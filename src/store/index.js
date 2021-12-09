@@ -11,11 +11,10 @@ import {
   persistStore,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import Restaurant from "../redux/slices/restaurantSlice";
-import Auth from "../redux/slices/authSlice";
+
+import Auth from "./slices/authSlice";
 
 let reducers = combineReducers({
-  restaurant: Restaurant,
   auth: Auth,
 });
 
