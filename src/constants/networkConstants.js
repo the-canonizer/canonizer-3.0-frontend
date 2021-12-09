@@ -6,6 +6,7 @@ const NetworkConstants = {
 
     // User
     LoginUser: "/login",
+    LogoutUser: "/logout",
     UpdateUser: "/users/",
   },
   Method: {

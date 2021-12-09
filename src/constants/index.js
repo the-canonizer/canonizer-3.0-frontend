@@ -1,10 +1,10 @@
 import NetworkConstants from "./networkConstants";
-import CookieConstants from "./cookieConstants";
+import EncryptionConstants from "./encryptionConstants";
 import RoleConstants from "./roleConstants";
 
 const K = {
   Network: NetworkConstants,
-  Cookie: CookieConstants,
+  EncryptionConstants: EncryptionConstants,
   Roles: RoleConstants,
 };
 

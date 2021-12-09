@@ -23,6 +23,18 @@ export default class UserRequest extends Request {
     );
   }
 
+  static loginUser(email) {
+    const body = { token };
+    return new UserRequest(
+      K.Network.URL.LoginUser,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      false
+    );
+  }
+
   static updateUser(user, user_image, id) {
     const body = {
       user,
