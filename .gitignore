@@ -8,6 +8,10 @@
 # testing
 /coverage
 
+# Configuration Files
+next.config.js
+/config
+
 # next.js
 /.next/
 /out/
@@ -32,3 +36,6 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+#vscode
+.history

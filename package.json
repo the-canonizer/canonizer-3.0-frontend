@@ -2,18 +2,27 @@
   "name": "next-canonizer",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "sh bin/dev.sh",
+    "build": "sh bin/build.sh",
+    "start": "sh bin/start.sh",
     "lint": "next lint"
   },
   "dependencies": {
+    "craco-less": "^1.20.0",
+    "cross-env": "^7.0.3",
     "next": "12.0.7",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "sass": "^1.44.0"
   },
   "devDependencies": {
+    "antd": "^4.17.3",
     "eslint": "7",
     "eslint-config-next": "12.0.7"
-  }
+  },
+  "description": "This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).",
+  "version": "1.0.0",
+  "main": "craco.config.js",
+  "author": "",
+  "license": "ISC"
 }
