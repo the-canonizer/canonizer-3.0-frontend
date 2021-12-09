@@ -9,8 +9,7 @@ export default class Request {
     method = K.Network.Method.GET,
     body = null,
     defaultHeaderType = K.Network.Header.Type.Json,
-    headers = {},
-    isTenant = true
+    headers = {}
   ) {
     const token = User.getToken();
     headers = {
