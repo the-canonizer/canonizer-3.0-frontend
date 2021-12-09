@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "sh bin/dev.sh",
+    "stage": "sh bin/stage.sh",
     "build": "sh bin/build.sh",
     "start": "sh bin/start.sh",
     "lint": "next lint"
