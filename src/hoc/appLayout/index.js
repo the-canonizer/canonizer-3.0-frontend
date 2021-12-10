@@ -1,11 +1,24 @@
-import store from "../../store";
+import { store } from "../../store";
 import { createWrapper } from "next-redux-wrapper";
 import HeadContent from "../../hoc/headContent";
 import AppHeader from "../../components/app/header";
-import Header from "../../components/static/header";
+import { useEffect } from "react";
+import usePermission from "../../hooks/usePermissions";
 
 function Layout(props) {
-  const isLogin = false;
+  const { auth } = store.getState();
+  const { isAllowed } = usePermission();
+
+  useEffect(() => {
+    if (!auth.token) {
+      window.location.href = "/login";
+    } else if (props.permission) {
+      if (!isAllowed(props.permission)) {
+        window.location.href = "/required-permission";
+      }
+    }
+  }, []);
+
   return (
     <>
       <HeadContent
@@ -22,8 +35,8 @@ function Layout(props) {
   );
 }
 
-// const makeStore = () => store;
-// const wrapper = createWrapper();
+const makeStore = () => store;
+const wrapper = createWrapper(makeStore);
 
-export default Layout;
-// export default wrapper.withRedux(Layout);
+// export default Layout;
+export default wrapper.withRedux(Layout);

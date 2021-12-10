@@ -1,5 +1,7 @@
 const AppHeader = () => {
-  return <h1>Header for logged-out users</h1>;
+  return (
+    <h1 style={{ backgroundColor: "#ffdc7a" }}>Header for logged-out users</h1>
+  );
 };
 
 export default AppHeader;
