@@ -23,7 +23,7 @@ export default class UserRequest extends Request {
     );
   }
 
-  static loginUser(email) {
+  static loginUser(token) {
     const body = { token };
     return new UserRequest(
       K.Network.URL.LoginUser,

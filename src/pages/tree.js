@@ -7,7 +7,7 @@ const TreesPage = () => {
     route: "tree",
   };
 
-  const permissionRequired = "view_tree";
+  const permissionRequired = "view_tree123";
 
   return (
     <Layout meta={meta} permission={permissionRequired}>
