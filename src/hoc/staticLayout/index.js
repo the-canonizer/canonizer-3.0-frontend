@@ -1,8 +1,8 @@
 import { store } from "../../store";
 import { createWrapper } from "next-redux-wrapper";
 import HeadContent from "../../hoc/headContent";
-import AppHeader from "../../components/app/header";
-import Header from "../../components/static/header";
+import AppHeader from "../../components/common/headers/loggedInHeader";
+import Header from "../../components/common/headers/loggedOutHeader";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 

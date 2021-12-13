@@ -1,3 +1,4 @@
+import Trees from "../components/pages/trees";
 import Layout from "../hoc/appLayout";
 
 const TreesPage = () => {
@@ -11,7 +12,7 @@ const TreesPage = () => {
 
   return (
     <Layout meta={meta} permission={permissionRequired}>
-      <h1>Trees Page</h1>
+      <Trees />
     </Layout>
   );
 };

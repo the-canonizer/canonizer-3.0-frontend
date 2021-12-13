@@ -1,5 +1,6 @@
+import AboutUs from "../components/pages/aboutUs";
 import Layout from "../hoc/staticLayout";
-const AboutUs = () => {
+const AboutUsPage = () => {
   const meta = {
     title: "About Canonizer",
     description: "Short description ",
@@ -9,10 +10,10 @@ const AboutUs = () => {
   return (
     <>
       <Layout meta={meta}>
-        <h1>About us</h1>
+        <AboutUs />
       </Layout>
     </>
   );
 };
 
-export default AboutUs;
+export default AboutUsPage;

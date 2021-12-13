@@ -1,7 +1,7 @@
 import { store } from "../../store";
 import { createWrapper } from "next-redux-wrapper";
 import HeadContent from "../../hoc/headContent";
-import AppHeader from "../../components/app/header";
+import AppHeader from "../../components/common/headers/loggedInHeader";
 import { useEffect } from "react";
 import usePermission from "../../hooks/usePermissions";
 
