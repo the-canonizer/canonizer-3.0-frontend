@@ -1,19 +1,18 @@
-const CracoLessPlugin = require("craco-less");
+const withAntdLess = require("next-plugin-antd-less");
 
-module.exports = {
-  reactStrictMode: true,
-  plugins: [
-    {
-      plugin: CracoLessPlugin,
-      options: {
-        lessLoaderOptions: {
-          lessOptions: {
-            //modifyVars: { "@primary-color": "#1DA57A" },
-            modifyVars: { "@primary-color": "red" },
-            javascriptEnabled: true,
-          },
-        },
-      },
-    },
-  ],
-};
+module.exports = withAntdLess({
+  // optional
+  // modifyVars: { "@primary-color": "#04f", "@font-size-base": "38px" },
+  // optional
+  lessVarsFilePath: "./styles/variables.less",
+  // optional
+  lessVarsFilePathAppendToEndOfContent: false,
+  // optional https://github.com/webpack-contrib/css-loader#object
+  cssLoaderOptions: {},
+
+  // Other Config Here...
+
+  webpack(config) {
+    return config;
+  },
+});
