@@ -35,19 +35,19 @@ You can start editing the page by modifying `src/pages/index.js`. The page auto-
 
 ## Routes
 
-Any file name under src/pages is basically a route name
+    Any file name under src/pages is basically a route name
 
 ## High order components (HOC)
 
-## App layout:
+## - App layout:
 
-- Containing logic for restricted pages(required permission) and rendering layout and children components for logged in users
+     Containing logic for restricted pages(required permission) and rendering layout and children components for logged in users
 
-## Static layout:
+## - Static layout:
 
-- Containing logic to render either logged in layout or logged out layout and also rendering the children components
+    Containing logic to render either logged in layout or logged out layout and also rendering the children components
 
-## Src/Components:
+## src/Components:
 
 ## Common
 
@@ -56,31 +56,38 @@ Any file name under src/pages is basically a route name
 
 ## Pages:
 
-- Containing the components for pages
+     Containing the components for pages
 
 ## Libraries:
 
-- Containing third party libraries like fresh chat
+     Containing third party libraries like fresh chat
 
-## Src/constants
+## src/constants
 
-     -Containing constants being used throughout the application like network constants
+      Containing constants being used throughout the application like network constants
 
-## Src/hooks
+## src/hooks
 
-- Containing custom hooks like usePermission() hook returns true if a user have a specific permission
+     Containing custom hooks like usePermission() hook returns true if a user have a specific permission
 
-## Src/store
+## src/store
 
-- Containing redux store configurations
+     Containing redux store configurations
 
-## Src/store/slices
+## src/network
 
-- Containing slices of redux store, Slice is basically a feature of redux toolkit, a combination of action, action creator and redux reducer.
+- ## api
+  containing specific api methods in which we are calling api requests and dispatching redux store actions
+- ## request
+  containing specific request methods in which we are calling generic network call method
 
-## /src/utils
+## src/store/slices
 
-- utils contains all utilities being used in application like a waiting spinner
+    Containing slices of redux store, Slice is basically a feature of redux toolkit, a combination of action, action creator and redux reducer.
+
+## src/utils
+
+    utils contains all utilities being used in application like a waiting spinner
 
 ## Learn More
 
