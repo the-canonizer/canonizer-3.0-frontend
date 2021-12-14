@@ -2,8 +2,10 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Cloning
 
+```
 - Clone repo
 - Checkout to main branch
+```
 
 ## Getting Started
 
@@ -51,16 +53,16 @@ You can start editing the page by modifying `src/pages/index.js`. The page auto-
 
 - ## Common
 
-- LoggedInHeader
-- LoggedOutHeader
+        - LoggedInHeader
+        - LoggedOutHeader
 
 - ## Pages:
 
-  Containing the components for pages
+        Containing the components for pages
 
 - ## Libraries:
 
-  Containing third party libraries like fresh chat
+        Containing third party libraries like fresh chat
 
 ## src/constants
 
