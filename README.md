@@ -1,8 +1,8 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-Cloning:
+## Cloning
 
-- git clone https://shahab_ramzan@bitbucket.org/shahab_ramzan/canonizer-next.git
+- Clone repo
 - Checkout to main branch
 
 ## Getting Started
@@ -47,7 +47,7 @@ You can start editing the page by modifying `src/pages/index.js`. The page auto-
 
   Containing logic to render either logged in layout or logged out layout and also rendering the children components
 
-## src/Components:
+## src/components:
 
 ## Common
 
@@ -88,6 +88,10 @@ You can start editing the page by modifying `src/pages/index.js`. The page auto-
 ## src/utils
 
     utils contains all utilities being used in application like a waiting spinner
+
+## Note
+
+    The component's directory name (src/components/pages) should be  same as route name files (src/pages)
 
 ## Learn More
 
