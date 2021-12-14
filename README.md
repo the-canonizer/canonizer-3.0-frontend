@@ -41,26 +41,26 @@ You can start editing the page by modifying `src/pages/index.js`. The page auto-
 
 - ## App layout:
 
-  Containing logic for restricted pages(required permission) and rendering layout and children components for logged in users
+        Containing logic for restricted pages(required permission) and rendering layout and children components for logged in users
 
 - ## Static layout:
 
-  Containing logic to render either logged in layout or logged out layout and also rendering the children components
+        Containing logic to render either logged in layout or logged out layout and also rendering the children components
 
 ## src/components:
 
-## Common
+- ## Common
 
 - LoggedInHeader
 - LoggedOutHeader
 
-## Pages:
+- ## Pages:
 
-     Containing the components for pages
+  Containing the components for pages
 
-## Libraries:
+- ## Libraries:
 
-     Containing third party libraries like fresh chat
+  Containing third party libraries like fresh chat
 
 ## src/constants
 
