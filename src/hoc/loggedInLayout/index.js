@@ -1,18 +1,21 @@
 import { store } from "../../store";
 import { createWrapper } from "next-redux-wrapper";
-import HeadContent from "../../hoc/headContent";
-import AppHeader from "../../components/common/headers/loggedInHeader";
-import Header from "../../components/common/headers/loggedOutHeader";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import HeadContent from "../headContent";
+import LoggedInHeader from "../../components/common/headers/loggedInHeader";
+import { useEffect } from "react";
+import usePermission from "../../hooks/usePermissions";
 
-function Layout(props) {
-  const [isLogin, setIsLogin] = useState(false);
+function LoggedInLayout(props) {
   const { auth } = store.getState();
+  const { isAllowed } = usePermission();
 
   useEffect(() => {
-    if (auth.authenticated && auth.token) {
-      setIsLogin(true);
+    if (!auth.token) {
+      window.location.href = "/login";
+    } else if (props.permission) {
+      if (!isAllowed(props.permission)) {
+        window.location.href = "/required-permission";
+      }
     }
   }, []);
 
@@ -25,8 +28,7 @@ function Layout(props) {
         image_url={props.meta.image_url}
       />
       <div className="app-layout">
-        {isLogin ? <AppHeader /> : <Header />}
-        <h1>read store {auth.authenticated}</h1>
+        <LoggedInHeader />
         <div className="app-content">{props.children}</div>
       </div>
     </>
@@ -37,4 +39,4 @@ const makeStore = () => store;
 const wrapper = createWrapper(makeStore);
 
 // export default Layout;
-export default wrapper.withRedux(Layout);
+export default wrapper.withRedux(LoggedInLayout);

@@ -1,5 +1,5 @@
 import AboutUs from "../components/pages/aboutUs";
-import Layout from "../hoc/staticLayout";
+import LoggedOutLayout from "../hoc/loggedOutLayout";
 const AboutUsPage = () => {
   const meta = {
     title: "About Canonizer",
@@ -9,9 +9,9 @@ const AboutUsPage = () => {
 
   return (
     <>
-      <Layout meta={meta}>
+      <LoggedOutLayout meta={meta}>
         <AboutUs />
-      </Layout>
+      </LoggedOutLayout>
     </>
   );
 };

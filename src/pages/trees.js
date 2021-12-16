@@ -1,5 +1,5 @@
 import Trees from "../components/pages/trees";
-import Layout from "../hoc/appLayout";
+import LoggedInLayout from "../hoc/loggedInLayout";
 
 const TreesPage = () => {
   const meta = {
@@ -11,9 +11,9 @@ const TreesPage = () => {
   const permissionRequired = "view_tree123";
 
   return (
-    <Layout meta={meta} permission={permissionRequired}>
+    <LoggedInLayout meta={meta} permission={permissionRequired}>
       <Trees />
-    </Layout>
+    </LoggedInLayout>
   );
 };
 

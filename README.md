@@ -41,13 +41,16 @@ You can start editing the page by modifying `src/pages/index.js`. The page auto-
 
 ## High order components (HOC)
 
-- ## App layout:
+- ## loggedInLayout:
 
         Containing logic for restricted pages(required permission) and rendering layout and children components for logged in users
 
-- ## Static layout:
+- ## loggedOutLayout:
 
         Containing logic to render either logged in layout or logged out layout and also rendering the children components
+
+- ## GetStartedLayout:
+        for login, reset password, forgot password pages
 
 ## src/components:
 
