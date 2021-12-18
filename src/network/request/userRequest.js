@@ -1,7 +1,7 @@
 import K from "../../constants";
-import Cookies from "js-cookie";
-import queryParams from "../utilities/queryParams";
-import User from "../models/user/user";
+
+// import queryParams from "../utilities/queryParams";
+// import User from "../models/user/user";
 
 export default class UserRequest extends Request {
   constructor(params) {

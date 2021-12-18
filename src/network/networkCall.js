@@ -1,9 +1,9 @@
 import axios from "axios";
-import K from "../utilities/constants";
+import K from "../constants";
 import { message } from "antd";
-import { camelCaseKeys } from "../utilities/generalUtility";
 import { trackPromise } from "react-promise-tracker";
-import User from "../models/user/user";
+// import User from "../models/user/user";
+import { camelCaseKeys } from "../utils/generalUtility";
 
 export default class NetworkCall {
   static async fetch(request, useLoading = true) {
@@ -41,9 +41,9 @@ export default class NetworkCall {
           error: error,
         });
       } else if (error.status === K.Network.StatusCode.Invalid) {
-        User.logoutCall("Invalid User");
+        // User.logoutCall("Invalid User");
       } else if (error.status === K.Network.StatusCode.Unauthorized) {
-        User.logoutCall("User unauthorized");
+        // User.logoutCall("User unauthorized");
       }
 
       if ("errors" in error.data)

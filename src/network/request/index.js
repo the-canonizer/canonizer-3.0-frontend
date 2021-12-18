@@ -1,7 +1,4 @@
 import K from "../../constants";
-import Cookies from "js-cookie";
-import queryParams from "../utilities/queryParams";
-import User from "../models/user/user";
 
 export default class Request {
   constructor(
@@ -11,7 +8,8 @@ export default class Request {
     defaultHeaderType = K.Network.Header.Type.Json,
     headers = {}
   ) {
-    const token = User.getToken();
+    // const token = User.getToken();
+    const token = "kbdjsbfjyy897798hsdbjfbjn";
     headers = {
       ...(defaultHeaderType === K.Network.Header.Type.Json
         ? K.Network.Header.Default(token)
@@ -22,5 +20,6 @@ export default class Request {
     this.method = method;
     this.body = body;
     this.headers = headers;
+    console.log("...../////// ParentsCon", relativeURL);
   }
 }

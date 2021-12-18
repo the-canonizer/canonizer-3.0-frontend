@@ -1,13 +1,18 @@
 const NetworkConstants = {
   URL: {
     Base: process.env.REACT_APP_BASE_URL,
-    BaseAPI: process.env.REACT_APP_BASE_API_URL,
+    // BaseAPI: process.env.REACT_APP_BASE_API_URL,
+    BaseAPI: "https://reqres.in",
     Timeout: process.env.REACT_APP_TIMEOUT,
 
     // User
     LoginUser: "/login",
     LogoutUser: "/logout",
     UpdateUser: "/users/",
+
+    // Tree
+
+    GetTree: "/api/unknown",
   },
   Method: {
     GET: "GET",
