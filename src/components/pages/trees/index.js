@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getTreesApi } from "../../../network/api/treeApi";
+import { setTree } from "../../../store/slices/treeSlice";
 
 const Trees = () => {
   const [data, setData] = useState();

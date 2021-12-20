@@ -3,14 +3,12 @@ import NetworkCall from "../networkCall";
 import TreeRequest from "../request/treeRequest";
 import { store } from "../../store";
 
-export const getTreesApi = async () => {
-  debugger;
+export const getTreesApi = async (dispatch) => {
   try {
     const trees = await NetworkCall.fetch(TreeRequest.getTrees());
-    store.dispatch(setTree(trees));
-    return user;
+    dispatch(setTree(trees));
+    return trees;
   } catch (error) {
-    debugger;
-    // message.error(error.message);
+    message.error(error.message);
   }
 };

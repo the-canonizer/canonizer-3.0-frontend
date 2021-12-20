@@ -11,11 +11,13 @@ import {
   persistStore,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-
+// reducers
 import Auth from "./slices/authSlice";
+import Tree from "./slices/treeSlice";
 
 let reducers = combineReducers({
   auth: Auth,
+  trees: Tree,
 });
 
 const persistConfig = {

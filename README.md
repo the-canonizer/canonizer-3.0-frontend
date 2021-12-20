@@ -85,9 +85,16 @@ You can start editing the page by modifying `src/pages/index.js`. The page auto-
 ## src/network
 
 - ## api
+
+```
   containing specific api methods in which we are calling api requests and dispatching redux store actions
+```
+
 - ## request
+
+```
   containing specific request methods in which we are calling generic network call method
+```
 
 ## src/store/slices
 
