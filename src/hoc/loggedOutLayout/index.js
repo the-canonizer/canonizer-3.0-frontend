@@ -1,10 +1,8 @@
 import { store } from "../../store";
-import { createWrapper } from "next-redux-wrapper";
 import HeadContent from "../headContent";
 import LoggedInHeader from "../../components/common/headers/loggedInHeader";
 import LoggedOutHeader from "../../components/common/headers/loggedOutHeader";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 
 function LoggedOutLayout(props) {
   const [isLogin, setIsLogin] = useState(false);
@@ -33,8 +31,8 @@ function LoggedOutLayout(props) {
   );
 }
 
-const makeStore = () => store;
-const wrapper = createWrapper(makeStore);
+// const makeStore = () => store;
+// const wrapper = createWrapper(makeStore);
 
-// export default Layout;
-export default wrapper.withRedux(LoggedOutLayout);
+export default LoggedOutLayout;
+// export default wrapper.withRedux(LoggedOutLayout);

@@ -4,7 +4,7 @@ import "../../styles/variables.less";
 import { store, persistor } from "../store";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-
+import { createWrapper } from "next-redux-wrapper";
 function MyApp({ Component, pageProps }) {
   return (
     <>
@@ -17,4 +17,7 @@ function MyApp({ Component, pageProps }) {
   );
 }
 
-export default MyApp;
+const makeStore = () => store;
+const wrapper = createWrapper(makeStore);
+
+export default wrapper.withRedux(MyApp);
