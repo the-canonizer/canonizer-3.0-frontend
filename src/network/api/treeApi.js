@@ -1,7 +1,6 @@
 import { setTree } from "../../store/slices/treeSlice";
 import NetworkCall from "../networkCall";
 import TreeRequest from "../request/treeRequest";
-import { store } from "../../store";
 
 export const getTreesApi = async (dispatch) => {
   try {

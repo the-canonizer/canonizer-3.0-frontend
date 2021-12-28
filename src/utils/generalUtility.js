@@ -109,7 +109,7 @@ export const setFieldErrorsFromServer = (error, form, values = undefined) => {
     return;
   }
   let fieldErrors = [];
-  // debugger;
+
   for (let key in errors) {
     if (errors.hasOwnProperty(key)) {
       // let fieldError = errors[key].map((error) => {

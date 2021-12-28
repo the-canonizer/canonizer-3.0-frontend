@@ -1,7 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { message } from "antd";
-import NetworkCall from "../../network/networkCall";
-import UserRequest from "../../network/request/userRequest";
 
 export const treeSlice = createSlice({
   name: "tree",
@@ -10,7 +8,6 @@ export const treeSlice = createSlice({
   },
   reducers: {
     setTree: (state, action) => {
-      debugger;
       state.tree = action.payload.data;
     },
   },

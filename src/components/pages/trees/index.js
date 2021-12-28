@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getTreesApi } from "../../../network/api/treeApi";
-import { setTree } from "../../../store/slices/treeSlice";
 
 const Trees = () => {
   const [data, setData] = useState();
   const dispatch = useDispatch();
-  useEffect(async () => {
-    const result = await getTreesApi(dispatch);
-    await setData(result);
+  useEffect(() => {
+    async function fetchData() {
+      // You can await here
+      const result = await getTreesApi(dispatch);
+      await setData(result);
+      // ...
+    }
+    fetchData();
   }, []);
   return (
     <>
