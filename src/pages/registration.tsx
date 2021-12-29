@@ -1,4 +1,4 @@
-import Registration from "../components/pages/registration";
+import Registration from "../components/ComponentPages/Registration";
 import GetStartedLayout from "../hoc/getStartedLayout";
 const RegistrationPage = () => {
   const meta = {

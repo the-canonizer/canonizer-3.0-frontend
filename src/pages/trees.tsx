@@ -1,4 +1,4 @@
-import Trees from "../components/pages/trees";
+import Trees from "../components/ComponentPages/Trees";
 import LoggedInLayout from "../hoc/loggedInLayout";
 
 const TreesPage = () => {

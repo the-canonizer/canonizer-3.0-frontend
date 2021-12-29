@@ -1,4 +1,4 @@
-import AboutUs from "../components/pages/aboutUs";
+import AboutUs from "../components/ComponentPages/AboutUs";
 import LoggedOutLayout from "../hoc/loggedOutLayout";
 const AboutUsPage = () => {
   const meta = {

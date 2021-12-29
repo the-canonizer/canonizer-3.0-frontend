@@ -8,6 +8,6 @@ export const getTreesApi = async (dispatch) => {
     dispatch(setTree(trees));
     return trees;
   } catch (error) {
-    message.error(error.message);
+    // message.error(error.message);
   }
 };

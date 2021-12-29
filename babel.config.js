@@ -2,7 +2,7 @@ module.exports = function (api) {
   api.cache(true);
 
   return {
-    presets: [["next/babel"]],
+    presets: ["next/babel", "@zeit/next-typescript/babel"],
     plugins: [
       ["import", { libraryName: "antd", style: true }],
       [
@@ -16,3 +16,7 @@ module.exports = function (api) {
     ],
   };
 };
+
+// {
+//   "presets": ["next/babel", "@zeit/next-typescript/babel"]
+// }
