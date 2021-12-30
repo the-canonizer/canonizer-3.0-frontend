@@ -1,15 +1,10 @@
 import AboutUs from "../components/ComponentPages/AboutUs";
 import LoggedOutLayout from "../hoc/loggedOutLayout";
-const AboutUsPage = () => {
-  const meta = {
-    title: "About Canonizer",
-    description: "Short description ",
-    route: "about",
-  };
 
+const AboutUsPage = () => {
   return (
     <>
-      <LoggedOutLayout meta={meta}>
+      <LoggedOutLayout routeName={"about-us"}>
         <AboutUs />
       </LoggedOutLayout>
     </>

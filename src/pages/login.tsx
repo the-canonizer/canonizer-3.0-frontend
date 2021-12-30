@@ -1,13 +1,7 @@
 import GetStartedLayout from "../hoc/getStartedLayout";
 const LoginPage = () => {
-  const meta = {
-    title: "login",
-    description: "login canonizer ",
-    route: "login",
-  };
-
   return (
-    <GetStartedLayout meta={meta}>
+    <GetStartedLayout routeName={"login"}>
       <h1>Login Page</h1>
     </GetStartedLayout>
   );

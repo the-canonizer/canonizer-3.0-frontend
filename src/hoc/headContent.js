@@ -4,8 +4,9 @@ import React from "react";
 
 import { withUserAgent } from "next-useragent";
 
-function HeadContent({ description, title, route, image_url, ua }) {
+function HeadContent({ description, title, route, image_url }) {
   const url = process.env.SITE_NAME;
+  debugger;
 
   return (
     <Head>

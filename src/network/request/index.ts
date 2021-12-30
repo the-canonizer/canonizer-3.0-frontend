@@ -20,6 +20,5 @@ export default class Request {
     this.method = method;
     this.body = body;
     this.headers = headers;
-    console.log("...../////// ParentsCon", relativeURL);
   }
 }

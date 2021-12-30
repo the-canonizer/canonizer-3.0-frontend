@@ -30,7 +30,6 @@ export default class NetworkCall {
             },
           });
 
-      console.log("NetworkCall Data: ", response.data);
       return response.data;
     } catch (err) {
       let error = err.response;
