@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { message } from "antd";
 import CryptoJS from "crypto-js";
-import isServer from "../../utils/generalUtility";
 import K from "../../constants";
 
 export const authSlice = createSlice({
@@ -26,7 +25,6 @@ export const authSlice = createSlice({
       state.loggedInUser = null;
       state.token = null;
       state.authenticated = false;
-      !isServer && localStorage.clear();
     },
   },
 });

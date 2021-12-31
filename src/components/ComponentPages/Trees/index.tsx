@@ -1,29 +1,34 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getTreesApi } from "../../../network/api/treeApi";
-
-const Trees = () => {
-  const [data, setData] = useState();
+import * as GeneralUtility from "../../../utils/generalUtility";
+const Trees = ({ treesData }: any) => {
+  const [data, setData] = useState(treesData);
   const dispatch = useDispatch();
   useEffect(() => {
     async function fetchData() {
-      // You can await here
-      const result = await getTreesApi(dispatch);
+      let result;
+      try {
+        result = await dispatch(getTreesApi());
+      } catch (error) {
+        GeneralUtility.handleError(error, dispatch);
+      }
+
       await setData(result);
-      // ...
     }
     fetchData();
   }, []);
   return (
     <>
       <h1>Trees Page</h1>
-      {data?.data.map((record) => (
-        <div key={record.id} style={{ backgroundColor: record.color }}>
-          <h1>Name: {record.name}</h1>
-          <h4>ID: {record.id}</h4>
-          <h4></h4>
-        </div>
-      ))}
+      {data &&
+        data?.map((record) => (
+          <div key={record.id} style={{ backgroundColor: record.color }}>
+            <h1>Name: {record.name}</h1>
+            <h4>ID: {record.id}</h4>
+            <h4></h4>
+          </div>
+        ))}
     </>
   );
 };

@@ -1,33 +1,43 @@
 const MetaTags = {
-  "about-us": {
+  Home: {
+    title: "About Landing Page",
+    description: "Short description ",
+    route: "/",
+  },
+  AboutUsPage: {
     title: "About Canonizer",
     description: "Short description ",
     route: "about",
   },
-  trees: {
+  TreesPage: {
     title: "About Canonizer Trees",
     description: "Short description ",
     route: "trees",
   },
-  "forgot-password": {
+  ForgotPasswordPage: {
     title: "forgot password",
-    description: "forgot canaonizer login password ",
+    description: "forgot canonizer login password ",
     route: "forgot-password",
   },
-  login: {
+  LoginPage: {
     title: "login",
     description: "login canonizer ",
     route: "login",
   },
-  registration: {
+  RegistrationPage: {
     title: "Registration",
     description: "Register to canonizer ",
     route: "registration",
   },
-  "reset-password": {
+  ResetPasswordPage: {
     title: "Reset Password",
     description: "Reset canonizer login password ",
     route: "reset-password",
+  },
+  default: {
+    title: "Default Meta tags for canonizer",
+    description: "Default short description for canonizer app",
+    route: "/",
   },
 };
 

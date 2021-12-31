@@ -1,52 +1,30 @@
 import { store } from "../../store";
-import HeadContent from "../headContent";
 import LoggedInHeader from "../../components/common/headers/loggedInHeader";
-import { useEffect, useState } from "react";
-import usePermission from "../../hooks/usePermissions";
-import MetaTags from "../../MetaTags";
-
+import { useEffect } from "react";
+import { Layout } from "antd";
+import Spinner from "../../components/common/spinner/spinner";
+import styles from "../layout.module.scss";
 function LoggedInLayout(props) {
   const { auth } = store.getState();
-  const { isAllowed } = usePermission();
-  const [meta, setMeta] = useState(MetaTags[props.routeName]);
+
+  const { Content } = Layout;
 
   useEffect(() => {
     if (!auth.token) {
       window.location.href = "/login";
-    } else if (props.permission) {
-      if (!isAllowed(props.permission)) {
-        window.location.href = "/required-permission";
-      }
     }
-    // set default meta tags
-    if (!props.routeName || !meta || Object.keys(meta).length === 0) {
-      setMeta({
-        title: "About Canonizer",
-        description: "Short description ",
-        route: "about",
-      });
-      console.log(
-        `${
-          props.routeName
-            ? `${props.routeName} -- this route name is not matched with any Object's key in MetaTags file`
-            : "routeName is not passed to layout as props"
-        } `
-      );
-    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
-      <HeadContent
-        title={meta?.title}
-        description={meta?.description}
-        route={meta?.route}
-        image_url={meta?.image_url}
-      />
-      <div className="app-layout">
+      <Layout className={styles["app-layout"]}>
         <LoggedInHeader />
-        <div className="app-content">{props.children}</div>
-      </div>
+        <Content className="app-content">
+          {props.children}
+          <Spinner></Spinner>
+        </Content>
+      </Layout>
     </>
   );
 }
