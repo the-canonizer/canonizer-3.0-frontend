@@ -13,11 +13,13 @@
     "@reduxjs/toolkit": "^1.6.2",
     "@types/next": "^9.0.0",
     "@zeit/next-typescript": "^1.1.1",
+    "antd": "^4.17.3",
     "axios": "^0.24.0",
     "babel-plugin-import": "^1.13.3",
     "babel-plugin-module-resolver": "^4.1.0",
     "cross-env": "^7.0.3",
     "crypto-js": "^4.1.1",
+    "firebase": "^9.6.1",
     "history": "^5.1.0",
     "next": "12.0.7",
     "next-plugin-antd-less": "^1.6.0",
@@ -30,8 +32,7 @@
     "react-redux-toastr": "^7.6.6",
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
-    "sass": "^1.44.0",
-    "antd": "^4.17.3"
+    "sass": "^1.44.0"
   },
   "devDependencies": {
     "@types/node": "^17.0.5",
