@@ -1,7 +1,8 @@
 const PermissionsForPages = {
   TreesPage: {
-    isRequired: true,
-    permissionName: "view-trees",
+    isAuthenticationRequired: true,
+    isPermissionRequired: true,
+    permissionName: "view_tree",
   },
 };
 

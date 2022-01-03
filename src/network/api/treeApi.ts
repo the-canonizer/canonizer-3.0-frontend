@@ -3,7 +3,7 @@ import NetworkCall from "../networkCall";
 import TreeRequest from "../request/treeRequest";
 import { message } from "antd";
 
-export const getTreesApi = (dispatch) => async () => {
+export const getTreesApi = () => async (dispatch) => {
   try {
     const trees = await NetworkCall.fetch(TreeRequest.getTrees());
     dispatch(setTree(trees));

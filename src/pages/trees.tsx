@@ -1,12 +1,13 @@
 import Trees from "../components/ComponentPages/Trees";
 import LoggedInLayout from "../hoc/loggedInLayout";
 import { getTreesApi } from "../network/api/treeApi";
+import Layout from "../hoc/layout";
 
 const TreesPage = ({ result }) => {
   return (
-    <LoggedInLayout>
+    <Layout>
       <Trees treesData={result} />
-    </LoggedInLayout>
+    </Layout>
   );
 };
 

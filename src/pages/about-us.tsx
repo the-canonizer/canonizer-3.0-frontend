@@ -1,12 +1,12 @@
 import AboutUs from "../components/ComponentPages/AboutUs";
-import LoggedOutLayout from "../hoc/loggedOutLayout";
+import Layout from "../hoc/layout";
 
 const AboutUsPage = () => {
   return (
     <>
-      <LoggedOutLayout routeName={"about-us"}>
+      <Layout routeName={"about-us"}>
         <AboutUs />
-      </LoggedOutLayout>
+      </Layout>
     </>
   );
 };
