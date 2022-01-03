@@ -9,6 +9,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { createWrapper } from "next-redux-wrapper";
 import HeadContentComponent from "../components/common/headContentAndPermisisonCheck";
+import ErrorBoundary from "../hoc/ErrorBoundary";
 import * as gtag from "../firebaseConfig/gtag";
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
@@ -44,12 +45,12 @@ function MyApp({ Component, pageProps }) {
       />
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <>
+          <ErrorBoundary>
             <HeadContentComponent componentName={Component.name}>
               {" "}
             </HeadContentComponent>
             <Component {...pageProps} />
-          </>
+          </ErrorBoundary>
         </PersistGate>
       </Provider>
     </>
