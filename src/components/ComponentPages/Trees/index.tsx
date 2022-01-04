@@ -2,22 +2,22 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getTreesApi } from "../../../network/api/treeApi";
 import * as GeneralUtility from "../../../utils/generalUtility";
-const Trees = ({ treesData }: any) => {
+const Trees = ({ treesData }) => {
+  console.log("///////////////", treesData);
   const [data, setData] = useState(treesData);
   const dispatch = useDispatch();
-  useEffect(() => {
-    async function fetchData() {
-      let result;
-      try {
-        result = await dispatch(getTreesApi());
-      } catch (error) {
-        GeneralUtility.handleError(error, dispatch);
-      }
-
-      await setData(result);
-    }
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     let result;
+  //     try {
+  //       result = await getTreesApi();
+  //     } catch (error) {
+  //       GeneralUtility.handleError(error, dispatch);
+  //     }
+  //     await setData(result);
+  //   }
+  //   fetchData();
+  // }, []);
   return (
     <>
       <h1>Trees Page</h1>

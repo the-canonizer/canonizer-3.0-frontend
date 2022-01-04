@@ -1,24 +1,27 @@
-import Trees from "../components/ComponentPages/Trees";
+import Trees from "../components/componentPages/trees";
 import LoggedInLayout from "../hoc/loggedInLayout";
 import { getTreesApi } from "../network/api/treeApi";
 import Layout from "../hoc/layout";
 
-const TreesPage = ({ result }) => {
+const TreesPage = ({ data }) => {
   return (
     <Layout>
-      <Trees treesData={result} />
+      <Trees treesData={data} />
     </Layout>
   );
 };
 
-// export async function getServerSideProps(context: any) {
-//   // const result = await getTreesApi();
-//   console.log("//////server///////");
-//   return {
-//     props: {
-//       // result,
-//     },
-//   };
-// }
+export async function getServerSideProps() {
+  const result = await getTreesApi();
+  const data = result || [];
+  // const data = await result;
+  console.log("result");
+
+  return {
+    props: {
+      data,
+    },
+  };
+}
 
 export default TreesPage;

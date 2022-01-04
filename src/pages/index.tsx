@@ -9,7 +9,7 @@ export default function Home() {
         <Button>Hello</Button>
 
         <main>
-          <h1>Canonizer</h1>
+          <h1>Hello Canonizer</h1>
         </main>
         <footer>
           <a

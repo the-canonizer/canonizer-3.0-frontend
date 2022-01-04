@@ -1,4 +1,4 @@
-import Resetpassword from "../components/ComponentPages/ResetPassword";
+import Resetpassword from "../components/componentPages/resetPassword";
 import GetStartedLayout from "../hoc/getStartedLayout";
 const ResetPasswordPage = () => {
   return (

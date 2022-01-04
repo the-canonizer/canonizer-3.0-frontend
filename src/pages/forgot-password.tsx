@@ -1,4 +1,4 @@
-import ForgotPassword from "../components/ComponentPages/ForgotPassword";
+import ForgotPassword from "../components/componentPages/forgotPassword";
 
 import GetStartedLayout from "../hoc/getStartedLayout";
 

@@ -5,7 +5,6 @@ import React from "react";
 import { withUserAgent } from "next-useragent";
 
 function HeadContent({ description, title, route, image_url }) {
-  debugger;
   const url = process.env.SITE_NAME;
 
   return (

@@ -1,43 +1,43 @@
+import Link from "next/link";
 import React, { Component } from "react";
-import Image from "next/image";
+import { isServer } from "../../utils/generalUtility";
 
 export default class ErrorBoundary extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
-  }
+  state = { hasError: false };
 
   static getDerivedStateFromError(error) {
     if (error.name === "ChunkLoadError") {
       return window.location.reload();
     }
-    return { hasError: true };
+    return { hasError: true, redirect: false };
   }
 
-  componentDidCatch(error, errorInfo) {
-    console.log(error, errorInfo);
+  componentDidCatch(error, info) {
+    console.error("ErrorBoundary caught an error", error, info);
   }
+
+  componentDidUpdate() {
+    if (this.state.hasError) {
+      setTimeout(() => this.setState({ redirect: true }), 5000);
+    }
+  }
+
+  redirectToHome = () => {
+    return !isServer && (window.location.href = "/");
+  };
 
   render() {
-    if (this.state.hasError) {
+    if (this.state.redirect) {
+      return this.redirectToHome();
+    } else if (this.state.hasError) {
       return (
-        <div className="error_boundary_banner">
-          <h1 className="erro_msg">
-            Whoops. Something went wrong,
-            <br /> please refresh and try again.
-          </h1>
-          <button
-            className="refresh_btn"
-            onClick={() => window.location.reload()}
-          >
-            <Image
-              className="redo_icon"
-              src="https://d2jyir0m79gs60.cloudfront.net/Refresh-icon.svg"
-              alt="refresh"
-            />
-            Refresh
-          </button>
-        </div>
+        <h2>
+          There was an error with this listing.{" "}
+          <Link href="/">
+            <a>Click here</a>
+          </Link>{" "}
+          to back to the home page or wait five seconds.
+        </h2>
       );
     }
 

@@ -11,6 +11,10 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 First, run the development server:
 
+```
+For windows Install git bash
+```
+
 ```bash
 - npm run dev: starts dev environment
 - npm run build: creates a build

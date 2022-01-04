@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import HeadContent from "./headContent";
-import MetaTags from "../../../MetaTags";
+import MetaTags from "../../../metaTags";
 import { useRouter } from "next/router";
 import PermissionsForPages from "../../../permissions";
 import usePermission from "../../../hooks/usePermissions";
 import useAuthentication from "../../../hooks/isUserAuthenticated";
 
 const HeadContentComponent = ({ componentName }) => {
-  debugger;
   const router = useRouter();
   const [meta, setMeta] = useState(MetaTags[componentName]);
   const [permission] = useState(PermissionsForPages[componentName]);
@@ -28,7 +27,6 @@ const HeadContentComponent = ({ componentName }) => {
     }
 
     if (requiredPermission && !isAllowed(permission.permissionName)) {
-      debugger;
       router.push("/required-permission");
     }
 
