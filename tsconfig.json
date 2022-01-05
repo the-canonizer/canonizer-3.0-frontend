@@ -19,27 +19,9 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "src/network/api/treeApi.js"
+    "src/network/api/treeApi.js",
+    "next.config.js",
+    "src/pages/404/index.js"
   ],
   "exclude": ["node_modules"]
 }
-
-// {
-//     "compilerOptions": {
-//       "allowJs": true,
-//       "allowSyntheticDefaultImports": true,
-//       "jsx": "preserve",
-//       "lib": ["dom", "es2017"],
-//       "module": "esnext",
-//       "moduleResolution": "node",
-//       "noEmit": true,
-//       "noUnusedLocals": true,
-//       "noUnusedParameters": true,
-//       "preserveConstEnums": true,
-//       "removeComments": false,
-//       "skipLibCheck": true,
-//       "sourceMap": true,
-//       "strict": true,
-//       "target": "esnext"
-//     }
-//   }

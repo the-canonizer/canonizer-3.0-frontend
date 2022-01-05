@@ -202,9 +202,9 @@ export const setParams = (history, search, page, pageSize) => {
   let searchObj = { ...search, page, pageSize };
   const params = new URLSearchParams();
 
-  Object.entries(searchObj).map(([key, value]) => {
-    value && params.append(key, value);
-  });
+  Object.entries(searchObj).map(
+    ([key, value]) => value && params.append(key, value)
+  );
   history.push({ search: params.toString() });
   // }
 };

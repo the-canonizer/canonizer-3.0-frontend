@@ -7,7 +7,7 @@ export const authSlice = createSlice({
   name: "auth",
   initialState: {
     loggedInUser: null,
-    authenticated: "test",
+    authenticated: true,
     token: "jhsdhbud7y7sjhbjfbds7y87ysjdbfjd7y78yfds",
     permissions: ["view_tree"],
   },

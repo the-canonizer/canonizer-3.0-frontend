@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import { getTreesApi } from "../../../network/api/treeApi";
 import * as GeneralUtility from "../../../utils/generalUtility";
 const Trees = ({ treesData }) => {
-  console.log("///////////////", treesData);
   const [data, setData] = useState(treesData);
   const dispatch = useDispatch();
   // useEffect(() => {

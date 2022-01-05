@@ -6,7 +6,11 @@ import PermissionsForPages from "../../../permissions";
 import usePermission from "../../../hooks/usePermissions";
 import useAuthentication from "../../../hooks/isUserAuthenticated";
 
-const HeadContentComponent = ({ componentName }) => {
+type HeadContentComponentProps = {
+  componentName: string;
+};
+
+const HeadContentComponent = ({ componentName }: HeadContentComponentProps) => {
   const router = useRouter();
   const [meta, setMeta] = useState(MetaTags[componentName]);
   const [permission] = useState(PermissionsForPages[componentName]);

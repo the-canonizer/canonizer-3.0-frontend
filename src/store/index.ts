@@ -23,7 +23,7 @@ let reducers = combineReducers({
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth"],
+  whitelist: ["auth", "trees"],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);

@@ -1,4 +1,15 @@
-const MetaTags = {
+type tagtypes = {
+  title: string;
+  description: string;
+  route: string;
+  image_url?: string;
+};
+
+type MetaTagsTypes = {
+  [key: string]: tagtypes;
+};
+
+const MetaTags: MetaTagsTypes = {
   Home: {
     title: "About Landing Page",
     description: "Short description ",

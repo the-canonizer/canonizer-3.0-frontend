@@ -4,7 +4,19 @@ import React from "react";
 
 import { withUserAgent } from "next-useragent";
 
-function HeadContent({ description, title, route, image_url }) {
+type HeadContentProps = {
+  description: string;
+  title: string;
+  route: string;
+  image_url: string;
+};
+
+function HeadContent({
+  description,
+  title,
+  route,
+  image_url,
+}: HeadContentProps) {
   const url = process.env.SITE_NAME;
 
   return (

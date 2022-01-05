@@ -3,7 +3,7 @@ import React from "react";
 
 const My404 = () => {
   const router = useRouter();
-  const goBack = (props) => {
+  const goBack = () => {
     router.back();
   };
   return (
