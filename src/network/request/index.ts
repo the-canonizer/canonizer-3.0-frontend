@@ -1,6 +1,11 @@
 import K from "../../constants";
 
 export default class Request {
+  url: string = "";
+  method: string = "";
+  body: any;
+  headers: any;
+
   constructor(
     relativeURL,
     method = K.Network.Method.GET,
@@ -8,6 +13,7 @@ export default class Request {
     defaultHeaderType = K.Network.Header.Type.Json,
     headers = {}
   ) {
+    debugger;
     // const token = User.getToken();
     const token = "kbdjsbfjyy897798hsdbjfbjn";
     headers = {

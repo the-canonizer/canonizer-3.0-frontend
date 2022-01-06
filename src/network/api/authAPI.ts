@@ -4,7 +4,7 @@ import NetworkCall from "../networkCall";
 import UserRequest from "../request/userRequest";
 import { message } from "antd";
 
-export const login = () => {
+export const login = (email, password) => {
   return async (dispatch) => {
     try {
       const user = await NetworkCall.fetch(

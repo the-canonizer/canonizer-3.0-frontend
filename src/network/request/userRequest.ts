@@ -1,14 +1,14 @@
 import K from "../../constants";
+import Request from ".";
 
-// import queryParams from "../utilities/queryParams";
-// import User from "../models/user/user";
+import { redirectToLogin } from "../../utils/generalUtility";
 
 export default class UserRequest extends Request {
-  constructor(params) {
-    super(...params);
+  constructor(...params) {
+    super(params);
   }
 
-  static loginUser(email, password) {
+  static loginUser(email: any, password: any) {
     const body = {
       email,
       password,
@@ -23,19 +23,7 @@ export default class UserRequest extends Request {
     );
   }
 
-  static loginUser(token) {
-    const body = { token };
-    return new UserRequest(
-      K.Network.URL.LoginUser,
-      K.Network.Method.POST,
-      body,
-      K.Network.Header.Type.Json,
-      {},
-      false
-    );
-  }
-
-  static updateUser(user, user_image, id) {
+  static updateUser(user: any, user_image: any, id: string) {
     const body = {
       user,
       user_image,
@@ -48,5 +36,10 @@ export default class UserRequest extends Request {
       {},
       false
     );
+  }
+
+  static logoutCall(error: string = "") {
+    //user's logout logic
+    redirectToLogin(error);
   }
 }

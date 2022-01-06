@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { message } from "antd";
 import CryptoJS from "crypto-js";
 import K from "../../constants";
 

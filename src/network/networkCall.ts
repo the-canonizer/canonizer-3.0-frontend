@@ -2,13 +2,14 @@ import axios from "axios";
 import K from "../constants";
 import { message } from "antd";
 import { trackPromise } from "react-promise-tracker";
-// import User from "../models/user/user";
+import UserRequest from "./request/userRequest";
 import { camelCaseKeys } from "../utils/generalUtility";
 
 export default class NetworkCall {
   static async fetch(request, useLoading = true) {
+    console.log("request class ", request);
     try {
-      const response = useLoading
+      const response: any = useLoading
         ? await trackPromise(
             NetworkCall.axios({
               method: request.method,
@@ -40,9 +41,9 @@ export default class NetworkCall {
           error: error,
         });
       } else if (error.status === K.Network.StatusCode.Invalid) {
-        // User.logoutCall("Invalid User");
+        UserRequest.logoutCall("Invalid User");
       } else if (error.status === K.Network.StatusCode.Unauthorized) {
-        // User.logoutCall("User unauthorized");
+        UserRequest.logoutCall("User unauthorized");
       }
 
       if ("errors" in error.data)
@@ -53,6 +54,15 @@ export default class NetworkCall {
         statusCode: error.status,
       });
     }
+  }
+  static axios(arg0: {
+    method: any;
+    url: any;
+    data: any;
+    headers: any;
+    validateStatus: (status: any) => boolean;
+  }): Promise<unknown> {
+    throw new Error("Method not implemented.");
   }
 }
 NetworkCall.axios = axios.create({
