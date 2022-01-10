@@ -20,3 +20,5 @@ module.exports = function (api) {
 // {
 //   "presets": ["next/babel", "@zeit/next-typescript/babel"]
 // }
+
+export {};

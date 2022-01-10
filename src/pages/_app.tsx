@@ -5,7 +5,7 @@ import { store } from "../store";
 import { Provider } from "react-redux";
 import type { AppProps } from "next/app";
 import { createWrapper } from "next-redux-wrapper";
-import HeadContentComponent from "../components/common/headContentAndPermisisonCheck";
+import HeadContentAndPermissionComponent from "../components/common/headContentAndPermisisonCheck";
 import ErrorBoundary from "../hoc/errorBoundary";
 import GoogleAnalyticScripts from "../firebaseConfig/scripts";
 
@@ -14,14 +14,10 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       <GoogleAnalyticScripts />
       <Provider store={store}>
-        {/* <PersistGate loading={null} persistor={persistor}> */}
         <ErrorBoundary>
-          <HeadContentComponent componentName={Component.name}>
-            {" "}
-          </HeadContentComponent>
+          <HeadContentAndPermissionComponent componentName={Component.name} />
           <Component {...pageProps} />
         </ErrorBoundary>
-        {/* </PersistGate> */}
       </Provider>
     </>
   );

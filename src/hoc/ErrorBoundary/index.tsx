@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { isServer } from "../../utils/generalUtility";
 
 export default class ErrorBoundary extends Component {
-  state = { hasError: false };
+  state = { hasError: false, redirect: false };
 
   static getDerivedStateFromError(error) {
     if (error.name === "ChunkLoadError") {

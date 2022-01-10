@@ -2,8 +2,6 @@ import Head from "next/head";
 
 import React from "react";
 
-import { withUserAgent } from "next-useragent";
-
 type HeadContentProps = {
   description: string;
   title: string;
@@ -32,7 +30,7 @@ function HeadContent({
         content="width=device-width,minimum-scale=1, initial-scale=1, maximum-scale=1, user-scalable=no"
       />
       <meta name="type" content="website" />
-      <meta name="url" rel="canonical" content={url + route} />
+      {/* <meta name="url" rel="canonical" content={url + route} /> */}
       <meta
         name="image"
         content={
@@ -84,4 +82,4 @@ function HeadContent({
   );
 }
 
-export default withUserAgent(HeadContent);
+export default HeadContent;

@@ -10,7 +10,9 @@ type HeadContentComponentProps = {
   componentName: string;
 };
 
-const HeadContentComponent = ({ componentName }: HeadContentComponentProps) => {
+const HeadContentAndPermissionComponent = ({
+  componentName,
+}: HeadContentComponentProps) => {
   const router = useRouter();
   const [meta, setMeta] = useState(MetaTags[componentName]);
   const [permission] = useState(PermissionsForPages[componentName]);
@@ -54,4 +56,4 @@ const HeadContentComponent = ({ componentName }: HeadContentComponentProps) => {
   );
 };
 
-export default HeadContentComponent;
+export default HeadContentAndPermissionComponent;

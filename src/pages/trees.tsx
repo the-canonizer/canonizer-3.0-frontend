@@ -12,7 +12,6 @@ const TreesPage = ({ data }) => {
 
 export async function getServerSideProps() {
   const result = await getTreesApi();
-  console.log("ssr result", result);
   const data = result;
 
   return {

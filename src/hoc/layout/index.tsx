@@ -22,7 +22,7 @@ function Layout(props) {
         {isLogin ? <LoggedInHeader /> : <LoggedOutHeader />}
 
         <div className="app-content">{props.children}</div>
-        <Spinner></Spinner>
+        <Spinner>{""}</Spinner>
       </div>
     </>
   );
