@@ -38,6 +38,6 @@ const store = configureStore({
     }),
   // .concat(logger),
 });
-
+export type RootState = ReturnType<typeof reducers>;
 const persistor = persistStore(store);
 export { persistor, store };

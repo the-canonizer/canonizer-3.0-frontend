@@ -13,8 +13,7 @@ export default class TreeRequest extends Request {
       K.Network.Method.GET,
       null,
       K.Network.Header.Type.Json,
-      {},
-      false
+      {}
     );
   }
 }
