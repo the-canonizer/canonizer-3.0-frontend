@@ -5,6 +5,7 @@ import { UserOutlined, UserAddOutlined } from '@ant-design/icons';
 
 import styles from "../siteHeader.module.scss";
 
+
 import SearchSection from "../../search/search";
 
 const LoggedOutHeader = () => {

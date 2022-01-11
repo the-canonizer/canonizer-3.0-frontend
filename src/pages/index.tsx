@@ -2,6 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { Button } from "antd";
 import Layout from "../hoc/layout";
+import Footer from "../components/common/footer/footer";
 export default function Home() {
   return (
     <Layout>
@@ -28,6 +29,7 @@ export default function Home() {
             </span>
           </a>
         </footer>
+        <Footer />
       </div>
     </Layout>
   );
