@@ -1,0 +1,11 @@
+@import "./fonts";
+:root {
+  --primary:#4484CE;
+}
+body {
+  font-family: 'Asap', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji' !important;
+  background-color: #F8F8F8 !important;
+}
+.d-flex {
+  display: flex;
+}
