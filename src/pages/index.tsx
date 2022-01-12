@@ -5,32 +5,16 @@ import Layout from "../hoc/layout";
 import Footer from "../components/common/footer/footer";
 export default function Home() {
   return (
-    <Layout>
-      <div>
-        <Button>Hello</Button>
-
-        <main>
-          <h1>Hello Canonizer</h1>
-        </main>
-        <footer>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Powered by{" "}
-            <span>
-              <Image
-                src="/vercel.svg"
-                alt="Vercel Logo"
-                width={72}
-                height={16}
-              />
-            </span>
-          </a>
-        </footer>
-        <Footer />
-      </div>
-    </Layout>
+    <>
+      <Layout>
+        <div>
+          <Button>Hello</Button>
+          <main>
+            <h1>Hello Canonizer</h1>
+          </main>
+        </div>
+      </Layout>
+      <Footer />
+    </>
   );
 }
