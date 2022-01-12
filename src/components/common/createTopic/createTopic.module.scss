@@ -1,0 +1,36 @@
+.wrap{
+    width: 243px;
+    padding:23px 12px;
+    border: solid 1px #F0F0F0;
+    background-color: #fff;
+}
+
+.createBtn{
+    width: 100%;
+    font-size: 1.125rem;
+    font-weight:600;
+    color: #0F2A4D;
+    border: solid 1px #D9D9D9;
+    i{
+        color: #2E68DB;
+        margin-right:8px;
+        position: relative;
+        top: 2px;
+    }
+}
+
+.accordian{
+    background-color:transparent;
+    .IconAngle{
+        i{
+            font-size: 7px;
+            color: #4484CE;
+        }
+    }
+}
+
+.title{
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #4484CE;
+}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Layout, Menu } from 'antd';
+import { Button, Layout, Menu, Row, Col } from 'antd';
 import Link from 'next/link';
 import { UserOutlined, UserAddOutlined } from '@ant-design/icons';
 
@@ -7,6 +7,10 @@ import styles from "../siteHeader.module.scss";
 
 
 import SearchSection from "../../search/search";
+import HelpCard from "../../helpCard/help";
+import CanonizedList from '../../canonizedList/canonizedList';
+import CreateTopic from '../../createTopic/createTopic';
+
 
 const LoggedOutHeader = () => {
   const { Header } = Layout;
@@ -47,6 +51,18 @@ const LoggedOutHeader = () => {
         </div>
       </Header>
       <SearchSection />
+      <Row>
+        <Col xs={24} md={12} lg={12} xl={8}>
+          <CreateTopic />
+        </Col>
+        <Col xs={24} md={12} lg={12} xl={8}>
+          <CanonizedList />
+        </Col>
+        <Col xs={24} md={12} lg={12} xl={8}>
+          <HelpCard />
+        </Col>
+      </Row>
+
     </React.Fragment>
   );
 };
