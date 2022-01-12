@@ -4,7 +4,6 @@ import { Button } from "antd";
 import Layout from "../hoc/layout";
 import Link from "next/link";
 
-import Footer from "../components/common/footer/footer";
 export default function Home() {
   return (
     <>
@@ -19,7 +18,6 @@ export default function Home() {
           </main>
         </div>
       </Layout>
-      <Footer />
     </>
   );
 }
