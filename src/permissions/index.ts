@@ -1,7 +1,7 @@
 type PermissionObj = {
   isAuthenticationRequired: boolean;
-  isPermissionRequired: boolean;
-  permissionName: string;
+  isPermissionRequired?: boolean;
+  permissionName?: string;
 };
 
 type PermissionsObj = {

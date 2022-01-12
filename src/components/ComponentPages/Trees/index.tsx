@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getTreesApi } from "../../../network/api/treeApi";
@@ -20,6 +21,9 @@ const Trees = ({ treesData }) => {
   return (
     <>
       <h1>Trees Page</h1>
+      <Link href="/">
+        <a>Home Page</a>
+      </Link>
       {data &&
         data?.map((record) => (
           <div key={record.id} style={{ backgroundColor: record.color }}>

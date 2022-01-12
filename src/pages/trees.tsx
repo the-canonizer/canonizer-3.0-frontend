@@ -12,7 +12,7 @@ const TreesPage = ({ data }) => {
 
 export async function getServerSideProps() {
   const result = await getTreesApi();
-  const data = result;
+  const data = result || [];
 
   return {
     props: {
