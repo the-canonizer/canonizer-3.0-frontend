@@ -22,7 +22,7 @@ export const login = (email, password) => {
 export const logout = () => {
   return async (dispatch) => {
     try {
-      await NetworkCall.fetch(UserRequest.logoutUser(token));
+      // await NetworkCall.fetch(UserRequest.logoutUser(token));
       !isServer && window.localStorage.removeItem("token");
       dispatch(logoutUser());
     } catch (error) {

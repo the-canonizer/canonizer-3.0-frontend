@@ -15,36 +15,35 @@ const HeadContentAndPermissionComponent = ({
 }: HeadContentComponentProps) => {
   const router = useRouter();
   const [meta, setMeta] = useState(MetaTags[componentName]);
-  const [permission] = useState(PermissionsForPages[componentName]);
   const { isAllowed } = usePermission();
   const { isUserAuthenticated } = useAuthentication();
 
   useEffect(() => {
     //Check permission
-
+    let permission = PermissionsForPages[componentName];
     const requiredAuthentication =
       permission && permission.isAuthenticationRequired ? true : false;
-
     const requiredPermission =
       permission && permission.isPermissionRequired ? true : false;
 
+    //redirect if authentication is required and user is not loggedIn
     if (requiredAuthentication && !isUserAuthenticated) {
       router.push("/login");
     }
 
+    //redirect if user doesn't have specific permission to view that page
     if (requiredPermission && !isAllowed(permission.permissionName)) {
       router.push("/required-permission");
     }
 
     // set default meta tags
-
     if (!meta || Object.keys(meta).length === 0) {
       setMeta(MetaTags["default"]);
       console.log("Default Meta tags added");
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [componentName]);
 
   return (
     <HeadContent

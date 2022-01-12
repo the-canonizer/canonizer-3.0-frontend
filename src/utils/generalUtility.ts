@@ -56,7 +56,11 @@ export const isRolePresent = (roles, userRoles) => {
   }
   return hasRole;
 };
-
+declare global {
+  interface Window {
+    Location: any;
+  }
+}
 export const redirectToLogin = (error = "") => {
   if (typeof window !== "undefined") {
     let newUrl =
@@ -69,30 +73,12 @@ export const redirectToLogin = (error = "") => {
     if (error !== "") {
       newUrl += `?err=${error}`;
     }
-    window.location = newUrl;
-  }
-};
-
-export const redirectIfInvalidTenant = () => {
-  const cookieDomainPrefix = User.getTenant();
-  const hostArray = window.location.hostname.split(".");
-  const urlDomainPrefix = hostArray.length > 0 ? hostArray[0] : "";
-  const path = window.location.pathname;
-  const search = window.location.search;
-  if (
-    !cookieDomainPrefix &&
-    (urlDomainPrefix === "www" ||
-      urlDomainPrefix === "localhost" ||
-      urlDomainPrefix === K.Network.URL.DomainName)
-  )
-    return false;
-  if (cookieDomainPrefix !== urlDomainPrefix) {
-    redirectToUrl(cookieDomainPrefix, path + search);
+    window.location.href = newUrl;
   }
 };
 
 export const redirectToUrl = (domainPrefix, path) => {
-  window.location =
+  window.location.href =
     window.location.protocol +
     "//" +
     (domainPrefix ? domainPrefix + "." : "") +
@@ -203,7 +189,7 @@ export const setParams = (history, search, page, pageSize) => {
   const params = new URLSearchParams();
 
   Object.entries(searchObj).map(
-    ([key, value]) => value && params.append(key, value)
+    ([key, value]: any) => value && params.append(key, value)
   );
   history.push({ search: params.toString() });
   // }
