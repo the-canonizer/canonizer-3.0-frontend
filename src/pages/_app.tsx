@@ -1,6 +1,8 @@
 import "antd/dist/antd.css";
 import "../../styles/globals.scss";
 import "../../styles/variables.less";
+import "../assets/fonticons/style.css";
+import "../assets/scss/global.scss";
 import { store } from "../store";
 import { Provider } from "react-redux";
 import type { AppProps } from "next/app";
