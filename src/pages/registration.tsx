@@ -1,4 +1,4 @@
-import Registration from "../components/componentPages/registration";
+import Registration from "../components/ComponentPages/registration";
 import GetStartedLayout from "../hoc/getStartedLayout";
 const RegistrationPage = () => {
   return (

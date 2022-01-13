@@ -1,4 +1,4 @@
-import Trees from "../components/componentPages/trees";
+import Trees from "../components/ComponentPages/trees";
 import { getTreesApi } from "../network/api/treeApi";
 import Layout from "../hoc/layout";
 
