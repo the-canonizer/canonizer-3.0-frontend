@@ -5,6 +5,11 @@
     background-color: #fff;
 }
 
+.divider{
+    margin: 15px 0;
+    border-top:solid 1px #E7E6F1;
+}
+
 .createBtn{
     width: 100%;
     font-size: 1.125rem;
@@ -19,8 +24,12 @@
     }
 }
 
+.ant-collapse-header{
+    background-color: green;
+}
+
 .accordian{
-    background-color:transparent;
+    background-color: transparent;
     .IconAngle{
         i{
             font-size: 8px;
@@ -33,8 +42,9 @@
     }
     .algoSelect{
         width:100%;
-        margin-bottom:10px;
+        margin-bottom:8px;
         >div:first-child{
+            padding-left: 15px!important;
             border: solid 1px #D9D9D9;
         }
         span{
@@ -46,10 +56,48 @@
         font-size: 1rem;
         color: #4484CE;
     }
+    div{
+        padding-left:0!important;
+        padding-right:0!important;
+    }
+    .filter{
+        display:flex;
+        align-items: center;
+        input{
+           width: 130px; 
+           margin:0 7px;
+        }
+        i{
+            color: #D1D4DB;
+            font-size:17px;
+        }
+        .LeftOutlined{
+            color:#6E6E6E;
+            margin-left:12px;
+        }
+    }
+    .date{
+        border:solid 1px #D9D9D9;
+        padding:0 12px!important;
+        height:40px;
+        margin-top:20px;
+    }
 }
 
 .title{
     font-size: 1.125rem;
     font-weight: 600;
     color: #4484CE;
+    i{
+        margin-left:2px;
+        font-size:17px;
+        color: #D1D4DB;
+    }
+}
+
+.radio{
+    span{
+        font-size: 1rem;
+        color: #1C1B24;
+    }
 }
