@@ -4,14 +4,14 @@
         padding: 24px;
         display: flex;
     }
-    .leftSidebar {
+    /* .leftSidebar {
         width: 245px;
-    }
+    } */
     .rightSidebar {
-        width: 220px;
+        width: 200px;
     }
     .contentArea {
-        padding: 0 18px;
-        width: calc(100% - 465px);
+        display: flex;
+        width: calc(100% - 200px);
     }
 }

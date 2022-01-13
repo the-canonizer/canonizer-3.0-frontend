@@ -9,3 +9,21 @@ body {
 .d-flex {
   display: flex;
 }
+
+.leftSideBar {
+  &+.pageContentWrap {
+    padding: 0 16px;
+  }
+  &.miniSideBar {
+    width: 245px;
+    &+.pageContentWrap {
+      width: calc(100% - 245px);
+    }
+  }
+  &:not(.miniSideBar) {
+    width: 420px;
+    &+.pageContentWrap {
+      width: calc(100% - 420px);
+    }
+  }
+}

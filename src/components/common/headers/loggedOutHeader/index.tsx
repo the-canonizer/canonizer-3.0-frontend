@@ -6,8 +6,6 @@ import { UserOutlined, UserAddOutlined } from '@ant-design/icons';
 import styles from "../siteHeader.module.scss";
 
 import SearchSection from "../../search/search";
-import CreateTopic from '../../createTopic/createTopic';
-
 
 const LoggedOutHeader = () => {
   const { Header } = Layout;
@@ -48,12 +46,6 @@ const LoggedOutHeader = () => {
         </div>
       </Header>
       <SearchSection />
-      <Row>
-        <Col xs={24} md={12} lg={12} xl={8}>
-          <CreateTopic />
-        </Col>
-      </Row>
-
     </React.Fragment>
   );
 };
