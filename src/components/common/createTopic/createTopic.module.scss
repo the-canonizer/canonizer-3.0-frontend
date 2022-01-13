@@ -23,9 +23,28 @@
     background-color:transparent;
     .IconAngle{
         i{
-            font-size: 7px;
+            font-size: 8px;
             color: #4484CE;
         }
+    }
+    .algoText{
+        font-weight:400;
+        color: #343434;
+    }
+    .algoSelect{
+        width:100%;
+        margin-bottom:10px;
+        >div:first-child{
+            border: solid 1px #D9D9D9;
+        }
+        span{
+            font-size: 0.875rem;
+            color: #343434;
+        }
+    }
+    .algoInfo{
+        font-size: 1rem;
+        color: #4484CE;
     }
 }
 

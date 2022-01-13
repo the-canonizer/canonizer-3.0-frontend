@@ -8,7 +8,7 @@ import styles from "../siteHeader.module.scss";
 
 import SearchSection from "../../search/search";
 import HelpCard from "../../helpCard/help";
-import CanonizedList from '../../canonizedList/canonizedList';
+import TopicsList from '../../topicsList/topicsList';
 import CreateTopic from '../../createTopic/createTopic';
 
 
@@ -56,7 +56,7 @@ const LoggedOutHeader = () => {
           <CreateTopic />
         </Col>
         <Col xs={24} md={12} lg={12} xl={8}>
-          <CanonizedList />
+          <TopicsList />
         </Col>
         <Col xs={24} md={12} lg={12} xl={8}>
           <HelpCard />

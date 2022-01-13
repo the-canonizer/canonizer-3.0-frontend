@@ -7,13 +7,12 @@
     padding-bottom: 10px;
 }
 
-.listhead{
-    display:flex;
-    align-items: center;
-    justify-content: space-between;
+.head{
     margin-bottom:20px;
-    @media screen and (max-width:767px){
-        display:block;
+    @media screen and (min-width:768px){
+        display:flex;
+        align-items: center;
+        justify-content: space-between;
     }
 }
 
@@ -21,6 +20,7 @@
     border: none;
     >div:first-child {
         padding:0;
+        border-bottom: none;
     }
     h3{
         font-size:1.25rem;
@@ -34,16 +34,26 @@
         }
     }
     li{
-        font-size: 1.125rem;
+        position: relative;
+        padding: 0!important;
+        border-bottom: none!important;
+        a{
         color:#0F2A4D;
+        font-size: 1.125rem;
         font-weight:400;
         padding-top:3px;
+        display: block;
+        width: 100%;
         padding-bottom:3px;
         justify-content: unset;
         border: solid 1px #F0F0F0;
         margin-bottom:8px;
         padding-left:10px;
         box-shadow: 3px 3px rgba(63,79,91, 8%);
+        @media screen and (min-width:768px){
+            padding-left:23px!important;
+        }
+        }
         @media screen and (max-width:767px){
             font-size: 1rem;
         }
@@ -59,12 +69,16 @@
             @media screen and (max-width:767px){
                 position: absolute;
                 right: 0;
+                top:8px;
             }
         }  
+        &:last-child{
+            border-bottom: none;
+        }
     }
 }
 
-.selectField{
+.dropdown{
     width: 273px;
     >div:first-child{
     height:40px!important;
@@ -77,8 +91,6 @@
 
 .footer{
     padding: 0;
-    font-size:1rem;
-    font-weight: 600;
     text-align: right;
     margin-right:-20px;
     .anticonright{
@@ -88,15 +100,21 @@
     }
     a{
         position: relative;
+    .link{
+        position: relative;
+        color: #4484CE;
+        font-size:1rem;
+        font-weight: 600;
         &:after{
          content: "";
          position: absolute;
          left: 0;
-         bottom: -3px;
+         bottom: -5px;
          height: 1px;
          width:100%;
          background-color: #4484CE;
 
         }
+    }
     }
 }
