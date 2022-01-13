@@ -53,12 +53,18 @@
         @media screen and (min-width:768px){
             padding-left:23px!important;
         }
+        @media screen and (max-width:767px){
+            display: flex;
+            justify-content:space-between;
+            align-items: center;
+            font-size:1rem;
+        }
         }
         @media screen and (max-width:767px){
             font-size: 1rem;
         }
-        span{
-            margin-left:15px;
+        span.tag{
+            margin-left:12px;
             border-radius:4px;
             line-height: 22px;
             font-size:13px;
@@ -66,11 +72,6 @@
             color:#fff;
             border: none;
             background-color:#F89D15;
-            @media screen and (max-width:767px){
-                position: absolute;
-                right: 0;
-                top:8px;
-            }
         }  
         &:last-child{
             border-bottom: none;
@@ -86,6 +87,7 @@
     }
     @media screen and (max-width:767px){
         margin-top:10px;
+        width: 100%;
     }
 }
 

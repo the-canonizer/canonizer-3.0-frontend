@@ -8,21 +8,21 @@ const Option = Select;
 const { Title, Link, Text } = Typography;
 
 const data = [
-    <><Link href="#">Theories of Consciousness <Tag>61.49</Tag></Link></>,
-    <><Link href="#">God <Tag>47.13</Tag></Link></>,
-    <><Link href="#">Hard Problem <Tag>32.69</Tag></Link></>,
-    <><Link href="#">Religious Preference <Tag>47.13</Tag></Link></>,
-    <><Link href="#">Technological Improvement <Tag>27.69</Tag></Link></>,
-    <><Link href="#">Human Gen. Eng. is Wrong <Tag>23</Tag></Link></>,
-    <><Link href="#">Friendly AI Importance <Tag>22</Tag></Link></>,
-    <><Link href="#">Embrace New Technology <Tag>47.13</Tag></Link></>,
-    <><Link href="#">Abortion Rights <Tag>19.75</Tag></Link></>,
-    <><Link href="#">Human Accomplishment <Tag>19</Tag></Link></>,
-    <><Link href="#">Public Sex Education <Tag>16</Tag></Link></>,
-    <><Link href="#">Is WikiLeaks Good? <Tag>16</Tag></Link></>,
-    <><Link href="#">More Intelligence Better <Tag>15.74</Tag></Link></>,
-    <><Link href="#">Value Long Life <Tag>13</Tag></Link></>,
-    <><Link href="#">Exclusive LDS Weddings <Tag>47.13</Tag></Link></>,
+    <><Link href="#"><Text>Theories of Consciousness </Text><Tag className={styles.tag}>61.49</Tag></Link></>,
+    <><Link href="#"><Text>God </Text><Tag className={styles.tag}>47.13</Tag></Link></>,
+    <><Link href="#"><Text>Hard Problem </Text><Tag className={styles.tag}>32.69</Tag></Link></>,
+    <><Link href="#"><Text>Religious Preference </Text><Tag className={styles.tag}>47.13</Tag></Link></>,
+    <><Link href="#"><Text>Technological Improvement </Text><Tag className={styles.tag}>27.69</Tag></Link></>,
+    <><Link href="#"><Text>Human Gen. Eng. is Wrong </Text><Tag className={styles.tag}>23</Tag></Link></>,
+    <><Link href="#"><Text>Friendly AI Importance </Text><Tag className={styles.tag}>22</Tag></Link></>,
+    <><Link href="#"><Text>Embrace New Technology </Text><Tag className={styles.tag}>47.13</Tag></Link></>,
+    <><Link href="#"><Text>Abortion Rights </Text><Tag className={styles.tag}>19.75</Tag></Link></>,
+    <><Link href="#"><Text>Human Accomplishment </Text><Tag className={styles.tag}>19</Tag></Link></>,
+    <><Link href="#"><Text>Public Sex Education </Text><Tag className={styles.tag}>16</Tag></Link></>,
+    <><Link href="#"><Text>Is WikiLeaks Good? </Text><Tag className={styles.tag}>16</Tag></Link></>,
+    <><Link href="#"><Text>More Intelligence Better </Text><Tag className={styles.tag}>15.74</Tag></Link></>,
+    <><Link href="#"><Text>Value Long Life </Text><Tag className={styles.tag}>13</Tag></Link></>,
+    <><Link href="#"><Text>Exclusive LDS Weddings </Text><Tag className={styles.tag}>47.13</Tag></Link></>,
 ];
 
 const TopicsList = () => {
