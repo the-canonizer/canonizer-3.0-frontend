@@ -5,10 +5,7 @@ import { UserOutlined, UserAddOutlined } from '@ant-design/icons';
 
 import styles from "../siteHeader.module.scss";
 
-
 import SearchSection from "../../search/search";
-import HelpCard from "../../helpCard/help";
-import TopicsList from '../../topicsList/topicsList';
 import CreateTopic from '../../createTopic/createTopic';
 
 
@@ -54,12 +51,6 @@ const LoggedOutHeader = () => {
       <Row>
         <Col xs={24} md={12} lg={12} xl={8}>
           <CreateTopic />
-        </Col>
-        <Col xs={24} md={12} lg={12} xl={8}>
-          <TopicsList />
-        </Col>
-        <Col xs={24} md={12} lg={12} xl={8}>
-          <HelpCard />
         </Col>
       </Row>
 

@@ -1,0 +1,17 @@
+.pageWrap {
+    overflow: hidden;
+    .contentWrap {
+        padding: 24px;
+        display: flex;
+    }
+    .leftSidebar {
+        width: 245px;
+    }
+    .rightSidebar {
+        width: 220px;
+    }
+    .contentArea {
+        padding: 0 18px;
+        width: calc(100% - 465px);
+    }
+}
