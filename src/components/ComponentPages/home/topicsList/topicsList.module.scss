@@ -61,8 +61,10 @@
         @media screen and (max-width:767px){
             font-size: 1rem;
         }
+        span.text{
+            padding-right:12px;
+        }
         span.tag{
-            margin-left:12px;
             border-radius:4px;
             line-height: 22px;
             font-size:13px;

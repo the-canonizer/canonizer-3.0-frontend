@@ -69,6 +69,7 @@
         i{
             color: #D1D4DB;
             font-size:17px;
+            cursor: pointer;
         }
         .LeftOutlined{
             color:#6E6E6E;
@@ -101,7 +102,7 @@
     }
 }
 
-.infoText{
+.infoText, .asfoText{
     width:240px;
     font-size: 12px;
     line-height:16px;
@@ -112,4 +113,8 @@
         color: #0F2A4D;
         font-weight:600;
     }
+}
+
+.asfoText{
+    width: 261px;
 }

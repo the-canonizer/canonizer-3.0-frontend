@@ -43,18 +43,18 @@
         padding: 0!important;
         border-bottom: none!important;
         a{
-        font-size: 1.125rem;
-        font-weight:400;
-        padding-top:3px;
-        align-items: center;
-        width: 100%;
-        padding-bottom:3px;
-        justify-content: unset;
-        border: solid 1px #F0F0F0;
-        margin-bottom:8px;
-        padding-left:10px;
-        padding-right:7px;
-        box-shadow: 3px 3px rgba(63,79,91, 8%);
+            font-size: 1.125rem;
+            font-weight:400;
+            padding-top:3px;
+            align-items: center;
+            width: 100%;
+            padding-bottom:3px;
+            justify-content: unset;
+            border: solid 1px #F0F0F0;
+            margin-bottom:8px;
+            padding-left:10px;
+            padding-right:7px;
+            box-shadow: 3px 3px rgba(63,79,91, 8%);
         i{
             margin-right:5px;
         }
@@ -67,6 +67,8 @@
         .secondary{
             font-size: 10px;
             color: #A1A2A2;
+            margin-left:10px;
+            white-space: nowrap;
         }
         @media screen and (min-width:768px){
             padding-left:23px!important;

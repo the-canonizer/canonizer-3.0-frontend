@@ -20,7 +20,7 @@ const infoContent = (
 
 const asContent = (
     <>
-        <div className={styles.infoText}>
+        <div className={styles.asfoText}>
             <Title level={5}>Include review</Title>
             <Paragraph>Duis aute irure dolor in reprehderit in voluptalore eu fugiat nulla pariatur.</Paragraph>
             <Title level={5}>Default</Title>
