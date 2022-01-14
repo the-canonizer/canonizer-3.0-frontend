@@ -1,0 +1,77 @@
+.wrap {
+    background-color: #FFF;
+    padding: 1.25rem;
+    .container {
+        max-width: 986px;
+        margin: 0 auto;
+        p {
+            text-align: center;
+            color: #1C1B24;
+            margin: 14px 0 0 0;
+        }
+    }
+    .form {
+        padding: 5px;
+        border: #D9D9D9 1px solid;
+        @media screen and (min-width: 768px) {
+            display: flex;
+        }
+    }
+    .formRadio {
+        border-color: #D9D9D9;
+        border-style: solid;
+        padding: 1rem;
+        label {
+            font-size: 1rem;
+        }
+        @media screen and (min-width: 768px) {
+            border-width: 0 1px 0 0;
+            margin: -5px 0;
+            width: 270px;
+        }
+        @media screen and (max-width: 767px) {
+            border-width: 0 0 1px 0;
+            margin: -5px -5px 0;
+        }
+    }
+    .formInput {
+        input {
+            border: 0;
+            &:focus {
+                box-shadow: none;
+            }
+            &+span {
+                display: none;
+            }
+            
+        }
+        @media screen and (min-width: 768px) {
+            flex: 1;
+            width: auto;
+            align-self: center;
+            margin: 5px .5rem;
+        }
+        @media screen and (max-width: 767px) {
+            margin: 8px 0;
+        }
+    }
+    .btnSearch {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 3rem;
+        font-size: 1.125rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        border-radius: 2px;
+        i {
+            margin-right: .75rem;
+        }
+        @media screen and (min-width: 768px) {
+            width: 170px;
+        }
+        @media screen and (max-width: 767px) {
+            width: 100%;
+        }
+    }
+}

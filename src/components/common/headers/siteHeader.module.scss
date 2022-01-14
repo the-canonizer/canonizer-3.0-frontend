@@ -1,0 +1,71 @@
+.wrap {
+    padding: 1.25rem 1.5rem;
+    background-color: var(--primary);
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    line-height: normal;
+    .logo {
+        img {
+            max-height: 42px;
+            max-width: 225px;
+        }
+    }
+    .navWrap {
+        .nav {
+            background-color: transparent;
+            border: 0;
+            line-height: normal;
+            li {
+                margin: 0;
+                padding: 8px 15px;
+                font-weight: 500;
+                font-size: 1rem;
+                &:active {
+                    background: transparent;
+                }
+                &:after {
+                    left: 15px;
+                    right: 15px;
+                }
+                &:hover, &.ant-menu-item-active {
+                    &:after {
+                        border-color: #FFF;
+                    }
+                }
+                a {
+                    color: #FFF;
+                }
+            }
+            @media screen and (min-width: 1200px) {
+                min-width: 590px;
+            }
+        }
+        .ant-menu-horizontal {
+            border: 0;
+        }
+    }
+    .right {
+        
+    }
+    .btnLogin, .btnRegister {
+        font-size: 1.125rem;
+        font-weight: 500;
+        height: 38px;
+        color: #FFF;
+        display: inline-flex;
+        align-items: center;
+        i {
+            margin-right: .5rem;
+        }
+    }
+    .btnLogin {
+        margin-right: 1rem;
+    }
+    .btnRegister {
+        background-color: #F89D15;
+        border-radius: 2px;
+        border: 0;
+    }
+}
