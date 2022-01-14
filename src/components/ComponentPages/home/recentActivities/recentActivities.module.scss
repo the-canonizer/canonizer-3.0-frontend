@@ -1,0 +1,19 @@
+.wrap{
+    width: 100%;
+    padding:22px 20px;
+    border: solid 1px #F0F0F0;
+    background-color:#fff;
+    h3{
+        font-size:1.125rem;
+        color: #1C1B24;
+        font-weight:600;
+        margin-bottom:0;
+    }
+}
+
+.topicTabs{
+    display: block;
+    div{
+        flex: unset!important;
+    }
+}

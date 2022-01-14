@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { Typography, Button, Divider, Collapse, Select, Radio, Space, Input, DatePicker } from 'antd';
+import { Typography, Button, Divider, Collapse, Select, Radio, Space, Input, DatePicker, Popover } from 'antd';
 import styles from "./createTopic.module.scss";
 import { LeftOutlined } from '@ant-design/icons';
 
@@ -8,6 +8,27 @@ const { Title, Text, Paragraph, Link } = Typography;
 const { Panel } = Collapse;
 const { Option } = Select;
 
+
+const infoContent = (
+    <>
+        <div className={styles.infoText}>
+            <p>Duis aute irure dolor in reprehderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+        </div>
+    </>
+);
+
+const asContent = (
+    <>
+        <div className={styles.asfoText}>
+            <Title level={5}>Include review</Title>
+            <Paragraph>Duis aute irure dolor in reprehderit in voluptalore eu fugiat nulla pariatur.</Paragraph>
+            <Title level={5}>Default</Title>
+            <Paragraph>Duis aute irure dolor in reprehderit in voluptalore eu fugiat nulla pariatur.</Paragraph>
+            <Title level={5}>As of date</Title>
+            <Paragraph>Duis aute irure dolor in reprehderit in voluptalore eu fugiat nulla pariatur.</Paragraph>
+        </div>
+    </>
+);
 
 function range(start, end) {
     const result = [];
@@ -55,10 +76,12 @@ const CreateTopic = () => {
                             <Text>Filter</Text>
                             <LeftOutlined className={styles.LeftOutlined} />
                             <Input size="large" defaultValue="0.0014" />
-                            <i className="icon-info"></i>
+                            <Popover className={styles.infoPop} style={{ width: '240px', borderRadius: '0', border: 'solid 1px #E6E9F1' }} placement="rightTop" content={infoContent} title="Score Value FIlter">
+                                <i className="icon-info"></i>
+                            </Popover>
                         </div>
                     </Panel>
-                    <Panel header={<span className={styles.title}>As of <i className="icon-info"></i></span>} key="2">
+                    <Panel header={<span className={styles.title}>As of <Popover className={styles.asContent} style={{ width: '230px', borderRadius: '0', border: 'solid 1px #E6E9F1' }} placement="rightTop" content={asContent}><i className="icon-info"></i></Popover></span>} key="2">
                         <Radio.Group>
                             <Space direction="vertical">
                                 <Radio className={styles.radio} value={1}>Include review</Radio>
@@ -77,6 +100,7 @@ const CreateTopic = () => {
                         />
                     </Panel>
                 </Collapse>
+
             </div>
         </>
     );

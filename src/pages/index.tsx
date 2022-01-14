@@ -7,6 +7,8 @@ import Link from "next/link";
 import SideBar from '../components/ComponentPages/home/sideBar';
 import TopicsList from '../components/ComponentPages/home/topicsList';
 import HelpCard from "../components/ComponentPages/home/helpCard";
+import RecentActivities from "../components/ComponentPages/home/recentActivities";
+
 
 export default function Home() {
   return (
@@ -21,6 +23,9 @@ export default function Home() {
               <TopicsList />
             </Col>
             <Col xs={24} sm={24} xl={12}>
+              <RecentActivities />
+            </Col>
+            <Col xs={24} sm={24} xl={24}>
               <HelpCard />
             </Col>
           </Row>
