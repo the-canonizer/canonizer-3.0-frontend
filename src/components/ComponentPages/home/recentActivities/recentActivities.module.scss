@@ -1,6 +1,6 @@
 .wrap{
     width: 100%;
-    padding:22px 20px;
+    padding:21px 20px 10px;
     border: solid 1px #F0F0F0;
     background-color:#fff;
     h3{
@@ -17,6 +17,9 @@
         flex: unset!important;
         &:first-child{
             justify-content: space-between;
+            @media screen and (max-width:767px){
+                display: block;
+            }
         }
     }
 }
@@ -28,9 +31,6 @@
         border-bottom: none;
     }
     h3{
-        font-size:1.25rem;
-        color:#1C1B24;
-        margin-bottom:0;
         i{
             margin-left:5px;
             color: #D1D4DB;
@@ -46,42 +46,70 @@
         font-size: 1.125rem;
         font-weight:400;
         padding-top:3px;
-        display: block;
+        align-items: center;
         width: 100%;
         padding-bottom:3px;
         justify-content: unset;
         border: solid 1px #F0F0F0;
         margin-bottom:8px;
         padding-left:10px;
+        padding-right:7px;
         box-shadow: 3px 3px rgba(63,79,91, 8%);
+        i{
+            margin-right:5px;
+        }
         span{
             color:#0F2A4D;
+        @media screen and (max-width:767px){
+            display:block;
+         }
+        }
+        .secondary{
+            font-size: 10px;
+            color: #A1A2A2;
         }
         @media screen and (min-width:768px){
             padding-left:23px!important;
+            display: flex;
+            justify-content:space-between!important;
         }
         @media screen and (max-width:767px){
-            display: flex;
-            justify-content:space-between;
             align-items: center;
             font-size:1rem;
         }
         }
         @media screen and (max-width:767px){
             font-size: 1rem;
+        } 
+    }
+}
+
+.footer{
+    padding: 0;
+    text-align: right;
+    margin-right:-20px;
+    .anticonright{
+        color:#4484CE;
+        position: relative;
+        top:2px;
+    }
+    a{
+        position: relative;
+    .link{
+        position: relative;
+        color: #4484CE;
+        font-size:1rem;
+        font-weight: 600;
+        &:after{
+         content: "";
+         position: absolute;
+         left: 0;
+         bottom: -5px;
+         height: 1px;
+         width:100%;
+         background-color: #4484CE;
+
         }
-        span.tag{
-            margin-left:12px;
-            border-radius:4px;
-            line-height: 22px;
-            font-size:13px;
-            font-weight: 400;
-            color:#fff;
-            border: none;
-            background-color:#F89D15;
-        }  
-        &:last-child{
-            border-bottom: none;
-        }
+    }
     }
 }

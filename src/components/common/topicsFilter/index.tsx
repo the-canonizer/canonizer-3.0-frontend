@@ -12,6 +12,7 @@ const { Option } = Select;
 const infoContent = (
     <>
         <div className={styles.infoText}>
+            <Title level={5}>Score Value FIlter</Title>
             <p>Duis aute irure dolor in reprehderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
         </div>
     </>
@@ -19,7 +20,7 @@ const infoContent = (
 
 const asContent = (
     <>
-        <div className={styles.asfoText}>
+        <div className={styles.infoText}>
             <Title level={5}>Include review</Title>
             <Paragraph>Duis aute irure dolor in reprehderit in voluptalore eu fugiat nulla pariatur.</Paragraph>
             <Title level={5}>Default</Title>
@@ -76,7 +77,7 @@ const CreateTopic = () => {
                             <Text>Filter</Text>
                             <LeftOutlined className={styles.LeftOutlined} />
                             <Input size="large" defaultValue="0.0014" />
-                            <Popover className={styles.infoPop} style={{ width: '240px', borderRadius: '0', border: 'solid 1px #E6E9F1' }} placement="rightTop" content={infoContent} title="Score Value FIlter">
+                            <Popover className={styles.infoPop} style={{ width: '240px', borderRadius: '0', border: 'solid 1px #E6E9F1' }} placement="rightTop" content={infoContent}>
                                 <i className="icon-info"></i>
                             </Popover>
                         </div>
