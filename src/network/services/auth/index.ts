@@ -1,6 +1,6 @@
 import { message } from "antd";
 
-import { isServer } from "../../../utils/generalUtility";
+import { isServer, redirectToLogin } from "../../../utils/generalUtility";
 import {
   setAuthToken,
   removeAuthToken,
@@ -9,6 +9,7 @@ import {
 } from "../../../store/slices/authSlice";
 import NetworkCall from "../../networkCall";
 import UserRequest from "./request";
+import { store } from "../../../store";
 
 export const createToken = async () => {
   try {
@@ -48,12 +49,21 @@ export const login = (email: string, password: string) => {
   };
 };
 
-export const logout = () => {
+export const logout = (error = "") => {
+  let state = store.getState();
+  const { auth } = state;
+
   return async (dispatch) => {
     try {
-      // await NetworkCall.fetch(UserRequest.logoutUser(token));
+      let res = await NetworkCall.fetch(
+        UserRequest.logoutCall(auth.token, error)
+      );
       !isServer && window.localStorage.removeItem("token");
       dispatch(logoutUser());
+      dispatch(removeAuthToken());
+      if (res.status_code === 200) {
+        redirectToLogin(error);
+      }
     } catch (error) {
       message.error(error.message);
     }

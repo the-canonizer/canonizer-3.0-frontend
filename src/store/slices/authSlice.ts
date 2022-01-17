@@ -16,7 +16,7 @@ export const authSlice = createSlice({
     setAuthToken: (state, action) => {
       state.authToken = action.payload;
     },
-    removeAuthToken: (state, action) => {
+    removeAuthToken: (state) => {
       state.authToken = null;
     },
     setLoggedInUser: (state, action) => {

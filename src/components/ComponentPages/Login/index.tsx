@@ -1,12 +1,12 @@
 import { useDispatch } from "react-redux";
 import { Form } from "antd";
+import { useRouter } from "next/router";
 
 import LoginUI from "./UI";
 
 import { hideLoginModal } from "../../../store/slices/ui/uiSlice";
 import { login } from "../../../network/services/auth/index";
 import { AppDispatch } from "../../../store";
-import { useRouter } from "next/router";
 
 const Login = ({ isModal }) => {
   const dispatch = useDispatch<AppDispatch>();

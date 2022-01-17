@@ -10,7 +10,7 @@ const NetworkConstants = {
     // User
     CreateToken: "/client_token",
     LoginUser: "/user/login",
-    LogoutUser: "/logout",
+    LogoutUser: "/user/logout",
     UpdateUser: "/users/",
 
     // Tree

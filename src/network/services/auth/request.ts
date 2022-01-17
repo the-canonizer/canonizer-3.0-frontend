@@ -1,8 +1,6 @@
 import K from "../../../constants";
 import Request from "../../request";
 
-import { redirectToLogin } from "../../../utils/generalUtility";
-
 export default class UserRequest extends Request {
   constructor(url, met, body, head, obj, token) {
     super(url, met, body, head, obj, token);
@@ -42,6 +40,17 @@ export default class UserRequest extends Request {
     );
   }
 
+  static logoutCall(token, error: string = "") {
+    return new UserRequest(
+      K.Network.URL.LogoutUser,
+      K.Network.Method.GET,
+      {},
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
+
   static updateUser(user: any, user_image: any, id: string) {
     const body = {
       user,
@@ -55,10 +64,5 @@ export default class UserRequest extends Request {
       {},
       false
     );
-  }
-
-  static logoutCall(error: string = "") {
-    //user's logout logic
-    // redirectToLogin(error);
   }
 }

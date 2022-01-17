@@ -21,6 +21,8 @@ import {
 
 import styles from "./Login.module.scss";
 
+import messages from "../../../../messages";
+
 const { Title, Paragraph, Text } = Typography;
 
 interface FieldData {
@@ -62,29 +64,31 @@ const LoginUi = ({ form, onFinish, closeModal, isModal }) => {
             >
               <Form.Item
                 name="username"
-                label="Email / Phone Number"
+                label={messages.labels.emailPhone}
                 rules={[
                   {
                     required: true,
-                    message: "Please input your Email / Phone Number!",
+                    message: messages.validations.username,
                   },
                   {
-                    pattern:
-                      /^([0-9]{9})|([A-Za-z0-9._%\+\-]+@[a-z0-9.\-]+\.[a-z]{2,3})$/,
-                    message: "Input is not valid!",
+                    pattern: messages.patterns.emailPhone,
+                    message: messages.validations.usernameNotValid,
                   },
                 ]}
               >
-                <Input placeholder="Enter Email / Phone Number" />
+                <Input placeholder={messages.placeholders.emailPhone} />
               </Form.Item>
               <Form.Item
                 name="password"
-                label="Password"
+                label={messages.labels.password}
                 rules={[
-                  { required: true, message: "Please input your Password!" },
+                  { required: true, message: messages.validations.password },
                 ]}
               >
-                <Input type="password" placeholder="Enter Password" />
+                <Input
+                  type="password"
+                  placeholder={messages.placeholders.password}
+                />
               </Form.Item>
               <Form.Item className={styles.remember}>
                 <Form.Item name="remember" valuePropName="checked" noStyle>
