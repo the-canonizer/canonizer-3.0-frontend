@@ -64,8 +64,68 @@ export const logout = (error = "") => {
       if (res.status_code === 200) {
         redirectToLogin(error);
       }
+      return res;
     } catch (error) {
       message.error(error.message);
+    }
+  };
+};
+
+export const register = (values: object) => {
+  return async (dispatch) => {
+    try {
+      const authToken = await createToken();
+
+      const res = await NetworkCall.fetch(
+        UserRequest.registerUser(values, authToken.access_token)
+      );
+
+      return res;
+    } catch (errors) {
+      console.log(errors.error.data);
+      message.error(errors.error.data.message);
+      let msgs = errors.error.data.error;
+      if (msgs) {
+        let keys = Object.keys(msgs);
+        keys.forEach((key) => {
+          message.error(msgs[key][0]);
+        });
+      }
+    }
+  };
+};
+
+export const verifyOtp = (values: object) => {
+  return async (dispatch) => {
+    try {
+      const authToken = await createToken();
+
+      const res = await NetworkCall.fetch(
+        UserRequest.verifyUser(values, authToken.access_token)
+      );
+
+      !isServer &&
+        window.localStorage.setItem("token", res.data.auth.access_token);
+      let payload = {
+        ...res.data.user,
+        token: res.data.auth.access_token,
+        refresh_token: res.data.auth.refresh_token,
+      };
+
+      dispatch(setLoggedInUser(payload));
+      dispatch(setAuthToken(authToken.access_token));
+
+      return res;
+    } catch (err) {
+      console.log("verify otp", err.error.data);
+      message.error(err.error.data.message);
+      let msgs = err.error.data.error;
+      if (msgs) {
+        let keys = Object.keys(msgs);
+        keys.forEach((key) => {
+          message.error(msgs[key][0]);
+        });
+      }
     }
   };
 };

@@ -10,18 +10,13 @@ import {
   Image,
   Space,
 } from "antd";
-import {
-  FacebookFilled,
-  LinkedinFilled,
-  TwitterOutlined,
-  GithubFilled,
-  CloseCircleOutlined,
-  ArrowRightOutlined,
-} from "@ant-design/icons";
+import { CloseCircleOutlined, ArrowRightOutlined } from "@ant-design/icons";
+import Link from "next/link";
 
 import styles from "./Login.module.scss";
 
 import messages from "../../../../messages";
+import SocialLoginButton from "../../../common/social-login/social-login";
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -34,8 +29,6 @@ interface FieldData {
 }
 
 const LoginUi = ({ form, onFinish, closeModal, isModal }) => {
-  // const [form] = Form.useForm();
-
   useEffect(() => {
     const userValue = JSON.parse(localStorage.getItem("rememberme"));
     if (userValue) {
@@ -121,37 +114,12 @@ const LoginUi = ({ form, onFinish, closeModal, isModal }) => {
               </Form.Item>
 
               <Form.Item>
-                <Text className={styles.social_login_text}>
-                  Login or Signup with social accounts.
-                </Text>
-                <div className={styles.btn_group}>
-                  <Button
-                    shape="circle"
-                    type="link"
-                    icon={<FacebookFilled />}
-                  />
-                  <Button
-                    shape="circle"
-                    type="link"
-                    // eslint-disable-next-line @next/next/no-img-element
-                    icon={<img src="/images/google.svg" alt="google logo" />}
-                  />
-                  <Button
-                    shape="circle"
-                    type="link"
-                    icon={<TwitterOutlined />}
-                  />
-                  <Button
-                    shape="circle"
-                    type="link"
-                    icon={<LinkedinFilled />}
-                  />
-                  <Button shape="circle" type="link" icon={<GithubFilled />} />
-                </div>
+                <SocialLoginButton />
               </Form.Item>
               <Form.Item noStyle>
                 <Text className={styles.ft_link}>
-                  Don't have an account? <a href="">Register Now</a>
+                  Don't have an account?{" "}
+                  <Link href="/registration">Register Now</Link>
                 </Text>
               </Form.Item>
             </Form>

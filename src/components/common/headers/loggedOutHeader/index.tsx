@@ -1,30 +1,24 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Button, Layout, Menu } from "antd";
-import Link from "next/link";
-import { UserOutlined, UserAddOutlined } from "@ant-design/icons";
+import { useDispatch } from "react-redux";
 
 import styles from "../siteHeader.module.scss";
 
 import SearchSection from "../../search/search";
 import LoginModal from "../../../ComponentPages/Login/loginModal";
-import { useDispatch, useSelector } from "react-redux";
-import { showLoginModal } from "../../../../store/slices/ui/uiSlice";
-import { RootState } from "../../../../store";
+import RegistrationModal from "../../../ComponentPages/Registration/registrationModal";
+import {
+  showLoginModal,
+  showRegistrationModal,
+} from "../../../../store/slices/ui/uiSlice";
 
 const { Header } = Layout;
 
 const LoggedOutHeader = () => {
   const dispatch = useDispatch();
 
-  const openModal = () => dispatch(showLoginModal());
-
-  const authenticated = useSelector(
-    (state: RootState) => state.auth.authenticated
-  );
-
-  const authenticatedUser = useSelector(
-    (state: RootState) => state.auth.loggedInUser
-  );
+  const openLoginModal = () => dispatch(showLoginModal());
+  const openRegistrationModal = () => dispatch(showRegistrationModal());
 
   return (
     <React.Fragment>
@@ -58,16 +52,24 @@ const LoggedOutHeader = () => {
           </Menu>
         </nav>
         <div className={styles.right}>
-          <Button type="link" className={styles.btnLogin} onClick={openModal}>
+          <Button
+            type="link"
+            className={styles.btnLogin}
+            onClick={openLoginModal}
+          >
             <i className="icon-user"></i> Login
           </Button>
-          <Button className={styles.btnRegister}>
+          <Button
+            className={styles.btnRegister}
+            onClick={openRegistrationModal}
+          >
             <i className="icon-user-plus"></i> Register
           </Button>
         </div>
       </Header>
       <SearchSection />
       <LoginModal />
+      <RegistrationModal />
     </React.Fragment>
   );
 };

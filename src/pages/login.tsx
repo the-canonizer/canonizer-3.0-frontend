@@ -1,12 +1,13 @@
+import { Card } from "antd";
+
 import GetStartedLayout from "../hoc/getStartedLayout";
 import Login from "../components/ComponentPages/Login";
-import { Card } from "antd";
 
 const LoginPage = () => {
   return (
     <GetStartedLayout routeName={"login"}>
       <Card bordered={false} className="login-container">
-        <Login />
+        <Login isModal={false} />
       </Card>
     </GetStartedLayout>
   );

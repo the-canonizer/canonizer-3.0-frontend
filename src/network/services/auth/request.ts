@@ -51,6 +51,38 @@ export default class UserRequest extends Request {
     );
   }
 
+  static registerUser(values, authToken) {
+    const body = {
+      ...values,
+    };
+
+    return new UserRequest(
+      K.Network.URL.RegisterUser,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
+
+  static verifyUser(values, authToken) {
+    const body = {
+      client_id: process.env.NEXT_PUBLIC_AUTH_CLIENT_PASSWORD_ID,
+      client_secret: process.env.NEXT_PUBLIC_AUTH_CLIENT_PASSWORD_SECRET,
+      ...values,
+    };
+
+    return new UserRequest(
+      K.Network.URL.VerifyRegisterUser,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
+
   static updateUser(user: any, user_image: any, id: string) {
     const body = {
       user,

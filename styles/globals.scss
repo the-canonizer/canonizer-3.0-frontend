@@ -38,6 +38,9 @@ img {
   .ant-card-body {
     padding: 0;
   }
+  @media screen and (max-width: 1119px) {
+    max-width: 100%;
+  }
 }
 
 .loginModal {

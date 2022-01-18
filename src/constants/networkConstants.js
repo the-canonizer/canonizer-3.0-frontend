@@ -11,6 +11,8 @@ const NetworkConstants = {
     CreateToken: "/client_token",
     LoginUser: "/user/login",
     LogoutUser: "/user/logout",
+    RegisterUser: "/register",
+    VerifyRegisterUser: "/verifyOtp",
     UpdateUser: "/users/",
 
     // Tree
