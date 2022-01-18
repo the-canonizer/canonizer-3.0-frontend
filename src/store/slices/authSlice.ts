@@ -6,28 +6,40 @@ export const authSlice = createSlice({
   name: "auth",
   initialState: {
     loggedInUser: null,
-    authenticated: true,
-    token: "jhsdhbud7y7sjhbjfbds7y87ysjdbfjd7y78yfds",
-    permissions: ["view_tree"],
+    authenticated: false,
+    authToken: null,
+    token: "",
+    authRefreshToken: null,
+    permissions: [""],
   },
   reducers: {
+    setAuthToken: (state, action) => {
+      state.authToken = action.payload;
+    },
+    removeAuthToken: (state) => {
+      state.authToken = null;
+    },
     setLoggedInUser: (state, action) => {
-      let encryptedUser = CryptoJS.AES.encrypt(
-        JSON.stringify(action.payload),
-        K.EncryptionConstants.AESEncryptionKey
-      );
-      state.loggedInUser = encryptedUser;
+      // let encryptedUser = CryptoJS.AES.encrypt(
+      //   JSON.stringify(action.payload),
+      //   K.EncryptionConstants.AESEncryptionKey
+      // );
+      state.loggedInUser = action.payload;
       state.token = action.payload.token;
       state.authenticated = true;
+      state.authRefreshToken = action.payload.refresh_token;
     },
     logoutUser: (state) => {
       state.loggedInUser = null;
       state.token = null;
       state.authenticated = false;
+      state.authToken = null;
+      state.authRefreshToken = null;
     },
   },
 });
 
-export const { setLoggedInUser, logoutUser } = authSlice.actions;
+export const { setAuthToken, removeAuthToken, setLoggedInUser, logoutUser } =
+  authSlice.actions;
 
 export default authSlice.reducer;

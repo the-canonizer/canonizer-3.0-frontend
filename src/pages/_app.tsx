@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 import type { AppProps } from "next/app";
 import { createWrapper } from "next-redux-wrapper";
 import HeadContentAndPermissionComponent from "../components/common/headContentAndPermisisonCheck";
-import ErrorBoundary from "../hoc/errorBoundary";
+import ErrorBoundary from "../hoc/ErrorBoundary";
 import GoogleAnalyticScripts from "../firebaseConfig/scripts";
 
 function MyApp({ Component, pageProps }: AppProps) {

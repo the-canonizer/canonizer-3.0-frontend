@@ -1,10 +1,14 @@
 @import "./fonts";
 :root {
-  --primary:#4484CE;
+  --primary: #4484ce;
+  --font-family-asap: "Asap", sans-serif;
+  --yellow: #f89d15;
 }
 body {
-  font-family: 'Asap', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji' !important;
-  background-color: #F8F8F8 !important;
+  font-family: "Asap", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+  background-color: #f8f8f8 !important;
 }
 .d-flex {
   display: flex;

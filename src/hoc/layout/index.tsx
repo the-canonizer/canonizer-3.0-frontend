@@ -4,10 +4,16 @@ import { useEffect, useState } from "react";
 import useAuthentication from "../../hooks/isUserAuthenticated";
 import Spinner from "../../components/common/spinner/spinner";
 import Footer from "../../components/common/footer";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 function Layout(props) {
   const [isLogin, setIsLogin] = useState(false);
 
   const { isUserAuthenticated } = useAuthentication();
+
+  const isAuthenticate = useSelector(
+    (state: RootState) => state.auth.authenticated
+  );
 
   useEffect(() => {
     if (isUserAuthenticated) {
@@ -19,7 +25,7 @@ function Layout(props) {
   return (
     <>
       <div className="app-layout">
-        {isLogin ? <LoggedInHeader /> : <LoggedOutHeader />}
+        {isAuthenticate ? <LoggedInHeader /> : <LoggedOutHeader />}
 
         <div className="app-content">{props.children}</div>
         <Spinner>{""}</Spinner>

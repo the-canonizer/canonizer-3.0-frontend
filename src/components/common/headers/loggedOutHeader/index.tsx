@@ -1,15 +1,25 @@
-import React from 'react';
-import { Button, Layout, Menu } from 'antd';
-import Link from 'next/link';
-import { UserOutlined, UserAddOutlined } from '@ant-design/icons';
+import React from "react";
+import { Button, Layout, Menu } from "antd";
+import { useDispatch } from "react-redux";
 
 import styles from "../siteHeader.module.scss";
 
-
 import SearchSection from "../../search/search";
+import LoginModal from "../../../ComponentPages/Login/loginModal";
+import RegistrationModal from "../../../ComponentPages/Registration/registrationModal";
+import {
+  showLoginModal,
+  showRegistrationModal,
+} from "../../../../store/slices/ui/uiSlice";
+
+const { Header } = Layout;
 
 const LoggedOutHeader = () => {
-  const { Header } = Layout;
+  const dispatch = useDispatch();
+
+  const openLoginModal = () => dispatch(showLoginModal());
+  const openRegistrationModal = () => dispatch(showRegistrationModal());
+
   return (
     <React.Fragment>
       <Header className={styles.wrap}>
@@ -42,11 +52,24 @@ const LoggedOutHeader = () => {
           </Menu>
         </nav>
         <div className={styles.right}>
-          <Button type="link" className={styles.btnLogin}><i className="icon-user"></i> Login</Button>
-          <Button className={styles.btnRegister}><i className="icon-user-plus"></i> Register</Button>
+          <Button
+            type="link"
+            className={styles.btnLogin}
+            onClick={openLoginModal}
+          >
+            <i className="icon-user"></i> Login
+          </Button>
+          <Button
+            className={styles.btnRegister}
+            onClick={openRegistrationModal}
+          >
+            <i className="icon-user-plus"></i> Register
+          </Button>
         </div>
       </Header>
       <SearchSection />
+      <LoginModal />
+      <RegistrationModal />
     </React.Fragment>
   );
 };

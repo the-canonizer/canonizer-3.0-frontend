@@ -1,16 +1,18 @@
 const NetworkConstants = {
   URL: {
-    Base: process.env.REACT_APP_BASE_URL,
-    BaseAPI: process.env.REACT_APP_BASE_API_URL,
-    // BaseAPI: "https://reqres.in",
-    Timeout: process.env.REACT_APP_TIMEOUT,
+    Base: process.env.NEXT_PUBLIC_BASE_URL,
+    BaseAPI: process.env.NEXT_PUBLIC_BASE_API_URL,
+    Timeout: process.env.NEXT_PUBLIC_TIMEOUT,
     Client: {
-      BaseHost: process.env.REACT_APP_CLIENT_BASE_HOST,
-      BasePort: process.env.REACT_APP_CLIENT_BASE_PORT,
+      BaseHost: process.env.NEXT_PUBLIC_CLIENT_BASE_HOST,
+      BasePort: process.env.NEXT_PUBLIC_CLIENT_BASE_PORT,
     },
     // User
-    LoginUser: "/login",
-    LogoutUser: "/logout",
+    CreateToken: "/client_token",
+    LoginUser: "/user/login",
+    LogoutUser: "/user/logout",
+    RegisterUser: "/register",
+    VerifyRegisterUser: "/verifyOtp",
     UpdateUser: "/users/",
 
     // Tree
