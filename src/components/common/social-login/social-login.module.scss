@@ -1,0 +1,76 @@
+.wrapper {
+  width: 100%;
+  button {
+    background: transparent;
+    border-radius: 2px;
+    border-color: transparent;
+    font-size: 16px;
+    font-family: var(--font-family-asap);
+    font-weight: 500;
+    transition: all 0.3s;
+  }
+  .social_login_text {
+    color: #0f2a4d;
+    display: block;
+    text-align: center;
+    font-size: 15px;
+  }
+  .btn_group {
+    padding: 20px 0;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #f1f1f1;
+
+    button {
+      background: transparent !important;
+      border: none;
+      outline: none;
+      width: auto;
+      height: auto;
+      padding: 0 10px;
+      transition: all 0.3s;
+
+      &:hover,
+      &:focus {
+        svg,
+        img {
+          transform: scale(1.1);
+        }
+      }
+
+      svg,
+      img {
+        width: 24px;
+        height: 24px;
+        transition: all 0.3s;
+      }
+      &:nth-child(1) {
+        svg {
+          fill: #3c5999;
+        }
+      }
+      &:nth-child(2) {
+        svg {
+          fill: #3c5999;
+        }
+      }
+      &:nth-child(3) {
+        svg {
+          fill: #03a9f4;
+        }
+      }
+      &:nth-child(4) {
+        svg {
+          fill: #006699;
+        }
+      }
+      &:nth-child(5) {
+        svg {
+          fill: #161514;
+        }
+      }
+    }
+  }
+}

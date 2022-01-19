@@ -8,11 +8,12 @@ export default class UserRequest extends Request {
     super(params);
   }
 
-  static loginUser(email: any, password: any) {
+  static loginUser(email: string, password: string) {
     const body = {
-      email,
       password,
+      email,
     };
+
     return new UserRequest(
       K.Network.URL.LoginUser,
       K.Network.Method.POST,
@@ -40,6 +41,6 @@ export default class UserRequest extends Request {
 
   static logoutCall(error: string = "") {
     //user's logout logic
-    redirectToLogin(error);
+    // redirectToLogin(error);
   }
 }
