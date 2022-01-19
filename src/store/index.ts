@@ -1,3 +1,4 @@
+import homePageSlice from "./slices/homePageSlice";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import logger from "redux-logger";
 import {
@@ -18,6 +19,7 @@ import Tree from "./slices/treeSlice";
 let reducers = combineReducers({
   auth: Auth,
   trees: Tree,
+  homePage: homePageSlice,
 });
 
 const persistConfig = {
