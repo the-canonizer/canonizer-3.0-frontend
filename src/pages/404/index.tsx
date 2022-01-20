@@ -1,4 +1,4 @@
-import My404 from "../../components/ComponentPages/404";
+import My404 from "../../components/componentPages/404";
 
 const My404Page = () => {
   return <My404 />;
