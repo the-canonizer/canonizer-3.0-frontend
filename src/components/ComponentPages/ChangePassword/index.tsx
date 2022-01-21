@@ -1,4 +1,4 @@
-import ChangePasswordUI from "./UI";
+import ChangePasswordUI from "./ChangePasswordUI";
 const ChangePassword = () => {
   const onFinish = (values) => {
     console.log('Success:', values);
