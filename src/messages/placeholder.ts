@@ -10,4 +10,6 @@ export const placeholders = {
   registrationPassword: "Enter Password",
   confirmPassword: "Enter Confirm Password",
   otp: "Enter OTP",
+  currentPassword: "Enter Current Password",
+  newPassword: "Enter New Password",
 };

@@ -9,4 +9,6 @@ export const labels = {
   captcha: "Captcha",
   registrationPassword: "Password",
   confirmPassword: "Confirm Password",
+  currentPassword: "Enter Current Password",
+  newPassword: "Enter New Password",
 };
