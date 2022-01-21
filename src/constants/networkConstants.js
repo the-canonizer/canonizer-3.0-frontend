@@ -20,6 +20,10 @@ const NetworkConstants = {
     // HomePage
     GetCanonizedTopics: "/api/v1/topic/getAll",
     GetHelpCardContent: "/api/help_card",
+
+    //footer
+
+    GetFooterSocialLinks: "/api/v1/socialLinks",
   },
   Method: {
     GET: "GET",

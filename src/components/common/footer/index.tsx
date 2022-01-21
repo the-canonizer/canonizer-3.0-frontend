@@ -1,11 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Col, Image, Typography, Menu } from "antd";
 import { RightOutlined } from "@ant-design/icons";
 import styles from "./siteFooter.module.scss";
+import { getFooterSocialLinksApi } from "../../../network/api/footerSocialLinksApi";
 
 const { Title, Link } = Typography;
 
 function Footer() {
+  const linksMock = {
+    facebook: "https://www.facebook.com",
+    twitter: "https://www.twitter.com",
+    instagram: "https://www.instagram.com/",
+    youtube: "https://www.youtube.com",
+    linkedIn: "https://www.linkedin.com",
+  };
+  const [socialLinks, setSocialLinks] = useState(null);
+  useEffect(() => {
+    async function linksApiCall() {
+      const result = await getFooterSocialLinksApi();
+      setSocialLinks(result);
+    }
+    linksApiCall();
+  }, []);
   return (
     <>
       <section className={styles.adv}>
@@ -83,22 +99,38 @@ function Footer() {
                 <Title level={5}>Follow Us</Title>
                 <div className={styles.smIcons}>
                   <Link
-                    href=""
+                    href={socialLinks?.instagram}
                     target="_blank"
                     className={styles.iconInstagram}
                   >
                     Instagram
                   </Link>
-                  <Link href="" target="_blank" className={styles.iconFacebook}>
+                  <Link
+                    href={socialLinks?.facebook}
+                    target="_blank"
+                    className={styles.iconFacebook}
+                  >
                     Facebook
                   </Link>
-                  <Link href="" target="_blank" className={styles.iconTwitter}>
+                  <Link
+                    href={socialLinks?.twitter}
+                    target="_blank"
+                    className={styles.iconTwitter}
+                  >
                     Twitter
                   </Link>
-                  <Link href="" target="_blank" className={styles.iconYoutube}>
+                  <Link
+                    href={socialLinks?.youtube}
+                    target="_blank"
+                    className={styles.iconYoutube}
+                  >
                     Youtube
                   </Link>
-                  <Link href="" target="_blank" className={styles.iconLinkedin}>
+                  <Link
+                    href={socialLinks?.linkedIn}
+                    target="_blank"
+                    className={styles.iconLinkedin}
+                  >
                     Linkedin
                   </Link>
                 </div>
