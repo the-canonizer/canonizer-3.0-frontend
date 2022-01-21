@@ -7,13 +7,12 @@ export default class Request {
   headers: any;
 
   constructor(
-    relativeURL,
+    relativeURL: string,
     method = K.Network.Method.GET,
     body = null,
     defaultHeaderType = K.Network.Header.Type.Json,
     headers = {}
   ) {
-    debugger;
     // const token = User.getToken();
     const token = "kbdjsbfjyy897798hsdbjfbjn";
     headers = {
