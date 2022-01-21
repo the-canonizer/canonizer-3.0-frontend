@@ -9,6 +9,14 @@ body {
 .d-flex {
   display: flex;
 }
+.text {
+  &-center {
+    text-align: center;
+  }
+  &-right {
+    text-align: right;
+  }
+}
 
 .leftSideBar {
   &+.pageContentWrap {

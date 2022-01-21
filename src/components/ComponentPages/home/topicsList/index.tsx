@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Typography, List, Select, Tag, Button } from "antd";
-import styles from "./topicsList.module.scss";
+import { useRouter } from 'next/router'
+import { Typography, List, Select, Tag, Button, Input } from "antd";
+import Link from 'next/link';
 import { RightOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store";
@@ -8,10 +9,14 @@ import { getCanonizedTopicsApi } from "../../../../network/api/homePageApi";
 import objectToFormData from "object-to-formdata";
 import { setFilterCanonizedTopics } from "../../../../store/slices/homePageSlice";
 
+import styles from "./topicsList.module.scss";
+
 const Option = Select;
-const { Title, Link, Text } = Typography;
+const { Title, Text } = Typography;
+const { Search } = Input;
 
 const TopicsList = () => {
+  const router = useRouter();
   const didMount = useRef(false);
   const didMountForFilterScoreEffect = useRef(false);
   const dispatch = useDispatch();
@@ -64,13 +69,33 @@ const TopicsList = () => {
       if (filterByScore.toString() == "") {
         setTopics(canonizedTopics);
       } else {
-        const filteredTopics = canonizedTopics.filter(
+        const filteredTopics = canonizedTopics?.filter(
           (topic) => topic.topic_score <= filterByScore
         );
         setTopics(filteredTopics);
       }
     } else didMountForFilterScoreEffect.current = true;
   }, [filterByScore]);
+
+  const LoadMoreTopics = (
+    <div className="text-center">
+      <a className={styles.viewAll}>
+        <Text>Load More</Text>
+        <i className="icon-angle-right"></i>
+      </a>
+    </div>
+  )
+
+  const ViewAllTopics = (
+    <div className="text-right">
+      <Link href="/browse">
+        <a className={styles.viewAll}>
+          <Text>View All Topics</Text>
+          <i className="icon-angle-right"></i>
+        </a>
+      </Link>
+    </div>
+  )
 
   return (
     <>
@@ -97,14 +122,15 @@ const TopicsList = () => {
                   );
                 })}
               </Select>
+              
+              {
+                router.asPath === '/browse' && <Search placeholder="input search text" allowClear className={styles.topic} style={{width: 200}} />
+              }
+              
             </div>
           }
-          footer={
-            <div className={styles.footer}>
-              <Link href="#" className={styles.viewAll}>
-                <Text>View All Topics</Text>
-                <i className="icon-angle-right"></i>
-              </Link>
+          footer={<div className={styles.footer}>
+            {router.asPath === '/browse' ? LoadMoreTopics : ViewAllTopics }
             </div>
           }
           bordered
