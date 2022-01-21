@@ -1,8 +1,9 @@
 import React from 'react';
 import moment from 'moment';
 import { Typography, Button, Divider, Collapse, Select, Radio, Space, Input, DatePicker, Popover } from 'antd';
-import styles from "./createTopic.module.scss";
 import { LeftOutlined } from '@ant-design/icons';
+
+import styles from "./createTopic.module.scss";
 
 const { Title, Text, Paragraph, Link } = Typography;
 const { Panel } = Collapse;

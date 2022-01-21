@@ -12,18 +12,49 @@ body {
 
 .leftSideBar {
   &+.pageContentWrap {
-    padding: 0 16px;
+    @media screen and (min-width: 992px) {
+      padding: 0 16px;
+    }
   }
   &.miniSideBar {
-    width: 245px;
-    &+.pageContentWrap {
-      width: calc(100% - 245px);
+    @media screen and (min-width: 992px) {
+      width: 245px;
+      &+.pageContentWrap {
+        width: calc(100% - 245px);
+      }
     }
   }
   &:not(.miniSideBar) {
     width: 420px;
     &+.pageContentWrap {
       width: calc(100% - 420px);
+    }
+  }
+}
+
+.topicsList_card__ajlxi, .recentActivities_listWrap__78VcE {
+  .ant-list-footer {
+    margin-top: 10px;
+    padding-bottom: 6px;
+  }
+}
+
+.recentActivities_listCardTabs__k6Xpq {
+  &.ant-tabs {
+    overflow: visible;
+  }
+  &.ant-tabs-top > .ant-tabs-nav::before {
+    right: -20px;
+    left: -20px;
+  }
+  .ant-tabs-nav {
+    margin-bottom: 18px;
+  }
+  .ant-tabs-tab {
+    padding-top: 3px;
+    padding-bottom: 15px;
+    &.ant-tabs-tab-active {
+      font-weight: 600;
     }
   }
 }
