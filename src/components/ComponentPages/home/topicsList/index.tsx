@@ -1,24 +1,76 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Typography, List, Select, Tag, Button } from "antd";
 import styles from "./topicsList.module.scss";
 import { RightOutlined } from "@ant-design/icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store";
+import { getCanonizedTopicsApi } from "../../../../network/api/homePageApi";
+import objectToFormData from "object-to-formdata";
+import { setFilterCanonizedTopics } from "../../../../store/slices/homePageSlice";
 
 const Option = Select;
 const { Title, Link, Text } = Typography;
 
 const TopicsList = () => {
-  const canonizedTopics = useSelector(
-    (state: RootState) => state.homePage?.canonizedTopics?.data?.topic
+  const didMount = useRef(false);
+  const didMountForFilterScoreEffect = useRef(false);
+  const dispatch = useDispatch();
+  const { canonizedTopics, asofdate, algorithm, filterByScore } = useSelector(
+    (state: RootState) => ({
+      canonizedTopics: state.homePage?.canonizedTopics?.topic,
+      asofdate: state.homePage?.filterObject?.asofdate,
+      algorithm: state.homePage?.filterObject?.algorithm,
+      filterByScore: state.homePage?.filterObject?.filterByScore,
+    })
   );
 
-  const mockDropdownList = ["Jack", "Lucy", "yiminghe"];
-  const [nameSpace, setNameSpace] = useState("/General/");
+  const [topics, setTopics] = useState(canonizedTopics);
 
-  const selectNameSpace = (value) => {
-    setNameSpace(value);
+  const mockDropdownList = [
+    { id: 1, name: "/General/" },
+    { id: 2, name: "Jack" },
+    { id: 3, name: "Lucy" },
+    { id: 4, name: "yiminghe" },
+  ];
+  const [nameSpaceId, setNameSpaceId] = useState(null);
+
+  const selectNameSpace = (value: Number) => {
+    setNameSpaceId(value);
+    dispatch(
+      setFilterCanonizedTopics({
+        namespace_id: value,
+      })
+    );
   };
+
+  useEffect(() => {
+    if (didMount.current) {
+      const reqBody = {
+        page_number: 1,
+        page_size: 15,
+        namespace_id: nameSpaceId,
+        asofdate: asofdate,
+        algorithm: algorithm,
+        search: "Hard",
+      };
+
+      getCanonizedTopicsApi(reqBody);
+    } else didMount.current = true;
+  }, [asofdate, algorithm, nameSpaceId]);
+
+  useEffect(() => {
+    console.log("filterByScore", filterByScore);
+    if (didMountForFilterScoreEffect.current) {
+      if (filterByScore.toString() == "") {
+        setTopics(canonizedTopics);
+      } else {
+        const filteredTopics = canonizedTopics.filter(
+          (topic) => topic.topic_score <= filterByScore
+        );
+        setTopics(filteredTopics);
+      }
+    } else didMountForFilterScoreEffect.current = true;
+  }, [filterByScore]);
 
   return (
     <>
@@ -34,11 +86,15 @@ const TopicsList = () => {
               <Select
                 size="large"
                 className={styles.dropdown}
-                defaultValue="/General/"
+                defaultValue={mockDropdownList[0].name}
                 onChange={selectNameSpace}
               >
                 {mockDropdownList.map((item) => {
-                  return <Option key={item}>{item}</Option>;
+                  return (
+                    <Option key={item.id} value={item.id}>
+                      {item.name}
+                    </Option>
+                  );
                 })}
               </Select>
             </div>
@@ -52,7 +108,7 @@ const TopicsList = () => {
             </div>
           }
           bordered
-          dataSource={canonizedTopics}
+          dataSource={topics}
           renderItem={(item: any) => (
             <List.Item>
               <>

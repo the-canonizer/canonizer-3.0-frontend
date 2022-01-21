@@ -13,7 +13,6 @@ export default class Request {
     defaultHeaderType = K.Network.Header.Type.Json,
     headers = {}
   ) {
-    debugger;
     // const token = User.getToken();
     const token = "kbdjsbfjyy897798hsdbjfbjn";
     headers = {

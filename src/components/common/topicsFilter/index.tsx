@@ -13,10 +13,13 @@ import {
 } from "antd";
 import styles from "./createTopic.module.scss";
 import { LeftOutlined } from "@ant-design/icons";
-import { getCanonizedTopicsApi } from "../../../network/api/homePageApi";
+
 import { RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
-import { setCanonizedTopics } from "../../../store/slices/homePageSlice";
+import {
+  setCanonizedTopics,
+  setFilterCanonizedTopics,
+} from "../../../store/slices/homePageSlice";
 
 const { Title, Text, Paragraph, Link } = Typography;
 const { Panel } = Collapse;
@@ -45,40 +48,50 @@ function disabledDateTime() {
 }
 
 const CreateTopic = () => {
-  const [nameSpace, setNameSpace] = useState("/General/");
+  const [isDatePicker, setIsDatePicker] = useState(false);
+  const [value, setValue] = useState(2);
+  const [inputFilterValue, setInputFilterValue] = useState(0.0);
   const dispatch = useDispatch();
   const canonizedTopics = useSelector(
     (state: RootState) => state.homePage?.canonizedTopics
   );
 
   const selectAlgorithm = (value) => {
-    debugger;
-    const reqBody = {
-      page_number: 1,
-      page_size: 20,
-      namespace_id: 1,
-      asofdate: 1642464000,
-      algorithm: value,
-      search: "Hard",
-    };
-    setNameSpace(value);
-    getCanonizedTopicsApi();
+    dispatch(
+      setFilterCanonizedTopics({
+        algorithm: value,
+      })
+    );
+  };
+  const onChange = (e) => {
+    if (e.target.value === 3) {
+      setIsDatePicker(true);
+    } else {
+      setIsDatePicker(false);
+    }
+    setValue(e.target.value);
+  };
+  const pickDate = (e) => {
+    const IsoDateFormat = Date.parse(e._d);
+    dispatch(
+      setFilterCanonizedTopics({
+        asofdate: IsoDateFormat,
+      })
+    );
   };
 
   const filterOnScore = (e) => {
-    console.log("filterOnScore", e.target.value);
-    const filteredTopics = canonizedTopics?.data?.topic?.filter(
-      (topic) => topic.topic_score < +e.target.value
-    );
-    debugger;
-    dispatch(
-      setCanonizedTopics({
-        ...canonizedTopics,
-        data: {
-          topic: filteredTopics,
-        },
-      })
-    );
+    const { value } = e.target;
+
+    const reg = /^-?\d*(\.\d*)?$/;
+    if ((!isNaN(value) && reg.test(value)) || value === "") {
+      setInputFilterValue(value);
+      dispatch(
+        setFilterCanonizedTopics({
+          filterByScore: value,
+        })
+      );
+    }
   };
 
   return (
@@ -128,8 +141,8 @@ const CreateTopic = () => {
               <LeftOutlined className={styles.LeftOutlined} />
               <Input
                 size="large"
-                defaultValue="0.0014"
                 onChange={filterOnScore}
+                value={inputFilterValue}
               />
               <i className="icon-info"></i>
             </div>
@@ -142,7 +155,7 @@ const CreateTopic = () => {
             }
             key="2"
           >
-            <Radio.Group>
+            <Radio.Group onChange={onChange} value={value}>
               <Space direction="vertical">
                 <Radio className={styles.radio} value={1}>
                   Include review
@@ -156,13 +169,17 @@ const CreateTopic = () => {
               </Space>
             </Radio.Group>
             <DatePicker
-              format="YYYY-MM-DD HH:mm:ss"
-              disabledDate={disabledDate}
-              disabledTime={disabledDateTime}
-              showTime={{ defaultValue: moment("00:00:00", "HH:mm:ss") }}
+              // open={isDatePicker}
+              disabled={!isDatePicker}
+              format="YYYY-MM-DD"
+              // disabledDate={disabledDate}
+              // disabledTime={disabledDateTime}
+              // showTime={{ defaultValue: moment("00:00:00", "HH:mm:ss") }}
               suffixIcon={<i className="icon-calendar"></i>}
               size={"large"}
               className={styles.date}
+              onChange={pickDate}
+              inputReadOnly={true}
             />
           </Panel>
         </Collapse>

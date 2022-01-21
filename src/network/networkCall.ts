@@ -33,6 +33,7 @@ export default class NetworkCall {
       return response.data;
     } catch (err) {
       let error = err.response;
+
       console.log("NetworkCall Error: ", error);
       if (error === undefined) {
         message.error("Cannot connect to server");

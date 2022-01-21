@@ -3,7 +3,6 @@ import HomePageContainer from "../components/componentPages/home";
 import { getCanonizedTopicsApi } from "../network/api/homePageApi";
 import { useDispatch } from "react-redux";
 import { setCanonizedTopics } from "../store/slices/homePageSlice";
-import { useEffect } from "react";
 
 export default function Home({ topicsData }) {
   const dispatch = useDispatch();
@@ -28,7 +27,7 @@ export async function getServerSideProps() {
     algorithm: "blind_popularity",
     search: "Hard",
   };
-  const result = await getCanonizedTopicsApi();
+  const result = await getCanonizedTopicsApi(reqBody);
   const topicsData = result || [];
 
   return {
