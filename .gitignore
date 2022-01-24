@@ -40,5 +40,12 @@ yarn-error.log*
 # vercel
 .vercel
 
+# local env files
+.env
+.env.development
+.env.production
+
+
 #vscode
 .history
+.vscode
