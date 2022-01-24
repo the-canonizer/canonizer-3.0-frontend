@@ -83,6 +83,57 @@ export default class UserRequest extends Request {
     );
   }
 
+  static userSocialLogin(values, authToken) {
+    const body = {
+      client_id: process.env.NEXT_PUBLIC_AUTH_CLIENT_PASSWORD_ID,
+      client_secret: process.env.NEXT_PUBLIC_AUTH_CLIENT_PASSWORD_SECRET,
+      ...values,
+    };
+
+    return new UserRequest(
+      K.Network.URL.UserSocialLogin,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
+
+  static userSocialLoginCallback(values, authToken) {
+    const body = {
+      client_id: process.env.NEXT_PUBLIC_AUTH_CLIENT_PASSWORD_ID,
+      client_secret: process.env.NEXT_PUBLIC_AUTH_CLIENT_PASSWORD_SECRET,
+      ...values,
+    };
+
+    return new UserRequest(
+      K.Network.URL.UserSocialLoginCallback,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
+
+  static socialLogin(values, authToken) {
+    const body = {
+      client_id: process.env.NEXT_PUBLIC_AUTH_CLIENT_PASSWORD_ID,
+      client_secret: process.env.NEXT_PUBLIC_AUTH_CLIENT_PASSWORD_SECRET,
+      ...values,
+    };
+
+    return new UserRequest(
+      K.Network.URL.SocialLogin,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
+
   static updateUser(user: any, user_image: any, id: string) {
     const body = {
       user,

@@ -13,6 +13,8 @@ const NetworkConstants = {
     LogoutUser: "/user/logout",
     RegisterUser: "/register",
     VerifyRegisterUser: "/verifyOtp",
+    UserSocialLogin: "/user/social/login",
+    UserSocialLoginCallback: "/user/social/callback",
     UpdateUser: "/users/",
 
     // Tree

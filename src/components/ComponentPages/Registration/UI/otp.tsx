@@ -52,10 +52,6 @@ export default function OTPVerify({ form, onFinish, isModal, closeModal }) {
                 message: messages.validations.otp,
               },
               {
-                min: 6,
-                message: messages.validations.otpLength,
-              },
-              {
                 max: 6,
                 message: messages.validations.otpLength,
               },
@@ -73,7 +69,7 @@ export default function OTPVerify({ form, onFinish, isModal, closeModal }) {
           <Button
             type="primary"
             htmlType="submit"
-            className="login-form-button"
+            className={styles["login-form-button"]}
             block
           >
             Submit <ArrowRightOutlined />

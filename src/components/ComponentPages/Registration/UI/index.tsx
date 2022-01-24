@@ -8,6 +8,7 @@ import styles from "./Registration.module.scss";
 
 import messages from "../../../../messages";
 import SocialLoginButton from "../../../common/social-login/social-login";
+import { country } from "./countryCodes";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -23,14 +24,12 @@ function RegistrationUi({
 }) {
   const recaptchaRef = createRef();
 
-  const countryCodes = ["+91", "+86", "+87"];
-
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
       <Select style={{ width: 90 }}>
-        {countryCodes.map((code) => (
-          <Option value={code} key={code}>
-            {code}
+        {country.map((code) => (
+          <Option value={code.dial_code} key={code.code}>
+            {code.dial_code}
           </Option>
         ))}
       </Select>
@@ -48,7 +47,7 @@ function RegistrationUi({
       <Form
         form={form}
         name="registration"
-        initialValues={{ prefix: "+91" }}
+        initialValues={{ prefix: "+1" }}
         onFinish={onFinish}
         layout="vertical"
         scrollToFirstError
@@ -177,10 +176,6 @@ function RegistrationUi({
                 label={messages.labels.email}
                 rules={[
                   {
-                    type: "email",
-                    message: messages.validations.email,
-                  },
-                  {
                     max: 255,
                     message: messages.validations.middleName,
                   },
@@ -260,7 +255,7 @@ function RegistrationUi({
         </Form.Item>
 
         <Form.Item>
-          <SocialLoginButton />
+          <SocialLoginButton isModal={isModal} />
         </Form.Item>
         <Form.Item noStyle>
           <Text className={styles.ft_link}>

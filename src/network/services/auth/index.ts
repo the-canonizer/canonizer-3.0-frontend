@@ -129,3 +129,63 @@ export const verifyOtp = (values: object) => {
     }
   };
 };
+
+// social login path
+export const socialLogin = async (values: object) => {
+  // return async (dispatch) => {
+  try {
+    const authToken = await createToken();
+
+    const res = await NetworkCall.fetch(
+      UserRequest.userSocialLogin(values, authToken.access_token)
+    );
+
+    return res;
+  } catch (err) {
+    console.log("socialLogin", err.error.data);
+    message.error(err.error.data.message);
+    let msgs = err.error.data.error;
+    if (msgs) {
+      let keys = Object.keys(msgs);
+      keys.forEach((key) => {
+        message.error(msgs[key][0]);
+      });
+    }
+  }
+  // };
+};
+
+export const socialLoginCallback = (values: object) => {
+  return async (dispatch) => {
+    try {
+      const authToken = await createToken();
+
+      const res = await NetworkCall.fetch(
+        UserRequest.userSocialLoginCallback(values, authToken.access_token)
+      );
+
+      !isServer &&
+        window.localStorage.setItem("token", res.data.auth.access_token);
+      let payload = {
+        ...res.data.user,
+        token: res.data.auth.access_token,
+        refresh_token: res.data.auth.refresh_token,
+      };
+
+      dispatch(setLoggedInUser(payload));
+      dispatch(setAuthToken(authToken.access_token));
+
+      return res;
+    } catch (err) {
+      console.log("socialLoginCallback", err.error.data);
+      message.error(err.error.data.message);
+      let msgs = err.error.data.error;
+      if (msgs) {
+        let keys = Object.keys(msgs);
+        keys.forEach((key) => {
+          message.error(msgs[key][0]);
+        });
+      }
+    }
+  };
+};
