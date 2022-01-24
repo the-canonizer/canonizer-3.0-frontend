@@ -13,3 +13,51 @@ body {
 .d-flex {
   display: flex;
 }
+.tab--card {
+  .ant-card-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: end;
+    .ant-card-head-wrapper {      
+      flex-grow: 1;
+      .ant-card-head-title {
+        font-size: 20px;
+      }
+    }
+    .ant-tabs {
+      .ant-tabs-tab-btn {
+        font-size: 14px;
+      }
+    }
+  }
+}
+.main--layout{
+  margin-top:20px;
+  .ant-col-5{
+    padding:0 20px;
+  }
+}
+.siteAds {
+  text-align: center;
+}
+
+
+.hdrUserdropdown {
+  .icon-user {
+    height: 38px;
+    width: 38px;
+    line-height: 34px;
+    background-color: #E6E9F1;
+    color: #647488;
+    display: inline-block;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+  }
+  .ant-dropdown-link {
+      color: #fff;
+      font-size: 17px;
+      font-weight: 600;
+  }
+}

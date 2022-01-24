@@ -14,7 +14,7 @@ const NetworkConstants = {
     RegisterUser: "/register",
     VerifyRegisterUser: "/verifyOtp",
     UpdateUser: "/users/",
-
+    ChangePassword:"/changepassword",
     // Tree
 
     GetTree: "/api/unknown",

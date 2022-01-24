@@ -97,4 +97,20 @@ export default class UserRequest extends Request {
       false
     );
   }
+  
+  static changePassword(values, authToken) {
+    const body = {
+      ...values,
+    };
+
+    return new UserRequest(
+      K.Network.URL.ChangePassword,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
+
 }
