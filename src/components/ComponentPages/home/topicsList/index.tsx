@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 import { Typography, List, Select, Tag, Button, Input } from "antd";
-import Link from 'next/link';
+import Link from "next/link";
 import { RightOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store";
@@ -84,7 +84,7 @@ const TopicsList = () => {
         <i className="icon-angle-right"></i>
       </a>
     </div>
-  )
+  );
 
   const ViewAllTopics = (
     <div className="text-right">
@@ -95,7 +95,7 @@ const TopicsList = () => {
         </a>
       </Link>
     </div>
-  )
+  );
 
   return (
     <>
@@ -122,15 +122,20 @@ const TopicsList = () => {
                   );
                 })}
               </Select>
-              
-              {
-                router.asPath === '/browse' && <Search placeholder="input search text" allowClear className={styles.topic} style={{width: 200}} />
-              }
-              
+
+              {router.asPath === "/browse" && (
+                <Search
+                  placeholder="input search text"
+                  allowClear
+                  className={styles.topic}
+                  style={{ width: 200 }}
+                />
+              )}
             </div>
           }
-          footer={<div className={styles.footer}>
-            {router.asPath === '/browse' ? LoadMoreTopics : ViewAllTopics }
+          footer={
+            <div className={styles.footer}>
+              {router.asPath === "/browse" ? LoadMoreTopics : ViewAllTopics}
             </div>
           }
           bordered
@@ -139,8 +144,10 @@ const TopicsList = () => {
             <List.Item className={styles.item}>
               <>
                 <Link href="#">
-                  <Text className={styles.text}>{item.topic_name}</Text>
-                  <Tag className={styles.tag}>{item.topic_score}</Tag>
+                  <a>
+                    <Text className={styles.text}>{item.topic_name}</Text>
+                    <Tag className={styles.tag}>{item.topic_score}</Tag>
+                  </a>
                 </Link>
               </>
             </List.Item>

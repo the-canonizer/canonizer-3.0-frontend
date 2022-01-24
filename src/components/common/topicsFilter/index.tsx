@@ -28,25 +28,37 @@ const { Option } = Select;
 const mockDropdownList = ["blind_popularity", "mind_experts"];
 
 const infoContent = (
-    <>
-        <div className={styles.infoText}>
-            <Title level={5}>Score Value FIlter</Title>
-            <p>Duis aute irure dolor in reprehderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-        </div>
-    </>
+  <>
+    <div className={styles.infoText}>
+      <Title level={5}>Score Value FIlter</Title>
+      <p>
+        Duis aute irure dolor in reprehderit in voluptate velit esse cillum
+        dolore eu fugiat nulla pariatur.
+      </p>
+    </div>
+  </>
 );
 
 const asContent = (
-    <>
-        <div className={styles.asfoText}>
-            <Title level={5}>Include review</Title>
-            <Paragraph>Duis aute irure dolor in reprehderit in voluptalore eu fugiat nulla pariatur.</Paragraph>
-            <Title level={5}>Default</Title>
-            <Paragraph>Duis aute irure dolor in reprehderit in voluptalore eu fugiat nulla pariatur.</Paragraph>
-            <Title level={5}>As of date</Title>
-            <Paragraph>Duis aute irure dolor in reprehderit in voluptalore eu fugiat nulla pariatur.</Paragraph>
-        </div>
-    </>
+  <>
+    <div className={styles.asfoText}>
+      <Title level={5}>Include review</Title>
+      <Paragraph>
+        Duis aute irure dolor in reprehderit in voluptalore eu fugiat nulla
+        pariatur.
+      </Paragraph>
+      <Title level={5}>Default</Title>
+      <Paragraph>
+        Duis aute irure dolor in reprehderit in voluptalore eu fugiat nulla
+        pariatur.
+      </Paragraph>
+      <Title level={5}>As of date</Title>
+      <Paragraph>
+        Duis aute irure dolor in reprehderit in voluptalore eu fugiat nulla
+        pariatur.
+      </Paragraph>
+    </div>
+  </>
 );
 
 function range(start, end) {

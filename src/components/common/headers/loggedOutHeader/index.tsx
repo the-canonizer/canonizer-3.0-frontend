@@ -1,7 +1,7 @@
-import React from 'react';
-import { Button, Layout, Menu, Row, Col } from 'antd';
-import Link from 'next/link';
-import { UserOutlined, UserAddOutlined } from '@ant-design/icons';
+import React from "react";
+import { Button, Layout, Menu, Row, Col } from "antd";
+import Link from "next/link";
+import { UserOutlined, UserAddOutlined } from "@ant-design/icons";
 
 import styles from "../siteHeader.module.scss";
 
@@ -41,8 +41,12 @@ const LoggedOutHeader = () => {
           </Menu>
         </nav>
         <div className={styles.right}>
-          <Button type="link" className={styles.btnLogin}><i className="icon-user"></i> Login</Button>
-          <Button className={styles.btnRegister}><i className="icon-user-plus"></i> Register</Button>
+          <Button type="link" className={styles.btnLogin}>
+            <i className="icon-user"></i> Login
+          </Button>
+          <Button className={styles.btnRegister}>
+            <i className="icon-user-plus"></i> Register
+          </Button>
         </div>
       </Header>
       <SearchSection />

@@ -18,8 +18,8 @@ const HomePageContainer = () => {
             <TopicsList />
           </Col>
           <Col xs={24} sm={24} xl={12}>
-              <RecentActivities />
-            </Col>
+            <RecentActivities />
+          </Col>
           <Col xs={24} sm={24} xl={24}>
             <HelpCard />
           </Col>

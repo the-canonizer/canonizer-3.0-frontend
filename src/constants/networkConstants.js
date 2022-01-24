@@ -2,7 +2,7 @@ const NetworkConstants = {
   URL: {
     Base: process.env.REACT_APP_BASE_URL,
     // BaseAPI: process.env.REACT_APP_BASE_API_URL,
-    BaseAPI: "http://localhost:8000",
+    BaseAPI: "http://api.canonizer.com",
     Timeout: process.env.REACT_APP_TIMEOUT,
     Client: {
       BaseHost: process.env.REACT_APP_CLIENT_BASE_HOST,
