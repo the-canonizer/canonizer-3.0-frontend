@@ -47,7 +47,7 @@ body {
   }
 }
 
-.recentActivities_listCardTabs__k6Xpq {
+.recentActivities_listCardTabs {
   &.ant-tabs {
     overflow: visible;
   }
@@ -57,6 +57,15 @@ body {
   }
   .ant-tabs-nav {
     margin-bottom: 18px;
+    &-wrap {
+      flex: unset !important;
+    }
+    @media screen and (min-width:1200px) and (max-width: 1499px) {
+      display: block;
+      h3 {
+        margin-bottom: 5px;
+      }
+    }
   }
   .ant-tabs-tab {
     padding-top: 3px;

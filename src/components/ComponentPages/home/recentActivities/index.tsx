@@ -44,7 +44,7 @@ export default function RecentActivities() {
     return (
         <>
             <div className={styles.listCard}>
-                <Tabs className={styles.listCardTabs} defaultActiveKey="1" tabBarExtraContent={slot}>
+                <Tabs className={`${styles.listCardTabs} recentActivities_listCardTabs`} defaultActiveKey="1" tabBarExtraContent={slot}>
                     <TabPane tab="Topics/Camps" key="1">
                         <List className={styles.listWrap}
                             footer={

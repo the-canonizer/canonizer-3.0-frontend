@@ -9,10 +9,9 @@
 .listCardTabs {
     display: block;
     div {
-        flex: unset !important;
         &:first-child {
             justify-content: space-between;
-            @media screen and (max-width:767px){
+            @media screen and (max-width:575px){
                 display: block;
             }
         }
@@ -98,7 +97,7 @@
         }
     }
     .footer {
-        padding: 0;
+        padding-top: 1rem;
         text-align: right;
         .viewAll {
             position: relative;
@@ -118,92 +117,3 @@
         }
     }
 }
-
-/* .list{
-    border: none;
-    >div:first-child {
-        padding:0;
-        border-bottom: none;
-    }
-    h3{
-        i{
-            margin-left:5px;
-            color: #D1D4DB;
-            position: relative;
-            top:3px;
-        }
-    }
-    li{
-        position: relative;
-        padding: 0!important;
-        border-bottom: none!important;
-        a{
-            font-size: 1.125rem;
-            font-weight:400;
-            padding-top:3px;
-            align-items: center;
-            width: 100%;
-            padding-bottom:3px;
-            justify-content: unset;
-            border: solid 1px #F0F0F0;
-            margin-bottom:8px;
-            padding-left:10px;
-            padding-right:7px;
-            box-shadow: 3px 3px rgba(63,79,91, 8%);
-        i{
-            margin-right:5px;
-        }
-        span{
-            color:#0F2A4D;
-        @media screen and (max-width:767px){
-            display:block;
-         }
-        }
-        
-        @media screen and (min-width:768px){
-            padding-left:23px!important;
-            display: flex;
-            justify-content:space-between!important;
-        }
-        @media screen and (max-width:767px){
-            align-items: center;
-            font-size:1rem;
-        }
-        }
-        @media screen and (max-width:767px){
-            font-size: 1rem;
-        } 
-    }
-} */
-
-/* 
-
-.footer{
-    padding: 0;
-    text-align: right;
-    margin-right:-20px;
-    .anticonright{
-        color:#4484CE;
-        position: relative;
-        top:2px;
-    }
-    a{
-        position: relative;
-    .link{
-        position: relative;
-        color: #4484CE;
-        font-size:1rem;
-        font-weight: 600;
-        &:after{
-         content: "";
-         position: absolute;
-         left: 0;
-         bottom: -5px;
-         height: 1px;
-         width:100%;
-         background-color: #4484CE;
-
-        }
-    }
-    }
-} */

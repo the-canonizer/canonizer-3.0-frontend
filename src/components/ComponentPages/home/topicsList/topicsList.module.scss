@@ -17,7 +17,7 @@
         @media screen and (min-width:1200px) and (max-width: 1499px) {
             flex-wrap: wrap;
         }
-        @media screen and (min-width:768px){
+        @media screen and (min-width:576px){
             display:flex;
             align-items: center;
             justify-content: space-between;
@@ -37,11 +37,13 @@
             }
         }
         .dropdown{
-            width: calc(100% - 200px);
-            max-width: 275px;
             >div:first-child{
                 height:40px!important;
                 border:solid 1px #D9D9D9!important;
+            }
+            @media screen and (min-width:576px) {
+                max-width: 275px;
+                width: calc(100% - 200px);
             }
             @media screen and (min-width:1200px) and (max-width: 1499px) {
                 width: 100%;
