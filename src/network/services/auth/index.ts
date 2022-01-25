@@ -142,8 +142,6 @@ export const changePassword = (values: object) => {
       );
       return res;
     } catch (errors) {
-      console.log(errors.error.data);
-      
       let msgs = errors.error.data.error;
       if (msgs) {
         let keys = Object.keys(msgs);
