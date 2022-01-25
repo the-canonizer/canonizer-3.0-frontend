@@ -1,5 +1,6 @@
 import LayoutMaster from "../../../hoc/layout";
-import { Layout, Card, Col, Row } from "antd";
+import { Layout, Card, Col, Row, Button } from "antd";
+import Icon, { MessageOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { RootState } from "../../../store";
 import { useSelector } from "react-redux";
@@ -8,6 +9,8 @@ import ChangePassword from "../../../components/ComponentPages/ChangePassword"
 import Image from 'next/image';
 import adone from '../../../../public/images/image11.jpg';
 import adtwo from '../../../../public/images/image37.jpg';
+import createTopic from '../../../../public/images/topic-icn.svg';
+import ProfileInfo from "../ProfileInfo";
 const tabList = [
     {
         key: 'profileinfo',
@@ -20,7 +23,7 @@ const tabList = [
 ];
 
 const contentList = {
-    profileinfo: <p> Profile Info</p>,
+    profileinfo: <p><ProfileInfo></ProfileInfo> </p>,
     changepassword: <p><ChangePassword></ChangePassword></p>,
 };
 export default function SettingsUI() {
@@ -29,10 +32,7 @@ export default function SettingsUI() {
     const onTab1Change = key => {
         setActiveTabKey(key);
     };
-    const { isUserAuthenticated } = useAuthentication();
-    const isAuthenticate = useSelector(
-        (state: RootState) => state.auth.authenticated
-    );
+   
     return (
         <>
             <LayoutMaster>
@@ -40,7 +40,10 @@ export default function SettingsUI() {
                     <Row className="main--layout">
                         <Col span={5}>
                             <Card>
-                                <p>Create New Topic</p>
+                                <Button size="large" className="createTopicBtn">
+                                    <Icon component={() => (<Image alt="adOne" src={createTopic} />)} />
+                                    Create New Topic
+                                </Button>
                             </Card>
                             <div className="siteAds">
                                 <Image alt="adOne" src={adone} />
