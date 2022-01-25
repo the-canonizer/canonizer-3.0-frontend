@@ -129,3 +129,29 @@ export const verifyOtp = (values: object) => {
     }
   };
 };
+
+export const changePassword = (values: object) => {
+  return async (dispatch) => {
+  
+    try {
+      let state = store.getState();
+      const { auth } = state;
+      const res = await NetworkCall.fetch(
+        UserRequest.changePassword(values, auth.loggedInUser.token)
+        //UserRequest.changePassword(values, auth.token)
+      );
+      return res;
+    } catch (errors) {
+      let msgs = errors.error.data.error;
+      if (msgs) {
+        let keys = Object.keys(msgs);
+        keys.forEach((key) => {
+          message.error(msgs[key][0]);
+        });
+      }
+      else{
+        message.error(errors.error.data.message);
+      }
+    }
+  };
+};
