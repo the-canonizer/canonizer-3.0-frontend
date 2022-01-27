@@ -16,7 +16,6 @@
     .mobNavBG {
         display: none;
         @media screen and (max-width: 1199px) {
-            display: block;
             background-color: rgba(0,0,0,.5);
             position: fixed;
             top: 0;
@@ -39,7 +38,7 @@
         @media screen and (max-width: 1199px) {
             padding: 1.5rem;
             position: fixed;
-            left: 0;
+            left: -320px;
             top: 0;
             width: 100%;
             max-width: 300px;
@@ -95,7 +94,14 @@
         }
     }
     .right {
-        background-color: transparent;
+        display: flex;
+        align-items: center;
+        .iconMobMenu {
+            margin-left: 1rem;
+            @media screen and (min-width: 1200px) {
+                display: none;
+            }
+        }
     }
     .btnLogin, .btnRegister {
         font-size: 1.125rem;

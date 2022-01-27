@@ -1,9 +1,9 @@
+import { useEffect, useState } from "react";
+import useAuthentication from "../../hooks/isUserAuthenticated";
 import Image from "next/image";
 
 import LoggedInHeader from "../../components/common/headers/loggedInHeader";
 import LoggedOutHeader from "../../components/common/headers/loggedOutHeader";
-import { useEffect, useState } from "react";
-import useAuthentication from "../../hooks/isUserAuthenticated";
 import Spinner from "../../components/common/spinner/spinner";
 import styles from "./layout.module.scss";
 import Footer from "../../components/common/footer";

@@ -1,42 +1,28 @@
-.wrap{
-    padding: 23px 16px;
-    background-color:#fff;
+.wrap {
+    padding: 20px;
+    background-color: #fff;
     border: solid 1px #F0F0F0;
-    h2{
+    margin-bottom: 16px;
+    height: calc(100% - 16px);
+    h2 {
+        font-size: 1.75rem;
         color: #343434;
-        margin-bottom:5px;
-        @media screen and (max-width:767px) {
-            font-size: 1.375rem;
-        }
+        font-weight: 600;
+        margin-bottom: 0;
     }
-    h3{
-        font-size:1.25rem;
-        color:#1C1B24;
-        font-weight:600;
-        @media screen and (max-width:767px) {
-            font-size: 1rem;
-        }
+    h3 {
+        line-height: 1.3;
+        font-size: 1.25rem;
+        color: #1C1B24;
+        font-weight: 600;
+        margin-bottom: 15px;
     }
-    .descriptionText{
-        font-size:1rem;
-        font-weight: 400;
-        color:#343434;
-        margin-bottom:10px;
-        @media screen and (max-width:767px) {
-            font-size: 0.875rem;
-        }
-        span{
+    p {
+        font-size: 1rem;
+        color: #343434;
+        margin: 15px 0 0;
+        a {
             color: #4484CE;
-        }        
+        }
     }
-}
-
-.vimeoVideo{
-    border:none;
-    margin-bottom:10px;
-}
-
-.imageWrap{
-    width:100%;
-    text-align:center;
 }
