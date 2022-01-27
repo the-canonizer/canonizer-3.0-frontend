@@ -1,9 +1,9 @@
 import React from "react";
 import { Row, Col, Form, Input, Button } from "antd";
-import styles from "./ProfileInfo.module.scss";
-import messages from "../../../../messages";
+import styles from "../ProfileInfo/ProfileInfoUI/ProfileInfo.module.scss";
+import messages from "../../../messages";
 
-function VerifyMobileNumber() {
+function VerifyMobileNumberForm() {
   return (
     <section className={styles.profileInfo_wrapper}>
       <Form
@@ -28,21 +28,21 @@ function VerifyMobileNumber() {
                 label={messages.labels.mobileCarrier}
                 {...messages.mobileCarrierRule}
               >
-                <Input placeholder={messages.placeholders.mobileCarrier} size="large"/>
+                <Input placeholder={messages.placeholders.mobileCarrier} size="large" />
               </Form.Item>
             </Col>
           </Row>
-            <Button
-              type="primary"
-              htmlType="submit"
-              className="ant-btn ant-btn-orange ant-btn-lg"
-            >
-              Verify
-            </Button>
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="ant-btn ant-btn-orange ant-btn-lg"
+          >
+            Verify
+          </Button>
         </div>
       </Form>
     </section>
   );
 }
 
-export default VerifyMobileNumber;
+export default VerifyMobileNumberForm;
