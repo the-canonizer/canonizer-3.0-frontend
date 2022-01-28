@@ -89,10 +89,6 @@ export const emailRule = {
       message: validations.email,
     },
     {
-      max: 255,
-      message: validations.middleName,
-    },
-    {
       required: true,
       message: validations.email,
     },
