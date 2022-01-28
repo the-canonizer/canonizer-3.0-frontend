@@ -3,7 +3,7 @@ import { Row, Col, Typography, Form, Input, Button, Select, DatePicker, Radio } 
 import styles from "../ProfileInfo/ProfileInfoUI/ProfileInfo.module.scss";
 import messages from "../../../messages";
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 const { Option } = Select;
 
 function ProfileInfoForm() {
@@ -14,6 +14,7 @@ function ProfileInfoForm() {
     </Select>
   );
 
+  // @ts-ignore
   return (
     <Form
       name="profileInfo"
