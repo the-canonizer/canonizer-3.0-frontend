@@ -1,10 +1,9 @@
+import TopicsFilter from "../../../../components/common/topicsFilter";
 
-import TopicsFilter from '../../../../components/common/topicsFilter';
-
-export default function HomeSideBar () {
+export default function HomeSideBar() {
   return (
     <>
-        <TopicsFilter />
+      <TopicsFilter />
     </>
   );
 }

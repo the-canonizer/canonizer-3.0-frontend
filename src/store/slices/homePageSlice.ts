@@ -1,10 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { message } from "antd";
 
 export const homePageSlice = createSlice({
   name: "homePage",
   initialState: {
-    canonizedTopics: null,
     canonizedTopicsData: null,
     filterObject: {
       page_number: 1,
@@ -15,10 +13,11 @@ export const homePageSlice = createSlice({
       algorithm: "blind_popularity",
       search: "Hard",
     },
+    nameSpaces: null,
+    whatsNew: null,
   },
   reducers: {
     setCanonizedTopics: (state, action) => {
-      state.canonizedTopics = action.payload?.data;
       state.canonizedTopicsData = action.payload;
     },
     setFilterCanonizedTopics: (state, action) => {
@@ -27,10 +26,20 @@ export const homePageSlice = createSlice({
         ...action.payload,
       };
     },
+    setCanonizedNameSpaces: (state, action) => {
+      state.nameSpaces = action.payload?.data;
+    },
+    setWhatsNewContent: (state, action) => {
+      state.whatsNew = action.payload[0]?.html_content;
+    },
   },
 });
 
-export const { setCanonizedTopics, setFilterCanonizedTopics } =
-  homePageSlice.actions;
+export const {
+  setCanonizedTopics,
+  setFilterCanonizedTopics,
+  setCanonizedNameSpaces,
+  setWhatsNewContent,
+} = homePageSlice.actions;
 
 export default homePageSlice.reducer;

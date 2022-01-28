@@ -50,8 +50,12 @@ const LoggedOutHeader = () => {
           </nav>
         </div>
         <div className={styles.right}>
-          <Button type="link" className={styles.btnLogin}><i className="icon-user"></i> Login</Button>
-          <Button className={styles.btnRegister}><i className="icon-user-plus"></i> Register</Button>
+          <Button type="link" className={styles.btnLogin}>
+            <i className="icon-user"></i> Login
+          </Button>
+          <Button className={styles.btnRegister}>
+            <i className="icon-user-plus"></i> Register
+          </Button>
           <div className={styles.iconMobMenu}>
             <Button size='large'><MenuOutlined /></Button>
           </div>

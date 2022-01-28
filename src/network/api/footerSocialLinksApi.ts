@@ -7,18 +7,11 @@ import FooterRequests from "../request/footerRequests";
 
 export const getFooterSocialLinksApi = async () => {
   try {
-    // const links = await NetworkCall.fetch(
-    //   FooterRequests.getFooterSocialLinks()
-    // );
-    const linksMock = {
-      facebook: "https://www.facebook.com",
-      twitter: "https://www.twitter.com",
-      instagram: "https://www.instagram.com/",
-      youtube: "https://www.youtube.com",
-      linkedIn: "https://www.linkedin.com",
-    };
-    return linksMock;
-    // return links;
+    const links = await NetworkCall.fetch(
+      FooterRequests.getFooterSocialLinks()
+    );
+
+    return links?.data;
   } catch (error) {
     message.error(error.message);
   }

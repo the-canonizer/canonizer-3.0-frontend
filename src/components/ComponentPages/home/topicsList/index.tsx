@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 import { Typography, List, Select, Tag, Button, Input } from "antd";
-import Link from 'next/link';
+import Link from "next/link";
 import { RightOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store";
@@ -19,27 +19,23 @@ const TopicsList = () => {
   const router = useRouter();
   const didMount = useRef(false);
   const didMountForFilterScoreEffect = useRef(false);
+  const [pageCounter, setPageCounter] = useState(1);
   const dispatch = useDispatch();
-  const { canonizedTopics, asofdate, algorithm, filterByScore } = useSelector(
-    (state: RootState) => ({
-      canonizedTopics: state.homePage?.canonizedTopics?.topic,
+  const { canonizedTopics, asofdate, algorithm, filterByScore, nameSpaces } =
+    useSelector((state: RootState) => ({
+      canonizedTopics: state.homePage?.canonizedTopicsData?.data,
       asofdate: state.homePage?.filterObject?.asofdate,
       algorithm: state.homePage?.filterObject?.algorithm,
       filterByScore: state.homePage?.filterObject?.filterByScore,
-    })
-  );
+      nameSpaces: state.homePage?.nameSpaces,
+    }));
 
-  const [topics, setTopics] = useState(canonizedTopics);
+  const [topicsData, setTopicsData] = useState(canonizedTopics?.topic);
+  const [nameSpacesList, setNameSpacesList] = useState(nameSpaces);
 
-  const mockDropdownList = [
-    { id: 1, name: "/General/" },
-    { id: 2, name: "Jack" },
-    { id: 3, name: "Lucy" },
-    { id: 4, name: "yiminghe" },
-  ];
   const [nameSpaceId, setNameSpaceId] = useState(null);
 
-  const selectNameSpace = (value: Number) => {
+  const selectNameSpace = (value) => {
     setNameSpaceId(value);
     dispatch(
       setFilterCanonizedTopics({
@@ -49,53 +45,50 @@ const TopicsList = () => {
   };
 
   useEffect(() => {
-    if (didMount.current) {
-      const reqBody = {
-        page_number: 1,
-        page_size: 15,
-        namespace_id: nameSpaceId,
-        asofdate: asofdate,
-        algorithm: algorithm,
-        search: "Hard",
-      };
-
-      getCanonizedTopicsApi(reqBody);
-    } else didMount.current = true;
-  }, [asofdate, algorithm, nameSpaceId]);
+    setTopicsData(canonizedTopics?.topic);
+  }, [canonizedTopics?.topic]);
 
   useEffect(() => {
-    console.log("filterByScore", filterByScore);
-    if (didMountForFilterScoreEffect.current) {
-      if (filterByScore.toString() == "") {
-        setTopics(canonizedTopics);
-      } else {
-        const filteredTopics = canonizedTopics?.filter(
-          (topic) => topic.topic_score <= filterByScore
-        );
-        setTopics(filteredTopics);
-      }
-    } else didMountForFilterScoreEffect.current = true;
-  }, [filterByScore]);
+    const loadMore = true;
+    if (didMount.current) {
+      const reqBody = {
+        algorithm: algorithm,
+        asofdate: asofdate,
+        namespace_id: 1,
+        page_number: 1,
+        page_size: 20,
+        search: "Hard",
+        filter: filterByScore,
+      };
+
+      getCanonizedTopicsApi(reqBody, loadMore);
+    } else didMount.current = true;
+  }, [asofdate, algorithm, nameSpaceId, pageCounter, filterByScore]);
 
   const LoadMoreTopics = (
     <div className="text-center">
-      <a className={styles.viewAll}>
+      <a
+        className={styles.viewAll}
+        onClick={() => setPageCounter(pageCounter + 1)}
+      >
         <Text>Load More</Text>
         <i className="icon-angle-right"></i>
       </a>
     </div>
-  )
+  );
 
   const ViewAllTopics = (
     <div className="text-right">
-      <Link href="/browse">
-        <a className={styles.viewAll}>
-          <Text>View All Topics</Text>
-          <i className="icon-angle-right"></i>
-        </a>
-      </Link>
+      {topicsData?.length && (
+        <Link href="/browse">
+          <a className={styles.viewAll}>
+            <Text>View All Topics</Text>
+            <i className="icon-angle-right"></i>
+          </a>
+        </Link>
+      )}
     </div>
-  )
+  );
 
   return (
     <>
@@ -111,36 +104,43 @@ const TopicsList = () => {
               <Select
                 size="large"
                 className={styles.dropdown}
-                defaultValue={mockDropdownList[0].name}
+                defaultValue={nameSpacesList[0].name}
                 onChange={selectNameSpace}
               >
-                {mockDropdownList.map((item) => {
+                {nameSpacesList.map((item) => {
                   return (
-                    <Option key={item.id} value={item.id}>
+                    <Select.Option key={item.id} value={item.id}>
                       {item.name}
-                    </Option>
+                    </Select.Option>
                   );
                 })}
               </Select>
-              
-              {
-                router.asPath === '/browse' && <Search placeholder="input search text" allowClear className={styles.topic} style={{width: 200}} />
-              }
-              
+
+              {router.asPath === "/browse" && (
+                <Search
+                  placeholder="input search text"
+                  allowClear
+                  className={styles.topic}
+                  style={{ width: 200 }}
+                />
+              )}
             </div>
           }
-          footer={<div className={styles.footer}>
-            {router.asPath === '/browse' ? LoadMoreTopics : ViewAllTopics }
+          footer={
+            <div className={styles.footer}>
+              {router.asPath === "/browse" ? LoadMoreTopics : ViewAllTopics}
             </div>
           }
           bordered
-          dataSource={topics}
+          dataSource={topicsData}
           renderItem={(item: any) => (
             <List.Item className={styles.item}>
               <>
                 <Link href="#">
-                  <Text className={styles.text}>{item.topic_name}</Text>
-                  <Tag className={styles.tag}>{item.topic_score}</Tag>
+                  <a>
+                    <Text className={styles.text}>{item.topic_name}</Text>
+                    <Tag className={styles.tag}>{item.topic_score}</Tag>
+                  </a>
                 </Link>
               </>
             </List.Item>

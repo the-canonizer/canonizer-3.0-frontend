@@ -28,25 +28,37 @@ const { Option } = Select;
 const mockDropdownList = ["blind_popularity", "mind_experts"];
 
 const infoContent = (
-    <>
-        <div className={styles.infoText}>
-            <Title level={5}>Score Value FIlter</Title>
-            <p>Duis aute irure dolor in reprehderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-        </div>
-    </>
+  <>
+    <div className={styles.infoText}>
+      <Title level={5}>Score Value FIlter</Title>
+      <p>
+        Duis aute irure dolor in reprehderit in voluptate velit esse cillum
+        dolore eu fugiat nulla pariatur.
+      </p>
+    </div>
+  </>
 );
 
 const asContent = (
-    <>
-        <div className={styles.asfoText}>
-            <Title level={5}>Include review</Title>
-            <Paragraph>Duis aute irure dolor in reprehderit in voluptalore eu fugiat nulla pariatur.</Paragraph>
-            <Title level={5}>Default</Title>
-            <Paragraph>Duis aute irure dolor in reprehderit in voluptalore eu fugiat nulla pariatur.</Paragraph>
-            <Title level={5}>As of date</Title>
-            <Paragraph>Duis aute irure dolor in reprehderit in voluptalore eu fugiat nulla pariatur.</Paragraph>
-        </div>
-    </>
+  <>
+    <div className={styles.asfoText}>
+      <Title level={5}>Include review</Title>
+      <Paragraph>
+        Duis aute irure dolor in reprehderit in voluptalore eu fugiat nulla
+        pariatur.
+      </Paragraph>
+      <Title level={5}>Default</Title>
+      <Paragraph>
+        Duis aute irure dolor in reprehderit in voluptalore eu fugiat nulla
+        pariatur.
+      </Paragraph>
+      <Title level={5}>As of date</Title>
+      <Paragraph>
+        Duis aute irure dolor in reprehderit in voluptalore eu fugiat nulla
+        pariatur.
+      </Paragraph>
+    </div>
+  </>
 );
 
 function range(start, end) {
@@ -75,9 +87,6 @@ const CreateTopic = () => {
   const [value, setValue] = useState(2);
   const [inputFilterValue, setInputFilterValue] = useState(0.0);
   const dispatch = useDispatch();
-  const canonizedTopics = useSelector(
-    (state: RootState) => state.homePage?.canonizedTopics
-  );
 
   const selectAlgorithm = (value) => {
     dispatch(
@@ -180,10 +189,30 @@ const CreateTopic = () => {
           >
             <Radio.Group onChange={onChange} value={value}>
               <Space direction="vertical">
-                <Radio className={styles.radio} value={1}>
+                <Radio
+                  className={styles.radio}
+                  value={1}
+                  onClick={() => {
+                    dispatch(
+                      setFilterCanonizedTopics({
+                        asofdate: "review",
+                      })
+                    );
+                  }}
+                >
                   Include review
                 </Radio>
-                <Radio className={styles.radio} value={2}>
+                <Radio
+                  className={styles.radio}
+                  value={2}
+                  onClick={() => {
+                    dispatch(
+                      setFilterCanonizedTopics({
+                        asofdate: "default",
+                      })
+                    );
+                  }}
+                >
                   Default
                 </Radio>
                 <Radio className={styles.radio} value={3}>

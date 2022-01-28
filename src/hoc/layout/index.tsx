@@ -27,7 +27,12 @@ function Layout(props) {
         <div className={styles.contentWrap}>
           <div className={styles.contentArea}>{props.children}</div>
           <aside className={styles.rightSidebar}>
-            <Image  src="/images/right-sidebar-adv.png" width={200} height={635} alt="" />
+            <Image
+              src="/images/right-sidebar-adv.png"
+              width={200}
+              height={635}
+              alt=""
+            />
           </aside>
         </div>
         <Spinner>{""}</Spinner>

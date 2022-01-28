@@ -16,10 +16,11 @@ export default class Request {
     // const token = User.getToken();
     const token = "kbdjsbfjyy897798hsdbjfbjn";
     headers = {
-      ...(defaultHeaderType === K.Network.Header.Type.Json
-        ? K.Network.Header.Default(token)
-        : K.Network.Header.Authorization(token)),
-      ...headers,
+      // ...(defaultHeaderType === K.Network.Header.Type.Json
+      //   ? K.Network.Header.Default(token)
+      //   : K.Network.Header.Authorization(token)),
+      // ...headers,
+      "Content-Type": "multipart/form-data",
     };
     this.url = K.Network.URL.BaseAPI + relativeURL;
     this.method = method;
