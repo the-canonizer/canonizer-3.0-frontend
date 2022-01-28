@@ -113,4 +113,35 @@ export default class UserRequest extends Request {
     );
   }
 
+  static GetUserProfileInfo(authToken) {
+    const body = {
+      
+    };
+  
+    return new UserRequest(
+      K.Network.URL.GetUserProfileInfo,
+      K.Network.Method.GET,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
+
+  static UpdateUserProfileInfo(values, authToken) {
+    const body = {
+      ...values,
+    };
+
+    return new UserRequest(
+      K.Network.URL.UpdateUserProfileInfo,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
 }
+
+
