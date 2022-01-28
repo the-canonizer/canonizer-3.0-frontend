@@ -87,9 +87,6 @@ const CreateTopic = () => {
   const [value, setValue] = useState(2);
   const [inputFilterValue, setInputFilterValue] = useState(0.0);
   const dispatch = useDispatch();
-  const canonizedTopics = useSelector(
-    (state: RootState) => state.homePage?.canonizedTopics
-  );
 
   const selectAlgorithm = (value) => {
     dispatch(
@@ -192,10 +189,30 @@ const CreateTopic = () => {
           >
             <Radio.Group onChange={onChange} value={value}>
               <Space direction="vertical">
-                <Radio className={styles.radio} value={1}>
+                <Radio
+                  className={styles.radio}
+                  value={1}
+                  onClick={() => {
+                    dispatch(
+                      setFilterCanonizedTopics({
+                        asofdate: "review",
+                      })
+                    );
+                  }}
+                >
                   Include review
                 </Radio>
-                <Radio className={styles.radio} value={2}>
+                <Radio
+                  className={styles.radio}
+                  value={2}
+                  onClick={() => {
+                    dispatch(
+                      setFilterCanonizedTopics({
+                        asofdate: "default",
+                      })
+                    );
+                  }}
+                >
                   Default
                 </Radio>
                 <Radio className={styles.radio} value={3}>

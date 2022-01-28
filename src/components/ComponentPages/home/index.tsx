@@ -17,9 +17,11 @@ const HomePageContainer = () => {
           <Col xs={24} sm={24} xl={12}>
             <TopicsList />
           </Col>
-          <Col xs={24} sm={24} xl={12}>
-            <RecentActivities />
-          </Col>
+          {true && (
+            <Col xs={24} sm={24} xl={12}>
+              <RecentActivities />
+            </Col>
+          )}
           <Col xs={24} sm={24} xl={24}>
             <HelpCard />
           </Col>

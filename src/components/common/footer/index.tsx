@@ -1,19 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Image, Typography, Menu } from "antd";
+import { Row, Col, Typography, Menu } from "antd";
 import { RightOutlined } from "@ant-design/icons";
 import styles from "./siteFooter.module.scss";
 import { getFooterSocialLinksApi } from "../../../network/api/footerSocialLinksApi";
-
-const { Title, Link } = Typography;
+import Image from "next/image";
+import Link from "next/link";
+const { Title } = Typography;
 
 function Footer() {
-  const linksMock = {
-    facebook: "https://www.facebook.com",
-    twitter: "https://www.twitter.com",
-    instagram: "https://www.instagram.com/",
-    youtube: "https://www.youtube.com",
-    linkedIn: "https://www.linkedin.com",
-  };
   const [socialLinks, setSocialLinks] = useState(null);
   useEffect(() => {
     async function linksApiCall() {
@@ -25,7 +19,13 @@ function Footer() {
   return (
     <>
       <section className={styles.adv}>
-        <img src="/images/footer-adv-img.png" alt="" />
+        <Image
+          src="/images/footer-adv-img.png"
+          alt=""
+          width={1054}
+          height={184}
+          layout="intrinsic"
+        />
       </section>
       <footer className={styles.wrap}>
         <div className={styles.container}>
@@ -33,7 +33,15 @@ function Footer() {
             <Col xs={24} sm={10} md={7} lg={6}>
               <div className={styles.logo}>
                 <Link href="/">
-                  <img src="/images/logo.svg" alt="Canonizer" />
+                  <a>
+                    <Image
+                      src="/images/logo.svg"
+                      alt="Canonizer"
+                      width={142}
+                      height={26}
+                      layout="intrinsic"
+                    />
+                  </a>
                 </Link>
               </div>
               <p>Pattent: US 8,160,970 B2</p>
@@ -51,44 +59,60 @@ function Footer() {
                 <ul>
                   <li>
                     <Link href="">
-                      <i className="icon-angle-right"></i> Browse
+                      <a>
+                        <i className="icon-angle-right"></i> Browse
+                      </a>
                     </Link>
                   </li>
                   <li>
                     <Link href="">
-                      <i className="icon-angle-right"></i> Create New Topic
+                      <a>
+                        <i className="icon-angle-right"></i> Create New Topic
+                      </a>
                     </Link>
                   </li>
                   <li>
                     <Link href="">
-                      <i className="icon-angle-right"></i> Upload File
+                      <a>
+                        <i className="icon-angle-right"></i> Upload File
+                      </a>
                     </Link>
                   </li>
                 </ul>
                 <ul>
                   <li>
                     <Link href="">
-                      <i className="icon-angle-right"></i> Services
+                      <a>
+                        <i className="icon-angle-right"></i> Services
+                      </a>
                     </Link>
                   </li>
                   <li>
                     <Link href="">
-                      <i className="icon-angle-right"></i> Help
+                      <a>
+                        <i className="icon-angle-right"></i> Help
+                      </a>
                     </Link>
                   </li>
                   <li>
                     <Link href="">
-                      <i className="icon-angle-right"></i> White Paper
+                      <a>
+                        <i className="icon-angle-right"></i> White Paper
+                      </a>
                     </Link>
                   </li>
                   <li>
                     <Link href="">
-                      <i className="icon-angle-right"></i> Blog
+                      <a>
+                        <i className="icon-angle-right"></i> Blog
+                      </a>
                     </Link>
                   </li>
                   <li>
                     <Link href="">
-                      <i className="icon-angle-right"></i> Jobs
+                      <a>
+                        <i className="icon-angle-right"></i> Jobs
+                      </a>
                     </Link>
                   </li>
                 </ul>
@@ -98,47 +122,29 @@ function Footer() {
               <div className={styles.widgetFollowUs}>
                 <Title level={5}>Follow Us</Title>
                 <div className={styles.smIcons}>
-                  <Link
-                    href={socialLinks?.instagram}
-                    target="_blank"
-                    className={styles.iconInstagram}
-                  >
-                    Instagram
-                  </Link>
-                  <Link
-                    href={socialLinks?.facebook}
-                    target="_blank"
-                    className={styles.iconFacebook}
-                  >
-                    Facebook
-                  </Link>
-                  <Link
-                    href={socialLinks?.twitter}
-                    target="_blank"
-                    className={styles.iconTwitter}
-                  >
-                    Twitter
-                  </Link>
-                  <Link
-                    href={socialLinks?.youtube}
-                    target="_blank"
-                    className={styles.iconYoutube}
-                  >
-                    Youtube
-                  </Link>
-                  <Link
-                    href={socialLinks?.linkedIn}
-                    target="_blank"
-                    className={styles.iconLinkedin}
-                  >
-                    Linkedin
-                  </Link>
+                  {socialLinks?.map((social, index) => {
+                    return (
+                      <Link key={social.id} href={social.link}>
+                        <a target="_blank">
+                          <Image
+                            src={social.icon}
+                            alt={social.label}
+                            width={28}
+                            height={28}
+                            layout="intrinsic"
+                          />
+                        </a>
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
               <div className={styles.supportWidget}>
                 <Title level={5}>Comments and Questions:</Title>
                 <Link href="mailto:support@canonizer.com">
-                  <i className="icon-envelope"></i> support@canonizer.com
+                  <a>
+                    <i className="icon-envelope"></i> support@canonizer.com
+                  </a>
                 </Link>
               </div>
             </Col>
