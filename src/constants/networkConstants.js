@@ -1,3 +1,5 @@
+const BaseCanonizerServiceUrl = "http://codedistrictem.com:7010";
+const BaseCanonizerApiUrl = "http://codedistrictem.com:7020";
 const NetworkConstants = {
   URL: {
     Base: process.env.REACT_APP_BASE_URL,
@@ -18,17 +20,14 @@ const NetworkConstants = {
     GetTree: "/api/unknown",
 
     // HomePage
-    GetCanonizedTopics: "http://codedistrictem.com:7010/api/v1/topic/getAll",
-    GetHelpCardContent: "/api/help_card",
-    GetCanonizedNameSpaces:
-      "http://codedistrictem.com:7020/api/v3/get_all_namespaces",
-    GetWhatsNewContent:
-      "http://codedistrictem.com:7020/api/v3/get_whats_new_content",
+    GetCanonizedTopics: `${BaseCanonizerServiceUrl}/api/v1/topic/getAll`,
+
+    GetCanonizedNameSpaces: `${BaseCanonizerApiUrl}/api/v3/get_all_namespaces`,
+    GetWhatsNewContent: `${BaseCanonizerApiUrl}/api/v3/get_whats_new_content`,
 
     //footer
 
-    GetFooterSocialLinks:
-      "http://codedistrictem.com:7020/api/v3/get_social_media_links",
+    GetFooterSocialLinks: `${BaseCanonizerApiUrl}/api/v3/get_social_media_links`,
   },
   Method: {
     GET: "GET",
