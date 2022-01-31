@@ -11,4 +11,15 @@ export const labels = {
   confirmPassword: "Confirm Password",
   currentPassword: "Enter Current Password",
   newPassword: "Enter New Password",
+  phoneNumber:"Phone Number",
+  mobileCarrier:"Mobile Carrier",
+  gender:"Gender",
+  addressLine1:"Address Line 1",
+  addressLine2:"Address Line 2",
+  city:"City",
+  country:"Country",
+  language:"Language",
+  state:"State",
+  zipCode:"Zip Code",
+  chooseAlgorithm:"Choose default algorithm preferences"
 };

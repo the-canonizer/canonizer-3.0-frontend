@@ -17,7 +17,7 @@ const NetworkConstants = {
     UserSocialLoginCallback: "/user/social/callback",
     CountryCodes: "/country/list",
     UpdateUser: "/users/",
-
+    ChangePassword: "/changepassword",
     // Tree
 
     GetTree: "/api/unknown",
