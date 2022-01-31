@@ -1,5 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button, Layout, Menu, Row, Col } from 'antd';
@@ -12,6 +13,12 @@ import SearchSection from "../../search/search";
 const LoggedOutHeader = () => {
   const { Header } = Layout;
   const router = useRouter();
+  
+  const [isActive, setActive] = useState(false);
+  const toggleMobNav = () => {
+    setActive(!isActive);
+  };
+
   return (
     <React.Fragment>
       <Header className={styles.wrap}>
@@ -21,8 +28,8 @@ const LoggedOutHeader = () => {
             {/* <img src={"/images/logo.svg"} alt="Canonizer" /> */}
           </Link>
         </div>
-        <div className={styles.navWrap}>
-          <Button block size="large" className={`${styles.btnCloseMobMenu} mb-4`}><i className='icon-angle-right'></i></Button>
+        <div className={`${styles.navWrap} ${isActive && styles.showMobMenu}`}>
+          <Button block size="large" className={`${styles.btnCloseMobMenu} mb-4`} onClick={toggleMobNav}><i className='icon-angle-right'></i></Button>
           <nav className={styles.nav}>
             <ul>
               <li className={router.asPath === '/browse' ? styles.active : ''}>
@@ -57,10 +64,10 @@ const LoggedOutHeader = () => {
             <i className="icon-user-plus"></i> Register
           </Button>
           <div className={styles.iconMobMenu}>
-            <Button size='large'><MenuOutlined /></Button>
+            <Button size='large' onClick={toggleMobNav}><MenuOutlined /></Button>
           </div>
         </div>
-        <div className={styles.mobNavBG}></div>
+        <div className={`${styles.mobNavBG} ${isActive && styles.mobNavBGshow}`} onClick={toggleMobNav}></div>
       </Header>
       <SearchSection />
     </React.Fragment>
