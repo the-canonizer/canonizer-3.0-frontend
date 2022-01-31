@@ -1,4 +1,4 @@
-import CampList from "../components/ComponentPages/campList";
+import CampList from "../components/componentPages/campList";
 
 import Layout from "../hoc/layout";
 

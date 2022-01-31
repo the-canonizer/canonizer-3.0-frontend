@@ -1,9 +1,9 @@
-import React from 'react';
-import { useRouter } from 'next/router';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Button, Layout, Menu, Row, Col } from 'antd';
-import { MenuOutlined } from '@ant-design/icons';
+import React from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import Image from "next/image";
+import { Button, Layout, Menu, Row, Col } from "antd";
+import { MenuOutlined } from "@ant-design/icons";
 
 import styles from "../siteHeader.module.scss";
 
@@ -16,16 +16,28 @@ const LoggedOutHeader = () => {
     <React.Fragment>
       <Header className={styles.wrap}>
         <div className={styles.logo}>
-          <Link href="/">
-            <Image src={"/images/logo.svg"} alt="Picture of the author" layout='responsive' width={225} height={42} />
+          <Link href="/" passHref>
+            <Image
+              src={"/images/logo.svg"}
+              alt="Picture of the author"
+              layout="responsive"
+              width={225}
+              height={42}
+            />
             {/* <img src={"/images/logo.svg"} alt="Canonizer" /> */}
           </Link>
         </div>
         <div className={styles.navWrap}>
-          <Button block size="large" className={`${styles.btnCloseMobMenu} mb-4`}><i className='icon-angle-right'></i></Button>
+          <Button
+            block
+            size="large"
+            className={`${styles.btnCloseMobMenu} mb-4`}
+          >
+            <i className="icon-angle-right"></i>
+          </Button>
           <nav className={styles.nav}>
             <ul>
-              <li className={router.asPath === '/browse' ? styles.active : ''}>
+              <li className={router.asPath === "/browse" ? styles.active : ""}>
                 <Link href="/browse"> Browse </Link>
               </li>
               <li>
@@ -57,7 +69,9 @@ const LoggedOutHeader = () => {
             <i className="icon-user-plus"></i> Register
           </Button>
           <div className={styles.iconMobMenu}>
-            <Button size='large'><MenuOutlined /></Button>
+            <Button size="large">
+              <MenuOutlined />
+            </Button>
           </div>
         </div>
         <div className={styles.mobNavBG}></div>

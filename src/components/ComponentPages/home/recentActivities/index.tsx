@@ -142,39 +142,42 @@ export default function RecentActivities() {
   const slot = React.useMemo(() => {
     if (position.length === 0) return null;
 
-        return position.reduce(
-            (acc, direction) => ({ ...acc, [direction]: OperationsSlot[direction] }),
-            {},
-        );
-    }, [position]);
-    return (
-        <>
-            <div className={styles.listCard}>
-                <Tabs className={`${styles.listCardTabs} recentActivities_listCardTabs`} defaultActiveKey="1" tabBarExtraContent={slot}>
-                    <TabPane tab="Topics/Camps" key="1">
-                        <List className={styles.listWrap}
-                            footer={
-                                <div className={styles.footer}>
-                                    <Link href="#" className={styles.viewAll}>
-                                        <Text>View All Topics</Text>
-                                        <i className="icon-angle-right"></i>
-                                    </Link>
-                                </div>
-                            }
-                            bordered={false}
-                            dataSource={data}
-                            renderItem={item => (
-                                <List.Item className={styles.listItem}>
-                                    {item}
-                                </List.Item>
-                            )}
-                        />
-                    </TabPane>
-                    <TabPane tab="Threads" key="2">
-                        Content of Tab Pane 2
-                    </TabPane>
-                </Tabs>
-            </div>
-        </>
+    return position.reduce(
+      (acc, direction) => ({ ...acc, [direction]: OperationsSlot[direction] }),
+      {}
     );
+  }, [position]);
+  return (
+    <>
+      <div className={styles.listCard}>
+        <Tabs
+          className={`${styles.listCardTabs} recentActivities_listCardTabs`}
+          defaultActiveKey="1"
+          tabBarExtraContent={slot}
+        >
+          <TabPane tab="Topics/Camps" key="1">
+            <List
+              className={styles.listWrap}
+              footer={
+                <div className={styles.footer}>
+                  <Link href="#" className={styles.viewAll}>
+                    <Text>View All Topics</Text>
+                    <i className="icon-angle-right"></i>
+                  </Link>
+                </div>
+              }
+              bordered={false}
+              dataSource={data}
+              renderItem={(item) => (
+                <List.Item className={styles.listItem}>{item}</List.Item>
+              )}
+            />
+          </TabPane>
+          <TabPane tab="Threads" key="2">
+            Content of Tab Pane 2
+          </TabPane>
+        </Tabs>
+      </div>
+    </>
+  );
 }

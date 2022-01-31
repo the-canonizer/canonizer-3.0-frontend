@@ -9,7 +9,10 @@ const HelpCard = () => {
   return (
     <>
       <section className={styles.wrap}>
-        <div className="help-card-wrap" dangerouslySetInnerHTML={{ __html: whatsNew }} />
+        <div
+          className="help-card-wrap"
+          dangerouslySetInnerHTML={{ __html: whatsNew }}
+        />
       </section>
     </>
   );
