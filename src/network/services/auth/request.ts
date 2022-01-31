@@ -117,17 +117,11 @@ export default class UserRequest extends Request {
     );
   }
 
-  static socialLogin(values, authToken) {
-    const body = {
-      client_id: process.env.NEXT_PUBLIC_AUTH_CLIENT_PASSWORD_ID,
-      client_secret: process.env.NEXT_PUBLIC_AUTH_CLIENT_PASSWORD_SECRET,
-      ...values,
-    };
-
+  static getCountryCodes(authToken) {
     return new UserRequest(
-      K.Network.URL.SocialLogin,
-      K.Network.Method.POST,
-      body,
+      K.Network.URL.CountryCodes,
+      K.Network.Method.GET,
+      {},
       K.Network.Header.Type.Json,
       {},
       authToken

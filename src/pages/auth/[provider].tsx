@@ -39,7 +39,7 @@ function SocialLoginCallback() {
         sendData(body);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, router.query]);

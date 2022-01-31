@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Form, message } from "antd";
 import { useRouter } from "next/router";
@@ -6,11 +6,16 @@ import { useRouter } from "next/router";
 import RegistrationUi from "./UI";
 import OTPVerify from "./UI/otp";
 import { hideRegistrationModal } from "../../../store/slices/ui/uiSlice";
-import { register, verifyOtp } from "../../../network/services/auth/index";
+import {
+  register,
+  verifyOtp,
+  getCountryCodes,
+} from "../../../network/services/auth/index";
 import { AppDispatch } from "../../../store";
 
 const Registration = ({ isModal }) => {
   const [isOtpScreen, setIsOtpScreen] = useState(false);
+  const [country, setCountry] = useState([]);
   const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
   const [isReCaptchaRef, setIsReCaptchaRef] = useState(false);
   const [formData, setFormData] = useState({ email: "" });
@@ -77,6 +82,18 @@ const Registration = ({ isModal }) => {
     }
   };
 
+  const getCodes = async () => {
+    let response = await getCountryCodes();
+    console.log(response);
+    if (response.status_code === 200) {
+      setCountry(response.data);
+    }
+  };
+
+  useEffect(() => {
+    getCodes();
+  }, []);
+
   return (
     <Fragment>
       {isOtpScreen ? (
@@ -95,6 +112,7 @@ const Registration = ({ isModal }) => {
           onReCAPTCHAChange={onReCAPTCHAChange}
           resetCaptcha={isReCaptchaRef}
           showCaptchaError={isCaptchaVerified}
+          country={country}
         />
       )}
     </Fragment>

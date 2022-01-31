@@ -14,7 +14,7 @@ export default class Request {
     headers = {},
     token = ""
   ) {
-    debugger;
+    // debugger;
     // const token = User.getToken();
     // const token = "kbdjsbfjyy897798hsdbjfbjn";
     headers = {

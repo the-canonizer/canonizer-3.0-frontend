@@ -15,6 +15,7 @@ const NetworkConstants = {
     VerifyRegisterUser: "/verifyOtp",
     UserSocialLogin: "/user/social/login",
     UserSocialLoginCallback: "/user/social/callback",
+    CountryCodes: "/country/list",
     UpdateUser: "/users/",
 
     // Tree

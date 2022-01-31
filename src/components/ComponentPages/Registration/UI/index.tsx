@@ -8,7 +8,6 @@ import styles from "./Registration.module.scss";
 
 import messages from "../../../../messages";
 import SocialLoginButton from "../../../common/social-login/social-login";
-import { country } from "./countryCodes";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -21,6 +20,7 @@ function RegistrationUi({
   onReCAPTCHAChange,
   resetCaptcha,
   showCaptchaError,
+  country,
 }) {
   const recaptchaRef = createRef();
 
@@ -28,8 +28,8 @@ function RegistrationUi({
     <Form.Item name="prefix" noStyle>
       <Select style={{ width: 90 }}>
         {country.map((code) => (
-          <Option value={code.dial_code} key={code.code}>
-            {code.dial_code}
+          <Option value={code.phone_code} key={code.country_code}>
+            {code.phone_code} {code.country_code}
           </Option>
         ))}
       </Select>
