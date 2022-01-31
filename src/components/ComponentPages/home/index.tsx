@@ -8,15 +8,7 @@ import HelpCard from "./helpCard";
 import RecentActivities from "./recentActivities";
 
 const HomePageContainer = () => {
-  
-  const [isLogin, setIsLogin] = useState(false);
   const { isUserAuthenticated } = useAuthentication();
-  useEffect(() => {
-    if (isUserAuthenticated) {
-      setIsLogin(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <>
@@ -28,12 +20,17 @@ const HomePageContainer = () => {
           <Col xs={24} sm={24} xl={12}>
             <TopicsList />
           </Col>
-          {isLogin && 
+          {isUserAuthenticated && (
             <Col xs={24} sm={24} xl={12}>
-                <RecentActivities />
+              <RecentActivities />
             </Col>
-          }
-          <Col xs={24} sm={24} xl={isLogin ? 24 : 12} className={isLogin && 'logged-in-view'}>
+          )}
+          <Col
+            xs={24}
+            sm={24}
+            xl={isUserAuthenticated ? 24 : 12}
+            className={isUserAuthenticated && "logged-in-view"}
+          >
             <HelpCard />
           </Col>
         </Row>

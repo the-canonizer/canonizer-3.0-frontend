@@ -21,19 +21,27 @@ const TopicsList = () => {
   const didMountForFilterScoreEffect = useRef(false);
   const [pageCounter, setPageCounter] = useState(1);
   const dispatch = useDispatch();
-  const { canonizedTopics, asofdate, algorithm, filterByScore, nameSpaces } =
-    useSelector((state: RootState) => ({
-      canonizedTopics: state.homePage?.canonizedTopicsData?.data,
-      asofdate: state.homePage?.filterObject?.asofdate,
-      algorithm: state.homePage?.filterObject?.algorithm,
-      filterByScore: state.homePage?.filterObject?.filterByScore,
-      nameSpaces: state.homePage?.nameSpaces,
-    }));
+  const {
+    canonizedTopics,
+    asofdate,
+    algorithm,
+    filterByScore,
+    nameSpaces,
+    includeReview,
+  } = useSelector((state: RootState) => ({
+    canonizedTopics: state.homePage?.canonizedTopicsData,
+    asofdate: state.homePage?.filterObject?.asofdate,
+    algorithm: state.homePage?.filterObject?.algorithm,
+    filterByScore: state.homePage?.filterObject?.filterByScore,
+    nameSpaces: state.homePage?.nameSpaces,
+    includeReview: state?.homePage?.filterObject?.includeReview,
+  }));
 
   const [topicsData, setTopicsData] = useState(canonizedTopics?.topic);
   const [nameSpacesList, setNameSpacesList] = useState(nameSpaces);
+  const [isReview, setIsReview] = useState(includeReview);
 
-  const [nameSpaceId, setNameSpaceId] = useState(null);
+  const [nameSpaceId, setNameSpaceId] = useState(1);
 
   const selectNameSpace = (value) => {
     setNameSpaceId(value);
@@ -47,16 +55,18 @@ const TopicsList = () => {
   useEffect(() => {
     setTopicsData(canonizedTopics?.topic);
   }, [canonizedTopics?.topic]);
-
+  useEffect(() => {
+    setIsReview(includeReview);
+  }, [includeReview]);
   useEffect(() => {
     const loadMore = true;
     if (didMount.current) {
       const reqBody = {
         algorithm: algorithm,
         asofdate: asofdate,
-        namespace_id: 1,
+        namespace_id: nameSpaceId,
         page_number: 1,
-        page_size: 20,
+        page_size: 15,
         search: "Hard",
         filter: filterByScore,
       };
@@ -80,7 +90,7 @@ const TopicsList = () => {
   const ViewAllTopics = (
     <div className="text-right">
       {topicsData?.length && (
-        <Link href="/browse">
+        <Link href="/">
           <a className={styles.viewAll}>
             <Text>View All Topics</Text>
             <i className="icon-angle-right"></i>
@@ -104,10 +114,10 @@ const TopicsList = () => {
               <Select
                 size="large"
                 className={styles.dropdown}
-                defaultValue={nameSpacesList[0].name}
+                defaultValue={nameSpacesList && nameSpacesList[0].name}
                 onChange={selectNameSpace}
               >
-                {nameSpacesList.map((item) => {
+                {nameSpacesList?.map((item) => {
                   return (
                     <Select.Option key={item.id} value={item.id}>
                       {item.name}
@@ -138,8 +148,14 @@ const TopicsList = () => {
               <>
                 <Link href="#">
                   <a>
-                    <Text className={styles.text}>{item.topic_name}</Text>
-                    <Tag className={styles.tag}>{item.topic_score}</Tag>
+                    <Text className={styles.text}>
+                      {isReview
+                        ? item?.tree_structure_1_review_title
+                        : item?.topic_name}
+                    </Text>
+                    <Tag className={styles.tag}>
+                      {item?.topic_score?.toFixed(2)}
+                    </Tag>
                   </a>
                 </Link>
               </>

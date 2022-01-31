@@ -29,12 +29,14 @@ export default function Home({ topicsData, nameSpacesList, whatsNew }) {
 }
 
 export async function getServerSideProps() {
+  const currentTime = Date.now() / 1000;
   const reqBody = {
-    page_number: 1,
-    page_size: 20,
-    namespace_id: 1,
-    asofdate: 1643293846,
     algorithm: "blind_popularity",
+    asofdate: currentTime,
+    filter: "2",
+    namespace_id: 1,
+    page_number: 1,
+    page_size: 15,
     search: "Hard",
   };
   const nameSpaces = await getCanonizedNameSpacesApi();

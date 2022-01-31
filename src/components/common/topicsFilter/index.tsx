@@ -16,7 +16,7 @@ import { LeftOutlined } from "@ant-design/icons";
 import { RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  setCanonizedTopics,
+  setIsReviewCanonizedTopics,
   setFilterCanonizedTopics,
 } from "../../../store/slices/homePageSlice";
 
@@ -85,6 +85,7 @@ function disabledDateTime() {
 const CreateTopic = () => {
   const [isDatePicker, setIsDatePicker] = useState(false);
   const [value, setValue] = useState(2);
+  const [datePickerValue, setDatePickerValue] = useState(null);
   const [inputFilterValue, setInputFilterValue] = useState(0.0);
   const dispatch = useDispatch();
 
@@ -104,7 +105,8 @@ const CreateTopic = () => {
     setValue(e.target.value);
   };
   const pickDate = (e) => {
-    const IsoDateFormat = Date.parse(e._d);
+    const IsoDateFormat = Date.parse(e?._d) / 1000;
+    setDatePickerValue(e?._d);
     dispatch(
       setFilterCanonizedTopics({
         asofdate: IsoDateFormat,
@@ -121,6 +123,16 @@ const CreateTopic = () => {
       dispatch(
         setFilterCanonizedTopics({
           filterByScore: value,
+        })
+      );
+    }
+  };
+
+  const handleAsOfClick = () => {
+    if (datePickerValue !== null) {
+      dispatch(
+        setFilterCanonizedTopics({
+          asofdate: Date.parse(datePickerValue) / 1000,
         })
       );
     }
@@ -194,8 +206,8 @@ const CreateTopic = () => {
                   value={1}
                   onClick={() => {
                     dispatch(
-                      setFilterCanonizedTopics({
-                        asofdate: "review",
+                      setIsReviewCanonizedTopics({
+                        includeReview: true,
                       })
                     );
                   }}
@@ -208,14 +220,20 @@ const CreateTopic = () => {
                   onClick={() => {
                     dispatch(
                       setFilterCanonizedTopics({
-                        asofdate: "default",
+                        asofdate: Date.now() / 1000,
                       })
                     );
                   }}
                 >
                   Default
                 </Radio>
-                <Radio className={styles.radio} value={3}>
+                <Radio
+                  className={styles.radio}
+                  value={3}
+                  onClick={() => {
+                    handleAsOfClick();
+                  }}
+                >
                   As of date
                 </Radio>
               </Space>
@@ -224,6 +242,7 @@ const CreateTopic = () => {
               // open={isDatePicker}
               disabled={!isDatePicker}
               format="YYYY-MM-DD"
+              // defaultValue={datePickerValue}
               // disabledDate={disabledDate}
               // disabledTime={disabledDateTime}
               // showTime={{ defaultValue: moment("00:00:00", "HH:mm:ss") }}

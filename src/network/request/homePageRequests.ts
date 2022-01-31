@@ -33,14 +33,4 @@ export default class HomePageRequests extends Request {
       K.Network.Header.Type.Json
     );
   }
-
-  static getHelpCardContent() {
-    return new Request(
-      K.Network.URL.GetHelpCardContent,
-      K.Network.Method.GET,
-      null,
-      K.Network.Header.Type.Json,
-      {}
-    );
-  }
 }

@@ -1,10 +1,14 @@
 import { Row, Col } from "antd";
 
 import Layout from "../hoc/layout";
-import SideBar from "../components/ComponentPages/home/sideBar";
+import SideBar from "../components/componentPages/home/sideBar";
 import TopicsList from "../components/componentPages/home/topicsList";
-
-const BrowsePage = () => {
+import { getCanonizedNameSpacesApi } from "../network/api/homePageApi";
+import { setCanonizedNameSpaces } from "../store/slices/homePageSlice";
+import { useDispatch } from "react-redux";
+const BrowsePage = ({ nameSpacesList }) => {
+  const dispatch = useDispatch();
+  dispatch(setCanonizedNameSpaces(nameSpacesList));
   return (
     <>
       <Layout routeName={"browse"}>
@@ -22,5 +26,17 @@ const BrowsePage = () => {
     </>
   );
 };
+
+export async function getServerSideProps() {
+  const nameSpaces = await getCanonizedNameSpacesApi();
+
+  const nameSpacesList = nameSpaces || [];
+
+  return {
+    props: {
+      nameSpacesList,
+    },
+  };
+}
 
 export default BrowsePage;

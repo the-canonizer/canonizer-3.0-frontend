@@ -14,13 +14,12 @@ export default class Request {
     headers = {}
   ) {
     // const token = User.getToken();
-    const token = "kbdjsbfjyy897798hsdbjfbjn";
+    const token = "";
     headers = {
-      // ...(defaultHeaderType === K.Network.Header.Type.Json
-      //   ? K.Network.Header.Default(token)
-      //   : K.Network.Header.Authorization(token)),
-      // ...headers,
-      "Content-Type": "multipart/form-data",
+      ...(defaultHeaderType === K.Network.Header.Type.Json
+        ? K.Network.Header.Default(token)
+        : K.Network.Header.Authorization(token)),
+      ...headers,
     };
     this.url = K.Network.URL.BaseAPI + relativeURL;
     this.method = method;

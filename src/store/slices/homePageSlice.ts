@@ -8,10 +8,11 @@ export const homePageSlice = createSlice({
       page_number: 1,
       page_size: 15,
       namespace_id: 1,
-      asofdate: 1642464000,
+      asofdate: 1643293846,
       filterByScore: 0,
       algorithm: "blind_popularity",
       search: "Hard",
+      includeReview: false,
     },
     nameSpaces: null,
     whatsNew: null,
@@ -21,6 +22,13 @@ export const homePageSlice = createSlice({
       state.canonizedTopicsData = action.payload;
     },
     setFilterCanonizedTopics: (state, action) => {
+      state.filterObject = {
+        ...state.filterObject,
+        ...action.payload,
+        includeReview: false,
+      };
+    },
+    setIsReviewCanonizedTopics: (state, action) => {
       state.filterObject = {
         ...state.filterObject,
         ...action.payload,
@@ -40,6 +48,7 @@ export const {
   setFilterCanonizedTopics,
   setCanonizedNameSpaces,
   setWhatsNewContent,
+  setIsReviewCanonizedTopics,
 } = homePageSlice.actions;
 
 export default homePageSlice.reducer;

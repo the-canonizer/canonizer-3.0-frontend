@@ -44,7 +44,10 @@ const NetworkConstants = {
       Authorization: "Bearer " + token,
     }),
     Authorization: (token = "") => ({
-      Authorization: "Bearer " + token,
+      // Authorization: "Bearer " + token,
+      // "Content-Type": "multipart/form-data",
+      // Accept: "application/json",
+      "Content-Type": "application/json",
     }),
     Type: {
       Json: "json",
