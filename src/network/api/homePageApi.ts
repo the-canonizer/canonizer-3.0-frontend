@@ -11,7 +11,8 @@ import {
 export const getCanonizedTopicsApi = async (reqBody, loadMore = false) => {
   try {
     const topics = await NetworkCall.fetch(
-      HomePageRequests.getCanonizedTopics(reqBody)
+      HomePageRequests.getCanonizedTopics(reqBody),
+      false
     );
     if (loadMore) {
       store.dispatch(pushToCanonizedTopics(topics?.data));
