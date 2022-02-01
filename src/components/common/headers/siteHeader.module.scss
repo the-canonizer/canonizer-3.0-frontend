@@ -34,13 +34,23 @@
             }
         }
     }
-    .btnCloseMobMenu {
+    .btnLogin, .btnRegister {
+        font-size: 1.125rem;
+        font-weight: 500;
+        height: 38px;
+        color: #FFF;
+        display: inline-flex;
+        align-items: center;
         i {
-            display: block;
-            transform: scaleX(-1);
+            margin-right: .5rem;
         }
-        @media screen and (min-width: 1200px) {
-            display: none;
+    }
+    .btnRegister {
+        background-color: #F89D15;
+        border-radius: 2px;
+        border: 0;
+        &:hover {
+            background-color: darken(#F89D15, 5%);
         }
     }
     .navWrap {
@@ -58,6 +68,25 @@
             transition: all .5s;
             &.showMobMenu {
                 left: 0;
+            }
+        }
+        .btnCloseMobMenu {
+            border-radius: 50%;
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #cbcaca;
+            padding: 0;
+            position: relative;
+            z-index: 2;
+            i {
+                display: block;
+                transform: scaleX(-1);
+            }
+            @media screen and (min-width: 1200px) {
+                display: none;
             }
         }
         .nav {
@@ -102,8 +131,30 @@
                 }
             }
         }
-        .ant-menu-horizontal {
-            border: 0;
+        .btnsLoginRegister {
+            border-top: #EEE 2px solid;
+            margin-top: 1rem;
+            padding-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            @media screen and (min-width: 576px) {
+                display: none;
+            }
+
+            button {
+                width: 48%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .btnLogin {
+                color: var(--primary);
+                border-color: var(--primary);
+                &:hover {
+                    background-color: var(--primary);
+                    color: #FFF;
+                }
+            }
         }
     }
     .right {
@@ -122,25 +173,13 @@
                 display: none;
             }
         }
-    }
-    .btnLogin, .btnRegister {
-        font-size: 1.125rem;
-        font-weight: 500;
-        height: 38px;
-        color: #FFF;
-        display: inline-flex;
-        align-items: center;
-        i {
-            margin-right: .5rem;
+        .btnsLoginRegister {
+            @media screen and (max-width: 575px) {
+                display: none;
+            }
+            .btnLogin {
+                margin-right: 1rem;
+            }
         }
     }
-    .btnLogin {
-        margin-right: 1rem;
-    }
-    .btnRegister {
-        background-color: #F89D15;
-        border-radius: 2px;
-        border: 0;
-    }
-    
 }

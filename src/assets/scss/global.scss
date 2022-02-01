@@ -6,6 +6,11 @@ body {
   font-family: 'Asap', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji' !important;
   background-color: #F8F8F8 !important;
 }
+
+.float-right {
+  float: right;
+}
+
 .d-flex {
   display: flex;
 }
@@ -71,10 +76,12 @@ body {
   }
 }
 
-.topicsList_card__ajlxi, .recentActivities_listWrap__78VcE {
+.topicsList_card, .recentActivities_listWrap {
   .ant-list-footer {
     margin-top: 10px;
     padding-bottom: 6px;
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 

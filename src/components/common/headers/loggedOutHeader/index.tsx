@@ -4,11 +4,12 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button, Layout, Menu, Row, Col } from "antd";
-import { MenuOutlined } from "@ant-design/icons";
+import { MenuOutlined, CloseOutlined } from "@ant-design/icons";
 
 import styles from "../siteHeader.module.scss";
 
 import SearchSection from "../../search/search";
+import Logo from "../logoHeader";
 
 const LoggedOutHeader = () => {
   const { Header } = Layout;
@@ -22,26 +23,14 @@ const LoggedOutHeader = () => {
   return (
     <React.Fragment>
       <Header className={styles.wrap}>
-        <div className={styles.logo}>
-          <Link href="/" passHref>
-            <Image
-              src={"/images/logo.svg"}
-              alt="Picture of the author"
-              layout="responsive"
-              width={225}
-              height={42}
-            />
-            {/* <img src={"/images/logo.svg"} alt="Canonizer" /> */}
-          </Link>
-        </div>
+        <Logo />
         <div className={`${styles.navWrap} ${isActive && styles.showMobMenu}`}>
           <Button
-            block
             size="large"
-            className={`${styles.btnCloseMobMenu} mb-4`}
+            className={`${styles.btnCloseMobMenu} mb-4 float-right`}
             onClick={toggleMobNav}
           >
-            <i className="icon-angle-right"></i>
+            <CloseOutlined />
           </Button>
           <nav className={styles.nav}>
             <ul>
@@ -68,14 +57,24 @@ const LoggedOutHeader = () => {
               </li>
             </ul>
           </nav>
+          <div className={styles.btnsLoginRegister}>
+            <Button type="link" className={styles.btnLogin}>
+              <i className="icon-user"></i> Login
+            </Button>
+            <Button className={styles.btnRegister}>
+              <i className="icon-user-plus"></i> Register
+            </Button>
+          </div>
         </div>
         <div className={styles.right}>
-          <Button type="link" className={styles.btnLogin}>
-            <i className="icon-user"></i> Login
-          </Button>
-          <Button className={styles.btnRegister}>
-            <i className="icon-user-plus"></i> Register
-          </Button>
+          <div className={styles.btnsLoginRegister}>
+            <Button type="link" className={styles.btnLogin}>
+              <i className="icon-user"></i> Login
+            </Button>
+            <Button className={styles.btnRegister}>
+              <i className="icon-user-plus"></i> Register
+            </Button>
+          </div>
           <div className={styles.iconMobMenu}>
             <Button size="large" onClick={toggleMobNav}>
               <MenuOutlined />
