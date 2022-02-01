@@ -16,7 +16,7 @@ export default function CampList() {
             <Text>Topic :</Text> Theories of Consciousness
           </Title>
           <Title level={5}>
-            <Text>Camp :</Text>{" "}
+            <Text>Camp :</Text>
             <Text className={styles.blueText}>
               Agreement / Approachable Via Science / Representational Qualia
             </Text>
