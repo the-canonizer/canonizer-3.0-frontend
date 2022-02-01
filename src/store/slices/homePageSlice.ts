@@ -3,7 +3,10 @@ import { createSlice } from "@reduxjs/toolkit";
 export const homePageSlice = createSlice({
   name: "homePage",
   initialState: {
-    canonizedTopicsData: null,
+    canonizedTopicsData: {
+      topics: null,
+      numOfPages: null,
+    },
     filterObject: {
       page_number: 1,
       page_size: 15,
@@ -16,10 +19,23 @@ export const homePageSlice = createSlice({
     },
     nameSpaces: null,
     whatsNew: null,
+    algorithms: null,
   },
   reducers: {
     setCanonizedTopics: (state, action) => {
-      state.canonizedTopicsData = action.payload;
+      state.canonizedTopicsData = {
+        topics: action.payload?.topic,
+        numOfPages: action.payload?.number_of_pages,
+      };
+    },
+    pushToCanonizedTopics: (state, action) => {
+      const topics = state.canonizedTopicsData?.topics;
+      const pushedTopics = topics.push(action.payload?.topic);
+      // debugger;
+      state.canonizedTopicsData = {
+        ...state.canonizedTopicsData,
+        topics: pushedTopics,
+      };
     },
     setFilterCanonizedTopics: (state, action) => {
       state.filterObject = {
@@ -37,6 +53,9 @@ export const homePageSlice = createSlice({
     setCanonizedNameSpaces: (state, action) => {
       state.nameSpaces = action.payload?.data;
     },
+    setCanonizedAlgorithms: (state, action) => {
+      state.algorithms = action.payload?.data;
+    },
     setWhatsNewContent: (state, action) => {
       state.whatsNew = action.payload[0]?.html_content;
     },
@@ -49,6 +68,8 @@ export const {
   setCanonizedNameSpaces,
   setWhatsNewContent,
   setIsReviewCanonizedTopics,
+  pushToCanonizedTopics,
+  setCanonizedAlgorithms,
 } = homePageSlice.actions;
 
 export default homePageSlice.reducer;

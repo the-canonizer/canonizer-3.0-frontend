@@ -4,7 +4,7 @@ const NetworkConstants = {
   URL: {
     Base: process.env.REACT_APP_BASE_URL,
     // BaseAPI: process.env.REACT_APP_BASE_API_URL,
-    BaseAPI: "",
+    BaseAPI: BaseCanonizerApiUrl,
     Timeout: process.env.REACT_APP_TIMEOUT,
     Client: {
       BaseHost: process.env.REACT_APP_CLIENT_BASE_HOST,
@@ -24,6 +24,7 @@ const NetworkConstants = {
 
     GetCanonizedNameSpaces: `${BaseCanonizerApiUrl}/api/v3/get_all_namespaces`,
     GetWhatsNewContent: `${BaseCanonizerApiUrl}/api/v3/get_whats_new_content`,
+    GetCanonizedAlgorithms: `${BaseCanonizerApiUrl}/api/v3/get_algorithms`,
 
     //footer
 

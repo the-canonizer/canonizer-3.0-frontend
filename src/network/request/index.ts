@@ -21,7 +21,7 @@ export default class Request {
         : K.Network.Header.Authorization(token)),
       ...headers,
     };
-    this.url = K.Network.URL.BaseAPI + relativeURL;
+    this.url = relativeURL;
     this.method = method;
     this.body = body;
     this.headers = headers;

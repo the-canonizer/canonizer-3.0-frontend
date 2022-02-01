@@ -6,9 +6,7 @@ import { RightOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import { getCanonizedTopicsApi } from "../../../../network/api/homePageApi";
-import objectToFormData from "object-to-formdata";
 import { setFilterCanonizedTopics } from "../../../../store/slices/homePageSlice";
-
 import styles from "./topicsList.module.scss";
 
 const Option = Select;
@@ -19,7 +17,7 @@ const TopicsList = () => {
   const router = useRouter();
   const didMount = useRef(false);
   const didMountForFilterScoreEffect = useRef(false);
-  const [pageCounter, setPageCounter] = useState(1);
+  const [pageNumber, setPageNumber] = useState(1);
   const dispatch = useDispatch();
   const {
     canonizedTopics,
@@ -37,7 +35,7 @@ const TopicsList = () => {
     includeReview: state?.homePage?.filterObject?.includeReview,
   }));
 
-  const [topicsData, setTopicsData] = useState(canonizedTopics?.topic);
+  const [topicsData, setTopicsData] = useState(canonizedTopics);
   const [nameSpacesList, setNameSpacesList] = useState(nameSpaces);
   const [isReview, setIsReview] = useState(includeReview);
 
@@ -53,43 +51,61 @@ const TopicsList = () => {
   };
 
   useEffect(() => {
-    setTopicsData(canonizedTopics?.topic);
-  }, [canonizedTopics?.topic]);
+    setTopicsData(canonizedTopics);
+  }, [canonizedTopics?.topics]);
+
   useEffect(() => {
     setIsReview(includeReview);
   }, [includeReview]);
+
   useEffect(() => {
-    const loadMore = true;
     if (didMount.current) {
       const reqBody = {
         algorithm: algorithm,
         asofdate: asofdate,
         namespace_id: nameSpaceId,
-        page_number: 1,
+        page_number: pageNumber,
         page_size: 15,
-        search: "Hard",
+        search: "",
         filter: filterByScore,
       };
-
-      getCanonizedTopicsApi(reqBody, loadMore);
+      getCanonizedTopicsApi(reqBody);
     } else didMount.current = true;
-  }, [asofdate, algorithm, nameSpaceId, pageCounter, filterByScore]);
+  }, [asofdate, algorithm, nameSpaceId, pageNumber, filterByScore]);
+
+  useEffect(() => {
+    if (didMountForFilterScoreEffect.current) {
+      const loadMore = false;
+      const reqBody = {
+        algorithm: algorithm,
+        asofdate: asofdate,
+        namespace_id: nameSpaceId,
+        page_number: pageNumber,
+        page_size: 15,
+        search: "",
+        filter: filterByScore,
+      };
+      getCanonizedTopicsApi(reqBody, loadMore);
+    } else didMountForFilterScoreEffect.current = true;
+  }, [pageNumber]);
 
   const LoadMoreTopics = (
     <div className="text-center">
-      <a
-        className={styles.viewAll}
-        onClick={() => setPageCounter(pageCounter + 1)}
-      >
-        <Text>Load More</Text>
-        <i className="icon-angle-right"></i>
-      </a>
+      {pageNumber < topicsData?.numOfPages && (
+        <a
+          className={styles.viewAll}
+          onClick={() => setPageNumber(pageNumber + 1)}
+        >
+          <Text>Load More</Text>
+          <i className="icon-angle-right"></i>
+        </a>
+      )}
     </div>
   );
 
   const ViewAllTopics = (
     <div className="text-right">
-      {topicsData?.length && (
+      {topicsData?.topics?.length && (
         <Link href="/">
           <a className={styles.viewAll}>
             <Text>View All Topics</Text>
@@ -126,7 +142,7 @@ const TopicsList = () => {
                 })}
               </Select>
 
-              {router.asPath === "/browse" && (
+              {router.asPath === "/browse" && !includeReview && (
                 <Search
                   placeholder="input search text"
                   allowClear
@@ -142,7 +158,7 @@ const TopicsList = () => {
             </div>
           }
           bordered
-          dataSource={topicsData}
+          dataSource={topicsData?.topics}
           renderItem={(item: any) => (
             <List.Item className={styles.item}>
               <>

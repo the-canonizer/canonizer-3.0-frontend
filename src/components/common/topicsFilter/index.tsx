@@ -12,7 +12,6 @@ import {
   DatePicker,
 } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
-
 import { RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -88,6 +87,10 @@ const CreateTopic = () => {
   const [datePickerValue, setDatePickerValue] = useState(null);
   const [inputFilterValue, setInputFilterValue] = useState(0.0);
   const dispatch = useDispatch();
+
+  const { algorithms } = useSelector((state: RootState) => ({
+    algorithms: state.homePage?.algorithms,
+  }));
 
   const selectAlgorithm = (value) => {
     dispatch(
@@ -166,13 +169,13 @@ const CreateTopic = () => {
             <Select
               size="large"
               className={styles.algoSelect}
-              defaultValue={mockDropdownList[0]}
+              defaultValue={algorithms && algorithms[0].algorithm_label}
               onChange={selectAlgorithm}
             >
-              {mockDropdownList.map((item) => {
+              {algorithms?.map((algo) => {
                 return (
-                  <Option key={item} value={item}>
-                    {item}
+                  <Option key={algo.id} value={algo.algorithm_key}>
+                    {algo.algorithm_label}
                   </Option>
                 );
               })}

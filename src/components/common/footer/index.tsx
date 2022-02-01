@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, Typography, Menu } from "antd";
-import { RightOutlined } from "@ant-design/icons";
 import styles from "./siteFooter.module.scss";
 import { getFooterSocialLinksApi } from "../../../network/api/footerSocialLinksApi";
 import Image from "next/image";
 import Link from "next/link";
 const { Title } = Typography;
+import K from "../../../constants";
 
 function Footer() {
   const [socialLinks, setSocialLinks] = useState(null);
@@ -123,12 +123,12 @@ function Footer() {
               <div className={styles.widgetFollowUs}>
                 <Title level={5}>Follow Us</Title>
                 <div className={styles.smIcons}>
-                  {socialLinks?.map((social, index) => {
+                  {socialLinks?.map((social) => {
                     return (
                       <Link key={social.id} href={social.link}>
                         <a target="_blank">
                           <Image
-                            src={social.icon}
+                            src={K.Network.URL.BaseAPI + social.icon}
                             alt={social.label}
                             width={28}
                             height={28}
