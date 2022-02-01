@@ -1,5 +1,5 @@
 import {  Card } from "antd";
-import Login from "../components/componentPages/Login";
+import Login from "../components/ComponentPages/Login";
 import GetStartedLayout from "../hoc/getStartedLayout";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";

@@ -43,8 +43,8 @@ export const login = (email: string, password: string) => {
 
       return res;
     } catch (err) {
-      console.error(err.error.data);
-      message.error(err.error.data.message);
+      console.error(err?.error?.data);
+      message.error(err?.error?.data.message);
     }
   };
 };
@@ -66,7 +66,7 @@ export const logout = (error = "") => {
       }
       return res;
     } catch (error) {
-      message.error(error.message);
+      message.error(error?.message);
     }
   };
 };
@@ -82,9 +82,9 @@ export const register = (values: object) => {
 
       return res;
     } catch (errors) {
-      console.error(errors.error.data);
-      message.error(errors.error.data.message);
-      let msgs = errors.error.data.error;
+      console.error(errors?.error?.data);
+      message.error(errors?.error?.data?.message);
+      let msgs = errors?.error?.data.error;
       if (msgs) {
         let keys = Object.keys(msgs);
         keys.forEach((key) => {
@@ -117,9 +117,9 @@ export const verifyOtp = (values: object) => {
 
       return res;
     } catch (err) {
-      console.error("verify otp", err.error.data);
-      message.error(err.error.data.message);
-      let msgs = err.error.data.error;
+      console.error(err?.error?.data);
+      message.error(err?.error?.data?.message);
+      let msgs = err?.error?.data?.error;
       if (msgs) {
         let keys = Object.keys(msgs);
         keys.forEach((key) => {
@@ -141,14 +141,14 @@ export const changePassword = (values: object) => {
       );
       return res;
     } catch (errors) {
-      let msgs = errors.error.data.error;
+      let msgs = errors?.error?.data?.error;
       if (msgs) {
         let keys = Object.keys(msgs);
         keys.forEach((key) => {
           message.error(msgs[key][0]);
         });
       } else {
-        message.error(errors.error.data.message);
+        message.error(errors?.error?.data?.message);
       }
     }
   };
@@ -166,9 +166,9 @@ export const socialLogin = async (values: object) => {
 
     return res;
   } catch (err) {
-    console.error("socialLogin", err.error.data);
-    message.error(err.error.data.message);
-    let msgs = err.error.data.error;
+    console.error(err?.error?.data);
+    message.error(err?.error?.data?.message);
+    let msgs = err?.error?.data?.error;
     if (msgs) {
       let keys = Object.keys(msgs);
       keys.forEach((key) => {
@@ -201,9 +201,9 @@ export const socialLoginCallback = (values: object) => {
 
       return res;
     } catch (err) {
-      console.error("socialLoginCallback", err.error.data);
-      message.error(err.error.data.message);
-      let msgs = err.error.data.error;
+      console.error(err?.error?.data);
+      message.error(err?.error?.data?.message);
+      let msgs = err?.error?.data?.error;
       if (msgs) {
         let keys = Object.keys(msgs);
         keys.forEach((key) => {
@@ -224,9 +224,9 @@ export const getCountryCodes = async () => {
 
     return res;
   } catch (err) {
-    console.error("getCountryCodes", err.error.data);
-    message.error(err.error.data.message);
-    let msgs = err.error.data.error;
+    console.error(err?.error?.data);
+    message.error(err?.error?.data?.message);
+    let msgs = err?.error?.data?.error;
     if (msgs) {
       let keys = Object.keys(msgs);
       keys.forEach((key) => {
