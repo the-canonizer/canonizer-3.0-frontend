@@ -75,7 +75,7 @@ const TopicsList = () => {
 
   useEffect(() => {
     if (didMountForFilterScoreEffect.current) {
-      const loadMore = false;
+      const loadMore = true;
       const reqBody = {
         algorithm: algorithm,
         asofdate: asofdate,

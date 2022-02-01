@@ -29,12 +29,10 @@ export const homePageSlice = createSlice({
       };
     },
     pushToCanonizedTopics: (state, action) => {
-      const topics = state.canonizedTopicsData?.topics;
-      const pushedTopics = topics.push(action.payload?.topic);
       // debugger;
       state.canonizedTopicsData = {
         ...state.canonizedTopicsData,
-        topics: pushedTopics,
+        topics: [...state.canonizedTopicsData.topics, ...action.payload.topic],
       };
     },
     setFilterCanonizedTopics: (state, action) => {
