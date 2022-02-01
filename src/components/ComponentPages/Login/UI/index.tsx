@@ -58,25 +58,14 @@ const LoginUi = ({ form, onFinish, closeModal, isModal }) => {
               <Form.Item
                 name="username"
                 label={messages.labels.emailPhone}
-                rules={[
-                  {
-                    required: true,
-                    message: messages.validations.username,
-                  },
-                  {
-                    pattern: messages.patterns.emailPhone,
-                    message: messages.validations.usernameNotValid,
-                  },
-                ]}
+                {...messages.usernameRule}
               >
                 <Input placeholder={messages.placeholders.emailPhone} />
               </Form.Item>
               <Form.Item
                 name="password"
                 label={messages.labels.password}
-                rules={[
-                  { required: true, message: messages.validations.password },
-                ]}
+                {...messages.userPassRule}
               >
                 <Input
                   type="password"

@@ -46,16 +46,7 @@ export default function OTPVerify({ form, onFinish, isModal, closeModal }) {
           <Form.Item
             name="otp"
             style={{ textAlign: "center" }}
-            rules={[
-              {
-                required: true,
-                message: messages.validations.otp,
-              },
-              {
-                max: 6,
-                message: messages.validations.otpLength,
-              },
-            ]}
+            {...messages.otpRule}
           >
             <Input
               className={styles.otpInput}

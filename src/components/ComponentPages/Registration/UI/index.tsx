@@ -70,52 +70,21 @@ function RegistrationUi({
               <Form.Item
                 name="first_name"
                 label={messages.labels.firstName}
-                rules={[
-                  {
-                    required: true,
-                    message: messages.validations.firstName,
-                  },
-                  {
-                    max: 100,
-                    message: messages.validations.firstNameMax,
-                  },
-                ]}
+                {...messages.firstNameRule}
               >
                 <Input placeholder={messages.placeholders.firstName} />
               </Form.Item>
               <Form.Item
                 name="last_name"
                 label={messages.labels.lastName}
-                rules={[
-                  {
-                    required: true,
-                    message: messages.validations.lastName,
-                  },
-                  {
-                    max: 100,
-                    message: messages.validations.firstNameMax,
-                  },
-                ]}
+                {...messages.lastNameRule}
               >
                 <Input placeholder={messages.placeholders.lastName} />
               </Form.Item>
               <Form.Item
                 name="phone"
                 label={messages.labels.phone}
-                rules={[
-                  {
-                    required: false,
-                    message: messages.validations.phone,
-                  },
-                  {
-                    min: 9,
-                    message: messages.validations.phoneLength,
-                  },
-                  {
-                    max: 10,
-                    message: messages.validations.phoneLength,
-                  },
-                ]}
+                {...messages.phoneRule}
               >
                 <Input
                   addonBefore={prefixSelector}
@@ -126,18 +95,7 @@ function RegistrationUi({
               <Form.Item
                 label={messages.labels.captcha}
                 name="captcha"
-                rules={[
-                  () => ({
-                    validator() {
-                      if (showCaptchaError) {
-                        return Promise.resolve();
-                      }
-                      return Promise.reject(
-                        new Error(messages.validations.captcha)
-                      );
-                    },
-                  }),
-                ]}
+                {...messages.getCaptchaRule(showCaptchaError)}
               >
                 <div className={styles.captchaCol}>
                   <ReCAPTCHA
@@ -147,67 +105,27 @@ function RegistrationUi({
                     grecaptcha={global.window?.grecaptcha}
                   />
                 </div>
-                {/* {showCaptchaError && (
-                  <Text type="danger">{messages.validations.captcha}</Text>
-                )} */}
-                {/* <div className={styles.captchaEnter}>
-                  <Input
-                    placeholder={messages.placeholders.captcha}
-                    onChange={handleOnChange}
-                  />
-                </div> */}
               </Form.Item>
             </Col>
             <Col md={12}>
               <Form.Item
                 name="middle_name"
                 label={messages.labels.middleName}
-                rules={[
-                  {
-                    max: 100,
-                    message: messages.validations.middleName,
-                  },
-                ]}
+                {...messages.middleNameRule}
               >
                 <Input placeholder={messages.placeholders.middleName} />
               </Form.Item>
               <Form.Item
                 name="email"
                 label={messages.labels.email}
-                rules={[
-                  {
-                    max: 255,
-                    message: messages.validations.middleName,
-                  },
-                  {
-                    required: true,
-                    message: messages.validations.email,
-                  },
-                  {
-                    pattern: messages.patterns.email,
-                    message: messages.validations.validEmail,
-                  },
-                ]}
+                {...messages.emRule}
               >
                 <Input placeholder={messages.placeholders.email} />
               </Form.Item>
               <Form.Item
                 name="password"
                 label={messages.labels.password}
-                rules={[
-                  {
-                    required: true,
-                    message: messages.validations.registrationPassword,
-                  },
-                  {
-                    min: 5,
-                    message: messages.validations.passwordMinLength,
-                  },
-                  {
-                    pattern: messages.patterns.password,
-                    message: messages.validations.passwordPattern,
-                  },
-                ]}
+                {...messages.passwordRule}
               >
                 <Input
                   type="password"
@@ -218,22 +136,7 @@ function RegistrationUi({
                 name="confirm"
                 label={messages.labels.confirmPassword}
                 dependencies={["password"]}
-                rules={[
-                  {
-                    required: true,
-                    message: messages.validations.confirmPassword,
-                  },
-                  ({ getFieldValue }) => ({
-                    validator(_, value) {
-                      if (!value || getFieldValue("password") === value) {
-                        return Promise.resolve();
-                      }
-                      return Promise.reject(
-                        new Error(messages.validations.confirmPasswordErr)
-                      );
-                    },
-                  }),
-                ]}
+                {...messages.confirmPasswordRule}
               >
                 <Input
                   type="password"
