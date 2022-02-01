@@ -14,7 +14,7 @@ export default class NetworkCall {
               method: request.method,
               url: request.url,
               data: request.body,
-              headers: request.headers,
+              headers: {},
               validateStatus: (status) => {
                 return (status >= 200 && status < 300) || status === 304;
               },
@@ -33,6 +33,7 @@ export default class NetworkCall {
       return response.data;
     } catch (err) {
       let error = err.response;
+
       console.log("NetworkCall Error: ", error);
       if (error === undefined) {
         message.error("Cannot connect to server");

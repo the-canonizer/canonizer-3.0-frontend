@@ -1,8 +1,8 @@
 const NetworkConstants = {
   URL: {
     Base: process.env.REACT_APP_BASE_URL,
-    BaseAPI: process.env.REACT_APP_BASE_API_URL,
-    // BaseAPI: "https://reqres.in",
+    // BaseAPI: process.env.REACT_APP_BASE_API_URL,
+    BaseAPI: "",
     Timeout: process.env.REACT_APP_TIMEOUT,
     Client: {
       BaseHost: process.env.REACT_APP_CLIENT_BASE_HOST,
@@ -16,6 +16,19 @@ const NetworkConstants = {
     // Tree
 
     GetTree: "/api/unknown",
+
+    // HomePage
+    GetCanonizedTopics: "http://codedistrictem.com:7010/api/v1/topic/getAll",
+    GetHelpCardContent: "/api/help_card",
+    GetCanonizedNameSpaces:
+      "http://codedistrictem.com:7020/api/v3/get_all_namespaces",
+    GetWhatsNewContent:
+      "http://codedistrictem.com:7020/api/v3/get_whats_new_content",
+
+    //footer
+
+    GetFooterSocialLinks:
+      "http://codedistrictem.com:7020/api/v3/get_social_media_links",
   },
   Method: {
     GET: "GET",
@@ -36,6 +49,7 @@ const NetworkConstants = {
     Type: {
       Json: "json",
       File: "file",
+      formData: "multipart/form-data",
     },
   },
   Default: {

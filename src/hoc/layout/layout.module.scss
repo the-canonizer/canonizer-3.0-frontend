@@ -2,16 +2,30 @@
     overflow: hidden;
     .contentWrap {
         padding: 24px;
-        display: flex;
+        @media screen and (min-width: 768px) {
+            display: flex;
+        }
     }
     /* .leftSidebar {
         width: 245px;
     } */
     .rightSidebar {
-        width: 200px;
+        @media screen and (min-width: 768px) {
+            width: 200px;
+        }
+        @media screen and (max-width: 767px) {
+            text-align: center;
+            display: none;
+        }
     }
     .contentArea {
-        display: flex;
-        width: calc(100% - 200px);
+        @media screen and (min-width: 992px) {
+            display: flex;
+            width: calc(100% - 200px);
+        }
+        @media screen and (min-width: 768px) and (max-width: 991px) {
+            width: calc(100% - 224px);
+            margin-right: 24px;
+        }
     }
 }
