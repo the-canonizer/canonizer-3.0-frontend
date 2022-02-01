@@ -6,7 +6,7 @@ import messages from "../../../messages";
 const { Title } = Typography;
 const { Option } = Select;
 
-function ProfileInfoForm() {
+function ProfileInfoForm({ form, onFinish, onFinishFailed }) {
   const selectAfter = (
     <Select defaultValue="private" className="select-after">
       <Option value="private">Private</Option>
@@ -18,7 +18,9 @@ function ProfileInfoForm() {
   return (
     <Form
       name="profileInfo"
-
+      form={form}
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
       layout="vertical"
       scrollToFirstError
     >
@@ -47,9 +49,9 @@ function ProfileInfoForm() {
               label={messages.labels.gender}
             >
               <Radio.Group name="radiogroup" defaultValue={1}>
-                <Radio value={1}>Male</Radio>
-                <Radio value={2}>Female</Radio>
-                <Radio value={3}>Other</Radio>
+                <Radio value={0}>Male</Radio>
+                <Radio value={1}>Female</Radio>
+                <Radio value={2}>Other</Radio>
               </Radio.Group>
             </Form.Item>
           </Col>
@@ -68,7 +70,7 @@ function ProfileInfoForm() {
             >
               <Input addonAfter={selectAfter} placeholder={messages.placeholders.email} size="large" />
             </Form.Item>
-            <Form.Item name="date-picker" label="Date of Birth" {...messages.dobRule}>
+            <Form.Item name="birthday" label="Date of Birth" {...messages.dobRule}>
               <DatePicker size="large" />
             </Form.Item>
           </Col>
@@ -79,7 +81,7 @@ function ProfileInfoForm() {
         <Row gutter={30}>
           <Col md={12}>
             <Form.Item
-              name="addressline1"
+              name="address_1"
               label={messages.labels.addressLine1}
             >
               <Input addonAfter={selectAfter} placeholder={messages.placeholders.addressLine1} size="large" />
@@ -109,7 +111,7 @@ function ProfileInfoForm() {
           </Col>
           <Col md={12}>
             <Form.Item
-              name="addressline2"
+              name="address_2"
               label={messages.labels.addressLine2}
             >
               <Input addonAfter={selectAfter} placeholder={messages.placeholders.addressLine2} size="large" />
@@ -121,16 +123,17 @@ function ProfileInfoForm() {
               <Input addonAfter={selectAfter} placeholder={messages.placeholders.state} size="large" />
             </Form.Item>
             <Form.Item
-              name="zipcode"
+              name="postal_code"
               label={messages.labels.zipCode}
             >
               <Input addonAfter={selectAfter} placeholder={messages.placeholders.zipCode} size="large" />
             </Form.Item>
             <Form.Item
-              name="algorithm"
+              name="default_algo"
               label={messages.labels.chooseAlgorithm}
             >
               <Select size="large" placeholder="Select an algorithm">
+                <Option value="blind_popularity">Blind Popularity</Option>
                 <Option value="algo1">Algorithm 1</Option>
                 <Option value="algo2">Algorithm 2</Option>
               </Select>
