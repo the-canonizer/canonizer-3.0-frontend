@@ -118,7 +118,7 @@ const TopicsList = () => {
 
   return (
     <>
-      <div className={styles.card}>
+      <div className={`${styles.card} topicsList_card`}>
         <List
           className={styles.wrap}
           header={

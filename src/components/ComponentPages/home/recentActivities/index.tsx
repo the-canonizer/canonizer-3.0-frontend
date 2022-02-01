@@ -149,7 +149,7 @@ export default function RecentActivities() {
   }, [position]);
   return (
     <>
-      <div className={styles.listCard}>
+      <div className={`${styles.listCard} recentActivities_listWrap`}>
         <Tabs
           className={`${styles.listCardTabs} recentActivities_listCardTabs`}
           defaultActiveKey="1"
