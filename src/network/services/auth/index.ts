@@ -235,3 +235,98 @@ export const getCountryCodes = async () => {
     }
   }
 };
+export const GetUserProfileInfo = () => {
+  return async (dispatch) => {
+    let state = store.getState();
+    const { auth } = state;
+    const res = await NetworkCall.fetch(
+      UserRequest.GetUserProfileInfo(auth.loggedInUser.token)
+    )
+      .then((value) => {
+        return value;
+      })
+      .catch((errors) => {
+        let msgs = errors
+          ? errors.error
+            ? errors.error.data
+              ? errors.error.data.error
+                ? errors.error.data.error
+                : ""
+              : ""
+            : ""
+          : "";
+        if (msgs) {
+          let keys = Object.keys(msgs);
+          keys.forEach((key) => {
+            message.error(msgs[key][0]);
+          });
+        } else {
+          if (
+            errors
+              ? errors.error
+                ? errors.error.data
+                  ? errors.error.data.message
+                    ? errors.error.data.message
+                    : ""
+                  : ""
+                : ""
+              : ""
+          )
+            message.error(errors.error.data.message);
+          else {
+            message.error("Something is wrong");
+          }
+        }
+      });
+    return res;
+  };
+};
+
+export const UpdateUserProfileInfo = (values: object) => {
+  return async (dispatch) => {
+    let state = store.getState();
+    const { auth } = state;
+    const res = await NetworkCall.fetch(
+      UserRequest.UpdateUserProfileInfo(values, auth.loggedInUser.token)
+    )
+      .then((value) => {
+        return value;
+      })
+      .catch((errors) => {
+        debugger;
+        let msgs = errors
+          ? errors.error
+            ? errors.error.data
+              ? errors.error.data.error
+                ? errors.error.data.error
+                : ""
+              : ""
+            : ""
+          : "";
+        debugger;
+        if (msgs) {
+          let keys = Object.keys(msgs);
+          keys.forEach((key) => {
+            message.error(msgs[key][0]);
+          });
+        } else {
+          if (
+            errors
+              ? errors.error
+                ? errors.error.data
+                  ? errors.error.data.message
+                    ? errors.error.data.message
+                    : ""
+                  : ""
+                : ""
+              : ""
+          )
+            message.error(errors.error.data.message);
+          else {
+            message.error("Something is wrong");
+          }
+        }
+      });
+    return res;
+  };
+};

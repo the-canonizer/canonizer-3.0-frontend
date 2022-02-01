@@ -18,6 +18,8 @@ const NetworkConstants = {
     CountryCodes: "/country/list",
     UpdateUser: "/users/",
     ChangePassword: "/changepassword",
+    GetUserProfileInfo: "/user/profile",
+    UpdateUserProfileInfo: "/updateprofile",
     // Tree
 
     GetTree: "/api/unknown",
