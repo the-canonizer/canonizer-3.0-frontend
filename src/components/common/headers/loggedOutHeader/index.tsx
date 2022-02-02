@@ -1,13 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { useState } from "react";
 import Link from "next/link";
-import { Button, Layout, Menu, Row, Col } from "antd";
+import { Button, Layout } from "antd";
 import { MenuOutlined, CloseOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
 import styles from "../siteHeader.module.scss";
 import Logo from "../logoHeader";
-import SearchSection from "../../search/search";
+import SearchSection from "../../searchSection";
 import LoginModal from "../../../componentPages/Login/loginModal";
 import RegistrationModal from "../../../componentPages/registration/registrationModal";
 import {
@@ -26,6 +25,45 @@ const LoggedOutHeader = () => {
     setActive(!isActive);
   };
 
+  const mockLinks = [
+    {
+      link: "",
+      linkTitle: "Browse",
+      id: 1,
+    },
+
+    {
+      link: "",
+      linkTitle: "Upload Files",
+      id: 2,
+    },
+    {
+      link: "",
+      linkTitle: "Help",
+      id: 3,
+    },
+    {
+      link: "",
+      linkTitle: "White Paper",
+      id: 4,
+    },
+    {
+      link: "",
+      linkTitle: "Blog",
+      id: 5,
+    },
+    {
+      link: "",
+      linkTitle: "Jobs",
+      id: 6,
+    },
+    {
+      link: "",
+      linkTitle: "Services",
+      id: 7,
+    },
+  ];
+
   const openLoginModal = () => dispatch(showLoginModal());
   const openRegistrationModal = () => dispatch(showRegistrationModal());
 
@@ -43,27 +81,16 @@ const LoggedOutHeader = () => {
           </Button>
           <nav className={styles.nav}>
             <ul>
-              <li className={router.asPath === "/browse" ? styles.active : ""}>
+              {/* <li className={router.asPath === "/browse" ? styles.active : ""}>
                 <Link href="/browse"> Browse </Link>
-              </li>
-              <li>
-                <Link href="">Upload File</Link>
-              </li>
-              <li>
-                <Link href="">Help</Link>
-              </li>
-              <li>
-                <Link href="">White Paper</Link>
-              </li>
-              <li>
-                <Link href="">Blog</Link>
-              </li>
-              <li>
-                <Link href="">Jobs</Link>
-              </li>
-              <li>
-                <Link href="">Services</Link>
-              </li>
+              </li> */}
+              {mockLinks?.map((item) => {
+                return (
+                  <li key={item.id}>
+                    <Link href={item.link}>{item.linkTitle}</Link>
+                  </li>
+                );
+              })}
             </ul>
           </nav>
           <div className={styles.btnsLoginRegister}>

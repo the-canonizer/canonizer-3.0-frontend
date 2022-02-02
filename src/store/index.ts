@@ -1,6 +1,5 @@
 import homePageSlice from "./slices/homePageSlice";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import logger from "redux-logger";
 import {
   FLUSH,
   PAUSE,

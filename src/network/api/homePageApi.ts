@@ -30,7 +30,7 @@ export const getCanonizedNameSpacesApi = async () => {
     const nameSpaces = await NetworkCall.fetch(
       HomePageRequests.getCanonizedNameSpaces()
     );
-
+    store.dispatch(setCanonizedNameSpaces(nameSpaces));
     return nameSpaces;
   } catch (error) {
     message.error(error.message);

@@ -1,15 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import { Typography, List, Select, Tag, Button, Input } from "antd";
+import { Typography, List, Select, Tag, Input, Button } from "antd";
 import Link from "next/link";
-import { RightOutlined } from "@ant-design/icons";
+
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import { getCanonizedTopicsApi } from "../../../../network/api/homePageApi";
 import { setFilterCanonizedTopics } from "../../../../store/slices/homePageSlice";
 import styles from "./topicsList.module.scss";
 
-const Option = Select;
 const { Title, Text } = Typography;
 const { Search } = Input;
 
@@ -36,7 +35,7 @@ const TopicsList = () => {
   }));
 
   const [topicsData, setTopicsData] = useState(canonizedTopics);
-  const [nameSpacesList, setNameSpacesList] = useState(nameSpaces);
+  const [nameSpacesList] = useState(nameSpaces);
   const [isReview, setIsReview] = useState(includeReview);
 
   const [nameSpaceId, setNameSpaceId] = useState(1);
@@ -92,13 +91,13 @@ const TopicsList = () => {
   const LoadMoreTopics = (
     <div className="text-center">
       {pageNumber < topicsData?.numOfPages && (
-        <a
+        <Button
           className={styles.viewAll}
           onClick={() => setPageNumber(pageNumber + 1)}
         >
           <Text>Load More</Text>
           <i className="icon-angle-right"></i>
-        </a>
+        </Button>
       )}
     </div>
   );

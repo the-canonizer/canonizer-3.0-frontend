@@ -19,6 +19,9 @@ const NetworkConstants = {
     ChangePassword: "/changepassword",
     GetUserProfileInfo: "/user/profile",
     UpdateUserProfileInfo: "/updateprofile",
+    GetMobileCarrier: "/mobilecarrier",
+    SendOTP: "/sendotp",
+    VerifyOTP: "/verifyotp",
     // Tree
 
     GetTree: "/api/unknown",

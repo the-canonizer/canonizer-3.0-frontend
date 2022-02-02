@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Typography, Menu } from "antd";
+import { Row, Col, Typography } from "antd";
 import styles from "./siteFooter.module.scss";
 import { getFooterSocialLinksApi } from "../../../network/api/footerSocialLinksApi";
 import Image from "next/image";
@@ -17,6 +17,50 @@ function Footer() {
     }
     linksApiCall();
   }, []);
+
+  const mockLinks = [
+    {
+      link: "",
+      linkTitle: "Browse",
+      id: 1,
+    },
+    {
+      link: "",
+      linkTitle: "Services",
+      id: 2,
+    },
+    {
+      link: "",
+      linkTitle: "Create New Topic",
+      id: 3,
+    },
+    {
+      link: "",
+      linkTitle: "Help",
+      id: 4,
+    },
+    {
+      link: "",
+      linkTitle: "Upload Files",
+      id: 5,
+    },
+    {
+      link: "",
+      linkTitle: "White Paper",
+      id: 6,
+    },
+    {
+      link: "",
+      linkTitle: "Blog",
+      id: 7,
+    },
+    {
+      link: "",
+      linkTitle: "Jobs",
+      id: 8,
+    },
+  ];
+
   return (
     <>
       <section className={styles.adv}>
@@ -58,64 +102,18 @@ function Footer() {
             <Col xs={24} sm={14} md={10} lg={12}>
               <div className={styles.navsWrap}>
                 <ul>
-                  <li>
-                    <Link href="">
-                      <a>
-                        <i className="icon-angle-right"></i> Browse
-                      </a>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="">
-                      <a>
-                        <i className="icon-angle-right"></i> Create New Topic
-                      </a>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="">
-                      <a>
-                        <i className="icon-angle-right"></i> Upload File
-                      </a>
-                    </Link>
-                  </li>
-                </ul>
-                <ul>
-                  <li>
-                    <Link href="">
-                      <a>
-                        <i className="icon-angle-right"></i> Services
-                      </a>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="">
-                      <a>
-                        <i className="icon-angle-right"></i> Help
-                      </a>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="">
-                      <a>
-                        <i className="icon-angle-right"></i> White Paper
-                      </a>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="">
-                      <a>
-                        <i className="icon-angle-right"></i> Blog
-                      </a>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="">
-                      <a>
-                        <i className="icon-angle-right"></i> Jobs
-                      </a>
-                    </Link>
-                  </li>
+                  {mockLinks?.map((item) => {
+                    return (
+                      <li key={item.id}>
+                        <Link href={item.link}>
+                          <a>
+                            <i className="icon-angle-right"></i>{" "}
+                            {item.linkTitle}
+                          </a>
+                        </Link>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             </Col>

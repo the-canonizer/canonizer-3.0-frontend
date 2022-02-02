@@ -1,8 +1,6 @@
 import K from "../../constants";
 import Request from ".";
 
-import { redirectToLogin } from "../../utils/generalUtility";
-
 export default class UserRequest extends Request {
   constructor(params) {
     super(params);
