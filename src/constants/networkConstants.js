@@ -1,5 +1,5 @@
-const BaseCanonizerServiceUrl = "http://codedistrictem.com:7010";
-const BaseCanonizerApiUrl = "http://codedistrictem.com:7020";
+const BaseCanonizerServiceUrl = process.env.NEXT_PUBLIC_BASE_SERVICE_URL;
+const BaseCanonizerApiUrl = process.env.NEXT_PUBLIC_BASE_API_URL;
 const NetworkConstants = {
   URL: {
     Base: process.env.REACT_APP_BASE_URL,
