@@ -2,7 +2,6 @@ import React from "react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { Button, Layout, Menu, Row, Col } from "antd";
 import { MenuOutlined, CloseOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
@@ -68,20 +67,34 @@ const LoggedOutHeader = () => {
             </ul>
           </nav>
           <div className={styles.btnsLoginRegister}>
-            <Button type="link" className={styles.btnLogin}>
+            <Button
+              type="link"
+              className={styles.btnLogin}
+              onClick={openLoginModal}
+            >
               <i className="icon-user"></i> Login
             </Button>
-            <Button className={styles.btnRegister}>
+            <Button
+              className={styles.btnRegister}
+              onClick={openRegistrationModal}
+            >
               <i className="icon-user-plus"></i> Register
             </Button>
           </div>
         </div>
         <div className={styles.right}>
           <div className={styles.btnsLoginRegister}>
-            <Button type="link" className={styles.btnLogin}>
+            <Button
+              type="link"
+              className={styles.btnLogin}
+              onClick={openLoginModal}
+            >
               <i className="icon-user"></i> Login
             </Button>
-            <Button className={styles.btnRegister}>
+            <Button
+              className={styles.btnRegister}
+              onClick={openRegistrationModal}
+            >
               <i className="icon-user-plus"></i> Register
             </Button>
           </div>
