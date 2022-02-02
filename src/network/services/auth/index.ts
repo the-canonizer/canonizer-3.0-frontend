@@ -195,9 +195,95 @@ export const UpdateUserProfileInfo = (values: object) => {
         return value;
       })
       .catch(errors => {
-        debugger;
         let msgs = errors ? errors.error ? errors.error.data ? errors.error.data.error ? errors.error.data.error : '' : '' : '' : '';
-        debugger;
+        if (msgs) {
+          let keys = Object.keys(msgs);
+          keys.forEach((key) => {
+            message.error(msgs[key][0]);
+          });
+        }
+        else {
+          if (errors ? errors.error ? errors.error.data ? errors.error.data.message ? errors.error.data.message : '' : '' : '' : '')
+            message.error(errors.error.data.message);
+          else {
+            message.error('Something is wrong');
+          }
+        }
+
+      })
+    return res;
+  };
+};
+export const GetMobileCarrier = () => {
+  return async (dispatch) => {
+    let state = store.getState();
+    const { auth } = state;
+    const res = await NetworkCall.fetch(
+      UserRequest.GetMobileCarrier(auth.loggedInUser.token)
+      ).then(value => {
+        return value;
+      })
+      .catch(errors => {
+        let msgs = errors ? errors.error ? errors.error.data ? errors.error.data.error ? errors.error.data.error : '' : '' : '' : '';
+        if (msgs) {
+          let keys = Object.keys(msgs);
+          keys.forEach((key) => {
+            message.error(msgs[key][0]);
+          });
+        }
+        else {
+          if (errors ? errors.error ? errors.error.data ? errors.error.data.message ? errors.error.data.message : '' : '' : '' : '')
+            message.error(errors.error.data.message);
+          else {
+            message.error('Something is wrong');
+          }
+        }
+      })
+    return res;
+  };
+};
+
+export const SendOTP = (values: object) => {
+  return async (dispatch) => {
+    let state = store.getState();
+    const { auth } = state;
+    const res = await NetworkCall.fetch(
+      UserRequest.SendOTP(values, auth.loggedInUser.token)
+      ).then(value => {
+        return value;
+      })
+      .catch(errors => {
+        let msgs = errors ? errors.error ? errors.error.data ? errors.error.data.error ? errors.error.data.error : '' : '' : '' : '';
+        if (msgs) {
+          let keys = Object.keys(msgs);
+          keys.forEach((key) => {
+            message.error(msgs[key][0]);
+          });
+        }
+        else {
+          if (errors ? errors.error ? errors.error.data ? errors.error.data.message ? errors.error.data.message : '' : '' : '' : '')
+            message.error(errors.error.data.message);
+          else {
+            message.error('Something is wrong');
+          }
+        }
+
+      })
+    return res;
+  };
+};
+
+export const VerifyOTP = (values: object) => {
+  return async (dispatch) => {
+    let state = store.getState();
+    const { auth } = state;
+    const res = await NetworkCall.fetch(
+      UserRequest.VerifyOTP(values, auth.loggedInUser.token)
+      ).then(value => {
+        return value;
+      })
+      .catch(errors => {
+        let msgs = errors ? errors.error ? errors.error.data ? errors.error.data.error ? errors.error.data.error : '' : '' : '' : '';
         if (msgs) {
           let keys = Object.keys(msgs);
           keys.forEach((key) => {
