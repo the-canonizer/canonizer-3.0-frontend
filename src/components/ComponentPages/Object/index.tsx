@@ -1,6 +1,6 @@
+import { Card, Form, Input, Button, Select, Row, Col   } from 'antd';
 import SideBar from "../home/sideBar";
 import styles from './object.module.scss';
-import { Card, Form, Input, Button, Select, Row, Col   } from 'antd';
 const { Option } = Select;
 
 const Object = () => {
@@ -11,14 +11,14 @@ const Object = () => {
                 <SideBar />
             </aside>
             <div className="pageContentWrap">
-            <Card title={CardTitle} className='form-card'>
+            <Card title={CardTitle} className='can-card-style'>
                 <Form
                 name="basic"
                 layout={'vertical'}
                 autoComplete="off"
                 >
                     <Row gutter={16}>
-                        <Col span={12}>
+                        <Col xs={24} sm={12}>
                             <Form.Item
                                 label="Nick Name"
                                 name="NickName"

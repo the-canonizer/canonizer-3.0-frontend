@@ -24,6 +24,9 @@ body {
   &-4 {
     margin-bottom: 1.5rem;
   }
+  &-0 {
+    margin-bottom: 0 !important;
+  }
 }
 
 .ratio {
@@ -134,13 +137,14 @@ body {
   }
   &.ghost {
     background: transparent !important;
-    margin-left: 1rem;
+    @media screen and (min-width: 421px) {
+      margin-left: 1rem;
+    }
     color: #F89D15;
-    box-shadow: 2px 2px 2px 0px rgba(248, 157, 21, 0.2);
   }
 }
 
-.form-card {
+.can-card-style {
   border: 1px solid #F0F0F0;
   background: #fff;
   .ant-card-head {
@@ -178,6 +182,15 @@ body {
   .ant-select-arrow {
     right: 20px;
   }
+  .form-buttons {
+    @media screen and (max-width: 420px) {
+      display: flex;
+      flex-direction: column;
+      button + button {
+        margin-top: 1rem;
+      }
+    }
+  }
 
 }
 .ant-select-single.ant-select-lg:not(.ant-select-customize-input) .ant-select-selector, .ant-input-lg {
@@ -185,4 +198,12 @@ body {
   align-items: center;
   padding: 11px 20px;
   font-size: 14px;
+}
+.ant-modal-mask {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.ant-form-item-label > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before {
+  margin-top: -2px;
+  margin-left: 4px;
+  font-weight: normal;
 }

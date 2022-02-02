@@ -1,24 +1,39 @@
+import React, { useState } from 'react';
+import { Card, Form, Input, Button, Select, Row, Col, Modal   } from 'antd';
 import SideBar from "../home/sideBar";
 import styles from './statementUpdate.module.scss';
-import { Card, Form, Input, Button, Select, Row, Col   } from 'antd';
+
 const { Option } = Select;
 
 const StatementUpdate = () => {
-    const CardTitle = <>Statement Update</>
+    const CardTitle = <>Statement Update</>;
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const showModal = () => {
+      setIsModalVisible(true);
+    };
+  
+    const handleOk = () => {
+      setIsModalVisible(false);
+    };
+  
+    const handleCancel = () => {
+      setIsModalVisible(false);
+    };
     return (
         <>
             <aside className="leftSideBar miniSideBar">
                 <SideBar />
             </aside>
             <div className="pageContentWrap">
-            <Card title={CardTitle} className='form-card'>
+            <Card title={CardTitle} className='can-card-style'>
                 <Form
                 name="basic"
                 layout={'vertical'}
                 autoComplete="off"
                 >
                     <Row gutter={16}>
-                        <Col span={12}>
+                        <Col xs={24} sm={12}>
                             <Form.Item
                                 label="Nick Name"
                                 name="NickName"
@@ -35,9 +50,7 @@ const StatementUpdate = () => {
                                 </Select>
                             </Form.Item>
                         </Col>
-                        
                     </Row>
-                 
                     <Row gutter={16}>
                         <Col span={24}>
                             <Form.Item
@@ -62,9 +75,18 @@ const StatementUpdate = () => {
                         </Col>
                     </Row>
                     <Form.Item noStyle>
-                        <Button type="primary" htmlType="submit" size={"large"} className="btn-orang"> Submit Update </Button>
-                        <Button size={"large"} className=" btn-orang ghost"> Preview </Button>
+                        <div className="form-buttons">
+                            <Button type="primary" htmlType="submit" size={"large"} className="btn-orang"> Submit Update </Button>
+                            <Button size={"large"} className=" btn-orang ghost" onClick={showModal}> Preview </Button>
+                        </div>
                     </Form.Item>
+
+
+                    <Modal  width={558} title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} className='statement-preview'>
+                        <p>Some contents...</p>
+                        <p>Some contents...</p>
+                        <p>Some contents...</p>
+                    </Modal>
                 </Form>
             </Card>
             </div>

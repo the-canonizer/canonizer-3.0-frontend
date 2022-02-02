@@ -1,7 +1,9 @@
+import { Card, Form, Input, Button, Select, Row, Col, Typography   } from 'antd';
 import SideBar from "../home/sideBar";
 import styles from './createNewCamp.module.scss';
-import { Card, Form, Input, Button, Select, Row, Col   } from 'antd';
+
 const { Option } = Select;
+const { Text } = Typography;
 
 const CreateNewCamp = () => {
     const CardTitle = <>Create New Camp</>
@@ -11,14 +13,14 @@ const CreateNewCamp = () => {
                 <SideBar />
             </aside>
             <div className="pageContentWrap">
-            <Card title={CardTitle} className='form-card'>
+            <Card title={CardTitle} className='can-card-style'>
                 <Form
                 name="basic"
                 layout={'vertical'}
                 autoComplete="off"
                 >
                     <Row gutter={16}>
-                        <Col span={12}>
+                        <Col xs={24} sm={12}>
                             <Form.Item
                                 label="Nick Name"
                                 name="NickName"
@@ -35,7 +37,7 @@ const CreateNewCamp = () => {
                                 </Select>
                             </Form.Item>
                         </Col>
-                        <Col span={12}>
+                        <Col  xs={24} sm={12}>
                             <Form.Item
                                 label="Parent Camp"
                                 name="ParentCamp"
@@ -54,7 +56,7 @@ const CreateNewCamp = () => {
                         </Col>
                     </Row>
                     <Row gutter={16}>
-                        <Col span={12}>
+                        <Col xs={24} sm={12}>
                             <Form.Item
                                 label="Camp Name"
                                 name="CampName"
@@ -63,7 +65,7 @@ const CreateNewCamp = () => {
                                 <Input placeholder="Camp Name"  size={"large"}/>
                             </Form.Item>
                         </Col>
-                        <Col span={12}>
+                        <Col xs={24} sm={12}>
                             <Form.Item
                                 label="Keywords"
                                 name="Keywords"
@@ -80,13 +82,12 @@ const CreateNewCamp = () => {
                                 name="Summary"
                             >
                                 <Input.TextArea rows={6} placeholder="Write summary..."/>
-
-                                <p>The following are rarely used and are for advanced users only.</p>
+                                <Text>The following are rarely used and are for advanced users only.</Text>
                             </Form.Item>
                         </Col>
                     </Row>
                     <Row gutter={16}>
-                        <Col span={12}>
+                        <Col xs={24} sm={12}>
                             <Form.Item
                                 label="Camp About URL"
                                 name="CampAboutURL"
@@ -94,7 +95,7 @@ const CreateNewCamp = () => {
                                 <Input placeholder="https://"  size={"large"}/>
                             </Form.Item>
                         </Col>
-                        <Col span={12}>
+                        <Col xs={24} sm={12}>
                             <Form.Item
                                 label="Camp About Nick Name"
                                 name="CampAbout"
@@ -109,7 +110,7 @@ const CreateNewCamp = () => {
                                     <Option value="other">other</Option>
                                 </Select>
                             </Form.Item>
-                        </Col>
+                        </Col> 
                     </Row>
                     <Form.Item noStyle>
                         <Button type="primary" htmlType="submit" size={"large"} className=" btn-orang"> Create Camp </Button>
