@@ -12,10 +12,14 @@ const ProfileInfo = () => {
   const [mobileCarrier, setMobileCarrier] = useState([]);
   const [isOTPModalVisible, setIsOTPModalVisible] = useState(false);
   const [oTP, setOTP] = useState();
+  const [privateFlags, setPrivateFlags] = useState("");
+  const [privateList, setPrivateList] = useState([]);
+  const [publicList, setPublicList] = useState([]);
 
 
   //on update profile click
   const onFinish = async (values: any) => {
+    values.private_flags = privateList.join();
     values.mobile_carrier = formVerify.getFieldValue("mobile_carrier")
     values.phone_number = formVerify.getFieldValue("phone_number")
     let res = await dispatch(UpdateUserProfileInfo(values));
@@ -56,6 +60,21 @@ const ProfileInfo = () => {
   const handleChangeOTP = (e) => {
     setOTP(e.target.value);
   }
+  //private public selection of fields, create PrivateFlag list
+  const handleselectAfter = (data) => (value) => {
+    if (value == "private") {
+      if (!privateList.includes(data)) {
+        setPrivateList((oldArray) => [...oldArray, data]);
+        publicList.splice(publicList.indexOf(data), 1);
+      }
+    }
+    else if (value == "public") {
+      if (!publicList.includes(data)) {
+        setPublicList((oldArray) => [...oldArray, data]);
+        privateList.splice(privateList.indexOf(data), 1);
+      }
+    }
+  }
   useEffect(() => {
     async function fetchMobileCarrier() {
       let res = await dispatch(GetMobileCarrier());
@@ -75,6 +94,8 @@ const ProfileInfo = () => {
           //format date for datepicker
           res.data.birthday = moment(res.data.birthday, 'YYYY-MM-DD');
           form.setFieldsValue(res.data);
+          setPrivateFlags(res.data.private_flags);
+          setPrivateList(res.data.private_flags.split(','))
         }
       }
     }
@@ -94,6 +115,8 @@ const ProfileInfo = () => {
       handleOTPCancel={handleOTPCancel}
       oTP={oTP}
       handleChangeOTP={handleChangeOTP}
+      handleselectAfter={handleselectAfter}
+      privateFlags={privateFlags}
     ></ProfileInfoUI>
   );
 };
