@@ -1,6 +1,19 @@
+import React from "react";
+import SearchSection from "../../search/search";
+import LoginModal from "../../../componentPages/Login/loginModal";
+import RegistrationModal from "../../../componentPages/registration/registrationModal";
+import LoggedInHeaderNavigation from "../loggedInHeaderNavigation";
+
 const LoggedInHeader = () => {
+
   return (
-    <h1 style={{ backgroundColor: "#a5ec00" }}>Header for logged-in users</h1>
+    <React.Fragment>
+     <LoggedInHeaderNavigation></LoggedInHeaderNavigation>
+      <SearchSection />
+      <LoginModal />
+      <RegistrationModal />
+    </React.Fragment>
+
   );
 };
 

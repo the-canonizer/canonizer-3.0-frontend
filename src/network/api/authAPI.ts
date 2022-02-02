@@ -4,12 +4,13 @@ import NetworkCall from "../networkCall";
 import UserRequest from "../request/userRequest";
 import { message } from "antd";
 
-export const login = (email, password) => {
+export const login = (email: string, password: string) => {
   return async (dispatch) => {
     try {
       const user = await NetworkCall.fetch(
         UserRequest.loginUser(email, password)
       );
+      console.log(user)
       !isServer && window.localStorage.setItem("token", user?.token);
       dispatch(setLoggedInUser(user));
       return user;

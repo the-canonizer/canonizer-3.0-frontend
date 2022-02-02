@@ -5,20 +5,30 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button, Layout, Menu, Row, Col } from "antd";
 import { MenuOutlined, CloseOutlined } from "@ant-design/icons";
-
+import { useDispatch } from "react-redux";
 import styles from "../siteHeader.module.scss";
-
-import SearchSection from "../../search/search";
 import Logo from "../logoHeader";
+import SearchSection from "../../search/search";
+import LoginModal from "../../../componentPages/Login/loginModal";
+import RegistrationModal from "../../../componentPages/registration/registrationModal";
+import {
+  showLoginModal,
+  showRegistrationModal,
+} from "../../../../store/slices/ui/uiSlice";
+
+const { Header } = Layout;
 
 const LoggedOutHeader = () => {
-  const { Header } = Layout;
+  const dispatch = useDispatch();
   const router = useRouter();
 
   const [isActive, setActive] = useState(false);
   const toggleMobNav = () => {
     setActive(!isActive);
   };
+
+  const openLoginModal = () => dispatch(showLoginModal());
+  const openRegistrationModal = () => dispatch(showRegistrationModal());
 
   return (
     <React.Fragment>
@@ -87,6 +97,8 @@ const LoggedOutHeader = () => {
         ></div>
       </Header>
       <SearchSection />
+      <LoginModal />
+      <RegistrationModal />
     </React.Fragment>
   );
 };

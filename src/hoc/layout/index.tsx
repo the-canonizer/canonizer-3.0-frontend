@@ -7,23 +7,30 @@ import LoggedOutHeader from "../../components/common/headers/loggedOutHeader";
 import Spinner from "../../components/common/spinner/spinner";
 import styles from "./layout.module.scss";
 import Footer from "../../components/common/footer";
-
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 function Layout(props) {
   const [isLogin, setIsLogin] = useState(false);
 
   const { isUserAuthenticated } = useAuthentication();
 
-  useEffect(() => {
-    if (isUserAuthenticated) {
-      setIsLogin(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const isAuthenticate = useSelector(
+    (state: RootState) => state.auth.authenticated
+  );
+
+  // useEffect(() => {
+  //   if (isUserAuthenticated) {
+  //     setIsLogin(true);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   return (
     <>
-      <div className={styles.pageWrap}>
-        {isLogin ? <LoggedInHeader /> : <LoggedOutHeader />}
+      <div className="app-layout">
+        {isAuthenticate ? <LoggedInHeader /> : <LoggedOutHeader />}
+
+        <div className="app-content">{props.children}</div>
         <Spinner>{""}</Spinner>
         <div className={styles.contentWrap}>
           <div className={styles.contentArea}>{props.children}</div>

@@ -15,11 +15,13 @@ import storage from "redux-persist/lib/storage";
 // reducers
 import Auth from "./slices/authSlice";
 import Tree from "./slices/treeSlice";
+import UiReducer from "./slices/ui/uiSlice";
 
 let reducers = combineReducers({
   auth: Auth,
   trees: Tree,
   homePage: homePageSlice,
+  ui: UiReducer,
 });
 
 const persistConfig = {
@@ -41,5 +43,7 @@ const store = configureStore({
   // .concat(logger),
 });
 export type RootState = ReturnType<typeof reducers>;
+export type AppDispatch = typeof store.dispatch;
+
 const persistor = persistStore(store);
 export { persistor, store };

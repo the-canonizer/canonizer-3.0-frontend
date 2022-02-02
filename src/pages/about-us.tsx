@@ -1,4 +1,4 @@
-import AboutUs from "../components/componentPages/aboutUs";
+import AboutUs from "../components/ComponentPages/AboutUs";
 import Layout from "../hoc/layout";
 
 const AboutUsPage = () => {
