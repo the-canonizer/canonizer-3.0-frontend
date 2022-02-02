@@ -1,5 +1,32 @@
-.statement-preview {
-   &.ant-modal {
-       top: 137px;
-   } 
+.statementPreview {
+    top: 137px;
+    // padding-bottom: 0;
+    .headingStyle {
+        font-size: 26px;
+        font-weight: 600;
+        color: #2E68DB;
+        &.bgDark {
+            color: #6E7880;
+            margin-top: 32px;
+            margin-bottom: 1rem;
+        }
+    }
+    .paragraphStyle {
+        font-size: 15px;
+        font-weight: 400;
+        color: #000000;
+        margin-bottom: 1.5rem;
+    }
+    .modalFooter {
+        display: flex;
+        justify-content: flex-end;
+        .modalCancelBtn {
+            color: #B0BAC9;
+            border: 1px solid #B0BAC9;
+            background: #F5F5F5;
+            height: 38px;
+            margin-left: 1rem;
+            font-weight: 500;
+        }
+    }
 }

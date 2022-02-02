@@ -202,8 +202,26 @@ body {
 .ant-modal-mask {
   background-color: rgba(0, 0, 0, 0.8);
 }
+.ant-modal-content {
+  border: 1px solid #707070;
+  border-radius: 2px;
+}
 .ant-form-item-label > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before {
   margin-top: -2px;
   margin-left: 4px;
   font-weight: normal;
 }
+.ant-modal-close {
+  top: 13px;
+  right: 15px;
+  .ant-modal-close-x {
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    .anticon-close-circle {
+      font-size: 24px;
+      color: #0F2A4D;
+    }
+  }
+}
+

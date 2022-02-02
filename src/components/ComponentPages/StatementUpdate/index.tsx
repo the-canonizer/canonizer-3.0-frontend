@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { Card, Form, Input, Button, Select, Row, Col, Modal   } from 'antd';
+import { Card, Form, Input, Button, Select, Row, Col, Modal, Typography   } from 'antd';
+import { CloseCircleOutlined } from '@ant-design/icons';
 import SideBar from "../home/sideBar";
 import styles from './statementUpdate.module.scss';
 
 const { Option } = Select;
+const { Title, Paragraph } = Typography;
 
 const StatementUpdate = () => {
     const CardTitle = <>Statement Update</>;
@@ -82,13 +84,36 @@ const StatementUpdate = () => {
                     </Form.Item>
 
 
-                    <Modal  width={558} title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} className='statement-preview'>
-                        <p>Some contents...</p>
-                        <p>Some contents...</p>
-                        <p>Some contents...</p>
+                    <Modal  width={558} visible={isModalVisible} footer={null} onOk={handleOk} onCancel={handleCancel} className={styles.statementPreview} closeIcon={<CloseCircleOutlined />} bodyStyle={{
+                        padding: '37px 30px 27px'
+                    }}>
+                        <Title level={3} className={styles.headingStyle}>Statement Preview</Title>
+                        <Title level={3} className={`${styles.headingStyle} ${styles.bgDark}`}>Theories of Mind and Consciousness</Title>
+
+                        <Paragraph className={styles.paragraphStyle}>
+                            The goal of this topic is to build and track consensus around theories of consciousness. Everyone is invited to contribute, as we want to track the default popular consensus. There is also the “Mind Expert” Canonizer people can select, so people can compare the popular consensus with the “Expert Consensus”.
+                        </Paragraph>
+
+                        <Paragraph className={styles.paragraphStyle}>
+                            We focus on bridging the Explanatory Gap to explore the qualitative nature of consciousness. We are asking the questions: “What are the physical properties of conscious experience?” Physical properties can be measured. “Can consciousness then be physically measured, tested, and observed?”
+                        </Paragraph>
+                        <Paragraph className={styles.paragraphStyle}>
+                            Contributors should work to describe experiments that are consistent with particular theories, and falsify competing theories.
+                        </Paragraph>
+                        <Paragraph className={styles.paragraphStyle}>
+                            This topic is part of the Consciousness Consensus Project.
+                        </Paragraph>
+                        <Paragraph className={styles.paragraphStyle}>
+                            <div><strong>Edit summary : </strong> Typo fixes </div>
+                            <div><strong>Submitter Nick Name : </strong> Nomi </div>
+                        </Paragraph>
+                        <div className={styles.modalFooter}>
+                            <Button size={'large'} type="primary" className="btn-orang" onClick={handleOk}> Submit Update </Button>
+                            <Button size={'large'} className={styles.modalCancelBtn} onClick={handleCancel}> Cancel </Button>
+                        </div>
                     </Modal>
                 </Form>
-            </Card>
+            </Card>  
             </div>
         </>
     );
