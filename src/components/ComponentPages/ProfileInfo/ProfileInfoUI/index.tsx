@@ -3,10 +3,10 @@ import styles from "./ProfileInfo.module.scss";
 import VerifyMobileNumber from "../../Form/VerifyMobileNumberForm";
 import ProfileInfoForm from "../../Form/ProfileInfoForm";
 
-function ProfileInfoUI({ 
-  form, 
-  mobileCarrier, 
-  onFinish, 
+function ProfileInfoUI({
+  form,
+  mobileCarrier,
+  onFinish,
   onFinishFailed,
   formVerify,
   onVerifyClick,
@@ -14,7 +14,9 @@ function ProfileInfoUI({
   isOTPModalVisible,
   handleOTPCancel,
   oTP,
-  handleChangeOTP }) {
+  handleChangeOTP,
+  handleselectAfter,
+  privateFlags }) {
   return (
     <section className={styles.profileInfo_wrapper}>
       <VerifyMobileNumber
@@ -31,6 +33,8 @@ function ProfileInfoUI({
         form={form}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
+        handleselectAfter={handleselectAfter}
+        privateFlags={privateFlags}
       ></ProfileInfoForm>
     </section>
   );
