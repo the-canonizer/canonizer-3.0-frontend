@@ -29,7 +29,6 @@ export const homePageSlice = createSlice({
       };
     },
     pushToCanonizedTopics: (state, action) => {
-      // debugger;
       state.canonizedTopicsData = {
         ...state.canonizedTopicsData,
         topics: [...state.canonizedTopicsData.topics, ...action.payload.topic],

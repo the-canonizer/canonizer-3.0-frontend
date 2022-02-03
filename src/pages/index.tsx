@@ -41,7 +41,7 @@ export async function getServerSideProps() {
   const reqBody = {
     algorithm: "blind_popularity",
     asofdate: currentTime,
-    filter: "2",
+    filter: 0,
     namespace_id: 1,
     page_number: 1,
     page_size: 15,

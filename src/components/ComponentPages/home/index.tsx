@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Row, Col } from "antd";
 
 import useAuthentication from "../../../hooks/isUserAuthenticated";
