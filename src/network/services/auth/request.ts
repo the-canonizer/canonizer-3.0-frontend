@@ -187,6 +187,50 @@ export default class UserRequest extends Request {
       authToken
     );
   }
+
+  static GetMobileCarrier(authToken) {
+    const body = {
+      
+    };
+  
+    return new UserRequest(
+      K.Network.URL.GetMobileCarrier,
+      K.Network.Method.GET,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
+  static SendOTP(values, authToken) {
+    const body = {
+      ...values,
+    };
+
+    return new UserRequest(
+      K.Network.URL.SendOTP,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
+
+  static VerifyOTP(values, authToken) {
+    const body = {
+      ...values,
+    };
+
+    return new UserRequest(
+      K.Network.URL.VerifyOTP,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
 }
 
 

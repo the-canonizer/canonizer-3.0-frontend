@@ -17,6 +17,7 @@ import styles from "./Login.module.scss";
 
 import messages from "../../../../messages";
 import SocialLoginButton from "../../../common/social-login/social-login";
+import FormItem from "../../../common/formElements";
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -55,23 +56,19 @@ const LoginUi = ({ form, onFinish, closeModal, isModal }) => {
               layout="vertical"
               scrollToFirstError
             >
-              <Form.Item
+              <FormItem
                 name="username"
                 label={messages.labels.emailPhone}
-                {...messages.usernameRule}
-              >
-                <Input placeholder={messages.placeholders.emailPhone} />
-              </Form.Item>
-              <Form.Item
+                rules={messages.usernameRule}
+                placeholder={messages.placeholders.emailPhone}
+              />
+              <FormItem
                 name="password"
                 label={messages.labels.password}
-                {...messages.userPassRule}
-              >
-                <Input
-                  type="password"
-                  placeholder={messages.placeholders.password}
-                />
-              </Form.Item>
+                rules={messages.userPassRule}
+                placeholder={messages.placeholders.password}
+                type="password"
+              />
               <Form.Item className={styles.remember}>
                 <Form.Item name="remember" valuePropName="checked" noStyle>
                   <Checkbox>Remember me</Checkbox>

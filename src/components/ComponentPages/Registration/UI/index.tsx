@@ -8,6 +8,7 @@ import styles from "./Registration.module.scss";
 
 import messages from "../../../../messages";
 import SocialLoginButton from "../../../common/social-login/social-login";
+import FormItem from "../../../common/formElements";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -67,20 +68,18 @@ function RegistrationUi({
         <div className={styles.section_one}>
           <Row gutter={30}>
             <Col md={12}>
-              <Form.Item
+              <FormItem
                 name="first_name"
                 label={messages.labels.firstName}
-                {...messages.firstNameRule}
-              >
-                <Input placeholder={messages.placeholders.firstName} />
-              </Form.Item>
-              <Form.Item
+                rules={messages.firstNameRule}
+                placeholder={messages.placeholders.firstName}
+              />
+              <FormItem
                 name="last_name"
                 label={messages.labels.lastName}
-                {...messages.lastNameRule}
-              >
-                <Input placeholder={messages.placeholders.lastName} />
-              </Form.Item>
+                rules={messages.lastNameRule}
+                placeholder={messages.placeholders.lastName}
+              />
               <Form.Item
                 name="phone"
                 label={messages.labels.phone}
@@ -108,30 +107,26 @@ function RegistrationUi({
               </Form.Item>
             </Col>
             <Col md={12}>
-              <Form.Item
+              <FormItem
                 name="middle_name"
                 label={messages.labels.middleName}
-                {...messages.middleNameRule}
-              >
-                <Input placeholder={messages.placeholders.middleName} />
-              </Form.Item>
-              <Form.Item
+                rules={messages.middleNameRule}
+                placeholder={messages.placeholders.middleName}
+              />
+
+              <FormItem
                 name="email"
                 label={messages.labels.email}
-                {...messages.emRule}
-              >
-                <Input placeholder={messages.placeholders.email} />
-              </Form.Item>
-              <Form.Item
+                rules={messages.emRule}
+                placeholder={messages.placeholders.email}
+              />
+              <FormItem
                 name="password"
                 label={messages.labels.password}
-                {...messages.passwordRule}
-              >
-                <Input
-                  type="password"
-                  placeholder={messages.placeholders.password}
-                />
-              </Form.Item>
+                rules={messages.passwordRule}
+                placeholder={messages.placeholders.password}
+                type="password"
+              />
               <Form.Item
                 name="confirm"
                 label={messages.labels.confirmPassword}
