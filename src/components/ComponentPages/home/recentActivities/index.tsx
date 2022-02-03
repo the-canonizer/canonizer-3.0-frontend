@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { Button, Row, Col, Tabs, Typography, Tag, List } from "antd";
+import { Tabs, Typography, List } from "antd";
 import styles from "./recentActivities.module.scss";
-import { RightOutlined } from "@ant-design/icons";
 
 const { TabPane } = Tabs;
 const { Title, Link, Text } = Typography;
@@ -9,135 +8,102 @@ const { Title, Link, Text } = Typography;
 const OperationsSlot = {
   left: <Title level={3}>Recent Activities</Title>,
 };
-const options = ["left", "right"];
 
-const data = [
-  <>
-    <Link href="#">
-      <>
-        <Text className={styles.text}>More Intelligence Better </Text>
-        <Text className={styles.secondary} type="secondary">
-          <i className="icon-calendar"></i> Jun 23, 2012, 2:25:02 AM
-        </Text>
-      </>
-    </Link>
-  </>,
-  <>
-    <Link href="#">
-      <Text className={styles.text}>Mind-Brain Identity </Text>
-      <Text className={styles.secondary} type="secondary">
-        <i className="icon-calendar"></i> Jun 23, 2012, 2:25:02 AM
-      </Text>
-    </Link>
-  </>,
-  <>
-    <Link href="#">
-      <Text className={styles.text}>Consciousness fundamental </Text>
-      <Text className={styles.secondary} type="secondary">
-        <i className="icon-calendar"></i> Jun 23, 2012, 2:25:02 AM
-      </Text>
-    </Link>
-  </>,
-  <>
-    <Link href="#">
-      <Text className={styles.text}>Technological Improvement </Text>
-      <Text className={styles.secondary} type="secondary">
-        <i className="icon-calendar"></i> Jun 23, 2012, 2:25:02 AM
-      </Text>
-    </Link>
-  </>,
-  <>
-    <Link href="#">
-      <Text className={styles.text}>Qualitative Present </Text>
-      <Text className={styles.secondary} type="secondary">
-        <i className="icon-calendar"></i> Jun 23, 2012, 2:25:02 AM
-      </Text>
-    </Link>
-  </>,
-  <>
-    <Link href="#">
-      <Text className={styles.text}>Holistic Panexperientiali </Text>
-      <Text className={styles.secondary} type="secondary">
-        <i className="icon-calendar"></i> Jun 23, 2012, 2:25:02 AM
-      </Text>
-    </Link>
-  </>,
-  <>
-    <Link href="#">
-      <Text className={styles.text}>Embrace New Technology </Text>
-      <Text className={styles.secondary} type="secondary">
-        <i className="icon-calendar"></i> Jun 23, 2012, 2:25:02 AM
-      </Text>
-    </Link>
-  </>,
-  <>
-    <Link href="#">
-      <Text className={styles.text}>Abortion Rights </Text>
-      <Text className={styles.secondary} type="secondary">
-        <i className="icon-calendar"></i> Jun 23, 2012, 2:25:02 AM
-      </Text>
-    </Link>
-  </>,
-  <>
-    <Link href="#">
-      <Text className={styles.text}>Biological naturalism </Text>
-      <Text className={styles.secondary} type="secondary">
-        <i className="icon-calendar"></i> Jun 23, 2012, 2:25:02 AM
-      </Text>
-    </Link>
-  </>,
-  <>
-    <Link href="#">
-      <Text className={styles.text}>Integrated Information </Text>
-      <Text className={styles.secondary} type="secondary">
-        <i className="icon-calendar"></i> Jun 23, 2012, 2:25:02 AM
-      </Text>
-    </Link>
-  </>,
-  <>
-    <Link href="#">
-      <Text className={styles.text}>Qualia are Material Qualities </Text>
-      <Text className={styles.secondary} type="secondary">
-        <i className="icon-calendar"></i> Jun 23, 2012, 2:25:02 AM
-      </Text>
-    </Link>
-  </>,
-  <>
-    <Link href="#">
-      <Text className={styles.text}>More Intelligence Better </Text>
-      <Text className={styles.secondary} type="secondary">
-        <i className="icon-calendar"></i> Jun 23, 2012, 2:25:02 AM
-      </Text>
-    </Link>
-  </>,
-  <>
-    <Link href="#">
-      <Text className={styles.text}>Orch OR </Text>
-      <Text className={styles.secondary} type="secondary">
-        <i className="icon-calendar"></i> Jun 23, 2012, 2:25:02 AM
-      </Text>
-    </Link>
-  </>,
-  <>
-    <Link href="#">
-      <Text className={styles.text}>More Intelligence Better</Text>
-      <Text className={styles.secondary} type="secondary">
-        <i className="icon-calendar"></i> Jun 23, 2012, 2:25:02 AM
-      </Text>
-    </Link>
-  </>,
-  <>
-    <Link href="#">
-      <Text className={styles.text}>Orch OR</Text>
-      <Text className={styles.secondary} type="secondary">
-        <i className="icon-calendar"></i> Jun 23, 2012, 2:25:02 AM
-      </Text>
-    </Link>
-  </>,
+const mockData = [
+  {
+    link: "/",
+    shortDescription: "More Intelligence Better",
+    date: " Jun 23, 2012, 2:25:02 AM",
+    id: 1,
+  },
+  {
+    link: "/",
+    shortDescription: "More Intelligence Better",
+    date: " Jun 23, 2012, 2:25:02 AM",
+    id: 2,
+  },
+  {
+    link: "/",
+    shortDescription: "More Intelligence Better",
+    date: " Jun 23, 2012, 2:25:02 AM",
+    id: 3,
+  },
+  {
+    link: "/",
+    shortDescription: "More Intelligence Better",
+    date: " Jun 23, 2012, 2:25:02 AM",
+    id: 4,
+  },
+  {
+    link: "/",
+    shortDescription: "More Intelligence Better",
+    date: " Jun 23, 2012, 2:25:02 AM",
+    id: 5,
+  },
+  {
+    link: "/",
+    shortDescription: "More Intelligence Better",
+    date: " Jun 23, 2012, 2:25:02 AM",
+    id: 6,
+  },
+  {
+    link: "/",
+    shortDescription: "More Intelligence Better",
+    date: " Jun 23, 2012, 2:25:02 AM",
+    id: 7,
+  },
+  {
+    link: "/",
+    shortDescription: "More Intelligence Better",
+    date: " Jun 23, 2012, 2:25:02 AM",
+    id: 8,
+  },
+  {
+    link: "/",
+    shortDescription: "More Intelligence Better",
+    date: " Jun 23, 2012, 2:25:02 AM",
+    id: 9,
+  },
+  {
+    link: "/",
+    shortDescription: "More Intelligence Better",
+    date: " Jun 23, 2012, 2:25:02 AM",
+    id: 10,
+  },
+  {
+    link: "/",
+    shortDescription: "More Intelligence Better",
+    date: " Jun 23, 2012, 2:25:02 AM",
+    id: 11,
+  },
+  {
+    link: "/",
+    shortDescription: "More Intelligence Better",
+    date: " Jun 23, 2012, 2:25:02 AM",
+    id: 12,
+  },
+  {
+    link: "/",
+    shortDescription: "More Intelligence Better",
+    date: " Jun 23, 2012, 2:25:02 AM",
+    id: 13,
+  },
+  {
+    link: "/",
+    shortDescription: "More Intelligence Better",
+    date: " Jun 23, 2012, 2:25:02 AM",
+    id: 14,
+  },
+  {
+    link: "/",
+    shortDescription: "More Intelligence Better",
+    date: " Jun 23, 2012, 2:25:02 AM",
+    id: 15,
+  },
 ];
 
 export default function RecentActivities() {
-  const [position, setPosition] = React.useState(["left", "right"]);
+  const [position] = useState(["left", "right"]);
 
   const slot = React.useMemo(() => {
     if (position.length === 0) return null;
@@ -167,9 +133,21 @@ export default function RecentActivities() {
                 </div>
               }
               bordered={false}
-              dataSource={data}
+              dataSource={mockData}
               renderItem={(item) => (
-                <List.Item className={styles.listItem}>{item}</List.Item>
+                <List.Item className={styles.listItem}>
+                  <Link href={item.link}>
+                    <>
+                      <Text className={styles.text}>
+                        {item.shortDescription}
+                      </Text>
+                      <Text className={styles.secondary} type="secondary">
+                        <i className="icon-calendar"></i>
+                        {item.date}
+                      </Text>
+                    </>
+                  </Link>
+                </List.Item>
               )}
             />
           </TabPane>
