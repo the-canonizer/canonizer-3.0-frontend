@@ -19,7 +19,19 @@ const ProfileInfo = () => {
 
   //on update profile click
   const onFinish = async (values: any) => {
-    values.private_flags = privateList.join();
+    //Set Private Public flags
+    values.first_name_bit = privateList.includes("first_name") ? 0 : 1;
+    values.last_name_bit = privateList.includes("last_name") ? 0 : 1;
+    values.middle_name_bit = privateList.includes("middle_name") ? 0 : 1;
+    values.email_bit = privateList.includes("email") ? 0 : 1;
+    values.address_1_bit = privateList.includes("address_1") ? 0 : 1;
+    values.address_2_bit = privateList.includes("address_2") ? 0 : 1;
+    values.postal_code_bit = privateList.includes("postal_code") ? 0 : 1;
+    values.city_bit = privateList.includes("city") ? 0 : 1;
+    values.state_bit = privateList.includes("state") ? 0 : 1;
+    values.country_bit = privateList.includes("country") ? 0 : 1;
+    values.birthday_bit = privateList.includes("birthday") ? 0 : 1;
+    //End Set Private Public flags
     values.mobile_carrier = formVerify.getFieldValue("mobile_carrier")
     values.phone_number = formVerify.getFieldValue("phone_number")
     let res = await dispatch(UpdateUserProfileInfo(values));
