@@ -1,10 +1,8 @@
 import K from "../../constants";
 import Request from ".";
 
-import { redirectToLogin } from "../../utils/generalUtility";
-
 export default class UserRequest extends Request {
-  constructor(...params) {
+  constructor(params) {
     super(params);
   }
 
@@ -13,14 +11,12 @@ export default class UserRequest extends Request {
       password,
       email,
     };
-
-    return new UserRequest(
+    return new Request(
       K.Network.URL.LoginUser,
       K.Network.Method.POST,
       body,
       K.Network.Header.Type.Json,
-      {},
-      false
+      {}
     );
   }
 
@@ -29,13 +25,12 @@ export default class UserRequest extends Request {
       user,
       user_image,
     };
-    return new UserRequest(
+    return new Request(
       K.Network.URL.UpdateUser + id,
       K.Network.Method.PUT,
       body,
       K.Network.Header.Type.Json,
-      {},
-      false
+      {}
     );
   }
 

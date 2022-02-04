@@ -17,7 +17,7 @@ const ChangePassword = () => {
     let formBody = {
       current_password: values.current_password,
       new_password: values.new_password,
-      confirm_password: values.confirm_password
+      confirm_password: values.confirm_password,
     };
     
     let res = await dispatch(changePassword(formBody));
@@ -30,7 +30,7 @@ const ChangePassword = () => {
   };
   
   const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+    console.log("Failed:", errorInfo);
   };
 
   return (

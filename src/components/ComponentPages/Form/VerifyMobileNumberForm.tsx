@@ -39,7 +39,10 @@ function VerifyMobileNumberForm({
                 label={messages.labels.phoneNumber}
                 {...messages.phoneNumberRule}
               >
-                <Input placeholder={messages.placeholders.phoneNumber} size="large" />
+                <Input
+                  placeholder={messages.placeholders.phoneNumber}
+                  size="large"
+                />
               </Form.Item>
             </Col>
             <Col md={12}>
@@ -54,10 +57,14 @@ function VerifyMobileNumberForm({
                   optionFilterProp="children"
                   size="large"
                   filterOption={(input, option) =>
-                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    option.children
+                      .toLowerCase()
+                      .indexOf(input.toLowerCase()) >= 0
                   }
                   filterSort={(optionA, optionB) =>
-                    optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
+                    optionA.children
+                      .toLowerCase()
+                      .localeCompare(optionB.children.toLowerCase())
                   }
                 >
                   {mobileCarrierList}
@@ -74,7 +81,12 @@ function VerifyMobileNumberForm({
               Verify
             </Button>
           </Form.Item>
-          <Modal title="" visible={isOTPModalVisible} footer="" onCancel={handleOTPCancel}>
+          <Modal
+            title=""
+            visible={isOTPModalVisible}
+            footer=""
+            onCancel={handleOTPCancel}
+          >
             Otp has been sent on your phone number.
             <Input placeholder={messages.placeholders.otp} value={otp} onChange={handleChangeOTP} size="large" />
             <Button

@@ -10,9 +10,124 @@ body {
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
   background-color: #f8f8f8 !important;
 }
+
+.float-right {
+  float: right;
+}
+
 .d-flex {
   display: flex;
 }
+
+.mt {
+  &-3 {
+    margin-top: 1rem;
+  }
+  &-4 {
+    margin-top: 1.5rem;
+  }
+}
+
+.mb {
+  &-4 {
+    margin-bottom: 1.5rem;
+  }
+}
+
+.ratio {
+  position: relative;
+  &>iframe {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  &-16x9 {
+    padding-top: 56.6%;
+  }
+}
+
+.text {
+  &-center {
+    text-align: center;
+  }
+  &-right {
+    text-align: right;
+  }
+}
+
+.leftSideBar {
+  &+.pageContentWrap {
+    @media screen and (min-width: 992px) {
+      padding: 0 16px;
+    }
+  }
+  &.miniSideBar {
+    @media screen and (min-width: 992px) {
+      width: 245px;
+      &+.pageContentWrap {
+        width: calc(100% - 245px);
+      }
+    }
+  }
+  &:not(.miniSideBar) {
+    width: 420px;
+    &+.pageContentWrap {
+      width: calc(100% - 420px);
+    }
+  }
+}
+
+.topicsList_card, .recentActivities_listWrap {
+  .ant-list-footer {
+    margin-top: 10px;
+    padding-bottom: 6px;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+.recentActivities_listCardTabs {
+  &.ant-tabs {
+    overflow: visible;
+  }
+  &.ant-tabs-top > .ant-tabs-nav::before {
+    right: -20px;
+    left: -20px;
+  }
+  .ant-tabs-nav {
+    margin-bottom: 18px;
+    &-wrap {
+      flex: unset !important;
+    }
+    @media screen and (min-width:1200px) and (max-width: 1499px) {
+      display: block;
+      h3 {
+        margin-bottom: 5px;
+      }
+    }
+  }
+  .ant-tabs-tab {
+    padding-top: 3px;
+    padding-bottom: 15px;
+    &.ant-tabs-tab-active {
+      font-weight: 600;
+    }
+  }
+}
+
+.logged-in-view {
+  .help-card-wrap {
+    @media screen and (min-width: 1200px) {
+      display: flex;
+      justify-content: space-between;
+      .col-1, .col-2 {
+        width: 48%;
+      }
+    }
+  }
 .tab--card {
   .ant-card-head {
     display: flex;

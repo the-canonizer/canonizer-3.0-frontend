@@ -30,7 +30,7 @@ export const validations: ErrorContainer = {
   confirmPasswordErr: "The two passwords that you entered do not match!",
   otp: "Please input your otp!",
   otpLength: "OTP should be min/max 6 characters long!",
-  phoneNumber:"Please Enter Phone Number!",
-  mobileCarrier:"Please Enter Mobile Carrier!",
-  dob:"Please select DOB!"
+  phoneNumber: "Please Enter Phone Number!",
+  mobileCarrier: "Please Enter Mobile Carrier!",
+  dob: "Please select DOB!",
 };

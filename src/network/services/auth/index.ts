@@ -132,7 +132,6 @@ export const verifyOtp = (values: object) => {
 
 export const changePassword = (values: object) => {
   return async (dispatch) => {
-
     try {
       let state = store.getState();
       const { auth } = state;
@@ -148,8 +147,7 @@ export const changePassword = (values: object) => {
         keys.forEach((key) => {
           message.error(msgs[key][0]);
         });
-      }
-      else {
+      } else {
         message.error(errors.error.data.message);
       }
     }
@@ -162,25 +160,43 @@ export const GetUserProfileInfo = () => {
     const { auth } = state;
     const res = await NetworkCall.fetch(
       UserRequest.GetUserProfileInfo(auth.loggedInUser.token)
-      ).then(value => {
+    )
+      .then((value) => {
         return value;
       })
-      .catch(errors => {
-        let msgs = errors ? errors.error ? errors.error.data ? errors.error.data.error ? errors.error.data.error : '' : '' : '' : '';
+      .catch((errors) => {
+        let msgs = errors
+          ? errors.error
+            ? errors.error.data
+              ? errors.error.data.error
+                ? errors.error.data.error
+                : ""
+              : ""
+            : ""
+          : "";
         if (msgs) {
           let keys = Object.keys(msgs);
           keys.forEach((key) => {
             message.error(msgs[key][0]);
           });
-        }
-        else {
-          if (errors ? errors.error ? errors.error.data ? errors.error.data.message ? errors.error.data.message : '' : '' : '' : '')
+        } else {
+          if (
+            errors
+              ? errors.error
+                ? errors.error.data
+                  ? errors.error.data.message
+                    ? errors.error.data.message
+                    : ""
+                  : ""
+                : ""
+              : ""
+          )
             message.error(errors.error.data.message);
           else {
-            message.error('Something is wrong');
+            message.error("Something is wrong");
           }
         }
-      })
+      });
     return res;
   };
 };
@@ -191,26 +207,43 @@ export const UpdateUserProfileInfo = (values: object) => {
     const { auth } = state;
     const res = await NetworkCall.fetch(
       UserRequest.UpdateUserProfileInfo(values, auth.loggedInUser.token)
-      ).then(value => {
+    )
+      .then((value) => {
         return value;
       })
-      .catch(errors => {
-        let msgs = errors ? errors.error ? errors.error.data ? errors.error.data.error ? errors.error.data.error : '' : '' : '' : '';
+      .catch((errors) => {
+        let msgs = errors
+          ? errors.error
+            ? errors.error.data
+              ? errors.error.data.error
+                ? errors.error.data.error
+                : ""
+              : ""
+            : ""
+          : "";
         if (msgs) {
           let keys = Object.keys(msgs);
           keys.forEach((key) => {
             message.error(msgs[key][0]);
           });
-        }
-        else {
-          if (errors ? errors.error ? errors.error.data ? errors.error.data.message ? errors.error.data.message : '' : '' : '' : '')
+        } else {
+          if (
+            errors
+              ? errors.error
+                ? errors.error.data
+                  ? errors.error.data.message
+                    ? errors.error.data.message
+                    : ""
+                  : ""
+                : ""
+              : ""
+          )
             message.error(errors.error.data.message);
           else {
-            message.error('Something is wrong');
+            message.error("Something is wrong");
           }
         }
-
-      })
+      });
     return res;
   };
 };
@@ -220,25 +253,43 @@ export const GetMobileCarrier = () => {
     const { auth } = state;
     const res = await NetworkCall.fetch(
       UserRequest.GetMobileCarrier(auth.loggedInUser.token)
-      ).then(value => {
+    )
+      .then((value) => {
         return value;
       })
-      .catch(errors => {
-        let msgs = errors ? errors.error ? errors.error.data ? errors.error.data.error ? errors.error.data.error : '' : '' : '' : '';
+      .catch((errors) => {
+        let msgs = errors
+          ? errors.error
+            ? errors.error.data
+              ? errors.error.data.error
+                ? errors.error.data.error
+                : ""
+              : ""
+            : ""
+          : "";
         if (msgs) {
           let keys = Object.keys(msgs);
           keys.forEach((key) => {
             message.error(msgs[key][0]);
           });
-        }
-        else {
-          if (errors ? errors.error ? errors.error.data ? errors.error.data.message ? errors.error.data.message : '' : '' : '' : '')
+        } else {
+          if (
+            errors
+              ? errors.error
+                ? errors.error.data
+                  ? errors.error.data.message
+                    ? errors.error.data.message
+                    : ""
+                  : ""
+                : ""
+              : ""
+          )
             message.error(errors.error.data.message);
           else {
-            message.error('Something is wrong');
+            message.error("Something is wrong");
           }
         }
-      })
+      });
     return res;
   };
 };
@@ -249,26 +300,43 @@ export const SendOTP = (values: object) => {
     const { auth } = state;
     const res = await NetworkCall.fetch(
       UserRequest.SendOTP(values, auth.loggedInUser.token)
-      ).then(value => {
+    )
+      .then((value) => {
         return value;
       })
-      .catch(errors => {
-        let msgs = errors ? errors.error ? errors.error.data ? errors.error.data.error ? errors.error.data.error : '' : '' : '' : '';
+      .catch((errors) => {
+        let msgs = errors
+          ? errors.error
+            ? errors.error.data
+              ? errors.error.data.error
+                ? errors.error.data.error
+                : ""
+              : ""
+            : ""
+          : "";
         if (msgs) {
           let keys = Object.keys(msgs);
           keys.forEach((key) => {
             message.error(msgs[key][0]);
           });
-        }
-        else {
-          if (errors ? errors.error ? errors.error.data ? errors.error.data.message ? errors.error.data.message : '' : '' : '' : '')
+        } else {
+          if (
+            errors
+              ? errors.error
+                ? errors.error.data
+                  ? errors.error.data.message
+                    ? errors.error.data.message
+                    : ""
+                  : ""
+                : ""
+              : ""
+          )
             message.error(errors.error.data.message);
           else {
-            message.error('Something is wrong');
+            message.error("Something is wrong");
           }
         }
-
-      })
+      });
     return res;
   };
 };
@@ -279,26 +347,43 @@ export const VerifyOTP = (values: object) => {
     const { auth } = state;
     const res = await NetworkCall.fetch(
       UserRequest.VerifyOTP(values, auth.loggedInUser.token)
-      ).then(value => {
+    )
+      .then((value) => {
         return value;
       })
-      .catch(errors => {
-        let msgs = errors ? errors.error ? errors.error.data ? errors.error.data.error ? errors.error.data.error : '' : '' : '' : '';
+      .catch((errors) => {
+        let msgs = errors
+          ? errors.error
+            ? errors.error.data
+              ? errors.error.data.error
+                ? errors.error.data.error
+                : ""
+              : ""
+            : ""
+          : "";
         if (msgs) {
           let keys = Object.keys(msgs);
           keys.forEach((key) => {
             message.error(msgs[key][0]);
           });
-        }
-        else {
-          if (errors ? errors.error ? errors.error.data ? errors.error.data.message ? errors.error.data.message : '' : '' : '' : '')
+        } else {
+          if (
+            errors
+              ? errors.error
+                ? errors.error.data
+                  ? errors.error.data.message
+                    ? errors.error.data.message
+                    : ""
+                  : ""
+                : ""
+              : ""
+          )
             message.error(errors.error.data.message);
           else {
-            message.error('Something is wrong');
+            message.error("Something is wrong");
           }
         }
-
-      })
+      });
     return res;
   };
 };

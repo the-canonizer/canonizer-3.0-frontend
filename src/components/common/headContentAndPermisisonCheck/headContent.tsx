@@ -19,6 +19,12 @@ function HeadContent({
 
   return (
     <Head>
+      <script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6971863585610170"
+        // crossorigin="anonymous"
+      ></script>
+
       {/* Meta tags for browser link preview  */}
       <title>{title}</title>
       <meta charSet="utf-8" />

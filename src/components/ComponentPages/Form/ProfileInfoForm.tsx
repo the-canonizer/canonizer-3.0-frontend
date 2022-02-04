@@ -22,11 +22,15 @@ function ProfileInfoForm({
   const selectAfter = (val, prvtPblc) => {
     if (privateFlags != undefined)
       return (
-        <Select defaultValue={prvtPblc} className="select-after" onChange={handleselectAfter(val)}>
+        <Select
+          defaultValue={prvtPblc}
+          className="select-after"
+          onChange={handleselectAfter(val)}
+        >
           <Option value="private">Private</Option>
           <Option value="public">Public</Option>
         </Select>
-      )
+      );
   };
 
   // @ts-ignore

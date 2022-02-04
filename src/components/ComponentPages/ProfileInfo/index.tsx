@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import moment from 'moment';
+import moment from "moment";
 import { Form, message } from "antd";
 import { AppDispatch } from "../../../store";
 import { GetUserProfileInfo, UpdateUserProfileInfo, GetMobileCarrier, SendOTP, VerifyOTP, GetAlgorithmsList } from "../../../network/services/auth/index";
@@ -62,7 +62,7 @@ const ProfileInfo = () => {
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+    console.log("Failed:", errorInfo);
   };
 
   //Send OTP to mobile number
@@ -93,8 +93,7 @@ const ProfileInfo = () => {
     if (res && res.status_code === 200) {
       message.success(res.message);
       setIsOTPModalVisible(false);
-    }
-    else {
+    } else {
       message.error(res.message);
     }
 
@@ -112,8 +111,7 @@ const ProfileInfo = () => {
         setPrivateList((oldArray) => [...oldArray, data]);
         publicList.splice(publicList.indexOf(data), 1);
       }
-    }
-    else if (value == "public") {
+    } else if (value == "public") {
       if (!publicList.includes(data)) {
         setPublicList((oldArray) => [...oldArray, data]);
         privateList.splice(privateList.indexOf(data), 1);
@@ -157,10 +155,10 @@ const ProfileInfo = () => {
           }
           formVerify.setFieldsValue(verify);
           //format date for datepicker
-          res.data.birthday = moment(res.data.birthday, 'YYYY-MM-DD');
+          res.data.birthday = moment(res.data.birthday, "YYYY-MM-DD");
           form.setFieldsValue(res.data);
           setPrivateFlags(res.data.private_flags);
-          setPrivateList(res.data.private_flags.split(','))
+          setPrivateList(res.data.private_flags.split(","));
         }
       }
     }

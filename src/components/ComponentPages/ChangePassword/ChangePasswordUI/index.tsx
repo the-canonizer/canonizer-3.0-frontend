@@ -29,7 +29,7 @@ export default function ChangePasswordUI({ form, onFinish, onFinishFailed }) {
                   rules={[
                     {
                       required: true,
-                      message: 'Please enter current password!',
+                      message: "Please enter current password!",
                     },
                   ]}
                 >
