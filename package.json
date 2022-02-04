@@ -6,7 +6,7 @@
     "build": "sh bin/build.sh",
     "start": "sh bin/start.sh",
     "lint": "next lint",
-    "format": "prettier --write \"src/**/*.{js,tsx}\""
+    "format": "prettier --write \"src/**/*.{ts,tsx}\""
   },
   "dependencies": {
     "@babel/core": "^7.16.5",

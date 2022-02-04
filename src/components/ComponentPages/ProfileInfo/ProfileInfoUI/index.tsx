@@ -15,6 +15,8 @@ function ProfileInfoUI({
   handleOTPCancel,
   oTP,
   handleChangeOTP,
+  handleselectAfter,
+  privateFlags,
 }) {
   return (
     <section className={styles.profileInfo_wrapper}>
@@ -32,6 +34,8 @@ function ProfileInfoUI({
         form={form}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
+        handleselectAfter={handleselectAfter}
+        privateFlags={privateFlags}
       ></ProfileInfoForm>
     </section>
   );
