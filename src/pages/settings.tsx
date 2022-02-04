@@ -1,4 +1,4 @@
-import {  Card } from "antd";
+import { Card } from "antd";
 import Login from "../components/ComponentPages/Login";
 import GetStartedLayout from "../hoc/getStartedLayout";
 import { useSelector } from "react-redux";

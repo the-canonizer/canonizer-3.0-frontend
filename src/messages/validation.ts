@@ -104,9 +104,9 @@ export const dobRule = {
   rules: [
     {
       type: "object",
-      required: true,
       message: validations.dob,
     },
+    { required: true, message: validations.dob },
   ],
 };
 

@@ -1,15 +1,15 @@
 import { message } from "antd";
 
-import { isServer, redirectToLogin } from "../../../utils/generalUtility";
+import { isServer, redirectToLogin } from "../../utils/generalUtility";
 import {
   setAuthToken,
   removeAuthToken,
   setLoggedInUser,
   logoutUser,
-} from "../../../store/slices/authSlice";
-import NetworkCall from "../../networkCall";
-import UserRequest from "./request";
-import { store } from "../../../store";
+} from "../../store/slices/authSlice";
+import NetworkCall from "../networkCall";
+import UserRequest from "../request/userRequest";
+import { store } from "../../store";
 
 export const createToken = async () => {
   try {

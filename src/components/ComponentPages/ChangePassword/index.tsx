@@ -3,8 +3,8 @@ import { useState } from "react";
 import ChangePasswordUI from "./ChangePasswordUI";
 import { AppDispatch } from "../../../store";
 import { Form, message } from "antd";
-import { changePassword } from "../../../network/services/auth/index";
-import { logout } from "../../../network/services/auth";
+import { changePassword } from "../../../network/api/userApi";
+import { logout } from "../../../network/api/userApi";
 
 const ChangePassword = () => {
   const [formData, setFormData] = useState();

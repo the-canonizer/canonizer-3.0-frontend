@@ -70,7 +70,7 @@ const LoggedOutHeader = () => {
   return (
     <React.Fragment>
       <Header className={styles.wrap}>
-        <Logo />
+        {/* <Logo /> */}
         <div className={`${styles.navWrap} ${isActive && styles.showMobMenu}`}>
           <Button
             size="large"

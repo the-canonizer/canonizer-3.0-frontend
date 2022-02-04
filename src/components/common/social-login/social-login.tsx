@@ -7,7 +7,7 @@ import {
 } from "@ant-design/icons";
 
 import styles from "./social-login.module.scss";
-import { socialLogin } from "../../../network/services/auth";
+import { socialLogin } from "../../../network/api/userApi";
 
 const { Text } = Typography;
 

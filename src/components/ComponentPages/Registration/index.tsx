@@ -10,7 +10,7 @@ import {
   register,
   verifyOtp,
   getCountryCodes,
-} from "../../../network/services/auth/index";
+} from "../../../network/api/userApi";
 import { AppDispatch } from "../../../store";
 
 const Registration = ({ isModal }) => {

@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Layout, Menu, Dropdown } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
-import { logout } from "../../../../network/services/auth";
+import { logout } from "../../../../network/api/userApi";
 import { AppDispatch, RootState } from "../../../../store";
 import styles from "../siteHeader.module.scss";
 import Image from "next/image";

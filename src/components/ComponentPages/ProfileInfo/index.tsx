@@ -9,7 +9,7 @@ import {
   GetMobileCarrier,
   SendOTP,
   VerifyOTP,
-} from "../../../network/services/auth/index";
+} from "../../../network/api/userApi";
 import ProfileInfoUI from "./ProfileInfoUI";
 const ProfileInfo = () => {
   const dispatch = useDispatch<AppDispatch>();

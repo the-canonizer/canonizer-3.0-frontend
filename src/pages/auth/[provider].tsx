@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import GetStartedLayout from "../../hoc/getStartedLayout";
-import { socialLoginCallback } from "../../network/services/auth";
+import { socialLoginCallback } from "../../network/api/userApi";
 import { AppDispatch } from "../../store";
 import { getSearchedParams } from "../../utils/generalUtility";
 
