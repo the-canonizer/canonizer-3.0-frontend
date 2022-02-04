@@ -10,6 +10,14 @@ import {
   middleNameRule,
   emailRule,
   dobRule,
+  otpRule,
+  phoneRule,
+  getCaptchaRule,
+  emRule,
+  passwordRule,
+  confirmPasswordRule,
+  usernameRule,
+  userPassRule,
 } from "./validation";
 
 const messages = {
@@ -24,6 +32,14 @@ const messages = {
   middleNameRule,
   emailRule,
   dobRule,
+  otpRule,
+  phoneRule,
+  getCaptchaRule,
+  emRule,
+  passwordRule,
+  confirmPasswordRule,
+  usernameRule,
+  userPassRule,
 };
 
 export default messages;

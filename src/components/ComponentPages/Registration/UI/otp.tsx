@@ -46,20 +46,7 @@ export default function OTPVerify({ form, onFinish, isModal, closeModal }) {
           <Form.Item
             name="otp"
             style={{ textAlign: "center" }}
-            rules={[
-              {
-                required: true,
-                message: messages.validations.otp,
-              },
-              {
-                min: 6,
-                message: messages.validations.otpLength,
-              },
-              {
-                max: 6,
-                message: messages.validations.otpLength,
-              },
-            ]}
+            {...messages.otpRule}
           >
             <Input
               className={styles.otpInput}
@@ -73,7 +60,7 @@ export default function OTPVerify({ form, onFinish, isModal, closeModal }) {
           <Button
             type="primary"
             htmlType="submit"
-            className="login-form-button"
+            className={styles["login-form-button"]}
             block
           >
             Submit <ArrowRightOutlined />

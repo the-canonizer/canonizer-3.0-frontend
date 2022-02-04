@@ -7,8 +7,8 @@ import { useSelector } from "react-redux";
 import useAuthentication from "../../../hooks/isUserAuthenticated";
 import ChangePassword from "../../../components/ComponentPages/ChangePassword";
 import Image from "next/image";
-import adone from "../../../../public/images/image11.jpg";
-import adtwo from "../../../../public/images/image37.jpg";
+import adone from "../../../../public/images/Image 11.png";
+import adtwo from "../../../../public/images/Image37.jpg";
 import createTopic from "../../../../public/images/topic-icn.svg";
 import ProfileInfo from "../ProfileInfo";
 const tabList = [

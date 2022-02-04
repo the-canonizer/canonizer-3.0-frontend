@@ -1,7 +1,7 @@
 import { Card } from "antd";
 
 import GetStartedLayout from "../hoc/getStartedLayout";
-import Login from "../components/componentPages/Login";
+import Login from "../components/ComponentPages/Login";
 
 const LoginPage = () => {
   return (

@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import LoginUI from "./UI";
 
 import { hideLoginModal } from "../../../store/slices/ui/uiSlice";
-import { login } from "../../../network/services/auth/index";
+import { login } from "../../../network/api/userApi";
 import { AppDispatch } from "../../../store";
 
 const Login = ({ isModal }) => {
