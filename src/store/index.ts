@@ -1,5 +1,5 @@
+import homePageSlice from "./slices/homePageSlice";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import logger from "redux-logger";
 import {
   FLUSH,
   PAUSE,
@@ -19,6 +19,7 @@ import UiReducer from "./slices/ui/uiSlice";
 let reducers = combineReducers({
   auth: Auth,
   trees: Tree,
+  homePage: homePageSlice,
   ui: UiReducer,
 });
 
@@ -41,7 +42,7 @@ const store = configureStore({
   // .concat(logger),
 });
 export type RootState = ReturnType<typeof reducers>;
-export type AppDispatch = typeof store.dispatch
+export type AppDispatch = typeof store.dispatch;
 
 const persistor = persistStore(store);
 export { persistor, store };

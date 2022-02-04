@@ -16,7 +16,8 @@ function ProfileInfoUI({
   oTP,
   handleChangeOTP,
   handleselectAfter,
-  privateFlags }) {
+  privateFlags,
+}) {
   return (
     <section className={styles.profileInfo_wrapper}>
       <VerifyMobileNumber

@@ -30,9 +30,9 @@ export const validations: ErrorContainer = {
   confirmPasswordErr: "The two passwords that you entered do not match!",
   otp: "Please input your otp!",
   otpLength: "OTP should be min/max 6 characters long!",
-  phoneNumber:"Please Enter Phone Number!",
-  mobileCarrier:"Please Enter Mobile Carrier!",
-  dob:"Please select DOB!"
+  phoneNumber: "Please Enter Phone Number!",
+  mobileCarrier: "Please Enter Mobile Carrier!",
+  dob: "Please select DOB!",
 };
 
 export const phoneNumberRule = {
@@ -49,7 +49,7 @@ export const mobileCarrierRule = {
       required: true,
       message: validations.mobileCarrier,
     },
-  ]
+  ],
 };
 export const firstNameRule = {
   rules: [
@@ -61,8 +61,9 @@ export const firstNameRule = {
       max: 100,
       message: validations.firstNameMax,
     },
-  ]
-};export const lastNameRule = {
+  ],
+};
+export const lastNameRule = {
   rules: [
     {
       required: true,
@@ -72,7 +73,7 @@ export const firstNameRule = {
       max: 100,
       message: validations.firstNameMax,
     },
-  ]
+  ],
 };
 export const middleNameRule = {
   rules: [
@@ -80,7 +81,7 @@ export const middleNameRule = {
       max: 100,
       message: validations.middleName,
     },
-  ]
+  ],
 };
 export const emailRule = {
   rules: [
@@ -96,14 +97,14 @@ export const emailRule = {
       pattern: patterns.email,
       message: validations.validEmail,
     },
-  ]
+  ],
 };
 export const dobRule = {
   rules: [
     {
-      type: 'object',
+      type: "object",
       required: true,
       message: validations.dob,
     },
-  ]
+  ],
 };

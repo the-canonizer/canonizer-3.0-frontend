@@ -10,7 +10,7 @@ export const login = (email: string, password: string) => {
       const user = await NetworkCall.fetch(
         UserRequest.loginUser(email, password)
       );
-      console.log(user)
+      console.log(user);
       !isServer && window.localStorage.setItem("token", user?.token);
       dispatch(setLoggedInUser(user));
       return user;
