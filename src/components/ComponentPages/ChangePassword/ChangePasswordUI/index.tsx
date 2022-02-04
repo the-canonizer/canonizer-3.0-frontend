@@ -3,11 +3,11 @@ import styles from "./ChangePassword.module.scss";
 import messages from "../../../../messages";
 
 export default function ChangePasswordUI({ form, onFinish, onFinishFailed }) {
- 
- 
+
+
   return (
     <>
-   <section className={styles.change_password}>
+      <section className={styles.change_password}>
         <Form
           form={form}
           name="changePassword"
@@ -24,7 +24,7 @@ export default function ChangePasswordUI({ form, onFinish, onFinishFailed }) {
             <Row gutter={30}>
               <Col md={8}>
                 <Form.Item
-                 name="current_password"
+                  name="current_password"
                   label={messages.labels.currentPassword}
                   rules={[
                     {
@@ -39,22 +39,24 @@ export default function ChangePasswordUI({ form, onFinish, onFinishFailed }) {
                   />
                 </Form.Item>
               </Col>
-              <Col md={8}> <Form.Item
-                name="new_password"
-                label={messages.labels.newPassword}
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please enter new password!',
-                  },
-                ]}
-                hasFeedback
-              >
-                <Input
-                  type="password"
-                  placeholder={messages.placeholders.newPassword}
-                />
-              </Form.Item></Col>
+              <Col md={8}>
+                <Form.Item
+                  name="new_password"
+                  label={messages.labels.newPassword}
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please enter new password!',
+                    },
+                  ]}
+                  hasFeedback
+                >
+                  <Input
+                    type="password"
+                    placeholder={messages.placeholders.newPassword}
+                  />
+                </Form.Item>
+              </Col>
               <Col md={8}>  <Form.Item
                 name="confirm_password"
                 label={messages.labels.confirmPassword}
@@ -79,16 +81,18 @@ export default function ChangePasswordUI({ form, onFinish, onFinishFailed }) {
                   type="password"
                   placeholder={messages.placeholders.confirmPassword}
                 />
-              </Form.Item></Col>
+              </Form.Item>
+              </Col>
             </Row>
           </div>
           <Form.Item>
             <Button type="primary" htmlType="submit">
-            Save
+              Save
             </Button>
           </Form.Item>
         </Form>
-        </section>
+      </section>
     </>
   );
+  
 }

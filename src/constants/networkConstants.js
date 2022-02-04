@@ -20,6 +20,7 @@ const NetworkConstants = {
     GetMobileCarrier: "/mobilecarrier",
     SendOTP: "/sendotp",
     VerifyOTP: "/verifyotp",
+    GetAlgorithmsList: "/get_algorithms",
     // Tree
 
     GetTree: "/api/unknown",

@@ -1,38 +1,36 @@
-import LayoutMaster from "../../../hoc/layout";
-import { Layout, Card, Col, Row, Button } from "antd";
-import Icon, { MessageOutlined } from "@ant-design/icons";
 import { useState } from "react";
-import { RootState } from "../../../store";
-import { useSelector } from "react-redux";
-import useAuthentication from "../../../hooks/isUserAuthenticated";
-import ChangePassword from "../../../components/ComponentPages/ChangePassword"
+import { Layout, Card, Col, Row, Button } from "antd";
+import Icon from "@ant-design/icons";
 import Image from 'next/image';
+import LayoutMaster from "../../../hoc/layout";
+import ChangePassword from "../../../components/ComponentPages/ChangePassword"
 import adone from '../../../../public/images/image11.jpg';
 import adtwo from '../../../../public/images/image37.jpg';
 import createTopic from '../../../../public/images/topic-icn.svg';
 import ProfileInfo from "../ProfileInfo";
+
 const tabList = [
     {
-        key: 'profileinfo',
+        key: 'profile_info',
         tab: 'Profile Info',
     },
     {
-        key: 'changepassword',
+        key: 'change_password',
         tab: 'Change Password',
     },
 ];
 
 const contentList = {
-    profileinfo: <p><ProfileInfo></ProfileInfo> </p>,
-    changepassword: <p><ChangePassword></ChangePassword></p>,
+    profile_info: <p><ProfileInfo /> </p>,
+    change_password: <p><ChangePassword /></p>,
 };
-export default function SettingsUI() {
-    const [activeTabKey, setActiveTabKey] = useState('profileinfo');
 
-    const onTab1Change = key => {
+export default function SettingsUI() {
+    const [activeTabKey, setActiveTabKey] = useState('profile_info');
+    const onTabChange = key => {
         setActiveTabKey(key);
     };
-   
+
     return (
         <>
             <LayoutMaster>
@@ -56,7 +54,7 @@ export default function SettingsUI() {
                                 tabList={tabList}
                                 activeTabKey={activeTabKey}
                                 onTabChange={key => {
-                                    onTab1Change(key);
+                                    onTabChange(key);
                                 }}
                                 className="tab--card"
                             >
@@ -64,16 +62,13 @@ export default function SettingsUI() {
                             </Card>
                         </Col>
                         <Col span={5}>
-
                             <div className="siteAds">
                                 <Image alt="adtwo" src={adtwo} />
                             </div>
-
                         </Col>
                     </Row>
                 </Layout>
             </LayoutMaster>
-
         </>
     );
 }

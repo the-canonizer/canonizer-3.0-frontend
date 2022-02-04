@@ -20,5 +20,6 @@ export const placeholders = {
   country:"Enter Country",
   language:"Enter Language",
   state:"Enter State",
-  zipCode:"Enter Zip Code"
+  zipCode:"Enter Zip Code",
+  algorithm:"Select an algorithm"
 };

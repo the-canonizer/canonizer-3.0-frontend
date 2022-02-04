@@ -5,8 +5,8 @@ import { useDispatch } from "react-redux";
 import styles from "../siteHeader.module.scss";
 
 import SearchSection from "../../search/search";
-import LoginModal from "../../../componentPages/Login/loginModal";
-import RegistrationModal from "../../../componentPages/registration/registrationModal";
+import LoginModal from "../../../ComponentPages/Login/loginModal";
+import RegistrationModal from "../../../ComponentPages/Registration/registrationModal";
 import {
   showLoginModal,
   showRegistrationModal,

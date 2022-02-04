@@ -13,11 +13,13 @@ const ChangePassword = () => {
 
   const onFinish = async (values: any) => {
     setFormData(values);
+
     let formBody = {
       current_password: values.current_password,
       new_password: values.new_password,
       confirm_password: values.confirm_password
     };
+    
     let res = await dispatch(changePassword(formBody));
     if (res && res.status_code === 200) {
       form.resetFields();
@@ -26,14 +28,18 @@ const ChangePassword = () => {
       await dispatch(logout());
     }
   };
+  
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
+
   return (
+    
     <ChangePasswordUI
     form={form}
     onFinish={onFinish}
-    onFinishFailed={onFinishFailed}></ChangePasswordUI>
+    onFinishFailed={onFinishFailed}/>
+    
   );
 };
 
