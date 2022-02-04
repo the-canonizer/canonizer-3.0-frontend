@@ -1,9 +1,15 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import moment from 'moment';
+import moment from "moment";
 import { Form, message } from "antd";
 import { AppDispatch } from "../../../store";
-import { GetUserProfileInfo, UpdateUserProfileInfo, GetMobileCarrier, SendOTP, VerifyOTP } from "../../../network/services/auth/index";
+import {
+  GetUserProfileInfo,
+  UpdateUserProfileInfo,
+  GetMobileCarrier,
+  SendOTP,
+  VerifyOTP,
+} from "../../../network/services/auth/index";
 import ProfileInfoUI from "./ProfileInfoUI";
 const ProfileInfo = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -16,19 +22,18 @@ const ProfileInfo = () => {
   const [privateList, setPrivateList] = useState([]);
   const [publicList, setPublicList] = useState([]);
 
-
   //on update profile click
   const onFinish = async (values: any) => {
     values.private_flags = privateList.join();
-    values.mobile_carrier = formVerify.getFieldValue("mobile_carrier")
-    values.phone_number = formVerify.getFieldValue("phone_number")
+    values.mobile_carrier = formVerify.getFieldValue("mobile_carrier");
+    values.phone_number = formVerify.getFieldValue("phone_number");
     let res = await dispatch(UpdateUserProfileInfo(values));
     if (res && res.status_code === 200) {
       message.success(res.message);
     }
   };
   const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+    console.log("Failed:", errorInfo);
   };
   //Send OTP to mobile number
   const onVerifyClick = async (values: any) => {
@@ -46,20 +51,19 @@ const ProfileInfo = () => {
   //function to verify the OTP
   const onOTPBtnClick = async () => {
     let otpBody = {
-      otp: oTP
+      otp: oTP,
     };
     let res = await dispatch(VerifyOTP(otpBody));
     if (res && res.status_code === 200) {
       message.success(res.message);
       setIsOTPModalVisible(false);
-    }
-    else {
+    } else {
       message.error(res.message);
     }
   };
   const handleChangeOTP = (e) => {
     setOTP(e.target.value);
-  }
+  };
   //private public selection of fields, create PrivateFlag list
   const handleselectAfter = (data) => (value) => {
     if (value == "private") {
@@ -67,14 +71,13 @@ const ProfileInfo = () => {
         setPrivateList((oldArray) => [...oldArray, data]);
         publicList.splice(publicList.indexOf(data), 1);
       }
-    }
-    else if (value == "public") {
+    } else if (value == "public") {
       if (!publicList.includes(data)) {
         setPublicList((oldArray) => [...oldArray, data]);
         privateList.splice(privateList.indexOf(data), 1);
       }
     }
-  }
+  };
   useEffect(() => {
     async function fetchMobileCarrier() {
       let res = await dispatch(GetMobileCarrier());
@@ -88,19 +91,19 @@ const ProfileInfo = () => {
         if (res.data != undefined) {
           const verify = {
             phone_number: res.data.phone_number,
-            mobile_carrier: res.data.mobile_carrier
-          }
+            mobile_carrier: res.data.mobile_carrier,
+          };
           formVerify.setFieldsValue(verify);
           //format date for datepicker
-          res.data.birthday = moment(res.data.birthday, 'YYYY-MM-DD');
+          res.data.birthday = moment(res.data.birthday, "YYYY-MM-DD");
           form.setFieldsValue(res.data);
           setPrivateFlags(res.data.private_flags);
-          setPrivateList(res.data.private_flags.split(','))
+          setPrivateList(res.data.private_flags.split(","));
         }
       }
     }
-    fetchMobileCarrier()
-    fetchUserProfileInfo()
+    fetchMobileCarrier();
+    fetchUserProfileInfo();
   }, []);
   return (
     <ProfileInfoUI

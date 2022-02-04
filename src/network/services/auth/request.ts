@@ -142,7 +142,7 @@ export default class UserRequest extends Request {
       false
     );
   }
-  
+
   static changePassword(values, authToken) {
     const body = {
       ...values,
@@ -159,10 +159,8 @@ export default class UserRequest extends Request {
   }
 
   static GetUserProfileInfo(authToken) {
-    const body = {
-      
-    };
-  
+    const body = {};
+
     return new UserRequest(
       K.Network.URL.GetUserProfileInfo,
       K.Network.Method.GET,
@@ -189,10 +187,8 @@ export default class UserRequest extends Request {
   }
 
   static GetMobileCarrier(authToken) {
-    const body = {
-      
-    };
-  
+    const body = {};
+
     return new UserRequest(
       K.Network.URL.GetMobileCarrier,
       K.Network.Method.GET,
@@ -232,5 +228,3 @@ export default class UserRequest extends Request {
     );
   }
 }
-
-

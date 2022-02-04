@@ -1,0 +1,121 @@
+.wrap{
+    padding:23px 12px;
+    border: solid 1px #F0F0F0;
+    background-color: #fff;
+    margin-bottom: 16px;
+}
+
+.divider{
+    margin: 15px 0;
+    border-top:solid 1px #E7E6F1;
+}
+
+.createBtn{
+    width: 100%;
+    font-size: 1.125rem;
+    font-weight:600;
+    color: #0F2A4D;
+    border: solid 1px #D9D9D9;
+    i{
+        color: #2E68DB;
+        margin-right:8px;
+        position: relative;
+        top: 2px;
+    }
+}
+
+.ant-collapse-header{
+    background-color: green;
+}
+
+.accordian{
+    background-color: transparent;
+    .IconAngle{
+        i{
+            font-size: 8px;
+            color: #4484CE;
+        }
+    }
+    .algoText{
+        font-weight:400;
+        color: #343434;
+    }
+    .algoSelect{
+        width:100%;
+        margin-bottom:8px;
+        >div{
+            padding-left: 15px!important;
+            border: solid 1px #D9D9D9;
+        }
+        span{
+            font-size: 0.875rem;
+            color: #343434;
+        }
+    }
+    .algoInfo{
+        font-size: 1rem;
+        color: #4484CE;
+    }
+    div{
+        padding-left:0!important;
+        padding-right:0!important;
+    }
+    .filter{
+        display:flex;
+        align-items: center;
+        input{
+           width: 130px; 
+           margin:0 7px;
+        }
+        i{
+            color: #D1D4DB;
+            font-size:17px;
+            cursor: pointer;
+        }
+        .LeftOutlined{
+            color:#6E6E6E;
+            margin-left:12px;
+        }
+    }
+    .date{
+        border:solid 1px #D9D9D9;
+        padding:0 12px!important;
+        height:40px;
+        margin-top:20px;
+    }
+}
+
+.title{
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #4484CE;
+    i{
+        margin-left:2px;
+        font-size:17px;
+        color: #D1D4DB;
+    }
+}
+
+.radio{
+    span{
+        font-size: 1rem;
+        color: #1C1B24;
+    }
+}
+
+.infoText, .asfoText{
+    width:240px;
+    font-size: 12px;
+    line-height:16px;
+    font-weight:400;
+    color:#0F2A4D;
+    h5{
+        font-size: 0.875rem;
+        color: #0F2A4D;
+        font-weight:600;
+    }
+}
+
+.asfoText{
+    width: 261px;
+}
