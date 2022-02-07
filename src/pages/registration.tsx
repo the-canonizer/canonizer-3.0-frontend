@@ -1,5 +1,5 @@
 import { Card } from "antd";
-import Registration from "../components/componentPages/registration";
+import Registration from "../components/ComponentPages/Registration";
 import GetStartedLayout from "../hoc/getStartedLayout";
 
 const RegistrationPage = () => {

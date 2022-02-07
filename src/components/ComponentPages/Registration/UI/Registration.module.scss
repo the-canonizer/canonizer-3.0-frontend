@@ -102,6 +102,10 @@
       &:focus {
         background: #d38714 0% 0% no-repeat;
       }
+
+      &.login-form-button{
+        margin-top: 0;
+      }
     }
 
     .ft_link {

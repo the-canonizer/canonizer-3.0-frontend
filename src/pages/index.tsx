@@ -1,5 +1,5 @@
 import Layout from "../hoc/layout";
-import HomePageContainer from "../components/componentPages/home";
+import HomePageContainer from "../components/ComponentPages/home";
 import {
   getCanonizedTopicsApi,
   getCanonizedNameSpacesApi,
