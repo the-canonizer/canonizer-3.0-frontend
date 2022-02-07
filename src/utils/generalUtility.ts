@@ -6,6 +6,13 @@ import K from "../constants";
 export const handleError = (error, dispatch = null) => {
   console.error(error);
   message.error(error.message);
+  const nestedMsg = error?.error?.data?.error;
+  if (nestedMsg) {
+    let keys = Object.keys(nestedMsg);
+    keys.forEach((key) => {
+      message.error(nestedMsg[key][0]);
+    });
+  }
   return null;
 };
 

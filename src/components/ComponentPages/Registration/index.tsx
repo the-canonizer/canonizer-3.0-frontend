@@ -84,7 +84,6 @@ const Registration = ({ isModal }) => {
 
   const getCodes = async () => {
     let response = await getCountryCodes();
-    console.log(response);
     if (response.status_code === 200) {
       setCountry(response.data);
     }
