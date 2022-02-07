@@ -27,10 +27,8 @@ function Layout(props) {
 
   return (
     <>
-      <div className="app-layout">
-        {isAuthenticate ? <LoggedInHeader /> : <LoggedOutHeader />}
-
-        <div className="app-content">{props.children}</div>
+      <div className={styles.pageWrap}>
+        {!isAuthenticate ? <LoggedInHeader /> : <LoggedOutHeader />}
         <Spinner>{""}</Spinner>
         <div className={styles.contentWrap}>
           <div className={styles.contentArea}>{props.children}</div>
