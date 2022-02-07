@@ -147,11 +147,11 @@ const ProfileInfo = () => {
           if (mobileCarrierList.length > 0) {
             mobile_carrierValue = mobileCarrierList.find(function (element) {
               return element.id == res.data.mobile_carrier;
-            }).name;
+            });
           }
           const verify = {
             phone_number: res.data.phone_number,
-            mobile_carrier: mobile_carrierValue
+            mobile_carrier: mobile_carrierValue!=""?mobile_carrierValue["name"]:""
           }
           formVerify.setFieldsValue(verify);
           //format date for datepicker
@@ -162,10 +162,11 @@ const ProfileInfo = () => {
         }
       }
     }
-
-    fetchMobileCarrier()
-    fetchAlgorithmsList()
-    fetchUserProfileInfo()
+    fetchMobileCarrier().then(function () {
+      return fetchAlgorithmsList()
+    }).then(function () {
+      return fetchUserProfileInfo();
+    });
 
   }, []);
 
