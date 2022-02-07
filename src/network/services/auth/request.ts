@@ -184,9 +184,8 @@ export default class UserRequest extends Request {
   }
 
   static GetAlgorithmsList(authToken) {
-    const body = {
-    };
-  
+    const body = {};
+
     return new UserRequest(
       K.Network.URL.GetAlgorithmsList,
       K.Network.Method.GET,
@@ -196,5 +195,4 @@ export default class UserRequest extends Request {
       authToken
     );
   }
-  
 }

@@ -17,10 +17,9 @@ function ProfileInfoUI({
   handleChangeOTP,
   handleselectAfter,
   privateFlags,
-  algorithmList }) {
-    
+  algorithmList,
+}) {
   return (
-
     <section className={styles.profileInfo_wrapper}>
       <VerifyMobileNumber
         mobileCarrier={mobileCarrier}
@@ -42,7 +41,6 @@ function ProfileInfoUI({
         algorithmList={algorithmList}
       />
     </section>
-
   );
 }
 

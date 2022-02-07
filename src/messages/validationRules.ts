@@ -14,7 +14,7 @@ export const mobileCarrierRule = {
       required: true,
       message: validations.mobileCarrier,
     },
-  ]
+  ],
 };
 export const firstNameRule = {
   rules: [
@@ -26,7 +26,7 @@ export const firstNameRule = {
       max: 100,
       message: validations.firstNameMax,
     },
-  ]
+  ],
 };
 export const lastNameRule = {
   rules: [
@@ -38,7 +38,7 @@ export const lastNameRule = {
       max: 100,
       message: validations.firstNameMax,
     },
-  ]
+  ],
 };
 export const middleNameRule = {
   rules: [
@@ -46,7 +46,7 @@ export const middleNameRule = {
       max: 100,
       message: validations.middleName,
     },
-  ]
+  ],
 };
 export const emailRule = {
   rules: [
@@ -60,8 +60,8 @@ export const emailRule = {
     {
       pattern: patterns.email,
       message: validations.validEmail,
-    }
-  ]
+    },
+  ],
 };
 export const dobRule = {
   rules: [
@@ -69,7 +69,7 @@ export const dobRule = {
       required: true,
       message: validations.dob,
     },
-  ]
+  ],
 };
 export const otpRule = {
   rules: [

@@ -21,113 +21,113 @@ export const createToken = async () => {
   }
 };
 
-export const login = (email: string, password: string) => {
-  return async (dispatch) => {
-    try {
-      const authToken = await createToken();
+export const login = async (email: string, password: string) => {
+  // return async (dispatch) => {
+  try {
+    const authToken = await createToken();
 
-      const res = await NetworkCall.fetch(
-        UserRequest.loginUser(email, password, authToken.access_token)
-      );
+    const res = await NetworkCall.fetch(
+      UserRequest.loginUser(email, password, authToken.access_token)
+    );
 
-      !isServer &&
-        window.localStorage.setItem("token", res.data.auth.access_token);
-      let payload = {
-        ...res.data.user,
-        token: res.data.auth.access_token,
-        refresh_token: res.data.auth.refresh_token,
-      };
+    !isServer &&
+      window.localStorage.setItem("token", res.data.auth.access_token);
+    let payload = {
+      ...res.data.user,
+      token: res.data.auth.access_token,
+      refresh_token: res.data.auth.refresh_token,
+    };
 
-      dispatch(setLoggedInUser(payload));
-      dispatch(setAuthToken(authToken.access_token));
+    store.dispatch(setLoggedInUser(payload));
+    store.dispatch(setAuthToken(authToken.access_token));
 
-      return res;
-    } catch (err) {
-      console.error(err?.error?.data);
-      message.error(err?.error?.data.message);
-    }
-  };
+    return res;
+  } catch (err) {
+    console.error(err?.error?.data);
+    message.error(err?.error?.data.message);
+  }
+  // };
 };
 
-export const logout = (error = "") => {
+export const logout = async (error = "") => {
   let state = store.getState();
   const { auth } = state;
 
-  return async (dispatch) => {
-    try {
-      let res = await NetworkCall.fetch(
-        UserRequest.logoutCall(auth.token, error)
-      );
-      !isServer && window.localStorage.removeItem("token");
-      dispatch(logoutUser());
-      dispatch(removeAuthToken());
-      if (res.status_code === 200) {
-        redirectToLogin(error);
-      }
-      return res;
-    } catch (error) {
-      message.error(error?.message);
+  // return async (dispatch) => {
+  try {
+    let res = await NetworkCall.fetch(
+      UserRequest.logoutCall(auth.token, error)
+    );
+    !isServer && window.localStorage.removeItem("token");
+    store.dispatch(logoutUser());
+    store.dispatch(removeAuthToken());
+    if (res.status_code === 200) {
+      redirectToLogin(error);
     }
-  };
+    return res;
+  } catch (error) {
+    message.error(error?.message);
+  }
+  // };
 };
 
-export const register = (values: object) => {
-  return async (dispatch) => {
-    try {
-      const authToken = await createToken();
+export const register = async (values: object) => {
+  // return async (dispatch) => {
+  try {
+    const authToken = await createToken();
 
-      const res = await NetworkCall.fetch(
-        UserRequest.registerUser(values, authToken.access_token)
-      );
+    const res = await NetworkCall.fetch(
+      UserRequest.registerUser(values, authToken.access_token)
+    );
 
-      return res;
-    } catch (errors) {
-      console.error(errors?.error?.data);
-      message.error(errors?.error?.data?.message);
-      let msgs = errors?.error?.data.error;
-      if (msgs) {
-        let keys = Object.keys(msgs);
-        keys.forEach((key) => {
-          message.error(msgs[key][0]);
-        });
-      }
+    return res;
+  } catch (errors) {
+    console.error(errors?.error?.data);
+    message.error(errors?.error?.data?.message);
+    let msgs = errors?.error?.data.error;
+    if (msgs) {
+      let keys = Object.keys(msgs);
+      keys.forEach((key) => {
+        message.error(msgs[key][0]);
+      });
     }
-  };
+  }
+  // };
 };
 
-export const verifyOtp = (values: object) => {
-  return async (dispatch) => {
-    try {
-      const authToken = await createToken();
+export const verifyOtp = async (values: object) => {
+  // return async (dispatch) => {
+  try {
+    const authToken = await createToken();
 
-      const res = await NetworkCall.fetch(
-        UserRequest.verifyUser(values, authToken.access_token)
-      );
+    const res = await NetworkCall.fetch(
+      UserRequest.verifyUser(values, authToken.access_token)
+    );
 
-      !isServer &&
-        window.localStorage.setItem("token", res.data.auth.access_token);
-      let payload = {
-        ...res.data.user,
-        token: res.data.auth.access_token,
-        refresh_token: res.data.auth.refresh_token,
-      };
+    !isServer &&
+      window.localStorage.setItem("token", res.data.auth.access_token);
+    let payload = {
+      ...res.data.user,
+      token: res.data.auth.access_token,
+      refresh_token: res.data.auth.refresh_token,
+    };
 
-      dispatch(setLoggedInUser(payload));
-      dispatch(setAuthToken(authToken.access_token));
+    store.dispatch(setLoggedInUser(payload));
+    store.dispatch(setAuthToken(authToken.access_token));
 
-      return res;
-    } catch (err) {
-      console.error(err?.error?.data);
-      message.error(err?.error?.data?.message);
-      let msgs = err?.error?.data?.error;
-      if (msgs) {
-        let keys = Object.keys(msgs);
-        keys.forEach((key) => {
-          message.error(msgs[key][0]);
-        });
-      }
+    return res;
+  } catch (err) {
+    console.error(err?.error?.data);
+    message.error(err?.error?.data?.message);
+    let msgs = err?.error?.data?.error;
+    if (msgs) {
+      let keys = Object.keys(msgs);
+      keys.forEach((key) => {
+        message.error(msgs[key][0]);
+      });
     }
-  };
+  }
+  // };
 };
 
 export const changePassword = (values: object) => {
@@ -179,39 +179,39 @@ export const socialLogin = async (values: object) => {
   // };
 };
 
-export const socialLoginCallback = (values: object) => {
-  return async (dispatch) => {
-    try {
-      const authToken = await createToken();
+export const socialLoginCallback = async (values: object) => {
+  // return async (dispatch) => {
+  try {
+    const authToken = await createToken();
 
-      const res = await NetworkCall.fetch(
-        UserRequest.userSocialLoginCallback(values, authToken.access_token)
-      );
+    const res = await NetworkCall.fetch(
+      UserRequest.userSocialLoginCallback(values, authToken.access_token)
+    );
 
-      !isServer &&
-        window.localStorage.setItem("token", res.data.auth.access_token);
-      let payload = {
-        ...res.data.user,
-        token: res.data.auth.access_token,
-        refresh_token: res.data.auth.refresh_token,
-      };
+    !isServer &&
+      window.localStorage.setItem("token", res.data.auth.access_token);
+    let payload = {
+      ...res.data.user,
+      token: res.data.auth.access_token,
+      refresh_token: res.data.auth.refresh_token,
+    };
 
-      dispatch(setLoggedInUser(payload));
-      dispatch(setAuthToken(authToken.access_token));
+    store.dispatch(setLoggedInUser(payload));
+    store.dispatch(setAuthToken(authToken.access_token));
 
-      return res;
-    } catch (err) {
-      console.error(err?.error?.data);
-      message.error(err?.error?.data?.message);
-      let msgs = err?.error?.data?.error;
-      if (msgs) {
-        let keys = Object.keys(msgs);
-        keys.forEach((key) => {
-          message.error(msgs[key][0]);
-        });
-      }
+    return res;
+  } catch (err) {
+    console.error(err?.error?.data);
+    message.error(err?.error?.data?.message);
+    let msgs = err?.error?.data?.error;
+    if (msgs) {
+      let keys = Object.keys(msgs);
+      keys.forEach((key) => {
+        message.error(msgs[key][0]);
+      });
     }
-  };
+  }
+  // };
 };
 
 export const getCountryCodes = async () => {
@@ -329,6 +329,7 @@ export const UpdateUserProfileInfo = (values: object) => {
     return res;
   };
 };
+
 export const GetMobileCarrier = () => {
   return async (dispatch) => {
     let state = store.getState();
@@ -476,25 +477,43 @@ export const GetAlgorithmsList = () => {
     const { auth } = state;
     const res = await NetworkCall.fetch(
       UserRequest.GetAlgorithmsList(auth.loggedInUser.token)
-      ).then(value => {
+    )
+      .then((value) => {
         return value;
       })
-      .catch(errors => {
-        let msgs = errors ? errors.error ? errors.error.data ? errors.error.data.error ? errors.error.data.error : '' : '' : '' : '';
+      .catch((errors) => {
+        let msgs = errors
+          ? errors.error
+            ? errors.error.data
+              ? errors.error.data.error
+                ? errors.error.data.error
+                : ""
+              : ""
+            : ""
+          : "";
         if (msgs) {
           let keys = Object.keys(msgs);
           keys.forEach((key) => {
             message.error(msgs[key][0]);
           });
-        }
-        else {
-          if (errors ? errors.error ? errors.error.data ? errors.error.data.message ? errors.error.data.message : '' : '' : '' : '')
+        } else {
+          if (
+            errors
+              ? errors.error
+                ? errors.error.data
+                  ? errors.error.data.message
+                    ? errors.error.data.message
+                    : ""
+                  : ""
+                : ""
+              : ""
+          )
             message.error(errors.error.data.message);
           else {
-            message.error('Something is wrong');
+            message.error("Something is wrong");
           }
         }
-      })
+      });
     return res;
   };
 };

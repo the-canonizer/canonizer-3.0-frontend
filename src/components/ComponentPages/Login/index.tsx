@@ -17,7 +17,7 @@ const Login = ({ isModal }) => {
 
   const onFinish = async (values: any) => {
     try {
-      let res = await dispatch(login(values.username, values.password));
+      let res = await login(values.username, values.password);
       if (res.status_code === 200) {
         form.resetFields();
         closeModal();

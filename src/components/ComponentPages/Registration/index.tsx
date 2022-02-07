@@ -49,7 +49,7 @@ const Registration = ({ isModal }) => {
         phone_number: values.phone,
         country_code: values.prefix,
       };
-      let res = await dispatch(register(formBody));
+      let res = await register(formBody);
       if (res && res.status_code === 200) {
         form.resetFields();
         message.success(res.message);
@@ -68,7 +68,7 @@ const Registration = ({ isModal }) => {
       otp: values.otp,
     };
 
-    let res = await dispatch(verifyOtp(formBody));
+    let res = await verifyOtp(formBody);
 
     if (res && res.status_code === 200) {
       otpForm.resetFields();

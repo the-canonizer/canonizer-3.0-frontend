@@ -13,6 +13,12 @@ import FormItem from "../../../common/formElements";
 const { Title, Text } = Typography;
 const { Option } = Select;
 
+declare global {
+  interface Window {
+    grecaptcha: any;
+  }
+}
+
 function RegistrationUi({
   form,
   onFinish,
@@ -23,7 +29,7 @@ function RegistrationUi({
   showCaptchaError,
   country,
 }) {
-  const recaptchaRef = createRef();
+  const recaptchaRef: React.RefObject<{ reset }> = createRef();
 
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
@@ -39,7 +45,7 @@ function RegistrationUi({
 
   useEffect(() => {
     if (resetCaptcha) {
-      recaptchaRef.current.reset();
+      recaptchaRef?.current?.reset();
     }
   }, [resetCaptcha, recaptchaRef]);
 
@@ -101,7 +107,7 @@ function RegistrationUi({
                     ref={recaptchaRef}
                     sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
                     onChange={onReCAPTCHAChange}
-                    grecaptcha={global.window?.grecaptcha}
+                    grecaptcha={global?.window?.grecaptcha}
                   />
                 </div>
               </Form.Item>
