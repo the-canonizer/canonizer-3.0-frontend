@@ -46,6 +46,7 @@ export async function getServerSideProps() {
     page_number: 1,
     page_size: 15,
     search: "",
+    asof: "default",
   };
   const nameSpaces = await getCanonizedNameSpacesApi();
   const result = await getCanonizedTopicsApi(reqBody);

@@ -67,6 +67,6 @@ export default class NetworkCall {
 }
 NetworkCall.axios = axios.create({
   baseURL: K.Network.URL.BaseAPI,
-  timeout: K.Network.Timeout,
+  timeout: +K.Network.URL.Timeout,
   headers: {},
 });

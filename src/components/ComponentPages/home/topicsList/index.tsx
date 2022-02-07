@@ -67,6 +67,7 @@ const TopicsList = () => {
         page_size: 15,
         search: "",
         filter: filterByScore,
+        asof: "default",
       };
       getCanonizedTopicsApi(reqBody);
     } else didMount.current = true;
@@ -83,6 +84,7 @@ const TopicsList = () => {
         page_size: 15,
         search: "",
         filter: filterByScore,
+        asof: "default",
       };
       getCanonizedTopicsApi(reqBody, loadMore);
     } else didMountForFilterScoreEffect.current = true;
