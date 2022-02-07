@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import moment from "moment";
 import { Form, message } from "antd";
 import { AppDispatch } from "../../../store";
-import { GetUserProfileInfo, UpdateUserProfileInfo, GetMobileCarrier, SendOTP, VerifyOTP, GetAlgorithmsList } from "../../../network/services/auth/index";
+import { GetUserProfileInfo, UpdateUserProfileInfo, GetMobileCarrier, SendOTP, VerifyOTP, GetAlgorithmsList } from "../../../network/api/userApi";
 import ProfileInfoUI from "./ProfileInfoUI";
 
 const ProfileInfo = () => {

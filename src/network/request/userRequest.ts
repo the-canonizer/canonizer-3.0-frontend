@@ -227,4 +227,18 @@ export default class UserRequest extends Request {
       authToken
     );
   }
+
+  static GetAlgorithmsList(authToken) {
+    const body = {
+    };
+  
+    return new UserRequest(
+      K.Network.URL.GetAlgorithmsList,
+      K.Network.Method.GET,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
 }
