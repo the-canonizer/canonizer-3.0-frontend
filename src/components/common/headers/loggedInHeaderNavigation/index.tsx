@@ -51,7 +51,8 @@ const LoggedInHeaderNavigation = () => {
                 className="ant-dropdown-link"
                 onClick={(e) => e.preventDefault()}
               >
-                {loggedInUser?.first_name}
+                
+                {loggedInUser?loggedInUser["first_name"]:""}
               </a>
             </Dropdown>
           </div>
