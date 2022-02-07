@@ -30,7 +30,7 @@ function Layout(props) {
       <div className="app-layout">
         {isAuthenticate ? <LoggedInHeader /> : <LoggedOutHeader />}
 
-        <div className="app-content">{props.children}</div>
+        {/* <div className="app-content">{props.children}</div> */}
         <Spinner>{""}</Spinner>
         <div className={styles.contentWrap}>
           <div className={styles.contentArea}>{props.children}</div>

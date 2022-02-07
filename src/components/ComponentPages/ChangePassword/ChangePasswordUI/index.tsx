@@ -3,6 +3,8 @@ import styles from "./ChangePassword.module.scss";
 import messages from "../../../../messages";
 
 export default function ChangePasswordUI({ form, onFinish, onFinishFailed }) {
+
+
   return (
     <>
       <section className={styles.change_password}>
@@ -38,14 +40,13 @@ export default function ChangePasswordUI({ form, onFinish, onFinishFailed }) {
                 </Form.Item>
               </Col>
               <Col md={8}>
-                {" "}
                 <Form.Item
                   name="new_password"
                   label={messages.labels.newPassword}
                   rules={[
                     {
                       required: true,
-                      message: "Please enter new password!",
+                      message: 'Please enter new password!',
                     },
                   ]}
                   hasFeedback
@@ -56,37 +57,31 @@ export default function ChangePasswordUI({ form, onFinish, onFinishFailed }) {
                   />
                 </Form.Item>
               </Col>
-              <Col md={8}>
-                {" "}
-                <Form.Item
-                  name="confirm_password"
-                  label={messages.labels.confirmPassword}
-                  dependencies={["new_password"]}
-                  hasFeedback
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please confirm your password!",
+              <Col md={8}>  <Form.Item
+                name="confirm_password"
+                label={messages.labels.confirmPassword}
+                dependencies={['new_password']}
+                hasFeedback
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please confirm your password!',
+                  },
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (!value || getFieldValue('new_password') === value) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(new Error('The confirm password and new password must match'));
                     },
-                    ({ getFieldValue }) => ({
-                      validator(_, value) {
-                        if (!value || getFieldValue("new_password") === value) {
-                          return Promise.resolve();
-                        }
-                        return Promise.reject(
-                          new Error(
-                            "The confirm password and new password must match"
-                          )
-                        );
-                      },
-                    }),
-                  ]}
-                >
-                  <Input
-                    type="password"
-                    placeholder={messages.placeholders.confirmPassword}
-                  />
-                </Form.Item>
+                  }),
+                ]}
+              >
+                <Input
+                  type="password"
+                  placeholder={messages.placeholders.confirmPassword}
+                />
+              </Form.Item>
               </Col>
             </Row>
           </div>
@@ -99,4 +94,5 @@ export default function ChangePasswordUI({ form, onFinish, onFinishFailed }) {
       </section>
     </>
   );
+  
 }

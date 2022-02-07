@@ -1,5 +1,5 @@
-import K from "../../constants";
-import Request from ".";
+import K from "../../../constants";
+import Request from "../../request";
 
 export default class UserRequest extends Request {
   constructor(url, met, body, head, obj, token) {
@@ -12,7 +12,7 @@ export default class UserRequest extends Request {
       client_secret: process.env.NEXT_PUBLIC_AUTH_CLIENT_SECRET,
     };
 
-    return new Request(
+    return new UserRequest(
       K.Network.URL.CreateToken,
       K.Network.Method.POST,
       body,
@@ -30,7 +30,7 @@ export default class UserRequest extends Request {
       password,
     };
 
-    return new Request(
+    return new UserRequest(
       K.Network.URL.LoginUser,
       K.Network.Method.POST,
       body,
@@ -41,7 +41,7 @@ export default class UserRequest extends Request {
   }
 
   static logoutCall(token, error: string = "") {
-    return new Request(
+    return new UserRequest(
       K.Network.URL.LogoutUser,
       K.Network.Method.GET,
       {},
@@ -56,7 +56,7 @@ export default class UserRequest extends Request {
       ...values,
     };
 
-    return new Request(
+    return new UserRequest(
       K.Network.URL.RegisterUser,
       K.Network.Method.POST,
       body,
@@ -73,55 +73,10 @@ export default class UserRequest extends Request {
       ...values,
     };
 
-    return new Request(
+    return new UserRequest(
       K.Network.URL.VerifyRegisterUser,
       K.Network.Method.POST,
       body,
-      K.Network.Header.Type.Json,
-      {},
-      authToken
-    );
-  }
-
-  static userSocialLogin(values, authToken) {
-    const body = {
-      client_id: process.env.NEXT_PUBLIC_AUTH_CLIENT_PASSWORD_ID,
-      client_secret: process.env.NEXT_PUBLIC_AUTH_CLIENT_PASSWORD_SECRET,
-      ...values,
-    };
-
-    return new Request(
-      K.Network.URL.UserSocialLogin,
-      K.Network.Method.POST,
-      body,
-      K.Network.Header.Type.Json,
-      {},
-      authToken
-    );
-  }
-
-  static userSocialLoginCallback(values, authToken) {
-    const body = {
-      client_id: process.env.NEXT_PUBLIC_AUTH_CLIENT_PASSWORD_ID,
-      client_secret: process.env.NEXT_PUBLIC_AUTH_CLIENT_PASSWORD_SECRET,
-      ...values,
-    };
-
-    return new Request(
-      K.Network.URL.UserSocialLoginCallback,
-      K.Network.Method.POST,
-      body,
-      K.Network.Header.Type.Json,
-      {},
-      authToken
-    );
-  }
-
-  static getCountryCodes(authToken) {
-    return new Request(
-      K.Network.URL.CountryCodes,
-      K.Network.Method.GET,
-      {},
       K.Network.Header.Type.Json,
       {},
       authToken
@@ -133,13 +88,13 @@ export default class UserRequest extends Request {
       user,
       user_image,
     };
-    return new Request(
+    return new UserRequest(
       K.Network.URL.UpdateUser + id,
       K.Network.Method.PUT,
       body,
       K.Network.Header.Type.Json,
       {},
-      ""
+      false
     );
   }
 
@@ -148,7 +103,7 @@ export default class UserRequest extends Request {
       ...values,
     };
 
-    return new Request(
+    return new UserRequest(
       K.Network.URL.ChangePassword,
       K.Network.Method.POST,
       body,
@@ -161,7 +116,7 @@ export default class UserRequest extends Request {
   static GetUserProfileInfo(authToken) {
     const body = {};
 
-    return new Request(
+    return new UserRequest(
       K.Network.URL.GetUserProfileInfo,
       K.Network.Method.GET,
       body,
@@ -176,7 +131,7 @@ export default class UserRequest extends Request {
       ...values,
     };
 
-    return new Request(
+    return new UserRequest(
       K.Network.URL.UpdateUserProfileInfo,
       K.Network.Method.POST,
       body,
@@ -189,7 +144,7 @@ export default class UserRequest extends Request {
   static GetMobileCarrier(authToken) {
     const body = {};
 
-    return new Request(
+    return new UserRequest(
       K.Network.URL.GetMobileCarrier,
       K.Network.Method.GET,
       body,
@@ -203,7 +158,7 @@ export default class UserRequest extends Request {
       ...values,
     };
 
-    return new Request(
+    return new UserRequest(
       K.Network.URL.SendOTP,
       K.Network.Method.POST,
       body,
@@ -218,7 +173,7 @@ export default class UserRequest extends Request {
       ...values,
     };
 
-    return new Request(
+    return new UserRequest(
       K.Network.URL.VerifyOTP,
       K.Network.Method.POST,
       body,
@@ -241,4 +196,5 @@ export default class UserRequest extends Request {
       authToken
     );
   }
+  
 }
