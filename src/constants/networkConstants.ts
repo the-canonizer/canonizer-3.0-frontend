@@ -25,6 +25,7 @@ const NetworkConstants = {
     GetMobileCarrier: `${BaseCanonizerApiUrl}/mobilecarrier`,
     SendOTP: `${BaseCanonizerApiUrl}/sendotp`,
     VerifyOTP: `${BaseCanonizerApiUrl}/verifyotp`,
+    GetAlgorithmsList: `${BaseCanonizerApiUrl}/get_algorithms`,
     // Tree
 
     GetTree: "/api/unknown",

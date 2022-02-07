@@ -13,12 +13,14 @@ function ProfileInfoUI({
   onOTPBtnClick,
   isOTPModalVisible,
   handleOTPCancel,
-  oTP,
+  otp,
   handleChangeOTP,
   handleselectAfter,
   privateFlags,
-}) {
+  algorithmList }) {
+    
   return (
+
     <section className={styles.profileInfo_wrapper}>
       <VerifyMobileNumber
         mobileCarrier={mobileCarrier}
@@ -27,17 +29,20 @@ function ProfileInfoUI({
         onOTPBtnClick={onOTPBtnClick}
         isOTPModalVisible={isOTPModalVisible}
         handleOTPCancel={handleOTPCancel}
-        oTP={oTP}
+        otp={otp}
         handleChangeOTP={handleChangeOTP}
-      ></VerifyMobileNumber>
+      />
+
       <ProfileInfoForm
         form={form}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         handleselectAfter={handleselectAfter}
         privateFlags={privateFlags}
-      ></ProfileInfoForm>
+        algorithmList={algorithmList}
+      />
     </section>
+
   );
 }
 
