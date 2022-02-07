@@ -71,3 +71,114 @@ export const dobRule = {
     },
   ]
 };
+export const otpRule = {
+  rules: [
+    {
+      required: true,
+      message: validations.otp,
+    },
+    {
+      max: 6,
+      message: validations.otpLength,
+    },
+  ],
+};
+export const phoneRule = {
+  rules: [
+    {
+      required: false,
+      message: validations.phone,
+    },
+    {
+      min: 9,
+      message: validations.phoneLength,
+    },
+    {
+      max: 10,
+      message: validations.phoneLength,
+    },
+  ],
+};
+
+export const getCaptchaRule = (showCaptchaError) => {
+  return {
+    rules: [
+      () => ({
+        validator() {
+          if (showCaptchaError) {
+            return Promise.resolve();
+          }
+          return Promise.reject(new Error(validations.captcha));
+        },
+      }),
+    ],
+  };
+};
+
+export const emRule = {
+  rules: [
+    {
+      max: 255,
+      message: validations.middleName,
+    },
+    {
+      required: true,
+      message: validations.email,
+    },
+    {
+      pattern: patterns.email,
+      message: validations.validEmail,
+    },
+  ],
+};
+
+export const passwordRule = {
+  rules: [
+    {
+      required: true,
+      message: validations.registrationPassword,
+    },
+    {
+      min: 5,
+      message: validations.passwordMinLength,
+    },
+    {
+      pattern: patterns.password,
+      message: validations.passwordPattern,
+    },
+  ],
+};
+
+export const confirmPasswordRule = {
+  rules: [
+    {
+      required: true,
+      message: validations.confirmPassword,
+    },
+    ({ getFieldValue }) => ({
+      validator(_, value) {
+        if (!value || getFieldValue("password") === value) {
+          return Promise.resolve();
+        }
+        return Promise.reject(new Error(validations.confirmPasswordErr));
+      },
+    }),
+  ],
+};
+
+export const usernameRule = {
+  rules: [
+    {
+      required: true,
+      message: validations.username,
+    },
+    {
+      pattern: patterns.emailPhone,
+      message: validations.usernameNotValid,
+    },
+  ],
+};
+
+export const userPassRule = {
+  rules: [{ required: true, message: validations.password }],
+};
