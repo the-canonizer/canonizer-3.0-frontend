@@ -19,27 +19,26 @@ const ChangePassword = () => {
       new_password: values.new_password,
       confirm_password: values.confirm_password,
     };
-    
+
     let res = await dispatch(changePassword(formBody));
     if (res && res.status_code === 200) {
       form.resetFields();
       message.success(res.message);
       //logout after success
-      await dispatch(logout());
+      await logout();
     }
   };
-  
+
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
 
   return (
-    
     <ChangePasswordUI
-    form={form}
-    onFinish={onFinish}
-    onFinishFailed={onFinishFailed}/>
-    
+      form={form}
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+    />
   );
 };
 

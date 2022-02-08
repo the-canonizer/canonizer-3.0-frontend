@@ -1,14 +1,14 @@
 import { labels } from "./label";
 import { placeholders } from "./placeholder";
 import { patterns, validations } from "./validation";
-import {  
+import {
   phoneNumberRule,
   mobileCarrierRule,
   firstNameRule,
   lastNameRule,
   middleNameRule,
   emailRule,
-  dobRule, 
+  dobRule,
   otpRule,
   phoneRule,
   getCaptchaRule,
@@ -16,7 +16,7 @@ import {
   passwordRule,
   confirmPasswordRule,
   usernameRule,
-  userPassRule, 
+  userPassRule,
 } from "./validationRules";
 
 const messages = {

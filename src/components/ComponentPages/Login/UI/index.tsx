@@ -81,6 +81,7 @@ const LoginUi = ({ form, onFinish, closeModal, isModal }) => {
 
               <Form.Item>
                 <Button
+                  data-testid="submitButton"
                   type="primary"
                   htmlType="submit"
                   className="login-form-button"

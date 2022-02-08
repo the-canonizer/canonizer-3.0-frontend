@@ -17,7 +17,7 @@ const LoggedInHeaderNavigation = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const logOut = async () => {
-    await dispatch(logout());
+    await logout();
   };
   const onClick = ({ key }) => {
     if (key == 3) {
@@ -51,8 +51,7 @@ const LoggedInHeaderNavigation = () => {
                 className="ant-dropdown-link"
                 onClick={(e) => e.preventDefault()}
               >
-                
-                {loggedInUser?loggedInUser["first_name"]:""}
+                {loggedInUser ? loggedInUser["first_name"] : ""}
               </a>
             </Dropdown>
           </div>

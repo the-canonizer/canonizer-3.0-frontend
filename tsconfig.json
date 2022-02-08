@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -17,7 +13,11 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "jsx": "preserve",
-    "isolatedModules": true
+    "isolatedModules": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/components/*": ["./src/components/*"]
+    }
   },
   "include": [
     "next-env.d.ts",
@@ -25,9 +25,8 @@
     "**/*.tsx",
     "next.config.js",
     "src/components/common/helpCard/help.tsx",
-    "src/components/common/headers/loggedOutHeader/index.jsx"
+    "src/components/common/headers/loggedOutHeader/index.jsx",
+    "src/utils/testUtils.tsx"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
