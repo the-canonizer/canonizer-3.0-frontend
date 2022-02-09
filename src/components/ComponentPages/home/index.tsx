@@ -1,10 +1,10 @@
 import { Row, Col } from "antd";
 
 import useAuthentication from "../../../hooks/isUserAuthenticated";
-import SideBar from "./sideBar";
-import TopicsList from "./topicsList";
-import HelpCard from "./helpCard";
-import RecentActivities from "./recentActivities";
+import SideBar from "./SideBar";
+import TopicsList from "./TopicsList";
+import HelpCard from "./HelpCard";
+import RecentActivities from "./RecentActivities";
 
 const HomePageContainer = () => {
   const { isUserAuthenticated } = useAuthentication();
