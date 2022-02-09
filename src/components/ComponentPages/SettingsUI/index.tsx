@@ -3,7 +3,7 @@ import { Layout, Card, Col, Row, Button } from "antd";
 import Icon from "@ant-design/icons";
 import Image from "next/image";
 import LayoutMaster from "../../../hoc/layout";
-import ChangePassword from "../../../components/ComponentPages/ChangePassword";
+import ChangePassword from "../ChangePassword";
 import adone from "../../../../public/images/image11.jpg";
 import adtwo from "../../../../public/images/image37.jpg";
 import createTopic from "../../../../public/images/topic-icn.svg";

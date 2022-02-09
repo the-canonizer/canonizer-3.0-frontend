@@ -15,7 +15,7 @@ function SocialLoginCallback() {
   const dispatch = useDispatch<AppDispatch>();
 
   const sendData = async (data) => {
-    let response = await dispatch(socialLoginCallback(data));
+    let response = await socialLoginCallback(data);
 
     if (response && response.status_code === 200) {
       router.push("/");

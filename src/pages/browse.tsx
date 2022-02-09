@@ -1,8 +1,8 @@
 import { Row, Col } from "antd";
 
 import Layout from "../hoc/layout";
-import SideBar from "../components/componentPages/home/sideBar";
-import TopicsList from "../components/componentPages/home/topicsList";
+import SideBar from "../components/ComponentPages/Home/SideBar";
+import TopicsList from "../components/ComponentPages/Home/TopicsList";
 import { getCanonizedNameSpacesApi } from "../network/api/homePageApi";
 import { setCanonizedNameSpaces } from "../store/slices/homePageSlice";
 import { useDispatch } from "react-redux";
