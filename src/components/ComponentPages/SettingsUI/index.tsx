@@ -4,8 +4,8 @@ import Icon from "@ant-design/icons";
 import Image from "next/image";
 import LayoutMaster from "../../../hoc/layout";
 import ChangePassword from "../ChangePassword";
-import adone from "../../../../public/images/image11.jpg";
-import adtwo from "../../../../public/images/image37.jpg";
+// import adone from "../../../../public/images/image11.jpg";
+// import adtwo from "../../../../public/images/image37.jpg";
 import createTopic from "../../../../public/images/topic-icn.svg";
 import ProfileInfo from "../ProfileInfo";
 
@@ -54,7 +54,7 @@ export default function SettingsUI() {
                 </Button>
               </Card>
               <div className="siteAds">
-                <Image alt="adOne" src={adone} />
+                <Image alt="adOne" src={'/images/image11.jpg'} />
               </div>
             </Col>
             <Col span={14}>
@@ -73,7 +73,7 @@ export default function SettingsUI() {
             </Col>
             <Col span={5}>
               <div className="siteAds">
-                <Image alt="adtwo" src={adtwo} />
+                <Image alt="adtwo" src={'/images/image37.jpg'} />
               </div>
             </Col>
           </Row>
