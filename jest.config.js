@@ -29,9 +29,9 @@ const jestConfig = {
     "@components/(.*)": "<rootDir>/src/components/$1",
     "@styles/(.*)": "<rootDir>/styles/$1",
     "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
-    "^.+\\.(css|sass|scss)$": "<rootDir>/__mocks__/styleMock.js",
+    "^.+\\.(css|sass|scss)$": "<rootDir>/styleMock.js",
     // https://jestjs.io/docs/webpack#handling-static-assets
-    "^.+\\.(jpg|jpeg|png|gif|webp|avif|svg)$": `<rootDir>/__mocks__/fileMock.js`,
+    "^.+\\.(jpg|jpeg|png|gif|webp|avif|svg)$": `<rootDir>/fileMock.js`,
   },
   coverageDirectory: "coverage",
   transform: {

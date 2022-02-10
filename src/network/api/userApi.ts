@@ -1,6 +1,10 @@
 import { message } from "antd";
 
-import { isServer, redirectToLogin } from "../../utils/generalUtility";
+import {
+  handleError,
+  isServer,
+  redirectToLogin,
+} from "../../utils/generalUtility";
 import {
   setAuthToken,
   removeAuthToken,
@@ -16,13 +20,11 @@ export const createToken = async () => {
     const token = await NetworkCall.fetch(UserRequest.createToken());
     return token.data;
   } catch (error) {
-    console.error(error);
-    message.error(error.message);
+    handleError(error);
   }
 };
 
 export const login = async (email: string, password: string) => {
-  // return async (dispatch) => {
   try {
     const authToken = await createToken();
 
@@ -43,10 +45,8 @@ export const login = async (email: string, password: string) => {
 
     return res;
   } catch (err) {
-    console.error(err?.error?.data);
-    message.error(err?.error?.data.message);
+    handleError(err);
   }
-  // };
 };
 
 export const logout = async (error = "") => {
