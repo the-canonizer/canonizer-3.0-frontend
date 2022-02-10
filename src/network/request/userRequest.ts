@@ -12,14 +12,16 @@ export default class UserRequest extends Request {
       client_secret: process.env.NEXT_PUBLIC_AUTH_CLIENT_SECRET,
     };
 
-    console.log(new Request(
-      K.Network.URL.CreateToken,
-      K.Network.Method.POST,
-      body,
-      K.Network.Header.Type.Json,
-      {},
-      ""
-    ))
+    console.log(
+      new Request(
+        K.Network.URL.CreateToken,
+        K.Network.Method.POST,
+        body,
+        K.Network.Header.Type.Json,
+        {},
+        ""
+      )
+    );
 
     return new Request(
       K.Network.URL.CreateToken,
