@@ -10,6 +10,7 @@ import {
   SendOTP,
   VerifyOTP,
   GetAlgorithmsList,
+  GetLanguageList
 } from "../../../network/api/userApi";
 import ProfileInfoUI from "./ProfileInfoUI";
 
@@ -24,7 +25,7 @@ const ProfileInfo = () => {
   const [privateList, setPrivateList] = useState([]);
   const [publicList, setPublicList] = useState([]);
   const [algorithmList, setAlgorithmList] = useState([]);
-  var mobileCarrierList = [];
+  const [languageList, setLanguageList] = useState([]);
   const publicPrivateArray = {
     first_name: "first_name",
     last_name: "last_name",
@@ -147,7 +148,6 @@ const ProfileInfo = () => {
       let res = await dispatch(GetMobileCarrier());
       if (res != undefined) {
         setMobileCarrier(res.data);
-        mobileCarrierList = res.data;
       }
     }
 
@@ -157,21 +157,22 @@ const ProfileInfo = () => {
         setAlgorithmList(res.data);
       }
     }
+    async function fetchLanguageList() {
+      let res = await dispatch(GetLanguageList());
+      if (res != undefined) {
+        setLanguageList(res.data);
+      }
+    }
 
     async function fetchUserProfileInfo() {
       let res = await dispatch(GetUserProfileInfo());
       if (res != undefined) {
         if (res.data != undefined) {
-          let mobile_carrierValue = "";
-          if (mobileCarrierList.length > 0) {
-            mobile_carrierValue = mobileCarrierList.find(function (element) {
-              return element.id == res.data.mobile_carrier;
-            });
-          }
           const verify = {
             phone_number: res.data.phone_number,
             mobile_carrier:
-              mobile_carrierValue != "" ? mobile_carrierValue["name"] : "",
+              (parseInt(res.data.mobile_carrier)).toString() == "NaN" ? "" : parseInt(res.data.mobile_carrier)
+
           };
           formVerify.setFieldsValue(verify);
           //format date for datepicker
@@ -187,6 +188,9 @@ const ProfileInfo = () => {
         return fetchAlgorithmsList();
       })
       .then(function () {
+        return fetchLanguageList();
+      })
+      .then(function () {
         return fetchUserProfileInfo();
       });
   }, []);
@@ -197,6 +201,7 @@ const ProfileInfo = () => {
       formVerify={formVerify}
       mobileCarrier={mobileCarrier}
       algorithmList={algorithmList}
+      languageList={languageList}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       onVerifyClick={onVerifyClick}

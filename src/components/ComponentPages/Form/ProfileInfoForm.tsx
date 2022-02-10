@@ -22,6 +22,7 @@ function ProfileInfoForm({
   handleselectAfter,
   privateFlags,
   algorithmList,
+  languageList
 }) {
   let algorithms =
     algorithmList.length > 0 &&
@@ -29,6 +30,15 @@ function ProfileInfoForm({
       return (
         <Option key={item.algorithm_key} value={item.algorithm_key}>
           {item.algorithm_label}
+        </Option>
+      );
+    });
+  let languages =
+    languageList.length > 0 &&
+    languageList.map((item, i) => {
+      return (
+        <Option key={item.id} value={item.name}>
+          {item.name}
         </Option>
       );
     });
@@ -169,8 +179,7 @@ function ProfileInfoForm({
               </Form.Item>
               <Form.Item name="language" label={messages.labels.language}>
                 <Select size="large" placeholder="Select a language">
-                  <Option value="English">English</Option>
-                  <Option value="Hindi">Hindi</Option>
+                  {languages}
                 </Select>
               </Form.Item>
             </Col>
