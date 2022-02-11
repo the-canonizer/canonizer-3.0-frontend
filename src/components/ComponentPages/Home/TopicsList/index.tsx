@@ -37,7 +37,7 @@ const TopicsList = () => {
   const [topicsData, setTopicsData] = useState(canonizedTopics);
   const [nameSpacesList] = useState(nameSpaces);
   const [isReview, setIsReview] = useState(includeReview);
-
+  const [inputSearch, setInputSearch] = useState("");
   const [nameSpaceId, setNameSpaceId] = useState(1);
 
   const selectNameSpace = (value) => {
@@ -65,13 +65,20 @@ const TopicsList = () => {
         namespace_id: nameSpaceId,
         page_number: pageNumber,
         page_size: 15,
-        search: "",
+        search: inputSearch,
         filter: filterByScore,
         asof: "default",
       };
       getCanonizedTopicsApi(reqBody);
     } else didMount.current = true;
-  }, [asofdate, algorithm, nameSpaceId, pageNumber, filterByScore]);
+  }, [
+    asofdate,
+    algorithm,
+    nameSpaceId,
+    pageNumber,
+    filterByScore,
+    inputSearch,
+  ]);
 
   useEffect(() => {
     if (didMountForFilterScoreEffect.current) {
@@ -82,13 +89,15 @@ const TopicsList = () => {
         namespace_id: nameSpaceId,
         page_number: pageNumber,
         page_size: 15,
-        search: "",
+        search: inputSearch,
         filter: filterByScore,
         asof: "default",
       };
       getCanonizedTopicsApi(reqBody, loadMore);
     } else didMountForFilterScoreEffect.current = true;
   }, [pageNumber]);
+
+  const onSearch = (value) => setInputSearch(value);
 
   const LoadMoreTopics = (
     <div className="text-center">
@@ -149,6 +158,7 @@ const TopicsList = () => {
                   allowClear
                   className={styles.topic}
                   style={{ width: 200 }}
+                  onSearch={onSearch}
                 />
               )}
             </div>
