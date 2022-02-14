@@ -42,40 +42,23 @@ const ProfileInfo = () => {
     phone_number: "phone_number",
   };
 
+  const isPublicOrPrivate=(field_value )=> {
+    return privateList.includes(field_value) ? 0 : 1
+  }
   //on update profile click
   const onFinish = async (values: any) => {
     //Set Private Public flags
-    values.first_name_bit = privateList.includes(publicPrivateArray.first_name)
-      ? 0
-      : 1;
-    values.last_name_bit = privateList.includes(publicPrivateArray.last_name)
-      ? 0
-      : 1;
-    values.middle_name_bit = privateList.includes(
-      publicPrivateArray.middle_name
-    )
-      ? 0
-      : 1;
-    values.email_bit = privateList.includes(publicPrivateArray.email) ? 0 : 1;
-    values.address_1_bit = privateList.includes(publicPrivateArray.address_1)
-      ? 0
-      : 1;
-    values.address_2_bit = privateList.includes(publicPrivateArray.address_2)
-      ? 0
-      : 1;
-    values.postal_code_bit = privateList.includes(
-      publicPrivateArray.postal_code
-    )
-      ? 0
-      : 1;
-    values.city_bit = privateList.includes(publicPrivateArray.city) ? 0 : 1;
-    values.state_bit = privateList.includes(publicPrivateArray.state) ? 0 : 1;
-    values.country_bit = privateList.includes(publicPrivateArray.country)
-      ? 0
-      : 1;
-    values.birthday_bit = privateList.includes(publicPrivateArray.birthday)
-      ? 0
-      : 1;
+    values.first_name_bit = isPublicOrPrivate(publicPrivateArray.first_name)
+    values.last_name_bit =isPublicOrPrivate(publicPrivateArray.last_name)
+    values.middle_name_bit = isPublicOrPrivate(publicPrivateArray.middle_name)
+    values.email_bit = isPublicOrPrivate(publicPrivateArray.email);
+    values.address_1_bit = isPublicOrPrivate(publicPrivateArray.address_1)
+    values.address_2_bit = isPublicOrPrivate(publicPrivateArray.address_2)
+    values.postal_code_bit = isPublicOrPrivate(publicPrivateArray.postal_code)
+    values.city_bit = isPublicOrPrivate(publicPrivateArray.city);
+    values.state_bit = isPublicOrPrivate(publicPrivateArray.state);
+    values.country_bit = isPublicOrPrivate(publicPrivateArray.country)
+    values.birthday_bit = isPublicOrPrivate(publicPrivateArray.birthday)
     //End Set Private Public flags
     values.mobile_carrier = formVerify.getFieldValue(
       publicPrivateArray.mobile_carrier
@@ -83,7 +66,6 @@ const ProfileInfo = () => {
     values.phone_number = formVerify.getFieldValue(
       publicPrivateArray.phone_number
     );
-
     let res = await dispatch(UpdateUserProfileInfo(values));
     if (res && res.status_code === 200) {
       message.success(res.message);
