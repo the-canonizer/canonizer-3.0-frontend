@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from "../src/utils/testUtils";
 import userEvent from "@testing-library/user-event";
 
-import Login from "../src/components/ComponentPages/Login";
+import Login from "../index";
 
 describe("Login page", () => {
   it("render heading", () => {
