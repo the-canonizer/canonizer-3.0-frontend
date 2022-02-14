@@ -54,7 +54,7 @@ export default function SettingsUI() {
                 </Button>
               </Card>
               <div className="siteAds">
-                <Image alt="adOne" src={'/images/image11.jpg'} />
+                <Image alt="adOne" src={"/images/image11.jpg"} />
               </div>
             </Col>
             <Col span={14}>
@@ -73,7 +73,7 @@ export default function SettingsUI() {
             </Col>
             <Col span={5}>
               <div className="siteAds">
-                <Image alt="adtwo" src={'/images/image37.jpg'} />
+                <Image alt="adtwo" src={"/images/image37.jpg"} />
               </div>
             </Col>
           </Row>
