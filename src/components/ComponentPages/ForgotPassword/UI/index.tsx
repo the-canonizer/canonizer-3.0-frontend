@@ -39,9 +39,9 @@ function ForgotPasswordUI({ form, onFinish, isModal, closeModal }) {
             />
           </div>
           <Text type="danger" className={styles.otpNote}>
-            Don't worry, it happens. Let us know the email address you signed up
+            Don&apos;t worry, it happens. Let us know the email address you signed up
             <span className={styles.otpNoteSupport}>
-              with and we'll send you an email with instructions.
+              with and we&apos;ll send you an email with instructions.
             </span>
           </Text>
           <Form.Item
