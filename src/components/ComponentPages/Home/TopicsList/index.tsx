@@ -21,6 +21,7 @@ const TopicsList = () => {
   const {
     canonizedTopics,
     asofdate,
+    asof,
     algorithm,
     filterByScore,
     nameSpaces,
@@ -28,6 +29,7 @@ const TopicsList = () => {
   } = useSelector((state: RootState) => ({
     canonizedTopics: state.homePage?.canonizedTopicsData,
     asofdate: state.homePage?.filterObject?.asofdate,
+    asof: state.homePage?.filterObject?.asof,
     algorithm: state.homePage?.filterObject?.algorithm,
     filterByScore: state.homePage?.filterObject?.filterByScore,
     nameSpaces: state.homePage?.nameSpaces,
@@ -67,12 +69,13 @@ const TopicsList = () => {
         page_size: 15,
         search: inputSearch,
         filter: filterByScore,
-        asof: "default",
+        asof: asof,
       };
       getCanonizedTopicsApi(reqBody);
     } else didMount.current = true;
   }, [
     asofdate,
+    asof,
     algorithm,
     nameSpaceId,
     pageNumber,
