@@ -22,4 +22,7 @@ export const labels = {
   state: "State",
   zipCode: "Zip Code",
   chooseAlgorithm: "Choose default algorithm preferences",
+  addnewNickName: "Add New Nick Name",
+  nickName: "Nick Name (Limit 50 Char)*",
+  visibilityStatus: "Visibility Status"
 };
