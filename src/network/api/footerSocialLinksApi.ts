@@ -6,7 +6,8 @@ import FooterRequests from "../request/footerRequests";
 export const getFooterSocialLinksApi = async () => {
   try {
     const links = await NetworkCall.fetch(
-      FooterRequests.getFooterSocialLinks()
+      FooterRequests.getFooterSocialLinks(),
+      false
     );
 
     return links?.data;

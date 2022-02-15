@@ -182,3 +182,49 @@ export const usernameRule = {
 export const userPassRule = {
   rules: [{ required: true, message: validations.password }],
 };
+
+export const currentPasswordRule = {
+  rules: [
+    {
+      required: true,
+      message: validations.currentpassword,
+    },
+  ],
+};
+export const newPasswordRule = {
+  rules: [
+    {
+      required: true,
+      message: validations.newPassword,
+    },
+    {
+      min: 5,
+      message: validations.passwordMinLength,
+    },
+    {
+      pattern: patterns.password,
+      message: validations.passwordPattern,
+    },
+  ],
+};
+
+export const confirmNewPasswordRule = {
+  rules: [
+    {
+      required: true,
+      message: validations.confirmNewPassword,
+    },
+    ({ getFieldValue }) => ({
+      validator(_, value) {
+        if (!value || getFieldValue("new_password") === value) {
+          return Promise.resolve();
+        }
+        return Promise.reject(
+          new Error(
+            validations.confirmNewPasswordErr
+          )
+        );
+      },
+    }),
+  ]
+};

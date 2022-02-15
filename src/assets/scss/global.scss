@@ -244,7 +244,15 @@ form {
   box-shadow: 0 2px #0000000b;
 }
 .createTopicBtn {
-  display: flex;
-  align-items: center;
-  font-weight: 600;
+  width: 100%;
+  font-size: 14px;
+  font-weight:600;
+  color: #0F2A4D;
+  border: solid 1px #D9D9D9;
+  i{
+      color: #2E68DB;
+      margin-right:4px;
+      position: relative;
+      top: 2px;
+  }
 }

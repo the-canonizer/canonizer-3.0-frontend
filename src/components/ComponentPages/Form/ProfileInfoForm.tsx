@@ -22,16 +22,32 @@ function ProfileInfoForm({
   handleselectAfter,
   privateFlags,
   algorithmList,
+  languageList
 }) {
-  let algorithms =
-    algorithmList.length > 0 &&
-    algorithmList.map((item, i) => {
-      return (
-        <Option key={item.algorithm_key} value={item.algorithm_key}>
-          {item.algorithm_label}
-        </Option>
-      );
-    });
+  const listOfOption = (optionList, algoOrLang): any => {
+    let option = [];
+    optionList.length > 0 &&
+      optionList.map((item, i) => {
+        if (algoOrLang == "algorithms") {
+          option.push(
+            <Option key={item.algorithm_key} value={item.algorithm_key}>
+              {item.algorithm_label}
+            </Option>
+          );
+        }
+        else if (algoOrLang == "languages") {
+          option.push(
+            <Option key={item.id} value={item.name}>
+              {item.name}
+            </Option>
+          );
+        }
+      });
+    return option;
+  }
+  const publicOrPrivate = (val) => {
+    return privateFlags.includes(val) ? "private" : "public"
+  }
   const selectAfter = (val, prvtPblc) => {
     if (privateFlags != undefined)
       return (
@@ -68,8 +84,7 @@ function ProfileInfoForm({
               >
                 <Input
                   addonAfter={selectAfter(
-                    "first_name",
-                    privateFlags.includes("first_name") ? "private" : "public"
+                    "first_name", publicOrPrivate("first_name")
                   )}
                   placeholder={messages.placeholders.firstName}
                   size="large"
@@ -82,8 +97,7 @@ function ProfileInfoForm({
               >
                 <Input
                   addonAfter={selectAfter(
-                    "last_name",
-                    privateFlags.includes("last_name") ? "private" : "public"
+                    "last_name", publicOrPrivate("last_name")
                   )}
                   placeholder={messages.placeholders.lastName}
                 />
@@ -104,8 +118,7 @@ function ProfileInfoForm({
               >
                 <Input
                   addonAfter={selectAfter(
-                    "middle_name",
-                    privateFlags.includes("middle_name") ? "private" : "public"
+                    "middle_name", publicOrPrivate("middle_name")
                   )}
                   placeholder={messages.placeholders.middleName}
                   size="large"
@@ -118,8 +131,7 @@ function ProfileInfoForm({
               >
                 <Input
                   addonAfter={selectAfter(
-                    "email",
-                    privateFlags.includes("email") ? "private" : "public"
+                    "email", publicOrPrivate("email")
                   )}
                   placeholder={messages.placeholders.email}
                   size="large"
@@ -140,8 +152,7 @@ function ProfileInfoForm({
               <Form.Item name="address_1" label={messages.labels.addressLine1}>
                 <Input
                   addonAfter={selectAfter(
-                    "address_1",
-                    privateFlags.includes("address_1") ? "private" : "public"
+                    "address_1", publicOrPrivate("address_1")
                   )}
                   placeholder={messages.placeholders.addressLine1}
                   size="large"
@@ -150,8 +161,7 @@ function ProfileInfoForm({
               <Form.Item name="city" label={messages.labels.city}>
                 <Input
                   addonAfter={selectAfter(
-                    "city",
-                    privateFlags.includes("city") ? "private" : "public"
+                    "city", publicOrPrivate("city")
                   )}
                   placeholder={messages.placeholders.city}
                   size="large"
@@ -160,8 +170,7 @@ function ProfileInfoForm({
               <Form.Item name="country" label={messages.labels.country}>
                 <Input
                   addonAfter={selectAfter(
-                    "country",
-                    privateFlags.includes("country") ? "private" : "public"
+                    "country", publicOrPrivate("country")
                   )}
                   placeholder={messages.placeholders.country}
                   size="large"
@@ -169,8 +178,7 @@ function ProfileInfoForm({
               </Form.Item>
               <Form.Item name="language" label={messages.labels.language}>
                 <Select size="large" placeholder="Select a language">
-                  <Option value="English">English</Option>
-                  <Option value="Hindi">Hindi</Option>
+                  {listOfOption(languageList, "languages")}
                 </Select>
               </Form.Item>
             </Col>
@@ -178,8 +186,7 @@ function ProfileInfoForm({
               <Form.Item name="address_2" label={messages.labels.addressLine2}>
                 <Input
                   addonAfter={selectAfter(
-                    "address_2",
-                    privateFlags.includes("address_2") ? "private" : "public"
+                    "address_2", publicOrPrivate("address_2")
                   )}
                   placeholder={messages.placeholders.addressLine2}
                   size="large"
@@ -188,8 +195,7 @@ function ProfileInfoForm({
               <Form.Item name="state" label={messages.labels.state}>
                 <Input
                   addonAfter={selectAfter(
-                    "state",
-                    privateFlags.includes("state") ? "private" : "public"
+                    "state", publicOrPrivate("state")
                   )}
                   placeholder={messages.placeholders.state}
                   size="large"
@@ -198,8 +204,7 @@ function ProfileInfoForm({
               <Form.Item name="postal_code" label={messages.labels.zipCode}>
                 <Input
                   addonAfter={selectAfter(
-                    "postal_code",
-                    privateFlags.includes("postal_code") ? "private" : "public"
+                    "postal_code", publicOrPrivate("postal_code")
                   )}
                   placeholder={messages.placeholders.zipCode}
                   size="large"
@@ -213,7 +218,7 @@ function ProfileInfoForm({
                   size="large"
                   placeholder={messages.placeholders.algorithm}
                 >
-                  {algorithms}
+                  {listOfOption(algorithmList, "algorithms")}
                 </Select>
               </Form.Item>
             </Col>

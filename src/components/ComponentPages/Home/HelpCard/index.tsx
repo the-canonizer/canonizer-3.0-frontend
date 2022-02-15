@@ -8,12 +8,14 @@ const HelpCard = () => {
   }));
   return (
     <>
-      <section className={styles.wrap}>
-        <div
-          className="help-card-wrap"
-          dangerouslySetInnerHTML={{ __html: whatsNew }}
-        />
-      </section>
+      {whatsNew && (
+        <section className={styles.wrap}>
+          <div
+            className="help-card-wrap"
+            dangerouslySetInnerHTML={{ __html: whatsNew }}
+          />
+        </section>
+      )}
     </>
   );
 };
