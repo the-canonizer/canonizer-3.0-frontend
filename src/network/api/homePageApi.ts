@@ -37,6 +37,110 @@ export const getCanonizedNameSpacesApi = async () => {
   }
 };
 
+export const getRecentActivitiesApi = async () => {
+  try {
+    // const nameSpaces = await NetworkCall.fetch(
+    //   HomePageRequests.getCanonizedRecentActivities()
+    // );
+    const mockData = [
+      {
+        link: "/",
+        shortDescription: "More Intelligence Better",
+        date: " Jun 23, 2012, 2:25:02 AM",
+        id: 1,
+      },
+      {
+        link: "/",
+        shortDescription: "More Intelligence Better",
+        date: " Jun 23, 2012, 2:25:02 AM",
+        id: 2,
+      },
+      {
+        link: "/",
+        shortDescription: "More Intelligence Better",
+        date: " Jun 23, 2012, 2:25:02 AM",
+        id: 3,
+      },
+      {
+        link: "/",
+        shortDescription: "More Intelligence Better",
+        date: " Jun 23, 2012, 2:25:02 AM",
+        id: 4,
+      },
+      {
+        link: "/",
+        shortDescription: "More Intelligence Better",
+        date: " Jun 23, 2012, 2:25:02 AM",
+        id: 5,
+      },
+      {
+        link: "/",
+        shortDescription: "More Intelligence Better",
+        date: " Jun 23, 2012, 2:25:02 AM",
+        id: 6,
+      },
+      {
+        link: "/",
+        shortDescription: "More Intelligence Better",
+        date: " Jun 23, 2012, 2:25:02 AM",
+        id: 7,
+      },
+      {
+        link: "/",
+        shortDescription: "More Intelligence Better",
+        date: " Jun 23, 2012, 2:25:02 AM",
+        id: 8,
+      },
+      {
+        link: "/",
+        shortDescription: "More Intelligence Better",
+        date: " Jun 23, 2012, 2:25:02 AM",
+        id: 9,
+      },
+      {
+        link: "/",
+        shortDescription: "More Intelligence Better",
+        date: " Jun 23, 2012, 2:25:02 AM",
+        id: 10,
+      },
+      {
+        link: "/",
+        shortDescription: "More Intelligence Better",
+        date: " Jun 23, 2012, 2:25:02 AM",
+        id: 11,
+      },
+      {
+        link: "/",
+        shortDescription: "More Intelligence Better",
+        date: " Jun 23, 2012, 2:25:02 AM",
+        id: 12,
+      },
+      {
+        link: "/",
+        shortDescription: "More Intelligence Better",
+        date: " Jun 23, 2012, 2:25:02 AM",
+        id: 13,
+      },
+      {
+        link: "/",
+        shortDescription: "More Intelligence Better",
+        date: " Jun 23, 2012, 2:25:02 AM",
+        id: 14,
+      },
+      {
+        link: "/",
+        shortDescription: "More Intelligence Better",
+        date: " Jun 23, 2012, 2:25:02 AM",
+        id: 15,
+      },
+    ];
+    return mockData;
+    // return nameSpaces;
+  } catch (error) {
+    message.error(error.message);
+  }
+};
+
 export const getCanonizedAlgorithmsApi = async () => {
   try {
     const algorithms = await NetworkCall.fetch(

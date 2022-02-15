@@ -37,6 +37,7 @@ const NetworkConstants = {
     GetCanonizedNameSpaces: `${BaseCanonizerApiUrl}/api/v3/get_all_namespaces`,
     GetWhatsNewContent: `${BaseCanonizerApiUrl}/api/v3/get_whats_new_content`,
     GetCanonizedAlgorithms: `${BaseCanonizerApiUrl}/api/v3/get_algorithms`,
+    GetCanonizedRecentActivities: `${BaseCanonizerApiUrl}/api/v3/get_recent_activities`,
 
     //footer
 
