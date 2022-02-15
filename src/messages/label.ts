@@ -25,5 +25,5 @@ export const labels = {
   emailId: "Email ID",
   addnewNickName: "Add New Nick Name",
   nickName: "Nick Name (Limit 50 Char)*",
-  visibilityStatus: "Visibility Status"
+  visibilityStatus: "Visibility Status",
 };
