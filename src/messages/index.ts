@@ -17,6 +17,9 @@ import {
   confirmPasswordRule,
   usernameRule,
   userPassRule,
+  newPasswordRule,
+  confirmNewPasswordRule,
+  currentPasswordRule
 } from "./validationRules";
 
 const messages = {
@@ -39,6 +42,9 @@ const messages = {
   confirmPasswordRule,
   usernameRule,
   userPassRule,
+  newPasswordRule,
+  confirmNewPasswordRule,
+  currentPasswordRule
 };
 
 export default messages;
