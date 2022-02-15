@@ -517,3 +517,50 @@ export const GetAlgorithmsList = () => {
     return res;
   };
 };
+
+export const GetLanguageList = () => {
+  return async (dispatch) => {
+    let state = store.getState();
+    const { auth } = state;
+    const res = await NetworkCall.fetch(
+      UserRequest.GetLanguageList(auth.loggedInUser.token)
+    )
+      .then((value) => {
+        return value;
+      })
+      .catch((errors) => {
+        let msgs = errors
+          ? errors.error
+            ? errors.error.data
+              ? errors.error.data.error
+                ? errors.error.data.error
+                : ""
+              : ""
+            : ""
+          : "";
+        if (msgs) {
+          let keys = Object.keys(msgs);
+          keys.forEach((key) => {
+            message.error(msgs[key][0]);
+          });
+        } else {
+          if (
+            errors
+              ? errors.error
+                ? errors.error.data
+                  ? errors.error.data.message
+                    ? errors.error.data.message
+                    : ""
+                  : ""
+                : ""
+              : ""
+          )
+            message.error(errors.error.data.message);
+          else {
+            message.error("Something is wrong");
+          }
+        }
+      });
+    return res;
+  };
+};
