@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Layout, Card, Col, Row, Button } from "antd";
-import Icon from "@ant-design/icons";
 import Image from "next/image";
-import LayoutMaster from "../../../hoc/layout";
 import ChangePassword from "../ChangePassword";
 import ProfileInfo from "../ProfileInfo";
 import NickName from "../NickName";
