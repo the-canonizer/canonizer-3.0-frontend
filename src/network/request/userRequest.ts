@@ -241,6 +241,20 @@ export default class UserRequest extends Request {
       authToken
     );
   }
+
+  static GetLanguageList(authToken) {
+    const body = {};
+
+    return new UserRequest(
+      K.Network.URL.GetLanguageList,
+      K.Network.Method.GET,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
+
   // forgot password
   static forgotPasswordSendOTP(body, token) {
     return new Request(

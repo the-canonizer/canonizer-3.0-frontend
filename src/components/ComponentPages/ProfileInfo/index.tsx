@@ -10,6 +10,7 @@ import {
   SendOTP,
   VerifyOTP,
   GetAlgorithmsList,
+  GetLanguageList
 } from "../../../network/api/userApi";
 import ProfileInfoUI from "./ProfileInfoUI";
 
@@ -24,7 +25,7 @@ const ProfileInfo = () => {
   const [privateList, setPrivateList] = useState([]);
   const [publicList, setPublicList] = useState([]);
   const [algorithmList, setAlgorithmList] = useState([]);
-  var mobileCarrierList = [];
+  const [languageList, setLanguageList] = useState([]);
   const publicPrivateArray = {
     first_name: "first_name",
     last_name: "last_name",
@@ -41,40 +42,23 @@ const ProfileInfo = () => {
     phone_number: "phone_number",
   };
 
+  const isPublicOrPrivate=(field_value )=> {
+    return privateList.includes(field_value) ? 0 : 1
+  }
   //on update profile click
   const onFinish = async (values: any) => {
     //Set Private Public flags
-    values.first_name_bit = privateList.includes(publicPrivateArray.first_name)
-      ? 0
-      : 1;
-    values.last_name_bit = privateList.includes(publicPrivateArray.last_name)
-      ? 0
-      : 1;
-    values.middle_name_bit = privateList.includes(
-      publicPrivateArray.middle_name
-    )
-      ? 0
-      : 1;
-    values.email_bit = privateList.includes(publicPrivateArray.email) ? 0 : 1;
-    values.address_1_bit = privateList.includes(publicPrivateArray.address_1)
-      ? 0
-      : 1;
-    values.address_2_bit = privateList.includes(publicPrivateArray.address_2)
-      ? 0
-      : 1;
-    values.postal_code_bit = privateList.includes(
-      publicPrivateArray.postal_code
-    )
-      ? 0
-      : 1;
-    values.city_bit = privateList.includes(publicPrivateArray.city) ? 0 : 1;
-    values.state_bit = privateList.includes(publicPrivateArray.state) ? 0 : 1;
-    values.country_bit = privateList.includes(publicPrivateArray.country)
-      ? 0
-      : 1;
-    values.birthday_bit = privateList.includes(publicPrivateArray.birthday)
-      ? 0
-      : 1;
+    values.first_name_bit = isPublicOrPrivate(publicPrivateArray.first_name)
+    values.last_name_bit =isPublicOrPrivate(publicPrivateArray.last_name)
+    values.middle_name_bit = isPublicOrPrivate(publicPrivateArray.middle_name)
+    values.email_bit = isPublicOrPrivate(publicPrivateArray.email);
+    values.address_1_bit = isPublicOrPrivate(publicPrivateArray.address_1)
+    values.address_2_bit = isPublicOrPrivate(publicPrivateArray.address_2)
+    values.postal_code_bit = isPublicOrPrivate(publicPrivateArray.postal_code)
+    values.city_bit = isPublicOrPrivate(publicPrivateArray.city);
+    values.state_bit = isPublicOrPrivate(publicPrivateArray.state);
+    values.country_bit = isPublicOrPrivate(publicPrivateArray.country)
+    values.birthday_bit = isPublicOrPrivate(publicPrivateArray.birthday)
     //End Set Private Public flags
     values.mobile_carrier = formVerify.getFieldValue(
       publicPrivateArray.mobile_carrier
@@ -82,7 +66,6 @@ const ProfileInfo = () => {
     values.phone_number = formVerify.getFieldValue(
       publicPrivateArray.phone_number
     );
-
     let res = await dispatch(UpdateUserProfileInfo(values));
     if (res && res.status_code === 200) {
       message.success(res.message);
@@ -147,7 +130,6 @@ const ProfileInfo = () => {
       let res = await dispatch(GetMobileCarrier());
       if (res != undefined) {
         setMobileCarrier(res.data);
-        mobileCarrierList = res.data;
       }
     }
 
@@ -157,21 +139,22 @@ const ProfileInfo = () => {
         setAlgorithmList(res.data);
       }
     }
+    async function fetchLanguageList() {
+      let res = await dispatch(GetLanguageList());
+      if (res != undefined) {
+        setLanguageList(res.data);
+      }
+    }
 
     async function fetchUserProfileInfo() {
       let res = await dispatch(GetUserProfileInfo());
       if (res != undefined) {
         if (res.data != undefined) {
-          let mobile_carrierValue = "";
-          if (mobileCarrierList.length > 0) {
-            mobile_carrierValue = mobileCarrierList.find(function (element) {
-              return element.id == res.data.mobile_carrier;
-            });
-          }
           const verify = {
             phone_number: res.data.phone_number,
             mobile_carrier:
-              mobile_carrierValue != "" ? mobile_carrierValue["name"] : "",
+              (parseInt(res.data.mobile_carrier)).toString() == "NaN" ? "" : parseInt(res.data.mobile_carrier)
+
           };
           formVerify.setFieldsValue(verify);
           //format date for datepicker
@@ -187,6 +170,9 @@ const ProfileInfo = () => {
         return fetchAlgorithmsList();
       })
       .then(function () {
+        return fetchLanguageList();
+      })
+      .then(function () {
         return fetchUserProfileInfo();
       });
   }, []);
@@ -197,6 +183,7 @@ const ProfileInfo = () => {
       formVerify={formVerify}
       mobileCarrier={mobileCarrier}
       algorithmList={algorithmList}
+      languageList={languageList}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       onVerifyClick={onVerifyClick}
