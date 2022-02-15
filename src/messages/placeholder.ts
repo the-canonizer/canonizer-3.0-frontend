@@ -22,4 +22,5 @@ export const placeholders = {
   state: "Enter State",
   zipCode: "Enter Zip Code",
   algorithm: "Select an algorithm",
+  emailId: "Enter Your Email",
 };

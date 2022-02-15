@@ -5,6 +5,7 @@ export const uiSlice = createSlice({
   initialState: {
     loginModalVisible: false,
     registrationModalVisible: false,
+    forgotModalVisible: false,
   },
   reducers: {
     showLoginModal: (state) => {
@@ -19,6 +20,12 @@ export const uiSlice = createSlice({
     hideRegistrationModal: (state) => {
       state.registrationModalVisible = false;
     },
+    showForgotModal: (state) => {
+      state.forgotModalVisible = true;
+    },
+    hideForgotModal: (state) => {
+      state.forgotModalVisible = false;
+    },
   },
 });
 
@@ -27,6 +34,8 @@ export const {
   hideLoginModal,
   hideRegistrationModal,
   showRegistrationModal,
+  showForgotModal,
+  hideForgotModal,
 } = uiSlice.actions;
 
 export default uiSlice.reducer;

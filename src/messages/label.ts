@@ -22,4 +22,5 @@ export const labels = {
   state: "State",
   zipCode: "Zip Code",
   chooseAlgorithm: "Choose default algorithm preferences",
+  emailId: "Email ID",
 };

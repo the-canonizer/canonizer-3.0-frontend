@@ -1,7 +1,7 @@
-import { Image, Typography, Form, Input, Button, Select } from "antd";
+import { Image, Typography, Form, Input, Button } from "antd";
 import { CloseCircleOutlined, ArrowRightOutlined } from "@ant-design/icons";
 
-import styles from "./Registration.module.scss";
+import styles from "../../Registration/UI/Registration.module.scss";
 
 import messages from "../../../../messages";
 
@@ -13,13 +13,12 @@ export default function OTPVerify({ form, onFinish, isModal, closeModal }) {
       <Form
         form={form}
         name="registration"
-        initialValues={{ prefix: "001" }}
         onFinish={onFinish}
         layout="vertical"
         scrollToFirstError
       >
         <Title level={2} className={styles.titles}>
-          Login One Time Verification Code
+          Create password verification code
         </Title>
         {isModal && (
           <Button
@@ -40,7 +39,7 @@ export default function OTPVerify({ form, onFinish, isModal, closeModal }) {
             />
           </div>
           <Text type="danger" className={styles.otpNote}>
-            Note : Registration code has been sent to your registered email
+            Note : ForgotPassword code has been sent to your registered email
             address and Phone Number.
           </Text>
           <Form.Item

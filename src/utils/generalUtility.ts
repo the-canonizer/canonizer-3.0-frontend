@@ -5,12 +5,27 @@ import K from "../constants";
 
 export const handleError = (error, dispatch = null) => {
   console.error(error);
-  message.error(error.message);
-  const nestedMsg = error?.error?.data?.error;
-  if (nestedMsg) {
-    let keys = Object.keys(nestedMsg);
+
+  if (error.message) {
+    message.error(error.message);
+  }
+
+  const nestedErrs = error
+    ? error.error
+      ? error.error.data
+        ? error.error.data
+        : ""
+      : ""
+    : "";
+
+  if (nestedErrs.message) {
+    message.error(nestedErrs.message);
+  }
+
+  if (nestedErrs.error) {
+    let keys = Object.keys(nestedErrs.error);
     keys.forEach((key) => {
-      message.error(nestedMsg[key][0]);
+      message.error(nestedErrs.error[key][0]);
     });
   }
   return null;

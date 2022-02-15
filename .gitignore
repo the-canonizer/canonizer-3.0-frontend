@@ -9,7 +9,6 @@
 /coverage
 
 # Configuration Files
-next.config.js
 /config
 
 # next.js

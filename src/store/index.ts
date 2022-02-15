@@ -14,7 +14,7 @@ import storage from "redux-persist/lib/storage";
 // reducers
 import Auth from "./slices/authSlice";
 import Tree from "./slices/treeSlice";
-import UiReducer from "./slices/ui/uiSlice";
+import UiReducer from "./slices/uiSlice";
 
 let reducers = combineReducers({
   auth: Auth,

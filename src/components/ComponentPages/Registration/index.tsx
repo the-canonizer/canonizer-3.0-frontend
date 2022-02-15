@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 
 import RegistrationUi from "./UI";
 import OTPVerify from "./UI/otp";
-import { hideRegistrationModal } from "../../../store/slices/ui/uiSlice";
+import { hideRegistrationModal } from "../../../store/slices/uiSlice";
 import {
   register,
   verifyOtp,
@@ -13,8 +13,8 @@ import {
 } from "../../../network/api/userApi";
 import { AppDispatch } from "../../../store";
 
-const Registration = ({ isModal }) => {
-  const [isOtpScreen, setIsOtpScreen] = useState(false);
+const Registration = ({ isModal, isTest = false }) => {
+  const [isOtpScreen, setIsOtpScreen] = useState(isTest);
   const [country, setCountry] = useState([]);
   const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
   const [isReCaptchaRef, setIsReCaptchaRef] = useState(false);
@@ -84,7 +84,7 @@ const Registration = ({ isModal }) => {
 
   const getCodes = async () => {
     let response = await getCountryCodes();
-    if (response.status_code === 200) {
+    if (response && response.status_code === 200) {
       setCountry(response.data);
     }
   };
