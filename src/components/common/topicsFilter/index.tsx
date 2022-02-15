@@ -113,6 +113,7 @@ const CreateTopic = () => {
     dispatch(
       setFilterCanonizedTopics({
         asofdate: IsoDateFormat,
+        asof: "bydate",
       })
     );
   };
@@ -136,6 +137,7 @@ const CreateTopic = () => {
       dispatch(
         setFilterCanonizedTopics({
           asofdate: Date.parse(datePickerValue) / 1000,
+          asof: "bydate",
         })
       );
     }
@@ -211,6 +213,8 @@ const CreateTopic = () => {
                     dispatch(
                       setIsReviewCanonizedTopics({
                         includeReview: true,
+                        asof: "review",
+                        asofdate: Date.now() / 1000,
                       })
                     );
                   }}
@@ -224,6 +228,7 @@ const CreateTopic = () => {
                     dispatch(
                       setFilterCanonizedTopics({
                         asofdate: Date.now() / 1000,
+                        asof: "default",
                       })
                     );
                   }}
