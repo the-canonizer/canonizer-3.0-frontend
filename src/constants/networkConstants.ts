@@ -26,6 +26,7 @@ const NetworkConstants = {
     SendOTP: `${BaseCanonizerApiUrl}/sendotp`,
     VerifyOTP: `${BaseCanonizerApiUrl}/verifyotp`,
     GetAlgorithmsList: `${BaseCanonizerApiUrl}/get_algorithms`,
+    GetLanguageList: `${BaseCanonizerApiUrl}/get_languages`,
     // Tree
 
     GetTree: "/api/unknown",

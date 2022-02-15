@@ -18,6 +18,7 @@ function ProfileInfoUI({
   handleselectAfter,
   privateFlags,
   algorithmList,
+  languageList
 }) {
   return (
     <section className={styles.profileInfo_wrapper}>
@@ -39,6 +40,7 @@ function ProfileInfoUI({
         handleselectAfter={handleselectAfter}
         privateFlags={privateFlags}
         algorithmList={algorithmList}
+        languageList={languageList}
       />
     </section>
   );

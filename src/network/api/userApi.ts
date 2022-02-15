@@ -1,6 +1,10 @@
 import { message } from "antd";
 
-import { isServer, redirectToLogin } from "../../utils/generalUtility";
+import {
+  handleError,
+  isServer,
+  redirectToLogin,
+} from "../../utils/generalUtility";
 import {
   setAuthToken,
   removeAuthToken,
@@ -16,13 +20,11 @@ export const createToken = async () => {
     const token = await NetworkCall.fetch(UserRequest.createToken());
     return token.data;
   } catch (error) {
-    console.error(error);
-    message.error(error.message);
+    handleError(error);
   }
 };
 
 export const login = async (email: string, password: string) => {
-  // return async (dispatch) => {
   try {
     const authToken = await createToken();
 
@@ -43,10 +45,8 @@ export const login = async (email: string, password: string) => {
 
     return res;
   } catch (err) {
-    console.error(err?.error?.data);
-    message.error(err?.error?.data.message);
+    handleError(err);
   }
-  // };
 };
 
 export const logout = async (error = "") => {
@@ -477,6 +477,53 @@ export const GetAlgorithmsList = () => {
     const { auth } = state;
     const res = await NetworkCall.fetch(
       UserRequest.GetAlgorithmsList(auth.loggedInUser.token)
+    )
+      .then((value) => {
+        return value;
+      })
+      .catch((errors) => {
+        let msgs = errors
+          ? errors.error
+            ? errors.error.data
+              ? errors.error.data.error
+                ? errors.error.data.error
+                : ""
+              : ""
+            : ""
+          : "";
+        if (msgs) {
+          let keys = Object.keys(msgs);
+          keys.forEach((key) => {
+            message.error(msgs[key][0]);
+          });
+        } else {
+          if (
+            errors
+              ? errors.error
+                ? errors.error.data
+                  ? errors.error.data.message
+                    ? errors.error.data.message
+                    : ""
+                  : ""
+                : ""
+              : ""
+          )
+            message.error(errors.error.data.message);
+          else {
+            message.error("Something is wrong");
+          }
+        }
+      });
+    return res;
+  };
+};
+
+export const GetLanguageList = () => {
+  return async (dispatch) => {
+    let state = store.getState();
+    const { auth } = state;
+    const res = await NetworkCall.fetch(
+      UserRequest.GetLanguageList(auth.loggedInUser.token)
     )
       .then((value) => {
         return value;

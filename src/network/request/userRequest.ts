@@ -12,6 +12,17 @@ export default class UserRequest extends Request {
       client_secret: process.env.NEXT_PUBLIC_AUTH_CLIENT_SECRET,
     };
 
+    console.log(
+      new Request(
+        K.Network.URL.CreateToken,
+        K.Network.Method.POST,
+        body,
+        K.Network.Header.Type.Json,
+        {},
+        ""
+      )
+    );
+
     return new Request(
       K.Network.URL.CreateToken,
       K.Network.Method.POST,
@@ -231,8 +242,21 @@ export default class UserRequest extends Request {
   static GetAlgorithmsList(authToken) {
     const body = {};
 
-    return new UserRequest(
+    return new Request(
       K.Network.URL.GetAlgorithmsList,
+      K.Network.Method.GET,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
+
+  static GetLanguageList(authToken) {
+    const body = {};
+
+    return new UserRequest(
+      K.Network.URL.GetLanguageList,
       K.Network.Method.GET,
       body,
       K.Network.Header.Type.Json,
