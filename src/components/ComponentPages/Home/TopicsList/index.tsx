@@ -73,15 +73,24 @@ const TopicsList = () => {
       };
       getCanonizedTopicsApi(reqBody);
     } else didMount.current = true;
-  }, [
-    asofdate,
-    asof,
-    algorithm,
-    nameSpaceId,
-    pageNumber,
-    filterByScore,
-    inputSearch,
-  ]);
+  }, [asofdate, asof, algorithm, nameSpaceId, filterByScore, inputSearch]);
+
+  useEffect(() => {
+    if (didMountForFilterScoreEffect.current) {
+      const loadMore = true;
+      const reqBody = {
+        algorithm: algorithm,
+        asofdate: asofdate,
+        namespace_id: nameSpaceId,
+        page_number: pageNumber,
+        page_size: 15,
+        search: inputSearch,
+        filter: filterByScore,
+        asof: "default",
+      };
+      getCanonizedTopicsApi(reqBody, loadMore);
+    } else didMountForFilterScoreEffect.current = true;
+  }, [pageNumber]);
 
   useEffect(() => {
     if (didMountForFilterScoreEffect.current) {
