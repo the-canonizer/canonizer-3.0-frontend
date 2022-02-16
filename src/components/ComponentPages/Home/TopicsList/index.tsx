@@ -21,6 +21,7 @@ const TopicsList = () => {
   const {
     canonizedTopics,
     asofdate,
+    asof,
     algorithm,
     filterByScore,
     nameSpaces,
@@ -28,6 +29,7 @@ const TopicsList = () => {
   } = useSelector((state: RootState) => ({
     canonizedTopics: state.homePage?.canonizedTopicsData,
     asofdate: state.homePage?.filterObject?.asofdate,
+    asof: state.homePage?.filterObject?.asof,
     algorithm: state.homePage?.filterObject?.algorithm,
     filterByScore: state.homePage?.filterObject?.filterByScore,
     nameSpaces: state.homePage?.nameSpaces,
@@ -37,7 +39,7 @@ const TopicsList = () => {
   const [topicsData, setTopicsData] = useState(canonizedTopics);
   const [nameSpacesList] = useState(nameSpaces);
   const [isReview, setIsReview] = useState(includeReview);
-
+  const [inputSearch, setInputSearch] = useState("");
   const [nameSpaceId, setNameSpaceId] = useState(1);
 
   const selectNameSpace = (value) => {
@@ -65,13 +67,21 @@ const TopicsList = () => {
         namespace_id: nameSpaceId,
         page_number: pageNumber,
         page_size: 15,
-        search: "",
+        search: inputSearch,
         filter: filterByScore,
-        asof: "default",
+        asof: asof,
       };
       getCanonizedTopicsApi(reqBody);
     } else didMount.current = true;
-  }, [asofdate, algorithm, nameSpaceId, pageNumber, filterByScore]);
+  }, [
+    asofdate,
+    asof,
+    algorithm,
+    nameSpaceId,
+    pageNumber,
+    filterByScore,
+    inputSearch,
+  ]);
 
   useEffect(() => {
     if (didMountForFilterScoreEffect.current) {
@@ -82,13 +92,15 @@ const TopicsList = () => {
         namespace_id: nameSpaceId,
         page_number: pageNumber,
         page_size: 15,
-        search: "",
+        search: inputSearch,
         filter: filterByScore,
         asof: "default",
       };
       getCanonizedTopicsApi(reqBody, loadMore);
     } else didMountForFilterScoreEffect.current = true;
   }, [pageNumber]);
+
+  const onSearch = (value) => setInputSearch(value);
 
   const LoadMoreTopics = (
     <div className="text-center">
@@ -149,6 +161,7 @@ const TopicsList = () => {
                   allowClear
                   className={styles.topic}
                   style={{ width: 200 }}
+                  onSearch={onSearch}
                 />
               )}
             </div>

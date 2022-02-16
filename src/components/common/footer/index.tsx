@@ -12,7 +12,6 @@ function Footer() {
   useEffect(() => {
     async function linksApiCall() {
       const result = await getFooterSocialLinksApi();
-
       setSocialLinks(result);
     }
     linksApiCall();
