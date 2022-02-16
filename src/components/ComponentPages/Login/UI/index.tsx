@@ -17,7 +17,7 @@ import styles from "./Login.module.scss";
 import messages from "../../../../messages";
 import SocialLoginButton from "../../../common/socialLogin";
 import FormItem from "../../../common/formElements";
-import { redirectToUrl } from "src/utils/generalUtility";
+import { redirectToUrl } from "../../../../utils/generalUtility";
 
 const { Title, Paragraph, Text } = Typography;
 

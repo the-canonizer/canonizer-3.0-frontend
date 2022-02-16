@@ -13,7 +13,7 @@ import {
   forgotPasswordUpdate,
 } from "../../../network/api/userApi";
 import { AppDispatch } from "../../../store";
-import { redirectToLogin } from "src/utils/generalUtility";
+import { redirectToLogin } from "../../../utils/generalUtility";
 
 const ForgotPassword = ({ isModal, isTestScreen = 0 }) => {
   const [isScreen, setIsScreen] = useState(isTestScreen);

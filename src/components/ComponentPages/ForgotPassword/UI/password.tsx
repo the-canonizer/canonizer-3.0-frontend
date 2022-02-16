@@ -44,7 +44,7 @@ function SetPasswordUI({ form, onFinish, isModal, closeModal }) {
               <FormItem
                 name="password"
                 label={messages.labels.newPassword}
-                rules={messages.newPasswordRule}
+                rules={messages.passwordRule}
                 placeholder={messages.placeholders.newPassword}
                 type="password"
               />
@@ -54,7 +54,7 @@ function SetPasswordUI({ form, onFinish, isModal, closeModal }) {
                 name="confirm"
                 label={messages.labels.confirmPassword}
                 dependencies={["password"]}
-                {...messages.confirmNewPasswordRule}
+                {...messages.confirmPasswordRule}
               >
                 <Input
                   type="password"
