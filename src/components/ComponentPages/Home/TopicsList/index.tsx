@@ -40,7 +40,6 @@ const TopicsList = () => {
   const [isReview, setIsReview] = useState(includeReview);
   const [inputSearch, setInputSearch] = useState("");
   const [nameSpaceId, setNameSpaceId] = useState(1);
-  const [clickedLoadMore, setClickedLoadMore] = useState(false);
 
   const selectNameSpace = (value) => {
     setNameSpaceId(value);
