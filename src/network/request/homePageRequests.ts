@@ -25,11 +25,11 @@ export default class HomePageRequests extends Request {
     );
   }
 
-  static getCanonizedRecentActivities() {
+  static getCanonizedRecentActivities(reqBody) {
     return new Request(
       K.Network.URL.GetCanonizedRecentActivities,
-      K.Network.Method.GET,
-      null,
+      K.Network.Method.POST,
+      reqBody,
       K.Network.Header.Type.Json,
       {}
     );

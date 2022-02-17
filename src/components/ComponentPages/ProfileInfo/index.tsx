@@ -10,7 +10,7 @@ import {
   SendOTP,
   VerifyOTP,
   GetAlgorithmsList,
-  GetLanguageList
+  GetLanguageList,
 } from "../../../network/api/userApi";
 import ProfileInfoUI from "./ProfileInfoUI";
 
@@ -42,23 +42,23 @@ const ProfileInfo = () => {
     phone_number: "phone_number",
   };
 
-  const isPublicOrPrivate=(field_value )=> {
-    return privateList.includes(field_value) ? 0 : 1
-  }
+  const isPublicOrPrivate = (field_value) => {
+    return privateList.includes(field_value) ? 0 : 1;
+  };
   //on update profile click
   const onFinish = async (values: any) => {
     //Set Private Public flags
-    values.first_name_bit = isPublicOrPrivate(publicPrivateArray.first_name)
-    values.last_name_bit =isPublicOrPrivate(publicPrivateArray.last_name)
-    values.middle_name_bit = isPublicOrPrivate(publicPrivateArray.middle_name)
+    values.first_name_bit = isPublicOrPrivate(publicPrivateArray.first_name);
+    values.last_name_bit = isPublicOrPrivate(publicPrivateArray.last_name);
+    values.middle_name_bit = isPublicOrPrivate(publicPrivateArray.middle_name);
     values.email_bit = isPublicOrPrivate(publicPrivateArray.email);
-    values.address_1_bit = isPublicOrPrivate(publicPrivateArray.address_1)
-    values.address_2_bit = isPublicOrPrivate(publicPrivateArray.address_2)
-    values.postal_code_bit = isPublicOrPrivate(publicPrivateArray.postal_code)
+    values.address_1_bit = isPublicOrPrivate(publicPrivateArray.address_1);
+    values.address_2_bit = isPublicOrPrivate(publicPrivateArray.address_2);
+    values.postal_code_bit = isPublicOrPrivate(publicPrivateArray.postal_code);
     values.city_bit = isPublicOrPrivate(publicPrivateArray.city);
     values.state_bit = isPublicOrPrivate(publicPrivateArray.state);
-    values.country_bit = isPublicOrPrivate(publicPrivateArray.country)
-    values.birthday_bit = isPublicOrPrivate(publicPrivateArray.birthday)
+    values.country_bit = isPublicOrPrivate(publicPrivateArray.country);
+    values.birthday_bit = isPublicOrPrivate(publicPrivateArray.birthday);
     //End Set Private Public flags
     values.mobile_carrier = formVerify.getFieldValue(
       publicPrivateArray.mobile_carrier
@@ -153,8 +153,9 @@ const ProfileInfo = () => {
           const verify = {
             phone_number: res.data.phone_number,
             mobile_carrier:
-              (parseInt(res.data.mobile_carrier)).toString() == "NaN" ? "" : parseInt(res.data.mobile_carrier)
-
+              parseInt(res.data.mobile_carrier).toString() == "NaN"
+                ? ""
+                : parseInt(res.data.mobile_carrier),
           };
           formVerify.setFieldsValue(verify);
           //format date for datepicker

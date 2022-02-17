@@ -37,6 +37,7 @@ export default function SocialLoginUi({ isModal }) {
           onClick={onSocialLogin.bind(this, "facebook")}
           type="link"
           icon={<FacebookFilled />}
+          data-testid="facebook"
         />
         <Button
           shape="circle"
@@ -46,6 +47,7 @@ export default function SocialLoginUi({ isModal }) {
             // eslint-disable-next-line @next/next/no-img-element
             <img src="/images/google.svg" alt="google logo" />
           }
+          data-testid="google"
         />
 
         <Button
@@ -53,6 +55,7 @@ export default function SocialLoginUi({ isModal }) {
           onClick={onSocialLogin.bind(this, "twitter")}
           type="link"
           icon={<TwitterOutlined />}
+          data-testid="twitter"
         />
 
         <Button
@@ -60,6 +63,7 @@ export default function SocialLoginUi({ isModal }) {
           onClick={onSocialLogin.bind(this, "linkedin")}
           type="link"
           icon={<LinkedinFilled />}
+          data-testid="linkedin"
         />
 
         <Button
@@ -67,6 +71,7 @@ export default function SocialLoginUi({ isModal }) {
           onClick={onSocialLogin.bind(this, "github")}
           type="link"
           icon={<GithubFilled />}
+          data-testid="github"
         />
       </div>
     </div>

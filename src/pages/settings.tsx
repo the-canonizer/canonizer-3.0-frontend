@@ -13,7 +13,9 @@ export default function Settings() {
   return (
     <>
       {isAuthenticate ? (
-         <Layout><SettingsUI/></Layout>
+        <Layout>
+          <SettingsUI />
+        </Layout>
       ) : (
         <GetStartedLayout routeName={"login"}>
           <Card bordered={false} className="login-container">

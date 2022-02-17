@@ -25,35 +25,34 @@ export default function NickNameUI({
   editNickName,
   nickNameForm,
   handleAddNickName,
-  handleNickNameCancel
+  handleNickNameCancel,
 }) {
-
   const [data, setData] = useState(originData);
   const columns = [
     {
-      title: 'Sr',
-      dataIndex: 'srNo',
-      width: '5%',
+      title: "Sr",
+      dataIndex: "srNo",
+      width: "5%",
     },
     {
-      title: 'Nick Name ID',
-      dataIndex: 'nickNameId',
-      width: '20%',
+      title: "Nick Name ID",
+      dataIndex: "nickNameId",
+      width: "20%",
     },
     {
-      title: 'Nick Name',
-      dataIndex: 'nickName',
-      width: '40%',
+      title: "Nick Name",
+      dataIndex: "nickName",
+      width: "40%",
     },
     {
-      title: 'Visibility Status',
-      dataIndex: 'visibilityStatus',
-      width: '20%',
+      title: "Visibility Status",
+      dataIndex: "visibilityStatus",
+      width: "20%",
     },
     {
-      title: '',
-      dataIndex: 'operation',
-      width: '10%',
+      title: "",
+      dataIndex: "operation",
+      width: "10%",
       render: (_, record) => {
         return (
           <Typography.Link onClick={() => editNickName(record)}>
@@ -86,9 +85,7 @@ export default function NickNameUI({
               className="ant-btn ant-btn-orange ant-btn-lg"
             >
               {messages.labels.addnewNickName}
-              <Icon
-                component={() => <PlusCircleOutlined />}
-              />
+              <Icon component={() => <PlusCircleOutlined />} />
             </Button>
           </Form.Item>
         </Form>
@@ -108,32 +105,24 @@ export default function NickNameUI({
             layout="vertical"
             scrollToFirstError
           >
-            <Form.Item
-              name="nick_name"
-              label={messages.labels.nickName}
-            >
-              <Input
-                placeholder=""
-                value=""
-                size="large"
-              />
+            <Form.Item name="nick_name" label={messages.labels.nickName}>
+              <Input placeholder="" value="" size="large" />
             </Form.Item>
             <Form.Item
               name="visibility_status"
               label={messages.labels.visibilityStatus}
             >
-              <Select defaultValue="public" size="large" >
+              <Select defaultValue="public" size="large">
                 <Option value="public">Public</Option>
                 <Option value="private">Private</Option>
               </Select>
             </Form.Item>
-            <Form.Item
-            >
+            <Form.Item>
               <Button
                 type="primary"
                 className="ant-btn ant-btn-orange ant-btn-lg"
                 style={{
-                  width:'100%'
+                  width: "100%",
                 }}
               >
                 {addEditBtn}

@@ -4,7 +4,6 @@ import {
   Col,
   Typography,
   Form,
-  Input,
   Button,
   Checkbox,
   Image,
@@ -16,8 +15,9 @@ import Link from "next/link";
 import styles from "./Login.module.scss";
 
 import messages from "../../../../messages";
-import SocialLoginButton from "../../../common/social-login/social-login";
+import SocialLoginButton from "../../../common/socialLogin";
 import FormItem from "../../../common/formElements";
+import { redirectToUrl } from "../../../../utils/generalUtility";
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -29,7 +29,13 @@ interface FieldData {
   errors?: string[];
 }
 
-const LoginUi = ({ form, onFinish, closeModal, isModal }) => {
+const LoginUi = ({
+  form,
+  onFinish,
+  closeModal,
+  isModal,
+  openForgotPasswordModal,
+}) => {
   useEffect(() => {
     const userValue = JSON.parse(localStorage.getItem("rememberme"));
     if (userValue) {
@@ -39,6 +45,16 @@ const LoginUi = ({ form, onFinish, closeModal, isModal }) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const onForgotPasswordClick = (e) => {
+    e.preventDefault();
+    if (isModal) {
+      closeModal();
+      openForgotPasswordModal();
+    } else {
+      redirectToUrl(null, "/forgot-password");
+    }
+  };
 
   return (
     <section className={styles.login_wrapper}>
@@ -73,10 +89,14 @@ const LoginUi = ({ form, onFinish, closeModal, isModal }) => {
                 <Form.Item name="remember" valuePropName="checked" noStyle>
                   <Checkbox>Remember me</Checkbox>
                 </Form.Item>
-
-                <a className={styles["login-form-forgot"]} href="">
-                  Forgot password
-                </a>
+                <Link href="/">
+                  <a
+                    className={styles["login-form-forgot"]}
+                    onClick={onForgotPasswordClick}
+                  >
+                    Forgot password
+                  </a>
+                </Link>
               </Form.Item>
 
               <Form.Item>

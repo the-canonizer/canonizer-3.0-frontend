@@ -24,12 +24,7 @@ export default function ChangePasswordUI({ form, onFinish, onFinishFailed }) {
                 <Form.Item
                   name="current_password"
                   label={messages.labels.currentPassword}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please enter current password!",
-                    },
-                  ]}
+                  {...messages.currentPasswordRule}
                 >
                   <Input
                     type="password"
@@ -41,12 +36,7 @@ export default function ChangePasswordUI({ form, onFinish, onFinishFailed }) {
                 <Form.Item
                   name="new_password"
                   label={messages.labels.newPassword}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please enter new password!",
-                    },
-                  ]}
+                  {...messages.newPasswordRule}
                   hasFeedback
                 >
                   <Input
@@ -62,24 +52,7 @@ export default function ChangePasswordUI({ form, onFinish, onFinishFailed }) {
                   label={messages.labels.confirmPassword}
                   dependencies={["new_password"]}
                   hasFeedback
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please confirm your password!",
-                    },
-                    ({ getFieldValue }) => ({
-                      validator(_, value) {
-                        if (!value || getFieldValue("new_password") === value) {
-                          return Promise.resolve();
-                        }
-                        return Promise.reject(
-                          new Error(
-                            "The confirm password and new password must match"
-                          )
-                        );
-                      },
-                    }),
-                  ]}
+                  {...messages.confirmNewPasswordRule}
                 >
                   <Input
                     type="password"
@@ -90,7 +63,7 @@ export default function ChangePasswordUI({ form, onFinish, onFinishFailed }) {
             </Row>
           </div>
           <Form.Item>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" data-testid="submitButton">
               Save
             </Button>
           </Form.Item>
