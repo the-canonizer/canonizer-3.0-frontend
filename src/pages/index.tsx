@@ -21,7 +21,6 @@ export default function Home({
   algorithms,
 }) {
   const dispatch = useDispatch();
-
   dispatch(setCanonizedTopics(topicsData));
   dispatch(setCanonizedNameSpaces(nameSpacesList));
   dispatch(setWhatsNewContent(whatsNew));
