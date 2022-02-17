@@ -13,9 +13,6 @@ const LoginModal = () => {
       <Modal
         style={{ top: "20px" }}
         visible={visible}
-        // title="Title"
-        // onOk={handleOk}
-        // onCancel={handleCancel}
         footer={null}
         closable={false}
         width={800}

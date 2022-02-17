@@ -1,10 +1,8 @@
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Form, message } from "antd";
 
 import ForgotPasswordUI from "./UI";
-import OTPVerify from "./UI/otp";
-import PasswordUI from "./UI/password";
 
 import { hideForgotModal } from "../../../store/slices/uiSlice";
 import {
@@ -68,41 +66,23 @@ const ForgotPassword = ({ isModal, isTestScreen = 0 }) => {
       passwordForm.resetFields();
       setIsScreen(0);
     }
-
-    if (isModal) {
-      closeModal();
-    } else {
-      redirectToLogin();
-    }
+    isModal ? closeModal() : redirectToLogin();
   };
 
   return (
-    <Fragment>
-      {isScreen === 0 && (
-        <ForgotPasswordUI
-          form={form}
-          onFinish={onFinish}
-          closeModal={closeModal}
-          isModal={isModal}
-        />
-      )}
-      {isScreen === 1 && (
-        <OTPVerify
-          form={otpForm}
-          onFinish={onOTPSubmit}
-          closeModal={closeModal}
-          isModal={isModal}
-        />
-      )}
-      {isScreen === 2 && (
-        <PasswordUI
-          form={passwordForm}
-          onFinish={onPasswordSubmit}
-          closeModal={closeModal}
-          isModal={isModal}
-        />
-      )}
-    </Fragment>
+    <ForgotPasswordUI
+      form={isScreen === 2 ? passwordForm : isScreen === 1 ? otpForm : form}
+      onFinish={
+        isScreen === 2
+          ? onPasswordSubmit
+          : isScreen === 1
+          ? onOTPSubmit
+          : onFinish
+      }
+      closeModal={closeModal}
+      isModal={isModal}
+      isScreen={isScreen}
+    />
   );
 };
 

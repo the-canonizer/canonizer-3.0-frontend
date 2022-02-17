@@ -1,18 +1,16 @@
 import { useDispatch } from "react-redux";
 import { Form } from "antd";
-import { useRouter } from "next/router";
 
 import LoginUI from "./UI";
 
 import { hideLoginModal, showForgotModal } from "../../../store/slices/uiSlice";
 import { login } from "../../../network/api/userApi";
 import { AppDispatch } from "../../../store";
-// import { redirectToUrl } from "src/utils/generalUtility";
+import { redirectToUrl } from "../../../utils/generalUtility";
 
 const Login = ({ isModal }) => {
   const dispatch = useDispatch<AppDispatch>();
   const [form] = Form.useForm();
-  const router = useRouter();
 
   const closeModal = () => dispatch(hideLoginModal());
   const openForgotPasswordModal = () => dispatch(showForgotModal());
@@ -23,8 +21,7 @@ const Login = ({ isModal }) => {
       form.resetFields();
       closeModal();
       if (!isModal) {
-        // redirectToUrl(null, "/");
-        router.push("/");
+        redirectToUrl(null, "/");
       }
     }
     if (values.remember) {
@@ -36,10 +33,6 @@ const Login = ({ isModal }) => {
         })
       );
     }
-    // try {
-    // } catch (error) {
-    //   console.log(error);
-    // }
   };
 
   return (
