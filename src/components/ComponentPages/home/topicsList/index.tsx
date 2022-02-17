@@ -77,13 +77,13 @@ const TopicsList = () => {
 
   const LoadMoreTopics = (
     <div className="text-center">
-      <a
+      <Button
         className={styles.viewAll}
         onClick={() => setPageCounter(pageCounter + 1)}
       >
         <Text>Load More</Text>
         <i className="icon-angle-right"></i>
-      </a>
+      </Button>
     </div>
   );
 

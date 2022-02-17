@@ -1,13 +1,35 @@
-import React, { useState } from "react";
-import { Typography, Button, Tabs } from "antd";
-
+import { Typography, Button } from "antd";
 import styles from "./campList.module.scss";
-
+import Link from "next/link";
 const { Title, Text } = Typography;
-
-const { TabPane } = Tabs;
-
 export default function CampList() {
+  const mockLinks = [
+    {
+      link: "/",
+      linkTitle: "View All",
+      id: 1,
+    },
+    {
+      link: "/",
+      linkTitle: " Objected",
+      id: 2,
+    },
+    {
+      link: "/",
+      linkTitle: " Live",
+      id: 3,
+    },
+    {
+      link: "/",
+      linkTitle: "Not Live",
+      id: 4,
+    },
+    {
+      link: "/",
+      linkTitle: "Old",
+      id: 5,
+    },
+  ];
   return (
     <>
       <div className={styles.wrap}>
@@ -35,45 +57,15 @@ export default function CampList() {
             <div className={styles.filterOt}>
               <Title level={4}>Camp Statement History</Title>
               <ul className={styles.filters}>
-                <li className={styles.active}>
-                  <a href="#">View All</a>
-                </li>
-                <li>
-                  <a href="#">
-                    <span
-                      style={{ backgroundColor: "#EF5E5E" }}
-                      className={styles.block}
-                    ></span>
-                    Objected
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <span
-                      style={{ backgroundColor: "#12C879" }}
-                      className={styles.block}
-                    ></span>
-                    Live
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <span
-                      style={{ backgroundColor: "#FFDD00" }}
-                      className={styles.block}
-                    ></span>
-                    Not Live
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <span
-                      style={{ backgroundColor: "#4484CE" }}
-                      className={styles.block}
-                    ></span>
-                    Old
-                  </a>
-                </li>
+                {mockLinks?.map((item) => {
+                  return (
+                    <li className={styles.active} key={item.id}>
+                      <Link href={item.link}>
+                        <a>{item.linkTitle}</a>
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
             <Button>Compare Statements</Button>

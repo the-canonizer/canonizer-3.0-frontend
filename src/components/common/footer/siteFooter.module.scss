@@ -65,15 +65,24 @@
       padding: 0;
       margin: 0;
       list-style: none;
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
       @media screen and (min-width: 992px) {
-        width: 30%;
+        width: 70%;
       }
       @media screen and (max-width: 991px) {
-        width: 50%;
+        width: 100%;
       }
       li {
         & + li {
           margin-top: 5px;
+        }
+        @media screen and (min-width: 992px) {
+          width: 50%;
+        }
+        @media screen and (max-width: 991px) {
+          width: 50%;
         }
         a {
           font-size: 15px;

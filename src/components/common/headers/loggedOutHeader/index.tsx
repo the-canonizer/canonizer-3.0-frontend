@@ -8,7 +8,7 @@ import { MenuOutlined, CloseOutlined } from "@ant-design/icons";
 
 import styles from "../siteHeader.module.scss";
 
-import SearchSection from "../../search/search";
+import SearchSection from "../../searchSection";
 import Logo from "../logoHeader";
 
 const LoggedOutHeader = () => {
