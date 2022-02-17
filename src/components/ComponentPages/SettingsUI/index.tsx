@@ -17,7 +17,7 @@ const tabList = [
   {
     key: "nick_name",
     tab: "Nick Names",
-  }
+  },
 ];
 
 const contentList = {
@@ -35,7 +35,7 @@ const contentList = {
     <p>
       <NickName />
     </p>
-  )
+  ),
 };
 
 export default function SettingsUI() {
@@ -46,7 +46,6 @@ export default function SettingsUI() {
 
   return (
     <>
-
       <Layout>
         <Row className="main--layout">
           <Col span={5}>
@@ -56,10 +55,12 @@ export default function SettingsUI() {
               </Button>
             </Card>
             <div className="siteAds">
-              <Image alt="adOne"
-                src={'/images/image11.jpg'}
+              <Image
+                alt="adOne"
+                src={"/images/image11.jpg"}
                 width={200}
-                height={635} />
+                height={635}
+              />
             </div>
           </Col>
           <Col span={14}>
@@ -78,8 +79,9 @@ export default function SettingsUI() {
           </Col>
           <Col span={5}>
             <div className="siteAds">
-              <Image alt="adtwo"
-                src={'/images/image11.jpg'}
+              <Image
+                alt="adtwo"
+                src={"/images/image11.jpg"}
                 width={200}
                 height={635}
               />
@@ -87,7 +89,6 @@ export default function SettingsUI() {
           </Col>
         </Row>
       </Layout>
-
     </>
   );
 }

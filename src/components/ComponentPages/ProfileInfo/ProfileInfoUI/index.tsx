@@ -18,7 +18,7 @@ function ProfileInfoUI({
   handleselectAfter,
   privateFlags,
   algorithmList,
-  languageList
+  languageList,
 }) {
   return (
     <section className={styles.profileInfo_wrapper}>
