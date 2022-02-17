@@ -7,7 +7,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import styles from "./Registration.module.scss";
 
 import messages from "../../../../messages";
-import SocialLoginButton from "../../../common/social-login/social-login";
+import SocialLoginButton from "../../../common/socialLogin";
 import FormItem from "../../../common/formElements";
 
 const { Title, Text } = Typography;
@@ -153,6 +153,7 @@ function RegistrationUi({
             htmlType="submit"
             className="login-form-button"
             block
+            data-testid="submitButton"
           >
             Register Now <ArrowRightOutlined />
           </Button>

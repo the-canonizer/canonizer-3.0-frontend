@@ -5,7 +5,7 @@ import GetStartedLayout from "../hoc/getStartedLayout";
 const ForgotPasswordPage = () => {
   return (
     <GetStartedLayout routeName={"forgot-password"}>
-      <ForgotPassword />
+      <ForgotPassword isModal={false} />
     </GetStartedLayout>
   );
 };

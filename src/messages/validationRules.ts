@@ -219,12 +219,8 @@ export const confirmNewPasswordRule = {
         if (!value || getFieldValue("new_password") === value) {
           return Promise.resolve();
         }
-        return Promise.reject(
-          new Error(
-            validations.confirmNewPasswordErr
-          )
-        );
+        return Promise.reject(new Error(validations.confirmNewPasswordErr));
       },
     }),
-  ]
+  ],
 };

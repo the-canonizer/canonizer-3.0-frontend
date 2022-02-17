@@ -63,7 +63,7 @@ export default function ChangePasswordUI({ form, onFinish, onFinishFailed }) {
             </Row>
           </div>
           <Form.Item>
-            <Button type="primary" htmlType="submit"  data-testid="submitButton">
+            <Button type="primary" htmlType="submit" data-testid="submitButton">
               Save
             </Button>
           </Form.Item>
