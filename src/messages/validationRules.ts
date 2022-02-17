@@ -6,6 +6,14 @@ export const phoneNumberRule = {
       required: true,
       message: validations.phoneNumber,
     },
+    {
+      min: 9,
+      message: validations.phoneLength,
+    },
+    {
+      max: 10,
+      message: validations.phoneLength,
+    },
   ],
 };
 export const mobileCarrierRule = {
