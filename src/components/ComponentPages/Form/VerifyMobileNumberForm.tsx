@@ -81,6 +81,7 @@ function VerifyMobileNumberForm({
               type="primary"
               className="ant-btn ant-btn-orange ant-btn-lg"
               htmlType="submit"
+              data-testid="submitButton"
             >
               Verify
             </Button>
@@ -91,13 +92,14 @@ function VerifyMobileNumberForm({
             footer=""
             onCancel={handleOTPCancel}
           >
-            Otp has been sent on your phone number.
+            <p>Otp has been sent on your phone number.</p>
             <Input
               placeholder={messages.placeholders.otp}
               value={otp}
               onChange={handleChangeOTP}
               size="large"
             />
+            <p></p> {/* For Empty Row */}
             <Button
               type="primary"
               className="ant-btn ant-btn-orange ant-btn-lg"

@@ -63,7 +63,7 @@ export default function SettingsUI() {
               />
             </div>
           </Col>
-          <Col span={14}>
+          <Col span={18}>
             <Card
               style={{ width: "100%" }}
               title="Account Settings"
@@ -76,16 +76,6 @@ export default function SettingsUI() {
             >
               {contentList[activeTabKey]}
             </Card>
-          </Col>
-          <Col span={5}>
-            <div className="siteAds">
-              <Image
-                alt="adtwo"
-                src={"/images/image11.jpg"}
-                width={200}
-                height={635}
-              />
-            </div>
           </Col>
         </Row>
       </Layout>
