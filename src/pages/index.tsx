@@ -1,23 +1,30 @@
 import Layout from "../hoc/layout";
-import HomePageContainer from "../components/componentPages/home";
+import HomePageContainer from "../components/ComponentPages/Home";
 import {
   getCanonizedTopicsApi,
   getCanonizedNameSpacesApi,
   getCanonizedWhatsNewContentApi,
+  getCanonizedAlgorithmsApi,
 } from "../network/api/homePageApi";
 import { useDispatch } from "react-redux";
 import {
   setCanonizedTopics,
   setCanonizedNameSpaces,
   setWhatsNewContent,
+  setCanonizedAlgorithms,
 } from "../store/slices/homePageSlice";
 
-export default function Home({ topicsData, nameSpacesList, whatsNew }) {
+export default function Home({
+  topicsData,
+  nameSpacesList,
+  whatsNew,
+  algorithms,
+}) {
   const dispatch = useDispatch();
-
   dispatch(setCanonizedTopics(topicsData));
   dispatch(setCanonizedNameSpaces(nameSpacesList));
   dispatch(setWhatsNewContent(whatsNew));
+  dispatch(setCanonizedAlgorithms(algorithms));
 
   return (
     <>
@@ -33,17 +40,20 @@ export async function getServerSideProps() {
   const reqBody = {
     algorithm: "blind_popularity",
     asofdate: currentTime,
-    filter: "2",
+    filter: 0,
     namespace_id: 1,
     page_number: 1,
     page_size: 15,
-    search: "Hard",
+    search: "",
+    asof: "default",
   };
   const nameSpaces = await getCanonizedNameSpacesApi();
   const result = await getCanonizedTopicsApi(reqBody);
   const whatsNewResult = await getCanonizedWhatsNewContentApi();
+  const canonizedAlgorithms = await getCanonizedAlgorithmsApi();
   const topicsData = result || [];
   const nameSpacesList = nameSpaces || [];
+  const algorithms = canonizedAlgorithms || [];
   const whatsNew = whatsNewResult || [];
 
   return {
@@ -51,6 +61,7 @@ export async function getServerSideProps() {
       topicsData,
       nameSpacesList,
       whatsNew,
+      algorithms,
     },
   };
 }

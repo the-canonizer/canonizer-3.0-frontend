@@ -1,24 +1,72 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { Button, Layout, Menu, Row, Col } from "antd";
+import { Button, Layout } from "antd";
 import { MenuOutlined, CloseOutlined } from "@ant-design/icons";
-
+import { useDispatch } from "react-redux";
 import styles from "../siteHeader.module.scss";
-
-import SearchSection from "../../searchSection";
 import Logo from "../logoHeader";
+import SearchSection from "../../searchSection";
+import LoginModal from "../../../ComponentPages/Login/loginModal";
+import RegistrationModal from "../../../ComponentPages/Registration/registrationModal";
+import {
+  showLoginModal,
+  showRegistrationModal,
+} from "../../../../store/slices/uiSlice";
+import ForgotModal from "@/components/ComponentPages/ForgotPassword/forgotPasswordModal";
+
+const { Header } = Layout;
 
 const LoggedOutHeader = () => {
-  const { Header } = Layout;
+  const dispatch = useDispatch();
   const router = useRouter();
 
   const [isActive, setActive] = useState(false);
   const toggleMobNav = () => {
     setActive(!isActive);
   };
+
+  const mockLinks = [
+    {
+      link: "/browse",
+      linkTitle: "Browse",
+      id: 1,
+    },
+
+    {
+      link: "/upload",
+      linkTitle: "Upload Files",
+      id: 2,
+    },
+    {
+      link: "/help",
+      linkTitle: "Help",
+      id: 3,
+    },
+    {
+      link: "/white-paper",
+      linkTitle: "White Paper",
+      id: 4,
+    },
+    {
+      link: "/blog",
+      linkTitle: "Blog",
+      id: 5,
+    },
+    {
+      link: "/jobs",
+      linkTitle: "Jobs",
+      id: 6,
+    },
+    {
+      link: "/services",
+      linkTitle: "Services",
+      id: 7,
+    },
+  ];
+
+  const openLoginModal = () => dispatch(showLoginModal());
+  const openRegistrationModal = () => dispatch(showRegistrationModal());
 
   return (
     <React.Fragment>
@@ -34,44 +82,47 @@ const LoggedOutHeader = () => {
           </Button>
           <nav className={styles.nav}>
             <ul>
-              <li className={router.asPath === "/browse" ? styles.active : ""}>
+              {/* <li className={router.asPath === "/browse" ? styles.active : ""}>
                 <Link href="/browse"> Browse </Link>
-              </li>
-              <li>
-                <Link href="">Upload File</Link>
-              </li>
-              <li>
-                <Link href="">Help</Link>
-              </li>
-              <li>
-                <Link href="">White Paper</Link>
-              </li>
-              <li>
-                <Link href="">Blog</Link>
-              </li>
-              <li>
-                <Link href="">Jobs</Link>
-              </li>
-              <li>
-                <Link href="">Services</Link>
-              </li>
+              </li> */}
+              {mockLinks?.map((item) => {
+                return (
+                  <li key={item.id}>
+                    <Link href={item.link}>{item.linkTitle}</Link>
+                  </li>
+                );
+              })}
             </ul>
           </nav>
           <div className={styles.btnsLoginRegister}>
-            <Button type="link" className={styles.btnLogin}>
+            <Button
+              type="link"
+              className={styles.btnLogin}
+              onClick={openLoginModal}
+            >
               <i className="icon-user"></i> Login
             </Button>
-            <Button className={styles.btnRegister}>
+            <Button
+              className={styles.btnRegister}
+              onClick={openRegistrationModal}
+            >
               <i className="icon-user-plus"></i> Register
             </Button>
           </div>
         </div>
         <div className={styles.right}>
           <div className={styles.btnsLoginRegister}>
-            <Button type="link" className={styles.btnLogin}>
+            <Button
+              type="link"
+              className={styles.btnLogin}
+              onClick={openLoginModal}
+            >
               <i className="icon-user"></i> Login
             </Button>
-            <Button className={styles.btnRegister}>
+            <Button
+              className={styles.btnRegister}
+              onClick={openRegistrationModal}
+            >
               <i className="icon-user-plus"></i> Register
             </Button>
           </div>
@@ -87,6 +138,9 @@ const LoggedOutHeader = () => {
         ></div>
       </Header>
       <SearchSection />
+      <LoginModal />
+      <RegistrationModal />
+      <ForgotModal />
     </React.Fragment>
   );
 };

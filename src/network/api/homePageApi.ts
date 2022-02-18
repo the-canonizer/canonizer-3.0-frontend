@@ -5,16 +5,20 @@ import HomePageRequests from "../request/homePageRequests";
 import {
   setCanonizedNameSpaces,
   setCanonizedTopics,
+  pushToCanonizedTopics,
 } from "../../store/slices/homePageSlice";
 
 export const getCanonizedTopicsApi = async (reqBody, loadMore = false) => {
   try {
     const topics = await NetworkCall.fetch(
-      HomePageRequests.getCanonizedTopics(reqBody)
+      HomePageRequests.getCanonizedTopics(reqBody),
+      false
     );
-
-    store.dispatch(setCanonizedTopics(topics?.data));
-
+    if (loadMore) {
+      store.dispatch(pushToCanonizedTopics(topics?.data));
+    } else {
+      store.dispatch(setCanonizedTopics(topics?.data));
+    }
     return topics?.data;
   } catch (error) {
     // message.error(error.message);
@@ -26,8 +30,20 @@ export const getCanonizedNameSpacesApi = async () => {
     const nameSpaces = await NetworkCall.fetch(
       HomePageRequests.getCanonizedNameSpaces()
     );
-
+    store.dispatch(setCanonizedNameSpaces(nameSpaces));
     return nameSpaces;
+  } catch (error) {
+    message.error(error.message);
+  }
+};
+
+export const getCanonizedAlgorithmsApi = async () => {
+  try {
+    const algorithms = await NetworkCall.fetch(
+      HomePageRequests.getCanonizedAlgorithms()
+    );
+    store.dispatch(setCanonizedTopics(algorithms));
+    return algorithms;
   } catch (error) {
     message.error(error.message);
   }

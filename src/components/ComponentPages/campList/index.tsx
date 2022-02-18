@@ -1,7 +1,10 @@
 import { Typography, Button } from "antd";
+
 import styles from "./campList.module.scss";
 import Link from "next/link";
+
 const { Title, Text } = Typography;
+
 export default function CampList() {
   const mockLinks = [
     {

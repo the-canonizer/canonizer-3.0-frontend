@@ -1,0 +1,60 @@
+.profileInfo_wrapper {
+
+  form {
+    .titles {
+      color: #2e68db;
+      font-size: 26px;
+      font-family: Asap;
+      font-weight: 500;
+      margin-bottom: 40px;
+      font-family: var(--font-family-asap);
+    }
+    h4{
+      margin-top: 20px;
+    }
+    .section_one{
+      background-color: #f8f8f8;
+      padding: 15px;
+    }
+    .section_one, .section_two {
+      width: 100%;
+      height: 100%;
+      text-align: left;
+
+      label {
+        font-size: 15px;
+        font-weight: 600;
+        color: #6E7880;
+        padding: 0 0 0 4px;
+
+        &::before {
+          position: absolute;
+          right: -15px;
+        }
+      }
+
+      input {
+        transition: all 0.3s;
+        &:not([type="checkbox"])
+        &:not([id="profileInfo_date-picker"]) {
+          height: 42px;
+          background: var(--color-ffffff) 0% 0% no-repeat padding-box;
+          border: 1px solid #d9d9d9;
+          font-size: 16px;
+          color: #262626;
+        }
+
+        ::placeholder {
+          font-size: 14px;
+          color: #afb6bb;
+        }
+
+        
+      }
+    }
+    .ant-picker{
+      width: 100%;
+    }
+      
+  }
+}

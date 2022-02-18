@@ -12,7 +12,6 @@ import {
   DatePicker,
 } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
-
 import { RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -89,6 +88,10 @@ const CreateTopic = () => {
   const [inputFilterValue, setInputFilterValue] = useState(0.0);
   const dispatch = useDispatch();
 
+  const { algorithms } = useSelector((state: RootState) => ({
+    algorithms: state.homePage?.algorithms,
+  }));
+
   const selectAlgorithm = (value) => {
     dispatch(
       setFilterCanonizedTopics({
@@ -110,6 +113,7 @@ const CreateTopic = () => {
     dispatch(
       setFilterCanonizedTopics({
         asofdate: IsoDateFormat,
+        asof: "bydate",
       })
     );
   };
@@ -133,6 +137,7 @@ const CreateTopic = () => {
       dispatch(
         setFilterCanonizedTopics({
           asofdate: Date.parse(datePickerValue) / 1000,
+          asof: "bydate",
         })
       );
     }
@@ -166,13 +171,13 @@ const CreateTopic = () => {
             <Select
               size="large"
               className={styles.algoSelect}
-              defaultValue={mockDropdownList[0]}
+              defaultValue={algorithms && algorithms[0].algorithm_label}
               onChange={selectAlgorithm}
             >
-              {mockDropdownList.map((item) => {
+              {algorithms?.map((algo) => {
                 return (
-                  <Option key={item} value={item}>
-                    {item}
+                  <Option key={algo.id} value={algo.algorithm_key}>
+                    {algo.algorithm_label}
                   </Option>
                 );
               })}
@@ -208,6 +213,8 @@ const CreateTopic = () => {
                     dispatch(
                       setIsReviewCanonizedTopics({
                         includeReview: true,
+                        asof: "review",
+                        asofdate: Date.now() / 1000,
                       })
                     );
                   }}
@@ -221,6 +228,7 @@ const CreateTopic = () => {
                     dispatch(
                       setFilterCanonizedTopics({
                         asofdate: Date.now() / 1000,
+                        asof: "default",
                       })
                     );
                   }}

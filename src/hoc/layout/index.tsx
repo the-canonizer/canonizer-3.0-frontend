@@ -7,7 +7,6 @@ import LoggedOutHeader from "../../components/common/headers/loggedOutHeader";
 import Spinner from "../../components/common/spinner/spinner";
 import styles from "./layout.module.scss";
 import Footer from "../../components/common/footer";
-
 function Layout(props) {
   const [isLogin, setIsLogin] = useState(false);
 
@@ -24,6 +23,7 @@ function Layout(props) {
     <>
       <div className={styles.pageWrap}>
         {isLogin ? <LoggedInHeader /> : <LoggedOutHeader />}
+        <Spinner>{""}</Spinner>
         <div className={styles.contentWrap}>
           <div className={styles.contentArea}>{props.children}</div>
           <aside className={styles.rightSidebar}>
@@ -35,7 +35,7 @@ function Layout(props) {
             />
           </aside>
         </div>
-        <Spinner>{""}</Spinner>
+
         <Footer />
       </div>
     </>

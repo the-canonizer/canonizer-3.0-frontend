@@ -12,7 +12,6 @@ function Footer() {
   useEffect(() => {
     async function linksApiCall() {
       const result = await getFooterSocialLinksApi();
-
       setSocialLinks(result);
     }
     linksApiCall();
@@ -20,42 +19,42 @@ function Footer() {
 
   const mockLinks = [
     {
-      link: "",
+      link: "/browse",
       linkTitle: "Browse",
       id: 1,
     },
     {
-      link: "",
+      link: "/services",
       linkTitle: "Services",
       id: 2,
     },
     {
-      link: "",
+      link: "/create-new-topic",
       linkTitle: "Create New Topic",
       id: 3,
     },
     {
-      link: "",
+      link: "/help",
       linkTitle: "Help",
       id: 4,
     },
     {
-      link: "",
+      link: "/upload",
       linkTitle: "Upload Files",
       id: 5,
     },
     {
-      link: "",
+      link: "/white-paper",
       linkTitle: "White Paper",
       id: 6,
     },
     {
-      link: "",
+      link: "/blog",
       linkTitle: "Blog",
       id: 7,
     },
     {
-      link: "",
+      link: "/jobs",
       linkTitle: "Jobs",
       id: 8,
     },
@@ -92,10 +91,10 @@ function Footer() {
               <p>Pattent: US 8,160,970 B2</p>
               <ul className={styles.privacyTerms}>
                 <li>
-                  <a href="#">Privacy Policy</a>
+                  <a href="/privacy-policy">Privacy Policy</a>
                 </li>
                 <li>
-                  <a href="#">Terms &amp; Services</a>
+                  <a href="/terms-and-services">Terms &amp; Services</a>
                 </li>
               </ul>
             </Col>

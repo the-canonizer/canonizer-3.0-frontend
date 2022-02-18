@@ -7,7 +7,6 @@ import { camelCaseKeys } from "../utils/generalUtility";
 
 export default class NetworkCall {
   static async fetch(request, useLoading = true) {
-    // debugger;
     try {
       const response: any = useLoading
         ? await trackPromise(
@@ -68,6 +67,6 @@ export default class NetworkCall {
 }
 NetworkCall.axios = axios.create({
   baseURL: K.Network.URL.BaseAPI,
-  timeout: K.Network.Timeout,
+  timeout: +K.Network.URL.Timeout,
   headers: {},
 });

@@ -1,11 +1,11 @@
-import ForgotPassword from "../components/componentPages/forgotPassword";
+import ForgotPassword from "../components/ComponentPages/ForgotPassword";
 
 import GetStartedLayout from "../hoc/getStartedLayout";
 
 const ForgotPasswordPage = () => {
   return (
     <GetStartedLayout routeName={"forgot-password"}>
-      <ForgotPassword />
+      <ForgotPassword isModal={false} />
     </GetStartedLayout>
   );
 };
