@@ -121,7 +121,11 @@ const TopicsList = () => {
         <List
           className={styles.wrap}
           header={
-            <div className={`${styles.head} ${router.asPath === "/browse" ? styles.browsePage : '' }`}>
+            <div
+              className={`${styles.head} ${
+                router.asPath === "/browse" ? styles.browsePage : ""
+              }`}
+            >
               <Title level={3}>
                 Canonized list for
                 <i className="icon-info"></i>
@@ -143,12 +147,12 @@ const TopicsList = () => {
 
               {router.asPath === "/browse" && !includeReview && (
                 <div className={styles.inputSearchTopic}>
-                <Search
-                  placeholder="Search by topic name"
-                  allowClear
-                  className={styles.topic}
-                  onSearch={onSearch}
-                />
+                  <Search
+                    placeholder="Search by topic name"
+                    allowClear
+                    className={styles.topic}
+                    onSearch={onSearch}
+                  />
                 </div>
               )}
             </div>
