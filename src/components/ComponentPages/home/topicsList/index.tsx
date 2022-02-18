@@ -106,7 +106,7 @@ const TopicsList = () => {
         <List
           className={styles.wrap}
           header={
-            <div className={styles.head}>
+            <div className={`${styles.head} ${router.asPath === "/browse" ? styles.browsePage : '' }`}>
               <Title level={3}>
                 Canonized list for
                 <i className="icon-info"></i>
@@ -127,12 +127,13 @@ const TopicsList = () => {
               </Select>
 
               {router.asPath === "/browse" && (
-                <Search
-                  placeholder="input search text"
+                <div className={styles.inputSearchTopic}>
+                  <Search
+                  placeholder="Search by topic name"
                   allowClear
                   className={styles.topic}
-                  style={{ width: 200 }}
                 />
+                </div>
               )}
             </div>
           }
