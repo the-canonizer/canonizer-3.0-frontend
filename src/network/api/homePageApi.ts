@@ -39,6 +39,10 @@ export const getCanonizedNameSpacesApi = async () => {
 
 export const getRecentActivitiesApi = async (reqBody) => {
   try {
+    /////////////////////////////////////////////////////////////////////////////
+    // Once API gets completed I'll uncomment this chunk and remove mockData  //
+    ///////////////////////////////////////////////////////////////////////////
+
     // const recentActivities = await NetworkCall.fetch(
     //   HomePageRequests.getCanonizedRecentActivities(reqBody),
     //   false
@@ -58,12 +62,6 @@ export const getRecentActivitiesApi = async (reqBody) => {
       },
     ];
 
-    // {
-    //   link: "/",
-    //   shortDescription: "More Intelligence Better",
-    //   date: " Jun 23, 2012, 2:25:02 AM",
-    //   id: 13,
-    // },
     return mockData;
   } catch (error) {
     message.error(error.message);
