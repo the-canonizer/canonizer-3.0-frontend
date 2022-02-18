@@ -1,6 +1,16 @@
+import { Layout } from "antd";
+
+import styles from "../siteHeader.module.scss";
+
+import Logo from "../logoHeader";
+
+const { Header } = Layout;
+
 const GetStartedHeader = () => {
   return (
-    <h1 style={{ backgroundColor: "#ffdc7a" }}>Header for get started pages</h1>
+    <Header className={styles.wrap}>
+      <Logo />
+    </Header>
   );
 };
 

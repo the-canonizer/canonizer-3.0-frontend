@@ -134,8 +134,8 @@ const LoginUi = ({
               </Form.Item>
               <Form.Item noStyle>
                 <Text className={styles.ft_link}>
-                  {`Don't have an account?`}
-                  <Link href="/registration">Register Now</Link>
+                  {`Don't have an account? `}
+                  <Link href="/registration"> Register Now</Link>
                 </Text>
               </Form.Item>
             </Form>

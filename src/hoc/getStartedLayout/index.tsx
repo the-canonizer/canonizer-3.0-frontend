@@ -1,6 +1,8 @@
-import { store } from "../../store";
 import { createWrapper } from "next-redux-wrapper";
+
+import { store } from "../../store";
 import GetStartedHeader from "../../components/common/headers/getStartedHeader";
+import Footer from "../../components/common/footer";
 
 function GetStartedLayout(props) {
   return (
@@ -9,6 +11,7 @@ function GetStartedLayout(props) {
         <GetStartedHeader />
 
         <div className="app-content">{props.children}</div>
+        <Footer />
       </div>
     </>
   );
