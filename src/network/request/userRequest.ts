@@ -288,4 +288,42 @@ export default class UserRequest extends Request {
       token
     );
   }
+  static addNickName(values, authToken) {
+    const body = {
+      ...values,
+    };
+
+    return new Request(
+      K.Network.URL.AddNickName,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
+  static getNickNameList(authToken) {
+    return new Request(
+      K.Network.URL.GetNickNameList,
+      K.Network.Method.GET,
+      {},
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
+  static updateNickName(values, authToken, id: string) {
+    const body = {
+      ...values,
+    };
+
+    return new Request(
+      K.Network.URL.UpdateNickName + id,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
 }

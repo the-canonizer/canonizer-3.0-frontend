@@ -31,6 +31,10 @@ const NetworkConstants = {
     SendForgotPasswordOTP: `${BaseCanonizerApiUrl}/forgotpassword/sendOtp`,
     VerifyForgotPasswordOTP: `${BaseCanonizerApiUrl}/forgotpassword/verifyOtp`,
     UpdateForgotPassword: `${BaseCanonizerApiUrl}/forgotpassword/update`,
+    //NickName
+    AddNickName: `${BaseCanonizerApiUrl}/add_nick_name`,
+    GetNickNameList: `${BaseCanonizerApiUrl}/get_nick_name_list`,
+    UpdateNickName: `${BaseCanonizerApiUrl}/update_nick_name`,
     // Tree
 
     GetTree: "/api/unknown",
@@ -45,6 +49,7 @@ const NetworkConstants = {
     //footer
 
     GetFooterSocialLinks: `${BaseCanonizerApiUrl}/api/v3/get_social_media_links`,
+
   },
   Method: {
     GET: "GET",

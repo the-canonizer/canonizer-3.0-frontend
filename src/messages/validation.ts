@@ -37,4 +37,6 @@ export const validations: ErrorContainer = {
   newPassword: "Please enter new password!",
   confirmNewPassword: "Please confirm your password!",
   confirmNewPasswordErr: "The confirm password and new password must match",
+  nickName: "Please Enter Nick Name!",
+  nickNameMax: "Maximum 50 character allowed!",
 };
