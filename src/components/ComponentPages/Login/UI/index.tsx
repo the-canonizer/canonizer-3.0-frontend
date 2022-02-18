@@ -58,6 +58,15 @@ const LoginUi = ({
 
   return (
     <section className={styles.login_wrapper}>
+      {isModal && (
+        <Button
+          shape="circle"
+          type="link"
+          className={styles.close_btn}
+          onClick={closeModal}
+          icon={<CloseCircleOutlined />}
+        />
+      )}
       <Row>
         <Col md={12}>
           <div className={styles.form_section}>
@@ -134,15 +143,6 @@ const LoginUi = ({
         </Col>
         <Col md={12}>
           <div className={styles.img_section}>
-            {isModal && (
-              <Button
-                shape="circle"
-                type="link"
-                className={styles.close_btn}
-                onClick={closeModal}
-                icon={<CloseCircleOutlined />}
-              />
-            )}
             <Paragraph className={styles.imgText}>
               Enter to the best leaderless consensus building and tracking
               system in the world.
