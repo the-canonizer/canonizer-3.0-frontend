@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import useState from "react-usestateref";
 import { useRouter } from "next/router";
 import { Typography, List, Select, Tag, Input, Button } from "antd";
 import Link from "next/link";
-
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import { getCanonizedTopicsApi } from "../../../../network/api/homePageApi";
@@ -15,8 +15,7 @@ const { Search } = Input;
 const TopicsList = () => {
   const router = useRouter();
   const didMount = useRef(false);
-  const didMountForFilterScoreEffect = useRef(false);
-  const [pageNumber, setPageNumber] = useState(1);
+  const [pageNumber, setPageNumber, pageNumberRef] = useState(1);
   const dispatch = useDispatch();
   const {
     canonizedTopics,
@@ -53,6 +52,7 @@ const TopicsList = () => {
 
   useEffect(() => {
     setTopicsData(canonizedTopics);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [canonizedTopics?.topics]);
 
   useEffect(() => {
@@ -60,45 +60,29 @@ const TopicsList = () => {
   }, [includeReview]);
 
   useEffect(() => {
-    if (didMount.current) {
-      const reqBody = {
-        algorithm: algorithm,
-        asofdate: asofdate,
-        namespace_id: nameSpaceId,
-        page_number: pageNumber,
-        page_size: 15,
-        search: inputSearch,
-        filter: filterByScore,
-        asof: asof,
-      };
-      getCanonizedTopicsApi(reqBody);
-    } else didMount.current = true;
-  }, [
-    asofdate,
-    asof,
-    algorithm,
-    nameSpaceId,
-    pageNumber,
-    filterByScore,
-    inputSearch,
-  ]);
+    async function getTopicsApiCall() {
+      if (didMount.current) {
+        await getTopicsApiCallWithReqBody();
+      } else didMount.current = true;
+    }
+    getTopicsApiCall();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [asofdate, asof, algorithm, nameSpaceId, filterByScore, inputSearch]);
 
-  useEffect(() => {
-    if (didMountForFilterScoreEffect.current) {
-      const loadMore = true;
-      const reqBody = {
-        algorithm: algorithm,
-        asofdate: asofdate,
-        namespace_id: nameSpaceId,
-        page_number: pageNumber,
-        page_size: 15,
-        search: inputSearch,
-        filter: filterByScore,
-        asof: "default",
-      };
-      getCanonizedTopicsApi(reqBody, loadMore);
-    } else didMountForFilterScoreEffect.current = true;
-  }, [pageNumber]);
+  async function getTopicsApiCallWithReqBody(loadMore = false) {
+    loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
+    const reqBody = {
+      algorithm: algorithm,
+      asofdate: asofdate,
+      namespace_id: nameSpaceId,
+      page_number: pageNumberRef.current,
+      page_size: 15,
+      search: inputSearch,
+      filter: filterByScore,
+      asof: asof,
+    };
+    await getCanonizedTopicsApi(reqBody, loadMore);
+  }
 
   const onSearch = (value) => setInputSearch(value);
 
@@ -107,7 +91,9 @@ const TopicsList = () => {
       {pageNumber < topicsData?.numOfPages && (
         <Button
           className={styles.viewAll}
-          onClick={() => setPageNumber(pageNumber + 1)}
+          onClick={() => {
+            getTopicsApiCallWithReqBody(true);
+          }}
         >
           <Text>Load More</Text>
           <i className="icon-angle-right"></i>
@@ -119,7 +105,7 @@ const TopicsList = () => {
   const ViewAllTopics = (
     <div className="text-right">
       {topicsData?.topics?.length && (
-        <Link href="/">
+        <Link href="/browse">
           <a className={styles.viewAll}>
             <Text>View All Topics</Text>
             <i className="icon-angle-right"></i>

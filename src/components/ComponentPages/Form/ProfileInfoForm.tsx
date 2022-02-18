@@ -229,6 +229,7 @@ function ProfileInfoForm({
             type="primary"
             htmlType="submit"
             className="ant-btn ant-btn-orange ant-btn-lg"
+            data-testid="submitButton"
           >
             Update
           </Button>
