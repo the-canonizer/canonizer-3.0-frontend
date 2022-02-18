@@ -1,5 +1,6 @@
 import RecentActivities from "../";
 import { cleanup, render } from "@testing-library/react";
+import { act } from "react-dom/test-utils";
 
 afterEach(cleanup);
 
@@ -15,6 +16,8 @@ window.matchMedia =
 
 describe("RecentActivities on HomePage for authenticated user", () => {
   it("Should render without crash", () => {
-    const { container } = render(<RecentActivities />);
+    act(() => {
+      const { container } = render(<RecentActivities />);
+    });
   });
 });

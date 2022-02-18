@@ -12,7 +12,7 @@ const OperationsSlot = {
 
 export default function RecentActivities() {
   const [position] = useState(["left", "right"]);
-  const [recentActivities, setRecentActivities] = useState();
+  const [recentActivities, setRecentActivities] = useState([]);
   const [selectedTab, setSelectedTab] = useState("topics");
   const slot = useMemo(() => {
     if (position.length === 0) return null;
