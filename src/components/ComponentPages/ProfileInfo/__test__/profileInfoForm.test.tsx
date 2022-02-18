@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from "../../../../utils/testUtils";
 import userEvent from "@testing-library/user-event";
 
-import ProfileInfoForm from "../../Form/ProfileInfoForm"
+import ProfileInfoForm from "../../Form/ProfileInfoForm";
 import messages from "../../../../messages";
 
 const { labels, placeholders, validations } = messages;
@@ -14,13 +14,16 @@ const languageList = [];
 
 describe("Profile Info Page", () => {
   it("render heading and labels Of Profile Info Form", () => {
-    render(<ProfileInfoForm
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      handleselectAfter={handleselectAfter}
-      privateFlags={privateFlags}
-      algorithmList={algorithmList}
-      languageList={languageList} />);
+    render(
+      <ProfileInfoForm
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        handleselectAfter={handleselectAfter}
+        privateFlags={privateFlags}
+        algorithmList={algorithmList}
+        languageList={languageList}
+      />
+    );
 
     let heading = screen.getByRole("heading", {
       name: /Personal information/i,
@@ -42,13 +45,16 @@ describe("Profile Info Page", () => {
   });
 
   it("render inputs field and submit button", () => {
-    render(<ProfileInfoForm
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      handleselectAfter={handleselectAfter}
-      privateFlags={privateFlags}
-      algorithmList={algorithmList}
-      languageList={languageList} />);
+    render(
+      <ProfileInfoForm
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        handleselectAfter={handleselectAfter}
+        privateFlags={privateFlags}
+        algorithmList={algorithmList}
+        languageList={languageList}
+      />
+    );
     const firstName = screen.getByLabelText(labels.firstName);
     const middleName = screen.getByLabelText(labels.middleName);
     const lastName = screen.getByLabelText(labels.lastName);
@@ -79,11 +85,17 @@ describe("Profile Info Page", () => {
 
     expect(addressLine1).toBeInTheDocument();
     expect(addressLine1).toHaveAttribute("type", "text");
-    expect(addressLine1).toHaveAttribute("placeholder", placeholders.addressLine1);
+    expect(addressLine1).toHaveAttribute(
+      "placeholder",
+      placeholders.addressLine1
+    );
 
     expect(addressLine2).toBeInTheDocument();
     expect(addressLine2).toHaveAttribute("type", "text");
-    expect(addressLine2).toHaveAttribute("placeholder", placeholders.addressLine2);
+    expect(addressLine2).toHaveAttribute(
+      "placeholder",
+      placeholders.addressLine2
+    );
 
     expect(city).toBeInTheDocument();
     expect(city).toHaveAttribute("type", "text");
@@ -105,13 +117,16 @@ describe("Profile Info Page", () => {
   });
 
   it("pass valid email to test email input field", async () => {
-    render(<ProfileInfoForm
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      handleselectAfter={handleselectAfter}
-      privateFlags={privateFlags}
-      algorithmList={algorithmList}
-      languageList={languageList} />);
+    render(
+      <ProfileInfoForm
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        handleselectAfter={handleselectAfter}
+        privateFlags={privateFlags}
+        algorithmList={algorithmList}
+        languageList={languageList}
+      />
+    );
     const inputEl = screen.getByLabelText(labels.email);
     userEvent.type(inputEl, "canonizer@gmail.com");
     await waitFor(() => {
@@ -121,13 +136,16 @@ describe("Profile Info Page", () => {
   });
 
   it("should show error when invalid email enter in field", async () => {
-    render(<ProfileInfoForm
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      handleselectAfter={handleselectAfter}
-      privateFlags={privateFlags}
-      algorithmList={algorithmList}
-      languageList={languageList} />);
+    render(
+      <ProfileInfoForm
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        handleselectAfter={handleselectAfter}
+        privateFlags={privateFlags}
+        algorithmList={algorithmList}
+        languageList={languageList}
+      />
+    );
     const inputEl = screen.getByLabelText(labels.email);
     userEvent.type(inputEl, "canonizer.gmail.com");
     await waitFor(() => {
@@ -138,13 +156,16 @@ describe("Profile Info Page", () => {
   });
 
   it("blank Profile info form should not be submit", async () => {
-    render(<ProfileInfoForm
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      handleselectAfter={handleselectAfter}
-      privateFlags={privateFlags}
-      algorithmList={algorithmList}
-      languageList={languageList} />);
+    render(
+      <ProfileInfoForm
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        handleselectAfter={handleselectAfter}
+        privateFlags={privateFlags}
+        algorithmList={algorithmList}
+        languageList={languageList}
+      />
+    );
     const btnEl = screen.getByTestId("submitButton");
 
     userEvent.click(btnEl);
@@ -155,5 +176,4 @@ describe("Profile Info Page", () => {
       expect(screen.queryByText(validations.email)).toBeVisible();
     });
   });
-
 });
