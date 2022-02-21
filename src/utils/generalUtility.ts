@@ -3,7 +3,8 @@ import K from "../constants";
 // import history from "./history";
 // import User from "../models/user/user";
 
-export const handleError = (error, dispatch = null) => {
+export const handleError = (error, log = false, dispatch = null) => {
+  log ? console.log(error) : "";
   if (error.message) {
     message.error(error.message);
   }
@@ -217,4 +218,37 @@ export const setParams = (history, search, page, pageSize) => {
 
 export const isServer = () => {
   return typeof window === "undefined";
+};
+export const handleCatchError = (errors) => {
+  let msgs = errors
+    ? errors.error
+      ? errors.error.data
+        ? errors.error.data.error
+          ? errors.error.data.error
+          : ""
+        : ""
+      : ""
+    : "";
+  if (msgs) {
+    let keys = Object.keys(msgs);
+    keys.forEach((key) => {
+      message.error(msgs[key][0]);
+    });
+  } else {
+    if (
+      errors
+        ? errors.error
+          ? errors.error.data
+            ? errors.error.data.message
+              ? errors.error.data.message
+              : ""
+            : ""
+          : ""
+        : ""
+    )
+      message.error(errors.error.data.message);
+    else {
+      message.error("Something is wrong");
+    }
+  }
 };

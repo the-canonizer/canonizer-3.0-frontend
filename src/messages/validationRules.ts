@@ -232,3 +232,16 @@ export const confirmNewPasswordRule = {
     }),
   ],
 };
+
+export const nickNameRule = {
+  rules: [
+    {
+      required: true,
+      message: validations.nickName,
+    },
+    {
+      max: 50,
+      message: validations.nickNameMax,
+    }
+  ],
+};

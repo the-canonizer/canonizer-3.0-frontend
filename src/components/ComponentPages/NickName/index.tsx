@@ -1,6 +1,11 @@
 import NickNameUI from "./NickNameUI";
-import { useState } from "react";
-import { Form } from "antd";
+import { useState, useEffect } from "react";
+import { Form, message } from "antd";
+import {
+  addNickName,
+  updateNickName,
+  getNickNameList
+} from "../../../network/api/userApi";
 
 const NickName = () => {
   const [add_edit_form] = Form.useForm();
@@ -8,14 +13,18 @@ const NickName = () => {
   const [isNickNameModalVisible, setIsNickNameModalVisible] = useState(false);
   const [addEditTitle, setAddEditTitle] = useState("");
   const [addEditBtn, setAddEditBtn] = useState("");
+  const [nickNameList, setNickNameList] = useState([]);
+  const [selectedNickNameList, setSelectedNickNameList] = useState([]);
+  const create = "Create";
 
   const editNickName = (record) => {
     setAddEditTitle("Edit New Nick Name");
     setAddEditBtn("Update");
     setIsNickNameModalVisible(true);
+    setSelectedNickNameList(record);
     add_edit_form.setFieldsValue({
-      nick_name: record.nickName,
-      visibility_status: record.visibilityStatus,
+      nick_name: record.nick_name,
+      visibility_status: record.private.toString(),
     });
   };
 
@@ -30,6 +39,50 @@ const NickName = () => {
     setAddEditBtn("Create");
   };
 
+  const onAddUpdateNickName = async (values: any) => {
+    var formBody = {};
+    if (addEditBtn == create) {
+      formBody = {
+        "nick_name": values.nick_name,
+        "visibility_status": parseInt(values.visibility_status).toString() == "NaN"
+          ? 0
+          : parseInt(values.visibility_status)
+      };
+      let res = await addNickName(formBody);
+      if (res && res.status_code === 200) {
+        nickNameForm.resetFields();
+        setIsNickNameModalVisible(false);
+        message.success(res.message);
+      }
+    }
+    else {
+      formBody = {
+        "visibility_status": parseInt(values.visibility_status).toString() == "NaN"
+          ? 0
+          : parseInt(values.visibility_status)
+      };
+      if (selectedNickNameList) {
+        let nickNameId = "/" + selectedNickNameList["id"];
+        let res = await updateNickName(formBody, nickNameId);
+        if (res && res.status_code === 200) {
+          setIsNickNameModalVisible(false);
+          message.success(res.message);
+        }
+      }
+    }
+    fetchNickNameList()
+  }
+
+  const fetchNickNameList = async () => {
+    let response = await getNickNameList();
+    if (response && response.status_code === 200) {
+      setNickNameList(response.data);
+    }
+  }
+  useEffect(() => {
+    fetchNickNameList();
+  }, []);
+  
   return (
     <NickNameUI
       nickNameForm={nickNameForm}
@@ -40,6 +93,8 @@ const NickName = () => {
       editNickName={editNickName}
       handleAddNickName={handleAddNickName}
       handleNickNameCancel={handleNickNameCancel}
+      onAddUpdateNickName={onAddUpdateNickName}
+      nickNameList={nickNameList}
     />
   );
 };

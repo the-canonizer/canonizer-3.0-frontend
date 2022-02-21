@@ -4,6 +4,7 @@ import {
   handleError,
   isServer,
   redirectToLogin,
+  handleCatchError
 } from "../../utils/generalUtility";
 import {
   setAuthToken,
@@ -197,37 +198,7 @@ export const GetUserProfileInfo = () => {
         return value;
       })
       .catch((errors) => {
-        let msgs = errors
-          ? errors.error
-            ? errors.error.data
-              ? errors.error.data.error
-                ? errors.error.data.error
-                : ""
-              : ""
-            : ""
-          : "";
-        if (msgs) {
-          let keys = Object.keys(msgs);
-          keys.forEach((key) => {
-            message.error(msgs[key][0]);
-          });
-        } else {
-          if (
-            errors
-              ? errors.error
-                ? errors.error.data
-                  ? errors.error.data.message
-                    ? errors.error.data.message
-                    : ""
-                  : ""
-                : ""
-              : ""
-          )
-            message.error(errors.error.data.message);
-          else {
-            message.error("Something is wrong");
-          }
-        }
+        handleCatchError(errors)
       });
     return res;
   };
@@ -244,37 +215,7 @@ export const UpdateUserProfileInfo = (values: object) => {
         return value;
       })
       .catch((errors) => {
-        let msgs = errors
-          ? errors.error
-            ? errors.error.data
-              ? errors.error.data.error
-                ? errors.error.data.error
-                : ""
-              : ""
-            : ""
-          : "";
-        if (msgs) {
-          let keys = Object.keys(msgs);
-          keys.forEach((key) => {
-            message.error(msgs[key][0]);
-          });
-        } else {
-          if (
-            errors
-              ? errors.error
-                ? errors.error.data
-                  ? errors.error.data.message
-                    ? errors.error.data.message
-                    : ""
-                  : ""
-                : ""
-              : ""
-          )
-            message.error(errors.error.data.message);
-          else {
-            message.error("Something is wrong");
-          }
-        }
+        handleCatchError(errors)
       });
     return res;
   };
@@ -291,37 +232,7 @@ export const GetMobileCarrier = () => {
         return value;
       })
       .catch((errors) => {
-        let msgs = errors
-          ? errors.error
-            ? errors.error.data
-              ? errors.error.data.error
-                ? errors.error.data.error
-                : ""
-              : ""
-            : ""
-          : "";
-        if (msgs) {
-          let keys = Object.keys(msgs);
-          keys.forEach((key) => {
-            message.error(msgs[key][0]);
-          });
-        } else {
-          if (
-            errors
-              ? errors.error
-                ? errors.error.data
-                  ? errors.error.data.message
-                    ? errors.error.data.message
-                    : ""
-                  : ""
-                : ""
-              : ""
-          )
-            message.error(errors.error.data.message);
-          else {
-            message.error("Something is wrong");
-          }
-        }
+        handleCatchError(errors)
       });
     return res;
   };
@@ -338,37 +249,7 @@ export const SendOTP = (values: object) => {
         return value;
       })
       .catch((errors) => {
-        let msgs = errors
-          ? errors.error
-            ? errors.error.data
-              ? errors.error.data.error
-                ? errors.error.data.error
-                : ""
-              : ""
-            : ""
-          : "";
-        if (msgs) {
-          let keys = Object.keys(msgs);
-          keys.forEach((key) => {
-            message.error(msgs[key][0]);
-          });
-        } else {
-          if (
-            errors
-              ? errors.error
-                ? errors.error.data
-                  ? errors.error.data.message
-                    ? errors.error.data.message
-                    : ""
-                  : ""
-                : ""
-              : ""
-          )
-            message.error(errors.error.data.message);
-          else {
-            message.error("Something is wrong");
-          }
-        }
+        handleCatchError(errors)
       });
     return res;
   };
@@ -385,37 +266,7 @@ export const VerifyOTP = (values: object) => {
         return value;
       })
       .catch((errors) => {
-        let msgs = errors
-          ? errors.error
-            ? errors.error.data
-              ? errors.error.data.error
-                ? errors.error.data.error
-                : ""
-              : ""
-            : ""
-          : "";
-        if (msgs) {
-          let keys = Object.keys(msgs);
-          keys.forEach((key) => {
-            message.error(msgs[key][0]);
-          });
-        } else {
-          if (
-            errors
-              ? errors.error
-                ? errors.error.data
-                  ? errors.error.data.message
-                    ? errors.error.data.message
-                    : ""
-                  : ""
-                : ""
-              : ""
-          )
-            message.error(errors.error.data.message);
-          else {
-            message.error("Something is wrong");
-          }
-        }
+        handleCatchError(errors)
       });
     return res;
   };
@@ -432,37 +283,7 @@ export const GetAlgorithmsList = () => {
         return value;
       })
       .catch((errors) => {
-        let msgs = errors
-          ? errors.error
-            ? errors.error.data
-              ? errors.error.data.error
-                ? errors.error.data.error
-                : ""
-              : ""
-            : ""
-          : "";
-        if (msgs) {
-          let keys = Object.keys(msgs);
-          keys.forEach((key) => {
-            message.error(msgs[key][0]);
-          });
-        } else {
-          if (
-            errors
-              ? errors.error
-                ? errors.error.data
-                  ? errors.error.data.message
-                    ? errors.error.data.message
-                    : ""
-                  : ""
-                : ""
-              : ""
-          )
-            message.error(errors.error.data.message);
-          else {
-            message.error("Something is wrong");
-          }
-        }
+        handleCatchError(errors)
       });
     return res;
   };
@@ -479,37 +300,7 @@ export const GetLanguageList = () => {
         return value;
       })
       .catch((errors) => {
-        let msgs = errors
-          ? errors.error
-            ? errors.error.data
-              ? errors.error.data.error
-                ? errors.error.data.error
-                : ""
-              : ""
-            : ""
-          : "";
-        if (msgs) {
-          let keys = Object.keys(msgs);
-          keys.forEach((key) => {
-            message.error(msgs[key][0]);
-          });
-        } else {
-          if (
-            errors
-              ? errors.error
-                ? errors.error.data
-                  ? errors.error.data.message
-                    ? errors.error.data.message
-                    : ""
-                  : ""
-                : ""
-              : ""
-          )
-            message.error(errors.error.data.message);
-          else {
-            message.error("Something is wrong");
-          }
-        }
+        handleCatchError(errors)
       });
     return res;
   };
@@ -556,4 +347,59 @@ export const forgotPasswordUpdate = async (values: object) => {
   } catch (err) {
     handleError(err);
   }
+};
+
+export const addNickName = async (values: object) => {
+
+  let state = store.getState();
+  const { auth } = state;
+
+  const res = await NetworkCall.fetch(
+    UserRequest.addNickName(values, auth.loggedInUser.token)
+  )
+    .then((value) => {
+      return value;
+    })
+    .catch((errors) => {
+      handleCatchError(errors)
+    });
+
+  return res;
+
+};
+
+export const getNickNameList = async () => {
+  let state = store.getState();
+  const { auth } = state;
+
+
+  const res = await NetworkCall.fetch(
+    UserRequest.getNickNameList(auth.loggedInUser.token)
+  )
+    .then((value) => {
+      return value;
+    })
+    .catch((errors) => {
+      handleCatchError(errors)
+    });
+  return res;
+
+};
+
+export const updateNickName = async (values: object, id: string) => {
+
+  let state = store.getState();
+  const { auth } = state;
+
+  const res = await NetworkCall.fetch(
+    UserRequest.updateNickName(values, auth.loggedInUser.token, id)
+  )
+    .then((value) => {
+      return value;
+    })
+    .catch((errors) => {
+      handleCatchError(errors)
+    });
+  return res;
+
 };
