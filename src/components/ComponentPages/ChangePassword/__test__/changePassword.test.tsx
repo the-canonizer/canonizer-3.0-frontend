@@ -22,11 +22,17 @@ describe("ChangePassword page", () => {
 
     expect(currentPassword).toBeInTheDocument();
     expect(currentPassword).toHaveAttribute("type", "password");
-    expect(currentPassword).toHaveAttribute("placeholder", placeholders.currentPassword);
+    expect(currentPassword).toHaveAttribute(
+      "placeholder",
+      placeholders.currentPassword
+    );
 
     expect(newPassword).toBeInTheDocument();
     expect(newPassword).toHaveAttribute("type", "password");
-    expect(newPassword).toHaveAttribute("placeholder", placeholders.newPassword);
+    expect(newPassword).toHaveAttribute(
+      "placeholder",
+      placeholders.newPassword
+    );
 
     expect(confirmPassword).toBeInTheDocument();
     expect(confirmPassword).toHaveAttribute("type", "password");
@@ -42,10 +48,12 @@ describe("ChangePassword page", () => {
     userEvent.type(inputEl, "123");
     await waitFor(() => {
       expect(inputEl).toHaveValue("123");
-      const alerts = screen.getAllByRole('alert');
-      expect(alerts).toHaveLength(2)
-      expect(alerts[0]).toHaveTextContent(/Password must be at least 8 characters long!/i)
-      expect(alerts[1]).toHaveTextContent(/Password Should be like Abc@1234./i)
+      const alerts = screen.getAllByRole("alert");
+      expect(alerts).toHaveLength(2);
+      expect(alerts[0]).toHaveTextContent(
+        /Password must be at least 8 characters long!/i
+      );
+      expect(alerts[1]).toHaveTextContent(/Password Should be like Abc@1234./i);
     });
   });
 
@@ -95,7 +103,9 @@ describe("ChangePassword page", () => {
     userEvent.click(btnEl);
 
     await waitFor(() => {
-      expect(screen.queryByText("Please enter current password!")).toBeVisible();
+      expect(
+        screen.queryByText("Please enter current password!")
+      ).toBeVisible();
       expect(screen.queryByText("Please enter new password!")).toBeVisible();
       expect(screen.queryByText("Please confirm your password!")).toBeVisible();
     });

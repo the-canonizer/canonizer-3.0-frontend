@@ -5,8 +5,14 @@
   box-shadow: 0 0 10px rgba($color: #000000, $alpha: 0.03);
   position: relative;
 
-  &.textCenter {
+  &.textCenter,
+  .textCenter {
     text-align: center;
+
+    label {
+      display: block;
+      text-align: center;
+    }
   }
 
   form {
@@ -77,6 +83,14 @@
         margin-bottom: 25px;
         font-size: 15px;
         color: #f81b1b;
+
+        .otpNoteSupport {
+          display: block;
+
+          @media screen and (max-width: 991px) {
+            display: inline;
+          }
+        }
       }
     }
 
@@ -103,7 +117,7 @@
         background: #d38714 0% 0% no-repeat;
       }
 
-      &.login-form-button{
+      &.login-form-button {
         margin-top: 0;
       }
     }

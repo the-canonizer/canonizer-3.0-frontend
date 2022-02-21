@@ -13,6 +13,7 @@ const RegistrationModal = () => {
   return (
     <Fragment>
       <Modal
+        style={{ top: "20px" }}
         visible={visible}
         footer={null}
         closable={false}

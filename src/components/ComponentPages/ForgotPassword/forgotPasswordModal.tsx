@@ -3,10 +3,12 @@ import { Fragment } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store";
 
-import Login from "./index";
+import ForgotPassword from "./index";
 
-const LoginModal = () => {
-  const visible = useSelector((state: RootState) => state.ui.loginModalVisible);
+const ForgotModal = () => {
+  const visible = useSelector(
+    (state: RootState) => state.ui.forgotModalVisible
+  );
 
   return (
     <Fragment>
@@ -18,10 +20,10 @@ const LoginModal = () => {
         width={800}
         className="loginModal"
       >
-        <Login isModal={true} />
+        <ForgotPassword isModal={true} />
       </Modal>
     </Fragment>
   );
 };
 
-export default LoginModal;
+export default ForgotModal;

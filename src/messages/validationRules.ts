@@ -6,6 +6,14 @@ export const phoneNumberRule = {
       required: true,
       message: validations.phoneNumber,
     },
+    {
+      min: 9,
+      message: validations.phoneLength,
+    },
+    {
+      max: 10,
+      message: validations.phoneLength,
+    },
   ],
 };
 export const mobileCarrierRule = {
@@ -219,12 +227,21 @@ export const confirmNewPasswordRule = {
         if (!value || getFieldValue("new_password") === value) {
           return Promise.resolve();
         }
-        return Promise.reject(
-          new Error(
-            validations.confirmNewPasswordErr
-          )
-        );
+        return Promise.reject(new Error(validations.confirmNewPasswordErr));
       },
     }),
-  ]
+  ],
+};
+
+export const nickNameRule = {
+  rules: [
+    {
+      required: true,
+      message: validations.nickName,
+    },
+    {
+      max: 50,
+      message: validations.nickNameMax,
+    }
+  ],
 };

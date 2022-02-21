@@ -7,7 +7,7 @@ function ReduxProvider({ children }) {
   return <Provider store={store}>{children}</Provider>;
 }
 
-const reduxRender = (ui, options) =>
+const reduxRender = (ui, options = null) =>
   render(ui, { wrapper: ReduxProvider, ...options });
 
 Object.defineProperty(window, "matchMedia", {

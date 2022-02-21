@@ -12,17 +12,6 @@ export default class UserRequest extends Request {
       client_secret: process.env.NEXT_PUBLIC_AUTH_CLIENT_SECRET,
     };
 
-    console.log(
-      new Request(
-        K.Network.URL.CreateToken,
-        K.Network.Method.POST,
-        body,
-        K.Network.Header.Type.Json,
-        {},
-        ""
-      )
-    );
-
     return new Request(
       K.Network.URL.CreateToken,
       K.Network.Method.POST,
@@ -209,6 +198,7 @@ export default class UserRequest extends Request {
       authToken
     );
   }
+
   static SendOTP(values, authToken) {
     const body = {
       ...values,
@@ -258,6 +248,78 @@ export default class UserRequest extends Request {
     return new UserRequest(
       K.Network.URL.GetLanguageList,
       K.Network.Method.GET,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
+
+  // forgot password
+  static forgotPasswordSendOTP(body, token) {
+    return new Request(
+      K.Network.URL.SendForgotPasswordOTP,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
+
+  static forgotPasswordVerifyOTP(body, token) {
+    return new Request(
+      K.Network.URL.VerifyForgotPasswordOTP,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
+
+  static forgotPasswordUpdatePassword(body, token) {
+    return new Request(
+      K.Network.URL.UpdateForgotPassword,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
+  static addNickName(values, authToken) {
+    const body = {
+      ...values,
+    };
+
+    return new Request(
+      K.Network.URL.AddNickName,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
+  static getNickNameList(authToken) {
+    return new Request(
+      K.Network.URL.GetNickNameList,
+      K.Network.Method.GET,
+      {},
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
+  static updateNickName(values, authToken, id: string) {
+    const body = {
+      ...values,
+    };
+
+    return new Request(
+      K.Network.URL.UpdateNickName + id,
+      K.Network.Method.POST,
       body,
       K.Network.Header.Type.Json,
       {},

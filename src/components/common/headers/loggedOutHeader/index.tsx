@@ -12,7 +12,8 @@ import RegistrationModal from "../../../ComponentPages/Registration/registration
 import {
   showLoginModal,
   showRegistrationModal,
-} from "../../../../store/slices/ui/uiSlice";
+} from "../../../../store/slices/uiSlice";
+import ForgotModal from "@/components/ComponentPages/ForgotPassword/forgotPasswordModal";
 
 const { Header } = Layout;
 
@@ -33,32 +34,32 @@ const LoggedOutHeader = () => {
     },
 
     {
-      link: "",
+      link: "/upload",
       linkTitle: "Upload Files",
       id: 2,
     },
     {
-      link: "",
+      link: "/help",
       linkTitle: "Help",
       id: 3,
     },
     {
-      link: "",
+      link: "/white-paper",
       linkTitle: "White Paper",
       id: 4,
     },
     {
-      link: "",
+      link: "/blog",
       linkTitle: "Blog",
       id: 5,
     },
     {
-      link: "",
+      link: "/jobs",
       linkTitle: "Jobs",
       id: 6,
     },
     {
-      link: "",
+      link: "/services",
       linkTitle: "Services",
       id: 7,
     },
@@ -139,6 +140,7 @@ const LoggedOutHeader = () => {
       <SearchSection />
       <LoginModal />
       <RegistrationModal />
+      <ForgotModal />
     </React.Fragment>
   );
 };

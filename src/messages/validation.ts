@@ -33,8 +33,10 @@ export const validations: ErrorContainer = {
   phoneNumber: "Please Enter Phone Number!",
   mobileCarrier: "Please Enter Mobile Carrier!",
   dob: "Please select DOB!",
-  currentpassword:"Please enter current password!",
-  newPassword:"Please enter new password!",
-  confirmNewPassword:"Please confirm your password!",
-  confirmNewPasswordErr:"The confirm password and new password must match"
+  currentpassword: "Please enter current password!",
+  newPassword: "Please enter new password!",
+  confirmNewPassword: "Please confirm your password!",
+  confirmNewPasswordErr: "The confirm password and new password must match",
+  nickName: "Please Enter Nick Name!",
+  nickNameMax: "Maximum 50 character allowed!",
 };
