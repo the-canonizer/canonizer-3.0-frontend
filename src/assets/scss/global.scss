@@ -136,7 +136,7 @@ body {
   .ant-card-head {
     display: flex;
     align-items: baseline;
-    justify-content: end;
+    justify-content: flex-end;
     .ant-card-head-wrapper {
       flex-grow: 1;
       .ant-card-head-title {

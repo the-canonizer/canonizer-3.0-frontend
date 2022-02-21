@@ -4,8 +4,6 @@ import K from "../constants";
 // import User from "../models/user/user";
 
 export const handleError = (error, dispatch = null) => {
-  console.error(error);
-
   if (error.message) {
     message.error(error.message);
   }

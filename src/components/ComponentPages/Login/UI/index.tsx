@@ -21,14 +21,6 @@ import { redirectToUrl } from "../../../../utils/generalUtility";
 
 const { Title, Paragraph, Text } = Typography;
 
-interface FieldData {
-  username: string | number | (string | number)[];
-  password: any;
-  touched?: boolean;
-  validating?: boolean;
-  errors?: string[];
-}
-
 const LoginUi = ({
   form,
   onFinish,
