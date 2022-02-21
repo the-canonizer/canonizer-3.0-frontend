@@ -37,6 +37,37 @@ export const getCanonizedNameSpacesApi = async () => {
   }
 };
 
+export const getRecentActivitiesApi = async (reqBody) => {
+  try {
+    /////////////////////////////////////////////////////////////////////////////
+    // Once API gets completed I'll uncomment this chunk and remove mockData  //
+    ///////////////////////////////////////////////////////////////////////////
+
+    // const recentActivities = await NetworkCall.fetch(
+    //   HomePageRequests.getCanonizedRecentActivities(reqBody),
+    //   false
+    // );
+    const mockData = [
+      {
+        id: 27,
+        log_name: "threads",
+        description: "A thread has been updated",
+        subject_type: "App\\Models\\Languages",
+        subject_id: 20,
+        causer_type: null,
+        causer_id: null,
+        properties: [],
+        created_at: "2022-02-17T11:22:36.000000Z",
+        updated_at: "2022-02-17T11:22:36.000000Z",
+      },
+    ];
+
+    return mockData;
+  } catch (error) {
+    message.error(error.message);
+  }
+};
+
 export const getCanonizedAlgorithmsApi = async () => {
   try {
     const algorithms = await NetworkCall.fetch(

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Tabs, Typography, List } from "antd";
 import styles from "./recentActivities.module.scss";
+import { getRecentActivitiesApi } from "../../../../network/api/homePageApi";
 
 const { TabPane } = Tabs;
 const { Title, Link, Text } = Typography;
@@ -9,103 +10,11 @@ const OperationsSlot = {
   left: <Title level={3}>Recent Activities</Title>,
 };
 
-const mockData = [
-  {
-    link: "/",
-    shortDescription: "More Intelligence Better",
-    date: " Jun 23, 2012, 2:25:02 AM",
-    id: 1,
-  },
-  {
-    link: "/",
-    shortDescription: "More Intelligence Better",
-    date: " Jun 23, 2012, 2:25:02 AM",
-    id: 2,
-  },
-  {
-    link: "/",
-    shortDescription: "More Intelligence Better",
-    date: " Jun 23, 2012, 2:25:02 AM",
-    id: 3,
-  },
-  {
-    link: "/",
-    shortDescription: "More Intelligence Better",
-    date: " Jun 23, 2012, 2:25:02 AM",
-    id: 4,
-  },
-  {
-    link: "/",
-    shortDescription: "More Intelligence Better",
-    date: " Jun 23, 2012, 2:25:02 AM",
-    id: 5,
-  },
-  {
-    link: "/",
-    shortDescription: "More Intelligence Better",
-    date: " Jun 23, 2012, 2:25:02 AM",
-    id: 6,
-  },
-  {
-    link: "/",
-    shortDescription: "More Intelligence Better",
-    date: " Jun 23, 2012, 2:25:02 AM",
-    id: 7,
-  },
-  {
-    link: "/",
-    shortDescription: "More Intelligence Better",
-    date: " Jun 23, 2012, 2:25:02 AM",
-    id: 8,
-  },
-  {
-    link: "/",
-    shortDescription: "More Intelligence Better",
-    date: " Jun 23, 2012, 2:25:02 AM",
-    id: 9,
-  },
-  {
-    link: "/",
-    shortDescription: "More Intelligence Better",
-    date: " Jun 23, 2012, 2:25:02 AM",
-    id: 10,
-  },
-  {
-    link: "/",
-    shortDescription: "More Intelligence Better",
-    date: " Jun 23, 2012, 2:25:02 AM",
-    id: 11,
-  },
-  {
-    link: "/",
-    shortDescription: "More Intelligence Better",
-    date: " Jun 23, 2012, 2:25:02 AM",
-    id: 12,
-  },
-  {
-    link: "/",
-    shortDescription: "More Intelligence Better",
-    date: " Jun 23, 2012, 2:25:02 AM",
-    id: 13,
-  },
-  {
-    link: "/",
-    shortDescription: "More Intelligence Better",
-    date: " Jun 23, 2012, 2:25:02 AM",
-    id: 14,
-  },
-  {
-    link: "/",
-    shortDescription: "More Intelligence Better",
-    date: " Jun 23, 2012, 2:25:02 AM",
-    id: 15,
-  },
-];
-
 export default function RecentActivities() {
   const [position] = useState(["left", "right"]);
-
-  const slot = React.useMemo(() => {
+  const [recentActivities, setRecentActivities] = useState([]);
+  const [selectedTab, setSelectedTab] = useState("topics");
+  const slot = useMemo(() => {
     if (position.length === 0) return null;
 
     return position.reduce(
@@ -113,37 +22,58 @@ export default function RecentActivities() {
       {}
     );
   }, [position]);
+
+  useEffect(() => {
+    async function linksApiCall() {
+      const reqBody = {
+        log_type: selectedTab,
+        page_number: 1,
+        page_size: 20,
+      };
+      const result = await getRecentActivitiesApi(reqBody);
+      setRecentActivities(result);
+    }
+    linksApiCall();
+  }, [selectedTab]);
+
+  const handleTabChange = (key: string) => {
+    setSelectedTab(key);
+  };
+
   return (
     <>
       <div className={`${styles.listCard} recentActivities_listWrap`}>
         <Tabs
           className={`${styles.listCardTabs} recentActivities_listCardTabs`}
-          defaultActiveKey="1"
+          defaultActiveKey="topics"
           tabBarExtraContent={slot}
+          onChange={handleTabChange}
         >
-          <TabPane tab="Topics/Camps" key="1">
+          <TabPane tab="Topics/Camps" key="topics">
             <List
               className={styles.listWrap}
               footer={
-                <div className={styles.footer}>
-                  <Link href="#" className={styles.viewAll}>
-                    <Text>View All Topics</Text>
-                    <i className="icon-angle-right"></i>
-                  </Link>
-                </div>
+                recentActivities?.length > 0 && (
+                  <div className={styles.footer}>
+                    <Link href="#" className={styles.viewAll}>
+                      <Text>View All Topics</Text>
+                      <i className="icon-angle-right"></i>
+                    </Link>
+                  </div>
+                )
               }
               bordered={false}
-              dataSource={mockData}
-              renderItem={(item) => (
+              dataSource={recentActivities}
+              renderItem={(activity) => (
                 <List.Item className={styles.listItem}>
-                  <Link href={item.link}>
+                  <Link href={"/"}>
                     <>
                       <Text className={styles.text}>
-                        {item.shortDescription}
+                        {activity.description}
                       </Text>
                       <Text className={styles.secondary} type="secondary">
                         <i className="icon-calendar"></i>
-                        {item.date}
+                        {activity.updated_at}
                       </Text>
                     </>
                   </Link>
@@ -151,8 +81,37 @@ export default function RecentActivities() {
               )}
             />
           </TabPane>
-          <TabPane tab="Threads" key="2">
-            Content of Tab Pane 2
+          <TabPane tab="Threads" key="threads">
+            <List
+              className={styles.listWrap}
+              footer={
+                recentActivities?.length > 0 && (
+                  <div className={styles.footer}>
+                    <Link href="#" className={styles.viewAll}>
+                      <Text>View All Topics</Text>
+                      <i className="icon-angle-right"></i>
+                    </Link>
+                  </div>
+                )
+              }
+              bordered={false}
+              dataSource={recentActivities}
+              renderItem={(activity) => (
+                <List.Item className={styles.listItem}>
+                  <Link href={"/"}>
+                    <>
+                      <Text className={styles.text}>
+                        {activity.description}
+                      </Text>
+                      <Text className={styles.secondary} type="secondary">
+                        <i className="icon-calendar"></i>
+                        {activity.updated_at}
+                      </Text>
+                    </>
+                  </Link>
+                </List.Item>
+              )}
+            />
           </TabPane>
         </Tabs>
       </div>

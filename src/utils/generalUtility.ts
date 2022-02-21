@@ -3,9 +3,8 @@ import K from "../constants";
 // import history from "./history";
 // import User from "../models/user/user";
 
-export const handleError = (error, dispatch = null) => {
-  console.error(error);
-
+export const handleError = (error, log = false, dispatch = null) => {
+  log ? console.log(error) : "";
   if (error.message) {
     message.error(error.message);
   }

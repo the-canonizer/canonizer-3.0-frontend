@@ -21,14 +21,6 @@ import { redirectToUrl } from "../../../../utils/generalUtility";
 
 const { Title, Paragraph, Text } = Typography;
 
-interface FieldData {
-  username: string | number | (string | number)[];
-  password: any;
-  touched?: boolean;
-  validating?: boolean;
-  errors?: string[];
-}
-
 const LoginUi = ({
   form,
   onFinish,
@@ -58,6 +50,15 @@ const LoginUi = ({
 
   return (
     <section className={styles.login_wrapper}>
+      {isModal && (
+        <Button
+          shape="circle"
+          type="link"
+          className={styles.close_btn}
+          onClick={closeModal}
+          icon={<CloseCircleOutlined />}
+        />
+      )}
       <Row>
         <Col md={12}>
           <div className={styles.form_section}>
@@ -125,8 +126,8 @@ const LoginUi = ({
               </Form.Item>
               <Form.Item noStyle>
                 <Text className={styles.ft_link}>
-                  {`Don't have an account?`}
-                  <Link href="/registration">Register Now</Link>
+                  {`Don't have an account? `}
+                  <Link href="/registration"> Register Now</Link>
                 </Text>
               </Form.Item>
             </Form>
@@ -134,15 +135,6 @@ const LoginUi = ({
         </Col>
         <Col md={12}>
           <div className={styles.img_section}>
-            {isModal && (
-              <Button
-                shape="circle"
-                type="link"
-                className={styles.close_btn}
-                onClick={closeModal}
-                icon={<CloseCircleOutlined />}
-              />
-            )}
             <Paragraph className={styles.imgText}>
               Enter to the best leaderless consensus building and tracking
               system in the world.

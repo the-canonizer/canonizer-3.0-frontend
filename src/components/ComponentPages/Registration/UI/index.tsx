@@ -73,19 +73,39 @@ function RegistrationUi({
         )}
         <div className={styles.section_one}>
           <Row gutter={30}>
-            <Col md={12}>
+            <Col md={12} style={{ width: "100%" }}>
               <FormItem
                 name="first_name"
                 label={messages.labels.firstName}
                 rules={messages.firstNameRule}
                 placeholder={messages.placeholders.firstName}
               />
+            </Col>
+            <Col md={12} style={{ width: "100%" }}>
+              <FormItem
+                name="middle_name"
+                label={messages.labels.middleName}
+                rules={messages.middleNameRule}
+                placeholder={messages.placeholders.middleName}
+              />
+            </Col>
+            <Col md={12} style={{ width: "100%" }}>
               <FormItem
                 name="last_name"
                 label={messages.labels.lastName}
                 rules={messages.lastNameRule}
                 placeholder={messages.placeholders.lastName}
               />
+            </Col>
+            <Col md={12} style={{ width: "100%" }}>
+              <FormItem
+                name="email"
+                label={messages.labels.email}
+                rules={messages.emRule}
+                placeholder={messages.placeholders.email}
+              />
+            </Col>
+            <Col md={12} style={{ width: "100%" }}>
               <Form.Item
                 name="phone"
                 label={messages.labels.phone}
@@ -97,6 +117,30 @@ function RegistrationUi({
                   placeholder={messages.placeholders.phone}
                 />
               </Form.Item>
+            </Col>
+            <Col md={12} style={{ width: "100%" }}>
+              <FormItem
+                name="password"
+                label={messages.labels.password}
+                rules={messages.passwordRule}
+                placeholder={messages.placeholders.password}
+                type="password"
+              />
+            </Col>
+            <Col md={{ order: 1, span: 12 }} style={{ width: "100%" }}>
+              <Form.Item
+                name="confirm"
+                label={messages.labels.confirmPassword}
+                dependencies={["password"]}
+                {...messages.confirmPasswordRule}
+              >
+                <Input
+                  type="password"
+                  placeholder={messages.placeholders.confirmPassword}
+                />
+              </Form.Item>
+            </Col>
+            <Col md={12} style={{ width: "100%" }}>
               <Form.Item
                 label={messages.labels.captcha}
                 name="captcha"
@@ -110,39 +154,6 @@ function RegistrationUi({
                     grecaptcha={global?.window?.grecaptcha}
                   />
                 </div>
-              </Form.Item>
-            </Col>
-            <Col md={12}>
-              <FormItem
-                name="middle_name"
-                label={messages.labels.middleName}
-                rules={messages.middleNameRule}
-                placeholder={messages.placeholders.middleName}
-              />
-
-              <FormItem
-                name="email"
-                label={messages.labels.email}
-                rules={messages.emRule}
-                placeholder={messages.placeholders.email}
-              />
-              <FormItem
-                name="password"
-                label={messages.labels.password}
-                rules={messages.passwordRule}
-                placeholder={messages.placeholders.password}
-                type="password"
-              />
-              <Form.Item
-                name="confirm"
-                label={messages.labels.confirmPassword}
-                dependencies={["password"]}
-                {...messages.confirmPasswordRule}
-              >
-                <Input
-                  type="password"
-                  placeholder={messages.placeholders.confirmPassword}
-                />
               </Form.Item>
             </Col>
           </Row>
