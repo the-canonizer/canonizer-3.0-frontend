@@ -1,12 +1,18 @@
+import { Fragment } from "react";
 import { useDispatch } from "react-redux";
 import { Form } from "antd";
 
 import LoginUI from "./UI";
 
-import { hideLoginModal, showForgotModal } from "../../../store/slices/uiSlice";
+import {
+  hideLoginModal,
+  showForgotModal,
+  showRegistrationModal,
+} from "../../../store/slices/uiSlice";
 import { login } from "../../../network/api/userApi";
 import { AppDispatch } from "../../../store";
 import { redirectToUrl } from "../../../utils/generalUtility";
+import Spinner from "../../common/spinner/spinner";
 
 const Login = ({ isModal }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -14,15 +20,15 @@ const Login = ({ isModal }) => {
 
   const closeModal = () => dispatch(hideLoginModal());
   const openForgotPasswordModal = () => dispatch(showForgotModal());
+  const openRegistration = () => dispatch(showRegistrationModal());
 
   const onFinish = async (values: any) => {
     let res = await login(values.username, values.password);
     if (res && res.status_code === 200) {
       form.resetFields();
-      closeModal();
-      if (!isModal) {
-        redirectToUrl(null, "/");
-      }
+      isModal ? closeModal() : "";
+
+      redirectToUrl(null, "/");
     }
     if (values.remember) {
       localStorage.setItem(
@@ -36,13 +42,18 @@ const Login = ({ isModal }) => {
   };
 
   return (
-    <LoginUI
-      form={form}
-      onFinish={onFinish}
-      closeModal={closeModal}
-      isModal={isModal}
-      openForgotPasswordModal={openForgotPasswordModal}
-    />
+    <Fragment>
+      <Spinner>
+        <LoginUI
+          form={form}
+          onFinish={onFinish}
+          closeModal={closeModal}
+          isModal={isModal}
+          openForgotPasswordModal={openForgotPasswordModal}
+          openRegistration={openRegistration}
+        />
+      </Spinner>
+    </Fragment>
   );
 };
 

@@ -27,6 +27,7 @@ const LoginUi = ({
   closeModal,
   isModal,
   openForgotPasswordModal,
+  openRegistration,
 }) => {
   useEffect(() => {
     const userValue = JSON.parse(localStorage.getItem("rememberme"));
@@ -45,6 +46,16 @@ const LoginUi = ({
       openForgotPasswordModal();
     } else {
       redirectToUrl(null, "/forgot-password");
+    }
+  };
+
+  const onRegister = (e) => {
+    e.preventDefault();
+    if (isModal) {
+      closeModal();
+      openRegistration();
+    } else {
+      redirectToUrl(null, "/registration");
     }
   };
 
@@ -127,7 +138,7 @@ const LoginUi = ({
               <Form.Item noStyle>
                 <Text className={styles.ft_link}>
                   {`Don't have an account? `}
-                  <Link href="/registration"> Register Now</Link>
+                  <a onClick={onRegister}> Register Now</a>
                 </Text>
               </Form.Item>
             </Form>
