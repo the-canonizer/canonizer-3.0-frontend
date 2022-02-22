@@ -3,8 +3,8 @@ import { message } from "antd";
 import {
   handleError,
   isServer,
-  redirectToLogin,
   handleCatchError,
+  redirectToUrl,
 } from "../../utils/generalUtility";
 import {
   setAuthToken,
@@ -62,7 +62,7 @@ export const logout = async (error = "") => {
     store.dispatch(logoutUser());
     store.dispatch(removeAuthToken());
     if (res.status_code === 200) {
-      redirectToLogin(error);
+      redirectToUrl(null, "/");
     }
     return res;
   } catch (error) {
