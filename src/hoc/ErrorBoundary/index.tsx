@@ -7,13 +7,13 @@ import Image from "next/image";
 import styles from "./errorPage.module.scss";
 
 export default class ErrorBoundary extends Component {
-  state = { hasError: false, redirect: false };
+  state = { hasError: true, redirect: false };
 
   static getDerivedStateFromError(error) {
     if (error.name === "ChunkLoadError") {
       return window.location.reload();
     }
-    return { hasError: true, redirect: false };
+    return { hasError: false, redirect: false };
   }
 
   componentDidCatch(error, info) {
@@ -53,7 +53,7 @@ export default class ErrorBoundary extends Component {
                 <Link href="/">
                   <a>Click here</a>
                 </Link>{" "}
-                to back to the home page or wait five seconds.
+                to go back to the home page or wait five seconds.
               </p>
             </div>
           </div>
