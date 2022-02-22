@@ -28,6 +28,7 @@ const LoginUi = ({
   isModal,
   openForgotPasswordModal,
   openRegistration,
+  onOTPClick,
 }) => {
   useEffect(() => {
     const userValue = JSON.parse(localStorage.getItem("rememberme"));
@@ -127,6 +128,7 @@ const LoginUi = ({
                   htmlType="button"
                   className="login-form-button"
                   block
+                  onClick={onOTPClick}
                 >
                   Request One Time Verification Code
                 </Button>

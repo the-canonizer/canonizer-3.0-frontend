@@ -120,6 +120,16 @@
       &.login-form-button {
         margin-top: 0;
       }
+      &.resetOTP {
+        background-color: transparent;
+        border: none;
+        box-shadow: none !important;
+        outline: none !important;
+        width: auto;
+        margin: 0 auto 20px;
+        display: block;
+        color: var(--yellow);
+      }
     }
 
     .ft_link {
@@ -171,7 +181,7 @@
             width: 100%;
           }
         }
-        label{
+        label {
           text-align: left;
         }
       }

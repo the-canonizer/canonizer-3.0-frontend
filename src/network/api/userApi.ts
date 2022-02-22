@@ -4,7 +4,7 @@ import {
   handleError,
   isServer,
   redirectToLogin,
-  handleCatchError
+  handleCatchError,
 } from "../../utils/generalUtility";
 import {
   setAuthToken,
@@ -198,7 +198,7 @@ export const GetUserProfileInfo = () => {
         return value;
       })
       .catch((errors) => {
-        handleCatchError(errors)
+        handleCatchError(errors);
       });
     return res;
   };
@@ -215,7 +215,7 @@ export const UpdateUserProfileInfo = (values: object) => {
         return value;
       })
       .catch((errors) => {
-        handleCatchError(errors)
+        handleCatchError(errors);
       });
     return res;
   };
@@ -232,7 +232,7 @@ export const GetMobileCarrier = () => {
         return value;
       })
       .catch((errors) => {
-        handleCatchError(errors)
+        handleCatchError(errors);
       });
     return res;
   };
@@ -249,7 +249,7 @@ export const SendOTP = (values: object) => {
         return value;
       })
       .catch((errors) => {
-        handleCatchError(errors)
+        handleCatchError(errors);
       });
     return res;
   };
@@ -266,7 +266,7 @@ export const VerifyOTP = (values: object) => {
         return value;
       })
       .catch((errors) => {
-        handleCatchError(errors)
+        handleCatchError(errors);
       });
     return res;
   };
@@ -283,7 +283,7 @@ export const GetAlgorithmsList = () => {
         return value;
       })
       .catch((errors) => {
-        handleCatchError(errors)
+        handleCatchError(errors);
       });
     return res;
   };
@@ -300,7 +300,7 @@ export const GetLanguageList = () => {
         return value;
       })
       .catch((errors) => {
-        handleCatchError(errors)
+        handleCatchError(errors);
       });
     return res;
   };
@@ -350,7 +350,6 @@ export const forgotPasswordUpdate = async (values: object) => {
 };
 
 export const addNickName = async (values: object) => {
-
   let state = store.getState();
   const { auth } = state;
 
@@ -361,17 +360,15 @@ export const addNickName = async (values: object) => {
       return value;
     })
     .catch((errors) => {
-      handleCatchError(errors)
+      handleCatchError(errors);
     });
 
   return res;
-
 };
 
 export const getNickNameList = async () => {
   let state = store.getState();
   const { auth } = state;
-
 
   const res = await NetworkCall.fetch(
     UserRequest.getNickNameList(auth.loggedInUser.token)
@@ -380,14 +377,12 @@ export const getNickNameList = async () => {
       return value;
     })
     .catch((errors) => {
-      handleCatchError(errors)
+      handleCatchError(errors);
     });
   return res;
-
 };
 
 export const updateNickName = async (values: object, id: string) => {
-
   let state = store.getState();
   const { auth } = state;
 
@@ -398,8 +393,21 @@ export const updateNickName = async (values: object, id: string) => {
       return value;
     })
     .catch((errors) => {
-      handleCatchError(errors)
+      handleCatchError(errors);
     });
   return res;
+};
 
+export const resendOTPForRegistration = async (values: object) => {
+  try {
+    const authToken = await createToken();
+
+    const res = await NetworkCall.fetch(
+      UserRequest.resendOTPForRegistration(values, authToken.access_token)
+    );
+
+    return res;
+  } catch (err) {
+    handleError(err);
+  }
 };

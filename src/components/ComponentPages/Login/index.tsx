@@ -41,6 +41,16 @@ const Login = ({ isModal }) => {
     }
   };
 
+  const onOTPClick = async (e) => {
+    e.preventDefault();
+    const emailPhone = form.getFieldValue("username");
+    if (emailPhone?.trim()) {
+      console.log("emailPhone", emailPhone);
+    } else {
+      form.validateFields(["username"]);
+    }
+  };
+
   return (
     <Fragment>
       <Spinner>
@@ -51,6 +61,7 @@ const Login = ({ isModal }) => {
           isModal={isModal}
           openForgotPasswordModal={openForgotPasswordModal}
           openRegistration={openRegistration}
+          onOTPClick={onOTPClick}
         />
       </Spinner>
     </Fragment>
