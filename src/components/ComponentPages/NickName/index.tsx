@@ -18,7 +18,7 @@ const NickName = () => {
   const create = "Create";
 
   const editNickName = (record) => {
-    setAddEditTitle("Edit New Nick Name");
+    setAddEditTitle("Edit Nick Name");
     setAddEditBtn("Update");
     setIsNickNameModalVisible(true);
     setSelectedNickNameList(record);
