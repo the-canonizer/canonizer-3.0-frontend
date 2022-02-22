@@ -2,6 +2,10 @@ import Link from "next/link";
 import React, { Component } from "react";
 import { isServer } from "../../utils/generalUtility";
 
+import Image from "next/image";
+
+import styles from "./errorPage.module.scss";
+
 export default class ErrorBoundary extends Component {
   state = { hasError: false, redirect: false };
 
@@ -31,13 +35,29 @@ export default class ErrorBoundary extends Component {
       return this.redirectToHome();
     } else if (this.state.hasError) {
       return (
-        <h2>
-          There was an error with this listing.{" "}
-          <Link href="/">
-            <a>Click here</a>
-          </Link>{" "}
-          to back to the home page or wait five seconds.
-        </h2>
+        <>
+          <div className={styles.errorPageContentWrap}>
+            <div className={styles.errorPageImg}>
+              <Image
+                src={"/images/error-boundary-img.png"}
+                alt=""
+                width={487}
+                height={552}
+                layout="fixed"
+              />
+            </div>
+            <div className={styles.errorPageContent}>
+              <h2>Oops!</h2>
+              <h3>Something went wrong</h3>
+              <p>
+                <Link href="/">
+                  <a>Click here</a>
+                </Link>{" "}
+                to back to the home page or wait five seconds.
+              </p>
+            </div>
+          </div>
+        </>
       );
     }
 
