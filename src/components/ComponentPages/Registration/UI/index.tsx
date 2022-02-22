@@ -1,7 +1,6 @@
 import React, { createRef, useEffect } from "react";
 import { Row, Col, Typography, Form, Input, Button, Select } from "antd";
 import { CloseCircleOutlined, ArrowRightOutlined } from "@ant-design/icons";
-import Link from "next/link";
 import ReCAPTCHA from "react-google-recaptcha";
 
 import styles from "./Registration.module.scss";
@@ -9,6 +8,7 @@ import styles from "./Registration.module.scss";
 import messages from "../../../../messages";
 import SocialLoginButton from "../../../common/socialLogin";
 import FormItem from "../../../common/formElements";
+import { redirectToUrl } from "../../../../utils/generalUtility";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -28,6 +28,7 @@ function RegistrationUi({
   resetCaptcha,
   showCaptchaError,
   country,
+  openLogin,
 }) {
   const recaptchaRef: React.RefObject<{ reset }> = createRef();
 
@@ -48,6 +49,16 @@ function RegistrationUi({
       recaptchaRef?.current?.reset();
     }
   }, [resetCaptcha, recaptchaRef]);
+
+  const onLoginClick = (e) => {
+    e.preventDefault();
+    if (isModal) {
+      closeModal();
+      openLogin();
+    } else {
+      redirectToUrl(null, "/login");
+    }
+  };
 
   return (
     <section className={styles.signup_wrapper}>
@@ -175,7 +186,10 @@ function RegistrationUi({
         </Form.Item>
         <Form.Item noStyle>
           <Text className={styles.ft_link}>
-            Already have an account? <Link href="/login">Login Here</Link>
+            Already have an account?{" "}
+            <a href="#" onClick={onLoginClick}>
+              Login Here
+            </a>
           </Text>
         </Form.Item>
       </Form>

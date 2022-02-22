@@ -1,17 +1,21 @@
 import { Fragment, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Form, message } from "antd";
-import { useRouter } from "next/router";
 
 import RegistrationUi from "./UI";
 import OTPVerify from "./UI/otp";
-import { hideRegistrationModal } from "../../../store/slices/uiSlice";
+import {
+  hideRegistrationModal,
+  showLoginModal,
+} from "../../../store/slices/uiSlice";
 import {
   register,
   verifyOtp,
   getCountryCodes,
 } from "../../../network/api/userApi";
 import { AppDispatch } from "../../../store";
+import { redirectToUrl } from "src/utils/generalUtility";
+import Spinner from "../../common/spinner/spinner";
 
 const Registration = ({ isModal, isTest = false }) => {
   const [isOtpScreen, setIsOtpScreen] = useState(isTest);
@@ -23,9 +27,9 @@ const Registration = ({ isModal, isTest = false }) => {
   const dispatch = useDispatch<AppDispatch>();
   const [form] = Form.useForm();
   const [otpForm] = Form.useForm();
-  const router = useRouter();
 
   const closeModal = () => dispatch(hideRegistrationModal());
+  const openLogin = () => dispatch(showLoginModal());
 
   const onReCAPTCHAChange = async (captchaCode) => {
     if (!captchaCode) {
@@ -74,11 +78,9 @@ const Registration = ({ isModal, isTest = false }) => {
       otpForm.resetFields();
 
       setIsOtpScreen(false);
+      isModal ? closeModal() : "";
 
-      closeModal();
-      if (!isModal) {
-        router.push("/");
-      }
+      redirectToUrl(null, "/");
     }
   };
 
@@ -95,25 +97,28 @@ const Registration = ({ isModal, isTest = false }) => {
 
   return (
     <Fragment>
-      {isOtpScreen ? (
-        <OTPVerify
-          form={otpForm}
-          onFinish={onOTPSubmit}
-          closeModal={closeModal}
-          isModal={isModal}
-        />
-      ) : (
-        <RegistrationUi
-          form={form}
-          onFinish={onFinish}
-          closeModal={closeModal}
-          isModal={isModal}
-          onReCAPTCHAChange={onReCAPTCHAChange}
-          resetCaptcha={isReCaptchaRef}
-          showCaptchaError={isCaptchaVerified}
-          country={country}
-        />
-      )}
+      <Spinner>
+        {isOtpScreen ? (
+          <OTPVerify
+            form={otpForm}
+            onFinish={onOTPSubmit}
+            closeModal={closeModal}
+            isModal={isModal}
+          />
+        ) : (
+          <RegistrationUi
+            form={form}
+            onFinish={onFinish}
+            closeModal={closeModal}
+            isModal={isModal}
+            onReCAPTCHAChange={onReCAPTCHAChange}
+            resetCaptcha={isReCaptchaRef}
+            showCaptchaError={isCaptchaVerified}
+            country={country}
+            openLogin={openLogin}
+          />
+        )}
+      </Spinner>
     </Fragment>
   );
 };

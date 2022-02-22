@@ -171,7 +171,7 @@ const CreateTopic = () => {
             <Select
               size="large"
               className={styles.algoSelect}
-              defaultValue={algorithms && algorithms[0].algorithm_label}
+              defaultValue={algorithms && algorithms[0]?.algorithm_label}
               onChange={selectAlgorithm}
             >
               {algorithms?.map((algo) => {
