@@ -209,7 +209,16 @@
       }
       span {
         color: #4484ce;
+      }
+      & > span {
         border-bottom: #4484ce 1px solid;
+      }
+      & > div {
+        margin-top: 3px;
+        margin-left: 5px;
+        span {
+          font-size: 16px;
+        }
       }
       i {
         font-size: 13px;
