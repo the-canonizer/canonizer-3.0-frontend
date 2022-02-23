@@ -125,18 +125,23 @@ function RegistrationUi({
                 <Input
                   addonBefore={prefixSelector}
                   style={{ width: "100%" }}
+                  className={styles.phoneInput}
                   placeholder={messages.placeholders.phone}
                 />
               </Form.Item>
             </Col>
             <Col md={12} style={{ width: "100%" }}>
-              <FormItem
+              <Form.Item
                 name="password"
                 label={messages.labels.password}
-                rules={messages.passwordRule}
-                placeholder={messages.placeholders.password}
-                type="password"
-              />
+                {...messages.passwordRule}
+              >
+                <Input.Password
+                  className={styles.passwordInput}
+                  type="password"
+                  placeholder={messages.placeholders.password}
+                />
+              </Form.Item>
             </Col>
             <Col md={{ order: 1, span: 12 }} style={{ width: "100%" }}>
               <Form.Item
@@ -145,7 +150,8 @@ function RegistrationUi({
                 dependencies={["password"]}
                 {...messages.confirmPasswordRule}
               >
-                <Input
+                <Input.Password
+                  className={styles.passwordInput}
                   type="password"
                   placeholder={messages.placeholders.confirmPassword}
                 />

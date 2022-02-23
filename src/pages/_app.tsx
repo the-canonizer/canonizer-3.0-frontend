@@ -9,7 +9,6 @@ import type { AppProps } from "next/app";
 import { createWrapper } from "next-redux-wrapper";
 import HeadContentAndPermissionComponent from "../components/common/headContentAndPermisisonCheck";
 import ErrorBoundary from "../hoc/ErrorBoundary";
-import RouteGuard from "../hoc/RouteGuard";
 
 import GoogleAnalyticScripts from "../firebaseConfig/scripts";
 
@@ -19,10 +18,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       <GoogleAnalyticScripts />
       <Provider store={store}>
         <ErrorBoundary>
-          <RouteGuard>
-            <HeadContentAndPermissionComponent componentName={Component.name} />
-            <Component {...pageProps} />
-          </RouteGuard>
+          <HeadContentAndPermissionComponent componentName={Component.name} />
+          <Component {...pageProps} />
         </ErrorBoundary>
       </Provider>
     </>

@@ -3,8 +3,8 @@ import { message } from "antd";
 import {
   handleError,
   isServer,
-  redirectToLogin,
-  handleCatchError
+  handleCatchError,
+  redirectToUrl,
 } from "../../utils/generalUtility";
 import {
   setAuthToken,
@@ -62,7 +62,7 @@ export const logout = async (error = "") => {
     store.dispatch(logoutUser());
     store.dispatch(removeAuthToken());
     if (res.status_code === 200) {
-      redirectToLogin(error);
+      redirectToUrl(null, "/");
     }
     return res;
   } catch (error) {
@@ -77,9 +77,16 @@ export const register = async (values: object) => {
     const res = await NetworkCall.fetch(
       UserRequest.registerUser(values, authToken.access_token)
     );
-
     return res;
   } catch (error) {
+    if (
+      error &&
+      error.error &&
+      error.error.data &&
+      error.error.data.status_code === 403
+    ) {
+      return error.error.data;
+    }
     handleError(error);
   }
 };
@@ -198,7 +205,7 @@ export const GetUserProfileInfo = () => {
         return value;
       })
       .catch((errors) => {
-        handleCatchError(errors)
+        handleCatchError(errors);
       });
     return res;
   };
@@ -215,7 +222,7 @@ export const UpdateUserProfileInfo = (values: object) => {
         return value;
       })
       .catch((errors) => {
-        handleCatchError(errors)
+        handleCatchError(errors);
       });
     return res;
   };
@@ -232,7 +239,7 @@ export const GetMobileCarrier = () => {
         return value;
       })
       .catch((errors) => {
-        handleCatchError(errors)
+        handleCatchError(errors);
       });
     return res;
   };
@@ -249,7 +256,7 @@ export const SendOTP = (values: object) => {
         return value;
       })
       .catch((errors) => {
-        handleCatchError(errors)
+        handleCatchError(errors);
       });
     return res;
   };
@@ -266,7 +273,7 @@ export const VerifyOTP = (values: object) => {
         return value;
       })
       .catch((errors) => {
-        handleCatchError(errors)
+        handleCatchError(errors);
       });
     return res;
   };
@@ -283,7 +290,7 @@ export const GetAlgorithmsList = () => {
         return value;
       })
       .catch((errors) => {
-        handleCatchError(errors)
+        handleCatchError(errors);
       });
     return res;
   };
@@ -300,7 +307,7 @@ export const GetLanguageList = () => {
         return value;
       })
       .catch((errors) => {
-        handleCatchError(errors)
+        handleCatchError(errors);
       });
     return res;
   };
@@ -350,7 +357,6 @@ export const forgotPasswordUpdate = async (values: object) => {
 };
 
 export const addNickName = async (values: object) => {
-
   let state = store.getState();
   const { auth } = state;
 
@@ -361,17 +367,15 @@ export const addNickName = async (values: object) => {
       return value;
     })
     .catch((errors) => {
-      handleCatchError(errors)
+      handleCatchError(errors);
     });
 
   return res;
-
 };
 
 export const getNickNameList = async () => {
   let state = store.getState();
   const { auth } = state;
-
 
   const res = await NetworkCall.fetch(
     UserRequest.getNickNameList(auth.loggedInUser.token)
@@ -380,14 +384,12 @@ export const getNickNameList = async () => {
       return value;
     })
     .catch((errors) => {
-      handleCatchError(errors)
+      handleCatchError(errors);
     });
   return res;
-
 };
 
 export const updateNickName = async (values: object, id: string) => {
-
   let state = store.getState();
   const { auth } = state;
 
@@ -398,8 +400,21 @@ export const updateNickName = async (values: object, id: string) => {
       return value;
     })
     .catch((errors) => {
-      handleCatchError(errors)
+      handleCatchError(errors);
     });
   return res;
+};
 
+export const resendOTPForRegistration = async (values: object) => {
+  try {
+    const authToken = await createToken();
+
+    const res = await NetworkCall.fetch(
+      UserRequest.resendOTPForRegistration(values, authToken.access_token)
+    );
+
+    return res;
+  } catch (err) {
+    handleError(err);
+  }
 };

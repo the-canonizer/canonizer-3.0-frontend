@@ -326,4 +326,16 @@ export default class UserRequest extends Request {
       authToken
     );
   }
+
+  // resend otp for registration
+  static resendOTPForRegistration(body, token) {
+    return new Request(
+      K.Network.URL.ResendOTPForRegistration,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
 }

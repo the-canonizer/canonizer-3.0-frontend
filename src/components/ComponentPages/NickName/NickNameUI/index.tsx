@@ -6,7 +6,6 @@ import messages from "../../../../messages";
 
 const { Option } = Select;
 
-
 export default function NickNameUI({
   add_edit_form,
   addEditBtn,
@@ -17,9 +16,9 @@ export default function NickNameUI({
   handleAddNickName,
   handleNickNameCancel,
   onAddUpdateNickName,
-  nickNameList
+  nickNameList,
 }) {
-  const isDisable= addEditBtn=="Update"
+  const isDisable = addEditBtn == "Update";
   const columns = [
     {
       title: "Sr",
@@ -41,7 +40,7 @@ export default function NickNameUI({
       title: "Visibility Status",
       dataIndex: "private",
       width: "20%",
-      render: (text, record, index) => text == 0 ? "Public" : "Private",
+      render: (text, record, index) => (text == 0 ? "Public" : "Private"),
     },
     {
       title: "",
@@ -98,10 +97,17 @@ export default function NickNameUI({
             layout="vertical"
             scrollToFirstError
           >
-            <Form.Item name="nick_name"
+            <Form.Item
+              name="nick_name"
               label={messages.labels.nickName}
-              {...messages.nickNameRule}>
-              <Input placeholder="" value="" size="large"  disabled={isDisable}/>
+              {...messages.nickNameRule}
+            >
+              <Input
+                placeholder=""
+                value=""
+                size="large"
+                disabled={isDisable}
+              />
             </Form.Item>
             <Form.Item
               name="visibility_status"
