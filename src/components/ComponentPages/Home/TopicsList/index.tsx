@@ -43,7 +43,7 @@ const TopicsList = () => {
   const [isReview, setIsReview] = useState(includeReview);
   const [inputSearch, setInputSearch] = useState("");
   const [nameSpaceId, setNameSpaceId] = useState(1);
-  const [loadMoreIndicator, setLoadMoreIndicator] = useState(true);
+  const [loadMoreIndicator, setLoadMoreIndicator] = useState(false);
   const [getTopicsLoadingIndicator, setGetTopicsLoadingIndicator] =
     useState(false);
 
