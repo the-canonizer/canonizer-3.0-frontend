@@ -57,7 +57,7 @@ describe("Footer", () => {
     screen.getByText((content, node) => {
       const hasText = (node) =>
         node.textContent ===
-        "Copyright owned by the volunteers contributing to the system and its contents (2006 - 2021)";
+        "Copyright owned by the volunteers contributing to the system and its contents (2006 - 2022)";
       const nodeHasText = hasText(node);
       const childrenDontHaveText = Array.from(node.children).every(
         (child) => !hasText(child)
