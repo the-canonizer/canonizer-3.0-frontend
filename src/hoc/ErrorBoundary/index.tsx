@@ -7,13 +7,13 @@ import Image from "next/image";
 import styles from "./errorPage.module.scss";
 
 export default class ErrorBoundary extends Component {
-  state = { hasError: true, redirect: false };
+  state = { hasError: false, redirect: false };
 
   static getDerivedStateFromError(error) {
     if (error.name === "ChunkLoadError") {
       return window.location.reload();
     }
-    return { hasError: false, redirect: false };
+    return { hasError: true, redirect: false };
   }
 
   componentDidCatch(error, info) {
