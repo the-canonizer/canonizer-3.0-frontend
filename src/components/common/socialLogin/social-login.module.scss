@@ -40,6 +40,7 @@
 
       &:hover,
       &:focus {
+        box-shadow: none;
         svg,
         img {
           transform: scale(1.1);

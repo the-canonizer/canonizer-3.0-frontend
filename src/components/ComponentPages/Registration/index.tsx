@@ -12,6 +12,7 @@ import {
   register,
   verifyOtp,
   getCountryCodes,
+  resendOTPForRegistration,
 } from "../../../network/api/userApi";
 import { AppDispatch } from "../../../store";
 import { redirectToUrl } from "src/utils/generalUtility";
@@ -19,9 +20,10 @@ import Spinner from "../../common/spinner/spinner";
 
 const Registration = ({ isModal, isTest = false }) => {
   const [isOtpScreen, setIsOtpScreen] = useState(isTest);
-  const [country, setCountry] = useState([]);
+  const [isResend, setIsResend] = useState(false);
   const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
   const [isReCaptchaRef, setIsReCaptchaRef] = useState(false);
+  const [country, setCountry] = useState([]);
   const [formData, setFormData] = useState({ email: "" });
 
   const dispatch = useDispatch<AppDispatch>();
@@ -53,7 +55,15 @@ const Registration = ({ isModal, isTest = false }) => {
         phone_number: values.phone,
         country_code: values.prefix,
       };
+
       let res = await register(formBody);
+      console.log(res);
+      if (res && res.status_code === 403) {
+        setIsOtpScreen(true);
+        setIsResend(true);
+        setIsReCaptchaRef(true);
+      }
+
       if (res && res.status_code === 200) {
         form.resetFields();
         message.success(res.message);
@@ -95,6 +105,17 @@ const Registration = ({ isModal, isTest = false }) => {
     getCodes();
   }, []);
 
+  // on resend click
+  const onResendClick = async (e) => {
+    e.preventDefault();
+
+    let formBody = {
+      email: formData.email,
+    };
+
+    await resendOTPForRegistration(formBody);
+  };
+
   return (
     <Fragment>
       <Spinner>
@@ -104,6 +125,8 @@ const Registration = ({ isModal, isTest = false }) => {
             onFinish={onOTPSubmit}
             closeModal={closeModal}
             isModal={isModal}
+            isResend={isResend}
+            onResendClick={onResendClick}
           />
         ) : (
           <RegistrationUi

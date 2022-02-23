@@ -4,7 +4,7 @@ import { Form, message } from "antd";
 import {
   addNickName,
   updateNickName,
-  getNickNameList
+  getNickNameList,
 } from "../../../network/api/userApi";
 
 const NickName = () => {
@@ -43,10 +43,11 @@ const NickName = () => {
     var formBody = {};
     if (addEditBtn == create) {
       formBody = {
-        "nick_name": values.nick_name,
-        "visibility_status": parseInt(values.visibility_status).toString() == "NaN"
-          ? 0
-          : parseInt(values.visibility_status)
+        nick_name: values.nick_name,
+        visibility_status:
+          parseInt(values.visibility_status).toString() == "NaN"
+            ? 0
+            : parseInt(values.visibility_status),
       };
       let res = await addNickName(formBody);
       if (res && res.status_code === 200) {
@@ -54,12 +55,12 @@ const NickName = () => {
         setIsNickNameModalVisible(false);
         message.success(res.message);
       }
-    }
-    else {
+    } else {
       formBody = {
-        "visibility_status": parseInt(values.visibility_status).toString() == "NaN"
-          ? 0
-          : parseInt(values.visibility_status)
+        visibility_status:
+          parseInt(values.visibility_status).toString() == "NaN"
+            ? 0
+            : parseInt(values.visibility_status),
       };
       if (selectedNickNameList) {
         let nickNameId = "/" + selectedNickNameList["id"];
@@ -70,19 +71,19 @@ const NickName = () => {
         }
       }
     }
-    fetchNickNameList()
-  }
+    fetchNickNameList();
+  };
 
   const fetchNickNameList = async () => {
     let response = await getNickNameList();
     if (response && response.status_code === 200) {
       setNickNameList(response.data);
     }
-  }
+  };
   useEffect(() => {
     fetchNickNameList();
   }, []);
-  
+
   return (
     <NickNameUI
       nickNameForm={nickNameForm}

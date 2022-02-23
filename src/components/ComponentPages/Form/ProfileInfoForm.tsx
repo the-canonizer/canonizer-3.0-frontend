@@ -45,10 +45,9 @@ function ProfileInfoForm({
     return option;
   };
   const publicOrPrivate = (val) => {
-    return privateFlags.includes(val) ? "private" : "public";
+    return privateFlags ? privateFlags.includes(val) ? "private" : "public" : "public";
   };
   const selectAfter = (val, prvtPblc) => {
-    if (privateFlags != undefined)
       return (
         <Select
           defaultValue={prvtPblc}

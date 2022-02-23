@@ -1,5 +1,9 @@
-import { Image, Typography, Form, Input, Button, Select } from "antd";
-import { CloseCircleOutlined, ArrowRightOutlined } from "@ant-design/icons";
+import { Image, Typography, Form, Input, Button } from "antd";
+import {
+  CloseCircleOutlined,
+  ArrowRightOutlined,
+  RedoOutlined,
+} from "@ant-design/icons";
 
 import styles from "./Registration.module.scss";
 
@@ -8,7 +12,14 @@ import { fallBackSrc } from "../../../../assets/data-images";
 
 const { Title, Text } = Typography;
 
-export default function OTPVerify({ form, onFinish, isModal, closeModal }) {
+export default function OTPVerify({
+  form,
+  onFinish,
+  isModal,
+  closeModal,
+  isResend,
+  onResendClick,
+}) {
   return (
     <section className={styles.signup_wrapper + " " + styles.textCenter}>
       <Form
@@ -58,6 +69,17 @@ export default function OTPVerify({ form, onFinish, isModal, closeModal }) {
           </Form.Item>
         </div>
         <Form.Item>
+          {isResend && (
+            <Button
+              type="primary"
+              htmlType="button"
+              className={styles.resetOTP}
+              block
+              onClick={onResendClick}
+            >
+              Resend OTP <RedoOutlined />
+            </Button>
+          )}
           <Button
             type="primary"
             htmlType="submit"

@@ -100,13 +100,17 @@ function ForgotPasswordUI({ form, onFinish, isModal, closeModal, isScreen }) {
           {isScreen === 2 && (
             <Row gutter={20} justify="center" align="top">
               <Col xs={24} md={8}>
-                <FormItem
+                <Form.Item
                   name="password"
                   label={messages.labels.newPassword}
-                  rules={messages.passwordRule}
-                  placeholder={messages.placeholders.newPassword}
-                  type="password"
-                />
+                  {...messages.passwordRule}
+                >
+                  <Input.Password
+                    className={styles.passwordInput}
+                    type="password"
+                    placeholder={messages.placeholders.newPassword}
+                  />
+                </Form.Item>
               </Col>
               <Col xs={24} md={8}>
                 <Form.Item
@@ -115,7 +119,8 @@ function ForgotPasswordUI({ form, onFinish, isModal, closeModal, isScreen }) {
                   dependencies={["password"]}
                   {...messages.confirmPasswordRule}
                 >
-                  <Input
+                  <Input.Password
+                    className={styles.passwordInput}
                     type="password"
                     placeholder={messages.placeholders.confirmPassword}
                   />

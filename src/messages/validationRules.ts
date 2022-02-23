@@ -242,6 +242,6 @@ export const nickNameRule = {
     {
       max: 50,
       message: validations.nickNameMax,
-    }
+    },
   ],
 };

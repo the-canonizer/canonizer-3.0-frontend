@@ -14,160 +14,183 @@ const handleNickNameCancel = jest.fn();
 const onAddUpdateNickName = jest.fn();
 const nickNameList = [
   {
-    id: '1',
-    nick_name: 'Mike',
+    id: "1",
+    nick_name: "Mike",
     private: 0,
   },
   {
-    id: '2',
-    nick_name: 'John',
+    id: "2",
+    nick_name: "John",
     private: 0,
   },
-];;
+];
 
 describe("NickName page", () => {
-
   it("render Column Names and Button", () => {
-    render(<NickNameUI
-      addEditTitle={addEditTitle}
-      addEditBtn={addEditBtn}
-      isNickNameModalVisible={isNickNameModalVisible}
-      editNickName={editNickName}
-      handleAddNickName={handleAddNickName}
-      handleNickNameCancel={handleNickNameCancel}
-      onAddUpdateNickName={onAddUpdateNickName}
-      nickNameList={nickNameList}
-    />);
-    
+    render(
+      <NickNameUI
+        addEditTitle={addEditTitle}
+        addEditBtn={addEditBtn}
+        isNickNameModalVisible={isNickNameModalVisible}
+        editNickName={editNickName}
+        handleAddNickName={handleAddNickName}
+        handleNickNameCancel={handleNickNameCancel}
+        onAddUpdateNickName={onAddUpdateNickName}
+        nickNameList={nickNameList}
+      />
+    );
+
     expect(screen.getByText("Sr")).toBeInTheDocument();
     expect(screen.getByText("Nick Name ID")).toBeInTheDocument();
     expect(screen.getByText("Nick Name")).toBeInTheDocument();
     expect(screen.getByLabelText("Visibility Status")).toBeInTheDocument();
-    expect(screen.getAllByText(labels.addnewNickName)[0] as HTMLButtonElement).toBeInTheDocument();
+    expect(
+      screen.getAllByText(labels.addnewNickName)[0] as HTMLButtonElement
+    ).toBeInTheDocument();
   });
 
   it("render Nick Name Table", () => {
-    render(<NickNameUI
-      addEditTitle={addEditTitle}
-      addEditBtn={addEditBtn}
-      isNickNameModalVisible={isNickNameModalVisible}
-      editNickName={editNickName}
-      handleAddNickName={handleAddNickName}
-      handleNickNameCancel={handleNickNameCancel}
-      onAddUpdateNickName={onAddUpdateNickName}
-      nickNameList={nickNameList}
-    />);
+    render(
+      <NickNameUI
+        addEditTitle={addEditTitle}
+        addEditBtn={addEditBtn}
+        isNickNameModalVisible={isNickNameModalVisible}
+        editNickName={editNickName}
+        handleAddNickName={handleAddNickName}
+        handleNickNameCancel={handleNickNameCancel}
+        onAddUpdateNickName={onAddUpdateNickName}
+        nickNameList={nickNameList}
+      />
+    );
     expect(screen.getByText("Sr")).toBeInTheDocument();
     expect(screen.getByText("Nick Name ID")).toBeInTheDocument();
     expect(screen.getByText("Nick Name")).toBeInTheDocument();
     expect(screen.getByLabelText("Visibility Status")).toBeInTheDocument();
 
     screen.getByText((content, node) => {
-      const hasText = node => node.textContent === "Mike";
+      const hasText = (node) => node.textContent === "Mike";
       const nodeHasText = hasText(node);
-      return nodeHasText ;
+      return nodeHasText;
     });
     screen.getByText((content, node) => {
-      const hasText = node => node.textContent === "John";
+      const hasText = (node) => node.textContent === "John";
       const nodeHasText = hasText(node);
-      return nodeHasText ;
+      return nodeHasText;
     });
-  })
+  });
 
   it("render Add new Nick Name button", () => {
-    const { getAllByText } = render(<NickNameUI
-      addEditTitle={addEditTitle}
-      addEditBtn={addEditBtn}
-      isNickNameModalVisible={isNickNameModalVisible}
-      editNickName={editNickName}
-      handleAddNickName={handleAddNickName}
-      handleNickNameCancel={handleNickNameCancel}
-      onAddUpdateNickName={onAddUpdateNickName}
-      nickNameList={nickNameList}
-    />);
-    const addbutton = getAllByText(labels.addnewNickName)[0] as HTMLButtonElement;
-    expect(addbutton).toBeTruthy()
+    const { getAllByText } = render(
+      <NickNameUI
+        addEditTitle={addEditTitle}
+        addEditBtn={addEditBtn}
+        isNickNameModalVisible={isNickNameModalVisible}
+        editNickName={editNickName}
+        handleAddNickName={handleAddNickName}
+        handleNickNameCancel={handleNickNameCancel}
+        onAddUpdateNickName={onAddUpdateNickName}
+        nickNameList={nickNameList}
+      />
+    );
+    const addbutton = getAllByText(
+      labels.addnewNickName
+    )[0] as HTMLButtonElement;
+    expect(addbutton).toBeTruthy();
   });
-  
+
   it("render Modal when Add new NickName is clicked", () => {
     addEditTitle = "Add New Nick Name";
     addEditBtn = "Create";
 
-    const { getByText } = render(<NickNameUI
-      addEditTitle={addEditTitle}
-      addEditBtn={addEditBtn}
-      isNickNameModalVisible={isNickNameModalVisible}
-      editNickName={editNickName}
-      handleAddNickName={handleAddNickName}
-      handleNickNameCancel={handleNickNameCancel}
-      onAddUpdateNickName={onAddUpdateNickName}
-      nickNameList={nickNameList}
-    />);
+    const { getByText } = render(
+      <NickNameUI
+        addEditTitle={addEditTitle}
+        addEditBtn={addEditBtn}
+        isNickNameModalVisible={isNickNameModalVisible}
+        editNickName={editNickName}
+        handleAddNickName={handleAddNickName}
+        handleNickNameCancel={handleNickNameCancel}
+        onAddUpdateNickName={onAddUpdateNickName}
+        nickNameList={nickNameList}
+      />
+    );
 
     const addbutton = getByText("Create");
-    expect(addbutton).toBeTruthy()
-    expect(screen.getAllByText(labels.addnewNickName)[1] as HTMLLabelElement).toBeInTheDocument();
+    expect(addbutton).toBeTruthy();
+    expect(
+      screen.getAllByText(labels.addnewNickName)[1] as HTMLLabelElement
+    ).toBeInTheDocument();
     expect(screen.getByText(labels.nickName)).toBeInTheDocument();
-    expect(screen.getAllByText(labels.visibilityStatus)[1] as HTMLLabelElement).toBeInTheDocument();
+    expect(
+      screen.getAllByText(labels.visibilityStatus)[1] as HTMLLabelElement
+    ).toBeInTheDocument();
   });
 
   it("render Modal when Edit NickName is clicked", () => {
     addEditTitle = "Edit Nick Name";
     addEditBtn = "Update";
 
-    const { getByText } = render(<NickNameUI
-      addEditTitle={addEditTitle}
-      addEditBtn={addEditBtn}
-      isNickNameModalVisible={isNickNameModalVisible}
-      editNickName={editNickName}
-      handleAddNickName={handleAddNickName}
-      handleNickNameCancel={handleNickNameCancel}
-      onAddUpdateNickName={onAddUpdateNickName}
-      nickNameList={nickNameList}
-    />);
-    
+    const { getByText } = render(
+      <NickNameUI
+        addEditTitle={addEditTitle}
+        addEditBtn={addEditBtn}
+        isNickNameModalVisible={isNickNameModalVisible}
+        editNickName={editNickName}
+        handleAddNickName={handleAddNickName}
+        handleNickNameCancel={handleNickNameCancel}
+        onAddUpdateNickName={onAddUpdateNickName}
+        nickNameList={nickNameList}
+      />
+    );
+
     const nickname = screen.getByLabelText(labels.nickName);
     const addbutton = getByText("Update");
-    expect(addbutton).toBeTruthy()
+    expect(addbutton).toBeTruthy();
     expect(screen.getByText("Edit Nick Name")).toBeInTheDocument();
     expect(screen.getByText(labels.nickName)).toBeInTheDocument();
     expect(nickname).toBeInTheDocument();
     expect(nickname).toHaveAttribute("type", "text");
-    expect(nickname).toHaveAttribute('disabled');
-    expect(screen.getAllByText(labels.visibilityStatus)[1] as HTMLLabelElement).toBeInTheDocument();
+    expect(nickname).toHaveAttribute("disabled");
+    expect(
+      screen.getAllByText(labels.visibilityStatus)[1] as HTMLLabelElement
+    ).toBeInTheDocument();
   });
- 
+
   it("Nick Name input disabled on Edit click", () => {
     addEditTitle = "Edit Nick Name";
     addEditBtn = "Update";
 
-    render(<NickNameUI
-      addEditTitle={addEditTitle}
-      addEditBtn={addEditBtn}
-      isNickNameModalVisible={isNickNameModalVisible}
-      editNickName={editNickName}
-      handleAddNickName={handleAddNickName}
-      handleNickNameCancel={handleNickNameCancel}
-      onAddUpdateNickName={onAddUpdateNickName}
-      nickNameList={nickNameList}
-    />);
+    render(
+      <NickNameUI
+        addEditTitle={addEditTitle}
+        addEditBtn={addEditBtn}
+        isNickNameModalVisible={isNickNameModalVisible}
+        editNickName={editNickName}
+        handleAddNickName={handleAddNickName}
+        handleNickNameCancel={handleNickNameCancel}
+        onAddUpdateNickName={onAddUpdateNickName}
+        nickNameList={nickNameList}
+      />
+    );
     const nickname = screen.getByLabelText(labels.nickName);
-    
+
     expect(nickname).toHaveAttribute("type", "text");
-    expect(nickname).toHaveAttribute('disabled');
+    expect(nickname).toHaveAttribute("disabled");
   });
 
   it("blank form should not be submit", async () => {
-    render(<NickNameUI
-      addEditTitle={addEditTitle}
-      addEditBtn={addEditBtn}
-      isNickNameModalVisible={isNickNameModalVisible}
-      editNickName={editNickName}
-      handleAddNickName={handleAddNickName}
-      handleNickNameCancel={handleNickNameCancel}
-      onAddUpdateNickName={onAddUpdateNickName}
-      nickNameList={nickNameList}
-    />);
+    render(
+      <NickNameUI
+        addEditTitle={addEditTitle}
+        addEditBtn={addEditBtn}
+        isNickNameModalVisible={isNickNameModalVisible}
+        editNickName={editNickName}
+        handleAddNickName={handleAddNickName}
+        handleNickNameCancel={handleNickNameCancel}
+        onAddUpdateNickName={onAddUpdateNickName}
+        nickNameList={nickNameList}
+      />
+    );
     const btnEl = screen.getByTestId("submitButton");
 
     userEvent.click(btnEl);
