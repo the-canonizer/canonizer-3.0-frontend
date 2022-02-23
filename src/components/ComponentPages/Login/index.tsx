@@ -45,7 +45,7 @@ const Login = ({ isModal }) => {
     e.preventDefault();
     const emailPhone = form.getFieldValue("username");
     if (emailPhone?.trim()) {
-      console.log("emailPhone", emailPhone);
+      // console.log("emailPhone", emailPhone);
     } else {
       form.validateFields(["username"]);
     }

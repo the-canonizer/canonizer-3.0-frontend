@@ -151,7 +151,7 @@ function Footer() {
         <div className={styles.copyRights}>
           <p>
             Copyright owned by the volunteers contributing to the system and its
-            contents (2006 - 2021)
+            contents (2006 - {new Date().getFullYear()})
           </p>
         </div>
       </footer>
