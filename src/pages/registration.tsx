@@ -13,7 +13,7 @@ const RegistrationPage = () => {
     isUserAuthenticated && router.push("/");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
+
   return (
     <GetStartedLayout routeName={"registration"}>
       <Card bordered={false} className="login-container">
