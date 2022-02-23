@@ -19,6 +19,9 @@
       width: 20px;
       height: 20px;
     }
+    &:hover {
+      box-shadow: none;
+    }
   }
 
   .form_section {
@@ -51,6 +54,7 @@
           border: 1px solid #d9d9d9;
           font-size: 16px;
           color: #262626;
+          border-radius: 0.25rem;
         }
 
         &[type="checkbox"] {
@@ -63,6 +67,15 @@
         ::placeholder {
           font-size: 14px;
           color: #afb6bb;
+        }
+      }
+      .passwordInput {
+        border: 1px solid #d9d9d9;
+        border-radius: 0.25rem;
+        height: 42px;
+        input {
+          border: none;
+          height: 100%;
         }
       }
       .login-form-forgot {
@@ -87,6 +100,8 @@
         &:hover,
         &:focus {
           background: #d38714 0% 0% no-repeat;
+          box-shadow: none;
+          border-color: #d38714;
         }
       }
       .space {

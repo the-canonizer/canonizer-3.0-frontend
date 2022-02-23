@@ -8,6 +8,7 @@ import {
   Checkbox,
   Image,
   Space,
+  Input,
 } from "antd";
 import { CloseCircleOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import Link from "next/link";
@@ -91,13 +92,18 @@ const LoginUi = ({
                 rules={messages.usernameRule}
                 placeholder={messages.placeholders.emailPhone}
               />
-              <FormItem
+
+              <Form.Item
                 name="password"
                 label={messages.labels.password}
-                rules={messages.userPassRule}
-                placeholder={messages.placeholders.password}
-                type="password"
-              />
+                {...messages.userPassRule}
+              >
+                <Input.Password
+                  className={styles.passwordInput}
+                  type="password"
+                  placeholder={messages.placeholders.password}
+                />
+              </Form.Item>
               <Form.Item className={styles.remember}>
                 <Form.Item name="remember" valuePropName="checked" noStyle>
                   <Checkbox>Remember me</Checkbox>
