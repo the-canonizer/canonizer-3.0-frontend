@@ -77,9 +77,16 @@ export const register = async (values: object) => {
     const res = await NetworkCall.fetch(
       UserRequest.registerUser(values, authToken.access_token)
     );
-
     return res;
   } catch (error) {
+    if (
+      error &&
+      error.error &&
+      error.error.data &&
+      error.error.data.status_code === 403
+    ) {
+      return error.error.data;
+    }
     handleError(error);
   }
 };

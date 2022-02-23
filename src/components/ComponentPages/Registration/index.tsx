@@ -55,7 +55,15 @@ const Registration = ({ isModal, isTest = false }) => {
         phone_number: values.phone,
         country_code: values.prefix,
       };
+
       let res = await register(formBody);
+      console.log(res);
+      if (res && res.status_code === 403) {
+        setIsOtpScreen(true);
+        setIsResend(true);
+        setIsReCaptchaRef(true);
+      }
+
       if (res && res.status_code === 200) {
         form.resetFields();
         message.success(res.message);
@@ -84,10 +92,6 @@ const Registration = ({ isModal, isTest = false }) => {
 
       redirectToUrl(null, "/");
     }
-
-    if (res && res.status_code === 403) {
-      setIsResend(true);
-    }
   };
 
   const getCodes = async () => {
@@ -105,14 +109,11 @@ const Registration = ({ isModal, isTest = false }) => {
   const onResendClick = async (e) => {
     e.preventDefault();
 
-    // let formBody = {
-    //   username: formData.email,
-    // };
+    let formBody = {
+      email: formData.email,
+    };
 
-    // let res = await resendOTPForRegistration(formBody);
-
-    // if (res && res.status_code === 200) {
-    // }
+    await resendOTPForRegistration(formBody);
   };
 
   return (

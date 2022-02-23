@@ -38,7 +38,7 @@ const NetworkConstants = {
     // Tree
     GetTree: "/api/unknown",
     // resend otp for registration
-    ResendOTPForRegistration: `${BaseCanonizerApiUrl}/api/v3/resend`,
+    ResendOTPForRegistration: `${BaseCanonizerApiUrl}/api/v3/user/reSendOtp`,
 
     // HomePage
     GetCanonizedTopics: `${BaseCanonizerServiceUrl}/api/v1/topic/getAll`,

@@ -21,7 +21,12 @@ export const handleError = (error, log = false, dispatch = null) => {
     message.error(nestedErrs.message);
   }
 
-  if (nestedErrs.error) {
+  if (
+    typeof nestedErrs.error !== "string" &&
+    typeof nestedErrs.error === "object" &&
+    nestedErrs.error !== null &&
+    nestedErrs.error
+  ) {
     let keys = Object.keys(nestedErrs.error);
     keys.forEach((key) => {
       message.error(nestedErrs.error[key][0]);
