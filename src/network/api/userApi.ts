@@ -4,7 +4,6 @@ import {
   handleError,
   isServer,
   handleCatchError,
-  redirectToUrl,
 } from "../../utils/generalUtility";
 import {
   setAuthToken,
@@ -61,9 +60,6 @@ export const logout = async (error = "") => {
     !isServer && window.localStorage.removeItem("token");
     store.dispatch(logoutUser());
     store.dispatch(removeAuthToken());
-    if (res.status_code === 200) {
-      redirectToUrl(null, "/");
-    }
     return res;
   } catch (error) {
     handleError(error);

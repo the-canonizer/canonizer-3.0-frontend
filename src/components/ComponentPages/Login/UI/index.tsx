@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useRouter } from "next/router";
 import {
   Row,
   Col,
@@ -18,7 +19,6 @@ import styles from "./Login.module.scss";
 import messages from "../../../../messages";
 import SocialLoginButton from "../../../common/socialLogin";
 import FormItem from "../../../common/formElements";
-import { redirectToUrl } from "../../../../utils/generalUtility";
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -31,6 +31,8 @@ const LoginUi = ({
   openRegistration,
   onOTPClick,
 }) => {
+  const router = useRouter();
+
   useEffect(() => {
     const userValue = JSON.parse(localStorage.getItem("rememberme"));
     if (userValue) {
@@ -47,7 +49,7 @@ const LoginUi = ({
       closeModal();
       openForgotPasswordModal();
     } else {
-      redirectToUrl(null, "/forgot-password");
+      router.push("/forgot-password");
     }
   };
 
@@ -57,7 +59,7 @@ const LoginUi = ({
       closeModal();
       openRegistration();
     } else {
-      redirectToUrl(null, "/registration");
+      router.push("/registration");
     }
   };
 

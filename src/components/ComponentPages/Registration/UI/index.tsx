@@ -1,4 +1,5 @@
 import React, { createRef, useEffect } from "react";
+import { useRouter } from "next/router";
 import { Row, Col, Typography, Form, Input, Button, Select } from "antd";
 import { CloseCircleOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -8,7 +9,6 @@ import styles from "./Registration.module.scss";
 import messages from "../../../../messages";
 import SocialLoginButton from "../../../common/socialLogin";
 import FormItem from "../../../common/formElements";
-import { redirectToUrl } from "../../../../utils/generalUtility";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -30,6 +30,8 @@ function RegistrationUi({
   country,
   openLogin,
 }) {
+  const router = useRouter();
+
   const recaptchaRef: React.RefObject<{ reset }> = createRef();
 
   const prefixSelector = (
@@ -56,7 +58,7 @@ function RegistrationUi({
       closeModal();
       openLogin();
     } else {
-      redirectToUrl(null, "/login");
+      router.push("/login");
     }
   };
 

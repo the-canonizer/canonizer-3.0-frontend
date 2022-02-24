@@ -1,6 +1,7 @@
 import React from "react";
-import { Button, Layout, Menu, Dropdown } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
+import { Layout, Menu, Dropdown } from "antd";
+import { useSelector } from "react-redux";
 import Link from "next/link";
 import { logout } from "../../../../network/api/userApi";
 import { AppDispatch, RootState } from "../../../../store";
@@ -14,10 +15,14 @@ const LoggedInHeaderNavigation = () => {
   const loggedInUser = useSelector<RootState>(
     (state) => state.auth.loggedInUser
   );
-  const dispatch = useDispatch<AppDispatch>();
+
+  const router = useRouter();
 
   const logOut = async () => {
-    await logout();
+    const res = await logout();
+    if (res.status_code === 200) {
+      router.push("/");
+    }
   };
   const onClick = ({ key }) => {
     if (key == 3) {
