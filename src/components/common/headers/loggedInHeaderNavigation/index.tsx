@@ -1,14 +1,13 @@
-import React from "react";
 import { useRouter } from "next/router";
-import { Layout, Menu, Dropdown } from "antd";
+import { Layout, Menu, Dropdown, Button } from "antd";
 import { useSelector } from "react-redux";
 import Link from "next/link";
 import { logout } from "../../../../network/api/userApi";
-import { AppDispatch, RootState } from "../../../../store";
+import { RootState } from "../../../../store";
 import styles from "../siteHeader.module.scss";
-import Image from "next/image";
-import logo from "../../../../../public/images/logo.svg";
-import HeaderMenu from "../HeaderMenu";
+import React, { useState } from "react";
+import Logo from "../logoHeader";
+import { MenuOutlined, CloseOutlined } from "@ant-design/icons";
 
 const { Header } = Layout;
 const LoggedInHeaderNavigation = () => {
@@ -17,6 +16,49 @@ const LoggedInHeaderNavigation = () => {
   );
 
   const router = useRouter();
+  const [isActive, setActive] = useState(false);
+  const toggleMobNav = () => {
+    setActive(!isActive);
+  };
+
+  const mockLinks = [
+    {
+      link: "/browse",
+      linkTitle: "Browse",
+      id: 1,
+    },
+
+    {
+      link: "/upload",
+      linkTitle: "Upload Files",
+      id: 2,
+    },
+    {
+      link: "/help",
+      linkTitle: "Help",
+      id: 3,
+    },
+    {
+      link: "/white-paper",
+      linkTitle: "White Paper",
+      id: 4,
+    },
+    {
+      link: "/blog",
+      linkTitle: "Blog",
+      id: 5,
+    },
+    {
+      link: "/jobs",
+      linkTitle: "Jobs",
+      id: 6,
+    },
+    {
+      link: "/services",
+      linkTitle: "Services",
+      id: 7,
+    },
+  ];
 
   const logOut = async () => {
     const res = await logout();
@@ -43,25 +85,73 @@ const LoggedInHeaderNavigation = () => {
   );
   return (
     <>
-      <Header className={styles.wrap}>
-        <div className={styles.logo}>
-          <Image alt="Logo" src={logo} />
-        </div>
-        <HeaderMenu></HeaderMenu>
-        <div className={styles.right}>
-          <div className="hdrUserdropdown">
-            <i className="icon-user"></i>{" "}
-            <Dropdown overlay={menu} trigger={["click"]}>
-              <a
-                className="ant-dropdown-link"
-                onClick={(e) => e.preventDefault()}
-              >
-                {loggedInUser ? loggedInUser["first_name"] : ""}
-              </a>
-            </Dropdown>
+      <React.Fragment>
+        <Header className={styles.wrap}>
+          <Logo />
+          <div
+            className={`${styles.navWrap} ${isActive && styles.showMobMenu}`}
+          >
+            <Button
+              size="large"
+              className={`${styles.btnCloseMobMenu} mb-4 float-right`}
+              onClick={toggleMobNav}
+            >
+              <CloseOutlined />
+            </Button>
+            <nav className={styles.nav}>
+              <ul>
+                {/* <li className={router.asPath === "/browse" ? styles.active : ""}>
+                <Link href="/browse"> Browse </Link>
+              </li> */}
+                {mockLinks?.map((item) => {
+                  return (
+                    <li key={item.id}>
+                      <Link href={item.link}>{item.linkTitle}</Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </nav>
+            <div className={styles.btnsLoginRegister}>
+              <div className="hdrUserdropdown">
+                <i className="icon-user"></i>{" "}
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  <a
+                    className="ant-dropdown-link"
+                    onClick={(e) => e.preventDefault()}
+                  >
+                    {loggedInUser ? loggedInUser["first_name"] : ""}
+                  </a>
+                </Dropdown>
+              </div>
+            </div>
           </div>
-        </div>
-      </Header>
+          <div className={styles.right}>
+            <div className={styles.btnsLoginRegister}>
+              <div className="hdrUserdropdown">
+                <i className="icon-user"></i>{" "}
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  <a
+                    className="ant-dropdown-link"
+                    onClick={(e) => e.preventDefault()}
+                  >
+                    {loggedInUser ? loggedInUser["first_name"] : ""}
+                  </a>
+                </Dropdown>
+              </div>
+            </div>
+            <div className={styles.iconMobMenu}>
+              <Button size="large" onClick={toggleMobNav}>
+                <MenuOutlined />
+              </Button>
+            </div>
+          </div>
+          <div
+            className={`${styles.mobNavBG} ${isActive && styles.mobNavBGshow}`}
+            onClick={toggleMobNav}
+          ></div>
+        </Header>
+      </React.Fragment>
     </>
   );
 };

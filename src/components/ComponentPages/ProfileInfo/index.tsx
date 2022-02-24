@@ -162,7 +162,9 @@ const ProfileInfo = () => {
           res.data.birthday = moment(res.data.birthday, "YYYY-MM-DD");
           form.setFieldsValue(res.data);
           setPrivateFlags(res.data.private_flags);
-          setPrivateList(res.data.private_flags.split(","));
+          setPrivateList(
+            res.data.private_flags ? res.data.private_flags.split(",") : ""
+          );
         }
       }
     }
