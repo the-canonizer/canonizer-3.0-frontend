@@ -46,7 +46,7 @@ function HeadContent({
         }
       />
       <link
-        // href={`${process.env.IMAGES_BASE_URL}/static-content/canonizerLogo.png.webp`}
+        href="https://canonizer.com/img/logo.png"
         rel="shortcut icon"
       ></link>
       {process.env.NODE_ENV !== "production" && (
