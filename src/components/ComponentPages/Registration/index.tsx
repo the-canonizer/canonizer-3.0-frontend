@@ -112,9 +112,7 @@ const Registration = ({ isModal, isTest = false }) => {
   }, []);
 
   // on resend click
-  const onResendClick = async (e) => {
-    e.preventDefault();
-
+  const onResendClick = async () => {
     let formBody = {
       email: formData.email,
     };
