@@ -68,8 +68,7 @@ const ForgotPassword = ({ isModal, isTestScreen = 0 }) => {
       passwordForm.resetFields();
       setIsScreen(0);
     }
-    isModal ? closeModal() : "";
-    router.push("/login");
+    isModal ? closeModal() : router.push("/login");
   };
 
   return (
