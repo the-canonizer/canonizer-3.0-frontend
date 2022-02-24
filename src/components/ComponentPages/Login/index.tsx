@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { Form } from "antd";
 
@@ -11,10 +12,10 @@ import {
 } from "../../../store/slices/uiSlice";
 import { login } from "../../../network/api/userApi";
 import { AppDispatch } from "../../../store";
-import { redirectToUrl } from "../../../utils/generalUtility";
 import Spinner from "../../common/spinner/spinner";
 
 const Login = ({ isModal }) => {
+  const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const [form] = Form.useForm();
 
@@ -28,7 +29,7 @@ const Login = ({ isModal }) => {
       form.resetFields();
       isModal ? closeModal() : "";
 
-      redirectToUrl(null, "/");
+      router.push("/");
     }
     if (values.remember) {
       localStorage.setItem(

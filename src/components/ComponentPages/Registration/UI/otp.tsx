@@ -18,6 +18,7 @@ export default function OTPVerify({
   isModal,
   closeModal,
   isResend,
+  failedMsg,
   onResendClick,
 }) {
   return (
@@ -52,8 +53,9 @@ export default function OTPVerify({
             />
           </div>
           <Text type="danger" className={styles.otpNote}>
-            Note : Registration code has been sent to your registered email
-            address and Phone Number.
+            {isResend
+              ? failedMsg
+              : "Note : Registration code has been sent to your registered email address and Phone Number."}
           </Text>
           <Form.Item
             name="otp"

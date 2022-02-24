@@ -1,4 +1,5 @@
 import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import ChangePasswordUI from "./ChangePasswordUI";
 import { AppDispatch } from "../../../store";
@@ -7,6 +8,8 @@ import { changePassword } from "../../../network/api/userApi";
 import { logout } from "../../../network/api/userApi";
 
 const ChangePassword = () => {
+  const router = useRouter();
+
   const [formData, setFormData] = useState();
   const dispatch = useDispatch<AppDispatch>();
   const [form] = Form.useForm();
@@ -25,7 +28,10 @@ const ChangePassword = () => {
       form.resetFields();
       message.success(res.message);
       //logout after success
-      await logout();
+      const logOutRes = await logout();
+      if (logOutRes.status_code === 200) {
+        router.push("/");
+      }
     }
   };
 

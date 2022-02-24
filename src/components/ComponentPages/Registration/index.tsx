@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { Form, message } from "antd";
 
@@ -15,7 +16,6 @@ import {
   resendOTPForRegistration,
 } from "../../../network/api/userApi";
 import { AppDispatch } from "../../../store";
-import { redirectToUrl } from "src/utils/generalUtility";
 import Spinner from "../../common/spinner/spinner";
 
 const Registration = ({ isModal, isTest = false }) => {
@@ -25,10 +25,13 @@ const Registration = ({ isModal, isTest = false }) => {
   const [isReCaptchaRef, setIsReCaptchaRef] = useState(false);
   const [country, setCountry] = useState([]);
   const [formData, setFormData] = useState({ email: "" });
+  const [failedMsg, setFailedMsg] = useState("");
 
   const dispatch = useDispatch<AppDispatch>();
   const [form] = Form.useForm();
   const [otpForm] = Form.useForm();
+
+  const router = useRouter();
 
   const closeModal = () => dispatch(hideRegistrationModal());
   const openLogin = () => dispatch(showLoginModal());
@@ -57,11 +60,12 @@ const Registration = ({ isModal, isTest = false }) => {
       };
 
       let res = await register(formBody);
-      console.log(res);
+
       if (res && res.status_code === 403) {
         setIsOtpScreen(true);
         setIsResend(true);
         setIsReCaptchaRef(true);
+        setFailedMsg(res.message);
       }
 
       if (res && res.status_code === 200) {
@@ -84,13 +88,15 @@ const Registration = ({ isModal, isTest = false }) => {
 
     let res = await verifyOtp(formBody);
 
+    setFailedMsg(res.message);
+
     if (res && res.status_code === 200) {
       otpForm.resetFields();
 
       setIsOtpScreen(false);
       isModal ? closeModal() : "";
 
-      redirectToUrl(null, "/");
+      router.push("/");
     }
   };
 
@@ -106,9 +112,7 @@ const Registration = ({ isModal, isTest = false }) => {
   }, []);
 
   // on resend click
-  const onResendClick = async (e) => {
-    e.preventDefault();
-
+  const onResendClick = async () => {
     let formBody = {
       email: formData.email,
     };
@@ -126,6 +130,7 @@ const Registration = ({ isModal, isTest = false }) => {
             closeModal={closeModal}
             isModal={isModal}
             isResend={isResend}
+            failedMsg={failedMsg}
             onResendClick={onResendClick}
           />
         ) : (
