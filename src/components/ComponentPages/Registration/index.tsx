@@ -56,7 +56,7 @@ const Registration = ({ isModal, isTest = false }) => {
         password: values.password,
         password_confirmation: values.confirm,
         phone_number: values.phone,
-        country_code: values.prefix,
+        country_code: values.prefix?.split(" ")[0],
       };
 
       let res = await register(formBody);
