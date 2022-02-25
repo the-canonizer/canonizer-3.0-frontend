@@ -45,10 +45,8 @@ function HeadContent({
             : `${process.env.IMAGES_BASE_URL}/static-content/Landing+Page+Banner+.png`
         }
       />
-      <link
-        href="https://canonizer.com/img/logo.png"
-        rel="shortcut icon"
-      ></link>
+      {/* <link href="/images/logo.svg" rel="shortcut icon"></link> */}
+      <link rel="shortcut icon" href="/images/canonizer-fav.png" />
       {process.env.NODE_ENV !== "production" && (
         <link
           rel="stylesheet"

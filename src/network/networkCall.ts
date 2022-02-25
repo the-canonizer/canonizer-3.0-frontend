@@ -1,6 +1,5 @@
 import axios from "axios";
 import K from "../constants";
-// import { message } from "antd";
 import { trackPromise } from "react-promise-tracker";
 import UserRequest from "./request/userRequest";
 import { camelCaseKeys } from "../utils/generalUtility";
@@ -25,12 +24,7 @@ export default class NetworkCall {
       return response.data;
     } catch (err) {
       let error = err.response;
-      //**************************************************************************/
-      //  Bellow commented lines will be used during development for debugging  //
-      //************************************************************************/
-      // console.log("NetworkCall Error: ", error);
       if (error === undefined) {
-        // message.error("Cannot connect to server");
         return Promise.reject({
           error: error,
         });
@@ -44,8 +38,6 @@ export default class NetworkCall {
         error.data.errors = camelCaseKeys(error.data.errors);
       return Promise.reject({
         error: error,
-        // message: error.data.errors,
-        // statusCode: error.status,
       });
     }
   }
