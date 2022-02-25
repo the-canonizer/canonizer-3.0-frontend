@@ -26,7 +26,8 @@ export const validations: ErrorContainer = {
   captchaExtra: "We must make sure that your are a human.",
   registrationPassword: "Please input your password!",
   passwordMinLength: "Password must be at least 8 characters long!",
-  passwordPattern: "Password Should be like Abc@1234.",
+  passwordPattern:
+    "Password must be contain small, capital letter, number and special character like Abc@1234.",
   confirmPassword: "Please confirm your password!",
   confirmPasswordErr: "The two passwords that you entered do not match!",
   otp: "Please input your otp!",
