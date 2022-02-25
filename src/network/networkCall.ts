@@ -13,7 +13,7 @@ export default class NetworkCall {
         data: request.body,
         headers: request.headers,
         validateStatus: (status) => {
-          return (status >= 200 && status < 300) || status === 304;
+          return status == 200;
         },
       });
     };
