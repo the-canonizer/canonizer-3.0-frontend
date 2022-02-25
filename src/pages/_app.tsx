@@ -41,8 +41,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 
 const makeStore = () => store;
 const wrapper = createWrapper(makeStore);
-
+const googleAPIKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY
 //export default wrapper.withRedux(MyApp);
 export default scriptLoader([
-  `https://maps.googleapis.com/maps/api/js?key=AIzaSyCk3gXs2-rKl0MYVnN6IBKZrH6xM2FVcqo&libraries=places`,
+  `https://maps.googleapis.com/maps/api/js?key=${googleAPIKey}&libraries=places`,
 ])(wrapper.withRedux(MyApp));
