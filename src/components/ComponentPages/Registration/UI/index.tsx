@@ -38,7 +38,10 @@ function RegistrationUi({
     <Form.Item name="prefix" noStyle>
       <Select style={{ width: 90 }}>
         {country.map((code) => (
-          <Option value={code.phone_code} key={code.country_code}>
+          <Option
+            value={code.phone_code + " " + code.country_code}
+            key={code.country_code}
+          >
             {code.phone_code} {code.country_code}
           </Option>
         ))}
@@ -67,7 +70,7 @@ function RegistrationUi({
       <Form
         form={form}
         name="registration"
-        initialValues={{ prefix: "+1" }}
+        initialValues={{ prefix: "+1 US" }}
         onFinish={onFinish}
         layout="vertical"
         scrollToFirstError
