@@ -1,5 +1,4 @@
 import { Row, Col } from "antd";
-
 import useAuthentication from "../../../hooks/isUserAuthenticated";
 import SideBar from "./SideBar";
 import TopicsList from "./TopicsList";
