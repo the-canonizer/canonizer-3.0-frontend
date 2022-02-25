@@ -19,6 +19,9 @@ function ProfileInfoUI({
   privateFlags,
   algorithmList,
   languageList,
+  handleAddressChange,
+  handleAddressSelect,
+  address
 }) {
   return (
     <section className={styles.profileInfo_wrapper}>
@@ -41,6 +44,9 @@ function ProfileInfoUI({
         privateFlags={privateFlags}
         algorithmList={algorithmList}
         languageList={languageList}
+        handleAddressChange={handleAddressChange}
+        handleAddressSelect={handleAddressSelect}
+        address={address}
       />
     </section>
   );

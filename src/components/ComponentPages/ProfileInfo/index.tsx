@@ -13,6 +13,7 @@ import {
   GetLanguageList,
 } from "../../../network/api/userApi";
 import ProfileInfoUI from "./ProfileInfoUI";
+import { geocodeByAddress, getLatLng, geocodeByPlaceId } from "react-places-autocomplete";
 
 const ProfileInfo = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -26,6 +27,8 @@ const ProfileInfo = () => {
   const [publicList, setPublicList] = useState([]);
   const [algorithmList, setAlgorithmList] = useState([]);
   const [languageList, setLanguageList] = useState([]);
+  const [address, setAddress] = useState("");
+
   const publicPrivateArray = {
     first_name: "first_name",
     last_name: "last_name",
@@ -66,6 +69,7 @@ const ProfileInfo = () => {
     values.phone_number = formVerify.getFieldValue(
       publicPrivateArray.phone_number
     );
+    values.address_1 = address;
     let res = await dispatch(UpdateUserProfileInfo(values));
     if (res && res.status_code === 200) {
       message.success(res.message);
@@ -124,6 +128,65 @@ const ProfileInfo = () => {
       }
     }
   };
+  const handleAddressChange = (value) => {
+    setAddress(value)
+  }
+
+  const handleAddressSelect = async (address, placeId) => {
+    setAddress(address)
+    const results = await geocodeByAddress(address);
+    const [place] = await geocodeByPlaceId(placeId);
+    const { long_name: postalCode = '' } =
+      place.address_components.find(c => c.types.includes('postal_code')) || {};
+    var city = ""
+    var country = ""
+    var address2 = ""
+
+    for (const component of results[0].address_components) {
+      const componentType = component.types[0];
+      switch (componentType) {
+        case "neighborhood": {
+          address2 = component.short_name
+          break;
+        }
+        case "political": {
+          address2 = address2 + ", " + component.long_name;
+          break;
+        }
+        case "neighborhood": {
+          address2 = address2 + ", " + component.long_name;
+          break;
+        }
+        case "sublocality_level_2": {
+          address2 = address2 + ", " + component.long_name;
+          break;
+        }
+        case "sublocality_level_1": {
+          address2 = address2 + ", " + component.long_name;
+          break;
+        }
+        case "locality": {
+          city = component.long_name;
+          break;
+        }
+        case "administrative_area_level_1": {
+          var state = component.long_name;
+          break;
+        }
+        case "country": {
+          country = component.long_name;
+          break;
+        }
+      }
+    }
+    address2 = address2.replace(/^,|,$/g, '');
+
+    form.setFieldsValue({ ["address_2"]: address2 })
+    form.setFieldsValue({ ["postal_code"]: postalCode })
+    form.setFieldsValue({ ["city"]: city })
+    form.setFieldsValue({ ["state"]: state })
+    form.setFieldsValue({ ["country"]: country })
+  }
 
   useEffect(() => {
     async function fetchMobileCarrier() {
@@ -165,6 +228,7 @@ const ProfileInfo = () => {
           setPrivateList(
             res.data.private_flags ? res.data.private_flags.split(",") : ""
           );
+          setAddress(res.data.address_1);
         }
       }
     }
@@ -197,6 +261,9 @@ const ProfileInfo = () => {
       handleChangeOTP={handleChangeOTP}
       handleselectAfter={handleselectAfter}
       privateFlags={privateFlags}
+      handleAddressChange={handleAddressChange}
+      handleAddressSelect={handleAddressSelect}
+      address={address}
     />
   );
 };
