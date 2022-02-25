@@ -94,17 +94,26 @@ export const otpRule = {
 export const phoneRule = {
   rules: [
     {
-      type: "number",
-      message: validations.validPhone,
+      required: false,
+      message: validations.valid,
     },
     {
       min: 9,
-      message: validations.phoneLength,
+      message: validations.phoneMinLength,
     },
     {
       max: 10,
-      message: validations.phoneLength,
+      message: validations.phoneMaxLength,
     },
+    () => ({
+      validator(_, value) {
+        let number = +value;
+        if (!isNaN(number) && typeof number === "number") {
+          return Promise.resolve();
+        }
+        return Promise.reject(new Error(validations.validPhone));
+      },
+    }),
   ],
 };
 
