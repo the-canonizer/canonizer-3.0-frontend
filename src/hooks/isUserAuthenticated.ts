@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
-import { store } from "../store/index";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/index";
 
 const useAuthentication = () => {
-  const { auth } = store.getState();
-  const [isLogin, setIsLogin] = useState(auth.authenticated);
+  const authenticated = useSelector(
+    (state: RootState) => state.auth.authenticated
+  );
+  const [isLogin, setIsLogin] = useState(authenticated);
   useEffect(() => {
-    setIsLogin(auth.authenticated);
-  }, [auth.authenticated]);
+    setIsLogin(authenticated);
+  }, [authenticated]);
 
   return isLogin;
 };
