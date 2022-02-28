@@ -1,0 +1,117 @@
+.card {
+	padding: 20px 20px 10px;
+	border: solid 1px #f0f0f0;
+	background-color: #fff;
+	margin-bottom: 16px;
+	.btnsWrap {
+		margin-bottom: 16px;
+		.btn {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 100%;
+			font-size: 1.125rem;
+			font-weight: 600;
+			color: #0f2a4d;
+			border: solid 1px #d9d9d9;
+			i {
+				font-size: 1.1875rem;
+				color: var(--primary);
+				margin-right: 8px;
+			}
+			&:hover {
+				color: var(--primary);
+				border-color: var(--primary);
+			}
+		}
+	}
+}
+
+.cardAccordian {
+	background-color: transparent;
+    .collapseIcon {
+		i {
+			font-size: 8px;
+			color: #4484ce;
+		}
+	}
+	.algoText {
+		font-weight: 400;
+		color: #343434;
+	}
+	.algoSelect {
+		width: 100%;
+		margin-bottom: 8px;
+		> div {
+			padding-left: 15px !important;
+			border: solid 1px #d9d9d9;
+		}
+		span {
+			font-size: 0.875rem;
+			color: #343434;
+		}
+	}
+	.algoInfo {
+		font-size: 1rem;
+		color: #4484ce;
+	}
+	.filter {
+		display: flex;
+		align-items: center;
+		input {
+			width: 130px;
+			margin: 0 7px;
+		}
+		i {
+			color: #d1d4db;
+			font-size: 17px;
+			cursor: pointer;
+		}
+		.LeftOutlined {
+			color: #6e6e6e;
+			margin-left: 12px;
+		}
+	}
+	.date {
+		border: solid 1px #d9d9d9;
+		padding: 0 12px !important;
+		height: 40px;
+		margin-top: 20px;
+	}
+}
+
+.title {
+	font-size: 1.125rem;
+	font-weight: 600;
+	color: #4484ce;
+	i {
+		margin-left: 8px;
+		font-size: 17px;
+		color: #d1d4db;
+	}
+}
+
+.radio {
+	span {
+		font-size: 1rem;
+		color: #1c1b24;
+	}
+}
+
+.infoText,
+.asfoText {
+	width: 240px;
+	font-size: 12px;
+	line-height: 16px;
+	font-weight: 400;
+	color: #0f2a4d;
+	h5 {
+		font-size: 0.875rem;
+		color: #0f2a4d;
+		font-weight: 600;
+	}
+}
+
+.asfoText {
+	width: 261px;
+}
