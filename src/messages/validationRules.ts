@@ -108,10 +108,10 @@ export const phoneRule = {
     () => ({
       validator(_, value) {
         let number = +value;
-        if (!isNaN(number) && typeof number === "number") {
-          return Promise.resolve();
+        if (isNaN(number)) {
+          return Promise.reject(new Error(validations.validPhone));
         }
-        return Promise.reject(new Error(validations.validPhone));
+        return Promise.resolve();
       },
     }),
   ],
