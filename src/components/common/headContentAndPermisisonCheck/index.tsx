@@ -16,7 +16,7 @@ const HeadContentAndPermissionComponent = ({
   const router = useRouter();
   const [meta, setMeta] = useState(MetaTags[componentName]);
   const { isAllowed } = usePermission();
-  const { isUserAuthenticated } = useAuthentication();
+  const isUserAuthenticated = useAuthentication();
 
   useEffect(() => {
     //Check permission
