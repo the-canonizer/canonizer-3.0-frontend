@@ -138,39 +138,18 @@ const ProfileInfo = () => {
     const [place] = await geocodeByPlaceId(placeId);
     const { long_name: postalCode = '' } =
       place.address_components.find(c => c.types.includes('postal_code')) || {};
-    var city = ""
-    var country = ""
-    var address2 = ""
-
+    let city = "", country = "", state = "", address2 = "";
+    
     for (const component of results[0].address_components) {
       const componentType = component.types[0];
+      address2 = getAddress(componentType, address2, component)
       switch (componentType) {
-        case "neighborhood": {
-          address2 = component.short_name
-          break;
-        }
-        case "political": {
-          address2 = address2 + ", " + component.long_name;
-          break;
-        }
-        case "neighborhood": {
-          address2 = address2 + ", " + component.long_name;
-          break;
-        }
-        case "sublocality_level_2": {
-          address2 = address2 + ", " + component.long_name;
-          break;
-        }
-        case "sublocality_level_1": {
-          address2 = address2 + ", " + component.long_name;
-          break;
-        }
         case "locality": {
           city = component.long_name;
           break;
         }
         case "administrative_area_level_1": {
-          var state = component.long_name;
+          state = component.long_name;
           break;
         }
         case "country": {
@@ -181,13 +160,23 @@ const ProfileInfo = () => {
     }
     address2 = address2.replace(/^,|,$/g, '');
 
-    form.setFieldsValue({ ["address_2"]: address2 })
-    form.setFieldsValue({ ["postal_code"]: postalCode })
-    form.setFieldsValue({ ["city"]: city })
-    form.setFieldsValue({ ["state"]: state })
-    form.setFieldsValue({ ["country"]: country })
-  }
+    form.setFieldsValue({
+      ["address_2"]: address2,
+      ["postal_code"]: postalCode,
+      ["city"]: city,
+      ["state"]: state,
+      ["country"]: country
+    })
 
+  }
+  const getAddress = (type, address, component) => {
+    if (type.match(/^political|^neighborhood$|^sublocality_level_2$|^sublocality_level_1$/)) {
+      return address + ", " + component.long_name;
+    }
+    else {
+      return address;
+    }
+  }
   useEffect(() => {
     async function fetchMobileCarrier() {
       let res = await dispatch(GetMobileCarrier());
