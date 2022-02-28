@@ -1,7 +1,7 @@
 import React, { createRef, useEffect } from "react";
+import { useRouter } from "next/router";
 import { Row, Col, Typography, Form, Input, Button, Select } from "antd";
 import { CloseCircleOutlined, ArrowRightOutlined } from "@ant-design/icons";
-import Link from "next/link";
 import ReCAPTCHA from "react-google-recaptcha";
 
 import styles from "./Registration.module.scss";
@@ -9,6 +9,7 @@ import styles from "./Registration.module.scss";
 import messages from "../../../../messages";
 import SocialLoginButton from "../../../common/socialLogin";
 import FormItem from "../../../common/formElements";
+import { validations } from "../../../../messages/validation";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -28,14 +29,20 @@ function RegistrationUi({
   resetCaptcha,
   showCaptchaError,
   country,
+  openLogin,
 }) {
+  const router = useRouter();
+
   const recaptchaRef: React.RefObject<{ reset }> = createRef();
 
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
       <Select style={{ width: 90 }}>
         {country.map((code) => (
-          <Option value={code.phone_code} key={code.country_code}>
+          <Option
+            value={code.phone_code + " " + code.country_code}
+            key={code.country_code}
+          >
             {code.phone_code} {code.country_code}
           </Option>
         ))}
@@ -49,12 +56,22 @@ function RegistrationUi({
     }
   }, [resetCaptcha, recaptchaRef]);
 
+  const onLoginClick = (e) => {
+    e.preventDefault();
+    if (isModal) {
+      closeModal();
+      openLogin();
+    } else {
+      router.push("/login");
+    }
+  };
+
   return (
     <section className={styles.signup_wrapper}>
       <Form
         form={form}
         name="registration"
-        initialValues={{ prefix: "+1" }}
+        initialValues={{ prefix: "+1 US" }}
         onFinish={onFinish}
         layout="vertical"
         scrollToFirstError
@@ -114,18 +131,23 @@ function RegistrationUi({
                 <Input
                   addonBefore={prefixSelector}
                   style={{ width: "100%" }}
+                  className={`${styles.phoneInput} numberInput`}
                   placeholder={messages.placeholders.phone}
                 />
               </Form.Item>
             </Col>
             <Col md={12} style={{ width: "100%" }}>
-              <FormItem
+              <Form.Item
                 name="password"
                 label={messages.labels.password}
-                rules={messages.passwordRule}
-                placeholder={messages.placeholders.password}
-                type="password"
-              />
+                {...messages.passwordRule}
+              >
+                <Input.Password
+                  className={styles.passwordInput}
+                  type="password"
+                  placeholder={messages.placeholders.password}
+                />
+              </Form.Item>
             </Col>
             <Col md={{ order: 1, span: 12 }} style={{ width: "100%" }}>
               <Form.Item
@@ -134,7 +156,8 @@ function RegistrationUi({
                 dependencies={["password"]}
                 {...messages.confirmPasswordRule}
               >
-                <Input
+                <Input.Password
+                  className={styles.passwordInput}
                   type="password"
                   placeholder={messages.placeholders.confirmPassword}
                 />
@@ -175,7 +198,10 @@ function RegistrationUi({
         </Form.Item>
         <Form.Item noStyle>
           <Text className={styles.ft_link}>
-            Already have an account? <Link href="/login">Login Here</Link>
+            Already have an account?{" "}
+            <a href="#" onClick={onLoginClick}>
+              Login Here
+            </a>
           </Text>
         </Form.Item>
       </Form>

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
+import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { Form, message } from "antd";
 
@@ -11,7 +12,7 @@ import {
   forgotPasswordUpdate,
 } from "../../../network/api/userApi";
 import { AppDispatch } from "../../../store";
-import { redirectToLogin } from "../../../utils/generalUtility";
+import Spinner from "../../common/spinner/spinner";
 
 const ForgotPassword = ({ isModal, isTestScreen = 0 }) => {
   const [isScreen, setIsScreen] = useState(isTestScreen);
@@ -21,6 +22,7 @@ const ForgotPassword = ({ isModal, isTestScreen = 0 }) => {
   const [form] = Form.useForm();
   const [otpForm] = Form.useForm();
   const [passwordForm] = Form.useForm();
+  const router = useRouter();
 
   const closeModal = () => dispatch(hideForgotModal());
 
@@ -66,23 +68,27 @@ const ForgotPassword = ({ isModal, isTestScreen = 0 }) => {
       passwordForm.resetFields();
       setIsScreen(0);
     }
-    isModal ? closeModal() : redirectToLogin();
+    isModal ? closeModal() : router.push("/login");
   };
 
   return (
-    <ForgotPasswordUI
-      form={isScreen === 2 ? passwordForm : isScreen === 1 ? otpForm : form}
-      onFinish={
-        isScreen === 2
-          ? onPasswordSubmit
-          : isScreen === 1
-          ? onOTPSubmit
-          : onFinish
-      }
-      closeModal={closeModal}
-      isModal={isModal}
-      isScreen={isScreen}
-    />
+    <Fragment>
+      <Spinner>
+        <ForgotPasswordUI
+          form={isScreen === 2 ? passwordForm : isScreen === 1 ? otpForm : form}
+          onFinish={
+            isScreen === 2
+              ? onPasswordSubmit
+              : isScreen === 1
+              ? onOTPSubmit
+              : onFinish
+          }
+          closeModal={closeModal}
+          isModal={isModal}
+          isScreen={isScreen}
+        />
+      </Spinner>
+    </Fragment>
   );
 };
 

@@ -95,16 +95,25 @@ export const phoneRule = {
   rules: [
     {
       required: false,
-      message: validations.phone,
+      message: validations.valid,
     },
     {
       min: 9,
-      message: validations.phoneLength,
+      message: validations.phoneMinLength,
     },
     {
       max: 10,
-      message: validations.phoneLength,
+      message: validations.phoneMaxLength,
     },
+    () => ({
+      validator(_, value) {
+        let number = +value;
+        if (isNaN(number)) {
+          return Promise.reject(new Error(validations.validPhone));
+        }
+        return Promise.resolve();
+      },
+    }),
   ],
 };
 
@@ -242,6 +251,6 @@ export const nickNameRule = {
     {
       max: 50,
       message: validations.nickNameMax,
-    }
+    },
   ],
 };

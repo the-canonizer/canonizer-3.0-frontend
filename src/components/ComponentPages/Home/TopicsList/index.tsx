@@ -8,7 +8,10 @@ import { RootState } from "../../../../store";
 import { getCanonizedTopicsApi } from "../../../../network/api/homePageApi";
 import { setFilterCanonizedTopics } from "../../../../store/slices/homePageSlice";
 import styles from "./topicsList.module.scss";
+import { Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 
+const antIcon = <LoadingOutlined spin />;
 const { Title, Text } = Typography;
 const { Search } = Input;
 
@@ -40,6 +43,9 @@ const TopicsList = () => {
   const [isReview, setIsReview] = useState(includeReview);
   const [inputSearch, setInputSearch] = useState("");
   const [nameSpaceId, setNameSpaceId] = useState(1);
+  const [loadMoreIndicator, setLoadMoreIndicator] = useState(false);
+  const [getTopicsLoadingIndicator, setGetTopicsLoadingIndicator] =
+    useState(false);
 
   const selectNameSpace = (value) => {
     setNameSpaceId(value);
@@ -62,7 +68,9 @@ const TopicsList = () => {
   useEffect(() => {
     async function getTopicsApiCall() {
       if (didMount.current) {
+        setGetTopicsLoadingIndicator(true);
         await getTopicsApiCallWithReqBody();
+        setGetTopicsLoadingIndicator(false);
       } else didMount.current = true;
     }
     getTopicsApiCall();
@@ -82,6 +90,7 @@ const TopicsList = () => {
       asof: asof,
     };
     await getCanonizedTopicsApi(reqBody, loadMore);
+    setLoadMoreIndicator(false);
   }
 
   const onSearch = (value) => setInputSearch(value);
@@ -93,10 +102,12 @@ const TopicsList = () => {
           className={styles.viewAll}
           onClick={() => {
             getTopicsApiCallWithReqBody(true);
+            setLoadMoreIndicator(true);
           }}
         >
           <Text>Load More</Text>
-          <i className="icon-angle-right"></i>
+          {!loadMoreIndicator && <i className="icon-angle-right"></i>}
+          {loadMoreIndicator && <Spin indicator={antIcon} />}
         </Button>
       )}
     </div>
@@ -118,71 +129,73 @@ const TopicsList = () => {
   return (
     <>
       <div className={`${styles.card} topicsList_card`}>
-        <List
-          className={styles.wrap}
-          header={
-            <div
-              className={`${styles.head} ${
-                router.asPath === "/browse" ? styles.browsePage : ""
-              }`}
-            >
-              <Title level={3}>
-                Canonized list for
-                <i className="icon-info"></i>
-              </Title>
-              <Select
-                size="large"
-                className={styles.dropdown}
-                defaultValue={nameSpacesList && nameSpacesList[0].name}
-                onChange={selectNameSpace}
+        <Spin spinning={getTopicsLoadingIndicator} size="large">
+          <List
+            className={styles.wrap}
+            header={
+              <div
+                className={`${styles.head} ${
+                  router.asPath === "/browse" ? styles.browsePage : ""
+                }`}
               >
-                {nameSpacesList?.map((item) => {
-                  return (
-                    <Select.Option key={item.id} value={item.id}>
-                      {item.name}
-                    </Select.Option>
-                  );
-                })}
-              </Select>
+                <Title level={3}>
+                  Canonized list for
+                  <i className="icon-info"></i>
+                </Title>
+                <Select
+                  size="large"
+                  className={styles.dropdown}
+                  defaultValue={nameSpacesList && nameSpacesList[0].name}
+                  onChange={selectNameSpace}
+                >
+                  {nameSpacesList?.map((item) => {
+                    return (
+                      <Select.Option key={item.id} value={item.id}>
+                        {item.name}
+                      </Select.Option>
+                    );
+                  })}
+                </Select>
 
-              {router.asPath === "/browse" && !includeReview && (
-                <div className={styles.inputSearchTopic}>
-                  <Search
-                    placeholder="Search by topic name"
-                    allowClear
-                    className={styles.topic}
-                    onSearch={onSearch}
-                  />
-                </div>
-              )}
-            </div>
-          }
-          footer={
-            <div className={styles.footer}>
-              {router.asPath === "/browse" ? LoadMoreTopics : ViewAllTopics}
-            </div>
-          }
-          bordered
-          dataSource={topicsData?.topics}
-          renderItem={(item: any) => (
-            <List.Item className={styles.item}>
-              <>
-                <Link href="#">
-                  <a>
-                    <Text className={styles.text}>
-                      {isReview
-                        ? item?.tree_structure_1_review_title
-                        : item?.topic_name}
-                    </Text>
-                    <Tag className={styles.tag}>
-                      {item?.topic_score?.toFixed(2)}
-                    </Tag>
-                  </a>
-                </Link>
-              </>
-            </List.Item>
-          )}
-        />
+                {router.asPath === "/browse" && !includeReview && (
+                  <div className={styles.inputSearchTopic}>
+                    <Search
+                      placeholder="Search by topic name"
+                      allowClear
+                      className={styles.topic}
+                      onSearch={onSearch}
+                    />
+                  </div>
+                )}
+              </div>
+            }
+            footer={
+              <div className={styles.footer}>
+                {router.asPath === "/browse" ? LoadMoreTopics : ViewAllTopics}
+              </div>
+            }
+            bordered
+            dataSource={topicsData?.topics}
+            renderItem={(item: any) => (
+              <List.Item className={styles.item}>
+                <>
+                  <Link href="#">
+                    <a>
+                      <Text className={styles.text}>
+                        {isReview
+                          ? item?.tree_structure_1_review_title
+                          : item?.topic_name}
+                      </Text>
+                      <Tag className={styles.tag}>
+                        {item?.topic_score?.toFixed(2)}
+                      </Tag>
+                    </a>
+                  </Link>
+                </>
+              </List.Item>
+            )}
+          />
+        </Spin>
       </div>
     </>
   );

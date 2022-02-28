@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button, Layout } from "antd";
-import { CloseOutlined } from "@ant-design/icons";
+import { CloseOutlined, MenuOutlined } from "@ant-design/icons";
 import Link from "next/link";
 
 import styles from "../siteHeader.module.scss";
@@ -77,6 +77,17 @@ const GetStartedHeader = () => {
           </ul>
         </nav>
       </div>
+      <div className={styles.right}>
+        <div className={styles.iconMobMenu}>
+          <Button size="large" onClick={toggleMobNav}>
+            <MenuOutlined />
+          </Button>
+        </div>
+      </div>
+      <div
+        className={`${styles.mobNavBG} ${isActive && styles.mobNavBGshow}`}
+        onClick={toggleMobNav}
+      ></div>
     </Header>
   );
 };

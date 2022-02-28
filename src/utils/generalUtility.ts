@@ -21,7 +21,12 @@ export const handleError = (error, log = false, dispatch = null) => {
     message.error(nestedErrs.message);
   }
 
-  if (nestedErrs.error) {
+  if (
+    typeof nestedErrs.error !== "string" &&
+    typeof nestedErrs.error === "object" &&
+    nestedErrs.error !== null &&
+    nestedErrs.error
+  ) {
     let keys = Object.keys(nestedErrs.error);
     keys.forEach((key) => {
       message.error(nestedErrs.error[key][0]);
@@ -84,13 +89,14 @@ declare global {
 }
 export const redirectToLogin = (error = "") => {
   if (typeof window !== "undefined") {
+    // we will correct this later
     let newUrl =
-      window.location.protocol +
-      "//" +
-      K.Network.URL.Client.BaseHost +
-      ":" +
-      K.Network.URL.Client.BasePort +
-      "/login";
+      // window.location.protocol +
+      // "//" +
+      // K.Network.URL.Client.BaseHost +
+      // ":" +
+      // K.Network.URL.Client.BasePort +
+      window.location.origin + "/login";
     if (error !== "") {
       newUrl += `?err=${error}`;
     }
@@ -99,14 +105,15 @@ export const redirectToLogin = (error = "") => {
 };
 
 export const redirectToUrl = (domainPrefix, path) => {
+  // we will correct this later
   window.location.href =
-    window.location.protocol +
-    "//" +
-    (domainPrefix ? domainPrefix + "." : "") +
-    K.Network.URL.Client.BaseHost +
-    ":" +
-    K.Network.URL.Client.BasePort +
-    path;
+    // window.location.protocol +
+    // "//" +
+    // (domainPrefix ? domainPrefix + "." : "") +
+    // K.Network.URL.Client.BaseHost +
+    // ":" +
+    // K.Network.URL.Client.BasePort +
+    window.location.origin + path;
 };
 
 export const setFieldErrorsFromServer = (error, form, values = undefined) => {

@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useRouter } from "next/router";
 import {
   Row,
   Col,
@@ -8,6 +9,7 @@ import {
   Checkbox,
   Image,
   Space,
+  Input,
 } from "antd";
 import { CloseCircleOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import Link from "next/link";
@@ -17,7 +19,6 @@ import styles from "./Login.module.scss";
 import messages from "../../../../messages";
 import SocialLoginButton from "../../../common/socialLogin";
 import FormItem from "../../../common/formElements";
-import { redirectToUrl } from "../../../../utils/generalUtility";
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -27,7 +28,11 @@ const LoginUi = ({
   closeModal,
   isModal,
   openForgotPasswordModal,
+  openRegistration,
+  onOTPClick,
 }) => {
+  const router = useRouter();
+
   useEffect(() => {
     const userValue = JSON.parse(localStorage.getItem("rememberme"));
     if (userValue) {
@@ -44,7 +49,17 @@ const LoginUi = ({
       closeModal();
       openForgotPasswordModal();
     } else {
-      redirectToUrl(null, "/forgot-password");
+      router.push("/forgot-password");
+    }
+  };
+
+  const onRegister = (e) => {
+    e.preventDefault();
+    if (isModal) {
+      closeModal();
+      openRegistration();
+    } else {
+      router.push("/registration");
     }
   };
 
@@ -79,13 +94,18 @@ const LoginUi = ({
                 rules={messages.usernameRule}
                 placeholder={messages.placeholders.emailPhone}
               />
-              <FormItem
+
+              <Form.Item
                 name="password"
                 label={messages.labels.password}
-                rules={messages.userPassRule}
-                placeholder={messages.placeholders.password}
-                type="password"
-              />
+                {...messages.userPassRule}
+              >
+                <Input.Password
+                  className={styles.passwordInput}
+                  type="password"
+                  placeholder={messages.placeholders.password}
+                />
+              </Form.Item>
               <Form.Item className={styles.remember}>
                 <Form.Item name="remember" valuePropName="checked" noStyle>
                   <Checkbox>Remember me</Checkbox>
@@ -116,6 +136,7 @@ const LoginUi = ({
                   htmlType="button"
                   className="login-form-button"
                   block
+                  onClick={onOTPClick}
                 >
                   Request One Time Verification Code
                 </Button>
@@ -127,7 +148,7 @@ const LoginUi = ({
               <Form.Item noStyle>
                 <Text className={styles.ft_link}>
                   {`Don't have an account? `}
-                  <Link href="/registration"> Register Now</Link>
+                  <a onClick={onRegister}> Register Now</a>
                 </Text>
               </Form.Item>
             </Form>
