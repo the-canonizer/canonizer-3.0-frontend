@@ -4,7 +4,7 @@ export const labels = {
   firstName: "First Name (Limit 100 Chars)",
   middleName: "Middle Name (Limit 100 Chars)",
   lastName: "Last Name (Limit 100 Chars)",
-  phone: "Phone",
+  phone: "Phone Number",
   email: "Email (Limit 255 Chars)",
   captcha: "Captcha",
   registrationPassword: "Password",

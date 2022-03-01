@@ -199,7 +199,7 @@ function RegistrationUi({
           <Text className={styles.ft_link}>
             Already have an account?{" "}
             <a href="#" onClick={onLoginClick}>
-              Login Here
+              Log in Here
             </a>
           </Text>
         </Form.Item>

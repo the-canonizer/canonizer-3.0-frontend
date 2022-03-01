@@ -52,7 +52,7 @@ export const middleNameRule = {
   rules: [
     {
       max: 100,
-      message: validations.middleName,
+      message: validations.firstNameMax,
     },
   ],
 };
@@ -136,7 +136,7 @@ export const emRule = {
   rules: [
     {
       max: 255,
-      message: validations.middleName,
+      message: validations.emailMax,
     },
     {
       required: true,
