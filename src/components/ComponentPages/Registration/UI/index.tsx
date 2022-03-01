@@ -9,7 +9,6 @@ import styles from "./Registration.module.scss";
 import messages from "../../../../messages";
 import SocialLoginButton from "../../../common/socialLogin";
 import FormItem from "../../../common/formElements";
-import { validations } from "../../../../messages/validation";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -200,7 +199,7 @@ function RegistrationUi({
           <Text className={styles.ft_link}>
             Already have an account?{" "}
             <a href="#" onClick={onLoginClick}>
-              Login Here
+              Log in Here
             </a>
           </Text>
         </Form.Item>

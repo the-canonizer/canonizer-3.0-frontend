@@ -92,6 +92,8 @@
         font-family: var(--font-family-asap);
         font-weight: 500;
         transition: all 0.3s;
+        padding: 5px 20px;
+        height: auto;
 
         &[type="submit"] {
           min-height: 38px;
