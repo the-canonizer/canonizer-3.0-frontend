@@ -1,10 +1,11 @@
 import Resetpassword from "../components/ComponentPages/ResetPassword";
-import GetStartedLayout from "../hoc/getStartedLayout";
+import Layout from "../hoc/layout";
+
 const ResetPasswordPage = () => {
   return (
-    <GetStartedLayout routeName={"reset-password"}>
+    <Layout routeName={"reset-password"}>
       <Resetpassword />
-    </GetStartedLayout>
+    </Layout>
   );
 };
 

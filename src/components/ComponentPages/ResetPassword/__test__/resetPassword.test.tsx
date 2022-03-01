@@ -1,23 +1,23 @@
 import { render, screen, waitFor } from "../../../../utils/testUtils";
 import userEvent from "@testing-library/user-event";
 
-import ForgotPassword from "../index";
+import ResetPassword from "../index";
 import messages from "../../../../messages";
 
 const { placeholders, validations, labels } = messages;
 
 describe("Reset Password page", () => {
   it("render heading labels and text", () => {
-    render(<ForgotPassword isModal={false} isTestScreen={2} />);
+    render(<ResetPassword />);
 
-    let heading = screen.getByText("Reset Your Password");
+    let heading = screen.getByText("Create new password");
     expect(heading).toBeInTheDocument();
     expect(screen.getByText(labels.newPassword)).toBeInTheDocument();
     expect(screen.getByText(labels.confirmPassword)).toBeInTheDocument();
   });
 
   it("render inputs field and submit button", () => {
-    render(<ForgotPassword isModal={false} isTestScreen={2} />);
+    render(<ResetPassword />);
     const newPassword = screen.getByLabelText(labels.newPassword);
     const confirmPassword = screen.getByLabelText(labels.confirmPassword);
 
@@ -37,20 +37,22 @@ describe("Reset Password page", () => {
   });
 
   it("check password minimum length > 8", async () => {
-    render(<ForgotPassword isModal={false} isTestScreen={2} />);
+    render(<ResetPassword />);
     const inputEl = screen.getByLabelText(labels.newPassword);
     userEvent.type(inputEl, "1234567");
     await waitFor(() => {
       expect(inputEl).toHaveValue("1234567");
       expect(screen.queryByRole("alert")).toBeInTheDocument();
       expect(
-        screen.queryByText("Password Should be like Abc@1234.")
+        screen.queryByText(
+          "Password must be contain small, capital letter, number and special character like Abc@1234."
+        )
       ).toBeVisible();
     });
   });
 
   it("pass valid password", async () => {
-    render(<ForgotPassword isModal={false} isTestScreen={2} />);
+    render(<ResetPassword />);
     const inputEl = screen.getByLabelText(labels.newPassword);
     userEvent.type(inputEl, "Abc@1234");
     await waitFor(() => {
@@ -60,7 +62,7 @@ describe("Reset Password page", () => {
   });
 
   it("pass invalid confirm password", async () => {
-    render(<ForgotPassword isModal={false} isTestScreen={2} />);
+    render(<ResetPassword />);
     const inputEl = screen.getByLabelText(labels.newPassword);
     const inputEl2 = screen.getByLabelText(labels.confirmPassword);
     userEvent.type(inputEl, "Abc@1234");
@@ -76,7 +78,7 @@ describe("Reset Password page", () => {
   });
 
   it("pass valid confirm password", async () => {
-    render(<ForgotPassword isModal={false} isTestScreen={2} />);
+    render(<ResetPassword />);
     const inputEl = screen.getByLabelText(labels.newPassword);
     const inputEl2 = screen.getByLabelText(labels.confirmPassword);
     userEvent.type(inputEl, "Abc@1234");
@@ -89,7 +91,7 @@ describe("Reset Password page", () => {
   });
 
   it("blank form should not be submit", async () => {
-    render(<ForgotPassword isModal={false} isTestScreen={2} />);
+    render(<ResetPassword />);
     const btnEl = screen.getByTestId("submitButton");
 
     userEvent.click(btnEl);

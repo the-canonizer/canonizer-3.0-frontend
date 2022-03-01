@@ -4,7 +4,6 @@ import { CloseCircleOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import styles from "../../Registration/UI/Registration.module.scss";
 
 import messages from "../../../../messages";
-import FormItem from "../../../common/formElements";
 import { fallBackSrc } from "../../../../assets/data-images";
 
 const { Title, Text } = Typography;
@@ -14,21 +13,13 @@ function ForgotPasswordUI({ form, onFinish, isModal, closeModal, isScreen }) {
     <section className={styles.signup_wrapper + " " + styles.textCenter}>
       <Form
         form={form}
-        name={
-          isScreen === 2
-            ? "setPassword"
-            : isScreen === 1
-            ? "otpverify"
-            : "forgotPassword"
-        }
+        name={isScreen === 1 ? "otpverify" : "forgotPassword"}
         onFinish={onFinish}
         layout="vertical"
         scrollToFirstError
       >
         <Title level={2} className={styles.titles}>
-          {isScreen === 2
-            ? "Reset Your Password"
-            : isScreen === 1
+          {isScreen === 1
             ? "Create password verification code"
             : "Forgot your password?"}
         </Title>
@@ -96,37 +87,6 @@ function ForgotPasswordUI({ form, onFinish, isModal, closeModal, isScreen }) {
                 max={6}
               />
             </Form.Item>
-          )}
-          {isScreen === 2 && (
-            <Row gutter={20} justify="center" align="top">
-              <Col xs={24} md={8}>
-                <Form.Item
-                  name="password"
-                  label={messages.labels.newPassword}
-                  {...messages.passwordRule}
-                >
-                  <Input.Password
-                    className={styles.passwordInput}
-                    type="password"
-                    placeholder={messages.placeholders.newPassword}
-                  />
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={8}>
-                <Form.Item
-                  name="confirm"
-                  label={messages.labels.confirmPassword}
-                  dependencies={["password"]}
-                  {...messages.confirmPasswordRule}
-                >
-                  <Input.Password
-                    className={styles.passwordInput}
-                    type="password"
-                    placeholder={messages.placeholders.confirmPassword}
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
           )}
         </div>
         <Form.Item>
