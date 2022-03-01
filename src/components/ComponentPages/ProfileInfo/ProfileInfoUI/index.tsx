@@ -21,7 +21,7 @@ function ProfileInfoUI({
   languageList,
   handleAddressChange,
   handleAddressSelect,
-  address
+  address,
 }) {
   return (
     <section className={styles.profileInfo_wrapper}>

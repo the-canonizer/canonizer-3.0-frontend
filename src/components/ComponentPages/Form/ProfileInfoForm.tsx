@@ -189,7 +189,7 @@ function ProfileInfoForm({
                               : { backgroundColor: "#ffffff", cursor: "pointer" };
 
                             return (
-                              <div {...getSuggestionItemProps(suggestion, { style })}>
+                              <div key={'some key'} {...getSuggestionItemProps(suggestion, { style })}>
                                 {suggestion.description}
                               </div>
                             );
