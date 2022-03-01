@@ -4,11 +4,11 @@ import TreeRequest from "../request/treeRequest";
 import { message } from "antd";
 import { store } from "../../store";
 
-export const getTreesApi = async () => {
+export const getTreesApi = async (reqBody) => {
   try {
-    const trees = await NetworkCall.fetch(TreeRequest.getTrees());
-    store.dispatch(setTree(trees));
-    return trees.data;
+    const trees = await NetworkCall.fetch(TreeRequest.getTrees(reqBody));
+    store.dispatch(setTree(trees?.data[0]));
+    return trees?.data[0];
   } catch (error) {
     message.error(error.message);
   }
