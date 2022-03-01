@@ -179,7 +179,7 @@ const TopicsList = () => {
             renderItem={(item: any) => (
               <List.Item className={styles.item}>
                 <>
-                  <Link href="#">
+                  <Link href={`/camp-details/${item?.topic_id}`}>
                     <a>
                       <Text className={styles.text}>
                         {isReview

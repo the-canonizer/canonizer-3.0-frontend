@@ -1,0 +1,48 @@
+import Layout from "../../hoc/layout";
+
+import TopicDetails from "../../components/ComponentPages/TopicDetails";
+import { getTreesApi } from "src/network/api/treeApi";
+import { useDispatch } from "react-redux";
+import { setTree } from "src/store/slices/treeSlice";
+import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
+import { setCanonizedAlgorithms } from "src/store/slices/homePageSlice";
+
+const TopicDetailsPage = ({ camps, algorithms }) => {
+  const dispatch = useDispatch();
+  dispatch(setTree(camps));
+  dispatch(setCanonizedAlgorithms(algorithms));
+  return (
+    <>
+      <Layout>
+        <TopicDetails />
+      </Layout>
+    </>
+  );
+};
+
+export async function getServerSideProps(context) {
+  const campId = context.query.camp.join(",");
+  console.log(".............////////////////////", campId);
+  const reqBody = {
+    topic_num: campId,
+    asofdate: 1644323333,
+    algorithm: "mind_experts",
+    update_all: 0,
+  };
+
+  const [canonizedAlgorithms, canonizedCampTrees] = await Promise.all([
+    getCanonizedAlgorithmsApi(),
+    getTreesApi(reqBody),
+  ]);
+  const camps = canonizedCampTrees || [];
+  const algorithms = canonizedAlgorithms || [];
+
+  return {
+    props: {
+      camps,
+      algorithms,
+    },
+  };
+}
+
+export default TopicDetailsPage;

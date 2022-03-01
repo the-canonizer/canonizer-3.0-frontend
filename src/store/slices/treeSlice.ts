@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { message } from "antd";
 
 export const treeSlice = createSlice({
   name: "tree",
@@ -8,7 +7,7 @@ export const treeSlice = createSlice({
   },
   reducers: {
     setTree: (state, action) => {
-      state.tree = action.payload.data;
+      state.tree = action.payload;
     },
   },
 });
