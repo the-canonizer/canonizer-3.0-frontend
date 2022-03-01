@@ -1,11 +1,10 @@
-
-import { Button, Layout, Menu, Dropdown } from "antd";
+import { useRouter } from "next/router";
+import { Layout, Menu, Dropdown, Button } from "antd";
 import { useSelector } from "react-redux";
 import Link from "next/link";
 import { logout } from "../../../../network/api/userApi";
 import { RootState } from "../../../../store";
 import styles from "../siteHeader.module.scss";
-/////
 import React, { useState } from "react";
 import Logo from "../logoHeader";
 import { MenuOutlined, CloseOutlined } from "@ant-design/icons";
@@ -15,6 +14,8 @@ const LoggedInHeaderNavigation = () => {
   const loggedInUser = useSelector<RootState>(
     (state) => state.auth.loggedInUser
   );
+
+  const router = useRouter();
   const [isActive, setActive] = useState(false);
   const toggleMobNav = () => {
     setActive(!isActive);
@@ -60,7 +61,10 @@ const LoggedInHeaderNavigation = () => {
   ];
 
   const logOut = async () => {
-    await logout();
+    const res = await logout();
+    if (res.status_code === 200) {
+      router.push("/");
+    }
   };
   const onClick = ({ key }) => {
     if (key == 3) {
@@ -84,7 +88,9 @@ const LoggedInHeaderNavigation = () => {
       <React.Fragment>
         <Header className={styles.wrap}>
           <Logo />
-          <div className={`${styles.navWrap} ${isActive && styles.showMobMenu}`}>
+          <div
+            className={`${styles.navWrap} ${isActive && styles.showMobMenu}`}
+          >
             <Button
               size="large"
               className={`${styles.btnCloseMobMenu} mb-4 float-right`}

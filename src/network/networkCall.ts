@@ -1,42 +1,30 @@
 import axios from "axios";
 import K from "../constants";
-import { message } from "antd";
 import { trackPromise } from "react-promise-tracker";
 import UserRequest from "./request/userRequest";
 import { camelCaseKeys } from "../utils/generalUtility";
 
 export default class NetworkCall {
   static async fetch(request, useLoading = true) {
+    const axiosCall = () => {
+      return NetworkCall.axios({
+        method: request.method,
+        url: request.url,
+        data: request.body,
+        headers: request.headers,
+        validateStatus: (status) => {
+          return status == 200;
+        },
+      });
+    };
     try {
       const response: any = useLoading
-        ? await trackPromise(
-            NetworkCall.axios({
-              method: request.method,
-              url: request.url,
-              data: request.body,
-              headers: request.headers,
-              validateStatus: (status) => {
-                return (status >= 200 && status < 300) || status === 304;
-              },
-            })
-          )
-        : await NetworkCall.axios({
-            method: request.method,
-            url: request.url,
-            data: request.body,
-            headers: request.headers,
-            validateStatus: (status) => {
-              return (status >= 200 && status < 300) || status === 304;
-            },
-          });
-
+        ? await trackPromise(axiosCall())
+        : await axiosCall();
       return response.data;
     } catch (err) {
       let error = err.response;
-
-      console.log("NetworkCall Error: ", error);
       if (error === undefined) {
-        message.error("Cannot connect to server");
         return Promise.reject({
           error: error,
         });
@@ -50,8 +38,6 @@ export default class NetworkCall {
         error.data.errors = camelCaseKeys(error.data.errors);
       return Promise.reject({
         error: error,
-        message: error.data.errors,
-        statusCode: error.status,
       });
     }
   }

@@ -1,4 +1,5 @@
 import React, { createRef, useEffect } from "react";
+import { useRouter } from "next/router";
 import { Row, Col, Typography, Form, Input, Button, Select } from "antd";
 import { CloseCircleOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -8,7 +9,7 @@ import styles from "./Registration.module.scss";
 import messages from "../../../../messages";
 import SocialLoginButton from "../../../common/socialLogin";
 import FormItem from "../../../common/formElements";
-import { redirectToUrl } from "../../../../utils/generalUtility";
+import { validations } from "../../../../messages/validation";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -30,13 +31,18 @@ function RegistrationUi({
   country,
   openLogin,
 }) {
+  const router = useRouter();
+
   const recaptchaRef: React.RefObject<{ reset }> = createRef();
 
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
       <Select style={{ width: 90 }}>
         {country.map((code) => (
-          <Option value={code.phone_code} key={code.country_code}>
+          <Option
+            value={code.phone_code + " " + code.country_code}
+            key={code.country_code}
+          >
             {code.phone_code} {code.country_code}
           </Option>
         ))}
@@ -56,7 +62,7 @@ function RegistrationUi({
       closeModal();
       openLogin();
     } else {
-      redirectToUrl(null, "/login");
+      router.push("/login");
     }
   };
 
@@ -65,7 +71,7 @@ function RegistrationUi({
       <Form
         form={form}
         name="registration"
-        initialValues={{ prefix: "+1" }}
+        initialValues={{ prefix: "+1 US" }}
         onFinish={onFinish}
         layout="vertical"
         scrollToFirstError
@@ -125,7 +131,7 @@ function RegistrationUi({
                 <Input
                   addonBefore={prefixSelector}
                   style={{ width: "100%" }}
-                  className={styles.phoneInput}
+                  className={`${styles.phoneInput} numberInput`}
                   placeholder={messages.placeholders.phone}
                 />
               </Form.Item>
