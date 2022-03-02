@@ -183,13 +183,13 @@ function ProfileInfoForm({
                         />
                         <div>
                           {loading && <div>Loading...</div>}
-                          {suggestions.map((suggestion) => {
+                          {suggestions.map((suggestion, index) => {
                             const style = suggestion.active
                               ? { backgroundColor: "#f8f8f8", cursor: "pointer" }
                               : { backgroundColor: "#ffffff", cursor: "pointer" };
 
                             return (
-                              <div {...getSuggestionItemProps(suggestion, { style })}>
+                              <div {...getSuggestionItemProps(suggestion, { style })} key={index}>
                                 {suggestion.description}
                               </div>
                             );
