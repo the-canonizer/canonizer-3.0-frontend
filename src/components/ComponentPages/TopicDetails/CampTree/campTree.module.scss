@@ -1,31 +1,32 @@
-.CTcard {
-   .AddNew {
+.iconMr {
+    margin-right: 5px;
+}
+.ctCard {
+   .addNew {
        font-size: 15px;
        font-weight: 500;
        margin-left: 33px;
        font-size: 15px;
        color: #2E68DB;
        font-weight: 500;
-       .IconMr {
-           margin-right: 5px;
-       }
+      
    }
-   .ChexkboxLabel {
+   .chexkboxLabel {
        color: #0F2A4D;
        font-size: 15px;
        font-weight: 400;
    }
-   .TreeListItem {
+   .treeListItem {
        display: flex;
        align-items: center;
-       margin-bottom: 8px;
-       .TLITitle {
+       margin-bottom: 6px;
+       .treeListItemTitle {
         font-size: 15px;
         font-weight: 400;
         color: #0F2A4D;
-        margin-left: 10px;
+        margin-left: 4px;
        }
-       .TLINumber {
+       .treeListItemNumber {
         width: 34px;
         height: 16px;
         display: flex;
@@ -40,4 +41,10 @@
         margin-left: 6px;
        }
    }
+}
+h2.cardHeading {
+    font-size: 30px;
+    font-weight: 400;
+    color: #2E68DB;
+    margin-bottom: 22px;
 }

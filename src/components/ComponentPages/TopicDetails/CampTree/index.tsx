@@ -38,9 +38,9 @@ const CampTree = (props) => {
           <TreeNode
             // switcherIcon={<PlusSquareOutlined />}
             title={
-              <div className={"TreeListItem " + Styles.TreeListItem}>
-                <span className={"TLITitle " + Styles.TLITitle}> {data[item].title}</span>
-                <span className={"TLINumber " + Styles.TLINumber}> {data[item].score}</span>
+              <div className={"treeListItem " + Styles.treeListItem}>
+                <span className={"treeListItemTitle " + Styles.treeListItemTitle}> {data[item].title}</span>
+                <span className={"treeListItemNumber " + Styles.treeListItemNumber}> {data[item].score}</span>
               </div>
             }
             key={data[item].camp_id}
