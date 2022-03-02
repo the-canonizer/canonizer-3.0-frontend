@@ -457,6 +457,7 @@ form {
 }
 .bold { 
 	font-weight: 700;
+	white-space: nowrap;
 }
 .tooltip-icon-style {
     font-size: 17px;
@@ -492,4 +493,9 @@ form {
 	border-radius: 6px;
 	font-weight: 400;
 	margin-left: 10px;
+}
+.ant-breadcrumb-separator {
+	margin: 0;
+	color: #2E68DB;
+	font-size: 18px;
 }
