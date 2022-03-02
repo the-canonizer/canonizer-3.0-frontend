@@ -271,3 +271,34 @@
     top: 2px;
   }
 }
+
+.wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+@media screen and (min-width: 769px) and (max-width: 992px) {
+  .wrapper {
+    display: grid;
+    & > aside {
+      order: 1;
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .rightSidebar {
+    display: none;
+  }
+  .wrapper {
+    display: block;
+    overflow: hidden;
+    // background: #fff;
+  }
+
+  .pageContentWrap {
+    background: #fff;
+    overflow: hidden;
+  }
+}

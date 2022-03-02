@@ -33,7 +33,7 @@ const ResetPassword = () => {
     router.push("/");
   };
   return (
-    <Fragment>
+    <div className={styles.wrapper}>
       <aside className="leftSideBar miniSideBar">
         <div className={styles.wrap}>
           <Button size="large" className={styles.createBtn}>
@@ -49,7 +49,7 @@ const ResetPassword = () => {
           />
         </aside>
       </aside>
-      <div className="pageContentWrap">
+      <div className={`pageContentWrap ${styles.pageContentWrap}`}>
         <div className={`${styles.signup_wrapper} ${styles.resetPassword}`}>
           <Form
             form={form}
@@ -110,7 +110,7 @@ const ResetPassword = () => {
           </Form>
         </div>
       </div>
-    </Fragment>
+    </div>
   );
 };
 
