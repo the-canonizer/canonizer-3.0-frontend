@@ -381,11 +381,27 @@ form {
 	}
 }
 .canCard {
-	& + .canCard{
+	@media screen and (min-width: 1200px) {
+		& + .canCard{
+			margin-top: 18px;
+		}
+	}
+	@media screen and (max-width: 1199px) {
 		margin-top: 18px;
 	}
+	
 	.ant-card-head {
 		padding: 20px;
+		@media screen and (max-width: 576px) {
+			.ant-card-head-wrapper {
+				flex-direction: column;
+    			align-items: flex-start;
+				.ant-card-extra {
+					margin-left: 0;
+					margin-top: .5rem;
+				}
+			}
+		}
 		.ant-card-head-title {
 			line-height: 1;
 			padding: 0;
@@ -428,6 +444,9 @@ form {
 		.card-actions-wrapper {
 			@extend .d-flex, .align-items-center, .justify-content-end;
 			padding: 0 20px;
+			@media screen and (max-width: 576px) {
+				flex-direction: column;
+			}
 			.ant-btn {
 				@extend .d-flex, .align-items-center;
 				padding: 11px 25px;
@@ -435,8 +454,17 @@ form {
 				color: #fff;
 				font-weight: 500;
 				border: none;
-				& + .ant-btn { 
-					margin-left: 28px;
+				@media screen and (min-width: 577px) {
+					& + .ant-btn { 
+						margin-left: 28px;
+					}
+				}
+				@media screen and (max-width: 576px) {
+					width: 100%;
+					justify-content: center;
+					& + .ant-btn { 
+						margin-top: .5rem;
+					}
 				}
 			}
 			.edit-btn-style {
@@ -498,4 +526,27 @@ form {
 	margin: 0;
 	color: #2E68DB;
 	font-size: 18px;
+}
+.ant-descriptions-item-container {
+	@media screen and (max-width: 576px) {
+		flex-direction: column;
+		.ant-descriptions-item-label {
+			margin-top: .5rem;
+		}
+	}
+}
+.ant-descriptions-view {
+	table {
+		@media screen and (max-width: 576px) {
+			tr {
+				margin-bottom: .5rem;
+				.ant-descriptions-item-label {
+					font-weight: 600;
+				}
+			}
+			tr:last-child  {
+				margin-bottom: 0;
+			}
+		}
+	}
 }

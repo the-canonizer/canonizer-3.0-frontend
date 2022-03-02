@@ -31,6 +31,9 @@
     .breadcrumbWrapper {
         display: flex;
         padding: 24px 24px 0;
+        @media screen and (max-width: 991px) {
+           flex-direction: column;
+        }
         .topicTitleStyle {
             margin-right: 50px;
             font-size: 18px;
