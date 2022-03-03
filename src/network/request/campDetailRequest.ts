@@ -16,4 +16,14 @@ export default class TreeRequest extends Request {
       {}
     );
   }
+
+  static getNewsFeed(reqBody) {
+    return new Request(
+      K.Network.URL.GetNewsFeed,
+      K.Network.Method.POST,
+      reqBody,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
 }

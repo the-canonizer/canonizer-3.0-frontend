@@ -2,7 +2,7 @@ import homePageSlice from "./slices/homePageSlice";
 
 // // reducers
 import Auth from "./slices/authSlice";
-import Tree from "./slices/treeSlice";
+import Tree from "./slices/campDetailSlice";
 import UiReducer from "./slices/uiSlice";
 
 import { createStore, Store } from "redux";

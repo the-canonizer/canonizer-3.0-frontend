@@ -7,6 +7,11 @@ import {
   List,
   Breadcrumb,
 } from "antd";
+import { useRef } from "react";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { getTreesApi } from "src/network/api/campDetailApi";
+import { RootState } from "src/store";
 
 import SideBar from "../Home/SideBar";
 import CampTree from "./CampTree";
@@ -29,6 +34,29 @@ const CampTreeCardTitle = (
 );
 
 const TopicDetails = (props) => {
+  const didMount = useRef(false);
+  const { asofdate, asof, algorithm, filterByScore, includeReview } =
+    useSelector((state: RootState) => ({
+      asofdate: state.homePage?.filterObject?.asofdate,
+      asof: state.homePage?.filterObject?.asof,
+      algorithm: state.homePage?.filterObject?.algorithm,
+      filterByScore: state.homePage?.filterObject?.filterByScore,
+      includeReview: state?.homePage?.filterObject?.includeReview,
+    }));
+  useEffect(() => {
+    async function getTreeApiCall() {
+      if (didMount.current) {
+        const reqBody = {
+          topic_num: 88,
+          asofdate: 1644323333,
+          algorithm: algorithm,
+          update_all: 0,
+        };
+        await getTreesApi(reqBody);
+      } else didMount.current = true;
+    }
+    getTreeApiCall();
+  }, [asofdate, algorithm]);
   return (
     <>
       {/* <div className={styles.breadcrumbWrapper}>

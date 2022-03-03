@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
-import { getTreesApi } from "src/network/api/treeApi";
+import { getTreesApi } from "src/network/api/campDetailApi";
 import { Tree, Card } from "antd";
-import { CarryOutOutlined, FormOutlined, PlusSquareOutlined } from "@ant-design/icons";
+import {
+  CarryOutOutlined,
+  FormOutlined,
+  PlusSquareOutlined,
+} from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
-import Styles from './campTree.module.scss';
+import Styles from "./campTree.module.scss";
 
 const { TreeNode } = Tree;
 const CampTree = (props) => {
@@ -39,8 +43,18 @@ const CampTree = (props) => {
             // switcherIcon={<PlusSquareOutlined />}
             title={
               <div className={"treeListItem " + Styles.treeListItem}>
-                <span className={"treeListItemTitle " + Styles.treeListItemTitle}> {data[item].title}</span>
-                <span className={"treeListItemNumber " + Styles.treeListItemNumber}> {data[item].score}</span>
+                <span
+                  className={"treeListItemTitle " + Styles.treeListItemTitle}
+                >
+                  {" "}
+                  {data[item].title}
+                </span>
+                <span
+                  className={"treeListItemNumber " + Styles.treeListItemNumber}
+                >
+                  {" "}
+                  {data[item].score}
+                </span>
               </div>
             }
             key={data[item].camp_id}

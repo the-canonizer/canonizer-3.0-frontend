@@ -1,9 +1,9 @@
 import Layout from "../../hoc/layout";
 
 import TopicDetails from "../../components/ComponentPages/TopicDetails";
-import { getTreesApi } from "src/network/api/treeApi";
+import { getTreesApi } from "src/network/api/campDetailApi";
 import { useDispatch } from "react-redux";
-import { setTree } from "src/store/slices/treeSlice";
+import { setTree } from "src/store/slices/campDetailSlice";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 import { setCanonizedAlgorithms } from "src/store/slices/homePageSlice";
 import { wrapper } from "src/store";
