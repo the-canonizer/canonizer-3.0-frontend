@@ -78,7 +78,7 @@ const LoginUi = ({
         <Col md={12}>
           <div className={styles.form_section}>
             <Title level={2} className={styles.titles}>
-              Login to Canonizer
+              Log in to Canonizer
             </Title>
             <Form
               form={form}

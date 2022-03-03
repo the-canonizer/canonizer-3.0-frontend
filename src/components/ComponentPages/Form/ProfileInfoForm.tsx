@@ -11,6 +11,7 @@ import {
 } from "antd";
 import styles from "../ProfileInfo/ProfileInfoUI/ProfileInfo.module.scss";
 import messages from "../../../messages";
+import PlacesAutocomplete from "react-places-autocomplete";
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -23,6 +24,9 @@ function ProfileInfoForm({
   privateFlags,
   algorithmList,
   languageList,
+  handleAddressChange,
+  handleAddressSelect,
+  address
 }) {
   const listOfOption = (optionList, algoOrLang): any => {
     let option = [];
@@ -153,20 +157,55 @@ function ProfileInfoForm({
           <Row gutter={30}>
             <Col md={12}>
               <Form.Item name="address_1" label={messages.labels.addressLine1}>
-                <Input
-                  addonAfter={selectAfter(
-                    "address_1",
-                    publicOrPrivate("address_1")
-                  )}
-                  placeholder={messages.placeholders.addressLine1}
-                  size="large"
-                />
+                <div>
+                  <PlacesAutocomplete
+                    value={address}
+                    onChange={handleAddressChange}
+                    onSelect={handleAddressSelect}
+                  >
+                    {({
+                      getInputProps,
+                      suggestions,
+                      getSuggestionItemProps,
+                      loading,
+                    }) => (
+                      <div>
+                        <Input
+                          addonAfter={selectAfter(
+                            "address_1",
+                            publicOrPrivate("address_1")
+                          )}
+                          placeholder={messages.placeholders.addressLine1}
+                          size="large"
+                          {...getInputProps({
+                            placeholder: messages.placeholders.addressLine1,
+                          })}
+                        />
+                        <div>
+                          {loading && <div>Loading...</div>}
+                          {suggestions.map((suggestion, index) => {
+                            const style = suggestion.active
+                              ? { backgroundColor: "#f8f8f8", cursor: "pointer" }
+                              : { backgroundColor: "#ffffff", cursor: "pointer" };
+
+                            return (
+                              <div {...getSuggestionItemProps(suggestion, { style })} key={index}>
+                                {suggestion.description}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </PlacesAutocomplete>
+                </div>
               </Form.Item>
               <Form.Item name="city" label={messages.labels.city}>
                 <Input
                   addonAfter={selectAfter("city", publicOrPrivate("city"))}
                   placeholder={messages.placeholders.city}
                   size="large"
+                  disabled
                 />
               </Form.Item>
               <Form.Item name="country" label={messages.labels.country}>
@@ -177,6 +216,7 @@ function ProfileInfoForm({
                   )}
                   placeholder={messages.placeholders.country}
                   size="large"
+                  disabled
                 />
               </Form.Item>
               <Form.Item name="language" label={messages.labels.language}>
@@ -194,6 +234,7 @@ function ProfileInfoForm({
                   )}
                   placeholder={messages.placeholders.addressLine2}
                   size="large"
+                  disabled
                 />
               </Form.Item>
               <Form.Item name="state" label={messages.labels.state}>
@@ -201,6 +242,7 @@ function ProfileInfoForm({
                   addonAfter={selectAfter("state", publicOrPrivate("state"))}
                   placeholder={messages.placeholders.state}
                   size="large"
+                  disabled
                 />
               </Form.Item>
               <Form.Item name="postal_code" label={messages.labels.zipCode}>
@@ -211,6 +253,7 @@ function ProfileInfoForm({
                   )}
                   placeholder={messages.placeholders.zipCode}
                   size="large"
+                  disabled
                 />
               </Form.Item>
               <Form.Item

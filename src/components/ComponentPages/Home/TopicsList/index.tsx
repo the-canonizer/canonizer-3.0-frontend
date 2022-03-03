@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import useState from "react-usestateref";
 import { useRouter } from "next/router";
-import { Typography, List, Select, Tag, Input, Button } from "antd";
+import { Typography, List, Select, Tag, Input, Button, Popover } from "antd";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store";
@@ -14,6 +14,15 @@ import { LoadingOutlined } from "@ant-design/icons";
 const antIcon = <LoadingOutlined spin />;
 const { Title, Text } = Typography;
 const { Search } = Input;
+
+const infoContent = (
+  <>
+    <div>
+      <Title level={5}>Lorem Ipsum</Title>
+      <p>Duis aute irure dolor in reprehderit.</p>
+    </div>
+  </>
+);
 
 const TopicsList = () => {
   const router = useRouter();
@@ -140,7 +149,9 @@ const TopicsList = () => {
               >
                 <Title level={3}>
                   Canonized list for
-                  <i className="icon-info"></i>
+                  <Popover content={infoContent} placement="right">
+                    <i className="icon-info cursor-pointer"></i>
+                  </Popover>
                 </Title>
                 <Select
                   size="large"

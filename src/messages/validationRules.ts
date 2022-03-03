@@ -52,7 +52,7 @@ export const middleNameRule = {
   rules: [
     {
       max: 100,
-      message: validations.middleName,
+      message: validations.firstNameMax,
     },
   ],
 };
@@ -94,10 +94,6 @@ export const otpRule = {
 export const phoneRule = {
   rules: [
     {
-      required: false,
-      message: validations.valid,
-    },
-    {
       min: 9,
       message: validations.phoneMinLength,
     },
@@ -107,9 +103,11 @@ export const phoneRule = {
     },
     () => ({
       validator(_, value) {
-        let number = +value;
-        if (isNaN(number)) {
-          return Promise.reject(new Error(validations.validPhone));
+        if (value && value !== "") {
+          let number = +value;
+          if (isNaN(number)) {
+            return Promise.reject(new Error(validations.validPhone));
+          }
         }
         return Promise.resolve();
       },
@@ -136,7 +134,7 @@ export const emRule = {
   rules: [
     {
       max: 255,
-      message: validations.middleName,
+      message: validations.emailMax,
     },
     {
       required: true,

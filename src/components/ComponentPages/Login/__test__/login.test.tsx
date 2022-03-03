@@ -16,7 +16,7 @@ const API = {
 describe("Login page", () => {
   it("render heading and labels", () => {
     render(<Login isModal={false} />);
-    let heading = screen.getByRole("heading", { name: /Login to Canonizer/i });
+    let heading = screen.getByRole("heading", { name: /Log in to Canonizer/i });
     expect(heading).toBeInTheDocument();
     expect(screen.getByText(labels.emailPhone)).toBeInTheDocument();
     expect(screen.getByText(labels.password)).toBeInTheDocument();

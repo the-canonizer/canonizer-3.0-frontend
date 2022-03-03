@@ -82,12 +82,12 @@ const LoggedOutHeader = () => {
           </Button>
           <nav className={styles.nav}>
             <ul>
-              {/* <li className={router.asPath === "/browse" ? styles.active : ""}>
-                <Link href="/browse"> Browse </Link>
-              </li> */}
               {mockLinks?.map((item) => {
                 return (
-                  <li key={item.id}>
+                  <li
+                    className={router.asPath === item.link ? styles.active : ""}
+                    key={item.id}
+                  >
                     <Link href={item.link}>{item.linkTitle}</Link>
                   </li>
                 );
@@ -117,7 +117,7 @@ const LoggedOutHeader = () => {
               className={styles.btnLogin}
               onClick={openLoginModal}
             >
-              <i className="icon-user"></i> Login
+              <i className="icon-user"></i> Log in
             </Button>
             <Button
               className={styles.btnRegister}
