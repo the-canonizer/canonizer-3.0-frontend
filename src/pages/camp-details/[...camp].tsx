@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { setTree } from "src/store/slices/treeSlice";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 import { setCanonizedAlgorithms } from "src/store/slices/homePageSlice";
+import { wrapper } from "src/store";
 
 const TopicDetailsPage = ({ camps, algorithms }) => {
   const dispatch = useDispatch();
@@ -44,5 +45,32 @@ export async function getServerSideProps(context) {
     },
   };
 }
+
+// export const getServerSideProps = wrapper.getServerSideProps(({ store }) => {
+//   console.log("/..///////////////////////store", store.getState());
+//   const reqBody = {
+//     topic_num: 88,
+//     asofdate: 1644323333,
+//     algorithm: "mind_experts",
+//     update_all: 0,
+//   };
+//   let camps, algorithms;
+//   async function apiCalls() {
+//     const [canonizedAlgorithms, canonizedCampTrees] = await Promise.all([
+//       getCanonizedAlgorithmsApi(),
+//       getTreesApi(reqBody),
+//     ]);
+//     camps = canonizedCampTrees || [];
+//     algorithms = canonizedAlgorithms || [];
+//   }
+//   apiCalls();
+
+//   return {
+//     props: {
+//       camps,
+//       algorithms,
+//     },
+//   };
+// });
 
 export default TopicDetailsPage;

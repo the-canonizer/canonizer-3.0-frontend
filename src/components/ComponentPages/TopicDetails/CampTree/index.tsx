@@ -59,8 +59,10 @@ const CampTree = (props) => {
   return (
     <Tree
       showLine={true}
-      defaultExpandedKeys={["0-0-0"]}
+      defaultExpandedKeys={["0-0-0", "0-0-1"]}
       onSelect={onSelect}
+      // defaultExpandAll={true}
+      autoExpandParent={true}
       //   treeData={treeData}
     >
       {tree && renderTreeNodes(tree)}

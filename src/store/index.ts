@@ -5,7 +5,7 @@ import Auth from "./slices/authSlice";
 import Tree from "./slices/treeSlice";
 import UiReducer from "./slices/uiSlice";
 
-import { createStore, applyMiddleware } from "redux";
+import { createStore, Store } from "redux";
 
 import { MakeStore, createWrapper, Context } from "next-redux-wrapper";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
@@ -53,9 +53,8 @@ export interface State {
   tree: string;
 }
 
-export const makeStore: MakeStore<any> = (context: Context) =>
-  createStore(persistedReducer);
-
+const makeStore = (context: Context) => createStore(persistedReducer);
 const persistor = persistStore(store);
 export { persistor, store };
-export const wrapper = createWrapper<any>(makeStore, { debug: true });
+
+export const wrapper = createWrapper<Store>(makeStore, { debug: true });
