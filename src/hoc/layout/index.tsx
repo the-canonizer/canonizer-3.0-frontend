@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import {Breadcrumb, Typography } from 'antd';
 import useAuthentication from "../../hooks/isUserAuthenticated";
 import Image from "next/image";
 import LoggedInHeader from "../../components/common/headers/loggedInHeader";
@@ -31,25 +30,6 @@ function Layout(props) {
       <div className={styles.pageWrap}>
         {isLogin ? <LoggedInHeader /> : <LoggedOutHeader />}
         <Spinner>{""}</Spinner>
-        <div className={styles.breadcrumbWrapper}>
-            <Typography.Paragraph className={"mb-0 " + styles.topicTitleStyle}> <span className="bold"> Topic : </span>  Theories of Consciousness </Typography.Paragraph>
-            <div className={styles.breadcrumbLinks}> <span className="bold mr-1"> Camp :  </span>
-              <Breadcrumb>
-                  <Breadcrumb.Item>
-                    <a href=""> Agreement </a>
-                  </Breadcrumb.Item>
-                  <Breadcrumb.Item>
-                    <a href=""> Approachable Via Science </a>
-                  </Breadcrumb.Item>
-                  <Breadcrumb.Item>
-                    <a href=""> Representational Qualia </a>
-                  </Breadcrumb.Item>
-              </Breadcrumb>
-            </div>
-          
-        </div>
-
-
         <div className={styles.contentWrap}>
           <div className={styles.contentArea}>{props.children} </div>
           <aside className={styles.rightSidebar}>
@@ -61,7 +41,6 @@ function Layout(props) {
             />
           </aside>
         </div>
-
         <Footer />
       </div>
     </>
