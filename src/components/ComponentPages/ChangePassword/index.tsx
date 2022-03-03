@@ -30,7 +30,7 @@ const ChangePassword = () => {
       //logout after success
       const logOutRes = await logout();
       if (logOutRes.status_code === 200) {
-        router.push("/");
+        router.push("/login");
       }
     }
   };

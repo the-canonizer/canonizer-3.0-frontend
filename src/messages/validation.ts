@@ -14,7 +14,7 @@ export const validations: ErrorContainer = {
   usernameNotValid: "Input is not valid!",
   password: "Please input your Password!",
   firstName: "Please input your first name!",
-  firstNameMax: "Maximum 100 characters allow!",
+  firstNameMax: "More than 100 characters are not allowed!",
   middleName: "Please input your middle name!",
   lastName: "Please input your last name!",
   phone: "Please input your phone number!",

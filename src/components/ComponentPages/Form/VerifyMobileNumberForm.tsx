@@ -3,6 +3,8 @@ import { Row, Col, Form, Input, Button, Select, Modal } from "antd";
 import styles from "../ProfileInfo/ProfileInfoUI/ProfileInfo.module.scss";
 import messages from "../../../messages";
 import verifyIcon from "../../../../public/images/checkbox-icn.svg";
+import Icon from "@ant-design/icons";
+import Image from "next/image";
 
 const { Option } = Select;
 
@@ -15,6 +17,8 @@ function VerifyMobileNumberForm({
   handleOTPCancel,
   otp,
   handleChangeOTP,
+  toggleVerifyButton,
+  handleMobileNumberChange
 }) {
   let mobileCarrierList =
     mobileCarrier.length > 0 &&
@@ -46,6 +50,8 @@ function VerifyMobileNumberForm({
                 <Input
                   placeholder={messages.placeholders.phoneNumber}
                   size="large"
+                  onChange={handleMobileNumberChange} 
+                  tabIndex={1}
                 />
               </Form.Item>
             </Col>
@@ -70,6 +76,7 @@ function VerifyMobileNumberForm({
                       .toLowerCase()
                       .localeCompare(optionB.children.toLowerCase())
                   }
+                  tabIndex={2}
                 >
                   {mobileCarrierList}
                 </Select>
@@ -77,14 +84,17 @@ function VerifyMobileNumberForm({
             </Col>
           </Row>
           <Form.Item>
-            <Button
-              type="primary"
-              className="ant-btn ant-btn-orange ant-btn-lg"
-              htmlType="submit"
-              data-testid="submitButton"
-            >
-              Verify
-            </Button>
+            {!toggleVerifyButton ?
+              <Button
+                type="primary"
+                className="ant-btn ant-btn-orange ant-btn-lg"
+                htmlType="submit"
+                data-testid="submitButton"
+                tabIndex={3}
+              >
+                Verify
+              </Button>
+              : <div><Icon component={() => (<Image alt="adOne" src={verifyIcon} />)} /> <span> Your phone number is verified</span></div>}
           </Form.Item>
           <Modal
             title=""
@@ -92,7 +102,7 @@ function VerifyMobileNumberForm({
             footer=""
             onCancel={handleOTPCancel}
           >
-            <p>Otp has been sent on your phone number.</p>
+            <p>OTP has been sent on your phone number.</p>
             <Input
               placeholder={messages.placeholders.otp}
               value={otp}
