@@ -26,7 +26,7 @@ function ProfileInfoForm({
   languageList,
   handleAddressChange,
   handleAddressSelect,
-  address
+  address,
 }) {
   const listOfOption = (optionList, algoOrLang): any => {
     let option = [];
@@ -185,11 +185,22 @@ function ProfileInfoForm({
                           {loading && <div>Loading...</div>}
                           {suggestions.map((suggestion, index) => {
                             const style = suggestion.active
-                              ? { backgroundColor: "#f8f8f8", cursor: "pointer" }
-                              : { backgroundColor: "#ffffff", cursor: "pointer" };
+                              ? {
+                                  backgroundColor: "#f8f8f8",
+                                  cursor: "pointer",
+                                }
+                              : {
+                                  backgroundColor: "#ffffff",
+                                  cursor: "pointer",
+                                };
 
                             return (
-                              <div {...getSuggestionItemProps(suggestion, { style })} key={index}>
+                              <div
+                                {...getSuggestionItemProps(suggestion, {
+                                  style,
+                                })}
+                                key={index}
+                              >
                                 {suggestion.description}
                               </div>
                             );
