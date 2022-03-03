@@ -3,13 +3,13 @@ import moment from "moment";
 import {
   Typography,
   Button,
-  Divider,
   Collapse,
   Select,
   Radio,
   Space,
   Input,
   DatePicker,
+  Popover,
 } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
 import { RootState } from "../../../store";
@@ -19,12 +19,14 @@ import {
   setFilterCanonizedTopics,
 } from "../../../store/slices/homePageSlice";
 
-import styles from "./createTopic.module.scss";
+
 
 const { Title, Text, Paragraph, Link } = Typography;
 const { Panel } = Collapse;
 const { Option } = Select;
 const mockDropdownList = ["blind_popularity", "mind_experts"];
+
+import styles from "./topicListFilter.module.scss";
 
 const infoContent = (
   <>
@@ -145,16 +147,17 @@ const CreateTopic = () => {
 
   return (
     <>
-      <div className={styles.wrap}>
-        <Button size="large" className={styles.createBtn}>
-          <i className="icon-topic"></i>Create New Topic
-        </Button>
-        <Divider className={styles.divider} />
+      <div className={styles.card}>
+        <div className={styles.btnsWrap}>
+          <Button size="large" className={styles.btn}>
+            <i className="icon-topic"></i> Create New Topic
+          </Button>
+        </div>
         <Collapse
-          className={styles.accordian}
+          className={`${styles.cardAccordian} topicListFilterCardCollapse`}
           expandIconPosition="right"
           expandIcon={() => (
-            <div className={styles.IconAngle}>
+            <div className={styles.collapseIcon}>
               <i className="icon-angle-up"></i>
             </div>
           )}
@@ -193,13 +196,18 @@ const CreateTopic = () => {
                 onChange={filterOnScore}
                 value={inputFilterValue}
               />
-              <i className="icon-info"></i>
+              <Popover content={infoContent} placement="right">
+                <i className="icon-info"></i>
+              </Popover>
             </div>
           </Panel>
           <Panel
             header={
               <span className={styles.title}>
-                As of <i className="icon-info"></i>
+                As of 
+                <Popover content={asContent} placement="right">
+                  <i className="icon-info"></i>
+                </Popover>
               </span>
             }
             key="2"
@@ -256,7 +264,7 @@ const CreateTopic = () => {
               // showTime={{ defaultValue: moment("00:00:00", "HH:mm:ss") }}
               suffixIcon={<i className="icon-calendar"></i>}
               size={"large"}
-              className={styles.date}
+              className={`${styles.date} w-100`}
               onChange={pickDate}
               inputReadOnly={true}
             />
