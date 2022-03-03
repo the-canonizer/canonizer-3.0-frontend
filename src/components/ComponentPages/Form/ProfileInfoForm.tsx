@@ -8,6 +8,7 @@ import {
   Select,
   DatePicker,
   Radio,
+  Space
 } from "antd";
 import styles from "../ProfileInfo/ProfileInfoUI/ProfileInfo.module.scss";
 import messages from "../../../messages";
@@ -114,10 +115,12 @@ function ProfileInfoForm({
                 />
               </Form.Item>
               <Form.Item name="gender" label={messages.labels.gender} >
-                <Radio.Group name="radiogroup" defaultValue={1}>
-                  <Radio value={0} tabIndex={7}>Male</Radio>
-                  <Radio value={1}>Female</Radio>
-                  <Radio value={2}>Other</Radio>
+                <Radio.Group name="radiogroup" defaultValue={1} >
+                  <Space size="large">
+                    <Radio value={0} tabIndex={7}>Male</Radio>
+                    <Radio value={1}>Female</Radio>
+                    <Radio value={2}>Other</Radio>
+                  </Space>
                 </Radio.Group>
               </Form.Item>
             </Col>
@@ -149,12 +152,28 @@ function ProfileInfoForm({
                   disabled
                 />
               </Form.Item>
-              <Form.Item
-                name="birthday"
-                label="Date of Birth"
-                {...messages.dobRule}
-              >
-                <DatePicker size="large"  tabIndex={8}/>
+              <Form.Item label="Date of Birth">
+                <Input.Group compact>
+                  <Form.Item
+                    name="birthday"
+                    {...messages.dobRule}
+                  >
+                    <DatePicker size="large" tabIndex={8} 
+                    style={{ width: 280 }}
+                    />
+                  </Form.Item>
+                  <Form.Item>
+                    <Select
+                      size="large"
+                      defaultValue={publicOrPrivate("birthday")}
+                      onChange={handleselectAfter("birthday")}
+                      className={styles.select_after}
+                    >
+                      <Option value="private">Private</Option>
+                      <Option value="public">Public</Option>
+                    </Select>
+                  </Form.Item>
+                </Input.Group>
               </Form.Item>
             </Col>
           </Row>
@@ -226,7 +245,7 @@ function ProfileInfoForm({
                 />
               </Form.Item>
               <Form.Item name="language" label={messages.labels.language}>
-                <Select size="large" placeholder="Select a language"  tabIndex={10}>
+                <Select size="large" placeholder="Select a language" tabIndex={10}>
                   {listOfOption(languageList, "languages")}
                 </Select>
               </Form.Item>
