@@ -28,4 +28,24 @@
             margin-right: 24px;
         }
     }
+    .breadcrumbWrapper {
+        display: flex;
+        padding: 24px 24px 0;
+        @media screen and (max-width: 991px) {
+           flex-direction: column;
+        }
+        .topicTitleStyle {
+            margin-right: 50px;
+            font-size: 18px;
+        }
+    }
+    .breadcrumbLinks {
+        display: flex;
+        font-size: 18px;
+        a {
+            font-size: 18px;
+            color: #2E68DB !important;
+            font-weight: 400;
+        }
+    }
 }
