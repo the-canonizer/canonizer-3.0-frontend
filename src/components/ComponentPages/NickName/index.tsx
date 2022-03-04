@@ -16,6 +16,7 @@ const NickName = () => {
   const [nickNameList, setNickNameList] = useState([]);
   const [selectedNickNameList, setSelectedNickNameList] = useState([]);
   const create = "Create";
+  const [disableButton, setDisableButton] = useState(false);
 
   const editNickName = (record) => {
     setAddEditTitle("Edit Nick Name");
@@ -41,6 +42,7 @@ const NickName = () => {
 
   const onAddUpdateNickName = async (values: any) => {
     var formBody = {};
+    setDisableButton(true);
     if (addEditBtn == create) {
       formBody = {
         nick_name: values.nick_name,
@@ -54,6 +56,10 @@ const NickName = () => {
         nickNameForm.resetFields();
         setIsNickNameModalVisible(false);
         message.success(res.message);
+        setDisableButton(false);
+      }
+      else{
+        setDisableButton(false);
       }
     } else {
       formBody = {
@@ -68,6 +74,10 @@ const NickName = () => {
         if (res && res.status_code === 200) {
           setIsNickNameModalVisible(false);
           message.success(res.message);
+          setDisableButton(false);
+        }
+        else{
+          setDisableButton(false);
         }
       }
     }
@@ -96,6 +106,7 @@ const NickName = () => {
       handleNickNameCancel={handleNickNameCancel}
       onAddUpdateNickName={onAddUpdateNickName}
       nickNameList={nickNameList}
+      disableButton={disableButton}
     />
   );
 };

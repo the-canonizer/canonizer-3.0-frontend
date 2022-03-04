@@ -17,11 +17,12 @@ export default function NickNameUI({
   handleNickNameCancel,
   onAddUpdateNickName,
   nickNameList,
+  disableButton
 }) {
   const isDisable = addEditBtn == "Update";
   const columns = [
     {
-      title: "Sr",
+      title: "Sr.No.",
       dataIndex: "srNo",
       width: "5%",
       render: (text, record, index) => index + 1,
@@ -127,6 +128,7 @@ export default function NickNameUI({
                 style={{
                   width: "100%",
                 }}
+                disabled={disableButton}
               >
                 {addEditBtn}
               </Button>
