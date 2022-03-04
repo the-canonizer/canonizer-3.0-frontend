@@ -8,7 +8,7 @@ import {
 } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
-import Styles from "./campTree.module.scss";
+import Styles from "../campTree.module.scss";
 
 const { TreeNode } = Tree;
 const CampTree = (props) => {

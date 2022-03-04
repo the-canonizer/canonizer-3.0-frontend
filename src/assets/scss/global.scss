@@ -1,6 +1,4 @@
 @import "./fonts";
-@import "./utilities";
-
 :root {
   --primary: #4484ce;
   --font-family-asap: "Asap", sans-serif;
@@ -34,6 +32,14 @@ body {
   &-4 {
     margin-bottom: 1.5rem;
   }
+  &-0 {
+    margin-bottom: 0 !important;
+  }
+}
+.mr {
+  &-1 {
+    margin-right: 5px !important;
+  }
 }
 
 .w-100 {
@@ -64,8 +70,40 @@ body {
   }
 }
 
-.cursor-pointer {
-  cursor: pointer;
+.leftSideBar {
+  & + .pageContentWrap {
+    @media screen and (min-width: 992px) {
+      padding: 0 16px;
+    }
+  }
+  &.miniSideBar {
+    @media screen and (min-width: 1200px) {
+      width: 245px;
+      & + .pageContentWrap {
+        width: calc(100% - 245px);
+      }
+    }
+    @media screen and (max-width: 1199px) {
+      width: 100%;
+      & + .pageContentWrap {
+        width: 100%;
+      }
+    }
+  }
+  &:not(.miniSideBar) {
+    @media screen and (min-width: 1200px) {
+      width: 420px;
+      & + .pageContentWrap {
+        width: calc(100% - 420px);
+      }
+    }
+    @media screen and (max-width: 1199px) {
+      width: 100%;
+      & + .pageContentWrap {
+        width: 100%;
+      }
+    }
+  }
 }
 
 .leftSideBar {
@@ -335,13 +373,24 @@ form {
         border-color: #1890ff;
         &::after {
           width: 5px;
-          height: 10px;
+          height: 8px;
           top: 46%;
+          left: 2px;
         }
+      }
+    }
+
+    .ant-checkbox-inner {
+      border-color: #1890ff;
+      &::after {
+        width: 5px;
+        height: 10px;
+        top: 46%;
       }
     }
   }
 }
+
 .ctCard {
   .ant-tree-switcher {
     .anticon {
@@ -403,7 +452,7 @@ form {
       line-height: 1;
       padding: 0;
       h3 {
-        @extend .mb-0;
+        margin-bottom: 0;
       }
     }
     .ant-card-extra {
@@ -413,8 +462,12 @@ form {
   .cardHeader h3 {
     font-size: 20px;
     font-weight: 600;
+    white-space: break-spaces;
+    line-height: 1.2;
     &.heading-color {
       color: #f89d15;
+      display: inline-flex;
+      align-items: center;
     }
   }
   .cardActions {
@@ -423,6 +476,9 @@ form {
     a {
       font-size: inherit;
       font-weight: inherit;
+      display: inline-flex;
+      align-items: center;
+      line-height: 1;
       & + a {
         margin-left: 32px;
       }
@@ -432,19 +488,22 @@ form {
     padding: 20px;
     .ant-typography {
       &:last-child {
-        @extend .mb-0;
+        margin-bottom: 0;
       }
     }
   }
   .ant-card-actions {
     .card-actions-wrapper {
-      @extend .d-flex, .align-items-center, .justify-content-end;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
       padding: 0 20px;
       @media screen and (max-width: 576px) {
         flex-direction: column;
       }
       .ant-btn {
-        @extend .d-flex, .align-items-center;
+        display: flex;
+        align-items: center;
         padding: 11px 25px;
         height: 38px;
         color: #fff;
@@ -475,7 +534,7 @@ form {
     }
   }
   .ant-descriptions-item {
-    @extend .pb-0;
+    padding-bottom: 0;
   }
 }
 .bold {
@@ -543,5 +602,11 @@ form {
         margin-bottom: 0;
       }
     }
+  }
+}
+.pageWrapper {
+  display: flex;
+  @media screen and (max-width: 1199px) {
+    flex-direction: column;
   }
 }

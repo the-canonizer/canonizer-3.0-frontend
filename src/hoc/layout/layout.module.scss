@@ -21,6 +21,7 @@
     .contentArea {
         @media screen and (min-width: 992px) {
             display: flex;
+            flex-wrap: wrap;
             width: calc(100% - 200px);
         }
         @media screen and (min-width: 768px) and (max-width: 991px) {
@@ -28,24 +29,5 @@
             margin-right: 24px;
         }
     }
-    .breadcrumbWrapper {
-        display: flex;
-        padding: 24px 24px 0;
-        @media screen and (max-width: 991px) {
-           flex-direction: column;
-        }
-        .topicTitleStyle {
-            margin-right: 50px;
-            font-size: 18px;
-        }
-    }
-    .breadcrumbLinks {
-        display: flex;
-        font-size: 18px;
-        a {
-            font-size: 18px;
-            color: #2E68DB !important;
-            font-weight: 400;
-        }
-    }
+    
 }
