@@ -36,11 +36,12 @@ const HeadContentAndPermissionComponent = ({
       router.push("/required-permission");
     }
 
-    // set default meta tags
-    if (!meta || Object.keys(meta).length === 0) {
-      setMeta(MetaTags["default"]);
-      console.log("Default Meta tags added");
-    }
+    // set default meta tags if page meta data not added
+    const metaKeys = Object.keys(MetaTags);
+
+    metaKeys.includes(componentName)
+      ? setMeta(MetaTags[componentName])
+      : setMeta(MetaTags["default"]);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [componentName]);

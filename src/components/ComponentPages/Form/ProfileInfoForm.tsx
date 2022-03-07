@@ -8,6 +8,7 @@ import {
   Select,
   DatePicker,
   Radio,
+  Space,
 } from "antd";
 import styles from "../ProfileInfo/ProfileInfoUI/ProfileInfo.module.scss";
 import messages from "../../../messages";
@@ -27,6 +28,7 @@ function ProfileInfoForm({
   handleAddressChange,
   handleAddressSelect,
   address,
+  disableButton,
 }) {
   const listOfOption = (optionList, algoOrLang): any => {
     let option = [];
@@ -79,7 +81,7 @@ function ProfileInfoForm({
         layout="vertical"
         scrollToFirstError
       >
-        <Title level={4}>Personal information</Title>
+        <Title level={4}>Personal Information</Title>
         <div className={styles.section_two}>
           <Row gutter={30}>
             <Col md={12}>
@@ -95,6 +97,7 @@ function ProfileInfoForm({
                   )}
                   placeholder={messages.placeholders.firstName}
                   size="large"
+                  tabIndex={4}
                 />
               </Form.Item>
               <Form.Item
@@ -108,13 +111,18 @@ function ProfileInfoForm({
                     publicOrPrivate("last_name")
                   )}
                   placeholder={messages.placeholders.lastName}
+                  tabIndex={6}
                 />
               </Form.Item>
               <Form.Item name="gender" label={messages.labels.gender}>
                 <Radio.Group name="radiogroup" defaultValue={1}>
-                  <Radio value={0}>Male</Radio>
-                  <Radio value={1}>Female</Radio>
-                  <Radio value={2}>Other</Radio>
+                  <Space size="large">
+                    <Radio value={0} tabIndex={7}>
+                      Male
+                    </Radio>
+                    <Radio value={1}>Female</Radio>
+                    <Radio value={2}>Other</Radio>
+                  </Space>
                 </Radio.Group>
               </Form.Item>
             </Col>
@@ -131,6 +139,7 @@ function ProfileInfoForm({
                   )}
                   placeholder={messages.placeholders.middleName}
                   size="large"
+                  tabIndex={5}
                 />
               </Form.Item>
               <Form.Item
@@ -142,14 +151,30 @@ function ProfileInfoForm({
                   addonAfter={selectAfter("email", publicOrPrivate("email"))}
                   placeholder={messages.placeholders.email}
                   size="large"
+                  disabled
                 />
               </Form.Item>
-              <Form.Item
-                name="birthday"
-                label="Date of Birth"
-                {...messages.dobRule}
-              >
-                <DatePicker size="large" />
+              <Form.Item label="Date of Birth">
+                <Input.Group compact>
+                  <Form.Item name="birthday" {...messages.dobRule}>
+                    <DatePicker
+                      size="large"
+                      tabIndex={8}
+                      style={{ width: 280 }}
+                    />
+                  </Form.Item>
+                  <Form.Item>
+                    <Select
+                      size="large"
+                      defaultValue={publicOrPrivate("birthday")}
+                      onChange={handleselectAfter("birthday")}
+                      className={styles.select_after}
+                    >
+                      <Option value="private">Private</Option>
+                      <Option value="public">Public</Option>
+                    </Select>
+                  </Form.Item>
+                </Input.Group>
               </Form.Item>
             </Col>
           </Row>
@@ -180,6 +205,7 @@ function ProfileInfoForm({
                           {...getInputProps({
                             placeholder: messages.placeholders.addressLine1,
                           })}
+                          tabIndex={9}
                         />
                         <div>
                           {loading && <div>Loading...</div>}
@@ -231,7 +257,11 @@ function ProfileInfoForm({
                 />
               </Form.Item>
               <Form.Item name="language" label={messages.labels.language}>
-                <Select size="large" placeholder="Select a language">
+                <Select
+                  size="large"
+                  placeholder="Select a language"
+                  tabIndex={10}
+                >
                   {listOfOption(languageList, "languages")}
                 </Select>
               </Form.Item>
@@ -274,6 +304,7 @@ function ProfileInfoForm({
                 <Select
                   size="large"
                   placeholder={messages.placeholders.algorithm}
+                  tabIndex={11}
                 >
                   {listOfOption(algorithmList, "algorithms")}
                 </Select>
@@ -287,6 +318,8 @@ function ProfileInfoForm({
             htmlType="submit"
             className="ant-btn ant-btn-orange ant-btn-lg"
             data-testid="submitButton"
+            tabIndex={12}
+            disabled={disableButton}
           >
             Update
           </Button>

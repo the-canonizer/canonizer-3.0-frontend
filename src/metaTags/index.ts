@@ -46,7 +46,7 @@ const MetaTags: MetaTagsTypes = {
     route: "reset-password",
   },
   default: {
-    title: "Default Meta tags for canonizer",
+    title: "Canonizer",
     description: "Default short description for canonizer app",
     route: "/",
   },

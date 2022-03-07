@@ -32,6 +32,10 @@ const ProfileInfo = () => {
   const [algorithmList, setAlgorithmList] = useState([]);
   const [languageList, setLanguageList] = useState([]);
   const [address, setAddress] = useState("");
+  const [mobileVerified, setMobileVerified] = useState(0);
+  const [mobileNumber, setMobileNumber] = useState(0);
+  const [toggleVerifyButton, setToggleVerifyButton] = useState(0);
+  const [disableButton, setDisableButton] = useState(false);
 
   const publicPrivateArray = {
     first_name: "first_name",
@@ -54,6 +58,7 @@ const ProfileInfo = () => {
   };
   //on update profile click
   const onFinish = async (values: any) => {
+    setDisableButton(true);
     //Set Private Public flags
     values.first_name_bit = isPublicOrPrivate(publicPrivateArray.first_name);
     values.last_name_bit = isPublicOrPrivate(publicPrivateArray.last_name);
@@ -77,6 +82,9 @@ const ProfileInfo = () => {
     let res = await dispatch(UpdateUserProfileInfo(values));
     if (res && res.status_code === 200) {
       message.success(res.message);
+      setDisableButton(false);
+    } else {
+      setDisableButton(false);
     }
   };
 
@@ -187,6 +195,13 @@ const ProfileInfo = () => {
       return address;
     }
   };
+  const handleMobileNumberChange = (event) => {
+    if (mobileNumber === event.target.value && mobileVerified) {
+      setToggleVerifyButton(1);
+    } else {
+      setToggleVerifyButton(0);
+    }
+  };
   useEffect(() => {
     async function fetchMobileCarrier() {
       let res = await dispatch(GetMobileCarrier());
@@ -212,22 +227,28 @@ const ProfileInfo = () => {
       let res = await dispatch(GetUserProfileInfo());
       if (res != undefined) {
         if (res.data != undefined) {
+          let profileData = res.data;
           const verify = {
-            phone_number: res.data.phone_number,
+            phone_number: profileData.phone_number,
             mobile_carrier:
-              parseInt(res.data.mobile_carrier).toString() == "NaN"
+              parseInt(profileData.mobile_carrier).toString() == "NaN"
                 ? ""
-                : parseInt(res.data.mobile_carrier),
+                : parseInt(profileData.mobile_carrier),
           };
           formVerify.setFieldsValue(verify);
           //format date for datepicker
-          res.data.birthday = moment(res.data.birthday, "YYYY-MM-DD");
-          form.setFieldsValue(res.data);
-          setPrivateFlags(res.data.private_flags);
+          profileData.birthday = moment(profileData.birthday, "YYYY-MM-DD");
+          form.setFieldsValue(profileData);
+          setPrivateFlags(profileData.private_flags);
           setPrivateList(
-            res.data.private_flags ? res.data.private_flags.split(",") : ""
+            profileData.private_flags
+              ? profileData.private_flags.split(",")
+              : ""
           );
-          setAddress(res.data.address_1);
+          setAddress(profileData.address_1);
+          setMobileNumber(profileData.phone_number);
+          setToggleVerifyButton(profileData.mobile_verified);
+          setMobileVerified(profileData.mobile_verified);
         }
       }
     }
@@ -263,6 +284,9 @@ const ProfileInfo = () => {
       handleAddressChange={handleAddressChange}
       handleAddressSelect={handleAddressSelect}
       address={address}
+      toggleVerifyButton={toggleVerifyButton}
+      handleMobileNumberChange={handleMobileNumberChange}
+      disableButton={disableButton}
     />
   );
 };

@@ -22,6 +22,9 @@ function ProfileInfoUI({
   handleAddressChange,
   handleAddressSelect,
   address,
+  toggleVerifyButton,
+  handleMobileNumberChange,
+  disableButton,
 }) {
   return (
     <section className={styles.profileInfo_wrapper}>
@@ -34,6 +37,8 @@ function ProfileInfoUI({
         handleOTPCancel={handleOTPCancel}
         otp={otp}
         handleChangeOTP={handleChangeOTP}
+        toggleVerifyButton={toggleVerifyButton}
+        handleMobileNumberChange={handleMobileNumberChange}
       />
 
       <ProfileInfoForm
@@ -47,6 +52,7 @@ function ProfileInfoUI({
         handleAddressChange={handleAddressChange}
         handleAddressSelect={handleAddressSelect}
         address={address}
+        disableButton={disableButton}
       />
     </section>
   );
