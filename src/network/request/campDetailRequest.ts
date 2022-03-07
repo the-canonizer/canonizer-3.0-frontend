@@ -26,4 +26,24 @@ export default class TreeRequest extends Request {
       {}
     );
   }
+
+  static getCampStatement(reqBody) {
+    return new Request(
+      K.Network.URL.GetNewsFeed,
+      K.Network.Method.POST,
+      reqBody,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
+
+  static getCampSupportingTree(reqBody) {
+    return new Request(
+      K.Network.URL.GetNewsFeed,
+      K.Network.Method.POST,
+      reqBody,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
 }

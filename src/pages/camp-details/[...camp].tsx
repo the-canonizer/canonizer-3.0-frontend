@@ -23,7 +23,8 @@ const TopicDetailsPage = ({ camps, algorithms }) => {
 
 export async function getServerSideProps(context) {
   const campId = context.query.camp.join(",");
-  console.log(".............////////////////////", campId);
+  const { algo } = context.query;
+  console.log(".............////////////////////", campId, "++++++++", algo);
   const reqBody = {
     topic_num: campId,
     asofdate: 1644323333,

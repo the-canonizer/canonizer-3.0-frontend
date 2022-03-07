@@ -190,7 +190,17 @@ const TopicsList = () => {
             renderItem={(item: any) => (
               <List.Item className={styles.item}>
                 <>
-                  <Link href={`/camp-details/${item?.topic_id}`}>
+                  <Link
+                    // href={`/camp-details/${item?.topic_id}`}
+                    href={{
+                      pathname: `/camp-details/${item?.topic_id}`,
+                      query: {
+                        ...router.query,
+                        filter: "mind-expert",
+                        defaultDate: "3784328657",
+                      },
+                    }}
+                  >
                     <a>
                       <Text className={styles.text}>
                         {isReview

@@ -4,7 +4,9 @@ export const treeSlice = createSlice({
   name: "tree",
   initialState: {
     tree: null,
-    newsFeed: "",
+    newsFeed: null,
+    campStatement: null,
+    campSupportingTree: null,
   },
   reducers: {
     setTree: (state, action) => {
@@ -13,9 +15,16 @@ export const treeSlice = createSlice({
     setNewsFeed: (state, action) => {
       state.newsFeed = action.payload;
     },
+    setCampStatement: (state, action) => {
+      state.campStatement = action.payload;
+    },
+    setCampSupportingTree: (state, action) => {
+      state.campSupportingTree = action.payload;
+    },
   },
 });
 
-export const { setTree, setNewsFeed } = treeSlice.actions;
+export const { setTree, setNewsFeed, setCampStatement, setCampSupportingTree } =
+  treeSlice.actions;
 
 export default treeSlice.reducer;
