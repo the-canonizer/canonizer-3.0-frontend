@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { Row, Col, Button, Form, Input, Typography } from "antd";
@@ -18,7 +17,7 @@ const ResetPassword = () => {
     const email_id = localStorage.getItem("email_id");
 
     let body = {
-      username: email_id,
+      username: email_id?.trim(),
       new_password: values.password,
       confirm_password: values.confirm,
     };
@@ -30,7 +29,7 @@ const ResetPassword = () => {
       localStorage.removeItem("email_id");
     }
 
-    router.push("/");
+    router.push("/login");
   };
   return (
     <div className={styles.wrapper}>
@@ -57,6 +56,7 @@ const ResetPassword = () => {
             onFinish={onFinish}
             layout="vertical"
             scrollToFirstError
+            validateTrigger={["onSubmit", "onBlur"]}
           >
             <Title level={2} className={styles.titles}>
               Create new password

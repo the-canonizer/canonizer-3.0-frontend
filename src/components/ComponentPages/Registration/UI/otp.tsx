@@ -30,6 +30,7 @@ export default function OTPVerify({
         onFinish={onFinish}
         layout="vertical"
         scrollToFirstError
+        validateTrigger={["onSubmit", "onBlur"]}
       >
         <Title level={2} className={styles.titles}>
           Login One Time Verification Code

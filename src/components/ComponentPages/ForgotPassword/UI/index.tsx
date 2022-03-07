@@ -17,6 +17,7 @@ function ForgotPasswordUI({ form, onFinish, isModal, closeModal, isScreen }) {
         onFinish={onFinish}
         layout="vertical"
         scrollToFirstError
+        validateTrigger={["onSubmit", "onBlur"]}
       >
         <Title level={2} className={styles.titles}>
           {isScreen === 1

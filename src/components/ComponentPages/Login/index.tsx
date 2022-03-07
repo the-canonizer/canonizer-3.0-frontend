@@ -25,17 +25,19 @@ const Login = ({ isModal }) => {
 
   const onFinish = async (values: any) => {
     let res = await login(values.username, values.password);
+
     if (res && res.status_code === 200) {
       form.resetFields();
       isModal ? closeModal() : "";
 
       router.push("/");
     }
+
     if (values.remember) {
       localStorage.setItem(
         "rememberme",
         JSON.stringify({
-          username: values.username,
+          username: values.username?.trim(),
           password: values.password,
         })
       );

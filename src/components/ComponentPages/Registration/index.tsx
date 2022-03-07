@@ -54,10 +54,9 @@ const Registration = ({ isModal, isTest = false }) => {
     if (isCaptchaVerified) {
       setFormData(values);
       let formBody = {
-        first_name: values.first_name,
-        middle_name: values.middle_name,
-        last_name: values.last_name,
-        email: values.email,
+        first_name: values.first_name?.trim(),
+        last_name: values.last_name?.trim(),
+        email: values.email?.trim(),
         password: values.password,
         password_confirmation: values.confirm,
         phone_number: values.phone,

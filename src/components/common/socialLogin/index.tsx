@@ -11,7 +11,7 @@ import { socialLogin } from "../../../network/api/userApi";
 
 const { Text } = Typography;
 
-export default function SocialLoginUi({ isModal }) {
+export default function SocialLoginUi({ isNotLogin = false }) {
   // social login api call
   const onSocialLogin = async (provider, e) => {
     e.preventDefault();
@@ -29,7 +29,7 @@ export default function SocialLoginUi({ isModal }) {
   return (
     <div className={styles.wrapper}>
       <Text className={styles.social_login_text}>
-        Login or Signup with social accounts.
+        {`${isNotLogin ? "Signup" : "Login"} with social accounts.`}
       </Text>
       <div className={styles.btn_group}>
         <Button

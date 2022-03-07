@@ -87,6 +87,7 @@ const LoginUi = ({
               onFinish={onFinish}
               layout="vertical"
               scrollToFirstError
+              validateTrigger={["onSubmit", "onBlur"]}
             >
               <FormItem
                 name="username"
