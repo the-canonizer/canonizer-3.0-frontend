@@ -25,7 +25,6 @@ const NetworkConstants = {
     GetMobileCarrier: `${BaseCanonizerApiUrl}/mobile-carrier`,
     SendOTP: `${BaseCanonizerApiUrl}/send-otp`,
     VerifyOTP: `${BaseCanonizerApiUrl}/verify-otp`,
-    GetAlgorithmsList: `${BaseCanonizerApiUrl}/get-algorithms`,
     GetLanguageList: `${BaseCanonizerApiUrl}/get-languages`,
     // Forgot Password
     SendForgotPasswordOTP: `${BaseCanonizerApiUrl}/forgotpassword/sendOtp`,
