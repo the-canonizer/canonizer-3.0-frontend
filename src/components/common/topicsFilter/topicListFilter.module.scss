@@ -23,6 +23,9 @@
 				color: var(--primary);
 				border-color: var(--primary);
 			}
+			& + .btn {
+				margin-top: .5rem;
+			}
 		}
 	}
 }

@@ -1,5 +1,5 @@
 import { Card, Typography, Button  } from "antd";
-import styles from '../campTree.module.scss';
+import styles from '../topicDetails.module.scss';
 
 const { Paragraph, Title } = Typography;
 
@@ -7,7 +7,7 @@ const { Paragraph, Title } = Typography;
 const CampStatementCard = () => {
     return (
         <Card className="canCard" title={<div className="cardHeader"> <h3>Camp Statement</h3></div>} 
-        extra={<div className="cardActions"> <span className="bold">Go live Time </span>: 5/27/2020, 8:04:24 AM </div>}
+        extra={<div className="cardActions"> <span className="font-weight-bold">Go live Time </span>: 5/27/2020, 8:04:24 AM </div>}
         actions={[
           <div className="card-actions-wrapper">
             <Button className="edit-btn-style">Manage/Edit Camp Statement</Button>

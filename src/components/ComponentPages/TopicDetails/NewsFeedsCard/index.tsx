@@ -1,5 +1,5 @@
 import { Card, Typography  } from "antd";
-import styles from '../campTree.module.scss';
+import styles from '../topicDetails.module.scss';
 
 const { Paragraph } = Typography;
 

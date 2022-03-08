@@ -1,4 +1,6 @@
 @import "./fonts";
+
+
 :root {
 	--primary: #4484ce;
 	--font-family-asap: "Asap", sans-serif;
@@ -44,6 +46,12 @@ body {
 .w-100 {
   width: 100% !important;
 }
+.font-weight { 
+	&-bold {
+		font-weight: 700;
+		white-space: nowrap;
+	}
+}
 
 .ratio {
 	position: relative;
@@ -70,40 +78,25 @@ body {
 }
 
 .leftSideBar {
-	& + .pageContentWrap {
-		@media screen and (min-width: 992px) {
-			padding: 0 16px;
-		}
-	}
-	&.miniSideBar {
-		@media screen and (min-width: 1200px) {
-			width: 245px;
-			& + .pageContentWrap {
-				width: calc(100% - 245px);
-			}
-		}
-		@media screen and (max-width: 1199px) {
-			width: 100%;
-			& + .pageContentWrap {
-				width: 100%;
-			}
-		}
-	}
-	&:not(.miniSideBar) {
-		@media screen and (min-width: 1200px) {
-			width: 420px;
-			& + .pageContentWrap {
-				width: calc(100% - 420px);
-			}
-		}
-		@media screen and (max-width: 1199px) {
-			width: 100%;
-			& + .pageContentWrap {
-				width: 100%;
-			}
-		}
-	}
-	
+    & + .pageContentWrap {
+        @media screen and (min-width: 992px) {
+            padding: 0 16px;
+        }
+    }
+    &.miniSideBar {
+        @media screen and (min-width: 992px) {
+            width: 245px;
+            & + .pageContentWrap {
+                width: calc(100% - 245px);
+            }
+        }
+    }
+    &:not(.miniSideBar) {
+        width: 420px;
+        & + .pageContentWrap {
+            width: calc(100% - 420px);
+        }
+    }
 }
 
 
@@ -312,270 +305,4 @@ form {
 		top: 2px;
 	}
 }
-
-
-
-
-// topic details tree list 
-
-.tree-list-item {
-	display: flex;
-}
-.ctCard {
-    .ant-card-head {
-        padding: 20px;
-		.ant-card-head-title {
-			padding: 0;
-			font-weight: 600;
-			font-size: 20px;
-		}
-    }
-	.chexkboxLabel {
-		.ant-checkbox-inner {
-			border-color: #d9d9d9;
-			border-width: 2px;
-			border-radius: 4px;
-			width: 15px;
-			height: 15px;
-		}
-
-		.ant-checkbox-checked {
-			&::after {
-				border-radius: 4px;
-			}
-			
-			.ant-checkbox-inner {
-				border-color: #1890ff;
-				&::after {
-					width: 5px;
-					height: 8px;
-					top: 46%;
-					left: 2px;
-				}
-			}
-		} 
-
-	}
-}
-.ctCard {
-	.ant-tree-switcher {
-	
-		.anticon {
-			font-size: 16px;
-			color: #000000;
-		}
-	}
-	.ant-card-body {
-		padding: 20px;
-	}
-	.ant-tree-treenode {
-		.ant-tree-node-content-wrapper {
-			&:hover {
-				background-color: transparent;
-			}
-		}
-		&.ant-tree-treenode-leaf-last:first-child, &:nth-child(2) {
-			.treeListItemTitle {
-				font-size: 16px;
-				font-weight: 600;
-			}
-		}
-		&.ant-tree-treenode-leaf-last:first-child {
-			.treeListItemTitle {
-				color: #2850BE;
-			}
-		}
-		&:nth-child(2) {
-			.treeListItemTitle {
-				color: #F89D15;
-			}
-		}
-	}
-}
-.canCard {
-	@media screen and (min-width: 1200px) {
-		& + .canCard{
-			margin-top: 18px;
-		}
-	}
-	@media screen and (max-width: 1199px) {
-		margin-top: 18px;
-	}
-	
-	.ant-card-head {
-		padding: 20px;
-		@media screen and (max-width: 576px) {
-			.ant-card-head-wrapper {
-				flex-direction: column;
-    			align-items: flex-start;
-				.ant-card-extra {
-					margin-left: 0;
-					margin-top: .5rem;
-				}
-			}
-		}
-		.ant-card-head-title {
-			line-height: 1;
-			padding: 0;
-			h3 {
-				margin-bottom: 0;
-			}
-		}
-		.ant-card-extra {
-			padding: 0;
-		}
-	}
-	.cardHeader h3 {
-		font-size: 20px;
-		font-weight: 600;
-		white-space: break-spaces;
-		line-height: 1.2;
-		&.heading-color {
-			color: #F89D15;
-			display: inline-flex;
-			align-items: center;
-		}
-	}
-	.cardActions {
-		font-size: 15px;
-		font-weight: 500;
-		a {
-			font-size: inherit;
-			font-weight: inherit;
-			display: inline-flex;
-			align-items: center;
-			line-height: 1;
-			& + a {
-				margin-left: 32px;
-			}
-		}
-		
-	}
-	.ant-card-body {
-		padding: 20px;
-		.ant-typography {
-			&:last-child {
-				margin-bottom: 0
-			}
-		}
-	}
-	.ant-card-actions {
-		.card-actions-wrapper {
-			display: flex;
-			align-items: center;
-			justify-content: flex-end;
-			padding: 0 20px;
-			@media screen and (max-width: 576px) {
-				flex-direction: column;
-			}
-			.ant-btn {
-				display: flex;
-				align-items: center;
-				padding: 11px 25px;
-				height: 38px;
-				color: #fff;
-				font-weight: 500;
-				border: none;
-				@media screen and (min-width: 577px) {
-					& + .ant-btn { 
-						margin-left: 28px;
-					}
-				}
-				@media screen and (max-width: 576px) {
-					width: 100%;
-					justify-content: center;
-					& + .ant-btn { 
-						margin-top: .5rem;
-					}
-				}
-			}
-			.edit-btn-style {
-				background: #12C879;
-			}
-			.camp-btn-style {
-				background: #2E68DB;
-			}
-			.support-btn-style {
-				background: #F89D15
-			}
-	
-		}
-	}
-	.ant-descriptions-item {
-		padding-bottom: 0;
-	}
-}
-.bold { 
-	font-weight: 700;
-	white-space: nowrap;
-}
-.tooltip-icon-style {
-    font-size: 17px;
-    color: #d1d4db;
-	cursor: pointer;
-}
-.can-card-list {
-	padding-left: 23px;
-	.ant-list-item {
-		padding: 0;
-		border: none;
-		 a {
-			 color: #2E68DB;
-		 }
-	}
-}
-.load-more-btn {
-	margin-top: 29px;
-    font-size: 14px;
-    font-weight: 500;
-    padding: 7px 18px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    border-color: #4484CE;
-    color: #4484CE;
-}
-.number-style {
-	padding: 2px 7px;
-	font-size: 11px;
-	color: #fff;
-	background-color: #F89D15;
-	border-radius: 6px;
-	font-weight: 400;
-	margin-left: 10px;
-}
-.ant-breadcrumb-separator {
-	margin: 0;
-	color: #2E68DB;
-	font-size: 18px;
-}
-.ant-descriptions-item-container {
-	@media screen and (max-width: 576px) {
-		flex-direction: column;
-		.ant-descriptions-item-label {
-			margin-top: .5rem;
-		}
-	}
-}
-.ant-descriptions-view {
-	table {
-		@media screen and (max-width: 576px) {
-			tr {
-				margin-bottom: .5rem;
-				.ant-descriptions-item-label {
-					font-weight: 600;
-				}
-			}
-			tr:last-child  {
-				margin-bottom: 0;
-			}
-		}
-	}
-}
-.pageWrapper {
-	display: flex;
-	@media  screen and (max-width: 1199px)  {
-		flex-direction: column;
-	}
-}
-
+@import './topic-details';

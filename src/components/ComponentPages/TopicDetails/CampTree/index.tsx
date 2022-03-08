@@ -4,7 +4,7 @@ import { Tree, Card } from "antd";
 import { CarryOutOutlined, FormOutlined, PlusSquareOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
-import Styles from '../campTree.module.scss';
+import Styles from '../topicDetails.module.scss';
 
 const { TreeNode } = Tree;
 const CampTree = (props) => {

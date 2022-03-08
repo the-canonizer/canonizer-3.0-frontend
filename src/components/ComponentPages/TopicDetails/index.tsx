@@ -1,7 +1,7 @@
 import {  Typography, Breadcrumb   } from "antd";
 import SideBar from "../Home/SideBar";
 import CampStatementCard from "./CampStatementCard";
-import styles from './campTree.module.scss';
+import styles from './topicDetails.module.scss';
 import CampTreeCard from './CampTreeCard'
 import CurrentCampCard from "./CurrentCampCard";
 import CurrentTopicCard from "./CurrentTopicCard";
@@ -10,12 +10,13 @@ import SupportTreeCard from "./SupportTreeCard";
 
 
 
+
 const TopicDetails = (props) => {
   return (
     <>
        <div className={styles.breadcrumbWrapper}>
-            <Typography.Paragraph className={"mb-0 " + styles.topicTitleStyle}> <span className="bold"> Topic : </span>  Theories of Consciousness </Typography.Paragraph>
-            <div className={styles.breadcrumbLinks}> <span className="bold mr-1"> Camp :  </span>
+            <Typography.Paragraph className={"mb-0 " + styles.topicTitleStyle}> <span className="font-weight-bold"> Topic : </span>  <span>Theories of Consciousness</span></Typography.Paragraph>
+            <div className={styles.breadcrumbLinks}> <span className="font-weight-bold mr-1"> Camp :  </span>
               <Breadcrumb>
                   <Breadcrumb.Item>
                     <a href=""> Agreement </a>

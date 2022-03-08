@@ -152,6 +152,9 @@ const CreateTopic = () => {
           <Button size="large" className={styles.btn}>
             <i className="icon-topic"></i> Create New Topic
           </Button>
+          <Button size="large" className={styles.btn}>
+            <i className="icon-camp"></i> Create New Camp 
+          </Button>
         </div>
         <Collapse
           className={`${styles.cardAccordian} topicListFilterCardCollapse`}
