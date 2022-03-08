@@ -45,6 +45,14 @@ export const login = async (email: string, password: string) => {
 
     return res;
   } catch (err) {
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      (err.error.data.status_code === 403 || err.error.data.status_code === 402)
+    ) {
+      return err.error.data;
+    }
     handleError(err);
   }
 };

@@ -92,7 +92,9 @@ const Registration = ({ isModal, isTest = false }) => {
 
     let res = await verifyOtp(formBody);
 
-    setFailedMsg(res.message);
+    if (res) {
+      setFailedMsg(res.message);
+    }
 
     if (res && res.status_code === 200) {
       otpForm.resetFields();

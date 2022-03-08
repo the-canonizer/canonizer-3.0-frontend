@@ -56,7 +56,7 @@ const ResetPassword = () => {
             onFinish={onFinish}
             layout="vertical"
             scrollToFirstError
-            validateTrigger={["onSubmit", "onBlur"]}
+            validateTrigger={messages.formValidationTypes()}
           >
             <Title level={2} className={styles.titles}>
               Create new password

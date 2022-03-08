@@ -71,7 +71,7 @@ function RegistrationUi({
         onFinish={onFinish}
         layout="vertical"
         scrollToFirstError
-        validateTrigger={["onSubmit", "onBlur"]}
+        validateTrigger={messages.formValidationTypes()}
       >
         <Title level={2} className={styles.titles}>
           Register Now on Canonizer
