@@ -6,7 +6,7 @@ import HelpCard from "./HelpCard";
 import RecentActivities from "./RecentActivities";
 
 const HomePageContainer = () => {
-  const { isUserAuthenticated } = useAuthentication();
+  const isUserAuthenticated = useAuthentication();
 
   return (
     <>

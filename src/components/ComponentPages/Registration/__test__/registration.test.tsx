@@ -14,7 +14,7 @@ describe("Registration page", () => {
     });
     expect(heading).toBeInTheDocument();
     expect(screen.getByText("Already have an account?")).toBeVisible();
-    expect(screen.getByText("Login Here")).toBeVisible();
+    expect(screen.getByText("Log in Here")).toBeVisible();
     expect(screen.getByText(labels.firstName)).toBeInTheDocument();
     expect(screen.getByText(labels.middleName)).toBeInTheDocument();
     expect(screen.getByText(labels.lastName)).toBeInTheDocument();
@@ -100,7 +100,7 @@ describe("Registration page", () => {
     await waitFor(() => {
       expect(inputEl).toHaveValue("12345678");
       expect(screen.queryByRole("alert")).toBeInTheDocument();
-      expect(screen.queryByText(validations.phoneLength)).toBeVisible();
+      expect(screen.queryByText(validations.phoneMinLength)).toBeVisible();
     });
   });
 
@@ -122,7 +122,9 @@ describe("Registration page", () => {
       expect(inputEl).toHaveValue("1234567");
       expect(screen.queryByRole("alert")).toBeInTheDocument();
       expect(
-        screen.queryByText("Password Should be like Abc@1234.")
+        screen.queryByText(
+          "Password must be contain small, capital letter, number and special character like Abc@1234."
+        )
       ).toBeVisible();
     });
   });

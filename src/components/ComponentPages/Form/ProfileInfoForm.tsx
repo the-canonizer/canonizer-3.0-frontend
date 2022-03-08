@@ -8,9 +8,11 @@ import {
   Select,
   DatePicker,
   Radio,
+  Space
 } from "antd";
 import styles from "../ProfileInfo/ProfileInfoUI/ProfileInfo.module.scss";
 import messages from "../../../messages";
+import PlacesAutocomplete from "react-places-autocomplete";
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -23,6 +25,10 @@ function ProfileInfoForm({
   privateFlags,
   algorithmList,
   languageList,
+  handleAddressChange,
+  handleAddressSelect,
+  address,
+  disableButton
 }) {
   const listOfOption = (optionList, algoOrLang): any => {
     let option = [];
@@ -75,7 +81,7 @@ function ProfileInfoForm({
         layout="vertical"
         scrollToFirstError
       >
-        <Title level={4}>Personal information</Title>
+        <Title level={4}>Personal Information</Title>
         <div className={styles.section_two}>
           <Row gutter={30}>
             <Col md={12}>
@@ -91,6 +97,7 @@ function ProfileInfoForm({
                   )}
                   placeholder={messages.placeholders.firstName}
                   size="large"
+                  tabIndex={4}
                 />
               </Form.Item>
               <Form.Item
@@ -104,13 +111,17 @@ function ProfileInfoForm({
                     publicOrPrivate("last_name")
                   )}
                   placeholder={messages.placeholders.lastName}
+                  tabIndex={6}
+                  size="large"
                 />
               </Form.Item>
-              <Form.Item name="gender" label={messages.labels.gender}>
-                <Radio.Group name="radiogroup" defaultValue={1}>
-                  <Radio value={0}>Male</Radio>
-                  <Radio value={1}>Female</Radio>
-                  <Radio value={2}>Other</Radio>
+              <Form.Item name="gender" label={messages.labels.gender} >
+                <Radio.Group name="radiogroup" defaultValue={1} >
+                  <Space size="large" className={styles.radio_Btn}>
+                    <Radio value={0} tabIndex={7}>Male</Radio>
+                    <Radio value={1}>Female</Radio>
+                    <Radio value={2}>Other</Radio>
+                  </Space>
                 </Radio.Group>
               </Form.Item>
             </Col>
@@ -127,6 +138,7 @@ function ProfileInfoForm({
                   )}
                   placeholder={messages.placeholders.middleName}
                   size="large"
+                  tabIndex={5}
                 />
               </Form.Item>
               <Form.Item
@@ -138,14 +150,32 @@ function ProfileInfoForm({
                   addonAfter={selectAfter("email", publicOrPrivate("email"))}
                   placeholder={messages.placeholders.email}
                   size="large"
+                  disabled
                 />
               </Form.Item>
-              <Form.Item
-                name="birthday"
-                label="Date of Birth"
-                {...messages.dobRule}
-              >
-                <DatePicker size="large" />
+              <Form.Item label="Date of Birth">
+                <Input.Group compact className={styles.date_picker}>
+                  <Form.Item
+                    name="birthday"
+                    {...messages.dobRule}
+                    className={styles.date_picker_input_item}
+                  >
+                    <DatePicker size="large" tabIndex={8} 
+                    className={styles.date_picker_inner}
+                    />
+                  </Form.Item>
+                  <Form.Item>
+                    <Select
+                      size="large"
+                      defaultValue={publicOrPrivate("birthday")}
+                      onChange={handleselectAfter("birthday")}
+                      className={styles.select_after}
+                    >
+                      <Option value="private">Private</Option>
+                      <Option value="public">Public</Option>
+                    </Select>
+                  </Form.Item>
+                </Input.Group>
               </Form.Item>
             </Col>
           </Row>
@@ -153,20 +183,56 @@ function ProfileInfoForm({
           <Row gutter={30}>
             <Col md={12}>
               <Form.Item name="address_1" label={messages.labels.addressLine1}>
-                <Input
-                  addonAfter={selectAfter(
-                    "address_1",
-                    publicOrPrivate("address_1")
-                  )}
-                  placeholder={messages.placeholders.addressLine1}
-                  size="large"
-                />
+                <div>
+                  <PlacesAutocomplete
+                    value={address}
+                    onChange={handleAddressChange}
+                    onSelect={handleAddressSelect}
+                  >
+                    {({
+                      getInputProps,
+                      suggestions,
+                      getSuggestionItemProps,
+                      loading,
+                    }) => (
+                      <div>
+                        <Input
+                          addonAfter={selectAfter(
+                            "address_1",
+                            publicOrPrivate("address_1")
+                          )}
+                          placeholder={messages.placeholders.addressLine1}
+                          size="large"
+                          {...getInputProps({
+                            placeholder: messages.placeholders.addressLine1,
+                          })}
+                          tabIndex={9}
+                        />
+                        <div>
+                          {loading && <div>Loading...</div>}
+                          {suggestions.map((suggestion, index) => {
+                            const style = suggestion.active
+                              ? { backgroundColor: "#f8f8f8", cursor: "pointer" }
+                              : { backgroundColor: "#ffffff", cursor: "pointer" };
+
+                            return (
+                              <div {...getSuggestionItemProps(suggestion, { style })} key={index}>
+                                {suggestion.description}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </PlacesAutocomplete>
+                </div>
               </Form.Item>
               <Form.Item name="city" label={messages.labels.city}>
                 <Input
                   addonAfter={selectAfter("city", publicOrPrivate("city"))}
                   placeholder={messages.placeholders.city}
                   size="large"
+                  disabled
                 />
               </Form.Item>
               <Form.Item name="country" label={messages.labels.country}>
@@ -177,10 +243,11 @@ function ProfileInfoForm({
                   )}
                   placeholder={messages.placeholders.country}
                   size="large"
+                  disabled
                 />
               </Form.Item>
               <Form.Item name="language" label={messages.labels.language}>
-                <Select size="large" placeholder="Select a language">
+                <Select size="large" placeholder="Select a language" tabIndex={10}>
                   {listOfOption(languageList, "languages")}
                 </Select>
               </Form.Item>
@@ -194,6 +261,7 @@ function ProfileInfoForm({
                   )}
                   placeholder={messages.placeholders.addressLine2}
                   size="large"
+                  disabled
                 />
               </Form.Item>
               <Form.Item name="state" label={messages.labels.state}>
@@ -201,6 +269,7 @@ function ProfileInfoForm({
                   addonAfter={selectAfter("state", publicOrPrivate("state"))}
                   placeholder={messages.placeholders.state}
                   size="large"
+                  disabled
                 />
               </Form.Item>
               <Form.Item name="postal_code" label={messages.labels.zipCode}>
@@ -211,6 +280,7 @@ function ProfileInfoForm({
                   )}
                   placeholder={messages.placeholders.zipCode}
                   size="large"
+                  disabled
                 />
               </Form.Item>
               <Form.Item
@@ -220,6 +290,7 @@ function ProfileInfoForm({
                 <Select
                   size="large"
                   placeholder={messages.placeholders.algorithm}
+                  tabIndex={11}
                 >
                   {listOfOption(algorithmList, "algorithms")}
                 </Select>
@@ -233,6 +304,8 @@ function ProfileInfoForm({
             htmlType="submit"
             className="ant-btn ant-btn-orange ant-btn-lg"
             data-testid="submitButton"
+            tabIndex={12}
+            disabled={disableButton}
           >
             Update
           </Button>

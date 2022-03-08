@@ -195,6 +195,37 @@
     }
   }
 
+  &.resetPassword {
+    box-shadow: none;
+    padding: 0;
+    background-color: #fff;
+    border: none;
+    margin-bottom: 16px;
+    height: calc(100% - 5px);
+
+    form {
+      padding: 0;
+      .titles {
+        color: #1c1b24;
+        font-size: 20px;
+        padding: 20px;
+        border-bottom: 1px solid #f1f1f1;
+      }
+      button {
+        &.login-form-button {
+          margin: 15px 0 0;
+          width: 150px;
+          // padding-left: 40px;
+          // padding-right: 40px;
+        }
+      }
+      .inputRows {
+        padding: 0 10px;
+        width: 100%;
+      }
+    }
+  }
+
   @media screen and (max-width: 767px) {
     form {
       .section_one {
@@ -213,5 +244,30 @@
         }
       }
     }
+  }
+}
+
+.rightSidebar {
+  text-align: center;
+}
+
+.wrap {
+  padding: 23px 12px;
+  border: solid 1px #f0f0f0;
+  background-color: #fff;
+  margin-bottom: 16px;
+}
+
+.createBtn {
+  width: 100%;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #0f2a4d;
+  border: solid 1px #d9d9d9;
+  i {
+    color: #2e68db;
+    margin-right: 8px;
+    position: relative;
+    top: 2px;
   }
 }

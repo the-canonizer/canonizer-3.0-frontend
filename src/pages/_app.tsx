@@ -11,6 +11,7 @@ import HeadContentAndPermissionComponent from "../components/common/headContentA
 import ErrorBoundary from "../hoc/ErrorBoundary";
 
 import GoogleAnalyticScripts from "../firebaseConfig/scripts";
+import scriptLoader from "react-async-script-loader";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -40,5 +41,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 
 const makeStore = () => store;
 const wrapper = createWrapper(makeStore);
-
-export default wrapper.withRedux(MyApp);
+const googleAPIKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY
+//export default wrapper.withRedux(MyApp);
+export default scriptLoader([
+  `https://maps.googleapis.com/maps/api/js?key=${googleAPIKey}&libraries=places`,
+])(wrapper.withRedux(MyApp));

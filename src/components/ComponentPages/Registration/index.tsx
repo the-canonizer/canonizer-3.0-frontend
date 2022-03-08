@@ -33,7 +33,12 @@ const Registration = ({ isModal, isTest = false }) => {
 
   const router = useRouter();
 
-  const closeModal = () => dispatch(hideRegistrationModal());
+  const closeModal = () => {
+    dispatch(hideRegistrationModal());
+
+    isOtpScreen ? otpForm.resetFields() : form.resetFields();
+  };
+
   const openLogin = () => dispatch(showLoginModal());
 
   const onReCAPTCHAChange = async (captchaCode) => {

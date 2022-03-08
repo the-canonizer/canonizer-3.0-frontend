@@ -19,6 +19,12 @@ function ProfileInfoUI({
   privateFlags,
   algorithmList,
   languageList,
+  handleAddressChange,
+  handleAddressSelect,
+  address,
+  toggleVerifyButton,
+  handleMobileNumberChange,
+  disableButton
 }) {
   return (
     <section className={styles.profileInfo_wrapper}>
@@ -31,6 +37,8 @@ function ProfileInfoUI({
         handleOTPCancel={handleOTPCancel}
         otp={otp}
         handleChangeOTP={handleChangeOTP}
+        toggleVerifyButton={toggleVerifyButton}
+        handleMobileNumberChange={handleMobileNumberChange}
       />
 
       <ProfileInfoForm
@@ -41,6 +49,10 @@ function ProfileInfoUI({
         privateFlags={privateFlags}
         algorithmList={algorithmList}
         languageList={languageList}
+        handleAddressChange={handleAddressChange}
+        handleAddressSelect={handleAddressSelect}
+        address={address}
+        disableButton={disableButton}
       />
     </section>
   );

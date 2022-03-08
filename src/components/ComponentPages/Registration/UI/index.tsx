@@ -9,7 +9,6 @@ import styles from "./Registration.module.scss";
 import messages from "../../../../messages";
 import SocialLoginButton from "../../../common/socialLogin";
 import FormItem from "../../../common/formElements";
-import { validations } from "../../../../messages/validation";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -39,11 +38,8 @@ function RegistrationUi({
     <Form.Item name="prefix" noStyle>
       <Select style={{ width: 90 }}>
         {country.map((code) => (
-          <Option
-            value={code.phone_code + " " + code.country_code}
-            key={code.country_code}
-          >
-            {code.phone_code} {code.country_code}
+          <Option value={code.phone_code} key={code.country_code}>
+            {code.phone_code}
           </Option>
         ))}
       </Select>
@@ -71,7 +67,7 @@ function RegistrationUi({
       <Form
         form={form}
         name="registration"
-        initialValues={{ prefix: "+1 US" }}
+        initialValues={{ prefix: "+1" }}
         onFinish={onFinish}
         layout="vertical"
         scrollToFirstError
@@ -200,7 +196,7 @@ function RegistrationUi({
           <Text className={styles.ft_link}>
             Already have an account?{" "}
             <a href="#" onClick={onLoginClick}>
-              Login Here
+              Log in Here
             </a>
           </Text>
         </Form.Item>
