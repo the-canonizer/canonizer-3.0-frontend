@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getTreesApi } from "src/network/api/campDetailApi";
 import { Tree, Card } from "antd";
 import {
@@ -13,6 +13,7 @@ import Styles from "../campTree.module.scss";
 const { TreeNode } = Tree;
 const CampTree = (props) => {
   const [treesList, setTreesList] = useState();
+  const [selectedNodeID, setSelectedNodeID] = useState(null);
   const { tree } = useSelector((state: RootState) => ({
     tree: state?.trees?.tree,
   }));
@@ -32,8 +33,19 @@ const CampTree = (props) => {
   // }, []);
 
   const onSelect = (selectedKeys, info) => {
-    console.log("selected", selectedKeys, info);
+    console.log("selected", selectedKeys);
+    setSelectedNodeID(+selectedKeys.join(""));
+    debugger;
   };
+
+  const treeData = [
+    {
+      title: " <Start new supporting camp here>",
+      key: "0-0",
+
+      children: [],
+    },
+  ];
 
   const renderTreeNodes = (data: any) =>
     Object.keys(data).map((item) => {
@@ -42,20 +54,34 @@ const CampTree = (props) => {
           <TreeNode
             // switcherIcon={<PlusSquareOutlined />}
             title={
-              <div className={"treeListItem " + Styles.treeListItem}>
-                <span
-                  className={"treeListItemTitle " + Styles.treeListItemTitle}
-                >
-                  {" "}
-                  {data[item].title}
-                </span>
-                <span
-                  className={"treeListItemNumber " + Styles.treeListItemNumber}
-                >
-                  {" "}
-                  {data[item].score}
-                </span>
-              </div>
+              <>
+                <div className={"treeListItem " + Styles.treeListItem}>
+                  <span
+                    className={"treeListItemTitle " + Styles.treeListItemTitle}
+                  >
+                    {" "}
+                    {data[item].title}
+                  </span>
+                  <span
+                    className={
+                      "treeListItemNumber " + Styles.treeListItemNumber
+                    }
+                  >
+                    {" "}
+                    {data[item].score}
+                  </span>
+                  {/* {selectedNodeID === data[item].camp_id && <h1>Hello</h1>} */}
+                </div>
+                {selectedNodeID === data[item].camp_id && (
+                  <Tree
+                    defaultExpandedKeys={["0-0-0", "0-0-1"]}
+                    defaultSelectedKeys={["0-0-0", "0-0-1"]}
+                    defaultCheckedKeys={["0-0-0", "0-0-1"]}
+                    treeData={treeData}
+                    showIcon={false}
+                  />
+                )}
+              </>
             }
             key={data[item].camp_id}
             // link={data[item].link}
@@ -65,6 +91,7 @@ const CampTree = (props) => {
             // topic_id={data[item].topic_id}
             // dataRef={data[item]}
           >
+            {/* <TreeNode icon={(props) => null} title={<h1>{`${{data[item].camp_id}}<Hello>`}</h1>} /> */}
             {renderTreeNodes(data[item].children)}
           </TreeNode>
         );

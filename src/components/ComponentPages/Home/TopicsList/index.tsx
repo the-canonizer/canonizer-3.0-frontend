@@ -196,8 +196,8 @@ const TopicsList = () => {
                       pathname: `/camp-details/${item?.topic_id}`,
                       query: {
                         ...router.query,
-                        filter: "mind-expert",
-                        defaultDate: "3784328657",
+                        algo: algorithm,
+                        asof: asofdate,
                       },
                     }}
                   >
