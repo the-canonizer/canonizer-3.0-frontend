@@ -25,7 +25,7 @@ const NetworkConstants = {
     GetMobileCarrier: `${BaseCanonizerApiUrl}/mobile-carrier`,
     SendOTP: `${BaseCanonizerApiUrl}/send-otp`,
     VerifyOTP: `${BaseCanonizerApiUrl}/verify-otp`,
-    GetAlgorithmsList: `${BaseCanonizerApiUrl}/get_algorithms`,
+    GetAlgorithmsList: `${BaseCanonizerApiUrl}/get-algorithms`,
     GetLanguageList: `${BaseCanonizerApiUrl}/get-languages`,
     // Forgot Password
     SendForgotPasswordOTP: `${BaseCanonizerApiUrl}/forgotpassword/sendOtp`,
@@ -43,14 +43,14 @@ const NetworkConstants = {
     // HomePage
     GetCanonizedTopics: `${BaseCanonizerServiceUrl}/api/v1/topic/getAll`,
 
-    GetCanonizedNameSpaces: `${BaseCanonizerApiUrl}/get_all_namespaces`,
-    GetWhatsNewContent: `${BaseCanonizerApiUrl}/get_whats_new_content`,
-    GetCanonizedAlgorithms: `${BaseCanonizerApiUrl}/get_algorithms`,
-    GetCanonizedRecentActivities: `${BaseCanonizerApiUrl}/get_recent_activities`,
+    GetCanonizedNameSpaces: `${BaseCanonizerApiUrl}/get-all-namespaces`,
+    GetWhatsNewContent: `${BaseCanonizerApiUrl}/get-whats-new-content`,
+    GetCanonizedAlgorithms: `${BaseCanonizerApiUrl}/get-algorithms`,
+    GetCanonizedRecentActivities: `${BaseCanonizerApiUrl}/get-recent-activities`,
 
     //footer
 
-    GetFooterSocialLinks: `${BaseCanonizerApiUrl}/get_social_media_links`,
+    GetFooterSocialLinks: `${BaseCanonizerApiUrl}/get-social-media-links`,
   },
   Method: {
     GET: "GET",
