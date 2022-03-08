@@ -15,6 +15,7 @@
     .section_one{
       background-color: #f8f8f8;
       padding: 15px;
+      padding-bottom: 1px;
     }
     .section_one, .section_two {
       width: 100%;
@@ -56,5 +57,26 @@
       width: 100%;
     }
       
+  }
+  .select_after{
+    font-size: 14px;
+    background-color: #fafafa !important;
+  }
+  .select_after .ant-select-selector{
+    background-color: #fafafa !important;
+  }
+  .date_picker{
+    display: flex !important;
+  }
+  .date_picker_input_item
+  {
+    flex:1;
+  }
+  .date_picker_inner
+  {
+    width: 100%;
+  }
+  .radio_Btn{
+    flex-wrap: wrap;
   }
 }
