@@ -1,7 +1,9 @@
 const BaseCanonizerServiceUrl = process.env.NEXT_PUBLIC_BASE_SERVICE_URL;
 const BaseCanonizerApiUrl = process.env.NEXT_PUBLIC_BASE_API_URL;
+const BaseImagesURL = process.env.NEXT_PUBLIC_BASE_IMAGES_URL;
 const NetworkConstants = {
   URL: {
+    BaseImagesURL,
     BaseAPI: BaseCanonizerApiUrl,
     Base: process.env.NEXT_PUBLIC_BASE_URL,
     Timeout: process.env.NEXT_PUBLIC_TIMEOUT,
