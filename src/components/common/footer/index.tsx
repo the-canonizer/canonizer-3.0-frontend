@@ -121,8 +121,6 @@ function Footer() {
                 <Title level={5}>Follow Us</Title>
                 <div className={styles.smIcons}>
                   {socialLinks?.map((social) => {
-                    console.log(K.Network.URL.BaseImagesURL);
-                    debugger;
                     return (
                       <Link key={social.id} href={social.link}>
                         <a target="_blank">
