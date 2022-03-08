@@ -112,11 +112,12 @@ function ProfileInfoForm({
                   )}
                   placeholder={messages.placeholders.lastName}
                   tabIndex={6}
+                  size="large"
                 />
               </Form.Item>
               <Form.Item name="gender" label={messages.labels.gender} >
                 <Radio.Group name="radiogroup" defaultValue={1} >
-                  <Space size="large">
+                  <Space size="large" className={styles.radio_Btn}>
                     <Radio value={0} tabIndex={7}>Male</Radio>
                     <Radio value={1}>Female</Radio>
                     <Radio value={2}>Other</Radio>
@@ -153,13 +154,14 @@ function ProfileInfoForm({
                 />
               </Form.Item>
               <Form.Item label="Date of Birth">
-                <Input.Group compact>
+                <Input.Group compact className={styles.date_picker}>
                   <Form.Item
                     name="birthday"
                     {...messages.dobRule}
+                    className={styles.date_picker_input_item}
                   >
                     <DatePicker size="large" tabIndex={8} 
-                    style={{ width: 280 }}
+                    className={styles.date_picker_inner}
                     />
                   </Form.Item>
                   <Form.Item>
