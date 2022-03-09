@@ -14,6 +14,7 @@ import SupportTreeCard from "./SupportTreeCard";
 
 const TopicDetails = (props) => {
   const didMount = useRef(false);
+  let myRefToCampStatement = useRef(null);
   const { asofdate, asof, algorithm, filterByScore, includeReview } =
     useSelector((state: RootState) => ({
       asofdate: state.homePage?.filterObject?.asofdate,
@@ -36,6 +37,11 @@ const TopicDetails = (props) => {
     }
     getTreeApiCall();
   }, [asofdate, algorithm]);
+
+  const scrollToCampStatement = () => {
+    myRefToCampStatement.current.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <>
       <div className={styles.breadcrumbWrapper}>
@@ -65,9 +71,9 @@ const TopicDetails = (props) => {
         </aside>
 
         <div className="pageContentWrap">
-          <CampTreeCard />
+          <CampTreeCard scrollToCampStatement={scrollToCampStatement} />
           <NewsFeedsCard />
-          <CampStatementCard />
+          <CampStatementCard myRefToCampStatement={myRefToCampStatement} />
           <CurrentTopicCard />
           <CurrentCampCard />
           <SupportTreeCard />

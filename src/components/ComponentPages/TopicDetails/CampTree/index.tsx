@@ -11,7 +11,7 @@ import { RootState } from "src/store";
 import Styles from "../campTree.module.scss";
 
 const { TreeNode } = Tree;
-const CampTree = (props) => {
+const CampTree = ({ scrollToCampStatement }) => {
   const [treesList, setTreesList] = useState();
   const [selectedNodeID, setSelectedNodeID] = useState(null);
   const { tree } = useSelector((state: RootState) => ({
@@ -32,68 +32,48 @@ const CampTree = (props) => {
   //   getTreesApiCallFunc();
   // }, []);
 
-  const onSelect = (selectedKeys, info) => {
+  const onSelect = (selectedKeys) => {
     console.log("selected", selectedKeys);
     setSelectedNodeID(+selectedKeys.join(""));
-    debugger;
+    scrollToCampStatement();
   };
-
-  const treeData = [
-    {
-      title: " <Start new supporting camp here>",
-      key: "0-0",
-
-      children: [],
-    },
-  ];
 
   const renderTreeNodes = (data: any) =>
     Object.keys(data).map((item) => {
       if (data[item].children) {
         return (
-          <TreeNode
-            // switcherIcon={<PlusSquareOutlined />}
-            title={
-              <>
-                <div className={"treeListItem " + Styles.treeListItem}>
-                  <span
-                    className={"treeListItemTitle " + Styles.treeListItemTitle}
-                  >
-                    {" "}
-                    {data[item].title}
-                  </span>
-                  <span
-                    className={
-                      "treeListItemNumber " + Styles.treeListItemNumber
-                    }
-                  >
-                    {" "}
-                    {data[item].score}
-                  </span>
-                  {/* {selectedNodeID === data[item].camp_id && <h1>Hello</h1>} */}
-                </div>
-                {selectedNodeID === data[item].camp_id && (
-                  <Tree
-                    defaultExpandedKeys={["0-0-0", "0-0-1"]}
-                    defaultSelectedKeys={["0-0-0", "0-0-1"]}
-                    defaultCheckedKeys={["0-0-0", "0-0-1"]}
-                    treeData={treeData}
-                    showIcon={false}
-                  />
-                )}
-              </>
-            }
-            key={data[item].camp_id}
-            // link={data[item].link}
-            // review_link={data[item].review_link}
-            // review_title={data[item].review_title}
-            // score={data[item].score}
-            // topic_id={data[item].topic_id}
-            // dataRef={data[item]}
-          >
-            {/* <TreeNode icon={(props) => null} title={<h1>{`${{data[item].camp_id}}<Hello>`}</h1>} /> */}
-            {renderTreeNodes(data[item].children)}
-          </TreeNode>
+          <>
+            <TreeNode
+              title={
+                <>
+                  <div className={"treeListItem " + Styles.treeListItem}>
+                    <span
+                      className={
+                        "treeListItemTitle " + Styles.treeListItemTitle
+                      }
+                    >
+                      {" "}
+                      {data[item].title}
+                    </span>
+                    <span
+                      className={
+                        "treeListItemNumber " + Styles.treeListItemNumber
+                      }
+                    >
+                      {" "}
+                      {data[item].score}
+                    </span>
+                  </div>
+                </>
+              }
+              key={data[item].camp_id}
+            >
+              {selectedNodeID === data[item].camp_id && (
+                <TreeNode title="<Start new supporting camp here>" />
+              )}
+              {renderTreeNodes(data[item].children)}
+            </TreeNode>
+          </>
         );
       }
       return <TreeNode key={data[item].key} {...data[item]} />;
@@ -101,12 +81,10 @@ const CampTree = (props) => {
 
   return (
     <Tree
-      showLine={true}
+      showLine={{ showLeafIcon: false }}
       defaultExpandedKeys={["0-0-0", "0-0-1"]}
       onSelect={onSelect}
-      // defaultExpandAll={true}
       autoExpandParent={true}
-      //   treeData={treeData}
     >
       {tree && renderTreeNodes(tree)}
     </Tree>
