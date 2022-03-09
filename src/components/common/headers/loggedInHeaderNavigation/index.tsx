@@ -72,7 +72,7 @@ const LoggedInHeaderNavigation = () => {
     }
   };
   const menu = (
-    <Menu onClick={onClick} >
+    <Menu onClick={onClick}>
       <Menu.Item key="0">
         <Link href="/settings">Account Settings</Link>
       </Menu.Item>
@@ -124,7 +124,13 @@ const LoggedInHeaderNavigation = () => {
                       >
                         {loggedInUser ? loggedInUser["first_name"] : ""}
                       </a>
-                      <DownOutlined style={{ fontSize: '15px', color: '#fff', cursor: 'pointer' }} />
+                      <DownOutlined
+                        style={{
+                          fontSize: "15px",
+                          color: "#fff",
+                          cursor: "pointer",
+                        }}
+                      />
                     </Space>
                   </Dropdown>
                 </Space>
@@ -142,10 +148,16 @@ const LoggedInHeaderNavigation = () => {
                         className="ant-dropdown-link"
                         onClick={(e) => e.preventDefault()}
                       >
-                        {loggedInUser ? loggedInUser["first_name"] : ""} {" "}
+                        {loggedInUser ? loggedInUser["first_name"] : ""}{" "}
                         {loggedInUser ? loggedInUser["last_name"] : ""}
                       </a>
-                      <DownOutlined style={{ fontSize: '15px', color: '#fff', cursor: 'pointer' }} />
+                      <DownOutlined
+                        style={{
+                          fontSize: "15px",
+                          color: "#fff",
+                          cursor: "pointer",
+                        }}
+                      />
                     </Space>
                   </Dropdown>
                 </Space>

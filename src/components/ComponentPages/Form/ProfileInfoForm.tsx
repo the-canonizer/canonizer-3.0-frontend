@@ -8,7 +8,7 @@ import {
   Select,
   DatePicker,
   Radio,
-  Space
+  Space,
 } from "antd";
 import styles from "../ProfileInfo/ProfileInfoUI/ProfileInfo.module.scss";
 import messages from "../../../messages";
@@ -28,7 +28,7 @@ function ProfileInfoForm({
   handleAddressChange,
   handleAddressSelect,
   address,
-  disableButton
+  disableButton,
 }) {
   const listOfOption = (optionList, algoOrLang): any => {
     let option = [];
@@ -115,10 +115,12 @@ function ProfileInfoForm({
                   size="large"
                 />
               </Form.Item>
-              <Form.Item name="gender" label={messages.labels.gender} >
-                <Radio.Group name="radiogroup" defaultValue={1} >
+              <Form.Item name="gender" label={messages.labels.gender}>
+                <Radio.Group name="radiogroup" defaultValue={1}>
                   <Space size="large" className={styles.radio_Btn}>
-                    <Radio value={0} tabIndex={7}>Male</Radio>
+                    <Radio value={0} tabIndex={7}>
+                      Male
+                    </Radio>
                     <Radio value={1}>Female</Radio>
                     <Radio value={2}>Other</Radio>
                   </Space>
@@ -160,8 +162,10 @@ function ProfileInfoForm({
                     {...messages.dobRule}
                     className={styles.date_picker_input_item}
                   >
-                    <DatePicker size="large" tabIndex={8} 
-                    className={styles.date_picker_inner}
+                    <DatePicker
+                      size="large"
+                      tabIndex={8}
+                      className={styles.date_picker_inner}
                     />
                   </Form.Item>
                   <Form.Item>
@@ -212,11 +216,22 @@ function ProfileInfoForm({
                           {loading && <div>Loading...</div>}
                           {suggestions.map((suggestion, index) => {
                             const style = suggestion.active
-                              ? { backgroundColor: "#f8f8f8", cursor: "pointer" }
-                              : { backgroundColor: "#ffffff", cursor: "pointer" };
+                              ? {
+                                  backgroundColor: "#f8f8f8",
+                                  cursor: "pointer",
+                                }
+                              : {
+                                  backgroundColor: "#ffffff",
+                                  cursor: "pointer",
+                                };
 
                             return (
-                              <div {...getSuggestionItemProps(suggestion, { style })} key={index}>
+                              <div
+                                {...getSuggestionItemProps(suggestion, {
+                                  style,
+                                })}
+                                key={index}
+                              >
                                 {suggestion.description}
                               </div>
                             );
@@ -247,7 +262,11 @@ function ProfileInfoForm({
                 />
               </Form.Item>
               <Form.Item name="language" label={messages.labels.language}>
-                <Select size="large" placeholder="Select a language" tabIndex={10}>
+                <Select
+                  size="large"
+                  placeholder="Select a language"
+                  tabIndex={10}
+                >
                   {listOfOption(languageList, "languages")}
                 </Select>
               </Form.Item>

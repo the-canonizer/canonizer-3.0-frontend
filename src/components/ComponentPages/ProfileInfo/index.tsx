@@ -13,7 +13,11 @@ import {
   GetLanguageList,
 } from "../../../network/api/userApi";
 import ProfileInfoUI from "./ProfileInfoUI";
-import { geocodeByAddress, getLatLng, geocodeByPlaceId } from "react-places-autocomplete";
+import {
+  geocodeByAddress,
+  getLatLng,
+  geocodeByPlaceId,
+} from "react-places-autocomplete";
 
 const ProfileInfo = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -79,8 +83,7 @@ const ProfileInfo = () => {
     if (res && res.status_code === 200) {
       message.success(res.message);
       setDisableButton(false);
-    }
-    else{
+    } else {
       setDisableButton(false);
     }
   };
@@ -138,20 +141,24 @@ const ProfileInfo = () => {
     }
   };
   const handleAddressChange = (value) => {
-    setAddress(value)
-  }
+    setAddress(value);
+  };
 
   const handleAddressSelect = async (address, placeId) => {
-    setAddress(address)
+    setAddress(address);
     const results = await geocodeByAddress(address);
     const [place] = await geocodeByPlaceId(placeId);
-    const { long_name: postalCode = '' } =
-      place.address_components.find(c => c.types.includes('postal_code')) || {};
-    let city = "", country = "", state = "", address2 = "";
+    const { long_name: postalCode = "" } =
+      place.address_components.find((c) => c.types.includes("postal_code")) ||
+      {};
+    let city = "",
+      country = "",
+      state = "",
+      address2 = "";
 
     for (const component of results[0].address_components) {
       const componentType = component.types[0];
-      address2 = getAddress(componentType, address2, component)
+      address2 = getAddress(componentType, address2, component);
       switch (componentType) {
         case "locality": {
           city = component.long_name;
@@ -167,33 +174,34 @@ const ProfileInfo = () => {
         }
       }
     }
-    address2 = address2.replace(/^,|,$/g, '');
+    address2 = address2.replace(/^,|,$/g, "");
 
     form.setFieldsValue({
       ["address_2"]: address2,
       ["postal_code"]: postalCode,
       ["city"]: city,
       ["state"]: state,
-      ["country"]: country
-    })
-
-  }
+      ["country"]: country,
+    });
+  };
   const getAddress = (type, address, component) => {
-    if (type.match(/^political|^neighborhood$|^sublocality_level_2$|^sublocality_level_1$/)) {
+    if (
+      type.match(
+        /^political|^neighborhood$|^sublocality_level_2$|^sublocality_level_1$/
+      )
+    ) {
       return address + ", " + component.long_name;
-    }
-    else {
+    } else {
       return address;
     }
-  }
+  };
   const handleMobileNumberChange = (event) => {
-    if (mobileNumber === event.target.value && mobileVerified ) {
+    if (mobileNumber === event.target.value && mobileVerified) {
       setToggleVerifyButton(1);
-    }
-    else{
+    } else {
       setToggleVerifyButton(0);
     }
-  }
+  };
   useEffect(() => {
     async function fetchMobileCarrier() {
       let res = await dispatch(GetMobileCarrier());
@@ -233,12 +241,14 @@ const ProfileInfo = () => {
           form.setFieldsValue(profileData);
           setPrivateFlags(profileData.private_flags);
           setPrivateList(
-            profileData.private_flags ? profileData.private_flags.split(",") : ""
+            profileData.private_flags
+              ? profileData.private_flags.split(",")
+              : ""
           );
           setAddress(profileData.address_1);
-          setMobileNumber(profileData.phone_number)
+          setMobileNumber(profileData.phone_number);
           setToggleVerifyButton(profileData.mobile_verified);
-          setMobileVerified(profileData.mobile_verified)
+          setMobileVerified(profileData.mobile_verified);
         }
       }
     }
