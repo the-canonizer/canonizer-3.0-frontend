@@ -25,3 +25,23 @@ img {
     padding: 0;
   }
 }
+
+.ant-tabs-card {
+  .ant-tabs-nav-list {
+    .ant-tabs-tab-active {
+      background-color: #eaedf2 !important;
+
+      .ant-tabs-tab-btn {
+        color: #000 !important;
+      }
+    }
+  }
+}
+.ant-tag-hidden {
+  display: none !important;
+}
+.modal_cross {
+  .ant-modal-close {
+    font-size: 17px;
+  }
+}

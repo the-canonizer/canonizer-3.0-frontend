@@ -5,7 +5,10 @@ import ChangePassword from "../ChangePassword";
 import ProfileInfo from "../ProfileInfo";
 import NickName from "../NickName";
 import styles from "./Settings.module.scss";
-
+import SupportedCamps from "../SupportedCamps";
+import { SearchOutlined } from "@ant-design/icons";
+import { Tabs } from "antd";
+const { TabPane } = Tabs;
 const tabList = [
   {
     key: "profile_info",
@@ -19,8 +22,14 @@ const tabList = [
     key: "nick_name",
     tab: "Nick Names",
   },
+  {
+    key: "supported_camps",
+    tab: "Supported Camps",
+  },
 ];
-
+function callback(key) {
+  console.log(key);
+}
 const contentList = {
   profile_info: (
     <p>
@@ -36,6 +45,27 @@ const contentList = {
     <p>
       <NickName />
     </p>
+  ),
+  supported_camps: (
+    <div className={styles.supported_camps}>
+      <div className={styles.search_users}>
+        <SearchOutlined />
+        <input placeholder="Search by topic name" type="text" name="search" />
+      </div>
+      <Tabs onChange={callback} type="card">
+        <TabPane tab="Direct Supported Camps" key="1">
+          <div className={styles.notes}>
+            {" "}
+            Note : To change support order of camp, drag & drop the camp box on
+            your choice position.
+          </div>
+          <SupportedCamps />
+        </TabPane>
+        <TabPane tab="Delegated Support Camps" key="2">
+          Content of Tab Pane 2
+        </TabPane>
+      </Tabs>
+    </div>
   ),
 };
 

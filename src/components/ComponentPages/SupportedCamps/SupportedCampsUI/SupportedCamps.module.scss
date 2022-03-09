@@ -1,0 +1,54 @@
+.RemoveCardSupported {
+  color: #d57272;
+  font-weight: 600;
+  span {
+    margin-right: 5px;
+  }
+}
+
+.tag_btn {
+  border: 1px solid #ddd !important;
+  background: transparent;
+  color: #1890ff;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 4px 12px;
+  display: inline-flex;
+  border-radius: 0;
+  align-items: center;
+  box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%);
+  .count {
+    color: #000 !important;
+  }
+  span {
+    color: #d7d9dc;
+    margin-left: 5px;
+    font-size: 14px;
+  }
+}
+.ant-tag-hidden,
+.ant-tag-hidden {
+  display: none !important;
+}
+.Bluecolor {
+  color: #1890ff;
+}
+.card_heading_title {
+  font-size: 18px;
+  span {
+    color: #1890ff;
+  }
+}
+
+.text_right {
+  text-align: right;
+}
+
+.cardBox_tags {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%);
+}
+.modal_cross {
+  font-size: 17px;
+}
