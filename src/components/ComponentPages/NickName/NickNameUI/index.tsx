@@ -17,7 +17,7 @@ export default function NickNameUI({
   handleNickNameCancel,
   onAddUpdateNickName,
   nickNameList,
-  disableButton
+  disableButton,
 }) {
   const isDisable = addEditBtn == "Update";
   const columns = [

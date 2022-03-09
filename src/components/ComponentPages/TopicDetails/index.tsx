@@ -12,7 +12,7 @@ import CurrentTopicCard from "./CurrentTopicCard";
 import NewsFeedsCard from "./NewsFeedsCard";
 import SupportTreeCard from "./SupportTreeCard";
 
-const TopicDetails = (props) => {
+const TopicDetails = () => {
   const didMount = useRef(false);
   let myRefToCampStatement = useRef(null);
   const { asofdate, asof, algorithm, filterByScore, includeReview } =

@@ -233,7 +233,7 @@ export default class UserRequest extends Request {
     const body = {};
 
     return new Request(
-      K.Network.URL.GetAlgorithmsList,
+      K.Network.URL.GetCanonizedAlgorithms,
       K.Network.Method.GET,
       body,
       K.Network.Header.Type.Json,

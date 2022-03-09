@@ -1,4 +1,4 @@
-import { Button, Card, Checkbox, Typography } from "antd";
+import { Card, Checkbox, Typography } from "antd";
 import styles from "../campTree.module.scss";
 import CampTree from "../CampTree";
 

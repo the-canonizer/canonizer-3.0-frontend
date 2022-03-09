@@ -125,7 +125,7 @@ function Footer() {
                       <Link key={social.id} href={social.link}>
                         <a target="_blank">
                           <Image
-                            src={K.Network.URL.BaseAPI + social.icon}
+                            src={K.Network.URL.BaseImagesURL + social.icon}
                             alt={social.label}
                             width={28}
                             height={28}
