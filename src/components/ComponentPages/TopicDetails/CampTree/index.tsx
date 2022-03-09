@@ -1,0 +1,73 @@
+import React, { useState } from "react";
+import { Tree } from "antd";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
+import Styles from "../campTree.module.scss";
+
+const { TreeNode } = Tree;
+const CampTree = ({ scrollToCampStatement }) => {
+  const [selectedNodeID, setSelectedNodeID] = useState(null);
+  const { tree } = useSelector((state: RootState) => ({
+    tree: state?.trees?.tree,
+  }));
+
+  const onSelect = (selectedKeys) => {
+    console.log("selected", selectedKeys);
+    setSelectedNodeID(+selectedKeys.join(""));
+    scrollToCampStatement();
+  };
+
+  const renderTreeNodes = (data: any) =>
+    Object.keys(data).map((item) => {
+      if (data[item].children) {
+        return (
+          <>
+            <TreeNode
+              title={
+                <>
+                  <div className={"treeListItem " + Styles.treeListItem}>
+                    <span
+                      className={
+                        "treeListItemTitle " + Styles.treeListItemTitle
+                      }
+                    >
+                      {" "}
+                      {data[item].title}
+                    </span>
+                    <span
+                      className={
+                        "treeListItemNumber " + Styles.treeListItemNumber
+                      }
+                    >
+                      {" "}
+                      {data[item].score}
+                    </span>
+                  </div>
+                </>
+              }
+              key={data[item].camp_id}
+            >
+              {selectedNodeID === data[item].camp_id && (
+                <TreeNode title="<Start new supporting camp here>" />
+              )}
+              {renderTreeNodes(data[item].children)}
+            </TreeNode>
+          </>
+        );
+      }
+      return <TreeNode key={data[item].key} {...data[item]} />;
+    });
+
+  return (
+    <Tree
+      showLine={{ showLeafIcon: false }}
+      defaultExpandedKeys={["1"]}
+      onSelect={onSelect}
+      autoExpandParent={true}
+    >
+      {tree && renderTreeNodes(tree)}
+    </Tree>
+  );
+};
+
+export default CampTree;
