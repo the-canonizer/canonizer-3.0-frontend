@@ -19,8 +19,6 @@ import {
   setFilterCanonizedTopics,
 } from "../../../store/slices/homePageSlice";
 
-
-
 const { Title, Text, Paragraph, Link } = Typography;
 const { Panel } = Collapse;
 const { Option } = Select;
@@ -204,7 +202,7 @@ const CreateTopic = () => {
           <Panel
             header={
               <span className={styles.title}>
-                As of 
+                As of
                 <Popover content={asContent} placement="right">
                   <i className="icon-info"></i>
                 </Popover>

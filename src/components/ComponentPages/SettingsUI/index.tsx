@@ -54,7 +54,6 @@ export default function SettingsUI() {
               <i className="icon-topic"></i> Create New Topic
             </Button>
           </div>
-
         </div>
         <div className="siteAds">
           <Image

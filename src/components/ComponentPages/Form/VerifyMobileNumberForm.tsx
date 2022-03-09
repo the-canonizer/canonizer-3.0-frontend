@@ -18,7 +18,7 @@ function VerifyMobileNumberForm({
   otp,
   handleChangeOTP,
   toggleVerifyButton,
-  handleMobileNumberChange
+  handleMobileNumberChange,
 }) {
   let mobileCarrierList =
     mobileCarrier.length > 0 &&
@@ -50,7 +50,7 @@ function VerifyMobileNumberForm({
                 <Input
                   placeholder={messages.placeholders.phoneNumber}
                   size="large"
-                  onChange={handleMobileNumberChange} 
+                  onChange={handleMobileNumberChange}
                   tabIndex={1}
                 />
               </Form.Item>
@@ -84,7 +84,7 @@ function VerifyMobileNumberForm({
             </Col>
           </Row>
           <Form.Item>
-            {!toggleVerifyButton ?
+            {!toggleVerifyButton ? (
               <Button
                 type="primary"
                 className="ant-btn ant-btn-orange ant-btn-lg"
@@ -94,7 +94,14 @@ function VerifyMobileNumberForm({
               >
                 Verify
               </Button>
-              : <div><Icon component={() => (<Image alt="adOne" src={verifyIcon} />)} /> <span> Your phone number is verified</span></div>}
+            ) : (
+              <div>
+                <Icon
+                  component={() => <Image alt="adOne" src={verifyIcon} />}
+                />{" "}
+                <span> Your phone number is verified</span>
+              </div>
+            )}
           </Form.Item>
           <Modal
             title=""

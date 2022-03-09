@@ -57,8 +57,7 @@ const NickName = () => {
         setIsNickNameModalVisible(false);
         message.success(res.message);
         setDisableButton(false);
-      }
-      else{
+      } else {
         setDisableButton(false);
       }
     } else {
@@ -75,8 +74,7 @@ const NickName = () => {
           setIsNickNameModalVisible(false);
           message.success(res.message);
           setDisableButton(false);
-        }
-        else{
+        } else {
           setDisableButton(false);
         }
       }
