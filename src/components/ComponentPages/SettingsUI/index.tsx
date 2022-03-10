@@ -8,6 +8,7 @@ import styles from "./Settings.module.scss";
 import DirectSupportedCamps from "../DirectSupportedCamps";
 import { SearchOutlined } from "@ant-design/icons";
 import { Tabs } from "antd";
+import DelegatedSupportCamps from "../DelegatedSupportCamps";
 
 const { TabPane } = Tabs;
 const tabList = [
@@ -63,7 +64,7 @@ const contentList = {
           <DirectSupportedCamps />
         </TabPane>
         <TabPane tab="Delegated Support Camps" key="2">
-          Content of Tab Pane 2
+          <DelegatedSupportCamps />
         </TabPane>
       </Tabs>
     </div>
