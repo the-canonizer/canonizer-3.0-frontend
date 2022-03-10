@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import SupportedCampsUI from "./SupportedCampsUI";
+import DirectSupportedCampsUI from "./DirectSupportedCampsUI";
+import SupportedCampsUI from "./DirectSupportedCampsUI";
 
-const SupportedCamps = () => {
+const DirectSupportedCamps = () => {
   const [isSupportedCampsModalVisible, setIsSupportedCampsModalVisible] =
     useState(false);
 
@@ -13,7 +14,7 @@ const SupportedCamps = () => {
     setIsSupportedCampsModalVisible(true);
   };
   return (
-    <SupportedCampsUI
+    <DirectSupportedCampsUI
       RemoveCardSupportedCamps={RemoveCardSupportedCamps}
       handleSupportedCampsCancel={handleSupportedCampsCancel}
       isSupportedCampsModalVisible={isSupportedCampsModalVisible}
@@ -21,4 +22,4 @@ const SupportedCamps = () => {
   );
 };
 
-export default SupportedCamps;
+export default DirectSupportedCamps;

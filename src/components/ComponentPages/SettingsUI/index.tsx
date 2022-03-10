@@ -5,9 +5,10 @@ import ChangePassword from "../ChangePassword";
 import ProfileInfo from "../ProfileInfo";
 import NickName from "../NickName";
 import styles from "./Settings.module.scss";
-import SupportedCamps from "../SupportedCamps";
+import DirectSupportedCamps from "../DirectSupportedCamps";
 import { SearchOutlined } from "@ant-design/icons";
 import { Tabs } from "antd";
+
 const { TabPane } = Tabs;
 const tabList = [
   {
@@ -59,7 +60,7 @@ const contentList = {
             Note : To change support order of camp, drag & drop the camp box on
             your choice position.
           </div>
-          <SupportedCamps />
+          <DirectSupportedCamps />
         </TabPane>
         <TabPane tab="Delegated Support Camps" key="2">
           Content of Tab Pane 2

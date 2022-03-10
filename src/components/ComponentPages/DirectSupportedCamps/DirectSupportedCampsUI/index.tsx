@@ -4,8 +4,8 @@ import Icon, {
   CloseCircleOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons";
-import styles from "./SupportedCamps.module.scss";
-export default function SupportedCampsUI({
+import styles from "./DirectSupportedCamps.module.scss";
+export default function DirectSupportedCampsUI({
   RemoveCardSupportedCamps,
   handleSupportedCampsCancel,
   isSupportedCampsModalVisible,
