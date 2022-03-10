@@ -29,7 +29,7 @@ export async function getServerSideProps(context) {
     topic_num: campId,
     asofdate: 1644323333,
     algorithm: algo,
-    update_all: 0,
+    update_all: 1,
   };
 
   const [canonizedAlgorithms, canonizedCampTrees] = await Promise.all([

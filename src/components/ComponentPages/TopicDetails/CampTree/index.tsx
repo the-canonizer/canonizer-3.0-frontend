@@ -8,13 +8,17 @@ const { TreeNode } = Tree;
 const CampTree = ({ scrollToCampStatement }) => {
   const [selectedNodeID, setSelectedNodeID] = useState(null);
   const { tree } = useSelector((state: RootState) => ({
-    tree: state?.trees?.tree,
+    tree: state?.topicDetails?.tree,
   }));
 
   const onSelect = (selectedKeys) => {
     console.log("selected", selectedKeys);
-    setSelectedNodeID(+selectedKeys.join(""));
-    scrollToCampStatement();
+    if (selectedKeys.join() === "custom" || selectedKeys.join() === "") {
+      console.log(".////////");
+    } else {
+      setSelectedNodeID(+selectedKeys.join(""));
+      scrollToCampStatement();
+    }
   };
 
   const renderTreeNodes = (data: any) =>
@@ -48,7 +52,16 @@ const CampTree = ({ scrollToCampStatement }) => {
               key={data[item].camp_id}
             >
               {selectedNodeID === data[item].camp_id && (
-                <TreeNode title="<Start new supporting camp here>" />
+                <TreeNode
+                  key={"custom"}
+                  title={
+                    <p
+                      onClick={() => {
+                        "supportCamp";
+                      }}
+                    >{`<Start new supporting camp here>`}</p>
+                  }
+                />
               )}
               {renderTreeNodes(data[item].children)}
             </TreeNode>

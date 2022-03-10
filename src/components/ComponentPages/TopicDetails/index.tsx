@@ -1,7 +1,12 @@
 import { Typography, Breadcrumb } from "antd";
 import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import { getTreesApi } from "src/network/api/campDetailApi";
+import {
+  getCanonizedCampStatementApi,
+  getNewsFeedApi,
+  getTreesApi,
+  getCanonizedCampSupportingTreeApi,
+} from "src/network/api/campDetailApi";
 import { RootState } from "src/store";
 import SideBar from "../Home/SideBar";
 import CampStatementCard from "./CampStatementCard";
@@ -32,14 +37,29 @@ const TopicDetails = () => {
           algorithm: algorithm,
           update_all: 0,
         };
-        await getTreesApi(reqBody);
+        const result = await getTreesApi(reqBody);
+        debugger;
       } else didMount.current = true;
     }
     getTreeApiCall();
   }, [asofdate, algorithm]);
 
+  const reqBody = {};
+  useEffect(() => {
+    async function getNewsFeedAndCampStatementApiCall() {
+      await getNewsFeedApi(reqBody);
+      await getCanonizedCampStatementApi(reqBody);
+      await getCanonizedCampSupportingTreeApi(reqBody);
+    }
+    getNewsFeedAndCampStatementApiCall();
+  }, []);
+
   const scrollToCampStatement = () => {
     myRefToCampStatement.current.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleLoadMoreSupporters = async () => {
+    await getCanonizedCampSupportingTreeApi(reqBody, true);
   };
 
   return (
@@ -76,7 +96,9 @@ const TopicDetails = () => {
           <CampStatementCard myRefToCampStatement={myRefToCampStatement} />
           <CurrentTopicCard />
           <CurrentCampCard />
-          <SupportTreeCard />
+          <SupportTreeCard
+            handleLoadMoreSupporters={handleLoadMoreSupporters}
+          />
         </div>
       </div>
     </>

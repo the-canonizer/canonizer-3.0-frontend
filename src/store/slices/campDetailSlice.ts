@@ -21,10 +21,21 @@ export const treeSlice = createSlice({
     setCampSupportingTree: (state, action) => {
       state.campSupportingTree = action.payload;
     },
+    pushToCampSupportingTree: (state, action) => {
+      state.campSupportingTree = [
+        ...state.campSupportingTree,
+        ...action.payload,
+      ];
+    },
   },
 });
 
-export const { setTree, setNewsFeed, setCampStatement, setCampSupportingTree } =
-  treeSlice.actions;
+export const {
+  setTree,
+  setNewsFeed,
+  setCampStatement,
+  setCampSupportingTree,
+  pushToCampSupportingTree,
+} = treeSlice.actions;
 
 export default treeSlice.reducer;

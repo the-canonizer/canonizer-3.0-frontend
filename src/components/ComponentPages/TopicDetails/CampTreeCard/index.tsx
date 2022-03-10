@@ -26,7 +26,6 @@ const CampTreeCard = ({ scrollToCampStatement }) => {
         </div>
       }
     >
-      {/* <h1 onClick={() => scrollToCampStatement()}>Scroll</h1> */}
       <CampTree scrollToCampStatement={scrollToCampStatement} />
     </Card>
   );
