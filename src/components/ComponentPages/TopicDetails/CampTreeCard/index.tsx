@@ -4,7 +4,7 @@ import CampTree from "../CampTree";
 
 const { Link } = Typography;
 
-const CampTreeCard = ({ scrollToCampStatement }) => {
+const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
   return (
     <Card
       className={"ctCard canCard " + styles.ctCard}
@@ -26,7 +26,10 @@ const CampTreeCard = ({ scrollToCampStatement }) => {
         </div>
       }
     >
-      <CampTree scrollToCampStatement={scrollToCampStatement} />
+      <CampTree
+        scrollToCampStatement={scrollToCampStatement}
+        getSelectedNode={getSelectedNode}
+      />
     </Card>
   );
 };

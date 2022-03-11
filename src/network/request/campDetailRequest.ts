@@ -20,7 +20,7 @@ export default class TreeRequest extends Request {
   static getNewsFeed(reqBody) {
     return new Request(
       K.Network.URL.GetNewsFeed,
-      K.Network.Method.POST,
+      K.Network.Method.GET,
       reqBody,
       K.Network.Header.Type.Json,
       {}
@@ -29,8 +29,8 @@ export default class TreeRequest extends Request {
 
   static getCampStatement(reqBody) {
     return new Request(
-      K.Network.URL.GetNewsFeed,
-      K.Network.Method.POST,
+      K.Network.URL.GetCampStatement,
+      K.Network.Method.GET,
       reqBody,
       K.Network.Header.Type.Json,
       {}
@@ -39,7 +39,7 @@ export default class TreeRequest extends Request {
 
   static getCampSupportingTree(reqBody) {
     return new Request(
-      K.Network.URL.GetNewsFeed,
+      K.Network.URL.GetSupportingTree,
       K.Network.Method.POST,
       reqBody,
       K.Network.Header.Type.Json,

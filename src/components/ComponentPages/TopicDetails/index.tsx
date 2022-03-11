@@ -38,7 +38,6 @@ const TopicDetails = () => {
           update_all: 0,
         };
         const result = await getTreesApi(reqBody);
-        debugger;
       } else didMount.current = true;
     }
     getTreeApiCall();
@@ -46,9 +45,15 @@ const TopicDetails = () => {
 
   const reqBody = {};
   useEffect(() => {
+    const campStatementReq = {
+      topic_num: 45,
+      camp_num: "1",
+      as_of: "default",
+      as_of_date: "12-12-22",
+    };
     async function getNewsFeedAndCampStatementApiCall() {
       await getNewsFeedApi(reqBody);
-      await getCanonizedCampStatementApi(reqBody);
+      await getCanonizedCampStatementApi(campStatementReq);
       await getCanonizedCampSupportingTreeApi(reqBody);
     }
     getNewsFeedAndCampStatementApiCall();
@@ -60,6 +65,14 @@ const TopicDetails = () => {
 
   const handleLoadMoreSupporters = async () => {
     await getCanonizedCampSupportingTreeApi(reqBody, true);
+  };
+
+  const getSelectedNode = async (nodeKey) => {
+    const req = {
+      topic_num: 45,
+      camp_num: 1,
+    };
+    await getNewsFeedApi(req);
   };
 
   return (
@@ -91,7 +104,10 @@ const TopicDetails = () => {
         </aside>
 
         <div className="pageContentWrap">
-          <CampTreeCard scrollToCampStatement={scrollToCampStatement} />
+          <CampTreeCard
+            scrollToCampStatement={scrollToCampStatement}
+            getSelectedNode={getSelectedNode}
+          />
           <NewsFeedsCard />
           <CampStatementCard myRefToCampStatement={myRefToCampStatement} />
           <CurrentTopicCard />

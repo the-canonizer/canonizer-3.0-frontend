@@ -5,18 +5,22 @@ import { RootState } from "src/store";
 import Styles from "../campTree.module.scss";
 
 const { TreeNode } = Tree;
-const CampTree = ({ scrollToCampStatement }) => {
+const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
   const [selectedNodeID, setSelectedNodeID] = useState(null);
   const { tree } = useSelector((state: RootState) => ({
     tree: state?.topicDetails?.tree,
   }));
 
-  const onSelect = (selectedKeys) => {
+  const onSelect = (
+    selectedKeys,
+    e: { selected; selectedNodes; node; event }
+  ) => {
     console.log("selected", selectedKeys);
     if (selectedKeys.join() === "custom" || selectedKeys.join() === "") {
       console.log(".////////");
     } else {
       setSelectedNodeID(+selectedKeys.join(""));
+      getSelectedNode(+selectedKeys.join());
       scrollToCampStatement();
     }
   };
