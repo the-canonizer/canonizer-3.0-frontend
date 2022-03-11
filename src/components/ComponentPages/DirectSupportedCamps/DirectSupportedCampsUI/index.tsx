@@ -2,9 +2,9 @@ import React from "react";
 import { Card, Modal, Tag, Button, Form } from "antd";
 import Icon, {
   CloseCircleOutlined,
-  PlusCircleOutlined,
 } from "@ant-design/icons";
 import styles from "./DirectSupportedCamps.module.scss";
+import Link from "next/link";
 export default function DirectSupportedCampsUI({
   RemoveCardSupportedCamps,
   handleSupportedCampsCancel,
@@ -25,17 +25,17 @@ export default function DirectSupportedCampsUI({
         size="default"
         title={<CardTitle value="Theories of Consciousness" />}
         extra={
-          <a
-            className={styles.RemoveCardSupported}
-            onClick={() => RemoveCardSupportedCamps()}
-          >
-            <CloseCircleOutlined /> Remove support{" "}
-          </a>
+          <Link href={""}>
+            <a
+              className={styles.RemoveCardSupported}
+              onClick={() => RemoveCardSupportedCamps()}
+            >
+              <CloseCircleOutlined /> Remove support{" "}
+            </a>
+          </Link>
         }
         style={{ width: 760, marginBottom: 16 }}
       >
-        {/* <p>1.{" "} <b style={{"color":"#6A90C4"}}> Next.js</b></p>
-                <p>2. {" "}<b style={{"color":"#6A90C4"}}> React.js</b></p> */}
         <Tag
           className={styles.tag_btn}
           closable
@@ -53,16 +53,17 @@ export default function DirectSupportedCampsUI({
         size="default"
         title={<CardTitle value="Front End Language" />}
         extra={
-          <a
-            className={styles.RemoveCardSupported}
-            onClick={() => RemoveCardSupportedCamps()}
-          >
-            <CloseCircleOutlined /> Remove support{" "}
-          </a>
+          <Link href={""}>
+            <a
+              className={styles.RemoveCardSupported}
+              onClick={() => RemoveCardSupportedCamps()}
+            >
+              <CloseCircleOutlined /> Remove support{" "}
+            </a>
+          </Link>
         }
         style={{ width: 760, marginBottom: 16 }}
       >
-        {/* <p>1.{" "}<b style={{"color":"#6A90C4"}}> Next.js</b></p> */}
         <Tag
           className={styles.tag_btn}
           closable
@@ -90,16 +91,17 @@ export default function DirectSupportedCampsUI({
         size="default"
         title={<CardTitle value="Front End Language" />}
         extra={
-          <a
-            className={styles.RemoveCardSupported}
-            onClick={() => RemoveCardSupportedCamps()}
-          >
-            <CloseCircleOutlined /> Remove support{" "}
-          </a>
+          <Link href={""}>
+            <a
+              className={styles.RemoveCardSupported}
+              onClick={() => RemoveCardSupportedCamps()}
+            >
+              <CloseCircleOutlined /> Remove support{" "}
+            </a>
+          </Link>
         }
         style={{ width: 760, marginBottom: 16 }}
       >
-        {/* <p>1.{" "}<b style={{"color":"#6A90C4"}}> reactJsFrameWork</b></p> */}
 
         <Tag
           className={styles.tag_btn}

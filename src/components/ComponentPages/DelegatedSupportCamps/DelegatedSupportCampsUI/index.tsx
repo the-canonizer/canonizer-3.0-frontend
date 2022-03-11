@@ -4,6 +4,7 @@ import Icon, {
   CloseCircleOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons";
+import Link from "next/link";
 import styles from "./DelegatedSupportedCamps.module.scss";
 export default function DelegatedSupportCampsUI({
   RemoveCardDelegatedSupportedCamps,
@@ -20,6 +21,35 @@ export default function DelegatedSupportCampsUI({
       </div>
     );
   }
+  function CurrentSupportedCamps(props) {
+    return (
+      <>
+        <p>
+            {props.id_data} &nbsp;
+            <span className={styles.Bluecolor}>
+            {props.value}
+            </span>
+          </p>
+      </>
+    );
+  }
+  function SupportedCampsTo (props) {
+    return (
+    <>  
+      <div className={styles.line_height}>
+        <p>
+          Support delegated to:
+          <span className={styles.Bluecolor}>{props.supportedto}</span>
+        </p>
+        <p>
+          Nick Name:
+          <span className={styles.Bluecolor}>{props.NickName}</span>
+        </p>
+      </div>
+    </>    
+    )
+  }  
+  
   return (
     <div>
       <Card
@@ -28,28 +58,26 @@ export default function DelegatedSupportCampsUI({
         size="default"
         title={<CardTitle value="Theories of Consciousness" />}
         extra={
-          <a
-            className={styles.RemoveCardSupported}
-            onClick={() => RemoveCardDelegatedSupportedCamps()}
-          >
-            <CloseCircleOutlined /> Remove support{" "}
-          </a>
+          <Link href={""}>
+            <a
+              className={styles.RemoveCardSupported}
+              onClick={() => RemoveCardDelegatedSupportedCamps()}
+            >
+              <CloseCircleOutlined /> Remove support{" "}
+            </a>
+          </Link>  
         }
         style={{ width: 760, marginBottom: 16 }}
       >
         <div>
           <Row>
             <Col span={12}>
-              <div className={styles.line_height}>
-                <p>
-                  Support delegated to:
-                  <span className={styles.Bluecolor}>Pranav</span>
-                </p>
-                <p>
-                  Nick Name:
-                  <span className={styles.Bluecolor}>rohit_telentelgia</span>
-                </p>
-              </div>
+              <>
+              <SupportedCampsTo
+                supportedto="Pranav"
+                NickName="rohit_telentelgia"
+                />
+              </>
             </Col>
             <div></div>
             <Col span={12} className={styles.border_left}>
@@ -57,23 +85,25 @@ export default function DelegatedSupportCampsUI({
                 <p>
                   <b>Current Supported Camps:</b>
                 </p>
-                <p>
-                  1. &nbsp;
-                  <span className={styles.Bluecolor}>
-                    Technological Improvement
-                  </span>
-                </p>
-                <p>
-                  2. &nbsp;
-                  <span className={styles.Bluecolor}>Digital Identity</span>
-                </p>
-                <p>
-                  3. &nbsp;<span className={styles.Bluecolor}>Prototype</span>
-                </p>
+                <CurrentSupportedCamps 
+                  value="Technological Improvement"
+                  id_data="1."
+                />
+                <CurrentSupportedCamps 
+                  value="Digital Identity"
+                  id_data="2."
+                />
+                <CurrentSupportedCamps 
+                  value="Prototype"
+                  id_data="3."
+                />
               </div>
-              <a className={styles.mrgn_left} onClick={showViewMoreModal}>
-                View More
-              </a>
+              <Link href={""} >
+                <a className={styles.mrgn_left} onClick={showViewMoreModal}>
+                  View More
+                </a>
+              </Link>
+              
             </Col>
           </Row>
         </div>
@@ -84,28 +114,24 @@ export default function DelegatedSupportCampsUI({
         size="default"
         title={<CardTitle value="Front End Language" />}
         extra={
-          <a
-            className={styles.RemoveCardSupported}
-            onClick={() => RemoveCardDelegatedSupportedCamps()}
-          >
-            <CloseCircleOutlined /> Remove support{" "}
-          </a>
+          <Link href={""}>
+            <a
+              className={styles.RemoveCardSupported}
+              onClick={() => RemoveCardDelegatedSupportedCamps()}
+            >
+              <CloseCircleOutlined /> Remove support{" "}
+            </a>
+          </Link> 
         }
         style={{ width: 760, marginBottom: 16 }}
       >
         <div>
           <Row>
             <Col span={12}>
-              <div className={styles.line_height}>
-                <p>
-                  Support delegated to:
-                  <span className={styles.Bluecolor}>Pranav</span>
-                </p>
-                <p>
-                  Nick Name:
-                  <span className={styles.Bluecolor}>rohit_telentelgia</span>
-                </p>
-              </div>
+              <SupportedCampsTo
+                supportedto="Pranav"
+                NickName="rohit_telentelgia"
+                />
             </Col>
             <div></div>
             <Col span={12}>
@@ -113,23 +139,24 @@ export default function DelegatedSupportCampsUI({
                 <p>
                   <b>Current Supported Camps:</b>
                 </p>
-                <p>
-                  1. &nbsp;
-                  <span className={styles.Bluecolor}>
-                    Technological Improvement
-                  </span>
-                </p>
-                <p>
-                  2. &nbsp;
-                  <span className={styles.Bluecolor}>Digital Identity</span>
-                </p>
-                <p>
-                  3. &nbsp;<span className={styles.Bluecolor}>Prototype</span>
-                </p>
+                <CurrentSupportedCamps 
+                  value="Technological Improvement"
+                  id_data="1."
+                />
+                <CurrentSupportedCamps 
+                  value="Digital Identity"
+                  id_data="2."
+                />
+                <CurrentSupportedCamps 
+                  value="Prototype"
+                  id_data="3."
+                />  
               </div>
-              <a className={styles.mrgn_left} onClick={showViewMoreModal}>
-                View More
-              </a>
+              <Link href={""} >
+                <a className={styles.mrgn_left} onClick={showViewMoreModal}>
+                  View More
+                </a>
+              </Link>
             </Col>
           </Row>
         </div>
@@ -209,66 +236,66 @@ export default function DelegatedSupportCampsUI({
         </div>
         <h3 className={styles.marginTop}>List of current supported camps</h3>
         <div className={styles.list_Content}>
-          <p>
-            1. &nbsp;
-            <span className={styles.Bluecolor}>Representational Qualia</span>
-          </p>
-          <p>
-            2. &nbsp;
-            <span className={styles.Bluecolor}>Mind-Brain Identity</span>
-          </p>
-          <p>
-            3. &nbsp;<span className={styles.Bluecolor}>Property Dualism</span>
-          </p>
-          <p>
-            4. &nbsp;
-            <span className={styles.Bluecolor}>Panexperientialism</span>
-          </p>
-          <p>
-            5. &nbsp;
-            <span className={styles.Bluecolor}>Absolute space conscious</span>
-          </p>
-          <p>
-            6. &nbsp;
-            <span className={styles.Bluecolor}>Consciousness fundamental</span>
-          </p>
-          <p>
-            7. &nbsp;
-            <span className={styles.Bluecolor}>Mind is a seprate field</span>
-          </p>
-          <p>
-            8. &nbsp;
-            <span className={styles.Bluecolor}>Spacetime geometry</span>
-          </p>
-          <p>
-            9. &nbsp;<span className={styles.Bluecolor}>Force of phisics</span>
-          </p>
-          <p>
-            10. &nbsp;
-            <span className={styles.Bluecolor}>Multisens Realism</span>
-          </p>
-          <p>
-            11. &nbsp;
-            <span className={styles.Bluecolor}>Qualitative present</span>
-          </p>
-          <p>
-            12. &nbsp;
-            <span className={styles.Bluecolor}>Phisicalistic Idealism</span>
-          </p>
-          <p>
-            13. &nbsp;
-            <span className={styles.Bluecolor}>Holistic Panexperiential</span>
-          </p>
-          <p>
-            14. &nbsp;
-            <span className={styles.Bluecolor}>
-              Functional Property Dualism{" "}
-            </span>
-          </p>
-          <p>
-            15. &nbsp;
-            <span className={styles.Bluecolor}>Comp Functionalism</span>
-          </p>
+          <CurrentSupportedCamps 
+            value="Representational Qualia"
+            id_data="1."
+          />
+          <CurrentSupportedCamps 
+            value="Mind-Brain Identity"
+            id_data="2."
+          />
+          <CurrentSupportedCamps 
+            value="Representational Qualia"
+            id_data="3."
+          />
+          <CurrentSupportedCamps 
+            value="Panexperientialism"
+            id_data="4."
+          />
+          <CurrentSupportedCamps 
+            value="Absolute space conscious"
+            id_data="5."
+          />
+          <CurrentSupportedCamps 
+            value="Consciousness fundamental"
+            id_data="6."
+          />
+          <CurrentSupportedCamps 
+            value="Mind is a seprate field"
+            id_data="7."
+          />
+          <CurrentSupportedCamps 
+            value="Spacetime geometry "
+            id_data="8."
+          />
+          <CurrentSupportedCamps 
+            value="Force of phisics "
+            id_data="9."
+          />
+          <CurrentSupportedCamps 
+            value="Multisens Realism"
+            id_data="10."
+          />
+          <CurrentSupportedCamps 
+            value="Qualitative present"
+            id_data="11."
+          />
+          <CurrentSupportedCamps 
+            value="Phisicalistic Idealism"
+            id_data="12."
+          />
+          <CurrentSupportedCamps 
+            value="Holistic Panexperiential"
+            id_data="13."
+          />
+          <CurrentSupportedCamps 
+            value="Functional Property Dualism"
+            id_data="14."
+          />
+          <CurrentSupportedCamps 
+            value="Comp Functionalism"
+            id_data="15."
+          />
         </div>
       </Modal>
     </div>
