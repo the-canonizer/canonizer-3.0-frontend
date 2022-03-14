@@ -24,6 +24,7 @@ export default function FormData() {
         <Form.Item
           name="text"
           label="Display Text"
+          validateTrigger="onFinish"
           rules={[
             {
               required: true,
@@ -37,6 +38,7 @@ export default function FormData() {
         <Form.Item
           label="Link"
           name="link"
+          validateTrigger="onFinish"
           rules={[
             {
               required: true,
