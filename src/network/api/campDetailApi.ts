@@ -3,6 +3,7 @@ import {
   setNewsFeed,
   setCampStatement,
   setCampSupportingTree,
+  pushToCampSupportingTree,
 } from "../../store/slices/campDetailSlice";
 import NetworkCall from "../networkCall";
 import TreeRequest from "../request/campDetailRequest";
@@ -41,13 +42,72 @@ export const getCanonizedCampStatementApi = async (reqBody) => {
   }
 };
 
-export const getCanonizedCampSupportingTreeApi = async (reqBody) => {
+export const getCanonizedCampSupportingTreeApi = async (
+  reqBody,
+  loadMore = false
+) => {
   try {
-    const supportingTree = await NetworkCall.fetch(
-      TreeRequest.getCampSupportingTree(reqBody)
-    );
-    store.dispatch(setCampSupportingTree(supportingTree));
-    return supportingTree;
+    // const supportingTree = await NetworkCall.fetch(
+    //   TreeRequest.getCampSupportingTree(reqBody)
+    // );
+    const mockSupporters = [
+      {
+        id: 1,
+        name: "1:shahab",
+        score: 1,
+      },
+      {
+        id: 1,
+        name: "Awais",
+        score: 234,
+      },
+      {
+        id: 1,
+        name: "Umair",
+        score: 234,
+      },
+      {
+        id: 1,
+        name: "Shawaiz",
+        score: 234,
+      },
+      {
+        id: 1,
+        name: "Ahmed",
+        score: 234,
+      },
+      {
+        id: 1,
+        name: "Darab",
+        score: 234,
+      },
+      {
+        id: 1,
+        name: "wahaj",
+        score: 234,
+      },
+      {
+        id: 1,
+        name: "shahzaib",
+        score: 234,
+      },
+      {
+        id: 1,
+        name: "Talha",
+        score: 234,
+      },
+      {
+        id: 1,
+        name: "Saim",
+        score: 234,
+      },
+    ];
+    if (loadMore) {
+      store.dispatch(pushToCampSupportingTree(mockSupporters));
+    } else {
+      store.dispatch(setCampSupportingTree(mockSupporters));
+    }
+    return mockSupporters;
   } catch (error) {
     message.error(error.message);
   }

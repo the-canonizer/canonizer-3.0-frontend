@@ -24,7 +24,7 @@ import storage from "redux-persist/lib/storage";
 
 let reducers = combineReducers({
   auth: Auth,
-  trees: Tree,
+  topicDetails: Tree,
   homePage: homePageSlice,
   ui: UiReducer,
 });

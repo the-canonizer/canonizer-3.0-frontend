@@ -5,16 +5,24 @@ import { RootState } from "src/store";
 import Styles from "../campTree.module.scss";
 
 const { TreeNode } = Tree;
-const CampTree = ({ scrollToCampStatement }) => {
+const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
   const [selectedNodeID, setSelectedNodeID] = useState(null);
   const { tree } = useSelector((state: RootState) => ({
-    tree: state?.trees?.tree,
+    tree: state?.topicDetails?.tree,
   }));
 
-  const onSelect = (selectedKeys) => {
+  const onSelect = (
+    selectedKeys,
+    e: { selected; selectedNodes; node; event }
+  ) => {
     console.log("selected", selectedKeys);
-    setSelectedNodeID(+selectedKeys.join(""));
-    scrollToCampStatement();
+    if (selectedKeys.join() === "custom" || selectedKeys.join() === "") {
+      console.log(".////////");
+    } else {
+      setSelectedNodeID(+selectedKeys.join(""));
+      getSelectedNode(+selectedKeys.join());
+      scrollToCampStatement();
+    }
   };
 
   const renderTreeNodes = (data: any) =>
@@ -48,7 +56,16 @@ const CampTree = ({ scrollToCampStatement }) => {
               key={data[item].camp_id}
             >
               {selectedNodeID === data[item].camp_id && (
-                <TreeNode title="<Start new supporting camp here>" />
+                <TreeNode
+                  key={"custom"}
+                  title={
+                    <p
+                      onClick={() => {
+                        "supportCamp";
+                      }}
+                    >{`<Start new supporting camp here>`}</p>
+                  }
+                />
               )}
               {renderTreeNodes(data[item].children)}
             </TreeNode>

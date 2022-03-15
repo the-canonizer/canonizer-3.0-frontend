@@ -1,7 +1,12 @@
 import { Typography, Breadcrumb } from "antd";
 import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import { getTreesApi } from "src/network/api/campDetailApi";
+import {
+  getCanonizedCampStatementApi,
+  getNewsFeedApi,
+  getTreesApi,
+  getCanonizedCampSupportingTreeApi,
+} from "src/network/api/campDetailApi";
 import { RootState } from "src/store";
 import SideBar from "../Home/SideBar";
 import CampStatementCard from "./CampStatementCard";
@@ -32,14 +37,42 @@ const TopicDetails = () => {
           algorithm: algorithm,
           update_all: 0,
         };
-        await getTreesApi(reqBody);
+        const result = await getTreesApi(reqBody);
       } else didMount.current = true;
     }
     getTreeApiCall();
   }, [asofdate, algorithm]);
 
+  const reqBody = {};
+  useEffect(() => {
+    const campStatementReq = {
+      topic_num: 45,
+      camp_num: "1",
+      as_of: "default",
+      as_of_date: "12-12-22",
+    };
+    async function getNewsFeedAndCampStatementApiCall() {
+      await getNewsFeedApi(reqBody);
+      await getCanonizedCampStatementApi(campStatementReq);
+      await getCanonizedCampSupportingTreeApi(reqBody);
+    }
+    getNewsFeedAndCampStatementApiCall();
+  }, []);
+
   const scrollToCampStatement = () => {
     myRefToCampStatement.current.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleLoadMoreSupporters = async () => {
+    await getCanonizedCampSupportingTreeApi(reqBody, true);
+  };
+
+  const getSelectedNode = async (nodeKey) => {
+    const req = {
+      topic_num: 45,
+      camp_num: 1,
+    };
+    await getNewsFeedApi(req);
   };
 
   return (
@@ -71,12 +104,17 @@ const TopicDetails = () => {
         </aside>
 
         <div className="pageContentWrap">
-          <CampTreeCard scrollToCampStatement={scrollToCampStatement} />
+          <CampTreeCard
+            scrollToCampStatement={scrollToCampStatement}
+            getSelectedNode={getSelectedNode}
+          />
           <NewsFeedsCard />
           <CampStatementCard myRefToCampStatement={myRefToCampStatement} />
           <CurrentTopicCard />
           <CurrentCampCard />
-          <SupportTreeCard />
+          <SupportTreeCard
+            handleLoadMoreSupporters={handleLoadMoreSupporters}
+          />
         </div>
       </div>
     </>
