@@ -15,7 +15,7 @@ const RegistrationPage = () => {
   }, []);
 
   return (
-    <GetStartedLayout routeName={"registration"}>
+    <GetStartedLayout initialProps={undefined} initialState={undefined}>
       <Card bordered={false} className="login-container">
         <Registration isModal={false} />
       </Card>

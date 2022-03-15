@@ -14,7 +14,7 @@ const SupportTreeCard = ({ handleLoadMoreSupporters }) => {
       className="canCard"
       title={
         <div className="cardHeader">
-          <h3>Support Tree for "Agreement" Camp</h3>
+          <h3>Support Tree for &quot;Agreement&quot; Camp</h3>
         </div>
       }
       extra={

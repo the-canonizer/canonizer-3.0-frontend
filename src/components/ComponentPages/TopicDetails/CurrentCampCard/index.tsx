@@ -11,7 +11,7 @@ const CurrentCampCard = () => {
         </div>
       }
       actions={[
-        <div className="card-actions-wrapper">
+        <div className="card-actions-wrapper" key="key2">
           <Button className="edit-btn-style">Manage/Edit This Topic</Button>
         </div>,
       ]}

@@ -16,7 +16,7 @@ export default function Settings() {
       );
     }
     return (
-      <GetStartedLayout routeName={"login"}>
+      <GetStartedLayout initialProps={undefined} initialState={undefined}>
         <Card bordered={false} className="login-container">
           <Login isModal={false} />
         </Card>
