@@ -156,11 +156,12 @@ function RegistrationUi({
                 />
               </Form.Item>
             </Col>
-            <Col md={12} style={{ width: "100%" }}>
+            <Col md={{ span: 12, offset: 6 }} style={{ width: "100%" }}>
               <Form.Item
-                label={messages.labels.captcha}
+                // label={messages.labels.captcha}
                 name="captcha"
                 {...messages.getCaptchaRule(showCaptchaError)}
+                style={{ paddingLeft: "15px" }}
               >
                 <div className={styles.captchaCol}>
                   <ReCAPTCHA
