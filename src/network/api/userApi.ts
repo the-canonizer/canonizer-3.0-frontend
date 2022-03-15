@@ -112,28 +112,26 @@ export const verifyOtp = async (values: object) => {
   }
 };
 
-export const changePassword = (values: object) => {
-  return async (dispatch) => {
-    try {
-      let state = store.getState();
-      const { auth } = state;
-      const res = await NetworkCall.fetch(
-        UserRequest.changePassword(values, auth.loggedInUser.token)
-        //UserRequest.changePassword(values, auth.token)
-      );
-      return res;
-    } catch (errors) {
-      let msgs = errors?.error?.data?.error;
-      if (msgs) {
-        let keys = Object.keys(msgs);
-        keys.forEach((key) => {
-          message.error(msgs[key][0]);
-        });
-      } else {
-        message.error(errors?.error?.data?.message);
-      }
+export const changePassword = async (values: object) => {
+  try {
+    let state = store.getState();
+    const { auth } = state;
+    const res = await NetworkCall.fetch(
+      UserRequest.changePassword(values, auth.loggedInUser.token)
+      //UserRequest.changePassword(values, auth.token)
+    );
+    return res;
+  } catch (errors) {
+    let msgs = errors?.error?.data?.error;
+    if (msgs) {
+      let keys = Object.keys(msgs);
+      keys.forEach((key) => {
+        message.error(msgs[key][0]);
+      });
+    } else {
+      message.error(errors?.error?.data?.message);
     }
-  };
+  }
 };
 
 // social login path
@@ -190,123 +188,109 @@ export const getCountryCodes = async () => {
   }
 };
 
-export const GetUserProfileInfo = () => {
-  return async (dispatch) => {
-    let state = store.getState();
-    const { auth } = state;
-    const res = await NetworkCall.fetch(
-      UserRequest.GetUserProfileInfo(auth.loggedInUser.token)
-    )
-      .then((value) => {
-        return value;
-      })
-      .catch((errors) => {
-        handleCatchError(errors);
-      });
-    return res;
-  };
+export const GetUserProfileInfo = async () => {
+  let state = store.getState();
+  const { auth } = state;
+  const res = await NetworkCall.fetch(
+    UserRequest.GetUserProfileInfo(auth.loggedInUser.token)
+  )
+    .then((value) => {
+      return value;
+    })
+    .catch((errors) => {
+      handleCatchError(errors);
+    });
+  return res;
 };
 
-export const UpdateUserProfileInfo = (values: object) => {
-  return async (dispatch) => {
-    let state = store.getState();
-    const { auth } = state;
-    const res = await NetworkCall.fetch(
-      UserRequest.UpdateUserProfileInfo(values, auth.loggedInUser.token)
-    )
-      .then((value) => {
-        return value;
-      })
-      .catch((errors) => {
-        handleCatchError(errors);
-      });
-    return res;
-  };
+export const UpdateUserProfileInfo = async (values: object) => {
+  let state = store.getState();
+  const { auth } = state;
+  const res = await NetworkCall.fetch(
+    UserRequest.UpdateUserProfileInfo(values, auth.loggedInUser.token)
+  )
+    .then((value) => {
+      return value;
+    })
+    .catch((errors) => {
+      handleCatchError(errors);
+    });
+  return res;
 };
 
-export const GetMobileCarrier = () => {
-  return async (dispatch) => {
-    let state = store.getState();
-    const { auth } = state;
-    const res = await NetworkCall.fetch(
-      UserRequest.GetMobileCarrier(auth.loggedInUser.token)
-    )
-      .then((value) => {
-        return value;
-      })
-      .catch((errors) => {
-        handleCatchError(errors);
-      });
-    return res;
-  };
+export const GetMobileCarrier = async () => {
+  let state = store.getState();
+  const { auth } = state;
+  const res = await NetworkCall.fetch(
+    UserRequest.GetMobileCarrier(auth.loggedInUser.token)
+  )
+    .then((value) => {
+      return value;
+    })
+    .catch((errors) => {
+      handleCatchError(errors);
+    });
+  return res;
 };
 
-export const SendOTP = (values: object) => {
-  return async (dispatch) => {
-    let state = store.getState();
-    const { auth } = state;
-    const res = await NetworkCall.fetch(
-      UserRequest.SendOTP(values, auth.loggedInUser.token)
-    )
-      .then((value) => {
-        return value;
-      })
-      .catch((errors) => {
-        handleCatchError(errors);
-      });
-    return res;
-  };
+export const SendOTP = async (values: object) => {
+  let state = store.getState();
+  const { auth } = state;
+  const res = await NetworkCall.fetch(
+    UserRequest.SendOTP(values, auth.loggedInUser.token)
+  )
+    .then((value) => {
+      return value;
+    })
+    .catch((errors) => {
+      handleCatchError(errors);
+    });
+  return res;
 };
 
-export const VerifyOTP = (values: object) => {
-  return async (dispatch) => {
-    let state = store.getState();
-    const { auth } = state;
-    const res = await NetworkCall.fetch(
-      UserRequest.VerifyOTP(values, auth.loggedInUser.token)
-    )
-      .then((value) => {
-        return value;
-      })
-      .catch((errors) => {
-        handleCatchError(errors);
-      });
-    return res;
-  };
+export const VerifyOTP = async (values: object) => {
+  let state = store.getState();
+  const { auth } = state;
+  const res = await NetworkCall.fetch(
+    UserRequest.VerifyOTP(values, auth.loggedInUser.token)
+  )
+    .then((value) => {
+      return value;
+    })
+    .catch((errors) => {
+      handleCatchError(errors);
+    });
+  return res;
 };
 
-export const GetAlgorithmsList = () => {
-  return async (dispatch) => {
-    let state = store.getState();
-    const { auth } = state;
-    const res = await NetworkCall.fetch(
-      UserRequest.GetAlgorithmsList(auth.loggedInUser.token)
-    )
-      .then((value) => {
-        return value;
-      })
-      .catch((errors) => {
-        handleCatchError(errors);
-      });
-    return res;
-  };
+export const GetAlgorithmsList = async () => {
+  let state = store.getState();
+  const { auth } = state;
+  const res = await NetworkCall.fetch(
+    UserRequest.GetAlgorithmsList(auth.loggedInUser.token)
+  )
+    .then((value) => {
+      return value;
+    })
+    .catch((errors) => {
+      handleCatchError(errors);
+    });
+  return res;
 };
 
-export const GetLanguageList = () => {
-  return async (dispatch) => {
-    let state = store.getState();
-    const { auth } = state;
-    const res = await NetworkCall.fetch(
-      UserRequest.GetLanguageList(auth.loggedInUser.token)
-    )
-      .then((value) => {
-        return value;
-      })
-      .catch((errors) => {
-        handleCatchError(errors);
-      });
-    return res;
-  };
+export const GetLanguageList = async () => {
+  let state = store.getState();
+  const { auth } = state;
+  const res = await NetworkCall.fetch(
+    UserRequest.GetLanguageList(auth.loggedInUser.token)
+  )
+    .then((value) => {
+      return value;
+    })
+    .catch((errors) => {
+      handleCatchError(errors);
+    });
+  return res;
 };
 
 // forgot password
