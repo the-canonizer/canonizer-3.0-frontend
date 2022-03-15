@@ -1,4 +1,5 @@
 import { Typography, Breadcrumb } from "antd";
+import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import {
@@ -20,14 +21,12 @@ import SupportTreeCard from "./SupportTreeCard";
 const TopicDetails = () => {
   const didMount = useRef(false);
   let myRefToCampStatement = useRef(null);
-  const { asofdate, asof, algorithm, filterByScore, includeReview } =
-    useSelector((state: RootState) => ({
-      asofdate: state.homePage?.filterObject?.asofdate,
-      asof: state.homePage?.filterObject?.asof,
-      algorithm: state.homePage?.filterObject?.algorithm,
-      filterByScore: state.homePage?.filterObject?.filterByScore,
-      includeReview: state?.homePage?.filterObject?.includeReview,
-    }));
+  const router = useRouter();
+  const { asofdate, algorithm, newsFeed } = useSelector((state: RootState) => ({
+    asofdate: state.homePage?.filterObject?.asofdate,
+    algorithm: state.homePage?.filterObject?.algorithm,
+    newsFeed: state?.topicDetails?.newsFeed,
+  }));
   useEffect(() => {
     async function getTreeApiCall() {
       if (didMount.current) {
@@ -37,7 +36,7 @@ const TopicDetails = () => {
           algorithm: algorithm,
           update_all: 0,
         };
-        const result = await getTreesApi(reqBody);
+        await getTreesApi(reqBody);
       } else didMount.current = true;
     }
     getTreeApiCall();
@@ -108,7 +107,7 @@ const TopicDetails = () => {
             scrollToCampStatement={scrollToCampStatement}
             getSelectedNode={getSelectedNode}
           />
-          <NewsFeedsCard />
+          <NewsFeedsCard newsFeed={newsFeed} />
           <CampStatementCard myRefToCampStatement={myRefToCampStatement} />
           <CurrentTopicCard />
           <CurrentCampCard />
