@@ -5,26 +5,29 @@ import "../assets/fonticons/style.css";
 import "../assets/scss/global.scss";
 import { store } from "../store";
 import { Provider } from "react-redux";
-import type { AppProps } from "next/app";
-import { createWrapper } from "next-redux-wrapper";
 import HeadContentAndPermissionComponent from "../components/common/headContentAndPermisisonCheck";
 import ErrorBoundary from "../hoc/ErrorBoundary";
-
 import GoogleAnalyticScripts from "../firebaseConfig/scripts";
+import React from "react";
+import App, { AppInitialProps } from "next/app";
+import { wrapper } from "../store";
 import scriptLoader from "react-async-script-loader";
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return (
-    <>
-      <GoogleAnalyticScripts />
-      <Provider store={store}>
-        <ErrorBoundary>
-          <HeadContentAndPermissionComponent componentName={Component.name} />
-          <Component {...pageProps} />
-        </ErrorBoundary>
-      </Provider>
-    </>
-  );
+class WrappedApp extends App<AppInitialProps> {
+  public render() {
+    const { Component, pageProps } = this.props;
+    return (
+      <>
+        <GoogleAnalyticScripts />
+        <Provider store={store}>
+          <ErrorBoundary>
+            <HeadContentAndPermissionComponent componentName={Component.name} />
+            <Component {...pageProps} />
+          </ErrorBoundary>
+        </Provider>
+      </>
+    );
+  }
 }
 
 // Only uncomment this method if you have blocking data requirements for
@@ -39,10 +42,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 //   return { ...appProps }
 // }
 
-const makeStore = () => store;
-const wrapper = createWrapper(makeStore);
 const googleAPIKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
 //export default wrapper.withRedux(MyApp);
 export default scriptLoader([
   `https://maps.googleapis.com/maps/api/js?key=${googleAPIKey}&libraries=places`,
-])(wrapper.withRedux(MyApp));
+])(wrapper.withRedux(WrappedApp));

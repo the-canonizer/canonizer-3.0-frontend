@@ -4,7 +4,7 @@ import { RootState } from "../store/index";
 
 const useAuthentication = () => {
   const authenticated = useSelector(
-    (state: RootState) => state.auth.authenticated
+    (state: RootState) => state.auth?.authenticated
   );
   const [isLogin, setIsLogin] = useState(authenticated);
   useEffect(() => {

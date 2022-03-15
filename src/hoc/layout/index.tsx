@@ -1,6 +1,5 @@
 import useAuthentication from "../../hooks/isUserAuthenticated";
 import Image from "next/image";
-
 import LoggedInHeader from "../../components/common/headers/loggedInHeader";
 import LoggedOutHeader from "../../components/common/headers/loggedOutHeader";
 import Spinner from "../../components/common/spinner/spinner";
@@ -16,7 +15,7 @@ function Layout(props) {
         {isLogin ? <LoggedInHeader /> : <LoggedOutHeader />}
         <Spinner>{""}</Spinner>
         <div className={styles.contentWrap}>
-          <div className={styles.contentArea}>{props.children}</div>
+          <div className={styles.contentArea}>{props.children} </div>
           <aside className={styles.rightSidebar}>
             <Image
               src="/images/right-sidebar-adv.png"
@@ -26,7 +25,6 @@ function Layout(props) {
             />
           </aside>
         </div>
-
         <Footer />
       </div>
     </>

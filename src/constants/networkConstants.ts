@@ -1,7 +1,9 @@
 const BaseCanonizerServiceUrl = process.env.NEXT_PUBLIC_BASE_SERVICE_URL;
 const BaseCanonizerApiUrl = process.env.NEXT_PUBLIC_BASE_API_URL;
+const BaseImagesURL = process.env.NEXT_PUBLIC_BASE_IMAGES_URL;
 const NetworkConstants = {
   URL: {
+    BaseImagesURL,
     BaseAPI: BaseCanonizerApiUrl,
     Base: process.env.NEXT_PUBLIC_BASE_URL,
     Timeout: process.env.NEXT_PUBLIC_TIMEOUT,
@@ -25,7 +27,6 @@ const NetworkConstants = {
     GetMobileCarrier: `${BaseCanonizerApiUrl}/mobile-carrier`,
     SendOTP: `${BaseCanonizerApiUrl}/send-otp`,
     VerifyOTP: `${BaseCanonizerApiUrl}/verify-otp`,
-    GetAlgorithmsList: `${BaseCanonizerApiUrl}/get_algorithms`,
     GetLanguageList: `${BaseCanonizerApiUrl}/get-languages`,
     // Forgot Password
     SendForgotPasswordOTP: `${BaseCanonizerApiUrl}/forgotpassword/sendOtp`,
@@ -36,21 +37,22 @@ const NetworkConstants = {
     GetNickNameList: `${BaseCanonizerApiUrl}/get-nick-name-list`,
     UpdateNickName: `${BaseCanonizerApiUrl}/update-nick-name`,
     // Tree
-    GetTree: "/api/unknown",
+    GetTree: `${BaseCanonizerServiceUrl}/api/v1/tree/get`,
+    GetNewsFeed: "get_news_feed",
     // resend otp for registration
     ResendOTPForRegistration: `${BaseCanonizerApiUrl}/user/reSendOtp`,
 
     // HomePage
     GetCanonizedTopics: `${BaseCanonizerServiceUrl}/api/v1/topic/getAll`,
 
-    GetCanonizedNameSpaces: `${BaseCanonizerApiUrl}/get_all_namespaces`,
-    GetWhatsNewContent: `${BaseCanonizerApiUrl}/get_whats_new_content`,
-    GetCanonizedAlgorithms: `${BaseCanonizerApiUrl}/get_algorithms`,
-    GetCanonizedRecentActivities: `${BaseCanonizerApiUrl}/get_recent_activities`,
+    GetCanonizedNameSpaces: `${BaseCanonizerApiUrl}/get-all-namespaces`,
+    GetWhatsNewContent: `${BaseCanonizerApiUrl}/get-whats-new-content`,
+    GetCanonizedAlgorithms: `${BaseCanonizerApiUrl}/get-algorithms`,
+    GetCanonizedRecentActivities: `${BaseCanonizerApiUrl}/get-recent-activities`,
 
     //footer
 
-    GetFooterSocialLinks: `${BaseCanonizerApiUrl}/get_social_media_links`,
+    GetFooterSocialLinks: `${BaseCanonizerApiUrl}/get-social-media-links`,
   },
   Method: {
     GET: "GET",

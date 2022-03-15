@@ -1,4 +1,13 @@
 import homePageSlice from "./slices/homePageSlice";
+
+// // reducers
+import Auth from "./slices/authSlice";
+import Tree from "./slices/campDetailSlice";
+import UiReducer from "./slices/uiSlice";
+
+import { createStore, Store } from "redux";
+
+import { MakeStore, createWrapper, Context } from "next-redux-wrapper";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import {
   FLUSH,
@@ -12,9 +21,6 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 // reducers
-import Auth from "./slices/authSlice";
-import Tree from "./slices/treeSlice";
-import UiReducer from "./slices/uiSlice";
 
 let reducers = combineReducers({
   auth: Auth,
@@ -43,6 +49,12 @@ const store = configureStore({
 });
 export type RootState = ReturnType<typeof reducers>;
 export type AppDispatch = typeof store.dispatch;
+export interface State {
+  tree: string;
+}
 
+const makeStore = (context: Context) => createStore(persistedReducer);
 const persistor = persistStore(store);
 export { persistor, store };
+
+export const wrapper = createWrapper<Store>(makeStore, { debug: true });
