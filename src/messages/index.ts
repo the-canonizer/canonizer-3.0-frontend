@@ -1,52 +1,14 @@
 import { labels } from "./label";
 import { placeholders } from "./placeholder";
 import { patterns, validations } from "./validation";
-import {
-  phoneNumberRule,
-  mobileCarrierRule,
-  firstNameRule,
-  lastNameRule,
-  middleNameRule,
-  emailRule,
-  dobRule,
-  otpRule,
-  phoneRule,
-  getCaptchaRule,
-  emRule,
-  passwordRule,
-  confirmPasswordRule,
-  usernameRule,
-  userPassRule,
-  newPasswordRule,
-  confirmNewPasswordRule,
-  currentPasswordRule,
-  nickNameRule,
-} from "./validationRules";
+import * as rules from "./validationRules";
 
 const messages = {
   labels,
   patterns,
   placeholders,
   validations,
-  phoneNumberRule,
-  mobileCarrierRule,
-  firstNameRule,
-  lastNameRule,
-  middleNameRule,
-  emailRule,
-  dobRule,
-  otpRule,
-  phoneRule,
-  getCaptchaRule,
-  emRule,
-  passwordRule,
-  confirmPasswordRule,
-  usernameRule,
-  userPassRule,
-  newPasswordRule,
-  confirmNewPasswordRule,
-  currentPasswordRule,
-  nickNameRule,
+  ...rules,
 };
 
 export default messages;
