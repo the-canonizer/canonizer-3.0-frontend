@@ -20,7 +20,7 @@ const CampStatementCard = ({ myRefToCampStatement }) => {
         </div>
       }
       actions={[
-        <div className="card-actions-wrapper">
+        <div className="card-actions-wrapper" key="key1">
           <Button className="edit-btn-style">Manage/Edit Camp Statement</Button>
           <Button className="camp-btn-style">Camp Forum</Button>
         </div>,

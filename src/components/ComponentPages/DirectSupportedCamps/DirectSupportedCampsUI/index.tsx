@@ -1,8 +1,6 @@
 import React from "react";
 import { Card, Modal, Tag, Button, Form } from "antd";
-import Icon, {
-  CloseCircleOutlined,
-} from "@ant-design/icons";
+import Icon, { CloseCircleOutlined } from "@ant-design/icons";
 import styles from "./DirectSupportedCamps.module.scss";
 import Link from "next/link";
 export default function DirectSupportedCampsUI({
@@ -13,7 +11,7 @@ export default function DirectSupportedCampsUI({
   function CardTitle(props) {
     return (
       <div className={styles.card_heading_title}>
-        For topics<span> "{props.value}"</span>
+        For topics<span> &quot;{props.value}&quot;</span>
       </div>
     );
   }
@@ -102,7 +100,6 @@ export default function DirectSupportedCampsUI({
         }
         style={{ width: 760, marginBottom: 16 }}
       >
-
         <Tag
           className={styles.tag_btn}
           closable
@@ -138,7 +135,7 @@ export default function DirectSupportedCampsUI({
           <Form.Item style={{ marginBottom: "0px" }}>
             <p>
               Your Support for all the capps under the Topics{" "}
-              <span className={styles.Bluecolor}>"Front End Language"</span>{" "}
+              <span className={styles.Bluecolor}>&quot;Front End Language&quot;</span>{" "}
               will be removed. Are you sure you want to continue?
             </p>
           </Form.Item>

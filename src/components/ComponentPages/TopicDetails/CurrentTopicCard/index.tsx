@@ -13,7 +13,7 @@ const CurrentTopicCard = () => {
         </div>
       }
       actions={[
-        <div className="card-actions-wrapper">
+        <div className="card-actions-wrapper" key="key3">
           <Button className="edit-btn-style">Manage/Edit This Topic</Button>
         </div>,
       ]}
