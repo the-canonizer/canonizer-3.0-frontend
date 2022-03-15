@@ -44,7 +44,7 @@ function SocialLoginCallback() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, router.query]);
   return (
-    <GetStartedLayout routeName={router.pathname}>
+    <GetStartedLayout initialProps={undefined} initialState={undefined}>
       <Skeleton active={isLoading} />
     </GetStartedLayout>
   );

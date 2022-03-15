@@ -17,7 +17,7 @@ export default function DelegatedSupportCampsUI({
   function CardTitle(props) {
     return (
       <div className={styles.card_heading_title}>
-        For topics<span> "{props.value}"</span>
+        For topics<span> &quot;{props.value}&quot;</span>
       </div>
     );
   }
@@ -161,7 +161,7 @@ export default function DelegatedSupportCampsUI({
               Are you sure, you want to remove your delegate support given to
               pranav_telentelgia under the topic{" "}
               <span className={styles.Bluecolor}>
-                "Theories of Consiousness"
+              &quot;Theories of Consiousness&quot;
               </span>{" "}
               ?
             </p>
@@ -206,7 +206,7 @@ export default function DelegatedSupportCampsUI({
           {" "}
           For topic{" "}
           <span className={styles.Bluecolor}>
-            "Theories of Consciousness"
+          &quot;Theories of Consciousness&quot;
           </span>{" "}
         </h3>
         <div className={styles.topic_content}>

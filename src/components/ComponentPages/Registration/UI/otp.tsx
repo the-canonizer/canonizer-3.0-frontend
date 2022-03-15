@@ -20,6 +20,7 @@ export default function OTPVerify({
   isResend,
   failedMsg,
   onResendClick,
+  logMsg = "",
 }) {
   return (
     <section className={styles.signup_wrapper + " " + styles.textCenter}>
@@ -30,9 +31,10 @@ export default function OTPVerify({
         onFinish={onFinish}
         layout="vertical"
         scrollToFirstError
+        validateTrigger={messages.formValidationTypes()}
       >
         <Title level={2} className={styles.titles}>
-          Login One Time Verification Code
+          Log in One Time Verification Code
         </Title>
         {isModal && (
           <Button
@@ -55,6 +57,8 @@ export default function OTPVerify({
           <Text type="danger" className={styles.otpNote}>
             {isResend
               ? failedMsg
+              : logMsg
+              ? logMsg
               : "Note : Registration code has been sent to your registered email address and Phone Number."}
           </Text>
           <Form.Item

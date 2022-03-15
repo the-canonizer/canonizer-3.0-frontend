@@ -1,5 +1,9 @@
 import { patterns, validations } from "./validation";
 
+export const formValidationTypes = () => {
+  return ["onSubmit", "onBlur"];
+};
+
 export const phoneNumberRule = {
   rules: [
     {

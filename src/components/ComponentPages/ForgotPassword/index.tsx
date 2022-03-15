@@ -27,7 +27,7 @@ const ForgotPassword = ({ isModal, isTestScreen = 0 }) => {
   const onFinish = async (values: any) => {
     setFormData(values);
     let body = {
-      email: values.email_id,
+      email: values.email_id?.trim(),
     };
     let res = await forgotPasswordSendOTP(body);
     if (res && res.status_code === 200) {
@@ -40,7 +40,7 @@ const ForgotPassword = ({ isModal, isTestScreen = 0 }) => {
 
   const onOTPSubmit = async (values: any) => {
     let body = {
-      username: formData.email_id,
+      username: formData.email_id?.trim(),
       otp: values.otp,
     };
 
