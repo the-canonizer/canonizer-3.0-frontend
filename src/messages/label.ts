@@ -1,5 +1,5 @@
 export const labels = {
-  emailPhone: "Email / Phone Number",
+  emailPhone: "Email",
   password: "Password",
   firstName: "First Name (Limit 100 Chars)",
   middleName: "Middle Name (Limit 100 Chars)",

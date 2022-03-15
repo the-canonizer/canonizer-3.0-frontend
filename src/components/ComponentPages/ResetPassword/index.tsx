@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { Row, Col, Button, Form, Input, Typography } from "antd";
@@ -18,7 +17,7 @@ const ResetPassword = () => {
     const email_id = localStorage.getItem("email_id");
 
     let body = {
-      username: email_id,
+      username: email_id?.trim(),
       new_password: values.password,
       confirm_password: values.confirm,
     };
@@ -30,10 +29,10 @@ const ResetPassword = () => {
       localStorage.removeItem("email_id");
     }
 
-    router.push("/");
+    router.push("/login");
   };
   return (
-    <Fragment>
+    <div className={styles.wrapper}>
       <aside className="leftSideBar miniSideBar">
         <div className={styles.wrap}>
           <Button size="large" className={styles.createBtn}>
@@ -49,7 +48,7 @@ const ResetPassword = () => {
           />
         </aside>
       </aside>
-      <div className="pageContentWrap">
+      <div className={`pageContentWrap ${styles.pageContentWrap}`}>
         <div className={`${styles.signup_wrapper} ${styles.resetPassword}`}>
           <Form
             form={form}
@@ -57,6 +56,7 @@ const ResetPassword = () => {
             onFinish={onFinish}
             layout="vertical"
             scrollToFirstError
+            validateTrigger={messages.formValidationTypes()}
           >
             <Title level={2} className={styles.titles}>
               Create new password
@@ -110,7 +110,7 @@ const ResetPassword = () => {
           </Form>
         </div>
       </div>
-    </Fragment>
+    </div>
   );
 };
 

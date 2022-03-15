@@ -71,6 +71,7 @@ function RegistrationUi({
         onFinish={onFinish}
         layout="vertical"
         scrollToFirstError
+        validateTrigger={messages.formValidationTypes()}
       >
         <Title level={2} className={styles.titles}>
           Register Now on Canonizer
@@ -94,14 +95,7 @@ function RegistrationUi({
                 placeholder={messages.placeholders.firstName}
               />
             </Col>
-            <Col md={12} style={{ width: "100%" }}>
-              <FormItem
-                name="middle_name"
-                label={messages.labels.middleName}
-                rules={messages.middleNameRule}
-                placeholder={messages.placeholders.middleName}
-              />
-            </Col>
+
             <Col md={12} style={{ width: "100%" }}>
               <FormItem
                 name="last_name"
@@ -129,6 +123,7 @@ function RegistrationUi({
                   style={{ width: "100%" }}
                   className={`${styles.phoneInput} numberInput`}
                   placeholder={messages.placeholders.phone}
+                  autoComplete="false"
                 />
               </Form.Item>
             </Col>
@@ -142,10 +137,11 @@ function RegistrationUi({
                   className={styles.passwordInput}
                   type="password"
                   placeholder={messages.placeholders.password}
+                  autoComplete="false"
                 />
               </Form.Item>
             </Col>
-            <Col md={{ order: 1, span: 12 }} style={{ width: "100%" }}>
+            <Col md={{ span: 12 }} style={{ width: "100%" }}>
               <Form.Item
                 name="confirm"
                 label={messages.labels.confirmPassword}
@@ -156,14 +152,16 @@ function RegistrationUi({
                   className={styles.passwordInput}
                   type="password"
                   placeholder={messages.placeholders.confirmPassword}
+                  autoComplete="false"
                 />
               </Form.Item>
             </Col>
-            <Col md={12} style={{ width: "100%" }}>
+            <Col md={{ span: 12, offset: 6 }} style={{ width: "100%" }}>
               <Form.Item
-                label={messages.labels.captcha}
+                // label={messages.labels.captcha}
                 name="captcha"
                 {...messages.getCaptchaRule(showCaptchaError)}
+                style={{ paddingLeft: "15px" }}
               >
                 <div className={styles.captchaCol}>
                   <ReCAPTCHA
@@ -190,7 +188,7 @@ function RegistrationUi({
         </Form.Item>
 
         <Form.Item>
-          <SocialLoginButton isModal={isModal} />
+          <SocialLoginButton isNotLogin={true} />
         </Form.Item>
         <Form.Item noStyle>
           <Text className={styles.ft_link}>
