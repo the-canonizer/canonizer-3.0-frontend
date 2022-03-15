@@ -2,8 +2,30 @@ import { Form, Input, Button, Checkbox } from "antd";
 import React from "react";
 
 export default function FormData() {
+  console.log("selected data 2=> ");
+
   const onFinish = (values: any) => {
     console.log("Success:", values);
+
+    // setnewdata((data) =>data.map(item=>{
+    //   if (item.id===selecteddata.id) {
+    //   item.text = values.text
+    //   item.link = values.link}
+    //   else {
+    //     item
+    //   }
+    //   ))
+    // }
+    // setnewdata((data) =>
+    //   data.map((ite) => {
+    //     if (ite.id === selecteddata.id) {
+    //       ite.text = values.text;
+    //       ite.link = values.link;
+    //     } else {
+    //       ite;
+    //     }
+    //   })
+    // );
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -16,7 +38,9 @@ export default function FormData() {
         name="basic"
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
-        initialValues={{ available: true }}
+        initialValues={{
+          available: false,
+        }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
@@ -32,7 +56,7 @@ export default function FormData() {
             },
           ]}
         >
-          <Input.TextArea showCount maxLength={10} />
+          <Input.TextArea showCount maxLength={50} />
         </Form.Item>
 
         <Form.Item

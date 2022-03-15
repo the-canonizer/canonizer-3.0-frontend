@@ -1,4 +1,4 @@
-import FormData from "../../../addnewsformdata/form";
+import FormData from "../../../addnewsformdata/formadd";
 import { cleanup, render, screen } from "@testing-library/react";
 
 window.matchMedia =
