@@ -9,17 +9,19 @@ export default function Settings() {
   const SettingsLayout = () => {
     const isUserAuthenticated = useAuthentication();
     if (isUserAuthenticated) {
-      return <Layout>
-        <SettingsUI />
-      </Layout>;
+      return (
+        <Layout>
+          <SettingsUI />
+        </Layout>
+      );
     }
-    return <GetStartedLayout routeName={"login"}>
-      <Card bordered={false} className="login-container">
-        <Login isModal={false} />
-      </Card>
-    </GetStartedLayout>;
-  }
-  return (
-    <SettingsLayout />
-  );
+    return (
+      <GetStartedLayout routeName={"login"}>
+        <Card bordered={false} className="login-container">
+          <Login isModal={false} />
+        </Card>
+      </GetStartedLayout>
+    );
+  };
+  return <SettingsLayout />;
 }

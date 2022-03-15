@@ -1,8 +1,6 @@
 import React from "react";
 import { Card, Modal, Tag, Button, Form } from "antd";
-import Icon, {
-  CloseCircleOutlined,
-} from "@ant-design/icons";
+import Icon, { CloseCircleOutlined } from "@ant-design/icons";
 import styles from "./DirectSupportedCamps.module.scss";
 import Link from "next/link";
 export default function DirectSupportedCampsUI({
@@ -102,7 +100,6 @@ export default function DirectSupportedCampsUI({
         }
         style={{ width: 760, marginBottom: 16 }}
       >
-
         <Tag
           className={styles.tag_btn}
           closable
