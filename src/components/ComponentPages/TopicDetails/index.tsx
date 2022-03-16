@@ -22,11 +22,14 @@ const TopicDetails = () => {
   const didMount = useRef(false);
   let myRefToCampStatement = useRef(null);
   const router = useRouter();
-  const { asofdate, algorithm, newsFeed } = useSelector((state: RootState) => ({
-    asofdate: state.homePage?.filterObject?.asofdate,
-    algorithm: state.homePage?.filterObject?.algorithm,
-    newsFeed: state?.topicDetails?.newsFeed,
-  }));
+  const { asof, asofdate, algorithm, newsFeed } = useSelector(
+    (state: RootState) => ({
+      asofdate: state.homePage?.filterObject?.asofdate,
+      algorithm: state.homePage?.filterObject?.algorithm,
+      newsFeed: state?.topicDetails?.newsFeed,
+      asof: state?.homePage?.filterObject?.asof,
+    })
+  );
   useEffect(() => {
     async function getTreeApiCall() {
       if (didMount.current) {
@@ -42,13 +45,13 @@ const TopicDetails = () => {
     getTreeApiCall();
   }, [asofdate, algorithm]);
 
-  const reqBody = {};
+  const reqBody = { topic_num: 45, camp_num: 1 };
   useEffect(() => {
     const campStatementReq = {
-      topic_num: 45,
+      topic_num: +router.query.camp,
       camp_num: "1",
-      as_of: "default",
-      as_of_date: "12-12-22",
+      as_of: asof,
+      as_of_date: asofdate,
     };
     async function getNewsFeedAndCampStatementApiCall() {
       await getNewsFeedApi(reqBody);
@@ -68,10 +71,17 @@ const TopicDetails = () => {
 
   const getSelectedNode = async (nodeKey) => {
     const req = {
-      topic_num: 45,
-      camp_num: 1,
+      topic_num: +router.query.camp,
+      camp_num: nodeKey,
+    };
+    const campStatementReq = {
+      topic_num: +router.query.camp,
+      camp_num: nodeKey,
+      as_of: asof,
+      as_of_date: asofdate,
     };
     await getNewsFeedApi(req);
+    await getCanonizedCampStatementApi(campStatementReq);
   };
 
   return (

@@ -161,7 +161,7 @@ export default function DelegatedSupportCampsUI({
               Are you sure, you want to remove your delegate support given to
               pranav_telentelgia under the topic{" "}
               <span className={styles.Bluecolor}>
-              &quot;Theories of Consiousness&quot;
+                &quot;Theories of Consiousness&quot;
               </span>{" "}
               ?
             </p>
@@ -206,7 +206,7 @@ export default function DelegatedSupportCampsUI({
           {" "}
           For topic{" "}
           <span className={styles.Bluecolor}>
-          &quot;Theories of Consciousness&quot;
+            &quot;Theories of Consciousness&quot;
           </span>{" "}
         </h3>
         <div className={styles.topic_content}>
