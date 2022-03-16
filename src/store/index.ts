@@ -57,4 +57,4 @@ const makeStore = (context: Context) => createStore(persistedReducer);
 const persistor = persistStore(store);
 export { persistor, store };
 
-export const wrapper = createWrapper<Store>(makeStore, { debug: true });
+export const wrapper = createWrapper(makeStore, { debug: true });
