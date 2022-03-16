@@ -37,6 +37,7 @@ const Registration = ({ isModal, isTest = false }) => {
     dispatch(hideRegistrationModal());
 
     isOtpScreen ? otpForm.resetFields() : form.resetFields();
+    setIsOtpScreen(false);
   };
 
   const openLogin = () => dispatch(showLoginModal());
@@ -57,9 +58,9 @@ const Registration = ({ isModal, isTest = false }) => {
         first_name: values.first_name?.trim(),
         last_name: values.last_name?.trim(),
         email: values.email?.trim(),
-        password: values.password,
-        password_confirmation: values.confirm,
-        phone_number: values.phone,
+        password: values.password?.trim(),
+        password_confirmation: values.confirm?.trim(),
+        phone_number: values.phone?.trim(),
         country_code: values.prefix?.split(" ")[0],
       };
 
@@ -86,23 +87,29 @@ const Registration = ({ isModal, isTest = false }) => {
 
   const onOTPSubmit = async (values: any) => {
     let formBody = {
-      username: formData.email,
-      otp: values.otp,
+      username: formData.email?.trim(),
+      otp: values.otp?.trim(),
     };
 
-    let res = await verifyOtp(formBody);
+    if (values.otp?.trim()) {
+      let res = await verifyOtp(formBody);
 
-    if (res) {
-      setFailedMsg(res.message);
-    }
+      if (res) {
+        setFailedMsg(res.message);
+      }
 
-    if (res && res.status_code === 200) {
+      if (res && res.status_code === 200) {
+        otpForm.resetFields();
+
+        setIsOtpScreen(false);
+        isModal ? closeModal() : "";
+
+        router.push("/");
+      }
+    } else {
       otpForm.resetFields();
 
-      setIsOtpScreen(false);
-      isModal ? closeModal() : "";
-
-      router.push("/");
+      otpForm.validateFields(["otp"]);
     }
   };
 

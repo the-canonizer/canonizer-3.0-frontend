@@ -42,7 +42,7 @@ const Login = ({ isModal, isTest = false }) => {
 
   const onFinish = async (values: any) => {
     setFormData({ email: values.username });
-    let res = await login(values.username, values.password);
+    let res = await login(values.username?.trim(), values.password?.trim());
 
     if (res && res.status_code === 402) {
       setIsOtpScreen(true);

@@ -22,7 +22,11 @@ const ForgotPassword = ({ isModal, isTestScreen = 0 }) => {
   const [otpForm] = Form.useForm();
   const router = useRouter();
 
-  const closeModal = () => dispatch(hideForgotModal());
+  const closeModal = () => {
+    dispatch(hideForgotModal());
+    isScreen === 1 ? otpForm.resetFields() : form.resetFields();
+    setIsScreen(0);
+  };
 
   const onFinish = async (values: any) => {
     setFormData(values);
