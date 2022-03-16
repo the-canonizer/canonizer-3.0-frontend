@@ -116,25 +116,18 @@ const LoggedInHeaderNavigation = () => {
               <div className="hdrUserdropdown">
                 <Space size="large">
                   <i className="icon-user"></i>{" "}
-                  <Dropdown overlay={menu} trigger={["click"]}>
-                    <Space size="small">
-                      <a
-                        className="ant-dropdown-link"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        {loggedInUser ? loggedInUser["first_name"] : ""}
-                      </a>
-                      <DownOutlined
-                        style={{
-                          fontSize: "15px",
-                          color: "#fff",
-                          cursor: "pointer",
-                        }}
-                      />
-                    </Space>
-                  </Dropdown>
+                  <div>
+                    {loggedInUser ? loggedInUser["first_name"] : ""}{" "}
+                    {loggedInUser ? loggedInUser["last_name"] : ""}
+                  </div>
                 </Space>
               </div>
+            </div>
+
+            <div className="mobile_tag">
+              <Link href="/settings">Account Settings</Link>
+              <a>Support Camps</a>
+              <a onClick={logOut}>Logout</a>
             </div>
           </div>
           <div className={styles.right}>
@@ -149,6 +142,14 @@ const LoggedInHeaderNavigation = () => {
                         onClick={(e) => e.preventDefault()}
                       >
                         {loggedInUser ? loggedInUser["first_name"] : ""}{" "}
+                        {loggedInUser
+                          ? console.log(
+                              loggedInUser,
+                              loggedInUser["first_name"],
+                              loggedInUser["last_name"],
+                              "logs"
+                            )
+                          : "console"}
                         {loggedInUser ? loggedInUser["last_name"] : ""}
                       </a>
                       <DownOutlined
