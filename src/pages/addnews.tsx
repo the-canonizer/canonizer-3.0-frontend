@@ -1,6 +1,4 @@
 import FormData from "../components/addnewsformdata/formadd";
-import { useRouter } from "next/router";
-
 export default function Home() {
   return (
     <>

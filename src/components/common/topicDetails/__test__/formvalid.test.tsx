@@ -13,16 +13,7 @@ window.matchMedia =
 
 afterEach(cleanup);
 describe("Should render Addnews", () => {
-  // it("Renders the home page2", () => {
-  //   render(<Showtreedetail result={fakedata} />);
-
-  //   expect(screen.getByText("Topic Details")).toBeInTheDocument();
-  //   expect(
-  //     screen.getByRole("heading", { name: "Topic Details" })
-  //   ).toBeInTheDocument();
-  // });
-
-  it("Render without crash", async () => {
+  it("Render without crash", () => {
     const { container } = render(<FormData />);
     const formHeading = screen.getByRole("heading", {
       name: /form/i,
@@ -38,8 +29,8 @@ describe("Should render Addnews", () => {
     expect(container.getElementsByTagName("button")).toHaveLength(2);
     expect(container.getElementsByTagName("textarea")).toHaveLength(1);
     expect(container.getElementsByTagName("input")).toHaveLength(2);
-    expect(screen.getByText(/display text/i));
-    expect(screen.getByText(/link/i));
+    expect(screen.getByText(/display text/i).textContent).toBe("Display Text");
+    expect(screen.getByText(/link/i).textContent).toBe("Link");
     expect(submitButton.textContent).toBe("Submit");
     expect(cancelButton.textContent).toBe("Cancel");
   });

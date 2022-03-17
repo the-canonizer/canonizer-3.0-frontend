@@ -6,26 +6,6 @@ export default function FormData() {
 
   const onFinish = (values: any) => {
     console.log("Success:", values);
-
-    // setnewdata((data) =>data.map(item=>{
-    //   if (item.id===selecteddata.id) {
-    //   item.text = values.text
-    //   item.link = values.link}
-    //   else {
-    //     item
-    //   }
-    //   ))
-    // }
-    // setnewdata((data) =>
-    //   data.map((ite) => {
-    //     if (ite.id === selecteddata.id) {
-    //       ite.text = values.text;
-    //       ite.link = values.link;
-    //     } else {
-    //       ite;
-    //     }
-    //   })
-    // );
   };
 
   const onFinishFailed = (errorInfo: any) => {

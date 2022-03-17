@@ -7,12 +7,12 @@ export default function Home() {
     { id: 3, text: "wah", link: "https://www.wah.com", available: true },
     { id: 4, text: "wa", link: "https://www.wa.com", available: false },
   ]);
-  console.log("upadat ======> ", update);
+
   return (
     <>
       <div style={{ maxWidth: "500px" }}>
         <h1>Update news</h1>
-        <FormDataupdate update={update} setUpdate={setUpdate} />
+        <FormDataupdate update={update} />
       </div>
     </>
   );

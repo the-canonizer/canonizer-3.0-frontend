@@ -1,7 +1,7 @@
 import { Form, Input, Button, Checkbox, Divider } from "antd";
 import React from "react";
 
-export default function FormDataupdate({ update, setUpdate }) {
+export default function FormDataupdate({ update }) {
   console.log("data => ", update);
 
   const [form] = Form.useForm();
@@ -16,7 +16,6 @@ export default function FormDataupdate({ update, setUpdate }) {
     console.log("texts => ", texts);
     console.log("links => ", links);
     console.log("availables => ", availables);
-    setUpdate(values.data);
   };
 
   const onFinishFailed = (errorInfo: any) => {
