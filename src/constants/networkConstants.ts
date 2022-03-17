@@ -36,6 +36,8 @@ const NetworkConstants = {
     AddNickName: `${BaseCanonizerApiUrl}/add-nick-name`,
     GetNickNameList: `${BaseCanonizerApiUrl}/get-nick-name-list`,
     UpdateNickName: `${BaseCanonizerApiUrl}/update-nick-name`,
+    //Direct Supported camps
+    GetDirectSupportedCamps: `${BaseCanonizerApiUrl}/get-direct-supported-camps`,
     // Tree
     GetTree: `${BaseCanonizerServiceUrl}/api/v1/tree/get`,
     GetNewsFeed: `${BaseCanonizerApiUrl}/get/camp-newsfeed`,
