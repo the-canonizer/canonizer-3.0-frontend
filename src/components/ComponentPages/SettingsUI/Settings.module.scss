@@ -1,35 +1,70 @@
-  .card {
-    padding: 20px 20px 10px;
-    border: solid 1px #f0f0f0;
-    background-color: #fff;
+.card {
+  padding: 20px 20px 10px;
+  border: solid 1px #f0f0f0;
+  background-color: #fff;
+  margin-bottom: 16px;
+  .btnsWrap {
     margin-bottom: 16px;
-    .btnsWrap {
-      margin-bottom: 16px;
-      .btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        font-size: 1.125rem;
-        font-weight: 600;
-        color: #0f2a4d;
-        border: solid 1px #d9d9d9;
-        i {
-          font-size: 1.1875rem;
-          color: var(--primary);
-          margin-right: 8px;
-        }
-        &:hover {
-          color: var(--primary);
-          border-color: var(--primary);
-        }
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #0f2a4d;
+      border: solid 1px #d9d9d9;
+      i {
+        font-size: 1.1875rem;
+        color: var(--primary);
+        margin-right: 8px;
+      }
+      &:hover {
+        color: var(--primary);
+        border-color: var(--primary);
       }
     }
   }
-  .accountSetting{
-    margin-left: 10px !important;
-    margin-right: 25px !important;
-    flex: 1;
-  }
+}
+.accountSetting {
+  margin-left: 10px !important;
+  margin-right: 25px !important;
+  flex: 1;
+}
 
- 
+.supported_camps {
+  position: relative;
+  .search_users {
+    position: absolute;
+    right: 0;
+    z-index: 99;
+    min-width: 250px;
+
+    span {
+      position: absolute;
+      right: 8px;
+      font-size: 19px;
+      color: #aaa;
+      top: 7px;
+      pointer-events: none;
+    }
+    input {
+      border: 1px solid #ddd;
+      height: 37px;
+      padding: 0 30px 0 15px;
+      background: transparent;
+      width: 100%;
+    }
+  }
+  .ant-tabs-nav-list {
+    .ant-tabs-tab-active {
+      background-color: #000 !important;
+    }
+  }
+}
+
+.notes {
+  color: #dc7070;
+  margin-bottom: 15px;
+  font-size: 11px;
+}

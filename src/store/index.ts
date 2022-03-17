@@ -24,7 +24,7 @@ import storage from "redux-persist/lib/storage";
 
 let reducers = combineReducers({
   auth: Auth,
-  trees: Tree,
+  topicDetails: Tree,
   homePage: homePageSlice,
   ui: UiReducer,
 });
@@ -57,4 +57,4 @@ const makeStore = (context: Context) => createStore(persistedReducer);
 const persistor = persistStore(store);
 export { persistor, store };
 
-export const wrapper = createWrapper<Store>(makeStore, { debug: true });
+export const wrapper = createWrapper(makeStore, { debug: true });

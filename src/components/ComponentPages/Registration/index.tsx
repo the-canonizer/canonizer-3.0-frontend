@@ -54,10 +54,9 @@ const Registration = ({ isModal, isTest = false }) => {
     if (isCaptchaVerified) {
       setFormData(values);
       let formBody = {
-        first_name: values.first_name,
-        middle_name: values.middle_name,
-        last_name: values.last_name,
-        email: values.email,
+        first_name: values.first_name?.trim(),
+        last_name: values.last_name?.trim(),
+        email: values.email?.trim(),
         password: values.password,
         password_confirmation: values.confirm,
         phone_number: values.phone,
@@ -93,7 +92,9 @@ const Registration = ({ isModal, isTest = false }) => {
 
     let res = await verifyOtp(formBody);
 
-    setFailedMsg(res.message);
+    if (res) {
+      setFailedMsg(res.message);
+    }
 
     if (res && res.status_code === 200) {
       otpForm.resetFields();

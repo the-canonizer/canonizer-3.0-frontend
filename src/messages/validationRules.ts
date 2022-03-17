@@ -1,5 +1,9 @@
 import { patterns, validations } from "./validation";
 
+export const formValidationTypes = () => {
+  return ["onSubmit", "onBlur"];
+};
+
 export const phoneNumberRule = {
   rules: [
     {
@@ -8,11 +12,11 @@ export const phoneNumberRule = {
     },
     {
       min: 9,
-      message: validations.phoneLength,
+      message: validations.phoneMinLength,
     },
     {
       max: 10,
-      message: validations.phoneLength,
+      message: validations.phoneMaxLength,
     },
   ],
 };

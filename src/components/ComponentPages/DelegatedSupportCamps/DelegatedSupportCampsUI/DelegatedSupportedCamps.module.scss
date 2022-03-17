@@ -1,0 +1,64 @@
+.RemoveCardSupported {
+  color: #d57272;
+  font-weight: 600;
+  span {
+    margin-right: 5px;
+  }
+}
+.Bluecolor {
+  color: #1890ff;
+}
+.card_heading_title {
+  font-size: 18px;
+  span {
+    color: #1890ff;
+  }
+}
+
+.text_right {
+  text-align: right;
+}
+
+.cardBox_tags {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%);
+}
+.topic_content {
+  background-color: rgb(246, 246, 246);
+  padding: 12px;
+
+  p {
+    margin-bottom: 4px;
+  }
+}
+.list_Content {
+  p {
+    margin-bottom: 4px;
+  }
+}
+.marginTop {
+  margin-top: 10px;
+}
+.line_height {
+  p {
+    margin-bottom: 4px;
+  }
+}
+
+.line_height1 {
+  border-left: 1px solid #ddd;
+  padding-left: 20px;
+
+  p {
+    margin-bottom: 4px;
+  }
+}
+.mrgn_left {
+  margin-left: 20px;
+  border-bottom: 1px solid #1890ff;
+  padding-bottom: 2px;
+}
+.ant-modal-close {
+  color: #000 !important;
+}

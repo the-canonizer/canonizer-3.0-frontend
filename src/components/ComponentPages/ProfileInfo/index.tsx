@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import moment from "moment";
 import { Form, message } from "antd";
-import { AppDispatch } from "../../../store";
 import {
   GetUserProfileInfo,
   UpdateUserProfileInfo,
@@ -20,7 +18,6 @@ import {
 } from "react-places-autocomplete";
 
 const ProfileInfo = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const [form] = Form.useForm();
   const [formVerify] = Form.useForm();
   const [mobileCarrier, setMobileCarrier] = useState([]);
@@ -79,7 +76,7 @@ const ProfileInfo = () => {
       publicPrivateArray.phone_number
     );
     values.address_1 = address;
-    let res = await dispatch(UpdateUserProfileInfo(values));
+    let res = await UpdateUserProfileInfo(values);
     if (res && res.status_code === 200) {
       message.success(res.message);
       setDisableButton(false);
@@ -94,7 +91,7 @@ const ProfileInfo = () => {
 
   //Send OTP to mobile number
   const onVerifyClick = async (values: any) => {
-    let res = await dispatch(SendOTP(values));
+    let res = await SendOTP(values);
     if (res && res.status_code === 200) {
       message.success(res.message);
       setIsOTPModalVisible(true);
@@ -113,7 +110,7 @@ const ProfileInfo = () => {
       otp: otp,
     };
 
-    let res = await dispatch(VerifyOTP(otpBody));
+    let res = await VerifyOTP(otpBody);
     if (res && res.status_code === 200) {
       message.success(res.message);
       setIsOTPModalVisible(false);
@@ -204,27 +201,27 @@ const ProfileInfo = () => {
   };
   useEffect(() => {
     async function fetchMobileCarrier() {
-      let res = await dispatch(GetMobileCarrier());
+      let res = await GetMobileCarrier();
       if (res != undefined) {
         setMobileCarrier(res.data);
       }
     }
 
     async function fetchAlgorithmsList() {
-      let res = await dispatch(GetAlgorithmsList());
+      let res = await GetAlgorithmsList();
       if (res != undefined) {
         setAlgorithmList(res.data);
       }
     }
     async function fetchLanguageList() {
-      let res = await dispatch(GetLanguageList());
+      let res = await GetLanguageList();
       if (res != undefined) {
         setLanguageList(res.data);
       }
     }
 
     async function fetchUserProfileInfo() {
-      let res = await dispatch(GetUserProfileInfo());
+      let res = await GetUserProfileInfo();
       if (res != undefined) {
         if (res.data != undefined) {
           let profileData = res.data;

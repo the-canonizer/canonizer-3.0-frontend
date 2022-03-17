@@ -10,6 +10,7 @@ import {
   Radio,
   Space,
 } from "antd";
+import moment from "moment";
 import styles from "../ProfileInfo/ProfileInfoUI/ProfileInfo.module.scss";
 import messages from "../../../messages";
 import PlacesAutocomplete from "react-places-autocomplete";
@@ -166,6 +167,12 @@ function ProfileInfoForm({
                       size="large"
                       tabIndex={8}
                       className={styles.date_picker_inner}
+                      disabledDate={(current) => {
+                        let customDate = moment().format("YYYY-MM-DD");
+                        return (
+                          current && current > moment(customDate, "YYYY-MM-DD")
+                        );
+                      }}
                     />
                   </Form.Item>
                   <Form.Item>

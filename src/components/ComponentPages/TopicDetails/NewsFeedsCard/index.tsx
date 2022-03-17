@@ -4,6 +4,20 @@ import styles from "../campTree.module.scss";
 const { Paragraph } = Typography;
 
 const NewsFeedsCard = () => {
+  const newsMockResponse = [
+    {
+      id: 1,
+      news: ` New Video: "Consciousness: Not a Hard Problem Just a Color Problem"`,
+      link: "www.canonizer.com",
+    },
+    {
+      id: 2,
+      news: ` Consciousness can only be apprehended in agreement with the hard
+    sciences, and the result is very different from what most would expect`,
+      link: "www.canonizer.com",
+    },
+  ];
+
   return (
     <Card
       className="canCard"
@@ -28,15 +42,9 @@ const NewsFeedsCard = () => {
         </div>
       }
     >
-      <Paragraph>
-        {" "}
-        New Video: "Consciousness: Not a Hard Problem Just a Color Problem"{" "}
-      </Paragraph>
-      <Paragraph>
-        {" "}
-        Consciousness can only be apprehended in agreement with the hard
-        sciences, and the result is very different from what most would expect{" "}
-      </Paragraph>
+      {newsMockResponse.map((news) => {
+        return <Paragraph key={news.id}>{news.news}</Paragraph>;
+      })}
     </Card>
   );
 };

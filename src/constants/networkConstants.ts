@@ -38,7 +38,9 @@ const NetworkConstants = {
     UpdateNickName: `${BaseCanonizerApiUrl}/update-nick-name`,
     // Tree
     GetTree: `${BaseCanonizerServiceUrl}/api/v1/tree/get`,
-    GetNewsFeed: "get_news_feed",
+    GetNewsFeed: `${BaseCanonizerApiUrl}/get/camp-newsfeed`,
+    GetCampStatement: `${BaseCanonizerApiUrl}/get/camp-statement`,
+    GetSupportingTree: `${BaseCanonizerApiUrl}/get/supporting-tree`,
     // resend otp for registration
     ResendOTPForRegistration: `${BaseCanonizerApiUrl}/user/reSendOtp`,
 

@@ -15,7 +15,7 @@ const ForgotPasswordPage = () => {
   }, []);
 
   return (
-    <GetStartedLayout routeName={"forgot-password"}>
+    <GetStartedLayout initialProps={undefined} initialState={undefined}>
       <Card bordered={false} className="login-container">
         <ForgotPassword isModal={false} />
       </Card>
