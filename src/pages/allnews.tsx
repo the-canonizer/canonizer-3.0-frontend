@@ -1,47 +1,44 @@
 import React, { useState } from "react";
-import FormData from "../components/addnewsformdata/formadd";
-
-import FormDataupdate from "../components/addnewsformdata/formupdate";
-import { useRouter } from "next/router";
+import { campNewsFeedApi } from "../network/api/addupdateNewsApi";
 import Link from "next/link";
-import { newsdata } from "../components/addnewsformdata/addnewsdata";
-export default function allnews() {
-  const [newdata, setnewdata] = useState(newsdata);
-  const [id, setid] = useState(null);
-  const router = useRouter();
-  console.log("data=> ", newdata);
-  console.log("select data1=> ", id);
 
+export default function allnews({ res }) {
+  console.log("result ====> 2 ? ", res.data);
+
+  const [result, setResult] = useState(res.data);
   return (
     <>
       <div style={{ maxWidth: "500px" }}>
-        <h1>alll news</h1>
-        {newdata.map((news) => {
+        <h1>edit and udadate and add news here</h1>
+        <br />
+        {result.map((re) => {
           return (
-            <div
-              key={news.id}
-              onClick={() =>
-                setid({ id: news.id, text: news.text, link: news.link })
-              }
-            >
-              <h4>text : {news.text}</h4>
-              <h6>link : {news.link}</h6>
+            <div key={re.id}>
+              <h3>
+                dispaly text : {re.display_text}/ . Link : {re.link} /.
+                Available : {re.available_for_child}{" "}
+              </h3>
             </div>
           );
         })}
-        {!id && (
-          <div>
-            <h1>Add news </h1>
-            <FormDataupdate setnewdata={setnewdata} />
-          </div>
-        )}
-        {id && (
-          <div>
-            <h1>update news </h1>
-            <FormData setnewdata={setnewdata} selecteddata={id} />
-          </div>
-        )}
+        <Link href="/addnews">
+          <a style={{ fontSize: 22 }}>To add News</a>
+        </Link>
+        <br />
+        <Link href="/updatenews">
+          <a style={{ fontSize: 22 }}>To edit News</a>
+        </Link>
       </div>
     </>
   );
+}
+export async function getServerSideProps() {
+  const res = await campNewsFeedApi();
+  console.log("result ====> ? ", res);
+
+  return {
+    props: {
+      res,
+    },
+  };
 }

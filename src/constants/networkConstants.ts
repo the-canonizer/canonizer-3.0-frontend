@@ -55,6 +55,14 @@ const NetworkConstants = {
     //footer
 
     GetFooterSocialLinks: `${BaseCanonizerApiUrl}/get-social-media-links`,
+  
+    //camp news feed add edit update
+    GetCampNewsFeeds:`${BaseCanonizerApiUrl}/get/camp-newsfeed`,
+    GetEditNewsFeeds:`${BaseCanonizerApiUrl}/edit/camp-newsfeed`,
+    GetUpdateNewsFeeds:`${BaseCanonizerApiUrl}/update/camp-newsfeed`,
+    
+  
+  
   },
   Method: {
     GET: "GET",

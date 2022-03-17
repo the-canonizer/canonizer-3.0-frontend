@@ -1,12 +1,10 @@
 import FormDataupdate from "../components/addnewsformdata/formupdate";
+
+import { editNewsFeedApi } from "../network/api/addupdateNewsApi";
 import React, { useState } from "react";
-export default function Home() {
-  const [update, setUpdate] = useState([
-    { id: 1, text: "wahaj", link: "https://www.wahaj.com", available: true },
-    { id: 2, text: "waha", link: "https://www.waha.com", available: false },
-    { id: 3, text: "wah", link: "https://www.wah.com", available: true },
-    { id: 4, text: "wa", link: "https://www.wa.com", available: false },
-  ]);
+export default function Home({ res }) {
+  console.log("edit data 1=> ", res.data);
+  const [update, setUpdate] = useState(res.data);
 
   return (
     <>
@@ -16,4 +14,15 @@ export default function Home() {
       </div>
     </>
   );
+}
+
+export async function getServerSideProps() {
+  const res = await editNewsFeedApi();
+  console.log("result edit  ====> ? ", res);
+
+  return {
+    props: {
+      res,
+    },
+  };
 }

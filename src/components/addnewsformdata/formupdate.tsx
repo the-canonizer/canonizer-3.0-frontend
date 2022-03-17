@@ -1,21 +1,28 @@
 import { Form, Input, Button, Checkbox, Divider } from "antd";
+import Router, { useRouter } from "next/router";
 import React from "react";
-
+import { updateNewsFeedApi } from "../../network/api/addupdateNewsApi";
 export default function FormDataupdate({ update }) {
   console.log("data => ", update);
 
   const [form] = Form.useForm();
 
-  const onFinish = (values: any) => {
+  const onFinish = async (values: any) => {
     console.log("Success:", values.data);
-    let ids = values.data.map((id) => id.id);
-    let texts = values.data.map((text) => text.text);
-    let links = values.data.map((link) => link.link);
-    let availables = values.data.map((available) => available.available);
-    console.log("ids => ", ids);
-    console.log("texts => ", texts);
-    console.log("links => ", links);
-    console.log("availables => ", availables);
+
+    const dataobj = await {
+      id: values.data.map((id) => id.id),
+      display_text: values.data.map((text) => text.display_text),
+      link: values.data.map((link) => link.link),
+      available_for_child: values.data.map(
+        (available) => available.available_for_child
+      ),
+    };
+    console.log("data obj of all adata  => ", dataobj);
+    const a = await updateNewsFeedApi(dataobj);
+    console.log("data obj of all a  => ", a);
+
+    Router.push("/allnews");
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -47,7 +54,7 @@ export default function FormDataupdate({ update }) {
                 {fields.map((field, index) => (
                   <div key={field.key}>
                     <Form.Item
-                      name={[index, "text"]}
+                      name={[index, "display_text"]}
                       label="Display Text"
                       validateTrigger="onFinish"
                       rules={[
@@ -68,7 +75,6 @@ export default function FormDataupdate({ update }) {
                         {
                           required: true,
                           message: "Please input url only",
-                          type: "url",
                         },
                       ]}
                     >
@@ -76,7 +82,7 @@ export default function FormDataupdate({ update }) {
                     </Form.Item>
 
                     <Form.Item
-                      name={[index, "available"]}
+                      name={[index, "available_for_child"]}
                       valuePropName="checked"
                       wrapperCol={{
                         offset: 8,
