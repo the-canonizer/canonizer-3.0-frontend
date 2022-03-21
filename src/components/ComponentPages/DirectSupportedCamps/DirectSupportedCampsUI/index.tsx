@@ -3,6 +3,8 @@ import { Card, Modal, Tag, Button, Form } from "antd";
 import Icon, { CloseCircleOutlined } from "@ant-design/icons";
 import styles from "./DirectSupportedCamps.module.scss";
 import Link from "next/link";
+import messages from "../../../../messages";
+
 export default function DirectSupportedCampsUI({
   RemoveCardSupportedCamps,
   handleSupportedCampsCancel,
@@ -13,7 +15,7 @@ export default function DirectSupportedCampsUI({
   function CardTitle(props) {
     return (
       <div className={styles.card_heading_title}>
-        For topics
+        {messages.labels.fortopics}
         <span>
           {" "}
           &quot;
@@ -48,12 +50,14 @@ export default function DirectSupportedCampsUI({
                 <CardTitle title_link={data.title_link} value={data.title} />
               }
               extra={
-                <a
+               
+                <div
                   className={styles.RemoveCardSupported}
                   onClick={() => RemoveCardSupportedCamps()}
                 >
-                  <CloseCircleOutlined /> Remove support{" "}
-                </a>
+                  <CloseCircleOutlined /> {messages.labels.removeSupport}{" "}
+                </div>
+              
               }
               style={{ width: 760, marginBottom: 16 }}
             >
