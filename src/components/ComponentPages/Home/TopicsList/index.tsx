@@ -8,8 +8,9 @@ import { RootState } from "../../../../store";
 import { getCanonizedTopicsApi } from "../../../../network/api/homePageApi";
 import { setFilterCanonizedTopics } from "../../../../store/slices/homePageSlice";
 import styles from "./topicsList.module.scss";
-import { Spin } from "antd";
+import { Spin, Checkbox } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
+import useAuthentication from "src/hooks/isUserAuthenticated";
 
 const antIcon = <LoadingOutlined spin />;
 const { Title, Text } = Typography;
@@ -29,6 +30,7 @@ const TopicsList = () => {
   const didMount = useRef(false);
   const [pageNumber, setPageNumber, pageNumberRef] = useState(1);
   const dispatch = useDispatch();
+  const isLogin = useAuthentication();
   const {
     canonizedTopics,
     asofdate,
@@ -37,6 +39,7 @@ const TopicsList = () => {
     filterByScore,
     nameSpaces,
     includeReview,
+    onlyMyTopics,
   } = useSelector((state: RootState) => ({
     canonizedTopics: state.homePage?.canonizedTopicsData,
     asofdate: state.homePage?.filterObject?.asofdate,
@@ -45,6 +48,7 @@ const TopicsList = () => {
     filterByScore: state.homePage?.filterObject?.filterByScore,
     nameSpaces: state.homePage?.nameSpaces,
     includeReview: state?.homePage?.filterObject?.includeReview,
+    onlyMyTopics: state?.homePage?.filterObject?.onlyMyTopics,
   }));
 
   const [topicsData, setTopicsData] = useState(canonizedTopics);
@@ -84,7 +88,15 @@ const TopicsList = () => {
     }
     getTopicsApiCall();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [asofdate, asof, algorithm, nameSpaceId, filterByScore, inputSearch]);
+  }, [
+    asofdate,
+    asof,
+    algorithm,
+    nameSpaceId,
+    filterByScore,
+    inputSearch,
+    onlyMyTopics,
+  ]);
 
   async function getTopicsApiCallWithReqBody(loadMore = false) {
     loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
@@ -97,6 +109,7 @@ const TopicsList = () => {
       search: inputSearch,
       filter: filterByScore,
       asof: asof,
+      only_my_topics: onlyMyTopics,
     };
     await getCanonizedTopicsApi(reqBody, loadMore);
     setLoadMoreIndicator(false);
@@ -135,6 +148,15 @@ const TopicsList = () => {
     </div>
   );
 
+  const handleCheckbox = (e) => {
+    console.log(`checked = ${e.target.checked}`);
+    dispatch(
+      setFilterCanonizedTopics({
+        onlyMyTopics: e.target.checked,
+      })
+    );
+  };
+
   return (
     <>
       <div className={`${styles.card} topicsList_card`}>
@@ -159,6 +181,9 @@ const TopicsList = () => {
                   defaultValue={nameSpacesList && nameSpacesList[0].name}
                   onChange={selectNameSpace}
                 >
+                  <Select.Option key="custom-key" value="">
+                    All
+                  </Select.Option>
                   {nameSpacesList?.map((item) => {
                     return (
                       <Select.Option key={item.id} value={item.id}>
@@ -167,6 +192,9 @@ const TopicsList = () => {
                     );
                   })}
                 </Select>
+                {router.asPath === "/browse" && !isLogin && (
+                  <Checkbox onChange={handleCheckbox}>Only My Topics</Checkbox>
+                )}
 
                 {router.asPath === "/browse" && !includeReview && (
                   <div className={styles.inputSearchTopic}>
