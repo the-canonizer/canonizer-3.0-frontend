@@ -23,8 +23,8 @@ export const getTreesApi = async (reqBody) => {
 export const getNewsFeedApi = async (reqBody) => {
   try {
     const newsFeed = await NetworkCall.fetch(TreeRequest.getNewsFeed(reqBody));
-    store.dispatch(setNewsFeed(newsFeed));
-    return newsFeed;
+    store.dispatch(setNewsFeed(newsFeed?.data));
+    return newsFeed?.data;
   } catch (error) {
     message.error(error.message);
   }
