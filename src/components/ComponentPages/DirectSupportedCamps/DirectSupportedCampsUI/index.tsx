@@ -134,8 +134,10 @@ export default function DirectSupportedCampsUI({
         <Form>
           <Form.Item style={{ marginBottom: "0px" }}>
             <p>
-              Your Support for all the capps under the Topics{" "}
-              <span className={styles.Bluecolor}>&quot;Front End Language&quot;</span>{" "}
+              Your Support for all the camps under the Topics{" "}
+              <span className={styles.Bluecolor}>
+                &quot;Front End Language&quot;
+              </span>{" "}
               will be removed. Are you sure you want to continue?
             </p>
           </Form.Item>
