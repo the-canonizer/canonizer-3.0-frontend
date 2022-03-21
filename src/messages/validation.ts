@@ -7,6 +7,7 @@ export const patterns = {
   email:
     /[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?/,
   password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*]).{8,}$/,
+  alphaSpace: /^[a-zA-Z ]*$/,
 };
 
 export const validations: ErrorContainer = {
@@ -18,8 +19,8 @@ export const validations: ErrorContainer = {
   middleName: "Please input your middle name!",
   lastName: "Please input your last name!",
   phone: "Please input your phone number!",
-  phoneMinLength: "Phone number must be at least min 9 characters!",
-  phoneMaxLength: "Phone number should be max 10 characters long!",
+  phoneMinLength: "Phone number must be at least  10 digits!",
+  phoneMaxLength: "Phone number must be at least  10 digits!",
   validPhone: "Please input valid phone number!",
   email: "Please input your E-mail!",
   validEmail: "The input is not valid E-mail!",
@@ -43,4 +44,5 @@ export const validations: ErrorContainer = {
   confirmNewPasswordErr: "The confirm password and new password must match",
   nickName: "Please Enter Nick Name!",
   nickNameMax: "Maximum 50 character allowed!",
+  alphaSpace: "This field must be in alphabets and space only.",
 };
