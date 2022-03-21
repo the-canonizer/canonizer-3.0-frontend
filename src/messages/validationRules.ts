@@ -12,11 +12,11 @@ export const phoneNumberRule = {
     },
     {
       min: 9,
-      message: validations.phoneLength,
+      message: validations.phoneMinLength,
     },
     {
       max: 10,
-      message: validations.phoneLength,
+      message: validations.phoneMaxLength,
     },
   ],
 };

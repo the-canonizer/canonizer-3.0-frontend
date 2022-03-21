@@ -66,7 +66,7 @@ function VerifyMobileNumberForm({
                   placeholder={messages.placeholders.mobileCarrier}
                   optionFilterProp="children"
                   size="large"
-                  filterOption={(input, option) =>
+                  filterOption={(input: any, option: any) =>
                     option.children
                       .toLowerCase()
                       .indexOf(input.toLowerCase()) >= 0

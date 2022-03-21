@@ -10,6 +10,7 @@ import {
   Radio,
   Space,
 } from "antd";
+import moment from "moment";
 import styles from "../ProfileInfo/ProfileInfoUI/ProfileInfo.module.scss";
 import messages from "../../../messages";
 import PlacesAutocomplete from "react-places-autocomplete";
@@ -69,7 +70,50 @@ function ProfileInfoForm({
       </Select>
     );
   };
-
+  const renderFuncForGooglePlaces = ({
+    getInputProps,
+    suggestions,
+    getSuggestionItemProps,
+    loading }) => (
+    <div>
+      <Input
+        addonAfter={selectAfter(
+          "address_1",
+          publicOrPrivate("address_1")
+        )}
+        placeholder={messages.placeholders.addressLine1}
+        size="large"
+        {...getInputProps({
+          placeholder: messages.placeholders.addressLine1,
+        })}
+        tabIndex={9}
+      />
+      <div>
+        {loading && <div>Loading...</div>}
+        {suggestions.map((suggestion, index) => {
+          const style = suggestion.active
+            ? {
+              backgroundColor: "#f8f8f8",
+              cursor: "pointer",
+            }
+            : {
+              backgroundColor: "#ffffff",
+              cursor: "pointer",
+            };
+          return (
+            <div
+              {...getSuggestionItemProps(suggestion, {
+                style,
+              })}
+              key={index}
+            >
+              {suggestion.description}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
   // @ts-ignore
   if (privateFlags != "")
     return (
@@ -166,6 +210,12 @@ function ProfileInfoForm({
                       size="large"
                       tabIndex={8}
                       className={styles.date_picker_inner}
+                      disabledDate={(current) => {
+                        let customDate = moment().format("YYYY-MM-DD");
+                        return (
+                          current && current > moment(customDate, "YYYY-MM-DD")
+                        );
+                      }}
                     />
                   </Form.Item>
                   <Form.Item>
@@ -193,52 +243,7 @@ function ProfileInfoForm({
                     onChange={handleAddressChange}
                     onSelect={handleAddressSelect}
                   >
-                    {({
-                      getInputProps,
-                      suggestions,
-                      getSuggestionItemProps,
-                      loading,
-                    }) => (
-                      <div>
-                        <Input
-                          addonAfter={selectAfter(
-                            "address_1",
-                            publicOrPrivate("address_1")
-                          )}
-                          placeholder={messages.placeholders.addressLine1}
-                          size="large"
-                          {...getInputProps({
-                            placeholder: messages.placeholders.addressLine1,
-                          })}
-                          tabIndex={9}
-                        />
-                        <div>
-                          {loading && <div>Loading...</div>}
-                          {suggestions.map((suggestion, index) => {
-                            const style = suggestion.active
-                              ? {
-                                  backgroundColor: "#f8f8f8",
-                                  cursor: "pointer",
-                                }
-                              : {
-                                  backgroundColor: "#ffffff",
-                                  cursor: "pointer",
-                                };
-
-                            return (
-                              <div
-                                {...getSuggestionItemProps(suggestion, {
-                                  style,
-                                })}
-                                key={index}
-                              >
-                                {suggestion.description}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
+                    {renderFuncForGooglePlaces}
                   </PlacesAutocomplete>
                 </div>
               </Form.Item>

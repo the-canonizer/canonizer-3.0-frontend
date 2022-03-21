@@ -258,10 +258,26 @@ body {
     font-size: 22px;
     font-weight: bold;
   }
+  .ant-space {
+    @media screen and (max-width: 567px) {
+      gap: 10px !important;
+    }
+  }
   .ant-dropdown-link {
     color: #fff;
     font-size: 17px;
     font-weight: 400;
+
+    @media screen and (max-width: 567px) {
+      color: #222;
+    }
+  }
+  .ant-space-item {
+    .anticon {
+      @media screen and (max-width: 567px) {
+        color: #222 !important;
+      }
+    }
   }
 }
 form {
@@ -281,7 +297,7 @@ form {
   outline: 0;
 } */
 
- .ant-btn-primary {
+.ant-btn-primary {
   color: #fff;
   border-color: #4484ce;
   background: #4484ce;
@@ -326,7 +342,7 @@ form {
   color: #4484ce;
   text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
   box-shadow: 0 2px #0000000b;
-} 
+}
 .createTopicBtn {
   width: 100%;
   font-size: 13px;
@@ -608,5 +624,20 @@ form {
   display: flex;
   @media screen and (max-width: 1199px) {
     flex-direction: column;
+  }
+}
+
+.mobile_tag {
+  margin-top: 10px;
+  display: none;
+  @media screen and (max-width: 567px) {
+    display: block;
+  }
+  a {
+    width: 100%;
+    font-size: 16px;
+    display: inline-block;
+    padding: 8px 0;
+    color: #222;
   }
 }
