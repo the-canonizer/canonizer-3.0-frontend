@@ -6,6 +6,7 @@ import Icon, {
 } from "@ant-design/icons";
 import Link from "next/link";
 import styles from "./DelegatedSupportedCamps.module.scss";
+import messages from "../../../../messages";
 export default function DelegatedSupportCampsUI({
   RemoveCardDelegatedSupportedCamps,
   handleSupportedCampsCancel,
@@ -17,7 +18,7 @@ export default function DelegatedSupportCampsUI({
   function CardTitle(props) {
     return (
       <div className={styles.card_heading_title}>
-        For topics<span> &quot;{props.value}&quot;</span>
+        {messages.labels.fortopics}<span> &quot;{props.value}&quot;</span>
       </div>
     );
   }
@@ -61,7 +62,7 @@ export default function DelegatedSupportCampsUI({
               className={styles.RemoveCardSupported}
               onClick={() => RemoveCardDelegatedSupportedCamps()}
             >
-              <CloseCircleOutlined /> Remove support{" "}
+              <CloseCircleOutlined /> {messages.labels.removeSupport}{" "}
             </a>
           </Link>
         }
@@ -81,7 +82,7 @@ export default function DelegatedSupportCampsUI({
             <Col span={12} className={styles.border_left}>
               <div className={styles.line_height1}>
                 <p>
-                  <b>Current Supported Camps:</b>
+                  <b>{messages.labels.currentSupportedCamps}</b>
                 </p>
                 <CurrentSupportedCamps
                   value="Technological Improvement"
@@ -92,7 +93,7 @@ export default function DelegatedSupportCampsUI({
               </div>
               <Link href={""}>
                 <a className={styles.mrgn_left} onClick={showViewMoreModal}>
-                  View More
+                {messages.labels.viewMore}
                 </a>
               </Link>
             </Col>
@@ -110,7 +111,7 @@ export default function DelegatedSupportCampsUI({
               className={styles.RemoveCardSupported}
               onClick={() => RemoveCardDelegatedSupportedCamps()}
             >
-              <CloseCircleOutlined /> Remove support{" "}
+              <CloseCircleOutlined /> {messages.labels.removeSupport}{" "}
             </a>
           </Link>
         }
@@ -128,7 +129,7 @@ export default function DelegatedSupportCampsUI({
             <Col span={12}>
               <div className={styles.line_height1}>
                 <p>
-                  <b>Current Supported Camps:</b>
+                  <b>{messages.labels.currentSupportedCamps}</b>
                 </p>
                 <CurrentSupportedCamps
                   value="Technological Improvement"
@@ -139,7 +140,7 @@ export default function DelegatedSupportCampsUI({
               </div>
               <Link href={""}>
                 <a className={styles.mrgn_left} onClick={showViewMoreModal}>
-                  View More
+                {messages.labels.viewMore}
                 </a>
               </Link>
             </Col>
@@ -211,11 +212,11 @@ export default function DelegatedSupportCampsUI({
         </h3>
         <div className={styles.topic_content}>
           <p>
-            Support delegated to:
+            {messages.labels.supportdelegatedto}  
             <span className={styles.Bluecolor}>Pranav</span>
           </p>
           <p>
-            Nick Name:
+            {messages.labels.nickname}
             <span className={styles.Bluecolor}>rohit_telentelgia</span>
           </p>
         </div>
