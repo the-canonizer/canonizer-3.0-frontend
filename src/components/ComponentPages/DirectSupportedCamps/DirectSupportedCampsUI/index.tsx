@@ -96,7 +96,7 @@ export default function DirectSupportedCampsUI({
         <Form>
           <Form.Item style={{ marginBottom: "0px" }}>
             <p>
-              Your Support for all the capps under the Topics{" "}
+              Your Support for all the camps under the Topics{" "}
               <span className={styles.Bluecolor}>
                 &quot;Front End Language&quot;
               </span>{" "}

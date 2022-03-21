@@ -1,9 +1,10 @@
 import { Card, Typography } from "antd";
+import Link from "next/link";
 import styles from "../campTree.module.scss";
 
 const { Paragraph } = Typography;
 
-const NewsFeedsCard = () => {
+const NewsFeedsCard = ({ newsFeed }) => {
   const newsMockResponse = [
     {
       id: 1,
@@ -42,8 +43,14 @@ const NewsFeedsCard = () => {
         </div>
       }
     >
-      {newsMockResponse.map((news) => {
-        return <Paragraph key={news.id}>{news.news}</Paragraph>;
+      {newsFeed?.map((news) => {
+        return (
+          <Paragraph key={news.id}>
+            <Link href={news?.link} passHref>
+              <a>{news?.display_text}</a>
+            </Link>
+          </Paragraph>
+        );
       })}
     </Card>
   );
