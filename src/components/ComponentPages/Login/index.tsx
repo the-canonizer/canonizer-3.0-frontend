@@ -94,7 +94,7 @@ const Login = ({ isModal, isTest = false }) => {
   const onOTPSubmit = async (values: any) => {
     if (values.otp.trim()) {
       let formBody = {
-        username: formData.email,
+        username: formData.email?.trim(),
         otp: values.otp,
       };
 
