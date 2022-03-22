@@ -32,51 +32,60 @@ const tabList = [
 function callback(key) {
   console.log(key);
 }
-const contentList = {
-  profile_info: (
-    <p>
-      <ProfileInfo />{" "}
-    </p>
-  ),
-  change_password: (
-    <p>
-      <ChangePassword />
-    </p>
-  ),
-  nick_name: (
-    <p>
-      <NickName />
-    </p>
-  ),
-  supported_camps: (
-    <div className={styles.supported_camps}>
-      <div className={styles.search_users}>
-        <SearchOutlined />
-        <input placeholder="Search by topic name" type="text" name="search" />
-      </div>
-      <Tabs onChange={callback} type="card">
-        <TabPane tab="Direct Supported Camps" key="1">
-          <div className={styles.notes}>
-            {" "}
-            Note : To change support order of camp, drag & drop the camp box on
-            your choice position.
-          </div>
-          <DirectSupportedCamps />
-        </TabPane>
-        <TabPane tab="Delegated Support Camps" key="2">
-          <DelegatedSupportCamps />
-        </TabPane>
-      </Tabs>
-    </div>
-  ),
-};
 
 export default function SettingsUI() {
+  const [search, setSearch] = useState("");
+  const [typingTimeout, setTypingTimeout] = useState(0);
   const [activeTabKey, setActiveTabKey] = useState("profile_info");
   const onTabChange = (key) => {
     setActiveTabKey(key);
   };
 
+  const contentList = {
+    profile_info: (
+      <p>
+        <ProfileInfo />{" "}
+      </p>
+    ),
+    change_password: (
+      <p>
+        <ChangePassword />
+      </p>
+    ),
+    nick_name: (
+      <p>
+        <NickName />
+      </p>
+    ),
+    supported_camps: (
+      <div className={styles.supported_camps}>
+        <div className={styles.search_users}>
+          <SearchOutlined />
+          <input
+            placeholder="Search by topic name"
+            type="text"
+            name="search"
+            onChange={(e) => {
+              setSearch(e.target.value);
+            }}
+          />
+        </div>
+        <Tabs onChange={callback} type="card">
+          <TabPane tab="Direct Supported Camps" key="1">
+            <div className={styles.notes}>
+              {" "}
+              Note : To change support order of camp, drag & drop the camp box
+              on your choice position.
+            </div>
+            <DirectSupportedCamps search={search} />
+          </TabPane>
+          <TabPane tab="Delegated Support Camps" key="2">
+            <DelegatedSupportCamps search={search} />
+          </TabPane>
+        </Tabs>
+      </div>
+    ),
+  };
   return (
     <>
       <div>
