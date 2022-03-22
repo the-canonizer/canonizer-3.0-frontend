@@ -30,6 +30,7 @@ const LoginUi = ({
   openForgotPasswordModal,
   openRegistration,
   onOTPClick,
+  errorMsg,
 }) => {
   const router = useRouter();
 
@@ -80,6 +81,9 @@ const LoginUi = ({
             <Title level={2} className={styles.titles}>
               Log in to Canonizer
             </Title>
+            {errorMsg && (
+              <Text className={`${styles.errorMsgs}`}>{errorMsg}</Text>
+            )}
             <Form
               form={form}
               name="login_form"

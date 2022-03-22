@@ -43,20 +43,27 @@ const ForgotPassword = ({ isModal, isTestScreen = 0 }) => {
   };
 
   const onOTPSubmit = async (values: any) => {
-    let body = {
-      username: formData.email_id?.trim(),
-      otp: values.otp,
-    };
+    if (values.otp.trim()) {
+      let body = {
+        username: formData.email_id?.trim(),
+        otp: values.otp?.trim(),
+      };
 
-    let res = await forgotPasswordVerifyOTP(body);
+      let res = await forgotPasswordVerifyOTP(body);
 
-    if (res && res.status_code === 200) {
-      otpForm.resetFields();
-      message.success(res.message);
-      setIsScreen(0);
-      localStorage.setItem("email_id", formData.email_id);
-      isModal && closeModal();
-      router.push("/reset-password");
+      if (res && res.status_code === 200) {
+        otpForm.resetFields();
+        message.success(res.message);
+        setIsScreen(0);
+        localStorage.setItem("email_id", formData.email_id);
+        isModal && closeModal();
+        router.push("/reset-password");
+      }
+    } else {
+      if (isScreen === 1) {
+        form.resetFields();
+        form.validateFields(["otp"]);
+      }
     }
   };
 
