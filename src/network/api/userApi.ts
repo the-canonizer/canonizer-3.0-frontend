@@ -422,3 +422,19 @@ export const getDirectSupportedCampsList = async () => {
     });
   return res;
 };
+
+export const getDelegatedSupportCampsList = async () => {
+  let state = store.getState();
+  const { auth } = state;
+
+  const res = await NetworkCall.fetch(
+    UserRequest.getDelegatedSupportCampsList(auth.loggedInUser.token)
+  )
+    .then((value) => {
+      return value;
+    })
+    .catch((errors) => {
+      handleCatchError(errors);
+    });
+  return res;
+};

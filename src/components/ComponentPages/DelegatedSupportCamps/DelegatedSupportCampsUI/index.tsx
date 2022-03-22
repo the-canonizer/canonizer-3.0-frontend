@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, Modal, Row, Col, Button, Form } from "antd";
 import Icon, {
   CloseCircleOutlined,
@@ -14,11 +14,22 @@ export default function DelegatedSupportCampsUI({
   handelViewMoreModalCancel,
   showViewMoreModal,
   viewMoreModalVisible,
+  delegatedSupportCampsList,
+  search,
 }) {
+  const limit = 3;
   function CardTitle(props) {
     return (
       <div className={styles.card_heading_title}>
-        {messages.labels.fortopics}<span> &quot;{props.value}&quot;</span>
+        {messages.labels.fortopics}
+        <span>
+          {" "}
+          &quot;
+          <Link href={props.title_link}>
+            <a>{props.value}</a>
+          </Link>
+          &quot;
+        </span>
       </div>
     );
   }
@@ -27,7 +38,9 @@ export default function DelegatedSupportCampsUI({
       <>
         <p>
           {props.id_data} &nbsp;
-          <span className={styles.Bluecolor}>{props.value}</span>
+          <Link href={props.camp_link}>
+            <a className={styles.Bluecolor}>{props.value}</a>
+          </Link>
         </p>
       </>
     );
@@ -48,105 +61,81 @@ export default function DelegatedSupportCampsUI({
       </>
     );
   }
-
   return (
     <div>
-      <Card
-        className={styles.cardBox_tags}
-        type="inner"
-        size="default"
-        title={<CardTitle value="Theories of Consciousness" />}
-        extra={
-          <Link href={""}>
-            <a
-              className={styles.RemoveCardSupported}
-              onClick={() => RemoveCardDelegatedSupportedCamps()}
+      {delegatedSupportCampsList
+        .filter((val) => {
+          if (search.trim() == "") {
+            return val;
+          } else if (
+            val.title.toLowerCase().trim().includes(search.toLowerCase().trim())
+          ) {
+            return val;
+          }
+        })
+        ?.map((data, i) => {
+          return (
+            <Card
+              className={styles.cardBox_tags}
+              type="inner"
+              size="default"
+              title={
+                <CardTitle title_link={data.title_link} value={data.title} />
+              }
+              extra={
+                <div
+                  className={styles.RemoveCardSupported}
+                  onClick={() => RemoveCardDelegatedSupportedCamps()}
+                >
+                  <CloseCircleOutlined /> {messages.labels.removeSupport}{" "}
+                </div>
+              }
+              style={{ width: 760, marginBottom: 16 }}
             >
-              <CloseCircleOutlined /> {messages.labels.removeSupport}{" "}
-            </a>
-          </Link>
-        }
-        style={{ width: 760, marginBottom: 16 }}
-      >
-        <div>
-          <Row>
-            <Col span={12}>
-              <>
-                <SupportedCampsTo
-                  supportedto="Pranav"
-                  NickName="rohit_telentelgia"
-                />
-              </>
-            </Col>
-            <div></div>
-            <Col span={12} className={styles.border_left}>
-              <div className={styles.line_height1}>
-                <p>
-                  <b>{messages.labels.currentSupportedCamps}</b>
-                </p>
-                <CurrentSupportedCamps
-                  value="Technological Improvement"
-                  id_data="1."
-                />
-                <CurrentSupportedCamps value="Digital Identity" id_data="2." />
-                <CurrentSupportedCamps value="Prototype" id_data="3." />
+              <div>
+                <Row>
+                  <Col span={12}>
+                    <>
+                      <SupportedCampsTo
+                        supportedto="Pranav"
+                        NickName="rohit_telentelgia"
+                      />
+                    </>
+                  </Col>
+                  <div></div>
+                  <Col span={12} className={styles.border_left}>
+                    <div className={styles.line_height1}>
+                      <p>
+                        <b>{messages.labels.currentSupportedCamps}</b>
+                      </p>
+
+                      {data.camps?.slice(0, limit).map((val, i) => {
+                        return (
+                          <CurrentSupportedCamps
+                            value={val.camp_name}
+                            id_data={val.camp_num + "."}
+                            camp_link={val.camp_link}
+                          />
+                        );
+                      })}
+                    </div>
+                    {data.camps.length > limit ? (
+                      <a
+                        className={styles.mrgn_left}
+                        onClick={showViewMoreModal}
+                      >
+                        {messages.labels.viewMore}
+                      </a>
+                    ) : (
+                      ""
+                    )}
+                  </Col>
+                </Row>
               </div>
-              <Link href={""}>
-                <a className={styles.mrgn_left} onClick={showViewMoreModal}>
-                {messages.labels.viewMore}
-                </a>
-              </Link>
-            </Col>
-          </Row>
-        </div>
-      </Card>
-      <Card
-        className={styles.cardBox_tags}
-        type="inner"
-        size="default"
-        title={<CardTitle value="Front End Language" />}
-        extra={
-          <Link href={""}>
-            <a
-              className={styles.RemoveCardSupported}
-              onClick={() => RemoveCardDelegatedSupportedCamps()}
-            >
-              <CloseCircleOutlined /> {messages.labels.removeSupport}{" "}
-            </a>
-          </Link>
-        }
-        style={{ width: 760, marginBottom: 16 }}
-      >
-        <div>
-          <Row>
-            <Col span={12}>
-              <SupportedCampsTo
-                supportedto="Pranav"
-                NickName="rohit_telentelgia"
-              />
-            </Col>
-            <div></div>
-            <Col span={12}>
-              <div className={styles.line_height1}>
-                <p>
-                  <b>{messages.labels.currentSupportedCamps}</b>
-                </p>
-                <CurrentSupportedCamps
-                  value="Technological Improvement"
-                  id_data="1."
-                />
-                <CurrentSupportedCamps value="Digital Identity" id_data="2." />
-                <CurrentSupportedCamps value="Prototype" id_data="3." />
-              </div>
-              <Link href={""}>
-                <a className={styles.mrgn_left} onClick={showViewMoreModal}>
-                {messages.labels.viewMore}
-                </a>
-              </Link>
-            </Col>
-          </Row>
-        </div>
-      </Card>
+            </Card>
+          );
+        })}
+
       <Modal
         className={styles.modal_cross}
         title="Remove Support"
@@ -203,53 +192,47 @@ export default function DelegatedSupportCampsUI({
         onCancel={handelViewMoreModalCancel}
         closeIcon={<CloseCircleOutlined />}
       >
-        <h3>
-          {" "}
-          For topic{" "}
-          <span className={styles.Bluecolor}>
-            &quot;Theories of Consciousness&quot;
-          </span>{" "}
-        </h3>
-        <div className={styles.topic_content}>
-          <p>
-            {messages.labels.supportdelegatedto}  
-            <span className={styles.Bluecolor}>Pranav</span>
-          </p>
-          <p>
-            {messages.labels.nickname}
-            <span className={styles.Bluecolor}>rohit_telentelgia</span>
-          </p>
-        </div>
-        <h3 className={styles.marginTop}>List of current supported camps</h3>
-        <div className={styles.list_Content}>
-          <CurrentSupportedCamps value="Representational Qualia" id_data="1." />
-          <CurrentSupportedCamps value="Mind-Brain Identity" id_data="2." />
-          <CurrentSupportedCamps value="Representational Qualia" id_data="3." />
-          <CurrentSupportedCamps value="Panexperientialism" id_data="4." />
-          <CurrentSupportedCamps
-            value="Absolute space conscious"
-            id_data="5."
-          />
-          <CurrentSupportedCamps
-            value="Consciousness fundamental"
-            id_data="6."
-          />
-          <CurrentSupportedCamps value="Mind is a seprate field" id_data="7." />
-          <CurrentSupportedCamps value="Spacetime geometry " id_data="8." />
-          <CurrentSupportedCamps value="Force of phisics " id_data="9." />
-          <CurrentSupportedCamps value="Multisens Realism" id_data="10." />
-          <CurrentSupportedCamps value="Qualitative present" id_data="11." />
-          <CurrentSupportedCamps value="Phisicalistic Idealism" id_data="12." />
-          <CurrentSupportedCamps
-            value="Holistic Panexperiential"
-            id_data="13."
-          />
-          <CurrentSupportedCamps
-            value="Functional Property Dualism"
-            id_data="14."
-          />
-          <CurrentSupportedCamps value="Comp Functionalism" id_data="15." />
-        </div>
+        {delegatedSupportCampsList?.map((data, i) => {
+          return (
+            <>
+              <h3>
+                {" "}
+                For topic{" "}
+                <span className={styles.Bluecolor}>
+                  &quot;{" "}
+                  <Link href={data.title_link}>
+                    <a>{data.title}</a>
+                  </Link>{" "}
+                  &quot;
+                </span>{" "}
+              </h3>
+              <div className={styles.topic_content}>
+                <p>
+                  {messages.labels.supportdelegatedto}
+                  <span className={styles.Bluecolor}>Pranav</span>
+                </p>
+                <p>
+                  {messages.labels.nickname}
+                  <span className={styles.Bluecolor}>rohit_telentelgia</span>
+                </p>
+              </div>
+              <h3 className={styles.marginTop}>
+                List of current supported camps
+              </h3>
+              <div className={styles.list_Content}>
+                {data.camps?.map((val, i) => {
+                  return (
+                    <CurrentSupportedCamps
+                      value={val.camp_name}
+                      id_data={val.camp_num + "."}
+                      camp_link={val.camp_link}
+                    />
+                  );
+                })}
+              </div>
+            </>
+          );
+        })}
       </Modal>
     </div>
   );

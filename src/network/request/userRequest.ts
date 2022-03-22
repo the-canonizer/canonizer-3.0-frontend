@@ -349,4 +349,15 @@ export default class UserRequest extends Request {
       authToken
     );
   }
+
+  static getDelegatedSupportCampsList(authToken) {
+    return new Request(
+      K.Network.URL.GetDelegatedSupportCamps,
+      K.Network.Method.GET,
+      {},
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
 }

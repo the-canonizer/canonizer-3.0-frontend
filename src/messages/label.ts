@@ -26,11 +26,11 @@ export const labels = {
   addnewNickName: "Add New Nick Name",
   nickName: "Nick Name (Limit 50 Char)",
   visibilityStatus: "Visibility Status",
-  
-  removeSupport : "Remove support",
-  fortopics :"For topics" ,
-  supportdelegatedto:"Support delegated to:",
-  nickname:"Nick Name:",
-  viewMore:"View More",
-  currentSupportedCamps:"Current Supported Camps:"
+
+  removeSupport: "Remove support",
+  fortopics: "For topics",
+  supportdelegatedto: "Support delegated to:",
+  nickname: "Nick Name:",
+  viewMore: "View More",
+  currentSupportedCamps: "Current Supported Camps:",
 };

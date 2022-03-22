@@ -50,14 +50,12 @@ export default function DirectSupportedCampsUI({
                 <CardTitle title_link={data.title_link} value={data.title} />
               }
               extra={
-               
                 <div
                   className={styles.RemoveCardSupported}
                   onClick={() => RemoveCardSupportedCamps()}
                 >
                   <CloseCircleOutlined /> {messages.labels.removeSupport}{" "}
                 </div>
-              
               }
               style={{ width: 760, marginBottom: 16 }}
             >

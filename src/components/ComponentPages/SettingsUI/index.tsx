@@ -80,7 +80,7 @@ export default function SettingsUI() {
             <DirectSupportedCamps search={search} />
           </TabPane>
           <TabPane tab="Delegated Support Camps" key="2">
-            <DelegatedSupportCamps />
+            <DelegatedSupportCamps search={search} />
           </TabPane>
         </Tabs>
       </div>
