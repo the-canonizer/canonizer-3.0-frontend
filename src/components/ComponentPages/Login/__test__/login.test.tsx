@@ -64,6 +64,7 @@ describe("Login page", () => {
     render(<Login isModal={false} />);
     const inputEl = screen.getByLabelText(labels.emailPhone);
     userEvent.type(inputEl, "rahul.singhiffort.com");
+    userEvent.tab();
     await waitFor(() => {
       expect(screen.getByText("Input is not valid!")).toBeInTheDocument();
     });

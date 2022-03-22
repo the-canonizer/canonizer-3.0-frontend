@@ -57,8 +57,7 @@ function ForgotPasswordUI({ form, onFinish, isModal, closeModal, isScreen }) {
           )}
           {isScreen === 1 && (
             <Text type="danger" className={styles.otpNote}>
-              Note : OTP has been sent to your registered email address and
-              phone number.
+              {messages.validations.otpMsgs}
             </Text>
           )}
           {isScreen === 0 && (

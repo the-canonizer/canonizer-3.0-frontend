@@ -38,23 +38,28 @@ const delegatedSupportCampsList = [
     ],
   },
 ];
-const viewMoreDataValue={
+const viewMoreDataValue = {
   delegated_to_nick_name: "Rohit_Talentelgia",
-  delegated_to_nick_name_link: "https://canonizer-api.teamtalentelgia.com/user/supports/1138?topicnum=286&campnum=5&namespace=19",
+  delegated_to_nick_name_link:
+    "https://canonizer-api.teamtalentelgia.com/user/supports/1138?topicnum=286&campnum=5&namespace=19",
   my_nick_name: "reena_talentelgia",
-  my_nick_name_link: "https://canonizer-api.teamtalentelgia.com/user/supports/1134?topicnum=286&campnum=5&namespace=19",
+  my_nick_name_link:
+    "https://canonizer-api.teamtalentelgia.com/user/supports/1134?topicnum=286&campnum=5&namespace=19",
   title: "This is a test topic RG",
-  title_link: "https://canonizer-api.teamtalentelgia.com/topic/286-This-is-a-test-topic-RG/1-Aggreement",
+  title_link:
+    "https://canonizer-api.teamtalentelgia.com/topic/286-This-is-a-test-topic-RG/1-Aggreement",
   topic_num: 286,
-  camps:[{
-    camp_link: "https://canonizer-api.teamtalentelgia.com/topic/286-This-is-a-test-topic-RG/5-test-camp-12#statement",
-    camp_name: "test camp 12",
-    camp_num: 5,
-    support_added: "2021-10-29",
-    support_order: 1
-  }
-  ]
-}
+  camps: [
+    {
+      camp_link:
+        "https://canonizer-api.teamtalentelgia.com/topic/286-This-is-a-test-topic-RG/5-test-camp-12#statement",
+      camp_name: "test camp 12",
+      camp_num: 5,
+      support_added: "2021-10-29",
+      support_order: 1,
+    },
+  ],
+};
 describe("Delegated Support camps page", () => {
   it("render Modal when Remove support is clicked", () => {
     const { getByText } = render(

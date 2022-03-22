@@ -40,7 +40,7 @@ export const firstNameRule = {
     },
     {
       pattern: patterns.alphaSpace,
-      message: validations.alphaSpace,
+      message: validations.firstNameSpace,
     },
   ],
 };
@@ -56,7 +56,7 @@ export const lastNameRule = {
     },
     {
       pattern: patterns.alphaSpace,
-      message: validations.alphaSpace,
+      message: validations.lastNameSpace,
     },
   ],
 };
