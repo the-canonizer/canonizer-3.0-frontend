@@ -56,11 +56,13 @@ const TopicsList = () => {
   const [getTopicsLoadingIndicator, setGetTopicsLoadingIndicator] =
     useState(false);
 
-  const selectNameSpace = (value) => {
-    setNameSpaceId(value);
+  const selectNameSpace = (id, nameSpace) => {
+    debugger;
+    setNameSpaceId(id);
     dispatch(
       setFilterCanonizedTopics({
-        namespace_id: value,
+        namespace_id: id,
+        nameSpace: nameSpace?.children,
       })
     );
   };
@@ -144,7 +146,7 @@ const TopicsList = () => {
             header={
               <div
                 className={`${styles.head} ${
-                  router.asPath === "/browse" ? styles.browsePage : ""
+                  router.asPath.includes("/browse") ? styles.browsePage : ""
                 }`}
               >
                 <Title level={3}>
@@ -168,7 +170,7 @@ const TopicsList = () => {
                   })}
                 </Select>
 
-                {router.asPath === "/browse" && !includeReview && (
+                {router.asPath.includes("/browse") && !includeReview && (
                   <div className={styles.inputSearchTopic}>
                     <Search
                       placeholder="Search by topic name"
@@ -182,7 +184,9 @@ const TopicsList = () => {
             }
             footer={
               <div className={styles.footer}>
-                {router.asPath === "/browse" ? LoadMoreTopics : ViewAllTopics}
+                {router.asPath.includes("/browse")
+                  ? LoadMoreTopics
+                  : ViewAllTopics}
               </div>
             }
             bordered
@@ -191,13 +195,12 @@ const TopicsList = () => {
               <List.Item className={styles.item}>
                 <>
                   <Link
-                    // href={`/camp-details/${item?.topic_id}`}
                     href={{
                       pathname: `/camp-details/${item?.topic_id}`,
                       query: {
                         ...router.query,
-                        algo: algorithm,
-                        asof: asofdate,
+                        algorithm,
+                        asofdate,
                       },
                     }}
                   >

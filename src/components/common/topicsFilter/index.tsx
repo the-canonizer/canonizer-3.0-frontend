@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 import {
   Typography,
@@ -22,9 +22,9 @@ import {
 const { Title, Text, Paragraph, Link } = Typography;
 const { Panel } = Collapse;
 const { Option } = Select;
-const mockDropdownList = ["blind_popularity", "mind_experts"];
 
 import styles from "./topicListFilter.module.scss";
+import { useRouter } from "next/router";
 
 const infoContent = (
   <>
@@ -87,10 +87,25 @@ const CreateTopic = () => {
   const [datePickerValue, setDatePickerValue] = useState(null);
   const [inputFilterValue, setInputFilterValue] = useState(0.0);
   const dispatch = useDispatch();
+  const router = useRouter();
 
-  const { algorithms } = useSelector((state: RootState) => ({
+  const { algorithms, filterObject } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
+    filterObject: state.homePage.filterObject,
   }));
+
+  useEffect(() => {
+    if (history.pushState) {
+      const queryParams = `?filter=${filterObject?.filterByScore}&algorithm=${filterObject?.algorithm}&asofdate=${filterObject?.asofdate}&namespace=${filterObject?.nameSpace}`;
+      var newurl =
+        window.location.protocol +
+        "//" +
+        window.location.host +
+        window.location.pathname +
+        queryParams;
+      window.history.pushState({ path: newurl }, "", newurl);
+    }
+  }, [filterObject]);
 
   const selectAlgorithm = (value) => {
     dispatch(
