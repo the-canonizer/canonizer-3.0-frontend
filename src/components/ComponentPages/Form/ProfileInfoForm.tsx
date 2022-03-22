@@ -74,13 +74,11 @@ function ProfileInfoForm({
     getInputProps,
     suggestions,
     getSuggestionItemProps,
-    loading }) => (
+    loading,
+  }) => (
     <div>
       <Input
-        addonAfter={selectAfter(
-          "address_1",
-          publicOrPrivate("address_1")
-        )}
+        addonAfter={selectAfter("address_1", publicOrPrivate("address_1"))}
         placeholder={messages.placeholders.addressLine1}
         size="large"
         {...getInputProps({
@@ -93,13 +91,13 @@ function ProfileInfoForm({
         {suggestions.map((suggestion, index) => {
           const style = suggestion.active
             ? {
-              backgroundColor: "#f8f8f8",
-              cursor: "pointer",
-            }
+                backgroundColor: "#f8f8f8",
+                cursor: "pointer",
+              }
             : {
-              backgroundColor: "#ffffff",
-              cursor: "pointer",
-            };
+                backgroundColor: "#ffffff",
+                cursor: "pointer",
+              };
           return (
             <div
               {...getSuggestionItemProps(suggestion, {
