@@ -58,8 +58,8 @@ const Registration = ({ isModal, isTest = false }) => {
         first_name: values.first_name?.trim(),
         last_name: values.last_name?.trim(),
         email: values.email?.trim(),
-        password: values.password?.trim(),
-        password_confirmation: values.confirm?.trim(),
+        password: values.password,
+        password_confirmation: values.confirm,
         phone_number: values.phone?.trim(),
         country_code: values.prefix?.split(" ")[0],
       };
