@@ -29,7 +29,7 @@ import { useRouter } from "next/router";
 const infoContent = (
   <>
     <div className={styles.infoText}>
-      <Title level={5}>Score Value FIlter</Title>
+      <Title level={5}>Score Value </Title>
       <p>
         Duis aute irure dolor in reprehderit in voluptate velit esse cillum
         dolore eu fugiat nulla pariatur.
