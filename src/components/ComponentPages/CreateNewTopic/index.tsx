@@ -61,7 +61,7 @@ const CreateNewTopic = ({}) => {
 
     if (res && res.status_code === 200) {
       dispatch(setCreatedTopic({ message: res.message, ...res.data }));
-      router.push(`/topic-history/234-dadsadas`);
+      router.push(`/topic-history/${res.data.topic_num}`);
     }
   };
 
