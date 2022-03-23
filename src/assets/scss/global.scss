@@ -641,3 +641,12 @@ form {
     color: #222;
   }
 }
+
+#create_new_topic {
+  .ant-form-item-extra {
+    font-size: 12px;
+    color: #ef5e5e;
+    font-weight: normal;
+    line-height: 14px;
+  }
+}

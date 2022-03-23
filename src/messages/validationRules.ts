@@ -268,3 +268,47 @@ export const nickNameRule = {
     },
   ],
 };
+
+// create new topic
+export const nickNmRule = {
+  rules: [
+    {
+      required: true,
+      message: validations.nickNm,
+    },
+  ],
+};
+
+export const topicNameRule = {
+  rules: [
+    {
+      required: true,
+      message: validations.topicName,
+    },
+    {
+      max: 30,
+      message: validations.topiNameMax30,
+    },
+    {
+      pattern: patterns.alphaSpace,
+      message: validations.topicNameSpace,
+    },
+  ],
+};
+
+export const namespaceRule = {
+  rules: [
+    {
+      required: true,
+      message: validations.namespace,
+    },
+  ],
+};
+export const summaryRule = {
+  rules: [
+    {
+      max: 500,
+      message: validations.summaryMax,
+    },
+  ],
+};

@@ -1,0 +1,72 @@
+.createNewTopicForm {
+  label {
+    font-size: 15px;
+    font-weight: 600;
+    color: #795548;
+
+    &::before {
+      position: absolute;
+      right: -15px;
+    }
+  }
+  input,
+  textarea {
+    transition: all 0.3s;
+    ::placeholder {
+      font-size: 14px;
+      color: #afb6bb;
+      line-height: 15px;
+    }
+  }
+
+  .submit_btn {
+    background: #f89d15 0% 0% no-repeat padding-box;
+    border-radius: 2px;
+    border-color: #f89d15;
+    opacity: 1;
+    margin-right: 15px;
+    color: #ffffff;
+    transition: all 0.3s;
+
+    &:hover {
+      background: #d3840e;
+    }
+  }
+  .namespaceInput {
+    // & > div {
+    //   display: flex;
+    //   &:first-child {
+    //     &::after {
+    //       display: inline-block;
+    //       content: "(General is recommended, unless you know otherwise)";
+    //       // position: absolute;
+    //     }
+    //   }
+    // }
+
+    label {
+      &::before {
+        position: static;
+        order: 1;
+      }
+    }
+  }
+  .cancel_btn {
+    background: #ffffff 0% 0% no-repeat padding-box;
+    border: 1px solid #4484ce;
+    border-radius: 2px;
+    opacity: 1;
+    letter-spacing: 0px;
+    color: #4484ce;
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 1;
+    line-height: 16px;
+    transition: all 0.3s;
+
+    &:hover {
+      background: #4484ce;
+      color: #ffffff;
+    }
+  }
+}
