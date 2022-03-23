@@ -65,6 +65,10 @@ const CreateNewTopic = ({}) => {
     }
   };
 
+  const onCancel = () => {
+    router.push("/");
+  };
+
   return (
     <Fragment>
       <aside className="leftSideBar miniSideBar">
@@ -169,6 +173,7 @@ const CreateNewTopic = ({}) => {
                 htmlType="button"
                 size={"large"}
                 className={`${styles.cancel_btn}`}
+                onClick={onCancel}
               >
                 Cancel
               </Button>
