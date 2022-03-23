@@ -27,4 +27,6 @@ export const placeholders = {
   nickName: "Nick Name",
   topicName: "Topic Name",
   namespace: "Namespace",
+  campAboutNickName: "--Select Camp About Nick Name--",
+  campURL: "https://",
 };

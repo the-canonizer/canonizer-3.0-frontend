@@ -7,7 +7,9 @@ export const patterns = {
   email:
     /[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?/,
   password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*]).{8,}$/,
-  alphaSpace: /^[a-zA-Z0-9 ]*$/,
+  alphaSpace: /^[a-zA-Z ]*$/,
+  alphaNumSpace: /^[a-zA-Z0-9 ]*$/,
+  url: /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g,
 };
 
 export const validations: ErrorContainer = {
@@ -49,11 +51,17 @@ export const validations: ErrorContainer = {
   alphaSpace: "The field must be in alphabets and space only.",
   otpMsgs:
     " Note : OTP has been sent to your registered email address and phone number.",
-  nickNm: "Please select Nick Name!",
-  topicName: "Please Enter Topic Name!",
+  nickNm: "Please select nick name!",
+  topicName: "Please enter topic name!",
   topiNameMax30: "Maximum 30 character allowed!",
   topicNameSpace:
     "Topic name can only contain space and alphanumeric characters.",
   namespace: "Please select Namespace!",
   summaryMax: "Maximum 500 character allowed!",
+  campName: "Please enter camp name!",
+  parentCamp: "Please select parent camp!",
+  keywords: "Please enter keywords!",
+  campUrlLim: "Maximum 1024 character allowed!",
+  campUrl: "The camp about url format is invalid.",
+  campAlpha: "Camp name can only contain space and alphanumeric characters.",
 };

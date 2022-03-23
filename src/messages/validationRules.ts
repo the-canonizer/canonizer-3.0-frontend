@@ -290,7 +290,7 @@ export const topicNameRule = {
       message: validations.topiNameMax30,
     },
     {
-      pattern: patterns.alphaSpace,
+      pattern: patterns.alphaNumSpace,
       message: validations.topicNameSpace,
     },
   ],
@@ -309,6 +309,46 @@ export const summaryRule = {
     {
       max: 500,
       message: validations.summaryMax,
+    },
+  ],
+};
+
+// create new camp
+export const campNameRule = {
+  rules: [
+    {
+      required: true,
+      message: validations.campName,
+    },
+    {
+      max: 30,
+      message: validations.topiNameMax30,
+    },
+    {
+      pattern: patterns.alphaNumSpace,
+      message: validations.campAlpha,
+    },
+  ],
+};
+
+export const parentCampRule = {
+  rules: [
+    {
+      required: true,
+      message: validations.parentCamp,
+    },
+  ],
+};
+
+export const campAboutUrlRule = {
+  rules: [
+    {
+      pattern: patterns.url,
+      message: validations.campUrl,
+    },
+    {
+      max: 1024,
+      message: validations.campUrlLim,
     },
   ],
 };

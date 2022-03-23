@@ -37,7 +37,14 @@ export const labels = {
   cr_nick_name: "Nick Name",
   cr_nick_name_sp:
     "(Once you pick a nick name, for any contribution to a topic, you must always use the same nick name for any other contribution or forum post to this topic.)",
-  cr_topic_name: "Topic Name ( Limit 30 Chars )",
+  cr_topic_name: "Topic Name (Limit 30 Chars)",
   cr_namespace: "Namespace (General is recommended, unless you know otherwise)",
   cr_edit_summary: "Edit summary (Briefly describe your changes)",
+  cr_camp_name: "Camp Name (Limit 30 Chars)",
+  cr_parent_camp: "Parent Camp",
+  cr_keywords: "Keywords",
+  cr_keywords_sp:
+    "The following fields are rarely used and are for advanced users only.",
+  cr_camp_url: "Camp About URL (Limit 1024 Chars)",
+  cr_nick_name_about: "Camp About Nick Name",
 };
