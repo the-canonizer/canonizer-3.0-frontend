@@ -35,7 +35,7 @@ const CreateNewTopic = ({}) => {
   const dispatch = useDispatch();
 
   const [form] = Form.useForm();
-  const CardTitle = <span data-testid="head">Create New Topic</span>;
+  const CardTitle = <span className={styles.cardTitle} data-testid="head">Create New Topic</span>;
 
   const fetchNickNameList = async () => {
     let response = await getNickNameList();

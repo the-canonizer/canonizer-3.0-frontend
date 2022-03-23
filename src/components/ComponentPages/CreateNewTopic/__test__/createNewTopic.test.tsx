@@ -1,14 +1,14 @@
 import { render, screen, waitFor } from "../../../../utils/testUtils";
 import userEvent from "@testing-library/user-event";
 
-import CreateNewCamp from "../index";
+import CreateNewTopic from "../index";
 import messages from "../../../../messages";
 
 const { labels, placeholders } = messages;
 
 describe("Create New Topic page", () => {
   it("render heading and labels", () => {
-    render(<CreateNewCamp />);
+    render(<CreateNewTopic />);
 
     expect(screen.getByTestId("head")).toBeInTheDocument();
     expect(screen.getByLabelText(labels.cr_nick_name)).toBeInTheDocument();
@@ -21,7 +21,7 @@ describe("Create New Topic page", () => {
   });
 
   it("render inputs field and submit button", () => {
-    render(<CreateNewCamp />);
+    render(<CreateNewTopic />);
 
     const nickName = screen.getByLabelText(labels.cr_nick_name);
     expect(nickName).toBeInTheDocument();
@@ -40,7 +40,7 @@ describe("Create New Topic page", () => {
   });
 
   it("blank form should not be submit", async () => {
-    render(<CreateNewCamp />);
+    render(<CreateNewTopic />);
     const btnEl = screen.getByText("Create Topic");
 
     userEvent.click(btnEl);

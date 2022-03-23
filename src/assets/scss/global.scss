@@ -650,3 +650,11 @@ form {
     line-height: 14px;
   }
 }
+
+.d-flex {
+  display: flex;
+
+  @media screen and (max-width: 1024px) {
+    flex-flow: column;
+  }
+}
