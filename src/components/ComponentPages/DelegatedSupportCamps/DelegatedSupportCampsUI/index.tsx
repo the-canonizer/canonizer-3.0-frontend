@@ -53,15 +53,14 @@ export default function DelegatedSupportCampsUI({
           <p>
             Support delegated to:{" "}
             <Link href={props.supportedto_link}>
-            <a className={styles.Bluecolor}>{props.supportedto}</a>
+              <a className={styles.Bluecolor}>{props.supportedto}</a>
             </Link>
           </p>
           <p>
             Nick Name:{" "}
             <Link href={props.NickNameLink}>
-            <a className={styles.Bluecolor}>{props.NickName}</a>
+              <a className={styles.Bluecolor}>{props.NickName}</a>
             </Link>
-            
           </p>
         </div>
       </>
@@ -82,6 +81,7 @@ export default function DelegatedSupportCampsUI({
         ?.map((data, i) => {
           return (
             <Card
+              key={i}
               className={styles.cardBox_tags}
               type="inner"
               size="default"
@@ -120,6 +120,7 @@ export default function DelegatedSupportCampsUI({
                       {data.camps?.slice(0, limit).map((val, i) => {
                         return (
                           <CurrentSupportedCamps
+                            key={i}
                             value={val.camp_name}
                             id_data={val.support_order + "."}
                             camp_link={val.camp_link}
@@ -130,7 +131,7 @@ export default function DelegatedSupportCampsUI({
                     {data.camps.length > limit ? (
                       <a
                         className={styles.mrgn_left}
-                        onClick={(e)=>showViewMoreModal(e,data)}
+                        onClick={(e) => showViewMoreModal(e, data)}
                       >
                         {messages.labels.viewMore}
                       </a>
@@ -200,47 +201,50 @@ export default function DelegatedSupportCampsUI({
         onCancel={handelViewMoreModalCancel}
         closeIcon={<CloseCircleOutlined />}
       >
-            <>
-              <h3>
-                {" "}
-                For topic{" "}
-                <span className={styles.Bluecolor}>
-                  &quot;{" "}
-                  <Link href={viewMoreDataValue.title_link}>
-                    <a>{viewMoreDataValue.title}</a>
-                  </Link>{" "}
-                  &quot;
-                </span>{" "}
-              </h3>
-              <div className={styles.topic_content}>
-                <p>
-                  {messages.labels.supportdelegatedto} {" "}
-                  <Link href={viewMoreDataValue.delegated_to_nick_name_link}>
-                    <a className={styles.Bluecolor}>{viewMoreDataValue.delegated_to_nick_name}</a>
-                  </Link>
-                </p>
-                <p>
-                  {messages.labels.nickname} {" "}
-                  <Link href={viewMoreDataValue.my_nick_name_link}>
-                    <a className={styles.Bluecolor}>{viewMoreDataValue.my_nick_name}</a>
-                  </Link>
-                </p>
-              </div>
-              <h3 className={styles.marginTop}>
-                List of current supported camps
-              </h3>
-              <div className={styles.list_Content}>
-                {viewMoreDataValue.camps?.map((val, i) => {
-                  return (
-                    <CurrentSupportedCamps
-                      value={val.camp_name}
-                      id_data={val.support_order + "."}
-                      camp_link={val.camp_link}
-                    />
-                  );
-                })}
-              </div>
-            </>
+        <>
+          <h3>
+            {" "}
+            For topic{" "}
+            <span className={styles.Bluecolor}>
+              &quot;{" "}
+              <Link href={viewMoreDataValue.title_link}>
+                <a>{viewMoreDataValue.title}</a>
+              </Link>{" "}
+              &quot;
+            </span>{" "}
+          </h3>
+          <div className={styles.topic_content}>
+            <p>
+              {messages.labels.supportdelegatedto}{" "}
+              <Link href={viewMoreDataValue.delegated_to_nick_name_link}>
+                <a className={styles.Bluecolor}>
+                  {viewMoreDataValue.delegated_to_nick_name}
+                </a>
+              </Link>
+            </p>
+            <p>
+              {messages.labels.nickname}{" "}
+              <Link href={viewMoreDataValue.my_nick_name_link}>
+                <a className={styles.Bluecolor}>
+                  {viewMoreDataValue.my_nick_name}
+                </a>
+              </Link>
+            </p>
+          </div>
+          <h3 className={styles.marginTop}>List of current supported camps</h3>
+          <div className={styles.list_Content}>
+            {viewMoreDataValue.camps?.map((val, i) => {
+              return (
+                <CurrentSupportedCamps
+                  key={i}
+                  value={val.camp_name}
+                  id_data={val.support_order + "."}
+                  camp_link={val.camp_link}
+                />
+              );
+            })}
+          </div>
+        </>
       </Modal>
     </div>
   );

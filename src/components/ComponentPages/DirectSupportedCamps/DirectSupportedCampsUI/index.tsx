@@ -62,6 +62,7 @@ export default function DirectSupportedCampsUI({
               {data.camps?.map((val, i) => {
                 return (
                   <Tag
+                    key={i}
                     className={styles.tag_btn}
                     closable
                     closeIcon={<CloseCircleOutlined />}
