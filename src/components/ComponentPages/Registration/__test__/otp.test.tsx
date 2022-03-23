@@ -11,7 +11,7 @@ const { placeholders, validations } = messages;
 describe("OTP page", () => {
   it("render heading and text", () => {
     render(<Registration isModal={false} isTest={true} />);
-    let heading = screen.getByText("Login One Time Verification Code");
+    let heading = screen.getByText("Log in One Time Verification Code");
     expect(heading).toBeInTheDocument();
     expect(
       screen.getByText(
@@ -43,6 +43,7 @@ describe("OTP page", () => {
     render(<Registration isModal={false} isTest={true} />);
     const inputEl = screen.getByPlaceholderText(placeholders.otp);
     userEvent.type(inputEl, "123456789");
+    userEvent.tab();
     await waitFor(() => {
       expect(inputEl).toHaveValue("123456789");
       expect(screen.queryByRole("alert")).toBeInTheDocument();
@@ -56,7 +57,7 @@ describe("OTP page", () => {
     userEvent.click(btnEl);
 
     await waitFor(() => {
-      expect(screen.queryByText("Please input your otp!")).toBeVisible();
+      expect(screen.queryByText("Please input your OTP!")).toBeVisible();
     });
   });
 });

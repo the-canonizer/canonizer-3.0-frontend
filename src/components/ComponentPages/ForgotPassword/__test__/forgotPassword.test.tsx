@@ -48,6 +48,7 @@ describe("Forgot Password", () => {
     render(<ForgotPassword isModal={false} />);
     const inputEl = screen.getByLabelText(labels.emailId);
     userEvent.type(inputEl, "rahul.singhiffort.com");
+    userEvent.tab();
     await waitFor(() => {
       expect(inputEl).toHaveValue("rahul.singhiffort.com");
       expect(
