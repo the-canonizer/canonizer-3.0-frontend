@@ -38,6 +38,10 @@ export const firstNameRule = {
       max: 100,
       message: validations.firstNameMax,
     },
+    {
+      pattern: patterns.alphaSpace,
+      message: validations.firstNameSpace,
+    },
   ],
 };
 export const lastNameRule = {
@@ -50,6 +54,10 @@ export const lastNameRule = {
       max: 100,
       message: validations.firstNameMax,
     },
+    {
+      pattern: patterns.alphaSpace,
+      message: validations.lastNameSpace,
+    },
   ],
 };
 export const middleNameRule = {
@@ -57,6 +65,10 @@ export const middleNameRule = {
     {
       max: 100,
       message: validations.firstNameMax,
+    },
+    {
+      pattern: patterns.alphaSpace,
+      message: validations.alphaSpace,
     },
   ],
 };

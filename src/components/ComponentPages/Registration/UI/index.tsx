@@ -72,6 +72,7 @@ function RegistrationUi({
         layout="vertical"
         scrollToFirstError
         validateTrigger={messages.formValidationTypes()}
+        autoComplete="off"
       >
         <Title level={2} className={styles.titles}>
           Register Now on Canonizer
@@ -119,11 +120,12 @@ function RegistrationUi({
                 {...messages.phoneRule}
               >
                 <Input
+                  type="number"
                   addonBefore={prefixSelector}
                   style={{ width: "100%" }}
                   className={`${styles.phoneInput} numberInput`}
                   placeholder={messages.placeholders.phone}
-                  autoComplete="false"
+                  autoComplete="new-phone"
                 />
               </Form.Item>
             </Col>
@@ -137,7 +139,7 @@ function RegistrationUi({
                   className={styles.passwordInput}
                   type="password"
                   placeholder={messages.placeholders.password}
-                  autoComplete="false"
+                  autoComplete="new-password"
                 />
               </Form.Item>
             </Col>
@@ -152,7 +154,7 @@ function RegistrationUi({
                   className={styles.passwordInput}
                   type="password"
                   placeholder={messages.placeholders.confirmPassword}
-                  autoComplete="false"
+                  autoComplete="new-conf-password"
                 />
               </Form.Item>
             </Col>
@@ -161,7 +163,11 @@ function RegistrationUi({
                 // label={messages.labels.captcha}
                 name="captcha"
                 {...messages.getCaptchaRule(showCaptchaError)}
-                style={{ paddingLeft: "15px" }}
+                style={{
+                  paddingLeft: "30px",
+                  marginTop: "15px",
+                  marginBottom: "0",
+                }}
               >
                 <div className={styles.captchaCol}>
                   <ReCAPTCHA
@@ -182,6 +188,7 @@ function RegistrationUi({
             className="login-form-button"
             block
             data-testid="submitButton"
+            style={{ marginTop: "20px" }}
           >
             Register Now <ArrowRightOutlined />
           </Button>

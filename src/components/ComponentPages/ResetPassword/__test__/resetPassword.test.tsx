@@ -40,6 +40,7 @@ describe("Reset Password page", () => {
     render(<ResetPassword />);
     const inputEl = screen.getByLabelText(labels.newPassword);
     userEvent.type(inputEl, "1234567");
+    userEvent.tab();
     await waitFor(() => {
       expect(inputEl).toHaveValue("1234567");
       expect(screen.queryByRole("alert")).toBeInTheDocument();
@@ -66,7 +67,9 @@ describe("Reset Password page", () => {
     const inputEl = screen.getByLabelText(labels.newPassword);
     const inputEl2 = screen.getByLabelText(labels.confirmPassword);
     userEvent.type(inputEl, "Abc@1234");
+    userEvent.tab();
     userEvent.type(inputEl2, "Abc@12344");
+    userEvent.tab();
     await waitFor(() => {
       expect(inputEl).toHaveValue("Abc@1234");
       expect(inputEl2).toHaveValue("Abc@12344");

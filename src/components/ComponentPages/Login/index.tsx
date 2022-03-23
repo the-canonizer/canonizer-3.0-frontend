@@ -24,6 +24,7 @@ const Login = ({ isModal, isTest = false }) => {
   const [isResend, setIsResend] = useState(false);
   const [formData, setFormData] = useState({ email: "" });
   const [failedMsg, setFailedMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
@@ -35,6 +36,7 @@ const Login = ({ isModal, isTest = false }) => {
 
     isOtpScreen ? otpForm.resetFields() : form.resetFields();
     setIsOtpScreen(false);
+    setErrorMsg("");
   };
 
   const openForgotPasswordModal = () => dispatch(showForgotModal());
@@ -42,10 +44,10 @@ const Login = ({ isModal, isTest = false }) => {
 
   const onFinish = async (values: any) => {
     setFormData({ email: values.username });
-    let res = await login(values.username, values.password);
+    let res = await login(values.username?.trim(), values.password?.trim());
 
     if (res && res.status_code === 402) {
-      setIsOtpScreen(true);
+      setErrorMsg(res.message);
     }
 
     if (res && res.status_code === 403) {
@@ -76,6 +78,7 @@ const Login = ({ isModal, isTest = false }) => {
     e.preventDefault();
     const emailPhone = form.getFieldValue("username");
     if (emailPhone?.trim()) {
+      setErrorMsg("");
       let formBody = { email: emailPhone };
 
       const res = await resendOTPForRegistration(formBody);
@@ -89,24 +92,29 @@ const Login = ({ isModal, isTest = false }) => {
   };
 
   const onOTPSubmit = async (values: any) => {
-    let formBody = {
-      username: formData.email,
-      otp: values.otp,
-    };
+    if (values.otp.trim()) {
+      let formBody = {
+        username: formData.email?.trim(),
+        otp: values.otp,
+      };
 
-    let res = await verifyOtp(formBody);
+      let res = await verifyOtp(formBody);
 
-    if (res) {
-      setFailedMsg(res.message);
-    }
+      if (res) {
+        setFailedMsg(res.message);
+      }
 
-    if (res && res.status_code === 200) {
+      if (res && res.status_code === 200) {
+        otpForm.resetFields();
+
+        setIsOtpScreen(false);
+        isModal ? closeModal() : "";
+
+        router.push("/");
+      }
+    } else {
       otpForm.resetFields();
-
-      setIsOtpScreen(false);
-      isModal ? closeModal() : "";
-
-      router.push("/");
+      otpForm.validateFields(["otp"]);
     }
   };
 
@@ -140,6 +148,7 @@ const Login = ({ isModal, isTest = false }) => {
             openForgotPasswordModal={openForgotPasswordModal}
             openRegistration={openRegistration}
             onOTPClick={onOTPClick}
+            errorMsg={errorMsg}
           />
         )}
       </Spinner>

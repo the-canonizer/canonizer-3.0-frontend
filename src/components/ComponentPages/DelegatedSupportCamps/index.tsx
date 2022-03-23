@@ -17,8 +17,8 @@ const DelegatedSupportCamps = ({ search }) => {
     setIsRemoveSupportModalVisible(true);
   };
   const [viewMoreModalVisible, setViewmoreModalVisible] = useState(false);
-  const [viewMoreDataValue, setviewMoreDataValue] = useState([])
-  const showViewMoreModal = (e,data) => {
+  const [viewMoreDataValue, setviewMoreDataValue] = useState([]);
+  const showViewMoreModal = (e, data) => {
     setViewmoreModalVisible(true);
     setviewMoreDataValue(data);
   };
@@ -42,7 +42,7 @@ const DelegatedSupportCamps = ({ search }) => {
       RemoveCardDelegatedSupportedCamps={RemoveCardDelegatedSupportedCamps}
       handleSupportedCampsCancel={handleSupportedCampsCancel}
       isRemoveSupportModalVisible={isRemoveSupportModalVisible}
-      showViewMoreModal={(e,data)=>showViewMoreModal(e,data)}
+      showViewMoreModal={(e, data) => showViewMoreModal(e, data)}
       viewMoreDataValue={viewMoreDataValue}
       handelViewMoreModalCancel={handelViewMoreModalCancel}
       viewMoreModalVisible={viewMoreModalVisible}
