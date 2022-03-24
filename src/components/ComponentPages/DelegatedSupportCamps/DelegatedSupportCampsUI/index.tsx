@@ -81,6 +81,7 @@ export default function DelegatedSupportCampsUI({
         ?.map((data, i) => {
           return (
             <Card
+              key={i}
               className={styles.cardBox_tags}
               type="inner"
               size="default"
@@ -119,6 +120,7 @@ export default function DelegatedSupportCampsUI({
                       {data.camps?.slice(0, limit).map((val, i) => {
                         return (
                           <CurrentSupportedCamps
+                            key={i}
                             value={val.camp_name}
                             id_data={val.support_order + "."}
                             camp_link={val.camp_link}
@@ -234,6 +236,7 @@ export default function DelegatedSupportCampsUI({
             {viewMoreDataValue.camps?.map((val, i) => {
               return (
                 <CurrentSupportedCamps
+                  key={i}
                   value={val.camp_name}
                   id_data={val.support_order + "."}
                   camp_link={val.camp_link}
