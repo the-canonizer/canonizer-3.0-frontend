@@ -1,10 +1,13 @@
 import { Card, Typography } from "antd";
 import Link from "next/link";
 import styles from "../campTree.module.scss";
+import Router, { useRouter } from "next/router";
 
 const { Paragraph } = Typography;
 
-const NewsFeedsCard = ({ newsFeed }) => {
+const NewsFeedsCard = ({ newsFeed, reqBody }) => {
+  console.log("req body in index -newsfeedcard-", reqBody);
+  console.log("newsfeed data -newsfeedcard-", newsFeed);
   const newsMockResponse = [
     {
       id: 1,
@@ -34,9 +37,26 @@ const NewsFeedsCard = ({ newsFeed }) => {
       extra={
         <div className="cardActions">
           {" "}
-          <a>
+          {/* <a
+            onClick={() =>
+              Router.push({
+                pathname: "/updatenews/${}",
+                query: reqBody,
+              })
+            }
+          >
             <i className={"icon-edit " + styles.iconMr}></i>Edit News
-          </a>{" "}
+          </a> */}
+          <Link
+            href={{
+              pathname: "/updatenews/:",
+              query: reqBody,
+            }}
+          >
+            <a>
+              <i className={"icon-edit " + styles.iconMr}></i>Edit News
+            </a>
+          </Link>{" "}
           <a>
             <i className={"icon-delete " + styles.iconMr}></i>Delete News
           </a>

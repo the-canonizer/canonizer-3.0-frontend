@@ -2,9 +2,13 @@ import NetworkCall from "../networkCall";
 import {message} from "antd";
 import addNewsRequest from "../request/addupdateNewsRequest"
 
-export const addNewsApi = async (body) =>{
+export const addNewsRequestApi = async (body) =>{
     try {
-        
+        console.log("body of add news in api",body);
+        const editnewsdata =await NetworkCall.fetch(
+                addNewsRequest.getAddNewsrequest(body))
+       
+        return editnewsdata;
     } catch (error) {
         
     message.error(error.message);
@@ -21,10 +25,12 @@ export const campNewsFeedApi = async () =>{
     message.error(error.message);
     }
 }
-    export const editNewsFeedApi = async () =>{
+    export const editNewsFeedApi = async (body) =>{
         try {
+            console.log("body in api",body);
             const editnewsdat =await NetworkCall.fetch(
-                    addNewsRequest.geteditNewsFeedData())
+                    addNewsRequest.geteditNewsFeedData(body))
+           
             return editnewsdat;
     
         } catch (error) {
@@ -35,10 +41,8 @@ export const campNewsFeedApi = async () =>{
 
         export const updateNewsFeedApi = async (body) =>{
             try {
-                console.log("data obj body in  api", body);
                 const editnewsdat =await NetworkCall.fetch(
                         addNewsRequest.getupdateNewsFeedData(body))
-                console.log("request = update data=> ",editnewsdat);
                 return editnewsdat;
         
             } catch (error) {

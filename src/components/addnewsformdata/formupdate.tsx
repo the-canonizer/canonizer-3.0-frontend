@@ -1,16 +1,19 @@
 import { Form, Input, Button, Checkbox, Divider } from "antd";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
+import { Row, Col } from "antd";
 import React from "react";
 import { updateNewsFeedApi } from "../../network/api/addupdateNewsApi";
 export default function FormDataupdate({ update }) {
   console.log("data => ", update);
-
+  const router = useRouter();
   const [form] = Form.useForm();
 
   const onFinish = async (values: any) => {
     console.log("Success:", values.data);
 
     const dataobj = await {
+      topic_num: 45,
+      camp_num: 1,
       id: values.data.map((id) => id.id),
       display_text: values.data.map((text) => text.display_text),
       link: values.data.map((link) => link.link),
@@ -22,7 +25,7 @@ export default function FormDataupdate({ update }) {
     const a = await updateNewsFeedApi(dataobj);
     console.log("data obj of all a  => ", a);
 
-    Router.push("/allnews");
+    router.back();
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -30,94 +33,135 @@ export default function FormDataupdate({ update }) {
   };
 
   return (
-    <div>
-      <h1>update</h1>
+    <Form
+      form={form}
+      layout={"vertical"}
+      name="basic"
+      initialValues={{
+        data: update,
+      }}
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+      autoComplete="off"
+      style={{
+        width: "100%",
+        margin: "30px",
+        marginRight: "50px",
+        borderStyle: "solid",
+        borderWidth: "3px",
+        borderColor: "#f2f2f2",
+        padding: "10px 20px",
+      }}
+    >
+      <h1>Add News</h1>
+      <Divider />
+      <Form.List name="data">
+        {(fields) => {
+          return (
+            <>
+              {fields.map((field, index) => (
+                <>
+                  <Row
+                    style={{
+                      backgroundColor: "#f2f2f2",
+                      marginBottom: "10px",
+                      padding: "10px 20px",
+                    }}
+                  >
+                    <Col xs={24} xl={1}>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          alignContent: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <h1
+                          style={{
+                            backgroundColor: "orange",
+                            textAlign: "center",
+                            height: "45px",
+                            width: "40px",
 
-      <Form
-        form={form}
-        name="basic"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        initialValues={{
-          data: update,
+                            borderRadius: "10px",
+                            color: "white",
+                          }}
+                        >
+                          {field.key}
+                        </h1>
+                      </div>
+                    </Col>
+                    <Col xs={24} xl={12} style={{ paddingRight: "30px" }}>
+                      <Form.Item
+                        key={field.key}
+                        name={[index, "display_text"]}
+                        label="Display Text"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input text",
+                          },
+                        ]}
+                      >
+                        <Input.TextArea showCount maxLength={50} rows={6} />
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} xl={11}>
+                      <Form.Item
+                        label="Link"
+                        name={[index, "link"]}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input url",
+                          },
+                          {
+                            pattern:
+                              /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/,
+                            message: "Please input valid url only",
+                          },
+                        ]}
+                      >
+                        <Input maxLength={200} />
+                      </Form.Item>
+
+                      <Form.Item
+                        style={{
+                          fontWeight: "bold",
+                          marginTop: "-10px",
+                        }}
+                        name={[index, "available_for_child"]}
+                        valuePropName="checked"
+                      >
+                        <Checkbox>Available for children</Checkbox>
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </>
+              ))}
+            </>
+          );
         }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete="off"
-      >
-        <Form.List name="data">
-          {(fields) => {
-            console.log("fields=> ", fields);
+      </Form.List>
 
-            return (
-              <div>
-                {fields.map((field, index) => (
-                  <div key={field.key}>
-                    <Form.Item
-                      name={[index, "display_text"]}
-                      label="Display Text"
-                      validateTrigger="onFinish"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input text",
-                        },
-                      ]}
-                    >
-                      <Input.TextArea showCount maxLength={50} />
-                    </Form.Item>
-
-                    <Form.Item
-                      label="Link"
-                      name={[index, "link"]}
-                      validateTrigger="onFinish"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input url only",
-                        },
-                      ]}
-                    >
-                      <Input maxLength={200} />
-                    </Form.Item>
-
-                    <Form.Item
-                      name={[index, "available_for_child"]}
-                      valuePropName="checked"
-                      wrapperCol={{
-                        offset: 8,
-                        span: 16,
-                      }}
-                    >
-                      <Checkbox>Available for children</Checkbox>
-                    </Form.Item>
-                    <Divider />
-                  </div>
-                ))}
-              </div>
-            );
-          }}
-        </Form.List>
-
-        <Form.Item
-          wrapperCol={{
-            offset: 8,
-            span: 16,
+      <Form.Item>
+        <Button
+          type="primary"
+          style={{ backgroundColor: "#fa8c16", borderColor: "#fa8c16" }}
+          htmlType="submit"
+        >
+          Submit
+        </Button>
+        <Button
+          htmlType="button"
+          style={{
+            margin: "0 8px",
           }}
         >
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-          <Button
-            htmlType="button"
-            style={{
-              margin: "0 8px",
-            }}
-          >
-            Cancel
-          </Button>
-        </Form.Item>
-      </Form>
-    </div>
+          Cancel
+        </Button>
+      </Form.Item>
+    </Form>
   );
 }

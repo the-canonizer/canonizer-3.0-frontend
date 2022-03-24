@@ -38,7 +38,7 @@ const NetworkConstants = {
     UpdateNickName: `${BaseCanonizerApiUrl}/update-nick-name`,
     // Tree
     GetTree: `${BaseCanonizerServiceUrl}/api/v1/tree/get`,
-    GetNewsFeed: `${BaseCanonizerApiUrl}/get/camp-newsfeed`,
+    GetNewsFeed: `${BaseCanonizerApiUrl}/get-camp-newsfeed`,
     GetCampStatement: `${BaseCanonizerApiUrl}/get/camp-statement`,
     GetSupportingTree: `${BaseCanonizerApiUrl}/get/supporting-tree`,
     // resend otp for registration
@@ -57,9 +57,10 @@ const NetworkConstants = {
     GetFooterSocialLinks: `${BaseCanonizerApiUrl}/get-social-media-links`,
   
     //camp news feed add edit update
-    GetCampNewsFeeds:`${BaseCanonizerApiUrl}/get/camp-newsfeed`,
-    GetEditNewsFeeds:`${BaseCanonizerApiUrl}/edit/camp-newsfeed`,
-    GetUpdateNewsFeeds:`${BaseCanonizerApiUrl}/update/camp-newsfeed`,
+    GetCampNewsFeeds:`${BaseCanonizerApiUrl}/get-camp-newsfeed`,
+    GetEditNewsFeeds:`${BaseCanonizerApiUrl}/edit-camp-newsfeed`,
+    GetUpdateNewsFeeds:`${BaseCanonizerApiUrl}/update-camp-newsfeed`,
+    GetAddNewsFeeds:"`${BaseCanonizerApiUrl}/"
     
   
   

@@ -11,8 +11,20 @@ window.matchMedia =
     };
   };
 const fakeUsers = [
-  { id: 1, text: "wahaj", link: "https://www.wahaj.com", available: true },
-  { id: 2, text: "waqas", link: "https://www.waqas.com", available: false },
+  //   available_for_child: 1
+  // display_text: "waqar zaman"
+  {
+    id: 1,
+    display_text: "wahaj",
+    link: "https://www.wahaj.com",
+    available_for_child: 1,
+  },
+  {
+    id: 2,
+    display_text: "waqas",
+    link: "https://www.waqas.com",
+    available_for_child: 0,
+  },
 ];
 
 afterEach(cleanup);
@@ -47,7 +59,8 @@ describe("Should render Addnews", () => {
     );
     expect(screen.getAllByText(/link/i)[1].textContent).toBe("Link");
 
-    // check mock data update coructelly
+    //console.log("wahaj data .,=>", screen.getAllByRole("textbox")[0]);
+    // // check mock data update coructelly
     expect(screen.getAllByRole("textbox")[0]).toHaveValue("wahaj");
 
     expect(screen.getAllByRole("textbox")[1]).toHaveValue(
@@ -59,7 +72,7 @@ describe("Should render Addnews", () => {
       "https://www.waqas.com"
     );
 
-    // expect(screen.getAllByTestId("checkbox",)[0]).toBeChecked();
+    expect(screen.getAllByRole("checkbox")[0]).toBeChecked();
     expect(
       screen.getAllByRole("checkbox", {
         name: /available for children/i,

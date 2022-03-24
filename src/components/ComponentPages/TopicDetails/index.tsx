@@ -1,6 +1,6 @@
 import { Typography, Breadcrumb } from "antd";
 import { useRouter } from "next/router";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   getCanonizedCampStatementApi,
@@ -8,6 +8,8 @@ import {
   getTreesApi,
   getCanonizedCampSupportingTreeApi,
 } from "src/network/api/campDetailApi";
+
+import { editNewsFeedApi } from "src/network/api/addupdateNewsApi";
 import { RootState } from "src/store";
 import SideBar from "../Home/SideBar";
 import CampStatementCard from "./CampStatementCard";
@@ -21,6 +23,10 @@ import SupportTreeCard from "./SupportTreeCard";
 const TopicDetails = () => {
   const didMount = useRef(false);
   let myRefToCampStatement = useRef(null);
+  const [requestBody, setRequestBody] = useState({
+    topic_num: 45,
+    camp_num: 1,
+  });
   const router = useRouter();
   const { asof, asofdate, algorithm, newsFeed } = useSelector(
     (state: RootState) => ({
@@ -30,6 +36,9 @@ const TopicDetails = () => {
       asof: state?.homePage?.filterObject?.asof,
     })
   );
+
+  console.log("newfeed=", newsFeed);
+  console.log("reqdata =====> ", requestBody);
   useEffect(() => {
     async function getTreeApiCall() {
       if (didMount.current) {
@@ -74,12 +83,17 @@ const TopicDetails = () => {
       topic_num: +router.query.camp,
       camp_num: nodeKey,
     };
+    console.log("req =====> ", req);
+    setRequestBody(req);
     const campStatementReq = {
       topic_num: +router.query.camp,
       camp_num: nodeKey,
       as_of: asof,
       as_of_date: asofdate,
     };
+    console.log("all data", req);
+    console.log("all data", nodeKey);
+    await editNewsFeedApi(req);
     await getNewsFeedApi(req);
     await getCanonizedCampStatementApi(campStatementReq);
   };
@@ -116,8 +130,9 @@ const TopicDetails = () => {
           <CampTreeCard
             scrollToCampStatement={scrollToCampStatement}
             getSelectedNode={getSelectedNode}
+            reqBody={requestBody}
           />
-          <NewsFeedsCard newsFeed={newsFeed} />
+          <NewsFeedsCard newsFeed={newsFeed} reqBody={requestBody} />
           <CampStatementCard myRefToCampStatement={myRefToCampStatement} />
           <CurrentTopicCard />
           <CurrentCampCard />

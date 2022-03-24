@@ -1,10 +1,9 @@
 import { Card, Checkbox, Typography } from "antd";
 import styles from "../campTree.module.scss";
 import CampTree from "../CampTree";
+import Link from "next/link";
 
-const { Link } = Typography;
-
-const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
+const CampTreeCard = ({ scrollToCampStatement, getSelectedNode, reqBody }) => {
   return (
     <Card
       className={"ctCard canCard " + styles.ctCard}
@@ -20,8 +19,15 @@ const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
           <Checkbox className={"chexkboxLabel " + styles.chexkboxLabel}>
             Subscribe
           </Checkbox>
-          <Link href="#" className={styles.addNew}>
-            <i className={"icon-fi-document " + styles.iconMr} /> Add News
+          <Link
+            href={{
+              pathname: "/addnews/:",
+              query: reqBody,
+            }}
+          >
+            <a className={styles.addNew}>
+              <i className={"icon-fi-document " + styles.iconMr} /> Add News
+            </a>
           </Link>
         </div>
       }

@@ -8,12 +8,14 @@ export default class addNewsRequest extends Request {
   
     // Define request functions below.
   
-    static getTopicDetails(body) {
+    static getAddNewsrequest(body) {
+      
+     console.log("body in req od add  news ", body )
      
       return new Request(
-        K.Network.URL,
+        K.Network.URL.GetAddNewsFeeds,
         K.Network.Method.POST,
-       {      },
+       {  body    },
         K.Network.Header.Type.Json,
         {}
       );
@@ -34,14 +36,14 @@ export default class addNewsRequest extends Request {
       );
     }
     
-    static geteditNewsFeedData() {
-     
+    static geteditNewsFeedData(body) {
+     console.log("body in req ", body.topic_num, body.camp_num )
       return new Request(
         K.Network.URL.GetEditNewsFeeds,
         K.Network.Method.POST,
         {
-          "topic_num":45,
-          "camp_num":1
+          "topic_num":body.topic_num,
+          "camp_num":body.camp_num
         }
        ,
         K.Network.Header.Type.Json,
@@ -50,19 +52,13 @@ export default class addNewsRequest extends Request {
     }
 
     static getupdateNewsFeedData(body) {
-     
-    console.log("body in   -req-  data obj  text => ",body)
-    console.log("body in   -req-  data obj  text => ",body.display_text)
-    
-    console.log("body in   -req-  data obj  link => ",body.link)
-    
-    console.log("body in   -req-  data obj  => ",body.available_for_child)
+   
       return new Request(
         K.Network.URL.GetUpdateNewsFeeds,
         K.Network.Method.POST,
         {
-          "topic_num":45,
-          "camp_num":1,
+          "topic_num":body.topic_num,
+          "camp_num":body.camp_num,
           "display_text":body.display_text,
           "link":body.link,
           "available_for_child":body.available_for_child
