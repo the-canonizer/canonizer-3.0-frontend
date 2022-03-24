@@ -35,7 +35,11 @@ const CreateNewTopic = ({}) => {
   const dispatch = useDispatch();
 
   const [form] = Form.useForm();
-  const CardTitle = <span className={styles.cardTitle} data-testid="head">Create New Topic</span>;
+  const CardTitle = (
+    <span className={styles.cardTitle} data-testid="head">
+      Create New Topic
+    </span>
+  );
 
   const fetchNickNameList = async () => {
     let response = await getNickNameList();
@@ -87,7 +91,7 @@ const CreateNewTopic = ({}) => {
             validateTrigger={messages.formValidationTypes()}
             initialValues={{
               ...initialValue,
-              namespace: nameSpaces[0]?.id,
+              namespace: nameSpaces && nameSpaces[0]?.id,
             }}
           >
             <Row gutter={16}>
