@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { Row, Col, Button, Form, Input, Typography } from "antd";
+import { Row, Col, Button, Form, Input, Typography, message } from "antd";
 
 import styles from "../Registration/UI/Registration.module.scss";
 
@@ -25,6 +25,7 @@ const ResetPassword = () => {
     let res = await forgotPasswordUpdate(body);
 
     if (res && res.status_code === 200) {
+      message.success(res.message);
       form.resetFields();
       localStorage.removeItem("email_id");
     }

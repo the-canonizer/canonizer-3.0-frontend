@@ -8,8 +8,9 @@ import { RootState } from "../../../../store";
 import { getCanonizedTopicsApi } from "../../../../network/api/homePageApi";
 import { setFilterCanonizedTopics } from "../../../../store/slices/homePageSlice";
 import styles from "./topicsList.module.scss";
-import { Spin } from "antd";
+import { Spin, Checkbox } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
+import useAuthentication from "src/hooks/isUserAuthenticated";
 
 const antIcon = <LoadingOutlined spin />;
 const { Title, Text } = Typography;
@@ -29,6 +30,7 @@ const TopicsList = () => {
   const didMount = useRef(false);
   const [pageNumber, setPageNumber, pageNumberRef] = useState(1);
   const dispatch = useDispatch();
+  const isLogin = useAuthentication();
   const {
     canonizedTopics,
     asofdate,
@@ -37,6 +39,7 @@ const TopicsList = () => {
     filterByScore,
     nameSpaces,
     includeReview,
+    onlyMyTopics,
   } = useSelector((state: RootState) => ({
     canonizedTopics: state.homePage?.canonizedTopicsData,
     asofdate: state.homePage?.filterObject?.asofdate,
@@ -45,6 +48,7 @@ const TopicsList = () => {
     filterByScore: state.homePage?.filterObject?.filterByScore,
     nameSpaces: state.homePage?.nameSpaces,
     includeReview: state?.homePage?.filterObject?.includeReview,
+    onlyMyTopics: state?.homePage?.filterObject?.onlyMyTopics,
   }));
 
   const [topicsData, setTopicsData] = useState(canonizedTopics);
@@ -56,11 +60,13 @@ const TopicsList = () => {
   const [getTopicsLoadingIndicator, setGetTopicsLoadingIndicator] =
     useState(false);
 
-  const selectNameSpace = (value) => {
-    setNameSpaceId(value);
+  const selectNameSpace = (id, nameSpace) => {
+    debugger;
+    setNameSpaceId(id);
     dispatch(
       setFilterCanonizedTopics({
-        namespace_id: value,
+        namespace_id: id,
+        nameSpace: nameSpace?.children,
       })
     );
   };
@@ -84,7 +90,15 @@ const TopicsList = () => {
     }
     getTopicsApiCall();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [asofdate, asof, algorithm, nameSpaceId, filterByScore, inputSearch]);
+  }, [
+    asofdate,
+    asof,
+    algorithm,
+    nameSpaceId,
+    filterByScore,
+    inputSearch,
+    onlyMyTopics,
+  ]);
 
   async function getTopicsApiCallWithReqBody(loadMore = false) {
     loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
@@ -97,6 +111,7 @@ const TopicsList = () => {
       search: inputSearch,
       filter: filterByScore,
       asof: asof,
+      only_my_topics: onlyMyTopics,
     };
     await getCanonizedTopicsApi(reqBody, loadMore);
     setLoadMoreIndicator(false);
@@ -135,6 +150,15 @@ const TopicsList = () => {
     </div>
   );
 
+  const handleCheckbox = (e) => {
+    console.log(`checked = ${e.target.checked}`);
+    dispatch(
+      setFilterCanonizedTopics({
+        onlyMyTopics: e.target.checked,
+      })
+    );
+  };
+
   return (
     <>
       <div className={`${styles.card} topicsList_card`}>
@@ -144,11 +168,11 @@ const TopicsList = () => {
             header={
               <div
                 className={`${styles.head} ${
-                  router.asPath === "/browse" ? styles.browsePage : ""
+                  router.asPath.includes("/browse") ? styles.browsePage : ""
                 }`}
               >
                 <Title level={3}>
-                  Canonized list for
+                  Select namespace
                   <Popover content={infoContent} placement="right">
                     <i className="icon-info cursor-pointer"></i>
                   </Popover>
@@ -159,6 +183,9 @@ const TopicsList = () => {
                   defaultValue={nameSpacesList && nameSpacesList[0].name}
                   onChange={selectNameSpace}
                 >
+                  <Select.Option key="custom-key" value="">
+                    All
+                  </Select.Option>
                   {nameSpacesList?.map((item) => {
                     return (
                       <Select.Option key={item.id} value={item.id}>
@@ -167,8 +194,11 @@ const TopicsList = () => {
                     );
                   })}
                 </Select>
+                {router.asPath === "/browse" && !isLogin && (
+                  <Checkbox onChange={handleCheckbox}>Only My Topics</Checkbox>
+                )}
 
-                {router.asPath === "/browse" && !includeReview && (
+                {router.asPath.includes("/browse") && !includeReview && (
                   <div className={styles.inputSearchTopic}>
                     <Search
                       placeholder="Search by topic name"
@@ -182,7 +212,9 @@ const TopicsList = () => {
             }
             footer={
               <div className={styles.footer}>
-                {router.asPath === "/browse" ? LoadMoreTopics : ViewAllTopics}
+                {router.asPath.includes("/browse")
+                  ? LoadMoreTopics
+                  : ViewAllTopics}
               </div>
             }
             bordered
@@ -191,13 +223,12 @@ const TopicsList = () => {
               <List.Item className={styles.item}>
                 <>
                   <Link
-                    // href={`/camp-details/${item?.topic_id}`}
                     href={{
                       pathname: `/camp-details/${item?.topic_id}`,
                       query: {
                         ...router.query,
-                        algo: algorithm,
-                        asof: asofdate,
+                        algorithm,
+                        asofdate,
                       },
                     }}
                   >

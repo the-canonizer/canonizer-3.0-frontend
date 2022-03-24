@@ -7,6 +7,7 @@ export const patterns = {
   email:
     /[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?/,
   password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*]).{8,}$/,
+  alphaSpace: /^[a-zA-Z ]*$/,
 };
 
 export const validations: ErrorContainer = {
@@ -18,8 +19,8 @@ export const validations: ErrorContainer = {
   middleName: "Please input your middle name!",
   lastName: "Please input your last name!",
   phone: "Please input your phone number!",
-  phoneMinLength: "'Phone Number' must be at least 9 digits",
-  phoneMaxLength: "'Phone Number' should be max 10 digits",
+  phoneMinLength: "Phone number must be at least 10 digits!",
+  phoneMaxLength: "Phone number must be at least 10 digits!",
   validPhone: "Please input valid phone number!",
   email: "Please input your E-mail!",
   validEmail: "The input is not valid E-mail!",
@@ -32,7 +33,7 @@ export const validations: ErrorContainer = {
     "Password must be contain small, capital letter, number and special character like Abc@1234.",
   confirmPassword: "Please confirm your password!",
   confirmPasswordErr: "The two passwords that you entered do not match!",
-  otp: "Please input your otp!",
+  otp: "Please input your OTP!",
   otpLength: "OTP should be min/max 6 characters long!",
   phoneNumber: "Please Enter Phone Number!",
   mobileCarrier: "Please Enter Mobile Carrier!",
@@ -43,4 +44,9 @@ export const validations: ErrorContainer = {
   confirmNewPasswordErr: "The confirm password and new password must match",
   nickName: "Please Enter Nick Name!",
   nickNameMax: "Maximum 50 character allowed!",
+  firstNameSpace: "The first name should only contain alphabets and spaces.",
+  lastNameSpace: "The first name should only contain alphabets and spaces.",
+  alphaSpace: "The field must be in alphabets and space only.",
+  otpMsgs:
+    " Note : OTP has been sent to your registered email address and phone number.",
 };

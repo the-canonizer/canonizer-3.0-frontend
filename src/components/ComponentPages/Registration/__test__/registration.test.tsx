@@ -16,19 +16,16 @@ describe("Registration page", () => {
     expect(screen.getByText("Already have an account?")).toBeVisible();
     expect(screen.getByText("Log in Here")).toBeVisible();
     expect(screen.getByText(labels.firstName)).toBeInTheDocument();
-    expect(screen.getByText(labels.middleName)).toBeInTheDocument();
     expect(screen.getByText(labels.lastName)).toBeInTheDocument();
     expect(screen.getByText(labels.email)).toBeInTheDocument();
     expect(screen.getByText(labels.phone)).toBeInTheDocument();
     expect(screen.getByText(labels.registrationPassword)).toBeInTheDocument();
     expect(screen.getByText(labels.confirmPassword)).toBeInTheDocument();
-    expect(screen.getByText(labels.captcha)).toBeInTheDocument();
   });
 
   it("render inputs field and submit button", () => {
     render(<Registration isModal={false} />);
     const firstName = screen.getByLabelText(labels.firstName);
-    const middleName = screen.getByLabelText(labels.middleName);
     const lastName = screen.getByLabelText(labels.lastName);
     const email = screen.getByLabelText(labels.email);
     const phone = screen.getByLabelText(labels.phone);
@@ -41,10 +38,6 @@ describe("Registration page", () => {
     expect(firstName).toHaveAttribute("type", "text");
     expect(firstName).toHaveAttribute("placeholder", placeholders.firstName);
 
-    expect(middleName).toBeInTheDocument();
-    expect(middleName).toHaveAttribute("type", "text");
-    expect(middleName).toHaveAttribute("placeholder", placeholders.middleName);
-
     expect(lastName).toBeInTheDocument();
     expect(lastName).toHaveAttribute("type", "text");
     expect(lastName).toHaveAttribute("placeholder", placeholders.lastName);
@@ -54,7 +47,7 @@ describe("Registration page", () => {
     expect(email).toHaveAttribute("placeholder", placeholders.email);
 
     expect(phone).toBeInTheDocument();
-    expect(phone).toHaveAttribute("type", "text");
+    expect(phone).toHaveAttribute("type", "number");
     expect(phone).toHaveAttribute("placeholder", placeholders.phone);
 
     expect(registrationPassword).toBeInTheDocument();
@@ -86,6 +79,7 @@ describe("Registration page", () => {
     render(<Registration isModal={false} />);
     const inputEl = screen.getByLabelText(labels.email);
     userEvent.type(inputEl, "rahul.singhiffort.com");
+    userEvent.tab();
     await waitFor(() => {
       expect(
         screen.queryByText("The input is not valid E-mail!")
@@ -97,8 +91,9 @@ describe("Registration page", () => {
     render(<Registration isModal={false} />);
     const inputEl = screen.getByLabelText(labels.phone);
     userEvent.type(inputEl, "12345678");
+    userEvent.tab();
     await waitFor(() => {
-      expect(inputEl).toHaveValue("12345678");
+      expect(inputEl).toHaveValue(12345678);
       expect(screen.queryByRole("alert")).toBeInTheDocument();
       expect(screen.queryByText(validations.phoneMinLength)).toBeVisible();
     });
@@ -109,7 +104,7 @@ describe("Registration page", () => {
     const inputEl = screen.getByLabelText(labels.phone);
     userEvent.type(inputEl, "123456789");
     await waitFor(() => {
-      expect(inputEl).toHaveValue("123456789");
+      expect(inputEl).toHaveValue(123456789);
       expect(screen.queryByRole("alert")).not.toBeInTheDocument();
     });
   });
@@ -118,6 +113,7 @@ describe("Registration page", () => {
     render(<Registration isModal={false} />);
     const inputEl = screen.getByLabelText(labels.password);
     userEvent.type(inputEl, "1234567");
+    userEvent.tab();
     await waitFor(() => {
       expect(inputEl).toHaveValue("1234567");
       expect(screen.queryByRole("alert")).toBeInTheDocument();
@@ -145,6 +141,7 @@ describe("Registration page", () => {
     const inputEl2 = screen.getByLabelText(labels.confirmPassword);
     userEvent.type(inputEl, "Abc@1234");
     userEvent.type(inputEl2, "Abc@12344");
+    userEvent.tab();
     await waitFor(() => {
       expect(inputEl).toHaveValue("Abc@1234");
       expect(inputEl2).toHaveValue("Abc@12344");

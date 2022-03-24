@@ -3,124 +3,85 @@ import { Card, Modal, Tag, Button, Form } from "antd";
 import Icon, { CloseCircleOutlined } from "@ant-design/icons";
 import styles from "./DirectSupportedCamps.module.scss";
 import Link from "next/link";
+import messages from "../../../../messages";
+
 export default function DirectSupportedCampsUI({
   RemoveCardSupportedCamps,
   handleSupportedCampsCancel,
   isSupportedCampsModalVisible,
+  directSupportedCampsList,
+  search,
 }) {
   function CardTitle(props) {
     return (
       <div className={styles.card_heading_title}>
-        For topics<span> &quot;{props.value}&quot;</span>
+        {messages.labels.fortopics}
+        <span>
+          {" "}
+          &quot;
+          <Link href={props.title_link}>
+            <a>{props.value}</a>
+          </Link>
+          &quot;
+        </span>
       </div>
     );
   }
   return (
     <div>
-      <Card
-        className={styles.cardBox_tags}
-        type="inner"
-        size="default"
-        title={<CardTitle value="Theories of Consciousness" />}
-        extra={
-          <Link href={""}>
-            <a
-              className={styles.RemoveCardSupported}
-              onClick={() => RemoveCardSupportedCamps()}
+      {directSupportedCampsList
+        .filter((val) => {
+          if (search.trim() == "") {
+            return val;
+          } else if (
+            val.title.toLowerCase().trim().includes(search.toLowerCase().trim())
+          ) {
+            return val;
+          }
+        })
+        ?.map((data, i) => {
+          return (
+            <Card
+              key={i}
+              className={styles.cardBox_tags}
+              type="inner"
+              size="default"
+              title={
+                <CardTitle title_link={data.title_link} value={data.title} />
+              }
+              extra={
+                <div
+                  className={styles.RemoveCardSupported}
+                  onClick={() => RemoveCardSupportedCamps()}
+                >
+                  <CloseCircleOutlined /> {messages.labels.removeSupport}{" "}
+                </div>
+              }
+              style={{ width: 760, marginBottom: 16 }}
             >
-              <CloseCircleOutlined /> Remove support{" "}
-            </a>
-          </Link>
-        }
-        style={{ width: 760, marginBottom: 16 }}
-      >
-        <Tag
-          className={styles.tag_btn}
-          closable
-          closeIcon={<CloseCircleOutlined />}
-        >
-          <div>
-            {" "}
-            <span className={styles.count}>1. </span> Representational Quilia
-          </div>
-        </Tag>
-      </Card>
-      <Card
-        className={styles.cardBox_tags}
-        type="inner"
-        size="default"
-        title={<CardTitle value="Front End Language" />}
-        extra={
-          <Link href={""}>
-            <a
-              className={styles.RemoveCardSupported}
-              onClick={() => RemoveCardSupportedCamps()}
-            >
-              <CloseCircleOutlined /> Remove support{" "}
-            </a>
-          </Link>
-        }
-        style={{ width: 760, marginBottom: 16 }}
-      >
-        <Tag
-          className={styles.tag_btn}
-          closable
-          closeIcon={<CloseCircleOutlined />}
-        >
-          <div>
-            {" "}
-            <span className={styles.count}>1. </span> Next JS{" "}
-          </div>
-        </Tag>
-        <Tag
-          className={styles.tag_btn}
-          closable
-          closeIcon={<CloseCircleOutlined />}
-        >
-          <div>
-            {" "}
-            <span className={styles.count}>2. </span> react JS Framework
-          </div>
-        </Tag>
-      </Card>
-      <Card
-        className={styles.cardBox_tags}
-        type="inner"
-        size="default"
-        title={<CardTitle value="Front End Language" />}
-        extra={
-          <Link href={""}>
-            <a
-              className={styles.RemoveCardSupported}
-              onClick={() => RemoveCardSupportedCamps()}
-            >
-              <CloseCircleOutlined /> Remove support{" "}
-            </a>
-          </Link>
-        }
-        style={{ width: 760, marginBottom: 16 }}
-      >
-        <Tag
-          className={styles.tag_btn}
-          closable
-          closeIcon={<CloseCircleOutlined />}
-        >
-          <div>
-            {" "}
-            <span className={styles.count}>1. </span> Next JS{" "}
-          </div>
-        </Tag>
-        <Tag
-          className={styles.tag_btn}
-          closable
-          closeIcon={<CloseCircleOutlined />}
-        >
-          <div>
-            {" "}
-            <span className={styles.count}>2. </span> react JS Framework
-          </div>
-        </Tag>
-      </Card>
+              {data.camps?.map((val, i) => {
+                return (
+                  <Tag
+                    key={i}
+                    className={styles.tag_btn}
+                    closable
+                    closeIcon={<CloseCircleOutlined />}
+                  >
+                    <div>
+                      {" "}
+                      <span className={styles.count}>
+                        {val.support_order}.{" "}
+                      </span>
+                      <Link href={val.camp_link}>
+                        <a className={styles.Bluecolor}> {val.camp_name}</a>
+                      </Link>
+                    </div>
+                  </Tag>
+                );
+              })}
+            </Card>
+          );
+        })}
 
       <Modal
         className={styles.modal_cross}

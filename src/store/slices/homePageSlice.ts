@@ -10,13 +10,15 @@ export const homePageSlice = createSlice({
     filterObject: {
       page_number: 1,
       page_size: 15,
-      namespace_id: 1,
+      nameSpace: "All",
+      namespace_id: "",
       asofdate: Date.now() / 1000,
       asof: "default",
       filterByScore: 0,
       algorithm: "blind_popularity",
       search: "Hard",
       includeReview: false,
+      onlyMyTopics: false,
     },
     nameSpaces: null,
     whatsNew: null,
@@ -36,6 +38,7 @@ export const homePageSlice = createSlice({
       };
     },
     setFilterCanonizedTopics: (state, action) => {
+      debugger;
       state.filterObject = {
         ...state.filterObject,
         ...action.payload,

@@ -14,7 +14,7 @@ describe("OTP page", () => {
     expect(heading).toBeInTheDocument();
     expect(
       screen.getByText(
-        "Note : ForgotPassword code has been sent to your registered email address and Phone Number."
+        "Note : OTP has been sent to your registered email address and phone number."
       )
     ).toBeInTheDocument();
   });
@@ -42,6 +42,7 @@ describe("OTP page", () => {
     render(<ForgotPassword isModal={false} isTestScreen={1} />);
     const inputEl = screen.getByPlaceholderText(placeholders.otp);
     userEvent.type(inputEl, "123456789");
+    userEvent.tab();
     await waitFor(() => {
       expect(inputEl).toHaveValue("123456789");
       expect(screen.queryByRole("alert")).toBeInTheDocument();
@@ -55,7 +56,7 @@ describe("OTP page", () => {
     userEvent.click(btnEl);
 
     await waitFor(() => {
-      expect(screen.queryByText("Please input your otp!")).toBeVisible();
+      expect(screen.queryByText(validations.otp)).toBeVisible();
     });
   });
 });

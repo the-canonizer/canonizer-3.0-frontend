@@ -77,6 +77,17 @@
         input {
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          appearance: none;
+
+          &::-webkit-inner-spin-button,
+          &::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            margin: 0;
+          }
         }
       }
       .imageWrapper {
