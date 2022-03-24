@@ -1,9 +1,14 @@
 import { Card, Typography, Button } from "antd";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
 import styles from "../campTree.module.scss";
 
 const { Paragraph, Title } = Typography;
 
 const CampStatementCard = ({ myRefToCampStatement }) => {
+  const { campStatement } = useSelector((state: RootState) => ({
+    campStatement: state?.topicDetails?.campStatement,
+  }));
   return (
     <Card
       className="canCard"
@@ -26,7 +31,10 @@ const CampStatementCard = ({ myRefToCampStatement }) => {
         </div>,
       ]}
     >
-      <Title level={2} className={styles.cardHeading}>
+      <Paragraph>{campStatement && campStatement[0]?.value}</Paragraph>
+      {/* Will remove the below commented code once the api is integrated completed */}
+
+      {/* <Title level={2} className={styles.cardHeading}>
         Theories of Mind and Consciousness
       </Title>
       <Paragraph>
@@ -52,7 +60,7 @@ const CampStatementCard = ({ myRefToCampStatement }) => {
 
       <Paragraph>
         This topic is part of the <a>Consciousness Consensus Project.</a>
-      </Paragraph>
+      </Paragraph>*/}
     </Card>
   );
 };

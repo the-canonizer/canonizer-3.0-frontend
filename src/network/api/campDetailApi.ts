@@ -35,8 +35,8 @@ export const getCanonizedCampStatementApi = async (reqBody) => {
     const campStatement = await NetworkCall.fetch(
       TreeRequest.getCampStatement(reqBody)
     );
-    store.dispatch(setCampStatement(campStatement));
-    return campStatement;
+    store.dispatch(setCampStatement(campStatement?.data));
+    return campStatement?.data;
   } catch (error) {
     message.error(error.message);
   }

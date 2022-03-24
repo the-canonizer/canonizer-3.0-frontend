@@ -55,13 +55,12 @@ const TopicsList = () => {
   const [nameSpacesList] = useState(nameSpaces);
   const [isReview, setIsReview] = useState(includeReview);
   const [inputSearch, setInputSearch] = useState("");
-  const [nameSpaceId, setNameSpaceId] = useState(1);
+  const [nameSpaceId, setNameSpaceId] = useState("");
   const [loadMoreIndicator, setLoadMoreIndicator] = useState(false);
   const [getTopicsLoadingIndicator, setGetTopicsLoadingIndicator] =
     useState(false);
 
   const selectNameSpace = (id, nameSpace) => {
-    debugger;
     setNameSpaceId(id);
     dispatch(
       setFilterCanonizedTopics({
@@ -180,7 +179,7 @@ const TopicsList = () => {
                 <Select
                   size="large"
                   className={styles.dropdown}
-                  defaultValue={nameSpacesList && nameSpacesList[0].name}
+                  defaultValue="All"
                   onChange={selectNameSpace}
                 >
                   <Select.Option key="custom-key" value="">

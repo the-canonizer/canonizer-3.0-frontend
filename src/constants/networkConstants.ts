@@ -42,8 +42,8 @@ const NetworkConstants = {
     GetDelegatedSupportCamps: `${BaseCanonizerApiUrl}/get-delegated-supported-camps`,
     // Tree
     GetTree: `${BaseCanonizerServiceUrl}/api/v1/tree/get`,
-    GetNewsFeed: `${BaseCanonizerApiUrl}/get/camp-newsfeed`,
-    GetCampStatement: `${BaseCanonizerApiUrl}/get/camp-statement`,
+    GetNewsFeed: `${BaseCanonizerApiUrl}/get-camp-newsfeed`,
+    GetCampStatement: `${BaseCanonizerApiUrl}/get-camp-statement`,
     GetSupportingTree: `${BaseCanonizerApiUrl}/get/supporting-tree`,
     // resend otp for registration
     ResendOTPForRegistration: `${BaseCanonizerApiUrl}/user/reSendOtp`,
