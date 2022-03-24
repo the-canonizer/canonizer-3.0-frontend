@@ -40,6 +40,7 @@ export default function ChangePasswordUI({ form, onFinish, onFinishFailed }) {
                   hasFeedback
                 >
                   <Input
+                    className={styles.Password_input}
                     type="password"
                     placeholder={messages.placeholders.newPassword}
                   />
@@ -55,6 +56,7 @@ export default function ChangePasswordUI({ form, onFinish, onFinishFailed }) {
                   {...messages.confirmNewPasswordRule}
                 >
                   <Input
+                    className={styles.Password_input}
                     type="password"
                     placeholder={messages.placeholders.confirmPassword}
                   />

@@ -61,7 +61,7 @@ export default function NickNameUI({
     <>
       <section className={styles.nick_name}>
         <Form form={nickNameForm} component={false}>
-          <Form.Item>
+          <Form.Item className={styles.nick_form}>
             <Table
               dataSource={nickNameList}
               columns={columns}

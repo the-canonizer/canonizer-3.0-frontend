@@ -15,9 +15,9 @@ const ChangePassword = () => {
     setFormData(values);
 
     let formBody = {
-      current_password: values.current_password,
-      new_password: values.new_password,
-      confirm_password: values.confirm_password,
+      current_password: values.current_password.trim(),
+      new_password: values.new_password.trim(),
+      confirm_password: values.confirm_password.trim(),
     };
 
     let res = await changePassword(formBody);

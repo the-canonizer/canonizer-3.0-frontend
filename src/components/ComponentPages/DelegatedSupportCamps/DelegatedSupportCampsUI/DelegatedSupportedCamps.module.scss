@@ -1,8 +1,15 @@
 .RemoveCardSupported {
   color: #d57272;
   font-weight: 600;
+  @media screen and (max-width: 767px) {
+    font-size: 0;
+  }
   span {
     margin-right: 5px;
+    @media screen and (max-width: 767px) {
+      font-size: 13px;
+      margin-left: 10px;
+    }
   }
 }
 .Bluecolor {
@@ -12,6 +19,9 @@
   font-size: 18px;
   span {
     color: #1890ff;
+  }
+  @media screen and (max-width: 767px) {
+    font-size: 13px;
   }
 }
 
@@ -50,7 +60,17 @@
 .line_height1 {
   border-left: 1px solid #ddd;
   padding-left: 20px;
-
+  @media screen and (max-width: 767px) {
+    border-left: none;
+    padding: 0;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+    margin-top: 20px;
+  }
+  @media screen and (max-width: 767px) {
+    max-width: 100%;
+    flex: 0 0 100%;
+  }
   p {
     margin-bottom: 4px;
   }
@@ -62,4 +82,16 @@
 }
 .ant-modal-close {
   color: #000 !important;
+}
+.flex_wrap {
+  @media screen and (max-width: 767px) {
+    flex-wrap: wrap;
+  }
+  .flex_wrap_col,
+  .border_left {
+    @media screen and (max-width: 767px) {
+      max-width: 100%;
+      flex: 0 0 100%;
+    }
+  }
 }

@@ -231,7 +231,7 @@ function ProfileInfoForm({
               </Form.Item>
             </Col>
           </Row>
-          <Title level={4}>Address information</Title>
+          <Title level={4}>Address Information</Title>
           <Row gutter={30}>
             <Col md={12}>
               <Form.Item name="address_1" label={messages.labels.addressLine1}>
@@ -283,7 +283,6 @@ function ProfileInfoForm({
                   )}
                   placeholder={messages.placeholders.addressLine2}
                   size="large"
-                  disabled
                 />
               </Form.Item>
               <Form.Item name="state" label={messages.labels.state}>
@@ -302,7 +301,6 @@ function ProfileInfoForm({
                   )}
                   placeholder={messages.placeholders.zipCode}
                   size="large"
-                  disabled
                 />
               </Form.Item>
               <Form.Item
@@ -334,7 +332,7 @@ function ProfileInfoForm({
         </Form.Item>
       </Form>
     );
-  else return <div>Loading...</div>;
+  else return <div></div>;
 }
 
 export default ProfileInfoForm;

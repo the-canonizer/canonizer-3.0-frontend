@@ -641,3 +641,10 @@ form {
     color: #222;
   }
 }
+.cardBox_tags {
+  @media screen and (max-width: 767px) {
+    .ant-row {
+      flex-wrap: wrap;
+    }
+  }
+}
