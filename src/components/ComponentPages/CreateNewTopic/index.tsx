@@ -1,7 +1,7 @@
 import { Fragment, useState, useEffect } from "react";
 import { Card, Form, Input, Button, Select, Row, Col } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { useRouter, withRouter } from "next/router";
+import { useRouter } from "next/router";
 
 import messages from "../../../messages";
 import SideBar from "../Home/SideBar";
@@ -23,13 +23,17 @@ const {
   summaryRule,
 } = messages;
 
-const CreateNewTopic = ({}) => {
-  const [nickNameList, setNickNameList] = useState([]);
-  const [initialValue, setInitialValues] = useState({});
+const CreateNewTopic = ({
+  testNickName = [],
+  testNamespace = [],
+  testInitialValue = {},
+}) => {
+  const [nickNameList, setNickNameList] = useState(testNickName);
+  const [initialValue, setInitialValues] = useState(testInitialValue);
 
-  const nameSpaces = useSelector(
-    (state: RootState) => state.homePage.nameSpaces
-  );
+  const nameSpaces =
+    useSelector((state: RootState) => state.homePage.nameSpaces) ||
+    testNamespace;
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -189,4 +193,4 @@ const CreateNewTopic = ({}) => {
   );
 };
 
-export default withRouter(CreateNewTopic);
+export default CreateNewTopic;
