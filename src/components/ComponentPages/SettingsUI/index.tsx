@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, Fragment, useEffect } from "react";
 import { Layout, Card, Col, Row, Button } from "antd";
 import Image from "next/image";
 import ChangePassword from "../ChangePassword";
@@ -10,12 +10,17 @@ import { SearchOutlined } from "@ant-design/icons";
 import { Tabs } from "antd";
 import DelegatedSupportCamps from "../DelegatedSupportCamps";
 import { useRouter } from "next/router";
+import SocialOauth from "../socialAuthVerification";
 
 const { TabPane } = Tabs;
 const tabList = [
   {
     key: "profile_info",
     tab: "Profile Info",
+  },
+  {
+    key: "social_oauth_verification",
+    tab: "Social Oauth Verification",
   },
   {
     key: "change_password",
@@ -91,7 +96,20 @@ export default function SettingsUI() {
         </Tabs>
       </div>
     ),
+    social_oauth_verification: (
+      <Fragment>
+        <SocialOauth />
+      </Fragment>
+    ),
   };
+
+  useEffect(() => {
+    const query = router.query;
+    if (query.tab === "social") {
+      setActiveTabKey("social_oauth_verification");
+    }
+  }, [router.query]);
+
   return (
     <>
       <div>

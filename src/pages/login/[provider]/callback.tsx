@@ -18,7 +18,14 @@ function SocialLoginCallback() {
     let response = await socialLoginCallback(data);
 
     if (response && response.status_code === 200) {
-      router.push("/");
+      const redirectTab = localStorage.getItem("redirectTab");
+
+      if (redirectTab === "tab=social") {
+        localStorage.removeItem("redirectTab");
+        router.push("/settings?tab=social");
+      } else {
+        router.push("/");
+      }
     }
 
     setIsLoading(false);

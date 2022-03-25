@@ -15,10 +15,21 @@ function SocialLoginCallback() {
   const dispatch = useDispatch<AppDispatch>();
 
   const sendData = async (data) => {
-    let response = await socialLoginCallback(data);
+    const redirectTab = localStorage.getItem("redirectTab");
+
+    let body = redirectTab
+      ? { ...data, type: "link" }
+      : { ...data, type: "login" };
+
+    let response = await socialLoginCallback(body);
 
     if (response && response.status_code === 200) {
-      router.push("/");
+      if (redirectTab === "tab=social") {
+        localStorage.removeItem("redirectTab");
+        router.push("/settings?tab=social");
+      } else {
+        router.push("/");
+      }
     }
 
     setIsLoading(false);

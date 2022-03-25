@@ -158,6 +158,8 @@ export const socialLogin = async (values: object) => {
 };
 
 export const socialLoginCallback = async (values: object) => {
+  const state = store.getState();
+
   try {
     const authToken = await createToken();
 
@@ -366,7 +368,7 @@ export const getNickNameList = async () => {
   const { auth } = state;
 
   const res = await NetworkCall.fetch(
-    UserRequest.getNickNameList(auth.loggedInUser.token)
+    UserRequest.getNickNameList(auth.loggedInUser?.token)
   )
     .then((value) => {
       return value;
