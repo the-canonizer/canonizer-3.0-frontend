@@ -45,3 +45,16 @@ img {
     font-size: 17px;
   }
 }
+#changePassword_new_password,
+#changePassword_confirm_password {
+  border: none;
+  height: 32px;
+}
+.tab--card {
+  @media screen and (max-width: 1023px) {
+    .ant-card-head {
+      flex-wrap: wrap;
+      padding: 0 10px;
+    }
+  }
+}

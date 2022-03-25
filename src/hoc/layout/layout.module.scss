@@ -1,33 +1,35 @@
 .pageWrap {
-    overflow: hidden;
-    .contentWrap {
-        padding: 24px;
-        @media screen and (min-width: 768px) {
-            display: flex;
-        }
+  overflow: hidden;
+  .contentWrap {
+    padding: 24px;
+    @media screen and (min-width: 768px) {
+      display: flex;
     }
-    /* .leftSidebar {
+    @media screen and (max-width: 767px) {
+      padding: 10px;
+    }
+  }
+  /* .leftSidebar {
         width: 245px;
     } */
-    .rightSidebar {
-        @media screen and (min-width: 768px) {
-            width: 200px;
-        }
-        @media screen and (max-width: 767px) {
-            text-align: center;
-            display: none;
-        }
+  .rightSidebar {
+    @media screen and (min-width: 768px) {
+      width: 200px;
     }
-    .contentArea {
-        @media screen and (min-width: 992px) {
-            display: flex;
-            flex-wrap: wrap;
-            width: calc(100% - 200px);
-        }
-        @media screen and (min-width: 768px) and (max-width: 991px) {
-            width: calc(100% - 224px);
-            margin-right: 24px;
-        }
+    @media screen and (max-width: 767px) {
+      text-align: center;
+      display: none;
     }
-    
+  }
+  .contentArea {
+    @media screen and (min-width: 992px) {
+      display: flex;
+      flex-wrap: wrap;
+      width: calc(100% - 200px);
+    }
+    @media screen and (min-width: 768px) and (max-width: 991px) {
+      width: calc(100% - 224px);
+      margin-right: 24px;
+    }
+  }
 }

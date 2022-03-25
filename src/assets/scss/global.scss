@@ -227,7 +227,7 @@ body {
         font-size: 20px;
       }
     }
-    .ant-tabs-top{
+    .ant-tabs-top {
       max-width: 500px;
     }
     .ant-tabs {
@@ -671,6 +671,14 @@ form {
 
     &:hover {
       background: #d3840e;
+    }
+  }
+}
+
+.cardBox_tags {
+  @media screen and (max-width: 767px) {
+    .ant-row {
+      flex-wrap: wrap;
     }
   }
 }

@@ -43,7 +43,7 @@ export const validations: ErrorContainer = {
   currentpassword: "Please enter current password!",
   newPassword: "Please enter new password!",
   confirmNewPassword: "Please confirm your password!",
-  confirmNewPasswordErr: "The confirm password and new password must match",
+  confirmNewPasswordErr: "Confirm Password does not match.",
   nickName: "Please Enter Nick Name!",
   nickNameMax: "Maximum 50 character allowed!",
   firstNameSpace: "The first name should only contain alphabets and spaces.",

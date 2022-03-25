@@ -81,6 +81,7 @@ export default function DelegatedSupportCampsUI({
         ?.map((data, i) => {
           return (
             <Card
+              key={i}
               className={styles.cardBox_tags}
               type="inner"
               size="default"
@@ -98,8 +99,8 @@ export default function DelegatedSupportCampsUI({
               style={{ width: 760, marginBottom: 16 }}
             >
               <div>
-                <Row>
-                  <Col span={12}>
+                <Row className={styles.flex_wrap}>
+                  <Col span={12} className={styles.flex_wrap_col}>
                     <>
                       <SupportedCampsTo
                         supportedto={data.delegated_to_nick_name}
@@ -109,7 +110,6 @@ export default function DelegatedSupportCampsUI({
                       />
                     </>
                   </Col>
-                  <div></div>
                   <Col span={12} className={styles.border_left}>
                     <div className={styles.line_height1}>
                       <p>
@@ -119,6 +119,7 @@ export default function DelegatedSupportCampsUI({
                       {data.camps?.slice(0, limit).map((val, i) => {
                         return (
                           <CurrentSupportedCamps
+                            key={i}
                             value={val.camp_name}
                             id_data={val.support_order + "."}
                             camp_link={val.camp_link}
@@ -234,6 +235,7 @@ export default function DelegatedSupportCampsUI({
             {viewMoreDataValue.camps?.map((val, i) => {
               return (
                 <CurrentSupportedCamps
+                  key={i}
                   value={val.camp_name}
                   id_data={val.support_order + "."}
                   camp_link={val.camp_link}
