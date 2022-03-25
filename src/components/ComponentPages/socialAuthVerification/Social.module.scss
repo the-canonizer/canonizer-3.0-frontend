@@ -49,7 +49,7 @@
         align-items: center;
         flex-wrap: wrap;
         flex-flow: column;
-        word-break: break-word;
+        word-break: nowrap;
         overflow: hidden;
 
         .name,

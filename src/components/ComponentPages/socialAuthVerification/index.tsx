@@ -43,8 +43,6 @@ function SocialAuthVerification() {
   }, []);
 
   const onLinkClick = async (provider) => {
-    console.log("link:- " + provider);
-
     let body = { provider };
     const res = await socialLogin(body);
 
@@ -60,12 +58,14 @@ function SocialAuthVerification() {
 
   const onUnlinkClick = async (provider, id) => {
     const res = await userSocialAccountDelete(id);
-    console.log(res);
+
     if (res && res.status_code === 200) {
       message.success(res.message);
       fetchList();
     }
   };
+
+  console.log("link:- ", socialLinks);
 
   return (
     <Fragment>
