@@ -11,9 +11,9 @@ const CampStatementCard = ({ myRefToCampStatement }) => {
   }));
   return (
     <Card
-      className="canCard"
+      className="canCard mb-3"
       title={
-        <div className="cardHeader" ref={myRefToCampStatement}>
+        <div ref={myRefToCampStatement}>
           <h3>Camp Statement</h3>
         </div>
       }
@@ -24,10 +24,10 @@ const CampStatementCard = ({ myRefToCampStatement }) => {
         </div>
       }
       actions={[
-        <div className="card-actions-wrapper" key="key1">
-          <Button className="edit-btn-style">Manage/Edit Camp Statement</Button>
-          <Button className="camp-btn-style">Camp Forum</Button>
-        </div>,
+        <>
+          <Button className="btn-green">Manage/Edit Camp Statement</Button>
+          <Button className="btn-blue">Camp Forum</Button>
+        </>,
       ]}
     >
       <Paragraph>{campStatement?.length && campStatement[0]?.value}</Paragraph>
