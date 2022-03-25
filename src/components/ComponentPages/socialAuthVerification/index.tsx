@@ -65,8 +65,6 @@ function SocialAuthVerification() {
     }
   };
 
-  console.log("link:- ", socialLinks);
-
   return (
     <Fragment>
       <section className={`${styles.wrapper}`}>
