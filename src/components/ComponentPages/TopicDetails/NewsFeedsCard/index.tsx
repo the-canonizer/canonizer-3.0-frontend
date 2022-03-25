@@ -1,6 +1,6 @@
 import { Card, Typography } from "antd";
 import Link from "next/link";
-import styles from "../campTree.module.scss";
+import styles from "../topicDetails.module.scss";
 
 const { Paragraph } = Typography;
 

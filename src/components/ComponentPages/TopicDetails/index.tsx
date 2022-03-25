@@ -11,7 +11,7 @@ import {
 import { RootState } from "src/store";
 import SideBar from "../Home/SideBar";
 import CampStatementCard from "./CampStatementCard";
-import styles from "./campTree.module.scss";
+import styles from "./topicDetails.module.scss";
 import CampTreeCard from "./CampTreeCard";
 import CurrentCampCard from "./CurrentCampCard";
 import CurrentTopicCard from "./CurrentTopicCard";

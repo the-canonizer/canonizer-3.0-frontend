@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Tree } from "antd";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
-import Styles from "../campTree.module.scss";
+import Styles from "../topicDetails.module.scss";
 
 const { TreeNode } = Tree;
 const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
