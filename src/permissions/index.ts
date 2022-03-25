@@ -14,6 +14,11 @@ const PermissionsForPages: PermissionsObj = {
     isPermissionRequired: true,
     permissionName: "view_tree",
   },
+  CreateNewTopicPage: {
+    isAuthenticationRequired: true,
+    isPermissionRequired: false,
+    permissionName: "create-new-topic",
+  },
 };
 
 export default PermissionsForPages;

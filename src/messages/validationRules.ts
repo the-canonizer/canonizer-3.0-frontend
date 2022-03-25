@@ -268,3 +268,87 @@ export const nickNameRule = {
     },
   ],
 };
+
+// create new topic
+export const nickNmRule = {
+  rules: [
+    {
+      required: true,
+      message: validations.nickNm,
+    },
+  ],
+};
+
+export const topicNameRule = {
+  rules: [
+    {
+      required: true,
+      message: validations.topicName,
+    },
+    {
+      max: 30,
+      message: validations.topiNameMax30,
+    },
+    {
+      pattern: patterns.alphaNumSpace,
+      message: validations.topicNameSpace,
+    },
+  ],
+};
+
+export const namespaceRule = {
+  rules: [
+    {
+      required: true,
+      message: validations.namespace,
+    },
+  ],
+};
+export const summaryRule = {
+  rules: [
+    {
+      max: 500,
+      message: validations.summaryMax,
+    },
+  ],
+};
+
+// create new camp
+export const campNameRule = {
+  rules: [
+    {
+      required: true,
+      message: validations.campName,
+    },
+    {
+      max: 30,
+      message: validations.topiNameMax30,
+    },
+    {
+      pattern: patterns.alphaNumSpace,
+      message: validations.campAlpha,
+    },
+  ],
+};
+
+export const parentCampRule = {
+  rules: [
+    {
+      required: true,
+      message: validations.parentCamp,
+    },
+  ],
+};
+
+export const campAboutUrlRule = {
+  rules: [
+    {
+      pattern: patterns.url,
+      message: validations.campUrl,
+    },
+    {
+      max: 1024,
+      message: validations.campUrlLim,
+    },
+  ],
+};

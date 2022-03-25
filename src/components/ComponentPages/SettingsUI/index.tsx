@@ -9,6 +9,7 @@ import DirectSupportedCamps from "../DirectSupportedCamps";
 import { SearchOutlined } from "@ant-design/icons";
 import { Tabs } from "antd";
 import DelegatedSupportCamps from "../DelegatedSupportCamps";
+import { useRouter } from "next/router";
 
 const { TabPane } = Tabs;
 const tabList = [
@@ -39,6 +40,11 @@ export default function SettingsUI() {
   const [activeTabKey, setActiveTabKey] = useState("profile_info");
   const onTabChange = (key) => {
     setActiveTabKey(key);
+  };
+  const router = useRouter();
+
+  const campRoute = () => {
+    router.push("/create-new-topic");
   };
 
   const contentList = {
@@ -91,7 +97,7 @@ export default function SettingsUI() {
       <div>
         <div className={styles.card}>
           <div className={styles.btnsWrap}>
-            <Button size="large" className={styles.btn}>
+            <Button size="large" className={styles.btn} onClick={campRoute}>
               <i className="icon-topic"></i> Create New Topic
             </Button>
           </div>
