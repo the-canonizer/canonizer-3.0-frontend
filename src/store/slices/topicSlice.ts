@@ -13,7 +13,7 @@ export const topicSlice = createSlice({
   },
   reducers: {
     setCurrentTopic: (state, action) => {
-      state.currentTopic = action.payload;
+      state.currentTopic = { ...state.currentTopic, ...action.payload };
     },
     resetCurrentTopic: (state) => {
       state.currentTopic = {
