@@ -56,6 +56,14 @@ const NetworkConstants = {
     GetCanonizedAlgorithms: `${BaseCanonizerApiUrl}/get-algorithms`,
     GetCanonizedRecentActivities: `${BaseCanonizerApiUrl}/get-recent-activities`,
 
+    // topic
+    CreateTopic: `${BaseCanonizerApiUrl}/topic/save`,
+
+    // Camp
+    CreateCamp: `${BaseCanonizerApiUrl}/camp/save`,
+    GetAllParents: `${BaseCanonizerApiUrl}/camp/allParent`,
+    GetCampNickNames: `${BaseCanonizerApiUrl}/camp/allAboutNickName`,
+
     //footer
 
     GetFooterSocialLinks: `${BaseCanonizerApiUrl}/get-social-media-links`,

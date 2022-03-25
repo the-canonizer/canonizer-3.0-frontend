@@ -32,11 +32,16 @@ const ResetPassword = () => {
 
     router.push("/login");
   };
+
+  const campRoute = () => {
+    router.push("/create-new-topic");
+  };
+
   return (
     <div className={styles.wrapper}>
       <aside className="leftSideBar miniSideBar">
         <div className={styles.wrap}>
-          <Button size="large" className={styles.createBtn}>
+          <Button size="large" className={styles.createBtn} onClick={campRoute}>
             <i className="icon-topic"></i>Create New Topic
           </Button>
         </div>

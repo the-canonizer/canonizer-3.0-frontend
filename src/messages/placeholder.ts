@@ -23,4 +23,10 @@ export const placeholders = {
   zipCode: "Enter Zip Code",
   algorithm: "Select an algorithm",
   emailId: "Enter Your Email",
+  editSummary: "Summary",
+  nickName: "Nick Name",
+  topicName: "Topic Name",
+  namespace: "Namespace",
+  campAboutNickName: "--Select Camp About Nick Name--",
+  campURL: "https://",
 };

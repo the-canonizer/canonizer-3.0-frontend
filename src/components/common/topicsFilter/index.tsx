@@ -89,6 +89,10 @@ const CreateTopic = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
+  const campRoute = () => {
+    router.push("/create-new-topic");
+  };
+
   const { algorithms, filterObject } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filterObject: state.homePage.filterObject,
@@ -162,7 +166,7 @@ const CreateTopic = () => {
     <>
       <div className={styles.card}>
         <div className={styles.btnsWrap}>
-          <Button size="large" className={styles.btn}>
+          <Button size="large" className={styles.btn} onClick={campRoute}>
             <i className="icon-topic"></i> Create New Topic
           </Button>
         </div>

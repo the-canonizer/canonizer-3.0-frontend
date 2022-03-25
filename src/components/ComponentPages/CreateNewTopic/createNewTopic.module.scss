@@ -1,0 +1,107 @@
+.createNewTopicForm {
+  label {
+    font-size: 15px;
+    font-weight: 600;
+    color: #795548;
+
+    span {
+      font-weight: normal;
+    }
+
+    &::before {
+      position: absolute;
+      right: -15px;
+    }
+  }
+  input,
+  textarea {
+    transition: all 0.3s;
+    ::placeholder {
+      font-size: 14px;
+      color: #afb6bb;
+      line-height: 15px;
+    }
+  }
+
+  .submit_btn {
+    background: #f89d15 0% 0% no-repeat padding-box;
+    border-radius: 2px;
+    border-color: #f89d15;
+    opacity: 1;
+    margin-right: 15px;
+    color: #ffffff;
+    transition: all 0.3s;
+
+    &:hover {
+      background: #d3840e;
+    }
+  }
+  .namespaceInput {
+    label {
+      &::before {
+        position: static;
+        order: 1;
+      }
+    }
+  }
+  .advanceuser {
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 14px;
+    letter-spacing: 0px;
+    color: #ef5e5e;
+    opacity: 1;
+    margin-top: 45px;
+    margin-bottom: 20px;
+    display: block;
+  }
+  .cancel_btn {
+    background: #ffffff 0% 0% no-repeat padding-box;
+    border: 1px solid #4484ce;
+    border-radius: 2px;
+    opacity: 1;
+    letter-spacing: 0px;
+    color: #4484ce;
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 1;
+    line-height: 16px;
+    transition: all 0.3s;
+
+    &:hover {
+      background: #4484ce;
+      color: #ffffff;
+    }
+  }
+}
+
+.cardTitle {
+  font: normal normal 600 20px/23px Asap;
+  letter-spacing: 0px;
+  color: #1c1b24;
+  opacity: 1;
+}
+
+.upperTitle {
+  display: flex;
+  p {
+    text-align: left;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 21px;
+    letter-spacing: 0px;
+    color: #0f2a4d;
+    margin-right: 35px;
+
+    &:last-child {
+      strong {
+        color: #0f2a4d;
+      }
+      color: #4484ce;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    flex-flow: column;
+  }
+}

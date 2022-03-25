@@ -78,7 +78,7 @@ describe("ChangePassword page", () => {
       expect(inputEl2).toHaveValue("Abc@12344");
       expect(screen.queryByRole("alert")).toBeInTheDocument();
       expect(
-        screen.queryByText("The confirm password and new password must match")
+        screen.queryByText("Confirm Password does not match.")
       ).toBeVisible();
     });
   });

@@ -9,6 +9,7 @@ import NetworkCall from "../networkCall";
 import TreeRequest from "../request/campDetailRequest";
 import { message } from "antd";
 import { store } from "../../store";
+import { handleError, isServer } from "../../utils/generalUtility";
 
 export const getTreesApi = async (reqBody) => {
   try {
@@ -110,5 +111,32 @@ export const getCanonizedCampSupportingTreeApi = async (
     return mockSupporters;
   } catch (error) {
     message.error(error.message);
+  }
+};
+
+export const createCamp = async (body) => {
+  try {
+    const res = await NetworkCall.fetch(TreeRequest.createCamp(body));
+    return res;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const getAllParentsCamp = async (body) => {
+  try {
+    const res = await NetworkCall.fetch(TreeRequest.getAllParentsCamp(body));
+    return res;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const getAllCampNickNames = async () => {
+  try {
+    const res = await NetworkCall.fetch(TreeRequest.getAllCampNickNames());
+    return res;
+  } catch (error) {
+    handleError(error);
   }
 };
