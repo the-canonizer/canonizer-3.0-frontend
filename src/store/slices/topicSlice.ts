@@ -3,15 +3,30 @@ import { createSlice } from "@reduxjs/toolkit";
 export const topicSlice = createSlice({
   name: "topic",
   initialState: {
-    createdTopic: null,
+    currentTopic: {
+      topic_num: null,
+      topic_name: "",
+      camp_name: "",
+      parent_camp_num: "",
+      message: null,
+    },
   },
   reducers: {
-    setCreatedTopic: (state, action) => {
-      state.createdTopic = action.payload;
+    setCurrentTopic: (state, action) => {
+      state.currentTopic = action.payload;
+    },
+    resetCurrentTopic: (state) => {
+      state.currentTopic = {
+        topic_num: null,
+        topic_name: "",
+        camp_name: "",
+        parent_camp_num: "",
+        message: null,
+      };
     },
   },
 });
 
-export const { setCreatedTopic } = topicSlice.actions;
+export const { setCurrentTopic, resetCurrentTopic } = topicSlice.actions;
 
 export default topicSlice.reducer;

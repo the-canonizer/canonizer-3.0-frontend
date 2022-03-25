@@ -10,7 +10,7 @@ import styles from "./createNewTopic.module.scss";
 import { createTopic } from "../../../network/api/topicAPI";
 import { getNickNameList } from "../../../network/api/userApi";
 import { RootState } from "../../../store";
-import { setCreatedTopic } from "../../../store/slices/topicSlice";
+import { setCurrentTopic } from "../../../store/slices/topicSlice";
 
 const { Option } = Select;
 
@@ -68,7 +68,7 @@ const CreateNewTopic = ({
     const res = await createTopic(body);
 
     if (res && res.status_code === 200) {
-      dispatch(setCreatedTopic({ message: res.message, ...res.data }));
+      dispatch(setCurrentTopic({ message: res.message, ...res.data }));
       router.push(`/topic-history/${res.data.topic_num}`);
     }
   };
