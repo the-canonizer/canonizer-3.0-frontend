@@ -27,7 +27,7 @@ export const validations: ErrorContainer = {
   email: "Please input your E-mail!",
   validEmail: "The input is not valid E-mail!",
   emailMax: "E-mail should be max 255 characters long!",
-  captcha: "Please input the captcha you got!",
+  captcha: "Please check the captcha!",
   captchaExtra: "We must make sure that your are a human.",
   registrationPassword: "Please input your password!",
   passwordMinLength: "Password must be at least 8 characters long!",
