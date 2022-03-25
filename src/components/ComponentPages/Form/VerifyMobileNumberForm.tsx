@@ -7,7 +7,7 @@ import Icon from "@ant-design/icons";
 import Image from "next/image";
 
 const { Option } = Select;
-const [symbolsArr] = useState(["e", "E", "+", "-", "."]);
+
 function VerifyMobileNumberForm({
   mobileCarrier,
   formVerify,
@@ -20,6 +20,7 @@ function VerifyMobileNumberForm({
   toggleVerifyButton,
   handleMobileNumberChange,
 }) {
+  const [symbolsArr] = useState(["e", "E", "+", "-", "."]);
   let mobileCarrierList =
     mobileCarrier.length > 0 &&
     mobileCarrier.map((item, i) => {
