@@ -1,6 +1,11 @@
 import { Card, Button, Descriptions } from "antd";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
 
 const CurrentCampCard = () => {
+  const { campRecord } = useSelector((state: RootState) => ({
+    campRecord: state?.topicDetails?.currentCampRecord,
+  }));
   return (
     <Card
       className="canCard"
@@ -17,14 +22,18 @@ const CurrentCampCard = () => {
       ]}
     >
       <Descriptions column={1}>
-        <Descriptions.Item label="Camp Name"> Agreement</Descriptions.Item>
-        <Descriptions.Item label="Keywords">
-          consciousness, mind, theories{" "}
-        </Descriptions.Item>
-        <Descriptions.Item label="Camp About URL"> </Descriptions.Item>
-        <Descriptions.Item label="Camp About Nick Name">
+        <Descriptions.Item label="Camp Name">
           {" "}
-          No nickname associated{" "}
+          {campRecord?.length && campRecord[0]?.camp_name}
+        </Descriptions.Item>
+        <Descriptions.Item label="Keywords">
+          {campRecord?.length && campRecord[0]?.key_words}
+        </Descriptions.Item>
+        <Descriptions.Item label="Camp About URL">
+          {campRecord?.length && campRecord[0]?.camp_about_url}
+        </Descriptions.Item>
+        <Descriptions.Item label="Camp About Nick Name">
+          {campRecord?.length && campRecord[0]?.nick_name}
         </Descriptions.Item>
       </Descriptions>
     </Card>

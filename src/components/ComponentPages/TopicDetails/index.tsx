@@ -7,6 +7,8 @@ import {
   getNewsFeedApi,
   getTreesApi,
   getCanonizedCampSupportingTreeApi,
+  getCurrentTopicRecordApi,
+  getCurrentCampRecordApi,
 } from "src/network/api/campDetailApi";
 import { RootState } from "src/store";
 import SideBar from "../Home/SideBar";
@@ -37,7 +39,7 @@ const TopicDetails = () => {
           topic_num: 88,
           asofdate: 1644323333,
           algorithm: algorithm,
-          update_all: 0,
+          update_all: 1,
         };
         await getTreesApi(reqBody);
       } else didMount.current = true;
@@ -48,8 +50,10 @@ const TopicDetails = () => {
   const reqBody = { topic_num: 45, camp_num: 1 };
   useEffect(() => {
     const campStatementReq = {
-      topic_num: +router.query.camp,
-      camp_num: "1",
+      topic_num: 45,
+      camp_num: 1,
+      // topic_num: +router.query.camp,
+      // camp_num: "1",
       as_of: asof,
       as_of_date: asofdate,
     };
@@ -82,6 +86,8 @@ const TopicDetails = () => {
     };
     await getNewsFeedApi(req);
     await getCanonizedCampStatementApi(campStatementReq);
+    await getCurrentTopicRecordApi(req);
+    await getCurrentCampRecordApi(req);
   };
 
   return (

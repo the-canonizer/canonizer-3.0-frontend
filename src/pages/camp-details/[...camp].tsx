@@ -1,17 +1,27 @@
 import Layout from "../../hoc/layout";
 
 import TopicDetails from "../../components/ComponentPages/TopicDetails";
-import { getTreesApi } from "src/network/api/campDetailApi";
+import {
+  getTreesApi,
+  getCurrentTopicRecordApi,
+  getCurrentCampRecordApi,
+} from "src/network/api/campDetailApi";
 import { useDispatch } from "react-redux";
-import { setTree } from "src/store/slices/campDetailSlice";
+import {
+  setTree,
+  setCurrentTopicRecord,
+  setCurrentCampRecord,
+} from "src/store/slices/campDetailSlice";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 import { setCanonizedAlgorithms } from "src/store/slices/homePageSlice";
-import { wrapper } from "src/store";
+// import { wrapper } from "src/store";
 
-const TopicDetailsPage = ({ camps, algorithms }) => {
+const TopicDetailsPage = ({ camps, algorithms, topicRecord, campRecord }) => {
   const dispatch = useDispatch();
   dispatch(setTree(camps));
   dispatch(setCanonizedAlgorithms(algorithms));
+  dispatch(setCurrentTopicRecord(topicRecord));
+  dispatch(setCurrentCampRecord(campRecord));
   return (
     <>
       <Layout>
@@ -31,21 +41,39 @@ export async function getServerSideProps(context) {
     algorithm,
     update_all: 1,
   };
+  const topicOrCampReqBody = {
+    topic_num: 76,
+    camp_num: 1,
+  };
 
-  const [canonizedAlgorithms, canonizedCampTrees] = await Promise.all([
+  const [
+    canonizedAlgorithms,
+    canonizedCampTrees,
+    currentTopicRecord,
+    currentCampRecord,
+  ] = await Promise.all([
     getCanonizedAlgorithmsApi(),
     getTreesApi(reqBody),
+    getCurrentTopicRecordApi(topicOrCampReqBody),
+    getCurrentCampRecordApi(topicOrCampReqBody),
   ]);
   const camps = canonizedCampTrees || [];
   const algorithms = canonizedAlgorithms || [];
+  const topicRecord = currentTopicRecord || [];
+  const campRecord = currentCampRecord || [];
 
   return {
     props: {
       camps,
       algorithms,
+      topicRecord,
+      campRecord,
     },
   };
 }
+//////////////////////////////////////////////
+// Bellow commented code will be used later//
+////////////////////////////////////////////
 
 // export const getServerSideProps = wrapper.getServerSideProps(({ store }) => {
 //   console.log("/..///////////////////////store", store.getState());

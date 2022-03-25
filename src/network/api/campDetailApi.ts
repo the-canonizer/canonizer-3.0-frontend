@@ -4,6 +4,8 @@ import {
   setCampStatement,
   setCampSupportingTree,
   pushToCampSupportingTree,
+  setCurrentTopicRecord,
+  setCurrentCampRecord,
 } from "../../store/slices/campDetailSlice";
 import NetworkCall from "../networkCall";
 import TreeRequest from "../request/campDetailRequest";
@@ -35,8 +37,32 @@ export const getCanonizedCampStatementApi = async (reqBody) => {
     const campStatement = await NetworkCall.fetch(
       TreeRequest.getCampStatement(reqBody)
     );
-    store.dispatch(setCampStatement(campStatement));
-    return campStatement;
+    store.dispatch(setCampStatement(campStatement?.data));
+    return campStatement?.data;
+  } catch (error) {
+    message.error(error.message);
+  }
+};
+
+export const getCurrentTopicRecordApi = async (reqBody) => {
+  try {
+    const currentTopicRecord = await NetworkCall.fetch(
+      TreeRequest.getCurrentTopicRecord(reqBody)
+    );
+    store.dispatch(setCurrentTopicRecord(currentTopicRecord?.data));
+    return currentTopicRecord?.data;
+  } catch (error) {
+    message.error(error.message);
+  }
+};
+
+export const getCurrentCampRecordApi = async (reqBody) => {
+  try {
+    const currentCampRecord = await NetworkCall.fetch(
+      TreeRequest.getCurrentCampRecord(reqBody)
+    );
+    store.dispatch(setCurrentCampRecord(currentCampRecord?.data));
+    return currentCampRecord?.data;
   } catch (error) {
     message.error(error.message);
   }
