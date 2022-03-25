@@ -1,5 +1,5 @@
-import { Button, Col, Divider, Row, Typography } from "antd";
-import { Fragment } from "react";
+import { message, Col, Divider, Row, Typography } from "antd";
+import { Fragment, useEffect, useState } from "react";
 import Image from "next/image";
 import {
   FacebookFilled,
@@ -10,16 +10,61 @@ import {
 
 import styles from "./Social.module.scss";
 
+import {
+  socialLogin,
+  userSocialAccountsList,
+  userSocialAccountDelete,
+} from "../../../network/api/userApi";
+import Details from "./details";
+
 const { Text } = Typography;
 
 function SocialAuthVerification() {
-  const onLinkClick = (provider) => {
-    localStorage.setItem("redirectTab", "tab=social");
-    alert("link:- " + provider);
+  const [socialLinks, setSocialLinks] = useState({});
+
+  const fetchList = async () => {
+    const res = await userSocialAccountsList();
+
+    if (res && res.status_code === 200) {
+      const socialData = {};
+
+      res.data.forEach((s) => {
+        socialData[s.provider] = s.id;
+        socialData[s.provider + "_email"] = s.social_email;
+        socialData[s.provider + "_name"] = s.social_name;
+      });
+
+      setSocialLinks(socialData);
+    }
   };
 
-  const onUnlinkClick = (provider) => {
-    alert("unlink:- " + provider);
+  useEffect(() => {
+    fetchList();
+  }, []);
+
+  const onLinkClick = async (provider) => {
+    console.log("link:- " + provider);
+
+    let body = { provider };
+    const res = await socialLogin(body);
+
+    try {
+      if (res.data) {
+        localStorage.setItem("redirectTab", "tab=social");
+        window.location.href = res.data.url;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onUnlinkClick = async (provider, id) => {
+    const res = await userSocialAccountDelete(id);
+    console.log(res);
+    if (res && res.status_code === 200) {
+      message.success(res.message);
+      fetchList();
+    }
   };
 
   return (
@@ -39,19 +84,12 @@ function SocialAuthVerification() {
               </div>
               <Divider plain className={styles.divider} />
               <div className={`${styles.content}`}>
-                <Text strong className={`${styles.name}`}>
-                  Pranav Thakur
-                </Text>
-                <Text className={`${styles.email}`}>pranav.tel@gmail.com</Text>
-
-                <Button
-                  type="link"
-                  className={`${styles.linkBtn}`}
-                  onClick={onUnlinkClick.bind(this, "Google")}
-                  data-testid="linkBtn"
-                >
-                  Unlink
-                </Button>
+                <Details
+                  socialLinks={socialLinks}
+                  onUnlinkClick={onUnlinkClick}
+                  onLinkClick={onLinkClick}
+                  provider="google"
+                />
               </div>
             </div>
           </div>
@@ -63,16 +101,12 @@ function SocialAuthVerification() {
               </div>
               <Divider plain className={styles.divider} />
               <div className={`${styles.content}`}>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  className={`ant-btn ant-btn-orange ant-btn-lg ${styles.submitBtn}`}
-                  data-testid="linkBtn"
-                  tabIndex={12}
-                  onClick={onLinkClick.bind(this, "Facebook")}
-                >
-                  Link
-                </Button>
+                <Details
+                  socialLinks={socialLinks}
+                  onUnlinkClick={onUnlinkClick}
+                  onLinkClick={onLinkClick}
+                  provider="facebook"
+                />
               </div>
             </div>
           </div>
@@ -84,16 +118,12 @@ function SocialAuthVerification() {
               </div>
               <Divider plain className={styles.divider} />
               <div className={`${styles.content}`}>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  className={`ant-btn ant-btn-orange ant-btn-lg ${styles.submitBtn}`}
-                  data-testid="linkBtn"
-                  tabIndex={12}
-                  onClick={onLinkClick.bind(this, "Twitter")}
-                >
-                  Link
-                </Button>
+                <Details
+                  socialLinks={socialLinks}
+                  onUnlinkClick={onUnlinkClick}
+                  onLinkClick={onLinkClick}
+                  provider="twitter"
+                />
               </div>
             </div>
           </div>
@@ -105,16 +135,12 @@ function SocialAuthVerification() {
               </div>
               <Divider plain className={styles.divider} />
               <div className={`${styles.content}`}>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  className={`ant-btn ant-btn-orange ant-btn-lg ${styles.submitBtn}`}
-                  data-testid="linkBtn"
-                  tabIndex={12}
-                  onClick={onLinkClick.bind(this, "Linkedin")}
-                >
-                  Link
-                </Button>
+                <Details
+                  socialLinks={socialLinks}
+                  onUnlinkClick={onUnlinkClick}
+                  onLinkClick={onLinkClick}
+                  provider="linkedin"
+                />
               </div>
             </div>
           </div>
@@ -126,16 +152,12 @@ function SocialAuthVerification() {
               </div>
               <Divider plain className={styles.divider} />
               <div className={`${styles.content}`}>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  className={`ant-btn ant-btn-orange ant-btn-lg ${styles.submitBtn}`}
-                  data-testid="linkBtn"
-                  tabIndex={12}
-                  onClick={onLinkClick.bind(this, "Github")}
-                >
-                  Link
-                </Button>
+                <Details
+                  socialLinks={socialLinks}
+                  onUnlinkClick={onUnlinkClick}
+                  onLinkClick={onLinkClick}
+                  provider="github"
+                />
               </div>
             </div>
           </div>

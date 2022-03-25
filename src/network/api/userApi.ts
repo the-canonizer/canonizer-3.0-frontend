@@ -161,26 +161,44 @@ export const socialLoginCallback = async (values: object) => {
   const state = store.getState();
 
   try {
-    const authToken = await createToken();
+    let token = null;
+    let authToken = null;
+
+    if (state.auth.token) {
+      token = state.auth.token;
+    } else {
+      authToken = await createToken();
+      token = authToken.access_token;
+    }
 
     const res = await NetworkCall.fetch(
-      UserRequest.userSocialLoginCallback(values, authToken.access_token)
+      UserRequest.userSocialLoginCallback(values, token)
     );
 
-    !isServer &&
-      window.localStorage.setItem("token", res.data.auth.access_token);
-    let payload = {
-      ...res.data.user,
-      token: res.data.auth.access_token,
-      refresh_token: res.data.auth.refresh_token,
-    };
+    if (res && res.data.type !== "social_link") {
+      !isServer &&
+        window.localStorage.setItem("token", res.data.auth.access_token);
+      let payload = {
+        ...res.data.user,
+        token: res.data.auth.access_token,
+        refresh_token: res.data.auth.refresh_token,
+      };
 
-    store.dispatch(setLoggedInUser(payload));
-    store.dispatch(setAuthToken(authToken.access_token));
+      store.dispatch(setLoggedInUser(payload));
+      store.dispatch(setAuthToken(authToken.access_token));
+    }
 
     return res;
-  } catch (err) {
-    handleError(err);
+  } catch (error) {
+    if (
+      error &&
+      error.error &&
+      error.error.data &&
+      error.error.data.status_code === 403
+    ) {
+      return error.error.data;
+    }
+    handleError(error);
   }
 };
 
@@ -439,4 +457,32 @@ export const getDelegatedSupportCampsList = async () => {
       handleCatchError(errors);
     });
   return res;
+};
+
+export const userSocialAccountsList = async () => {
+  const state = store.getState();
+
+  try {
+    const res = await NetworkCall.fetch(
+      UserRequest.userSocialAccountsList(state.auth.token)
+    );
+
+    return res;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const userSocialAccountDelete = async (id: string) => {
+  const state = store.getState();
+
+  try {
+    const res = await NetworkCall.fetch(
+      UserRequest.userSocialAccountDelete(state.auth.token, id)
+    );
+
+    return res;
+  } catch (error) {
+    handleError(error);
+  }
 };

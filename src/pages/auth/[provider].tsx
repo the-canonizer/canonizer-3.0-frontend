@@ -1,4 +1,4 @@
-import { Skeleton } from "antd";
+import { Skeleton, message } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -15,21 +15,30 @@ function SocialLoginCallback() {
   const dispatch = useDispatch<AppDispatch>();
 
   const sendData = async (data) => {
+    let response = await socialLoginCallback(data);
+
     const redirectTab = localStorage.getItem("redirectTab");
 
-    let body = redirectTab
-      ? { ...data, type: "link" }
-      : { ...data, type: "login" };
-
-    let response = await socialLoginCallback(body);
-
     if (response && response.status_code === 200) {
-      if (redirectTab === "tab=social") {
+      if (
+        response.data.type === "social_link" &&
+        redirectTab === "tab=social"
+      ) {
+        message.success(response.message);
         localStorage.removeItem("redirectTab");
         router.push("/settings?tab=social");
       } else {
         router.push("/");
       }
+    }
+
+    if (
+      response &&
+      response.status_code === 403 &&
+      redirectTab === "tab=social"
+    ) {
+      message.error(response.message);
+      router.push("/settings?tab=social");
     }
 
     setIsLoading(false);

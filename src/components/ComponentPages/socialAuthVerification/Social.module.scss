@@ -49,7 +49,8 @@
         align-items: center;
         flex-wrap: wrap;
         flex-flow: column;
-        word-break: break-all;
+        word-break: break-word;
+        overflow: hidden;
 
         .name,
         .linkBtn .email {
@@ -68,8 +69,8 @@
           font-weight: normal;
           color: #ef5e5e;
           transition: all 0.3s;
-          
-          &:hover{
+
+          &:hover {
             color: #f74e4e;
           }
         }
