@@ -1,8 +1,13 @@
 import { Card, Typography, Button, Descriptions } from "antd";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
 
 const { Paragraph, Title } = Typography;
 
 const CurrentTopicCard = () => {
+  const { topicRecord } = useSelector((state: RootState) => ({
+    topicRecord: state?.topicDetails?.currentTopicRecord,
+  }));
   return (
     <Card
       className="canCard"
@@ -20,9 +25,11 @@ const CurrentTopicCard = () => {
     >
       <Descriptions column={1}>
         <Descriptions.Item label="Topic Name">
-          Theories of Consciousness
+          {topicRecord?.length && topicRecord[0]?.topic_name}
         </Descriptions.Item>
-        <Descriptions.Item label="Namespace">/General/</Descriptions.Item>
+        <Descriptions.Item label="Namespace">
+          /{topicRecord?.length && topicRecord[0]?.namespace_name}/
+        </Descriptions.Item>
       </Descriptions>
     </Card>
   );

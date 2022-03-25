@@ -37,6 +37,26 @@ export default class TreeRequest extends Request {
     );
   }
 
+  static getCurrentTopicRecord(reqBody) {
+    return new Request(
+      K.Network.URL.GetCurrentTopicRecord,
+      K.Network.Method.POST,
+      reqBody,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
+
+  static getCurrentCampRecord(reqBody) {
+    return new Request(
+      K.Network.URL.GetCurrentCampRecord,
+      K.Network.Method.POST,
+      reqBody,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
+
   static getCampSupportingTree(reqBody) {
     return new Request(
       K.Network.URL.GetSupportingTree,

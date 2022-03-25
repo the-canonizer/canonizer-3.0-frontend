@@ -7,6 +7,8 @@ import {
   getNewsFeedApi,
   getTreesApi,
   getCanonizedCampSupportingTreeApi,
+  getCurrentTopicRecordApi,
+  getCurrentCampRecordApi,
 } from "src/network/api/campDetailApi";
 import { RootState } from "src/store";
 import SideBar from "../Home/SideBar";
@@ -84,6 +86,8 @@ const TopicDetails = () => {
     };
     await getNewsFeedApi(req);
     await getCanonizedCampStatementApi(campStatementReq);
+    await getCurrentTopicRecordApi(req);
+    await getCurrentCampRecordApi(req);
   };
 
   return (

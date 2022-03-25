@@ -45,6 +45,8 @@ const NetworkConstants = {
     GetNewsFeed: `${BaseCanonizerApiUrl}/get-camp-newsfeed`,
     GetCampStatement: `${BaseCanonizerApiUrl}/get-camp-statement`,
     GetSupportingTree: `${BaseCanonizerApiUrl}/get/supporting-tree`,
+    GetCurrentTopicRecord: `${BaseCanonizerApiUrl}/get-topic-record`,
+    GetCurrentCampRecord: `${BaseCanonizerApiUrl}/get-camp-record`,
     // resend otp for registration
     ResendOTPForRegistration: `${BaseCanonizerApiUrl}/user/reSendOtp`,
 
