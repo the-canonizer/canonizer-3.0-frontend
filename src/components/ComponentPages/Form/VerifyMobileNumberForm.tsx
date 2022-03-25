@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Row, Col, Form, Input, Button, Select, Modal } from "antd";
 import styles from "../ProfileInfo/ProfileInfoUI/ProfileInfo.module.scss";
 import messages from "../../../messages";
@@ -7,7 +7,7 @@ import Icon from "@ant-design/icons";
 import Image from "next/image";
 
 const { Option } = Select;
-
+const [symbolsArr] = useState(["e", "E", "+", "-", "."]);
 function VerifyMobileNumberForm({
   mobileCarrier,
   formVerify,
@@ -29,7 +29,6 @@ function VerifyMobileNumberForm({
         </Option>
       );
     });
-
   return (
     <section className={styles.profileInfo_wrapper}>
       <Form
@@ -52,6 +51,9 @@ function VerifyMobileNumberForm({
                   placeholder={messages.placeholders.phoneNumber}
                   size="large"
                   onChange={handleMobileNumberChange}
+                  onKeyDown={(e) =>
+                    symbolsArr.includes(e.key) && e.preventDefault()
+                  }
                   tabIndex={1}
                 />
               </Form.Item>
