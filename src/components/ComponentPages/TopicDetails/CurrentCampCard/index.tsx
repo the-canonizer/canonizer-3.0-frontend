@@ -7,18 +7,14 @@ const CurrentCampCard = () => {
     campRecord: state?.topicDetails?.currentCampRecord,
   }));
   return (
-    <Card
-      className="canCard"
+    <Card className="canCard mb-3"
       title={
-        <div className="cardHeader">
-          {" "}
-          <h3>Current Camp Record</h3>
-        </div>
+        <h3>Current Camp Record</h3>
       }
       actions={[
-        <div className="card-actions-wrapper" key="key2">
-          <Button className="edit-btn-style">Manage/Edit This Topic</Button>
-        </div>,
+        <>
+          <Button className="btn-green">Manage/Edit This Topic</Button>
+        </>
       ]}
     >
       <Descriptions column={1}>

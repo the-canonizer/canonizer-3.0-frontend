@@ -1,6 +1,7 @@
 import { Card, Checkbox, Typography } from "antd";
-import styles from "../topicDetails.module.scss";
 import CampTree from "../CampTree";
+
+import styles from "../topicDetails.module.scss";
 
 const { Link } = Typography;
 

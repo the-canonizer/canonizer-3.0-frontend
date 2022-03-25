@@ -10,23 +10,22 @@ const CampStatementCard = ({ myRefToCampStatement }) => {
     campStatement: state?.topicDetails?.campStatement,
   }));
   return (
-    <Card
-      className="canCard"
+    <Card className="canCard mb-3"
       title={
-        <div className="cardHeader" ref={myRefToCampStatement}>
+        <div ref={myRefToCampStatement}>
           <h3>Camp Statement</h3>
         </div>
       }
       extra={
-        <div className="cardActions">
+        <>
           <span className="bold">Go live Time </span>: 5/27/2020, 8:04:24 AM{" "}
-        </div>
+        </>
       }
       actions={[
-        <div className="card-actions-wrapper" key="key1">
-          <Button className="edit-btn-style">Manage/Edit Camp Statement</Button>
-          <Button className="camp-btn-style">Camp Forum</Button>
-        </div>,
+        <>
+          <Button className="btn-green">Manage/Edit Camp Statement</Button>
+          <Button className="btn-blue">Camp Forum</Button>
+        </>,
       ]}
     >
       <Paragraph>{campStatement && campStatement[0]?.value}</Paragraph>
