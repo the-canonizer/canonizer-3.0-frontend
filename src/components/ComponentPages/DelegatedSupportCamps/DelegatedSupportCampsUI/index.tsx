@@ -99,8 +99,8 @@ export default function DelegatedSupportCampsUI({
               style={{ width: 760, marginBottom: 16 }}
             >
               <div>
-                <Row>
-                  <Col span={12}>
+                <Row className={styles.flex_wrap}>
+                  <Col span={12} className={styles.flex_wrap_col}>
                     <>
                       <SupportedCampsTo
                         supportedto={data.delegated_to_nick_name}
@@ -110,7 +110,6 @@ export default function DelegatedSupportCampsUI({
                       />
                     </>
                   </Col>
-                  <div></div>
                   <Col span={12} className={styles.border_left}>
                     <div className={styles.line_height1}>
                       <p>

@@ -30,6 +30,11 @@
   margin-left: 10px !important;
   margin-right: 25px !important;
   flex: 1;
+
+  @media screen and (max-width: 767px) {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
 }
 
 .supported_camps {
@@ -39,7 +44,10 @@
     right: 0;
     z-index: 99;
     min-width: 250px;
-
+    @media screen and (max-width: 1023px) {
+      position: relative;
+      margin-bottom: 10px;
+    }
     span {
       position: absolute;
       right: 8px;

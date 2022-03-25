@@ -48,6 +48,7 @@ function VerifyMobileNumberForm({
                 {...messages.phoneNumberRule}
               >
                 <Input
+                  type="number"
                   placeholder={messages.placeholders.phoneNumber}
                   size="large"
                   onChange={handleMobileNumberChange}
