@@ -1,4 +1,5 @@
 import { Typography, Button } from "antd";
+import { useRouter } from "next/router";
 
 import styles from "./campList.module.scss";
 import Link from "next/link";
@@ -6,6 +7,8 @@ import Link from "next/link";
 const { Title, Text } = Typography;
 
 export default function CampList() {
+  const router = useRouter();
+
   const mockLinks = [
     {
       link: "/",
@@ -33,6 +36,11 @@ export default function CampList() {
       id: 5,
     },
   ];
+
+  const campRoute = () => {
+    router.push("/create-new-topic");
+  };
+
   return (
     <>
       <div className={styles.wrap}>
@@ -48,7 +56,7 @@ export default function CampList() {
           </Title>
         </div>
         <div className={styles.btnGroup}>
-          <Button size="large" className={styles.createBtn}>
+          <Button size="large" className={styles.createBtn} onClick={campRoute}>
             <i className="icon-topic"></i>Create New Topic
           </Button>
           <Button size="large" className={styles.createBtn}>

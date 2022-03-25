@@ -227,6 +227,9 @@ body {
         font-size: 20px;
       }
     }
+    .ant-tabs-top {
+      max-width: 500px;
+    }
     .ant-tabs {
       .ant-tabs-tab-btn {
         font-size: 14px;
@@ -641,6 +644,37 @@ form {
     color: #222;
   }
 }
+
+#create_new_topic {
+  .ant-form-item-extra {
+    font-size: 12px;
+    color: #ef5e5e;
+    font-weight: normal;
+    line-height: 14px;
+  }
+}
+
+.d-flex {
+  display: flex;
+
+  @media screen and (max-width: 1024px) {
+    flex-flow: column;
+  }
+}
+.ant-btn-orange {
+  &.orange-btn {
+    background: #f89d15 0% 0% no-repeat padding-box;
+    border-radius: 2px;
+    border-color: #f89d15;
+    color: #ffffff;
+    transition: all 0.3s;
+
+    &:hover {
+      background: #d3840e;
+    }
+  }
+}
+
 .cardBox_tags {
   @media screen and (max-width: 767px) {
     .ant-row {
