@@ -1,4 +1,6 @@
 @import "./fonts";
+
+
 :root {
   --primary: #4484ce;
   --font-family-asap: "Asap", sans-serif;
@@ -43,10 +45,22 @@ body {
   &-1 {
     margin-right: 5px !important;
   }
+	&-4 {
+		margin-bottom: 1.5rem;
+	}
+	&-0 {
+		margin-bottom: 0 !important;
+	}
 }
 
 .w-100 {
   width: 100% !important;
+}
+.font-weight { 
+	&-bold {
+		font-weight: 700;
+		white-space: nowrap;
+	}
 }
 
 .ratio {
