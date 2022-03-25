@@ -226,6 +226,7 @@ const TopicsList = () => {
                       pathname: `/camp-details/${item?.topic_id}`,
                       query: {
                         ...router.query,
+                        filter: filterByScore,
                         algorithm,
                         asofdate,
                       },

@@ -24,12 +24,13 @@ const TopicDetails = () => {
   const didMount = useRef(false);
   let myRefToCampStatement = useRef(null);
   const router = useRouter();
-  const { asof, asofdate, algorithm, newsFeed } = useSelector(
+  const { asof, asofdate, algorithm, newsFeed, topicRecord } = useSelector(
     (state: RootState) => ({
       asofdate: state.homePage?.filterObject?.asofdate,
       algorithm: state.homePage?.filterObject?.algorithm,
       newsFeed: state?.topicDetails?.newsFeed,
       asof: state?.homePage?.filterObject?.asof,
+      topicRecord: state?.topicDetails?.currentTopicRecord,
     })
   );
   useEffect(() => {
@@ -95,7 +96,8 @@ const TopicDetails = () => {
       <div className={styles.breadcrumbWrapper}>
         <Typography.Paragraph className={"mb-0 " + styles.topicTitleStyle}>
           {" "}
-          <span className="bold"> Topic : </span> Theories of Consciousness{" "}
+          <span className="bold"> Topic : </span>{" "}
+          {topicRecord?.length && topicRecord[0]?.topic_name}
         </Typography.Paragraph>
         <div className={styles.breadcrumbLinks}>
           {" "}

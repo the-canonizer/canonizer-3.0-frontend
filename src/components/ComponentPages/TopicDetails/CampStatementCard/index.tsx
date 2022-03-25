@@ -19,7 +19,8 @@ const CampStatementCard = ({ myRefToCampStatement }) => {
       }
       extra={
         <div className="cardActions">
-          <span className="bold">Go live Time </span>: 5/27/2020, 8:04:24 AM{" "}
+          <span className="bold">Go live Time </span>:{" "}
+          {campStatement?.length && campStatement[0]?.go_live_time}
         </div>
       }
       actions={[
@@ -29,7 +30,7 @@ const CampStatementCard = ({ myRefToCampStatement }) => {
         </div>,
       ]}
     >
-      <Paragraph>{campStatement && campStatement[0]?.value}</Paragraph>
+      <Paragraph>{campStatement?.length && campStatement[0]?.value}</Paragraph>
       {/* Will remove the below commented code once the api is integrated completed */}
 
       {/* <Title level={2} className={styles.cardHeading}>

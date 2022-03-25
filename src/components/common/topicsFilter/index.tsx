@@ -100,7 +100,7 @@ const CreateTopic = () => {
 
   useEffect(() => {
     if (history.pushState) {
-      const queryParams = `?filter=${filterObject?.filterByScore}&algorithm=${filterObject?.algorithm}&asofdate=${filterObject?.asofdate}&namespace=${filterObject?.nameSpace}`;
+      const queryParams = `?filter=${filterObject?.filterByScore}&algorithm=${filterObject?.algorithm}&asofdate=${filterObject?.asofdate}&namespace=${filterObject?.namespace_id}`;
       var newurl =
         window.location.protocol +
         "//" +
@@ -170,7 +170,7 @@ const CreateTopic = () => {
             <i className="icon-topic"></i> Create New Topic
           </Button>
           <Button size="large" className={styles.btn}>
-            <i className="icon-camp"></i> Create New Camp 
+            <i className="icon-camp"></i> Create New Camp
           </Button>
         </div>
         <Collapse
