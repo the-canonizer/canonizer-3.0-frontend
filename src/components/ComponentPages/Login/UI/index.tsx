@@ -82,7 +82,9 @@ const LoginUi = ({
               Log in to Canonizer
             </Title>
             {errorMsg && (
-              <Text className={`${styles.errorMsgs}`}>{errorMsg}</Text>
+              <Text className={`${styles.errorMsgs}`} type="danger">
+                {errorMsg}
+              </Text>
             )}
             <Form
               form={form}

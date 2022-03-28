@@ -117,7 +117,7 @@ function RegistrationUi({
               <Form.Item
                 name="phone"
                 label={messages.labels.phone}
-                {...messages.phoneRule}
+                {...messages.phoneRule} className={styles.phoneInput}
               >
                 <Input
                   type="number"
