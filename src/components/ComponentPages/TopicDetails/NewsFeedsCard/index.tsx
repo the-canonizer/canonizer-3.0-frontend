@@ -6,6 +6,7 @@ import Router, { useRouter } from "next/router";
 const { Paragraph } = Typography;
 
 const NewsFeedsCard = ({ newsFeed, reqBody }) => {
+  const router = useRouter();
   console.log("req body in index -newsfeedcard-", reqBody);
   console.log("newsfeed data -newsfeedcard-", newsFeed);
   const newsMockResponse = [

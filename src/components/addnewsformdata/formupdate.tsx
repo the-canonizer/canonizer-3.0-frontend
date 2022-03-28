@@ -155,6 +155,7 @@ export default function FormDataupdate({ update }) {
         </Button>
         <Button
           htmlType="button"
+          onClick={() => router.back()}
           style={{
             margin: "0 8px",
           }}

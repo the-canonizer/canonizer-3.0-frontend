@@ -222,9 +222,11 @@ const TopicsList = () => {
             renderItem={(item: any) => (
               <List.Item className={styles.item}>
                 <>
+                  {console.log("rrrrrrrrrrrrrrrouutrer -=>", router.query)}
                   <Link
                     href={{
                       pathname: `/camp-details/${item?.topic_id}`,
+
                       query: {
                         ...router.query,
                         algorithm,

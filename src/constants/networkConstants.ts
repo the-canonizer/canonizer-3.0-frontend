@@ -43,7 +43,7 @@ const NetworkConstants = {
     // Tree
     GetTree: `${BaseCanonizerServiceUrl}/api/v1/tree/get`,
     GetNewsFeed: `${BaseCanonizerApiUrl}/get-camp-newsfeed`,
-    GetCampStatement: `${BaseCanonizerApiUrl}/get/camp-statement`,
+    GetCampStatement: `${BaseCanonizerApiUrl}/get-camp-statement`,
     GetSupportingTree: `${BaseCanonizerApiUrl}/get/supporting-tree`,
     // resend otp for registration
     ResendOTPForRegistration: `${BaseCanonizerApiUrl}/user/reSendOtp`,
