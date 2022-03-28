@@ -44,7 +44,6 @@ export default function FormDataupdate({ update }) {
         onFinishFailed={onFinishFailed}
         autoComplete="off"
         layout="vertical"
-        className="textarea-form"
       >
         <Form.List name="data">
           {(fields) => {
@@ -52,12 +51,12 @@ export default function FormDataupdate({ update }) {
               <>
                 {fields.map((field, index) => (
                   <>
-                    <Card className="inner-form">
+                    <Card className="inner-form" key={field.key}>
                       <div className="count-badge">
                         <Badge className="count-row-edit ">{field.key}</Badge>
                       </div>
                       <Row gutter={28}>
-                        <Col xl={14} md={24} xs={24}>
+                        <Col xl={14} md={24} xs={24} className="textarea-form">
                           <Form.Item
                             key={field.key}
                             name={[index, "display_text"]}
@@ -71,12 +70,12 @@ export default function FormDataupdate({ update }) {
                           >
                             <Input.TextArea
                               showCount
-                              maxLength={50}
+                              maxLength={256}
                               autoSize={{ minRows: 6, maxRows: 5 }}
                             />
                           </Form.Item>
                         </Col>
-                        <Col xl={10} md={24} xs={24}>
+                        <Col xl={10} md={24} xs={24} className="form-link">
                           <Form.Item
                             label="Link ( Limit 2000 chars )"
                             name={[index, "link"]}
@@ -92,7 +91,7 @@ export default function FormDataupdate({ update }) {
                               },
                             ]}
                           >
-                            <Input />
+                            <Input maxLength={2000} />
                           </Form.Item>
 
                           <Form.Item

@@ -10,14 +10,11 @@ export default function Home({ res }) {
   return (
     <>
       {res.data !== "error" && (
-        <Layout routeName={"update-news"}>
-          <aside className="leftSideBar miniSideBar">
-            <SideBar />
-          </aside>
+        <div>
           <div className="pageContentWrap">
             <FormDataupdate update={update} />
           </div>
-        </Layout>
+        </div>
       )}
       {res.data === "error" && (
         <Layout>
