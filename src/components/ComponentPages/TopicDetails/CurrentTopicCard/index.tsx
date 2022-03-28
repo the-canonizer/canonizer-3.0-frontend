@@ -9,10 +9,9 @@ const CurrentTopicCard = () => {
     topicRecord: state?.topicDetails?.currentTopicRecord,
   }));
   return (
-    <Card className="canCard mb-3"
-      title={
-        <h3>Current Topic Record</h3>
-      }
+    <Card
+      className="canCard mb-3"
+      title={<h3>Current Topic Record</h3>}
       actions={[
         <>
           <Button className="btn-green">Manage/Edit This Topic</Button>

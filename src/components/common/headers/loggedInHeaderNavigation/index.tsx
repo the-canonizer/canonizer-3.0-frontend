@@ -15,13 +15,13 @@ const LoggedInHeaderNavigation = () => {
     (state) => state.auth.loggedInUser
   );
 
-  const [loggedUser, setLoggedUser]=useState(loggedInUser);
+  const [loggedUser, setLoggedUser] = useState(loggedInUser);
   const router = useRouter();
   const [isActive, setActive] = useState(false);
   const toggleMobNav = () => {
     setActive(!isActive);
   };
-  
+
   const mockLinks = [
     {
       link: "/browse",
@@ -123,7 +123,7 @@ const LoggedInHeaderNavigation = () => {
                 <Space size="large">
                   <i className="icon-user"></i>{" "}
                   <div>
-                    {loggedUser ? loggedUser["first_name"]: ""}{" "}
+                    {loggedUser ? loggedUser["first_name"] : ""}{" "}
                     {loggedUser ? loggedUser["last_name"] : ""}
                   </div>
                 </Space>
@@ -147,7 +147,7 @@ const LoggedInHeaderNavigation = () => {
                         className="ant-dropdown-link"
                         onClick={(e) => e.preventDefault()}
                       >
-                        {loggedUser ? loggedUser["first_name"]: ""}{" "}
+                        {loggedUser ? loggedUser["first_name"] : ""}{" "}
                         {loggedUser ? loggedUser["last_name"] : ""}
                       </a>
                       <DownOutlined
