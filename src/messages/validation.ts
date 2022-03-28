@@ -46,6 +46,7 @@ export const validations: ErrorContainer = {
   confirmNewPasswordErr: "Confirm Password does not match.",
   nickName: "Please Enter Nick Name!",
   nickNameMax: "Maximum 50 character allowed!",
+  nickNameSpaceError: "Please Enter valid Nick Name!",
   firstNameSpace: "The first name should only contain alphabets and spaces.",
   lastNameSpace: "The first name should only contain alphabets and spaces.",
   alphaSpace: "The field must be in alphabets and space only.",
