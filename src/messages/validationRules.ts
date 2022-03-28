@@ -262,6 +262,14 @@ export const nickNameRule = {
       required: true,
       message: validations.nickName,
     },
+    ({ getFieldValue }) => ({
+      validator(_, value) {
+        if (!value || value.trim().length > 0) {
+          return Promise.resolve();
+        }
+        return Promise.reject(new Error(validations.nickNameSpaceError));
+      },
+    }),
     {
       max: 50,
       message: validations.nickNameMax,
