@@ -99,7 +99,6 @@ const CreateNewCamp = ({
         (c) => c.camp_num === changed.parent_camp_num
       );
       setCrCamp(currentCamp[0]);
-      console.log(`crCamp`, currentCamp, crCamp, changed, parentCamp);
     }
   };
 
