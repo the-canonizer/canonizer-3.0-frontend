@@ -2,17 +2,14 @@ import { Card, Typography, Button, Descriptions } from "antd";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 
-const { Paragraph, Title } = Typography;
-
 const CurrentTopicCard = () => {
   const { topicRecord } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
   }));
   return (
-    <Card className="canCard mb-3"
-      title={
-        <h3>Current Topic Record</h3>
-      }
+    <Card
+      className="canCard mb-3"
+      title={<h3>Current Topic Record</h3>}
       actions={[
         <>
           <Button className="btn-green">Manage/Edit This Topic</Button>
