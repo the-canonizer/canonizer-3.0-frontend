@@ -19,9 +19,12 @@ const NewsFeedsCard = ({ newsFeed }) => {
   ];
 
   return (
-    <Card className="canCard mb-3"
+    <Card
+      className="canCard mb-3"
       title={
-        <h3 className="heading-color"><i className={"icon-fi-document"} /> News Feeds</h3>
+        <h3 className="heading-color">
+          <i className={"icon-fi-document"} /> News Feeds
+        </h3>
       }
       extra={
         <>
