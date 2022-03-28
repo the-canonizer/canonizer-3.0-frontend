@@ -38,7 +38,6 @@ export const homePageSlice = createSlice({
       };
     },
     setFilterCanonizedTopics: (state, action) => {
-      debugger;
       state.filterObject = {
         ...state.filterObject,
         ...action.payload,

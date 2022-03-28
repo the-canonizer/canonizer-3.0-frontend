@@ -7,11 +7,13 @@ import {
   getNewsFeedApi,
   getTreesApi,
   getCanonizedCampSupportingTreeApi,
+  getCurrentTopicRecordApi,
+  getCurrentCampRecordApi,
 } from "src/network/api/campDetailApi";
 import { RootState } from "src/store";
 import SideBar from "../Home/SideBar";
 import CampStatementCard from "./CampStatementCard";
-import styles from "./campTree.module.scss";
+import styles from "./topicDetails.module.scss";
 import CampTreeCard from "./CampTreeCard";
 import CurrentCampCard from "./CurrentCampCard";
 import CurrentTopicCard from "./CurrentTopicCard";
@@ -22,12 +24,13 @@ const TopicDetails = () => {
   const didMount = useRef(false);
   let myRefToCampStatement = useRef(null);
   const router = useRouter();
-  const { asof, asofdate, algorithm, newsFeed } = useSelector(
+  const { asof, asofdate, algorithm, newsFeed, topicRecord } = useSelector(
     (state: RootState) => ({
       asofdate: state.homePage?.filterObject?.asofdate,
       algorithm: state.homePage?.filterObject?.algorithm,
       newsFeed: state?.topicDetails?.newsFeed,
       asof: state?.homePage?.filterObject?.asof,
+      topicRecord: state?.topicDetails?.currentTopicRecord,
     })
   );
   useEffect(() => {
@@ -37,7 +40,7 @@ const TopicDetails = () => {
           topic_num: 88,
           asofdate: 1644323333,
           algorithm: algorithm,
-          update_all: 0,
+          update_all: 1,
         };
         await getTreesApi(reqBody);
       } else didMount.current = true;
@@ -48,8 +51,10 @@ const TopicDetails = () => {
   const reqBody = { topic_num: 45, camp_num: 1 };
   useEffect(() => {
     const campStatementReq = {
-      topic_num: +router.query.camp,
-      camp_num: "1",
+      topic_num: 45,
+      camp_num: 1,
+      // topic_num: +router.query.camp,
+      // camp_num: "1",
       as_of: asof,
       as_of_date: asofdate,
     };
@@ -82,32 +87,36 @@ const TopicDetails = () => {
     };
     await getNewsFeedApi(req);
     await getCanonizedCampStatementApi(campStatementReq);
+    await getCurrentTopicRecordApi(req);
+    await getCurrentCampRecordApi(req);
   };
 
   return (
     <>
-      <div className={styles.breadcrumbWrapper}>
-        <Typography.Paragraph className={"mb-0 " + styles.topicTitleStyle}>
-          {" "}
-          <span className="bold"> Topic : </span> Theories of Consciousness{" "}
-        </Typography.Paragraph>
-        <div className={styles.breadcrumbLinks}>
-          {" "}
-          <span className="bold mr-1"> Camp : </span>
-          <Breadcrumb>
-            <Breadcrumb.Item>
-              <a href=""> Agreement </a>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>
-              <a href=""> Approachable Via Science </a>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>
-              <a href=""> Representational Qualia </a>
-            </Breadcrumb.Item>
-          </Breadcrumb>
+      <div className={styles.topicDetailContentWrap}>
+        <div className={styles.breadcrumbWrapper}>
+          <Typography.Paragraph className={"mb-0 " + styles.topicTitleStyle}>
+            {" "}
+            <span className="bold"> Topic: </span>
+            {topicRecord?.length && topicRecord[0]?.topic_name}
+          </Typography.Paragraph>
+          <div className={styles.breadcrumbLinks}>
+            {" "}
+            <span className="bold mr-1"> Camp : </span>
+            <Breadcrumb>
+              <Breadcrumb.Item>
+                <a href=""> Agreement </a>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>
+                <a href=""> Approachable Via Science </a>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>
+                <a href=""> Representational Qualia </a>
+              </Breadcrumb.Item>
+            </Breadcrumb>
+          </div>
         </div>
-      </div>
-      <div className="pageWrapper">
+
         <aside className="leftSideBar miniSideBar">
           <SideBar />
         </aside>
