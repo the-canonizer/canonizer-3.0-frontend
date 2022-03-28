@@ -34,7 +34,7 @@ export default class NetworkCall {
         UserRequest.logoutCall("User unauthorized");
       }
 
-      if ("errors" in error.data)
+      if (typeof error.data === "object" && "errors" in error.data)
         error.data.errors = camelCaseKeys(error.data.errors);
       return Promise.reject({
         error: error,
