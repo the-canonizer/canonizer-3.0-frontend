@@ -11,8 +11,8 @@ import { MenuOutlined, CloseOutlined, DownOutlined } from "@ant-design/icons";
 
 const { Header } = Layout;
 const LoggedInHeaderNavigation = () => {
-  const loggedInUser = useSelector<RootState>(
-    (state) => state.auth.loggedInUser
+  const loggedInUser = useSelector(
+    (state: RootState) => state.auth.loggedInUser
   );
 
   const router = useRouter();

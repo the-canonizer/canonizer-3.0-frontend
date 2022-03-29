@@ -10,7 +10,9 @@ import {
   removeAuthToken,
   setLoggedInUser,
   logoutUser,
+  setSocialUsers,
 } from "../../store/slices/authSlice";
+import { showMultiUserModal } from "../../store/slices/uiSlice";
 import NetworkCall from "../networkCall";
 import UserRequest from "../request/userRequest";
 import { store } from "../../store";
@@ -479,6 +481,61 @@ export const userSocialAccountDelete = async (id: string) => {
   try {
     const res = await NetworkCall.fetch(
       UserRequest.userSocialAccountDelete(state.auth.token, id)
+    );
+
+    return res;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const socialLoginLinkUser = async (values: object) => {
+  const state = store.getState();
+
+  try {
+    let token = state.auth.token;
+
+    const res = await NetworkCall.fetch(
+      UserRequest.SocialLinkUser(values, token)
+    );
+
+    return res;
+  } catch (error) {
+    if (
+      error &&
+      error.error &&
+      error.error.data &&
+      error.error.data.status_code === 403
+    ) {
+      const data = error.error.data;
+
+      const users = [
+        data.data.already_link_user,
+        {
+          ...data.data.current_user,
+          social_email: data.data.current_user.email,
+          social_name:
+            data.data.current_user.first_name +
+            " " +
+            data.data.current_user.last_name,
+        },
+      ];
+
+      store.dispatch(setSocialUsers(users));
+      store.dispatch(showMultiUserModal());
+
+      return data;
+    }
+    handleError(error);
+  }
+};
+
+export const deactivateUser = async (body: object) => {
+  const state = store.getState();
+
+  try {
+    const res = await NetworkCall.fetch(
+      UserRequest.UserDeactivate(body, state.auth.token)
     );
 
     return res;

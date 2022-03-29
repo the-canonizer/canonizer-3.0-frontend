@@ -1,42 +1,39 @@
-import { Form } from "antd";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment } from "react";
+import { message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
 
 import { RootState } from "../../../store";
 import { hideMultiUserModal } from "../../../store/slices/uiSlice";
+import { removeSocialUsers } from "../../../store/slices/authSlice";
 import MultiUserModalForm from "./multipleAccountsUI";
+import { deactivateUser } from "../../../network/api/userApi";
 
 const MultiUserModal = () => {
-  const [users, setUsers] = useState([]);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const visible = useSelector(
     (state: RootState) => state.ui.multipleUserModalVisible
   );
 
-  const [modalForm] = Form.useForm();
-
-  useEffect(() => {
-    const usersD = [
-      {
-        id: 1,
-        name: "User One",
-      },
-      {
-        id: 2,
-        name: "User Two",
-      },
-    ];
-    setUsers(usersD);
-  }, []);
+  const users = useSelector((state: RootState) => state.auth.socialUsers || []);
 
   const closeModal = () => dispatch(hideMultiUserModal());
+  const removeUsers = () => dispatch(removeSocialUsers());
 
-  const onFinish = (v: any) => {
-    console.log("Values", v);
+  const onFinish = async (v: any, f: any) => {
+    const body = { user_id: v.selected_user };
+
+    const res = await deactivateUser(body);
+
+    if (res && res.status_code === 200) {
+      message.success(res.message);
+      closeModal();
+      removeUsers();
+      router.push("/settings?tab=social");
+    }
   };
-
-  console.log("modal status ff", visible);
 
   return (
     <Fragment>
@@ -45,7 +42,6 @@ const MultiUserModal = () => {
         onFinish={onFinish}
         closeModal={closeModal}
         users={users}
-        modalForm={modalForm}
       />
     </Fragment>
   );

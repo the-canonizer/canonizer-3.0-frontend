@@ -1,6 +1,5 @@
 import { message } from "antd";
 import { Fragment, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import Image from "next/image";
 import {
   FacebookFilled,
@@ -18,16 +17,9 @@ import {
 } from "../../../network/api/userApi";
 import IconWrapper from "./iconWrapper";
 import MultiUserModal from "./multipleAccounts";
-import { showMultiUserModal } from "../../../store/slices/uiSlice";
-import { useRouter } from "next/router";
 
 function SocialAuthVerification() {
   const [socialLinks, setSocialLinks] = useState({});
-
-  const dispatch = useDispatch();
-  const router = useRouter();
-
-  const openModal = () => dispatch(showMultiUserModal());
 
   const fetchList = async () => {
     const res = await userSocialAccountsList();
@@ -67,14 +59,6 @@ function SocialAuthVerification() {
       fetchList();
     }
   };
-
-  useEffect(() => {
-    const query = router.query;
-    if (query.status === "403") {
-      openModal();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.query]);
 
   return (
     <Fragment>
