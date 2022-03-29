@@ -34,7 +34,7 @@ export const validations: ErrorContainer = {
   passwordPattern:
     "Password must be contain small, capital letter, number and special character like Abc@1234.",
   confirmPassword: "Please confirm your password!",
-  confirmPasswordErr: "The two passwords that you entered do not match!",
+  confirmPasswordErr: "Confirm Password does not match!",
   otp: "Please input your OTP!",
   otpLength: "OTP should be min/max 6 characters long!",
   phoneNumber: "Please Enter Phone Number!",
