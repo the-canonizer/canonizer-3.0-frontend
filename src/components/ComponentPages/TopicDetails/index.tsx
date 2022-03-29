@@ -1,4 +1,4 @@
-import { Typography, Breadcrumb, Button } from "antd";
+import { Typography, Breadcrumb } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
@@ -146,13 +146,7 @@ const TopicDetails = () => {
           <SupportTreeCard
             handleLoadMoreSupporters={handleLoadMoreSupporters}
           />
-          {/* <Button
-            onClick={() => {
-              scrollToTop();
-            }}
-          >
-            Scroll to top
-          </Button> */}
+
           <BackTop />
         </div>
       </div>
