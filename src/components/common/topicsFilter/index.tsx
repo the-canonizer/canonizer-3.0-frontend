@@ -166,7 +166,11 @@ const CreateTopic = () => {
     <>
       <div className={styles.card}>
         <div className={styles.btnsWrap}>
-          <Button size="large" className={"mb-3 " + styles.btn} onClick={campRoute}>
+          <Button
+            size="large"
+            className={"mb-3 " + styles.btn}
+            onClick={campRoute}
+          >
             <i className="icon-topic"></i> Create New Topic
           </Button>
           <Button size="large" className={styles.btn}>

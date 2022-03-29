@@ -9,14 +9,10 @@ const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
   return (
     <Card
       className={"ctCard canCard mb-3 " + styles.ctCard}
-      title={
-        <h3>Canonizer Sorted Camp Tree</h3>
-      }
+      title={<h3>Canonizer Sorted Camp Tree</h3>}
       extra={
         <>
-          <Checkbox>
-            Subscribe
-          </Checkbox>
+          <Checkbox>Subscribe</Checkbox>
           <Link href="#">
             <i className="icon-fi-document"></i> Add News
           </Link>

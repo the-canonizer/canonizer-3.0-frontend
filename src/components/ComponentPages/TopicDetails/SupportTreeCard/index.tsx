@@ -10,13 +10,10 @@ const SupportTreeCard = ({ handleLoadMoreSupporters }) => {
     campSupportingTree: state?.topicDetails?.campSupportingTree,
   }));
   return (
-    <Card className="canCard"
-      title={
-        <h3>Support Tree for &quot;Agreement&quot; Camp</h3>
-      }
-      extra={
-        <i className="icon-info tooltip-icon-style"></i>
-      }
+    <Card
+      className="canCard"
+      title={<h3>Support Tree for &quot;Agreement&quot; Camp</h3>}
+      extra={<i className="icon-info tooltip-icon-style"></i>}
       actions={[
         <>
           <Button className="btn-orange">

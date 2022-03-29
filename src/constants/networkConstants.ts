@@ -66,6 +66,9 @@ const NetworkConstants = {
     GetAllParents: `${BaseCanonizerApiUrl}/camp/allParent`,
     GetCampNickNames: `${BaseCanonizerApiUrl}/camp/allAboutNickName`,
 
+    GetSocialLinkedAccounts: `${BaseCanonizerApiUrl}/user/social/list`,
+    DeleteSocialLinkedAccount: `${BaseCanonizerApiUrl}/user/social/delete`,
+
     //footer
 
     GetFooterSocialLinks: `${BaseCanonizerApiUrl}/get-social-media-links`,
@@ -74,6 +77,7 @@ const NetworkConstants = {
     GET: "GET",
     POST: "POST",
     PUT: "PUT",
+    DELETE: "DELETE",
   },
   Header: {
     ContentType: "Content-Type",

@@ -360,4 +360,26 @@ export default class UserRequest extends Request {
       authToken
     );
   }
+
+  static userSocialAccountsList(token) {
+    return new Request(
+      K.Network.URL.GetSocialLinkedAccounts,
+      K.Network.Method.GET,
+      null,
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
+
+  static userSocialAccountDelete(token, id) {
+    return new Request(
+      K.Network.URL.DeleteSocialLinkedAccount + "/" + id,
+      K.Network.Method.DELETE,
+      null,
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
 }
