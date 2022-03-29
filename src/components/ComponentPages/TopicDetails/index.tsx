@@ -1,4 +1,4 @@
-import { Typography, Breadcrumb } from "antd";
+import { Typography, Breadcrumb, Button } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
@@ -19,6 +19,8 @@ import CurrentCampCard from "./CurrentCampCard";
 import CurrentTopicCard from "./CurrentTopicCard";
 import NewsFeedsCard from "./NewsFeedsCard";
 import SupportTreeCard from "./SupportTreeCard";
+
+import { BackTop } from "antd";
 
 const TopicDetails = () => {
   const didMount = useRef(false);
@@ -48,6 +50,13 @@ const TopicDetails = () => {
     getTreeApiCall();
   }, [asofdate, algorithm]);
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // for smoothly scrolling
+    });
+  };
+
   const reqBody = { topic_num: 45, camp_num: 1 };
   useEffect(() => {
     const campStatementReq = {
@@ -59,9 +68,11 @@ const TopicDetails = () => {
       as_of_date: asofdate,
     };
     async function getNewsFeedAndCampStatementApiCall() {
-      await getNewsFeedApi(reqBody);
-      await getCanonizedCampStatementApi(campStatementReq);
-      await getCanonizedCampSupportingTreeApi(reqBody);
+      await Promise.all([
+        getNewsFeedApi(reqBody),
+        getCanonizedCampStatementApi(campStatementReq),
+        getCanonizedCampSupportingTreeApi(reqBody),
+      ]);
     }
     getNewsFeedAndCampStatementApiCall();
   }, []);
@@ -79,16 +90,18 @@ const TopicDetails = () => {
       topic_num: +router.query.camp,
       camp_num: nodeKey,
     };
-    const campStatementReq = {
+    const campReq = {
       topic_num: +router.query.camp,
       camp_num: nodeKey,
       as_of: asof,
       as_of_date: asofdate,
     };
-    await getNewsFeedApi(req);
-    await getCanonizedCampStatementApi(campStatementReq);
-    await getCurrentTopicRecordApi(req);
-    await getCurrentCampRecordApi(req);
+    await Promise.all([
+      getNewsFeedApi(req),
+      getCanonizedCampStatementApi(campReq),
+      getCurrentTopicRecordApi(campReq),
+      getCurrentCampRecordApi(campReq),
+    ]);
   };
 
   return (
@@ -133,6 +146,14 @@ const TopicDetails = () => {
           <SupportTreeCard
             handleLoadMoreSupporters={handleLoadMoreSupporters}
           />
+          {/* <Button
+            onClick={() => {
+              scrollToTop();
+            }}
+          >
+            Scroll to top
+          </Button> */}
+          <BackTop />
         </div>
       </div>
     </>

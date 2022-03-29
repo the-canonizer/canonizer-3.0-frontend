@@ -33,7 +33,7 @@ export const getCanonizedNameSpacesApi = async () => {
     store.dispatch(setCanonizedNameSpaces(nameSpaces));
     return nameSpaces;
   } catch (error) {
-    message.error(error.message);
+    // message.error(error.message);
   }
 };
 
@@ -64,7 +64,7 @@ export const getRecentActivitiesApi = async (reqBody) => {
 
     return mockData;
   } catch (error) {
-    message.error(error.message);
+    // message.error(error.message);
   }
 };
 
@@ -76,7 +76,7 @@ export const getCanonizedAlgorithmsApi = async () => {
     store.dispatch(setCanonizedTopics(algorithms));
     return algorithms;
   } catch (error) {
-    message.error(error.message);
+    // message.error(error.message);
   }
 };
 
@@ -87,6 +87,6 @@ export const getCanonizedWhatsNewContentApi = async () => {
     );
     return whatsNew?.data;
   } catch (error) {
-    message.error(error.message);
+    // message.error(error.message);
   }
 };
