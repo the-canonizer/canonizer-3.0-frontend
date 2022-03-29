@@ -509,17 +509,7 @@ export const socialLoginLinkUser = async (values: object) => {
     ) {
       const data = error.error.data;
 
-      const users = [
-        data.data.already_link_user,
-        {
-          ...data.data.current_user,
-          social_email: data.data.current_user.email,
-          social_name:
-            data.data.current_user.first_name +
-            " " +
-            data.data.current_user.last_name,
-        },
-      ];
+      const users = [data.data.already_link_user];
 
       store.dispatch(setSocialUsers(users));
       store.dispatch(showMultiUserModal());

@@ -1,4 +1,4 @@
-import { Button, Modal, Typography, Form, Radio } from "antd";
+import { Button, Modal, Typography, Form, Radio, Space } from "antd";
 import { Fragment } from "react";
 
 import styles from "./Social.module.scss";
@@ -66,15 +66,25 @@ const MultiUserModalForm = ({ visible, onFinish, closeModal, users }) => {
           </Form.Item>
           <Form.Item
             name="selected_user"
-            label={labels.multiUser}
             rules={[{ required: true, message: "Please select user!" }]}
           >
-            <Radio.Group>
-              {users.map((user) => (
-                <Radio.Button value={user.id} key={user.id}>
-                  {user.social_name}
-                </Radio.Button>
-              ))}
+            <Radio.Group
+              onChange={() => {
+                form
+                  .validateFields()
+                  .then((values) => {
+                    onFinish.bind(this, values, form);
+                  })
+                  .catch(() => {});
+              }}
+            >
+              <Space direction="vertical">
+                {users.map((user) => (
+                  <Radio value={user.user_id} key={user.id}>
+                    {user.social_name}
+                  </Radio>
+                ))}
+              </Space>
             </Radio.Group>
           </Form.Item>
           <Form.Item>
