@@ -45,6 +45,8 @@ const NetworkConstants = {
     GetNewsFeed: `${BaseCanonizerApiUrl}/get-camp-newsfeed`,
     GetCampStatement: `${BaseCanonizerApiUrl}/get-camp-statement`,
     GetSupportingTree: `${BaseCanonizerApiUrl}/get/supporting-tree`,
+    GetCurrentTopicRecord: `${BaseCanonizerApiUrl}/get-topic-record`,
+    GetCurrentCampRecord: `${BaseCanonizerApiUrl}/get-camp-record`,
     // resend otp for registration
     ResendOTPForRegistration: `${BaseCanonizerApiUrl}/user/reSendOtp`,
 
@@ -64,6 +66,9 @@ const NetworkConstants = {
     GetAllParents: `${BaseCanonizerApiUrl}/camp/allParent`,
     GetCampNickNames: `${BaseCanonizerApiUrl}/camp/allAboutNickName`,
 
+    GetSocialLinkedAccounts: `${BaseCanonizerApiUrl}/user/social/list`,
+    DeleteSocialLinkedAccount: `${BaseCanonizerApiUrl}/user/social/delete`,
+
     //footer
 
     GetFooterSocialLinks: `${BaseCanonizerApiUrl}/get-social-media-links`,
@@ -81,6 +86,7 @@ const NetworkConstants = {
     GET: "GET",
     POST: "POST",
     PUT: "PUT",
+    DELETE: "DELETE",
   },
   Header: {
     ContentType: "Content-Type",

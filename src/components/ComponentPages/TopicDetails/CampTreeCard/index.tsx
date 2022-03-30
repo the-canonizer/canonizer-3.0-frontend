@@ -1,35 +1,23 @@
 import { Card, Checkbox, Typography } from "antd";
-import styles from "../campTree.module.scss";
 import CampTree from "../CampTree";
 import Link from "next/link";
 
-const CampTreeCard = ({ scrollToCampStatement, getSelectedNode, reqBody }) => {
+import styles from "../topicDetails.module.scss";
+
+const { Link } = Typography;
+
+const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
   return (
     <Card
-      className={"ctCard canCard " + styles.ctCard}
-      title={
-        <div className="cardHeader">
-          <h3 className={"mb-0 " + styles.campTreeHeading}>
-            Canonizer Sorted Camp Tree
-          </h3>{" "}
-        </div>
-      }
+      className={"ctCard canCard mb-3 " + styles.ctCard}
+      title={<h3>Canonizer Sorted Camp Tree</h3>}
       extra={
-        <div className="cardActions">
-          <Checkbox className={"chexkboxLabel " + styles.chexkboxLabel}>
-            Subscribe
-          </Checkbox>
-          <Link
-            href={{
-              pathname: "/addnews",
-              query: reqBody,
-            }}
-          >
-            <a className={styles.addNew}>
-              <i className={"icon-fi-document " + styles.iconMr} /> Add News
-            </a>
+        <>
+          <Checkbox>Subscribe</Checkbox>
+          <Link href="#">
+            <i className="icon-fi-document"></i> Add News
           </Link>
-        </div>
+        </>
       }
     >
       <CampTree

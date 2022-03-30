@@ -12,22 +12,14 @@ const SupportTreeCard = ({ handleLoadMoreSupporters }) => {
   return (
     <Card
       className="canCard"
-      title={
-        <div className="cardHeader">
-          <h3>Support Tree for &quot;Agreement&quot; Camp</h3>
-        </div>
-      }
-      extra={
-        <div className="cardActions">
-          <i className="icon-info tooltip-icon-style"></i>
-        </div>
-      }
+      title={<h3>Support Tree for &quot;Agreement&quot; Camp</h3>}
+      extra={<i className="icon-info tooltip-icon-style"></i>}
       actions={[
-        <div className="card-actions-wrapper" key="1">
-          <Button className="support-btn-style">
+        <>
+          <Button className="btn-orange">
             Directly Join or Manage Support
           </Button>
-        </div>,
+        </>,
       ]}
     >
       <Paragraph>

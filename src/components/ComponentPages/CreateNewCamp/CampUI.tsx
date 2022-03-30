@@ -28,6 +28,8 @@ const CreateNewCampUI = ({
   nickNameList,
   parentCamp,
   campNickName,
+  onValuesChange,
+  crCamp,
 }) => {
   const CardTitle = (
     <span className={styles.cardTitle} data-testid="head">
@@ -42,7 +44,7 @@ const CreateNewCampUI = ({
           <strong>Topic:</strong> {topicData?.topic_name}
         </p>
         <p>
-          <strong>Camp:</strong> {topicData?.camp_name || "Agreement"}
+          <strong>Camp:</strong> {crCamp.camp_name || topicData?.camp_name}
         </p>
       </div>
       <div className="d-flex">
@@ -62,6 +64,7 @@ const CreateNewCampUI = ({
                 scrollToFirstError
                 validateTrigger={messages.formValidationTypes()}
                 initialValues={{ ...initialValue }}
+                onValuesChange={onValuesChange}
               >
                 <Row gutter={16}>
                   <Col xs={24} sm={12}>
@@ -105,7 +108,9 @@ const CreateNewCampUI = ({
                         label={labels.cr_parent_camp}
                         name="parent_camp_num"
                         {...parentCampRule}
-                        initialValue={topicData?.parent_camp_num || 1}
+                        initialValue={
+                          crCamp.camp_num || topicData?.parent_camp_num
+                        }
                       >
                         <Select
                           allowClear

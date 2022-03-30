@@ -5,7 +5,7 @@ import Link from "next/link";
 import { logout } from "../../../../network/api/userApi";
 import { RootState } from "../../../../store";
 import styles from "../siteHeader.module.scss";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Logo from "../logoHeader";
 import { MenuOutlined, CloseOutlined, DownOutlined } from "@ant-design/icons";
 
@@ -15,6 +15,7 @@ const LoggedInHeaderNavigation = () => {
     (state) => state.auth.loggedInUser
   );
 
+  const [loggedUser, setLoggedUser] = useState(loggedInUser);
   const router = useRouter();
   const [isActive, setActive] = useState(false);
   const toggleMobNav = () => {
@@ -83,6 +84,11 @@ const LoggedInHeaderNavigation = () => {
       <Menu.Item key="3">Log Out</Menu.Item>
     </Menu>
   );
+
+  useEffect(() => {
+    setLoggedUser(loggedInUser);
+  }, [loggedInUser]);
+
   return (
     <>
       <React.Fragment>
@@ -117,8 +123,8 @@ const LoggedInHeaderNavigation = () => {
                 <Space size="large">
                   <i className="icon-user"></i>{" "}
                   <div>
-                    {loggedInUser ? loggedInUser["first_name"] : ""}{" "}
-                    {loggedInUser ? loggedInUser["last_name"] : ""}
+                    {loggedUser ? loggedUser["first_name"] : ""}{" "}
+                    {loggedUser ? loggedUser["last_name"] : ""}
                   </div>
                 </Space>
               </div>
@@ -141,16 +147,8 @@ const LoggedInHeaderNavigation = () => {
                         className="ant-dropdown-link"
                         onClick={(e) => e.preventDefault()}
                       >
-                        {loggedInUser ? loggedInUser["first_name"] : ""}{" "}
-                        {loggedInUser
-                          ? console.log(
-                              loggedInUser,
-                              loggedInUser["first_name"],
-                              loggedInUser["last_name"],
-                              "logs"
-                            )
-                          : "console"}
-                        {loggedInUser ? loggedInUser["last_name"] : ""}
+                        {loggedUser ? loggedUser["first_name"] : ""}{" "}
+                        {loggedUser ? loggedUser["last_name"] : ""}
                       </a>
                       <DownOutlined
                         style={{

@@ -1,7 +1,5 @@
 import { Card, Typography } from "antd";
 import Link from "next/link";
-import styles from "../campTree.module.scss";
-import Router, { useRouter } from "next/router";
 
 const { Paragraph } = Typography;
 
@@ -25,43 +23,22 @@ const NewsFeedsCard = ({ newsFeed, reqBody }) => {
 
   return (
     <Card
-      className="canCard"
+      className="canCard mb-3"
       title={
-        <div className="cardHeader">
-          {" "}
-          <h3 className="heading-color">
-            <i className={"icon-fi-document " + styles.iconMr} />
-            News Feeds
-          </h3>
-        </div>
+        <h3 className="heading-color">
+          <i className={"icon-fi-document"} /> News Feeds
+        </h3>
       }
       extra={
-        <div className="cardActions">
+        <>
           {" "}
-          {/* <a
-            onClick={() =>
-              Router.push({
-                pathname: "/updatenews/${}",
-                query: reqBody,
-              })
-            }
-          >
-            <i className={"icon-edit " + styles.iconMr}></i>Edit News
-          </a> */}
-          <Link
-            href={{
-              pathname: "/updatenews/",
-              query: reqBody,
-            }}
-          >
-            <a>
-              <i className={"icon-edit " + styles.iconMr}></i>Edit News
-            </a>
-          </Link>{" "}
           <a>
-            <i className={"icon-delete " + styles.iconMr}></i>Delete News
+            <i className={"icon-edit"}></i>Edit News
+          </a>{" "}
+          <a>
+            <i className={"icon-delete"}></i>Delete News
           </a>
-        </div>
+        </>
       }
     >
       {newsFeed?.map((news) => {

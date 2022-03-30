@@ -1,32 +1,39 @@
 import { Card, Typography, Button } from "antd";
-import styles from "../campTree.module.scss";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
+import styles from "../topicDetails.module.scss";
 
 const { Paragraph, Title } = Typography;
 
 const CampStatementCard = ({ myRefToCampStatement }) => {
+  const { campStatement } = useSelector((state: RootState) => ({
+    campStatement: state?.topicDetails?.campStatement,
+  }));
   return (
     <Card
-      className="canCard"
+      className="canCard mb-3"
       title={
-        <div className="cardHeader" ref={myRefToCampStatement}>
-          {" "}
+        <div ref={myRefToCampStatement}>
           <h3>Camp Statement</h3>
         </div>
       }
       extra={
         <div className="cardActions">
-          {" "}
-          <span className="bold">Go live Time </span>: 5/27/2020, 8:04:24 AM{" "}
+          <span className="bold">Go live Time </span>:{" "}
+          {campStatement?.length && campStatement[0]?.go_live_time}
         </div>
       }
       actions={[
-        <div className="card-actions-wrapper" key="key1">
-          <Button className="edit-btn-style">Manage/Edit Camp Statement</Button>
-          <Button className="camp-btn-style">Camp Forum</Button>
-        </div>,
+        <>
+          <Button className="btn-green">Manage/Edit Camp Statement</Button>
+          <Button className="btn-blue">Camp Forum</Button>
+        </>,
       ]}
     >
-      <Title level={2} className={styles.cardHeading}>
+      <Paragraph>{campStatement?.length && campStatement[0]?.value}</Paragraph>
+      {/* Will remove the below commented code once the api is integrated completed */}
+
+      {/* <Title level={2} className={styles.cardHeading}>
         Theories of Mind and Consciousness
       </Title>
       <Paragraph>
@@ -52,7 +59,7 @@ const CampStatementCard = ({ myRefToCampStatement }) => {
 
       <Paragraph>
         This topic is part of the <a>Consciousness Consensus Project.</a>
-      </Paragraph>
+      </Paragraph>*/}
     </Card>
   );
 };

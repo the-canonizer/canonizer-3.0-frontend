@@ -27,6 +27,7 @@ const CreateNewCamp = ({
   const [initialValue, setInitialValues] = useState(initialValues);
   const [parentCamp, setParentCamps] = useState(parentCamps);
   const [campNickName, setCampNickName] = useState(campNickNames);
+  const [crCamp, setCrCamp] = useState({});
 
   const router = useRouter();
   const [form] = Form.useForm();
@@ -92,6 +93,15 @@ const CreateNewCamp = ({
     router.push("/");
   };
 
+  const onValuesChange = (changed, all) => {
+    if (changed.parent_camp_num) {
+      const currentCamp = parentCamp.filter(
+        (c) => c.camp_num === changed.parent_camp_num
+      );
+      setCrCamp(currentCamp[0]);
+    }
+  };
+
   return (
     <Fragment>
       <CreateNewCampUI
@@ -103,6 +113,8 @@ const CreateNewCamp = ({
         nickNameList={nickNameList}
         parentCamp={parentCamp}
         campNickName={campNickName}
+        onValuesChange={onValuesChange}
+        crCamp={crCamp}
       />
     </Fragment>
   );
