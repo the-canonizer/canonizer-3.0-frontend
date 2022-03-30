@@ -38,7 +38,7 @@ export const validations: ErrorContainer = {
   otp: "Please input your OTP!",
   otpLength: "OTP should be min/max 6 characters long!",
   phoneNumber: "Please Enter Phone Number!",
-  mobileCarrier: "Please Enter Mobile Carrier!",
+  mobileCarrier: "Please Select Mobile Carrier!",
   dob: "Please select DOB!",
   currentpassword: "Please enter current password!",
   newPassword: "Please enter new password!",

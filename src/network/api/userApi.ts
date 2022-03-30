@@ -240,6 +240,17 @@ export const UpdateUserProfileInfo = async (values: object) => {
     UserRequest.UpdateUserProfileInfo(values, auth.loggedInUser.token)
   )
     .then((value) => {
+      let payload = {
+        ...state.auth.loggedInUser,
+        first_name: value.data.first_name,
+        last_name: value.data.last_name,
+        phone_number: value.data.phone_number,
+        birthday: value.data.birthday,
+        email: value.data.email,
+        token: auth.loggedInUser.token,
+        refresh_token: auth.loggedInUser.refresh_token,
+      };
+      store.dispatch(setLoggedInUser(payload));
       return value;
     })
     .catch((errors) => {
