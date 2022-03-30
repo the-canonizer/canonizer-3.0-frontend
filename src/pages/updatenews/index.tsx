@@ -11,9 +11,9 @@ export default function Home({ res }) {
     <>
       {res.data !== "error" && (
         <Layout routeName={"edit-news"}>
-          <aside className="leftSideBar miniSideBar">
+          {/* <aside className="leftSideBar miniSideBar">
             <SideBar />
-          </aside>
+          </aside> */}
           <div className="pageContentWrap">
             <FormDataupdate update={update} />
           </div>

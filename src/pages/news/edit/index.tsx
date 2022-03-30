@@ -1,7 +1,7 @@
-import FormDataupdate from "../../components/addnewsformdata/formupdate";
-import Layout from "../../hoc/layout";
-import SideBar from "../../components/ComponentPages/Home/SideBar";
-import { editNewsFeedApi } from "../../network/api/addupdateNewsApi";
+import FormDataupdate from "../../../components/addnewsformdata/formupdate";
+import Layout from "../../../hoc/layout";
+import SideBar from "../../../components/ComponentPages/Home/SideBar";
+import { editNewsFeedApi } from "../../../network/api/addupdateNewsApi";
 import React, { useState } from "react";
 export default function Home({ res }) {
   console.log("updatenews.js page data 1=> ", res.data);
@@ -10,11 +10,14 @@ export default function Home({ res }) {
   return (
     <>
       {res.data !== "error" && (
-        <div>
+        <Layout routeName={"edit-news"}>
+          {/* <aside className="leftSideBar miniSideBar">
+            <SideBar />
+          </aside> */}
           <div className="pageContentWrap">
             <FormDataupdate update={update} />
           </div>
-        </div>
+        </Layout>
       )}
       {res.data === "error" && (
         <Layout>

@@ -1,7 +1,7 @@
-import FormData from "../../components/addnewsformdata/formadd";
+import FormData from "../../../components/addnewsformdata/formadd";
 
-import SideBar from "../../components/ComponentPages/Home/SideBar";
-import Layout from "../../hoc/layout";
+import SideBar from "../../../components/ComponentPages/Home/SideBar";
+import Layout from "../../../hoc/layout";
 export default function Home() {
   return (
     <>

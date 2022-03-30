@@ -4,9 +4,7 @@ import Link from "next/link";
 
 import styles from "../topicDetails.module.scss";
 
-const { Link } = Typography;
-
-const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
+const CampTreeCard = ({ scrollToCampStatement, getSelectedNode, reqBody }) => {
   return (
     <Card
       className={"ctCard canCard mb-3 " + styles.ctCard}
@@ -14,8 +12,15 @@ const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
       extra={
         <>
           <Checkbox>Subscribe</Checkbox>
-          <Link href="#">
-            <i className="icon-fi-document"></i> Add News
+          <Link
+            href={{
+              pathname: "/news/add",
+              query: reqBody,
+            }}
+          >
+            <a className={styles.addNew}>
+              <i className={"icon-fi-document " + styles.iconMr} /> Add News
+            </a>
           </Link>
         </>
       }

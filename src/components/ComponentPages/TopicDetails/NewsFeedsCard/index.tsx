@@ -1,6 +1,6 @@
 import { Card, Typography } from "antd";
 import Link from "next/link";
-
+import Router, { useRouter } from "next/router";
 const { Paragraph } = Typography;
 
 const NewsFeedsCard = ({ newsFeed, reqBody }) => {
@@ -32,9 +32,19 @@ const NewsFeedsCard = ({ newsFeed, reqBody }) => {
       extra={
         <>
           {" "}
-          <a>
+          {/* <a>
             <i className={"icon-edit"}></i>Edit News
-          </a>{" "}
+          </a>{" "} */}
+          <Link
+            href={{
+              pathname: "/news/edit",
+              query: reqBody,
+            }}
+          >
+            <a>
+              <i className={"icon-edit "}></i>Edit News
+            </a>
+          </Link>{" "}
           <a>
             <i className={"icon-delete"}></i>Delete News
           </a>

@@ -17,7 +17,7 @@ export default function FormData() {
     // const a = await addNewsRequestApi(values);
     // console.log("data obj of all in main addnews  => ", a);
     console.log("go back");
-    router.push("/camp-details");
+    router.back();
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -104,7 +104,6 @@ export default function FormData() {
           </Button>
         </Form.Item>
       </Form>
-      <Button onClick={goBack}>gggggggggggo back</Button>
     </Card>
   );
 }

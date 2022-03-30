@@ -10,7 +10,6 @@ import {
   getCurrentTopicRecordApi,
   getCurrentCampRecordApi,
 } from "src/network/api/campDetailApi";
-
 import { editNewsFeedApi } from "src/network/api/addupdateNewsApi";
 import { RootState } from "src/store";
 import SideBar from "../Home/SideBar";
@@ -29,6 +28,8 @@ const TopicDetails = () => {
     topic_num: 45,
     camp_num: 1,
   });
+
+  console.log("reqin /comp/compPage/topicdetail/ind =====> ", requestBody);
   const router = useRouter();
   const { asof, asofdate, algorithm, newsFeed, topicRecord } = useSelector(
     (state: RootState) => ({
@@ -39,9 +40,6 @@ const TopicDetails = () => {
       topicRecord: state?.topicDetails?.currentTopicRecord,
     })
   );
-
-  console.log("newfeed=", newsFeed);
-  console.log("reqdata =====> ", requestBody);
   useEffect(() => {
     async function getTreeApiCall() {
       if (didMount.current) {
@@ -88,7 +86,7 @@ const TopicDetails = () => {
       topic_num: +router.query.camp,
       camp_num: nodeKey,
     };
-    console.log("req =====> ", req);
+    console.log("same =====> ", req);
     setRequestBody(req);
     const campStatementReq = {
       topic_num: +router.query.camp,
@@ -96,8 +94,6 @@ const TopicDetails = () => {
       as_of: asof,
       as_of_date: asofdate,
     };
-    console.log("all data", req);
-    console.log("all data", nodeKey);
     await editNewsFeedApi(req);
     await getNewsFeedApi(req);
     await getCanonizedCampStatementApi(campStatementReq);
