@@ -25,3 +25,5 @@ export default function Settings() {
   };
   return <SettingsLayout />;
 }
+
+Settings.displayName = "Settings";

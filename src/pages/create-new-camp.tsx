@@ -12,4 +12,6 @@ const CreateNewCampPage = () => {
   );
 };
 
+CreateNewCampPage.displayName = "CreateNewCampPage";
+
 export default CreateNewCampPage;

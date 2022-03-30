@@ -21,7 +21,9 @@ class WrappedApp extends App<AppInitialProps> {
         <GoogleAnalyticScripts />
         <Provider store={store}>
           <ErrorBoundary>
-            <HeadContentAndPermissionComponent componentName={Component.name} />
+            <HeadContentAndPermissionComponent
+              componentName={Component.displayName || Component.name}
+            />
             <Component {...pageProps} />
           </ErrorBoundary>
         </Provider>
