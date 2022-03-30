@@ -9,4 +9,6 @@ function SocialLoginCallbackPage() {
   );
 }
 
+SocialLoginCallbackPage.displayName = "SocialLoginCallbackPage";
+
 export default SocialLoginCallbackPage;

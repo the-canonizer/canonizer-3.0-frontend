@@ -5,7 +5,7 @@ import SettingsUI from "../components/ComponentPages/SettingsUI";
 import Layout from "../hoc/layout";
 import useAuthentication from "../hooks/isUserAuthenticated";
 //Route : /settings
-export default function Settings() {
+function Settings() {
   const SettingsLayout = () => {
     const isUserAuthenticated = useAuthentication();
     if (isUserAuthenticated) {
@@ -27,3 +27,5 @@ export default function Settings() {
 }
 
 Settings.displayName = "Settings";
+
+export default Settings;

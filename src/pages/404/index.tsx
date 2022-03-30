@@ -9,4 +9,6 @@ const My404Page = () => {
   );
 };
 
+My404Page.displayName = "My404Page";
+
 export default My404Page;

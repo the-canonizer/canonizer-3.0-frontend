@@ -20,8 +20,6 @@ const CreateNewTopicPage = ({ nameSpacesList }) => {
   );
 };
 
-CreateNewTopicPage.displayName = "CreateNewTopicPage";
-
 export async function getServerSideProps() {
   const nameSpaces = await getCanonizedNameSpacesApi();
 
@@ -31,5 +29,7 @@ export async function getServerSideProps() {
     },
   };
 }
+
+CreateNewTopicPage.displayName = "CreateNewTopicPage";
 
 export default CreateNewTopicPage;
