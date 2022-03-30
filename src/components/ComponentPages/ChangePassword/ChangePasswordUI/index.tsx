@@ -12,8 +12,8 @@ export default function ChangePasswordUI({
 }) {
   const [currentPassWord, setCurrentPassWord] = useState("");
   const validateFun = {
-    validateStatus: "error",
-    help: incorrectPasswordData,
+    validateStatus: "error" as any,
+    help: incorrectPasswordData as any,
   };
   const onChangeFun = (value) => {
     setCurrentPassWord(value);
