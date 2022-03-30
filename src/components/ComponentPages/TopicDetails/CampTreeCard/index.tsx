@@ -21,7 +21,7 @@ const CampTreeCard = ({ scrollToCampStatement, getSelectedNode, reqBody }) => {
           </Checkbox>
           <Link
             href={{
-              pathname: "/addnews/:",
+              pathname: "/addnews",
               query: reqBody,
             }}
           >

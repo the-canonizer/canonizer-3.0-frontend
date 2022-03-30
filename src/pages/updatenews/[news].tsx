@@ -32,9 +32,7 @@ export default function Home({ res }) {
               <br />
               <h2>
                 Please provide URL like :
-                <h5>
-                  http://localhost:4000/updatenews/:?topic_num=0&camp_num=0
-                </h5>
+                <h5>http://localhost:4000/updatenews/topic_num=0&camp_num=0</h5>
               </h2>
             </div>
           </div>

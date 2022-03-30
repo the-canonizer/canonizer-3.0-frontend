@@ -50,7 +50,7 @@ const NewsFeedsCard = ({ newsFeed, reqBody }) => {
           </a> */}
           <Link
             href={{
-              pathname: "/updatenews/camp",
+              pathname: "/updatenews/",
               query: reqBody,
             }}
           >
