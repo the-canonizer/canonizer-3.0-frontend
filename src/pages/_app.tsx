@@ -1,17 +1,18 @@
+import React from "react";
+import App, { AppInitialProps } from "next/app";
+import { Provider } from "react-redux";
+import scriptLoader from "react-async-script-loader";
+
 import "antd/dist/antd.css";
 import "../../styles/globals.scss";
 import "../../styles/variables.less";
 import "../assets/fonticons/style.css";
 import "../assets/scss/global.scss";
-import { store } from "../store";
-import { Provider } from "react-redux";
-import HeadContentAndPermissionComponent from "../components/common/headContentAndPermisisonCheck";
+
 import ErrorBoundary from "../hoc/ErrorBoundary";
+import HeadContentAndPermissionComponent from "../components/common/headContentAndPermisisonCheck";
 import GoogleAnalyticScripts from "../firebaseConfig/scripts";
-import React from "react";
-import App, { AppInitialProps } from "next/app";
-import { wrapper } from "../store";
-import scriptLoader from "react-async-script-loader";
+import { store, wrapper } from "../store";
 
 class WrappedApp extends App<AppInitialProps> {
   public render() {

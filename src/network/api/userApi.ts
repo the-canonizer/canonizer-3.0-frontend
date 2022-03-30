@@ -177,18 +177,16 @@ export const socialLoginCallback = async (values: object) => {
       UserRequest.userSocialLoginCallback(values, token)
     );
 
-    if (res && res.data.type !== "social_link") {
-      !isServer &&
-        window.localStorage.setItem("token", res.data.auth.access_token);
-      let payload = {
-        ...res.data.user,
-        token: res.data.auth.access_token,
-        refresh_token: res.data.auth.refresh_token,
-      };
+    !isServer &&
+      window.localStorage.setItem("token", res.data.auth.access_token);
+    let payload = {
+      ...res.data.user,
+      token: res.data.auth.access_token,
+      refresh_token: res.data.auth.refresh_token,
+    };
 
-      store.dispatch(setLoggedInUser(payload));
-      store.dispatch(setAuthToken(authToken.access_token));
-    }
+    store.dispatch(setLoggedInUser(payload));
+    store.dispatch(setAuthToken(authToken.access_token));
 
     return res;
   } catch (error) {
