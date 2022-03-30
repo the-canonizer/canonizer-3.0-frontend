@@ -1,6 +1,5 @@
 @import "./fonts";
 
-
 :root {
   --primary: #4484ce;
   --font-family-asap: "Asap", sans-serif;
@@ -45,40 +44,43 @@ body {
   &-1 {
     margin-right: 5px !important;
   }
-	&-4 {
-		margin-bottom: 1.5rem;
-	}
-	&-0 {
-		margin-bottom: 0 !important;
-	}
+  &-4 {
+    margin-bottom: 1.5rem;
+  }
+  &-0 {
+    margin-bottom: 0 !important;
+  }
 }
 
 .w-100 {
   width: 100% !important;
 }
-.font-weight { 
-	&-bold {
-		font-weight: 700;
-		white-space: nowrap;
-	}
+.font-weight {
+  &-bold {
+    font-weight: 700;
+    white-space: nowrap;
+  }
 }
 
 .btn {
   &-blue {
     background-color: #2e68db;
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       background-color: darken(#2e68db, 10%);
     }
   }
   &-green {
     background-color: #12c879;
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       background-color: darken(#12c879, 7%);
     }
   }
   &-orange {
     background-color: #f89d15;
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       background-color: darken(#f89d15, 10%);
     }
   }
@@ -233,11 +235,10 @@ body {
       flex-grow: 1;
       .ant-card-head-title {
         font-size: 20px;
+        margin-right: 20px;
       }
     }
-    .ant-tabs-top {
-      max-width: 500px;
-    }
+
     .ant-tabs {
       .ant-tabs-tab-btn {
         font-size: 14px;
@@ -479,7 +480,8 @@ form {
       font-size: 15px;
       font-weight: 500;
       display: flex;
-      a, label {
+      a,
+      label {
         &:not(:last-child) {
           margin-right: 32px;
         }
@@ -505,8 +507,8 @@ form {
     }
   }
   .ant-card-actions {
-    &>li{
-      &>span {
+    & > li {
+      & > span {
         cursor: default;
         display: flex;
         align-items: center;

@@ -27,9 +27,7 @@
   }
 }
 .accountSetting {
-  margin-left: 10px !important;
-  margin-right: 25px !important;
-  flex: 1;
+  width: calc(100% - 240px);
 
   @media screen and (max-width: 767px) {
     margin-left: 0 !important;
