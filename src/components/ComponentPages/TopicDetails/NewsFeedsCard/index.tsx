@@ -39,17 +39,17 @@ const NewsFeedsCard = ({ newsFeed }) => {
       }
     >
       <ul className="newsFeedsList">
-      {newsFeed?.map((news) => {
-        return (
-          <li>
-            <Paragraph key={news.id}>
-              <Link href={news?.link} passHref>
-                <a>{news?.display_text}</a>
-              </Link>
-            </Paragraph>
-          </li>
-        );
-      })}
+        {newsFeed?.map((news) => {
+          return (
+            <li key={news.id}>
+              <Paragraph>
+                <Link href={news?.link} passHref>
+                  <a>{news?.display_text}</a>
+                </Link>
+              </Paragraph>
+            </li>
+          );
+        })}
       </ul>
     </Card>
   );

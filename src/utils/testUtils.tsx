@@ -25,15 +25,15 @@ Object.defineProperty(window, "matchMedia", {
 });
 
 const windowMatchMedia = () => {
-  return (window.matchMedia =
-    window.matchMedia ||
-    function () {
-      return {
-        matches: false,
-        addListener: function () {},
-        removeListener: function () {},
-      };
-    });
+  // return (window.matchMedia =
+  //   window.matchMedia ||
+  //   function () {
+  //     return {
+  //       matches: false,
+  //       addListener: function () {},
+  //       removeListener: function () {},
+  //     };
+  //   });
 };
 
 export * from "@testing-library/react";
