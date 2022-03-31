@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import moment from "moment";
 import {
   Typography,
@@ -88,6 +88,7 @@ const CreateTopic = () => {
   const [inputFilterValue, setInputFilterValue] = useState(0.0);
   const dispatch = useDispatch();
   const router = useRouter();
+  const didMount = useRef(false);
 
   const campRoute = () => {
     router.push("/create-new-topic");
@@ -99,16 +100,18 @@ const CreateTopic = () => {
   }));
 
   useEffect(() => {
-    if (history.pushState) {
-      const queryParams = `?filter=${filterObject?.filterByScore}&algorithm=${filterObject?.algorithm}&asofdate=${filterObject?.asofdate}&namespace=${filterObject?.namespace_id}`;
-      var newurl =
-        window.location.protocol +
-        "//" +
-        window.location.host +
-        window.location.pathname +
-        queryParams;
-      window.history.pushState({ path: newurl }, "", newurl);
-    }
+    if (didMount.current) {
+      if (history.pushState) {
+        const queryParams = `?filter=${filterObject?.filterByScore}&algorithm=${filterObject?.algorithm}&asofdate=${filterObject?.asofdate}&namespace=${filterObject?.namespace_id}`;
+        var newurl =
+          window.location.protocol +
+          "//" +
+          window.location.host +
+          window.location.pathname +
+          queryParams;
+        window.history.pushState({ path: newurl }, "", newurl);
+      }
+    } else didMount.current = true;
   }, [filterObject]);
 
   const selectAlgorithm = (value) => {

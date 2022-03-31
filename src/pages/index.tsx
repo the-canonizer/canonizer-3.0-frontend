@@ -14,12 +14,7 @@ import {
   setCanonizedAlgorithms,
 } from "../store/slices/homePageSlice";
 
-export default function Home({
-  topicsData,
-  nameSpacesList,
-  whatsNew,
-  algorithms,
-}) {
+function Home({ topicsData, nameSpacesList, whatsNew, algorithms }) {
   const dispatch = useDispatch();
   dispatch(setCanonizedTopics(topicsData));
   dispatch(setCanonizedNameSpaces(nameSpacesList));
@@ -65,3 +60,7 @@ export async function getServerSideProps() {
     },
   };
 }
+
+Home.displayName = "Home";
+
+export default Home;

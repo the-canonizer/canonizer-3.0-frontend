@@ -1,4 +1,4 @@
-import { Typography, Breadcrumb } from "antd";
+import { Typography } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
@@ -20,6 +20,7 @@ import CurrentCampCard from "./CurrentCampCard";
 import CurrentTopicCard from "./CurrentTopicCard";
 import NewsFeedsCard from "./NewsFeedsCard";
 import SupportTreeCard from "./SupportTreeCard";
+import { BackTop } from "antd";
 
 const TopicDetails = () => {
   const didMount = useRef(false);
@@ -31,21 +32,21 @@ const TopicDetails = () => {
 
   console.log("reqin /comp/compPage/topicdetail/ind =====> ", requestBody);
   const router = useRouter();
-  const { asof, asofdate, algorithm, newsFeed, topicRecord } = useSelector(
-    (state: RootState) => ({
+  const { asof, asofdate, algorithm, newsFeed, topicRecord, campRecord } =
+    useSelector((state: RootState) => ({
       asofdate: state.homePage?.filterObject?.asofdate,
       algorithm: state.homePage?.filterObject?.algorithm,
       newsFeed: state?.topicDetails?.newsFeed,
       asof: state?.homePage?.filterObject?.asof,
       topicRecord: state?.topicDetails?.currentTopicRecord,
-    })
-  );
+      campRecord: state?.topicDetails?.currentCampRecord,
+    }));
   useEffect(() => {
     async function getTreeApiCall() {
       if (didMount.current) {
         const reqBody = {
-          topic_num: 88,
-          asofdate: 1644323333,
+          topic_num: +router.query.camp,
+          asofdate: asofdate || Date.now() / 1000,
           algorithm: algorithm,
           update_all: 1,
         };
@@ -54,6 +55,13 @@ const TopicDetails = () => {
     }
     getTreeApiCall();
   }, [asofdate, algorithm]);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // for smoothly scrolling
+    });
+  };
 
   const reqBody = { topic_num: 45, camp_num: 1 };
   useEffect(() => {
@@ -66,9 +74,11 @@ const TopicDetails = () => {
       as_of_date: asofdate,
     };
     async function getNewsFeedAndCampStatementApiCall() {
-      await getNewsFeedApi(reqBody);
-      await getCanonizedCampStatementApi(campStatementReq);
-      await getCanonizedCampSupportingTreeApi(reqBody);
+      await Promise.all([
+        getNewsFeedApi(reqBody),
+        getCanonizedCampStatementApi(campStatementReq),
+        getCanonizedCampSupportingTreeApi(reqBody),
+      ]);
     }
     getNewsFeedAndCampStatementApiCall();
   }, []);
@@ -86,19 +96,32 @@ const TopicDetails = () => {
       topic_num: +router.query.camp,
       camp_num: nodeKey,
     };
+<<<<<<< HEAD
     console.log("same =====> ", req);
     setRequestBody(req);
     const campStatementReq = {
+=======
+    const campReq = {
+>>>>>>> d92897d0546aff79b937f9dede1f26dcd6c99ce5
       topic_num: +router.query.camp,
       camp_num: nodeKey,
       as_of: asof,
       as_of_date: asofdate,
     };
+<<<<<<< HEAD
     await editNewsFeedApi(req);
     await getNewsFeedApi(req);
     await getCanonizedCampStatementApi(campStatementReq);
     await getCurrentTopicRecordApi(req);
     await getCurrentCampRecordApi(req);
+=======
+    await Promise.all([
+      getNewsFeedApi(req),
+      getCanonizedCampStatementApi(campReq),
+      getCurrentTopicRecordApi(campReq),
+      getCurrentCampRecordApi(campReq),
+    ]);
+>>>>>>> d92897d0546aff79b937f9dede1f26dcd6c99ce5
   };
 
   return (
@@ -113,17 +136,21 @@ const TopicDetails = () => {
           <div className={styles.breadcrumbLinks}>
             {" "}
             <span className="bold mr-1"> Camp : </span>
-            <Breadcrumb>
-              <Breadcrumb.Item>
-                <a href=""> Agreement </a>
-              </Breadcrumb.Item>
-              <Breadcrumb.Item>
-                <a href=""> Approachable Via Science </a>
-              </Breadcrumb.Item>
-              <Breadcrumb.Item>
-                <a href=""> Representational Qualia </a>
-              </Breadcrumb.Item>
-            </Breadcrumb>
+            {campRecord?.length &&
+              campRecord[0].parentCamps?.map((camp, index) => {
+                return (
+                  <a
+                    key={camp?.camp_num}
+                    onClick={() => {
+                      getSelectedNode(camp?.camp_num);
+                    }}
+                  >
+                    {" "}
+                    {index !== 0 && "/"}
+                    {`${camp?.camp_name}`}
+                  </a>
+                );
+              })}
           </div>
         </div>
 
@@ -144,6 +171,8 @@ const TopicDetails = () => {
           <SupportTreeCard
             handleLoadMoreSupporters={handleLoadMoreSupporters}
           />
+
+          <BackTop />
         </div>
       </div>
     </>

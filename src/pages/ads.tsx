@@ -16,4 +16,6 @@ const ADS: React.FunctionComponent<IADSProps> = (props) => {
   );
 };
 
+ADS.displayName = "ADS";
+
 export default ADS;

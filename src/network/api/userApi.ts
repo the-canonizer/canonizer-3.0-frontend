@@ -10,7 +10,9 @@ import {
   removeAuthToken,
   setLoggedInUser,
   logoutUser,
+  setSocialUsers,
 } from "../../store/slices/authSlice";
+import { showMultiUserModal } from "../../store/slices/uiSlice";
 import NetworkCall from "../networkCall";
 import UserRequest from "../request/userRequest";
 import { store } from "../../store";
@@ -121,25 +123,13 @@ export const verifyOtp = async (values: object) => {
 };
 
 export const changePassword = async (values: object) => {
-  try {
-    let state = store.getState();
-    const { auth } = state;
-    const res = await NetworkCall.fetch(
-      UserRequest.changePassword(values, auth.loggedInUser.token)
-      //UserRequest.changePassword(values, auth.token)
-    );
-    return res;
-  } catch (errors) {
-    let msgs = errors?.error?.data?.error;
-    if (msgs) {
-      let keys = Object.keys(msgs);
-      keys.forEach((key) => {
-        message.error(msgs[key][0]);
-      });
-    } else {
-      message.error(errors?.error?.data?.message);
-    }
-  }
+  let state = store.getState();
+  const { auth } = state;
+  const res = await NetworkCall.fetch(
+    UserRequest.changePassword(values, auth.loggedInUser.token)
+    //UserRequest.changePassword(values, auth.token)
+  );
+  return res;
 };
 
 // social login path
@@ -175,18 +165,16 @@ export const socialLoginCallback = async (values: object) => {
       UserRequest.userSocialLoginCallback(values, token)
     );
 
-    if (res && res.data.type !== "social_link") {
-      !isServer &&
-        window.localStorage.setItem("token", res.data.auth.access_token);
-      let payload = {
-        ...res.data.user,
-        token: res.data.auth.access_token,
-        refresh_token: res.data.auth.refresh_token,
-      };
+    !isServer &&
+      window.localStorage.setItem("token", res.data.auth.access_token);
+    let payload = {
+      ...res.data.user,
+      token: res.data.auth.access_token,
+      refresh_token: res.data.auth.refresh_token,
+    };
 
-      store.dispatch(setLoggedInUser(payload));
-      store.dispatch(setAuthToken(authToken.access_token));
-    }
+    store.dispatch(setLoggedInUser(payload));
+    store.dispatch(setAuthToken(authToken.access_token));
 
     return res;
   } catch (error) {
@@ -490,6 +478,51 @@ export const userSocialAccountDelete = async (id: string) => {
   try {
     const res = await NetworkCall.fetch(
       UserRequest.userSocialAccountDelete(state.auth.token, id)
+    );
+
+    return res;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const socialLoginLinkUser = async (values: object) => {
+  const state = store.getState();
+
+  try {
+    let token = state.auth.token;
+
+    const res = await NetworkCall.fetch(
+      UserRequest.SocialLinkUser(values, token)
+    );
+
+    return res;
+  } catch (error) {
+    if (
+      error &&
+      error.error &&
+      error.error.data &&
+      error.error.data.status_code === 403
+    ) {
+      const data = error.error.data;
+
+      const users = [data.data.already_link_user];
+
+      store.dispatch(setSocialUsers(users));
+      store.dispatch(showMultiUserModal());
+
+      return data;
+    }
+    handleError(error);
+  }
+};
+
+export const deactivateUser = async (body: object) => {
+  const state = store.getState();
+
+  try {
+    const res = await NetworkCall.fetch(
+      UserRequest.UserDeactivate(body, state.auth.token)
     );
 
     return res;
