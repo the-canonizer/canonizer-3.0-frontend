@@ -38,15 +38,19 @@ const NewsFeedsCard = ({ newsFeed }) => {
         </>
       }
     >
+      <ul className="newsFeedsList">
       {newsFeed?.map((news) => {
         return (
-          <Paragraph key={news.id}>
-            <Link href={news?.link} passHref>
-              <a>{news?.display_text}</a>
-            </Link>
-          </Paragraph>
+          <li>
+            <Paragraph key={news.id}>
+              <Link href={news?.link} passHref>
+                <a>{news?.display_text}</a>
+              </Link>
+            </Paragraph>
+          </li>
         );
       })}
+      </ul>
     </Card>
   );
 };

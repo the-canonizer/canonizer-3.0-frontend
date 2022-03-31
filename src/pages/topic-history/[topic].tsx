@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import Layout from "../../hoc/layout";
 import { RootState } from "../../store";
 
-export default function TopicHistory() {
+function TopicHistory() {
   const router = useRouter();
 
   const createdData = useSelector(
@@ -31,3 +31,7 @@ export default function TopicHistory() {
     </Fragment>
   );
 }
+
+TopicHistory.displayName = "TopicHistory";
+
+export default TopicHistory;

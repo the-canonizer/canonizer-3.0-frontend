@@ -12,4 +12,6 @@ const CampListPage = () => {
   );
 };
 
+CampListPage.displayName = "CampListPage";
+
 export default CampListPage;

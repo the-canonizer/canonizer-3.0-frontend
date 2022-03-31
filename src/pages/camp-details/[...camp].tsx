@@ -102,4 +102,6 @@ export async function getServerSideProps(context) {
 //   };
 // });
 
+TopicDetailsPage.displayName = "TopicDetailsPage";
+
 export default TopicDetailsPage;

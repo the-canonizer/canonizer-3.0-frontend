@@ -47,9 +47,9 @@ describe("Verify Mobile Number Page", () => {
     const inputEl = screen.getByLabelText(labels.phoneNumber);
     userEvent.type(inputEl, "12345678");
     await waitFor(() => {
-      expect(inputEl).toHaveValue("12345678");
+      expect(inputEl).toHaveValue(12345678);
       expect(screen.queryByRole("alert")).toBeInTheDocument();
-      expect(screen.queryByText(validations.phoneLength)).toBeVisible();
+      expect(screen.queryByText(validations.phoneMinLength)).toBeVisible();
     });
   });
 
@@ -69,7 +69,7 @@ describe("Verify Mobile Number Page", () => {
     const inputEl = screen.getByLabelText(labels.phoneNumber);
     userEvent.type(inputEl, "123456789");
     await waitFor(() => {
-      expect(inputEl).toHaveValue("123456789");
+      expect(inputEl).toHaveValue(123456789);
       expect(screen.queryByRole("alert")).not.toBeInTheDocument();
     });
   });

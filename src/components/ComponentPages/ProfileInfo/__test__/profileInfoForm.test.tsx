@@ -9,8 +9,12 @@ const privateFlags = "first_name";
 const onFinish = jest.fn();
 const onFinishFailed = jest.fn();
 const handleselectAfter = jest.fn();
+const handleAddressChange = jest.fn();
+const handleAddressSelect = jest.fn();
+
 const algorithmList = [];
 const languageList = [];
+const address = "";
 
 describe("Profile Info Page", () => {
   it("render heading and labels Of Profile Info Form", () => {
@@ -22,6 +26,10 @@ describe("Profile Info Page", () => {
         privateFlags={privateFlags}
         algorithmList={algorithmList}
         languageList={languageList}
+        handleAddressChange={handleAddressChange}
+        handleAddressSelect={handleAddressSelect}
+        address={address}
+        disableButton={true}
       />
     );
 
@@ -53,6 +61,10 @@ describe("Profile Info Page", () => {
         privateFlags={privateFlags}
         algorithmList={algorithmList}
         languageList={languageList}
+        handleAddressChange={handleAddressChange}
+        handleAddressSelect={handleAddressSelect}
+        address={address}
+        disableButton={true}
       />
     );
     const firstName = screen.getByLabelText(labels.firstName);
@@ -125,6 +137,10 @@ describe("Profile Info Page", () => {
         privateFlags={privateFlags}
         algorithmList={algorithmList}
         languageList={languageList}
+        handleAddressChange={handleAddressChange}
+        handleAddressSelect={handleAddressSelect}
+        address={address}
+        disableButton={true}
       />
     );
     const inputEl = screen.getByLabelText(labels.email);
@@ -144,6 +160,10 @@ describe("Profile Info Page", () => {
         privateFlags={privateFlags}
         algorithmList={algorithmList}
         languageList={languageList}
+        handleAddressChange={handleAddressChange}
+        handleAddressSelect={handleAddressSelect}
+        address={address}
+        disableButton={true}
       />
     );
     const inputEl = screen.getByLabelText(labels.email);
@@ -164,6 +184,10 @@ describe("Profile Info Page", () => {
         privateFlags={privateFlags}
         algorithmList={algorithmList}
         languageList={languageList}
+        handleAddressChange={handleAddressChange}
+        handleAddressSelect={handleAddressSelect}
+        address={address}
+        disableButton={true}
       />
     );
     const btnEl = screen.getByTestId("submitButton");
