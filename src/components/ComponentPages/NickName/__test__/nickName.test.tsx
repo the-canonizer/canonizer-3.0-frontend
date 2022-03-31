@@ -40,7 +40,7 @@ describe("NickName page", () => {
       />
     );
 
-    expect(screen.getByText("Sr")).toBeInTheDocument();
+    expect(screen.getByText("Sr.No.")).toBeInTheDocument();
     expect(screen.getByText("Nick Name ID")).toBeInTheDocument();
     expect(screen.getByText("Nick Name")).toBeInTheDocument();
     expect(screen.getByLabelText("Visibility Status")).toBeInTheDocument();
@@ -62,7 +62,7 @@ describe("NickName page", () => {
         nickNameList={nickNameList}
       />
     );
-    expect(screen.getByText("Sr")).toBeInTheDocument();
+    expect(screen.getByText("Sr.No.")).toBeInTheDocument();
     expect(screen.getByText("Nick Name ID")).toBeInTheDocument();
     expect(screen.getByText("Nick Name")).toBeInTheDocument();
     expect(screen.getByLabelText("Visibility Status")).toBeInTheDocument();
