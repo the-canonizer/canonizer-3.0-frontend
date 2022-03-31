@@ -7,7 +7,7 @@ import { logout } from "../../../network/api/userApi";
 
 const ChangePassword = () => {
   const router = useRouter();
-
+  const [incorrectPasswordData, setIncorrectPasswordData] = useState("");
   const [formData, setFormData] = useState();
   const [form] = Form.useForm();
 
@@ -20,14 +20,26 @@ const ChangePassword = () => {
       confirm_password: values.confirm_password.trim(),
     };
 
-    let res = await changePassword(formBody);
-    if (res && res.status_code === 200) {
-      form.resetFields();
-      message.success(res.message);
-      //logout after success
-      const logOutRes = await logout();
-      if (logOutRes.status_code === 200) {
-        router.push("/login");
+    try {
+      let res = await changePassword(formBody);
+      if (res && res.status_code === 200) {
+        form.resetFields();
+        message.success(res.message);
+        //logout after success
+        const logOutRes = await logout();
+        if (logOutRes.status_code === 200) {
+          router.push("/login");
+        }
+      }
+    } catch (e) {
+      let msgs = e?.error?.data?.error;
+      if (msgs) {
+        let keys = Object.keys(msgs);
+        keys.forEach((key) => {
+          setIncorrectPasswordData(msgs[key][0]);
+        });
+      } else {
+        setIncorrectPasswordData(e?.error?.data?.message);
       }
     }
   };
@@ -41,6 +53,8 @@ const ChangePassword = () => {
       form={form}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
+      incorrectPasswordData={incorrectPasswordData}
+      setIncorrectPasswordData={setIncorrectPasswordData}
     />
   );
 };

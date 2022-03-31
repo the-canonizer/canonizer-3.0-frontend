@@ -1,8 +1,24 @@
 import { Form, Input, Button, Tabs, Row, Col } from "antd";
 import styles from "./ChangePassword.module.scss";
 import messages from "../../../../messages";
+import { useState } from "react";
 
-export default function ChangePasswordUI({ form, onFinish, onFinishFailed }) {
+export default function ChangePasswordUI({
+  form,
+  onFinish,
+  onFinishFailed,
+  incorrectPasswordData,
+  setIncorrectPasswordData,
+}) {
+  const [currentPassWord, setCurrentPassWord] = useState("");
+  const validateFun = {
+    validateStatus: "error" as any,
+    help: incorrectPasswordData as any,
+  };
+  const onChangeFun = (value) => {
+    setCurrentPassWord(value);
+    setIncorrectPasswordData("");
+  };
   return (
     <>
       <section className={styles.change_password}>
@@ -25,10 +41,16 @@ export default function ChangePasswordUI({ form, onFinish, onFinishFailed }) {
                   name="current_password"
                   label={messages.labels.currentPassword}
                   {...messages.currentPasswordRule}
+                  {...(currentPassWord !== ""
+                    ? incorrectPasswordData
+                      ? validateFun
+                      : ""
+                    : "")}
                 >
                   <Input
                     type="password"
                     placeholder={messages.placeholders.currentPassword}
+                    onChange={(e) => onChangeFun(e.target.value)}
                   />
                 </Form.Item>
               </Col>
