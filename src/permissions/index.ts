@@ -24,6 +24,11 @@ const PermissionsForPages: PermissionsObj = {
     isPermissionRequired: false,
     permissionName: "create-new-camp",
   },
+  Settings: {
+    isAuthenticationRequired: true,
+    isPermissionRequired: false,
+    permissionName: "settings",
+  },
 };
 
 export default PermissionsForPages;

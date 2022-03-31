@@ -30,4 +30,6 @@ export async function getServerSideProps() {
   };
 }
 
+CreateNewTopicPage.displayName = "CreateNewTopicPage";
+
 export default CreateNewTopicPage;

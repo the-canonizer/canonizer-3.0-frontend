@@ -11,4 +11,6 @@ const RequiredPermission = () => {
   );
 };
 
+RequiredPermission.displayName = "RequiredPermission";
+
 export default RequiredPermission;

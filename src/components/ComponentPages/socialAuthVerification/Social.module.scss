@@ -4,7 +4,7 @@
   .icon_container {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     grid-gap: 20px;
 
     .icon_wrapper {
@@ -27,7 +27,7 @@
             width: 30px;
             height: 30px;
           }
-          caption {
+          .caption {
             font-weight: normal;
             font-size: 14px;
             line-height: 16px;
@@ -37,19 +37,21 @@
             text-transform: capitalize;
             display: block;
             text-align: center;
+            padding-top: 0.75em;
+            padding-bottom: 0.3em;
           }
         }
       }
 
       .content {
         width: 100%;
-        height: calc(100% - 72px);
+        height: calc(100% - 80px);
         display: flex;
         justify-content: center;
         align-items: center;
         flex-wrap: wrap;
         flex-flow: column;
-        word-break: nowrap;
+        word-break: break-all;
         overflow: hidden;
 
         .name,
@@ -126,4 +128,38 @@
       }
     }
   }
+}
+
+.modal {
+  background-color: red;
+  padding: 0;
+}
+
+.cancel_btn {
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border: 1px solid #4484ce;
+  border-radius: 2px;
+  opacity: 1;
+  letter-spacing: 0px;
+  color: #4484ce;
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 1;
+  line-height: 16px;
+  transition: all 0.3s;
+  margin-left: 15px;
+
+  &:hover {
+    background: #4484ce;
+    color: #ffffff;
+  }
+}
+
+.buttonDiv {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding-top: 15px;
+  padding-bottom: 20px;
 }
