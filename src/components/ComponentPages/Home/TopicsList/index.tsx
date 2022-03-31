@@ -150,7 +150,6 @@ const TopicsList = () => {
   );
 
   const handleCheckbox = (e) => {
-    console.log(`checked = ${e.target.checked}`);
     dispatch(
       setFilterCanonizedTopics({
         onlyMyTopics: e.target.checked,

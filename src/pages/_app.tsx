@@ -16,7 +16,6 @@ import scriptLoader from "react-async-script-loader";
 class WrappedApp extends App<AppInitialProps> {
   public render() {
     const { Component, pageProps } = this.props;
-    console.log("component name", Component.name);
     return (
       <>
         <GoogleAnalyticScripts />
