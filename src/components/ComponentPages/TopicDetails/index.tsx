@@ -96,32 +96,18 @@ const TopicDetails = () => {
       topic_num: +router.query.camp,
       camp_num: nodeKey,
     };
-<<<<<<< HEAD
-    console.log("same =====> ", req);
-    setRequestBody(req);
-    const campStatementReq = {
-=======
     const campReq = {
->>>>>>> d92897d0546aff79b937f9dede1f26dcd6c99ce5
       topic_num: +router.query.camp,
       camp_num: nodeKey,
       as_of: asof,
       as_of_date: asofdate,
     };
-<<<<<<< HEAD
-    await editNewsFeedApi(req);
-    await getNewsFeedApi(req);
-    await getCanonizedCampStatementApi(campStatementReq);
-    await getCurrentTopicRecordApi(req);
-    await getCurrentCampRecordApi(req);
-=======
     await Promise.all([
       getNewsFeedApi(req),
       getCanonizedCampStatementApi(campReq),
       getCurrentTopicRecordApi(campReq),
       getCurrentCampRecordApi(campReq),
     ]);
->>>>>>> d92897d0546aff79b937f9dede1f26dcd6c99ce5
   };
 
   return (
