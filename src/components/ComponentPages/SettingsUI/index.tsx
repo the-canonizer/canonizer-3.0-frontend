@@ -53,21 +53,9 @@ export default function SettingsUI() {
   };
 
   const contentList = {
-    profile_info: (
-      <p>
-        <ProfileInfo />{" "}
-      </p>
-    ),
-    change_password: (
-      <p>
-        <ChangePassword />
-      </p>
-    ),
-    nick_name: (
-      <p>
-        <NickName />
-      </p>
-    ),
+    profile_info: <ProfileInfo />,
+    change_password: <ChangePassword />,
+    nick_name: <NickName />,
     supported_camps: (
       <div className={styles.supported_camps}>
         <div className={styles.search_users}>

@@ -37,7 +37,7 @@ export async function getServerSideProps(context) {
 
   const reqBody = {
     topic_num: campId,
-    asofdate: 1644323333,
+    asofdate: asofdate,
     algorithm,
     update_all: 1,
   };
@@ -101,5 +101,7 @@ export async function getServerSideProps(context) {
 //     },
 //   };
 // });
+
+TopicDetailsPage.displayName = "TopicDetailsPage";
 
 export default TopicDetailsPage;

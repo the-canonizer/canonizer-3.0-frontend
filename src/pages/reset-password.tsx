@@ -9,4 +9,6 @@ const ResetPasswordPage = () => {
   );
 };
 
+ResetPasswordPage.displayName = "ResetPasswordPage";
+
 export default ResetPasswordPage;

@@ -23,4 +23,6 @@ const ForgotPasswordPage = () => {
   );
 };
 
+ForgotPasswordPage.displayName = "ForgotPasswordPage";
+
 export default ForgotPasswordPage;

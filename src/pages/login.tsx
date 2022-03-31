@@ -23,4 +23,6 @@ const LoginPage = () => {
   );
 };
 
+LoginPage.displayName = "LoginPage";
+
 export default LoginPage;
