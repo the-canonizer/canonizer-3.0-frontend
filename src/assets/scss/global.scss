@@ -78,8 +78,11 @@ body {
   }
   &-orange {
     background-color: #f89d15;
+    color: #FFF;
+    border: 0;
     &:hover, &:focus {
       background-color: darken(#f89d15, 10%);
+      color: #FFF;
     }
   }
 }

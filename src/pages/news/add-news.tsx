@@ -6,35 +6,41 @@ import styles from "./editNews.module.scss";
 
 const { TextArea } = Input;
 
-function EditNews() {
+function AddNews() {
   return (
     <>
-      <Layout routeName={"edit-news"}>
+      <Layout routeName={"add-news"}>
         <aside className="leftSideBar miniSideBar">
           <SideBar />
         </aside>
         <div className="pageContentWrap">
           <Card title="Edit News" className={styles.newsCard}>
             <Form layout="vertical">
-              <Card className={styles.newsFormFieldsCard} bordered={false}>
-                <Badge className={styles.newsFormFieldsCardCounter}>1</Badge>
+              <Card className={styles.innerForm} bordered={false}>
+                <div className={styles.countBadge}>
+                  <Badge className={styles.countRowEdit}>1</Badge>
+                </div>
                 <Row gutter={28}>
                   <Col xl={14} md={24} xs={24}>
-                      <Form.Item label="Display Text ( Limit 256 chars )" className={styles.textArea}>
+                    <div className={styles.textAreaForm}>
+                      <Form.Item label="Display Text ( Limit 256 chars )">
                         <TextArea
                           placeholder='New Video:"Consciousness:Not a Hard Problem Just a Color Problem"'
                           autoSize={{ minRows: 6, maxRows: 5 }}
                         />
                       </Form.Item>
+                    </div>
                   </Col>
 
                   <Col xl={10} md={24} xs={24}>
-                      <Form.Item label="Link ( Limit 2000 chars )" className={styles.formLink}>
+                    <div className={styles.formLink}>
+                      <Form.Item label="Link ( Limit 2000 chars )">
                         <Input placeholder="http:canonizer.com/videos/conciousness/" />
                       </Form.Item>
                       <Form.Item>
                         <Checkbox>Available For Child camps</Checkbox>
                       </Form.Item>
+                    </div>
                   </Col>
                 </Row>
               </Card>
@@ -95,8 +101,8 @@ function EditNews() {
                 </Row>
               </Card> */}
               <div className={styles.editNewsButtons}>
-                <Button className="btn-orange">Submit</Button>
-                <Button >Cancel</Button>
+                <Button className={styles.submitBtn}>Submit</Button>
+                <Button className={styles.cancelBtn}>Cancel</Button>
               </div>
             </Form>
           </Card>
@@ -106,4 +112,4 @@ function EditNews() {
   );
 }
 
-export default EditNews;
+export default AddNews;
