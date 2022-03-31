@@ -53,7 +53,7 @@ describe("ChangePassword page", () => {
       expect(alerts[0]).toHaveTextContent(
         /Password must be at least 8 characters long!/i
       );
-      expect(alerts[1]).toHaveTextContent(/Password Should be like Abc@1234./i);
+      expect(alerts[1]).toHaveTextContent(validations.passwordPattern);
     });
   });
 
