@@ -11,7 +11,7 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
     tree: state?.topicDetails?.tree,
     filterByScore: state.homePage?.filterObject?.filterByScore,
   }));
-  const [selectedNodeID, setSelectedNodeID] = useState(null);
+  const [selectedNodeID, setSelectedNodeID] = useState(1);
   const [scoreFilter, setScoreFilter] = useState(filterByScore);
 
   const onSelect = (

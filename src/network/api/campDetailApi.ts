@@ -29,7 +29,7 @@ export const getNewsFeedApi = async (reqBody) => {
     store.dispatch(setNewsFeed(newsFeed?.data));
     return newsFeed?.data;
   } catch (error) {
-    message.error(error.message);
+    // message.error(error.message);
   }
 };
 
@@ -41,7 +41,7 @@ export const getCanonizedCampStatementApi = async (reqBody) => {
     store.dispatch(setCampStatement(campStatement?.data));
     return campStatement?.data;
   } catch (error) {
-    message.error(error.message);
+    // message.error(error.message);
   }
 };
 
@@ -53,7 +53,7 @@ export const getCurrentTopicRecordApi = async (reqBody) => {
     store.dispatch(setCurrentTopicRecord(currentTopicRecord?.data));
     return currentTopicRecord?.data;
   } catch (error) {
-    message.error(error.message);
+    // message.error(error.message);
   }
 };
 
@@ -65,7 +65,7 @@ export const getCurrentCampRecordApi = async (reqBody) => {
     store.dispatch(setCurrentCampRecord(currentCampRecord?.data));
     return currentCampRecord?.data;
   } catch (error) {
-    message.error(error.message);
+    // message.error(error.message);
   }
 };
 
