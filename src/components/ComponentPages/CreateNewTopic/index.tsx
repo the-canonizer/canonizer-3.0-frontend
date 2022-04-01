@@ -52,7 +52,7 @@ const CreateNewTopic = ({
       dispatch(
         setCurrentTopic({ message: res.message, topic_num: res.data.topic_num })
       );
-      router.push(`/camp-list`);
+      router.push(`/camp-details/${res.data.topic_num}`);
     }
 
     if (res && res.status_code === 400 && res.error.topic_name) {
