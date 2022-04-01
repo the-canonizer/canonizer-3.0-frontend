@@ -19,16 +19,16 @@ const CurrentCampCard = () => {
       <Descriptions column={1}>
         <Descriptions.Item label="Camp Name">
           {" "}
-          {campRecord?.length && campRecord[0]?.camp_name}
+          {campRecord?.length ? campRecord[0]?.camp_name : null}
         </Descriptions.Item>
         <Descriptions.Item label="Keywords">
-          {campRecord?.length && campRecord[0]?.key_words}
+          {campRecord?.length ? campRecord[0]?.key_words : null}
         </Descriptions.Item>
         <Descriptions.Item label="Camp About URL">
-          {campRecord?.length && campRecord[0]?.camp_about_url}
+          {campRecord?.length ? campRecord[0]?.camp_about_url : null}
         </Descriptions.Item>
         <Descriptions.Item label="Camp About Nick Name">
-          {campRecord?.length && campRecord[0]?.nick_name}
+          {campRecord?.length ? campRecord[0]?.nick_name : null}
         </Descriptions.Item>
       </Descriptions>
     </Card>

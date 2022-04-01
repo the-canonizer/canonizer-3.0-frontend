@@ -157,6 +157,10 @@ const TopicsList = () => {
     );
   };
 
+  const handleTopicClick = () => {
+    setGetTopicsLoadingIndicator(true);
+  };
+
   return (
     <>
       <div className={`${styles.card} topicsList_card`}>
@@ -231,11 +235,16 @@ const TopicsList = () => {
                         ...router.query,
                         filter: filterByScore,
                         algorithm,
+                        asof,
                         asofdate,
                       },
                     }}
                   >
-                    <a>
+                    <a
+                      onClick={() => {
+                        handleTopicClick();
+                      }}
+                    >
                       <Text className={styles.text}>
                         {isReview
                           ? item?.tree_structure_1_review_title
