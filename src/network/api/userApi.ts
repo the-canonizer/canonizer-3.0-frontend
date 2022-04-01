@@ -1,10 +1,6 @@
 import { message } from "antd";
 
-import {
-  handleError,
-  isServer,
-  handleCatchError,
-} from "../../utils/generalUtility";
+import { handleError, isServer } from "../../utils/generalUtility";
 import {
   setAuthToken,
   removeAuthToken,
@@ -208,13 +204,13 @@ export const GetUserProfileInfo = async () => {
   let state = store.getState();
   const { auth } = state;
   const res = await NetworkCall.fetch(
-    UserRequest.GetUserProfileInfo(auth.loggedInUser.token)
+    UserRequest.GetUserProfileInfo(auth.loggedInUser?.token)
   )
     .then((value) => {
       return value;
     })
     .catch((errors) => {
-      handleCatchError(errors);
+      handleError(errors);
     });
   return res;
 };
@@ -240,7 +236,7 @@ export const UpdateUserProfileInfo = async (values: object) => {
       return value;
     })
     .catch((errors) => {
-      handleCatchError(errors);
+      handleError(errors);
     });
   return res;
 };
@@ -249,13 +245,13 @@ export const GetMobileCarrier = async () => {
   let state = store.getState();
   const { auth } = state;
   const res = await NetworkCall.fetch(
-    UserRequest.GetMobileCarrier(auth.loggedInUser.token)
+    UserRequest.GetMobileCarrier(auth.loggedInUser?.token)
   )
     .then((value) => {
       return value;
     })
     .catch((errors) => {
-      handleCatchError(errors);
+      handleError(errors);
     });
   return res;
 };
@@ -270,7 +266,7 @@ export const SendOTP = async (values: object) => {
       return value;
     })
     .catch((errors) => {
-      handleCatchError(errors);
+      handleError(errors);
     });
   return res;
 };
@@ -285,7 +281,7 @@ export const VerifyOTP = async (values: object) => {
       return value;
     })
     .catch((errors) => {
-      handleCatchError(errors);
+      handleError(errors);
     });
   return res;
 };
@@ -294,13 +290,13 @@ export const GetAlgorithmsList = async () => {
   let state = store.getState();
   const { auth } = state;
   const res = await NetworkCall.fetch(
-    UserRequest.GetAlgorithmsList(auth.loggedInUser.token)
+    UserRequest.GetAlgorithmsList(auth.loggedInUser?.token)
   )
     .then((value) => {
       return value;
     })
     .catch((errors) => {
-      handleCatchError(errors);
+      handleError(errors);
     });
   return res;
 };
@@ -309,13 +305,13 @@ export const GetLanguageList = async () => {
   let state = store.getState();
   const { auth } = state;
   const res = await NetworkCall.fetch(
-    UserRequest.GetLanguageList(auth.loggedInUser.token)
+    UserRequest.GetLanguageList(auth.loggedInUser?.token)
   )
     .then((value) => {
       return value;
     })
     .catch((errors) => {
-      handleCatchError(errors);
+      handleError(errors);
     });
   return res;
 };
@@ -374,7 +370,7 @@ export const addNickName = async (values: object) => {
       return value;
     })
     .catch((errors) => {
-      handleCatchError(errors);
+      handleError(errors);
     });
 
   return res;
@@ -391,7 +387,7 @@ export const getNickNameList = async () => {
       return value;
     })
     .catch((errors) => {
-      handleCatchError(errors);
+      handleError(errors);
     });
   return res;
 };
@@ -407,7 +403,7 @@ export const updateNickName = async (values: object, id: string) => {
       return value;
     })
     .catch((errors) => {
-      handleCatchError(errors);
+      handleError(errors);
     });
   return res;
 };
@@ -437,7 +433,7 @@ export const getDirectSupportedCampsList = async () => {
       return value;
     })
     .catch((errors) => {
-      handleCatchError(errors);
+      handleError(errors);
     });
   return res;
 };
@@ -453,7 +449,7 @@ export const getDelegatedSupportCampsList = async () => {
       return value;
     })
     .catch((errors) => {
-      handleCatchError(errors);
+      handleError(errors);
     });
   return res;
 };
