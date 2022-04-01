@@ -114,8 +114,6 @@ const CreateNewCamp = ({
     }
   };
 
-  console.log("topicData", topicData, "crCamp", crCamp);
-
   return (
     <Fragment>
       <CreateNewCampUI

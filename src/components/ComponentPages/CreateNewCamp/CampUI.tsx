@@ -108,15 +108,9 @@ const CreateNewCampUI = ({
                       name="parent_camp_num"
                       {...parentCampRule}
                       initialValue={
-                        crCamp.camp_num ||
-                        topicData?.parent_camp_num?.toString()
+                        crCamp.camp_num || +topicData?.parent_camp_num
                       }
                     >
-                      {console.log(
-                        "camp_num",
-                        crCamp.camp_num || topicData?.parent_camp_num,
-                        topicData?.camp_name
-                      )}
                       <Select
                         allowClear
                         size={"large"}
@@ -135,6 +129,9 @@ const CreateNewCampUI = ({
                       label={labels.cr_parent_camp}
                       name="parent_camp_num"
                       {...parentCampRule}
+                      initialValue={
+                        crCamp.camp_num || +topicData?.parent_camp_num
+                      }
                     >
                       <Select
                         allowClear
