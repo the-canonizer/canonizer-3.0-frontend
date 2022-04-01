@@ -1,13 +1,26 @@
-import { Typography, Button } from "antd";
+import { useEffect, useState } from "react";
+import { Alert } from "antd";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import { Typography, Button } from "antd";
 
 import styles from "./campList.module.scss";
 import Link from "next/link";
 
+import { RootState } from "../../../store";
+
 const { Title, Text } = Typography;
 
 export default function CampList() {
+  const [isCampBtnVisible, setIsCampBtnVisible] = useState(false);
+
   const router = useRouter();
+
+  useEffect(() => {
+    if (router.pathname.includes("camp-details")) {
+      setIsCampBtnVisible(true);
+    }
+  }, [router.pathname]);
 
   const mockLinks = [
     {
@@ -41,6 +54,10 @@ export default function CampList() {
     router.push("/create-new-topic");
   };
 
+  const createdData = useSelector(
+    (state: RootState) => state.topic.currentTopic
+  );
+
   return (
     <>
       <div className={styles.wrap}>
@@ -59,9 +76,22 @@ export default function CampList() {
           <Button size="large" className={styles.createBtn} onClick={campRoute}>
             <i className="icon-topic"></i>Create New Topic
           </Button>
-          <Button size="large" className={styles.createBtn}>
-            <i className="icon-topic"></i>Create New Camp
-          </Button>
+          {createdData?.message && (
+            <Alert message={createdData?.message} type="success" />
+          )}
+
+          <button onClick={() => router.push("/create-new-camp")}>
+            Create Camp
+          </button>
+          {isCampBtnVisible ? (
+            <Button
+              size="large"
+              className={styles.createBtn}
+              onClick={() => router.push("/create-new-camp")}
+            >
+              <i className="icon-topic"></i>Create New Camp
+            </Button>
+          ) : null}
         </div>
         <div className={styles.campStatement}>
           <div className={styles.tabHead}>

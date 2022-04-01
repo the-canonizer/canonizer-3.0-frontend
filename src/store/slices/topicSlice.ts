@@ -6,21 +6,28 @@ export const topicSlice = createSlice({
     currentTopic: {
       topic_num: null,
       topic_name: "",
-      camp_name: "",
-      parent_camp_num: "",
+      camp_name: "Agreement",
+      parent_camp_num: "1",
       message: null,
     },
   },
   reducers: {
     setCurrentTopic: (state, action) => {
-      state.currentTopic = { ...state.currentTopic, ...action.payload };
+      console.log("state", state.currentTopic);
+      state.currentTopic = {
+        topic_num: action.payload.topic_num,
+        topic_name: "",
+        camp_name: "Agreement",
+        parent_camp_num: "1",
+        message: action.payload.message,
+      };
     },
     resetCurrentTopic: (state) => {
       state.currentTopic = {
         topic_num: null,
         topic_name: "",
-        camp_name: "",
-        parent_camp_num: "",
+        camp_name: "Agreement",
+        parent_camp_num: "1",
         message: null,
       };
     },

@@ -84,8 +84,20 @@ const CreateNewCamp = ({
 
     const res = await createCamp(body);
     if (res && res.status_code === 200) {
-      dispatch(setCurrentTopic({ message: res.message, ...res.data }));
+      dispatch(
+        setCurrentTopic({ message: res.message, camp_num: res.data.camp_num })
+      );
       router.push(`/camp-history/${topicData?.topic_num}/${res.data.camp_num}`);
+    }
+
+    if (res && res.status_code === 400 && res.error.camp_name) {
+      form.setFields([
+        {
+          name: "camp_name",
+          value: values.camp_name,
+          errors: [res.error.camp_name],
+        },
+      ]);
     }
   };
 
@@ -101,6 +113,8 @@ const CreateNewCamp = ({
       setCrCamp(currentCamp[0]);
     }
   };
+
+  console.log("topicData", topicData, "crCamp", crCamp);
 
   return (
     <Fragment>

@@ -47,10 +47,22 @@ const CreateNewTopic = ({
     };
 
     const res = await createTopic(body);
-
+    console.log("res resr", res);
     if (res && res.status_code === 200) {
-      dispatch(setCurrentTopic({ message: res.message, ...res.data }));
-      router.push(`/topic-history/${res.data.topic_num}`);
+      dispatch(
+        setCurrentTopic({ message: res.message, topic_num: res.data.topic_num })
+      );
+      router.push(`/camp-list`);
+    }
+
+    if (res && res.status_code === 400 && res.error.topic_name) {
+      form.setFields([
+        {
+          name: "topic_name",
+          value: values.topic_name,
+          errors: [res.error.topic_name],
+        },
+      ]);
     }
   };
 
