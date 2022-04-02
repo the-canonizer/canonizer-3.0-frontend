@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import { getCanonizedTopicsApi } from "../../../../network/api/homePageApi";
-import { setFilterCanonizedTopics } from "../../../../store/slices/homePageSlice";
+import { setFilterCanonizedTopics } from "../../../../store/slices/filtersSlice";
 import styles from "./topicsList.module.scss";
 import { Spin, Checkbox } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -42,13 +42,13 @@ const TopicsList = () => {
     onlyMyTopics,
   } = useSelector((state: RootState) => ({
     canonizedTopics: state.homePage?.canonizedTopicsData,
-    asofdate: state.homePage?.filterObject?.asofdate,
-    asof: state.homePage?.filterObject?.asof,
-    algorithm: state.homePage?.filterObject?.algorithm,
-    filterByScore: state.homePage?.filterObject?.filterByScore,
+    asofdate: state.filters?.filterObject?.asofdate,
+    asof: state.filters?.filterObject?.asof,
+    algorithm: state.filters?.filterObject?.algorithm,
+    filterByScore: state.filters?.filterObject?.filterByScore,
     nameSpaces: state.homePage?.nameSpaces,
-    includeReview: state?.homePage?.filterObject?.includeReview,
-    onlyMyTopics: state?.homePage?.filterObject?.onlyMyTopics,
+    includeReview: state?.filters?.filterObject?.includeReview,
+    onlyMyTopics: state?.filters?.filterObject?.onlyMyTopics,
   }));
 
   const [topicsData, setTopicsData] = useState(canonizedTopics);
@@ -233,10 +233,9 @@ const TopicsList = () => {
                       pathname: `/camp-details/${item?.topic_id}`,
                       query: {
                         ...router.query,
-                        filter: filterByScore,
                         algorithm,
                         asof,
-                        asofdate,
+                        asofdate: Math.floor(asofdate),
                       },
                     }}
                   >

@@ -59,21 +59,11 @@ export async function getServerSideProps(context) {
     update_all: 1,
   };
   const topicOrCampReqBody = {
-    // topic_num: topicID,
-    // camp_num: 1,
-    topic_num: 45,
+    topic_num: topicID,
     camp_num: 1,
     as_of: asof,
     as_of_date: asofdate,
   };
-  // const campStatementReq = {
-  //   topic_num: 45,
-  //   camp_num: 1,
-  //   // topic_num: +router.query.camp,
-  //   // camp_num: "1",
-  //   as_of: asof,
-  //   as_of_date: asofdate,
-  // };
 
   const [
     canonizedAlgorithms,

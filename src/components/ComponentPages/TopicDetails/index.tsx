@@ -26,19 +26,21 @@ const TopicDetails = () => {
   const didMount = useRef(false);
   let myRefToCampStatement = useRef(null);
   const [loadingIndicator, setLoadingIndicator] = useState(false);
+  const [getTreeLoadingIndicator, setGetTreeLoadingIndicator] = useState(false);
   const router = useRouter();
   const { asof, asofdate, algorithm, newsFeed, topicRecord, campRecord } =
     useSelector((state: RootState) => ({
-      asofdate: state.homePage?.filterObject?.asofdate,
-      algorithm: state.homePage?.filterObject?.algorithm,
+      asofdate: state.filters?.filterObject?.asofdate,
+      algorithm: state.filters?.filterObject?.algorithm,
       newsFeed: state?.topicDetails?.newsFeed,
-      asof: state?.homePage?.filterObject?.asof,
+      asof: state?.filters?.filterObject?.asof,
       topicRecord: state?.topicDetails?.currentTopicRecord,
       campRecord: state?.topicDetails?.currentCampRecord,
     }));
   useEffect(() => {
     async function getTreeApiCall() {
       if (didMount.current) {
+        setGetTreeLoadingIndicator(true);
         const reqBody = {
           topic_num: +router.query.camp,
           asofdate: asofdate || Date.now() / 1000,
@@ -46,6 +48,7 @@ const TopicDetails = () => {
           update_all: 1,
         };
         await getTreesApi(reqBody);
+        setGetTreeLoadingIndicator(false);
       } else didMount.current = true;
     }
     getTreeApiCall();
@@ -123,10 +126,12 @@ const TopicDetails = () => {
         </aside>
 
         <div className="pageContentWrap">
-          <CampTreeCard
-            scrollToCampStatement={scrollToCampStatement}
-            getSelectedNode={getSelectedNode}
-          />
+          <Spin spinning={getTreeLoadingIndicator} size="large">
+            <CampTreeCard
+              scrollToCampStatement={scrollToCampStatement}
+              getSelectedNode={getSelectedNode}
+            />
+          </Spin>
           <Spin spinning={loadingIndicator} size="large">
             <NewsFeedsCard newsFeed={newsFeed} />
           </Spin>
