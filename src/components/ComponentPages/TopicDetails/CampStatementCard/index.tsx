@@ -1,3 +1,4 @@
+import CustomButton from "@/components/common/button";
 import { Card, Typography, Button } from "antd";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
@@ -28,8 +29,10 @@ const CampStatementCard = ({ myRefToCampStatement }) => {
       }
       actions={[
         <>
-          <Button className="btn-green">Manage/Edit Camp Statement</Button>
-          <Button className="btn-blue">Camp Forum</Button>
+          <CustomButton className="btn-green">
+            Manage/Edit Camp Statement
+          </CustomButton>
+          <CustomButton className="btn-blue">Camp Forum</CustomButton>
         </>,
       ]}
     >

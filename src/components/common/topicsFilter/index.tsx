@@ -29,8 +29,9 @@ const infoContent = (
     <div className={styles.infoText}>
       <Title level={5}>Score Value </Title>
       <p>
-        Duis aute irure dolor in reprehderit in voluptate velit esse cillum
-        dolore eu fugiat nulla pariatur.
+        This option filters down the camp list with a score value greater than
+        the entered value. By default, the score value filter is 0, displaying
+        all camps.
       </p>
     </div>
   </>
@@ -41,18 +42,16 @@ const asContent = (
     <div className={styles.asfoText}>
       <Title level={5}>Include review</Title>
       <Paragraph>
-        Duis aute irure dolor in reprehderit in voluptalore eu fugiat nulla
-        pariatur.
+        In addition to the published camps, this option shows camps in Review.
       </Paragraph>
       <Title level={5}>Default</Title>
       <Paragraph>
-        Duis aute irure dolor in reprehderit in voluptalore eu fugiat nulla
-        pariatur.
+        This option lists down the latest (current date) version of camps.
       </Paragraph>
       <Title level={5}>As of date</Title>
       <Paragraph>
-        Duis aute irure dolor in reprehderit in voluptalore eu fugiat nulla
-        pariatur.
+        This option shows the historical view of camps according to the selected
+        date.
       </Paragraph>
     </div>
   </>

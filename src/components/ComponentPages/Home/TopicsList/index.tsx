@@ -19,8 +19,18 @@ const { Search } = Input;
 const infoContent = (
   <>
     <div>
-      <Title level={5}>Lorem Ipsum</Title>
-      <p>Duis aute irure dolor in reprehderit.</p>
+      <Title level={5}>Namespace</Title>
+      <p>
+        Namespaces are a set of topics created for specific organizations and
+        cities to separate topics exclusively for them from the topics of
+        general interest. To get a namespace created for your organization,
+        contact{" "}
+        <Link href="mailto:support@canonizer.com">
+          <a>
+            <i className="icon-envelope"></i> support@canonizer.com
+          </a>
+        </Link>
+      </p>
     </div>
   </>
 );
