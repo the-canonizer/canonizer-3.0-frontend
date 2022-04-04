@@ -16,6 +16,7 @@ import { RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsReviewCanonizedTopics } from "../../../store/slices/filtersSlice";
 
+
 const { Title, Text, Paragraph, Link } = Typography;
 const { Panel } = Collapse;
 const { Option } = Select;
@@ -79,7 +80,7 @@ function disabledDateTime() {
   };
 }
 
-const CreateTopic = () => {
+const CreateTopic = ({ onCreateCamp = () => {} }) => {
   const [isDatePicker, setIsDatePicker] = useState(false);
   const [value, setValue] = useState(2);
   const [datePickerValue, setDatePickerValue] = useState(null);
@@ -173,12 +174,6 @@ const CreateTopic = () => {
         })
       );
     }
-  };
-
-  const onCreateCamp = () => {
-    router.push({
-      pathname: "/create-new-camp",
-    });
   };
 
   return (

@@ -180,3 +180,12 @@ export const getAllCampNickNames = async () => {
     handleError(error);
   }
 };
+
+export const getAllUsedNickNames = async (body) => {
+  try {
+    const res = await NetworkCall.fetch(TreeRequest.getUsedNickNames(body));
+    return res;
+  } catch (error) {
+    handleError(error);
+  }
+};

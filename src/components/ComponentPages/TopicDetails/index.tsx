@@ -1,7 +1,7 @@
 import { Typography } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   getCanonizedCampStatementApi,
   getNewsFeedApi,
@@ -21,6 +21,7 @@ import NewsFeedsCard from "./NewsFeedsCard";
 import SupportTreeCard from "./SupportTreeCard";
 import { BackTop } from "antd";
 import { Spin } from "antd";
+import { setCurrentTopic } from "../../../store/slices/topicSlice";
 
 const TopicDetails = () => {
   const didMount = useRef(false);
@@ -28,6 +29,7 @@ const TopicDetails = () => {
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [getTreeLoadingIndicator, setGetTreeLoadingIndicator] = useState(false);
   const router = useRouter();
+  const dispatch = useDispatch();
   const { asof, asofdate, algorithm, newsFeed, topicRecord, campRecord } =
     useSelector((state: RootState) => ({
       asofdate: state.filters?.filterObject?.asofdate,
@@ -90,6 +92,26 @@ const TopicDetails = () => {
     setLoadingIndicator(false);
   };
 
+  const setCurrentTopics = (data) => dispatch(setCurrentTopic(data));
+
+  const onCreateCamp = () => {
+    const queryParams = router.query;
+
+    const data = {
+      message: null,
+      topic_num: queryParams.camp[0],
+      topic_name: topicRecord[0]?.topic_name,
+      camp_name: topicRecord[0]?.camp_name,
+      parent_camp_num: topicRecord[0]?.camp_num,
+    };
+
+    router.push({
+      pathname: "/create-new-camp",
+    });
+    
+    setCurrentTopics(data);
+  };
+
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
@@ -122,7 +144,7 @@ const TopicDetails = () => {
         </div>
 
         <aside className="leftSideBar miniSideBar">
-          <SideBar />
+          <SideBar onCreateCamp={onCreateCamp} />
         </aside>
 
         <div className="pageContentWrap">

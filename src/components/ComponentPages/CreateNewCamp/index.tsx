@@ -3,11 +3,11 @@ import { Form } from "antd";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 
-import { getNickNameList } from "../../../network/api/userApi";
 import {
   createCamp,
   getAllParentsCamp,
   getAllCampNickNames,
+  getAllUsedNickNames,
 } from "../../../network/api/campDetailApi";
 import { RootState } from "../../../store";
 import {
@@ -36,7 +36,10 @@ const CreateNewCamp = ({
   const topicData = useSelector((state: RootState) => state.topic.currentTopic);
 
   const fetchNickNameList = async () => {
-    let response = await getNickNameList();
+    const body = {
+      topic_num: topicData.topic_num,
+    };
+    let response = await getAllUsedNickNames(body);
     if (response && response.status_code === 200) {
       setNickNameList(response.data);
       setInitialValues({ nick_name: response.data[0]?.id });
