@@ -18,7 +18,7 @@ const { Search } = Input;
 
 const infoContent = (
   <>
-    <div>
+    <div className={styles.namespacesPopover}>
       <Title level={5}>Namespace</Title>
       <p>
         Namespaces are a set of topics created for specific organizations and
@@ -26,9 +26,7 @@ const infoContent = (
         general interest. To get a namespace created for your organization,
         contact{" "}
         <Link href="mailto:support@canonizer.com">
-          <a>
-            <i className="icon-envelope"></i> support@canonizer.com
-          </a>
+          <a>support@canonizer.com</a>
         </Link>
       </p>
     </div>
