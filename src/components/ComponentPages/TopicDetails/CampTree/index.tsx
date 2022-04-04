@@ -57,7 +57,7 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
                         }
                       >
                         {" "}
-                        {data[item].score}
+                        {data[item].score?.toFixed(2)}
                       </span>
                     </div>
                   </>

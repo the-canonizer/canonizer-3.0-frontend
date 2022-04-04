@@ -2,8 +2,6 @@ import { Card, Typography, Button, Descriptions } from "antd";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 
-const { Paragraph, Title } = Typography;
-
 const CurrentTopicCard = () => {
   const { topicRecord } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,

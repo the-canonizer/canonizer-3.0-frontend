@@ -175,6 +175,14 @@ const TopicsList = () => {
                     <i className="icon-info cursor-pointer"></i>
                   </Popover>
                 </Title>
+                {router.asPath === "/browse" && isLogin && (
+                  <Checkbox
+                    className={styles.checkboxOnlyMyTopics}
+                    onChange={handleCheckbox}
+                  >
+                    Only My Topics
+                  </Checkbox>
+                )}
                 <Select
                   size="large"
                   className={styles.dropdown}
@@ -192,10 +200,6 @@ const TopicsList = () => {
                     );
                   })}
                 </Select>
-                {router.asPath === "/browse" && !isLogin && (
-                  <Checkbox onChange={handleCheckbox}>Only My Topics</Checkbox>
-                )}
-
                 {router.asPath.includes("/browse") && !includeReview && (
                   <div className={styles.inputSearchTopic}>
                     <Search

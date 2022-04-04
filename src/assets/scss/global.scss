@@ -434,9 +434,11 @@ form {
         color: #2850be;
       }
     }
-    &:nth-child(2) {
-      .treeListItemTitle {
+    .ant-tree-node-content-wrapper.ant-tree-node-selected {
+      background-color: transparent;
+      &>span>div>span:first-child {
         color: #f89d15;
+        font-weight: 600;
       }
     }
   }
@@ -543,6 +545,18 @@ form {
   }
   .ant-descriptions-item {
     padding-bottom: 0;
+  }
+  .newsFeedsList {
+    margin: 0;
+    padding-left: 20px;
+    li {
+      &+li {
+        margin-top: .5rem;
+      }
+      a {
+        color: rgba(0, 0, 0, 0.85);
+      }
+    }
   }
 }
 .bold {
