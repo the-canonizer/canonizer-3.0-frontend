@@ -94,7 +94,7 @@ const CreateTopic = () => {
 
   const { algorithms, filterObject } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
-    filterObject: state.homePage.filterObject,
+    filterObject: state?.filters?.filterObject,
   }));
 
   // /////////////////////////////////////////////////////////////////////////
