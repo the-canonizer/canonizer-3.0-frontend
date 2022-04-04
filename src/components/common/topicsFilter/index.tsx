@@ -172,6 +172,12 @@ const CreateTopic = () => {
     }
   };
 
+  const onCreateCamp = () => {
+    router.push({
+      pathname: "/create-new-camp",
+    });
+  };
+
   return (
     <>
       <div className={styles.card}>
@@ -184,7 +190,7 @@ const CreateTopic = () => {
             <i className="icon-topic"></i> Create New Topic
           </Button>
           {isCampBtnVisible ? (
-            <Button size="large" className={styles.btn}>
+            <Button size="large" className={styles.btn} onClick={onCreateCamp}>
               <i className="icon-camp"></i> Create New Camp
             </Button>
           ) : null}

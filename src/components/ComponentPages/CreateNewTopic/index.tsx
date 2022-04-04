@@ -7,7 +7,7 @@ import { createTopic } from "../../../network/api/topicAPI";
 import { getNickNameList } from "../../../network/api/userApi";
 import { RootState } from "../../../store";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
-import CreateNewTopicUI from "./TopicUI";
+import CreateNewTopicUI from "./UI/TopicUI";
 
 const CreateNewTopic = ({
   testNickName = [],

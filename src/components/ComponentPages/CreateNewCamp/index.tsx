@@ -15,7 +15,7 @@ import {
   resetCurrentTopic,
 } from "../../../store/slices/topicSlice";
 
-import CreateNewCampUI from "./CampUI";
+import CreateNewCampUI from "./UI/CampUI";
 
 const CreateNewCamp = ({
   nickNames = [],
