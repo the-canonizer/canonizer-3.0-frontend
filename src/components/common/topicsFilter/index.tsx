@@ -16,7 +16,6 @@ import { RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsReviewCanonizedTopics } from "../../../store/slices/filtersSlice";
 
-
 const { Title, Text, Paragraph, Link } = Typography;
 const { Panel } = Collapse;
 const { Option } = Select;

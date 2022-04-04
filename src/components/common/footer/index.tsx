@@ -23,7 +23,7 @@ function Footer() {
       linkTitle: "Browse",
       id: 1,
     },
-    
+
     {
       link: "/create-new-topic",
       linkTitle: "Create New Topic",

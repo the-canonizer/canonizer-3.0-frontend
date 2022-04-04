@@ -108,7 +108,7 @@ const TopicDetails = () => {
     router.push({
       pathname: "/create-new-camp",
     });
-    
+
     setCurrentTopics(data);
   };
 
