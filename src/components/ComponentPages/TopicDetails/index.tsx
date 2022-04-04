@@ -1,6 +1,6 @@
 import { Typography } from "antd";
 import { useRouter } from "next/router";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   getCanonizedCampStatementApi,
@@ -20,23 +20,27 @@ import CurrentTopicCard from "./CurrentTopicCard";
 import NewsFeedsCard from "./NewsFeedsCard";
 import SupportTreeCard from "./SupportTreeCard";
 import { BackTop } from "antd";
+import { Spin } from "antd";
 
 const TopicDetails = () => {
   const didMount = useRef(false);
   let myRefToCampStatement = useRef(null);
+  const [loadingIndicator, setLoadingIndicator] = useState(false);
+  const [getTreeLoadingIndicator, setGetTreeLoadingIndicator] = useState(false);
   const router = useRouter();
   const { asof, asofdate, algorithm, newsFeed, topicRecord, campRecord } =
     useSelector((state: RootState) => ({
-      asofdate: state.homePage?.filterObject?.asofdate,
-      algorithm: state.homePage?.filterObject?.algorithm,
+      asofdate: state.filters?.filterObject?.asofdate,
+      algorithm: state.filters?.filterObject?.algorithm,
       newsFeed: state?.topicDetails?.newsFeed,
-      asof: state?.homePage?.filterObject?.asof,
+      asof: state?.filters?.filterObject?.asof,
       topicRecord: state?.topicDetails?.currentTopicRecord,
       campRecord: state?.topicDetails?.currentCampRecord,
     }));
   useEffect(() => {
     async function getTreeApiCall() {
       if (didMount.current) {
+        setGetTreeLoadingIndicator(true);
         const reqBody = {
           topic_num: +router.query.camp,
           asofdate: asofdate || Date.now() / 1000,
@@ -44,9 +48,11 @@ const TopicDetails = () => {
           update_all: 1,
         };
         await getTreesApi(reqBody);
+        setGetTreeLoadingIndicator(false);
       } else didMount.current = true;
     }
     getTreeApiCall();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asofdate, algorithm]);
 
   const scrollToTop = () => {
@@ -56,51 +62,32 @@ const TopicDetails = () => {
     });
   };
 
-  const reqBody = { topic_num: 45, camp_num: 1 };
-  useEffect(() => {
-    const campStatementReq = {
-      topic_num: 45,
-      camp_num: 1,
-      // topic_num: +router.query.camp,
-      // camp_num: "1",
-      as_of: asof,
-      as_of_date: asofdate,
-    };
-    async function getNewsFeedAndCampStatementApiCall() {
-      await Promise.all([
-        getNewsFeedApi(reqBody),
-        getCanonizedCampStatementApi(campStatementReq),
-        getCanonizedCampSupportingTreeApi(reqBody),
-      ]);
-    }
-    getNewsFeedAndCampStatementApiCall();
-  }, []);
-
   const scrollToCampStatement = () => {
     myRefToCampStatement.current.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleLoadMoreSupporters = async () => {
+    const reqBody = { topic_num: 45, camp_num: 1 };
     await getCanonizedCampSupportingTreeApi(reqBody, true);
   };
 
   const getSelectedNode = async (nodeKey) => {
-    const req = {
-      topic_num: +router.query.camp,
-      camp_num: nodeKey,
-    };
-    const campReq = {
+    setLoadingIndicator(true);
+    const reqBody = {
       topic_num: +router.query.camp,
       camp_num: nodeKey,
       as_of: asof,
       as_of_date: asofdate,
     };
+
     await Promise.all([
-      getNewsFeedApi(req),
-      getCanonizedCampStatementApi(campReq),
-      getCurrentTopicRecordApi(campReq),
-      getCurrentCampRecordApi(campReq),
+      getNewsFeedApi(reqBody),
+      getCanonizedCampStatementApi(reqBody),
+      getCurrentTopicRecordApi(reqBody),
+      getCurrentCampRecordApi(reqBody),
+      getCanonizedCampSupportingTreeApi(reqBody),
     ]);
+    setLoadingIndicator(false);
   };
 
   return (
@@ -115,21 +102,22 @@ const TopicDetails = () => {
           <div className={styles.breadcrumbLinks}>
             {" "}
             <span className="bold mr-1"> Camp : </span>
-            {campRecord?.length &&
-              campRecord[0].parentCamps?.map((camp, index) => {
-                return (
-                  <a
-                    key={camp?.camp_num}
-                    onClick={() => {
-                      getSelectedNode(camp?.camp_num);
-                    }}
-                  >
-                    {" "}
-                    {index !== 0 && "/"}
-                    {`${camp?.camp_name}`}
-                  </a>
-                );
-              })}
+            {campRecord?.length
+              ? campRecord[0].parentCamps?.map((camp, index) => {
+                  return (
+                    <a
+                      key={camp?.camp_num}
+                      onClick={() => {
+                        getSelectedNode(camp?.camp_num);
+                      }}
+                    >
+                      {" "}
+                      {index !== 0 && "/"}
+                      {`${camp?.camp_name}`}
+                    </a>
+                  );
+                })
+              : null}
           </div>
         </div>
 
@@ -138,17 +126,29 @@ const TopicDetails = () => {
         </aside>
 
         <div className="pageContentWrap">
-          <CampTreeCard
-            scrollToCampStatement={scrollToCampStatement}
-            getSelectedNode={getSelectedNode}
-          />
-          <NewsFeedsCard newsFeed={newsFeed} />
-          <CampStatementCard myRefToCampStatement={myRefToCampStatement} />
-          <CurrentTopicCard />
-          <CurrentCampCard />
-          <SupportTreeCard
-            handleLoadMoreSupporters={handleLoadMoreSupporters}
-          />
+          <Spin spinning={getTreeLoadingIndicator} size="large">
+            <CampTreeCard
+              scrollToCampStatement={scrollToCampStatement}
+              getSelectedNode={getSelectedNode}
+            />
+          </Spin>
+          <Spin spinning={loadingIndicator} size="large">
+            <NewsFeedsCard newsFeed={newsFeed} />
+          </Spin>
+          <Spin spinning={loadingIndicator} size="large">
+            <CampStatementCard myRefToCampStatement={myRefToCampStatement} />
+          </Spin>
+          <Spin spinning={loadingIndicator} size="large">
+            <CurrentTopicCard />
+          </Spin>
+          <Spin spinning={loadingIndicator} size="large">
+            <CurrentCampCard />
+          </Spin>
+          <Spin spinning={loadingIndicator} size="large">
+            <SupportTreeCard
+              handleLoadMoreSupporters={handleLoadMoreSupporters}
+            />
+          </Spin>
 
           <BackTop />
         </div>

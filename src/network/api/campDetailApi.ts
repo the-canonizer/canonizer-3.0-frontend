@@ -15,7 +15,7 @@ import { handleError, isServer } from "../../utils/generalUtility";
 
 export const getTreesApi = async (reqBody) => {
   try {
-    const trees = await NetworkCall.fetch(TreeRequest.getTrees(reqBody));
+    const trees = await NetworkCall.fetch(TreeRequest.getTrees(reqBody), false);
     store.dispatch(setTree(trees?.data[0]));
     return trees?.data[0];
   } catch (error) {
@@ -25,7 +25,10 @@ export const getTreesApi = async (reqBody) => {
 
 export const getNewsFeedApi = async (reqBody) => {
   try {
-    const newsFeed = await NetworkCall.fetch(TreeRequest.getNewsFeed(reqBody));
+    const newsFeed = await NetworkCall.fetch(
+      TreeRequest.getNewsFeed(reqBody),
+      false
+    );
     store.dispatch(setNewsFeed(newsFeed?.data));
     return newsFeed?.data;
   } catch (error) {
@@ -36,7 +39,8 @@ export const getNewsFeedApi = async (reqBody) => {
 export const getCanonizedCampStatementApi = async (reqBody) => {
   try {
     const campStatement = await NetworkCall.fetch(
-      TreeRequest.getCampStatement(reqBody)
+      TreeRequest.getCampStatement(reqBody),
+      false
     );
     store.dispatch(setCampStatement(campStatement?.data));
     return campStatement?.data;
@@ -48,7 +52,8 @@ export const getCanonizedCampStatementApi = async (reqBody) => {
 export const getCurrentTopicRecordApi = async (reqBody) => {
   try {
     const currentTopicRecord = await NetworkCall.fetch(
-      TreeRequest.getCurrentTopicRecord(reqBody)
+      TreeRequest.getCurrentTopicRecord(reqBody),
+      false
     );
     store.dispatch(setCurrentTopicRecord(currentTopicRecord?.data));
     return currentTopicRecord?.data;
@@ -60,7 +65,8 @@ export const getCurrentTopicRecordApi = async (reqBody) => {
 export const getCurrentCampRecordApi = async (reqBody) => {
   try {
     const currentCampRecord = await NetworkCall.fetch(
-      TreeRequest.getCurrentCampRecord(reqBody)
+      TreeRequest.getCurrentCampRecord(reqBody),
+      false
     );
     store.dispatch(setCurrentCampRecord(currentCampRecord?.data));
     return currentCampRecord?.data;
@@ -75,7 +81,7 @@ export const getCanonizedCampSupportingTreeApi = async (
 ) => {
   try {
     // const supportingTree = await NetworkCall.fetch(
-    //   TreeRequest.getCampSupportingTree(reqBody)
+    //   TreeRequest.getCampSupportingTree(reqBody), false
     // );
     const mockSupporters = [
       {
