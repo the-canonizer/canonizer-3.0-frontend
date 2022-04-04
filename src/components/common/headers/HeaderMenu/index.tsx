@@ -1,17 +1,17 @@
 import React from "react";
 import { Menu } from "antd";
 import styles from "../siteHeader.module.scss";
-
+import Link from "next/link";
 const HeaderMenu = () => {
   return (
     <>
-      <nav className={styles.navWrap}>
+      {/* <nav className={styles.navWrap}>
         <Menu mode="horizontal" className={styles.nav}>
           <Menu.Item key={0}>
             <a href=""> Browse </a>
           </Menu.Item>
           <Menu.Item key={1}>
-            <a href="">Upload File</a>
+            <Link href="/uploadFiles">Upload Files</Link>
           </Menu.Item>
           <Menu.Item key={2}>
             <a href="">Help</a>
@@ -29,7 +29,7 @@ const HeaderMenu = () => {
             <a href="">Services</a>
           </Menu.Item>
         </Menu>
-      </nav>
+      </nav> */}
     </>
   );
 };
