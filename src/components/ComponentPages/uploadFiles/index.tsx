@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import UploadFileUI from "./uploadFilesUI";
 import { Form, Menu } from "antd";
 import moment from "moment";
@@ -54,30 +54,19 @@ const UploadFiles = () => {
   const [fileLists, setFileLists] = useState([]);
   const [folderFiles, setFolderFiles] = useState([]);
 
-  const Closefolder = () => {
+  const closeFolder = () => {
     showUploadsAfter();
     enableCreateFolderBtn();
     openFolderHide();
   };
-  const hideFiles = () => {
-    let element = document.getElementsByClassName("ant-upload-list-picture");
-    for (let x = 0; x < element.length; x++) {
-      element[x].style.display = "none";
-    }
-  };
-  const showfiles = () => {
-    let element = document.getElementsByClassName("ant-upload-list-picture");
-    for (let x = 0; x < element.length; x++) {
-      element[x].style.display = "flex";
-    }
-  };
-  const UploadFun = () => {
+  
+  const uploadFun = () => {
     setFolderFiles([]);
     fileStatusHide();
     enableCreateFolderBtn();
     uploadOptionsHide();
     shownFolder();
-    hideFiles();
+    //hideFiles();
     showUploadsAfter();
   };
   const handleCancel = () => {
@@ -91,13 +80,13 @@ const UploadFiles = () => {
   const handle_X_btn = () => {
     crossBtnHide();
     dragBoxHide();
-    showfiles();
+    //showfiles();
     uploadOptionsShow();
   };
   const addNewFile = () => {
-    hideFiles();
+    //hideFiles();
     dragBoxShow();
-    Closefolder();
+    closeFolder();
     hideUploadsAfter();
     disbleCreateFolderBtn();
     folderHide();
@@ -159,9 +148,8 @@ const UploadFiles = () => {
       setFileLists={setFileLists}
       folderFiles={folderFiles}
       setFolderFiles={setFolderFiles}
-      Closefolder={Closefolder}
-      showfiles={showfiles}
-      UploadFun={UploadFun}
+      closeFolder={closeFolder}
+      uploadFun={uploadFun}
       handleCancel={handleCancel}
       handle_X_btn={handle_X_btn}
       addNewFile={addNewFile}

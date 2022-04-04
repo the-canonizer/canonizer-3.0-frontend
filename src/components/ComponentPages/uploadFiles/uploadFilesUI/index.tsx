@@ -51,9 +51,8 @@ const UploadFileUI = ({
   setFileLists,
   folderFiles,
   setFolderFiles,
-  Closefolder,
-  showfiles,
-  UploadFun,
+  closeFolder,
+  uploadFun,
   handleCancel,
   handle_X_btn,
   addNewFile,
@@ -188,9 +187,9 @@ const UploadFileUI = ({
                 let length = info.fileList.length;
                 if (length) {
                   if (fileStatus) {
-                    fileLists.map((fileitems) => {
+                    fileLists.map((fileitems,index) => {
                       return (
-                        <div>
+                        <div key={index}>
                           {fileitems.id === selectedFolderID
                             ? fileitems.files.push(...folderFiles)
                             : ""}
@@ -218,7 +217,6 @@ const UploadFileUI = ({
                   message.success(
                     `${info.file.name} file uploaded successfully.`
                   );
-                  showfiles();
                 } else if (status === "error") {
                   message.error(`${info.file.name} file upload failed.`);
                 }
@@ -277,7 +275,7 @@ const UploadFileUI = ({
 
           {fileLists.map((item, i) => {
             return (
-              <div className={styles.view_After_Upload}>
+              <div className={styles.view_After_Upload} key={i}>
                 {item.type &&
                 item.type == "folder" &&
                 item.id == selectedFolderID &&
@@ -290,7 +288,7 @@ const UploadFileUI = ({
                           {" "}
                           <ArrowLeftOutlined
                             onClick={() => {
-                              Closefolder();
+                              closeFolder();
                               StatushideFile();
                             }}
                           />{" "}
@@ -359,7 +357,7 @@ const UploadFileUI = ({
           })}
           {show_UploadOptions ? (
             <div className={styles.Upload_Cancel_Btn}>
-              <Button className={styles.Upload_Btn} onClick={UploadFun}>
+              <Button className={styles.Upload_Btn} onClick={uploadFun}>
                 Upload
               </Button>
               <Button onClick={() => handleCancel()}>cancel</Button>
