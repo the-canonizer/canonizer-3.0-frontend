@@ -25,9 +25,25 @@
       font-size: 1.25rem;
       color: #1c1b24;
       margin-bottom: 0;
+      white-space: nowrap;
       i {
         margin-left: 5px;
         color: #d1d4db;
+      }
+    }
+    .checkboxOnlyMyTopics {
+      white-space: nowrap;
+      @media screen and (max-width: 400px) {
+        margin-top: 1rem;
+      }
+      @media screen and (min-width: 401px) and (max-width: 1199px) {
+        position: absolute;
+        right: 0;
+        top: 0.2rem;
+      }
+      @media screen and (min-width: 1200px) {
+        order: 2;
+        margin: 0 10px 0 15px;
       }
     }
     .dropdown {
@@ -89,6 +105,7 @@
         @media screen and (min-width: 1200px) {
           max-width: 275px;
           width: 33%;
+          order: 3;
         }
         @media screen and (min-width: 576px) and (max-width: 1199px) {
           max-width: inherit;

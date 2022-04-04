@@ -1,4 +1,5 @@
 import homePageSlice from "./slices/homePageSlice";
+import filtersSlice from "./slices/filtersSlice";
 
 // // reducers
 import Auth from "./slices/authSlice";
@@ -29,6 +30,7 @@ let reducers = combineReducers({
   homePage: homePageSlice,
   ui: UiReducer,
   topic: TopicSlice,
+  filters: filtersSlice,
 });
 
 const persistConfig = {

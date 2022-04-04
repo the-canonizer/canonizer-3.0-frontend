@@ -1,15 +1,8 @@
 import Footer from "../";
 import { cleanup, render, screen } from "@testing-library/react";
+import { windowMatchMedia } from "../../../../utils/testUtils";
 
-window.matchMedia =
-  window.matchMedia ||
-  function () {
-    return {
-      matches: false,
-      addListener: function () {},
-      removeListener: function () {},
-    };
-  };
+windowMatchMedia();
 
 afterEach(cleanup);
 

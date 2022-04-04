@@ -14,10 +14,7 @@ import {
 import { LeftOutlined } from "@ant-design/icons";
 import { RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setIsReviewCanonizedTopics,
-  setFilterCanonizedTopics,
-} from "../../../store/slices/homePageSlice";
+import { setIsReviewCanonizedTopics } from "../../../store/slices/filtersSlice";
 
 const { Title, Text, Paragraph, Link } = Typography;
 const { Panel } = Collapse;
@@ -25,6 +22,7 @@ const { Option } = Select;
 
 import styles from "./topicListFilter.module.scss";
 import { useRouter } from "next/router";
+import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 
 const infoContent = (
   <>
@@ -100,20 +98,25 @@ const CreateTopic = () => {
     filterObject: state.homePage.filterObject,
   }));
 
-  useEffect(() => {
-    if (didMount.current) {
-      if (history.pushState) {
-        const queryParams = `?filter=${filterObject?.filterByScore}&algorithm=${filterObject?.algorithm}&asofdate=${filterObject?.asofdate}&namespace=${filterObject?.namespace_id}`;
-        var newurl =
-          window.location.protocol +
-          "//" +
-          window.location.host +
-          window.location.pathname +
-          queryParams;
-        window.history.pushState({ path: newurl }, "", newurl);
-      }
-    } else didMount.current = true;
-  }, [filterObject]);
+  // /////////////////////////////////////////////////////////////////////////
+  // Discussion required on this functionality after that I will remove or //
+  //                        uncomment bellow code                         //
+  // //////////////////////////////////////////////////////////////////////
+
+  // useEffect(() => {
+  //   if (didMount.current) {
+  //     if (history.pushState) {
+  //       const queryParams = `?filter=${filterObject?.filterByScore}&algorithm=${filterObject?.algorithm}&asofdate=${filterObject?.asofdate}&namespace=${filterObject?.namespace_id}`;
+  //       var newurl =
+  //         window.location.protocol +
+  //         "//" +
+  //         window.location.host +
+  //         window.location.pathname +
+  //         queryParams;
+  //       window.history.pushState({ path: newurl }, "", newurl);
+  //     }
+  //   } else didMount.current = true;
+  // }, [filterObject]);
 
   useEffect(() => {
     if (router.pathname.includes("camp-details")) {

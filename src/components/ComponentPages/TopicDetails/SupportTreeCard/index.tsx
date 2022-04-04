@@ -41,16 +41,18 @@ const SupportTreeCard = ({ handleLoadMoreSupporters }) => {
             );
           })}
       </List>
-      <Button
-        type="primary"
-        ghost
-        className="load-more-btn"
-        onClick={() => {
-          handleLoadMoreSupporters();
-        }}
-      >
-        Load More
-      </Button>
+      {campSupportingTree?.length && (
+        <Button
+          type="primary"
+          ghost
+          className="load-more-btn"
+          onClick={() => {
+            handleLoadMoreSupporters();
+          }}
+        >
+          Load More
+        </Button>
+      )}
     </Card>
   );
 };
