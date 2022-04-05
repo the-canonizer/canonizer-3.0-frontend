@@ -23,11 +23,7 @@ function Footer() {
       linkTitle: "Browse",
       id: 1,
     },
-    {
-      link: "/services",
-      linkTitle: "Services",
-      id: 2,
-    },
+
     {
       link: "/create-new-topic",
       linkTitle: "Create New Topic",
@@ -39,7 +35,7 @@ function Footer() {
       id: 4,
     },
     {
-      link: "/upload",
+      link: "/uploadFile",
       linkTitle: "Upload Files",
       id: 5,
     },

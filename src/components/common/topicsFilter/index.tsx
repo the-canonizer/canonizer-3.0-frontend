@@ -14,10 +14,7 @@ import {
 import { LeftOutlined } from "@ant-design/icons";
 import { RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setIsReviewCanonizedTopics,
-  setFilterCanonizedTopics,
-} from "../../../store/slices/homePageSlice";
+import { setIsReviewCanonizedTopics } from "../../../store/slices/filtersSlice";
 
 const { Title, Text, Paragraph, Link } = Typography;
 const { Panel } = Collapse;
@@ -25,14 +22,16 @@ const { Option } = Select;
 
 import styles from "./topicListFilter.module.scss";
 import { useRouter } from "next/router";
+import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 
 const infoContent = (
   <>
     <div className={styles.infoText}>
       <Title level={5}>Score Value </Title>
       <p>
-        Duis aute irure dolor in reprehderit in voluptate velit esse cillum
-        dolore eu fugiat nulla pariatur.
+        This option filters down the camp list with a score value greater than
+        the entered value. By default, the score value filter is 0, displaying
+        all camps.
       </p>
     </div>
   </>
@@ -43,18 +42,16 @@ const asContent = (
     <div className={styles.asfoText}>
       <Title level={5}>Include review</Title>
       <Paragraph>
-        Duis aute irure dolor in reprehderit in voluptalore eu fugiat nulla
-        pariatur.
+        In addition to the published camps, this option shows camps in Review.
       </Paragraph>
       <Title level={5}>Default</Title>
       <Paragraph>
-        Duis aute irure dolor in reprehderit in voluptalore eu fugiat nulla
-        pariatur.
+        This option lists down the latest (current date) version of camps.
       </Paragraph>
       <Title level={5}>As of date</Title>
       <Paragraph>
-        Duis aute irure dolor in reprehderit in voluptalore eu fugiat nulla
-        pariatur.
+        This option shows the historical view of camps according to the selected
+        date.
       </Paragraph>
     </div>
   </>
@@ -81,7 +78,7 @@ function disabledDateTime() {
   };
 }
 
-const CreateTopic = () => {
+const CreateTopic = ({ onCreateCamp = () => {} }) => {
   const [isDatePicker, setIsDatePicker] = useState(false);
   const [value, setValue] = useState(2);
   const [datePickerValue, setDatePickerValue] = useState(null);
@@ -89,6 +86,7 @@ const CreateTopic = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const didMount = useRef(false);
+  const [isCampBtnVisible, setIsCampBtnVisible] = useState(false);
 
   const campRoute = () => {
     router.push("/create-new-topic");
@@ -96,23 +94,34 @@ const CreateTopic = () => {
 
   const { algorithms, filterObject } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
-    filterObject: state.homePage.filterObject,
+    filterObject: state?.filters?.filterObject,
   }));
 
+  // /////////////////////////////////////////////////////////////////////////
+  // Discussion required on this functionality after that I will remove or //
+  //                        uncomment bellow code                         //
+  // //////////////////////////////////////////////////////////////////////
+
+  // useEffect(() => {
+  //   if (didMount.current) {
+  //     if (history.pushState) {
+  //       const queryParams = `?filter=${filterObject?.filterByScore}&algorithm=${filterObject?.algorithm}&asofdate=${filterObject?.asofdate}&namespace=${filterObject?.namespace_id}`;
+  //       var newurl =
+  //         window.location.protocol +
+  //         "//" +
+  //         window.location.host +
+  //         window.location.pathname +
+  //         queryParams;
+  //       window.history.pushState({ path: newurl }, "", newurl);
+  //     }
+  //   } else didMount.current = true;
+  // }, [filterObject]);
+
   useEffect(() => {
-    if (didMount.current) {
-      if (history.pushState) {
-        const queryParams = `?filter=${filterObject?.filterByScore}&algorithm=${filterObject?.algorithm}&asofdate=${filterObject?.asofdate}&namespace=${filterObject?.namespace_id}`;
-        var newurl =
-          window.location.protocol +
-          "//" +
-          window.location.host +
-          window.location.pathname +
-          queryParams;
-        window.history.pushState({ path: newurl }, "", newurl);
-      }
-    } else didMount.current = true;
-  }, [filterObject]);
+    if (router.pathname.includes("camp-details")) {
+      setIsCampBtnVisible(true);
+    }
+  }, [router.pathname]);
 
   const selectAlgorithm = (value) => {
     dispatch(
@@ -176,9 +185,11 @@ const CreateTopic = () => {
           >
             <i className="icon-topic"></i> Create New Topic
           </Button>
-          <Button size="large" className={styles.btn}>
-            <i className="icon-camp"></i> Create New Camp
-          </Button>
+          {isCampBtnVisible ? (
+            <Button size="large" className={styles.btn} onClick={onCreateCamp}>
+              <i className="icon-camp"></i> Create New Camp
+            </Button>
+          ) : null}
         </div>
         <Collapse
           className={`${styles.cardAccordian} topicListFilterCardCollapse`}

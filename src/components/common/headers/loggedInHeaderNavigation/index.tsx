@@ -30,7 +30,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
     },
 
     {
-      link: "/upload",
+      link: "/uploadFile",
       linkTitle: "Upload Files",
       id: 2,
     },
@@ -53,11 +53,6 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
       link: "/jobs",
       linkTitle: "Jobs",
       id: 6,
-    },
-    {
-      link: "/services",
-      linkTitle: "Services",
-      id: 7,
     },
   ];
 

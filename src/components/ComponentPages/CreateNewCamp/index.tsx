@@ -3,11 +3,11 @@ import { Form } from "antd";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 
-import { getNickNameList } from "../../../network/api/userApi";
 import {
   createCamp,
   getAllParentsCamp,
   getAllCampNickNames,
+  getAllUsedNickNames,
 } from "../../../network/api/campDetailApi";
 import { RootState } from "../../../store";
 import {
@@ -15,7 +15,7 @@ import {
   resetCurrentTopic,
 } from "../../../store/slices/topicSlice";
 
-import CreateNewCampUI from "./CampUI";
+import CreateNewCampUI from "./UI/CampUI";
 
 const CreateNewCamp = ({
   nickNames = [],
@@ -36,7 +36,10 @@ const CreateNewCamp = ({
   const topicData = useSelector((state: RootState) => state.topic.currentTopic);
 
   const fetchNickNameList = async () => {
-    let response = await getNickNameList();
+    const body = {
+      topic_num: topicData.topic_num,
+    };
+    let response = await getAllUsedNickNames(body);
     if (response && response.status_code === 200) {
       setNickNameList(response.data);
       setInitialValues({ nick_name: response.data[0]?.id });
@@ -84,8 +87,20 @@ const CreateNewCamp = ({
 
     const res = await createCamp(body);
     if (res && res.status_code === 200) {
-      dispatch(setCurrentTopic({ message: res.message, ...res.data }));
-      router.push(`/camp-history/${topicData?.topic_num}/${res.data.camp_num}`);
+      dispatch(
+        setCurrentTopic({ message: res.message, camp_num: res.data.camp_num })
+      );
+      router.push(`/camp-list`);
+    }
+
+    if (res && res.status_code === 400 && res.error.camp_name) {
+      form.setFields([
+        {
+          name: "camp_name",
+          value: values.camp_name,
+          errors: [res.error.camp_name],
+        },
+      ]);
     }
   };
 

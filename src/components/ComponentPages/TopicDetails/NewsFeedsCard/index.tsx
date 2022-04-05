@@ -30,36 +30,55 @@ const NewsFeedsCard = ({ newsFeed, reqBody }) => {
         </h3>
       }
       extra={
-        <>
-          {" "}
-          {/* <a>
+        newsFeed?.length ? (
+          <>
+            {" "}
+            {/* <a>
             <i className={"icon-edit"}></i>Edit News
           </a>{" "} */}
-          <Link
-            href={{
-              pathname: "/news/edit",
-              query: reqBody,
-            }}
-          >
+            <Link
+              href={{
+                pathname: "/news/edit",
+                query: reqBody,
+              }}
+            >
+              <a>
+                <i className={"icon-edit "}></i>Edit News
+              </a>
+            </Link>{" "}
             <a>
-              <i className={"icon-edit "}></i>Edit News
+              <i className={"icon-delete"}></i>Delete News
             </a>
-          </Link>{" "}
-          <a>
-            <i className={"icon-delete"}></i>Delete News
-          </a>
-        </>
+          </>
+        ) : null
+        // newsFeed?.length ? (
+        //   <>
+        //     {" "}
+        //     <a>
+        //       <i className={"icon-edit"}></i>Edit News
+        //     </a>{" "}
+        //     <a>
+        //       <i className={"icon-delete"}></i>Delete News
+        //     </a>
+        //   </>
+        // ) : null
       }
     >
-      {newsFeed?.map((news) => {
-        return (
-          <Paragraph key={news.id}>
-            <Link href={news?.link} passHref>
-              <a>{news?.display_text}</a>
-            </Link>
-          </Paragraph>
-        );
-      })}
+      <ul className="newsFeedsList">
+        {newsFeed?.length
+          ? newsFeed?.map((news) => {
+              return (
+                <li key={news.id}>
+                  <Paragraph>
+                    <Link href={news?.link} passHref>
+                      <a>{news?.display_text}</a>
+                    </Link>
+                  </Paragraph>
+                </li>
+              );
+            })
+          : "No News Found"}
+      </ul>
     </Card>
   );
 };

@@ -9,7 +9,7 @@ const { TreeNode } = Tree;
 const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
   const { tree, filterByScore } = useSelector((state: RootState) => ({
     tree: state?.topicDetails?.tree,
-    filterByScore: state.homePage?.filterObject?.filterByScore,
+    filterByScore: state.filters?.filterObject?.filterByScore,
   }));
   const [selectedNodeID, setSelectedNodeID] = useState(1);
   const [scoreFilter, setScoreFilter] = useState(filterByScore);
@@ -57,7 +57,7 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
                         }
                       >
                         {" "}
-                        {data[item].score}
+                        {data[item].score?.toFixed(2)}
                       </span>
                     </div>
                   </>

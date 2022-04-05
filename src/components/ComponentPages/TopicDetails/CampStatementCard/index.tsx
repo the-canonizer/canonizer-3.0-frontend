@@ -1,3 +1,4 @@
+import CustomButton from "@/components/common/button";
 import { Card, Typography, Button } from "antd";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
@@ -9,6 +10,7 @@ const CampStatementCard = ({ myRefToCampStatement }) => {
   const { campStatement } = useSelector((state: RootState) => ({
     campStatement: state?.topicDetails?.campStatement,
   }));
+
   return (
     <Card
       className="canCard mb-3"
@@ -18,19 +20,25 @@ const CampStatementCard = ({ myRefToCampStatement }) => {
         </div>
       }
       extra={
-        <div className="cardActions">
-          <span className="bold">Go live Time </span>:{" "}
-          {campStatement?.length && campStatement[0]?.go_live_time}
-        </div>
+        campStatement?.length ? (
+          <div className="cardActions">
+            <span className="bold">Go live Time </span>:
+            {campStatement?.length && campStatement[0]?.go_live_time}
+          </div>
+        ) : null
       }
       actions={[
         <>
-          <Button className="btn-green">Manage/Edit Camp Statement</Button>
-          <Button className="btn-blue">Camp Forum</Button>
+          <CustomButton className="btn-green">
+            Manage/Edit Camp Statement
+          </CustomButton>
+          <CustomButton className="btn-blue">Camp Forum</CustomButton>
         </>,
       ]}
     >
-      <Paragraph>{campStatement?.length && campStatement[0]?.value}</Paragraph>
+      <Paragraph>
+        {campStatement?.length ? campStatement[0]?.value : "No Statement Found"}
+      </Paragraph>
       {/* Will remove the below commented code once the api is integrated completed */}
 
       {/* <Title level={2} className={styles.cardHeading}>

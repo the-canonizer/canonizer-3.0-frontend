@@ -70,6 +70,7 @@ const NetworkConstants = {
     DeleteSocialLinkedAccount: `${BaseCanonizerApiUrl}/user/social/delete`,
     LinkUsersFromSocial: `${BaseCanonizerApiUrl}/user/social/socialLink`,
     DeactivateUser: `${BaseCanonizerApiUrl}/user/deactivate`,
+    GetNickNames: `${BaseCanonizerApiUrl}/camp/getTopicNickNameUsed`,
 
     //footer
 

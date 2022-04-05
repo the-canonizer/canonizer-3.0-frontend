@@ -1,15 +1,8 @@
 import Footer from "../";
 import { cleanup, render, screen } from "@testing-library/react";
+import { windowMatchMedia } from "../../../../utils/testUtils";
 
-window.matchMedia =
-  window.matchMedia ||
-  function () {
-    return {
-      matches: false,
-      addListener: function () {},
-      removeListener: function () {},
-    };
-  };
+windowMatchMedia();
 
 afterEach(cleanup);
 
@@ -74,7 +67,7 @@ describe("Footer", () => {
 
     expect(logoLink.getAttribute("href")).toBe("/");
     expect(browseLink.getAttribute("href")).toBe("/browse");
-    expect(uploadFilesLink.getAttribute("href")).toBe("/upload");
+    expect(uploadFilesLink.getAttribute("href")).toBe("/uploadFile");
     expect(helpLink.getAttribute("href")).toBe("/help");
     expect(whitePaperLink.getAttribute("href")).toBe("/white-paper");
     expect(blogLink.getAttribute("href")).toBe("/blog");

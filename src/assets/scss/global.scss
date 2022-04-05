@@ -434,9 +434,11 @@ form {
         color: #2850be;
       }
     }
-    &:nth-child(2) {
-      .treeListItemTitle {
+    .ant-tree-node-content-wrapper.ant-tree-node-selected {
+      background-color: transparent;
+      &>span>div>span:first-child {
         color: #f89d15;
+        font-weight: 600;
       }
     }
   }
@@ -543,6 +545,18 @@ form {
   }
   .ant-descriptions-item {
     padding-bottom: 0;
+  }
+  .newsFeedsList {
+    margin: 0;
+    padding-left: 20px;
+    li {
+      &+li {
+        margin-top: .5rem;
+      }
+      a {
+        color: rgba(0, 0, 0, 0.85);
+      }
+    }
   }
 }
 .bold {
@@ -663,4 +677,123 @@ form {
       flex-wrap: wrap;
     }
   }
+}
+.datepIcker {
+  width: 120px;
+}
+.ant-upload-list-picture {
+  display: flex;
+  flex-wrap: wrap;
+  .mr0 {
+    margin-top: 0;
+  }
+
+  .ant-upload-list-picture-container {
+    display: flex;
+    width: 25%;
+    padding: 0 10px;
+    margin-bottom: 20px;
+    img {
+      margin: auto;
+    }
+    label {
+      width: 100%;
+      background: #eee;
+      margin: 5px;
+      padding: 4px 5px;
+      border-radius: 4px;
+    }
+    .anticon-close-circle {
+      position: absolute;
+      right: 10px;
+      color: red;
+      font-size: 16px;
+    }
+  }
+}
+.ant-upload.ant-upload-select {
+  display: block;
+}
+
+.uploadBTn {
+  .anticon-inbox {
+    font-size: 50px;
+    color: #149fdf;
+  }
+  h2 {
+    margin-bottom: 0;
+  }
+}
+
+.Folder_container {
+  height: 150px;
+  width: 120px;
+  margin-left: 10px;
+  margin-top: 10px;
+  position: relative;
+  border: none;
+}
+.Folder_container .ant-card-body {
+  padding: 0px;
+}
+
+.folder_icon .foldername {
+  color: white;
+  font-weight: bold;
+  position: absolute;
+  top: 45px;
+  left: 20px;
+  z-index: 3;
+  cursor: pointer;
+}
+.folder_icon .dateAndfiles {
+  color: white;
+  font-size: 12px;
+  position: absolute;
+  bottom: 50px;
+  left: 20px;
+  z-index: 3;
+}
+
+.folder_icon .anticon svg {
+  height: 160px;
+  width: 140px;
+  color: rgb(68, 132, 206);
+  position: absolute;
+  top: -10px;
+  left: -10px;
+}
+
+/***********/
+
+.folder--wrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  line-height: normal;
+  z-index: 999;
+  transform: translate(-50%, -50%);
+  right: 10px;
+  margin: 0 auto;
+  text-align: left;
+  color: #ffffff;
+}
+.ant-dropdown-trigger .anticon.anticon-more {
+  color: #fff;
+  font-size: 20px;
+  right: 5px;
+  position: absolute;
+  bottom: -30px;
+}
+
+.anticon-folder.anticon svg {
+  display: inline-block;
+  font-size: 180px;
+  line-height: 0;
+  color: #4484ce;
+}
+
+.icon--menu {
+  text-align: right;
+  margin-bottom: 8px;
 }

@@ -6,24 +6,11 @@ import Layout from "../hoc/layout";
 import useAuthentication from "../hooks/isUserAuthenticated";
 //Route : /settings
 function Settings() {
-  const SettingsLayout = () => {
-    const isUserAuthenticated = useAuthentication();
-    if (isUserAuthenticated) {
-      return (
-        <Layout>
-          <SettingsUI />
-        </Layout>
-      );
-    }
-    return (
-      <GetStartedLayout initialProps={undefined} initialState={undefined}>
-        <Card bordered={false} className="login-container">
-          <Login isModal={false} />
-        </Card>
-      </GetStartedLayout>
-    );
-  };
-  return <SettingsLayout />;
+  return (
+    <Layout>
+      <SettingsUI />
+    </Layout>
+  );
 }
 
 Settings.displayName = "Settings";

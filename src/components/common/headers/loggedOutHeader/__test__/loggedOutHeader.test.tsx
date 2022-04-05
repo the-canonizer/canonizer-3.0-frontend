@@ -2,18 +2,24 @@ import LoggedOutHeader from "../";
 import { cleanup, getByRole, render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { store } from "../../../../../store";
-
-window.matchMedia =
-  window.matchMedia ||
-  function () {
-    return {
-      matches: false,
-      addListener: function () {},
-      removeListener: function () {},
-    };
-  };
+import { windowMatchMedia } from "../../../../../utils/testUtils";
+windowMatchMedia();
 
 afterEach(cleanup);
+
+Object.defineProperty(window, "matchMedia", {
+  writable: true,
+  value: jest.fn().mockImplementation((query) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: jest.fn(), // Deprecated
+    removeListener: jest.fn(), // Deprecated
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  })),
+});
 
 describe("LoggedOutHeader", () => {
   it("Should render without crash", () => {

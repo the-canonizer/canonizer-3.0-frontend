@@ -60,7 +60,7 @@ const Login = ({ isModal, isTest = false }) => {
       form.resetFields();
       isModal ? closeModal() : "";
 
-      router.push(router.pathname);
+      router.push("/");
     }
 
     if (values.remember) {
