@@ -436,7 +436,7 @@ form {
     }
     .ant-tree-node-content-wrapper.ant-tree-node-selected {
       background-color: transparent;
-      &>span>div>span:first-child {
+      & > span > div > span:first-child {
         color: #f89d15;
         font-weight: 600;
       }
@@ -550,8 +550,8 @@ form {
     margin: 0;
     padding-left: 20px;
     li {
-      &+li {
-        margin-top: .5rem;
+      & + li {
+        margin-top: 0.5rem;
       }
       a {
         color: rgba(0, 0, 0, 0.85);
@@ -681,6 +681,11 @@ form {
 .datepIcker {
   width: 120px;
 }
+.afterUpload {
+  span {
+    width: 100% !important;
+  }
+}
 .ant-upload-list-picture {
   display: flex;
   flex-wrap: wrap;
@@ -690,7 +695,7 @@ form {
 
   .ant-upload-list-picture-container {
     display: flex;
-    width: 25%;
+    width: 20%;
     padding: 0 10px;
     margin-bottom: 20px;
     img {
@@ -705,12 +710,15 @@ form {
     }
     .anticon-close-circle {
       position: absolute;
-      right: 10px;
+      right: 5px;
       color: red;
       font-size: 16px;
+      width: auto !important;
+      z-index: 999;
     }
   }
 }
+
 .ant-upload.ant-upload-select {
   display: block;
 }
@@ -796,4 +804,7 @@ form {
 .icon--menu {
   text-align: right;
   margin-bottom: 8px;
+}
+.hideUpload {
+  display: none;
 }

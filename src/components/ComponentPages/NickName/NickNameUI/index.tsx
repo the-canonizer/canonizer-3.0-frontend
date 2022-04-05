@@ -104,7 +104,7 @@ export default function NickNameUI({
               {...messages.nickNameRule}
             >
               <Input
-                placeholder=""
+                placeholder="Enter nick name"
                 value=""
                 size="large"
                 disabled={isDisable}

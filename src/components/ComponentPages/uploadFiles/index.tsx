@@ -24,6 +24,8 @@ import {
   showFileStatus,
   showCrossBtn,
   hideCrossBtn,
+  hideUploadFiles,
+  showUploadFiles,
 } from "src/store/slices/uiSlice";
 
 const UploadFiles = () => {
@@ -47,6 +49,8 @@ const UploadFiles = () => {
   const shownFileStatus = () => dispatch(showFileStatus());
   const crossBtnHide = () => dispatch(hideCrossBtn());
   const shownCrossBtn = () => dispatch(showCrossBtn());
+  const showFiles = () => dispatch(showUploadFiles());
+  const hideFiles = () => dispatch(hideUploadFiles());
 
   const [input, setInput] = useState("");
   const [fileName, setfileName] = useState("");
@@ -54,6 +58,7 @@ const UploadFiles = () => {
   const [fileLists, setFileLists] = useState([]);
   const [folderFiles, setFolderFiles] = useState([]);
 
+  const ref = useRef();
   const closeFolder = () => {
     showUploadsAfter();
     enableCreateFolderBtn();
@@ -66,7 +71,7 @@ const UploadFiles = () => {
     enableCreateFolderBtn();
     uploadOptionsHide();
     shownFolder();
-    //hideFiles();
+    hideFiles();
     showUploadsAfter();
   };
   const handleCancel = () => {
@@ -80,11 +85,11 @@ const UploadFiles = () => {
   const handle_X_btn = () => {
     crossBtnHide();
     dragBoxHide();
-    //showfiles();
+    showFiles();
     uploadOptionsShow();
   };
   const addNewFile = () => {
-    //hideFiles();
+    hideFiles();
     dragBoxShow();
     closeFolder();
     hideUploadsAfter();
@@ -137,6 +142,7 @@ const UploadFiles = () => {
   const onFinish = (values) => {
     createNewFolder();
   };
+
   return (
     <UploadFileUI
       input={input}
