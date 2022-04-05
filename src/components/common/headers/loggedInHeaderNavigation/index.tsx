@@ -54,11 +54,6 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
       linkTitle: "Jobs",
       id: 6,
     },
-    {
-      link: "/services",
-      linkTitle: "Services",
-      id: 7,
-    },
   ];
 
   const logOut = async () => {

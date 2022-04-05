@@ -6,22 +6,32 @@ export const topicSlice = createSlice({
     currentTopic: {
       topic_num: null,
       topic_name: "",
-      camp_name: "",
-      parent_camp_num: "",
+      camp_name: "Agreement",
+      parent_camp_num: "1",
       message: null,
+      submitter_nick_id: null,
     },
   },
   reducers: {
     setCurrentTopic: (state, action) => {
-      state.currentTopic = { ...state.currentTopic, ...action.payload };
+      console.log("state", state.currentTopic);
+      state.currentTopic = {
+        topic_num: action.payload.topic_num,
+        topic_name: action.payload.topic_name || "",
+        camp_name: action.payload.camp_name || "Agreement",
+        parent_camp_num: action.payload.parent_camp_num || "1",
+        message: action.payload.message,
+        submitter_nick_id: action.payload.submitter_nick_id,
+      };
     },
     resetCurrentTopic: (state) => {
       state.currentTopic = {
         topic_num: null,
         topic_name: "",
-        camp_name: "",
-        parent_camp_num: "",
+        camp_name: "Agreement",
+        parent_camp_num: "1",
         message: null,
+        submitter_nick_id: null,
       };
     },
   },

@@ -150,8 +150,16 @@ export const createCamp = async (body) => {
   try {
     const res = await NetworkCall.fetch(TreeRequest.createCamp(body));
     return res;
-  } catch (error) {
-    handleError(error);
+  } catch (err) {
+    handleError(err);
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400
+    ) {
+      return err.error.data;
+    }
   }
 };
 
@@ -167,6 +175,15 @@ export const getAllParentsCamp = async (body) => {
 export const getAllCampNickNames = async () => {
   try {
     const res = await NetworkCall.fetch(TreeRequest.getAllCampNickNames());
+    return res;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const getAllUsedNickNames = async (body) => {
+  try {
+    const res = await NetworkCall.fetch(TreeRequest.getUsedNickNames(body));
     return res;
   } catch (error) {
     handleError(error);

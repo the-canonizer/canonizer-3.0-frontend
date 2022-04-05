@@ -1,5 +1,5 @@
 export const placeholders = {
-  emailPhone: "Enter Email / Phone Number",
+  emailPhone: "Enter Email",
   password: "Enter Password",
   firstName: "Enter First Name",
   middleName: "Enter Middle Name",
