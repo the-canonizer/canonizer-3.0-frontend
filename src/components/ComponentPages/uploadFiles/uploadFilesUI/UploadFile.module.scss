@@ -1,0 +1,416 @@
+.card {
+  padding: 20px 20px 10px;
+  border: solid 1px #f0f0f0;
+  background-color: #fff;
+  margin-bottom: 16px;
+  .btnsWrap {
+    margin-bottom: 16px;
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #0f2a4d;
+      border: solid 1px #d9d9d9;
+      i {
+        font-size: 1.1875rem;
+        color: var(--primary);
+        margin-right: 8px;
+      }
+      &:hover {
+        color: var(--primary);
+        border-color: var(--primary);
+      }
+    }
+  }
+}
+
+.uploadFilesData {
+  width: calc(100% - 240px);
+
+  @media screen and (max-width: 767px) {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+.Container .Card {
+  justify-items: center;
+  position: absolute;
+  left: 150px;
+  height: auto;
+  width: 900px;
+}
+
+.Container .span {
+  color: gray;
+}
+.top_icon {
+  font-size: 22px;
+  span + span {
+    margin-left: 5px;
+    cursor: pointer;
+  }
+}
+.top_icon .anticon svg {
+  color: rgb(132, 135, 138);
+  height: 30px;
+  width: 30px;
+  margin-top: 15px;
+  margin-right: 5px;
+}
+
+.Dragebox .Drager {
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  align-content: center;
+  height: 400px;
+  width: 100%;
+  border: 2px dashed gray;
+}
+
+.Dragebox .Drager:hover {
+  color: gray;
+  border-color: gray;
+}
+
+.Dragebox .anticon svg {
+  color: rgb(20, 159, 223);
+  height: 50px;
+  width: 50px;
+}
+
+.Dragebox .ant-upload-hint {
+  color: gray;
+}
+
+.Back_from_browser .anticon svg {
+  position: absolute;
+  top: 120px;
+  right: 40px;
+  z-index: 5;
+  color: red;
+  height: 25px;
+  width: 25px;
+}
+.uploded_Files {
+  position: relative;
+}
+.Back_from_browser {
+  position: absolute;
+  right: 10px;
+  z-index: 999;
+  top: 10px;
+  font-size: 19px;
+  color: red;
+}
+
+.Upload_Cancel_Btn {
+  margin-top: 20px;
+  margin-left: 10px;
+}
+
+.Upload_Cancel_Btn .Upload_Btn {
+  margin-right: 10px;
+  background-color: rgb(249, 157, 22);
+  color: white;
+}
+
+.Upload_Cancel_Btn .Upload_Btn:hover {
+  color: white;
+  background-color: rgb(249, 157, 22);
+}
+.top_btn {
+  width: auto;
+  display: flex;
+  position: relative;
+}
+
+.Top_SearchBtn {
+  width: auto;
+  margin-right: 20px;
+}
+
+.Top_SearchBtn Input {
+  width: 150px;
+}
+
+.Top_SearchBtn .ant-picker {
+  width: 100px;
+  margin-right: 10px;
+}
+
+.searchIcon .anticon svg {
+  color: rgb(217, 217, 217);
+  height: 20px;
+  width: 20px;
+  position: absolute;
+  top: 5px;
+  right: 230px;
+}
+
+.top_btn .create_folder_btn {
+  color: rgb(20, 159, 223);
+  border-color: rgb(20, 159, 223);
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.top_btn .add_file_btn {
+  color: rgb(20, 159, 223);
+  border-color: rgb(20, 159, 223);
+  margin-right: 10px;
+}
+
+/* .ant-upload-list-picture .ant-upload-span{
+    display: flex;
+    
+} */
+.ant-upload-list-picture {
+  flex-wrap: wrap;
+}
+.ant-upload-list-picture-container {
+  padding: 0 10px;
+  flex: 0 0 20%;
+}
+.ant-modal-content {
+  width: 400px;
+}
+
+.modal_body .anticon svg {
+  color: red;
+  height: 25px;
+  width: 25px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.modal_title {
+  color: rgb(62, 103, 183);
+  margin-bottom: 20px;
+  margin-right: 100px;
+  display: inline;
+}
+
+.ant-modal-close-x {
+  display: none;
+}
+
+.wraper .modal_Btn {
+  width: 350px;
+  margin-top: 20px;
+  background-color: rgb(249, 157, 22);
+  color: white;
+}
+
+.wraper .modal_Btn:hover {
+  color: white;
+  background-color: rgb(249, 157, 22);
+}
+
+.ant-modal-mask {
+  background-color: rgba(0, 0, 0, 0.78);
+}
+
+.wraper .folderlabel {
+  color: gray;
+}
+.wraper {
+  margin-top: 50px;
+}
+
+.uploded-Files {
+  display: flex;
+  max-width: 850px;
+}
+
+.After_Upload {
+  padding: 5px;
+  height: auto;
+  border: 1px solid lightgray;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.After_Upload input {
+  width: 100%;
+  padding: 6px 10px;
+  margin-top: 10px;
+  display: block;
+}
+.After_Upload .anticon svg {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+// .Folder_container {
+//   height: 150px;
+//   width: 120px;
+//   margin-left: 10px;
+//   margin-top: 10px;
+//   position: relative;
+//   border: none;
+// }
+.Folder_container .ant-card-body {
+  padding: 0px;
+}
+
+// .folder_icon .foldername {
+//   color: yellow;
+//   font-weight: bold;
+//   position: absolute;
+//   top: 45px;
+//   left: 20px;
+//   z-index: 3;
+//   cursor: pointer;
+// }
+// .folder_icon .dateAndfiles {
+//   color: yellow;
+//   font-size: 12px;
+//   position: absolute;
+//   bottom: 50px;
+//   left: 20px;
+//   z-index: 3;
+// }
+
+.folder_icon .anticon svg {
+  height: 160px;
+  width: 140px;
+  color: rgb(68, 132, 206);
+  position: absolute;
+  top: -10px;
+  left: -10px;
+}
+
+.dropdown .anticon svg {
+  height: 30px;
+  width: 30px;
+  color: white;
+}
+.ant-dropdown-menu {
+  position: relative;
+  right: 90px;
+}
+.dropdown .ant-dropdown-link {
+  position: absolute;
+  top: 95px;
+  left: 100px;
+}
+
+.view_After_Upload {
+  display: inline-flex;
+  position: relative;
+  margin: 0px 10px;
+}
+
+.view_After_Upload .files {
+  width: 150px;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+.view_After_Upload .files span {
+  font-size: 12px;
+}
+
+.view_After_Upload .files .anticon svg {
+  height: 20px;
+  width: 25px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+.files .ant-card-body {
+  padding: 0px;
+  justify-content: center;
+}
+
+@media (max-width: 1200px) {
+  .ant-upload-list-picture-container {
+    flex: 0 0 25%;
+  }
+}
+
+@media (max-width: 992px) {
+}
+
+@media (max-width: 767px) {
+  .ant-upload-list-picture-container {
+    flex: 0 0 33.333%;
+  }
+}
+@media (max-width: 414px) {
+  .ant-upload-list-picture-container {
+    flex: 0 0 50%;
+  }
+}
+
+// .search_users {
+//   position: absolute;
+//   right: 0;
+//   z-index: 99;
+//   min-width: 100px;
+//   @media screen and (max-width: 1023px) {
+//     position: relative;
+//     margin-bottom: 10px;
+//   }
+//   span {
+//     position: absolute;
+//     right: 8px;
+//     font-size: 19px;
+//     color: #aaa;
+//     top: 7px;
+//     pointer-events: none;
+//   }
+//   input {
+//     border: 1px solid #ddd;
+//     height: 37px;
+//     padding: 0 30px 0 15px;
+//     background: transparent;
+//     width: 100%;
+//   }
+// }
+
+.search_users {
+  margin-left: 5px;
+  position: relative;
+  @media screen and (max-width: 1023px) {
+    position: relative;
+    margin-bottom: 10px;
+  }
+  span {
+    position: absolute;
+    right: 8px;
+    font-size: 19px;
+    color: #aaa;
+    top: 7px;
+    pointer-events: none;
+  }
+
+  input {
+    border: 1px solid #ddd;
+    height: 32px;
+    padding: 0 30px 0 15px;
+    background: transparent;
+    width: 150px;
+  }
+}
+
+.folder_icon {
+  position: relative;
+  .dropdown {
+    position: absolute;
+    bottom: 70px;
+    right: 10px;
+    cursor: pointer;
+  }
+}
+.modal_cross {
+  font-size: 17px;
+}
