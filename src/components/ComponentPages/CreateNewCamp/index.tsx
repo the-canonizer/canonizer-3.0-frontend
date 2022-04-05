@@ -56,6 +56,7 @@ const CreateNewCamp = ({
   useEffect(() => {
     fetchNickNameList();
     fetchCampNickNameList();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchParentsCampList = async () => {

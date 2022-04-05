@@ -187,7 +187,7 @@ const UploadFileUI = ({
                 let length = info.fileList.length;
                 if (length) {
                   if (fileStatus) {
-                    fileLists.map((fileitems,index) => {
+                    fileLists.map((fileitems, index) => {
                       return (
                         <div key={index}>
                           {fileitems.id === selectedFolderID
