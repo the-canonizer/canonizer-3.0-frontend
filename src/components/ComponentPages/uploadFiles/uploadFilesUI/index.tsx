@@ -24,6 +24,7 @@ import {
   ArrowLeftOutlined,
 } from "@ant-design/icons";
 import Image from "next/image";
+import PdfImage from "../../../../assets/image/png.png";
 import styles from "./UploadFile.module.scss";
 import { useRouter } from "next/router";
 import moment from "moment";
@@ -40,6 +41,7 @@ import {
   showAddButton,
   hideFileStatus,
   hideCrossBtn,
+  showUploadFiles,
 } from "../../../../store/slices/uiSlice";
 const UploadFileUI = ({
   input,
@@ -78,7 +80,9 @@ const UploadFileUI = ({
   const AddButtonShow = useSelector((state: RootState) => state.ui.addButton);
   const fileStatus = useSelector((state: RootState) => state.ui.fileStatus);
   const showCrossBtn = useSelector((state: RootState) => state.ui.crossBtn);
-
+  const afterUploadClass = useSelector(
+    (state: RootState) => state.ui.showFiles
+  );
   const showCreateFolderModal = () => dispatch(showFolderModal());
   const hideCreateFolderModal = () => dispatch(hideFolderModal());
   const DragBoxShow = () => dispatch(showDrageBox());
@@ -89,7 +93,7 @@ const UploadFileUI = ({
   const shownAddButton = () => dispatch(showAddButton());
   const StatushideFile = () => dispatch(hideFileStatus());
   const CrossBtnhide = () => dispatch(hideCrossBtn());
-
+  const showFiles = () => dispatch(showUploadFiles());
   const router = useRouter();
   const campRoute = () => {
     router.push("/create-new-topic");
@@ -187,7 +191,7 @@ const UploadFileUI = ({
                 let length = info.fileList.length;
                 if (length) {
                   if (fileStatus) {
-                    fileLists.map((fileitems,index) => {
+                    fileLists.map((fileitems, index) => {
                       return (
                         <div key={index}>
                           {fileitems.id === selectedFolderID
@@ -217,6 +221,7 @@ const UploadFileUI = ({
                   message.success(
                     `${info.file.name} file uploaded successfully.`
                   );
+                  showFiles();
                 } else if (status === "error") {
                   message.error(`${info.file.name} file upload failed.`);
                 }
@@ -228,26 +233,29 @@ const UploadFileUI = ({
                 return file.type && file.type == "folder" ? (
                   ""
                 ) : (
-                  <div className={styles.After_Upload}>
-                    <CloseCircleOutlined
-                      onClick={() =>
-                        removeFiles(originNode, file, currFileList)
-                      }
-                    />
-                    <img
-                      src="https://www.apkmirror.com/wp-content/uploads/2021/05/65/60afb3b73b390.png"
-                      height="150px"
-                      width="140px"
-                    />
-                    <br />
-                    <label>{file.name}</label>
-                    <Input
-                      className="mr0"
-                      value={fileName}
-                      id={fileName}
-                      onChange={(e) => setfileName(e.target.value)}
-                      placeholder="Full Name (with no extension)"
-                    />
+                  <div className={afterUploadClass}>
+                    <div className={styles.After_Upload}>
+                      <CloseCircleOutlined
+                        onClick={() =>
+                          removeFiles(originNode, file, currFileList)
+                        }
+                      />
+                      <Image
+                        alt="pdfImage"
+                        src={PdfImage}
+                        height={"150px"}
+                        width={"140px"}
+                      />
+                      <br />
+                      <label>{file.name}</label>
+                      <Input
+                        className="mr0"
+                        value={fileName}
+                        id={fileName}
+                        onChange={(e) => setfileName(e.target.value)}
+                        placeholder="Full Name (with no extension)"
+                      />
+                    </div>
                   </div>
                 );
               }}
@@ -306,7 +314,6 @@ const UploadFileUI = ({
                     showFolder ? (
                       <div className={styles.Folder_container}>
                         <Card>
-                          {(item.id = "folderId" + i)}
                           <div className={styles.folder_icon}>
                             <FolderFilled />
                             <div className="folder--wrap">
