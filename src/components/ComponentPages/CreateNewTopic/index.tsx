@@ -49,9 +49,13 @@ const CreateNewTopic = ({
     const res = await createTopic(body);
     console.log("res resr", res);
     if (res && res.status_code === 200) {
-      dispatch(
-        setCurrentTopic({ message: res.message, topic_num: res.data.topic_num })
-      );
+      const data = {
+        submitter_nick_id: res.data.submitter_nick_id,
+        message: res.message,
+        topic_num: res.data.topic_num,
+        topic_name: res.data.topic_name,
+      };
+      dispatch(setCurrentTopic(data));
       router.push(`/camp-details/${res.data.topic_num}`);
     }
 

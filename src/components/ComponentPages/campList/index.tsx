@@ -101,7 +101,6 @@ export default function CampList() {
             <Alert message={createdData?.message} type="success" />
           )}
 
-          <button onClick={onCreateCamp}>Create Camp</button>
           {isCampBtnVisible ? (
             <Button
               size="large"

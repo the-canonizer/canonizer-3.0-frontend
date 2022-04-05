@@ -90,7 +90,7 @@ const CreateNewCamp = ({
       dispatch(
         setCurrentTopic({ message: res.message, camp_num: res.data.camp_num })
       );
-      router.push(`/camp-history/${topicData?.topic_num}/${res.data.camp_num}`);
+      router.push(`/camp-list`);
     }
 
     if (res && res.status_code === 400 && res.error.camp_name) {
