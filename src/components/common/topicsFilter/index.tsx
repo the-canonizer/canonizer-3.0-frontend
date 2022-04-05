@@ -82,7 +82,7 @@ const CreateTopic = () => {
   const [isDatePicker, setIsDatePicker] = useState(false);
   const [value, setValue] = useState(2);
   const [datePickerValue, setDatePickerValue] = useState(null);
-  const [inputFilterValue, setInputFilterValue] = useState(0.0);
+
   const dispatch = useDispatch();
   const router = useRouter();
   const didMount = useRef(false);
@@ -91,10 +91,13 @@ const CreateTopic = () => {
     router.push("/create-new-topic");
   };
 
-  const { algorithms, filterObject } = useSelector((state: RootState) => ({
-    algorithms: state.homePage?.algorithms,
-    filterObject: state?.filters?.filterObject,
-  }));
+  const { algorithms, filterObject, selectedAlgorithm, scoresFilter } =
+    useSelector((state: RootState) => ({
+      algorithms: state.homePage?.algorithms,
+      filterObject: state?.filters?.filterObject,
+      selectedAlgorithm: state?.filters?.filterObject?.algorithm,
+      scoresFilter: state?.filters?.filterObject?.filterByScore,
+    }));
 
   // /////////////////////////////////////////////////////////////////////////
   // Discussion required on this functionality after that I will remove or //
@@ -147,7 +150,6 @@ const CreateTopic = () => {
 
     const reg = /^-?\d*(\.\d*)?$/;
     if ((!isNaN(value) && reg.test(value)) || value === "") {
-      setInputFilterValue(value);
       dispatch(
         setFilterCanonizedTopics({
           filterByScore: value,
@@ -203,7 +205,7 @@ const CreateTopic = () => {
             <Select
               size="large"
               className={styles.algoSelect}
-              defaultValue={algorithms && algorithms[0]?.algorithm_label}
+              defaultValue={selectedAlgorithm}
               onChange={selectAlgorithm}
             >
               {algorithms?.map((algo) => {
@@ -223,7 +225,7 @@ const CreateTopic = () => {
               <Input
                 size="large"
                 onChange={filterOnScore}
-                value={inputFilterValue}
+                value={scoresFilter}
               />
               <Popover content={infoContent} placement="right">
                 <i className="icon-info"></i>
