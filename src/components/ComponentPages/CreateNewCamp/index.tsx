@@ -93,7 +93,7 @@ const CreateNewCamp = ({
       router.push(`/camp-list`);
     }
 
-    if (res && res.status_code === 400 && res.error.camp_name) {
+    if (res && res.status_code === 400 && res.error?.camp_name) {
       form.setFields([
         {
           name: "camp_name",
