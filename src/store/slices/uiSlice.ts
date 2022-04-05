@@ -7,6 +7,16 @@ export const uiSlice = createSlice({
     registrationModalVisible: false,
     forgotModalVisible: false,
     multipleUserModalVisible: false,
+    createFolderShowModal: false,
+    dragBox: true,
+    disabledCreateFolderBtn: true,
+    visibleUploadOptions: false,
+    uploadAfter: false,
+    folderShown: false,
+    folderOpen: false,
+    addButton: false,
+    fileStatus: false,
+    crossBtn: false,
   },
   reducers: {
     showLoginModal: (state) => {
@@ -33,6 +43,66 @@ export const uiSlice = createSlice({
     hideMultiUserModal: (state) => {
       state.multipleUserModalVisible = false;
     },
+    hideFolderModal: (state) => {
+      state.createFolderShowModal = false;
+    },
+    showFolderModal: (state) => {
+      state.createFolderShowModal = true;
+    },
+    showDrageBox: (state) => {
+      state.dragBox = true;
+    },
+    hideDrageBox: (state) => {
+      state.dragBox = false;
+    },
+    createFolderBtnDisable: (state) => {
+      state.disabledCreateFolderBtn = true;
+    },
+    createFolderBtnEnable: (state) => {
+      state.disabledCreateFolderBtn = false;
+    },
+    showUploadOptions: (state) => {
+      state.visibleUploadOptions = true;
+    },
+    hideUploadOptions: (state) => {
+      state.visibleUploadOptions = false;
+    },
+    showAfterUploads: (state) => {
+      state.uploadAfter = true;
+    },
+    hideAfterUploads: (state) => {
+      state.uploadAfter = false;
+    },
+    showFolder: (state) => {
+      state.folderShown = true;
+    },
+    hideFolder: (state) => {
+      state.folderShown = false;
+    },
+    showOpenFolder: (state) => {
+      state.folderOpen = true;
+    },
+    hideOpenFolder: (state) => {
+      state.folderOpen = false;
+    },
+    showAddButton: (state) => {
+      state.addButton = true;
+    },
+    hideAddButton: (state) => {
+      state.addButton = false;
+    },
+    showFileStatus: (state) => {
+      state.fileStatus = true;
+    },
+    hideFileStatus: (state) => {
+      state.fileStatus = false;
+    },
+    showCrossBtn: (state) => {
+      state.crossBtn = true;
+    },
+    hideCrossBtn: (state) => {
+      state.crossBtn = false;
+    },
   },
 });
 
@@ -45,6 +115,26 @@ export const {
   hideForgotModal,
   showMultiUserModal,
   hideMultiUserModal,
+  hideFolderModal,
+  showFolderModal,
+  showDrageBox,
+  hideDrageBox,
+  createFolderBtnDisable,
+  createFolderBtnEnable,
+  hideUploadOptions,
+  showUploadOptions,
+  showAfterUploads,
+  hideAfterUploads,
+  showFolder,
+  hideFolder,
+  hideOpenFolder,
+  showOpenFolder,
+  hideAddButton,
+  showAddButton,
+  hideFileStatus,
+  showFileStatus,
+  showCrossBtn,
+  hideCrossBtn,
 } = uiSlice.actions;
 
 export default uiSlice.reducer;
