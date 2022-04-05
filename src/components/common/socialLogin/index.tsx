@@ -38,6 +38,7 @@ export default function SocialLoginUi({ isNotLogin = false }) {
           type="link"
           icon={<FacebookFilled />}
           data-testid="facebook"
+          className={styles["facebook-btn"]}
         />
         <Button
           shape="circle"
@@ -48,15 +49,19 @@ export default function SocialLoginUi({ isNotLogin = false }) {
             <img src="/images/google.svg" alt="google logo" />
           }
           data-testid="google"
+          className={styles["google-btn"]}
         />
 
-        <Button
-          shape="circle"
-          onClick={onSocialLogin.bind(this, "twitter")}
-          type="link"
-          icon={<TwitterOutlined />}
-          data-testid="twitter"
-        />
+        {!isNotLogin && (
+          <Button
+            shape="circle"
+            onClick={onSocialLogin.bind(this, "twitter")}
+            type="link"
+            icon={<TwitterOutlined />}
+            data-testid="twitter"
+            className={styles["twitter-btn"]}
+          />
+        )}
 
         <Button
           shape="circle"
@@ -64,6 +69,7 @@ export default function SocialLoginUi({ isNotLogin = false }) {
           type="link"
           icon={<LinkedinFilled />}
           data-testid="linkedin"
+          className={styles["linkedin-btn"]}
         />
 
         <Button
@@ -72,6 +78,7 @@ export default function SocialLoginUi({ isNotLogin = false }) {
           type="link"
           icon={<GithubFilled />}
           data-testid="github"
+          className={styles["github-btn"]}
         />
       </div>
     </div>

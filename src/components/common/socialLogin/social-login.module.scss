@@ -57,27 +57,27 @@
         width: 22px;
         height: 22px;
       }
-      &:nth-child(1) {
+      &.facebook-btn {
         svg {
           fill: #3c5999;
         }
       }
-      &:nth-child(2) {
+      &.google-btn {
         svg {
           fill: #3c5999;
         }
       }
-      &:nth-child(3) {
+      &.twitter-btn {
         svg {
           fill: #03a9f4;
         }
       }
-      &:nth-child(4) {
+      &.linkedin-btn {
         svg {
           fill: #006699;
         }
       }
-      &:nth-child(5) {
+      &.github-btn {
         svg {
           fill: #161514;
         }
