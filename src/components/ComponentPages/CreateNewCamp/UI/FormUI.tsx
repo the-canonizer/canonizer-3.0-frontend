@@ -110,11 +110,11 @@ const CreateCampFormUI = ({
                   {...parentCampRule}
                   initialValue={crCamp.camp_num || +topicData?.parent_camp_num}
                 >
-                  <Select
-                    allowClear
-                    size={"large"}
-                    placeholder="Parent camp"
-                  ></Select>
+                  <Select allowClear size={"large"} placeholder="Parent camp">
+                    <Option value={+topicData?.parent_camp_num}>
+                      {topicData?.camp_name}
+                    </Option>
+                  </Select>
                 </Form.Item>
               ) : null}
             </Col>

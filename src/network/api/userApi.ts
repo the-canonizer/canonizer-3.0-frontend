@@ -143,7 +143,7 @@ export const socialLogin = async (values: object) => {
   }
 };
 
-export const socialLoginCallback = async (values: object) => {
+export const socialLoginCallback = async (values: object, router) => {
   const state = store.getState();
 
   try {
@@ -181,6 +181,14 @@ export const socialLoginCallback = async (values: object) => {
       error.error.data.status_code === 403
     ) {
       return error.error.data;
+    }
+    if (
+      error &&
+      error.error &&
+      error.error.data &&
+      error.error.data.status_code === 400
+    ) {
+      router.push("/login");
     }
     handleError(error);
   }

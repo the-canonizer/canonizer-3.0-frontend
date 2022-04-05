@@ -59,7 +59,7 @@ const UploadFiles = () => {
     enableCreateFolderBtn();
     openFolderHide();
   };
-  
+
   const uploadFun = () => {
     setFolderFiles([]);
     fileStatusHide();

@@ -18,9 +18,12 @@ function SocialLoginCallback() {
     const redirectTab = localStorage.getItem("redirectTab");
 
     if (!redirectTab) {
-      const response = await socialLoginCallback(data);
+      const response = await socialLoginCallback(data, router);
 
       if (response && response.status_code === 200) {
+        router.push("/");
+      }
+      if (response && response.status_code === 400) {
         router.push("/");
       }
     } else {
