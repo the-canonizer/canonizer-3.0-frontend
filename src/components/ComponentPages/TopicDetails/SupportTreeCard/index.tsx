@@ -1,3 +1,4 @@
+import CustomButton from "@/components/common/button";
 import { Card, Button, Typography, List } from "antd";
 import Link from "next/link";
 import { useSelector } from "react-redux";
@@ -10,18 +11,15 @@ const SupportTreeCard = ({ handleLoadMoreSupporters }) => {
     campSupportingTree: state?.topicDetails?.campSupportingTree,
   }));
   return (
-    <Card className="canCard"
-      title={
-        <h3>Support Tree for &quot;Agreement&quot; Camp</h3>
-      }
-      extra={
-        <i className="icon-info tooltip-icon-style"></i>
-      }
+    <Card
+      className="canCard"
+      title={<h3>Support Tree for &quot;Agreement&quot; Camp</h3>}
+      extra={<i className="icon-info tooltip-icon-style"></i>}
       actions={[
         <>
-          <Button className="btn-orange">
+          <CustomButton className="btn-orange">
             Directly Join or Manage Support
-          </Button>
+          </CustomButton>
         </>,
       ]}
     >
@@ -44,16 +42,18 @@ const SupportTreeCard = ({ handleLoadMoreSupporters }) => {
             );
           })}
       </List>
-      <Button
-        type="primary"
-        ghost
-        className="load-more-btn"
-        onClick={() => {
-          handleLoadMoreSupporters();
-        }}
-      >
-        Load More
-      </Button>
+      {campSupportingTree?.length && (
+        <CustomButton
+          type="primary"
+          ghost
+          className="load-more-btn"
+          onClick={() => {
+            handleLoadMoreSupporters();
+          }}
+        >
+          Load More
+        </CustomButton>
+      )}
     </Card>
   );
 };

@@ -63,6 +63,14 @@ const NetworkConstants = {
 
     // Camp
     CreateCamp: `${BaseCanonizerApiUrl}/camp/save`,
+    GetAllParents: `${BaseCanonizerApiUrl}/camp/allParent`,
+    GetCampNickNames: `${BaseCanonizerApiUrl}/camp/allAboutNickName`,
+
+    GetSocialLinkedAccounts: `${BaseCanonizerApiUrl}/user/social/list`,
+    DeleteSocialLinkedAccount: `${BaseCanonizerApiUrl}/user/social/delete`,
+    LinkUsersFromSocial: `${BaseCanonizerApiUrl}/user/social/socialLink`,
+    DeactivateUser: `${BaseCanonizerApiUrl}/user/deactivate`,
+    GetNickNames: `${BaseCanonizerApiUrl}/camp/getTopicNickNameUsed`,
 
     //footer
 
@@ -72,6 +80,7 @@ const NetworkConstants = {
     GET: "GET",
     POST: "POST",
     PUT: "PUT",
+    DELETE: "DELETE",
   },
   Header: {
     ContentType: "Content-Type",

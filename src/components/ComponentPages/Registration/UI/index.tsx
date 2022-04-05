@@ -118,6 +118,7 @@ function RegistrationUi({
                 name="phone"
                 label={messages.labels.phone}
                 {...messages.phoneRule}
+                className={styles.phoneInput}
               >
                 <Input
                   type="number"

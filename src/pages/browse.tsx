@@ -68,4 +68,6 @@ export async function getServerSideProps() {
   };
 }
 
+BrowsePage.displayName = "BrowsePage";
+
 export default BrowsePage;

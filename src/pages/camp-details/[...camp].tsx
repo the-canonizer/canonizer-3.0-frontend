@@ -5,23 +5,40 @@ import {
   getTreesApi,
   getCurrentTopicRecordApi,
   getCurrentCampRecordApi,
+  getCanonizedCampStatementApi,
+  getNewsFeedApi,
+  getCanonizedCampSupportingTreeApi,
 } from "src/network/api/campDetailApi";
 import { useDispatch } from "react-redux";
 import {
   setTree,
   setCurrentTopicRecord,
   setCurrentCampRecord,
+  setCampStatement,
+  setNewsFeed,
+  setCampSupportingTree,
 } from "src/store/slices/campDetailSlice";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 import { setCanonizedAlgorithms } from "src/store/slices/homePageSlice";
 // import { wrapper } from "src/store";
 
-const TopicDetailsPage = ({ camps, algorithms, topicRecord, campRecord }) => {
+const TopicDetailsPage = ({
+  camps,
+  algorithms,
+  topicRecord,
+  campRecord,
+  campStatement,
+  newsFeed,
+  supportingTree,
+}) => {
   const dispatch = useDispatch();
   dispatch(setTree(camps));
   dispatch(setCanonizedAlgorithms(algorithms));
   dispatch(setCurrentTopicRecord(topicRecord));
   dispatch(setCurrentCampRecord(campRecord));
+  dispatch(setCampStatement(campStatement));
+  dispatch(setNewsFeed(newsFeed));
+  dispatch(setCampSupportingTree(supportingTree));
   return (
     <>
       <Layout>
@@ -32,18 +49,20 @@ const TopicDetailsPage = ({ camps, algorithms, topicRecord, campRecord }) => {
 };
 
 export async function getServerSideProps(context) {
-  const campId = context.query.camp.join(",");
-  const { algorithm, asofdate } = context.query;
+  const topicID = context.query.camp.join(",");
+  const { algorithm, asofdate, asof } = context.query;
 
-  const reqBody = {
-    topic_num: campId,
-    asofdate: 1644323333,
+  const treeReqBody = {
+    topic_num: topicID,
+    asofdate: asofdate,
     algorithm,
     update_all: 1,
   };
   const topicOrCampReqBody = {
-    topic_num: 76,
+    topic_num: topicID,
     camp_num: 1,
+    as_of: asof,
+    as_of_date: asofdate,
   };
 
   const [
@@ -51,16 +70,26 @@ export async function getServerSideProps(context) {
     canonizedCampTrees,
     currentTopicRecord,
     currentCampRecord,
+    currentCampStatement,
+    campNewsFeed,
+    campSupportingTree,
   ] = await Promise.all([
     getCanonizedAlgorithmsApi(),
-    getTreesApi(reqBody),
+    getTreesApi(treeReqBody),
     getCurrentTopicRecordApi(topicOrCampReqBody),
     getCurrentCampRecordApi(topicOrCampReqBody),
+    getCanonizedCampStatementApi(topicOrCampReqBody),
+    getNewsFeedApi(topicOrCampReqBody),
+    getCanonizedCampSupportingTreeApi(topicOrCampReqBody),
   ]);
+
   const camps = canonizedCampTrees || [];
   const algorithms = canonizedAlgorithms || [];
   const topicRecord = currentTopicRecord || [];
   const campRecord = currentCampRecord || [];
+  const campStatement = currentCampStatement || [];
+  const newsFeed = campNewsFeed || [];
+  const supportingTree = campSupportingTree || [];
 
   return {
     props: {
@@ -68,6 +97,9 @@ export async function getServerSideProps(context) {
       algorithms,
       topicRecord,
       campRecord,
+      campStatement,
+      newsFeed,
+      supportingTree,
     },
   };
 }
@@ -101,5 +133,7 @@ export async function getServerSideProps(context) {
 //     },
 //   };
 // });
+
+TopicDetailsPage.displayName = "TopicDetailsPage";
 
 export default TopicDetailsPage;

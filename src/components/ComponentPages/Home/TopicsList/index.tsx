@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import { getCanonizedTopicsApi } from "../../../../network/api/homePageApi";
-import { setFilterCanonizedTopics } from "../../../../store/slices/homePageSlice";
+import { setFilterCanonizedTopics } from "../../../../store/slices/filtersSlice";
 import styles from "./topicsList.module.scss";
 import { Spin, Checkbox } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -18,9 +18,17 @@ const { Search } = Input;
 
 const infoContent = (
   <>
-    <div>
-      <Title level={5}>Lorem Ipsum</Title>
-      <p>Duis aute irure dolor in reprehderit.</p>
+    <div className={styles.namespacesPopover}>
+      <Title level={5}>Namespace</Title>
+      <p>
+        Namespaces are a set of topics created for specific organizations and
+        cities to separate topics exclusively for them from the topics of
+        general interest. To get a namespace created for your organization,
+        contact{" "}
+        <Link href="mailto:support@canonizer.com">
+          <a>support@canonizer.com</a>
+        </Link>
+      </p>
     </div>
   </>
 );
@@ -42,13 +50,13 @@ const TopicsList = () => {
     onlyMyTopics,
   } = useSelector((state: RootState) => ({
     canonizedTopics: state.homePage?.canonizedTopicsData,
-    asofdate: state.homePage?.filterObject?.asofdate,
-    asof: state.homePage?.filterObject?.asof,
-    algorithm: state.homePage?.filterObject?.algorithm,
-    filterByScore: state.homePage?.filterObject?.filterByScore,
+    asofdate: state.filters?.filterObject?.asofdate,
+    asof: state.filters?.filterObject?.asof,
+    algorithm: state.filters?.filterObject?.algorithm,
+    filterByScore: state.filters?.filterObject?.filterByScore,
     nameSpaces: state.homePage?.nameSpaces,
-    includeReview: state?.homePage?.filterObject?.includeReview,
-    onlyMyTopics: state?.homePage?.filterObject?.onlyMyTopics,
+    includeReview: state?.filters?.filterObject?.includeReview,
+    onlyMyTopics: state?.filters?.filterObject?.onlyMyTopics,
   }));
 
   const [topicsData, setTopicsData] = useState(canonizedTopics);
@@ -150,12 +158,15 @@ const TopicsList = () => {
   );
 
   const handleCheckbox = (e) => {
-    console.log(`checked = ${e.target.checked}`);
     dispatch(
       setFilterCanonizedTopics({
         onlyMyTopics: e.target.checked,
       })
     );
+  };
+
+  const handleTopicClick = () => {
+    setGetTopicsLoadingIndicator(true);
   };
 
   return (
@@ -176,6 +187,14 @@ const TopicsList = () => {
                     <i className="icon-info cursor-pointer"></i>
                   </Popover>
                 </Title>
+                {router.asPath === "/browse" && isLogin && (
+                  <Checkbox
+                    className={styles.checkboxOnlyMyTopics}
+                    onChange={handleCheckbox}
+                  >
+                    Only My Topics
+                  </Checkbox>
+                )}
                 <Select
                   size="large"
                   className={styles.dropdown}
@@ -193,10 +212,6 @@ const TopicsList = () => {
                     );
                   })}
                 </Select>
-                {router.asPath === "/browse" && !isLogin && (
-                  <Checkbox onChange={handleCheckbox}>Only My Topics</Checkbox>
-                )}
-
                 {router.asPath.includes("/browse") && !includeReview && (
                   <div className={styles.inputSearchTopic}>
                     <Search
@@ -226,13 +241,17 @@ const TopicsList = () => {
                       pathname: `/camp-details/${item?.topic_id}`,
                       query: {
                         ...router.query,
-                        filter: filterByScore,
                         algorithm,
-                        asofdate,
+                        asof,
+                        asofdate: Math.floor(asofdate),
                       },
                     }}
                   >
-                    <a>
+                    <a
+                      onClick={() => {
+                        handleTopicClick();
+                      }}
+                    >
                       <Text className={styles.text}>
                         {isReview
                           ? item?.tree_structure_1_review_title

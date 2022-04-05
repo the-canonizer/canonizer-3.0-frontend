@@ -1,5 +1,7 @@
 import K from "../../constants";
 import Request from ".";
+import { store } from "../../store";
+
 export default class TreeRequest extends Request {
   constructor(params) {
     super(params);
@@ -64,6 +66,62 @@ export default class TreeRequest extends Request {
       reqBody,
       K.Network.Header.Type.Json,
       {}
+    );
+  }
+
+  static createCamp(body) {
+    let state = store.getState();
+    const { auth } = state;
+
+    return new Request(
+      K.Network.URL.CreateCamp,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      auth.loggedInUser?.token
+    );
+  }
+
+  static getAllParentsCamp(body) {
+    let state = store.getState();
+    const { auth } = state;
+
+    return new Request(
+      K.Network.URL.GetAllParents,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      auth.loggedInUser?.token
+    );
+  }
+
+  static getAllCampNickNames() {
+    let state = store.getState();
+    const { auth } = state;
+
+    return new Request(
+      K.Network.URL.GetCampNickNames,
+      K.Network.Method.GET,
+      null,
+      K.Network.Header.Type.Json,
+      {},
+      auth.loggedInUser?.token
+    );
+  }
+
+  static getUsedNickNames(body) {
+    let state = store.getState();
+    const { auth } = state;
+
+    return new Request(
+      K.Network.URL.GetNickNames,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      auth.loggedInUser?.token
     );
   }
 }

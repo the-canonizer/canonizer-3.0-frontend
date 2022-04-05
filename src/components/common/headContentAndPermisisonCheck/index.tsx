@@ -27,6 +27,7 @@ const HeadContentAndPermissionComponent = ({
       permission && permission.isPermissionRequired ? true : false;
 
     //redirect if authentication is required and user is not loggedIn
+
     if (requiredAuthentication && !isUserAuthenticated) {
       router.push("/login");
     }

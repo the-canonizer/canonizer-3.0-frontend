@@ -19,31 +19,42 @@ const NewsFeedsCard = ({ newsFeed }) => {
   ];
 
   return (
-    <Card className="canCard mb-3"
+    <Card
+      className="canCard mb-3"
       title={
-        <h3 className="heading-color"><i className={"icon-fi-document"} /> News Feeds</h3>
+        <h3 className="heading-color">
+          <i className={"icon-fi-document"} /> News Feeds
+        </h3>
       }
       extra={
-        <>
-          {" "}
-          <a>
-            <i className={"icon-edit"}></i>Edit News
-          </a>{" "}
-          <a>
-            <i className={"icon-delete"}></i>Delete News
-          </a>
-        </>
+        newsFeed?.length ? (
+          <>
+            {" "}
+            <a>
+              <i className={"icon-edit"}></i>Edit News
+            </a>{" "}
+            <a>
+              <i className={"icon-delete"}></i>Delete News
+            </a>
+          </>
+        ) : null
       }
     >
-      {newsFeed?.map((news) => {
-        return (
-          <Paragraph key={news.id}>
-            <Link href={news?.link} passHref>
-              <a>{news?.display_text}</a>
-            </Link>
-          </Paragraph>
-        );
-      })}
+      <ul className="newsFeedsList">
+        {newsFeed?.length
+          ? newsFeed?.map((news) => {
+              return (
+                <li key={news.id}>
+                  <Paragraph>
+                    <Link href={news?.link} passHref>
+                      <a>{news?.display_text}</a>
+                    </Link>
+                  </Paragraph>
+                </li>
+              );
+            })
+          : "No News Found"}
+      </ul>
     </Card>
   );
 };

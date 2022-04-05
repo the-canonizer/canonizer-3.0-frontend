@@ -23,4 +23,6 @@ const RegistrationPage = () => {
   );
 };
 
+RegistrationPage.displayName = "RegistrationPage";
+
 export default RegistrationPage;

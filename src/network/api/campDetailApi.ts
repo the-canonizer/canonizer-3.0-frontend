@@ -11,10 +11,11 @@ import NetworkCall from "../networkCall";
 import TreeRequest from "../request/campDetailRequest";
 import { message } from "antd";
 import { store } from "../../store";
+import { handleError, isServer } from "../../utils/generalUtility";
 
 export const getTreesApi = async (reqBody) => {
   try {
-    const trees = await NetworkCall.fetch(TreeRequest.getTrees(reqBody));
+    const trees = await NetworkCall.fetch(TreeRequest.getTrees(reqBody), false);
     store.dispatch(setTree(trees?.data[0]));
     return trees?.data[0];
   } catch (error) {
@@ -24,47 +25,53 @@ export const getTreesApi = async (reqBody) => {
 
 export const getNewsFeedApi = async (reqBody) => {
   try {
-    const newsFeed = await NetworkCall.fetch(TreeRequest.getNewsFeed(reqBody));
+    const newsFeed = await NetworkCall.fetch(
+      TreeRequest.getNewsFeed(reqBody),
+      false
+    );
     store.dispatch(setNewsFeed(newsFeed?.data));
     return newsFeed?.data;
   } catch (error) {
-    message.error(error.message);
+    // message.error(error.message);
   }
 };
 
 export const getCanonizedCampStatementApi = async (reqBody) => {
   try {
     const campStatement = await NetworkCall.fetch(
-      TreeRequest.getCampStatement(reqBody)
+      TreeRequest.getCampStatement(reqBody),
+      false
     );
     store.dispatch(setCampStatement(campStatement?.data));
     return campStatement?.data;
   } catch (error) {
-    message.error(error.message);
+    // message.error(error.message);
   }
 };
 
 export const getCurrentTopicRecordApi = async (reqBody) => {
   try {
     const currentTopicRecord = await NetworkCall.fetch(
-      TreeRequest.getCurrentTopicRecord(reqBody)
+      TreeRequest.getCurrentTopicRecord(reqBody),
+      false
     );
     store.dispatch(setCurrentTopicRecord(currentTopicRecord?.data));
     return currentTopicRecord?.data;
   } catch (error) {
-    message.error(error.message);
+    // message.error(error.message);
   }
 };
 
 export const getCurrentCampRecordApi = async (reqBody) => {
   try {
     const currentCampRecord = await NetworkCall.fetch(
-      TreeRequest.getCurrentCampRecord(reqBody)
+      TreeRequest.getCurrentCampRecord(reqBody),
+      false
     );
     store.dispatch(setCurrentCampRecord(currentCampRecord?.data));
     return currentCampRecord?.data;
   } catch (error) {
-    message.error(error.message);
+    // message.error(error.message);
   }
 };
 
@@ -74,7 +81,7 @@ export const getCanonizedCampSupportingTreeApi = async (
 ) => {
   try {
     // const supportingTree = await NetworkCall.fetch(
-    //   TreeRequest.getCampSupportingTree(reqBody)
+    //   TreeRequest.getCampSupportingTree(reqBody), false
     // );
     const mockSupporters = [
       {
@@ -136,5 +143,49 @@ export const getCanonizedCampSupportingTreeApi = async (
     return mockSupporters;
   } catch (error) {
     message.error(error.message);
+  }
+};
+
+export const createCamp = async (body) => {
+  try {
+    const res = await NetworkCall.fetch(TreeRequest.createCamp(body));
+    return res;
+  } catch (err) {
+    handleError(err);
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400
+    ) {
+      return err.error.data;
+    }
+  }
+};
+
+export const getAllParentsCamp = async (body) => {
+  try {
+    const res = await NetworkCall.fetch(TreeRequest.getAllParentsCamp(body));
+    return res;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const getAllCampNickNames = async () => {
+  try {
+    const res = await NetworkCall.fetch(TreeRequest.getAllCampNickNames());
+    return res;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const getAllUsedNickNames = async (body) => {
+  try {
+    const res = await NetworkCall.fetch(TreeRequest.getUsedNickNames(body));
+    return res;
+  } catch (error) {
+    handleError(error);
   }
 };

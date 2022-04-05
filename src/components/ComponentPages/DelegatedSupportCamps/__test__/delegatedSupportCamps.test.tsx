@@ -23,7 +23,33 @@ const delegatedSupportCampsList = [
         support_order: 1,
         camp_name: "Supported Camps",
       },
+      {
+        camp_link: "https://www.google.com/",
+        support_order: 2,
+        camp_name: "Supported Camps",
+      },
+      {
+        camp_link: "https://www.google.com/",
+        support_order: 3,
+        camp_name: "Supported Camps",
+      },
+      {
+        camp_link: "https://www.google.com/",
+        support_order: 4,
+        camp_name: "Supported Camps",
+      },
+      {
+        camp_link: "https://www.google.com/",
+        support_order: 5,
+        camp_name: "Supported Camps",
+      },
     ],
+    delegated_to_nick_name: "Rohit_Talentelgia",
+    delegated_to_nick_name_link:
+      "https://canonizer-api.teamtalentelgia.com/user/supports/1138?topicnum=286&campnum=5&namespace=19",
+    my_nick_name: "reena_talentelgia",
+    my_nick_name_link:
+      "https://canonizer-api.teamtalentelgia.com/user/supports/1134?topicnum=286&campnum=5&namespace=19",
   },
   {
     id: "2",
@@ -36,6 +62,12 @@ const delegatedSupportCampsList = [
         camp_name: "Supported Camps 2",
       },
     ],
+    delegated_to_nick_name: "Rohit_Talentelgia",
+    delegated_to_nick_name_link:
+      "https://canonizer-api.teamtalentelgia.com/user/supports/1138?topicnum=286&campnum=5&namespace=19",
+    my_nick_name: "reena_talentelgia",
+    my_nick_name_link:
+      "https://canonizer-api.teamtalentelgia.com/user/supports/1134?topicnum=286&campnum=5&namespace=19",
   },
 ];
 const viewMoreDataValue = {
@@ -150,7 +182,7 @@ describe("Delegated Support camps page", () => {
       />
     );
     expect(
-      screen.getAllByText(labels.viewMore)[1] as HTMLLabelElement
+      screen.getAllByText(labels.viewMore)[0] as HTMLLabelElement
     ).toBeInTheDocument();
   });
   it("render Modal View More is clicked", () => {
@@ -168,7 +200,7 @@ describe("Delegated Support camps page", () => {
       />
     );
     expect(
-      screen.getAllByText(labels.viewMore)[1] as HTMLLabelElement
+      screen.getAllByText(labels.viewMore)[0] as HTMLLabelElement
     ).toBeInTheDocument();
     expect(screen.getByText("Current Supported Campus:")).toBeInTheDocument();
   });

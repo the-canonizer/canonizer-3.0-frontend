@@ -1,16 +1,14 @@
 import { message } from "antd";
 
-import {
-  handleError,
-  isServer,
-  handleCatchError,
-} from "../../utils/generalUtility";
+import { handleError, isServer } from "../../utils/generalUtility";
 import {
   setAuthToken,
   removeAuthToken,
   setLoggedInUser,
   logoutUser,
+  setSocialUsers,
 } from "../../store/slices/authSlice";
+import { showMultiUserModal } from "../../store/slices/uiSlice";
 import NetworkCall from "../networkCall";
 import UserRequest from "../request/userRequest";
 import { store } from "../../store";
@@ -121,25 +119,13 @@ export const verifyOtp = async (values: object) => {
 };
 
 export const changePassword = async (values: object) => {
-  try {
-    let state = store.getState();
-    const { auth } = state;
-    const res = await NetworkCall.fetch(
-      UserRequest.changePassword(values, auth.loggedInUser.token)
-      //UserRequest.changePassword(values, auth.token)
-    );
-    return res;
-  } catch (errors) {
-    let msgs = errors?.error?.data?.error;
-    if (msgs) {
-      let keys = Object.keys(msgs);
-      keys.forEach((key) => {
-        message.error(msgs[key][0]);
-      });
-    } else {
-      message.error(errors?.error?.data?.message);
-    }
-  }
+  let state = store.getState();
+  const { auth } = state;
+  const res = await NetworkCall.fetch(
+    UserRequest.changePassword(values, auth.loggedInUser.token)
+    //UserRequest.changePassword(values, auth.token)
+  );
+  return res;
 };
 
 // social login path
@@ -158,11 +144,21 @@ export const socialLogin = async (values: object) => {
 };
 
 export const socialLoginCallback = async (values: object) => {
+  const state = store.getState();
+
   try {
-    const authToken = await createToken();
+    let token = null;
+    let authToken = null;
+
+    if (state.auth.token) {
+      token = state.auth.token;
+    } else {
+      authToken = await createToken();
+      token = authToken.access_token;
+    }
 
     const res = await NetworkCall.fetch(
-      UserRequest.userSocialLoginCallback(values, authToken.access_token)
+      UserRequest.userSocialLoginCallback(values, token)
     );
 
     !isServer &&
@@ -177,8 +173,16 @@ export const socialLoginCallback = async (values: object) => {
     store.dispatch(setAuthToken(authToken.access_token));
 
     return res;
-  } catch (err) {
-    handleError(err);
+  } catch (error) {
+    if (
+      error &&
+      error.error &&
+      error.error.data &&
+      error.error.data.status_code === 403
+    ) {
+      return error.error.data;
+    }
+    handleError(error);
   }
 };
 
@@ -200,13 +204,13 @@ export const GetUserProfileInfo = async () => {
   let state = store.getState();
   const { auth } = state;
   const res = await NetworkCall.fetch(
-    UserRequest.GetUserProfileInfo(auth.loggedInUser.token)
+    UserRequest.GetUserProfileInfo(auth.loggedInUser?.token)
   )
     .then((value) => {
       return value;
     })
     .catch((errors) => {
-      handleCatchError(errors);
+      handleError(errors);
     });
   return res;
 };
@@ -218,10 +222,21 @@ export const UpdateUserProfileInfo = async (values: object) => {
     UserRequest.UpdateUserProfileInfo(values, auth.loggedInUser.token)
   )
     .then((value) => {
+      let payload = {
+        ...state.auth.loggedInUser,
+        first_name: value.data.first_name,
+        last_name: value.data.last_name,
+        phone_number: value.data.phone_number,
+        birthday: value.data.birthday,
+        email: value.data.email,
+        token: auth.loggedInUser.token,
+        refresh_token: auth.loggedInUser.refresh_token,
+      };
+      store.dispatch(setLoggedInUser(payload));
       return value;
     })
     .catch((errors) => {
-      handleCatchError(errors);
+      handleError(errors);
     });
   return res;
 };
@@ -230,13 +245,13 @@ export const GetMobileCarrier = async () => {
   let state = store.getState();
   const { auth } = state;
   const res = await NetworkCall.fetch(
-    UserRequest.GetMobileCarrier(auth.loggedInUser.token)
+    UserRequest.GetMobileCarrier(auth.loggedInUser?.token)
   )
     .then((value) => {
       return value;
     })
     .catch((errors) => {
-      handleCatchError(errors);
+      handleError(errors);
     });
   return res;
 };
@@ -251,7 +266,7 @@ export const SendOTP = async (values: object) => {
       return value;
     })
     .catch((errors) => {
-      handleCatchError(errors);
+      handleError(errors);
     });
   return res;
 };
@@ -266,7 +281,7 @@ export const VerifyOTP = async (values: object) => {
       return value;
     })
     .catch((errors) => {
-      handleCatchError(errors);
+      handleError(errors);
     });
   return res;
 };
@@ -275,13 +290,13 @@ export const GetAlgorithmsList = async () => {
   let state = store.getState();
   const { auth } = state;
   const res = await NetworkCall.fetch(
-    UserRequest.GetAlgorithmsList(auth.loggedInUser.token)
+    UserRequest.GetAlgorithmsList(auth.loggedInUser?.token)
   )
     .then((value) => {
       return value;
     })
     .catch((errors) => {
-      handleCatchError(errors);
+      handleError(errors);
     });
   return res;
 };
@@ -290,13 +305,13 @@ export const GetLanguageList = async () => {
   let state = store.getState();
   const { auth } = state;
   const res = await NetworkCall.fetch(
-    UserRequest.GetLanguageList(auth.loggedInUser.token)
+    UserRequest.GetLanguageList(auth.loggedInUser?.token)
   )
     .then((value) => {
       return value;
     })
     .catch((errors) => {
-      handleCatchError(errors);
+      handleError(errors);
     });
   return res;
 };
@@ -355,7 +370,7 @@ export const addNickName = async (values: object) => {
       return value;
     })
     .catch((errors) => {
-      handleCatchError(errors);
+      handleError(errors);
     });
 
   return res;
@@ -366,13 +381,13 @@ export const getNickNameList = async () => {
   const { auth } = state;
 
   const res = await NetworkCall.fetch(
-    UserRequest.getNickNameList(auth.loggedInUser.token)
+    UserRequest.getNickNameList(auth.loggedInUser?.token)
   )
     .then((value) => {
       return value;
     })
     .catch((errors) => {
-      handleCatchError(errors);
+      handleError(errors);
     });
   return res;
 };
@@ -388,7 +403,7 @@ export const updateNickName = async (values: object, id: string) => {
       return value;
     })
     .catch((errors) => {
-      handleCatchError(errors);
+      handleError(errors);
     });
   return res;
 };
@@ -418,7 +433,7 @@ export const getDirectSupportedCampsList = async () => {
       return value;
     })
     .catch((errors) => {
-      handleCatchError(errors);
+      handleError(errors);
     });
   return res;
 };
@@ -434,7 +449,80 @@ export const getDelegatedSupportCampsList = async () => {
       return value;
     })
     .catch((errors) => {
-      handleCatchError(errors);
+      handleError(errors);
     });
   return res;
+};
+
+export const userSocialAccountsList = async () => {
+  const state = store.getState();
+
+  try {
+    const res = await NetworkCall.fetch(
+      UserRequest.userSocialAccountsList(state.auth.token)
+    );
+
+    return res;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const userSocialAccountDelete = async (id: string) => {
+  const state = store.getState();
+
+  try {
+    const res = await NetworkCall.fetch(
+      UserRequest.userSocialAccountDelete(state.auth.token, id)
+    );
+
+    return res;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const socialLoginLinkUser = async (values: object) => {
+  const state = store.getState();
+
+  try {
+    let token = state.auth.token;
+
+    const res = await NetworkCall.fetch(
+      UserRequest.SocialLinkUser(values, token)
+    );
+
+    return res;
+  } catch (error) {
+    if (
+      error &&
+      error.error &&
+      error.error.data &&
+      error.error.data.status_code === 403
+    ) {
+      const data = error.error.data;
+
+      const users = [data.data.already_link_user];
+
+      store.dispatch(setSocialUsers(users));
+      store.dispatch(showMultiUserModal());
+
+      return data;
+    }
+    handleError(error);
+  }
+};
+
+export const deactivateUser = async (body: object) => {
+  const state = store.getState();
+
+  try {
+    const res = await NetworkCall.fetch(
+      UserRequest.UserDeactivate(body, state.auth.token)
+    );
+
+    return res;
+  } catch (error) {
+    handleError(error);
+  }
 };

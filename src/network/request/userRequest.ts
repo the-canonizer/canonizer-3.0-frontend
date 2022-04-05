@@ -360,4 +360,54 @@ export default class UserRequest extends Request {
       authToken
     );
   }
+
+  static userSocialAccountsList(token) {
+    return new Request(
+      K.Network.URL.GetSocialLinkedAccounts,
+      K.Network.Method.GET,
+      null,
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
+
+  static userSocialAccountDelete(token, id) {
+    return new Request(
+      K.Network.URL.DeleteSocialLinkedAccount + "/" + id,
+      K.Network.Method.DELETE,
+      null,
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
+
+  static SocialLinkUser(values, authToken) {
+    const body = {
+      client_id: process.env.NEXT_PUBLIC_AUTH_CLIENT_PASSWORD_ID,
+      client_secret: process.env.NEXT_PUBLIC_AUTH_CLIENT_PASSWORD_SECRET,
+      ...values,
+    };
+
+    return new Request(
+      K.Network.URL.LinkUsersFromSocial,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
+
+  static UserDeactivate(body, authToken) {
+    return new Request(
+      K.Network.URL.DeactivateUser,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
 }

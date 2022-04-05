@@ -11,6 +11,7 @@ export const authSlice = createSlice({
     token: "",
     authRefreshToken: null,
     permissions: [""],
+    socialUsers: [],
   },
   reducers: {
     setAuthToken: (state, action) => {
@@ -35,11 +36,24 @@ export const authSlice = createSlice({
       state.authenticated = false;
       state.authToken = null;
       state.authRefreshToken = null;
+      state.socialUsers = [];
+    },
+    setSocialUsers: (state, action) => {
+      state.socialUsers = action.payload;
+    },
+    removeSocialUsers: (state) => {
+      state.socialUsers = [];
     },
   },
 });
 
-export const { setAuthToken, removeAuthToken, setLoggedInUser, logoutUser } =
-  authSlice.actions;
+export const {
+  setAuthToken,
+  removeAuthToken,
+  setLoggedInUser,
+  logoutUser,
+  setSocialUsers,
+  removeSocialUsers,
+} = authSlice.actions;
 
 export default authSlice.reducer;

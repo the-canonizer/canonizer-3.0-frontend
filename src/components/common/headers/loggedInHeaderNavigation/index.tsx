@@ -5,16 +5,17 @@ import Link from "next/link";
 import { logout } from "../../../../network/api/userApi";
 import { RootState } from "../../../../store";
 import styles from "../siteHeader.module.scss";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Logo from "../logoHeader";
 import { MenuOutlined, CloseOutlined, DownOutlined } from "@ant-design/icons";
 
 const { Header } = Layout;
-const LoggedInHeaderNavigation = () => {
-  const loggedInUser = useSelector<RootState>(
-    (state) => state.auth.loggedInUser
+const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
+  const loggedInUser = useSelector(
+    (state: RootState) => state.auth.loggedInUser
   );
 
+  const [loggedUser, setLoggedUser] = useState(loggedInUser);
   const router = useRouter();
   const [isActive, setActive] = useState(false);
   const toggleMobNav = () => {
@@ -29,7 +30,7 @@ const LoggedInHeaderNavigation = () => {
     },
 
     {
-      link: "/upload",
+      link: "/uploadFile",
       linkTitle: "Upload Files",
       id: 2,
     },
@@ -52,11 +53,6 @@ const LoggedInHeaderNavigation = () => {
       link: "/jobs",
       linkTitle: "Jobs",
       id: 6,
-    },
-    {
-      link: "/services",
-      linkTitle: "Services",
-      id: 7,
     },
   ];
 
@@ -83,6 +79,11 @@ const LoggedInHeaderNavigation = () => {
       <Menu.Item key="3">Log Out</Menu.Item>
     </Menu>
   );
+
+  useEffect(() => {
+    setLoggedUser(loggedInUser);
+  }, [loggedInUser]);
+
   return (
     <>
       <React.Fragment>
@@ -112,58 +113,55 @@ const LoggedInHeaderNavigation = () => {
                 })}
               </ul>
             </nav>
-            <div className={styles.btnsLoginRegister}>
-              <div className="hdrUserdropdown">
-                <Space size="large">
-                  <i className="icon-user"></i>{" "}
-                  <div>
-                    {loggedInUser ? loggedInUser["first_name"] : ""}{" "}
-                    {loggedInUser ? loggedInUser["last_name"] : ""}
+            {!isLoginPage ? (
+              <>
+                <div className={styles.btnsLoginRegister}>
+                  <div className="hdrUserdropdown">
+                    <Space size="large">
+                      <i className="icon-user"></i>{" "}
+                      <div>
+                        {loggedUser ? loggedUser["first_name"] : ""}{" "}
+                        {loggedUser ? loggedUser["last_name"] : ""}
+                      </div>
+                    </Space>
                   </div>
-                </Space>
-              </div>
-            </div>
-
-            <div className="mobile_tag">
-              <Link href="/settings">Account Settings</Link>
-              <a>Support Camps</a>
-              <a onClick={logOut}>Logout</a>
-            </div>
+                </div>
+                <div className="mobile_tag">
+                  <Link href="/settings">Account Settings</Link>
+                  <a>Support Camps</a>
+                  <a onClick={logOut}>Logout</a>
+                </div>
+              </>
+            ) : null}
           </div>
           <div className={styles.right}>
-            <div className={styles.btnsLoginRegister}>
-              <div className="hdrUserdropdown">
-                <Space size="small">
-                  <i className="icon-user"></i>{" "}
-                  <Dropdown overlay={menu} trigger={["click"]}>
-                    <Space size="small">
-                      <a
-                        className="ant-dropdown-link"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        {loggedInUser ? loggedInUser["first_name"] : ""}{" "}
-                        {loggedInUser
-                          ? console.log(
-                              loggedInUser,
-                              loggedInUser["first_name"],
-                              loggedInUser["last_name"],
-                              "logs"
-                            )
-                          : "console"}
-                        {loggedInUser ? loggedInUser["last_name"] : ""}
-                      </a>
-                      <DownOutlined
-                        style={{
-                          fontSize: "15px",
-                          color: "#fff",
-                          cursor: "pointer",
-                        }}
-                      />
-                    </Space>
-                  </Dropdown>
-                </Space>
+            {!isLoginPage ? (
+              <div className={styles.btnsLoginRegister}>
+                <div className="hdrUserdropdown">
+                  <Space size="small">
+                    <i className="icon-user"></i>{" "}
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <Space size="small">
+                        <a
+                          className="ant-dropdown-link"
+                          onClick={(e) => e.preventDefault()}
+                        >
+                          {loggedUser ? loggedUser["first_name"] : ""}{" "}
+                          {loggedUser ? loggedUser["last_name"] : ""}
+                        </a>
+                        <DownOutlined
+                          style={{
+                            fontSize: "15px",
+                            color: "#fff",
+                            cursor: "pointer",
+                          }}
+                        />
+                      </Space>
+                    </Dropdown>
+                  </Space>
+                </div>
               </div>
-            </div>
+            ) : null}
             <div className={styles.iconMobMenu}>
               <Button size="middle" onClick={toggleMobNav}>
                 <MenuOutlined />
