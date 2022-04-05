@@ -110,4 +110,18 @@ export default class TreeRequest extends Request {
       auth.loggedInUser?.token
     );
   }
+
+  static getUsedNickNames(body) {
+    let state = store.getState();
+    const { auth } = state;
+
+    return new Request(
+      K.Network.URL.GetNickNames,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      auth.loggedInUser?.token
+    );
+  }
 }

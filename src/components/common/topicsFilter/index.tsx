@@ -78,7 +78,7 @@ function disabledDateTime() {
   };
 }
 
-const CreateTopic = () => {
+const CreateTopic = ({ onCreateCamp = () => {} }) => {
   const [isDatePicker, setIsDatePicker] = useState(false);
   const [value, setValue] = useState(2);
   const [datePickerValue, setDatePickerValue] = useState(null);
@@ -86,6 +86,7 @@ const CreateTopic = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const didMount = useRef(false);
+  const [isCampBtnVisible, setIsCampBtnVisible] = useState(false);
 
   const campRoute = () => {
     router.push("/create-new-topic");
@@ -118,6 +119,12 @@ const CreateTopic = () => {
   //     }
   //   } else didMount.current = true;
   // }, [filterObject]);
+
+  useEffect(() => {
+    if (router.pathname.includes("camp-details")) {
+      setIsCampBtnVisible(true);
+    }
+  }, [router.pathname]);
 
   const selectAlgorithm = (value) => {
     dispatch(
@@ -180,9 +187,11 @@ const CreateTopic = () => {
           >
             <i className="icon-topic"></i> Create New Topic
           </Button>
-          <Button size="large" className={styles.btn}>
-            <i className="icon-camp"></i> Create New Camp
-          </Button>
+          {isCampBtnVisible ? (
+            <Button size="large" className={styles.btn} onClick={onCreateCamp}>
+              <i className="icon-camp"></i> Create New Camp
+            </Button>
+          ) : null}
         </div>
         <Collapse
           className={`${styles.cardAccordian} topicListFilterCardCollapse`}

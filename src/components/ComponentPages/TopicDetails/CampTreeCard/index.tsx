@@ -13,7 +13,7 @@ const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
       extra={
         <>
           <Checkbox>Subscribe</Checkbox>
-          <Link href="#">
+          <Link href="/news/add-news">
             <i className="icon-fi-document"></i> Add News
           </Link>
         </>

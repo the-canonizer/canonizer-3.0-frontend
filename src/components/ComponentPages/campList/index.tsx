@@ -1,13 +1,28 @@
-import { Typography, Button } from "antd";
+import { useEffect, useState } from "react";
+import { Alert } from "antd";
 import { useRouter } from "next/router";
+import { useSelector, useDispatch } from "react-redux";
+import { Typography, Button } from "antd";
 
 import styles from "./campList.module.scss";
 import Link from "next/link";
 
+import { RootState } from "../../../store";
+import { setCurrentTopic } from "../../../store/slices/topicSlice";
+
 const { Title, Text } = Typography;
 
 export default function CampList() {
+  const [isCampBtnVisible, setIsCampBtnVisible] = useState(false);
+
   const router = useRouter();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (router.pathname.includes("camp-details")) {
+      setIsCampBtnVisible(true);
+    }
+  }, [router.pathname]);
 
   const mockLinks = [
     {
@@ -41,6 +56,29 @@ export default function CampList() {
     router.push("/create-new-topic");
   };
 
+  const createdData = useSelector(
+    (state: RootState) => state.topic.currentTopic
+  );
+
+  const setCurrentTopics = (data) => dispatch(setCurrentTopic(data));
+
+  const onCreateCamp = () => {
+    const queryParams = router.query;
+
+    const data = {
+      message: null,
+      topic_num: queryParams.camp[0],
+      topic_name: "",
+      camp_name: "Agreement",
+      parent_camp_num: "1",
+    };
+
+    router.push({
+      pathname: "/create-new-camp",
+    });
+    setCurrentTopics(data);
+  };
+
   return (
     <>
       <div className={styles.wrap}>
@@ -59,9 +97,19 @@ export default function CampList() {
           <Button size="large" className={styles.createBtn} onClick={campRoute}>
             <i className="icon-topic"></i>Create New Topic
           </Button>
-          <Button size="large" className={styles.createBtn}>
-            <i className="icon-topic"></i>Create New Camp
-          </Button>
+          {createdData?.message && (
+            <Alert message={createdData?.message} type="success" />
+          )}
+
+          {isCampBtnVisible ? (
+            <Button
+              size="large"
+              className={styles.createBtn}
+              onClick={onCreateCamp}
+            >
+              <i className="icon-topic"></i>Create New Camp
+            </Button>
+          ) : null}
         </div>
         <div className={styles.campStatement}>
           <div className={styles.tabHead}>
