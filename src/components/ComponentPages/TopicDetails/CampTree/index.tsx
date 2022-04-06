@@ -20,7 +20,6 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
   ) => {
     console.log("selected", selectedKeys);
     if (selectedKeys.join() === "custom" || selectedKeys.join() === "") {
-      console.log(".////////");
     } else {
       setSelectedNodeID(+selectedKeys.join(""));
       getSelectedNode(+selectedKeys.join());
@@ -35,7 +34,6 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
   const renderTreeNodes = (data: any) =>
     Object.keys(data).map((item) => {
       if (data[item].children) {
-        // debugger;
         if (data[item].score > scoreFilter) {
           return (
             <>
