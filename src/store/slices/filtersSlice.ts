@@ -12,7 +12,7 @@ export const filtersSlice = createSlice({
       asof: "default",
       filterByScore: 0,
       algorithm: "blind_popularity",
-      search: "Hard",
+      search: "",
       includeReview: false,
       onlyMyTopics: false,
     },
