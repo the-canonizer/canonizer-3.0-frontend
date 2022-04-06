@@ -80,7 +80,7 @@ const NetworkConstants = {
     GetCampNewsFeeds:`${BaseCanonizerApiUrl}/get-camp-newsfeed`,
     GetEditNewsFeeds:`${BaseCanonizerApiUrl}/edit-camp-newsfeed`,
     GetUpdateNewsFeeds:`${BaseCanonizerApiUrl}/update-camp-newsfeed`,
-    GetAddNewsFeeds:"`${BaseCanonizerApiUrl}/"
+    GetAddNewsFeeds:`${BaseCanonizerApiUrl}/store-camp-newsfeed`
     
   
   

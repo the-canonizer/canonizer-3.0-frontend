@@ -30,27 +30,26 @@ const NewsFeedsCard = ({ newsFeed, reqBody }) => {
         </h3>
       }
       extra={
-        newsFeed?.length ? (
-          <>
-            {" "}
-            {/* <a>
+        <>
+          {" "}
+          {/* <a>
             <i className={"icon-edit"}></i>Edit News
           </a>{" "} */}
-            <Link
-              href={{
-                pathname: "/news/edit",
-                query: reqBody,
-              }}
-            >
-              <a>
-                <i className={"icon-edit "}></i>Edit News
-              </a>
-            </Link>{" "}
+          <Link
+            href={{
+              pathname: "/news/edit",
+              query: reqBody,
+            }}
+          >
             <a>
-              <i className={"icon-delete"}></i>Delete News
+              <i className={"icon-edit "}></i>Edit News
             </a>
-          </>
-        ) : null
+          </Link>{" "}
+          <a>
+            <i className={"icon-delete"}></i>Delete News
+          </a>
+        </>
+
         // newsFeed?.length ? (
         //   <>
         //     {" "}

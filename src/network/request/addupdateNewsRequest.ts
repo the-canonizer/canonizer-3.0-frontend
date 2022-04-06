@@ -10,12 +10,24 @@ export default class addNewsRequest extends Request {
   
     static getAddNewsrequest(body) {
       
-     console.log("body in req od add  news ", body )
-     
+     console.log(" -------------------------body in req od add  news ",body.topic_num,body.camp_num,body.available_for_child,body.link,body.display_text )
+  //    {
+  //     "topic_num":12,
+  //     "camp_num":1,
+  //     "available_for_child":1,
+  //     "link":"facebook.com",
+  //     "display_text":"any text"
+  // }
       return new Request(
         K.Network.URL.GetAddNewsFeeds,
         K.Network.Method.POST,
-       {  body    },
+       {  
+        "topic_num":body.topic_num,
+        "camp_num":body.camp_num,
+        "available_for_child":body.available_for_child,
+        "link":body.link,
+        "display_text":body.display_text
+        },
         K.Network.Header.Type.Json,
         {}
       );

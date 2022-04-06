@@ -1,11 +1,7 @@
 import { Typography } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-<<<<<<< HEAD
-import { useSelector } from "react-redux";
-=======
 import { useSelector, useDispatch } from "react-redux";
->>>>>>> 1cdca2dcdaac0c3cf6a53776281a62810d15cb83
 import {
   getCanonizedCampStatementApi,
   getNewsFeedApi,
@@ -35,7 +31,7 @@ const TopicDetails = () => {
     topic_num: 45,
     camp_num: 1,
   });
-
+  const [feednews2, setfeednews2] = useState(null);
   console.log("reqin /comp/compPage/topicdetail/ind =====> ", requestBody);
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [getTreeLoadingIndicator, setGetTreeLoadingIndicator] = useState(false);
@@ -52,6 +48,11 @@ const TopicDetails = () => {
     }));
   useEffect(() => {
     async function getTreeApiCall() {
+      await getTreesApi(requestBody);
+      let feed = await editNewsFeedApi(requestBody);
+
+      setfeednews2(feed.data);
+      console.log("feed ", feed);
       if (didMount.current) {
         setGetTreeLoadingIndicator(true);
         const reqBody = {
@@ -60,10 +61,11 @@ const TopicDetails = () => {
           algorithm: algorithm,
           update_all: 1,
         };
-        await getTreesApi(reqBody);
+
         setGetTreeLoadingIndicator(false);
       } else didMount.current = true;
     }
+
     getTreeApiCall();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asofdate, algorithm]);
@@ -92,6 +94,10 @@ const TopicDetails = () => {
       as_of: asof,
       as_of_date: asofdate,
     };
+    console.log("req of main ", reqBody);
+    let { camp_num, topic_num } = reqBody;
+
+    setRequestBody({ camp_num, topic_num });
 
     await Promise.all([
       getNewsFeedApi(reqBody),
@@ -122,7 +128,9 @@ const TopicDetails = () => {
 
     setCurrentTopics(data);
   };
-
+  console.log("reqin /comp/compPage/topicdetail/ind tr =====>", topicRecord);
+  console.log("reqin /comp/compPage/topicdetail/ind cr =====>", campRecord);
+  console.log("reqin /comp/compPage/topicdetail/ind fn2 =====>", feednews2);
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
@@ -179,7 +187,7 @@ const TopicDetails = () => {
             />
           </Spin>
           <Spin spinning={loadingIndicator} size="large">
-            <NewsFeedsCard newsFeed={newsFeed}   reqBody={requestBody}/>
+            <NewsFeedsCard newsFeed={feednews2} reqBody={requestBody} />
           </Spin>
           <Spin spinning={loadingIndicator} size="large">
             <CampStatementCard myRefToCampStatement={myRefToCampStatement} />

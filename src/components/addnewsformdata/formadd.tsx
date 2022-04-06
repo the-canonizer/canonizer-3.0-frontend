@@ -8,17 +8,34 @@ import { Row, Col, Card, Badge } from "antd";
 export default function FormData() {
   const router = useRouter();
   const [form] = Form.useForm();
-  console.log("selected data 2=> ");
   const goBack = () => {
     router.back();
   };
-  const onFinish = (values: any) => {
+  const onFinish = async (values: any) => {
     console.log("Success:", values);
-    // const a = await addNewsRequestApi(values);
-    // console.log("data obj of all in main addnews  => ", a);
+    const { topic_num, camp_num } = router.query;
+    console.log("----------------data topic , camp", topic_num, camp_num);
+    const a = await addNewsRequestApi({
+      topic_num: topic_num,
+      camp_num: camp_num,
+      available_for_child: values.available_for_child,
+      link: values.link,
+      display_text: values.display_text,
+    });
+    console.log(
+      "--------------------------data obj of all in main addnews  => ",
+      a
+    );
     console.log("go back");
     router.back();
   };
+  //   {
+  //     "topic_num":12,
+  //     "camp_num":1,
+  //     "available_for_child":1,
+  //     "link":"facebook.com",
+  //     "display_text":"any text"
+  // }
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);

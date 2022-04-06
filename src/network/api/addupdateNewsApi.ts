@@ -4,7 +4,7 @@ import addNewsRequest from "../request/addupdateNewsRequest"
 
 export const addNewsRequestApi = async (body) =>{
     try {
-        console.log("body of add news in api",body);
+        console.log("body of add news----------------------------------------------- in api",body);
         const editnewsdata =await NetworkCall.fetch(
                 addNewsRequest.getAddNewsrequest(body))
        
