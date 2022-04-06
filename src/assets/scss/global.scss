@@ -808,3 +808,11 @@ form {
 .hideUpload {
   display: none;
 }
+
+#profileInfo {
+  .ant-select-status-error {
+    .ant-select-selector {
+      border: none !important;
+    }
+  }
+}

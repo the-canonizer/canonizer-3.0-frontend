@@ -22,7 +22,7 @@ const ProfileInfo = () => {
   const [formVerify] = Form.useForm();
   const [mobileCarrier, setMobileCarrier] = useState([]);
   const [isOTPModalVisible, setIsOTPModalVisible] = useState(false);
-  const [otp, setOTP] = useState();
+  const [otp, setOTP] = useState("");
   const [privateFlags, setPrivateFlags] = useState("");
   const [privateList, setPrivateList] = useState([]);
   const [publicList, setPublicList] = useState([]);
@@ -53,8 +53,21 @@ const ProfileInfo = () => {
   const isPublicOrPrivate = (field_value) => {
     return privateList.includes(field_value) ? 0 : 1;
   };
+  function formatDate(date) {
+    var d = new Date(date),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return [year, month, day].join("-");
+  }
   //on update profile click
   const onFinish = async (values: any) => {
+    // console.log(values, 'valuessss')
+    let birthday = values.birthday._d;
     setDisableButton(true);
     //Set Private Public flags
     values.first_name_bit = isPublicOrPrivate(publicPrivateArray.first_name);
@@ -68,6 +81,8 @@ const ProfileInfo = () => {
     values.state_bit = isPublicOrPrivate(publicPrivateArray.state);
     values.country_bit = isPublicOrPrivate(publicPrivateArray.country);
     values.birthday_bit = isPublicOrPrivate(publicPrivateArray.birthday);
+    values.birthday = formatDate(birthday);
+
     //End Set Private Public flags
     values.mobile_carrier = formVerify.getFieldValue(
       publicPrivateArray.mobile_carrier
@@ -95,6 +110,7 @@ const ProfileInfo = () => {
     if (res && res.status_code === 200) {
       message.success(res.message);
       setIsOTPModalVisible(true);
+      setOTP("");
       console.log(res.data.otp);
       //setOTP(res.data.otp)
     }
