@@ -4,6 +4,7 @@ import React from "react";
 import { useRouter } from "next/router";
 import { addNewsRequestApi } from "../../network/api/addupdateNewsApi";
 import { Row, Col, Card, Badge } from "antd";
+import styles from "./addEditNews.module.scss";
 
 export default function FormData() {
   const router = useRouter();
@@ -41,7 +42,7 @@ export default function FormData() {
     console.log("Failed:", errorInfo);
   };
   return (
-    <Card title="Add News" className="edit-card" bordered={false}>
+    <Card title="Add News" className={styles.Card} bordered={false}>
       <Form
         form={form}
         layout={"vertical"}
@@ -51,72 +52,88 @@ export default function FormData() {
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
       >
-        <Card className="inner-form">
-          {/* <div className="count-badge">
-            <Badge className="count-row-edit ">1</Badge>
-          </div> */}
-          <Row gutter={24}>
-            <Col xl={14} md={24} xs={24} className="textarea-form">
-              <Form.Item
-                name="display_text"
-                label="Display Text ( Limit 256 chars )"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input text",
-                  },
-                ]}
-              >
-                <Input.TextArea
-                  placeholder='New Video:"Consciousness:Not a Hard Problem Just a Color Problem"'
-                  autoSize={{ minRows: 6, maxRows: 5 }}
-                  maxLength={256}
-                />
-              </Form.Item>
-            </Col>
-            <Col xl={10} md={24} xs={24} className="form-link">
-              <Form.Item
-                label="Link ( Limit 2000 chars )"
-                name="link"
-                validateTrigger="onFinish"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input url",
-                  },
-                  {
-                    pattern:
-                      /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/,
-                    message: "Please input valid url only",
-                  },
-                ]}
-              >
-                <Input maxLength={200} />
-              </Form.Item>
+        <Row gutter={28}>
+          <Col xl={14} md={24} xs={24} className="textarea-form">
+            <Form.Item
+              className={styles.formItem}
+              name="display_text"
+              label={
+                <>
+                  Display Text <small>(Limit 256 chars)</small>
+                </>
+              }
+              rules={[
+                {
+                  required: true,
+                  message: "Please input text",
+                },
+              ]}
+            >
+              <Input.TextArea
+                size="large"
+                placeholder='New Video:"Consciousness:Not a Hard Problem Just a Color Problem"'
+                maxLength={256}
+              />
+            </Form.Item>
+          </Col>
+          <Col xl={10} md={24} xs={24} className="form-link">
+            <Form.Item
+              className={`${styles.formItem} mb-3`}
+              label={
+                <>
+                  Link <small>(Limit 2000 chars)</small>
+                </>
+              }
+              name="link"
+              validateTrigger="onFinish"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input url",
+                },
+                {
+                  pattern:
+                    /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/,
+                  message: "Please input valid url only",
+                },
+              ]}
+            >
+              <Input
+                size="large"
+                placeholder="http:canonizer.com/videos/conciousness/"
+              />
+            </Form.Item>
 
-              <Form.Item
-                style={{
-                  marginLeft: "10px",
-                  fontWeight: "bold",
-                  marginTop: "-10px",
-                }}
-                name="available_for_child"
-                valuePropName="checked"
-                // wrapperCol={{
-                //   offset: 8,
-                //   span: 16,
-                // }}
-              >
-                <Checkbox>Available for children</Checkbox>
-              </Form.Item>
-            </Col>
-          </Row>
-        </Card>
-        <Form.Item className="edit-news-buttons">
-          <Button type="primary" className="submit-btn" htmlType="submit">
+            <Form.Item
+              className={styles.formItemCheckbox}
+              name="available_for_child"
+              valuePropName="checked"
+              // wrapperCol={{
+              //   offset: 8,
+              //   span: 16,
+              // }}
+            >
+              <Checkbox>Available for children</Checkbox>
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Form.Item>
+          <Button
+            type="primary"
+            size="large"
+            className="btn-orange mr-3"
+            htmlType="submit"
+          >
             Create News
           </Button>
-          <Button htmlType="button" className="cancel-btn" onClick={goBack}>
+          <Button
+            htmlType="button"
+            className="cancel-btn"
+            type="ghost"
+            size="large"
+            onClick={goBack}
+          >
             Cancel
           </Button>
         </Form.Item>
