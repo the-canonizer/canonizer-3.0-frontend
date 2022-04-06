@@ -162,7 +162,7 @@ const TopicDetails = () => {
           </div>
         </div>
 
-        <aside className="leftSideBar miniSideBar">
+        <aside className="leftSideBar">
           <SideBar onCreateCamp={onCreateCamp} />
         </aside>
 
