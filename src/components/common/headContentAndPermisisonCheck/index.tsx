@@ -46,7 +46,6 @@ const HeadContentAndPermissionComponent = ({
     metaKeys.includes(componentName)
       ? setMeta(MetaTags[componentName])
       : setMeta(MetaTags["default"]);
-
   }, [componentName, isUserAuthenticated, isAllowed, router]);
 
   return (

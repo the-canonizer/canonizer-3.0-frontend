@@ -1,5 +1,4 @@
 .profileInfo_wrapper {
-
   form {
     .titles {
       color: #2e68db;
@@ -9,24 +8,25 @@
       margin-bottom: 40px;
       font-family: var(--font-family-asap);
     }
-    h4{
+    h4 {
       margin-top: 20px;
     }
-    .section_one{
+    .section_one {
       background-color: #f8f8f8;
       padding: 15px;
       padding-bottom: 1px;
     }
-    .section_one, .section_two {
+    .section_one,
+    .section_two {
       width: 100%;
       height: 100%;
       text-align: left;
 
       label {
-        font-size: 15px;
+        font-size: 13px;
         font-weight: 600;
-        color: #6E7880;
-        padding: 0 0 0 4px;
+        color: #6e7880;
+        padding: 0 0 0 0px;
 
         &::before {
           position: absolute;
@@ -36,8 +36,7 @@
 
       input {
         transition: all 0.3s;
-        &:not([type="checkbox"])
-        &:not([id="profileInfo_date-picker"]) {
+        &:not([type="checkbox"]) &:not([id="profileInfo_date-picker"]) {
           height: 42px;
           background: var(--color-ffffff) 0% 0% no-repeat padding-box;
           border: 1px solid #d9d9d9;
@@ -49,34 +48,29 @@
           font-size: 14px;
           color: #afb6bb;
         }
-
-        
       }
     }
-    .ant-picker{
+    .ant-picker {
       width: 100%;
     }
-      
   }
-  .select_after{
+  .select_after {
     font-size: 14px;
     background-color: #fafafa !important;
   }
-  .select_after .ant-select-selector{
+  .select_after .ant-select-selector {
     background-color: #fafafa !important;
   }
-  .date_picker{
+  .date_picker {
     display: flex !important;
   }
-  .date_picker_input_item
-  {
-    flex:1;
+  .date_picker_input_item {
+    flex: 1;
   }
-  .date_picker_inner
-  {
+  .date_picker_inner {
     width: 100%;
   }
-  .radio_Btn{
+  .radio_Btn {
     flex-wrap: wrap;
   }
 }

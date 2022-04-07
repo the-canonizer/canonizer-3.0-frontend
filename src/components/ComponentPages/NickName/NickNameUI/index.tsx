@@ -67,6 +67,7 @@ export default function NickNameUI({
               columns={columns}
               rowClassName="editable-row"
               pagination={false}
+              className={"NickName_TableHead"}
             />
           </Form.Item>
           <Form.Item>

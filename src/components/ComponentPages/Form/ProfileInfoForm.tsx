@@ -123,7 +123,9 @@ function ProfileInfoForm({
         layout="vertical"
         scrollToFirstError
       >
-        <Title level={4}>Personal Information</Title>
+        <Title level={4} className="form-Title">
+          Personal Information
+        </Title>
         <div className={styles.section_two}>
           <Row gutter={30}>
             <Col md={12}>
@@ -140,6 +142,9 @@ function ProfileInfoForm({
                   placeholder={messages.placeholders.firstName}
                   size="large"
                   tabIndex={4}
+                  onKeyDown={(e) =>
+                    e.key === " " && e.keyCode === 32 && e.preventDefault()
+                  }
                 />
               </Form.Item>
               <Form.Item
@@ -155,6 +160,9 @@ function ProfileInfoForm({
                   placeholder={messages.placeholders.lastName}
                   tabIndex={6}
                   size="large"
+                  onKeyDown={(e) =>
+                    e.key === " " && e.keyCode === 32 && e.preventDefault()
+                  }
                 />
               </Form.Item>
               <Form.Item name="gender" label={messages.labels.gender}>
@@ -183,6 +191,9 @@ function ProfileInfoForm({
                   placeholder={messages.placeholders.middleName}
                   size="large"
                   tabIndex={5}
+                  onKeyDown={(e) =>
+                    e.key === " " && e.keyCode === 32 && e.preventDefault()
+                  }
                 />
               </Form.Item>
               <Form.Item
@@ -231,7 +242,9 @@ function ProfileInfoForm({
               </Form.Item>
             </Col>
           </Row>
-          <Title level={4}>Address Information</Title>
+          <Title level={4} className="form-Title">
+            Address Information
+          </Title>
           <Row gutter={30}>
             <Col md={12}>
               <Form.Item name="address_1" label={messages.labels.addressLine1}>
