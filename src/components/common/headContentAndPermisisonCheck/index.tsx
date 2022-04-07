@@ -29,7 +29,10 @@ const HeadContentAndPermissionComponent = ({
     //redirect if authentication is required and user is not loggedIn
 
     if (requiredAuthentication && !isUserAuthenticated) {
-      router.push("/login");
+      router.push({
+        pathname: "/login",
+        query: { returnUrl: router.asPath },
+      });
     }
 
     //redirect if user doesn't have specific permission to view that page
@@ -44,8 +47,7 @@ const HeadContentAndPermissionComponent = ({
       ? setMeta(MetaTags[componentName])
       : setMeta(MetaTags["default"]);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [componentName]);
+  }, [componentName, isUserAuthenticated, isAllowed, router]);
 
   return (
     <HeadContent

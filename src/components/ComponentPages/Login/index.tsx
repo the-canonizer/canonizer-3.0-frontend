@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { Form } from "antd";
@@ -60,7 +60,11 @@ const Login = ({ isModal, isTest = false }) => {
       form.resetFields();
       isModal ? closeModal() : "";
 
-      router.push("/");
+      if (router.query.returnUrl) {
+        router.push(`${router.query.returnUrl}`);
+      } else {
+        router.push("/");
+      }
     }
 
     if (values.remember) {
@@ -110,7 +114,11 @@ const Login = ({ isModal, isTest = false }) => {
         setIsOtpScreen(false);
         isModal ? closeModal() : "";
 
-        router.push("/");
+        if (router.query.returnUrl) {
+          router.push(`${router.query.returnUrl}`);
+        } else {
+          router.push("/");
+        }
       }
     } else {
       otpForm.resetFields();
