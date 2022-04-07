@@ -29,15 +29,7 @@ const TopicDetails = () => {
   const isLogin = useAuthentication();
   const didMount = useRef(false);
   let myRefToCampStatement = useRef(null);
-  const [requestBody, setRequestBody] = useState({
-    topic_num: 45,
-    camp_num: 1,
-  });
-  const [feednews2, setfeednews2] = useState(null);
-  console.log(
-    " /comp/compPage/topicdetail/ind  requestBody =====> ",
-    requestBody
-  );
+
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [getTreeLoadingIndicator, setGetTreeLoadingIndicator] = useState(false);
   const router = useRouter();
@@ -51,12 +43,27 @@ const TopicDetails = () => {
       topicRecord: state?.topicDetails?.currentTopicRecord,
       campRecord: state?.topicDetails?.currentCampRecord,
     }));
+
+  const [requestBody, setRequestBody] = useState({
+    topic_num: topicRecord[0].topic_num,
+    camp_num: topicRecord[0].camp_num,
+  });
+  const [feednews2, setfeednews2] = useState(null);
+  console.log(
+    " /comp/compPage/topicdetail/ind  requestBody =====> ",
+    requestBody
+  );
   useEffect(() => {
     async function getTreeApiCall() {
       let feed = await editNewsFeedApi(requestBody);
 
       setfeednews2(feed.data);
-      console.log("feed ", feed);
+      console.log(
+        "feed ",
+        feed,
+        topicRecord[0].topic_num,
+        topicRecord[0].camp_num
+      );
       if (didMount.current) {
         setGetTreeLoadingIndicator(true);
         const reqBody = {
@@ -137,7 +144,7 @@ const TopicDetails = () => {
   console.log("reqin /comp/compPage/topicdetail/ind cr =====>", campRecord);
   console.log("reqin /comp/compPage/topicdetail/ind fn2 =====>", feednews2);
   console.log("reqin /comp/compPage/topicdetail/ind isLogin =====>", isLogin);
-
+  console.log("--------------------------------------------------------------");
   return (
     <>
       <div className={styles.topicDetailContentWrap}>

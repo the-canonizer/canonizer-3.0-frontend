@@ -3,8 +3,9 @@ import Layout from "../../../hoc/layout";
 import SideBar from "../../../components/ComponentPages/Home/SideBar";
 import { editNewsFeedApi } from "../../../network/api/addupdateNewsApi";
 import React, { useState } from "react";
-export default function Home({ res }) {
+export default function Home({ res, topic_num, camp_num }) {
   console.log("updatenews.js page data 1=> ", res.data);
+  console.log("1111111111111111111111...>", topic_num, camp_num);
   const [update, setUpdate] = useState(res.data);
 
   return (
@@ -15,7 +16,11 @@ export default function Home({ res }) {
             <SideBar />
           </aside>
           <div className="pageContentWrap">
-            <FormDataupdate update={update} />
+            <FormDataupdate
+              update={update}
+              topic_num={topic_num}
+              camp_num={camp_num}
+            />
           </div>
         </Layout>
       )}
@@ -53,12 +58,13 @@ export async function getServerSideProps(context) {
   );
   console.log("query => ", query.topic_num, query.camp_num);
   if (query.topic_num !== undefined && query.camp_num !== undefined) {
-    const reqBody = { topic_num: 45, camp_num: 1 };
+    const reqBody = { topic_num: query.topic_num, camp_num: query.camp_num };
     const res = await editNewsFeedApi(reqBody);
-
     return {
       props: {
         res,
+        topic_num: query.topic_num,
+        camp_num: query.camp_num,
       },
     };
   } else {
