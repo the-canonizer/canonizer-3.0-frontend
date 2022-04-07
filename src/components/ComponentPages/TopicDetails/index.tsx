@@ -32,7 +32,10 @@ const TopicDetails = () => {
     camp_num: 1,
   });
   const [feednews2, setfeednews2] = useState(null);
-  console.log("reqin /comp/compPage/topicdetail/ind =====> ", requestBody);
+  console.log(
+    " /comp/compPage/topicdetail/ind  requestBody =====> ",
+    requestBody
+  );
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [getTreeLoadingIndicator, setGetTreeLoadingIndicator] = useState(false);
   const router = useRouter();
@@ -48,7 +51,6 @@ const TopicDetails = () => {
     }));
   useEffect(() => {
     async function getTreeApiCall() {
-      await getTreesApi(requestBody);
       let feed = await editNewsFeedApi(requestBody);
 
       setfeednews2(feed.data);
@@ -61,6 +63,7 @@ const TopicDetails = () => {
           algorithm: algorithm,
           update_all: 1,
         };
+        await getTreesApi(reqBody);
 
         setGetTreeLoadingIndicator(false);
       } else didMount.current = true;
@@ -94,7 +97,7 @@ const TopicDetails = () => {
       as_of: asof,
       as_of_date: asofdate,
     };
-    console.log("req of main ", reqBody);
+    console.log("reqBody of main ", reqBody);
     let { camp_num, topic_num } = reqBody;
 
     setRequestBody({ camp_num, topic_num });

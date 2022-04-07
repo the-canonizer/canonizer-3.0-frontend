@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import { Row, Col } from "antd";
 import React from "react";
 import { updateNewsFeedApi } from "../../network/api/addupdateNewsApi";
+import styles from "./addEditNews.module.scss";
+
 export default function FormDataupdate({ update }) {
   console.log("data => ", update);
   const router = useRouter();
@@ -33,7 +35,7 @@ export default function FormDataupdate({ update }) {
   };
 
   return (
-    <Card title="Edit News" className="edit-card" bordered={false}>
+    <Card title="Edit News" className={styles.card}>
       <Form
         form={form}
         name="basic"
@@ -51,16 +53,26 @@ export default function FormDataupdate({ update }) {
               <>
                 {fields.map((field, index) => (
                   <>
-                    <Card className="inner-form" key={field.key}>
-                      <div className="count-badge">
-                        <Badge className="count-row-edit ">{field.key}</Badge>
-                      </div>
+                    <Card
+                      className={styles.newsFormFieldsCard}
+                      bordered={false}
+                      key={field.key}
+                    >
+                      <Badge className={styles.newsFormFieldsCardCounter}>
+                        {field.key}
+                      </Badge>
+
                       <Row gutter={28}>
-                        <Col xl={14} md={24} xs={24} className="textarea-form">
+                        <Col xl={14} md={24} xs={24}>
                           <Form.Item
+                            className={styles.formItem}
                             key={field.key}
                             name={[index, "display_text"]}
-                            label="Display Text ( Limit 256 chars )"
+                            label={
+                              <>
+                                Display Text <small>(Limit 256 chars)</small>
+                              </>
+                            }
                             rules={[
                               {
                                 required: true,
@@ -69,15 +81,21 @@ export default function FormDataupdate({ update }) {
                             ]}
                           >
                             <Input.TextArea
-                              showCount
+                              placeholder='New Video:"Consciousness:Not a Hard Problem Just a Color Problem"'
+                              rows={6}
                               maxLength={256}
-                              autoSize={{ minRows: 6, maxRows: 5 }}
                             />
                           </Form.Item>
                         </Col>
-                        <Col xl={10} md={24} xs={24} className="form-link">
+
+                        <Col xl={10} md={24} xs={24}>
                           <Form.Item
-                            label="Link ( Limit 2000 chars )"
+                            label={
+                              <>
+                                Link <small>(Limit 2000 chars)</small>
+                              </>
+                            }
+                            className={`${styles.formItem} mb-3`}
                             name={[index, "link"]}
                             rules={[
                               {
@@ -91,10 +109,15 @@ export default function FormDataupdate({ update }) {
                               },
                             ]}
                           >
-                            <Input maxLength={2000} />
+                            <Input
+                              size="large"
+                              placeholder="http:canonizer.com/videos/conciousness/"
+                              maxLength={2000}
+                            />
                           </Form.Item>
 
                           <Form.Item
+                            className={styles.formItemCheckbox}
                             name={[index, "available_for_child"]}
                             valuePropName="checked"
                           >
@@ -110,14 +133,15 @@ export default function FormDataupdate({ update }) {
           }}
         </Form.List>
 
-        <Form.Item className="edit-news-buttons">
-          <Button type="primary" className="submit-btn" htmlType="submit">
+        <Form.Item>
+          <Button size="large" className="btn-orange mr-3" htmlType="submit">
             Submit
           </Button>
           <Button
             htmlType="button"
             onClick={() => router.back()}
-            className="cancel-btn"
+            type="ghost"
+            size="large"
           >
             Cancel
           </Button>

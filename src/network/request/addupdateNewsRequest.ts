@@ -10,8 +10,13 @@ export default class addNewsRequest extends Request {
   
     static getAddNewsrequest(body) {
       
-     console.log(" -------------------------body in req od add  news ",body.topic_num,body.camp_num,body.available_for_child,body.link,body.display_text )
-  //    {
+     console.log(" -------------------------body in req od add  news ")
+    console.log( "topic_num",body.topic_num)
+    console.log( "camp_num",body.camp_num)
+    console.log( "available_for_child",body.available_for_child)
+     console.log("link",body.link)
+     console.log("display_text",body.display_text)
+   
   //     "topic_num":12,
   //     "camp_num":1,
   //     "available_for_child":1,

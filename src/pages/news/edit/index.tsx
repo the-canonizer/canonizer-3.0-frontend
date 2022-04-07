@@ -53,7 +53,6 @@ export async function getServerSideProps(context) {
   );
   console.log("query => ", query.topic_num, query.camp_num);
   if (query.topic_num !== undefined && query.camp_num !== undefined) {
-    console.log("not walid url please  -00-0-0-0-0-00");
     const reqBody = { topic_num: 45, camp_num: 1 };
     const res = await editNewsFeedApi(reqBody);
 
@@ -63,7 +62,6 @@ export async function getServerSideProps(context) {
       },
     };
   } else {
-    console.log("walid url  -00-0-0-0-0-00");
     let res = { data: "error" };
     return {
       props: {

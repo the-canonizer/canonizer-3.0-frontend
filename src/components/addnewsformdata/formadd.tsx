@@ -42,7 +42,7 @@ export default function FormData() {
     console.log("Failed:", errorInfo);
   };
   return (
-    <Card title="Add News" className={styles.Card} bordered={false}>
+    <Card title="Add News" className={styles.card}>
       <Form
         form={form}
         layout={"vertical"}
@@ -53,7 +53,7 @@ export default function FormData() {
         onFinishFailed={onFinishFailed}
       >
         <Row gutter={28}>
-          <Col xl={14} md={24} xs={24} className="textarea-form">
+          <Col xl={14} md={24} xs={24}>
             <Form.Item
               className={styles.formItem}
               name="display_text"
@@ -73,10 +73,12 @@ export default function FormData() {
                 size="large"
                 placeholder='New Video:"Consciousness:Not a Hard Problem Just a Color Problem"'
                 maxLength={256}
+                rows={6}
               />
             </Form.Item>
           </Col>
-          <Col xl={10} md={24} xs={24} className="form-link">
+
+          <Col xl={10} md={24} xs={24}>
             <Form.Item
               className={`${styles.formItem} mb-3`}
               label={
@@ -101,6 +103,7 @@ export default function FormData() {
               <Input
                 size="large"
                 placeholder="http:canonizer.com/videos/conciousness/"
+                maxLength={2000}
               />
             </Form.Item>
 
@@ -108,10 +111,6 @@ export default function FormData() {
               className={styles.formItemCheckbox}
               name="available_for_child"
               valuePropName="checked"
-              // wrapperCol={{
-              //   offset: 8,
-              //   span: 16,
-              // }}
             >
               <Checkbox>Available for children</Checkbox>
             </Form.Item>
@@ -119,12 +118,7 @@ export default function FormData() {
         </Row>
 
         <Form.Item>
-          <Button
-            type="primary"
-            size="large"
-            className="btn-orange mr-3"
-            htmlType="submit"
-          >
+          <Button size="large" className="btn-orange mr-3" htmlType="submit">
             Create News
           </Button>
           <Button

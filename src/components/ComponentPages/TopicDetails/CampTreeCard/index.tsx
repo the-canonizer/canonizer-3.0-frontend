@@ -5,6 +5,7 @@ import Link from "next/link";
 import styles from "../topicDetails.module.scss";
 
 const CampTreeCard = ({ scrollToCampStatement, getSelectedNode, reqBody }) => {
+  console.log("reqbody in =>  addnews  ---", reqBody);
   return (
     <Card
       className={"ctCard canCard mb-3 " + styles.ctCard}
