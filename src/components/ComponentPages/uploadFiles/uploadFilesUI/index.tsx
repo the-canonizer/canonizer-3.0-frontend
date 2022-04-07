@@ -247,7 +247,8 @@ const UploadFileUI = ({
                         width={"140px"}
                       />
                       <br />
-                      <label>{file.name}</label>
+                      <label className={"fileName_label"}>{file.name}</label>
+                      <span className={"fileName_span"}>Enter file name</span>
                       <Input
                         className="mr0"
                         value={fileName}
