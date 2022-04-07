@@ -11,6 +11,7 @@ import { Tabs } from "antd";
 import DelegatedSupportCamps from "../DelegatedSupportCamps";
 import { useRouter } from "next/router";
 import SocialOauth from "../socialAuthVerification";
+import CreateNewCampButton from "../../common/button/createNewTopicBtn";
 
 const { TabPane } = Tabs;
 const tabList = [
@@ -47,10 +48,6 @@ export default function SettingsUI() {
     setActiveTabKey(key);
   };
   const router = useRouter();
-
-  const campRoute = () => {
-    router.push("/create-new-topic");
-  };
 
   const contentList = {
     profile_info: <ProfileInfo />,
@@ -103,9 +100,7 @@ export default function SettingsUI() {
       <div>
         <div className={styles.card}>
           <div className={styles.btnsWrap}>
-            <Button size="large" className={styles.btn} onClick={campRoute}>
-              <i className="icon-topic"></i> Create New Topic
-            </Button>
+            <CreateNewCampButton />
           </div>
         </div>
         <div className="siteAds">
