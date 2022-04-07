@@ -3,10 +3,11 @@ import Link from "next/link";
 import Router, { useRouter } from "next/router";
 const { Paragraph } = Typography;
 
-const NewsFeedsCard = ({ newsFeed, reqBody }) => {
+const NewsFeedsCard = ({ newsFeed, reqBody, isLogin }) => {
   const router = useRouter();
+  console.log("isLogin in index -newsfeedcard-", isLogin);
   console.log("req body in index -newsfeedcard-", reqBody);
-  console.log("newsfeed data -newsfeedcard-", newsFeed);
+  console.log("newsfeed in index -newsfeedcard-", newsFeed);
   const newsMockResponse = [
     {
       id: 1,
@@ -37,7 +38,7 @@ const NewsFeedsCard = ({ newsFeed, reqBody }) => {
           </a>{" "} */}
           <Link
             href={{
-              pathname: "/news/edit",
+              pathname: isLogin ? "/login" : "/news/edit",
               query: reqBody,
             }}
           >

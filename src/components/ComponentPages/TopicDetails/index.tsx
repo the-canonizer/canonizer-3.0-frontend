@@ -23,8 +23,10 @@ import SupportTreeCard from "./SupportTreeCard";
 import { BackTop } from "antd";
 import { Spin } from "antd";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
+import useAuthentication from "src/hooks/isUserAuthenticated";
 
 const TopicDetails = () => {
+  const isLogin = useAuthentication();
   const didMount = useRef(false);
   let myRefToCampStatement = useRef(null);
   const [requestBody, setRequestBody] = useState({
@@ -134,6 +136,8 @@ const TopicDetails = () => {
   console.log("reqin /comp/compPage/topicdetail/ind tr =====>", topicRecord);
   console.log("reqin /comp/compPage/topicdetail/ind cr =====>", campRecord);
   console.log("reqin /comp/compPage/topicdetail/ind fn2 =====>", feednews2);
+  console.log("reqin /comp/compPage/topicdetail/ind isLogin =====>", isLogin);
+
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
@@ -187,10 +191,15 @@ const TopicDetails = () => {
               scrollToCampStatement={scrollToCampStatement}
               getSelectedNode={getSelectedNode}
               reqBody={requestBody}
+              isLogin={isLogin}
             />
           </Spin>
           <Spin spinning={loadingIndicator} size="large">
-            <NewsFeedsCard newsFeed={feednews2} reqBody={requestBody} />
+            <NewsFeedsCard
+              newsFeed={feednews2}
+              reqBody={requestBody}
+              isLogin={isLogin}
+            />
           </Spin>
           <Spin spinning={loadingIndicator} size="large">
             <CampStatementCard myRefToCampStatement={myRefToCampStatement} />

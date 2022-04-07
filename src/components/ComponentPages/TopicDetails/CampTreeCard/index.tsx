@@ -4,8 +4,14 @@ import Link from "next/link";
 
 import styles from "../topicDetails.module.scss";
 
-const CampTreeCard = ({ scrollToCampStatement, getSelectedNode, reqBody }) => {
+const CampTreeCard = ({
+  scrollToCampStatement,
+  getSelectedNode,
+  reqBody,
+  isLogin,
+}) => {
   console.log("reqbody in =>  addnews  ---", reqBody);
+  console.log("isLogin in = > addnews ---", isLogin);
   return (
     <Card
       className={"ctCard canCard mb-3 " + styles.ctCard}
@@ -15,7 +21,7 @@ const CampTreeCard = ({ scrollToCampStatement, getSelectedNode, reqBody }) => {
           <Checkbox>Subscribe</Checkbox>
           <Link
             href={{
-              pathname: "/news/add",
+              pathname: isLogin ? "/login" : "/news/add",
               query: reqBody,
             }}
           >
