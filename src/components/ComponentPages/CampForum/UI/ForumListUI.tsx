@@ -2,21 +2,10 @@ import { Fragment } from "react";
 import Image from "next/image";
 
 import styles from "./Forum.module.scss";
-import FormUI from "./ThreadListUI";
+import ThreadListUI from "./ThreadListUI";
 import CreateNewCampButton from "../../../common/button/createNewTopicBtn";
 
-const CreateNewCampUI = ({
-  onFinish,
-  onCancel,
-  form,
-  initialValue,
-  topicData,
-  nickNameList,
-  parentCamp,
-  campNickName,
-  onValuesChange,
-  crCamp,
-}) => {
+const CreateNewCampUI = ({ onSearch, onChange }) => {
   return (
     <Fragment>
       <div className="d-flex">
@@ -36,18 +25,7 @@ const CreateNewCampUI = ({
           </div>
         </aside>
         <div className="pageContentWrap">
-          <FormUI
-            onFinish={onFinish}
-            onCancel={onCancel}
-            form={form}
-            initialValue={initialValue}
-            topicData={topicData}
-            nickNameList={nickNameList}
-            parentCamp={parentCamp}
-            campNickName={campNickName}
-            onValuesChange={onValuesChange}
-            crCamp={crCamp}
-          />
+          <ThreadListUI onSearch={onSearch} onChange={onChange} />
         </div>
       </div>
     </Fragment>

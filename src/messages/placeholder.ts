@@ -29,4 +29,5 @@ export const placeholders = {
   namespace: "Namespace",
   campAboutNickName: "--Select Camp About Nick Name--",
   campURL: "https://",
+  searchPlaceholder: "Search by thread name",
 };

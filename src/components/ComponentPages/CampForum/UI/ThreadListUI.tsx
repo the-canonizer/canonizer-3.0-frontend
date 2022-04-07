@@ -1,227 +1,119 @@
 import { Fragment } from "react";
-import { Card, Form, Input, Button, Select, Row, Col, Typography } from "antd";
+import { Card, Input, Button, Typography, Table, Pagination } from "antd";
 
-import styles from "../../CreateNewTopic/UI/createNewTopic.module.scss";
+import styles from "./Forum.module.scss";
 import messages from "../../../../messages";
 
-const { Option } = Select;
 const { Text } = Typography;
+const { Column } = Table;
 
-const {
-  labels,
-  placeholders,
-  nickNmRule,
-  summaryRule,
-  campNameRule,
-  campAboutUrlRule,
-  parentCampRule,
-} = messages;
+const { placeholders } = messages;
 
-const CreateCampFormUI = ({
-  onFinish,
-  onCancel,
-  form,
-  initialValue,
-  topicData,
-  nickNameList,
-  parentCamp,
-  campNickName,
-  onValuesChange,
-  crCamp,
-}) => {
-  const CardTitle = (
-    <span className={styles.cardTitle} data-testid="head">
-      Create Camp
-    </span>
-  );
+const ThreadListUI = ({ onSearch, onChange }) => {
+  const CardTitle = <span className={styles.cardTitle}>Camp Forum</span>;
+
+  const data = [
+    {
+      key: "101",
+      name: "Can we unify “Integrated Information” and “Global Workspace” with “Representational Qualia Theory”?",
+      replies: 32,
+      recent_post:
+        "Brent_Allsop replied 3 years ago (Mar 18, 2019, 10:54:32 PM)",
+    },
+    {
+      key: "102",
+      name: "Moving “Mind Brain Identity” above “Dualism” in the camp structure.",
+      replies: 3,
+      recent_post:
+        "Brent_Allsop replied 3 years ago (Sep 19, 2018, 3:48:20 AM)",
+    },
+  ];
+
+  // for (let i = 0; i < 100; i++) {
+  //   data.push({
+  //     key: `${i}`,
+  //     name:
+  //       "Moving “Mind Brain Identity” above “Dualism” in the camp structure._" +
+  //       i,
+  //     replies: i + i,
+  //     recent_post:
+  //       "Brent_Allsop replied 3 years ago (Sep 19, 2018, 3:48:20 AM)_" + i,
+  //   });
+  // }
 
   return (
     <Fragment>
-      <Card title={CardTitle} className="can-card-style">
-        <Form
-          autoComplete="off"
-          form={form}
-          onFinish={onFinish}
-          name="create_new_camp"
-          className={`${styles.createNewTopicForm}`}
-          layout={"vertical"}
-          scrollToFirstError
-          validateTrigger={messages.formValidationTypes()}
-          initialValues={{ ...initialValue }}
-          onValuesChange={onValuesChange}
+      <Card
+        title={CardTitle}
+        className="can-card-style"
+        extra={
+          <div className={styles.inputSearchTopic}>
+            <Input.Search
+              placeholder={placeholders.searchPlaceholder}
+              allowClear
+              onSearch={onSearch}
+              className={styles.searchInput}
+            />
+          </div>
+        }
+      >
+        <Text strong className={styles.labelHeading}>
+          List of All Camp Threads
+        </Text>
+        <div className={styles.btn_group}>
+          <Button
+            type="primary"
+            ghost
+            className={`${styles.orange} ${styles.tabBtn}`}
+          >
+            All Threads
+          </Button>
+          <Button type="primary" ghost className={`${styles.tabBtn}`}>
+            My Threads
+          </Button>
+          <Button type="primary" ghost className={`${styles.tabBtn}`}>
+            My Participation
+          </Button>
+          <Button type="primary" ghost className={`${styles.tabBtn}`}>
+            Top 10
+          </Button>
+          <Button
+            type="primary"
+            className={`${styles.tabBtn} ${styles.submit_btn}`}
+          >
+            Create Thread
+          </Button>
+        </div>
+        <Table
+          dataSource={data}
+          pagination={{ position: ["none"] }}
+          footer={() => (
+            <Pagination current={1} onChange={onChange} total={50} />
+          )}
         >
-          <Row gutter={16}>
-            <Col xs={24} sm={12}>
-              {nickNameList.length > 0 ? (
-                <Form.Item
-                  label={labels.cr_nick_name}
-                  name="nick_name"
-                  {...nickNmRule}
-                  initialValue={nickNameList[0]?.id}
-                >
-                  <Select
-                    placeholder={placeholders.nickName}
-                    allowClear
-                    size={"large"}
-                  >
-                    {nickNameList.map((nick) => (
-                      <Option key={nick.id} value={nick.id}>
-                        {nick.nick_name}
-                      </Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              ) : null}
-              {nickNameList.length <= 0 ? (
-                <Form.Item
-                  label={labels.cr_nick_name}
-                  name="nick_name"
-                  {...nickNmRule}
-                >
-                  <Select
-                    placeholder={placeholders.nickName}
-                    allowClear
-                    size={"large"}
-                  ></Select>
-                </Form.Item>
-              ) : null}
-            </Col>
-            <Col xs={24} sm={12}>
-              {parentCamp.length > 0 ? (
-                <Form.Item
-                  label={labels.cr_parent_camp}
-                  name="parent_camp_num"
-                  {...parentCampRule}
-                  initialValue={crCamp.camp_num || +topicData?.parent_camp_num}
-                >
-                  <Select allowClear size={"large"} placeholder="Parent camp">
-                    {parentCamp.map((camp) => (
-                      <Option value={camp.camp_num} key={camp.id}>
-                        {camp.camp_name}
-                      </Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              ) : null}
-              {parentCamp.length <= 0 ? (
-                <Form.Item
-                  label={labels.cr_parent_camp}
-                  name="parent_camp_num"
-                  {...parentCampRule}
-                  initialValue={crCamp.camp_num || +topicData?.parent_camp_num}
-                >
-                  <Select allowClear size={"large"} placeholder="Parent camp">
-                    <Option value={+topicData?.parent_camp_num}>
-                      {topicData?.camp_name}
-                    </Option>
-                  </Select>
-                </Form.Item>
-              ) : null}
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col xs={24} sm={12}>
-              <Form.Item
-                label={labels.cr_camp_name}
-                name="camp_name"
-                {...campNameRule}
-              >
-                <Input size={"large"} placeholder="Camp name" />
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={12}>
-              <Form.Item label={labels.cr_keywords} name="key_words">
-                <Input size={"large"} placeholder="Keywords" />
-              </Form.Item>
-            </Col>
-            <Col span={24}>
-              <Form.Item
-                label={labels.cr_edit_summary}
-                name="note"
-                {...summaryRule}
-              >
-                <Input.TextArea
-                  rows={6}
-                  placeholder={placeholders.editSummary}
-                />
-              </Form.Item>
-              <Form.Item noStyle>
-                <Text className={styles.advanceuser}>
-                  {labels.cr_keywords_sp}
-                </Text>
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={12}>
-              <Form.Item
-                label={labels.cr_camp_url}
-                name="camp_about_url"
-                {...campAboutUrlRule}
-              >
-                <Input placeholder={placeholders.campURL} size={"large"} />
-              </Form.Item>
-            </Col>
-
-            <Col xs={24} sm={12}>
-              {campNickName.length > 0 ? (
-                <Form.Item
-                  label={labels.cr_nick_name_about}
-                  name="camp_about_nick_id"
-                >
-                  <Select
-                    placeholder={placeholders.campAboutNickName}
-                    allowClear
-                    size={"large"}
-                  >
-                    <Option value="">{placeholders.campAboutNickName}</Option>
-                    {campNickName.map((nc) => (
-                      <Option value={nc.id} key={nc.id}>
-                        {nc.nick_name}
-                      </Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              ) : (
-                <Form.Item
-                  label={labels.cr_nick_name_about}
-                  name="camp_about_nick_id"
-                >
-                  <Select
-                    placeholder={placeholders.campAboutNickName}
-                    allowClear
-                    size={"large"}
-                  >
-                    <Option value="">{placeholders.campAboutNickName}</Option>
-                  </Select>
-                </Form.Item>
-              )}
-            </Col>
-          </Row>
-
-          <Form.Item noStyle>
-            <Button
-              type="primary"
-              htmlType="submit"
-              size={"large"}
-              className={`${styles.submit_btn}`}
-              data-testid="btn"
-            >
-              Create Camp
-            </Button>
-
-            <Button
-              type="primary"
-              htmlType="button"
-              size={"large"}
-              className={`${styles.cancel_btn}`}
-              onClick={onCancel}
-            >
-              Cancel
-            </Button>
-          </Form.Item>
-        </Form>
+          <Column
+            title="Thread Name"
+            dataIndex="name"
+            key="name"
+            render={(text) => <a>{text}</a>}
+            responsive={["md"]}
+          />
+          <Column
+            title="Replies"
+            dataIndex="replies"
+            key="replies"
+            responsive={["md"]}
+          />
+          <Column
+            title="Most Recent Post Date"
+            dataIndex="recent_post"
+            key="recent_post"
+            responsive={["lg"]}
+          />
+        </Table>
       </Card>
     </Fragment>
   );
 };
 
-export default CreateCampFormUI;
+export default ThreadListUI;
