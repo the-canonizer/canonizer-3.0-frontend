@@ -108,6 +108,9 @@ export default function NickNameUI({
                 value=""
                 size="large"
                 disabled={isDisable}
+                onKeyDown={(e) =>
+                  e.key === " " && e.keyCode === 32 && e.preventDefault()
+                }
               />
             </Form.Item>
             <Form.Item
