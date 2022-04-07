@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import { Card, Input, Button, Typography, Table, Pagination } from "antd";
+import { ColumnsType } from "antd/es/table";
 
 import styles from "./Forum.module.scss";
 import messages from "../../../../messages";
@@ -28,18 +29,6 @@ const ThreadListUI = ({ onSearch, onChange }) => {
         "Brent_Allsop replied 3 years ago (Sep 19, 2018, 3:48:20 AM)",
     },
   ];
-
-  // for (let i = 0; i < 100; i++) {
-  //   data.push({
-  //     key: `${i}`,
-  //     name:
-  //       "Moving “Mind Brain Identity” above “Dualism” in the camp structure._" +
-  //       i,
-  //     replies: i + i,
-  //     recent_post:
-  //       "Brent_Allsop replied 3 years ago (Sep 19, 2018, 3:48:20 AM)_" + i,
-  //   });
-  // }
 
   return (
     <Fragment>
@@ -87,6 +76,7 @@ const ThreadListUI = ({ onSearch, onChange }) => {
         <Table
           dataSource={data}
           pagination={{ position: ["none"] }}
+          // showSizeChanger={"false"}
           footer={() => (
             <Pagination current={1} onChange={onChange} total={50} />
           )}
