@@ -7,7 +7,9 @@ function CampForumPage() {
   return (
     <Fragment>
       <Layout routeName={"forum"}>
-        <CampForumComponent />
+        <div className="">
+          <CampForumComponent />
+        </div>
       </Layout>
     </Fragment>
   );

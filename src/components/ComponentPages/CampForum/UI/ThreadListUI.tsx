@@ -1,6 +1,5 @@
 import { Fragment } from "react";
 import { Card, Input, Button, Typography, Table, Pagination } from "antd";
-import { ColumnsType } from "antd/es/table";
 
 import styles from "./Forum.module.scss";
 import messages from "../../../../messages";
@@ -10,25 +9,18 @@ const { Column } = Table;
 
 const { placeholders } = messages;
 
-const ThreadListUI = ({ onSearch, onChange }) => {
+const ThreadListUI = ({
+  onSearch,
+  onChange,
+  onCreateThread,
+  threadList,
+  onThreadClick,
+  current,
+  total,
+  filterThread,
+  isLoggedIn,
+}) => {
   const CardTitle = <span className={styles.cardTitle}>Camp Forum</span>;
-
-  const data = [
-    {
-      key: "101",
-      name: "Can we unify “Integrated Information” and “Global Workspace” with “Representational Qualia Theory”?",
-      replies: 32,
-      recent_post:
-        "Brent_Allsop replied 3 years ago (Mar 18, 2019, 10:54:32 PM)",
-    },
-    {
-      key: "102",
-      name: "Moving “Mind Brain Identity” above “Dualism” in the camp structure.",
-      replies: 3,
-      recent_post:
-        "Brent_Allsop replied 3 years ago (Sep 19, 2018, 3:48:20 AM)",
-    },
-  ];
 
   return (
     <Fragment>
@@ -54,38 +46,57 @@ const ThreadListUI = ({ onSearch, onChange }) => {
             type="primary"
             ghost
             className={`${styles.orange} ${styles.tabBtn}`}
+            onClick={filterThread.bind(this, "all")}
+            key="all"
           >
             All Threads
           </Button>
-          <Button type="primary" ghost className={`${styles.tabBtn}`}>
-            My Threads
-          </Button>
-          <Button type="primary" ghost className={`${styles.tabBtn}`}>
-            My Participation
-          </Button>
-          <Button type="primary" ghost className={`${styles.tabBtn}`}>
-            Top 10
-          </Button>
+          {isLoggedIn ? (
+            <Fragment>
+              <Button
+                type="primary"
+                ghost
+                className={`${styles.tabBtn}`}
+                onClick={filterThread.bind(this, "own")}
+                key="thread"
+              >
+                My Threads
+              </Button>
+              <Button
+                type="primary"
+                ghost
+                className={`${styles.tabBtn}`}
+                onClick={filterThread.bind(this, "participation")}
+                key="participation"
+              >
+                My Participation
+              </Button>
+              <Button
+                type="primary"
+                ghost
+                className={`${styles.tabBtn}`}
+                onClick={filterThread.bind(this, "top")}
+                key="top"
+              >
+                Top 10
+              </Button>
+            </Fragment>
+          ) : null}
           <Button
             type="primary"
             className={`${styles.tabBtn} ${styles.submit_btn}`}
+            onClick={onCreateThread}
+            key="create"
           >
             Create Thread
           </Button>
         </div>
-        <Table
-          dataSource={data}
-          pagination={{ position: ["none"] }}
-          // showSizeChanger={"false"}
-          footer={() => (
-            <Pagination current={1} onChange={onChange} total={50} />
-          )}
-        >
+        <Table dataSource={threadList} pagination={false}>
           <Column
             title="Thread Name"
             dataIndex="name"
             key="name"
-            render={(text) => <a>{text}</a>}
+            render={(text) => <a onClick={onThreadClick}>{text}</a>}
             responsive={["md"]}
           />
           <Column
@@ -101,6 +112,9 @@ const ThreadListUI = ({ onSearch, onChange }) => {
             responsive={["lg"]}
           />
         </Table>
+        <div className={`paginationCon`}>
+          <Pagination current={current} onChange={onChange} total={total} />
+        </div>
       </Card>
     </Fragment>
   );

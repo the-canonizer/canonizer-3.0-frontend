@@ -851,3 +851,69 @@ form {
     }
   }
 }
+
+.paginationCon {
+  width: 100%;
+  padding: 25px 0;
+
+  .ant-pagination {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    li {
+      border-radius: 2px;
+      border: 1px solid #dde1e5;
+      font-weight: 600;
+      padding: 5px 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      a {
+        color: #555c64;
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      button,
+      a {
+        padding: 0;
+        margin: 0;
+        border: none;
+        line-height: 1;
+      }
+
+      &.ant-pagination-prev,
+      &.ant-pagination-next {
+        .anticon {
+          svg {
+            fill: #68707a;
+          }
+        }
+      }
+      &.ant-pagination-disabled {
+        border-color: #dde1e5;
+        .anticon {
+          svg {
+            fill: #dde1e5;
+          }
+        }
+      }
+      &.ant-pagination-item-active {
+        border-color: #2e68db;
+        a {
+          color: #2e68db;
+        }
+      }
+    }
+  }
+}
+
+.nick_name_extra .ant-form-item-extra {
+  font-size: 10px;
+}
+
+.ql-container.ql-snow {
+  height: 350px;
+}

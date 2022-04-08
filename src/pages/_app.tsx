@@ -4,6 +4,8 @@ import { Provider } from "react-redux";
 import scriptLoader from "react-async-script-loader";
 
 import "antd/dist/antd.css";
+import 'react-quill/dist/quill.snow.css'
+
 import "../../styles/globals.scss";
 import "../../styles/variables.less";
 import "../assets/fonticons/style.css";

@@ -104,12 +104,9 @@ export default function SettingsUI() {
           </div>
         </div>
         <div className="siteAds">
-          <Image
-            alt="adOne"
-            src={"/images/image11.jpg"}
-            width={200}
-            height={635}
-          />
+          src={"/images/Image37.jpg"}
+          width={200}
+          height={400}
         </div>
       </div>
       <Row gutter={16} className={styles.accountSetting}>

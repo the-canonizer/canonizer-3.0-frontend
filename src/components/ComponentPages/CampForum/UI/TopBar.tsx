@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 
-import styles from "../../CreateNewTopic/UI/createNewTopic.module.scss";
+import styles from "./Forum.module.scss";
 
 export default function TopBar({ paramsList }) {
   return (
