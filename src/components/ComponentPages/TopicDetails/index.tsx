@@ -10,7 +10,6 @@ import {
   getCurrentTopicRecordApi,
   getCurrentCampRecordApi,
 } from "src/network/api/campDetailApi";
-import { editNewsFeedApi } from "src/network/api/addupdateNewsApi";
 import { RootState } from "src/store";
 import SideBar from "../Home/SideBar";
 import CampStatementCard from "./CampStatementCard";
@@ -48,22 +47,9 @@ const TopicDetails = () => {
     topic_num: topicRecord[0].topic_num,
     camp_num: topicRecord[0].camp_num,
   });
-  const [feednews2, setfeednews2] = useState(null);
-  console.log(
-    " /comp/compPage/topicdetail/ind  requestBody =====> ",
-    requestBody
-  );
+  console.log("topic record ->", topicRecord);
   useEffect(() => {
     async function getTreeApiCall() {
-      let feed = await editNewsFeedApi(requestBody);
-
-      setfeednews2(feed.data);
-      console.log(
-        "feed ",
-        feed,
-        topicRecord[0].topic_num,
-        topicRecord[0].camp_num
-      );
       if (didMount.current) {
         setGetTreeLoadingIndicator(true);
         const reqBody = {
@@ -73,11 +59,9 @@ const TopicDetails = () => {
           update_all: 1,
         };
         await getTreesApi(reqBody);
-
         setGetTreeLoadingIndicator(false);
       } else didMount.current = true;
     }
-
     getTreeApiCall();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asofdate, algorithm]);
@@ -140,11 +124,7 @@ const TopicDetails = () => {
 
     setCurrentTopics(data);
   };
-  console.log("reqin /comp/compPage/topicdetail/ind tr =====>", topicRecord);
-  console.log("reqin /comp/compPage/topicdetail/ind cr =====>", campRecord);
-  console.log("reqin /comp/compPage/topicdetail/ind fn2 =====>", feednews2);
-  console.log("reqin /comp/compPage/topicdetail/ind isLogin =====>", isLogin);
-  console.log("--------------------------------------------------------------");
+
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
@@ -176,23 +156,11 @@ const TopicDetails = () => {
           </div>
         </div>
 
-        <aside className="leftSideBar">
+        <aside className="leftSideBar miniSideBar">
           <SideBar onCreateCamp={onCreateCamp} />
         </aside>
 
         <div className="pageContentWrap">
-          {/* <CampTreeCard
-            scrollToCampStatement={scrollToCampStatement}
-            getSelectedNode={getSelectedNode}
-            reqBody={requestBody}
-          />
-          <NewsFeedsCard newsFeed={newsFeed} reqBody={requestBody} />
-          <CampStatementCard myRefToCampStatement={myRefToCampStatement} />
-          <CurrentTopicCard />
-          <CurrentCampCard />
-          <SupportTreeCard
-            handleLoadMoreSupporters={handleLoadMoreSupporters}
-          /> */}
           <Spin spinning={getTreeLoadingIndicator} size="large">
             <CampTreeCard
               scrollToCampStatement={scrollToCampStatement}
@@ -203,7 +171,7 @@ const TopicDetails = () => {
           </Spin>
           <Spin spinning={loadingIndicator} size="large">
             <NewsFeedsCard
-              newsFeed={feednews2}
+              newsFeed={newsFeed}
               reqBody={requestBody}
               isLogin={isLogin}
             />
