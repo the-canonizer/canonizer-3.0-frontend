@@ -10,8 +10,6 @@ const CampTreeCard = ({
   reqBody,
   isLogin,
 }) => {
-  console.log("reqbody in =>  addnews  ---", reqBody);
-  console.log("isLogin in = > addnews ---", isLogin);
   return (
     <Card
       className={"ctCard canCard mb-3 " + styles.ctCard}

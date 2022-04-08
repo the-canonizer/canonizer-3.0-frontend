@@ -41,9 +41,6 @@ export default function FormData() {
     }
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-  };
   return (
     <Spin spinning={loading} size="large">
       <Card title="Add News" className={styles.card}>
@@ -54,7 +51,6 @@ export default function FormData() {
             available_for_child: 0,
           }}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
         >
           <Row gutter={28}>
             <Col xl={14} md={24} xs={24}>

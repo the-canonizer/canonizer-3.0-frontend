@@ -1,27 +1,9 @@
 import { Card, Typography } from "antd";
 import Link from "next/link";
-import Router, { useRouter } from "next/router";
+
 const { Paragraph } = Typography;
 
 const NewsFeedsCard = ({ newsFeed, reqBody, isLogin }) => {
-  const router = useRouter();
-  console.log("isLogin in index -newsfeedcard-", isLogin);
-  console.log("req body in index -newsfeedcard-", reqBody);
-  console.log("newsfeed in index -newsfeedcard-", newsFeed);
-  const newsMockResponse = [
-    {
-      id: 1,
-      news: ` New Video: "Consciousness: Not a Hard Problem Just a Color Problem"`,
-      link: "www.canonizer.com",
-    },
-    {
-      id: 2,
-      news: ` Consciousness can only be apprehended in agreement with the hard
-    sciences, and the result is very different from what most would expect`,
-      link: "www.canonizer.com",
-    },
-  ];
-
   return (
     <Card
       className="canCard mb-3"
@@ -32,36 +14,26 @@ const NewsFeedsCard = ({ newsFeed, reqBody, isLogin }) => {
       }
       extra={
         <>
-          {" "}
-          {/* <a>
-            <i className={"icon-edit"}></i>Edit News
-          </a>{" "} */}
-          <Link
-            href={{
-              pathname: isLogin ? "/login" : "/news/edit",
-              query: reqBody,
-            }}
-          >
-            <a>
-              <i className={"icon-edit "}></i>Edit News
-            </a>
-          </Link>{" "}
-          <a>
-            <i className={"icon-delete"}></i>Delete News
-          </a>
+          {newsFeed?.length ? (
+            <>
+              <Link
+                href={{
+                  pathname: isLogin ? "/login" : "/news/edit",
+                  query: reqBody,
+                }}
+              >
+                <a>
+                  <i className={"icon-edit "}></i>Edit News
+                </a>
+              </Link>
+              <Link href="/">
+                <a>
+                  <i className={"icon-delete"}></i>Delete News
+                </a>
+              </Link>
+            </>
+          ) : null}
         </>
-
-        // newsFeed?.length ? (
-        //   <>
-        //     {" "}
-        //     <a>
-        //       <i className={"icon-edit"}></i>Edit News
-        //     </a>{" "}
-        //     <a>
-        //       <i className={"icon-delete"}></i>Delete News
-        //     </a>
-        //   </>
-        // ) : null
       }
     >
       <ul className="newsFeedsList">

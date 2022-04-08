@@ -47,7 +47,7 @@ const TopicDetails = () => {
     topic_num: topicRecord[0].topic_num,
     camp_num: topicRecord[0].camp_num,
   });
-  console.log("topic record ->", topicRecord);
+
   useEffect(() => {
     async function getTreeApiCall() {
       if (didMount.current) {
@@ -90,7 +90,7 @@ const TopicDetails = () => {
       as_of: asof,
       as_of_date: asofdate,
     };
-    console.log("reqBody of main ", reqBody);
+
     let { camp_num, topic_num } = reqBody;
 
     setRequestBody({ camp_num, topic_num });
