@@ -187,10 +187,10 @@ const ProfileInfo = () => {
         }
       }
     }
-    // address2 = address2.replace(/^,|,$/g, "");
+    address2 = address2.replace(/^,|,$/g, "");
 
     form.setFieldsValue({
-      ["address_2"]: "",
+      ["address_2"]: address2,
       ["postal_code"]: postalCode,
       ["city"]: city,
       ["state"]: state,
