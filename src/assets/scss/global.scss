@@ -231,6 +231,7 @@ body {
     display: flex;
     align-items: baseline;
     justify-content: flex-end;
+    background: #f8f8f8 !important;
     .ant-card-head-wrapper {
       flex-grow: 1;
       .ant-card-head-title {
@@ -242,13 +243,13 @@ body {
 
     .ant-tabs {
       .ant-tabs-tab-btn {
-        font-size: 16px;
-        color: #1c1b24;
+        font-size: 14px;
+        color: #0f2a4d;
       }
     }
     .ant-tabs-tab-active {
       .ant-tabs-tab-btn {
-        color: #1890ff;
+        color: #2e68db;
         font-weight: 600;
       }
     }
@@ -263,6 +264,9 @@ body {
 }
 .siteAds {
   text-align: center;
+  @media screen and (max-width: 767px) {
+    display: none;
+  }
 }
 
 .hdrUserdropdown {
@@ -850,4 +854,11 @@ form {
       color: #9a9a9a;
     }
   }
+}
+.Menu_Icon {
+  color: rgba(0, 0, 0, 0.85) !important;
+}
+
+.ant-tabs-ink-bar {
+  background-color: #2e68db !important;
 }
