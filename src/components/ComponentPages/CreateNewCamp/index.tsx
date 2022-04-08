@@ -56,6 +56,7 @@ const CreateNewCamp = ({
   useEffect(() => {
     fetchNickNameList();
     fetchCampNickNameList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchParentsCampList = async () => {
@@ -93,7 +94,7 @@ const CreateNewCamp = ({
       router.push(`/camp-list`);
     }
 
-    if (res && res.status_code === 400 && res.error.camp_name) {
+    if (res && res.status_code === 400 && res.error?.camp_name) {
       form.setFields([
         {
           name: "camp_name",

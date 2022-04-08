@@ -22,7 +22,7 @@ export default function DelegatedSupportCampsUI({
   function CardTitle(props) {
     return (
       <div className={styles.card_heading_title}>
-        {messages.labels.fortopics}
+        {messages.labels.fortopic}
         <span>
           {" "}
           &quot;

@@ -251,12 +251,20 @@ body {
       .ant-card-head-title {
         font-size: 20px;
         margin-right: 20px;
+        font-weight: 600;
       }
     }
 
     .ant-tabs {
       .ant-tabs-tab-btn {
-        font-size: 14px;
+        font-size: 16px;
+        color: #1c1b24;
+      }
+    }
+    .ant-tabs-tab-active {
+      .ant-tabs-tab-btn {
+        color: #1890ff;
+        font-weight: 600;
       }
     }
   }
@@ -348,6 +356,7 @@ body {
 .ant-btn-orange:focus,
 .ant-btn-orange:active {
   background-color: #e28801;
+  border-color: #e28801;
 }
 
 .ant-btn-green {
@@ -451,7 +460,7 @@ body {
     }
     .ant-tree-node-content-wrapper.ant-tree-node-selected {
       background-color: transparent;
-      &>span>div>span:first-child {
+      & > span > div > span:first-child {
         color: #f89d15;
         font-weight: 600;
       }
@@ -565,8 +574,8 @@ body {
     margin: 0;
     padding-left: 20px;
     li {
-      &+li {
-        margin-top: .5rem;
+      & + li {
+        margin-top: 0.5rem;
       }
       a {
         color: rgba(0, 0, 0, 0.85);
@@ -696,6 +705,11 @@ body {
 .datepIcker {
   width: 120px;
 }
+.afterUpload {
+  span {
+    width: 100% !important;
+  }
+}
 .ant-upload-list-picture {
   display: flex;
   flex-wrap: wrap;
@@ -705,27 +719,35 @@ body {
 
   .ant-upload-list-picture-container {
     display: flex;
-    width: 25%;
+    width: 20%;
     padding: 0 10px;
     margin-bottom: 20px;
     img {
       margin: auto;
     }
-    label {
+    .fileName_label {
       width: 100%;
       background: #eee;
-      margin: 5px;
+      margin-top: 5px;
       padding: 4px 5px;
       border-radius: 4px;
     }
+    .fileName_span {
+      text-align: center;
+      margin: 5px;
+      font-size: 12px;
+    }
     .anticon-close-circle {
       position: absolute;
-      right: 10px;
+      right: 5px;
       color: red;
       font-size: 16px;
+      width: auto !important;
+      z-index: 999;
     }
   }
 }
+
 .ant-upload.ant-upload-select {
   display: block;
 }
@@ -811,4 +833,36 @@ body {
 .icon--menu {
   text-align: right;
   margin-bottom: 8px;
+}
+.hideUpload {
+  display: none;
+}
+
+#profileInfo {
+  .ant-select-status-error {
+    .ant-select-selector {
+      border: none !important;
+    }
+  }
+}
+.form-Title {
+  font-size: 16px !important;
+  font-weight: bold !important;
+  margin-bottom: 20px !important;
+}
+.ant-tabs-tab + .ant-tabs-tab {
+  margin: 0 0 0 27px;
+}
+.ant-input-group-addon {
+  background-color: #f6f9ff;
+  color: #000;
+}
+.NickName_TableHead {
+  thead {
+    th {
+      background-color: #f5f6fa;
+      font-size: 12px;
+      color: #9a9a9a;
+    }
+  }
 }

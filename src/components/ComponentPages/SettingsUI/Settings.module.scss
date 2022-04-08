@@ -1,10 +1,10 @@
 .card {
-  padding: 20px 20px 10px;
-  border: solid 1px #f0f0f0;
-  background-color: #fff;
-  margin-bottom: 16px;
+  padding: 0 8px;
   .btnsWrap {
-    margin-bottom: 16px;
+    padding: 15px 13px 15px;
+    border: solid 1px #d9d9d9;
+    background-color: #fff;
+    margin-bottom: 24px;
     .btn {
       display: flex;
       align-items: center;
@@ -27,11 +27,19 @@
   }
 }
 .accountSetting {
-  width: calc(100% - 240px);
+  width: calc(100% - 260px);
+  margin: 0 8px !important;
+  border: 1px solid #f0f0f0;
 
+  @media screen and (max-width: 991px) {
+    width: 100%;
+  }
   @media screen and (max-width: 767px) {
     margin-left: 0 !important;
     margin-right: 0 !important;
+  }
+  > div {
+    padding: 0px !important;
   }
 }
 
@@ -70,7 +78,7 @@
 }
 
 .notes {
-  color: #dc7070;
-  margin-bottom: 15px;
-  font-size: 11px;
+  color: #ef5e5e;
+  margin-bottom: 12px;
+  font-size: 12px;
 }

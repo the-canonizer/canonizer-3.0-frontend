@@ -28,7 +28,7 @@ export const labels = {
   visibilityStatus: "Visibility Status",
 
   removeSupport: "Remove support",
-  fortopics: "For topics",
+  fortopic: "For topic",
   supportdelegatedto: "Support delegated to:",
   nickname: "Nick Name:",
   viewMore: "View More",

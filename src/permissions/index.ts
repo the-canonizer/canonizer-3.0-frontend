@@ -29,6 +29,11 @@ const PermissionsForPages: PermissionsObj = {
     isPermissionRequired: false,
     permissionName: "settings",
   },
+  UploadFile: {
+    isAuthenticationRequired: true,
+    isPermissionRequired: false,
+    permissionName: "uploadFile",
+  },
 };
 
 export default PermissionsForPages;

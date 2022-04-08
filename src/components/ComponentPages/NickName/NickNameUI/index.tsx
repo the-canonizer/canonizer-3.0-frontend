@@ -67,6 +67,7 @@ export default function NickNameUI({
               columns={columns}
               rowClassName="editable-row"
               pagination={false}
+              className={"NickName_TableHead"}
             />
           </Form.Item>
           <Form.Item>
@@ -104,10 +105,13 @@ export default function NickNameUI({
               {...messages.nickNameRule}
             >
               <Input
-                placeholder=""
+                placeholder="Enter nick name"
                 value=""
                 size="large"
                 disabled={isDisable}
+                onKeyDown={(e) =>
+                  e.key === " " && e.keyCode === 32 && e.preventDefault()
+                }
               />
             </Form.Item>
             <Form.Item
