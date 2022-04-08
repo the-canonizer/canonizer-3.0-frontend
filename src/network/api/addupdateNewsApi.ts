@@ -12,6 +12,7 @@ export const addNewsRequestApi = async (body) =>{
     } catch (error) {
         
     message.error(error.message);
+    return error.error.data
     }
 }
 export const campNewsFeedApi = async () =>{
@@ -46,7 +47,8 @@ export const campNewsFeedApi = async () =>{
                 return editnewsdat;
         
             } catch (error) {
-                
+              
             message.error(error.message);
+            return error.error.data;
             }
 }
