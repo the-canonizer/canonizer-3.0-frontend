@@ -54,7 +54,7 @@ export async function getServerSideProps(context) {
 
   const treeReqBody = {
     topic_num: topicID,
-    asofdate: asofdate,
+    asofdate: asofdate || Date.now() / 1000,
     algorithm,
     update_all: 1,
   };

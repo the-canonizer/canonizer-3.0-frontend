@@ -48,6 +48,7 @@ const TopicsList = () => {
     nameSpaces,
     includeReview,
     onlyMyTopics,
+    selectedNameSpace,
   } = useSelector((state: RootState) => ({
     canonizedTopics: state.homePage?.canonizedTopicsData,
     asofdate: state.filters?.filterObject?.asofdate,
@@ -57,6 +58,7 @@ const TopicsList = () => {
     nameSpaces: state.homePage?.nameSpaces,
     includeReview: state?.filters?.filterObject?.includeReview,
     onlyMyTopics: state?.filters?.filterObject?.onlyMyTopics,
+    selectedNameSpace: state?.filters?.filterObject?.nameSpace,
   }));
 
   const [topicsData, setTopicsData] = useState(canonizedTopics);
@@ -198,7 +200,7 @@ const TopicsList = () => {
                 <Select
                   size="large"
                   className={styles.dropdown}
-                  defaultValue="All"
+                  defaultValue={selectedNameSpace}
                   onChange={selectNameSpace}
                 >
                   <Select.Option key="custom-key" value="">
@@ -207,7 +209,7 @@ const TopicsList = () => {
                   {nameSpacesList?.map((item) => {
                     return (
                       <Select.Option key={item.id} value={item.id}>
-                        {item.name}
+                        {item.label}
                       </Select.Option>
                     );
                   })}
@@ -237,15 +239,26 @@ const TopicsList = () => {
               <List.Item className={styles.item}>
                 <>
                   <Link
-                    href={{
-                      pathname: `/camp-details/${item?.topic_id}`,
-                      query: {
-                        ...router.query,
-                        algorithm,
-                        asof,
-                        asofdate: Math.floor(asofdate),
-                      },
-                    }}
+                    href={
+                      asof !== "default"
+                        ? {
+                            pathname: `/camp-details/${item?.topic_id}`,
+                            query: {
+                              ...router.query,
+                              algorithm,
+                              asof,
+                              asofdate: Math.floor(asofdate),
+                            },
+                          }
+                        : {
+                            pathname: `/camp-details/${item?.topic_id}`,
+                            query: {
+                              ...router.query,
+                              algorithm,
+                              asof,
+                            },
+                          }
+                    }
                   >
                     <a
                       onClick={() => {

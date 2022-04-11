@@ -79,7 +79,7 @@ describe("Direct Support camps page", () => {
       />
     );
     expect(
-      screen.getAllByText(labels.fortopics)[1] as HTMLLabelElement
+      screen.getAllByText(labels.fortopic)[1] as HTMLLabelElement
     ).toBeInTheDocument();
     expect(
       screen.getAllByText(labels.removeSupport)[1] as HTMLLabelElement

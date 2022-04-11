@@ -11,42 +11,42 @@ type MetaTagsTypes = {
 
 const MetaTags: MetaTagsTypes = {
   Home: {
-    title: "About Landing Page",
+    title: "Canonizer",
     description: "Short description ",
     route: "/",
   },
   AboutUsPage: {
-    title: "About Canonizer",
+    title: "Canonizer",
     description: "Short description ",
     route: "about",
   },
   TreesPage: {
-    title: "About Canonizer Trees",
+    title: "Canonizer",
     description: "Short description ",
     route: "trees",
   },
   ForgotPasswordPage: {
-    title: "forgot password",
+    title: "Canonizer",
     description: "forgot canonizer login password ",
     route: "forgot-password",
   },
   LoginPage: {
-    title: "login",
+    title: "Canonizer",
     description: "login canonizer ",
     route: "login",
   },
   RegistrationPage: {
-    title: "Registration",
+    title: "Canonizer",
     description: "Register to canonizer ",
     route: "registration",
   },
   ResetPasswordPage: {
-    title: "Reset Password",
+    title: "Canonizer",
     description: "Reset canonizer login password ",
     route: "reset-password",
   },
   Settings: {
-    title: "Account Settings",
+    title: "Canonizer",
     description: "Account Settings",
     route: "settings",
   },

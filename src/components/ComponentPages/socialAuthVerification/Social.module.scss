@@ -4,12 +4,27 @@
   .icon_container {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: auto auto auto auto auto;
     grid-gap: 20px;
 
+    @media screen and (max-width: 1200px) {
+      grid-gap: 10px;
+      display: flex;
+      grid-template-columns: inherit;
+      flex-wrap: wrap;
+    }
     .icon_wrapper {
       width: 100%;
       height: 100%;
+      @media screen and (max-width: 1200px) {
+        width: calc(33.33% - 10px);
+      }
+      @media screen and (max-width: 767px) {
+        width: calc(50% - 10px);
+      }
+      @media screen and (max-width: 567px) {
+        width: 100%;
+      }
 
       .icon_box {
         background: #ffffff 0% 0% no-repeat padding-box;

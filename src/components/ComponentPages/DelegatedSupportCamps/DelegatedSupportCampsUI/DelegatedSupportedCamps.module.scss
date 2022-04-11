@@ -1,5 +1,6 @@
 .RemoveCardSupported {
-  color: #d57272;
+  color: #ef5e5e;
+  font-size: 14px;
   font-weight: 600;
   @media screen and (max-width: 767px) {
     font-size: 0;
@@ -16,9 +17,10 @@
   color: #1890ff;
 }
 .card_heading_title {
-  font-size: 18px;
+  font-size: 16px;
+  color: #1c1b24;
   span {
-    color: #1890ff;
+    color: #4484ce;
   }
   @media screen and (max-width: 767px) {
     font-size: 13px;
@@ -30,9 +32,10 @@
 }
 
 .cardBox_tags {
-  border-radius: 8px;
+  border-radius: 6px;
   overflow: hidden;
-  box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%);
+  box-shadow: 4px 4px 0px #0000000d;
+  border: 1px solid #ececec;
   width: 100% !important;
 }
 .topic_content {
@@ -54,6 +57,7 @@
 .line_height {
   p {
     margin-bottom: 4px;
+    color: #0f2a4d;
   }
 }
 

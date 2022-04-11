@@ -80,9 +80,9 @@ function disabledDateTime() {
 
 const CreateTopic = ({ onCreateCamp = () => {} }) => {
   const [isDatePicker, setIsDatePicker] = useState(false);
-  const [value, setValue] = useState(2);
+
   const [datePickerValue, setDatePickerValue] = useState(null);
-  const [inputFilterValue, setInputFilterValue] = useState(0.0);
+
   const dispatch = useDispatch();
   const router = useRouter();
   const didMount = useRef(false);
@@ -92,11 +92,24 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
     router.push("/create-new-topic");
   };
 
-  const { algorithms, filterObject } = useSelector((state: RootState) => ({
+  const {
+    algorithms,
+    filterObject,
+    filteredScore,
+    selectedAlgorithm,
+    selectedAsOf,
+    selectedAsOFDate,
+  } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filterObject: state?.filters?.filterObject,
+    filteredScore: state?.filters?.filterObject?.filterByScore,
+    selectedAlgorithm: state?.filters?.filterObject?.algorithm,
+    selectedAsOf: state?.filters?.filterObject?.asof,
+    selectedAsOFDate: state?.filters?.filterObject?.asofdate,
   }));
-
+  const [value, setValue] = useState(
+    selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3
+  );
   // /////////////////////////////////////////////////////////////////////////
   // Discussion required on this functionality after that I will remove or //
   //                        uncomment bellow code                         //
@@ -154,7 +167,6 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
 
     const reg = /^-?\d*(\.\d*)?$/;
     if ((!isNaN(value) && reg.test(value)) || value === "") {
-      setInputFilterValue(value);
       dispatch(
         setFilterCanonizedTopics({
           filterByScore: value,
@@ -212,7 +224,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
             <Select
               size="large"
               className={styles.algoSelect}
-              defaultValue={algorithms && algorithms[0]?.algorithm_label}
+              defaultValue={selectedAlgorithm}
               onChange={selectAlgorithm}
             >
               {algorithms?.map((algo) => {
@@ -232,7 +244,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
               <Input
                 size="large"
                 onChange={filterOnScore}
-                value={inputFilterValue}
+                value={filteredScore}
               />
               <Popover content={infoContent} placement="right">
                 <i className="icon-info"></i>
@@ -294,9 +306,9 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
             </Radio.Group>
             <DatePicker
               // open={isDatePicker}
-              disabled={!isDatePicker}
+              disabled={isDatePicker || selectedAsOf == "bydate" ? false : true}
               format="YYYY-MM-DD"
-              // defaultValue={datePickerValue}
+              defaultValue={moment(selectedAsOFDate)}
               // disabledDate={disabledDate}
               // disabledTime={disabledDateTime}
               // showTime={{ defaultValue: moment("00:00:00", "HH:mm:ss") }}

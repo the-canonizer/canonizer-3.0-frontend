@@ -24,7 +24,7 @@ const NickName = () => {
     setIsNickNameModalVisible(true);
     setSelectedNickNameList(record);
     add_edit_form.setFieldsValue({
-      nick_name: record.nick_name.trim(),
+      nick_name: record.nick_name.replace(/\s\s+/g, " "),
       visibility_status: record.private.toString(),
     });
   };
@@ -45,7 +45,7 @@ const NickName = () => {
     setDisableButton(true);
     if (addEditBtn == create) {
       formBody = {
-        nick_name: values.nick_name.trim(),
+        nick_name: values.nick_name.replace(/\s\s+/g, " "),
         visibility_status:
           parseInt(values.visibility_status).toString() == "NaN"
             ? 0

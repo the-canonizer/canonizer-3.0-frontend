@@ -11,6 +11,8 @@ import {
   Menu,
   Dropdown,
   DatePicker,
+  Popover,
+  Table,
 } from "antd";
 import {
   InboxOutlined,
@@ -22,8 +24,12 @@ import {
   MoreOutlined,
   FolderOpenOutlined,
   ArrowLeftOutlined,
+  EyeTwoTone,
+  CopyTwoTone,
+  DeleteTwoTone,
 } from "@ant-design/icons";
 import Image from "next/image";
+import PdfImage from "../../../../assets/image/png.png";
 import styles from "./UploadFile.module.scss";
 import { useRouter } from "next/router";
 import moment from "moment";
@@ -40,6 +46,7 @@ import {
   showAddButton,
   hideFileStatus,
   hideCrossBtn,
+  showUploadFiles,
 } from "../../../../store/slices/uiSlice";
 const UploadFileUI = ({
   input,
@@ -60,12 +67,13 @@ const UploadFileUI = ({
   removeFiles,
   onFinish,
 }) => {
+  const [toggleFileView, setToggleFileView] = useState(false);
   const [createFolderForm] = Form.useForm();
   const dispatch = useDispatch<AppDispatch>();
   const visible = useSelector(
     (state: RootState) => state.ui.createFolderShowModal
   );
-  const DrageBoxVisible = useSelector((state: RootState) => state.ui.dragBox);
+  const drageBoxVisible = useSelector((state: RootState) => state.ui.dragBox);
   const disabledCreateFolder = useSelector(
     (state: RootState) => state.ui.disabledCreateFolderBtn
   );
@@ -75,21 +83,23 @@ const UploadFileUI = ({
   const afterUpload = useSelector((state: RootState) => state.ui.uploadAfter);
   const showFolder = useSelector((state: RootState) => state.ui.folderShown);
   const openFolder = useSelector((state: RootState) => state.ui.folderOpen);
-  const AddButtonShow = useSelector((state: RootState) => state.ui.addButton);
+  const addButtonShow = useSelector((state: RootState) => state.ui.addButton);
   const fileStatus = useSelector((state: RootState) => state.ui.fileStatus);
   const showCrossBtn = useSelector((state: RootState) => state.ui.crossBtn);
-
+  const afterUploadClass = useSelector(
+    (state: RootState) => state.ui.showFiles
+  );
   const showCreateFolderModal = () => dispatch(showFolderModal());
   const hideCreateFolderModal = () => dispatch(hideFolderModal());
-  const DragBoxShow = () => dispatch(showDrageBox());
-  const DragBoxHide = () => dispatch(hideDrageBox());
-  const UploadOptionsHide = () => dispatch(hideUploadOptions());
-  const UploadOptionsShow = () => dispatch(showUploadOptions());
+  const dragBoxShow = () => dispatch(showDrageBox());
+  const dagBoxHide = () => dispatch(hideDrageBox());
+  const uploadOptionsHide = () => dispatch(hideUploadOptions());
+  const uploadOptionsShow = () => dispatch(showUploadOptions());
   const hideButtonAdd = () => dispatch(hideAddButton());
   const shownAddButton = () => dispatch(showAddButton());
   const StatushideFile = () => dispatch(hideFileStatus());
-  const CrossBtnhide = () => dispatch(hideCrossBtn());
-
+  const crossBtnhide = () => dispatch(hideCrossBtn());
+  const showFiles = () => dispatch(showUploadFiles());
   const router = useRouter();
   const campRoute = () => {
     router.push("/create-new-topic");
@@ -110,6 +120,112 @@ const UploadFileUI = ({
       </Menu.Item>
     </Menu>
   );
+  const menu_files = (i) => (
+    <Menu>
+      <Menu.Item>
+        <a>
+          <EyeTwoTone /> View File
+        </a>
+      </Menu.Item>
+      <Menu.Item>
+        <a>
+          <CopyTwoTone /> Copy Short Code
+        </a>
+        ,
+      </Menu.Item>
+      <Menu.Item>
+        <a>
+          <DeleteTwoTone /> Delete
+        </a>
+      </Menu.Item>
+    </Menu>
+  );
+  const columns = [
+    {
+      title: "File Name",
+      dataIndex: "name",
+      key: "name",
+      render: (name, obj) => {
+        return (
+          <>
+            <div className={styles.icon_Width}>
+              {obj.thumbUrl ? (
+                <img src={obj.thumbUrl} />
+              ) : (
+                <FolderFilled className={styles.folder_icons} />
+              )}
+            </div>
+            <div className={styles.icon_height}>
+              {name ? name : obj.folderName}
+            </div>
+          </>
+        );
+      },
+    },
+    {
+      title: "Short Code",
+      dataIndex: "code",
+      key: "code",
+    },
+    {
+      title: "Created Date",
+      dataIndex: "lastModifiedDate",
+      key: "lastModifiedDate",
+      render: (lastModifiedDate, obj) => (
+        <div>
+          {" "}
+          {lastModifiedDate
+            ? moment().format("MMM DD,YYYY, h:mm:ss A").toString()
+            : obj.createdAt}
+        </div>
+      ),
+    },
+    {
+      title: "Action",
+      dataIndex: "",
+      key: "x",
+      render: (keyParam, obj) => {
+        return (
+          <>
+            <Popover
+              placement="bottomRight"
+              title=""
+              content={
+                <>
+                  <li className={styles.high_light}>
+                    <EyeTwoTone /> View File
+                  </li>
+                  ,
+                  <li
+                    className={styles.high_light}
+                    onClick={() => {
+                      navigator.clipboard.writeText(keyParam.name);
+                    }}
+                  >
+                    <CopyTwoTone /> Copy Short Code
+                  </li>
+                  ,
+                  <li
+                    className={styles.high_light}
+                    onClick={() => {
+                      removeFiles(keyParam, obj, fileLists);
+                    }}
+                  >
+                    <DeleteTwoTone /> Delete
+                  </li>
+                </>
+              }
+              trigger="click"
+            >
+              <a>
+                <MoreOutlined />
+              </a>
+            </Popover>
+          </>
+        );
+      },
+    },
+  ];
   return (
     <>
       <div>
@@ -151,12 +267,19 @@ const UploadFileUI = ({
                   id="createFolder"
                   disabled={disabledCreateFolder}
                   className={styles.create_folder_btn}
-                  onClick={showCreateFolderModal}
+                  onClick={() => {
+                    showCreateFolderModal(), setToggleFileView(false);
+                  }}
                 >
                   Create a folder
                 </Button>
-                {AddButtonShow ? (
-                  <Button className={styles.add_file_btn} onClick={addNewFile}>
+                {addButtonShow ? (
+                  <Button
+                    className={styles.add_file_btn}
+                    onClick={() => {
+                      addNewFile(), setToggleFileView(false);
+                    }}
+                  >
                     Add a file
                   </Button>
                 ) : (
@@ -164,8 +287,14 @@ const UploadFileUI = ({
                 )}
               </div>
               <div className={styles.top_icon}>
-                <MenuOutlined />
-                <AppstoreOutlined />
+                <MenuOutlined
+                  className={toggleFileView ? styles.high_light : ""}
+                  onClick={() => setToggleFileView(true)}
+                />
+                <AppstoreOutlined
+                  className={!toggleFileView ? styles.high_light : ""}
+                  onClick={() => setToggleFileView(false)}
+                />
               </div>
             </div>
           }
@@ -187,7 +316,7 @@ const UploadFileUI = ({
                 let length = info.fileList.length;
                 if (length) {
                   if (fileStatus) {
-                    fileLists.map((fileitems,index) => {
+                    fileLists.map((fileitems, index) => {
                       return (
                         <div key={index}>
                           {fileitems.id === selectedFolderID
@@ -200,13 +329,13 @@ const UploadFileUI = ({
                   } else {
                     setFileLists(info.fileList);
                   }
-                  DragBoxHide();
-                  CrossBtnhide();
+                  dagBoxHide();
+                  crossBtnhide();
                   shownAddButton();
-                  UploadOptionsShow();
+                  uploadOptionsShow();
                 } else {
-                  DragBoxShow();
-                  UploadOptionsHide();
+                  dragBoxShow();
+                  uploadOptionsHide();
                   hideButtonAdd();
                 }
 
@@ -217,6 +346,7 @@ const UploadFileUI = ({
                   message.success(
                     `${info.file.name} file uploaded successfully.`
                   );
+                  showFiles();
                 } else if (status === "error") {
                   message.error(`${info.file.name} file upload failed.`);
                 }
@@ -225,34 +355,39 @@ const UploadFileUI = ({
                 console.log("Dropped files", e.dataTransfer.files);
               }}
               itemRender={(originNode, file, currFileList) => {
-                return file.type && file.type == "folder" ? (
+                return (file.type && file.type == "folder") ||
+                  toggleFileView ? (
                   ""
                 ) : (
-                  <div className={styles.After_Upload}>
-                    <CloseCircleOutlined
-                      onClick={() =>
-                        removeFiles(originNode, file, currFileList)
-                      }
-                    />
-                    <img
-                      src="https://www.apkmirror.com/wp-content/uploads/2021/05/65/60afb3b73b390.png"
-                      height="150px"
-                      width="140px"
-                    />
-                    <br />
-                    <label>{file.name}</label>
-                    <Input
-                      className="mr0"
-                      value={fileName}
-                      id={fileName}
-                      onChange={(e) => setfileName(e.target.value)}
-                      placeholder="Full Name (with no extension)"
-                    />
+                  <div className={afterUploadClass}>
+                    <div className={styles.After_Upload}>
+                      <CloseCircleOutlined
+                        onClick={() =>
+                          removeFiles(originNode, file, currFileList)
+                        }
+                      />
+                      <img
+                        alt="Image"
+                        src={file.thumbUrl}
+                        height={"150px"}
+                        width={"140px"}
+                      />
+                      <br />
+                      <label className={"fileName_label"}>{file.name}</label>
+                      <span className={"fileName_span"}>Enter file name</span>
+                      <Input
+                        className="mr0"
+                        value={fileName}
+                        id={fileName}
+                        onChange={(e) => setfileName(e.target.value)}
+                        placeholder="Full Name (with no extension)"
+                      />
+                    </div>
                   </div>
                 );
               }}
             >
-              {DrageBoxVisible !== false ? (
+              {drageBoxVisible !== false ? (
                 <div className={styles.Dragebox}>
                   <Button className={styles.Drager}>
                     <div className="uploadBTn">
@@ -271,6 +406,11 @@ const UploadFileUI = ({
                 ""
               )}
             </Upload>
+            {toggleFileView ? (
+              <Table dataSource={fileLists} columns={columns} />
+            ) : (
+              ""
+            )}
           </div>
 
           {fileLists.map((item, i) => {
@@ -303,10 +443,10 @@ const UploadFileUI = ({
                     {item &&
                     item.type &&
                     item.type == "folder" &&
-                    showFolder ? (
+                    showFolder &&
+                    !toggleFileView ? (
                       <div className={styles.Folder_container}>
                         <Card>
-                          {(item.id = "folderId" + i)}
                           <div className={styles.folder_icon}>
                             <FolderFilled />
                             <div className="folder--wrap">
@@ -317,7 +457,7 @@ const UploadFileUI = ({
                                 {item.folderName.substring(0, 10) + "..."}
                               </div>
                               <div className={styles.dateAndfiles}>
-                                <p>{moment().format("DD MMM-YYYY")}</p>
+                                <p>{moment().format("DD-MMM-YYYY")}</p>
                                 <small>
                                   {"(" + item.files.length + " files)"}
                                 </small>
@@ -336,15 +476,26 @@ const UploadFileUI = ({
                           </div>
                         </Card>
                       </div>
-                    ) : afterUpload ? (
+                    ) : afterUpload && !toggleFileView ? (
                       <Card className={styles.files}>
-                        <div className="icon--menu">
-                          <MoreOutlined />
+                        <div className={styles.dropdown_menu}>
+                          <Dropdown overlay={menu_files(i)} trigger={["click"]}>
+                            <a
+                              className="ant-dropdown-link"
+                              onClick={(e) => e.preventDefault()}
+                            >
+                              <MoreOutlined className="Menu_Icon" />
+                            </a>
+                          </Dropdown>
                         </div>
-                        <h3>
-                          {item.name.substring(0, 16) + "..."}
-                          <br />
-                        </h3>
+
+                        <img
+                          alt="image"
+                          src={item.thumbUrl}
+                          height={"150px"}
+                          width={"140px"}
+                        />
+                        <h3>{item.name.substring(0, 16) + "..."}</h3>
                         <span>{moment().format("MMM DD,YYYY, h:mm:ss A")}</span>
                       </Card>
                     ) : (
