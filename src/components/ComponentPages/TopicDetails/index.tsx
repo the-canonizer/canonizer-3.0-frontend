@@ -41,17 +41,27 @@ const TopicDetails = () => {
     }));
   useEffect(() => {
     async function getTreeApiCall() {
-      if (didMount.current) {
-        setGetTreeLoadingIndicator(true);
-        const reqBody = {
-          topic_num: +router.query.camp,
-          asofdate: asofdate || Date.now() / 1000,
-          algorithm: algorithm,
-          update_all: 1,
-        };
-        await getTreesApi(reqBody);
-        setGetTreeLoadingIndicator(false);
-      } else didMount.current = true;
+      setGetTreeLoadingIndicator(true);
+      setLoadingIndicator(true);
+      const reqBody = {
+        topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+        camp_num: 1,
+        as_of: asof,
+        asofdate: asofdate || Date.now() / 1000,
+        algorithm: algorithm,
+        update_all: 1,
+      };
+
+      await getTreesApi(reqBody);
+      await Promise.all([
+        getNewsFeedApi(reqBody),
+        getCanonizedCampStatementApi(reqBody),
+        getCurrentTopicRecordApi(reqBody),
+        getCurrentCampRecordApi(reqBody),
+        getCanonizedCampSupportingTreeApi(reqBody),
+      ]);
+      setGetTreeLoadingIndicator(false);
+      setLoadingIndicator(false);
     }
     getTreeApiCall();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -76,7 +86,7 @@ const TopicDetails = () => {
   const getSelectedNode = async (nodeKey) => {
     setLoadingIndicator(true);
     const reqBody = {
-      topic_num: +router.query.camp,
+      topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
       camp_num: nodeKey,
       as_of: asof,
       as_of_date: asofdate,
@@ -148,17 +158,24 @@ const TopicDetails = () => {
         </aside>
 
         <div className="pageContentWrap">
+          <Spin spinning={loadingIndicator} size="large">
+            <NewsFeedsCard newsFeed={newsFeed} />
+          </Spin>
           <Spin spinning={getTreeLoadingIndicator} size="large">
             <CampTreeCard
               scrollToCampStatement={scrollToCampStatement}
               getSelectedNode={getSelectedNode}
             />
           </Spin>
-          <Spin spinning={loadingIndicator} size="large">
-            <NewsFeedsCard newsFeed={newsFeed} />
-          </Spin>
+
           <Spin spinning={loadingIndicator} size="large">
             <CampStatementCard myRefToCampStatement={myRefToCampStatement} />
+          </Spin>
+
+          <Spin spinning={loadingIndicator} size="large">
+            <SupportTreeCard
+              handleLoadMoreSupporters={handleLoadMoreSupporters}
+            />
           </Spin>
           <Spin spinning={loadingIndicator} size="large">
             <CurrentTopicCard />
@@ -166,12 +183,6 @@ const TopicDetails = () => {
           <Spin spinning={loadingIndicator} size="large">
             <CurrentCampCard />
           </Spin>
-          <Spin spinning={loadingIndicator} size="large">
-            <SupportTreeCard
-              handleLoadMoreSupporters={handleLoadMoreSupporters}
-            />
-          </Spin>
-
           <BackTop />
         </div>
       </div>
