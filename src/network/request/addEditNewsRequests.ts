@@ -26,7 +26,7 @@ export default class addEditNewsRequest extends Request {
 
  
 
-  static geteditNewsFeedData(body) {
+  static getEditNewsFeedData(body) {
     console.log("body in req ", body.topic_num, body.camp_num);
     return new Request(
       K.Network.URL.GetEditNewsFeeds,

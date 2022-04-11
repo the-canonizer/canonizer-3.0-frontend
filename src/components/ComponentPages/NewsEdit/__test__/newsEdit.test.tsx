@@ -1,4 +1,4 @@
-import NewsEdit from "../../../ComponentPages/NewsEdit";
+import NewsEdit from "..";
 import { cleanup, render, screen } from "@testing-library/react";
 
 window.matchMedia =
@@ -30,7 +30,7 @@ const fakeUsers = [
 afterEach(cleanup);
 describe("Should render Addnews", () => {
   it("Render without crash", () => {
-    const { container } = render(<FormDataupdate update={fakeUsers} />);
+    const { container } = render(<NewsEdit update={fakeUsers} />);
 
     const submitButton = screen.getByRole("button", {
       name: /submit/i,

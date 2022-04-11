@@ -1,4 +1,4 @@
-import NewsAdd from "../../../ComponentPages/NewsAdd";
+import NewsAdd from "..";
 import { cleanup, render, screen } from "@testing-library/react";
 
 window.matchMedia =

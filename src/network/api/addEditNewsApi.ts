@@ -18,7 +18,7 @@ export const getAddNewsRequestApi = async (body) => {
 export const getEditNewsFeedApi = async (body) => {
   try {
     const editnewsdat = await NetworkCall.fetch(
-      addEditNewsRequest.geteditNewsFeedData(body)
+      addEditNewsRequest.getEditNewsFeedData(body)
     );
 
     return editnewsdat;
