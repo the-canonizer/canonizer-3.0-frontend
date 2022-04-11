@@ -1,7 +1,7 @@
 import { Row, Col, Card, Checkbox, Form, Input, Badge, Button } from "antd";
 
 import Layout from "../../hoc/layout";
-import SideBar from "../../components/ComponentPages/Home/SideBar";
+import SideBarNoFilter from "../../components/ComponentPages/Home/SideBarNoFilter";
 import styles from "./addEditNews.module.scss";
 
 const { TextArea } = Input;
@@ -11,7 +11,7 @@ function EditNews() {
     <>
       <Layout routeName={"edit-news"}>
         <aside className="leftSideBar miniSideBar">
-          <SideBar />
+          <SideBarNoFilter />
         </aside>
         <div className="pageContentWrap">
           <Card title="Edit News" className={styles.card}>
