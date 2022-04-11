@@ -68,6 +68,9 @@ export const logout = async (error = "") => {
     store.dispatch(removeAuthToken());
     return res;
   } catch (error) {
+    store.dispatch(logoutUser());
+    store.dispatch(removeAuthToken());
+    !isServer && window.localStorage.removeItem("token");
     handleError(error);
   }
 };
