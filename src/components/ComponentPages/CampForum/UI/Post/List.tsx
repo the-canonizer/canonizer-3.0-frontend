@@ -1,5 +1,6 @@
 import { Fragment } from "react";
-import { Card, Typography } from "antd";
+import { Card, Typography, Tooltip, Space } from "antd";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 import styles from "../Forum.module.scss";
 
@@ -10,17 +11,36 @@ const CreateCampFormUI = ({
   postedTime = null,
   title = null,
   content = null,
+  onEditClick,
+  onDeleteClick,
 }) => {
   return (
     <Fragment>
-      <Card className={styles.listCard}>
+      <Card className={styles.listCard} bodyStyle={{ padding: "15px" }}>
         <div className={`${styles.cardTitle} ${styles.listCardTitle}`}>
-          <Text>
-            <span className={styles.by}>{postedBy}</span> {postedTime}
-          </Text>
+          <Space size="small">
+            <Text>
+              <span className={styles.by}>{postedBy}</span> {postedTime}
+            </Text>
+            <Tooltip title="edit">
+              <a onClick={onEditClick} className="linkCss">
+                <EditOutlined />
+              </a>
+            </Tooltip>
+            <Tooltip title="delete">
+              <a onClick={onDeleteClick} className="linkCss">
+                <DeleteOutlined />
+              </a>
+            </Tooltip>
+          </Space>
         </div>
-        <Text strong>{title}</Text>
-        <br />
+        {title ? (
+          <Fragment>
+            {" "}
+            <Text strong>{title}</Text>
+            <br />
+          </Fragment>
+        ) : null}
         <Text>{content}</Text>
       </Card>
     </Fragment>

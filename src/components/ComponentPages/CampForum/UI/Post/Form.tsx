@@ -4,6 +4,7 @@ import { Form, Button, Select, Row, Col, Typography } from "antd";
 import styles from "../Forum.module.scss";
 import messages from "../../../../../messages";
 import QuillEditor from "../../../../common/editor";
+import { isServer } from "../../../../../utils/generalUtility";
 
 const { Option } = Select;
 const { Text } = Typography;
@@ -37,7 +38,7 @@ const PostForm = ({
               Number of Post in this thread: {postCount}
             </Text>
             <div className={styles.editorQuill}>
-              <QuillEditor />
+              {!isServer ? <QuillEditor /> : null}
             </div>
           </Col>
           <Col xs={24} sm={12}>

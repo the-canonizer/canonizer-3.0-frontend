@@ -55,6 +55,13 @@ export const login = async (email: string, password: string) => {
   }
 };
 
+export const logoutReset = async (error = "") => {
+  console.log(error);
+  !isServer && window.localStorage.removeItem("token");
+  store.dispatch(logoutUser());
+  store.dispatch(removeAuthToken());
+};
+
 export const logout = async (error = "") => {
   let state = store.getState();
   const { auth } = state;
@@ -63,9 +70,7 @@ export const logout = async (error = "") => {
     let res = await NetworkCall.fetch(
       UserRequest.logoutCall(auth.token, error)
     );
-    !isServer && window.localStorage.removeItem("token");
-    store.dispatch(logoutUser());
-    store.dispatch(removeAuthToken());
+    resetData();
     return res;
   } catch (error) {
     store.dispatch(logoutUser());

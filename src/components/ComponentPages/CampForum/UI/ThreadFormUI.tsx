@@ -14,6 +14,8 @@ const CreateThreadForm = ({
   form,
   initialValue,
   nickNameList,
+  isThreadUpdate,
+  paramsList,
 }) => {
   const CardTitle = (
     <span className={styles.cardTitle}>Create a new thread</span>
@@ -21,7 +23,11 @@ const CreateThreadForm = ({
 
   return (
     <Fragment>
-      <Card title={CardTitle} className="can-card-style">
+      <Card
+        title={CardTitle}
+        className="can-card-style"
+        style={{ width: "100%" }}
+      >
         <Form
           autoComplete="off"
           form={form}
@@ -43,42 +49,47 @@ const CreateThreadForm = ({
                 <Input size={"large"} placeholder="Title" />
               </Form.Item>
 
-              {nickNameList.length > 0 ? (
-                <Form.Item
-                  label={labels.cr_nick_name}
-                  name="nick_name"
-                  {...nickNmRule}
-                  initialValue={nickNameList[0]?.id}
-                  extra={labels.cr_nick_name_sp}
-                  className="nick_name_extra"
-                >
-                  <Select
-                    placeholder={placeholders.nickName}
-                    allowClear
-                    size={"large"}
-                  >
-                    {nickNameList.map((nick) => (
-                      <Option key={nick.id} value={nick.id}>
-                        {nick.nick_name}
-                      </Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              ) : null}
-              {nickNameList.length <= 0 ? (
-                <Form.Item
-                  label={labels.cr_nick_name}
-                  name="nick_name"
-                  {...nickNmRule}
-                  extra={labels.cr_nick_name_sp}
-                  className="nick_name_extra"
-                >
-                  <Select
-                    placeholder={placeholders.nickName}
-                    allowClear
-                    size={"large"}
-                  ></Select>
-                </Form.Item>
+              {!isThreadUpdate ? (
+                <Fragment>
+                  {" "}
+                  {nickNameList.length > 0 ? (
+                    <Form.Item
+                      label={labels.cr_nick_name}
+                      name="nick_name"
+                      {...nickNmRule}
+                      initialValue={nickNameList[0]?.id}
+                      extra={labels.cr_nick_name_sp}
+                      className="nick_name_extra"
+                    >
+                      <Select
+                        placeholder={placeholders.nickName}
+                        allowClear
+                        size={"large"}
+                      >
+                        {nickNameList.map((nick) => (
+                          <Option key={nick.id} value={nick.id}>
+                            {nick.nick_name}
+                          </Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                  ) : null}
+                  {nickNameList.length <= 0 ? (
+                    <Form.Item
+                      label={labels.cr_nick_name}
+                      name="nick_name"
+                      {...nickNmRule}
+                      extra={labels.cr_nick_name_sp}
+                      className="nick_name_extra"
+                    >
+                      <Select
+                        placeholder={placeholders.nickName}
+                        allowClear
+                        size={"large"}
+                      ></Select>
+                    </Form.Item>
+                  ) : null}
+                </Fragment>
               ) : null}
             </Col>
           </Row>

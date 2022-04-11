@@ -163,9 +163,14 @@
   color: #68707a;
   font-size: 16px;
   margin-bottom: 10px;
-
+  span {
+    font-size: 14px;
+    font-weight: normal;
+  }
   .by {
     color: #4484ce;
+    font-weight: bold;
+    margin-right: 5px;
   }
 }
 

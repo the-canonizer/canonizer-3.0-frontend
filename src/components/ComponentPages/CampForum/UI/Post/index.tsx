@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { Card, Typography } from "antd";
+import { Card, Typography, Pagination } from "antd";
 
 import styles from "../Forum.module.scss";
 
@@ -20,8 +20,14 @@ const PostUI = ({
   postCount = 0,
   postList,
   cardTitle,
+  pCurrent,
+  pTotal,
+  pOnChange,
+  paramsList,
 }) => {
   const CardTitle = <span className={styles.cardTitle}>{cardTitle}</span>;
+  const onEditClick = () => {};
+  const onDeleteClick = () => {};
 
   return (
     <Fragment>
@@ -52,8 +58,14 @@ const PostUI = ({
             title={post.title}
             content={post.content}
             key={post.id}
+            onEditClick={onEditClick.bind(this, post.id)}
+            onDeleteClick={onDeleteClick.bind(this, post.id)}
           />
         ))}
+
+        <div className={`paginationCon`}>
+          <Pagination current={pCurrent} onChange={pOnChange} total={pTotal} />
+        </div>
       </Card>
     </Fragment>
   );

@@ -16,7 +16,6 @@ function SocialLoginCallback() {
 
   const sendData = async (data) => {
     const redirectTab = localStorage.getItem("redirectTab");
-
     if (!redirectTab) {
       const response = await socialLoginCallback(data, router);
 
@@ -47,17 +46,26 @@ function SocialLoginCallback() {
 
   useEffect(() => {
     setIsLoading(true);
+
     try {
       const queryParams = router.query;
       const params = getSearchedParams();
+      const redirectTab = localStorage.getItem("redirectTab");
 
       let body = {
         code: params.code,
         provider: queryParams.provider,
       };
 
-      if (queryParams.provider) {
+      if (queryParams.provider && params.code) {
         sendData(body);
+      } else {
+        console.log(queryParams, params);
+        if (!redirectTab) {
+          router.push("/");
+        } else {
+          router.push("/settings?tab=social");
+        }
       }
     } catch (error) {
       console.error(error);
