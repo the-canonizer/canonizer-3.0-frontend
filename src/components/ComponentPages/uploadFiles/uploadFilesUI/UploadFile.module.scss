@@ -366,3 +366,25 @@
 .hideUpload {
   display: none;
 }
+.high_light {
+  color: #149fdf;
+}
+.icon_Width {
+  display: inline-block;
+  max-width: 20px;
+}
+.icon_height {
+  display: inline-block;
+}
+.folder_icons {
+  svg {
+    font-size: 20px !important;
+  }
+}
+.dropdown_menu {
+  position: relative;
+  top: -10px;
+  margin-right: -20px;
+  right: 10px;
+  cursor: pointer;
+}
