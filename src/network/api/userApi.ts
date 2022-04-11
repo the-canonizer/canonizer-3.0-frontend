@@ -55,27 +55,28 @@ export const login = async (email: string, password: string) => {
   }
 };
 
-export const logoutReset = async (error = "") => {
-  console.log(error);
-  !isServer && window.localStorage.removeItem("token");
-  store.dispatch(logoutUser());
-  store.dispatch(removeAuthToken());
-};
-
 export const logout = async (error = "") => {
   let state = store.getState();
   const { auth } = state;
 
   try {
+    if (error) {
+      !isServer && window.localStorage.removeItem("token");
+      store.dispatch(logoutUser());
+      store.dispatch(removeAuthToken());
+      return true;
+    }
     let res = await NetworkCall.fetch(
       UserRequest.logoutCall(auth.token, error)
     );
-    resetData();
-    return res;
-  } catch (error) {
+    !isServer && window.localStorage.removeItem("token");
     store.dispatch(logoutUser());
     store.dispatch(removeAuthToken());
+    return res;
+  } catch (error) {
     !isServer && window.localStorage.removeItem("token");
+    store.dispatch(logoutUser());
+    store.dispatch(removeAuthToken());
     handleError(error);
   }
 };
