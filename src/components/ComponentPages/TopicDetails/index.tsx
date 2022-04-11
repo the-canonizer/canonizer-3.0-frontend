@@ -19,9 +19,10 @@ import CurrentCampCard from "./CurrentCampCard";
 import CurrentTopicCard from "./CurrentTopicCard";
 import NewsFeedsCard from "./NewsFeedsCard";
 import SupportTreeCard from "./SupportTreeCard";
-import { BackTop } from "antd";
+import { BackTop, Dropdown, Menu, Button } from "antd";
 import { Spin } from "antd";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
+import {MoreOutlined,FileTextOutlined,HeartOutlined} from '@ant-design/icons';
 
 const TopicDetails = () => {
   const didMount = useRef(false);
@@ -112,35 +113,65 @@ const TopicDetails = () => {
     setCurrentTopics(data);
   };
 
+  const campForumDropdownMenu = (
+    <Menu className={styles.campForumDropdownMenu}>
+      <Menu.Item key="0" icon={<i className="icon-newspaper"></i> }>
+        <a rel="noopener noreferrer" href="/add-news">
+          Add News
+        </a>
+      </Menu.Item>
+      <Menu.Item icon={<i className="icon-subscribe"></i>}>
+        Subscribe to Entire Topic
+      </Menu.Item>
+      <Menu.Item icon={<i className="icon-subscribe"></i>}>Subscribe to the Camp</Menu.Item>
+      <Menu.Item icon={<HeartOutlined/>}>Directly Join and Support </Menu.Item>
+      <Menu.Item icon={<i className="icon-camp"></i>}>Manage/Edit the Camp</Menu.Item>
+      <Menu.Item icon={<i className="icon-topic"></i>}>Manage/Edit the Topic</Menu.Item>
+      <Menu.Item icon={<FileTextOutlined />}>Manage/Edit Camp Statement </Menu.Item>
+    </Menu>
+  );
+
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
-        <div className={styles.breadcrumbWrapper}>
-          <Typography.Paragraph className={"mb-0 " + styles.topicTitleStyle}>
-            {" "}
-            <span className="bold"> Topic: </span>
-            {topicRecord?.length && topicRecord[0]?.topic_name}
-          </Typography.Paragraph>
-          <div className={styles.breadcrumbLinks}>
-            {" "}
-            <span className="bold mr-1"> Camp : </span>
-            {campRecord?.length
-              ? campRecord[0].parentCamps?.map((camp, index) => {
-                  return (
-                    <a
-                      key={camp?.camp_num}
-                      onClick={() => {
-                        getSelectedNode(camp?.camp_num);
-                      }}
-                    >
-                      {" "}
-                      {index !== 0 && "/"}
-                      {`${camp?.camp_name}`}
-                    </a>
-                  );
-                })
-              : null}
+        <div className={styles.topicDetailContentHead}>
+          <div className={styles.topicDetailContentHead_Left}>
+            <Typography.Paragraph className={"mb-0 " + styles.topicTitleStyle}>
+              {" "}
+              <span className="bold"> Topic: </span>
+              {topicRecord?.length && topicRecord[0]?.topic_name}
+            </Typography.Paragraph>
+            <div className={styles.breadcrumbLinks}>
+              {" "}
+              <span className="bold mr-1"> Camp : </span>
+              {campRecord?.length
+                ? campRecord[0].parentCamps?.map((camp, index) => {
+                    return (
+                      <a
+                        key={camp?.camp_num}
+                        onClick={() => {
+                          getSelectedNode(camp?.camp_num);
+                        }}
+                      >
+                        {" "}
+                        {index !== 0 && "/"}
+                        {`${camp?.camp_name}`}
+                      </a>
+                    );
+                  })
+                : null}
+            </div>
           </div>
+
+          <div className={styles.topicDetailContentHead_Right}>
+            <Button type="primary" className={styles.btnCampForum}>Camp Forum</Button>
+            <Dropdown className={styles.campForumDropdown} placement="bottomRight" overlay={campForumDropdownMenu} trigger={['click']}>
+              <a className={styles.iconMore} onClick={e => e.preventDefault()}>
+                <MoreOutlined />
+              </a>
+            </Dropdown>
+          </div>
+
         </div>
 
         <aside className="leftSideBar miniSideBar">
