@@ -92,6 +92,8 @@ export default function SettingsUI() {
     const query = router.query;
     if (query.tab === "social") {
       setActiveTabKey("social_oauth_verification");
+    } else if (query.tab === "profile") {
+      setActiveTabKey("profile_info");
     }
   }, [router.query]);
 
