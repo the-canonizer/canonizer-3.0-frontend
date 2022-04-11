@@ -3,6 +3,8 @@ import { Tree } from "antd";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 import Styles from "../topicDetails.module.scss";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const { TreeNode } = Tree;
 
@@ -13,7 +15,8 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
   }));
   const [selectedNodeID, setSelectedNodeID] = useState(1);
   const [scoreFilter, setScoreFilter] = useState(filterByScore);
-
+  const router = useRouter();
+  debugger;
   const onSelect = (
     selectedKeys,
     e: { selected; selectedNodes; node; event }
@@ -46,15 +49,19 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
                           "treeListItemTitle " + Styles.treeListItemTitle
                         }
                       >
-                        {" "}
-                        {data[item].title}
+                        <Link
+                          href={`${router.query.camp.at(0)}/${
+                            data[item]?.camp_id
+                          }-${data[item]?.title?.split(" ").join("-")}`}
+                        >
+                          <a>{data[item].title}</a>
+                        </Link>
                       </span>
                       <span
                         className={
                           "treeListItemNumber " + Styles.treeListItemNumber
                         }
                       >
-                        {" "}
                         {data[item].score?.toFixed(2)}
                       </span>
                     </div>
@@ -85,7 +92,7 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
       return <TreeNode key={data[item].key} {...data[item]} />;
     });
 
-  return (
+  return tree ? (
     <Tree
       showLine={{ showLeafIcon: false }}
       defaultExpandedKeys={["1"]}
@@ -95,6 +102,8 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
     >
       {tree && renderTreeNodes(tree)}
     </Tree>
+  ) : (
+    <p>No Camp Tree Found</p>
   );
 };
 

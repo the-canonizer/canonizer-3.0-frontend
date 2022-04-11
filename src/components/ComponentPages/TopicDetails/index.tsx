@@ -22,7 +22,12 @@ import SupportTreeCard from "./SupportTreeCard";
 import { BackTop, Dropdown, Menu, Button } from "antd";
 import { Spin } from "antd";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
-import {MoreOutlined,FileTextOutlined,HeartOutlined} from '@ant-design/icons';
+import {
+  MoreOutlined,
+  FileTextOutlined,
+  HeartOutlined,
+} from "@ant-design/icons";
+import Link from "next/link";
 
 const TopicDetails = () => {
   const didMount = useRef(false);
@@ -46,7 +51,7 @@ const TopicDetails = () => {
       setLoadingIndicator(true);
       const reqBody = {
         topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
-        camp_num: 1,
+        camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
         as_of: asof,
         asofdate: asofdate || Date.now() / 1000,
         algorithm: algorithm,
@@ -125,7 +130,7 @@ const TopicDetails = () => {
 
   const campForumDropdownMenu = (
     <Menu className={styles.campForumDropdownMenu}>
-      <Menu.Item key="0" icon={<i className="icon-newspaper"></i> }>
+      <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
         <a rel="noopener noreferrer" href="/add-news">
           Add News
         </a>
@@ -133,11 +138,19 @@ const TopicDetails = () => {
       <Menu.Item icon={<i className="icon-subscribe"></i>}>
         Subscribe to Entire Topic
       </Menu.Item>
-      <Menu.Item icon={<i className="icon-subscribe"></i>}>Subscribe to the Camp</Menu.Item>
-      <Menu.Item icon={<HeartOutlined/>}>Directly Join and Support </Menu.Item>
-      <Menu.Item icon={<i className="icon-camp"></i>}>Manage/Edit the Camp</Menu.Item>
-      <Menu.Item icon={<i className="icon-topic"></i>}>Manage/Edit the Topic</Menu.Item>
-      <Menu.Item icon={<FileTextOutlined />}>Manage/Edit Camp Statement </Menu.Item>
+      <Menu.Item icon={<i className="icon-subscribe"></i>}>
+        Subscribe to the Camp
+      </Menu.Item>
+      <Menu.Item icon={<HeartOutlined />}>Directly Join and Support </Menu.Item>
+      <Menu.Item icon={<i className="icon-camp"></i>}>
+        Manage/Edit the Camp
+      </Menu.Item>
+      <Menu.Item icon={<i className="icon-topic"></i>}>
+        Manage/Edit the Topic
+      </Menu.Item>
+      <Menu.Item icon={<FileTextOutlined />}>
+        Manage/Edit Camp Statement{" "}
+      </Menu.Item>
     </Menu>
   );
 
@@ -157,16 +170,17 @@ const TopicDetails = () => {
               {campRecord?.length
                 ? campRecord[0].parentCamps?.map((camp, index) => {
                     return (
-                      <a
+                      <Link
+                        href={`${router.query.camp.at(0)}/${
+                          camp?.camp_num
+                        }-${camp?.camp_name?.split(" ").join("-")}`}
                         key={camp?.camp_num}
-                        onClick={() => {
-                          getSelectedNode(camp?.camp_num);
-                        }}
                       >
-                        {" "}
-                        {index !== 0 && "/"}
-                        {`${camp?.camp_name}`}
-                      </a>
+                        <a>
+                          {index !== 0 && "/"}
+                          {`${camp?.camp_name}`}
+                        </a>
+                      </Link>
                     );
                   })
                 : null}
@@ -174,14 +188,23 @@ const TopicDetails = () => {
           </div>
 
           <div className={styles.topicDetailContentHead_Right}>
-            <Button type="primary" className={styles.btnCampForum}>Camp Forum</Button>
-            <Dropdown className={styles.campForumDropdown} placement="bottomRight" overlay={campForumDropdownMenu} trigger={['click']}>
-              <a className={styles.iconMore} onClick={e => e.preventDefault()}>
+            <Button type="primary" className={styles.btnCampForum}>
+              Camp Forum
+            </Button>
+            <Dropdown
+              className={styles.campForumDropdown}
+              placement="bottomRight"
+              overlay={campForumDropdownMenu}
+              trigger={["click"]}
+            >
+              <a
+                className={styles.iconMore}
+                onClick={(e) => e.preventDefault()}
+              >
                 <MoreOutlined />
               </a>
             </Dropdown>
           </div>
-
         </div>
 
         <aside className="leftSideBar miniSideBar">
