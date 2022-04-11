@@ -366,12 +366,14 @@ const UploadFileUI = ({
                           removeFiles(originNode, file, currFileList)
                         }
                       />
-                      <img
-                        alt="Image"
-                        src={file.thumbUrl}
-                        height={"150px"}
-                        width={"140px"}
-                      />
+                      <div className="imgWrap">
+                        <img
+                          alt="Image"
+                          src={file.thumbUrl}
+                          height={"150px"}
+                          width={"140px"}
+                        />
+                      </div>
                       <br />
                       <label className={"fileName_label"}>{file.name}</label>
                       <span className={"fileName_span"}>Enter file name</span>
@@ -406,112 +408,138 @@ const UploadFileUI = ({
                 ""
               )}
             </Upload>
-            {toggleFileView ? (
-              <Table dataSource={fileLists} columns={columns} />
-            ) : (
-              ""
-            )}
           </div>
 
-          {fileLists.map((item, i) => {
-            return (
-              <div className={styles.view_After_Upload} key={i}>
-                {item.type &&
-                item.type == "folder" &&
-                item.id == selectedFolderID &&
-                openFolder ? (
-                  <div>
-                    <Card
-                      size="small"
-                      title={
-                        <h2>
-                          {" "}
-                          <ArrowLeftOutlined
-                            onClick={() => {
-                              closeFolder();
-                              StatushideFile();
-                            }}
-                          />{" "}
-                          {item.folderName} <FolderOpenOutlined />
-                        </h2>
-                      }
-                      className="FolderfileCard"
-                    ></Card>
-                  </div>
-                ) : (
-                  <div className={"folderId" + i} id={"folderId" + i}>
-                    {item &&
-                    item.type &&
-                    item.type == "folder" &&
-                    showFolder &&
-                    !toggleFileView ? (
-                      <div className={styles.Folder_container}>
-                        <Card>
-                          <div className={styles.folder_icon}>
-                            <FolderFilled />
-                            <div className="folder--wrap">
-                              <div
-                                className={styles.foldername}
-                                onClick={() => Openfolder(i)}
-                              >
-                                {item.folderName.substring(0, 10) + "..."}
-                              </div>
-                              <div className={styles.dateAndfiles}>
-                                <p>{moment().format("DD-MMM-YYYY")}</p>
-                                <small>
-                                  {"(" + item.files.length + " files)"}
-                                </small>
-                              </div>
-                            </div>
-                            <div className={styles.dropdown}>
-                              <Dropdown overlay={menu(i)} trigger={["click"]}>
-                                <a
-                                  className="ant-dropdown-link"
-                                  onClick={(e) => e.preventDefault()}
+          {toggleFileView && fileLists.length > 0 ? (
+            <Table dataSource={fileLists} columns={columns} />
+          ) : (
+            ""
+          )}
+          <div className={styles.fileList}>
+            {fileLists.map((item, i) => {
+              item.id = "folderId" + i;
+              return (
+                <div className={styles.view_After_Upload} key={i}>
+                  {console.log(
+                    openFolder,
+                    "openFolder",
+                    item,
+                    "item",
+                    item.type == "folder",
+                    "folder",
+                    item.id == selectedFolderID
+                  )}
+                  {item.type &&
+                  item.type == "folder" &&
+                  item.id == selectedFolderID &&
+                  openFolder ? (
+                    <div className={styles.openFolder}>
+                      <Card
+                        size="small"
+                        title={
+                          <h2>
+                            {" "}
+                            <ArrowLeftOutlined
+                              onClick={() => {
+                                closeFolder();
+                                StatushideFile();
+                              }}
+                            />{" "}
+                            {item.folderName} <FolderOpenOutlined />
+                          </h2>
+                        }
+                        className="FolderfileCard"
+                      ></Card>
+                    </div>
+                  ) : (
+                    <div className={"folderId" + i} id={"folderId" + i}>
+                      {item &&
+                      item.type &&
+                      item.type == "folder" &&
+                      showFolder &&
+                      !toggleFileView ? (
+                        <div className={styles.Folder_container}>
+                          <Card className={styles.FolderData}>
+                            {/* {item.id = "folderId" + i} */}
+                            <div className={styles.folder_icon}>
+                              {/* <FolderFilled /> */}
+                              <div className="folder--wrap">
+                                <div
+                                  className="foldername"
+                                  onClick={() => Openfolder(i)}
                                 >
-                                  <MoreOutlined />
-                                </a>
-                              </Dropdown>
+                                  {item.folderName}
+                                </div>
+                                <div className={styles.dateAndfiles}>
+                                  <p>{moment().format("DD-MMM-YYYY")}</p>
+                                  <small>
+                                    {"(" + item.files.length + " files)"}
+                                  </small>
+                                </div>
+                              </div>
+                              <div className={styles.dropdown}>
+                                <Dropdown overlay={menu(i)} trigger={["click"]}>
+                                  <a
+                                    className="ant-dropdown-link"
+                                    onClick={(e) => e.preventDefault()}
+                                  >
+                                    <MoreOutlined />
+                                  </a>
+                                </Dropdown>
+                              </div>
                             </div>
-                          </div>
-                        </Card>
-                      </div>
-                    ) : afterUpload && !toggleFileView ? (
-                      <Card className={styles.files}>
-                        <div className={styles.dropdown_menu}>
-                          <Dropdown overlay={menu_files(i)} trigger={["click"]}>
-                            <a
-                              className="ant-dropdown-link"
-                              onClick={(e) => e.preventDefault()}
-                            >
-                              <MoreOutlined className="Menu_Icon" />
-                            </a>
-                          </Dropdown>
+                          </Card>
                         </div>
-
-                        <img
-                          alt="image"
-                          src={item.thumbUrl}
-                          height={"150px"}
-                          width={"140px"}
-                        />
-                        <h3>{item.name.substring(0, 16) + "..."}</h3>
-                        <span>{moment().format("MMM DD,YYYY, h:mm:ss A")}</span>
-                      </Card>
-                    ) : (
-                      ""
-                    )}
-                  </div>
-                )}
-              </div>
-            );
-          })}
+                      ) : afterUpload && !toggleFileView ? (
+                        <Card className={styles.files}>
+                          <div className={styles.dropdown_menu}>
+                            <Dropdown
+                              overlay={menu_files(i)}
+                              trigger={["click"]}
+                            >
+                              <a
+                                className="ant-dropdown-link"
+                                onClick={(e) => e.preventDefault()}
+                              >
+                                <MoreOutlined className="Menu_Iconss" />
+                              </a>
+                            </Dropdown>
+                          </div>
+                          <div className={styles.imageFiles}>
+                            <img
+                              alt="image"
+                              src={item.thumbUrl}
+                              height={"150px"}
+                              width={"140px"}
+                            />
+                          </div>
+                          <h3>{item.name.substring(0, 16) + "..."}</h3>
+                          <span>
+                            {moment().format("MMM DD,YYYY, h:mm:ss A")}
+                          </span>
+                        </Card>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
           {show_UploadOptions ? (
             <div className={styles.Upload_Cancel_Btn}>
-              <Button className={styles.Upload_Btn} onClick={uploadFun}>
+              <Button
+                className={styles.Upload_Btn}
+                onClick={() => {
+                  uploadFun(), setToggleFileView(false);
+                }}
+              >
                 Upload
               </Button>
-              <Button onClick={() => handleCancel()}>cancel</Button>
+              <Button className={styles.cancel_Btn} onClick={handleCancel}>
+                cancel
+              </Button>
             </div>
           ) : (
             ""
