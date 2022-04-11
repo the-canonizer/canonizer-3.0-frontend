@@ -60,6 +60,13 @@ export const logout = async (error = "") => {
   const { auth } = state;
 
   try {
+    if (error) {
+      !isServer && window.localStorage.removeItem("token");
+      store.dispatch(logoutUser());
+      store.dispatch(removeAuthToken());
+      return true;
+    }
+
     let res = await NetworkCall.fetch(
       UserRequest.logoutCall(auth.token, error)
     );
@@ -68,6 +75,9 @@ export const logout = async (error = "") => {
     store.dispatch(removeAuthToken());
     return res;
   } catch (error) {
+    !isServer && window.localStorage.removeItem("token");
+    store.dispatch(logoutUser());
+    store.dispatch(removeAuthToken());
     handleError(error);
   }
 };
