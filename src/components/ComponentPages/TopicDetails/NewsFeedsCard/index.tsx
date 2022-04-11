@@ -1,5 +1,6 @@
 import { Card, Typography } from "antd";
 import Link from "next/link";
+import { DeleteOutlined } from '@ant-design/icons';
 
 const { Paragraph } = Typography;
 
@@ -47,7 +48,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
                 <li key={news.id}>
                   <Paragraph>
                     <Link href={news?.link} passHref>
-                      <a>{news?.display_text}</a>
+                      <><a>{news?.display_text}</a>  <DeleteOutlined /></>
                     </Link>
                   </Paragraph>
                 </li>
