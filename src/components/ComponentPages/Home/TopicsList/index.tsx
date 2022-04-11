@@ -209,7 +209,7 @@ const TopicsList = () => {
                   {nameSpacesList?.map((item) => {
                     return (
                       <Select.Option key={item.id} value={item.id}>
-                        {item.name}
+                        {item.label}
                       </Select.Option>
                     );
                   })}
@@ -239,15 +239,26 @@ const TopicsList = () => {
               <List.Item className={styles.item}>
                 <>
                   <Link
-                    href={{
-                      pathname: `/camp-details/${item?.topic_id}`,
-                      query: {
-                        ...router.query,
-                        algorithm,
-                        asof,
-                        asofdate: Math.floor(asofdate),
-                      },
-                    }}
+                    href={
+                      asof !== "default"
+                        ? {
+                            pathname: `/camp-details/${item?.topic_id}`,
+                            query: {
+                              ...router.query,
+                              algorithm,
+                              asof,
+                              asofdate: Math.floor(asofdate),
+                            },
+                          }
+                        : {
+                            pathname: `/camp-details/${item?.topic_id}`,
+                            query: {
+                              ...router.query,
+                              algorithm,
+                              asof,
+                            },
+                          }
+                    }
                   >
                     <a
                       onClick={() => {
