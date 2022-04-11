@@ -1,4 +1,4 @@
-import FormDataupdate from "../../../addnewsformdata/formupdate";
+import NewsEdit from "../../../ComponentPages/NewsEdit";
 import { cleanup, render, screen } from "@testing-library/react";
 
 window.matchMedia =

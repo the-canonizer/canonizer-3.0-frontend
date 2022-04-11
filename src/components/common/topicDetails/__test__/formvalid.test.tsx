@@ -1,4 +1,4 @@
-import FormData from "../../../addnewsformdata/formadd";
+import NewsAdd from "../../../ComponentPages/NewsAdd";
 import { cleanup, render, screen } from "@testing-library/react";
 
 window.matchMedia =
@@ -14,7 +14,7 @@ window.matchMedia =
 afterEach(cleanup);
 describe("Should render Addnews", () => {
   it("Render without crash", () => {
-    const { container } = render(<FormData />);
+    const { container } = render(<NewsAdd />);
 
     const submitButton = screen.getByRole("button", {
       name: /Create News/i,

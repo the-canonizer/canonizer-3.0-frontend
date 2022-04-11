@@ -1,8 +1,8 @@
-import FormData from "../../../components/addnewsformdata/formadd";
+import NewsAdd from "../../../components/ComponentPages/NewsAdd";
 
 import SideBar from "../../../components/ComponentPages/Home/SideBar";
 import Layout from "../../../hoc/layout";
-export default function Home() {
+export default function AddNewsPage() {
   return (
     <>
       <Layout routeName={"add-news"}>
@@ -10,7 +10,7 @@ export default function Home() {
           <SideBar />
         </aside>
         <div className="pageContentWrap">
-          <FormData />
+          <NewsAdd />
         </div>
       </Layout>
     </>

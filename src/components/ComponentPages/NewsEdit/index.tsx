@@ -2,11 +2,11 @@ import { Form, Input, Button, Checkbox, Divider, Card, Badge } from "antd";
 import { useRouter } from "next/router";
 import { Row, Col } from "antd";
 import React, { useState } from "react";
-import { updateNewsFeedApi } from "../../network/api/addupdateNewsApi";
+import { getUpdateNewsFeedApi } from "../../../network/api/addEditNewsApi";
 import styles from "./addEditNews.module.scss";
 import { Spin } from "antd";
 
-export default function FormDataupdate({ update, topic_num, camp_num }) {
+export default function NewsEdit({ update, topic_num, camp_num }) {
   const [urlErrorMsg, setUrlErrorMsg] = useState("");
   const [urlError2, setUrlError2] = useState(update.map(() => false));
   const [loading, setLoading] = useState(false);
@@ -30,7 +30,7 @@ export default function FormDataupdate({ update, topic_num, camp_num }) {
         (available) => available.available_for_child
       ),
     };
-    const a = await updateNewsFeedApi(dataobj);
+    const a = await getUpdateNewsFeedApi(dataobj);
 
     if (a.status_code == 200) {
       router.back();

@@ -1,7 +1,7 @@
 import K from "../../constants";
 import Request from ".";
 
-export default class addNewsRequest extends Request {
+export default class addEditNewsRequest extends Request {
   constructor(params) {
     super(params);
   }
@@ -24,18 +24,7 @@ export default class addNewsRequest extends Request {
     );
   }
 
-  static getcampNewsFeedData() {
-    return new Request(
-      K.Network.URL.GetCampNewsFeeds,
-      K.Network.Method.POST,
-      {
-        topic_num: 45,
-        camp_num: 1,
-      },
-      K.Network.Header.Type.Json,
-      {}
-    );
-  }
+ 
 
   static geteditNewsFeedData(body) {
     console.log("body in req ", body.topic_num, body.camp_num);
@@ -51,7 +40,7 @@ export default class addNewsRequest extends Request {
     );
   }
 
-  static getupdateNewsFeedData(body) {
+  static getUpdateNewsFeedData(body) {
     return new Request(
       K.Network.URL.GetUpdateNewsFeeds,
       K.Network.Method.POST,

@@ -2,12 +2,12 @@ import { Form, Input, Button, Checkbox } from "antd";
 import "antd/dist/antd.css";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { addNewsRequestApi } from "../../network/api/addupdateNewsApi";
+import { getAddNewsRequestApi } from "../../../network/api/addEditNewsApi";
 import { Row, Col, Card, Badge } from "antd";
 import styles from "./addEditNews.module.scss";
 import { Spin } from "antd";
 
-export default function FormData() {
+export default function NewsAdd() {
   const [loading, setLoading] = useState(false);
   const [urlErrorMsg, setUrlErrorMsg] = useState("");
   const [urlError, setUrlError] = useState(false);
@@ -21,7 +21,7 @@ export default function FormData() {
   const onFinish = async (values: any) => {
     setLoading(true);
     const { topic_num, camp_num } = router.query;
-    const a = await addNewsRequestApi({
+    const a = await getAddNewsRequestApi({
       topic_num: topic_num,
       camp_num: camp_num,
       available_for_child: values.available_for_child,
