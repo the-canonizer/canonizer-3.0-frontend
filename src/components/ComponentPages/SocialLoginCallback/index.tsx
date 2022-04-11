@@ -60,7 +60,6 @@ function SocialLoginCallback() {
       if (queryParams.provider && params.code) {
         sendData(body);
       } else {
-        console.log(queryParams, params);
         if (!redirectTab) {
           router.push("/");
         } else {
