@@ -1,7 +1,7 @@
 import NewsEdit from "../../../components/ComponentPages/NewsEdit";
 import Layout from "../../../hoc/layout";
 import SideBar from "../../../components/ComponentPages/Home/SideBar";
-import { getEditNewsFeedApi } from "../../../network/api/addEditNewsApi";
+import { getCampNewsFeedApi } from "../../../network/api/addEditNewsApi";
 import React, { useState } from "react";
 
 export default function EditNewsPage({ res, topic_num, camp_num }) {
@@ -54,7 +54,7 @@ export async function getServerSideProps(context) {
 
   if (query.topic_num !== undefined && query.camp_num !== undefined) {
     const reqBody = { topic_num: query.topic_num, camp_num: query.camp_num };
-    const res = await getEditNewsFeedApi(reqBody);
+    const res = await getCampNewsFeedApi(reqBody);
     return {
       props: {
         res,

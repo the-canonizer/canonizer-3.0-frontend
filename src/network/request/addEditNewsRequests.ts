@@ -26,10 +26,10 @@ export default class addEditNewsRequest extends Request {
 
  
 
-  static getEditNewsFeedData(body) {
+  static getCampNewsFeedData(body) {
     console.log("body in req ", body.topic_num, body.camp_num);
     return new Request(
-      K.Network.URL.GetEditNewsFeeds,
+      K.Network.URL.GetCampNewsFeeds,
       K.Network.Method.POST,
       {
         topic_num: body.topic_num,
@@ -50,6 +50,18 @@ export default class addEditNewsRequest extends Request {
         display_text: body.display_text,
         link: body.link,
         available_for_child: body.available_for_child,
+      },
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
+
+  static getDeleteNewsFeedData(body) {
+    return new Request(
+      K.Network.URL.GetDeleteNewsFeeds,
+      K.Network.Method.POST,
+      {
+        newsfeed_id : body
       },
       K.Network.Header.Type.Json,
       {}
