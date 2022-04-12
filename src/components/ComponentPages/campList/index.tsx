@@ -19,7 +19,7 @@ export default function CampList() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (router.pathname.includes("camp-details")) {
+    if (router.pathname.includes("/topic/")) {
       setIsCampBtnVisible(true);
     }
   }, [router.pathname]);

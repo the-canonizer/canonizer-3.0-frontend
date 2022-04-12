@@ -56,7 +56,11 @@ const CreateNewTopic = ({
         topic_name: res.data.topic_name,
       };
       dispatch(setCurrentTopic(data));
-      router.push(`/camp-details/${res.data.topic_num}`);
+      router.push(
+        `/topic/${res.data.topic_num}-${res.data.topic_name
+          ?.split(" ")
+          .join("-")}/1-Agreement`
+      );
     }
 
     if (res && res.status_code === 400 && res.error.topic_name) {
