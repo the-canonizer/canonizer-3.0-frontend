@@ -112,6 +112,31 @@ const TopicDetails = () => {
     setCurrentTopics(data);
   };
 
+  const onCampForumClick = () => {
+    // const queryParams = router.query;
+
+    // const data = {
+    //   message: null,
+    //   topic_num: queryParams.camp[0],
+    //   topic_name: topicRecord[0]?.topic_name,
+    //   camp_name: topicRecord[0]?.camp_name,
+    //   parent_camp_num: topicRecord[0]?.camp_num,
+    // };
+    // setCurrentTopics(data);
+    const topicName = topicRecord[0]?.topic_name.replaceAll(" ", "-");
+    const campName = campRecord[0]?.parentCamps[0]?.camp_name.replaceAll(
+      " ",
+      "-"
+    );
+    console.log(
+      "forum-url",
+      `/forum/${topicRecord[0]?.topic_num}-${topicName}/${campRecord[0]?.camp_num}-${campName}/threads`
+    );
+    router.push(
+      `/forum/${topicRecord[0]?.topic_num}-${topicName}/${campRecord[0]?.camp_num}-${campName}/threads`
+    );
+  };
+
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
@@ -158,7 +183,10 @@ const TopicDetails = () => {
             <NewsFeedsCard newsFeed={newsFeed} />
           </Spin>
           <Spin spinning={loadingIndicator} size="large">
-            <CampStatementCard myRefToCampStatement={myRefToCampStatement} />
+            <CampStatementCard
+              myRefToCampStatement={myRefToCampStatement}
+              onCampForumClick={onCampForumClick}
+            />
           </Spin>
           <Spin spinning={loadingIndicator} size="large">
             <CurrentTopicCard />

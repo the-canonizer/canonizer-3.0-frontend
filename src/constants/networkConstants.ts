@@ -77,8 +77,8 @@ const NetworkConstants = {
     GetFooterSocialLinks: `${BaseCanonizerApiUrl}/get-social-media-links`,
 
     // Camp Forum
-    ForumList: `${BaseCanonizerApiUrl}/thread/list`,
-    ForumCreate: `${BaseCanonizerApiUrl}/thread/save`,
+    ThreadsList: `${BaseCanonizerApiUrl}/thread/list`,
+    ThreadCreate: `${BaseCanonizerApiUrl}/thread/save`,
   },
   Method: {
     GET: "GET",

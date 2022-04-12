@@ -13,7 +13,7 @@ export default class TreeRequest extends Request {
     const { auth } = state;
 
     return new Request(
-      K.Network.URL.ForumCreate,
+      K.Network.URL.ThreadCreate,
       K.Network.Method.POST,
       body,
       K.Network.Header.Type.Json,

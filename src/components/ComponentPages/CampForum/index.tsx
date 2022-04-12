@@ -1,6 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { Form } from "antd";
+import { Form, message } from "antd";
 import { useSelector } from "react-redux";
 
 import { RootState } from "../../../store";
@@ -11,6 +11,11 @@ import ForumUICreate from "./Create";
 import ForumUIPost from "./Post";
 
 import { createThread } from "../../../network/api/campForumApi";
+import {
+  getAllUsedNickNames,
+  getCurrentCampRecordApi,
+  getCurrentTopicRecordApi,
+} from "../../../network/api/campDetailApi";
 
 const data = [
   {
@@ -75,6 +80,27 @@ const ForumComponent = ({
 
   const isLog = isUserAuthenticated();
 
+  const { topicRecord, campRecord } = useSelector((state: RootState) => ({
+    topicRecord: state?.topicDetails?.currentTopicRecord,
+    campRecord: state?.topicDetails?.currentCampRecord,
+  }));
+
+  const getSelectedNode = async (nodeKey) => {
+    const queries = router.query;
+    const campArr = (queries.camp as string).split("-");
+    const camp_num = campArr.shift();
+
+    const reqBody = {
+      topic_num: +camp_num,
+      camp_num: nodeKey,
+    };
+
+    await Promise.all([
+      getCurrentTopicRecordApi(reqBody),
+      getCurrentCampRecordApi(reqBody),
+    ]);
+  };
+
   useEffect(() => {
     if (isLog) {
       setIsLoggedIn(isLog);
@@ -83,10 +109,42 @@ const ForumComponent = ({
 
   useEffect(() => {
     if (router && router.query) {
-      setParamsList(router.query);
-      console.log(router.query, "router.query");
+      const queries = router.query;
+      const campArr = (queries.camp as string).split("-");
+      const camp_num = campArr.shift();
+      getSelectedNode(camp_num);
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router, router?.query]);
+
+  useEffect(() => {
+    const queries = router.query;
+    let p_camps = "";
+
+    const topicArr = (queries.topic as string).split("-");
+    const campArr = (queries.camp as string).split("-");
+    const topic_num = topicArr.shift();
+    const camp_num = campArr.shift();
+    const topic = topicArr.join(" ");
+    const camp = campArr.join(" ");
+    if (campRecord && campRecord.length) {
+      campRecord[0].parentCamps?.map((camp, index) => {
+        console.log("p_camps", p_camps, index, camp);
+        p_camps += index !== 0 ? " / " : "";
+        p_camps += `${camp?.camp_name}`;
+      });
+    }
+
+    const paramsLists = {
+      topic,
+      camp: p_camps,
+      camp_num,
+      topic_num,
+    };
+
+    setParamsList(paramsLists);
+  }, [campRecord, router.query]);
 
   // start thread List section
 
@@ -137,15 +195,48 @@ const ForumComponent = ({
   // create thread start
 
   const [form] = Form.useForm();
-  const onCancelCreateThread = () => {
-    console.log("onCancelCreateThread");
-    const queries = router.query;
-    router.push(`/forum/${queries.topic}/${queries.camp}/threads`);
-    // setIsScreen(0);
+
+  const fetchNickNameList = async () => {
+    const body = {
+      topic_num: paramsList["topic_num"],
+    };
+    let response = await getAllUsedNickNames(body);
+    if (response && response.status_code === 200) {
+      setNickNameList(response.data);
+      setInitialValues({ nick_name: response.data[0]?.id });
+    }
   };
 
-  const onFinish = (values) => {
+  useEffect(() => {
+    if (paramsList["topic_num"]) {
+      fetchNickNameList();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paramsList]);
+
+  const onCancelCreateThread = () => {
+    const queries = router.query;
+    router.push(`/forum/${queries.topic}/${queries.camp}/threads`);
+  };
+
+  const onFinish = async (values) => {
     console.log(values);
+
+    const body = {
+      title: values.thread_title,
+      nick_name: values.nick_name,
+      camp_num: paramsList["camp_num"],
+      topic_num: paramsList["topic_num"],
+      topic_name: paramsList["topic"],
+    };
+
+    const res = await createThread(body);
+
+    if (res && res.status_code === 200) {
+      message.success(res.message);
+      form.resetFields();
+      onCancelCreateThread();
+    }
   };
 
   // create thread start
