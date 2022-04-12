@@ -50,14 +50,21 @@ function SocialLoginCallback() {
     try {
       const queryParams = router.query;
       const params = getSearchedParams();
+      const redirectTab = localStorage.getItem("redirectTab");
 
       let body = {
         code: params.code,
         provider: queryParams.provider,
       };
 
-      if (queryParams.provider) {
+      if (queryParams.provider && params.code) {
         sendData(body);
+      } else {
+        if (!redirectTab) {
+          router.push("/");
+        } else {
+          router.push("/settings?tab=social");
+        }
       }
     } catch (error) {
       console.error(error);
