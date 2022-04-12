@@ -1,10 +1,10 @@
 .card {
-  padding: 20px 20px 10px;
-  border: solid 1px #f0f0f0;
-  background-color: #fff;
-  margin-bottom: 16px;
+  padding: 0 8px;
   .btnsWrap {
-    margin-bottom: 16px;
+    padding: 15px 13px 15px;
+    border: solid 1px #d9d9d9;
+    background-color: #fff;
+    margin-bottom: 24px;
     .btn {
       display: flex;
       align-items: center;
@@ -28,12 +28,14 @@
 }
 
 .uploadFilesData {
-  width: calc(100% - 245px);
+  width: calc(100% - 260px);
+  margin: 0 8px !important;
+  border: 1px solid #f0f0f0;
 
   @media screen and (max-width: 767px) {
     margin-left: 0 !important;
-    width: 100%;
     margin-right: 0 !important;
+    width: 100%;
   }
 
   h3 {
@@ -187,12 +189,14 @@
   border-color: rgb(20, 159, 223);
   margin-right: 5px;
   margin-left: 5px;
+  padding: 0 8px;
 }
 
 .top_btn .add_file_btn {
   color: rgb(20, 159, 223);
   border-color: rgb(20, 159, 223);
   margin-right: 10px;
+  padding: 0 5px;
 }
 
 /* .ant-upload-list-picture .ant-upload-span{
@@ -357,7 +361,7 @@
     padding: 0 !important;
   }
   .dropdown {
-    bottom: 0px !important;
+    bottom: -15px !important;
   }
 }
 .fileList {
@@ -386,8 +390,8 @@
     width: 100%;
     display: inline-block;
     background-color: #f3f3f3;
-    max-height: 140px;
-    min-height: 140px;
+    max-height: 125px;
+    min-height: 125px;
     overflow: hidden;
     img {
       object-fit: cover;
@@ -516,9 +520,37 @@
     font-size: 20px !important;
   }
 }
+.folder_icons_fileTxt {
+  svg {
+    font-size: 20px !important;
+    color: blue;
+  }
+}
+.folder_icons_pdf {
+  svg {
+    font-size: 20px !important;
+    color: red;
+  }
+}
+.FileTextTwoOneClass {
+  svg {
+    height: 100px;
+    width: 100px;
+    margin-block: 15px;
+  }
+}
+.FilePdfTwoToneColor {
+  svg {
+    height: 100px;
+    width: 100px;
+    margin-block: 15px;
+    color: red;
+  }
+}
+
 .dropdown_menu {
   position: relative;
-  top: -10px;
+  top: -15px;
   margin-right: -20px;
   right: 10px;
   cursor: pointer;

@@ -872,6 +872,11 @@ form {
 .hideUpload {
   display: none;
 }
+.foldername {
+  font-size: 13px;
+  text-align: center;
+  margin-bottom: 10px;
+}
 
 #profileInfo {
   .ant-select-status-error {
@@ -920,6 +925,7 @@ form {
   flex: inherit;
 }
 .ant-card-extra {
+  padding: 0;
   @media screen and (max-width: 1100px) {
     margin-left: inherit;
     float: left;

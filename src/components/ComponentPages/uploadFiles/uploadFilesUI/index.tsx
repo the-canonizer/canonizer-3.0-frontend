@@ -21,6 +21,9 @@ import {
   AppstoreOutlined,
   CloseCircleOutlined,
   FolderFilled,
+  FileTextFilled,
+  FilePdfFilled,
+  FileUnknownFilled,
   MoreOutlined,
   FolderOpenOutlined,
   ArrowLeftOutlined,
@@ -151,8 +154,14 @@ const UploadFileUI = ({
             <div className={styles.icon_Width}>
               {obj.thumbUrl ? (
                 <img src={obj.thumbUrl} />
-              ) : (
+              ) : obj.type == "folder" ? (
                 <FolderFilled className={styles.folder_icons} />
+              ) : obj.type == "text/plain" ? (
+                <FileTextFilled className={styles.folder_icons_fileTxt} />
+              ) : obj.type == "application/pdf" ? (
+                <FilePdfFilled className={styles.folder_icons_pdf} />
+              ) : (
+                <FileUnknownFilled className={styles.folder_icons} />
               )}
             </div>
             <div className={styles.icon_height}>
@@ -268,7 +277,9 @@ const UploadFileUI = ({
                   disabled={disabledCreateFolder}
                   className={styles.create_folder_btn}
                   onClick={() => {
-                    showCreateFolderModal(), setToggleFileView(false);
+                    showCreateFolderModal(),
+                      setToggleFileView(false),
+                      createFolderForm.resetFields();
                   }}
                 >
                   Create a folder
@@ -367,12 +378,26 @@ const UploadFileUI = ({
                         }
                       />
                       <div className="imgWrap">
-                        <img
-                          alt="Image"
-                          src={file.thumbUrl}
-                          height={"150px"}
-                          width={"140px"}
-                        />
+                        {file.thumbUrl ? (
+                          <img
+                            alt="Image"
+                            src={file.thumbUrl}
+                            height={"150px"}
+                            width={"140px"}
+                          />
+                        ) : file.type == "text/plain" ? (
+                          <FileTextFilled
+                            className={styles.FileTextTwoOneClass}
+                          />
+                        ) : file.type == "application/pdf" ? (
+                          <FilePdfFilled
+                            className={styles.FilePdfTwoToneColor}
+                          />
+                        ) : (
+                          <FileUnknownFilled
+                            className={styles.FileTextTwoOneClass}
+                          />
+                        )}
                       </div>
                       <br />
                       <label className={"fileName_label"}>{file.name}</label>
@@ -420,15 +445,6 @@ const UploadFileUI = ({
               item.id = "folderId" + i;
               return (
                 <div className={styles.view_After_Upload} key={i}>
-                  {console.log(
-                    openFolder,
-                    "openFolder",
-                    item,
-                    "item",
-                    item.type == "folder",
-                    "folder",
-                    item.id == selectedFolderID
-                  )}
                   {item.type &&
                   item.type == "folder" &&
                   item.id == selectedFolderID &&
@@ -506,12 +522,26 @@ const UploadFileUI = ({
                             </Dropdown>
                           </div>
                           <div className={styles.imageFiles}>
-                            <img
-                              alt="image"
-                              src={item.thumbUrl}
-                              height={"150px"}
-                              width={"140px"}
-                            />
+                            {item.thumbUrl ? (
+                              <img
+                                alt="Image"
+                                src={item.thumbUrl}
+                                height={"150px"}
+                                width={"140px"}
+                              />
+                            ) : item.type == "text/plain" ? (
+                              <FileTextFilled
+                                className={styles.FileTextTwoOneClass}
+                              />
+                            ) : item.type == "application/pdf" ? (
+                              <FilePdfFilled
+                                className={styles.FilePdfTwoToneColor}
+                              />
+                            ) : (
+                              <FileUnknownFilled
+                                className={styles.FileTextTwoOneClass}
+                              />
+                            )}
                           </div>
                           <h3>{item.name.substring(0, 16) + "..."}</h3>
                           <span>
