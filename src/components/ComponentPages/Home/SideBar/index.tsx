@@ -7,7 +7,7 @@ export default function HomeSideBar({ onCreateCamp = () => {} }) {
   return (
     <>
       <TopicsFilter onCreateCamp={onCreateCamp} />
-      {router.asPath.includes("camp-details") && <CampRecentActivities />}
+      {router.asPath.includes("topic") && <CampRecentActivities />}
     </>
   );
 }

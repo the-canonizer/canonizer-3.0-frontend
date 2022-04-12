@@ -5,6 +5,7 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { getDeleteNewsFeedApi } from "src/network/api/addEditNewsApi";
 import { getNewsFeedApi } from "src/network/api/campDetailApi";
 import { Spin } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
 
 const { Paragraph } = Typography;
 
@@ -59,7 +60,6 @@ const NewsFeedsCard = ({ newsFeed, reqBody, isLogin }) => {
         <ul className="newsFeedsList">
           {newsFeed?.length
             ? newsFeed?.map((news) => {
-                console.log("news data --> ", news);
                 return (
                   <li key={news.id}>
                     <Paragraph>
@@ -68,7 +68,7 @@ const NewsFeedsCard = ({ newsFeed, reqBody, isLogin }) => {
                       </Link>
 
                       {deleteNews && (
-                        <RiDeleteBinLine
+                        <DeleteOutlined
                           style={{ marginLeft: "5px" }}
                           onClick={() => handleDeleteCamp(news.id)}
                         />
@@ -84,3 +84,23 @@ const NewsFeedsCard = ({ newsFeed, reqBody, isLogin }) => {
   );
 };
 export default NewsFeedsCard;
+
+// ) : null
+// }
+// >
+// <ul className="newsFeedsList">
+//   {newsFeed?.length
+//     ? newsFeed?.map((news) => {
+//         return (
+//           <li key={news.id}>
+//             <Paragraph>
+//               <Link href={news?.link} passHref>
+//                 <><a>{news?.display_text}</a>  <DeleteOutlined /></>
+//               </Link>
+//             </Paragraph>
+//           </li>
+//         );
+//       })
+//     : "No News Found"}
+// </ul>
+// </Card>
