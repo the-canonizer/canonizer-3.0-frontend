@@ -17,12 +17,12 @@ const PermissionsForPages: PermissionsObj = {
   CreateNewTopicPage: {
     isAuthenticationRequired: true,
     isPermissionRequired: false,
-    permissionName: "create-new-topic",
+    permissionName: "create-topic",
   },
   CreateNewCampPage: {
     isAuthenticationRequired: true,
     isPermissionRequired: false,
-    permissionName: "create-new-camp",
+    permissionName: "create-camp",
   },
   Settings: {
     isAuthenticationRequired: true,
