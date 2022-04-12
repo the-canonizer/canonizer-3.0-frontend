@@ -80,19 +80,30 @@ const ForumComponent = ({
 
   const isLog = isUserAuthenticated();
 
-  const { topicRecord, campRecord } = useSelector((state: RootState) => ({
-    topicRecord: state?.topicDetails?.currentTopicRecord,
-    campRecord: state?.topicDetails?.currentCampRecord,
-  }));
+  const { topicRecord, campRecord, asof, asofdate, algorithm } = useSelector(
+    (state: RootState) => ({
+      topicRecord: state?.topicDetails?.currentTopicRecord,
+      campRecord: state?.topicDetails?.currentCampRecord,
+      asof: state?.filters?.filterObject?.asof,
+      asofdate: state.filters?.filterObject?.asofdate,
+      algorithm: state.filters?.filterObject?.algorithm,
+    })
+  );
 
   const getSelectedNode = async (nodeKey) => {
     const queries = router.query;
+    const topicArr = (queries.topic as string).split("-");
+    const topic_num = topicArr.shift();
     const campArr = (queries.camp as string).split("-");
     const camp_num = campArr.shift();
 
     const reqBody = {
-      topic_num: +camp_num,
-      camp_num: nodeKey,
+      topic_num: +topic_num,
+      camp_num: +nodeKey,
+      as_of: asof,
+      asofdate: asofdate || Date.now() / 1000,
+      algorithm: algorithm,
+      update_all: 1,
     };
 
     await Promise.all([

@@ -209,7 +209,9 @@
 }
 
 .upperTitle {
-  display: flex;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  grid-gap: 15px;
   p {
     text-align: left;
     font-weight: normal;
@@ -217,7 +219,7 @@
     line-height: 21px;
     letter-spacing: 0px;
     color: #0f2a4d;
-    margin-right: 35px;
+    margin-right: 0;
 
     &:last-child {
       strong {
