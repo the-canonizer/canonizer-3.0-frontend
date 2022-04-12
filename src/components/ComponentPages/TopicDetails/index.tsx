@@ -50,8 +50,8 @@ const TopicDetails = () => {
     }));
 
   const [requestBody, setRequestBody] = useState({
-    topic_num: topicRecord[0].topic_num,
-    camp_num: topicRecord[0].camp_num,
+    topic_num: topicRecord && topicRecord[0].topic_num,
+    camp_num: topicRecord && topicRecord[0].camp_num,
   });
 
   useEffect(() => {
@@ -66,7 +66,9 @@ const TopicDetails = () => {
         algorithm: algorithm,
         update_all: 1,
       };
+      let { camp_num, topic_num } = reqBody;
 
+      setRequestBody({ camp_num, topic_num });
       await getTreesApi(reqBody);
       await Promise.all([
         getNewsFeedApi(reqBody),

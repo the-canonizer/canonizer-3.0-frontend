@@ -1,7 +1,6 @@
 import { Card, Typography } from "antd";
 import Link from "next/link";
 import { useState } from "react";
-import { RiDeleteBinLine } from "react-icons/ri";
 import { getDeleteNewsFeedApi } from "src/network/api/addEditNewsApi";
 import { getNewsFeedApi } from "src/network/api/campDetailApi";
 import { Spin } from "antd";
@@ -84,23 +83,3 @@ const NewsFeedsCard = ({ newsFeed, reqBody, isLogin }) => {
   );
 };
 export default NewsFeedsCard;
-
-// ) : null
-// }
-// >
-// <ul className="newsFeedsList">
-//   {newsFeed?.length
-//     ? newsFeed?.map((news) => {
-//         return (
-//           <li key={news.id}>
-//             <Paragraph>
-//               <Link href={news?.link} passHref>
-//                 <><a>{news?.display_text}</a>  <DeleteOutlined /></>
-//               </Link>
-//             </Paragraph>
-//           </li>
-//         );
-//       })
-//     : "No News Found"}
-// </ul>
-// </Card>
