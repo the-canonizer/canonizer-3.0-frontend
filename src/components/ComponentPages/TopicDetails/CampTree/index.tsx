@@ -13,7 +13,6 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
   }));
   const [selectedNodeID, setSelectedNodeID] = useState(1);
   const [scoreFilter, setScoreFilter] = useState(filterByScore);
-
   const onSelect = (
     selectedKeys,
     e: { selected; selectedNodes; node; event }
