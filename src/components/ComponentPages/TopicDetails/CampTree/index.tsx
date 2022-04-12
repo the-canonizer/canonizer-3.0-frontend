@@ -16,7 +16,7 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
   const [selectedNodeID, setSelectedNodeID] = useState(1);
   const [scoreFilter, setScoreFilter] = useState(filterByScore);
   const router = useRouter();
-  debugger;
+
   const onSelect = (
     selectedKeys,
     e: { selected; selectedNodes; node; event }
@@ -69,7 +69,8 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
                 }
                 key={data[item].camp_id}
               >
-                {selectedNodeID === data[item].camp_id && (
+                {data[item].camp_id ===
+                  +router?.query?.camp?.at(1)?.split("-")?.at(0) && (
                   <TreeNode
                     key={"custom"}
                     title={
