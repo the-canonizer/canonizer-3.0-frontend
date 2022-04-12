@@ -64,6 +64,7 @@ export const logout = async (error = "") => {
       !isServer && window.localStorage.removeItem("token");
       store.dispatch(logoutUser());
       store.dispatch(removeAuthToken());
+      message.error("Your session has expired. Please log in again!");
       return true;
     }
 
