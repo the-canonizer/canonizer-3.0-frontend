@@ -239,26 +239,15 @@ const TopicsList = () => {
               <List.Item className={styles.item}>
                 <>
                   <Link
-                    href={
-                      asof !== "default"
-                        ? {
-                            pathname: `/camp-details/${item?.topic_id}`,
-                            query: {
-                              ...router.query,
-                              algorithm,
-                              asof,
-                              asofdate: Math.floor(asofdate),
-                            },
-                          }
-                        : {
-                            pathname: `/camp-details/${item?.topic_id}`,
-                            query: {
-                              ...router.query,
-                              algorithm,
-                              asof,
-                            },
-                          }
-                    }
+                    href={{
+                      pathname: `/topic/${item?.topic_id}-${
+                        isReview
+                          ? item?.tree_structure_1_review_title
+                              ?.split(" ")
+                              .join("-")
+                          : item?.topic_name?.split(" ").join("-")
+                      }/1-Agreement`,
+                    }}
                   >
                     <a
                       onClick={() => {

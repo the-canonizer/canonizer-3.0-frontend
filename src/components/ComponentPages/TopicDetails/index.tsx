@@ -19,9 +19,15 @@ import CurrentCampCard from "./CurrentCampCard";
 import CurrentTopicCard from "./CurrentTopicCard";
 import NewsFeedsCard from "./NewsFeedsCard";
 import SupportTreeCard from "./SupportTreeCard";
-import { BackTop } from "antd";
+import { BackTop, Dropdown, Menu, Button } from "antd";
 import { Spin } from "antd";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
+import {
+  MoreOutlined,
+  FileTextOutlined,
+  HeartOutlined,
+} from "@ant-design/icons";
+import Link from "next/link";
 
 const TopicDetails = () => {
   const didMount = useRef(false);
@@ -41,17 +47,27 @@ const TopicDetails = () => {
     }));
   useEffect(() => {
     async function getTreeApiCall() {
-      if (didMount.current) {
-        setGetTreeLoadingIndicator(true);
-        const reqBody = {
-          topic_num: +router.query.camp,
-          asofdate: asofdate || Date.now() / 1000,
-          algorithm: algorithm,
-          update_all: 1,
-        };
-        await getTreesApi(reqBody);
-        setGetTreeLoadingIndicator(false);
-      } else didMount.current = true;
+      setGetTreeLoadingIndicator(true);
+      setLoadingIndicator(true);
+      const reqBody = {
+        topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+        camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
+        as_of: asof,
+        asofdate: asofdate || Date.now() / 1000,
+        algorithm: algorithm,
+        update_all: 1,
+      };
+
+      await getTreesApi(reqBody);
+      await Promise.all([
+        getNewsFeedApi(reqBody),
+        getCanonizedCampStatementApi(reqBody),
+        getCurrentTopicRecordApi(reqBody),
+        getCurrentCampRecordApi(reqBody),
+        getCanonizedCampSupportingTreeApi(reqBody),
+      ]);
+      setGetTreeLoadingIndicator(false);
+      setLoadingIndicator(false);
     }
     getTreeApiCall();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -76,7 +92,7 @@ const TopicDetails = () => {
   const getSelectedNode = async (nodeKey) => {
     setLoadingIndicator(true);
     const reqBody = {
-      topic_num: +router.query.camp,
+      topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
       camp_num: nodeKey,
       as_of: asof,
       as_of_date: asofdate,
@@ -128,43 +144,87 @@ const TopicDetails = () => {
       " ",
       "-"
     );
-    console.log(
-      "forum-url",
-      `/forum/${topicRecord[0]?.topic_num}-${topicName}/${campRecord[0]?.camp_num}-${campName}/threads`
-    );
+
     router.push(
       `/forum/${topicRecord[0]?.topic_num}-${topicName}/${campRecord[0]?.camp_num}-${campName}/threads`
     );
   };
+  const campForumDropdownMenu = (
+    <Menu className={styles.campForumDropdownMenu}>
+      <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
+        <a rel="noopener noreferrer" href="/add-news">
+          Add News
+        </a>
+      </Menu.Item>
+      <Menu.Item icon={<i className="icon-subscribe"></i>}>
+        Subscribe to Entire Topic
+      </Menu.Item>
+      <Menu.Item icon={<i className="icon-subscribe"></i>}>
+        Subscribe to the Camp
+      </Menu.Item>
+      <Menu.Item icon={<HeartOutlined />}>Directly Join and Support </Menu.Item>
+      <Menu.Item icon={<i className="icon-camp"></i>}>
+        Manage/Edit the Camp
+      </Menu.Item>
+      <Menu.Item icon={<i className="icon-topic"></i>}>
+        Manage/Edit the Topic
+      </Menu.Item>
+      <Menu.Item icon={<FileTextOutlined />}>
+        Manage/Edit Camp Statement{" "}
+      </Menu.Item>
+    </Menu>
+  );
 
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
-        <div className={styles.breadcrumbWrapper}>
-          <Typography.Paragraph className={"mb-0 " + styles.topicTitleStyle}>
-            {" "}
-            <span className="bold"> Topic: </span>
-            {topicRecord?.length && topicRecord[0]?.topic_name}
-          </Typography.Paragraph>
-          <div className={styles.breadcrumbLinks}>
-            {" "}
-            <span className="bold mr-1"> Camp : </span>
-            {campRecord?.length
-              ? campRecord[0].parentCamps?.map((camp, index) => {
-                  return (
-                    <a
-                      key={camp?.camp_num}
-                      onClick={() => {
-                        getSelectedNode(camp?.camp_num);
-                      }}
-                    >
-                      {" "}
-                      {index !== 0 && "/"}
-                      {`${camp?.camp_name}`}
-                    </a>
-                  );
-                })
-              : null}
+        <div className={styles.topicDetailContentHead}>
+          <div className={styles.topicDetailContentHead_Left}>
+            <Typography.Paragraph className={"mb-0 " + styles.topicTitleStyle}>
+              {" "}
+              <span className="bold"> Topic: </span>
+              {topicRecord?.length && topicRecord[0]?.topic_name}
+            </Typography.Paragraph>
+            <div className={styles.breadcrumbLinks}>
+              {" "}
+              <span className="bold mr-1"> Camp : </span>
+              {campRecord?.length
+                ? campRecord[0].parentCamps?.map((camp, index) => {
+                    return (
+                      <Link
+                        href={`${router.query.camp.at(0)}/${
+                          camp?.camp_num
+                        }-${camp?.camp_name?.split(" ").join("-")}`}
+                        key={camp?.camp_num}
+                      >
+                        <a>
+                          {index !== 0 && "/"}
+                          {`${camp?.camp_name}`}
+                        </a>
+                      </Link>
+                    );
+                  })
+                : null}
+            </div>
+          </div>
+
+          <div className={styles.topicDetailContentHead_Right}>
+            <Button type="primary" className={styles.btnCampForum}>
+              Camp Forum
+            </Button>
+            <Dropdown
+              className={styles.campForumDropdown}
+              placement="bottomRight"
+              overlay={campForumDropdownMenu}
+              trigger={["click"]}
+            >
+              <a
+                className={styles.iconMore}
+                onClick={(e) => e.preventDefault()}
+              >
+                <MoreOutlined />
+              </a>
+            </Dropdown>
           </div>
         </div>
 
@@ -173,19 +233,26 @@ const TopicDetails = () => {
         </aside>
 
         <div className="pageContentWrap">
+          <Spin spinning={loadingIndicator} size="large">
+            <NewsFeedsCard newsFeed={newsFeed} />
+          </Spin>
           <Spin spinning={getTreeLoadingIndicator} size="large">
             <CampTreeCard
               scrollToCampStatement={scrollToCampStatement}
               getSelectedNode={getSelectedNode}
             />
           </Spin>
-          <Spin spinning={loadingIndicator} size="large">
-            <NewsFeedsCard newsFeed={newsFeed} />
-          </Spin>
+
           <Spin spinning={loadingIndicator} size="large">
             <CampStatementCard
               myRefToCampStatement={myRefToCampStatement}
               onCampForumClick={onCampForumClick}
+            />
+          </Spin>
+
+          <Spin spinning={loadingIndicator} size="large">
+            <SupportTreeCard
+              handleLoadMoreSupporters={handleLoadMoreSupporters}
             />
           </Spin>
           <Spin spinning={loadingIndicator} size="large">
@@ -194,12 +261,6 @@ const TopicDetails = () => {
           <Spin spinning={loadingIndicator} size="large">
             <CurrentCampCard />
           </Spin>
-          <Spin spinning={loadingIndicator} size="large">
-            <SupportTreeCard
-              handleLoadMoreSupporters={handleLoadMoreSupporters}
-            />
-          </Spin>
-
           <BackTop />
         </div>
       </div>
