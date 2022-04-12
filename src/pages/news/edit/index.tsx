@@ -1,6 +1,6 @@
 import NewsEdit from "../../../components/ComponentPages/NewsEdit";
 import Layout from "../../../hoc/layout";
-import SideBar from "../../../components/ComponentPages/Home/SideBar";
+import SideBarNoFilter from "../../../components/ComponentPages/Home/SideBarNoFilter";
 import { getCampNewsFeedApi } from "../../../network/api/addEditNewsApi";
 import React, { useState } from "react";
 
@@ -12,7 +12,7 @@ export default function EditNewsPage({ res, topic_num, camp_num }) {
       {res.data !== "error" && (
         <Layout routeName={"edit-news"}>
           <aside className="leftSideBar miniSideBar">
-            <SideBar />
+            <SideBarNoFilter />
           </aside>
           <div className="pageContentWrap">
             <NewsEdit

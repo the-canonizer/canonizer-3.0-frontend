@@ -34,7 +34,7 @@ describe("Should render Addnews", () => {
       name: /submit/i,
     });
     const cancelButton = screen.getByRole("button", {
-      name: /Cancel/i,
+      name: /cancel/i,
     });
 
     //length of tags
@@ -65,5 +65,7 @@ describe("Should render Addnews", () => {
     expect(screen.getByText("0")).toBeInTheDocument();
 
     expect(screen.getByText("1")).toBeInTheDocument();
+    expect(submitButton.textContent).toBe("Submit");
+    expect(cancelButton.textContent).toBe("Cancel");
   });
 });
