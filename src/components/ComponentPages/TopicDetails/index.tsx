@@ -49,10 +49,7 @@ const TopicDetails = () => {
       campRecord: state?.topicDetails?.currentCampRecord,
     }));
 
-  const [requestBody, setRequestBody] = useState({
-    topic_num: topicRecord && topicRecord[0].topic_num,
-    camp_num: topicRecord && topicRecord[0].camp_num,
-  });
+  const [requestBody, setRequestBody] = useState(null);
 
   useEffect(() => {
     async function getTreeApiCall() {
@@ -168,7 +165,6 @@ const TopicDetails = () => {
       </Menu.Item>
     </Menu>
   );
-
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
