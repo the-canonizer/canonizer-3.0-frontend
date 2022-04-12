@@ -52,26 +52,16 @@ const postData = [
   },
 ];
 
-const ForumComponent = ({
-  testParamsList = {},
-  testIsScreen = 0,
-  testNickName = [],
-  testInitialValue = {},
-  testPostList = [...postData],
-  testIsLoggedIn = false,
-  testCardTitle = null,
-}) => {
-  const [paramsList, setParamsList] = useState(testParamsList);
-  const [isScreen, setIsScreen] = useState(testIsScreen);
+const ForumComponent = ({}) => {
+  const [paramsList, setParamsList] = useState({});
   const [threadList, setThreadList] = useState(data);
   const [page, setPage] = useState(1);
   const [totalRecords, setTotalRecords] = useState(30);
-  const [nickNameList, setNickNameList] = useState(testNickName);
-  const [initialValue, setInitialValues] = useState(testInitialValue);
-  const [postList, setPostList] = useState(testPostList);
-  const [isLoggedIn, setIsLoggedIn] = useState(testIsLoggedIn);
-  const [cardTitle, setCardTitle] = useState(testCardTitle);
-  const [isThreadUpdate, setIsThreadUpdate] = useState(false);
+  const [nickNameList, setNickNameList] = useState([]);
+  const [initialValue, setInitialValues] = useState({});
+  const [postList, setPostList] = useState(postData);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [cardTitle, setCardTitle] = useState(null);
   const [ppage, setPpage] = useState(1);
   const [pTotalRecords, setPtotalRecords] = useState(50);
   // const [queries, setQueries] = useState({});
@@ -91,7 +81,7 @@ const ForumComponent = ({
   );
 
   const getSelectedNode = async (nodeKey) => {
-    const queries = router.query;
+    const queries = router?.query;
     const topicArr = (queries.topic as string).split("-");
     const topic_num = topicArr.shift();
     const campArr = (queries.camp as string).split("-");
@@ -119,8 +109,8 @@ const ForumComponent = ({
   }, [isLog]);
 
   useEffect(() => {
-    if (router && router.query) {
-      const queries = router.query;
+    if (router && router?.query) {
+      const queries = router?.query;
       const campArr = (queries.camp as string).split("-");
       const camp_num = campArr.shift();
       getSelectedNode(camp_num);
@@ -130,15 +120,15 @@ const ForumComponent = ({
   }, [router, router?.query]);
 
   useEffect(() => {
-    const queries = router.query;
+    const queries = router?.query;
     let p_camps = "";
 
-    const topicArr = (queries.topic as string).split("-");
-    const campArr = (queries.camp as string).split("-");
-    const topic_num = topicArr.shift();
-    const camp_num = campArr.shift();
-    const topic = topicArr.join(" ");
-    const camp = campArr.join(" ");
+    const topicArr = (queries?.topic as string)?.split("-");
+    const campArr = (queries?.camp as string)?.split("-");
+    const topic_num = topicArr?.shift();
+    const camp_num = campArr?.shift();
+    const topic = topicArr?.join(" ");
+    const camp = campArr?.join(" ");
     if (campRecord && campRecord.length) {
       campRecord[0].parentCamps?.map((camp, index) => {
         console.log("p_camps", p_camps, index, camp);
@@ -155,7 +145,7 @@ const ForumComponent = ({
     };
 
     setParamsList(paramsLists);
-  }, [campRecord, router.query]);
+  }, [campRecord, router?.query]);
 
   // start thread List section
 
@@ -169,7 +159,7 @@ const ForumComponent = ({
   };
 
   const onCreateThread = () => {
-    const queries = router.query;
+    const queries = router?.query;
     router.push(`/forum/${queries.topic}/${queries.camp}/threads/create`);
   };
 
@@ -177,12 +167,11 @@ const ForumComponent = ({
     e.preventDefault();
     e.stopPropagation();
     console.log("thred", e);
-    setIsScreen(2);
   };
 
   const filterThread = (type) => {
-    console.log("type", type, router.query);
-    const queries = router.query;
+    console.log("type", type, router?.query);
+    const queries = router?.query;
 
     router.push(
       `/forum/${queries.topic}/${queries.camp}/threads?by=${type}`,
@@ -194,11 +183,9 @@ const ForumComponent = ({
   const onEditClick = (e, id) => {
     e.preventDefault();
     e.stopPropagation();
-    const queries = router.query;
+    const queries = router?.query;
     console.log("edit", e, queries, id);
     router.push(`/forum/${queries.topic}/${queries.camp}/threads/edit/${id}`);
-    // setIsScreen(1);
-    // setIsThreadUpdate(true);
   };
 
   // end thread list section
@@ -226,7 +213,7 @@ const ForumComponent = ({
   }, [paramsList]);
 
   const onCancelCreateThread = () => {
-    const queries = router.query;
+    const queries = router?.query;
     router.push(`/forum/${queries.topic}/${queries.camp}/threads`);
   };
 
@@ -262,7 +249,6 @@ const ForumComponent = ({
 
   const onCancel = () => {
     console.log("onCancel");
-    setIsScreen(0);
   };
 
   const pOnChange = (p, size) => {
@@ -275,7 +261,7 @@ const ForumComponent = ({
   return (
     <Fragment>
       <TopBar paramsList={paramsList} />
-      {router.pathname === "/forum/[topic]/[camp]/threads" ? (
+      {router?.pathname === "/forum/[topic]/[camp]/threads" ? (
         <ForumUIList
           onSearch={onSearch}
           onChange={onChange}
@@ -290,10 +276,9 @@ const ForumComponent = ({
           paramsList={paramsList}
         />
       ) : null}
-      {router.pathname === "/forum/[topic]/[camp]/threads/create" ||
-      router.pathname === "/forum/[topic]/[camp]/threads/edit/[tId]" ? (
+      {router?.pathname === "/forum/[topic]/[camp]/threads/create" ? (
         <ForumUICreate
-          isThreadUpdate={isThreadUpdate}
+          isThreadUpdate={false}
           nickNameList={nickNameList}
           onCancelCreateThread={onCancelCreateThread}
           onFinish={onFinish}
@@ -302,7 +287,18 @@ const ForumComponent = ({
           paramsList={paramsList}
         />
       ) : null}
-      {router.pathname === "/forum/[topic]/[camp]/threads/[id]" ? (
+      {router?.pathname === "/forum/[topic]/[camp]/threads/edit/[tId]" ? (
+        <ForumUICreate
+          isThreadUpdate={true}
+          nickNameList={nickNameList}
+          onCancelCreateThread={onCancelCreateThread}
+          onFinish={onFinish}
+          form={form}
+          initialValue={initialValue}
+          paramsList={paramsList}
+        />
+      ) : null}
+      {router?.pathname === "/forum/[topic]/[camp]/threads/[id]" ? (
         <ForumUIPost
           nickNameList={nickNameList}
           onCancel={onCancel}

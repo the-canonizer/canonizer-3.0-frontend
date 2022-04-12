@@ -1,7 +1,10 @@
 import { render, screen, waitFor } from "../../../../utils/testUtils";
 import userEvent from "@testing-library/user-event";
 
-import CreateNewCamp from "..";
+import TopBar from "../UI/TopBar";
+import ForumList from "../List";
+import ThreadForm from "../Create";
+import PostSection from "../Post";
 import messages from "../../../../messages";
 
 const { labels, placeholders } = messages;
@@ -71,23 +74,29 @@ const postList = [];
 describe("Camp forum page", () => {
   it("render heading and labels before login", () => {
     render(
-      <CreateNewCamp
-        testNickName={nickNamesList}
-        testInitialValue={initialValues}
-        testParamsList={params}
-        testIsScreen={0}
-        testPostList={postList}
-        testIsLoggedIn={false}
-      />
+      <>
+        <TopBar paramsList={params} />
+        <ForumList
+          onSearch={jest.fn()}
+          onChange={jest.fn()}
+          onCreateThread={jest.fn()}
+          threadList={data}
+          onThreadClick={jest.fn()}
+          onEditClick={jest.fn()}
+          current={1}
+          total={10}
+          filterThread={jest.fn()}
+          isLoggedIn={false}
+          paramsList={params}
+        />
+      </>
     );
 
     expect(screen.getByText("Camp Forum")).toBeInTheDocument();
     expect(screen.getByText("List of All Camp Threads")).toBeInTheDocument();
     expect(screen.getByText("All Threads")).toBeInTheDocument();
     expect(screen.getByText("Create Thread")).toBeInTheDocument();
-    // expect(screen.getByText("Thread Name")).toBeInTheDocument();
-    // expect(screen.getByText("Replies")).toBeInTheDocument();
-    // expect(screen.getByText("Most Recent Post Date")).toBeInTheDocument();
+    expect(screen.getByText("Thread Name")).toBeInTheDocument();
     expect(screen.getByText("Topic:")).toBeInTheDocument();
     expect(screen.getByText("topic-88")).toBeInTheDocument();
     expect(screen.getByText("Camp:")).toBeInTheDocument();
@@ -99,14 +108,22 @@ describe("Camp forum page", () => {
 
   it("render buttons after login", () => {
     render(
-      <CreateNewCamp
-        testNickName={nickNamesList}
-        testInitialValue={initialValues}
-        testParamsList={params}
-        testIsScreen={0}
-        testPostList={postList}
-        testIsLoggedIn={true}
-      />
+      <>
+        <TopBar paramsList={params} />
+        <ForumList
+          onSearch={jest.fn()}
+          onChange={jest.fn()}
+          onCreateThread={jest.fn()}
+          threadList={data}
+          onThreadClick={jest.fn()}
+          onEditClick={jest.fn()}
+          current={1}
+          total={10}
+          filterThread={jest.fn()}
+          isLoggedIn={true}
+          paramsList={params}
+        />
+      </>
     );
 
     expect(screen.getByText("Camp Forum")).toBeInTheDocument();
@@ -116,9 +133,7 @@ describe("Camp forum page", () => {
     expect(screen.getByText("My Participation")).toBeInTheDocument();
     expect(screen.getByText("Top 10")).toBeInTheDocument();
     expect(screen.getByText("Create Thread")).toBeInTheDocument();
-    // expect(screen.getByText("Thread Name")).toBeInTheDocument();
-    // expect(screen.getByText("Replies")).toBeInTheDocument();
-    // expect(screen.getByText("Most Recent Post Date")).toBeInTheDocument();
+    expect(screen.getByText("Thread Name")).toBeInTheDocument();
     expect(screen.getByText("Topic:")).toBeInTheDocument();
     expect(screen.getByText("topic-88")).toBeInTheDocument();
     expect(screen.getByText("Camp:")).toBeInTheDocument();
@@ -128,85 +143,118 @@ describe("Camp forum page", () => {
     ).toBeInTheDocument();
   });
 
-  it("render inputs field and submit button on create thread section", () => {
-    render(
-      <CreateNewCamp
-        testNickName={nickNamesList}
-        testInitialValue={initialValues}
-        testParamsList={params}
-        testIsScreen={1}
-        testPostList={postList}
-      />
-    );
+  // it("render inputs field and submit button on create thread section", () => {
+  //   const form = {};
+  //   render(
+  //     <>
+  //       <TopBar paramsList={params} />
+  //       <ThreadForm
+  //         isThreadUpdate={false}
+  //         nickNameList={nickNamesList}
+  //         onFinish={jest.fn()}
+  //         form={form}
+  //         initialValue={initialValues}
+  //         paramsList={params}
+  //         onCancelCreateThread={jest.fn()}
+  //       />
+  //     </>
+  //   );
 
-    expect(screen.getByText("Create a new thread")).toBeInTheDocument();
+  //   expect(screen.getByText("Create a new thread")).toBeInTheDocument();
 
-    const parentCamp = screen.getByLabelText(labels.threadTitle);
-    expect(parentCamp).toBeInTheDocument();
-    expect(parentCamp).toHaveAttribute("type", "text");
+  //   const parentCamp = screen.getByLabelText(labels.threadTitle);
+  //   expect(parentCamp).toBeInTheDocument();
+  //   expect(parentCamp).toHaveAttribute("type", "text");
 
-    const nickNameAbout = screen.getByLabelText(labels.cr_nick_name);
-    expect(nickNameAbout).toBeInTheDocument();
-    expect(nickNameAbout).toHaveAttribute("type", "search");
-    expect(screen.getByText(labels.cr_nick_name_sp)).toBeInTheDocument();
+  //   const nickNameAbout = screen.getByLabelText(labels.cr_nick_name);
+  //   expect(nickNameAbout).toBeInTheDocument();
+  //   expect(nickNameAbout).toHaveAttribute("type", "search");
+  //   expect(screen.getByText(labels.cr_nick_name_sp)).toBeInTheDocument();
 
-    expect(screen.getByText("Submit")).toBeInTheDocument();
-    expect(screen.getByText("Back")).toBeInTheDocument();
-  });
+  //   expect(screen.getByText("Submit")).toBeInTheDocument();
+  //   expect(screen.getByText("Back")).toBeInTheDocument();
+  // });
 
-  it("blank form should not be submitted on create thread section", async () => {
-    render(
-      <CreateNewCamp
-        testNickName={nickNamesList}
-        testInitialValue={initialValues}
-        testParamsList={params}
-        testIsScreen={1}
-        testPostList={postList}
-      />
-    );
-    const btnEl = screen.getByText("Submit");
+  // it("blank form should not be submitted on create thread section", async () => {
+  //   const form = {};
+  //   render(
+  //     <>
+  //       <TopBar paramsList={params} />
+  //       <ThreadForm
+  //         isThreadUpdate={false}
+  //         nickNameList={nickNamesList}
+  //         onFinish={jest.fn()}
+  //         form={form}
+  //         initialValue={initialValues}
+  //         paramsList={params}
+  //         onCancelCreateThread={jest.fn()}
+  //       />
+  //     </>
+  //   );
+  //   const btnEl = screen.getByText("Submit");
 
-    userEvent.click(btnEl);
+  //   userEvent.click(btnEl);
 
-    await waitFor(() => {
-      expect(screen.queryByRole("alert")).toBeInTheDocument();
-    });
-  });
+  //   await waitFor(() => {
+  //     expect(screen.queryByRole("alert")).toBeInTheDocument();
+  //   });
+  // });
 
-  it("post section render", async () => {
-    render(
-      <CreateNewCamp
-        testNickName={nickNamesList}
-        testInitialValue={initialValues}
-        testParamsList={params}
-        testIsScreen={2}
-        testPostList={postList}
-        testIsLoggedIn={true}
-        testCardTitle="Test Post"
-      />
-    );
+  // it("post section render", async () => {
+  //   const form = {};
+  //   render(
+  //     <>
+  //       <TopBar paramsList={params} />
+  //       <PostSection
+  //         nickNameList={nickNamesList}
+  //         onCancel={jest.fn()}
+  //         onFinishPost={jest.fn()}
+  //         formPost={form}
+  //         startedBy={"startedBy"}
+  //         postCount={0}
+  //         postList={postList}
+  //         threadStamps={"threadStamps"}
+  //         initialValue={initialValues}
+  //         cardTitle="Test Post"
+  //         pCurrent={1}
+  //         pTotal={10}
+  //         pOnChange={jest.fn()}
+  //         paramsList={params}
+  //       />
+  //     </>
+  //   );
 
-    expect(screen.getByText("Test Post")).toBeInTheDocument();
-    expect(
-      screen.getByText("Number of Post in this thread: 0")
-    ).toBeInTheDocument();
-    expect(screen.getByLabelText(labels.cr_nick_name)).toBeInTheDocument();
-    expect(screen.getByText(labels.cr_nick_name_sp)).toBeInTheDocument();
-    expect(screen.getByText("Submit")).toBeInTheDocument();
-    expect(screen.getByText("Back")).toBeInTheDocument();
-  });
+  //   expect(screen.getByText("Test Post")).toBeInTheDocument();
+  //   expect(
+  //     screen.getByText("Number of Post in this thread: 0")
+  //   ).toBeInTheDocument();
+  //   expect(screen.getByLabelText(labels.cr_nick_name)).toBeInTheDocument();
+  //   expect(screen.getByText(labels.cr_nick_name_sp)).toBeInTheDocument();
+  //   expect(screen.getByText("Submit")).toBeInTheDocument();
+  //   expect(screen.getByText("Back")).toBeInTheDocument();
+  // });
 
   // it("post section blank form error check", async () => {
   //   render(
-  //     <CreateNewCamp
-  //       testNickName={nickNamesList}
-  //       testInitialValue={initialValues}
-  //       testParamsList={params}
-  //       testIsScreen={2}
-  //       testPostList={postList}
-  //       testIsLoggedIn={true}
-  //       testCardTitle="Test Post"
-  //     />
+  //     <>
+  //       <TopBar paramsList={params} />
+  //       <PostSection
+  //         nickNameList={nickNamesList}
+  //         onCancel={jest.fn()}
+  //         onFinishPost={jest.fn()}
+  //         formPost={form}
+  //         startedBy={"startedBy"}
+  //         postCount={0}
+  //         postList={postList}
+  //         threadStamps={"threadStamps"}
+  //         initialValue={initialValues}
+  //         cardTitle="Test Post"
+  //         pCurrent={1}
+  //         pTotal={10}
+  //         pOnChange={jest.fn()}
+  //         paramsList={params}
+  //       />
+  //     </>
   //   );
 
   //   const btnEl = screen.getByText("Submit");
