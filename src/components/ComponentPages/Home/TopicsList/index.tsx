@@ -49,6 +49,7 @@ const TopicsList = () => {
     includeReview,
     onlyMyTopics,
     selectedNameSpace,
+    userEmail,
   } = useSelector((state: RootState) => ({
     canonizedTopics: state.homePage?.canonizedTopicsData,
     asofdate: state.filters?.filterObject?.asofdate,
@@ -59,6 +60,7 @@ const TopicsList = () => {
     includeReview: state?.filters?.filterObject?.includeReview,
     onlyMyTopics: state?.filters?.filterObject?.onlyMyTopics,
     selectedNameSpace: state?.filters?.filterObject?.nameSpace,
+    userEmail: state?.auth?.loggedInUser?.email,
   }));
 
   const [topicsData, setTopicsData] = useState(canonizedTopics);
@@ -69,6 +71,7 @@ const TopicsList = () => {
   const [loadMoreIndicator, setLoadMoreIndicator] = useState(false);
   const [getTopicsLoadingIndicator, setGetTopicsLoadingIndicator] =
     useState(false);
+  let onlyMyTopicsCheck = false;
 
   const selectNameSpace = (id, nameSpace) => {
     setNameSpaceId(id);
@@ -107,6 +110,7 @@ const TopicsList = () => {
     filterByScore,
     inputSearch,
     onlyMyTopics,
+    onlyMyTopicsCheck,
   ]);
 
   async function getTopicsApiCallWithReqBody(loadMore = false) {
@@ -120,7 +124,8 @@ const TopicsList = () => {
       search: inputSearch,
       filter: filterByScore,
       asof: asof,
-      only_my_topics: onlyMyTopics,
+
+      user_email: !!onlyMyTopicsCheck && userEmail,
     };
     await getCanonizedTopicsApi(reqBody, loadMore);
     setLoadMoreIndicator(false);
@@ -159,12 +164,9 @@ const TopicsList = () => {
     </div>
   );
 
-  const handleCheckbox = (e) => {
-    dispatch(
-      setFilterCanonizedTopics({
-        onlyMyTopics: e.target.checked,
-      })
-    );
+  const handleCheckbox = async (e) => {
+    onlyMyTopicsCheck = e.target.checked;
+    await getTopicsApiCallWithReqBody();
   };
 
   const handleTopicClick = () => {
@@ -189,7 +191,7 @@ const TopicsList = () => {
                     <i className="icon-info cursor-pointer"></i>
                   </Popover>
                 </Title>
-                {router.asPath === "/browse" && isLogin && (
+                {router.asPath === "/browse" && !isLogin && (
                   <Checkbox
                     className={styles.checkboxOnlyMyTopics}
                     onChange={handleCheckbox}
