@@ -1,4 +1,4 @@
-import NewsAdd from "../../../components/ComponentPages/NewsAdd";
+import Add from "../../../components/ComponentPages/News/Add";
 
 import SideBarNoFilter from "../../../components/ComponentPages/Home/SideBarNoFilter";
 
@@ -11,7 +11,7 @@ export default function AddNewsPage() {
           <SideBarNoFilter />
         </aside>
         <div className="pageContentWrap">
-          <NewsAdd />
+          <Add />
         </div>
       </Layout>
     </>

@@ -32,9 +32,12 @@ export const getUpdateNewsFeedApi = async (body) => {
     const editnewsdat = await NetworkCall.fetch(
       addEditNewsRequest.getUpdateNewsFeedData(body)
     );
+    
     return editnewsdat;
   } catch (error) {
-    message.error(error.message);
+    
+    // message.error(error.message);
+  
     return error.error.data;
   }
 };

@@ -139,7 +139,7 @@ const TopicsList = () => {
           }}
         >
           <Text>Load More</Text>
-          {!loadMoreIndicator && <i className="icon-angle-right"></i>}
+          {!loadMoreIndicator && <i className="icon-angle-right">wahjj</i>}
           {loadMoreIndicator && <Spin indicator={antIcon} />}
         </Button>
       )}

@@ -18,11 +18,22 @@
         padding-left: 5px;
       }
     }
+    .error {
+      border-color: #ff4d4f;
+    }
   }
   .formItemCheckbox {
     label {
       font-weight: 600;
       font-size: 16px;
+    }
+  }
+  .btnSubmit {
+    display: inline-flex;
+    align-items: center;
+    &>div {
+      height: 20px;
+      margin-left: .5rem;
     }
   }
 }

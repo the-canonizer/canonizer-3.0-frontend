@@ -1,4 +1,4 @@
-import NewsEdit from "../../../components/ComponentPages/NewsEdit";
+import Edit from "../../../components/ComponentPages/News/Edit";
 import Layout from "../../../hoc/layout";
 import SideBarNoFilter from "../../../components/ComponentPages/Home/SideBarNoFilter";
 import { getCampNewsFeedApi } from "../../../network/api/addEditNewsApi";
@@ -15,11 +15,7 @@ export default function EditNewsPage({ res, topic_num, camp_num }) {
             <SideBarNoFilter />
           </aside>
           <div className="pageContentWrap">
-            <NewsEdit
-              update={update}
-              topic_num={topic_num}
-              camp_num={camp_num}
-            />
+            <Edit update={update} topic_num={topic_num} camp_num={camp_num} />
           </div>
         </Layout>
       )}
