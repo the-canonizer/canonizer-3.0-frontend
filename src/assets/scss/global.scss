@@ -570,7 +570,7 @@ form {
         color: rgba(0, 0, 0, 0.85);
       }
       .anticon {
-        margin-left: .5rem;
+        margin-left: 0.5rem;
         color: red;
         cursor: pointer;
       }
@@ -716,9 +716,9 @@ form {
 
   .ant-upload-list-picture-container {
     display: flex;
-    width: 200px;
+    width: 195px;
     padding: 0 8px;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
     @media screen and (max-width: 1100px) {
       width: 50%;
     }
@@ -917,6 +917,13 @@ form {
   width: 100%;
   text-align: center;
   background-color: #f3f3f3;
+  min-height: 125px;
+  max-height: 125px;
+  overflow: hidden;
+
+  img {
+    object-fit: cover;
+  }
 }
 .ant-card-head-wrapper {
   flex-wrap: wrap;
@@ -929,5 +936,34 @@ form {
   @media screen and (max-width: 1100px) {
     margin-left: inherit;
     float: left;
+  }
+}
+.Back_from_browser {
+  background-color: red;
+}
+
+.threeDOt {
+  float: right;
+  font-size: 21px;
+  color: #000;
+}
+
+.TableContent {
+  thead {
+    tr {
+      th {
+        background-color: #f8f8f8;
+        color: #1c1b24;
+        font-size: 16px;
+        padding: 10px;
+      }
+    }
+  }
+  tbody {
+    tr {
+      td {
+        padding: 10px;
+      }
+    }
   }
 }

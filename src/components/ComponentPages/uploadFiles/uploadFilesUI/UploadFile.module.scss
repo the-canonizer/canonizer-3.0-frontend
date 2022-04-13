@@ -114,6 +114,9 @@
 .uploded_Files {
   position: relative;
 }
+.UploadDataFiles {
+  color: green;
+}
 .Back_from_browser {
   position: absolute;
   right: 10px;
@@ -370,7 +373,7 @@
   flex-wrap: wrap;
   .view_After_Upload {
     padding: 0 8px;
-    margin-bottom: 25px;
+    margin-bottom: 16px;
     @media screen and (max-width: 767px) {
       width: 50%;
     }
@@ -380,7 +383,7 @@
   > div {
     padding: 0;
     border: 1px solid #eaedf2;
-    width: 150px;
+    width: 160px;
     @media screen and (max-width: 767px) {
       width: 100%;
     }
@@ -511,9 +514,34 @@
 .icon_Width {
   display: inline-block;
   max-width: 20px;
+  margin-right: 10px;
 }
 .icon_height {
   display: inline-block;
+  color: #0f2a4d;
+  font-size: 14px;
+  flex: inherit;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.CopyShortCode {
+  display: flex;
+}
+.filename_text {
+  display: inline-block;
+  color: #0f2a4d;
+  font-size: 14px;
+  flex: inherit;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 150px;
+}
+.shortcode_icon {
+  margin-left: 10px;
 }
 .folder_icons {
   svg {
