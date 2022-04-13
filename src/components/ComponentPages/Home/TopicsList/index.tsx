@@ -121,8 +121,7 @@ const TopicsList = () => {
       search: inputSearch,
       filter: filterByScore,
       asof: asof,
-
-      user_email: !!onlyMyTopicsCheck && userEmail,
+      user_email: onlyMyTopicsCheck ? userEmail : "",
     };
     await getCanonizedTopicsApi(reqBody, loadMore);
     setLoadMoreIndicator(false);
@@ -188,7 +187,7 @@ const TopicsList = () => {
                     <i className="icon-info cursor-pointer"></i>
                   </Popover>
                 </Title>
-                {router.asPath === "/browse" && !isLogin && (
+                {router.asPath === "/browse" && isLogin && (
                   <Checkbox
                     className={styles.checkboxOnlyMyTopics}
                     onChange={handleCheckbox}
