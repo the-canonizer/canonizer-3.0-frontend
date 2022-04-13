@@ -96,7 +96,11 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
   return tree ? (
     <Tree
       showLine={{ showLeafIcon: false }}
-      defaultExpandedKeys={["1"]}
+      defaultExpandedKeys={[
+        +router?.query?.camp?.at(1)?.split("-")?.at(0) == 1
+          ? 2
+          : +router?.query?.camp?.at(1)?.split("-")?.at(0),
+      ]}
       onSelect={onSelect}
       autoExpandParent={true}
       // filterTreeNode={filterTreeNode}
