@@ -5,9 +5,6 @@ import K from "../constants";
 
 export const handleError = (error, log = false, dispatch = null) => {
   log ? console.log(error) : "";
-  if (error.message) {
-    message.error(error.message);
-  }
 
   const nestedErrs = error
     ? error.error
@@ -16,10 +13,6 @@ export const handleError = (error, log = false, dispatch = null) => {
         : ""
       : ""
     : "";
-
-  if (nestedErrs.message) {
-    message.error(nestedErrs.message);
-  }
 
   if (
     typeof nestedErrs.error !== "string" &&
@@ -31,6 +24,13 @@ export const handleError = (error, log = false, dispatch = null) => {
     keys.forEach((key) => {
       message.error(nestedErrs.error[key][0]);
     });
+  } else {
+    if (nestedErrs.message) {
+      message.error(nestedErrs.message);
+    }
+    if (error.message) {
+      message.error(error.message);
+    }
   }
   return null;
 };
