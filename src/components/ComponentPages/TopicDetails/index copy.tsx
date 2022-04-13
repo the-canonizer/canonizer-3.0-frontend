@@ -19,7 +19,7 @@ import CurrentCampCard from "./CurrentCampCard";
 import CurrentTopicCard from "./CurrentTopicCard";
 import NewsFeedsCard from "./NewsFeedsCard";
 import SupportTreeCard from "./SupportTreeCard";
-import { BackTop, Dropdown, Menu, Button, Collapse } from "antd";
+import { BackTop, Dropdown, Menu, Button } from "antd";
 import { Spin } from "antd";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
 import {
@@ -29,8 +29,6 @@ import {
 } from "@ant-design/icons";
 import Link from "next/link";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
-
-const { Panel } = Collapse;
 
 const TopicDetails = () => {
   const didMount = useRef(false);
@@ -217,44 +215,31 @@ const TopicDetails = () => {
         </aside>
 
         <div className="pageContentWrap">
-          <Collapse defaultActiveKey={['1']} ghost>
-            <Panel header="This is panel header 1" key="1">
-              <Spin spinning={loadingIndicator} size="large">
-                <NewsFeedsCard newsFeed={newsFeed} />
-              </Spin>
-            </Panel>
-            <Panel header="This is panel header 2" key="2">
-              <Spin spinning={getTreeLoadingIndicator} size="large">
-                <CampTreeCard
-                  scrollToCampStatement={scrollToCampStatement}
-                  getSelectedNode={getSelectedNode}
-                />
-              </Spin>
-            </Panel>
-            <Panel header="This is panel header 3" key="3">
-              <Spin spinning={loadingIndicator} size="large">
-                <CampStatementCard myRefToCampStatement={myRefToCampStatement} />
-              </Spin>
-            </Panel>
-            <Panel header="This is panel header 4" key="4">
-              <Spin spinning={loadingIndicator} size="large">
-                <SupportTreeCard
-                  handleLoadMoreSupporters={handleLoadMoreSupporters}
-                />
-              </Spin>
-            </Panel>
-            <Panel header="This is panel header 5" key="5">
-              <Spin spinning={loadingIndicator} size="large">
-                <CurrentTopicCard />
-              </Spin>
-            </Panel>
-            <Panel header="This is panel header 6" key="6">
-              <Spin spinning={loadingIndicator} size="large">
-                <CurrentCampCard />
-              </Spin>
-            </Panel>
-          </Collapse>
-          
+          <Spin spinning={loadingIndicator} size="large">
+            <NewsFeedsCard newsFeed={newsFeed} />
+          </Spin>
+          <Spin spinning={getTreeLoadingIndicator} size="large">
+            <CampTreeCard
+              scrollToCampStatement={scrollToCampStatement}
+              getSelectedNode={getSelectedNode}
+            />
+          </Spin>
+
+          <Spin spinning={loadingIndicator} size="large">
+            <CampStatementCard myRefToCampStatement={myRefToCampStatement} />
+          </Spin>
+
+          <Spin spinning={loadingIndicator} size="large">
+            <SupportTreeCard
+              handleLoadMoreSupporters={handleLoadMoreSupporters}
+            />
+          </Spin>
+          <Spin spinning={loadingIndicator} size="large">
+            <CurrentTopicCard />
+          </Spin>
+          <Spin spinning={loadingIndicator} size="large">
+            <CurrentCampCard />
+          </Spin>
           <BackTop />
         </div>
       </div>
