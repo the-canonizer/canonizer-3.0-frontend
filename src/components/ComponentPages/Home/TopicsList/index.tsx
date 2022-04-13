@@ -47,7 +47,6 @@ const TopicsList = () => {
     filterByScore,
     nameSpaces,
     includeReview,
-    onlyMyTopics,
     selectedNameSpace,
     userEmail,
   } = useSelector((state: RootState) => ({
@@ -58,7 +57,6 @@ const TopicsList = () => {
     filterByScore: state.filters?.filterObject?.filterByScore,
     nameSpaces: state.homePage?.nameSpaces,
     includeReview: state?.filters?.filterObject?.includeReview,
-    onlyMyTopics: state?.filters?.filterObject?.onlyMyTopics,
     selectedNameSpace: state?.filters?.filterObject?.nameSpace,
     userEmail: state?.auth?.loggedInUser?.email,
   }));
@@ -109,7 +107,6 @@ const TopicsList = () => {
     nameSpaceId,
     filterByScore,
     inputSearch,
-    onlyMyTopics,
     onlyMyTopicsCheck,
   ]);
 
