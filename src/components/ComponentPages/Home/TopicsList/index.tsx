@@ -126,7 +126,9 @@ const TopicsList = () => {
     setLoadMoreIndicator(false);
   }
 
-  const onSearch = (value) => setInputSearch(value);
+  const onSearch = (value) => {
+    /[a-zA-Z0-9]/.test(value) ? setInputSearch(value) : setInputSearch("");
+  };
 
   const LoadMoreTopics = (
     <div className="text-center">
