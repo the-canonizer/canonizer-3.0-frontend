@@ -13,6 +13,7 @@ import ForumUIPost from "./Post";
 import {
   createThread,
   getThreadsList,
+  updateThread,
 } from "../../../network/api/campForumApi";
 import {
   getAllUsedNickNames,
@@ -51,7 +52,6 @@ const ForumComponent = ({}) => {
   const [cardTitle, setCardTitle] = useState(null);
   const [ppage, setPpage] = useState(1);
   const [pTotalRecords, setPtotalRecords] = useState(50);
-  // const [queries, setQueries] = useState({});
 
   const router = useRouter();
 
@@ -136,7 +136,6 @@ const ForumComponent = ({}) => {
     const camp = campArr?.join(" ");
     if (campRecord && campRecord.length) {
       campRecord[0].parentCamps?.map((camp, index) => {
-        console.log("p_camps", p_camps, index, camp);
         p_camps += index !== 0 ? " / " : "";
         p_camps += `${camp?.camp_name}`;
       });
@@ -194,12 +193,15 @@ const ForumComponent = ({}) => {
     router.push(router, undefined, { shallow: true });
   };
 
-  const onEditClick = (e, id) => {
+  const onEditClick = (e, item) => {
+    const queries = router?.query;
+
     e.preventDefault();
     e.stopPropagation();
-    const queries = router?.query;
-    console.log("edit", e, queries, id);
-    router.push(`/forum/${queries.topic}/${queries.camp}/threads/edit/${id}`);
+
+    router.push(
+      `/forum/${queries.topic}/${queries.camp}/threads/edit/${item.id}`
+    );
   };
 
   // end thread list section
@@ -231,18 +233,35 @@ const ForumComponent = ({}) => {
     router.push(`/forum/${queries.topic}/${queries.camp}/threads`);
   };
 
+  useEffect(() => {
+    const q = router.query;
+    const cI = threadList.filter((it) => +it.id === +q.tId);
+    if (q.tId && cI[0]) {
+      form.setFieldsValue({ thread_title: cI[0]?.title });
+    }
+  }, [form, router.query, threadList]);
+
   const onFinish = async (values) => {
-    console.log(values);
+    const q = router.query;
+    let res = null;
 
-    const body = {
-      title: values.thread_title,
-      nick_name: values.nick_name,
-      camp_num: paramsList["camp_num"],
-      topic_num: paramsList["topic_num"],
-      topic_name: paramsList["topic"],
-    };
+    console.log(values, "submit");
 
-    const res = await createThread(body);
+    if (q.tId) {
+      const body = {
+        title: values.thread_title,
+      };
+      res = await updateThread(body, +q.tId);
+    } else {
+      const body = {
+        title: values.thread_title,
+        nick_name: values.nick_name,
+        camp_num: paramsList["camp_num"],
+        topic_num: paramsList["topic_num"],
+        topic_name: paramsList["topic"],
+      };
+      res = await createThread(body);
+    }
 
     if (res && res.status_code === 200) {
       message.success(res.message);

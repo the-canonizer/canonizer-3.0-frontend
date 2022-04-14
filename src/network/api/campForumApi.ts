@@ -27,3 +27,16 @@ export const getThreadsList = async (queries) => {
     handleError(error);
   }
 };
+
+export const updateThread = async (body, id) => {
+  try {
+    const response = await NetworkCall.fetch(
+      TreadRequest.updateThread(body, id),
+      false
+    );
+
+    return response;
+  } catch (error) {
+    handleError(error);
+  }
+};

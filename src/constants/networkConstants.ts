@@ -79,6 +79,7 @@ const NetworkConstants = {
     // Camp Forum
     ThreadsList: `${BaseCanonizerApiUrl}/thread/list`,
     ThreadCreate: `${BaseCanonizerApiUrl}/thread/save`,
+    ThreadUpdate: `${BaseCanonizerApiUrl}/thread/update`,
   },
   Method: {
     GET: "GET",

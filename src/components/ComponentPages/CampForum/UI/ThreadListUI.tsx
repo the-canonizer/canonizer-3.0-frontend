@@ -119,7 +119,10 @@ const ThreadListUI = ({
                 {text}
                 {paramsList.by === "my" ? (
                   <Tooltip title="edit">
-                    <a onClick={onEditClick} className="linkCss">
+                    <a
+                      onClick={(e) => onEditClick(e, others)}
+                      className="linkCss"
+                    >
                       <EditOutlined />
                     </a>
                   </Tooltip>
