@@ -10,29 +10,15 @@ import ForumUIList from "./List";
 import ForumUICreate from "./Create";
 import ForumUIPost from "./Post";
 
-import { createThread } from "../../../network/api/campForumApi";
+import {
+  createThread,
+  getThreadsList,
+} from "../../../network/api/campForumApi";
 import {
   getAllUsedNickNames,
   getCurrentCampRecordApi,
   getCurrentTopicRecordApi,
 } from "../../../network/api/campDetailApi";
-
-const data = [
-  {
-    id: 1,
-    key: "101",
-    name: "Can we unify “Integrated Information” and “Global Workspace” with “Representational Qualia Theory”?",
-    replies: 32,
-    recent_post: "Brent_Allsop replied 3 years ago (Mar 18, 2019, 10:54:32 PM)",
-  },
-  {
-    id: 2,
-    key: "102",
-    name: "Moving “Mind Brain Identity” above “Dualism” in the camp structure.",
-    replies: 3,
-    recent_post: "Brent_Allsop replied 3 years ago (Sep 19, 2018, 3:48:20 AM)",
-  },
-];
 
 const postData = [
   {
@@ -54,7 +40,8 @@ const postData = [
 
 const ForumComponent = ({}) => {
   const [paramsList, setParamsList] = useState({});
-  const [threadList, setThreadList] = useState(data);
+  const [threadList, setThreadList] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(1);
   const [totalRecords, setTotalRecords] = useState(30);
   const [nickNameList, setNickNameList] = useState([]);
@@ -102,6 +89,24 @@ const ForumComponent = ({}) => {
     ]);
   };
 
+  const getThreads = async (
+    camp,
+    topic,
+    type = "all",
+    page = 1,
+    like = "",
+    per_page = 10
+  ) => {
+    const q = `?camp_num=${camp}&topic_num=${topic}&type=${type}&page=${page}&per_page=${per_page}&like=${like}`;
+
+    const res = await getThreadsList(q);
+    if (res && res.status_code === 200) {
+      setThreadList(res.data?.items);
+      setTotalRecords(res.data?.total_rows);
+      setPage(res.data?.current_page);
+    }
+  };
+
   useEffect(() => {
     if (isLog) {
       setIsLoggedIn(isLog);
@@ -142,6 +147,7 @@ const ForumComponent = ({}) => {
       camp: p_camps,
       camp_num,
       topic_num,
+      by: queries.by,
     };
 
     setParamsList(paramsLists);
@@ -149,13 +155,26 @@ const ForumComponent = ({}) => {
 
   // start thread List section
 
-  const onSearch = (...rest) => {
-    console.log("onSearch rest", rest);
+  useEffect(() => {
+    const queries = router?.query;
+    const campArr = (queries.camp as string).split("-");
+    const camp_num = campArr.shift();
+    const topicArr = (queries?.topic as string)?.split("-");
+    const topic_num = topicArr?.shift();
+    const type = queries["by"] as string;
+
+    getThreads(camp_num, topic_num, type, page, searchQuery);
+  }, [router, router?.query, page, searchQuery]);
+
+  const onSearch = (v) => {
+    setSearchQuery(v.trim());
   };
 
   const onChange = (p, size) => {
     setPage(p);
-    console.log("onChange", p, size);
+    const queries = router?.query;
+    queries.page = p;
+    router.push(router, undefined, { shallow: true });
   };
 
   const onCreateThread = () => {
@@ -170,14 +189,9 @@ const ForumComponent = ({}) => {
   };
 
   const filterThread = (type) => {
-    console.log("type", type, router?.query);
     const queries = router?.query;
-
-    router.push(
-      `/forum/${queries.topic}/${queries.camp}/threads?by=${type}`,
-      undefined,
-      { shallow: true }
-    );
+    queries.by = type;
+    router.push(router, undefined, { shallow: true });
   };
 
   const onEditClick = (e, id) => {

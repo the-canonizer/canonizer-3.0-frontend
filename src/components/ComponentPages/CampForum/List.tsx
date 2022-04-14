@@ -17,31 +17,27 @@ const Threads = ({
   isLoggedIn,
   onEditClick,
   paramsList,
-}) => {
-  const router = useRouter();
-
-  return (
-    <Fragment>
-      <div className="d-flex">
-        <ThreadSidebar />
-        <div className="pageContentWrap">
-          <ThreadListUI
-            onSearch={onSearch}
-            onChange={onChange}
-            onCreateThread={onCreateThread}
-            threadList={threadList}
-            onThreadClick={onThreadClick}
-            current={current}
-            total={total}
-            filterThread={filterThread}
-            isLoggedIn={isLoggedIn}
-            onEditClick={onEditClick}
-            paramsList={paramsList}
-          />
-        </div>
+}) => (
+  <Fragment>
+    <div className="d-flex">
+      <ThreadSidebar />
+      <div className="pageContentWrap">
+        <ThreadListUI
+          onSearch={onSearch}
+          onChange={onChange}
+          onCreateThread={onCreateThread}
+          threadList={threadList}
+          onThreadClick={onThreadClick}
+          current={current}
+          total={total}
+          filterThread={filterThread}
+          isLoggedIn={isLoggedIn}
+          onEditClick={onEditClick}
+          paramsList={paramsList}
+        />
       </div>
-    </Fragment>
-  );
-};
+    </div>
+  </Fragment>
+);
 
 export default Threads;

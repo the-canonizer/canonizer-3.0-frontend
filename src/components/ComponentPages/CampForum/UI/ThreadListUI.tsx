@@ -9,6 +9,7 @@ import {
   Tooltip,
 } from "antd";
 import { EditOutlined } from "@ant-design/icons";
+import moment from "moment";
 
 import styles from "./Forum.module.scss";
 import messages from "../../../../messages";
@@ -67,10 +68,10 @@ const ThreadListUI = ({
               type="primary"
               ghost
               className={`${styles.tabBtn} ${
-                paramsList.by === "own" && styles.orange
+                paramsList.by === "my" && styles.orange
               }`}
-              onClick={filterThread.bind(this, "own")}
-              key="thread"
+              onClick={filterThread.bind(this, "my")}
+              key="my"
             >
               My Threads
             </Button>
@@ -78,10 +79,10 @@ const ThreadListUI = ({
               type="primary"
               ghost
               className={`${styles.tabBtn} ${
-                paramsList.by === "participation" && styles.orange
+                paramsList.by === "participate" && styles.orange
               }`}
-              onClick={filterThread.bind(this, "participation")}
-              key="participation"
+              onClick={filterThread.bind(this, "participate")}
+              key="participate"
             >
               My Participation
             </Button>
@@ -89,10 +90,10 @@ const ThreadListUI = ({
               type="primary"
               ghost
               className={`${styles.tabBtn} ${
-                paramsList.by === "top" && styles.orange
+                paramsList.by === "most_replies" && styles.orange
               }`}
-              onClick={filterThread.bind(this, "top")}
-              key="top"
+              onClick={filterThread.bind(this, "most_replies")}
+              key="most_replies"
             >
               Top 10
             </Button>
@@ -110,17 +111,19 @@ const ThreadListUI = ({
       <Table dataSource={threadList} pagination={false}>
         <Column
           title="Thread Name"
-          dataIndex="name"
-          key="name"
+          dataIndex="title"
+          key="title"
           render={(text, others) => {
             return (
               <a onClick={onThreadClick}>
                 {text}
-                <Tooltip title="edit">
-                  <a onClick={onEditClick} className="linkCss">
-                    <EditOutlined />
-                  </a>
-                </Tooltip>
+                {paramsList.by === "my" ? (
+                  <Tooltip title="edit">
+                    <a onClick={onEditClick} className="linkCss">
+                      <EditOutlined />
+                    </a>
+                  </Tooltip>
+                ) : null}
               </a>
             );
           }}
@@ -128,15 +131,33 @@ const ThreadListUI = ({
         />
         <Column
           title="Replies"
-          dataIndex="replies"
-          key="replies"
+          dataIndex="post_count"
+          key="post_count"
           responsive={["lg"]}
         />
         <Column
           title="Most Recent Post Date"
-          dataIndex="recent_post"
-          key="recent_post"
+          dataIndex="post_updated_at"
+          key="post_updated_at"
           responsive={["lg"]}
+          render={(dt, others) => {
+            return (
+              <Text>
+                {others["post_count"] === 0
+                  ? "This thread doesn't have any posts yet."
+                  : `${
+                      others["nick_name"] === null || others["nick_name"] === ""
+                        ? ""
+                        : others["nick_name"]
+                    } replied ${moment(dt)
+                      .local()
+                      .startOf("seconds")
+                      .fromNow()} (${moment(dt).format(
+                      "MMM Do YYYY, h:mm:ss a"
+                    )})`}
+              </Text>
+            );
+          }}
         />
       </Table>
       <div className={`paginationCon`}>

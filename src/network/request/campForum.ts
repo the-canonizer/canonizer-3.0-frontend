@@ -21,4 +21,18 @@ export default class TreeRequest extends Request {
       auth.loggedInUser?.token
     );
   }
+
+  static getThreads(queries) {
+    let state = store.getState();
+    const { auth } = state;
+
+    return new Request(
+      K.Network.URL.ThreadsList + queries,
+      K.Network.Method.GET,
+      null,
+      K.Network.Header.Type.Json,
+      {},
+      auth.loggedInUser?.token
+    );
+  }
 }

@@ -14,3 +14,16 @@ export const createThread = async (body) => {
     handleError(error);
   }
 };
+
+export const getThreadsList = async (queries) => {
+  try {
+    const response = await NetworkCall.fetch(
+      TreadRequest.getThreads(queries),
+      false
+    );
+
+    return response;
+  } catch (error) {
+    handleError(error);
+  }
+};
