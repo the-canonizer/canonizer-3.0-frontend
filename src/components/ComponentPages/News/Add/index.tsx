@@ -5,9 +5,10 @@ import { useRouter } from "next/router";
 import { getAddNewsRequestApi } from "../../../../network/api/addEditNewsApi";
 import { Row, Col, Card } from "antd";
 import styles from "../addEditNews.module.scss";
-import { Spin } from "antd";
+import { Spin, Typography } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
+const { Text } = Typography;
 const antIcon = <LoadingOutlined spin />;
 
 export default function Add() {
@@ -24,8 +25,6 @@ export default function Add() {
   const onFinish = async (values: any) => {
     setLoading(true);
     const { topic_num, camp_num } = router.query;
-
-    await new Promise((r) => setTimeout(r, 3000));
     const res = await getAddNewsRequestApi({
       topic_num: topic_num,
       camp_num: camp_num,
@@ -33,14 +32,12 @@ export default function Add() {
       link: values.link,
       display_text: values.display_text,
     });
-
     if (res.status_code == 200) {
       router.back();
       return;
     }
     if (res.status_code != 200) {
       setUrlError(true);
-
       setUrlErrorMsg(res.error.link[0]);
       setLoading(false);
     }
@@ -99,22 +96,9 @@ export default function Add() {
                 },
               ]}
             >
-              <Input
-                size="large"
-                placeholder="http:canonizer.com/videos/conciousness/"
-                maxLength={2000}
-              />
+              <Input size="large" maxLength={2000} />
             </Form.Item>
-            {urlError && (
-              <h6
-                style={{
-                  color: "#ff4d4f",
-                  fontSize: "14px",
-                }}
-              >
-                {urlErrorMsg}
-              </h6>
-            )}
+            {urlError && <Text type="danger">{urlErrorMsg}</Text>}
 
             <Form.Item
               className={styles.formItemCheckbox}

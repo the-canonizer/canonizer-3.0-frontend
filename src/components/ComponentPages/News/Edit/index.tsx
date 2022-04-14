@@ -5,11 +5,9 @@ import React, { useState } from "react";
 import { getUpdateNewsFeedApi } from "../../../../network/api/addEditNewsApi";
 import styles from "../addEditNews.module.scss";
 import { Spin, Typography } from "antd";
-
 import { LoadingOutlined } from "@ant-design/icons";
 
 const { Text } = Typography;
-
 const antIcon = <LoadingOutlined spin />;
 
 export default function Edit({ update, topic_num, camp_num }) {
@@ -36,10 +34,7 @@ export default function Edit({ update, topic_num, camp_num }) {
         (available) => available.available_for_child
       ),
     };
-
-    await new Promise((r) => setTimeout(r, 1000));
     const res = await getUpdateNewsFeedApi(dataobj);
-
     if (res.status_code == 200) {
       router.back();
       return;
@@ -51,9 +46,7 @@ export default function Edit({ update, topic_num, camp_num }) {
       });
       let urlError_dup = [...urlError];
       noOfErr.forEach((val) => (urlError_dup[val] = !urlError_dup[val]));
-
       setUrlError(urlError_dup);
-
       setUrlErrorMsg(res.message);
       setLoading(false);
     }
@@ -124,7 +117,6 @@ export default function Edit({ update, topic_num, camp_num }) {
                             >
                               <Input
                                 size="large"
-                                placeholder="http:canonizer.com/videos/conciousness/"
                                 maxLength={2000}
                                 className={urlError[index] && `${styles.error}`}
                               />
