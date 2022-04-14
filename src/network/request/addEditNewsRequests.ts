@@ -8,7 +8,7 @@ export default class addEditNewsRequest extends Request {
 
   // Define request functions below.
 
-  static getAddNewsrequest(body) {
+  static getAddNewsRequest(body) {
     return new Request(
       K.Network.URL.GetAddNewsFeeds,
       K.Network.Method.POST,

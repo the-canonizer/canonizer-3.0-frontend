@@ -7,7 +7,6 @@ import { useDispatch } from "react-redux";
 import { setCampNewsToEdit } from "src/store/slices/news";
 
 export default function EditNewsPage({ news }) {
-  debugger;
   const dispatch = useDispatch();
   dispatch(setCampNewsToEdit(news));
   return (

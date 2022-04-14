@@ -22,7 +22,6 @@ import SupportTreeCard from "./SupportTreeCard";
 import { BackTop, Dropdown, Menu, Button } from "antd";
 import { Spin } from "antd";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
-import useAuthentication from "src/hooks/isUserAuthenticated";
 import {
   MoreOutlined,
   FileTextOutlined,
@@ -31,7 +30,6 @@ import {
 import Link from "next/link";
 
 const TopicDetails = () => {
-  const isLogin = useAuthentication();
   const didMount = useRef(false);
   let myRefToCampStatement = useRef(null);
 
@@ -49,8 +47,6 @@ const TopicDetails = () => {
       campRecord: state?.topicDetails?.currentCampRecord,
     }));
 
-  const [requestBody, setRequestBody] = useState(null);
-
   useEffect(() => {
     async function getTreeApiCall() {
       setGetTreeLoadingIndicator(true);
@@ -63,9 +59,7 @@ const TopicDetails = () => {
         algorithm: algorithm,
         update_all: 1,
       };
-      let { camp_num, topic_num } = reqBody;
 
-      setRequestBody({ camp_num, topic_num });
       await getTreesApi(reqBody);
       await Promise.all([
         getNewsFeedApi(reqBody),
@@ -107,8 +101,6 @@ const TopicDetails = () => {
     };
 
     let { camp_num, topic_num } = reqBody;
-
-    setRequestBody({ camp_num, topic_num });
 
     await Promise.all([
       getNewsFeedApi(reqBody),
@@ -224,18 +216,12 @@ const TopicDetails = () => {
 
         <div className="pageContentWrap">
           <Spin spinning={loadingIndicator} size="large">
-            <NewsFeedsCard
-              newsFeed={newsFeed}
-              reqBody={requestBody}
-              isLogin={isLogin}
-            />
+            <NewsFeedsCard newsFeed={newsFeed} />
           </Spin>
           <Spin spinning={getTreeLoadingIndicator} size="large">
             <CampTreeCard
               scrollToCampStatement={scrollToCampStatement}
               getSelectedNode={getSelectedNode}
-              reqBody={requestBody}
-              isLogin={isLogin}
             />
           </Spin>
           <Spin spinning={loadingIndicator} size="large">

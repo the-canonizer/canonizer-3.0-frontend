@@ -4,11 +4,11 @@ import addEditNewsRequest from "../request/addEditNewsRequests";
 
 export const getAddNewsRequestApi = async (body) => {
   try {
-    const editnewsdata = await NetworkCall.fetch(
-      addEditNewsRequest.getAddNewsrequest(body)
+    const editNewsData = await NetworkCall.fetch(
+      addEditNewsRequest.getAddNewsRequest(body)
     );
 
-    return editnewsdata;
+    return editNewsData;
   } catch (error) {
     message.error(error.message);
     return error.error.data;
@@ -17,11 +17,11 @@ export const getAddNewsRequestApi = async (body) => {
 
 export const getCampNewsFeedApi = async (body) => {
   try {
-    const editnewsdat = await NetworkCall.fetch(
+    const  editNewsData = await NetworkCall.fetch(
       addEditNewsRequest.getCampNewsFeedData(body)
     );
 
-    return editnewsdat?.data;
+    return editNewsData.data;
   } catch (error) {
     message.error(error.message);
   }
@@ -29,11 +29,11 @@ export const getCampNewsFeedApi = async (body) => {
 
 export const getUpdateNewsFeedApi = async (body) => {
   try {
-    const editnewsdat = await NetworkCall.fetch(
+    const editNewsData = await NetworkCall.fetch(
       addEditNewsRequest.getUpdateNewsFeedData(body)
     );
 
-    return editnewsdat;
+    return editNewsData;
   } catch (error) {
     // message.error(error.message);
 
@@ -42,10 +42,10 @@ export const getUpdateNewsFeedApi = async (body) => {
 };
 export const getDeleteNewsFeedApi = async (body) => {
   try {
-    const editnewsdat = await NetworkCall.fetch(
+    const editNewsData = await NetworkCall.fetch(
       addEditNewsRequest.getDeleteNewsFeedData(body)
     );
-    return editnewsdat;
+    return editNewsData;
   } catch (error) {
     message.error(error.message);
     return error.error.data;

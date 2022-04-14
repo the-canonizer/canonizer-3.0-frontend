@@ -2,16 +2,15 @@ import { Card, Checkbox, Typography } from "antd";
 import CampTree from "../CampTree";
 import Link from "next/link";
 
+import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
+
 import styles from "../topicDetails.module.scss";
 import { useRouter } from "next/router";
 
-const CampTreeCard = ({
-  scrollToCampStatement,
-  getSelectedNode,
-  reqBody,
-  isLogin,
-}) => {
+const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
   const router = useRouter();
+
+  const isLogin = useAuthentication();
 
   return (
     <Card

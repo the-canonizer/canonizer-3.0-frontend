@@ -6,10 +6,12 @@ import { getNewsFeedApi } from "src/network/api/campDetailApi";
 import { Spin } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
+import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 
 const { Paragraph } = Typography;
 
-const NewsFeedsCard = ({ newsFeed, reqBody, isLogin }) => {
+const NewsFeedsCard = ({ newsFeed }) => {
+  const isLogin = useAuthentication();
   const [deleteNews, setDeleteNews] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -18,6 +20,10 @@ const NewsFeedsCard = ({ newsFeed, reqBody, isLogin }) => {
     setLoading(true);
     const res = await getDeleteNewsFeedApi(id);
     if (res?.status_code == 200) {
+      const reqBody = {
+        topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+        camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
+      };
       await getNewsFeedApi(reqBody);
     }
     setLoading(false);

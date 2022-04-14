@@ -9,7 +9,6 @@ import { Spin, Typography } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
 const antIcon = <LoadingOutlined spin />;
-
 const { Text } = Typography;
 
 export default function Add() {
@@ -25,20 +24,19 @@ export default function Add() {
   };
   const onFinish = async (values: any) => {
     setLoading(true);
-    const { topic_num, camp_num } = router.query;
     const res = await getAddNewsRequestApi({
-      topic_num: topic_num,
-      camp_num: camp_num,
+      topic_num: +router.query?.camp[0]?.split("-")[0],
+      camp_num: +router.query?.camp[1]?.split("-")[0],
       available_for_child: values.available_for_child,
       link: values.link,
       display_text: values.display_text,
     });
 
-    if (res.status_code == 200) {
+    if (res?.status_code == 200) {
       router.back();
       return;
     }
-    if (res.status_code != 200) {
+    if (res?.status_code != 200) {
       setUrlError(true);
 
       setUrlErrorMsg(res.error.link[0]);
@@ -99,11 +97,7 @@ export default function Add() {
                 },
               ]}
             >
-              <Input
-                size="large"
-                placeholder="http:canonizer.com/videos/conciousness/"
-                maxLength={2000}
-              />
+              <Input size="large" maxLength={2000} />
             </Form.Item>
             {urlError && <Text type="danger">{urlErrorMsg}</Text>}
 

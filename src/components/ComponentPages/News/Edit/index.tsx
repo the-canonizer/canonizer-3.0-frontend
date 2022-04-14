@@ -6,27 +6,33 @@ import { getUpdateNewsFeedApi } from "../../../../network/api/addEditNewsApi";
 import styles from "../addEditNews.module.scss";
 import { Spin, Typography } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
+import { RootState } from "../../../../store";
+import { useSelector } from "react-redux";
 
 const { Text } = Typography;
 const antIcon = <LoadingOutlined spin />;
 
 export default function Edit() {
+  const dataToUpdate = useSelector(
+    (state: RootState) => state?.campNews?.campNews?.newsToEdit
+  );
+
   const [urlErrorMsg, setUrlErrorMsg] = useState("");
-  const [urlError, setUrlError] = useState(update?.map(() => false));
+  const [urlError, setUrlError] = useState(
+    new Array(dataToUpdate.length).fill(false)
+  );
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [form] = Form.useForm();
-
   const goBack = () => {
     setLoading(true);
     router.back();
   };
-
   const onFinish = async (values: any) => {
     setLoading(true);
     const dataObj = {
-      topic_num: topic_num,
-      camp_num: camp_num,
+      topic_num: +router.query?.camp[0]?.split("-")[0],
+      camp_num: +router.query?.camp[1]?.split("-")[0],
       id: values.data.map((id) => id.id),
       display_text: values.data.map((text) => text.display_text),
       link: values.data.map((link) => link.link),
@@ -35,11 +41,11 @@ export default function Edit() {
       ),
     };
     const res = await getUpdateNewsFeedApi(dataObj);
-    if (res.status_code == 200) {
+    if (res?.status_code == 200) {
       router.back();
       return;
     }
-    if (res.status_code != 200) {
+    if (res?.status_code != 200) {
       let noOfErr = Object.keys(res.error).map((err) => {
         let err_on = err.replace("link.", "");
         return err_on;
@@ -51,13 +57,16 @@ export default function Edit() {
       setLoading(false);
     }
   };
+  if (dataToUpdate.length == 0) {
+    return null;
+  }
   return (
     <Card title="Edit News" className={styles.card}>
       <Form
         form={form}
         name="basic"
         initialValues={{
-          data: update,
+          data: dataToUpdate,
         }}
         onFinish={onFinish}
         autoComplete="off"
