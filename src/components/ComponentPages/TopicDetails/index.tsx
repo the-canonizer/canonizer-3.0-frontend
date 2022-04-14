@@ -50,26 +50,7 @@ const TopicDetails = () => {
     }));
 
   const [requestBody, setRequestBody] = useState(null);
-  const [newsReqBody, setNewsReqBody] = useState(null);
-  /////////////////////////////////////
-  useEffect(() => {
-    if (topicRecord !== null && campRecord !== null) {
-      let { topic_num, camp_num, topic_name } = topicRecord[0];
-      console.log("camp recod in useeffect=> ", campRecord);
-      let parentCamps = campRecord[0].parentCamps;
 
-      console.log("topic recod in useeffect=> ", topicRecord);
-
-      console.log(
-        "topic recodssss in useeffect=> ",
-        topic_num,
-        camp_num,
-        topic_name,
-        parentCamps
-      );
-    }
-  }, [topicRecord, campRecord]);
-  ////////////////////////////////////////
   useEffect(() => {
     async function getTreeApiCall() {
       setGetTreeLoadingIndicator(true);
@@ -184,7 +165,6 @@ const TopicDetails = () => {
       </Menu.Item>
     </Menu>
   );
-
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
