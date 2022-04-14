@@ -21,7 +21,7 @@ export const getCampNewsFeedApi = async (body) => {
       addEditNewsRequest.getCampNewsFeedData(body)
     );
 
-    return editnewsdat;
+    return editnewsdat?.data;
   } catch (error) {
     message.error(error.message);
   }
@@ -32,17 +32,15 @@ export const getUpdateNewsFeedApi = async (body) => {
     const editnewsdat = await NetworkCall.fetch(
       addEditNewsRequest.getUpdateNewsFeedData(body)
     );
-    
+
     return editnewsdat;
   } catch (error) {
-    
     // message.error(error.message);
-  
+
     return error.error.data;
   }
 };
 export const getDeleteNewsFeedApi = async (body) => {
-  
   try {
     const editnewsdat = await NetworkCall.fetch(
       addEditNewsRequest.getDeleteNewsFeedData(body)
@@ -53,4 +51,3 @@ export const getDeleteNewsFeedApi = async (body) => {
     return error.error.data;
   }
 };
-
