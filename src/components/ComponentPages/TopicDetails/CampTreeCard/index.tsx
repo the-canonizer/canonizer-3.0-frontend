@@ -3,6 +3,7 @@ import CampTree from "../CampTree";
 import Link from "next/link";
 
 import styles from "../topicDetails.module.scss";
+import { useRouter } from "next/router";
 
 const CampTreeCard = ({
   scrollToCampStatement,
@@ -10,6 +11,8 @@ const CampTreeCard = ({
   reqBody,
   isLogin,
 }) => {
+  const router = useRouter();
+
   return (
     <Card
       className={"ctCard canCard mb-3 " + styles.ctCard}
@@ -18,10 +21,9 @@ const CampTreeCard = ({
         <>
           <Checkbox>Subscribe</Checkbox>
           <Link
-            href={{
-              pathname: isLogin ? "/login" : "/news/add",
-              query: reqBody,
-            }}
+            href={
+              isLogin ? "/login" : router.asPath.replace("topic", "addnews")
+            }
           >
             <a className={styles.addNew}>
               <i className={"icon-fi-document " + styles.iconMr} /> Add News

@@ -5,19 +5,20 @@ import { getDeleteNewsFeedApi } from "src/network/api/addEditNewsApi";
 import { getNewsFeedApi } from "src/network/api/campDetailApi";
 import { Spin } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
+import { useRouter } from "next/router";
 
 const { Paragraph } = Typography;
 
 const NewsFeedsCard = ({ newsFeed, reqBody, isLogin }) => {
   const [deleteNews, setDeleteNews] = useState(false);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleDeleteCamp = async (id) => {
     setLoading(true);
     const res = await getDeleteNewsFeedApi(id);
-
-    if (res.status_code == 200) {
-      const newsres = await getNewsFeedApi(reqBody);
+    if (res?.status_code == 200) {
+      await getNewsFeedApi(reqBody);
     }
     setLoading(false);
   };
@@ -36,10 +37,11 @@ const NewsFeedsCard = ({ newsFeed, reqBody, isLogin }) => {
               <>
                 {!deleteNews && (
                   <Link
-                    href={{
-                      pathname: isLogin ? "/login" : "/news/edit",
-                      query: reqBody,
-                    }}
+                    href={
+                      isLogin
+                        ? "/login"
+                        : router.asPath.replace("topic", "editnews")
+                    }
                   >
                     <a>
                       <i className={"icon-edit "}></i>Edit News
@@ -68,7 +70,6 @@ const NewsFeedsCard = ({ newsFeed, reqBody, isLogin }) => {
 
                       {deleteNews && (
                         <DeleteOutlined
-                          style={{ marginLeft: "5px" }}
                           onClick={() => handleDeleteCamp(news.id)}
                         />
                       )}

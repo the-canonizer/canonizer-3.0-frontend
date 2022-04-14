@@ -10,9 +10,9 @@ import { LoadingOutlined } from "@ant-design/icons";
 const { Text } = Typography;
 const antIcon = <LoadingOutlined spin />;
 
-export default function Edit({ update, topic_num, camp_num }) {
+export default function Edit() {
   const [urlErrorMsg, setUrlErrorMsg] = useState("");
-  const [urlError, setUrlError] = useState(update.map(() => false));
+  const [urlError, setUrlError] = useState(update?.map(() => false));
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [form] = Form.useForm();
@@ -24,7 +24,7 @@ export default function Edit({ update, topic_num, camp_num }) {
 
   const onFinish = async (values: any) => {
     setLoading(true);
-    const dataobj = await {
+    const dataObj = {
       topic_num: topic_num,
       camp_num: camp_num,
       id: values.data.map((id) => id.id),
@@ -34,7 +34,7 @@ export default function Edit({ update, topic_num, camp_num }) {
         (available) => available.available_for_child
       ),
     };
-    const res = await getUpdateNewsFeedApi(dataobj);
+    const res = await getUpdateNewsFeedApi(dataObj);
     if (res.status_code == 200) {
       router.back();
       return;
