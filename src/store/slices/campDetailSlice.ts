@@ -9,6 +9,7 @@ export const treeSlice = createSlice({
     campSupportingTree: null,
     currentTopicRecord: null,
     currentCampRecord: null,
+    campStatementHistory: null,
   },
   reducers: {
     setTree: (state, action) => {
@@ -35,6 +36,9 @@ export const treeSlice = createSlice({
         ...action.payload,
       ];
     },
+    setCampStatementHistory: (state, action) => {
+      state.campStatementHistory = action.payload;
+    },
   },
 });
 
@@ -46,6 +50,7 @@ export const {
   pushToCampSupportingTree,
   setCurrentTopicRecord,
   setCurrentCampRecord,
+  setCampStatementHistory,
 } = treeSlice.actions;
 
 export default treeSlice.reducer;

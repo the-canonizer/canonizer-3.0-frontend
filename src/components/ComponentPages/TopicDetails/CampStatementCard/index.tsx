@@ -33,7 +33,9 @@ const CampStatementCard = ({ myRefToCampStatement }) => {
       actions={[
         <>
           <CustomButton className="btn-green">
-            <Link href={`/statement/history/${router.query?.camp[0]}`}>
+            <Link
+              href={`/statement/history/${router.query?.camp[0]}/${router.query?.camp[1]}`}
+            >
               <a>Manage/Edit Camp Statement </a>
             </Link>
           </CustomButton>

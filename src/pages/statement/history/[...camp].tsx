@@ -5,11 +5,11 @@ import Layout from "../../../hoc/layout";
 const CampHistoryPage = () => {
   return (
     <>
-      <Layout routeName={"camp-history"}>
+      <Layout>
         <CampHistory />
       </Layout>
     </>
   );
 };
-
+CampHistoryPage.displayName = "CampHistoryPage";
 export default CampHistoryPage;

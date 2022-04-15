@@ -65,6 +65,7 @@ const NetworkConstants = {
     CreateCamp: `${BaseCanonizerApiUrl}/camp/save`,
     GetAllParents: `${BaseCanonizerApiUrl}/camp/allParent`,
     GetCampNickNames: `${BaseCanonizerApiUrl}/camp/allAboutNickName`,
+    CampStatementHistory: `${BaseCanonizerApiUrl}/camp-statement-history`,
 
     GetSocialLinkedAccounts: `${BaseCanonizerApiUrl}/user/social/list`,
     DeleteSocialLinkedAccount: `${BaseCanonizerApiUrl}/user/social/delete`,
