@@ -1,6 +1,6 @@
-import CampHistory from "../components/ComponentPages/CampHistory";
+import CampHistory from "../../../components/ComponentPages/CampHistory";
 
-import Layout from "../hoc/layout";
+import Layout from "../../../hoc/layout";
 
 const CampHistoryPage = () => {
   return (
