@@ -9,7 +9,6 @@ import { useRouter } from "next/router";
 
 const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
   const router = useRouter();
-
   const isLogin = useAuthentication();
 
   return (

@@ -1,11 +1,11 @@
 import NetworkCall from "../networkCall";
 import { message } from "antd";
-import addEditNewsRequest from "../request/addEditNewsRequests";
+import campNewsRequest from "../request/addEditNewsRequests";
 
-export const getAddNewsRequestApi = async (body) => {
+export const addNewsApi = async (body) => {
   try {
     const editNewsData = await NetworkCall.fetch(
-      addEditNewsRequest.getAddNewsRequest(body)
+      campNewsRequest.addNewsRequest(body)
     );
 
     return editNewsData;
@@ -15,10 +15,10 @@ export const getAddNewsRequestApi = async (body) => {
   }
 };
 
-export const getCampNewsFeedApi = async (body) => {
+export const getCampNewsDataApi = async (body) => {
   try {
     const  editNewsData = await NetworkCall.fetch(
-      addEditNewsRequest.getCampNewsFeedData(body)
+      campNewsRequest.getCampNewsData(body)
     );
 
     return editNewsData.data;
@@ -27,10 +27,10 @@ export const getCampNewsFeedApi = async (body) => {
   }
 };
 
-export const getUpdateNewsFeedApi = async (body) => {
+export const updateNewsDataApi = async (body) => {
   try {
     const editNewsData = await NetworkCall.fetch(
-      addEditNewsRequest.getUpdateNewsFeedData(body)
+      campNewsRequest.updateNewsData(body)
     );
 
     return editNewsData;
@@ -40,10 +40,10 @@ export const getUpdateNewsFeedApi = async (body) => {
     return error.error.data;
   }
 };
-export const getDeleteNewsFeedApi = async (body) => {
+export const deleteNewsDataApi = async (body) => {
   try {
     const editNewsData = await NetworkCall.fetch(
-      addEditNewsRequest.getDeleteNewsFeedData(body)
+      campNewsRequest.deleteNewsData(body)
     );
     return editNewsData;
   } catch (error) {

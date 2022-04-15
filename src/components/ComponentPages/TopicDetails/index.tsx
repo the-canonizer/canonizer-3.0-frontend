@@ -22,6 +22,8 @@ import SupportTreeCard from "./SupportTreeCard";
 import { BackTop, Dropdown, Menu, Button } from "antd";
 import { Spin } from "antd";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
+
+import useAuthentication from "../../../../src/hooks/isUserAuthenticated";
 import {
   MoreOutlined,
   FileTextOutlined,
@@ -30,6 +32,7 @@ import {
 import Link from "next/link";
 
 const TopicDetails = () => {
+  const isLogin = useAuthentication();
   const didMount = useRef(false);
   let myRefToCampStatement = useRef(null);
 
@@ -135,9 +138,13 @@ const TopicDetails = () => {
   const campForumDropdownMenu = (
     <Menu className={styles.campForumDropdownMenu}>
       <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
-        <a rel="noopener noreferrer" href="/add-news">
-          Add News
-        </a>
+        <Link
+          href={isLogin ? "/login" : router.asPath.replace("topic", "addnews")}
+        >
+          <a rel="noopener noreferrer" href="/add-news">
+            Add News
+          </a>
+        </Link>
       </Menu.Item>
       <Menu.Item icon={<i className="icon-subscribe"></i>}>
         Subscribe to Entire Topic

@@ -2,7 +2,7 @@ import { Form, Input, Button, Checkbox } from "antd";
 import "antd/dist/antd.css";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { getAddNewsRequestApi } from "../../../../network/api/addEditNewsApi";
+import { addNewsApi } from "../../../../network/api/campNewsApi";
 import { Row, Col, Card } from "antd";
 import styles from "../addEditNews.module.scss";
 import { Spin, Typography } from "antd";
@@ -24,7 +24,7 @@ export default function Add() {
   };
   const onFinish = async (values: any) => {
     setLoading(true);
-    const res = await getAddNewsRequestApi({
+    const res = await addNewsApi({
       topic_num: +router.query?.camp[0]?.split("-")[0],
       camp_num: +router.query?.camp[1]?.split("-")[0],
       available_for_child: values.available_for_child,
@@ -35,8 +35,7 @@ export default function Add() {
     if (res?.status_code == 200) {
       router.back();
       return;
-    }
-    if (res?.status_code != 200) {
+    } else if (res?.status_code == 400) {
       setUrlError(true);
 
       setUrlErrorMsg(res.error.link[0]);

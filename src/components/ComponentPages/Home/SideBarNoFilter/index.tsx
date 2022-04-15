@@ -6,14 +6,15 @@ import Image from "next/image";
 
 export default function HomeSideBar({ onCreateCamp = () => {} }) {
   const router = useRouter();
+  const campRoute = () => {
+    router.push("/create-new-topic");
+  };
+
   return (
     <>
       <div className="leftSideBar_Card noFilter">
         <div className="btnsWrap">
-          <Button
-            size="large"
-            className={"btn"}
-          >
+          <Button size="large" className={"btn"} onClick={campRoute}>
             <i className="icon-topic"></i> Create New Topic
           </Button>
         </div>

@@ -1,7 +1,7 @@
 import { Card, Typography } from "antd";
 import Link from "next/link";
 import { useState } from "react";
-import { getDeleteNewsFeedApi } from "src/network/api/addEditNewsApi";
+import { deleteNewsDataApi } from "src/network/api/campNewsApi";
 import { getNewsFeedApi } from "src/network/api/campDetailApi";
 import { Spin } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
@@ -18,7 +18,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
 
   const handleDeleteCamp = async (id) => {
     setLoading(true);
-    const res = await getDeleteNewsFeedApi(id);
+    const res = await deleteNewsDataApi(id);
     if (res?.status_code == 200) {
       const reqBody = {
         topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),

@@ -1,24 +1,18 @@
 import K from "../../constants";
 import Request from ".";
 
-export default class addEditNewsRequest extends Request {
+export default class campNewsRequest extends Request {
   constructor(params) {
     super(params);
   }
 
   // Define request functions below.
 
-  static getAddNewsRequest(body) {
+  static addNewsRequest(reqBody) {
     return new Request(
-      K.Network.URL.GetAddNewsFeeds,
+      K.Network.URL.AddNewsFeeds,
       K.Network.Method.POST,
-      {
-        topic_num: body.topic_num,
-        camp_num: body.camp_num,
-        available_for_child: body.available_for_child,
-        link: body.link,
-        display_text: body.display_text,
-      },
+   reqBody,
       K.Network.Header.Type.Json,
       {}
     );
@@ -26,43 +20,31 @@ export default class addEditNewsRequest extends Request {
 
  
 
-  static getCampNewsFeedData(body) {
-    console.log("body in req ", body.topic_num, body.camp_num);
+  static getCampNewsData(reqBody) {
     return new Request(
-      K.Network.URL.GetCampNewsFeeds,
+      K.Network.URL.GetCampNewsData,
       K.Network.Method.POST,
-      {
-        topic_num: body.topic_num,
-        camp_num: body.camp_num,
-      },
+      reqBody,
       K.Network.Header.Type.Json,
       {}
     );
   }
 
-  static getUpdateNewsFeedData(body) {
+  static updateNewsData(reqBody) {
     return new Request(
-      K.Network.URL.GetUpdateNewsFeeds,
+      K.Network.URL.UpdateNewsData,
       K.Network.Method.POST,
-      {
-        topic_num: body.topic_num,
-        camp_num: body.camp_num,
-        display_text: body.display_text,
-        link: body.link,
-        available_for_child: body.available_for_child,
-      },
+      reqBody,
       K.Network.Header.Type.Json,
       {}
     );
   }
 
-  static getDeleteNewsFeedData(body) {
+  static deleteNewsData(reqBody) {
     return new Request(
-      K.Network.URL.GetDeleteNewsFeeds,
+      K.Network.URL.DeleteNewsData,
       K.Network.Method.POST,
-      {
-        newsfeed_id : body
-      },
+      reqBody,
       K.Network.Header.Type.Json,
       {}
     );

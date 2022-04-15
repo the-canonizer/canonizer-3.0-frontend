@@ -2,7 +2,7 @@ import { Form, Input, Button, Checkbox, Divider, Card, Badge } from "antd";
 import { useRouter } from "next/router";
 import { Row, Col } from "antd";
 import React, { useState } from "react";
-import { getUpdateNewsFeedApi } from "../../../../network/api/addEditNewsApi";
+import { updateNewsDataApi } from "../../../../network/api/campNewsApi";
 import styles from "../addEditNews.module.scss";
 import { Spin, Typography } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -40,12 +40,11 @@ export default function Edit() {
         (available) => available.available_for_child
       ),
     };
-    const res = await getUpdateNewsFeedApi(dataObj);
+    const res = await updateNewsDataApi(dataObj);
     if (res?.status_code == 200) {
       router.back();
       return;
-    }
-    if (res?.status_code != 200) {
+    } else if (res?.status_code === 200) {
       let noOfErr = Object.keys(res.error).map((err) => {
         let err_on = err.replace("link.", "");
         return err_on;
