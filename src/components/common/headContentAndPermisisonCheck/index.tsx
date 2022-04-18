@@ -29,10 +29,16 @@ const HeadContentAndPermissionComponent = ({
     //redirect if authentication is required and user is not loggedIn
 
     if (requiredAuthentication && !isUserAuthenticated) {
-      router.push({
-        pathname: "/login",
-        query: { returnUrl: router.asPath },
-      });
+      const lgt = localStorage.getItem("logout_type");
+      if (lgt) {
+        router.push("/");
+      } else {
+        router.push({
+          pathname: "/login",
+          query: { returnUrl: router.asPath },
+        });
+      }
+      localStorage.removeItem("logout_type");
     }
 
     //redirect if user doesn't have specific permission to view that page

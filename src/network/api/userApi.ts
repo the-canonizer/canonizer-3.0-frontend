@@ -61,21 +61,25 @@ export const logout = async (error = "") => {
 
   try {
     if (error) {
-      !isServer && window.localStorage.removeItem("token");
+      !isServer() && window.localStorage.removeItem("token");
       store.dispatch(logoutUser());
       store.dispatch(removeAuthToken());
       message.error("Your session has expired. Please log in again!");
       return true;
     }
+
+    !isServer() && localStorage.setItem("logout_type", "a");
+
     let res = await NetworkCall.fetch(
       UserRequest.logoutCall(auth.token, error)
     );
-    !isServer && window.localStorage.removeItem("token");
+
+    !isServer() && window.localStorage.removeItem("token");
     store.dispatch(logoutUser());
     store.dispatch(removeAuthToken());
     return res;
   } catch (error) {
-    !isServer && window.localStorage.removeItem("token");
+    !isServer() && window.localStorage.removeItem("token");
     store.dispatch(logoutUser());
     store.dispatch(removeAuthToken());
     handleError(error);

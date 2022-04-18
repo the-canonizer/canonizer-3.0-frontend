@@ -49,6 +49,10 @@ export default function SettingsUI() {
   };
   const router = useRouter();
 
+  const campRoute = () => {
+    router.push("/create/topic");
+  };
+
   const contentList = {
     profile_info: <ProfileInfo />,
     change_password: <ChangePassword />,

@@ -20,8 +20,8 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
     selectedKeys,
     e: { selected; selectedNodes; node; event }
   ) => {
-    console.log("selected", selectedKeys);
     if (selectedKeys.join() === "custom" || selectedKeys.join() === "") {
+      console.log("selected", selectedKeys, e);
     } else {
       setSelectedNodeID(+selectedKeys.join(""));
       getSelectedNode(+selectedKeys.join());
@@ -75,7 +75,7 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
                     title={
                       <p
                         onClick={() => {
-                          "supportCamp";
+                          console.log("supportCamp");
                         }}
                       >{`<Start new supporting camp here>`}</p>
                     }
