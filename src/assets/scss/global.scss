@@ -570,7 +570,7 @@ form {
         color: rgba(0, 0, 0, 0.85);
       }
       .anticon {
-        margin-left: .5rem;
+        margin-left: 0.5rem;
         color: red;
         cursor: pointer;
       }
@@ -700,6 +700,7 @@ form {
   width: 120px;
 }
 .afterUpload {
+  width: 100%;
   span {
     width: 100% !important;
   }
@@ -709,33 +710,49 @@ form {
   flex-wrap: wrap;
   .mr0 {
     margin-top: 0;
+    border-color: #d9d9d9 !important;
+    font-size: 12px;
   }
 
   .ant-upload-list-picture-container {
     display: flex;
-    width: 20%;
-    padding: 0 10px;
-    margin-bottom: 20px;
+    width: 195px;
+    padding: 0 8px;
+    margin-bottom: 16px;
+    @media screen and (max-width: 1100px) {
+      width: 50%;
+    }
+    @media screen and (max-width: 567px) {
+      width: 100%;
+    }
     img {
       margin: auto;
     }
     .fileName_label {
       width: 100%;
-      background: #eee;
+      background: #eaedf2;
       margin-top: 5px;
       padding: 4px 5px;
-      border-radius: 4px;
+      border-radius: 0;
+      font-size: 12px;
+      color: #0f2a4d;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      box-sizing: border-box;
+      display: inline-block;
     }
     .fileName_span {
       text-align: center;
-      margin: 5px;
+      margin: 5px 5px 0;
       font-size: 12px;
+      color: #6c737d;
     }
     .anticon-close-circle {
       position: absolute;
-      right: 5px;
-      color: red;
-      font-size: 16px;
+      right: 8px;
+      color: #ef5e5e;
+      font-size: 19px;
       width: auto !important;
       z-index: 999;
     }
@@ -753,6 +770,15 @@ form {
   }
   h2 {
     margin-bottom: 0;
+    font-size: 20px;
+    white-space: normal;
+    margin-top: 10px;
+    color: #1c1b24;
+  }
+  p {
+    font-size: 16px;
+    white-space: normal;
+    color: #83868b;
   }
 }
 
@@ -768,6 +794,21 @@ form {
   padding: 0px;
 }
 
+.FolderData {
+  padding: 20px;
+  background: chartreuse;
+  .ant-card-body {
+    padding: 0;
+  }
+}
+.Menu_Iconss {
+  width: auto !important;
+  padding: 0 !important;
+  right: 20px !important;
+  top: 20px;
+  color: #6c737d !important;
+  bottom: inherit !important;
+}
 .folder_icon .foldername {
   color: white;
   font-weight: bold;
@@ -831,6 +872,11 @@ form {
 .hideUpload {
   display: none;
 }
+.foldername {
+  font-size: 13px;
+  text-align: center;
+  margin-bottom: 10px;
+}
 
 #profileInfo {
   .ant-select-status-error {
@@ -866,6 +912,61 @@ form {
 
 .ant-tabs-ink-bar {
   background-color: #2e68db !important;
+}
+
+.imgWrap {
+  width: 100%;
+  text-align: center;
+  background-color: #f3f3f3;
+  min-height: 125px;
+  max-height: 125px;
+  overflow: hidden;
+
+  img {
+    object-fit: cover;
+  }
+}
+.ant-card-head-wrapper {
+  flex-wrap: wrap;
+}
+.ant-card-head-title {
+  flex: inherit;
+}
+.ant-card-extra {
+  padding: 0;
+  @media screen and (max-width: 1100px) {
+    margin-left: inherit;
+    float: left;
+  }
+}
+.Back_from_browser {
+  background-color: red;
+}
+
+.threeDOt {
+  float: right;
+  font-size: 21px;
+  color: #000;
+}
+
+.TableContent {
+  thead {
+    tr {
+      th {
+        background-color: #f8f8f8;
+        color: #1c1b24;
+        font-size: 16px;
+        padding: 10px;
+      }
+    }
+  }
+  tbody {
+    tr {
+      td {
+        padding: 10px;
+      }
+    }
+  }
 }
 
 .paginationCon {

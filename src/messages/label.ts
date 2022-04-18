@@ -49,4 +49,6 @@ export const labels = {
   cr_nick_name_about: "Camp About Nick Name",
   multiUser: "Select User",
   threadTitle: "Title of Thread (Limit 100 Chars)",
+  uploadFiles: "UploadFiles",
+  maxSize: "Max size 5 MB",
 };
