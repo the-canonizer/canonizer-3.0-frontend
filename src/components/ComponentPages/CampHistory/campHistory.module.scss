@@ -74,6 +74,24 @@
         }
 
         &>button {
+            width: 168px;
+            border: none;
+            background-color: #D1D4DB;
+
+            &>span {
+                color: white;
+                font-weight: 600;
+            }
+
+            &>.active {
+                background-color: #40a9ff;
+                border: none;
+
+                &:hover {
+                    background-color: #2a71c2;
+                }
+            }
+
             @media screen and (min-width:320px) and (max-width:719px) {
                 width: 100%;
                 margin-top: 15px;
@@ -105,18 +123,10 @@
 
         }
 
-        &>button {
-            background-color: #4484CE;
-
-
-            &>:hover {
-                background-color: #2a71c2;
-            }
-
-        }
-
-
     }
+
+
+
 
     .filters {
         list-style: none;
@@ -199,20 +209,6 @@
                 }
             }
 
-            &>.campStatementViewAll {
-
-                /* &>a {
-                    // margin-left: 17px;
-                    color: #2E68DB;
-                    border-bottom: 1px solid #2E68DB !important;
-                    font-weight: bold;
-
-                    &::before {
-                        display: none;
-                    }
-                } */
-
-            }
 
             &>.campStatementObjected {
                 &>a {
@@ -281,12 +277,35 @@
     }
 
     .campStatementCollapse {
+        padding-top: 18px;
+
+        &>:first-child {
+            /* position: absolute;
+            right: 0;
+            height: 203px;
+            // min-width: 31px;
+            background: rgba(0, 0, 0, 0.06);
+            padding-right: 16px;
+            display: flex;
+            align-items: center;
+            margin-top: -18px; */
+
+            // &:focus {
+            //     height: auto;
+            //     background-color: #EF5E5E;
+            // }
+
+
+
+        }
 
         >div {
             background-color: #FFF3F3;
             border: none;
 
+
             &>div {
+
                 &>h5 {
                     line-height: 16px;
                 }
@@ -302,7 +321,7 @@
             &>div:first-child {
                 font-size: 15px;
                 font-weight: 400;
-                padding: 18px 18px 0 18px !important;
+                padding: 0 18px 0 18px !important;
 
                 &>span a {
                     color: #4484CE;
@@ -347,7 +366,8 @@
     }
 
     .campStatementCollapseSummary {
-        padding: 18 18px 18px 18px;
+
+        padding: 0 18px 18px 18px;
 
         &>h5 {
             font-size: 16px;
@@ -381,6 +401,7 @@
 
 $btn-bkg:#4484CE;
 
+
 .campCollapseSummaryWrap {
 
     .campStatementCollapseButtons {
@@ -391,6 +412,7 @@ $btn-bkg:#4484CE;
         flex-wrap: wrap;
         align-items: center;
         padding-right: 18px;
+        margin-right: -55px;
 
         @media screen and (max-width:1018px) {}
 
