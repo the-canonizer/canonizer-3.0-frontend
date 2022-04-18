@@ -1,5 +1,6 @@
 import { Card, Typography } from "antd";
 import Link from "next/link";
+<<<<<<< HEAD
 import { useState } from "react";
 import { deleteNewsDataApi } from "src/network/api/campNewsApi";
 import { getNewsFeedApi } from "src/network/api/campDetailApi";
@@ -11,6 +12,9 @@ import {
 } from "@ant-design/icons";
 import { useRouter } from "next/router";
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
+=======
+import { DeleteOutlined } from "@ant-design/icons";
+>>>>>>> caca3cb8ff8e5aca7c6f29cba365fd9d39fd21ef
 
 const { Paragraph } = Typography;
 
@@ -90,6 +94,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
               </>
             ) : null}
           </>
+<<<<<<< HEAD
         }
       >
         <ul className="newsFeedsList">
@@ -131,6 +136,29 @@ const NewsFeedsCard = ({ newsFeed }) => {
         </ul>
       </Card>
     </Spin>
+=======
+        ) : null
+      }
+    >
+      <ul className="newsFeedsList">
+        {newsFeed?.length
+          ? newsFeed?.map((news) => {
+              return (
+                <li key={news.id}>
+                  <Paragraph>
+                    <Link href={news?.link} passHref>
+                      <>
+                        <a>{news?.display_text}</a> <DeleteOutlined />
+                      </>
+                    </Link>
+                  </Paragraph>
+                </li>
+              );
+            })
+          : "No News Found"}
+      </ul>
+    </Card>
+>>>>>>> caca3cb8ff8e5aca7c6f29cba365fd9d39fd21ef
   );
 };
 export default NewsFeedsCard;

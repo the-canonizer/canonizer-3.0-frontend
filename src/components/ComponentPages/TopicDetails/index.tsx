@@ -30,6 +30,7 @@ import {
   HeartOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
+import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 
 const TopicDetails = () => {
   const isLogin = useAuthentication();
@@ -63,20 +64,22 @@ const TopicDetails = () => {
         update_all: 1,
       };
 
-      await getTreesApi(reqBody);
       await Promise.all([
+        getTreesApi(reqBody),
         getNewsFeedApi(reqBody),
         getCanonizedCampStatementApi(reqBody),
         getCurrentTopicRecordApi(reqBody),
         getCurrentCampRecordApi(reqBody),
         getCanonizedCampSupportingTreeApi(reqBody),
+        getCanonizedAlgorithmsApi(),
       ]);
       setGetTreeLoadingIndicator(false);
       setLoadingIndicator(false);
     }
     getTreeApiCall();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [asofdate, algorithm]);
+  }, [asofdate, algorithm, +router?.query?.camp[1]?.split("-")[0]]);
 
   const scrollToTop = () => {
     window.scrollTo({
