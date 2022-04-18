@@ -1,10 +1,10 @@
 .card {
-  padding: 20px 20px 10px;
-  border: solid 1px #f0f0f0;
-  background-color: #fff;
-  margin-bottom: 16px;
+  padding: 0 8px;
   .btnsWrap {
-    margin-bottom: 16px;
+    padding: 15px 13px 15px;
+    border: solid 1px #d9d9d9;
+    background-color: #fff;
+    margin-bottom: 24px;
     .btn {
       display: flex;
       align-items: center;
@@ -28,11 +28,25 @@
 }
 
 .uploadFilesData {
-  width: calc(100% - 245px);
+  width: calc(100% - 260px);
+  margin: 0 8px !important;
+  border: 1px solid #f0f0f0;
 
   @media screen and (max-width: 767px) {
     margin-left: 0 !important;
     margin-right: 0 !important;
+    width: 100%;
+  }
+
+  h3 {
+    font-size: 20px;
+    color: #1c1b24;
+    font-weight: 600;
+    margin: 0;
+    span {
+      color: #6c737d;
+      font-weight: 400;
+    }
   }
 }
 
@@ -70,7 +84,7 @@
   align-content: center;
   height: 400px;
   width: 100%;
-  border: 2px dashed gray;
+  border: 2px dashed #707070;
 }
 
 .Dragebox .Drager:hover {
@@ -100,6 +114,9 @@
 .uploded_Files {
   position: relative;
 }
+.UploadDataFiles {
+  color: green;
+}
 .Back_from_browser {
   position: absolute;
   right: 10px;
@@ -117,18 +134,34 @@
 .Upload_Cancel_Btn .Upload_Btn {
   margin-right: 10px;
   background-color: rgb(249, 157, 22);
+  border-color: rgb(249, 157, 22);
   color: white;
-  width: 15%;
+  border-radius: 2px;
+  width: 130px;
+  height: 38px;
 }
 
 .Upload_Cancel_Btn .Upload_Btn:hover {
   color: white;
+  border-color: rgb(249, 157, 22);
   background-color: rgb(249, 157, 22);
+}
+.cancel_Btn {
+  border-color: #4484ce;
+  color: #4484ce;
+  height: 38px;
+  border-radius: 2px;
+  width: 80px;
+}
+.cancel_Btn:hover {
+  background: #4484ce;
+  color: #fff;
 }
 .top_btn {
   width: auto;
   display: flex;
   position: relative;
+  flex-wrap: wrap;
 }
 
 .Top_SearchBtn {
@@ -159,12 +192,14 @@
   border-color: rgb(20, 159, 223);
   margin-right: 5px;
   margin-left: 5px;
+  padding: 0 8px;
 }
 
 .top_btn .add_file_btn {
   color: rgb(20, 159, 223);
   border-color: rgb(20, 159, 223);
   margin-right: 10px;
+  padding: 0 5px;
 }
 
 /* .ant-upload-list-picture .ant-upload-span{
@@ -231,9 +266,9 @@
 }
 
 .After_Upload {
-  padding: 5px;
+  padding: 8px;
   height: auto;
-  border: 1px solid lightgray;
+  border: 1px solid #eaedf2;
   position: relative;
   display: flex;
   flex-wrap: wrap;
@@ -278,8 +313,115 @@
   top: 95px;
   left: 100px;
 }
+.view_After_folder {
+  background: red;
+}
+.FolderfileCard {
+  background: red;
+}
+.FolderData {
+  width: 175px;
+  background: #4484ce;
+  height: 130px;
+  border-radius: 0px 6px 6px 6px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  @media screen and (max-width: 767px) {
+    width: 100%;
+  }
 
-.view_After_Upload {
+  &::before {
+    height: 11px;
+    content: "";
+    background: #336eb2;
+    width: 100px;
+    top: -11px;
+    position: absolute;
+    border-radius: 6px 6px 0 0;
+  }
+  .foldername {
+    color: #fffdf3;
+    font-size: 13px;
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  small {
+    font-size: 10px;
+    text-align: center;
+    width: 100%;
+    display: inline-block;
+  }
+  p {
+    font-size: 11px;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  > div {
+    padding: 0 !important;
+  }
+  .dropdown {
+    bottom: -15px !important;
+  }
+}
+.fileList {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  .view_After_Upload {
+    padding: 0 8px;
+    margin-bottom: 16px;
+    @media screen and (max-width: 767px) {
+      width: 50%;
+    }
+  }
+}
+.files {
+  > div {
+    padding: 0;
+    border: 1px solid #eaedf2;
+    width: 160px;
+    @media screen and (max-width: 767px) {
+      width: 100%;
+    }
+  }
+  .imageFiles {
+    text-align: center;
+    width: 100%;
+    display: inline-block;
+    background-color: #f3f3f3;
+    max-height: 125px;
+    min-height: 125px;
+    overflow: hidden;
+    img {
+      object-fit: cover;
+    }
+  }
+  h3 {
+    font-size: 16px;
+    padding: 2px 6px 0;
+    color: #0f2a4d;
+    margin-bottom: 0px;
+    border-top: 1px solid #eaedf2;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  span {
+    font-size: 12px;
+    display: inline-block;
+    width: 100%;
+    color: #6c737d;
+    padding: 0 6px;
+    margin-bottom: 6px;
+  }
+}
+
+/*.view_After_Upload {
   display: inline-flex;
   position: relative;
   margin: 0px 10px;
@@ -300,7 +442,7 @@
   position: absolute;
   top: 5px;
   right: 5px;
-}
+}*/
 .files .ant-card-body {
   padding: 0px;
   justify-content: center;
@@ -321,7 +463,7 @@
   }
 }
 @media (max-width: 414px) {
-  .ant-upload-list-picture-container {
+  .imageFiles {
     flex: 0 0 50%;
   }
 }
@@ -372,18 +514,71 @@
 .icon_Width {
   display: inline-block;
   max-width: 20px;
+  margin-right: 10px;
 }
 .icon_height {
   display: inline-block;
+  color: #0f2a4d;
+  font-size: 14px;
+  flex: inherit;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.CopyShortCode {
+  display: flex;
+}
+.filename_text {
+  display: inline-block;
+  color: #0f2a4d;
+  font-size: 14px;
+  flex: inherit;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 150px;
+}
+.shortcode_icon {
+  margin-left: 10px;
 }
 .folder_icons {
   svg {
     font-size: 20px !important;
   }
 }
+.folder_icons_fileTxt {
+  svg {
+    font-size: 20px !important;
+    color: blue;
+  }
+}
+.folder_icons_pdf {
+  svg {
+    font-size: 20px !important;
+    color: red;
+  }
+}
+.FileTextTwoOneClass {
+  svg {
+    height: 100px;
+    width: 100px;
+    margin-block: 15px;
+  }
+}
+.FilePdfTwoToneColor {
+  svg {
+    height: 100px;
+    width: 100px;
+    margin-block: 15px;
+    color: red;
+  }
+}
+
 .dropdown_menu {
   position: relative;
-  top: -10px;
+  top: -15px;
   margin-right: -20px;
   right: 10px;
   cursor: pointer;

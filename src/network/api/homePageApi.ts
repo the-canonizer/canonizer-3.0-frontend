@@ -6,6 +6,7 @@ import {
   setCanonizedNameSpaces,
   setCanonizedTopics,
   pushToCanonizedTopics,
+  setCanonizedAlgorithms,
 } from "../../store/slices/homePageSlice";
 
 export const getCanonizedTopicsApi = async (reqBody, loadMore = false) => {
@@ -71,9 +72,10 @@ export const getRecentActivitiesApi = async (reqBody) => {
 export const getCanonizedAlgorithmsApi = async () => {
   try {
     const algorithms = await NetworkCall.fetch(
-      HomePageRequests.getCanonizedAlgorithms()
+      HomePageRequests.getCanonizedAlgorithms(),
+      false
     );
-    store.dispatch(setCanonizedTopics(algorithms));
+    store.dispatch(setCanonizedAlgorithms(algorithms));
     return algorithms;
   } catch (error) {
     // message.error(error.message);
