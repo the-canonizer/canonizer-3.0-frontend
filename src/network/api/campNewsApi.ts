@@ -1,11 +1,11 @@
 import NetworkCall from "../networkCall";
 import { message } from "antd";
-import campNewsRequest from "../request/addEditNewsRequests";
+import campNewsRequest from "../request/campNewsRequest";
 
-export const addNewsApi = async (body) => {
+export const addNewsDatapi = async (body) => {
   try {
     const editNewsData = await NetworkCall.fetch(
-      campNewsRequest.addNewsRequest(body)
+      campNewsRequest.addNewsDataRequest(body)
     );
 
     return editNewsData;
@@ -47,7 +47,6 @@ export const deleteNewsDataApi = async (body) => {
     );
     return editNewsData;
   } catch (error) {
-    message.error(error.message);
     return error.error.data;
   }
 };

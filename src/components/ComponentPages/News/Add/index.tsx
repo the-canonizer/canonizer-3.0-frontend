@@ -1,11 +1,12 @@
-import { Form, Input, Button, Checkbox } from "antd";
+import { Form, Button, Checkbox } from "antd";
 import "antd/dist/antd.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { addNewsApi } from "../../../../network/api/campNewsApi";
+import { addNewsDatapi } from "../../../../network/api/campNewsApi";
+import { getNickNameList } from "../../../../network/api/userApi";
 import { Row, Col, Card } from "antd";
 import styles from "../addEditNews.module.scss";
-import { Spin, Typography } from "antd";
+import { Spin, Typography, Input, Select } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
 const antIcon = <LoadingOutlined spin />;
@@ -15,6 +16,7 @@ export default function Add() {
   const [loading, setLoading] = useState(false);
   const [urlErrorMsg, setUrlErrorMsg] = useState("");
   const [urlError, setUrlError] = useState(false);
+  const [nickNameData, setNickNameData] = useState([]);
 
   const router = useRouter();
   const [form] = Form.useForm();
@@ -24,24 +26,31 @@ export default function Add() {
   };
   const onFinish = async (values: any) => {
     setLoading(true);
-    const res = await addNewsApi({
+    const res = await addNewsDatapi({
       topic_num: +router.query?.camp[0]?.split("-")[0],
       camp_num: +router.query?.camp[1]?.split("-")[0],
       available_for_child: values.available_for_child,
       link: values.link,
       display_text: values.display_text,
+      submitter_nick_id: values.nick_name,
     });
-
     if (res?.status_code == 200) {
       router.back();
       return;
     } else if (res?.status_code == 400) {
       setUrlError(true);
-
-      setUrlErrorMsg(res.error.link[0]);
-      setLoading(false);
+      setUrlErrorMsg(res?.error?.link[0]);
     }
+    setLoading(false);
   };
+
+  useEffect(() => {
+    async function nickNameListApiCall() {
+      const result = await getNickNameList();
+      setNickNameData(result.data);
+    }
+    nickNameListApiCall();
+  }, []);
 
   return (
     <Card title="Add News" className={styles.card}>
@@ -106,6 +115,27 @@ export default function Add() {
               valuePropName="checked"
             >
               <Checkbox>Available for children</Checkbox>
+            </Form.Item>
+
+            <Form.Item
+              label={<>Nick Name</>}
+              name="nick_name"
+              validateTrigger="onFinish"
+              rules={[
+                {
+                  required: true,
+                  message: "Please select Nick name",
+                },
+              ]}
+            >
+              <Select>
+                {nickNameData &&
+                  nickNameData.map((names) => (
+                    <Select.Option value={names.id}>
+                      {names.nick_name}
+                    </Select.Option>
+                  ))}
+              </Select>
             </Form.Item>
           </Col>
         </Row>

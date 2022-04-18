@@ -4,7 +4,11 @@ import { useState } from "react";
 import { deleteNewsDataApi } from "src/network/api/campNewsApi";
 import { getNewsFeedApi } from "src/network/api/campDetailApi";
 import { Spin } from "antd";
-import { DeleteOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EditTwoTone,
+  CloseSquareTwoTone,
+} from "@ant-design/icons";
 import { useRouter } from "next/router";
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 
@@ -13,6 +17,7 @@ const { Paragraph } = Typography;
 const NewsFeedsCard = ({ newsFeed }) => {
   const isLogin = useAuthentication();
   const [deleteNews, setDeleteNews] = useState(false);
+  const [editNews, setEditNews] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -41,22 +46,45 @@ const NewsFeedsCard = ({ newsFeed }) => {
           <>
             {newsFeed?.length ? (
               <>
-                {!deleteNews && (
-                  <Link
-                    href={
-                      isLogin
-                        ? "/login"
-                        : router.asPath.replace("topic", "editnews")
-                    }
+                {!(deleteNews || editNews) && (
+                  // <Link
+                  //   href={
+                  //     isLogin
+                  //       ? "/login"
+                  //       : router.asPath.replace("topic", "editnews")
+                  //   }
+                  // >
+                  <a
+                    onClick={() => {
+                      setEditNews(true);
+                      setDeleteNews(false);
+                    }}
                   >
-                    <a>
-                      <i className={"icon-edit "}></i>Edit News
-                    </a>
-                  </Link>
+                    <i className={"icon-edit "}></i>Edit News
+                  </a>
+                  // </Link>
                 )}
-                {!deleteNews && (
-                  <a onClick={() => setDeleteNews(true)}>
+                {!(deleteNews || editNews) && (
+                  <a
+                    onClick={() => {
+                      setDeleteNews(true);
+                      setEditNews(false);
+                    }}
+                  >
                     <i className={"icon-delete"}></i>Delete News
+                  </a>
+                )}
+                {(deleteNews || editNews) && (
+                  <a
+                    onClick={() => {
+                      setDeleteNews(false);
+                      setEditNews(false);
+                    }}
+                  >
+                    <i>
+                      <CloseSquareTwoTone />
+                    </i>
+                    Cancel
                   </a>
                 )}
               </>
@@ -68,16 +96,32 @@ const NewsFeedsCard = ({ newsFeed }) => {
           {newsFeed?.length
             ? newsFeed?.map((news) => {
                 return (
-                  <li key={news.id}>
+                  <li key={news?.id}>
                     <Paragraph>
-                      <Link href={news?.link} passHref>
-                        <a>{news?.display_text} </a>
-                      </Link>
+                      <a>{news?.display_text} </a>
 
+                      {!deleteNews && !editNews && (
+                        <i> nickname {news?.submitter_nick_name}</i>
+                      )}
                       {deleteNews && (
-                        <DeleteOutlined
-                          onClick={() => handleDeleteCamp(news.id)}
-                        />
+                        <button
+                          disabled={!news.delete_flag}
+                          onClick={() => handleDeleteCamp(news?.id)}
+                        >
+                          <DeleteOutlined />
+                        </button>
+                      )}
+                      {editNews && (
+                        <Link
+                          href={
+                            isLogin
+                              ? "/login"
+                              : `/editnews/${router?.query?.camp[0]}/${router?.query?.camp[1]}/${news?.id}-id`
+                            //  : router.asPath.replace("topic", "editnews")
+                          }
+                        >
+                          <EditTwoTone />
+                        </Link>
                       )}
                     </Paragraph>
                   </li>
