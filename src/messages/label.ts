@@ -48,4 +48,6 @@ export const labels = {
   cr_camp_url: "Camp About URL (Limit 1024 Chars)",
   cr_nick_name_about: "Camp About Nick Name",
   multiUser: "Select User",
+  uploadFiles: "UploadFiles",
+  maxSize: "Max size 5 MB",
 };
