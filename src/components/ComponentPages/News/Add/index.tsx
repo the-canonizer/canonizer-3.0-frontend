@@ -29,10 +29,10 @@ export default function Add() {
     const res = await addNewsDatapi({
       topic_num: +router.query?.camp[0]?.split("-")[0],
       camp_num: +router.query?.camp[1]?.split("-")[0],
-      available_for_child: values.available_for_child,
-      link: values.link,
-      display_text: values.display_text,
-      submitter_nick_id: values.nick_name,
+      available_for_child: values?.available_for_child,
+      link: values?.link,
+      display_text: values?.display_text,
+      submitter_nick_id: values?.nick_name,
     });
     if (res?.status_code == 200) {
       router.back();
@@ -47,7 +47,7 @@ export default function Add() {
   useEffect(() => {
     async function nickNameListApiCall() {
       const result = await getNickNameList();
-      setNickNameData(result.data);
+      setNickNameData(result?.data);
     }
     nickNameListApiCall();
   }, []);

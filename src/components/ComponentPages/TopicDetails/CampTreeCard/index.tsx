@@ -1,7 +1,6 @@
-import { Card, Checkbox, Typography } from "antd";
+import { Card, Checkbox } from "antd";
 import CampTree from "../CampTree";
 import Link from "next/link";
-
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 
 import styles from "../topicDetails.module.scss";

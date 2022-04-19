@@ -14,6 +14,7 @@ export default function EditNewsPage({ news }) {
   const isLogin = useAuthentication();
   const dispatch = useDispatch();
   dispatch(setCampNewsToEdit(news));
+
   useEffect(() => {
     if (isLogin === true) {
       router.replace("/login");
@@ -38,12 +39,7 @@ export default function EditNewsPage({ news }) {
 
 export async function getServerSideProps(context) {
   const { query } = context;
-  // const reqBody = {
-  //   topic_num: +query?.camp[0]?.split("-")[0],
-  //   camp_num: +query?.camp[1]?.split("-")[0],
-  // };
   const reqBody = { newsfeed_id: +query?.camp[2]?.split("-")[0] };
-
   const res = await getCampEditNewsDataApi(reqBody);
   const news = (res && res[0]) || {};
   return {

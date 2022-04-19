@@ -1,8 +1,7 @@
 import Add from "../../components/ComponentPages/News/Add";
-
 import SideBarNoFilter from "../../components/ComponentPages/Home/SideBarNoFilter";
-
 import Layout from "../../hoc/layout";
+
 export default function AddNewsPage() {
   return (
     <>

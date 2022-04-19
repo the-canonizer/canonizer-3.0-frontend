@@ -1,11 +1,11 @@
 import { Form, Button, Checkbox } from "antd";
 import "antd/dist/antd.css";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { updateNewsDataApi } from "../../../../network/api/campNewsApi";
 import { Row, Col, Card } from "antd";
 import styles from "../addEditNews.module.scss";
-import { Spin, Typography, Input, Select } from "antd";
+import { Spin, Typography, Input } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { RootState } from "src/store";
 import { useSelector } from "react-redux";
@@ -20,30 +20,15 @@ export default function Edit() {
   const [loading, setLoading] = useState(false);
   const [urlErrorMsg, setUrlErrorMsg] = useState("");
   const [urlError, setUrlError] = useState(false);
-
   const router = useRouter();
   const [form] = Form.useForm();
   const goBack = () => {
     setLoading(true);
     router.back();
   };
+
   const onFinish = async (values: any) => {
     setLoading(true);
-    // const res = await addNewsDatapi({
-    //   topic_num: +router.query?.camp[0]?.split("-")[0],
-    //   camp_num: +router.query?.camp[1]?.split("-")[0],
-    //   available_for_child: values.available_for_child,
-    //   link: values.link,
-    //   display_text: values.display_text,
-
-    // });
-    // if (res?.status_code == 200) {
-    //   router.back();
-    //   return;
-    // } else if (res?.status_code == 400) {
-    //   setUrlError(true);
-    //   setUrlErrorMsg(res?.error?.link[0]);
-    // }
     const res = await updateNewsDataApi({
       newsfeed_id: dataToUpdate?.id,
       display_text: values.display_text,
@@ -51,7 +36,6 @@ export default function Edit() {
       available_for_child: values.available_for_child,
       submitter_nick_id: dataToUpdate?.submitter_nick_id,
     });
-
     if (res?.status_code == 200) {
       router.back();
       return;
@@ -59,7 +43,6 @@ export default function Edit() {
       setUrlError(true);
       setUrlErrorMsg(res?.error?.link[0]);
     }
-
     setLoading(false);
   };
 

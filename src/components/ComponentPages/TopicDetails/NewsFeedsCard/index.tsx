@@ -49,28 +49,24 @@ const NewsFeedsCard = ({ newsFeed }) => {
             {newsFeed?.length ? (
               <>
                 {!(deleteNews || editNews) && (
-                  // <Link
-                  //   href={
-                  //     isLogin
-                  //       ? "/login"
-                  //       : router.asPath.replace("topic", "editnews")
-                  //   }
-                  // >
                   <a
                     onClick={() => {
-                      setEditNews(true);
-                      setDeleteNews(false);
+                      if (!isLogin) {
+                        setEditNews(true);
+                        setDeleteNews(false);
+                      }
                     }}
                   >
                     <i className={"icon-edit "}></i>Edit News
                   </a>
-                  // </Link>
                 )}
                 {!(deleteNews || editNews) && (
                   <a
                     onClick={() => {
-                      setDeleteNews(true);
-                      setEditNews(false);
+                      if (!isLogin) {
+                        setDeleteNews(true);
+                        setEditNews(false);
+                      }
                     }}
                   >
                     <i className={"icon-delete"}></i>Delete News
@@ -100,7 +96,11 @@ const NewsFeedsCard = ({ newsFeed }) => {
                 return (
                   <li key={news?.id}>
                     <Paragraph>
-                      {news?.display_text}
+                      <Link href={news.link} passHref>
+                        <a target="_blank" rel="noopener noreferrer">
+                          {news?.display_text}
+                        </a>
+                      </Link>
 
                       {!deleteNews && !editNews && (
                         <i> {news?.submitter_nick_name}</i>
@@ -114,20 +114,17 @@ const NewsFeedsCard = ({ newsFeed }) => {
                         </button>
                       )}
                       {editNews && (
-                        // <button disabled={!news.owner_flag}>
                         <Link
                           href={
                             isLogin
                               ? "/login"
                               : `/editnews/${router?.query?.camp[0]}/${router?.query?.camp[1]}/${news?.id}-id`
-                            //  : router.asPath.replace("topic", "editnews")
                           }
                         >
                           <a>
                             <EditTwoTone />
                           </a>
                         </Link>
-                        // </button>
                       )}
                     </Paragraph>
                   </li>
