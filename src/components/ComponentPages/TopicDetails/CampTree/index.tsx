@@ -16,13 +16,12 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
   const [selectedNodeID, setSelectedNodeID] = useState(1);
   const [scoreFilter, setScoreFilter] = useState(filterByScore);
   const router = useRouter();
-
   const onSelect = (
     selectedKeys,
     e: { selected; selectedNodes; node; event }
   ) => {
-    console.log("selected", selectedKeys);
     if (selectedKeys.join() === "custom" || selectedKeys.join() === "") {
+      console.log("selected", selectedKeys, e);
     } else {
       setSelectedNodeID(+selectedKeys.join(""));
       getSelectedNode(+selectedKeys.join());
@@ -76,7 +75,7 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
                     title={
                       <p
                         onClick={() => {
-                          "supportCamp";
+                          console.log("supportCamp");
                         }}
                       >{`<Start new supporting camp here>`}</p>
                     }

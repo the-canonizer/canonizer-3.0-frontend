@@ -66,4 +66,7 @@ export const validations: ErrorContainer = {
   campUrl:
     "The camp about url format is invalid. (Example: https://www.example.com?post=1234)",
   campAlpha: "Camp name can only contain space and alphanumeric characters.",
+  threadReq: "Please enter title!",
+  threadAlpha: "Title can only contain space and alphanumeric characters.",
+  Max100: "Maximum 100 character allowed!",
 };

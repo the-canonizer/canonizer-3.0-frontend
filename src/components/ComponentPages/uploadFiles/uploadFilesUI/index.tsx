@@ -125,7 +125,7 @@ const UploadFileUI = ({
 
   const router = useRouter();
   const campRoute = () => {
-    router.push("/create-new-topic");
+    router.push("/create/topic");
   };
   const validateMessages = {
     required: "${name} is required !",
