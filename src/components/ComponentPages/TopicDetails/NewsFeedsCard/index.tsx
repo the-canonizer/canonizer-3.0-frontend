@@ -15,7 +15,6 @@ import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 const { Paragraph } = Typography;
 
 const NewsFeedsCard = ({ newsFeed }) => {
-  console.log("newfeed in newsfeedcard index", newsFeed);
   const isLogin = useAuthentication();
   const [deleteNews, setDeleteNews] = useState(false);
   const [editNews, setEditNews] = useState(false);

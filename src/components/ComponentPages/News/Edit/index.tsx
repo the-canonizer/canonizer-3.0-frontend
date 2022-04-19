@@ -17,7 +17,6 @@ export default function Edit() {
   const dataToUpdate = useSelector(
     (state: RootState) => state?.campNews?.campNews?.newsToEdit
   );
-  console;
   const [loading, setLoading] = useState(false);
   const [urlErrorMsg, setUrlErrorMsg] = useState("");
   const [urlError, setUrlError] = useState(false);

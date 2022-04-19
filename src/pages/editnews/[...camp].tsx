@@ -14,7 +14,6 @@ export default function EditNewsPage({ news }) {
   const isLogin = useAuthentication();
   const dispatch = useDispatch();
   dispatch(setCampNewsToEdit(news));
-  console.log("news in edit", news);
   useEffect(() => {
     if (isLogin === true) {
       router.replace("/login");

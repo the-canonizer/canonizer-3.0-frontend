@@ -34,7 +34,6 @@ export default class campNewsRequest extends Request {
     );
   }
   static getCampEditNewsData(reqBody) {
-    console.log("reqbody in edit news",reqBody)
     return new Request(
       K.Network.URL.GetCampEditNewsData,
       K.Network.Method.POST,
@@ -56,7 +55,6 @@ export default class campNewsRequest extends Request {
   }
 
   static deleteNewsData(reqBody) {
- console.log("req body in delete",reqBody)
     return new Request(
       K.Network.URL.DeleteNewsData,
       K.Network.Method.POST,
