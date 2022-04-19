@@ -26,8 +26,6 @@ const CreateCampFormUI = ({
   nickNameList,
   parentCamp,
   campNickName,
-  onValuesChange,
-  crCamp,
 }) => {
   const CardTitle = (
     <span className={styles.cardTitle} data-testid="head">
@@ -47,8 +45,9 @@ const CreateCampFormUI = ({
           layout={"vertical"}
           scrollToFirstError
           validateTrigger={messages.formValidationTypes()}
-          initialValues={{ ...initialValue }}
-          onValuesChange={onValuesChange}
+          initialValues={{
+            ...initialValue,
+          }}
         >
           <Row gutter={16}>
             <Col xs={24} sm={12}>
@@ -92,7 +91,7 @@ const CreateCampFormUI = ({
                   label={labels.cr_parent_camp}
                   name="parent_camp_num"
                   {...parentCampRule}
-                  initialValue={crCamp.camp_num || +topicData?.parent_camp_num}
+                  initialValue={topicData?.camp_num}
                 >
                   <Select allowClear size={"large"} placeholder="Parent camp">
                     {parentCamp.map((camp) => (
@@ -108,10 +107,10 @@ const CreateCampFormUI = ({
                   label={labels.cr_parent_camp}
                   name="parent_camp_num"
                   {...parentCampRule}
-                  initialValue={crCamp.camp_num || +topicData?.parent_camp_num}
+                  initialValue={topicData?.camp_num}
                 >
                   <Select allowClear size={"large"} placeholder="Parent camp">
-                    <Option value={+topicData?.parent_camp_num}>
+                    <Option value={topicData?.camp_num}>
                       {topicData?.camp_name}
                     </Option>
                   </Select>

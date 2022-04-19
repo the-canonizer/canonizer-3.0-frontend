@@ -360,3 +360,20 @@ export const campAboutUrlRule = {
     },
   ],
 };
+
+export const threadTitleRule = {
+  rules: [
+    {
+      required: true,
+      message: validations.threadReq,
+    },
+    {
+      max: 100,
+      message: validations.Max100,
+    },
+    {
+      pattern: patterns.alphaNumSpace,
+      message: validations.threadAlpha,
+    },
+  ],
+};

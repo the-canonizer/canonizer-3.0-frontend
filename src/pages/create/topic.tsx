@@ -1,10 +1,10 @@
 import { useDispatch } from "react-redux";
 
-import { getCanonizedNameSpacesApi } from "../network/api/homePageApi";
-import CreateNewTopic from "../components/ComponentPages/CreateNewTopic";
+import { getCanonizedNameSpacesApi } from "../../network/api/homePageApi";
+import CreateNewTopic from "../../components/ComponentPages/CreateNewTopic";
 
-import Layout from "../hoc/layout";
-import { setCanonizedNameSpaces } from "../store/slices/homePageSlice";
+import Layout from "../../hoc/layout";
+import { setCanonizedNameSpaces } from "../../store/slices/homePageSlice";
 
 const CreateNewTopicPage = ({ nameSpacesList }) => {
   const dispatch = useDispatch();
@@ -13,7 +13,7 @@ const CreateNewTopicPage = ({ nameSpacesList }) => {
 
   return (
     <>
-      <Layout routeName={"create-new-topic"}>
+      <Layout routeName={"/create/topic"}>
         <CreateNewTopic />
       </Layout>
     </>

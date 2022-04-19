@@ -6,7 +6,7 @@ import styles from "../topicDetails.module.scss";
 
 const { Paragraph, Title } = Typography;
 
-const CampStatementCard = ({ myRefToCampStatement }) => {
+const CampStatementCard = ({ myRefToCampStatement, onCampForumClick }) => {
   const { campStatement } = useSelector((state: RootState) => ({
     campStatement: state?.topicDetails?.campStatement,
   }));
@@ -32,7 +32,9 @@ const CampStatementCard = ({ myRefToCampStatement }) => {
           <CustomButton className="btn-green">
             Manage/Edit Camp Statement
           </CustomButton>
-          <CustomButton className="btn-blue">Camp Forum</CustomButton>
+          <CustomButton className="btn-blue" onClick={onCampForumClick}>
+            Camp Forum
+          </CustomButton>
         </>,
       ]}
     >

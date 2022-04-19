@@ -75,6 +75,11 @@ const NetworkConstants = {
     //footer
 
     GetFooterSocialLinks: `${BaseCanonizerApiUrl}/get-social-media-links`,
+
+    // Camp Forum
+    ThreadsList: `${BaseCanonizerApiUrl}/thread/list`,
+    ThreadCreate: `${BaseCanonizerApiUrl}/thread/save`,
+    ThreadUpdate: `${BaseCanonizerApiUrl}/thread/update`,
   
     //camp news feed add edit update
     GetCampEditNewsData:`${BaseCanonizerApiUrl}/edit-camp-newsfeed`,    
