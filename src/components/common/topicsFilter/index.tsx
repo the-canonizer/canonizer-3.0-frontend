@@ -190,11 +190,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
     <>
       <div className="leftSideBar_Card">
         <div className="btnsWrap">
-          <Button
-            size="large"
-            className="mb-3 btn"
-            onClick={campRoute}
-          >
+          <Button size="large" className="mb-3 btn" onClick={campRoute}>
             <i className="icon-topic"></i> Create New Topic
           </Button>
           {isCampBtnVisible ? (

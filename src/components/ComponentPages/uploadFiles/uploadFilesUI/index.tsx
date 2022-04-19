@@ -54,7 +54,7 @@ import {
   showFolder,
 } from "../../../../store/slices/uiSlice";
 import Item from "antd/lib/list/Item";
-
+import CreateFolder from "../CreateFolder";
 const UploadFileUI = ({
   input,
   setInput,
@@ -118,7 +118,7 @@ const UploadFileUI = ({
   const uploadOptionsShow = () => dispatch(showUploadOptions());
   const hideButtonAdd = () => dispatch(hideAddButton());
   const shownAddButton = () => dispatch(showAddButton());
-  const StatushideFile = () => dispatch(hideFileStatus());
+  const StatusHideFile = () => dispatch(hideFileStatus());
   const crossBtnhide = () => dispatch(hideCrossBtn());
   const showFiles = () => dispatch(showUploadFiles());
   const shownFolder = () => dispatch(showFolder());
@@ -133,33 +133,33 @@ const UploadFileUI = ({
   const menu = (i, obj) => (
     <Menu>
       <Menu.Item>
-        <a
+        <span
           onClick={() => {
             Openfolder(i);
             setFolderIndex(i);
           }}
         >
           Open folder
-        </a>
+        </span>
       </Menu.Item>
       <Menu.Item>
-        <a onClick={() => editFolder(obj)}>Edit folder</a>
+        <span onClick={() => editFolder(obj)}>Edit folder</span>
       </Menu.Item>
       <Menu.Item>
-        <a
+        <span
           onClick={() => {
             removeFiles(obj, {}, fileLists);
           }}
         >
           Delete folder
-        </a>
+        </span>
       </Menu.Item>
     </Menu>
   );
   const menu_files = (i, item) => (
     <Menu>
       <Menu.Item>
-        <a
+        <span
           className={styles.high_light}
           onClick={() =>
             setPreview({
@@ -170,28 +170,27 @@ const UploadFileUI = ({
           }
         >
           <EyeTwoTone /> View File
-        </a>
+        </span>
       </Menu.Item>
       <Menu.Item>
-        <a
+        <span
           className={styles.high_light}
           onClick={() => {
             navigator.clipboard.writeText(item.name);
           }}
         >
           <CopyTwoTone /> Copy Short Code
-        </a>
-        ,
+        </span>
       </Menu.Item>
       <Menu.Item>
-        <a
+        <span
           className={styles.high_light}
           onClick={() => {
             removeFiles("", item, fileLists);
           }}
         >
           <DeleteTwoTone /> Delete
-        </a>
+        </span>
       </Menu.Item>
     </Menu>
   );
@@ -245,7 +244,7 @@ const UploadFileUI = ({
           <div className={styles.CopyShortCode}>
             <div className={styles.icon_Width}>
               {obj.thumbUrl ? (
-                <img src={obj.thumbUrl} />
+                <Image src={obj.thumbUrl} width={"100"} height={"100"} />
               ) : obj.type == "folder" ? (
                 <FolderFilled className={styles.folder_icons} />
               ) : obj.type == "text/plain" ? (
@@ -347,9 +346,9 @@ const UploadFileUI = ({
               trigger="click"
               zIndex={1}
             >
-              <a className="threeDOt">
+              <div className="threeDOt">
                 <MoreOutlined />
-              </a>
+              </div>
             </Popover>
           </>
         );
@@ -379,12 +378,10 @@ const UploadFileUI = ({
         const innerFileLists = fileLists[i].files.filter((obj) => {
           return obj.size / (1024 * 1024) < 5;
         });
-        console.log(innerFileLists);
         filterFileList.push({ ...fileLists[i], files: innerFileLists });
       }
     }
     setFileLists(filterFileList);
-    // uploadFun()
   };
   const searchFilter = () => {
     return (
@@ -448,7 +445,7 @@ const UploadFileUI = ({
                     <ArrowLeftOutlined
                       onClick={() => {
                         closeFolder();
-                        StatushideFile();
+                        StatusHideFile();
                       }}
                     />{" "}
                     {item.folderName} <FolderOpenOutlined />
@@ -456,32 +453,53 @@ const UploadFileUI = ({
                 }
                 className="FolderfileCard"
               ></Card>
-              {item.files.map((file, i) => {
-                const fileSizeFlag = file.size / (1024 * 1024) > 5;
-                return (
-                  <div
-                    className={styles.After_Upload}
-                    style={fileSizeFlag ? { border: "1px solid red" } : {}}
-                    key={i}
-                  >
-                    <CloseCircleOutlined
-                    // onClick={() =>
-                    //   removeFiles(originNode, file, currFileList,)
-                    // }
-                    />
-                    <img src={file.thumbUrl} height="150px" width="140px" />
-                    <br />
-                    <label>{file.name}</label>
-                    <Input
-                      className="mr0"
-                      value={fileName}
-                      id={fileName}
-                      onChange={(e) => setfileName(e.target.value)}
-                      placeholder="Full Name (with no extension)"
-                    />
-                  </div>
-                );
-              })}
+
+              {!toggleFileView
+                ? item.files.map((file, i) => {
+                    return (
+                      <Card className={styles.files}>
+                        <div className={styles.dropdown_menu}>
+                          {/* <Dropdown overlay={menu_files(i, file)} trigger={["click"]}>
+                      <div
+                        className="ant-dropdown-link"
+                        onClick={(e) => e.preventDefault()}
+                      >
+                        <MoreOutlined className="Menu_Iconss" />
+                      </div>
+                    </Dropdown> */}
+                        </div>
+                        <div className={styles.imageFiles}>
+                          {file.thumbUrl ? (
+                            <Image
+                              alt="Image"
+                              src={file.thumbUrl}
+                              height={"150px"}
+                              width={"140px"}
+                            />
+                          ) : file.type == "text/plain" ? (
+                            <FileTextFilled
+                              className={styles.FileTextTwoOneClass}
+                            />
+                          ) : file.type == "application/pdf" ? (
+                            <FilePdfFilled
+                              className={styles.FilePdfTwoToneColor}
+                            />
+                          ) : (
+                            <FileUnknownFilled
+                              className={styles.FileTextTwoOneClass}
+                            />
+                          )}
+                        </div>
+                        <h3>{file.name.substring(0, 16) + "..."}</h3>
+                        <span>
+                          {moment(file.lastModifiedDate).format(
+                            "MMM DD, YYYY, h:mm:ss A"
+                          )}
+                        </span>
+                      </Card>
+                    );
+                  })
+                : ""}
             </div>
           ) : (
             <div className={"folderId" + i} id={"folderId" + i}>
@@ -498,7 +516,9 @@ const UploadFileUI = ({
                       <div className="folder--wrap">
                         <div
                           className="foldername"
-                          onClick={() => Openfolder(i)}
+                          onClick={() => {
+                            Openfolder(i), setFolderIndex(i);
+                          }}
                         >
                           {item.folderName}
                         </div>
@@ -509,12 +529,12 @@ const UploadFileUI = ({
                       </div>
                       <div className={styles.dropdown}>
                         <Dropdown overlay={menu(i, item)} trigger={["click"]}>
-                          <a
+                          <div
                             className="ant-dropdown-link"
                             onClick={(e) => e.preventDefault()}
                           >
                             <MoreOutlined />
-                          </a>
+                          </div>
                         </Dropdown>
                       </div>
                     </div>
@@ -524,17 +544,17 @@ const UploadFileUI = ({
                 <Card className={styles.files}>
                   <div className={styles.dropdown_menu}>
                     <Dropdown overlay={menu_files(i, item)} trigger={["click"]}>
-                      <a
+                      <div
                         className="ant-dropdown-link"
                         onClick={(e) => e.preventDefault()}
                       >
                         <MoreOutlined className="Menu_Iconss" />
-                      </a>
+                      </div>
                     </Dropdown>
                   </div>
                   <div className={styles.imageFiles}>
                     {item.thumbUrl ? (
-                      <img
+                      <Image
                         alt="Image"
                         src={item.thumbUrl}
                         height={"150px"}
@@ -672,16 +692,11 @@ const UploadFileUI = ({
                 let length = info.fileList.length;
                 if (length) {
                   if (fileStatus) {
-                    if (info.file.status == "uploading") {
-                      fileLists.map((fileitems, index) => {
-                        return (
-                          <div key={index}>
-                            {fileitems.id === selectedFolderID
-                              ? fileitems.files.push(...folderFiles)
-                              : ""}
-                          </div>
-                        );
-                      });
+                    if (
+                      info.file.status == "uploading" &&
+                      info.file.percent == 0
+                    ) {
+                      fileLists[folderIndex].files.push(info.file);
                       setFolderFiles(info.fileList);
                     }
                   } else {
@@ -730,7 +745,7 @@ const UploadFileUI = ({
                       />
                       <div className="imgWrap">
                         {file.thumbUrl ? (
-                          <img
+                          <Image
                             alt="Image"
                             src={file.thumbUrl}
                             height={"150px"}
@@ -834,51 +849,16 @@ const UploadFileUI = ({
         width={400}
         closeIcon={<CloseCircleOutlined />}
       >
-        <Form
-          name={editModal ? "Edit your folder name" : "Create a Folder"}
-          form={createFolderForm}
+        <CreateFolder
+          editModal={editModal}
+          createFolderForm={createFolderForm}
           onFinish={onFinish}
           validateMessages={validateMessages}
-          layout="vertical"
-          scrollToFirstError
-        >
-          <Form.Item
-            label="Folder Name (Limit 15 Chars*)"
-            name="folderName"
-            rules={[
-              { required: true },
-              {
-                pattern: new RegExp(/^[A-Z ]*$/i),
-                message: "field does not accept numbers",
-              },
-            ]}
-          >
-            <Input
-              type="text"
-              value={editModal ? rename : input}
-              onChange={(e) => {
-                editModal
-                  ? setRename(e.target.value)
-                  : setInput(e.target.value);
-              }}
-              placeholder="Enter name of the Folder"
-              maxLength={15}
-            />
-          </Form.Item>
-
-          <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              className="ant-btn ant-btn-orange ant-btn-lg"
-              style={{
-                width: "100%",
-              }}
-            >
-              {editModal ? "Update" : "Create"}
-            </Button>
-          </Form.Item>
-        </Form>
+          rename={rename}
+          input={input}
+          setRename={setRename}
+          setInput={setInput}
+        />
       </Modal>
 
       <Modal
@@ -889,10 +869,11 @@ const UploadFileUI = ({
           setPreview({ ...preview, previewVisible: false });
         }}
       >
-        <img
+        <Image
           alt="example"
-          style={{ width: "100%" }}
           src={preview.previewPath}
+          width={"472px"}
+          height={"472px"}
         />
       </Modal>
     </>

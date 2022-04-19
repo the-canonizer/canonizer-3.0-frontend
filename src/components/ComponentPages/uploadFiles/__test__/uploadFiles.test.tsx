@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "../../../../utils/testUtils";
 
-import UploadFileUI from "../uploadFilesUI";
+import UploadFileUI from "../UploadFilesUI";
 import messages from "../../../../messages";
 const { labels, placeholders, validations } = messages;
 
@@ -65,7 +65,6 @@ describe("Upload File Page", () => {
         addNewFile={addNewFile}
         Openfolder={Openfolder}
         removeFiles={removeFiles}
-        onFinish={onFinish}
       />
     );
     expect(screen.getByText(labels.uploadFiles)).toBeTruthy();
@@ -93,7 +92,6 @@ describe("Upload File Page", () => {
         addNewFile={addNewFile}
         Openfolder={Openfolder}
         removeFiles={removeFiles}
-        onFinish={onFinish}
       />
     );
     expect(screen.getByText(labels.uploadFiles)).toBeTruthy();

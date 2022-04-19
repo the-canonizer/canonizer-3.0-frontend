@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import UploadFileUI from "./uploadFilesUI";
+import UploadFileUI from "./UploadFilesUI";
 import { Form, Menu } from "antd";
 import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
