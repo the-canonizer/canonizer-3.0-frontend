@@ -22,6 +22,7 @@ import {
   persistStore,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import campNewsSlice from "./slices/news";
 // reducers
 
 let reducers = combineReducers({
@@ -31,6 +32,7 @@ let reducers = combineReducers({
   ui: UiReducer,
   topic: TopicSlice,
   filters: filtersSlice,
+  campNews: campNewsSlice,
 });
 
 const persistConfig = {

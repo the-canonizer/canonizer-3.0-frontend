@@ -21,7 +21,6 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
     selectedKeys,
     e: { selected; selectedNodes; node; event }
   ) => {
-    console.log("selected", selectedKeys);
     if (selectedKeys.join() === "custom" || selectedKeys.join() === "") {
     } else {
       setSelectedNodeID(+selectedKeys.join(""));
