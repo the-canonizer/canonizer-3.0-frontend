@@ -53,7 +53,6 @@ const UploadFiles = () => {
   const hideFiles = () => dispatch(hideUploadFiles());
 
   const [input, setInput] = useState("");
-  const [fileName, setfileName] = useState("");
   const [selectedFolderID, setSelectedFolderID] = useState("");
   const [fileLists, setFileLists] = useState([]);
   const [folderFiles, setFolderFiles] = useState([]);
@@ -147,8 +146,6 @@ const UploadFiles = () => {
     <UploadFileUI
       input={input}
       setInput={setInput}
-      fileName={fileName}
-      setfileName={setfileName}
       selectedFolderID={selectedFolderID}
       fileLists={fileLists}
       setFileLists={setFileLists}

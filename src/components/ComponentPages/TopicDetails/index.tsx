@@ -22,6 +22,8 @@ import SupportTreeCard from "./SupportTreeCard";
 import { BackTop, Dropdown, Menu, Button } from "antd";
 import { Spin } from "antd";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
+
+import useAuthentication from "../../../../src/hooks/isUserAuthenticated";
 import {
   MoreOutlined,
   FileTextOutlined,
@@ -31,8 +33,10 @@ import Link from "next/link";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 
 const TopicDetails = () => {
+  const isLogin = useAuthentication();
   const didMount = useRef(false);
   let myRefToCampStatement = useRef(null);
+
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [getTreeLoadingIndicator, setGetTreeLoadingIndicator] = useState(false);
   const router = useRouter();
@@ -46,6 +50,7 @@ const TopicDetails = () => {
       topicRecord: state?.topicDetails?.currentTopicRecord,
       campRecord: state?.topicDetails?.currentCampRecord,
     }));
+
   useEffect(() => {
     async function getTreeApiCall() {
       setGetTreeLoadingIndicator(true);
@@ -101,6 +106,8 @@ const TopicDetails = () => {
       as_of_date: asofdate,
     };
 
+    let { camp_num, topic_num } = reqBody;
+
     await Promise.all([
       getNewsFeedApi(reqBody),
       getCanonizedCampStatementApi(reqBody),
@@ -118,25 +125,56 @@ const TopicDetails = () => {
 
     const data = {
       message: null,
-      topic_num: queryParams.camp[0],
+      topic_num: topicRecord[0]?.topic_num,
       topic_name: topicRecord[0]?.topic_name,
       camp_name: topicRecord[0]?.camp_name,
       parent_camp_num: topicRecord[0]?.camp_num,
     };
 
-    router.push({
-      pathname: "/create-new-camp",
-    });
+    const topicName = topicRecord[0]?.topic_name.replaceAll(" ", "-");
+    const campName = campRecord[0]?.parentCamps[0]?.camp_name.replaceAll(
+      " ",
+      "-"
+    );
+
+    router.push(
+      `/camp/create/${topicRecord[0]?.topic_num}-${topicName}/${campRecord[0]?.camp_num}-${campName}`
+    );
 
     setCurrentTopics(data);
   };
 
+  const onCampForumClick = () => {
+    // const queryParams = router.query;
+
+    // const data = {
+    //   message: null,
+    //   topic_num: queryParams.camp[0],
+    //   topic_name: topicRecord[0]?.topic_name,
+    //   camp_name: topicRecord[0]?.camp_name,
+    //   parent_camp_num: topicRecord[0]?.camp_num,
+    // };
+    // setCurrentTopics(data);
+    const topicName = topicRecord[0]?.topic_name.replaceAll(" ", "-");
+    const campName = campRecord[0]?.parentCamps[0]?.camp_name.replaceAll(
+      " ",
+      "-"
+    );
+
+    router.push(
+      `/forum/${topicRecord[0]?.topic_num}-${topicName}/${campRecord[0]?.camp_num}-${campName}/threads`
+    );
+  };
   const campForumDropdownMenu = (
     <Menu className={styles.campForumDropdownMenu}>
       <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
-        <a rel="noopener noreferrer" href="/add-news">
-          Add News
-        </a>
+        <Link
+          href={isLogin ? "/login" : router.asPath.replace("topic", "addnews")}
+        >
+          <a rel="noopener noreferrer" href="/add-news">
+            Add News
+          </a>
+        </Link>
       </Menu.Item>
       <Menu.Item icon={<i className="icon-subscribe"></i>}>
         Subscribe to Entire Topic
@@ -156,7 +194,6 @@ const TopicDetails = () => {
       </Menu.Item>
     </Menu>
   );
-
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
@@ -180,7 +217,7 @@ const TopicDetails = () => {
                         key={camp?.camp_num}
                       >
                         <a>
-                          {index !== 0 && "/"}
+                          {index !== 0 && "/ "}
                           {`${camp?.camp_name}`}
                         </a>
                       </Link>
@@ -224,9 +261,11 @@ const TopicDetails = () => {
               getSelectedNode={getSelectedNode}
             />
           </Spin>
-
           <Spin spinning={loadingIndicator} size="large">
-            <CampStatementCard myRefToCampStatement={myRefToCampStatement} />
+            <CampStatementCard
+              myRefToCampStatement={myRefToCampStatement}
+              onCampForumClick={onCampForumClick}
+            />
           </Spin>
 
           <Spin spinning={loadingIndicator} size="large">

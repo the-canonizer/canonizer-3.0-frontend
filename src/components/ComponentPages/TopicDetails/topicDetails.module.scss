@@ -87,6 +87,17 @@
         }
     }
 }
+.breadcrumbLinks {
+    display: flex;
+    font-size: 18px;
+    flex-wrap: wrap;
+    a {
+        font-size: 18px;
+        color: #2E68DB !important;
+        font-weight: 400;
+        white-space: nowrap;
+    }
+}
 
 .campForumDropdownMenu {
     &>li {
