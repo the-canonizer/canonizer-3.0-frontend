@@ -53,7 +53,7 @@ export default function CampList() {
   ];
 
   const campRoute = () => {
-    router.push("/create-new-topic");
+    router.push("/create/topic");
   };
 
   const createdData = useSelector(
@@ -73,9 +73,16 @@ export default function CampList() {
       parent_camp_num: "1",
     };
 
-    router.push({
-      pathname: "/create-new-camp",
-    });
+    // const topicName = topicRecord[0]?.topic_name.replaceAll(" ", "-");
+    // const campName = campRecord[0]?.parentCamps[0]?.camp_name.replaceAll(
+    //   " ",
+    //   "-"
+    // );
+
+    // router.push(
+    //   `/camp/create/${topicRecord[0]?.topic_num}-${topicName}/${campRecord[0]?.camp_num}-${campName}`
+    // );
+
     setCurrentTopics(data);
   };
 

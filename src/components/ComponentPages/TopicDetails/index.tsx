@@ -125,15 +125,21 @@ const TopicDetails = () => {
 
     const data = {
       message: null,
-      topic_num: queryParams.camp[0],
+      topic_num: topicRecord[0]?.topic_num,
       topic_name: topicRecord[0]?.topic_name,
       camp_name: topicRecord[0]?.camp_name,
       parent_camp_num: topicRecord[0]?.camp_num,
     };
 
-    router.push({
-      pathname: "/create-new-camp",
-    });
+    const topicName = topicRecord[0]?.topic_name.replaceAll(" ", "-");
+    const campName = campRecord[0]?.parentCamps[0]?.camp_name.replaceAll(
+      " ",
+      "-"
+    );
+
+    router.push(
+      `/camp/create/${topicRecord[0]?.topic_num}-${topicName}/${campRecord[0]?.camp_num}-${campName}`
+    );
 
     setCurrentTopics(data);
   };
