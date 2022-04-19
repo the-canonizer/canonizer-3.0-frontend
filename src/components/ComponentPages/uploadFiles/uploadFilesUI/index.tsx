@@ -32,7 +32,6 @@ import {
   DeleteTwoTone,
 } from "@ant-design/icons";
 import Image from "next/image";
-import PdfImage from "../../../../assets/image/png.png";
 import styles from "./UploadFile.module.scss";
 import { useRouter } from "next/router";
 import moment from "moment";
@@ -53,7 +52,6 @@ import {
   showUploadFiles,
   showFolder,
 } from "../../../../store/slices/uiSlice";
-import Item from "antd/lib/list/Item";
 import CreateFolder from "../CreateFolder";
 const UploadFileUI = ({
   input,
@@ -457,7 +455,7 @@ const UploadFileUI = ({
               {!toggleFileView
                 ? item.files.map((file, i) => {
                     return (
-                      <Card className={styles.files}>
+                      <Card className={styles.files} key={i}>
                         <div className={styles.dropdown_menu}>
                           {/* <Dropdown overlay={menu_files(i, file)} trigger={["click"]}>
                       <div
