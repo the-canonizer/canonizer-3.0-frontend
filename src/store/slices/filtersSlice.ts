@@ -14,7 +14,6 @@ export const filtersSlice = createSlice({
       algorithm: "blind_popularity",
       search: "",
       includeReview: false,
-      onlyMyTopics: false,
     },
   },
   reducers: {

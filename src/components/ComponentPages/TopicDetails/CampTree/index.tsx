@@ -16,13 +16,12 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
   const [selectedNodeID, setSelectedNodeID] = useState(1);
   const [scoreFilter, setScoreFilter] = useState(filterByScore);
   const router = useRouter();
-  debugger;
   const onSelect = (
     selectedKeys,
     e: { selected; selectedNodes; node; event }
   ) => {
-    console.log("selected", selectedKeys);
     if (selectedKeys.join() === "custom" || selectedKeys.join() === "") {
+      console.log("selected", selectedKeys, e);
     } else {
       setSelectedNodeID(+selectedKeys.join(""));
       getSelectedNode(+selectedKeys.join());
@@ -69,13 +68,14 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
                 }
                 key={data[item].camp_id}
               >
-                {selectedNodeID === data[item].camp_id && (
+                {data[item].camp_id ===
+                  +router?.query?.camp?.at(1)?.split("-")?.at(0) && (
                   <TreeNode
                     key={"custom"}
                     title={
                       <p
                         onClick={() => {
-                          "supportCamp";
+                          console.log("supportCamp");
                         }}
                       >{`<Start new supporting camp here>`}</p>
                     }
@@ -95,7 +95,11 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
   return tree ? (
     <Tree
       showLine={{ showLeafIcon: false }}
-      defaultExpandedKeys={["1"]}
+      defaultExpandedKeys={[
+        +router?.query?.camp?.at(1)?.split("-")?.at(0) == 1
+          ? 2
+          : +router?.query?.camp?.at(1)?.split("-")?.at(0),
+      ]}
       onSelect={onSelect}
       autoExpandParent={true}
       // filterTreeNode={filterTreeNode}
