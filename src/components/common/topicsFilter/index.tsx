@@ -188,17 +188,17 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
 
   return (
     <>
-      <div className={styles.card}>
-        <div className={styles.btnsWrap}>
+      <div className="leftSideBar_Card">
+        <div className="btnsWrap">
           <Button
             size="large"
-            className={"mb-3 " + styles.btn}
+            className="mb-3 btn"
             onClick={campRoute}
           >
             <i className="icon-topic"></i> Create New Topic
           </Button>
           {isCampBtnVisible ? (
-            <Button size="large" className={styles.btn} onClick={onCreateCamp}>
+            <Button size="large" className="btn" onClick={onCreateCamp}>
               <i className="icon-camp"></i> Create New Camp
             </Button>
           ) : null}
