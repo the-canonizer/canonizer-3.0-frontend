@@ -144,6 +144,27 @@ const TopicDetails = () => {
     setCurrentTopics(data);
   };
 
+  const onCampForumClick = () => {
+    // const queryParams = router.query;
+
+    // const data = {
+    //   message: null,
+    //   topic_num: queryParams.camp[0],
+    //   topic_name: topicRecord[0]?.topic_name,
+    //   camp_name: topicRecord[0]?.camp_name,
+    //   parent_camp_num: topicRecord[0]?.camp_num,
+    // };
+    // setCurrentTopics(data);
+    const topicName = topicRecord[0]?.topic_name.replaceAll(" ", "-");
+    const campName = campRecord[0]?.parentCamps[0]?.camp_name.replaceAll(
+      " ",
+      "-"
+    );
+
+    router.push(
+      `/forum/${topicRecord[0]?.topic_num}-${topicName}/${campRecord[0]?.camp_num}-${campName}/threads`
+    );
+  };
   const campForumDropdownMenu = (
     <Menu className={styles.campForumDropdownMenu}>
       <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
@@ -241,7 +262,10 @@ const TopicDetails = () => {
             />
           </Spin>
           <Spin spinning={loadingIndicator} size="large">
-            <CampStatementCard myRefToCampStatement={myRefToCampStatement} />
+            <CampStatementCard
+              myRefToCampStatement={myRefToCampStatement}
+              onCampForumClick={onCampForumClick}
+            />
           </Spin>
 
           <Spin spinning={loadingIndicator} size="large">

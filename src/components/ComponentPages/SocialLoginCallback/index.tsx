@@ -16,7 +16,6 @@ function SocialLoginCallback() {
 
   const sendData = async (data) => {
     const redirectTab = localStorage.getItem("redirectTab");
-
     if (!redirectTab) {
       const response = await socialLoginCallback(data, router);
 
@@ -47,6 +46,7 @@ function SocialLoginCallback() {
 
   useEffect(() => {
     setIsLoading(true);
+
     try {
       const queryParams = router.query;
       const params = getSearchedParams();
