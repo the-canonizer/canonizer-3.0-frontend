@@ -1,7 +1,7 @@
 import Edit from "../../components/ComponentPages/News/Edit";
 import Layout from "../../hoc/layout";
 import SideBarNoFilter from "../../components/ComponentPages/Home/SideBarNoFilter";
-import { getCampNewsDataApi } from "../../network/api/campNewsApi";
+import { getCampEditNewsDataApi } from "../../network/api/campNewsApi";
 
 import useAuthentication from "../../../src/hooks/isUserAuthenticated";
 import { setCampNewsToEdit } from "src/store/slices/news";
@@ -14,10 +14,11 @@ export default function EditNewsPage({ news }) {
   const isLogin = useAuthentication();
   const dispatch = useDispatch();
   dispatch(setCampNewsToEdit(news));
+  console.log("news in edit", news);
   useEffect(() => {
     if (isLogin === true) {
       router.replace("/login");
-    } else if (news.length === 0 && isLogin === false) {
+    } else if (news === {} && isLogin === false) {
       router.replace(`/topic/${router.query.camp[0]}/${router.query.camp[0]}`);
     }
   }, []);
@@ -38,20 +39,14 @@ export default function EditNewsPage({ news }) {
 
 export async function getServerSideProps(context) {
   const { query } = context;
-  const reqBody = {
-    topic_num: +query?.camp[0]?.split("-")[0],
-    camp_num: +query?.camp[1]?.split("-")[0],
-  };
-  const id = +query?.camp[2]?.split("-")[0];
+  // const reqBody = {
+  //   topic_num: +query?.camp[0]?.split("-")[0],
+  //   camp_num: +query?.camp[1]?.split("-")[0],
+  // };
+  const reqBody = { newsfeed_id: +query?.camp[2]?.split("-")[0] };
 
-  const response = await getCampNewsDataApi(reqBody);
-  let res = {};
-  response?.forEach((resp) => {
-    if (resp.id === id) {
-      res = resp;
-    }
-  });
-  const news = res || {};
+  const res = await getCampEditNewsDataApi(reqBody);
+  const news = (res && res[0]) || {};
   return {
     props: {
       news,

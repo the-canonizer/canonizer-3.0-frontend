@@ -26,6 +26,17 @@ export const getCampNewsDataApi = async (body) => {
     message.error(error.message);
   }
 };
+export const getCampEditNewsDataApi = async (body) => {
+  try {
+    const  editNewsData = await NetworkCall.fetch(
+      campNewsRequest.getCampEditNewsData(body)
+    );
+
+    return editNewsData.data;
+  } catch (error) {
+    message.error(error.message);
+  }
+};
 
 export const updateNewsDataApi = async (body) => {
   try {

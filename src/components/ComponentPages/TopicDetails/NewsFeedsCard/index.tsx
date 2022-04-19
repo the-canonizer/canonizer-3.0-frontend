@@ -1,6 +1,5 @@
 import { Card, Typography } from "antd";
 import Link from "next/link";
-<<<<<<< HEAD
 import { useState } from "react";
 import { deleteNewsDataApi } from "src/network/api/campNewsApi";
 import { getNewsFeedApi } from "src/network/api/campDetailApi";
@@ -12,13 +11,11 @@ import {
 } from "@ant-design/icons";
 import { useRouter } from "next/router";
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
-=======
-import { DeleteOutlined } from "@ant-design/icons";
->>>>>>> caca3cb8ff8e5aca7c6f29cba365fd9d39fd21ef
 
 const { Paragraph } = Typography;
 
 const NewsFeedsCard = ({ newsFeed }) => {
+  console.log("newfeed in newsfeedcard index", newsFeed);
   const isLogin = useAuthentication();
   const [deleteNews, setDeleteNews] = useState(false);
   const [editNews, setEditNews] = useState(false);
@@ -27,7 +24,9 @@ const NewsFeedsCard = ({ newsFeed }) => {
 
   const handleDeleteCamp = async (id) => {
     setLoading(true);
-    const res = await deleteNewsDataApi(id);
+    const res = await deleteNewsDataApi({
+      newsfeed_id: id,
+    });
     if (res?.status_code == 200) {
       const reqBody = {
         topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
@@ -94,7 +93,6 @@ const NewsFeedsCard = ({ newsFeed }) => {
               </>
             ) : null}
           </>
-<<<<<<< HEAD
         }
       >
         <ul className="newsFeedsList">
@@ -103,20 +101,21 @@ const NewsFeedsCard = ({ newsFeed }) => {
                 return (
                   <li key={news?.id}>
                     <Paragraph>
-                      <a>{news?.display_text} </a>
+                      {news?.display_text}
 
                       {!deleteNews && !editNews && (
-                        <i> nickname {news?.submitter_nick_name}</i>
+                        <i> {news?.submitter_nick_name}</i>
                       )}
                       {deleteNews && (
                         <button
-                          disabled={!news.delete_flag}
+                          disabled={!news.owner_flag}
                           onClick={() => handleDeleteCamp(news?.id)}
                         >
                           <DeleteOutlined />
                         </button>
                       )}
                       {editNews && (
+                        // <button disabled={!news.owner_flag}>
                         <Link
                           href={
                             isLogin
@@ -125,8 +124,11 @@ const NewsFeedsCard = ({ newsFeed }) => {
                             //  : router.asPath.replace("topic", "editnews")
                           }
                         >
-                          <EditTwoTone />
+                          <a>
+                            <EditTwoTone />
+                          </a>
                         </Link>
+                        // </button>
                       )}
                     </Paragraph>
                   </li>
@@ -136,29 +138,6 @@ const NewsFeedsCard = ({ newsFeed }) => {
         </ul>
       </Card>
     </Spin>
-=======
-        ) : null
-      }
-    >
-      <ul className="newsFeedsList">
-        {newsFeed?.length
-          ? newsFeed?.map((news) => {
-              return (
-                <li key={news.id}>
-                  <Paragraph>
-                    <Link href={news?.link} passHref>
-                      <>
-                        <a>{news?.display_text}</a> <DeleteOutlined />
-                      </>
-                    </Link>
-                  </Paragraph>
-                </li>
-              );
-            })
-          : "No News Found"}
-      </ul>
-    </Card>
->>>>>>> caca3cb8ff8e5aca7c6f29cba365fd9d39fd21ef
   );
 };
 export default NewsFeedsCard;

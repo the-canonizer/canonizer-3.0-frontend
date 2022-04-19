@@ -6,7 +6,7 @@ import { updateNewsDataApi } from "../../../../network/api/campNewsApi";
 import styles from "../addEditNews.module.scss";
 import { Spin, Typography } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
-
+import { RootState } from "src/store";
 import { useSelector } from "react-redux";
 
 const { Text } = Typography;

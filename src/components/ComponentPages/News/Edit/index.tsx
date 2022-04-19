@@ -2,8 +2,7 @@ import { Form, Button, Checkbox } from "antd";
 import "antd/dist/antd.css";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { addNewsDatapi } from "../../../../network/api/campNewsApi";
-import { getNickNameList } from "../../../../network/api/userApi";
+import { updateNewsDataApi } from "../../../../network/api/campNewsApi";
 import { Row, Col, Card } from "antd";
 import styles from "../addEditNews.module.scss";
 import { Spin, Typography, Input, Select } from "antd";
@@ -18,11 +17,10 @@ export default function Edit() {
   const dataToUpdate = useSelector(
     (state: RootState) => state?.campNews?.campNews?.newsToEdit
   );
-
+  console;
   const [loading, setLoading] = useState(false);
   const [urlErrorMsg, setUrlErrorMsg] = useState("");
   const [urlError, setUrlError] = useState(false);
-  const [nickNameData, setNickNameData] = useState([]);
 
   const router = useRouter();
   const [form] = Form.useForm();
@@ -47,6 +45,22 @@ export default function Edit() {
     //   setUrlError(true);
     //   setUrlErrorMsg(res?.error?.link[0]);
     // }
+    const res = await updateNewsDataApi({
+      newsfeed_id: dataToUpdate?.id,
+      display_text: values.display_text,
+      link: values.link,
+      available_for_child: values.available_for_child,
+      submitter_nick_id: dataToUpdate?.submitter_nick_id,
+    });
+
+    if (res?.status_code == 200) {
+      router.back();
+      return;
+    } else if (res?.status_code == 400) {
+      setUrlError(true);
+      setUrlErrorMsg(res?.error?.link[0]);
+    }
+
     setLoading(false);
   };
 
@@ -56,9 +70,6 @@ export default function Edit() {
         form={form}
         name="basic"
         layout={"vertical"}
-        initialValues={{
-          available_for_child: 0,
-        }}
         initialValues={{
           display_text: dataToUpdate?.display_text,
           link: dataToUpdate?.link,
@@ -130,7 +141,7 @@ export default function Edit() {
             htmlType="submit"
             disabled={loading}
           >
-            Create News
+            Submit
             {loading && <Spin indicator={antIcon} />}
           </Button>
           <Button

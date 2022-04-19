@@ -77,6 +77,7 @@ const NetworkConstants = {
     GetFooterSocialLinks: `${BaseCanonizerApiUrl}/get-social-media-links`,
   
     //camp news feed add edit update
+    GetCampEditNewsData:`${BaseCanonizerApiUrl}/edit-camp-newsfeed`,    
     GetCampNewsData:`${BaseCanonizerApiUrl}/get-camp-newsfeed`,
     UpdateNewsData:`${BaseCanonizerApiUrl}/update-camp-newsfeed`,
     AddNewsData:`${BaseCanonizerApiUrl}/store-camp-newsfeed`,
