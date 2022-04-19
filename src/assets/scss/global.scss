@@ -429,22 +429,28 @@ form {
       color: #000000;
     }
   }
+  .ant-tree-list {
+    .ant-tree-list-holder-inner {
+      &>.ant-tree-treenode-switcher-open:first-child {
+        .treeListItemTitle {
+          font-size: 16px;
+          font-weight: 600;
+          a {
+            color: #2850be;
+          }
+        }
+      }
+    }
+  }
+  .ant-tree-node-selected {
+    a {
+      color: #2850be !important;
+    }
+  }
   .ant-tree-treenode {
     .ant-tree-node-content-wrapper {
       &:hover {
         background-color: transparent;
-      }
-    }
-    &.ant-tree-treenode-leaf-last:first-child,
-    &:nth-child(2) {
-      .treeListItemTitle {
-        font-size: 16px;
-        font-weight: 600;
-      }
-    }
-    &.ant-tree-treenode-leaf-last:first-child {
-      .treeListItemTitle {
-        color: #2850be;
       }
     }
     .ant-tree-node-content-wrapper.ant-tree-node-selected {
