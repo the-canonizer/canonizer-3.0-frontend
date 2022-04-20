@@ -12,13 +12,11 @@ export default class campNewsRequest extends Request {
     return new Request(
       K.Network.URL.AddNewsFeeds,
       K.Network.Method.POST,
-   reqBody,
+      reqBody,
       K.Network.Header.Type.Json,
       {}
     );
   }
-
- 
 
   static getCampNewsData(reqBody) {
     return new Request(
