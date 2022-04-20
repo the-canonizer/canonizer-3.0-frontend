@@ -19,6 +19,9 @@ export default function SocialLoginUi({ isNotLogin = false }) {
     const res = await socialLogin(body);
     try {
       if (res.data) {
+        if (isNotLogin) {
+          localStorage.setItem("rd_s", "rg");
+        }
         window.location.href = res.data.url;
       }
     } catch (error) {
