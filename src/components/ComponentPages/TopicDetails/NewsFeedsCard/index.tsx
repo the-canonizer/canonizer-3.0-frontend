@@ -1,4 +1,4 @@
-import { Card, Typography } from "antd";
+import { Button, Card, Typography } from "antd";
 import Link from "next/link";
 import { useState } from "react";
 import { deleteNewsDataApi } from "src/network/api/campNewsApi";
@@ -6,8 +6,8 @@ import { getNewsFeedApi } from "src/network/api/campDetailApi";
 import { Spin } from "antd";
 import {
   DeleteOutlined,
-  EditTwoTone,
-  CloseSquareTwoTone,
+  EditOutlined,
+  CloseOutlined,
 } from "@ant-design/icons";
 import { useRouter } from "next/router";
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
@@ -77,17 +77,14 @@ const NewsFeedsCard = ({ newsFeed }) => {
                   </a>
                 )}
                 {(deleteNews || editNews) && (
-                  <a
+                  <Button
                     onClick={() => {
                       setDeleteNews(false);
                       setEditNews(false);
                     }}
                   >
-                    <i>
-                      <CloseSquareTwoTone />
-                    </i>
-                    Cancel
-                  </a>
+                    <CloseOutlined /> Cancel
+                  </Button>
                 )}
               </>
             ) : null}
@@ -106,14 +103,15 @@ const NewsFeedsCard = ({ newsFeed }) => {
                         <i> {news?.submitter_nick_name}</i>
                       )}
                       {deleteNews && (
-                        <button
+                        <Button size="small" type="text"
+                          danger
                           disabled={!news.owner_flag}
                           onClick={() => handleDeleteCamp(news?.id)}
                         >
                           <DeleteOutlined />
-                        </button>
+                        </Button>
                       )}
-                      {editNews && (
+                      {/* {editNews && (
                         // <button disabled={!news.owner_flag}>
                         <Link
                           href={
@@ -128,6 +126,13 @@ const NewsFeedsCard = ({ newsFeed }) => {
                           </a>
                         </Link>
                         // </button>
+                      )} */}
+                      {editNews && (
+                        <Button size="small" type="link"
+                          disabled={!news.owner_flag}
+                        >
+                          <EditOutlined />
+                        </Button>
                       )}
                     </Paragraph>
                   </li>
