@@ -13,7 +13,10 @@ import { useRouter } from "next/router";
 import styles from "./campHistory.module.scss";
 import Link from "next/link";
 import { getCampStatementHistoryApi } from "src/network/api/campStatementHistory";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import HistoryCollapse from "./Collapse";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
 
 const { Paragraph, Title, Text } = Typography;
 const { Panel } = Collapse;
@@ -139,9 +142,22 @@ function callback(key) {
 }
 
 export default function CampList() {
+  const [isActive, setisActive] = useState("all");
   const router = useRouter();
 
-  const handleTabButton = (name) => {};
+  const { campStatementHistory } = useSelector((state: RootState) => ({
+    campStatementHistory: state?.topicDetails?.campStatementHistory,
+  }));
+
+  const handleTabButton = async (tabName) => {
+    setisActive(tabName);
+    const reqBody = {
+      topic_num: +router.query.camp[0].split("-")[0],
+      camp_num: +router.query.camp[1].split("-")[0],
+      type: tabName,
+    };
+    await getCampStatementHistoryApi(reqBody);
+  };
   const mockLinks = [
     {
       link: "/",
@@ -170,14 +186,6 @@ export default function CampList() {
     },
   ];
 
-  useEffect(() => {
-    const reqBody = {
-      topic_num: 88,
-      camp_num: 1,
-    };
-    getCampStatementHistoryApi(reqBody);
-  }, []);
-
   const campRoute = () => {
     router.push("/create-new-topic");
   };
@@ -187,12 +195,29 @@ export default function CampList() {
       <div className={styles.wrap}>
         <div className={styles.heading}>
           <Title level={5}>
-            <Text>Topic :</Text> Theories of Consciousness
+            <Text>Topic :</Text>{" "}
+            {campStatementHistory?.length &&
+              campStatementHistory[0].topic?.topic_name}
           </Title>
           <Title level={5}>
-            <Text>Camp :</Text>{" "}
+            <Text>Camp : </Text>{" "}
             <Text className={styles.blueText}>
-              Agreement / Approachable Via Science / Representational Qualia
+              {campStatementHistory?.length &&
+                campStatementHistory[0]?.parentCamp?.map((camp, index) => {
+                  return (
+                    <Link
+                      href={`/topic/${router.query.camp[0]}/${
+                        camp?.camp_num
+                      }-${camp?.camp_name?.split(" ").join("-")}`}
+                      key={camp?.camp_num}
+                    >
+                      <a>
+                        {index !== 0 && "/"}
+                        {`${camp?.camp_name}`}
+                      </a>
+                    </Link>
+                  );
+                })}
             </Text>
           </Title>
         </div>
@@ -222,29 +247,69 @@ export default function CampList() {
 
               <List className={styles.campStatementHistory} size="small">
                 <List.Item
-                  className={`${styles.campStatementViewAll} ${styles.campStatementListItem}`}
+                  className={`${styles.campStatementViewAll} ${
+                    styles.campStatementListItem
+                  } ${isActive == "all" ? styles.active : null}`}
                 >
-                  <a>View All</a>
+                  <a
+                    onClick={() => {
+                      handleTabButton("all");
+                    }}
+                  >
+                    View All
+                  </a>
                 </List.Item>
                 <List.Item
-                  className={`${styles.campStatementObjected}  ${styles.campStatementListItem} ${styles.active}`}
+                  className={`${styles.campStatementObjected}  ${
+                    styles.campStatementListItem
+                  }  ${isActive == "objected" ? styles.active : null}`}
                 >
-                  <a>Objected</a>
+                  <a
+                    onClick={() => {
+                      handleTabButton("objected");
+                    }}
+                  >
+                    Objected
+                  </a>
                 </List.Item>
                 <List.Item
-                  className={`${styles.campStatementLive} ${styles.campStatementListItem}`}
+                  className={`${styles.campStatementLive} ${
+                    styles.campStatementListItem
+                  } ${isActive == "live" ? styles.active : null}`}
                 >
-                  <a>Live</a>
+                  <a
+                    onClick={() => {
+                      handleTabButton("live");
+                    }}
+                  >
+                    Live
+                  </a>
                 </List.Item>
                 <List.Item
-                  className={`${styles.campStatementNotLive} ${styles.campStatementListItem}`}
+                  className={`${styles.campStatementNotLive} ${
+                    styles.campStatementListItem
+                  } ${isActive == "in_review" ? styles.active : null}`}
                 >
-                  <a>Not Live</a>
+                  <a
+                    onClick={() => {
+                      handleTabButton("in_review");
+                    }}
+                  >
+                    Not Live
+                  </a>
                 </List.Item>
                 <List.Item
-                  className={`${styles.campStatementOld} ${styles.campStatementListItem}`}
+                  className={`${styles.campStatementOld} ${
+                    styles.campStatementListItem
+                  } ${isActive == "old" ? styles.active : null}`}
                 >
-                  <a>Old</a>
+                  <a
+                    onClick={() => {
+                      handleTabButton("old");
+                    }}
+                  >
+                    Old
+                  </a>
                 </List.Item>
               </List>
             </div>
@@ -252,7 +317,7 @@ export default function CampList() {
               Compare Statements
             </Button>
           </div>
-          <Space
+          {/* <Space
             direction="vertical"
             className={`${styles.campStatementCollapseObjectedHistory} ${styles.campStatementCollapseHistory}`}
           >
@@ -336,6 +401,16 @@ export default function CampList() {
               {campListColpsummary}
             </Collapse>
           </Space>
+        */}
+          {campStatementHistory?.length &&
+            campStatementHistory[0]?.statement?.map((campHistory, index) => {
+              return (
+                <HistoryCollapse key={index} campStatement={campHistory} />
+              );
+            })}
+          {/* <HistoryCollapse />
+          <HistoryCollapse />
+          <HistoryCollapse /> */}
         </div>
       </div>
     </>
