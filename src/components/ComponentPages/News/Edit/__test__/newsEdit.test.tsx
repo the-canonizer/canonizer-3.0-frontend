@@ -48,13 +48,7 @@ describe("Should render Addnews", () => {
     expect(screen.getByText(/display text/i).textContent).toBe(
       "Display Text (Limit 256 chars)"
     );
-    // expect(screen.getByText(/link/i).textContent).toBe(
-    //   "Link (Limit 2000 chars)"
-    // );
 
-    // expect(screen.getByText("test add")).toBeInTheDocument();
-    // console.log("link", screen.getByText("www.abc.com"));
-    // expect(screen.getByText("www.abc.com")).toBeInTheDocument();
     expect(screen.getAllByRole("textbox")[0]).toHaveValue("test add");
     expect(screen.getAllByRole("textbox")[1]).toHaveValue("www.abc.com");
     expect(

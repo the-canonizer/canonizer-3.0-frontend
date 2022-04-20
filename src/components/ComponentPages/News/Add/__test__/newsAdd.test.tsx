@@ -29,9 +29,7 @@ describe("Should render Addnews", () => {
     expect(screen.getByText(/display text/i).textContent).toBe(
       "Display Text (Limit 256 chars)"
     );
-    // expect(screen.getByText(/link/i).textContent).toBe(
-    //   "Link (Limit 2000 chars)"
-    // );
+
     expect(submitButton.textContent).toBe("Create News");
     expect(cancelButton.textContent).toBe("Cancel");
   });
