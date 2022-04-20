@@ -46,7 +46,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
             {newsFeed?.length ? (
               <>
                 {!(deleteNews || editNews) && (
-                  <Button
+                  <Button type="link"
                     onClick={() => {
                       if (!isLogin) {
                         setEditNews(true);
@@ -58,7 +58,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
                   </Button>
                 )}
                 {!(deleteNews || editNews) && (
-                  <Button
+                  <Button type="link"
                     onClick={() => {
                       if (!isLogin) {
                         setDeleteNews(true);
@@ -70,7 +70,8 @@ const NewsFeedsCard = ({ newsFeed }) => {
                   </Button>
                 )}
                 {(deleteNews || editNews) && (
-                  <Button
+                  <Button type="link"
+                    danger
                     onClick={() => {
                       setDeleteNews(false);
                       setEditNews(false);

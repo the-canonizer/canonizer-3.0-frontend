@@ -514,7 +514,7 @@ body {
 
 .canCard {
   .ant-card-head {
-    padding: 20px;
+    padding: 16px 20px;
     @media screen and (max-width: 576px) {
       .ant-card-head-wrapper {
         flex-direction: column;
@@ -551,6 +551,7 @@ body {
       font-weight: 500;
       display: flex;
       a,
+      button,
       label {
         &:not(:last-child) {
           margin-right: 32px;
@@ -559,12 +560,13 @@ body {
       label {
         font-weight: 500;
       }
-      a {
+      a, .ant-btn {
         font-size: inherit;
         font-weight: inherit;
         display: inline-flex;
         align-items: center;
         line-height: 1;
+        padding: 0;
       }
     }
   }
