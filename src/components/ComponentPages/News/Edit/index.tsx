@@ -1,14 +1,22 @@
-import { Form, Button, Checkbox } from "antd";
-import "antd/dist/antd.css";
 import React, { useState } from "react";
+import {
+  Form,
+  Button,
+  Checkbox,
+  Spin,
+  Typography,
+  Input,
+  Row,
+  Col,
+  Card,
+} from "antd";
 import { useRouter } from "next/router";
-import { updateNewsDataApi } from "../../../../network/api/campNewsApi";
-import { Row, Col, Card } from "antd";
-import styles from "../addEditNews.module.scss";
-import { Spin, Typography, Input } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { RootState } from "src/store";
 import { useSelector } from "react-redux";
+import "antd/dist/antd.css";
+import { updateNewsDataApi } from "../../../../network/api/campNewsApi";
+import styles from "../addEditNews.module.scss";
 
 const antIcon = <LoadingOutlined spin />;
 const { Text } = Typography;
@@ -41,7 +49,7 @@ export default function Edit() {
       return;
     } else if (res?.status_code == 400) {
       setUrlError(true);
-      setUrlErrorMsg(res?.error?.link[0]);
+      setUrlErrorMsg(res?.error?.link && res?.error?.link[0]);
     }
     setLoading(false);
   };

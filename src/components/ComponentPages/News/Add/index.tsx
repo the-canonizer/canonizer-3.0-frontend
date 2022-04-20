@@ -1,13 +1,22 @@
-import { Form, Button, Checkbox } from "antd";
-import "antd/dist/antd.css";
 import React, { useEffect, useState } from "react";
+import {
+  Form,
+  Button,
+  Checkbox,
+  Row,
+  Col,
+  Card,
+  Spin,
+  Typography,
+  Input,
+  Select,
+} from "antd";
 import { useRouter } from "next/router";
+import { LoadingOutlined } from "@ant-design/icons";
+import "antd/dist/antd.css";
+import styles from "../addEditNews.module.scss";
 import { addNewsDatapi } from "../../../../network/api/campNewsApi";
 import { getNickNameList } from "../../../../network/api/userApi";
-import { Row, Col, Card } from "antd";
-import styles from "../addEditNews.module.scss";
-import { Spin, Typography, Input, Select } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
 
 const antIcon = <LoadingOutlined spin />;
 const { Text } = Typography;
@@ -17,13 +26,14 @@ export default function Add() {
   const [urlErrorMsg, setUrlErrorMsg] = useState("");
   const [urlError, setUrlError] = useState(false);
   const [nickNameData, setNickNameData] = useState([]);
-
   const router = useRouter();
   const [form] = Form.useForm();
+
   const goBack = () => {
     setLoading(true);
     router.back();
   };
+
   const onFinish = async (values: any) => {
     setLoading(true);
     const res = await addNewsDatapi({

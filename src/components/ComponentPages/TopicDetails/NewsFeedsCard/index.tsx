@@ -35,6 +35,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
     }
     setLoading(false);
   };
+
   return (
     <Spin spinning={loading} size="large">
       <Card
@@ -49,7 +50,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
             {newsFeed?.length ? (
               <>
                 {!(deleteNews || editNews) && (
-                  <a
+                  <button
                     onClick={() => {
                       if (!isLogin) {
                         setEditNews(true);
@@ -58,10 +59,10 @@ const NewsFeedsCard = ({ newsFeed }) => {
                     }}
                   >
                     <i className={"icon-edit "}></i>Edit News
-                  </a>
+                  </button>
                 )}
                 {!(deleteNews || editNews) && (
-                  <a
+                  <button
                     onClick={() => {
                       if (!isLogin) {
                         setDeleteNews(true);
@@ -70,10 +71,10 @@ const NewsFeedsCard = ({ newsFeed }) => {
                     }}
                   >
                     <i className={"icon-delete"}></i>Delete News
-                  </a>
+                  </button>
                 )}
                 {(deleteNews || editNews) && (
-                  <a
+                  <button
                     onClick={() => {
                       setDeleteNews(false);
                       setEditNews(false);
@@ -83,7 +84,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
                       <CloseSquareTwoTone />
                     </i>
                     Cancel
-                  </a>
+                  </button>
                 )}
               </>
             ) : null}
