@@ -196,7 +196,7 @@ function RegistrationUi({
         </Form.Item>
 
         <Form.Item>
-          <SocialLoginButton />
+          <SocialLoginButton isNotLogin={true} />
         </Form.Item>
         <Form.Item noStyle>
           <Text className={styles.ft_link}>
