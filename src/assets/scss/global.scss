@@ -490,13 +490,6 @@ body {
         background-color: transparent;
       }
     }
-    /* &.ant-tree-treenode-leaf-last:first-child,
-    &:nth-child(2) {
-      .treeListItemTitle {
-        font-size: 16px;
-        font-weight: 600;
-      }
-    } */
     &.ant-tree-treenode-leaf-last:first-child {
       .treeListItemTitle {
         color: #2850be;
@@ -504,10 +497,6 @@ body {
     }
     .ant-tree-node-content-wrapper.ant-tree-node-selected {
       background-color: transparent;
-      & > span > div > span:first-child {
-        color: #f89d15;
-        font-weight: 600;
-      }
     }
   }
 }

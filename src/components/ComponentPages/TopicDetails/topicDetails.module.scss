@@ -18,6 +18,9 @@
             font-weight: 400;
             color: #0F2A4D;
             margin-left: 4px;
+            &_active {
+                font-weight: 600;
+            }
         }
         .treeListItemNumber {
             height: 16px;

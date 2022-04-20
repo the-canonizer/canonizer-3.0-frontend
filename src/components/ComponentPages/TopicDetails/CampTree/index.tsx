@@ -45,7 +45,8 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
                     <div className={"treeListItem " + styles.treeListItem}>
                       <span
                         className={
-                          "treeListItemTitle " + styles.treeListItemTitle
+                          `treeListItemTitle ${data[item].camp_id ===
+                            +router?.query?.camp?.at(1)?.split("-")?.at(0) ? styles.treeListItemTitle_active : '' } ${styles.treeListItemTitle}`
                         }
                       >
                         <Link
