@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Tree } from "antd";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
-import Styles from "../topicDetails.module.scss";
+import styles from "../topicDetails.module.scss";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -42,10 +42,10 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
               <TreeNode
                 title={
                   <>
-                    <div className={"treeListItem " + Styles.treeListItem}>
+                    <div className={"treeListItem " + styles.treeListItem}>
                       <span
                         className={
-                          "treeListItemTitle " + Styles.treeListItemTitle
+                          "treeListItemTitle " + styles.treeListItemTitle
                         }
                       >
                         <Link
@@ -58,7 +58,7 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
                       </span>
                       <span
                         className={
-                          "treeListItemNumber " + Styles.treeListItemNumber
+                          "treeListItemNumber " + styles.treeListItemNumber
                         }
                       >
                         {data[item].score?.toFixed(2)}
@@ -74,6 +74,7 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
                     key={"custom"}
                     title={
                       <p
+                        className={styles.startNewSupportCamp}
                         onClick={() => {
                           console.log("supportCamp");
                         }}

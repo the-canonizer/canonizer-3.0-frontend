@@ -1,14 +1,10 @@
-import { Card, Typography } from "antd";
+import { Button, Card, Typography, Tooltip } from "antd";
 import Link from "next/link";
 import { useState } from "react";
 import { deleteNewsDataApi } from "src/network/api/campNewsApi";
 import { getNewsFeedApi } from "src/network/api/campDetailApi";
 import { Spin } from "antd";
-import {
-  DeleteOutlined,
-  EditTwoTone,
-  CloseSquareTwoTone,
-} from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, CloseOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 
@@ -50,7 +46,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
             {newsFeed?.length ? (
               <>
                 {!(deleteNews || editNews) && (
-                  <button
+                  <Button
                     onClick={() => {
                       if (!isLogin) {
                         setEditNews(true);
@@ -59,10 +55,10 @@ const NewsFeedsCard = ({ newsFeed }) => {
                     }}
                   >
                     <i className={"icon-edit "}></i>Edit News
-                  </button>
+                  </Button>
                 )}
                 {!(deleteNews || editNews) && (
-                  <button
+                  <Button
                     onClick={() => {
                       if (!isLogin) {
                         setDeleteNews(true);
@@ -71,20 +67,17 @@ const NewsFeedsCard = ({ newsFeed }) => {
                     }}
                   >
                     <i className={"icon-delete"}></i>Delete News
-                  </button>
+                  </Button>
                 )}
                 {(deleteNews || editNews) && (
-                  <button
+                  <Button
                     onClick={() => {
                       setDeleteNews(false);
                       setEditNews(false);
                     }}
                   >
-                    <i>
-                      <CloseSquareTwoTone />
-                    </i>
-                    Cancel
-                  </button>
+                    <CloseOutlined /> Cancel
+                  </Button>
                 )}
               </>
             ) : null}
@@ -107,25 +100,46 @@ const NewsFeedsCard = ({ newsFeed }) => {
                         <i> {news?.submitter_nick_name}</i>
                       )}
                       {deleteNews && (
-                        <button
-                          disabled={!news.owner_flag}
-                          onClick={() => handleDeleteCamp(news?.id)}
-                        >
-                          <DeleteOutlined />
-                        </button>
-                      )}
-                      {editNews && (
-                        <Link
-                          href={
-                            isLogin
-                              ? "/login"
-                              : `/editnews/${router?.query?.camp[0]}/${router?.query?.camp[1]}/${news?.id}-id`
+                        <Tooltip
+                          title={
+                            news.owner_flag
+                              ? "Delete news"
+                              : "must owner to delete"
                           }
                         >
-                          <a>
-                            <EditTwoTone />
-                          </a>
-                        </Link>
+                          <Button
+                            size="small"
+                            type="text"
+                            danger
+                            disabled={!news.owner_flag}
+                            onClick={() => handleDeleteCamp(news?.id)}
+                          >
+                            <DeleteOutlined />
+                          </Button>
+                        </Tooltip>
+                      )}
+
+                      {editNews && (
+                        <Tooltip
+                          title={
+                            news.owner_flag ? "edit news" : "must owner to edit"
+                          }
+                        >
+                          <Button
+                            size="small"
+                            type="link"
+                            disabled={!news.owner_flag}
+                            onClick={() =>
+                              isLogin
+                                ? router.push("/login")
+                                : router.push(
+                                    `/editnews/${router?.query?.camp[0]}/${router?.query?.camp[1]}/${news?.id}-id`
+                                  )
+                            }
+                          >
+                            <EditOutlined />
+                          </Button>
+                        </Tooltip>
                       )}
                     </Paragraph>
                   </li>
