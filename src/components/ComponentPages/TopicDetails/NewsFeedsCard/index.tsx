@@ -1,6 +1,6 @@
 import { Button, Card, Typography, Tooltip } from "antd";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { deleteNewsDataApi } from "src/network/api/campNewsApi";
 import { getNewsFeedApi } from "src/network/api/campDetailApi";
 import { Spin } from "antd";
@@ -32,6 +32,11 @@ const NewsFeedsCard = ({ newsFeed }) => {
     setLoading(false);
   };
 
+  useEffect(() => {
+    setDeleteNews(false);
+    setEditNews(false);
+  }, [newsFeed]);
+
   return (
     <Spin spinning={loading} size="large">
       <Card
@@ -46,7 +51,8 @@ const NewsFeedsCard = ({ newsFeed }) => {
             {newsFeed?.length ? (
               <>
                 {!(deleteNews || editNews) && (
-                  <Button type="link"
+                  <Button
+                    type="link"
                     onClick={() => {
                       if (!isLogin) {
                         setEditNews(true);
@@ -58,7 +64,8 @@ const NewsFeedsCard = ({ newsFeed }) => {
                   </Button>
                 )}
                 {!(deleteNews || editNews) && (
-                  <Button type="link"
+                  <Button
+                    type="link"
                     onClick={() => {
                       if (!isLogin) {
                         setDeleteNews(true);
@@ -70,7 +77,8 @@ const NewsFeedsCard = ({ newsFeed }) => {
                   </Button>
                 )}
                 {(deleteNews || editNews) && (
-                  <Button type="link"
+                  <Button
+                    type="link"
                     danger
                     onClick={() => {
                       setDeleteNews(false);
