@@ -1,4 +1,4 @@
-import { Button, Card, Typography, Tooltip } from "antd";
+import { Button, Card, Typography, Tooltip, Popconfirm } from "antd";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { deleteNewsDataApi } from "src/network/api/campNewsApi";
@@ -110,29 +110,31 @@ const NewsFeedsCard = ({ newsFeed }) => {
                       )}
                       {deleteNews && (
                         <Tooltip
-                          title={
-                            news.owner_flag
-                              ? "Delete news"
-                              : "must owner to delete"
-                          }
+                          title={news.owner_flag ? "" : "must owner to delete"}
                         >
-                          <Button
-                            size="small"
-                            type="text"
-                            danger
+                          <Popconfirm
                             disabled={!news.owner_flag}
-                            onClick={() => handleDeleteCamp(news?.id)}
+                            placement="topLeft"
+                            title="Are you sure to delete this task?"
+                            onConfirm={() => handleDeleteCamp(news?.id)}
+                            okText="Yes"
+                            cancelText="No"
                           >
-                            <DeleteOutlined />
-                          </Button>
+                            <Button
+                              size="small"
+                              type="text"
+                              danger
+                              disabled={!news.owner_flag}
+                            >
+                              <DeleteOutlined />
+                            </Button>
+                          </Popconfirm>
                         </Tooltip>
                       )}
 
                       {editNews && (
                         <Tooltip
-                          title={
-                            news.owner_flag ? "edit news" : "must owner to edit"
-                          }
+                          title={news.owner_flag ? "" : "must owner to edit"}
                         >
                           <Button
                             size="small"

@@ -36,6 +36,7 @@ export default function Add() {
 
   const onFinish = async (values: any) => {
     setLoading(true);
+
     const res = await addNewsDatapi({
       topic_num: +router.query?.camp[0]?.split("-")[0],
       camp_num: +router.query?.camp[1]?.split("-")[0],
