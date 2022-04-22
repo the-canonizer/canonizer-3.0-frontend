@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 
 const CampHistoryPage = ({ history }) => {
   const dispatch = useDispatch();
-  dispatch(setCampStatementHistory(history));
+  // dispatch(setCampStatementHistory(history));
   return (
     <>
       <Layout>

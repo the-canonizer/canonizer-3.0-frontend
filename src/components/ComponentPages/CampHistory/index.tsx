@@ -167,7 +167,7 @@ export default function CampList() {
           </div>
 
           <Spin spinning={loadingIndicator} size="large">
-            {campHistory?.length ? (
+            {!loadingIndicator && campHistory && campHistory?.length ? (
               campHistory[0]?.statement?.map((campHistory, index) => {
                 return (
                   <HistoryCollapse key={index} campStatement={campHistory} />
