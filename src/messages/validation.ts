@@ -69,4 +69,5 @@ export const validations: ErrorContainer = {
   threadReq: "Please enter title!",
   threadAlpha: "Title can only contain space and alphanumeric characters.",
   Max100: "Maximum 100 character allowed!",
+  reply: " The reply field is required.",
 };

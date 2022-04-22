@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import { Card, Typography, Pagination } from "antd";
+import moment from "moment";
 
 import styles from "../Forum.module.scss";
 
@@ -14,31 +15,33 @@ const PostUI = ({
   formPost,
   initialValue,
   nickNameList,
-
-  threadStamps,
-  startedBy,
-  postCount = 0,
   postList,
-  cardTitle,
   pCurrent,
   pTotal,
   pOnChange,
-  paramsList,
+  quillContent,
+  onContentChange,
+  isError,
+  onDeleteClick,
+  onEditClick,
+  currentThread,
 }) => {
-  const CardTitle = <span className={styles.cardTitle}>{cardTitle}</span>;
-  const onEditClick = () => {};
-  const onDeleteClick = () => {};
-
   return (
     <Fragment>
       <Card
-        title={CardTitle}
+        title={
+          <span className={styles.cardTitle}>{currentThread["title"]}</span>
+        }
         className="can-card-style"
         extra={
           <div className={styles.threadStamp}>
-            <Text>{threadStamps}</Text> |{" "}
+            <Text>{`Thread Created at ${moment(
+              currentThread["created_at"]
+            ).format("MMM Do YYYY, h:mm:ss a")}`}</Text>{" "}
+            |{" "}
             <Text>
-              Started by <span className={styles.by}>{startedBy}</span>
+              Started by{" "}
+              <span className={styles.by}>{currentThread["nick_name"]}</span>
             </Text>
           </div>
         }
@@ -49,17 +52,22 @@ const PostUI = ({
           form={formPost}
           initialValue={initialValue}
           nickNameList={nickNameList}
-          postCount={postCount}
+          postCount={pTotal}
+          quillContent={quillContent}
+          onContentChange={onContentChange}
+          isError={isError}
         />
         {postList.map((post) => (
           <PostList
             postedBy={post.post_by}
-            postedTime={post.time}
-            title={post.title}
-            content={post.content}
+            postedTime={post.created_at}
+            postedUpdatedTime={post.updated_at}
+            content={post.body}
+            nick_name={post.nick_name}
             key={post.id}
-            onEditClick={onEditClick.bind(this, post.id)}
+            onEditClick={onEditClick.bind(this, post)}
             onDeleteClick={onDeleteClick.bind(this, post.id)}
+            post={post}
           />
         ))}
 

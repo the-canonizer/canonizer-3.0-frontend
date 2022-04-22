@@ -1,7 +1,7 @@
 import { Fragment, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Form, message } from "antd";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../../../store";
 import isUserAuthenticated from "../../../hooks/isUserAuthenticated";
@@ -14,30 +14,17 @@ import {
   createThread,
   getThreadsList,
   updateThread,
+  createPost,
+  updatePost,
+  getPostsList,
+  deletePost,
 } from "../../../network/api/campForumApi";
 import {
   getAllUsedNickNames,
   getCurrentCampRecordApi,
   getCurrentTopicRecordApi,
 } from "../../../network/api/campDetailApi";
-
-const postData = [
-  {
-    id: 1,
-    post_by: "Multisense Realism",
-    time: "replied 8 years ago (Dec 1, 2013, 11:44:56 PM)",
-    content:
-      "Rich, I do think that the astonishing hypothesis is half wrong (well, half wrong for human beings, completely wrong for matter in general, in that matter is a sensory experience, not the other way around.) but yes it sounds like we agree on the non-computational, or trans-computational nature of qualia.",
-  },
-  {
-    id: 2,
-    post_by: "richwil",
-    time: "replied 8 years ago (Dec 1, 2013, 11:01:34 PM)",
-    content:
-      "Something like a brain scanner is only giving us a view of certain conditions, like magnetic resonance and blood oxygen levels, through which we can infer the brain or conscious experience.",
-    title: "test",
-  },
-];
+import { setThread, setPost } from "../../../store/slices/campForumSlice";
 
 const ForumComponent = ({}) => {
   const [paramsList, setParamsList] = useState({});
@@ -47,25 +34,31 @@ const ForumComponent = ({}) => {
   const [totalRecords, setTotalRecords] = useState(30);
   const [nickNameList, setNickNameList] = useState([]);
   const [initialValue, setInitialValues] = useState({});
-  const [postList, setPostList] = useState(postData);
+  const [postList, setPostList] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [cardTitle, setCardTitle] = useState(null);
   const [ppage, setPpage] = useState(1);
-  const [pTotalRecords, setPtotalRecords] = useState(50);
+  const [pTotalRecords, setPtotalRecords] = useState(0);
+  const [quillContent, setQuillContent] = useState("");
+  const [isError, setIsError] = useState(false);
 
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const isLog = isUserAuthenticated();
 
-  const { topicRecord, campRecord, asof, asofdate, algorithm } = useSelector(
-    (state: RootState) => ({
+  const { topicRecord, campRecord, asof, asofdate, algorithm, currentThread } =
+    useSelector((state: RootState) => ({
       topicRecord: state?.topicDetails?.currentTopicRecord,
       campRecord: state?.topicDetails?.currentCampRecord,
       asof: state?.filters?.filterObject?.asof,
       asofdate: state.filters?.filterObject?.asofdate,
       algorithm: state.filters?.filterObject?.algorithm,
-    })
-  );
+      currentThread: state.forum.currentThread,
+    }));
+
+  const setCurrentThread = (data) => dispatch(setThread(data));
+
+  const setCurrentPost = (data) => dispatch(setPost(data));
 
   const getSelectedNode = async (nodeKey) => {
     const queries = router?.query;
@@ -104,6 +97,17 @@ const ForumComponent = ({}) => {
       setThreadList(res.data?.items);
       setTotalRecords(res.data?.total_rows);
       setPage(res.data?.current_page);
+    }
+  };
+
+  const getPosts = async (id, page = 1, like = "", per_page = 10) => {
+    const q = `?page=${page}&per_page=${per_page}&like=${like}`;
+
+    const res = await getPostsList(id, q);
+    if (res && res.status_code === 200) {
+      setPostList(res.data?.items);
+      setPtotalRecords(res.data?.total_rows);
+      setPpage(res.data?.current_page);
     }
   };
 
@@ -181,10 +185,15 @@ const ForumComponent = ({}) => {
     router.push(`/forum/${queries.topic}/${queries.camp}/threads/create`);
   };
 
-  const onThreadClick = (e) => {
+  const onThreadClick = (e, data) => {
+    setCurrentThread(data);
+
+    const queries = router?.query;
+
     e.preventDefault();
     e.stopPropagation();
-    console.log("thred", e);
+
+    router.push(`/forum/${queries.topic}/${queries.camp}/threads/${data.id}`);
   };
 
   const filterThread = (type) => {
@@ -245,8 +254,6 @@ const ForumComponent = ({}) => {
     const q = router.query;
     let res = null;
 
-    console.log(values, "submit");
-
     if (q.tId) {
       const body = {
         title: values.thread_title,
@@ -276,17 +283,81 @@ const ForumComponent = ({}) => {
 
   const [formPost] = Form.useForm();
 
-  const onFinishPost = (values) => {
-    console.log(values);
+  useEffect(() => {
+    const q = router?.query;
+
+    if (q.id) {
+      getPosts(q.id, ppage);
+    }
+  }, [router, router?.query, ppage]);
+
+  const onContentChange = (v) => {
+    setQuillContent(v);
+    setIsError(false);
+  };
+
+  const onFinishPost = async (values) => {
+    const q = router.query;
+
+    if (quillContent.trim() === "") {
+      setIsError(true);
+      return;
+    }
+
+    setIsError(false);
+
+    const campArr = (q.camp as string).split("-");
+    const camp_num = campArr.shift();
+    const topicArr = (q?.topic as string)?.split("-");
+    const topic_num = topicArr?.shift();
+
+    const body = {
+      body: quillContent,
+      nick_name: values.nick_name,
+      thread_id: +q.id,
+      camp_num: +camp_num,
+      topic_num: +topic_num,
+      topic_name: topicArr.join(" "),
+    };
+
+    let res = null;
+
+    if (currentThread && currentThread["id"]) {
+      res = await updatePost(body, currentThread["id"]);
+      setCurrentPost({});
+    } else {
+      res = await createPost(body);
+    }
+
+    if (res && res.status_code === 200) {
+      message.success(res.message);
+      setQuillContent("");
+      getPosts(q.id, ppage);
+    }
+  };
+
+  const onPostEditClick = (post) => {
+    console.log("edit", post);
+    setQuillContent(post.body);
+    setCurrentPost(post);
+  };
+
+  const onDeleteClick = async (id) => {
+    const q = router.query;
+
+    const res = await deletePost(+id);
+    if (res && res.status_code === 200) {
+      message.success(res.message);
+      getPosts(q.id, ppage);
+    }
   };
 
   const onCancel = () => {
-    console.log("onCancel");
+    onCancelCreateThread();
   };
 
   const pOnChange = (p, size) => {
     setPpage(p);
-    console.log("pOnChange", p, size);
   };
 
   //  post section end
@@ -337,16 +408,18 @@ const ForumComponent = ({}) => {
           onCancel={onCancel}
           onFinishPost={onFinishPost}
           formPost={formPost}
-          startedBy={"startedBy"}
-          postCount={0}
           postList={postList}
-          threadStamps={"threadStamps"}
           initialValue={initialValue}
-          cardTitle={cardTitle}
+          currentThread={currentThread}
           pCurrent={ppage}
           pTotal={pTotalRecords}
           pOnChange={pOnChange}
           paramsList={paramsList}
+          quillContent={quillContent}
+          onContentChange={onContentChange}
+          isError={isError}
+          onPostEditClick={onPostEditClick}
+          onDeleteClick={onDeleteClick}
         />
       ) : null}
     </Fragment>

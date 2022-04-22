@@ -81,6 +81,10 @@ const NetworkConstants = {
     ThreadsList: `${BaseCanonizerApiUrl}/thread/list`,
     ThreadCreate: `${BaseCanonizerApiUrl}/thread/save`,
     ThreadUpdate: `${BaseCanonizerApiUrl}/thread/update`,
+    PostSave: `${BaseCanonizerApiUrl}/post/save`,
+    PostUpdate: `${BaseCanonizerApiUrl}/post/update`,
+    PostList: `${BaseCanonizerApiUrl}/post/list`,
+    PostDelete: `${BaseCanonizerApiUrl}/post/delete`,
 
     //camp news feed add edit update
     GetCampNewsData: `${BaseCanonizerApiUrl}/get-camp-newsfeed`,
