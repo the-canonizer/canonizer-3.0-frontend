@@ -17,7 +17,7 @@ export const addNewsApi = async (body) => {
 
 export const getCampNewsDataApi = async (body) => {
   try {
-    const  editNewsData = await NetworkCall.fetch(
+    const editNewsData = await NetworkCall.fetch(
       campNewsRequest.getCampNewsData(body)
     );
 
