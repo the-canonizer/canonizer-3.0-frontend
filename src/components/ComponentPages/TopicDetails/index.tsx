@@ -217,7 +217,7 @@ const TopicDetails = () => {
                         key={camp?.camp_num}
                       >
                         <a>
-                          {index !== 0 && "/"}
+                          {index !== 0 && "/ "}
                           {`${camp?.camp_name}`}
                         </a>
                       </Link>
