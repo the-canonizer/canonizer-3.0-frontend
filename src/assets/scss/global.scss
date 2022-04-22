@@ -1018,7 +1018,7 @@ body {
   }
 }
 
-.campHistoryCollapseLiveCard {
+.live {
   .ant-collapse-item {
     &.ant-collapse-item-active {
       .ant-collapse-header {
@@ -1028,7 +1028,7 @@ body {
   }
 }
 
-.campHistoryCollapseNotLiveCard {
+.in_review {
   .ant-collapse-item {
     &.ant-collapse-item-active {
       .ant-collapse-header {
@@ -1150,7 +1150,7 @@ body {
   }
 }
 
-.campHistoryCollapseOldCard {
+.old {
   .ant-collapse-item {
     &.ant-collapse-item-active {
       .ant-collapse-header {

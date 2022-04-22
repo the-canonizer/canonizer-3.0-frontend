@@ -18,13 +18,15 @@ export default function HistoryCollapse({ campStatement }) {
     <div>
       <Space
         direction="vertical"
-        className={`${styles.campStatementCollapseObjectedHistory} ${styles.campStatementCollapseHistory}`}
+        className={`${styles[campStatement?.status]} ${
+          styles.campStatementCollapseHistory
+        }`}
       >
         <Collapse
           collapsible="header"
           defaultActiveKey={["1"]}
           expandIconPosition="right"
-          className="campHistoryCollapseCards campHistoryCollapseObjectedCard"
+          className={`campHistoryCollapseCards + " " + ${campStatement?.status}`}
         >
           <Panel
             header={<i className="icon-uparrow"></i>}

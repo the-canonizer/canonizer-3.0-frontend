@@ -16,21 +16,21 @@ const CampHistoryPage = ({ history }) => {
   );
 };
 
-export async function getServerSideProps() {
-  const reqBody = {
-    topic_num: 75,
-    camp_num: 1,
-    type: "all",
-  };
-  const res = await getCampStatementHistoryApi(reqBody);
-  const history = res || [];
+// export async function getServerSideProps() {
+//   const reqBody = {
+//     topic_num: 75,
+//     camp_num: 1,
+//     type: "all",
+//   };
+//   const res = await getCampStatementHistoryApi(reqBody);
+//   const history = res || [];
 
-  return {
-    props: {
-      history,
-    },
-  };
-}
+//   return {
+//     props: {
+//       history,
+//     },
+//   };
+// }
 
 CampHistoryPage.displayName = "CampHistoryPage";
 export default CampHistoryPage;
