@@ -31,6 +31,7 @@ export default function CampList() {
         topic_num: +router.query.camp[0].split("-")[0],
         camp_num: +router.query.camp[1].split("-")[0],
         type: isActive,
+        as_of: "default",
       };
       await getCampStatementHistoryApi(reqBody);
       setLoadingIndicator(false);
@@ -164,91 +165,7 @@ export default function CampList() {
               Compare Statements
             </Button>
           </div>
-          {/* <Space
-            direction="vertical"
-            className={`${styles.campStatementCollapseObjectedHistory} ${styles.campStatementCollapseHistory}`}
-          >
-            <Collapse
-              collapsible="header"
-              defaultActiveKey={["1"]}
-              expandIconPosition="right"
-              className="campHistoryCollapseCards campHistoryCollapseObjectedCard"
-            >
-              <Panel
-                header={<i className="icon-uparrow"></i>}
-                key="1"
-                className={styles.campStatementCollapse}
-                showArrow={false}
-              >
-                {campListColp}
-              </Panel>
-              {campListColpsummary}
-            </Collapse>
-          </Space>
-          <Space
-            direction="vertical"
-            className={`${styles.campStatementCollapseLiveHistory} ${styles.campStatementCollapseHistory}`}
-          >
-            <Collapse
-              collapsible="header"
-              defaultActiveKey={["1"]}
-              expandIconPosition="right"
-              className="campHistoryCollapseCards campHistoryCollapseLiveCard"
-            >
-              <Panel
-                header={<i className="icon-uparrow"></i>}
-                key="1"
-                className={styles.campStatementCollapse}
-                showArrow={false}
-              >
-                {campListColp}
-              </Panel>
-              {campListColpsummary}
-            </Collapse>
-          </Space>
-          <Space
-            direction="vertical"
-            className={`${styles.campStatementCollapseNotLiveHistory} ${styles.campStatementCollapseHistory}`}
-          >
-            <Collapse
-              collapsible="header"
-              defaultActiveKey={["1"]}
-              expandIconPosition="right"
-              className="campHistoryCollapseCards campHistoryCollapseNotLiveCard"
-            >
-              <Panel
-                header={<i className="icon-uparrow"></i>}
-                key="1"
-                className={styles.campStatementCollapse}
-                showArrow={false}
-              >
-                {campListColp}
-              </Panel>
-              {campListColpsummary}
-            </Collapse>
-          </Space>
-          <Space
-            direction="vertical"
-            className={`${styles.campStatementCollapseOldHistory} ${styles.campStatementCollapseHistory}`}
-          >
-            <Collapse
-              collapsible="header"
-              defaultActiveKey={["1"]}
-              expandIconPosition="right"
-              className="campHistoryCollapseCards campHistoryCollapseOldCard"
-            >
-              <Panel
-                header={<i className="icon-uparrow"></i>}
-                key="1"
-                className={styles.campStatementCollapse}
-                showArrow={false}
-              >
-                {campListColp}
-              </Panel>
-              {campListColpsummary}
-            </Collapse>
-          </Space>
-        */}
+
           <Spin spinning={loadingIndicator} size="large">
             {campHistory?.length ? (
               campHistory[0]?.statement?.map((campHistory, index) => {
@@ -268,9 +185,6 @@ export default function CampList() {
               </h2>
             )}
           </Spin>
-          {/* <HistoryCollapse />
-          <HistoryCollapse />
-          <HistoryCollapse /> */}
         </div>
       </div>
     </>
