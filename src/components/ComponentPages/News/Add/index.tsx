@@ -141,9 +141,9 @@ export default function Add() {
             >
               <Select>
                 {nickNameData &&
-                  nickNameData.map((names) => (
-                    <Select.Option value={names.id}>
-                      {names.nick_name}
+                  nickNameData?.map((names) => (
+                    <Select.Option value={names.id} key={names?.id}>
+                      {names?.nick_name}
                     </Select.Option>
                   ))}
               </Select>
