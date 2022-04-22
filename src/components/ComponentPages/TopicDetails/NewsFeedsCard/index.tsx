@@ -70,9 +70,9 @@ const NewsFeedsCard = ({ newsFeed }) => {
                 return (
                   <li key={news.id}>
                     <Paragraph>
-                      <Link href={news?.link} passHref>
-                        <a>{news?.display_text} </a>
-                      </Link>
+                      <a href={news?.link} target={"__blank"}>
+                        {news?.display_text}{" "}
+                      </a>
 
                       {deleteNews && (
                         <DeleteOutlined
