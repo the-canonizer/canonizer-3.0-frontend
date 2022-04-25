@@ -13,7 +13,7 @@ export const patterns = {
 };
 
 export const validations: ErrorContainer = {
-  username: "Please input your Email / Phone Number!",
+  username: "Please input your Email!",
   usernameNotValid: "Input is not valid!",
   password: "Please input your Password!",
   firstName: "Please input your first name!",
@@ -48,7 +48,7 @@ export const validations: ErrorContainer = {
   nickNameMax: "Maximum 50 character allowed!",
   nickNameSpaceError: "Please Enter valid Nick Name!",
   firstNameSpace: "The first name should only contain alphabets and spaces.",
-  lastNameSpace: "The first name should only contain alphabets and spaces.",
+  lastNameSpace: "The last name should only contain alphabets and spaces.",
   alphaSpace: "The field must be in alphabets and space only.",
   otpMsgs:
     " Note : OTP has been sent to your registered email address and phone number.",
