@@ -80,8 +80,8 @@ export default function CampList() {
     // );
 
     // router.push({
-      // pathname:`/camp/create/${topicRecord[0]?.topic_num}-${topicName}/${campRecord[0]?.camp_num}-${campName}`
-    });
+    // pathname:`/camp/create/${topicRecord[0]?.topic_num}-${topicName}/${campRecord[0]?.camp_num}-${campName}`
+    // });
 
     setCurrentTopics(data);
   };
