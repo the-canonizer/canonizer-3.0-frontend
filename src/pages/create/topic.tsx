@@ -13,7 +13,6 @@ import {
 } from "../../store/slices/homePageSlice";
 
 const CreateNewTopicPage = ({ nameSpacesList, algorithms }) => {
-  debugger;
   const dispatch = useDispatch();
 
   dispatch(setCanonizedNameSpaces(nameSpacesList));

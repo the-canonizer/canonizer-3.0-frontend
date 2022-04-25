@@ -11,7 +11,7 @@ const useAuthentication = () => {
     setIsLogin(authenticated);
   }, [authenticated]);
 
-  return true;
+  return isLogin;
 };
 
 export default useAuthentication;
