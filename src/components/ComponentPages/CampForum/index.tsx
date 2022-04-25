@@ -190,9 +190,16 @@ const ForumComponent = ({}) => {
 
   const onCreateThread = () => {
     const queries = router?.query;
-    router.push({
-      pathname: `/forum/${queries.topic}/${queries.camp}/threads/create`,
-    });
+    if (isLog) {
+      router.push({
+        pathname: `/forum/${queries.topic}/${queries.camp}/threads/create`,
+      });
+    } else {
+      router.push({
+        pathname: "/login",
+        query: { returnUrl: router.asPath },
+      });
+    }
   };
 
   const onThreadClick = (e, data) => {
@@ -235,10 +242,12 @@ const ForumComponent = ({}) => {
     const body = {
       topic_num: paramsList["topic_num"],
     };
-    let response = await getAllUsedNickNames(body);
-    if (response && response.status_code === 200) {
-      setNickNameList(response.data);
-      setInitialValues({ nick_name: response.data[0]?.id });
+    if (isLog) {
+      let response = await getAllUsedNickNames(body);
+      if (response && response.status_code === 200) {
+        setNickNameList(response.data);
+        setInitialValues({ nick_name: response.data[0]?.id });
+      }
     }
   };
 
@@ -351,7 +360,6 @@ const ForumComponent = ({}) => {
   };
 
   const onPostEditClick = (post) => {
-    console.log("edit", post);
     setQuillContent(post.body);
     setCurrentPost(post);
   };
