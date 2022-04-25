@@ -35,7 +35,7 @@ body {
     margin-bottom: 0 !important;
   }
   &-2 {
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
   }
   &-3 {
     margin-bottom: 1rem;
@@ -86,12 +86,12 @@ body {
   }
   &-orange {
     background-color: #f89d15;
-    color: #FFF;
+    color: #fff;
     border: 0;
     &:hover,
     &:focus {
       background-color: darken(#f89d15, 10%);
-      color: #FFF;
+      color: #fff;
     }
   }
 }
@@ -195,7 +195,7 @@ body {
         border-color: var(--primary);
       }
       & + .btn {
-        margin-top: .5rem;
+        margin-top: 0.5rem;
       }
     }
   }
@@ -482,6 +482,24 @@ body {
     .anticon {
       font-size: 16px;
       color: #000000;
+    }
+  }
+  .ant-tree-list {
+    .ant-tree-list-holder-inner {
+      & > .ant-tree-treenode-switcher-open:first-child {
+        .treeListItemTitle {
+          font-size: 16px;
+          font-weight: 600;
+          a {
+            color: #2850be;
+          }
+        }
+      }
+    }
+  }
+  .ant-tree-node-selected {
+    a {
+      color: #2850be !important;
     }
   }
   .ant-tree-treenode {
@@ -960,6 +978,75 @@ body {
   background-color: #2e68db !important;
 }
 
+.campHistoryCollapseCards {
+  position: relative;
+  padding-right: 55px;
+
+  .ant-collapse-item {
+    .ant-collapse-header {
+      position: absolute;
+      right: 0;
+      top: 0;
+      background: rgba(0, 0, 0, 0.06);
+      padding: 0 !important;
+      display: flex;
+      align-items: center;
+
+      .ant-collapse-header-text {
+        padding: 10px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        font-size: 13px;
+      }
+    }
+
+    &:not(.ant-collapse-item-active) {
+      .ant-collapse-header {
+        bottom: 66px;
+
+        .ant-collapse-header-text {
+          i {
+            transform: rotate(180deg);
+          }
+        }
+      }
+    }
+
+    &.ant-collapse-item-active {
+      .ant-collapse-header {
+        background-color: #ef5e5e;
+
+        .ant-collapse-header-text {
+          i {
+            transform: rotate(0deg);
+            color: white;
+          }
+        }
+      }
+    }
+  }
+}
+
+.campHistoryCollapseLiveCard {
+  .ant-collapse-item {
+    &.ant-collapse-item-active {
+      .ant-collapse-header {
+        background-color: #12c879;
+      }
+    }
+  }
+}
+
+.campHistoryCollapseNotLiveCard {
+  .ant-collapse-item {
+    &.ant-collapse-item-active {
+      .ant-collapse-header {
+        background-color: #ffdd00;
+      }
+    }
+  }
+}
 .imgWrap {
   width: 100%;
   text-align: center;
@@ -1073,6 +1160,45 @@ body {
   }
 }
 
+.campHistoryCollapseOldCard {
+  .ant-collapse-item {
+    &.ant-collapse-item-active {
+      .ant-collapse-header {
+        background-color: #4484ce;
+      }
+    }
+  }
+}
+
+@media screen and(max-width:332px) {
+  .campHistoryCollapseCards .ant-collapse-item {
+    &:not(.ant-collapse-item-active) {
+      .ant-collapse-header {
+        bottom: 162px;
+      }
+    }
+  }
+}
+
+@media screen and(min-width:333px) and(max-width:453px) {
+  .campHistoryCollapseCards .ant-collapse-item {
+    &:not(.ant-collapse-item-active) {
+      .ant-collapse-header {
+        bottom: 138px;
+      }
+    }
+  }
+}
+
+@media screen and(min-width:454px) and (max-width: 1032px) {
+  .campHistoryCollapseCards .ant-collapse-item {
+    &:not(.ant-collapse-item-active) {
+      .ant-collapse-header {
+        bottom: 121px;
+      }
+    }
+  }
+}
 .nick_name_extra .ant-form-item-extra {
   font-size: 10px;
 }

@@ -19,6 +19,9 @@ export default function SocialLoginUi({ isNotLogin = false }) {
     const res = await socialLogin(body);
     try {
       if (res.data) {
+        if (isNotLogin) {
+          localStorage.setItem("rd_s", "rg");
+        }
         window.location.href = res.data.url;
       }
     } catch (error) {
@@ -52,16 +55,14 @@ export default function SocialLoginUi({ isNotLogin = false }) {
           className={styles["google-btn"]}
         />
 
-        {!isNotLogin && (
-          <Button
-            shape="circle"
-            onClick={onSocialLogin.bind(this, "twitter")}
-            type="link"
-            icon={<TwitterOutlined />}
-            data-testid="twitter"
-            className={styles["twitter-btn"]}
-          />
-        )}
+        <Button
+          shape="circle"
+          onClick={onSocialLogin.bind(this, "twitter")}
+          type="link"
+          icon={<TwitterOutlined />}
+          data-testid="twitter"
+          className={styles["twitter-btn"]}
+        />
 
         <Button
           shape="circle"

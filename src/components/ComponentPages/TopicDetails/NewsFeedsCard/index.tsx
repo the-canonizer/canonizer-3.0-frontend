@@ -109,11 +109,9 @@ const NewsFeedsCard = ({ newsFeed }) => {
                 return (
                   <li key={news?.id}>
                     <Paragraph>
-                      <Link href={news.link} passHref>
-                        <a target="_blank" rel="noopener noreferrer">
-                          {news?.display_text}
-                        </a>
-                      </Link>
+                      <a href={news?.link} target={"__blank"}>
+                        {news?.display_text}{" "}
+                      </a>
 
                       {!deleteNews && !editNews && (
                         <i> {news?.submitter_nick_name}</i>

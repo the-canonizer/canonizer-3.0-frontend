@@ -45,8 +45,7 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
                     <div className={"treeListItem " + styles.treeListItem}>
                       <span
                         className={
-                          `treeListItemTitle ${data[item].camp_id ===
-                            +router?.query?.camp?.at(1)?.split("-")?.at(0) ? styles.treeListItemTitle_active : '' } ${styles.treeListItemTitle}`
+                          "treeListItemTitle " + styles.treeListItemTitle
                         }
                       >
                         <Link
@@ -75,9 +74,9 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
                     key={"custom"}
                     title={
                       <p
-                        className={styles.startNewSupportCamp}
+                        className={styles.startNew}
                         onClick={() => {
-                          console.log("supportCamp");
+                          // console.log("supportCamp");
                         }}
                       >{`<Start new supporting camp here>`}</p>
                     }
