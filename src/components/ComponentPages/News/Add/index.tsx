@@ -17,6 +17,8 @@ import "antd/dist/antd.css";
 import styles from "../addEditNews.module.scss";
 import { addNewsDatapi } from "../../../../network/api/campNewsApi";
 import { getNickNameList } from "../../../../network/api/userApi";
+import { RootState } from "src/store";
+import { useSelector } from "react-redux";
 
 const antIcon = <LoadingOutlined spin />;
 const { Text } = Typography;
@@ -26,6 +28,9 @@ export default function Add() {
   const [urlErrorMsg, setUrlErrorMsg] = useState("");
   const [urlError, setUrlError] = useState(false);
   const [nickNameData, setNickNameData] = useState([]);
+
+  const tokenBearer = useSelector((state: RootState) => state?.auth?.token);
+
   const router = useRouter();
   const [form] = Form.useForm();
 
@@ -36,15 +41,17 @@ export default function Add() {
 
   const onFinish = async (values: any) => {
     setLoading(true);
-
-    const res = await addNewsDatapi({
-      topic_num: +router.query?.camp[0]?.split("-")[0],
-      camp_num: +router.query?.camp[1]?.split("-")[0],
-      available_for_child: values?.available_for_child,
-      link: values?.link,
-      display_text: values?.display_text,
-      submitter_nick_id: values?.nick_name,
-    });
+    const res = await addNewsDatapi(
+      {
+        topic_num: +router.query?.camp[0]?.split("-")[0],
+        camp_num: +router.query?.camp[1]?.split("-")[0],
+        available_for_child: values?.available_for_child,
+        link: values?.link,
+        display_text: values?.display_text,
+        submitter_nick_id: values?.nick_name,
+      },
+      tokenBearer
+    );
     if (res?.status_code == 200) {
       router.back();
       return;

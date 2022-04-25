@@ -15,6 +15,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { RootState } from "src/store";
 import { useSelector } from "react-redux";
 import "antd/dist/antd.css";
+
 import { updateNewsDataApi } from "../../../../network/api/campNewsApi";
 import styles from "../addEditNews.module.scss";
 
@@ -25,6 +26,8 @@ export default function Edit() {
   const dataToUpdate = useSelector(
     (state: RootState) => state?.campNews?.campNews?.newsToEdit
   );
+  const tokenBearer = useSelector((state: RootState) => state?.auth?.token);
+
   const [loading, setLoading] = useState(false);
   const [urlErrorMsg, setUrlErrorMsg] = useState("");
   const [urlError, setUrlError] = useState(false);
@@ -37,13 +40,16 @@ export default function Edit() {
 
   const onFinish = async (values: any) => {
     setLoading(true);
-    const res = await updateNewsDataApi({
-      newsfeed_id: dataToUpdate?.id,
-      display_text: values.display_text,
-      link: values.link,
-      available_for_child: values.available_for_child,
-      submitter_nick_id: dataToUpdate?.submitter_nick_id,
-    });
+    const res = await updateNewsDataApi(
+      {
+        newsfeed_id: dataToUpdate?.id,
+        display_text: values.display_text,
+        link: values.link,
+        available_for_child: values.available_for_child,
+        submitter_nick_id: dataToUpdate?.submitter_nick_id,
+      },
+      tokenBearer
+    );
     if (res?.status_code == 200) {
       router.back();
       return;

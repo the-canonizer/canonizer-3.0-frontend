@@ -1,12 +1,14 @@
 import { Button, Card, Typography, Tooltip, Popconfirm } from "antd";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { deleteNewsDataApi } from "src/network/api/campNewsApi";
+import { deleteNewsApi } from "src/network/api/campNewsApi";
 import { getNewsFeedApi } from "src/network/api/campDetailApi";
 import { Spin } from "antd";
 import { DeleteOutlined, EditOutlined, CloseOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
+import { RootState } from "src/store";
+import { useSelector } from "react-redux";
 
 const { Paragraph } = Typography;
 
@@ -15,13 +17,17 @@ const NewsFeedsCard = ({ newsFeed }) => {
   const [deleteNews, setDeleteNews] = useState(false);
   const [editNews, setEditNews] = useState(false);
   const [loading, setLoading] = useState(false);
+  const tokenBearer = useSelector((state: RootState) => state?.auth?.token);
   const router = useRouter();
 
   const handleDeleteCamp = async (id) => {
     setLoading(true);
-    const res = await deleteNewsDataApi({
-      newsfeed_id: id,
-    });
+    const res = await deleteNewsApi(
+      {
+        newsfeed_id: id,
+      },
+      tokenBearer
+    );
     if (res?.status_code == 200) {
       const reqBody = {
         topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
@@ -54,9 +60,11 @@ const NewsFeedsCard = ({ newsFeed }) => {
                   <Button
                     type="link"
                     onClick={() => {
-                      if (!isLogin) {
+                      if (isLogin) {
                         setEditNews(true);
                         setDeleteNews(false);
+                      } else {
+                        router.push("/login");
                       }
                     }}
                   >
@@ -67,9 +75,11 @@ const NewsFeedsCard = ({ newsFeed }) => {
                   <Button
                     type="link"
                     onClick={() => {
-                      if (!isLogin) {
+                      if (isLogin) {
                         setDeleteNews(true);
                         setEditNews(false);
+                      } else {
+                        router.push("/login");
                       }
                     }}
                   >
@@ -141,11 +151,9 @@ const NewsFeedsCard = ({ newsFeed }) => {
                             type="link"
                             disabled={!news.owner_flag}
                             onClick={() =>
-                              isLogin
-                                ? router.push("/login")
-                                : router.push(
-                                    `/editnews/${router?.query?.camp[0]}/${router?.query?.camp[1]}/${news?.id}-id`
-                                  )
+                              router.push(
+                                `/editnews/${router?.query?.camp[0]}/${router?.query?.camp[1]}/${news?.id}-id`
+                              )
                             }
                           >
                             <EditOutlined />

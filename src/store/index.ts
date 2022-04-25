@@ -23,7 +23,6 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import campNewsSlice from "./slices/news";
-import tokenBearerSlice from "./slices/tokenBearerSlice"
 // reducers
 
 let reducers = combineReducers({
@@ -34,7 +33,6 @@ let reducers = combineReducers({
   topic: TopicSlice,
   filters: filtersSlice,
   campNews: campNewsSlice,
-  tokenBearer : tokenBearerSlice
 });
 
 const persistConfig = {

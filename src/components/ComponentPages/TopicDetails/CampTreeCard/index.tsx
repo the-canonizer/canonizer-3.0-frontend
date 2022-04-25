@@ -19,7 +19,7 @@ const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
           <Checkbox>Subscribe</Checkbox>
           <Link
             href={
-              isLogin ? "/login" : router.asPath.replace("topic", "addnews")
+              isLogin ? router.asPath.replace("topic", "addnews") : "/login"
             }
           >
             <a className={styles.addNew}>

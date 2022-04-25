@@ -157,7 +157,7 @@ const TopicDetails = () => {
     <Menu className={styles.campForumDropdownMenu}>
       <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
         <Link
-          href={isLogin ? "/login" : router.asPath.replace("topic", "addnews")}
+          href={isLogin ? router.asPath.replace("topic", "addnews") : "/login"}
         >
           <a rel="noopener noreferrer" href="/add-news">
             Add News
