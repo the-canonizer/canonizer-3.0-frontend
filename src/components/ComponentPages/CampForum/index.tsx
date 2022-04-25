@@ -46,15 +46,23 @@ const ForumComponent = ({}) => {
 
   const isLog = isUserAuthenticated();
 
-  const { topicRecord, campRecord, asof, asofdate, algorithm, currentThread } =
-    useSelector((state: RootState) => ({
-      topicRecord: state?.topicDetails?.currentTopicRecord,
-      campRecord: state?.topicDetails?.currentCampRecord,
-      asof: state?.filters?.filterObject?.asof,
-      asofdate: state.filters?.filterObject?.asofdate,
-      algorithm: state.filters?.filterObject?.algorithm,
-      currentThread: state.forum.currentThread,
-    }));
+  const {
+    topicRecord,
+    campRecord,
+    asof,
+    asofdate,
+    algorithm,
+    currentThread,
+    currentPost,
+  } = useSelector((state: RootState) => ({
+    topicRecord: state?.topicDetails?.currentTopicRecord,
+    campRecord: state?.topicDetails?.currentCampRecord,
+    asof: state?.filters?.filterObject?.asof,
+    asofdate: state.filters?.filterObject?.asofdate,
+    algorithm: state.filters?.filterObject?.algorithm,
+    currentThread: state.forum.currentThread,
+    currentPost: state.forum.currentPost,
+  }));
 
   const setCurrentThread = (data) => dispatch(setThread(data));
 
@@ -182,7 +190,9 @@ const ForumComponent = ({}) => {
 
   const onCreateThread = () => {
     const queries = router?.query;
-    router.push(`/forum/${queries.topic}/${queries.camp}/threads/create`);
+    router.push({
+      pathname: `/forum/${queries.topic}/${queries.camp}/threads/create`,
+    });
   };
 
   const onThreadClick = (e, data) => {
@@ -193,7 +203,9 @@ const ForumComponent = ({}) => {
     e.preventDefault();
     e.stopPropagation();
 
-    router.push(`/forum/${queries.topic}/${queries.camp}/threads/${data.id}`);
+    router.push({
+      pathname: `/forum/${queries.topic}/${queries.camp}/threads/${data.id}`,
+    });
   };
 
   const filterThread = (type) => {
@@ -208,9 +220,9 @@ const ForumComponent = ({}) => {
     e.preventDefault();
     e.stopPropagation();
 
-    router.push(
-      `/forum/${queries.topic}/${queries.camp}/threads/edit/${item.id}`
-    );
+    router.push({
+      pathname: `/forum/${queries.topic}/${queries.camp}/threads/edit/${item.id}`,
+    });
   };
 
   // end thread list section
@@ -239,7 +251,9 @@ const ForumComponent = ({}) => {
 
   const onCancelCreateThread = () => {
     const queries = router?.query;
-    router.push(`/forum/${queries.topic}/${queries.camp}/threads`);
+    router.push({
+      pathname: `/forum/${queries.topic}/${queries.camp}/threads`,
+    });
   };
 
   useEffect(() => {
@@ -322,8 +336,8 @@ const ForumComponent = ({}) => {
 
     let res = null;
 
-    if (currentThread && currentThread["id"]) {
-      res = await updatePost(body, currentThread["id"]);
+    if (currentPost && currentPost["id"]) {
+      res = await updatePost(body, currentPost["id"]);
       setCurrentPost({});
     } else {
       res = await createPost(body);
