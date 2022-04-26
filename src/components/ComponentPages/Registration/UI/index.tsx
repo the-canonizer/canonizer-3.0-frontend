@@ -94,6 +94,9 @@ function RegistrationUi({
                 label={messages.labels.firstName}
                 rules={messages.firstNameRule}
                 placeholder={messages.placeholders.firstName}
+                onKeyDown={(e) =>
+                  e.key === " " && e.keyCode === 32 && e.preventDefault()
+                }
               />
             </Col>
 
@@ -103,6 +106,9 @@ function RegistrationUi({
                 label={messages.labels.lastName}
                 rules={messages.lastNameRule}
                 placeholder={messages.placeholders.lastName}
+                onKeyDown={(e) =>
+                  e.key === " " && e.keyCode === 32 && e.preventDefault()
+                }
               />
             </Col>
             <Col md={12} style={{ width: "100%" }}>
@@ -111,6 +117,9 @@ function RegistrationUi({
                 label={messages.labels.email}
                 rules={messages.emRule}
                 placeholder={messages.placeholders.email}
+                onKeyDown={(e) =>
+                  e.key === " " && e.keyCode === 32 && e.preventDefault()
+                }
               />
             </Col>
             <Col md={12} style={{ width: "100%" }}>
@@ -127,6 +136,9 @@ function RegistrationUi({
                   className={`${styles.phoneInput} numberInput`}
                   placeholder={messages.placeholders.phone}
                   autoComplete="new-phone"
+                  onKeyDown={(e) =>
+                    e.key === " " && e.keyCode === 32 && e.preventDefault()
+                  }
                 />
               </Form.Item>
             </Col>
