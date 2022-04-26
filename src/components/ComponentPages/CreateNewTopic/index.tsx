@@ -8,6 +8,7 @@ import { getNickNameList } from "../../../network/api/userApi";
 import { RootState } from "../../../store";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
 import CreateNewTopicUI from "./UI/TopicUI";
+import isAuth from "../../../hooks/isUserAuthenticated";
 
 const CreateNewTopic = ({
   testNickName = [],
@@ -23,6 +24,7 @@ const CreateNewTopic = ({
 
   const router = useRouter();
   const dispatch = useDispatch();
+  const isLogIn = isAuth();
 
   const [form] = Form.useForm();
 
@@ -35,8 +37,10 @@ const CreateNewTopic = ({
   };
 
   useEffect(() => {
-    fetchNickNameList();
-  }, []);
+    if (isLogIn) {
+      fetchNickNameList();
+    }
+  }, [isLogIn]);
 
   const onFinish = async (values: any) => {
     const body = {
