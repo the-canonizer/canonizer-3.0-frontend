@@ -21,37 +21,6 @@
         color: rgba(0, 0, 0, 0.85);
       }
     }
-<<<<<<< HEAD
-    .treeListItem {
-        display: flex;
-        align-items: center;
-        .treeListItemTitle {
-            font-size: 15px;
-            font-weight: 400;
-            color: #0F2A4D;
-            margin-left: 4px;
-            &_active {
-                font-weight: 600;
-            }
-        }
-        .treeListItemNumber {
-            height: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            background: #F89D15;
-            padding: 2px 7px;
-            border-radius: 2px;
-            color: #fff;
-            margin-left: 6px;
-        }
-    }
-    .startNewSupportCamp {
-        font-weight: 600;
-        color: var(--orange);
-    }
-=======
     .treeListItemNumber {
       height: 16px;
       display: flex;
@@ -69,7 +38,6 @@
     color: #f89d15;
     font-weight: 500;
   }
->>>>>>> c74851a48a561544a58e126373dcd931f762a2fd
 }
 .topicDetailContentHead {
   width: 100%;

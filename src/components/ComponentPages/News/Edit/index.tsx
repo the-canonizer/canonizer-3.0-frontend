@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Form,
   Button,
@@ -12,27 +12,25 @@ import {
 } from "antd";
 import { useRouter } from "next/router";
 import { LoadingOutlined } from "@ant-design/icons";
-import { RootState } from "src/store";
-import { useSelector } from "react-redux";
 import "antd/dist/antd.css";
-
 import { updateNewsDataApi } from "../../../../network/api/campNewsApi";
+import { getCampEditNewsDataApi } from "../../../../network/api/campNewsApi";
+import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import styles from "../addEditNews.module.scss";
+import { is } from "immer/dist/internal";
 
 const antIcon = <LoadingOutlined spin />;
 const { Text } = Typography;
 
 export default function Edit() {
-  const dataToUpdate = useSelector(
-    (state: RootState) => state?.campNews?.campNews?.newsToEdit
-  );
-  const tokenBearer = useSelector((state: RootState) => state?.auth?.token);
-
+  const [dataToUpdate, setDataToUpdate] = useState({});
   const [loading, setLoading] = useState(false);
   const [urlErrorMsg, setUrlErrorMsg] = useState("");
   const [urlError, setUrlError] = useState(false);
   const router = useRouter();
+  const isLogin = useAuthentication();
   const [form] = Form.useForm();
+
   const goBack = () => {
     setLoading(true);
     router.back();
@@ -40,16 +38,13 @@ export default function Edit() {
 
   const onFinish = async (values: any) => {
     setLoading(true);
-    const res = await updateNewsDataApi(
-      {
-        newsfeed_id: dataToUpdate?.id,
-        display_text: values.display_text,
-        link: values.link,
-        available_for_child: values.available_for_child,
-        submitter_nick_id: dataToUpdate?.submitter_nick_id,
-      },
-      tokenBearer
-    );
+    const res = await updateNewsDataApi({
+      newsfeed_id: dataToUpdate?.id,
+      display_text: values.display_text,
+      link: values.link,
+      available_for_child: values.available_for_child,
+      submitter_nick_id: dataToUpdate?.submitter_nick_id,
+    });
     if (res?.status_code == 200) {
       router.back();
       return;
@@ -60,19 +55,31 @@ export default function Edit() {
     setLoading(false);
   };
 
+  useEffect(() => {
+    async function getCampEditNewsDataCall() {
+      const reqBody = { newsfeed_id: +router.query?.camp[2]?.split("-")[0] };
+      const res = await getCampEditNewsDataApi(reqBody);
+      const news = (res && res[0]) || {};
+      setDataToUpdate(news);
+      form.setFieldsValue({
+        display_text: news?.display_text,
+        link: news?.link,
+        available_for_child: news?.available_for_child,
+      });
+
+      if (isLogin === false) {
+        router.push("/login");
+      } else if (news === {} && isLogin === true) {
+        router.push(`/topic/${router.query.camp[0]}/${router.query.camp[0]}`);
+      }
+    }
+    getCampEditNewsDataCall();
+  }, []);
+
+  if (isLogin === false) return null;
   return (
     <Card title="Edit News" className={styles.card}>
-      <Form
-        form={form}
-        name="basic"
-        layout={"vertical"}
-        initialValues={{
-          display_text: dataToUpdate?.display_text,
-          link: dataToUpdate?.link,
-          available_for_child: dataToUpdate?.available_for_child,
-        }}
-        onFinish={onFinish}
-      >
+      <Form form={form} name="basic" layout={"vertical"} onFinish={onFinish}>
         <Row gutter={28}>
           <Col xl={14} md={24} xs={24}>
             <Form.Item

@@ -83,7 +83,6 @@ const NetworkConstants = {
     ThreadUpdate: `${BaseCanonizerApiUrl}/thread/update`,
 
     //camp news feed add edit update
-<<<<<<< HEAD
     GetCampEditNewsData:`${BaseCanonizerApiUrl}/edit-camp-newsfeed`,    
     GetCampNewsData:`${BaseCanonizerApiUrl}/get-camp-newsfeed`,
     UpdateNewsData:`${BaseCanonizerApiUrl}/update-camp-newsfeed`,
@@ -92,12 +91,6 @@ const NetworkConstants = {
     
   
   
-=======
-    GetCampNewsData: `${BaseCanonizerApiUrl}/get-camp-newsfeed`,
-    UpdateNewsData: `${BaseCanonizerApiUrl}/update-camp-newsfeed`,
-    AddNewsFeeds: `${BaseCanonizerApiUrl}/store-camp-newsfeed`,
-    DeleteNewsData: `${BaseCanonizerApiUrl}/delete-camp-newsfeed`,
->>>>>>> c74851a48a561544a58e126373dcd931f762a2fd
   },
   Method: {
     GET: "GET",
