@@ -1,8 +1,6 @@
 import React, { useState, useRef } from "react";
 import UploadFileUI from "./uploadFilesUI";
-import { Form, Menu } from "antd";
-import moment from "moment";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { AppDispatch } from "src/store";
 import {
   hideFolderModal,
@@ -53,7 +51,6 @@ const UploadFiles = () => {
   const hideFiles = () => dispatch(hideUploadFiles());
 
   const [input, setInput] = useState("");
-  const [fileName, setfileName] = useState("");
   const [selectedFolderID, setSelectedFolderID] = useState("");
   const [fileLists, setFileLists] = useState([]);
   const [folderFiles, setFolderFiles] = useState([]);
@@ -122,33 +119,10 @@ const UploadFiles = () => {
     }
   };
 
-  const createNewFolder = () => {
-    let newFolder = {
-      folderName: input,
-      type: "folder",
-      createdAt: moment().format("DD MMM-YYYY"),
-      files: [],
-      id: "",
-    };
-    let newarray = [...fileLists];
-    newarray.push(newFolder);
-    setFileLists(newarray);
-    shownFolder();
-    hideCreateFolderModal();
-    dragBoxHide();
-    shownAddButton();
-  };
-
-  const onFinish = (values) => {
-    createNewFolder();
-  };
-
   return (
     <UploadFileUI
       input={input}
       setInput={setInput}
-      fileName={fileName}
-      setfileName={setfileName}
       selectedFolderID={selectedFolderID}
       fileLists={fileLists}
       setFileLists={setFileLists}
@@ -161,7 +135,6 @@ const UploadFiles = () => {
       addNewFile={addNewFile}
       Openfolder={Openfolder}
       removeFiles={removeFiles}
-      onFinish={onFinish}
     />
   );
 };

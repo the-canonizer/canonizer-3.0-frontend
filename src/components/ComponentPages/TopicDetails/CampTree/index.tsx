@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Tree } from "antd";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
-import Styles from "../topicDetails.module.scss";
+import styles from "../topicDetails.module.scss";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -16,13 +16,12 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
   const [selectedNodeID, setSelectedNodeID] = useState(1);
   const [scoreFilter, setScoreFilter] = useState(filterByScore);
   const router = useRouter();
-
   const onSelect = (
     selectedKeys,
     e: { selected; selectedNodes; node; event }
   ) => {
-    console.log("selected", selectedKeys);
     if (selectedKeys.join() === "custom" || selectedKeys.join() === "") {
+      console.log("selected", selectedKeys, e);
     } else {
       setSelectedNodeID(+selectedKeys.join(""));
       getSelectedNode(+selectedKeys.join());
@@ -43,10 +42,10 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
               <TreeNode
                 title={
                   <>
-                    <div className={"treeListItem " + Styles.treeListItem}>
+                    <div className={"treeListItem " + styles.treeListItem}>
                       <span
                         className={
-                          "treeListItemTitle " + Styles.treeListItemTitle
+                          "treeListItemTitle " + styles.treeListItemTitle
                         }
                       >
                         <Link
@@ -59,7 +58,7 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
                       </span>
                       <span
                         className={
-                          "treeListItemNumber " + Styles.treeListItemNumber
+                          "treeListItemNumber " + styles.treeListItemNumber
                         }
                       >
                         {data[item].score?.toFixed(2)}
@@ -75,8 +74,9 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
                     key={"custom"}
                     title={
                       <p
+                        className={styles.startNew}
                         onClick={() => {
-                          "supportCamp";
+                          // console.log("supportCamp");
                         }}
                       >{`<Start new supporting camp here>`}</p>
                     }
@@ -96,7 +96,11 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
   return tree ? (
     <Tree
       showLine={{ showLeafIcon: false }}
-      defaultExpandedKeys={["1"]}
+      defaultExpandedKeys={[
+        +router?.query?.camp?.at(1)?.split("-")?.at(0) == 1
+          ? 2
+          : +router?.query?.camp?.at(1)?.split("-")?.at(0),
+      ]}
       onSelect={onSelect}
       autoExpandParent={true}
       // filterTreeNode={filterTreeNode}

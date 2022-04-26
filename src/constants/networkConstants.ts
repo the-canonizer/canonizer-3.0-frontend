@@ -65,6 +65,7 @@ const NetworkConstants = {
     CreateCamp: `${BaseCanonizerApiUrl}/camp/save`,
     GetAllParents: `${BaseCanonizerApiUrl}/camp/allParent`,
     GetCampNickNames: `${BaseCanonizerApiUrl}/camp/allAboutNickName`,
+    CampStatementHistory: `${BaseCanonizerApiUrl}/get-statement-history`,
 
     GetSocialLinkedAccounts: `${BaseCanonizerApiUrl}/user/social/list`,
     DeleteSocialLinkedAccount: `${BaseCanonizerApiUrl}/user/social/delete`,
@@ -75,6 +76,17 @@ const NetworkConstants = {
     //footer
 
     GetFooterSocialLinks: `${BaseCanonizerApiUrl}/get-social-media-links`,
+
+    // Camp Forum
+    ThreadsList: `${BaseCanonizerApiUrl}/thread/list`,
+    ThreadCreate: `${BaseCanonizerApiUrl}/thread/save`,
+    ThreadUpdate: `${BaseCanonizerApiUrl}/thread/update`,
+
+    //camp news feed add edit update
+    GetCampNewsData: `${BaseCanonizerApiUrl}/get-camp-newsfeed`,
+    UpdateNewsData: `${BaseCanonizerApiUrl}/update-camp-newsfeed`,
+    AddNewsFeeds: `${BaseCanonizerApiUrl}/store-camp-newsfeed`,
+    DeleteNewsData: `${BaseCanonizerApiUrl}/delete-camp-newsfeed`,
   },
   Method: {
     GET: "GET",

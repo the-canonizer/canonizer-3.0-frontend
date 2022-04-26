@@ -4,7 +4,7 @@ import TopicDetails from "../../components/ComponentPages/TopicDetails";
 
 // import { wrapper } from "src/store";
 
-const TopicDetailsPage = ({}) => {
+const TopicDetailsPage = () => {
   return (
     <>
       <Layout>

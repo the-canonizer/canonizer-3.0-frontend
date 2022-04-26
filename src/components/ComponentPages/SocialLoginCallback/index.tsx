@@ -16,21 +16,28 @@ function SocialLoginCallback() {
 
   const sendData = async (data) => {
     const redirectTab = localStorage.getItem("redirectTab");
+    const redirectSocial = localStorage.getItem("rd_s");
 
     if (!redirectTab) {
       const response = await socialLoginCallback(data, router);
 
-      if (response && response.status_code === 200) {
-        router.push("/");
-      }
-      if (response && response.status_code === 400) {
-        router.push("/");
+      if (
+        (response && response.status_code === 200) ||
+        (response && response.status_code === 400)
+      ) {
+        if (redirectSocial) {
+          localStorage.removeItem("rd_s");
+          router.push("/settings?tab=profile");
+        } else {
+          router.push("/");
+        }
       }
     } else {
       const response = await socialLoginLinkUser(data);
 
       if (response && response.status_code === 200) {
         message.success(response.message);
+
         localStorage.removeItem("redirectTab");
         router.push("/settings?tab=social");
       }
@@ -47,6 +54,7 @@ function SocialLoginCallback() {
 
   useEffect(() => {
     setIsLoading(true);
+
     try {
       const queryParams = router.query;
       const params = getSearchedParams();
@@ -60,6 +68,7 @@ function SocialLoginCallback() {
       if (queryParams.provider && params.code) {
         sendData(body);
       } else {
+        localStorage.removeItem("rd_s");
         if (!redirectTab) {
           router.push("/");
         } else {

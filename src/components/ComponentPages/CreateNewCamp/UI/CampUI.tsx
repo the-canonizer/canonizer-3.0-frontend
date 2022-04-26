@@ -13,8 +13,6 @@ const CreateNewCampUI = ({
   nickNameList,
   parentCamp,
   campNickName,
-  onValuesChange,
-  crCamp,
 }) => {
   return (
     <Fragment>
@@ -23,7 +21,7 @@ const CreateNewCampUI = ({
           <strong>Topic:</strong> {topicData?.topic_name}
         </p>
         <p>
-          <strong>Camp:</strong> {crCamp.camp_name || topicData?.camp_name}
+          <strong>Camp:</strong> {topicData?.camp_name}
         </p>
       </div>
       <div className="d-flex">
@@ -40,8 +38,6 @@ const CreateNewCampUI = ({
             nickNameList={nickNameList}
             parentCamp={parentCamp}
             campNickName={campNickName}
-            onValuesChange={onValuesChange}
-            crCamp={crCamp}
           />
         </div>
       </div>
