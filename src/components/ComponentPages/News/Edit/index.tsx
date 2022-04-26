@@ -66,10 +66,12 @@ export default function Edit() {
         link: news?.link,
         available_for_child: news?.available_for_child,
       });
-
+      console.log("islogin , news data =", isLogin, news);
       if (isLogin === false) {
+        console.log("came in 1");
         router.push("/login");
-      } else if (news === {} && isLogin === true) {
+      } else if (Object.keys(news).length === 0 && isLogin === true) {
+        console.log("came in 2");
         router.push(`/topic/${router.query.camp[0]}/${router.query.camp[0]}`);
       }
     }
