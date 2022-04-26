@@ -217,13 +217,27 @@ const TopicDetails = () => {
         </aside>
 
         <div className="pageContentWrap">
-          <Collapse defaultActiveKey={['1']} ghost>
-            <Panel header="This is panel header 1" key="1">
+          <Collapse defaultActiveKey={['1']} ghost expandIconPosition="right" className={styles.campDetailsCollapse}>
+            <Panel className={styles.campDetailsCollapsePanel} header={
+              <h3 className="heading-color">
+                <i className={"icon-fi-document"} /> News Feeds
+              </h3>
+              } 
+              key="1" extra={
+              <>
+                <a>
+                  <i className={"icon-edit"}></i>Edit News
+                </a>{" "}
+                <a>
+                  <i className={"icon-delete"}></i>Delete News
+                </a>
+              </>
+            }>
               <Spin spinning={loadingIndicator} size="large">
                 <NewsFeedsCard newsFeed={newsFeed} />
               </Spin>
             </Panel>
-            <Panel header="This is panel header 2" key="2">
+            {/* <Panel header="This is panel header 2" key="2">
               <Spin spinning={getTreeLoadingIndicator} size="large">
                 <CampTreeCard
                   scrollToCampStatement={scrollToCampStatement}
@@ -252,7 +266,7 @@ const TopicDetails = () => {
               <Spin spinning={loadingIndicator} size="large">
                 <CurrentCampCard />
               </Spin>
-            </Panel>
+            </Panel> */}
           </Collapse>
           
           <BackTop />

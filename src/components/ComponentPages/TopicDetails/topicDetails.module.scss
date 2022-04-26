@@ -104,4 +104,23 @@
     }
 }
 
-
+.campDetailsCollapse {
+    .campDetailsCollapsePanel {
+        border: 1px solid #f0f0f0;
+        background-color: #FFF;
+        &>div {
+            &:first-child {
+                h3 {
+                    font-size: 20px;
+                    font-weight: 600;
+                    margin-bottom: 0;
+                    display: inline-flex;
+                    align-items: center;
+                    i {
+                        margin-right: 5px;
+                    }
+                }
+            }
+        }
+    }
+}
