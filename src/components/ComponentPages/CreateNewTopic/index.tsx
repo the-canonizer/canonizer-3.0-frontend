@@ -51,7 +51,7 @@ const CreateNewTopic = ({
     };
 
     const res = await createTopic(body);
-    console.log("res resr", res);
+    
     if (res && res.status_code === 200) {
       const data = {
         submitter_nick_id: res.data.submitter_nick_id,
