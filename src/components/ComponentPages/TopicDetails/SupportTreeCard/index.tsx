@@ -1,28 +1,22 @@
 import CustomButton from "@/components/common/button";
-import { Card, Button, Typography, List } from "antd";
+import { Card, Button, Typography, List, Collapse } from "antd";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 
 const { Paragraph } = Typography;
 
+const { Panel } = Collapse;
+
 const SupportTreeCard = ({ handleLoadMoreSupporters }) => {
   const { campSupportingTree } = useSelector((state: RootState) => ({
     campSupportingTree: state?.topicDetails?.campSupportingTree,
   }));
   return (
-    <Card
-      className="canCard"
-      title={<h3>Support Tree for &quot;Agreement&quot; Camp</h3>}
-      extra={<i className="icon-info tooltip-icon-style"></i>}
-      actions={[
-        <>
-          <CustomButton className="btn-orange">
-            Directly Join or Manage Support
-          </CustomButton>
-        </>,
-      ]}
-    >
+    <Collapse defaultActiveKey={['1']} expandIconPosition="right" className="topicDetailsCollapse">
+      <Panel header={<h3>Support Tree for &quot;Agreement&quot; Camp</h3>} 
+        key="1" extra={<i className="icon-info tooltip-icon-style"></i>}
+      >
       <Paragraph>
         Total Support for This Camp (including sub-camps):
         <span className="number-style">65.4</span>
@@ -54,7 +48,13 @@ const SupportTreeCard = ({ handleLoadMoreSupporters }) => {
           Load More
         </CustomButton>
       )}
-    </Card>
+      <div className="topicDetailsCollapseFooter">
+        <CustomButton className="btn-orange">
+          Directly Join or Manage Support
+        </CustomButton>
+      </div>
+    </Panel>
+    </Collapse>
   );
 };
 export default SupportTreeCard;

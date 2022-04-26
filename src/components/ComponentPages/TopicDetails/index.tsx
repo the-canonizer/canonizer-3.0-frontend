@@ -19,7 +19,7 @@ import CurrentCampCard from "./CurrentCampCard";
 import CurrentTopicCard from "./CurrentTopicCard";
 import NewsFeedsCard from "./NewsFeedsCard";
 import SupportTreeCard from "./SupportTreeCard";
-import { BackTop, Dropdown, Menu, Button, Collapse } from "antd";
+import { BackTop, Dropdown, Menu, Button } from "antd";
 import { Spin } from "antd";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
 
@@ -31,8 +31,6 @@ import {
 } from "@ant-design/icons";
 import Link from "next/link";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
-
-const { Panel } = Collapse;
 
 const TopicDetails = () => {
   const isLogin = useAuthentication();

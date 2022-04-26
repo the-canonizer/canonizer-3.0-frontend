@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Tree } from "antd";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
-import styles from "../topicDetails.module.scss";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import styles from "../topicDetails.module.scss";
 
 const { TreeNode } = Tree;
 
@@ -42,7 +42,7 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
               <TreeNode
                 title={
                   <>
-                    <div className={"treeListItem " + styles.treeListItem}>
+                    <div className={"treeListItem " + styles.topicDetailsTreeListItem}>
                       <span
                         className={
                           "treeListItemTitle " + styles.treeListItemTitle

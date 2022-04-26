@@ -10,31 +10,6 @@
     font-size: 15px;
     font-weight: 400;
   }
-  .treeListItem {
-    display: flex;
-    align-items: center;
-    .treeListItemTitle {
-      font-size: 15px;
-      font-weight: 400;
-      color: #0f2a4d;
-      margin-left: 4px;
-      a {
-        color: rgba(0, 0, 0, 0.85);
-      }
-    }
-    .treeListItemNumber {
-      height: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      background: #f89d15;
-      padding: 2px 7px;
-      border-radius: 2px;
-      color: #fff;
-      margin-left: 6px;
-    }
-  }
   .startNew {
     color: #f89d15;
     font-weight: 500;
@@ -124,23 +99,29 @@
   }
 }
 
-.campDetailsCollapse {
-    .campDetailsCollapsePanel {
-        border: 1px solid #f0f0f0;
-        background-color: #FFF;
-        &>div {
-            &:first-child {
-                h3 {
-                    font-size: 20px;
-                    font-weight: 600;
-                    margin-bottom: 0;
-                    display: inline-flex;
-                    align-items: center;
-                    i {
-                        margin-right: 5px;
-                    }
-                }
-            }
-        }
+
+.topicDetailsTreeListItem {
+    display: flex;
+    align-items: center;
+    .treeListItemTitle {
+      font-size: 15px;
+      font-weight: 400;
+      color: #0f2a4d;
+      margin-left: 4px;
+      a {
+        color: rgba(0, 0, 0, 0.85);
+      }
     }
-}
+    .treeListItemNumber {
+      height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      background: #f89d15;
+      padding: 2px 7px;
+      border-radius: 2px;
+      color: #fff;
+      margin-left: 6px;
+    }
+  }
