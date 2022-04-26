@@ -142,11 +142,7 @@ const TopicsList = () => {
           }}
         >
           <Text>Load More</Text>
-<<<<<<< HEAD
-          {!loadMoreIndicator && <i className="icon-angle-right"> </i>}
-=======
           {!loadMoreIndicator && <i className="icon-angle-right"></i>}
->>>>>>> 9bf934e18b7180e687f94b9e70e8297dfa212933
           {loadMoreIndicator && <Spin indicator={antIcon} />}
         </Button>
       )}
