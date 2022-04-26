@@ -187,7 +187,7 @@ export default function CampList() {
   ];
 
   const campRoute = () => {
-    router.push("/create-new-topic");
+    router.push("/create/topic");
   };
 
   return (

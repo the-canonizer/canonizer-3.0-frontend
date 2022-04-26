@@ -17,9 +17,12 @@ import {
 } from "../../../network/api/userApi";
 import IconWrapper from "./iconWrapper";
 import MultiUserModal from "./multipleAccounts";
+import isAuth from "../../../hooks/isUserAuthenticated";
 
 function SocialAuthVerification() {
   const [socialLinks, setSocialLinks] = useState({});
+
+  const isLog = isAuth();
 
   const fetchList = async () => {
     const res = await userSocialAccountsList();
@@ -38,8 +41,10 @@ function SocialAuthVerification() {
   };
 
   useEffect(() => {
-    fetchList();
-  }, []);
+    if (isLog) {
+      fetchList();
+    }
+  }, [isLog]);
 
   const onLinkClick = async (provider) => {
     let body = { provider };
