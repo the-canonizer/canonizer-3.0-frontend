@@ -9,9 +9,9 @@ export class campNewsRequest extends Request {
 
   // Define request functions below.
 
-  static addNewsDataRequest(reqBody) {
+  static addNewsFeed(reqBody) {
     return new Request(
-      K.Network.URL.AddNewsData,
+      K.Network.URL.AddNewsFeed,
       K.Network.Method.POST,
       reqBody,
       K.Network.Header.Type.Json,
@@ -20,19 +20,9 @@ export class campNewsRequest extends Request {
     );
   }
 
-  static getCampNewsData(reqBody) {
+  static getEditCampNewsFeed(reqBody) {
     return new Request(
-      K.Network.URL.GetCampNewsData,
-      K.Network.Method.POST,
-      reqBody,
-      K.Network.Header.Type.Json,
-      {},
-      tokenBearer
-    );
-  }
-  static getCampEditNewsData(reqBody) {
-    return new Request(
-      K.Network.URL.GetCampEditNewsData,
+      K.Network.URL.GetEditCampNewsFeed,
       K.Network.Method.POST,
       reqBody,
       K.Network.Header.Type.Json,
@@ -41,9 +31,9 @@ export class campNewsRequest extends Request {
     );
   }
 
-  static updateNewsData(reqBody) {
+  static updateNewsFeed(reqBody) {
     return new Request(
-      K.Network.URL.UpdateNewsData,
+      K.Network.URL.UpdateNewsFeed,
       K.Network.Method.POST,
       reqBody,
       K.Network.Header.Type.Json,
@@ -52,9 +42,9 @@ export class campNewsRequest extends Request {
     );
   }
 
-  static deleteNewsData(reqBody) {
+  static deleteNewsFeed(reqBody) {
     return new Request(
-      K.Network.URL.DeleteNewsData,
+      K.Network.URL.DeleteNewsFeed,
       K.Network.Method.POST,
       reqBody,
       K.Network.Header.Type.Json,

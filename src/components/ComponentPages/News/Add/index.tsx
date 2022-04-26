@@ -15,7 +15,7 @@ import { useRouter } from "next/router";
 import { LoadingOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
 import styles from "../addEditNews.module.scss";
-import { addNewsDatapi } from "../../../../network/api/campNewsApi";
+import { addNewsFeedApi } from "../../../../network/api/campNewsApi";
 import { getNickNameList } from "../../../../network/api/userApi";
 
 const antIcon = <LoadingOutlined spin />;
@@ -37,7 +37,7 @@ export default function Add() {
 
   const onFinish = async (values: any) => {
     setLoading(true);
-    const res = await addNewsDatapi({
+    const res = await addNewsFeedApi({
       topic_num: +router.query?.camp[0]?.split("-")[0],
       camp_num: +router.query?.camp[1]?.split("-")[0],
       available_for_child: values?.available_for_child,

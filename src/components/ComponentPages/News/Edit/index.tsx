@@ -13,11 +13,10 @@ import {
 import { useRouter } from "next/router";
 import { LoadingOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
-import { updateNewsDataApi } from "../../../../network/api/campNewsApi";
-import { getCampEditNewsDataApi } from "../../../../network/api/campNewsApi";
+import { updateNewsFeedApi } from "../../../../network/api/campNewsApi";
+import { getEditCampNewsFeedApi } from "../../../../network/api/campNewsApi";
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import styles from "../addEditNews.module.scss";
-import { is } from "immer/dist/internal";
 
 const antIcon = <LoadingOutlined spin />;
 const { Text } = Typography;
@@ -38,7 +37,7 @@ export default function Edit() {
 
   const onFinish = async (values: any) => {
     setLoading(true);
-    const res = await updateNewsDataApi({
+    const res = await updateNewsFeedApi({
       newsfeed_id: dataToUpdate?.id,
       display_text: values.display_text,
       link: values.link,
@@ -58,7 +57,7 @@ export default function Edit() {
   useEffect(() => {
     async function getCampEditNewsDataCall() {
       const reqBody = { newsfeed_id: +router.query?.camp[2]?.split("-")[0] };
-      const res = await getCampEditNewsDataApi(reqBody);
+      const res = await getEditCampNewsFeedApi(reqBody);
       const news = (res && res[0]) || {};
       setDataToUpdate(news);
       form.setFieldsValue({
@@ -66,12 +65,9 @@ export default function Edit() {
         link: news?.link,
         available_for_child: news?.available_for_child,
       });
-      console.log("islogin , news data =", isLogin, news);
       if (isLogin === false) {
-        console.log("came in 1");
         router.push("/login");
       } else if (Object.keys(news).length === 0 && isLogin === true) {
-        console.log("came in 2");
         router.push(`/topic/${router.query.camp[0]}/${router.query.camp[0]}`);
       }
     }

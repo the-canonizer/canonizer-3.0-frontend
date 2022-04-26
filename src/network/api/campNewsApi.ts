@@ -4,12 +4,11 @@ import { campNewsRequest } from "../request/campNewsRequest";
 import { store } from "../../store";
 import { setCampNewsToEdit } from "../../../src/store/slices/news";
 
-export const addNewsDatapi = async (body) => {
+export const addNewsFeedApi = async (body) => {
   try {
     const editNewsData = await NetworkCall.fetch(
-      campNewsRequest.addNewsDataRequest(body)
+      campNewsRequest.addNewsFeed(body)
     );
-
     return editNewsData;
   } catch (error) {
     message.error(error?.message);
@@ -17,21 +16,10 @@ export const addNewsDatapi = async (body) => {
   }
 };
 
-export const getCampNewsDataApi = async (body) => {
+export const getEditCampNewsFeedApi = async (body) => {
   try {
     const editNewsData = await NetworkCall.fetch(
-      campNewsRequest.getCampNewsData(body)
-    );
-
-    return editNewsData?.data;
-  } catch (error) {
-    message.error(error?.message);
-  }
-};
-export const getCampEditNewsDataApi = async (body) => {
-  try {
-    const editNewsData = await NetworkCall.fetch(
-      campNewsRequest.getCampEditNewsData(body)
+      campNewsRequest.getEditCampNewsFeed(body)
     );
     let res = editNewsData?.data;
     store.dispatch(setCampNewsToEdit((res && res[0]) || {}));
@@ -41,22 +29,21 @@ export const getCampEditNewsDataApi = async (body) => {
   }
 };
 
-export const updateNewsDataApi = async (body) => {
+export const updateNewsFeedApi = async (body) => {
   try {
     const editNewsData = await NetworkCall.fetch(
-      campNewsRequest.updateNewsData(body)
+      campNewsRequest.updateNewsFeed(body)
     );
-
     return editNewsData;
   } catch (error) {
     return error?.error?.data;
   }
 };
 
-export const deleteNewsApi = async (body) => {
+export const deleteNewsFeedApi = async (body) => {
   try {
     const editNewsData = await NetworkCall.fetch(
-      campNewsRequest.deleteNewsData(body)
+      campNewsRequest.deleteNewsFeed(body)
     );
     return editNewsData;
   } catch (error) {

@@ -1,6 +1,6 @@
 import { Button, Card, Typography, Tooltip, Popconfirm } from "antd";
 import { useEffect, useState } from "react";
-import { deleteNewsApi } from "src/network/api/campNewsApi";
+import { deleteNewsFeedApi } from "src/network/api/campNewsApi";
 import { getNewsFeedApi } from "src/network/api/campDetailApi";
 import { Spin } from "antd";
 import { DeleteOutlined, EditOutlined, CloseOutlined } from "@ant-design/icons";
@@ -18,7 +18,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
 
   const handleDeleteCamp = async (id) => {
     setLoading(true);
-    const res = await deleteNewsApi({
+    const res = await deleteNewsFeedApi({
       newsfeed_id: id,
     });
     if (res?.status_code == 200) {
