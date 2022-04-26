@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Card,
   Button,
@@ -53,6 +53,8 @@ import {
   showFolder,
 } from "../../../../store/slices/uiSlice";
 import CreateFolder from "../CreateFolder";
+import { createFolderApi } from "src/network/api/userApi";
+
 const UploadFileUI = ({
   input,
   setInput,
@@ -68,6 +70,10 @@ const UploadFileUI = ({
   addNewFile,
   Openfolder,
   removeFiles,
+  setUploadFileList,
+  uploadFileList,
+  removeUploadFiles,
+  GetUploadFileAndFolder,
 }) => {
   const [toggleFileView, setToggleFileView] = useState(false);
   const [search, setSearch] = useState("");
@@ -133,7 +139,7 @@ const UploadFileUI = ({
       <Menu.Item>
         <span
           onClick={() => {
-            Openfolder(i);
+            Openfolder(obj.id);
             setFolderIndex(i);
           }}
         >
@@ -211,7 +217,30 @@ const UploadFileUI = ({
     hideCreateFolderModal();
   };
 
-  const createNewFolder = () => {
+  // const createNewFolder = async() => {
+  //   let newFolder = {
+  //     folderName: input,
+  //     type: "folder",
+  //     createdAt: moment().format("DD MMM-YYYY"),
+  //     files: [],
+  //     id: "",
+  //   };
+  //   let res = await createFolderApi({
+  //     name: input
+  //   })
+  //   if(res && res.status_code ==200){
+  //     let newarray = [...fileLists];
+  //     newarray.push(newFolder);
+  //     setFileLists(newarray);
+  //     shownFolder();
+  //     hideCreateFolderModal();
+  //     dragBoxHide();
+  //     shownAddButton();
+  //     GetUploadFileAndFolder();
+  //   }
+  // };
+
+  const createNewFolder = async () => {
     let newFolder = {
       folderName: input,
       type: "folder",
@@ -219,13 +248,20 @@ const UploadFileUI = ({
       files: [],
       id: "",
     };
-    let newarray = [...fileLists];
-    newarray.push(newFolder);
-    setFileLists(newarray);
-    shownFolder();
-    hideCreateFolderModal();
-    dragBoxHide();
-    shownAddButton();
+    let res = await createFolderApi({
+      name: input,
+    });
+    if (res && res.status_code == 200) {
+      newFolder.id = res.data.id;
+      let newarray = [...fileLists];
+      newarray.push(newFolder);
+      setFileLists(newarray);
+      console.log(fileLists);
+      shownFolder();
+      hideCreateFolderModal();
+      dragBoxHide();
+      shownAddButton();
+    }
   };
 
   const onFinish = (values) => {
@@ -238,6 +274,7 @@ const UploadFileUI = ({
       dataIndex: "name",
       key: "name",
       render: (name, obj, index) => {
+        console.log(name, "name", obj, "obj");
         return (
           <div className={styles.CopyShortCode}>
             <div className={styles.icon_Width}>
@@ -303,7 +340,7 @@ const UploadFileUI = ({
               placement="bottomRight"
               title=""
               content={
-                obj.thumbUrl ? (
+                obj.type == "file" ? (
                   <>
                     <li
                       className={styles.high_light}
@@ -322,7 +359,7 @@ const UploadFileUI = ({
                     <li
                       className={styles.high_light}
                       onClick={() => {
-                        navigator.clipboard.writeText(keyParam.name);
+                        navigator.clipboard.writeText(keyParam.file_name);
                       }}
                     >
                       <CopyTwoTone /> Copy Short Code
@@ -362,6 +399,7 @@ const UploadFileUI = ({
     });
   };
   const handleChangeFileName = (e, id) => {
+    console.log(e, id, "id");
     setUpdateList({ ...updateList, [id]: e.target.value });
   };
   const uploadFunction = () => {
@@ -427,7 +465,9 @@ const UploadFileUI = ({
             }
           })
     )?.map((item, i) => {
-      item.id = "folderId" + i;
+      //console.log(item, 'item',i, 'i')
+      //item.id = "folderId" + item.id;
+
       return (
         <div className={styles.view_After_Upload} key={i}>
           {item.type &&
@@ -458,13 +498,13 @@ const UploadFileUI = ({
                       <Card className={styles.files} key={i}>
                         <div className={styles.dropdown_menu}>
                           {/* <Dropdown overlay={menu_files(i, file)} trigger={["click"]}>
-                      <div
-                        className="ant-dropdown-link"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        <MoreOutlined className="Menu_Iconss" />
-                      </div>
-                    </Dropdown> */}
+                         <div
+                           className="ant-dropdown-link"
+                           onClick={(e) => e.preventDefault()}
+                         >
+                           <MoreOutlined className="Menu_Iconss" />
+                         </div>
+                       </Dropdown>  */}
                         </div>
                         <div className={styles.imageFiles}>
                           {file.thumbUrl ? (
@@ -500,12 +540,12 @@ const UploadFileUI = ({
                 : ""}
             </div>
           ) : (
-            <div className={"folderId" + i} id={"folderId" + i}>
-              {item &&
-              item.type &&
-              item.type == "folder" &&
-              showFolderData &&
-              !toggleFileView ? (
+            <div className={"folderId" + item.id} id={"folderId" + item.id}>
+              {(item &&
+                item.type &&
+                item.type == "folder" &&
+                !toggleFileView) ||
+              showFolderData ? (
                 <div className={styles.Folder_container}>
                   <Card className={styles.FolderData}>
                     {/* {item.id = "folderId" + i} */}
@@ -518,11 +558,11 @@ const UploadFileUI = ({
                             Openfolder(i), setFolderIndex(i);
                           }}
                         >
-                          {item.folderName}
+                          {item.name}
                         </div>
                         <div className={styles.dateAndfiles}>
                           <p> {moment().format("DD-MMMM-YYYY")}</p>
-                          <small>{"(" + item.files.length + " files)"}</small>
+                          <small>{"(" + item.uploads_count + " files)"}</small>
                         </div>
                       </div>
                       <div className={styles.dropdown}>
@@ -538,7 +578,7 @@ const UploadFileUI = ({
                     </div>
                   </Card>
                 </div>
-              ) : afterUpload && !toggleFileView ? (
+              ) : afterUpload || !toggleFileView ? (
                 <Card className={styles.files}>
                   <div className={styles.dropdown_menu}>
                     <Dropdown overlay={menu_files(i, item)} trigger={["click"]}>
@@ -568,7 +608,10 @@ const UploadFileUI = ({
                       />
                     )}
                   </div>
-                  <h3>{item.name.substring(0, 16) + "..."}</h3>
+                  <h3>
+                    {(item.name ? item.name : item.file_name).substring(0, 10) +
+                      "..."}
+                  </h3>
                   <span>
                     {moment(item.lastModifiedDate).format(
                       "MMM DD, YYYY, h:mm:ss A"
@@ -584,6 +627,8 @@ const UploadFileUI = ({
       );
     });
   };
+  console.log(fileLists, "fileLists");
+
   return (
     <>
       <div>
@@ -680,14 +725,19 @@ const UploadFileUI = ({
             ) : (
               ""
             )}
+
             <Upload
               className={styles.UploadDataFiles}
               name="file"
               listType="picture"
-              multiple={true}
-              fileList={fileStatus ? folderFiles : fileLists}
+              multiple
+              //showUploadList={false}
+              fileList={fileStatus ? folderFiles : uploadFileList}
               onChange={(info) => {
+                let fileListData = [...info.fileList];
+                // console.log(fileListData, 'fileListData')
                 let length = info.fileList.length;
+                //console.log(info,'info', info.fileList, 'info.FileList')
                 if (length) {
                   if (fileStatus) {
                     if (
@@ -698,7 +748,11 @@ const UploadFileUI = ({
                       setFolderFiles(info.fileList);
                     }
                   } else {
-                    setFileLists(info.fileList);
+                    let dataValues = info.fileList;
+                    console.log(dataValues, "dataValues");
+                    setUploadFileList(dataValues);
+                    // setFileLists(info.fileList)
+                    setFileLists(fileLists);
                   }
                   dragBoxHide();
                   crossBtnhide();
@@ -726,6 +780,8 @@ const UploadFileUI = ({
                 console.log("Dropped files", e.dataTransfer.files);
               }}
               itemRender={(originNode, file, currFileList) => {
+                //console.log(file, 'file',originNode, 'originNode', currFileList, 'currFileList')
+
                 const fileSizeFlag = file.size / (1024 * 1024) > 5;
                 return (file.type && file.type == "folder") ||
                   toggleFileView ? (
@@ -738,7 +794,7 @@ const UploadFileUI = ({
                     >
                       <CloseCircleOutlined
                         onClick={() =>
-                          removeFiles(originNode, file, currFileList)
+                          removeUploadFiles(originNode, file, uploadFileList)
                         }
                       />
                       <div className="imgWrap">
@@ -769,7 +825,7 @@ const UploadFileUI = ({
 
                       <Input
                         className="mr0"
-                        value={fileName}
+                        //value={fileName}
                         //id={file.id}
                         name={file.uid}
                         onChange={(e) => handleChangeFileName(e, file.uid)}
@@ -800,7 +856,7 @@ const UploadFileUI = ({
               )}
             </Upload>
           </div>
-
+          <div className={styles.fileList}>{searchFilter()}</div>
           {toggleFileView && fileLists.length > 0 ? (
             <div className="TableContent">
               <Table
@@ -815,16 +871,15 @@ const UploadFileUI = ({
             ""
           )}
 
-          <div className={styles.fileList}>{searchFilter()}</div>
           {show_UploadOptions ? (
             <div className={styles.Upload_Cancel_Btn}>
               <Button
                 className={styles.Upload_Btn}
                 onClick={() => {
-                  uploadList(),
-                    uploadFunction(),
-                    uploadFun(),
-                    setToggleFileView(false);
+                  //uploadList(),
+                  //uploadFunction(),
+                  uploadFun(), setToggleFileView(false);
+                  setUploadFileList([]);
                 }}
               >
                 Upload
@@ -867,12 +922,14 @@ const UploadFileUI = ({
           setPreview({ ...preview, previewVisible: false });
         }}
       >
-        <Image
-          alt="example"
-          src={preview.previewPath}
-          width={"472px"}
-          height={"472px"}
-        />
+        {preview.previewPath && (
+          <Image
+            alt="example"
+            src={preview.previewPath}
+            width={"472px"}
+            height={"472px"}
+          />
+        )}
       </Modal>
     </>
   );

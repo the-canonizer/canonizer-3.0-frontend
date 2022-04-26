@@ -15,9 +15,9 @@ export default class Request {
     token = ""
   ) {
     // const token = User.getToken();
-
     headers = {
-      ...(defaultHeaderType === K.Network.Header.Type.Json
+      ...(defaultHeaderType === K.Network.Header.Type.Json ||
+      defaultHeaderType === K.Network.Header.Type.formData
         ? K.Network.Header.Default(token)
         : K.Network.Header.Authorization(token)),
       ...headers,

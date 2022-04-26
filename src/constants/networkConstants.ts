@@ -61,6 +61,17 @@ const NetworkConstants = {
     // topic
     CreateTopic: `${BaseCanonizerApiUrl}/topic/save`,
 
+    //UploadFile
+    UploadFile: `${BaseCanonizerApiUrl}/upload-files`,
+    //UploadFileAndFolder
+    GetUploadFileAndFolder: `${BaseCanonizerApiUrl}/uploaded-files`,
+    //GetFilesInsideAFolder folder/files/1
+    GETFILESINDISEFOLDER: `${BaseCanonizerApiUrl}/folder/files/`,
+    //createFolder
+    CreateFolder: `${BaseCanonizerApiUrl}/add-folder`,
+    //DeleteFolder
+    DeleteFolder: `${BaseCanonizerApiUrl}/folder/delete/`,
+
     // Camp
     CreateCamp: `${BaseCanonizerApiUrl}/camp/save`,
     GetAllParents: `${BaseCanonizerApiUrl}/camp/allParent`,
