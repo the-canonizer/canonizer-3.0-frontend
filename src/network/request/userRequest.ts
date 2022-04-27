@@ -1,6 +1,6 @@
 import K from "../../constants";
 import Request from ".";
-
+import { store } from "../../store";
 export default class UserRequest extends Request {
   constructor(url, met, body, head, obj, token) {
     super(url, met, body, head, obj, token);
@@ -408,6 +408,76 @@ export default class UserRequest extends Request {
       K.Network.Header.Type.Json,
       {},
       authToken
+    );
+  }
+
+  static UploadFile(body) {
+    let state = store.getState();
+    const { auth } = state;
+
+    return new Request(
+      K.Network.URL.UploadFile,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.formData,
+      {},
+      auth.loggedInUser.token
+    );
+  }
+
+  static GetUploadFileAndFolder() {
+    let state = store.getState();
+    const { auth } = state;
+
+    return new Request(
+      K.Network.URL.GetUploadFileAndFolder,
+      K.Network.Method.GET,
+      {},
+      K.Network.Header.Type.Json,
+      {},
+      auth.loggedInUser.token
+    );
+  }
+
+  static CreateFolder(body) {
+    let state = store.getState();
+    const { auth } = state;
+
+    return new Request(
+      K.Network.URL.CreateFolder,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      auth.loggedInUser.token
+    );
+  }
+
+  static DeleteFolder(id) {
+    let state = store.getState();
+    const { auth } = state;
+
+    return new Request(
+      K.Network.URL.DeleteFolder + id,
+      K.Network.Method.DELETE,
+      {},
+      K.Network.Header.Type.Json,
+      {},
+      auth.loggedInUser.token
+    );
+  }
+
+  static GetFileInsideAFolder(id) {
+    let state = store.getState();
+    const { auth } = state;
+
+    return new Request(
+      K.Network.URL.GETFILESINDISEFOLDER + id,
+      K.Network.Method.GET,
+      {},
+      K.Network.Header.Type.Json,
+      {},
+      auth.loggedInUser.token
     );
   }
 }

@@ -3,7 +3,7 @@ import Login from "../components/ComponentPages/Login";
 import GetStartedLayout from "../hoc/getStartedLayout";
 import Layout from "../hoc/layout";
 import useAuthentication from "../hooks/isUserAuthenticated";
-import UploadFiles from "../components/ComponentPages/uploadFiles";
+import UploadFiles from "../components/ComponentPages/UploadFiles";
 //Route : /settings
 function UploadFile() {
   return (

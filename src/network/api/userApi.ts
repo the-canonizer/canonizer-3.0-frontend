@@ -548,3 +548,87 @@ export const deactivateUser = async (body: object) => {
     handleError(error);
   }
 };
+
+export const uploadFile = async (body) => {
+  try {
+    const res = await NetworkCall.fetch(UserRequest.UploadFile(body));
+    return res;
+  } catch (err) {
+    handleError(err);
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400
+    ) {
+      return err.error.data;
+    }
+  }
+};
+
+export const getUploadFileAndFolder = async () => {
+  try {
+    const res = await NetworkCall.fetch(UserRequest.GetUploadFileAndFolder());
+    return res;
+  } catch (err) {
+    handleError(err);
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400
+    ) {
+      return err.error.data;
+    }
+  }
+};
+export const createFolderApi = async (body) => {
+  try {
+    const res = await NetworkCall.fetch(UserRequest.CreateFolder(body));
+    return res;
+  } catch (err) {
+    handleError(err);
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400
+    ) {
+      return err.error.data;
+    }
+  }
+};
+
+export const deleteFolderApi = async (id) => {
+  try {
+    const res = await NetworkCall.fetch(UserRequest.DeleteFolder(id));
+    return res;
+  } catch (err) {
+    handleError(err);
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400
+    ) {
+      return err.error.data;
+    }
+  }
+};
+
+export const getFileInsideFolderApi = async (id) => {
+  try {
+    const res = await NetworkCall.fetch(UserRequest.GetFileInsideAFolder(id));
+    return res;
+  } catch (err) {
+    handleError(err);
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400
+    ) {
+      return err.error.data;
+    }
+  }
+};
