@@ -1303,6 +1303,23 @@ body {
       }
     }
   }
+  .topicDetailsNewsFeedsList {
+    margin: 0;
+    padding-left: 20px;
+    li {
+      & + li {
+        margin-top: 0.5rem;
+      }
+      a {
+        color: rgba(0, 0, 0, 0.85);
+      }
+      .anticon {
+        margin-left: 0.5rem;
+        color: red;
+        cursor: pointer;
+      }
+    }
+  }
   .ant-tree-switcher {
     .anticon {
       font-size: 16px;
