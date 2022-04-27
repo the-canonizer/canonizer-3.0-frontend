@@ -19,7 +19,8 @@ export default class Request {
     const { auth } = state;
     console.log("store", auth);
     headers = {
-      ...(defaultHeaderType === K.Network.Header.Type.Json
+      ...(defaultHeaderType === K.Network.Header.Type.Json ||
+      defaultHeaderType === K.Network.Header.Type.formData
         ? K.Network.Header.Default(token)
         : K.Network.Header.Authorization(token)),
       ...headers,
