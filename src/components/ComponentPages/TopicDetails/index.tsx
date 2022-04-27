@@ -81,13 +81,6 @@ const TopicDetails = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asofdate, algorithm, +router?.query?.camp[1]?.split("-")[0]]);
 
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth", // for smoothly scrolling
-    });
-  };
-
   const scrollToCampStatement = () => {
     myRefToCampStatement.current.scrollIntoView({ behavior: "smooth" });
   };
