@@ -74,6 +74,7 @@ const UploadFileUI = ({
   uploadFileList,
   removeUploadFiles,
   GetUploadFileAndFolder,
+  getFileListFromFolderID,
 }) => {
   const [toggleFileView, setToggleFileView] = useState(false);
   const [search, setSearch] = useState("");
@@ -281,20 +282,25 @@ const UploadFileUI = ({
         return (
           <div className={styles.CopyShortCode}>
             <div className={styles.icon_Width}>
-              {obj.thumbUrl ? (
-                <Image src={obj.thumbUrl} width={"100"} height={"100"} />
+              {obj.file_types == "image/jpeg" ? (
+                <Image
+                  src={obj.file_paths}
+                  alt="picture of author"
+                  width={"100"}
+                  height={"100"}
+                />
               ) : obj.type == "folder" ? (
                 <FolderFilled className={styles.folder_icons} />
-              ) : obj.type == "text/plain" ? (
+              ) : obj.file_type == "text/plain" ? (
                 <FileTextFilled className={styles.folder_icons_fileTxt} />
-              ) : obj.type == "application/pdf" ? (
+              ) : obj.file_type == "application/pdf" ? (
                 <FilePdfFilled className={styles.folder_icons_pdf} />
               ) : (
                 <FileUnknownFilled className={styles.folder_icons} />
               )}
             </div>
             <div className={styles.filename_text}>
-              {name ? name : obj.folderName}
+              {obj.file_name ? obj.file_name : obj.name}
             </div>
           </div>
         );
@@ -305,10 +311,11 @@ const UploadFileUI = ({
       dataIndex: "code",
       key: "code",
       render: (code, obj) => {
+        console.log(code, "code", obj, "obj");
         return (
           <div className={styles.CopyShortCode}>
             <div className={styles.icon_height}>
-              {"[[file: https://staging.canonizer]]"}
+              {`[[${obj.short_code ? obj.short_code : "   "}]]`}
             </div>
             <div className={styles.shortcode_icon}>
               <CopyTwoTone className={styles.folder_icons} />
@@ -324,11 +331,11 @@ const UploadFileUI = ({
       render: (lastModifiedDate, obj) => (
         <div>
           {" "}
-          {lastModifiedDate
-            ? moment(lastModifiedDate)
+          {obj.updated_at
+            ? moment(obj.updated_at).format("MMM DD,YYYY, h:mm:ss A").toString()
+            : moment(obj.created_at)
                 .format("MMM DD,YYYY, h:mm:ss A")
-                .toString()
-            : moment(obj.createdAt).format("MMM DD,YYYY, h:mm:ss A").toString()}
+                .toString()}
         </div>
       ),
     },
@@ -343,22 +350,22 @@ const UploadFileUI = ({
               placement="bottomRight"
               title=""
               content={
-                obj.type == "file" ? (
+                obj.file_type ? (
                   <>
                     <li
                       className={styles.high_light}
                       onClick={() =>
                         setPreview({
                           previewVisible: true,
-                          previewName: obj.name,
-                          previewPath: obj.thumbUrl,
+                          previewName: obj.file_name,
+                          previewPath: obj.file_paths,
                         })
                       }
                     >
                       {" "}
                       <EyeTwoTone /> View File
                     </li>
-                    ,
+                    <br />
                     <li
                       className={styles.high_light}
                       onClick={() => {
@@ -367,7 +374,7 @@ const UploadFileUI = ({
                     >
                       <CopyTwoTone /> Copy Short Code
                     </li>
-                    ,
+                    <br />
                     <li
                       className={styles.high_light}
                       onClick={() => {
@@ -407,6 +414,7 @@ const UploadFileUI = ({
   };
   const uploadFunction = () => {
     const filterFileList = [];
+    console.log(fileLists, "fileLists--");
     for (let i = 0; i < fileLists.length; i++) {
       if (
         fileLists[i].type != "folder" &&
@@ -468,7 +476,7 @@ const UploadFileUI = ({
             }
           })
     )?.map((item, i) => {
-      //console.log(item, 'item',i, 'i')
+      console.log(item, "item", i, "i");
       //item.id = "folderId" + item.id;
 
       return (
@@ -578,7 +586,8 @@ const UploadFileUI = ({
                     </div>
                   </Card>
                 </div>
-              ) : afterUpload && !toggleFileView ? (
+              ) : //afterUpload &&
+              !toggleFileView ? (
                 <Card className={styles.files}>
                   <div className={styles.dropdown_menu}>
                     <Dropdown overlay={menu_files(i, item)} trigger={["click"]}>
@@ -752,7 +761,7 @@ const UploadFileUI = ({
                     console.log(dataValues, "dataValues");
                     setUploadFileList(dataValues);
                     // setFileLists(info.fileList)
-                    setFileLists(fileLists);
+                    setFileLists(info.fileList);
                   }
                   dragBoxHide();
                   crossBtnhide();
@@ -861,7 +870,8 @@ const UploadFileUI = ({
               <Table
                 className="contentValue"
                 dataSource={
-                  fileStatus ? fileLists[folderIndex].files : fileLists
+                  // fileStatus ? fileLists[folderIndex].files : fileLists
+                  fileStatus ? getFileListFromFolderID : fileLists
                 }
                 columns={columns}
               />
@@ -875,9 +885,10 @@ const UploadFileUI = ({
               <Button
                 className={styles.Upload_Btn}
                 onClick={() => {
-                  //uploadList(),
-                  //uploadFunction(),
-                  uploadFun(), setToggleFileView(false);
+                  uploadList(),
+                    uploadFunction(),
+                    uploadFun(),
+                    setToggleFileView(false);
                   setUploadFileList([]);
                 }}
               >

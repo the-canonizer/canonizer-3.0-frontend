@@ -480,4 +480,18 @@ export default class UserRequest extends Request {
       auth.loggedInUser.token
     );
   }
+
+  static DeleteUploadFile(id) {
+    let state = store.getState();
+    const { auth } = state;
+
+    return new Request(
+      K.Network.URL.DeleteUploadFile + id,
+      K.Network.Method.DELETE,
+      {},
+      K.Network.Header.Type.Json,
+      {},
+      auth.loggedInUser.token
+    );
+  }
 }
