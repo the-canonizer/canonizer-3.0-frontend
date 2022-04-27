@@ -1215,7 +1215,7 @@ body {
 }
 
 .ql-container.ql-snow {
-  height: 350px;
+  height: 200px;
 }
 
 .linkCss {
@@ -1258,12 +1258,12 @@ body {
       font-weight: 500;
       display: flex;
       a,
-      label {
+      .ant-checkbox-wrapper {
         &:not(:last-child) {
           margin-right: 32px;
         }
       }
-      label {
+      .ant-checkbox-wrapper {
         font-weight: 500;
       }
       a {

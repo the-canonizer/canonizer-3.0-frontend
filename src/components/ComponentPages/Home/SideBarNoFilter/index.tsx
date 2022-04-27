@@ -7,7 +7,7 @@ import Image from "next/image";
 export default function HomeSideBar({ onCreateCamp = () => {} }) {
   const router = useRouter();
   const campRoute = () => {
-    router.push("/create-new-topic");
+    router.push("/create/topic");
   };
 
   return (

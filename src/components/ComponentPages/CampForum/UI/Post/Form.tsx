@@ -1,15 +1,58 @@
+import dynamic from "next/dynamic";
 import { Fragment } from "react";
 import { Form, Button, Select, Row, Col, Typography } from "antd";
 
 import styles from "../Forum.module.scss";
 import messages from "../../../../../messages";
-import QuillEditor from "../../../../common/editor";
-import { isServer } from "../../../../../utils/generalUtility";
+
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 const { Option } = Select;
 const { Text } = Typography;
 
-const { labels, placeholders, nickNmRule } = messages;
+const { labels, placeholders, nickNmRule, validations } = messages;
+
+const modules = {
+  /*
+   * Quill editor toolbars
+   * See https://quilljs.com/docs/modules/toolbar/
+   */
+  toolbar: [
+    [{ header: [1, 2, 3, 4, 5, 6, false] }, { font: [] }],
+    [{ size: ["small", false, "large", "huge"] }],
+    ["bold", "italic", "underline", "strike", "blockquote"],
+    [{ color: [] }, { background: [] }],
+    [
+      { list: "ordered" },
+      { list: "bullet" },
+      { indent: "-1" },
+      { indent: "+1" },
+    ],
+    ["link"],
+    ["clean"],
+  ],
+  clipboard: { matchVisual: false },
+};
+
+/*
+ * Quill editor formats
+ * See https://quilljs.com/docs/formats/
+ */
+
+const formats = [
+  "header",
+  "font",
+  "size",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "blockquote",
+  "list",
+  "bullet",
+  "indent",
+  "link",
+];
 
 const PostForm = ({
   onFinish,
@@ -18,6 +61,9 @@ const PostForm = ({
   initialValue,
   nickNameList,
   postCount,
+  quillContent = "",
+  onContentChange,
+  isError = false,
 }) => {
   return (
     <Fragment>
@@ -38,7 +84,15 @@ const PostForm = ({
               Number of Post in this thread: {postCount}
             </Text>
             <div className={styles.editorQuill}>
-              {!isServer ? <QuillEditor /> : null}
+              <ReactQuill
+                modules={modules}
+                formats={formats}
+                onChange={onContentChange}
+                value={quillContent}
+                theme="snow"
+                placeholder="Post Your Message Here..."
+              />
+              {isError && <Text type="danger">{validations.reply}</Text>}
             </div>
           </Col>
           <Col xs={24} sm={12}>

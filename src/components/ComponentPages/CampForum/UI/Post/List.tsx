@@ -1,6 +1,8 @@
 import { Fragment } from "react";
-import { Card, Typography, Tooltip, Space } from "antd";
+import { Card, Typography, Tooltip, Space, Popconfirm } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import moment from "moment";
+import sanitizeHtml from "sanitize-html";
 
 import styles from "../Forum.module.scss";
 
@@ -9,39 +11,57 @@ const { Text } = Typography;
 const CreateCampFormUI = ({
   postedBy = null,
   postedTime = null,
-  title = null,
   content = null,
+  postedUpdatedTime = null,
+  nick_name = "",
   onEditClick,
   onDeleteClick,
+  post,
 }) => {
   return (
     <Fragment>
       <Card className={styles.listCard} bodyStyle={{ padding: "15px" }}>
         <div className={`${styles.cardTitle} ${styles.listCardTitle}`}>
           <Space size="small">
-            <Text>
-              <span className={styles.by}>{postedBy}</span> {postedTime}
+            <Text strong>
+              <span className={styles.by}>{postedBy}</span>{" "}
+              {new Date(postedTime).getTime() ===
+              new Date(postedUpdatedTime).getTime()
+                ? `${nick_name} replied ${moment(postedTime)
+                    .local()
+                    .startOf("seconds")
+                    .fromNow()} (${moment(postedTime).format(
+                    "MMM Do YYYY, h:mm:ss a"
+                  )})`
+                : `${nick_name} updated ${moment(postedUpdatedTime)
+                    .local()
+                    .startOf("seconds")
+                    .fromNow()} (${moment(postedUpdatedTime).format(
+                    "MMM Do YYYY, h:mm:ss a"
+                  )})`}
             </Text>
-            <Tooltip title="edit">
-              <a onClick={onEditClick} className="linkCss">
-                <EditOutlined />
-              </a>
-            </Tooltip>
-            <Tooltip title="delete">
-              <a onClick={onDeleteClick} className="linkCss">
-                <DeleteOutlined />
-              </a>
-            </Tooltip>
+            {post.is_my_post ? (
+              <Fragment>
+                <Tooltip title="edit">
+                  <a onClick={onEditClick} className="linkCss">
+                    <EditOutlined />
+                  </a>
+                </Tooltip>
+                <Popconfirm
+                  title="Are you sure to delete this task?"
+                  onConfirm={onDeleteClick}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <a className="linkCss">
+                    <DeleteOutlined />
+                  </a>
+                </Popconfirm>
+              </Fragment>
+            ) : null}
           </Space>
         </div>
-        {title ? (
-          <Fragment>
-            {" "}
-            <Text strong>{title}</Text>
-            <br />
-          </Fragment>
-        ) : null}
-        <Text>{content}</Text>
+        <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(content) }}></div>
       </Card>
     </Fragment>
   );
