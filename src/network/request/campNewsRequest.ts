@@ -9,54 +9,47 @@ export class campNewsRequest extends Request {
 
   // Define request functions below.
 
-  static addNewsFeed(reqBody) {
+  static addNewsFeed(reqBody, token) {
     return new Request(
       K.Network.URL.AddNewsFeed,
       K.Network.Method.POST,
       reqBody,
       K.Network.Header.Type.Json,
       {},
-      tokenBearer
+      token
     );
   }
 
-  static getEditCampNewsFeed(reqBody) {
+  static getEditCampNewsFeed(reqBody, token) {
     return new Request(
       K.Network.URL.GetEditCampNewsFeed,
       K.Network.Method.POST,
       reqBody,
       K.Network.Header.Type.Json,
       {},
-      tokenBearer
+      token
     );
   }
 
-  static updateNewsFeed(reqBody) {
+  static updateNewsFeed(reqBody, token) {
     return new Request(
       K.Network.URL.UpdateNewsFeed,
       K.Network.Method.POST,
       reqBody,
       K.Network.Header.Type.Json,
       {},
-      tokenBearer
+      token
     );
   }
 
-  static deleteNewsFeed(reqBody) {
+  static deleteNewsFeed(reqBody, token) {
     return new Request(
       K.Network.URL.DeleteNewsFeed,
       K.Network.Method.POST,
       reqBody,
       K.Network.Header.Type.Json,
       {},
-      tokenBearer
+      token
     );
   }
 }
-
-const mapStateToProps = (state) => {
-  // const { auth } = state;
-  // return auth;
-  myState: state.auth;
-};
-export default connect(mapStateToProps)(campNewsRequest);

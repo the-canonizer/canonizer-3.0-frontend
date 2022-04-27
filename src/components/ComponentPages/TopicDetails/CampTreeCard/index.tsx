@@ -5,18 +5,43 @@ import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 
 import styles from "../topicDetails.module.scss";
 import { useRouter } from "next/router";
+import { subscribeToCampApi } from "src/network/api/campDetailApi";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
 
 const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
   const router = useRouter();
   const isLogin = useAuthentication();
+  const { currentCampRecord } = useSelector((state: RootState) => ({
+    currentCampRecord: state?.topicDetails?.currentCampRecord,
+  }));
 
+  function onChange(e) {
+    const reqBody = {
+      topic_num: currentCampRecord[0].topic_num,
+      camp_num: currentCampRecord[0].camp_num,
+      checked: e.target.checked,
+      subscription_id: currentCampRecord[0].campSubscriptionId,
+    };
+
+    subscribeToCampApi(reqBody);
+  }
   return (
     <Card
       className={"ctCard canCard mb-3 " + styles.ctCard}
       title={<h3>Canonizer Sorted Camp Tree</h3>}
       extra={
         <>
-          <Checkbox>Subscribe</Checkbox>
+          <Checkbox
+            checked={
+              currentCampRecord && currentCampRecord[0].campSubscriptionId
+                ? true
+                : false
+            }
+            onChange={onChange}
+          >
+            Subscribe
+          </Checkbox>
           <Link
             href={
               isLogin ? router.asPath.replace("topic", "addnews") : "/login"

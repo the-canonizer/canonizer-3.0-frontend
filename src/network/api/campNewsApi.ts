@@ -5,9 +5,11 @@ import { store } from "../../store";
 import { setCampNewsToEdit } from "../../../src/store/slices/news";
 
 export const addNewsFeedApi = async (body) => {
+  let state = store.getState();
+  const { auth } = state;
   try {
     const editNewsData = await NetworkCall.fetch(
-      campNewsRequest.addNewsFeed(body)
+      campNewsRequest.addNewsFeed(body, auth?.loggedInUser?.token)
     );
     return editNewsData;
   } catch (error) {
@@ -17,9 +19,11 @@ export const addNewsFeedApi = async (body) => {
 };
 
 export const getEditCampNewsFeedApi = async (body) => {
+  let state = store.getState();
+  const { auth } = state;
   try {
     const editNewsData = await NetworkCall.fetch(
-      campNewsRequest.getEditCampNewsFeed(body)
+      campNewsRequest.getEditCampNewsFeed(body, auth?.loggedInUser?.token)
     );
     let res = editNewsData?.data;
     store.dispatch(setCampNewsToEdit((res && res[0]) || {}));
@@ -30,9 +34,11 @@ export const getEditCampNewsFeedApi = async (body) => {
 };
 
 export const updateNewsFeedApi = async (body) => {
+  let state = store.getState();
+  const { auth } = state;
   try {
     const editNewsData = await NetworkCall.fetch(
-      campNewsRequest.updateNewsFeed(body)
+      campNewsRequest.updateNewsFeed(body, auth?.loggedInUser?.token)
     );
     return editNewsData;
   } catch (error) {
@@ -41,9 +47,11 @@ export const updateNewsFeedApi = async (body) => {
 };
 
 export const deleteNewsFeedApi = async (body) => {
+  let state = store.getState();
+  const { auth } = state;
   try {
     const editNewsData = await NetworkCall.fetch(
-      campNewsRequest.deleteNewsFeed(body)
+      campNewsRequest.deleteNewsFeed(body, auth?.loggedInUser?.token)
     );
     return editNewsData;
   } catch (error) {

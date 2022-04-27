@@ -4,9 +4,14 @@ import NetworkCall from "../networkCall";
 import CampStatementHistoryRequest from "../request/campStatementHistoryRequest";
 
 export const getCampStatementHistoryApi = async (reqBody) => {
+  let state = store.getState();
+  const { auth } = state;
   try {
     const campStatementHistory = await NetworkCall.fetch(
-      CampStatementHistoryRequest.statementHistory(reqBody),
+      CampStatementHistoryRequest.statementHistory(
+        reqBody,
+        auth.loggedInUser?.token
+      ),
       false
     );
     store.dispatch(setCampStatementHistory(campStatementHistory?.data));

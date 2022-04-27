@@ -49,34 +49,35 @@ const NewsFeedsCard = ({ newsFeed }) => {
             {newsFeed?.length ? (
               <>
                 {!(deleteNews || editNews) && (
-                  <Button
-                    type="link"
-                    onClick={() => {
-                      if (isLogin) {
-                        setEditNews(true);
-                        setDeleteNews(false);
-                      } else {
-                        router.push("/login");
-                      }
-                    }}
-                  >
-                    <i className={"icon-edit "}></i>Edit News
-                  </Button>
-                )}
-                {!(deleteNews || editNews) && (
-                  <Button
-                    type="link"
-                    onClick={() => {
-                      if (isLogin) {
-                        setDeleteNews(true);
-                        setEditNews(false);
-                      } else {
-                        router.push("/login");
-                      }
-                    }}
-                  >
-                    <i className={"icon-delete"}></i>Delete News
-                  </Button>
+                  <>
+                    <Button
+                      type="link"
+                      onClick={() => {
+                        if (isLogin) {
+                          setEditNews(true);
+                          setDeleteNews(false);
+                        } else {
+                          router.push("/login");
+                        }
+                      }}
+                    >
+                      <i className={"icon-edit "}></i>Edit News
+                    </Button>
+
+                    <Button
+                      type="link"
+                      onClick={() => {
+                        if (isLogin) {
+                          setDeleteNews(true);
+                          setEditNews(false);
+                        } else {
+                          router.push("/login");
+                        }
+                      }}
+                    >
+                      <i className={"icon-delete"}></i>Delete News
+                    </Button>
+                  </>
                 )}
                 {(deleteNews || editNews) && (
                   <Button
@@ -105,7 +106,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
                         {news?.display_text}{" "}
                       </a>
 
-                      {!deleteNews && !editNews && (
+                      {!(deleteNews && editNews) && (
                         <i> {news?.submitter_nick_name}</i>
                       )}
                       {deleteNews && (

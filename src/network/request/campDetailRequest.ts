@@ -19,14 +19,14 @@ export default class TreeRequest extends Request {
     );
   }
 
-  static getNewsFeed(reqBody) {
+  static getNewsFeed(reqBody, token) {
     return new Request(
       K.Network.URL.GetNewsFeed,
       K.Network.Method.POST,
       reqBody,
       K.Network.Header.Type.Json,
       {},
-      tokenBearer
+      token
     );
   }
 
@@ -50,13 +50,14 @@ export default class TreeRequest extends Request {
     );
   }
 
-  static getCurrentCampRecord(reqBody) {
+  static getCurrentCampRecord(reqBody, token) {
     return new Request(
       K.Network.URL.GetCurrentCampRecord,
       K.Network.Method.POST,
       reqBody,
       K.Network.Header.Type.Json,
-      {}
+      {},
+      token
     );
   }
 
@@ -123,6 +124,17 @@ export default class TreeRequest extends Request {
       K.Network.Header.Type.Json,
       {},
       auth.loggedInUser?.token
+    );
+  }
+
+  static subscribeToCamp(reqBody, token) {
+    return new Request(
+      K.Network.URL.subscribeToCamp,
+      K.Network.Method.POST,
+      reqBody,
+      K.Network.Header.Type.Json,
+      {},
+      token
     );
   }
 }
