@@ -161,26 +161,27 @@ const UploadFiles = () => {
   //   }
   // };
   const removeFiles = async (originNode, file, currFileList) => {
-    let newarray = [...fileLists];
-    if (file.uid) {
-      let uid = file.uid;
-      let fileIndex = currFileList.findIndex((element) => element.uid == uid);
-    } else {
-      let folderIndex = currFileList.findIndex(
-        (element) => element.id == originNode.id
-      );
-      let res = await deleteFolderApi(originNode.id);
-      if (res && res.status_code == 200) {
-        newarray.splice(folderIndex, 1);
-        setFileLists(newarray);
+    // let newarray = [...fileLists];
+    // if (file.uid) {
+    //   let uid = file.uid;
+    //   let fileIndex = currFileList.findIndex((element) => element.uid == uid);
+    // } else {
+    //   let folderIndex = currFileList.findIndex(
+    //     (element) => element.id == originNode.id
+    //   );
 
-        {
-          newarray.length > 0
-            ? (dragBoxHide(), uploadOptionsHide(), shownAddButton())
-            : (dragBoxShow(), uploadOptionsHide(), hideAddButton());
-        }
+    let res = await deleteFolderApi(originNode.id);
+    if (res && res.status_code == 200) {
+      // newarray.splice(folderIndex, 1);
+      GetUploadFileAndFolder();
+      setFileLists(fileLists);
+      {
+        fileLists.length > 0
+          ? (dragBoxHide(), uploadOptionsHide(), shownAddButton())
+          : (uploadOptionsHide(), hideAddButton());
       }
     }
+    //}
   };
   const removeUploadFiles = (originNode, file, currFileList) => {
     let uid = file.uid;
@@ -208,12 +209,11 @@ const UploadFiles = () => {
       arr.push(...FileArrData);
       arr.push(...folderArrData);
       setFileAndFolderList(arr);
-      //console.log(response.data, 'Responsedat', ...folderArrData,...FileArrData, 'folderArrData')
       setFileLists(arr);
-      if (FileArrData.length > 0) {
-        dragBoxHide();
-        shownAddButton();
-        enableCreateFolderBtn();
+      {
+        arr.length > 0
+          ? (dragBoxHide(), shownAddButton(), enableCreateFolderBtn())
+          : (dragBoxShow(), hideAddButton(), disbleCreateFolderBtn());
       }
     }
   };
@@ -222,6 +222,7 @@ const UploadFiles = () => {
     GetUploadFileAndFolder();
   }, []);
   console.log(fileAndFolderList, "fileAndFolderList");
+  console.log(fileLists.length, fileLists.length > 0, "fileListsLength");
   return (
     <UploadFileUI
       input={input}
