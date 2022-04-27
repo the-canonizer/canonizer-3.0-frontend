@@ -58,11 +58,6 @@ const LoggedOutHeader = () => {
       linkTitle: "Jobs",
       id: 6,
     },
-    {
-      link: "/services",
-      linkTitle: "Services",
-      id: 7,
-    },
   ];
 
   const openLoginModal = () => dispatch(showLoginModal());
