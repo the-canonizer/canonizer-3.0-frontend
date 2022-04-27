@@ -1,4 +1,4 @@
-import { Card, Checkbox, Typography } from "antd";
+import { Card, Checkbox } from "antd";
 import CampTree from "../CampTree";
 import Link from "next/link";
 
@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { subscribeToCampApi } from "src/network/api/campDetailApi";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
+import { useState } from "react";
 
 const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
   const router = useRouter();
@@ -16,6 +17,10 @@ const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
   const { currentCampRecord } = useSelector((state: RootState) => ({
     currentCampRecord: state?.topicDetails?.currentCampRecord,
   }));
+
+  const [checkBoxStatus, setCheckBoxStatus] = useState(
+    currentCampRecord && currentCampRecord[0].campSubscriptionId
+  );
 
   function onChange(e) {
     const reqBody = {
@@ -25,7 +30,9 @@ const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
       subscription_id: currentCampRecord[0].campSubscriptionId,
     };
 
-    subscribeToCampApi(reqBody);
+    subscribeToCampApi(reqBody).then((res) => {
+      debugger;
+    });
   }
   return (
     <Card
@@ -33,14 +40,7 @@ const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
       title={<h3>Canonizer Sorted Camp Tree</h3>}
       extra={
         <>
-          <Checkbox
-            checked={
-              currentCampRecord && currentCampRecord[0].campSubscriptionId
-                ? true
-                : false
-            }
-            onChange={onChange}
-          >
+          <Checkbox checked={checkBoxStatus} onChange={onChange}>
             Subscribe
           </Checkbox>
           <Link

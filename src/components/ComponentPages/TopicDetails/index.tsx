@@ -99,8 +99,6 @@ const TopicDetails = () => {
       as_of_date: asofdate,
     };
 
-    let { camp_num, topic_num } = reqBody;
-
     await Promise.all([
       getNewsFeedApi(reqBody),
       getCanonizedCampStatementApi(reqBody),
