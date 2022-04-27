@@ -1,6 +1,5 @@
 import K from "../../constants";
 import Request from ".";
-import { store } from "../../store";
 
 export default class CampStatementHistoryRequest extends Request {
   constructor(params) {
