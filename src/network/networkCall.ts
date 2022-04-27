@@ -27,7 +27,9 @@ export default class NetworkCall {
       if (error === undefined) {
         return Promise.reject({ error: error });
       } else if (error.status === K.Network.StatusCode.Invalid) {
-        logout("Invalid User");
+        if (!error.config.url?.includes("/user/login")) {
+          logout("Invalid User");
+        }
       } else if (error.status === K.Network.StatusCode.Unauthorized) {
         logout("User unauthorized");
       }

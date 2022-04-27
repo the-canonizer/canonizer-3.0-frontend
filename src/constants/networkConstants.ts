@@ -40,13 +40,14 @@ const NetworkConstants = {
     GetDirectSupportedCamps: `${BaseCanonizerApiUrl}/get-direct-supported-camps`,
     //Delegated Supported Camps
     GetDelegatedSupportCamps: `${BaseCanonizerApiUrl}/get-delegated-supported-camps`,
-    // Tree
+    // topic details page api's
     GetTree: `${BaseCanonizerServiceUrl}/api/v1/tree/get`,
     GetNewsFeed: `${BaseCanonizerApiUrl}/get-camp-newsfeed`,
     GetCampStatement: `${BaseCanonizerApiUrl}/get-camp-statement`,
     GetSupportingTree: `${BaseCanonizerApiUrl}/get/supporting-tree`,
     GetCurrentTopicRecord: `${BaseCanonizerApiUrl}/get-topic-record`,
     GetCurrentCampRecord: `${BaseCanonizerApiUrl}/get-camp-record`,
+    subscribeToCamp: `${BaseCanonizerApiUrl}/camp/subscription`,
     // resend otp for registration
     ResendOTPForRegistration: `${BaseCanonizerApiUrl}/user/reSendOtp`,
 
@@ -92,6 +93,10 @@ const NetworkConstants = {
     ThreadsList: `${BaseCanonizerApiUrl}/thread/list`,
     ThreadCreate: `${BaseCanonizerApiUrl}/thread/save`,
     ThreadUpdate: `${BaseCanonizerApiUrl}/thread/update`,
+    PostSave: `${BaseCanonizerApiUrl}/post/save`,
+    PostUpdate: `${BaseCanonizerApiUrl}/post/update`,
+    PostList: `${BaseCanonizerApiUrl}/post/list`,
+    PostDelete: `${BaseCanonizerApiUrl}/post/delete`,
 
     //camp news feed add edit update
     GetCampNewsData: `${BaseCanonizerApiUrl}/get-camp-newsfeed`,

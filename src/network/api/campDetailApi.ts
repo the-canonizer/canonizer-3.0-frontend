@@ -64,13 +64,30 @@ export const getCurrentTopicRecordApi = async (reqBody) => {
 };
 
 export const getCurrentCampRecordApi = async (reqBody) => {
+  let state = store.getState();
+  const { auth } = state;
   try {
     const currentCampRecord = await NetworkCall.fetch(
-      TreeRequest.getCurrentCampRecord(reqBody),
+      TreeRequest.getCurrentCampRecord(reqBody, auth.loggedInUser?.token),
       false
     );
     store.dispatch(setCurrentCampRecord(currentCampRecord?.data));
     return currentCampRecord?.data;
+  } catch (error) {
+    // message.error(error.message);
+  }
+};
+
+export const subscribeToCampApi = async (reqBody) => {
+  let state = store.getState();
+  const { auth } = state;
+  try {
+    const subscribeToCamp = await NetworkCall.fetch(
+      TreeRequest.subscribeToCamp(reqBody, auth.loggedInUser?.token),
+      false
+    );
+
+    return subscribeToCamp?.data;
   } catch (error) {
     // message.error(error.message);
   }

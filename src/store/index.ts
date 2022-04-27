@@ -6,6 +6,7 @@ import Auth from "./slices/authSlice";
 import Tree from "./slices/campDetailSlice";
 import UiReducer from "./slices/uiSlice";
 import TopicSlice from "./slices/topicSlice";
+import ForumSlice from "./slices/campForumSlice";
 
 import { createStore, Store } from "redux";
 
@@ -33,6 +34,7 @@ let reducers = combineReducers({
   topic: TopicSlice,
   filters: filtersSlice,
   campNews: campNewsSlice,
+  forum: ForumSlice,
 });
 
 const persistConfig = {

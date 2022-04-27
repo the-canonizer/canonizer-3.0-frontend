@@ -71,6 +71,9 @@ function ForgotPasswordUI({ form, onFinish, isModal, closeModal, isScreen }) {
               <Input
                 className={styles.otpInput}
                 placeholder={messages.placeholders.emailId}
+                onKeyDown={(e) =>
+                  e.key === " " && e.keyCode === 32 && e.preventDefault()
+                }
               />
             </Form.Item>
           )}

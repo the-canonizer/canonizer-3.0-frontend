@@ -115,7 +115,7 @@ const ThreadListUI = ({
           key="title"
           render={(text, others) => {
             return (
-              <a onClick={onThreadClick}>
+              <a onClick={(e) => onThreadClick(e, others)}>
                 {text}
                 {paramsList.by === "my" ? (
                   <Tooltip title="edit">
