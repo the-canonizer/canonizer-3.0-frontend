@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import UploadFileUI from "./uploadFilesUI";
+import UploadFileUI from "./UploadFilesUI";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "src/store";
 import {
