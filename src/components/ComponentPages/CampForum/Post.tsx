@@ -10,15 +10,17 @@ const Threads = ({
   initialValue,
   onFinishPost,
   formPost,
-  startedBy,
-  postCount,
   postList,
-  threadStamps,
-  cardTitle,
   pCurrent,
   pTotal,
   pOnChange,
   paramsList,
+  quillContent,
+  onContentChange,
+  isError,
+  onDeleteClick,
+  onPostEditClick,
+  currentThread,
 }) => {
   const router = useRouter();
 
@@ -33,15 +35,16 @@ const Threads = ({
             formPost={formPost}
             initialValue={initialValue}
             nickNameList={nickNameList}
-            threadStamps={threadStamps}
-            startedBy={startedBy}
-            postCount={postCount}
             postList={postList}
-            cardTitle={cardTitle}
             pCurrent={pCurrent}
             pTotal={pTotal}
             pOnChange={pOnChange}
-            paramsList={paramsList}
+            quillContent={quillContent}
+            onContentChange={onContentChange}
+            isError={isError}
+            onEditClick={onPostEditClick}
+            onDeleteClick={onDeleteClick}
+            currentThread={currentThread}
           />
         </div>
       </div>

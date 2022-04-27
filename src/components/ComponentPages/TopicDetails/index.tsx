@@ -130,9 +130,9 @@ const TopicDetails = () => {
       "-"
     );
 
-    router.push(
-      `/camp/create/${topicRecord[0]?.topic_num}-${topicName}/${campRecord[0]?.camp_num}-${campName}`
-    );
+    router.push({
+      pathname: `/camp/create/${topicRecord[0]?.topic_num}-${topicName}/${campRecord[0]?.camp_num}-${campName}`,
+    });
 
     setCurrentTopics(data);
   };
@@ -154,9 +154,9 @@ const TopicDetails = () => {
       "-"
     );
 
-    router.push(
-      `/forum/${topicRecord[0]?.topic_num}-${topicName}/${campRecord[0]?.camp_num}-${campName}/threads`
-    );
+    router.push({
+      pathname: `/forum/${topicRecord[0]?.topic_num}-${topicName}/${campRecord[0]?.camp_num}-${campName}/threads`,
+    });
   };
   const campForumDropdownMenu = (
     <Menu className={styles.campForumDropdownMenu}>
@@ -221,7 +221,11 @@ const TopicDetails = () => {
           </div>
 
           <div className={styles.topicDetailContentHead_Right}>
-            <Button type="primary" className={styles.btnCampForum}>
+            <Button
+              type="primary"
+              className={styles.btnCampForum}
+              onClick={onCampForumClick}
+            >
               Camp Forum
             </Button>
             <Dropdown
