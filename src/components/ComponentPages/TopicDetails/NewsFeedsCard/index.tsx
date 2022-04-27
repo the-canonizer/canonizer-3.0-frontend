@@ -1,8 +1,8 @@
 import { Card, Typography } from "antd";
 import Link from "next/link";
 import { useState } from "react";
-import { deleteNewsDataApi } from "src/network/api/campNewsApi";
-import { getNewsFeedApi } from "src/network/api/campDetailApi";
+import { deleteNewsDataApi } from "../../../../network/api/campNewsApi";
+import { getNewsFeedApi } from "../../../../network/api/campDetailApi";
 import { Spin } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";

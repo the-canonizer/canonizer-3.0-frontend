@@ -1,9 +1,10 @@
-import CustomButton from "@/components/common/button";
+// import CustomButton from "@/components/common/button";
+import CustomButton from "../../../../components/common/button";
 import { Card, Typography, Button } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-import { RootState } from "src/store";
+import { RootState } from "../../../../store";
 import styles from "../topicDetails.module.scss";
 
 const { Paragraph, Title } = Typography;
@@ -34,7 +35,7 @@ const CampStatementCard = ({ myRefToCampStatement, onCampForumClick }) => {
         <>
           <CustomButton className="btn-green">
             <Link
-              href={`/statement/history/${router.query?.camp[0]}/${router.query?.camp[1]}`}
+              href={`/statement/history/${router?.query?.camp[0]}/${router?.query?.camp[1]}`}
             >
               <a>Manage/Edit Camp Statement </a>
             </Link>

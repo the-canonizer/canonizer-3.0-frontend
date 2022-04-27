@@ -1,8 +1,9 @@
-import CustomButton from "@/components/common/button";
+//import CustomButton from "@/components/common/button";
+import CustomButton from "../../../common/button";
 import { Card, Button, Typography, List } from "antd";
 import Link from "next/link";
 import { useSelector } from "react-redux";
-import { RootState } from "src/store";
+import { RootState } from "../../../../store";
 
 const { Paragraph } = Typography;
 
