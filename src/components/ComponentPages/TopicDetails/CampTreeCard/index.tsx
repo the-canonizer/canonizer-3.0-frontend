@@ -1,15 +1,13 @@
 import { Card, Checkbox } from "antd";
 import CampTree from "../CampTree";
 import Link from "next/link";
-
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
-
 import styles from "../topicDetails.module.scss";
 import { useRouter } from "next/router";
 import { subscribeToCampApi } from "src/network/api/campDetailApi";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
   const router = useRouter();
@@ -19,8 +17,16 @@ const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
   }));
 
   const [checkBoxStatus, setCheckBoxStatus] = useState(
-    currentCampRecord && currentCampRecord[0].campSubscriptionId
+    currentCampRecord && currentCampRecord[0].campSubscriptionId ? true : false
   );
+
+  useEffect(() => {
+    setCheckBoxStatus(
+      currentCampRecord && currentCampRecord[0].campSubscriptionId
+        ? true
+        : false
+    );
+  }, [currentCampRecord]);
 
   function onChange(e) {
     const reqBody = {
@@ -31,7 +37,9 @@ const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
     };
 
     subscribeToCampApi(reqBody).then((res) => {
-      debugger;
+      if (res?.status_code == 200) {
+        setCheckBoxStatus(!checkBoxStatus);
+      }
     });
   }
   return (
