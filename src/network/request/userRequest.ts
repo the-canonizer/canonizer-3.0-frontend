@@ -309,8 +309,7 @@ export default class UserRequest extends Request {
       {},
       K.Network.Header.Type.Json,
       {},
-      //authToken
-      tokenBearer
+      authToken
     );
   }
   static updateNickName(values, authToken, id: string) {
