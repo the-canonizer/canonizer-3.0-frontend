@@ -1220,3 +1220,11 @@ body {
   padding: 0 5px;
   color: #f89f38;
 }
+
+.numberInput {
+  .ant-input-group-addon
+    .ant-select.ant-select-single:not(.ant-select-customize-input)
+    .ant-select-selector {
+    border-color: transparent !important;
+  }
+}
