@@ -1,4 +1,4 @@
-import { Card, Typography } from "antd";
+import { Card, Typography, Collapse } from "antd";
 import Link from "next/link";
 import { useState } from "react";
 import { deleteNewsDataApi } from "src/network/api/campNewsApi";
@@ -9,6 +9,8 @@ import { useRouter } from "next/router";
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 
 const { Paragraph } = Typography;
+
+const { Panel } = Collapse;
 
 const NewsFeedsCard = ({ newsFeed }) => {
   const isLogin = useAuthentication();
@@ -29,42 +31,39 @@ const NewsFeedsCard = ({ newsFeed }) => {
     setLoading(false);
   };
   return (
-    <Spin spinning={loading} size="large">
-      <Card
-        className="canCard mb-3"
-        title={
-          <h3 className="heading-color">
-            <i className={"icon-fi-document"} /> News Feeds
-          </h3>
-        }
-        extra={
+    <Collapse defaultActiveKey={['1']} expandIconPosition="right" className="topicDetailsCollapse">
+      <Panel header={
+        <h3 className="text-orange">
+          <i className={"icon-fi-document"} /> News Feeds
+        </h3>
+        } 
+        key="1" extra={
           <>
-            {newsFeed?.length ? (
-              <>
-                {!deleteNews && (
-                  <Link
-                    href={
-                      isLogin
-                        ? "/login"
-                        : router.asPath.replace("topic", "editnews")
-                    }
-                  >
-                    <a>
-                      <i className={"icon-edit "}></i>Edit News
-                    </a>
-                  </Link>
-                )}
-                {!deleteNews && (
-                  <a onClick={() => setDeleteNews(true)}>
-                    <i className={"icon-delete"}></i>Delete News
+          {newsFeed?.length ? (
+            <>
+              {!deleteNews && (
+                <Link
+                  href={
+                    isLogin
+                      ? "/login"
+                      : router.asPath.replace("topic", "editnews")
+                  }
+                >
+                  <a>
+                    <i className={"icon-edit "}></i>Edit News
                   </a>
-                )}
-              </>
-            ) : null}
-          </>
-        }
-      >
-        <ul className="newsFeedsList">
+                </Link>
+              )}
+              {!deleteNews && (
+                <a onClick={() => setDeleteNews(true)}>
+                  <i className={"icon-delete"}></i>Delete News
+                </a>
+              )}
+            </>
+          ) : null}
+        </>
+      }>
+        <ul className="topicDetailsNewsFeedsList">
           {newsFeed?.length
             ? newsFeed?.map((news) => {
                 return (
@@ -85,8 +84,8 @@ const NewsFeedsCard = ({ newsFeed }) => {
               })
             : "No News Found"}
         </ul>
-      </Card>
-    </Spin>
+      </Panel>
+    </Collapse>
   );
 };
 export default NewsFeedsCard;

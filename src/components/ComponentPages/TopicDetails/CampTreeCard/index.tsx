@@ -1,4 +1,4 @@
-import { Card, Checkbox, Typography } from "antd";
+import { Card, Checkbox, Typography, Collapse } from "antd";
 import CampTree from "../CampTree";
 import Link from "next/link";
 
@@ -9,6 +9,8 @@ import { useRouter } from "next/router";
 import { subscribeToCampApi } from "src/network/api/campDetailApi";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
+
+const { Panel } = Collapse;
 
 const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
   const router = useRouter();
@@ -28,11 +30,11 @@ const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
     subscribeToCampApi(reqBody);
   }
   return (
-    <Card
-      className={"ctCard canCard mb-3 " + styles.ctCard}
-      title={<h3>Canonizer Sorted Camp Tree</h3>}
-      extra={
-        <>
+    <Collapse defaultActiveKey={['1']} expandIconPosition="right" className="topicDetailsCollapse">
+      <Panel header={<h3>Canonizer Sorted Camp Tree</h3>} 
+        key="1" extra={
+          <>
+          <div className="ant-checkbox-wrapper" onClick={event => {event.stopPropagation();}}>
           <Checkbox
             checked={
               currentCampRecord && currentCampRecord[0].campSubscriptionId
@@ -40,26 +42,28 @@ const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
                 : false
             }
             onChange={onChange}
+            
           >
             Subscribe
           </Checkbox>
+          </div>
           <Link
             href={
               isLogin ? "/login" : router.asPath.replace("topic", "addnews")
             }
           >
-            <a className={styles.addNew}>
+            <a className={styles.addNew} onClick={event => {event.stopPropagation();}}>
               <i className={"icon-fi-document " + styles.iconMr} /> Add News
             </a>
           </Link>
         </>
-      }
-    >
-      <CampTree
-        scrollToCampStatement={scrollToCampStatement}
-        getSelectedNode={getSelectedNode}
-      />
-    </Card>
+      }>
+        <CampTree
+          scrollToCampStatement={scrollToCampStatement}
+          getSelectedNode={getSelectedNode}
+        />
+      </Panel>
+    </Collapse>
   );
 };
 export default CampTreeCard;
