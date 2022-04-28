@@ -1,11 +1,26 @@
 //import CustomButton from "@/components/common/button";
 import CustomButton from "../../../common/button";
-import { Card, Button, Typography, List } from "antd";
+import { Card, Button, Typography, List, Popover } from "antd";
+import styles from "../topicDetails.module.scss";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 
 const { Paragraph } = Typography;
+const supportContent = (
+  <>
+    <div className={styles.addSupportText}>
+      <p>
+        Supporters can delegate their support to others. Direct supporters
+        receive email notifications of proposed camp changes, while delegated
+        supporters don’t. People delegating their support to others are shown
+        below and indented from their delegates in an outline form. If a
+        delegate changes camp, everyone delegating their support to them will
+        change camps with them.
+      </p>
+    </div>
+  </>
+);
 
 const SupportTreeCard = ({ handleLoadMoreSupporters }) => {
   const { campSupportingTree } = useSelector((state: RootState) => ({
@@ -15,7 +30,11 @@ const SupportTreeCard = ({ handleLoadMoreSupporters }) => {
     <Card
       className="canCard"
       title={<h3>Support Tree for &quot;Agreement&quot; Camp</h3>}
-      extra={<i className="icon-info tooltip-icon-style"></i>}
+      extra={
+        <Popover content={supportContent} placement="left">
+          <i className="icon-info"></i>
+        </Popover>
+      }
       actions={[
         <>
           <CustomButton className="btn-orange">
