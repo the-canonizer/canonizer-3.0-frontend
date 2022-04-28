@@ -377,6 +377,10 @@
     @media screen and (max-width: 767px) {
       width: 50%;
     }
+    .openFolder {
+      display: flex;
+      flex-wrap: wrap;
+    }
   }
 }
 .files {

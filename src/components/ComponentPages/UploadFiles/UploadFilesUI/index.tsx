@@ -51,6 +51,7 @@ import {
   hideCrossBtn,
   showUploadFiles,
   showFolder,
+  showAfterUploads,
 } from "../../../../store/slices/uiSlice";
 import CreateFolder from "../CreateFolder";
 import { createFolderApi } from "src/network/api/userApi";
@@ -91,6 +92,7 @@ const UploadFileUI = ({
     previewPath: "",
     previewName: "",
   });
+  const [filename, setfilename] = useState([]);
   const [folderIndex, setFolderIndex] = useState(0);
 
   const dispatch = useDispatch<AppDispatch>();
@@ -127,6 +129,7 @@ const UploadFileUI = ({
   const crossBtnhide = () => dispatch(hideCrossBtn());
   const showFiles = () => dispatch(showUploadFiles());
   const shownFolder = () => dispatch(showFolder());
+  const showUploadsAfter = () => dispatch(showAfterUploads());
 
   const router = useRouter();
   const campRoute = () => {
@@ -181,7 +184,7 @@ const UploadFileUI = ({
         <span
           className={styles.high_light}
           onClick={() => {
-            navigator.clipboard.writeText(item.name);
+            navigator.clipboard.writeText(item.file_name);
           }}
         >
           <CopyTwoTone /> Copy Short Code
@@ -191,8 +194,7 @@ const UploadFileUI = ({
         <span
           className={styles.high_light}
           onClick={() => {
-            console.log(i, "i", item, "item");
-            removeFiles(i, item, fileLists);
+            removeFiles(item, item, fileLists);
           }}
         >
           <DeleteTwoTone /> Delete
@@ -202,7 +204,6 @@ const UploadFileUI = ({
   );
 
   const editFolder = (obj) => {
-    console.log(obj, "objeditFolder");
     setEditModal(true);
     showCreateFolderModal();
     setRename(obj.name);
@@ -211,12 +212,8 @@ const UploadFileUI = ({
       ["folderName"]: obj.name,
     });
   };
-  //pending api
+
   const changeFolderName = async () => {
-    // const folderIndex = fileLists.findIndex((obj) => editModalId == obj.id);
-    // const fileListsArr = [...fileLists];
-    // fileListsArr[folderIndex].folderName = rename;
-    // setFileLists(fileListsArr);
     let res = await createFolderApi({
       name: rename,
       id: editModalId,
@@ -230,22 +227,10 @@ const UploadFileUI = ({
   };
 
   const createNewFolder = async () => {
-    // let newFolder = {
-    //   folderName: input,
-    //   type: "folder",
-    //   createdAt: moment().format("DD MMM-YYYY"),
-    //   files: [],
-    //   id: "",
-    // };
     let res = await createFolderApi({
       name: input,
     });
     if (res && res.status_code == 200) {
-      // newFolder.id = res.data.id;
-      // let newarray = [...fileLists];
-      // newarray.push(newFolder);
-      // setFileLists(newarray);
-      // console.log(fileLists);
       GetUploadFileAndFolder();
       setFileLists(fileLists);
       shownFolder();
@@ -265,7 +250,6 @@ const UploadFileUI = ({
       dataIndex: "name",
       key: "name",
       render: (name, obj, index) => {
-        console.log(name, "name", obj, "obj");
         return (
           <div className={styles.CopyShortCode}>
             <div className={styles.icon_Width}>
@@ -298,7 +282,6 @@ const UploadFileUI = ({
       dataIndex: "code",
       key: "code",
       render: (code, obj) => {
-        console.log(code, "code", obj, "obj");
         return (
           <div className={styles.CopyShortCode}>
             <div className={styles.icon_height}>
@@ -335,7 +318,6 @@ const UploadFileUI = ({
       dataIndex: "",
       key: "x",
       render: (keyParam, obj, index) => {
-        console.log(keyParam, "keyParam", obj, "obj", index, "index");
         return (
           <>
             <Popover
@@ -401,12 +383,10 @@ const UploadFileUI = ({
     });
   };
   const handleChangeFileName = (e, id) => {
-    console.log(e, id, "id");
     setUpdateList({ ...updateList, [id]: e.target.value });
   };
   const uploadFunction = () => {
     const filterFileList = [];
-    console.log(fileLists, "fileLists--");
     for (let i = 0; i < fileLists.length; i++) {
       if (
         fileLists[i].type != "folder" &&
@@ -479,16 +459,14 @@ const UploadFileUI = ({
             }
           })
     )?.map((item, i) => {
-      console.log(item, "item", i, "i");
-      //item.id = "folderId" + item.id;
-
       return (
         <div className={styles.view_After_Upload} key={i}>
           {item.type &&
           item.type == "folder" &&
           item.id == selectedFolderID &&
           openFolder ? (
-            <div className={styles.openFolder}>
+            // <div className={styles.openFolder}>
+            <div>
               <Card
                 size="small"
                 title={
@@ -505,55 +483,59 @@ const UploadFileUI = ({
                 }
                 className="FolderfileCard"
               ></Card>
-
-              {!toggleFileView
-                ? item.files.map((file, i) => {
-                    return (
-                      <Card className={styles.files} key={i}>
-                        <div className={styles.dropdown_menu}>
-                          {/* <Dropdown overlay={menu_files(i, file)} trigger={["click"]}>
-                         <div
-                           className="ant-dropdown-link"
-                           onClick={(e) => e.preventDefault()}
-                         >
-                           <MoreOutlined className="Menu_Iconss" />
-                         </div>
-                       </Dropdown>  */}
-                        </div>
-                        <div className={styles.imageFiles}>
-                          {file.thumbUrl ? (
-                            <Image
-                              alt="Image"
-                              src={file.thumbUrl}
-                              height={"150px"}
-                              width={"140px"}
-                            />
-                          ) : file.type == "text/plain" ? (
-                            <FileTextFilled
-                              className={styles.FileTextTwoOneClass}
-                            />
-                          ) : file.type == "application/pdf" ? (
-                            <FilePdfFilled
-                              className={styles.FilePdfTwoToneColor}
-                            />
-                          ) : (
-                            <FileUnknownFilled
-                              className={styles.FileTextTwoOneClass}
-                            />
-                          )}
-                        </div>
-                        <h3>{file.name.substring(0, 16) + "..."}</h3>
-                        <span>
-                          {moment(file.lastModifiedDate).format(
-                            "MMM DD, YYYY, h:mm:ss A"
-                          )}
-                        </span>
-                      </Card>
-                    );
-                  })
-                : ""}
+              <div className={styles.openFolder}>
+                {!toggleFileView
+                  ? getFileListFromFolderID.map((file, i) => {
+                      return (
+                        <Card className={styles.files} key={i}>
+                          <div className={styles.dropdown_menu}>
+                            <Dropdown
+                              overlay={menu_files(file.id, file)}
+                              trigger={["click"]}
+                            >
+                              <div
+                                className="ant-dropdown-link"
+                                onClick={(e) => e.preventDefault()}
+                              >
+                                <MoreOutlined className="Menu_Iconss" />
+                              </div>
+                            </Dropdown>
+                          </div>
+                          <div className={styles.imageFiles}>
+                            {file.thumbUrl ? (
+                              <Image
+                                alt="Image"
+                                src={file.thumbUrl}
+                                height={"150px"}
+                                width={"140px"}
+                              />
+                            ) : file.type == "text/plain" ? (
+                              <FileTextFilled
+                                className={styles.FileTextTwoOneClass}
+                              />
+                            ) : file.type == "application/pdf" ? (
+                              <FilePdfFilled
+                                className={styles.FilePdfTwoToneColor}
+                              />
+                            ) : (
+                              <FileUnknownFilled
+                                className={styles.FileTextTwoOneClass}
+                              />
+                            )}
+                          </div>
+                          <h3>{file.file_name.substring(0, 16) + "..."}</h3>
+                          <span>
+                            {moment
+                              .unix(file.created_at)
+                              .format("MMM DD, YYYY, h:mm:ss A")}
+                          </span>
+                        </Card>
+                      );
+                    })
+                  : ""}
+              </div>
             </div>
-          ) : (
+          ) : !openFolder ? (
             <div className={"folderId" + item.id} id={"folderId" + item.id}>
               {item && item.type && item.type == "folder" && !toggleFileView ? (
                 //||showFolderData
@@ -566,7 +548,7 @@ const UploadFileUI = ({
                         <div
                           className="foldername"
                           onClick={() => {
-                            Openfolder(i), setFolderIndex(i);
+                            Openfolder(item.id), setFolderIndex(i);
                           }}
                         >
                           {item.name}
@@ -594,11 +576,13 @@ const UploadFileUI = ({
                     </div>
                   </Card>
                 </div>
-              ) : //afterUpload &&
-              !toggleFileView ? (
+              ) : afterUpload && !toggleFileView ? (
                 <Card className={styles.files}>
                   <div className={styles.dropdown_menu}>
-                    <Dropdown overlay={menu_files(i, item)} trigger={["click"]}>
+                    <Dropdown
+                      overlay={menu_files(item.id, item)}
+                      trigger={["click"]}
+                    >
                       <div
                         className="ant-dropdown-link"
                         onClick={(e) => e.preventDefault()}
@@ -630,22 +614,26 @@ const UploadFileUI = ({
                       "..."}
                   </h3>
                   <span>
-                    {moment
-                      .unix(item.created_at)
-                      .format("MMM DD, YYYY, h:mm:ss A")}
+                    {item.created_at
+                      ? moment
+                          .unix(item.created_at)
+                          .format("MMM DD, YYYY, h:mm:ss A")
+                      : moment(item.lastModified).format(
+                          "MMM DD, YYYY, h:mm:ss A"
+                        )}
                   </span>
                 </Card>
               ) : (
                 ""
               )}
             </div>
+          ) : (
+            ""
           )}
         </div>
       );
     });
   };
-  console.log(fileLists, "fileLists");
-
   return (
     <>
       <div>
@@ -724,11 +712,15 @@ const UploadFileUI = ({
               <div className={styles.top_icon}>
                 <MenuOutlined
                   className={toggleFileView ? styles.high_light : ""}
-                  onClick={() => setToggleFileView(true)}
+                  onClick={() => {
+                    setToggleFileView(true);
+                  }}
                 />
                 <AppstoreOutlined
                   className={!toggleFileView ? styles.high_light : ""}
-                  onClick={() => setToggleFileView(false)}
+                  onClick={() => {
+                    setToggleFileView(false), showUploadsAfter();
+                  }}
                 />
               </div>
             </div>
@@ -748,27 +740,24 @@ const UploadFileUI = ({
               name="file"
               listType="picture"
               multiple
-              //showUploadList={false}
               fileList={fileStatus ? folderFiles : uploadFileList}
               onChange={(info) => {
                 let fileListData = [...info.fileList];
-                // console.log(fileListData, 'fileListData')
                 let length = info.fileList.length;
-                //console.log(info,'info', info.fileList, 'info.FileList')
                 if (length) {
                   if (fileStatus) {
                     if (
                       info.file.status == "uploading" &&
                       info.file.percent == 0
                     ) {
-                      fileLists[folderIndex].files.push(info.file);
                       setFolderFiles(info.fileList);
+                      setUploadFileList(info.fileList);
+                      setFileLists(info.fileList);
                     }
                   } else {
                     let dataValues = info.fileList;
-                    console.log(dataValues, "dataValues");
+
                     setUploadFileList(dataValues);
-                    // setFileLists(info.fileList)
                     setFileLists(info.fileList);
                   }
                   dragBoxHide();
@@ -785,9 +774,9 @@ const UploadFileUI = ({
                 if (status !== "uploading") {
                 }
                 if (status === "done") {
-                  message.success(
-                    `${info.file.name} file uploaded successfully.`
-                  );
+                  // message.success(
+                  //   `${info.file.name} file uploaded successfully.`
+                  // );
                   showFiles();
                 } else if (status === "error") {
                   message.error(`${info.file.name} file upload failed.`);
@@ -851,8 +840,7 @@ const UploadFileUI = ({
                 );
               }}
             >
-              {console.log(drageBoxVisible, "drageBoxVisible")}
-              {drageBoxVisible ? (
+              {drageBoxVisible !== false ? (
                 <div className={styles.Dragebox}>
                   <Button className={styles.Drager}>
                     <div className="uploadBTn">
@@ -877,10 +865,7 @@ const UploadFileUI = ({
             <div className="TableContent">
               <Table
                 className="contentValue"
-                dataSource={
-                  // fileStatus ? fileLists[folderIndex].files : fileLists
-                  fileStatus ? getFileListFromFolderID : fileLists
-                }
+                dataSource={fileStatus ? getFileListFromFolderID : fileLists}
                 columns={columns}
               />
             </div>
@@ -894,7 +879,7 @@ const UploadFileUI = ({
                 className={styles.Upload_Btn}
                 onClick={() => {
                   uploadList(),
-                    uploadFunction(),
+                    //uploadFunction(),
                     uploadFun(),
                     setToggleFileView(false);
                   setUploadFileList([]);
