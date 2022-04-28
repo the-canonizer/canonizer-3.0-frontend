@@ -52,7 +52,7 @@ const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
         <>
           <Checkbox
             checked={
-              currentCampRecord && currentCampRecord[0].campSubscriptionId
+              currentCampRecord && currentCampRecord[0]?.campSubscriptionId
                 ? true
                 : false
             }
@@ -70,7 +70,7 @@ const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
             </a>
           </Link>
           <Popover content={addContent} placement="left">
-            <i className="icon-info"></i>
+            <i className="icon-info info-tooltip"></i>
           </Popover>
         </>
       }

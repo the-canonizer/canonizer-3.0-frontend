@@ -567,6 +567,7 @@ body {
       font-size: 15px;
       font-weight: 500;
       display: flex;
+      align-items: center;
       a,
       label {
         &:not(:last-child) {
@@ -1219,4 +1220,10 @@ body {
   font-size: 16px;
   padding: 0 5px;
   color: #f89f38;
+}
+
+.info-tooltip {
+   color: #d1d4db;
+    font-size: 17px;
+    cursor: pointer;
 }

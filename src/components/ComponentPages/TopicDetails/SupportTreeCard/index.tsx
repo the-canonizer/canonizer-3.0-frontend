@@ -32,7 +32,7 @@ const SupportTreeCard = ({ handleLoadMoreSupporters }) => {
       title={<h3>Support Tree for &quot;Agreement&quot; Camp</h3>}
       extra={
         <Popover content={supportContent} placement="left">
-          <i className="icon-info"></i>
+          <i className="icon-info info-tooltip"></i>
         </Popover>
       }
       actions={[
