@@ -65,8 +65,10 @@ const UploadFiles = () => {
   const [uploadFileList, setUploadFileList] = useState([]);
   const [fileAndFolderList, setFileAndFolderList] = useState([]);
   const [getFileListFromFolderID, setGetFileListFromFolderID] = useState([]);
+  const [openFolderID, setOpenFolderID] = useState("");
   const ref = useRef();
   const closeFolder = () => {
+    setOpenFolderID("");
     showUploadsAfter();
     enableCreateFolderBtn();
     openFolderHide();
@@ -144,6 +146,7 @@ const UploadFiles = () => {
 
   const Openfolder = (i) => {
     console.log(i, "itemId");
+    setOpenFolderID(i);
     //let ID = document.getElementsByClassName("folderId" + i)[0].id;
     console.log(i, "IsdsdD");
     shownFileStatus();
@@ -154,61 +157,30 @@ const UploadFiles = () => {
     GetFileInsideFolderData(i);
   };
 
-  // const removeFiles = (originNode, file, currFileList) => {
-  //   let uid = file.uid;
-  //   let fileIndex = currFileList.findIndex((element) => element.uid == uid);
-  //   let newarray = [...fileLists];
-
-  //   setFileLists(newarray);
-  //   newarray.splice(fileIndex, 1);
-  //   if (newarray.length < 1) {
-  //     dragBoxShow();
-  //     uploadOptionsHide();
-  //     addButtonHide();
-  //   }
-  // };
-  // const removeFiles = async (originNode, file, currFileList) => {
-  //   // let newarray = [...fileLists];
-  //   // if (file.uid) {
-  //   //   let uid = file.uid;
-  //   //   let fileIndex = currFileList.findIndex((element) => element.uid == uid);
-  //   // } else {
-  //   //   let folderIndex = currFileList.findIndex(
-  //   //     (element) => element.id == originNode.id
-  //   //   );
-
-  //     let res = await deleteFolderApi(originNode.id);
-  //     if (res && res.status_code == 200) {
-  //       // newarray.splice(folderIndex, 1);
-  //       GetUploadFileAndFolder();
-  //       setFileLists(fileLists);
-  //       {
-  //         fileLists.length > 0
-  //           ? (dragBoxHide(), uploadOptionsHide(), shownAddButton())
-  //           : ( uploadOptionsHide(), hideAddButton());
-  //       }
-  //     }
-  //   //}
-  // };
   const removeFiles = async (originNode, file, currFileList) => {
-    let newarray = [...fileLists];
+    console.log(originNode.id, "originNode.id");
+    //let newarray = [...fileLists];
     // if(file.uid){
     //   let uid = file.uid;
     //   let fileIndex = currFileList.findIndex((element) => element.uid == uid);
     // }else{
     //   let folderIndex = currFileList.findIndex((element) => element.id == originNode.id);
-    if (originNode.type == "file") {
-      let response = await deleteUploadFileApi(originNode.id);
-      if (response && response.status_code == 200) {
-        GetUploadFileAndFolder();
-        setFileLists(fileLists);
-      }
-    } else if (originNode.type == "folder") {
+    if (originNode.type == "folder") {
       let res = await deleteFolderApi(originNode.id);
       if (res && res.status_code == 200) {
         // newarray.splice(folderIndex, 1);
         GetUploadFileAndFolder();
         setFileLists(fileLists);
+      }
+      //(originNode.type == "file")
+    } else {
+      let response = await deleteUploadFileApi(originNode.id);
+      if (response && response.status_code == 200) {
+        GetUploadFileAndFolder();
+        setFileLists(fileLists);
+        if (openFolderID) {
+          GetFileInsideFolderData(openFolderID);
+        }
       }
     }
     {
@@ -217,6 +189,7 @@ const UploadFiles = () => {
         : (dragBoxShow(), uploadOptionsHide(), hideAddButton());
     }
   };
+
   const removeUploadFiles = (originNode, file, currFileList) => {
     let uid = file.uid;
     let fileIndex = currFileList.findIndex((element) => element.uid == uid);

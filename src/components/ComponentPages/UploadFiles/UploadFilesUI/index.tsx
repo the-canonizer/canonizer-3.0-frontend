@@ -191,7 +191,8 @@ const UploadFileUI = ({
         <span
           className={styles.high_light}
           onClick={() => {
-            removeFiles("", item, fileLists);
+            console.log(i, "i", item, "item");
+            removeFiles(i, item, fileLists);
           }}
         >
           <DeleteTwoTone /> Delete
@@ -199,48 +200,34 @@ const UploadFileUI = ({
       </Menu.Item>
     </Menu>
   );
-  //progess
+
   const editFolder = (obj) => {
+    console.log(obj, "objeditFolder");
     setEditModal(true);
     showCreateFolderModal();
-    setRename(obj.folderName);
+    setRename(obj.name);
     setEditModalId(obj.id);
     createFolderForm.setFieldsValue({
-      ["folderName"]: obj.folderName,
+      ["folderName"]: obj.name,
     });
   };
   //pending api
-  const changeFolderName = () => {
-    const folderIndex = fileLists.findIndex((obj) => editModalId == obj.id);
-    const fileListsArr = [...fileLists];
-    fileListsArr[folderIndex].folderName = rename;
-    setFileLists(fileListsArr);
-    setEditModal(false);
-    hideCreateFolderModal();
+  const changeFolderName = async () => {
+    // const folderIndex = fileLists.findIndex((obj) => editModalId == obj.id);
+    // const fileListsArr = [...fileLists];
+    // fileListsArr[folderIndex].folderName = rename;
+    // setFileLists(fileListsArr);
+    let res = await createFolderApi({
+      name: rename,
+      id: editModalId,
+    });
+    if (res && res.status_code == 200) {
+      GetUploadFileAndFolder();
+      setFileLists(fileLists);
+      setEditModal(false);
+      hideCreateFolderModal();
+    }
   };
-
-  // const createNewFolder = async() => {
-  //   let newFolder = {
-  //     folderName: input,
-  //     type: "folder",
-  //     createdAt: moment().format("DD MMM-YYYY"),
-  //     files: [],
-  //     id: "",
-  //   };
-  //   let res = await createFolderApi({
-  //     name: input
-  //   })
-  //   if(res && res.status_code ==200){
-  //     let newarray = [...fileLists];
-  //     newarray.push(newFolder);
-  //     setFileLists(newarray);
-  //     shownFolder();
-  //     hideCreateFolderModal();
-  //     dragBoxHide();
-  //     shownAddButton();
-  //     GetUploadFileAndFolder();
-  //   }
-  // };
 
   const createNewFolder = async () => {
     // let newFolder = {
@@ -332,8 +319,12 @@ const UploadFileUI = ({
         <div>
           {" "}
           {obj.updated_at
-            ? moment(obj.updated_at).format("MMM DD,YYYY, h:mm:ss A").toString()
-            : moment(obj.created_at)
+            ? moment
+                .unix(obj.updated_at)
+                .format("MMM DD,YYYY, h:mm:ss A")
+                .toString()
+            : moment
+                .unix(obj.created_at)
                 .format("MMM DD,YYYY, h:mm:ss A")
                 .toString()}
         </div>
@@ -344,6 +335,7 @@ const UploadFileUI = ({
       dataIndex: "",
       key: "x",
       render: (keyParam, obj, index) => {
+        console.log(keyParam, "keyParam", obj, "obj", index, "index");
         return (
           <>
             <Popover
@@ -431,11 +423,17 @@ const UploadFileUI = ({
     setFileLists(filterFileList);
   };
   const searchFilter = () => {
+    var searchName = "";
     return (
       search !== "" && datePick !== ""
         ? fileLists.filter((val) => {
+            if (val.name !== undefined) {
+              searchName = val.name;
+            } else if (val.file_name !== undefined) {
+              searchName = val.file_name;
+            }
             if (
-              val.name
+              searchName
                 .toLowerCase()
                 .trim()
                 .includes(search.toLowerCase().trim()) &&
@@ -447,8 +445,13 @@ const UploadFileUI = ({
           })
         : search !== "" && datePick == ""
         ? fileLists.filter((val) => {
+            if (val.name !== undefined) {
+              searchName = val.name;
+            } else if (val.file_name !== undefined) {
+              searchName = val.file_name;
+            }
             if (
-              val.name
+              searchName
                 .toLowerCase()
                 .trim()
                 .includes(search.toLowerCase().trim())
@@ -460,7 +463,7 @@ const UploadFileUI = ({
         ? fileLists.filter((val) => {
             if (
               moment(datePick).format("MMM DD, YYYY") ==
-              moment(val.lastModifiedDate).format("MMM DD, YYYY")
+              moment(val.created_at).format("MMM DD, YYYY")
             ) {
               return val;
             }
@@ -470,7 +473,7 @@ const UploadFileUI = ({
               return val;
             } else if (
               moment(datePick).format("MMM DD, YYYY") ==
-              moment(val.lastModifiedDate).format("MMM DD, YYYY")
+              moment(val.created_at).format("MMM DD, YYYY")
             ) {
               return val;
             }
@@ -569,7 +572,12 @@ const UploadFileUI = ({
                           {item.name}
                         </div>
                         <div className={styles.dateAndfiles}>
-                          <p> {moment().format("DD-MMMM-YYYY")}</p>
+                          <p>
+                            {" "}
+                            {moment
+                              .unix(item.created_at)
+                              .format("DD-MMMM-YYYY")}
+                          </p>
                           <small>{"(" + item.uploads_count + " files)"}</small>
                         </div>
                       </div>
@@ -622,9 +630,9 @@ const UploadFileUI = ({
                       "..."}
                   </h3>
                   <span>
-                    {moment(item.lastModifiedDate).format(
-                      "MMM DD, YYYY, h:mm:ss A"
-                    )}
+                    {moment
+                      .unix(item.created_at)
+                      .format("MMM DD, YYYY, h:mm:ss A")}
                   </span>
                 </Card>
               ) : (
