@@ -17,23 +17,21 @@ const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
   }));
 
   const [checkBoxStatus, setCheckBoxStatus] = useState(
-    currentCampRecord && currentCampRecord[0].campSubscriptionId ? true : false
+    currentCampRecord && currentCampRecord.campSubscriptionId ? true : false
   );
 
   useEffect(() => {
     setCheckBoxStatus(
-      currentCampRecord && currentCampRecord[0].campSubscriptionId
-        ? true
-        : false
+      currentCampRecord && currentCampRecord.campSubscriptionId ? true : false
     );
   }, [currentCampRecord]);
 
   function onChange(e) {
     const reqBody = {
-      topic_num: currentCampRecord[0].topic_num,
-      camp_num: currentCampRecord[0].camp_num,
+      topic_num: currentCampRecord.topic_num,
+      camp_num: currentCampRecord.camp_num,
       checked: e.target.checked,
-      subscription_id: currentCampRecord[0].campSubscriptionId,
+      subscription_id: currentCampRecord.campSubscriptionId,
     };
 
     subscribeToCampApi(reqBody).then((res) => {
