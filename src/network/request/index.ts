@@ -1,5 +1,5 @@
 import K from "../../constants";
-
+import { store } from "../../store";
 export default class Request {
   url: string = "";
   method: string = "";
@@ -15,6 +15,9 @@ export default class Request {
     token = ""
   ) {
     // const token = User.getToken();
+    let state = store.getState();
+    const { auth } = state;
+    console.log("store", auth);
     headers = {
       ...(defaultHeaderType === K.Network.Header.Type.Json ||
       defaultHeaderType === K.Network.Header.Type.formData

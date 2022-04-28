@@ -1,4 +1,3 @@
-import React, { ReactElement } from "react";
 import {
   Typography,
   Button,
@@ -12,19 +11,21 @@ import {
 import styles from ".././campHistory.module.scss";
 
 const { Panel } = Collapse;
-const { Paragraph, Title, Text } = Typography;
+const { Title } = Typography;
 export default function HistoryCollapse({ campStatement }) {
   return (
     <div>
       <Space
         direction="vertical"
-        className={`${styles.campStatementCollapseObjectedHistory} ${styles.campStatementCollapseHistory}`}
+        className={`${styles[campStatement?.status]} ${
+          styles.campStatementCollapseHistory
+        }`}
       >
         <Collapse
           collapsible="header"
           defaultActiveKey={["1"]}
           expandIconPosition="right"
-          className="campHistoryCollapseCards campHistoryCollapseObjectedCard"
+          className={`campHistoryCollapseCards + " " + ${campStatement?.status}`}
         >
           <Panel
             header={<i className="icon-uparrow"></i>}
@@ -54,7 +55,7 @@ export default function HistoryCollapse({ campStatement }) {
                 <Title level={5}>
                   Submitter Nick Name :{" "}
                   <span>
-                    <a href="">ali_Ahmed</a>
+                    <a href="">{campStatement?.objector_nick_name}</a>
                   </span>
                 </Title>
                 <Title level={5}>
