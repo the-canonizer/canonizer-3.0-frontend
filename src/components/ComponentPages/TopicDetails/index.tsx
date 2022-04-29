@@ -126,10 +126,7 @@ const TopicDetails = () => {
           ? 0
           : +router?.query?.camp?.at(1)?.split("-")?.at(0),
       checked: !subscribedCampStatus,
-      subscription_id:
-        subscribeTo == "topic"
-          ? topicRecord?.topicSubscriptionId
-          : campRecord.campSubscriptionId,
+      subscription_id: campRecord.campSubscriptionId,
     };
 
     subscribeToCampApi(reqBody, subscribeTo).then((res) => {

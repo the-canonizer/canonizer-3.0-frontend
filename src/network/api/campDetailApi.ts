@@ -100,7 +100,7 @@ export const subscribeToCampApi = async (reqBody, subscribeTo) => {
           setCurrentCampSubscriptionID(subscribeToCamp?.data[0].subscriptionId)
         );
 
-    return subscribeToCamp;
+    return subscribeToCamp?.data;
   } catch (error) {
     // message.error(error.message);
   }
