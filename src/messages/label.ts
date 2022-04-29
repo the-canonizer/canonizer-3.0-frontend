@@ -51,4 +51,5 @@ export const labels = {
   threadTitle: "Title of Thread (Limit 100 Chars)",
   uploadFiles: "UploadFiles",
   maxSize: "Max size 5 MB",
+  FolderName: "Folder Name (Limit 15 Chars*)",
 };

@@ -13,47 +13,53 @@ const SupportTreeCard = ({ handleLoadMoreSupporters }) => {
     campSupportingTree: state?.topicDetails?.campSupportingTree,
   }));
   return (
-    <Collapse defaultActiveKey={['1']} expandIconPosition="right" className="topicDetailsCollapse">
-      <Panel header={<h3>Support Tree for &quot;Agreement&quot; Camp</h3>} 
-        key="1" extra={<i className="icon-info tooltip-icon-style"></i>}
+    <Collapse
+      defaultActiveKey={["1"]}
+      expandIconPosition="right"
+      className="topicDetailsCollapse"
+    >
+      <Panel
+        header={<h3>Support Tree for &quot;Agreement&quot; Camp</h3>}
+        key="1"
+        extra={<i className="icon-info tooltip-icon-style"></i>}
       >
-      <Paragraph>
-        Total Support for This Camp (including sub-camps):
-        <span className="number-style">65.4</span>
-      </Paragraph>
-      <List className={"can-card-list "}>
-        {campSupportingTree?.length &&
-          campSupportingTree.map((supporter, index) => {
-            return (
-              <List.Item key={index}>
-                <Link href="#">
-                  <a>
-                    {supporter.name}
-                    <span className="number-style">{supporter.score}</span>
-                  </a>
-                </Link>
-              </List.Item>
-            );
-          })}
-      </List>
-      {campSupportingTree?.length && (
-        <CustomButton
-          type="primary"
-          ghost
-          className="load-more-btn"
-          onClick={() => {
-            handleLoadMoreSupporters();
-          }}
-        >
-          Load More
-        </CustomButton>
-      )}
-      <div className="topicDetailsCollapseFooter">
-        <CustomButton className="btn-orange">
-          Directly Join or Manage Support
-        </CustomButton>
-      </div>
-    </Panel>
+        <Paragraph>
+          Total Support for This Camp (including sub-camps):
+          <span className="number-style">65.4</span>
+        </Paragraph>
+        <List className={"can-card-list "}>
+          {campSupportingTree?.length &&
+            campSupportingTree.map((supporter, index) => {
+              return (
+                <List.Item key={index}>
+                  <Link href="#">
+                    <a>
+                      {supporter.name}
+                      <span className="number-style">{supporter.score}</span>
+                    </a>
+                  </Link>
+                </List.Item>
+              );
+            })}
+        </List>
+        {campSupportingTree?.length && (
+          <CustomButton
+            type="primary"
+            ghost
+            className="load-more-btn"
+            onClick={() => {
+              handleLoadMoreSupporters();
+            }}
+          >
+            Load More
+          </CustomButton>
+        )}
+        <div className="topicDetailsCollapseFooter">
+          <CustomButton className="btn-orange">
+            Directly Join or Manage Support
+          </CustomButton>
+        </div>
+      </Panel>
     </Collapse>
   );
 };

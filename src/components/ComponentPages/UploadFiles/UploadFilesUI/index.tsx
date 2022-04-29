@@ -38,6 +38,7 @@ import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../../../store";
 import messages from "../../../../messages";
+import ThreeDots from "../../../../assets/image/threeDots.svg";
 import {
   showFolderModal,
   hideFolderModal,
@@ -54,7 +55,7 @@ import {
   showAfterUploads,
 } from "../../../../store/slices/uiSlice";
 import CreateFolder from "../CreateFolder";
-import { createFolderApi } from "src/network/api/userApi";
+import { createFolderApi } from "../../../../network/api/userApi";
 
 const UploadFileUI = ({
   input,
@@ -172,8 +173,8 @@ const UploadFileUI = ({
           onClick={() =>
             setPreview({
               previewVisible: true,
-              previewName: item.name,
-              previewPath: item.thumbUrl,
+              previewName: item.file_name,
+              previewPath: item.file_path,
             })
           }
         >
@@ -184,7 +185,9 @@ const UploadFileUI = ({
         <span
           className={styles.high_light}
           onClick={() => {
-            navigator.clipboard.writeText(item.file_name);
+            {
+              navigator.clipboard.writeText(item.short_code);
+            }
           }}
         >
           <CopyTwoTone /> Copy Short Code
@@ -243,7 +246,26 @@ const UploadFileUI = ({
   const onFinish = (values) => {
     editModal ? changeFolderName() : createNewFolder();
   };
-
+  const displayImageIcon = (obj) => {
+    if (obj.type == "file" || obj.file_path || obj.thumbUrl) {
+      return (
+        <Image
+          src={obj.file_path}
+          alt="picture of author"
+          width={"100"}
+          height={"100"}
+        />
+      );
+    } else if (obj.type == "folder") {
+      return <FolderFilled className={styles.folder_icons} />;
+    } else if (obj.file_type == "text/plain") {
+      return <FileTextFilled className={styles.folder_icons_fileTxt} />;
+    } else if (obj.file_type == "application/pdf") {
+      return <FilePdfFilled className={styles.folder_icons_pdf} />;
+    } else {
+      return <FileUnknownFilled className={styles.folder_icons} />;
+    }
+  };
   const columns = [
     {
       title: "File Name",
@@ -253,9 +275,9 @@ const UploadFileUI = ({
         return (
           <div className={styles.CopyShortCode}>
             <div className={styles.icon_Width}>
-              {obj.file_types == "image/jpeg" ? (
+              {obj.type == "file" ? (
                 <Image
-                  src={obj.file_paths}
+                  src={obj.file_path}
                   alt="picture of author"
                   width={"100"}
                   height={"100"}
@@ -288,7 +310,12 @@ const UploadFileUI = ({
               {`[[${obj.short_code ? obj.short_code : "   "}]]`}
             </div>
             <div className={styles.shortcode_icon}>
-              <CopyTwoTone className={styles.folder_icons} />
+              <CopyTwoTone
+                className={styles.folder_icons}
+                onClick={() => {
+                  navigator.clipboard.writeText(obj.short_code);
+                }}
+              />
             </div>
           </div>
         );
@@ -332,7 +359,7 @@ const UploadFileUI = ({
                         setPreview({
                           previewVisible: true,
                           previewName: obj.file_name,
-                          previewPath: obj.file_paths,
+                          previewPath: obj.file_path,
                         })
                       }
                     >
@@ -343,7 +370,7 @@ const UploadFileUI = ({
                     <li
                       className={styles.high_light}
                       onClick={() => {
-                        navigator.clipboard.writeText(keyParam.file_name);
+                        navigator.clipboard.writeText(keyParam.short_code);
                       }}
                     >
                       <CopyTwoTone /> Copy Short Code
@@ -502,10 +529,10 @@ const UploadFileUI = ({
                             </Dropdown>
                           </div>
                           <div className={styles.imageFiles}>
-                            {file.thumbUrl ? (
+                            {file.file_path ? (
                               <Image
                                 alt="Image"
-                                src={file.thumbUrl}
+                                src={file.file_path}
                                 height={"150px"}
                                 width={"140px"}
                               />
@@ -576,7 +603,7 @@ const UploadFileUI = ({
                     </div>
                   </Card>
                 </div>
-              ) : afterUpload && !toggleFileView ? (
+              ) : afterUpload && !toggleFileView && item.type == "file" ? (
                 <Card className={styles.files}>
                   <div className={styles.dropdown_menu}>
                     <Dropdown
@@ -587,15 +614,23 @@ const UploadFileUI = ({
                         className="ant-dropdown-link"
                         onClick={(e) => e.preventDefault()}
                       >
-                        <MoreOutlined className="Menu_Iconss" />
+                        {/* <MoreOutlined className="Menu_Iconss" /> */}
+
+                        <Image
+                          className={styles.Menu_Iconss}
+                          alt="Three Dots"
+                          src={ThreeDots}
+                          width={15}
+                          height={20}
+                        />
                       </div>
                     </Dropdown>
                   </div>
                   <div className={styles.imageFiles}>
-                    {item.thumbUrl ? (
+                    {item.file_path ? (
                       <Image
                         alt="Image"
-                        src={item.thumbUrl}
+                        src={item.file_path}
                         height={"150px"}
                         width={"140px"}
                       />
@@ -786,6 +821,7 @@ const UploadFileUI = ({
                 console.log("Dropped files", e.dataTransfer.files);
               }}
               itemRender={(originNode, file, currFileList) => {
+                console.log(file, "file");
                 const fileSizeFlag = file.size / (1024 * 1024) > 5;
                 return (file.type && file.type == "folder") ||
                   toggleFileView ? (
@@ -918,9 +954,11 @@ const UploadFileUI = ({
       </Modal>
 
       <Modal
+        className={styles.preview_image}
         visible={preview.previewVisible}
         title={preview.previewName}
         footer={null}
+        closeIcon={<CloseCircleOutlined className={styles.crossIcon} />}
         onCancel={() => {
           setPreview({ ...preview, previewVisible: false });
         }}
@@ -929,8 +967,8 @@ const UploadFileUI = ({
           <Image
             alt="example"
             src={preview.previewPath}
-            width={"472px"}
-            height={"472px"}
+            width={"470px"}
+            height={"470px"}
           />
         )}
       </Modal>

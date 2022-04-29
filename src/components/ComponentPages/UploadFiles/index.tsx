@@ -125,11 +125,7 @@ const UploadFiles = () => {
     dragBoxHide();
     showFiles();
     uploadOptionsHide();
-    /////
-    // if(fileLists.length > 0 ){
-    //   dragBoxHide()
-    //   uploadOptionsHide()
-    //   }
+    GetUploadFileAndFolder();
   };
   const addNewFile = () => {
     hideFiles();
@@ -208,6 +204,7 @@ const UploadFiles = () => {
       arr.push(...folderArrData);
       // setFileAndFolderList(arr);
       setFileLists(arr);
+      console.log(arr, "arr");
       {
         arr.length > 0
           ? (dragBoxHide(),

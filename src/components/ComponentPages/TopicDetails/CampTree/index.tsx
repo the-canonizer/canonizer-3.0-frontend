@@ -42,7 +42,11 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
               <TreeNode
                 title={
                   <>
-                    <div className={"treeListItem " + styles.topicDetailsTreeListItem}>
+                    <div
+                      className={
+                        "treeListItem " + styles.topicDetailsTreeListItem
+                      }
+                    >
                       <span
                         className={
                           "treeListItemTitle " + styles.treeListItemTitle

@@ -31,38 +31,45 @@ const NewsFeedsCard = ({ newsFeed }) => {
     setLoading(false);
   };
   return (
-    <Collapse defaultActiveKey={['1']} expandIconPosition="right" className="topicDetailsCollapse">
-      <Panel header={
-        <h3 className="text-orange">
-          <i className={"icon-fi-document"} /> News Feeds
-        </h3>
-        } 
-        key="1" extra={
+    <Collapse
+      defaultActiveKey={["1"]}
+      expandIconPosition="right"
+      className="topicDetailsCollapse"
+    >
+      <Panel
+        header={
+          <h3 className="text-orange">
+            <i className={"icon-fi-document"} /> News Feeds
+          </h3>
+        }
+        key="1"
+        extra={
           <>
-          {newsFeed?.length ? (
-            <>
-              {!deleteNews && (
-                <Link
-                  href={
-                    isLogin
-                      ? "/login"
-                      : router.asPath.replace("topic", "editnews")
-                  }
-                >
-                  <a>
-                    <i className={"icon-edit "}></i>Edit News
+            {newsFeed?.length ? (
+              <>
+                {!deleteNews && (
+                  <Link
+                    href={
+                      isLogin
+                        ? "/login"
+                        : router.asPath.replace("topic", "editnews")
+                    }
+                  >
+                    <a>
+                      <i className={"icon-edit "}></i>Edit News
+                    </a>
+                  </Link>
+                )}
+                {!deleteNews && (
+                  <a onClick={() => setDeleteNews(true)}>
+                    <i className={"icon-delete"}></i>Delete News
                   </a>
-                </Link>
-              )}
-              {!deleteNews && (
-                <a onClick={() => setDeleteNews(true)}>
-                  <i className={"icon-delete"}></i>Delete News
-                </a>
-              )}
-            </>
-          ) : null}
-        </>
-      }>
+                )}
+              </>
+            ) : null}
+          </>
+        }
+      >
         <ul className="topicDetailsNewsFeedsList">
           {newsFeed?.length
             ? newsFeed?.map((news) => {
