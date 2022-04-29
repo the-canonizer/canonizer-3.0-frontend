@@ -1224,15 +1224,15 @@ body {
   color: #f89f38;
 }
 
-
 .ant-collapse.topicDetailsCollapse {
   margin-bottom: 1rem;
   border: #f0f0f0 1px solid;
-  background-color: #FFF;
+  background-color: #fff;
   .ant-collapse-item {
     border: 0;
   }
-  .ant-collapse-header, .ant-collapse-content-box {
+  .ant-collapse-header,
+  .ant-collapse-content-box {
     padding: 20px;
   }
   .ant-collapse-content {
@@ -1251,7 +1251,6 @@ body {
       margin-bottom: 0;
       display: inline-flex;
       align-items: center;
-      
     }
     .ant-collapse-extra {
       font-size: 15px;
@@ -1362,5 +1361,12 @@ body {
         font-weight: 600;
       }
     }
+  }
+}
+.numberInput {
+  .ant-input-group-addon
+    .ant-select.ant-select-single:not(.ant-select-customize-input)
+    .ant-select-selector {
+    border-color: transparent !important;
   }
 }

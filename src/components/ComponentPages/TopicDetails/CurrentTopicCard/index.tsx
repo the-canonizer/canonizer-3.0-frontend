@@ -9,14 +9,18 @@ const CurrentTopicCard = () => {
     topicRecord: state?.topicDetails?.currentTopicRecord,
   }));
   return (
-    <Collapse defaultActiveKey={['1']} expandIconPosition="right" className="topicDetailsCollapse">
+    <Collapse
+      defaultActiveKey={["1"]}
+      expandIconPosition="right"
+      className="topicDetailsCollapse"
+    >
       <Panel header={<h3>Current Topic Record</h3>} key="1">
         <Descriptions column={1}>
           <Descriptions.Item label="Topic Name">
-            {topicRecord?.length && topicRecord[0]?.topic_name}
+            {topicRecord?.length && topicRecord?.topic_name}
           </Descriptions.Item>
           <Descriptions.Item label="Namespace">
-            /{topicRecord?.length && topicRecord[0]?.namespace_name}/
+            /{topicRecord?.length && topicRecord?.namespace_name}/
           </Descriptions.Item>
         </Descriptions>
         <div className="topicDetailsCollapseFooter">

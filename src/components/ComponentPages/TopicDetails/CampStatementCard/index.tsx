@@ -1,12 +1,12 @@
 import CustomButton from "@/components/common/button";
-import { Card, Typography, Button, Collapse } from "antd";
+import { Typography, Collapse } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
 
-const { Paragraph, Title } = Typography;
+const { Paragraph } = Typography;
 
 const { Panel } = Collapse;
 
@@ -17,19 +17,27 @@ const CampStatementCard = ({ myRefToCampStatement, onCampForumClick }) => {
   }));
 
   return (
-    <Collapse defaultActiveKey={['1']} expandIconPosition="right" className="topicDetailsCollapse">
-      <Panel header={<h3>Camp Statement</h3>} 
-        key="1" extra={
+    <Collapse
+      defaultActiveKey={["1"]}
+      expandIconPosition="right"
+      className="topicDetailsCollapse"
+    >
+      <Panel
+        header={<h3>Camp Statement</h3>}
+        key="1"
+        extra={
           campStatement?.length ? (
             <div className="cardActions">
               <span className="bold">Go live Time </span>:
               {campStatement?.length && campStatement[0]?.go_live_time}
             </div>
           ) : null
-      }>
-    
+        }
+      >
         <Paragraph>
-          {campStatement?.length ? campStatement[0]?.value : "No Statement Found"}
+          {campStatement?.length
+            ? campStatement[0]?.value
+            : "No Statement Found"}
         </Paragraph>
         {/* Will remove the below commented code once the api is integrated completed */}
 
