@@ -34,7 +34,7 @@ const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
         <>
           <Checkbox
             checked={
-              currentCampRecord && currentCampRecord[0].campSubscriptionId
+              currentCampRecord && currentCampRecord.campSubscriptionId
                 ? true
                 : false
             }
