@@ -9,6 +9,7 @@ import {
   getCanonizedCampSupportingTreeApi,
   getCurrentTopicRecordApi,
   getCurrentCampRecordApi,
+  subscribeToCampApi,
 } from "src/network/api/campDetailApi";
 import { RootState } from "src/store";
 import SideBar from "../Home/SideBar";
@@ -39,6 +40,7 @@ const TopicDetails = () => {
 
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [getTreeLoadingIndicator, setGetTreeLoadingIndicator] = useState(false);
+
   const router = useRouter();
   const dispatch = useDispatch();
   const { asof, asofdate, algorithm, newsFeed, topicRecord, campRecord } =
@@ -50,6 +52,13 @@ const TopicDetails = () => {
       topicRecord: state?.topicDetails?.currentTopicRecord,
       campRecord: state?.topicDetails?.currentCampRecord,
     }));
+
+  const [subscribedCampStatus, setSubscribedCampStatus] = useState(
+    campRecord && campRecord.campSubscriptionId ? true : false
+  );
+  const [subscribedTopicStatus, setSubscribedTopicStatus] = useState(
+    topicRecord?.topicSubscriptionId ? true : false
+  );
 
   useEffect(() => {
     async function getTreeApiCall() {
@@ -99,8 +108,6 @@ const TopicDetails = () => {
       as_of_date: asofdate,
     };
 
-    let { camp_num, topic_num } = reqBody;
-
     await Promise.all([
       getNewsFeedApi(reqBody),
       getCanonizedCampStatementApi(reqBody),
@@ -111,6 +118,26 @@ const TopicDetails = () => {
     setLoadingIndicator(false);
   };
 
+  const handleCampSubscription = (subscribeTo) => {
+    const reqBody = {
+      topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+      camp_num:
+        subscribeTo == "topic"
+          ? 0
+          : +router?.query?.camp?.at(1)?.split("-")?.at(0),
+      checked: !subscribedCampStatus,
+      subscription_id: campRecord.campSubscriptionId,
+    };
+
+    subscribeToCampApi(reqBody).then((res) => {
+      if (res?.status_code == 200) {
+        if (subscribeTo == "topic") {
+          setSubscribedTopicStatus(!subscribedTopicStatus);
+        } else setSubscribedCampStatus(!subscribedCampStatus);
+      }
+    });
+  };
+
   const setCurrentTopics = (data) => dispatch(setCurrentTopic(data));
 
   const onCreateCamp = () => {
@@ -118,61 +145,56 @@ const TopicDetails = () => {
 
     const data = {
       message: null,
-      topic_num: topicRecord[0]?.topic_num,
-      topic_name: topicRecord[0]?.topic_name,
-      camp_name: topicRecord[0]?.camp_name,
-      parent_camp_num: topicRecord[0]?.camp_num,
+      topic_num: topicRecord?.topic_num,
+      topic_name: topicRecord?.topic_name,
+      camp_name: topicRecord?.camp_name,
+      parent_camp_num: topicRecord?.camp_num,
     };
 
-    const topicName = topicRecord[0]?.topic_name.replaceAll(" ", "-");
-    const campName = campRecord[0]?.parentCamps[0]?.camp_name.replaceAll(
-      " ",
-      "-"
-    );
+    const topicName = topicRecord?.topic_name.replaceAll(" ", "-");
+    const campName = campRecord?.parentCamps[0]?.camp_name.replaceAll(" ", "-");
 
     router.push({
-      pathname: `/camp/create/${topicRecord[0]?.topic_num}-${topicName}/${campRecord[0]?.camp_num}-${campName}`,
+      pathname: `/camp/create/${topicRecord?.topic_num}-${topicName}/${campRecord?.camp_num}-${campName}`,
     });
 
     setCurrentTopics(data);
   };
 
   const onCampForumClick = () => {
-    // const queryParams = router.query;
-
-    // const data = {
-    //   message: null,
-    //   topic_num: queryParams.camp[0],
-    //   topic_name: topicRecord[0]?.topic_name,
-    //   camp_name: topicRecord[0]?.camp_name,
-    //   parent_camp_num: topicRecord[0]?.camp_num,
-    // };
-    // setCurrentTopics(data);
-    const topicName = topicRecord[0]?.topic_name.replaceAll(" ", "-");
-    const campName = campRecord[0]?.parentCamps[0]?.camp_name.replaceAll(
-      " ",
-      "-"
-    );
+    const topicName = topicRecord?.topic_name.replaceAll(" ", "-");
+    const campName = campRecord?.parentCamps[0]?.camp_name.replaceAll(" ", "-");
 
     router.push({
-      pathname: `/forum/${topicRecord[0]?.topic_num}-${topicName}/${campRecord[0]?.camp_num}-${campName}/threads`,
+      pathname: `/forum/${topicRecord?.topic_num}-${topicName}/${campRecord?.camp_num}-${campName}/threads`,
     });
   };
   const campForumDropdownMenu = (
     <Menu className={styles.campForumDropdownMenu}>
       <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
         <Link
-          href={isLogin ? "/login" : router.asPath.replace("topic", "addnews")}
+          href={isLogin ? router.asPath.replace("topic", "addnews") : "/login"}
         >
           <a rel="noopener noreferrer" href="/add-news">
             Add News
           </a>
         </Link>
       </Menu.Item>
-      <Menu.Item icon={<i className="icon-subscribe"></i>}>
+      <Menu.Item
+        icon={<i className="icon-subscribe"></i>}
+        onClick={() => {
+          handleCampSubscription("topic");
+        }}
+      >
         Subscribe to Entire Topic
       </Menu.Item>
-      <Menu.Item icon={<i className="icon-subscribe"></i>}>
+      <Menu.Item
+        icon={<i className="icon-subscribe"></i>}
+        onClick={() => {
+          handleCampSubscription("camp");
+        }}
+        style={subscribedCampStatus ? { cursor: "progress" } : null}
+      >
         Subscribe to the Camp
       </Menu.Item>
       <Menu.Item icon={<HeartOutlined />}>Directly Join and Support </Menu.Item>
@@ -195,13 +217,13 @@ const TopicDetails = () => {
             <Typography.Paragraph className={"mb-0 " + styles.topicTitleStyle}>
               {" "}
               <span className="bold"> Topic: </span>
-              {topicRecord?.length && topicRecord[0]?.topic_name}
+              {topicRecord?.length && topicRecord?.topic_name}
             </Typography.Paragraph>
             <div className={styles.breadcrumbLinks}>
               {" "}
               <span className="bold mr-1"> Camp : </span>
               {campRecord?.length
-                ? campRecord[0].parentCamps?.map((camp, index) => {
+                ? campRecord.parentCamps?.map((camp, index) => {
                     return (
                       <Link
                         href={`${router.query.camp.at(0)}/${
