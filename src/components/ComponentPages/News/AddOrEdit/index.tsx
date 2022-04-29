@@ -1,33 +1,40 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Form,
   Button,
   Checkbox,
-  Spin,
-  Typography,
-  Input,
   Row,
   Col,
   Card,
+  Spin,
+  Typography,
+  Input,
+  Select,
 } from "antd";
 import { useRouter } from "next/router";
 import { LoadingOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
-import { updateNewsFeedApi } from "../../../../network/api/campNewsApi";
-import { getEditCampNewsFeedApi } from "../../../../network/api/campNewsApi";
-import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import styles from "../addEditNews.module.scss";
+import {
+  addNewsFeedApi,
+  getEditCampNewsFeedApi,
+  updateNewsFeedApi,
+} from "../../../../network/api/campNewsApi";
+import { getNickNameList } from "../../../../network/api/userApi";
 
 const antIcon = <LoadingOutlined spin />;
 const { Text } = Typography;
 
-export default function Edit() {
-  const [dataToUpdate, setDataToUpdate] = useState({});
+export default function AddOrEdit({ edit }) {
   const [loading, setLoading] = useState(false);
   const [urlErrorMsg, setUrlErrorMsg] = useState("");
   const [urlError, setUrlError] = useState(false);
+  const [nickNameData, setNickNameData] = useState([]);
+  const [dataToUpdate, setDataToUpdate] = useState({
+    id: null,
+    submitter_nick_id: null,
+  });
   const router = useRouter();
-  const isLogin = useAuthentication();
   const [form] = Form.useForm();
 
   const goBack = () => {
@@ -37,47 +44,64 @@ export default function Edit() {
 
   const onFinish = async (values: any) => {
     setLoading(true);
-    const res = await updateNewsFeedApi({
-      newsfeed_id: dataToUpdate?.id,
-      display_text: values.display_text,
-      link: values.link,
-      available_for_child: values.available_for_child,
-      submitter_nick_id: dataToUpdate?.submitter_nick_id,
-    });
+    let res;
+    edit
+      ? (res = await updateNewsFeedApi({
+          newsfeed_id: dataToUpdate?.id,
+          display_text: values.display_text,
+          link: values.link,
+          available_for_child: values.available_for_child,
+          submitter_nick_id: dataToUpdate?.submitter_nick_id,
+        }))
+      : (res = await addNewsFeedApi({
+          topic_num: +router.query?.camp[0]?.split("-")[0],
+          camp_num: +router.query?.camp[1]?.split("-")[0],
+          available_for_child: values?.available_for_child,
+          link: values?.link,
+          display_text: values?.display_text,
+          submitter_nick_id: values?.nick_name,
+        }));
+
     if (res?.status_code == 200) {
       router.back();
       return;
     } else if (res?.status_code == 400) {
       setUrlError(true);
-      setUrlErrorMsg(res?.error?.link && res?.error?.link[0]);
+      setUrlErrorMsg(res?.error?.link[0]);
     }
     setLoading(false);
   };
 
   useEffect(() => {
-    async function getCampEditNewsDataCall() {
-      const reqBody = { newsfeed_id: +router.query?.camp[2]?.split("-")[0] };
-      const res = await getEditCampNewsFeedApi(reqBody);
-      const news = (res && res[0]) || {};
-      setDataToUpdate(news);
-      form.setFieldsValue({
-        display_text: news?.display_text,
-        link: news?.link,
-        available_for_child: news?.available_for_child,
-      });
-      if (isLogin === false) {
-        router.push("/login");
-      } else if (Object.keys(news).length === 0 && isLogin === true) {
-        router.push(`/topic/${router.query.camp[0]}/${router.query.camp[0]}`);
+    async function nickNameListApiCall() {
+      if (edit) {
+        const reqBody = { newsfeed_id: +router.query?.camp[2]?.split("-")[0] };
+        const res = await getEditCampNewsFeedApi(reqBody);
+        const news = (res && res[0]) || {};
+        setDataToUpdate(news);
+        form.setFieldsValue({
+          display_text: news?.display_text,
+          link: news?.link,
+          available_for_child: news?.available_for_child,
+        });
+      } else {
+        const result = await getNickNameList();
+        setNickNameData(result?.data);
       }
     }
-    getCampEditNewsDataCall();
+    nickNameListApiCall();
   }, []);
 
-  if (isLogin === false) return null;
   return (
-    <Card title="Edit News" className={styles.card}>
-      <Form form={form} name="basic" layout={"vertical"} onFinish={onFinish}>
+    <Card title={edit ? "Edit News" : "Add News"} className={styles.card}>
+      <Form
+        form={form}
+        layout={"vertical"}
+        initialValues={{
+          available_for_child: 0,
+        }}
+        onFinish={onFinish}
+      >
         <Row gutter={28}>
           <Col xl={14} md={24} xs={24}>
             <Form.Item
@@ -132,6 +156,29 @@ export default function Edit() {
             >
               <Checkbox>Available for children</Checkbox>
             </Form.Item>
+
+            {!edit && (
+              <Form.Item
+                label={<>Nick Name</>}
+                name="nick_name"
+                validateTrigger="onFinish"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Nick name",
+                  },
+                ]}
+              >
+                <Select>
+                  {nickNameData &&
+                    nickNameData?.map((names) => (
+                      <Select.Option value={names.id} key={names?.id}>
+                        {names?.nick_name}
+                      </Select.Option>
+                    ))}
+                </Select>
+              </Form.Item>
+            )}
           </Col>
         </Row>
 
@@ -142,7 +189,7 @@ export default function Edit() {
             htmlType="submit"
             disabled={loading}
           >
-            Submit
+            {edit ? "Submit" : " Create News"}
             {loading && <Spin indicator={antIcon} />}
           </Button>
           <Button

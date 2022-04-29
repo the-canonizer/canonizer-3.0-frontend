@@ -56,51 +56,60 @@ const NewsFeedsCard = ({ newsFeed }) => {
         extra={
           <>
             {newsFeed?.length ? (
-              <>
-                {!(deleteNews || editNews) && (
-                  <>
-                    <Button
-                      type="link"
-                      onClick={() => {
-                        if (isLogin) {
-                          setEditNews(true);
-                          setDeleteNews(false);
-                        } else {
-                          router.push("/login");
-                        }
-                      }}
-                    >
-                      <i className={"icon-edit "}></i>Edit News
-                    </Button>
+              <div
+                className="ant-checkbox-wrapper"
+                onClick={(event) => {
+                  event.stopPropagation();
+                }}
+              >
+                <>
+                  {!(deleteNews || editNews) && (
+                    <>
+                      <Button
+                        type="link"
+                        onClick={() => {
+                          if (isLogin) {
+                            setEditNews(true);
+                            setDeleteNews(false);
+                          } else {
+                            router.push("/login");
+                          }
+                        }}
+                      >
+                        <i className={"icon-edit "} />
+                        Edit News
+                      </Button>
 
+                      <Button
+                        type="link"
+                        onClick={() => {
+                          if (isLogin) {
+                            setDeleteNews(true);
+                            setEditNews(false);
+                          } else {
+                            router.push("/login");
+                          }
+                        }}
+                      >
+                        <i className={"icon-delete"} />
+                        Delete News
+                      </Button>
+                    </>
+                  )}
+                  {(deleteNews || editNews) && (
                     <Button
                       type="link"
+                      danger
                       onClick={() => {
-                        if (isLogin) {
-                          setDeleteNews(true);
-                          setEditNews(false);
-                        } else {
-                          router.push("/login");
-                        }
+                        setDeleteNews(false);
+                        setEditNews(false);
                       }}
                     >
-                      <i className={"icon-delete"}></i>Delete News
+                      <CloseOutlined /> Cancel
                     </Button>
-                  </>
-                )}
-                {(deleteNews || editNews) && (
-                  <Button
-                    type="link"
-                    danger
-                    onClick={() => {
-                      setDeleteNews(false);
-                      setEditNews(false);
-                    }}
-                  >
-                    <CloseOutlined /> Cancel
-                  </Button>
-                )}
-              </>
+                  )}
+                </>
+              </div>
             ) : null}
           </>
         }
@@ -125,7 +134,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
                           <Popconfirm
                             disabled={!news.owner_flag}
                             placement="topLeft"
-                            title="Are you sure to delete this task?"
+                            title="Are you sure to delete the news"
                             onConfirm={() => handleDeleteCamp(news?.id)}
                             okText="Yes"
                             cancelText="No"

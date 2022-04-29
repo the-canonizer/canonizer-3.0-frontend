@@ -28,7 +28,7 @@ const CampStatementCard = ({ myRefToCampStatement, onCampForumClick }) => {
         extra={
           campStatement?.length ? (
             <div className="cardActions">
-              <span className="bold">Go live Time </span>:
+              <span className="bold">Go live Time: </span>
               {campStatement?.length && campStatement[0]?.go_live_time}
             </div>
           ) : null
@@ -76,9 +76,6 @@ const CampStatementCard = ({ myRefToCampStatement, onCampForumClick }) => {
             >
               <a>Manage/Edit Camp Statement </a>
             </Link>
-          </CustomButton>
-          <CustomButton className="btn-blue" onClick={onCampForumClick}>
-            Camp Forum
           </CustomButton>
         </div>
       </Panel>

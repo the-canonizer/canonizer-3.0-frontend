@@ -45,31 +45,23 @@ const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
                 event.stopPropagation();
               }}
             >
-              <Checkbox
-                checked={
-                  currentCampRecord && currentCampRecord.campSubscriptionId
-                    ? true
-                    : false
+              <Link
+                href={
+                  !isLogin
+                    ? "/login"
+                    : router.asPath.replace("topic", "addnews")
                 }
-                onChange={onChange}
               >
-                Subscribe
-              </Checkbox>
+                <a
+                  className={styles.addNew}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                  }}
+                >
+                  <i className={"icon-fi-document " + styles.iconMr} /> Add News
+                </a>
+              </Link>
             </div>
-            <Link
-              href={
-                isLogin ? "/login" : router.asPath.replace("topic", "addnews")
-              }
-            >
-              <a
-                className={styles.addNew}
-                onClick={(event) => {
-                  event.stopPropagation();
-                }}
-              >
-                <i className={"icon-fi-document " + styles.iconMr} /> Add News
-              </a>
-            </Link>
           </>
         }
       >

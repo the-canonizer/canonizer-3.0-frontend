@@ -1,4 +1,4 @@
-import Edit from "../../components/ComponentPages/News/Edit";
+import Add from "../../components/ComponentPages/News/AddOrEdit";
 import Layout from "../../hoc/layout";
 import SideBarNoFilter from "../../components/ComponentPages/Home/SideBarNoFilter";
 import React from "react";
@@ -11,7 +11,7 @@ export default function EditNewsPage() {
           <SideBarNoFilter />
         </aside>
         <div className="pageContentWrap">
-          <Edit />
+          <Add edit={true} />
         </div>
       </Layout>
     </>
