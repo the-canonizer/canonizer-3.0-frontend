@@ -4,7 +4,6 @@
   --primary: #4484ce;
   --font-family-asap: "Asap", sans-serif;
   --yellow: #f89d15;
-  --orange: #f89d15;
 }
 body {
   font-family: "Asap", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -511,6 +510,13 @@ body {
         background-color: transparent;
       }
     }
+    /* &.ant-tree-treenode-leaf-last:first-child,
+    &:nth-child(2) {
+      .treeListItemTitle {
+        font-size: 16px;
+        font-weight: 600;
+      }
+    } */
     &.ant-tree-treenode-leaf-last:first-child {
       .treeListItemTitle {
         color: #2850be;
@@ -518,13 +524,17 @@ body {
     }
     .ant-tree-node-content-wrapper.ant-tree-node-selected {
       background-color: transparent;
+      & > span > div > span:first-child {
+        color: #f89d15;
+        font-weight: 600;
+      }
     }
   }
 }
 
 .canCard {
   .ant-card-head {
-    padding: 16px 20px;
+    padding: 20px;
     @media screen and (max-width: 576px) {
       .ant-card-head-wrapper {
         flex-direction: column;
@@ -560,8 +570,8 @@ body {
       font-size: 15px;
       font-weight: 500;
       display: flex;
+      align-items: center;
       a,
-      button,
       label {
         &:not(:last-child) {
           margin-right: 32px;
@@ -570,13 +580,12 @@ body {
       label {
         font-weight: 500;
       }
-      a, .ant-btn {
+      a {
         font-size: inherit;
         font-weight: inherit;
         display: inline-flex;
         align-items: center;
         line-height: 1;
-        padding: 0;
       }
     }
   }
@@ -636,11 +645,11 @@ body {
       a {
         color: rgba(0, 0, 0, 0.85);
       }
-      /* .anticon {
+      .anticon {
         margin-left: 0.5rem;
         color: red;
         cursor: pointer;
-      } */
+      }
     }
   }
 }

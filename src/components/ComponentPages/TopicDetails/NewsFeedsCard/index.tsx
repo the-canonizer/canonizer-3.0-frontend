@@ -1,11 +1,9 @@
 import { Button, Typography, Tooltip, Collapse, Popconfirm } from "antd";
 import { useEffect, useState } from "react";
 import { deleteNewsFeedApi } from "src/network/api/campNewsApi";
-import Link from "next/link";
 
-import { deleteNewsDataApi } from "src/network/api/campNewsApi";
 import { getNewsFeedApi } from "src/network/api/campDetailApi";
-import { Spin } from "antd";
+
 import { DeleteOutlined, EditOutlined, CloseOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
@@ -18,11 +16,10 @@ const NewsFeedsCard = ({ newsFeed }) => {
   const isLogin = useAuthentication();
   const [deleteNews, setDeleteNews] = useState(false);
   const [editNews, setEditNews] = useState(false);
-  const [loading, setLoading] = useState(false);
+
   const router = useRouter();
 
   const handleDeleteCamp = async (id) => {
-    setLoading(true);
     const res = await deleteNewsFeedApi({
       newsfeed_id: id,
     });
@@ -33,7 +30,6 @@ const NewsFeedsCard = ({ newsFeed }) => {
       };
       await getNewsFeedApi(reqBody);
     }
-    setLoading(false);
   };
   useEffect(() => {
     setDeleteNews(false);

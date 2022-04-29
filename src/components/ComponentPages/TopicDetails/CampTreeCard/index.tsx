@@ -1,11 +1,12 @@
-import { Card, Checkbox, Collapse } from "antd";
+import { Checkbox, Collapse } from "antd";
 import CampTree from "../CampTree";
 import Link from "next/link";
+
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 
 import styles from "../topicDetails.module.scss";
 import { useRouter } from "next/router";
-import { subscribeToCampApi } from "src/network/api/campDetailApi";
+import { subscribeToCampApi } from "../../../../network/api/campDetailApi";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 
@@ -45,23 +46,31 @@ const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
                 event.stopPropagation();
               }}
             >
-              <Link
-                href={
-                  !isLogin
-                    ? "/login"
-                    : router.asPath.replace("topic", "addnews")
+              <Checkbox
+                checked={
+                  currentCampRecord && currentCampRecord.campSubscriptionId
+                    ? true
+                    : false
                 }
+                onChange={onChange}
               >
-                <a
-                  className={styles.addNew}
-                  onClick={(event) => {
-                    event.stopPropagation();
-                  }}
-                >
-                  <i className={"icon-fi-document " + styles.iconMr} /> Add News
-                </a>
-              </Link>
+                Subscribe
+              </Checkbox>
             </div>
+            <Link
+              href={
+                isLogin ? "/login" : router.asPath.replace("topic", "addnews")
+              }
+            >
+              <a
+                className={styles.addNew}
+                onClick={(event) => {
+                  event.stopPropagation();
+                }}
+              >
+                <i className={"icon-fi-document " + styles.iconMr} /> Add News
+              </a>
+            </Link>
           </>
         }
       >

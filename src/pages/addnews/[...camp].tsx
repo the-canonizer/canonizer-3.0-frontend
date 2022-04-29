@@ -10,7 +10,7 @@ export default function AddNewsPage() {
           <SideBarNoFilter />
         </aside>
         <div className="pageContentWrap">
-          <Add />
+          <Add edit={false} />
         </div>
       </Layout>
     </>
