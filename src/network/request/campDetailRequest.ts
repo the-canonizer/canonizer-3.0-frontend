@@ -39,13 +39,14 @@ export default class TreeRequest extends Request {
     );
   }
 
-  static getCurrentTopicRecord(reqBody) {
+  static getCurrentTopicRecord(reqBody, token) {
     return new Request(
       K.Network.URL.GetCurrentTopicRecord,
       K.Network.Method.POST,
       reqBody,
       K.Network.Header.Type.Json,
-      {}
+      {},
+      token
     );
   }
 

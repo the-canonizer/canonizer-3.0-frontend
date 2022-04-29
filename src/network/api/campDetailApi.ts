@@ -6,6 +6,8 @@ import {
   pushToCampSupportingTree,
   setCurrentTopicRecord,
   setCurrentCampRecord,
+  setCurrentCampSubscriptionID,
+  setCurrentTopicSubscriptionID,
 } from "../../store/slices/campDetailSlice";
 import NetworkCall from "../networkCall";
 import TreeRequest from "../request/campDetailRequest";
@@ -51,12 +53,15 @@ export const getCanonizedCampStatementApi = async (reqBody) => {
 };
 
 export const getCurrentTopicRecordApi = async (reqBody) => {
+  let state = store.getState();
+  const { auth } = state;
   try {
     const currentTopicRecord = await NetworkCall.fetch(
-      TreeRequest.getCurrentTopicRecord(reqBody),
+      TreeRequest.getCurrentTopicRecord(reqBody, auth?.loggedInUser?.token),
       false
     );
     store.dispatch(setCurrentTopicRecord(currentTopicRecord?.data));
+
     return currentTopicRecord?.data;
   } catch (error) {
     // message.error(error.message);
@@ -68,7 +73,7 @@ export const getCurrentCampRecordApi = async (reqBody) => {
   const { auth } = state;
   try {
     const currentCampRecord = await NetworkCall.fetch(
-      TreeRequest.getCurrentCampRecord(reqBody, auth.loggedInUser?.token),
+      TreeRequest.getCurrentCampRecord(reqBody, auth?.loggedInUser?.token),
       false
     );
     store.dispatch(setCurrentCampRecord(currentCampRecord?.data));
@@ -78,7 +83,7 @@ export const getCurrentCampRecordApi = async (reqBody) => {
   }
 };
 
-export const subscribeToCampApi = async (reqBody) => {
+export const subscribeToCampApi = async (reqBody, subscribeTo) => {
   let state = store.getState();
   const { auth } = state;
   try {
@@ -86,6 +91,14 @@ export const subscribeToCampApi = async (reqBody) => {
       TreeRequest.subscribeToCamp(reqBody, auth.loggedInUser?.token),
       false
     );
+
+    subscribeTo == "topic"
+      ? store.dispatch(
+          setCurrentTopicSubscriptionID(subscribeToCamp?.data[0].subscriptionId)
+        )
+      : store.dispatch(
+          setCurrentCampSubscriptionID(subscribeToCamp?.data[0].subscriptionId)
+        );
 
     return subscribeToCamp;
   } catch (error) {
