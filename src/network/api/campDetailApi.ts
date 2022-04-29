@@ -87,7 +87,7 @@ export const subscribeToCampApi = async (reqBody) => {
       false
     );
 
-    return subscribeToCamp;
+    return subscribeToCamp?.data;
   } catch (error) {
     // message.error(error.message);
   }

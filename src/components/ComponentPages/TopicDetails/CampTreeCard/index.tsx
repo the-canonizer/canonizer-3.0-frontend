@@ -1,13 +1,14 @@
-import { Card, Checkbox } from "antd";
+import { Card, Checkbox, Typography } from "antd";
 import CampTree from "../CampTree";
 import Link from "next/link";
+
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
+
 import styles from "../topicDetails.module.scss";
 import { useRouter } from "next/router";
 import { subscribeToCampApi } from "src/network/api/campDetailApi";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
-import { useEffect, useState } from "react";
 
 const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
   const router = useRouter();
@@ -16,29 +17,15 @@ const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
     currentCampRecord: state?.topicDetails?.currentCampRecord,
   }));
 
-  const [checkBoxStatus, setCheckBoxStatus] = useState(
-    currentCampRecord && currentCampRecord.campSubscriptionId ? true : false
-  );
-
-  useEffect(() => {
-    setCheckBoxStatus(
-      currentCampRecord && currentCampRecord.campSubscriptionId ? true : false
-    );
-  }, [currentCampRecord]);
-
   function onChange(e) {
     const reqBody = {
-      topic_num: currentCampRecord.topic_num,
-      camp_num: currentCampRecord.camp_num,
+      topic_num: currentCampRecord[0].topic_num,
+      camp_num: currentCampRecord[0].camp_num,
       checked: e.target.checked,
-      subscription_id: currentCampRecord.campSubscriptionId,
+      subscription_id: currentCampRecord[0].campSubscriptionId,
     };
 
-    subscribeToCampApi(reqBody).then((res) => {
-      if (res?.status_code == 200) {
-        setCheckBoxStatus(!checkBoxStatus);
-      }
-    });
+    subscribeToCampApi(reqBody);
   }
   return (
     <Card
@@ -46,7 +33,14 @@ const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
       title={<h3>Canonizer Sorted Camp Tree</h3>}
       extra={
         <>
-          <Checkbox checked={checkBoxStatus} onChange={onChange}>
+          <Checkbox
+            checked={
+              currentCampRecord && currentCampRecord[0].campSubscriptionId
+                ? true
+                : false
+            }
+            onChange={onChange}
+          >
             Subscribe
           </Checkbox>
           <Link
