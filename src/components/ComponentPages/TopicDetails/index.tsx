@@ -99,8 +99,6 @@ const TopicDetails = () => {
       as_of_date: asofdate,
     };
 
-    let { camp_num, topic_num } = reqBody;
-
     await Promise.all([
       getNewsFeedApi(reqBody),
       getCanonizedCampStatementApi(reqBody),
@@ -138,16 +136,6 @@ const TopicDetails = () => {
   };
 
   const onCampForumClick = () => {
-    // const queryParams = router.query;
-
-    // const data = {
-    //   message: null,
-    //   topic_num: queryParams.camp[0],
-    //   topic_name: topicRecord[0]?.topic_name,
-    //   camp_name: topicRecord[0]?.camp_name,
-    //   parent_camp_num: topicRecord[0]?.camp_num,
-    // };
-    // setCurrentTopics(data);
     const topicName = topicRecord[0]?.topic_name.replaceAll(" ", "-");
     const campName = campRecord[0]?.parentCamps[0]?.camp_name.replaceAll(
       " ",
@@ -162,7 +150,7 @@ const TopicDetails = () => {
     <Menu className={styles.campForumDropdownMenu}>
       <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
         <Link
-          href={isLogin ? "/login" : router.asPath.replace("topic", "addnews")}
+          href={isLogin ? router.asPath.replace("topic", "addnews") : "/login"}
         >
           <a rel="noopener noreferrer" href="/add-news">
             Add News

@@ -101,10 +101,10 @@ const NetworkConstants = {
     PostDelete: `${BaseCanonizerApiUrl}/post/delete`,
 
     //camp news feed add edit update
-    GetCampNewsData: `${BaseCanonizerApiUrl}/get-camp-newsfeed`,
-    UpdateNewsData: `${BaseCanonizerApiUrl}/update-camp-newsfeed`,
-    AddNewsFeeds: `${BaseCanonizerApiUrl}/store-camp-newsfeed`,
-    DeleteNewsData: `${BaseCanonizerApiUrl}/delete-camp-newsfeed`,
+    GetEditCampNewsFeed: `${BaseCanonizerApiUrl}/edit-camp-newsfeed`,
+    UpdateNewsFeed: `${BaseCanonizerApiUrl}/update-camp-newsfeed`,
+    AddNewsFeed: `${BaseCanonizerApiUrl}/store-camp-newsfeed`,
+    DeleteNewsFeed: `${BaseCanonizerApiUrl}/delete-camp-newsfeed`,
   },
   Method: {
     GET: "GET",

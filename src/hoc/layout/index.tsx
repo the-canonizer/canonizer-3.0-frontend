@@ -25,7 +25,7 @@ function Layout(props) {
             />
           </aside>
         </div>
-        {/* <Footer /> */}
+        <Footer />
       </div>
     </>
   );

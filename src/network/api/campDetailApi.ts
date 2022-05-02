@@ -25,9 +25,11 @@ export const getTreesApi = async (reqBody) => {
 };
 
 export const getNewsFeedApi = async (reqBody) => {
+  let state = store.getState();
+  const { auth } = state;
   try {
     const newsFeed = await NetworkCall.fetch(
-      TreeRequest.getNewsFeed(reqBody),
+      TreeRequest.getNewsFeed(reqBody, auth?.loggedInUser?.token),
       false
     );
     store.dispatch(setNewsFeed(newsFeed?.data));

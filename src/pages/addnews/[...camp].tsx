@@ -1,8 +1,7 @@
-import Add from "../../components/ComponentPages/News/Add";
-
+import Add from "../../components/ComponentPages/News/AddOrEdit";
 import SideBarNoFilter from "../../components/ComponentPages/Home/SideBarNoFilter";
-
 import Layout from "../../hoc/layout";
+
 export default function AddNewsPage() {
   return (
     <>
@@ -11,7 +10,7 @@ export default function AddNewsPage() {
           <SideBarNoFilter />
         </aside>
         <div className="pageContentWrap">
-          <Add />
+          <Add edit={false} />
         </div>
       </Layout>
     </>
