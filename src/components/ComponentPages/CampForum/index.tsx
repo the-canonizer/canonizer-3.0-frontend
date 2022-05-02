@@ -436,7 +436,6 @@ const ForumComponent = ({}) => {
           pCurrent={ppage}
           pTotal={pTotalRecords}
           pOnChange={pOnChange}
-          paramsList={paramsList}
           quillContent={quillContent}
           onContentChange={onContentChange}
           isError={isError}
