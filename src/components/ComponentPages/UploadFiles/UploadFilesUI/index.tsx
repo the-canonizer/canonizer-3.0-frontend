@@ -40,8 +40,6 @@ import { AppDispatch, RootState } from "../../../../store";
 import messages from "../../../../messages";
 import ThreeDots from "../../../../assets/image/threeDots.svg";
 import {
-  showFolderModal,
-  hideFolderModal,
   showDrageBox,
   hideDrageBox,
   hideUploadOptions,
@@ -56,6 +54,7 @@ import {
 } from "../../../../store/slices/uiSlice";
 import CreateFolder from "../CreateFolder";
 import { createFolderApi } from "../../../../network/api/userApi";
+import { labels } from "../../../../messages/label";
 
 const UploadFileUI = ({
   input,
@@ -77,12 +76,13 @@ const UploadFileUI = ({
   removeUploadFiles,
   GetUploadFileAndFolder,
   getFileListFromFolderID,
+  setShowCreateFolderModal,
+  showCreateFolderModal,
 }) => {
   const [toggleFileView, setToggleFileView] = useState(false);
   const [search, setSearch] = useState("");
   const [updateList, setUpdateList] = useState({});
   const [datePick, setDatePick] = useState("");
-  const [fileName, setfileName] = useState("");
   const [createFolderForm] = Form.useForm();
 
   const [rename, setRename] = useState("");
@@ -97,13 +97,11 @@ const UploadFileUI = ({
   const [folderIndex, setFolderIndex] = useState(0);
 
   const dispatch = useDispatch<AppDispatch>();
-  const visible = useSelector(
-    (state: RootState) => state.ui.createFolderShowModal
-  );
   const drageBoxVisible = useSelector((state: RootState) => state.ui.dragBox);
   const disabledCreateFolder = useSelector(
     (state: RootState) => state.ui.disabledCreateFolderBtn
   );
+  const dragBoxStatus = useSelector((state: RootState) => state.ui.dragBox);
   const show_UploadOptions = useSelector(
     (state: RootState) => state.ui.visibleUploadOptions
   );
@@ -118,8 +116,6 @@ const UploadFileUI = ({
   const afterUploadClass = useSelector(
     (state: RootState) => state.ui.showFiles
   );
-  const showCreateFolderModal = () => dispatch(showFolderModal());
-  const hideCreateFolderModal = () => dispatch(hideFolderModal());
   const dragBoxShow = () => dispatch(showDrageBox());
   const dragBoxHide = () => dispatch(hideDrageBox());
   const uploadOptionsHide = () => dispatch(hideUploadOptions());
@@ -152,7 +148,7 @@ const UploadFileUI = ({
         </span>
       </Menu.Item>
       <Menu.Item>
-        <span onClick={() => editFolder(obj)}>Edit folder</span>
+        <span onClick={() => editFolder(obj)}>Edit folder name</span>
       </Menu.Item>
       <Menu.Item>
         <span
@@ -208,7 +204,7 @@ const UploadFileUI = ({
 
   const editFolder = (obj) => {
     setEditModal(true);
-    showCreateFolderModal();
+    setShowCreateFolderModal(true);
     setRename(obj.name);
     setEditModalId(obj.id);
     createFolderForm.setFieldsValue({
@@ -225,7 +221,7 @@ const UploadFileUI = ({
       GetUploadFileAndFolder();
       setFileLists(fileLists);
       setEditModal(false);
-      hideCreateFolderModal();
+      setShowCreateFolderModal(false);
     }
   };
 
@@ -237,7 +233,7 @@ const UploadFileUI = ({
       GetUploadFileAndFolder();
       setFileLists(fileLists);
       shownFolder();
-      hideCreateFolderModal();
+      setShowCreateFolderModal(false);
       dragBoxHide();
       shownAddButton();
     }
@@ -246,26 +242,7 @@ const UploadFileUI = ({
   const onFinish = (values) => {
     editModal ? changeFolderName() : createNewFolder();
   };
-  const displayImageIcon = (obj) => {
-    if (obj.type == "file" || obj.file_path || obj.thumbUrl) {
-      return (
-        <Image
-          src={obj.file_path}
-          alt="picture of author"
-          width={"100"}
-          height={"100"}
-        />
-      );
-    } else if (obj.type == "folder") {
-      return <FolderFilled className={styles.folder_icons} />;
-    } else if (obj.file_type == "text/plain") {
-      return <FileTextFilled className={styles.folder_icons_fileTxt} />;
-    } else if (obj.file_type == "application/pdf") {
-      return <FilePdfFilled className={styles.folder_icons_pdf} />;
-    } else {
-      return <FileUnknownFilled className={styles.folder_icons} />;
-    }
-  };
+
   const columns = [
     {
       title: "File Name",
@@ -412,87 +389,54 @@ const UploadFileUI = ({
   const handleChangeFileName = (e, id) => {
     setUpdateList({ ...updateList, [id]: e.target.value });
   };
-  const uploadFunction = () => {
-    const filterFileList = [];
-    for (let i = 0; i < fileLists.length; i++) {
-      if (
-        fileLists[i].type != "folder" &&
-        fileLists[i].size / (1024 * 1024) < 5
-      ) {
-        filterFileList.push(fileLists[i]);
-      } else if (fileLists[i].type == "folder") {
-        const innerFileLists = fileLists[i].files.filter((obj) => {
-          return obj.size / (1024 * 1024) < 5;
-        });
-        filterFileList.push({ ...fileLists[i], files: innerFileLists });
+
+  const filteredArray = () => {
+    const datePickerData = moment(datePick).format("MMM DD, YYYY");
+    const createdAtValue = (val) =>
+      moment.unix(val.created_at).format("MMM DD, YYYY");
+    let searchName = "";
+    return fileLists.filter((val) => {
+      if (search !== "") {
+        if (val.name) {
+          searchName = val.name;
+        } else if (val.file_name) {
+          searchName = val.file_name;
+        }
+        if (
+          searchName
+            .toLowerCase()
+            .trim()
+            .includes(search.toLowerCase().trim()) &&
+          (datePick == "" ||
+            (datePick !== "" && datePickerData == createdAtValue(val)))
+        ) {
+          return val;
+        }
+      } else if (datePick.trim() == "") {
+        return val;
+      } else if (datePickerData == createdAtValue(val)) {
+        return val;
       }
-    }
-    setFileLists(filterFileList);
+    });
   };
   const searchFilter = () => {
-    var searchName = "";
-    return (
-      search !== "" && datePick !== ""
-        ? fileLists.filter((val) => {
-            if (val.name !== undefined) {
-              searchName = val.name;
-            } else if (val.file_name !== undefined) {
-              searchName = val.file_name;
-            }
-            if (
-              searchName
-                .toLowerCase()
-                .trim()
-                .includes(search.toLowerCase().trim()) &&
-              moment(datePick).format("MMM DD, YYYY") ==
-                moment(val.lastModifiedDate).format("MMM DD, YYYY")
-            ) {
-              return val;
-            }
-          })
-        : search !== "" && datePick == ""
-        ? fileLists.filter((val) => {
-            if (val.name !== undefined) {
-              searchName = val.name;
-            } else if (val.file_name !== undefined) {
-              searchName = val.file_name;
-            }
-            if (
-              searchName
-                .toLowerCase()
-                .trim()
-                .includes(search.toLowerCase().trim())
-            ) {
-              return val;
-            }
-          })
-        : search == "" && datePick !== ""
-        ? fileLists.filter((val) => {
-            if (
-              moment(datePick).format("MMM DD, YYYY") ==
-              moment(val.created_at).format("MMM DD, YYYY")
-            ) {
-              return val;
-            }
-          })
-        : fileLists.filter((val) => {
-            if (datePick.trim() == "") {
-              return val;
-            } else if (
-              moment(datePick).format("MMM DD, YYYY") ==
-              moment(val.created_at).format("MMM DD, YYYY")
-            ) {
-              return val;
-            }
-          })
-    )?.map((item, i) => {
+    return filteredArray().map((item, i) => {
       return (
-        <div className={styles.view_After_Upload} key={i}>
+        <div
+          className={
+            openFolder && item.id != selectedFolderID
+              ? ""
+              : !openFolder
+              ? styles.view_After_Upload
+              : styles.folder_Back_Button
+          }
+          key={i}
+        >
           {item.type &&
           item.type == "folder" &&
           item.id == selectedFolderID &&
-          openFolder ? (
-            // <div className={styles.openFolder}>
+          openFolder &&
+          dragBoxStatus == false ? (
             <div>
               <Card
                 size="small"
@@ -504,73 +448,78 @@ const UploadFileUI = ({
                         closeFolder();
                         StatusHideFile();
                       }}
-                    />{" "}
+                    />
+                    {" " + item.name + " "}
                     {item.folderName} <FolderOpenOutlined />
                   </h2>
                 }
                 className="FolderfileCard"
-              ></Card>
-              <div className={styles.openFolder}>
-                {!toggleFileView
-                  ? getFileListFromFolderID.map((file, i) => {
-                      return (
-                        <Card className={styles.files} key={i}>
-                          <div className={styles.dropdown_menu}>
-                            <Dropdown
-                              overlay={menu_files(file.id, file)}
-                              trigger={["click"]}
-                            >
-                              <div
-                                className="ant-dropdown-link"
-                                onClick={(e) => e.preventDefault()}
+              >
+                <div className={styles.openFolder}>
+                  {!toggleFileView
+                    ? getFileListFromFolderID.map((file, i) => {
+                        return (
+                          <Card className={styles.files} key={i}>
+                            <div className={styles.dropdown_menu}>
+                              <Dropdown
+                                overlay={menu_files(file.id, file)}
+                                trigger={["click"]}
                               >
-                                <MoreOutlined className="Menu_Iconss" />
-                              </div>
-                            </Dropdown>
-                          </div>
-                          <div className={styles.imageFiles}>
-                            {file.file_path ? (
-                              <Image
-                                alt="Image"
-                                src={file.file_path}
-                                height={"150px"}
-                                width={"140px"}
-                              />
-                            ) : file.type == "text/plain" ? (
-                              <FileTextFilled
-                                className={styles.FileTextTwoOneClass}
-                              />
-                            ) : file.type == "application/pdf" ? (
-                              <FilePdfFilled
-                                className={styles.FilePdfTwoToneColor}
-                              />
-                            ) : (
-                              <FileUnknownFilled
-                                className={styles.FileTextTwoOneClass}
-                              />
-                            )}
-                          </div>
-                          <h3>{file.file_name.substring(0, 16) + "..."}</h3>
-                          <span>
-                            {moment
-                              .unix(file.created_at)
-                              .format("MMM DD, YYYY, h:mm:ss A")}
-                          </span>
-                        </Card>
-                      );
-                    })
-                  : ""}
-              </div>
+                                <div
+                                  className="ant-dropdown-link"
+                                  onClick={(e) => e.preventDefault()}
+                                >
+                                  <Image
+                                    className={styles.Menu_Iconss}
+                                    alt="Three Dots"
+                                    src={ThreeDots}
+                                    width={15}
+                                    height={20}
+                                  />
+                                </div>
+                              </Dropdown>
+                            </div>
+                            <div className={styles.imageFiles}>
+                              {file.file_path ? (
+                                <Image
+                                  alt="Image"
+                                  src={file.file_path}
+                                  height={"150px"}
+                                  width={"140px"}
+                                />
+                              ) : file.type == "text/plain" ? (
+                                <FileTextFilled
+                                  className={styles.FileTextTwoOneClass}
+                                />
+                              ) : file.type == "application/pdf" ? (
+                                <FilePdfFilled
+                                  className={styles.FilePdfTwoToneColor}
+                                />
+                              ) : (
+                                <FileUnknownFilled
+                                  className={styles.FileTextTwoOneClass}
+                                />
+                              )}
+                            </div>
+                            <h3>{file.file_name.substring(0, 16) + "..."}</h3>
+                            <span>
+                              {moment
+                                .unix(file.created_at)
+                                .format("MMM DD, YYYY, h:mm:ss A")}
+                            </span>
+                          </Card>
+                        );
+                      })
+                    : ""}
+                </div>
+              </Card>
             </div>
-          ) : !openFolder ? (
+          ) : !openFolder && dragBoxStatus == false ? (
             <div className={"folderId" + item.id} id={"folderId" + item.id}>
               {item && item.type && item.type == "folder" && !toggleFileView ? (
-                //||showFolderData
                 <div className={styles.Folder_container}>
                   <Card className={styles.FolderData}>
-                    {/* {item.id = "folderId" + i} */}
                     <div className={styles.folder_icon}>
-                      {/* <FolderFilled /> */}
                       <div className="folder--wrap">
                         <div
                           className="foldername"
@@ -614,8 +563,6 @@ const UploadFileUI = ({
                         className="ant-dropdown-link"
                         onClick={(e) => e.preventDefault()}
                       >
-                        {/* <MoreOutlined className="Menu_Iconss" /> */}
-
                         <Image
                           className={styles.Menu_Iconss}
                           alt="Three Dots"
@@ -723,7 +670,7 @@ const UploadFileUI = ({
                   disabled={disabledCreateFolder}
                   className={styles.create_folder_btn}
                   onClick={() => {
-                    showCreateFolderModal(),
+                    setShowCreateFolderModal(true),
                       setToggleFileView(false),
                       setEditModal(false);
                     createFolderForm.resetFields();
@@ -735,7 +682,7 @@ const UploadFileUI = ({
                   <Button
                     className={styles.add_file_btn}
                     onClick={() => {
-                      addNewFile(), setToggleFileView(false);
+                      addNewFile(), setToggleFileView(false), setUpdateList({});
                     }}
                   >
                     Add a file
@@ -809,9 +756,6 @@ const UploadFileUI = ({
                 if (status !== "uploading") {
                 }
                 if (status === "done") {
-                  // message.success(
-                  //   `${info.file.name} file uploaded successfully.`
-                  // );
                   showFiles();
                 } else if (status === "error") {
                   message.error(`${info.file.name} file upload failed.`);
@@ -821,7 +765,6 @@ const UploadFileUI = ({
                 console.log("Dropped files", e.dataTransfer.files);
               }}
               itemRender={(originNode, file, currFileList) => {
-                console.log(file, "file");
                 const fileSizeFlag = file.size / (1024 * 1024) > 5;
                 return (file.type && file.type == "folder") ||
                   toggleFileView ? (
@@ -865,8 +808,6 @@ const UploadFileUI = ({
 
                       <Input
                         className="mr0"
-                        //value={fileName}
-                        //id={file.id}
                         name={file.uid}
                         onChange={(e) => handleChangeFileName(e, file.uid)}
                         placeholder="Full Name (with no extension)"
@@ -914,10 +855,7 @@ const UploadFileUI = ({
               <Button
                 className={styles.Upload_Btn}
                 onClick={() => {
-                  uploadList(),
-                    //uploadFunction(),
-                    uploadFun(),
-                    setToggleFileView(false);
+                  uploadList(), uploadFun(), setToggleFileView(false);
                   setUploadFileList([]);
                 }}
               >
@@ -934,10 +872,10 @@ const UploadFileUI = ({
       </div>
       <Modal
         className={styles.modal_cross}
-        title={editModal ? "Edit your folder name" : "Create a Folder"}
-        visible={visible}
+        title={editModal ? "Edit your folder name" : labels.CreateaFolder}
+        visible={showCreateFolderModal}
         footer=""
-        onCancel={() => hideCreateFolderModal()}
+        onCancel={() => setShowCreateFolderModal(false)}
         width={400}
         closeIcon={<CloseCircleOutlined />}
       >

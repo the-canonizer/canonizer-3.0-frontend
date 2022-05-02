@@ -36,7 +36,6 @@ import { message } from "antd";
 
 const UploadFiles = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const hideCreateFolderModal = () => dispatch(hideFolderModal());
   const dragBoxShow = () => dispatch(showDrageBox());
   const dragBoxHide = () => dispatch(hideDrageBox());
   const disbleCreateFolderBtn = () => dispatch(createFolderBtnDisable());
@@ -63,9 +62,9 @@ const UploadFiles = () => {
   const [fileLists, setFileLists] = useState([]);
   const [folderFiles, setFolderFiles] = useState([]);
   const [uploadFileList, setUploadFileList] = useState([]);
-  const [fileAndFolderList, setFileAndFolderList] = useState([]);
   const [getFileListFromFolderID, setGetFileListFromFolderID] = useState([]);
   const [openFolderID, setOpenFolderID] = useState("");
+  const [showCreateFolderModal, setShowCreateFolderModal] = useState(false);
   const ref = useRef();
   const closeFolder = () => {
     setOpenFolderID("");
@@ -103,10 +102,6 @@ const UploadFiles = () => {
   const handleCancel = () => {
     setFileLists(fileLists);
     fileStatusHide();
-    // disbleCreateFolderBtn();
-    // addButtonHide();
-    // dragBoxHide();
-    // uploadOptionsHide();
     GetUploadFileAndFolder();
     {
       fileLists.length > 0
@@ -130,7 +125,6 @@ const UploadFiles = () => {
   const addNewFile = () => {
     hideFiles();
     dragBoxShow();
-    //closeFolder();
     hideUploadsAfter();
     disbleCreateFolderBtn();
     folderHide();
@@ -202,9 +196,7 @@ const UploadFiles = () => {
       let arr = [];
       arr.push(...FileArrData);
       arr.push(...folderArrData);
-      // setFileAndFolderList(arr);
       setFileLists(arr);
-      console.log(arr, "arr");
       {
         arr.length > 0
           ? (dragBoxHide(),
@@ -240,6 +232,8 @@ const UploadFiles = () => {
       removeUploadFiles={removeUploadFiles}
       GetUploadFileAndFolder={GetUploadFileAndFolder}
       getFileListFromFolderID={getFileListFromFolderID}
+      setShowCreateFolderModal={setShowCreateFolderModal}
+      showCreateFolderModal={showCreateFolderModal}
     />
   );
 };

@@ -377,6 +377,10 @@
     @media screen and (max-width: 767px) {
       width: 50%;
     }
+  }
+  .folder_Back_Button {
+    width: 100%;
+    padding: 0;
     .openFolder {
       display: flex;
       flex-wrap: wrap;

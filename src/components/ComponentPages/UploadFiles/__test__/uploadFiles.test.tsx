@@ -2,9 +2,7 @@ import { render, screen, waitFor } from "../../../../utils/testUtils";
 import UploadFileUI from "../UploadFilesUI";
 import messages from "../../../../messages";
 
-const { labels, placeholders, validations } = messages;
-var addCreateAFolderTitle = "";
-var addCreateBtn = "";
+const { labels } = messages;
 
 const input = "";
 const setInput = jest.fn();
@@ -25,6 +23,8 @@ const setUploadFileList = jest.fn();
 const removeUploadFiles = jest.fn();
 const GetUploadFileAndFolder = jest.fn();
 const getFileListFromFolderID = [];
+const setShowCreateFolderModal = jest.fn();
+const showCreateFolderModal = true;
 const fileLists = [
   {
     created_at: 1650894718,
@@ -75,6 +75,8 @@ describe("Upload File Page", () => {
         removeUploadFiles={removeUploadFiles}
         GetUploadFileAndFolder={GetUploadFileAndFolder}
         getFileListFromFolderID={getFileListFromFolderID}
+        setShowCreateFolderModal={setShowCreateFolderModal}
+        showCreateFolderModal={showCreateFolderModal}
       />
     );
     expect(screen.getByText(labels.uploadFiles)).toBeTruthy();
@@ -107,6 +109,8 @@ describe("Upload File Page", () => {
         removeUploadFiles={removeUploadFiles}
         GetUploadFileAndFolder={GetUploadFileAndFolder}
         getFileListFromFolderID={getFileListFromFolderID}
+        setShowCreateFolderModal={setShowCreateFolderModal}
+        showCreateFolderModal={showCreateFolderModal}
       />
     );
     expect(screen.getByText(labels.uploadFiles)).toBeTruthy();
@@ -139,16 +143,15 @@ describe("Upload File Page", () => {
         removeUploadFiles={removeUploadFiles}
         GetUploadFileAndFolder={GetUploadFileAndFolder}
         getFileListFromFolderID={getFileListFromFolderID}
+        setShowCreateFolderModal={setShowCreateFolderModal}
+        showCreateFolderModal={showCreateFolderModal}
       />
     );
     const addbutton = getAllByText("Create a folder")[0] as HTMLButtonElement;
     expect(addbutton).toBeTruthy();
   });
-  it("render Modal when create a folder is clicked", () => {
-    addCreateAFolderTitle = "Create a Folder";
-    //addCreateBtn = "Create";
-
-    render(
+  it("render Modal when create a folder button  is clicked", () => {
+    const { getByText } = render(
       <UploadFileUI
         input={input}
         setInput={setInput}
@@ -169,47 +172,16 @@ describe("Upload File Page", () => {
         removeUploadFiles={removeUploadFiles}
         GetUploadFileAndFolder={GetUploadFileAndFolder}
         getFileListFromFolderID={getFileListFromFolderID}
+        setShowCreateFolderModal={setShowCreateFolderModal}
+        showCreateFolderModal={showCreateFolderModal}
       />
     );
 
-    //const showCreateFolderModal = () => dispatch(showFolderModal());
-    //showCreateFolderModal();
-    // expect(
-    //   screen.getAllByText("Create")[0] as HTMLButtonElement
-    // ).toBeInTheDocument();
-    // expect(screen.getByText("Create")).toBeInTheDocument();
-    //  expect(
-    //   screen.getAllByText(addCreateAFolderTitle)[1] as HTMLLabelElement
-    // ).toBeInTheDocument();
-    // expect(screen.getByText(labels.FolderName)).toBeInTheDocument();
-  });
-  it("render Add a file button ", () => {
-    render(
-      <UploadFileUI
-        input={input}
-        setInput={setInput}
-        selectedFolderID={selectedFolderID}
-        fileLists={fileLists}
-        setFileLists={setFileLists}
-        folderFiles={folderFiles}
-        setFolderFiles={setFolderFiles}
-        closeFolder={closeFolder}
-        uploadFun={uploadFun}
-        handleCancel={handleCancel}
-        handle_X_btn={handle_X_btn}
-        addNewFile={addNewFile}
-        Openfolder={Openfolder}
-        removeFiles={removeFiles}
-        uploadFileList={uploadFileList}
-        setUploadFileList={setUploadFileList}
-        removeUploadFiles={removeUploadFiles}
-        GetUploadFileAndFolder={GetUploadFileAndFolder}
-        getFileListFromFolderID={getFileListFromFolderID}
-      />
-    );
-
-    // expect(
-    //   screen.getAllByText("Add a file")[0] as HTMLButtonElement
-    // ).toBeInTheDocument();
+    const addbutton = getByText("Create");
+    expect(addbutton).toBeTruthy();
+    expect(
+      screen.getAllByText(labels.CreateaFolder)[0] as HTMLLabelElement
+    ).toBeInTheDocument();
+    expect(screen.getByText(labels.FolderName)).toBeInTheDocument();
   });
 });
