@@ -1,5 +1,5 @@
 module.exports = {
-    images: {
-      domains: ["api3.canonizer.com"],
-    },
-  };
+  images: {
+    domains: ["api3.canonizer.com"],
+  },
+};

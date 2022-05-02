@@ -244,7 +244,6 @@ export default class UserRequest extends Request {
 
   static GetLanguageList(authToken) {
     const body = {};
-
     return new UserRequest(
       K.Network.URL.GetLanguageList,
       K.Network.Method.GET,
