@@ -146,8 +146,8 @@ const ForumComponent = ({}) => {
     const camp_num = campArr?.shift();
     const topic = topicArr?.join(" ");
     const camp = campArr?.join(" ");
-    if (campRecord && campRecord.length) {
-      campRecord[0].parentCamps?.map((camp, index) => {
+    if (campRecord && campRecord.parentCamps) {
+      campRecord.parentCamps?.map((camp, index) => {
         p_camps += index !== 0 ? " / " : "";
         p_camps += `${camp?.camp_name}`;
       });
@@ -260,9 +260,18 @@ const ForumComponent = ({}) => {
 
   const onCancelCreateThread = () => {
     const queries = router?.query;
-    router.push({
-      pathname: `/forum/${queries.topic}/${queries.camp}/threads`,
-    });
+    if (queries.tId) {
+      const queries = router?.query;
+      router.push({
+        pathname: `/forum/${queries.topic}/${queries.camp}/threads`,
+        query: { by: "my" },
+      });
+    } else {
+      const queries = router?.query;
+      router.push({
+        pathname: `/forum/${queries.topic}/${queries.camp}/threads`,
+      });
+    }
   };
 
   useEffect(() => {
@@ -296,7 +305,18 @@ const ForumComponent = ({}) => {
     if (res && res.status_code === 200) {
       message.success(res.message);
       form.resetFields();
-      onCancelCreateThread();
+      if (q.tId) {
+        const queries = router?.query;
+        router.push({
+          pathname: `/forum/${queries.topic}/${queries.camp}/threads`,
+          query: { by: "my" },
+        });
+      } else {
+        const queries = router?.query;
+        router.push({
+          pathname: `/forum/${queries.topic}/${queries.camp}/threads`,
+        });
+      }
     }
   };
 
@@ -386,7 +406,7 @@ const ForumComponent = ({}) => {
 
   return (
     <Fragment>
-      <TopBar paramsList={paramsList} />
+      <TopBar topicRecord={topicRecord} campRecord={campRecord} />
       {router?.pathname === "/forum/[topic]/[camp]/threads" ? (
         <ForumUIList
           onSearch={onSearch}
