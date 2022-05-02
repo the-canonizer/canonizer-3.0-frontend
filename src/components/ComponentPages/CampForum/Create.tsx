@@ -8,7 +8,6 @@ const Threads = ({
   onFinish,
   form,
   initialValue,
-  paramsList,
 }) => (
   <div className="d-flex">
     <ThreadSidebar />
@@ -20,7 +19,6 @@ const Threads = ({
         initialValue={initialValue}
         nickNameList={nickNameList}
         isThreadUpdate={isThreadUpdate}
-        paramsList={paramsList}
       />
     </div>
   </div>

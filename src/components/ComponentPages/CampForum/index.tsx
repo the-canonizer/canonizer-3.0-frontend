@@ -410,7 +410,6 @@ const ForumComponent = ({}) => {
           onFinish={onFinish}
           form={form}
           initialValue={initialValue}
-          paramsList={paramsList}
         />
       ) : null}
       {router?.pathname === "/forum/[topic]/[camp]/threads/edit/[tId]" ? (
@@ -421,7 +420,6 @@ const ForumComponent = ({}) => {
           onFinish={onFinish}
           form={form}
           initialValue={initialValue}
-          paramsList={paramsList}
         />
       ) : null}
       {router?.pathname === "/forum/[topic]/[camp]/threads/[id]" ? (

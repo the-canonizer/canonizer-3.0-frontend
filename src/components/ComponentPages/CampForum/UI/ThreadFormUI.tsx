@@ -15,7 +15,6 @@ const CreateThreadForm = ({
   initialValue,
   nickNameList,
   isThreadUpdate,
-  paramsList,
 }) => {
   const CardTitle = (
     <span className={styles.cardTitle}>Create a new thread</span>
