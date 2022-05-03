@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Input, Form } from "antd";
+import { labels } from "../../../../messages/label";
 const CreateFolder = ({
   editModal,
   createFolderForm,
@@ -13,7 +14,7 @@ const CreateFolder = ({
   return (
     <>
       <Form
-        name={editModal ? "Edit your folder name" : "Create a Folder"}
+        name={editModal ? "Edit your folder name" : labels.CreateaFolder}
         form={createFolderForm}
         onFinish={onFinish}
         validateMessages={validateMessages}
@@ -21,7 +22,7 @@ const CreateFolder = ({
         scrollToFirstError
       >
         <Form.Item
-          label="Folder Name (Limit 15 Chars*)"
+          label={labels.FolderName}
           name="folderName"
           rules={[
             { required: true },

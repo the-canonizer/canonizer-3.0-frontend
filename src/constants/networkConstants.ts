@@ -68,6 +68,8 @@ const NetworkConstants = {
     GetUploadFileAndFolder: `${BaseCanonizerApiUrl}/uploaded-files`,
     //GetFilesInsideAFolder folder/files/1
     GETFILESINDISEFOLDER: `${BaseCanonizerApiUrl}/folder/files/`,
+    //Delete Upload File
+    DeleteUploadFile: `${BaseCanonizerApiUrl}/file/delete/`,
     //createFolder
     CreateFolder: `${BaseCanonizerApiUrl}/add-folder`,
     //DeleteFolder

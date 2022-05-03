@@ -27,14 +27,15 @@ import {
 } from "src/store/slices/uiSlice";
 import {
   deleteFolderApi,
+  deleteUploadFileApi,
   getFileInsideFolderApi,
   getUploadFileAndFolder,
   uploadFile,
 } from "src/network/api/userApi";
+import { message } from "antd";
 
 const UploadFiles = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const hideCreateFolderModal = () => dispatch(hideFolderModal());
   const dragBoxShow = () => dispatch(showDrageBox());
   const dragBoxHide = () => dispatch(hideDrageBox());
   const disbleCreateFolderBtn = () => dispatch(createFolderBtnDisable());
@@ -61,10 +62,12 @@ const UploadFiles = () => {
   const [fileLists, setFileLists] = useState([]);
   const [folderFiles, setFolderFiles] = useState([]);
   const [uploadFileList, setUploadFileList] = useState([]);
-  const [fileAndFolderList, setFileAndFolderList] = useState([]);
-  const [testFileList, setTestFileList] = useState([]);
+  const [getFileListFromFolderID, setGetFileListFromFolderID] = useState([]);
+  const [openFolderID, setOpenFolderID] = useState("");
+  const [showCreateFolderModal, setShowCreateFolderModal] = useState(false);
   const ref = useRef();
   const closeFolder = () => {
+    setOpenFolderID("");
     showUploadsAfter();
     enableCreateFolderBtn();
     openFolderHide();
@@ -72,12 +75,15 @@ const UploadFiles = () => {
 
   const uploadFun = async () => {
     const formData = new FormData();
-    console.log(uploadFileList, "uploadFileList");
     for (const key of Object.keys(uploadFileList)) {
-      formData.append("file[]", uploadFileList[key].originFileObj),
-        formData.append("name[]", uploadFileList[key].name);
+      if (uploadFileList[key].size / (1024 * 1024) < 5) {
+        formData.append("file[]", uploadFileList[key].originFileObj),
+          formData.append("name[]", uploadFileList[key].name);
+      } else {
+        message.error("Your upload file is greater than 5 mb");
+      }
     }
-    formData.append("folder_id", "");
+    formData.append("folder_id", openFolderID);
     let res = await uploadFile(formData);
     if (res && res.status_code == 200) {
       setFolderFiles([]);
@@ -88,15 +94,15 @@ const UploadFiles = () => {
       hideFiles();
       showUploadsAfter();
       GetUploadFileAndFolder();
+      if (openFolderID) {
+        GetFileInsideFolderData(openFolderID);
+      }
     }
   };
   const handleCancel = () => {
     setFileLists(fileLists);
     fileStatusHide();
-    // disbleCreateFolderBtn();
-    // addButtonHide();
-    // dragBoxHide();
-    // uploadOptionsHide();
+    GetUploadFileAndFolder();
     {
       fileLists.length > 0
         ? (enableCreateFolderBtn(),
@@ -114,11 +120,11 @@ const UploadFiles = () => {
     dragBoxHide();
     showFiles();
     uploadOptionsHide();
+    GetUploadFileAndFolder();
   };
   const addNewFile = () => {
     hideFiles();
     dragBoxShow();
-    closeFolder();
     hideUploadsAfter();
     disbleCreateFolderBtn();
     folderHide();
@@ -127,18 +133,14 @@ const UploadFiles = () => {
   };
 
   const GetFileInsideFolderData = async (id) => {
-    console.log("hello");
     let response = await getFileInsideFolderApi(id);
     if (response) {
-      console.log("Hello", response, "getFileInsideFolderApi");
-      //setFileAndFolderList(response.data);
+      setGetFileListFromFolderID(response.data);
     }
   };
 
   const Openfolder = (i) => {
-    console.log(i, "itemId");
-    //let ID = document.getElementsByClassName("folderId" + i)[0].id;
-    console.log(i, "IsdsdD");
+    setOpenFolderID(i);
     shownFileStatus();
     openFolderShow();
     setSelectedFolderID(i);
@@ -147,60 +149,46 @@ const UploadFiles = () => {
     GetFileInsideFolderData(i);
   };
 
-  // const removeFiles = (originNode, file, currFileList) => {
-  //   let uid = file.uid;
-  //   let fileIndex = currFileList.findIndex((element) => element.uid == uid);
-  //   let newarray = [...fileLists];
-
-  //   setFileLists(newarray);
-  //   newarray.splice(fileIndex, 1);
-  //   if (newarray.length < 1) {
-  //     dragBoxShow();
-  //     uploadOptionsHide();
-  //     addButtonHide();
-  //   }
-  // };
   const removeFiles = async (originNode, file, currFileList) => {
-    // let newarray = [...fileLists];
-    // if (file.uid) {
-    //   let uid = file.uid;
-    //   let fileIndex = currFileList.findIndex((element) => element.uid == uid);
-    // } else {
-    //   let folderIndex = currFileList.findIndex(
-    //     (element) => element.id == originNode.id
-    //   );
-
-    let res = await deleteFolderApi(originNode.id);
-    if (res && res.status_code == 200) {
-      // newarray.splice(folderIndex, 1);
-      GetUploadFileAndFolder();
-      setFileLists(fileLists);
-      {
-        fileLists.length > 0
-          ? (dragBoxHide(), uploadOptionsHide(), shownAddButton())
-          : (uploadOptionsHide(), hideAddButton());
+    if (originNode.type == "folder") {
+      let res = await deleteFolderApi(originNode.id);
+      if (res && res.status_code == 200) {
+        GetUploadFileAndFolder();
+        setFileLists(fileLists);
+      }
+    } else {
+      let response = await deleteUploadFileApi(originNode.id);
+      if (response && response.status_code == 200) {
+        if (openFolderID) {
+          GetFileInsideFolderData(openFolderID);
+        }
+        GetUploadFileAndFolder();
+        setFileLists(fileLists);
       }
     }
-    //}
+    {
+      fileLists.length > 0
+        ? (dragBoxHide(), uploadOptionsHide(), shownAddButton())
+        : (dragBoxShow(), uploadOptionsHide(), hideAddButton());
+    }
   };
+
   const removeUploadFiles = (originNode, file, currFileList) => {
     let uid = file.uid;
     let fileIndex = currFileList.findIndex((element) => element.uid == uid);
     let newarray = [...uploadFileList];
 
     setUploadFileList(newarray);
+    //uploadOptionsShow();
     newarray.splice(fileIndex, 1);
     if (newarray.length > 1) {
       dragBoxHide();
-      uploadOptionsHide();
       addButtonHide();
     }
   };
   const GetUploadFileAndFolder = async () => {
-    console.log("hello");
     let response = await getUploadFileAndFolder();
     if (response) {
-      console.log("Hello");
       let filesArr = response.data.files;
       let FileArrData = filesArr.map((v) => ({ ...v, type: "file" }));
       let folderArr = response.data.folders;
@@ -208,11 +196,13 @@ const UploadFiles = () => {
       let arr = [];
       arr.push(...FileArrData);
       arr.push(...folderArrData);
-      setFileAndFolderList(arr);
       setFileLists(arr);
       {
         arr.length > 0
-          ? (dragBoxHide(), shownAddButton(), enableCreateFolderBtn())
+          ? (dragBoxHide(),
+            shownAddButton(),
+            enableCreateFolderBtn(),
+            showUploadsAfter())
           : (dragBoxShow(), hideAddButton(), disbleCreateFolderBtn());
       }
     }
@@ -221,8 +211,6 @@ const UploadFiles = () => {
   useEffect(() => {
     GetUploadFileAndFolder();
   }, []);
-  console.log(fileAndFolderList, "fileAndFolderList");
-  console.log(fileLists.length, fileLists.length > 0, "fileListsLength");
   return (
     <UploadFileUI
       input={input}
@@ -243,6 +231,9 @@ const UploadFiles = () => {
       setUploadFileList={setUploadFileList}
       removeUploadFiles={removeUploadFiles}
       GetUploadFileAndFolder={GetUploadFileAndFolder}
+      getFileListFromFolderID={getFileListFromFolderID}
+      setShowCreateFolderModal={setShowCreateFolderModal}
+      showCreateFolderModal={showCreateFolderModal}
     />
   );
 };
