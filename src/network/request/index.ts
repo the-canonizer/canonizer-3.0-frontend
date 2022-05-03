@@ -12,17 +12,22 @@ export default class Request {
     body = null,
     defaultHeaderType = K.Network.Header.Type.Json,
     headers = {},
-    token = ""
+    token = null
   ) {
-    // const token = User.getToken();
-    let state = store.getState();
+    const state = store.getState();
     const { auth } = state;
-    console.log("store", auth);
+
+    let bearerToken = "";
+
+    token ? (bearerToken = token) : (bearerToken = auth?.loggedInUser?.token);
+
+    console.log("bearerToken", bearerToken);
+
     headers = {
       ...(defaultHeaderType === K.Network.Header.Type.Json ||
       defaultHeaderType === K.Network.Header.Type.formData
-        ? K.Network.Header.Default(token)
-        : K.Network.Header.Authorization(token)),
+        ? K.Network.Header.Default(bearerToken)
+        : K.Network.Header.Authorization(bearerToken)),
       ...headers,
     };
     this.url = relativeURL;

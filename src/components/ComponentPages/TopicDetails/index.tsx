@@ -122,28 +122,32 @@ const TopicDetails = () => {
       parent_camp_num: topicRecord[0]?.camp_num,
     };
 
-    const topicName = topicRecord[0]?.topic_name.replaceAll(" ", "-");
-    const campName = campRecord[0]?.parentCamps[0]?.camp_name.replaceAll(
-      " ",
-      "-"
-    );
+    const topicName = topicRecord?.topic_name.replaceAll(" ", "-");
+    const campName = campRecord?.camp_name.replaceAll(" ", "-");
 
     router.push({
-      pathname: `/camp/create/${topicRecord[0]?.topic_num}-${topicName}/${campRecord[0]?.camp_num}-${campName}`,
+      pathname: `/camp/create/${topicRecord?.topic_num}-${topicName}/${campRecord?.camp_num}-${campName}`,
     });
 
     setCurrentTopics(data);
   };
 
   const onCampForumClick = () => {
-    const topicName = topicRecord[0]?.topic_name.replaceAll(" ", "-");
-    const campName = campRecord[0]?.parentCamps[0]?.camp_name.replaceAll(
-      " ",
-      "-"
-    );
+    // const queryParams = router.query;
+
+    // const data = {
+    //   message: null,
+    //   topic_num: queryParams.camp[0],
+    //   topic_name: topicRecord[0]?.topic_name,
+    //   camp_name: topicRecord[0]?.camp_name,
+    //   parent_camp_num: topicRecord[0]?.camp_num,
+    // };
+    // setCurrentTopics(data);
+    const topicName = topicRecord?.topic_name.replaceAll(" ", "-");
+    const campName = campRecord?.camp_name.replaceAll(" ", "-");
 
     router.push({
-      pathname: `/forum/${topicRecord[0]?.topic_num}-${topicName}/${campRecord[0]?.camp_num}-${campName}/threads`,
+      pathname: `/forum/${topicRecord?.topic_num}-${topicName}/${campRecord?.camp_num}-${campName}/threads`,
     });
   };
   const campForumDropdownMenu = (
@@ -183,13 +187,13 @@ const TopicDetails = () => {
             <Typography.Paragraph className={"mb-0 " + styles.topicTitleStyle}>
               {" "}
               <span className="bold"> Topic: </span>
-              {topicRecord?.length && topicRecord[0]?.topic_name}
+              {topicRecord && topicRecord?.topic_name}
             </Typography.Paragraph>
             <div className={styles.breadcrumbLinks}>
               {" "}
               <span className="bold mr-1"> Camp : </span>
-              {campRecord?.length
-                ? campRecord[0].parentCamps?.map((camp, index) => {
+              {campRecord
+                ? campRecord.parentCamps?.map((camp, index) => {
                     return (
                       <Link
                         href={`${router.query.camp.at(0)}/${
