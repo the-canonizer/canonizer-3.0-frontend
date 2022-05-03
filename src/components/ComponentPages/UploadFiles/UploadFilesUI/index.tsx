@@ -93,8 +93,6 @@ const UploadFileUI = ({
     previewPath: "",
     previewName: "",
   });
-  const [filename, setfilename] = useState([]);
-  const [folderIndex, setFolderIndex] = useState(0);
 
   const dispatch = useDispatch<AppDispatch>();
   const drageBoxVisible = useSelector((state: RootState) => state.ui.dragBox);
@@ -141,7 +139,6 @@ const UploadFileUI = ({
         <span
           onClick={() => {
             Openfolder(obj.id);
-            setFolderIndex(i);
           }}
         >
           Open folder
@@ -201,7 +198,28 @@ const UploadFileUI = ({
       </Menu.Item>
     </Menu>
   );
-
+  const displayColumnListImage = (obj) => {
+    return (
+      <div>
+        {obj.type == "file" ? (
+          <Image
+            src={obj.file_path}
+            alt="picture of author"
+            width={"100"}
+            height={"100"}
+          />
+        ) : obj.type == "folder" ? (
+          <FolderFilled className={styles.folder_icons} />
+        ) : obj.file_type == "text/plain" ? (
+          <FileTextFilled className={styles.folder_icons_fileTxt} />
+        ) : obj.file_type == "application/pdf" ? (
+          <FilePdfFilled className={styles.folder_icons_pdf} />
+        ) : (
+          <FileUnknownFilled className={styles.folder_icons} />
+        )}
+      </div>
+    );
+  };
   const editFolder = (obj) => {
     setEditModal(true);
     setShowCreateFolderModal(true);
@@ -252,22 +270,7 @@ const UploadFileUI = ({
         return (
           <div className={styles.CopyShortCode}>
             <div className={styles.icon_Width}>
-              {obj.type == "file" ? (
-                <Image
-                  src={obj.file_path}
-                  alt="picture of author"
-                  width={"100"}
-                  height={"100"}
-                />
-              ) : obj.type == "folder" ? (
-                <FolderFilled className={styles.folder_icons} />
-              ) : obj.file_type == "text/plain" ? (
-                <FileTextFilled className={styles.folder_icons_fileTxt} />
-              ) : obj.file_type == "application/pdf" ? (
-                <FilePdfFilled className={styles.folder_icons_pdf} />
-              ) : (
-                <FileUnknownFilled className={styles.folder_icons} />
-              )}
+              {displayColumnListImage(obj)}
             </div>
             <div className={styles.filename_text}>
               {obj.file_name ? obj.file_name : obj.name}
@@ -419,202 +422,191 @@ const UploadFileUI = ({
       }
     });
   };
+  const openFolderData = (item, i) => {
+    return (
+      <div className={"folderId" + item.id} id={"folderId" + item.id}>
+        {item && item.type && item.type == "folder" && !toggleFileView ? (
+          <div className={styles.Folder_container}>
+            <Card className={styles.FolderData}>
+              <div className={styles.folder_icon}>
+                <div className="folder--wrap">
+                  <div
+                    className="foldername"
+                    onClick={() => {
+                      Openfolder(item.id);
+                    }}
+                  >
+                    {item.name}
+                  </div>
+                  <div className={styles.dateAndfiles}>
+                    <p>
+                      {" "}
+                      {moment.unix(item.created_at).format("DD-MMMM-YYYY")}
+                    </p>
+                    <small>{"(" + item.uploads_count + " files)"}</small>
+                  </div>
+                </div>
+                <div className={styles.dropdown}>
+                  <Dropdown overlay={menu(i, item)} trigger={["click"]}>
+                    <div
+                      className="ant-dropdown-link"
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      <MoreOutlined />
+                    </div>
+                  </Dropdown>
+                </div>
+              </div>
+            </Card>
+          </div>
+        ) : afterUpload && !toggleFileView && item.type == "file" ? (
+          <Card className={styles.files}>
+            <div className={styles.dropdown_menu}>
+              <Dropdown overlay={menu_files(item.id, item)} trigger={["click"]}>
+                <div
+                  className="ant-dropdown-link"
+                  onClick={(e) => e.preventDefault()}
+                >
+                  <Image
+                    className={styles.Menu_Iconss}
+                    alt="Three Dots"
+                    src={ThreeDots}
+                    width={15}
+                    height={20}
+                  />
+                </div>
+              </Dropdown>
+            </div>
+            <div className={styles.imageFiles}>
+              {displayImage(item, item.file_path)}
+            </div>
+            <h3>
+              {(item.name ? item.name : item.file_name).substring(0, 10) +
+                "..."}
+            </h3>
+            <span>
+              {item.created_at
+                ? moment.unix(item.created_at).format("MMM DD, YYYY, h:mm:ss A")
+                : moment(item.lastModified).format("MMM DD, YYYY, h:mm:ss A")}
+            </span>
+          </Card>
+        ) : (
+          ""
+        )}
+      </div>
+    );
+  };
   const searchFilter = () => {
     return filteredArray().map((item, i) => {
       return (
         <div
-          className={
-            openFolder && item.id != selectedFolderID
-              ? ""
-              : !openFolder
-              ? styles.view_After_Upload
-              : styles.folder_Back_Button
-          }
+          className={(() => {
+            if (openFolder && item.id != selectedFolderID) {
+              return "";
+            } else if (!openFolder) {
+              return styles.view_After_Upload;
+            } else {
+              return styles.folder_Back_Button;
+            }
+          })()}
           key={i}
         >
-          {item.type &&
-          item.type == "folder" &&
-          item.id == selectedFolderID &&
-          openFolder &&
-          dragBoxStatus == false ? (
-            <div>
-              <Card
-                size="small"
-                title={
-                  <h2>
-                    {" "}
-                    <ArrowLeftOutlined
-                      onClick={() => {
-                        closeFolder();
-                        StatusHideFile();
-                      }}
-                    />
-                    {" " + item.name + " "}
-                    {item.folderName} <FolderOpenOutlined />
-                  </h2>
-                }
-                className="FolderfileCard"
-              >
-                <div className={styles.openFolder}>
-                  {!toggleFileView
-                    ? getFileListFromFolderID.map((file, i) => {
-                        return (
-                          <Card className={styles.files} key={i}>
-                            <div className={styles.dropdown_menu}>
-                              <Dropdown
-                                overlay={menu_files(file.id, file)}
-                                trigger={["click"]}
-                              >
-                                <div
-                                  className="ant-dropdown-link"
-                                  onClick={(e) => e.preventDefault()}
-                                >
-                                  <Image
-                                    className={styles.Menu_Iconss}
-                                    alt="Three Dots"
-                                    src={ThreeDots}
-                                    width={15}
-                                    height={20}
-                                  />
-                                </div>
-                              </Dropdown>
-                            </div>
-                            <div className={styles.imageFiles}>
-                              {file.file_path ? (
-                                <Image
-                                  alt="Image"
-                                  src={file.file_path}
-                                  height={"150px"}
-                                  width={"140px"}
-                                />
-                              ) : file.type == "text/plain" ? (
-                                <FileTextFilled
-                                  className={styles.FileTextTwoOneClass}
-                                />
-                              ) : file.type == "application/pdf" ? (
-                                <FilePdfFilled
-                                  className={styles.FilePdfTwoToneColor}
-                                />
-                              ) : (
-                                <FileUnknownFilled
-                                  className={styles.FileTextTwoOneClass}
-                                />
-                              )}
-                            </div>
-                            <h3>{file.file_name.substring(0, 16) + "..."}</h3>
-                            <span>
-                              {moment
-                                .unix(file.created_at)
-                                .format("MMM DD, YYYY, h:mm:ss A")}
-                            </span>
-                          </Card>
-                        );
-                      })
-                    : ""}
-                </div>
-              </Card>
-            </div>
-          ) : !openFolder && dragBoxStatus == false ? (
-            <div className={"folderId" + item.id} id={"folderId" + item.id}>
-              {item && item.type && item.type == "folder" && !toggleFileView ? (
-                <div className={styles.Folder_container}>
-                  <Card className={styles.FolderData}>
-                    <div className={styles.folder_icon}>
-                      <div className="folder--wrap">
-                        <div
-                          className="foldername"
+          {(() => {
+            if (
+              item.type &&
+              item.type == "folder" &&
+              item.id == selectedFolderID &&
+              openFolder &&
+              dragBoxStatus == false
+            ) {
+              return (
+                <div>
+                  <Card
+                    size="small"
+                    title={
+                      <h2>
+                        {" "}
+                        <ArrowLeftOutlined
                           onClick={() => {
-                            Openfolder(item.id), setFolderIndex(i);
+                            closeFolder();
+                            StatusHideFile();
                           }}
-                        >
-                          {item.name}
-                        </div>
-                        <div className={styles.dateAndfiles}>
-                          <p>
-                            {" "}
-                            {moment
-                              .unix(item.created_at)
-                              .format("DD-MMMM-YYYY")}
-                          </p>
-                          <small>{"(" + item.uploads_count + " files)"}</small>
-                        </div>
-                      </div>
-                      <div className={styles.dropdown}>
-                        <Dropdown overlay={menu(i, item)} trigger={["click"]}>
-                          <div
-                            className="ant-dropdown-link"
-                            onClick={(e) => e.preventDefault()}
-                          >
-                            <MoreOutlined />
-                          </div>
-                        </Dropdown>
-                      </div>
+                        />
+                        {" " + item.name + " "}
+                        {item.folderName} <FolderOpenOutlined />
+                      </h2>
+                    }
+                    className="FolderfileCard"
+                  >
+                    <div className={styles.openFolder}>
+                      {!toggleFileView
+                        ? getFileListFromFolderID.map((file, i) => {
+                            return (
+                              <div className={styles.view_After_Upload}>
+                                <Card className={styles.files} key={i}>
+                                  <div className={styles.dropdown_menu}>
+                                    <Dropdown
+                                      overlay={menu_files(file.id, file)}
+                                      trigger={["click"]}
+                                    >
+                                      <div
+                                        className="ant-dropdown-link"
+                                        onClick={(e) => e.preventDefault()}
+                                      >
+                                        <Image
+                                          className={styles.Menu_Iconss}
+                                          alt="Three Dots"
+                                          src={ThreeDots}
+                                          width={15}
+                                          height={20}
+                                        />
+                                      </div>
+                                    </Dropdown>
+                                  </div>
+                                  <div className={styles.imageFiles}>
+                                    {displayImage(file, file.file_path)}
+                                  </div>
+                                  <h3>
+                                    {file.file_name.substring(0, 16) + "..."}
+                                  </h3>
+                                  <span>
+                                    {moment
+                                      .unix(file.created_at)
+                                      .format("MMM DD, YYYY, h:mm:ss A")}
+                                  </span>
+                                </Card>
+                              </div>
+                            );
+                          })
+                        : ""}
                     </div>
                   </Card>
                 </div>
-              ) : afterUpload && !toggleFileView && item.type == "file" ? (
-                <Card className={styles.files}>
-                  <div className={styles.dropdown_menu}>
-                    <Dropdown
-                      overlay={menu_files(item.id, item)}
-                      trigger={["click"]}
-                    >
-                      <div
-                        className="ant-dropdown-link"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        <Image
-                          className={styles.Menu_Iconss}
-                          alt="Three Dots"
-                          src={ThreeDots}
-                          width={15}
-                          height={20}
-                        />
-                      </div>
-                    </Dropdown>
-                  </div>
-                  <div className={styles.imageFiles}>
-                    {item.file_path ? (
-                      <Image
-                        alt="Image"
-                        src={item.file_path}
-                        height={"150px"}
-                        width={"140px"}
-                      />
-                    ) : item.type == "text/plain" ? (
-                      <FileTextFilled className={styles.FileTextTwoOneClass} />
-                    ) : item.type == "application/pdf" ? (
-                      <FilePdfFilled className={styles.FilePdfTwoToneColor} />
-                    ) : (
-                      <FileUnknownFilled
-                        className={styles.FileTextTwoOneClass}
-                      />
-                    )}
-                  </div>
-                  <h3>
-                    {(item.name ? item.name : item.file_name).substring(0, 10) +
-                      "..."}
-                  </h3>
-                  <span>
-                    {item.created_at
-                      ? moment
-                          .unix(item.created_at)
-                          .format("MMM DD, YYYY, h:mm:ss A")
-                      : moment(item.lastModified).format(
-                          "MMM DD, YYYY, h:mm:ss A"
-                        )}
-                  </span>
-                </Card>
-              ) : (
-                ""
-              )}
-            </div>
-          ) : (
-            ""
-          )}
+              );
+            } else if (!openFolder && dragBoxStatus == false) {
+              return openFolderData(item, i);
+            } else {
+              return "";
+            }
+          })()}
         </div>
       );
     });
+  };
+  const displayImage = (file, imageData) => {
+    return (
+      <div>
+        {imageData ? (
+          <Image alt="Image" src={imageData} height={"150px"} width={"140px"} />
+        ) : file.type == "text/plain" ? (
+          <FileTextFilled className={styles.FileTextTwoOneClass} />
+        ) : file.type == "application/pdf" ? (
+          <FilePdfFilled className={styles.FilePdfTwoToneColor} />
+        ) : (
+          <FileUnknownFilled className={styles.FileTextTwoOneClass} />
+        )}
+      </div>
+    );
   };
   return (
     <>
@@ -781,26 +773,7 @@ const UploadFileUI = ({
                         }
                       />
                       <div className="imgWrap">
-                        {file.thumbUrl ? (
-                          <Image
-                            alt="Image"
-                            src={file.thumbUrl}
-                            height={"150px"}
-                            width={"140px"}
-                          />
-                        ) : file.type == "text/plain" ? (
-                          <FileTextFilled
-                            className={styles.FileTextTwoOneClass}
-                          />
-                        ) : file.type == "application/pdf" ? (
-                          <FilePdfFilled
-                            className={styles.FilePdfTwoToneColor}
-                          />
-                        ) : (
-                          <FileUnknownFilled
-                            className={styles.FileTextTwoOneClass}
-                          />
-                        )}
+                        {displayImage(file, file.thumbUrl)}
                       </div>
                       <br />
                       <label className={"fileName_label"}>{file.name}</label>
