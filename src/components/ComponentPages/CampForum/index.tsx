@@ -256,7 +256,7 @@ const ForumComponent = ({}) => {
       fetchNickNameList();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paramsList]);
+  }, [paramsList, isLog]);
 
   const onCancelCreateThread = () => {
     const queries = router?.query;
