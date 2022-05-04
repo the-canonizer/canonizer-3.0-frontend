@@ -1,7 +1,10 @@
-import dynamic from "next/dynamic";
-import ReactQuill from "react-quill";
 import React from "react";
-const QuillNoSSRWrapper = dynamic(() => ReactQuill, { ssr: false });
+import dynamic from "next/dynamic";
+
+const QuillNoSSRWrapper = dynamic(() => import("react-quill"), {
+  ssr: false,
+  loading: () => <p>Loading...</p>,
+});
 
 const modules = {
   /*

@@ -25,6 +25,7 @@ const PostUI = ({
   onDeleteClick,
   onEditClick,
   currentThread,
+  isLog,
 }) => {
   return (
     <Fragment>
@@ -56,7 +57,9 @@ const PostUI = ({
           quillContent={quillContent}
           onContentChange={onContentChange}
           isError={isError}
+          isLog={isLog}
         />
+
         {postList.map((post) => (
           <PostList
             postedBy={post.post_by}

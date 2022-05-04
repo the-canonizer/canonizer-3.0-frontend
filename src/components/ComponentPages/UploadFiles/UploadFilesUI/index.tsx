@@ -542,7 +542,7 @@ const UploadFileUI = ({
                       {!toggleFileView
                         ? getFileListFromFolderID.map((file, i) => {
                             return (
-                              <div className={styles.view_After_Upload}>
+                              <div className={styles.view_After_Upload} key='upload_file_one'>
                                 <Card className={styles.files} key={i}>
                                   <div className={styles.dropdown_menu}>
                                     <Dropdown

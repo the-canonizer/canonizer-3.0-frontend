@@ -17,6 +17,7 @@ const Threads = ({
   onDeleteClick,
   onPostEditClick,
   currentThread,
+  isLog,
 }) => (
   <div className="d-flex">
     <ThreadSidebar />
@@ -37,6 +38,7 @@ const Threads = ({
         onEditClick={onPostEditClick}
         onDeleteClick={onDeleteClick}
         currentThread={currentThread}
+        isLog={isLog}
       />
     </div>
   </div>
