@@ -23,7 +23,7 @@ const CreateFolder = ({
       >
         <Form.Item
           label={labels.FolderName}
-          name="folderName"
+          name="Folder Name"
           rules={[
             { required: true },
             {

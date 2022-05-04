@@ -519,6 +519,9 @@
 .high_light {
   color: #149fdf;
 }
+.menu_item {
+  color: black;
+}
 .icon_Width {
   display: inline-block;
   max-width: 20px;
@@ -617,4 +620,9 @@
   margin-left: 31px;
   position: relative;
   top: -15px;
+}
+.maxLimit {
+  color: red;
+  text-align: center;
+  font-size: 11px;
 }
