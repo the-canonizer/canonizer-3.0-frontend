@@ -459,6 +459,7 @@ const ForumComponent = ({}) => {
           isError={isError}
           onPostEditClick={onPostEditClick}
           onDeleteClick={onDeleteClick}
+          isLog={isLog}
         />
       ) : null}
     </Fragment>
