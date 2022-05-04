@@ -81,6 +81,8 @@ const UploadFiles = () => {
           formData.append("name[]", uploadFileList[key].name);
       } else {
         message.error("Your upload file is greater than 5 mb");
+        uploadOptionsHide();
+        GetUploadFileAndFolder();
       }
     }
     formData.append("folder_id", openFolderID);
@@ -103,6 +105,7 @@ const UploadFiles = () => {
     setFileLists(fileLists);
     fileStatusHide();
     GetUploadFileAndFolder();
+    setUploadFileList([]);
     {
       fileLists.length > 0
         ? (enableCreateFolderBtn(),

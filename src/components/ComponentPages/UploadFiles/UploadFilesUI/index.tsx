@@ -93,7 +93,6 @@ const UploadFileUI = ({
     previewPath: "",
     previewName: "",
   });
-
   const dispatch = useDispatch<AppDispatch>();
   const drageBoxVisible = useSelector((state: RootState) => state.ui.dragBox);
   const disabledCreateFolder = useSelector(
@@ -162,7 +161,7 @@ const UploadFileUI = ({
     <Menu>
       <Menu.Item>
         <span
-          className={styles.high_light}
+          className={styles.menu_item}
           onClick={() =>
             setPreview({
               previewVisible: true,
@@ -176,10 +175,11 @@ const UploadFileUI = ({
       </Menu.Item>
       <Menu.Item>
         <span
-          className={styles.high_light}
+          className={styles.menu_item}
           onClick={() => {
             {
-              navigator.clipboard.writeText(item.short_code);
+              navigator.clipboard.writeText(item.short_code),
+                message.success("Short code copied");
             }
           }}
         >
@@ -188,12 +188,12 @@ const UploadFileUI = ({
       </Menu.Item>
       <Menu.Item>
         <span
-          className={styles.high_light}
+          className={styles.menu_item}
           onClick={() => {
             removeFiles(item, item, fileLists);
           }}
         >
-          <DeleteTwoTone /> Delete
+          <DeleteTwoTone /> Delete File
         </span>
       </Menu.Item>
     </Menu>
@@ -201,7 +201,7 @@ const UploadFileUI = ({
   const displayColumnListImage = (obj) => {
     return (
       <div>
-        {obj.type == "file" ? (
+        {obj.type == "file" || obj.file_path ? (
           <Image
             src={obj.file_path}
             alt="picture of author"
@@ -221,12 +221,13 @@ const UploadFileUI = ({
     );
   };
   const editFolder = (obj) => {
+    createFolderForm.resetFields();
     setEditModal(true);
     setShowCreateFolderModal(true);
     setRename(obj.name);
     setEditModalId(obj.id);
     createFolderForm.setFieldsValue({
-      ["folderName"]: obj.name,
+      ["Folder Name"]: obj.name,
     });
   };
 
@@ -286,17 +287,24 @@ const UploadFileUI = ({
       render: (code, obj) => {
         return (
           <div className={styles.CopyShortCode}>
-            <div className={styles.icon_height}>
-              {`[[${obj.short_code ? obj.short_code : "   "}]]`}
-            </div>
-            <div className={styles.shortcode_icon}>
-              <CopyTwoTone
-                className={styles.folder_icons}
-                onClick={() => {
-                  navigator.clipboard.writeText(obj.short_code);
-                }}
-              />
-            </div>
+            {obj.short_code ? (
+              <>
+                <div className={styles.icon_height}>
+                  {`[[${obj.short_code}]]`}
+                </div>
+                <div className={styles.shortcode_icon}>
+                  <CopyTwoTone
+                    className={styles.folder_icons}
+                    onClick={() => {
+                      navigator.clipboard.writeText(obj.short_code),
+                        message.success("Short code copied");
+                    }}
+                  />
+                </div>
+              </>
+            ) : (
+              ""
+            )}
           </div>
         );
       },
@@ -334,7 +342,7 @@ const UploadFileUI = ({
                 obj.file_type ? (
                   <>
                     <li
-                      className={styles.high_light}
+                      className={styles.menu_item}
                       onClick={() =>
                         setPreview({
                           previewVisible: true,
@@ -348,21 +356,22 @@ const UploadFileUI = ({
                     </li>
                     <br />
                     <li
-                      className={styles.high_light}
+                      className={styles.menu_item}
                       onClick={() => {
-                        navigator.clipboard.writeText(keyParam.short_code);
+                        navigator.clipboard.writeText(keyParam.short_code),
+                          message.success("Short code copied");
                       }}
                     >
                       <CopyTwoTone /> Copy Short Code
                     </li>
                     <br />
                     <li
-                      className={styles.high_light}
+                      className={styles.menu_item}
                       onClick={() => {
                         removeFiles(keyParam, obj, fileLists);
                       }}
                     >
-                      <DeleteTwoTone /> Delete
+                      <DeleteTwoTone /> Delete File
                     </li>
                   </>
                 ) : (
@@ -441,7 +450,7 @@ const UploadFileUI = ({
                   <div className={styles.dateAndfiles}>
                     <p>
                       {" "}
-                      {moment.unix(item.created_at).format("DD-MMMM-YYYY")}
+                      {moment.unix(item.created_at).format("DD MMMM YYYY")}
                     </p>
                     <small>{"(" + item.uploads_count + " files)"}</small>
                   </div>
@@ -533,7 +542,7 @@ const UploadFileUI = ({
                           }}
                         />
                         {" " + item.name + " "}
-                        {item.folderName} <FolderOpenOutlined />
+                        <FolderOpenOutlined />
                       </h2>
                     }
                     className="FolderfileCard"
@@ -662,10 +671,10 @@ const UploadFileUI = ({
                   disabled={disabledCreateFolder}
                   className={styles.create_folder_btn}
                   onClick={() => {
+                    createFolderForm.resetFields();
                     setShowCreateFolderModal(true),
                       setToggleFileView(false),
                       setEditModal(false);
-                    createFolderForm.resetFields();
                   }}
                 >
                   Create a folder
@@ -776,7 +785,15 @@ const UploadFileUI = ({
                         {displayImage(file, file.thumbUrl)}
                       </div>
                       <br />
-                      <label className={"fileName_label"}>{file.name}</label>
+                      <label
+                        className={
+                          fileSizeFlag
+                            ? "fileName_label_max_limit"
+                            : "fileName_label"
+                        }
+                      >
+                        {file.name}
+                      </label>
                       <span className={"fileName_span"}>Enter file name</span>
 
                       <Input
@@ -786,6 +803,14 @@ const UploadFileUI = ({
                         placeholder="Full Name (with no extension)"
                       />
                     </div>
+                    {fileSizeFlag ? (
+                      <p className={styles.maxLimit}>
+                        This file is exceeding the max limit and will not be
+                        uploaded{" "}
+                      </p>
+                    ) : (
+                      " "
+                    )}
                   </div>
                 );
               }}
@@ -849,7 +874,7 @@ const UploadFileUI = ({
         visible={showCreateFolderModal}
         footer=""
         onCancel={() => setShowCreateFolderModal(false)}
-        width={400}
+        width={450}
         closeIcon={<CloseCircleOutlined />}
       >
         <CreateFolder
