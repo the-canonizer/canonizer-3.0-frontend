@@ -51,6 +51,9 @@ export default function ChangePasswordUI({
                     type="password"
                     placeholder={messages.placeholders.currentPassword}
                     onChange={(e) => onChangeFun(e.target.value)}
+                    onKeyDown={(e) =>
+                      e.key === " " && e.keyCode === 32 && e.preventDefault()
+                    }
                   />
                 </Form.Item>
               </Col>
@@ -65,6 +68,9 @@ export default function ChangePasswordUI({
                     className={styles.Password_input}
                     type="password"
                     placeholder={messages.placeholders.newPassword}
+                    onKeyDown={(e) =>
+                      e.key === " " && e.keyCode === 32 && e.preventDefault()
+                    }
                   />
                 </Form.Item>
               </Col>
@@ -81,6 +87,9 @@ export default function ChangePasswordUI({
                     className={styles.Password_input}
                     type="password"
                     placeholder={messages.placeholders.confirmPassword}
+                    onKeyDown={(e) =>
+                      e.key === " " && e.keyCode === 32 && e.preventDefault()
+                    }
                   />
                 </Form.Item>
               </Col>
