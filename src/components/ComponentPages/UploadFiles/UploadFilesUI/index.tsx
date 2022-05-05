@@ -14,7 +14,7 @@ import {
   Popover,
   Table,
 } from "antd";
-import {
+import Icon, {
   InboxOutlined,
   MenuOutlined,
   SearchOutlined,
@@ -39,6 +39,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../../../store";
 import messages from "../../../../messages";
 import ThreeDots from "../../../../assets/image/threeDots.svg";
+import GridView from "../../../../assets/image/gridView.svg";
+import GridViewActive from "../../../../assets/image/gridViewActive.svg";
+import ListView from "../../../../assets/image/listView.svg";
+import ListViewActive from "../../../../assets/image/listViewActive.svg";
 import {
   showDrageBox,
   hideDrageBox,
@@ -551,7 +555,10 @@ const UploadFileUI = ({
                       {!toggleFileView
                         ? getFileListFromFolderID.map((file, i) => {
                             return (
-                              <div className={styles.view_After_Upload} key='upload_file_one'>
+                              <div
+                                className={styles.view_After_Upload}
+                                key="upload_file_one"
+                              >
                                 <Card className={styles.files} key={i}>
                                   <div className={styles.dropdown_menu}>
                                     <Dropdown
@@ -693,18 +700,30 @@ const UploadFileUI = ({
                 )}
               </div>
               <div className={styles.top_icon}>
-                <MenuOutlined
-                  className={toggleFileView ? styles.high_light : ""}
+                <span
                   onClick={() => {
                     setToggleFileView(true);
                   }}
-                />
-                <AppstoreOutlined
-                  className={!toggleFileView ? styles.high_light : ""}
+                >
+                  <Image
+                    alt="listView"
+                    src={toggleFileView ? ListViewActive : ListView}
+                    width={24}
+                    height={20}
+                  />
+                </span>
+                <span
                   onClick={() => {
                     setToggleFileView(false), showUploadsAfter();
                   }}
-                />
+                >
+                  <Image
+                    alt="listView"
+                    src={!toggleFileView ? GridViewActive : GridView}
+                    width={24}
+                    height={20}
+                  />
+                </span>
               </div>
             </div>
           }
