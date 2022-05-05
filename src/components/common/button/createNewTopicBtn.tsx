@@ -4,7 +4,7 @@ import styles from "./button.module.scss";
 
 import Button from "./index";
 
-const CreateNewCampButton = (props) => {
+const CreateNewTopicButton = (props) => {
   const router = useRouter();
 
   const campRoute = () => {
@@ -18,4 +18,4 @@ const CreateNewCampButton = (props) => {
   );
 };
 
-export default CreateNewCampButton;
+export default CreateNewTopicButton;
