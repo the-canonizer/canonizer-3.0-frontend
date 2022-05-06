@@ -78,6 +78,7 @@ function ProfileInfoForm({
   }) => (
     <div>
       <Input
+        id="selectAddress_1"
         addonAfter={selectAfter("address_1", publicOrPrivate("address_1"))}
         placeholder={messages.placeholders.addressLine1}
         size="large"
@@ -135,6 +136,7 @@ function ProfileInfoForm({
                 {...messages.firstNameRule}
               >
                 <Input
+                  id="firstName"
                   addonAfter={selectAfter(
                     "first_name",
                     publicOrPrivate("first_name")
@@ -153,6 +155,7 @@ function ProfileInfoForm({
                 {...messages.lastNameRule}
               >
                 <Input
+                  id="lastName"
                   addonAfter={selectAfter(
                     "last_name",
                     publicOrPrivate("last_name")
@@ -184,6 +187,7 @@ function ProfileInfoForm({
                 {...messages.middleNameRule}
               >
                 <Input
+                  id="middleName"
                   addonAfter={selectAfter(
                     "middle_name",
                     publicOrPrivate("middle_name")
@@ -202,6 +206,7 @@ function ProfileInfoForm({
                 {...messages.emailRule}
               >
                 <Input
+                  id="email"
                   addonAfter={selectAfter("email", publicOrPrivate("email"))}
                   placeholder={messages.placeholders.email}
                   size="large"
@@ -260,6 +265,7 @@ function ProfileInfoForm({
               </Form.Item>
               <Form.Item name="city" label={messages.labels.city}>
                 <Input
+                  id="selectCity"
                   addonAfter={selectAfter("city", publicOrPrivate("city"))}
                   placeholder={messages.placeholders.city}
                   size="large"
@@ -268,6 +274,7 @@ function ProfileInfoForm({
               </Form.Item>
               <Form.Item name="country" label={messages.labels.country}>
                 <Input
+                  id="selectCountry"
                   addonAfter={selectAfter(
                     "country",
                     publicOrPrivate("country")
@@ -279,6 +286,7 @@ function ProfileInfoForm({
               </Form.Item>
               <Form.Item name="language" label={messages.labels.language}>
                 <Select
+                  id="selectLanguage"
                   size="large"
                   placeholder="Select a language"
                   tabIndex={10}
@@ -290,6 +298,7 @@ function ProfileInfoForm({
             <Col md={12}>
               <Form.Item name="address_2" label={messages.labels.addressLine2}>
                 <Input
+                  id="selectAddress_2"
                   addonAfter={selectAfter(
                     "address_2",
                     publicOrPrivate("address_2")
@@ -300,6 +309,7 @@ function ProfileInfoForm({
               </Form.Item>
               <Form.Item name="state" label={messages.labels.state}>
                 <Input
+                  id="selectState"
                   addonAfter={selectAfter("state", publicOrPrivate("state"))}
                   placeholder={messages.placeholders.state}
                   size="large"
@@ -308,6 +318,7 @@ function ProfileInfoForm({
               </Form.Item>
               <Form.Item name="postal_code" label={messages.labels.zipCode}>
                 <Input
+                  id="selectPostalCode"
                   addonAfter={selectAfter(
                     "postal_code",
                     publicOrPrivate("postal_code")
@@ -321,6 +332,7 @@ function ProfileInfoForm({
                 label={messages.labels.chooseAlgorithm}
               >
                 <Select
+                  id="algorithms"
                   size="large"
                   placeholder={messages.placeholders.algorithm}
                   tabIndex={11}
@@ -333,6 +345,7 @@ function ProfileInfoForm({
         </div>
         <Form.Item>
           <Button
+            id="profileUpdate"
             type="primary"
             htmlType="submit"
             className="ant-btn ant-btn-orange ant-btn-lg"

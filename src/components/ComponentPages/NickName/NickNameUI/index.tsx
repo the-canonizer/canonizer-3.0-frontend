@@ -63,6 +63,7 @@ export default function NickNameUI({
         <Form form={nickNameForm} component={false}>
           <Form.Item className={styles.nick_form}>
             <Table
+              id="nickNameList"
               dataSource={nickNameList}
               columns={columns}
               rowClassName="editable-row"
@@ -105,6 +106,7 @@ export default function NickNameUI({
               {...messages.nickNameRule}
             >
               <Input
+                id="enterNickName"
                 placeholder="Enter nick name"
                 value=""
                 size="large"
@@ -125,6 +127,7 @@ export default function NickNameUI({
             </Form.Item>
             <Form.Item>
               <Button
+                id="addEditBtn"
                 type="primary"
                 htmlType="submit"
                 data-testid="submitButton"

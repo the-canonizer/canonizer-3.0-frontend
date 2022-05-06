@@ -244,7 +244,6 @@ export default class UserRequest extends Request {
 
   static GetLanguageList(authToken) {
     const body = {};
-
     return new UserRequest(
       K.Network.URL.GetLanguageList,
       K.Network.Method.GET,
@@ -474,6 +473,20 @@ export default class UserRequest extends Request {
     return new Request(
       K.Network.URL.GETFILESINDISEFOLDER + id,
       K.Network.Method.GET,
+      {},
+      K.Network.Header.Type.Json,
+      {},
+      auth.loggedInUser.token
+    );
+  }
+
+  static DeleteUploadFile(id) {
+    let state = store.getState();
+    const { auth } = state;
+
+    return new Request(
+      K.Network.URL.DeleteUploadFile + id,
+      K.Network.Method.DELETE,
       {},
       K.Network.Header.Type.Json,
       {},

@@ -99,8 +99,6 @@ const TopicDetails = () => {
       as_of_date: asofdate,
     };
 
-    let { camp_num, topic_num } = reqBody;
-
     await Promise.all([
       getNewsFeedApi(reqBody),
       getCanonizedCampStatementApi(reqBody),
@@ -124,14 +122,11 @@ const TopicDetails = () => {
       parent_camp_num: topicRecord[0]?.camp_num,
     };
 
-    const topicName = topicRecord[0]?.topic_name.replaceAll(" ", "-");
-    const campName = campRecord[0]?.parentCamps[0]?.camp_name.replaceAll(
-      " ",
-      "-"
-    );
+    const topicName = topicRecord?.topic_name.replaceAll(" ", "-");
+    const campName = campRecord?.camp_name.replaceAll(" ", "-");
 
     router.push({
-      pathname: `/camp/create/${topicRecord[0]?.topic_num}-${topicName}/${campRecord[0]?.camp_num}-${campName}`,
+      pathname: `/camp/create/${topicRecord?.topic_num}-${topicName}/${campRecord?.camp_num}-${campName}`,
     });
 
     setCurrentTopics(data);
@@ -148,21 +143,18 @@ const TopicDetails = () => {
     //   parent_camp_num: topicRecord[0]?.camp_num,
     // };
     // setCurrentTopics(data);
-    const topicName = topicRecord[0]?.topic_name.replaceAll(" ", "-");
-    const campName = campRecord[0]?.parentCamps[0]?.camp_name.replaceAll(
-      " ",
-      "-"
-    );
+    const topicName = topicRecord?.topic_name.replaceAll(" ", "-");
+    const campName = campRecord?.camp_name.replaceAll(" ", "-");
 
     router.push({
-      pathname: `/forum/${topicRecord[0]?.topic_num}-${topicName}/${campRecord[0]?.camp_num}-${campName}/threads`,
+      pathname: `/forum/${topicRecord?.topic_num}-${topicName}/${campRecord?.camp_num}-${campName}/threads`,
     });
   };
   const campForumDropdownMenu = (
     <Menu className={styles.campForumDropdownMenu}>
       <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
         <Link
-          href={isLogin ? "/login" : router.asPath.replace("topic", "addnews")}
+          href={isLogin ? router.asPath.replace("topic", "addnews") : "/login"}
         >
           <a rel="noopener noreferrer" href="/add-news">
             Add News
@@ -195,13 +187,13 @@ const TopicDetails = () => {
             <Typography.Paragraph className={"mb-0 " + styles.topicTitleStyle}>
               {" "}
               <span className="bold"> Topic: </span>
-              {topicRecord?.length && topicRecord[0]?.topic_name}
+              {topicRecord && topicRecord?.topic_name}
             </Typography.Paragraph>
             <div className={styles.breadcrumbLinks}>
               {" "}
               <span className="bold mr-1"> Camp : </span>
-              {campRecord?.length
-                ? campRecord[0].parentCamps?.map((camp, index) => {
+              {campRecord
+                ? campRecord.parentCamps?.map((camp, index) => {
                     return (
                       <Link
                         href={`${router.query.camp.at(0)}/${

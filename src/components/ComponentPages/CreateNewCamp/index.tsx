@@ -93,8 +93,8 @@ const CreateNewCamp = ({
     const q = getRouterParams();
     let p_camps = "";
 
-    if (campRecord && campRecord.length) {
-      campRecord[0].parentCamps?.map((camp, index) => {
+    if (campRecord && campRecord.parentCamps) {
+      campRecord.parentCamps?.map((camp, index) => {
         p_camps += index !== 0 ? " / " : "";
         p_camps += `${camp?.camp_name}`;
       });
@@ -197,6 +197,8 @@ const CreateNewCamp = ({
         nickNameList={nickNameList}
         parentCamp={parentCamp}
         campNickName={campNickName}
+        topicRecord={topicRecord}
+        campRecord={campRecord}
       />
     </Fragment>
   );

@@ -378,6 +378,14 @@
       width: 50%;
     }
   }
+  .folder_Back_Button {
+    width: 100%;
+    padding: 0;
+    .openFolder {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
 }
 .files {
   > div {
@@ -511,6 +519,9 @@
 .high_light {
   color: #149fdf;
 }
+.menu_item {
+  color: black;
+}
 .icon_Width {
   display: inline-block;
   max-width: 20px;
@@ -577,10 +588,41 @@
 }
 
 .dropdown_menu {
-  position: relative;
-  top: -15px;
-  margin-right: -20px;
+  position: absolute;
+  top: 6px;
+  margin-right: 0;
   right: 10px;
   cursor: pointer;
   z-index: 99;
+  left: auto;
+  width: 25px;
+  height: 25px;
+  background: #ffffff96;
+  text-align: center;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 5px;
+}
+
+.dropdown_menu:hover {
+  background-color: #fff;
+}
+
+.preview_image button span.ant-modal-close-x {
+  width: 23px;
+  height: 20px;
+  line-height: 25px;
+}
+
+.crossIcon {
+  margin-left: 31px;
+  position: relative;
+  top: -15px;
+}
+.maxLimit {
+  color: red;
+  text-align: center;
+  font-size: 11px;
 }

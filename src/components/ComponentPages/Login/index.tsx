@@ -63,7 +63,9 @@ const Login = ({ isModal, isTest = false }) => {
       if (router.query.returnUrl) {
         router.push(`${router.query.returnUrl}`);
       } else {
-        router.push("/");
+        if (!router.pathname?.includes("/forum/")) {
+          router.push("/");
+        }
       }
     }
 
@@ -117,7 +119,9 @@ const Login = ({ isModal, isTest = false }) => {
         if (router.query.returnUrl) {
           router.push(`${router.query.returnUrl}`);
         } else {
-          router.push("/");
+          if (!router.pathname?.includes("/forum/")) {
+            router.push("/");
+          }
         }
       }
     } else {

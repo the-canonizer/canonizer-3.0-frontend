@@ -1,28 +1,9 @@
-import Edit from "../../components/ComponentPages/News/Edit";
+import Add from "../../components/ComponentPages/News/AddOrEdit";
 import Layout from "../../hoc/layout";
 import SideBarNoFilter from "../../components/ComponentPages/Home/SideBarNoFilter";
-import { getCampNewsDataApi } from "../../network/api/campNewsApi";
+import React from "react";
 
-import useAuthentication from "../../../src/hooks/isUserAuthenticated";
-import { setCampNewsToEdit } from "src/store/slices/news";
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useRouter } from "next/router";
-
-export default function EditNewsPage({ news }) {
-  const router = useRouter();
-  const isLogin = useAuthentication();
-  const dispatch = useDispatch();
-  dispatch(setCampNewsToEdit(news));
-
-  useEffect(() => {
-    if (isLogin === true) {
-      router.replace("/login");
-    } else if (news.length === 0 && isLogin === false) {
-      router.replace(`/topic/${router.query.camp[0]}/${router.query.camp[0]}`);
-    }
-  }, []);
-
+export default function EditNewsPage() {
   return (
     <>
       <Layout>
@@ -30,25 +11,9 @@ export default function EditNewsPage({ news }) {
           <SideBarNoFilter />
         </aside>
         <div className="pageContentWrap">
-          <Edit />
+          <Add edit={true} />
         </div>
       </Layout>
     </>
   );
-}
-
-export async function getServerSideProps(context) {
-  const { query } = context;
-
-  const reqBody = {
-    topic_num: +query?.camp[0]?.split("-")[0],
-    camp_num: +query?.camp[1]?.split("-")[0],
-  };
-  const res = await getCampNewsDataApi(reqBody);
-  const news = res || [];
-  return {
-    props: {
-      news,
-    },
-  };
 }
