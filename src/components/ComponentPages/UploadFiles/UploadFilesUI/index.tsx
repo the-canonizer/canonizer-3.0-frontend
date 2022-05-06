@@ -140,6 +140,7 @@ const UploadFileUI = ({
     <Menu>
       <Menu.Item>
         <span
+          id="openFolder"
           onClick={() => {
             Openfolder(obj.id);
           }}
@@ -148,10 +149,13 @@ const UploadFileUI = ({
         </span>
       </Menu.Item>
       <Menu.Item>
-        <span onClick={() => editFolder(obj)}>Edit folder name</span>
+        <span id="editFolderName" onClick={() => editFolder(obj)}>
+          Edit folder name
+        </span>
       </Menu.Item>
       <Menu.Item>
         <span
+          id="deleteFolder"
           onClick={() => {
             removeFiles(obj, {}, fileLists);
           }}
@@ -174,7 +178,7 @@ const UploadFileUI = ({
             })
           }
         >
-          <EyeTwoTone /> View File
+          <EyeTwoTone id="viewFile" /> View File
         </span>
       </Menu.Item>
       <Menu.Item>
@@ -187,7 +191,7 @@ const UploadFileUI = ({
             }
           }}
         >
-          <CopyTwoTone /> Copy Short Code
+          <CopyTwoTone id="copyShortCode" /> Copy Short Code
         </span>
       </Menu.Item>
       <Menu.Item>
@@ -197,16 +201,18 @@ const UploadFileUI = ({
             removeFiles(item, item, fileLists);
           }}
         >
-          <DeleteTwoTone /> Delete File
+          <DeleteTwoTone id="deleteFile" /> Delete File
         </span>
       </Menu.Item>
     </Menu>
   );
   const displayColumnListImage = (obj) => {
+    console.log(obj, "obj");
     return (
       <div>
         {obj.type == "file" || obj.file_path ? (
           <Image
+            id={"imageList" + obj.id}
             src={obj.file_path}
             alt="picture of author"
             width={"100"}
@@ -481,6 +487,7 @@ const UploadFileUI = ({
                   onClick={(e) => e.preventDefault()}
                 >
                   <Image
+                    // id="threeDots"
                     className={styles.Menu_Iconss}
                     alt="Three Dots"
                     src={ThreeDots}
@@ -540,6 +547,7 @@ const UploadFileUI = ({
                       <h2>
                         {" "}
                         <ArrowLeftOutlined
+                          id="arrowLeftOutlined"
                           onClick={() => {
                             closeFolder();
                             StatusHideFile();
@@ -570,6 +578,7 @@ const UploadFileUI = ({
                                         onClick={(e) => e.preventDefault()}
                                       >
                                         <Image
+                                          id="menuFilesThreeDots"
                                           className={styles.Menu_Iconss}
                                           alt="Three Dots"
                                           src={ThreeDots}
@@ -611,7 +620,7 @@ const UploadFileUI = ({
   };
   const displayImage = (file, imageData) => {
     return (
-      <div>
+      <div id="display_image">
         {imageData ? (
           <Image alt="Image" src={imageData} height={"150px"} width={"140px"} />
         ) : file.type == "text/plain" ? (
@@ -629,7 +638,12 @@ const UploadFileUI = ({
       <div>
         <div className={styles.card}>
           <div className={styles.btnsWrap}>
-            <Button size="large" className={styles.btn} onClick={campRoute}>
+            <Button
+              id="createNewTopicBtn"
+              size="large"
+              className={styles.btn}
+              onClick={campRoute}
+            >
               <i className="icon-topic"></i> Create New Topic
             </Button>
           </div>
@@ -665,6 +679,7 @@ const UploadFileUI = ({
                 <div className={styles.search_users}>
                   <SearchOutlined />
                   <Input
+                    id="datePickerText"
                     placeholder="Search"
                     type="text"
                     name="search"
@@ -674,7 +689,7 @@ const UploadFileUI = ({
                   />
                 </div>
                 <Button
-                  id="createFolder"
+                  id="createFolderBtn"
                   disabled={disabledCreateFolder}
                   className={styles.create_folder_btn}
                   onClick={() => {
@@ -688,6 +703,7 @@ const UploadFileUI = ({
                 </Button>
                 {addButtonShow ? (
                   <Button
+                    id="addAFileBtn"
                     className={styles.add_file_btn}
                     onClick={() => {
                       addNewFile(), setToggleFileView(false), setUpdateList({});
@@ -816,6 +832,7 @@ const UploadFileUI = ({
                       <span className={"fileName_span"}>Enter file name</span>
 
                       <Input
+                        id="enterFileName"
                         className="mr0"
                         name={file.uid}
                         onChange={(e) => handleChangeFileName(e, file.uid)}
@@ -836,7 +853,7 @@ const UploadFileUI = ({
             >
               {drageBoxVisible !== false ? (
                 <div className={styles.Dragebox}>
-                  <Button className={styles.Drager}>
+                  <Button id="clickOrDragAreaBtn" className={styles.Drager}>
                     <div className="uploadBTn">
                       <InboxOutlined />
                       <h2>
@@ -858,6 +875,7 @@ const UploadFileUI = ({
           {toggleFileView && fileLists.length > 0 ? (
             <div className="TableContent">
               <Table
+                id="tableColumn"
                 className="contentValue"
                 dataSource={fileStatus ? getFileListFromFolderID : fileLists}
                 columns={columns}
@@ -870,6 +888,7 @@ const UploadFileUI = ({
           {show_UploadOptions ? (
             <div className={styles.Upload_Cancel_Btn}>
               <Button
+                id="uploadBtn"
                 className={styles.Upload_Btn}
                 onClick={() => {
                   uploadList(), uploadFun(), setToggleFileView(false);
@@ -878,7 +897,11 @@ const UploadFileUI = ({
               >
                 Upload
               </Button>
-              <Button className={styles.cancel_Btn} onClick={handleCancel}>
+              <Button
+                id="cancelBtn"
+                className={styles.cancel_Btn}
+                onClick={handleCancel}
+              >
                 cancel
               </Button>
             </div>
@@ -920,6 +943,7 @@ const UploadFileUI = ({
       >
         {preview.previewPath && (
           <Image
+            id="modalImageId"
             alt="example"
             src={preview.previewPath}
             width={"470px"}
