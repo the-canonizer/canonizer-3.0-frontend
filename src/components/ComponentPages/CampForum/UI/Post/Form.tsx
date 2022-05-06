@@ -1,9 +1,11 @@
 import dynamic from "next/dynamic";
 import { Fragment } from "react";
 import { Form, Button, Select, Row, Col, Typography } from "antd";
+import { useDispatch } from "react-redux";
 
 import styles from "../Forum.module.scss";
 import messages from "../../../../../messages";
+import { showLoginModal } from "../../../../../store/slices/uiSlice";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -64,7 +66,11 @@ const PostForm = ({
   quillContent = "",
   onContentChange,
   isError = false,
+  isLog,
 }) => {
+  const dispatch = useDispatch();
+  const openModal = () => dispatch(showLoginModal());
+
   return (
     <Fragment>
       <Form
@@ -83,79 +89,91 @@ const PostForm = ({
             <Text style={{ marginBottom: "10px", display: "block" }}>
               Number of Post in this thread: {postCount}
             </Text>
-            <div className={styles.editorQuill}>
-              <ReactQuill
-                modules={modules}
-                formats={formats}
-                onChange={onContentChange}
-                value={quillContent}
-                theme="snow"
-                placeholder="Post Your Message Here..."
-              />
-              {isError && <Text type="danger">{validations.reply}</Text>}
-            </div>
+            {!isLog && (
+              <Text>
+                Please <a onClick={openModal}>Sign In</a> to comment on this
+                Thread
+              </Text>
+            )}
+            {isLog ? (
+              <div className={styles.editorQuill}>
+                <ReactQuill
+                  modules={modules}
+                  formats={formats}
+                  onChange={onContentChange}
+                  value={quillContent}
+                  theme="snow"
+                  placeholder="Post Your Message Here..."
+                />
+                {isError && <Text type="danger">{validations.reply}</Text>}
+              </div>
+            ) : null}
           </Col>
-          <Col xs={24} sm={12}>
-            {nickNameList.length > 0 ? (
-              <Form.Item
-                label={labels.cr_nick_name}
-                name="nick_name"
-                {...nickNmRule}
-                initialValue={nickNameList[0]?.id}
-                extra={labels.cr_nick_name_sp}
-                className="nick_name_extra"
-              >
-                <Select
-                  placeholder={placeholders.nickName}
-                  allowClear
-                  size={"large"}
+          {isLog ? (
+            <Col xs={24} sm={12}>
+              {nickNameList.length > 0 ? (
+                <Form.Item
+                  label={labels.cr_nick_name}
+                  name="nick_name"
+                  {...nickNmRule}
+                  initialValue={nickNameList[0]?.id}
+                  extra={labels.cr_nick_name_sp}
+                  className="nick_name_extra"
                 >
-                  {nickNameList.map((nick) => (
-                    <Option key={nick.id} value={nick.id}>
-                      {nick.nick_name}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
-            ) : null}
-            {nickNameList.length <= 0 ? (
-              <Form.Item
-                label={labels.cr_nick_name}
-                name="nick_name"
-                {...nickNmRule}
-                extra={labels.cr_nick_name_sp}
-                className="nick_name_extra"
-              >
-                <Select
-                  placeholder={placeholders.nickName}
-                  allowClear
-                  size={"large"}
-                ></Select>
-              </Form.Item>
-            ) : null}
-          </Col>
+                  <Select
+                    placeholder={placeholders.nickName}
+                    allowClear
+                    size={"large"}
+                  >
+                    {nickNameList.map((nick) => (
+                      <Option key={nick.id} value={nick.id}>
+                        {nick.nick_name}
+                      </Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+              ) : null}
+              {nickNameList.length <= 0 ? (
+                <Form.Item
+                  label={labels.cr_nick_name}
+                  name="nick_name"
+                  {...nickNmRule}
+                  extra={labels.cr_nick_name_sp}
+                  className="nick_name_extra"
+                >
+                  <Select
+                    placeholder={placeholders.nickName}
+                    allowClear
+                    size={"large"}
+                  ></Select>
+                </Form.Item>
+              ) : null}
+            </Col>
+          ) : null}
         </Row>
 
-        <Form.Item noStyle>
-          <Button
-            type="primary"
-            htmlType="submit"
-            size={"large"}
-            className={`${styles.submit_btn}`}
-          >
-            Submit
-          </Button>
+        {isLog ? (
+          <Form.Item noStyle>
+            <Button
+              type="primary"
+              htmlType="submit"
+              size={"large"}
+              className={`${styles.submit_btn}`}
+            >
+              Submit
+            </Button>
 
-          <Button
-            type="primary"
-            htmlType="button"
-            size={"large"}
-            className={`${styles.cancel_btn}`}
-            onClick={onCancel}
-          >
-            Back
-          </Button>
-        </Form.Item>
+            <Button
+              type="primary"
+              htmlType="button"
+              size={"large"}
+              className={`${styles.cancel_btn}`}
+              onClick={onCancel}
+            >
+              Back
+            </Button>
+          </Form.Item>
+        ) : null}
       </Form>
     </Fragment>
   );

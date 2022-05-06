@@ -112,7 +112,7 @@ export default function SettingsUI() {
         <div className="siteAds">
           <Image
             alt="adOne"
-            src={"/images/Image37.jpg"}
+            src={"/images/left-sidebar-adv1.jpg"}
             width={200}
             height={400}
           />

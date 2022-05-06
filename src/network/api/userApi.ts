@@ -616,6 +616,23 @@ export const deleteFolderApi = async (id) => {
   }
 };
 
+export const deleteUploadFileApi = async (id) => {
+  try {
+    const res = await NetworkCall.fetch(UserRequest.DeleteUploadFile(id));
+    return res;
+  } catch (err) {
+    handleError(err);
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400
+    ) {
+      return err.error.data;
+    }
+  }
+};
+
 export const getFileInsideFolderApi = async (id) => {
   try {
     const res = await NetworkCall.fetch(UserRequest.GetFileInsideAFolder(id));

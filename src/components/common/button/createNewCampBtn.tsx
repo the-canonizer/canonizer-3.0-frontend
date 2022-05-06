@@ -8,7 +8,9 @@ const CreateNewTopicButton = (props) => {
   const router = useRouter();
 
   const campRoute = () => {
-    router.push({ pathname: "/create/topic" });
+    router.push({
+      pathname: props.url,
+    });
   };
 
   return (

@@ -1,50 +1,55 @@
 import K from "../../constants";
 import Request from ".";
+import { connect } from "react-redux";
 
-export default class campNewsRequest extends Request {
+export class campNewsRequest extends Request {
   constructor(params) {
     super(params);
   }
 
   // Define request functions below.
 
-  static addNewsRequest(reqBody) {
+  static addNewsFeed(reqBody, token) {
     return new Request(
-      K.Network.URL.AddNewsFeeds,
+      K.Network.URL.AddNewsFeed,
       K.Network.Method.POST,
       reqBody,
       K.Network.Header.Type.Json,
-      {}
+      {},
+      token
     );
   }
 
-  static getCampNewsData(reqBody) {
+  static getEditCampNewsFeed(reqBody, token) {
     return new Request(
-      K.Network.URL.GetCampNewsData,
+      K.Network.URL.GetEditCampNewsFeed,
       K.Network.Method.POST,
       reqBody,
       K.Network.Header.Type.Json,
-      {}
+      {},
+      token
     );
   }
 
-  static updateNewsData(reqBody) {
+  static updateNewsFeed(reqBody, token) {
     return new Request(
-      K.Network.URL.UpdateNewsData,
+      K.Network.URL.UpdateNewsFeed,
       K.Network.Method.POST,
       reqBody,
       K.Network.Header.Type.Json,
-      {}
+      {},
+      token
     );
   }
 
-  static deleteNewsData(reqBody) {
+  static deleteNewsFeed(reqBody, token) {
     return new Request(
-      K.Network.URL.DeleteNewsData,
+      K.Network.URL.DeleteNewsFeed,
       K.Network.Method.POST,
       reqBody,
       K.Network.Header.Type.Json,
-      {}
+      {},
+      token
     );
   }
 }

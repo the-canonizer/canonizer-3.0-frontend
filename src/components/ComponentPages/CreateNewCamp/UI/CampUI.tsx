@@ -1,4 +1,6 @@
 import { Fragment } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 import SideBar from "../../Home/SideBar";
 import styles from "../../CreateNewTopic/UI/createNewTopic.module.scss";
@@ -13,15 +15,36 @@ const CreateNewCampUI = ({
   nickNameList,
   parentCamp,
   campNickName,
+  topicRecord,
+  campRecord,
 }) => {
+  const router = useRouter();
+
   return (
     <Fragment>
       <div className={`${styles.upperTitle}`}>
         <p>
-          <strong>Topic:</strong> {topicData?.topic_name}
+          <strong>Topic: </strong> {topicRecord && topicRecord?.topic_name}
         </p>
         <p>
-          <strong>Camp:</strong> {topicData?.camp_name}
+          <strong>Camp: </strong>{" "}
+          {campRecord
+            ? campRecord.parentCamps?.map((camp, index) => {
+                return (
+                  <Link
+                    href={`/topic/${router.query.camp[0]}/${
+                      camp?.camp_num
+                    }-${camp?.camp_name?.split(" ").join("-")}`}
+                    key={camp?.camp_num}
+                  >
+                    <a>
+                      {index !== 0 && "/ "}
+                      {`${camp?.camp_name}`}
+                    </a>
+                  </Link>
+                );
+              })
+            : null}
         </p>
       </div>
       <div className="d-flex">

@@ -1,13 +1,12 @@
 import { render, screen, waitFor } from "../../../../utils/testUtils";
-
 import UploadFileUI from "../UploadFilesUI";
 import messages from "../../../../messages";
-const { labels, placeholders, validations } = messages;
+
+const { labels } = messages;
 
 const input = "";
 const setInput = jest.fn();
 const selectedFolderID = jest.fn();
-//const fileLists = [];
 const setFileLists = jest.fn();
 const folderFiles = [];
 const setFolderFiles = jest.fn();
@@ -19,32 +18,38 @@ const addNewFile = jest.fn();
 const Openfolder = jest.fn();
 const removeFiles = jest.fn();
 const onFinish = jest.fn();
+const uploadFileList = [];
+const setUploadFileList = jest.fn();
+const removeUploadFiles = jest.fn();
+const GetUploadFileAndFolder = jest.fn();
+const getFileListFromFolderID = [];
+const setShowCreateFolderModal = jest.fn();
+const showCreateFolderModal = true;
 const fileLists = [
   {
-    id: "0",
-    lastModified: 1644681380403,
-    lastModifiedDate:
-      "Sat Feb 12 2022 21:26:20 GMT+0530 (India Standard Time) {}",
-    name: "jon-koop-khYVyHiNZo0-unsplash.jpg",
-    percent: 0,
-    size: 770230,
-    status: "uploading",
-    thumbUrl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMg",
-    type: "image/jpeg",
-    uid: "rc-upload-1649942764012-2",
+    created_at: 1650894718,
+    deleted_at: null,
+    file_id: "can-lmLrBLqFe",
+    file_name: "Third.jpg",
+    file_path:
+      "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
+    file_type: "image/jpeg",
+    folder_id: null,
+    id: 132,
+    short_code: "can-lmLrBLqFe",
+    type: "file",
+    updated_at: 1650894718,
+    user_id: 1134,
   },
   {
-    id: "1",
-    lastModified: 1644681380403,
-    lastModifiedDate:
-      "Sat Feb 12 2022 21:26:20 GMT+0530 (India Standard Time) {}",
-    name: "jon-koop-khYVyHiNZo0-unsplash.jpg",
-    percent: 0,
-    size: 770230,
-    status: "uploading",
-    thumbUrl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMg",
-    type: "image/jpeg",
-    uid: "rc-upload-1649942764012-2",
+    created_at: 1651209637,
+    deleted_at: null,
+    id: 109,
+    name: "can",
+    type: "folder",
+    updated_at: 1651209637,
+    uploads_count: 0,
+    user_id: 1134,
   },
 ];
 describe("Upload File Page", () => {
@@ -61,10 +66,17 @@ describe("Upload File Page", () => {
         closeFolder={closeFolder}
         uploadFun={uploadFun}
         handleCancel={handleCancel}
-        handle_X_btn={handle_X_btn()}
+        handle_X_btn={handle_X_btn}
         addNewFile={addNewFile}
         Openfolder={Openfolder}
         removeFiles={removeFiles}
+        uploadFileList={uploadFileList}
+        setUploadFileList={setUploadFileList}
+        removeUploadFiles={removeUploadFiles}
+        GetUploadFileAndFolder={GetUploadFileAndFolder}
+        getFileListFromFolderID={getFileListFromFolderID}
+        setShowCreateFolderModal={setShowCreateFolderModal}
+        showCreateFolderModal={showCreateFolderModal}
       />
     );
     expect(screen.getByText(labels.uploadFiles)).toBeTruthy();
@@ -92,6 +104,13 @@ describe("Upload File Page", () => {
         addNewFile={addNewFile}
         Openfolder={Openfolder}
         removeFiles={removeFiles}
+        uploadFileList={uploadFileList}
+        setUploadFileList={setUploadFileList}
+        removeUploadFiles={removeUploadFiles}
+        GetUploadFileAndFolder={GetUploadFileAndFolder}
+        getFileListFromFolderID={getFileListFromFolderID}
+        setShowCreateFolderModal={setShowCreateFolderModal}
+        showCreateFolderModal={showCreateFolderModal}
       />
     );
     expect(screen.getByText(labels.uploadFiles)).toBeTruthy();
@@ -101,10 +120,68 @@ describe("Upload File Page", () => {
     expect(
       screen.getAllByText("Create a folder")[0] as HTMLButtonElement
     ).toBeInTheDocument();
+  });
+  it("render Create a folder button", () => {
+    const { getAllByText } = render(
+      <UploadFileUI
+        input={input}
+        setInput={setInput}
+        selectedFolderID={selectedFolderID}
+        fileLists={fileLists}
+        setFileLists={setFileLists}
+        folderFiles={folderFiles}
+        setFolderFiles={setFolderFiles}
+        closeFolder={closeFolder}
+        uploadFun={uploadFun}
+        handleCancel={handleCancel}
+        handle_X_btn={handle_X_btn}
+        addNewFile={addNewFile}
+        Openfolder={Openfolder}
+        removeFiles={removeFiles}
+        uploadFileList={uploadFileList}
+        setUploadFileList={setUploadFileList}
+        removeUploadFiles={removeUploadFiles}
+        GetUploadFileAndFolder={GetUploadFileAndFolder}
+        getFileListFromFolderID={getFileListFromFolderID}
+        setShowCreateFolderModal={setShowCreateFolderModal}
+        showCreateFolderModal={showCreateFolderModal}
+      />
+    );
+    const addbutton = getAllByText("Create a folder")[0] as HTMLButtonElement;
+    expect(addbutton).toBeTruthy();
+  });
+  it("render Modal when create a folder button  is clicked", () => {
+    const { getByText } = render(
+      <UploadFileUI
+        input={input}
+        setInput={setInput}
+        selectedFolderID={selectedFolderID}
+        fileLists={fileLists}
+        setFileLists={setFileLists}
+        folderFiles={folderFiles}
+        setFolderFiles={setFolderFiles}
+        closeFolder={closeFolder}
+        uploadFun={uploadFun}
+        handleCancel={handleCancel}
+        handle_X_btn={handle_X_btn}
+        addNewFile={addNewFile}
+        Openfolder={Openfolder}
+        removeFiles={removeFiles}
+        uploadFileList={uploadFileList}
+        setUploadFileList={setUploadFileList}
+        removeUploadFiles={removeUploadFiles}
+        GetUploadFileAndFolder={GetUploadFileAndFolder}
+        getFileListFromFolderID={getFileListFromFolderID}
+        setShowCreateFolderModal={setShowCreateFolderModal}
+        showCreateFolderModal={showCreateFolderModal}
+      />
+    );
+
+    const addbutton = getByText("Create");
+    expect(addbutton).toBeTruthy();
     expect(
-      screen.getAllByText(
-        "Click or drag file to this area to upload"
-      )[0] as HTMLLabelElement
+      screen.getAllByText(labels.CreateaFolder)[0] as HTMLLabelElement
     ).toBeInTheDocument();
+    expect(screen.getByText(labels.FolderName)).toBeInTheDocument();
   });
 });
