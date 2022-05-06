@@ -112,7 +112,8 @@ const UploadFiles = () => {
           shownAddButton(),
           dragBoxHide(),
           uploadOptionsHide())
-        : (disbleCreateFolderBtn(),
+        : (enableCreateFolderBtn(),
+          //disbleCreateFolderBtn(),
           addButtonHide(),
           dragBoxShow(),
           uploadOptionsShow());
@@ -206,7 +207,7 @@ const UploadFiles = () => {
             shownAddButton(),
             enableCreateFolderBtn(),
             showUploadsAfter())
-          : (dragBoxShow(), hideAddButton(), disbleCreateFolderBtn());
+          : (dragBoxShow(), hideAddButton(), enableCreateFolderBtn());
       }
     }
   };

@@ -130,8 +130,6 @@ const ProfileInfo = () => {
     if (res && res.status_code === 200) {
       message.success(res.message);
       setIsOTPModalVisible(false);
-    } else {
-      message.error(res.message);
     }
   };
 

@@ -84,7 +84,7 @@ describe("Upload File Page", () => {
     expect(screen.getByPlaceholderText("Select date")).toBeTruthy();
     expect(screen.getByPlaceholderText("Search")).toBeTruthy();
     expect(
-      screen.getAllByText("Create a folder")[0] as HTMLButtonElement
+      screen.getAllByText("Create folder")[0] as HTMLButtonElement
     ).toBeInTheDocument();
   });
   it("render upload file(images) is loaded ", () => {
@@ -118,10 +118,10 @@ describe("Upload File Page", () => {
     expect(screen.getByPlaceholderText("Select date")).toBeTruthy();
     expect(screen.getByPlaceholderText("Search")).toBeTruthy();
     expect(
-      screen.getAllByText("Create a folder")[0] as HTMLButtonElement
+      screen.getAllByText("Create folder")[0] as HTMLButtonElement
     ).toBeInTheDocument();
   });
-  it("render Create a folder button", () => {
+  it("render Create folder button", () => {
     const { getAllByText } = render(
       <UploadFileUI
         input={input}
@@ -147,10 +147,10 @@ describe("Upload File Page", () => {
         showCreateFolderModal={showCreateFolderModal}
       />
     );
-    const addbutton = getAllByText("Create a folder")[0] as HTMLButtonElement;
+    const addbutton = getAllByText("Create folder")[0] as HTMLButtonElement;
     expect(addbutton).toBeTruthy();
   });
-  it("render Modal when create a folder button  is clicked", () => {
+  it("render Modal when create folder button  is clicked", () => {
     const { getByText } = render(
       <UploadFileUI
         input={input}
