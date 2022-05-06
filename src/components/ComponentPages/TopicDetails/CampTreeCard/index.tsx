@@ -59,7 +59,7 @@ const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
             </div>
             <Link
               href={
-                isLogin ? "/login" : router.asPath.replace("topic", "addnews")
+                isLogin ? router.asPath.replace("topic", "addnews") : "/login"
               }
             >
               <a
