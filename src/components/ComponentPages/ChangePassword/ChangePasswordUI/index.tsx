@@ -48,6 +48,7 @@ export default function ChangePasswordUI({
                     : "")}
                 >
                   <Input
+                    id="currentPassword"
                     type="password"
                     placeholder={messages.placeholders.currentPassword}
                     onChange={(e) => onChangeFun(e.target.value)}
@@ -65,6 +66,7 @@ export default function ChangePasswordUI({
                   hasFeedback
                 >
                   <Input
+                    id="newPassword"
                     className={styles.Password_input}
                     type="password"
                     placeholder={messages.placeholders.newPassword}
@@ -84,6 +86,7 @@ export default function ChangePasswordUI({
                   {...messages.confirmNewPasswordRule}
                 >
                   <Input
+                    id="confirmPassword"
                     className={styles.Password_input}
                     type="password"
                     placeholder={messages.placeholders.confirmPassword}
@@ -96,7 +99,12 @@ export default function ChangePasswordUI({
             </Row>
           </div>
           <Form.Item>
-            <Button type="primary" htmlType="submit" data-testid="submitButton">
+            <Button
+              id="saveBtn"
+              type="primary"
+              htmlType="submit"
+              data-testid="submitButton"
+            >
               Save
             </Button>
           </Form.Item>
