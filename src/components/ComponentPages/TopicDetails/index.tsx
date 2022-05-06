@@ -9,6 +9,7 @@ import {
   getCanonizedCampSupportingTreeApi,
   getCurrentTopicRecordApi,
   getCurrentCampRecordApi,
+  subscribeToCampApi,
 } from "src/network/api/campDetailApi";
 import { RootState } from "src/store";
 import SideBar from "../Home/SideBar";
@@ -82,7 +83,7 @@ const TopicDetails = () => {
   }, [asofdate, algorithm, +router?.query?.camp[1]?.split("-")[0]]);
 
   const scrollToCampStatement = () => {
-    myRefToCampStatement.current.scrollIntoView({ behavior: "smooth" });
+    myRefToCampStatement.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleLoadMoreSupporters = async () => {
@@ -150,6 +151,18 @@ const TopicDetails = () => {
       pathname: `/forum/${topicRecord?.topic_num}-${topicName}/${campRecord?.camp_num}-${campName}/threads`,
     });
   };
+
+  const campScribe = (e) => {
+    const reqBody = {
+      topic_num: campRecord.topic_num,
+      camp_num: campRecord.camp_num,
+      checked: true,
+      subscription_id: campRecord.campSubscriptionId,
+    };
+
+    subscribeToCampApi(reqBody);
+  };
+
   const campForumDropdownMenu = (
     <Menu className={styles.campForumDropdownMenu}>
       <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
@@ -164,7 +177,10 @@ const TopicDetails = () => {
       <Menu.Item icon={<i className="icon-subscribe"></i>}>
         Subscribe to Entire Topic
       </Menu.Item>
-      <Menu.Item icon={<i className="icon-subscribe"></i>}>
+      <Menu.Item
+        icon={<i className="icon-subscribe"></i>}
+        onClick={() => campScribe()}
+      >
         Subscribe to the Camp
       </Menu.Item>
       <Menu.Item icon={<HeartOutlined />}>Directly Join and Support </Menu.Item>
