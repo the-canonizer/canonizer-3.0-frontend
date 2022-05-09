@@ -335,11 +335,12 @@
   &::before {
     height: 11px;
     content: "";
-    background: #336eb2;
+    background: url("../../../../assets/image/folderTop.svg");
     width: 100px;
     top: -11px;
     position: absolute;
-    border-radius: 6px 6px 0 0;
+    border-radius: 0;
+    background-size: cover;
   }
   .foldername {
     color: #fffdf3;
@@ -418,6 +419,9 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    span {
+      margin-left: 5px !important;
+    }
   }
   span {
     font-size: 12px;
@@ -500,7 +504,9 @@
     width: 150px;
   }
 }
-
+.marginLeftView {
+  margin-left: 5px !important;
+}
 .folder_icon {
   position: relative;
   .dropdown {
@@ -625,4 +631,17 @@
   color: red;
   text-align: center;
   font-size: 11px;
+}
+.FolderOpenHeading {
+  color: #1c1b24;
+  font-weight: 600;
+  display: flex;
+  font-size: 20px;
+  align-items: center;
+  span {
+    margin-right: 10px;
+  }
+  // span + span {
+  //   margin-left: 10px !important;
+  // }
 }

@@ -13,6 +13,7 @@ import {
   DatePicker,
   Popover,
   Table,
+  Popconfirm,
 } from "antd";
 import Icon, {
   InboxOutlined,
@@ -43,6 +44,11 @@ import GridView from "../../../../assets/image/gridView.svg";
 import GridViewActive from "../../../../assets/image/gridViewActive.svg";
 import ListView from "../../../../assets/image/listView.svg";
 import ListViewActive from "../../../../assets/image/listViewActive.svg";
+import folderOpenOutLine from "../../../../assets/image/folderOpen.svg";
+import CopyShortCode from "../../../../assets/image/copyShortCode.svg";
+import eyeImage from "../../../../assets/image/eye.svg";
+import Trash from "../../../../assets/image/trash.svg";
+import ArrowLeft from "../../../../assets/image/arrow_small_left.svg";
 import {
   showDrageBox,
   hideDrageBox,
@@ -154,13 +160,16 @@ const UploadFileUI = ({
         </span>
       </Menu.Item>
       <Menu.Item>
-        <span
-          id="deleteFolder"
-          onClick={() => {
-            removeFiles(obj, {}, fileLists);
-          }}
-        >
-          Delete folder
+        <span id="deleteFolder">
+          <Popconfirm
+            placement="topRight"
+            title="Are you sure to delete ?"
+            onConfirm={() => removeFiles(obj, {}, fileLists)}
+            okText="Yes"
+            cancelText="No"
+          >
+            Delete folder
+          </Popconfirm>
         </span>
       </Menu.Item>
     </Menu>
@@ -178,7 +187,14 @@ const UploadFileUI = ({
             })
           }
         >
-          <EyeTwoTone id="viewFile" /> View File
+          <Image
+            id="viewFile"
+            alt="Eye Image"
+            src={eyeImage}
+            width={15}
+            height={11}
+          />
+          <span className={styles.marginLeftView}>View File</span>
         </span>
       </Menu.Item>
       <Menu.Item>
@@ -191,23 +207,39 @@ const UploadFileUI = ({
             }
           }}
         >
-          <CopyTwoTone id="copyShortCode" /> Copy Short Code
+          <Image
+            id="copyShortCode"
+            alt="copyShortCode"
+            src={CopyShortCode}
+            width={12}
+            height={15}
+          />
+          <span className={styles.marginLeftView}>Copy Short Code</span>
         </span>
       </Menu.Item>
       <Menu.Item>
-        <span
-          className={styles.menu_item}
-          onClick={() => {
-            removeFiles(item, item, fileLists);
-          }}
-        >
-          <DeleteTwoTone id="deleteFile" /> Delete File
+        <span className={styles.menu_item}>
+          <Popconfirm
+            placement="topRight"
+            title="Are you sure to delete ?"
+            onConfirm={() => removeFiles(item, item, fileLists)}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Image
+              id="deleteFile"
+              alt="Trash Data "
+              src={Trash}
+              width={12}
+              height={15}
+            />
+            <span className={styles.marginLeftView}>Delete File</span>
+          </Popconfirm>
         </span>
       </Menu.Item>
     </Menu>
   );
   const displayColumnListImage = (obj) => {
-    console.log(obj, "obj");
     return (
       <div>
         {obj.type == "file" || obj.file_path ? (
@@ -303,13 +335,20 @@ const UploadFileUI = ({
                   {`[[${obj.short_code}]]`}
                 </div>
                 <div className={styles.shortcode_icon}>
-                  <CopyTwoTone
+                  <span
                     className={styles.folder_icons}
                     onClick={() => {
                       navigator.clipboard.writeText(obj.short_code),
                         message.success("Short code copied");
                     }}
-                  />
+                  >
+                    <Image
+                      alt="copyShortCode"
+                      src={CopyShortCode}
+                      width={15}
+                      height={18}
+                    />
+                  </span>
                 </div>
               </>
             ) : (
@@ -351,7 +390,7 @@ const UploadFileUI = ({
               content={
                 obj.file_type ? (
                   <>
-                    <li
+                    <div
                       className={styles.menu_item}
                       onClick={() =>
                         setPreview({
@@ -362,27 +401,50 @@ const UploadFileUI = ({
                       }
                     >
                       {" "}
-                      <EyeTwoTone /> View File
-                    </li>
-                    <br />
-                    <li
+                      <Image
+                        alt="Eye Image"
+                        src={eyeImage}
+                        width={15}
+                        height={11}
+                      />
+                      <span className={styles.marginLeftView}>View File</span>
+                    </div>
+                    <div
                       className={styles.menu_item}
                       onClick={() => {
                         navigator.clipboard.writeText(keyParam.short_code),
                           message.success("Short code copied");
                       }}
                     >
-                      <CopyTwoTone /> Copy Short Code
-                    </li>
-                    <br />
-                    <li
-                      className={styles.menu_item}
-                      onClick={() => {
-                        removeFiles(keyParam, obj, fileLists);
-                      }}
-                    >
-                      <DeleteTwoTone /> Delete File
-                    </li>
+                      <Image
+                        alt="copyShortCode"
+                        src={CopyShortCode}
+                        width={12}
+                        height={15}
+                      />
+                      <span className={styles.marginLeftView}>
+                        Copy Short Code
+                      </span>
+                    </div>
+                    <div className={styles.menu_item}>
+                      <Popconfirm
+                        placement="topRight"
+                        title="Are you sure to delete this file."
+                        onConfirm={() => removeFiles(keyParam, obj, fileLists)}
+                        okText="Yes"
+                        cancelText="No"
+                      >
+                        <Image
+                          alt="Trash Data "
+                          src={Trash}
+                          width={12}
+                          height={15}
+                        />
+                        <span className={styles.marginLeftView}>
+                          Delete File
+                        </span>
+                      </Popconfirm>
+                    </div>
                   </>
                 ) : (
                   menu(index, obj)
@@ -487,7 +549,7 @@ const UploadFileUI = ({
                   onClick={(e) => e.preventDefault()}
                 >
                   <Image
-                    // id="threeDots"
+                    id="threeDots"
                     className={styles.Menu_Iconss}
                     alt="Three Dots"
                     src={ThreeDots}
@@ -503,6 +565,19 @@ const UploadFileUI = ({
             <h3>
               {(item.name ? item.name : item.file_name).substring(0, 10) +
                 "..."}
+              <span
+                onClick={() => {
+                  navigator.clipboard.writeText(item.short_code),
+                    message.success("Short code copied");
+                }}
+              >
+                <Image
+                  alt="copyShortCode"
+                  src={CopyShortCode}
+                  width={12}
+                  height={15}
+                />
+              </span>
             </h3>
             <span>
               {item.created_at
@@ -544,17 +619,32 @@ const UploadFileUI = ({
                   <Card
                     size="small"
                     title={
-                      <h2>
+                      <h2 className={styles.FolderOpenHeading}>
                         {" "}
-                        <ArrowLeftOutlined
-                          id="arrowLeftOutlined"
+                        <span
                           onClick={() => {
                             closeFolder();
                             StatusHideFile();
                           }}
+                        >
+                          <Image
+                            id="arrowLeftOutlined"
+                            alt="Arrow Left"
+                            src={ArrowLeft}
+                            width={14}
+                            height={17}
+                          />
+                        </span>
+                        <span className={styles.marginLeftView}>
+                          {" " + item.name + " "}
+                        </span>
+                        <Image
+                          alt="folderOpenOutLine"
+                          src={folderOpenOutLine}
+                          width={24}
+                          height={20}
+                          className="ms-2"
                         />
-                        {" " + item.name + " "}
-                        <FolderOpenOutlined />
                       </h2>
                     }
                     className="FolderfileCard"
@@ -592,7 +682,22 @@ const UploadFileUI = ({
                                     {displayImage(file, file.file_path)}
                                   </div>
                                   <h3>
-                                    {file.file_name.substring(0, 16) + "..."}
+                                    {file.file_name.substring(0, 10) + "..."}
+                                    <span
+                                      onClick={() => {
+                                        navigator.clipboard.writeText(
+                                          file.short_code
+                                        ),
+                                          message.success("Short code copied");
+                                      }}
+                                    >
+                                      <Image
+                                        alt="copyShortCode"
+                                        src={CopyShortCode}
+                                        width={12}
+                                        height={15}
+                                      />
+                                    </span>
                                   </h3>
                                   <span>
                                     {moment
@@ -632,6 +737,10 @@ const UploadFileUI = ({
         )}
       </div>
     );
+  };
+  const confirm = (keyParam) => {
+    message.info("Clicked on Yes.");
+    removeFiles(keyParam);
   };
   return (
     <>
@@ -699,7 +808,7 @@ const UploadFileUI = ({
                       setEditModal(false);
                   }}
                 >
-                  Create a folder
+                  Create folder
                 </Button>
                 {addButtonShow ? (
                   <Button
@@ -734,7 +843,7 @@ const UploadFileUI = ({
                   }}
                 >
                   <Image
-                    alt="listView"
+                    alt="gridView"
                     src={!toggleFileView ? GridViewActive : GridView}
                     width={24}
                     height={20}
