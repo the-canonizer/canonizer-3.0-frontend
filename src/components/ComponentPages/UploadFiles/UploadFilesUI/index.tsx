@@ -316,7 +316,17 @@ const UploadFileUI = ({
               {displayColumnListImage(obj)}
             </div>
             <div className={styles.filename_text}>
-              {obj.file_name ? obj.file_name : obj.name}
+              {obj.file_name ? (
+                obj.file_name
+              ) : (
+                <div
+                  onClick={() => {
+                    Openfolder(obj.id);
+                  }}
+                >
+                  {obj.name}
+                </div>
+              )}
             </div>
           </div>
         );
@@ -479,7 +489,41 @@ const UploadFileUI = ({
     const createdAtValue = (val) =>
       moment.unix(val.created_at).format("MMM DD, YYYY");
     let searchName = "";
+    console.log(fileLists, "fileLists---");
     return fileLists.filter((val) => {
+      console.log(val.name, "name--");
+      if (search !== "") {
+        if (val.name) {
+          searchName = val.name;
+        } else if (val.file_name) {
+          searchName = val.file_name;
+        }
+        if (
+          searchName
+            .toLowerCase()
+            .trim()
+            .includes(search.toLowerCase().trim()) &&
+          (datePick == "" ||
+            (datePick !== "" && datePickerData == createdAtValue(val)))
+        ) {
+          return val;
+        }
+      } else if (datePick.trim() == "") {
+        return val;
+      } else if (datePickerData == createdAtValue(val)) {
+        return val;
+      }
+    });
+  };
+  const filteredArray1 = () => {
+    const datePickerData = moment(datePick).format("MMM DD, YYYY");
+    const createdAtValue = (val) =>
+      moment.unix(val.created_at).format("MMM DD, YYYY");
+    let searchName = "";
+
+    console.log(getFileListFromFolderID, "getFileListFromFolderID---");
+    return getFileListFromFolderID.filter((val) => {
+      console.log(val.name, "name--");
       if (search !== "") {
         if (val.name) {
           searchName = val.name;
@@ -504,6 +548,7 @@ const UploadFileUI = ({
     });
   };
   const openFolderData = (item, i) => {
+    console.log("openFolderDta-----");
     return (
       <div className={"folderId" + item.id} id={"folderId" + item.id}>
         {item && item.type && item.type == "folder" && !toggleFileView ? (
@@ -563,8 +608,7 @@ const UploadFileUI = ({
               {displayImage(item, item.file_path)}
             </div>
             <h3>
-              {(item.name ? item.name : item.file_name).substring(0, 10) +
-                "..."}
+              {subStringData(item.name ? item.name : item.file_name)}
               <span
                 onClick={() => {
                   navigator.clipboard.writeText(item.short_code),
@@ -591,8 +635,13 @@ const UploadFileUI = ({
       </div>
     );
   };
+  const subStringData = (fileName) => {
+    return fileName.length > 10 ? fileName.substring(0, 10) + "..." : fileName;
+  };
+  const filterArrList = [];
   const searchFilter = () => {
     return filteredArray().map((item, i) => {
+      filterArrList.push(item);
       return (
         <div
           className={(() => {
@@ -652,6 +701,7 @@ const UploadFileUI = ({
                     <div className={styles.openFolder}>
                       {!toggleFileView
                         ? getFileListFromFolderID.map((file, i) => {
+                            filterArrList.push(item);
                             return (
                               <div
                                 className={styles.view_After_Upload}
@@ -682,7 +732,7 @@ const UploadFileUI = ({
                                     {displayImage(file, file.file_path)}
                                   </div>
                                   <h3>
-                                    {file.file_name.substring(0, 10) + "..."}
+                                    {subStringData(file.file_name)}
                                     <span
                                       onClick={() => {
                                         navigator.clipboard.writeText(
@@ -826,6 +876,7 @@ const UploadFileUI = ({
               </div>
               <div className={styles.top_icon}>
                 <span
+                  style={{ cursor: "pointer" }}
                   onClick={() => {
                     setToggleFileView(true);
                   }}
@@ -986,7 +1037,13 @@ const UploadFileUI = ({
               <Table
                 id="tableColumn"
                 className="contentValue"
-                dataSource={fileStatus ? getFileListFromFolderID : fileLists}
+                dataSource={
+                  fileStatus
+                    ? getFileListFromFolderID
+                    : filterArrList
+                    ? filterArrList
+                    : fileLists
+                }
                 columns={columns}
               />
             </div>

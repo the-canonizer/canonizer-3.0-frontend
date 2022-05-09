@@ -26,10 +26,10 @@ const CreateFolder = ({
           name="Folder Name"
           rules={[
             { required: true },
-            {
-              pattern: new RegExp(/^[A-Z ]*$/i),
-              message: "field does not accept numbers",
-            },
+            // {
+            //   pattern: new RegExp(/^[A-Z ]*$/i),
+            //   message: "field does not accept numbers",
+            // },
           ]}
         >
           <Input
