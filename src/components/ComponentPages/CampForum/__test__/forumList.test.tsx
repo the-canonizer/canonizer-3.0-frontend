@@ -70,12 +70,24 @@ const data = [
 
 const params = { topic: "topic-88", camp: "camp-22" };
 const postList = [];
+const campRecords = {
+  parentCamps: [
+    {
+      camp_num: 22,
+      camp_name: "camp",
+    },
+  ],
+};
+
+const topicRecords = {
+  topic_name: "topic",
+};
 
 describe("Camp forum page", () => {
   it("render heading and labels before login", () => {
     render(
       <>
-        <TopBar paramsList={params} />
+        <TopBar campRecord={campRecords} topicRecord={topicRecords} />
         <ForumList
           onSearch={jest.fn()}
           onChange={jest.fn()}
@@ -109,7 +121,7 @@ describe("Camp forum page", () => {
   it("render buttons after login", () => {
     render(
       <>
-        <TopBar paramsList={params} />
+        <TopBar campRecord={campRecords} topicRecord={topicRecords} />
         <ForumList
           onSearch={jest.fn()}
           onChange={jest.fn()}

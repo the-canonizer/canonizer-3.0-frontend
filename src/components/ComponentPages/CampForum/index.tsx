@@ -286,20 +286,30 @@ const ForumComponent = ({}) => {
     const q = router.query;
     let res = null;
 
-    if (q.tId) {
-      const body = {
-        title: values.thread_title,
-      };
-      res = await updateThread(body, +q.tId);
+    if (values.thread_title.trim()) {
+      if (q.tId) {
+        const body = {
+          title: values.thread_title?.trim(),
+        };
+        res = await updateThread(body, +q.tId);
+      } else {
+        const body = {
+          title: values.thread_title?.trim(),
+          nick_name: values.nick_name,
+          camp_num: paramsList["camp_num"],
+          topic_num: paramsList["topic_num"],
+          topic_name: paramsList["topic"],
+        };
+        res = await createThread(body);
+      }
     } else {
-      const body = {
-        title: values.thread_title,
-        nick_name: values.nick_name,
-        camp_num: paramsList["camp_num"],
-        topic_num: paramsList["topic_num"],
-        topic_name: paramsList["topic"],
-      };
-      res = await createThread(body);
+      form.setFields([
+        {
+          name: "thread_title",
+          value: "",
+        },
+      ]);
+      form.validateFields(["thread_title"]);
     }
 
     if (res && res.status_code === 200) {

@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import { Card, Typography, Pagination } from "antd";
 import moment from "moment";
+import Link from "next/link";
 
 import styles from "../Forum.module.scss";
 
@@ -42,7 +43,9 @@ const PostUI = ({
             |{" "}
             <Text>
               Started by{" "}
-              <span className={styles.by}>{currentThread["nick_name"]}</span>
+              <Link href="#">
+                <a className={styles.by}>{currentThread["nick_name"]}</a>
+              </Link>
             </Text>
           </div>
         }

@@ -3,6 +3,7 @@ import { Card, Typography, Tooltip, Space, Popconfirm } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import moment from "moment";
 import sanitizeHtml from "sanitize-html";
+import Link from "next/link";
 
 import styles from "../Forum.module.scss";
 
@@ -24,10 +25,12 @@ const CreateCampFormUI = ({
         <div className={`${styles.cardTitle} ${styles.listCardTitle}`}>
           <Space size="small">
             <Text strong>
-              <span className={styles.by}>{postedBy}</span>{" "}
+              <Link href="#">
+                <a className={styles.by}>{nick_name}</a>
+              </Link>
               {new Date(postedTime).getTime() ===
               new Date(postedUpdatedTime).getTime()
-                ? `${nick_name} replied ${moment(postedTime)
+                ? ` replied ${moment(postedTime)
                     .local()
                     .startOf("seconds")
                     .fromNow()} (${moment(postedTime).format(
