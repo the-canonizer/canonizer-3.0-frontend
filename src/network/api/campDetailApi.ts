@@ -171,7 +171,15 @@ export const createCamp = async (body) => {
     const res = await NetworkCall.fetch(TreeRequest.createCamp(body));
     return res;
   } catch (err) {
-    handleError(err);
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400 &&
+      !err.error.data.error.camp_name
+    ) {
+      handleError(err);
+    }
     if (
       err &&
       err.error &&
