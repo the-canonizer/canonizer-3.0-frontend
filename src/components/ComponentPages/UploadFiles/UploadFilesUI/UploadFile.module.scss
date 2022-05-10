@@ -611,6 +611,9 @@
   align-items: center;
   justify-content: center;
   padding-top: 5px;
+  span {
+    top: -3px;
+  }
 }
 
 .dropdown_menu:hover {

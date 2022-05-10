@@ -49,6 +49,8 @@ import CopyShortCode from "../../../../assets/image/copyShortCode.svg";
 import eyeImage from "../../../../assets/image/eye.svg";
 import Trash from "../../../../assets/image/trash.svg";
 import ArrowLeft from "../../../../assets/image/arrow_small_left.svg";
+import CopyShortCodeImage from "../../../../assets/image/copyShort.png";
+import DatePickerImage from "../../../../assets/image/datePicker.png";
 import {
   showDrageBox,
   hideDrageBox,
@@ -63,7 +65,10 @@ import {
   showAfterUploads,
 } from "../../../../store/slices/uiSlice";
 import CreateFolder from "../CreateFolder";
-import { createFolderApi } from "../../../../network/api/userApi";
+import {
+  createFolderApi,
+  deactivateUser,
+} from "../../../../network/api/userApi";
 import { labels } from "../../../../messages/label";
 
 const UploadFileUI = ({
@@ -102,6 +107,8 @@ const UploadFileUI = ({
     previewVisible: false,
     previewPath: "",
     previewName: "",
+    previewCopyShortCode: "",
+    previewCreatedAt: 0,
   });
   const dispatch = useDispatch<AppDispatch>();
   const drageBoxVisible = useSelector((state: RootState) => state.ui.dragBox);
@@ -184,6 +191,8 @@ const UploadFileUI = ({
               previewVisible: true,
               previewName: item.file_name,
               previewPath: item.file_path,
+              previewCopyShortCode: item.short_code,
+              previewCreatedAt: item.created_at,
             })
           }
         >
@@ -320,6 +329,7 @@ const UploadFileUI = ({
                 obj.file_name
               ) : (
                 <div
+                  style={{ cursor: "pointer" }}
                   onClick={() => {
                     Openfolder(obj.id);
                   }}
@@ -407,6 +417,8 @@ const UploadFileUI = ({
                           previewVisible: true,
                           previewName: obj.file_name,
                           previewPath: obj.file_path,
+                          previewCopyShortCode: obj.short_code,
+                          previewCreatedAt: obj.created_at,
                         })
                       }
                     >
@@ -489,9 +501,7 @@ const UploadFileUI = ({
     const createdAtValue = (val) =>
       moment.unix(val.created_at).format("MMM DD, YYYY");
     let searchName = "";
-    console.log(fileLists, "fileLists---");
-    return fileLists.filter((val) => {
-      console.log(val.name, "name--");
+    return (openFolder ? getFileListFromFolderID : fileLists).filter((val) => {
       if (search !== "") {
         if (val.name) {
           searchName = val.name;
@@ -515,40 +525,8 @@ const UploadFileUI = ({
       }
     });
   };
-  const filteredArray1 = () => {
-    const datePickerData = moment(datePick).format("MMM DD, YYYY");
-    const createdAtValue = (val) =>
-      moment.unix(val.created_at).format("MMM DD, YYYY");
-    let searchName = "";
 
-    console.log(getFileListFromFolderID, "getFileListFromFolderID---");
-    return getFileListFromFolderID.filter((val) => {
-      console.log(val.name, "name--");
-      if (search !== "") {
-        if (val.name) {
-          searchName = val.name;
-        } else if (val.file_name) {
-          searchName = val.file_name;
-        }
-        if (
-          searchName
-            .toLowerCase()
-            .trim()
-            .includes(search.toLowerCase().trim()) &&
-          (datePick == "" ||
-            (datePick !== "" && datePickerData == createdAtValue(val)))
-        ) {
-          return val;
-        }
-      } else if (datePick.trim() == "") {
-        return val;
-      } else if (datePickerData == createdAtValue(val)) {
-        return val;
-      }
-    });
-  };
   const openFolderData = (item, i) => {
-    console.log("openFolderDta-----");
     return (
       <div className={"folderId" + item.id} id={"folderId" + item.id}>
         {item && item.type && item.type == "folder" && !toggleFileView ? (
@@ -562,7 +540,7 @@ const UploadFileUI = ({
                       Openfolder(item.id);
                     }}
                   >
-                    {item.name}
+                    <span style={{ cursor: "pointer" }}>{item.name}</span>
                   </div>
                   <div className={styles.dateAndfiles}>
                     <p>
@@ -587,23 +565,25 @@ const UploadFileUI = ({
           </div>
         ) : afterUpload && !toggleFileView && item.type == "file" ? (
           <Card className={styles.files}>
-            <div className={styles.dropdown_menu}>
-              <Dropdown overlay={menu_files(item.id, item)} trigger={["click"]}>
-                <div
-                  className="ant-dropdown-link"
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <Image
-                    id="threeDots"
-                    className={styles.Menu_Iconss}
-                    alt="Three Dots"
-                    src={ThreeDots}
-                    width={15}
-                    height={20}
-                  />
-                </div>
-              </Dropdown>
-            </div>
+            <Dropdown
+              className={styles.dropdown_menu}
+              overlay={menu_files(item.id, item)}
+              trigger={["click"]}
+            >
+              <div
+                className="ant-dropdown-link"
+                onClick={(e) => e.preventDefault()}
+              >
+                <Image
+                  id="threeDots"
+                  className={styles.Menu_Iconss}
+                  alt="Three Dots"
+                  src={ThreeDots}
+                  width={15}
+                  height={20}
+                />
+              </div>
+            </Dropdown>
             <div className={styles.imageFiles}>
               {displayImage(item, item.file_path)}
             </div>
@@ -640,7 +620,7 @@ const UploadFileUI = ({
   };
   const filterArrList = [];
   const searchFilter = () => {
-    return filteredArray().map((item, i) => {
+    return (openFolder ? fileLists : filteredArray()).map((item, i) => {
       filterArrList.push(item);
       return (
         <div
@@ -700,34 +680,35 @@ const UploadFileUI = ({
                   >
                     <div className={styles.openFolder}>
                       {!toggleFileView
-                        ? getFileListFromFolderID.map((file, i) => {
-                            filterArrList.push(item);
+                        ? (openFolder
+                            ? filteredArray()
+                            : getFileListFromFolderID
+                          ).map((file, i) => {
                             return (
                               <div
                                 className={styles.view_After_Upload}
                                 key="upload_file_one"
                               >
                                 <Card className={styles.files} key={i}>
-                                  <div className={styles.dropdown_menu}>
-                                    <Dropdown
-                                      overlay={menu_files(file.id, file)}
-                                      trigger={["click"]}
+                                  <Dropdown
+                                    className={styles.dropdown_menu}
+                                    overlay={menu_files(file.id, file)}
+                                    trigger={["click"]}
+                                  >
+                                    <div
+                                      className="ant-dropdown-link"
+                                      onClick={(e) => e.preventDefault()}
                                     >
-                                      <div
-                                        className="ant-dropdown-link"
-                                        onClick={(e) => e.preventDefault()}
-                                      >
-                                        <Image
-                                          id="menuFilesThreeDots"
-                                          className={styles.Menu_Iconss}
-                                          alt="Three Dots"
-                                          src={ThreeDots}
-                                          width={15}
-                                          height={20}
-                                        />
-                                      </div>
-                                    </Dropdown>
-                                  </div>
+                                      <Image
+                                        id="menuFilesThreeDots"
+                                        className={styles.Menu_Iconss}
+                                        alt="Three Dots"
+                                        src={ThreeDots}
+                                        width={15}
+                                        height={20}
+                                      />
+                                    </div>
+                                  </Dropdown>
                                   <div className={styles.imageFiles}>
                                     {displayImage(file, file.file_path)}
                                   </div>
@@ -1098,9 +1079,11 @@ const UploadFileUI = ({
       </Modal>
 
       <Modal
-        className={styles.preview_image}
+        destroyOnClose={true}
+        className="modalStyle"
+        // className={styles.preview_image}
         visible={preview.previewVisible}
-        title={preview.previewName}
+        //title={preview.previewName}
         footer={null}
         closeIcon={<CloseCircleOutlined className={styles.crossIcon} />}
         onCancel={() => {
@@ -1108,13 +1091,49 @@ const UploadFileUI = ({
         }}
       >
         {preview.previewPath && (
-          <Image
-            id="modalImageId"
-            alt="example"
-            src={preview.previewPath}
-            width={"470px"}
-            height={"470px"}
-          />
+          <>
+            <Image
+              className="modal--img"
+              id="modalImageId"
+              alt="example"
+              src={preview.previewPath}
+              width={"470px"}
+              height={"470px"}
+            />
+            <div className="d-flex copy--modal">
+              <div className="copy__text">
+                <h6>{preview.previewName}</h6>
+                <div
+                  className="copy_wrap"
+                  onClick={() => {
+                    navigator.clipboard.writeText(preview.previewCopyShortCode),
+                      message.success("Short code copied");
+                  }}
+                >
+                  <Image
+                    alt="copyShortCode"
+                    src={CopyShortCodeImage}
+                    width={"16px"}
+                    height={"10px"}
+                  />
+                  <span> [[{preview.previewCopyShortCode}]]</span>
+                </div>
+              </div>
+              <div className="date_wrap">
+                <Image
+                  alt="datePicker"
+                  src={DatePickerImage}
+                  width={"18px"}
+                  height={"20px"}
+                />
+                <span>
+                  {moment
+                    .unix(preview.previewCreatedAt)
+                    .format("MMM DD, YYYY, h:mm:ss A")}
+                </span>
+              </div>
+            </div>
+          </>
         )}
       </Modal>
     </>
