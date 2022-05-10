@@ -9,6 +9,7 @@ import {
   getCanonizedCampSupportingTreeApi,
   getCurrentTopicRecordApi,
   getCurrentCampRecordApi,
+  subscribeToCampApi,
 } from "src/network/api/campDetailApi";
 import { RootState } from "src/store";
 import SideBar from "../Home/SideBar";
@@ -39,6 +40,7 @@ const TopicDetails = () => {
 
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [getTreeLoadingIndicator, setGetTreeLoadingIndicator] = useState(false);
+
   const router = useRouter();
   const dispatch = useDispatch();
   const { asof, asofdate, algorithm, newsFeed, topicRecord, campRecord } =
@@ -50,7 +52,10 @@ const TopicDetails = () => {
       topicRecord: state?.topicDetails?.currentTopicRecord,
       campRecord: state?.topicDetails?.currentCampRecord,
     }));
-
+  const [campSubscriptionStatus, setCampSubscriptionStatus] = useState(
+    !!campRecord?.campSubscriptionId
+  );
+  const [topicSubscriptionStatus, setTopicSubscriptionStatus] = useState(true);
   useEffect(() => {
     async function getTreeApiCall() {
       setGetTreeLoadingIndicator(true);
@@ -81,8 +86,13 @@ const TopicDetails = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asofdate, algorithm, +router?.query?.camp[1]?.split("-")[0]]);
 
+  useEffect(() => {
+    setCampSubscriptionStatus(!!campRecord?.campSubscriptionId);
+    setTopicSubscriptionStatus(!!topicRecord?.topicSubscriptionId);
+  }, [campRecord?.campSubscriptionId, topicRecord?.topicSubscriptionId]);
+
   const scrollToCampStatement = () => {
-    myRefToCampStatement.current.scrollIntoView({ behavior: "smooth" });
+    myRefToCampStatement.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleLoadMoreSupporters = async () => {
@@ -116,10 +126,10 @@ const TopicDetails = () => {
 
     const data = {
       message: null,
-      topic_num: topicRecord[0]?.topic_num,
-      topic_name: topicRecord[0]?.topic_name,
-      camp_name: topicRecord[0]?.camp_name,
-      parent_camp_num: topicRecord[0]?.camp_num,
+      topic_num: topicRecord?.topic_num,
+      topic_name: topicRecord?.topic_name,
+      camp_name: topicRecord?.camp_name,
+      parent_camp_num: topicRecord?.camp_num,
     };
 
     const topicName = topicRecord?.topic_name.replaceAll(" ", "-");
@@ -138,9 +148,9 @@ const TopicDetails = () => {
     // const data = {
     //   message: null,
     //   topic_num: queryParams.camp[0],
-    //   topic_name: topicRecord[0]?.topic_name,
-    //   camp_name: topicRecord[0]?.camp_name,
-    //   parent_camp_num: topicRecord[0]?.camp_num,
+    //   topic_name: topicRecord?.topic_name,
+    //   camp_name: topicRecord?.camp_name,
+    //   parent_camp_num: topicRecord?.camp_num,
     // };
     // setCurrentTopics(data);
     const topicName = topicRecord?.topic_name.replaceAll(" ", "-");
@@ -150,6 +160,20 @@ const TopicDetails = () => {
       pathname: `/forum/${topicRecord?.topic_num}-${topicName}/${campRecord?.camp_num}-${campName}/threads`,
     });
   };
+
+  const campOrTopicScribe = (isTopic: Boolean) => {
+    const reqBody = {
+      topic_num: campRecord.topic_num,
+      camp_num: isTopic ? 0 : campRecord.camp_num,
+      checked: isTopic ? !topicSubscriptionStatus : !campSubscriptionStatus,
+      subscription_id: isTopic
+        ? topicRecord?.topicSubscriptionId
+        : campRecord.campSubscriptionId,
+    };
+
+    subscribeToCampApi(reqBody, isTopic);
+  };
+
   const campForumDropdownMenu = (
     <Menu className={styles.campForumDropdownMenu}>
       <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
@@ -161,10 +185,18 @@ const TopicDetails = () => {
           </a>
         </Link>
       </Menu.Item>
-      <Menu.Item icon={<i className="icon-subscribe"></i>}>
+      <Menu.Item
+        icon={<i className="icon-subscribe"></i>}
+        onClick={() => campOrTopicScribe(true)}
+        style={topicSubscriptionStatus ? { cursor: "progress" } : null}
+      >
         Subscribe to Entire Topic
       </Menu.Item>
-      <Menu.Item icon={<i className="icon-subscribe"></i>}>
+      <Menu.Item
+        icon={<i className="icon-subscribe"></i>}
+        onClick={() => campOrTopicScribe(false)}
+        style={campSubscriptionStatus ? { cursor: "progress" } : null}
+      >
         Subscribe to the Camp
       </Menu.Item>
       <Menu.Item icon={<HeartOutlined />}>Directly Join and Support </Menu.Item>

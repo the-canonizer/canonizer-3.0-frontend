@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="20" viewBox="0 0 24 20">
+  <g id="fi-rr-align-justify" transform="translate(0 -2)">
+    <path id="Path_43490" data-name="Path 43490" d="M1,6H23a1,1,0,0,0,0-2H1A1,1,0,0,0,1,6Z" transform="translate(0 -2)" fill="#6c737d"/>
+    <path id="Path_43491" data-name="Path 43491" d="M23,9H1a1,1,0,0,0,0,2H23a1,1,0,0,0,0-2Z" transform="translate(0 -1)" fill="#6c737d"/>
+    <path id="Path_43492" data-name="Path 43492" d="M23,19H1a1,1,0,0,0,0,2H23a1,1,0,0,0,0-2Z" transform="translate(0 1)" fill="#6c737d"/>
+    <path id="Path_43493" data-name="Path 43493" d="M23,14H1a1,1,0,0,0,0,2H23a1,1,0,0,0,0-2Z" fill="#6c737d"/>
+  </g>
+</svg>

@@ -44,9 +44,16 @@ export default function CampList() {
     setIsActive(tabName);
   };
 
-  const campRoute = () => {
+  const topicRoute = () => {
     setLoadingIndicator(true);
     router.push("/create/topic");
+  };
+
+  const campRoute = () => {
+    setLoadingIndicator(true);
+    router.push(
+      `/camp/create/${router.query.camp[0] + "/" + router.query.camp[1]}`
+    );
   };
 
   return (
@@ -81,10 +88,14 @@ export default function CampList() {
           </Title>
         </div>
         <div className={styles.btnGroup}>
-          <Button size="large" className={styles.createBtn} onClick={campRoute}>
+          <Button
+            size="large"
+            className={styles.createBtn}
+            onClick={topicRoute}
+          >
             <i className="icon-topic"></i>Create New Topic
           </Button>
-          <Button size="large" className={styles.createBtn}>
+          <Button size="large" className={styles.createBtn} onClick={campRoute}>
             <i className="icon-topic"></i>Create New Camp
           </Button>
         </div>

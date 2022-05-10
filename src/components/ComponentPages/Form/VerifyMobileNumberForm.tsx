@@ -48,6 +48,7 @@ function VerifyMobileNumberForm({
                 {...messages.phoneNumberRule}
               >
                 <Input
+                  id="phoneNumber"
                   type="number"
                   placeholder={messages.placeholders.phoneNumber}
                   size="large"
@@ -90,6 +91,7 @@ function VerifyMobileNumberForm({
           <Form.Item>
             {!toggleVerifyButton ? (
               <Button
+                id="verifyBtn"
                 type="primary"
                 className="ant-btn ant-btn-orange ant-btn-lg"
                 htmlType="submit"
@@ -101,7 +103,9 @@ function VerifyMobileNumberForm({
             ) : (
               <div>
                 <Icon
-                  component={() => <Image alt="adOne" src={verifyIcon} />}
+                  component={() => (
+                    <Image id="siteAddImage" alt="adOne" src={verifyIcon} />
+                  )}
                 />{" "}
                 <span> Your phone number is verified</span>
               </div>
@@ -115,6 +119,7 @@ function VerifyMobileNumberForm({
           >
             <p>OTP has been sent on your phone number.</p>
             <Input
+              id="otpInput"
               placeholder={messages.placeholders.otp}
               value={otp}
               onChange={handleChangeOTP}
@@ -122,6 +127,7 @@ function VerifyMobileNumberForm({
             />
             <p></p> {/* For Empty Row */}
             <Button
+              id="submitBtn"
               type="primary"
               className="ant-btn ant-btn-orange ant-btn-lg"
               onClick={onOTPBtnClick}

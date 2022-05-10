@@ -24,8 +24,20 @@ export const treeSlice = createSlice({
     setCurrentTopicRecord: (state, action) => {
       state.currentTopicRecord = action.payload;
     },
+    setCurrentTopicRecordSubscriptionId: (state, action) => {
+      state.currentTopicRecord = {
+        ...state.currentTopicRecord,
+        topicSubscriptionId: action.payload,
+      };
+    },
     setCurrentCampRecord: (state, action) => {
       state.currentCampRecord = action.payload;
+    },
+    setCurrentCampRecordSubscriptionId: (state, action) => {
+      state.currentCampRecord = {
+        ...state.currentCampRecord,
+        campSubscriptionId: action.payload,
+      };
     },
     setCampSupportingTree: (state, action) => {
       state.campSupportingTree = action.payload;
@@ -51,6 +63,8 @@ export const {
   setCurrentTopicRecord,
   setCurrentCampRecord,
   setCampStatementHistory,
+  setCurrentTopicRecordSubscriptionId,
+  setCurrentCampRecordSubscriptionId,
 } = treeSlice.actions;
 
 export default treeSlice.reducer;

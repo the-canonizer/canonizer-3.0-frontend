@@ -48,9 +48,13 @@ export default function ChangePasswordUI({
                     : "")}
                 >
                   <Input
+                    id="currentPassword"
                     type="password"
                     placeholder={messages.placeholders.currentPassword}
                     onChange={(e) => onChangeFun(e.target.value)}
+                    onKeyDown={(e) =>
+                      e.key === " " && e.keyCode === 32 && e.preventDefault()
+                    }
                   />
                 </Form.Item>
               </Col>
@@ -62,9 +66,13 @@ export default function ChangePasswordUI({
                   hasFeedback
                 >
                   <Input
+                    id="newPassword"
                     className={styles.Password_input}
                     type="password"
                     placeholder={messages.placeholders.newPassword}
+                    onKeyDown={(e) =>
+                      e.key === " " && e.keyCode === 32 && e.preventDefault()
+                    }
                   />
                 </Form.Item>
               </Col>
@@ -78,16 +86,25 @@ export default function ChangePasswordUI({
                   {...messages.confirmNewPasswordRule}
                 >
                   <Input
+                    id="confirmPassword"
                     className={styles.Password_input}
                     type="password"
                     placeholder={messages.placeholders.confirmPassword}
+                    onKeyDown={(e) =>
+                      e.key === " " && e.keyCode === 32 && e.preventDefault()
+                    }
                   />
                 </Form.Item>
               </Col>
             </Row>
           </div>
           <Form.Item>
-            <Button type="primary" htmlType="submit" data-testid="submitButton">
+            <Button
+              id="saveBtn"
+              type="primary"
+              htmlType="submit"
+              data-testid="submitButton"
+            >
               Save
             </Button>
           </Form.Item>

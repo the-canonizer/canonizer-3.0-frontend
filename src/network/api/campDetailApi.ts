@@ -6,6 +6,8 @@ import {
   pushToCampSupportingTree,
   setCurrentTopicRecord,
   setCurrentCampRecord,
+  setCurrentTopicRecordSubscriptionId,
+  setCurrentCampRecordSubscriptionId,
 } from "../../store/slices/campDetailSlice";
 import NetworkCall from "../networkCall";
 import TreeRequest from "../request/campDetailRequest";
@@ -73,6 +75,7 @@ export const getCurrentCampRecordApi = async (reqBody) => {
       TreeRequest.getCurrentCampRecord(reqBody, auth.loggedInUser?.token),
       false
     );
+
     store.dispatch(setCurrentCampRecord(currentCampRecord?.data));
     return currentCampRecord?.data;
   } catch (error) {
@@ -80,7 +83,7 @@ export const getCurrentCampRecordApi = async (reqBody) => {
   }
 };
 
-export const subscribeToCampApi = async (reqBody) => {
+export const subscribeToCampApi = async (reqBody, isTopic: Boolean) => {
   let state = store.getState();
   const { auth } = state;
   try {
@@ -88,7 +91,17 @@ export const subscribeToCampApi = async (reqBody) => {
       TreeRequest.subscribeToCamp(reqBody, auth.loggedInUser?.token),
       false
     );
-
+    isTopic
+      ? store.dispatch(
+          setCurrentTopicRecordSubscriptionId(
+            subscribeToCamp?.data[0]?.subscriptionId || null
+          )
+        )
+      : store.dispatch(
+          setCurrentCampRecordSubscriptionId(
+            subscribeToCamp?.data[0]?.subscriptionId || null
+          )
+        );
     return subscribeToCamp?.data;
   } catch (error) {
     // message.error(error.message);
