@@ -1,4 +1,4 @@
-import CustomButton from "@/components/common/button";
+import CustomButton from "../../../common/button";
 import { Typography, Collapse } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
