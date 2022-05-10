@@ -13,6 +13,7 @@ import moment from "moment";
 
 import styles from "./Forum.module.scss";
 import messages from "../../../../messages";
+import { getTime } from "../../../../utils/generalUtility";
 
 const { Text } = Typography;
 const { Column } = Table;
@@ -152,10 +153,10 @@ const ThreadListUI = ({
                       others["nick_name"] === null || others["nick_name"] === ""
                         ? ""
                         : others["nick_name"]
-                    } replied ${moment(dt)
+                    } replied ${moment(getTime(dt))
                       .local()
                       .startOf("seconds")
-                      .fromNow()} (${moment(dt).format(
+                      .fromNow()} (${moment(getTime(dt)).format(
                       "MMM Do YYYY, h:mm:ss a"
                     )})`}
               </Text>

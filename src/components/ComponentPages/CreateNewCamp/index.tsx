@@ -151,6 +151,16 @@ const CreateNewCamp = ({
   }, []);
 
   const onFinish = async (values: any) => {
+    if (!values.camp_name?.trim()) {
+      form.setFields([
+        {
+          name: "camp_name",
+          value: "",
+        },
+      ]);
+      form.validateFields(["camp_name"]);
+      return true;
+    }
     const body = {
       camp_about_nick_id: values.camp_about_nick_id || "",
       camp_about_url: values.camp_about_url || "",

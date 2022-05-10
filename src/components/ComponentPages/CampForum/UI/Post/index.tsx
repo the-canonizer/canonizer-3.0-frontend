@@ -7,6 +7,7 @@ import styles from "../Forum.module.scss";
 
 import PostForm from "./Form";
 import PostList from "./List";
+import { getTime } from "../../../../../utils/generalUtility";
 
 const { Text } = Typography;
 
@@ -38,7 +39,7 @@ const PostUI = ({
         extra={
           <div className={styles.threadStamp}>
             <Text>{`Thread Created at ${moment(
-              currentThread["created_at"]
+              getTime(currentThread["created_at"])
             ).format("MMM Do YYYY, h:mm:ss a")}`}</Text>{" "}
             |{" "}
             <Text>

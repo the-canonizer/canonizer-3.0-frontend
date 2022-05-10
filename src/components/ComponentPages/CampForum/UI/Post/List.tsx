@@ -6,6 +6,7 @@ import sanitizeHtml from "sanitize-html";
 import Link from "next/link";
 
 import styles from "../Forum.module.scss";
+import { getTime } from "../../../../../utils/generalUtility";
 
 const { Text } = Typography;
 
@@ -30,10 +31,10 @@ const CreateCampFormUI = ({
               </Link>
               {new Date(postedTime).getTime() ===
               new Date(postedUpdatedTime).getTime()
-                ? ` replied ${moment(postedTime)
+                ? ` replied ${moment(getTime(postedTime))
                     .local()
                     .startOf("seconds")
-                    .fromNow()} (${moment(postedTime).format(
+                    .fromNow()} (${moment(getTime(postedTime)).format(
                     "MMM Do YYYY, h:mm:ss a"
                   )})`
                 : `${nick_name} updated ${moment(postedUpdatedTime)
