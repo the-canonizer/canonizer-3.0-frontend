@@ -163,8 +163,10 @@ const TopicsList = () => {
   );
 
   const handleCheckbox = async (e) => {
-    onlyMyTopicsCheck = e.target.checked;
-    await getTopicsApiCallWithReqBody();
+    if (isLogin) {
+      onlyMyTopicsCheck = e.target.checked;
+      await getTopicsApiCallWithReqBody();
+    } else router.push("/login");
   };
 
   const handleTopicClick = () => {
@@ -189,7 +191,7 @@ const TopicsList = () => {
                     <i className="icon-info cursor-pointer"></i>
                   </Popover>
                 </Title>
-                {router.asPath === "/browse" && isLogin && (
+                {router.asPath === "/browse" && (
                   <Checkbox
                     className={styles.checkboxOnlyMyTopics}
                     onChange={handleCheckbox}
