@@ -9,7 +9,6 @@ describe("Camp statement on camp details page", () => {
   it("Should render without crash", () => {
     render(
       <Provider store={store}>
-        ]
         <CampStatementCard />
       </Provider>
     );
