@@ -81,6 +81,7 @@ const campRecords = {
 
 const topicRecords = {
   topic_name: "topic",
+  topic_num: 1,
 };
 
 describe("Camp forum page", () => {
@@ -110,9 +111,9 @@ describe("Camp forum page", () => {
     expect(screen.getByText("Create Thread")).toBeInTheDocument();
     expect(screen.getByText("Thread Name")).toBeInTheDocument();
     expect(screen.getByText("Topic:")).toBeInTheDocument();
-    expect(screen.getByText("topic-88")).toBeInTheDocument();
+    expect(screen.getByText("topic")).toBeInTheDocument();
     expect(screen.getByText("Camp:")).toBeInTheDocument();
-    expect(screen.getByText("camp-22")).toBeInTheDocument();
+    expect(screen.getByText("camp")).toBeInTheDocument();
     expect(
       screen.getByPlaceholderText(placeholders.searchPlaceholder)
     ).toBeInTheDocument();
@@ -147,9 +148,9 @@ describe("Camp forum page", () => {
     expect(screen.getByText("Create Thread")).toBeInTheDocument();
     expect(screen.getByText("Thread Name")).toBeInTheDocument();
     expect(screen.getByText("Topic:")).toBeInTheDocument();
-    expect(screen.getByText("topic-88")).toBeInTheDocument();
+    expect(screen.getByText("topic")).toBeInTheDocument();
     expect(screen.getByText("Camp:")).toBeInTheDocument();
-    expect(screen.getByText("camp-22")).toBeInTheDocument();
+    expect(screen.getByText("camp")).toBeInTheDocument();
     expect(
       screen.getByPlaceholderText(placeholders.searchPlaceholder)
     ).toBeInTheDocument();
@@ -157,16 +158,25 @@ describe("Camp forum page", () => {
 
   // it("render inputs field and submit button on create thread section", () => {
   //   const form = {};
+  //   expect(
+  //     <ThreadForm
+  //       isThreadUpdate={false}
+  //       nickNameList={nickNamesList}
+  //       onFinish={jest.fn()}
+  //       form={form}
+  //       initialValue={initialValues}
+  //       onCancelCreateThread={jest.fn()}
+  //     />
+  //   ).toBeTruthy();
   //   render(
   //     <>
-  //       <TopBar paramsList={params} />
+  //       <TopBar campRecord={campRecords} topicRecord={topicRecords} />
   //       <ThreadForm
   //         isThreadUpdate={false}
   //         nickNameList={nickNamesList}
   //         onFinish={jest.fn()}
   //         form={form}
   //         initialValue={initialValues}
-  //         paramsList={params}
   //         onCancelCreateThread={jest.fn()}
   //       />
   //     </>
