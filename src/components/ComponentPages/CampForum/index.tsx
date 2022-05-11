@@ -384,8 +384,8 @@ const ForumComponent = ({}) => {
 
     if (res && res.status_code === 200) {
       message.success(res.message);
-      setQuillContent("");
       getPosts(q.id, ppage);
+      setQuillContent("");
     }
   };
 
