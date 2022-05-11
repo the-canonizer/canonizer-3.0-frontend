@@ -383,6 +383,7 @@ const ForumComponent = ({}) => {
     }
 
     if (res && res.status_code === 200) {
+      console.log("post created");
       message.success(res.message);
       getPosts(q.id, ppage);
       setQuillContent("");
