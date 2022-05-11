@@ -391,6 +391,14 @@ const ForumComponent = ({}) => {
   };
 
   const onPostEditClick = (post) => {
+    const element = document.querySelector("#new_post");
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+        inline: "nearest",
+      });
+    }
     setQuillContent(post.body);
     setCurrentPost(post);
   };
