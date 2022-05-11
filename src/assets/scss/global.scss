@@ -780,6 +780,12 @@ body {
   span {
     width: 100% !important;
   }
+  .styles_spin {
+    span {
+      width: 17% !important;
+      top: 33% !important;
+    }
+  }
 }
 .ant-upload-list-picture {
   display: flex;
