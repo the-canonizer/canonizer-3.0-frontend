@@ -65,7 +65,10 @@ const CreateCampFormUI = ({
             ) : null}
           </Space>
         </div>
-        <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(content) }}></div>
+        <div
+          className={styles.htmlContainer}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(content) }}
+        ></div>
       </Card>
     </Fragment>
   );
