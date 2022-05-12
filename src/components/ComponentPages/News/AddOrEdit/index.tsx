@@ -71,7 +71,6 @@ export default function AddOrEdit({ edit }) {
           display_text: values?.display_text,
           submitter_nick_id: values?.nick_name,
         }));
-
     if (res?.status_code == 200) {
       if (edit) {
         router.push(
@@ -136,12 +135,10 @@ export default function AddOrEdit({ edit }) {
           link: news?.link,
           available_for_child: news?.available_for_child,
         });
-
         setScreenLoading(false);
       } else {
         const result = await getNickNameList();
         setNickNameData(result?.data);
-
         setScreenLoading(false);
       }
     }
@@ -180,7 +177,7 @@ export default function AddOrEdit({ edit }) {
                   },
                   {
                     pattern: /[^ \s]/,
-                    message: "Enter a valid text",
+                    message: "Display text is required",
                   },
                 ]}
               >
@@ -236,6 +233,7 @@ export default function AddOrEdit({ edit }) {
                 <Form.Item
                   label={<>Nick Name</>}
                   name="nick_name"
+                  initialValue={nickNameData[0]?.nick_name}
                   rules={[
                     {
                       required: true,

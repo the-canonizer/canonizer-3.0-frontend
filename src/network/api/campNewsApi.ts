@@ -44,7 +44,7 @@ export const updateNewsFeedApi = async (body) => {
     return editNewsData;
   } catch (error) {
     if (Object.keys(error?.error?.data?.error).includes("newsfeed_id")) {
-      message.error(error?.error?.data?.error?.newsfeed_id[0]);
+      message.error("News does not found");
     }
     return error?.error?.data;
   }
