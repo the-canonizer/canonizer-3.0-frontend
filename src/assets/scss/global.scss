@@ -120,6 +120,9 @@ body {
   &-orange {
     color: #f89d15;
   }
+  &-decoration-underline {
+    text-decoration: underline;
+  }
 }
 
 .leftSideBar {
@@ -780,6 +783,12 @@ body {
   span {
     width: 100% !important;
   }
+  .styles_spin {
+    span {
+      width: 17% !important;
+      top: 33% !important;
+    }
+  }
 }
 .ant-upload-list-picture {
   display: flex;
@@ -1284,7 +1293,8 @@ body {
       font-weight: 500;
       display: flex;
       a,
-      .ant-checkbox-wrapper {
+      .ant-checkbox-wrapper,
+      .ant-btn {
         &:not(:last-child) {
           margin-right: 32px;
         }
@@ -1292,12 +1302,13 @@ body {
       .ant-checkbox-wrapper {
         font-weight: 500;
       }
-      a {
+      a, .ant-btn {
         font-size: inherit;
-        font-weight: inherit;
+        font-weight: 500;
         display: inline-flex;
         align-items: center;
         line-height: 1;
+        padding: 0;
       }
     }
   }

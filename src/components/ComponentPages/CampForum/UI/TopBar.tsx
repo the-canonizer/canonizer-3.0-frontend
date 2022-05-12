@@ -16,10 +16,10 @@ export default function TopBar({ topicRecord, campRecord }) {
         <p>
           <strong>Camp: </strong>
           {campRecord
-            ? campRecord.parentCamps?.map((camp, index) => {
+            ? campRecord?.parentCamps?.map((camp, index) => {
                 return (
                   <Link
-                    href={`/topic/${router.query.topic}/${
+                    href={`/topic/${router?.query?.topic}/${
                       camp?.camp_num
                     }-${camp?.camp_name?.split(" ").join("-")}`}
                     key={camp?.camp_num}

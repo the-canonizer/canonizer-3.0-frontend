@@ -170,12 +170,12 @@
   .by {
     color: #4484ce;
     font-weight: bold;
-    margin-right: 5px;
   }
 }
 
 .threadStamp {
   margin-bottom: 10px;
+  margin-top: 10px;
   span {
     color: #68707a;
     font-size: 16px;
@@ -210,9 +210,10 @@
 }
 
 .upperTitle {
-  display: grid;
-  grid-template-columns: 300px 1fr;
-  grid-gap: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  // grid-template-columns: 248px 1fr;
+  // grid-gap: 15px;
   p {
     text-align: left;
     font-weight: normal;
@@ -221,6 +222,10 @@
     letter-spacing: 0px;
     color: #0f2a4d;
     margin-right: 0;
+
+    &:first-child {
+      margin-right: 47px;
+    }
 
     &:last-child {
       strong {
@@ -259,4 +264,10 @@
       line-height: 15px;
     }
   }
+}
+
+.htmlContainer {
+  white-space: break-spaces;
+  overflow: hidden;
+  word-break: break-word;
 }

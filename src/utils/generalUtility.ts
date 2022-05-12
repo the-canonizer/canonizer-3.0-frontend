@@ -259,3 +259,11 @@ export const isServer = () => {
 //     }
 //   }
 // };
+
+export const getTime = (dt) => {
+  return new Date(dt * 1000).toLocaleTimeString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+};
