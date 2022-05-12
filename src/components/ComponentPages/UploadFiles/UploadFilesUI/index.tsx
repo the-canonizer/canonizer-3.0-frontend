@@ -257,23 +257,34 @@ const UploadFileUI = ({
   const displayColumnListImage = (obj) => {
     return (
       <div>
-        {obj.type == "file" || obj.file_path ? (
-          <Image
-            id={"imageList" + obj.id}
-            src={obj.file_path}
-            alt="picture of author"
-            width={"100"}
-            height={"100"}
-          />
-        ) : obj.type == "folder" ? (
-          <FolderFilled className={styles.folder_icons} />
-        ) : obj.file_type == "text/plain" ? (
-          <FileTextFilled className={styles.folder_icons_fileTxt} />
-        ) : obj.file_type == "application/pdf" ? (
-          <FilePdfFilled className={styles.folder_icons_pdf} />
-        ) : (
-          <FileUnknownFilled className={styles.folder_icons} />
-        )}
+        {(() => {
+          if (obj.type == "file" || obj.file_path) {
+            return (
+              <Image
+                alt="Image"
+                src={obj.file_path}
+                height={"150px"}
+                width={"140px"}
+              />
+            );
+          } else if (obj.type == "folder") {
+            return (
+              <FolderFilled
+                className={styles.folder_icons}
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  Openfolder(obj.id);
+                }}
+              />
+            );
+          } else if (obj.type == "text/plain") {
+            return <FileTextFilled className={styles.folder_icons_fileTxt} />;
+          } else if (obj.type == "application/pdf") {
+            return <FilePdfFilled className={styles.folder_icons_pdf} />;
+          } else if (obj.type == "") {
+            return <FileUnknownFilled className={styles.folder_icons} />;
+          }
+        })()}
       </div>
     );
   };
@@ -666,6 +677,7 @@ const UploadFileUI = ({
                       <h2 className={styles.FolderOpenHeading}>
                         {" "}
                         <span
+                          style={{ cursor: "pointer" }}
                           onClick={() => {
                             closeFolder();
                             StatusHideFile();
@@ -773,17 +785,27 @@ const UploadFileUI = ({
     });
   };
   const displayImage = (file, imageData) => {
+    console.log(file, "file", imageData);
     return (
       <div id="display_image">
-        {imageData ? (
-          <Image alt="Image" src={imageData} height={"150px"} width={"140px"} />
-        ) : file.type == "text/plain" ? (
-          <FileTextFilled className={styles.FileTextTwoOneClass} />
-        ) : file.type == "application/pdf" ? (
-          <FilePdfFilled className={styles.FilePdfTwoToneColor} />
-        ) : (
-          <FileUnknownFilled className={styles.FileTextTwoOneClass} />
-        )}
+        {(() => {
+          if (file.type == "file" || imageData) {
+            return (
+              <Image
+                alt="Image"
+                src={imageData}
+                height={"150px"}
+                width={"140px"}
+              />
+            );
+          } else if (file.type == "text/plain") {
+            return <FileTextFilled className={styles.FileTextTwoOneClass} />;
+          } else if (file.type == "application/pdf") {
+            return <FilePdfFilled className={styles.FilePdfTwoToneColor} />;
+          } else if (file.type == "") {
+            return <FileUnknownFilled className={styles.FileTextTwoOneClass} />;
+          }
+        })()}
       </div>
     );
   };
@@ -836,6 +858,7 @@ const UploadFileUI = ({
               <div className={styles.top_btn}>
                 <div className="datepIcker">
                   <DatePicker
+                    disabled={show_UploadOptions}
                     onChange={(date, dateString) => {
                       setDatePick(date ? date.toLocaleString() : "");
                     }}
@@ -844,6 +867,7 @@ const UploadFileUI = ({
                 <div className={styles.search_users}>
                   <SearchOutlined />
                   <Input
+                    disabled={show_UploadOptions}
                     id="datePickerText"
                     placeholder="Search"
                     type="text"
@@ -881,31 +905,39 @@ const UploadFileUI = ({
                 )}
               </div>
               <div className={styles.top_icon}>
-                <span
-                  style={{ cursor: "pointer" }}
-                  onClick={() => {
-                    setToggleFileView(true);
-                  }}
-                >
-                  <Image
-                    alt="listView"
-                    src={toggleFileView ? ListViewActive : ListView}
-                    width={24}
-                    height={20}
-                  />
-                </span>
-                <span
-                  onClick={() => {
-                    setToggleFileView(false), showUploadsAfter();
-                  }}
-                >
-                  <Image
-                    alt="gridView"
-                    src={!toggleFileView ? GridViewActive : GridView}
-                    width={24}
-                    height={20}
-                  />
-                </span>
+                {show_UploadOptions ? (
+                  ""
+                ) : (
+                  <span
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      setToggleFileView(true);
+                    }}
+                  >
+                    <Image
+                      alt="listView"
+                      src={toggleFileView ? ListViewActive : ListView}
+                      width={24}
+                      height={20}
+                    />
+                  </span>
+                )}
+                {show_UploadOptions ? (
+                  ""
+                ) : (
+                  <span
+                    onClick={() => {
+                      setToggleFileView(false), showUploadsAfter();
+                    }}
+                  >
+                    <Image
+                      alt="gridView"
+                      src={!toggleFileView ? GridViewActive : GridView}
+                      width={24}
+                      height={20}
+                    />
+                  </span>
+                )}
               </div>
             </div>
           }
