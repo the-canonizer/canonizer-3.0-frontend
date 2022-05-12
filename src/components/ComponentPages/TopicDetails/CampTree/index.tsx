@@ -53,13 +53,7 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
                         }
                       >
                         <Link
-                          href={`${router.query.camp.at(0)}/${
-                            data[item]?.camp_id == 1
-                              ? "1-Agreement"
-                              : data[item]?.camp_id +
-                                "-" +
-                                data[item]?.title?.split(" ").join("-")
-                          }`}
+                          href={data[item]?.link?.replace("#statement", "")}
                         >
                           <a>{data[item].title}</a>
                         </Link>
