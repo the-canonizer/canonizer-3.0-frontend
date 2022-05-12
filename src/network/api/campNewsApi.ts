@@ -13,7 +13,8 @@ export const addNewsFeedApi = async (body) => {
     );
     return editNewsData;
   } catch (error) {
-    message.error(error?.message);
+    message.error(error?.error?.data?.message);
+    console.log("sfas=>>>", error.error.data);
     return error?.error?.data;
   }
 };

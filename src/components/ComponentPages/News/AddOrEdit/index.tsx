@@ -123,29 +123,29 @@ export default function AddOrEdit({ edit }) {
 
   useEffect(() => {
     setScreenLoading(true);
-    if (isLogin) {
-      async function nickNameListApiCall() {
-        if (edit) {
-          const reqBody = {
-            newsfeed_id: +router.query?.camp[2]?.split("-")[2],
-          };
-          const res = await getEditCampNewsFeedApi(reqBody);
-          const news = (res && res[0]) || {};
-          setDataToUpdate(news);
-          form.setFieldsValue({
-            display_text: news?.display_text,
-            link: news?.link,
-            available_for_child: news?.available_for_child,
-          });
+    async function nickNameListApiCall() {
+      if (edit) {
+        const reqBody = {
+          newsfeed_id: +router.query?.camp[2]?.split("-")[2],
+        };
+        const res = await getEditCampNewsFeedApi(reqBody);
+        const news = (res && res[0]) || {};
+        setDataToUpdate(news);
+        form.setFieldsValue({
+          display_text: news?.display_text,
+          link: news?.link,
+          available_for_child: news?.available_for_child,
+        });
 
-          setScreenLoading(false);
-        } else {
-          const result = await getNickNameList();
-          setNickNameData(result?.data);
+        setScreenLoading(false);
+      } else {
+        const result = await getNickNameList();
+        setNickNameData(result?.data);
 
-          setScreenLoading(false);
-        }
+        setScreenLoading(false);
       }
+    }
+    if (isLogin) {
       nickNameListApiCall();
     } else {
       router.push("/login");
