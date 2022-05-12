@@ -3,8 +3,10 @@ import { Card, Typography, Tooltip, Space, Popconfirm } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import moment from "moment";
 import sanitizeHtml from "sanitize-html";
+import Link from "next/link";
 
 import styles from "../Forum.module.scss";
+import { getTime } from "../../../../../utils/generalUtility";
 
 const { Text } = Typography;
 
@@ -24,13 +26,15 @@ const CreateCampFormUI = ({
         <div className={`${styles.cardTitle} ${styles.listCardTitle}`}>
           <Space size="small">
             <Text strong>
-              <span className={styles.by}>{postedBy}</span>{" "}
+              <Link href="#">
+                <a className={styles.by}>{nick_name}</a>
+              </Link>
               {new Date(postedTime).getTime() ===
               new Date(postedUpdatedTime).getTime()
-                ? `${nick_name} replied ${moment(postedTime)
+                ? ` replied ${moment(getTime(postedTime))
                     .local()
                     .startOf("seconds")
-                    .fromNow()} (${moment(postedTime).format(
+                    .fromNow()} (${moment(getTime(postedTime)).format(
                     "MMM Do YYYY, h:mm:ss a"
                   )})`
                 : `${nick_name} updated ${moment(postedUpdatedTime)
@@ -61,7 +65,10 @@ const CreateCampFormUI = ({
             ) : null}
           </Space>
         </div>
-        <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(content) }}></div>
+        <div
+          className={styles.htmlContainer}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(content) }}
+        ></div>
       </Card>
     </Fragment>
   );

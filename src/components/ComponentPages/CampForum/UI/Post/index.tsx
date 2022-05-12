@@ -1,11 +1,13 @@
 import { Fragment } from "react";
 import { Card, Typography, Pagination } from "antd";
 import moment from "moment";
+import Link from "next/link";
 
 import styles from "../Forum.module.scss";
 
 import PostForm from "./Form";
 import PostList from "./List";
+import { getTime } from "../../../../../utils/generalUtility";
 
 const { Text } = Typography;
 
@@ -37,12 +39,14 @@ const PostUI = ({
         extra={
           <div className={styles.threadStamp}>
             <Text>{`Thread Created at ${moment(
-              currentThread["created_at"]
+              getTime(currentThread["created_at"])
             ).format("MMM Do YYYY, h:mm:ss a")}`}</Text>{" "}
             |{" "}
             <Text>
               Started by{" "}
-              <span className={styles.by}>{currentThread["nick_name"]}</span>
+              <Link href="#">
+                <a className={styles.by}>{currentThread["nick_name"]}</a>
+              </Link>
             </Text>
           </div>
         }
