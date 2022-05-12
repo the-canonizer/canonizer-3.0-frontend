@@ -187,7 +187,12 @@ const UploadFiles = () => {
     newarray.splice(fileIndex, 1);
     if (newarray.length > 1) {
       dragBoxHide();
-      addButtonHide();
+      shownAddButton();
+    }
+    if (newarray.length <= 0) {
+      showFiles();
+      uploadOptionsHide();
+      GetUploadFileAndFolder();
     }
   };
   const GetUploadFileAndFolder = async () => {
