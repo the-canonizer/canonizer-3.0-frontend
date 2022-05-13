@@ -68,7 +68,7 @@ export default function HistoryCollapse({ campStatement }) {
                   <Link
                     href={{
                       pathname: `/topic/${
-                        router.query.camp[0] + "/" + router.query.camp[1]
+                        router?.query?.camp[0] + "/" + router?.query?.camp[1]
                       }`,
                       query: {
                         asof: "bydate",
