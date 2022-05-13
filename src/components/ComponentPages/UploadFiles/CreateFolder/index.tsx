@@ -10,6 +10,7 @@ const CreateFolder = ({
   input,
   setRename,
   setInput,
+  editFolderNameVal,
 }) => {
   return (
     <>
@@ -47,6 +48,7 @@ const CreateFolder = ({
           <Button
             type="primary"
             htmlType="submit"
+            disabled={editModal && editFolderNameVal == rename}
             className="ant-btn ant-btn-orange ant-btn-lg"
             style={{
               width: "100%",

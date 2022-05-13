@@ -107,6 +107,7 @@ const UploadFileUI = ({
   const [createFolderForm] = Form.useForm();
   const imageTimer = 2500;
   const [rename, setRename] = useState("");
+  const [editFolderNameVal, setEditFolderNameVal] = useState("");
   const [editModal, setEditModal] = useState(false);
   const [editModalId, setEditModalId] = useState("");
   const [preview, setPreview] = useState({
@@ -293,6 +294,7 @@ const UploadFileUI = ({
     setEditModal(true);
     setShowCreateFolderModal(true);
     setRename(obj.name);
+    setEditFolderNameVal(obj.name);
     setEditModalId(obj.id);
     createFolderForm.setFieldsValue({
       ["Folder Name"]: obj.name,
@@ -1153,6 +1155,7 @@ const UploadFileUI = ({
           input={input}
           setRename={setRename}
           setInput={setInput}
+          editFolderNameVal={editFolderNameVal}
         />
       </Modal>
 
