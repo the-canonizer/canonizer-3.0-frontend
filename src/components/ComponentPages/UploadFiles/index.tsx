@@ -89,7 +89,7 @@ const UploadFiles = () => {
     let res = await uploadFile(formData);
     if (res && res.status_code == 200) {
       setFolderFiles([]);
-      fileStatusHide();
+      //fileStatusHide();
       enableCreateFolderBtn();
       uploadOptionsHide();
       shownFolder();
@@ -103,7 +103,7 @@ const UploadFiles = () => {
   };
   const handleCancel = () => {
     setFileLists(fileLists);
-    fileStatusHide();
+    //fileStatusHide();
     GetUploadFileAndFolder();
     setUploadFileList([]);
     {

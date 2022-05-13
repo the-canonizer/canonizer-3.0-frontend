@@ -259,7 +259,12 @@ const UploadFileUI = ({
     return (
       <div>
         {(() => {
-          if (obj.type == "file" || obj.file_path) {
+          if (
+            (obj.file_type == "image/jpeg" ||
+              obj.file_type == "image/jpg" ||
+              obj.file_type == "image/png") &&
+            obj.file_path
+          ) {
             return (
               <Image
                 alt="Image"
@@ -282,7 +287,7 @@ const UploadFileUI = ({
             return <FileTextFilled className={styles.folder_icons_fileTxt} />;
           } else if (obj.type == "application/pdf") {
             return <FilePdfFilled className={styles.folder_icons_pdf} />;
-          } else if (obj.type == "") {
+          } else {
             return <FileUnknownFilled className={styles.folder_icons} />;
           }
         })()}
@@ -787,11 +792,15 @@ const UploadFileUI = ({
     });
   };
   const displayImage = (file, imageData) => {
-    console.log(file, "file", imageData);
     return (
       <div id="display_image">
         {(() => {
-          if (file.type == "file" || imageData) {
+          if (
+            ((file.file_type || file.type) == "image/jpeg" ||
+              (file.file_type || file.type) == "image/jpg" ||
+              (file.file_type || file.type) == "image/png") &&
+            imageData
+          ) {
             return (
               <Image
                 alt="Image"
@@ -800,11 +809,11 @@ const UploadFileUI = ({
                 width={"140px"}
               />
             );
-          } else if (file.type == "text/plain") {
+          } else if ((file.file_type || file.type) == "text/plain") {
             return <FileTextFilled className={styles.FileTextTwoOneClass} />;
-          } else if (file.type == "application/pdf") {
+          } else if ((file.file_type || file.type) == "application/pdf") {
             return <FilePdfFilled className={styles.FilePdfTwoToneColor} />;
-          } else if (file.type == "") {
+          } else {
             return <FileUnknownFilled className={styles.FileTextTwoOneClass} />;
           }
         })()}
@@ -1098,13 +1107,7 @@ const UploadFileUI = ({
               <Table
                 id="tableColumn"
                 className="contentValue"
-                dataSource={
-                  fileStatus
-                    ? getFileListFromFolderID
-                    : filterArrList
-                    ? filterArrList
-                    : fileLists
-                }
+                dataSource={filteredArray()}
                 columns={columns}
               />
             </div>
