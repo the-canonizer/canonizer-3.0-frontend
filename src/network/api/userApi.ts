@@ -211,7 +211,6 @@ export const socialLoginCallback = async (values: object, router) => {
 export const getCountryCodes = async () => {
   try {
     const authToken = await createToken();
-
     const res = await NetworkCall.fetch(
       UserRequest.getCountryCodes(authToken.access_token)
     );
@@ -550,8 +549,12 @@ export const deactivateUser = async (body: object) => {
 };
 
 export const uploadFile = async (body) => {
+  let state = store.getState();
+  const { auth } = state;
   try {
-    const res = await NetworkCall.fetch(UserRequest.UploadFile(body));
+    const res = await NetworkCall.fetch(
+      UserRequest.UploadFile(body, auth.loggedInUser?.token)
+    );
     return res;
   } catch (err) {
     handleError(err);
@@ -567,8 +570,12 @@ export const uploadFile = async (body) => {
 };
 
 export const getUploadFileAndFolder = async () => {
+  let state = store.getState();
+  const { auth } = state;
   try {
-    const res = await NetworkCall.fetch(UserRequest.GetUploadFileAndFolder());
+    const res = await NetworkCall.fetch(
+      UserRequest.GetUploadFileAndFolder(auth.loggedInUser?.token)
+    );
     return res;
   } catch (err) {
     handleError(err);
@@ -583,8 +590,12 @@ export const getUploadFileAndFolder = async () => {
   }
 };
 export const createFolderApi = async (body) => {
+  let state = store.getState();
+  const { auth } = state;
   try {
-    const res = await NetworkCall.fetch(UserRequest.CreateFolder(body));
+    const res = await NetworkCall.fetch(
+      UserRequest.CreateFolder(body, auth.loggedInUser?.token)
+    );
     return res;
   } catch (err) {
     handleError(err);
@@ -600,8 +611,12 @@ export const createFolderApi = async (body) => {
 };
 
 export const deleteFolderApi = async (id) => {
+  let state = store.getState();
+  const { auth } = state;
   try {
-    const res = await NetworkCall.fetch(UserRequest.DeleteFolder(id));
+    const res = await NetworkCall.fetch(
+      UserRequest.DeleteFolder(id, auth.loggedInUser?.token)
+    );
     return res;
   } catch (err) {
     handleError(err);
@@ -617,8 +632,12 @@ export const deleteFolderApi = async (id) => {
 };
 
 export const deleteUploadFileApi = async (id) => {
+  let state = store.getState();
+  const { auth } = state;
   try {
-    const res = await NetworkCall.fetch(UserRequest.DeleteUploadFile(id));
+    const res = await NetworkCall.fetch(
+      UserRequest.DeleteUploadFile(id, auth.loggedInUser?.token)
+    );
     return res;
   } catch (err) {
     handleError(err);
@@ -634,8 +653,12 @@ export const deleteUploadFileApi = async (id) => {
 };
 
 export const getFileInsideFolderApi = async (id) => {
+  let state = store.getState();
+  const { auth } = state;
   try {
-    const res = await NetworkCall.fetch(UserRequest.GetFileInsideAFolder(id));
+    const res = await NetworkCall.fetch(
+      UserRequest.GetFileInsideAFolder(id, auth.loggedInUser?.token)
+    );
     return res;
   } catch (err) {
     handleError(err);

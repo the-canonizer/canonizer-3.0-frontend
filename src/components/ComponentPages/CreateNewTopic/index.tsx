@@ -43,6 +43,17 @@ const CreateNewTopic = ({
   }, [isLogIn]);
 
   const onFinish = async (values: any) => {
+    if (!values.topic_name?.trim()) {
+      form.setFields([
+        {
+          name: "topic_name",
+          value: "",
+        },
+      ]);
+      form.validateFields(["topic_name"]);
+      return true;
+    }
+
     const body = {
       topic_name: values.topic_name,
       namespace: values.namespace,
