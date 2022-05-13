@@ -410,87 +410,70 @@ export default class UserRequest extends Request {
     );
   }
 
-  static UploadFile(body) {
-    let state = store.getState();
-    const { auth } = state;
-
+  static UploadFile(body, authToken) {
     return new Request(
       K.Network.URL.UploadFile,
       K.Network.Method.POST,
       body,
       K.Network.Header.Type.formData,
       {},
-      auth.loggedInUser.token
+      authToken
     );
   }
 
-  static GetUploadFileAndFolder() {
-    let state = store.getState();
-    const { auth } = state;
-
+  static GetUploadFileAndFolder(authToken) {
     return new Request(
       K.Network.URL.GetUploadFileAndFolder,
       K.Network.Method.GET,
       {},
       K.Network.Header.Type.Json,
       {},
-      auth.loggedInUser.token
+      //auth.loggedInUser.token
+      authToken
     );
   }
 
-  static CreateFolder(body) {
-    let state = store.getState();
-    const { auth } = state;
-
+  static CreateFolder(body, authToken) {
     return new Request(
       K.Network.URL.CreateFolder,
       K.Network.Method.POST,
       body,
       K.Network.Header.Type.Json,
       {},
-      auth.loggedInUser.token
+      authToken
     );
   }
 
-  static DeleteFolder(id) {
-    let state = store.getState();
-    const { auth } = state;
-
+  static DeleteFolder(id, authToken) {
     return new Request(
       K.Network.URL.DeleteFolder + id,
       K.Network.Method.DELETE,
       {},
       K.Network.Header.Type.Json,
       {},
-      auth.loggedInUser.token
+      authToken
     );
   }
 
-  static GetFileInsideAFolder(id) {
-    let state = store.getState();
-    const { auth } = state;
-
+  static GetFileInsideAFolder(id, authToken) {
     return new Request(
       K.Network.URL.GETFILESINDISEFOLDER + id,
       K.Network.Method.GET,
       {},
       K.Network.Header.Type.Json,
       {},
-      auth.loggedInUser.token
+      authToken
     );
   }
 
-  static DeleteUploadFile(id) {
-    let state = store.getState();
-    const { auth } = state;
-
+  static DeleteUploadFile(id, authToken) {
     return new Request(
       K.Network.URL.DeleteUploadFile + id,
       K.Network.Method.DELETE,
       {},
       K.Network.Header.Type.Json,
       {},
-      auth.loggedInUser.token
+      authToken
     );
   }
 }

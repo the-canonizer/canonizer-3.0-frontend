@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Tabs, Typography, List } from "antd";
 import styles from "./recentActivities.module.scss";
 import { getRecentActivitiesApi } from "../../../../network/api/homePageApi";
+import { useRouter } from "next/router";
 
 const { TabPane } = Tabs;
 const { Title, Link, Text } = Typography;
@@ -14,6 +15,7 @@ export default function RecentActivities() {
   const [position] = useState(["left", "right"]);
   const [recentActivities, setRecentActivities] = useState([]);
   const [selectedTab, setSelectedTab] = useState("topics");
+  const router = useRouter();
   const slot = useMemo(() => {
     if (position.length === 0) return null;
 
@@ -53,10 +55,11 @@ export default function RecentActivities() {
             <List
               className={styles.listWrap}
               footer={
+                router.asPath !== "/activities" &&
                 recentActivities?.length > 0 && (
                   <div className={styles.footer}>
-                    <Link href="#" className={styles.viewAll}>
-                      <Text>View All Topics</Text>
+                    <Link href="/activities" className={styles.viewAll}>
+                      <Text>View All Activities</Text>
                       <i className="icon-angle-right"></i>
                     </Link>
                   </div>

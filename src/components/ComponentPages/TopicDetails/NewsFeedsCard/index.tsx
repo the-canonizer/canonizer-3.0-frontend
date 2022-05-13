@@ -121,7 +121,10 @@ const NewsFeedsCard = ({ newsFeed }) => {
                       </a>
 
                       {!(deleteNews && editNews) && (
-                        <i> {news?.submitter_nick_name}</i>
+                        <strong className="text-orange">
+                          {" "}
+                          {news?.submitter_nick_name}
+                        </strong>
                       )}
                       {deleteNews && (
                         <Tooltip

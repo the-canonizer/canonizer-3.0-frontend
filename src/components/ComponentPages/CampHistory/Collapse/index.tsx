@@ -1,18 +1,13 @@
-import {
-  Typography,
-  Button,
-  Image,
-  Collapse,
-  Space,
-  List,
-  Checkbox,
-  Divider,
-} from "antd";
+import { Typography, Button, Collapse, Space, Checkbox, Divider } from "antd";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import styles from ".././campHistory.module.scss";
 
 const { Panel } = Collapse;
 const { Title } = Typography;
 export default function HistoryCollapse({ campStatement }) {
+  const router = useRouter();
+
   return (
     <div>
       <Space
@@ -70,7 +65,19 @@ export default function HistoryCollapse({ campStatement }) {
                   Submit Statement Update Based on This
                 </Button>
                 <Button type="primary" className={styles.campVersionButton}>
-                  View This Version
+                  <Link
+                    href={{
+                      pathname: `/topic/${
+                        router.query.camp[0] + "/" + router.query.camp[1]
+                      }`,
+                      query: {
+                        asof: "bydate",
+                        asofdate: campStatement?.go_live_time,
+                      },
+                    }}
+                  >
+                    View This Version
+                  </Link>
                 </Button>
               </div>
             </div>
