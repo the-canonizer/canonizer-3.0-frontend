@@ -13,7 +13,7 @@ import {
   showLoginModal,
   showRegistrationModal,
 } from "../../../../store/slices/uiSlice";
-import ForgotModal from "@/components/ComponentPages/ForgotPassword/forgotPasswordModal";
+import ForgotModal from "../../../ComponentPages/ForgotPassword/forgotPasswordModal";
 
 const { Header } = Layout;
 
