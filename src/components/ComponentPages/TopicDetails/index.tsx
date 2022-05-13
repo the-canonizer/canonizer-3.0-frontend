@@ -52,10 +52,12 @@ const TopicDetails = () => {
       topicRecord: state?.topicDetails?.currentTopicRecord,
       campRecord: state?.topicDetails?.currentCampRecord,
     }));
-  const [campSubscriptionStatus, setCampSubscriptionStatus] = useState(
-    !!campRecord?.campSubscriptionId
+  const [campSubscriptionID, setCampSubscriptionID] = useState(
+    campRecord?.campSubscriptionId
   );
-  const [topicSubscriptionStatus, setTopicSubscriptionStatus] = useState(true);
+  const [topicSubscriptionID, setTopicSubscriptionID] = useState(
+    topicRecord?.topicSubscriptionId
+  );
   useEffect(() => {
     async function getTreeApiCall() {
       setGetTreeLoadingIndicator(true);
@@ -87,8 +89,8 @@ const TopicDetails = () => {
   }, [asofdate, algorithm, +router?.query?.camp[1]?.split("-")[0]]);
 
   useEffect(() => {
-    setCampSubscriptionStatus(!!campRecord?.campSubscriptionId);
-    setTopicSubscriptionStatus(!!topicRecord?.topicSubscriptionId);
+    setCampSubscriptionID(campRecord?.campSubscriptionId);
+    setTopicSubscriptionID(topicRecord?.topicSubscriptionId);
   }, [campRecord?.campSubscriptionId, topicRecord?.topicSubscriptionId]);
 
   const scrollToCampStatement = () => {
@@ -165,10 +167,8 @@ const TopicDetails = () => {
     const reqBody = {
       topic_num: campRecord.topic_num,
       camp_num: isTopic ? 0 : campRecord.camp_num,
-      checked: isTopic ? !topicSubscriptionStatus : !campSubscriptionStatus,
-      subscription_id: isTopic
-        ? topicRecord?.topicSubscriptionId
-        : campRecord.campSubscriptionId,
+      checked: isTopic ? !topicSubscriptionID : !campSubscriptionID,
+      subscription_id: isTopic ? topicSubscriptionID : campSubscriptionID,
     };
 
     subscribeToCampApi(reqBody, isTopic);
@@ -188,16 +188,18 @@ const TopicDetails = () => {
       <Menu.Item
         icon={<i className="icon-subscribe"></i>}
         onClick={() => campOrTopicScribe(true)}
-        style={topicSubscriptionStatus ? { cursor: "progress" } : null}
       >
-        Subscribe to Entire Topic
+        {!!topicSubscriptionID
+          ? " Unsubscribe to Entire Topic"
+          : " Subscribe to Entire Topic"}
       </Menu.Item>
       <Menu.Item
         icon={<i className="icon-subscribe"></i>}
         onClick={() => campOrTopicScribe(false)}
-        style={campSubscriptionStatus ? { cursor: "progress" } : null}
       >
-        Subscribe to the Camp
+        {!!campSubscriptionID
+          ? "Unsubscribe to the Camp"
+          : "Subscribe to the Camp"}
       </Menu.Item>
       <Menu.Item icon={<HeartOutlined />}>Directly Join and Support </Menu.Item>
       <Menu.Item icon={<i className="icon-camp"></i>}>

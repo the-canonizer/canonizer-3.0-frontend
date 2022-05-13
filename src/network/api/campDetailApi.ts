@@ -94,12 +94,12 @@ export const subscribeToCampApi = async (reqBody, isTopic: Boolean) => {
     isTopic
       ? store.dispatch(
           setCurrentTopicRecordSubscriptionId(
-            subscribeToCamp?.data[0]?.subscriptionId || null
+            subscribeToCamp?.data?.subscriptionId || null
           )
         )
       : store.dispatch(
           setCurrentCampRecordSubscriptionId(
-            subscribeToCamp?.data[0]?.subscriptionId || null
+            subscribeToCamp?.data?.subscriptionId || null
           )
         );
     return subscribeToCamp?.data;

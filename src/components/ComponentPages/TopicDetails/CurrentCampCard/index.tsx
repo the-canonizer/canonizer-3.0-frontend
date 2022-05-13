@@ -39,7 +39,7 @@ const CurrentCampCard = () => {
         <Descriptions column={1}>
           {descriptionItems?.map((description) => (
             <Descriptions.Item label={description.label} key={description.key}>
-              {campRecord?.length ? campRecord[description.key] : null}
+              {campRecord && campRecord[description.key]}
             </Descriptions.Item>
           ))}
         </Descriptions>
