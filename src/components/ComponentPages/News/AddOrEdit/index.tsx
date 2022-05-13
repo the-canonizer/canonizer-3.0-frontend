@@ -138,6 +138,9 @@ export default function AddOrEdit({ edit }) {
         setScreenLoading(false);
       } else {
         const result = await getNickNameList();
+        form.setFieldsValue({
+          nick_name: result?.data[0]?.id,
+        });
         setNickNameData(result?.data);
         setScreenLoading(false);
       }
@@ -233,7 +236,6 @@ export default function AddOrEdit({ edit }) {
                 <Form.Item
                   label={<>Nick Name</>}
                   name="nick_name"
-                  initialValue={nickNameData[0]?.nick_name}
                   rules={[
                     {
                       required: true,
@@ -241,7 +243,7 @@ export default function AddOrEdit({ edit }) {
                     },
                   ]}
                 >
-                  <Select>
+                  <Select value={nickNameData[0]?.id}>
                     {nickNameData &&
                       nickNameData?.map((names) => (
                         <Select.Option value={names.id} key={names?.id}>
