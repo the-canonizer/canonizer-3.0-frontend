@@ -53,15 +53,15 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
                         }
                       >
                         <Link
-                          href={`${router.query.camp.at(0)}/${
-                            data[item]?.camp_id == 1
-                              ? "1-Agreement"
-                              : data[item]?.camp_id +
-                                "-" +
-                                data[item]?.title?.split(" ").join("-")
-                          }`}
+                          href={
+                            typeof data[item]?.link === "string" &&
+                            data[item]?.link?.replace("#statement", "")
+                          }
                         >
-                          <a>{data[item].title}</a>
+                          <a>
+                            {typeof data[item].title == "string" &&
+                              data[item].title}
+                          </a>
                         </Link>
                       </span>
                       <span
@@ -69,7 +69,8 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
                           "treeListItemNumber " + styles.treeListItemNumber
                         }
                       >
-                        {data[item].score?.toFixed(2)}
+                        {typeof data[item].score === "number" &&
+                          data[item].score?.toFixed(2)}
                       </span>
                     </div>
                   </>

@@ -21,8 +21,6 @@ export default class Request {
 
     token ? (bearerToken = token) : (bearerToken = auth?.loggedInUser?.token);
 
-    console.log("bearerToken", bearerToken);
-
     headers = {
       ...(defaultHeaderType === K.Network.Header.Type.Json ||
       defaultHeaderType === K.Network.Header.Type.formData

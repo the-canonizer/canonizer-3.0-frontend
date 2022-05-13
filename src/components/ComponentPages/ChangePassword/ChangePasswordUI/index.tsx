@@ -63,11 +63,11 @@ export default function ChangePasswordUI({
                   name="new_password"
                   label={messages.labels.newPassword}
                   {...messages.newPasswordRule}
-                  hasFeedback
+                  //hasFeedback
                 >
                   <Input
                     id="newPassword"
-                    className={styles.Password_input}
+                    //className={styles.Password_input}
                     type="password"
                     placeholder={messages.placeholders.newPassword}
                     onKeyDown={(e) =>
@@ -82,7 +82,7 @@ export default function ChangePasswordUI({
                   name="confirm_password"
                   label={messages.labels.confirmPassword}
                   dependencies={["new_password"]}
-                  hasFeedback
+                  //hasFeedback
                   {...messages.confirmNewPasswordRule}
                 >
                   <Input
