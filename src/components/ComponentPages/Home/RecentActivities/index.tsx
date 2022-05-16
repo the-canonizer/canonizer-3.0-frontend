@@ -15,6 +15,7 @@ export default function RecentActivities() {
   const [position] = useState(["left", "right"]);
   const [recentActivities, setRecentActivities] = useState([]);
   const [selectedTab, setSelectedTab] = useState("topics");
+  const [loadMoreIndicator, setLoadMoreIndicator] = useState(false);
   const router = useRouter();
   const slot = useMemo(() => {
     if (position.length === 0) return null;
@@ -41,6 +42,30 @@ export default function RecentActivities() {
   const handleTabChange = (key: string) => {
     setSelectedTab(key);
   };
+  console.log("position ", position);
+  console.log("recent Acticvities ", recentActivities);
+  console.log("seletedTab ", selectedTab);
+  console.log("slot ", slot);
+
+  const ViewAllTopics = recentActivities?.length > 0 && (
+    <div className={styles.footer}>
+      <Link href="/activities" className={styles.viewAll}>
+        <Text>View All Topics</Text>
+        <i className="icon-angle-right"></i>
+      </Link>
+    </div>
+  );
+
+  const LoadMoreTopics = recentActivities?.length > 0 && (
+    <div className={styles.footer}>
+      <div className="text-center">
+        <Link href="/#" className={styles.viewAll}>
+          <Text>Load More ! </Text>
+          <i className="icon-angle-right"></i>
+        </Link>
+      </div>
+    </div>
+  );
 
   return (
     <>
@@ -55,15 +80,24 @@ export default function RecentActivities() {
             <List
               className={styles.listWrap}
               footer={
-                router.asPath !== "/activities" &&
-                recentActivities?.length > 0 && (
-                  <div className={styles.footer}>
-                    <Link href="/activities" className={styles.viewAll}>
-                      <Text>View All Activities</Text>
-                      <i className="icon-angle-right"></i>
-                    </Link>
-                  </div>
-                )
+                router.asPath !== "/activities" ? ViewAllTopics : LoadMoreTopics
+
+                // ? recentActivities?.length > 0 && (
+                //     <div className={styles.footer}>
+                //       <Link href="/activities" className={styles.viewAll}>
+                //         <Text>View All Topics</Text>
+                //         <i className="icon-angle-right"></i>
+                //       </Link>
+                //     </div>
+                //   )
+                // : recentActivities?.length > 0 && (
+                //     <div className={styles.footer}>
+                //       <Link href="/activities" className={styles.viewAll}>
+                //         <Text>Load More ! </Text>
+                //         <i className="icon-angle-right"></i>
+                //       </Link>
+                //     </div>
+                //   )
               }
               bordered={false}
               dataSource={recentActivities}
@@ -88,14 +122,33 @@ export default function RecentActivities() {
             <List
               className={styles.listWrap}
               footer={
-                recentActivities?.length > 0 && (
-                  <div className={styles.footer}>
-                    <Link href="#" className={styles.viewAll}>
-                      <Text>View All Topics</Text>
-                      <i className="icon-angle-right"></i>
-                    </Link>
-                  </div>
-                )
+                router.asPath !== "/activities"
+                  ? recentActivities?.length > 0 && (
+                      <div className={styles.footer}>
+                        <Link href="/#" className={styles.viewAll}>
+                          <Text>View All Threads</Text>
+                          <i className="icon-angle-right"></i>
+                        </Link>
+                      </div>
+                    )
+                  : recentActivities?.length > 0 && (
+                      <div className={styles.footer}>
+                        <div className="text-center">
+                          <Link href="/#" className={styles.viewAll}>
+                            <Text>Load More ! </Text>
+                            <i className="icon-angle-right"></i>
+                          </Link>
+                        </div>
+                      </div>
+                    )
+                // recentActivities?.length > 0 && (
+                //   <div className={styles.footer}>
+                //     <Link href="#" className={styles.viewAll}>
+                //       <Text>View All Threads</Text>
+                //       <i className="icon-angle-right"></i>
+                //     </Link>
+                //   </div>
+                // )
               }
               bordered={false}
               dataSource={recentActivities}
