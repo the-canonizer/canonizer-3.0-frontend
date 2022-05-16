@@ -117,6 +117,9 @@ body {
   &-right {
     text-align: right;
   }
+  &-primary {
+    color: var(--primary) !important;
+  }
   &-orange {
     color: #f89d15;
   }
@@ -1302,7 +1305,8 @@ body {
       .ant-checkbox-wrapper {
         font-weight: 500;
       }
-      a, .ant-btn {
+      a,
+      .ant-btn {
         font-size: inherit;
         font-weight: 500;
         display: inline-flex;

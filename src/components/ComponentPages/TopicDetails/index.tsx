@@ -186,7 +186,13 @@ const TopicDetails = () => {
         </Link>
       </Menu.Item>
       <Menu.Item
-        icon={<i className="icon-subscribe"></i>}
+        icon={
+          <i
+            className={`icon-subscribe ${
+              !!topicSubscriptionID && "text-primary"
+            }`}
+          ></i>
+        }
         onClick={() => campOrTopicScribe(true)}
       >
         {!!topicSubscriptionID
@@ -194,7 +200,13 @@ const TopicDetails = () => {
           : " Subscribe to Entire Topic"}
       </Menu.Item>
       <Menu.Item
-        icon={<i className="icon-subscribe"></i>}
+        icon={
+          <i
+            className={`icon-subscribe ${
+              !!campSubscriptionID && "text-primary"
+            }`}
+          ></i>
+        }
         onClick={() => campOrTopicScribe(false)}
       >
         {!!campSubscriptionID
@@ -221,7 +233,12 @@ const TopicDetails = () => {
             <Typography.Paragraph className={"mb-0 " + styles.topicTitleStyle}>
               {" "}
               <span className="bold"> Topic: </span>
-              {topicRecord && topicRecord?.topic_name}
+              {topicRecord && topicRecord?.topic_name}{" "}
+              {!!topicSubscriptionID && (
+                <small>
+                  <i className="icon-subscribe text-primary"></i>
+                </small>
+              )}
             </Typography.Paragraph>
             <div className={styles.breadcrumbLinks}>
               {" "}
@@ -243,6 +260,11 @@ const TopicDetails = () => {
                     );
                   })
                 : null}
+              {!!campSubscriptionID && (
+                <small style={{ alignSelf: "center", marginLeft: "10px" }}>
+                  <i className="icon-subscribe text-primary"></i>
+                </small>
+              )}
             </div>
           </div>
 
