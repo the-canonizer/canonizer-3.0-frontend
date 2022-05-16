@@ -160,7 +160,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
                             disabled={!news.owner_flag}
                             onClick={() =>
                               router.push(
-                                `/editnews/${router?.query?.camp[0]}/${router?.query?.camp[1]}/${news?.id}-id`
+                                `/editnews/${router?.query?.camp[0]}/${router?.query?.camp[1]}/camp-id-${news?.id}`
                               )
                             }
                           >
