@@ -53,15 +53,9 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
                         }
                       >
                         <Link
-                          href={
-                            typeof data[item]?.link === "string" &&
-                            data[item]?.link?.replace("#statement", "")
-                          }
+                          href={data[item]?.link?.replace("#statement", "")}
                         >
-                          <a>
-                            {typeof data[item].title == "string" &&
-                              data[item].title}
-                          </a>
+                          <a>{data[item].title}</a>
                         </Link>
                       </span>
                       <span
@@ -69,8 +63,7 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
                           "treeListItemNumber " + styles.treeListItemNumber
                         }
                       >
-                        {typeof data[item].score === "number" &&
-                          data[item].score?.toFixed(2)}
+                        {data[item].score?.toFixed(2)}
                       </span>
                     </div>
                   </>
