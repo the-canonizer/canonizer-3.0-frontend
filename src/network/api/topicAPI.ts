@@ -12,16 +12,10 @@ export const createTopic = async (body) => {
       err.error &&
       err.error.data &&
       err.error.data.status_code === 400 &&
-      !err.error.data.error.topic_name
+      !err.error.data.error?.topic_name
     ) {
       handleError(err);
-    }
-    if (
-      err &&
-      err.error &&
-      err.error.data &&
-      err.error.data.status_code === 400
-    ) {
+    } else {
       return err.error.data;
     }
   }
