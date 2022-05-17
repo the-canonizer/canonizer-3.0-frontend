@@ -44,7 +44,7 @@ const UserProfileCard = () => {
               <Card
                 title={
                   <div className={styles.card_heading_title}>
-                    Canonizer Topic Page Design
+                    Canonizer3 Topic Page Design
                   </div>
                 }
               >
@@ -54,7 +54,7 @@ const UserProfileCard = () => {
                     <span className={styles.count}>{""}</span>
                     <Link href={""}>
                       <a className={styles.Bluecolor}>
-                        Topic Page Talentegia Design
+                        Topic Page Design Canonizer LLC
                       </a>
                     </Link>
                   </div>
@@ -65,7 +65,7 @@ const UserProfileCard = () => {
               <Card
                 title={
                   <div className={styles.card_heading_title}>
-                    Canonizer 3 Logo Design
+                    Canonizer3 Logo Design
                   </div>
                 }
               >
@@ -75,7 +75,7 @@ const UserProfileCard = () => {
                     <span className={styles.count}>{""}</span>
                     <Link href={""}>
                       <a className={styles.Bluecolor}>
-                        History Page Design Talentelgia
+                        History Page Design Canonizer LLC
                       </a>
                     </Link>
                   </div>
@@ -87,7 +87,7 @@ const UserProfileCard = () => {
                     <span className={styles.count}>{""}</span>
                     <Link href={""}>
                       <a className={styles.Bluecolor}>
-                        Logo Design By Talentelgia
+                        Logo Design By Canonizer LLC
                       </a>
                     </Link>
                   </div>
@@ -109,7 +109,7 @@ const UserProfileCard = () => {
                     <span className={styles.count}>{""}</span>
                     <Link href={""}>
                       <a className={styles.Bluecolor}>
-                        Home Page Design Talentelgia
+                        Home Page Design Canonizer LLC
                       </a>
                     </Link>
                   </div>
@@ -121,7 +121,7 @@ const UserProfileCard = () => {
                     <span className={styles.count}>{""}</span>
                     <Link href={""}>
                       <a className={styles.Bluecolor}>
-                        UI UX Design Talentelgia
+                        UI UX Design Canonizer LLC
                       </a>
                     </Link>
                   </div>
@@ -133,7 +133,7 @@ const UserProfileCard = () => {
                     <span className={styles.count}>{""}</span>
                     <Link href={""}>
                       <a className={styles.Bluecolor}>
-                        Logo Design By Talentelgia
+                        Logo Design By Canonizer LLC
                       </a>
                     </Link>
                   </div>
@@ -155,7 +155,7 @@ const UserProfileCard = () => {
                     <span className={styles.count}>{""}</span>
                     <Link href={""}>
                       <a className={styles.Bluecolor}>
-                        Home Page Design Talentelgia
+                        Home Page Design Canonizer LLC
                       </a>
                     </Link>
                   </div>
@@ -209,7 +209,7 @@ const UserProfileCard = () => {
                     <span className={styles.count}>{""}</span>
                     <Link href={""}>
                       <a className={styles.Bluecolor}>
-                        UI UX Design Talentelgia
+                        UI UX Design Canonizer LLC
                       </a>
                     </Link>
                   </div>
