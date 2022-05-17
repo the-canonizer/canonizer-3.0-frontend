@@ -73,7 +73,6 @@ import {
 import { labels } from "../../../../messages/label";
 import { setTimeout } from "timers";
 import { spawnSync } from "child_process";
-
 const UploadFileUI = ({
   input,
   setInput,
@@ -792,15 +791,16 @@ const UploadFileUI = ({
     });
   };
   const displayImage = (file, imageData) => {
+    const imageRegexData = /^image\/(jpeg$|png$|jpg$)/;
+    const fileText = <FileTextFilled className={styles.FileTextTwoOneClass} />;
+    const filePdf = <FilePdfFilled className={styles.FilePdfTwoToneColor} />;
+    const fileUnknown = (
+      <FileUnknownFilled className={styles.FileTextTwoOneClass} />
+    );
     return (
       <div id="display_image">
         {(() => {
-          if (
-            ((file.file_type || file.type) == "image/jpeg" ||
-              (file.file_type || file.type) == "image/jpg" ||
-              (file.file_type || file.type) == "image/png") &&
-            imageData
-          ) {
+          if (imageRegexData.test(file.file_type || file.type) && imageData) {
             return (
               <Image
                 alt="Image"
@@ -810,11 +810,11 @@ const UploadFileUI = ({
               />
             );
           } else if ((file.file_type || file.type) == "text/plain") {
-            return <FileTextFilled className={styles.FileTextTwoOneClass} />;
+            return fileText;
           } else if ((file.file_type || file.type) == "application/pdf") {
-            return <FilePdfFilled className={styles.FilePdfTwoToneColor} />;
+            return filePdf;
           } else {
-            return <FileUnknownFilled className={styles.FileTextTwoOneClass} />;
+            return fileUnknown;
           }
         })()}
       </div>
@@ -916,7 +916,7 @@ const UploadFileUI = ({
                 )}
               </div>
               <div className={styles.top_icon}>
-                {show_UploadOptions ? (
+                {show_UploadOptions || dragBoxStatus ? (
                   ""
                 ) : (
                   <span
@@ -933,7 +933,7 @@ const UploadFileUI = ({
                     />
                   </span>
                 )}
-                {show_UploadOptions ? (
+                {show_UploadOptions || dragBoxStatus ? (
                   ""
                 ) : (
                   <span
