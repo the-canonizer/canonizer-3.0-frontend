@@ -189,7 +189,7 @@ export const createCamp = async (body) => {
       err.error &&
       err.error.data &&
       err.error.data.status_code === 400 &&
-      !err.error.data.error.camp_name
+      !err.error.data.error?.camp_name
     ) {
       handleError(err);
     } else {

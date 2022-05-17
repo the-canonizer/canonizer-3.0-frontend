@@ -13,7 +13,8 @@ export const addNewsFeedApi = async (body) => {
     );
     return editNewsData;
   } catch (error) {
-    message.error(error?.message);
+    message.error(error?.error?.data?.message);
+    console.log("sfas=>>>", error.error.data);
     return error?.error?.data;
   }
 };
@@ -42,6 +43,9 @@ export const updateNewsFeedApi = async (body) => {
     );
     return editNewsData;
   } catch (error) {
+    if (Object.keys(error?.error?.data?.error).includes("newsfeed_id")) {
+      message.error("News does not found");
+    }
     return error?.error?.data;
   }
 };
