@@ -351,8 +351,7 @@ const ForumComponent = ({}) => {
 
   const onFinishPost = async (values) => {
     const q = router.query;
-
-    if (quillContent.trim() === "") {
+    if (quillContent.trim() === "" || quillContent === "<p><br></p>") {
       setIsError(true);
       return;
     }

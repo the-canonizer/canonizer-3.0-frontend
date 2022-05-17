@@ -37,10 +37,10 @@ const CreateCampFormUI = ({
                     .fromNow()} (${moment(getTime(postedTime)).format(
                     "MMM Do YYYY, h:mm:ss a"
                   )})`
-                : `${nick_name} updated ${moment(postedUpdatedTime)
+                : ` updated ${moment(getTime(postedUpdatedTime))
                     .local()
                     .startOf("seconds")
-                    .fromNow()} (${moment(postedUpdatedTime).format(
+                    .fromNow()} (${moment(getTime(postedUpdatedTime)).format(
                     "MMM Do YYYY, h:mm:ss a"
                   )})`}
             </Text>
