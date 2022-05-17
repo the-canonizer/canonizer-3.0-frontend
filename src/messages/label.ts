@@ -53,4 +53,13 @@ export const labels = {
   maxSize: "Max size 5 MB",
   FolderName: "Folder Name (Limit 15 Chars*)",
   CreateaFolder: "Create Folder",
+
+  userProfile: "UserProfile",
+  name: "Name",
+  address: "Address",
+  zipcode: "Zip Code",
+  emailAddress: "Email Address",
+  City: "City",
+  Country: "country",
+  listOfSupportedCamps: "List of supported camps",
 };
