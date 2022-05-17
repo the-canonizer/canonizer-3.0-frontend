@@ -179,3 +179,33 @@ img {
     }
   }
 }
+.user--cards-outer{
+  .ant-card-type-inner {
+    .ant-card-head{
+      background-color: #eaedf2;
+    }
+  }
+  .inner--cards{
+    .ant-card-head{
+      background-color: #f8f8f8;
+    }
+  }
+}
+.Headings--wrap {
+  margin: 0px -24px;
+  .Headings--inn {
+    border-bottom: 1px solid #f7f7f7;
+    padding: 0px 16px 16px;
+    margin-bottom: 15px;
+}
+}
+
+.inner--cards .ant-tag a{
+  font-weight: normal;
+}
+.Headings--wrap{
+  .ant-select-show-arrow {
+    border: none !important;
+
+  }
+}
