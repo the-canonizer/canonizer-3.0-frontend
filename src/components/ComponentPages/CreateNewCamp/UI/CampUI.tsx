@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import SideBar from "../../Home/SideBar";
+import SideBar from "../../CampForum/UI/sidebar";
 import styles from "../../CreateNewTopic/UI/createNewTopic.module.scss";
 import FormUI from "./FormUI";
 

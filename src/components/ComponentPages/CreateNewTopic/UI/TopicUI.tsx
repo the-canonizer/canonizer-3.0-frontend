@@ -1,6 +1,6 @@
 import { Fragment } from "react";
+import Image from "next/image";
 
-import SideBar from "../../Home/SideBar";
 import FromUI from "./FromUI";
 
 const CreateNewTopicUI = ({
@@ -13,8 +13,15 @@ const CreateNewTopicUI = ({
 }) => {
   return (
     <Fragment>
-      <aside className="leftSideBar miniSideBar">
-        <SideBar />
+      <aside className="leftSideBar miniSideBar bg-white">
+        <div className="siteAds">
+          <Image
+            alt="adOne"
+            src={"/images/left-sidebar-adv1.jpg"}
+            width={200}
+            height={400}
+          />
+        </div>
       </aside>
       <div className="pageContentWrap">
         <FromUI

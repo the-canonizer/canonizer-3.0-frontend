@@ -3,7 +3,7 @@ import ThreadSidebar from "./UI/sidebar";
 
 const Threads = ({
   isThreadUpdate,
-  nickNameList = [],
+  nickNameList,
   onCancelCreateThread,
   onFinish,
   form,

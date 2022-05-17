@@ -35,10 +35,17 @@ const CampStatementCard = ({ myRefToCampStatement, onCampForumClick }) => {
         }
       >
         <Paragraph>
-          {campStatement?.length
-            ? campStatement[0]?.value
-            : "No Statement Found"}
+          {campStatement?.length ? (
+            <div
+              dangerouslySetInnerHTML={{
+                __html: campStatement[0]?.parsed_value,
+              }}
+            />
+          ) : (
+            "No Statement Found"
+          )}
         </Paragraph>
+
         {/* Will remove the below commented code once the api is integrated completed */}
 
         {/* <Title level={2} className={styles.cardHeading}>
