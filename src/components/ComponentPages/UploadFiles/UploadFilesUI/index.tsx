@@ -155,6 +155,7 @@ const UploadFileUI = ({
   const validateMessages = {
     required: "${name} is required !",
   };
+  const imageRegexData = /^image\/(jpeg$|png$|jpg$)/;
   const menu = (i, obj) => (
     <Menu>
       <Menu.Item>
@@ -255,15 +256,13 @@ const UploadFileUI = ({
     </Menu>
   );
   const displayColumnListImage = (obj) => {
+    const fileText = <FileTextFilled className={styles.folder_icons_fileTxt} />;
+    const filePdf = <FilePdfFilled className={styles.folder_icons_pdf} />;
+    const fileUnknown = <FileUnknownFilled className={styles.folder_icons} />;
     return (
       <div>
         {(() => {
-          if (
-            (obj.file_type == "image/jpeg" ||
-              obj.file_type == "image/jpg" ||
-              obj.file_type == "image/png") &&
-            obj.file_path
-          ) {
+          if (imageRegexData.test(obj.file_type) && obj.file_path) {
             return (
               <Image
                 alt="Image"
@@ -282,12 +281,12 @@ const UploadFileUI = ({
                 }}
               />
             );
-          } else if (obj.type == "text/plain") {
-            return <FileTextFilled className={styles.folder_icons_fileTxt} />;
-          } else if (obj.type == "application/pdf") {
-            return <FilePdfFilled className={styles.folder_icons_pdf} />;
+          } else if (obj.file_type == "text/plain") {
+            return fileText;
+          } else if (obj.file_type == "application/pdf") {
+            return filePdf;
           } else {
-            return <FileUnknownFilled className={styles.folder_icons} />;
+            return fileUnknown;
           }
         })()}
       </div>
@@ -791,7 +790,6 @@ const UploadFileUI = ({
     });
   };
   const displayImage = (file, imageData) => {
-    const imageRegexData = /^image\/(jpeg$|png$|jpg$)/;
     const fileText = <FileTextFilled className={styles.FileTextTwoOneClass} />;
     const filePdf = <FilePdfFilled className={styles.FilePdfTwoToneColor} />;
     const fileUnknown = (
