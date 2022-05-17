@@ -12,6 +12,7 @@ import DelegatedSupportCamps from "../DelegatedSupportCamps";
 import { useRouter } from "next/router";
 import SocialOauth from "../socialAuthVerification";
 import CreateNewCampButton from "../../common/button/createNewTopicBtn";
+import SubscriptionsList from "../SubscriptionsList";
 
 const { TabPane } = Tabs;
 const tabList = [
@@ -34,6 +35,10 @@ const tabList = [
   {
     key: "supported_camps",
     tab: "Supported Camps",
+  },
+  {
+    key: "subscriptions",
+    tab: "Subscriptions",
   },
 ];
 function callback(key) {
@@ -90,6 +95,11 @@ export default function SettingsUI() {
         <SocialOauth />
       </Fragment>
     ),
+    subscriptions: (
+      <Fragment>
+        <SubscriptionsList />
+      </Fragment>
+    ),
   };
 
   useEffect(() => {
@@ -98,6 +108,8 @@ export default function SettingsUI() {
       setActiveTabKey("social_oauth_verification");
     } else if (query.tab === "profile") {
       setActiveTabKey("profile_info");
+    } else if (query.tab === "subscriptions") {
+      setActiveTabKey("subscriptions");
     }
   }, [router.query]);
 
