@@ -32,6 +32,10 @@ import Icon, {
   EyeTwoTone,
   CopyTwoTone,
   DeleteTwoTone,
+  FilePptOutlined,
+  FileOutlined,
+  FileExcelOutlined,
+  FileWordOutlined,
 } from "@ant-design/icons";
 import Image from "next/image";
 import styles from "./UploadFile.module.scss";
@@ -155,7 +159,17 @@ const UploadFileUI = ({
   const validateMessages = {
     required: "${name} is required !",
   };
-  const imageRegexData = /^image\/(jpeg$|png$|jpg$)/;
+  //Regex
+  const textFileRegex = /^text\/(plain$|html$|rtf$|csv$)/;
+  const pdfFileRegex = /^application\/(pdf$)/;
+  const excelFileRegex =
+    /^application\/(vnd.ms-excel.sheet.macroEnabled.12$|vnd.ms-excel$|vnd.ms-excel.sheet.binary.macroEnabled.12$|vnd.openxmlformats-officedocument.spreadsheetml.sheet$)/;
+  const docFileRegex =
+    /^application\/(msword$|vnd.openxmlformats-officedocument.wordprocessingml.template$|vnd.ms-word.template.macroEnabled.12$|vnd.openxmlformats-officedocument.wordprocessingml.document$| vnd.ms-word.document.macroEnabled.12$|msword$)/;
+  const imageRegexData = /^image\/(jpeg$|png$|jpg$|gif$|bmp$)/;
+  const pptRegexData =
+    /^application\/(vnd.ms-powerpoint.template.macroEnabled.12$|vnd.openxmlformats-officedocument.presentationml.template$|vnd.ms-powerpoint.addin.macroEnabled.12$|vnd.openxmlformats-officedocument.presentationml.slideshow$|vnd.openxmlformats-officedocument.presentationml.slideshow$|vnd.ms-powerpoint.slideshow.macroEnabled.12$|vnd.ms-powerpoint$|vnd.ms-powerpoint.presentation.macroEnabled.12$|vnd.openxmlformats-officedocument.presentationml.presentation$)/;
+  const fileJsonRegex = /^application\/(json$)/;
   const menu = (i, obj) => (
     <Menu>
       <Menu.Item>
@@ -259,6 +273,15 @@ const UploadFileUI = ({
     const fileText = <FileTextFilled className={styles.folder_icons_fileTxt} />;
     const filePdf = <FilePdfFilled className={styles.folder_icons_pdf} />;
     const fileUnknown = <FileUnknownFilled className={styles.folder_icons} />;
+
+    const filePpt = <FilePptOutlined className={styles.folder_icons_fileTxt} />;
+    const fileJson = <FileOutlined className={styles.folder_icons_fileTxt} />;
+    const fileXcel = (
+      <FileExcelOutlined className={styles.folder_icons_fileTxt} />
+    );
+    const fileDocs = (
+      <FileWordOutlined className={styles.folder_icons_fileTxt} />
+    );
     return (
       <div>
         {(() => {
@@ -281,10 +304,18 @@ const UploadFileUI = ({
                 }}
               />
             );
-          } else if (obj.file_type == "text/plain") {
+          } else if (textFileRegex.test(obj.file_type)) {
             return fileText;
-          } else if (obj.file_type == "application/pdf") {
+          } else if (pdfFileRegex.test(obj.file_type)) {
             return filePdf;
+          } else if (excelFileRegex.test(obj.file_type)) {
+            return fileXcel;
+          } else if (docFileRegex.test(obj.file_type)) {
+            return fileDocs;
+          } else if (pptRegexData.test(obj.file_type)) {
+            return filePpt;
+          } else if (fileJsonRegex.test(obj.file_type)) {
+            return fileJson;
           } else {
             return fileUnknown;
           }
@@ -795,6 +826,15 @@ const UploadFileUI = ({
     const fileUnknown = (
       <FileUnknownFilled className={styles.FileTextTwoOneClass} />
     );
+    const filePpt = <FilePptOutlined className={styles.FileTextTwoOneClass} />;
+    const fileJson = <FileOutlined className={styles.FileTextTwoOneClass} />;
+    const fileXcel = (
+      <FileExcelOutlined className={styles.FileTextTwoOneClass} />
+    );
+    const fileDocs = (
+      <FileWordOutlined className={styles.FileTextTwoOneClass} />
+    );
+
     return (
       <div id="display_image">
         {(() => {
@@ -807,10 +847,18 @@ const UploadFileUI = ({
                 width={"140px"}
               />
             );
-          } else if ((file.file_type || file.type) == "text/plain") {
+          } else if (textFileRegex.test(file.file_type || file.type)) {
             return fileText;
-          } else if ((file.file_type || file.type) == "application/pdf") {
+          } else if (pdfFileRegex.test(file.file_type || file.type)) {
             return filePdf;
+          } else if (excelFileRegex.test(file.file_type || file.type)) {
+            return fileXcel;
+          } else if (docFileRegex.test(file.file_type || file.type)) {
+            return fileDocs;
+          } else if (pptRegexData.test(file.file_type || file.type)) {
+            return filePpt;
+          } else if (fileJsonRegex.test(file.file_type || file.type)) {
+            return fileJson;
           } else {
             return fileUnknown;
           }
@@ -867,7 +915,7 @@ const UploadFileUI = ({
               <div className={styles.top_btn}>
                 <div className="datepIcker">
                   <DatePicker
-                    disabled={show_UploadOptions}
+                    disabled={show_UploadOptions || dragBoxStatus}
                     onChange={(date, dateString) => {
                       setDatePick(date ? date.toLocaleString() : "");
                     }}
@@ -876,7 +924,7 @@ const UploadFileUI = ({
                 <div className={styles.search_users}>
                   <SearchOutlined />
                   <Input
-                    disabled={show_UploadOptions}
+                    disabled={show_UploadOptions || dragBoxStatus}
                     id="datePickerText"
                     placeholder="Search"
                     type="text"
@@ -899,7 +947,7 @@ const UploadFileUI = ({
                 >
                   Create folder
                 </Button>
-                {addButtonShow ? (
+                {addButtonShow && !dragBoxStatus ? (
                   <Button
                     id="addAFileBtn"
                     className={styles.add_file_btn}

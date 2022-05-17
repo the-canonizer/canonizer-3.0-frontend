@@ -102,29 +102,17 @@ const UploadFiles = () => {
     }
   };
   const handleCancel = () => {
-    setFileLists(fileLists);
-    //fileStatusHide();
-    GetUploadFileAndFolder();
     setUploadFileList([]);
-    {
-      fileLists.length > 0
-        ? (enableCreateFolderBtn(),
-          shownAddButton(),
-          dragBoxHide(),
-          uploadOptionsHide())
-        : (enableCreateFolderBtn(),
-          //disbleCreateFolderBtn(),
-          addButtonHide(),
-          dragBoxShow(),
-          uploadOptionsShow());
-    }
+    uploadOptionsHide();
+    GetUploadFileAndFolder();
   };
   const handle_X_btn = () => {
     crossBtnHide();
     dragBoxHide();
     showFiles();
-    uploadOptionsHide();
-    GetUploadFileAndFolder();
+    uploadFileList.length == 0
+      ? (uploadOptionsHide(), GetUploadFileAndFolder())
+      : uploadOptionsShow();
   };
   const addNewFile = () => {
     hideFiles();
