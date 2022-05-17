@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "../../../../utils/testUtils";
+import { render, screen, waitFor, act } from "../../../../utils/testUtils";
 import userEvent from "@testing-library/user-event";
 
 import TopBar from "../UI/TopBar";
@@ -158,16 +158,6 @@ describe("Camp forum page", () => {
 
   // it("render inputs field and submit button on create thread section", () => {
   //   const form = {};
-  //   expect(
-  //     <ThreadForm
-  //       isThreadUpdate={false}
-  //       nickNameList={nickNamesList}
-  //       onFinish={jest.fn()}
-  //       form={form}
-  //       initialValue={initialValues}
-  //       onCancelCreateThread={jest.fn()}
-  //     />
-  //   ).toBeTruthy();
   //   render(
   //     <>
   //       <TopBar campRecord={campRecords} topicRecord={topicRecords} />
@@ -198,17 +188,15 @@ describe("Camp forum page", () => {
   // });
 
   // it("blank form should not be submitted on create thread section", async () => {
-  //   const form = {};
   //   render(
   //     <>
-  //       <TopBar paramsList={params} />
+  //       <TopBar campRecord={campRecords} topicRecord={topicRecords} />
   //       <ThreadForm
   //         isThreadUpdate={false}
   //         nickNameList={nickNamesList}
   //         onFinish={jest.fn()}
-  //         form={form}
+  //         form={{}}
   //         initialValue={initialValues}
-  //         paramsList={params}
   //         onCancelCreateThread={jest.fn()}
   //       />
   //     </>
@@ -223,27 +211,30 @@ describe("Camp forum page", () => {
   // });
 
   // it("post section render", async () => {
-  //   const form = {};
-  //   render(
-  //     <>
-  //       <TopBar paramsList={params} />
-  //       <PostSection
-  //         nickNameList={nickNamesList}
-  //         onCancel={jest.fn()}
-  //         onFinishPost={jest.fn()}
-  //         formPost={form}
-  //         startedBy={"startedBy"}
-  //         postCount={0}
-  //         postList={postList}
-  //         threadStamps={"threadStamps"}
-  //         initialValue={initialValues}
-  //         cardTitle="Test Post"
-  //         pCurrent={1}
-  //         pTotal={10}
-  //         pOnChange={jest.fn()}
-  //         paramsList={params}
-  //       />
-  //     </>
+  //   await act(async () =>
+  //     render(
+  //       <>
+  //         <TopBar campRecord={campRecords} topicRecord={topicRecords} />
+  //         <PostSection
+  //           nickNameList={nickNamesList}
+  //           onCancel={jest.fn()}
+  //           onFinishPost={jest.fn()}
+  //           formPost={{}}
+  //           postList={postList}
+  //           initialValue={initialValues}
+  //           pCurrent={1}
+  //           pTotal={10}
+  //           pOnChange={jest.fn()}
+  //           currentThread={{}}
+  //           quillContent={""}
+  //           onContentChange={jest.fn()}
+  //           isError={false}
+  //           onPostEditClick={jest.fn()}
+  //           onDeleteClick={jest.fn()}
+  //           isLog={true}
+  //         />
+  //       </>
+  //     )
   //   );
 
   //   expect(screen.getByText("Test Post")).toBeInTheDocument();
@@ -259,7 +250,7 @@ describe("Camp forum page", () => {
   // it("post section blank form error check", async () => {
   //   render(
   //     <>
-  //       <TopBar paramsList={params} />
+  //       <TopBar campRecord={campRecords} topicRecord={topicRecords} />
   //       <PostSection
   //         nickNameList={nickNamesList}
   //         onCancel={jest.fn()}

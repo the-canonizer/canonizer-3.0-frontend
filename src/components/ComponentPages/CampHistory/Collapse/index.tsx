@@ -30,7 +30,13 @@ export default function HistoryCollapse({ campStatement }) {
           >
             <>
               <Title level={5}>Statement :</Title>
-              {campStatement?.value}
+
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: campStatement?.parsed_value,
+                }}
+              />
+
               <Divider />
             </>
           </Panel>

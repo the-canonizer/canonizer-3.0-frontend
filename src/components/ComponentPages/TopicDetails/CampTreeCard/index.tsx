@@ -60,7 +60,8 @@ const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
                     event.stopPropagation();
                   }}
                 >
-                  <i className={"icon-fi-document " + styles.iconMr} /> Add News
+                  <i className={"icon-fi-document " + styles.iconMr} />
+                  Add News
                 </a>
               </Link>
               <Popover content={addContent} placement="left">
