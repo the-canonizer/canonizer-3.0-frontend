@@ -2,7 +2,7 @@
     background-color: #FFF;
     padding: 1.25rem;
     .container {
-        max-width: 986px;
+        max-width: 850px;
         margin: 0 auto;
         p {
             text-align: center;
@@ -30,7 +30,7 @@
             }
         }
         label {
-            font-size: 1rem;
+            // font-size: 1rem;
             margin-left: 5px;
         }
         @media screen and (min-width: 768px) {
@@ -69,12 +69,12 @@
         align-items: center;
         justify-content: center;
         height: 3rem;
-        font-size: 1.125rem;
+        // font-size: 1.125rem;
         font-weight: 500;
         text-transform: uppercase;
         border-radius: 2px;
         i {
-            margin-right: .75rem;
+            margin-right: 5px;
         }
         @media screen and (min-width: 768px) {
             width: 170px;

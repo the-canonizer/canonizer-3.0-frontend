@@ -189,7 +189,7 @@ body {
       align-items: center;
       justify-content: center;
       width: 100%;
-      font-size: 1.125rem;
+      font-size: 16px;
       font-weight: 600;
       color: #0f2a4d;
       border: solid 1px #d9d9d9;
@@ -334,9 +334,9 @@ body {
 
 .hdrUserdropdown {
   .icon-user {
-    height: 38px;
-    width: 38px;
-    line-height: 34px;
+    height: 30px;
+    width: 30px;
+    line-height: 28px;
     background-color: #e6e9f1;
     color: #647488;
     display: inline-block;
@@ -352,7 +352,7 @@ body {
   }
   .ant-dropdown-link {
     color: #fff;
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 400;
 
     @media screen and (max-width: 567px) {
