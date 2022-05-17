@@ -1,82 +1,200 @@
-import NetworkCall from "../networkCall";
-import { message } from "antd";
-import { store } from "../../store";
-import HomePageRequests from "../request/homePageRequests";
-import {
-  setCanonizedNameSpaces,
-  setCanonizedTopics,
-  pushToCanonizedTopics,
-  setCanonizedAlgorithms,
-} from "../../store/slices/homePageSlice";
-import {
-  setThreads,
-  setTopics,
-  pushToThreads,
-  pushToTopics,
-} from "../../store/slices/recentActivitiesSlice";
+import { createSlice } from "@reduxjs/toolkit";
 
-export const getCanonizedTopicsApi = async (reqBody, loadMore = false) => {
-  try {
-    const topics = await NetworkCall.fetch(
-      HomePageRequests.getCanonizedTopics(reqBody),
-      false
-    );
-    if (loadMore) {
-      store.dispatch(pushToCanonizedTopics(topics?.data));
-    } else {
-      store.dispatch(setCanonizedTopics(topics?.data));
-    }
-    return topics?.data;
-  } catch (error) {
-    // message.error(error.message);
-  }
-};
+export const recentActivitiesSlice = createSlice({
+  name: "rececntActivities",
+  initialState: {
+    topicsData: {
+      topics: [
+        {
+          id: 27,
+          log_name: "threads",
+          description: "A thread has been updated",
+          subject_type: "App\\Models\\Languages",
+          subject_id: 20,
+          causer_type: null,
+          causer_id: null,
+          properties: [],
+          created_at: "2022-02-17T11:22:36.000000Z",
+          updated_at: "2022-02-17T11:22:36.000000Z",
+        },
+        {
+          id: 27,
+          log_name: "topic",
+          description: "A topic has been updated",
+          subject_type: "App\\Models\\Languages",
+          subject_id: 20,
+          causer_type: null,
+          causer_id: null,
+          properties: [],
+          created_at: "2022-02-17T11:22:36.000000Z",
+          updated_at: "2022-02-17T11:22:36.000000Z",
+        },
+        {
+          id: 27,
+          log_name: "topic",
+          description: "A topic has been updated",
+          subject_type: "App\\Models\\Languages",
+          subject_id: 20,
+          causer_type: null,
+          causer_id: null,
+          properties: [],
+          created_at: "2022-02-17T11:22:36.000000Z",
+          updated_at: "2022-02-17T11:22:36.000000Z",
+        },
+        {
+          id: 27,
+          log_name: "topic",
+          description: "A topic has been updated",
+          subject_type: "App\\Models\\Languages",
+          subject_id: 20,
+          causer_type: null,
+          causer_id: null,
+          properties: [],
+          created_at: "2022-02-17T11:22:36.000000Z",
+          updated_at: "2022-02-17T11:22:36.000000Z",
+        },
+        {
+          id: 27,
+          log_name: "topic",
+          description: "A topic has been updated",
+          subject_type: "App\\Models\\Languages",
+          subject_id: 20,
+          causer_type: null,
+          causer_id: null,
+          properties: [],
+          created_at: "2022-02-17T11:22:36.000000Z",
+          updated_at: "2022-02-17T11:22:36.000000Z",
+        },
+        {
+          id: 27,
+          log_name: "topic",
+          description: "A topic has been updated",
+          subject_type: "App\\Models\\Languages",
+          subject_id: 20,
+          causer_type: null,
+          causer_id: null,
+          properties: [],
+          created_at: "2022-02-17T11:22:36.000000Z",
+          updated_at: "2022-02-17T11:22:36.000000Z",
+        },
+        {
+          id: 27,
+          log_name: "topic",
+          description: "A topic has been updated",
+          subject_type: "App\\Models\\Languages",
+          subject_id: 20,
+          causer_type: null,
+          causer_id: null,
+          properties: [],
+          created_at: "2022-02-17T11:22:36.000000Z",
+          updated_at: "2022-02-17T11:22:36.000000Z",
+        },
+        {
+          id: 27,
+          log_name: "threads",
+          description: "A thread has been updated",
+          subject_type: "App\\Models\\Languages",
+          subject_id: 20,
+          causer_type: null,
+          causer_id: null,
+          properties: [],
+          created_at: "2022-02-17T11:22:36.000000Z",
+          updated_at: "2022-02-17T11:22:36.000000Z",
+        },
+        {
+          id: 27,
+          log_name: "topic",
+          description: "A topic has been updated",
+          subject_type: "App\\Models\\Languages",
+          subject_id: 20,
+          causer_type: null,
+          causer_id: null,
+          properties: [],
+          created_at: "2022-02-17T11:22:36.000000Z",
+          updated_at: "2022-02-17T11:22:36.000000Z",
+        },
+        {
+          id: 27,
+          log_name: "threads",
+          description: "A thread has been updated",
+          subject_type: "App\\Models\\Languages",
+          subject_id: 20,
+          causer_type: null,
+          causer_id: null,
+          properties: [],
+          created_at: "2022-02-17T11:22:36.000000Z",
+          updated_at: "2022-02-17T11:22:36.000000Z",
+        },
+        {
+          id: 27,
+          log_name: "threads",
+          description: "A thread has been updated",
+          subject_type: "App\\Models\\Languages",
+          subject_id: 20,
+          causer_type: null,
+          causer_id: null,
+          properties: [],
+          created_at: "2022-02-17T11:22:36.000000Z",
+          updated_at: "2022-02-17T11:22:36.000000Z",
+        },
+        {
+          id: 27,
+          log_name: "threads",
+          description: "A thread has been updated",
+          subject_type: "App\\Models\\Languages",
+          subject_id: 20,
+          causer_type: null,
+          causer_id: null,
+          properties: [],
+          created_at: "2022-02-17T11:22:36.000000Z",
+          updated_at: "2022-02-17T11:22:36.000000Z",
+        },
+        {
+          id: 27,
+          log_name: "threads",
+          description: "A thread has been updated",
+          subject_type: "App\\Models\\Languages",
+          subject_id: 20,
+          causer_type: null,
+          causer_id: null,
+          properties: [],
+          created_at: "2022-02-17T11:22:36.000000Z",
+          updated_at: "2022-02-17T11:22:36.000000Z",
+        },
+        {
+          id: 27,
+          log_name: "threads",
+          description: "A thread has been updated",
+          subject_type: "App\\Models\\Languages",
+          subject_id: 20,
+          causer_type: null,
+          causer_id: null,
+          properties: [],
+          created_at: "2022-02-17T11:22:36.000000Z",
+          updated_at: "2022-02-17T11:22:36.000000Z",
+        },
+        {
+          id: 27,
+          log_name: "threads",
+          description: "A thread has been updated",
+          subject_type: "App\\Models\\Languages",
+          subject_id: 20,
+          causer_type: null,
+          causer_id: null,
+          properties: [],
+          created_at: "2022-02-17T11:22:36.000000Z",
+          updated_at: "2022-02-17T11:22:36.000000Z",
+        },
+      ],
 
-export const getCanonizedNameSpacesApi = async () => {
-  try {
-    const nameSpaces = await NetworkCall.fetch(
-      HomePageRequests.getCanonizedNameSpaces()
-    );
-    store.dispatch(setCanonizedNameSpaces(nameSpaces));
-    return nameSpaces;
-  } catch (error) {
-    // message.error(error.message);
-  }
-};
-
-export const getRecentActivitiesApi = async (
-  reqBody,
-  loadMore = false,
-  istopic = true
-) => {
-  try {
-    /////////////////////////////////////////////////////////////////////////////
-    // Once API gets completed I'll uncomment this chunk and remove mockData  //
-    ///////////////////////////////////////////////////////////////////////////
-
-    // const recentActivities = await NetworkCall.fetch(
-    //   HomePageRequests.getCanonizedRecentActivities(reqBody),
-    //   false
-    // );
-    const mockDataTopic = {
       numOfPages: 8,
+    },
+    threadsData: {
       topics: [
         {
           id: 27,
-          log_name: "Topic",
-          description: "A Topic has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-        {
-          id: 27,
-          log_name: "Topic",
-          description: "A Topic has been updated",
+          log_name: "threads",
+          description: "A thread has been updated sdsa",
           subject_type: "App\\Models\\Languages",
           subject_id: 20,
           causer_type: null,
@@ -88,7 +206,7 @@ export const getRecentActivitiesApi = async (
         {
           id: 27,
           log_name: "threads",
-          description: "A Topic has been updated",
+          description: "A thread has been updated sss",
           subject_type: "App\\Models\\Languages",
           subject_id: 20,
           causer_type: null,
@@ -100,7 +218,7 @@ export const getRecentActivitiesApi = async (
         {
           id: 27,
           log_name: "threads",
-          description: "A Topic has been updated",
+          description: "A thread has been updated ssss",
           subject_type: "App\\Models\\Languages",
           subject_id: 20,
           causer_type: null,
@@ -112,7 +230,7 @@ export const getRecentActivitiesApi = async (
         {
           id: 27,
           log_name: "threads",
-          description: "A Topic has been updated",
+          description: "A thread has been updated  sssss",
           subject_type: "App\\Models\\Languages",
           subject_id: 20,
           causer_type: null,
@@ -124,7 +242,7 @@ export const getRecentActivitiesApi = async (
         {
           id: 27,
           log_name: "threads",
-          description: "A Topic has been updated",
+          description: "A thread has been updated",
           subject_type: "App\\Models\\Languages",
           subject_id: 20,
           causer_type: null,
@@ -136,7 +254,7 @@ export const getRecentActivitiesApi = async (
         {
           id: 27,
           log_name: "threads",
-          description: "A Topic has been updated",
+          description: "A thread has been updated",
           subject_type: "App\\Models\\Languages",
           subject_id: 20,
           causer_type: null,
@@ -148,7 +266,7 @@ export const getRecentActivitiesApi = async (
         {
           id: 27,
           log_name: "threads",
-          description: "A Topic has been updated",
+          description: "A thread has been updated",
           subject_type: "App\\Models\\Languages",
           subject_id: 20,
           causer_type: null,
@@ -160,7 +278,7 @@ export const getRecentActivitiesApi = async (
         {
           id: 27,
           log_name: "threads",
-          description: "A Topic has been updated",
+          description: "A thread has been updated",
           subject_type: "App\\Models\\Languages",
           subject_id: 20,
           causer_type: null,
@@ -172,7 +290,7 @@ export const getRecentActivitiesApi = async (
         {
           id: 27,
           log_name: "threads",
-          description: "A Topic has been updated",
+          description: "A thread has been updated",
           subject_type: "App\\Models\\Languages",
           subject_id: 20,
           causer_type: null,
@@ -184,7 +302,7 @@ export const getRecentActivitiesApi = async (
         {
           id: 27,
           log_name: "threads",
-          description: "A Topic has been updated",
+          description: "A thread has been updated",
           subject_type: "App\\Models\\Languages",
           subject_id: 20,
           causer_type: null,
@@ -196,7 +314,7 @@ export const getRecentActivitiesApi = async (
         {
           id: 27,
           log_name: "threads",
-          description: "A Topic has been updated",
+          description: "A thread has been updated",
           subject_type: "App\\Models\\Languages",
           subject_id: 20,
           causer_type: null,
@@ -208,7 +326,7 @@ export const getRecentActivitiesApi = async (
         {
           id: 27,
           log_name: "threads",
-          description: "A Topic has been updated",
+          description: "A thread has been updated",
           subject_type: "App\\Models\\Languages",
           subject_id: 20,
           causer_type: null,
@@ -220,7 +338,7 @@ export const getRecentActivitiesApi = async (
         {
           id: 27,
           log_name: "threads",
-          description: "A Topic has been updated",
+          description: "A thread has been updated",
           subject_type: "App\\Models\\Languages",
           subject_id: 20,
           causer_type: null,
@@ -232,7 +350,19 @@ export const getRecentActivitiesApi = async (
         {
           id: 27,
           log_name: "threads",
-          description: "A Topic has been updated",
+          description: "A thread has been updated",
+          subject_type: "App\\Models\\Languages",
+          subject_id: 20,
+          causer_type: null,
+          causer_id: null,
+          properties: [],
+          created_at: "2022-02-17T11:22:36.000000Z",
+          updated_at: "2022-02-17T11:22:36.000000Z",
+        },
+        {
+          id: 27,
+          log_name: "threads",
+          description: "A thread has been updated",
           subject_type: "App\\Models\\Languages",
           subject_id: 20,
           causer_type: null,
@@ -242,228 +372,39 @@ export const getRecentActivitiesApi = async (
           updated_at: "2022-02-17T11:22:36.000000Z",
         },
       ],
-    };
-    const mockDataThread = {
+
       numOfPages: 6,
-      topics: [
-        {
-          id: 27,
-          log_name: "threads",
-          description: "A thread has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-        {
-          id: 27,
-          log_name: "threads",
-          description: "A thread has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-        {
-          id: 27,
-          log_name: "threads",
-          description: "A thread has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-        {
-          id: 27,
-          log_name: "threads",
-          description: "A thread has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-        {
-          id: 27,
-          log_name: "threads",
-          description: "A thread has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-        {
-          id: 27,
-          log_name: "threads",
-          description: "A thread has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-        {
-          id: 27,
-          log_name: "threads",
-          description: "A thread has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-        {
-          id: 27,
-          log_name: "threads",
-          description: "A thread has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-        {
-          id: 27,
-          log_name: "threads",
-          description: "A thread has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-        {
-          id: 27,
-          log_name: "threads",
-          description: "A thread has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-        {
-          id: 27,
-          log_name: "threads",
-          description: "A thread has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-        {
-          id: 27,
-          log_name: "threads",
-          description: "A thread has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-        {
-          id: 27,
-          log_name: "threads",
-          description: "A thread has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-        {
-          id: 27,
-          log_name: "threads",
-          description: "A thread has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-        {
-          id: 27,
-          log_name: "threads",
-          description: "A thread has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-      ],
-    };
+    },
+  },
+  reducers: {
+    setTopics: (state, action) => {
+      state.topicsData = {
+        topics: action.payload?.topics,
+        numOfPages: action.payload?.numOfPages,
+      };
+    },
+    pushToTopics: (state, action) => {
+      state.topicsData = {
+        ...state.topicsData,
+        topics: [...state.topicsData.topics, ...action.payload.topics],
+      };
+    },
+    setThreads: (state, action) => {
+      state.threadsData = {
+        topics: action.payload?.topics,
+        numOfPages: action.payload?.numOfPages,
+      };
+    },
+    pushToThreads: (state, action) => {
+      state.threadsData = {
+        ...state.threadsData,
+        topics: [...state.threadsData.topics, ...action.payload.topics],
+      };
+    },
+  },
+});
 
-    if (loadMore) {
-      istopic
-        ? store.dispatch(pushToTopics(mockDataTopic))
-        : store.dispatch(pushToThreads(mockDataThread));
-    } else {
-      istopic
-        ? store.dispatch(setTopics(mockDataTopic))
-        : store.dispatch(setThreads(mockDataThread));
-    }
-    return mockDataThread;
-  } catch (error) {
-    // message.error(error.message);
-  }
-};
+export const { setTopics, pushToTopics, setThreads, pushToThreads } =
+  recentActivitiesSlice.actions;
 
-export const getCanonizedAlgorithmsApi = async () => {
-  try {
-    const algorithms = await NetworkCall.fetch(
-      HomePageRequests.getCanonizedAlgorithms(),
-      false
-    );
-    store.dispatch(setCanonizedAlgorithms(algorithms));
-    return algorithms;
-  } catch (error) {
-    // message.error(error.message);
-  }
-};
-
-export const getCanonizedWhatsNewContentApi = async () => {
-  try {
-    const whatsNew = await NetworkCall.fetch(
-      HomePageRequests.getCanonizedWhatsNewContent()
-    );
-    return whatsNew?.data;
-  } catch (error) {
-    // message.error(error.message);
-  }
-};
+export default recentActivitiesSlice.reducer;
