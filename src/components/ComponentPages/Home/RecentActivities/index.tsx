@@ -50,7 +50,10 @@ export default function RecentActivities() {
   useEffect(() => {
     async function linksApiCall() {
       setGetTopicsLoadingIndicator(true);
-      await getTopicsApiCallWithReqBody();
+      await getTopicsApiCallWithReqBody(
+        false,
+        selectedTab == "topics" ? true : false
+      );
       setGetTopicsLoadingIndicator(false);
     }
     linksApiCall();
