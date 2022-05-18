@@ -67,6 +67,7 @@ const UploadFiles = () => {
   const [showCreateFolderModal, setShowCreateFolderModal] = useState(false);
   const ref = useRef();
   const closeFolder = () => {
+    setGetFileListFromFolderID([]);
     setOpenFolderID("");
     showUploadsAfter();
     enableCreateFolderBtn();
@@ -104,6 +105,7 @@ const UploadFiles = () => {
   const handleCancel = () => {
     setUploadFileList([]);
     uploadOptionsHide();
+    fileStatusHide();
     GetUploadFileAndFolder();
   };
   const handle_X_btn = () => {
