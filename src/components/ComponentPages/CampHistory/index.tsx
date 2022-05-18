@@ -2,7 +2,7 @@ import { Typography, Button, List } from "antd";
 import { useRouter } from "next/router";
 import styles from "./campHistory.module.scss";
 import Link from "next/link";
-import { getCampStatementHistoryApi } from "src/network/api/campStatementHistory";
+import { getCampStatementHistoryApi } from "../../../network/api/campStatementHistory";
 import { useEffect, useState } from "react";
 import HistoryCollapse from "./Collapse";
 import { useSelector } from "react-redux";
@@ -26,15 +26,19 @@ export default function CampList() {
 
   useEffect(() => {
     const campStatementApiCall = async () => {
-      setLoadingIndicator(true);
-      const reqBody = {
-        topic_num: +router.query.camp[0].split("-")[0],
-        camp_num: +router.query.camp[1].split("-")[0],
-        type: isActive,
-        as_of: "default",
-      };
-      await getCampStatementHistoryApi(reqBody);
-      setLoadingIndicator(false);
+      try {
+        setLoadingIndicator(true);
+        const reqBody = {
+          topic_num: +router.query.camp[0].split("-")[0],
+          camp_num: +router.query.camp[1].split("-")[0],
+          type: isActive,
+          as_of: "default",
+        };
+        await getCampStatementHistoryApi(reqBody);
+        setLoadingIndicator(false);
+      } catch (error) {
+        //console.log(error)
+      }
     };
     campStatementApiCall();
     // eslint-disable-next-line react-hooks/exhaustive-deps
