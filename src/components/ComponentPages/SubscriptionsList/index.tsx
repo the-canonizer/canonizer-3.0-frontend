@@ -8,22 +8,7 @@ const subsList = [
     title: "topic one 17 05",
     title_link:
       "http://canonizer3.local/topic/323-topic-one-17-05/1-Aggreement",
-    camps: [
-      {
-        camp_num: 1,
-        camp_name: "Agreement",
-        support_order: 1,
-        camp_link:
-          "http://canonizer3.local/topic/323-topic-one-17-05/1-Agreement#statement",
-      },
-      {
-        camp_num: 2,
-        camp_name: "Agreement-2",
-        support_order: 2,
-        camp_link:
-          "http://canonizer3.local/topic/323-topic-one-17-05/1-Agreement#statement",
-      },
-    ],
+    camps: [],
   },
   {
     topic_num: 324,

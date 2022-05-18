@@ -25,7 +25,9 @@ function TopicSubscriptionsTab({
       return (
         <Card
           key={i}
-          className={styles.cardBox_tags}
+          className={`${styles.cardBox_tags} ${
+            data.camps?.length > 0 ? "" : styles.no_body
+          }`}
           type="inner"
           size="default"
           title={

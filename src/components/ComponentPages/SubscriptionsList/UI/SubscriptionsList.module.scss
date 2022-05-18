@@ -54,11 +54,18 @@
   overflow: hidden;
   box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%);
   width: 100% !important;
+
+  &.no_body {
+    div[class="ant-card-body"] {
+      padding: 0;
+    }
+  }
 }
 
 .cardTitle {
-  font-weight: 600;
-  font-size: 14px;
+  font-weight: 550;
+  font-size: 12px;
+  text-transform: capitalize;
 
   @media screen and (max-width: 767px) {
     font-size: 0;
