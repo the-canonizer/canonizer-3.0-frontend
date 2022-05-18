@@ -1,5 +1,5 @@
-import { Tabs } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { Tabs, Card, Typography, Tooltip, Button } from "antd";
+import { SearchOutlined, CloseCircleOutlined } from "@ant-design/icons";
 
 import styles from "./SubscriptionsList.module.scss";
 
@@ -7,6 +7,7 @@ import TopicSubscriptionsTab from "./TopicSubscriptionsTab";
 import TopicRemoveModal from "./RemoveModal";
 
 const { TabPane } = Tabs;
+const { Title } = Typography;
 
 function SubscriptionsListUI({
   tabCallBack,
@@ -35,30 +36,18 @@ function SubscriptionsListUI({
 
   return (
     <div className={styles.supported_camps}>
-      <div className={styles.search_users}>
-        <SearchOutlined />
-        <input
-          placeholder={placeholder}
-          type="text"
-          name="search"
-          onChange={onSearch}
-          className={styles.searchInput}
+      <Card
+        className={styles.cardBox_tags_wrapper}
+        type="inner"
+        size="default"
+        style={{ width: "100%" }}
+      >
+        <TopicSubscriptionsTab
+          onRemoveSubscription={onRemoveSubscription}
+          onConfirm={onConfirm}
+          subscriptionsList={subscriptionsList}
         />
-      </div>
-      <Tabs onChange={tabCallBack} type="card" activeKey={activeKey}>
-        <TabPane tab="Subscriptions List" key="topic_subs">
-          <Note />
-          <TopicSubscriptionsTab
-            onRemoveSubscription={onRemoveSubscription}
-            onConfirm={onConfirm}
-            subscriptionsList={subscriptionsList}
-          />
-        </TabPane>
-        {/* <TabPane tab="Camp Subscriptions" key="camp_subs">
-          <Note />
-          <CampSubscriptionsTab />
-        </TabPane> */}
-      </Tabs>
+      </Card>
       <TopicRemoveModal
         isVisible={isVisible}
         onCancel={onCancel}
