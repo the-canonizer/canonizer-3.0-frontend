@@ -163,10 +163,10 @@ const TopicsList = () => {
   );
 
   const handleCheckbox = async (e) => {
-    if (isLogin) {
-      onlyMyTopicsCheck = e.target.checked;
-      await getTopicsApiCallWithReqBody();
-    } else router.push("/login");
+    setGetTopicsLoadingIndicator(true);
+    onlyMyTopicsCheck = e.target.checked;
+    await getTopicsApiCallWithReqBody();
+    setGetTopicsLoadingIndicator(false);
   };
 
   const handleTopicClick = () => {
