@@ -58,191 +58,16 @@ export const getRecentActivitiesApi = async (
     //   HomePageRequests.getCanonizedRecentActivities(reqBody),
     //   false
     // );
-    const mockDataTopic = {
-      numOfPages: 8,
-      topics: [
-        {
-          id: 27,
-          log_name: "Topic",
-          description: "A Topic has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-        {
-          id: 27,
-          log_name: "Topic",
-          description: "A Topic has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-        {
-          id: 27,
-          log_name: "threads",
-          description: "A Topic has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-        {
-          id: 27,
-          log_name: "threads",
-          description: "A Topic has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-        {
-          id: 27,
-          log_name: "threads",
-          description: "A Topic has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-        {
-          id: 27,
-          log_name: "threads",
-          description: "A Topic has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-        {
-          id: 27,
-          log_name: "threads",
-          description: "A Topic has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-        {
-          id: 27,
-          log_name: "threads",
-          description: "A Topic has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-        {
-          id: 27,
-          log_name: "threads",
-          description: "A Topic has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-        {
-          id: 27,
-          log_name: "threads",
-          description: "A Topic has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-        {
-          id: 27,
-          log_name: "threads",
-          description: "A Topic has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-        {
-          id: 27,
-          log_name: "threads",
-          description: "A Topic has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-        {
-          id: 27,
-          log_name: "threads",
-          description: "A Topic has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-        {
-          id: 27,
-          log_name: "threads",
-          description: "A Topic has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-        {
-          id: 27,
-          log_name: "threads",
-          description: "A Topic has been updated",
-          subject_type: "App\\Models\\Languages",
-          subject_id: 20,
-          causer_type: null,
-          causer_id: null,
-          properties: [],
-          created_at: "2022-02-17T11:22:36.000000Z",
-          updated_at: "2022-02-17T11:22:36.000000Z",
-        },
-      ],
-    };
+    let state = store.getState();
+    const { auth } = state;
+
+    const recentActivities = await NetworkCall.fetch(
+      HomePageRequests.getCanonizedRecentActivities(
+        reqBody,
+        auth?.loggedInUser?.token
+      )
+    );
+
     const mockDataThread = {
       numOfPages: 6,
       topics: [
@@ -431,11 +256,11 @@ export const getRecentActivitiesApi = async (
 
     if (loadMore) {
       istopic
-        ? store.dispatch(pushToTopics(mockDataTopic))
+        ? store.dispatch(pushToTopics(recentActivities?.data))
         : store.dispatch(pushToThreads(mockDataThread));
     } else {
       istopic
-        ? store.dispatch(setTopics(mockDataTopic))
+        ? store.dispatch(setTopics(recentActivities?.data))
         : store.dispatch(setThreads(mockDataThread));
     }
     return mockDataThread;

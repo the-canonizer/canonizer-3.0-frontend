@@ -24,7 +24,7 @@ export default function RecentActivities() {
   const [recentActivities, setRecentActivities] = useState(topicsData);
   const [topicPageNumber, setTopicPageNumber] = useState(1);
   const [threadPageNumber, setThreadPageNumber] = useState(1);
-  const [selectedTab, setSelectedTab] = useState("topics");
+  const [selectedTab, setSelectedTab] = useState("topic/camps");
   const [loadMoreIndicator, setLoadMoreIndicator] = useState(false);
   const [getTopicsLoadingIndicator, setGetTopicsLoadingIndicator] =
     useState(false);
@@ -52,7 +52,7 @@ export default function RecentActivities() {
       setGetTopicsLoadingIndicator(true);
       await getTopicsApiCallWithReqBody(
         false,
-        selectedTab == "topics" ? true : false
+        selectedTab == "topic/camps" ? true : false
       );
       setGetTopicsLoadingIndicator(false);
     }
@@ -70,27 +70,36 @@ export default function RecentActivities() {
     setSelectedTab(key);
   };
 
-  async function getTopicsApiCallWithReqBody(loadMore = false, istopic = true) {
-    istopic
-      ? loadMore
-        ? setTopicPageNumber(topicPageNumber + 1)
-        : setTopicPageNumber(1)
-      : loadMore
-      ? setThreadPageNumber(threadPageNumber + 1)
-      : setThreadPageNumber(1);
-
-    const p1 = await new Promise((r) => setTimeout(r, 1000));
+  async function getTopicsApiCallWithReqBody(loadMore = false, isTopic = true) {
+    let pageNo;
+    if (isTopic) {
+      if (loadMore) {
+        setTopicPageNumber((prev) => prev + 1);
+        pageNo = topicPageNumber + 1;
+      } else {
+        setTopicPageNumber(1);
+        pageNo = 1;
+      }
+    } else {
+      if (loadMore) {
+        setThreadPageNumber((prev) => prev + 1);
+        pageNo = threadPageNumber + 1;
+      } else {
+        setThreadPageNumber(1);
+        pageNo = 1;
+      }
+    }
     const reqBody = {
-      log_type: selectedTab,
-      page_number: istopic ? topicPageNumber : threadPageNumber,
-      page_size: 20,
+      log_type: isTopic ? "topic/camps" : "threads",
+      page: pageNo,
+      per_page: 15,
     };
-    getRecentActivitiesApi(reqBody, loadMore, istopic);
+    getRecentActivitiesApi(reqBody, loadMore, isTopic);
     setLoadMoreIndicator(false);
   }
 
-  const ViewAllTopics = (istopic) => {
-    const ViewAllName = istopic ? "View All Topics" : "View All Threads";
+  const ViewAllTopics = (isTopic) => {
+    const ViewAllName = isTopic ? "View All Topics" : "View All Threads";
     return (
       recentActivities?.topics?.length > 0 && (
         <div className={styles.footer}>
@@ -103,8 +112,8 @@ export default function RecentActivities() {
     );
   };
 
-  const LoadMoreTopics = (istopic) => {
-    const pageNumber = istopic ? topicPageNumber : threadPageNumber;
+  const LoadMoreTopics = (isTopic) => {
+    const pageNumber = isTopic ? topicPageNumber : threadPageNumber;
     return (
       recentActivities?.topics?.length > 0 && (
         <div className={styles.footer}>
@@ -114,7 +123,7 @@ export default function RecentActivities() {
                 className={styles.viewAll}
                 onClick={() => {
                   setLoadMoreIndicator(true);
-                  getTopicsApiCallWithReqBody(true, istopic);
+                  getTopicsApiCallWithReqBody(true, isTopic);
                 }}
               >
                 <Text>Load More topics !</Text>
@@ -127,18 +136,17 @@ export default function RecentActivities() {
       )
     );
   };
-
   return (
     <>
       <div className={`${styles.listCard} recentActivities_listWrap`}>
         <Spin spinning={getTopicsLoadingIndicator} size="large">
           <Tabs
             className={`${styles.listCardTabs} recentActivities_listCardTabs`}
-            defaultActiveKey="topics"
+            defaultActiveKey="topic/camps"
             tabBarExtraContent={slot}
             onChange={handleTabChange}
           >
-            <TabPane tab="Topics/Camps" key="topics">
+            <TabPane tab="Topics/Camps" key="topic/camps">
               <List
                 className={styles.listWrap}
                 footer={
@@ -153,7 +161,7 @@ export default function RecentActivities() {
                     <Link href={"/"}>
                       <>
                         <Text className={styles.text}>
-                          {activity.description}
+                          {activity?.activity?.description}
                         </Text>
                         <Text className={styles.secondary} type="secondary">
                           <i className="icon-calendar"></i>
