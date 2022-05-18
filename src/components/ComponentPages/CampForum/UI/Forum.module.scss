@@ -28,7 +28,7 @@
 }
 
 .cardTitle {
-  font-size: 20px;
+  font-size: 18px;
   line-height: 23px;
   font-weight: normal;
   letter-spacing: 0px;
@@ -81,7 +81,7 @@
 }
 
 .labelHeading {
-  font-size: 16px;
+  font-size: 14px;
   color: #1c1b24;
   line-height: 18px;
   font-weight: 600;
@@ -94,7 +94,7 @@
   .tabBtn {
     border-color: #0f2a4d;
     color: #0f2a4d;
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1;
     margin-right: 10px;
     font-weight: 600;
@@ -178,7 +178,7 @@
   margin-top: 10px;
   span {
     color: #68707a;
-    font-size: 16px;
+    font-size: 14px;
 
     &:first-child {
       margin-right: 5px;
@@ -203,7 +203,8 @@
 }
 
 .cardTitle {
-  font: normal normal 600 20px/23px Asap;
+  font-size: 18px;
+  font-weight: 600;
   letter-spacing: 0px;
   color: #1c1b24;
   opacity: 1;
@@ -212,8 +213,7 @@
 .upperTitle {
   display: flex;
   flex-wrap: wrap;
-  // grid-template-columns: 248px 1fr;
-  // grid-gap: 15px;
+  padding: 10px 0 30px;
   p {
     text-align: left;
     font-weight: normal;
@@ -222,6 +222,7 @@
     letter-spacing: 0px;
     color: #0f2a4d;
     margin-right: 0;
+    margin-bottom: 0;
 
     &:first-child {
       margin-right: 47px;
@@ -242,8 +243,8 @@
 
 .createNewTopicForm {
   label {
-    font-size: 15px;
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 500;
     color: #795548;
 
     span {

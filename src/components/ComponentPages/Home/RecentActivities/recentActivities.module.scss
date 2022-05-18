@@ -39,13 +39,13 @@
         margin-top: 8px;
       }
       @media screen and (max-width: 767px) {
-        font-size: 1rem;
+        // font-size: 1rem;
       }
       a {
         padding-top: 3px;
         padding-bottom: 3px;
         color: #0f2a4d;
-        font-size: 16px;
+        font-size: 14px;
         width: 100%;
         border: solid 1px #f0f0f0;
         background-color: #fff;
@@ -104,7 +104,7 @@
     text-align: right;
     .viewAll {
       position: relative;
-    //   font-size: 1rem;
+      font-size: 13px;
       font-weight: 600;
       display: inline-flex;
       align-items: center;

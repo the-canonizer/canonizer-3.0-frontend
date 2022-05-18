@@ -259,7 +259,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
             key="2"
           >
             <Radio.Group onChange={onChange} value={value}>
-              <Space direction="vertical">
+              <Space direction="vertical" style={{ gap: "12px" }}>
                 <Radio
                   className={styles.radio}
                   value={1}
