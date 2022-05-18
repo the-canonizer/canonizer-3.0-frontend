@@ -131,14 +131,14 @@ body {
 .leftSideBar {
   & + .pageContentWrap {
     @media screen and (min-width: 992px) {
-      padding: 0 16px;
+      padding: 0 15px;
     }
   }
   &.miniSideBar {
     @media screen and (min-width: 992px) {
-      width: 245px;
+      width: 200px;
       & + .pageContentWrap {
-        width: calc(100% - 245px);
+        width: calc(100% - 200px);
       }
     }
     @media screen and (max-width: 991px) {
@@ -169,9 +169,9 @@ body {
     }
   }
   &_Card {
-    padding-top: 20px;
-    padding-right: 20px;
-    padding-left: 20px;
+    padding-top: 15px;
+    padding-right: 15px;
+    padding-left: 15px;
     border: solid 1px #f0f0f0;
     background-color: #fff;
     margin-bottom: 16px;
