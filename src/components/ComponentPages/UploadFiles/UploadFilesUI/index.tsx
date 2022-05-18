@@ -32,6 +32,10 @@ import Icon, {
   EyeTwoTone,
   CopyTwoTone,
   DeleteTwoTone,
+  FilePptOutlined,
+  FileOutlined,
+  FileExcelOutlined,
+  FileWordOutlined,
 } from "@ant-design/icons";
 import Image from "next/image";
 import styles from "./UploadFile.module.scss";
@@ -73,7 +77,6 @@ import {
 import { labels } from "../../../../messages/label";
 import { setTimeout } from "timers";
 import { spawnSync } from "child_process";
-
 const UploadFileUI = ({
   input,
   setInput,
@@ -107,6 +110,7 @@ const UploadFileUI = ({
   const [createFolderForm] = Form.useForm();
   const imageTimer = 2500;
   const [rename, setRename] = useState("");
+  const [editFolderNameVal, setEditFolderNameVal] = useState("");
   const [editModal, setEditModal] = useState(false);
   const [editModalId, setEditModalId] = useState("");
   const [preview, setPreview] = useState({
@@ -155,6 +159,17 @@ const UploadFileUI = ({
   const validateMessages = {
     required: "${name} is required !",
   };
+  //Regex
+  const textFileRegex = /^text\/(plain$|html$|rtf$|csv$)/;
+  const pdfFileRegex = /^application\/(pdf$)/;
+  const excelFileRegex =
+    /^application\/(vnd.ms-excel.sheet.macroEnabled.12$|vnd.ms-excel$|vnd.ms-excel.sheet.binary.macroEnabled.12$|vnd.openxmlformats-officedocument.spreadsheetml.sheet$)/;
+  const docFileRegex =
+    /^application\/(msword$|vnd.openxmlformats-officedocument.wordprocessingml.template$|vnd.ms-word.template.macroEnabled.12$|vnd.openxmlformats-officedocument.wordprocessingml.document$| vnd.ms-word.document.macroEnabled.12$|msword$)/;
+  const imageRegexData = /^image\/(jpeg$|png$|jpg$|gif$|bmp$)/;
+  const pptRegexData =
+    /^application\/(vnd.ms-powerpoint.template.macroEnabled.12$|vnd.openxmlformats-officedocument.presentationml.template$|vnd.ms-powerpoint.addin.macroEnabled.12$|vnd.openxmlformats-officedocument.presentationml.slideshow$|vnd.openxmlformats-officedocument.presentationml.slideshow$|vnd.ms-powerpoint.slideshow.macroEnabled.12$|vnd.ms-powerpoint$|vnd.ms-powerpoint.presentation.macroEnabled.12$|vnd.openxmlformats-officedocument.presentationml.presentation$)/;
+  const fileJsonRegex = /^application\/(json$)/;
   const menu = (i, obj) => (
     <Menu>
       <Menu.Item>
@@ -255,10 +270,22 @@ const UploadFileUI = ({
     </Menu>
   );
   const displayColumnListImage = (obj) => {
+    const fileText = <FileTextFilled className={styles.folder_icons_fileTxt} />;
+    const filePdf = <FilePdfFilled className={styles.folder_icons_pdf} />;
+    const fileUnknown = <FileUnknownFilled className={styles.folder_icons} />;
+
+    const filePpt = <FilePptOutlined className={styles.folder_icons_fileTxt} />;
+    const fileJson = <FileOutlined className={styles.folder_icons_fileTxt} />;
+    const fileXcel = (
+      <FileExcelOutlined className={styles.folder_icons_fileTxt} />
+    );
+    const fileDocs = (
+      <FileWordOutlined className={styles.folder_icons_fileTxt} />
+    );
     return (
       <div>
         {(() => {
-          if (obj.type == "file" || obj.file_path) {
+          if (imageRegexData.test(obj.file_type) && obj.file_path) {
             return (
               <Image
                 alt="Image"
@@ -277,12 +304,20 @@ const UploadFileUI = ({
                 }}
               />
             );
-          } else if (obj.type == "text/plain") {
-            return <FileTextFilled className={styles.folder_icons_fileTxt} />;
-          } else if (obj.type == "application/pdf") {
-            return <FilePdfFilled className={styles.folder_icons_pdf} />;
-          } else if (obj.type == "") {
-            return <FileUnknownFilled className={styles.folder_icons} />;
+          } else if (textFileRegex.test(obj.file_type)) {
+            return fileText;
+          } else if (pdfFileRegex.test(obj.file_type)) {
+            return filePdf;
+          } else if (excelFileRegex.test(obj.file_type)) {
+            return fileXcel;
+          } else if (docFileRegex.test(obj.file_type)) {
+            return fileDocs;
+          } else if (pptRegexData.test(obj.file_type)) {
+            return filePpt;
+          } else if (fileJsonRegex.test(obj.file_type)) {
+            return fileJson;
+          } else {
+            return fileUnknown;
           }
         })()}
       </div>
@@ -293,6 +328,7 @@ const UploadFileUI = ({
     setEditModal(true);
     setShowCreateFolderModal(true);
     setRename(obj.name);
+    setEditFolderNameVal(obj.name);
     setEditModalId(obj.id);
     createFolderForm.setFieldsValue({
       ["Folder Name"]: obj.name,
@@ -785,11 +821,24 @@ const UploadFileUI = ({
     });
   };
   const displayImage = (file, imageData) => {
-    console.log(file, "file", imageData);
+    const fileText = <FileTextFilled className={styles.FileTextTwoOneClass} />;
+    const filePdf = <FilePdfFilled className={styles.FilePdfTwoToneColor} />;
+    const fileUnknown = (
+      <FileUnknownFilled className={styles.FileTextTwoOneClass} />
+    );
+    const filePpt = <FilePptOutlined className={styles.FileTextTwoOneClass} />;
+    const fileJson = <FileOutlined className={styles.FileTextTwoOneClass} />;
+    const fileXcel = (
+      <FileExcelOutlined className={styles.FileTextTwoOneClass} />
+    );
+    const fileDocs = (
+      <FileWordOutlined className={styles.FileTextTwoOneClass} />
+    );
+
     return (
       <div id="display_image">
         {(() => {
-          if (file.type == "file" || imageData) {
+          if (imageRegexData.test(file.file_type || file.type) && imageData) {
             return (
               <Image
                 alt="Image"
@@ -798,12 +847,20 @@ const UploadFileUI = ({
                 width={"140px"}
               />
             );
-          } else if (file.type == "text/plain") {
-            return <FileTextFilled className={styles.FileTextTwoOneClass} />;
-          } else if (file.type == "application/pdf") {
-            return <FilePdfFilled className={styles.FilePdfTwoToneColor} />;
-          } else if (file.type == "") {
-            return <FileUnknownFilled className={styles.FileTextTwoOneClass} />;
+          } else if (textFileRegex.test(file.file_type || file.type)) {
+            return fileText;
+          } else if (pdfFileRegex.test(file.file_type || file.type)) {
+            return filePdf;
+          } else if (excelFileRegex.test(file.file_type || file.type)) {
+            return fileXcel;
+          } else if (docFileRegex.test(file.file_type || file.type)) {
+            return fileDocs;
+          } else if (pptRegexData.test(file.file_type || file.type)) {
+            return filePpt;
+          } else if (fileJsonRegex.test(file.file_type || file.type)) {
+            return fileJson;
+          } else {
+            return fileUnknown;
           }
         })()}
       </div>
@@ -858,7 +915,7 @@ const UploadFileUI = ({
               <div className={styles.top_btn}>
                 <div className="datepIcker">
                   <DatePicker
-                    disabled={show_UploadOptions}
+                    disabled={show_UploadOptions || dragBoxStatus}
                     onChange={(date, dateString) => {
                       setDatePick(date ? date.toLocaleString() : "");
                     }}
@@ -867,7 +924,7 @@ const UploadFileUI = ({
                 <div className={styles.search_users}>
                   <SearchOutlined />
                   <Input
-                    disabled={show_UploadOptions}
+                    disabled={show_UploadOptions || dragBoxStatus}
                     id="datePickerText"
                     placeholder="Search"
                     type="text"
@@ -890,7 +947,7 @@ const UploadFileUI = ({
                 >
                   Create folder
                 </Button>
-                {addButtonShow ? (
+                {addButtonShow && !dragBoxStatus ? (
                   <Button
                     id="addAFileBtn"
                     className={styles.add_file_btn}
@@ -905,7 +962,7 @@ const UploadFileUI = ({
                 )}
               </div>
               <div className={styles.top_icon}>
-                {show_UploadOptions ? (
+                {show_UploadOptions || dragBoxStatus ? (
                   ""
                 ) : (
                   <span
@@ -922,7 +979,7 @@ const UploadFileUI = ({
                     />
                   </span>
                 )}
-                {show_UploadOptions ? (
+                {show_UploadOptions || dragBoxStatus ? (
                   ""
                 ) : (
                   <span
@@ -1096,13 +1153,7 @@ const UploadFileUI = ({
               <Table
                 id="tableColumn"
                 className="contentValue"
-                dataSource={
-                  fileStatus
-                    ? getFileListFromFolderID
-                    : filterArrList
-                    ? filterArrList
-                    : fileLists
-                }
+                dataSource={filteredArray()}
                 columns={columns}
               />
             </div>
@@ -1153,6 +1204,7 @@ const UploadFileUI = ({
           input={input}
           setRename={setRename}
           setInput={setInput}
+          editFolderNameVal={editFolderNameVal}
         />
       </Modal>
 

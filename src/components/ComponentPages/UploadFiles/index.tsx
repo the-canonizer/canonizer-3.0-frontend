@@ -67,6 +67,7 @@ const UploadFiles = () => {
   const [showCreateFolderModal, setShowCreateFolderModal] = useState(false);
   const ref = useRef();
   const closeFolder = () => {
+    setGetFileListFromFolderID([]);
     setOpenFolderID("");
     showUploadsAfter();
     enableCreateFolderBtn();
@@ -89,7 +90,7 @@ const UploadFiles = () => {
     let res = await uploadFile(formData);
     if (res && res.status_code == 200) {
       setFolderFiles([]);
-      fileStatusHide();
+      //fileStatusHide();
       enableCreateFolderBtn();
       uploadOptionsHide();
       shownFolder();
@@ -102,29 +103,18 @@ const UploadFiles = () => {
     }
   };
   const handleCancel = () => {
-    setFileLists(fileLists);
+    setUploadFileList([]);
+    uploadOptionsHide();
     fileStatusHide();
     GetUploadFileAndFolder();
-    setUploadFileList([]);
-    {
-      fileLists.length > 0
-        ? (enableCreateFolderBtn(),
-          shownAddButton(),
-          dragBoxHide(),
-          uploadOptionsHide())
-        : (enableCreateFolderBtn(),
-          //disbleCreateFolderBtn(),
-          addButtonHide(),
-          dragBoxShow(),
-          uploadOptionsShow());
-    }
   };
   const handle_X_btn = () => {
     crossBtnHide();
     dragBoxHide();
     showFiles();
-    uploadOptionsHide();
-    GetUploadFileAndFolder();
+    uploadFileList.length == 0
+      ? (uploadOptionsHide(), GetUploadFileAndFolder())
+      : uploadOptionsShow();
   };
   const addNewFile = () => {
     hideFiles();
