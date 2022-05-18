@@ -191,7 +191,7 @@ const TopicsList = () => {
                     <i className="icon-info cursor-pointer"></i>
                   </Popover>
                 </Title>
-                {router.asPath === "/browse" && (
+                {router.asPath === "/browse" && isLogin && (
                   <Checkbox
                     className={styles.checkboxOnlyMyTopics}
                     onChange={handleCheckbox}
