@@ -10,8 +10,6 @@ const { TabPane } = Tabs;
 const { Title } = Typography;
 
 function SubscriptionsListUI({
-  tabCallBack,
-  onSearch,
   activeKey,
   subscriptionsList,
   onRemoveSubscription,

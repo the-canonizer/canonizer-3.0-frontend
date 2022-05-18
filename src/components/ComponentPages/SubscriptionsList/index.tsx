@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import SubscriptionsListUI from "./UI";
+
+import { GetAllSubscriptionsList } from "../../../network/api/userApi";
 
 const subsList = [
   {
@@ -41,11 +43,24 @@ function SubscriptionsList({ isTestData = [...subsList] }) {
   const [isVisible, setIsVisible] = useState(false);
   const [currentTopic, setCurrentTopic] = useState({});
 
-  const tabCallBack = (key: string) => {
-    // setActiveKey(key);
+  const getSubscriptionsList = async (q: string) => {
+    const res = await GetAllSubscriptionsList(q);
+    console.log("response", res);
+
+    if (res?.status_code === 200) {
+      setSubscriptionsList(res?.data);
+    }
   };
 
-  const onSearch = (ev: any) => setSearchQuery(ev.target.value);
+  useEffect(() => {
+    getSubscriptionsList("");
+  }, []);
+
+  // const tabCallBack = (key: string) => {
+  //   setActiveKey(key);
+  // };
+
+  // const onSearch = (ev: any) => setSearchQuery(ev.target.value);
 
   const onRemoveSubscription = (e: any, topic: object) => {
     e.preventDefault();
@@ -66,8 +81,6 @@ function SubscriptionsList({ isTestData = [...subsList] }) {
 
   return (
     <SubscriptionsListUI
-      tabCallBack={tabCallBack}
-      onSearch={onSearch}
       activeKey={activeKey}
       onRemoveSubscription={onRemoveSubscription}
       onConfirm={onConfirm}

@@ -476,4 +476,14 @@ export default class UserRequest extends Request {
       authToken
     );
   }
+
+  static AllSubscriptionsList(params) {
+    return new Request(
+      K.Network.URL.DeleteUploadFile + params,
+      K.Network.Method.GET,
+      {},
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
 }
