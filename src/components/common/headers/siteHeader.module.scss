@@ -1,5 +1,5 @@
 .wrap {
-  padding: 1.25rem 1.5rem;
+  padding: 1rem 19px;
   background-color: var(--primary);
   height: auto;
   display: flex;
@@ -7,10 +7,10 @@
   align-items: center;
   line-height: normal;
   .logo {
-    width: 225px;
+    width: 199px;
     img {
       max-height: 42px;
-      max-width: 225px;
+      max-width: 200px;
     }
   }
   .mobNavBG {
