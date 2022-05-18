@@ -290,6 +290,8 @@ const ForumComponent = ({}) => {
       if (q.tId) {
         const body = {
           title: values.thread_title?.trim(),
+          topic_num: paramsList["topic_num"],
+          camp_num: paramsList["camp_num"],
         };
         res = await updateThread(body, +q.tId);
       } else {
