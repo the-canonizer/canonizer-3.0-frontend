@@ -102,6 +102,9 @@ export const subscribeToCampApi = async (reqBody, isTopic: Boolean) => {
             subscribeToCamp?.data?.subscriptionId || null
           )
         );
+    subscribeToCamp?.data?.msg
+      ? message.info(subscribeToCamp?.data?.msg)
+      : message.info(subscribeToCamp?.message);
     return subscribeToCamp?.data;
   } catch (error) {
     // message.error(error.message);
