@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { LoadingOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
+import useAuthentication from "../../../../hooks/isUserAuthenticated";
 
 const antIcon = <LoadingOutlined spin />;
 const { TabPane } = Tabs;
@@ -20,6 +21,8 @@ export default function RecentActivities() {
     topicsData: state?.recentActivities?.topicsData,
     threadsData: state?.recentActivities?.threadsData,
   }));
+
+  const isLogin = useAuthentication();
   const [position] = useState(["left", "right"]);
   const [recentActivities, setRecentActivities] = useState(topicsData);
   const [topicPageNumber, setTopicPageNumber] = useState(1);
@@ -53,7 +56,12 @@ export default function RecentActivities() {
       await getTopicsApiCallWithReqBody(false, selectedTab);
       setGetTopicsLoadingIndicator(false);
     }
-    linksApiCall();
+    if (isLogin) {
+      linksApiCall();
+    } else {
+      setGetTopicsLoadingIndicator(true);
+      router.push("/login");
+    }
   }, [selectedTab]);
 
   const handleTabChange = (key: string) => {
@@ -100,7 +108,7 @@ export default function RecentActivities() {
     return (
       recentActivities?.topics?.length > 0 && (
         <div className={styles.footer}>
-          <Link href="/#" className={styles.viewAll}>
+          <Link href="/activities" className={styles.viewAll}>
             <Text>{ViewAllName}</Text>
             <i className="icon-angle-right"></i>
           </Link>
