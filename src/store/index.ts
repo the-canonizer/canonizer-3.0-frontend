@@ -1,5 +1,6 @@
 import homePageSlice from "./slices/homePageSlice";
 import filtersSlice from "./slices/filtersSlice";
+import recentActivitiesSlice from "./slices/recentActivitiesSlice";
 
 // // reducers
 import Auth from "./slices/authSlice";
@@ -30,6 +31,7 @@ let reducers = combineReducers({
   auth: Auth,
   topicDetails: Tree,
   homePage: homePageSlice,
+  recentActivities: recentActivitiesSlice,
   ui: UiReducer,
   topic: TopicSlice,
   filters: filtersSlice,
