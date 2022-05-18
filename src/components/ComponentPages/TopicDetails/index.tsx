@@ -193,7 +193,10 @@ const TopicDetails = () => {
             }`}
           ></i>
         }
-        onClick={() => campOrTopicScribe(true)}
+        onClick={
+          () => (isLogin ? campOrTopicScribe(true) : router.push("/login"))
+          // campOrTopicScribe(true)
+        }
       >
         {!!topicSubscriptionID
           ? " Unsubscribe to Entire Topic"
@@ -207,7 +210,10 @@ const TopicDetails = () => {
             }`}
           ></i>
         }
-        onClick={() => campOrTopicScribe(false)}
+        onClick={
+          () => (isLogin ? campOrTopicScribe(false) : router.push("/login"))
+          // campOrTopicScribe(false)
+        }
       >
         {!!campSubscriptionID
           ? "Unsubscribe to the Camp"
