@@ -35,7 +35,7 @@ const PostUI = ({
         title={
           <span className={styles.cardTitle}>{currentThread["title"]}</span>
         }
-        className="can-card-style"
+        className={`can-card-style ${styles.forum_post_card}`}
         extra={
           <div className={styles.threadStamp}>
             <Text>{`Thread Created at ${moment(
