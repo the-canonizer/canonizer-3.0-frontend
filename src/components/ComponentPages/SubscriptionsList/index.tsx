@@ -34,10 +34,10 @@ const subsList = [
   },
 ];
 
-function SubscriptionsList() {
+function SubscriptionsList({ isTestData = [...subsList] }) {
   const [activeKey, setActiveKey] = useState("topic_subs");
   const [searchQuery, setSearchQuery] = useState("");
-  const [subscriptionsList, setSubscriptionsList] = useState([...subsList]);
+  const [subscriptionsList, setSubscriptionsList] = useState(isTestData);
   const [isVisible, setIsVisible] = useState(false);
   const [currentTopic, setCurrentTopic] = useState({});
 
