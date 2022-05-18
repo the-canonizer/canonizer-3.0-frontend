@@ -151,14 +151,14 @@ const TopicsList = () => {
 
   const ViewAllTopics = (
     <div className="text-right">
-      {topicsData?.topics?.length && (
+      {topicsData?.topics?.length ? (
         <Link href="/browse">
           <a className={styles.viewAll}>
             <Text>View All Topics</Text>
             <i className="icon-angle-right"></i>
           </a>
         </Link>
-      )}
+      ) : null}
     </div>
   );
 
