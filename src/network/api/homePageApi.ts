@@ -47,7 +47,7 @@ export const getCanonizedNameSpacesApi = async () => {
 export const getRecentActivitiesApi = async (
   reqBody,
   loadMore = false,
-  istopic = true
+  topicType
 ) => {
   try {
     /////////////////////////////////////////////////////////////////////////////
@@ -255,11 +255,11 @@ export const getRecentActivitiesApi = async (
     };
 
     if (loadMore) {
-      istopic
+      topicType == "topic/camps"
         ? store.dispatch(pushToTopics(recentActivities?.data))
         : store.dispatch(pushToThreads(mockDataThread));
     } else {
-      istopic
+      topicType == "topic/camps"
         ? store.dispatch(setTopics(recentActivities?.data))
         : store.dispatch(setThreads(mockDataThread));
     }

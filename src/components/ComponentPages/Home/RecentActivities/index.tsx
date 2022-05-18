@@ -50,10 +50,7 @@ export default function RecentActivities() {
   useEffect(() => {
     async function linksApiCall() {
       setGetTopicsLoadingIndicator(true);
-      await getTopicsApiCallWithReqBody(
-        false,
-        selectedTab == "topic/camps" ? true : false
-      );
+      await getTopicsApiCallWithReqBody(false, selectedTab);
       setGetTopicsLoadingIndicator(false);
     }
     linksApiCall();
@@ -70,9 +67,9 @@ export default function RecentActivities() {
     setSelectedTab(key);
   };
 
-  async function getTopicsApiCallWithReqBody(loadMore = false, isTopic = true) {
+  async function getTopicsApiCallWithReqBody(loadMore = false, topicType) {
     let pageNo;
-    if (isTopic) {
+    if (topicType == "topic/camps") {
       if (loadMore) {
         setTopicPageNumber((prev) => prev + 1);
         pageNo = topicPageNumber + 1;
@@ -90,11 +87,11 @@ export default function RecentActivities() {
       }
     }
     const reqBody = {
-      log_type: isTopic ? "topic/camps" : "threads",
+      log_type: topicType,
       page: pageNo,
       per_page: 15,
     };
-    getRecentActivitiesApi(reqBody, loadMore, isTopic);
+    getRecentActivitiesApi(reqBody, loadMore, topicType);
     setLoadMoreIndicator(false);
   }
 
@@ -112,8 +109,9 @@ export default function RecentActivities() {
     );
   };
 
-  const LoadMoreTopics = (isTopic) => {
-    const pageNumber = isTopic ? topicPageNumber : threadPageNumber;
+  const LoadMoreTopics = (topicType) => {
+    const pageNumber =
+      topicType == "topic/camps" ? topicPageNumber : threadPageNumber;
     return (
       recentActivities?.topics?.length > 0 && (
         <div className={styles.footer}>
@@ -123,7 +121,7 @@ export default function RecentActivities() {
                 className={styles.viewAll}
                 onClick={() => {
                   setLoadMoreIndicator(true);
-                  getTopicsApiCallWithReqBody(true, isTopic);
+                  getTopicsApiCallWithReqBody(true, topicType);
                 }}
               >
                 <Text>Load More topics !</Text>
@@ -152,7 +150,7 @@ export default function RecentActivities() {
                 footer={
                   router.asPath !== "/activities"
                     ? ViewAllTopics(true)
-                    : LoadMoreTopics(true)
+                    : LoadMoreTopics("topic/camps")
                 }
                 bordered={false}
                 dataSource={recentActivities?.topics}
@@ -179,7 +177,7 @@ export default function RecentActivities() {
                 footer={
                   router.asPath !== "/activities"
                     ? ViewAllTopics(false)
-                    : LoadMoreTopics(false)
+                    : LoadMoreTopics("threads")
                 }
                 bordered={false}
                 dataSource={recentActivities?.topics}
