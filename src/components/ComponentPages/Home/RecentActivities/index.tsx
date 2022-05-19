@@ -100,7 +100,7 @@ export default function RecentActivities() {
       page: pageNo,
       per_page: 15,
     };
-    getRecentActivitiesApi(reqBody, loadMore, topicType);
+    await getRecentActivitiesApi(reqBody, loadMore, topicType);
     setLoadMoreIndicator(false);
   }
 
@@ -196,7 +196,7 @@ export default function RecentActivities() {
                     <Link href={"/"}>
                       <>
                         <Text className={styles.text}>
-                          {activity.description}
+                          {activity?.activity?.description}
                         </Text>
                         <Text className={styles.secondary} type="secondary">
                           <i className="icon-calendar"></i>
