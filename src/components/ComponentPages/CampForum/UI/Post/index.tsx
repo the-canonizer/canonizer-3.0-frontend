@@ -45,7 +45,9 @@ const PostUI = ({
             <Text>
               Started by{" "}
               <Link href="#">
-                <a className={styles.by}>{currentThread["creation_nick_name"]}</a>
+                <a className={styles.by}>
+                  {currentThread["creation_nick_name"]}
+                </a>
               </Link>
             </Text>
           </div>
