@@ -60,13 +60,16 @@ export const getRecentActivitiesApi = async (
     // );
     let state = store.getState();
     const { auth } = state;
-
-    const recentActivities = await NetworkCall.fetch(
-      HomePageRequests.getCanonizedRecentActivities(
-        reqBody,
-        auth?.loggedInUser?.token
-      )
-    );
+    let recentActivities;
+    if (topicType == "topic/camps") {
+      recentActivities = await NetworkCall.fetch(
+        HomePageRequests.getCanonizedRecentActivities(
+          reqBody,
+          auth?.loggedInUser?.token
+        ),
+        false
+      );
+    }
 
     const mockDataThread = {
       numOfPages: 6,

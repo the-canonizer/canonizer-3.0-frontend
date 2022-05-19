@@ -94,6 +94,7 @@ export default function RecentActivities() {
         pageNo = 1;
       }
     }
+
     const reqBody = {
       log_type: topicType,
       page: pageNo,
@@ -142,6 +143,7 @@ export default function RecentActivities() {
       )
     );
   };
+
   return (
     <>
       <div className={`${styles.listCard} recentActivities_listWrap`}>
