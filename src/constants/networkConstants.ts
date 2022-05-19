@@ -57,7 +57,7 @@ const NetworkConstants = {
     GetCanonizedNameSpaces: `${BaseCanonizerApiUrl}/get-all-namespaces`,
     GetWhatsNewContent: `${BaseCanonizerApiUrl}/get-whats-new-content`,
     GetCanonizedAlgorithms: `${BaseCanonizerApiUrl}/get-algorithms`,
-    GetCanonizedRecentActivities: `${BaseCanonizerApiUrl}/get-recent-activities`,
+    GetCanonizedRecentActivities: `${BaseCanonizerApiUrl}/get-activity-log`,
 
     // topic
     CreateTopic: `${BaseCanonizerApiUrl}/topic/save`,
