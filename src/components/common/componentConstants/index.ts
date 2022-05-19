@@ -1,4 +1,4 @@
-export const descriptionTitles = [
+export const currentCampRecordConstants = [
   {
     label: "Camp Name",
     key: "camp_name",
