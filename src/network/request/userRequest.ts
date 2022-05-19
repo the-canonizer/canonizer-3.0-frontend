@@ -479,9 +479,19 @@ export default class UserRequest extends Request {
 
   static AllSubscriptionsList(params) {
     return new Request(
-      K.Network.URL.DeleteUploadFile + params,
+      K.Network.URL.GetSubscriptions + params,
       K.Network.Method.GET,
       {},
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
+
+  static unsubscribeTopicOrCamp(body: object) {
+    return new Request(
+      K.Network.URL.subscribeToCamp,
+      K.Network.Method.POST,
+      body,
       K.Network.Header.Type.Json,
       {}
     );

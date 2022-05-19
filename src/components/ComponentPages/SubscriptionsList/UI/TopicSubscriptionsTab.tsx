@@ -43,40 +43,42 @@ function TopicSubscriptionsTab({
             </Title>
           }
           extra={
-            <Tooltip title="Remove subscription">
-              <Button
-                className={styles.cardTitle}
-                onClick={(e) => onRemoveSubscription(e, data)}
-                type="link"
-                danger
-                icon={<CloseCircleOutlined />}
-              >
-                Remove subscription
-              </Button>
-            </Tooltip>
+            data.is_remove_subscription ? (
+              <Tooltip title="Remove subscription">
+                <Button
+                  className={styles.cardTitle}
+                  onClick={(e) => onRemoveSubscription(e, data)}
+                  type="link"
+                  danger
+                  icon={<CloseCircleOutlined />}
+                >
+                  Remove subscription
+                </Button>
+              </Tooltip>
+            ) : null
           }
           style={{ width: "100%", marginBottom: 16 }}
         >
           {data.camps?.map((camp, i) => {
             return (
               <Tag
-                key={i}
+                key={camp.subscription_start + i}
                 className={styles.tag_btn}
                 closable
                 onClose={(e) => e.preventDefault()}
                 closeIcon={
                   <Popconfirm
-                    title="Are you sure？"
+                    title="Are you sure you want to remove the subscription?"
                     okText="Yes"
                     cancelText="No"
-                    onConfirm={onConfirm}
+                    onConfirm={(e) => onConfirm(e, data, camp)}
                   >
                     <CloseCircleOutlined />
                   </Popconfirm>
                 }
               >
                 <div>
-                  <span className={styles.count}>{camp.support_order}. </span>
+                  <span className={styles.count}>{i + 1}. </span>
                   <Link href={camp.camp_link}>
                     <a className={styles.Bluecolor}> {camp.camp_name}</a>
                   </Link>

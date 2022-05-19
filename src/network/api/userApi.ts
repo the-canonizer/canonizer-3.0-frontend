@@ -687,3 +687,15 @@ export const GetAllSubscriptionsList = async (params = "") => {
     }
   }
 };
+
+export const unsubscribeTopicOrCampAPI = async (body: object) => {
+  try {
+    const res = await NetworkCall.fetch(
+      UserRequest.unsubscribeTopicOrCamp(body),
+      false
+    );
+    return res;
+  } catch (err) {
+    handleError(err);
+  }
+};

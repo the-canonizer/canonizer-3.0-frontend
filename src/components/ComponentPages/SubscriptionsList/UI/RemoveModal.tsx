@@ -32,7 +32,7 @@ function TopicRemoveModal({ isVisible, onCancel, onRemove, topicTitle }) {
       closeIcon={<CloseCircleOutlined />}
     >
       <Typography.Text>
-        Your Support for all the camps under the Topics{" "}
+        Your Subscription for all the camps under the Topics{" "}
         <span className={styles.Bluecolor}>&quot; {topicTitle} &quot;</span>{" "}
         will be removed. Are you sure you want to continue?
       </Typography.Text>

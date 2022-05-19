@@ -1,13 +1,10 @@
-import { Tabs, Card, Typography, Tooltip, Button } from "antd";
-import { SearchOutlined, CloseCircleOutlined } from "@ant-design/icons";
+import { Card } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
 
 import styles from "./SubscriptionsList.module.scss";
 
 import TopicSubscriptionsTab from "./TopicSubscriptionsTab";
 import TopicRemoveModal from "./RemoveModal";
-
-const { TabPane } = Tabs;
-const { Title } = Typography;
 
 function SubscriptionsListUI({
   activeKey,
@@ -19,16 +16,6 @@ function SubscriptionsListUI({
   onRemove,
   topicTitle,
 }) {
-  const Note = () => {
-    const key = activeKey === "topic_subs" ? "camp" : "camp";
-    return (
-      <div className={styles.notes}>
-        {`Note : To change the order of ${key}, drag & drop the ${key} box on your
-        choice position.`}
-      </div>
-    );
-  };
-
   const placeholder =
     activeKey === "topic_subs" ? "Search by topic name" : "Search by camp name";
 

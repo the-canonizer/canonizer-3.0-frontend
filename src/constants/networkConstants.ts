@@ -107,7 +107,7 @@ const NetworkConstants = {
     DeleteNewsFeed: `${BaseCanonizerApiUrl}/delete-camp-newsfeed`,
 
     // subscriptions
-    GetSubscriptions: `${BaseCanonizerApiUrl}/get-subscriptions`,
+    GetSubscriptions: `${BaseCanonizerApiUrl}/camp/subscription/list`,
   },
   Method: {
     GET: "GET",

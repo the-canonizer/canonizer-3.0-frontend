@@ -1,60 +1,34 @@
 import { useEffect, useState } from "react";
+import { message } from "antd";
 
 import SubscriptionsListUI from "./UI";
 
-import { GetAllSubscriptionsList } from "../../../network/api/userApi";
+import {
+  GetAllSubscriptionsList,
+  unsubscribeTopicOrCampAPI,
+} from "../../../network/api/userApi";
 
-const subsList = [
-  {
-    topic_num: 323,
-    title: "topic one 17 05",
-    title_link:
-      "http://canonizer3.local/topic/323-topic-one-17-05/1-Aggreement",
-    camps: [],
-  },
-  {
-    topic_num: 324,
-    title: "topic two",
-    title_link:
-      "http://canonizer3.local/topic/323-topic-one-17-05/1-Aggreement",
-    camps: [
-      {
-        camp_num: 4,
-        camp_name: "Agreement",
-        support_order: 1,
-        camp_link:
-          "http://canonizer3.local/topic/323-topic-one-17-05/1-Agreement#statement",
-      },
-      {
-        camp_num: 5,
-        camp_name: "Agreement-2",
-        support_order: 2,
-        camp_link:
-          "http://canonizer3.local/topic/323-topic-one-17-05/1-Agreement#statement",
-      },
-    ],
-  },
-];
-
-function SubscriptionsList({ isTestData = [...subsList] }) {
+function SubscriptionsList({ isTestData = [] }) {
   const [activeKey, setActiveKey] = useState("topic_subs");
   const [searchQuery, setSearchQuery] = useState("");
   const [subscriptionsList, setSubscriptionsList] = useState(isTestData);
   const [isVisible, setIsVisible] = useState(false);
   const [currentTopic, setCurrentTopic] = useState({});
+  const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(-1);
 
   const getSubscriptionsList = async (q: string) => {
     const res = await GetAllSubscriptionsList(q);
-    console.log("response", res);
 
     if (res?.status_code === 200) {
-      setSubscriptionsList(res?.data);
+      setSubscriptionsList(res?.data.items);
     }
   };
 
   useEffect(() => {
-    getSubscriptionsList("");
-  }, []);
+    const query = `?page=${page}&per_page=${perPage}`;
+    getSubscriptionsList(query);
+  }, [page, perPage]);
 
   // const tabCallBack = (key: string) => {
   //   setActiveKey(key);
@@ -62,22 +36,51 @@ function SubscriptionsList({ isTestData = [...subsList] }) {
 
   // const onSearch = (ev: any) => setSearchQuery(ev.target.value);
 
+  const campOrTopicUnsubscribe = async (body: Object) => {
+    const res = await unsubscribeTopicOrCampAPI(body);
+
+    const query = `?page=${page}&per_page=${perPage}`;
+
+    console.log(res, "campOrTopicUnsubscribe res");
+
+    if (res && res["status_code"] === 200) {
+      message.success(res?.data?.msg);
+      setIsVisible(false);
+      getSubscriptionsList(query);
+    }
+  };
+
   const onRemoveSubscription = (e: any, topic: object) => {
     e.preventDefault();
     setIsVisible(true);
     setCurrentTopic(topic);
   };
 
-  const onConfirm = (e: any) => {
+  const onConfirm = (e: any, topic: any, camp: any) => {
     e.preventDefault();
-    console.log("onConfirm", e);
+    const body = {
+      topic_num: topic.topic_num,
+      camp_num: camp.camp_num,
+      checked: false,
+      subscription_id: camp.subscription_id,
+    };
+    campOrTopicUnsubscribe(body);
   };
 
   const onCancel = () => {
     setIsVisible(false);
+    setCurrentTopic({});
   };
 
-  const onRemove = () => {};
+  const onRemove = () => {
+    const body = {
+      topic_num: currentTopic["topic_num"],
+      camp_num: 0,
+      checked: false,
+      subscription_id: currentTopic["subscription_id"],
+    };
+    campOrTopicUnsubscribe(body);
+  };
 
   return (
     <SubscriptionsListUI

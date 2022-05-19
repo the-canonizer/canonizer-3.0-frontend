@@ -58,6 +58,7 @@
   &.no_body {
     div[class="ant-card-body"] {
       padding: 0;
+      display: none;
     }
   }
 }
