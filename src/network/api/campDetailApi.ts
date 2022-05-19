@@ -22,7 +22,7 @@ export const getTreesApi = async (reqBody) => {
     store.dispatch(setTree(trees?.data[0]));
     return trees?.data[0];
   } catch (error) {
-    message.error(error.message);
+    // message.error(error.message);
   }
 };
 
@@ -102,6 +102,9 @@ export const subscribeToCampApi = async (reqBody, isTopic: Boolean) => {
             subscribeToCamp?.data?.subscriptionId || null
           )
         );
+    subscribeToCamp?.data?.msg
+      ? message.info(subscribeToCamp?.data?.msg)
+      : message.info(subscribeToCamp?.message);
     return subscribeToCamp?.data;
   } catch (error) {
     // message.error(error.message);

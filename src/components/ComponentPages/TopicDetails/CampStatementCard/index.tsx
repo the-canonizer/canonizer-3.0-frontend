@@ -1,4 +1,4 @@
-import CustomButton from "@/components/common/button";
+import CustomButton from "../../../common/button";
 import { Typography, Collapse } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -79,7 +79,7 @@ const CampStatementCard = ({ myRefToCampStatement, onCampForumClick }) => {
         <div className="topicDetailsCollapseFooter">
           <CustomButton className="btn-green">
             <Link
-              href={`/statement/history/${router.query?.camp[0]}/${router.query?.camp[1]}`}
+              href={`/statement/history/${router?.query?.camp[0]}/${router?.query?.camp[1]}`}
             >
               <a>Manage/Edit Camp Statement </a>
             </Link>

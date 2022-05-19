@@ -1,4 +1,4 @@
-import CustomButton from "@/components/common/button";
+import CustomButton from "../../../common/button";
 import { Card, Button, Typography, List, Collapse, Popover } from "antd";
 import Link from "next/link";
 import { useSelector } from "react-redux";
