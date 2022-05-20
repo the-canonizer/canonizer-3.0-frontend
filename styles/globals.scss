@@ -77,7 +77,8 @@ img {
       &::before {
         content: "";
         position: absolute;
-        top: 0;
+        //top: 0;
+        height: 150px;
         left: 0;
         right: 0;
         bottom: 0;
@@ -179,14 +180,14 @@ img {
     }
   }
 }
-.user--cards-outer{
+.user--cards-outer {
   .ant-card-type-inner {
-    .ant-card-head{
+    .ant-card-head {
       background-color: #eaedf2;
     }
   }
-  .inner--cards{
-    .ant-card-head{
+  .inner--cards {
+    .ant-card-head {
       background-color: #f8f8f8;
     }
   }
@@ -197,15 +198,44 @@ img {
     border-bottom: 1px solid #f7f7f7;
     padding: 0px 16px 16px;
     margin-bottom: 15px;
-}
+  }
 }
 
-.inner--cards .ant-tag a{
+.inner--cards .ant-tag a {
   font-weight: normal;
 }
-.Headings--wrap{
+.Headings--wrap {
   .ant-select-show-arrow {
     border: none !important;
+  }
+}
 
+.ant-dropdown-menu-item .ant-dropdown-menu-title-content {
+  .UploadFile_menu_item__Fnasz {
+    display: flex;
+    align-items: center;
+  }
+}
+// .PopoverCustom {
+//   .ant-popover-inner-content .UploadFile_menu_item__Fnasz {
+//     > span {
+//       //display: flex;
+//       align-items: center;
+//     }
+//   }
+// }
+
+.UploadFile_top_btn__zicww {
+  button.UploadFile_create_folder_btn__eOIVx {
+    color: #4484ce;
+    border-color: #4484ce;
+    font-weight: 500;
+  }
+}
+.UploadFile_top_btn__zicww {
+  button.UploadFile_add_file_btn__XrdP0 {
+    color: #4484ce;
+    border-color: #4484ce;
+    font-weight: 500;
   }
 }
