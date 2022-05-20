@@ -192,7 +192,7 @@ export default function AddOrEdit({ edit }) {
                   size="large"
                   placeholder='New Video:"Consciousness:Not a Hard Problem Just a Color Problem"'
                   maxLength={256}
-                  rows={6}
+                  rows={7}
                 />
               </Form.Item>
 
@@ -238,6 +238,7 @@ export default function AddOrEdit({ edit }) {
 
               {!edit && (
                 <Form.Item
+                  className={styles.formItem}
                   label={<>Nick Name</>}
                   name="nick_name"
                   rules={[
@@ -247,7 +248,7 @@ export default function AddOrEdit({ edit }) {
                     },
                   ]}
                 >
-                  <Select value={nickNameData[0]?.id}>
+                  <Select value={nickNameData[0]?.id} size="large">
                     {nickNameData &&
                       nickNameData?.map((names) => (
                         <Select.Option value={names.id} key={names?.id}>
