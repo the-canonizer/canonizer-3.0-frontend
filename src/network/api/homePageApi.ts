@@ -50,14 +50,6 @@ export const getRecentActivitiesApi = async (
   topicType
 ) => {
   try {
-    /////////////////////////////////////////////////////////////////////////////
-    // Once API gets completed I'll uncomment this chunk and remove mockData  //
-    ///////////////////////////////////////////////////////////////////////////
-
-    // const recentActivities = await NetworkCall.fetch(
-    //   HomePageRequests.getCanonizedRecentActivities(reqBody),
-    //   false
-    // );
     let state = store.getState();
     const { auth } = state;
 

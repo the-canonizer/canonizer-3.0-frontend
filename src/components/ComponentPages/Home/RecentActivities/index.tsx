@@ -42,12 +42,10 @@ export default function RecentActivities() {
 
   useEffect(() => {
     setRecentActivities(topicsData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [topicsData?.topics]);
 
   useEffect(() => {
     setRecentActivities(threadsData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [threadsData?.topics]);
 
   useEffect(() => {

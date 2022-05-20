@@ -37,7 +37,6 @@ function createMockRouter(router: Partial<NextRouter>): NextRouter {
   };
 }
 
-// router.asPath !== "/activities"
 afterEach(cleanup);
 windowMatchMedia();
 
@@ -398,28 +397,6 @@ describe("RecentActivities on HomePage for authenticated user", () => {
       expect(topictab.textContent).toBe("Topics/Camps");
       expect(threadtab.textContent).toBe("Threads");
       expect(loadmorebutton.textContent).toBe("Load More topics !");
-
-      // when asPath "/" then use this
-
-      // const mainHeadig = screen.getByRole("heading", {
-      //   name: /recent activities/i,
-      // });
-      // const topictab = screen.getByRole("tab", {
-      //   name: /topics\/camps/i,
-      // });
-      // const threadtab = screen.getByRole("tab", {
-      //   name: /threads/i,
-      // });
-
-      // expect(container.getElementsByTagName("li")).toHaveLength(15);
-      // expect(container.getElementsByTagName("button")).toHaveLength(1);
-
-      // expect(mainHeadig.textContent).toBe("Recent Activities");
-
-      // expect(topictab.textContent).toBe("Topics/Camps");
-
-      // expect(threadtab.textContent).toBe("Threads");
-      // expect(screen.getByText(/view all topics/i)).toBeInTheDocument();
     });
   });
 });
