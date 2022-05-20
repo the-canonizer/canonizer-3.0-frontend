@@ -29,14 +29,14 @@ export const recentActivitiesSlice = createSlice({
     },
     setThreads: (state, action) => {
       state.threadsData = {
-        topics: action.payload?.topics,
-        numOfPages: action.payload?.numOfPages,
+        topics: action.payload?.items,
+        numOfPages: action.payload?.last_page,
       };
     },
     pushToThreads: (state, action) => {
       state.threadsData = {
         ...state.threadsData,
-        topics: [...state.threadsData.topics, ...action.payload.topics],
+        topics: [...state.threadsData.topics, ...action.payload?.items],
       };
     },
   },
