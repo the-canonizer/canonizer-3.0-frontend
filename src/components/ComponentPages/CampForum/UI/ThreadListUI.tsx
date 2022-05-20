@@ -167,8 +167,11 @@ const ThreadListUI = ({
           }}
         />
       </Table>
+
       <div className={`paginationCon`}>
-        <Pagination current={current} onChange={onChange} total={total} />
+        {total > 10 ? (
+          <Pagination current={current} onChange={onChange} total={total} />
+        ) : null}
       </div>
     </Card>
   </Fragment>
