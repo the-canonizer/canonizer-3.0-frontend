@@ -458,7 +458,22 @@ export const getDirectSupportedCampsList = async () => {
     });
   return res;
 };
+export const removeSupportedCampsEntireTopic = async (body) => {
+  let state = store.getState();
+  const { auth } = state;
 
+  const res = await NetworkCall.fetch(
+    UserRequest.removeSupportedCampsEntireTopic(body, auth.loggedInUser.token)
+  )
+    .then((value) => {
+      return value;
+    })
+    .catch((errors) => {
+      handleError(errors);
+    });
+  return res;
+};
+//removeDirectSupportedCampsFromEntireTopic
 export const getDelegatedSupportCampsList = async () => {
   let state = store.getState();
   const { auth } = state;

@@ -38,6 +38,7 @@ const NetworkConstants = {
     UpdateNickName: `${BaseCanonizerApiUrl}/update-nick-name`,
     //Direct Supported camps
     GetDirectSupportedCamps: `${BaseCanonizerApiUrl}/get-direct-supported-camps`,
+    RemoveSupportesCampsEntireTopic: `${BaseCanonizerApiUrl}/support/remove`,
     //Delegated Supported Camps
     GetDelegatedSupportCamps: `${BaseCanonizerApiUrl}/get-delegated-supported-camps`,
     // topic details page api's

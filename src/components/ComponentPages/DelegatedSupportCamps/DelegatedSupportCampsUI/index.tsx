@@ -8,7 +8,7 @@ import Link from "next/link";
 import styles from "./DelegatedSupportedCamps.module.scss";
 import messages from "../../../../messages";
 export default function DelegatedSupportCampsUI({
-  RemoveCardDelegatedSupportedCamps,
+  removeCardDelegatedSupportedCamps,
   handleSupportedCampsCancel,
   isRemoveSupportModalVisible,
   handelViewMoreModalCancel,
@@ -17,6 +17,7 @@ export default function DelegatedSupportCampsUI({
   viewMoreModalVisible,
   delegatedSupportCampsList,
   search,
+  removeSupport,
 }) {
   const limit = 3;
   function CardTitle(props) {
@@ -91,7 +92,7 @@ export default function DelegatedSupportCampsUI({
               extra={
                 <div
                   className={styles.RemoveCardSupported}
-                  onClick={() => RemoveCardDelegatedSupportedCamps()}
+                  onClick={() => removeCardDelegatedSupportedCamps(data)}
                 >
                   <CloseCircleOutlined /> {messages.labels.removeSupport}{" "}
                 </div>
@@ -169,7 +170,7 @@ export default function DelegatedSupportCampsUI({
             style={{ marginBottom: "0px" }}
           >
             <Button
-              onClick={handleSupportedCampsCancel}
+              onClick={removeSupport}
               type="primary"
               style={{
                 marginTop: 10,
