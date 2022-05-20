@@ -15,6 +15,7 @@ import {
   Table,
   Popconfirm,
   Spin,
+  Empty,
 } from "antd";
 import Icon, {
   InboxOutlined,
@@ -172,51 +173,43 @@ const UploadFileUI = ({
   const fileJsonRegex = /^application\/(json$)/;
   const menu = (i, obj) => (
     <Menu>
-      <Menu.Item>
-        <span
-          id="openFolder"
-          onClick={() => {
-            Openfolder(obj.id);
-          }}
-        >
-          Open folder
-        </span>
+      <Menu.Item
+        onClick={() => {
+          Openfolder(obj.id);
+        }}
+      >
+        <span id="openFolder">Open folder</span>
       </Menu.Item>
-      <Menu.Item>
-        <span id="editFolderName" onClick={() => editFolder(obj)}>
-          Edit folder name
-        </span>
+      <Menu.Item onClick={() => editFolder(obj)}>
+        <span id="editFolderName">Edit folder name</span>
       </Menu.Item>
-      <Menu.Item>
-        <span id="deleteFolder">
-          <Popconfirm
-            placement="leftTop"
-            title="Are you sure to delete ?"
-            onConfirm={() => removeFiles(obj, {}, fileLists)}
-            okText="Yes"
-            cancelText="No"
-          >
-            Delete folder
-          </Popconfirm>
-        </span>
-      </Menu.Item>
+      <Popconfirm
+        placement="leftTop"
+        title="Are you sure to delete ?"
+        onConfirm={() => removeFiles(obj, {}, fileLists)}
+        okText="Yes"
+        cancelText="No"
+      >
+        <Menu.Item>
+          <span id="deleteFolder">Delete folder</span>
+        </Menu.Item>
+      </Popconfirm>
     </Menu>
   );
   const menu_files = (i, item) => (
     <Menu>
-      <Menu.Item>
-        <span
-          className={styles.menu_item}
-          onClick={() =>
-            setPreview({
-              previewVisible: true,
-              previewName: item.file_name,
-              previewPath: item.file_path,
-              previewCopyShortCode: item.short_code,
-              previewCreatedAt: item.created_at,
-            })
-          }
-        >
+      <Menu.Item
+        onClick={() =>
+          setPreview({
+            previewVisible: true,
+            previewName: item.file_name,
+            previewPath: item.file_path,
+            previewCopyShortCode: item.short_code,
+            previewCreatedAt: item.created_at,
+          })
+        }
+      >
+        <span className={styles.menu_item}>
           <Image
             id="viewFile"
             alt="Eye Image"
@@ -227,16 +220,15 @@ const UploadFileUI = ({
           <span className={styles.marginLeftView}>View File</span>
         </span>
       </Menu.Item>
-      <Menu.Item>
-        <span
-          className={styles.menu_item}
-          onClick={() => {
-            {
-              navigator.clipboard.writeText(item.short_code),
-                message.success("Short code copied");
-            }
-          }}
-        >
+      <Menu.Item
+        onClick={() => {
+          {
+            navigator.clipboard.writeText(item.short_code),
+              message.success("Short code copied");
+          }
+        }}
+      >
+        <span className={styles.menu_item}>
           <Image
             id="copyShortCode"
             alt="copyShortCode"
@@ -247,15 +239,16 @@ const UploadFileUI = ({
           <span className={styles.marginLeftView}>Copy Short Code</span>
         </span>
       </Menu.Item>
-      <Menu.Item>
-        <span className={styles.menu_item}>
-          <Popconfirm
-            placement="top"
-            title="Are you sure to delete ?"
-            onConfirm={() => removeFiles(item, item, fileLists)}
-            okText="Yes"
-            cancelText="No"
-          >
+
+      <Popconfirm
+        placement="top"
+        title="Are you sure to delete ?"
+        onConfirm={() => removeFiles(item, item, fileLists)}
+        okText="Yes"
+        cancelText="No"
+      >
+        <Menu.Item>
+          <span className={styles.menu_item}>
             <Image
               id="deleteFile"
               alt="Trash Data "
@@ -264,9 +257,9 @@ const UploadFileUI = ({
               height={15}
             />
             <span className={styles.marginLeftView}>Delete File</span>
-          </Popconfirm>
-        </span>
-      </Menu.Item>
+          </span>
+        </Menu.Item>
+      </Popconfirm>
     </Menu>
   );
   const displayColumnListImage = (obj) => {
@@ -742,70 +735,23 @@ const UploadFileUI = ({
                     className="FolderfileCard"
                   >
                     <div className={styles.openFolder}>
-                      {!toggleFileView
-                        ? (openFolder
-                            ? filteredArray()
-                            : getFileListFromFolderID
-                          ).map((file, i) => {
-                            return (
-                              <div
-                                className={styles.view_After_Upload}
-                                key="upload_file_one"
-                              >
-                                <Card className={styles.files} key={i}>
-                                  <Dropdown
-                                    className={styles.dropdown_menu}
-                                    overlay={menu_files(file.id, file)}
-                                    trigger={["click"]}
-                                  >
-                                    <div
-                                      className="ant-dropdown-link"
-                                      onClick={(e) => e.preventDefault()}
-                                    >
-                                      <Image
-                                        id="menuFilesThreeDots"
-                                        className={styles.Menu_Iconss}
-                                        alt="Three Dots"
-                                        src={ThreeDots}
-                                        width={15}
-                                        height={20}
-                                      />
-                                    </div>
-                                  </Dropdown>
-                                  <div className={styles.imageFiles}>
-                                    {displayImage(file, file.file_path)}
-                                  </div>
-                                  <h3 className="BoxcopyWrap">
-                                    <span className="value">
-                                      {subStringData(file.file_name)}
-                                    </span>
-                                    <span
-                                      className="copySpan"
-                                      onClick={() => {
-                                        navigator.clipboard.writeText(
-                                          file.short_code
-                                        ),
-                                          message.success("Short code copied");
-                                      }}
-                                    >
-                                      <Image
-                                        alt="copyShortCode"
-                                        src={CopyShortCode}
-                                        width={12}
-                                        height={15}
-                                      />
-                                    </span>
-                                  </h3>
-                                  <span>
-                                    {moment
-                                      .unix(file.created_at)
-                                      .format("MMM DD, YYYY, h:mm:ss A")}
-                                  </span>
-                                </Card>
-                              </div>
-                            );
-                          })
-                        : ""}
+                      {!toggleFileView ? (
+                        openFolder ? (
+                          filteredArray() && filteredArray().length > 0 ? (
+                            filteredArray().map((file, i) => {
+                              return openFolderInGridView(file, i);
+                            })
+                          ) : (
+                            <div className={styles.emptyFolderData}>
+                              <Empty description={<span>No Data Found</span>} />
+                            </div>
+                          )
+                        ) : (
+                          ""
+                        )
+                      ) : (
+                        ""
+                      )}
                     </div>
                   </Card>
                 </div>
@@ -866,9 +812,62 @@ const UploadFileUI = ({
       </div>
     );
   };
-  const confirm = (keyParam) => {
-    message.info("Clicked on Yes.");
-    removeFiles(keyParam);
+  // const confirm = (keyParam) => {
+  //   message.info("Clicked on Yes.");
+  //   removeFiles(keyParam);
+  // };
+  const openFolderInGridView = (file, i) => {
+    return (
+      <div
+        className={styles.view_After_Upload}
+        //key="upload_file_one"
+      >
+        <Card className={styles.files} key={i}>
+          <Dropdown
+            className={styles.dropdown_menu}
+            overlay={menu_files(file.id, file)}
+            trigger={["click"]}
+          >
+            <div
+              className="ant-dropdown-link"
+              onClick={(e) => e.preventDefault()}
+            >
+              <Image
+                id="menuFilesThreeDots"
+                className={styles.Menu_Iconss}
+                alt="Three Dots"
+                src={ThreeDots}
+                width={15}
+                height={20}
+              />
+            </div>
+          </Dropdown>
+          <div className={styles.imageFiles}>
+            {displayImage(file, file.file_path)}
+          </div>
+          <h3 className="BoxcopyWrap">
+            <span className="value">{subStringData(file.file_name)}</span>
+            <span
+              className="copySpan"
+              onClick={() => {
+                navigator.clipboard.writeText(file.short_code),
+                  message.success("Short code copied");
+              }}
+            >
+              <Image
+                alt="copyShortCode"
+                src={CopyShortCode}
+                width={12}
+                height={15}
+              />
+            </span>
+          </h3>
+          <span>
+            {moment.unix(file.created_at).format("MMM DD, YYYY, h:mm:ss A")}
+          </span>
+        </Card>
+      </div>
+    );
   };
   //spinner Image Preview
   useEffect(() => {
@@ -945,7 +944,7 @@ const UploadFileUI = ({
                       setEditModal(false);
                   }}
                 >
-                  Create folder
+                  Create Folder
                 </Button>
                 {addButtonShow && !dragBoxStatus ? (
                   <Button
@@ -955,7 +954,7 @@ const UploadFileUI = ({
                       addNewFile(), setToggleFileView(false), setUpdateList({});
                     }}
                   >
-                    Add a file
+                    Add a File
                   </Button>
                 ) : (
                   ""
@@ -1036,7 +1035,7 @@ const UploadFileUI = ({
                       info.file.percent == 0
                     ) {
                       setFolderFiles(info.fileList);
-                      setUploadFileList(info.fileList);
+                      //setUploadFileList(info.fileList);
                       setFileLists(info.fileList);
                     }
                   } else {
@@ -1088,11 +1087,15 @@ const UploadFileUI = ({
                       >
                         <CloseCircleOutlined
                           onClick={() =>
-                            removeUploadFiles(originNode, file, uploadFileList)
+                            removeUploadFiles(
+                              originNode,
+                              file,
+                              fileStatus ? folderFiles : uploadFileList
+                            )
                           }
                         />
                         <div className="imgWrap">
-                          {displayImage(file, file.thumbUrl)}
+                          {file.thumbUrl && displayImage(file, file.thumbUrl)}
                         </div>
                         <br />
                         <label
@@ -1168,7 +1171,7 @@ const UploadFileUI = ({
                 className={styles.Upload_Btn}
                 onClick={() => {
                   uploadList(), uploadFun(), setToggleFileView(false);
-                  setUploadFileList([]);
+                  setUploadFileList([]), setFolderFiles([]);
                 }}
               >
                 Upload
@@ -1178,7 +1181,7 @@ const UploadFileUI = ({
                 className={styles.cancel_Btn}
                 onClick={handleCancel}
               >
-                cancel
+                Cancel
               </Button>
             </div>
           ) : (
@@ -1188,6 +1191,7 @@ const UploadFileUI = ({
       </div>
       <Modal
         className={styles.modal_cross}
+        centered
         title={editModal ? "Edit your folder name" : labels.CreateaFolder}
         visible={showCreateFolderModal}
         footer=""

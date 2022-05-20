@@ -672,3 +672,30 @@ export const getFileInsideFolderApi = async (id) => {
     }
   }
 };
+
+export const GetAllSubscriptionsList = async (params = "") => {
+  try {
+    const res = await NetworkCall.fetch(
+      UserRequest.AllSubscriptionsList(params)
+    );
+    return res;
+  } catch (err) {
+    if (err?.error?.data?.status_code === 400) {
+      return err.error.data;
+    } else {
+      handleError(err);
+    }
+  }
+};
+
+export const unsubscribeTopicOrCampAPI = async (body: object) => {
+  try {
+    const res = await NetworkCall.fetch(
+      UserRequest.unsubscribeTopicOrCamp(body),
+      false
+    );
+    return res;
+  } catch (err) {
+    handleError(err);
+  }
+};
