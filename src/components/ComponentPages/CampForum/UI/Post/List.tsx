@@ -52,7 +52,7 @@ const CreateCampFormUI = ({
                   </a>
                 </Tooltip>
                 <Popconfirm
-                  title="Are you sure to delete the news?"
+                  title="Are you sure you want to delete the post?"
                   onConfirm={onDeleteClick}
                   okText="Yes"
                   cancelText="No"

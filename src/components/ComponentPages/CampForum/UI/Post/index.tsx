@@ -81,7 +81,13 @@ const PostUI = ({
         ))}
 
         <div className={`paginationCon`}>
-          <Pagination current={pCurrent} onChange={pOnChange} total={pTotal} />
+          {pTotal > 10 ? (
+            <Pagination
+              current={pCurrent}
+              onChange={pOnChange}
+              total={pTotal}
+            />
+          ) : null}
         </div>
       </Card>
     </Fragment>
