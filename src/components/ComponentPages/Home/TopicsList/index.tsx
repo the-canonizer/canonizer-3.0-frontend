@@ -151,22 +151,22 @@ const TopicsList = () => {
 
   const ViewAllTopics = (
     <div className="text-right">
-      {topicsData?.topics?.length && (
+      {topicsData?.topics?.length ? (
         <Link href="/browse">
           <a className={styles.viewAll}>
             <Text>View All Topics</Text>
             <i className="icon-angle-right"></i>
           </a>
         </Link>
-      )}
+      ) : null}
     </div>
   );
 
   const handleCheckbox = async (e) => {
-    if (isLogin) {
-      onlyMyTopicsCheck = e.target.checked;
-      await getTopicsApiCallWithReqBody();
-    } else router.push("/login");
+    setGetTopicsLoadingIndicator(true);
+    onlyMyTopicsCheck = e.target.checked;
+    await getTopicsApiCallWithReqBody();
+    setGetTopicsLoadingIndicator(false);
   };
 
   const handleTopicClick = () => {
@@ -186,12 +186,12 @@ const TopicsList = () => {
                 }`}
               >
                 <Title level={3}>
-                  Select namespace
+                  Select Namespace
                   <Popover content={infoContent} placement="right">
                     <i className="icon-info cursor-pointer"></i>
                   </Popover>
                 </Title>
-                {router.asPath === "/browse" && (
+                {router.asPath === "/browse" && isLogin && (
                   <Checkbox
                     className={styles.checkboxOnlyMyTopics}
                     onChange={handleCheckbox}

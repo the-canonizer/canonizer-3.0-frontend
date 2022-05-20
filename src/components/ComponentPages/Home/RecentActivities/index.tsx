@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { LoadingOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
+import useAuthentication from "../../../../hooks/isUserAuthenticated";
 
 const antIcon = <LoadingOutlined spin />;
 const { TabPane } = Tabs;
@@ -20,11 +21,13 @@ export default function RecentActivities() {
     topicsData: state?.recentActivities?.topicsData,
     threadsData: state?.recentActivities?.threadsData,
   }));
+
+  const isLogin = useAuthentication();
   const [position] = useState(["left", "right"]);
   const [recentActivities, setRecentActivities] = useState(topicsData);
   const [topicPageNumber, setTopicPageNumber] = useState(1);
   const [threadPageNumber, setThreadPageNumber] = useState(1);
-  const [selectedTab, setSelectedTab] = useState("topics");
+  const [selectedTab, setSelectedTab] = useState("topic/camps");
   const [loadMoreIndicator, setLoadMoreIndicator] = useState(false);
   const [getTopicsLoadingIndicator, setGetTopicsLoadingIndicator] =
     useState(false);
@@ -50,13 +53,15 @@ export default function RecentActivities() {
   useEffect(() => {
     async function linksApiCall() {
       setGetTopicsLoadingIndicator(true);
-      await getTopicsApiCallWithReqBody(
-        false,
-        selectedTab == "topics" ? true : false
-      );
+      await getTopicsApiCallWithReqBody(false, selectedTab);
       setGetTopicsLoadingIndicator(false);
     }
-    linksApiCall();
+    if (isLogin) {
+      linksApiCall();
+    } else {
+      setGetTopicsLoadingIndicator(true);
+      router.push("/login");
+    }
   }, [selectedTab]);
 
   const handleTabChange = (key: string) => {
@@ -70,31 +75,40 @@ export default function RecentActivities() {
     setSelectedTab(key);
   };
 
-  async function getTopicsApiCallWithReqBody(loadMore = false, istopic = true) {
-    istopic
-      ? loadMore
-        ? setTopicPageNumber(topicPageNumber + 1)
-        : setTopicPageNumber(1)
-      : loadMore
-      ? setThreadPageNumber(threadPageNumber + 1)
-      : setThreadPageNumber(1);
-
-    const p1 = await new Promise((r) => setTimeout(r, 1000));
+  async function getTopicsApiCallWithReqBody(loadMore = false, topicType) {
+    let pageNo;
+    if (topicType == "topic/camps") {
+      if (loadMore) {
+        setTopicPageNumber((prev) => prev + 1);
+        pageNo = topicPageNumber + 1;
+      } else {
+        setTopicPageNumber(1);
+        pageNo = 1;
+      }
+    } else {
+      if (loadMore) {
+        setThreadPageNumber((prev) => prev + 1);
+        pageNo = threadPageNumber + 1;
+      } else {
+        setThreadPageNumber(1);
+        pageNo = 1;
+      }
+    }
     const reqBody = {
-      log_type: selectedTab,
-      page_number: istopic ? topicPageNumber : threadPageNumber,
-      page_size: 20,
+      log_type: topicType,
+      page: pageNo,
+      per_page: 15,
     };
-    getRecentActivitiesApi(reqBody, loadMore, istopic);
+    getRecentActivitiesApi(reqBody, loadMore, topicType);
     setLoadMoreIndicator(false);
   }
 
-  const ViewAllTopics = (istopic) => {
-    const ViewAllName = istopic ? "View All Topics" : "View All Threads";
+  const ViewAllTopics = (isTopic) => {
+    const ViewAllName = isTopic ? "View All Topics" : "View All Threads";
     return (
       recentActivities?.topics?.length > 0 && (
         <div className={styles.footer}>
-          <Link href="/#" className={styles.viewAll}>
+          <Link href="/activities" className={styles.viewAll}>
             <Text>{ViewAllName}</Text>
             <i className="icon-angle-right"></i>
           </Link>
@@ -103,8 +117,9 @@ export default function RecentActivities() {
     );
   };
 
-  const LoadMoreTopics = (istopic) => {
-    const pageNumber = istopic ? topicPageNumber : threadPageNumber;
+  const LoadMoreTopics = (topicType) => {
+    const pageNumber =
+      topicType == "topic/camps" ? topicPageNumber : threadPageNumber;
     return (
       recentActivities?.topics?.length > 0 && (
         <div className={styles.footer}>
@@ -114,7 +129,7 @@ export default function RecentActivities() {
                 className={styles.viewAll}
                 onClick={() => {
                   setLoadMoreIndicator(true);
-                  getTopicsApiCallWithReqBody(true, istopic);
+                  getTopicsApiCallWithReqBody(true, topicType);
                 }}
               >
                 <Text>Load More topics !</Text>
@@ -127,24 +142,23 @@ export default function RecentActivities() {
       )
     );
   };
-
   return (
     <>
       <div className={`${styles.listCard} recentActivities_listWrap`}>
         <Spin spinning={getTopicsLoadingIndicator} size="large">
           <Tabs
             className={`${styles.listCardTabs} recentActivities_listCardTabs`}
-            defaultActiveKey="topics"
+            defaultActiveKey="topic/camps"
             tabBarExtraContent={slot}
             onChange={handleTabChange}
           >
-            <TabPane tab="Topics/Camps" key="topics">
+            <TabPane tab="Topics/Camps" key="topic/camps">
               <List
                 className={styles.listWrap}
                 footer={
                   router.asPath !== "/activities"
                     ? ViewAllTopics(true)
-                    : LoadMoreTopics(true)
+                    : LoadMoreTopics("topic/camps")
                 }
                 bordered={false}
                 dataSource={recentActivities?.topics}
@@ -153,7 +167,7 @@ export default function RecentActivities() {
                     <Link href={"/"}>
                       <>
                         <Text className={styles.text}>
-                          {activity.description}
+                          {activity?.activity?.description}
                         </Text>
                         <Text className={styles.secondary} type="secondary">
                           <i className="icon-calendar"></i>
@@ -171,7 +185,7 @@ export default function RecentActivities() {
                 footer={
                   router.asPath !== "/activities"
                     ? ViewAllTopics(false)
-                    : LoadMoreTopics(false)
+                    : LoadMoreTopics("threads")
                 }
                 bordered={false}
                 dataSource={recentActivities?.topics}

@@ -57,7 +57,7 @@ const NetworkConstants = {
     GetCanonizedNameSpaces: `${BaseCanonizerApiUrl}/get-all-namespaces`,
     GetWhatsNewContent: `${BaseCanonizerApiUrl}/get-whats-new-content`,
     GetCanonizedAlgorithms: `${BaseCanonizerApiUrl}/get-algorithms`,
-    GetCanonizedRecentActivities: `${BaseCanonizerApiUrl}/get-recent-activities`,
+    GetCanonizedRecentActivities: `${BaseCanonizerApiUrl}/get-activity-log`,
 
     // topic
     CreateTopic: `${BaseCanonizerApiUrl}/topic/save`,
@@ -105,6 +105,9 @@ const NetworkConstants = {
     UpdateNewsFeed: `${BaseCanonizerApiUrl}/update-camp-newsfeed`,
     AddNewsFeed: `${BaseCanonizerApiUrl}/store-camp-newsfeed`,
     DeleteNewsFeed: `${BaseCanonizerApiUrl}/delete-camp-newsfeed`,
+
+    // subscriptions
+    GetSubscriptions: `${BaseCanonizerApiUrl}/camp/subscription/list`,
   },
   Method: {
     GET: "GET",

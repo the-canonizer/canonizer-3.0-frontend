@@ -21,6 +21,7 @@ import {
   updateNewsFeedApi,
 } from "../../../../network/api/campNewsApi";
 import { getNickNameList } from "../../../../network/api/userApi";
+import { getAllUsedNickNames } from "../../../../network/api/campDetailApi";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
 
 const antIcon = <LoadingOutlined spin />;
@@ -137,7 +138,10 @@ export default function AddOrEdit({ edit }) {
         });
         setScreenLoading(false);
       } else {
-        const result = await getNickNameList();
+        const reqBody = {
+          topic_num: +router.query?.camp[0]?.split("-")[0],
+        };
+        const result = await getAllUsedNickNames(reqBody);
         form.setFieldsValue({
           nick_name: result?.data[0]?.id,
         });

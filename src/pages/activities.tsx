@@ -1,7 +1,7 @@
 import { Row, Col } from "antd";
 
 import Layout from "../hoc/layout";
-import SideBar from "../components/ComponentPages/Home/SideBar";
+import SideBarNoFilter from "../components/ComponentPages/Home/SideBarNoFilter";
 import RecentActivities from "../components/ComponentPages/Home/RecentActivities";
 import {
   getCanonizedAlgorithmsApi,
@@ -24,7 +24,7 @@ const RecentActivitiesPage = ({ nameSpacesList, topicsData, algorithms }) => {
     <>
       <Layout routeName={"recent-activities"}>
         <aside className="leftSideBar miniSideBar">
-          <SideBar />
+          <SideBarNoFilter />
         </aside>
         <div className="pageContentWrap">
           <Row gutter={16}>
