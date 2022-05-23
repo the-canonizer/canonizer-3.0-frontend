@@ -75,6 +75,13 @@ export default function RecentActivities() {
     setSelectedTab(key);
   };
 
+  const decodeUrlLink = (threadData) => {
+    let link = threadData.activity.properties;
+    link = JSON.parse(link).url;
+    link = link.replace(/\s+/g, "-");
+    return link;
+  };
+
   async function getTopicsApiCallWithReqBody(loadMore = false, topicType) {
     let pageNo;
     if (topicType == "topic/camps") {
@@ -193,7 +200,7 @@ export default function RecentActivities() {
                 dataSource={recentActivities?.topics}
                 renderItem={(activity) => (
                   <List.Item className={styles.listItem}>
-                    <Link href={"/"}>
+                    <Link href={decodeUrlLink(activity)}>
                       <>
                         <Text className={styles.text}>
                           {activity?.activity?.description}
