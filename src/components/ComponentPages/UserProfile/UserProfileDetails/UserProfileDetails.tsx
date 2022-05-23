@@ -3,7 +3,7 @@ import styles from "../UserProfileUI/UserProfile.module.scss";
 import messages from "../../../../messages";
 import { Card, Image, Row, Col, Form, message, Tag } from "antd";
 import { getUserProfileById } from "src/network/api/userApi";
-const userProfileDetails = () => {
+const UserProfileDetails = () => {
   const [profileData, setProfileData] = useState({} as any);
   const GetUserProfileData = async () => {
     let response = await getUserProfileById();
@@ -75,4 +75,4 @@ const userProfileDetails = () => {
   );
 };
 
-export default userProfileDetails;
+export default UserProfileDetails;

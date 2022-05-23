@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "../../../../utils/testUtils";
-import UserProfileDetails from "../UserProfileDetails/userProfileDetails";
-import UserProfileCard from "../UserProfileDetails/userProfileCard";
+import UserProfileDetails from "../UserProfileDetails/UserProfileDetails";
+import UserProfileCard from "../UserProfileDetails/UserProfileCard";
 import messages from "../../../../messages";
 import UserProfile from "../UserProfileUI";
 import { Container } from "postcss";
