@@ -233,7 +233,7 @@ export default function AddOrEdit({ edit }) {
                 name="available_for_child"
                 valuePropName="checked"
               >
-                <Checkbox>Available for children</Checkbox>
+                <Checkbox>Available for child camps</Checkbox>
               </Form.Item>
 
               {!edit && (
