@@ -26,7 +26,7 @@ const CurrentCampCard = () => {
           ))}
         </Descriptions>
         <div className="topicDetailsCollapseFooter">
-          <Button className="btn-green">Manage/Edit This Topic</Button>
+          <Button className="btn-green">Manage/Edit This Camp</Button>
         </div>
       </Panel>
     </Collapse>
