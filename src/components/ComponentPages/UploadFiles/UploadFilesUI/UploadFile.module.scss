@@ -139,6 +139,7 @@
   border-radius: 2px;
   width: 130px;
   height: 38px;
+  font-size: 16px;
 }
 
 .Upload_Cancel_Btn .Upload_Btn:hover {
@@ -152,6 +153,7 @@
   height: 38px;
   border-radius: 2px;
   width: 80px;
+  font-weight: 600;
 }
 .cancel_Btn:hover {
   background: #4484ce;
@@ -405,6 +407,7 @@
     max-height: 125px;
     min-height: 125px;
     overflow: hidden;
+    padding-top: 5px;
     img {
       object-fit: cover;
     }
@@ -529,6 +532,9 @@
   color: black;
   cursor: pointer;
 }
+.menu_item > span {
+  display: inline-flex;
+}
 .icon_Width {
   display: inline-block;
   max-width: 20px;
@@ -569,7 +575,7 @@
 .folder_icons_fileTxt {
   svg {
     font-size: 20px !important;
-    color: blue;
+    //color: blue;
   }
 }
 .folder_icons_pdf {
@@ -648,4 +654,8 @@
   // span + span {
   //   margin-left: 10px !important;
   // }
+}
+
+.emptyFolderData {
+  margin: auto;
 }

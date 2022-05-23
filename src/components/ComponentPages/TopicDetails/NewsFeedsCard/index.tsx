@@ -1,12 +1,11 @@
 import { Button, Typography, Tooltip, Collapse, Popconfirm } from "antd";
 import { useEffect, useState } from "react";
-import { deleteNewsFeedApi } from "src/network/api/campNewsApi";
-
-import { getNewsFeedApi } from "src/network/api/campDetailApi";
-
+import { deleteNewsFeedApi } from "../../../../network/api/campNewsApi";
+import { getNewsFeedApi } from "../../../../network/api/campDetailApi";
 import { DeleteOutlined, EditOutlined, CloseOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
+import K from "src/constants";
 
 const { Paragraph } = Typography;
 
@@ -172,7 +171,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
                   </li>
                 );
               })
-            : "No News Found"}
+            : K?.exceptionalMessages?.newsFeed}
         </ul>
       </Panel>
     </Collapse>

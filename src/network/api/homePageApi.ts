@@ -8,6 +8,12 @@ import {
   pushToCanonizedTopics,
   setCanonizedAlgorithms,
 } from "../../store/slices/homePageSlice";
+import {
+  setThreads,
+  setTopics,
+  pushToThreads,
+  pushToTopics,
+} from "../../store/slices/recentActivitiesSlice";
 
 export const getCanonizedTopicsApi = async (reqBody, loadMore = false) => {
   try {
@@ -38,7 +44,11 @@ export const getCanonizedNameSpacesApi = async () => {
   }
 };
 
-export const getRecentActivitiesApi = async (reqBody) => {
+export const getRecentActivitiesApi = async (
+  reqBody,
+  loadMore = false,
+  topicType
+) => {
   try {
     /////////////////////////////////////////////////////////////////////////////
     // Once API gets completed I'll uncomment this chunk and remove mockData  //
@@ -48,22 +58,25 @@ export const getRecentActivitiesApi = async (reqBody) => {
     //   HomePageRequests.getCanonizedRecentActivities(reqBody),
     //   false
     // );
-    const mockData = [
-      {
-        id: 27,
-        log_name: "threads",
-        description: "A thread has been updated",
-        subject_type: "App\\Models\\Languages",
-        subject_id: 20,
-        causer_type: null,
-        causer_id: null,
-        properties: [],
-        created_at: "2022-02-17T11:22:36.000000Z",
-        updated_at: "2022-02-17T11:22:36.000000Z",
-      },
-    ];
+    let state = store.getState();
+    const { auth } = state;
 
-    return mockData;
+    const recentActivities = await NetworkCall.fetch(
+      HomePageRequests.getCanonizedRecentActivities(
+        reqBody,
+        auth?.loggedInUser?.token
+      ),
+      false
+    );
+    if (loadMore) {
+      topicType == "topic/camps"
+        ? store.dispatch(pushToTopics(recentActivities?.data))
+        : store.dispatch(pushToThreads(recentActivities?.data));
+    } else {
+      topicType == "topic/camps"
+        ? store.dispatch(setTopics(recentActivities?.data))
+        : store.dispatch(setThreads(recentActivities?.data));
+    }
   } catch (error) {
     // message.error(error.message);
   }

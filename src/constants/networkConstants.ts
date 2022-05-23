@@ -38,6 +38,7 @@ const NetworkConstants = {
     UpdateNickName: `${BaseCanonizerApiUrl}/update-nick-name`,
     //Direct Supported camps
     GetDirectSupportedCamps: `${BaseCanonizerApiUrl}/get-direct-supported-camps`,
+    RemoveSupportesCampsEntireTopic: `${BaseCanonizerApiUrl}/support/remove`,
     //Delegated Supported Camps
     GetDelegatedSupportCamps: `${BaseCanonizerApiUrl}/get-delegated-supported-camps`,
     // topic details page api's
@@ -57,7 +58,7 @@ const NetworkConstants = {
     GetCanonizedNameSpaces: `${BaseCanonizerApiUrl}/get-all-namespaces`,
     GetWhatsNewContent: `${BaseCanonizerApiUrl}/get-whats-new-content`,
     GetCanonizedAlgorithms: `${BaseCanonizerApiUrl}/get-algorithms`,
-    GetCanonizedRecentActivities: `${BaseCanonizerApiUrl}/get-recent-activities`,
+    GetCanonizedRecentActivities: `${BaseCanonizerApiUrl}/get-activity-log`,
 
     // topic
     CreateTopic: `${BaseCanonizerApiUrl}/topic/save`,
@@ -74,6 +75,8 @@ const NetworkConstants = {
     CreateFolder: `${BaseCanonizerApiUrl}/add-folder`,
     //DeleteFolder
     DeleteFolder: `${BaseCanonizerApiUrl}/folder/delete/`,
+    //
+    UserProfile: `${BaseCanonizerApiUrl}/user/profile`,
 
     // Camp
     CreateCamp: `${BaseCanonizerApiUrl}/camp/save`,
@@ -105,6 +108,9 @@ const NetworkConstants = {
     UpdateNewsFeed: `${BaseCanonizerApiUrl}/update-camp-newsfeed`,
     AddNewsFeed: `${BaseCanonizerApiUrl}/store-camp-newsfeed`,
     DeleteNewsFeed: `${BaseCanonizerApiUrl}/delete-camp-newsfeed`,
+
+    // subscriptions
+    GetSubscriptions: `${BaseCanonizerApiUrl}/camp/subscription/list`,
   },
   Method: {
     GET: "GET",

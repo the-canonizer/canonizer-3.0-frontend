@@ -1,10 +1,11 @@
-import CustomButton from "@/components/common/button";
+import CustomButton from "../../../common/button";
 import { Typography, Collapse } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
+import K from "src/constants";
 
 const { Paragraph } = Typography;
 
@@ -42,7 +43,7 @@ const CampStatementCard = ({ myRefToCampStatement, onCampForumClick }) => {
               }}
             />
           ) : (
-            "No Statement Found"
+            K?.exceptionalMessages?.campStatement
           )}
         </Paragraph>
 
@@ -79,7 +80,7 @@ const CampStatementCard = ({ myRefToCampStatement, onCampForumClick }) => {
         <div className="topicDetailsCollapseFooter">
           <CustomButton className="btn-green">
             <Link
-              href={`/statement/history/${router.query?.camp[0]}/${router.query?.camp[1]}`}
+              href={`/statement/history/${router?.query?.camp[0]}/${router?.query?.camp[1]}`}
             >
               <a>Manage/Edit Camp Statement </a>
             </Link>

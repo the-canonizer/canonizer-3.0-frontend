@@ -8,6 +8,6 @@ function UserProfile() {
     </Layout>
   );
 }
-UserProfile.displayName = "userProfile";
+UserProfile.displayName = "UserProfile";
 
 export default UserProfile;

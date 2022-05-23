@@ -67,6 +67,7 @@ const UploadFiles = () => {
   const [showCreateFolderModal, setShowCreateFolderModal] = useState(false);
   const ref = useRef();
   const closeFolder = () => {
+    setGetFileListFromFolderID([]);
     setOpenFolderID("");
     showUploadsAfter();
     enableCreateFolderBtn();
@@ -75,10 +76,22 @@ const UploadFiles = () => {
 
   const uploadFun = async () => {
     const formData = new FormData();
-    for (const key of Object.keys(uploadFileList)) {
-      if (uploadFileList[key].size / (1024 * 1024) < 5) {
-        formData.append("file[]", uploadFileList[key].originFileObj),
-          formData.append("name[]", uploadFileList[key].name);
+    for (const key of Object.keys(
+      openFolderID ? folderFiles : uploadFileList
+    )) {
+      if (
+        (openFolderID ? folderFiles : uploadFileList)[key].size /
+          (1024 * 1024) <
+        5
+      ) {
+        formData.append(
+          "file[]",
+          (openFolderID ? folderFiles : uploadFileList)[key].originFileObj
+        ),
+          formData.append(
+            "name[]",
+            (openFolderID ? folderFiles : uploadFileList)[key].name
+          );
       } else {
         message.error("Your upload file is greater than 5 mb");
         uploadOptionsHide();
@@ -88,8 +101,7 @@ const UploadFiles = () => {
     formData.append("folder_id", openFolderID);
     let res = await uploadFile(formData);
     if (res && res.status_code == 200) {
-      setFolderFiles([]);
-      fileStatusHide();
+      //fileStatusHide();
       enableCreateFolderBtn();
       uploadOptionsHide();
       shownFolder();
@@ -102,29 +114,19 @@ const UploadFiles = () => {
     }
   };
   const handleCancel = () => {
-    setFileLists(fileLists);
+    setUploadFileList([]);
+    setFolderFiles([]);
+    uploadOptionsHide();
     fileStatusHide();
     GetUploadFileAndFolder();
-    setUploadFileList([]);
-    {
-      fileLists.length > 0
-        ? (enableCreateFolderBtn(),
-          shownAddButton(),
-          dragBoxHide(),
-          uploadOptionsHide())
-        : (enableCreateFolderBtn(),
-          //disbleCreateFolderBtn(),
-          addButtonHide(),
-          dragBoxShow(),
-          uploadOptionsShow());
-    }
   };
   const handle_X_btn = () => {
     crossBtnHide();
     dragBoxHide();
     showFiles();
-    uploadOptionsHide();
-    GetUploadFileAndFolder();
+    uploadFileList.length == 0
+      ? (uploadOptionsHide(), GetUploadFileAndFolder())
+      : uploadOptionsShow();
   };
   const addNewFile = () => {
     hideFiles();
@@ -180,12 +182,11 @@ const UploadFiles = () => {
   const removeUploadFiles = (originNode, file, currFileList) => {
     let uid = file.uid;
     let fileIndex = currFileList.findIndex((element) => element.uid == uid);
-    let newarray = [...uploadFileList];
-
-    setUploadFileList(newarray);
+    let newarray = [...currFileList];
     //uploadOptionsShow();
     newarray.splice(fileIndex, 1);
-    if (newarray.length > 1) {
+    openFolderID ? setFolderFiles(newarray) : setUploadFileList(newarray);
+    if (newarray.length > 0) {
       dragBoxHide();
       shownAddButton();
     }
@@ -193,6 +194,9 @@ const UploadFiles = () => {
       showFiles();
       uploadOptionsHide();
       GetUploadFileAndFolder();
+      if (openFolderID) {
+        GetFileInsideFolderData(openFolderID);
+      }
     }
   };
   const GetUploadFileAndFolder = async () => {

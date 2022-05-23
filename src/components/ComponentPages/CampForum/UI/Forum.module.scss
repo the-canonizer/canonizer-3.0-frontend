@@ -276,3 +276,20 @@
 .threadListTitle {
   word-break: break-word;
 }
+
+.forum_post_card {
+  div[class="ant-card-head-wrapper"] {
+    flex-wrap: nowrap;
+    div[class="ant-card-head-title"] {
+      width: 30%;
+    }
+  }
+  @media screen and (max-width: 1024px) {
+    div[class="ant-card-head-wrapper"] {
+      flex-wrap: wrap;
+      div[class="ant-card-head-title"] {
+        width: 100%;
+      }
+    }
+  }
+}

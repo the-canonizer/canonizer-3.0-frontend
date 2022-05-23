@@ -15,6 +15,7 @@ import {
   Table,
   Popconfirm,
   Spin,
+  Empty,
 } from "antd";
 import Icon, {
   InboxOutlined,
@@ -32,6 +33,10 @@ import Icon, {
   EyeTwoTone,
   CopyTwoTone,
   DeleteTwoTone,
+  FilePptOutlined,
+  FileOutlined,
+  FileExcelOutlined,
+  FileWordOutlined,
 } from "@ant-design/icons";
 import Image from "next/image";
 import styles from "./UploadFile.module.scss";
@@ -73,7 +78,6 @@ import {
 import { labels } from "../../../../messages/label";
 import { setTimeout } from "timers";
 import { spawnSync } from "child_process";
-
 const UploadFileUI = ({
   input,
   setInput,
@@ -107,6 +111,7 @@ const UploadFileUI = ({
   const [createFolderForm] = Form.useForm();
   const imageTimer = 2500;
   const [rename, setRename] = useState("");
+  const [editFolderNameVal, setEditFolderNameVal] = useState("");
   const [editModal, setEditModal] = useState(false);
   const [editModalId, setEditModalId] = useState("");
   const [preview, setPreview] = useState({
@@ -155,53 +160,56 @@ const UploadFileUI = ({
   const validateMessages = {
     required: "${name} is required !",
   };
+  //Regex
+  const textFileRegex = /^text\/(plain$|html$|rtf$|csv$)/;
+  const pdfFileRegex = /^application\/(pdf$)/;
+  const excelFileRegex =
+    /^application\/(vnd.ms-excel.sheet.macroEnabled.12$|vnd.ms-excel$|vnd.ms-excel.sheet.binary.macroEnabled.12$|vnd.openxmlformats-officedocument.spreadsheetml.sheet$)/;
+  const docFileRegex =
+    /^application\/(msword$|vnd.openxmlformats-officedocument.wordprocessingml.template$|vnd.ms-word.template.macroEnabled.12$|vnd.openxmlformats-officedocument.wordprocessingml.document$| vnd.ms-word.document.macroEnabled.12$|msword$)/;
+  const imageRegexData = /^image\/(jpeg$|png$|jpg$|gif$|bmp$)/;
+  const pptRegexData =
+    /^application\/(vnd.ms-powerpoint.template.macroEnabled.12$|vnd.openxmlformats-officedocument.presentationml.template$|vnd.ms-powerpoint.addin.macroEnabled.12$|vnd.openxmlformats-officedocument.presentationml.slideshow$|vnd.openxmlformats-officedocument.presentationml.slideshow$|vnd.ms-powerpoint.slideshow.macroEnabled.12$|vnd.ms-powerpoint$|vnd.ms-powerpoint.presentation.macroEnabled.12$|vnd.openxmlformats-officedocument.presentationml.presentation$)/;
+  const fileJsonRegex = /^application\/(json$)/;
   const menu = (i, obj) => (
     <Menu>
-      <Menu.Item>
-        <span
-          id="openFolder"
-          onClick={() => {
-            Openfolder(obj.id);
-          }}
-        >
-          Open folder
-        </span>
+      <Menu.Item
+        onClick={() => {
+          Openfolder(obj.id);
+        }}
+      >
+        <span id="openFolder">Open folder</span>
       </Menu.Item>
-      <Menu.Item>
-        <span id="editFolderName" onClick={() => editFolder(obj)}>
-          Edit folder name
-        </span>
+      <Menu.Item onClick={() => editFolder(obj)}>
+        <span id="editFolderName">Edit folder name</span>
       </Menu.Item>
-      <Menu.Item>
-        <span id="deleteFolder">
-          <Popconfirm
-            placement="leftTop"
-            title="Are you sure to delete ?"
-            onConfirm={() => removeFiles(obj, {}, fileLists)}
-            okText="Yes"
-            cancelText="No"
-          >
-            Delete folder
-          </Popconfirm>
-        </span>
-      </Menu.Item>
+      <Popconfirm
+        placement="leftTop"
+        title="Are you sure to delete ?"
+        onConfirm={() => removeFiles(obj, {}, fileLists)}
+        okText="Yes"
+        cancelText="No"
+      >
+        <Menu.Item>
+          <span id="deleteFolder">Delete folder</span>
+        </Menu.Item>
+      </Popconfirm>
     </Menu>
   );
   const menu_files = (i, item) => (
     <Menu>
-      <Menu.Item>
-        <span
-          className={styles.menu_item}
-          onClick={() =>
-            setPreview({
-              previewVisible: true,
-              previewName: item.file_name,
-              previewPath: item.file_path,
-              previewCopyShortCode: item.short_code,
-              previewCreatedAt: item.created_at,
-            })
-          }
-        >
+      <Menu.Item
+        onClick={() =>
+          setPreview({
+            previewVisible: true,
+            previewName: item.file_name,
+            previewPath: item.file_path,
+            previewCopyShortCode: item.short_code,
+            previewCreatedAt: item.created_at,
+          })
+        }
+      >
+        <span className={styles.menu_item}>
           <Image
             id="viewFile"
             alt="Eye Image"
@@ -212,16 +220,15 @@ const UploadFileUI = ({
           <span className={styles.marginLeftView}>View File</span>
         </span>
       </Menu.Item>
-      <Menu.Item>
-        <span
-          className={styles.menu_item}
-          onClick={() => {
-            {
-              navigator.clipboard.writeText(item.short_code),
-                message.success("Short code copied");
-            }
-          }}
-        >
+      <Menu.Item
+        onClick={() => {
+          {
+            navigator.clipboard.writeText(item.short_code),
+              message.success("Short code copied");
+          }
+        }}
+      >
+        <span className={styles.menu_item}>
           <Image
             id="copyShortCode"
             alt="copyShortCode"
@@ -232,15 +239,16 @@ const UploadFileUI = ({
           <span className={styles.marginLeftView}>Copy Short Code</span>
         </span>
       </Menu.Item>
-      <Menu.Item>
-        <span className={styles.menu_item}>
-          <Popconfirm
-            placement="top"
-            title="Are you sure to delete ?"
-            onConfirm={() => removeFiles(item, item, fileLists)}
-            okText="Yes"
-            cancelText="No"
-          >
+
+      <Popconfirm
+        placement="top"
+        title="Are you sure to delete ?"
+        onConfirm={() => removeFiles(item, item, fileLists)}
+        okText="Yes"
+        cancelText="No"
+      >
+        <Menu.Item>
+          <span className={styles.menu_item}>
             <Image
               id="deleteFile"
               alt="Trash Data "
@@ -249,16 +257,28 @@ const UploadFileUI = ({
               height={15}
             />
             <span className={styles.marginLeftView}>Delete File</span>
-          </Popconfirm>
-        </span>
-      </Menu.Item>
+          </span>
+        </Menu.Item>
+      </Popconfirm>
     </Menu>
   );
   const displayColumnListImage = (obj) => {
+    const fileText = <FileTextFilled className={styles.folder_icons_fileTxt} />;
+    const filePdf = <FilePdfFilled className={styles.folder_icons_pdf} />;
+    const fileUnknown = <FileUnknownFilled className={styles.folder_icons} />;
+
+    const filePpt = <FilePptOutlined className={styles.folder_icons_fileTxt} />;
+    const fileJson = <FileOutlined className={styles.folder_icons_fileTxt} />;
+    const fileXcel = (
+      <FileExcelOutlined className={styles.folder_icons_fileTxt} />
+    );
+    const fileDocs = (
+      <FileWordOutlined className={styles.folder_icons_fileTxt} />
+    );
     return (
       <div>
         {(() => {
-          if (obj.type == "file" || obj.file_path) {
+          if (imageRegexData.test(obj.file_type) && obj.file_path) {
             return (
               <Image
                 alt="Image"
@@ -277,12 +297,20 @@ const UploadFileUI = ({
                 }}
               />
             );
-          } else if (obj.type == "text/plain") {
-            return <FileTextFilled className={styles.folder_icons_fileTxt} />;
-          } else if (obj.type == "application/pdf") {
-            return <FilePdfFilled className={styles.folder_icons_pdf} />;
-          } else if (obj.type == "") {
-            return <FileUnknownFilled className={styles.folder_icons} />;
+          } else if (textFileRegex.test(obj.file_type)) {
+            return fileText;
+          } else if (pdfFileRegex.test(obj.file_type)) {
+            return filePdf;
+          } else if (excelFileRegex.test(obj.file_type)) {
+            return fileXcel;
+          } else if (docFileRegex.test(obj.file_type)) {
+            return fileDocs;
+          } else if (pptRegexData.test(obj.file_type)) {
+            return filePpt;
+          } else if (fileJsonRegex.test(obj.file_type)) {
+            return fileJson;
+          } else {
+            return fileUnknown;
           }
         })()}
       </div>
@@ -293,6 +321,7 @@ const UploadFileUI = ({
     setEditModal(true);
     setShowCreateFolderModal(true);
     setRename(obj.name);
+    setEditFolderNameVal(obj.name);
     setEditModalId(obj.id);
     createFolderForm.setFieldsValue({
       ["Folder Name"]: obj.name,
@@ -706,70 +735,23 @@ const UploadFileUI = ({
                     className="FolderfileCard"
                   >
                     <div className={styles.openFolder}>
-                      {!toggleFileView
-                        ? (openFolder
-                            ? filteredArray()
-                            : getFileListFromFolderID
-                          ).map((file, i) => {
-                            return (
-                              <div
-                                className={styles.view_After_Upload}
-                                key="upload_file_one"
-                              >
-                                <Card className={styles.files} key={i}>
-                                  <Dropdown
-                                    className={styles.dropdown_menu}
-                                    overlay={menu_files(file.id, file)}
-                                    trigger={["click"]}
-                                  >
-                                    <div
-                                      className="ant-dropdown-link"
-                                      onClick={(e) => e.preventDefault()}
-                                    >
-                                      <Image
-                                        id="menuFilesThreeDots"
-                                        className={styles.Menu_Iconss}
-                                        alt="Three Dots"
-                                        src={ThreeDots}
-                                        width={15}
-                                        height={20}
-                                      />
-                                    </div>
-                                  </Dropdown>
-                                  <div className={styles.imageFiles}>
-                                    {displayImage(file, file.file_path)}
-                                  </div>
-                                  <h3 className="BoxcopyWrap">
-                                    <span className="value">
-                                      {subStringData(file.file_name)}
-                                    </span>
-                                    <span
-                                      className="copySpan"
-                                      onClick={() => {
-                                        navigator.clipboard.writeText(
-                                          file.short_code
-                                        ),
-                                          message.success("Short code copied");
-                                      }}
-                                    >
-                                      <Image
-                                        alt="copyShortCode"
-                                        src={CopyShortCode}
-                                        width={12}
-                                        height={15}
-                                      />
-                                    </span>
-                                  </h3>
-                                  <span>
-                                    {moment
-                                      .unix(file.created_at)
-                                      .format("MMM DD, YYYY, h:mm:ss A")}
-                                  </span>
-                                </Card>
-                              </div>
-                            );
-                          })
-                        : ""}
+                      {!toggleFileView ? (
+                        openFolder ? (
+                          filteredArray() && filteredArray().length > 0 ? (
+                            filteredArray().map((file, i) => {
+                              return openFolderInGridView(file, i);
+                            })
+                          ) : (
+                            <div className={styles.emptyFolderData}>
+                              <Empty description={<span>No Data Found</span>} />
+                            </div>
+                          )
+                        ) : (
+                          ""
+                        )
+                      ) : (
+                        ""
+                      )}
                     </div>
                   </Card>
                 </div>
@@ -785,11 +767,24 @@ const UploadFileUI = ({
     });
   };
   const displayImage = (file, imageData) => {
-    console.log(file, "file", imageData);
+    const fileText = <FileTextFilled className={styles.FileTextTwoOneClass} />;
+    const filePdf = <FilePdfFilled className={styles.FilePdfTwoToneColor} />;
+    const fileUnknown = (
+      <FileUnknownFilled className={styles.FileTextTwoOneClass} />
+    );
+    const filePpt = <FilePptOutlined className={styles.FileTextTwoOneClass} />;
+    const fileJson = <FileOutlined className={styles.FileTextTwoOneClass} />;
+    const fileXcel = (
+      <FileExcelOutlined className={styles.FileTextTwoOneClass} />
+    );
+    const fileDocs = (
+      <FileWordOutlined className={styles.FileTextTwoOneClass} />
+    );
+
     return (
       <div id="display_image">
         {(() => {
-          if (file.type == "file" || imageData) {
+          if (imageRegexData.test(file.file_type || file.type) && imageData) {
             return (
               <Image
                 alt="Image"
@@ -798,20 +793,81 @@ const UploadFileUI = ({
                 width={"140px"}
               />
             );
-          } else if (file.type == "text/plain") {
-            return <FileTextFilled className={styles.FileTextTwoOneClass} />;
-          } else if (file.type == "application/pdf") {
-            return <FilePdfFilled className={styles.FilePdfTwoToneColor} />;
-          } else if (file.type == "") {
-            return <FileUnknownFilled className={styles.FileTextTwoOneClass} />;
+          } else if (textFileRegex.test(file.file_type || file.type)) {
+            return fileText;
+          } else if (pdfFileRegex.test(file.file_type || file.type)) {
+            return filePdf;
+          } else if (excelFileRegex.test(file.file_type || file.type)) {
+            return fileXcel;
+          } else if (docFileRegex.test(file.file_type || file.type)) {
+            return fileDocs;
+          } else if (pptRegexData.test(file.file_type || file.type)) {
+            return filePpt;
+          } else if (fileJsonRegex.test(file.file_type || file.type)) {
+            return fileJson;
+          } else {
+            return fileUnknown;
           }
         })()}
       </div>
     );
   };
-  const confirm = (keyParam) => {
-    message.info("Clicked on Yes.");
-    removeFiles(keyParam);
+  // const confirm = (keyParam) => {
+  //   message.info("Clicked on Yes.");
+  //   removeFiles(keyParam);
+  // };
+  const openFolderInGridView = (file, i) => {
+    return (
+      <div
+        className={styles.view_After_Upload}
+        //key="upload_file_one"
+      >
+        <Card className={styles.files} key={i}>
+          <Dropdown
+            className={styles.dropdown_menu}
+            overlay={menu_files(file.id, file)}
+            trigger={["click"]}
+          >
+            <div
+              className="ant-dropdown-link"
+              onClick={(e) => e.preventDefault()}
+            >
+              <Image
+                id="menuFilesThreeDots"
+                className={styles.Menu_Iconss}
+                alt="Three Dots"
+                src={ThreeDots}
+                width={15}
+                height={20}
+              />
+            </div>
+          </Dropdown>
+          <div className={styles.imageFiles}>
+            {displayImage(file, file.file_path)}
+          </div>
+          <h3 className="BoxcopyWrap">
+            <span className="value">{subStringData(file.file_name)}</span>
+            <span
+              className="copySpan"
+              onClick={() => {
+                navigator.clipboard.writeText(file.short_code),
+                  message.success("Short code copied");
+              }}
+            >
+              <Image
+                alt="copyShortCode"
+                src={CopyShortCode}
+                width={12}
+                height={15}
+              />
+            </span>
+          </h3>
+          <span>
+            {moment.unix(file.created_at).format("MMM DD, YYYY, h:mm:ss A")}
+          </span>
+        </Card>
+      </div>
+    );
   };
   //spinner Image Preview
   useEffect(() => {
@@ -858,7 +914,7 @@ const UploadFileUI = ({
               <div className={styles.top_btn}>
                 <div className="datepIcker">
                   <DatePicker
-                    disabled={show_UploadOptions}
+                    disabled={show_UploadOptions || dragBoxStatus}
                     onChange={(date, dateString) => {
                       setDatePick(date ? date.toLocaleString() : "");
                     }}
@@ -867,7 +923,7 @@ const UploadFileUI = ({
                 <div className={styles.search_users}>
                   <SearchOutlined />
                   <Input
-                    disabled={show_UploadOptions}
+                    disabled={show_UploadOptions || dragBoxStatus}
                     id="datePickerText"
                     placeholder="Search"
                     type="text"
@@ -888,9 +944,9 @@ const UploadFileUI = ({
                       setEditModal(false);
                   }}
                 >
-                  Create folder
+                  Create Folder
                 </Button>
-                {addButtonShow ? (
+                {addButtonShow && !dragBoxStatus ? (
                   <Button
                     id="addAFileBtn"
                     className={styles.add_file_btn}
@@ -898,14 +954,14 @@ const UploadFileUI = ({
                       addNewFile(), setToggleFileView(false), setUpdateList({});
                     }}
                   >
-                    Add a file
+                    Add a File
                   </Button>
                 ) : (
                   ""
                 )}
               </div>
               <div className={styles.top_icon}>
-                {show_UploadOptions ? (
+                {show_UploadOptions || dragBoxStatus ? (
                   ""
                 ) : (
                   <span
@@ -922,7 +978,7 @@ const UploadFileUI = ({
                     />
                   </span>
                 )}
-                {show_UploadOptions ? (
+                {show_UploadOptions || dragBoxStatus ? (
                   ""
                 ) : (
                   <span
@@ -979,7 +1035,7 @@ const UploadFileUI = ({
                       info.file.percent == 0
                     ) {
                       setFolderFiles(info.fileList);
-                      setUploadFileList(info.fileList);
+                      //setUploadFileList(info.fileList);
                       setFileLists(info.fileList);
                     }
                   } else {
@@ -1031,11 +1087,15 @@ const UploadFileUI = ({
                       >
                         <CloseCircleOutlined
                           onClick={() =>
-                            removeUploadFiles(originNode, file, uploadFileList)
+                            removeUploadFiles(
+                              originNode,
+                              file,
+                              fileStatus ? folderFiles : uploadFileList
+                            )
                           }
                         />
                         <div className="imgWrap">
-                          {displayImage(file, file.thumbUrl)}
+                          {file.thumbUrl && displayImage(file, file.thumbUrl)}
                         </div>
                         <br />
                         <label
@@ -1096,13 +1156,7 @@ const UploadFileUI = ({
               <Table
                 id="tableColumn"
                 className="contentValue"
-                dataSource={
-                  fileStatus
-                    ? getFileListFromFolderID
-                    : filterArrList
-                    ? filterArrList
-                    : fileLists
-                }
+                dataSource={filteredArray()}
                 columns={columns}
               />
             </div>
@@ -1117,7 +1171,7 @@ const UploadFileUI = ({
                 className={styles.Upload_Btn}
                 onClick={() => {
                   uploadList(), uploadFun(), setToggleFileView(false);
-                  setUploadFileList([]);
+                  setUploadFileList([]), setFolderFiles([]);
                 }}
               >
                 Upload
@@ -1127,7 +1181,7 @@ const UploadFileUI = ({
                 className={styles.cancel_Btn}
                 onClick={handleCancel}
               >
-                cancel
+                Cancel
               </Button>
             </div>
           ) : (
@@ -1137,6 +1191,7 @@ const UploadFileUI = ({
       </div>
       <Modal
         className={styles.modal_cross}
+        centered
         title={editModal ? "Edit your folder name" : labels.CreateaFolder}
         visible={showCreateFolderModal}
         footer=""
@@ -1153,6 +1208,7 @@ const UploadFileUI = ({
           input={input}
           setRename={setRename}
           setInput={setInput}
+          editFolderNameVal={editFolderNameVal}
         />
       </Modal>
 

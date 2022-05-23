@@ -22,7 +22,7 @@ const { Option } = Select;
 
 import styles from "./topicListFilter.module.scss";
 import { useRouter } from "next/router";
-import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
+import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
 
 const infoContent = (
   <>

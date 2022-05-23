@@ -193,7 +193,15 @@ const TopicDetails = () => {
             }`}
           ></i>
         }
-        onClick={() => campOrTopicScribe(true)}
+        onClick={() => {
+          if (isLogin) {
+            campOrTopicScribe(true);
+          } else {
+            setLoadingIndicator(true);
+            router.push("/login");
+          }
+          // campOrTopicScribe(true)
+        }}
       >
         {!!topicSubscriptionID
           ? " Unsubscribe to Entire Topic"
@@ -207,7 +215,18 @@ const TopicDetails = () => {
             }`}
           ></i>
         }
-        onClick={() => campOrTopicScribe(false)}
+        onClick={
+          () => {
+            if (isLogin) {
+              campOrTopicScribe(false);
+            } else {
+              setLoadingIndicator(true);
+              router.push("/login");
+            }
+          }
+
+          // campOrTopicScribe(false)
+        }
       >
         {!!campSubscriptionID
           ? "Unsubscribe to the Camp"
