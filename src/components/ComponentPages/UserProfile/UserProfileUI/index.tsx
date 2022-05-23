@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./UserProfile.module.scss";
-import UserProfileDetails from "../UserProfileDetails/userProfileDetails";
-import UserProfileCard from "../UserProfileDetails/userProfileCard";
+import UserProfileDetails from "../UserProfileDetails/UserProfileDetails";
+import UserProfileCard from "../UserProfileDetails/UserProfileCard";
 const UserProfile = () => {
   return (
     <>
