@@ -36,7 +36,7 @@
   }
   .btnLogin,
   .btnRegister {
-    font-size: 1.125rem;
+    font-size: 14px;
     font-weight: 500;
     height: 38px;
     color: #fff;
@@ -176,6 +176,7 @@
   .right {
     display: flex;
     align-items: center;
+    // width: 207px;
     .iconMobMenu {
       margin-left: 1.5rem;
       button {
@@ -196,6 +197,9 @@
       .btnLogin {
         margin-right: 1rem;
       }
+    }
+    @media screen and (max-width: 767px) {
+      width: auto;
     }
   }
 }

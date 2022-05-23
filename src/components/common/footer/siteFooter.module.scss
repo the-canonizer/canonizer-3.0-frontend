@@ -75,9 +75,6 @@
         width: 100%;
       }
       li {
-        & + li {
-          margin-top: 5px;
-        }
         @media screen and (min-width: 992px) {
           width: 50%;
         }
@@ -85,7 +82,7 @@
           width: 50%;
         }
         a {
-          font-size: 15px;
+          font-size: 14px;
           color: #e6e9f1;
           display: inline-flex;
           align-items: center;

@@ -298,7 +298,7 @@ body {
     .ant-card-head-wrapper {
       flex-grow: 1;
       .ant-card-head-title {
-        font-size: 20px;
+        font-size: 18px;
         margin-right: 20px;
         font-weight: 600;
       }
@@ -403,6 +403,7 @@ body {
   background: #f89d15;
   text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
   box-shadow: 0 2px #0000000b;
+  font-size: 14px;
 }
 .ant-btn-orange:hover,
 .ant-btn-orange:focus,

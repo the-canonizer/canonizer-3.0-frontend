@@ -50,7 +50,7 @@ export default function OTPVerify({
             <Image
               preview={false}
               alt="otp"
-              src="/images/otp-image.png"
+              src="/images/otp-image_sm.png"
               fallback={fallBackSrc}
             />
           </div>

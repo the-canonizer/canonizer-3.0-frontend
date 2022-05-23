@@ -134,7 +134,10 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
               </>
             ) : null}
           </div>
-          <div className={styles.right}>
+          <div
+            className={styles.right}
+            style={{ width: isLoginPage ? "207px" : "null" }}
+          >
             {!isLoginPage ? (
               <div className={styles.btnsLoginRegister}>
                 <div className="hdrUserdropdown">
