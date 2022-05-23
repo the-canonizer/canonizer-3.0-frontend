@@ -6,11 +6,12 @@ import Link from "next/link";
 import messages from "../../../../messages";
 
 export default function DirectSupportedCampsUI({
-  RemoveCardSupportedCamps,
+  removeCardSupportedCamps,
   handleSupportedCampsCancel,
   isSupportedCampsModalVisible,
   directSupportedCampsList,
   search,
+  removeSupport,
 }) {
   function CardTitle(props) {
     return (
@@ -52,7 +53,7 @@ export default function DirectSupportedCampsUI({
               extra={
                 <div
                   className={styles.RemoveCardSupported}
-                  onClick={() => RemoveCardSupportedCamps()}
+                  onClick={() => removeCardSupportedCamps(data)}
                 >
                   <CloseCircleOutlined /> {messages.labels.removeSupport}{" "}
                 </div>
@@ -107,7 +108,7 @@ export default function DirectSupportedCampsUI({
             style={{ marginBottom: "0px" }}
           >
             <Button
-              onClick={handleSupportedCampsCancel}
+              onClick={removeSupport}
               type="primary"
               style={{
                 marginTop: 10,

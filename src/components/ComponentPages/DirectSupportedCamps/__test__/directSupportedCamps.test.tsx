@@ -8,6 +8,7 @@ const { labels, placeholders, validations } = messages;
 const isSupportedCampsModalVisible = true;
 const RemoveCardSupportedCamps = jest.fn();
 const handleSupportedCampsCancel = jest.fn();
+const RemoveSupport = jest.fn();
 const search = "";
 
 const directSupportedCampsList = [
@@ -45,6 +46,7 @@ describe("Direct Support camps page", () => {
         isSupportedCampsModalVisible={isSupportedCampsModalVisible}
         directSupportedCampsList={directSupportedCampsList}
         search={search}
+        RemoveSupport={RemoveSupport}
       />
     );
     expect(screen.getByText("Remove")).toBeTruthy();
@@ -62,6 +64,7 @@ describe("Direct Support camps page", () => {
         isSupportedCampsModalVisible={isSupportedCampsModalVisible}
         directSupportedCampsList={directSupportedCampsList}
         search={search}
+        RemoveSupport={RemoveSupport}
       />
     );
     expect(
@@ -76,6 +79,7 @@ describe("Direct Support camps page", () => {
         isSupportedCampsModalVisible={isSupportedCampsModalVisible}
         directSupportedCampsList={directSupportedCampsList}
         search={search}
+        RemoveSupport={RemoveSupport}
       />
     );
     expect(

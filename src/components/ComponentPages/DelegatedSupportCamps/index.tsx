@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { getDelegatedSupportCampsList } from "src/network/api/userApi";
+import {
+  getDelegatedSupportCampsList,
+  removeSupportedCampsEntireTopic,
+} from "src/network/api/userApi";
+import { message } from "antd";
 import DelegatedSupportCampsUI from "./DelegatedSupportCampsUI";
 
 const DelegatedSupportCamps = ({ search }) => {
@@ -8,16 +12,21 @@ const DelegatedSupportCamps = ({ search }) => {
   );
   const [isRemoveSupportModalVisible, setIsRemoveSupportModalVisible] =
     useState(false);
-
+  const [removeTopicNumDataId, setRemoveTopicNumDataId] = useState("");
+  const [nickNameId, setNickNameId] = useState("");
   const handleSupportedCampsCancel = () => {
     setIsRemoveSupportModalVisible(false);
   };
 
-  const RemoveCardDelegatedSupportedCamps = () => {
+  const removeCardDelegatedSupportedCamps = (data) => {
+    setRemoveTopicNumDataId(data.topic_num);
+    setNickNameId(data.nick_name_id);
     setIsRemoveSupportModalVisible(true);
   };
+
   const [viewMoreModalVisible, setViewmoreModalVisible] = useState(false);
   const [viewMoreDataValue, setviewMoreDataValue] = useState([]);
+
   const showViewMoreModal = (e, data) => {
     setViewmoreModalVisible(true);
     setviewMoreDataValue(data);
@@ -25,7 +34,21 @@ const DelegatedSupportCamps = ({ search }) => {
   const handelViewMoreModalCancel = () => {
     setViewmoreModalVisible(false);
   };
-
+  const removeSupport = async () => {
+    const removeEntireData = {
+      topic_num: removeTopicNumDataId,
+      camp_num: "",
+      type: "delegate",
+      action: "all",
+      nick_name_id: nickNameId,
+    };
+    let res = await removeSupportedCampsEntireTopic(removeEntireData);
+    if (res && res.status_code == 200) {
+      message.success(res.message);
+      setViewmoreModalVisible(false);
+      fetchDelegatedSupportCampsList();
+    }
+  };
   const fetchDelegatedSupportCampsList = async () => {
     let response = await getDelegatedSupportCampsList();
     if (response && response.status_code === 200) {
@@ -39,7 +62,7 @@ const DelegatedSupportCamps = ({ search }) => {
 
   return (
     <DelegatedSupportCampsUI
-      RemoveCardDelegatedSupportedCamps={RemoveCardDelegatedSupportedCamps}
+      removeCardDelegatedSupportedCamps={removeCardDelegatedSupportedCamps}
       handleSupportedCampsCancel={handleSupportedCampsCancel}
       isRemoveSupportModalVisible={isRemoveSupportModalVisible}
       showViewMoreModal={(e, data) => showViewMoreModal(e, data)}
@@ -48,6 +71,7 @@ const DelegatedSupportCamps = ({ search }) => {
       viewMoreModalVisible={viewMoreModalVisible}
       delegatedSupportCampsList={delegatedSupportCampsList}
       search={search}
+      removeSupport={removeSupport}
     />
   );
 };
