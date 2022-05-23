@@ -62,15 +62,20 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
       router.push("/");
     }
   };
-  const onClick = ({ key }) => {
+  const onAccountSettingClick = ({ key }) => {
     if (key == 3) {
       logOut();
     }
+    if (key == 0) {
+      localStorage.setItem("settings_Tabs_keys", "profile_info");
+    }
   };
   const menu = (
-    <Menu onClick={onClick}>
+    <Menu onClick={onAccountSettingClick}>
       <Menu.Item key="0">
-        <Link href="/settings">Account Settings</Link>
+        <Link href="/settings" key="0">
+          Account Settings
+        </Link>
       </Menu.Item>
       <Menu.Item key="1">
         <a>Support Camps</a>
