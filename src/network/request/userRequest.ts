@@ -496,4 +496,14 @@ export default class UserRequest extends Request {
       {}
     );
   }
+  static GetUserProfileById(authToken) {
+    return new Request(
+      K.Network.URL.UserProfile,
+      K.Network.Method.GET,
+      {},
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
 }
