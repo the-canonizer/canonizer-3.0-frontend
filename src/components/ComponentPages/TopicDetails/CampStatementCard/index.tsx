@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
+import K from "src/constants";
 
 const { Paragraph } = Typography;
 
@@ -42,7 +43,7 @@ const CampStatementCard = ({ myRefToCampStatement, onCampForumClick }) => {
               }}
             />
           ) : (
-            "No Statement Found"
+            K?.exceptionalMessages?.campStatement
           )}
         </Paragraph>
 
