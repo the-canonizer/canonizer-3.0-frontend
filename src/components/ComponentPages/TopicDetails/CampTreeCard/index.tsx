@@ -39,6 +39,7 @@ const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
       className="topicDetailsCollapse"
     >
       <Panel
+        disabled
         header={<h3>Canonizer Sorted Camp Tree</h3>}
         key="1"
         extra={
