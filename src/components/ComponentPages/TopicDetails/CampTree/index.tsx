@@ -75,12 +75,15 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
                   <TreeNode
                     key={"custom"}
                     title={
-                      <p
-                        className={styles.startNew}
-                        onClick={() => {
-                          // console.log("supportCamp");
-                        }}
-                      >{`<Start new supporting camp here>`}</p>
+                      <p className={styles.startNew}>
+                        <Link
+                          href={`/camp/create/${
+                            router.query.camp[0] + "/" + router.query.camp[1]
+                          }`}
+                        >
+                          <a>{`<Start new supporting camp here>`} </a>
+                        </Link>
+                      </p>
                     }
                   />
                 )}
