@@ -28,7 +28,7 @@ const addContent = (
   </>
 );
 
-const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
+const CampTreeCard = ({ scrollToCampStatement }) => {
   const router = useRouter();
   const isLogin = useAuthentication();
 
@@ -39,6 +39,7 @@ const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
       className="topicDetailsCollapse"
     >
       <Panel
+        disabled
         header={<h3>Canonizer Sorted Camp Tree</h3>}
         key="1"
         extra={
@@ -71,10 +72,7 @@ const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
           </>
         }
       >
-        <CampTree
-          scrollToCampStatement={scrollToCampStatement}
-          getSelectedNode={getSelectedNode}
-        />
+        <CampTree scrollToCampStatement={scrollToCampStatement} />
       </Panel>
     </Collapse>
   );

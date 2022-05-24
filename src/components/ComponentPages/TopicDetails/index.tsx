@@ -1,4 +1,4 @@
-import { Typography } from "antd";
+import { Tooltip, Typography } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -53,7 +53,7 @@ const TopicDetails = () => {
       campRecord: state?.topicDetails?.currentCampRecord,
     }));
   const [campSubscriptionID, setCampSubscriptionID] = useState(
-    campRecord?.campSubscriptionId
+    campRecord?.subscriptionId
   );
   const [topicSubscriptionID, setTopicSubscriptionID] = useState(
     topicRecord?.topicSubscriptionId
@@ -89,9 +89,11 @@ const TopicDetails = () => {
   }, [asofdate, algorithm, +router?.query?.camp[1]?.split("-")[0]]);
 
   useEffect(() => {
-    setCampSubscriptionID(campRecord?.campSubscriptionId);
-    setTopicSubscriptionID(topicRecord?.topicSubscriptionId);
-  }, [campRecord?.campSubscriptionId, topicRecord?.topicSubscriptionId]);
+    if (didMount.current) {
+      setCampSubscriptionID(campRecord?.subscriptionId);
+      setTopicSubscriptionID(topicRecord?.topicSubscriptionId);
+    } else didMount.current = true;
+  }, [campRecord?.subscriptionId, topicRecord?.topicSubscriptionId]);
 
   const scrollToCampStatement = () => {
     myRefToCampStatement.current?.scrollIntoView({ behavior: "smooth" });
@@ -100,25 +102,6 @@ const TopicDetails = () => {
   const handleLoadMoreSupporters = async () => {
     const reqBody = { topic_num: 45, camp_num: 1 };
     await getCanonizedCampSupportingTreeApi(reqBody, true);
-  };
-
-  const getSelectedNode = async (nodeKey) => {
-    setLoadingIndicator(true);
-    const reqBody = {
-      topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
-      camp_num: nodeKey,
-      as_of: asof,
-      as_of_date: asofdate,
-    };
-
-    await Promise.all([
-      getNewsFeedApi(reqBody),
-      getCanonizedCampStatementApi(reqBody),
-      getCurrentTopicRecordApi(reqBody),
-      getCurrentCampRecordApi(reqBody),
-      getCanonizedCampSupportingTreeApi(reqBody),
-    ]);
-    setLoadingIndicator(false);
   };
 
   const setCurrentTopics = (data) => dispatch(setCurrentTopic(data));
@@ -215,6 +198,7 @@ const TopicDetails = () => {
             }`}
           ></i>
         }
+        disabled={!!campSubscriptionID && campRecord?.flag == 2 ? true : false}
         onClick={
           () => {
             if (isLogin) {
@@ -228,9 +212,17 @@ const TopicDetails = () => {
           // campOrTopicScribe(false)
         }
       >
-        {!!campSubscriptionID
-          ? "Unsubscribe to the Camp"
-          : "Subscribe to the Camp"}
+        {!!campSubscriptionID && campRecord?.flag !== 2 ? (
+          "Unsubscribe to the Camp"
+        ) : !!campSubscriptionID && campRecord?.flag == 2 ? (
+          <Tooltip
+            title={`You are subscribed to ${campRecord?.subscriptionCampName}`}
+          >
+            Subscribe to the Camp
+          </Tooltip>
+        ) : (
+          "Subscribe to the Camp"
+        )}
       </Menu.Item>
       <Menu.Item icon={<HeartOutlined />}>Directly Join and Support </Menu.Item>
       <Menu.Item icon={<i className="icon-camp"></i>}>
@@ -320,10 +312,7 @@ const TopicDetails = () => {
             <NewsFeedsCard newsFeed={newsFeed} />
           </Spin>
           <Spin spinning={getTreeLoadingIndicator} size="large">
-            <CampTreeCard
-              scrollToCampStatement={scrollToCampStatement}
-              getSelectedNode={getSelectedNode}
-            />
+            <CampTreeCard scrollToCampStatement={scrollToCampStatement} />
           </Spin>
           <Spin spinning={loadingIndicator} size="large">
             <CampStatementCard

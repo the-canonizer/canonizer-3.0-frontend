@@ -1323,6 +1323,15 @@ body {
       }
     }
   }
+  .ant-collapse-item-disabled {
+    .ant-collapse-header {
+      cursor: inherit;
+      padding-right: 20px;
+      .ant-collapse-arrow {
+        display: none;
+      }
+    }
+  }
   .topicDetailsCollapseFooter {
     display: flex;
     justify-content: flex-end;
