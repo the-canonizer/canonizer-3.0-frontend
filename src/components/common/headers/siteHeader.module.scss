@@ -1,5 +1,5 @@
 .wrap {
-  padding: 1.25rem 1.5rem;
+  padding: 14px 19px;
   background-color: var(--primary);
   height: auto;
   display: flex;
@@ -7,10 +7,10 @@
   align-items: center;
   line-height: normal;
   .logo {
-    width: 225px;
+    width: 199px;
     img {
       max-height: 42px;
-      max-width: 225px;
+      max-width: 200px;
     }
   }
   .mobNavBG {
@@ -36,7 +36,7 @@
   }
   .btnLogin,
   .btnRegister {
-    font-size: 1.125rem;
+    font-size: 14px;
     font-weight: 500;
     height: 38px;
     color: #fff;
@@ -104,7 +104,7 @@
       }
       li {
         font-weight: 500;
-        font-size: 1rem;
+        // font-size: 1rem;
         @media screen and (min-width: 1200px) {
           padding: 8px 15px;
         }
@@ -176,6 +176,7 @@
   .right {
     display: flex;
     align-items: center;
+    // width: 207px;
     .iconMobMenu {
       margin-left: 1.5rem;
       button {
@@ -196,6 +197,9 @@
       .btnLogin {
         margin-right: 1rem;
       }
+    }
+    @media screen and (max-width: 767px) {
+      width: auto;
     }
   }
 }

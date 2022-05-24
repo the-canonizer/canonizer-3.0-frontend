@@ -131,14 +131,14 @@ body {
 .leftSideBar {
   & + .pageContentWrap {
     @media screen and (min-width: 992px) {
-      padding: 0 16px;
+      padding: 0 15px;
     }
   }
   &.miniSideBar {
     @media screen and (min-width: 992px) {
-      width: 245px;
+      width: 200px;
       & + .pageContentWrap {
-        width: calc(100% - 245px);
+        width: calc(100% - 200px);
       }
     }
     @media screen and (max-width: 991px) {
@@ -169,9 +169,9 @@ body {
     }
   }
   &_Card {
-    padding-top: 20px;
-    padding-right: 20px;
-    padding-left: 20px;
+    padding-top: 15px;
+    padding-right: 15px;
+    padding-left: 15px;
     border: solid 1px #f0f0f0;
     background-color: #fff;
     margin-bottom: 16px;
@@ -189,8 +189,8 @@ body {
       align-items: center;
       justify-content: center;
       width: 100%;
-      font-size: 1.125rem;
-      font-weight: 600;
+      font-size: 14px;
+      font-weight: 500;
       color: #0f2a4d;
       border: solid 1px #d9d9d9;
       i {
@@ -298,7 +298,7 @@ body {
     .ant-card-head-wrapper {
       flex-grow: 1;
       .ant-card-head-title {
-        font-size: 20px;
+        font-size: 18px;
         margin-right: 20px;
         font-weight: 600;
       }
@@ -334,9 +334,9 @@ body {
 
 .hdrUserdropdown {
   .icon-user {
-    height: 38px;
-    width: 38px;
-    line-height: 34px;
+    height: 30px;
+    width: 30px;
+    line-height: 28px;
     background-color: #e6e9f1;
     color: #647488;
     display: inline-block;
@@ -352,7 +352,7 @@ body {
   }
   .ant-dropdown-link {
     color: #fff;
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 400;
 
     @media screen and (max-width: 567px) {
@@ -403,6 +403,7 @@ body {
   background: #f89d15;
   text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
   box-shadow: 0 2px #0000000b;
+  font-size: 14px;
 }
 .ant-btn-orange:hover,
 .ant-btn-orange:focus,
@@ -1291,7 +1292,7 @@ body {
       margin-right: 5px;
     }
     h3 {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 600;
       margin-bottom: 0;
       display: inline-flex;
@@ -1457,4 +1458,8 @@ body .UploadFile_menu_item__Fnasz .anticon {
 }
 body .UploadFile_menu_item__Fnasz {
   color: #0f2a4d;
+}
+
+.card_heading {
+  font-size: 18px;
 }

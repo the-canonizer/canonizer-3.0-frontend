@@ -26,7 +26,7 @@
     display: flex;
     .topicTitleStyle,
     .breadcrumbLinks {
-      font-size: 18px;
+      font-size: 16px;
     }
     .topicTitleStyle {
       margin-right: 50px;
@@ -49,7 +49,7 @@
       background-color: #4484ce;
       box-shadow: none;
       border-color: transparent;
-      font-size: 15px;
+      font-size: 14px;
 
       &:hover {
         background-color: darken(#4484ce, 7%);

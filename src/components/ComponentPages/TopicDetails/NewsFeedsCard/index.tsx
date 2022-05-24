@@ -43,7 +43,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
     >
       <Panel
         header={
-          <h3 className="text-orange">
+          <h3 className="text-orange card_heading">
             <i className={"icon-fi-document"} /> News Feeds
           </h3>
         }
