@@ -8,7 +8,7 @@ import styles from "../topicDetails.module.scss";
 
 const { TreeNode } = Tree;
 
-const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
+const CampTree = ({ scrollToCampStatement }) => {
   const { tree, filterByScore } = useSelector((state: RootState) => ({
     tree: state?.topicDetails?.tree,
     filterByScore: state.filters?.filterObject?.filterByScore,
@@ -24,7 +24,6 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
       console.log("selected", selectedKeys, e);
     } else {
       setSelectedNodeID(+selectedKeys.join(""));
-      getSelectedNode(+selectedKeys.join());
       scrollToCampStatement();
     }
   };

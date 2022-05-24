@@ -28,7 +28,7 @@ const addContent = (
   </>
 );
 
-const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
+const CampTreeCard = ({ scrollToCampStatement }) => {
   const router = useRouter();
   const isLogin = useAuthentication();
 
@@ -71,10 +71,7 @@ const CampTreeCard = ({ scrollToCampStatement, getSelectedNode }) => {
           </>
         }
       >
-        <CampTree
-          scrollToCampStatement={scrollToCampStatement}
-          getSelectedNode={getSelectedNode}
-        />
+        <CampTree scrollToCampStatement={scrollToCampStatement} />
       </Panel>
     </Collapse>
   );
