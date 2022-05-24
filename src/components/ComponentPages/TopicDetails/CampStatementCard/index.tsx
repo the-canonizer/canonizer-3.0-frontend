@@ -24,6 +24,7 @@ const CampStatementCard = ({ myRefToCampStatement, onCampForumClick }) => {
       className="topicDetailsCollapse"
     >
       <Panel
+        disabled
         header={<h3>Camp Statement</h3>}
         key="1"
         extra={
