@@ -43,15 +43,24 @@ const TopicDetails = () => {
 
   const router = useRouter();
   const dispatch = useDispatch();
-  const { asof, asofdate, algorithm, newsFeed, topicRecord, campRecord } =
-    useSelector((state: RootState) => ({
-      asofdate: state.filters?.filterObject?.asofdate,
-      algorithm: state.filters?.filterObject?.algorithm,
-      newsFeed: state?.topicDetails?.newsFeed,
-      asof: state?.filters?.filterObject?.asof,
-      topicRecord: state?.topicDetails?.currentTopicRecord,
-      campRecord: state?.topicDetails?.currentCampRecord,
-    }));
+  const {
+    asof,
+    asofdate,
+    algorithm,
+    newsFeed,
+    topicRecord,
+    campRecord,
+    campStatement,
+  } = useSelector((state: RootState) => ({
+    asofdate: state.filters?.filterObject?.asofdate,
+    algorithm: state.filters?.filterObject?.algorithm,
+    newsFeed: state?.topicDetails?.newsFeed,
+    asof: state?.filters?.filterObject?.asof,
+    topicRecord: state?.topicDetails?.currentTopicRecord,
+    campRecord: state?.topicDetails?.currentCampRecord,
+    campStatement: state?.topicDetails?.campStatement,
+  }));
+
   const [campSubscriptionID, setCampSubscriptionID] = useState(
     campRecord?.subscriptionId
   );
@@ -232,10 +241,18 @@ const TopicDetails = () => {
         Manage/Edit the Topic
       </Menu.Item>
       <Menu.Item icon={<FileTextOutlined />}>
-        Manage/Edit Camp Statement{" "}
+        <Link
+          href={`/statement/history/${router?.query?.camp[0]}/${router?.query?.camp[1]}`}
+        >
+          <a>
+            {campStatement?.length > 0 && "Manage/Edit Camp Statement"}
+            {campStatement?.length == 0 && "Add Camp Statement"}
+          </a>
+        </Link>
       </Menu.Item>
     </Menu>
   );
+
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
