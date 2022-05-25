@@ -76,10 +76,10 @@ export default function RecentActivities() {
   };
 
   const decodeUrlLink = (threadData) => {
-    let link = threadData.activity.properties;
-    link = JSON.parse(link).url;
-    link = link.replace(/\s+/g, "-");
-    return link;
+    return JSON.parse(threadData?.activity?.properties)?.url?.replace(
+      /\s+/g,
+      "-"
+    );
   };
 
   async function getTopicsApiCallWithReqBody(loadMore = false, topicType) {
