@@ -10,6 +10,7 @@ import {
 } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import moment from "moment";
+import Link from "next/link";
 
 import styles from "./Forum.module.scss";
 import messages from "../../../../messages";
@@ -150,18 +151,26 @@ const ThreadListUI = ({
           render={(dt, others) => {
             return (
               <Text>
-                {others["post_count"] === 0
-                  ? "This thread doesn't have any posts yet."
-                  : `${
-                      others["nick_name"] === null || others["nick_name"] === ""
-                        ? ""
-                        : others["nick_name"]
-                    } replied ${moment(getTime(dt))
+                {others["post_count"] === 0 ? (
+                  "This thread doesn't have any posts yet."
+                ) : (
+                  <Fragment>
+                    <Link href="#" passHref>
+                      <a>
+                        {others["nick_name"] === null ||
+                        others["nick_name"] === ""
+                          ? ""
+                          : others["nick_name"]}
+                      </a>
+                    </Link>{" "}
+                    {`replied ${moment(getTime(dt))
                       .local()
                       .startOf("seconds")
                       .fromNow()} (${moment(getTime(dt)).format(
                       "MMM Do YYYY, h:mm:ss a"
                     )})`}
+                  </Fragment>
+                )}
               </Text>
             );
           }}
