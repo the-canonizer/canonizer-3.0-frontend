@@ -127,7 +127,9 @@ const NewsFeedsCard = ({ newsFeed }) => {
                       )}
                       {deleteNews && (
                         <Tooltip
-                          title={news.owner_flag ? "" : "must owner to delete"}
+                          title={
+                            news.owner_flag ? "" : " must be owner to delete"
+                          }
                         >
                           <Popconfirm
                             disabled={!news.owner_flag}
@@ -151,7 +153,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
 
                       {editNews && (
                         <Tooltip
-                          title={news.owner_flag ? "" : "must owner to edit"}
+                          title={news.owner_flag ? "" : "must be owner to edit"}
                         >
                           <Button
                             size="small"
