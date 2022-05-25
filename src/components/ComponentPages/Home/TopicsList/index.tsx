@@ -114,7 +114,8 @@ const TopicsList = () => {
     loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
     const reqBody = {
       algorithm: algorithm,
-      asofdate: asofdate,
+      asofdate:
+        asof == ("default" || asof == "review") ? Date.now() / 1000 : asofdate,
       namespace_id: nameSpaceId,
       page_number: pageNumberRef.current,
       page_size: 15,
