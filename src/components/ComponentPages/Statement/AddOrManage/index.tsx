@@ -62,7 +62,7 @@ export default function AddOrManage({ add }) {
           onFinish={onFinish}
         >
           <Row gutter={28}>
-            <Col xl={14} md={24} xs={24}>
+            <Col xs={24} sm={24} xl={12}>
               <Form.Item
                 className={styles.formItem}
                 label={<>Nick Name</>}
@@ -83,92 +83,101 @@ export default function AddOrManage({ add }) {
                     ))}
                 </Select>
               </Form.Item>
-              {add ? (
-                <>
-                  <Form.Item
-                    className={`${styles.formItem} mb-3`}
-                    label={
-                      <>
-                        Topic Name <small>(Limit 30 chars)</small>
-                      </>
-                    }
-                    name="topic_name"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Topic name is required.",
-                      },
-                    ]}
-                  >
-                    <Input size="large" maxLength={30} />
-                  </Form.Item>
-
-                  <Form.Item
-                    className={styles.formItem}
-                    label={
-                      <>
-                        Namespace{" "}
-                        <small>
-                          (General is recommended, unless you know otherwise)
-                        </small>
-                      </>
-                    }
-                    name="name_space"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please select Namespace",
-                      },
-                    ]}
-                  >
-                    <Select defaultValue="/General/" size="large">
-                      <Select.Option value="general">/General/</Select.Option>
-                      <Select.Option value="sandbox">/Sandbox/</Select.Option>
-                      <Select.Option value="family">/Family/</Select.Option>
-                    </Select>
-                  </Form.Item>
-                </>
+            </Col>
+            <Col xs={24} xl={24}>
+            {add ? (
+                <Row gutter={24}>
+                  <Col xs={24} xl={12}>
+                    <Form.Item
+                      className={`${styles.formItem} mb-3`}
+                      label={
+                        <>
+                          Topic Name <small>(Limit 30 chars)</small>
+                        </>
+                      }
+                      name="topic_name"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Topic name is required.",
+                        },
+                      ]}
+                    >
+                      <Input size="large" maxLength={30} />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} xl={12}>
+                    <Form.Item
+                      className={styles.formItem}
+                      label={
+                        <>
+                          Namespace{" "}
+                          <small>
+                            (General is recommended, unless you know otherwise)
+                          </small>
+                        </>
+                      }
+                      name="name_space"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please select Namespace",
+                        },
+                      ]}
+                    >
+                      <Select defaultValue="/General/" size="large">
+                        <Select.Option value="general">/General/</Select.Option>
+                        <Select.Option value="sandbox">/Sandbox/</Select.Option>
+                        <Select.Option value="family">/Family/</Select.Option>
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                </Row>
               ) : (
-                <>
-                  <Form.Item
-                    className={styles.formItem}
-                    name="statement"
-                    label={<>Statement </>}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Statement is required",
-                      },
-                    ]}
-                  >
-                    <Input.TextArea size="large" rows={7} />
-                  </Form.Item>
-
-                  <Form.Item
-                    className={styles.formItem}
-                    name="edit_summary"
-                    label={
-                      <>
-                        Edit Summary{" "}
-                        <small>(Briefly describe your changes)</small>
-                      </>
-                    }
-                    rules={[
-                      {
-                        required: true,
-                        message: "Edit summary is required",
-                      },
-                    ]}
-                  >
-                    <Input.TextArea size="large" rows={5} />
-                  </Form.Item>
-                </>
+                <Row gutter={24}>
+                  <Col xs={24} xl={12}>
+                    <Form.Item
+                      className={styles.formItem}
+                      name="statement"
+                      label={<>Statement </>}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Statement is required",
+                        },
+                      ]}
+                    >
+                      <Input.TextArea size="large" rows={7} />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} xl={12}>
+                    <Form.Item
+                      className={styles.formItem}
+                      name="edit_summary"
+                      label={
+                        <>
+                          Edit Summary{" "}
+                          <small>(Briefly describe your changes)</small>
+                        </>
+                      }
+                      rules={[
+                        {
+                          required: true,
+                          message: "Edit summary is required",
+                        },
+                      ]}
+                    >
+                      <Input.TextArea size="large" rows={7} />
+                    </Form.Item>
+                  </Col>
+                </Row>
               )}
-
-              <Form.Item>
+            </Col>
+            <Col xs={24} xl={24}>
+              <Form.Item className="mb-0 text-right">
                 <Button
                   size="large"
-                  className={`btn-orange mr-3 ${styles.btnSubmit}`}
+                  className={`btn-orange ${styles.btnSubmit}`}
                   htmlType="submit"
                 >
                   {add ? "Submit Statement" : "Submit Update"}
