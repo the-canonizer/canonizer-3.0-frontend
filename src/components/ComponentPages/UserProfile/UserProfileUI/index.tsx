@@ -6,10 +6,11 @@ import {
   getUserProfileById,
   getUserSupportedCampList,
 } from "src/network/api/userApi";
+import { getCanonizedNameSpacesApi } from "src/network/api/homePageApi";
 const UserProfile = () => {
   const [profileData, setProfileData] = useState({} as any);
   const [userSupportedCampsList, setUserSupportedCampsList] = useState([]);
-
+  const [nameSpaceList, setNameSpaceList] = useState([]);
   const GetUserProfileData = async (id) => {
     let response = await getUserProfileById(id);
     if (response && response.status_code === 200) {
@@ -22,23 +23,33 @@ const UserProfile = () => {
       setUserSupportedCampsList(res.data);
     }
   };
+
+  const UserSupportCampListNewSpaces = async (id) => {
+    let res = await getCanonizedNameSpacesApi();
+    console.log(res);
+    if (res && res.status_code === 200) {
+      setNameSpaceList(res.data);
+    }
+  };
   //onLoad
   useEffect(() => {
     let userId = localStorage.getItem("publicUserId");
     GetUserProfileData(userId);
     UserSupportedCampsListApi(userId);
+    UserSupportCampListNewSpaces(userId);
   }, []);
 
   return (
     <>
       <div className={styles.userProfileData}>
         <UserProfileDetails
-          setProfileData={setProfileData}
+          // setProfileData={setProfileData}
           profileData={profileData}
         />
         <UserProfileCard
           userSupportedCampsList={userSupportedCampsList}
           setUserSupportedCampsList={setUserSupportedCampsList}
+          nameSpaceList={nameSpaceList}
         />
       </div>
     </>

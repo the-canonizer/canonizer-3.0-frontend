@@ -3,7 +3,7 @@ import styles from "../UserProfileUI/UserProfile.module.scss";
 import messages from "../../../../messages";
 import { Card, Image, Row, Col, Form, message, Tag } from "antd";
 import { getUserProfileById } from "src/network/api/userApi";
-const UserProfileDetails = ({ setProfileData, profileData }) => {
+const UserProfileDetails = ({ profileData }) => {
   return (
     <>
       <Card title={<h3>{messages.labels.userProfile} </h3>}>

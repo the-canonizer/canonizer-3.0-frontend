@@ -2,22 +2,12 @@ import React from "react";
 import messages from "../../../../messages";
 import styles from "../UserProfileUI/UserProfile.module.scss";
 import Link from "next/link";
-import Icon, { CloseCircleOutlined } from "@ant-design/icons";
-import {
-  Card,
-  Image,
-  Row,
-  Col,
-  Form,
-  message,
-  Tag,
-  Checkbox,
-  Select,
-} from "antd";
+import { Card, Tag, Select } from "antd";
 
 export const UserProfileCard = ({
   userSupportedCampsList,
   setUserSupportedCampsList,
+  nameSpaceList,
 }) => {
   return (
     <div className="user--cards-outer">
@@ -29,7 +19,8 @@ export const UserProfileCard = ({
               type="inner"
               title={
                 <div className={styles.main_card_title}>
-                  Nick name : <span> {val.nick_name}</span>
+                  {messages.labels.nickname} :{" "}
+                  <span className={styles.Bluecolor}> {val.nick_name}</span>
                 </div>
               }
             >
@@ -46,6 +37,13 @@ export const UserProfileCard = ({
                     <Select.Option key="custom-key" value="">
                       /General/
                     </Select.Option>
+                    {nameSpaceList?.map((item) => {
+                      return (
+                        <Select.Option key={item.id} value={item.id}>
+                          {item.label}
+                        </Select.Option>
+                      );
+                    })}
                   </Select>
                 </div>
               </div>
