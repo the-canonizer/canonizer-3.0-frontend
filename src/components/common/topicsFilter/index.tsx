@@ -131,6 +131,10 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
   // }, [filterObject]);
 
   useEffect(() => {
+    setValue(selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3);
+  }, [selectedAsOf]);
+
+  useEffect(() => {
     if (router.pathname.includes("/topic/")) {
       setIsCampBtnVisible(true);
     }
