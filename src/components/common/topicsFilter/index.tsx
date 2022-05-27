@@ -147,6 +147,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
       })
     );
   };
+
   const onChange = (e) => {
     if (e.target.value === 3) {
       setIsDatePicker(true);
@@ -155,6 +156,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
     }
     setValue(e.target.value);
   };
+
   const pickDate = (e) => {
     const IsoDateFormat = Date.parse(e?._d) / 1000;
     setDatePickerValue(e?._d);
@@ -226,6 +228,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
               className={styles.algoSelect}
               defaultValue={selectedAlgorithm}
               onChange={selectAlgorithm}
+              value={selectedAlgorithm}
             >
               {algorithms?.map((algo) => {
                 return (

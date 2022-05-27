@@ -47,8 +47,9 @@ const TopicsList = () => {
     filterByScore,
     nameSpaces,
     includeReview,
-    selectedNameSpace,
+    filterNameSpace,
     userEmail,
+    filterNameSpaceId,
   } = useSelector((state: RootState) => ({
     canonizedTopics: state.homePage?.canonizedTopicsData,
     asofdate: state.filters?.filterObject?.asofdate,
@@ -57,18 +58,20 @@ const TopicsList = () => {
     filterByScore: state.filters?.filterObject?.filterByScore,
     nameSpaces: state.homePage?.nameSpaces,
     includeReview: state?.filters?.filterObject?.includeReview,
-    selectedNameSpace: state?.filters?.filterObject?.nameSpace,
+    filterNameSpace: state?.filters?.filterObject?.nameSpace,
     userEmail: state?.auth?.loggedInUser?.email,
+    filterNameSpaceId: state?.filters?.filterObject?.namespace_id,
   }));
 
   const [topicsData, setTopicsData] = useState(canonizedTopics);
   const [nameSpacesList] = useState(nameSpaces);
   const [isReview, setIsReview] = useState(includeReview);
   const [inputSearch, setInputSearch] = useState("");
-  const [nameSpaceId, setNameSpaceId] = useState("");
+  const [nameSpaceId, setNameSpaceId] = useState(filterNameSpaceId || "");
   const [loadMoreIndicator, setLoadMoreIndicator] = useState(false);
   const [getTopicsLoadingIndicator, setGetTopicsLoadingIndicator] =
     useState(false);
+  const [selectedNameSpace, setSelectedNameSpace] = useState(filterNameSpace);
   let onlyMyTopicsCheck = false;
 
   const selectNameSpace = (id, nameSpace) => {
@@ -80,6 +83,11 @@ const TopicsList = () => {
       })
     );
   };
+
+  useEffect(() => {
+    setSelectedNameSpace(filterNameSpace);
+    setNameSpaceId(filterNameSpaceId);
+  }, [filterNameSpace, filterNameSpaceId]);
 
   useEffect(() => {
     setTopicsData(canonizedTopics);
@@ -108,6 +116,7 @@ const TopicsList = () => {
     filterByScore,
     inputSearch,
     onlyMyTopicsCheck,
+    filterNameSpace,
   ]);
 
   async function getTopicsApiCallWithReqBody(loadMore = false) {
@@ -203,6 +212,7 @@ const TopicsList = () => {
                   size="large"
                   className={styles.dropdown}
                   defaultValue={selectedNameSpace}
+                  value={selectedNameSpace}
                   onChange={selectNameSpace}
                 >
                   <Select.Option key="custom-key" value="">
