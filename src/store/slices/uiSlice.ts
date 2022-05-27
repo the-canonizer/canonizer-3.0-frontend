@@ -18,6 +18,7 @@ export const uiSlice = createSlice({
     fileStatus: false,
     crossBtn: false,
     showFiles: "afterUpload",
+    showSocialLoginEmailPopup: false,
   },
   reducers: {
     showLoginModal: (state) => {
@@ -110,6 +111,12 @@ export const uiSlice = createSlice({
     hideUploadFiles: (state) => {
       state.showFiles = "hideUpload";
     },
+    showSocialEmailPopup: (state) => {
+      state.showSocialLoginEmailPopup = true;
+    },
+    hideSocialEmailPopup: (state) => {
+      state.showSocialLoginEmailPopup = false;
+    },
   },
 });
 
@@ -144,6 +151,8 @@ export const {
   hideCrossBtn,
   hideUploadFiles,
   showUploadFiles,
+  showSocialEmailPopup,
+  hideSocialEmailPopup,
 } = uiSlice.actions;
 
 export default uiSlice.reducer;
