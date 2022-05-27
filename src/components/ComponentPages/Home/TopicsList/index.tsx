@@ -186,7 +186,7 @@ const TopicsList = () => {
                 }`}
               >
                 <Title level={3}>
-                  Select Namespace
+                  Canonized list for
                   <Popover content={infoContent} placement="right">
                     <i className="icon-info cursor-pointer"></i>
                   </Popover>

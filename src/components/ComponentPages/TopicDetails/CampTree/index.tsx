@@ -8,7 +8,7 @@ import styles from "../topicDetails.module.scss";
 
 const { TreeNode } = Tree;
 
-const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
+const CampTree = ({ scrollToCampStatement }) => {
   const { tree, filterByScore } = useSelector((state: RootState) => ({
     tree: state?.topicDetails?.tree,
     filterByScore: state.filters?.filterObject?.filterByScore,
@@ -24,7 +24,6 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
       console.log("selected", selectedKeys, e);
     } else {
       setSelectedNodeID(+selectedKeys.join(""));
-      getSelectedNode(+selectedKeys.join());
       scrollToCampStatement();
     }
   };
@@ -75,12 +74,15 @@ const CampTree = ({ scrollToCampStatement, getSelectedNode }) => {
                   <TreeNode
                     key={"custom"}
                     title={
-                      <p
-                        className={styles.startNew}
-                        onClick={() => {
-                          // console.log("supportCamp");
-                        }}
-                      >{`<Start new supporting camp here>`}</p>
+                      <p className={styles.startNew}>
+                        <Link
+                          href={`/camp/create/${
+                            router.query.camp[0] + "/" + router.query.camp[1]
+                          }`}
+                        >
+                          <a>{`<Start new supporting camp here>`} </a>
+                        </Link>
+                      </p>
                     }
                   />
                 )}

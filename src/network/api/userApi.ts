@@ -458,7 +458,22 @@ export const getDirectSupportedCampsList = async () => {
     });
   return res;
 };
+export const removeSupportedCampsEntireTopic = async (body) => {
+  let state = store.getState();
+  const { auth } = state;
 
+  const res = await NetworkCall.fetch(
+    UserRequest.removeSupportedCampsEntireTopic(body, auth.loggedInUser.token)
+  )
+    .then((value) => {
+      return value;
+    })
+    .catch((errors) => {
+      handleError(errors);
+    });
+  return res;
+};
+//removeDirectSupportedCampsFromEntireTopic
 export const getDelegatedSupportCampsList = async () => {
   let state = store.getState();
   const { auth } = state;
@@ -697,5 +712,25 @@ export const unsubscribeTopicOrCampAPI = async (body: object) => {
     return res;
   } catch (err) {
     handleError(err);
+  }
+};
+export const getUserProfileById = async () => {
+  let state = store.getState();
+  const { auth } = state;
+  try {
+    const res = await NetworkCall.fetch(
+      UserRequest.GetUserProfileById(auth.loggedInUser?.token)
+    );
+    return res;
+  } catch (err) {
+    handleError(err);
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400
+    ) {
+      return err.error.data;
+    }
   }
 };

@@ -13,7 +13,7 @@ const LogoHeader = () => {
               src={"/images/logo.svg"}
               alt="Picture of the author"
               layout="responsive"
-              width={225}
+              width={200}
               height={42}
             />
           </a>

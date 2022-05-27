@@ -1,7 +1,7 @@
 .createNewTopicForm {
   label {
-    font-size: 15px;
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 500;
     color: #795548;
 
     span {
@@ -13,13 +13,25 @@
       right: -15px;
     }
   }
-  input,
-  textarea {
+  input {
     transition: all 0.3s;
-    ::placeholder {
+    &::placeholder {
       font-size: 14px;
       color: #afb6bb;
-      line-height: 15px;
+      line-height: 20px;
+    }
+  }
+  span[class="ant-select-selection-placeholder"]{
+    font-size: 14px;
+    color: #afb6bb;
+    line-height: 20px;
+  }
+  textarea {
+    transition: all 0.3s;
+    &::placeholder {
+      font-size: 14px;
+      color: #afb6bb;
+      line-height: 20px;
     }
   }
 
@@ -39,8 +51,8 @@
   .namespaceInput {
     label {
       &::before {
-        position: static;
-        order: 1;
+        // position: static;
+        // order: 1;
       }
     }
   }
@@ -51,8 +63,8 @@
     letter-spacing: 0px;
     color: #ef5e5e;
     opacity: 1;
-    margin-top: 45px;
-    margin-bottom: 20px;
+    margin-top: 35px;
+    margin-bottom: 15px;
     display: block;
   }
   .cancel_btn {
@@ -76,7 +88,8 @@
 }
 
 .cardTitle {
-  font: normal normal 600 20px/23px Asap;
+  font-size: 18px;
+  font-weight: 600;
   letter-spacing: 0px;
   color: #1c1b24;
   opacity: 1;
@@ -84,14 +97,16 @@
 
 .upperTitle {
   display: flex;
+  padding: 10px 0 30px;
   p {
     text-align: left;
     font-weight: normal;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 21px;
     letter-spacing: 0px;
     color: #0f2a4d;
     margin-right: 35px;
+    margin-bottom: 0;
 
     &:last-child {
       strong {

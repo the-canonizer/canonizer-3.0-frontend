@@ -1,5 +1,5 @@
 .card {
-  padding: 20px;
+  padding: 15px;
   background-color: #fff;
   border: solid 1px #f0f0f0;
   margin-bottom: 16px;
@@ -14,6 +14,7 @@
   }
   .head {
     margin-bottom: 18px;
+    overflow: hidden;
     @media screen and (min-width: 576px) {
       display: flex;
       align-items: center;
@@ -22,7 +23,7 @@
     h3 {
       display: flex;
       align-items: center;
-      font-size: 1.25rem;
+      font-size: 18px;
       color: #1c1b24;
       margin-bottom: 0;
       white-space: nowrap;
@@ -47,9 +48,12 @@
       }
     }
     .dropdown {
+      max-width: 100%;
+      border: 1px solid #d9d9d9;
+      font-size: 13px;
       > div:first-child {
         height: 40px !important;
-        border: solid 1px #d9d9d9 !important;
+        // border: solid 1px #d9d9d9 !important;
       }
       @media screen and (max-width: 767px) {
         margin-top: 10px;
@@ -58,7 +62,7 @@
     }
     &:not(.browsePage) {
       @media screen and (min-width: 1200px) and (max-width: 1499px) {
-        flex-wrap: wrap;
+        // flex-wrap: wrap;
       }
       h3 {
         @media screen and (min-width: 1200px) and (max-width: 1499px) {
@@ -163,15 +167,16 @@
         margin-top: 8px;
       }
       @media screen and (max-width: 767px) {
-        font-size: 1rem;
+        // font-size: 1rem;
       }
       a {
         display: flex;
         align-items: center;
-        padding-top: 3px;
-        padding-bottom: 3px;
+        padding-top: 8px;
+        padding-bottom: 8px;
         color: #0f2a4d;
-        font-size: 1.125rem;
+        font-size: 14px;
+        line-height: 21px;
         width: 100%;
         border: solid 1px #f0f0f0;
         background-color: #fff;
@@ -200,8 +205,8 @@
       .tag {
         margin: 0;
         border-radius: 4px;
-        line-height: 22px;
-        font-size: 13px;
+        line-height: 1.7;
+        font-size: 10px;
         font-weight: 400;
         color: #fff;
         border: none;
@@ -215,7 +220,7 @@
   .footer {
     .viewAll {
       position: relative;
-      font-size: 1rem;
+      font-size: 13px;
       font-weight: 600;
       display: inline-flex;
       align-items: center;

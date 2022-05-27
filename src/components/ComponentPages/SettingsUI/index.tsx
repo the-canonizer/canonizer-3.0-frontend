@@ -45,11 +45,11 @@ function callback(key) {
   console.log(key);
 }
 
-export default function SettingsUI() {
+const SettingsUI = () => {
   const [search, setSearch] = useState("");
-  const [typingTimeout, setTypingTimeout] = useState(0);
   const [activeTabKey, setActiveTabKey] = useState("profile_info");
   const onTabChange = (key) => {
+    localStorage.setItem("settings_Tabs_keys", key);
     setActiveTabKey(key);
   };
   const router = useRouter();
@@ -112,6 +112,14 @@ export default function SettingsUI() {
       setActiveTabKey("subscriptions");
     }
   }, [router.query]);
+  //when page is reloaded/refresh
+  useEffect(() => {
+    setActiveTabKey(
+      localStorage.getItem("settings_Tabs_keys")
+        ? localStorage.getItem("settings_Tabs_keys")
+        : "profile_info"
+    );
+  }, []);
 
   return (
     <>
@@ -148,4 +156,5 @@ export default function SettingsUI() {
       </Row>
     </>
   );
-}
+};
+export default SettingsUI;

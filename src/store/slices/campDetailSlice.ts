@@ -36,7 +36,7 @@ export const treeSlice = createSlice({
     setCurrentCampRecordSubscriptionId: (state, action) => {
       state.currentCampRecord = {
         ...state.currentCampRecord,
-        campSubscriptionId: action.payload,
+        subscriptionId: action.payload,
       };
     },
     setCampSupportingTree: (state, action) => {

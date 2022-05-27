@@ -349,6 +349,16 @@ export default class UserRequest extends Request {
     );
   }
 
+  static removeSupportedCampsEntireTopic(body, authToken) {
+    return new Request(
+      K.Network.URL.RemoveSupportesCampsEntireTopic,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
   static getDelegatedSupportCampsList(authToken) {
     return new Request(
       K.Network.URL.GetDelegatedSupportCamps,
@@ -494,6 +504,16 @@ export default class UserRequest extends Request {
       body,
       K.Network.Header.Type.Json,
       {}
+    );
+  }
+  static GetUserProfileById(authToken) {
+    return new Request(
+      K.Network.URL.UserProfile,
+      K.Network.Method.GET,
+      {},
+      K.Network.Header.Type.Json,
+      {},
+      authToken
     );
   }
 }

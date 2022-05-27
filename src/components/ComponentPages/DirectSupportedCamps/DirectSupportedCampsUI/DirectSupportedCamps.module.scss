@@ -1,7 +1,8 @@
 .RemoveCardSupported {
+  cursor: pointer;
   color: #ef5e5e;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 12px;
 
   @media screen and (max-width: 767px) {
     font-size: 0;
@@ -20,7 +21,7 @@
   background: transparent;
   color: #4484ce;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 14px;
   padding: 4px 12px;
   margin-bottom: 6px;
   display: inline-flex;
