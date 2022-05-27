@@ -10,12 +10,19 @@ import {
   Typography,
   Input,
   Select,
+  Dropdown,
 } from "antd";
 import { useRouter } from "next/router";
 import "antd/dist/antd.css";
 import styles from "../addEditNews.module.scss";
 import { getAllUsedNickNames } from "../../../../network/api/campDetailApi";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
+import {
+  MoreOutlined,
+  FileTextOutlined,
+  HeartOutlined,
+} from "@ant-design/icons";
+import SideBarNoFilter from "../../../ComponentPages/Home/SideBarNoFilter";
 
 export default function AddOrManage({ add }) {
   const isLogin = useAuthentication();
@@ -48,145 +55,211 @@ export default function AddOrManage({ add }) {
   }, []);
 
   return (
-    <Spin spinning={screenLoading} size="large">
-      <Card
-        title={add ? "Add Camp Statement" : "Topic Update"}
-        className={styles.card}
-      >
-        <Form
-          form={form}
-          layout={"vertical"}
-          initialValues={{
-            available_for_child: 0,
-          }}
-          onFinish={onFinish}
-        >
-          <Row gutter={28}>
-            <Col xl={14} md={24} xs={24}>
-              <Form.Item
-                className={styles.formItem}
-                label={<>Nick Name</>}
-                name="nick_name"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select Nick name",
-                  },
-                ]}
+    <>
+      <div className={styles.topicDetailContentWrap}>
+        <div className={styles.topicDetailContentHead}>
+          <div className={styles.topicDetailContentHead_Left}>
+            <Typography.Paragraph className={"mb-0 " + styles.topicTitleStyle}>
+              {" "}
+              <span className="bold"> Topic: </span>
+              <small>
+                <i className="icon-subscribe text-primary"></i>
+              </small>
+            </Typography.Paragraph>
+            <div className={styles.breadcrumbLinks}>
+              {" "}
+              <span className="bold mr-1"> Camp : </span>
+              <small style={{ alignSelf: "center", marginLeft: "10px" }}>
+                <i className="icon-subscribe text-primary"></i>
+              </small>
+            </div>
+          </div>
+
+          <div className={styles.topicDetailContentHead_Right}>
+            <Button type="primary" className={styles.btnCampForum}>
+              Camp Forum
+            </Button>
+            <Dropdown
+              className={styles.campForumDropdown}
+              placement="bottomRight"
+              trigger={["click"]}
+            >
+              <a
+                className={styles.iconMore}
+                onClick={(e) => e.preventDefault()}
               >
-                <Select value={nickNameData[0]?.id} size="large">
-                  {nickNameData &&
-                    nickNameData?.map((names) => (
-                      <Select.Option value={names.id} key={names?.id}>
-                        {names?.nick_name}
-                      </Select.Option>
-                    ))}
-                </Select>
-              </Form.Item>
-              {add ? (
-                <>
-                  <Form.Item
-                    className={`${styles.formItem} mb-3`}
-                    label={
-                      <>
-                        Topic Name <small>(Limit 30 chars)</small>
-                      </>
-                    }
-                    name="topic_name"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Topic name is required.",
-                      },
-                    ]}
-                  >
-                    <Input size="large" maxLength={30} />
-                  </Form.Item>
+                <MoreOutlined />
+              </a>
+            </Dropdown>
+          </div>
+        </div>
+        <aside className="leftSideBar miniSideBar">
+          <SideBarNoFilter />
+        </aside>
 
-                  <Form.Item
-                    className={styles.formItem}
-                    label={
-                      <>
-                        Namespace{" "}
-                        <small>
-                          (General is recommended, unless you know otherwise)
-                        </small>
-                      </>
-                    }
-                    name="name_space"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please select Namespace",
-                      },
-                    ]}
-                  >
-                    <Select defaultValue="/General/" size="large">
-                      <Select.Option value="general">/General/</Select.Option>
-                      <Select.Option value="sandbox">/Sandbox/</Select.Option>
-                      <Select.Option value="family">/Family/</Select.Option>
-                    </Select>
-                  </Form.Item>
-                </>
-              ) : (
-                <>
-                  <Form.Item
-                    className={styles.formItem}
-                    name="statement"
-                    label={<>Statement </>}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Statement is required",
-                      },
-                    ]}
-                  >
-                    <Input.TextArea size="large" rows={7} />
-                  </Form.Item>
-                  <Form.Item
-                    className={styles.formItem}
-                    name="edit_summary"
-                    label={
-                      <>
-                        Edit Summary{" "}
-                        <small>(Briefly describe your changes)</small>
-                      </>
-                    }
-                    rules={[
-                      {
-                        required: true,
-                        message: "Edit summary is required",
-                      },
-                    ]}
-                  >
-                    <Input.TextArea size="large" rows={5} />
-                  </Form.Item>
-                </>
-              )}
+        <div className="pageContentWrap">
+          <Spin spinning={screenLoading} size="large">
+            <Card
+              title={add ? "Add Camp Statement" : "Topic Update"}
+              className={styles.card}
+            >
+              <Form
+                form={form}
+                layout={"vertical"}
+                initialValues={{
+                  available_for_child: 0,
+                }}
+                onFinish={onFinish}
+              >
+                <Row gutter={28}>
+                  <Col xs={24} sm={24} xl={12}>
+                    <Form.Item
+                      className={styles.formItem}
+                      label={<>Nick Name</>}
+                      name="nick_name"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please select Nick name",
+                        },
+                      ]}
+                    >
+                      <Select value={nickNameData[0]?.id} size="large">
+                        {nickNameData &&
+                          nickNameData?.map((names) => (
+                            <Select.Option value={names.id} key={names?.id}>
+                              {names?.nick_name}
+                            </Select.Option>
+                          ))}
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} xl={24}>
+                    {add ? (
+                      <Row gutter={24}>
+                        <Col xs={24} xl={12}>
+                          <Form.Item
+                            className={`${styles.formItem} mb-3`}
+                            label={
+                              <>
+                                Topic Name <small>(Limit 30 chars)</small>
+                              </>
+                            }
+                            name="topic_name"
+                            rules={[
+                              {
+                                required: true,
+                                message: "Topic name is required.",
+                              },
+                            ]}
+                          >
+                            <Input size="large" maxLength={30} />
+                          </Form.Item>
+                        </Col>
+                        <Col xs={24} xl={12}>
+                          <Form.Item
+                            className={styles.formItem}
+                            label={
+                              <>
+                                Namespace{" "}
+                                <small>
+                                  (General is recommended, unless you know
+                                  otherwise)
+                                </small>
+                              </>
+                            }
+                            name="name_space"
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please select Namespace",
+                              },
+                            ]}
+                          >
+                            <Select defaultValue="/General/" size="large">
+                              <Select.Option value="general">
+                                /General/
+                              </Select.Option>
+                              <Select.Option value="sandbox">
+                                /Sandbox/
+                              </Select.Option>
+                              <Select.Option value="family">
+                                /Family/
+                              </Select.Option>
+                            </Select>
+                          </Form.Item>
+                        </Col>
+                      </Row>
+                    ) : (
+                      <Row gutter={24}>
+                        <Col xs={24} xl={12}>
+                          <Form.Item
+                            className={styles.formItem}
+                            name="statement"
+                            label={<>Statement </>}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Statement is required",
+                              },
+                            ]}
+                          >
+                            <Input.TextArea size="large" rows={7} />
+                          </Form.Item>
+                        </Col>
+                      </Row>
+                    )}
 
-              <Form.Item>
-                <Button
-                  size="large"
-                  className={`btn-orange mr-3 ${styles.btnSubmit}`}
-                  htmlType="submit"
-                >
-                  {add ? "Submit Statement" : "Submit Update"}
-                </Button>
-                {add && (
-                  <Button
-                    htmlType="button"
-                    className="cancel-btn"
-                    type="ghost"
-                    size="large"
-                  >
-                    Preview
-                  </Button>
-                )}
-              </Form.Item>
-            </Col>
-          </Row>
-        </Form>
-      </Card>
-    </Spin>
+                    <Row gutter={24}>
+                      <Col xs={24} xl={12}>
+                        <Form.Item
+                          className={styles.formItem}
+                          name="edit_summary"
+                          label={
+                            <>
+                              Edit Summary{" "}
+                              <small>(Briefly describe your changes)</small>
+                            </>
+                          }
+                          rules={[
+                            {
+                              required: true,
+                              message: "Edit summary is required",
+                            },
+                          ]}
+                        >
+                          <Input.TextArea size="large" rows={7} />
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                  </Col>
+                  <Col xs={24} xl={24}>
+                    <Form.Item className="mb-0 text-right">
+                      <Button
+                        size="large"
+                        className={`btn-orange ${styles.btnSubmit}`}
+                        htmlType="submit"
+                      >
+                        {add ? "Submit Statement" : "Submit Update"}
+                      </Button>
+                      {add && (
+                        <Button
+                          htmlType="button"
+                          className="cancel-btn"
+                          type="ghost"
+                          size="large"
+                        >
+                          Preview
+                        </Button>
+                      )}
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </Form>
+            </Card>
+          </Spin>
+        </div>
+      </div>
+    </>
   );
 }

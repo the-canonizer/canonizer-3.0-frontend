@@ -67,3 +67,72 @@
     border-radius: 3px;
   }
 }
+
+.topicDetailContentHead {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 24px 24px 0;
+  justify-content: space-between;
+  align-items: center;
+  &_Left {
+    display: flex;
+    .topicTitleStyle,
+    .breadcrumbLinks {
+      font-size: 16px;
+    }
+    .topicTitleStyle {
+      margin-right: 50px;
+    }
+    .breadcrumbLinks {
+      display: flex;
+      a {
+        font-size: 18px;
+        color: #2e68db;
+        font-weight: 400;
+      }
+    }
+  }
+  &_Right {
+    display: flex;
+    align-items: center;
+
+    .btnCampForum {
+      margin-right: 20px;
+      background-color: #4484ce;
+      box-shadow: none;
+      border-color: transparent;
+      font-size: 14px;
+
+      &:hover {
+        background-color: darken(#4484ce, 7%);
+      }
+    }
+
+    .campForumDropdown {
+      font-size: 24px;
+      color: #0f2a4d !important;
+      span {
+        color: #000 !important;
+        position: static !important;
+        bottom: initial !important;
+      }
+    }
+  }
+}
+.breadcrumbLinks {
+  display: flex;
+  font-size: 18px;
+  flex-wrap: wrap;
+  a {
+    font-size: 18px;
+    color: #2e68db !important;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+}
+.topicDetailContentWrap {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
