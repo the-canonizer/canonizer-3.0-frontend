@@ -143,27 +143,25 @@ export default function AddOrManage({ add }) {
                   >
                     <Input.TextArea size="large" rows={7} />
                   </Form.Item>
-
-                  <Form.Item
-                    className={styles.formItem}
-                    name="edit_summary"
-                    label={
-                      <>
-                        Edit Summary{" "}
-                        <small>(Briefly describe your changes)</small>
-                      </>
-                    }
-                    rules={[
-                      {
-                        required: true,
-                        message: "Edit summary is required",
-                      },
-                    ]}
-                  >
-                    <Input.TextArea size="large" rows={5} />
-                  </Form.Item>
                 </>
               )}
+              <Form.Item
+                className={styles.formItem}
+                name="edit_summary"
+                label={
+                  <>
+                    Edit Summary <small>(Briefly describe your changes)</small>
+                  </>
+                }
+                rules={[
+                  {
+                    required: true,
+                    message: "Edit summary is required",
+                  },
+                ]}
+              >
+                <Input.TextArea size="large" rows={5} />
+              </Form.Item>
 
               <Form.Item>
                 <Button
