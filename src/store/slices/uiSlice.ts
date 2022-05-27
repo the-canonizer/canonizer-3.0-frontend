@@ -18,7 +18,7 @@ export const uiSlice = createSlice({
     fileStatus: false,
     crossBtn: false,
     showFiles: "afterUpload",
-    showSocialLoginEmailPopup: false,
+    showSocialLoginEmailPopup: true,
   },
   reducers: {
     showLoginModal: (state) => {

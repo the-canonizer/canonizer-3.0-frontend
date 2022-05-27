@@ -31,7 +31,6 @@ function RegistrationUi({
   openLogin,
 }) {
   const router = useRouter();
-  console.log("🚀 ~ file: index.tsx ~ line 34 ~ router", router)
 
   const recaptchaRef: React.RefObject<{ reset }> = createRef();
 
