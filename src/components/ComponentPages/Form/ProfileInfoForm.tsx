@@ -253,7 +253,7 @@ function ProfileInfoForm({
           <Row gutter={30}>
             <Col md={12}>
               <Form.Item name="address_1" label={messages.labels.addressLine1}>
-                <div>
+                <div className="reactDropdown">
                   <PlacesAutocomplete
                     value={address}
                     onChange={handleAddressChange}

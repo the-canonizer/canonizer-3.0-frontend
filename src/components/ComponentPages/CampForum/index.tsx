@@ -31,7 +31,7 @@ const ForumComponent = ({}) => {
   const [threadList, setThreadList] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(1);
-  const [totalRecords, setTotalRecords] = useState(30);
+  const [totalRecords, setTotalRecords] = useState(0);
   const [nickNameList, setNickNameList] = useState([]);
   const [initialValue, setInitialValues] = useState({});
   const [postList, setPostList] = useState([]);
@@ -216,6 +216,7 @@ const ForumComponent = ({}) => {
   };
 
   const filterThread = (type) => {
+    setThreadList([]);
     const queries = router?.query;
     queries.by = type;
     router.push(router, undefined, { shallow: true });

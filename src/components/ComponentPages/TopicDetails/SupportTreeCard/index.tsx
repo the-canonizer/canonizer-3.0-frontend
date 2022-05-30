@@ -28,6 +28,7 @@ const SupportTreeCard = ({ handleLoadMoreSupporters }) => {
   const { campSupportingTree } = useSelector((state: RootState) => ({
     campSupportingTree: state?.topicDetails?.campSupportingTree,
   }));
+
   return (
     <Collapse
       defaultActiveKey={["1"]}
@@ -51,8 +52,13 @@ const SupportTreeCard = ({ handleLoadMoreSupporters }) => {
           {campSupportingTree?.length &&
             campSupportingTree.map((supporter, index) => {
               return (
-                <List.Item key={index}>
-                  <Link href="#">
+                <List.Item
+                  key={index}
+                  onClick={() => {
+                    localStorage.setItem("publicUserId", supporter.id);
+                  }}
+                >
+                  <Link href="/userProfile">
                     <a>
                       {supporter.name}
                       <span className="number-style">{supporter.score}</span>
