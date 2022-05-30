@@ -20,7 +20,6 @@ import {
   getEditCampNewsFeedApi,
   updateNewsFeedApi,
 } from "../../../../network/api/campNewsApi";
-import { getNickNameList } from "../../../../network/api/userApi";
 import { getAllUsedNickNames } from "../../../../network/api/campDetailApi";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
 
@@ -256,7 +255,11 @@ export default function AddOrEdit({ edit }) {
                   },
                 ]}
               >
-                <Select value={nickNameData[0]?.id} size="large">
+                <Select
+                  value={nickNameData[0]?.id}
+                  size="large"
+                  disabled={edit}
+                >
                   {nickNameData &&
                     nickNameData?.map((names) => (
                       <Select.Option value={names.id} key={names?.id}>
