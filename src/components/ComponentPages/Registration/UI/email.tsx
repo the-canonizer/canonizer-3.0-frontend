@@ -1,14 +1,25 @@
-import { Image, Typography, Form, Input, Button } from "antd";
-import { CloseCircleOutlined, ArrowRightOutlined } from "@ant-design/icons";
+import { Typography, Form, Input, Button } from "antd";
+import {
+  CloseCircleOutlined,
+  ArrowRightOutlined,
+  RedoOutlined,
+} from "@ant-design/icons";
 
 import styles from "./Registration.module.scss";
 
 import messages from "../../../../messages";
-import { fallBackSrc } from "../../../../assets/data-images";
 
 const { Title, Text } = Typography;
 
-const EmailConfirmation = ({ form, onFinish, isModal, closeModal }) => (
+const EmailConfirmation = ({
+  form,
+  onFinish,
+  isModal,
+  closeModal,
+  isOTP,
+  onResendClick,
+  isResend,
+}) => (
   <section className={styles.signup_wrapper + " " + styles.textCenter}>
     <Form
       form={form}
@@ -19,7 +30,7 @@ const EmailConfirmation = ({ form, onFinish, isModal, closeModal }) => (
       validateTrigger={messages.formValidationTypes()}
     >
       <Title level={2} className={styles.titles}>
-        User Email Confirmation
+        {isOTP ? "One Time Verification Code" : "User Email Confirmation"}
       </Title>
       {isModal && (
         <Button
@@ -31,30 +42,48 @@ const EmailConfirmation = ({ form, onFinish, isModal, closeModal }) => (
         />
       )}
       <div className={styles.section_one}>
-        {/* <div className={styles.imageWrapper}>
-          <Image
-            preview={false}
-            alt="otp"
-            src="/images/otp-image.png"
-            fallback={fallBackSrc}
-          />
-        </div> */}
         <Text type="danger" className={styles.otpNote}>
-          Note : Your email address is not returned from social account. You
-          have to enter the email address.
+          {isOTP
+            ? `Note : Verification code has been sent to your registered email address.`
+            : `Note : Your email address is not returned from social account. You
+          have to enter the email address.`}
         </Text>
-        <Form.Item
-          name="email"
-          style={{
-            maxWidth: "300px",
-            margin: "0 auto 20px",
-          }}
-          {...messages.emailRule}
-        >
-          <Input placeholder={messages.placeholders.email} />
-        </Form.Item>
+        {isOTP ? (
+          <Form.Item
+            name="otp"
+            className={styles.confirmationINput}
+            {...messages.otpRule}
+          >
+            <Input
+              className={styles.otpInput}
+              placeholder={messages.placeholders.otp}
+              min={6}
+              max={6}
+            />
+          </Form.Item>
+        ) : (
+          <Form.Item
+            name="email"
+            className={styles.confirmationINput}
+            {...messages.emailRule}
+          >
+            <Input placeholder={messages.placeholders.email} />
+          </Form.Item>
+        )}
       </div>
       <Form.Item>
+        {isResend && (
+          <Button
+            type="primary"
+            htmlType="button"
+            className={styles.resetOTP}
+            block
+            onClick={onResendClick}
+          >
+            Resend OTP <RedoOutlined />
+          </Button>
+        )}
+
         <Button
           type="primary"
           htmlType="submit"

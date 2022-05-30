@@ -516,4 +516,13 @@ export default class UserRequest extends Request {
       authToken
     );
   }
+  static postVerifyEmail(body) {
+    return new Request(
+      K.Network.URL.PostVerifyEmail,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
 }

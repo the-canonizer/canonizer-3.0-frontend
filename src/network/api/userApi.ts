@@ -714,6 +714,7 @@ export const unsubscribeTopicOrCampAPI = async (body: object) => {
     handleError(err);
   }
 };
+
 export const getUserProfileById = async () => {
   let state = store.getState();
   const { auth } = state;
@@ -721,6 +722,23 @@ export const getUserProfileById = async () => {
     const res = await NetworkCall.fetch(
       UserRequest.GetUserProfileById(auth.loggedInUser?.token)
     );
+    return res;
+  } catch (err) {
+    handleError(err);
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400
+    ) {
+      return err.error.data;
+    }
+  }
+};
+
+export const verifyEmailOnSocial = async (body) => {
+  try {
+    const res = await NetworkCall.fetch(UserRequest.postVerifyEmail(body));
     return res;
   } catch (err) {
     handleError(err);
