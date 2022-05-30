@@ -18,6 +18,9 @@
     @media screen and (min-width: 768px) {
       display: flex;
     }
+    @media screen and (max-width: 767px) {
+      height: 100%;
+    }
   }
   .formRadio {
     border-color: #d9d9d9;

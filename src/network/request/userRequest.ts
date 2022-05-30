@@ -506,14 +506,23 @@ export default class UserRequest extends Request {
       {}
     );
   }
-  static GetUserProfileById(authToken) {
+  static GetUserProfileById(id) {
     return new Request(
-      K.Network.URL.UserProfile,
+      K.Network.URL.UserProfile + id,
       K.Network.Method.GET,
       {},
       K.Network.Header.Type.Json,
+      {}
+    );
+  }
+
+  static UserSupportedCampList(id) {
+    return new Request(
+      K.Network.URL.AllSupportedCampsList + id,
+      K.Network.Method.GET,
       {},
-      authToken
+      K.Network.Header.Type.Json,
+      {}
     );
   }
   static postVerifyEmail(body) {
