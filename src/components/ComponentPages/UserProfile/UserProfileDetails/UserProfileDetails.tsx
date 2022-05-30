@@ -3,19 +3,7 @@ import styles from "../UserProfileUI/UserProfile.module.scss";
 import messages from "../../../../messages";
 import { Card, Image, Row, Col, Form, message, Tag } from "antd";
 import { getUserProfileById } from "src/network/api/userApi";
-const UserProfileDetails = () => {
-  const [profileData, setProfileData] = useState({} as any);
-  const GetUserProfileData = async () => {
-    let response = await getUserProfileById();
-    if (response && response.status_code === 200) {
-      setProfileData(response.data);
-      console.log(response.data.city);
-    }
-  };
-  //onLoad
-  useEffect(() => {
-    GetUserProfileData();
-  }, []);
+const UserProfileDetails = ({ profileData }) => {
   return (
     <>
       <Card title={<h3>{messages.labels.userProfile} </h3>}>

@@ -34,8 +34,9 @@ const CampTree = ({ scrollToCampStatement }) => {
 
   const renderTreeNodes = (data: any) =>
     Object.keys(data).map((item) => {
+      debugger;
       if (data[item].children) {
-        if (data[item].score > scoreFilter) {
+        if (data[item].score >= scoreFilter) {
           return (
             <>
               <TreeNode

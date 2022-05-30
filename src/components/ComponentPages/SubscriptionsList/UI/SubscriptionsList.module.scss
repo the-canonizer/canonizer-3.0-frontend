@@ -90,6 +90,13 @@
   border-radius: 0;
   align-items: center;
   box-shadow: 3px 3px 0px #3f4f5b14;
+
+  [class="ant-tag-close-icon"] {
+    svg {
+      fill: #ff4d4f;
+    }
+  }
+
   @media screen and (max-width: 767px) {
     font-size: 13px;
   }

@@ -1,5 +1,4 @@
 import { Card } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
 
 import styles from "./SubscriptionsList.module.scss";
 

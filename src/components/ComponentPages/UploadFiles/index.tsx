@@ -33,6 +33,7 @@ import {
   uploadFile,
 } from "src/network/api/userApi";
 import { message } from "antd";
+import isAuth from "../../../hooks/isUserAuthenticated";
 
 const UploadFiles = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -65,6 +66,7 @@ const UploadFiles = () => {
   const [getFileListFromFolderID, setGetFileListFromFolderID] = useState([]);
   const [openFolderID, setOpenFolderID] = useState("");
   const [showCreateFolderModal, setShowCreateFolderModal] = useState(false);
+  const isLogIn = isAuth();
   const ref = useRef();
   const closeFolder = () => {
     setGetFileListFromFolderID([]);
@@ -222,8 +224,10 @@ const UploadFiles = () => {
   };
   //onLoad
   useEffect(() => {
-    GetUploadFileAndFolder();
-  }, []);
+    if (isLogIn) {
+      GetUploadFileAndFolder();
+    }
+  }, [isLogIn]);
   return (
     <UploadFileUI
       input={input}

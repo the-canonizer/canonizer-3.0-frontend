@@ -68,6 +68,7 @@ const TopicsList = () => {
   const [isReview, setIsReview] = useState(includeReview);
   const [inputSearch, setInputSearch] = useState("");
   const [nameSpaceId, setNameSpaceId] = useState(filterNameSpaceId || "");
+
   const [loadMoreIndicator, setLoadMoreIndicator] = useState(false);
   const [getTopicsLoadingIndicator, setGetTopicsLoadingIndicator] =
     useState(false);
@@ -76,6 +77,17 @@ const TopicsList = () => {
 
   const selectNameSpace = (id, nameSpace) => {
     setNameSpaceId(id);
+    if (history.pushState) {
+      const queryParams = `?namespace=${id}`;
+      var newurl =
+        window.location.protocol +
+        "//" +
+        window.location.host +
+        window.location.pathname +
+        queryParams;
+      window.history.replaceState({ path: newurl }, "", newurl);
+    }
+
     dispatch(
       setFilterCanonizedTopics({
         namespace_id: id,
@@ -99,6 +111,11 @@ const TopicsList = () => {
   }, [includeReview]);
 
   useEffect(() => {
+    dispatch(
+      setFilterCanonizedTopics({
+        namespace_id: router.query.namespace,
+      })
+    );
     async function getTopicsApiCall() {
       if (didMount.current) {
         setGetTopicsLoadingIndicator(true);
@@ -123,7 +140,8 @@ const TopicsList = () => {
     loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
     const reqBody = {
       algorithm: algorithm,
-      asofdate: asofdate,
+      asofdate:
+        asof == ("default" || asof == "review") ? Date.now() / 1000 : asofdate,
       namespace_id: nameSpaceId,
       page_number: pageNumberRef.current,
       page_size: 15,
@@ -174,6 +192,7 @@ const TopicsList = () => {
   const handleCheckbox = async (e) => {
     setGetTopicsLoadingIndicator(true);
     onlyMyTopicsCheck = e.target.checked;
+
     await getTopicsApiCallWithReqBody();
     setGetTopicsLoadingIndicator(false);
   };
