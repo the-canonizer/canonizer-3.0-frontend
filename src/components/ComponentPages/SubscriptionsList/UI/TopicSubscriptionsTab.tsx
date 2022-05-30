@@ -65,17 +65,17 @@ function TopicSubscriptionsTab({
                 key={camp.subscription_start + i}
                 className={styles.tag_btn}
                 closable
-                onClose={(e) => e.preventDefault()}
+                onClose={(e) => onConfirm(e, data, camp)}
                 closeIcon={
                   <Tooltip title="Remove camp subscription">
-                    <Popconfirm
-                      title={`Your subscription from the Camp - ${camp.camp_name} will be removed. Do you want to continue?`}
+                    {/* <Popconfirm
+                      title={`Your subscription from the Camp - "${camp.camp_name}" will be removed. Do you want to continue?`}
                       okText="Yes"
                       cancelText="No"
                       onConfirm={(e) => onConfirm(e, data, camp)}
-                    >
-                      <CloseCircleOutlined />
-                    </Popconfirm>
+                    > */}
+                    <CloseCircleOutlined />
+                    {/* </Popconfirm> */}
                   </Tooltip>
                 }
               >

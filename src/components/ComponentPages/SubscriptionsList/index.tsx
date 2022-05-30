@@ -16,6 +16,8 @@ function SubscriptionsList({ isTestData = [] }) {
   const [currentTopic, setCurrentTopic] = useState({});
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(-1);
+  const [isCamp, setIsCamp] = useState(false);
+  const [camp, setCamp] = useState({});
 
   const getSubscriptionsList = async (q: string) => {
     const res = await GetAllSubscriptionsList(q);
@@ -52,32 +54,43 @@ function SubscriptionsList({ isTestData = [] }) {
     e.preventDefault();
     setIsVisible(true);
     setCurrentTopic(topic);
+    setIsCamp(false);
   };
 
   const onConfirm = (e: any, topic: any, camp: any) => {
     e.preventDefault();
-    const body = {
-      topic_num: topic.topic_num,
-      camp_num: camp.camp_num,
-      checked: false,
-      subscription_id: camp.subscription_id,
-    };
-    campOrTopicUnsubscribe(body);
+    setIsVisible(true);
+    setIsCamp(true);
+    setCurrentTopic(topic);
+    setCamp(camp);
   };
 
   const onCancel = () => {
     setIsVisible(false);
     setCurrentTopic({});
+    setCamp({});
   };
 
   const onRemove = () => {
-    const body = {
-      topic_num: currentTopic["topic_num"],
-      camp_num: 0,
-      checked: false,
-      subscription_id: currentTopic["subscription_id"],
-    };
-    campOrTopicUnsubscribe(body);
+    let body = null;
+    if (isCamp) {
+      body = {
+        topic_num: currentTopic["topic_num"],
+        camp_num: camp["camp_num"],
+        checked: false,
+        subscription_id: camp["subscription_id"],
+      };
+    } else {
+      body = {
+        topic_num: currentTopic["topic_num"],
+        camp_num: 0,
+        checked: false,
+        subscription_id: currentTopic["subscription_id"],
+      };
+    }
+    if (body) {
+      campOrTopicUnsubscribe(body);
+    }
   };
 
   return (
@@ -90,6 +103,8 @@ function SubscriptionsList({ isTestData = [] }) {
       onCancel={onCancel}
       onRemove={onRemove}
       topicTitle={currentTopic["title"]}
+      isCamp={isCamp}
+      campTitle={camp["camp_name"]}
     />
   );
 }
