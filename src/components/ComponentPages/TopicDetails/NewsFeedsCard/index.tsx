@@ -153,7 +153,11 @@ const NewsFeedsCard = ({ newsFeed }) => {
 
                       {editNews && (
                         <Tooltip
-                          title={news.owner_flag ? "" : "must be owner to edit"}
+                          title={
+                            news.owner_flag
+                              ? ""
+                              : K?.exceptionalMessages?.tooltipNewsEdit
+                          }
                         >
                           <Button
                             size="small"
