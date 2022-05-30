@@ -40,15 +40,13 @@ function TopicRemoveModal({
     >
       {!isCamp ? (
         <Typography.Text>
-          Your subscription will be removed from the entire Topic -
-          <span className={styles.Bluecolor}> {topicTitle}.</span> Do you want
-          to continue?
+          Your subscription will be removed from the entire Topic - &quot;
+          {topicTitle}&quot;. Do you want to continue?
         </Typography.Text>
       ) : (
         <Typography.Text>
-          Your subscription will be removed from the Camp -
-          <span className={styles.Bluecolor}> {campTitle}.</span> Do you want to
-          continue?
+          Your subscription will be removed from the Camp - &quot;{campTitle}
+          &quot;. Do you want to continue?
         </Typography.Text>
       )}
     </Modal>
