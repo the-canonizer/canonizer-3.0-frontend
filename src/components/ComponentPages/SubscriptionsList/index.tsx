@@ -41,8 +41,6 @@ function SubscriptionsList({ isTestData = [] }) {
 
     const query = `?page=${page}&per_page=${perPage}`;
 
-    console.log(res, "campOrTopicUnsubscribe res");
-
     if (res && res["status_code"] === 200) {
       message.success(res?.data?.msg);
       setIsVisible(false);
