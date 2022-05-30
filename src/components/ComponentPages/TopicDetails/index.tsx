@@ -75,7 +75,10 @@ const TopicDetails = () => {
         topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
         camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
         as_of: asof,
-        asofdate: asofdate || Date.now() / 1000,
+        asofdate:
+          asof == ("default" || asof == "review")
+            ? Date.now() / 1000
+            : asofdate,
         algorithm: algorithm,
         update_all: 1,
       };

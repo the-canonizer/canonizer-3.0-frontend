@@ -714,13 +714,30 @@ export const unsubscribeTopicOrCampAPI = async (body: object) => {
     handleError(err);
   }
 };
-export const getUserProfileById = async () => {
+export const getUserProfileById = async (id) => {
   let state = store.getState();
   const { auth } = state;
   try {
-    const res = await NetworkCall.fetch(
-      UserRequest.GetUserProfileById(auth.loggedInUser?.token)
-    );
+    const res = await NetworkCall.fetch(UserRequest.GetUserProfileById(id));
+    return res;
+  } catch (err) {
+    handleError(err);
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400
+    ) {
+      return err.error.data;
+    }
+  }
+};
+
+export const getUserSupportedCampList = async (id) => {
+  let state = store.getState();
+  const { auth } = state;
+  try {
+    const res = await NetworkCall.fetch(UserRequest.UserSupportedCampList(id));
     return res;
   } catch (err) {
     handleError(err);
