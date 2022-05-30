@@ -60,7 +60,7 @@ export default function AddOrEdit({ edit }) {
       ? (res = await updateNewsFeedApi({
           newsfeed_id: dataToUpdate?.id,
           display_text: values.display_text,
-          link: values.link,
+          link: values.link.trim(),
           available_for_child: values.available_for_child,
           submitter_nick_id: dataToUpdate?.submitter_nick_id,
         }))
@@ -68,7 +68,7 @@ export default function AddOrEdit({ edit }) {
           topic_num: +router.query?.camp[0]?.split("-")[0],
           camp_num: +router.query?.camp[1]?.split("-")[0],
           available_for_child: values?.available_for_child,
-          link: values?.link,
+          link: values?.link.trim(),
           display_text: values?.display_text,
           submitter_nick_id: values?.nick_name,
         }));
