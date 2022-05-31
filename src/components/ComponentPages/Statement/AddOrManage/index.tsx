@@ -1,28 +1,13 @@
 import React, { useEffect, useState } from "react";
-import {
-  Form,
-  Button,
-  Checkbox,
-  Row,
-  Col,
-  Card,
-  Spin,
-  Typography,
-  Input,
-  Select,
-  Dropdown,
-} from "antd";
+import { Form, Button, Row, Col, Card, Spin, Input, Select } from "antd";
 import { useRouter } from "next/router";
 import "antd/dist/antd.css";
 import styles from "../addEditNews.module.scss";
 import { getAllUsedNickNames } from "../../../../network/api/campDetailApi";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
-import {
-  MoreOutlined,
-  FileTextOutlined,
-  HeartOutlined,
-} from "@ant-design/icons";
+
 import SideBarNoFilter from "../../../ComponentPages/Home/SideBarNoFilter";
+import CampInfoBar from "../../TopicDetails/CampInfoBar";
 
 export default function AddOrManage({ add }) {
   const isLogin = useAuthentication();
@@ -57,42 +42,8 @@ export default function AddOrManage({ add }) {
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
-        <div className={styles.topicDetailContentHead}>
-          <div className={styles.topicDetailContentHead_Left}>
-            <Typography.Paragraph className={"mb-0 " + styles.topicTitleStyle}>
-              {" "}
-              <span className="bold"> Topic: </span>
-              <small>
-                <i className="icon-subscribe text-primary"></i>
-              </small>
-            </Typography.Paragraph>
-            <div className={styles.breadcrumbLinks}>
-              {" "}
-              <span className="bold mr-1"> Camp : </span>
-              <small style={{ alignSelf: "center", marginLeft: "10px" }}>
-                <i className="icon-subscribe text-primary"></i>
-              </small>
-            </div>
-          </div>
+        <CampInfoBar isStatementBar={true} payload={null} />
 
-          <div className={styles.topicDetailContentHead_Right}>
-            <Button type="primary" className={styles.btnCampForum}>
-              Camp Forum
-            </Button>
-            <Dropdown
-              className={styles.campForumDropdown}
-              placement="bottomRight"
-              trigger={["click"]}
-            >
-              <a
-                className={styles.iconMore}
-                onClick={(e) => e.preventDefault()}
-              >
-                <MoreOutlined />
-              </a>
-            </Dropdown>
-          </div>
-        </div>
         <aside className="leftSideBar miniSideBar">
           <SideBarNoFilter />
         </aside>

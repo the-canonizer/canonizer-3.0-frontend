@@ -15,11 +15,7 @@ import {
 } from "@ant-design/icons";
 import Link from "next/link";
 
-const CampInfoBar = ({
-  setLoadingIndicator,
-  campSubscriptionID,
-  topicSubscriptionID,
-}) => {
+const CampInfoBar = ({ payload, isStatementBar }) => {
   const isLogin = useAuthentication();
 
   const router = useRouter();
@@ -43,8 +39,12 @@ const CampInfoBar = ({
     const reqBody = {
       topic_num: campRecord.topic_num,
       camp_num: isTopic ? 0 : campRecord.camp_num,
-      checked: isTopic ? !topicSubscriptionID : !campSubscriptionID,
-      subscription_id: isTopic ? topicSubscriptionID : campSubscriptionID,
+      checked: isTopic
+        ? !payload?.topicSubscriptionID
+        : !payload?.campSubscriptionID,
+      subscription_id: isTopic
+        ? payload?.topicSubscriptionID
+        : payload?.campSubscriptionID,
     };
 
     subscribeToCampApi(reqBody, isTopic);
@@ -65,7 +65,7 @@ const CampInfoBar = ({
         icon={
           <i
             className={`icon-subscribe ${
-              !!topicSubscriptionID && "text-primary"
+              !!payload?.topicSubscriptionID && "text-primary"
             }`}
           ></i>
         }
@@ -73,13 +73,13 @@ const CampInfoBar = ({
           if (isLogin) {
             campOrTopicScribe(true);
           } else {
-            setLoadingIndicator(true);
+            payload?.setLoadingIndicator(true);
             router.push("/login");
           }
           // campOrTopicScribe(true)
         }}
       >
-        {!!topicSubscriptionID
+        {!!payload?.topicSubscriptionID
           ? " Unsubscribe to Entire Topic"
           : " Subscribe to Entire Topic"}
       </Menu.Item>
@@ -87,17 +87,19 @@ const CampInfoBar = ({
         icon={
           <i
             className={`icon-subscribe ${
-              !!campSubscriptionID && "text-primary"
+              !!payload?.campSubscriptionID && "text-primary"
             }`}
           ></i>
         }
-        disabled={!!campSubscriptionID && campRecord?.flag == 2 ? true : false}
+        disabled={
+          !!payload?.campSubscriptionID && campRecord?.flag == 2 ? true : false
+        }
         onClick={
           () => {
             if (isLogin) {
               campOrTopicScribe(false);
             } else {
-              setLoadingIndicator(true);
+              payload?.setLoadingIndicator(true);
               router.push("/login");
             }
           }
@@ -105,9 +107,9 @@ const CampInfoBar = ({
           // campOrTopicScribe(false)
         }
       >
-        {!!campSubscriptionID && campRecord?.flag !== 2 ? (
+        {!!payload?.campSubscriptionID && campRecord?.flag !== 2 ? (
           "Unsubscribe to the Camp"
-        ) : !!campSubscriptionID && campRecord?.flag == 2 ? (
+        ) : !!payload?.campSubscriptionID && campRecord?.flag == 2 ? (
           <Tooltip
             title={`You are subscribed to ${campRecord?.subscriptionCampName}`}
           >
@@ -137,7 +139,7 @@ const CampInfoBar = ({
             {" "}
             <span className="bold"> Topic: </span>
             {topicRecord && topicRecord?.topic_name}{" "}
-            {!!topicSubscriptionID && (
+            {!!payload?.topicSubscriptionID && (
               <small>
                 <i className="icon-subscribe text-primary"></i>
               </small>
@@ -163,7 +165,7 @@ const CampInfoBar = ({
                   );
                 })
               : null}
-            {!!campSubscriptionID && (
+            {!!payload?.campSubscriptionID && (
               <small style={{ alignSelf: "center", marginLeft: "10px" }}>
                 <i className="icon-subscribe text-primary"></i>
               </small>
@@ -172,23 +174,30 @@ const CampInfoBar = ({
         </div>
 
         <div className={styles.topicDetailContentHead_Right}>
-          <Button
-            type="primary"
-            className={styles.btnCampForum}
-            onClick={onCampForumClick}
-          >
-            Camp Forum
-          </Button>
-          <Dropdown
-            className={styles.campForumDropdown}
-            placement="bottomRight"
-            overlay={campForumDropdownMenu}
-            trigger={["click"]}
-          >
-            <a className={styles.iconMore} onClick={(e) => e.preventDefault()}>
-              <MoreOutlined />
-            </a>
-          </Dropdown>
+          {!isStatementBar && (
+            <>
+              <Button
+                type="primary"
+                className={styles.btnCampForum}
+                onClick={onCampForumClick}
+              >
+                Camp Forum
+              </Button>
+              <Dropdown
+                className={styles.campForumDropdown}
+                placement="bottomRight"
+                overlay={campForumDropdownMenu}
+                trigger={["click"]}
+              >
+                <a
+                  className={styles.iconMore}
+                  onClick={(e) => e.preventDefault()}
+                >
+                  <MoreOutlined />
+                </a>
+              </Dropdown>
+            </>
+          )}
         </div>
       </div>
     </>

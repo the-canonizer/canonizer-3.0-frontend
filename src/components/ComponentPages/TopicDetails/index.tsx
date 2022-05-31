@@ -140,14 +140,16 @@ const TopicDetails = () => {
     });
   };
 
+  const payload = {
+    setLoadingIndicator,
+    campSubscriptionID,
+    topicSubscriptionID,
+  };
+
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
-        <CampInfoBar
-          setLoadingIndicator={setLoadingIndicator}
-          campSubscriptionID={campSubscriptionID}
-          topicSubscriptionID={topicSubscriptionID}
-        />
+        <CampInfoBar payload={payload} isStatementBar={false} />
 
         <aside className="leftSideBar miniSideBar">
           <SideBar onCreateCamp={onCreateCamp} />
