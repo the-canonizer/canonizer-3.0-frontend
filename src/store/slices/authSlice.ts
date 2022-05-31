@@ -45,6 +45,11 @@ export const authSlice = createSlice({
     removeSocialUsers: (state) => {
       state.socialUsers = [];
     },
+    setLogout: (state) => {
+      // From here we can take action only at this "auth" state
+      // But, as we have taken care of this particular "logout" action
+      // in rootReducer, we can use it to CLEAR the complete Redux Store's state
+    },
   },
 });
 
@@ -55,6 +60,7 @@ export const {
   logoutUser,
   setSocialUsers,
   removeSocialUsers,
+  setLogout,
 } = authSlice.actions;
 
 export default authSlice.reducer;
