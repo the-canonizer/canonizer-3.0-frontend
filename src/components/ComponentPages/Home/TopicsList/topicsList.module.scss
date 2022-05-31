@@ -15,6 +15,7 @@
   .head {
     margin-bottom: 18px;
     overflow: hidden;
+    flex-wrap: wrap;
     @media screen and (min-width: 576px) {
       display: flex;
       align-items: center;
@@ -51,13 +52,16 @@
       max-width: 100%;
       border: 1px solid #d9d9d9;
       font-size: 13px;
+      width: 100%;
       > div:first-child {
         height: 40px !important;
         // border: solid 1px #d9d9d9 !important;
       }
+      @media screen and (max-width: 992px) {
+        width: 100%;
+      }
       @media screen and (max-width: 767px) {
         margin-top: 10px;
-        width: 100%;
       }
     }
     &:not(.browsePage) {
@@ -73,6 +77,9 @@
         @media screen and (min-width: 576px) {
           max-width: 275px;
           width: calc(100% - 200px);
+        }
+        @media screen and (max-width: 992px) {
+          // width: 100%;
         }
         @media screen and (min-width: 1200px) and (max-width: 1499px) {
           width: 100%;
@@ -103,6 +110,9 @@
           max-width: inherit;
           width: 48.5%;
           margin-top: 10px;
+        }
+        @media screen and (max-width: 992px) {
+          // width: 100%;
         }
       }
       .inputSearchTopic {
