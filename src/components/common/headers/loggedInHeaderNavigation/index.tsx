@@ -58,24 +58,19 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
 
   const logOut = async () => {
     const res = await logout();
-    if (res.status_code === 200) {
+    if (res?.status_code === 200) {
       router.push("/");
     }
   };
-  const onAccountSettingClick = ({ key }) => {
+  const onClick = ({ key }) => {
     if (key == 3) {
       logOut();
     }
-    if (key == 0) {
-      localStorage.setItem("settings_Tabs_keys", "profile_info");
-    }
   };
   const menu = (
-    <Menu onClick={onAccountSettingClick}>
+    <Menu onClick={onClick}>
       <Menu.Item key="0">
-        <Link href="/settings" key="0">
-          Account Settings
-        </Link>
+        <Link href="/settings">Account Settings</Link>
       </Menu.Item>
       <Menu.Item key="1">
         <a>Support Camps</a>
@@ -139,10 +134,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
               </>
             ) : null}
           </div>
-          <div
-            className={styles.right}
-            style={{ width: isLoginPage ? "207px" : "null" }}
-          >
+          <div className={styles.right}>
             {!isLoginPage ? (
               <div className={styles.btnsLoginRegister}>
                 <div className="hdrUserdropdown">

@@ -7,6 +7,7 @@ import {
   setLoggedInUser,
   logoutUser,
   setSocialUsers,
+  setLogout,
 } from "../../store/slices/authSlice";
 import { showMultiUserModal } from "../../store/slices/uiSlice";
 import NetworkCall from "../networkCall";
@@ -75,6 +76,7 @@ export const logout = async (error = "") => {
     );
 
     !isServer() && window.localStorage.removeItem("token");
+    store.dispatch(setLogout());
     store.dispatch(logoutUser());
     store.dispatch(removeAuthToken());
     return res;

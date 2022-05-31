@@ -35,8 +35,8 @@ function TopicSubscriptionsTab({
               For topic{" "}
               <span>
                 &quot;
-                <Link href={data.title_link}>
-                  <a>{data.title}</a>
+                <Link href="#" passHref>
+                  <a onClick={(e) => e.preventDefault()}>{data.title}</a>
                 </Link>
                 &quot;
               </span>
@@ -65,24 +65,30 @@ function TopicSubscriptionsTab({
                 key={camp.subscription_start + i}
                 className={styles.tag_btn}
                 closable
-                onClose={(e) => e.preventDefault()}
+                onClose={(e) => onConfirm(e, data, camp)}
                 closeIcon={
                   <Tooltip title="Remove camp subscription">
-                    <Popconfirm
-                      title="Are you sure you want to remove the subscription?"
+                    {/* <Popconfirm
+                      title={`Your subscription from the Camp - "${camp.camp_name}" will be removed. Do you want to continue?`}
                       okText="Yes"
                       cancelText="No"
                       onConfirm={(e) => onConfirm(e, data, camp)}
-                    >
-                      <CloseCircleOutlined />
-                    </Popconfirm>
+                    > */}
+                    <CloseCircleOutlined />
+                    {/* </Popconfirm> */}
                   </Tooltip>
                 }
               >
                 <div>
                   <span className={styles.count}>{i + 1}. </span>
-                  <Link href={camp.camp_link}>
-                    <a className={styles.Bluecolor}> {camp.camp_name}</a>
+                  <Link href="#" passHref>
+                    <a
+                      className={styles.Bluecolor}
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      {" "}
+                      {camp.camp_name}
+                    </a>
                   </Link>
                 </div>
               </Tag>
