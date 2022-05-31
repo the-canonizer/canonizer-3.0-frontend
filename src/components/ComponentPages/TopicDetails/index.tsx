@@ -239,6 +239,7 @@ const TopicDetails = () => {
       </Menu.Item>
     </Menu>
   );
+
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
@@ -277,6 +278,11 @@ const TopicDetails = () => {
               {!!campSubscriptionID && (
                 <small style={{ alignSelf: "center", marginLeft: "10px" }}>
                   <i className="icon-subscribe text-primary"></i>
+                </small>
+              )}
+              {!!campSubscriptionID && campRecord?.flag == 2 && (
+                <small style={{ alignSelf: "center", marginLeft: "10px" }}>
+                  <i className="icon-subscribe text-primary">123</i>
                 </small>
               )}
             </div>
