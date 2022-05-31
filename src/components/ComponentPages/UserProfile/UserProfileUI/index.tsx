@@ -1,51 +1,46 @@
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import styles from "./UserProfile.module.scss";
 import UserProfileDetails from "../UserProfileDetails/UserProfileDetails";
 import { UserProfileCard } from "../UserProfileDetails/UserProfileCard";
-import {
-  getUserProfileById,
-  getUserSupportedCampList,
-} from "src/network/api/userApi";
+
+import { getUserSupportedCampList } from "src/network/api/userApi";
 import { getCanonizedNameSpacesApi } from "src/network/api/homePageApi";
 const UserProfile = () => {
   const [profileData, setProfileData] = useState({} as any);
   const [userSupportedCampsList, setUserSupportedCampsList] = useState([]);
   const [nameSpaceList, setNameSpaceList] = useState([]);
-  const GetUserProfileData = async (id) => {
-    let response = await getUserProfileById(id);
-    if (response && response.status_code === 200) {
-      setProfileData(response.data);
-    }
-  };
+  const router = useRouter();
+
   const UserSupportedCampsListApi = async (id) => {
     let res = await getUserSupportedCampList(id);
     if (res && res.status_code === 200) {
-      setUserSupportedCampsList(res.data);
+      setUserSupportedCampsList(res.data.support_list);
+      setProfileData(res.data.profile);
     }
   };
 
   const UserSupportCampListNewSpaces = async (id) => {
     let res = await getCanonizedNameSpacesApi();
-    console.log(res);
     if (res && res.status_code === 200) {
       setNameSpaceList(res.data);
     }
   };
+
   //onLoad
   useEffect(() => {
     let userId = localStorage.getItem("publicUserId");
-    GetUserProfileData(userId);
-    UserSupportedCampsListApi(userId);
+    let topicRecord = JSON.parse(localStorage.getItem("topicRecord"));
+    let namespace_name_id = localStorage.getItem("namespace_name_id");
+    const query = `${userId}?topicnum=${topicRecord?.topic_num}&campnum=${topicRecord?.camp_num}&namespace=${namespace_name_id}`;
+    UserSupportedCampsListApi(query);
     UserSupportCampListNewSpaces(userId);
   }, []);
 
   return (
     <>
       <div className={styles.userProfileData}>
-        <UserProfileDetails
-          // setProfileData={setProfileData}
-          profileData={profileData}
-        />
+        <UserProfileDetails profileData={profileData} />
         <UserProfileCard
           userSupportedCampsList={userSupportedCampsList}
           setUserSupportedCampsList={setUserSupportedCampsList}

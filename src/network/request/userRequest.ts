@@ -506,19 +506,10 @@ export default class UserRequest extends Request {
       {}
     );
   }
-  static GetUserProfileById(id) {
-    return new Request(
-      K.Network.URL.UserProfile + id,
-      K.Network.Method.GET,
-      {},
-      K.Network.Header.Type.Json,
-      {}
-    );
-  }
 
-  static UserSupportedCampList(id) {
+  static UserSupportedCampList(params: string) {
     return new Request(
-      K.Network.URL.AllSupportedCampsList + id,
+      K.Network.URL.AllSupportedCampsList + params,
       K.Network.Method.GET,
       {},
       K.Network.Header.Type.Json,

@@ -1,18 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import messages from "../../../../messages";
 import styles from "../UserProfileUI/UserProfile.module.scss";
 import Link from "next/link";
 import { Card, Tag, Select } from "antd";
-
+import { topicNameRule } from "src/messages/validationRules";
 export const UserProfileCard = ({
   userSupportedCampsList,
   setUserSupportedCampsList,
   nameSpaceList,
 }) => {
+  const [dropdownNameSpaceList, setDropdownNameSpaceList] = useState([]);
   return (
     <div className="user--cards-outer">
       <div className={styles.card_spacing}>
-        {userSupportedCampsList?.map((val, i) => {
+        {userSupportedCampsList?.map((supportedCampList, i) => {
           return (
             <Card
               key={i}
@@ -20,7 +21,10 @@ export const UserProfileCard = ({
               title={
                 <div className={styles.main_card_title}>
                   {messages.labels.nickname} :{" "}
-                  <span className={styles.Bluecolor}> {val.nick_name}</span>
+                  <span className={styles.Bluecolor}>
+                    {" "}
+                    {supportedCampList.nick_name}
+                  </span>
                 </div>
               }
             >
@@ -32,11 +36,11 @@ export const UserProfileCard = ({
                   <Select
                     size="large"
                     className={styles.dropdown}
-                    defaultValue={""}
+                    defaultValue={nameSpaceList[0]}
+                    onChange={(selectedNameSpaceList) =>
+                      setDropdownNameSpaceList(selectedNameSpaceList)
+                    }
                   >
-                    <Select.Option key="custom-key" value="">
-                      /General/
-                    </Select.Option>
                     {nameSpaceList?.map((item) => {
                       return (
                         <Select.Option key={item.id} value={item.id}>
@@ -47,61 +51,55 @@ export const UserProfileCard = ({
                   </Select>
                 </div>
               </div>
-              {val.topic?.map((data, i) => {
-                return (
-                  <span key={i}>
-                    <div className="inner--cards">
-                      <div className={styles.cardBox_tags}>
-                        <Card
-                          title={
-                            <div className={styles.card_heading_title}>
-                              {data.title}
+              <div>
+                {supportedCampList.topic?.filter((obj) => {
+                  if (dropdownNameSpaceList == obj.namespace_id) {
+                    return obj;
+                  }
+                }).length > 0
+                  ? supportedCampList.topic
+                      .filter((obj) => {
+                        if (dropdownNameSpaceList == obj.namespace_id) {
+                          return obj;
+                        }
+                      })
+                      .map((data, i) => {
+                        return (
+                          <span key={i}>
+                            <div className="inner--cards">
+                              <div className={styles.cardBox_tags}>
+                                <Card
+                                  title={
+                                    <div className={styles.card_heading_title}>
+                                      {data.title}
+                                    </div>
+                                  }
+                                >
+                                  {data.camps?.map((campData, id) => {
+                                    return (
+                                      <Tag className={styles.tag_btn} key={id}>
+                                        <div>
+                                          {""}
+                                          <span className={styles.count}>
+                                            {""}
+                                          </span>
+                                          <Link href={campData.camp_link}>
+                                            <a className={styles.Bluecolor}>
+                                              {campData.camp_name}
+                                            </a>
+                                          </Link>
+                                        </div>
+                                      </Tag>
+                                    );
+                                  })}
+                                </Card>
+                              </div>
                             </div>
-                          }
-                        >
-                          <Tag className={styles.tag_btn}>
-                            <div>
-                              {""}
-                              <span className={styles.count}>{""}</span>
-                              <Link href={""}>
-                                <a className={styles.Bluecolor}>
-                                  Topic Page Design Canonizer LLC
-                                </a>
-                              </Link>
-                            </div>
-                          </Tag>
-                        </Card>
-                      </div>
-
-                      <div className={styles.cardBox_tags}>
-                        <Card
-                          title={
-                            <div className={styles.card_heading_title}>
-                              Scalability Architecture
-                            </div>
-                          }
-                        >
-                          {data.camps?.map((campData, id) => {
-                            return (
-                              <Tag className={styles.tag_btn} key={id}>
-                                <div>
-                                  {""}
-                                  <span className={styles.count}>{""}</span>
-                                  <Link href={""}>
-                                    <a className={styles.Bluecolor}>
-                                      {campData.camp_name}
-                                    </a>
-                                  </Link>
-                                </div>
-                              </Tag>
-                            );
-                          })}
-                        </Card>
-                      </div>
-                    </div>
-                  </span>
-                );
-              })}
+                          </span>
+                        );
+                      })
+                  : "No Data Available !"}
+              </div>
             </Card>
           );
         })}
