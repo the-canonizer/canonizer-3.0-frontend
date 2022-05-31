@@ -131,12 +131,13 @@ const DirectSupportedCamps = ({ search }) => {
   const removeSupport = async () => {
     const removeEntireData = {
       topic_num: removeTopicNumDataId,
-      camp_num: "",
+      remove_camps: [],
       type: "direct",
       action: "all",
       nick_name_id: nickNameId,
+      order_update: []
     };
-    let res = await removeSupportedCampsEntireTopic(removeEntireData);
+    let res = await removeOrUpdateDirectSupportCamps(removeEntireData);
     if (res && res.status_code == 200) {
       message.success(res.message);
       setIsSupportedCampsModalVisible(false);
