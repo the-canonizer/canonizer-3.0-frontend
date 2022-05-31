@@ -3,7 +3,14 @@ import { CloseCircleOutlined } from "@ant-design/icons";
 
 import styles from "./SubscriptionsList.module.scss";
 
-function TopicRemoveModal({ isVisible, onCancel, onRemove, topicTitle }) {
+function TopicRemoveModal({
+  isVisible,
+  onCancel,
+  onRemove,
+  topicTitle,
+  isCamp,
+  campTitle,
+}) {
   return (
     <Modal
       className={styles.modal_cross}
@@ -31,11 +38,17 @@ function TopicRemoveModal({ isVisible, onCancel, onRemove, topicTitle }) {
       }
       closeIcon={<CloseCircleOutlined />}
     >
-      <Typography.Text>
-        Your Subscription for all the camps under the Topics{" "}
-        <span className={styles.Bluecolor}>&quot; {topicTitle} &quot;</span>{" "}
-        will be removed. Are you sure you want to continue?
-      </Typography.Text>
+      {!isCamp ? (
+        <Typography.Text>
+          Your subscription will be removed from the entire Topic - &quot;
+          {topicTitle}&quot;. Do you want to continue?
+        </Typography.Text>
+      ) : (
+        <Typography.Text>
+          Your subscription will be removed from the Camp - &quot;{campTitle}
+          &quot;. Do you want to continue?
+        </Typography.Text>
+      )}
     </Modal>
   );
 }

@@ -20,7 +20,6 @@ import {
   getEditCampNewsFeedApi,
   updateNewsFeedApi,
 } from "../../../../network/api/campNewsApi";
-import { getNickNameList } from "../../../../network/api/userApi";
 import { getAllUsedNickNames } from "../../../../network/api/campDetailApi";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
 
@@ -136,6 +135,15 @@ export default function AddOrEdit({ edit }) {
           link: news?.link,
           available_for_child: news?.available_for_child,
         });
+        const reqBodyNickName = {
+          topic_num: +router.query?.camp[0]?.split("-")[0],
+        };
+        const result = await getAllUsedNickNames(reqBodyNickName);
+        form.setFieldsValue({
+          nick_name: result?.data.find((id) => id.id == news.submitter_nick_id)
+            ?.id,
+        });
+        setNickNameData(result?.data);
         setScreenLoading(false);
       } else {
         const reqBody = {
@@ -236,28 +244,30 @@ export default function AddOrEdit({ edit }) {
                 <Checkbox>Available for child camps</Checkbox>
               </Form.Item>
 
-              {!edit && (
-                <Form.Item
-                  className={styles.formItem}
-                  label={<>Nick Name</>}
-                  name="nick_name"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please select Nick name",
-                    },
-                  ]}
+              <Form.Item
+                className={styles.formItem}
+                label={<>Nick Name</>}
+                name="nick_name"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Nick name",
+                  },
+                ]}
+              >
+                <Select
+                  value={nickNameData[0]?.id}
+                  size="large"
+                  disabled={edit}
                 >
-                  <Select value={nickNameData[0]?.id} size="large">
-                    {nickNameData &&
-                      nickNameData?.map((names) => (
-                        <Select.Option value={names.id} key={names?.id}>
-                          {names?.nick_name}
-                        </Select.Option>
-                      ))}
-                  </Select>
-                </Form.Item>
-              )}
+                  {nickNameData &&
+                    nickNameData?.map((names) => (
+                      <Select.Option value={names.id} key={names?.id}>
+                        {names?.nick_name}
+                      </Select.Option>
+                    ))}
+                </Select>
+              </Form.Item>
             </Col>
           </Row>
 

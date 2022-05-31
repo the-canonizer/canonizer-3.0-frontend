@@ -75,6 +75,13 @@ export default function RecentActivities() {
     setSelectedTab(key);
   };
 
+  const decodeUrlLink = (threadData) => {
+    return JSON.parse(threadData?.activity?.properties)?.url?.replace(
+      /\s+/g,
+      "-"
+    );
+  };
+
   async function getTopicsApiCallWithReqBody(loadMore = false, topicType) {
     let pageNo;
     if (topicType == "topic/camps") {
@@ -164,9 +171,9 @@ export default function RecentActivities() {
                 }
                 bordered={false}
                 dataSource={recentActivities?.topics}
-                renderItem={(activity) => (
+                renderItem={(activity: any) => (
                   <List.Item className={styles.listItem}>
-                    <Link href={"/"}>
+                    <Link href={decodeUrlLink(activity)}>
                       <>
                         <Text className={styles.text}>
                           {activity?.activity?.description}
@@ -191,9 +198,9 @@ export default function RecentActivities() {
                 }
                 bordered={false}
                 dataSource={recentActivities?.topics}
-                renderItem={(activity) => (
+                renderItem={(activity: any) => (
                   <List.Item className={styles.listItem}>
-                    <Link href={"/"}>
+                    <Link href={decodeUrlLink(activity)}>
                       <>
                         <Text className={styles.text}>
                           {activity?.activity?.description}
