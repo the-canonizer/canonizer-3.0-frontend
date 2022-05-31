@@ -359,6 +359,16 @@ export default class UserRequest extends Request {
       authToken
     );
   }
+  static removeOrUpdateDirectSupportCamps(body, authToken) {
+    return new Request(
+      K.Network.URL.RemoveOrUpdateDirectSupportCamps,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
   static getDelegatedSupportCampsList(authToken) {
     return new Request(
       K.Network.URL.GetDelegatedSupportCamps,
