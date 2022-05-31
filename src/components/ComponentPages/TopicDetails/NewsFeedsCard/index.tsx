@@ -132,7 +132,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
                           <Popconfirm
                             disabled={!news.owner_flag}
                             placement="topLeft"
-                            title="Are you sure you want to delete this news feed"
+                            title="Are you sure you want to delete this news feed?"
                             onConfirm={() => handleDeleteCamp(news?.id)}
                             okText="Yes"
                             cancelText="No"
