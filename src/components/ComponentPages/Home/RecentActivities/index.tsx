@@ -171,7 +171,7 @@ export default function RecentActivities() {
                 }
                 bordered={false}
                 dataSource={recentActivities?.topics}
-                renderItem={(activity) => (
+                renderItem={(activity: any) => (
                   <List.Item className={styles.listItem}>
                     <Link href={decodeUrlLink(activity)}>
                       <>
@@ -198,7 +198,7 @@ export default function RecentActivities() {
                 }
                 bordered={false}
                 dataSource={recentActivities?.topics}
-                renderItem={(activity) => (
+                renderItem={(activity: any) => (
                   <List.Item className={styles.listItem}>
                     <Link href={decodeUrlLink(activity)}>
                       <>

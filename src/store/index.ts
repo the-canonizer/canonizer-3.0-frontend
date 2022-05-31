@@ -27,7 +27,7 @@ import storage from "redux-persist/lib/storage";
 import campNewsSlice from "./slices/news";
 // reducers
 
-let reducers = combineReducers({
+let combinedReducer = combineReducers({
   auth: Auth,
   topicDetails: Tree,
   homePage: homePageSlice,
@@ -39,13 +39,20 @@ let reducers = combineReducers({
   forum: ForumSlice,
 });
 
+const rootReducer = (state, action) => {
+  if (action.type === "auth/setLogout") {
+    state.filters = undefined;
+  }
+  return combinedReducer(state, action);
+};
+
 const persistConfig = {
   key: "root",
   storage,
   whitelist: ["auth", "filters", "topic", "forum"],
 };
 
-const persistedReducer = persistReducer(persistConfig, reducers);
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
   reducer: persistedReducer,
@@ -57,7 +64,7 @@ const store = configureStore({
     }),
   // .concat(logger),
 });
-export type RootState = ReturnType<typeof reducers>;
+export type RootState = ReturnType<typeof rootReducer>;
 export type AppDispatch = typeof store.dispatch;
 export interface State {
   tree: string;
