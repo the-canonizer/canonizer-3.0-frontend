@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { Card, Modal, Tag, Button, Form, Popconfirm } from "antd";
-import Icon, { CloseCircleOutlined } from "@ant-design/icons";
+import React, { useState } from "react";
+import { Card, Modal, Button, Form } from "antd";
+import{ CloseCircleOutlined } from "@ant-design/icons";
 import styles from "./DirectSupportedCamps.module.scss";
 import Link from "next/link";
 import messages from "../../../../messages";
-import { Droppable, Draggable } from "react-beautiful-dnd";
-import { ExclamationCircleOutlined } from "@ant-design/icons";
-const { confirm } = Modal;
+
 export default function DirectSupportedCampsUI({
   removeCardSupportedCamps,
   handleSupportedCampsCancel,
@@ -84,19 +82,8 @@ export default function DirectSupportedCampsUI({
                     <Button
                       key={val.camp_num}
                       className={styles.tag_btn}
-                      // disabled={
-                      //   //campdisabled
-                      //   // campIds.length>0?
-                      //   (campIds.length>0 && campIds?.map((value)=>{
-                      //   (revertBack && orgData==data.topic_num && value==val.camp_num) ? true: false
-                      //   }))
-                      // }
+                      
                       disabled={val.dis}
-                      //closable
-                      //closeIcon={<CloseCircleOutlined  />}
-                      //
-
-                      //onClose={() => handleClose(tag)}
                     >
                       <div>
                         {" "}

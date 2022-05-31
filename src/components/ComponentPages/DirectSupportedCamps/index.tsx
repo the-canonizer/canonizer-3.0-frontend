@@ -4,7 +4,7 @@ import {
   removeSupportedCampsEntireTopic,
   removeOrUpdateDirectSupportCamps,
 } from "../../../network/api/userApi";
-import { Popconfirm, message, Button } from "antd";
+import {  message } from "antd";
 import DirectSupportedCampsUI from "./DirectSupportedCampsUI";
 
 const DirectSupportedCamps = ({ search }) => {
@@ -12,8 +12,6 @@ const DirectSupportedCamps = ({ search }) => {
   const [isSupportedCampsModalVisible, setIsSupportedCampsModalVisible] =
     useState(false);
   const [removeTopicNumDataId, setRemoveTopicNumDataId] = useState("");
-  // const [tagsDataDeletedDataIDs, setTagsDataDeletedDataIDs] = useState("");
-  // const [tagsDataDeletedOrder, setTagsDataDeletedOrder] = useState("");
   const [nickNameId, setNickNameId] = useState("");
   const [showSaveChanges, setShowSaveChanges] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -28,7 +26,6 @@ const DirectSupportedCamps = ({ search }) => {
   const [originalDataArr, setoriginalDataArr] = useState([]);
   const [revertBack, setRevertBack] = useState([]);
   const [idData, setIdData] = useState("");
-  let ConfirmOk = false;
   const handleRevertBack = (topicId, camps) => {
     camps.map((val) => {
       val.dis = false;
@@ -95,8 +92,6 @@ const DirectSupportedCamps = ({ search }) => {
 
     setRemoveTopicNumDataId(data.topic_num);
     setNickNameId(data.nick_name_id);
-    // setTagsDataDeletedDataIDs(val.camp_num);
-    // setTagsDataDeletedOrder(val.support_order)
   };
 
   const saveChanges = async () => {
