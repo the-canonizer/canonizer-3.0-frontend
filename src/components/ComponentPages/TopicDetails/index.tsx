@@ -14,6 +14,7 @@ import {
 import { RootState } from "src/store";
 import SideBar from "../Home/SideBar";
 import CampStatementCard from "./CampStatementCard";
+import K from "../../../constants";
 import styles from "./topicDetails.module.scss";
 import CampTreeCard from "./CampTreeCard";
 import CurrentCampCard from "./CurrentCampCard";
@@ -249,8 +250,8 @@ const TopicDetails = () => {
         >
           <a>
             {campStatement?.length > 0
-              ? "Manage/Edit Camp Statement"
-              : "Add Camp Statement"}
+              ? K?.exceptionalMessages?.manageCampStatementButton
+              : K?.exceptionalMessages?.addCampStatementButton}
           </a>
         </Link>
       </Menu.Item>

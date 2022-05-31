@@ -85,8 +85,8 @@ const CampStatementCard = ({ myRefToCampStatement, onCampForumClick }) => {
             >
               <a>
                 {campStatement?.length > 0
-                  ? "Manage/Edit Camp Statement"
-                  : "Add Camp Statement"}
+                  ? K?.exceptionalMessages?.manageCampStatementButton
+                  : K?.exceptionalMessages?.addCampStatementButton}
               </a>
             </Link>
           </CustomButton>
