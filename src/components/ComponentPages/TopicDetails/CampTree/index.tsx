@@ -27,7 +27,6 @@ const CampTree = ({ scrollToCampStatement }) => {
       scrollToCampStatement();
     }
   };
-
   useEffect(() => {
     setScoreFilter(filterByScore);
   }, [filterByScore]);
@@ -55,7 +54,16 @@ const CampTree = ({ scrollToCampStatement }) => {
                         <Link
                           href={data[item]?.link?.replace("#statement", "")}
                         >
-                          <a>{data[item].title}</a>
+                          <a
+                            className={
+                              data[item]?.camp_id ==
+                              router?.query?.camp?.at(1)?.split("-")?.at(0)
+                                ? "font-weight-bold text-primary"
+                                : ""
+                            }
+                          >
+                            {data[item].title}
+                          </a>
                         </Link>
                       </span>
                       <span
