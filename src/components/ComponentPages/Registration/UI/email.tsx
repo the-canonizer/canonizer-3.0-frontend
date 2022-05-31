@@ -43,10 +43,7 @@ const EmailConfirmation = ({
       )}
       <div className={styles.section_one}>
         <Text type="danger" className={styles.otpNote}>
-          {isOTP
-            ? `Note : Verification code has been sent to your registered email address.`
-            : `Note : Your email address is not returned from social account. You
-          have to enter the email address.`}
+          {isOTP ? messages.labels.otpLabel : messages.labels.emailLabel}
         </Text>
         {isOTP ? (
           <Form.Item
