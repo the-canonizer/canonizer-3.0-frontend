@@ -293,22 +293,16 @@ const TopicDetails = () => {
                     );
                   })
                 : null}
-              {!!campSubscriptionID && campRecord?.flag == 2 ? (
+              {!!campSubscriptionID && (
                 <small
                   style={{
                     alignSelf: "center",
                     marginLeft: "10px",
-                    opacity: 0.5,
+                    opacity: campRecord?.flag == 2 ? 0.5 : 1,
                   }}
                 >
                   <i className="icon-subscribe text-primary"></i>
                 </small>
-              ) : (
-                !!campSubscriptionID && (
-                  <small style={{ alignSelf: "center", marginLeft: "10px" }}>
-                    <i className="icon-subscribe text-primary"></i>
-                  </small>
-                )
               )}
             </div>
           </div>
