@@ -275,15 +275,22 @@ const TopicDetails = () => {
                     );
                   })
                 : null}
-              {!!campSubscriptionID && (
-                <small style={{ alignSelf: "center", marginLeft: "10px" }}>
+              {!!campSubscriptionID && campRecord?.flag == 2 ? (
+                <small
+                  style={{
+                    alignSelf: "center",
+                    marginLeft: "10px",
+                    opacity: 0.5,
+                  }}
+                >
                   <i className="icon-subscribe text-primary"></i>
                 </small>
-              )}
-              {!!campSubscriptionID && campRecord?.flag == 2 && (
-                <small style={{ alignSelf: "center", marginLeft: "10px" }}>
-                  <i className="icon-subscribe text-primary">123</i>
-                </small>
+              ) : (
+                !!campSubscriptionID && (
+                  <small style={{ alignSelf: "center", marginLeft: "10px" }}>
+                    <i className="icon-subscribe text-primary"></i>
+                  </small>
+                )
               )}
             </div>
           </div>
