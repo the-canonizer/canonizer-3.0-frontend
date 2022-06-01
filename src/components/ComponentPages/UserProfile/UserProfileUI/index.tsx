@@ -10,11 +10,14 @@ const UserProfile = () => {
   const [profileData, setProfileData] = useState({} as any);
   const [userSupportedCampsList, setUserSupportedCampsList] = useState([]);
   const [nameSpaceList, setNameSpaceList] = useState([]);
+  const [dropdownNameSpaceList, setDropdownNameSpaceList] = useState();
+  const [noData, setNoData] = useState(false);
   const router = useRouter();
 
   const UserSupportedCampsListApi = async (id) => {
     let res = await getUserSupportedCampList(id);
     if (res && res.status_code === 200) {
+      setNoData(true);
       setUserSupportedCampsList(res.data.support_list);
       setProfileData(res.data.profile);
     }
@@ -28,14 +31,22 @@ const UserProfile = () => {
   };
 
   //onLoad
+
   useEffect(() => {
-    let userId = localStorage.getItem("publicUserId");
-    let topicRecord = JSON.parse(localStorage.getItem("topicRecord"));
-    let namespace_name_id = localStorage.getItem("namespace_name_id");
-    const query = `${userId}?topicnum=${topicRecord?.topic_num}&campnum=${topicRecord?.camp_num}&namespace=${namespace_name_id}`;
-    UserSupportedCampsListApi(query);
-    UserSupportCampListNewSpaces(userId);
-  }, []);
+    setNoData(false);
+    const userId = localStorage.getItem("publicUserId");
+    const topicRecord = JSON.parse(localStorage.getItem("topicRecord"));
+    const namespace_name_id = dropdownNameSpaceList
+      ? dropdownNameSpaceList
+      : localStorage.getItem("namespace_name_id");
+    if (dropdownNameSpaceList) {
+      const query = `${userId}?topicnum=${topicRecord?.topic_num}&campnum=${topicRecord?.camp_num}&namespace=${namespace_name_id}`;
+      UserSupportedCampsListApi(query);
+    } else {
+      UserSupportCampListNewSpaces(userId);
+      setDropdownNameSpaceList(namespace_name_id as any);
+    }
+  }, [dropdownNameSpaceList]);
 
   return (
     <>
@@ -45,6 +56,9 @@ const UserProfile = () => {
           userSupportedCampsList={userSupportedCampsList}
           setUserSupportedCampsList={setUserSupportedCampsList}
           nameSpaceList={nameSpaceList}
+          dropdownNameSpaceList={dropdownNameSpaceList}
+          setDropdownNameSpaceList={setDropdownNameSpaceList}
+          noData={noData}
         />
       </div>
     </>
