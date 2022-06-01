@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Card, Modal, Button, Form } from "antd";
-import{ CloseCircleOutlined } from "@ant-design/icons";
+import { CloseCircleOutlined } from "@ant-design/icons";
 import styles from "./DirectSupportedCamps.module.scss";
 import Link from "next/link";
 import messages from "../../../../messages";
@@ -82,7 +82,6 @@ export default function DirectSupportedCampsUI({
                     <Button
                       key={val.camp_num}
                       className={styles.tag_btn}
-                      
                       disabled={val.dis}
                     >
                       <div>
