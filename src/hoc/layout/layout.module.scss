@@ -23,6 +23,9 @@
     @media screen and (max-width: 991px) {
       width: 100%;
     }
+    @media screen and (min-width: 768px) and (max-width: 991px) {
+      width: auto;
+    }
     @media screen and (max-width: 767px) {
       text-align: center;
       display: none;
@@ -34,10 +37,14 @@
       flex-wrap: wrap;
       width: calc(100% - 120px);
     }
+    @media screen and (max-width: 991px) {
+      width: auto;
+    }
     @media screen and (min-width: 768px) and (max-width: 991px) {
       width: 100%;
-      margin-right: 0;
+      margin-right: 10px;
       display: flex;
+      flex-wrap: wrap;
     }
   }
 }
