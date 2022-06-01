@@ -112,6 +112,9 @@ const NetworkConstants = {
 
     // subscriptions
     GetSubscriptions: `${BaseCanonizerApiUrl}/camp/subscription/list`,
+
+    // email confirmation verify
+    PostVerifyEmail: `${BaseCanonizerApiUrl}/user/postVerifyEmail`,
   },
   Method: {
     GET: "GET",
