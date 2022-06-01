@@ -77,16 +77,17 @@ const TopicsList = () => {
 
   const selectNameSpace = (id, nameSpace) => {
     setNameSpaceId(id);
-    if (history.pushState) {
-      const queryParams = `?namespace=${id}`;
-      var newurl =
-        window.location.protocol +
-        "//" +
-        window.location.host +
-        window.location.pathname +
-        queryParams;
-      window.history.replaceState({ path: newurl }, "", newurl);
-    }
+    setSelectedNameSpace(nameSpace?.children);
+    // if (history.pushState) {
+    //   const queryParams = `?namespace=${id}`;
+    //   var newurl =
+    //     window.location.protocol +
+    //     "//" +
+    //     window.location.host +
+    //     window.location.pathname +
+    //     queryParams;
+    //   window.history.replaceState({ path: newurl }, "", newurl);
+    // }
 
     dispatch(
       setFilterCanonizedTopics({
@@ -96,10 +97,10 @@ const TopicsList = () => {
     );
   };
 
-  // useEffect(() => {
-  //   setSelectedNameSpace(filterNameSpace);
-  //   setNameSpaceId(filterNameSpaceId);
-  // }, [filterNameSpace, filterNameSpaceId]);
+  useEffect(() => {
+    setSelectedNameSpace(filterNameSpace);
+    setNameSpaceId(filterNameSpaceId);
+  }, [filterNameSpace, filterNameSpaceId]);
 
   useEffect(() => {
     setTopicsData(canonizedTopics);
@@ -111,11 +112,6 @@ const TopicsList = () => {
   }, [includeReview]);
 
   useEffect(() => {
-    dispatch(
-      setFilterCanonizedTopics({
-        namespace_id: router.query.namespace,
-      })
-    );
     async function getTopicsApiCall() {
       if (didMount.current) {
         setGetTopicsLoadingIndicator(true);
@@ -133,7 +129,7 @@ const TopicsList = () => {
     filterByScore,
     inputSearch,
     onlyMyTopicsCheck,
-    filterNameSpace,
+    // filterNameSpace,
   ]);
 
   async function getTopicsApiCallWithReqBody(loadMore = false) {
@@ -231,7 +227,7 @@ const TopicsList = () => {
                   size="large"
                   className={styles.dropdown}
                   defaultValue={selectedNameSpace}
-                  // value={selectedNameSpace}
+                  value={selectedNameSpace}
                   onChange={selectNameSpace}
                 >
                   <Select.Option key="custom-key" value="">
