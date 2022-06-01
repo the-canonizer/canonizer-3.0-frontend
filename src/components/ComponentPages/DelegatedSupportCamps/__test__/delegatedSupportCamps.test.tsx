@@ -8,9 +8,10 @@ const { labels, placeholders, validations } = messages;
 const viewMoreModalVisible = true;
 const isRemoveSupportModalVisible = true;
 const showViewMoreModal = jest.fn();
-const RemoveCardDelegatedSupportedCamps = jest.fn();
+const removeCardDelegatedSupportedCamps = jest.fn();
 const handleSupportedCampsCancel = jest.fn();
 const handelViewMoreModalCancel = jest.fn();
+const removeSupport = jest.fn();
 const search = "";
 const delegatedSupportCampsList = [
   {
@@ -96,7 +97,7 @@ describe("Delegated Support camps page", () => {
   it("render Modal when Remove support is clicked", () => {
     const { getByText } = render(
       <DelegatedSupportCampsUI
-        RemoveCardDelegatedSupportedCamps={RemoveCardDelegatedSupportedCamps}
+        removeCardDelegatedSupportedCamps={removeCardDelegatedSupportedCamps}
         handleSupportedCampsCancel={handleSupportedCampsCancel}
         isRemoveSupportModalVisible={isRemoveSupportModalVisible}
         showViewMoreModal={showViewMoreModal}
@@ -105,6 +106,7 @@ describe("Delegated Support camps page", () => {
         delegatedSupportCampsList={delegatedSupportCampsList}
         viewMoreDataValue={viewMoreDataValue}
         search={search}
+        removeSupport={removeSupport}
       />
     );
     expect(getByText("Remove")).toBeTruthy();
@@ -118,7 +120,7 @@ describe("Delegated Support camps page", () => {
   it("render Remove support is clicked", () => {
     render(
       <DelegatedSupportCampsUI
-        RemoveCardDelegatedSupportedCamps={RemoveCardDelegatedSupportedCamps}
+        removeCardDelegatedSupportedCamps={removeCardDelegatedSupportedCamps}
         handleSupportedCampsCancel={handleSupportedCampsCancel}
         isRemoveSupportModalVisible={isRemoveSupportModalVisible}
         showViewMoreModal={showViewMoreModal}
@@ -127,6 +129,7 @@ describe("Delegated Support camps page", () => {
         delegatedSupportCampsList={delegatedSupportCampsList}
         search={search}
         viewMoreDataValue={viewMoreDataValue}
+        removeSupport={removeSupport}
       />
     );
     expect(
@@ -136,7 +139,7 @@ describe("Delegated Support camps page", () => {
   it("render delegated Supported Camps is clicked/active", () => {
     render(
       <DelegatedSupportCampsUI
-        RemoveCardDelegatedSupportedCamps={RemoveCardDelegatedSupportedCamps}
+        removeCardDelegatedSupportedCamps={removeCardDelegatedSupportedCamps}
         handleSupportedCampsCancel={handleSupportedCampsCancel}
         isRemoveSupportModalVisible={isRemoveSupportModalVisible}
         showViewMoreModal={showViewMoreModal}
@@ -145,6 +148,7 @@ describe("Delegated Support camps page", () => {
         delegatedSupportCampsList={delegatedSupportCampsList}
         search={search}
         viewMoreDataValue={viewMoreDataValue}
+        removeSupport={removeSupport}
       />
     );
     expect(
@@ -170,7 +174,7 @@ describe("Delegated Support camps page", () => {
   it("render View More is clicked", () => {
     render(
       <DelegatedSupportCampsUI
-        RemoveCardDelegatedSupportedCamps={RemoveCardDelegatedSupportedCamps}
+        removeCardDelegatedSupportedCamps={removeCardDelegatedSupportedCamps}
         handleSupportedCampsCancel={handleSupportedCampsCancel}
         isRemoveSupportModalVisible={isRemoveSupportModalVisible}
         showViewMoreModal={showViewMoreModal}
@@ -179,6 +183,7 @@ describe("Delegated Support camps page", () => {
         delegatedSupportCampsList={delegatedSupportCampsList}
         search={search}
         viewMoreDataValue={viewMoreDataValue}
+        removeSupport={removeSupport}
       />
     );
     expect(
@@ -188,15 +193,16 @@ describe("Delegated Support camps page", () => {
   it("render Modal View More is clicked", () => {
     render(
       <DelegatedSupportCampsUI
-        RemoveCardDelegatedSupportedCamps={RemoveCardDelegatedSupportedCamps}
+        removeCardDelegatedSupportedCamps={removeCardDelegatedSupportedCamps}
         handleSupportedCampsCancel={handleSupportedCampsCancel}
         isRemoveSupportModalVisible={isRemoveSupportModalVisible}
         showViewMoreModal={showViewMoreModal}
+        viewMoreDataValue={viewMoreDataValue}
         handelViewMoreModalCancel={handelViewMoreModalCancel}
         viewMoreModalVisible={viewMoreModalVisible}
         delegatedSupportCampsList={delegatedSupportCampsList}
         search={search}
-        viewMoreDataValue={viewMoreDataValue}
+        removeSupport={removeSupport}
       />
     );
     expect(

@@ -1,6 +1,6 @@
-import React from "react";
-import { Card, Modal, Tag, Button, Form } from "antd";
-import Icon, { CloseCircleOutlined } from "@ant-design/icons";
+import React, { useState } from "react";
+import { Card, Modal, Button, Form } from "antd";
+import{ CloseCircleOutlined } from "@ant-design/icons";
 import styles from "./DirectSupportedCamps.module.scss";
 import Link from "next/link";
 import messages from "../../../../messages";
@@ -12,8 +12,22 @@ export default function DirectSupportedCampsUI({
   directSupportedCampsList,
   search,
   removeSupport,
+  handleClose,
+  saveChanges,
+  showSaveChanges,
+  setRevertBack,
+  revertBack,
+  handleRevertBack,
+  visible,
+  idData,
+  handleOk,
+  handleCancel,
 }) {
-  function CardTitle(props) {
+  const [valData, setValData] = useState({});
+  let tagsArrayList = [],
+    DataArr = [];
+
+  const CardTitle = (props) => {
     return (
       <div className={styles.card_heading_title}>
         {messages.labels.fortopic}
@@ -27,7 +41,7 @@ export default function DirectSupportedCampsUI({
         </span>
       </div>
     );
-  }
+  };
   return (
     <div>
       {directSupportedCampsList
@@ -40,10 +54,12 @@ export default function DirectSupportedCampsUI({
             return val;
           }
         })
-        ?.map((data, i) => {
+        ?.map((data, id) => {
+          DataArr = data;
+          tagsArrayList = data.camps;
           return (
             <Card
-              key={i}
+              key={id}
               className={styles.cardBox_tags}
               type="inner"
               size="default"
@@ -60,30 +76,59 @@ export default function DirectSupportedCampsUI({
               }
               style={{ width: 760, marginBottom: 16 }}
             >
-              {data.camps?.map((val, i) => {
-                return (
-                  <Tag
-                    key={i}
-                    className={styles.tag_btn}
-                    closable
-                    closeIcon={<CloseCircleOutlined />}
+              {(revertBack.lenght > 0 ? revertBack : tagsArrayList)?.map(
+                (val) => {
+                  return (
+                    <Button
+                      key={val.camp_num}
+                      className={styles.tag_btn}
+                      
+                      disabled={val.dis}
+                    >
+                      <div>
+                        {" "}
+                        <span className={styles.count}>
+                          {val.support_order}.{" "}
+                        </span>
+                        <Link href={val.camp_link}>
+                          <a className={styles.Bluecolor}> {val.camp_name}</a>
+                        </Link>
+                      </div>
+                      <CloseCircleOutlined
+                        onClick={(e) => {
+                          handleClose(val, data.topic_num, data),
+                            setValData(val),
+                            setRevertBack([]);
+                        }}
+                      />
+                    </Button>
+                  );
+                }
+              )}
+
+              {showSaveChanges && idData == data.topic_num ? (
+                <div className={styles.tag_Changes}>
+                  <Button
+                    className={styles.save_Changes_Btn}
+                    onClick={saveChanges}
                   >
-                    <div>
-                      {" "}
-                      <span className={styles.count}>
-                        {val.support_order}.{" "}
-                      </span>
-                      <Link href={val.camp_link}>
-                        <a className={styles.Bluecolor}> {val.camp_name}</a>
-                      </Link>
-                    </div>
-                  </Tag>
-                );
-              })}
+                    Save Changes
+                  </Button>
+                  <Button
+                    className={styles.revert_Btn}
+                    onClick={(e) => {
+                      handleRevertBack(idData, data.camps);
+                    }}
+                  >
+                    Revert
+                  </Button>
+                </div>
+              ) : (
+                ""
+              )}
             </Card>
           );
         })}
-
       <Modal
         className={styles.modal_cross}
         title="Remove Support"
@@ -130,6 +175,16 @@ export default function DirectSupportedCampsUI({
             </Button>
           </Form.Item>
         </Form>
+      </Modal>
+      <Modal
+        title={null}
+        visible={visible}
+        onOk={() => {
+          handleOk(idData, valData);
+        }}
+        onCancel={handleCancel}
+      >
+        <h1>Changes will be reverted ?</h1>
       </Modal>
     </div>
   );
