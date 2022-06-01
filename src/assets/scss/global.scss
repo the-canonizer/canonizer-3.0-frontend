@@ -500,7 +500,7 @@ body {
           font-size: 16px;
           font-weight: 600;
           a {
-            color: #2850be;
+            color: var(--primary);
           }
         }
       }
@@ -526,7 +526,7 @@ body {
     } */
     &.ant-tree-treenode-leaf-last:first-child {
       .treeListItemTitle {
-        color: #2850be;
+        color: var(--primary);
       }
     }
     .ant-tree-node-content-wrapper.ant-tree-node-selected {
@@ -1390,7 +1390,7 @@ body {
           font-size: 16px;
           font-weight: 600;
           a {
-            color: #2850be;
+            color: var(--primary);
           }
         }
       }
@@ -1409,7 +1409,7 @@ body {
     }
     &.ant-tree-treenode-leaf-last:first-child {
       .treeListItemTitle {
-        color: #2850be;
+        color: var(--primary);
       }
     }
     .ant-tree-node-content-wrapper.ant-tree-node-selected {
