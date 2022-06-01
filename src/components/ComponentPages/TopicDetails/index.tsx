@@ -13,6 +13,7 @@ import { RootState } from "src/store";
 import SideBar from "../Home/SideBar";
 import CampStatementCard from "./CampStatementCard";
 import CampInfoBar from "./CampInfoBar";
+import K from "../../../constants";
 import styles from "./topicDetails.module.scss";
 import CampTreeCard from "./CampTreeCard";
 import CurrentCampCard from "./CurrentCampCard";
@@ -34,15 +35,24 @@ const TopicDetails = () => {
 
   const router = useRouter();
   const dispatch = useDispatch();
-  const { asof, asofdate, algorithm, newsFeed, topicRecord, campRecord } =
-    useSelector((state: RootState) => ({
-      asofdate: state.filters?.filterObject?.asofdate,
-      algorithm: state.filters?.filterObject?.algorithm,
-      newsFeed: state?.topicDetails?.newsFeed,
-      asof: state?.filters?.filterObject?.asof,
-      topicRecord: state?.topicDetails?.currentTopicRecord,
-      campRecord: state?.topicDetails?.currentCampRecord,
-    }));
+  const {
+    asof,
+    asofdate,
+    algorithm,
+    newsFeed,
+    topicRecord,
+    campRecord,
+    campStatement,
+  } = useSelector((state: RootState) => ({
+    asofdate: state.filters?.filterObject?.asofdate,
+    algorithm: state.filters?.filterObject?.algorithm,
+    newsFeed: state?.topicDetails?.newsFeed,
+    asof: state?.filters?.filterObject?.asof,
+    topicRecord: state?.topicDetails?.currentTopicRecord,
+    campRecord: state?.topicDetails?.currentCampRecord,
+    campStatement: state?.topicDetails?.campStatement,
+  }));
+
   const [campSubscriptionID, setCampSubscriptionID] = useState(
     campRecord?.subscriptionId
   );

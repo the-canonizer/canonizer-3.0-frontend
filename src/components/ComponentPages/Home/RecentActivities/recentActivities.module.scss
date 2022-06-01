@@ -10,6 +10,9 @@
   display: block;
   div[role="tablist"] {
     display: flex;
+    @media screen and (max-width: 992px) {
+      flex-wrap: wrap;
+    }
   }
   div {
     &:first-child {

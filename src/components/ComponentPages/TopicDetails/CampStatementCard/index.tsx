@@ -83,7 +83,11 @@ const CampStatementCard = ({ myRefToCampStatement, onCampForumClick }) => {
             <Link
               href={`/statement/history/${router?.query?.camp[0]}/${router?.query?.camp[1]}`}
             >
-              <a>Manage/Edit Camp Statement </a>
+              <a>
+                {campStatement?.length > 0
+                  ? K?.exceptionalMessages?.manageCampStatementButton
+                  : K?.exceptionalMessages?.addCampStatementButton}
+              </a>
             </Link>
           </CustomButton>
         </div>

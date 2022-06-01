@@ -28,7 +28,9 @@ const SupportTreeCard = ({ handleLoadMoreSupporters }) => {
   const { campSupportingTree } = useSelector((state: RootState) => ({
     campSupportingTree: state?.topicDetails?.campSupportingTree,
   }));
-
+  const { topicRecord } = useSelector((state: RootState) => ({
+    topicRecord: state?.topicDetails?.currentTopicRecord,
+  }));
   return (
     <Collapse
       defaultActiveKey={["1"]}
@@ -56,6 +58,11 @@ const SupportTreeCard = ({ handleLoadMoreSupporters }) => {
                   key={index}
                   onClick={() => {
                     localStorage.setItem("publicUserId", supporter.id);
+                    localStorage.setItem(
+                      "topicRecord",
+                      JSON.stringify(topicRecord)
+                    );
+                    localStorage.setItem("namespace_name_id", "1");
                   }}
                 >
                   <Link href="/userProfile">

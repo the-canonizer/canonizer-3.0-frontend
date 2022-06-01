@@ -27,14 +27,12 @@ const CampTree = ({ scrollToCampStatement }) => {
       scrollToCampStatement();
     }
   };
-
   useEffect(() => {
     setScoreFilter(filterByScore);
   }, [filterByScore]);
 
   const renderTreeNodes = (data: any) =>
     Object.keys(data).map((item) => {
-      debugger;
       if (data[item].children) {
         if (data[item].score >= scoreFilter) {
           return (
@@ -55,7 +53,16 @@ const CampTree = ({ scrollToCampStatement }) => {
                         <Link
                           href={data[item]?.link?.replace("#statement", "")}
                         >
-                          <a>{data[item].title}</a>
+                          <a
+                            className={
+                              data[item]?.camp_id ==
+                              router?.query?.camp?.at(1)?.split("-")?.at(0)
+                                ? "font-weight-bold text-primary"
+                                : ""
+                            }
+                          >
+                            {data[item].title}
+                          </a>
                         </Link>
                       </span>
                       <span

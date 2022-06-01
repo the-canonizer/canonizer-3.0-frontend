@@ -145,6 +145,12 @@ body {
       width: 100%;
       & + .pageContentWrap {
         width: 100%;
+        margin: 0;
+      }
+    }
+    @media screen and (max-width: 767px) {
+      & + .pageContentWrap {
+        margin: 0;
       }
     }
   }
@@ -165,6 +171,12 @@ body {
       width: 100%;
       & + .pageContentWrap {
         width: 100%;
+      }
+    }
+    @media screen and (max-width: 767px) {
+      width: 100%;
+      & + .pageContentWrap {
+        margin: 0;
       }
     }
   }
@@ -500,7 +512,7 @@ body {
           font-size: 16px;
           font-weight: 600;
           a {
-            color: #2850be;
+            color: var(--primary);
           }
         }
       }
@@ -526,7 +538,7 @@ body {
     } */
     &.ant-tree-treenode-leaf-last:first-child {
       .treeListItemTitle {
-        color: #2850be;
+        color: var(--primary);
       }
     }
     .ant-tree-node-content-wrapper.ant-tree-node-selected {
@@ -1390,7 +1402,7 @@ body {
           font-size: 16px;
           font-weight: 600;
           a {
-            color: #2850be;
+            color: var(--primary);
           }
         }
       }
@@ -1409,7 +1421,7 @@ body {
     }
     &.ant-tree-treenode-leaf-last:first-child {
       .treeListItemTitle {
-        color: #2850be;
+        color: var(--primary);
       }
     }
     .ant-tree-node-content-wrapper.ant-tree-node-selected {
@@ -1463,21 +1475,18 @@ body .UploadFile_menu_item__Fnasz {
 .card_heading {
   font-size: 18px;
 }
-.reactDropdown span.ant-input-group-wrapper-lg + div
-{
+.reactDropdown span.ant-input-group-wrapper-lg + div {
   box-shadow: 4px 0px 5px rgb(0 0 0 / 50%), -4px 0px 5px rgb(0 0 0 / 50%);
 }
-div[role="option"]
-{
+div[role="option"] {
   border-bottom: 1px solid #ccc;
-  padding:5px 5px 5px 28px;
+  padding: 5px 5px 5px 28px;
   position: relative;
 }
-div[role="option"]::before 
-{
+div[role="option"]::before {
   content: url(../image/location1.png);
   position: absolute;
   left: 5px;
   transform: scale(1.2);
-  top:0px
+  top: 0px;
 }

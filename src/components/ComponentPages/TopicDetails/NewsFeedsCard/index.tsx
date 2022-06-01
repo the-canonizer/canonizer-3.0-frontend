@@ -127,13 +127,22 @@ const NewsFeedsCard = ({ newsFeed }) => {
                       )}
                       {deleteNews && (
                         <Tooltip
-                          title={news.owner_flag ? "" : "must owner to delete"}
+                          title={
+                            news.owner_flag ? "" : " must be owner to delete"
+                          }
                         >
                           <Popconfirm
                             disabled={!news.owner_flag}
                             placement="topLeft"
-                            title="Are you sure to delete the news"
+                            title={
+                              K?.exceptionalMessages
+                                ?.deleteCampNewsTooltipMessage
+                            }
                             onConfirm={() => handleDeleteCamp(news?.id)}
+                            onCancel={() => {
+                              setDeleteNews(false);
+                              setEditNews(false);
+                            }}
                             okText="Yes"
                             cancelText="No"
                           >
@@ -151,7 +160,11 @@ const NewsFeedsCard = ({ newsFeed }) => {
 
                       {editNews && (
                         <Tooltip
-                          title={news.owner_flag ? "" : "must owner to edit"}
+                          title={
+                            news.owner_flag
+                              ? ""
+                              : K?.exceptionalMessages?.tooltipNewsEdit
+                          }
                         >
                           <Button
                             size="small"

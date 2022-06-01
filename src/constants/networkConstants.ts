@@ -39,6 +39,7 @@ const NetworkConstants = {
     //Direct Supported camps
     GetDirectSupportedCamps: `${BaseCanonizerApiUrl}/get-direct-supported-camps`,
     RemoveSupportesCampsEntireTopic: `${BaseCanonizerApiUrl}/support/remove`,
+    RemoveOrUpdateDirectSupportCamps: `${BaseCanonizerApiUrl}/support/update`,
     //Delegated Supported Camps
     GetDelegatedSupportCamps: `${BaseCanonizerApiUrl}/get-delegated-supported-camps`,
     // topic details page api's
@@ -75,10 +76,8 @@ const NetworkConstants = {
     CreateFolder: `${BaseCanonizerApiUrl}/add-folder`,
     //DeleteFolder
     DeleteFolder: `${BaseCanonizerApiUrl}/folder/delete/`,
-    //
-    UserProfile: `${BaseCanonizerApiUrl}/user/profile/`,
     //AllSupportedCampsList
-    AllSupportedCampsList: `${BaseCanonizerApiUrl}/user/all-supported-camps/`,
+    AllSupportedCampsList: `${BaseCanonizerApiUrl}/user/supports/`,
 
     // Camp
     CreateCamp: `${BaseCanonizerApiUrl}/camp/save`,
@@ -113,6 +112,9 @@ const NetworkConstants = {
 
     // subscriptions
     GetSubscriptions: `${BaseCanonizerApiUrl}/camp/subscription/list`,
+
+    // email confirmation verify
+    PostVerifyEmail: `${BaseCanonizerApiUrl}/user/postVerifyEmail`,
   },
   Method: {
     GET: "GET",

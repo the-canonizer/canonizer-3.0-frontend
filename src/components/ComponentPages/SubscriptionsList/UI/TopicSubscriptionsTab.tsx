@@ -35,8 +35,8 @@ function TopicSubscriptionsTab({
               For topic{" "}
               <span>
                 &quot;
-                <Link href="#" passHref>
-                  <a onClick={(e) => e.preventDefault()}>{data.title}</a>
+                <Link href={data.title_link}>
+                  <a>{data.title}</a>
                 </Link>
                 &quot;
               </span>
@@ -81,14 +81,8 @@ function TopicSubscriptionsTab({
               >
                 <div>
                   <span className={styles.count}>{i + 1}. </span>
-                  <Link href="#" passHref>
-                    <a
-                      className={styles.Bluecolor}
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      {" "}
-                      {camp.camp_name}
-                    </a>
+                  <Link href={camp.camp_link}>
+                    <a className={styles.Bluecolor}> {camp.camp_name}</a>
                   </Link>
                 </div>
               </Tag>
