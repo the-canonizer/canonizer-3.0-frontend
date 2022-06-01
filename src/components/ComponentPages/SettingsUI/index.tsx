@@ -105,7 +105,12 @@ const SettingsUI = () => {
 
   useEffect(() => {
     const query = router.query;
-    if (query && query.tab)
+    if (query && query.tab === "social") {
+      setActiveTabKey("social_oauth_verification");
+    } else if (query && query.tab === "profile") {
+      setActiveTabKey("profile_info");
+    }
+    else if (query && query.tab)
       setActiveTabKey(query.tab.toString())
     else
       setActiveTabKey("profile_info");
