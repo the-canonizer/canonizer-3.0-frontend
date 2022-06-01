@@ -76,10 +76,8 @@ const NetworkConstants = {
     CreateFolder: `${BaseCanonizerApiUrl}/add-folder`,
     //DeleteFolder
     DeleteFolder: `${BaseCanonizerApiUrl}/folder/delete/`,
-    //
-    UserProfile: `${BaseCanonizerApiUrl}/user/profile/`,
     //AllSupportedCampsList
-    AllSupportedCampsList: `${BaseCanonizerApiUrl}/user/all-supported-camps/`,
+    AllSupportedCampsList: `${BaseCanonizerApiUrl}/user/supports/`,
 
     // Camp
     CreateCamp: `${BaseCanonizerApiUrl}/camp/save`,
