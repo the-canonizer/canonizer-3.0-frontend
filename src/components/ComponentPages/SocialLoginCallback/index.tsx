@@ -38,9 +38,9 @@ function SocialLoginCallback() {
         }
       }
 
-      if (response && response.status_code === 407) {
-        localStorage.setItem("s_l", JSON.stringify(data));
+      if (response && response.status_code === 422) {
         openModal();
+        localStorage.setItem("s_l", JSON.stringify(data));
       }
     } else {
       const response = await socialLoginLinkUser(data);

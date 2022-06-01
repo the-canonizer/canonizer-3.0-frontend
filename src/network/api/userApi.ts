@@ -194,7 +194,7 @@ export const socialLoginCallback = async (values: object, router) => {
       error &&
       error.error &&
       error.error.data &&
-      error.error.data.status_code === 403
+      error.error.data.status_code === 403 || error.error.data.status_code === 422
     ) {
       return error.error.data;
     }
