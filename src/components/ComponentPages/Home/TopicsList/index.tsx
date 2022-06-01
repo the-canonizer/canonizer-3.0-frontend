@@ -96,10 +96,10 @@ const TopicsList = () => {
     );
   };
 
-  useEffect(() => {
-    setSelectedNameSpace(filterNameSpace);
-    setNameSpaceId(filterNameSpaceId);
-  }, [filterNameSpace, filterNameSpaceId]);
+  // useEffect(() => {
+  //   setSelectedNameSpace(filterNameSpace);
+  //   setNameSpaceId(filterNameSpaceId);
+  // }, [filterNameSpace, filterNameSpaceId]);
 
   useEffect(() => {
     setTopicsData(canonizedTopics);
@@ -231,7 +231,7 @@ const TopicsList = () => {
                   size="large"
                   className={styles.dropdown}
                   defaultValue={selectedNameSpace}
-                  value={selectedNameSpace}
+                  // value={selectedNameSpace}
                   onChange={selectNameSpace}
                 >
                   <Select.Option key="custom-key" value="">
