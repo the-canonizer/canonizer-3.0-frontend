@@ -139,6 +139,10 @@ const NewsFeedsCard = ({ newsFeed }) => {
                                 ?.deleteCampNewsTooltipMessage
                             }
                             onConfirm={() => handleDeleteCamp(news?.id)}
+                            onCancel={() => {
+                              setDeleteNews(false);
+                              setEditNews(false);
+                            }}
                             okText="Yes"
                             cancelText="No"
                           >
