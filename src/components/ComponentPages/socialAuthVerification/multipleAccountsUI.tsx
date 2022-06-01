@@ -56,12 +56,12 @@ const MultiUserModalForm = ({ visible, onFinish, closeModal, users }) => {
           <Form.Item>
             <Typography.Text>
               It seems that there is already a user linked with this email in
-              canonizer. If that user belongs to you than it is a violation of
-              canonizer&rsquo;s agreement. So we suggest you to deactivate your
-              another account and keep only single master account active. If you
-              donot want to deactivate than click on cancel and try linking with
-              other email for this social account.If you wish to deactivate than
-              select the account below and click submit
+              Canonizer. If that user belongs to you then it is a violation of
+              Canonizer’s agreement. So we suggest you deactivate your other
+              account and keep only a single master account active. If you do
+              not want to deactivate then click on cancel and try linking with
+              another email for this social account. If you wish to deactivate
+              then select the account below and click submit.
             </Typography.Text>
           </Form.Item>
           <Form.Item
