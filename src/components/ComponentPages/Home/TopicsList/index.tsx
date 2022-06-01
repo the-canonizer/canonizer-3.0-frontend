@@ -78,16 +78,6 @@ const TopicsList = () => {
   const selectNameSpace = (id, nameSpace) => {
     setNameSpaceId(id);
     setSelectedNameSpace(nameSpace?.children);
-    // if (history.pushState) {
-    //   const queryParams = `?namespace=${id}`;
-    //   var newurl =
-    //     window.location.protocol +
-    //     "//" +
-    //     window.location.host +
-    //     window.location.pathname +
-    //     queryParams;
-    //   window.history.replaceState({ path: newurl }, "", newurl);
-    // }
 
     dispatch(
       setFilterCanonizedTopics({
@@ -129,7 +119,6 @@ const TopicsList = () => {
     filterByScore,
     inputSearch,
     onlyMyTopicsCheck,
-    // filterNameSpace,
   ]);
 
   async function getTopicsApiCallWithReqBody(loadMore = false) {
