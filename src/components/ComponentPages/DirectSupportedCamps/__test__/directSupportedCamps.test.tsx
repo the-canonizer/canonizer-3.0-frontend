@@ -6,9 +6,9 @@ import messages from "../../../../messages";
 const { labels, placeholders, validations } = messages;
 
 const isSupportedCampsModalVisible = true;
-const RemoveCardSupportedCamps = jest.fn();
+const removeCardSupportedCamps = jest.fn();
 const handleSupportedCampsCancel = jest.fn();
-const RemoveSupport = jest.fn();
+const removeSupport = jest.fn();
 const search = "";
 
 const directSupportedCampsList = [
@@ -41,12 +41,12 @@ describe("Direct Support camps page", () => {
   it("render Modal when Remove support is clicked", () => {
     render(
       <DirectSupportedCampsUI
-        RemoveCardSupportedCamps={RemoveCardSupportedCamps}
+        removeCardSupportedCamps={removeCardSupportedCamps}
         handleSupportedCampsCancel={handleSupportedCampsCancel}
         isSupportedCampsModalVisible={isSupportedCampsModalVisible}
         directSupportedCampsList={directSupportedCampsList}
         search={search}
-        RemoveSupport={RemoveSupport}
+        removeSupport={removeSupport}
       />
     );
     expect(screen.getByText("Remove")).toBeTruthy();
@@ -59,12 +59,12 @@ describe("Direct Support camps page", () => {
   it("render Remove support is clicked", () => {
     const { getByText } = render(
       <DirectSupportedCampsUI
-        RemoveCardSupportedCamps={RemoveCardSupportedCamps}
+        removeCardSupportedCamps={removeCardSupportedCamps}
         handleSupportedCampsCancel={handleSupportedCampsCancel}
         isSupportedCampsModalVisible={isSupportedCampsModalVisible}
         directSupportedCampsList={directSupportedCampsList}
         search={search}
-        RemoveSupport={RemoveSupport}
+        removeSupport={removeSupport}
       />
     );
     expect(
@@ -74,12 +74,12 @@ describe("Direct Support camps page", () => {
   it("render direct Supported Camps is clicked/active", () => {
     render(
       <DirectSupportedCampsUI
-        RemoveCardSupportedCamps={RemoveCardSupportedCamps}
+        removeCardSupportedCamps={removeCardSupportedCamps}
         handleSupportedCampsCancel={handleSupportedCampsCancel}
         isSupportedCampsModalVisible={isSupportedCampsModalVisible}
         directSupportedCampsList={directSupportedCampsList}
         search={search}
-        RemoveSupport={RemoveSupport}
+        removeSupport={removeSupport}
       />
     );
     expect(

@@ -70,3 +70,34 @@
 .modal_cross {
   font-size: 17px;
 }
+
+.tag_Changes .save_Changes_Btn {
+  margin-top: 10px;
+  margin-right: 10px;
+  background-color: rgb(249, 157, 22);
+  border-color: rgb(249, 157, 22);
+  color: white;
+  border-radius: 2px;
+  width: 130px;
+  height: 38px;
+  font-size: 16px;
+}
+
+.tag_Changes .save_Changes_Btn:hover {
+  color: white;
+  border-color: rgb(249, 157, 22);
+  background-color: rgb(249, 157, 22);
+}
+
+.revert_Btn {
+  //border-color: #4484ce;
+  color: rgba(53, 47, 47, 0.5);
+  height: 38px;
+  border-radius: 2px;
+  width: 80px;
+  font-weight: 600;
+}
+// .revert_Btn:hover {
+//   //background: #4484ce;
+//   color: #fff;
+// }

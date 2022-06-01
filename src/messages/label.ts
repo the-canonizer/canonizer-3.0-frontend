@@ -62,4 +62,8 @@ export const labels = {
   City: "City",
   Country: "country",
   listOfSupportedCamps: "List of supported camps",
+  otpLabel:
+    "Note : Verification code has been sent to your registered email address",
+  emailLabel:
+    "Note : Your email address is not returned from social account. You have to enter the email address.",
 };

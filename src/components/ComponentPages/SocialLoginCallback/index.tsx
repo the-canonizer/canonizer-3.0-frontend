@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Skeleton, message } from "antd";
+import { useDispatch } from "react-redux";
 
 import {
   socialLoginCallback,
@@ -8,11 +9,15 @@ import {
 } from "../../../network/api/userApi";
 import { getSearchedParams } from "../../../utils/generalUtility";
 import Spinner from "../../common/spinner/spinner";
+import { showSocialEmailPopup } from "../../../store/slices/uiSlice";
 
 function SocialLoginCallback() {
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
+  const dispatch = useDispatch();
+
+  const openModal = () => dispatch(showSocialEmailPopup());
 
   const sendData = async (data) => {
     const redirectTab = localStorage.getItem("redirectTab");
@@ -31,6 +36,11 @@ function SocialLoginCallback() {
         } else {
           router.push("/");
         }
+      }
+
+      if (response && response.status_code === 407) {
+        localStorage.setItem("s_l", JSON.stringify(data));
+        openModal();
       }
     } else {
       const response = await socialLoginLinkUser(data);
