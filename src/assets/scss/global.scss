@@ -131,14 +131,14 @@ body {
 .leftSideBar {
   & + .pageContentWrap {
     @media screen and (min-width: 992px) {
-      padding: 0 15px;
+      padding: 0 8px;
     }
   }
   &.miniSideBar {
     @media screen and (min-width: 992px) {
-      width: 220px;
+      width: 240px;
       & + .pageContentWrap {
-        width: calc(100% - 220px);
+        width: calc(100% - 240px);
       }
     }
     @media screen and (max-width: 991px) {
