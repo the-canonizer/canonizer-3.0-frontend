@@ -43,7 +43,12 @@ const CreateThreadForm = ({
           <Row gutter={16}>
             <Col xs={24} sm={16}>
               <Form.Item
-                label={labels.threadTitle}
+                label={
+                  <Fragment>
+                    {labels.threadTitle}
+                    <span>(Limit 100 Chars)</span>
+                  </Fragment>
+                }
                 name="thread_title"
                 {...threadTitleRule}
               >

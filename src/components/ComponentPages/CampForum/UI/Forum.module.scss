@@ -244,8 +244,13 @@
 .createNewTopicForm {
   label {
     font-size: 13px;
-    font-weight: 500;
+    font-weight: 600;
     color: #795548;
+    span {
+      margin-left: 4px;
+      color: #6e7880;
+      font-size: 95%;
+    }
 
     span {
       font-weight: normal;

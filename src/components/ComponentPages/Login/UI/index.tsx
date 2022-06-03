@@ -79,7 +79,7 @@ const LoginUi = ({
         <Col md={12}>
           <div className={styles.form_section}>
             <Title level={2} className={styles.titles}>
-              Log in to Canonizer
+              Login to Canonizer
             </Title>
             {errorMsg && (
               <Text className={`${styles.errorMsgs}`} type="danger">
@@ -149,7 +149,7 @@ const LoginUi = ({
                 </Button>
               </Form.Item>
 
-              <Form.Item>
+              <Form.Item style={{marginBottom:"15px"}}>
                 <SocialLoginButton />
               </Form.Item>
               <Form.Item noStyle>

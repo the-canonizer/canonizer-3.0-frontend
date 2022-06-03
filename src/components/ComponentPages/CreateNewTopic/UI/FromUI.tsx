@@ -72,7 +72,12 @@ const CreateTopicFromUI = ({
               ) : null}
 
               <Form.Item
-                label={labels.cr_topic_name}
+                label={
+                  <Fragment>
+                    {labels.cr_topic_name}
+                    <span>(Limit 30 Chars)</span>
+                  </Fragment>
+                }
                 name="topic_name"
                 {...topicNameRule}
               >
@@ -86,7 +91,7 @@ const CreateTopicFromUI = ({
                 <Form.Item
                   label={
                     <Fragment>
-                      <span className={styles.astrix}>Namespace</span>
+                      {labels.cr_namespace}
                       <span>
                         (General is recommended, unless you know otherwise)
                       </span>
@@ -113,7 +118,12 @@ const CreateTopicFromUI = ({
             </Col>
             <Col xs={24} sm={12}>
               <Form.Item
-                label={labels.cr_edit_summary}
+                label={
+                  <Fragment>
+                    {labels.cr_edit_summary}
+                    <span>(Briefly describe your changes)</span>
+                  </Fragment>
+                }
                 name="edit_summary"
                 {...summaryRule}
               >

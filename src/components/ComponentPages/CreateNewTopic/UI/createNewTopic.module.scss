@@ -2,10 +2,11 @@
   label {
     font-size: 13px;
     font-weight: 600;
-    color: #6e7880;
-
+    color: #795548;
     span {
-      font-weight: normal;
+      margin-left: 4px;
+      color: #6e7880;
+      font-size: 95%;
     }
 
     &::before {
@@ -56,7 +57,7 @@
         }
       }
       &::before {
-        left:70px;
+        left: 70px;
         right: auto;
         // display: block;
         // content: "(General is recommended, unless you know otherwise)";

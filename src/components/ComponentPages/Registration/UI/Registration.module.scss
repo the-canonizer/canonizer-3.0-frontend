@@ -36,7 +36,12 @@
       label {
         font-size: 15px;
         font-weight: 600;
-        color: #6e7880;
+        color: #795548;
+        span {
+          margin-left: 4px;
+          color: #6e7880;
+          font-size: 95%;
+        }
 
         &::before {
           position: absolute;
