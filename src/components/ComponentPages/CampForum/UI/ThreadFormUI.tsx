@@ -47,7 +47,7 @@ const CreateThreadForm = ({
                 name="thread_title"
                 {...threadTitleRule}
               >
-                <Input size={"large"} placeholder="Title" />
+                <Input size={"large"} placeholder="Title" maxLength={100} />
               </Form.Item>
 
               {!isThreadUpdate ? (

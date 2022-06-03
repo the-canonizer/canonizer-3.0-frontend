@@ -125,7 +125,7 @@ const CreateCampFormUI = ({
                 name="camp_name"
                 {...campNameRule}
               >
-                <Input size={"large"} placeholder="Camp name" />
+                <Input size={"large"} placeholder="Camp name" maxLength={30} />
               </Form.Item>
             </Col>
             <Col xs={24} sm={12}>
@@ -156,7 +156,11 @@ const CreateCampFormUI = ({
                 name="camp_about_url"
                 {...campAboutUrlRule}
               >
-                <Input placeholder={placeholders.campURL} size={"large"} />
+                <Input
+                  placeholder={placeholders.campURL}
+                  size={"large"}
+                  maxLength={1024}
+                />
               </Form.Item>
             </Col>
 

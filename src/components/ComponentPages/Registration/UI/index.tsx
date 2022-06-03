@@ -97,6 +97,7 @@ function RegistrationUi({
                 onKeyDown={(e) =>
                   e.key === " " && e.keyCode === 32 && e.preventDefault()
                 }
+                maxLength={100}
               />
             </Col>
 
@@ -109,6 +110,7 @@ function RegistrationUi({
                 onKeyDown={(e) =>
                   e.key === " " && e.keyCode === 32 && e.preventDefault()
                 }
+                maxLength={100}
               />
             </Col>
             <Col md={12} style={{ width: "100%" }}>
@@ -120,6 +122,7 @@ function RegistrationUi({
                 onKeyDown={(e) =>
                   e.key === " " && e.keyCode === 32 && e.preventDefault()
                 }
+                maxLength={255}
               />
             </Col>
             <Col md={12} style={{ width: "100%" }}>

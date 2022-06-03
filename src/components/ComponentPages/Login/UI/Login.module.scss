@@ -27,10 +27,9 @@
   .form_section {
     padding: 25px;
     h2.titles {
-      color: #2e68db;
+      color: var(--primary);
       font-size: 20px;
-      font-family: Asap;
-      font-weight: 500;
+      font-weight: 600;
       margin-bottom: 40px;
       font-family: var(--font-family-asap);
     }
@@ -48,7 +47,7 @@
       label {
         font-size: 15px;
         font-weight: 600;
-        color: #795548;
+        color: #6e7880;
 
         &::before {
           position: absolute;
@@ -90,7 +89,7 @@
       }
       .login-form-forgot {
         margin-left: auto;
-        color: #2e68db;
+        color: var(--primary);
         font-size: 15px;
         float: right;
       }
@@ -136,7 +135,7 @@
       font-size: 15px;
       font-weight: normal;
       button {
-        color: #2e68db;
+        color: var(--primary);
         cursor: pointer;
       }
     }

@@ -135,7 +135,7 @@ const LoginUi = ({
                   className="login-form-button"
                   block
                 >
-                  Log in <ArrowRightOutlined />
+                  Log In <ArrowRightOutlined />
                 </Button>
                 <Space className={styles.space}>Or</Space>
                 <Button
@@ -155,7 +155,10 @@ const LoginUi = ({
               <Form.Item noStyle>
                 <Text className={styles.ft_link}>
                   {`Don't have an account? `}
-                  <a onClick={onRegister}> Register Now</a>
+                  <a onClick={onRegister} style={{ fontWeight: "bold" }}>
+                    {" "}
+                    Register Now
+                  </a>
                 </Text>
               </Form.Item>
             </Form>

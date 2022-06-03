@@ -76,11 +76,22 @@ const CreateTopicFromUI = ({
                 name="topic_name"
                 {...topicNameRule}
               >
-                <Input placeholder={placeholders.topicName} size={"large"} />
+                <Input
+                  placeholder={placeholders.topicName}
+                  size={"large"}
+                  maxLength={30}
+                />
               </Form.Item>
               {nameSpaces ? (
                 <Form.Item
-                  label={labels.cr_namespace}
+                  label={
+                    <Fragment>
+                      <span className={styles.astrix}>Namespace</span>
+                      <span>
+                        (General is recommended, unless you know otherwise)
+                      </span>
+                    </Fragment>
+                  }
                   className={styles.namespaceInput}
                   name="namespace"
                   {...namespaceRule}
