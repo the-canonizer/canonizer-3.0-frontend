@@ -2,14 +2,21 @@ import React, { useState } from "react";
 import messages from "../../../../messages";
 import styles from "../UserProfileUI/UserProfile.module.scss";
 import Link from "next/link";
-import { Card, Tag, Select } from "antd";
-import { topicNameRule } from "src/messages/validationRules";
+import { Card, Tag, Select, Spin } from "antd";
 export const UserProfileCard = ({
   userSupportedCampsList,
   setUserSupportedCampsList,
   nameSpaceList,
+  dropdownNameSpaceList,
+  setDropdownNameSpaceList,
+  noData,
 }) => {
-  const [dropdownNameSpaceList, setDropdownNameSpaceList] = useState([]);
+  const renderFilter = () => {
+    const filteredVal = nameSpaceList.filter(
+      (obj) => obj.id == dropdownNameSpaceList
+    );
+    return filteredVal[0];
+  };
   return (
     <div className="user--cards-outer">
       <div className={styles.card_spacing}>
@@ -33,13 +40,14 @@ export const UserProfileCard = ({
                   <span className={styles.main_card_Heading}>
                     {messages.labels.listOfSupportedCamps}
                   </span>
+
                   <Select
                     size="large"
                     className={styles.dropdown}
-                    defaultValue={nameSpaceList[0]}
-                    onChange={(selectedNameSpaceList) =>
-                      setDropdownNameSpaceList(selectedNameSpaceList)
-                    }
+                    value={renderFilter()}
+                    onChange={(selectedNameSpaceList) => {
+                      setDropdownNameSpaceList(selectedNameSpaceList);
+                    }}
                   >
                     {nameSpaceList?.map((item) => {
                       return (
@@ -98,7 +106,7 @@ export const UserProfileCard = ({
                           </span>
                         );
                       })
-                  : "No Data Available !"}
+                  : noData && <div>No Data Available !</div>}
               </div>
             </Card>
           );
