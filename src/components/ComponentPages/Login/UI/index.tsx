@@ -149,7 +149,7 @@ const LoginUi = ({
                 </Button>
               </Form.Item>
 
-              <Form.Item style={{marginBottom:"15px"}}>
+              <Form.Item style={{ marginBottom: "15px" }}>
                 <SocialLoginButton />
               </Form.Item>
               <Form.Item noStyle>
