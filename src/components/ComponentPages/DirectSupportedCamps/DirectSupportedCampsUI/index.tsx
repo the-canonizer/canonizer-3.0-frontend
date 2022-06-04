@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, Modal, Button, Form } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
+import { DraggableArea } from "react-draggable-tags";
 import styles from "./DirectSupportedCamps.module.scss";
 import Link from "next/link";
 import messages from "../../../../messages";
-
 export default function DirectSupportedCampsUI({
   removeCardSupportedCamps,
   handleSupportedCampsCancel,
   isSupportedCampsModalVisible,
   directSupportedCampsList,
+  setDirectSupportedCampsList,
   search,
   removeSupport,
   handleClose,
@@ -24,8 +25,10 @@ export default function DirectSupportedCampsUI({
   handleCancel,
 }) {
   const [valData, setValData] = useState({});
-  let tagsArrayList = [],
-    DataArr = [];
+  const [tagsDataArrValue, setTagsDataArrValue] = useState([]);
+  const [tagsCampsOrderID, setTagsCampsOrderID] = useState("");
+  var tagsArrayList = [];
+  let DataArr = [];
 
   const CardTitle = (props) => {
     return (
@@ -42,6 +45,27 @@ export default function DirectSupportedCampsUI({
       </div>
     );
   };
+
+  const tagsOrder = (topic_num, data, tags) => {
+    setTagsCampsOrderID(data.topic_num);
+    setTagsDataArrValue(tags);
+    handleClose({}, topic_num, data, tags);
+    setValData({});
+  };
+
+  useEffect(() => {
+    if (tagsDataArrValue.length > 0) {
+      let newData = directSupportedCampsList.map((val) => {
+        if (val.topic_num == tagsCampsOrderID) {
+          return { ...val, camps: tagsDataArrValue };
+        } else {
+          return val;
+        }
+      });
+      setDirectSupportedCampsList(newData);
+    }
+  }, [tagsDataArrValue]);
+
   return (
     <div>
       {directSupportedCampsList
@@ -57,6 +81,9 @@ export default function DirectSupportedCampsUI({
         ?.map((data, id) => {
           DataArr = data;
           tagsArrayList = data.camps;
+          tagsArrayList.forEach((obj) => {
+            obj.id = obj.camp_num;
+          });
           return (
             <Card
               key={id}
@@ -76,34 +103,38 @@ export default function DirectSupportedCampsUI({
               }
               style={{ width: 760, marginBottom: 16 }}
             >
-              {(revertBack.lenght > 0 ? revertBack : tagsArrayList)?.map(
-                (val) => {
-                  return (
+              <DraggableArea
+                tags={tagsArrayList}
+                render={({ tag, index }) => (
+                  <div className={styles.tag}>
                     <Button
-                      key={val.camp_num}
+                      key={tag.camp_num}
                       className={styles.tag_btn}
-                      disabled={val.dis}
+                      disabled={tag.dis}
                     >
                       <div>
                         {" "}
                         <span className={styles.count}>
-                          {val.support_order}.{" "}
+                          {tag.support_order}.{" "}
                         </span>
-                        <Link href={val.camp_link}>
-                          <a className={styles.Bluecolor}> {val.camp_name}</a>
+                        <Link href={tag.camp_link}>
+                          <a className={styles.Bluecolor}> {tag.camp_name}</a>
                         </Link>
                       </div>
                       <CloseCircleOutlined
                         onClick={(e) => {
-                          handleClose(val, data.topic_num, data),
-                            setValData(val),
+                          handleClose(tag, data.topic_num, data, []),
+                            setValData(tag),
                             setRevertBack([]);
                         }}
                       />
                     </Button>
-                  );
-                }
-              )}
+                  </div>
+                )}
+                onChange={(tags) => {
+                  tagsOrder(data.topic_num, data, tags);
+                }}
+              />
 
               {showSaveChanges && idData == data.topic_num ? (
                 <div className={styles.tag_Changes}>
@@ -128,6 +159,7 @@ export default function DirectSupportedCampsUI({
             </Card>
           );
         })}
+
       <Modal
         className={styles.modal_cross}
         title="Remove Support"
