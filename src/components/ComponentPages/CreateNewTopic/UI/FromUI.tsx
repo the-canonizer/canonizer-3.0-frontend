@@ -72,15 +72,31 @@ const CreateTopicFromUI = ({
               ) : null}
 
               <Form.Item
-                label={labels.cr_topic_name}
+                label={
+                  <Fragment>
+                    {labels.cr_topic_name}
+                    <span>(Limit 30 Chars)</span>
+                  </Fragment>
+                }
                 name="topic_name"
                 {...topicNameRule}
               >
-                <Input placeholder={placeholders.topicName} size={"large"} />
+                <Input
+                  placeholder={placeholders.topicName}
+                  size={"large"}
+                  maxLength={30}
+                />
               </Form.Item>
               {nameSpaces ? (
                 <Form.Item
-                  label={labels.cr_namespace}
+                  label={
+                    <Fragment>
+                      {labels.cr_namespace}
+                      <span>
+                        (General is recommended, unless you know otherwise)
+                      </span>
+                    </Fragment>
+                  }
                   className={styles.namespaceInput}
                   name="namespace"
                   {...namespaceRule}
@@ -102,7 +118,12 @@ const CreateTopicFromUI = ({
             </Col>
             <Col xs={24} sm={12}>
               <Form.Item
-                label={labels.cr_edit_summary}
+                label={
+                  <Fragment>
+                    {labels.cr_edit_summary}
+                    <span>(Briefly describe your changes)</span>
+                  </Fragment>
+                }
                 name="edit_summary"
                 {...summaryRule}
               >
