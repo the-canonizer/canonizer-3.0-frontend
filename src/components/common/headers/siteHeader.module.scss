@@ -186,6 +186,18 @@
         color: #fff;
         font-size: 1.5rem;
       }
+      @media screen and (min-width: 767px) {
+        .mob_noti {
+          display: none;
+        }
+      }
+      @media screen and (max-width: 767px) {
+        display: flex;
+        align-items: center;
+        .mob_noti {
+          margin-right: 25px;
+        }
+      }
       @media screen and (min-width: 1200px) {
         display: none;
       }

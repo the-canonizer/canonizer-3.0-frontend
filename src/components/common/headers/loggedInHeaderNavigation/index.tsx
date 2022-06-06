@@ -169,6 +169,9 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
               </div>
             ) : null}
             <div className={styles.iconMobMenu}>
+              <div className={styles.mob_noti}>
+                <Notifications />
+              </div>
               <Button size="middle" onClick={toggleMobNav}>
                 <MenuOutlined />
               </Button>
