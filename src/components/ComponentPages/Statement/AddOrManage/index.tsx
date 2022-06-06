@@ -16,7 +16,7 @@ import CampInfoBar from "../../TopicDetails/CampInfoBar";
 export default function AddOrManage({ add }) {
   const isLogin = useAuthentication();
   const router = useRouter();
-  const [editStatementData, setEditStatementData] = useState({});
+  const [editStatementData, setEditStatementData] = useState({ data: null });
 
   const [modalVisible, setModalVisible] = useState(false);
   const [nickNameData, setNickNameData] = useState([]);
