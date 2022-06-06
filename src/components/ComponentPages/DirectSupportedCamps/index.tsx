@@ -4,7 +4,7 @@ import {
   removeSupportedCampsEntireTopic,
   removeOrUpdateDirectSupportCamps,
 } from "../../../network/api/userApi";
-import {  message } from "antd";
+import { message } from "antd";
 import DirectSupportedCampsUI from "./DirectSupportedCampsUI";
 
 const DirectSupportedCamps = ({ search }) => {
@@ -135,7 +135,7 @@ const DirectSupportedCamps = ({ search }) => {
       type: "direct",
       action: "all",
       nick_name_id: nickNameId,
-      order_update: []
+      order_update: [],
     };
     let res = await removeOrUpdateDirectSupportCamps(removeEntireData);
     if (res && res.status_code == 200) {

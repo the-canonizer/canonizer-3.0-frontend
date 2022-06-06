@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import moment from "moment";
 import { Form, message } from "antd";
+import isAuth from "../../../hooks/isUserAuthenticated";
+
 import {
   GetUserProfileInfo,
   UpdateUserProfileInfo,
@@ -99,6 +101,7 @@ const ProfileInfo = () => {
       setDisableButton(false);
     }
   };
+  const isLogIn = isAuth();
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
@@ -263,17 +266,19 @@ const ProfileInfo = () => {
         }
       }
     }
-    fetchMobileCarrier()
-      .then(function () {
-        return fetchAlgorithmsList();
-      })
-      .then(function () {
-        return fetchLanguageList();
-      })
-      .then(function () {
-        return fetchUserProfileInfo();
-      });
-  }, []);
+    if (isLogIn) {
+      fetchMobileCarrier()
+        .then(function () {
+          return fetchAlgorithmsList();
+        })
+        .then(function () {
+          return fetchLanguageList();
+        })
+        .then(function () {
+          return fetchUserProfileInfo();
+        });
+    }
+  }, [isLogIn]);
 
   return (
     <ProfileInfoUI
