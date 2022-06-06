@@ -3,7 +3,7 @@ import { Dropdown, Badge, Card, Typography, List } from "antd";
 import Link from "next/link";
 
 import styles from "../siteHeader.module.scss";
-import { BellOutlined } from "@ant-design/icons";
+import { BellOutlined, BellFilled } from "@ant-design/icons";
 
 const Notifications = ({}) => {
   const data = [
@@ -44,16 +44,17 @@ const Notifications = ({}) => {
     >
       <List
         itemLayout="horizontal"
-        dataSource={data} className={styles.list}
+        dataSource={data}
+        className={styles.list}
         renderItem={(item) => (
           <List.Item>
             <List.Item.Meta
               avatar={
                 <div className={styles.avatarBell}>
-                  <BellOutlined />
+                  <BellFilled />
                 </div>
               }
-              title={<a href="https://ant.design">{item.title}</a>}
+              title={<Link href="#">{item.title}</Link>}
               description={item.time}
             />
           </List.Item>
@@ -70,7 +71,12 @@ const Notifications = ({}) => {
         placement="bottomRight"
         arrow
       >
-        <Badge count={5} color="orange" size="small">
+        <Badge
+          count={5}
+          color="orange"
+          size="small"
+          className={styles.badgeCls}
+        >
           <BellOutlined className={styles.bellIcon} />
         </Badge>
       </Dropdown>
