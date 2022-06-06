@@ -131,6 +131,10 @@ const CampInfoBar = ({ payload, isStatementBar }) => {
       </Menu.Item>
     </Menu>
   );
+
+  console.log("topic record", topicRecord);
+  console.log("camp record", campRecord);
+
   return (
     <>
       <div className={styles.topicDetailContentHead}>
@@ -152,7 +156,7 @@ const CampInfoBar = ({ payload, isStatementBar }) => {
               ? campRecord.parentCamps?.map((camp, index) => {
                   return (
                     <Link
-                      href={`${router.query.camp.at(0)}/${
+                      href={`${router.query?.camp?.at(0)}/${
                         camp?.camp_num
                       }-${camp?.camp_name?.split(" ").join("-")}`}
                       key={camp?.camp_num}

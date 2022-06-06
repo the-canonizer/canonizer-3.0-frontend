@@ -110,6 +110,9 @@ const NetworkConstants = {
     AddNewsFeed: `${BaseCanonizerApiUrl}/store-camp-newsfeed`,
     DeleteNewsFeed: `${BaseCanonizerApiUrl}/delete-camp-newsfeed`,
 
+    //manage statement
+    GetEditStatement: `${BaseCanonizerApiUrl}/edit-camp-statement`,
+    UpdateStatement: `${BaseCanonizerApiUrl}/store-camp-statement`,
     // subscriptions
     GetSubscriptions: `${BaseCanonizerApiUrl}/camp/subscription/list`,
 

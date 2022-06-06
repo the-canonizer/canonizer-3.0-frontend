@@ -7,6 +7,12 @@ const { Panel } = Collapse;
 const { Title } = Typography;
 export default function HistoryCollapse({ campStatement }) {
   const router = useRouter();
+  console.log(
+    "data => ",
+    campStatement?.id,
+    router?.query?.camp[0],
+    router?.query?.camp[1]
+  );
 
   return (
     <div>
@@ -68,7 +74,9 @@ export default function HistoryCollapse({ campStatement }) {
               </div>
               <div className={styles.campStatementCollapseButtons}>
                 <Button type="primary" className={styles.campUpdateButton}>
-                  Submit Statement Update Based on This
+                  <Link href={`/manage/statement/${campStatement?.id}`}>
+                    Submit Statement Update Based on This
+                  </Link>
                 </Button>
                 <Button type="primary" className={styles.campVersionButton}>
                   <Link

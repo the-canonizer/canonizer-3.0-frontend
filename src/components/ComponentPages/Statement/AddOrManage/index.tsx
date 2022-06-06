@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Form, Button, Row, Col, Card, Spin, Input, Select } from "antd";
+import { Form, Button, Row, Col, Card, Modal, Spin, Input, Select } from "antd";
 import { useRouter } from "next/router";
 import "antd/dist/antd.css";
 import styles from "../addEditNews.module.scss";
+import K from "src/constants";
+
 import { getAllUsedNickNames } from "../../../../network/api/campDetailApi";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
+import { getEditStatementApi } from "../../../../network/api/campManageStatementApi";
+import { updateStatementApi } from "../../../../network/api/campManageStatementApi";
 
 import SideBarNoFilter from "../../../ComponentPages/Home/SideBarNoFilter";
 import CampInfoBar from "../../TopicDetails/CampInfoBar";
@@ -12,23 +16,86 @@ import CampInfoBar from "../../TopicDetails/CampInfoBar";
 export default function AddOrManage({ add }) {
   const isLogin = useAuthentication();
   const router = useRouter();
+  const [editStatementData, setEditStatementData] = useState({});
+
+  const [modalVisible, setModalVisible] = useState(false);
   const [nickNameData, setNickNameData] = useState([]);
   const [screenLoading, setScreenLoading] = useState(false);
   const [form] = Form.useForm();
-  const onFinish = (values: any) => {
-    console.log("values =>", values);
+
+  const onFinish = async (values: any) => {
+    setScreenLoading(true);
+    let res_for_add;
+    if (add) {
+      res_for_add = await getEditStatementApi(values?.nick_name);
+    }
+    let res = await updateStatementApi({
+      topic_num: add
+        ? router?.query?.statement[0]?.split("-")[0]
+        : editStatementData?.data?.parent_camp[
+            editStatementData?.data?.parent_camp?.length - 1
+          ]?.topic_num,
+      camp_num: add
+        ? router?.query?.statement[1]?.split("-")[0]
+        : editStatementData?.data?.parent_camp[
+            editStatementData?.data?.parent_camp?.length - 1
+          ]?.camp_num,
+      nick_name: values?.nick_name,
+      note: values?.edit_summary,
+      parent_camp_num: add
+        ? res_for_add?.data?.parentcampnum
+        : editStatementData?.data?.parentcampnum,
+      submitter: add
+        ? res_for_add?.data?.statement?.submitter_nick_id
+        : editStatementData?.data?.statement?.submitter_nick_id,
+      statement: values?.statement,
+    });
+    if (add) {
+      router.push(
+        router.asPath.replace("create/statement", "statement/history")
+      );
+    } else {
+      let route = `${
+        editStatementData?.data?.topic?.topic_num
+      }-${editStatementData?.data?.topic?.topic_name?.split(" ").join("-")}/${
+        editStatementData?.data?.parent_camp[
+          editStatementData?.data?.parent_camp?.length - 1
+        ]?.camp_num
+      }-${editStatementData?.data?.parent_camp[
+        editStatementData?.data?.parent_camp?.length - 1
+      ]?.camp_name
+        ?.split(" ")
+        .join("-")}`;
+      router.push(`/statement/history/${route}`);
+    }
+    setScreenLoading(false);
   };
 
   useEffect(() => {
     setScreenLoading(true);
     async function nickNameListApiCall() {
+      let res;
+      if (!add) {
+        res = await getEditStatementApi(router?.query?.statement[1]);
+        setEditStatementData(res);
+      }
+
       const reqBody = {
-        topic_num: 30,
+        topic_num: add
+          ? router?.query?.statement[0]?.split("-")[0]
+          : res?.data?.topic?.topic_num,
       };
       const result = await getAllUsedNickNames(reqBody);
-      form.setFieldsValue({
-        nick_name: result?.data[0]?.id,
-      });
+      if (add) {
+        form.setFieldsValue({
+          nick_name: result?.data[0].id,
+        });
+      } else {
+        form.setFieldsValue({
+          nick_name: res?.data?.nick_name[0]?.id,
+          statement: res?.data?.statement?.value,
+        });
+      }
       setNickNameData(result?.data);
       setScreenLoading(false);
     }
@@ -71,7 +138,8 @@ export default function AddOrManage({ add }) {
                       rules={[
                         {
                           required: true,
-                          message: "Please select Nick name",
+                          message:
+                            K?.exceptionalMessages?.selectNickNameErrorMsg,
                         },
                       ]}
                     >
@@ -86,80 +154,25 @@ export default function AddOrManage({ add }) {
                     </Form.Item>
                   </Col>
                   <Col xs={24} xl={24}>
-                    {add ? (
-                      <Row gutter={24}>
-                        <Col xs={24} xl={12}>
-                          <Form.Item
-                            className={`${styles.formItem} mb-3`}
-                            label={
-                              <>
-                                Topic Name <small>(Limit 30 chars)</small>
-                              </>
-                            }
-                            name="topic_name"
-                            rules={[
-                              {
-                                required: true,
-                                message: "Topic name is required.",
-                              },
-                            ]}
-                          >
-                            <Input size="large" maxLength={30} />
-                          </Form.Item>
-                        </Col>
-                        <Col xs={24} xl={12}>
-                          <Form.Item
-                            className={styles.formItem}
-                            label={
-                              <>
-                                Namespace{" "}
-                                <small>
-                                  (General is recommended, unless you know
-                                  otherwise)
-                                </small>
-                              </>
-                            }
-                            name="name_space"
-                            rules={[
-                              {
-                                required: true,
-                                message: "Please select Namespace",
-                              },
-                            ]}
-                          >
-                            <Select defaultValue="/General/" size="large">
-                              <Select.Option value="general">
-                                /General/
-                              </Select.Option>
-                              <Select.Option value="sandbox">
-                                /Sandbox/
-                              </Select.Option>
-                              <Select.Option value="family">
-                                /Family/
-                              </Select.Option>
-                            </Select>
-                          </Form.Item>
-                        </Col>
-                      </Row>
-                    ) : (
-                      <Row gutter={24}>
-                        <Col xs={24} xl={12}>
-                          <Form.Item
-                            className={styles.formItem}
-                            name="statement"
-                            label={<>Statement </>}
-                            rules={[
-                              {
-                                required: true,
-                                message: "Statement is required",
-                              },
-                            ]}
-                          >
-                            <Input.TextArea size="large" rows={7} />
-                          </Form.Item>
-                        </Col>
-                      </Row>
-                    )}
+                    <Row gutter={24}>
+                      <Col xs={24} xl={12}>
+                        <Form.Item
+                          className={styles.formItem}
+                          name="statement"
+                          label={<>Statement </>}
+                          rules={[
+                            {
+                              required: true,
+                              message:
+                                K?.exceptionalMessages
+                                  ?.statementRequiredErrorMsg,
+                            },
+                          ]}
+                        >
+                          <Input.TextArea size="large" rows={7} />
+                        </Form.Item>
+                      </Col>
+                    </Row>
 
                     <Row gutter={24}>
                       <Col xs={24} xl={12}>
@@ -172,12 +185,6 @@ export default function AddOrManage({ add }) {
                               <small>(Briefly describe your changes)</small>
                             </>
                           }
-                          rules={[
-                            {
-                              required: true,
-                              message: "Edit summary is required",
-                            },
-                          ]}
                         >
                           <Input.TextArea size="large" rows={7} />
                         </Form.Item>
@@ -191,18 +198,20 @@ export default function AddOrManage({ add }) {
                         className={`btn-orange ${styles.btnSubmit}`}
                         htmlType="submit"
                       >
-                        {add ? "Submit Statement" : "Submit Update"}
+                        {add
+                          ? K?.exceptionalMessages?.submitStatementButton
+                          : K?.exceptionalMessages?.submitUpdateButton}
                       </Button>
-                      {add && (
-                        <Button
-                          htmlType="button"
-                          className="cancel-btn"
-                          type="ghost"
-                          size="large"
-                        >
-                          Preview
-                        </Button>
-                      )}
+
+                      <Button
+                        htmlType="button"
+                        className="cancel-btn"
+                        type="ghost"
+                        size="large"
+                        onClick={() => setModalVisible(true)}
+                      >
+                        Preview
+                      </Button>
                     </Form.Item>
                   </Col>
                 </Row>
@@ -211,6 +220,31 @@ export default function AddOrManage({ add }) {
           </Spin>
         </div>
       </div>
+      <Modal
+        title="Statement preview"
+        style={{
+          top: 20,
+        }}
+        visible={modalVisible}
+        onCancel={() => setModalVisible(false)}
+        onOk={form?.submit}
+        okText={
+          add
+            ? K?.exceptionalMessages?.submitStatementButton
+            : K?.exceptionalMessages?.submitUpdateButton
+        }
+      >
+        <p>{form?.getFieldValue("statement")}</p>
+        <p>Edit Summary: {form?.getFieldValue("edit_summary")} </p>
+        <p>
+          Submitter Nick Name:{" "}
+          {
+            nickNameData?.find(
+              (id) => id.id == form?.getFieldValue("nick_name")
+            )?.nick_name
+          }
+        </p>
+      </Modal>
     </>
   );
 }
