@@ -1490,3 +1490,42 @@ div[role="option"]::before {
   transform: scale(1.2);
   top: 0px;
 }
+
+.tag {
+  margin: 3px 10px 3px 0;
+  font-size: 13px;
+  //border: 1px dashed #cccccc;
+  border-radius: 4px;
+  padding: 0 2px;
+  line-height: 30px;
+  color: #666666;
+  background: rgba(255, 255, 255, 0.7);
+
+  border: 1px solid #f0f0f0 !important;
+  background: transparent;
+  color: #4484ce;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 4px 12px;
+  margin-bottom: 6px;
+  display: inline-flex;
+  border-radius: 0;
+  align-items: center;
+  box-shadow: 3px 3px 0px #3f4f5b14;
+  @media screen and (max-width: 767px) {
+    font-size: 13px;
+  }
+  .count {
+    color: #000 !important;
+    font-weight: 600;
+  }
+  span {
+    color: #d1d4db;
+    margin-left: 5px;
+    font-size: 16px;
+  }
+}
+.tags_disable {
+  background: #f5f5f5;
+  cursor: not-allowed;
+}

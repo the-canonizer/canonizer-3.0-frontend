@@ -106,17 +106,15 @@ export default function DirectSupportedCampsUI({
               <DraggableArea
                 tags={tagsArrayList}
                 render={({ tag, index }) => (
-                  <div className={styles.tag}>
+                  <div className={tag.dis ? "tag tags_disable" : "tag"}>
                     <Button
                       key={tag.camp_num}
                       className={styles.tag_btn}
                       disabled={tag.dis}
                     >
-                      <div>
+                      <div className={styles.btndiv}>
                         {" "}
-                        <span className={styles.count}>
-                          {tag.support_order}.{" "}
-                        </span>
+                        <span className="count">{tag.support_order}. </span>
                         <Link href={tag.camp_link}>
                           <a className={styles.Bluecolor}> {tag.camp_name}</a>
                         </Link>

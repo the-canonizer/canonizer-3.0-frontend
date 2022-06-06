@@ -15,37 +15,55 @@
     }
   }
 }
-
-.tag_btn {
-  border: 1px solid #f0f0f0 !important;
-  background: transparent;
-  color: #4484ce;
-  font-weight: 600;
-  font-size: 14px;
-  padding: 4px 12px;
-  margin-bottom: 6px;
-  display: inline-flex;
-  border-radius: 0;
+.tag_btn  
+{
+  border:none !important;
+  padding: 0px !important;
+  height: auto !important;
+  box-shadow: none !important;
   align-items: center;
-  box-shadow: 3px 3px 0px #3f4f5b14;
-  @media screen and (max-width: 767px) {
-    font-size: 13px;
-  }
-  .count {
-    color: #000 !important;
-  }
-  span {
-    color: #d1d4db;
-    margin-left: 5px;
-    font-size: 14px;
-  }
+  display: inline-flex;
+  line-height: inherit !important;
+
 }
+.btndiv
+{
+  font-size: 16px;
+  display: inline-block;
+  line-height: 20px;
+}
+
+// .tag_btn {
+//   border: 1px solid #f0f0f0 !important;
+//   background: transparent;
+//   color: #4484ce;
+//   font-weight: 600;
+//   font-size: 14px;
+//   padding: 4px 12px;
+//   margin-bottom: 6px;
+//   display: inline-flex;
+//   border-radius: 0;
+//   align-items: center;
+//   box-shadow: 3px 3px 0px #3f4f5b14;
+//   @media screen and (max-width: 767px) {
+//     font-size: 13px;
+//   }
+//   .count {
+//     color: #000 !important;
+//   }
+//   span {
+//     color: #d1d4db;
+//     margin-left: 5px;
+//     font-size: 14px;
+//   }
+// // }
 .ant-tag-hidden,
 .ant-tag-hidden {
   display: none !important;
 }
 .Bluecolor {
   color: #1890ff !important;
+  font-weight: 600;
 }
 .card_heading_title {
   font-size: 16px;
@@ -78,7 +96,7 @@
   border-color: rgb(249, 157, 22);
   color: white;
   border-radius: 2px;
-  width: 130px;
+  width: 150px;
   height: 38px;
   font-size: 16px;
 }
@@ -94,8 +112,9 @@
   color: rgba(53, 47, 47, 0.5);
   height: 38px;
   border-radius: 2px;
-  width: 80px;
+  width: 130px;
   font-weight: 600;
+  font-size: 16px;
 }
 // .revert_Btn:hover {
 //   //background: #4484ce;
@@ -109,7 +128,7 @@
   padding: 5px;
 }
 .tag {
-  margin: 3px;
+  margin: 3px 10px 3px 0;
   font-size: 13px;
   //border: 1px dashed #cccccc;
   border-radius: 4px;
@@ -117,4 +136,31 @@
   line-height: 30px;
   color: #666666;
   background: rgba(255, 255, 255, 0.7);
+
+  border: 1px solid #f0f0f0 !important;
+  background: transparent;
+  color: #4484ce;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 4px 12px;
+  margin-bottom: 6px;
+  display: inline-flex;
+  border-radius: 0;
+  align-items: center;
+  box-shadow: 3px 3px 0px #3f4f5b14;
+  @media screen and (max-width: 767px) {
+    font-size: 13px;
+  }
+  .count {
+    color: #000 !important;
+  }
+  span {
+    color: #d1d4db;
+    margin-left: 5px;
+    font-size: 16px;
+  }
+}
+.btndiv + span 
+{
+  margin-left: 15px;
 }
