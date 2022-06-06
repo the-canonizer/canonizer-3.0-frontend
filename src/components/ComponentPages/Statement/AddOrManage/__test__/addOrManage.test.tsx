@@ -53,5 +53,24 @@ describe("Should render Addnews", () => {
         </RouterContext.Provider>
       </Provider>
     );
+    const submitButton = screen.getByRole("button", {
+      name: /submit update/i,
+    });
+    const previewButton = screen.getByRole("button", {
+      name: /preview/i,
+    });
+
+    expect(container.getElementsByTagName("button")).toHaveLength(3);
+    expect(container.getElementsByTagName("textarea")).toHaveLength(2);
+
+    expect(screen.getByText("Nick Name")).toBeInTheDocument();
+    expect(screen.getByText("Edit Summary")).toBeInTheDocument();
+    expect(
+      screen.getByText("(Briefly describe your changes)")
+    ).toBeInTheDocument();
+
+    expect(submitButton.textContent).toBe("Submit Update");
+    expect(previewButton.textContent).toBe("Preview");
+    expect(screen.getByText(/topic update/i)).toBeInTheDocument();
   });
 });
