@@ -4,12 +4,10 @@ import { useRouter } from "next/router";
 import "antd/dist/antd.css";
 import styles from "../addEditNews.module.scss";
 import K from "../../../../constants";
-
 import { getAllUsedNickNames } from "../../../../network/api/campDetailApi";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
 import { getEditStatementApi } from "../../../../network/api/campManageStatementApi";
 import { updateStatementApi } from "../../../../network/api/campManageStatementApi";
-
 import SideBarNoFilter from "../../../ComponentPages/Home/SideBarNoFilter";
 import CampInfoBar from "../../TopicDetails/CampInfoBar";
 
@@ -27,27 +25,26 @@ export default function AddOrManage({ add }) {
     setScreenLoading(true);
     let res_for_add;
     if (add) {
-      res_for_add = await getEditStatementApi(values?.nick_name);
+      let res = await getEditStatementApi(values?.nick_name);
+      res_for_add = res?.data;
     }
+    let editInfo = editStatementData?.data;
+    let parent_camp = editInfo?.parent_camp;
     let res = await updateStatementApi({
       topic_num: add
         ? router?.query?.statement[0]?.split("-")[0]
-        : editStatementData?.data?.parent_camp[
-            editStatementData?.data?.parent_camp?.length - 1
-          ]?.topic_num,
+        : parent_camp[parent_camp?.length - 1]?.topic_num,
       camp_num: add
         ? router?.query?.statement[1]?.split("-")[0]
-        : editStatementData?.data?.parent_camp[
-            editStatementData?.data?.parent_camp?.length - 1
-          ]?.camp_num,
+        : parent_camp[parent_camp?.length - 1]?.camp_num,
       nick_name: values?.nick_name,
       note: values?.edit_summary,
       parent_camp_num: add
-        ? res_for_add?.data?.parentcampnum
-        : editStatementData?.data?.parentcampnum,
+        ? res_for_add?.parentcampnum
+        : editInfo?.parentcampnum,
       submitter: add
-        ? res_for_add?.data?.statement?.submitter_nick_id
-        : editStatementData?.data?.statement?.submitter_nick_id,
+        ? res_for_add?.statement?.submitter_nick_id
+        : editInfo?.statement?.submitter_nick_id,
       statement: values?.statement,
     });
     if (add) {
@@ -55,15 +52,11 @@ export default function AddOrManage({ add }) {
         router.asPath.replace("create/statement", "statement/history")
       );
     } else {
-      let route = `${
-        editStatementData?.data?.topic?.topic_num
-      }-${editStatementData?.data?.topic?.topic_name?.split(" ").join("-")}/${
-        editStatementData?.data?.parent_camp[
-          editStatementData?.data?.parent_camp?.length - 1
-        ]?.camp_num
-      }-${editStatementData?.data?.parent_camp[
-        editStatementData?.data?.parent_camp?.length - 1
-      ]?.camp_name
+      let route = `${editInfo?.topic?.topic_num}-${editInfo?.topic?.topic_name
+        ?.split(" ")
+        .join("-")}/${
+        parent_camp[parent_camp?.length - 1]?.camp_num
+      }-${parent_camp[parent_camp?.length - 1]?.camp_name
         ?.split(" ")
         .join("-")}`;
       router.push(`/statement/history/${route}`);
@@ -79,23 +72,26 @@ export default function AddOrManage({ add }) {
         res = await getEditStatementApi(router?.query?.statement[1]);
         setEditStatementData(res);
       }
-
       const reqBody = {
         topic_num: add
           ? router?.query?.statement[0]?.split("-")[0]
           : res?.data?.topic?.topic_num,
       };
+
       const result = await getAllUsedNickNames(reqBody);
-      if (add) {
-        form.setFieldsValue({
-          nick_name: result?.data[0].id,
-        });
-      } else {
-        form.setFieldsValue({
-          nick_name: res?.data?.nick_name[0]?.id,
-          statement: res?.data?.statement?.value,
-        });
-      }
+      form.setFieldsValue(
+        add
+          ? {
+              nick_name: result?.data[0].id,
+            }
+          : {
+              nick_name: res?.data?.nick_name[0]?.id,
+              statement: res?.data?.statement?.parsed_value?.replace(
+                /<[^>]+>/g,
+                ""
+              ),
+            }
+      );
       setNickNameData(result?.data);
       setScreenLoading(false);
     }
