@@ -73,7 +73,7 @@ const TopicsList = () => {
   const [getTopicsLoadingIndicator, setGetTopicsLoadingIndicator] =
     useState(false);
   const [selectedNameSpace, setSelectedNameSpace] = useState(filterNameSpace);
-  let onlyMyTopicsCheck = false;
+  let onlyMyTopicsCheck = useRef();
 
   const selectNameSpace = (id, nameSpace) => {
     setNameSpaceId(id);
@@ -118,7 +118,7 @@ const TopicsList = () => {
     nameSpaceId,
     filterByScore,
     inputSearch,
-    onlyMyTopicsCheck,
+    onlyMyTopicsCheck.current,
   ]);
 
   async function getTopicsApiCallWithReqBody(loadMore = false) {
@@ -133,7 +133,7 @@ const TopicsList = () => {
       search: inputSearch,
       filter: filterByScore,
       asof: asof,
-      user_email: onlyMyTopicsCheck ? userEmail : "",
+      user_email: onlyMyTopicsCheck.current ? userEmail : "",
     };
     await getCanonizedTopicsApi(reqBody, loadMore);
     setLoadMoreIndicator(false);
@@ -176,7 +176,7 @@ const TopicsList = () => {
 
   const handleCheckbox = async (e) => {
     setGetTopicsLoadingIndicator(true);
-    onlyMyTopicsCheck = e.target.checked;
+    onlyMyTopicsCheck.current = e.target.checked;
 
     await getTopicsApiCallWithReqBody();
     setGetTopicsLoadingIndicator(false);
