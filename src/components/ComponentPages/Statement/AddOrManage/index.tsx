@@ -3,7 +3,7 @@ import { Form, Button, Row, Col, Card, Modal, Spin, Input, Select } from "antd";
 import { useRouter } from "next/router";
 import "antd/dist/antd.css";
 import styles from "../addEditNews.module.scss";
-import K from "src/constants";
+import K from "../../../../constants";
 
 import { getAllUsedNickNames } from "../../../../network/api/campDetailApi";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";

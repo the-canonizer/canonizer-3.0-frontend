@@ -2,7 +2,7 @@ import { Tooltip, Typography } from "antd";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { subscribeToCampApi } from "src/network/api/campDetailApi";
+import { subscribeToCampApi } from "../../../../network/api/campDetailApi";
 import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
 import { Dropdown, Menu, Button } from "antd";

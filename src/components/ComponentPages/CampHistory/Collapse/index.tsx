@@ -7,12 +7,6 @@ const { Panel } = Collapse;
 const { Title } = Typography;
 export default function HistoryCollapse({ campStatement }) {
   const router = useRouter();
-  console.log(
-    "data => ",
-    campStatement?.id,
-    router?.query?.camp[0],
-    router?.query?.camp[1]
-  );
 
   return (
     <div>

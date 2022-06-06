@@ -1,4 +1,3 @@
-import Add from "../../components/ComponentPages/News/AddOrEdit";
 import AddOrManage from "../../components/ComponentPages/Statement/AddOrManage";
 import Layout from "../../hoc/layout";
 
