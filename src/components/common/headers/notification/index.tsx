@@ -69,7 +69,6 @@ const Notifications = ({}) => {
         overlay={notificationDropdown}
         trigger={["click"]}
         placement="bottomRight"
-        arrow
       >
         <Badge
           count={5}
