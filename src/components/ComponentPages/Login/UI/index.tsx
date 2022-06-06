@@ -100,6 +100,9 @@ const LoginUi = ({
                 label={messages.labels.emailPhone}
                 rules={messages.usernameRule}
                 placeholder={messages.placeholders.emailPhone}
+                onKeyDown={(e) =>
+                  e.key === " " && e.keyCode === 32 && e.preventDefault()
+                }
               />
 
               <Form.Item
