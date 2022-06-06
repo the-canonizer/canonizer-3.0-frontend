@@ -37,7 +37,7 @@ function Footer() {
     },
     {
       link: "/uploadFile",
-      linkTitle: "Upload Files",
+      linkTitle: "Upload File",
       id: 5,
     },
     {

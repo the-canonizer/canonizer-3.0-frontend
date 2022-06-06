@@ -1184,14 +1184,16 @@ body {
       border-radius: 2px;
       border: 1px solid #dde1e5;
       font-weight: 600;
-      padding: 5px 10px;
+      padding: 0;
       display: flex;
       justify-content: center;
       align-items: center;
+      width: 20px;
+      height: 25px;
 
       a {
         color: #555c64;
-        font-size: 16px;
+        font-size: 14px;
         font-weight: 600;
       }
 
@@ -1489,4 +1491,13 @@ div[role="option"]::before {
   left: 5px;
   transform: scale(1.2);
   top: 0px;
+}
+
+.newsFeedsList{
+  list-style-type: square;
+  li{
+    &::marker{
+      color: var(--primary);
+    }
+  }
 }

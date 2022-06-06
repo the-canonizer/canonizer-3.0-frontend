@@ -203,3 +203,33 @@
     }
   }
 }
+
+.bellIcon {
+  // margin-right: 15px;
+  svg {
+    width: auto;
+    height: 25px;
+    fill: #fff;
+  }
+}
+
+.notificationCard {
+  width: 300px;
+  padding: 10px;
+  .notTitle {
+    text-transform: uppercase;
+    color: #828d9b;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .list {
+    .avatarBell {
+      width: 15px;
+      height: 15px;
+      background-color: #e6e9f1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}

@@ -8,6 +8,7 @@ import styles from "../siteHeader.module.scss";
 import React, { useEffect, useState } from "react";
 import Logo from "../logoHeader";
 import { MenuOutlined, CloseOutlined, DownOutlined } from "@ant-design/icons";
+import Notifications from "../notification";
 
 const { Header } = Layout;
 const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
@@ -31,7 +32,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
 
     {
       link: "/uploadFile",
-      linkTitle: "Upload Files",
+      linkTitle: "Upload File",
       id: 2,
     },
     {
@@ -138,10 +139,15 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
             {!isLoginPage ? (
               <div className={styles.btnsLoginRegister}>
                 <div className="hdrUserdropdown">
-                  <Space size="small">
-                    <i className="icon-user"></i>{" "}
-                    <Dropdown overlay={menu} trigger={["click"]}>
+                  <Space size={40}>
+                    <Notifications />
+                    <Dropdown
+                      overlay={menu}
+                      trigger={["click"]}
+                      placement="bottomLeft"
+                    >
                       <Space size="small">
+                        <i className="icon-user"></i>{" "}
                         <a
                           className="ant-dropdown-link"
                           onClick={(e) => e.preventDefault()}
