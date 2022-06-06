@@ -121,11 +121,16 @@ const CreateCampFormUI = ({
           <Row gutter={16}>
             <Col xs={24} sm={12}>
               <Form.Item
-                label={labels.cr_camp_name}
+                label={
+                  <Fragment>
+                    {labels.cr_camp_name}
+                    <span>(Limit 30 Chars)</span>
+                  </Fragment>
+                }
                 name="camp_name"
                 {...campNameRule}
               >
-                <Input size={"large"} placeholder="Camp name" />
+                <Input size={"large"} placeholder="Camp name" maxLength={30} />
               </Form.Item>
             </Col>
             <Col xs={24} sm={12}>
@@ -152,11 +157,20 @@ const CreateCampFormUI = ({
             </Col>
             <Col xs={24} sm={12}>
               <Form.Item
-                label={labels.cr_camp_url}
+                label={
+                  <Fragment>
+                    {labels.cr_camp_url}
+                    <span>(Limit 1024 Chars)</span>
+                  </Fragment>
+                }
                 name="camp_about_url"
                 {...campAboutUrlRule}
               >
-                <Input placeholder={placeholders.campURL} size={"large"} />
+                <Input
+                  placeholder={placeholders.campURL}
+                  size={"large"}
+                  maxLength={1024}
+                />
               </Form.Item>
             </Col>
 

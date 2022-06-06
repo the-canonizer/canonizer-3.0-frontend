@@ -1,4 +1,4 @@
-import React, { createRef, useEffect } from "react";
+import React, { createRef, useEffect, Fragment } from "react";
 import { useRouter } from "next/router";
 import { Row, Col, Typography, Form, Input, Button, Select } from "antd";
 import { CloseCircleOutlined, ArrowRightOutlined } from "@ant-design/icons";
@@ -91,35 +91,52 @@ function RegistrationUi({
             <Col md={12} style={{ width: "100%" }}>
               <FormItem
                 name="first_name"
-                label={messages.labels.firstName}
+                label={
+                  <Fragment>
+                    {messages.labels.firstName} <span>(Limit 100 Chars)</span>
+                  </Fragment>
+                }
                 rules={messages.firstNameRule}
                 placeholder={messages.placeholders.firstName}
                 onKeyDown={(e) =>
                   e.key === " " && e.keyCode === 32 && e.preventDefault()
                 }
+                maxLength={100}
               />
             </Col>
 
             <Col md={12} style={{ width: "100%" }}>
               <FormItem
                 name="last_name"
-                label={messages.labels.lastName}
+                label={
+                  <Fragment>
+                    {messages.labels.lastName}
+                    <span>(Limit 100 Chars)</span>
+                  </Fragment>
+                }
                 rules={messages.lastNameRule}
                 placeholder={messages.placeholders.lastName}
                 onKeyDown={(e) =>
                   e.key === " " && e.keyCode === 32 && e.preventDefault()
                 }
+                maxLength={100}
               />
             </Col>
             <Col md={12} style={{ width: "100%" }}>
               <FormItem
                 name="email"
-                label={messages.labels.email}
+                label={
+                  <Fragment>
+                    {messages.labels.email}
+                    <span>(Limit 255 Chars)</span>
+                  </Fragment>
+                }
                 rules={messages.emRule}
                 placeholder={messages.placeholders.email}
                 onKeyDown={(e) =>
                   e.key === " " && e.keyCode === 32 && e.preventDefault()
                 }
+                maxLength={255}
               />
             </Col>
             <Col md={12} style={{ width: "100%" }}>
@@ -207,14 +224,14 @@ function RegistrationUi({
           </Button>
         </Form.Item>
 
-        <Form.Item>
+        <Form.Item style={{ marginBottom: "15px" }}>
           <SocialLoginButton isNotLogin={true} />
         </Form.Item>
         <Form.Item noStyle>
           <Text className={styles.ft_link}>
             Already have an account?{" "}
             <a href="#" onClick={onLoginClick}>
-              Log in Here
+              Login Here
             </a>
           </Text>
         </Form.Item>
