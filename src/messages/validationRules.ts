@@ -160,6 +160,14 @@ export const emRule = {
       pattern: patterns.email,
       message: validations.validEmail,
     },
+    // ({}) => ({
+    //   validator(_, value) {
+    //     if (value && value?.trim().match(patterns.email)) {
+    //       return Promise.resolve();
+    //     }
+    //     return Promise.reject(new Error(validations.validEmail));
+    //   },
+    // }),
   ],
 };
 
@@ -203,10 +211,18 @@ export const usernameRule = {
       required: true,
       message: validations.username,
     },
-    {
-      pattern: patterns.emailPhone,
-      message: validations.usernameNotValid,
-    },
+    // {
+    //   pattern: patterns.emailPhone,
+    //   message: validations.usernameNotValid,
+    // },
+    ({}) => ({
+      validator(_, value) {
+        if (value && value?.trim().match(patterns.emailPhone)) {
+          return Promise.resolve();
+        }
+        return Promise.reject(new Error(validations.usernameNotValid));
+      },
+    }),
   ],
 };
 

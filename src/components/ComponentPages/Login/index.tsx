@@ -44,7 +44,12 @@ const Login = ({ isModal, isTest = false }) => {
 
   const onFinish = async (values: any) => {
     setFormData({ email: values.username });
-    let res = await login(values.username?.trim(), values.password?.trim());
+
+    // const username = values.username?.trim().split(" ").join("");
+    const username = values.username?.trim();
+    const pass = values.password?.trim();
+
+    let res = await login(username, pass);
 
     if (res && res.status_code === 402) {
       setErrorMsg(res.message);
