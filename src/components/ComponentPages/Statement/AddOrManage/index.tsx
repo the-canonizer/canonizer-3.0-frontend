@@ -47,6 +47,7 @@ export default function AddOrManage({ add }) {
         : editInfo?.statement?.submitter_nick_id,
       statement: values?.statement,
     });
+    console.log("res of update =>", res);
     if (add) {
       router.push(
         router.asPath.replace("create/statement", "statement/history")
@@ -67,6 +68,8 @@ export default function AddOrManage({ add }) {
   useEffect(() => {
     setScreenLoading(true);
     async function nickNameListApiCall() {
+      let a = await new Promise((r) => setTimeout(r, 4000));
+
       let res;
       if (!add) {
         res = await getEditStatementApi(router?.query?.statement[1]);
@@ -95,11 +98,7 @@ export default function AddOrManage({ add }) {
       setNickNameData(result?.data);
       setScreenLoading(false);
     }
-    if (isLogin) {
-      nickNameListApiCall();
-    } else {
-      router.push("/login");
-    }
+    isLogin ? nickNameListApiCall() : router.push("/login");
   }, []);
 
   return (
