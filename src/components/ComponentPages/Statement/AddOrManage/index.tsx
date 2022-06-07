@@ -95,11 +95,7 @@ export default function AddOrManage({ add }) {
       setNickNameData(result?.data);
       setScreenLoading(false);
     }
-    if (isLogin) {
-      nickNameListApiCall();
-    } else {
-      router.push("/login");
-    }
+    isLogin ? nickNameListApiCall() : router.push("/login");
   }, []);
 
   return (

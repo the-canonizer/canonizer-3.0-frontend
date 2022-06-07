@@ -1,7 +1,7 @@
 import { Tooltip, Typography } from "antd";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { subscribeToCampApi } from "../../../../network/api/campDetailApi";
 import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
@@ -19,7 +19,6 @@ const CampInfoBar = ({ payload, isStatementBar }) => {
   const isLogin = useAuthentication();
 
   const router = useRouter();
-  const dispatch = useDispatch();
   const { topicRecord, campRecord } = useSelector((state: RootState) => ({
     asof: state?.filters?.filterObject?.asof,
     topicRecord: state?.topicDetails?.currentTopicRecord,
@@ -131,9 +130,6 @@ const CampInfoBar = ({ payload, isStatementBar }) => {
       </Menu.Item>
     </Menu>
   );
-
-  console.log("topic record", topicRecord);
-  console.log("camp record", campRecord);
 
   return (
     <>
