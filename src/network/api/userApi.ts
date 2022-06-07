@@ -761,6 +761,18 @@ export const getUserSupportedCampList = async (params: string) => {
 export const verifyEmailOnSocial = async (body) => {
   try {
     const res = await NetworkCall.fetch(UserRequest.postVerifyEmail(body));
+
+    !isServer &&
+      window.localStorage.setItem("token", res.data.auth.access_token);
+
+    let payload = {
+      ...res.data.user,
+      token: res.data.auth.access_token,
+      refresh_token: res.data.auth.refresh_token,
+    };
+
+    store.dispatch(setLoggedInUser(payload));
+
     return res;
   } catch (err) {
     handleError(err);
