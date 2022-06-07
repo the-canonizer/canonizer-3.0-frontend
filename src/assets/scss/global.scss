@@ -319,15 +319,18 @@ body {
     .ant-tabs {
       .ant-tabs-tab-btn {
         font-size: 14px;
-        color: #0f2a4d;
+        color: #1c1b24;
       }
     }
     .ant-tabs-tab-active {
       .ant-tabs-tab-btn {
-        color: #2e68db;
+        color: var(--primary);
         font-weight: 600;
       }
     }
+  }
+  .ant-tabs-ink-bar {
+    background: var(--primary) !important;
   }
 }
 .main--layout {
