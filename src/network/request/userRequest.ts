@@ -535,4 +535,13 @@ export default class UserRequest extends Request {
       {}
     );
   }
+  static OTPSendVerifyEmail(body) {
+    return new Request(
+      K.Network.URL.OTPSendVerifyEmail,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
 }

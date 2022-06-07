@@ -44,6 +44,7 @@ function ForgotPasswordUI({ form, onFinish, isModal, closeModal, isScreen }) {
                   : "/images/forgot-password.png"
               }
               fallback={fallBackSrc}
+              width={200}
             />
           </div>
           {isScreen === 0 && (

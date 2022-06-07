@@ -1,11 +1,12 @@
 .createNewTopicForm {
   label {
     font-size: 13px;
-    font-weight: 500;
+    font-weight: 600;
     color: #795548;
-
     span {
-      font-weight: normal;
+      margin-left: 4px;
+      color: #6e7880;
+      font-size: 95%;
     }
 
     &::before {
@@ -21,7 +22,7 @@
       line-height: 20px;
     }
   }
-  span[class="ant-select-selection-placeholder"]{
+  span[class="ant-select-selection-placeholder"] {
     font-size: 14px;
     color: #afb6bb;
     line-height: 20px;
@@ -50,9 +51,20 @@
   }
   .namespaceInput {
     label {
+      span {
+        &:last-child {
+          margin-left: 15px;
+        }
+      }
       &::before {
-        // position: static;
-        // order: 1;
+        left: 70px;
+        right: auto;
+        // display: block;
+        // content: "(General is recommended, unless you know otherwise)";
+        // position: absolute;
+        // left: 121%;
+        // width: 100vw;
+        // pointer-events: none;
       }
     }
   }
@@ -69,11 +81,11 @@
   }
   .cancel_btn {
     background: #ffffff 0% 0% no-repeat padding-box;
-    border: 1px solid #4484ce;
+    border: 1px solid var(--primary);
     border-radius: 2px;
     opacity: 1;
     letter-spacing: 0px;
-    color: #4484ce;
+    color: var(--primary);
     font-size: 14px;
     font-weight: 600;
     opacity: 1;
@@ -81,7 +93,7 @@
     transition: all 0.3s;
 
     &:hover {
-      background: #4484ce;
+      background: var(--primary);
       color: #ffffff;
     }
   }
@@ -112,7 +124,7 @@
       strong {
         color: #0f2a4d;
       }
-      color: #4484ce;
+      color: var(--primary);
     }
   }
 

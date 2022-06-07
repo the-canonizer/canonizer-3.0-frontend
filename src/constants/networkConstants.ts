@@ -118,6 +118,7 @@ const NetworkConstants = {
 
     // email confirmation verify
     PostVerifyEmail: `${BaseCanonizerApiUrl}/user/postVerifyEmail`,
+    OTPSendVerifyEmail: `${BaseCanonizerApiUrl}/user/reSendOtpVerifyEmail`,
   },
   Method: {
     GET: "GET",
