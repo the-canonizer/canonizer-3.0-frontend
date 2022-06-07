@@ -7,6 +7,7 @@ import EmailConfirmation from "./UI/email";
 import { hideSocialEmailPopup } from "../../../store/slices/uiSlice";
 import {
   resendOTPForRegistration,
+  SendOTPForVerify,
   verifyEmailOnSocial,
 } from "../../../network/api/userApi";
 import { AppDispatch } from "../../../store";
@@ -33,11 +34,18 @@ const EmailPopup = ({ isModal = false }) => {
 
   const onSubmit = async (values: any) => {
     setFormData(values);
+
+    const social_keys = JSON.parse(localStorage.getItem("s_l"));
+
     let formBody = {
       email: values?.email?.trim(),
+      code: social_keys?.code,
+      provider: social_keys?.provider,
+      client_id: process.env.NEXT_PUBLIC_AUTH_CLIENT_PASSWORD_ID,
+      client_secret: process.env.NEXT_PUBLIC_AUTH_CLIENT_PASSWORD_SECRET,
     };
 
-    let res = await resendOTPForRegistration(formBody);
+    let res = await SendOTPForVerify(formBody);
 
     if (res && res.status_code === 200) {
       form.resetFields();

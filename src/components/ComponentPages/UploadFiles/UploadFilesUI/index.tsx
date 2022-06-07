@@ -160,6 +160,7 @@ const UploadFileUI = ({
   const validateMessages = {
     required: "${name} is required !",
   };
+
   //Regex
   const textFileRegex = /^text\/(plain$|html$|rtf$|csv$)/;
   const pdfFileRegex = /^application\/(pdf$)/;
@@ -185,7 +186,7 @@ const UploadFileUI = ({
       </Menu.Item>
       <Popconfirm
         placement="leftTop"
-        title="Are you sure to delete ?"
+        title="Are you sure you want to delete ?"
         onConfirm={() => removeFiles(obj, {}, fileLists)}
         okText="Yes"
         cancelText="No"
@@ -242,7 +243,7 @@ const UploadFileUI = ({
 
       <Popconfirm
         placement="top"
-        title="Are you sure to delete ?"
+        title="Are you sure you want to delete ?"
         onConfirm={() => removeFiles(item, item, fileLists)}
         okText="Yes"
         cancelText="No"
@@ -498,7 +499,7 @@ const UploadFileUI = ({
                     <div className={styles.menu_item}>
                       <Popconfirm
                         placement="rightTop"
-                        title="Are you sure to delete this file."
+                        title="Are you sure you want to delete"
                         onConfirm={() => removeFiles(keyParam, obj, fileLists)}
                         okText="Yes"
                         cancelText="No"
@@ -549,6 +550,9 @@ const UploadFileUI = ({
       moment.unix(val.created_at).format("MMM DD, YYYY");
     let searchName = "";
     return (openFolder ? getFileListFromFolderID : fileLists).filter((val) => {
+      if (val.id) {
+        val.key = val.id;
+      }
       if (search !== "") {
         if (val.name) {
           searchName = val.name;
@@ -580,13 +584,13 @@ const UploadFileUI = ({
           <div className={styles.Folder_container}>
             <Card className={styles.FolderData}>
               <div className={styles.folder_icon}>
-                <div className="folder--wrap">
-                  <div
-                    className="foldername"
-                    onClick={() => {
-                      Openfolder(item.id);
-                    }}
-                  >
+                <div
+                  className="folder--wrap"
+                  onClick={() => {
+                    Openfolder(item.id);
+                  }}
+                >
+                  <div className="foldername">
                     <span style={{ cursor: "pointer" }}>{item.name}</span>
                   </div>
                   <div className={styles.dateAndfiles}>
@@ -1026,7 +1030,7 @@ const UploadFileUI = ({
                   setTimeout(() => {
                     setLoadingArray([]);
                     setAddFileIndicator(false);
-                  }, 3000);
+                  }, 1000);
                 }
                 if (length) {
                   if (fileStatus) {
@@ -1095,7 +1099,11 @@ const UploadFileUI = ({
                           }
                         />
                         <div className="imgWrap">
-                          {file.thumbUrl && displayImage(file, file.thumbUrl)}
+                          {console.log(file)}
+                          {(!imageRegexData.test(file.type) ||
+                            (imageRegexData.test(file.type) &&
+                              file.thumbUrl)) &&
+                            displayImage(file, file.thumbUrl)}
                         </div>
                         <br />
                         <label

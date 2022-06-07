@@ -79,7 +79,7 @@ const LoginUi = ({
         <Col md={12}>
           <div className={styles.form_section}>
             <Title level={2} className={styles.titles}>
-              Log in to Canonizer
+              Login to Canonizer
             </Title>
             {errorMsg && (
               <Text className={`${styles.errorMsgs}`} type="danger">
@@ -135,7 +135,7 @@ const LoginUi = ({
                   className="login-form-button"
                   block
                 >
-                  Log in <ArrowRightOutlined />
+                  Log In <ArrowRightOutlined />
                 </Button>
                 <Space className={styles.space}>Or</Space>
                 <Button
@@ -149,13 +149,16 @@ const LoginUi = ({
                 </Button>
               </Form.Item>
 
-              <Form.Item>
+              <Form.Item style={{ marginBottom: "15px" }}>
                 <SocialLoginButton />
               </Form.Item>
               <Form.Item noStyle>
                 <Text className={styles.ft_link}>
                   {`Don't have an account? `}
-                  <a onClick={onRegister}> Register Now</a>
+                  <a onClick={onRegister} style={{ fontWeight: "bold" }}>
+                    {" "}
+                    Register Now
+                  </a>
                 </Text>
               </Form.Item>
             </Form>
