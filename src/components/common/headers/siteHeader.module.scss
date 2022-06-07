@@ -325,3 +325,22 @@
     border-color: #f89d15;
   }
 }
+
+.menuItems {
+  [role="menuitem"] {
+    padding: 5px 15px;
+    font-size: 13px;
+    font-weight: 500;
+
+    span[role="img"] {
+      margin-right: 8px;
+      svg {
+        width: 15px;
+        height: 15px;
+      }
+    }
+    span[class="anticon anticon-logout"]{
+      transform: rotate(-90deg);
+    }
+  }
+}

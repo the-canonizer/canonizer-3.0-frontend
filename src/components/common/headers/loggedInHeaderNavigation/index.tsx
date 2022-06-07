@@ -7,7 +7,14 @@ import { RootState } from "../../../../store";
 import styles from "../siteHeader.module.scss";
 import React, { useEffect, useState } from "react";
 import Logo from "../logoHeader";
-import { MenuOutlined, CloseOutlined, DownOutlined } from "@ant-design/icons";
+import {
+  MenuOutlined,
+  CloseOutlined,
+  DownOutlined,
+  SettingOutlined,
+  LogoutOutlined,
+  CheckCircleOutlined,
+} from "@ant-design/icons";
 import Notifications from "../notification";
 
 const { Header } = Layout;
@@ -69,15 +76,27 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
     }
   };
   const menu = (
-    <Menu onClick={onClick}>
+    <Menu onClick={onClick} className={styles.menuItems}>
       <Menu.Item key="0">
-        <Link href="/settings">Account Settings</Link>
-      </Menu.Item>
-      <Menu.Item key="1">
-        <a>Support Camps</a>
+        <Link href="/settings" passHref>
+          <a>
+            <SettingOutlined />
+            Account Settings
+          </a>
+        </Link>
       </Menu.Item>
       <Menu.Divider />
-      <Menu.Item key="3">Log Out</Menu.Item>
+      <Menu.Item key="1">
+        <a>
+          <CheckCircleOutlined />
+          Supported Camps
+        </a>
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key="3">
+        <LogoutOutlined />
+        Log Out
+      </Menu.Item>
     </Menu>
   );
 
