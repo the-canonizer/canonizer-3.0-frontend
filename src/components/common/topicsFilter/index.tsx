@@ -27,7 +27,7 @@ import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
 const infoContent = (
   <>
     <div className={styles.infoText}>
-      <Title level={5}>Score Value </Title>
+      <Title level={5}>Score Value Filter </Title>
       <p>
         This option filters down the camp list with a score value greater than
         the entered value. By default, the score value filter is 0, displaying
