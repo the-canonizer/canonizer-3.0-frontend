@@ -27,6 +27,7 @@
     .topicTitleStyle,
     .breadcrumbLinks {
       font-size: 16px;
+      color: #0f2a4d;
     }
     .topicTitleStyle {
       margin-right: 50px;
@@ -34,8 +35,8 @@
     .breadcrumbLinks {
       display: flex;
       a {
-        font-size: 18px;
-        color: #2e68db;
+        font-size: 16px;
+        color: var(--primary);
         font-weight: 400;
       }
     }
@@ -69,11 +70,11 @@
 }
 .breadcrumbLinks {
   display: flex;
-  font-size: 18px;
+  font-size: 16px;
   flex-wrap: wrap;
   a {
-    font-size: 18px;
-    color: #2e68db !important;
+    font-size: 16px;
+    color: var(--primary) !important;
     font-weight: 400;
     white-space: nowrap;
   }
