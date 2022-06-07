@@ -5,10 +5,17 @@ import {
   removeOrUpdateDirectSupportCamps,
 } from "../../../network/api/userApi";
 import { message } from "antd";
-import DirectSupportedCampsUI from "./DirectSupportedCampsUI";
+import dynamic from "next/dynamic";
+const DirectSupportedCampsUI = dynamic(
+  () => import("./DirectSupportedCampsUI"),
+  { ssr: false }
+);
+//import DirectSupportedCampsUI from "./DirectSupportedCampsUI";
 
 const DirectSupportedCamps = ({ search }) => {
   const [directSupportedCampsList, setDirectSupportedCampsList] = useState([]);
+  const [directSopportedCampsListRevert, setdirectSopportedCampsListRevert] =
+    useState([]);
   const [isSupportedCampsModalVisible, setIsSupportedCampsModalVisible] =
     useState(false);
   const [removeTopicNumDataId, setRemoveTopicNumDataId] = useState("");
@@ -26,7 +33,24 @@ const DirectSupportedCamps = ({ search }) => {
   const [originalDataArr, setoriginalDataArr] = useState([]);
   const [revertBack, setRevertBack] = useState([]);
   const [idData, setIdData] = useState("");
+
   const handleRevertBack = (topicId, camps) => {
+    ////////////
+    let data = directSopportedCampsListRevert.filter((val) => {
+      return val.topic_num == topicId;
+    });
+
+    if (data[0].camps.length > 0) {
+      let newData = directSupportedCampsList.map((val) => {
+        if (val.topic_num == topicId) {
+          return { ...val, camps: data[0].camps };
+        } else {
+          return val;
+        }
+      });
+      setDirectSupportedCampsList(newData);
+    }
+    ///////////
     camps.map((val) => {
       val.dis = false;
     });
@@ -45,46 +69,53 @@ const DirectSupportedCamps = ({ search }) => {
       (value) => value.topic_num == cardCamp_ID
     );
     handleRevertBack(cardCamp_ID, data[0].camps);
-    setcampIds([val.camp_num]),
-      setCampArrData([
-        {
-          camp_num: val.camp_num,
-          order: val.support_order,
-        },
-      ]),
-      setIdData(topicId),
-      (val.dis = true),
+    Object.keys(val).length === 0
+      ? setcampIds([])
+      : ((val.dis = true), setcampIds([val.camp_num]));
+    //setcampIds([val.camp_num],
+    // setCampArrData([
+    //   {
+    //     camp_num: val.camp_num,
+    //     order: val.support_order,
+    //   },
+    // ]),
+    setIdData(topicId),
+      //val.dis = true,
       setCardCamp_ID(topicId);
     setVisible(false);
   };
-  const handleClose = (val, id, data) => {
-    setoriginalDataArr(data);
-    setCardData(data.camps);
 
+  const handleClose = (val, id, data, CampsOrder) => {
+    setoriginalDataArr(data);
+    setCardData(CampsOrder.length > 0 ? CampsOrder : data.camps);
     if (cardCamp_ID == "") {
-      val.dis = true;
+      Object.keys(val).length === 0
+        ? setcampIds([])
+        : ((val.dis = true), setcampIds([val.camp_num]));
       setShowSaveChanges(true);
       setCardCamp_ID(id);
       setIdData(id);
-      setcampIds([val.camp_num]);
-      setCampArrData([
-        {
-          camp_num: val.camp_num,
-          order: val.support_order,
-        },
-      ]);
+
+      // setCampArrData([
+      //   {
+      //     camp_num: val.camp_num,
+      //     order: val.support_order,
+      //   },
+      // ]);
     } else if (cardCamp_ID && cardCamp_ID == id) {
-      val.dis = true;
+      Object.keys(val).length === 0
+        ? setcampIds([])
+        : ((val.dis = true), setcampIds([...campIds, val.camp_num]));
       setShowSaveChanges(true);
       setCardCamp_ID(id);
-      setcampIds([...campIds, val.camp_num]);
-      setCampArrData([
-        ...CampArrData,
-        {
-          camp_num: val.camp_num,
-          order: val.support_order,
-        },
-      ]);
+
+      // setCampArrData([
+      //   ...CampArrData,
+      //   {
+      //     camp_num: val.camp_num,
+      //     order: val.support_order,
+      //   },
+      // ]);
     } else if (cardCamp_ID && cardCamp_ID != id) {
       setIdData(id);
       setVisible(true);
@@ -119,6 +150,7 @@ const DirectSupportedCamps = ({ search }) => {
       message.success(res.message);
       //setIsSupportedCampsModalVisible(false);
       setShowSaveChanges(false);
+      setCardCamp_ID("");
       fetchDirectSupportedCampsList();
     }
   };
@@ -127,7 +159,7 @@ const DirectSupportedCamps = ({ search }) => {
     setNickNameId(data.nick_name_id);
     setIsSupportedCampsModalVisible(true);
   };
-
+  //remove Entire Card
   const removeSupport = async () => {
     const removeEntireData = {
       topic_num: removeTopicNumDataId,
@@ -148,6 +180,7 @@ const DirectSupportedCamps = ({ search }) => {
     let response = await getDirectSupportedCampsList();
     if (response && response.status_code === 200) {
       setDirectSupportedCampsList(response.data);
+      setdirectSopportedCampsListRevert(response.data);
     }
   };
   //onLoad
@@ -160,6 +193,7 @@ const DirectSupportedCamps = ({ search }) => {
       handleSupportedCampsCancel={handleSupportedCampsCancel}
       isSupportedCampsModalVisible={isSupportedCampsModalVisible}
       directSupportedCampsList={directSupportedCampsList}
+      setDirectSupportedCampsList={setDirectSupportedCampsList}
       search={search}
       removeSupport={removeSupport}
       handleClose={handleClose}
