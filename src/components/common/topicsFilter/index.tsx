@@ -80,6 +80,7 @@ function disabledDateTime() {
 
 const CreateTopic = ({ onCreateCamp = () => {} }) => {
   const [isDatePicker, setIsDatePicker] = useState(false);
+  const [isPanelCollapse, setIsPanelCollapse] = useState(false);
 
   const [datePickerValue, setDatePickerValue] = useState(null);
 
@@ -110,6 +111,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
   const [value, setValue] = useState(
     selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3
   );
+
   // /////////////////////////////////////////////////////////////////////////
   // Discussion required on this functionality after that I will remove or //
   //                        uncomment bellow code                         //
@@ -136,9 +138,12 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
 
   useEffect(() => {
     if (router.pathname.includes("/topic/")) {
+      setIsPanelCollapse(true);
       setIsCampBtnVisible(true);
     }
   }, [router.pathname]);
+
+  console.log("isPanelCollapse", isPanelCollapse);
 
   const selectAlgorithm = (value) => {
     dispatch(

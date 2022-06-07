@@ -327,6 +327,9 @@
 }
 
 .menuItems {
+  min-width: 160px;
+  width: 100%;
+
   [role="menuitem"] {
     padding: 5px 15px;
     font-size: 13px;
@@ -339,8 +342,11 @@
         height: 15px;
       }
     }
-    span[class="anticon anticon-logout"]{
+    span[class="anticon anticon-logout"] {
       transform: rotate(-90deg);
+    }
+    a {
+      white-space: nowrap;
     }
   }
 }

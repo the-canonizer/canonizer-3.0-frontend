@@ -325,11 +325,11 @@ const TopicDetails = () => {
           </div>
         </div>
 
-        <aside className="leftSideBar miniSideBar">
+        <aside className={styles.miniSide + " leftSideBar miniSideBar"}>
           <SideBar onCreateCamp={onCreateCamp} />
         </aside>
 
-        <div className="pageContentWrap">
+        <div className={styles.pageContent + " pageContentWrap"}>
           <Spin spinning={loadingIndicator} size="large">
             <NewsFeedsCard newsFeed={newsFeed} />
           </Spin>

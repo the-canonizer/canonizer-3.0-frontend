@@ -1,5 +1,7 @@
-import styles from "./helpCard.module.scss";
+import { Fragment } from "react";
 import { useSelector } from "react-redux";
+
+import styles from "./helpCard.module.scss";
 import { RootState } from "../../../../store";
 
 const HelpCard = () => {
@@ -7,7 +9,7 @@ const HelpCard = () => {
     whatsNew: state.homePage?.whatsNew,
   }));
   return (
-    <>
+    <Fragment>
       {whatsNew && (
         <section className={styles.wrap}>
           <div
@@ -16,7 +18,7 @@ const HelpCard = () => {
           />
         </section>
       )}
-    </>
+    </Fragment>
   );
 };
 
