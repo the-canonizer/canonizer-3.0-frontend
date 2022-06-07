@@ -143,8 +143,6 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
     }
   }, [router.pathname]);
 
-  console.log("isPanelCollapse", isPanelCollapse);
-
   const selectAlgorithm = (value) => {
     dispatch(
       setFilterCanonizedTopics({
