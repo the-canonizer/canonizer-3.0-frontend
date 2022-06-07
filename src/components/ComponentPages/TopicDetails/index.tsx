@@ -344,16 +344,18 @@ const TopicDetails = () => {
           </Spin>
 
           <Spin spinning={loadingIndicator} size="large">
-            <SupportTreeCard
-              handleLoadMoreSupporters={handleLoadMoreSupporters}
-            />
-          </Spin>
-          <Spin spinning={loadingIndicator} size="large">
             <CurrentTopicCard />
           </Spin>
           <Spin spinning={loadingIndicator} size="large">
             <CurrentCampCard />
           </Spin>
+
+          <Spin spinning={loadingIndicator} size="large">
+            <SupportTreeCard
+              handleLoadMoreSupporters={handleLoadMoreSupporters}
+            />
+          </Spin>
+
           <BackTop />
         </div>
       </div>
