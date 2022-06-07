@@ -294,7 +294,13 @@ const TopicDetails = () => {
                   })
                 : null}
               {!!campSubscriptionID && (
-                <small style={{ alignSelf: "center", marginLeft: "10px" }}>
+                <small
+                  style={{
+                    alignSelf: "center",
+                    marginLeft: "10px",
+                    opacity: campRecord?.flag == 2 ? 0.5 : 1,
+                  }}
+                >
                   <i className="icon-subscribe text-primary"></i>
                 </small>
               )}
