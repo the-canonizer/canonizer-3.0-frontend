@@ -81,7 +81,11 @@ const CampStatementCard = ({ myRefToCampStatement, onCampForumClick }) => {
         <div className="topicDetailsCollapseFooter">
           <CustomButton className="btn-green">
             <Link
-              href={`/statement/history/${router?.query?.camp[0]}/${router?.query?.camp[1]}`}
+              href={
+                campStatement?.length > 0
+                  ? `/statement/history/${router?.query?.camp[0]}/${router?.query?.camp[1]}`
+                  : `/create/statement/${router?.query?.camp[0]}/${router?.query?.camp[1]}`
+              }
             >
               <a>
                 {campStatement?.length > 0
