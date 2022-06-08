@@ -315,6 +315,26 @@
   top: 95px;
   left: 100px;
 }
+.dropdown 
+{
+  position: absolute;
+  right: 15px;
+  bottom: 20px;
+  width: 20px;
+  cursor: pointer;
+  height: 20px;
+}
+.ant-dropdown-trigger .anticon.anticon-more {
+  color: #fff;
+  font-size: 20px;
+  right: inherit;
+  position: inherit;
+  bottom: inherit;
+}
+.Folder_container 
+{
+  position: relative;
+}
 .view_After_folder {
   background: red;
 }
@@ -658,4 +678,11 @@
 
 .emptyFolderData {
   margin: auto;
+}
+
+.modal_cross {
+  font-size: 17px;
+}
+.text_right {
+  text-align: right;
 }
