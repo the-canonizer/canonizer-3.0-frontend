@@ -15,7 +15,7 @@ import { LeftOutlined } from "@ant-design/icons";
 import { RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsReviewCanonizedTopics } from "../../../store/slices/filtersSlice";
-import Link from "next/link";
+import NextLink from "next/link";
 
 const { Title, Text, Paragraph, Link } = Typography;
 const { Panel } = Collapse;
@@ -229,9 +229,9 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
                 Canonizer Algorithm:
               </Title>
               <Popover content="Algorithm Information" placement="top">
-                <Link href="/topic/53-Canonizer-Algorithms/1-Agreement">
+                <NextLink href="/topic/53-Canonizer-Algorithms/1-Agreement">
                   <a>Help</a>
-                </Link>
+                </NextLink>
               </Popover>
             </div>
             <Select
