@@ -31,7 +31,7 @@ export default function SocialLoginUi({ isNotLogin = false }) {
 
   return (
     <div className={styles.wrapper}>
-      <Text className={styles.social_login_text}>
+      <Text className={styles.social_login_text} id="social-login-title">
         {`${isNotLogin ? "Signup" : "Login"} with social accounts.`}
       </Text>
       <div className={styles.btn_group}>
@@ -42,6 +42,7 @@ export default function SocialLoginUi({ isNotLogin = false }) {
           icon={<FacebookFilled />}
           data-testid="facebook"
           className={styles["facebook-btn"]}
+          id="facebook-link"
         />
         <Button
           shape="circle"
@@ -53,6 +54,7 @@ export default function SocialLoginUi({ isNotLogin = false }) {
           }
           data-testid="google"
           className={styles["google-btn"]}
+          id="google-link"
         />
 
         <Button
@@ -62,6 +64,7 @@ export default function SocialLoginUi({ isNotLogin = false }) {
           icon={<TwitterOutlined />}
           data-testid="twitter"
           className={styles["twitter-btn"]}
+          id="twitter-link"
         />
 
         <Button
@@ -71,6 +74,7 @@ export default function SocialLoginUi({ isNotLogin = false }) {
           icon={<LinkedinFilled />}
           data-testid="linkedin"
           className={styles["linkedin-btn"]}
+          id="linkedin-link"
         />
 
         <Button
@@ -80,6 +84,7 @@ export default function SocialLoginUi({ isNotLogin = false }) {
           icon={<GithubFilled />}
           data-testid="github"
           className={styles["github-btn"]}
+          id="github-link"
         />
       </div>
     </div>
