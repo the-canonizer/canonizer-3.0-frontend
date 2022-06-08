@@ -19,7 +19,7 @@ function ForgotPasswordUI({ form, onFinish, isModal, closeModal, isScreen }) {
         scrollToFirstError
         validateTrigger={messages.formValidationTypes()}
       >
-        <Title level={2} className={styles.titles}>
+        <Title level={2} className={styles.titles} id="forgot-password-title">
           {isScreen === 1
             ? "Create password verification code"
             : "Forgot your password?"}
@@ -31,6 +31,7 @@ function ForgotPasswordUI({ form, onFinish, isModal, closeModal, isScreen }) {
             className={styles.close_btn}
             onClick={closeModal}
             icon={<CloseCircleOutlined />}
+            id="forgot-modal-close-btn"
           />
         )}
         <div className={styles.section_one}>
@@ -45,10 +46,15 @@ function ForgotPasswordUI({ form, onFinish, isModal, closeModal, isScreen }) {
               }
               fallback={fallBackSrc}
               width={200}
+              id="forgot-modal-img"
             />
           </div>
           {isScreen === 0 && (
-            <Text type="danger" className={styles.otpNote}>
+            <Text
+              type="danger"
+              className={styles.otpNote}
+              id="forgot-modal-note"
+            >
               Don&apos;t worry, it happens. Let us know the email address you
               signed up
               <span className={styles.otpNoteSupport}>
@@ -57,7 +63,7 @@ function ForgotPasswordUI({ form, onFinish, isModal, closeModal, isScreen }) {
             </Text>
           )}
           {isScreen === 1 && (
-            <Text type="danger" className={styles.otpNote}>
+            <Text type="danger" className={styles.otpNote} id="otp-msg">
               {messages.validations.otpMsgs}
             </Text>
           )}
@@ -100,6 +106,7 @@ function ForgotPasswordUI({ form, onFinish, isModal, closeModal, isScreen }) {
             className={styles["login-form-button"]}
             block
             data-testid="submitButton"
+            id="submit-btn"
           >
             Submit <ArrowRightOutlined />
           </Button>

@@ -100,7 +100,7 @@
       .dropdown {
         @media screen and (min-width: 576px) {
           max-width: 275px;
-          width: calc(65% - 200px);
+          width: calc(65% - 283px);
         }
         @media screen and (min-width: 1200px) {
           margin-right: auto;
@@ -118,7 +118,7 @@
       .inputSearchTopic {
         @media screen and (min-width: 1200px) {
           max-width: 275px;
-          width: 33%;
+          width: 28%;
           order: 3;
         }
         @media screen and (min-width: 576px) and (max-width: 1199px) {

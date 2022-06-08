@@ -45,11 +45,12 @@ const ThreadListUI = ({
             allowClear
             onSearch={onSearch}
             className={styles.searchInput}
+            id="search-bar"
           />
         </div>
       }
     >
-      <Text strong className={styles.labelHeading}>
+      <Text strong className={styles.labelHeading} id="list-label">
         List of All Camp Threads
       </Text>
       <div className={styles.btn_group}>
@@ -61,6 +62,7 @@ const ThreadListUI = ({
           }`}
           onClick={filterThread.bind(this, "all")}
           key="all"
+          id="all-thread-btn"
         >
           All Threads
         </Button>
@@ -74,6 +76,7 @@ const ThreadListUI = ({
               }`}
               onClick={filterThread.bind(this, "my")}
               key="my"
+              id="my-thread-btn"
             >
               My Threads
             </Button>
@@ -85,6 +88,7 @@ const ThreadListUI = ({
               }`}
               onClick={filterThread.bind(this, "participate")}
               key="participate"
+              id="participate-btn"
             >
               My Participation
             </Button>
@@ -96,6 +100,7 @@ const ThreadListUI = ({
               }`}
               onClick={filterThread.bind(this, "most_replies")}
               key="most_replies"
+              id="most-rep-btn"
             >
               Top 10
             </Button>
@@ -106,6 +111,7 @@ const ThreadListUI = ({
           className={`${styles.tabBtn} ${styles.submit_btn}`}
           onClick={onCreateThread}
           key="create"
+          id="create-btn"
         >
           Create Thread
         </Button>
@@ -120,6 +126,7 @@ const ThreadListUI = ({
               <a
                 onClick={(e) => onThreadClick(e, others)}
                 className={styles.threadListTitle}
+                id={"thread-name-" + text?.split(" ")[0].toLowerCase()}
               >
                 {text}
                 {paramsList.by === "my" ? (
