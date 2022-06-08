@@ -8,9 +8,10 @@ const FormItem = ({
   onKeyDown = (e) => {},
   type = "text",
   maxLength = null,
+  dataid = "",
 }) => {
   return (
-    <Form.Item name={name} label={label} {...rules}>
+    <Form.Item name={name} label={label} {...rules} data-id={dataid}>
       <Input
         type={type}
         placeholder={placeholder}
