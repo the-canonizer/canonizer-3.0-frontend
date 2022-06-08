@@ -1545,3 +1545,6 @@ div[role="option"]::before {
   background: #f5f5f5;
   cursor: not-allowed;
 }
+/* .ant-form-item-label > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before {
+  display: none;
+} */
