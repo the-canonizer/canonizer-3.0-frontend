@@ -65,7 +65,7 @@ const CreateNewTopic = ({
 
     if (res && res.status_code === 200) {
       message.success(res.message);
-      
+
       const data = {
         submitter_nick_id: res.data.submitter_nick_id,
         message: res.message,
