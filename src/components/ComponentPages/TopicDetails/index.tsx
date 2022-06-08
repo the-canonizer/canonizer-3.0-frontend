@@ -159,79 +159,7 @@ const TopicDetails = () => {
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
-<<<<<<< HEAD
         <CampInfoBar payload={payload} isStatementBar={false} />
-=======
-        <div className={styles.topicDetailContentHead}>
-          <div className={styles.topicDetailContentHead_Left}>
-            <Typography.Paragraph className={"mb-0 " + styles.topicTitleStyle}>
-              {" "}
-              <span className="bold"> Topic: </span>
-              {topicRecord && topicRecord?.topic_name}{" "}
-              {!!topicSubscriptionID && (
-                <small>
-                  <i className="icon-subscribe text-primary"></i>
-                </small>
-              )}
-            </Typography.Paragraph>
-            <div className={styles.breadcrumbLinks}>
-              {" "}
-              <span className="bold mr-1"> Camp : </span>
-              {campRecord
-                ? campRecord.parentCamps?.map((camp, index) => {
-                    return (
-                      <Link
-                        href={`${router.query.camp.at(0)}/${
-                          camp?.camp_num
-                        }-${camp?.camp_name?.split(" ").join("-")}`}
-                        key={camp?.camp_num}
-                      >
-                        <a>
-                          {index !== 0 && "/ "}
-                          {`${camp?.camp_name}`}
-                        </a>
-                      </Link>
-                    );
-                  })
-                : null}
-              {!!campSubscriptionID && (
-                <small
-                  style={{
-                    alignSelf: "center",
-                    marginLeft: "10px",
-                    opacity: campRecord?.flag == 2 ? 0.5 : 1,
-                  }}
-                >
-                  <i className="icon-subscribe text-primary"></i>
-                </small>
-              )}
-            </div>
-          </div>
-
-          <div className={styles.topicDetailContentHead_Right}>
-            <Button
-              type="primary"
-              className={styles.btnCampForum}
-              onClick={onCampForumClick}
-            >
-              Camp Forum
-            </Button>
-            <Dropdown
-              className={styles.campForumDropdown}
-              placement="bottomRight"
-              overlay={campForumDropdownMenu}
-              trigger={["click"]}
-            >
-              <a
-                className={styles.iconMore}
-                onClick={(e) => e.preventDefault()}
-              >
-                <MoreOutlined />
-              </a>
-            </Dropdown>
-          </div>
-        </div>
->>>>>>> 7372c8a6db7b7ed950833376b09bbb7aea378afe
 
         <aside className="leftSideBar miniSideBar">
           <SideBar onCreateCamp={onCreateCamp} />
