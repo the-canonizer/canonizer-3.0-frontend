@@ -131,14 +131,14 @@ body {
 .leftSideBar {
   & + .pageContentWrap {
     @media screen and (min-width: 992px) {
-      padding: 0 15px;
+      padding: 0 8px;
     }
   }
   &.miniSideBar {
     @media screen and (min-width: 992px) {
-      width: 220px;
+      width: 300px;
       & + .pageContentWrap {
-        width: calc(100% - 220px);
+        width: calc(100% - 300px);
       }
     }
     @media screen and (max-width: 991px) {
@@ -319,15 +319,18 @@ body {
     .ant-tabs {
       .ant-tabs-tab-btn {
         font-size: 14px;
-        color: #0f2a4d;
+        color: #1c1b24;
       }
     }
     .ant-tabs-tab-active {
       .ant-tabs-tab-btn {
-        color: #2e68db;
+        color: var(--primary);
         font-weight: 600;
       }
     }
+  }
+  .ant-tabs-ink-bar {
+    background: var(--primary) !important;
   }
 }
 .main--layout {
@@ -345,6 +348,7 @@ body {
 }
 
 .hdrUserdropdown {
+  position: relative;
   .icon-user {
     height: 30px;
     width: 30px;
@@ -1184,14 +1188,16 @@ body {
       border-radius: 2px;
       border: 1px solid #dde1e5;
       font-weight: 600;
-      padding: 5px 10px;
+      padding: 0;
       display: flex;
       justify-content: center;
       align-items: center;
+      width: 20px;
+      height: 25px;
 
       a {
         color: #555c64;
-        font-size: 16px;
+        font-size: 14px;
         font-weight: 600;
       }
 
@@ -1309,6 +1315,7 @@ body {
       margin-bottom: 0;
       display: inline-flex;
       align-items: center;
+      color: #1C1B24;
     }
     .ant-collapse-extra {
       font-size: 15px;
@@ -1489,6 +1496,15 @@ div[role="option"]::before {
   left: 5px;
   transform: scale(1.2);
   top: 0px;
+}
+
+.newsFeedsList {
+  list-style-type: square;
+  li {
+    &::marker {
+      color: var(--primary);
+    }
+  }
 }
 
 .tag {

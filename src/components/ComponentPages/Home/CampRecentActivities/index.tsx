@@ -83,7 +83,7 @@ export default function CampRecentActivities() {
   return (
     <>
       <Card
-        title="Recent Activities in this camp"
+        title="Recent Activities"
         className={"activities " + styles.campActivities}
       >
         <List

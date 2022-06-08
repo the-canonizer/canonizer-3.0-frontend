@@ -33,7 +33,7 @@
     align-items: center;
     margin-bottom: 5px;
     input {
-      width: 130px;
+      width: 100%;
       margin: 0 7px;
     }
     i {
@@ -95,4 +95,20 @@
 
 .asfoText {
   width: 261px;
+}
+
+.algo_title {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  a {
+    font-weight: bold;
+    color: var(--primary);
+    text-decoration: underline;
+  }
+}
+
+.infoIcon {
+  margin-left: auto;
 }

@@ -40,13 +40,16 @@
   max-width: 100%;
   width: 100%;
   order: 3;
+  // height: 35px;
 
   & > span {
     & > span {
       position: relative;
       display: block;
+      height: inherit;
       & > span:first-child {
-        padding: 8px 50px 8px 15px;
+        padding: 6px 50px 6px 15px;
+        height: inherit;
         & > span {
           background-color: #fff;
           position: absolute;
@@ -54,6 +57,7 @@
           right: 35px;
           top: 50%;
           transform: translateY(-50%);
+          height: inherit;
         }
         &:hover {
           span {
@@ -81,10 +85,13 @@
 }
 
 .labelHeading {
-  font-size: 14px;
+  font-size: 13px;
   color: #1c1b24;
   line-height: 18px;
-  font-weight: 600;
+  font-weight: 550;
+  strong {
+    font-weight: inherit;
+  }
 }
 
 .btn_group {
@@ -94,11 +101,13 @@
   .tabBtn {
     border-color: #0f2a4d;
     color: #0f2a4d;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1;
     margin-right: 10px;
-    font-weight: 600;
+    font-weight: 500;
     padding: 5px 10px;
+    min-width: 95px;
+    height: 30px;
 
     &.orange {
       border-color: #f89d15;
@@ -113,6 +122,7 @@
       margin-right: 15px;
       color: #ffffff;
       transition: all 0.3s;
+      font-weight: 600;
 
       &:hover {
         background: #d3840e;
@@ -213,11 +223,11 @@
 .upperTitle {
   display: flex;
   flex-wrap: wrap;
-  padding: 10px 0 30px;
+  padding: 10px 0 20px;
   p {
     text-align: left;
     font-weight: normal;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 21px;
     letter-spacing: 0px;
     color: #0f2a4d;
@@ -232,7 +242,7 @@
       strong {
         color: #0f2a4d;
       }
-      color: var(--primary);
+      color: #2e68db;
     }
   }
 
@@ -280,7 +290,8 @@
 
 .threadListTitle {
   word-break: break-word;
-  white-space: pre;
+  color: #2e68db;
+  white-space: break-spaces;
 }
 
 .forum_post_card {

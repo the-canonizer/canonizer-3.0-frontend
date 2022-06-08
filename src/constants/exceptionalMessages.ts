@@ -7,6 +7,10 @@ const ExceptionalMessageConstants = {
   manageCampStatementButton: "Manage/Edit Camp Statement",
   addCampStatementButton: "Add Camp Statement",
   tooltipNewsEdit: "Must be owner to edit",
+  selectNickNameErrorMsg: "Please select Nick name",
+  statementRequiredErrorMsg: "Statement is required",
+  submitStatementButton: "Submit Statement",
+  submitUpdateButton: "Submit Update",
 };
 
 export default ExceptionalMessageConstants;

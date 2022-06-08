@@ -15,7 +15,7 @@ function SubscriptionsList({ isTestData = [] }) {
   const [isVisible, setIsVisible] = useState(false);
   const [currentTopic, setCurrentTopic] = useState({});
   const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState('');
+  const [perPage, setPerPage] = useState("");
   const [isCamp, setIsCamp] = useState(false);
   const [camp, setCamp] = useState({});
 

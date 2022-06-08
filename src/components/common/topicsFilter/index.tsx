@@ -15,6 +15,7 @@ import { LeftOutlined } from "@ant-design/icons";
 import { RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsReviewCanonizedTopics } from "../../../store/slices/filtersSlice";
+import Link from "next/link";
 
 const { Title, Text, Paragraph, Link } = Typography;
 const { Panel } = Collapse;
@@ -27,7 +28,7 @@ import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
 const infoContent = (
   <>
     <div className={styles.infoText}>
-      <Title level={5}>Score Value </Title>
+      <Title level={5}>Score Value Filter </Title>
       <p>
         This option filters down the camp list with a score value greater than
         the entered value. By default, the score value filter is 0, displaying
@@ -80,6 +81,7 @@ function disabledDateTime() {
 
 const CreateTopic = ({ onCreateCamp = () => {} }) => {
   const [isDatePicker, setIsDatePicker] = useState(false);
+  const [isPanelCollapse, setIsPanelCollapse] = useState(false);
 
   const [datePickerValue, setDatePickerValue] = useState(null);
 
@@ -110,6 +112,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
   const [value, setValue] = useState(
     selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3
   );
+
   // /////////////////////////////////////////////////////////////////////////
   // Discussion required on this functionality after that I will remove or //
   //                        uncomment bellow code                         //
@@ -136,6 +139,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
 
   useEffect(() => {
     if (router.pathname.includes("/topic/")) {
+      setIsPanelCollapse(true);
       setIsCampBtnVisible(true);
     }
   }, [router.pathname]);
@@ -220,9 +224,16 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
             header={<span className={styles.title}>Canonizer</span>}
             key="1"
           >
-            <Title level={5} className={styles.algoText}>
-              Canonizer Algorithm:
-            </Title>
+            <div className={styles.algo_title}>
+              <Title level={5} className={styles.algoText}>
+                Canonizer Algorithm:
+              </Title>
+              <Popover content="Algorithm Information" placement="top">
+                <Link href="/topic/53-Canonizer-Algorithms/1-Agreement">
+                  <a>Help</a>
+                </Link>
+              </Popover>
+            </div>
             <Select
               size="large"
               className={styles.algoSelect}
@@ -239,7 +250,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
               })}
             </Select>
             <Paragraph className={styles.algoInfo}>
-              <i className="icon-fish-bones"></i> Algorithm Information
+              {/* <i className="icon-fish-bones"></i> Algorithm Information */}
             </Paragraph>
             <div className={styles.filter}>
               <Text>Filter</Text>
@@ -249,7 +260,11 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
                 onChange={filterOnScore}
                 value={filteredScore}
               />
-              <Popover content={infoContent} placement="right">
+              <Popover
+                content={infoContent}
+                placement="right"
+                className={styles.infoIcon}
+              >
                 <i className="icon-info"></i>
               </Popover>
             </div>

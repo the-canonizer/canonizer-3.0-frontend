@@ -68,7 +68,9 @@ export default function HistoryCollapse({ campStatement }) {
               </div>
               <div className={styles.campStatementCollapseButtons}>
                 <Button type="primary" className={styles.campUpdateButton}>
-                  Submit Statement Update Based on This
+                  <Link href={`/manage/statement/${campStatement?.id}`}>
+                    Submit Statement Update Based on This
+                  </Link>
                 </Button>
                 <Button type="primary" className={styles.campVersionButton}>
                   <Link

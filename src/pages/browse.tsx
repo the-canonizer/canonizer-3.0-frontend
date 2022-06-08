@@ -44,7 +44,7 @@ export async function getServerSideProps() {
     algorithm: "blind_popularity",
     asofdate: currentTime,
     filter: 0,
-    namespace_id: 1,
+    namespace_id: "",
     page_number: 1,
     page_size: 15,
     search: "",
