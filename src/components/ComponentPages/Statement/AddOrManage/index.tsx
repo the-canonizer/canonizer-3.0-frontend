@@ -47,19 +47,21 @@ export default function AddOrManage({ add }) {
         : editInfo?.statement?.submitter_nick_id,
       statement: values?.statement?.trim(),
     });
-    if (add) {
-      router.push(
-        router.asPath.replace("create/statement", "statement/history")
-      );
-    } else {
-      let route = `${editInfo?.topic?.topic_num}-${editInfo?.topic?.topic_name
-        ?.split(" ")
-        .join("-")}/${
-        parent_camp[parent_camp?.length - 1]?.camp_num
-      }-${parent_camp[parent_camp?.length - 1]?.camp_name
-        ?.split(" ")
-        .join("-")}`;
-      router.push(`/statement/history/${route}`);
+    if (res?.status_code == 200) {
+      if (add) {
+        router.push(
+          router.asPath.replace("create/statement", "statement/history")
+        );
+      } else {
+        let route = `${editInfo?.topic?.topic_num}-${editInfo?.topic?.topic_name
+          ?.split(" ")
+          .join("-")}/${
+          parent_camp[parent_camp?.length - 1]?.camp_num
+        }-${parent_camp[parent_camp?.length - 1]?.camp_name
+          ?.split(" ")
+          .join("-")}`;
+        router.push(`/statement/history/${route}`);
+      }
     }
     setScreenLoading(false);
   };
