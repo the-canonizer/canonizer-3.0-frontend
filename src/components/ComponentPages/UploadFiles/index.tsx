@@ -66,6 +66,8 @@ const UploadFiles = () => {
   const [getFileListFromFolderID, setGetFileListFromFolderID] = useState([]);
   const [openFolderID, setOpenFolderID] = useState("");
   const [showCreateFolderModal, setShowCreateFolderModal] = useState(false);
+  const [DeleteConfirmationVisible, setDeleteConfirmationVisible] =
+    useState(false);
   const isLogIn = isAuth();
   const ref = useRef();
   const closeFolder = () => {
@@ -161,12 +163,14 @@ const UploadFiles = () => {
     if (originNode.type == "folder") {
       let res = await deleteFolderApi(originNode.id);
       if (res && res.status_code == 200) {
+        setDeleteConfirmationVisible(false);
         GetUploadFileAndFolder();
         setFileLists(fileLists);
       }
     } else {
       let response = await deleteUploadFileApi(originNode.id);
       if (response && response.status_code == 200) {
+        setDeleteConfirmationVisible(false);
         if (openFolderID) {
           GetFileInsideFolderData(openFolderID);
         }
@@ -251,6 +255,8 @@ const UploadFiles = () => {
       getFileListFromFolderID={getFileListFromFolderID}
       setShowCreateFolderModal={setShowCreateFolderModal}
       showCreateFolderModal={showCreateFolderModal}
+      DeleteConfirmationVisible={DeleteConfirmationVisible}
+      setDeleteConfirmationVisible={setDeleteConfirmationVisible}
     />
   );
 };
