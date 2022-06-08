@@ -89,7 +89,7 @@ const SupportTreeCard = ({ handleLoadMoreSupporters }) => {
         )}
         <div className="topicDetailsCollapseFooter">
           <CustomButton className="btn-orange">
-            Directly Join and Support
+            Directly Join or Manage Support
           </CustomButton>
         </div>
       </Panel>

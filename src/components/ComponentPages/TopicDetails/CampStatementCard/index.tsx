@@ -29,8 +29,8 @@ const CampStatementCard = ({ myRefToCampStatement, onCampForumClick }) => {
         key="1"
         extra={
           campStatement?.length ? (
-            <div className="cardActions">
-              <span className="bold">Go live Time: </span>
+            <div className={styles.cardActions}>
+              <span className="bold">Go live Time : </span>
               {campStatement?.length && campStatement[0]?.go_live_time}
             </div>
           ) : null

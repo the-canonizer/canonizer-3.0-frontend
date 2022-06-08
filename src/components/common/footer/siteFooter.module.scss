@@ -57,30 +57,21 @@
     }
   }
   .navsWrap {
-    display: flex;
+    width: 100%;
+    max-width: 100%;
+
     @media screen and (min-width: 992px) {
-      justify-content: space-evenly;
+      padding: 0 40px;
     }
+
     ul {
       padding: 0;
       margin: 0;
       list-style: none;
       width: 100%;
-      display: flex;
-      flex-wrap: wrap;
-      @media screen and (min-width: 992px) {
-        width: 70%;
-      }
-      @media screen and (max-width: 991px) {
-        width: 100%;
-      }
+
       li {
-        @media screen and (min-width: 992px) {
-          width: 50%;
-        }
-        @media screen and (max-width: 991px) {
-          width: 50%;
-        }
+        width: 100%;
         a {
           font-size: 14px;
           color: #e6e9f1;

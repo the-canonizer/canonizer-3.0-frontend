@@ -18,7 +18,7 @@ function Footer() {
     linksApiCall();
   }, []);
 
-  const mockLinks = [
+  const mockLinks1 = [
     {
       link: "/browse",
       linkTitle: "Browse",
@@ -31,14 +31,16 @@ function Footer() {
       id: 3,
     },
     {
+      link: "/uploadFile",
+      linkTitle: "Upload File",
+      id: 5,
+    },
+  ];
+  const mockLinks2 = [
+    {
       link: "/help",
       linkTitle: "Help",
       id: 4,
-    },
-    {
-      link: "/uploadFile",
-      linkTitle: "Upload Files",
-      id: 5,
     },
     {
       link: "/white-paper",
@@ -97,20 +99,40 @@ function Footer() {
             </Col>
             <Col xs={24} sm={14} md={10} lg={12}>
               <div className={styles.navsWrap}>
-                <ul>
-                  {mockLinks?.map((item) => {
-                    return (
-                      <li key={item.id}>
-                        <Link href={item.link}>
-                          <a>
-                            <i className="icon-angle-right"></i>{" "}
-                            {item.linkTitle}
-                          </a>
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
+                <Row gutter={20}>
+                  <Col xs={24} md={12}>
+                    <ul>
+                      {mockLinks1?.map((item) => {
+                        return (
+                          <li key={item.id}>
+                            <Link href={item.link}>
+                              <a>
+                                <i className="icon-angle-right"></i>{" "}
+                                {item.linkTitle}
+                              </a>
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <ul>
+                      {mockLinks2?.map((item) => {
+                        return (
+                          <li key={item.id}>
+                            <Link href={item.link}>
+                              <a>
+                                <i className="icon-angle-right"></i>{" "}
+                                {item.linkTitle}
+                              </a>
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </Col>
+                </Row>
               </div>
             </Col>
             <Col xs={24} sm={12} md={7} lg={6}>
