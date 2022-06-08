@@ -1,7 +1,7 @@
 .pageWrap {
   overflow: hidden;
   .contentWrap {
-    padding: 15px;
+    padding: 8px 15px;
     @media screen and (min-width: 768px) {
       display: flex;
     }
@@ -18,7 +18,7 @@
     } */
   .rightSidebar {
     @media screen and (min-width: 991px) {
-      width: 120px;
+      width: 180px;
     }
     @media screen and (max-width: 991px) {
       width: 100%;
@@ -35,7 +35,7 @@
     @media screen and (min-width: 992px) {
       display: flex;
       flex-wrap: wrap;
-      width: calc(100% - 120px);
+      width: calc(100% - 180px);
     }
     @media screen and (max-width: 991px) {
       width: auto;

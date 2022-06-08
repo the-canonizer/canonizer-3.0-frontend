@@ -35,7 +35,7 @@ const LoggedOutHeader = () => {
 
     {
       link: "/uploadFile",
-      linkTitle: "Upload Files",
+      linkTitle: "Upload File",
       id: 2,
     },
     {

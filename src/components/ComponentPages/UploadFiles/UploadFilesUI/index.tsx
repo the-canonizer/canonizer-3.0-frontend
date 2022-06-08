@@ -13,7 +13,6 @@ import {
   DatePicker,
   Popover,
   Table,
-  Popconfirm,
   Spin,
   Empty,
 } from "antd";
@@ -100,6 +99,8 @@ const UploadFileUI = ({
   getFileListFromFolderID,
   setShowCreateFolderModal,
   showCreateFolderModal,
+  DeleteConfirmationVisible,
+  setDeleteConfirmationVisible,
 }) => {
   const [toggleFileView, setToggleFileView] = useState(false);
   const [previewImageIndicator, setPreviewImageIndicator] = useState(false);
@@ -120,6 +121,11 @@ const UploadFileUI = ({
     previewName: "",
     previewCopyShortCode: "",
     previewCreatedAt: 0,
+  });
+  const [removeFileData, setRemoveFileData] = useState({
+    keyParam: "",
+    obj: {},
+    fileLists: [],
   });
   const dispatch = useDispatch<AppDispatch>();
   const drageBoxVisible = useSelector((state: RootState) => state.ui.dragBox);
@@ -184,17 +190,16 @@ const UploadFileUI = ({
       <Menu.Item onClick={() => editFolder(obj)}>
         <span id="editFolderName">Edit folder name</span>
       </Menu.Item>
-      <Popconfirm
-        placement="leftTop"
-        title="Are you sure you want to delete ?"
-        onConfirm={() => removeFiles(obj, {}, fileLists)}
-        okText="Yes"
-        cancelText="No"
+      <span
+        onClick={() => {
+          setRemoveFileData({ keyParam: obj, obj: {}, fileLists: fileLists }),
+            setDeleteConfirmationVisible(true);
+        }}
       >
         <Menu.Item>
           <span id="deleteFolder">Delete folder</span>
         </Menu.Item>
-      </Popconfirm>
+      </span>
     </Menu>
   );
   const menu_files = (i, item) => (
@@ -240,13 +245,15 @@ const UploadFileUI = ({
           <span className={styles.marginLeftView}>Copy Short Code</span>
         </span>
       </Menu.Item>
-
-      <Popconfirm
-        placement="top"
-        title="Are you sure you want to delete ?"
-        onConfirm={() => removeFiles(item, item, fileLists)}
-        okText="Yes"
-        cancelText="No"
+      <span
+        onClick={() => {
+          setRemoveFileData({
+            keyParam: item,
+            obj: item,
+            fileLists: fileLists,
+          }),
+            setDeleteConfirmationVisible(true);
+        }}
       >
         <Menu.Item>
           <span className={styles.menu_item}>
@@ -260,7 +267,7 @@ const UploadFileUI = ({
             <span className={styles.marginLeftView}>Delete File</span>
           </span>
         </Menu.Item>
-      </Popconfirm>
+      </span>
     </Menu>
   );
   const displayColumnListImage = (obj) => {
@@ -496,24 +503,24 @@ const UploadFileUI = ({
                         Copy Short Code
                       </span>
                     </div>
-                    <div className={styles.menu_item}>
-                      <Popconfirm
-                        placement="rightTop"
-                        title="Are you sure you want to delete"
-                        onConfirm={() => removeFiles(keyParam, obj, fileLists)}
-                        okText="Yes"
-                        cancelText="No"
-                      >
-                        <Image
-                          alt="Trash Data "
-                          src={Trash}
-                          width={12}
-                          height={15}
-                        />
-                        <span className={styles.marginLeftView}>
-                          Delete File
-                        </span>
-                      </Popconfirm>
+                    <div
+                      className={styles.menu_item}
+                      onClick={() => {
+                        setRemoveFileData({
+                          keyParam: keyParam,
+                          obj: obj,
+                          fileLists: fileLists,
+                        }),
+                          setDeleteConfirmationVisible(true);
+                      }}
+                    >
+                      <Image
+                        alt="Trash Data "
+                        src={Trash}
+                        width={12}
+                        height={15}
+                      />
+                      <span className={styles.marginLeftView}>Delete File</span>
                     </div>
                   </>
                 ) : (
@@ -679,96 +686,104 @@ const UploadFileUI = ({
   };
   const filterArrList = [];
   const searchFilter = () => {
-    return (openFolder ? fileLists : filteredArray()).map((item, i) => {
-      filterArrList.push(item);
-      return (
-        <div
-          className={(() => {
-            if (openFolder && item.id != selectedFolderID) {
-              return "";
-            } else if (!openFolder) {
-              return styles.view_After_Upload;
-            } else {
-              return styles.folder_Back_Button;
-            }
-          })()}
-          key={i}
-        >
-          {(() => {
-            if (
-              item.type &&
-              item.type == "folder" &&
-              item.id == selectedFolderID &&
-              openFolder &&
-              dragBoxStatus == false
-            ) {
-              return (
-                <div>
-                  <Card
-                    size="small"
-                    title={
-                      <h2 className={styles.FolderOpenHeading}>
-                        {" "}
-                        <span
-                          style={{ cursor: "pointer" }}
-                          onClick={() => {
-                            closeFolder();
-                            StatusHideFile();
-                          }}
-                        >
+    return (openFolder ? fileLists : filteredArray()).length > 0 ? (
+      (openFolder ? fileLists : filteredArray()).map((item, i) => {
+        filterArrList.push(item);
+        return (
+          <div
+            className={(() => {
+              if (openFolder && item.id != selectedFolderID) {
+                return "";
+              } else if (!openFolder) {
+                return styles.view_After_Upload;
+              } else {
+                return styles.folder_Back_Button;
+              }
+            })()}
+            key={i}
+          >
+            {(() => {
+              if (
+                item.type &&
+                item.type == "folder" &&
+                item.id == selectedFolderID &&
+                openFolder &&
+                dragBoxStatus == false
+              ) {
+                return (
+                  <div>
+                    <Card
+                      size="small"
+                      title={
+                        <h2 className={styles.FolderOpenHeading}>
+                          {" "}
+                          <span
+                            style={{ cursor: "pointer" }}
+                            onClick={() => {
+                              closeFolder();
+                              StatusHideFile();
+                            }}
+                          >
+                            <Image
+                              id="arrowLeftOutlined"
+                              alt="Arrow Left"
+                              src={ArrowLeft}
+                              width={14}
+                              height={17}
+                            />
+                          </span>
+                          <span className={styles.marginLeftView}>
+                            {" " + item.name + " "}
+                          </span>
                           <Image
-                            id="arrowLeftOutlined"
-                            alt="Arrow Left"
-                            src={ArrowLeft}
-                            width={14}
-                            height={17}
+                            alt="folderOpenOutLine"
+                            src={folderOpenOutLine}
+                            width={24}
+                            height={20}
+                            className="ms-2"
                           />
-                        </span>
-                        <span className={styles.marginLeftView}>
-                          {" " + item.name + " "}
-                        </span>
-                        <Image
-                          alt="folderOpenOutLine"
-                          src={folderOpenOutLine}
-                          width={24}
-                          height={20}
-                          className="ms-2"
-                        />
-                      </h2>
-                    }
-                    className="FolderfileCard"
-                  >
-                    <div className={styles.openFolder}>
-                      {!toggleFileView ? (
-                        openFolder ? (
-                          filteredArray() && filteredArray().length > 0 ? (
-                            filteredArray().map((file, i) => {
-                              return openFolderInGridView(file, i);
-                            })
+                        </h2>
+                      }
+                      className="FolderfileCard"
+                    >
+                      <div className={styles.openFolder}>
+                        {!toggleFileView ? (
+                          openFolder ? (
+                            filteredArray() && filteredArray().length > 0 ? (
+                              filteredArray().map((file, i) => {
+                                return openFolderInGridView(file, i);
+                              })
+                            ) : (
+                              <div className={styles.emptyFolderData}>
+                                <Empty
+                                  description={<span>No Data Found</span>}
+                                />
+                              </div>
+                            )
                           ) : (
-                            <div className={styles.emptyFolderData}>
-                              <Empty description={<span>No Data Found</span>} />
-                            </div>
+                            ""
                           )
                         ) : (
                           ""
-                        )
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                  </Card>
-                </div>
-              );
-            } else if (!openFolder && dragBoxStatus == false) {
-              return openFolderData(item, i);
-            } else {
-              return "";
-            }
-          })()}
-        </div>
-      );
-    });
+                        )}
+                      </div>
+                    </Card>
+                  </div>
+                );
+              } else if (!openFolder && dragBoxStatus == false) {
+                return openFolderData(item, i);
+              } else {
+                return "";
+              }
+            })()}
+          </div>
+        );
+      })
+    ) : (
+      <div className={styles.emptyFolderData}>
+        <Empty description={<span>No Data Found</span>} />
+      </div>
+    );
   };
   const displayImage = (file, imageData) => {
     const fileText = <FileTextFilled className={styles.FileTextTwoOneClass} />;
@@ -1099,7 +1114,6 @@ const UploadFileUI = ({
                           }
                         />
                         <div className="imgWrap">
-                          {console.log(file)}
                           {(!imageRegexData.test(file.type) ||
                             (imageRegexData.test(file.type) &&
                               file.thumbUrl)) &&
@@ -1123,6 +1137,11 @@ const UploadFileUI = ({
                           name={file.uid}
                           onChange={(e) => handleChangeFileName(e, file.uid)}
                           placeholder="Full Name (with no extension)"
+                          onKeyDown={(e) =>
+                            e.key === "." &&
+                            e.keyCode === 190 &&
+                            e.preventDefault()
+                          }
                         />
                       </div>
                       {fileSizeFlag ? (
@@ -1279,6 +1298,23 @@ const UploadFileUI = ({
             </div>
           </span>
         )}
+      </Modal>
+      <Modal
+        title={null}
+        visible={DeleteConfirmationVisible}
+        onOk={() => {
+          removeFiles(
+            removeFileData.keyParam,
+            removeFileData.obj,
+            removeFileData.fileLists
+          );
+          //keyParam, obj, fileLists
+        }}
+        onCancel={() => {
+          setDeleteConfirmationVisible(false);
+        }}
+      >
+        <h1>Are you sure you want to delete ?</h1>
       </Modal>
     </>
   );

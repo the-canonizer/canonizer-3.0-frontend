@@ -14,7 +14,7 @@ const HomePageContainer = () => {
         <SideBar />
       </aside>
       <div className="pageContentWrap">
-        <Row gutter={16}>
+        <Row gutter={8}>
           <Col xs={24} sm={24} xl={12}>
             <TopicsList />
           </Col>

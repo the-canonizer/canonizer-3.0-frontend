@@ -7,7 +7,15 @@ import { RootState } from "../../../../store";
 import styles from "../siteHeader.module.scss";
 import React, { useEffect, useState } from "react";
 import Logo from "../logoHeader";
-import { MenuOutlined, CloseOutlined, DownOutlined } from "@ant-design/icons";
+import {
+  MenuOutlined,
+  CloseOutlined,
+  DownOutlined,
+  SettingOutlined,
+  LogoutOutlined,
+  CheckCircleOutlined,
+} from "@ant-design/icons";
+import Notifications from "../notification";
 
 const { Header } = Layout;
 const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
@@ -31,7 +39,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
 
     {
       link: "/uploadFile",
-      linkTitle: "Upload Files",
+      linkTitle: "Upload File",
       id: 2,
     },
     {
@@ -68,15 +76,27 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
     }
   };
   const menu = (
-    <Menu onClick={onClick}>
+    <Menu onClick={onClick} className={styles.menuItems}>
       <Menu.Item key="0">
-        <Link href="/settings">Account Settings</Link>
-      </Menu.Item>
-      <Menu.Item key="1">
-        <a>Support Camps</a>
+        <Link href="/settings" passHref>
+          <a>
+            <SettingOutlined />
+            Account Settings
+          </a>
+        </Link>
       </Menu.Item>
       <Menu.Divider />
-      <Menu.Item key="3">Log Out</Menu.Item>
+      <Menu.Item key="1">
+        <a>
+          <CheckCircleOutlined />
+          Supported Camps
+        </a>
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key="3">
+        <LogoutOutlined />
+        Log Out
+      </Menu.Item>
     </Menu>
   );
 
@@ -138,10 +158,15 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
             {!isLoginPage ? (
               <div className={styles.btnsLoginRegister}>
                 <div className="hdrUserdropdown">
-                  <Space size="small">
-                    <i className="icon-user"></i>{" "}
-                    <Dropdown overlay={menu} trigger={["click"]}>
+                  <Space size={40}>
+                    <Notifications />
+                    <Dropdown
+                      overlay={menu}
+                      trigger={["click"]}
+                      placement="bottomLeft"
+                    >
                       <Space size="small">
+                        <i className="icon-user"></i>{" "}
                         <a
                           className="ant-dropdown-link"
                           onClick={(e) => e.preventDefault()}
@@ -163,6 +188,9 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
               </div>
             ) : null}
             <div className={styles.iconMobMenu}>
+              <div className={styles.mob_noti}>
+                <Notifications />
+              </div>
               <Button size="middle" onClick={toggleMobNav}>
                 <MenuOutlined />
               </Button>
