@@ -15,6 +15,7 @@ import { LeftOutlined } from "@ant-design/icons";
 import { RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsReviewCanonizedTopics } from "../../../store/slices/filtersSlice";
+import Link from "next/link";
 
 const { Title, Text, Paragraph, Link } = Typography;
 const { Panel } = Collapse;
@@ -223,9 +224,16 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
             header={<span className={styles.title}>Canonizer</span>}
             key="1"
           >
-            <Title level={5} className={styles.algoText}>
-              Canonizer Algorithm:
-            </Title>
+            <div className={styles.algo_title}>
+              <Title level={5} className={styles.algoText}>
+                Canonizer Algorithm:
+              </Title>
+              <Popover content="Algorithm Information" placement="top">
+                <Link href="/topic/53-Canonizer-Algorithms/1-Agreement">
+                  <a>Help</a>
+                </Link>
+              </Popover>
+            </div>
             <Select
               size="large"
               className={styles.algoSelect}
@@ -242,7 +250,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
               })}
             </Select>
             <Paragraph className={styles.algoInfo}>
-              <i className="icon-fish-bones"></i> Algorithm Information
+              {/* <i className="icon-fish-bones"></i> Algorithm Information */}
             </Paragraph>
             <div className={styles.filter}>
               <Text>Filter</Text>
@@ -252,7 +260,11 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
                 onChange={filterOnScore}
                 value={filteredScore}
               />
-              <Popover content={infoContent} placement="right">
+              <Popover
+                content={infoContent}
+                placement="right"
+                className={styles.infoIcon}
+              >
                 <i className="icon-info"></i>
               </Popover>
             </div>

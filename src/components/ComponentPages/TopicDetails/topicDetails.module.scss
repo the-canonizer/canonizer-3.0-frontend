@@ -160,3 +160,12 @@
 //     width: calc(100% - 420px) !important;
 //   }
 // }
+
+.cardActions {
+  color: #6e7880;
+  font-weight: 500;
+  span {
+    font-weight: bold;
+    color: #0f2a4d;
+  }
+}
