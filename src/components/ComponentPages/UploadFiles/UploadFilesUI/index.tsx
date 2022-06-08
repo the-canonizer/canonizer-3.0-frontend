@@ -52,6 +52,7 @@ import ListViewActive from "../../../../assets/image/listViewActive.svg";
 import folderOpenOutLine from "../../../../assets/image/folderOpen.svg";
 import CopyShortCode from "../../../../assets/image/copyShortCode.svg";
 import eyeImage from "../../../../assets/image/eye.svg";
+import download from "../../../../assets/image/download.svg";
 import Trash from "../../../../assets/image/trash.svg";
 import ArrowLeft from "../../../../assets/image/arrow_small_left.svg";
 import CopyShortCodeImage from "../../../../assets/image/copyShort.png";
@@ -204,28 +205,47 @@ const UploadFileUI = ({
   );
   const menu_files = (i, item) => (
     <Menu>
-      <Menu.Item
-        onClick={() =>
-          setPreview({
-            previewVisible: true,
-            previewName: item.file_name,
-            previewPath: item.file_path,
-            previewCopyShortCode: item.short_code,
-            previewCreatedAt: item.created_at,
-          })
-        }
-      >
-        <span className={styles.menu_item}>
-          <Image
-            id="viewFile"
-            alt="Eye Image"
-            src={eyeImage}
-            width={15}
-            height={11}
-          />
-          <span className={styles.marginLeftView}>View File</span>
-        </span>
-      </Menu.Item>
+      {imageRegexData.test(item.file_type) ? (
+        <Menu.Item
+          onClick={() =>
+            setPreview({
+              previewVisible: true,
+              previewName: item.file_name,
+              previewPath: item.file_path,
+              previewCopyShortCode: item.short_code,
+              previewCreatedAt: item.created_at,
+            })
+          }
+        >
+          <span className={styles.menu_item}>
+            <Image
+              id="viewFile"
+              alt="Eye Image"
+              src={eyeImage}
+              width={15}
+              height={11}
+            />
+            <span className={styles.marginLeftView}>View File</span>
+          </span>
+        </Menu.Item>
+      ) : (
+        <Menu.Item
+          onClick={() => {
+            window.location.href = item.file_path;
+          }}
+        >
+          <span className={styles.menu_item}>
+            <Image
+              id="downloadFile"
+              alt="download file"
+              src={download}
+              width={15}
+              height={11}
+            />
+            <span className={styles.marginLeftView}>Download File</span>
+          </span>
+        </Menu.Item>
+      )}
       <Menu.Item
         onClick={() => {
           {
@@ -460,32 +480,52 @@ const UploadFileUI = ({
           <>
             <Popover
               overlayClassName="PopoverCustom"
-              placement="bottomRight"
+              placement="bottom"
               title=""
               content={
                 obj.file_type ? (
                   <>
-                    <div
-                      className={styles.menu_item}
-                      onClick={() =>
-                        setPreview({
-                          previewVisible: true,
-                          previewName: obj.file_name,
-                          previewPath: obj.file_path,
-                          previewCopyShortCode: obj.short_code,
-                          previewCreatedAt: obj.created_at,
-                        })
-                      }
-                    >
-                      {" "}
-                      <Image
-                        alt="Eye Image"
-                        src={eyeImage}
-                        width={15}
-                        height={11}
-                      />
-                      <span className={styles.marginLeftView}>View File</span>
-                    </div>
+                    {imageRegexData.test(obj.file_type) ? (
+                      <div
+                        className={styles.menu_item}
+                        onClick={() =>
+                          setPreview({
+                            previewVisible: true,
+                            previewName: obj.file_name,
+                            previewPath: obj.file_path,
+                            previewCopyShortCode: obj.short_code,
+                            previewCreatedAt: obj.created_at,
+                          })
+                        }
+                      >
+                        {" "}
+                        <Image
+                          alt="Eye Image"
+                          src={eyeImage}
+                          width={15}
+                          height={11}
+                        />
+                        <span className={styles.marginLeftView}>View File</span>
+                      </div>
+                    ) : (
+                      <div
+                        className={styles.menu_item}
+                        onClick={() => {
+                          window.location.href = obj.file_path;
+                        }}
+                      >
+                        <Image
+                          alt="downloadFile"
+                          src={download}
+                          width={15}
+                          height={11}
+                        />
+                        <span className={styles.marginLeftView}>
+                          Download File
+                        </span>
+                      </div>
+                    )}
+
                     <div
                       className={styles.menu_item}
                       onClick={() => {
