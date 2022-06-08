@@ -1,5 +1,5 @@
 import { Fragment, useState, useEffect } from "react";
-import { Form } from "antd";
+import { Form, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 
@@ -64,6 +64,8 @@ const CreateNewTopic = ({
     const res = await createTopic(body);
 
     if (res && res.status_code === 200) {
+      message.success(res.message);
+      
       const data = {
         submitter_nick_id: res.data.submitter_nick_id,
         message: res.message,

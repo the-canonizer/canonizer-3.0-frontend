@@ -1,5 +1,5 @@
 import { Fragment, useState, useEffect } from "react";
-import { Form } from "antd";
+import { Form, message } from "antd";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -174,6 +174,8 @@ const CreateNewCamp = ({
 
     const res = await createCamp(body);
     if (res && res.status_code === 200) {
+      message.success(res.message);
+
       dispatch(
         setCurrentTopic({ message: res.message, camp_num: res.data.camp_num })
       );
