@@ -41,6 +41,7 @@ const ForumComponent = ({}) => {
   const [quillContent, setQuillContent] = useState("");
   const [isError, setIsError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [postLoading, setPostLoading] = useState(false);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -358,6 +359,7 @@ const ForumComponent = ({}) => {
   };
 
   const onFinishPost = async (values) => {
+    setPostLoading(true);
     const q = router.query;
     if (
       quillContent.trim() === "" ||
@@ -399,6 +401,7 @@ const ForumComponent = ({}) => {
       getPosts(q.id, ppage);
       setQuillContent("");
     }
+    setPostLoading(false);
   };
 
   const onPostEditClick = (post) => {
@@ -492,6 +495,7 @@ const ForumComponent = ({}) => {
           onPostEditClick={onPostEditClick}
           onDeleteClick={onDeleteClick}
           isLog={isLog}
+          isLoading={postLoading}
         />
       ) : null}
     </Fragment>
