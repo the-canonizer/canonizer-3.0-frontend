@@ -9,6 +9,7 @@ const ExceptionalMessageConstants = {
   tooltipNewsEdit: "Must be owner to edit",
   selectNickNameErrorMsg: "Please select Nick name",
   statementRequiredErrorMsg: "Statement is required",
+  editSummaryErrorMsg: "Enter valid edit summary",
   submitStatementButton: "Submit Statement",
   submitUpdateButton: "Submit Update",
 };

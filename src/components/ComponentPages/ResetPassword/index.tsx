@@ -41,7 +41,12 @@ const ResetPassword = () => {
     <div className={styles.wrapper}>
       <aside className="leftSideBar miniSideBar">
         <div className={styles.wrap}>
-          <Button size="large" className={styles.createBtn} onClick={campRoute}>
+          <Button
+            size="large"
+            className={styles.createBtn}
+            onClick={campRoute}
+            id="create-topic-btn"
+          >
             <i className="icon-topic"></i>Create New Topic
           </Button>
         </div>
@@ -51,6 +56,7 @@ const ResetPassword = () => {
             width={200}
             height={532}
             alt=""
+            id="ad-img"
           />
         </aside>
       </aside>
@@ -64,7 +70,7 @@ const ResetPassword = () => {
             scrollToFirstError
             validateTrigger={messages.formValidationTypes()}
           >
-            <Title level={2} className={styles.titles}>
+            <Title level={2} className={styles.titles} id="create-pass-title">
               Create new password
             </Title>
             <div className={styles.section_one}>
@@ -105,6 +111,7 @@ const ResetPassword = () => {
                         className={styles["login-form-button"]}
                         block
                         data-testid="submitButton"
+                        id="save-btn"
                       >
                         Save
                       </Button>

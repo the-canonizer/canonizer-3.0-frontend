@@ -33,7 +33,7 @@ export default function OTPVerify({
         scrollToFirstError
         validateTrigger={messages.formValidationTypes()}
       >
-        <Title level={2} className={styles.titles}>
+        <Title level={2} className={styles.titles} id="otp-title-text">
           Log in One Time Verification Code
         </Title>
         {isModal && (
@@ -43,6 +43,7 @@ export default function OTPVerify({
             className={styles.close_btn}
             onClick={closeModal}
             icon={<CloseCircleOutlined />}
+            id="modal-close-btn"
           />
         )}
         <div className={styles.section_one}>
@@ -52,9 +53,10 @@ export default function OTPVerify({
               alt="otp"
               src="/images/otp-image_sm.png"
               fallback={fallBackSrc}
+              id="otp-modal-image"
             />
           </div>
-          <Text type="danger" className={styles.otpNote}>
+          <Text type="danger" className={styles.otpNote} id="otp-note-text">
             {isResend
               ? failedMsg
               : logMsg
@@ -82,6 +84,7 @@ export default function OTPVerify({
               className={styles.resetOTP}
               block
               onClick={onResendClick}
+              id="resent-otp-btn"
             >
               Resend OTP <RedoOutlined />
             </Button>
@@ -92,6 +95,7 @@ export default function OTPVerify({
             className={styles["login-form-button"]}
             block
             data-testid="submitButton"
+            id="submit-otp-btn"
           >
             Submit <ArrowRightOutlined />
           </Button>

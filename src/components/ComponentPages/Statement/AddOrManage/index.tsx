@@ -38,28 +38,30 @@ export default function AddOrManage({ add }) {
         ? router?.query?.statement[1]?.split("-")[0]
         : parent_camp[parent_camp?.length - 1]?.camp_num,
       nick_name: values?.nick_name,
-      note: values?.edit_summary,
+      note: values?.edit_summary?.trim(),
       parent_camp_num: add
         ? res_for_add?.parentcampnum
         : editInfo?.parentcampnum,
       submitter: add
         ? res_for_add?.statement?.submitter_nick_id
         : editInfo?.statement?.submitter_nick_id,
-      statement: values?.statement,
+      statement: values?.statement?.trim(),
     });
-    if (add) {
-      router.push(
-        router.asPath.replace("create/statement", "statement/history")
-      );
-    } else {
-      let route = `${editInfo?.topic?.topic_num}-${editInfo?.topic?.topic_name
-        ?.split(" ")
-        .join("-")}/${
-        parent_camp[parent_camp?.length - 1]?.camp_num
-      }-${parent_camp[parent_camp?.length - 1]?.camp_name
-        ?.split(" ")
-        .join("-")}`;
-      router.push(`/statement/history/${route}`);
+    if (res?.status_code == 200) {
+      if (add) {
+        router.push(
+          router.asPath.replace("create/statement", "statement/history")
+        );
+      } else {
+        let route = `${editInfo?.topic?.topic_num}-${editInfo?.topic?.topic_name
+          ?.split(" ")
+          .join("-")}/${
+          parent_camp[parent_camp?.length - 1]?.camp_num
+        }-${parent_camp[parent_camp?.length - 1]?.camp_name
+          ?.split(" ")
+          .join("-")}`;
+        router.push(`/statement/history/${route}`);
+      }
     }
     setScreenLoading(false);
   };
@@ -83,6 +85,15 @@ export default function AddOrManage({ add }) {
         add
           ? {
               nick_name: result?.data[0].id,
+            }
+          : router?.query?.statement[1]?.split("-")[1] == "update"
+          ? {
+              nick_name: res?.data?.nick_name[0]?.id,
+              statement: res?.data?.statement?.parsed_value?.replace(
+                /<[^>]+>/g,
+                ""
+              ),
+              edit_summary: res?.data?.statement?.note,
             }
           : {
               nick_name: res?.data?.nick_name[0]?.id,
@@ -155,6 +166,12 @@ export default function AddOrManage({ add }) {
                           rules={[
                             {
                               required: true,
+                              message:
+                                K?.exceptionalMessages
+                                  ?.statementRequiredErrorMsg,
+                            },
+                            {
+                              pattern: /[^ \s]/,
                               message:
                                 K?.exceptionalMessages
                                   ?.statementRequiredErrorMsg,

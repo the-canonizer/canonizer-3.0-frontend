@@ -23,10 +23,10 @@ const CreateNewCampUI = ({
   return (
     <Fragment>
       <div className={`${styles.upperTitle}`}>
-        <p>
+        <p id="topic-name">
           <strong>Topic: </strong> {topicRecord && topicRecord?.topic_name}
         </p>
-        <p>
+        <p id="camp-name">
           <strong>Camp: </strong>{" "}
           {campRecord
             ? campRecord.parentCamps?.map((camp, index) => {

@@ -216,6 +216,7 @@ const ForumComponent = ({}) => {
   };
 
   const filterThread = (type) => {
+    setTotalRecords(0);
     setThreadList([]);
     const queries = router?.query;
     queries.by = type;

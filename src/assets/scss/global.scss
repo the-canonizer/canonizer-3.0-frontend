@@ -1545,3 +1545,20 @@ div[role="option"]::before {
   background: #f5f5f5;
   cursor: not-allowed;
 }
+
+.dropdown 
+{
+  position: absolute;
+  right: 15px;
+  bottom: 20px;
+  width: 20px;
+  cursor: pointer;
+  height: 20px;
+}
+.ant-dropdown-trigger .anticon.anticon-more {
+  color: #fff;
+  font-size: 20px;
+  right: inherit;
+  position: inherit;
+  bottom: inherit;
+}
