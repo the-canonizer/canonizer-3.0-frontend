@@ -103,11 +103,9 @@ const TopicsList = () => {
 
   useEffect(() => {
     async function getTopicsApiCall() {
-      if (didMount.current) {
-        setGetTopicsLoadingIndicator(true);
-        await getTopicsApiCallWithReqBody();
-        setGetTopicsLoadingIndicator(false);
-      } else didMount.current = true;
+      setGetTopicsLoadingIndicator(true);
+      await getTopicsApiCallWithReqBody();
+      setGetTopicsLoadingIndicator(false);
     }
     getTopicsApiCall();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -126,7 +124,7 @@ const TopicsList = () => {
     const reqBody = {
       algorithm: algorithm,
       asofdate:
-        asof == ("default" || asof == "review") ? Date.now() / 1000 : asofdate,
+        asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
       namespace_id: nameSpaceId,
       page_number: pageNumberRef.current,
       page_size: 15,

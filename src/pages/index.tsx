@@ -31,32 +31,17 @@ function Home({ topicsData, nameSpacesList, whatsNew, algorithms }) {
 }
 
 export async function getServerSideProps() {
-  const currentTime = Date.now() / 1000;
-  const reqBody = {
-    algorithm: "blind_popularity",
-    asofdate: currentTime,
-    filter: 0,
-    namespace_id: "",
-    page_number: 1,
-    page_size: 15,
-    search: "",
-    asof: "default",
-  };
-  const nameSpaces = await getCanonizedNameSpacesApi();
-  const result = await getCanonizedTopicsApi(reqBody);
-  const whatsNewResult = await getCanonizedWhatsNewContentApi();
-  const canonizedAlgorithms = await getCanonizedAlgorithmsApi();
-  const topicsData = result || [];
-  const nameSpacesList = nameSpaces || [];
-  const algorithms = canonizedAlgorithms || [];
-  const whatsNew = whatsNewResult || [];
+  const [nameSpaces, canonizedAlgorithms, whatsNewResult] = await Promise.all([
+    getCanonizedNameSpacesApi(),
+    getCanonizedAlgorithmsApi(),
+    getCanonizedWhatsNewContentApi(),
+  ]);
 
   return {
     props: {
-      topicsData,
-      nameSpacesList,
-      whatsNew,
-      algorithms,
+      nameSpacesList: nameSpaces || [],
+      whatsNew: whatsNewResult || [],
+      algorithms: canonizedAlgorithms || [],
     },
   };
 }
