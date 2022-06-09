@@ -52,6 +52,7 @@ import ListViewActive from "../../../../assets/image/listViewActive.svg";
 import folderOpenOutLine from "../../../../assets/image/folderOpen.svg";
 import CopyShortCode from "../../../../assets/image/copyShortCode.svg";
 import eyeImage from "../../../../assets/image/eye.svg";
+import download from "../../../../assets/image/download.svg";
 import Trash from "../../../../assets/image/trash.svg";
 import ArrowLeft from "../../../../assets/image/arrow_small_left.svg";
 import CopyShortCodeImage from "../../../../assets/image/copyShort.png";
@@ -204,28 +205,47 @@ const UploadFileUI = ({
   );
   const menu_files = (i, item) => (
     <Menu>
-      <Menu.Item
-        onClick={() =>
-          setPreview({
-            previewVisible: true,
-            previewName: item.file_name,
-            previewPath: item.file_path,
-            previewCopyShortCode: item.short_code,
-            previewCreatedAt: item.created_at,
-          })
-        }
-      >
-        <span className={styles.menu_item}>
-          <Image
-            id="viewFile"
-            alt="Eye Image"
-            src={eyeImage}
-            width={15}
-            height={11}
-          />
-          <span className={styles.marginLeftView}>View File</span>
-        </span>
-      </Menu.Item>
+      {imageRegexData.test(item.file_type) ? (
+        <Menu.Item
+          onClick={() =>
+            setPreview({
+              previewVisible: true,
+              previewName: item.file_name,
+              previewPath: item.file_path,
+              previewCopyShortCode: item.short_code,
+              previewCreatedAt: item.created_at,
+            })
+          }
+        >
+          <span className={styles.menu_item}>
+            <Image
+              id="viewFile"
+              alt="Eye Image"
+              src={eyeImage}
+              width={15}
+              height={11}
+            />
+            <span className={styles.marginLeftView}>View File</span>
+          </span>
+        </Menu.Item>
+      ) : (
+        <Menu.Item
+          onClick={() => {
+            window.location.href = item.file_path;
+          }}
+        >
+          <span className={styles.menu_item}>
+            <Image
+              id="downloadFile"
+              alt="download file"
+              src={download}
+              width={15}
+              height={11}
+            />
+            <span className={styles.marginLeftView}>Download File</span>
+          </span>
+        </Menu.Item>
+      )}
       <Menu.Item
         onClick={() => {
           {
@@ -460,32 +480,52 @@ const UploadFileUI = ({
           <>
             <Popover
               overlayClassName="PopoverCustom"
-              placement="bottomRight"
+              placement="bottom"
               title=""
               content={
                 obj.file_type ? (
                   <>
-                    <div
-                      className={styles.menu_item}
-                      onClick={() =>
-                        setPreview({
-                          previewVisible: true,
-                          previewName: obj.file_name,
-                          previewPath: obj.file_path,
-                          previewCopyShortCode: obj.short_code,
-                          previewCreatedAt: obj.created_at,
-                        })
-                      }
-                    >
-                      {" "}
-                      <Image
-                        alt="Eye Image"
-                        src={eyeImage}
-                        width={15}
-                        height={11}
-                      />
-                      <span className={styles.marginLeftView}>View File</span>
-                    </div>
+                    {imageRegexData.test(obj.file_type) ? (
+                      <div
+                        className={styles.menu_item}
+                        onClick={() =>
+                          setPreview({
+                            previewVisible: true,
+                            previewName: obj.file_name,
+                            previewPath: obj.file_path,
+                            previewCopyShortCode: obj.short_code,
+                            previewCreatedAt: obj.created_at,
+                          })
+                        }
+                      >
+                        {" "}
+                        <Image
+                          alt="Eye Image"
+                          src={eyeImage}
+                          width={15}
+                          height={11}
+                        />
+                        <span className={styles.marginLeftView}>View File</span>
+                      </div>
+                    ) : (
+                      <div
+                        className={styles.menu_item}
+                        onClick={() => {
+                          window.location.href = obj.file_path;
+                        }}
+                      >
+                        <Image
+                          alt="downloadFile"
+                          src={download}
+                          width={15}
+                          height={11}
+                        />
+                        <span className={styles.marginLeftView}>
+                          Download File
+                        </span>
+                      </div>
+                    )}
+
                     <div
                       className={styles.menu_item}
                       onClick={() => {
@@ -589,14 +629,14 @@ const UploadFileUI = ({
       <div className={"folderId" + item.id} id={"folderId" + item.id}>
         {item && item.type && item.type == "folder" && !toggleFileView ? (
           <div className={styles.Folder_container}>
-            <Card className={styles.FolderData}>
+            <Card
+              className={styles.FolderData}
+              onClick={() => {
+                Openfolder(item.id);
+              }}
+            >
               <div className={styles.folder_icon}>
-                <div
-                  className="folder--wrap"
-                  onClick={() => {
-                    Openfolder(item.id);
-                  }}
-                >
+                <div className="folder--wrap">
                   <div className="foldername">
                     <span style={{ cursor: "pointer" }}>{item.name}</span>
                   </div>
@@ -608,22 +648,22 @@ const UploadFileUI = ({
                     <small>{"(" + item.uploads_count + " files)"}</small>
                   </div>
                 </div>
-                <div className={styles.dropdown}>
-                  <Dropdown
-                    overlay={menu(i, item)}
-                    trigger={["click"]}
-                    placement="topCenter"
-                  >
-                    <div
-                      className="ant-dropdown-link"
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      <MoreOutlined />
-                    </div>
-                  </Dropdown>
-                </div>
               </div>
             </Card>
+            <div className={styles.dropdown}>
+              <Dropdown
+                overlay={menu(i, item)}
+                trigger={["click"]}
+                placement="topCenter"
+              >
+                <div
+                  className="ant-dropdown-link"
+                  onClick={(e) => e.preventDefault()}
+                >
+                  <MoreOutlined />
+                </div>
+              </Dropdown>
+            </div>
           </div>
         ) : afterUpload && !toggleFileView && item.type == "file" ? (
           <Card className={styles.files}>
@@ -1299,22 +1339,61 @@ const UploadFileUI = ({
           </span>
         )}
       </Modal>
+
       <Modal
-        title={null}
+        className={styles.modal_cross}
+        title="Delete"
         visible={DeleteConfirmationVisible}
         onOk={() => {
-          removeFiles(
-            removeFileData.keyParam,
-            removeFileData.obj,
-            removeFileData.fileLists
-          );
-          //keyParam, obj, fileLists
+          setDeleteConfirmationVisible(false);
         }}
         onCancel={() => {
           setDeleteConfirmationVisible(false);
         }}
+        footer={null}
+        width="350px"
+        closeIcon={<CloseCircleOutlined />}
       >
-        <h1>Are you sure you want to delete ?</h1>
+        <Form>
+          <Form.Item style={{ marginBottom: "0px" }}>
+            <p>Are you sure you want to delete ?</p>
+          </Form.Item>
+          <Form.Item
+            className={styles.text_right}
+            style={{ marginBottom: "0px" }}
+          >
+            <Button
+              onClick={() => {
+                removeFiles(
+                  removeFileData.keyParam,
+                  removeFileData.obj,
+                  removeFileData.fileLists
+                );
+                //keyParam, obj, fileLists
+              }}
+              type="primary"
+              style={{
+                marginTop: 10,
+                marginRight: 10,
+              }}
+              className="ant-btn ant-btn-orange"
+            >
+              Delete
+            </Button>
+            <Button
+              onClick={() => {
+                setDeleteConfirmationVisible(false);
+              }}
+              type="default"
+              style={{
+                marginTop: 10,
+              }}
+              className="ant-btn"
+            >
+              Cancel
+            </Button>
+          </Form.Item>
+        </Form>
       </Modal>
     </>
   );

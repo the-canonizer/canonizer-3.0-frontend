@@ -230,6 +230,8 @@ const UploadFiles = () => {
   useEffect(() => {
     if (isLogIn) {
       GetUploadFileAndFolder();
+      setOpenFolderID("");
+      openFolderHide();
     }
   }, [isLogIn]);
   return (
