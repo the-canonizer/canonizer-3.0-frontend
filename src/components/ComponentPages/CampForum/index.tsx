@@ -216,11 +216,15 @@ const ForumComponent = ({}) => {
   };
 
   const filterThread = (type) => {
-    setTotalRecords(0);
-    setThreadList([]);
     const queries = router?.query;
-    queries.by = type;
-    router.push(router, undefined, { shallow: true });
+
+    if (type !== queries.by) {
+      setTotalRecords(0);
+      setThreadList([]);
+      setPage(1);
+      queries.by = type;
+      router.push(router, undefined, { shallow: true });
+    }
   };
 
   const onEditClick = (e, item) => {
