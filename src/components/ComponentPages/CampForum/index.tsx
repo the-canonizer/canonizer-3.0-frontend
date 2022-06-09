@@ -367,6 +367,7 @@ const ForumComponent = ({}) => {
       quillContent === "<p> </p>"
     ) {
       setIsError(true);
+      setPostLoading(false);
       return;
     }
 
