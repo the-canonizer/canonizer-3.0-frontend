@@ -86,11 +86,14 @@ const PostForm = ({
       >
         <Row gutter={16}>
           <Col xs={24}>
-            <Text style={{ marginBottom: "10px", display: "block" }}>
+            <Text
+              style={{ marginBottom: "10px", display: "block" }}
+              id="post-count-label"
+            >
               Number of Post in this thread: {postCount}
             </Text>
             {!isLog && (
-              <Text>
+              <Text id="sign-in-msg">
                 Please <a onClick={openModal}>Sign In</a> to comment on this
                 Thread
               </Text>
@@ -124,6 +127,7 @@ const PostForm = ({
                     placeholder={placeholders.nickName}
                     allowClear
                     size={"large"}
+                    data-id="nick-name-label"
                   >
                     {nickNameList.map((nick) => (
                       <Option key={nick.id} value={nick.id}>
@@ -145,6 +149,7 @@ const PostForm = ({
                     placeholder={placeholders.nickName}
                     allowClear
                     size={"large"}
+                    data-id="nick-name-label"
                   ></Select>
                 </Form.Item>
               ) : null}
@@ -159,6 +164,7 @@ const PostForm = ({
               htmlType="submit"
               size={"large"}
               className={`${styles.submit_btn}`}
+              id="submit-btn"
             >
               Submit
             </Button>
@@ -169,6 +175,7 @@ const PostForm = ({
               size={"large"}
               className={`${styles.cancel_btn}`}
               onClick={onCancel}
+              id="back-btn"
             >
               Back
             </Button>

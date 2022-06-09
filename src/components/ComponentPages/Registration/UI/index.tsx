@@ -74,7 +74,7 @@ function RegistrationUi({
         validateTrigger={messages.formValidationTypes()}
         autoComplete="off"
       >
-        <Title level={2} className={styles.titles}>
+        <Title level={2} className={styles.titles} id="registration-title">
           Register Now on Canonizer
         </Title>
         {isModal && (
@@ -84,6 +84,7 @@ function RegistrationUi({
             className={styles.close_btn}
             onClick={closeModal}
             icon={<CloseCircleOutlined />}
+            id="register-modal-close-btn"
           />
         )}
         <div className={styles.section_one}>
@@ -219,6 +220,7 @@ function RegistrationUi({
             block
             data-testid="submitButton"
             style={{ marginTop: "20px" }}
+            id="register-btn"
           >
             Register Now <ArrowRightOutlined />
           </Button>
@@ -228,9 +230,9 @@ function RegistrationUi({
           <SocialLoginButton isNotLogin={true} />
         </Form.Item>
         <Form.Item noStyle>
-          <Text className={styles.ft_link}>
+          <Text className={styles.ft_link} id="already-text">
             Already have an account?{" "}
-            <a href="#" onClick={onLoginClick}>
+            <a href="#" onClick={onLoginClick} id="already-text-link">
               Login Here
             </a>
           </Text>

@@ -25,7 +25,7 @@ const CreateCampFormUI = ({
       <Card className={styles.listCard} bodyStyle={{ padding: "15px" }}>
         <div className={`${styles.cardTitle} ${styles.listCardTitle}`}>
           <Space size="small">
-            <Text strong>
+            <Text strong id={"post-title-" + post.id}>
               <Link href="#">
                 <a className={styles.by}>{nick_name}</a>
               </Link>
@@ -47,7 +47,11 @@ const CreateCampFormUI = ({
             {post.is_my_post ? (
               <Fragment>
                 <Tooltip title="edit">
-                  <a onClick={onEditClick} className="linkCss">
+                  <a
+                    onClick={onEditClick}
+                    className="linkCss"
+                    id={"post-edit-icon" + post.id}
+                  >
                     <EditOutlined />
                   </a>
                 </Tooltip>
@@ -57,7 +61,7 @@ const CreateCampFormUI = ({
                   okText="Yes"
                   cancelText="No"
                 >
-                  <a className="linkCss">
+                  <a className="linkCss" id={"post-delete-icon-" + post.id}>
                     <DeleteOutlined />
                   </a>
                 </Popconfirm>

@@ -12,7 +12,13 @@ const CreateNewTopicButton = (props) => {
   };
 
   return (
-    <Button {...props} size="large" className={styles.btn} onClick={campRoute}>
+    <Button
+      {...props}
+      size="large"
+      className={styles.btn}
+      onClick={campRoute}
+      id="create-topic-btn"
+    >
       <i className="icon-topic"></i> Create New Topic
     </Button>
   );
