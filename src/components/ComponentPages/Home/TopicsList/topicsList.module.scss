@@ -75,8 +75,8 @@
       }
       .dropdown {
         @media screen and (min-width: 576px) {
-          max-width: 275px;
-          width: calc(100% - 200px);
+          max-width: 225px;
+          width: 100%;
         }
         @media screen and (max-width: 992px) {
           // width: 100%;
@@ -99,8 +99,8 @@
       }
       .dropdown {
         @media screen and (min-width: 576px) {
-          max-width: 275px;
-          width: calc(65% - 283px);
+          max-width: 225px;
+          width: 100%;
         }
         @media screen and (min-width: 1200px) {
           margin-right: auto;
