@@ -27,7 +27,7 @@ import { setCurrentTopic } from "../../../store/slices/topicSlice";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 
 const TopicDetails = () => {
-  const didMount = useRef(false);
+  // const didMount = useRef(false);
   let myRefToCampStatement = useRef(null);
 
   const [loadingIndicator, setLoadingIndicator] = useState(false);
@@ -53,12 +53,12 @@ const TopicDetails = () => {
     campStatement: state?.topicDetails?.campStatement,
   }));
 
-  const [campSubscriptionID, setCampSubscriptionID] = useState(
-    campRecord?.subscriptionId
-  );
-  const [topicSubscriptionID, setTopicSubscriptionID] = useState(
-    topicRecord?.topicSubscriptionId
-  );
+  // const [campSubscriptionID, setCampSubscriptionID] = useState(
+  //   campRecord?.subscriptionId
+  // );
+  // const [topicSubscriptionID, setTopicSubscriptionID] = useState(
+  //   topicRecord?.topicSubscriptionId
+  // );
   useEffect(() => {
     async function getTreeApiCall() {
       setGetTreeLoadingIndicator(true);
@@ -79,8 +79,8 @@ const TopicDetails = () => {
         getTreesApi(reqBody),
         getNewsFeedApi(reqBody),
         getCanonizedCampStatementApi(reqBody),
-        getCurrentTopicRecordApi(reqBody),
-        getCurrentCampRecordApi(reqBody),
+        // getCurrentTopicRecordApi(reqBody),
+        // getCurrentCampRecordApi(reqBody),
         getCanonizedCampSupportingTreeApi(reqBody),
         getCanonizedAlgorithmsApi(),
       ]);
@@ -92,12 +92,12 @@ const TopicDetails = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asofdate, algorithm, +router?.query?.camp[1]?.split("-")[0]]);
 
-  useEffect(() => {
-    if (didMount.current) {
-      setCampSubscriptionID(campRecord?.subscriptionId);
-      setTopicSubscriptionID(topicRecord?.topicSubscriptionId);
-    } else didMount.current = true;
-  }, [campRecord?.subscriptionId, topicRecord?.topicSubscriptionId]);
+  // useEffect(() => {
+  //   if (didMount.current) {
+  //     setCampSubscriptionID(campRecord?.subscriptionId);
+  //     setTopicSubscriptionID(topicRecord?.topicSubscriptionId);
+  //   } else didMount.current = true;
+  // }, [campRecord?.subscriptionId, topicRecord?.topicSubscriptionId]);
 
   const scrollToCampStatement = () => {
     myRefToCampStatement.current?.scrollIntoView({ behavior: "smooth" });
@@ -152,14 +152,13 @@ const TopicDetails = () => {
 
   const payload = {
     setLoadingIndicator,
-    campSubscriptionID,
-    topicSubscriptionID,
   };
+  console.log("pTH------------------------------", router?.query);
 
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
-        <CampInfoBar payload={payload} isStatementBar={false} />
+        <CampInfoBar payload={payload} isTopicPage={true} />
 
         <aside className={styles.miniSide + " leftSideBar miniSideBar"}>
           <SideBar onCreateCamp={onCreateCamp} />

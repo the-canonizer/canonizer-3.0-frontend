@@ -227,3 +227,13 @@ export const getAllUsedNickNames = async (body) => {
     handleError(error);
   }
 };
+export const getCampBreadCrumbApi = async (reqBody) => {
+  try {
+    const currentTopicRecord = await NetworkCall.fetch(
+      TreeRequest.getCampBreadCrumb(reqBody)
+    );
+    return currentTopicRecord?.data;
+  } catch (error) {
+    // message.error(error.message);
+  }
+};

@@ -137,4 +137,13 @@ export default class TreeRequest extends Request {
       token
     );
   }
+  static getCampBreadCrumb(reqBody) {
+    return new Request(
+      K.Network.URL.GetCurrentTopicRecord,
+      K.Network.Method.POST,
+      reqBody,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
 }

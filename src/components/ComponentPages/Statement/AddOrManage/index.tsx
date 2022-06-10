@@ -19,6 +19,7 @@ export default function AddOrManage({ add }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [nickNameData, setNickNameData] = useState([]);
   const [screenLoading, setScreenLoading] = useState(false);
+  const [payloadBreadCrumb, setPayloadBreadCrumb] = useState({});
   const [form] = Form.useForm();
 
   const onFinish = async (values: any) => {
@@ -73,13 +74,23 @@ export default function AddOrManage({ add }) {
       if (!add) {
         res = await getEditStatementApi(router?.query?.statement[1]);
         setEditStatementData(res);
+        setPayloadBreadCrumb({
+          camp_num: res?.data?.statement?.camp_num,
+          topic_num: res?.data?.statement?.topic_num,
+          topic_name: res?.data?.topic?.topic_name,
+        });
+      } else {
+        setPayloadBreadCrumb({
+          camp_num: router?.query?.statement[1].split("-")[0],
+          topic_num: router?.query?.statement[0].split("-")[0],
+          topic_name: router?.query?.statement[0].split("-").slice(1).join(" "),
+        });
       }
       const reqBody = {
         topic_num: add
           ? router?.query?.statement[0]?.split("-")[0]
           : res?.data?.topic?.topic_num,
       };
-
       const result = await getAllUsedNickNames(reqBody);
       form.setFieldsValue(
         add
@@ -108,11 +119,23 @@ export default function AddOrManage({ add }) {
     }
     isLogin ? nickNameListApiCall() : router.push("/login");
   }, []);
+  // console.log("payload router ----", router?.query);
+  // console.log(
+  //   "data in payload ------>",
+  //   router?.query?.statement[0].split("-")[0],
+  //   " =>>",
+  //   router?.query?.statement[0].split("-").slice(1).join(" "),
+  //   "addac",
 
+  //   router?.query?.statement[1].split("-")[0]
+  // );
+  console.log("req in 11111", payloadBreadCrumb);
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
-        <CampInfoBar isStatementBar={true} payload={null} />
+        {payloadBreadCrumb && (
+          <CampInfoBar isTopicPage={false} payload={payloadBreadCrumb} />
+        )}
 
         <aside className="leftSideBar miniSideBar">
           <SideBarNoFilter />
