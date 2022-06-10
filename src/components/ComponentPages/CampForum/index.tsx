@@ -362,17 +362,34 @@ const ForumComponent = ({}) => {
     setIsError(false);
   };
 
+  const isEmpty = (txt) => {
+    const commentText = txt.trim();
+    const re = /^<p>(<br>|<br\/>|<br\s\/>|\s+|)<\/p>$/gm;
+    return re.test(commentText);
+  };
+
+  const isEmptyTag = (htmlString) => {
+    const parser = new DOMParser();
+
+    const { textContent } = parser.parseFromString(
+      htmlString,
+      "text/html"
+    ).documentElement;
+
+    return textContent.trim();
+  };
+
   const onFinishPost = async (values) => {
+    // const regex = /(<[^<>\/]+>)\s+|\s+(<\/[^<>]+>)/g;
+    // quillContent.replace(regex, "$1$2")
+
     setPostLoading(true);
     const q = router.query;
-    if (
-      quillContent.trim() === "" ||
-      quillContent === "<p><br></p>" ||
-      quillContent === "<p> </p>"
-    ) {
+
+    if (quillContent.trim() === "" || isEmpty(quillContent)) {
       setIsError(true);
       setPostLoading(false);
-      return;
+      return true;
     }
 
     setIsError(false);
@@ -383,7 +400,7 @@ const ForumComponent = ({}) => {
     const topic_num = topicArr?.shift();
 
     const body = {
-      body: quillContent,
+      body: isEmptyTag(quillContent),
       nick_name: values.nick_name,
       thread_id: +q.id,
       camp_num: +camp_num,
@@ -401,7 +418,6 @@ const ForumComponent = ({}) => {
     }
 
     if (res && res.status_code === 200) {
-      console.log("post created");
       message.success(res.message);
       getPosts(q.id, ppage);
       setQuillContent("");
@@ -418,6 +434,7 @@ const ForumComponent = ({}) => {
         inline: "nearest",
       });
     }
+    console.log(post.body)
     setQuillContent(post.body);
     setCurrentPost(post);
   };
