@@ -40,6 +40,8 @@ const ForumComponent = ({}) => {
   const [pTotalRecords, setPtotalRecords] = useState(0);
   const [quillContent, setQuillContent] = useState("");
   const [isError, setIsError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [postLoading, setPostLoading] = useState(false);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -245,9 +247,10 @@ const ForumComponent = ({}) => {
   const [form] = Form.useForm();
 
   const fetchNickNameList = async () => {
-    const body = {
-      topic_num: paramsList["topic_num"],
-    };
+    setLoading(false);
+
+    const body = { topic_num: paramsList["topic_num"] };
+
     if (isLog) {
       let response = await getAllUsedNickNames(body);
       if (response && response.status_code === 200) {
@@ -289,6 +292,7 @@ const ForumComponent = ({}) => {
   }, [form, router.query, threadList]);
 
   const onFinish = async (values) => {
+    setLoading(true);
     const q = router.query;
     let res = null;
 
@@ -336,6 +340,7 @@ const ForumComponent = ({}) => {
         });
       }
     }
+    setLoading(false);
   };
 
   // create thread start
@@ -358,6 +363,7 @@ const ForumComponent = ({}) => {
   };
 
   const onFinishPost = async (values) => {
+    setPostLoading(true);
     const q = router.query;
     if (
       quillContent.trim() === "" ||
@@ -365,6 +371,7 @@ const ForumComponent = ({}) => {
       quillContent === "<p> </p>"
     ) {
       setIsError(true);
+      setPostLoading(false);
       return;
     }
 
@@ -399,6 +406,7 @@ const ForumComponent = ({}) => {
       getPosts(q.id, ppage);
       setQuillContent("");
     }
+    setPostLoading(false);
   };
 
   const onPostEditClick = (post) => {
@@ -460,6 +468,7 @@ const ForumComponent = ({}) => {
           onFinish={onFinish}
           form={form}
           initialValue={initialValue}
+          isLoading={loading}
         />
       ) : null}
       {router?.pathname === "/forum/[topic]/[camp]/threads/edit/[tId]" ? (
@@ -470,6 +479,7 @@ const ForumComponent = ({}) => {
           onFinish={onFinish}
           form={form}
           initialValue={initialValue}
+          isLoading={loading}
         />
       ) : null}
       {router?.pathname === "/forum/[topic]/[camp]/threads/[id]" ? (
@@ -490,6 +500,7 @@ const ForumComponent = ({}) => {
           onPostEditClick={onPostEditClick}
           onDeleteClick={onDeleteClick}
           isLog={isLog}
+          isLoading={postLoading}
         />
       ) : null}
     </Fragment>

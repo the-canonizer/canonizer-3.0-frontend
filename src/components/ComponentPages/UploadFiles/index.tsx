@@ -232,6 +232,7 @@ const UploadFiles = () => {
       GetUploadFileAndFolder();
       setOpenFolderID("");
       openFolderHide();
+      uploadOptionsHide();
     }
   }, [isLogIn]);
   return (
