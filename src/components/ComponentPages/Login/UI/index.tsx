@@ -73,16 +73,21 @@ const LoginUi = ({
           className={styles.close_btn}
           onClick={closeModal}
           icon={<CloseCircleOutlined />}
+          id="modal-close-btn"
         />
       )}
       <Row>
         <Col md={12}>
           <div className={styles.form_section}>
-            <Title level={2} className={styles.titles}>
+            <Title level={2} className={styles.titles} id="login-title">
               Login to Canonizer
             </Title>
             {errorMsg && (
-              <Text className={`${styles.errorMsgs}`} type="danger">
+              <Text
+                className={`${styles.errorMsgs}`}
+                type="danger"
+                id="login-error-label"
+              >
                 {errorMsg}
               </Text>
             )}
@@ -97,14 +102,24 @@ const LoginUi = ({
             >
               <FormItem
                 name="username"
-                label={messages.labels.emailPhone}
+                label={
+                  <>
+                    {messages.labels.emailPhone}{" "}
+                    <span className="required">*</span>
+                  </>
+                }
                 rules={messages.usernameRule}
                 placeholder={messages.placeholders.emailPhone}
               />
 
               <Form.Item
                 name="password"
-                label={messages.labels.password}
+                label={
+                  <>
+                    {messages.labels.password}
+                    <span className="required">*</span>
+                  </>
+                }
                 {...messages.userPassRule}
               >
                 <Input.Password
@@ -119,6 +134,7 @@ const LoginUi = ({
                 </Form.Item>
                 <Link href="/">
                   <a
+                    id="forgot-password-link"
                     className={styles["login-form-forgot"]}
                     onClick={onForgotPasswordClick}
                   >
@@ -134,6 +150,7 @@ const LoginUi = ({
                   htmlType="submit"
                   className="login-form-button"
                   block
+                  id="login-btn"
                 >
                   Log In <ArrowRightOutlined />
                 </Button>
@@ -144,6 +161,7 @@ const LoginUi = ({
                   className="login-form-button"
                   block
                   onClick={onOTPClick}
+                  id="request-otp-btn"
                 >
                   Request One Time Verification Code
                 </Button>
@@ -153,9 +171,13 @@ const LoginUi = ({
                 <SocialLoginButton />
               </Form.Item>
               <Form.Item noStyle>
-                <Text className={styles.ft_link}>
+                <Text className={styles.ft_link} id="dont-account-link">
                   {`Don't have an account? `}
-                  <a onClick={onRegister} style={{ fontWeight: "bold" }}>
+                  <a
+                    onClick={onRegister}
+                    style={{ fontWeight: "bold" }}
+                    id="dont-account-link-tag"
+                  >
                     {" "}
                     Register Now
                   </a>
@@ -166,7 +188,7 @@ const LoginUi = ({
         </Col>
         <Col md={12}>
           <div className={styles.img_section}>
-            <Paragraph className={styles.imgText}>
+            <Paragraph className={styles.imgText} id="login-right-text">
               Enter to the best leaderless consensus building and tracking
               system in the world.
             </Paragraph>
@@ -177,6 +199,7 @@ const LoginUi = ({
               preview={false}
               className={styles.bImg}
               src="/images/login-illustration.png"
+              id="login-page-img"
             />
           </div>
         </Col>

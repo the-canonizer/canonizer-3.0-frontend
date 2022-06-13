@@ -1315,7 +1315,7 @@ body {
       margin-bottom: 0;
       display: inline-flex;
       align-items: center;
-      color: #1C1B24;
+      color: #1c1b24;
     }
     .ant-collapse-extra {
       font-size: 15px;
@@ -1545,6 +1545,15 @@ div[role="option"]::before {
   background: #f5f5f5;
   cursor: not-allowed;
 }
-/* .ant-form-item-label > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before {
+.ant-form-item-label
+  > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before {
   display: none;
-} */
+}
+.ant-form-item-required {
+  .required {
+    color: red;
+    margin-left: 3px;
+    display: inline-block;
+    font-size: 16px;
+  }
+}

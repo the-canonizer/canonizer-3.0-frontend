@@ -74,7 +74,7 @@ function RegistrationUi({
         validateTrigger={messages.formValidationTypes()}
         autoComplete="off"
       >
-        <Title level={2} className={styles.titles}>
+        <Title level={2} className={styles.titles} id="registration-title">
           Register Now on Canonizer
         </Title>
         {isModal && (
@@ -84,6 +84,7 @@ function RegistrationUi({
             className={styles.close_btn}
             onClick={closeModal}
             icon={<CloseCircleOutlined />}
+            id="register-modal-close-btn"
           />
         )}
         <div className={styles.section_one}>
@@ -94,6 +95,7 @@ function RegistrationUi({
                 label={
                   <Fragment>
                     {messages.labels.firstName} <span>(Limit 100 Chars)</span>
+                    <span className="required">*</span>
                   </Fragment>
                 }
                 rules={messages.firstNameRule}
@@ -112,6 +114,7 @@ function RegistrationUi({
                   <Fragment>
                     {messages.labels.lastName}
                     <span>(Limit 100 Chars)</span>
+                    <span className="required">*</span>
                   </Fragment>
                 }
                 rules={messages.lastNameRule}
@@ -129,6 +132,7 @@ function RegistrationUi({
                   <Fragment>
                     {messages.labels.email}
                     <span>(Limit 255 Chars)</span>
+                    <span className="required">*</span>
                   </Fragment>
                 }
                 rules={messages.emRule}
@@ -162,7 +166,12 @@ function RegistrationUi({
             <Col md={12} style={{ width: "100%" }}>
               <Form.Item
                 name="password"
-                label={messages.labels.password}
+                label={
+                  <>
+                    {messages.labels.password}
+                    <span className="required">*</span>
+                  </>
+                }
                 {...messages.passwordRule}
               >
                 <Input.Password
@@ -176,7 +185,12 @@ function RegistrationUi({
             <Col md={{ span: 12 }} style={{ width: "100%" }}>
               <Form.Item
                 name="confirm"
-                label={messages.labels.confirmPassword}
+                label={
+                  <>
+                    {messages.labels.confirmPassword}
+                    <span className="required">*</span>
+                  </>
+                }
                 dependencies={["password"]}
                 {...messages.confirmPasswordRule}
               >
@@ -219,6 +233,7 @@ function RegistrationUi({
             block
             data-testid="submitButton"
             style={{ marginTop: "20px" }}
+            id="register-btn"
           >
             Register Now <ArrowRightOutlined />
           </Button>
@@ -228,9 +243,9 @@ function RegistrationUi({
           <SocialLoginButton isNotLogin={true} />
         </Form.Item>
         <Form.Item noStyle>
-          <Text className={styles.ft_link}>
+          <Text className={styles.ft_link} id="already-text">
             Already have an account?{" "}
-            <a href="#" onClick={onLoginClick}>
+            <a href="#" onClick={onLoginClick} id="already-text-link">
               Login Here
             </a>
           </Text>
