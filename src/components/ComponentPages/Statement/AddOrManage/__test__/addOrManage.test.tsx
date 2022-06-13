@@ -53,5 +53,34 @@ describe("Should render Addnews", () => {
         </RouterContext.Provider>
       </Provider>
     );
+    const mainHeadig = screen.getByText(/statement update/i);
+    const submitButton = screen.getByRole("button", {
+      name: /submit update/i,
+    });
+    const previewButton = screen.getByRole("button", {
+      name: /preview/i,
+    });
+    const createNewTopicButton = screen.getByRole("button", {
+      name: /create new topic/i,
+    });
+
+    expect(screen.getByText(/nick name/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/statement/i)[1].textContent).toBe("Statement");
+    expect(
+      screen.getByText(/\(briefly describe your changes\)/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/note: we support wiki markup\. to get reference \./i)
+    ).toBeInTheDocument();
+    expect(screen.getByText(/click here/i)).toBeInTheDocument();
+
+    expect(container.getElementsByTagName("button")).toHaveLength(3);
+    expect(container.getElementsByTagName("input")).toHaveLength(1);
+    expect(container.getElementsByTagName("textarea")).toHaveLength(2);
+
+    expect(submitButton.textContent).toBe("Submit Update");
+    expect(previewButton.textContent).toBe("Preview");
+    expect(createNewTopicButton.textContent).toBe("Create New Topic");
+    expect(mainHeadig.textContent).toBe("Statement Update");
   });
 });
