@@ -134,7 +134,11 @@ export default function AddOrManage({ add }) {
         <div className="pageContentWrap">
           <Spin spinning={screenLoading} size="large">
             <Card
-              title={add ? "Add Camp Statement" : "Topic Update"}
+              title={
+                add
+                  ? K?.exceptionalMessages?.addCampStatement
+                  : K?.exceptionalMessages?.statementUpdate
+              }
               className={styles.card}
             >
               <Form
@@ -194,7 +198,7 @@ export default function AddOrManage({ add }) {
                           <Input.TextArea size="large" rows={7} />
                         </Form.Item>
                         <p>
-                          Note: We support wiki markup. To get reference{" "}
+                          {K?.exceptionalMessages?.wikiMarkupSupportMsg}{" "}
                           <a>click here</a>.
                         </p>
                       </Col>
