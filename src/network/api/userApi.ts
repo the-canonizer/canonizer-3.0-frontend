@@ -9,7 +9,7 @@ import {
   setSocialUsers,
   setLogout,
 } from "../../store/slices/authSlice";
-import { showMultiUserModal } from "../../store/slices/uiSlice";
+import { showMultiUserModal, updateStatus } from "../../store/slices/uiSlice";
 import NetworkCall from "../networkCall";
 import UserRequest from "../request/userRequest";
 import { store } from "../../store";
@@ -56,7 +56,7 @@ export const login = async (email: string, password: string) => {
   }
 };
 
-export const logout = async (error = "") => {
+export const logout = async (error = "", status) => {
   let state = store.getState();
   const { auth } = state;
 
@@ -65,7 +65,14 @@ export const logout = async (error = "") => {
       !isServer() && window.localStorage.removeItem("token");
       store.dispatch(logoutUser());
       store.dispatch(removeAuthToken());
+      store.dispatch(updateStatus(status));
+
+      if (+state.ui.apiStatus === status) {
+        return;
+      }
+
       message.error("Your session has expired. Please log in again!");
+
       return true;
     }
 

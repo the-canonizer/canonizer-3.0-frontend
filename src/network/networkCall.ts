@@ -3,6 +3,8 @@ import K from "../constants";
 import { trackPromise } from "react-promise-tracker";
 import { camelCaseKeys } from "../utils/generalUtility";
 import { logout } from "./api/userApi";
+import { store } from "../store";
+import { updateStatus } from "../store/slices/uiSlice";
 
 export default class NetworkCall {
   static async fetch(request, useLoading = true) {
@@ -21,17 +23,20 @@ export default class NetworkCall {
       const response: any = useLoading
         ? await trackPromise(axiosCall())
         : await axiosCall();
+      store.dispatch(updateStatus(response.data.status));
       return response.data;
     } catch (err) {
       let error = err.response;
       if (error === undefined) {
         return Promise.reject({ error: error });
       } else if (error.status === K.Network.StatusCode.Invalid) {
+        store.dispatch(updateStatus(error.status));
+        
         if (!error.config.url?.includes("/user/login")) {
-          logout("Invalid User");
+          logout("Invalid User", error.status);
         }
       } else if (error.status === K.Network.StatusCode.Unauthorized) {
-        logout("User unauthorized");
+        logout("User unauthorized", error.status);
       }
 
       if (typeof error.data === "object" && "errors" in error.data)
