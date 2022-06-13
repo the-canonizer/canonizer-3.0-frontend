@@ -232,7 +232,7 @@ export const getCampBreadCrumbApi = async (reqBody) => {
     const currentTopicRecord = await NetworkCall.fetch(
       TreeRequest.getCampBreadCrumb(reqBody)
     );
-    return currentTopicRecord?.data;
+    return currentTopicRecord;
   } catch (error) {
     // message.error(error.message);
   }

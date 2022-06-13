@@ -1,4 +1,4 @@
-import { Tooltip, Typography } from "antd";
+import { Spin, Tooltip, Typography } from "antd";
 import { useRouter } from "next/router";
 import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
@@ -24,18 +24,18 @@ import Link from "next/link";
 const CampInfoBar = ({ payload, isTopicPage }) => {
   const isLogin = useAuthentication();
 
+  const [loadingIndicator, setLoadingIndicator] = useState(false);
+  const [payloadData, setPayloadData] = useState(payload);
+  const [breadCrumbRes, setBreadCrumbRes] = useState([]);
   const didMount = useRef(false);
   const router = useRouter();
   const { topicRecord, campRecord, campStatement, asofdate, asof, algorithm } =
     useSelector((state: RootState) => ({
       topicRecord: state?.topicDetails?.currentTopicRecord,
       campRecord: state?.topicDetails?.currentCampRecord,
-
       campStatement: state?.topicDetails?.campStatement,
-
       asofdate: state.filters?.filterObject?.asofdate,
       algorithm: state.filters?.filterObject?.algorithm,
-
       asof: state?.filters?.filterObject?.asof,
     }));
   const [campSubscriptionID, setCampSubscriptionID] = useState(
@@ -46,9 +46,23 @@ const CampInfoBar = ({ payload, isTopicPage }) => {
   );
 
   useEffect(() => {
-    console.log("useeffect1");
+    setPayloadData(payload);
+    async function getBreadCrumbApiCall() {
+      let reqBody = {
+        topic_num: payload?.topic_num,
+        camp_num: payload?.camp_num,
+      };
+      let res = await getCampBreadCrumbApi(reqBody);
+      setBreadCrumbRes(res?.data?.bread_crumb);
+    }
+    if (!isTopicPage) {
+      getBreadCrumbApiCall();
+    }
+  }, [payload]);
+
+  useEffect(() => {
     async function getTreeApiCall() {
-      payload?.setLoadingIndicator(true);
+      setLoadingIndicator(true);
       const reqBody = {
         topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
         camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
@@ -60,29 +74,15 @@ const CampInfoBar = ({ payload, isTopicPage }) => {
         algorithm: algorithm,
         update_all: 1,
       };
-
       await Promise.all([
         getCurrentTopicRecordApi(reqBody),
         getCurrentCampRecordApi(reqBody),
       ]);
-      payload?.setLoadingIndicator(false);
+      setLoadingIndicator(false);
     }
-    async function getBreedCrumbApiCall() {
-      let reqBody = {
-        topic_num: payload?.topic_num,
-        camp_num: payload?.camp_num,
-      };
-      console.log("request body 2222===============>", reqBody);
-      let res = await getCampBreadCrumbApi(reqBody);
-      console.log("res of breed camp====>", res);
-    }
-
     if (isTopicPage) {
       getTreeApiCall();
-    } else {
-      getBreedCrumbApiCall();
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     asofdate,
@@ -91,7 +91,6 @@ const CampInfoBar = ({ payload, isTopicPage }) => {
   ]);
 
   useEffect(() => {
-    console.log("useeffect1");
     if (isTopicPage) {
       if (didMount.current) {
         setCampSubscriptionID(campRecord?.subscriptionId);
@@ -141,10 +140,10 @@ const CampInfoBar = ({ payload, isTopicPage }) => {
           if (isLogin) {
             campOrTopicScribe(true);
           } else {
-            payload?.setLoadingIndicator(true);
+            setLoadingIndicator(true);
+
             router.push("/login");
           }
-          // campOrTopicScribe(true)
         }}
       >
         {!!topicSubscriptionID
@@ -160,18 +159,14 @@ const CampInfoBar = ({ payload, isTopicPage }) => {
           ></i>
         }
         disabled={!!campSubscriptionID && campRecord?.flag == 2 ? true : false}
-        onClick={
-          () => {
-            if (isLogin) {
-              campOrTopicScribe(false);
-            } else {
-              payload?.setLoadingIndicator(true);
-              router.push("/login");
-            }
+        onClick={() => {
+          if (isLogin) {
+            campOrTopicScribe(false);
+          } else {
+            setLoadingIndicator(true);
+            router.push("/login");
           }
-
-          // campOrTopicScribe(false)
-        }
+        }}
       >
         {!!campSubscriptionID && campRecord?.flag !== 2 ? (
           "Unsubscribe to the Camp"
@@ -197,95 +192,95 @@ const CampInfoBar = ({ payload, isTopicPage }) => {
       </Menu.Item>
     </Menu>
   );
-  console.log("payload 222=> ", payload);
-  //   console.log(" topicRecord ", topicRecord),
-  //   console.log("  campRecord", campRecord),
-  //   console.log("campStatement", campStatement);
-  // console.log(
-  //   "route=>1 ",
-  //   campRecord?.parentCamps?.map((camp, index) => {
-  //     console.log(
-  //       "data=>",
-  //       router.query?.camp?.at(0),
-  //       "/",
-  //       camp?.camp_num,
-  //       "-",
-  //       camp?.camp_name
-  //     );
-  //   })
-  // );
 
-  // console.log("change path ", +router?.query?.camp[1]?.split("-")[0]);
-
-  // console.log("initial path ", router?.query);
   return (
     <>
       <div className={styles.topicDetailContentHead}>
-        <div className={styles.topicDetailContentHead_Left}>
-          <Typography.Paragraph className={"mb-0 " + styles.topicTitleStyle}>
-            {" "}
-            <span className="bold"> Topic: </span>
-            {topicRecord && topicRecord?.topic_name}{" "}
-            {!!topicSubscriptionID && (
-              <small>
-                <i className="icon-subscribe text-primary"></i>
-              </small>
-            )}
-          </Typography.Paragraph>
-          <div className={styles.breadcrumbLinks}>
-            {" "}
-            <span className="bold mr-1"> Camp : </span>
-            {campRecord
-              ? campRecord.parentCamps?.map((camp, index) => {
-                  return (
-                    <Link
-                      href={`${router.query?.camp?.at(0)}/${
-                        camp?.camp_num
-                      }-${camp?.camp_name?.split(" ").join("-")}`}
-                      key={camp?.camp_num}
-                    >
-                      <a>
-                        {index !== 0 && "/ "}
-                        {`${camp?.camp_name}`}
-                      </a>
-                    </Link>
-                  );
-                })
-              : null}
-            {!!campSubscriptionID && (
-              <small style={{ alignSelf: "center", marginLeft: "10px" }}>
-                <i className="icon-subscribe text-primary"></i>
-              </small>
+        <Spin spinning={loadingIndicator} size="small">
+          <div className={styles.topicDetailContentHead_Left}>
+            <Typography.Paragraph className={"mb-0 " + styles.topicTitleStyle}>
+              {" "}
+              <span className="bold"> Topic: </span>
+              {isTopicPage
+                ? topicRecord && topicRecord?.topic_name
+                : payloadData?.topic_name}
+              {"  "}
+              {!!topicSubscriptionID && (
+                <small>
+                  <i className="icon-subscribe text-primary"></i>
+                </small>
+              )}
+            </Typography.Paragraph>
+            <div className={styles.breadcrumbLinks}>
+              {" "}
+              <span className="bold mr-1"> Camp : </span>
+              {isTopicPage
+                ? campRecord
+                  ? campRecord?.parentCamps?.map((camp, index) => {
+                      return (
+                        <Link
+                          href={`${router.query?.camp?.at(0)}/${
+                            camp?.camp_num
+                          }-${camp?.camp_name?.split(" ").join("-")}`}
+                          key={camp?.camp_num}
+                        >
+                          <a>
+                            {index !== 0 && "/ "}
+                            {`${camp?.camp_name}`}
+                          </a>
+                        </Link>
+                      );
+                    })
+                  : null
+                : breadCrumbRes
+                ? breadCrumbRes?.map((camp, index) => {
+                    return (
+                      <Link
+                        href={`/topic/${payloadData?.topic_num}-${payloadData?.topic_name}/${camp?.camp_num}-${camp?.camp_name}-${camp?.topic_num}`}
+                      >
+                        <a>
+                          {index !== 0 && "/ "}
+                          {`${camp?.camp_name}`}
+                        </a>
+                      </Link>
+                    );
+                  })
+                : null}
+              {!!campSubscriptionID && (
+                <small style={{ alignSelf: "center", marginLeft: "10px" }}>
+                  <i className="icon-subscribe text-primary"></i>
+                </small>
+              )}
+            </div>
+          </div>
+
+          <div className={styles.topicDetailContentHead_Right}>
+            {isTopicPage && (
+              <>
+                <Button
+                  type="primary"
+                  className={styles.btnCampForum}
+                  onClick={onCampForumClick}
+                >
+                  Camp Forum
+                </Button>
+                <Dropdown
+                  className={styles.campForumDropdown}
+                  placement="bottomRight"
+                  overlay={campForumDropdownMenu}
+                  trigger={["click"]}
+                >
+                  <a
+                    className={styles.iconMore}
+                    onClick={(e) => e.preventDefault()}
+                  >
+                    <MoreOutlined />
+                  </a>
+                </Dropdown>
+              </>
             )}
           </div>
-        </div>
-
-        <div className={styles.topicDetailContentHead_Right}>
-          {isTopicPage && (
-            <>
-              <Button
-                type="primary"
-                className={styles.btnCampForum}
-                onClick={onCampForumClick}
-              >
-                Camp Forum
-              </Button>
-              <Dropdown
-                className={styles.campForumDropdown}
-                placement="bottomRight"
-                overlay={campForumDropdownMenu}
-                trigger={["click"]}
-              >
-                <a
-                  className={styles.iconMore}
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <MoreOutlined />
-                </a>
-              </Dropdown>
-            </>
-          )}
-        </div>
+        </Spin>
       </div>
     </>
   );

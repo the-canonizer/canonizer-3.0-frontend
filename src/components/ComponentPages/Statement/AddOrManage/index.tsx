@@ -119,17 +119,8 @@ export default function AddOrManage({ add }) {
     }
     isLogin ? nickNameListApiCall() : router.push("/login");
   }, []);
-  // console.log("payload router ----", router?.query);
-  // console.log(
-  //   "data in payload ------>",
-  //   router?.query?.statement[0].split("-")[0],
-  //   " =>>",
-  //   router?.query?.statement[0].split("-").slice(1).join(" "),
-  //   "addac",
 
-  //   router?.query?.statement[1].split("-")[0]
-  // );
-  console.log("req in 11111", payloadBreadCrumb);
+  console.log("payload breadcrumb in 11111", payloadBreadCrumb);
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
@@ -203,6 +194,10 @@ export default function AddOrManage({ add }) {
                         >
                           <Input.TextArea size="large" rows={7} />
                         </Form.Item>
+                        <p>
+                          Note: We support wiki markup. To get reference{" "}
+                          <a>click here</a>.
+                        </p>
                       </Col>
                     </Row>
 
