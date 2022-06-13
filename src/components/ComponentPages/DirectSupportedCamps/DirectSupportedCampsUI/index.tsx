@@ -23,6 +23,7 @@ export default function DirectSupportedCampsUI({
   idData,
   handleOk,
   handleCancel,
+  removeSupportCampsData,
 }) {
   const [valData, setValData] = useState({});
   const [tagsDataArrValue, setTagsDataArrValue] = useState([]);
@@ -171,8 +172,12 @@ export default function DirectSupportedCampsUI({
           <Form.Item style={{ marginBottom: "0px" }}>
             <p>
               Your Support for all the camps under the Topics{" "}
-              <span className={styles.Bluecolor}>
-                &quot;Front End Language&quot;
+              <span>
+                &quot;
+                <Link href={removeSupportCampsData.title_link}>
+                  <a>{removeSupportCampsData.title}</a>
+                </Link>
+                &quot;
               </span>{" "}
               will be removed. Are you sure you want to continue?
             </p>

@@ -825,6 +825,8 @@ const UploadFileUI = ({
           </div>
         );
       })
+    ) : dragBoxStatus == true ? (
+      ""
     ) : (
       <div className={styles.emptyFolderData}>
         <Empty description={<span>No Data Found</span>} />
@@ -1324,13 +1326,14 @@ const UploadFileUI = ({
         className="modalStyle"
         visible={preview.previewVisible}
         footer={null}
+        centered
         closeIcon={<CloseCircleOutlined className={styles.crossIcon} />}
         onCancel={() => {
           setPreview({ ...preview, previewVisible: false }),
             setPreviewImageIndicator(false);
         }}
       >
-        {preview.previewPath && (
+        {preview.previewPath ? (
           <span>
             <Spin spinning={previewImageIndicator} size="large">
               <Image
@@ -1379,6 +1382,13 @@ const UploadFileUI = ({
               </div>
             </div>
           </span>
+        ) : (
+          <div className={styles.emptyFolderData}>
+            <br />
+            <Empty description={<span>{"File doesn't exist"}</span>} />
+            <br />
+            <br />
+          </div>
         )}
       </Modal>
 

@@ -1456,8 +1456,8 @@ body {
 //   font-family: var(--font-family-asap);
 // }
 .ant-modal-title {
-  color: #2e68db;
-  font-size: 26px;
+  color: #0F2A4D;
+  font-size: 20px; 
   font-weight: 600;
   font-family: var(--font-family-asap);
 }
@@ -1561,4 +1561,13 @@ div[role="option"]::before {
   right: inherit;
   position: inherit;
   bottom: inherit;
+}
+
+.Profile_btn{ 
+  min-width: 150px;
+}
+.ant-btn 
+{
+  padding:4px 32px;
+  height: 38px;
 }
