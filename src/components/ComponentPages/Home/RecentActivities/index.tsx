@@ -110,6 +110,15 @@ export default function RecentActivities() {
     await getRecentActivitiesApi(reqBody, loadMore, topicType);
     setLoadMoreIndicator(false);
   }
+  const covertToTime = (unixTime) => {
+    let uTime = new Date(unixTime * 1000);
+    var year = uTime.getFullYear();
+    var month = uTime.toDateString().split(" ")[1];
+    var date = uTime.getDate();
+    var time = uTime.toLocaleTimeString();
+    var convertedTime = month + " " + date + ", " + year + ", " + time;
+    return " " + convertedTime;
+  };
 
   const ViewAllTopics = (isTopic) => {
     const ViewAllName = isTopic ? "View All Topics" : "View All Threads";
@@ -180,7 +189,7 @@ export default function RecentActivities() {
                         </Text>
                         <Text className={styles.secondary} type="secondary">
                           <i className="icon-calendar"></i>
-                          {activity.updated_at}
+                          {covertToTime(activity.updated_at)}
                         </Text>
                       </>
                     </Link>
@@ -207,7 +216,7 @@ export default function RecentActivities() {
                         </Text>
                         <Text className={styles.secondary} type="secondary">
                           <i className="icon-calendar"></i>
-                          {activity.updated_at}
+                          {covertToTime(activity.updated_at)}
                         </Text>
                       </>
                     </Link>
