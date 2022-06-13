@@ -41,8 +41,8 @@ export default function AddOrManage({ add }) {
       nick_name: values?.nick_name,
       note: values?.edit_summary?.trim(),
       parent_camp_num: add
-        ? res_for_add?.parentcampnum
-        : editInfo?.parentcampnum,
+        ? res_for_add?.parent_camp_num
+        : editInfo?.parent_camp_num,
       submitter: add
         ? res_for_add?.statement?.submitter_nick_id
         : editInfo?.statement?.submitter_nick_id,
@@ -120,7 +120,6 @@ export default function AddOrManage({ add }) {
     isLogin ? nickNameListApiCall() : router.push("/login");
   }, []);
 
-  console.log("payload breadcrumb in 11111", payloadBreadCrumb);
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
