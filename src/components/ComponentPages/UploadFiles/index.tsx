@@ -106,7 +106,7 @@ const UploadFiles = () => {
     let res = await uploadFile(formData);
     if (res && res.status_code == 200) {
       //fileStatusHide();
-      enableCreateFolderBtn();
+      //enableCreateFolderBtn();
       uploadOptionsHide();
       shownFolder();
       hideFiles();
@@ -220,9 +220,10 @@ const UploadFiles = () => {
         arr.length > 0
           ? (dragBoxHide(),
             shownAddButton(),
-            enableCreateFolderBtn(),
+            //enableCreateFolderBtn(),
             showUploadsAfter())
-          : (dragBoxShow(), hideAddButton(), enableCreateFolderBtn());
+          : (dragBoxShow(), hideAddButton());
+            //enableCreateFolderBtn()
       }
     }
   };

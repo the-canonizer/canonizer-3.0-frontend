@@ -115,7 +115,7 @@ function ProfileInfoForm({
     </div>
   );
   // @ts-ignore
-  if (privateFlags != "")
+  if (privateFlags != "loading")
     return (
       <Form
         name="profileInfo"
