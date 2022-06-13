@@ -36,7 +36,7 @@ const CampStatementCard = ({ myRefToCampStatement, onCampForumClick }) => {
           ) : null
         }
       >
-        <Paragraph className={styles.campStatementContent}>
+        <Paragraph>
           {campStatement?.length ? (
             <div
               dangerouslySetInnerHTML={{

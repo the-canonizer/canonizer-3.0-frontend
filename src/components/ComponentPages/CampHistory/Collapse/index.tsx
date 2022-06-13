@@ -31,7 +31,7 @@ export default function HistoryCollapse({ campStatement }) {
             <>
               <Title level={5}>Statement :</Title>
 
-              <div className={styles.campStatementHistoryContent}
+              <div
                 dangerouslySetInnerHTML={{
                   __html: campStatement?.parsed_value,
                 }}
