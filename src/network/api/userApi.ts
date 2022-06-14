@@ -56,7 +56,7 @@ export const login = async (email: string, password: string) => {
   }
 };
 
-export const logout = async (error = "", status) => {
+export const logout = async (error = "", status = null) => {
   let state = store.getState();
   const { auth } = state;
 
@@ -67,7 +67,7 @@ export const logout = async (error = "", status) => {
       store.dispatch(removeAuthToken());
       store.dispatch(updateStatus(status));
 
-      if (+state.ui.apiStatus === status) {
+      if (+state.ui.apiStatus === +status) {
         return;
       }
 
