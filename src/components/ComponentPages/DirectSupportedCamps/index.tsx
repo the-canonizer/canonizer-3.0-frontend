@@ -18,6 +18,7 @@ const DirectSupportedCamps = ({ search }) => {
     useState([]);
   const [isSupportedCampsModalVisible, setIsSupportedCampsModalVisible] =
     useState(false);
+  const [removeSupportCampsData, setremoveSupportCampsData] = useState({});
   const [removeTopicNumDataId, setRemoveTopicNumDataId] = useState("");
   const [nickNameId, setNickNameId] = useState("");
   const [showSaveChanges, setShowSaveChanges] = useState(false);
@@ -158,6 +159,7 @@ const DirectSupportedCamps = ({ search }) => {
     setRemoveTopicNumDataId(data.topic_num);
     setNickNameId(data.nick_name_id);
     setIsSupportedCampsModalVisible(true);
+    setremoveSupportCampsData(data);
   };
   //remove Entire Card
   const removeSupport = async () => {
@@ -206,6 +208,7 @@ const DirectSupportedCamps = ({ search }) => {
       idData={idData}
       handleOk={handleOk}
       handleCancel={handleCancel}
+      removeSupportCampsData={removeSupportCampsData}
     />
   );
 };

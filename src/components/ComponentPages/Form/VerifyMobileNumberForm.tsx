@@ -93,7 +93,7 @@ function VerifyMobileNumberForm({
               <Button
                 id="verifyBtn"
                 type="primary"
-                className="ant-btn ant-btn-orange ant-btn-lg"
+                className="Profile_btn ant-btn ant-btn-orange ant-btn-lg"
                 htmlType="submit"
                 data-testid="submitButton"
                 tabIndex={3}
