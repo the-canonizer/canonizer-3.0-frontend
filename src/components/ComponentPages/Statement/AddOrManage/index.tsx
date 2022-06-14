@@ -177,7 +177,7 @@ export default function AddOrManage({ add }) {
                     <Row gutter={24}>
                       <Col xs={24} xl={12}>
                         <Form.Item
-                          className={styles.formItem}
+                          className={`${styles.formItem} mb-2`}
                           name="statement"
                           label={<>Statement </>}
                           rules={[
@@ -197,14 +197,11 @@ export default function AddOrManage({ add }) {
                         >
                           <Input.TextArea size="large" rows={7} />
                         </Form.Item>
-                        <p>
+                        <small className="mb-3 d-block">
                           {K?.exceptionalMessages?.wikiMarkupSupportMsg}{" "}
                           <a>click here</a>.
-                        </p>
+                        </small>
                       </Col>
-                    </Row>
-
-                    <Row gutter={24}>
                       <Col xs={24} xl={12}>
                         <Form.Item
                           className={styles.formItem}
@@ -225,7 +222,7 @@ export default function AddOrManage({ add }) {
                     <Form.Item className="mb-0 text-right">
                       <Button
                         size="large"
-                        className={`btn-orange ${styles.btnSubmit}`}
+                        className={`btn-orange mr-3 ${styles.btnSubmit}`}
                         htmlType="submit"
                       >
                         {add
