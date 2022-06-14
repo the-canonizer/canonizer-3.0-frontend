@@ -31,7 +31,7 @@ export default class NetworkCall {
         return Promise.reject({ error: error });
       } else if (error.status === K.Network.StatusCode.Invalid) {
         store.dispatch(updateStatus(error.status));
-        
+
         if (!error.config.url?.includes("/user/login")) {
           logout("Invalid User", error.status);
         }
