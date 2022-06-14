@@ -19,6 +19,7 @@ export const uiSlice = createSlice({
     crossBtn: false,
     showFiles: "afterUpload",
     showSocialLoginEmailPopup: false,
+    apiStatus: null,
   },
   reducers: {
     showLoginModal: (state) => {
@@ -117,6 +118,9 @@ export const uiSlice = createSlice({
     hideSocialEmailPopup: (state) => {
       state.showSocialLoginEmailPopup = false;
     },
+    updateStatus: (state, action) => {
+      state.apiStatus = action.payload;
+    },
   },
 });
 
@@ -153,6 +157,7 @@ export const {
   showUploadFiles,
   showSocialEmailPopup,
   hideSocialEmailPopup,
+  updateStatus,
 } = uiSlice.actions;
 
 export default uiSlice.reducer;

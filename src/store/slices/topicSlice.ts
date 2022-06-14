@@ -14,7 +14,6 @@ export const topicSlice = createSlice({
   },
   reducers: {
     setCurrentTopic: (state, action) => {
-      console.log("state", state.currentTopic);
       state.currentTopic = {
         topic_num: action.payload.topic_num,
         topic_name: action.payload.topic_name || "",

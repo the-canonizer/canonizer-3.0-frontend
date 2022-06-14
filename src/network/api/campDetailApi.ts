@@ -225,6 +225,7 @@ export const getAllUsedNickNames = async (body) => {
     return res;
   } catch (error) {
     handleError(error);
+    return error.error;
   }
 };
 export const getCampBreadCrumbApi = async (reqBody) => {

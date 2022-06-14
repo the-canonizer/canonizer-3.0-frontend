@@ -124,8 +124,12 @@
       transition: all 0.3s;
       font-weight: 600;
 
-      &:hover {
+      &:hover,
+      &:active,
+      &:focus {
         background: #d3840e;
+        background-color: #d3840e;
+        border-color: #f89d15;
       }
     }
   }
@@ -159,8 +163,12 @@
   color: #ffffff;
   transition: all 0.3s;
 
-  &:hover {
+  &:hover,
+  &:active,
+  &:focus {
     background: #d3840e;
+    background-color: #d3840e;
+    border-color: #f89d15;
   }
 }
 
