@@ -434,7 +434,7 @@ const ForumComponent = ({}) => {
         inline: "nearest",
       });
     }
-    console.log(post.body);
+    
     setQuillContent(post.body);
     setCurrentPost(post);
   };

@@ -223,7 +223,7 @@ const UploadFiles = () => {
             //enableCreateFolderBtn(),
             showUploadsAfter())
           : (dragBoxShow(), hideAddButton());
-            //enableCreateFolderBtn()
+        //enableCreateFolderBtn()
       }
     }
   };
