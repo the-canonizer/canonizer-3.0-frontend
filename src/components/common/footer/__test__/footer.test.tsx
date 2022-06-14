@@ -22,9 +22,7 @@ describe("Footer", () => {
     const browseLink = screen.getByRole("link", {
       name: /Browse/i,
     });
-    const servicesLink = screen.getByRole("link", {
-      name: "Services",
-    });
+
     const createNewTopicLink = screen.getByRole("link", {
       name: /Create New Topic/i,
     });
@@ -32,7 +30,7 @@ describe("Footer", () => {
       name: /Help/i,
     });
     const uploadFilesLink = screen.getByRole("link", {
-      name: /Upload Files/i,
+      name: /Upload File/i,
     });
     const whitePaperLink = screen.getByRole("link", {
       name: /White Paper/i,
@@ -60,9 +58,9 @@ describe("Footer", () => {
     });
 
     expect(container.getElementsByTagName("footer")).toHaveLength(1);
-    expect(container.getElementsByTagName("ul")).toHaveLength(2);
-    expect(container.getElementsByTagName("li")).toHaveLength(10);
-    expect(container.getElementsByTagName("a")).toHaveLength(12);
+    expect(container.getElementsByTagName("ul")).toHaveLength(3);
+    expect(container.getElementsByTagName("li")).toHaveLength(9);
+    expect(container.getElementsByTagName("a")).toHaveLength(11);
     expect(container.getElementsByTagName("img")).toHaveLength(4);
 
     expect(logoLink.getAttribute("href")).toBe("/");
@@ -72,7 +70,6 @@ describe("Footer", () => {
     expect(whitePaperLink.getAttribute("href")).toBe("/white-paper");
     expect(blogLink.getAttribute("href")).toBe("/blog");
     expect(jobsLink.getAttribute("href")).toBe("/jobs");
-    expect(servicesLink.getAttribute("href")).toBe("/services");
     expect(termsAndServicesLink.getAttribute("href")).toBe(
       "/terms-and-services"
     );
