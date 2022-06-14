@@ -451,6 +451,8 @@ const ForumComponent = ({}) => {
 
   const onCancel = () => {
     onCancelCreateThread();
+    setQuillContent('');
+    setCurrentPost({});
   };
 
   const pOnChange = (p, size) => {
