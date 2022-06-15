@@ -235,6 +235,16 @@ export default function AddOrManage({ add }) {
                         className="cancel-btn"
                         type="ghost"
                         size="large"
+                        onClick={() => {}}
+                      >
+                        Cancel
+                      </Button>
+
+                      <Button
+                        htmlType="button"
+                        className="cancel-btn"
+                        type="primary"
+                        size="large"
                         onClick={() => setModalVisible(true)}
                       >
                         Preview

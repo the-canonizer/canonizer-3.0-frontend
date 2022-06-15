@@ -48,14 +48,16 @@ const CampInfoBar = ({ payload, isTopicPage }) => {
   useEffect(() => {
     setPayloadData(payload);
     async function getBreadCrumbApiCall() {
+      setLoadingIndicator(true);
       let reqBody = {
         topic_num: payload?.topic_num,
         camp_num: payload?.camp_num,
       };
       let res = await getCampBreadCrumbApi(reqBody);
       setBreadCrumbRes(res?.data?.bread_crumb);
+      setLoadingIndicator(false);
     }
-    if (!isTopicPage) {
+    if (!isTopicPage && payload) {
       getBreadCrumbApiCall();
     }
   }, [payload]);
@@ -188,7 +190,21 @@ const CampInfoBar = ({ payload, isTopicPage }) => {
         Manage/Edit the Topic
       </Menu.Item>
       <Menu.Item icon={<FileTextOutlined />}>
-        {K?.exceptionalMessages?.manageCampStatementButton}
+        {isTopicPage && (
+          <Link
+            href={
+              campStatement?.length > 0
+                ? `/statement/history/${router?.query?.camp[0]}/${router?.query?.camp[1]}`
+                : `/create/statement/${router?.query?.camp[0]}/${router?.query?.camp[1]}`
+            }
+          >
+            <a>
+              {campStatement?.length > 0
+                ? K?.exceptionalMessages?.manageCampStatementButton
+                : K?.exceptionalMessages?.addCampStatementButton}
+            </a>
+          </Link>
+        )}
       </Menu.Item>
     </Menu>
   );
@@ -237,6 +253,7 @@ const CampInfoBar = ({ payload, isTopicPage }) => {
                     return (
                       <Link
                         href={`/topic/${payloadData?.topic_num}-${payloadData?.topic_name}/${camp?.camp_num}-${camp?.camp_name}-${camp?.topic_num}`}
+                        key={index}
                       >
                         <a>
                           {index !== 0 && "/ "}
