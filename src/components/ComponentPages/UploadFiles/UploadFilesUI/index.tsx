@@ -18,20 +18,13 @@ import {
 } from "antd";
 import Icon, {
   InboxOutlined,
-  MenuOutlined,
   SearchOutlined,
-  AppstoreOutlined,
   CloseCircleOutlined,
   FolderFilled,
   FileTextFilled,
   FilePdfFilled,
   FileUnknownFilled,
   MoreOutlined,
-  FolderOpenOutlined,
-  ArrowLeftOutlined,
-  EyeTwoTone,
-  CopyTwoTone,
-  DeleteTwoTone,
   FilePptOutlined,
   FileOutlined,
   FileExcelOutlined,
@@ -52,7 +45,7 @@ import ListViewActive from "../../../../assets/image/listViewActive.svg";
 import folderOpenOutLine from "../../../../assets/image/folderOpen.svg";
 import CopyShortCode from "../../../../assets/image/copyShortCode.svg";
 import eyeImage from "../../../../assets/image/eye.svg";
-import download from "../../../../assets/image/download.svg";
+import download from "../../../../assets/image/DownloadFile.svg";
 import Trash from "../../../../assets/image/trash.svg";
 import ArrowLeft from "../../../../assets/image/arrow_small_left.svg";
 import CopyShortCodeImage from "../../../../assets/image/copyShort.png";
@@ -77,7 +70,6 @@ import {
 } from "../../../../network/api/userApi";
 import { labels } from "../../../../messages/label";
 import { setTimeout } from "timers";
-import { spawnSync } from "child_process";
 const UploadFileUI = ({
   input,
   setInput,
@@ -160,7 +152,6 @@ const UploadFileUI = ({
   const shownFolder = () => dispatch(showFolder());
   const showUploadsAfter = () => dispatch(showAfterUploads());
   const [imageStatus, setImageStatus] = useState("");
-
   const router = useRouter();
   const campRoute = () => {
     router.push("/create/topic");
@@ -241,7 +232,7 @@ const UploadFileUI = ({
               alt="download file"
               src={download}
               width={15}
-              height={11}
+              height={13}
             />
             <span className={styles.marginLeftView}>Download File</span>
           </span>
@@ -523,7 +514,7 @@ const UploadFileUI = ({
                           alt="downloadFile"
                           src={download}
                           width={15}
-                          height={11}
+                          height={13}
                         />
                         <span className={styles.marginLeftView}>
                           Download File
@@ -1219,8 +1210,8 @@ const UploadFileUI = ({
                               }
                               placeholder="Full Name (with no extension)"
                               onKeyDown={(e) =>
-                                e.key === "." &&
-                                e.keyCode === 190 &&
+                                (e.key === "." || e.key === " ") &&
+                                (e.keyCode === 190 || e.keyCode === 32) &&
                                 e.preventDefault()
                               }
                             />
