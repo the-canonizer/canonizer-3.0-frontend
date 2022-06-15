@@ -818,10 +818,12 @@ const UploadFileUI = ({
       })
     ) : dragBoxStatus == true ? (
       ""
-    ) : (
+    ) : !toggleFileView ? (
       <div className={styles.emptyFolderData}>
         <Empty description={<span>No Data Found</span>} />
       </div>
+    ) : (
+      ""
     );
   };
   const displayImage = (file, imageData) => {
