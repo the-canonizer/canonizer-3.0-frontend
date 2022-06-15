@@ -25,7 +25,7 @@ const ProfileInfo = () => {
   const [mobileCarrier, setMobileCarrier] = useState([]);
   const [isOTPModalVisible, setIsOTPModalVisible] = useState(false);
   const [otp, setOTP] = useState("");
-  const [privateFlags, setPrivateFlags] = useState("");
+  const [privateFlags, setPrivateFlags] = useState("loading");
   const [privateList, setPrivateList] = useState([]);
   const [publicList, setPublicList] = useState([]);
   const [algorithmList, setAlgorithmList] = useState([]);

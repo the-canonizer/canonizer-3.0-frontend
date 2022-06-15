@@ -104,6 +104,7 @@ export default function ChangePasswordUI({
               type="primary"
               htmlType="submit"
               data-testid="submitButton"
+              className="Profile_btn"
             >
               Save
             </Button>

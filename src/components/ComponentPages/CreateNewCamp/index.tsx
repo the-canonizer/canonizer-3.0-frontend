@@ -13,6 +13,7 @@ import {
 } from "../../../network/api/campDetailApi";
 import { RootState } from "../../../store";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
+import isAuth from "../../../hooks/isUserAuthenticated";
 
 import CreateNewCampUI from "./UI/CampUI";
 
@@ -31,6 +32,8 @@ const CreateNewCamp = ({
   const router = useRouter();
   const [form] = Form.useForm();
   const dispatch = useDispatch();
+
+  const isLoggedIn = isAuth();
 
   const { topicRecord, campRecord, asof, asofdate, algorithm } = useSelector(
     (state: RootState) => ({
@@ -120,6 +123,9 @@ const CreateNewCamp = ({
     if (response && response.status_code === 200) {
       setNickNameList(response.data);
       setInitialValues({ nick_name: response.data[0]?.id });
+      return response.status_code;
+    } else {
+      return response.status ?? "";
     }
   };
 
@@ -129,12 +135,6 @@ const CreateNewCamp = ({
       setCampNickName(response.data);
     }
   };
-
-  useEffect(() => {
-    fetchNickNameList();
-    fetchCampNickNameList();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const fetchParentsCampList = async () => {
     const q = getRouterParams();
@@ -146,7 +146,9 @@ const CreateNewCamp = ({
   };
 
   useEffect(() => {
+    fetchCampNickNameList();
     fetchParentsCampList();
+    fetchNickNameList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
