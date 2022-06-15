@@ -1,23 +1,18 @@
 import { Row, Col } from "antd";
-
 import Layout from "../hoc/layout";
 import SideBar from "../components/ComponentPages/Home/SideBar";
 import TopicsList from "../components/ComponentPages/Home/TopicsList";
 import {
   getCanonizedAlgorithmsApi,
   getCanonizedNameSpacesApi,
-  getCanonizedTopicsApi,
-  getCanonizedWhatsNewContentApi,
 } from "../network/api/homePageApi";
 import {
   setCanonizedAlgorithms,
   setCanonizedNameSpaces,
-  setCanonizedTopics,
 } from "../store/slices/homePageSlice";
 import { useDispatch } from "react-redux";
-const BrowsePage = ({ nameSpacesList, topicsData, algorithms }) => {
+const BrowsePage = ({ nameSpacesList, algorithms }) => {
   const dispatch = useDispatch();
-  dispatch(setCanonizedTopics(topicsData));
   dispatch(setCanonizedNameSpaces(nameSpacesList));
   dispatch(setCanonizedAlgorithms(algorithms));
   return (
@@ -39,17 +34,15 @@ const BrowsePage = ({ nameSpacesList, topicsData, algorithms }) => {
 };
 
 export async function getServerSideProps() {
-  const nameSpaces = await getCanonizedNameSpacesApi();
-
-  const canonizedAlgorithms = await getCanonizedAlgorithmsApi();
-
-  const nameSpacesList = nameSpaces || [];
-  const algorithms = canonizedAlgorithms || [];
+  const [nameSpaces, canonizedAlgorithms] = await Promise.all([
+    getCanonizedNameSpacesApi(),
+    getCanonizedAlgorithmsApi(),
+  ]);
 
   return {
     props: {
-      nameSpacesList,
-      algorithms,
+      nameSpacesList: nameSpaces || [],
+      algorithms: canonizedAlgorithms || [],
     },
   };
 }

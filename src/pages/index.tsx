@@ -7,15 +7,14 @@ import {
 } from "../network/api/homePageApi";
 import { useDispatch } from "react-redux";
 import {
-  setCanonizedTopics,
   setCanonizedNameSpaces,
   setWhatsNewContent,
   setCanonizedAlgorithms,
 } from "../store/slices/homePageSlice";
 
-function Home({ topicsData, nameSpacesList, whatsNew, algorithms }) {
+function Home({ nameSpacesList, whatsNew, algorithms }) {
   const dispatch = useDispatch();
-  dispatch(setCanonizedTopics(topicsData));
+
   dispatch(setCanonizedNameSpaces(nameSpacesList));
   dispatch(setWhatsNewContent(whatsNew));
   dispatch(setCanonizedAlgorithms(algorithms));
