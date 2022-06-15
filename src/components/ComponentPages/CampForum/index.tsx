@@ -434,7 +434,7 @@ const ForumComponent = ({}) => {
         inline: "nearest",
       });
     }
-    
+
     setQuillContent(post.body);
     setCurrentPost(post);
   };
@@ -451,7 +451,7 @@ const ForumComponent = ({}) => {
 
   const onCancel = () => {
     onCancelCreateThread();
-    setQuillContent('');
+    setQuillContent("");
     setCurrentPost({});
   };
 
