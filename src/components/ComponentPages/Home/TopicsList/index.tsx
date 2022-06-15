@@ -35,7 +35,6 @@ const infoContent = (
 
 const TopicsList = () => {
   const router = useRouter();
-  const didMount = useRef(false);
   const [pageNumber, setPageNumber, pageNumberRef] = useState(1);
   const dispatch = useDispatch();
   const isLogin = useAuthentication();
@@ -103,11 +102,9 @@ const TopicsList = () => {
 
   useEffect(() => {
     async function getTopicsApiCall() {
-      if (didMount.current) {
-        setGetTopicsLoadingIndicator(true);
-        await getTopicsApiCallWithReqBody();
-        setGetTopicsLoadingIndicator(false);
-      } else didMount.current = true;
+      setGetTopicsLoadingIndicator(true);
+      await getTopicsApiCallWithReqBody();
+      setGetTopicsLoadingIndicator(false);
     }
     getTopicsApiCall();
     // eslint-disable-next-line react-hooks/exhaustive-deps
