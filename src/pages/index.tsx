@@ -11,6 +11,7 @@ import {
   setWhatsNewContent,
   setCanonizedAlgorithms,
 } from "../store/slices/homePageSlice";
+import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 
 function Home({ nameSpacesList, whatsNew, algorithms }) {
   const dispatch = useDispatch();
@@ -18,6 +19,11 @@ function Home({ nameSpacesList, whatsNew, algorithms }) {
   dispatch(setCanonizedNameSpaces(nameSpacesList));
   dispatch(setWhatsNewContent(whatsNew));
   dispatch(setCanonizedAlgorithms(algorithms));
+  dispatch(
+    setFilterCanonizedTopics({
+      search: "",
+    })
+  );
 
   return (
     <>
