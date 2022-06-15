@@ -102,7 +102,12 @@ const LoginUi = ({
             >
               <FormItem
                 name="username"
-                label={messages.labels.emailPhone}
+                label={
+                  <>
+                    {messages.labels.emailPhone}{" "}
+                    <span className="required">*</span>
+                  </>
+                }
                 rules={messages.usernameRule}
                 placeholder={messages.placeholders.emailPhone}
                 dataid="username"
@@ -110,7 +115,12 @@ const LoginUi = ({
 
               <Form.Item
                 name="password"
-                label={messages.labels.password}
+                label={
+                  <>
+                    {messages.labels.password}
+                    <span className="required">*</span>
+                  </>
+                }
                 {...messages.userPassRule}
               >
                 <Input.Password
