@@ -306,7 +306,7 @@ body {
     display: flex;
     align-items: baseline;
     justify-content: flex-end;
-   //background: #f8f8f8 !important;
+    //background: #f8f8f8 !important;
     .ant-card-head-wrapper {
       flex-grow: 1;
       .ant-card-head-title {
@@ -1315,7 +1315,7 @@ body {
       margin-bottom: 0;
       display: inline-flex;
       align-items: center;
-      color: #1C1B24;
+      color: #1c1b24;
     }
     .ant-collapse-extra {
       font-size: 15px;
@@ -1456,8 +1456,8 @@ body {
 //   font-family: var(--font-family-asap);
 // }
 .ant-modal-title {
-  color: #2e68db;
-  font-size: 26px;
+  color: #0f2a4d;
+  font-size: 20px;
   font-weight: 600;
   font-family: var(--font-family-asap);
 }
@@ -1494,7 +1494,7 @@ div[role="option"]::before {
   content: url(../image/location1.png);
   position: absolute;
   left: 5px;
-  transform: scale(1.2);
+  transform: scale(0.7);
   top: 0px;
 }
 
@@ -1545,9 +1545,19 @@ div[role="option"]::before {
   background: #f5f5f5;
   cursor: not-allowed;
 }
+.ant-form-item-label
+  > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before {
+  display: none;
+}
+.ant-form-item-required {
+  .required {
+    color: red;
+    margin-left: 3px;
+    display: inline-block;
+  }
+}
 
-.dropdown 
-{
+.dropdown {
   position: absolute;
   right: 15px;
   bottom: 20px;
@@ -1561,4 +1571,12 @@ div[role="option"]::before {
   right: inherit;
   position: inherit;
   bottom: inherit;
+}
+
+.Profile_btn {
+  min-width: 150px;
+}
+.ant-btn {
+  padding: 4px 32px;
+  height: 38px;
 }

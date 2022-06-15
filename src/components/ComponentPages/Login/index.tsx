@@ -63,6 +63,7 @@ const Login = ({ isModal, isTest = false }) => {
 
     if (res && res.status_code === 200) {
       form.resetFields();
+
       isModal ? closeModal() : "";
 
       if (router.query.returnUrl) {
@@ -70,6 +71,8 @@ const Login = ({ isModal, isTest = false }) => {
       } else {
         if (!router.pathname?.includes("/forum/")) {
           router.push("/");
+        } else {
+          closeModal();
         }
       }
     }

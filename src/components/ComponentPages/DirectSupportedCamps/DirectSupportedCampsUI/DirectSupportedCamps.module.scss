@@ -2,7 +2,7 @@
   cursor: pointer;
   color: #ef5e5e;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 14px;
 
   @media screen and (max-width: 767px) {
     font-size: 0;
@@ -113,7 +113,7 @@
   height: 38px;
   border-radius: 2px;
   width: 130px;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 16px;
 }
 // .revert_Btn:hover {
@@ -163,4 +163,9 @@
 .btndiv + span 
 {
   margin-left: 15px;
+}
+.modal_cross p 
+{
+  font-weight: 500;
+  font-size: 15px;
 }
