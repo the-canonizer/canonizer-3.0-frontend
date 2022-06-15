@@ -10,10 +10,10 @@ export default function TopBar({ topicRecord, campRecord }) {
   return (
     <Fragment>
       <div className={`${styles.upperTitle}`}>
-        <p>
+        <p id="topic-title">
           <strong>Topic: </strong> {topicRecord && topicRecord?.topic_name}
         </p>
-        <p>
+        <p id="camp-title">
           <strong>Camp: </strong>
           {campRecord
             ? campRecord?.parentCamps?.map((camp, index) => {

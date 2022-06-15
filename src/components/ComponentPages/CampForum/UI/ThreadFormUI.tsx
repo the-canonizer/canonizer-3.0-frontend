@@ -71,6 +71,7 @@ const CreateThreadForm = ({
                         placeholder={placeholders.nickName}
                         allowClear
                         size={"large"}
+                        data-id="nick-names"
                       >
                         {nickNameList.map((nick) => (
                           <Option key={nick.id} value={nick.id}>
@@ -92,6 +93,7 @@ const CreateThreadForm = ({
                         placeholder={placeholders.nickName}
                         allowClear
                         size={"large"}
+                        data-id="nick-names"
                       ></Select>
                     </Form.Item>
                   ) : null}
@@ -106,6 +108,7 @@ const CreateThreadForm = ({
               htmlType="submit"
               size={"large"}
               className={`${styles.submit_btn}`}
+              id="submit-btn"
             >
               Submit
             </Button>
@@ -116,6 +119,7 @@ const CreateThreadForm = ({
               size={"large"}
               className={`${styles.cancel_btn}`}
               onClick={onCancel}
+              id="back-btn"
             >
               Back
             </Button>

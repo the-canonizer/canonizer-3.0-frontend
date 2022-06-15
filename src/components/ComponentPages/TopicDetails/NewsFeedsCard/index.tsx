@@ -128,7 +128,9 @@ const NewsFeedsCard = ({ newsFeed }) => {
                       {deleteNews && (
                         <Tooltip
                           title={
-                            news.owner_flag ? "" : " must be owner to delete"
+                            news.owner_flag
+                              ? ""
+                              : K?.exceptionalMessages?.tooltipNewsDelete
                           }
                         >
                           <Popconfirm

@@ -306,7 +306,7 @@ body {
     display: flex;
     align-items: baseline;
     justify-content: flex-end;
-    background: #f8f8f8 !important;
+    //background: #f8f8f8 !important;
     .ant-card-head-wrapper {
       flex-grow: 1;
       .ant-card-head-title {
@@ -1456,8 +1456,8 @@ body {
 //   font-family: var(--font-family-asap);
 // }
 .ant-modal-title {
-  color: #2e68db;
-  font-size: 26px;
+  color: #0f2a4d;
+  font-size: 20px;
   font-weight: 600;
   font-family: var(--font-family-asap);
 }
@@ -1494,7 +1494,7 @@ div[role="option"]::before {
   content: url(../image/location1.png);
   position: absolute;
   left: 5px;
-  transform: scale(1.2);
+  transform: scale(0.7);
   top: 0px;
 }
 
@@ -1555,4 +1555,28 @@ div[role="option"]::before {
     margin-left: 3px;
     display: inline-block;
   }
+}
+
+.dropdown {
+  position: absolute;
+  right: 15px;
+  bottom: 20px;
+  width: 20px;
+  cursor: pointer;
+  height: 20px;
+}
+.ant-dropdown-trigger .anticon.anticon-more {
+  color: #fff;
+  font-size: 20px;
+  right: inherit;
+  position: inherit;
+  bottom: inherit;
+}
+
+.Profile_btn {
+  min-width: 150px;
+}
+.ant-btn {
+  padding: 4px 32px;
+  height: 38px;
 }

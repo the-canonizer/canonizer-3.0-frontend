@@ -33,16 +33,18 @@ const PostUI = ({
     <Fragment>
       <Card
         title={
-          <span className={styles.cardTitle}>{currentThread["title"]}</span>
+          <span className={styles.cardTitle} id="card-title">
+            {currentThread["title"]}
+          </span>
         }
         className={`can-card-style ${styles.forum_post_card}`}
         extra={
           <div className={styles.threadStamp}>
-            <Text>{`Thread Created at ${moment(
+            <Text id="thread-create-label">{`Thread Created at ${moment(
               getTime(currentThread["created_at"])
             ).format("MMM Do YYYY, h:mm:ss a")}`}</Text>{" "}
             |{" "}
-            <Text>
+            <Text id="started-by-label">
               Started by{" "}
               <Link href="#">
                 <a className={styles.by}>

@@ -20,6 +20,7 @@ const CreateNewTopicUI = ({
             src={"/images/left-sidebar-adv1.jpg"}
             width={200}
             height={400}
+            id="ads-img"
           />
         </div>
       </aside>

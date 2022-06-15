@@ -28,7 +28,7 @@ const CreateCampFormUI = ({
   campNickName,
 }) => {
   const CardTitle = (
-    <span className={styles.cardTitle} data-testid="head">
+    <span className={styles.cardTitle} data-testid="head" id="card-title">
       Create Camp
     </span>
   );
@@ -67,6 +67,7 @@ const CreateCampFormUI = ({
                     placeholder={placeholders.nickName}
                     allowClear
                     size={"large"}
+                    data-id="nick-name"
                   >
                     {nickNameList.map((nick) => (
                       <Option key={nick.id} value={nick.id}>
@@ -86,6 +87,7 @@ const CreateCampFormUI = ({
                     placeholder={placeholders.nickName}
                     allowClear
                     size={"large"}
+                    data-id="nick-name"
                   ></Select>
                 </Form.Item>
               ) : null}
@@ -103,7 +105,12 @@ const CreateCampFormUI = ({
                   {...parentCampRule}
                   initialValue={topicData?.camp_num}
                 >
-                  <Select allowClear size={"large"} placeholder="Parent camp">
+                  <Select
+                    allowClear
+                    size={"large"}
+                    placeholder="Parent camp"
+                    data-id="parent-camp"
+                  >
                     {parentCamp.map((camp) => (
                       <Option value={camp.camp_num} key={camp.id}>
                         {camp.camp_name}
@@ -119,7 +126,12 @@ const CreateCampFormUI = ({
                   {...parentCampRule}
                   initialValue={topicData?.camp_num}
                 >
-                  <Select allowClear size={"large"} placeholder="Parent camp">
+                  <Select
+                    allowClear
+                    size={"large"}
+                    placeholder="Parent camp"
+                    data-id="parent-camp"
+                  >
                     <Option value={topicData?.camp_num}>
                       {topicData?.camp_name}
                     </Option>
@@ -195,6 +207,7 @@ const CreateCampFormUI = ({
                     placeholder={placeholders.campAboutNickName}
                     allowClear
                     size={"large"}
+                    data-id="camp-about-nick-id"
                   >
                     <Option value="">{placeholders.campAboutNickName}</Option>
                     {campNickName.map((nc) => (
@@ -213,6 +226,7 @@ const CreateCampFormUI = ({
                     placeholder={placeholders.campAboutNickName}
                     allowClear
                     size={"large"}
+                    data-id="camp-about-nick-id"
                   >
                     <Option value="">{placeholders.campAboutNickName}</Option>
                   </Select>
@@ -228,6 +242,7 @@ const CreateCampFormUI = ({
               size={"large"}
               className={`${styles.submit_btn}`}
               data-testid="btn"
+              id="crate-camp-btn"
             >
               Create Camp
             </Button>
@@ -238,6 +253,7 @@ const CreateCampFormUI = ({
               size={"large"}
               className={`${styles.cancel_btn}`}
               onClick={onCancel}
+              id="cancel-btn"
             >
               Cancel
             </Button>

@@ -110,6 +110,7 @@ const LoginUi = ({
                 }
                 rules={messages.usernameRule}
                 placeholder={messages.placeholders.emailPhone}
+                dataid="username"
               />
 
               <Form.Item

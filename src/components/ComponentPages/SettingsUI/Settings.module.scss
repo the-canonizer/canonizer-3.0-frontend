@@ -29,7 +29,7 @@
 .accountSetting {
   width: calc(100% - 260px);
   margin: 0 8px !important;
-  border: 1px solid #f0f0f0;
+ // border: 1px solid #f0f0f0;
 
   @media screen and (max-width: 767px) {
     margin-left: 0 !important;
@@ -69,9 +69,12 @@
     }
   }
   .ant-tabs-nav-list {
+    font-size: 16px; 
+      font-weight: 500;
     .ant-tabs-tab-active {
       background-color: #1c1b24 !important;
     }
+    
   }
 }
 

@@ -29,7 +29,7 @@ const EmailConfirmation = ({
       scrollToFirstError
       validateTrigger={messages.formValidationTypes()}
     >
-      <Title level={2} className={styles.titles}>
+      <Title level={2} className={styles.titles} id="otp-title">
         {isOTP ? "One Time Verification Code" : "User Email Confirmation"}
       </Title>
       {isModal && (
@@ -39,10 +39,11 @@ const EmailConfirmation = ({
           className={styles.close_btn}
           onClick={closeModal}
           icon={<CloseCircleOutlined />}
+          id="close-modal-btn"
         />
       )}
       <div className={styles.section_one}>
-        <Text type="danger" className={styles.otpNote}>
+        <Text type="danger" className={styles.otpNote} id="note-text">
           {isOTP ? messages.labels.otpLabel : messages.labels.emailLabel}
         </Text>
         {isOTP ? (
@@ -76,6 +77,7 @@ const EmailConfirmation = ({
             className={styles.resetOTP}
             block
             onClick={onResendClick}
+            id="otp-send-btn"
           >
             Resend OTP <RedoOutlined />
           </Button>
@@ -88,6 +90,7 @@ const EmailConfirmation = ({
           block
           data-testid="submitButton"
           style={{ width: "150px" }}
+          id="submit-btn"
         >
           Submit <ArrowRightOutlined />
         </Button>

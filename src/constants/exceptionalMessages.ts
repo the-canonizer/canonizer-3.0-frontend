@@ -6,9 +6,11 @@ const ExceptionalMessageConstants = {
     "Are you sure you want to delete this news feed?",
   manageCampStatementButton: "Manage/Edit Camp Statement",
   addCampStatementButton: "Add Camp Statement",
-  tooltipNewsEdit: "Must be owner to edit",
+  tooltipNewsEdit: "Only the author of this news is allowed to edit.",
+  tooltipNewsDelete: "Only the author of this news is allowed to delete.",
   selectNickNameErrorMsg: "Please select Nick name",
   statementRequiredErrorMsg: "Statement is required",
+  editSummaryErrorMsg: "Enter valid edit summary",
   submitStatementButton: "Submit Statement",
   submitUpdateButton: "Submit Update",
 };

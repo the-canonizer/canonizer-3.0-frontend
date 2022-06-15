@@ -38,7 +38,7 @@
       @media screen and (max-width: 400px) {
         margin-top: 1rem;
       }
-      @media screen and (min-width: 401px) and (max-width: 1199px) {
+      @media screen and (min-width: 401px) and (max-width: 1350px) {
         position: absolute;
         right: 0;
         top: 0.2rem;
@@ -75,8 +75,8 @@
       }
       .dropdown {
         @media screen and (min-width: 576px) {
-          max-width: 275px;
-          width: calc(100% - 200px);
+          max-width: 225px;
+          width: 100%;
         }
         @media screen and (max-width: 992px) {
           // width: 100%;
@@ -89,27 +89,28 @@
       }
     }
     &.browsePage {
-      @media screen and (max-width: 1199px) {
+      @media screen and (max-width: 1350px) {
         flex-wrap: wrap;
       }
       & > h3 {
-        @media screen and (max-width: 1199px) {
+        @media screen and (max-width: 1350px) {
           width: 100%;
         }
       }
       .dropdown {
         @media screen and (min-width: 576px) {
-          max-width: 275px;
-          width: calc(65% - 200px);
+          max-width: 225px;
+          width: 100%;
         }
         @media screen and (min-width: 1200px) {
           margin-right: auto;
           margin-left: 20px;
         }
-        @media screen and (min-width: 576px) and (max-width: 1199px) {
+        @media screen and (min-width: 576px) and (max-width: 1350px) {
           max-width: inherit;
           width: 48.5%;
           margin-top: 10px;
+          margin-left: 0;
         }
         @media screen and (max-width: 992px) {
           // width: 100%;
@@ -118,14 +119,14 @@
       .inputSearchTopic {
         @media screen and (min-width: 1200px) {
           max-width: 275px;
-          width: 33%;
+          width: 28%;
           order: 3;
         }
-        @media screen and (min-width: 576px) and (max-width: 1199px) {
+        @media screen and (min-width: 576px) and (max-width: 1350px) {
           max-width: inherit;
           width: 48.5%;
         }
-        @media screen and (max-width: 1199px) {
+        @media screen and (max-width: 1350px) {
           margin-top: 10px;
         }
         & > span {

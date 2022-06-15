@@ -66,6 +66,7 @@ const CreateTopicFromUI = ({
                     allowClear
                     size={"large"}
                     defaultValue={nickNameList[0]?.id}
+                    data-id="nick-name"
                   >
                     {nickNameList.map((nick, idx) => (
                       <Option key={nick.id} value={nick.id}>
@@ -113,6 +114,7 @@ const CreateTopicFromUI = ({
                     allowClear
                     size={"large"}
                     defaultValue={nameSpaces[0]?.id}
+                    data-id="namespace"
                   >
                     {nameSpaces.map((name, idx) => (
                       <Option key={name.id} value={name.id}>
@@ -148,6 +150,7 @@ const CreateTopicFromUI = ({
               htmlType="submit"
               size={"large"}
               className={`${styles.submit_btn}`}
+              id="create-topic-btn"
             >
               Create Topic
             </Button>
@@ -158,6 +161,7 @@ const CreateTopicFromUI = ({
               size={"large"}
               className={`${styles.cancel_btn}`}
               onClick={onCancel}
+              id="cancel-btn"
             >
               Cancel
             </Button>

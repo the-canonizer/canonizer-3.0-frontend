@@ -86,6 +86,7 @@ function ProfileInfoForm({
           placeholder: messages.placeholders.addressLine1,
         })}
         tabIndex={9}
+        maxLength={255}
       />
       <div>
         {loading && <div>Loading...</div>}
@@ -114,7 +115,7 @@ function ProfileInfoForm({
     </div>
   );
   // @ts-ignore
-  if (privateFlags != "")
+  if (privateFlags != "loading")
     return (
       <Form
         name="profileInfo"
@@ -147,6 +148,7 @@ function ProfileInfoForm({
                   onKeyDown={(e) =>
                     e.key === " " && e.keyCode === 32 && e.preventDefault()
                   }
+                  maxLength={100}
                 />
               </Form.Item>
               <Form.Item
@@ -166,6 +168,7 @@ function ProfileInfoForm({
                   onKeyDown={(e) =>
                     e.key === " " && e.keyCode === 32 && e.preventDefault()
                   }
+                  maxLength={100}
                 />
               </Form.Item>
               <Form.Item name="gender" label={messages.labels.gender}>
@@ -198,6 +201,7 @@ function ProfileInfoForm({
                   onKeyDown={(e) =>
                     e.key === " " && e.keyCode === 32 && e.preventDefault()
                   }
+                  maxLength={100}
                 />
               </Form.Item>
               <Form.Item
@@ -284,16 +288,6 @@ function ProfileInfoForm({
                   disabled
                 />
               </Form.Item>
-              <Form.Item name="language" label={messages.labels.language}>
-                <Select
-                  id="selectLanguage"
-                  size="large"
-                  placeholder="Select a language"
-                  tabIndex={10}
-                >
-                  {listOfOption(languageList, "languages")}
-                </Select>
-              </Form.Item>
             </Col>
             <Col md={12}>
               <Form.Item name="address_2" label={messages.labels.addressLine2}>
@@ -305,6 +299,7 @@ function ProfileInfoForm({
                   )}
                   placeholder={messages.placeholders.addressLine2}
                   size="large"
+                  maxLength={255}
                 />
               </Form.Item>
               <Form.Item name="state" label={messages.labels.state}>
@@ -325,8 +320,28 @@ function ProfileInfoForm({
                   )}
                   placeholder={messages.placeholders.zipCode}
                   size="large"
+                  maxLength={255}
                 />
               </Form.Item>
+            </Col>
+          </Row>
+          <Title level={4} className="form-Title">
+            Other Information
+          </Title>
+          <Row gutter={30}>
+            <Col md={12}>
+              <Form.Item name="language" label={messages.labels.language}>
+                <Select
+                  id="selectLanguage"
+                  size="large"
+                  placeholder="Select a language"
+                  tabIndex={10}
+                >
+                  {listOfOption(languageList, "languages")}
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col md={12}>
               <Form.Item
                 name="default_algo"
                 label={messages.labels.chooseAlgorithm}
@@ -348,7 +363,7 @@ function ProfileInfoForm({
             id="profileUpdate"
             type="primary"
             htmlType="submit"
-            className="ant-btn ant-btn-orange ant-btn-lg"
+            className="Profile_btn ant-btn ant-btn-orange ant-btn-lg"
             data-testid="submitButton"
             tabIndex={12}
             disabled={disableButton}
