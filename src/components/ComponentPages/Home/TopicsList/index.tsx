@@ -46,7 +46,6 @@ const TopicsList = () => {
     algorithm,
     filterByScore,
     nameSpaces,
-    includeReview,
     filterNameSpace,
     userEmail,
     filterNameSpaceId,
@@ -57,7 +56,6 @@ const TopicsList = () => {
     algorithm: state.filters?.filterObject?.algorithm,
     filterByScore: state.filters?.filterObject?.filterByScore,
     nameSpaces: state.homePage?.nameSpaces,
-    includeReview: state?.filters?.filterObject?.includeReview,
     filterNameSpace: state?.filters?.filterObject?.nameSpace,
     userEmail: state?.auth?.loggedInUser?.email,
     filterNameSpaceId: state?.filters?.filterObject?.namespace_id,
@@ -65,7 +63,7 @@ const TopicsList = () => {
 
   const [topicsData, setTopicsData] = useState(canonizedTopics);
   const [nameSpacesList] = useState(nameSpaces);
-  const [isReview, setIsReview] = useState(includeReview);
+  const [isReview, setIsReview] = useState(asof == "review");
   const [inputSearch, setInputSearch] = useState("");
   const [nameSpaceId, setNameSpaceId] = useState(filterNameSpaceId || "");
 
@@ -98,8 +96,8 @@ const TopicsList = () => {
   }, [canonizedTopics?.topics]);
 
   useEffect(() => {
-    setIsReview(includeReview);
-  }, [includeReview]);
+    setIsReview(asof == "review");
+  }, [asof]);
 
   useEffect(() => {
     async function getTopicsApiCall() {
@@ -230,7 +228,7 @@ const TopicsList = () => {
                     );
                   })}
                 </Select>
-                {router.asPath.includes("/browse") && !includeReview && (
+                {router.asPath.includes("/browse") && !isReview && (
                   <div className={styles.inputSearchTopic}>
                     <Search
                       placeholder="Search by topic name"
