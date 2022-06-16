@@ -15,16 +15,6 @@ function Layout(props) {
       <div className={styles.pageWrap}>
         {isLogin ? <LoggedInHeader /> : <LoggedOutHeader />}
         <Spinner>{""}</Spinner>
-        {props.children?.type?.name == "ManageSupport" && (
-          <div className={styles.topics}>
-            <strong>Topic : </strong>
-            <Link href="">
-              <a className={styles.Bluecolor}>
-                Agreement/Approchable Via Science/Representational Qualia
-              </a>
-            </Link>
-          </div>
-        )}
         <div className={styles.contentWrap}>
           <div className={styles.contentArea}>{props.children} </div>
           <aside className={styles.rightSidebar}>
