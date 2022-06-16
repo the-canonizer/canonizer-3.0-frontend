@@ -50,7 +50,12 @@ const CreateTopicFromUI = ({
             <Col xs={24} sm={12}>
               {nickNameList.length ? (
                 <Form.Item
-                  label={labels.cr_nick_name}
+                  label={
+                    <>
+                      {labels.cr_nick_name}
+                      <span className="required">*</span>
+                    </>
+                  }
                   name="nick_name"
                   {...nickNmRule}
                   extra={labels.cr_nick_name_sp}
@@ -77,6 +82,7 @@ const CreateTopicFromUI = ({
                   <Fragment>
                     {labels.cr_topic_name}
                     <span>(Limit 30 Chars)</span>
+                    <span className="required">*</span>
                   </Fragment>
                 }
                 name="topic_name"
@@ -93,6 +99,7 @@ const CreateTopicFromUI = ({
                   label={
                     <Fragment>
                       {labels.cr_namespace}
+                      <span className="required">*</span>
                       <span>
                         (General is recommended, unless you know otherwise)
                       </span>

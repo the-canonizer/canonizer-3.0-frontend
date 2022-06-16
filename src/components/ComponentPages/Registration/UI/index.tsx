@@ -95,6 +95,7 @@ function RegistrationUi({
                 label={
                   <Fragment>
                     {messages.labels.firstName} <span>(Limit 100 Chars)</span>
+                    <span className="required">*</span>
                   </Fragment>
                 }
                 rules={messages.firstNameRule}
@@ -113,6 +114,7 @@ function RegistrationUi({
                   <Fragment>
                     {messages.labels.lastName}
                     <span>(Limit 100 Chars)</span>
+                    <span className="required">*</span>
                   </Fragment>
                 }
                 rules={messages.lastNameRule}
@@ -130,6 +132,7 @@ function RegistrationUi({
                   <Fragment>
                     {messages.labels.email}
                     <span>(Limit 255 Chars)</span>
+                    <span className="required">*</span>
                   </Fragment>
                 }
                 rules={messages.emRule}
@@ -163,7 +166,12 @@ function RegistrationUi({
             <Col md={12} style={{ width: "100%" }}>
               <Form.Item
                 name="password"
-                label={messages.labels.password}
+                label={
+                  <>
+                    {messages.labels.password}
+                    <span className="required">*</span>
+                  </>
+                }
                 {...messages.passwordRule}
               >
                 <Input.Password
@@ -177,7 +185,12 @@ function RegistrationUi({
             <Col md={{ span: 12 }} style={{ width: "100%" }}>
               <Form.Item
                 name="confirm"
-                label={messages.labels.confirmPassword}
+                label={
+                  <>
+                    {messages.labels.confirmPassword}
+                    <span className="required">*</span>
+                  </>
+                }
                 dependencies={["password"]}
                 {...messages.confirmPasswordRule}
               >

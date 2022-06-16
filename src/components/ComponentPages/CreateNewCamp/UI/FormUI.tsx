@@ -53,7 +53,12 @@ const CreateCampFormUI = ({
             <Col xs={24} sm={12}>
               {nickNameList.length > 0 ? (
                 <Form.Item
-                  label={labels.cr_nick_name}
+                  label={
+                    <>
+                      {labels.cr_nick_name}
+                      <span className="required">*</span>
+                    </>
+                  }
                   name="nick_name"
                   {...nickNmRule}
                   initialValue={nickNameList[0]?.id}
@@ -90,7 +95,12 @@ const CreateCampFormUI = ({
             <Col xs={24} sm={12}>
               {parentCamp.length > 0 ? (
                 <Form.Item
-                  label={labels.cr_parent_camp}
+                  label={
+                    <>
+                      {labels.cr_parent_camp}
+                      <span className="required">*</span>
+                    </>
+                  }
                   name="parent_camp_num"
                   {...parentCampRule}
                   initialValue={topicData?.camp_num}
@@ -136,6 +146,7 @@ const CreateCampFormUI = ({
                 label={
                   <Fragment>
                     {labels.cr_camp_name}
+                    <span className="required">*</span>
                     <span>(Limit 30 Chars)</span>
                   </Fragment>
                 }
