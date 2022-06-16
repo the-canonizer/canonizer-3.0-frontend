@@ -10,7 +10,7 @@ const LogoHeader = () => {
         <Link href="/" passHref>
           <a>
             <Image
-              src={"/images/logo.svg"}
+              src={`${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/site-images/logo.svg`}
               alt="Picture of the author"
               layout="responsive"
               width={200}
