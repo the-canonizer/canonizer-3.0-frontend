@@ -182,7 +182,8 @@ export default function AddOrEdit({ edit }) {
                 name="display_text"
                 label={
                   <>
-                    Display Text <small>(Limit 256 chars)</small>
+                    Display Text <span className="required">*</span>{" "}
+                    <small>(Limit 256 chars)</small>
                   </>
                 }
                 rules={[
@@ -214,7 +215,8 @@ export default function AddOrEdit({ edit }) {
                 className={`${styles.formItem} mb-3`}
                 label={
                   <>
-                    Link <small>(Limit 2000 chars)</small>
+                    Link <span className="required">*</span>{" "}
+                    <small>(Limit 2000 chars)</small>
                   </>
                 }
                 name="link"
@@ -246,7 +248,12 @@ export default function AddOrEdit({ edit }) {
 
               <Form.Item
                 className={styles.formItem}
-                label={<>Nick Name</>}
+                label={
+                  <>
+                    Nick Name
+                    <span className="required">*</span>
+                  </>
+                }
                 name="nick_name"
                 rules={[
                   {
