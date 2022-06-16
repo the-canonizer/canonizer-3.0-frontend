@@ -199,7 +199,7 @@ export default function AddOrEdit({ edit }) {
               >
                 <Input.TextArea
                   size="large"
-                  placeholder='New Video:"Consciousness:Not a Hard Problem Just a Color Problem"'
+                  placeholder="Add news text."
                   maxLength={256}
                   rows={7}
                 />
