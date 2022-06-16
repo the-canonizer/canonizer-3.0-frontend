@@ -22,6 +22,7 @@ import {
 } from "../../../../network/api/campNewsApi";
 import { getAllUsedNickNames } from "../../../../network/api/campDetailApi";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
+import K from "src/constants";
 
 const antIcon = <LoadingOutlined spin />;
 const { Text } = Typography;
@@ -199,7 +200,7 @@ export default function AddOrEdit({ edit }) {
               >
                 <Input.TextArea
                   size="large"
-                  placeholder="Add news text."
+                  placeholder={K?.exceptionalMessages?.addNewsTextPlaceHolder}
                   maxLength={256}
                   rows={7}
                 />
