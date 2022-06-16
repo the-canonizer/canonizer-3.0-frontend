@@ -219,8 +219,14 @@ export const usernameRule = {
       validator(_, value) {
         if (value && value?.trim().match(patterns.emailPhone)) {
           return Promise.resolve();
+        } else if (
+          value &&
+          value.length > 0 &&
+          !value?.trim().match(patterns.emailPhone)
+        ) {
+          return Promise.reject(new Error(validations.usernameNotValid));
         }
-        return Promise.reject(new Error(validations.usernameNotValid));
+        return Promise.reject(new Error());
       },
     }),
   ],
