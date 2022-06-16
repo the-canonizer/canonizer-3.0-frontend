@@ -3,9 +3,11 @@ import ManageSupportUI from "./ManageSupportUI";
 import { Image } from "antd";
 import CreateNewCampButton from "../../common/button/createNewTopicBtn";
 import styles from "./ManageSupportUI/ManageSupport.module.scss";
+import CampInfoBar from "../TopicDetails/CampInfoBar";
 const ManageSupport = () => {
   return (
     <>
+      <CampInfoBar isStatementBar={false} payload={null} />
       <div className={styles.card}>
         <div className={styles.btnsWrap}>
           <CreateNewCampButton />
