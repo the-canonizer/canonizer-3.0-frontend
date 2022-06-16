@@ -57,7 +57,7 @@ const CampInfoBar = ({ payload, isTopicPage }) => {
       setBreadCrumbRes(res?.data?.bread_crumb);
       setLoadingIndicator(false);
     }
-    if (!isTopicPage && payload) {
+    if (!isTopicPage && payload && Object.keys(payload).length > 0) {
       getBreadCrumbApiCall();
     }
   }, [payload]);
@@ -237,7 +237,7 @@ const CampInfoBar = ({ payload, isTopicPage }) => {
                         <Link
                           href={`${router.query?.camp?.at(0)}/${
                             camp?.camp_num
-                          }-${camp?.camp_name?.split(" ").join("-")}`}
+                          }-${camp?.camp_name?.replaceAll(" ", "-")}`}
                           key={camp?.camp_num}
                         >
                           <a>
@@ -252,7 +252,11 @@ const CampInfoBar = ({ payload, isTopicPage }) => {
                 ? breadCrumbRes?.map((camp, index) => {
                     return (
                       <Link
-                        href={`/topic/${payloadData?.topic_num}-${payloadData?.topic_name}/${camp?.camp_num}-${camp?.camp_name}-${camp?.topic_num}`}
+                        href={`/topic/${
+                          payloadData?.topic_num
+                        }-${payloadData?.topic_name?.replaceAll(" ", "-")}/${
+                          camp?.camp_num
+                        }-${camp?.camp_name?.replaceAll(" ", "-")}`}
                         key={index}
                       >
                         <a>
