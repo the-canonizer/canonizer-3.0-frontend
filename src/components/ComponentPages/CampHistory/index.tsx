@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Typography, Button, List, Spin } from "antd";
+import { Typography, Button, List, Spin, Affix } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -16,6 +16,8 @@ const { Title, Text } = Typography;
 function CampList() {
   const [isActive, setIsActive] = useState("all");
   const [selectedTopic, setSelectedTopic] = useState([]);
+  const [top, setTop] = useState(40);
+  const [isAbs, setIsAbs] = useState(false);
 
   const router = useRouter();
 
@@ -75,6 +77,16 @@ function CampList() {
     }
 
     setSelectedTopic(oldTopics);
+  };
+
+  const onCompareClick = () => {
+    router.push({
+      pathname: `/statement/compare/${router.query.camp[0]}/${router.query.camp[1]}`,
+      query: {
+        s1: selectedTopic[0],
+        s2: selectedTopic[1],
+      },
+    });
   };
 
   return (
@@ -188,18 +200,25 @@ function CampList() {
               </List.Item>
             </List>
           </div>
-          <Button
-            disabled={
-              !(
-                selectedTopic.length >= 2 &&
-                !selectedTopic.includes(campHistory.id)
-              )
-            }
-            className={styles.active}
-            type="primary"
+          <Affix
+            offsetTop={top}
+            style={{ position: isAbs ? "absolute" : "static", right: "10px" }}
+            onChange={setIsAbs}
           >
-            Compare Statements
-          </Button>
+            <Button
+              disabled={
+                !(
+                  selectedTopic.length >= 2 &&
+                  !selectedTopic.includes(campHistory.id)
+                )
+              }
+              className={styles.active}
+              type="primary"
+              onClick={onCompareClick}
+            >
+              Compare Statements
+            </Button>
+          </Affix>
         </div>
 
         <Spin spinning={loadingIndicator} size="large">

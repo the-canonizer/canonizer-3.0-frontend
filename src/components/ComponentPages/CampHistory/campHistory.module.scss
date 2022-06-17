@@ -80,6 +80,11 @@
         background-color: #2777d3;
       }
 
+      &.active {
+        position: sticky;
+        top: 100px;
+      }
+
       &:disabled {
         background-color: #d1d4db;
       }
