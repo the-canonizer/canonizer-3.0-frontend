@@ -73,7 +73,12 @@
     & > button {
       width: 168px;
       border: none;
-      background-color: #d1d4db;
+      background-color: var(--primary);
+      transition: all 0.3s;
+
+      &:disabled {
+        background-color: #d1d4db;
+      }
 
       & > span {
         color: white;

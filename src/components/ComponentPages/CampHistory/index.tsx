@@ -15,7 +15,6 @@ const { Title, Text } = Typography;
 
 function CampList() {
   const [isActive, setIsActive] = useState("all");
-  const [isEnableBtn, setIsEnableBtn] = useState(false);
   const [selectedTopic, setSelectedTopic] = useState([]);
 
   const router = useRouter();
@@ -49,14 +48,6 @@ function CampList() {
     campStatementApiCall();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isActive]);
-
-  useEffect(() => {
-    if (selectedTopic.length === 2) {
-      setIsEnableBtn(true);
-    } else {
-      setIsEnableBtn(false);
-    }
-  }, [selectedTopic]);
 
   const handleTabButton = async (tabName) => {
     setIsActive(tabName);
@@ -198,7 +189,12 @@ function CampList() {
             </List>
           </div>
           <Button
-            disabled={isEnableBtn}
+            disabled={
+              !(
+                selectedTopic.length >= 2 &&
+                !selectedTopic.includes(campHistory.id)
+              )
+            }
             className={styles.active}
             type="primary"
           >
