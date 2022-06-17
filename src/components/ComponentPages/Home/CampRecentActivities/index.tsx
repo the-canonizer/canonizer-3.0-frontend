@@ -21,7 +21,6 @@ export default function CampRecentActivities() {
   useEffect(() => {
     async function getTopicActivityLogCall() {
       setLoadingIndicator(true);
-      let a = await new Promise((r) => setTimeout(r, 5000));
 
       let reqBody = {
         topic_num: router?.query?.camp[0]?.split("-")[0],
