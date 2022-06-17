@@ -76,6 +76,10 @@
       background-color: var(--primary);
       transition: all 0.3s;
 
+      &:hover {
+        background-color: #2777d3;
+      }
+
       &:disabled {
         background-color: #d1d4db;
       }
