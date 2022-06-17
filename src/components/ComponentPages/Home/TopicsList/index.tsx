@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import useState from "react-usestateref";
 import { useRouter } from "next/router";
+import { BackTop } from "antd";
 import { Typography, List, Select, Tag, Input, Button, Popover } from "antd";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
@@ -291,6 +292,7 @@ const TopicsList = () => {
             )}
           />
         </Spin>
+        <BackTop />
       </div>
     </>
   );
