@@ -119,6 +119,9 @@ const NetworkConstants = {
     // email confirmation verify
     PostVerifyEmail: `${BaseCanonizerApiUrl}/user/post-verify-email`,
     OTPSendVerifyEmail: `${BaseCanonizerApiUrl}/user/resend-otp-verify-email`,
+
+    // compare statement
+    CompareStatement: `${BaseCanonizerApiUrl}/get-statement-comparison`,
   },
   Method: {
     GET: "GET",

@@ -11,8 +11,10 @@ import CreateTopicBtn from "../../../common/button/createNewTopicBtn";
 
 const { Title, Text, Paragraph } = Typography;
 
-function CompareStatementUI({ campStatementHistory, loadingIndicator }) {
+function CompareStatementUI({ statements, isLoading, campStatementHistory }) {
   const router = useRouter();
+  const s1 = statements[0],
+    s2 = statements[1];
 
   return (
     <Fragment>
@@ -49,45 +51,64 @@ function CompareStatementUI({ campStatementHistory, loadingIndicator }) {
           <CreateTopicBtn />
           <CreateCampBtn
             url={`/camp/create/${
-              router.query.routes[0] + "/" + router.query.routes[1]
+              router?.query?.routes[0] + "/" + router?.query?.routes[1]
             }`}
           />
         </div>
         <div className={styles.campStatement}>
           <div className={styles.tabHead}>
             <div className={styles.filterOt}>
-              <Button className={styles.active} type="primary">
+              <Button
+                className={styles.active}
+                type="primary"
+                onClick={() =>
+                  router.push({
+                    pathname: `/statement/campStatementHistory/${router?.query?.routes[0]}/${router?.query?.routes[1]}`,
+                  })
+                }
+              >
                 <ArrowLeftOutlined />
               </Button>
               <Title level={4}>Camp Statement History Comparison</Title>
             </div>
           </div>
           <div className={styles.contentBody}>
-            <Spin spinning={loadingIndicator} size="large">
+            <Spin spinning={isLoading} size="large">
               <Row gutter={50}>
                 <Col span={12}>
                   <Card
                     bordered
-                    className={styles.compareCard + " " + styles.old}
+                    className={
+                      styles.compareCard + " " + styles[s1.status || "old"]
+                    }
                   >
                     <Paragraph>
-                      <Text strong>Edit Summary:</Text> Update
+                      <Text strong>Edit Summary : </Text>
+                      <Text>
+                        Update &#34;{s1?.note}
+                        &#34; to &#34;{s1?.note}&#34;
+                      </Text>
                     </Paragraph>
                     <Paragraph>
-                      <Text strong>Submitted on:</Text> 5/26
+                      <Text strong>Submitted on : </Text>
+                      <Text>{s1?.submit_time}</Text>
                     </Paragraph>
                     <Paragraph>
-                      <Text strong>Submitter Nick Name:</Text> ali ahmad
+                      <Text strong>Submitter Nick Name : </Text>{" "}
+                      <Text>
+                        <Link href="#" passHref>
+                          <a>{s1?.objector_nick_name}</a>
+                        </Link>
+                      </Text>
                     </Paragraph>
                     <Paragraph>
-                      <Text strong>Go live time:</Text> 5/27
+                      <Text strong>Go live time : </Text>
+                      <Text>{s1?.go_live_time}</Text>
                     </Paragraph>
-                    <Text strong>Line 48:</Text>
+                    <Text strong>Line : </Text>
                     <Card bordered className={styles.compareCardInternal}>
                       <div
-                        dangerouslySetInnerHTML={{
-                          __html: "<p>lorem ipsum</p>",
-                        }}
+                        dangerouslySetInnerHTML={{ __html: s1?.parsed_value }}
                       ></div>
                     </Card>
                   </Card>
@@ -95,26 +116,37 @@ function CompareStatementUI({ campStatementHistory, loadingIndicator }) {
                 <Col span={12}>
                   <Card
                     bordered
-                    className={styles.compareCard + " " + styles.old}
+                    className={
+                      styles.compareCard + " " + styles[s2.status || "old"]
+                    }
                   >
                     <Paragraph>
-                      <Text strong>Edit Summary:</Text> Update
+                      <Text strong>Edit Summary : </Text>
+                      <Text>
+                        Update &#34;{s2?.note}
+                        &#34; to &#34;{s2?.note}&#34;
+                      </Text>
                     </Paragraph>
                     <Paragraph>
-                      <Text strong>Submitted on:</Text> 5/26
+                      <Text strong>Submitted on : </Text>
+                      <Text>{s2?.submit_time}</Text>
                     </Paragraph>
                     <Paragraph>
-                      <Text strong>Submitter Nick Name:</Text> ali ahmad
+                      <Text strong>Submitter Nick Name : </Text>{" "}
+                      <Text>
+                        <Link href="#" passHref>
+                          <a>{s2?.objector_nick_name}</a>
+                        </Link>
+                      </Text>
                     </Paragraph>
                     <Paragraph>
-                      <Text strong>Go live time:</Text> 5/27
+                      <Text strong>Go live time : </Text>
+                      <Text>{s2?.go_live_time}</Text>
                     </Paragraph>
-                    <Text strong>Line 48:</Text>
+                    <Text strong>Line : </Text>
                     <Card bordered className={styles.compareCardInternal}>
                       <div
-                        dangerouslySetInnerHTML={{
-                          __html: "<p>lorem ipsum</p>",
-                        }}
+                        dangerouslySetInnerHTML={{ __html: s2?.parsed_value }}
                       ></div>
                     </Card>
                   </Card>
