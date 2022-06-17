@@ -228,3 +228,15 @@ export const getAllUsedNickNames = async (body) => {
     return error.error;
   }
 };
+export const getTopicActivityLogApi = async (reqBody) => {
+  try {
+    console.log("resBody =>", reqBody);
+    const newsFeed = await NetworkCall.fetch(
+      TreeRequest.getTopicActivityLog(reqBody),
+      false
+    );
+    return newsFeed;
+  } catch (error) {
+    message.error(error.message);
+  }
+};
