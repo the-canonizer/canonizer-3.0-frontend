@@ -66,4 +66,5 @@ export const labels = {
     "Note : Verification code has been sent to your registered email address",
   emailLabel:
     "Note : Your email address is not returned from social account. You have to enter the email address.",
+  SupportedCamps: "Supported Camps",
 };
