@@ -35,7 +35,6 @@ const infoContent = (
 
 const TopicsList = () => {
   const router = useRouter();
-  const didMount = useRef(false);
   const [pageNumber, setPageNumber, pageNumberRef] = useState(1);
   const dispatch = useDispatch();
   const isLogin = useAuthentication();
@@ -46,10 +45,10 @@ const TopicsList = () => {
     algorithm,
     filterByScore,
     nameSpaces,
-    includeReview,
     filterNameSpace,
     userEmail,
     filterNameSpaceId,
+    search,
   } = useSelector((state: RootState) => ({
     canonizedTopics: state.homePage?.canonizedTopicsData,
     asofdate: state.filters?.filterObject?.asofdate,
@@ -57,16 +56,18 @@ const TopicsList = () => {
     algorithm: state.filters?.filterObject?.algorithm,
     filterByScore: state.filters?.filterObject?.filterByScore,
     nameSpaces: state.homePage?.nameSpaces,
-    includeReview: state?.filters?.filterObject?.includeReview,
     filterNameSpace: state?.filters?.filterObject?.nameSpace,
     userEmail: state?.auth?.loggedInUser?.email,
     filterNameSpaceId: state?.filters?.filterObject?.namespace_id,
+    search: state?.filters?.filterObject?.search,
   }));
 
   const [topicsData, setTopicsData] = useState(canonizedTopics);
   const [nameSpacesList] = useState(nameSpaces);
-  const [isReview, setIsReview] = useState(includeReview);
-  const [inputSearch, setInputSearch] = useState("");
+
+  const [isReview, setIsReview] = useState(asof == "review");
+  const [inputSearch, setInputSearch] = useState(search || "");
+
   const [nameSpaceId, setNameSpaceId] = useState(filterNameSpaceId || "");
 
   const [loadMoreIndicator, setLoadMoreIndicator] = useState(false);
@@ -90,7 +91,8 @@ const TopicsList = () => {
   useEffect(() => {
     setSelectedNameSpace(filterNameSpace);
     setNameSpaceId(filterNameSpaceId);
-  }, [filterNameSpace, filterNameSpaceId]);
+    setInputSearch(search);
+  }, [filterNameSpace, filterNameSpaceId, search]);
 
   useEffect(() => {
     setTopicsData(canonizedTopics);
@@ -98,16 +100,14 @@ const TopicsList = () => {
   }, [canonizedTopics?.topics]);
 
   useEffect(() => {
-    setIsReview(includeReview);
-  }, [includeReview]);
+    setIsReview(asof == "review");
+  }, [asof]);
 
   useEffect(() => {
     async function getTopicsApiCall() {
-      if (didMount.current) {
-        setGetTopicsLoadingIndicator(true);
-        await getTopicsApiCallWithReqBody();
-        setGetTopicsLoadingIndicator(false);
-      } else didMount.current = true;
+      setGetTopicsLoadingIndicator(true);
+      await getTopicsApiCallWithReqBody();
+      setGetTopicsLoadingIndicator(false);
     }
     getTopicsApiCall();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -141,6 +141,11 @@ const TopicsList = () => {
 
   const onSearch = (value) => {
     /[a-zA-Z0-9]/.test(value) ? setInputSearch(value) : setInputSearch("");
+    dispatch(
+      setFilterCanonizedTopics({
+        search: value || "",
+      })
+    );
   };
 
   const LoadMoreTopics = (
@@ -230,12 +235,13 @@ const TopicsList = () => {
                     );
                   })}
                 </Select>
-                {router.asPath.includes("/browse") && !includeReview && (
+                {router.asPath.includes("/browse") && !isReview && (
                   <div className={styles.inputSearchTopic}>
                     <Search
                       placeholder="Search by topic name"
                       allowClear
                       className={styles.topic}
+                      // value={inputSearch}
                       onSearch={onSearch}
                     />
                   </div>
@@ -258,7 +264,7 @@ const TopicsList = () => {
                     href={{
                       pathname: `/topic/${item?.topic_id}-${
                         isReview
-                          ? item?.tree_structure_1_review_title
+                          ? item?.tree_structure[1].review_title
                               ?.split(" ")
                               .join("-")
                           : item?.topic_name?.split(" ").join("-")
@@ -272,7 +278,7 @@ const TopicsList = () => {
                     >
                       <Text className={styles.text}>
                         {isReview
-                          ? item?.tree_structure_1_review_title
+                          ? item?.tree_structure[1].review_title
                           : item?.topic_name}
                       </Text>
                       <Tag className={styles.tag}>

@@ -9,7 +9,7 @@ export const uiSlice = createSlice({
     multipleUserModalVisible: false,
     createFolderShowModal: false,
     dragBox: false,
-    disabledCreateFolderBtn: true,
+    disabledCreateFolderBtn: false,
     visibleUploadOptions: false,
     uploadAfter: false,
     folderShown: false,
