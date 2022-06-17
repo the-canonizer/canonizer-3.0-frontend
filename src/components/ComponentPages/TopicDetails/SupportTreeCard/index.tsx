@@ -87,11 +87,15 @@ const SupportTreeCard = ({ handleLoadMoreSupporters }) => {
             Load More
           </CustomButton>
         )}
-        <div className="topicDetailsCollapseFooter">
-          <CustomButton className="btn-orange">
-            Directly Join or Manage Support
-          </CustomButton>
-        </div>
+        <Link href="/manageSupport">
+          <a>
+            <div className="topicDetailsCollapseFooter">
+              <CustomButton className="btn-orange">
+                Directly Join or Manage Support
+              </CustomButton>
+            </div>
+          </a>
+        </Link>
       </Panel>
     </Collapse>
   );

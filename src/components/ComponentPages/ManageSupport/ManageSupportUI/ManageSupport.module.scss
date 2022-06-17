@@ -1,0 +1,128 @@
+.card {
+    padding: 0 8px;
+    .btnsWrap {
+      padding: 15px 13px 15px;
+      border: solid 1px #d9d9d9;
+      background-color: #fff;
+      margin-bottom: 24px;
+      .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: #0f2a4d;
+        border: solid 1px #d9d9d9;
+        i {
+          font-size: 1.1875rem;
+          color: var(--primary);
+          margin-right: 8px;
+        }
+        &:hover {
+          color: var(--primary);
+          border-color: var(--primary);
+        }
+      }
+    }
+  }
+
+  .main_card_title{
+    font-size: 20px;
+    font-weight: 600;
+  
+  }
+
+  .card_spacing{
+    margin-top: 30px;
+  }
+  
+  .notes {
+    color: #ef5e5e;
+    margin-bottom: 12px;
+    font-size: 12px;
+  }
+  
+  .tag_btn {
+    border: 1px solid #f0f0f0 !important;
+    background: transparent;
+    color: #4484ce;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 4px 12px;
+    margin-bottom: 6px;
+    display: inline-flex;
+    border-radius: 0;
+    align-items: center;
+    box-shadow: 3px 3px 0px #3f4f5b14;
+    @media screen and (max-width: 767px) {
+      font-size: 13px;
+    }
+    .count {
+      color: #000 !important;
+    }
+    span {
+      color: #d1d4db;
+      margin-left: 5px;
+      font-size: 14px;
+    }
+  }
+
+  .dropdown {
+    height: 40px !important;
+    border: solid 1px #d9d9d9 !important;
+    width: 35%;
+    display: inline-block;
+    color: #4484ce;
+    font-size: 14px;
+    
+  @media screen and (max-width: 767px) {
+    margin-top: 10px;
+    width: 100%;
+  }
+}
+
+.Upload_Cancel_Btn {
+    margin-top: 19px;
+    margin-left: 10px;
+  }
+
+  .Upload_Cancel_Btn .Upload_Btn {
+    margin-right: 10px;
+    background-color: rgb(249, 157, 22);
+    border-color: rgb(249, 157, 22);
+    color: white;
+    border-radius: 2px;
+    width: 130px;
+    height: 38px;
+    font-size: 16px;
+  }
+
+  .cancel_Btn {
+    border-color: #4484ce;
+    color: #4484ce;
+    height: 38px;
+    border-radius: 2px;
+    width: auto;
+    font-weight: 600;
+  }
+
+  .margin_top{
+   margin-top:69px; 
+   background: #ececec;
+  }
+
+  .card_width{
+    flex: 1;
+    margin-right: 8px;
+  }
+
+  .card_heading{
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.Bluecolor {
+  color: #4484ce !important;
+}
+  

@@ -13,6 +13,7 @@ const ExceptionalMessageConstants = {
   editSummaryErrorMsg: "Enter valid edit summary",
   submitStatementButton: "Submit Statement",
   submitUpdateButton: "Submit Update",
+  addNewsTextPlaceHolder: "Add news text.",
 };
 
 export default ExceptionalMessageConstants;

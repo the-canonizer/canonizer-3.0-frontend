@@ -1491,10 +1491,10 @@ div[role="option"] {
   position: relative;
 }
 div[role="option"]::before {
-  content: url(../image/location1.png);
+  content: url(../image/map-marker-alt.svg);
   position: absolute;
   left: 5px;
-  transform: scale(0.7);
+  transform: scale(0.5);
   top: 0px;
 }
 
