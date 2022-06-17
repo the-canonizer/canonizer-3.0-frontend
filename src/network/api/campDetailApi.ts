@@ -230,7 +230,6 @@ export const getAllUsedNickNames = async (body) => {
 };
 export const getTopicActivityLogApi = async (reqBody) => {
   try {
-    console.log("resBody =>", reqBody);
     const newsFeed = await NetworkCall.fetch(
       TreeRequest.getTopicActivityLog(reqBody),
       false
