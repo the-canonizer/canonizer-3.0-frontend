@@ -235,13 +235,13 @@ const TopicsList = () => {
                     );
                   })}
                 </Select>
-                {router.asPath.includes("/browse") && !isReview && (
+                {router.asPath.includes("/browse") && (
                   <div className={styles.inputSearchTopic}>
                     <Search
                       placeholder="Search by topic name"
                       allowClear
                       className={styles.topic}
-                      // value={inputSearch}
+                      defaultValue={inputSearch}
                       onSearch={onSearch}
                     />
                   </div>
