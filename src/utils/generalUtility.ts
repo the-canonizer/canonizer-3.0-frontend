@@ -267,3 +267,20 @@ export const getTime = (dt) => {
     day: "numeric",
   });
 };
+
+export const routeToUserPage = (
+  router,
+  topicnum = "",
+  campnum = "",
+  namespace = ""
+) => {
+  return router.push({
+    pathname: `/user/supports`,
+    query: {
+      topicnum,
+      campnum,
+      namespace,
+      camp: `camp_${topicnum}_${campnum}`,
+    },
+  });
+};
