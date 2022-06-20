@@ -99,7 +99,6 @@ function CompareStatementUI({
                     <Paragraph>
                       <Text strong>Submitter Nick Name : </Text>
                       <Text>
-                        {console.log(s1)}
                         <Link
                           href={`/user/supports/${
                             s1["submitter_nick_id"] || ""
