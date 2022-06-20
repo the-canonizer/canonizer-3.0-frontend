@@ -103,11 +103,6 @@ function CompareStatementUI({
                           <a>{s1?.submitter_nick_name}</a>
                         </Link>
                       </Text>
-                      <Text>
-                        <Link href="#" passHref>
-                          <a>{s1?.objector_nick_name}</a>
-                        </Link>
-                      </Text>
                     </Paragraph>
                     <Paragraph>
                       <Text strong>Go live time : </Text>
@@ -146,11 +141,6 @@ function CompareStatementUI({
                       <Text>
                         <Link href="#" passHref>
                           <a>{s2?.submitter_nick_name}</a>
-                        </Link>
-                      </Text>
-                      <Text>
-                        <Link href="#" passHref>
-                          <a>{s2?.objector_nick_name}</a>
                         </Link>
                       </Text>
                     </Paragraph>
