@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { Typography, Button, Row, Col, Spin, Card, Divider } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import Link from "next/link";
+import moment from "moment";
 
 import styles from "./index.module.scss";
 
@@ -11,7 +12,12 @@ import CreateTopicBtn from "../../../common/button/createNewTopicBtn";
 
 const { Title, Text, Paragraph } = Typography;
 
-function CompareStatementUI({ statements, isLoading, campStatementHistory }) {
+function CompareStatementUI({
+  statements,
+  isLoading,
+  campStatementHistory,
+  liveStatement,
+}) {
   const router = useRouter();
   const s1 = statements[0],
     s2 = statements[1];
@@ -63,7 +69,7 @@ function CompareStatementUI({ statements, isLoading, campStatementHistory }) {
                 type="primary"
                 onClick={() =>
                   router.push({
-                    pathname: `/statement/campStatementHistory/${router?.query?.routes[0]}/${router?.query?.routes[1]}`,
+                    pathname: `/statement/history/${router?.query?.routes[0]}/${router?.query?.routes[1]}`,
                   })
                 }
               >
@@ -91,7 +97,12 @@ function CompareStatementUI({ statements, isLoading, campStatementHistory }) {
                       <Text>{s1?.submit_time}</Text>
                     </Paragraph>
                     <Paragraph>
-                      <Text strong>Submitter Nick Name : </Text>{" "}
+                      <Text strong>Submitter Nick Name : </Text>
+                      <Text>
+                        <Link href="#" passHref>
+                          <a>{s1?.submitter_nick_name}</a>
+                        </Link>
+                      </Text>
                       <Text>
                         <Link href="#" passHref>
                           <a>{s1?.objector_nick_name}</a>
@@ -102,7 +113,7 @@ function CompareStatementUI({ statements, isLoading, campStatementHistory }) {
                       <Text strong>Go live time : </Text>
                       <Text>{s1?.go_live_time}</Text>
                     </Paragraph>
-                    <Text strong>Line : </Text>
+                    <Text strong>Statement : </Text>
                     <Card
                       bordered
                       className={
@@ -131,7 +142,12 @@ function CompareStatementUI({ statements, isLoading, campStatementHistory }) {
                       <Text>{s2?.submit_time}</Text>
                     </Paragraph>
                     <Paragraph>
-                      <Text strong>Submitter Nick Name : </Text>{" "}
+                      <Text strong>Submitter Nick Name : </Text>
+                      <Text>
+                        <Link href="#" passHref>
+                          <a>{s2?.submitter_nick_name}</a>
+                        </Link>
+                      </Text>
                       <Text>
                         <Link href="#" passHref>
                           <a>{s2?.objector_nick_name}</a>
@@ -142,7 +158,7 @@ function CompareStatementUI({ statements, isLoading, campStatementHistory }) {
                       <Text strong>Go live time : </Text>
                       <Text>{s2?.go_live_time}</Text>
                     </Paragraph>
-                    <Text strong>Line : </Text>
+                    <Text strong>Statement : </Text>
                     <Card
                       bordered
                       className={
@@ -161,25 +177,40 @@ function CompareStatementUI({ statements, isLoading, campStatementHistory }) {
                     bordered={false}
                     className={styles.latestCard}
                     title={
-                      <Text>Latest revision as of 12:16, 10 November 2021</Text>
+                      <Text>
+                        Latest revision as of
+                        {moment(liveStatement?.revision_date).format(
+                          " hh:mm, DD MMMM YYYY"
+                        )}
+                      </Text>
                     }
                   >
-                    <Text strong>Statement:</Text>
+                    <Text strong>Statement : </Text>
                     <div
-                      dangerouslySetInnerHTML={{ __html: "<h1>Hello</h1>" }}
+                      dangerouslySetInnerHTML={{
+                        __html: liveStatement?.parsed_value,
+                      }}
                     ></div>
                     <Divider />
                     <Paragraph>
-                      <Text strong>Edit Summary:</Text> Update
+                      <Text strong>Edit Summary : </Text>
+                      <Text>{liveStatement?.note}</Text>
                     </Paragraph>
                     <Paragraph>
-                      <Text strong>Submitted on:</Text> 5/26
+                      <Text strong>Submitted on : </Text>
+                      <Text>{liveStatement?.submit_time}</Text>
                     </Paragraph>
                     <Paragraph>
-                      <Text strong>Submitter Nick Name:</Text> ali ahmad
+                      <Text strong>Submitter Nick Name : </Text>
+                      <Text>
+                        <Link href="#" passHref>
+                          <a>{liveStatement?.submitter_nick_name}</a>
+                        </Link>
+                      </Text>
                     </Paragraph>
                     <Paragraph>
-                      <Text strong>Go live time:</Text> 5/27
+                      <Text strong>Go live time : </Text>
+                      <Text>{liveStatement?.go_live_time}</Text>
                     </Paragraph>
                   </Card>
                 </Col>
