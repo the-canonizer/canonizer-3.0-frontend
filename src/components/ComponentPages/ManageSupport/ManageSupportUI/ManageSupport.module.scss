@@ -14,6 +14,8 @@
         font-weight: 600;
         color: #0f2a4d;
         border: solid 1px #d9d9d9;
+        padding: 4px 32px;
+        height: 38px;
         i {
           font-size: 1.1875rem;
           color: var(--primary);
@@ -49,8 +51,9 @@
     color: #4484ce;
     font-weight: 600;
     font-size: 16px;
-    padding: 4px 12px;
-    margin-bottom: 6px;
+    padding: 4px 38px;
+    height: 38px;
+    margin-bottom: 15px;
     display: inline-flex;
     border-radius: 0;
     align-items: center;
@@ -73,7 +76,7 @@
     border: solid 1px #d9d9d9 !important;
     width: 35%;
     display: inline-block;
-    color: #4484ce;
+    // color: #4484ce;
     font-size: 14px;
     
   @media screen and (max-width: 767px) {
@@ -96,6 +99,8 @@
     width: 130px;
     height: 38px;
     font-size: 16px;
+    padding: 4px 32px;
+    height: 38px;
   }
 
   .cancel_Btn {
@@ -105,6 +110,7 @@
     border-radius: 2px;
     width: auto;
     font-weight: 600;
+    padding: 4px 32px;
   }
 
   .margin_top{
@@ -126,3 +132,64 @@
   color: #4484ce !important;
 }
   
+.clear_Btn{
+    border-color: #4484ce;
+    color: #fff;
+    height: 38px;
+    border-radius: 2px;
+    width: auto;
+    font-weight: 600;
+    border-color: #4484ce;
+    background: #4484ce;
+    padding: 4px 32px;
+}
+
+.checkbox{
+  margin-inline: 22px;
+}
+
+.warning{
+  background-color: #F8D7DA;
+    border-color: #F8D7DA;
+    position: relative;
+    padding: 8px 15px;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    font-size: 13px;
+    display: inline-block;
+    width: 100%;
+    color:#80141F;
+}
+.hrtag 
+{
+  display: inline-block;
+  width: 100%;
+  height: 1px;
+  background-color: #DCDDE1;
+  margin: 25px 0  20px;
+}
+.removeAll 
+{
+  font-size: 15px;
+  color: #1C1B24;
+  font-weight: 600;
+  margin-right: 25px;
+}
+.quickAction 
+{
+  font-size: 15px;
+  color: #0F2A4D;
+}
+
+.btndiv
+{
+  font-size: 16px;
+  display: inline-block;
+  line-height: 20px;
+}
+
+.btndiv + span 
+{
+  margin-left: 15px;
+}

@@ -32,7 +32,7 @@ export const validations: ErrorContainer = {
   registrationPassword: "Please input your password!",
   passwordMinLength: "Password must be at least 8 characters long!",
   passwordPattern:
-    "Password must be contain small, capital letter, number and special character like Abc@1234.",
+    "Password must contain small, capital letter, number and special character like Abc@1234.",
   confirmPassword: "Please confirm your password!",
   confirmPasswordErr: "Confirm Password does not match!",
   otp: "Please input your OTP!",
