@@ -323,18 +323,15 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
               </Space>
             </Radio.Group>
             <DatePicker
-              // open={isDatePicker}
               disabled={isDatePicker || selectedAsOf == "bydate" ? false : true}
               format="YYYY-MM-DD"
-              defaultValue={moment(selectedAsOFDate)}
-              // disabledDate={disabledDate}
-              // disabledTime={disabledDateTime}
-              // showTime={{ defaultValue: moment("00:00:00", "HH:mm:ss") }}
+              defaultValue={moment(selectedAsOFDate * 1000)}
               suffixIcon={<i className="icon-calendar"></i>}
               size={"large"}
               className={`${styles.date} w-100`}
               onChange={pickDate}
               inputReadOnly={true}
+              disabledDate={(current) => current.isAfter(moment())}
             />
           </Panel>
         </Collapse>
