@@ -137,4 +137,14 @@ export default class TreeRequest extends Request {
       token
     );
   }
+
+  static getTopicActivityLog(reqBody) {
+    return new Request(
+      K.Network.URL.GetTopicActivityLog,
+      K.Network.Method.POST,
+      reqBody,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
 }
