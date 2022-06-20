@@ -19,8 +19,8 @@ function CompareStatementUI({
   liveStatement,
 }) {
   const router = useRouter();
-  const s1 = statements[0],
-    s2 = statements[1];
+  const s1 = statements[0] || {},
+    s2 = statements[1] || {};
 
   return (
     <Fragment>
@@ -99,7 +99,16 @@ function CompareStatementUI({
                     <Paragraph>
                       <Text strong>Submitter Nick Name : </Text>
                       <Text>
-                        <Link href="#" passHref>
+                        {console.log(s1)}
+                        <Link
+                          href={`/user/supports/${
+                            s1["submitter_nick_id"] || ""
+                          }?topicnum=${s1["topic_num"] || ""}&campnum=${
+                            s1["camp_num"] || ""
+                          }&namespace=${s1["namespace"] || ""}&camp_${
+                            s1["topic_num"] || ""
+                          }_${s1["camp_num"] || ""}`}
+                        >
                           <a>{s1?.submitter_nick_name}</a>
                         </Link>
                       </Text>
@@ -139,7 +148,15 @@ function CompareStatementUI({
                     <Paragraph>
                       <Text strong>Submitter Nick Name : </Text>
                       <Text>
-                        <Link href="#" passHref>
+                        <Link
+                          href={`/user/supports/${
+                            s2["submitter_nick_id"] || ""
+                          }?topicnum=${s2["topic_num"] || ""}&campnum=${
+                            s2["camp_num"] || ""
+                          }&namespace=${s2["namespace"] || ""}&camp_${
+                            s2["topic_num"] || ""
+                          }_${s2["camp_num"] || ""}`}
+                        >
                           <a>{s2?.submitter_nick_name}</a>
                         </Link>
                       </Text>
@@ -193,7 +210,19 @@ function CompareStatementUI({
                     <Paragraph>
                       <Text strong>Submitter Nick Name : </Text>
                       <Text>
-                        <Link href="#" passHref>
+                        <Link
+                          href={`/user/supports/${
+                            liveStatement["submitter_nick_id"] || ""
+                          }?topicnum=${
+                            liveStatement["topic_num"] || ""
+                          }&campnum=${
+                            liveStatement["camp_num"] || ""
+                          }&namespace=${
+                            liveStatement["namespace"] || ""
+                          }&camp_${liveStatement["topic_num"] || ""}_${
+                            liveStatement["camp_num"] || ""
+                          }`}
+                        >
                           <a>{liveStatement?.submitter_nick_name}</a>
                         </Link>
                       </Text>
