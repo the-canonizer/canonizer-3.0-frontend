@@ -1,12 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, Tag, Select, Spin } from "antd";
 import messages from "../../../../messages";
 import styles from "../ManageSupportUI/ManageSupport.module.scss";
 import Link from "next/link";
 import { Button, Col } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
+import { DraggableArea } from "react-draggable-tags";
+
+const tagsArrayList = [
+  { id: 1, content: "Representation Qualia" },
+  { id: 2, content: "Code By design" },
+  { id: 3, content: "Talentelgia" },
+];
 
 const ManageSupportUI = () => {
+  const [item, setItem] = useState(tagsArrayList);
+
+  const removeSupport = (id) => {
+    const filtereItem = item.filter((e) => {
+      return e.id != id;
+    });
+    setItem(filtereItem);
+  };
   return (
     <>
       <Card
@@ -63,16 +78,29 @@ const ManageSupportUI = () => {
           </span>
         </div>
 
-        <Tag className={styles.tag_btn}>
-          <div>
-            {""}
-            <span className={styles.count}>{""}</span>
-          </div>
-          <Link href="/topic/441-UserProfile-Testing2/1-Agreement#statement">
-            <a>1 . Representational Qualia</a>
-          </Link>
-          <CloseCircleOutlined />
-        </Tag>
+        <DraggableArea
+          tags={item}
+          render={({ tag, index }) => (
+            <div className="">
+              <Button
+                key={3}
+                className={styles.tag_btn}
+                // disabled={tag.dis}
+              >
+                <div className={styles.btndiv}>
+                  {" "}
+                  <span className={styles.count}>{tag.id}. </span>
+                  <Link href="">
+                    <a className={styles.count}>{tag.content}</a>
+                  </Link>
+                </div>
+                <CloseCircleOutlined onClick={() => removeSupport(tag.id)} />
+              </Button>
+            </div>
+          )}
+          onChange={(tags) => console.log(tags)}
+        />
+
         <div>
           <Card className={styles.margin_top} type="inner">
             <div className={styles.card_heading}>

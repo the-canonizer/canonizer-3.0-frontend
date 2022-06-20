@@ -14,6 +14,8 @@
         font-weight: 600;
         color: #0f2a4d;
         border: solid 1px #d9d9d9;
+        padding: 4px 32px;
+        height: 38px;
         i {
           font-size: 1.1875rem;
           color: var(--primary);
@@ -49,7 +51,8 @@
     color: #4484ce;
     font-weight: 600;
     font-size: 16px;
-    padding: 4px 12px;
+    padding: 4px 38px;
+    height: 38px;
     margin-bottom: 15px;
     display: inline-flex;
     border-radius: 0;
@@ -96,6 +99,8 @@
     width: 130px;
     height: 38px;
     font-size: 16px;
+    padding: 4px 32px;
+    height: 38px;
   }
 
   .cancel_Btn {
@@ -105,6 +110,7 @@
     border-radius: 2px;
     width: auto;
     font-weight: 600;
+    padding: 4px 32px;
   }
 
   .margin_top{
@@ -135,6 +141,7 @@
     font-weight: 600;
     border-color: #4484ce;
     background: #4484ce;
+    padding: 4px 32px;
 }
 
 .checkbox{
@@ -173,4 +180,16 @@
 {
   font-size: 15px;
   color: #0F2A4D;
+}
+
+.btndiv
+{
+  font-size: 16px;
+  display: inline-block;
+  line-height: 20px;
+}
+
+.btndiv + span 
+{
+  margin-left: 15px;
 }
