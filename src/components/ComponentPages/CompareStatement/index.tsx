@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-import HtmlDiffer from "html-differ";
+import HtmlDiff from "htmldiff-js";
 
 import CompareStatementUI from "./UI";
 
@@ -24,14 +24,27 @@ function CompareStatement() {
     });
   };
 
+  const stringToHTML = function (str) {
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(str, "text/html");
+    return doc.body.innerHTML;
+  };
+
   const getStatement = async (ids) => {
     setIsLoading(true);
     const reqBody = { ids };
     const res = await getCompareStatement(reqBody);
-    console.log("🚀 ~ file: index.tsx ~ line 31 ~ getStatement ~ res", res.data)
+
+    const statements = res.data,
+      s1 = statements[0],
+      s2 = statements[1];
+
+    s1.parsed_v = HtmlDiff.execute(s2?.parsed_value, s1?.parsed_value);
+    s2.parsed_v = HtmlDiff.execute(s1?.parsed_value, s2?.parsed_value);
+
     setIsLoading(false);
     if (res && res.status_code === 200) {
-      setStatements(res.data);
+      setStatements(statements);
     }
   };
 
@@ -40,23 +53,6 @@ function CompareStatement() {
     const ids = [q?.s1, q?.s2];
     getStatement(ids);
   }, [router]);
-
-  // const htmlDiffer = new HtmlDiffer.HtmlDiffer({
-  //   preset: "bem",
-  //   ignoreAttributes: [],
-  // });
-  // const html1 = "<p>Hello</p>",
-  //   html2 = "<p>Hello World!</p>";
-
-  // const diff = htmlDiffer.diffHtml(html1, html2),
-  //   isEqual = htmlDiffer.isEqual(html1, html2);
-
-  // console.log(
-  //   "🚀 ~ file: index.tsx ~ line 16 ~ CompareStatement ~ htmlDiffer",
-  //   htmlDiffer,
-  //   diff,
-  //   isEqual
-  // );
 
   const { campStatementHistory } = useSelector((state: RootState) => ({
     campStatementHistory: state?.topicDetails?.campStatementHistory,

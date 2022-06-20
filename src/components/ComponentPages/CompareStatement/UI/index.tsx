@@ -79,15 +79,12 @@ function CompareStatementUI({ statements, isLoading, campStatementHistory }) {
                   <Card
                     bordered
                     className={
-                      styles.compareCard + " " + styles[s1.status || "old"]
+                      styles.compareCard + " " + styles[s1?.status || "old"]
                     }
                   >
                     <Paragraph>
                       <Text strong>Edit Summary : </Text>
-                      <Text>
-                        Update &#34;{s1?.note}
-                        &#34; to &#34;{s1?.note}&#34;
-                      </Text>
+                      <Text>{s1?.note}</Text>
                     </Paragraph>
                     <Paragraph>
                       <Text strong>Submitted on : </Text>
@@ -106,9 +103,14 @@ function CompareStatementUI({ statements, isLoading, campStatementHistory }) {
                       <Text>{s1?.go_live_time}</Text>
                     </Paragraph>
                     <Text strong>Line : </Text>
-                    <Card bordered className={styles.compareCardInternal}>
+                    <Card
+                      bordered
+                      className={
+                        styles.compareCardInternal + " " + styles.inter1
+                      }
+                    >
                       <div
-                        dangerouslySetInnerHTML={{ __html: s1?.parsed_value }}
+                        dangerouslySetInnerHTML={{ __html: s1?.parsed_v }}
                       ></div>
                     </Card>
                   </Card>
@@ -117,15 +119,12 @@ function CompareStatementUI({ statements, isLoading, campStatementHistory }) {
                   <Card
                     bordered
                     className={
-                      styles.compareCard + " " + styles[s2.status || "old"]
+                      styles.compareCard + " " + styles[s2?.status || "old"]
                     }
                   >
                     <Paragraph>
                       <Text strong>Edit Summary : </Text>
-                      <Text>
-                        Update &#34;{s2?.note}
-                        &#34; to &#34;{s2?.note}&#34;
-                      </Text>
+                      <Text>{s2?.note}</Text>
                     </Paragraph>
                     <Paragraph>
                       <Text strong>Submitted on : </Text>
@@ -144,9 +143,14 @@ function CompareStatementUI({ statements, isLoading, campStatementHistory }) {
                       <Text>{s2?.go_live_time}</Text>
                     </Paragraph>
                     <Text strong>Line : </Text>
-                    <Card bordered className={styles.compareCardInternal}>
+                    <Card
+                      bordered
+                      className={
+                        styles.compareCardInternal + " " + styles.inter2
+                      }
+                    >
                       <div
-                        dangerouslySetInnerHTML={{ __html: s2?.parsed_value }}
+                        dangerouslySetInnerHTML={{ __html: s2?.parsed_v }}
                       ></div>
                     </Card>
                   </Card>
