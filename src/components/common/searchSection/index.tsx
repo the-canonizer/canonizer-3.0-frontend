@@ -27,12 +27,12 @@ const SearchSection = () => {
                   <input
                     type="radio"
                     name="sitesearch"
-                    defaultValue="canonizer.com"
+                    defaultValue="canonizer3.canonizer.com"
                     id="ss1"
                     defaultChecked
                   />
-                  <label htmlFor="ss1" title="Search canonizer.com">
-                    Canonizer.com
+                  <label htmlFor="ss1" title="Search canonizer3.canonizer.com">
+                    canonizer3.canonizer.com
                   </label>
                 </div>
               </div>
