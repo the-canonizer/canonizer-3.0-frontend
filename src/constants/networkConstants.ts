@@ -50,6 +50,7 @@ const NetworkConstants = {
     GetCurrentTopicRecord: `${BaseCanonizerApiUrl}/get-topic-record`,
     GetCurrentCampRecord: `${BaseCanonizerApiUrl}/get-camp-record`,
     subscribeToCamp: `${BaseCanonizerApiUrl}/camp/subscription`,
+    GetTopicActivityLog: `${BaseCanonizerApiUrl}/get-topic-activity-log`,
     // resend otp for registration
     ResendOTPForRegistration: `${BaseCanonizerApiUrl}/user/resend-otp`,
 
@@ -119,6 +120,9 @@ const NetworkConstants = {
     // email confirmation verify
     PostVerifyEmail: `${BaseCanonizerApiUrl}/user/post-verify-email`,
     OTPSendVerifyEmail: `${BaseCanonizerApiUrl}/user/resend-otp-verify-email`,
+
+    // compare statement
+    CompareStatement: `${BaseCanonizerApiUrl}/get-statement-comparison`,
   },
   Method: {
     GET: "GET",

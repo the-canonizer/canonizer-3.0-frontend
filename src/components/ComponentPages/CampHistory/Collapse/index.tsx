@@ -1,11 +1,18 @@
 import { Typography, Button, Collapse, Space, Checkbox, Divider } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
+
 import styles from ".././campHistory.module.scss";
 
 const { Panel } = Collapse;
 const { Title } = Typography;
-export default function HistoryCollapse({ campStatement }) {
+
+function HistoryCollapse({
+  campStatement,
+  onSelectCompare,
+  isDisabledCheck,
+  isChecked,
+}) {
   const router = useRouter();
 
   return (
@@ -62,7 +69,12 @@ export default function HistoryCollapse({ campStatement }) {
                 <Title level={5}>
                   Go live Time : <span>{campStatement?.go_live_time}</span>
                 </Title>
-                <Checkbox className={styles.campSelectCheckbox}>
+                <Checkbox
+                  className={styles.campSelectCheckbox}
+                  onChange={onSelectCompare.bind(this, campStatement)}
+                  disabled={isDisabledCheck}
+                  defaultChecked={isChecked}
+                >
                   Select to Compare
                 </Checkbox>
               </div>
@@ -95,3 +107,5 @@ export default function HistoryCollapse({ campStatement }) {
     </div>
   );
 }
+
+export default HistoryCollapse;
