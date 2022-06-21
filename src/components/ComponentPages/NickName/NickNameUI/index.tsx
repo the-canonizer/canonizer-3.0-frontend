@@ -106,6 +106,7 @@ export default function NickNameUI({
               {...messages.nickNameRule}
             >
               <Input
+                maxLength={50}
                 id="enterNickName"
                 placeholder="Enter nick name"
                 value=""

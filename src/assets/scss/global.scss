@@ -1497,10 +1497,10 @@ div[role="option"] {
   position: relative;
 }
 div[role="option"]::before {
-  content: url(../image/location1.png);
+  content: url(../image/map-marker-alt.svg);
   position: absolute;
   left: 5px;
-  transform: scale(0.7);
+  transform: scale(0.5);
   top: 0px;
 }
 
@@ -1582,7 +1582,9 @@ div[role="option"]::before {
 .Profile_btn {
   min-width: 150px;
 }
+
 .ant-btn {
   padding: 4px 32px;
   height: 38px;
 }
+

@@ -129,7 +129,7 @@ const TopicDetails = () => {
 
         <div className={styles.pageContent + " pageContentWrap"}>
           <Spin spinning={loadingIndicator} size="large">
-            <NewsFeedsCard newsFeed={newsFeed} />
+            {newsFeed?.length != 0 && <NewsFeedsCard newsFeed={newsFeed} />}
           </Spin>
           <Spin spinning={getTreeLoadingIndicator} size="large">
             <CampTreeCard scrollToCampStatement={scrollToCampStatement} />

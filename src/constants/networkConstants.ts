@@ -12,11 +12,11 @@ const NetworkConstants = {
       BasePort: process.env.NEXT_PUBLIC_CLIENT_BASE_PORT,
     },
     // User
-    CreateToken: `${BaseCanonizerApiUrl}/client_token`,
+    CreateToken: `${BaseCanonizerApiUrl}/client-token`,
     LoginUser: `${BaseCanonizerApiUrl}/user/login`,
     LogoutUser: `${BaseCanonizerApiUrl}/user/logout`,
     RegisterUser: `${BaseCanonizerApiUrl}/register`,
-    VerifyRegisterUser: `${BaseCanonizerApiUrl}/verifyOtp`,
+    VerifyRegisterUser: `${BaseCanonizerApiUrl}/post-verify-otp`,
     UserSocialLogin: `${BaseCanonizerApiUrl}/user/social/login`,
     UserSocialLoginCallback: `${BaseCanonizerApiUrl}/user/social/callback`,
     CountryCodes: `${BaseCanonizerApiUrl}/country/list`,
@@ -29,9 +29,9 @@ const NetworkConstants = {
     VerifyOTP: `${BaseCanonizerApiUrl}/verify-otp`,
     GetLanguageList: `${BaseCanonizerApiUrl}/get-languages`,
     // Forgot Password
-    SendForgotPasswordOTP: `${BaseCanonizerApiUrl}/forgotpassword/sendOtp`,
-    VerifyForgotPasswordOTP: `${BaseCanonizerApiUrl}/forgotpassword/verifyOtp`,
-    UpdateForgotPassword: `${BaseCanonizerApiUrl}/forgotpassword/update`,
+    SendForgotPasswordOTP: `${BaseCanonizerApiUrl}/forgot-password/send-otp`,
+    VerifyForgotPasswordOTP: `${BaseCanonizerApiUrl}/forgot-password/verify-otp`,
+    UpdateForgotPassword: `${BaseCanonizerApiUrl}/forgot-password/update`,
     //NickName
     AddNickName: `${BaseCanonizerApiUrl}/add-nick-name`,
     GetNickNameList: `${BaseCanonizerApiUrl}/get-nick-name-list`,
@@ -51,8 +51,9 @@ const NetworkConstants = {
     GetCurrentCampRecord: `${BaseCanonizerApiUrl}/get-camp-record`,
     subscribeToCamp: `${BaseCanonizerApiUrl}/camp/subscription`,
     GetCampBreadCrumb: `${BaseCanonizerApiUrl}/get-camp-breadcrumb`,
+    GetTopicActivityLog: `${BaseCanonizerApiUrl}/get-topic-activity-log`,
     // resend otp for registration
-    ResendOTPForRegistration: `${BaseCanonizerApiUrl}/user/reSendOtp`,
+    ResendOTPForRegistration: `${BaseCanonizerApiUrl}/user/resend-otp`,
 
     // HomePage
     GetCanonizedTopics: `${BaseCanonizerServiceUrl}/api/v1/topic/getAll`,
@@ -82,15 +83,15 @@ const NetworkConstants = {
 
     // Camp
     CreateCamp: `${BaseCanonizerApiUrl}/camp/save`,
-    GetAllParents: `${BaseCanonizerApiUrl}/camp/allParent`,
-    GetCampNickNames: `${BaseCanonizerApiUrl}/camp/allAboutNickName`,
+    GetAllParents: `${BaseCanonizerApiUrl}/camp/all-parent`,
+    GetCampNickNames: `${BaseCanonizerApiUrl}/camp/all-about-nickname`,
     CampStatementHistory: `${BaseCanonizerApiUrl}/get-statement-history`,
 
     GetSocialLinkedAccounts: `${BaseCanonizerApiUrl}/user/social/list`,
     DeleteSocialLinkedAccount: `${BaseCanonizerApiUrl}/user/social/delete`,
-    LinkUsersFromSocial: `${BaseCanonizerApiUrl}/user/social/socialLink`,
+    LinkUsersFromSocial: `${BaseCanonizerApiUrl}/user/social/social-link`,
     DeactivateUser: `${BaseCanonizerApiUrl}/user/deactivate`,
-    GetNickNames: `${BaseCanonizerApiUrl}/camp/getTopicNickNameUsed`,
+    GetNickNames: `${BaseCanonizerApiUrl}/camp/get-topic-nickname-used`,
 
     //footer
 
@@ -118,8 +119,11 @@ const NetworkConstants = {
     GetSubscriptions: `${BaseCanonizerApiUrl}/camp/subscription/list`,
 
     // email confirmation verify
-    PostVerifyEmail: `${BaseCanonizerApiUrl}/user/postVerifyEmail`,
-    OTPSendVerifyEmail: `${BaseCanonizerApiUrl}/user/reSendOtpVerifyEmail`,
+    PostVerifyEmail: `${BaseCanonizerApiUrl}/user/post-verify-email`,
+    OTPSendVerifyEmail: `${BaseCanonizerApiUrl}/user/resend-otp-verify-email`,
+
+    // compare statement
+    CompareStatement: `${BaseCanonizerApiUrl}/get-statement-comparison`,
   },
   Method: {
     GET: "GET",

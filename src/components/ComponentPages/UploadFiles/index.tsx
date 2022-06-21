@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import UploadFileUI from "./UploadFilesUI";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "src/store";
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "src/store";
 import {
   hideFolderModal,
   showDrageBox,
@@ -57,6 +57,7 @@ const UploadFiles = () => {
   const shownCrossBtn = () => dispatch(showCrossBtn());
   const showFiles = () => dispatch(showUploadFiles());
   const hideFiles = () => dispatch(hideUploadFiles());
+  const openFolder = useSelector((state: RootState) => state.ui.folderOpen);
 
   const [input, setInput] = useState("");
   const [selectedFolderID, setSelectedFolderID] = useState("");
@@ -106,7 +107,7 @@ const UploadFiles = () => {
     let res = await uploadFile(formData);
     if (res && res.status_code == 200) {
       //fileStatusHide();
-      //enableCreateFolderBtn();
+      openFolder ? "" : enableCreateFolderBtn();
       uploadOptionsHide();
       shownFolder();
       hideFiles();
@@ -220,10 +221,10 @@ const UploadFiles = () => {
         arr.length > 0
           ? (dragBoxHide(),
             shownAddButton(),
-            //enableCreateFolderBtn(),
+            openFolder ? "" : enableCreateFolderBtn(),
             showUploadsAfter())
           : (dragBoxShow(), hideAddButton());
-        //enableCreateFolderBtn()
+        openFolder ? "" : enableCreateFolderBtn();
       }
     }
   };

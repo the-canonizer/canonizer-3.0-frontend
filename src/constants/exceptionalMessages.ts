@@ -16,6 +16,7 @@ const ExceptionalMessageConstants = {
   addCampStatement: "Add Camp Statement",
   statementUpdate: "Statement Update",
   wikiMarkupSupportMsg: "Note: We support wiki markup. To get reference",
+  addNewsTextPlaceHolder: "Add news text.",
 };
 
 export default ExceptionalMessageConstants;

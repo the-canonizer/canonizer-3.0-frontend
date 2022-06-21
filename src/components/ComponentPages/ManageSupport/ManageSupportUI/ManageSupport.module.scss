@@ -1,0 +1,195 @@
+.card {
+    padding: 0 8px;
+    .btnsWrap {
+      padding: 15px 13px 15px;
+      border: solid 1px #d9d9d9;
+      background-color: #fff;
+      margin-bottom: 24px;
+      .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: #0f2a4d;
+        border: solid 1px #d9d9d9;
+        padding: 4px 32px;
+        height: 38px;
+        i {
+          font-size: 1.1875rem;
+          color: var(--primary);
+          margin-right: 8px;
+        }
+        &:hover {
+          color: var(--primary);
+          border-color: var(--primary);
+        }
+      }
+    }
+  }
+
+  .main_card_title{
+    font-size: 20px;
+    font-weight: 600;
+  
+  }
+
+  .card_spacing{
+    margin-top: 30px;
+  }
+  
+  .notes {
+    color: #ef5e5e;
+    margin-bottom: 12px;
+    font-size: 12px;
+  }
+  
+  .tag_btn {
+    border: 1px solid #f0f0f0 !important;
+    background: transparent;
+    color: #4484ce;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 4px 38px;
+    height: 38px;
+    margin-bottom: 15px;
+    display: inline-flex;
+    border-radius: 0;
+    align-items: center;
+    box-shadow: 3px 3px 0px #3f4f5b14;
+    @media screen and (max-width: 767px) {
+      font-size: 13px;
+    }
+    .count {
+      color: #000 !important;
+    }
+    span {
+      color: #d1d4db;
+      margin-left: 5px;
+      font-size: 14px;
+    }
+  }
+
+  .dropdown {
+    height: 40px !important;
+    border: solid 1px #d9d9d9 !important;
+    width: 35%;
+    display: inline-block;
+    // color: #4484ce;
+    font-size: 14px;
+    
+  @media screen and (max-width: 767px) {
+    margin-top: 10px;
+    width: 100%;
+  }
+}
+
+.Upload_Cancel_Btn {
+    margin-top: 19px;
+    margin-left: 10px;
+  }
+
+  .Upload_Cancel_Btn .Upload_Btn {
+    margin-right: 10px;
+    background-color: rgb(249, 157, 22);
+    border-color: rgb(249, 157, 22);
+    color: white;
+    border-radius: 2px;
+    width: 130px;
+    height: 38px;
+    font-size: 16px;
+    padding: 4px 32px;
+    height: 38px;
+  }
+
+  .cancel_Btn {
+    border-color: #4484ce;
+    color: #4484ce;
+    height: 38px;
+    border-radius: 2px;
+    width: auto;
+    font-weight: 600;
+    padding: 4px 32px;
+  }
+
+  .margin_top{
+   margin-top:69px; 
+   background: #ececec;
+  }
+
+  .card_width{
+    flex: 1;
+    margin-right: 8px;
+  }
+
+  .card_heading{
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.Bluecolor {
+  color: #4484ce !important;
+}
+  
+.clear_Btn{
+    border-color: #4484ce;
+    color: #fff;
+    height: 38px;
+    border-radius: 2px;
+    width: auto;
+    font-weight: 600;
+    border-color: #4484ce;
+    background: #4484ce;
+    padding: 4px 32px;
+}
+
+.checkbox{
+  margin-inline: 22px;
+}
+
+.warning{
+  background-color: #F8D7DA;
+    border-color: #F8D7DA;
+    position: relative;
+    padding: 8px 15px;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    font-size: 13px;
+    display: inline-block;
+    width: 100%;
+    color:#80141F;
+}
+.hrtag 
+{
+  display: inline-block;
+  width: 100%;
+  height: 1px;
+  background-color: #DCDDE1;
+  margin: 25px 0  20px;
+}
+.removeAll 
+{
+  font-size: 15px;
+  color: #1C1B24;
+  font-weight: 600;
+  margin-right: 25px;
+}
+.quickAction 
+{
+  font-size: 15px;
+  color: #0F2A4D;
+}
+
+.btndiv
+{
+  font-size: 16px;
+  display: inline-block;
+  line-height: 20px;
+}
+
+.btndiv + span 
+{
+  margin-left: 15px;
+}
