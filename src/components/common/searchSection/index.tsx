@@ -32,7 +32,7 @@ const SearchSection = () => {
                     defaultChecked
                   />
                   <label htmlFor="ss1" title="Search canonizer3.canonizer.com">
-                    canonizer3.canonizer.com
+                    canonizer.com
                   </label>
                 </div>
               </div>
