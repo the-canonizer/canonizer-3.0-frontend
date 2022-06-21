@@ -17,12 +17,12 @@ const PermissionsForPages: PermissionsObj = {
   CreateNewTopicPage: {
     isAuthenticationRequired: true,
     isPermissionRequired: false,
-    permissionName: "create-topic",
+    permissionName: "create_topic",
   },
   CreateNewCampPage: {
     isAuthenticationRequired: true,
     isPermissionRequired: false,
-    permissionName: "create-camp",
+    permissionName: "create_camp",
   },
   Settings: {
     isAuthenticationRequired: true,
@@ -33,6 +33,11 @@ const PermissionsForPages: PermissionsObj = {
     isAuthenticationRequired: true,
     isPermissionRequired: false,
     permissionName: "uploadFile",
+  },
+  CompareStatementPage: {
+    isAuthenticationRequired: true,
+    isPermissionRequired: false,
+    permissionName: "compare_statement",
   },
 };
 

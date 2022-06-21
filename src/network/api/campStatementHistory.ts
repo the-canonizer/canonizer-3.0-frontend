@@ -1,5 +1,6 @@
-import { store } from "../../../src/store";
-import { setCampStatementHistory } from "../../../src/store/slices/campDetailSlice";
+import { handleError } from "../../utils/generalUtility";
+import { store } from "../../store";
+import { setCampStatementHistory } from "../../store/slices/campDetailSlice";
 import NetworkCall from "../networkCall";
 import CampStatementHistoryRequest from "../request/campStatementHistoryRequest";
 
@@ -18,5 +19,18 @@ export const getCampStatementHistoryApi = async (reqBody) => {
     return campStatementHistory?.data;
   } catch (error) {
     // message.error(error.message);
+  }
+};
+
+export const getCompareStatement = async (reqBody) => {
+  try {
+    const res = await NetworkCall.fetch(
+      CampStatementHistoryRequest.statementCompare(reqBody),
+      false
+    );
+
+    return res;
+  } catch (error) {
+    handleError(error);
   }
 };

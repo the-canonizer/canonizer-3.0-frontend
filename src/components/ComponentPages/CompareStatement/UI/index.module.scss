@@ -1,0 +1,179 @@
+.wrap {
+  width: 100%;
+
+  .heading {
+    display: flex;
+
+    h5 {
+      font-size: 16px;
+      color: #0f2a4d;
+      font-weight: 400;
+
+      & + h5 {
+        margin-top: 0;
+        margin-left: 45px;
+      }
+
+      span {
+        font-weight: 700;
+      }
+
+      span.blueText {
+        font-weight: 400;
+        color: var(--primary);
+      }
+    }
+  }
+
+  .btnGroup {
+    display: flex;
+    margin-top: 10px;
+
+    button {
+      width: auto;
+      padding: 4px 15px;
+
+      & + button {
+        margin-left: 15px;
+      }
+    }
+  }
+}
+
+.campStatement {
+  margin-top: 20px;
+  border: solid 1px #e5e5e7;
+  background-color: #ffffff;
+
+  .tabHead {
+    padding: 15px;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: solid 1px #e5e5e7;
+
+    @media screen and (min-width: 992px) {
+      display: flex;
+    }
+
+    @media screen and (min-width: 720px) and (max-width: 768px) {
+      display: flex;
+    }
+
+    button {
+      border: none;
+      background: transparent;
+      color: #535353;
+      padding: 0;
+      height: auto;
+      margin-right: 15px;
+      box-shadow: none;
+      text-shadow: none;
+
+      svg {
+        fill: #535353;
+        width: 30px;
+        height: 20px;
+        transition: all 0.3s;
+      }
+
+      &:hover {
+        color: var(--primary);
+        svg {
+          fill: var(--primary);
+        }
+      }
+    }
+  }
+
+  h4 {
+    font-weight: 500;
+    margin-bottom: 0;
+    font-size: 18px;
+  }
+}
+
+.filterOt {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contentBody {
+  padding: 30px;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+
+  .latestCard {
+    [class="ant-card-head"] {
+      padding: 0;
+    }
+
+    [class="ant-card-head-title"] {
+      color: #0f2a4d;
+      font-weight: 600;
+    }
+
+    [class="ant-card-body"] {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+  .compareCard {
+    background-color: #f7f8fe;
+    border: 1px solid #f7f8fe;
+    border-left: 18px solid #f7f8fe;
+    height: 100%;
+
+    [class="ant-card-body"] {
+      padding: 10px 10px 30px;
+    }
+
+    &.objected {
+      background-color: #fff3f3;
+      border: 1px solid #ef5e5e;
+      border-left: 18px solid #ef5e5e;
+    }
+
+    &.live {
+      background-color: #f1fcf7;
+      border: 1px solid #12c879;
+      border-left: 18px solid #12c879;
+    }
+
+    &.in_review {
+      background-color: #fffdf3;
+      border: 1px solid #ffdd00;
+      border-left: 18px solid #ffdd00;
+    }
+
+    &.old {
+      background-color: #f6f9ff;
+      border: 1px solid #4484ce;
+      border-left: 18px solid #4484ce;
+    }
+
+    .compareCardInternal {
+      ins {
+        text-decoration: none;
+        background-color: #e0eafb;
+      }
+      del {
+        text-decoration: none;
+        background-color: #fbb6c2;
+        color: #555;
+      }
+
+      &.inter1 {
+        del {
+          display: none;
+        }
+      }
+      &.inter2 {
+        del {
+          display: none;
+        }
+      }
+    }
+  }
+}

@@ -4,7 +4,7 @@ import styles from "./button.module.scss";
 
 import Button from "./index";
 
-const CreateNewTopicButton = (props) => {
+const CreateNewCampButton = (props) => {
   const router = useRouter();
 
   const campRoute = () => {
@@ -21,9 +21,9 @@ const CreateNewTopicButton = (props) => {
       onClick={campRoute}
       id="create-camp-btn"
     >
-      <i className="icon-topic"></i> Create New Camp
+      <i className="icon-camp"></i> Create New Camp
     </Button>
   );
 };
 
-export default CreateNewTopicButton;
+export default CreateNewCampButton;
