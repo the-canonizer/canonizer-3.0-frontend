@@ -37,7 +37,6 @@ const CampTreeCard = ({ scrollToCampStatement }) => {
   }));
   const router = useRouter();
   const isLogin = useAuthentication();
-  console.log("tree", tree);
   return (
     <Collapse
       defaultActiveKey={["1"]}
