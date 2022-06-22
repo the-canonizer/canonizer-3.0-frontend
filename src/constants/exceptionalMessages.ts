@@ -14,6 +14,7 @@ const ExceptionalMessageConstants = {
   submitStatementButton: "Submit Statement",
   submitUpdateButton: "Submit Update",
   addNewsTextPlaceHolder: "Add news text.",
+  directJoinSupport: "Directly join and support",
 };
 
 export default ExceptionalMessageConstants;

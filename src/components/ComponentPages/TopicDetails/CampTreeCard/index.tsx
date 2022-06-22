@@ -2,6 +2,9 @@ import { Collapse, Popover } from "antd";
 import CampTree from "../CampTree";
 import Link from "next/link";
 
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
+
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 
 import styles from "../topicDetails.module.scss";
@@ -29,9 +32,12 @@ const addContent = (
 );
 
 const CampTreeCard = ({ scrollToCampStatement }) => {
+  const { tree } = useSelector((state: RootState) => ({
+    tree: state?.topicDetails?.tree,
+  }));
   const router = useRouter();
   const isLogin = useAuthentication();
-
+  console.log("tree", tree);
   return (
     <Collapse
       defaultActiveKey={["1"]}
@@ -50,21 +56,25 @@ const CampTreeCard = ({ scrollToCampStatement }) => {
                 event.stopPropagation();
               }}
             >
-              <Link
-                href={
-                  isLogin ? router.asPath.replace("topic", "addnews") : "/login"
-                }
-              >
-                <a
-                  className={styles.addNew}
-                  onClick={(event) => {
-                    event.stopPropagation();
-                  }}
+              {tree && (
+                <Link
+                  href={
+                    isLogin
+                      ? router.asPath.replace("topic", "addnews")
+                      : "/login"
+                  }
                 >
-                  <i className={"icon-fi-document " + styles.iconMr} />
-                  Add News
-                </a>
-              </Link>
+                  <a
+                    className={styles.addNew}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                    }}
+                  >
+                    <i className={"icon-fi-document " + styles.iconMr} />
+                    Add News
+                  </a>
+                </Link>
+              )}
               <Popover content={addContent} placement="left">
                 <i className="icon-info tooltip-icon-style"></i>
               </Popover>
