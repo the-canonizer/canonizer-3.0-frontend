@@ -233,7 +233,7 @@ export const routeToUserPage = (
   router,
   topicnum = "",
   campnum = "",
-  namespace = ""
+  namespace = 1
 ) => {
   return router.push({
     pathname: `/user/supports`,

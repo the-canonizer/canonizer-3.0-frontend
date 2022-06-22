@@ -34,9 +34,7 @@ const CreateCampFormUI = ({
                   (router?.query?.topic as string)?.split("-")[0] || ""
                 }&campnum=${
                   (router?.query?.camp as string)?.split("-")[0] || ""
-                }&namespace=${post["namespace"] || ""}&camp_${
-                  (router?.query?.topic as string)?.split("-")[0] || ""
-                }_${(router?.query?.camp as string)?.split("-")[0] || ""}`}
+                }&namespace=1`}
                 passHref
               >
                 <a className={styles.by}>{nick_name}</a>

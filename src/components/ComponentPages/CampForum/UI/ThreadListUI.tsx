@@ -172,9 +172,7 @@ const ThreadListUI = ({
                           others["user_id"] || ""
                         }?topicnum=${others["topic_id"] || ""}&campnum=${
                           others["camp_id"] || ""
-                        }&namespace=${others["namespace"] || ""}&camp_${
-                          others["topic_id"] || ""
-                        }_${others["camp_id"] || ""}`}
+                        }&namespace=1`}
                         passHref
                       >
                         <a>
