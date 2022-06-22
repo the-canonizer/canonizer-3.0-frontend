@@ -34,19 +34,20 @@ const UserProfile = () => {
 
   useEffect(() => {
     setNoData(false);
-    const userId = localStorage.getItem("publicUserId");
-    const topicRecord = JSON.parse(localStorage.getItem("topicRecord"));
+    const userId = router?.query?.supports[0];
+    const topic_num = router?.query?.topicnum;
+    const camp_num = router?.query?.campnum;
     const namespace_name_id = dropdownNameSpaceList
       ? dropdownNameSpaceList
-      : localStorage.getItem("namespace_name_id");
+      : router?.query?.namespace;
     if (dropdownNameSpaceList) {
-      const query = `${userId}?topicnum=${topicRecord?.topic_num}&campnum=${topicRecord?.camp_num}&namespace=${namespace_name_id}`;
+      const query = `${userId}?topicnum=${topic_num}&campnum=${camp_num}&namespace=${namespace_name_id}`;
       UserSupportedCampsListApi(query);
     } else {
       UserSupportCampListNewSpaces(userId);
       setDropdownNameSpaceList(namespace_name_id as any);
     }
-  }, [dropdownNameSpaceList]);
+  }, [dropdownNameSpaceList, router?.query]);
 
   return (
     <>
