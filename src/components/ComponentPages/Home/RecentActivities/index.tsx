@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Tabs, Typography, List, Button, Spin } from "antd";
+import { Tabs, Typography, List, Button, Spin, Tooltip } from "antd";
 import styles from "./recentActivities.module.scss";
 import { getRecentActivitiesApi } from "../../../../network/api/homePageApi";
 import { useRouter } from "next/router";
@@ -180,21 +180,38 @@ export default function RecentActivities() {
                 }
                 bordered={false}
                 dataSource={recentActivities?.topics}
-                renderItem={(activity: any) => (
-                  <List.Item className={styles.listItem}>
-                    <Link href={decodeUrlLink(activity)}>
-                      <>
-                        <Text className={styles.text}>
-                          {activity?.activity?.description}
-                        </Text>
-                        <Text className={styles.secondary} type="secondary">
-                          <i className="icon-calendar"></i>
-                          {covertToTime(activity.updated_at)}
-                        </Text>
-                      </>
-                    </Link>
-                  </List.Item>
-                )}
+                renderItem={(activity: any) => {
+                  const decodedProperties = JSON.parse(
+                    activity?.activity?.properties
+                  );
+                  return (
+                    <List.Item className={styles.listItem}>
+                      <Link href={decodedProperties?.url?.replace(/\s+/g, "-")}>
+                        <>
+                          <Text className={styles.text}>
+                            {activity?.activity?.description}
+                          </Text>
+                          <Text className={styles.secondary} type="secondary">
+                            <i className="icon-calendar"></i>
+                            {covertToTime(activity.updated_at)}
+                          </Text>
+                          <p>
+                            {decodedProperties?.description?.length > 4 ? (
+                              <Tooltip title={decodedProperties?.description}>
+                                {decodedProperties?.description?.substring(
+                                  0,
+                                  7
+                                ) + "..."}
+                              </Tooltip>
+                            ) : (
+                              decodedProperties?.description
+                            )}
+                          </p>
+                        </>
+                      </Link>
+                    </List.Item>
+                  );
+                }}
               />
             </TabPane>
             <TabPane tab="Threads" key="threads">
