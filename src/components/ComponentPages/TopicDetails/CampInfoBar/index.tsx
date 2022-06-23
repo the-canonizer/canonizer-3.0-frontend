@@ -21,7 +21,7 @@ import {
 } from "@ant-design/icons";
 import Link from "next/link";
 
-const CampInfoBar = ({ payload, isTopicPage }) => {
+const CampInfoBar = ({ payload = null, isTopicPage = false }) => {
   const isLogin = useAuthentication();
 
   const [loadingIndicator, setLoadingIndicator] = useState(false);

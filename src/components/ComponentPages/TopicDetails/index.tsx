@@ -121,7 +121,7 @@ const TopicDetails = () => {
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
-        <CampInfoBar payload={null} isTopicPage={true} />
+        <CampInfoBar isTopicPage={true} />
 
         <aside className={styles.miniSide + " leftSideBar miniSideBar"}>
           <SideBar onCreateCamp={onCreateCamp} />

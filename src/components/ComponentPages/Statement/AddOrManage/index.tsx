@@ -123,9 +123,7 @@ export default function AddOrManage({ add }) {
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
-        {payloadBreadCrumb && (
-          <CampInfoBar isTopicPage={false} payload={payloadBreadCrumb} />
-        )}
+        {payloadBreadCrumb && <CampInfoBar payload={payloadBreadCrumb} />}
 
         <aside className="leftSideBar miniSideBar">
           <SideBarNoFilter />
