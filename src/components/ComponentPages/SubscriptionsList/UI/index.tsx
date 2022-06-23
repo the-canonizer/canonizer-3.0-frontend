@@ -14,8 +14,10 @@ function SubscriptionsListUI({
   onCancel,
   onRemove,
   topicTitle,
+  topicLink,
   isCamp,
   campTitle,
+  campLink,
 }) {
   const placeholder =
     activeKey === "topic_subs" ? "Search by topic name" : "Search by camp name";
@@ -39,8 +41,10 @@ function SubscriptionsListUI({
         onCancel={onCancel}
         onRemove={onRemove}
         topicTitle={topicTitle}
+        topicLink={topicLink}
         isCamp={isCamp}
         campTitle={campTitle}
+        campLink={campLink}
       />
     </div>
   );

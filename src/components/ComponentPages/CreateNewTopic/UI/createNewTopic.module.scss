@@ -53,7 +53,11 @@
     label {
       span {
         &:last-child {
-          margin-left: 15px;
+          margin-left: 5px;
+
+          @media screen and (min-width: 1340px) {
+            white-space: nowrap;
+          }
         }
       }
       &::before {

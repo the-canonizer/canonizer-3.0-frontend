@@ -47,6 +47,7 @@ const CreateThreadForm = ({
                   <Fragment>
                     {labels.threadTitle}
                     <span>(Limit 100 Chars)</span>
+                    <span className="required">*</span>
                   </Fragment>
                 }
                 name="thread_title"
@@ -60,7 +61,12 @@ const CreateThreadForm = ({
                   {" "}
                   {nickNameList.length > 0 ? (
                     <Form.Item
-                      label={labels.cr_nick_name}
+                      label={
+                        <Fragment>
+                          {labels.cr_nick_name}
+                          <span className="required">*</span>
+                        </Fragment>
+                      }
                       name="nick_name"
                       {...nickNmRule}
                       initialValue={nickNameList[0]?.id}
@@ -83,7 +89,12 @@ const CreateThreadForm = ({
                   ) : null}
                   {nickNameList.length <= 0 ? (
                     <Form.Item
-                      label={labels.cr_nick_name}
+                      label={
+                        <Fragment>
+                          {labels.cr_nick_name}
+                          <span className="required">*</span>
+                        </Fragment>
+                      }
                       name="nick_name"
                       {...nickNmRule}
                       extra={labels.cr_nick_name_sp}

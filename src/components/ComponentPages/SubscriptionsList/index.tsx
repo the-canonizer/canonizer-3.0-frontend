@@ -103,8 +103,10 @@ function SubscriptionsList({ isTestData = [] }) {
       onCancel={onCancel}
       onRemove={onRemove}
       topicTitle={currentTopic["title"]}
+      topicLink={currentTopic["title_link"]}
       isCamp={isCamp}
       campTitle={camp["camp_name"]}
+      campLink={camp["camp_link"]}
     />
   );
 }

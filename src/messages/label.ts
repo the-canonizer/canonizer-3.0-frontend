@@ -1,9 +1,9 @@
 export const labels = {
   emailPhone: "Email",
   password: "Password",
-  firstName: "First Name (Limit 100 Chars)",
-  middleName: "Middle Name (Limit 100 Chars)",
-  lastName: "Last Name (Limit 100 Chars)",
+  firstName: "First Name",
+  middleName: "Middle Name",
+  lastName: "Last Name",
   phone: "Phone Number",
   email: "Email",
   captcha: "Captcha",
