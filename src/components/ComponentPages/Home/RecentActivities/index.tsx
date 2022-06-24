@@ -190,18 +190,20 @@ export default function RecentActivities() {
                         <>
                           <Text className={styles.text}>
                             {activity?.activity?.description}
-                            <span className="d-block">
-                              {decodedProperties?.description?.length > 40 ? (
+                            <br />
+                            <Tooltip title={decodedProperties?.description?.substring(0, 90) + "..."}>
+                              {decodedProperties?.description}
+                            </Tooltip>
+                              {/* {decodedProperties?.description?.length > 100 ? (
                                 <Tooltip title={decodedProperties?.description}>
                                   {decodedProperties?.description?.substring(
                                     0,
-                                    37
+                                    97
                                   ) + "..."}
                                 </Tooltip>
                               ) : (
                                 decodedProperties?.description
-                              )}
-                            </span>
+                              )} */}
                           </Text>
                           <Text className={styles.secondary} type="secondary">
                             <i className="icon-calendar"></i>
