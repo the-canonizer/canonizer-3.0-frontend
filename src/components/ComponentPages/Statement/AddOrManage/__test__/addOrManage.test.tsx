@@ -74,7 +74,7 @@ describe("Should render Addnews", () => {
     ).toBeInTheDocument();
     expect(screen.getByText(/click here/i)).toBeInTheDocument();
 
-    expect(container.getElementsByTagName("button")).toHaveLength(3);
+    expect(container.getElementsByTagName("button")).toHaveLength(4);
     expect(container.getElementsByTagName("input")).toHaveLength(1);
     expect(container.getElementsByTagName("textarea")).toHaveLength(2);
 
