@@ -110,7 +110,7 @@ const EmailPopup = ({ isModal = false }) => {
   // on resend click
   const onResendClick = async () => {
     let formBody = {
-      email: formData.email,
+      email: formData["email"],
     };
 
     await resendOTPForRegistration(formBody);
