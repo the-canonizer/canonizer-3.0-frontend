@@ -21,7 +21,8 @@ export default function AddOrManage({ add }) {
   const [screenLoading, setScreenLoading] = useState(false);
   const [payloadBreadCrumb, setPayloadBreadCrumb] = useState({});
   const [form] = Form.useForm();
-
+  let objection = router?.query?.statement[1]?.split("-")[1] == "objection";
+  console.log("objection ", objection);
   const onFinish = async (values: any) => {
     setScreenLoading(true);
     let res_for_add;
@@ -98,7 +99,7 @@ export default function AddOrManage({ add }) {
             ? {
                 nick_name: result?.data[0].id,
               }
-            : router?.query?.statement[1]?.split("-")[1] == "update"
+            : objection
             ? {
                 nick_name: res?.data?.nick_name[0]?.id,
                 statement: res?.data?.statement?.parsed_value?.replace(
@@ -124,6 +125,7 @@ export default function AddOrManage({ add }) {
   }, []);
 
   console.log("nickname=> ", nickNameData);
+  console.log("router=> ", router?.query?.statement[1]?.split("-")[1]);
 
   return (
     <>
@@ -142,7 +144,9 @@ export default function AddOrManage({ add }) {
               title={
                 add
                   ? K?.exceptionalMessages?.addCampStatement
-                  : K?.exceptionalMessages?.statementUpdate
+                  : !objection
+                  ? K?.exceptionalMessages?.statementUpdate
+                  : K?.exceptionalMessages?.objectionStatementHeading
               }
               className={styles.card}
             >
@@ -196,7 +200,11 @@ export default function AddOrManage({ add }) {
                         },
                       ]}
                     >
-                      <Input.TextArea size="large" rows={7} />
+                      <Input.TextArea
+                        size="large"
+                        rows={7}
+                        disabled={objection}
+                      />
                     </Form.Item>
                     <small className="mb-3 d-block">
                       {K?.exceptionalMessages?.wikiMarkupSupportMsg}{" "}
@@ -204,18 +212,33 @@ export default function AddOrManage({ add }) {
                     </small>
                   </Col>
                   <Col xs={24} xl={24}>
-                    <Form.Item
-                      className={styles.formItem}
-                      name="edit_summary"
-                      label={
-                        <>
-                          Edit Summary{" "}
-                          <small>(Briefly describe your changes)</small>
-                        </>
-                      }
-                    >
-                      <Input.TextArea size="large" rows={7} />
-                    </Form.Item>
+                    {objection ? (
+                      <Form.Item
+                        className={styles.formItem}
+                        name="objection_reason"
+                        label={
+                          <>
+                            Your Objection Reason{" "}
+                            <small>(Limit 100 Char)</small>
+                          </>
+                        }
+                      >
+                        <Input.TextArea size="large" rows={1} maxLength={100} />
+                      </Form.Item>
+                    ) : (
+                      <Form.Item
+                        className={styles.formItem}
+                        name="edit_summary"
+                        label={
+                          <>
+                            Edit Summary{" "}
+                            <small>(Briefly describe your changes)</small>
+                          </>
+                        }
+                      >
+                        <Input.TextArea size="large" rows={7} />
+                      </Form.Item>
+                    )}
                   </Col>
                   <Col xs={24} xl={24}>
                     <Form.Item className="mb-0">
@@ -226,28 +249,33 @@ export default function AddOrManage({ add }) {
                       >
                         {add
                           ? K?.exceptionalMessages?.submitStatementButton
-                          : K?.exceptionalMessages?.submitUpdateButton}
+                          : !objection
+                          ? K?.exceptionalMessages?.submitUpdateButton
+                          : "Submit Objection"}
                       </Button>
+                      {!objection && (
+                        <>
+                          <Button
+                            htmlType="button"
+                            className="cancel-btn mr-3"
+                            type="ghost"
+                            size="large"
+                            onClick={() => {}}
+                          >
+                            Cancel
+                          </Button>
 
-                      <Button
-                        htmlType="button"
-                        className="cancel-btn mr-3"
-                        type="ghost"
-                        size="large"
-                        onClick={() => {}}
-                      >
-                        Cancel
-                      </Button>
-
-                      <Button
-                        htmlType="button"
-                        className="cancel-btn"
-                        type="primary"
-                        size="large"
-                        onClick={() => setModalVisible(true)}
-                      >
-                        Preview
-                      </Button>
+                          <Button
+                            htmlType="button"
+                            className="cancel-btn"
+                            type="primary"
+                            size="large"
+                            onClick={() => setModalVisible(true)}
+                          >
+                            Preview
+                          </Button>
+                        </>
+                      )}
                     </Form.Item>
                   </Col>
                 </Row>

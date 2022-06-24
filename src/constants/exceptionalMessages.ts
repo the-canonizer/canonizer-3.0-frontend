@@ -13,10 +13,12 @@ const ExceptionalMessageConstants = {
   editSummaryErrorMsg: "Enter valid edit summary",
   submitStatementButton: "Submit Statement",
   submitUpdateButton: "Submit Update",
+  submitObjectionButton: "Submit Objection",
   addCampStatement: "Add Camp Statement",
   statementUpdate: "Statement Update",
   wikiMarkupSupportMsg: "Note: We support wiki markup. To get reference",
   addNewsTextPlaceHolder: "Add news text.",
+  objectionStatementHeading: "Object to this proposed update",
 };
 
 export default ExceptionalMessageConstants;
