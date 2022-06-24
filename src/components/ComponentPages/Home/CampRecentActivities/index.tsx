@@ -2,6 +2,7 @@ import { Card, List, Spin } from "antd";
 import { BellFilled } from "@ant-design/icons";
 import { useRouter } from "next/router";
 import { getTopicActivityLogApi } from "src/network/api/campDetailApi";
+import K from "src/constants";
 
 import styles from "./campRecentActivities.module.scss";
 import { useEffect, useState } from "react";
@@ -40,20 +41,24 @@ export default function CampRecentActivities() {
           title="Recent Activities"
           className={"activities " + styles.campActivities}
         >
-          <List
-            itemLayout="horizontal"
-            dataSource={data}
-            renderItem={(item) => (
-              <List.Item className={styles.activitiesList}>
-                <List.Item.Meta
-                  avatar={<BellFilled className={styles.bellIcon} />}
-                  title={item?.description}
-                  description={covertToTime(item?.updated_at)}
-                  className={styles.listItem}
-                />
-              </List.Item>
-            )}
-          />
+          {data ? (
+            <List
+              itemLayout="horizontal"
+              dataSource={data}
+              renderItem={(item) => (
+                <List.Item className={styles.activitiesList}>
+                  <List.Item.Meta
+                    avatar={<BellFilled className={styles.bellIcon} />}
+                    title={item?.description}
+                    description={covertToTime(item?.updated_at)}
+                    className={styles.listItem}
+                  />
+                </List.Item>
+              )}
+            />
+          ) : (
+            K?.exceptionalMessages?.noRecentActivityFound
+          )}
         </Card>
       </Spin>
     </>

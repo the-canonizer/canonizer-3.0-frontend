@@ -104,9 +104,7 @@ function CompareStatementUI({
                             s1["submitter_nick_id"] || ""
                           }?topicnum=${s1["topic_num"] || ""}&campnum=${
                             s1["camp_num"] || ""
-                          }&namespace=${s1["namespace"] || ""}&camp_${
-                            s1["topic_num"] || ""
-                          }_${s1["camp_num"] || ""}`}
+                          }&namespace=1`}
                         >
                           <a>{s1?.submitter_nick_name}</a>
                         </Link>
@@ -152,9 +150,7 @@ function CompareStatementUI({
                             s2["submitter_nick_id"] || ""
                           }?topicnum=${s2["topic_num"] || ""}&campnum=${
                             s2["camp_num"] || ""
-                          }&namespace=${s2["namespace"] || ""}&camp_${
-                            s2["topic_num"] || ""
-                          }_${s2["camp_num"] || ""}`}
+                          }&namespace=1`}
                         >
                           <a>{s2?.submitter_nick_name}</a>
                         </Link>
@@ -216,11 +212,7 @@ function CompareStatementUI({
                             liveStatement["topic_num"] || ""
                           }&campnum=${
                             liveStatement["camp_num"] || ""
-                          }&namespace=${
-                            liveStatement["namespace"] || ""
-                          }&camp_${liveStatement["topic_num"] || ""}_${
-                            liveStatement["camp_num"] || ""
-                          }`}
+                          }&namespace=1`}
                         >
                           <a>{liveStatement?.submitter_nick_name}</a>
                         </Link>

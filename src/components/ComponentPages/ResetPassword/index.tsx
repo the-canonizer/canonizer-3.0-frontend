@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { Row, Col, Button, Form, Input, Typography, message } from "antd";
@@ -79,7 +80,12 @@ const ResetPassword = () => {
                   <Col xs={24} md={10}>
                     <Form.Item
                       name="password"
-                      label={messages.labels.newPassword}
+                      label={
+                        <Fragment>
+                          {messages.labels.newPassword}
+                          <span className="required">*</span>
+                        </Fragment>
+                      }
                       {...messages.passwordRule}
                     >
                       <Input.Password
@@ -92,7 +98,12 @@ const ResetPassword = () => {
                   <Col xs={24} md={10}>
                     <Form.Item
                       name="confirm"
-                      label={messages.labels.confirmPassword}
+                      label={
+                        <Fragment>
+                          {messages.labels.confirmPassword}
+                          <span className="required">*</span>
+                        </Fragment>
+                      }
                       dependencies={["password"]}
                       {...messages.confirmPasswordRule}
                     >

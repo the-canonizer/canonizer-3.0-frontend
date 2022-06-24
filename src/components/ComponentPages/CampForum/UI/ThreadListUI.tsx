@@ -16,6 +16,7 @@ import styles from "./Forum.module.scss";
 import messages from "../../../../messages";
 import { getTime } from "../../../../utils/generalUtility";
 import isUserAuthenticated from "../../../../hooks/isUserAuthenticated";
+import { routeToUserPage } from "../../../../utils/generalUtility";
 
 const { Text } = Typography;
 const { Column } = Table;
@@ -166,7 +167,14 @@ const ThreadListUI = ({
                     "This thread doesn't have any posts yet."
                   ) : (
                     <Fragment>
-                      <Link href="#" passHref>
+                      <Link
+                        href={`/user/supports/${
+                          others["user_id"] || ""
+                        }?topicnum=${others["topic_id"] || ""}&campnum=${
+                          others["camp_id"] || ""
+                        }&namespace=1`}
+                        passHref
+                      >
                         <a>
                           {others["nick_name"] === null ||
                           others["nick_name"] === ""

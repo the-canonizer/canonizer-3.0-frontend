@@ -265,7 +265,7 @@ const TopicsList = () => {
                     href={{
                       pathname: `/topic/${item?.topic_id}-${
                         isReview
-                          ? item?.tree_structure[1].review_title
+                          ? item?.tree_structure[1]?.review_title
                               ?.split(" ")
                               .join("-")
                           : item?.topic_name?.split(" ").join("-")

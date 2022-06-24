@@ -57,7 +57,7 @@ const TopicDetails = () => {
       const reqBody = {
         topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
         camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
-        as_of: asof,
+        asOf: asof,
         asofdate:
           asof == ("default" || asof == "review")
             ? Date.now() / 1000
@@ -129,7 +129,9 @@ const TopicDetails = () => {
 
         <div className={styles.pageContent + " pageContentWrap"}>
           <Spin spinning={loadingIndicator} size="large">
-            {newsFeed?.length != 0 && <NewsFeedsCard newsFeed={newsFeed} />}
+            {newsFeed && newsFeed?.length != 0 && (
+              <NewsFeedsCard newsFeed={newsFeed} />
+            )}
           </Spin>
           <Spin spinning={getTreeLoadingIndicator} size="large">
             <CampTreeCard scrollToCampStatement={scrollToCampStatement} />
