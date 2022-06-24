@@ -3,20 +3,20 @@ import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { Form } from "antd";
 
-import EmailConfirmation from "./UI/email";
-import { hideSocialEmailPopup } from "../../../store/slices/uiSlice";
+import NameConfirmation from "./UI/nameConfirmation";
+import { hideSocialNamePopup } from "../../../store/slices/uiSlice";
 import {
-  resendOTPForRegistration,
-  SendOTPForVerify,
   verifyEmailOnSocial,
+  SendOTPForVerify,
+  resendOTPForRegistration,
 } from "../../../network/api/userApi";
 import { AppDispatch } from "../../../store";
-import Spinner from "../../common/spinner/spinner";  
+import Spinner from "../../common/spinner/spinner";
 
 const EmailPopup = ({ isModal = false }) => {
   const [isOTP, setIsOTP] = useState(false);
   const [isResend, setIsResend] = useState(false);
-  const [formData, setFormData] = useState({ email: "" });
+  const [formData, setFormData] = useState({});
   const [failedMsg, setFailedMsg] = useState("");
 
   const dispatch = useDispatch<AppDispatch>();
@@ -25,7 +25,7 @@ const EmailPopup = ({ isModal = false }) => {
   const [form] = Form.useForm();
 
   const closeModal = () => {
-    dispatch(hideSocialEmailPopup());
+    dispatch(hideSocialNamePopup());
 
     form.resetFields();
     setIsOTP(false);
@@ -33,17 +33,24 @@ const EmailPopup = ({ isModal = false }) => {
   };
 
   const onSubmit = async (values: any) => {
-    setFormData(values);
-
     const social_keys = JSON.parse(localStorage.getItem("s_l"));
 
     let formBody = {
-      email: values?.email?.trim(),
+      first_name: values?.first_name?.trim(),
+      last_name: values?.last_name?.trim(),
+      email: social_keys.email,
       code: social_keys?.code,
       provider: social_keys?.provider,
       client_id: process.env.NEXT_PUBLIC_AUTH_CLIENT_PASSWORD_ID,
       client_secret: process.env.NEXT_PUBLIC_AUTH_CLIENT_PASSWORD_SECRET,
+      type: "nameVerify",
     };
+
+    setFormData({
+      first_name: values?.first_name?.trim(),
+      last_name: values?.last_name?.trim(),
+      email: social_keys.email,
+    });
 
     let res = await SendOTPForVerify(formBody);
 
@@ -59,12 +66,15 @@ const EmailPopup = ({ isModal = false }) => {
     const redirectSocial = localStorage.getItem("rd_s");
 
     let body = {
-      email: formData.email?.trim(),
+      email: formData["email"]?.trim(),
+      first_name: formData["first_name"]?.trim(),
+      last_name: formData["last_name"]?.trim(),
       otp: values.otp?.trim(),
       code: social_keys?.code,
       provider: social_keys?.provider,
       client_id: process.env.NEXT_PUBLIC_AUTH_CLIENT_PASSWORD_ID,
       client_secret: process.env.NEXT_PUBLIC_AUTH_CLIENT_PASSWORD_SECRET,
+      type: "nameVerify",
     };
 
     if (values.otp?.trim()) {
@@ -109,7 +119,7 @@ const EmailPopup = ({ isModal = false }) => {
   return (
     <Fragment>
       <Spinner>
-        <EmailConfirmation
+        <NameConfirmation
           form={form}
           onFinish={isOTP ? onOTPSubmit : onSubmit}
           closeModal={closeModal}

@@ -1,17 +1,16 @@
-import { Typography, Form, Input, Button } from "antd";
-import {
-  CloseCircleOutlined,
-  ArrowRightOutlined,
-  RedoOutlined,
-} from "@ant-design/icons";
+import { Fragment } from "react";
+import { Typography, Form, Row, Col, Button, Input } from "antd";
+import { CloseCircleOutlined, ArrowRightOutlined } from "@ant-design/icons";
 
 import styles from "./Registration.module.scss";
 
 import messages from "../../../../messages";
+import FormItem from "../../../common/formElements";
 
 const { Title, Text } = Typography;
+const { labels } = messages;
 
-const EmailConfirmation = ({
+const NameConfirmation = ({
   form,
   onFinish,
   isModal,
@@ -23,14 +22,14 @@ const EmailConfirmation = ({
   <section className={styles.signup_wrapper + " " + styles.textCenter}>
     <Form
       form={form}
-      name="registration"
+      name="name-confirmation"
       onFinish={onFinish}
       layout="vertical"
       scrollToFirstError
       validateTrigger={messages.formValidationTypes()}
     >
-      <Title level={2} className={styles.titles} id="otp-title">
-        {isOTP ? "One Time Verification Code" : "Social Email Confirmation"}
+      <Title level={2} className={styles.titles} id="name-title">
+        Name Confirmation
       </Title>
       {isModal && (
         <Button
@@ -44,7 +43,7 @@ const EmailConfirmation = ({
       )}
       <div className={styles.section_one}>
         <Text type="danger" className={styles.otpNote} id="note-text">
-          {isOTP ? messages.labels.otpLabel : messages.labels.emailLabel}
+          {labels.nameLabel}
         </Text>
         {isOTP ? (
           <Form.Item
@@ -60,13 +59,44 @@ const EmailConfirmation = ({
             />
           </Form.Item>
         ) : (
-          <Form.Item
-            name="email"
-            className={styles.confirmationINput}
-            {...messages.emailRule}
-          >
-            <Input placeholder={messages.placeholders.email} />
-          </Form.Item>
+          <Row gutter={30} className={styles.textLeft}>
+            <Col md={12} style={{ width: "100%" }}>
+              <FormItem
+                name="first_name"
+                label={
+                  <Fragment>
+                    {messages.labels.firstName} <span>(Limit 100 Chars)</span>
+                    <span className="required">*</span>
+                  </Fragment>
+                }
+                rules={messages.firstNameRule}
+                placeholder={messages.placeholders.firstName}
+                onKeyDown={(e) =>
+                  e.key === " " && e.keyCode === 32 && e.preventDefault()
+                }
+                maxLength={100}
+              />
+            </Col>
+
+            <Col md={12} style={{ width: "100%" }}>
+              <FormItem
+                name="last_name"
+                label={
+                  <Fragment>
+                    {messages.labels.lastName}
+                    <span>(Limit 100 Chars)</span>
+                    <span className="required">*</span>
+                  </Fragment>
+                }
+                rules={messages.lastNameRule}
+                placeholder={messages.placeholders.lastName}
+                onKeyDown={(e) =>
+                  e.key === " " && e.keyCode === 32 && e.preventDefault()
+                }
+                maxLength={100}
+              />
+            </Col>
+          </Row>
         )}
       </div>
       <Form.Item>
@@ -99,4 +129,4 @@ const EmailConfirmation = ({
   </section>
 );
 
-export default EmailConfirmation;
+export default NameConfirmation;
