@@ -11,7 +11,7 @@ import {
   verifyEmailOnSocial,
 } from "../../../network/api/userApi";
 import { AppDispatch } from "../../../store";
-import Spinner from "../../common/spinner/spinner";  
+import Spinner from "../../common/spinner/spinner";
 
 const EmailPopup = ({ isModal = false }) => {
   const [isOTP, setIsOTP] = useState(false);
