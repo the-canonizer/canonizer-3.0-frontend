@@ -13,7 +13,11 @@ const ExceptionalMessageConstants = {
   editSummaryErrorMsg: "Enter valid edit summary",
   submitStatementButton: "Submit Statement",
   submitUpdateButton: "Submit Update",
+  addCampStatement: "Add Camp Statement",
+  statementUpdate: "Statement Update",
+  wikiMarkupSupportMsg: "Note: We support wiki markup. To get reference",
   addNewsTextPlaceHolder: "Add news text.",
+  directJoinSupport: "Directly join and support",
   noRecentActivityFound: "No Recent Activity Found",
 };
 

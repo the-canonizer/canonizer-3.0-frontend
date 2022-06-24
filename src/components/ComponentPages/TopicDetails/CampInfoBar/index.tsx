@@ -1,13 +1,19 @@
-import { Tooltip, Typography } from "antd";
+import { Spin, Tooltip, Typography } from "antd";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { subscribeToCampApi } from "../../../../network/api/campDetailApi";
 import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
 import { Dropdown, Menu, Button } from "antd";
+import K from "src/constants";
 
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
+import {
+  getCurrentTopicRecordApi,
+  getCurrentCampRecordApi,
+  getCampBreadCrumbApi,
+} from "src/network/api/campDetailApi";
 import {
   MoreOutlined,
   FileTextOutlined,
@@ -15,20 +21,89 @@ import {
 } from "@ant-design/icons";
 import Link from "next/link";
 
-const CampInfoBar = ({ payload, isStatementBar }) => {
+const CampInfoBar = ({ payload = null, isTopicPage = false }) => {
   const isLogin = useAuthentication();
 
+  const [loadingIndicator, setLoadingIndicator] = useState(false);
+  const [payloadData, setPayloadData] = useState(payload);
+  const [breadCrumbRes, setBreadCrumbRes] = useState([]);
+  const didMount = useRef(false);
   const router = useRouter();
-  const { topicRecord, campRecord } = useSelector((state: RootState) => ({
-    asof: state?.filters?.filterObject?.asof,
-    topicRecord: state?.topicDetails?.currentTopicRecord,
-    campRecord: state?.topicDetails?.currentCampRecord,
-  }));
+  const { topicRecord, campRecord, campStatement, asofdate, asof, algorithm } =
+    useSelector((state: RootState) => ({
+      topicRecord: state?.topicDetails?.currentTopicRecord,
+      campRecord: state?.topicDetails?.currentCampRecord,
+      campStatement: state?.topicDetails?.campStatement,
+      asofdate: state.filters?.filterObject?.asofdate,
+      algorithm: state.filters?.filterObject?.algorithm,
+      asof: state?.filters?.filterObject?.asof,
+    }));
+  const [campSubscriptionID, setCampSubscriptionID] = useState(
+    campRecord?.subscriptionId
+  );
+  const [topicSubscriptionID, setTopicSubscriptionID] = useState(
+    topicRecord?.topicSubscriptionId
+  );
+
+  useEffect(() => {
+    setPayloadData(payload);
+    async function getBreadCrumbApiCall() {
+      setLoadingIndicator(true);
+      let reqBody = {
+        topic_num: payload?.topic_num,
+        camp_num: payload?.camp_num,
+      };
+      let res = await getCampBreadCrumbApi(reqBody);
+      setBreadCrumbRes(res?.data?.bread_crumb);
+      setLoadingIndicator(false);
+    }
+    if (!isTopicPage && payload && Object.keys(payload).length > 0) {
+      getBreadCrumbApiCall();
+    }
+  }, [payload]);
+
+  useEffect(() => {
+    async function getTreeApiCall() {
+      setLoadingIndicator(true);
+      const reqBody = {
+        topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+        camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
+        as_of: asof,
+        asofdate:
+          asof == ("default" || asof == "review")
+            ? Date.now() / 1000
+            : asofdate,
+        algorithm: algorithm,
+        update_all: 1,
+      };
+      await Promise.all([
+        getCurrentTopicRecordApi(reqBody),
+        getCurrentCampRecordApi(reqBody),
+      ]);
+      setLoadingIndicator(false);
+    }
+    if (isTopicPage) {
+      getTreeApiCall();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    asofdate,
+    algorithm,
+    isTopicPage ? +router?.query?.camp[1]?.split("-")[0] : "",
+  ]);
+
+  useEffect(() => {
+    if (isTopicPage) {
+      if (didMount.current) {
+        setCampSubscriptionID(campRecord?.subscriptionId);
+        setTopicSubscriptionID(topicRecord?.topicSubscriptionId);
+      } else didMount.current = true;
+    }
+  }, [campRecord?.subscriptionId, topicRecord?.topicSubscriptionId]);
 
   const onCampForumClick = () => {
     const topicName = topicRecord?.topic_name.replaceAll(" ", "-");
     const campName = campRecord?.camp_name.replaceAll(" ", "-");
-
     router.push({
       pathname: `/forum/${topicRecord?.topic_num}-${topicName}/${campRecord?.camp_num}-${campName}/threads`,
     });
@@ -38,14 +113,9 @@ const CampInfoBar = ({ payload, isStatementBar }) => {
     const reqBody = {
       topic_num: campRecord.topic_num,
       camp_num: isTopic ? 0 : campRecord.camp_num,
-      checked: isTopic
-        ? !payload?.topicSubscriptionID
-        : !payload?.campSubscriptionID,
-      subscription_id: isTopic
-        ? payload?.topicSubscriptionID
-        : payload?.campSubscriptionID,
+      checked: isTopic ? !topicSubscriptionID : !campSubscriptionID,
+      subscription_id: isTopic ? topicSubscriptionID : campSubscriptionID,
     };
-
     subscribeToCampApi(reqBody, isTopic);
   };
 
@@ -64,7 +134,7 @@ const CampInfoBar = ({ payload, isStatementBar }) => {
         icon={
           <i
             className={`icon-subscribe ${
-              !!payload?.topicSubscriptionID && "text-primary"
+              !!topicSubscriptionID && "text-primary"
             }`}
           ></i>
         }
@@ -72,13 +142,13 @@ const CampInfoBar = ({ payload, isStatementBar }) => {
           if (isLogin) {
             campOrTopicScribe(true);
           } else {
-            payload?.setLoadingIndicator(true);
+            setLoadingIndicator(true);
+
             router.push("/login");
           }
-          // campOrTopicScribe(true)
         }}
       >
-        {!!payload?.topicSubscriptionID
+        {!!topicSubscriptionID
           ? " Unsubscribe to Entire Topic"
           : " Subscribe to Entire Topic"}
       </Menu.Item>
@@ -86,29 +156,23 @@ const CampInfoBar = ({ payload, isStatementBar }) => {
         icon={
           <i
             className={`icon-subscribe ${
-              !!payload?.campSubscriptionID && "text-primary"
+              !!campSubscriptionID && "text-primary"
             }`}
           ></i>
         }
-        disabled={
-          !!payload?.campSubscriptionID && campRecord?.flag == 2 ? true : false
-        }
-        onClick={
-          () => {
-            if (isLogin) {
-              campOrTopicScribe(false);
-            } else {
-              payload?.setLoadingIndicator(true);
-              router.push("/login");
-            }
+        disabled={!!campSubscriptionID && campRecord?.flag == 2 ? true : false}
+        onClick={() => {
+          if (isLogin) {
+            campOrTopicScribe(false);
+          } else {
+            setLoadingIndicator(true);
+            router.push("/login");
           }
-
-          // campOrTopicScribe(false)
-        }
+        }}
       >
-        {!!payload?.campSubscriptionID && campRecord?.flag !== 2 ? (
+        {!!campSubscriptionID && campRecord?.flag !== 2 ? (
           "Unsubscribe to the Camp"
-        ) : !!payload?.campSubscriptionID && campRecord?.flag == 2 ? (
+        ) : !!campSubscriptionID && campRecord?.flag == 2 ? (
           <Tooltip
             title={`You are subscribed to ${campRecord?.subscriptionCampName}`}
           >
@@ -126,7 +190,21 @@ const CampInfoBar = ({ payload, isStatementBar }) => {
         Manage/Edit the Topic
       </Menu.Item>
       <Menu.Item icon={<FileTextOutlined />}>
-        Manage/Edit Camp Statement{" "}
+        {isTopicPage && (
+          <Link
+            href={
+              campStatement?.length > 0
+                ? `/statement/history/${router?.query?.camp[0]}/${router?.query?.camp[1]}`
+                : `/create/statement/${router?.query?.camp[0]}/${router?.query?.camp[1]}`
+            }
+          >
+            <a>
+              {campStatement?.length > 0
+                ? K?.exceptionalMessages?.manageCampStatementButton
+                : K?.exceptionalMessages?.addCampStatementButton}
+            </a>
+          </Link>
+        )}
       </Menu.Item>
     </Menu>
   );
@@ -134,71 +212,96 @@ const CampInfoBar = ({ payload, isStatementBar }) => {
   return (
     <>
       <div className={styles.topicDetailContentHead}>
-        <div className={styles.topicDetailContentHead_Left}>
-          <Typography.Paragraph className={"mb-0 " + styles.topicTitleStyle}>
-            {" "}
-            <span className="bold"> Topic: </span>
-            {topicRecord && topicRecord?.topic_name}{" "}
-            {!!payload?.topicSubscriptionID && (
-              <small>
-                <i className="icon-subscribe text-primary"></i>
-              </small>
-            )}
-          </Typography.Paragraph>
-          <div className={styles.breadcrumbLinks}>
-            {" "}
-            <span className="bold mr-1"> Camp : </span>
-            {campRecord
-              ? campRecord.parentCamps?.map((camp, index) => {
-                  return (
-                    <Link
-                      href={`${router.query?.camp?.at(0)}/${
-                        camp?.camp_num
-                      }-${camp?.camp_name?.split(" ").join("-")}`}
-                      key={camp?.camp_num}
-                    >
-                      <a>
-                        {index !== 0 && "/ "}
-                        {`${camp?.camp_name}`}
-                      </a>
-                    </Link>
-                  );
-                })
-              : null}
-            {!!payload?.campSubscriptionID && (
-              <small style={{ alignSelf: "center", marginLeft: "10px" }}>
-                <i className="icon-subscribe text-primary"></i>
-              </small>
+        <Spin spinning={loadingIndicator} size="small">
+          <div className={styles.topicDetailContentHead_Left}>
+            <Typography.Paragraph className={"mb-0 " + styles.topicTitleStyle}>
+              {" "}
+              <span className="bold"> Topic: </span>
+              {isTopicPage
+                ? topicRecord && topicRecord?.topic_name
+                : payloadData?.topic_name}
+              {"  "}
+              {!!topicSubscriptionID && (
+                <small>
+                  <i className="icon-subscribe text-primary"></i>
+                </small>
+              )}
+            </Typography.Paragraph>
+            <div className={styles.breadcrumbLinks}>
+              {" "}
+              <span className="bold mr-1"> Camp : </span>
+              {isTopicPage
+                ? campRecord
+                  ? campRecord?.parentCamps?.map((camp, index) => {
+                      return (
+                        <Link
+                          href={`${router.query?.camp?.at(0)}/${
+                            camp?.camp_num
+                          }-${camp?.camp_name?.replaceAll(" ", "-")}`}
+                          key={camp?.camp_num}
+                        >
+                          <a>
+                            {index !== 0 && "/ "}
+                            {`${camp?.camp_name}`}
+                          </a>
+                        </Link>
+                      );
+                    })
+                  : null
+                : breadCrumbRes
+                ? breadCrumbRes?.map((camp, index) => {
+                    return (
+                      <Link
+                        href={`/topic/${
+                          payloadData?.topic_num
+                        }-${payloadData?.topic_name?.replaceAll(" ", "-")}/${
+                          camp?.camp_num
+                        }-${camp?.camp_name?.replaceAll(" ", "-")}`}
+                        key={index}
+                      >
+                        <a>
+                          {index !== 0 && "/ "}
+                          {`${camp?.camp_name}`}
+                        </a>
+                      </Link>
+                    );
+                  })
+                : null}
+              {!!campSubscriptionID && (
+                <small style={{ alignSelf: "center", marginLeft: "10px" }}>
+                  <i className="icon-subscribe text-primary"></i>
+                </small>
+              )}
+            </div>
+          </div>
+
+          <div className={styles.topicDetailContentHead_Right}>
+            {isTopicPage && (
+              <>
+                <Button
+                  type="primary"
+                  className={styles.btnCampForum}
+                  onClick={onCampForumClick}
+                >
+                  Camp Forum
+                </Button>
+                <Dropdown
+                  className={styles.campForumDropdown}
+                  placement="bottomRight"
+                  overlay={campForumDropdownMenu}
+                  trigger={["click"]}
+                >
+                  <a
+                    className={styles.iconMore}
+                    onClick={(e) => e.preventDefault()}
+                  >
+                    <MoreOutlined />
+                  </a>
+                </Dropdown>
+              </>
             )}
           </div>
-        </div>
-
-        <div className={styles.topicDetailContentHead_Right}>
-          {!isStatementBar && (
-            <>
-              <Button
-                type="primary"
-                className={styles.btnCampForum}
-                onClick={onCampForumClick}
-              >
-                Camp Forum
-              </Button>
-              <Dropdown
-                className={styles.campForumDropdown}
-                placement="bottomRight"
-                overlay={campForumDropdownMenu}
-                trigger={["click"]}
-              >
-                <a
-                  className={styles.iconMore}
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <MoreOutlined />
-                </a>
-              </Dropdown>
-            </>
-          )}
-        </div>
+        </Spin>
       </div>
     </>
   );

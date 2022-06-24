@@ -228,6 +228,17 @@ export const getAllUsedNickNames = async (body) => {
     return error.error;
   }
 };
+export const getCampBreadCrumbApi = async (reqBody) => {
+  try {
+    const currentTopicRecord = await NetworkCall.fetch(
+      TreeRequest.getCampBreadCrumb(reqBody)
+    );
+    return currentTopicRecord;
+  } catch (error) {
+    // message.error(error.message);
+  }
+};
+
 export const getTopicActivityLogApi = async (reqBody) => {
   try {
     const newsFeed = await NetworkCall.fetch(
