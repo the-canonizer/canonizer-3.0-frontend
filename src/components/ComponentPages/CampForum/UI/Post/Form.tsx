@@ -116,7 +116,12 @@ const PostForm = ({
             <Col xs={24} sm={12}>
               {nickNameList.length > 0 ? (
                 <Form.Item
-                  label={labels.cr_nick_name}
+                  label={
+                    <Fragment>
+                      {labels.cr_nick_name}
+                      <span className="required">*</span>
+                    </Fragment>
+                  }
                   name="nick_name"
                   {...nickNmRule}
                   initialValue={nickNameList[0]?.id}
@@ -139,7 +144,12 @@ const PostForm = ({
               ) : null}
               {nickNameList.length <= 0 ? (
                 <Form.Item
-                  label={labels.cr_nick_name}
+                  label={
+                    <Fragment>
+                      {labels.cr_nick_name}
+                      <span className="required">*</span>
+                    </Fragment>
+                  }
                   name="nick_name"
                   {...nickNmRule}
                   extra={labels.cr_nick_name_sp}

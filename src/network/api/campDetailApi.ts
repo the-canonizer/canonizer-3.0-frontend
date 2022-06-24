@@ -238,3 +238,15 @@ export const getCampBreadCrumbApi = async (reqBody) => {
     // message.error(error.message);
   }
 };
+
+export const getTopicActivityLogApi = async (reqBody) => {
+  try {
+    const newsFeed = await NetworkCall.fetch(
+      TreeRequest.getTopicActivityLog(reqBody),
+      false
+    );
+    return newsFeed;
+  } catch (error) {
+    message.error(error.message);
+  }
+};

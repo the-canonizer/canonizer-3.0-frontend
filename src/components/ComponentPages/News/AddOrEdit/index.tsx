@@ -22,6 +22,7 @@ import {
 } from "../../../../network/api/campNewsApi";
 import { getAllUsedNickNames } from "../../../../network/api/campDetailApi";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
+import K from "src/constants";
 
 const antIcon = <LoadingOutlined spin />;
 const { Text } = Typography;
@@ -182,7 +183,8 @@ export default function AddOrEdit({ edit }) {
                 name="display_text"
                 label={
                   <>
-                    Display Text <small>(Limit 256 chars)</small>
+                    Display Text <span className="required">*</span>{" "}
+                    <small>(Limit 256 chars)</small>
                   </>
                 }
                 rules={[
@@ -198,7 +200,7 @@ export default function AddOrEdit({ edit }) {
               >
                 <Input.TextArea
                   size="large"
-                  placeholder='New Video:"Consciousness:Not a Hard Problem Just a Color Problem"'
+                  placeholder={K?.exceptionalMessages?.addNewsTextPlaceHolder}
                   maxLength={256}
                   rows={7}
                 />
@@ -214,7 +216,8 @@ export default function AddOrEdit({ edit }) {
                 className={`${styles.formItem} mb-3`}
                 label={
                   <>
-                    Link <small>(Limit 2000 chars)</small>
+                    Link <span className="required">*</span>{" "}
+                    <small>(Limit 2000 chars)</small>
                   </>
                 }
                 name="link"
@@ -246,7 +249,12 @@ export default function AddOrEdit({ edit }) {
 
               <Form.Item
                 className={styles.formItem}
-                label={<>Nick Name</>}
+                label={
+                  <>
+                    Nick Name
+                    <span className="required">*</span>
+                  </>
+                }
                 name="nick_name"
                 rules={[
                   {

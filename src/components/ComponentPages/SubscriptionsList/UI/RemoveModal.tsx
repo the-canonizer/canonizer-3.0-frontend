@@ -1,5 +1,6 @@
 import { Modal, Button, Typography } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
+import Link from "next/link";
 
 import styles from "./SubscriptionsList.module.scss";
 
@@ -8,8 +9,10 @@ function TopicRemoveModal({
   onCancel,
   onRemove,
   topicTitle,
+  topicLink,
   isCamp,
   campTitle,
+  campLink,
 }) {
   return (
     <Modal
@@ -40,13 +43,19 @@ function TopicRemoveModal({
     >
       {!isCamp ? (
         <Typography.Text>
-          Your subscription will be removed from the entire Topic - &quot;
-          {topicTitle}&quot;. Do you want to continue?
+          Your subscription will be removed from the entire Topic -
+          <Link href={topicLink}>
+            <a> &quot;{topicTitle}&quot;. </a>
+          </Link>
+          Do you want to continue?
         </Typography.Text>
       ) : (
         <Typography.Text>
-          Your subscription will be removed from the Camp - &quot;{campTitle}
-          &quot;. Do you want to continue?
+          Your subscription will be removed from the Camp -
+          <Link href={campLink}>
+            <a> &quot;{campTitle}&quot;. </a>
+          </Link>
+          Do you want to continue?
         </Typography.Text>
       )}
     </Modal>

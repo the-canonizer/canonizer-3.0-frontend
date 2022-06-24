@@ -123,9 +123,7 @@ export default function AddOrManage({ add }) {
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
-        {payloadBreadCrumb && (
-          <CampInfoBar isTopicPage={false} payload={payloadBreadCrumb} />
-        )}
+        {payloadBreadCrumb && <CampInfoBar payload={payloadBreadCrumb} />}
 
         <aside className="leftSideBar miniSideBar">
           <SideBarNoFilter />
@@ -174,58 +172,49 @@ export default function AddOrManage({ add }) {
                     </Form.Item>
                   </Col>
                   <Col xs={24} xl={24}>
-                    <Row gutter={24}>
-                      <Col xs={24} xl={12}>
-                        <Form.Item
-                          className={styles.formItem}
-                          name="statement"
-                          label={<>Statement</>}
-                          rules={[
-                            {
-                              required: true,
-                              message:
-                                K?.exceptionalMessages
-                                  ?.statementRequiredErrorMsg,
-                            },
-                            {
-                              pattern: /[^ \s]/,
-                              message:
-                                K?.exceptionalMessages
-                                  ?.statementRequiredErrorMsg,
-                            },
-                          ]}
-                        >
-                          <Input.TextArea size="large" rows={7} />
-                        </Form.Item>
-                        <p>
-                          {K?.exceptionalMessages?.wikiMarkupSupportMsg}{" "}
-                          <a>click here</a>.
-                        </p>
-                      </Col>
-                    </Row>
-
-                    <Row gutter={24}>
-                      <Col xs={24} xl={12}>
-                        <Form.Item
-                          className={styles.formItem}
-                          name="edit_summary"
-                          label={
-                            <>
-                              Edit Summary{" "}
-                              <small>(Briefly describe your changes)</small>
-                            </>
-                          }
-                        >
-                          <Input.TextArea size="large" rows={7} />
-                        </Form.Item>
-                      </Col>
-                    </Row>
+                    <Form.Item
+                      className={`${styles.formItem} mb-2`}
+                      name="statement"
+                      label={<>Statement </>}
+                      rules={[
+                        {
+                          required: true,
+                          message:
+                            K?.exceptionalMessages?.statementRequiredErrorMsg,
+                        },
+                        {
+                          pattern: /[^ \s]/,
+                          message:
+                            K?.exceptionalMessages?.statementRequiredErrorMsg,
+                        },
+                      ]}
+                    >
+                      <Input.TextArea size="large" rows={7} />
+                    </Form.Item>
+                    <small className="mb-3 d-block">
+                      {K?.exceptionalMessages?.wikiMarkupSupportMsg}{" "}
+                      <a>click here</a>.
+                    </small>
                   </Col>
                   <Col xs={24} xl={24}>
-                    <Form.Item className="mb-0 text-right">
+                    <Form.Item
+                      className={styles.formItem}
+                      name="edit_summary"
+                      label={
+                        <>
+                          Edit Summary{" "}
+                          <small>(Briefly describe your changes)</small>
+                        </>
+                      }
+                    >
+                      <Input.TextArea size="large" rows={7} />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} xl={24}>
+                    <Form.Item className="mb-0">
                       <Button
                         size="large"
-                        className={`btn-orange ${styles.btnSubmit}`}
+                        className={`btn-orange mr-3 ${styles.btnSubmit}`}
                         htmlType="submit"
                       >
                         {add
@@ -235,8 +224,18 @@ export default function AddOrManage({ add }) {
 
                       <Button
                         htmlType="button"
-                        className="cancel-btn"
+                        className="cancel-btn mr-3"
                         type="ghost"
+                        size="large"
+                        onClick={() => {}}
+                      >
+                        Cancel
+                      </Button>
+
+                      <Button
+                        htmlType="button"
+                        className="cancel-btn"
+                        type="primary"
                         size="large"
                         onClick={() => setModalVisible(true)}
                       >

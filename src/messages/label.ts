@@ -1,9 +1,9 @@
 export const labels = {
   emailPhone: "Email",
   password: "Password",
-  firstName: "First Name (Limit 100 Chars)",
-  middleName: "Middle Name (Limit 100 Chars)",
-  lastName: "Last Name (Limit 100 Chars)",
+  firstName: "First Name",
+  middleName: "Middle Name",
+  lastName: "Last Name",
   phone: "Phone Number",
   email: "Email",
   captcha: "Captcha",
@@ -66,4 +66,5 @@ export const labels = {
     "Note : Verification code has been sent to your registered email address",
   emailLabel:
     "Note : Your email address is not returned from social account. You have to enter the email address.",
+  SupportedCamps: "Supported Camps",
 };

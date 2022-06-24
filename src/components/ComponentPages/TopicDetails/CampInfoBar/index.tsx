@@ -21,7 +21,7 @@ import {
 } from "@ant-design/icons";
 import Link from "next/link";
 
-const CampInfoBar = ({ payload, isTopicPage }) => {
+const CampInfoBar = ({ payload = null, isTopicPage = false }) => {
   const isLogin = useAuthentication();
 
   const [loadingIndicator, setLoadingIndicator] = useState(false);
@@ -48,14 +48,16 @@ const CampInfoBar = ({ payload, isTopicPage }) => {
   useEffect(() => {
     setPayloadData(payload);
     async function getBreadCrumbApiCall() {
+      setLoadingIndicator(true);
       let reqBody = {
         topic_num: payload?.topic_num,
         camp_num: payload?.camp_num,
       };
       let res = await getCampBreadCrumbApi(reqBody);
       setBreadCrumbRes(res?.data?.bread_crumb);
+      setLoadingIndicator(false);
     }
-    if (!isTopicPage) {
+    if (!isTopicPage && payload && Object.keys(payload).length > 0) {
       getBreadCrumbApiCall();
     }
   }, [payload]);
@@ -188,7 +190,21 @@ const CampInfoBar = ({ payload, isTopicPage }) => {
         Manage/Edit the Topic
       </Menu.Item>
       <Menu.Item icon={<FileTextOutlined />}>
-        {K?.exceptionalMessages?.manageCampStatementButton}
+        {isTopicPage && (
+          <Link
+            href={
+              campStatement?.length > 0
+                ? `/statement/history/${router?.query?.camp[0]}/${router?.query?.camp[1]}`
+                : `/create/statement/${router?.query?.camp[0]}/${router?.query?.camp[1]}`
+            }
+          >
+            <a>
+              {campStatement?.length > 0
+                ? K?.exceptionalMessages?.manageCampStatementButton
+                : K?.exceptionalMessages?.addCampStatementButton}
+            </a>
+          </Link>
+        )}
       </Menu.Item>
     </Menu>
   );
@@ -221,7 +237,7 @@ const CampInfoBar = ({ payload, isTopicPage }) => {
                         <Link
                           href={`${router.query?.camp?.at(0)}/${
                             camp?.camp_num
-                          }-${camp?.camp_name?.split(" ").join("-")}`}
+                          }-${camp?.camp_name?.replaceAll(" ", "-")}`}
                           key={camp?.camp_num}
                         >
                           <a>
@@ -236,7 +252,12 @@ const CampInfoBar = ({ payload, isTopicPage }) => {
                 ? breadCrumbRes?.map((camp, index) => {
                     return (
                       <Link
-                        href={`/topic/${payloadData?.topic_num}-${payloadData?.topic_name}/${camp?.camp_num}-${camp?.camp_name}-${camp?.topic_num}`}
+                        href={`/topic/${
+                          payloadData?.topic_num
+                        }-${payloadData?.topic_name?.replaceAll(" ", "-")}/${
+                          camp?.camp_num
+                        }-${camp?.camp_name?.replaceAll(" ", "-")}`}
+                        key={index}
                       >
                         <a>
                           {index !== 0 && "/ "}

@@ -126,9 +126,6 @@ export const setFieldErrorsFromServer = (error, form, values = undefined) => {
 
   for (let key in errors) {
     if (errors.hasOwnProperty(key)) {
-      // let fieldError = errors[key].map((error) => {
-      //     return error;
-      // });
       fieldErrors.push({
         name: key,
         errors: errors[key],
@@ -211,8 +208,6 @@ export const searchParams = (searchCols, values) => {
 };
 
 export const setParams = (history, search, page, pageSize) => {
-  // console.log("search", search);
-  // if (Object.keys(search).length != 0) {
   let searchObj = { ...search, page, pageSize };
   const params = new URLSearchParams();
 
@@ -220,50 +215,33 @@ export const setParams = (history, search, page, pageSize) => {
     ([key, value]: any) => value && params.append(key, value)
   );
   history.push({ search: params.toString() });
-  // }
 };
 
 export const isServer = () => {
   return typeof window === "undefined";
 };
-// export const handleCatchError = (errors) => {
-//   let msgs = errors
-//     ? errors.error
-//       ? errors.error.data
-//         ? errors.error.data.error
-//           ? errors.error.data.error
-//           : ""
-//         : ""
-//       : ""
-//     : "";
-//   if (msgs) {
-//     let keys = Object.keys(msgs);
-//     keys.forEach((key) => {
-//       message.error(msgs[key][0]);
-//     });
-//   } else {
-//     if (
-//       errors
-//         ? errors.error
-//           ? errors.error.data
-//             ? errors.error.data.message
-//               ? errors.error.data.message
-//               : ""
-//             : ""
-//           : ""
-//         : ""
-//     )
-//       message.error(errors.error.data.message);
-//     else {
-//       message.error("Something is wrong");
-//     }
-//   }
-// };
 
 export const getTime = (dt) => {
   return new Date(dt * 1000).toLocaleTimeString("en-US", {
     year: "numeric",
     month: "short",
     day: "numeric",
+  });
+};
+
+export const routeToUserPage = (
+  router,
+  topicnum = "",
+  campnum = "",
+  namespace = 1
+) => {
+  return router.push({
+    pathname: `/user/supports`,
+    query: {
+      topicnum,
+      campnum,
+      namespace,
+      camp: `camp_${topicnum}_${campnum}`,
+    },
   });
 };

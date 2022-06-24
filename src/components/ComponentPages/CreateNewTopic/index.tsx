@@ -9,6 +9,7 @@ import { RootState } from "../../../store";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
 import CreateNewTopicUI from "./UI/TopicUI";
 import isAuth from "../../../hooks/isUserAuthenticated";
+import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
 
 const CreateNewTopic = ({
   testNickName = [],
@@ -65,7 +66,7 @@ const CreateNewTopic = ({
 
     if (res && res.status_code === 200) {
       message.success(res.message);
-
+      storeFilterClear();
       const data = {
         submitter_nick_id: res.data.submitter_nick_id,
         message: res.message,
@@ -89,6 +90,14 @@ const CreateNewTopic = ({
         },
       ]);
     }
+  };
+
+  const storeFilterClear = () => {
+    dispatch(
+      setFilterCanonizedTopics({
+        filterByScore: "",
+      })
+    );
   };
 
   const onCancel = () => {
