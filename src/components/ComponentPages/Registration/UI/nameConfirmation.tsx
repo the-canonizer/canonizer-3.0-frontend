@@ -1,6 +1,10 @@
 import { Fragment } from "react";
 import { Typography, Form, Row, Col, Button, Input } from "antd";
-import { CloseCircleOutlined, ArrowRightOutlined } from "@ant-design/icons";
+import {
+  CloseCircleOutlined,
+  ArrowRightOutlined,
+  RedoOutlined,
+} from "@ant-design/icons";
 
 import styles from "./Registration.module.scss";
 
