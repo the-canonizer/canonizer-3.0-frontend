@@ -88,6 +88,8 @@ function CampList() {
       },
     });
   };
+  console.log("camp history redux => ", campStatementHistory);
+  console.log("camp history  => ", campHistory);
 
   return (
     <div className={styles.wrap}>

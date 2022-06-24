@@ -221,7 +221,10 @@ export const getAllCampNickNames = async () => {
 
 export const getAllUsedNickNames = async (body) => {
   try {
-    const res = await NetworkCall.fetch(TreeRequest.getUsedNickNames(body));
+    const res = await NetworkCall.fetch(
+      TreeRequest.getUsedNickNames(body),
+      false
+    );
     return res;
   } catch (error) {
     handleError(error);
@@ -231,7 +234,8 @@ export const getAllUsedNickNames = async (body) => {
 export const getCampBreadCrumbApi = async (reqBody) => {
   try {
     const currentTopicRecord = await NetworkCall.fetch(
-      TreeRequest.getCampBreadCrumb(reqBody)
+      TreeRequest.getCampBreadCrumb(reqBody),
+      false
     );
     return currentTopicRecord;
   } catch (error) {

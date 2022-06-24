@@ -92,33 +92,38 @@ export default function AddOrManage({ add }) {
           : res?.data?.topic?.topic_num,
       };
       const result = await getAllUsedNickNames(reqBody);
-      form.setFieldsValue(
-        add
-          ? {
-              nick_name: result?.data[0].id,
-            }
-          : router?.query?.statement[1]?.split("-")[1] == "update"
-          ? {
-              nick_name: res?.data?.nick_name[0]?.id,
-              statement: res?.data?.statement?.parsed_value?.replace(
-                /<[^>]+>/g,
-                ""
-              ),
-              edit_summary: res?.data?.statement?.note,
-            }
-          : {
-              nick_name: res?.data?.nick_name[0]?.id,
-              statement: res?.data?.statement?.parsed_value?.replace(
-                /<[^>]+>/g,
-                ""
-              ),
-            }
-      );
-      setNickNameData(result?.data);
+      if (result?.status_code == 200) {
+        form.setFieldsValue(
+          add
+            ? {
+                nick_name: result?.data[0].id,
+              }
+            : router?.query?.statement[1]?.split("-")[1] == "update"
+            ? {
+                nick_name: res?.data?.nick_name[0]?.id,
+                statement: res?.data?.statement?.parsed_value?.replace(
+                  /<[^>]+>/g,
+                  ""
+                ),
+                edit_summary: res?.data?.statement?.note,
+              }
+            : {
+                nick_name: res?.data?.nick_name[0]?.id,
+                statement: res?.data?.statement?.parsed_value?.replace(
+                  /<[^>]+>/g,
+                  ""
+                ),
+              }
+        );
+
+        setNickNameData(result?.data);
+      }
       setScreenLoading(false);
     }
     isLogin ? nickNameListApiCall() : router.push("/login");
   }, []);
+
+  console.log("nickname=> ", nickNameData);
 
   return (
     <>
@@ -164,7 +169,7 @@ export default function AddOrManage({ add }) {
                       ]}
                     >
                       <Select value={nickNameData[0]?.id} size="large">
-                        {nickNameData &&
+                        {!!nickNameData &&
                           nickNameData?.map((names) => (
                             <Select.Option value={names.id} key={names?.id}>
                               {names?.nick_name}

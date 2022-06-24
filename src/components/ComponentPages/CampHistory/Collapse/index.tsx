@@ -14,7 +14,7 @@ function HistoryCollapse({
   isChecked,
 }) {
   const router = useRouter();
-
+  console.log("camp statement of camp histroy in componrent=>", campStatement);
   return (
     <div>
       <Space
@@ -54,7 +54,6 @@ function HistoryCollapse({
                   Edit summary :{" "}
                   <span className={styles.updateSurveyPrj}>
                     {campStatement?.note}
-                    submit_time
                   </span>
                 </Title>
                 <Title level={5}>
