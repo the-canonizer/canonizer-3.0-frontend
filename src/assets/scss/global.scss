@@ -131,6 +131,10 @@ body {
   }
 }
 
+.pageContentWrap {
+  width: 100%;
+}
+
 .leftSideBar {
   & + .pageContentWrap {
     @media screen and (min-width: 992px) {
@@ -769,7 +773,9 @@ body {
     line-height: 14px;
   }
 }
-
+.d-block {
+  display: block;
+}
 .d-flex {
   display: flex;
 

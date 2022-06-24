@@ -17,11 +17,15 @@
 }
 .topicDetailContentHead {
   width: 100%;
+  padding: 0 24px 10px 0;
+  &>div>div {
+    width: 100%;
   display: flex;
   flex-wrap: wrap;
-  padding: 0 24px 10px 0;
+  
   justify-content: space-between;
   align-items: center;
+  }
   &_Left {
     display: flex;
     .topicTitleStyle,

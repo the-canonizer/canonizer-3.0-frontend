@@ -9,12 +9,16 @@ import styles from "../topicDetails.module.scss";
 const { TreeNode } = Tree;
 
 const CampTree = ({ scrollToCampStatement }) => {
-  const { tree, filterByScore } = useSelector((state: RootState) => ({
+  const { tree, filterByScore, review } = useSelector((state: RootState) => ({
     tree: state?.topicDetails?.tree,
     filterByScore: state.filters?.filterObject?.filterByScore,
+    review: state?.filters?.filterObject?.asof,
   }));
   const [selectedNodeID, setSelectedNodeID] = useState(1);
   const [scoreFilter, setScoreFilter] = useState(filterByScore);
+  const [includeReview, setIncludeReview] = useState(
+    review == "review" ? true : false
+  );
   const router = useRouter();
   const onSelect = (
     selectedKeys,
@@ -29,7 +33,8 @@ const CampTree = ({ scrollToCampStatement }) => {
   };
   useEffect(() => {
     setScoreFilter(filterByScore);
-  }, [filterByScore]);
+    setIncludeReview(review == "review" ? true : false);
+  }, [filterByScore, review]);
 
   const renderTreeNodes = (data: any) =>
     Object.keys(data).map((item) => {
@@ -61,7 +66,9 @@ const CampTree = ({ scrollToCampStatement }) => {
                                 : ""
                             }
                           >
-                            {data[item].title}
+                            {includeReview
+                              ? data[item]?.review_title
+                              : data[item]?.title}
                           </a>
                         </Link>
                       </span>

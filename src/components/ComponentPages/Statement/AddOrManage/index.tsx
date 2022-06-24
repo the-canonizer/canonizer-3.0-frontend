@@ -19,6 +19,7 @@ export default function AddOrManage({ add }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [nickNameData, setNickNameData] = useState([]);
   const [screenLoading, setScreenLoading] = useState(false);
+  const [payloadBreadCrumb, setPayloadBreadCrumb] = useState({});
   const [form] = Form.useForm();
 
   const onFinish = async (values: any) => {
@@ -40,8 +41,8 @@ export default function AddOrManage({ add }) {
       nick_name: values?.nick_name,
       note: values?.edit_summary?.trim(),
       parent_camp_num: add
-        ? res_for_add?.parentcampnum
-        : editInfo?.parentcampnum,
+        ? res_for_add?.parent_camp_num
+        : editInfo?.parent_camp_num,
       submitter: add
         ? res_for_add?.statement?.submitter_nick_id
         : editInfo?.statement?.submitter_nick_id,
@@ -73,13 +74,23 @@ export default function AddOrManage({ add }) {
       if (!add) {
         res = await getEditStatementApi(router?.query?.statement[1]);
         setEditStatementData(res);
+        setPayloadBreadCrumb({
+          camp_num: res?.data?.statement?.camp_num,
+          topic_num: res?.data?.statement?.topic_num,
+          topic_name: res?.data?.topic?.topic_name,
+        });
+      } else {
+        setPayloadBreadCrumb({
+          camp_num: router?.query?.statement[1].split("-")[0],
+          topic_num: router?.query?.statement[0].split("-")[0],
+          topic_name: router?.query?.statement[0].split("-").slice(1).join(" "),
+        });
       }
       const reqBody = {
         topic_num: add
           ? router?.query?.statement[0]?.split("-")[0]
           : res?.data?.topic?.topic_num,
       };
-
       const result = await getAllUsedNickNames(reqBody);
       form.setFieldsValue(
         add
@@ -112,7 +123,7 @@ export default function AddOrManage({ add }) {
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
-        <CampInfoBar isStatementBar={true} payload={null} />
+        {payloadBreadCrumb && <CampInfoBar payload={payloadBreadCrumb} />}
 
         <aside className="leftSideBar miniSideBar">
           <SideBarNoFilter />
@@ -121,7 +132,11 @@ export default function AddOrManage({ add }) {
         <div className="pageContentWrap">
           <Spin spinning={screenLoading} size="large">
             <Card
-              title={add ? "Add Camp Statement" : "Topic Update"}
+              title={
+                add
+                  ? K?.exceptionalMessages?.addCampStatement
+                  : K?.exceptionalMessages?.statementUpdate
+              }
               className={styles.card}
             >
               <Form
@@ -157,54 +172,49 @@ export default function AddOrManage({ add }) {
                     </Form.Item>
                   </Col>
                   <Col xs={24} xl={24}>
-                    <Row gutter={24}>
-                      <Col xs={24} xl={12}>
-                        <Form.Item
-                          className={styles.formItem}
-                          name="statement"
-                          label={<>Statement </>}
-                          rules={[
-                            {
-                              required: true,
-                              message:
-                                K?.exceptionalMessages
-                                  ?.statementRequiredErrorMsg,
-                            },
-                            {
-                              pattern: /[^ \s]/,
-                              message:
-                                K?.exceptionalMessages
-                                  ?.statementRequiredErrorMsg,
-                            },
-                          ]}
-                        >
-                          <Input.TextArea size="large" rows={7} />
-                        </Form.Item>
-                      </Col>
-                    </Row>
-
-                    <Row gutter={24}>
-                      <Col xs={24} xl={12}>
-                        <Form.Item
-                          className={styles.formItem}
-                          name="edit_summary"
-                          label={
-                            <>
-                              Edit Summary{" "}
-                              <small>(Briefly describe your changes)</small>
-                            </>
-                          }
-                        >
-                          <Input.TextArea size="large" rows={7} />
-                        </Form.Item>
-                      </Col>
-                    </Row>
+                    <Form.Item
+                      className={`${styles.formItem} mb-2`}
+                      name="statement"
+                      label={<>Statement </>}
+                      rules={[
+                        {
+                          required: true,
+                          message:
+                            K?.exceptionalMessages?.statementRequiredErrorMsg,
+                        },
+                        {
+                          pattern: /[^ \s]/,
+                          message:
+                            K?.exceptionalMessages?.statementRequiredErrorMsg,
+                        },
+                      ]}
+                    >
+                      <Input.TextArea size="large" rows={7} />
+                    </Form.Item>
+                    <small className="mb-3 d-block">
+                      {K?.exceptionalMessages?.wikiMarkupSupportMsg}{" "}
+                      <a>click here</a>.
+                    </small>
                   </Col>
                   <Col xs={24} xl={24}>
-                    <Form.Item className="mb-0 text-right">
+                    <Form.Item
+                      className={styles.formItem}
+                      name="edit_summary"
+                      label={
+                        <>
+                          Edit Summary{" "}
+                          <small>(Briefly describe your changes)</small>
+                        </>
+                      }
+                    >
+                      <Input.TextArea size="large" rows={7} />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} xl={24}>
+                    <Form.Item className="mb-0">
                       <Button
                         size="large"
-                        className={`btn-orange ${styles.btnSubmit}`}
+                        className={`btn-orange mr-3 ${styles.btnSubmit}`}
                         htmlType="submit"
                       >
                         {add
@@ -214,8 +224,18 @@ export default function AddOrManage({ add }) {
 
                       <Button
                         htmlType="button"
-                        className="cancel-btn"
+                        className="cancel-btn mr-3"
                         type="ghost"
+                        size="large"
+                        onClick={() => {}}
+                      >
+                        Cancel
+                      </Button>
+
+                      <Button
+                        htmlType="button"
+                        className="cancel-btn"
+                        type="primary"
                         size="large"
                         onClick={() => setModalVisible(true)}
                       >
