@@ -66,7 +66,7 @@ const TopicDetails = () => {
       const reqBody = {
         topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
         camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
-        as_of: asof,
+        asOf: asof,
         asofdate:
           asof == ("default" || asof == "review")
             ? Date.now() / 1000
