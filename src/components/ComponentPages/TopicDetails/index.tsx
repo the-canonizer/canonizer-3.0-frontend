@@ -155,7 +155,6 @@ const TopicDetails = () => {
     campSubscriptionID,
     topicSubscriptionID,
   };
-
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
@@ -167,7 +166,9 @@ const TopicDetails = () => {
 
         <div className={styles.pageContent + " pageContentWrap"}>
           <Spin spinning={loadingIndicator} size="large">
-            {newsFeed?.length != 0 && <NewsFeedsCard newsFeed={newsFeed} />}
+            {newsFeed && newsFeed?.length != 0 && (
+              <NewsFeedsCard newsFeed={newsFeed} />
+            )}
           </Spin>
           <Spin spinning={getTreeLoadingIndicator} size="large">
             <CampTreeCard scrollToCampStatement={scrollToCampStatement} />
