@@ -6,8 +6,6 @@ import {
   getNewsFeedApi,
   getTreesApi,
   getCanonizedCampSupportingTreeApi,
-  getCurrentTopicRecordApi,
-  getCurrentCampRecordApi,
 } from "src/network/api/campDetailApi";
 import { RootState } from "src/store";
 import SideBar from "../Home/SideBar";
@@ -27,7 +25,6 @@ import { setCurrentTopic } from "../../../store/slices/topicSlice";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 
 const TopicDetails = () => {
-  const didMount = useRef(false);
   let myRefToCampStatement = useRef(null);
 
   const [loadingIndicator, setLoadingIndicator] = useState(false);
@@ -53,12 +50,6 @@ const TopicDetails = () => {
     campStatement: state?.topicDetails?.campStatement,
   }));
 
-  const [campSubscriptionID, setCampSubscriptionID] = useState(
-    campRecord?.subscriptionId
-  );
-  const [topicSubscriptionID, setTopicSubscriptionID] = useState(
-    topicRecord?.topicSubscriptionId
-  );
   useEffect(() => {
     async function getTreeApiCall() {
       setGetTreeLoadingIndicator(true);
@@ -74,13 +65,10 @@ const TopicDetails = () => {
         algorithm: algorithm,
         update_all: 1,
       };
-
       await Promise.all([
         getTreesApi(reqBody),
         getNewsFeedApi(reqBody),
         getCanonizedCampStatementApi(reqBody),
-        getCurrentTopicRecordApi(reqBody),
-        getCurrentCampRecordApi(reqBody),
         getCanonizedCampSupportingTreeApi(reqBody),
         getCanonizedAlgorithmsApi(),
       ]);
@@ -88,16 +76,7 @@ const TopicDetails = () => {
       setLoadingIndicator(false);
     }
     getTreeApiCall();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asofdate, algorithm, +router?.query?.camp[1]?.split("-")[0]]);
-
-  useEffect(() => {
-    if (didMount.current) {
-      setCampSubscriptionID(campRecord?.subscriptionId);
-      setTopicSubscriptionID(topicRecord?.topicSubscriptionId);
-    } else didMount.current = true;
-  }, [campRecord?.subscriptionId, topicRecord?.topicSubscriptionId]);
 
   const scrollToCampStatement = () => {
     myRefToCampStatement.current?.scrollIntoView({ behavior: "smooth" });
@@ -132,33 +111,17 @@ const TopicDetails = () => {
   };
 
   const onCampForumClick = () => {
-    // const queryParams = router.query;
-
-    // const data = {
-    //   message: null,
-    //   topic_num: queryParams.camp[0],
-    //   topic_name: topicRecord?.topic_name,
-    //   camp_name: topicRecord?.camp_name,
-    //   parent_camp_num: topicRecord?.camp_num,
-    // };
-    // setCurrentTopics(data);
     const topicName = topicRecord?.topic_name.replaceAll(" ", "-");
     const campName = campRecord?.camp_name.replaceAll(" ", "-");
-
     router.push({
       pathname: `/forum/${topicRecord?.topic_num}-${topicName}/${campRecord?.camp_num}-${campName}/threads`,
     });
   };
 
-  const payload = {
-    setLoadingIndicator,
-    campSubscriptionID,
-    topicSubscriptionID,
-  };
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
-        <CampInfoBar payload={payload} isStatementBar={false} />
+        <CampInfoBar isTopicPage={true} />
 
         <aside className={styles.miniSide + " leftSideBar miniSideBar"}>
           <SideBar onCreateCamp={onCreateCamp} />

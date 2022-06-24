@@ -12,7 +12,7 @@ const ManageSupportUI = dynamic(() => import("./ManageSupportUI"), {
 const ManageSupport = () => {
   return (
     <>
-      <CampInfoBar isStatementBar={false} payload={null} />
+      <CampInfoBar />
       <div className={styles.card}>
         <div className={styles.btnsWrap}>
           <CreateNewCampButton />
