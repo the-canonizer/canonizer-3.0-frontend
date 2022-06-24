@@ -2,9 +2,10 @@ import CustomButton from "../../../common/button";
 import { Card, Button, Typography, List, Collapse, Popover } from "antd";
 import Link from "next/link";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
+
 import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
-
 const { Paragraph } = Typography;
 
 const { Panel } = Collapse;
@@ -25,6 +26,8 @@ const supportContent = (
 );
 
 const SupportTreeCard = ({ handleLoadMoreSupporters }) => {
+  const router = useRouter();
+  const manageSupportPath = router.asPath.replace("/topic/", "/support/");
   const { campSupportingTree } = useSelector((state: RootState) => ({
     campSupportingTree: state?.topicDetails?.campSupportingTree,
   }));
@@ -86,7 +89,7 @@ const SupportTreeCard = ({ handleLoadMoreSupporters }) => {
             Load More
           </CustomButton>
         )}
-        <Link href="/manageSupport">
+        <Link href={manageSupportPath}>
           <a>
             <div className="topicDetailsCollapseFooter">
               <CustomButton className="btn-orange">
