@@ -4,6 +4,7 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import moment from "moment";
 import sanitizeHtml from "sanitize-html";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 import styles from "../Forum.module.scss";
 import { getTime } from "../../../../../utils/generalUtility";
@@ -20,13 +21,22 @@ const CreateCampFormUI = ({
   onDeleteClick,
   post,
 }) => {
+  const router = useRouter();
+
   return (
     <Fragment>
       <Card className={styles.listCard} bodyStyle={{ padding: "15px" }}>
         <div className={`${styles.cardTitle} ${styles.listCardTitle}`}>
           <Space size="small">
             <Text strong id={"post-title-" + post.id}>
-              <Link href="#">
+              <Link
+                href={`/user/supports/${post["user_id"] || ""}?topicnum=${
+                  (router?.query?.topic as string)?.split("-")[0] || ""
+                }&campnum=${
+                  (router?.query?.camp as string)?.split("-")[0] || ""
+                }&namespace=1`}
+                passHref
+              >
                 <a className={styles.by}>{nick_name}</a>
               </Link>
               {new Date(postedTime).getTime() ===

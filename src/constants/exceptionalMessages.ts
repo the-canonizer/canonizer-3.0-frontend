@@ -15,6 +15,7 @@ const ExceptionalMessageConstants = {
   submitUpdateButton: "Submit Update",
   addNewsTextPlaceHolder: "Add news text.",
   directJoinSupport: "Directly join and support",
+  noRecentActivityFound: "No Recent Activity Found",
 };
 
 export default ExceptionalMessageConstants;
