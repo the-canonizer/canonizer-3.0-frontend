@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Typography, Button, List, Spin, Affix } from "antd";
+import { useEffect, useState, useCallback, useRef } from "react";
+import { Typography, Button, List, Spin, Affix, Skeleton } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -15,10 +15,13 @@ import { RootState } from "src/store";
 const { Title, Text } = Typography;
 
 function CampList() {
-  const [isActive, setIsActive] = useState("all");
+  const [activeTab, setActiveTab] = useState("all");
   const [selectedTopic, setSelectedTopic] = useState([]);
   const [top, setTop] = useState(40);
   const [isAbs, setIsAbs] = useState(false);
+  const [loadMoreItems, setLoadMoreItems] = useState(true);
+
+  const count = useRef(1);
 
   const router = useRouter();
 
@@ -33,29 +36,47 @@ function CampList() {
   }, [campStatementHistory]);
 
   useEffect(() => {
-    const campStatementApiCall = async () => {
-      try {
-        setLoadingIndicator(true);
-        const reqBody = {
-          topic_num: +router.query.camp[0].split("-")[0],
-          camp_num: +router.query.camp[1].split("-")[0],
-          type: isActive,
-          as_of: "default",
-          per_page: 10,
-          page: 1,
-        };
-        await getCampStatementHistoryApi(reqBody);
-        setLoadingIndicator(false);
-      } catch (error) {
-        //console.log(error)
-      }
+    const asynCall = async () => {
+      setLoadMoreItems(true);
+      count.current = 1;
+      await campStatementApiCall();
     };
-    campStatementApiCall();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isActive]);
+    asynCall();
+  }, [activeTab]);
+
+  // useEffect(() => {
+  const campStatementApiCall = async () => {
+    try {
+      setLoadingIndicator(true);
+      const reqBody = {
+        topic_num: +router.query.camp[0].split("-")[0],
+        camp_num: +router.query.camp[1].split("-")[0],
+        type: activeTab,
+        as_of: "default",
+        per_page: 4,
+        page: count.current,
+      };
+      const res = await getCampStatementHistoryApi(reqBody, count.current);
+      if (!res?.last_page) {
+        setLoadMoreItems(false);
+        return;
+      }
+      if (count.current >= res?.last_page) {
+        setLoadMoreItems(false);
+      } else {
+        count.current = count.current + 1;
+      }
+      setLoadingIndicator(false);
+    } catch (error) {
+      //console.log(error)
+    }
+  };
+  // campStatementApiCall();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [activeTab]);
 
   const handleTabButton = async (tabName) => {
-    setIsActive(tabName);
+    setActiveTab(tabName);
   };
 
   const topicRoute = () => {
@@ -92,18 +113,25 @@ function CampList() {
     });
   };
 
+  const loader = (
+    <>
+      <Skeleton active />
+      <Skeleton active />
+      <Skeleton active />
+    </>
+  );
+
   return (
     <div className={styles.wrap}>
       <div className={styles.heading}>
         <Title level={5}>
           <Text>Topic :</Text>{" "}
-          {campStatementHistory?.length &&
-            campStatementHistory[0].topic?.topic_name}
+          {/* {campStatementHistory && campStatementHistory[0].topic?.topic_name} */}
         </Title>
         <Title level={5}>
           <Text>Camp : </Text>{" "}
           <Text className={styles.blueText}>
-            {campStatementHistory?.length &&
+            {campStatementHistory &&
               campStatementHistory[0]?.parentCamp?.map((camp, index) => {
                 return (
                   <Link
@@ -139,7 +167,7 @@ function CampList() {
               <List.Item
                 className={`${styles.campStatementViewAll} ${
                   styles.campStatementListItem
-                } ${isActive == "all" ? styles.active : null}`}
+                } ${activeTab == "all" ? styles.active : null}`}
               >
                 <a
                   onClick={() => {
@@ -152,7 +180,7 @@ function CampList() {
               <List.Item
                 className={`${styles.campStatementObjected}  ${
                   styles.campStatementListItem
-                }  ${isActive == "objected" ? styles.active : null}`}
+                }  ${activeTab == "objected" ? styles.active : null}`}
               >
                 <a
                   onClick={() => {
@@ -165,7 +193,7 @@ function CampList() {
               <List.Item
                 className={`${styles.campStatementLive} ${
                   styles.campStatementListItem
-                } ${isActive == "live" ? styles.active : null}`}
+                } ${activeTab == "live" ? styles.active : null}`}
               >
                 <a
                   onClick={() => {
@@ -178,7 +206,7 @@ function CampList() {
               <List.Item
                 className={`${styles.campStatementNotLive} ${
                   styles.campStatementListItem
-                } ${isActive == "in_review" ? styles.active : null}`}
+                } ${activeTab == "in_review" ? styles.active : null}`}
               >
                 <a
                   onClick={() => {
@@ -191,7 +219,7 @@ function CampList() {
               <List.Item
                 className={`${styles.campStatementOld} ${
                   styles.campStatementListItem
-                } ${isActive == "old" ? styles.active : null}`}
+                } ${activeTab == "old" ? styles.active : null}`}
               >
                 <a
                   onClick={() => {
@@ -223,35 +251,47 @@ function CampList() {
             </Button>
           </Affix>
         </div>
-
-        <Spin spinning={loadingIndicator} size="large">
-          {!loadingIndicator && campHistory && campHistory?.items?.length ? (
-            campHistory?.items?.map((campHistory, index) => {
-              return (
-                <HistoryCollapse
-                  key={index}
-                  campStatement={campHistory}
-                  onSelectCompare={onSelectCompare}
-                  isDisabledCheck={
-                    selectedTopic.length >= 2 &&
-                    !selectedTopic.includes(campHistory.id)
-                  }
-                  isChecked={selectedTopic.includes(campHistory.id)}
-                />
-              );
-            })
-          ) : (
-            <h2
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                margin: "20px 0px",
-              }}
-            >
-              No Camp History Found
-            </h2>
-          )}
-        </Spin>
+        <div style={{ overflow: "auto" }}>
+          <InfiniteScroll
+            loadMore={!loadingIndicator && campStatementApiCall}
+            hasMore={loadMoreItems}
+            loader={loader}
+          >
+            {
+              // !loadingIndicator ? (
+              campHistory && campHistory?.items?.length ? (
+                campHistory?.items?.map((campHistory, index) => {
+                  return (
+                    <HistoryCollapse
+                      key={index}
+                      campStatement={campHistory}
+                      onSelectCompare={onSelectCompare}
+                      isDisabledCheck={
+                        selectedTopic.length >= 2 &&
+                        !selectedTopic.includes(campHistory.id)
+                      }
+                      isChecked={selectedTopic.includes(campHistory.id)}
+                    />
+                  );
+                })
+              ) : (
+                <h2
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    margin: "20px 0px",
+                  }}
+                >
+                  No Camp History Found
+                </h2>
+              )
+              // )
+              //  : (
+              //   <Skeleton active />
+              // )
+            }
+          </InfiniteScroll>
+        </div>
       </div>
     </div>
   );
