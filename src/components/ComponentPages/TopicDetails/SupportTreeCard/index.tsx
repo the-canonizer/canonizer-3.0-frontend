@@ -6,6 +6,9 @@ import { useRouter } from "next/router";
 
 import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
+
+import K from "src/constants";
+
 const { Paragraph } = Typography;
 
 const { Panel } = Collapse;
@@ -93,7 +96,7 @@ const SupportTreeCard = ({ handleLoadMoreSupporters }) => {
           <a>
             <div className="topicDetailsCollapseFooter">
               <CustomButton className="btn-orange">
-                Directly Join or Manage Support
+                {K?.exceptionalMessages?.directJoinSupport}
               </CustomButton>
             </div>
           </a>
