@@ -81,6 +81,6 @@ describe("Should render Addnews", () => {
     expect(submitButton.textContent).toBe("Submit Update");
     expect(previewButton.textContent).toBe("Preview");
     expect(createNewTopicButton.textContent).toBe("Create New Topic");
-    expect(mainHeadig.textContent).toBe("Statement Update");
+    expect(mainHeading.textContent).toBe("Statement Update");
   });
 });
