@@ -15,19 +15,23 @@ import {
 
 import HistoryCollapse from "./Collapse";
 import { RootState } from "src/store";
+import CampInfoBar from "../TopicDetails/CampInfoBar";
 
 const { Title, Text } = Typography;
 
 function CampList() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState("all");
   const [selectedTopic, setSelectedTopic] = useState([]);
   const [top, setTop] = useState(40);
   const [isAbs, setIsAbs] = useState(false);
   const [loadMoreItems, setLoadMoreItems] = useState(true);
-
+  let payload = {
+    camp_num: router?.query?.camp[1]?.split("-")[0],
+    topic_num: router?.query?.camp[0]?.split("-")[0],
+    topic_name: router?.query?.camp[0].split("-").slice(1).join(" "),
+  };
   const count = useRef(1);
-
-  const router = useRouter();
 
   const { campStatementHistory } = useSelector((state: RootState) => ({
     campStatementHistory: state?.topicDetails?.campStatementHistory,
@@ -140,33 +144,7 @@ function CampList() {
   );
   return (
     <div className={styles.wrap}>
-      <div className={styles.heading}>
-        <Title level={5}>
-          <Text>Topic :</Text>{" "}
-          {/* {campStatementHistory && campStatementHistory[0].topic?.topic_name} */}
-        </Title>
-        <Title level={5}>
-          <Text>Camp : </Text>{" "}
-          <Text className={styles.blueText}>
-            {campStatementHistory &&
-              campStatementHistory[0]?.parentCamp?.map((camp, index) => {
-                return (
-                  <Link
-                    href={`/topic/${router.query.camp[0]}/${
-                      camp?.camp_num
-                    }-${camp?.camp_name?.split(" ").join("-")}`}
-                    key={camp?.camp_num}
-                  >
-                    <a>
-                      {index !== 0 && "/"}
-                      {`${camp?.camp_name}`}
-                    </a>
-                  </Link>
-                );
-              })}
-          </Text>
-        </Title>
-      </div>
+      <CampInfoBar payload={payload} />
       <div className={styles.btnGroup}>
         <Button size="large" className={styles.createBtn} onClick={topicRoute}>
           <i className="icon-topic"></i>Create New Topic

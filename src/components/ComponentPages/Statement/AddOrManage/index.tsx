@@ -119,7 +119,6 @@ export default function AddOrManage({ add }) {
     }
     isLogin ? nickNameListApiCall() : router.push("/login");
   }, []);
-
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
