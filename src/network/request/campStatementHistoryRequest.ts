@@ -16,6 +16,15 @@ export default class CampStatementHistoryRequest extends Request {
       token
     );
   }
+  static getLiveCampStatement(reqBody) {
+    return new Request(
+      K.Network.URL.GetCampStatement,
+      K.Network.Method.POST,
+      reqBody,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
 
   static statementCompare(body) {
     return new Request(

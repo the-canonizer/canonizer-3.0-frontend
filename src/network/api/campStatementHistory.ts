@@ -25,10 +25,28 @@ export const getCampStatementHistoryApi = async (reqBody, pageNumber) => {
         pushToCampStatementHistory(campStatementHistory?.data?.items || [])
       );
     }
-    debugger;
+    // debugger;
     return campStatementHistory?.data;
   } catch (error) {
     // message.error(error.message);
+  }
+};
+
+export const getLiveCampStatementApi = async (reqBody, pageNumber) => {
+  let state = store.getState();
+  const { auth } = state;
+  try {
+    const campStatementHistory = await NetworkCall.fetch(
+      CampStatementHistoryRequest.getLiveCampStatement(reqBody),
+      false
+    );
+    store.dispatch(
+      setCampStatementHistory({ items: campStatementHistory?.data })
+    );
+    return campStatementHistory?.data;
+  } catch (error) {
+    console.log(error.message);
+    return error;
   }
 };
 

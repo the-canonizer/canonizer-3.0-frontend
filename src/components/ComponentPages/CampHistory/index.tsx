@@ -8,7 +8,11 @@ import InfiniteScroll from "react-infinite-scroller";
 
 import styles from "./campHistory.module.scss";
 
-import { getCampStatementHistoryApi } from "../../../network/api/campStatementHistory";
+import {
+  getCampStatementHistoryApi,
+  getLiveCampStatementApi,
+} from "../../../network/api/campStatementHistory";
+
 import HistoryCollapse from "./Collapse";
 import { RootState } from "src/store";
 
@@ -39,7 +43,11 @@ function CampList() {
     const asynCall = async () => {
       setLoadMoreItems(true);
       count.current = 1;
-      await campStatementApiCall();
+      if (activeTab === "live") {
+        await liveCampStatementApiCall();
+      } else {
+        await campStatementApiCall();
+      }
     };
     asynCall();
   }, [activeTab]);
@@ -70,6 +78,16 @@ function CampList() {
     } catch (error) {
       //console.log(error)
     }
+  };
+  const liveCampStatementApiCall = async () => {
+    setLoadingIndicator(true);
+    const reqBody = {
+      topic_num: +router.query.camp[0].split("-")[0],
+      camp_num: +router.query.camp[1].split("-")[0],
+    };
+    const res = await getLiveCampStatementApi(reqBody, count.current);
+    setLoadMoreItems(false);
+    setLoadingIndicator(false);
   };
   // campStatementApiCall();
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -120,7 +138,6 @@ function CampList() {
       <Skeleton active />
     </>
   );
-
   return (
     <div className={styles.wrap}>
       <div className={styles.heading}>
