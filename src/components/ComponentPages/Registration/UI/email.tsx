@@ -30,7 +30,7 @@ const EmailConfirmation = ({
       validateTrigger={messages.formValidationTypes()}
     >
       <Title level={2} className={styles.titles} id="otp-title">
-        {isOTP ? "One Time Verification Code" : "Social Email Confirmation"}
+        {isOTP ? messages.labels.otpTitle : messages.labels.emailTitle}
       </Title>
       {isModal && (
         <Button

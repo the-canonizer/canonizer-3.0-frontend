@@ -69,4 +69,6 @@ export const labels = {
   SupportedCamps: "Supported Camps",
   nameLabel:
     "Note: Your name is not returned from your social account. You have to enter the name.",
+  otpTitle: "One Time Verification Code",
+  emailTitle: "Social Email Confirmation",
 };
