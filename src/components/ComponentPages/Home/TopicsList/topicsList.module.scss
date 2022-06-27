@@ -58,6 +58,7 @@
       width: 100%;
       > div:first-child {
         height: 40px !important;
+        border: none;
         // border: solid 1px #d9d9d9 !important;
       }
       @media screen and (max-width: 992px) {

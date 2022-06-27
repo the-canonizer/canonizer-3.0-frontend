@@ -526,6 +526,7 @@ export default class UserRequest extends Request {
       {}
     );
   }
+
   static postVerifyEmail(body) {
     return new Request(
       K.Network.URL.PostVerifyEmail,
@@ -535,6 +536,7 @@ export default class UserRequest extends Request {
       {}
     );
   }
+
   static OTPSendVerifyEmail(body) {
     return new Request(
       K.Network.URL.OTPSendVerifyEmail,
