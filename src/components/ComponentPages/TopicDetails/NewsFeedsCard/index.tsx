@@ -157,7 +157,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
                           >
                             <Button
                               size="small"
-                              type="text"
+                              type="link"
                               danger
                               disabled={!news.owner_flag}
                             >

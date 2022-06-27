@@ -6,21 +6,36 @@ import Link from "next/link";
 import { Button, Col } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { DraggableArea } from "react-draggable-tags";
+import { placeholders } from "src/messages/placeholder";
 
-const tagsArrayList = [
-  { id: 1, content: "Representation Qualia" },
-  { id: 2, content: "Code By design" },
-  { id: 3, content: "Talentelgia" },
-];
-
-const ManageSupportUI = () => {
+const ManageSupportUI = ({ nickNameList }) => {
+  const tagsArrayList = [
+    { id: 1, content: "Representation Qualia", dis: false },
+    { id: 2, content: "Code By design", dis: false },
+    { id: 3, content: "Talentelgia", dis: false },
+  ];
   const [item, setItem] = useState(tagsArrayList);
 
   const removeSupport = (id) => {
-    const filtereItem = item.filter((e) => {
-      return e.id != id;
+    const filterItem = item.map((obj) => {
+      if (obj.id == id) {
+        obj.dis = true;
+      }
+      return obj;
     });
-    setItem(filtereItem);
+    setItem(filterItem);
+  };
+
+  const clearChanges = () => {
+    setItem([...tagsArrayList]);
+  };
+
+  const removeAll = (checked) => {
+    const disabeleAllTopic = item.map((obj) => {
+      obj.dis = checked;
+      return obj;
+    });
+    setItem(disabeleAllTopic);
   };
   return (
     <>
@@ -69,10 +84,17 @@ const ManageSupportUI = () => {
           <span className={styles.quickAction}>
             Quick Action:
             <span className={styles.checkbox}>
-              <input type="checkbox"></input>
+              <input
+                type="checkbox"
+                onClick={(e) => removeAll((e.target as any).checked)}
+              ></input>
             </span>
             <span className={styles.removeAll}>Remove all</span>
-            <Button htmlType="button" className={styles.clear_Btn}>
+            <Button
+              htmlType="button"
+              className={styles.clear_Btn}
+              onClick={() => clearChanges()}
+            >
               Clear all changes
             </Button>
           </span>
@@ -82,11 +104,7 @@ const ManageSupportUI = () => {
           tags={item}
           render={({ tag, index }) => (
             <div className="">
-              <Button
-                key={3}
-                className={styles.tag_btn}
-                // disabled={tag.dis}
-              >
+              <Button key={3} className={styles.tag_btn} disabled={tag.dis}>
                 <div className={styles.btndiv}>
                   {" "}
                   <span className={styles.count}>{tag.id}. </span>
@@ -107,15 +125,18 @@ const ManageSupportUI = () => {
               <p>Nick Name To Support Above Camps</p>
             </div>
             <Select
-              // style={{color:"#4484ce"}}
+              placeholder={placeholders.nickName}
               size="large"
               className={styles.dropdown}
-              defaultValue={"team"}
-              value={"Team_Talentelgia"}
+              value={nickNameList.nick_name}
             >
-              <Select.Option key="custom-key" value="">
-                All
-              </Select.Option>
+              {nickNameList?.map((nick) => {
+                return (
+                  <Select.Option key={nick.id} value={nick.id}>
+                    {nick.nick_name}
+                  </Select.Option>
+                );
+              })}
             </Select>
             <div className={styles.Upload_Cancel_Btn}>
               <Button

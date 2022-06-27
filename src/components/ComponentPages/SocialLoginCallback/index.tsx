@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Skeleton, message } from "antd";
 import { useDispatch } from "react-redux";
@@ -9,7 +9,10 @@ import {
 } from "../../../network/api/userApi";
 import { getSearchedParams } from "../../../utils/generalUtility";
 import Spinner from "../../common/spinner/spinner";
-import { showSocialEmailPopup } from "../../../store/slices/uiSlice";
+import {
+  showSocialEmailPopup,
+  showSocialNamePopup,
+} from "../../../store/slices/uiSlice";
 
 function SocialLoginCallback() {
   const [isLoading, setIsLoading] = useState(false);
@@ -18,6 +21,7 @@ function SocialLoginCallback() {
   const dispatch = useDispatch();
 
   const openModal = () => dispatch(showSocialEmailPopup());
+  const openNameModal = () => dispatch(showSocialNamePopup());
 
   const sendData = async (data) => {
     const redirectTab = localStorage.getItem("redirectTab");
@@ -41,6 +45,14 @@ function SocialLoginCallback() {
       if (response && response.status_code === 422) {
         openModal();
         localStorage.setItem("s_l", JSON.stringify(data));
+      }
+
+      if (response && response.status_code === 423) {
+        openNameModal();
+        localStorage.setItem(
+          "s_l",
+          JSON.stringify({ email: response.data.email, ...data })
+        );
       }
     } else {
       const response = await socialLoginLinkUser(data);
@@ -92,9 +104,11 @@ function SocialLoginCallback() {
   }, [router.query]);
 
   return (
-    <Spinner>
-      <Skeleton active={isLoading} />
-    </Spinner>
+    <Fragment>
+      <Spinner>
+        <Skeleton active={isLoading} />
+      </Spinner>
+    </Fragment>
   );
 }
 

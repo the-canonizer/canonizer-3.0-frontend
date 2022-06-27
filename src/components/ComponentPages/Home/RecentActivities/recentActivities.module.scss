@@ -84,6 +84,12 @@
         white-space: nowrap;
         overflow: hidden;
         color: #0f2a4d;
+        &>span {
+          color: #888;
+          display: block;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
         @media screen and (min-width: 576px) {
           padding-right: 12px;
         }
