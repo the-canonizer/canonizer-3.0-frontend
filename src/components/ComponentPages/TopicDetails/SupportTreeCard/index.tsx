@@ -2,8 +2,12 @@ import CustomButton from "../../../common/button";
 import { Card, Button, Typography, List, Collapse, Popover } from "antd";
 import Link from "next/link";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
+
 import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
+
+import K from "src/constants";
 
 const { Paragraph } = Typography;
 
@@ -25,6 +29,8 @@ const supportContent = (
 );
 
 const SupportTreeCard = ({ handleLoadMoreSupporters }) => {
+  const router = useRouter();
+  const manageSupportPath = router.asPath.replace("/topic/", "/support/");
   const { campSupportingTree } = useSelector((state: RootState) => ({
     campSupportingTree: state?.topicDetails?.campSupportingTree,
   }));
@@ -54,18 +60,17 @@ const SupportTreeCard = ({ handleLoadMoreSupporters }) => {
           {campSupportingTree?.length &&
             campSupportingTree.map((supporter, index) => {
               return (
-                <List.Item
-                  key={index}
-                  onClick={() => {
-                    localStorage.setItem("publicUserId", supporter.id);
-                    localStorage.setItem(
-                      "topicRecord",
-                      JSON.stringify(topicRecord)
-                    );
-                    localStorage.setItem("namespace_name_id", "1");
-                  }}
-                >
-                  <Link href="/userProfile">
+                <List.Item key={index}>
+                  <Link
+                    href={{
+                      pathname: `/user/supports/${supporter.id}`,
+                      query: {
+                        topicnum: topicRecord?.topic_num,
+                        campnum: topicRecord?.camp_num,
+                        namespace: 1,
+                      },
+                    }}
+                  >
                     <a>
                       {supporter.name}
                       <span className="number-style">{supporter.score}</span>
@@ -87,11 +92,11 @@ const SupportTreeCard = ({ handleLoadMoreSupporters }) => {
             Load More
           </CustomButton>
         )}
-        <Link href="/manageSupport">
+        <Link href={manageSupportPath}>
           <a>
             <div className="topicDetailsCollapseFooter">
               <CustomButton className="btn-orange">
-                Directly Join or Manage Support
+                {K?.exceptionalMessages?.directJoinSupport}
               </CustomButton>
             </div>
           </a>

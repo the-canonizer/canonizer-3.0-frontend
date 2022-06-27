@@ -19,6 +19,8 @@ const ExceptionalMessageConstants = {
   wikiMarkupSupportMsg: "Note: We support wiki markup. To get reference",
   addNewsTextPlaceHolder: "Add news text.",
   objectionStatementHeading: "Object to this proposed update",
+  directJoinSupport: "Directly join and support",
+  noRecentActivityFound: "No Recent Activity Found",
 };
 
 export default ExceptionalMessageConstants;

@@ -115,7 +115,14 @@ const NewsFeedsCard = ({ newsFeed }) => {
                 return (
                   <li key={news?.id}>
                     <Paragraph>
-                      <a href={news?.link} target={"__blank"}>
+                      <a
+                        href={
+                          !/^https?:\/\//i.test(news?.link)
+                            ? `http://${news?.link}`
+                            : news?.link
+                        }
+                        target={"__blank"}
+                      >
                         {news?.display_text}{" "}
                       </a>
 
@@ -150,7 +157,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
                           >
                             <Button
                               size="small"
-                              type="text"
+                              type="link"
                               danger
                               disabled={!news.owner_flag}
                             >
