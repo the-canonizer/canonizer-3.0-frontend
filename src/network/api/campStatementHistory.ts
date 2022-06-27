@@ -62,3 +62,17 @@ export const getCompareStatement = async (reqBody) => {
     handleError(error);
   }
 };
+
+export const changeCommitStatement = async (reqBody) => {
+  try {
+    const res = await NetworkCall.fetch(
+      CampStatementHistoryRequest.commitChangeStatement(reqBody),
+      false
+    );
+
+    return res;
+  } catch (error) {
+    handleError(error);
+    return error;
+  }
+};

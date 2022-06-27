@@ -134,6 +134,7 @@ function CampList() {
       },
     });
   };
+  // console.log("camp history redux => ", campStatementHistory);
 
   const loader = (
     <>
@@ -142,6 +143,8 @@ function CampList() {
       <Skeleton active />
     </>
   );
+  console.log("camp history  => ", campHistory);
+
   return (
     <div className={styles.wrap}>
       <CampInfoBar payload={payload} />

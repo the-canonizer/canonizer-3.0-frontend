@@ -2,6 +2,8 @@ import { Typography, Button, Collapse, Space, Checkbox, Divider } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
+import { changeCommitStatement } from "../../../../network/api/campStatementHistory";
+
 import styles from ".././campHistory.module.scss";
 
 const { Panel } = Collapse;
@@ -14,7 +16,18 @@ function HistoryCollapse({
   isChecked,
 }) {
   const router = useRouter();
+  const commitChanges = async () => {
+    let reqBody = {
+      type: "statement",
+      id: campStatement?.id,
+    };
 
+    console.log("req body of commit => ", reqBody);
+
+    let res = await changeCommitStatement(reqBody);
+    console.log("res of commit =>", res);
+  };
+  console.log("camp statement of camp histroy in componrent=>", campStatement);
   return (
     <div>
       <Space
@@ -56,7 +69,6 @@ function HistoryCollapse({
                   Edit summary :{" "}
                   <span className={styles.updateSurveyPrj}>
                     {campStatement?.note}
-                    submit_time
                   </span>
                 </Title>
                 <Title level={5}>
@@ -81,6 +93,15 @@ function HistoryCollapse({
                 </Checkbox>
               </div>
               <div className={styles.campStatementCollapseButtons}>
+                {campStatement?.status == "in_review" && (
+                  <Button type="primary" className={styles.campVersionButton}>
+                    <Link
+                      href={`/manage/statement/${campStatement?.id}-objection`}
+                    >
+                      Object
+                    </Link>
+                  </Button>
+                )}
                 <Button type="primary" className={styles.campUpdateButton}>
                   <Link href={`/manage/statement/${campStatement?.id}`}>
                     Submit Statement Update Based on This
@@ -102,6 +123,25 @@ function HistoryCollapse({
                   </Link>
                 </Button>
               </div>
+              {campStatement?.status == "in_review" && (
+                <div className={styles.campStatementCollapseButtons}>
+                  <p>
+                    Note: This countdown timer is the grace period in which you
+                    can make minor changes to your statement before other direct
+                    supporters are notified.
+                  </p>
+                  <Button type="primary" className={styles.campUpdateButton}>
+                    Edit Change
+                  </Button>
+                  <Button
+                    type="primary"
+                    className={styles.campUpdateButton}
+                    onClick={commitChanges}
+                  >
+                    Commit Change
+                  </Button>
+                </div>
+              )}
             </div>
           </>
         </Collapse>

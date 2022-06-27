@@ -11,7 +11,8 @@ export const getEditStatementApi = async (body) => {
       campManageStatementRequest.getEditStatement(
         body,
         auth?.loggedInUser?.token
-      )
+      ),
+      false
     );
     return res;
   } catch (error) {

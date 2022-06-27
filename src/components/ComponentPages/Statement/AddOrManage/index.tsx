@@ -21,33 +21,17 @@ export default function AddOrManage({ add }) {
   const [screenLoading, setScreenLoading] = useState(false);
   const [payloadBreadCrumb, setPayloadBreadCrumb] = useState({});
   const [form] = Form.useForm();
+  let objection = router?.query?.statement[1]?.split("-")[1] == "objection";
+  console.log("objection ", objection);
 
   const onFinish = async (values: any) => {
     setScreenLoading(true);
-    let res_for_add;
-    if (add) {
-      let res = await getEditStatementApi(values?.nick_name);
-      res_for_add = res?.data;
-    }
+    let res;
     let editInfo = editStatementData?.data;
     let parent_camp = editInfo?.parent_camp;
-    let res = await updateStatementApi({
-      topic_num: add
-        ? router?.query?.statement[0]?.split("-")[0]
-        : parent_camp[parent_camp?.length - 1]?.topic_num,
-      camp_num: add
-        ? router?.query?.statement[1]?.split("-")[0]
-        : parent_camp[parent_camp?.length - 1]?.camp_num,
-      nick_name: values?.nick_name,
-      note: values?.edit_summary?.trim(),
-      parent_camp_num: add
-        ? res_for_add?.parent_camp_num
-        : editInfo?.parent_camp_num,
-      submitter: add
-        ? res_for_add?.statement?.submitter_nick_id
-        : editInfo?.statement?.submitter_nick_id,
-      statement: values?.statement?.trim(),
-    });
+
+    res = await addOrManageStatement(values);
+
     if (res?.status_code == 200) {
       if (add) {
         router.push(
@@ -66,13 +50,69 @@ export default function AddOrManage({ add }) {
     }
     setScreenLoading(false);
   };
+  // const objectionStatemnent = async (values) => {
+  //   let editInfo = editStatementData?.data;
+  //   let parent_camp = editInfo?.parent_camp;
+  //   let reqBody = {
+  //     topic_num: parent_camp[parent_camp?.length - 1]?.topic_num,
+  //     parent_camp_num: editInfo?.parent_camp_num,
+  //     camp_num: parent_camp[parent_camp?.length - 1]?.camp_num,
+  //     submitter: editInfo?.statement?.submitter_nick_id,
+  //     objection: "1",
+  //     statement_id: router?.query?.statement[1]?.split("-")[0],
+  //     nick_name: values?.nick_name,
+  //     statement: values?.statement?.trim(),
+  //     objection_reason: values?.objection_reason,
+  //   };
+  //   console.log("objection ", reqBody);
+  //   let res = await updateStatementApi(reqBody);
+  //   return res;
+  // };
+
+  const addOrManageStatement = async (values) => {
+    let res_for_add;
+    if (add) {
+      let res = await getEditStatementApi(values?.nick_name);
+      res_for_add = res?.data;
+    }
+    let editInfo = editStatementData?.data;
+    let parent_camp = editInfo?.parent_camp;
+    let reqBody = {
+      topic_num: add
+        ? router?.query?.statement[0]?.split("-")[0]
+        : parent_camp[parent_camp?.length - 1]?.topic_num,
+      camp_num: add
+        ? router?.query?.statement[1]?.split("-")[0]
+        : parent_camp[parent_camp?.length - 1]?.camp_num,
+      nick_name: values?.nick_name,
+      note: values?.edit_summary?.trim(),
+      parent_camp_num: add
+        ? res_for_add?.parent_camp_num
+        : editInfo?.parent_camp_num,
+      submitter: add
+        ? res_for_add?.statement?.submitter_nick_id
+        : editInfo?.statement?.submitter_nick_id,
+      statement: values?.statement?.trim(),
+      objection: objection ? "1" : null,
+      statement_id: objection
+        ? router?.query?.statement[1]?.split("-")[0]
+        : null,
+      objection_reason: objection ? values?.objection_reason : null,
+    };
+    console.log("-------------reqbody", reqBody);
+    let res = await updateStatementApi(reqBody);
+    return res;
+  };
 
   useEffect(() => {
     setScreenLoading(true);
     async function nickNameListApiCall() {
       let res;
       if (!add) {
-        res = await getEditStatementApi(router?.query?.statement[1]);
+        res = await getEditStatementApi(
+          router?.query?.statement[1]?.split("-")[0]
+        );
+        // console.log("req body", router?.query?.statement[1]?.split("-")[0]);
         setEditStatementData(res);
         setPayloadBreadCrumb({
           camp_num: res?.data?.statement?.camp_num,
@@ -92,33 +132,39 @@ export default function AddOrManage({ add }) {
           : res?.data?.topic?.topic_num,
       };
       const result = await getAllUsedNickNames(reqBody);
-      form.setFieldsValue(
-        add
-          ? {
-              nick_name: result?.data[0].id,
-            }
-          : router?.query?.statement[1]?.split("-")[1] == "update"
-          ? {
-              nick_name: res?.data?.nick_name[0]?.id,
-              statement: res?.data?.statement?.parsed_value?.replace(
-                /<[^>]+>/g,
-                ""
-              ),
-              edit_summary: res?.data?.statement?.note,
-            }
-          : {
-              nick_name: res?.data?.nick_name[0]?.id,
-              statement: res?.data?.statement?.parsed_value?.replace(
-                /<[^>]+>/g,
-                ""
-              ),
-            }
-      );
-      setNickNameData(result?.data);
+      if (result?.status_code == 200) {
+        form.setFieldsValue(
+          add
+            ? {
+                nick_name: result?.data[0].id,
+              }
+            : objection
+            ? {
+                nick_name: res?.data?.nick_name[0]?.id,
+                statement: res?.data?.statement?.parsed_value?.replace(
+                  /<[^>]+>/g,
+                  ""
+                ),
+                edit_summary: res?.data?.statement?.note,
+              }
+            : {
+                nick_name: res?.data?.nick_name[0]?.id,
+                statement: res?.data?.statement?.parsed_value?.replace(
+                  /<[^>]+>/g,
+                  ""
+                ),
+              }
+        );
+        setNickNameData(result?.data);
+      }
       setScreenLoading(false);
     }
     isLogin ? nickNameListApiCall() : router.push("/login");
   }, []);
+
+  console.log("data is nick name", nickNameData);
+  console.log("payload breaaad crub", payloadBreadCrumb);
+  console.log("edit sattement data", editStatementData);
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
@@ -134,7 +180,9 @@ export default function AddOrManage({ add }) {
               title={
                 add
                   ? K?.exceptionalMessages?.addCampStatement
-                  : K?.exceptionalMessages?.statementUpdate
+                  : !objection
+                  ? K?.exceptionalMessages?.statementUpdate
+                  : K?.exceptionalMessages?.objectionStatementHeading
               }
               className={styles.card}
             >
@@ -161,7 +209,7 @@ export default function AddOrManage({ add }) {
                       ]}
                     >
                       <Select value={nickNameData[0]?.id} size="large">
-                        {nickNameData &&
+                        {!!nickNameData &&
                           nickNameData?.map((names) => (
                             <Select.Option value={names.id} key={names?.id}>
                               {names?.nick_name}
@@ -188,7 +236,11 @@ export default function AddOrManage({ add }) {
                         },
                       ]}
                     >
-                      <Input.TextArea size="large" rows={7} />
+                      <Input.TextArea
+                        size="large"
+                        rows={7}
+                        disabled={objection}
+                      />
                     </Form.Item>
                     <small className="mb-3 d-block">
                       {K?.exceptionalMessages?.wikiMarkupSupportMsg}{" "}
@@ -196,18 +248,33 @@ export default function AddOrManage({ add }) {
                     </small>
                   </Col>
                   <Col xs={24} xl={24}>
-                    <Form.Item
-                      className={styles.formItem}
-                      name="edit_summary"
-                      label={
-                        <>
-                          Edit Summary{" "}
-                          <small>(Briefly describe your changes)</small>
-                        </>
-                      }
-                    >
-                      <Input.TextArea size="large" rows={7} />
-                    </Form.Item>
+                    {objection ? (
+                      <Form.Item
+                        className={styles.formItem}
+                        name="objection_reason"
+                        label={
+                          <>
+                            Your Objection Reason{" "}
+                            <small>(Limit 100 Char)</small>
+                          </>
+                        }
+                      >
+                        <Input.TextArea size="large" rows={1} maxLength={100} />
+                      </Form.Item>
+                    ) : (
+                      <Form.Item
+                        className={styles.formItem}
+                        name="edit_summary"
+                        label={
+                          <>
+                            Edit Summary{" "}
+                            <small>(Briefly describe your changes)</small>
+                          </>
+                        }
+                      >
+                        <Input.TextArea size="large" rows={7} />
+                      </Form.Item>
+                    )}
                   </Col>
                   <Col xs={24} xl={24}>
                     <Form.Item className="mb-0">
@@ -218,28 +285,33 @@ export default function AddOrManage({ add }) {
                       >
                         {add
                           ? K?.exceptionalMessages?.submitStatementButton
-                          : K?.exceptionalMessages?.submitUpdateButton}
+                          : !objection
+                          ? K?.exceptionalMessages?.submitUpdateButton
+                          : "Submit Objection"}
                       </Button>
+                      {!objection && (
+                        <>
+                          <Button
+                            htmlType="button"
+                            className="cancel-btn mr-3"
+                            type="ghost"
+                            size="large"
+                            onClick={() => {}}
+                          >
+                            Cancel
+                          </Button>
 
-                      <Button
-                        htmlType="button"
-                        className="cancel-btn mr-3"
-                        type="ghost"
-                        size="large"
-                        onClick={() => {}}
-                      >
-                        Cancel
-                      </Button>
-
-                      <Button
-                        htmlType="button"
-                        className="cancel-btn"
-                        type="primary"
-                        size="large"
-                        onClick={() => setModalVisible(true)}
-                      >
-                        Preview
-                      </Button>
+                          <Button
+                            htmlType="button"
+                            className="cancel-btn"
+                            type="primary"
+                            size="large"
+                            onClick={() => setModalVisible(true)}
+                          >
+                            Preview
+                          </Button>
+                        </>
+                      )}
                     </Form.Item>
                   </Col>
                 </Row>
