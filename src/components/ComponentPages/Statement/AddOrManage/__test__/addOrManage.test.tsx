@@ -53,7 +53,7 @@ describe("Should render Addnews", () => {
         </RouterContext.Provider>
       </Provider>
     );
-    const mainHeadig = screen.getByText(/statement update/i);
+    const mainHeading = screen.getByText(/statement update/i);
     const submitButton = screen.getByRole("button", {
       name: /submit update/i,
     });
