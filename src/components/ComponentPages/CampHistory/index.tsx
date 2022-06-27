@@ -4,6 +4,7 @@ import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useSelector } from "react-redux";
+import InfiniteScroll from "react-infinite-scroller";
 
 import styles from "./campHistory.module.scss";
 
@@ -40,6 +41,8 @@ function CampList() {
           camp_num: +router.query.camp[1].split("-")[0],
           type: isActive,
           as_of: "default",
+          per_page: 10,
+          page: 1,
         };
         await getCampStatementHistoryApi(reqBody);
         setLoadingIndicator(false);
@@ -222,8 +225,8 @@ function CampList() {
         </div>
 
         <Spin spinning={loadingIndicator} size="large">
-          {!loadingIndicator && campHistory && campHistory?.length ? (
-            campHistory[0]?.statement?.map((campHistory, index) => {
+          {!loadingIndicator && campHistory && campHistory?.items?.length ? (
+            campHistory?.items?.map((campHistory, index) => {
               return (
                 <HistoryCollapse
                   key={index}
