@@ -5,15 +5,20 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../store";
 import Registration from "./index";
 import EmailPopup from "./emailPopup";
+import NameConfirmationPopup from "./nameConfirmationPopup";
 
 const RegistrationModal = () => {
-  const { isOTPModal, isEmailModal } = useSelector((state: RootState) => ({
-    isOTPModal: state.ui.registrationModalVisible,
-    isEmailModal: state.ui.showSocialLoginEmailPopup,
-  }));
+  const { isOTPModal, isEmailModal, isNameModal } = useSelector(
+    (state: RootState) => ({
+      isOTPModal: state.ui.registrationModalVisible,
+      isEmailModal: state.ui.showSocialLoginEmailPopup,
+      isNameModal: state.ui.showSocialLoginNamePopup,
+    })
+  );
 
   return (
     <Fragment>
+      {/* registration popup */}
       <Modal
         style={{ top: "20px" }}
         visible={isOTPModal}
@@ -25,6 +30,7 @@ const RegistrationModal = () => {
         <Registration isModal={true} />
       </Modal>
 
+      {/* email confirmation popup */}
       <Modal
         style={{ top: "20px" }}
         visible={isEmailModal}
@@ -34,6 +40,18 @@ const RegistrationModal = () => {
         className="loginModal"
       >
         <EmailPopup isModal={true} />
+      </Modal>
+
+      {/* name confirmation popup */}
+      <Modal
+        style={{ top: "20px" }}
+        visible={isNameModal}
+        footer={null}
+        closable={false}
+        width={800}
+        className="loginModal"
+      >
+        <NameConfirmationPopup isModal={true} />
       </Modal>
     </Fragment>
   );
