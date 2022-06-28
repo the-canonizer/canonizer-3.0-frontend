@@ -1560,7 +1560,7 @@ div[role="option"]::before {
 }
 .ant-form-item-required {
   .required {
-    color: red;
+    color: red !important;
     margin-left: 3px;
     display: inline-block;
   }
