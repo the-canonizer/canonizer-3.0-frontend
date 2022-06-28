@@ -2,7 +2,6 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { Typography, Button, List, Spin, Affix, Skeleton } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import { useSelector } from "react-redux";
 import InfiniteScroll from "react-infinite-scroller";
 
@@ -56,7 +55,6 @@ function CampList() {
     asynCall();
   }, [activeTab]);
 
-  // useEffect(() => {
   const campStatementApiCall = async () => {
     try {
       setLoadingIndicator(true);
@@ -93,9 +91,6 @@ function CampList() {
     setLoadMoreItems(false);
     setLoadingIndicator(false);
   };
-  // campStatementApiCall();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [activeTab]);
 
   const handleTabButton = async (tabName) => {
     setActiveTab(tabName);
@@ -157,74 +152,75 @@ function CampList() {
         <div className={styles.tabHead}>
           <div className={styles.filterOt}>
             <Title level={4}>Camp Statement History</Title>
-
-            <List className={styles.campStatementHistory} size="small">
-              <List.Item
-                className={`${styles.campStatementViewAll} ${
-                  styles.campStatementListItem
-                } ${activeTab == "all" ? styles.active : null}`}
-              >
-                <a
-                  onClick={() => {
-                    handleTabButton("all");
-                  }}
+            <Spin spinning={loadingIndicator} size="default">
+              <List className={styles.campStatementHistory} size="small">
+                <List.Item
+                  className={`${styles.campStatementViewAll} ${
+                    styles.campStatementListItem
+                  } ${activeTab == "all" ? styles.active : null}`}
                 >
-                  View All
-                </a>
-              </List.Item>
-              <List.Item
-                className={`${styles.campStatementObjected}  ${
-                  styles.campStatementListItem
-                }  ${activeTab == "objected" ? styles.active : null}`}
-              >
-                <a
-                  onClick={() => {
-                    handleTabButton("objected");
-                  }}
+                  <a
+                    onClick={() => {
+                      handleTabButton("all");
+                    }}
+                  >
+                    View All
+                  </a>
+                </List.Item>
+                <List.Item
+                  className={`${styles.campStatementObjected}  ${
+                    styles.campStatementListItem
+                  }  ${activeTab == "objected" ? styles.active : null}`}
                 >
-                  Objected
-                </a>
-              </List.Item>
-              <List.Item
-                className={`${styles.campStatementLive} ${
-                  styles.campStatementListItem
-                } ${activeTab == "live" ? styles.active : null}`}
-              >
-                <a
-                  onClick={() => {
-                    handleTabButton("live");
-                  }}
+                  <a
+                    onClick={() => {
+                      handleTabButton("objected");
+                    }}
+                  >
+                    Objected
+                  </a>
+                </List.Item>
+                <List.Item
+                  className={`${styles.campStatementLive} ${
+                    styles.campStatementListItem
+                  } ${activeTab == "live" ? styles.active : null}`}
                 >
-                  Live
-                </a>
-              </List.Item>
-              <List.Item
-                className={`${styles.campStatementNotLive} ${
-                  styles.campStatementListItem
-                } ${activeTab == "in_review" ? styles.active : null}`}
-              >
-                <a
-                  onClick={() => {
-                    handleTabButton("in_review");
-                  }}
+                  <a
+                    onClick={() => {
+                      handleTabButton("live");
+                    }}
+                  >
+                    Live
+                  </a>
+                </List.Item>
+                <List.Item
+                  className={`${styles.campStatementNotLive} ${
+                    styles.campStatementListItem
+                  } ${activeTab == "in_review" ? styles.active : null}`}
                 >
-                  Not Live
-                </a>
-              </List.Item>
-              <List.Item
-                className={`${styles.campStatementOld} ${
-                  styles.campStatementListItem
-                } ${activeTab == "old" ? styles.active : null}`}
-              >
-                <a
-                  onClick={() => {
-                    handleTabButton("old");
-                  }}
+                  <a
+                    onClick={() => {
+                      handleTabButton("in_review");
+                    }}
+                  >
+                    Not Live
+                  </a>
+                </List.Item>
+                <List.Item
+                  className={`${styles.campStatementOld} ${
+                    styles.campStatementListItem
+                  } ${activeTab == "old" ? styles.active : null}`}
                 >
-                  Old
-                </a>
-              </List.Item>
-            </List>
+                  <a
+                    onClick={() => {
+                      handleTabButton("old");
+                    }}
+                  >
+                    Old
+                  </a>
+                </List.Item>
+              </List>
+            </Spin>
           </div>
           <Affix
             offsetTop={top}
@@ -253,39 +249,32 @@ function CampList() {
               hasMore={loadMoreItems}
               loader={loader}
             >
-              {
-                // !loadingIndicator ? (
-                campHistory && campHistory?.items?.length ? (
-                  campHistory?.items?.map((campHistory, index) => {
-                    return (
-                      <HistoryCollapse
-                        key={index}
-                        campStatement={campHistory}
-                        onSelectCompare={onSelectCompare}
-                        isDisabledCheck={
-                          selectedTopic.length >= 2 &&
-                          !selectedTopic.includes(campHistory.id)
-                        }
-                        isChecked={selectedTopic.includes(campHistory.id)}
-                      />
-                    );
-                  })
-                ) : (
-                  <h2
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      margin: "20px 0px",
-                    }}
-                  >
-                    No Camp History Found
-                  </h2>
-                )
-                // )
-                //  : (
-                //   <Skeleton active />
-                // )
-              }
+              {campHistory && campHistory?.items?.length ? (
+                campHistory?.items?.map((campHistory, index) => {
+                  return (
+                    <HistoryCollapse
+                      key={index}
+                      campStatement={campHistory}
+                      onSelectCompare={onSelectCompare}
+                      isDisabledCheck={
+                        selectedTopic.length >= 2 &&
+                        !selectedTopic.includes(campHistory.id)
+                      }
+                      isChecked={selectedTopic.includes(campHistory.id)}
+                    />
+                  );
+                })
+              ) : (
+                <h2
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    margin: "20px 0px",
+                  }}
+                >
+                  No Camp History Found
+                </h2>
+              )}
             </InfiniteScroll>
           </div>
         </div>
