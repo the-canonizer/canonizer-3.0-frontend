@@ -1564,7 +1564,7 @@ div[role="option"]::before {
 }
 .ant-form-item-required {
   .required {
-    color: red;
+    color: red !important;
     margin-left: 3px;
     display: inline-block;
   }
@@ -1588,4 +1588,21 @@ div[role="option"]::before {
 
 .Profile_btn {
   min-width: 150px;
+}
+
+.tab--card > .ant-card-head 
+{
+  .ant-card-head-wrapper 
+  {
+    flex: inherit !important;
+  }
+  .ant-tabs 
+  {
+    flex: 1;
+    overflow: hidden;
+    .ant-tabs-nav-list 
+    {
+      margin-left: auto;
+    }
+  }
 }

@@ -67,7 +67,7 @@ describe("LoggedOutHeader", () => {
       name: /Browse/i,
     });
     const uploadFilesLink = screen.getByRole("link", {
-      name: /Upload Files/i,
+      name: /Upload File/i,
     });
 
     const helpLink = screen.getByRole("link", {

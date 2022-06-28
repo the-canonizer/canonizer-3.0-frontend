@@ -54,7 +54,7 @@ export const labels = {
   FolderName: "Folder Name (Limit 15 Chars*)",
   CreateaFolder: "Create Folder",
 
-  userProfile: "UserProfile",
+  userProfile: "User Profile",
   name: "Name",
   address: "Address",
   zipcode: "Zip Code",

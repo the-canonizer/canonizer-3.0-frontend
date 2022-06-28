@@ -191,10 +191,17 @@ export default function RecentActivities() {
                           <Text className={styles.text}>
                             {activity?.activity?.description}
                             <br />
-                            <Tooltip title={decodedProperties?.description?.substring(0, 90) + "..."}>
+                            <Tooltip
+                              title={
+                                decodedProperties?.description?.substring(
+                                  0,
+                                  90
+                                ) + "..."
+                              }
+                            >
                               {decodedProperties?.description}
                             </Tooltip>
-                              {/* {decodedProperties?.description?.length > 100 ? (
+                            {/* {decodedProperties?.description?.length > 100 ? (
                                 <Tooltip title={decodedProperties?.description}>
                                   {decodedProperties?.description?.substring(
                                     0,

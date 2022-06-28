@@ -166,9 +166,9 @@ const CreateNewCamp = ({
     const body = {
       camp_about_nick_id: values.camp_about_nick_id || "",
       camp_about_url: values.camp_about_url || "",
-      camp_name: values.camp_name,
+      camp_name: values.camp_name?.trim(),
       key_words: values.key_words || "",
-      note: values.note || "",
+      note: values.note?.trim() || "",
       parent_camp_num: values.parent_camp_num,
       nick_name: values.nick_name,
       topic_num: params["topic_num"],

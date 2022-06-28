@@ -6,14 +6,14 @@ import { subscribeToCampApi } from "../../../../network/api/campDetailApi";
 import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
 import { Dropdown, Menu, Button } from "antd";
-import K from "src/constants";
+import K from "../../../../constants";
 
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import {
   getCurrentTopicRecordApi,
   getCurrentCampRecordApi,
   getCampBreadCrumbApi,
-} from "src/network/api/campDetailApi";
+} from "../../../../network/api/campDetailApi";
 import {
   MoreOutlined,
   FileTextOutlined,
