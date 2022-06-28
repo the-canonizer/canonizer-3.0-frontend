@@ -175,7 +175,7 @@ export default function AddOrManage({ add }) {
                     <Form.Item
                       className={`${styles.formItem} mb-2`}
                       name="statement"
-                      label={<>Statement </>}
+                      label={<>Statement</>}
                       rules={[
                         {
                           required: true,

@@ -15,7 +15,7 @@ export default function HomeSideBar({ onCreateCamp = () => {} }) {
       <div className="leftSideBar_Card noFilter">
         <div className="btnsWrap">
           <Button size="large" className={"btn"} onClick={campRoute}>
-            <i className="icon-topic"></i> Create New Topic
+            <i className="icon-topic"></i>Create New Topic
           </Button>
         </div>
       </div>

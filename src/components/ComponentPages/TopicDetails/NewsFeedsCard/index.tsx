@@ -5,7 +5,7 @@ import { getNewsFeedApi } from "../../../../network/api/campDetailApi";
 import { DeleteOutlined, EditOutlined, CloseOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
-import K from "src/constants";
+import K from "../../../../constants";
 
 const { Paragraph } = Typography;
 
