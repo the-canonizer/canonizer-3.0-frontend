@@ -231,7 +231,7 @@ function CampList() {
               disabled={
                 !(
                   selectedTopic.length >= 2 &&
-                  !selectedTopic.includes(campHistory.id)
+                  !selectedTopic?.includes(campHistory["id"])
                 )
               }
               className={styles.active}
