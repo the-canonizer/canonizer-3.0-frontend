@@ -580,9 +580,11 @@ const UploadFileUI = ({
     Object.entries(updateList).map(([k, v], i) => {
       const fileIndex = fileLists.findIndex((obj) => k == obj.uid);
       const fileListsArr = [...fileLists];
-      const fileExtension = fileListsArr[fileIndex].name.split(".").pop();
-      fileListsArr[fileIndex].name = v + "." + fileExtension;
-      setFileLists(fileListsArr);
+      if (fileListsArr[fileIndex]) {
+        const fileExtension = fileListsArr[fileIndex].name.split(".").pop();
+        fileListsArr[fileIndex].name = v + "." + fileExtension;
+        setFileLists(fileListsArr);
+      }
     });
   };
   const handleChangeFileName = (e, id) => {
