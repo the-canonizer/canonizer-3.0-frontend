@@ -5,6 +5,7 @@ import styles from "../../Registration/UI/Registration.module.scss";
 
 import messages from "../../../../messages";
 import { fallBackSrc } from "../../../../assets/data-images";
+import { Fragment } from "react";
 
 const { Title, Text } = Typography;
 
@@ -70,7 +71,12 @@ function ForgotPasswordUI({ form, onFinish, isModal, closeModal, isScreen }) {
           {isScreen === 0 && (
             <Form.Item
               name="email_id"
-              label={messages.labels.emailId}
+              label={
+                <Fragment>
+                  {messages.labels.emailId}
+                  <span className="required">*</span>
+                </Fragment>
+              }
               style={{ textAlign: "center" }}
               {...messages.emRule}
               className={styles.textCenter}
