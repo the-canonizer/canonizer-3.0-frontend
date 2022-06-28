@@ -56,10 +56,10 @@ const CreateNewTopic = ({
     }
 
     const body = {
-      topic_name: values.topic_name,
+      topic_name: values.topic_name?.trim(),
       namespace: values.namespace,
       nick_name: values.nick_name,
-      note: values.edit_summary,
+      note: values.edit_summary?.trim(),
     };
 
     const res = await createTopic(body);
