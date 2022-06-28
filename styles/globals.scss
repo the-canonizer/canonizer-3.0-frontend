@@ -205,6 +205,8 @@ img {
     border-bottom: 1px solid #f7f7f7;
     padding: 0px 16px 16px;
     margin-bottom: 15px;
+    display: flex; 
+    flex-wrap: wrap;
   }
 }
 
