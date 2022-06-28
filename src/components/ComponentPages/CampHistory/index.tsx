@@ -258,9 +258,9 @@ function CampList() {
                       onSelectCompare={onSelectCompare}
                       isDisabledCheck={
                         selectedTopic.length >= 2 &&
-                        !selectedTopic.includes(campHistory.id)
+                        !selectedTopic.includes(campHistory?.id)
                       }
-                      isChecked={selectedTopic.includes(campHistory.id)}
+                      isChecked={selectedTopic.includes(campHistory?.id)}
                     />
                   );
                 })
