@@ -1,6 +1,8 @@
 import { Typography, Button, Collapse, Space, Checkbox, Divider } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 
 import styles from ".././campHistory.module.scss";
 
@@ -14,6 +16,16 @@ function HistoryCollapse({
   isChecked,
 }) {
   const router = useRouter();
+  const dispatch = useDispatch();
+
+  const handleViewThisVersion = (goLiveTime) => {
+    dispatch(
+      setFilterCanonizedTopics({
+        asofdate: goLiveTime,
+        asof: "bydate",
+      })
+    );
+  };
 
   return (
     <div>
@@ -86,7 +98,13 @@ function HistoryCollapse({
                     Submit Statement Update Based on This
                   </Link>
                 </Button>
-                <Button type="primary" className={styles.campVersionButton}>
+                <Button
+                  type="primary"
+                  className={styles.campVersionButton}
+                  onClick={() =>
+                    handleViewThisVersion(campStatement?.go_live_time)
+                  }
+                >
                   <Link
                     href={{
                       pathname: `/topic/${
