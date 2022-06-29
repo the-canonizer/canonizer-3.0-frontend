@@ -19,15 +19,17 @@ function HistoryCollapse({
     <div>
       <Space
         direction="vertical"
-        className={`${styles[campStatement?.status]} ${
-          styles.campStatementCollapseHistory
-        }`}
+        className={`${
+          styles[campStatement?.status ? campStatement?.status : "live"]
+        } ${styles.campStatementCollapseHistory}`}
       >
         <Collapse
           collapsible="header"
           defaultActiveKey={["1"]}
           expandIconPosition="right"
-          className={`campHistoryCollapseCards + " " + ${campStatement?.status}`}
+          className={`campHistoryCollapseCards + " " + ${
+            campStatement?.status ? campStatement?.status : "live"
+          }`}
         >
           <Panel
             header={<i className="icon-uparrow"></i>}

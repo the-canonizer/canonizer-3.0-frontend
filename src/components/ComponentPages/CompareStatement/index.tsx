@@ -1,15 +1,10 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
 import HtmlDiff from "htmldiff-js";
 
 import CompareStatementUI from "./UI";
 
-import {
-  getCompareStatement,
-  getCampStatementHistoryApi,
-} from "../../../network/api/campStatementHistory";
-import { RootState } from "../../../store";
+import { getCompareStatement } from "../../../network/api/campStatementHistory";
 
 function CompareStatement() {
   const [isLoading, setIsLoading] = useState(false);
@@ -51,32 +46,10 @@ function CompareStatement() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
-  const { campStatementHistory } = useSelector((state: RootState) => ({
-    campStatementHistory: state?.topicDetails?.campStatementHistory,
-  }));
-
-  useEffect(() => {
-    const campStatementApiCall = async () => {
-      try {
-        setIsLoading(true);
-        const reqBody = {
-          topic_num: +router.query.routes[0].split("-")[0],
-          camp_num: +router.query.routes[1].split("-")[0],
-          as_of: "default",
-        };
-        await getCampStatementHistoryApi(reqBody);
-        setIsLoading(false);
-      } catch (error) {}
-    };
-    campStatementApiCall();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <CompareStatementUI
       statements={statements}
       isLoading={isLoading}
-      campStatementHistory={campStatementHistory}
       liveStatement={liveStatement}
     />
   );

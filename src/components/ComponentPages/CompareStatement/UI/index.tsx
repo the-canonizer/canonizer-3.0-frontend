@@ -9,50 +9,25 @@ import styles from "./index.module.scss";
 
 import CreateCampBtn from "../../../common/button/createNewCampBtn";
 import CreateTopicBtn from "../../../common/button/createNewTopicBtn";
+import CampInfoBar from "../../TopicDetails/CampInfoBar";
 
 const { Title, Text, Paragraph } = Typography;
 
-function CompareStatementUI({
-  statements,
-  isLoading,
-  campStatementHistory,
-  liveStatement,
-}) {
+function CompareStatementUI({ statements, isLoading, liveStatement }) {
   const router = useRouter();
   const s1 = statements[0] || {},
     s2 = statements[1] || {};
 
+  let payload = {
+    camp_num: router?.query?.routes[1]?.split("-")[0],
+    topic_num: router?.query?.routes[0]?.split("-")[0],
+    topic_name: router?.query?.routes[0].split("-").slice(1).join(" "),
+  };
+
   return (
     <Fragment>
       <div className={styles.wrap}>
-        <div className={styles.heading}>
-          <Title level={5}>
-            <Text>Topic :</Text>{" "}
-            {campStatementHistory?.length &&
-              campStatementHistory[0].topic?.topic_name}
-          </Title>
-          <Title level={5}>
-            <Text>Camp : </Text>{" "}
-            <Text className={styles.blueText}>
-              {campStatementHistory?.length &&
-                campStatementHistory[0]?.parentCamp?.map((camp, index) => {
-                  return (
-                    <Link
-                      href={`/topic/${router.query.routes[0]}/${
-                        camp?.camp_num
-                      }-${camp?.camp_name?.split(" ").join("-")}`}
-                      key={camp?.camp_num}
-                    >
-                      <a>
-                        {index !== 0 && "/"}
-                        {`${camp?.camp_name}`}
-                      </a>
-                    </Link>
-                  );
-                })}
-            </Text>
-          </Title>
-        </div>
+        <CampInfoBar payload={payload} />
         <div className={styles.btnGroup}>
           <CreateTopicBtn />
           <CreateCampBtn

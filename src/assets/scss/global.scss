@@ -60,7 +60,11 @@ body {
     margin-bottom: 0 !important;
   }
 }
-
+.p {
+  &-3 {
+    padding: 1rem;
+  }
+}
 .w-100 {
   width: 100% !important;
 }

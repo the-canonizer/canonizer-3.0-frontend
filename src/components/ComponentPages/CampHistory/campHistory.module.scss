@@ -192,13 +192,16 @@
           color: #1c1b24;
           display: flex;
           align-items: center;
-
-          &::before {
-            content: "";
-            width: 10px;
-            height: 10px;
-            margin-right: 7px;
-            border-radius: 2px;
+        }
+        &:not(:first-child) {
+          & > a {
+            &::before {
+              content: "";
+              width: 10px;
+              height: 10px;
+              margin-right: 7px;
+              border-radius: 2px;
+            }
           }
         }
       }
@@ -240,8 +243,8 @@
 
 .campStatementCollapseHistory {
   width: 100%;
-  padding-top: 16px;
-  padding-left: 22px;
+  padding-top: 20px;
+  padding-left: 20px;
   padding-right: 20px;
 
   & > div {
@@ -339,7 +342,7 @@
     & > h5 {
       font-size: 16px;
       color: #292d2e;
-      line-height: 14px;
+      // line-height: 14px;
 
       @media screen and (min-width: 320px) and (max-width: 1014px) {
         .updateSurveyPrj {
@@ -488,8 +491,6 @@ $btn-bkg: #4484ce;
       border: none;
     }
   }
-
-  padding-bottom: 62px;
 
   & > div {
     & > div {
