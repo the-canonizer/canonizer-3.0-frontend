@@ -258,17 +258,18 @@ function CampList() {
             {
               // !loadingIndicator ? (
               campHistory && campHistory?.items?.length ? (
-                campHistory?.items?.map((campHistory, index) => {
+                campHistory?.items?.map((campHistoryData, index) => {
                   return (
                     <HistoryCollapse
                       key={index}
-                      campStatement={campHistory}
+                      campStatement={campHistoryData}
                       onSelectCompare={onSelectCompare}
+                      ifIamSupporter={campHistory?.details?.ifIamSupporter}
                       isDisabledCheck={
                         selectedTopic.length >= 2 &&
-                        !selectedTopic.includes(campHistory.id)
+                        !selectedTopic.includes(campHistoryData.id)
                       }
-                      isChecked={selectedTopic.includes(campHistory.id)}
+                      isChecked={selectedTopic.includes(campHistoryData.id)}
                     />
                   );
                 })
