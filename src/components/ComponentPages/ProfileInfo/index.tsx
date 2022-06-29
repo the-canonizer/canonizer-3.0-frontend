@@ -35,7 +35,7 @@ const ProfileInfo = () => {
   const [mobileNumber, setMobileNumber] = useState(0);
   const [toggleVerifyButton, setToggleVerifyButton] = useState(0);
   const [disableButton, setDisableButton] = useState(false);
-
+  const [postalCodeDisable, setPostalCodeDisable] = useState(false);
   const publicPrivateArray = {
     first_name: "first_name",
     last_name: "last_name",
@@ -189,7 +189,7 @@ const ProfileInfo = () => {
       }
     }
     address2 = address2.replace(/^,|,$/g, "");
-
+    setPostalCodeDisable(!!postalCode);
     form.setFieldsValue({
       ["address_2"]: address2,
       ["postal_code"]: postalCode,
@@ -252,6 +252,7 @@ const ProfileInfo = () => {
           formVerify.setFieldsValue(verify);
           //format date for datepicker
           profileData.birthday = moment(profileData.birthday, "YYYY-MM-DD");
+          if (profileData.postal_code) setPostalCodeDisable(true);
           form.setFieldsValue(profileData);
           setPrivateFlags(profileData.private_flags);
           setPrivateList(
@@ -303,6 +304,7 @@ const ProfileInfo = () => {
       toggleVerifyButton={toggleVerifyButton}
       handleMobileNumberChange={handleMobileNumberChange}
       disableButton={disableButton}
+      postalCodeDisable={postalCodeDisable}
     />
   );
 };

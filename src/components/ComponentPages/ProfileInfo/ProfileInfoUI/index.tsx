@@ -25,6 +25,7 @@ function ProfileInfoUI({
   toggleVerifyButton,
   handleMobileNumberChange,
   disableButton,
+  postalCodeDisable,
 }) {
   return (
     <section className={styles.profileInfo_wrapper}>
@@ -53,6 +54,7 @@ function ProfileInfoUI({
         handleAddressSelect={handleAddressSelect}
         address={address}
         disableButton={disableButton}
+        postalCodeDisable={postalCodeDisable}
       />
     </section>
   );

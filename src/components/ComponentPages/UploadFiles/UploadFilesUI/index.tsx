@@ -45,6 +45,8 @@ import ListViewActive from "../../../../assets/image/listViewActive.svg";
 import folderOpenOutLine from "../../../../assets/image/folderOpen.svg";
 import CopyShortCode from "../../../../assets/image/copyShortCode.svg";
 import eyeImage from "../../../../assets/image/eye.svg";
+import addFolder from "../../../../assets/image/add-folder.png";
+import addFile from "../../../../assets/image/add.png";
 import download from "../../../../assets/image/DownloadFile.svg";
 import Trash from "../../../../assets/image/trash.svg";
 import ArrowLeft from "../../../../assets/image/arrow_small_left.svg";
@@ -1027,6 +1029,7 @@ const UploadFileUI = ({
                         setEditModal(false);
                     }}
                   >
+                    <Image alt="adOne" src={addFolder} width={20} height={22} />
                     Create Folder
                   </Button>
                   {addButtonShow && !dragBoxStatus ? (
@@ -1041,6 +1044,7 @@ const UploadFileUI = ({
                         setDatePick("");
                       }}
                     >
+                      <Image alt="adOne" src={addFile} width={20} height={18} />
                       Add a File
                     </Button>
                   ) : (

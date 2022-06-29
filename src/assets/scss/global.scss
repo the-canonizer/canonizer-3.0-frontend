@@ -810,6 +810,31 @@ body {
 }
 .datepIcker {
   width: 120px;
+  @media screen and (max-width:1280px)
+  {
+    .ant-picker 
+    {
+      padding: 0;
+      height: 32px;
+      width: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ant-picker-input 
+    {
+      margin: auto;
+    }
+    width: auto;
+    input 
+    {
+      display: none !important;
+    }
+    .ant-picker-suffix 
+    {
+      margin: 0;
+    }
+  }
 }
 .afterUpload {
   width: 100%;
@@ -1146,7 +1171,7 @@ body {
 }
 .ant-card-extra {
   padding: 0;
-  @media screen and (max-width: 1100px) {
+  @media screen and (max-width: 1023px) {
     margin-left: inherit;
     float: left;
   }
