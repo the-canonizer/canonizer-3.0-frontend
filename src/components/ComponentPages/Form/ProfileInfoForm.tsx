@@ -30,6 +30,7 @@ function ProfileInfoForm({
   handleAddressSelect,
   address,
   disableButton,
+  postalCodeDisable,
 }) {
   const listOfOption = (optionList, algoOrLang): any => {
     let option = [];
@@ -321,6 +322,7 @@ function ProfileInfoForm({
                   placeholder={messages.placeholders.zipCode}
                   size="large"
                   maxLength={255}
+                  disabled={postalCodeDisable}
                 />
               </Form.Item>
             </Col>
