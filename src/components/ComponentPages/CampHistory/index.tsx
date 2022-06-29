@@ -62,13 +62,13 @@ function CampList() {
         topic_num: +router.query.camp[0].split("-")[0],
         camp_num: +router.query.camp[1].split("-")[0],
         type: activeTab,
-        as_of: "default",
         per_page: 4,
         page: count.current,
       };
       const res = await getCampStatementHistoryApi(reqBody, count.current);
-      if (!res?.last_page) {
+      if (!res || !res?.last_page) {
         setLoadMoreItems(false);
+        setLoadingIndicator(false);
         return;
       }
       if (count.current >= res?.last_page) {
@@ -137,6 +137,35 @@ function CampList() {
       <Skeleton active />
     </div>
   );
+
+  const renderCampHistories =
+    campHistory && campHistory?.items?.length ? (
+      campHistory?.items?.map((campHistory, index) => {
+        return (
+          <HistoryCollapse
+            key={index}
+            campStatement={campHistory}
+            onSelectCompare={onSelectCompare}
+            isDisabledCheck={
+              selectedTopic.length >= 2 &&
+              !selectedTopic?.includes(campHistory?.id)
+            }
+            isChecked={selectedTopic?.includes(campHistory?.id)}
+          />
+        );
+      })
+    ) : (
+      <h2
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          margin: "20px 0px",
+        }}
+      >
+        No Camp History Found
+      </h2>
+    );
+
   return (
     <div className={styles.wrap}>
       <CampInfoBar payload={payload} />
@@ -244,38 +273,17 @@ function CampList() {
         </div>
         <div style={{ paddingBottom: "20px" }}>
           <div style={{ overflow: "auto" }}>
-            <InfiniteScroll
-              loadMore={!loadingIndicator && campStatementApiCall}
-              hasMore={loadMoreItems}
-              loader={loader}
-            >
-              {campHistory && campHistory?.items?.length ? (
-                campHistory?.items?.map((campHistory, index) => {
-                  return (
-                    <HistoryCollapse
-                      key={index}
-                      campStatement={campHistory}
-                      onSelectCompare={onSelectCompare}
-                      isDisabledCheck={
-                        selectedTopic.length >= 2 &&
-                        !selectedTopic?.includes(campHistory?.id)
-                      }
-                      isChecked={selectedTopic?.includes(campHistory?.id)}
-                    />
-                  );
-                })
-              ) : (
-                <h2
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    margin: "20px 0px",
-                  }}
-                >
-                  No Camp History Found
-                </h2>
-              )}
-            </InfiniteScroll>
+            {activeTab === "live" ? (
+              renderCampHistories
+            ) : (
+              <InfiniteScroll
+                loadMore={!loadingIndicator && campStatementApiCall}
+                hasMore={loadMoreItems}
+                loader={loader}
+              >
+                {renderCampHistories}
+              </InfiniteScroll>
+            )}
           </div>
         </div>
       </div>
