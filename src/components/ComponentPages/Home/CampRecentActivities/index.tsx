@@ -6,6 +6,7 @@ import K from "src/constants";
 
 import styles from "./campRecentActivities.module.scss";
 import { useEffect, useState } from "react";
+import moment from "moment";
 
 export default function CampRecentActivities() {
   const router = useRouter();
@@ -13,10 +14,7 @@ export default function CampRecentActivities() {
   const [loadingIndicator, setLoadingIndicator] = useState(false);
 
   const covertToTime = (unixTime) => {
-    let uTime = new Date(unixTime * 1000);
-    var time = uTime.toLocaleTimeString();
-    var convertedTime = "Today " + time;
-    return " " + convertedTime;
+    return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
 
   useEffect(() => {
@@ -32,7 +30,7 @@ export default function CampRecentActivities() {
       setLoadingIndicator(false);
     }
     getTopicActivityLogCall();
-  }, []);
+  }, [router?.query?.camp[1]?.split("-")[0]]);
 
   return (
     <>
