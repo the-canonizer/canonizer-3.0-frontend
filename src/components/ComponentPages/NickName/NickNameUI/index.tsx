@@ -102,7 +102,12 @@ export default function NickNameUI({
           >
             <Form.Item
               name="nick_name"
-              label={messages.labels.nickName}
+              label={
+                <>
+                  {messages.labels.nickName}
+                  <span className="required">*</span>
+                </>
+              }
               {...messages.nickNameRule}
             >
               <Input
