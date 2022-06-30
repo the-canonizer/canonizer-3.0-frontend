@@ -1,4 +1,5 @@
 import { Typography, Button, Collapse, Space, Checkbox, Divider } from "antd";
+import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
@@ -25,6 +26,10 @@ function HistoryCollapse({
         asof: "bydate",
       })
     );
+  };
+
+  const covertToTime = (unixTime) => {
+    return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
 
   return (
@@ -72,7 +77,8 @@ function HistoryCollapse({
                   </span>
                 </Title>
                 <Title level={5}>
-                  Submitted on : <span>{campStatement?.submit_time}</span>
+                  Submitted on :{" "}
+                  <span>{covertToTime(campStatement?.submit_time)}</span>
                 </Title>
                 <Title level={5}>
                   Submitter Nick Name :{" "}
@@ -81,7 +87,8 @@ function HistoryCollapse({
                   </span>
                 </Title>
                 <Title level={5}>
-                  Go live Time : <span>{campStatement?.go_live_time}</span>
+                  Go live Time :{" "}
+                  <span>{covertToTime(campStatement?.go_live_time)}</span>
                 </Title>
                 <Checkbox
                   className={styles.campSelectCheckbox}
@@ -106,15 +113,9 @@ function HistoryCollapse({
                   }
                 >
                   <Link
-                    href={{
-                      pathname: `/topic/${
-                        router?.query?.camp[0] + "/" + router?.query?.camp[1]
-                      }`,
-                      query: {
-                        asof: "bydate",
-                        asofdate: campStatement?.go_live_time,
-                      },
-                    }}
+                    href={`/topic/${
+                      router?.query?.camp[0] + "/" + router?.query?.camp[1]
+                    }`}
                   >
                     View This Version
                   </Link>
