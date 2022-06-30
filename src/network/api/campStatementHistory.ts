@@ -1,10 +1,13 @@
 import { handleError } from "../../utils/generalUtility";
 import { store } from "../../store";
-import { setCampStatementHistory } from "../../store/slices/campDetailSlice";
+import {
+  pushToCampStatementHistory,
+  setCampStatementHistory,
+} from "../../store/slices/campDetailSlice";
 import NetworkCall from "../networkCall";
 import CampStatementHistoryRequest from "../request/campStatementHistoryRequest";
 
-export const getCampStatementHistoryApi = async (reqBody) => {
+export const getCampStatementHistoryApi = async (reqBody, pageNumber) => {
   let state = store.getState();
   const { auth } = state;
   try {
@@ -15,10 +18,35 @@ export const getCampStatementHistoryApi = async (reqBody) => {
       ),
       false
     );
-    store.dispatch(setCampStatementHistory(campStatementHistory?.data));
+    if (pageNumber == 1) {
+      store.dispatch(setCampStatementHistory(campStatementHistory?.data));
+    } else {
+      store.dispatch(
+        pushToCampStatementHistory(campStatementHistory?.data?.items || [])
+      );
+    }
+    // debugger;
     return campStatementHistory?.data;
   } catch (error) {
     // message.error(error.message);
+  }
+};
+
+export const getLiveCampStatementApi = async (reqBody, pageNumber) => {
+  let state = store.getState();
+  const { auth } = state;
+  try {
+    const campStatementHistory = await NetworkCall.fetch(
+      CampStatementHistoryRequest.getLiveCampStatement(reqBody),
+      false
+    );
+    store.dispatch(
+      setCampStatementHistory({ items: campStatementHistory?.data })
+    );
+    return campStatementHistory?.data;
+  } catch (error) {
+    console.log(error.message);
+    return error;
   }
 };
 
