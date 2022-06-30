@@ -29,7 +29,6 @@ const PostUI = ({
   currentThread,
   isLog,
 }) => {
-  console.log("🚀 ~ file: index.tsx ~ line 32 ~ currentThread", currentThread);
   return (
     <Fragment>
       <Card
