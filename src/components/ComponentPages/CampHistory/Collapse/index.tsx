@@ -20,69 +20,23 @@ function HistoryCollapse({
 }) {
   const router = useRouter();
   const [commited, setCommited] = useState(false);
+
   const commitChanges = async () => {
     let reqBody = {
       type: "statement",
       id: campStatement?.id,
     };
 
-    // console.log("req body of commit => ", reqBody);
-
     let res = await changeCommitStatement(reqBody);
-
-    // console.log("res of commit =>", res);
     if (res?.status_code === 200) {
+      console.log("res of commit =>");
       setCommited(true);
     }
   };
 
-  // console.log("submit time", campStatement?.submit_time);
-  // console.log(
-  //   "submit time =>",
-  //   moment.unix(campStatement?.submit_time).format("hh : mm : ss ")
-  // );
-
-  // let date1: any = moment.now(); // 11:00 am in milisecond
-  // let date2: any = 1656503028 * 1000; // 9:00 am in milisecond
-
-  // console.log("sdasd", moment.now(), date2);
-  // let differece1 = Math.abs(date2 - date1) / 36e5;
-  // console.log("Math.abs(date1 - date2) / 36e5;", differece1); // this will give 2
-  // let date3: any = moment.now(); // 11:00 am in milisecond
-  // let date4: any = 1656397846 * 1000; // 10:01 am in milisecond
-  // let differece2 = Math.abs(date3 - date4) / 36e5;
-  // console.log("Math.abs(date1 - date2) / 36e5;", differece2); // this will give 0.9833333333333333
-
-  // console.log("time", convertMsToTime(differece1));
-
-  // function convertMsToTime(milliseconds) {
-  //   let seconds = milliseconds * 1000;
-  //   let minutes = seconds * 60;
-  //   let hours = minutes * 60;
-
-  //   seconds = seconds % 60;
-  //   minutes = minutes % 60;
-
-  //   // 👇️ If you don't want to roll hours over, e.g. 24 to 00
-  //   // 👇️ comment (or remove) the line below
-  //   // commenting next line gets you `24:00:00` instead of `00:00:00`
-  //   // or `36:15:31` instead of `12:15:31`, etc.
-  //   hours = hours % 24;
-
-  //   return `${hours}:${minutes}:${seconds}`;
-  // }
-
-  // console.log("camp statement of camp histroy in componrent=>", ifIamSupporter);
-  // var date1 = moment("2014-06-07 00:03:00");
-  // var date2 = moment("2014-06-07 09:22:00");
-
-  // let differenceInMs = date2.diff(date1); // diff yields milliseconds
-  // console.log("diffms", differenceInMs);
-  // let duration = moment.duration(differenceInMs); // moment.duration accepts ms
-  // console.log("duration", duration);
-  // let differenceInMinutes = duration.asMinutes();
-  // console.log("diffmin", differenceInMinutes);
-  return (
+  return campStatement?.status == "in_review" &&
+    campStatement?.grace_period != 0 &&
+    !campStatement?.isAuthor ? null : (
     <div>
       <Space
         direction="vertical"
@@ -106,13 +60,11 @@ function HistoryCollapse({
           >
             <>
               <Title level={5}>Statement :</Title>
-
               <div
                 dangerouslySetInnerHTML={{
                   __html: campStatement?.parsed_value,
                 }}
               />
-
               <Divider />
             </>
           </Panel>
@@ -136,11 +88,7 @@ function HistoryCollapse({
                 <Title level={5}>
                   Submitter Nick Name :{" "}
                   <span>
-                    <a href="">
-                      {new Date(
-                        campStatement?.objector_nick_name
-                      ).toLocaleString()}
-                    </a>
+                    <a href="">{campStatement?.objector_nick_name}</a>
                   </span>
                 </Title>
                 {campStatement?.object_reason && (
@@ -149,7 +97,10 @@ function HistoryCollapse({
                   </Title>
                 )}
                 <Title level={5}>
-                  Go live Time : <span>{campStatement?.go_live_time}</span>
+                  Go live Time :{" "}
+                  <span>
+                    {new Date(campStatement?.go_live_time).toLocaleString()}
+                  </span>
                 </Title>
                 <Checkbox
                   className={styles.campSelectCheckbox}
@@ -164,7 +115,13 @@ function HistoryCollapse({
                 {campStatement?.status == "in_review" && (
                   <Button
                     type="primary"
-                    disabled={ifIamSupporter == 0}
+                    disabled={
+                      ifIamSupporter == 0
+                        ? true
+                        : campStatement?.isAuthor
+                        ? true
+                        : false
+                    }
                     className={styles.campVersionButton}
                   >
                     <Link
@@ -197,7 +154,7 @@ function HistoryCollapse({
               </div>
               {campStatement?.status == "in_review" &&
                 !commited &&
-                ifIamSupporter == 0 && (
+                !!campStatement?.grace_period && (
                   <div className={styles.campStatementCollapseButtons}>
                     <p>
                       Note: This countdown timer is the grace period in which
@@ -305,10 +262,9 @@ const Timer = ({ unixTime, setCommited }) => {
     seconds = seconds % 60;
     minutes = minutes % 60;
     hours = hours % 24;
-    setHours(0);
-    setMinutes(0);
-    setSeconds(10);
-
+    setHours(hours);
+    setMinutes(minutes);
+    setSeconds(seconds);
     return `${hours}:${minutes}:${seconds}`;
   }
   useEffect(() => {
@@ -316,7 +272,6 @@ const Timer = ({ unixTime, setCommited }) => {
     didMount.current = true;
   }, [unixTime]);
 
-  console.log("sdddddddddddddddddddddd");
   return (
     <div>
       {hours === 0 && minutes === 0 && seconds === 0 ? (

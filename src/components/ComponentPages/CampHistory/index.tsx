@@ -134,7 +134,6 @@ function CampList() {
       },
     });
   };
-  // console.log("camp history redux => ", campStatementHistory);
 
   const loader = (
     <>
