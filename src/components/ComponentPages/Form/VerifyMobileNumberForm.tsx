@@ -21,7 +21,7 @@ function VerifyMobileNumberForm({
   handleMobileNumberChange,
 }) {
   const [symbolsArr] = useState(["e", "E", "+", "-", "."]);
-  let mobileCarrierList =
+  const mobileCarrierList =
     mobileCarrier.length > 0 &&
     mobileCarrier.map((item, i) => {
       return (
@@ -44,7 +44,12 @@ function VerifyMobileNumberForm({
               {/* <Icon component={() => (<Image alt="adOne" src={verifyIcon} />)} /> */}
               <Form.Item
                 name="phone_number"
-                label={messages.labels.phoneNumber}
+                label={
+                  <>
+                    {messages.labels.phoneNumber}
+                    <span className="required">*</span>
+                  </>
+                }
                 {...messages.phoneNumberRule}
               >
                 <Input
@@ -52,6 +57,7 @@ function VerifyMobileNumberForm({
                   type="number"
                   placeholder={messages.placeholders.phoneNumber}
                   size="large"
+                  max={10}
                   onChange={handleMobileNumberChange}
                   onKeyDown={(e) =>
                     symbolsArr.includes(e.key) && e.preventDefault()
@@ -63,7 +69,12 @@ function VerifyMobileNumberForm({
             <Col md={12}>
               <Form.Item
                 name="mobile_carrier"
-                label={messages.labels.mobileCarrier}
+                label={
+                  <>
+                    {messages.labels.mobileCarrier}
+                    <span className="required">*</span>
+                  </>
+                }
                 {...messages.mobileCarrierRule}
               >
                 <Select

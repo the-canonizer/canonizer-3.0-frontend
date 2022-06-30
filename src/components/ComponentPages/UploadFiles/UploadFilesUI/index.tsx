@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+
 import {
   Card,
   Button,
@@ -997,6 +998,9 @@ const UploadFileUI = ({
                 <div className={styles.top_btn}>
                   <div className="datepIcker">
                     <DatePicker
+                      disabledDate={(current) =>
+                        current.isAfter(moment().subtract(0, "day"))
+                      }
                       disabled={show_UploadOptions || dragBoxStatus}
                       onChange={(date, dateString) => {
                         uploadStatus == true
