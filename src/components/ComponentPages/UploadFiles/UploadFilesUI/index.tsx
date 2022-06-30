@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+
 import {
   Card,
   Button,
@@ -45,6 +46,8 @@ import ListViewActive from "../../../../assets/image/listViewActive.svg";
 import folderOpenOutLine from "../../../../assets/image/folderOpen.svg";
 import CopyShortCode from "../../../../assets/image/copyShortCode.svg";
 import eyeImage from "../../../../assets/image/eye.svg";
+import addFolder from "../../../../assets/image/add-folder.png";
+import addFile from "../../../../assets/image/add.png";
 import download from "../../../../assets/image/DownloadFile.svg";
 import Trash from "../../../../assets/image/trash.svg";
 import ArrowLeft from "../../../../assets/image/arrow_small_left.svg";
@@ -95,6 +98,7 @@ const UploadFileUI = ({
   DeleteConfirmationVisible,
   setDeleteConfirmationVisible,
 }) => {
+  const [uploadStatus, setUploadStatus] = useState(false);
   const [toggleFileView, setToggleFileView] = useState(false);
   const [previewImageIndicator, setPreviewImageIndicator] = useState(false);
   const [addFileIndicator, setAddFileIndicator] = useState(false);
@@ -579,9 +583,11 @@ const UploadFileUI = ({
     Object.entries(updateList).map(([k, v], i) => {
       const fileIndex = fileLists.findIndex((obj) => k == obj.uid);
       const fileListsArr = [...fileLists];
-      const fileExtension = fileListsArr[fileIndex].name.split(".").pop();
-      fileListsArr[fileIndex].name = v + "." + fileExtension;
-      setFileLists(fileListsArr);
+      if (fileListsArr[fileIndex]) {
+        const fileExtension = fileListsArr[fileIndex].name.split(".").pop();
+        fileListsArr[fileIndex].name = v + "." + fileExtension;
+        setFileLists(fileListsArr);
+      }
     });
   };
   const handleChangeFileName = (e, id) => {
@@ -992,9 +998,14 @@ const UploadFileUI = ({
                 <div className={styles.top_btn}>
                   <div className="datepIcker">
                     <DatePicker
+                      disabledDate={(current) =>
+                        current.isAfter(moment().subtract(0, "day"))
+                      }
                       disabled={show_UploadOptions || dragBoxStatus}
                       onChange={(date, dateString) => {
-                        setDatePick(date ? date.toLocaleString() : "");
+                        uploadStatus == true
+                          ? setDatePick("")
+                          : setDatePick(date ? date.toLocaleString() : "");
                       }}
                     />
                   </div>
@@ -1022,6 +1033,7 @@ const UploadFileUI = ({
                         setEditModal(false);
                     }}
                   >
+                    <Image alt="adOne" src={addFolder} width={20} height={22} />
                     Create Folder
                   </Button>
                   {addButtonShow && !dragBoxStatus ? (
@@ -1032,48 +1044,52 @@ const UploadFileUI = ({
                         addNewFile(),
                           setToggleFileView(false),
                           setUpdateList({});
+                        setUploadStatus(true);
+                        setDatePick("");
                       }}
                     >
+                      <Image alt="adOne" src={addFile} width={20} height={18} />
                       Add a File
                     </Button>
                   ) : (
                     ""
                   )}
-                </div>
-                <div className={styles.top_icon}>
-                  {show_UploadOptions || dragBoxStatus ? (
-                    ""
-                  ) : (
-                    <span
-                      style={{ cursor: "pointer" }}
-                      onClick={() => {
-                        setToggleFileView(true);
-                      }}
-                    >
-                      <Image
-                        alt="listView"
-                        src={toggleFileView ? ListViewActive : ListView}
-                        width={24}
-                        height={20}
-                      />
-                    </span>
-                  )}
-                  {show_UploadOptions || dragBoxStatus ? (
-                    ""
-                  ) : (
-                    <span
-                      onClick={() => {
-                        setToggleFileView(false), showUploadsAfter();
-                      }}
-                    >
-                      <Image
-                        alt="gridView"
-                        src={!toggleFileView ? GridViewActive : GridView}
-                        width={24}
-                        height={20}
-                      />
-                    </span>
-                  )}
+
+                  <div className={styles.top_icon}>
+                    {show_UploadOptions || dragBoxStatus ? (
+                      ""
+                    ) : (
+                      <span
+                        style={{ cursor: "pointer" }}
+                        onClick={() => {
+                          setToggleFileView(true);
+                        }}
+                      >
+                        <Image
+                          alt="listView"
+                          src={toggleFileView ? ListViewActive : ListView}
+                          width={24}
+                          height={20}
+                        />
+                      </span>
+                    )}
+                    {show_UploadOptions || dragBoxStatus ? (
+                      ""
+                    ) : (
+                      <span
+                        onClick={() => {
+                          setToggleFileView(false), showUploadsAfter();
+                        }}
+                      >
+                        <Image
+                          alt="gridView"
+                          src={!toggleFileView ? GridViewActive : GridView}
+                          width={24}
+                          height={20}
+                        />
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
             }
@@ -1182,6 +1198,7 @@ const UploadFileUI = ({
                                 file.thumbUrl)) &&
                               displayImage(file, file.thumbUrl)}
                           </div>
+
                           <br />
                           <label
                             className={

@@ -60,7 +60,11 @@ body {
     margin-bottom: 0 !important;
   }
 }
-
+.p {
+  &-3 {
+    padding: 1rem;
+  }
+}
 .w-100 {
   width: 100% !important;
 }
@@ -806,6 +810,31 @@ body {
 }
 .datepIcker {
   width: 120px;
+  @media screen and (max-width:1280px)
+  {
+    .ant-picker 
+    {
+      padding: 0;
+      height: 32px;
+      width: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ant-picker-input 
+    {
+      margin: auto;
+    }
+    width: auto;
+    input 
+    {
+      display: none !important;
+    }
+    .ant-picker-suffix 
+    {
+      margin: 0;
+    }
+  }
 }
 .afterUpload {
   width: 100%;
@@ -1142,7 +1171,7 @@ body {
 }
 .ant-card-extra {
   padding: 0;
-  @media screen and (max-width: 1100px) {
+  @media screen and (max-width: 1023px) {
     margin-left: inherit;
     float: left;
   }
@@ -1560,7 +1589,7 @@ div[role="option"]::before {
 }
 .ant-form-item-required {
   .required {
-    color: red;
+    color: red !important;
     margin-left: 3px;
     display: inline-block;
   }
@@ -1584,4 +1613,21 @@ div[role="option"]::before {
 
 .Profile_btn {
   min-width: 150px;
+}
+
+.tab--card > .ant-card-head 
+{
+  .ant-card-head-wrapper 
+  {
+    flex: inherit !important;
+  }
+  .ant-tabs 
+  {
+    flex: 1;
+    overflow: hidden;
+    .ant-tabs-nav-list 
+    {
+      margin-left: auto;
+    }
+  }
 }

@@ -22,6 +22,7 @@ export default function AddOrManage({ add }) {
   const [payloadBreadCrumb, setPayloadBreadCrumb] = useState({});
   const [form] = Form.useForm();
   let objection = router?.query?.statement[1]?.split("-")[1] == "objection";
+  let update = router?.query?.statement[1]?.split("-")[1] == "update";
   console.log("objection ", objection);
 
   const onFinish = async (values: any) => {
@@ -29,9 +30,7 @@ export default function AddOrManage({ add }) {
     let res;
     let editInfo = editStatementData?.data;
     let parent_camp = editInfo?.parent_camp;
-
     res = await addOrManageStatement(values);
-
     if (res?.status_code == 200) {
       if (add) {
         router.push(
@@ -86,18 +85,16 @@ export default function AddOrManage({ add }) {
         : parent_camp[parent_camp?.length - 1]?.camp_num,
       nick_name: values?.nick_name,
       note: values?.edit_summary?.trim(),
-      parent_camp_num: add
-        ? res_for_add?.parent_camp_num
-        : editInfo?.parent_camp_num,
       submitter: add
         ? res_for_add?.statement?.submitter_nick_id
         : editInfo?.statement?.submitter_nick_id,
       statement: values?.statement?.trim(),
       objection: objection ? "1" : null,
-      statement_id: objection
+      statement_id: !!(objection || update)
         ? router?.query?.statement[1]?.split("-")[0]
         : null,
       objection_reason: objection ? values?.objection_reason : null,
+      statement_update: update ? 1 : null,
     };
     console.log("-------------reqbody", reqBody);
     let res = await updateStatementApi(reqBody);
@@ -138,7 +135,7 @@ export default function AddOrManage({ add }) {
             ? {
                 nick_name: result?.data[0].id,
               }
-            : objection
+            : !!(objection || update)
             ? {
                 nick_name: res?.data?.nick_name[0]?.id,
                 statement: res?.data?.statement?.parsed_value?.replace(
@@ -222,7 +219,7 @@ export default function AddOrManage({ add }) {
                     <Form.Item
                       className={`${styles.formItem} mb-2`}
                       name="statement"
-                      label={<>Statement </>}
+                      label={<>Statement</>}
                       rules={[
                         {
                           required: true,

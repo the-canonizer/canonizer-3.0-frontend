@@ -76,3 +76,16 @@ export const changeCommitStatement = async (reqBody) => {
     return error;
   }
 };
+export const agreeToChangeApi = async (reqBody) => {
+  try {
+    const res = await NetworkCall.fetch(
+      CampStatementHistoryRequest.agreeToChange(reqBody),
+      false
+    );
+
+    return res;
+  } catch (error) {
+    handleError(error);
+    return error;
+  }
+};

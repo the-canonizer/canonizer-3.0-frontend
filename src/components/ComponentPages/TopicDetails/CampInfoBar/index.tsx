@@ -1,19 +1,19 @@
 import { Spin, Tooltip, Typography } from "antd";
 import { useRouter } from "next/router";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, memo } from "react";
 import { useSelector } from "react-redux";
 import { subscribeToCampApi } from "../../../../network/api/campDetailApi";
 import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
 import { Dropdown, Menu, Button } from "antd";
-import K from "src/constants";
+import K from "../../../../constants";
 
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import {
   getCurrentTopicRecordApi,
   getCurrentCampRecordApi,
   getCampBreadCrumbApi,
-} from "src/network/api/campDetailApi";
+} from "../../../../network/api/campDetailApi";
 import {
   MoreOutlined,
   FileTextOutlined,
@@ -307,4 +307,4 @@ const CampInfoBar = ({ payload = null, isTopicPage = false }) => {
   );
 };
 
-export default CampInfoBar;
+export default memo(CampInfoBar);

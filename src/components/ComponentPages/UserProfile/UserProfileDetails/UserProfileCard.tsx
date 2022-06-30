@@ -27,7 +27,7 @@ export const UserProfileCard = ({
               type="inner"
               title={
                 <div className={styles.main_card_title}>
-                  {messages.labels.nickname} :{" "}
+                  {messages.labels.nickname}{" "}
                   <span className={styles.Bluecolor}>
                     {" "}
                     {supportedCampList.nick_name}

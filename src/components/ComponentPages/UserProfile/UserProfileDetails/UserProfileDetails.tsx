@@ -17,7 +17,7 @@ const UserProfileDetails = ({ profileData }) => {
               </Col>
               <Col md={12}>
                 <label className={styles.userProfileLabel}>
-                  {messages.labels.email}
+                  {messages.labels.emailAddress}
                 </label>
                 <h3>{profileData.email}</h3>
               </Col>
@@ -44,7 +44,7 @@ const UserProfileDetails = ({ profileData }) => {
             <Row gutter={30}>
               <Col md={12}>
                 <label className={styles.userProfileLabel}>
-                  {messages.labels.zipCode}
+                  {messages.labels.zipcode}
                 </label>
                 <h3>{profileData.postal_code}</h3>
               </Col>

@@ -4,7 +4,10 @@ import { useRouter } from "next/router";
 import { useState, useEffect, useRef } from "react";
 import moment from "moment";
 
-import { changeCommitStatement } from "../../../../network/api/campStatementHistory";
+import {
+  changeCommitStatement,
+  agreeToChangeApi,
+} from "../../../../network/api/campStatementHistory";
 
 import styles from ".././campHistory.module.scss";
 
@@ -16,6 +19,7 @@ function HistoryCollapse({
   campStatement,
   onSelectCompare,
   isDisabledCheck,
+  changeAgree,
   isChecked,
 }) {
   const router = useRouter();
@@ -26,12 +30,27 @@ function HistoryCollapse({
       type: "statement",
       id: campStatement?.id,
     };
-
     let res = await changeCommitStatement(reqBody);
     if (res?.status_code === 200) {
       console.log("res of commit =>");
       setCommited(true);
     }
+  };
+
+  const agreeWithChange = async () => {
+    console.log("req body");
+
+    let reqBody = {
+      record_id: campStatement.id,
+      topic_num: router.query.camp[0].split("-")[0],
+      camp_num: router.query.camp[1].split("-")[0],
+      change_for: "statement",
+      nick_name_id: campStatement?.submitter_nick_id,
+    };
+    console.log("req body =>", reqBody);
+    let res = await agreeToChangeApi(reqBody);
+    changeAgree();
+    console.log("res =>  =>", res);
   };
 
   return campStatement?.status == "in_review" &&
@@ -99,7 +118,9 @@ function HistoryCollapse({
                 <Title level={5}>
                   Go live Time :{" "}
                   <span>
-                    {new Date(campStatement?.go_live_time).toLocaleString()}
+                    {new Date(
+                      campStatement?.go_live_time * 1000
+                    ).toLocaleString()}
                   </span>
                 </Title>
                 <Checkbox
@@ -170,7 +191,11 @@ function HistoryCollapse({
                       )}
                     </Button>
                     <Button type="primary" className={styles.campUpdateButton}>
-                      Edit Change
+                      <Link
+                        href={`/manage/statement/${campStatement?.id}-update`}
+                      >
+                        Edit Change
+                      </Link>
                     </Button>
                     <Button
                       type="primary"
@@ -183,7 +208,10 @@ function HistoryCollapse({
                 )}
               {campStatement?.status == "in_review" && ifIamSupporter != 0 && (
                 <div>
-                  <Checkbox className={styles.campSelectCheckbox}>
+                  <Checkbox
+                    className={styles.campSelectCheckbox}
+                    onChange={agreeWithChange}
+                  >
                     I agree with this statement change
                   </Checkbox>
                 </div>

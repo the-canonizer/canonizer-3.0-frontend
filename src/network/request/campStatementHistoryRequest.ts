@@ -44,4 +44,13 @@ export default class CampStatementHistoryRequest extends Request {
       {}
     );
   }
+  static agreeToChange(body) {
+    return new Request(
+      K.Network.URL.AgreeToChange,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
 }

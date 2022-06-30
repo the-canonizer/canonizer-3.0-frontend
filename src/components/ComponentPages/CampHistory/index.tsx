@@ -2,7 +2,6 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { Typography, Button, List, Spin, Affix, Skeleton } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import { useSelector } from "react-redux";
 import InfiniteScroll from "react-infinite-scroller";
 
@@ -26,6 +25,10 @@ function CampList() {
   const [top, setTop] = useState(40);
   const [isAbs, setIsAbs] = useState(false);
   const [loadMoreItems, setLoadMoreItems] = useState(true);
+  const [agreecheck, setAgreeCheck] = useState(false);
+  const changeAgree = () => {
+    setAgreeCheck(!agreecheck);
+  };
   let payload = {
     camp_num: router?.query?.camp[1]?.split("-")[0],
     topic_num: router?.query?.camp[0]?.split("-")[0],
@@ -54,9 +57,8 @@ function CampList() {
       }
     };
     asynCall();
-  }, [activeTab]);
+  }, [activeTab, agreecheck]);
 
-  // useEffect(() => {
   const campStatementApiCall = async () => {
     try {
       setLoadingIndicator(true);
@@ -64,13 +66,13 @@ function CampList() {
         topic_num: +router.query.camp[0].split("-")[0],
         camp_num: +router.query.camp[1].split("-")[0],
         type: activeTab,
-        as_of: "default",
         per_page: 4,
         page: count.current,
       };
       const res = await getCampStatementHistoryApi(reqBody, count.current);
-      if (!res?.last_page) {
+      if (!res || !res?.last_page) {
         setLoadMoreItems(false);
+        setLoadingIndicator(false);
         return;
       }
       if (count.current >= res?.last_page) {
@@ -93,9 +95,6 @@ function CampList() {
     setLoadMoreItems(false);
     setLoadingIndicator(false);
   };
-  // campStatementApiCall();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [activeTab]);
 
   const handleTabButton = async (tabName) => {
     setActiveTab(tabName);
@@ -136,14 +135,48 @@ function CampList() {
   };
 
   const loader = (
-    <>
+    <div className="p-3">
       <Skeleton active />
       <Skeleton active />
       <Skeleton active />
-    </>
+    </div>
   );
-  console.log("camp history  => ", campHistory);
 
+  const renderCampHistories =
+    campHistory && campHistory?.items?.length ? (
+      campHistory?.items?.map((campHistoryData, index) => {
+        return (
+          <HistoryCollapse
+            key={index}
+            campStatement={campHistoryData}
+            onSelectCompare={onSelectCompare}
+            ifIamSupporter={campHistory?.details?.ifIamSupporter}
+            changeAgree={changeAgree}
+            isDisabledCheck={
+              selectedTopic.length >= 2 &&
+              !selectedTopic?.includes(campHistoryData?.id)
+            }
+            isChecked={selectedTopic?.includes(campHistoryData?.id)}
+          />
+        );
+      })
+    ) : (
+      <h2
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          margin: "20px 0px",
+        }}
+      >
+        No Camp History Found
+      </h2>
+    );
+
+  console.log("camp history ='>", campHistory);
+  console.log(
+    "--------------------------------------------------------",
+    agreecheck
+  );
   return (
     <div className={styles.wrap}>
       <CampInfoBar payload={payload} />
@@ -159,74 +192,75 @@ function CampList() {
         <div className={styles.tabHead}>
           <div className={styles.filterOt}>
             <Title level={4}>Camp Statement History</Title>
-
-            <List className={styles.campStatementHistory} size="small">
-              <List.Item
-                className={`${styles.campStatementViewAll} ${
-                  styles.campStatementListItem
-                } ${activeTab == "all" ? styles.active : null}`}
-              >
-                <a
-                  onClick={() => {
-                    handleTabButton("all");
-                  }}
+            <Spin spinning={loadingIndicator} size="default">
+              <List className={styles.campStatementHistory} size="small">
+                <List.Item
+                  className={`${styles.campStatementViewAll} ${
+                    styles.campStatementListItem
+                  } ${activeTab == "all" ? styles.active : null}`}
                 >
-                  View All
-                </a>
-              </List.Item>
-              <List.Item
-                className={`${styles.campStatementObjected}  ${
-                  styles.campStatementListItem
-                }  ${activeTab == "objected" ? styles.active : null}`}
-              >
-                <a
-                  onClick={() => {
-                    handleTabButton("objected");
-                  }}
+                  <a
+                    onClick={() => {
+                      handleTabButton("all");
+                    }}
+                  >
+                    View All
+                  </a>
+                </List.Item>
+                <List.Item
+                  className={`${styles.campStatementObjected}  ${
+                    styles.campStatementListItem
+                  }  ${activeTab == "objected" ? styles.active : null}`}
                 >
-                  Objected
-                </a>
-              </List.Item>
-              <List.Item
-                className={`${styles.campStatementLive} ${
-                  styles.campStatementListItem
-                } ${activeTab == "live" ? styles.active : null}`}
-              >
-                <a
-                  onClick={() => {
-                    handleTabButton("live");
-                  }}
+                  <a
+                    onClick={() => {
+                      handleTabButton("objected");
+                    }}
+                  >
+                    Objected
+                  </a>
+                </List.Item>
+                <List.Item
+                  className={`${styles.campStatementLive} ${
+                    styles.campStatementListItem
+                  } ${activeTab == "live" ? styles.active : null}`}
                 >
-                  Live
-                </a>
-              </List.Item>
-              <List.Item
-                className={`${styles.campStatementNotLive} ${
-                  styles.campStatementListItem
-                } ${activeTab == "in_review" ? styles.active : null}`}
-              >
-                <a
-                  onClick={() => {
-                    handleTabButton("in_review");
-                  }}
+                  <a
+                    onClick={() => {
+                      handleTabButton("live");
+                    }}
+                  >
+                    Live
+                  </a>
+                </List.Item>
+                <List.Item
+                  className={`${styles.campStatementNotLive} ${
+                    styles.campStatementListItem
+                  } ${activeTab == "in_review" ? styles.active : null}`}
                 >
-                  Not Live
-                </a>
-              </List.Item>
-              <List.Item
-                className={`${styles.campStatementOld} ${
-                  styles.campStatementListItem
-                } ${activeTab == "old" ? styles.active : null}`}
-              >
-                <a
-                  onClick={() => {
-                    handleTabButton("old");
-                  }}
+                  <a
+                    onClick={() => {
+                      handleTabButton("in_review");
+                    }}
+                  >
+                    Not Live
+                  </a>
+                </List.Item>
+                <List.Item
+                  className={`${styles.campStatementOld} ${
+                    styles.campStatementListItem
+                  } ${activeTab == "old" ? styles.active : null}`}
                 >
-                  Old
-                </a>
-              </List.Item>
-            </List>
+                  <a
+                    onClick={() => {
+                      handleTabButton("old");
+                    }}
+                  >
+                    Old
+                  </a>
+                </List.Item>
+              </List>
+            </Spin>
           </div>
           <Affix
             offsetTop={top}
@@ -237,7 +271,7 @@ function CampList() {
               disabled={
                 !(
                   selectedTopic.length >= 2 &&
-                  !selectedTopic.includes(campHistory.id)
+                  !selectedTopic?.includes(campHistory["id"])
                 )
               }
               className={styles.active}
@@ -248,47 +282,21 @@ function CampList() {
             </Button>
           </Affix>
         </div>
-        <div style={{ overflow: "auto" }}>
-          <InfiniteScroll
-            loadMore={!loadingIndicator && campStatementApiCall}
-            hasMore={loadMoreItems}
-            loader={loader}
-          >
-            {
-              // !loadingIndicator ? (
-              campHistory && campHistory?.items?.length ? (
-                campHistory?.items?.map((campHistoryData, index) => {
-                  return (
-                    <HistoryCollapse
-                      key={index}
-                      campStatement={campHistoryData}
-                      onSelectCompare={onSelectCompare}
-                      ifIamSupporter={campHistory?.details?.ifIamSupporter}
-                      isDisabledCheck={
-                        selectedTopic.length >= 2 &&
-                        !selectedTopic.includes(campHistoryData.id)
-                      }
-                      isChecked={selectedTopic.includes(campHistoryData.id)}
-                    />
-                  );
-                })
-              ) : (
-                <h2
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    margin: "20px 0px",
-                  }}
-                >
-                  No Camp History Found
-                </h2>
-              )
-              // )
-              //  : (
-              //   <Skeleton active />
-              // )
-            }
-          </InfiniteScroll>
+
+        <div style={{ paddingBottom: "20px" }}>
+          <div style={{ overflow: "auto" }}>
+            {activeTab === "live" ? (
+              renderCampHistories
+            ) : (
+              <InfiniteScroll
+                loadMore={!loadingIndicator && campStatementApiCall}
+                hasMore={loadMoreItems}
+                loader={loader}
+              >
+                {renderCampHistories}
+              </InfiniteScroll>
+            )}
+          </div>
         </div>
       </div>
     </div>

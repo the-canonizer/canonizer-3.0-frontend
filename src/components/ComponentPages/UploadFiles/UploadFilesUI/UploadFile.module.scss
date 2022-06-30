@@ -48,6 +48,12 @@
       color: #6c737d;
       font-weight: 400;
     }
+
+    @media screen and (max-width:1150px)
+    {
+      font-size: 15px;
+      margin-right: 10px;
+    }
   }
 }
 
@@ -165,6 +171,12 @@
   display: flex;
   position: relative;
   flex-wrap: wrap;
+
+  .datepIcker 
+  {
+    width: 100px;
+  }
+  
 }
 
 .Top_SearchBtn {
@@ -196,6 +208,33 @@
   margin-right: 5px;
   margin-left: 5px;
   padding: 0 8px;
+  @media screen and (max-width:400px)
+  {
+    margin-right: 3px;
+    margin-left: 2px;
+  }
+
+  img 
+  {
+    display: none !important;
+  }
+
+  @media screen and (max-width:1280px)
+  {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    width: 35px;
+    span 
+    {
+      font-size: 0 !important;
+    }
+    img 
+    {
+      display: block !important;
+    }
+  }
 }
 
 .top_btn .add_file_btn {
@@ -203,6 +242,31 @@
   border-color: rgb(20, 159, 223);
   margin-right: 10px;
   padding: 0 5px;
+  img 
+  {
+    display: none !important;
+  }
+  @media screen and (max-width:400px) 
+  {
+    margin-right: 5px;
+  }
+
+  @media screen and (max-width:1280px)
+  {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    width: 35px;
+    img 
+    {
+      display: block !important;
+    }
+    span 
+    {
+      font-size: 0 !important;
+    }
+  }
 }
 
 /* .ant-upload-list-picture .ant-upload-span{
@@ -401,6 +465,9 @@
     @media screen and (max-width: 767px) {
       width: 50%;
     }
+    @media screen and (max-width: 400px) {
+      width: 100%;
+    }
   }
   .folder_Back_Button {
     width: 100%;
@@ -518,6 +585,19 @@
     color: #aaa;
     top: 7px;
     pointer-events: none;
+    @media screen and (max-width: 1280px)
+    {
+      position: relative;
+      border:1px solid #ddd;
+      height: 32px;
+      width: 35px;
+      top: 0;
+      border-radius: 2px;
+      display: flex;
+      right:0;
+      align-items: center;
+      justify-content: center;
+    }
   }
 
   input {
@@ -526,6 +606,14 @@
     padding: 0 30px 0 15px;
     background: transparent;
     width: 150px;
+    @media screen and (max-width: 1280px) { 
+      width: 100px;
+      display: none;
+      }
+    @media screen and (max-width: 1023px) { 
+      width: 100px;
+
+      }
   }
 }
 .marginLeftView {
