@@ -172,11 +172,6 @@ function CampList() {
       </h2>
     );
 
-  console.log("camp history ='>", campHistory);
-  console.log(
-    "--------------------------------------------------------",
-    agreecheck
-  );
   return (
     <div className={styles.wrap}>
       <CampInfoBar payload={payload} />

@@ -32,14 +32,11 @@ function HistoryCollapse({
     };
     let res = await changeCommitStatement(reqBody);
     if (res?.status_code === 200) {
-      console.log("res of commit =>");
       setCommited(true);
     }
   };
 
   const agreeWithChange = async () => {
-    console.log("req body");
-
     let reqBody = {
       record_id: campStatement.id,
       topic_num: router.query.camp[0].split("-")[0],
@@ -47,10 +44,8 @@ function HistoryCollapse({
       change_for: "statement",
       nick_name_id: campStatement?.submitter_nick_id,
     };
-    console.log("req body =>", reqBody);
     let res = await agreeToChangeApi(reqBody);
     changeAgree();
-    console.log("res =>  =>", res);
   };
 
   return campStatement?.status == "in_review" &&
@@ -97,12 +92,7 @@ function HistoryCollapse({
                   </span>
                 </Title>
                 <Title level={5}>
-                  Submitted on :{" "}
-                  <span>
-                    {new Date(
-                      campStatement?.submit_time * 1000
-                    ).toLocaleString()}
-                  </span>
+                  Submitted on : <span>{campStatement?.submit_time}</span>
                 </Title>
                 <Title level={5}>
                   Submitter Nick Name :{" "}
@@ -116,12 +106,7 @@ function HistoryCollapse({
                   </Title>
                 )}
                 <Title level={5}>
-                  Go live Time :{" "}
-                  <span>
-                    {new Date(
-                      campStatement?.go_live_time * 1000
-                    ).toLocaleString()}
-                  </span>
+                  Go live Time : <span>{campStatement?.go_live_time}</span>
                 </Title>
                 <Checkbox
                   className={styles.campSelectCheckbox}
@@ -263,23 +248,10 @@ const Timer = ({ unixTime, setCommited }) => {
 
   const timeall = () => {
     let now_time = moment.now();
-    console.log(
-      "now => ",
-      moment.now(),
-      " unixtime",
-      unixTime * 1000 + 3600000
-    );
+
     if (moment.now() < unixTime * 1000 + 3600000) {
-      console.log("true");
       let currenttime = new Date();
       let subtime = new Date(unixTime * 1000 + 3600000);
-      console.log("-----n-h=", currenttime.toLocaleString());
-      console.log("-----s-h=", subtime.toLocaleString());
-      console.log("---time diff ", subtime.getTime() - currenttime.getTime());
-      console.log(
-        "final date ",
-        convertMsToTime(subtime.getTime() - currenttime.getTime())
-      );
     }
   };
 

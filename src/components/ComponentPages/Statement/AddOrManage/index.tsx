@@ -23,7 +23,6 @@ export default function AddOrManage({ add }) {
   const [form] = Form.useForm();
   let objection = router?.query?.statement[1]?.split("-")[1] == "objection";
   let update = router?.query?.statement[1]?.split("-")[1] == "update";
-  console.log("objection ", objection);
 
   const onFinish = async (values: any) => {
     setScreenLoading(true);
@@ -49,24 +48,6 @@ export default function AddOrManage({ add }) {
     }
     setScreenLoading(false);
   };
-  // const objectionStatemnent = async (values) => {
-  //   let editInfo = editStatementData?.data;
-  //   let parent_camp = editInfo?.parent_camp;
-  //   let reqBody = {
-  //     topic_num: parent_camp[parent_camp?.length - 1]?.topic_num,
-  //     parent_camp_num: editInfo?.parent_camp_num,
-  //     camp_num: parent_camp[parent_camp?.length - 1]?.camp_num,
-  //     submitter: editInfo?.statement?.submitter_nick_id,
-  //     objection: "1",
-  //     statement_id: router?.query?.statement[1]?.split("-")[0],
-  //     nick_name: values?.nick_name,
-  //     statement: values?.statement?.trim(),
-  //     objection_reason: values?.objection_reason,
-  //   };
-  //   console.log("objection ", reqBody);
-  //   let res = await updateStatementApi(reqBody);
-  //   return res;
-  // };
 
   const addOrManageStatement = async (values) => {
     let res_for_add;
@@ -96,7 +77,6 @@ export default function AddOrManage({ add }) {
       objection_reason: objection ? values?.objection_reason : null,
       statement_update: update ? 1 : null,
     };
-    console.log("-------------reqbody", reqBody);
     let res = await updateStatementApi(reqBody);
     return res;
   };
@@ -109,7 +89,6 @@ export default function AddOrManage({ add }) {
         res = await getEditStatementApi(
           router?.query?.statement[1]?.split("-")[0]
         );
-        // console.log("req body", router?.query?.statement[1]?.split("-")[0]);
         setEditStatementData(res);
         setPayloadBreadCrumb({
           camp_num: res?.data?.statement?.camp_num,
@@ -159,9 +138,6 @@ export default function AddOrManage({ add }) {
     isLogin ? nickNameListApiCall() : router.push("/login");
   }, []);
 
-  console.log("data is nick name", nickNameData);
-  console.log("payload breaaad crub", payloadBreadCrumb);
-  console.log("edit sattement data", editStatementData);
   return (
     <>
       <div className={styles.topicDetailContentWrap}>

@@ -22,7 +22,6 @@ export const getEditStatementApi = async (body) => {
 };
 
 export const updateStatementApi = async (body) => {
-  console.log("reqbody1 =>", body);
   let state = store.getState();
   const { auth } = state;
   try {

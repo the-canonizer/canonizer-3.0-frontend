@@ -45,7 +45,6 @@ export const getLiveCampStatementApi = async (reqBody, pageNumber) => {
     );
     return campStatementHistory?.data;
   } catch (error) {
-    console.log(error.message);
     return error;
   }
 };
