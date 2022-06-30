@@ -6,6 +6,7 @@ import { DeleteOutlined, EditOutlined, CloseOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import K from "../../../../constants";
+import Link from "next/link";
 
 const { Paragraph } = Typography;
 
@@ -132,14 +133,8 @@ const NewsFeedsCard = ({ newsFeed }) => {
                           {news?.submitter_nick_name}
                         </strong>
                       )}
-                      {deleteNews && (
-                        <Tooltip
-                          title={
-                            news.owner_flag
-                              ? ""
-                              : K?.exceptionalMessages?.tooltipNewsDelete
-                          }
-                        >
+                      {deleteNews &&
+                        (news?.manage_flag && news?.owner_flag ? (
                           <Popconfirm
                             disabled={!news.owner_flag}
                             placement="topLeft"
@@ -164,8 +159,30 @@ const NewsFeedsCard = ({ newsFeed }) => {
                               <DeleteOutlined />
                             </Button>
                           </Popconfirm>
-                        </Tooltip>
-                      )}
+                        ) : news?.owner_flag && !news?.manage_flag ? (
+                          <Tooltip
+                            title={
+                              <>
+                                This news is inherited from
+                                <Link href={news?.parent_camp_url}>
+                                  <a>{news?.parent_camp_name}</a>
+                                </Link>
+                              </>
+                            }
+                          >
+                            <DeleteOutlined />
+                          </Tooltip>
+                        ) : (
+                          <Tooltip
+                            title={
+                              news.owner_flag
+                                ? ""
+                                : K?.exceptionalMessages?.tooltipNewsDelete
+                            }
+                          >
+                            <DeleteOutlined />
+                          </Tooltip>
+                        ))}
 
                       {editNews && (
                         <Tooltip
