@@ -21,6 +21,14 @@ function VerifyMobileNumberForm({
   handleMobileNumberChange,
 }) {
   const [symbolsArr] = useState(["e", "E", "+", "-", "."]);
+  const [maxLengthKeysAllowed] = useState([
+    "backspace",
+    "delete",
+    "control",
+    "c",
+    "v",
+    "a",
+  ]);
   const mobileCarrierList =
     mobileCarrier.length > 0 &&
     mobileCarrier.map((item, i) => {
@@ -57,11 +65,14 @@ function VerifyMobileNumberForm({
                   type="number"
                   placeholder={messages.placeholders.phoneNumber}
                   size="large"
-                  max={10}
+                  maxLength={10}
                   onChange={handleMobileNumberChange}
-                  onKeyDown={(e) =>
-                    symbolsArr.includes(e.key) && e.preventDefault()
-                  }
+                  onKeyDown={(e) => {
+                    symbolsArr.includes(e.key) && e.preventDefault();
+                    e.currentTarget.value.length >= 10 &&
+                      !maxLengthKeysAllowed.includes(e.key.toLowerCase()) &&
+                      e.preventDefault();
+                  }}
                   tabIndex={1}
                 />
               </Form.Item>
