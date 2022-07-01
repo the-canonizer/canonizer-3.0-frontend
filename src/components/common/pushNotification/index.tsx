@@ -1,4 +1,4 @@
-import "firebase/compat/messaging";
+import "firebase/messaging";
 import firebase from "firebase/compat/app";
 import { Fragment, useEffect } from "react";
 import { SmileOutlined } from "@ant-design/icons";
@@ -67,6 +67,7 @@ function PushNotificationLayout({ children }) {
   // Get the push notification message and triggers a toast to display it
   function getMessage() {
     const messaging = firebase.messaging();
+    console.log("🚀 ~ file: index.tsx ~ line 70 ~ getMessage ~ messaging", messaging)
     messaging.onMessage((message) => {
       console.log(
         "🚀 ~ file: index.tsx ~ line 45 ~ messaging.onMessage ~ message",

@@ -1,11 +1,6 @@
-import "firebase/compat/messaging";
-import firebase from "firebase/compat/app";
+import firebase from "firebase/app";
+import "firebase/messaging";
 import localforage from "localforage";
-// import { ExclamationCircleOutlined } from "@ant-design/icons";
-// import { Modal } from "antd";
-
-// const { confirm } = Modal;
-var HTMLElement = HTMLElement;
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FCM_API_KEY,
@@ -17,78 +12,33 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FCM_MEASUREMENT_ID,
 };
 
-const firebaseCloudMessaging = {
+export const firebaseCloudMessaging = {
   init: async () => {
     if (!firebase?.apps?.length) {
-      // Initialize the Firebase app with the credentials
-      firebase?.initializeApp(firebaseConfig);
+      const app = firebase?.initializeApp(firebaseConfig);
+      const messaging = firebase.messaging(app);
+
+      if ("serviceWorker" in navigator && "PushManager" in window) {
+        navigator.serviceWorker.addEventListener("message", (event) =>
+          console.log("(event for the service worker)", event)
+        );
+
+        navigator.serviceWorker
+          .register("/firebase-messaging-sw.js")
+          .then(async (objServiceWorker) => {
+            // console.log("[service worker registered]", objServiceWorker);
+            messaging.useServiceWorker(objServiceWorker);
+          })
+          .catch((err) => console.error(`OOps! ${err}`));
+      }
 
       try {
-        // const messaging = firebase.messaging();
-        const tokenInLocalForage = await localforage.getItem("fcm_token");
+        const token = await localforage.getItem("fcm_token");
 
         // Return the token if it is already in our local storage
-        if (tokenInLocalForage !== null) {
-          return tokenInLocalForage;
+        if (token !== null) {
+          return token;
         }
-
-        // Request the push notification permission from browser
-        // const status = await Notification.requestPermission();
-        // console.log(
-        //   "🚀 ~ file: firebase.ts ~ line 37 ~ init: ~ status",
-        //   status
-        // );
-        // if (status && status === "granted") {
-        //   // Get new token from Firebase
-        //   const fcm_token = await messaging.getToken({
-        //     vapidKey: process.env.NEXT_PUBLIC_FCM_CERTIFICATE_KEY,
-        //   });
-
-        //   // Set token in our local storage
-        //   if (fcm_token) {
-        //     localforage.setItem("fcm_token", fcm_token);
-        //     return fcm_token;
-        //   }
-        // } else if (status && status === "default") {
-        //   // Firefox 1.0+
-        //   let isFirefox = typeof window["InstallTrigger"] !== "undefined";
-
-        //   // Safari 3.0+ "[object HTMLElementConstructor]"
-        //   let isSafari =
-        //     /constructor/i.test(HTMLElement) ||
-        //     (function (p) {
-        //       return p.toString() === "[object SafariRemoteNotification]";
-        //     })(
-        //       !window["safari"] ||
-        //         (typeof window["safari"] !== "undefined" &&
-        //           window["safari"].pushNotification)
-        //     );
-        //   if (isSafari || isFirefox) {
-        //     confirm({
-        //       title: "Want to get notification from us?",
-        //       onOk() {
-        //         Notification.requestPermission().then(async function (status) {
-        //           if (status === "granted") {
-        //             const fcm_token = await messaging.getToken({
-        //               vapidKey: process.env.NEXT_PUBLIC_FCM_CERTIFICATE_KEY,
-        //             });
-        //             console.log(
-        //               "🚀 ~ file: firebase.ts ~ line 71 ~ fcm_token",
-        //               fcm_token
-        //             );
-
-        //             // Set token in our local storage
-        //             if (fcm_token) {
-        //               localforage.setItem("fcm_token", fcm_token);
-        //               return fcm_token;
-        //             }
-        //           }
-        //         });
-        //       },
-        //       onCancel() {},
-        //     });
-        //   }
-        // }
       } catch (error) {
         console.error(error);
         return null;
@@ -96,5 +46,3 @@ const firebaseCloudMessaging = {
     }
   },
 };
-
-export { firebaseCloudMessaging };

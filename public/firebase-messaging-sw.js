@@ -1,47 +1,71 @@
-importScripts("https://www.gstatic.com/firebasejs/7.9.1/firebase-app.js");
-importScripts("https://www.gstatic.com/firebasejs/7.9.1/firebase-messaging.js");
+importScripts("https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js");
+importScripts("https://www.gstatic.com/firebasejs/8.2.0/firebase-messaging.js");
 
-// firebase.initializeApp({
-//   apiKey: "AIzaSyAlpxyCiOCPZTvCnRrV_Ss5K56GPu6yzzU",
-//   authDomain: "canonizer-test-sks.firebaseapp.com",
-//   projectId: "canonizer-test-sks",
-//   storageBucket: "canonizer-test-sks.appspot.com",
-//   messagingSenderId: "278119939224",
-//   appId: "1:278119939224:web:b489136c0ae4dc1206a4ed",
-//   measurementId: "G-0K2WRVE0EL",
-// });
+firebase.initializeApp({
+  apiKey: "AIzaSyAjN7xJlTZuY0ULCJl-oO9uN8M8Onhv2hY",
+  authDomain: "web-notification-eab20.firebaseapp.com",
+  projectId: "web-notification-eab20",
+  storageBucket: "web-notification-eab20.appspot.com",
+  messagingSenderId: "510617331086",
+  appId: "1:510617331086:web:2967e726267bec229cf0df",
+  measurementId: "G-P1HB2W86L6",
+});
 
 const messaging = firebase.messaging();
-console.log("🚀 ~ file: firebase-messaging-sw.js ~ line 15 ~ messaging", messaging)
 
-messaging.bgMessageHandler(function (payload) {
-  console.log("Received background message ", payload);
+messaging.setBackgroundMessageHandler(function (payload) {
+  console.log(
+    "🚀 ~ file: firebase-messaging-sw.js ~ line 17 ~ payload",
+    payload
+  );
 
-  const notificationTitle = payload.notification.title;
+  const notificationTitle = "Hello world is awesome";
+
   const notificationOptions = {
-    body: payload.notification.body,
+    body: "Your notificaiton message .",
+    icon: "/firebase-logo.png",
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
-// const msg = require("firebase/messaging");
-// const bgMsg = require("firebase/messaging/sw");
+messaging.onBackgroundMessage(messaging, (payload) => {
+  console.log(
+    "[firebase-messaging-sw.js] Received background message ",
+    payload
+  );
+  // Customize notification here
+  const notificationTitle = "Background Message Title";
+  const notificationOptions = {
+    body: "Background Message body.",
+    icon: "/firebase-logo.png",
+  };
 
-// const messaging = msg.getMessaging();
-// console.log("🚀 ~ file: firebase-messaging-sw.js ~ line 32 ~ messaging", messaging)
+  self.registration.showNotification(notificationTitle, notificationOptions);
+});
 
-// bgMsg.onBackgroundMessage(messaging, (payload) => {
-//   console.log(
-//     "[firebase-messaging-sw.js] Received background message ",
-//     payload
+// Not necessary, but if you want to handle clicks on notifications
+// self.addEventListener("notificationclick", (event) => {
+//   event.notification.close();
+
+//   const pathname = event.notification?.data?.FCM_MSG?.notification?.data?.link;
+//   if (!pathname) return;
+//   const url = new URL(pathname, self.location.origin).href;
+
+//   event.waitUntil(
+//     self.clients
+//       .matchAll({ type: "window", includeUncontrolled: true })
+//       .then((clientsArr) => {
+//         const hadWindowToFocus = clientsArr.some((windowClient) =>
+//           windowClient.url === url ? (windowClient.focus(), true) : false
+//         );
+
+//         if (!hadWindowToFocus)
+//           self.clients
+//             .openWindow(url)
+//             .then((windowClient) =>
+//               windowClient ? windowClient.focus() : null
+//             );
+//       })
 //   );
-//   // Customize notification here
-//   const notificationTitle = "Background Message Title";
-//   const notificationOptions = {
-//     body: "Background Message body.",
-//     icon: "/firebase-logo.png",
-//   };
-
-//   self.registration.showNotification(notificationTitle, notificationOptions);
 // });

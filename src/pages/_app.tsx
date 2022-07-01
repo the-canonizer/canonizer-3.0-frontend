@@ -18,39 +18,20 @@ import { store, wrapper } from "../store";
 // import PushNotificationLayout from "../components/common/pushNotification";
 
 class WrappedApp extends App<AppInitialProps> {
-  // componentDidMount(): void {
-  //   if ("serviceWorker" in navigator) {
-  //     window.addEventListener("load", function () {
-  //       navigator.serviceWorker
-  //         .register("/messaging_on_background_message.js")
-  //         .then(
-  //           function (registration) {
-  //             console.log(
-  //               "Service Worker registration successful with scope: ",
-  //               registration.scope
-  //             );
-  //           },
-  //           function (err) {
-  //             console.log("Service Worker registration failed: ", err);
-  //           }
-  //         );
-  //     });
-  //   }
-  // }
   public render() {
     const { Component, pageProps } = this.props;
     return (
       <>
         <GoogleAnalyticScripts />
         {/* <PushNotificationLayout> */}
-        <Provider store={store}>
-          <ErrorBoundary>
-            <HeadContentAndPermissionComponent
-              componentName={Component.displayName || Component.name}
-            />
-            <Component {...pageProps} />
-          </ErrorBoundary>
-        </Provider>
+          <Provider store={store}>
+            <ErrorBoundary>
+              <HeadContentAndPermissionComponent
+                componentName={Component.displayName || Component.name}
+              />
+              <Component {...pageProps} />
+            </ErrorBoundary>
+          </Provider>
         {/* </PushNotificationLayout> */}
       </>
     );
