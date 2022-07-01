@@ -200,6 +200,16 @@ const CreateNewCamp = ({
         },
       ]);
     }
+
+    if (res && res.status_code === 400 && res.error?.camp_about_url) {
+      form.setFields([
+        {
+          name: "camp_about_url",
+          value: values.camp_about_url,
+          errors: [res.error.camp_about_url],
+        },
+      ]);
+    }
   };
 
   const onCancel = () => {
