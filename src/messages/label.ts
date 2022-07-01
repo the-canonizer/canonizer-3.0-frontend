@@ -51,8 +51,8 @@ export const labels = {
   threadTitle: "Title of Thread",
   uploadFiles: "Upload Files",
   maxSize: "Max size 5 MB",
-  FolderName: "Folder Name (Limit 15 Chars*)",
-  CreateaFolder: "Create Folder",
+  FolderName: "Folder Name (Limit 15 Chars)",
+  CreateaFolder: "Create a Folder",
 
   userProfile: "User Profile",
   name: "Name",
