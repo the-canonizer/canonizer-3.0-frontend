@@ -134,7 +134,12 @@ function ProfileInfoForm({
             <Col md={12}>
               <Form.Item
                 name="first_name"
-                label={messages.labels.firstName}
+                label={
+                  <>
+                    {messages.labels.firstName}
+                    <span className="required">*</span>
+                  </>
+                }
                 {...messages.firstNameRule}
               >
                 <Input
@@ -154,7 +159,12 @@ function ProfileInfoForm({
               </Form.Item>
               <Form.Item
                 name="last_name"
-                label={messages.labels.lastName}
+                label={
+                  <>
+                    {messages.labels.lastName}
+                    <span className="required">*</span>
+                  </>
+                }
                 {...messages.lastNameRule}
               >
                 <Input

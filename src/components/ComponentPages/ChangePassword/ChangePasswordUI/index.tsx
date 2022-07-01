@@ -39,7 +39,12 @@ export default function ChangePasswordUI({
               <Col md={8}>
                 <Form.Item
                   name="current_password"
-                  label={messages.labels.currentPassword}
+                  label={
+                    <>
+                      {messages.labels.currentPassword}
+                      <span className="required">*</span>
+                    </>
+                  }
                   {...messages.currentPasswordRule}
                   {...(currentPassWord !== ""
                     ? incorrectPasswordData
@@ -61,7 +66,12 @@ export default function ChangePasswordUI({
               <Col md={8}>
                 <Form.Item
                   name="new_password"
-                  label={messages.labels.newPassword}
+                  label={
+                    <>
+                      {messages.labels.newPassword}
+                      <span className="required">*</span>
+                    </>
+                  }
                   {...messages.newPasswordRule}
                   //hasFeedback
                 >
@@ -80,7 +90,12 @@ export default function ChangePasswordUI({
                 {" "}
                 <Form.Item
                   name="confirm_password"
-                  label={messages.labels.confirmPassword}
+                  label={
+                    <>
+                      {messages.labels.confirmPassword}
+                      <span className="required">*</span>
+                    </>
+                  }
                   dependencies={["new_password"]}
                   //hasFeedback
                   {...messages.confirmNewPasswordRule}

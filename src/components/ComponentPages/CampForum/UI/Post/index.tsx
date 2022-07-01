@@ -46,7 +46,14 @@ const PostUI = ({
             |{" "}
             <Text id="started-by-label">
               Started by{" "}
-              <Link href="#">
+              <Link
+                href={`/user/supports/${
+                  currentThread["user_id"] || ""
+                }?topicnum=${currentThread["topic_id"] || ""}&campnum=${
+                  currentThread["camp_id"] || ""
+                }&namespace=1`}
+                passHref
+              >
                 <a className={styles.by}>
                   {currentThread["creation_nick_name"]}
                 </a>
