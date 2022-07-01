@@ -2,18 +2,14 @@ import { Typography, Button, Collapse, Space, Checkbox, Divider } from "antd";
 import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
-<<<<<<< HEAD
 import { useState, useEffect, useRef } from "react";
-import moment from "moment";
 
 import {
   changeCommitStatement,
   agreeToChangeApi,
 } from "../../../../network/api/campStatementHistory";
-=======
 import { useDispatch } from "react-redux";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
->>>>>>> 302ad5aa1baf8df61e8217a3a777e5c2e9670d8b
 
 import styles from ".././campHistory.module.scss";
 
@@ -29,9 +25,7 @@ function HistoryCollapse({
   isChecked,
 }) {
   const router = useRouter();
-<<<<<<< HEAD
   const [commited, setCommited] = useState(false);
-=======
   const dispatch = useDispatch();
 
   const handleViewThisVersion = (goLiveTime) => {
@@ -46,7 +40,6 @@ function HistoryCollapse({
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
->>>>>>> 302ad5aa1baf8df61e8217a3a777e5c2e9670d8b
 
   const commitChanges = async () => {
     let reqBody = {
@@ -277,6 +270,7 @@ const Timer = ({ unixTime, setCommited }) => {
     if (moment.now() < unixTime * 1000 + 3600000) {
       let currenttime = new Date();
       let subtime = new Date(unixTime * 1000 + 3600000);
+      convertMsToTime(unixTime * 1000 + 3600000 - moment.now());
     }
   };
 

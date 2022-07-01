@@ -269,7 +269,25 @@ export default function AddOrManage({ add }) {
                             className="cancel-btn mr-3"
                             type="ghost"
                             size="large"
-                            onClick={() => {}}
+                            onClick={() => {
+                              let backdata = editStatementData?.data;
+                              setScreenLoading(true);
+                              router?.push(
+                                `/statement/history/${
+                                  backdata?.topic?.topic_num
+                                }-${backdata?.topic?.topic_name
+                                  ?.split(" ")
+                                  ?.join("-")}/${
+                                  backdata?.parent_camp[
+                                    backdata?.parent_camp.length - 1
+                                  ].camp_num
+                                }-${backdata?.parent_camp[
+                                  backdata?.parent_camp.length - 1
+                                ].camp_name
+                                  ?.split(" ")
+                                  ?.join("-")}`
+                              );
+                            }}
                           >
                             Cancel
                           </Button>
