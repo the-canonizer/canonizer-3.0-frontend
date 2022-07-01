@@ -1034,7 +1034,7 @@ const UploadFileUI = ({
                     }}
                   >
                     <Image alt="adOne" src={addFolder} width={20} height={22} />
-                    Create Folder
+                    Create a Folder
                   </Button>
                   {addButtonShow && !dragBoxStatus ? (
                     <Button

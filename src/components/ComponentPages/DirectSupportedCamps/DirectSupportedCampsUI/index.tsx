@@ -211,6 +211,7 @@ export default function DirectSupportedCampsUI({
         </Form>
       </Modal>
       <Modal
+        className={styles.modal}
         title={null}
         visible={visible}
         onOk={() => {

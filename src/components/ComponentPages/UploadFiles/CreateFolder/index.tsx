@@ -23,7 +23,12 @@ const CreateFolder = ({
         scrollToFirstError
       >
         <Form.Item
-          label={labels.FolderName}
+          label={
+            <>
+              {labels.FolderName}
+              <span className="required">*</span>
+            </>
+          }
           name="Folder Name"
           rules={[
             { required: true },
