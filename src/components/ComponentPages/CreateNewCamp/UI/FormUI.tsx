@@ -29,7 +29,7 @@ const CreateCampFormUI = ({
 }) => {
   const CardTitle = (
     <span className={styles.cardTitle} data-testid="head" id="card-title">
-      Create Camp
+      Create New Camp
     </span>
   );
 
