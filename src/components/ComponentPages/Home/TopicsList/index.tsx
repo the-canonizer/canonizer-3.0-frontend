@@ -225,9 +225,6 @@ const TopicsList = () => {
                   value={selectedNameSpace}
                   onChange={selectNameSpace}
                 >
-                  <Select.Option key="custom-key" value="">
-                    All
-                  </Select.Option>
                   {nameSpacesList?.map((item) => {
                     return (
                       <Select.Option key={item.id} value={item.id}>
@@ -235,6 +232,9 @@ const TopicsList = () => {
                       </Select.Option>
                     );
                   })}
+                  <Select.Option key="custom-key" value="">
+                    All
+                  </Select.Option>
                 </Select>
                 {router.asPath.includes("/browse") && (
                   <div className={styles.inputSearchTopic}>
