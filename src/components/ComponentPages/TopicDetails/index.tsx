@@ -6,6 +6,8 @@ import {
   getNewsFeedApi,
   getTreesApi,
   getCanonizedCampSupportingTreeApi,
+  getCurrentTopicRecordApi,
+  getCurrentCampRecordApi,
 } from "src/network/api/campDetailApi";
 import { RootState } from "src/store";
 import SideBar from "../Home/SideBar";
@@ -23,6 +25,7 @@ import { Spin } from "antd";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
 
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
+import moment from "moment";
 
 const TopicDetails = () => {
   let myRefToCampStatement = useRef(null);
@@ -54,7 +57,7 @@ const TopicDetails = () => {
     async function getTreeApiCall() {
       setGetTreeLoadingIndicator(true);
       setLoadingIndicator(true);
-      const reqBody = {
+      const reqBodyForService = {
         topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
         camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
         asOf: asof,
@@ -65,9 +68,21 @@ const TopicDetails = () => {
         algorithm: algorithm,
         update_all: 1,
       };
+
+      const reqBody = {
+        topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+        camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
+        as_of: asof,
+        as_of_date:
+          asof == ("default" || asof == "review")
+            ? Date.now() / 1000
+            : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
+      };
       await Promise.all([
-        getTreesApi(reqBody),
+        getTreesApi(reqBodyForService),
         getNewsFeedApi(reqBody),
+        getCurrentTopicRecordApi(reqBody),
+        getCurrentCampRecordApi(reqBody),
         getCanonizedCampStatementApi(reqBody),
         getCanonizedCampSupportingTreeApi(reqBody),
         getCanonizedAlgorithmsApi(),

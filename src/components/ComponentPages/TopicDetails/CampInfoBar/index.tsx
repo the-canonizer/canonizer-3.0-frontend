@@ -60,37 +60,8 @@ const CampInfoBar = ({ payload = null, isTopicPage = false }) => {
     if (!isTopicPage && payload && Object.keys(payload).length > 0) {
       getBreadCrumbApiCall();
     }
-  }, [payload]);
-
-  useEffect(() => {
-    async function getTreeApiCall() {
-      setLoadingIndicator(true);
-      const reqBody = {
-        topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
-        camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
-        as_of: asof,
-        asofdate:
-          asof == ("default" || asof == "review")
-            ? Date.now() / 1000
-            : asofdate,
-        algorithm: algorithm,
-        update_all: 1,
-      };
-      await Promise.all([
-        getCurrentTopicRecordApi(reqBody),
-        getCurrentCampRecordApi(reqBody),
-      ]);
-      setLoadingIndicator(false);
-    }
-    if (isTopicPage) {
-      getTreeApiCall();
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    asofdate,
-    algorithm,
-    isTopicPage ? +router?.query?.camp[1]?.split("-")[0] : "",
-  ]);
+  }, [payload]);
 
   useEffect(() => {
     if (isTopicPage) {
@@ -307,4 +278,4 @@ const CampInfoBar = ({ payload = null, isTopicPage = false }) => {
   );
 };
 
-export default memo(CampInfoBar);
+export default CampInfoBar;

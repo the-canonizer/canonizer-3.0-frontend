@@ -100,18 +100,19 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
     filteredScore,
     selectedAlgorithm,
     selectedAsOf,
-    selectedAsOFDate,
+    filteredAsOfDate,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filterObject: state?.filters?.filterObject,
     filteredScore: state?.filters?.filterObject?.filterByScore,
     selectedAlgorithm: state?.filters?.filterObject?.algorithm,
     selectedAsOf: state?.filters?.filterObject?.asof,
-    selectedAsOFDate: state?.filters?.filterObject?.asofdate,
+    filteredAsOfDate: state?.filters?.filterObject?.asofdate,
   }));
   const [value, setValue] = useState(
     selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3
   );
+  const [selectedAsOFDate, setSelectedAsOFDate] = useState(filteredAsOfDate);
 
   // /////////////////////////////////////////////////////////////////////////
   // Discussion required on this functionality after that I will remove or //
@@ -143,6 +144,11 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
       setIsCampBtnVisible(true);
     }
   }, [router.pathname]);
+
+  useEffect(() => {
+    setSelectedAsOFDate(filteredAsOfDate);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filteredAsOfDate]);
 
   const selectAlgorithm = (value) => {
     dispatch(
