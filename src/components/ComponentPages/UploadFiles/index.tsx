@@ -66,6 +66,7 @@ const UploadFiles = () => {
   const [getFileListFromFolderID, setGetFileListFromFolderID] = useState([]);
   const [openFolderID, setOpenFolderID] = useState("");
   const [showCreateFolderModal, setShowCreateFolderModal] = useState(false);
+  const [flickringData, setFlickringData] = useState(false);
   const [DeleteConfirmationVisible, setDeleteConfirmationVisible] =
     useState(false);
   const isLogIn = isAuth();
@@ -146,8 +147,9 @@ const UploadFiles = () => {
 
   const GetFileInsideFolderData = async (id) => {
     let response = await getFileInsideFolderApi(id);
-    if (response) {
+    if (response && response.status_code == 200) {
       setGetFileListFromFolderID(response.data);
+      setFlickringData(true);
     }
   };
 
@@ -263,6 +265,8 @@ const UploadFiles = () => {
       showCreateFolderModal={showCreateFolderModal}
       DeleteConfirmationVisible={DeleteConfirmationVisible}
       setDeleteConfirmationVisible={setDeleteConfirmationVisible}
+      flickringData={flickringData}
+      setFlickringData={setFlickringData}
     />
   );
 };

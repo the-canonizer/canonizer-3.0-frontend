@@ -97,6 +97,8 @@ const UploadFileUI = ({
   showCreateFolderModal,
   DeleteConfirmationVisible,
   setDeleteConfirmationVisible,
+  flickringData,
+  setFlickringData,
 }) => {
   const [uploadStatus, setUploadStatus] = useState(false);
   const [toggleFileView, setToggleFileView] = useState(false);
@@ -765,6 +767,7 @@ const UploadFileUI = ({
                             onClick={() => {
                               closeFolder();
                               StatusHideFile();
+                              setFlickringData(false);
                             }}
                           >
                             <Image
@@ -790,25 +793,21 @@ const UploadFileUI = ({
                       className="FolderfileCard"
                     >
                       <div className={styles.openFolder}>
-                        {!toggleFileView ? (
-                          openFolder ? (
-                            filteredArray() && filteredArray().length > 0 ? (
-                              filteredArray().map((file, i) => {
-                                return openFolderInGridView(file, i);
-                              })
-                            ) : (
-                              <div className={styles.emptyFolderData}>
-                                <Empty
-                                  description={<span>No Data Found</span>}
-                                />
-                              </div>
-                            )
-                          ) : (
-                            ""
-                          )
-                        ) : (
-                          ""
-                        )}
+                        {!toggleFileView
+                          ? openFolder
+                            ? filteredArray() && filteredArray().length > 0
+                              ? filteredArray().map((file, i) => {
+                                  return openFolderInGridView(file, i);
+                                })
+                              : flickringData && (
+                                  <div className={styles.emptyFolderData}>
+                                    <Empty
+                                      description={<span>No Data Found</span>}
+                                    />
+                                  </div>
+                                )
+                            : ""
+                          : ""}
                       </div>
                     </Card>
                   </div>
