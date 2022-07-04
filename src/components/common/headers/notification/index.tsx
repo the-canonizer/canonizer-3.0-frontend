@@ -99,7 +99,13 @@ const Notifications = ({}) => {
     // () => handleClickPushNotification(message?.data?.url)
 
     messaging.onMessage((message) => {
-      console.log("[messaging.onMessage foreground Message]", message);
+      const url = message.data["gcm.notification.url"];
+      console.log(
+        "[messaging.onMessage foreground Message]",
+        message,
+        "url",
+        url
+      );
 
       const title = message.notification.title;
 
@@ -114,6 +120,9 @@ const Notifications = ({}) => {
         message: message?.notification?.title,
         description: message?.notification?.body,
         icon: <SmileOutlined style={{ color: "#108ee9" }} />,
+        onClick: () => {
+          router.push({ pathname: url });
+        },
       });
     });
   }

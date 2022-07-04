@@ -15,7 +15,6 @@ import ErrorBoundary from "../hoc/ErrorBoundary";
 import HeadContentAndPermissionComponent from "../components/common/headContentAndPermisisonCheck";
 import GoogleAnalyticScripts from "../firebaseConfig/scripts";
 import { store, wrapper } from "../store";
-// import PushNotificationLayout from "../components/common/pushNotification";
 
 class WrappedApp extends App<AppInitialProps> {
   public render() {
@@ -23,16 +22,14 @@ class WrappedApp extends App<AppInitialProps> {
     return (
       <>
         <GoogleAnalyticScripts />
-        {/* <PushNotificationLayout> */}
-          <Provider store={store}>
-            <ErrorBoundary>
-              <HeadContentAndPermissionComponent
-                componentName={Component.displayName || Component.name}
-              />
-              <Component {...pageProps} />
-            </ErrorBoundary>
-          </Provider>
-        {/* </PushNotificationLayout> */}
+        <Provider store={store}>
+          <ErrorBoundary>
+            <HeadContentAndPermissionComponent
+              componentName={Component.displayName || Component.name}
+            />
+            <Component {...pageProps} />
+          </ErrorBoundary>
+        </Provider>
       </>
     );
   }
