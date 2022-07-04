@@ -2,6 +2,7 @@ import { Fragment, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Form, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
+import localforage from "localforage";
 
 import { RootState } from "../../../store";
 import isUserAuthenticated from "../../../hooks/isUserAuthenticated";
@@ -296,12 +297,15 @@ const ForumComponent = ({}) => {
     const q = router.query;
     let res = null;
 
+    const fcm_token = await localforage.getItem("fcm_token");
+
     if (values.thread_title.trim()) {
       if (q.tId) {
         const body = {
           title: values.thread_title?.trim(),
           topic_num: paramsList["topic_num"],
           camp_num: paramsList["camp_num"],
+          fcm_token,
         };
         res = await updateThread(body, +q.tId);
       } else {
@@ -311,6 +315,7 @@ const ForumComponent = ({}) => {
           camp_num: paramsList["camp_num"],
           topic_num: paramsList["topic_num"],
           topic_name: paramsList["topic"],
+          fcm_token,
         };
         res = await createThread(body);
       }
@@ -394,6 +399,8 @@ const ForumComponent = ({}) => {
 
     setIsError(false);
 
+    const fcm_token = await localforage.getItem("fcm_token");
+
     const campArr = (q.camp as string).split("-");
     const camp_num = campArr.shift();
     const topicArr = (q?.topic as string)?.split("-");
@@ -406,6 +413,7 @@ const ForumComponent = ({}) => {
       camp_num: +camp_num,
       topic_num: +topic_num,
       topic_name: topicArr.join(" "),
+      fcm_token,
     };
 
     let res = null;

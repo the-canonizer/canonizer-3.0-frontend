@@ -1,24 +1,30 @@
 import { Fragment } from "react";
-import { Card, Typography, List, Button, Spin } from "antd";
-import Link from "next/link";
-import { BellFilled, LoadingOutlined } from "@ant-design/icons";
+import { Card, Typography, Button, Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 
 import styles from "./Notifications.module.scss";
 
 import SideBar from "../../CampForum/UI/sidebar";
+import Lists from "./list";
 
 const { Title, Text } = Typography;
 
-const NotificationsListUI = ({ list, isLoading, page, onViewMoreClick }) => {
+const NotificationsListUI = ({
+  list,
+  isLoading,
+  page,
+  onViewMoreClick,
+  total,
+  per_page,
+}) => {
   const LoadMoreTopics = (
     <div className="text-center">
-      {/* page < list?.numOfPages && */}
-      {
+      {page < total / per_page && (
         <Button className={styles.viewAll} onClick={onViewMoreClick}>
           <Text>View More</Text>
           {isLoading && <Spin indicator={<LoadingOutlined spin />} />}
         </Button>
-      }
+      )}
     </div>
   );
 
@@ -35,26 +41,7 @@ const NotificationsListUI = ({ list, isLoading, page, onViewMoreClick }) => {
           className={styles.notify_card}
           id="card-title"
         >
-          <List
-            itemLayout="horizontal"
-            dataSource={list}
-            className={styles.list}
-            id="list-items"
-            renderItem={(item) => (
-              <List.Item id={"list-item-" + item["id"]} key={item["id"]}>
-                <List.Item.Meta
-                  avatar={
-                    <div className={styles.avatarBell}>
-                      <BellFilled />
-                    </div>
-                  }
-                  title={<Link href="#">{item["title"]}</Link>}
-                  description={item["time"]}
-                />
-              </List.Item>
-            )}
-            footer={<div className={styles.footer}>{LoadMoreTopics}</div>}
-          />
+          <Lists list={list} isFooter={true} LoadMoreTopics={LoadMoreTopics} />
         </Card>
       </div>
     </Fragment>

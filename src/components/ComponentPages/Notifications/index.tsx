@@ -1,50 +1,38 @@
 import { useState, Fragment, useEffect } from "react";
-import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 
 import NotificationsListUI from "./UI";
+import { getNotificationsList } from "../../../network/api/notificationAPI";
+import { RootState } from "../../../store";
 
 const SettingsUI = () => {
-  const [list, setList] = useState([]);
   const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
-  const router = useRouter();
+  const per_page = 10;
+
+  const { list } = useSelector((state: RootState) => {
+    return {
+      list: state.notifications.data,
+    };
+  });
+
+  const getList = async (p) => {
+    const res = await getNotificationsList(p, per_page);
+    setIsLoading(false);
+    if (res && res?.status_code == 200) {
+      setTotal(res?.data?.total_rows);
+    }
+  };
 
   useEffect(() => {
-    const data = [
-      {
-        id: "1",
-        title: "Rohit has made the following post to the Camp Agreement forum",
-        time: "Today 11:56",
-      },
-      {
-        id: "2",
-        title:
-          "Vikram has just added their support to this camp: Software Development Team",
-        time: "Today 11:56",
-      },
-      {
-        id: "3",
-        title:
-          "Sunil has just removed their support from this camp: Software Development Team",
-        time: "Today 11:56",
-      },
-      {
-        id: "4",
-        title:
-          "Reena has just added their support to this camp: Scalability Architecture / Server Ar...",
-        time: "Today 11:56",
-      },
-    ];
-
-    console.log("[NOTIFICATIONS LIST]", router.query);
-
-    setList(data);
-  }, []);
+    getList(page);
+  }, [page]);
 
   const onViewMoreClick = () => {
     setIsLoading(true);
-    setTimeout(() => setIsLoading(false), 3000);
+    setPage(page + 1);
   };
 
   return (
@@ -54,6 +42,8 @@ const SettingsUI = () => {
         isLoading={isLoading}
         page={page}
         onViewMoreClick={onViewMoreClick}
+        total={total}
+        per_page={per_page}
       />
     </Fragment>
   );

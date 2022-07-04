@@ -1,53 +1,41 @@
 import { Fragment, useState, useEffect } from "react";
-import {
-  Dropdown,
-  Badge,
-  Card,
-  Typography,
-  List,
-  Switch,
-  notification,
-} from "antd";
+import { Dropdown, Badge, Card, Typography, Switch, notification } from "antd";
 import Link from "next/link";
-import { BellOutlined, BellFilled, SmileOutlined } from "@ant-design/icons";
+import { BellOutlined, SmileOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
 import localforage from "localforage";
 import firebase from "firebase/app";
-
-import { firebaseCloudMessaging } from "../../../../firebaseConfig/firebase";
+import { useSelector } from "react-redux";
 
 import styles from "../siteHeader.module.scss";
+
+import { firebaseCloudMessaging } from "../../../../firebaseConfig/firebase";
+import Lists from "../../../ComponentPages/Notifications/UI/list";
+import { getLists } from "../../../../network/api/notificationAPI";
+import { RootState } from "../../../../store";
 
 const Notifications = ({}) => {
   const [checked, setChecked] = useState(false);
 
+  const { count, list } = useSelector((state: RootState) => {
+    return {
+      count: state.notifications.headerNotification.count,
+      list: state.notifications.headerNotification.list,
+    };
+  });
+
   const router = useRouter();
 
-  const data = [
-    {
-      id: "1",
-      title: "Rohit has made the following post to the Camp Agreement forum",
-      time: "Today 11:56",
-    },
-    {
-      id: "2",
-      title:
-        "Vikram has just added their support to this camp: Software Development Team",
-      time: "Today 11:56",
-    },
-    {
-      id: "3",
-      title:
-        "Sunil has just removed their support from this camp: Software Development Team",
-      time: "Today 11:56",
-    },
-    {
-      id: "4",
-      title:
-        "Reena has just added their support to this camp: Scalability Architecture / Server Ar...",
-      time: "Today 11:56",
-    },
-  ];
+  const getListData = async () => {
+    const res = await getLists();
+    // if (res && res.status_code === 200) {
+    //   console.log("[notification header]", res);
+    // }
+  };
+
+  useEffect(() => {
+    getListData();
+  }, []);
 
   useEffect(() => {
     async function setToken() {
@@ -151,30 +139,12 @@ const Notifications = ({}) => {
         </Fragment>
       }
       actions={[
-        <Link href="#" passHref key="view_all">
+        <Link href="/user/notifications/22" passHref key="view_all">
           <a id="view-all-btn">View All</a>
         </Link>,
       ]}
     >
-      <List
-        itemLayout="horizontal"
-        dataSource={data}
-        className={styles.list}
-        id="list-items"
-        renderItem={(item) => (
-          <List.Item id={"list-item-" + item["id"]} key={item.id}>
-            <List.Item.Meta
-              avatar={
-                <div className={styles.avatarBell}>
-                  <BellFilled />
-                </div>
-              }
-              title={<Link href="#">{item.title}</Link>}
-              description={item.time}
-            />
-          </List.Item>
-        )}
-      />
+      <Lists list={list} />
     </Card>
   );
 
@@ -186,7 +156,7 @@ const Notifications = ({}) => {
         placement="bottomRight"
       >
         <Badge
-          count={5}
+          count={count}
           color="orange"
           size="small"
           className={styles.badgeCls}

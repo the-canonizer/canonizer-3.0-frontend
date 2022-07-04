@@ -2,6 +2,8 @@ import firebase from "firebase/app";
 import "firebase/messaging";
 import localforage from "localforage";
 
+import { getLists } from "../network/api/notificationAPI";
+
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FCM_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FCM_APP_DOMAIN,
@@ -19,9 +21,10 @@ export const firebaseCloudMessaging = {
       const messaging = firebase.messaging(app);
 
       if ("serviceWorker" in navigator && "PushManager" in window) {
-        navigator.serviceWorker.addEventListener("message", (event) =>
-          console.log("(event for the service worker)", event)
-        );
+        navigator.serviceWorker.addEventListener("message", async (event) => {
+          console.log("(event for the service worker)", event);
+          await getLists();
+        });
 
         navigator.serviceWorker
           .register("/firebase-messaging-sw.js")

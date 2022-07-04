@@ -124,6 +124,9 @@ const NetworkConstants = {
 
     // compare statement
     CompareStatement: `${BaseCanonizerApiUrl}/get-statement-comparison`,
+
+    // notification list
+    GetList: `${BaseCanonizerApiUrl}/notification-list`,
   },
   Method: {
     GET: "GET",

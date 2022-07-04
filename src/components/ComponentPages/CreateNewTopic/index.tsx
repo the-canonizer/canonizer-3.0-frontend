@@ -57,7 +57,6 @@ const CreateNewTopic = ({
     }
 
     const fcm_token = await localforage.getItem("fcm_token");
-    console.log("🚀 ~ file: index.tsx ~ line 60 ~ onFinish ~ fcm_token", fcm_token)
 
     const body = {
       topic_name: values.topic_name?.trim(),
