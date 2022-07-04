@@ -51,6 +51,7 @@
   }
   .namespaceInput {
     label {
+      display: block;
       span {
         &:last-child {
           margin-left: 5px;
@@ -63,12 +64,6 @@
       &::before {
         left: 70px;
         right: auto;
-        // display: block;
-        // content: "(General is recommended, unless you know otherwise)";
-        // position: absolute;
-        // left: 121%;
-        // width: 100vw;
-        // pointer-events: none;
       }
     }
   }
