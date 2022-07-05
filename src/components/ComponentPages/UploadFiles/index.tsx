@@ -77,6 +77,8 @@ const UploadFiles = () => {
     showUploadsAfter();
     enableCreateFolderBtn();
     openFolderHide();
+    localStorage.removeItem("isFolderOpen");
+    localStorage.removeItem("folderId");
   };
 
   const uploadFun = async () => {
@@ -161,6 +163,8 @@ const UploadFiles = () => {
     disbleCreateFolderBtn();
     hideUploadsAfter();
     GetFileInsideFolderData(i);
+    localStorage.setItem("isFolderOpen", "true"),
+      localStorage.setItem("folderId", i);
   };
 
   const removeFiles = async (originNode, file, currFileList) => {
@@ -238,6 +242,9 @@ const UploadFiles = () => {
       setOpenFolderID("");
       openFolderHide();
       uploadOptionsHide();
+      if (localStorage.getItem("isFolderOpen")) {
+        Openfolder(localStorage.getItem("folderId"));
+      }
     }
   }, [isLogIn]);
   return (
