@@ -10,6 +10,8 @@ const ExceptionalMessageConstants = {
   tooltipNewsDelete: "Only the author of this news is allowed to delete.",
   selectNickNameErrorMsg: "Please select Nick name",
   statementRequiredErrorMsg: "Statement is required",
+  objectionIsRequire: "Objection is required",
+  objectionRequireErrorMsg: "The objection reason field is required.",
   editSummaryErrorMsg: "Enter valid edit summary",
   submitStatementButton: "Submit Statement",
   submitUpdateButton: "Submit Update",

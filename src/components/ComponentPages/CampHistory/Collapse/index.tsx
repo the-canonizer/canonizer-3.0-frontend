@@ -320,7 +320,7 @@ const Timer = ({ unixTime, setCommited }) => {
   return (
     <div>
       {hours === -1 && minutes === -1 && seconds === -1 ? (
-        <span> 00:00:00 1</span>
+        <span> 00:00:00 </span>
       ) : (
         <span>
           {" "}

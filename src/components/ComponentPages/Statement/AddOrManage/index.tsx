@@ -182,7 +182,7 @@ export default function AddOrManage({ add }) {
                   <Col xs={24} sm={24} xl={12}>
                     <Form.Item
                       className={styles.formItem}
-                      label={<>Nick Name</>}
+                      label={<>Nick Name *</>}
                       name="nick_name"
                       rules={[
                         {
@@ -206,7 +206,7 @@ export default function AddOrManage({ add }) {
                     <Form.Item
                       className={`${styles.formItem} mb-2`}
                       name="statement"
-                      label={<>Statement</>}
+                      label={<>Statement *</>}
                       rules={[
                         {
                           required: true,
@@ -234,12 +234,23 @@ export default function AddOrManage({ add }) {
                   <Col xs={24} xl={24}>
                     {objection ? (
                       <Form.Item
+                        rules={[
+                          {
+                            required: true,
+                            message:
+                              K?.exceptionalMessages?.objectionRequireErrorMsg,
+                          },
+                          {
+                            pattern: /[^ \s]/,
+                            message: K?.exceptionalMessages?.objectionIsRequire,
+                          },
+                        ]}
                         className={styles.formItem}
                         name="objection_reason"
                         label={
                           <>
                             Your Objection Reason{" "}
-                            <small>(Limit 100 Char)</small>
+                            <small>(Limit 100 Char) *</small>
                           </>
                         }
                       >
