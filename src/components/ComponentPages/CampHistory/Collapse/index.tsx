@@ -173,6 +173,7 @@ function HistoryCollapse({
                           `/manage/statement/${campStatement?.id}-objection`
                         )
                       }
+                      className={`mr-3 ${styles.campUpdateButton}`}
                     >
                       Object
                     </Button>
@@ -180,7 +181,7 @@ function HistoryCollapse({
                 )}
                 <Button
                   type="primary"
-                  className={styles.campUpdateButton}
+                  className={`mr-3 ${styles.campUpdateButton}`}
                   onClick={() =>
                     router.push(`/manage/statement/${campStatement?.id}`)
                   }
@@ -236,7 +237,7 @@ function HistoryCollapse({
                   </div>
                 )}
               {campStatement?.status == "in_review" && ifIamSupporter != 0 && (
-                <div>
+                <div className={styles.campStatementCollapseButtons}>
                   <Checkbox
                     className={styles.campSelectCheckbox}
                     onChange={agreeWithChange}

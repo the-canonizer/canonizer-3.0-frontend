@@ -1638,3 +1638,15 @@ div[role="option"]::before {
 .TableContent .ant-table-content {
   overflow: auto;
 }
+
+.statementPreviewModal {
+  .ant-modal-body {
+    max-height: calc(100vh - 150px);
+    overflow-x: hidden;
+  }
+ .ant-descriptions-item-label {
+  font-weight: bold;
+  min-width: 108px;
+  max-width: 108px;
+ }
+} 

@@ -360,7 +360,11 @@ export default function AddOrManage({ add }) {
             : K?.exceptionalMessages?.submitUpdateButton
         }
       >
-        <Descriptions>
+        <Descriptions
+          className="statementPreviewModal"
+          size="small"
+          column={{ xxl: 1 }}
+        >
           <Descriptions.Item label="Statement">
             {form?.getFieldValue("statement")}
           </Descriptions.Item>

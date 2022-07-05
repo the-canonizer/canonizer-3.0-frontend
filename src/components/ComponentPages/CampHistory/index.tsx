@@ -22,7 +22,7 @@ function CampList() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("all");
   const [selectedTopic, setSelectedTopic] = useState([]);
-  const [top, setTop] = useState(40);
+  const [top, setTop] = useState(0);
   const [isAbs, setIsAbs] = useState(false);
   const [loadMoreItems, setLoadMoreItems] = useState(true);
   const [agreecheck, setAgreeCheck] = useState(false);
@@ -183,84 +183,84 @@ function CampList() {
         </Button>
       </div>
       <div className={styles.campStatement}>
-        <div className={styles.tabHead}>
-          <div className={styles.filterOt}>
-            <Title level={4}>Camp Statement History</Title>
-            <Spin spinning={loadingIndicator} size="default">
-              <List className={styles.campStatementHistory} size="small">
-                <List.Item
-                  className={`${styles.campStatementViewAll} ${
-                    styles.campStatementListItem
-                  } ${activeTab == "all" ? styles.active : null}`}
-                >
-                  <a
-                    onClick={() => {
-                      handleTabButton("all");
-                    }}
+        <Affix
+          offsetTop={top}
+          style={{ position: isAbs ? "absolute" : "static", left: "36px" }}
+          onChange={setIsAbs}
+        >
+          <div className={styles.tabHead}>
+            <div className={styles.filterOt}>
+              <Title level={4}>Camp Statement History</Title>
+              <Spin spinning={loadingIndicator} size="default">
+                <List className={styles.campStatementHistory} size="small">
+                  <List.Item
+                    className={`${styles.campStatementViewAll} ${
+                      styles.campStatementListItem
+                    } ${activeTab == "all" ? styles.active : null}`}
                   >
-                    View All
-                  </a>
-                </List.Item>
-                <List.Item
-                  className={`${styles.campStatementObjected}  ${
-                    styles.campStatementListItem
-                  }  ${activeTab == "objected" ? styles.active : null}`}
-                >
-                  <a
-                    onClick={() => {
-                      handleTabButton("objected");
-                    }}
+                    <a
+                      onClick={() => {
+                        handleTabButton("all");
+                      }}
+                    >
+                      View All
+                    </a>
+                  </List.Item>
+                  <List.Item
+                    className={`${styles.campStatementObjected}  ${
+                      styles.campStatementListItem
+                    }  ${activeTab == "objected" ? styles.active : null}`}
                   >
-                    Objected
-                  </a>
-                </List.Item>
-                <List.Item
-                  className={`${styles.campStatementLive} ${
-                    styles.campStatementListItem
-                  } ${activeTab == "live" ? styles.active : null}`}
-                >
-                  <a
-                    onClick={() => {
-                      handleTabButton("live");
-                    }}
+                    <a
+                      onClick={() => {
+                        handleTabButton("objected");
+                      }}
+                    >
+                      Objected
+                    </a>
+                  </List.Item>
+                  <List.Item
+                    className={`${styles.campStatementLive} ${
+                      styles.campStatementListItem
+                    } ${activeTab == "live" ? styles.active : null}`}
                   >
-                    Live
-                  </a>
-                </List.Item>
-                <List.Item
-                  className={`${styles.campStatementNotLive} ${
-                    styles.campStatementListItem
-                  } ${activeTab == "in_review" ? styles.active : null}`}
-                >
-                  <a
-                    onClick={() => {
-                      handleTabButton("in_review");
-                    }}
+                    <a
+                      onClick={() => {
+                        handleTabButton("live");
+                      }}
+                    >
+                      Live
+                    </a>
+                  </List.Item>
+                  <List.Item
+                    className={`${styles.campStatementNotLive} ${
+                      styles.campStatementListItem
+                    } ${activeTab == "in_review" ? styles.active : null}`}
                   >
-                    Not Live
-                  </a>
-                </List.Item>
-                <List.Item
-                  className={`${styles.campStatementOld} ${
-                    styles.campStatementListItem
-                  } ${activeTab == "old" ? styles.active : null}`}
-                >
-                  <a
-                    onClick={() => {
-                      handleTabButton("old");
-                    }}
+                    <a
+                      onClick={() => {
+                        handleTabButton("in_review");
+                      }}
+                    >
+                      Not Live
+                    </a>
+                  </List.Item>
+                  <List.Item
+                    className={`${styles.campStatementOld} ${
+                      styles.campStatementListItem
+                    } ${activeTab == "old" ? styles.active : null}`}
                   >
-                    Old
-                  </a>
-                </List.Item>
-              </List>
-            </Spin>
-          </div>
-          <Affix
-            offsetTop={top}
-            style={{ position: isAbs ? "absolute" : "static", right: "10px" }}
-            onChange={setIsAbs}
-          >
+                    <a
+                      onClick={() => {
+                        handleTabButton("old");
+                      }}
+                    >
+                      Old
+                    </a>
+                  </List.Item>
+                </List>
+              </Spin>
+            </div>
             <Button
               disabled={
                 !(
@@ -274,9 +274,8 @@ function CampList() {
             >
               Compare Statements
             </Button>
-          </Affix>
-        </div>
-
+          </div>
+        </Affix>
         <div style={{ paddingBottom: "20px" }}>
           <div style={{ overflow: "auto" }}>
             {activeTab === "live" ? (
