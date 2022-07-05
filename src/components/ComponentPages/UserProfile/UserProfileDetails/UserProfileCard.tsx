@@ -79,7 +79,11 @@ export const UserProfileCard = ({
                                 <Card
                                   title={
                                     <div className={styles.card_heading_title}>
-                                      {data.title}
+                                      <Link href={data.title_link}>
+                                        <a className={styles.Bluecolor}>
+                                          {data.title}
+                                        </a>
+                                      </Link>
                                     </div>
                                   }
                                 >
