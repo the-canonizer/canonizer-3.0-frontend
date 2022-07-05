@@ -827,6 +827,7 @@ body {
     .ant-picker-input 
     {
       margin: auto;
+      width: auto;
     }
     width: auto;
     input 
@@ -1633,4 +1634,7 @@ div[role="option"]::before {
       margin-left: auto;
     }
   }
+}
+.TableContent .ant-table-content {
+  overflow: auto;
 }
