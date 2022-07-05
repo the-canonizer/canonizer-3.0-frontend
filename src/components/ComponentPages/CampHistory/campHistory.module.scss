@@ -372,12 +372,10 @@ $btn-bkg: #4484ce;
 .campCollapseSummaryWrap {
   .campStatementCollapseButtons {
     background-color: rgb(0, 0, 0, 6%);
-    padding-left: 18px;
-    min-height: 66px;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    padding-right: 18px;
+    padding: 15px 18px;
     margin-right: -55px;
 
     @media screen and (max-width: 1018px) {

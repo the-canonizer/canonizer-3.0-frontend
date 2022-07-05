@@ -1,5 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Form, Button, Row, Col, Card, Modal, Spin, Input, Select } from "antd";
+import {
+  Form,
+  Button,
+  Row,
+  Col,
+  Card,
+  Modal,
+  Spin,
+  Input,
+  Select,
+  Descriptions,
+} from "antd";
 import { useRouter } from "next/router";
 import "antd/dist/antd.css";
 import styles from "../addEditNews.module.scss";
@@ -272,21 +283,31 @@ export default function AddOrManage({ add }) {
                             onClick={() => {
                               let backdata = editStatementData?.data;
                               setScreenLoading(true);
-                              router?.push(
-                                `/statement/history/${
-                                  backdata?.topic?.topic_num
-                                }-${backdata?.topic?.topic_name
-                                  ?.split(" ")
-                                  ?.join("-")}/${
-                                  backdata?.parent_camp[
-                                    backdata?.parent_camp.length - 1
-                                  ].camp_num
-                                }-${backdata?.parent_camp[
-                                  backdata?.parent_camp.length - 1
-                                ].camp_name
-                                  ?.split(" ")
-                                  ?.join("-")}`
-                              );
+                              add
+                                ? router.push(
+                                    `/topic/${router?.query?.statement[0].replace(
+                                      " ",
+                                      "-"
+                                    )}/${router?.query?.statement[1].replace(
+                                      " ",
+                                      "-"
+                                    )}`
+                                  )
+                                : router?.push(
+                                    `/statement/history/${
+                                      backdata?.topic?.topic_num
+                                    }-${backdata?.topic?.topic_name
+                                      ?.split(" ")
+                                      ?.join("-")}/${
+                                      backdata?.parent_camp[
+                                        backdata?.parent_camp.length - 1
+                                      ].camp_num
+                                    }-${backdata?.parent_camp[
+                                      backdata?.parent_camp.length - 1
+                                    ].camp_name
+                                      ?.split(" ")
+                                      ?.join("-")}`
+                                  );
                             }}
                           >
                             Cancel
@@ -318,23 +339,45 @@ export default function AddOrManage({ add }) {
         }}
         visible={modalVisible}
         onCancel={() => setModalVisible(false)}
-        onOk={form?.submit}
+        onOk={() => {
+          form?.submit();
+          setModalVisible(false);
+        }}
         okText={
           add
             ? K?.exceptionalMessages?.submitStatementButton
             : K?.exceptionalMessages?.submitUpdateButton
         }
       >
-        <p>{form?.getFieldValue("statement")}</p>
-        <p>Edit Summary: {form?.getFieldValue("edit_summary")} </p>
-        <p>
+        <Descriptions>
+          <Descriptions.Item label="Statement">
+            {form?.getFieldValue("statement")}
+          </Descriptions.Item>
+
+          <Descriptions.Item label="Edit Summary">
+            {" "}
+            {form?.getFieldValue("edit_summary")}
+          </Descriptions.Item>
+          <Descriptions.Item label="Submitter Nick Name:">
+            {" "}
+            {
+              nickNameData?.find(
+                (id) => id.id == form?.getFieldValue("nick_name")
+              )?.nick_name
+            }
+          </Descriptions.Item>
+        </Descriptions>
+
+        {/* <p>{form?.getFieldValue("statement")}</p> */}
+        {/* <p>Edit Summary: {form?.getFieldValue("edit_summary")} </p> */}
+        {/* <p>
           Submitter Nick Name:{" "}
           {
             nickNameData?.find(
               (id) => id.id == form?.getFieldValue("nick_name")
             )?.nick_name
           }
-        </p>
+        </p> */}
       </Modal>
     </>
   );

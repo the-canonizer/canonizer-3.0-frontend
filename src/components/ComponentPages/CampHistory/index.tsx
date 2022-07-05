@@ -171,7 +171,6 @@ function CampList() {
         No Camp History Found
       </h2>
     );
-
   return (
     <div className={styles.wrap}>
       <CampInfoBar payload={payload} />
