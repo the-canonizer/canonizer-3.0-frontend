@@ -66,6 +66,7 @@ const UploadFiles = () => {
   const [getFileListFromFolderID, setGetFileListFromFolderID] = useState([]);
   const [openFolderID, setOpenFolderID] = useState("");
   const [showCreateFolderModal, setShowCreateFolderModal] = useState(false);
+  const [flickringData, setFlickringData] = useState(false);
   const [DeleteConfirmationVisible, setDeleteConfirmationVisible] =
     useState(false);
   const isLogIn = isAuth();
@@ -76,6 +77,8 @@ const UploadFiles = () => {
     showUploadsAfter();
     enableCreateFolderBtn();
     openFolderHide();
+    localStorage.removeItem("isFolderOpen");
+    localStorage.removeItem("folderId");
   };
 
   const uploadFun = async () => {
@@ -146,8 +149,9 @@ const UploadFiles = () => {
 
   const GetFileInsideFolderData = async (id) => {
     let response = await getFileInsideFolderApi(id);
-    if (response) {
+    if (response && response.status_code == 200) {
       setGetFileListFromFolderID(response.data);
+      setFlickringData(true);
     }
   };
 
@@ -159,6 +163,8 @@ const UploadFiles = () => {
     disbleCreateFolderBtn();
     hideUploadsAfter();
     GetFileInsideFolderData(i);
+    localStorage.setItem("isFolderOpen", "true"),
+      localStorage.setItem("folderId", i);
   };
 
   const removeFiles = async (originNode, file, currFileList) => {
@@ -236,6 +242,9 @@ const UploadFiles = () => {
       setOpenFolderID("");
       openFolderHide();
       uploadOptionsHide();
+      if (localStorage.getItem("isFolderOpen")) {
+        Openfolder(localStorage.getItem("folderId"));
+      }
     }
   }, [isLogIn]);
   return (
@@ -263,6 +272,8 @@ const UploadFiles = () => {
       showCreateFolderModal={showCreateFolderModal}
       DeleteConfirmationVisible={DeleteConfirmationVisible}
       setDeleteConfirmationVisible={setDeleteConfirmationVisible}
+      flickringData={flickringData}
+      setFlickringData={setFlickringData}
     />
   );
 };
