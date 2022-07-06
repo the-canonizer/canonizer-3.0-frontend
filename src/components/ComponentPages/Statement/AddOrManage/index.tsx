@@ -21,6 +21,7 @@ import { getEditStatementApi } from "../../../../network/api/campManageStatement
 import { updateStatementApi } from "../../../../network/api/campManageStatementApi";
 import SideBarNoFilter from "../../../ComponentPages/Home/SideBarNoFilter";
 import CampInfoBar from "../../TopicDetails/CampInfoBar";
+import Link from "next/link";
 
 export default function AddOrManage({ add }) {
   const isLogin = useAuthentication();
@@ -228,7 +229,13 @@ export default function AddOrManage({ add }) {
                     </Form.Item>
                     <small className="mb-3 d-block">
                       {K?.exceptionalMessages?.wikiMarkupSupportMsg}{" "}
-                      <a>click here</a>.
+                      <Link
+                        href={
+                          "/topic/132-Help/5-Canonizer-wiki-text-formatting"
+                        }
+                      >
+                        <a>click here.</a>
+                      </Link>
                     </small>
                   </Col>
                   <Col xs={24} xl={24}>
