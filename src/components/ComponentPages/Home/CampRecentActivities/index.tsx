@@ -1,8 +1,8 @@
 import { Card, List, Spin } from "antd";
 import { BellFilled } from "@ant-design/icons";
 import { useRouter } from "next/router";
-import { getTopicActivityLogApi } from "src/network/api/campDetailApi";
-import K from "src/constants";
+import { getTopicActivityLogApi } from "../../../../network/api/campDetailApi";
+import K from "../../../../constants";
 
 import styles from "./campRecentActivities.module.scss";
 import { useEffect, useState } from "react";
@@ -31,7 +31,6 @@ export default function CampRecentActivities() {
     }
     getTopicActivityLogCall();
   }, [router?.query?.camp[1]?.split("-")[0]]);
-
   return (
     <>
       <Spin spinning={loadingIndicator} size="large">
