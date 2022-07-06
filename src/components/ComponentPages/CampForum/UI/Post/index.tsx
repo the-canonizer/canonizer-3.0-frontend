@@ -48,7 +48,7 @@ const PostUI = ({
               Started by{" "}
               <Link
                 href={`/user/supports/${
-                  currentThread["user_id"] || ""
+                  currentThread["creation_nick_name_id"] || ""
                 }?topicnum=${currentThread["topic_id"] || ""}&campnum=${
                   currentThread["camp_id"] || ""
                 }&namespace=1`}
