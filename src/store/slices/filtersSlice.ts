@@ -6,8 +6,8 @@ export const filtersSlice = createSlice({
     filterObject: {
       page_number: 1,
       page_size: 15,
-      nameSpace: "All",
-      namespace_id: "",
+      nameSpace: "/General/",
+      namespace_id: 1,
       asofdate: Date.now() / 1000,
       asof: "default",
       filterByScore: 0,

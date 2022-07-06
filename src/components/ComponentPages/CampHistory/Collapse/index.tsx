@@ -1,7 +1,22 @@
-import { Typography, Button, Collapse, Space, Checkbox, Divider } from "antd";
+import {
+  Typography,
+  Button,
+  Collapse,
+  Space,
+  Checkbox,
+  Divider,
+  Tooltip,
+  Tag,
+} from "antd";
 import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useState, useEffect, useRef } from "react";
+
+import {
+  changeCommitStatement,
+  agreeToChangeApi,
+} from "../../../../network/api/campStatementHistory";
 import { useDispatch } from "react-redux";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 
@@ -11,12 +26,15 @@ const { Panel } = Collapse;
 const { Title } = Typography;
 
 function HistoryCollapse({
+  ifIamSupporter,
   campStatement,
   onSelectCompare,
   isDisabledCheck,
+  changeAgree,
   isChecked,
 }) {
   const router = useRouter();
+  const [commited, setCommited] = useState(false);
   const dispatch = useDispatch();
 
   const handleViewThisVersion = (goLiveTime) => {
@@ -30,6 +48,29 @@ function HistoryCollapse({
 
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
+  };
+
+  const commitChanges = async () => {
+    let reqBody = {
+      type: "statement",
+      id: campStatement?.id,
+    };
+    let res = await changeCommitStatement(reqBody);
+    if (res?.status_code === 200) {
+      setCommited(true);
+    }
+  };
+
+  const agreeWithChange = async () => {
+    let reqBody = {
+      record_id: campStatement.id,
+      topic_num: router.query.camp[0].split("-")[0],
+      camp_num: router.query.camp[1].split("-")[0],
+      change_for: "statement",
+      nick_name_id: campStatement?.submitter_nick_id,
+    };
+    let res = await agreeToChangeApi(reqBody);
+    changeAgree();
   };
 
   return (
@@ -56,13 +97,11 @@ function HistoryCollapse({
           >
             <>
               <Title level={5}>Statement :</Title>
-
               <div
                 dangerouslySetInnerHTML={{
                   __html: campStatement?.parsed_value,
                 }}
               />
-
               <Divider />
             </>
           </Panel>
@@ -73,7 +112,6 @@ function HistoryCollapse({
                   Edit summary :{" "}
                   <span className={styles.updateSurveyPrj}>
                     {campStatement?.note}
-                    submit_time
                   </span>
                 </Title>
                 <Title level={5}>
@@ -83,9 +121,20 @@ function HistoryCollapse({
                 <Title level={5}>
                   Submitter Nick Name :{" "}
                   <span>
-                    <a href="">{campStatement?.objector_nick_name}</a>
+                    <a href="">{campStatement?.submitterNickName}</a>
                   </span>
                 </Title>
+                {campStatement?.object_reason && (
+                  <Title level={5}>
+                    Object reason : <span>{campStatement?.object_reason}</span>
+                  </Title>
+                )}
+                {campStatement?.objector_nick_name && (
+                  <Title level={5}>
+                    Object Nick Name :{" "}
+                    <span>{campStatement?.objector_nick_name}</span>
+                  </Title>
+                )}
                 <Title level={5}>
                   Go live Time :{" "}
                   <span>{covertToTime(campStatement?.go_live_time)}</span>
@@ -100,10 +149,44 @@ function HistoryCollapse({
                 </Checkbox>
               </div>
               <div className={styles.campStatementCollapseButtons}>
-                <Button type="primary" className={styles.campUpdateButton}>
-                  <Link href={`/manage/statement/${campStatement?.id}`}>
-                    Submit Statement Update Based on This
-                  </Link>
+                {campStatement?.status == "in_review" && (
+                  <Tooltip
+                    title={
+                      ifIamSupporter == 0
+                        ? "Only admin can object"
+                        : campStatement?.isAuthor
+                        ? "Only admin can object"
+                        : false
+                    }
+                  >
+                    <Button
+                      type="primary"
+                      disabled={
+                        ifIamSupporter == 0
+                          ? true
+                          : campStatement?.isAuthor
+                          ? true
+                          : false
+                      }
+                      onClick={() =>
+                        router.push(
+                          `/manage/statement/${campStatement?.id}-objection`
+                        )
+                      }
+                      className={`mr-3 ${styles.campUpdateButton}`}
+                    >
+                      Object
+                    </Button>
+                  </Tooltip>
+                )}
+                <Button
+                  type="primary"
+                  className={`mr-3 ${styles.campUpdateButton}`}
+                  onClick={() =>
+                    router.push(`/manage/statement/${campStatement?.id}`)
+                  }
+                >
+                  Submit Statement Update Based on This
                 </Button>
                 <Button
                   type="primary"
@@ -121,6 +204,48 @@ function HistoryCollapse({
                   </Link>
                 </Button>
               </div>
+              {campStatement?.status == "in_review" &&
+                !commited &&
+                !!campStatement?.grace_period && (
+                  <div className={styles.campStatementCollapseButtons}>
+                    <Divider className="mt-0"></Divider>
+                    <p className="w-100">
+                      Note: This countdown timer is the grace period in which
+                      you can make minor changes to your statement before other
+                      direct supporters are notified.
+                    </p>
+                    <div className="mb-3 text-right">
+                      <span className="ant-btn ant-btn-primary mr-3">
+                        {campStatement && (
+                          <Timer
+                            unixTime={campStatement?.submit_time}
+                            setCommited={setCommited}
+                          />
+                        )}
+                      </span>
+                      <Button type="primary" className=" mr-3">
+                        <Link
+                          href={`/manage/statement/${campStatement?.id}-update`}
+                        >
+                          Edit Change
+                        </Link>
+                      </Button>
+                      <Button type="primary" onClick={commitChanges}>
+                        Commit Change
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              {campStatement?.status == "in_review" && ifIamSupporter != 0 && (
+                <div className={styles.campStatementCollapseButtons}>
+                  <Checkbox
+                    className={styles.campSelectCheckbox}
+                    onChange={agreeWithChange}
+                  >
+                    I agree with this statement change
+                  </Checkbox>
+                </div>
+              )}
             </div>
           </>
         </Collapse>
@@ -130,3 +255,81 @@ function HistoryCollapse({
 }
 
 export default HistoryCollapse;
+
+const Timer = ({ unixTime, setCommited }) => {
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(0);
+  const [hours, setHours] = useState(0);
+  const didMount = useRef(false);
+
+  useEffect(() => {
+    if (didMount.current) {
+      let myInterval = setInterval(() => {
+        if (hours > 0) {
+          setHours(hours - 1);
+        }
+        if (seconds > 0) {
+          setSeconds(seconds - 1);
+        }
+        if (hours === 0) {
+          if (seconds === 0) {
+            if (minutes === 0) {
+              setCommited(true);
+              clearInterval(myInterval);
+            } else {
+              setMinutes(minutes - 1);
+              setSeconds(59);
+            }
+          }
+        } else {
+          setMinutes(59);
+          setSeconds(59);
+        }
+      }, 1000);
+      return () => {
+        clearInterval(myInterval);
+      };
+    }
+  });
+
+  const timeall = () => {
+    let now_time = moment.now();
+    if (moment.now() < unixTime * 1000 + 3600000) {
+      let currenttime = new Date();
+      let subtime = new Date(unixTime * 1000 + 3600000);
+      convertMsToTime(unixTime * 1000 + 3600000 - moment.now() + 34900);
+    }
+  };
+
+  function convertMsToTime(milliseconds) {
+    let seconds = Math.floor(milliseconds / 1000);
+    let minutes = Math.floor(seconds / 60);
+    let hours = Math.floor(minutes / 60);
+    seconds = seconds % 60;
+    minutes = minutes % 60;
+    hours = hours % 24;
+    setHours(hours);
+    setMinutes(minutes);
+    setSeconds(seconds);
+    return `${hours}:${minutes}:${seconds}`;
+  }
+  useEffect(() => {
+    timeall();
+    didMount.current = true;
+  }, [unixTime]);
+
+  return (
+    <div>
+      {hours === -1 && minutes === -1 && seconds === -1 ? (
+        <span> 00:00:00 </span>
+      ) : (
+        <span>
+          {" "}
+          {hours < 10 ? `0${hours}` : hours}:
+          {minutes < 10 ? `0${minutes}` : minutes}:
+          {seconds < 10 ? `0${seconds}` : seconds}
+        </span>
+      )}
+    </div>
+  );
+};

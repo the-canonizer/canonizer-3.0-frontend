@@ -51,7 +51,6 @@
 }
 
 .campStatement {
-  max-width: 1296px;
   margin-top: 20px;
   border: solid 1px #d9d9d9;
   background-color: #ffffff;
@@ -61,6 +60,7 @@
     align-items: center;
     justify-content: space-between;
     border-bottom: solid 1px #d9d9d9;
+    background-color: #ffffff;
 
     @media screen and (min-width: 992px) {
       display: flex;
@@ -372,29 +372,26 @@ $btn-bkg: #4484ce;
 .campCollapseSummaryWrap {
   .campStatementCollapseButtons {
     background-color: rgb(0, 0, 0, 6%);
-    padding-left: 18px;
-    min-height: 66px;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    padding-right: 18px;
+    padding: 15px 18px;
     margin-right: -55px;
 
     @media screen and (max-width: 1018px) {
     }
 
-    .campUpdateButton {
-      background-color: #4484ce;
-      margin-right: 16px;
+    .campUpdateButton, span.campUpdateButton button {
       font-size: 15px;
       font-weight: 500;
-      min-width: 306px;
       min-height: 38px;
       height: auto;
       border: none;
-
-      &:hover {
-        background-color: darken($btn-bkg, 10%);
+      &:not([disabled]) {
+        background-color: #4484ce;
+        &:hover {
+          background-color: darken($btn-bkg, 10%);
+        }
       }
 
       @media screen and (max-width: 1032px) {

@@ -11,7 +11,8 @@ export const getEditStatementApi = async (body) => {
       campManageStatementRequest.getEditStatement(
         body,
         auth?.loggedInUser?.token
-      )
+      ),
+      false
     );
     return res;
   } catch (error) {
@@ -21,7 +22,6 @@ export const getEditStatementApi = async (body) => {
 };
 
 export const updateStatementApi = async (body) => {
-  console.log("reqbody1 =>", body);
   let state = store.getState();
   const { auth } = state;
   try {
