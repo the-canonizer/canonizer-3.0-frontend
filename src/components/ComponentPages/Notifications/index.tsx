@@ -2,7 +2,10 @@ import { useState, Fragment, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 import NotificationsListUI from "./UI";
-import { getNotificationsList } from "../../../network/api/notificationAPI";
+import {
+  getNotificationsList,
+  markNotificationRead,
+} from "../../../network/api/notificationAPI";
 import { RootState } from "../../../store";
 
 const SettingsUI = () => {
@@ -10,7 +13,7 @@ const SettingsUI = () => {
   const [total, setTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
-  const per_page = 10;
+  const per_page = 50;
 
   const { list } = useSelector((state: RootState) => {
     return {
@@ -30,9 +33,13 @@ const SettingsUI = () => {
     getList(page);
   }, [page]);
 
-  const onViewMoreClick = () => {
+  const onViewMoreClick = (p) => {
     setIsLoading(true);
-    setPage(page + 1);
+    setPage(p);
+  };
+
+  const onNotifyClick = async (id) => {
+    await markNotificationRead(id);
   };
 
   return (
@@ -44,6 +51,7 @@ const SettingsUI = () => {
         onViewMoreClick={onViewMoreClick}
         total={total}
         per_page={per_page}
+        onNotifyClick={onNotifyClick}
       />
     </Fragment>
   );

@@ -10,7 +10,7 @@
 }
 
 .list {
-  li {
+  [class="ant-list-item"] {
     &:not(:last-child) {
       padding-bottom: 0;
       border: none;
@@ -102,6 +102,23 @@
       &:focus {
         box-shadow: none;
       }
+    }
+  }
+  .listPagination {
+    display: flex;
+    align-items: flex-start;
+
+    .ant-pagination-item {
+      color: #262626;
+      outline: none;
+      border: 1px solid #d9d9d9;
+    }
+    .ant-pagination-item-active {
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+    .ant-pagination-item-link {
+      border: none !important;
     }
   }
 }

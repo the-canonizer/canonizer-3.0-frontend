@@ -15,4 +15,14 @@ export default class NotificationRequest extends Request {
       {}
     );
   }
+
+  static markReadNotification(id) {
+    return new Request(
+      `${K.Network.URL.MarkRead}${id}`,
+      K.Network.Method.PUT,
+      null,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
 }

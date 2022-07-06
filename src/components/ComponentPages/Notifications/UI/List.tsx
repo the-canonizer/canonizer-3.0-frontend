@@ -11,6 +11,7 @@ export default function NotificationList({
   list,
   isFooter = false,
   LoadMoreTopics = null,
+  onNotifyClick,
 }) {
   return (
     <List
@@ -27,8 +28,9 @@ export default function NotificationList({
               </div>
             }
             title={
-              <Link href="#">
+              <Link href={item["url"]}>
                 <a
+                  onClick={() => onNotifyClick(item["id"])}
                   style={{
                     color: item["is_read"] === 1 ? "#566f8f" : "#0f2a4d",
                     fontWeight: item["is_read"] === 1 ? "500" : "600",

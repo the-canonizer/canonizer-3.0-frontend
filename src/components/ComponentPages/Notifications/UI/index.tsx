@@ -1,11 +1,11 @@
 import { Fragment } from "react";
-import { Card, Typography, Button, Spin } from "antd";
+import { Card, Typography, Button, Spin, Pagination } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
 import styles from "./Notifications.module.scss";
 
 import SideBar from "../../CampForum/UI/sidebar";
-import Lists from "./list";
+import Lists from "./List";
 
 const { Title, Text } = Typography;
 
@@ -16,6 +16,7 @@ const NotificationsListUI = ({
   onViewMoreClick,
   total,
   per_page,
+  onNotifyClick,
 }) => {
   const LoadMoreTopics = (
     <div className="text-center">
@@ -41,7 +42,23 @@ const NotificationsListUI = ({
           className={styles.notify_card}
           id="card-title"
         >
-          <Lists list={list} isFooter={true} LoadMoreTopics={LoadMoreTopics} />
+          <Lists
+            list={list}
+            isFooter={true}
+            LoadMoreTopics={
+              <Pagination
+                current={page}
+                total={total}
+                pageSize={per_page}
+                responsive={true}
+                showSizeChanger={false}
+                onChange={onViewMoreClick}
+                hideOnSinglePage={true}
+                className={styles.listPagination}
+              />
+            }
+            onNotifyClick={onNotifyClick}
+          />
         </Card>
       </div>
     </Fragment>

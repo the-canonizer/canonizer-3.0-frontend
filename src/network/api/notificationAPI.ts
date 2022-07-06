@@ -44,3 +44,21 @@ export const getNotificationsList = async (
     handleError(error);
   }
 };
+
+export const markNotificationRead = async (id: number) => {
+  try {
+    const res = await NetworkCall.fetch(
+      NotificationRequests.markReadNotification(id),
+      false
+    );
+
+    if (res && res?.status_code == 200) {
+      await getNotificationsList();
+      await getLists();
+    }
+
+    return res;
+  } catch (error) {
+    handleError(error);
+  }
+};

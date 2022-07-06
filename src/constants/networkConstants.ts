@@ -129,6 +129,7 @@ const NetworkConstants = {
 
     // notification list
     GetList: `${BaseCanonizerApiUrl}/notification-list`,
+    MarkRead: `${BaseCanonizerApiUrl}/notification-is-read/update/`,
   },
   Method: {
     GET: "GET",

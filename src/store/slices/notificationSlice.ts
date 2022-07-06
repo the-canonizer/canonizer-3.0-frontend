@@ -11,7 +11,7 @@ export const notificationSlice = createSlice({
   },
   reducers: {
     setData(state, action) {
-      state.data = [...state.data, ...action.payload];
+      state.data = action.payload;
     },
     setHeaderData(state, action) {
       state.headerNotification = action.payload;

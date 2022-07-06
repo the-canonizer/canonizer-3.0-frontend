@@ -1,7 +1,7 @@
 import { Fragment, useState, useEffect } from "react";
 import { Dropdown, Badge, Card, Typography, Switch, notification } from "antd";
 import Link from "next/link";
-import { BellOutlined, SmileOutlined } from "@ant-design/icons";
+import { BellOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
 import localforage from "localforage";
 import firebase from "firebase/app";
@@ -10,8 +10,11 @@ import { useSelector } from "react-redux";
 import styles from "../siteHeader.module.scss";
 
 import { firebaseCloudMessaging } from "../../../../firebaseConfig/firebase";
-import Lists from "../../../ComponentPages/Notifications/UI/list";
-import { getLists } from "../../../../network/api/notificationAPI";
+import Lists from "../../../ComponentPages/Notifications/UI/List";
+import {
+  getLists,
+  markNotificationRead,
+} from "../../../../network/api/notificationAPI";
 import { RootState } from "../../../../store";
 import Fav from "./icon";
 
@@ -90,26 +93,26 @@ const Notifications = ({}) => {
     if ("serviceWorker" in navigator && "PushManager" in window) {
       // () => handleClickPushNotification(message?.data?.url)
       // navigator.serviceWorker.addEventListener("message", async (event) => {
-        //   console.log("(event for the service worker event)", event);
-        // console.log("(event for the service worker event data)", event.data);
-        //   const url = event?.data.data["gcm.notification.url"];
-        //   console.log(
-        //     "🚀 ~ file: index.tsx ~ line 96 ~ navigator.serviceWorker.addEventListener ~ url",
-        //     url,
-        //     "title",
-        //     event?.data?.notification?.title,
-        //     "body",
-        //     event?.data?.notification?.body
-        //   );
-        //   notification.open({
-        //     message: event?.data?.notification?.title,
-        //     description: event?.data?.notification?.body,
-        //     icon: <Fav />,
-        //     onClick: () => {
-        //       router.push({ pathname: url });
-        //     },
-        //   });
-        // await getListData();
+      //   console.log("(event for the service worker event)", event);
+      // console.log("(event for the service worker event data)", event.data);
+      //   const url = event?.data.data["gcm.notification.url"];
+      //   console.log(
+      //     "🚀 ~ file: index.tsx ~ line 96 ~ navigator.serviceWorker.addEventListener ~ url",
+      //     url,
+      //     "title",
+      //     event?.data?.notification?.title,
+      //     "body",
+      //     event?.data?.notification?.body
+      //   );
+      //   notification.open({
+      //     message: event?.data?.notification?.title,
+      //     description: event?.data?.notification?.body,
+      //     icon: <Fav />,
+      //     onClick: () => {
+      //       router.push({ pathname: url });
+      //     },
+      //   });
+      // await getListData();
       // });
 
       messaging.onMessage((message) => {
@@ -142,6 +145,10 @@ const Notifications = ({}) => {
     }
   }
 
+  const onNotifyClick = async (id) => {
+    await markNotificationRead(id);
+  };
+
   const notificationDropdown = (
     <Card
       className={styles.notificationCard}
@@ -171,7 +178,7 @@ const Notifications = ({}) => {
         </Link>,
       ]}
     >
-      <Lists list={list} />
+      <Lists list={list} onNotifyClick={onNotifyClick} />
     </Card>
   );
 
