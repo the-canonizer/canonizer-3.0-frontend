@@ -35,4 +35,22 @@ export default class CampStatementHistoryRequest extends Request {
       {}
     );
   }
+  static commitChangeStatement(body) {
+    return new Request(
+      K.Network.URL.CommitChangeStatement,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
+  static agreeToChange(body) {
+    return new Request(
+      K.Network.URL.AgreeToChange,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
 }

@@ -11,6 +11,9 @@ export const treeSlice = createSlice({
     currentCampRecord: null,
     campStatementHistory: {
       items: [],
+      details: {
+        ifIamSupporter: null,
+      },
     },
   },
   reducers: {
