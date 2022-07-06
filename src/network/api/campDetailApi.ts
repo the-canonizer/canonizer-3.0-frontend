@@ -223,7 +223,10 @@ export const getAllCampNickNames = async () => {
 
 export const getAllUsedNickNames = async (body) => {
   try {
-    const res = await NetworkCall.fetch(TreeRequest.getUsedNickNames(body));
+    const res = await NetworkCall.fetch(
+      TreeRequest.getUsedNickNames(body),
+      false
+    );
     return res;
   } catch (error) {
     handleError(error);

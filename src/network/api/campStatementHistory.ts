@@ -45,7 +45,6 @@ export const getLiveCampStatementApi = async (reqBody, pageNumber) => {
     );
     return campStatementHistory?.data;
   } catch (error) {
-    console.log(error.message);
     return error;
   }
 };
@@ -60,5 +59,32 @@ export const getCompareStatement = async (reqBody) => {
     return res;
   } catch (error) {
     handleError(error);
+  }
+};
+
+export const changeCommitStatement = async (reqBody) => {
+  try {
+    const res = await NetworkCall.fetch(
+      CampStatementHistoryRequest.commitChangeStatement(reqBody),
+      false
+    );
+
+    return res;
+  } catch (error) {
+    handleError(error);
+    return error;
+  }
+};
+export const agreeToChangeApi = async (reqBody) => {
+  try {
+    const res = await NetworkCall.fetch(
+      CampStatementHistoryRequest.agreeToChange(reqBody),
+      false
+    );
+
+    return res;
+  } catch (error) {
+    handleError(error);
+    return error;
   }
 };

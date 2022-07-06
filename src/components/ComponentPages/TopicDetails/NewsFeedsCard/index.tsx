@@ -128,10 +128,14 @@ const NewsFeedsCard = ({ newsFeed }) => {
                       </a>
 
                       {!(deleteNews && editNews) && (
-                        <strong className="text-orange">
-                          {" "}
-                          {news?.submitter_nick_name}
-                        </strong>
+                        <>
+                          (by{" "}
+                          <strong className="text-orange">
+                            {" "}
+                            {news?.submitter_nick_name}
+                          </strong>
+                          )
+                        </>
                       )}
                       {deleteNews &&
                         (news?.manage_flag && news?.owner_flag ? (
