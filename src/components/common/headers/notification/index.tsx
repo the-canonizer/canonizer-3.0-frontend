@@ -13,6 +13,7 @@ import { firebaseCloudMessaging } from "../../../../firebaseConfig/firebase";
 import Lists from "../../../ComponentPages/Notifications/UI/list";
 import { getLists } from "../../../../network/api/notificationAPI";
 import { RootState } from "../../../../store";
+import Fav from "./icon";
 
 const Notifications = ({}) => {
   const [checked, setChecked] = useState(false);
@@ -41,8 +42,10 @@ const Notifications = ({}) => {
     async function setToken() {
       try {
         const token = await firebaseCloudMessaging.init();
-        if (token) {
-          console.log("[useEffect notification] token", token);
+        const token2 = await localforage.getItem("fcm_token");
+        if (token || token2) {
+          console.log("[useEffect notification] token", token, token2);
+          localforage.setItem("fcm_token", token2);
           setChecked(true);
           getMessage();
         }
@@ -52,7 +55,8 @@ const Notifications = ({}) => {
     }
 
     setToken();
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onSwitch = async (st, event) => {
     event.stopPropagation();
@@ -83,36 +87,59 @@ const Notifications = ({}) => {
 
   function getMessage() {
     const messaging = firebase.messaging();
+    if ("serviceWorker" in navigator && "PushManager" in window) {
+      // () => handleClickPushNotification(message?.data?.url)
+      // navigator.serviceWorker.addEventListener("message", async (event) => {
+        //   console.log("(event for the service worker event)", event);
+        // console.log("(event for the service worker event data)", event.data);
+        //   const url = event?.data.data["gcm.notification.url"];
+        //   console.log(
+        //     "🚀 ~ file: index.tsx ~ line 96 ~ navigator.serviceWorker.addEventListener ~ url",
+        //     url,
+        //     "title",
+        //     event?.data?.notification?.title,
+        //     "body",
+        //     event?.data?.notification?.body
+        //   );
+        //   notification.open({
+        //     message: event?.data?.notification?.title,
+        //     description: event?.data?.notification?.body,
+        //     icon: <Fav />,
+        //     onClick: () => {
+        //       router.push({ pathname: url });
+        //     },
+        //   });
+        // await getListData();
+      // });
 
-    // () => handleClickPushNotification(message?.data?.url)
+      messaging.onMessage((message) => {
+        const url = message.data["gcm.notification.url"];
+        console.log(
+          "[messaging.onMessage foreground Message]",
+          message,
+          "url",
+          url
+        );
 
-    messaging.onMessage((message) => {
-      const url = message.data["gcm.notification.url"];
-      console.log(
-        "[messaging.onMessage foreground Message]",
-        message,
-        "url",
-        url
-      );
+        // const title = message.notification.title;
 
-      const title = message.notification.title;
+        // const options = {
+        //   body: message.notification.body,
+        //   icon: message?.notification["icon"],
+        // };
 
-      const options = {
-        body: message.notification.body,
-        icon: message?.notification["icon"],
-      };
+        // new Notification(title, options);
 
-      new Notification(title, options);
-
-      notification.open({
-        message: message?.notification?.title,
-        description: message?.notification?.body,
-        icon: <SmileOutlined style={{ color: "#108ee9" }} />,
-        onClick: () => {
-          router.push({ pathname: url });
-        },
+        notification.open({
+          message: message?.notification?.title,
+          description: message?.notification?.body,
+          icon: <Fav />,
+          onClick: () => {
+            router.push({ pathname: url });
+          },
+        });
       });
-    });
+    }
   }
 
   const notificationDropdown = (
@@ -139,7 +166,7 @@ const Notifications = ({}) => {
         </Fragment>
       }
       actions={[
-        <Link href="/user/notifications/22" passHref key="view_all">
+        <Link href="/notifications" passHref key="view_all">
           <a id="view-all-btn">View All</a>
         </Link>,
       ]}
