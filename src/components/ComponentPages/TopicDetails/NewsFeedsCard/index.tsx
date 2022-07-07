@@ -18,7 +18,8 @@ const NewsFeedsCard = ({ newsFeed }) => {
   const [editNews, setEditNews] = useState(false);
 
   const router = useRouter();
-
+  const admin = true;
+  // const admin = false;
   const handleDeleteCamp = async (id) => {
     const res = await deleteNewsFeedApi({
       newsfeed_id: id,
@@ -35,7 +36,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
     setDeleteNews(false);
     setEditNews(false);
   }, [newsFeed]);
-
+  console.log("newsfeed =>", newsFeed);
   return (
     <Collapse
       defaultActiveKey={["1"]}
@@ -59,17 +60,22 @@ const NewsFeedsCard = ({ newsFeed }) => {
                 }}
               >
                 <>
-                  {!(deleteNews || editNews) && (
+                  {/* {!(deleteNews || editNews) && ( */}
+
+                  {!(deleteNews || editNews) && admin && isLogin && (
                     <>
                       <Button
                         type="link"
                         onClick={() => {
-                          if (isLogin) {
-                            setEditNews(true);
-                            setDeleteNews(false);
-                          } else {
-                            router.push("/login");
-                          }
+                          // if (isLogin) {
+                          //   setEditNews(true);
+                          //   setDeleteNews(false);
+                          // } else {
+                          //   router.push("/login");
+                          // }
+
+                          setEditNews(true);
+                          setDeleteNews(false);
                         }}
                       >
                         <i className={"icon-edit "} />
@@ -79,12 +85,14 @@ const NewsFeedsCard = ({ newsFeed }) => {
                       <Button
                         type="link"
                         onClick={() => {
-                          if (isLogin) {
-                            setDeleteNews(true);
-                            setEditNews(false);
-                          } else {
-                            router.push("/login");
-                          }
+                          // if (isLogin) {
+                          //   setDeleteNews(true);
+                          //   setEditNews(false);
+                          // } else {
+                          //   router.push("/login");
+                          // }
+                          setEditNews(true);
+                          setDeleteNews(false);
                         }}
                       >
                         <i className={"icon-delete"} />
@@ -138,9 +146,10 @@ const NewsFeedsCard = ({ newsFeed }) => {
                         </>
                       )}
                       {deleteNews &&
-                        (news?.manage_flag && news?.owner_flag ? (
+                        (news?.manage_flag ? (
+                          //  && news?.owner_flag
                           <Popconfirm
-                            disabled={!news.owner_flag}
+                            // disabled={!news.owner_flag}
                             placement="topLeft"
                             title={
                               K?.exceptionalMessages
@@ -158,12 +167,14 @@ const NewsFeedsCard = ({ newsFeed }) => {
                               size="small"
                               type="link"
                               danger
-                              disabled={!news.owner_flag}
+                              // disabled={!news.owner_flag}
                             >
                               <DeleteOutlined />
                             </Button>
                           </Popconfirm>
-                        ) : news?.owner_flag && !news?.manage_flag ? (
+                        ) : (
+                          //  news?.owner_flag &&
+                          // !news?.manage_flag ? (
                           <Tooltip
                             title={
                               <>
@@ -176,39 +187,41 @@ const NewsFeedsCard = ({ newsFeed }) => {
                           >
                             <DeleteOutlined />
                           </Tooltip>
-                        ) : (
-                          <Tooltip
-                            title={
-                              news.owner_flag
-                                ? ""
-                                : K?.exceptionalMessages?.tooltipNewsDelete
-                            }
-                          >
-                            <DeleteOutlined />
-                          </Tooltip>
-                        ))}
+                        ))
+                        // : (
+                        // <Tooltip
+                        //   title={
+                        //     news.owner_flag
+                        //       ? ""
+                        //       : K?.exceptionalMessages?.tooltipNewsDelete
+                        //   }
+                        // >
+                        //   <DeleteOutlined />
+                        // </Tooltip>
+                        // )
+                      }
 
                       {editNews && (
-                        <Tooltip
-                          title={
-                            news.owner_flag
-                              ? ""
-                              : K?.exceptionalMessages?.tooltipNewsEdit
+                        // <Tooltip
+                        //   title={
+                        //     news.owner_flag
+                        //       ? ""
+                        //       : K?.exceptionalMessages?.tooltipNewsEdit
+                        //   }
+                        // >
+                        <Button
+                          size="small"
+                          type="link"
+                          // disabled={!news.owner_flag}
+                          onClick={() =>
+                            router.push(
+                              `/editnews/${router?.query?.camp[0]}/${router?.query?.camp[1]}/camp-id-${news?.id}`
+                            )
                           }
                         >
-                          <Button
-                            size="small"
-                            type="link"
-                            disabled={!news.owner_flag}
-                            onClick={() =>
-                              router.push(
-                                `/editnews/${router?.query?.camp[0]}/${router?.query?.camp[1]}/camp-id-${news?.id}`
-                              )
-                            }
-                          >
-                            <EditOutlined />
-                          </Button>
-                        </Tooltip>
+                          <EditOutlined />
+                        </Button>
+                        // </Tooltip>
                       )}
                     </Paragraph>
                   </li>
