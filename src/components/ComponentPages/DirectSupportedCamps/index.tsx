@@ -197,10 +197,12 @@ const DirectSupportedCamps = ({ search }) => {
       directSupportedCampsList={directSupportedCampsList}
       setDirectSupportedCampsList={setDirectSupportedCampsList}
       search={search}
+      setCardCamp_ID={setCardCamp_ID}
       removeSupport={removeSupport}
       handleClose={handleClose}
       saveChanges={saveChanges}
       showSaveChanges={showSaveChanges}
+      setShowSaveChanges={setShowSaveChanges}
       setRevertBack={setRevertBack}
       revertBack={revertBack}
       handleRevertBack={handleRevertBack}

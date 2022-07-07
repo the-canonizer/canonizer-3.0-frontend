@@ -1227,11 +1227,15 @@ const UploadFileUI = ({
                                 handleChangeFileName(e, file.uid)
                               }
                               placeholder="Full Name (with no extension)"
-                              onKeyDown={(e) =>
-                                (e.key === "." || e.key === " ") &&
-                                (e.keyCode === 190 || e.keyCode === 32) &&
-                                e.preventDefault()
-                              }
+                              onKeyDown={(e) => {
+                                if (/[^\w]|_/g.test(e.key))
+                                  return e.preventDefault();
+                                return (
+                                  (e.key === "." || e.key === " ") &&
+                                  (e.keyCode === 190 || e.keyCode === 32) &&
+                                  e.preventDefault()
+                                );
+                              }}
                             />
                           </Form.Item>
                         </div>
