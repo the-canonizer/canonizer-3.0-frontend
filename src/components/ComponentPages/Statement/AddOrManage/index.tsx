@@ -128,18 +128,12 @@ export default function AddOrManage({ add }) {
             : !!(objection || update)
             ? {
                 nick_name: res?.data?.nick_name[0]?.id,
-                statement: res?.data?.statement?.parsed_value?.replace(
-                  /<[^>]+>/g,
-                  ""
-                ),
+                statement: res?.data?.statement?.value,
                 edit_summary: res?.data?.statement?.note,
               }
             : {
                 nick_name: res?.data?.nick_name[0]?.id,
-                statement: res?.data?.statement?.parsed_value?.replace(
-                  /<[^>]+>/g,
-                  ""
-                ),
+                statement: res?.data?.statement?.value,
               }
         );
         setNickNameData(result?.data);
