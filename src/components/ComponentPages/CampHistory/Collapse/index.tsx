@@ -144,6 +144,7 @@ function HistoryCollapse({
                   onChange={onSelectCompare.bind(this, campStatement)}
                   disabled={isDisabledCheck}
                   defaultChecked={isChecked}
+                  key={campStatement.id}
                 >
                   Select to Compare
                 </Checkbox>
