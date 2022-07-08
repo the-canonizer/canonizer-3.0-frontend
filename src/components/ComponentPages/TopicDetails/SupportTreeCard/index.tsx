@@ -67,7 +67,7 @@ const SupportTreeCard = ({ handleLoadMoreSupporters }) => {
                       query: {
                         topicnum: topicRecord?.topic_num,
                         campnum: topicRecord?.camp_num,
-                        namespace: 1,
+                        namespace: topicRecord?.namespace_id,
                       },
                     }}
                   >
