@@ -22,6 +22,7 @@ const ExceptionalMessageConstants = {
   addNewsTextPlaceHolder: "Add news text.",
   objectionStatementHeading: "Object to this proposed update",
   directJoinSupport: "Directly join and support",
+  manageSupport: "Manage support",
   noRecentActivityFound: "No Recent Activity Found",
 };
 
