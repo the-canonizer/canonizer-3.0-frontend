@@ -12,10 +12,12 @@ export default function DirectSupportedCampsUI({
   directSupportedCampsList,
   setDirectSupportedCampsList,
   search,
+  setCardCamp_ID,
   removeSupport,
   handleClose,
   saveChanges,
   showSaveChanges,
+  setShowSaveChanges,
   setRevertBack,
   revertBack,
   handleRevertBack,
@@ -146,7 +148,9 @@ export default function DirectSupportedCampsUI({
                   <Button
                     className={styles.revert_Btn}
                     onClick={(e) => {
-                      handleRevertBack(idData, data.camps);
+                      handleRevertBack(idData, data.camps),
+                        setCardCamp_ID(""),
+                        setShowSaveChanges(false);
                     }}
                   >
                     Revert
