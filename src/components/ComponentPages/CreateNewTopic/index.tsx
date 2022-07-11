@@ -74,11 +74,11 @@ const CreateNewTopic = ({
         topic_name: res.data.topic_name,
       };
       dispatch(setCurrentTopic(data));
-      router.push(
-        `/topic/${res.data.topic_num}-${res.data.topic_name
+      router.push({
+        pathname: `/topic/${res.data.topic_num}-${res.data.topic_name
           ?.split(" ")
-          .join("-")}/1-Agreement`
-      );
+          .join("-")}/1-Agreement`,
+      });
     }
 
     if (res && res.status_code === 400 && res.error.topic_name) {
@@ -101,7 +101,7 @@ const CreateNewTopic = ({
   };
 
   const onCancel = () => {
-    router.push("/");
+    router.push({ pathname: "/" });
   };
 
   return (
