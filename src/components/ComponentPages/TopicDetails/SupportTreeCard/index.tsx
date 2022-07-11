@@ -28,7 +28,10 @@ const supportContent = (
   </>
 );
 
-const SupportTreeCard = ({ handleLoadMoreSupporters }) => {
+const SupportTreeCard = ({
+  handleLoadMoreSupporters,
+  getCheckSupportStatus,
+}) => {
   const router = useRouter();
   const manageSupportPath = router.asPath.replace("/topic/", "/support/");
   const { campSupportingTree } = useSelector((state: RootState) => ({
@@ -96,7 +99,10 @@ const SupportTreeCard = ({ handleLoadMoreSupporters }) => {
           <a>
             <div className="topicDetailsCollapseFooter">
               <CustomButton className="btn-orange">
-                {K?.exceptionalMessages?.directJoinSupport}
+                {/* {K?.exceptionalMessages?.directJoinSupport} */}
+                {getCheckSupportStatus.support_flag == 1
+                  ? K?.exceptionalMessages?.manageSupport
+                  : K?.exceptionalMessages?.directJoinSupport}
               </CustomButton>
             </div>
           </a>
