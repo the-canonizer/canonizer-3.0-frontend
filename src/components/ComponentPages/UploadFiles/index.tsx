@@ -82,7 +82,7 @@ const UploadFiles = () => {
   };
 
   const uploadFun = async () => {
-    addButtonHide()
+    addButtonHide();
     const formData = new FormData();
     for (const key of Object.keys(
       openFolderID ? folderFiles : uploadFileList
@@ -109,7 +109,7 @@ const UploadFiles = () => {
     formData.append("folder_id", openFolderID);
     let res = await uploadFile(formData);
     if (res && res.status_code == 200) {
-      showAddButton()
+      showAddButton();
       //fileStatusHide();
       openFolder ? "" : enableCreateFolderBtn();
       uploadOptionsHide();
