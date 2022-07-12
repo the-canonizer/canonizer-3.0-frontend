@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Card, Tag, Select } from "antd";
 import messages from "../../../../messages";
 import styles from "../ManageSupportUI/ManageSupport.module.scss";
@@ -20,7 +20,14 @@ const ManageSupportUI = ({
   getSupportStatusData,
   cancelManageRoute,
   submitNickNameSupportCamps,
+  selectedtNickname,
+  setSelectedtNickname,
 }) => {
+  useEffect(() => {
+    if (nickNameList.length > 0) {
+      setSelectedtNickname(nickNameList[0]?.nick_name);
+    }
+  }, [nickNameList]);
   let tagsArrayList = [];
   {
     manageSupportList && manageSupportList.length > 0
@@ -137,11 +144,13 @@ const ManageSupportUI = ({
               <p>Nick Name To Support Above Camps</p>
             </div>
             <Select
-              //defaultValue={'demo'}
               placeholder={placeholders.nickName}
               size="large"
               className={styles.dropdown}
-              //value={nickNameList.nick_name}
+              value={selectedtNickname}
+              onChange={(value) => {
+                setSelectedtNickname(value);
+              }}
             >
               {nickNameList?.map((nick) => {
                 return (
