@@ -369,6 +369,17 @@ export default class UserRequest extends Request {
       authToken
     );
   }
+
+  static addSupport(body, authToken) {
+    return new Request(
+      K.Network.URL.AddSupport,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
   static getDelegatedSupportCampsList(authToken) {
     return new Request(
       K.Network.URL.GetDelegatedSupportCamps,
