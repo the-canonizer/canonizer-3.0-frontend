@@ -165,8 +165,24 @@ const CampInfoBar = ({ payload = null, isTopicPage = false }) => {
           <Link
             href={
               campStatement?.length > 0
-                ? `/statement/history/${router?.query?.camp[0]}/${router?.query?.camp[1]}`
-                : `/create/statement/${router?.query?.camp[0]}/${router?.query?.camp[1]}`
+                ? `/statement/history/${
+                    router?.query?.camp
+                      ? router?.query?.camp[0]
+                      : router?.query?.manageSupport[0]
+                  }/${
+                    router?.query?.camp
+                      ? router?.query?.camp[1]
+                      : router?.query?.manageSupport[1]
+                  }`
+                : `/create/statement/${
+                    router?.query?.camp
+                      ? router?.query?.camp[0]
+                      : router?.query?.manageSupport[0]
+                  }/${
+                    router?.query?.camp
+                      ? router?.query?.camp[1]
+                      : router?.query?.manageSupport[1]
+                  }`
             }
           >
             <a>
