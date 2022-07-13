@@ -222,12 +222,17 @@ const CampInfoBar = ({ payload = null, isTopicPage = false }) => {
                   ? campRecord?.parentCamps?.map((camp, index) => {
                       return (
                         <Link
-                          href={`${(router.query?.camp
-                            ? router.query?.camp
-                            : router.query?.manageSupport
-                          )?.at(0)}/${
-                            camp?.camp_num
-                          }-${camp?.camp_name?.replaceAll(" ", "-")}`}
+                          href= {
+                            router.asPath.split('/')[1] =="support"? 
+                            router.asPath.replace("/support/", "/topic/"):
+                            `${(router.query?.camp
+                                ? router.query?.camp
+                                : router.query?.manageSupport
+                              )
+                              ?.at(0)}/${
+                                camp?.camp_num
+                              }-${camp?.camp_name?.replaceAll(" ", "-")}`
+                          }
                           key={camp?.camp_num}
                         >
                           <a>
