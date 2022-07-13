@@ -40,6 +40,8 @@ const NetworkConstants = {
     GetDirectSupportedCamps: `${BaseCanonizerApiUrl}/get-direct-supported-camps`,
     RemoveSupportesCampsEntireTopic: `${BaseCanonizerApiUrl}/support/remove`,
     RemoveOrUpdateDirectSupportCamps: `${BaseCanonizerApiUrl}/support/update`,
+    //add direct Support
+    AddSupport: `${BaseCanonizerApiUrl}/support/add`,
     //Delegated Supported Camps
     GetDelegatedSupportCamps: `${BaseCanonizerApiUrl}/get-delegated-supported-camps`,
     // topic details page api's
@@ -126,6 +128,11 @@ const NetworkConstants = {
 
     // compare statement
     CompareStatement: `${BaseCanonizerApiUrl}/get-statement-comparison`,
+
+    //Get Active support topic
+    GetActiveSupportTopic: `${BaseCanonizerApiUrl}/topic-support-list`,
+    //Get Check if support exists
+    GetCheckSupportExists: `${BaseCanonizerApiUrl}/support/check`,
   },
   Method: {
     GET: "GET",

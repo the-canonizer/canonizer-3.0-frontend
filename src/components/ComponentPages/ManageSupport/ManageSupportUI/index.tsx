@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Card, Tag, Select, Spin } from "antd";
+import React, { useState, useEffect } from "react";
+import { Card, Tag, Select } from "antd";
 import messages from "../../../../messages";
 import styles from "../ManageSupportUI/ManageSupport.module.scss";
 import Link from "next/link";
@@ -8,35 +8,38 @@ import { CloseCircleOutlined } from "@ant-design/icons";
 import { DraggableArea } from "react-draggable-tags";
 import { placeholders } from "src/messages/placeholder";
 
-const ManageSupportUI = ({ nickNameList }) => {
-  const tagsArrayList = [
-    { id: 1, content: "Representation Qualia", dis: false },
-    { id: 2, content: "Code By design", dis: false },
-    { id: 3, content: "Talentelgia", dis: false },
-  ];
-  const [item, setItem] = useState(tagsArrayList);
+const ManageSupportUI = ({
+  nickNameList,
+  manageSupportList,
+  removeAll,
+  clearAllChanges,
+  handleClose,
+  checked,
+  setManageSupportList,
+  manageSupportRevertData,
+  getSupportStatusData,
+  cancelManageRoute,
+  submitNickNameSupportCamps,
+  selectedtNickname,
+  setSelectedtNickname,
+}) => {
+  useEffect(() => {
+    if (nickNameList.length > 0) {
+      setSelectedtNickname(nickNameList[0]?.nick_name);
+    }
+  }, [nickNameList]);
+  let tagsArrayList = [];
+  {
+    manageSupportList && manageSupportList.length > 0
+      ? ((tagsArrayList = manageSupportList),
+        tagsArrayList.forEach((obj) => {
+          obj.id = obj.camp_num;
+        }))
+      : "";
+  }
 
-  const removeSupport = (id) => {
-    const filterItem = item.map((obj) => {
-      if (obj.id == id) {
-        obj.dis = true;
-      }
-      return obj;
-    });
-    setItem(filterItem);
-  };
+  let nickNameValue = nickNameList.length > 0 && nickNameList[0]?.nick_name;
 
-  const clearChanges = () => {
-    setItem([...tagsArrayList]);
-  };
-
-  const removeAll = (checked) => {
-    const disabeleAllTopic = item.map((obj) => {
-      obj.dis = checked;
-      return obj;
-    });
-    setItem(disabeleAllTopic);
-  };
   return (
     <>
       <Card
@@ -47,32 +50,33 @@ const ManageSupportUI = ({ nickNameList }) => {
           </div>
         }
       >
-        <span className={styles.warning}>
-          <strong> Warning! </strong>`Agreement` is a parent camp to the list of
-          child camps.If you commit support to Agreement the support of the camp
-          in this list will be removed
-        </span>
-        <Col md={12}>
-          <Tag className={styles.tag_btn}>
-            <div>
-              {""}
-              <span className={styles.count}>{""}</span>
-            </div>
-            <Link href="">
-              <a>1 . Home Page by Code District</a>
-            </Link>
-          </Tag>
-
-          <Tag className={styles.tag_btn}>
-            <div>
-              {""}
-              <span className={styles.count}>{""}</span>
-            </div>
-            <Link href="">
-              <a>2 . Home Page Design Talentelgia</a>
-            </Link>
-          </Tag>
-        </Col>
+        {getSupportStatusData !== "" ? (
+          <>
+            <span className={styles.warning}>
+              <strong> Warning! </strong>
+              {getSupportStatusData}
+            </span>
+            <Col md={12}>
+              {manageSupportRevertData?.map((tag) => {
+                return (
+                  <Tag key={tag.camp_num} className={styles.tag_btn}>
+                    <div>
+                      {""}
+                      <span className={styles.count}>{""}</span>
+                    </div>
+                    <Link href="">
+                      <a>
+                        {tag.support_order} . {tag.camp_name}
+                      </a>
+                    </Link>
+                  </Tag>
+                );
+              })}
+            </Col>
+          </>
+        ) : (
+          ""
+        )}
         <div className={styles.hrtag}></div>
         <div className={styles.notes}>
           {" "}
@@ -86,37 +90,52 @@ const ManageSupportUI = ({ nickNameList }) => {
             <span className={styles.checkbox}>
               <input
                 type="checkbox"
-                onClick={(e) => removeAll((e.target as any).checked)}
+                checked={checked}
+                onClick={(e) =>
+                  removeAll((e.target as any).checked, manageSupportList)
+                }
               ></input>
             </span>
             <span className={styles.removeAll}>Remove all</span>
             <Button
               htmlType="button"
               className={styles.clear_Btn}
-              onClick={() => clearChanges()}
+              onClick={(e) => clearAllChanges(manageSupportList)}
             >
               Clear all changes
             </Button>
           </span>
         </div>
-
         <DraggableArea
-          tags={item}
+          tags={tagsArrayList}
           render={({ tag, index }) => (
             <div className="">
-              <Button key={3} className={styles.tag_btn} disabled={tag.dis}>
+              <Button
+                key={tag.camp_num}
+                className={styles.tag_btn}
+                disabled={tag.dis}
+              >
                 <div className={styles.btndiv}>
                   {" "}
-                  <span className={styles.count}>{tag.id}. </span>
+                  <span className={styles.count}>
+                    {getSupportStatusData !== ""
+                      ? tag.camp_num
+                      : tag.support_order}
+                    .{" "}
+                  </span>
                   <Link href="">
-                    <a className={styles.count}>{tag.content}</a>
+                    <a className={styles.Bluecolor}> {tag.camp_name}</a>
                   </Link>
                 </div>
-                <CloseCircleOutlined onClick={() => removeSupport(tag.id)} />
+                <CloseCircleOutlined
+                  onClick={() => handleClose(tag, tag.topic_num, tagsArrayList)}
+                />
               </Button>
             </div>
           )}
-          onChange={(tags) => console.log(tags)}
+          onChange={(tags) => {
+            setManageSupportList(tags);
+          }}
         />
 
         <div>
@@ -128,7 +147,10 @@ const ManageSupportUI = ({ nickNameList }) => {
               placeholder={placeholders.nickName}
               size="large"
               className={styles.dropdown}
-              value={nickNameList.nick_name}
+              value={selectedtNickname}
+              onChange={(value) => {
+                setSelectedtNickname(value);
+              }}
             >
               {nickNameList?.map((nick) => {
                 return (
@@ -143,6 +165,7 @@ const ManageSupportUI = ({ nickNameList }) => {
                 id="uploadBtn"
                 htmlType="submit"
                 className={styles.Upload_Btn}
+                onClick={submitNickNameSupportCamps}
               >
                 Submit
               </Button>
@@ -150,6 +173,7 @@ const ManageSupportUI = ({ nickNameList }) => {
                 id="cancelBtn"
                 htmlType="button"
                 className={styles.cancel_Btn}
+                onClick={cancelManageRoute}
               >
                 Cancel
               </Button>

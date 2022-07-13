@@ -26,13 +26,14 @@ import { setCurrentTopic } from "../../../store/slices/topicSlice";
 
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 import moment from "moment";
-
+import { GetCheckSupportExists } from "src/network/api/topicAPI";
+import queryParams from "src/utils/queryParams";
 const TopicDetails = () => {
   let myRefToCampStatement = useRef(null);
 
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [getTreeLoadingIndicator, setGetTreeLoadingIndicator] = useState(false);
-
+  const [getCheckSupportStatus, setGetCheckSupportStatus] = useState({});
   const router = useRouter();
   const dispatch = useDispatch();
   const {
@@ -92,6 +93,24 @@ const TopicDetails = () => {
     }
     getTreeApiCall();
   }, [asofdate, algorithm, +router?.query?.camp[1]?.split("-")[0]]);
+  const reqBodyData = {
+    topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+    camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
+  };
+  const GetCheckStatusData = async () => {
+    let response = await GetCheckSupportExists(queryParams(reqBodyData));
+    if (response && response.status_code === 200) {
+      setGetCheckSupportStatus(response.data);
+      localStorage.removeItem("GetCheckSupportStatus");
+      localStorage.setItem(
+        "GetCheckSupportStatus",
+        response.data.warning ? response.data.warning : ""
+      );
+    }
+  };
+  useEffect(() => {
+    GetCheckStatusData();
+  }, []);
 
   const scrollToCampStatement = () => {
     myRefToCampStatement.current?.scrollIntoView({ behavior: "smooth" });
@@ -166,6 +185,7 @@ const TopicDetails = () => {
           <Spin spinning={loadingIndicator} size="large">
             <SupportTreeCard
               handleLoadMoreSupporters={handleLoadMoreSupporters}
+              getCheckSupportStatus={getCheckSupportStatus}
             />
           </Spin>
 
