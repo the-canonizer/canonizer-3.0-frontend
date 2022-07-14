@@ -136,6 +136,23 @@
       }
     }
   }
+
+  @media screen and (max-width: 767px) {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+
+    .tabBtn {
+      margin-left: 0;
+      margin-right: 0;
+      margin: 5px 5px;
+
+      &.submit_btn {
+        margin-left: 0;
+        margin-right: 0;
+        margin: 5px 5px;
+      }
+    }
+  }
 }
 
 .cancel_btn {
