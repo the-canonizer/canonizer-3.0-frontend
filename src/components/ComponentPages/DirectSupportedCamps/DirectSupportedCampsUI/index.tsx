@@ -28,7 +28,7 @@ export default function DirectSupportedCampsUI({
   removeSupportCampsData,
 }) {
   const [valData, setValData] = useState({});
-  const [disState, setDisState] = useState();
+  const [disState, setDisState] = useState("");
   const [tagsDataArrValue, setTagsDataArrValue] = useState([]);
   const [tagsCampsOrderID, setTagsCampsOrderID] = useState("");
   let tagsArrayList = [];
