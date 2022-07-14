@@ -72,7 +72,6 @@ function HistoryCollapse({
     let res = await agreeToChangeApi(reqBody);
     changeAgree();
   };
-
   return (
     <div>
       <Space
@@ -121,7 +120,16 @@ function HistoryCollapse({
                 <Title level={5}>
                   Submitter Nick Name :{" "}
                   <span>
-                    <a href="">{campStatement?.submitterNickName}</a>
+                    <Link
+                      href={`/user/supports/${
+                        campStatement?.submitter_nick_id || ""
+                      }?topicnum=${campStatement?.topic_num || ""}&campnum=${
+                        campStatement?.camp_num || ""
+                      }&namespace=1`}
+                      passHref
+                    >
+                      <a>{campStatement?.submitterNickName}</a>
+                    </Link>
                   </span>
                 </Title>
                 {campStatement?.object_reason && (
