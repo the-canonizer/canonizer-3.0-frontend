@@ -30,7 +30,7 @@ export default function DirectSupportedCampsUI({
   const [valData, setValData] = useState({});
   const [tagsDataArrValue, setTagsDataArrValue] = useState([]);
   const [tagsCampsOrderID, setTagsCampsOrderID] = useState("");
-  var tagsArrayList = [];
+  let tagsArrayList = [];
   let DataArr = [];
 
   const CardTitle = (props) => {
@@ -84,12 +84,13 @@ export default function DirectSupportedCampsUI({
         ?.map((data, id) => {
           DataArr = data;
           tagsArrayList = data.camps;
-          tagsArrayList.forEach((obj) => {
-            obj.id = obj.camp_num;
+          tagsArrayList.forEach((obj, index) => {
+            obj.id = index + 1;
           });
+          console.log(tagsArrayList);
           return (
             <Card
-              key={id}
+              key={data.topic_num}
               className={styles.cardBox_tags}
               type="inner"
               size="default"
@@ -106,59 +107,20 @@ export default function DirectSupportedCampsUI({
               }
               style={{ width: 760, marginBottom: 16 }}
             >
-              <DraggableArea
-                tags={tagsArrayList}
-                render={({ tag, index }) => (
-                  <div className={tag.dis ? "tag tags_disable" : "tag"}>
-                    <Button
-                      key={tag.camp_num}
-                      className={styles.tag_btn}
-                      disabled={tag.dis}
-                    >
-                      <div className={styles.btndiv}>
-                        {" "}
-                        <span className="count">{tag.support_order}. </span>
-                        <Link href={tag.camp_link}>
-                          <a className={styles.Bluecolor}> {tag.camp_name}</a>
-                        </Link>
-                      </div>
-                      <CloseCircleOutlined
-                        onClick={(e) => {
-                          handleClose(tag, data.topic_num, data, []),
-                            setValData(tag),
-                            setRevertBack([]);
-                        }}
-                      />
-                    </Button>
-                  </div>
-                )}
-                onChange={(tags) => {
-                  tagsOrder(data.topic_num, data, tags);
-                }}
+              <DraggableAreaComponent
+                tagsArrayList={tagsArrayList}
+                handleClose={handleClose}
+                setValData={setValData}
+                setRevertBack={setRevertBack}
+                tagsOrder={tagsOrder}
+                data={data}
+                showSaveChanges={showSaveChanges}
+                idData={idData}
+                saveChanges={saveChanges}
+                handleRevertBack={handleRevertBack}
+                setCardCamp_ID={setCardCamp_ID}
+                setShowSaveChanges={setShowSaveChanges}
               />
-
-              {showSaveChanges && idData == data.topic_num ? (
-                <div className={styles.tag_Changes}>
-                  <Button
-                    className={styles.save_Changes_Btn}
-                    onClick={saveChanges}
-                  >
-                    Save Changes
-                  </Button>
-                  <Button
-                    className={styles.revert_Btn}
-                    onClick={(e) => {
-                      handleRevertBack(idData, data.camps),
-                        setCardCamp_ID(""),
-                        setShowSaveChanges(false);
-                    }}
-                  >
-                    Revert
-                  </Button>
-                </div>
-              ) : (
-                ""
-              )}
             </Card>
           );
         })}
@@ -228,3 +190,80 @@ export default function DirectSupportedCampsUI({
     </div>
   );
 }
+const DraggableAreaComponent = ({
+  tagsArrayList,
+  handleClose,
+  setValData,
+  setRevertBack,
+  tagsOrder,
+  data,
+  showSaveChanges,
+  idData,
+  saveChanges,
+  handleRevertBack,
+  setCardCamp_ID,
+  setShowSaveChanges,
+}) => {
+  const [disState, setDisState] = useState();
+  return (
+    <>
+      <DraggableArea
+        tags={tagsArrayList}
+        render={({ tag, index }) => (
+          <div
+            className={
+              tag.dis && disState == tag.id ? "tag tags_disable" : "tag"
+            }
+          >
+            <Button
+              key={tag.camp_num}
+              className={styles.tag_btn}
+              disabled={tag.dis && disState == tag.id}
+            >
+              <div className={styles.btndiv}>
+                {" "}
+                <span className="count">{tag.support_order}. </span>
+                <Link href={tag.camp_link}>
+                  <a className={styles.Bluecolor}> {tag.camp_name}</a>
+                </Link>
+              </div>
+              <CloseCircleOutlined
+                onClick={(e) => {
+                  handleClose(tag, data.topic_num, data, []),
+                    setValData(tag),
+                    setRevertBack([]);
+                  setDisState(tag.id);
+                }}
+              />
+            </Button>
+          </div>
+        )}
+        onChange={(tags) => {
+          console.log(tags);
+          tagsOrder(data.topic_num, data, tags);
+        }}
+      />
+
+      {showSaveChanges && idData == data.topic_num ? (
+        <div className={styles.tag_Changes}>
+          <Button className={styles.save_Changes_Btn} onClick={saveChanges}>
+            Save Changes
+          </Button>
+          <Button
+            className={styles.revert_Btn}
+            onClick={(e) => {
+              handleRevertBack(idData, data.camps);
+              setCardCamp_ID("");
+              setShowSaveChanges(false);
+              setDisState("");
+            }}
+          >
+            Revert
+          </Button>
+        </div>
+      ) : (
+        ""
+      )}
+    </>
+  );
+};
