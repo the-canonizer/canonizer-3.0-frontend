@@ -371,9 +371,6 @@ const ForumComponent = ({}) => {
   };
 
   const onFinishPost = async (values) => {
-    // const regex = /(<[^<>\/]+>)\s+|\s+(<\/[^<>]+>)/g;
-    // quillContent.replace(regex, "$1$2")
-
     setPostLoading(true);
     const q = router.query;
 
