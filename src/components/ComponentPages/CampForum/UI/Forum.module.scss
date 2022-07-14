@@ -97,6 +97,7 @@
 .btn_group {
   margin-bottom: 20px;
   margin-top: 10px;
+  display: flex;
 
   .tabBtn {
     border-color: #0f2a4d;
@@ -123,6 +124,8 @@
       color: #ffffff;
       transition: all 0.3s;
       font-weight: 600;
+      margin-left: auto;
+      margin-right: 0;
 
       &:hover,
       &:active,
