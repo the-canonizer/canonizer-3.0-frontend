@@ -9,12 +9,13 @@ import { getAllUsedNickNames } from "src/network/api/campDetailApi";
 import { useRouter } from "next/router";
 import { GetActiveSupportTopic } from "src/network/api/topicAPI";
 import { addSupport } from "src/network/api/userApi";
-
+import isAuth from "../../../hooks/isUserAuthenticated";
 const ManageSupportUI = dynamic(() => import("./ManageSupportUI"), {
   ssr: false,
 });
 
 const ManageSupport = () => {
+  const isLogin = isAuth();
   const router = useRouter();
   const [nickNameList, setNickNameList] = useState([]);
   const [paramsList, setParamsList] = useState({});
@@ -22,6 +23,7 @@ const ManageSupport = () => {
   const [campIds, setcampIds] = useState([]);
   const [manageSupportList, setManageSupportList] = useState([]);
   const [manageSupportRevertData, setManageSupportRevertData] = useState([]);
+  const [selectedtNickname, setSelectedtNickname] = useState();
   const [checked, setChecked] = useState(false);
   const [getSupportStatusData, setGetSupportStatusData] = useState<any>();
   const getCanonizedNicknameList = async () => {
@@ -36,8 +38,12 @@ const ManageSupport = () => {
   };
 
   useEffect(() => {
-    getCanonizedNicknameList();
-    getActiveSupportTopicList();
+    if (isLogin) {
+      getCanonizedNicknameList();
+      getActiveSupportTopicList();
+    } else {
+      router.push("/login");
+    }
   }, []);
 
   let AgreementListArr = [
@@ -96,6 +102,9 @@ const ManageSupport = () => {
   const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
   const campNum = router?.query?.manageSupport?.at(1)?.split("-")?.at(0);
   const camp_Name = router?.query?.manageSupport?.at(1)?.split(/-(.*)/s);
+  //replace use to - change to space
+  const camp_Name_ = camp_Name[1].replace("-", " ");
+
   const body = { topic_num: topicNum };
   const getActiveSupportTopicList = async () => {
     let response = await GetActiveSupportTopic(topicNum && body);
@@ -115,12 +124,25 @@ const ManageSupport = () => {
         (values) => values.camp_num == campNum
       );
       //check for campNum id is same or not and Agrreement is not same in url
-      if (resultFilterSupportCamp.length == 0 && camp_Name[1] != "Agreement") {
+      if (resultFilterSupportCamp.length == 0 && manageSupportArr.length == 0) {
         let supportOrderLen = manageSupportArr.length + 1;
+        //push data into a array of manageSupportArray
         manageSupportArr.push({
           topic_num: parseInt(topicNum),
           camp_num: parseInt(campNum),
-          camp_name: camp_Name[1],
+          camp_name: camp_Name_,
+          support_order: supportOrderLen,
+        });
+      } else if (
+        resultFilterSupportCamp.length == 0 &&
+        camp_Name_ != "Agreement"
+      ) {
+        let supportOrderLen = manageSupportArr.length + 1;
+        //push data into a array of manageSupportArray
+        manageSupportArr.push({
+          topic_num: parseInt(topicNum),
+          camp_num: parseInt(campNum),
+          camp_name: camp_Name_,
           support_order: supportOrderLen,
         });
       }
@@ -138,6 +160,7 @@ const ManageSupport = () => {
       pathname: manageSupportPath,
     });
   };
+
   //Submit NickName Supported Camps
   const submitNickNameSupportCamps = async () => {
     let campIDsArr = [];
@@ -196,18 +219,29 @@ const ManageSupport = () => {
             : {}
           : {};
     }
+
+    //using filter for getting nickName id
+    let nickNameID = nickNameList.filter(
+      (values) => selectedtNickname == values.nick_name
+    );
+    let nickNameIDValue = nickNameID[0].id;
     const addSupportId = {
       topic_num: topicNumId,
       add_camp: add_camp_data,
       remove_camps: campIDsArr,
       type: "direct",
       action: "add",
-      nick_name_id: 571,
+      nick_name_id: nickNameIDValue,
       order_update: filterArrayResult,
     };
+
     let res = await addSupport(addSupportId);
     if (res && res.status_code == 200) {
       message.success(res.message);
+      //After Submit page is redirect to previous
+      router.push({
+        pathname: manageSupportPath,
+      });
     }
   };
   return (
@@ -238,6 +272,8 @@ const ManageSupport = () => {
         getSupportStatusData={getSupportStatusData}
         submitNickNameSupportCamps={submitNickNameSupportCamps}
         cancelManageRoute={cancelManageRoute}
+        setSelectedtNickname={setSelectedtNickname}
+        selectedtNickname={selectedtNickname}
       />
     </>
   );

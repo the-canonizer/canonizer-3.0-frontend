@@ -38,7 +38,7 @@ export const GetActiveSupportTopic = async (body) => {
     ) {
       handleError(err);
     } else {
-      return err.error.data;
+      return err.error?.data;
     }
   }
 };
