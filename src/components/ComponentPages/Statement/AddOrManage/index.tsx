@@ -82,12 +82,19 @@ export default function AddOrManage({ add }) {
         ? res_for_add?.statement?.submitter_nick_id
         : editInfo?.statement?.submitter_nick_id,
       statement: values?.statement?.trim(),
-      objection: objection ? "1" : null,
+      event_type: add
+        ? "create"
+        : update
+        ? "edit"
+        : objection
+        ? "objection"
+        : "update",
+      // objection: objection ? "1" : null,
       statement_id: !!(objection || update)
         ? router?.query?.statement[1]?.split("-")[0]
         : null,
       objection_reason: objection ? values?.objection_reason : null,
-      statement_update: update ? 1 : null,
+      // statement_update: update ? 1 : null,
     };
     let res = await updateStatementApi(reqBody);
     return res;
