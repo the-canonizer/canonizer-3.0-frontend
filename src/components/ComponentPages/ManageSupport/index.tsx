@@ -44,7 +44,7 @@ const ManageSupport = () => {
     } else {
       router.push("/login");
     }
-  }, []);
+  }, [isLogin]);
 
   let AgreementListArr = [
     {
