@@ -28,9 +28,10 @@ export default function DirectSupportedCampsUI({
   removeSupportCampsData,
 }) {
   const [valData, setValData] = useState({});
+  const [disState, setDisState] = useState("");
   const [tagsDataArrValue, setTagsDataArrValue] = useState([]);
   const [tagsCampsOrderID, setTagsCampsOrderID] = useState("");
-  var tagsArrayList = [];
+  let tagsArrayList = [];
   let DataArr = [];
 
   const CardTitle = (props) => {
@@ -84,12 +85,12 @@ export default function DirectSupportedCampsUI({
         ?.map((data, id) => {
           DataArr = data;
           tagsArrayList = data.camps;
-          tagsArrayList.forEach((obj) => {
-            obj.id = obj.camp_num;
+          tagsArrayList.forEach((obj, index) => {
+            obj.id = index + 1;
           });
           return (
             <Card
-              key={id}
+              key={data.topic_num}
               className={styles.cardBox_tags}
               type="inner"
               size="default"
@@ -109,11 +110,15 @@ export default function DirectSupportedCampsUI({
               <DraggableArea
                 tags={tagsArrayList}
                 render={({ tag, index }) => (
-                  <div className={tag.dis ? "tag tags_disable" : "tag"}>
+                  <div
+                    className={
+                      tag.dis && disState == tag.id ? "tag tags_disable" : "tag"
+                    }
+                  >
                     <Button
                       key={tag.camp_num}
                       className={styles.tag_btn}
-                      disabled={tag.dis}
+                      disabled={tag.dis && disState == tag.id}
                     >
                       <div className={styles.btndiv}>
                         {" "}
@@ -127,6 +132,7 @@ export default function DirectSupportedCampsUI({
                           handleClose(tag, data.topic_num, data, []),
                             setValData(tag),
                             setRevertBack([]);
+                          setDisState(tag.id);
                         }}
                       />
                     </Button>
@@ -148,9 +154,10 @@ export default function DirectSupportedCampsUI({
                   <Button
                     className={styles.revert_Btn}
                     onClick={(e) => {
-                      handleRevertBack(idData, data.camps),
-                        setCardCamp_ID(""),
-                        setShowSaveChanges(false);
+                      handleRevertBack(idData, data.camps);
+                      setCardCamp_ID("");
+                      setShowSaveChanges(false);
+                      setDisState("");
                     }}
                   >
                     Revert
