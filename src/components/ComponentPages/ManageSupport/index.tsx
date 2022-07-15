@@ -26,6 +26,7 @@ const ManageSupport = () => {
   const [selectedtNickname, setSelectedtNickname] = useState();
   const [checked, setChecked] = useState(false);
   const [getSupportStatusData, setGetSupportStatusData] = useState<any>();
+  const [payloadBreadCrumb, setPayloadBreadCrumb] = useState({});
   const getCanonizedNicknameList = async () => {
     const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
     const body = { topic_num: topicNum };
@@ -35,9 +36,18 @@ const ManageSupport = () => {
       setNickNameList(res.data);
     }
   };
+
+  const breadCrumbData = () => {
+    setPayloadBreadCrumb({
+      camp_num: router?.query?.manageSupport[1].split("-")[0],
+      topic_num: router?.query?.manageSupport[0].split("-")[0],
+      topic_name: router?.query?.manageSupport[0].split("-").slice(1).join(" "),
+    });
+  };
   //isLogin
   useEffect(() => {
     if (isLogin) {
+      breadCrumbData();
       getCanonizedNicknameList();
       getActiveSupportTopicList();
     } else {
@@ -258,7 +268,7 @@ const ManageSupport = () => {
   };
   return (
     <>
-      <CampInfoBar isTopicPage={true} />
+      {payloadBreadCrumb && <CampInfoBar payload={payloadBreadCrumb} />}
       <div className={styles.card}>
         <div className={styles.btnsWrap}>
           <CreateNewCampButton />
