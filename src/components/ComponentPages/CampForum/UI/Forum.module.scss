@@ -97,6 +97,7 @@
 .btn_group {
   margin-bottom: 20px;
   margin-top: 10px;
+  display: flex;
 
   .tabBtn {
     border-color: #0f2a4d;
@@ -123,6 +124,8 @@
       color: #ffffff;
       transition: all 0.3s;
       font-weight: 600;
+      margin-left: auto;
+      margin-right: 0;
 
       &:hover,
       &:active,
@@ -130,6 +133,23 @@
         background: #d3840e;
         background-color: #d3840e;
         border-color: #f89d15;
+      }
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+
+    .tabBtn {
+      margin-left: 0;
+      margin-right: 0;
+      margin: 5px 5px;
+
+      &.submit_btn {
+        margin-left: 0;
+        margin-right: 0;
+        margin: 5px 5px;
       }
     }
   }
