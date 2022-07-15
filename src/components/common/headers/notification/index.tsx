@@ -84,7 +84,8 @@ const Notifications = ({}) => {
         }
       }
     } else {
-      // await localforage.removeItem("fcm_token");
+      await localforage.removeItem("fcm_token");
+      setChecked(false);
     }
   };
 

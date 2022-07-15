@@ -2,7 +2,6 @@ import { Fragment, useState, useEffect } from "react";
 import { Form, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import localforage from "localforage";
 
 import { createTopic } from "../../../network/api/topicAPI";
 import { getNickNameList } from "../../../network/api/userApi";
@@ -56,14 +55,11 @@ const CreateNewTopic = ({
       return true;
     }
 
-    const fcm_token = await localforage.getItem("fcm_token");
-
     const body = {
       topic_name: values.topic_name?.trim(),
       namespace: values.namespace,
       nick_name: values.nick_name,
       note: values.edit_summary?.trim(),
-      fcm_token,
     };
 
     const res = await createTopic(body);

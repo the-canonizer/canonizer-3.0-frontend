@@ -305,7 +305,6 @@ const ForumComponent = ({}) => {
           title: values.thread_title?.trim(),
           topic_num: paramsList["topic_num"],
           camp_num: paramsList["camp_num"],
-          fcm_token,
         };
         res = await updateThread(body, +q.tId);
       } else {
@@ -424,6 +423,7 @@ const ForumComponent = ({}) => {
     } else {
       res = await createPost(body);
     }
+    console.log("🚀 ~ file: index.tsx ~ line 425 ~ onFinishPost ~ res----", res)
 
     if (res && res.status_code === 200) {
       message.success(res.message);

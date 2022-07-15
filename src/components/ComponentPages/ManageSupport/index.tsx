@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import { GetActiveSupportTopic } from "src/network/api/topicAPI";
 import { addSupport } from "src/network/api/userApi";
 import isAuth from "../../../hooks/isUserAuthenticated";
+import localforage from "localforage";
 const ManageSupportUI = dynamic(() => import("./ManageSupportUI"), {
   ssr: false,
 });
@@ -225,6 +226,7 @@ const ManageSupport = () => {
       (values) => selectedtNickname == values.nick_name
     );
     let nickNameIDValue = nickNameID[0].id;
+    const fcm_token = await localforage.getItem("fcm_token");
     const addSupportId = {
       topic_num: topicNumId,
       add_camp: add_camp_data,
@@ -233,6 +235,7 @@ const ManageSupport = () => {
       action: "add",
       nick_name_id: nickNameIDValue,
       order_update: filterArrayResult,
+      fcm_token
     };
 
     let res = await addSupport(addSupportId);
