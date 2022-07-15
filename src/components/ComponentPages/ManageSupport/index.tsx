@@ -18,11 +18,11 @@ const ManageSupport = () => {
   const isLogin = isAuth();
   const router = useRouter();
   const [nickNameList, setNickNameList] = useState([]);
-  const [paramsList, setParamsList] = useState({});
   const [cardCamp_ID, setCardCamp_ID] = useState("");
   const [campIds, setcampIds] = useState([]);
   const [manageSupportList, setManageSupportList] = useState([]);
   const [manageSupportRevertData, setManageSupportRevertData] = useState([]);
+  const [parentSupportDataList, setParentSupportDataList] = useState([]);
   const [selectedtNickname, setSelectedtNickname] = useState();
   const [checked, setChecked] = useState(false);
   const [getSupportStatusData, setGetSupportStatusData] = useState<any>();
@@ -33,10 +33,9 @@ const ManageSupport = () => {
     let res = await getAllUsedNickNames(topicNum && body);
     if (res && res.status_code == 200) {
       setNickNameList(res.data);
-      // setParamsList(paramsList)
     }
   };
-
+  //isLogin
   useEffect(() => {
     if (isLogin) {
       getCanonizedNicknameList();
@@ -46,14 +45,10 @@ const ManageSupport = () => {
     }
   }, [isLogin]);
 
-  let AgreementListArr = [
-    {
-      id: 1,
-      camp_num: 1,
-      camp_name: "Agreement",
-    },
-  ];
-  let manageSupportArr = [];
+  let manageSupportArr = [],
+    supportArrayListData = [],
+    supportedCampsList = [];
+  //clearAllChanges Functionality
   const clearAllChanges = (val) => {
     setCardCamp_ID("");
     setcampIds([]);
@@ -66,7 +61,7 @@ const ManageSupport = () => {
     });
     setManageSupportList(ClearDataRes);
   };
-
+  //removeAll function
   const removeAll = (checked, val) => {
     setCardCamp_ID("");
     setcampIds([]);
@@ -77,7 +72,7 @@ const ManageSupport = () => {
     });
     setManageSupportList(disabeleAllTopic);
   };
-
+  //handleClose function
   const handleClose = (val, id, dataList) => {
     if (cardCamp_ID == "") {
       Object.keys(val).length === 0
@@ -98,7 +93,7 @@ const ManageSupport = () => {
       setChecked(false);
     }
   };
-
+  //get data from url
   const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
   const campNum = router?.query?.manageSupport?.at(1)?.split("-")?.at(0);
   const camp_Name = router?.query?.manageSupport?.at(1)?.split(/-(.*)/s);
@@ -109,47 +104,48 @@ const ManageSupport = () => {
   const getActiveSupportTopicList = async () => {
     let response = await GetActiveSupportTopic(topicNum && body);
     const dataValue = localStorage.getItem("GetCheckSupportStatus");
-    if (dataValue) {
-      setGetSupportStatusData(dataValue);
-    } else {
-      setGetSupportStatusData("");
-    }
 
     if (response && response.status_code === 200) {
       setCardCamp_ID("");
       response.data?.map((val) => {
-        manageSupportArr.push(val);
+        supportArrayListData.push(val);
+        supportedCampsList.push(val);
       });
-      let resultFilterSupportCamp = manageSupportArr.filter(
+      setParentSupportDataList(supportArrayListData);
+      let resultFilterSupportCamp = response.data.filter(
         (values) => values.camp_num == campNum
       );
-      //check for campNum id is same or not and Agrreement is not same in url
-      if (resultFilterSupportCamp.length == 0 && manageSupportArr.length == 0) {
-        let supportOrderLen = manageSupportArr.length + 1;
-        //push data into a array of manageSupportArray
-        manageSupportArr.push({
-          topic_num: parseInt(topicNum),
-          camp_num: parseInt(campNum),
-          camp_name: camp_Name_,
-          support_order: supportOrderLen,
-        });
-      } else if (
-        resultFilterSupportCamp.length == 0 &&
-        camp_Name_ != "Agreement"
-      ) {
-        let supportOrderLen = manageSupportArr.length + 1;
-        //push data into a array of manageSupportArray
-        manageSupportArr.push({
-          topic_num: parseInt(topicNum),
-          camp_num: parseInt(campNum),
-          camp_name: camp_Name_,
-          support_order: supportOrderLen,
-        });
+      if (dataValue) {
+        setGetSupportStatusData(dataValue);
+        //if Warning message is show
+        if (resultFilterSupportCamp.length == 0) {
+          let supportOrderLen = manageSupportArr.length + 1;
+          //push data into a array of manageSupportArray
+          manageSupportArr.push({
+            topic_num: parseInt(topicNum),
+            camp_num: parseInt(campNum),
+            camp_name: camp_Name_,
+            support_order: supportOrderLen,
+          });
+        }
+        setManageSupportList(manageSupportArr);
+        setManageSupportRevertData(manageSupportArr);
+      } else {
+        //warning  message is not show
+        setGetSupportStatusData("");
+        if (resultFilterSupportCamp.length == 0) {
+          let supportOrderLen = supportedCampsList.length + 1;
+          //push data into a array of manageSupportArray
+          supportedCampsList.push({
+            topic_num: parseInt(topicNum),
+            camp_num: parseInt(campNum),
+            camp_name: camp_Name_,
+            support_order: supportOrderLen,
+          });
+        }
+        setManageSupportList(supportedCampsList);
+        setManageSupportRevertData(supportedCampsList);
       }
-      setManageSupportList(
-        dataValue !== "" ? AgreementListArr : manageSupportArr
-      );
-      setManageSupportRevertData(manageSupportArr);
     }
   };
 
@@ -164,6 +160,11 @@ const ManageSupport = () => {
   //Submit NickName Supported Camps
   const submitNickNameSupportCamps = async () => {
     let campIDsArr = [];
+    //get support_flag status check
+    let supportedCampsStatus = JSON.parse(
+      localStorage.getItem("GetCheckSupportExistsData")
+    );
+    let support_flag_Status = supportedCampsStatus.support_flag;
 
     let topicNumId =
       manageSupportRevertData.length > 0
@@ -173,6 +174,11 @@ const ManageSupport = () => {
     let resultCamp = manageSupportList.filter(
       (values) => !campIds.includes(values.camp_num)
     );
+    //if supported camps  flag is 0 means not supported else same as previous
+    resultCamp =
+      support_flag_Status == 0
+        ? resultCamp.filter((value) => value.camp_num == campNum)
+        : resultCamp;
 
     let filterArrayResult = [];
     resultCamp.map((data, key) => {
@@ -183,8 +189,8 @@ const ManageSupport = () => {
     });
     let add_camp_data = {};
     if (getSupportStatusData !== "") {
-      manageSupportRevertData.length > 0 &&
-        manageSupportRevertData.map((obj) => {
+      parentSupportDataList.length > 0 &&
+        parentSupportDataList.map((obj) => {
           campIDsArr.push(obj.camp_num);
           return obj;
         }),
@@ -222,12 +228,18 @@ const ManageSupport = () => {
 
     //using filter for getting nickName id
     let nickNameID = nickNameList.filter(
-      (values) => selectedtNickname == values.nick_name
+      (values) => selectedtNickname == values.id
     );
     let nickNameIDValue = nickNameID[0].id;
+    let addCampsData;
+    if (support_flag_Status == 1) {
+      addCampsData = {};
+    } else {
+      addCampsData = add_camp_data;
+    }
     const addSupportId = {
       topic_num: topicNumId,
-      add_camp: add_camp_data,
+      add_camp: addCampsData,
       remove_camps: campIDsArr,
       type: "direct",
       action: "add",
@@ -268,7 +280,7 @@ const ManageSupport = () => {
         handleClose={handleClose}
         checked={checked}
         setManageSupportList={setManageSupportList}
-        manageSupportRevertData={manageSupportRevertData}
+        parentSupportDataList={parentSupportDataList}
         getSupportStatusData={getSupportStatusData}
         submitNickNameSupportCamps={submitNickNameSupportCamps}
         cancelManageRoute={cancelManageRoute}
