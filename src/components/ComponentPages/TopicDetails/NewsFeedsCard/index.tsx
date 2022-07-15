@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import { deleteNewsFeedApi } from "../../../../network/api/campNewsApi";
 import { getNewsFeedApi } from "../../../../network/api/campDetailApi";
 import { DeleteOutlined, EditOutlined, CloseOutlined } from "@ant-design/icons";
+
+import { RootState } from "src/store";
+import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import K from "../../../../constants";
@@ -16,10 +19,11 @@ const NewsFeedsCard = ({ newsFeed }) => {
   const isLogin = useAuthentication();
   const [deleteNews, setDeleteNews] = useState(false);
   const [editNews, setEditNews] = useState(false);
-
+  const { is_admin } = useSelector((state: RootState) => ({
+    is_admin: state?.auth?.loggedInUser?.is_admin,
+  }));
   const router = useRouter();
-  const admin = true;
-  // const admin = false;
+
   const handleDeleteCamp = async (id) => {
     const res = await deleteNewsFeedApi({
       newsfeed_id: id,
@@ -62,7 +66,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
                 <>
                   {/* {!(deleteNews || editNews) && ( */}
 
-                  {!(deleteNews || editNews) && admin && isLogin && (
+                  {!(deleteNews || editNews) && is_admin && isLogin && (
                     <>
                       <Button
                         type="link"
@@ -145,49 +149,50 @@ const NewsFeedsCard = ({ newsFeed }) => {
                           )
                         </>
                       )}
-                      {deleteNews &&
-                        (news?.manage_flag ? (
-                          //  && news?.owner_flag
-                          <Popconfirm
-                            // disabled={!news.owner_flag}
-                            placement="topLeft"
-                            title={
-                              K?.exceptionalMessages
-                                ?.deleteCampNewsTooltipMessage
-                            }
-                            onConfirm={() => handleDeleteCamp(news?.id)}
-                            onCancel={() => {
-                              setDeleteNews(false);
-                              setEditNews(false);
-                            }}
-                            okText="Yes"
-                            cancelText="No"
-                          >
-                            <Button
-                              size="small"
-                              type="link"
-                              danger
+                      {
+                        deleteNews &&
+                          (news?.manage_flag ? (
+                            //  && news?.owner_flag
+                            <Popconfirm
                               // disabled={!news.owner_flag}
+                              placement="topLeft"
+                              title={
+                                K?.exceptionalMessages
+                                  ?.deleteCampNewsTooltipMessage
+                              }
+                              onConfirm={() => handleDeleteCamp(news?.id)}
+                              onCancel={() => {
+                                setDeleteNews(false);
+                                setEditNews(false);
+                              }}
+                              okText="Yes"
+                              cancelText="No"
+                            >
+                              <Button
+                                size="small"
+                                type="link"
+                                danger
+                                // disabled={!news.owner_flag}
+                              >
+                                <DeleteOutlined />
+                              </Button>
+                            </Popconfirm>
+                          ) : (
+                            //  news?.owner_flag &&
+                            // !news?.manage_flag ? (
+                            <Tooltip
+                              title={
+                                <>
+                                  This news is inherited from
+                                  <Link href={news?.parent_camp_url}>
+                                    <a>{news?.parent_camp_name}</a>
+                                  </Link>
+                                </>
+                              }
                             >
                               <DeleteOutlined />
-                            </Button>
-                          </Popconfirm>
-                        ) : (
-                          //  news?.owner_flag &&
-                          // !news?.manage_flag ? (
-                          <Tooltip
-                            title={
-                              <>
-                                This news is inherited from
-                                <Link href={news?.parent_camp_url}>
-                                  <a>{news?.parent_camp_name}</a>
-                                </Link>
-                              </>
-                            }
-                          >
-                            <DeleteOutlined />
-                          </Tooltip>
-                        ))
+                            </Tooltip>
+                          ))
                         // : (
                         // <Tooltip
                         //   title={
