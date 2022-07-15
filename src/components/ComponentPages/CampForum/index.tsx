@@ -25,6 +25,7 @@ import {
   getCurrentTopicRecordApi,
 } from "../../../network/api/campDetailApi";
 import { setThread, setPost } from "../../../store/slices/campForumSlice";
+import CampInfoBar from "../TopicDetails/CampInfoBar";
 
 const ForumComponent = ({}) => {
   const [paramsList, setParamsList] = useState({});
@@ -458,12 +459,16 @@ const ForumComponent = ({}) => {
   const pOnChange = (p, size) => {
     setPpage(p);
   };
-
   //  post section end
-
+  let payload = {
+    camp_num: (router?.query?.camp as string)?.split("-")[0],
+    topic_num: (router?.query?.topic as string)?.split("-")[0],
+    topic_name: (router?.query?.topic as string)?.split("-").slice(1).join(" "),
+  };
   return (
     <Fragment>
-      <TopBar topicRecord={topicRecord} campRecord={campRecord} />
+      {/* <TopBar topicRecord={topicRecord} campRecord={campRecord} /> */}
+      <CampInfoBar payload={payload} />
       {router?.pathname === "/forum/[topic]/[camp]/threads" ? (
         <ForumUIList
           onSearch={onSearch}
