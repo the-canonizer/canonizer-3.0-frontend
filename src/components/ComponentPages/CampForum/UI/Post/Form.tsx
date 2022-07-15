@@ -63,7 +63,7 @@ const PostForm = ({
   initialValue,
   nickNameList,
   postCount,
-  quillContent = "",
+  quillContent,
   onContentChange,
   isError = false,
   isLog,

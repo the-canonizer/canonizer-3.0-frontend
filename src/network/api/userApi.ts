@@ -503,6 +503,22 @@ export const removeOrUpdateDirectSupportCamps = async (body) => {
     });
   return res;
 };
+//add Support
+export const addSupport = async (body) => {
+  let state = store.getState();
+  const { auth } = state;
+
+  const res = await NetworkCall.fetch(
+    UserRequest.addSupport(body, auth.loggedInUser.token)
+  )
+    .then((value) => {
+      return value;
+    })
+    .catch((errors) => {
+      handleError(errors);
+    });
+  return res;
+};
 
 export const getDelegatedSupportCampsList = async () => {
   let state = store.getState();

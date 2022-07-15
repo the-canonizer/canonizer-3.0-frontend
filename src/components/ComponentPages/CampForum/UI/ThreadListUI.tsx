@@ -65,7 +65,7 @@ const ThreadListUI = ({
               (!paramsList.by || paramsList.by === "all") && styles.orange
             }`}
             onClick={filterThread.bind(this, "all")}
-            key="all"
+            key="all-btn"
             id="all-thread-btn"
           >
             All Threads
@@ -79,7 +79,7 @@ const ThreadListUI = ({
                   paramsList.by === "my" && styles.orange
                 }`}
                 onClick={filterThread.bind(this, "my")}
-                key="my"
+                key="my-btn"
                 id="my-thread-btn"
               >
                 My Threads
@@ -91,7 +91,7 @@ const ThreadListUI = ({
                   paramsList.by === "participate" && styles.orange
                 }`}
                 onClick={filterThread.bind(this, "participate")}
-                key="participate"
+                key="participate-btn"
                 id="participate-btn"
               >
                 My Participation
@@ -103,7 +103,7 @@ const ThreadListUI = ({
                   paramsList.by === "most_replies" && styles.orange
                 }`}
                 onClick={filterThread.bind(this, "most_replies")}
-                key="most_replies"
+                key="most_replies-btn"
                 id="most-rep-btn"
               >
                 Top 10
@@ -114,7 +114,7 @@ const ThreadListUI = ({
             type="primary"
             className={`${styles.tabBtn} ${styles.submit_btn}`}
             onClick={onCreateThread}
-            key="create"
+            key="create-btn"
             id="create-btn"
           >
             Create Thread
@@ -155,7 +155,7 @@ const ThreadListUI = ({
             responsive={["lg"]}
           />
           <Column
-            title="Most Recent Post Date"
+            title="Last Updated On"
             dataIndex="post_updated_at"
             key="post_updated_at"
             responsive={["lg"]}
@@ -171,7 +171,7 @@ const ThreadListUI = ({
                           others["nick_name_id"] || ""
                         }?topicnum=${others["topic_id"] || ""}&campnum=${
                           others["camp_id"] || ""
-                        }&namespace=1`}
+                        }&namespace=${others["namespace_id"] || 1}`}
                         passHref
                       >
                         <a>

@@ -358,6 +358,8 @@ const ForumComponent = ({}) => {
   }, [router, router?.query, ppage]);
 
   const onContentChange = (v) => {
+    v = v.replace(/(^|>)\s+|\s+(?=<|$)/g, "$1");
+
     setQuillContent(v);
     setIsError(false);
   };
@@ -368,21 +370,7 @@ const ForumComponent = ({}) => {
     return re.test(commentText);
   };
 
-  const isEmptyTag = (htmlString) => {
-    const parser = new DOMParser();
-
-    const { textContent } = parser.parseFromString(
-      htmlString,
-      "text/html"
-    ).documentElement;
-
-    return textContent.trim();
-  };
-
   const onFinishPost = async (values) => {
-    // const regex = /(<[^<>\/]+>)\s+|\s+(<\/[^<>]+>)/g;
-    // quillContent.replace(regex, "$1$2")
-
     setPostLoading(true);
     const q = router.query;
 
@@ -400,7 +388,7 @@ const ForumComponent = ({}) => {
     const topic_num = topicArr?.shift();
 
     const body = {
-      body: isEmptyTag(quillContent),
+      body: quillContent,
       nick_name: values.nick_name,
       thread_id: +q.id,
       camp_num: +camp_num,

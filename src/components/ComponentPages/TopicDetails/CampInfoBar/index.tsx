@@ -165,8 +165,24 @@ const CampInfoBar = ({ payload = null, isTopicPage = false }) => {
           <Link
             href={
               campStatement?.length > 0
-                ? `/statement/history/${router?.query?.camp[0]}/${router?.query?.camp[1]}`
-                : `/create/statement/${router?.query?.camp[0]}/${router?.query?.camp[1]}`
+                ? `/statement/history/${
+                    router?.query?.camp
+                      ? router?.query?.camp[0]
+                      : router?.query?.manageSupport[0]
+                  }/${
+                    router?.query?.camp
+                      ? router?.query?.camp[1]
+                      : router?.query?.manageSupport[1]
+                  }`
+                : `/create/statement/${
+                    router?.query?.camp
+                      ? router?.query?.camp[0]
+                      : router?.query?.manageSupport[0]
+                  }/${
+                    router?.query?.camp
+                      ? router?.query?.camp[1]
+                      : router?.query?.manageSupport[1]
+                  }`
             }
           >
             <a>
@@ -206,9 +222,16 @@ const CampInfoBar = ({ payload = null, isTopicPage = false }) => {
                   ? campRecord?.parentCamps?.map((camp, index) => {
                       return (
                         <Link
-                          href={`${router.query?.camp?.at(0)}/${
-                            camp?.camp_num
-                          }-${camp?.camp_name?.replaceAll(" ", "-")}`}
+                          href={
+                            router.asPath.split("/")[1] == "support"
+                              ? router.asPath.replace("/support/", "/topic/")
+                              : `${(router.query?.camp
+                                  ? router.query?.camp
+                                  : router.query?.manageSupport
+                                )?.at(0)}/${
+                                  camp?.camp_num
+                                }-${camp?.camp_name?.replaceAll(" ", "-")}`
+                          }
                           key={camp?.camp_num}
                         >
                           <a>

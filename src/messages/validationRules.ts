@@ -20,6 +20,7 @@ export const phoneNumberRule = {
     },
   ],
 };
+
 export const mobileCarrierRule = {
   rules: [
     {
@@ -28,6 +29,7 @@ export const mobileCarrierRule = {
     },
   ],
 };
+
 export const firstNameRule = {
   rules: [
     {
@@ -38,12 +40,13 @@ export const firstNameRule = {
       max: 100,
       message: validations.firstNameMax,
     },
-    {
-      pattern: patterns.alphaSpace,
-      message: validations.firstNameSpace,
-    },
+    // {
+    //   pattern: patterns.alphaSpace,
+    //   message: validations.firstNameSpace,
+    // },
   ],
 };
+
 export const lastNameRule = {
   rules: [
     {
@@ -54,12 +57,13 @@ export const lastNameRule = {
       max: 100,
       message: validations.firstNameMax,
     },
-    {
-      pattern: patterns.alphaSpace,
-      message: validations.lastNameSpace,
-    },
+    // {
+    //   pattern: patterns.alphaSpace,
+    //   message: validations.lastNameSpace,
+    // },
   ],
 };
+
 export const middleNameRule = {
   rules: [
     {
@@ -72,6 +76,7 @@ export const middleNameRule = {
     },
   ],
 };
+
 export const emailRule = {
   rules: [
     {
@@ -87,6 +92,7 @@ export const emailRule = {
     },
   ],
 };
+
 export const dobRule = {
   rules: [
     {
@@ -95,6 +101,7 @@ export const dobRule = {
     },
   ],
 };
+
 export const otpRule = {
   rules: [
     {
@@ -107,6 +114,7 @@ export const otpRule = {
     },
   ],
 };
+
 export const phoneRule = {
   rules: [
     {
@@ -244,6 +252,7 @@ export const currentPasswordRule = {
     },
   ],
 };
+
 export const newPasswordRule = {
   rules: [
     {
@@ -319,10 +328,10 @@ export const topicNameRule = {
       max: 30,
       message: validations.topiNameMax30,
     },
-    {
-      pattern: patterns.alphaNumSpace,
-      message: validations.topicNameSpace,
-    },
+    // {
+    //   pattern: patterns.alphaNumSpace,
+    //   message: validations.topicNameSpace,
+    // },
   ],
 };
 
@@ -334,6 +343,7 @@ export const namespaceRule = {
     },
   ],
 };
+
 export const summaryRule = {
   rules: [
     {
@@ -354,10 +364,10 @@ export const campNameRule = {
       max: 30,
       message: validations.topiNameMax30,
     },
-    {
-      pattern: patterns.alphaNumSpace,
-      message: validations.campAlpha,
-    },
+    // {
+    //   pattern: patterns.alphaNumSpace,
+    //   message: validations.campAlpha,
+    // },
   ],
 };
 
@@ -393,9 +403,9 @@ export const threadTitleRule = {
       max: 100,
       message: validations.Max100,
     },
-    {
-      pattern: patterns.alphaNumSpace,
-      message: validations.threadAlpha,
-    },
+    // {
+    //   pattern: patterns.alphaNumSpace,
+    //   message: validations.threadAlpha,
+    // },
   ],
 };
