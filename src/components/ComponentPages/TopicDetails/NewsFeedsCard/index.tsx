@@ -10,7 +10,9 @@ import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import K from "../../../../constants";
 import Link from "next/link";
 
-//the commented code was used in future
+////////////////////////////////////////////////////////////
+//   The commented code bellow  will be used in future   //
+//////////////////////////////////////////////////////////
 
 const { Paragraph } = Typography;
 
