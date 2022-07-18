@@ -9,7 +9,6 @@ export class campManageStatementRequest extends Request {
   // Define request functions below.
 
   static getEditStatement(reqBody, token) {
-    console.log("reqbody2 =>", reqBody);
     return new Request(
       K.Network.URL.GetEditStatement + "/" + reqBody,
       K.Network.Method.GET,

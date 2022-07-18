@@ -390,17 +390,6 @@ export default function AddOrManage({ add }) {
             }
           </Descriptions.Item>
         </Descriptions>
-
-        {/* <p>{form?.getFieldValue("statement")}</p> */}
-        {/* <p>Edit Summary: {form?.getFieldValue("edit_summary")} </p> */}
-        {/* <p>
-          Submitter Nick Name:{" "}
-          {
-            nickNameData?.find(
-              (id) => id.id == form?.getFieldValue("nick_name")
-            )?.nick_name
-          }
-        </p> */}
       </Modal>
     </>
   );
