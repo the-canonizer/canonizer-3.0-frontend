@@ -182,7 +182,11 @@ export default function AddOrManage({ add }) {
                   <Col xs={24} sm={24} xl={12}>
                     <Form.Item
                       className={styles.formItem}
-                      label={<>Nick Name *</>}
+                      label={
+                        <>
+                          Nick Name <span className="required">*</span>
+                        </>
+                      }
                       name="nick_name"
                       rules={[
                         {
@@ -206,7 +210,11 @@ export default function AddOrManage({ add }) {
                     <Form.Item
                       className={`${styles.formItem} mb-2`}
                       name="statement"
-                      label={<>Statement *</>}
+                      label={
+                        <>
+                          Statement <span className="required">*</span>
+                        </>
+                      }
                       rules={[
                         {
                           required: true,
@@ -256,7 +264,8 @@ export default function AddOrManage({ add }) {
                         label={
                           <>
                             Your Objection Reason{" "}
-                            <small>(Limit 100 Char) *</small>
+                            <span className="required">*</span>{" "}
+                            <small>(Limit 100 Char) </small>
                           </>
                         }
                       >
@@ -369,7 +378,8 @@ export default function AddOrManage({ add }) {
         <Descriptions
           className="statementPreviewModal"
           size="small"
-          column={{ xxl: 1 }}
+          column={{ xxl: 1, lg: 1 }}
+          // layout="vertical"
         >
           <Descriptions.Item label="Statement">
             {form?.getFieldValue("statement")}
