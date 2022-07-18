@@ -40,7 +40,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
     setDeleteNews(false);
     setEditNews(false);
   }, [newsFeed]);
-  console.log("newsfeed =>", newsFeed);
+
   return (
     <Collapse
       defaultActiveKey={["1"]}
