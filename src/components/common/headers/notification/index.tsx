@@ -53,7 +53,7 @@ const Notifications = ({}) => {
           getMessage();
         }
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     }
 
@@ -67,7 +67,7 @@ const Notifications = ({}) => {
       const messaging = firebase.messaging();
       if ("serviceWorker" in navigator && "PushManager" in window) {
         const status = await Notification.requestPermission();
-        console.log("[onSwitch ~ status]", status);
+        // console.log("[onSwitch ~ status]", status);
 
         if (status && status === "granted") {
           const fcm_token = await messaging.getToken({
