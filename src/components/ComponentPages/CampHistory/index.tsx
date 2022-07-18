@@ -171,6 +171,7 @@ function CampList() {
         No Camp History Found
       </h2>
     );
+
   return (
     <div className={styles.wrap}>
       <CampInfoBar payload={payload} />
@@ -265,6 +266,7 @@ function CampList() {
               disabled={
                 !(
                   selectedTopic.length >= 2 &&
+                  campHistory &&
                   !selectedTopic?.includes(campHistory["id"])
                 )
               }
