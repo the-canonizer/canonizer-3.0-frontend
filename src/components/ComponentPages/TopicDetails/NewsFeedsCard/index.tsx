@@ -127,16 +127,17 @@ const NewsFeedsCard = ({ newsFeed }) => {
                         {news?.display_text}{" "}
                       </a>
 
-                      {!(deleteNews && editNews) && (
-                        <>
-                          (by{" "}
-                          <strong className="text-orange">
-                            {" "}
-                            {news?.submitter_nick_name}
-                          </strong>
-                          )
-                        </>
-                      )}
+                      {!(deleteNews && editNews) &&
+                        !!news?.submitter_nick_name && (
+                          <>
+                            (by{" "}
+                            <strong className="text-orange">
+                              {" "}
+                              {news?.submitter_nick_name}
+                            </strong>
+                            )
+                          </>
+                        )}
                       {deleteNews &&
                         (news?.manage_flag && news?.owner_flag ? (
                           <Popconfirm

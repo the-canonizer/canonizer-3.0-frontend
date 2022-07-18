@@ -102,9 +102,14 @@ const TopicDetails = () => {
     if (response && response.status_code === 200) {
       setGetCheckSupportStatus(response.data);
       localStorage.removeItem("GetCheckSupportStatus");
+      localStorage.removeItem("GetCheckSupportExistsData");
       localStorage.setItem(
         "GetCheckSupportStatus",
         response.data.warning ? response.data.warning : ""
+      );
+      localStorage.setItem(
+        "GetCheckSupportExistsData",
+        JSON.stringify(response.data)
       );
     }
   };

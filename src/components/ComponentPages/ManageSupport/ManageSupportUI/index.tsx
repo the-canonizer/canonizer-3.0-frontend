@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Button, Col } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { DraggableArea } from "react-draggable-tags";
-import { placeholders } from "src/messages/placeholder";
+import { placeholders } from "./../../../../messages/placeholder";
 
 const ManageSupportUI = ({
   nickNameList,
@@ -16,7 +16,7 @@ const ManageSupportUI = ({
   handleClose,
   checked,
   setManageSupportList,
-  manageSupportRevertData,
+  parentSupportDataList,
   getSupportStatusData,
   cancelManageRoute,
   submitNickNameSupportCamps,
@@ -25,7 +25,7 @@ const ManageSupportUI = ({
 }) => {
   useEffect(() => {
     if (nickNameList.length > 0) {
-      setSelectedtNickname(nickNameList[0]?.nick_name);
+      setSelectedtNickname(nickNameList[0]?.id);
     }
   }, [nickNameList]);
   let tagsArrayList = [];
@@ -37,8 +37,6 @@ const ManageSupportUI = ({
         }))
       : "";
   }
-
-  let nickNameValue = nickNameList.length > 0 && nickNameList[0]?.nick_name;
 
   return (
     <>
@@ -57,7 +55,7 @@ const ManageSupportUI = ({
               {getSupportStatusData}
             </span>
             <Col md={12}>
-              {manageSupportRevertData?.map((tag) => {
+              {parentSupportDataList?.map((tag) => {
                 return (
                   <Tag key={tag.camp_num} className={styles.tag_btn}>
                     <div>
