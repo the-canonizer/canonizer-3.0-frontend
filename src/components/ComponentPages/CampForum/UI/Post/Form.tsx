@@ -56,6 +56,7 @@ const formats = [
   "bullet",
   "indent",
   "link",
+  "clean",
 ];
 
 const PostForm = ({
