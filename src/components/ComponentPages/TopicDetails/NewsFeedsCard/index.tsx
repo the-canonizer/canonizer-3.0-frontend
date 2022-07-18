@@ -3,13 +3,14 @@ import { useEffect, useState } from "react";
 import { deleteNewsFeedApi } from "../../../../network/api/campNewsApi";
 import { getNewsFeedApi } from "../../../../network/api/campDetailApi";
 import { DeleteOutlined, EditOutlined, CloseOutlined } from "@ant-design/icons";
-
 import { RootState } from "src/store";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import K from "../../../../constants";
 import Link from "next/link";
+
+//the commented code was used in future
 
 const { Paragraph } = Typography;
 
