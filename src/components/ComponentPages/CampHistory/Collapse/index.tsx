@@ -128,7 +128,7 @@ function HistoryCollapse({
                       }&namespace=1`}
                       passHref
                     >
-                      <a>{campStatement?.submitterNickName}</a>
+                      <a>{campStatement?.submitter_nick_name}</a>
                     </Link>
                   </span>
                 </Title>
