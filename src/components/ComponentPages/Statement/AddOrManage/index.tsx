@@ -85,7 +85,13 @@ export default function AddOrManage({ add }) {
         ? res_for_add?.statement?.submitter_nick_id
         : editInfo?.statement?.submitter_nick_id,
       statement: values?.statement?.trim(),
-      objection: objection ? "1" : null,
+      event_type: add
+        ? "create"
+        : update
+        ? "edit"
+        : objection
+        ? "objection"
+        : "update",
       statement_id: !!(objection || update)
         ? router?.query?.statement[1]?.split("-")[0]
         : null,
@@ -397,17 +403,6 @@ export default function AddOrManage({ add }) {
             }
           </Descriptions.Item>
         </Descriptions>
-
-        {/* <p>{form?.getFieldValue("statement")}</p> */}
-        {/* <p>Edit Summary: {form?.getFieldValue("edit_summary")} </p> */}
-        {/* <p>
-          Submitter Nick Name:{" "}
-          {
-            nickNameData?.find(
-              (id) => id.id == form?.getFieldValue("nick_name")
-            )?.nick_name
-          }
-        </p> */}
       </Modal>
     </>
   );

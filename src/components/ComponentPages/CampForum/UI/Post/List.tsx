@@ -80,8 +80,27 @@ const CreateCampFormUI = ({
           </Space>
         </div>
         <div
-          className={styles.htmlContainer}
-          dangerouslySetInnerHTML={{ __html: sanitizeHtml(content) }}
+          className={styles.htmlContainer + " ql-editor"}
+          dangerouslySetInnerHTML={{
+            __html: sanitizeHtml(content, {
+              allowedAttributes: {
+                "*": [
+                  "class",
+                  "id",
+                  "href",
+                  "align",
+                  "alt",
+                  "center",
+                  "bgcolor",
+                  "src",
+                  "title",
+                  "style",
+                  "rel",
+                  "target",
+                ],
+              },
+            }),
+          }}
         ></div>
       </Card>
     </Fragment>
