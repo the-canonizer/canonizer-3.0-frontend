@@ -142,17 +142,17 @@ const NewsFeedsCard = ({ newsFeed }) => {
                         {news?.display_text}{" "}
                       </a>
 
-                      {!(deleteNews && editNews) &&  &&
+                      {!(deleteNews && editNews) &&
                         !!news?.submitter_nick_name(
-                        <>
-                          (by{" "}
-                          <strong className="text-orange">
-                            {" "}
-                            {news?.submitter_nick_name}
-                          </strong>
-                          )
-                        </>
-                      )}
+                          <>
+                            (by{" "}
+                            <strong className="text-orange">
+                              {" "}
+                              {news?.submitter_nick_name}
+                            </strong>
+                            )
+                          </>
+                        )}
                       {
                         deleteNews &&
                           (news?.manage_flag ? (
