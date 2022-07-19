@@ -5,7 +5,11 @@ import { Card, Image, Row, Col, Form, message, Tag } from "antd";
 const UserProfileDetails = ({ profileData }) => {
   return (
     <>
-      <Card title={<h3>{messages.labels.userProfile} </h3>}>
+      <Card
+        title={
+          <h3 style={{ margin: "0px" }}>{messages.labels.userProfile} </h3>
+        }
+      >
         <div>
           <div style={{ paddingBottom: "8px" }}>
             <Row gutter={30}>
