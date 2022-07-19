@@ -111,7 +111,7 @@ const UploadFiles = () => {
     if (res && res.status_code == 200) {
       showAddButton();
       //fileStatusHide();
-      openFolder ? "" : enableCreateFolderBtn();
+      openFolder ? disbleCreateFolderBtn() : enableCreateFolderBtn();
       uploadOptionsHide();
       shownFolder();
       hideFiles();
@@ -125,11 +125,21 @@ const UploadFiles = () => {
     GetUploadFileAndFolder();
   };
   const handleCancel = () => {
-    setUploadFileList([]);
-    setFolderFiles([]);
-    uploadOptionsHide();
-    fileStatusHide();
-    GetUploadFileAndFolder();
+    //if open folder is open and check using local storage
+    if (localStorage.getItem("isFolderOpen")) {
+      //setUploadFileList([]);
+      setFolderFiles([]);
+      uploadOptionsHide();
+      //fileStatusHide();
+      shownFileStatus();
+      GetUploadFileAndFolder();
+    } else {
+      setUploadFileList([]);
+      // setFolderFiles([]);
+      uploadOptionsHide();
+      fileStatusHide();
+      GetUploadFileAndFolder();
+    }
   };
   const handle_X_btn = () => {
     crossBtnHide();
@@ -216,6 +226,7 @@ const UploadFiles = () => {
     }
   };
   const GetUploadFileAndFolder = async () => {
+    const isFolderOpen = localStorage.getItem("isFolderOpen");
     let response = await getUploadFileAndFolder();
     if (response) {
       let filesArr = response.data.files;
@@ -230,10 +241,14 @@ const UploadFiles = () => {
         arr.length > 0
           ? (dragBoxHide(),
             shownAddButton(),
-            openFolder ? "" : enableCreateFolderBtn(),
+            openFolder || isFolderOpen
+              ? disbleCreateFolderBtn()
+              : enableCreateFolderBtn(),
             showUploadsAfter())
           : (dragBoxShow(), hideAddButton());
-        openFolder ? "" : enableCreateFolderBtn();
+        openFolder || isFolderOpen
+          ? disbleCreateFolderBtn()
+          : enableCreateFolderBtn();
       }
     }
   };
