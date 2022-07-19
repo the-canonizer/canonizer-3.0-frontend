@@ -6,11 +6,14 @@ import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
 import K from "../../../../constants";
+import moment from "moment";
 
 const { Paragraph } = Typography;
 
 const { Panel } = Collapse;
-
+const covertToTime = (unixTime) => {
+  return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm A");
+};
 const CampStatementCard = ({ myRefToCampStatement, onCampForumClick }) => {
   const router = useRouter();
   const { campStatement } = useSelector((state: RootState) => ({
@@ -31,7 +34,8 @@ const CampStatementCard = ({ myRefToCampStatement, onCampForumClick }) => {
           campStatement?.length ? (
             <div className={styles.cardActions}>
               <span className="bold">Go live Time : </span>
-              {campStatement?.length && campStatement[0]?.go_live_time}
+              {campStatement?.length &&
+                covertToTime(campStatement[0]?.go_live_time)}
             </div>
           ) : null
         }

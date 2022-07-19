@@ -191,7 +191,10 @@ const TopicsList = () => {
   const handleTopicClick = () => {
     setGetTopicsLoadingIndicator(true);
   };
-
+  useEffect(() => {
+    localStorage.removeItem("GetCheckSupportStatus");
+    localStorage.removeItem("GetCheckSupportExistsData");
+  }, []);
   return (
     <>
       <div className={`${styles.card} topicsList_card`}>

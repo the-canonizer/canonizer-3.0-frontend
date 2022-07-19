@@ -50,10 +50,13 @@ const formats = [
   "underline",
   "strike",
   "blockquote",
+  "color",
+  "background",
   "list",
   "bullet",
   "indent",
   "link",
+  "clean",
 ];
 
 const PostForm = ({

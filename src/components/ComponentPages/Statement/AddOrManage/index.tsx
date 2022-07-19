@@ -82,12 +82,17 @@ export default function AddOrManage({ add }) {
         ? res_for_add?.statement?.submitter_nick_id
         : editInfo?.statement?.submitter_nick_id,
       statement: values?.statement?.trim(),
-      objection: objection ? "1" : null,
+      event_type: add
+        ? "create"
+        : update
+        ? "edit"
+        : objection
+        ? "objection"
+        : "update",
       statement_id: !!(objection || update)
         ? router?.query?.statement[1]?.split("-")[0]
         : null,
       objection_reason: objection ? values?.objection_reason : null,
-      statement_update: update ? 1 : null,
     };
     let res = await updateStatementApi(reqBody);
     return res;
@@ -177,7 +182,11 @@ export default function AddOrManage({ add }) {
                   <Col xs={24} sm={24} xl={12}>
                     <Form.Item
                       className={styles.formItem}
-                      label={<>Nick Name *</>}
+                      label={
+                        <>
+                          Nick Name <span className="required">*</span>
+                        </>
+                      }
                       name="nick_name"
                       rules={[
                         {
@@ -201,7 +210,11 @@ export default function AddOrManage({ add }) {
                     <Form.Item
                       className={`${styles.formItem} mb-2`}
                       name="statement"
-                      label={<>Statement *</>}
+                      label={
+                        <>
+                          Statement <span className="required">*</span>
+                        </>
+                      }
                       rules={[
                         {
                           required: true,
@@ -251,7 +264,8 @@ export default function AddOrManage({ add }) {
                         label={
                           <>
                             Your Objection Reason{" "}
-                            <small>(Limit 100 Char) *</small>
+                            <span className="required">*</span>{" "}
+                            <small>(Limit 100 Char) </small>
                           </>
                         }
                       >
@@ -364,7 +378,8 @@ export default function AddOrManage({ add }) {
         <Descriptions
           className="statementPreviewModal"
           size="small"
-          column={{ xxl: 1 }}
+          column={{ xxl: 1, lg: 1 }}
+          // layout="vertical"
         >
           <Descriptions.Item label="Statement">
             {form?.getFieldValue("statement")}
@@ -383,17 +398,6 @@ export default function AddOrManage({ add }) {
             }
           </Descriptions.Item>
         </Descriptions>
-
-        {/* <p>{form?.getFieldValue("statement")}</p> */}
-        {/* <p>Edit Summary: {form?.getFieldValue("edit_summary")} </p> */}
-        {/* <p>
-          Submitter Nick Name:{" "}
-          {
-            nickNameData?.find(
-              (id) => id.id == form?.getFieldValue("nick_name")
-            )?.nick_name
-          }
-        </p> */}
       </Modal>
     </>
   );
