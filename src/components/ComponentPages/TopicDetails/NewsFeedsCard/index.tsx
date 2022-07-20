@@ -3,10 +3,16 @@ import { useEffect, useState } from "react";
 import { deleteNewsFeedApi } from "../../../../network/api/campNewsApi";
 import { getNewsFeedApi } from "../../../../network/api/campDetailApi";
 import { DeleteOutlined, EditOutlined, CloseOutlined } from "@ant-design/icons";
+import { RootState } from "src/store";
+import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import K from "../../../../constants";
 import Link from "next/link";
+
+////////////////////////////////////////////////////////////
+//   The commented code bellow  will be used in future   //
+//////////////////////////////////////////////////////////
 
 const { Paragraph } = Typography;
 
@@ -16,7 +22,9 @@ const NewsFeedsCard = ({ newsFeed }) => {
   const isLogin = useAuthentication();
   const [deleteNews, setDeleteNews] = useState(false);
   const [editNews, setEditNews] = useState(false);
-
+  const { is_admin } = useSelector((state: RootState) => ({
+    is_admin: state?.auth?.loggedInUser?.is_admin,
+  }));
   const router = useRouter();
 
   const handleDeleteCamp = async (id) => {
@@ -59,17 +67,22 @@ const NewsFeedsCard = ({ newsFeed }) => {
                 }}
               >
                 <>
-                  {!(deleteNews || editNews) && (
+                  {/* {!(deleteNews || editNews) && ( */}
+
+                  {!(deleteNews || editNews) && is_admin && isLogin && (
                     <>
                       <Button
                         type="link"
                         onClick={() => {
-                          if (isLogin) {
-                            setEditNews(true);
-                            setDeleteNews(false);
-                          } else {
-                            router.push("/login");
-                          }
+                          // if (isLogin) {
+                          //   setEditNews(true);
+                          //   setDeleteNews(false);
+                          // } else {
+                          //   router.push("/login");
+                          // }
+
+                          setEditNews(true);
+                          setDeleteNews(false);
                         }}
                       >
                         <i className={"icon-edit "} />
@@ -79,12 +92,14 @@ const NewsFeedsCard = ({ newsFeed }) => {
                       <Button
                         type="link"
                         onClick={() => {
-                          if (isLogin) {
-                            setDeleteNews(true);
-                            setEditNews(false);
-                          } else {
-                            router.push("/login");
-                          }
+                          // if (isLogin) {
+                          //   setDeleteNews(true);
+                          //   setEditNews(false);
+                          // } else {
+                          //   router.push("/login");
+                          // }
+                          setEditNews(true);
+                          setDeleteNews(false);
                         }}
                       >
                         <i className={"icon-delete"} />
@@ -128,7 +143,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
                       </a>
 
                       {!(deleteNews && editNews) &&
-                        !!news?.submitter_nick_name && (
+                        !!news?.submitter_nick_name(
                           <>
                             (by{" "}
                             <strong className="text-orange">
@@ -138,78 +153,84 @@ const NewsFeedsCard = ({ newsFeed }) => {
                             )
                           </>
                         )}
-                      {deleteNews &&
-                        (news?.manage_flag && news?.owner_flag ? (
-                          <Popconfirm
-                            disabled={!news.owner_flag}
-                            placement="topLeft"
-                            title={
-                              K?.exceptionalMessages
-                                ?.deleteCampNewsTooltipMessage
-                            }
-                            onConfirm={() => handleDeleteCamp(news?.id)}
-                            onCancel={() => {
-                              setDeleteNews(false);
-                              setEditNews(false);
-                            }}
-                            okText="Yes"
-                            cancelText="No"
-                          >
-                            <Button
-                              size="small"
-                              type="link"
-                              danger
-                              disabled={!news.owner_flag}
+                      {
+                        deleteNews &&
+                          (news?.manage_flag ? (
+                            //  && news?.owner_flag
+                            <Popconfirm
+                              // disabled={!news.owner_flag}
+                              placement="topLeft"
+                              title={
+                                K?.exceptionalMessages
+                                  ?.deleteCampNewsTooltipMessage
+                              }
+                              onConfirm={() => handleDeleteCamp(news?.id)}
+                              onCancel={() => {
+                                setDeleteNews(false);
+                                setEditNews(false);
+                              }}
+                              okText="Yes"
+                              cancelText="No"
+                            >
+                              <Button
+                                size="small"
+                                type="link"
+                                danger
+                                // disabled={!news.owner_flag}
+                              >
+                                <DeleteOutlined />
+                              </Button>
+                            </Popconfirm>
+                          ) : (
+                            //  news?.owner_flag &&
+                            // !news?.manage_flag ? (
+                            <Tooltip
+                              title={
+                                <>
+                                  This news is inherited from
+                                  <Link href={news?.parent_camp_url}>
+                                    <a>{news?.parent_camp_name}</a>
+                                  </Link>
+                                </>
+                              }
                             >
                               <DeleteOutlined />
-                            </Button>
-                          </Popconfirm>
-                        ) : news?.owner_flag && !news?.manage_flag ? (
-                          <Tooltip
-                            title={
-                              <>
-                                This news is inherited from
-                                <Link href={news?.parent_camp_url}>
-                                  <a>{news?.parent_camp_name}</a>
-                                </Link>
-                              </>
-                            }
-                          >
-                            <DeleteOutlined />
-                          </Tooltip>
-                        ) : (
-                          <Tooltip
-                            title={
-                              news.owner_flag
-                                ? ""
-                                : K?.exceptionalMessages?.tooltipNewsDelete
-                            }
-                          >
-                            <DeleteOutlined />
-                          </Tooltip>
-                        ))}
+                            </Tooltip>
+                          ))
+                        // : (
+                        // <Tooltip
+                        //   title={
+                        //     news.owner_flag
+                        //       ? ""
+                        //       : K?.exceptionalMessages?.tooltipNewsDelete
+                        //   }
+                        // >
+                        //   <DeleteOutlined />
+                        // </Tooltip>
+                        // )
+                      }
 
                       {editNews && (
-                        <Tooltip
-                          title={
-                            news.owner_flag
-                              ? ""
-                              : K?.exceptionalMessages?.tooltipNewsEdit
+                        // <Tooltip
+                        //   title={
+                        //     news.owner_flag
+                        //       ? ""
+                        //       : K?.exceptionalMessages?.tooltipNewsEdit
+                        //   }
+                        // >
+                        <Button
+                          size="small"
+                          type="link"
+                          // disabled={!news.owner_flag}
+                          onClick={() =>
+                            router.push(
+                              `/editnews/${router?.query?.camp[0]}/${router?.query?.camp[1]}/camp-id-${news?.id}`
+                            )
                           }
                         >
-                          <Button
-                            size="small"
-                            type="link"
-                            disabled={!news.owner_flag}
-                            onClick={() =>
-                              router.push(
-                                `/editnews/${router?.query?.camp[0]}/${router?.query?.camp[1]}/camp-id-${news?.id}`
-                              )
-                            }
-                          >
-                            <EditOutlined />
-                          </Button>
-                        </Tooltip>
+                          <EditOutlined />
+                        </Button>
+                        // </Tooltip>
                       )}
                     </Paragraph>
                   </li>
