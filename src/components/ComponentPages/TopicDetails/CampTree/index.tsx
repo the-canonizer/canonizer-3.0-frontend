@@ -41,7 +41,7 @@ const CampTree = ({ scrollToCampStatement }) => {
       if (data[item].children) {
         if (data[item].score >= scoreFilter) {
           return (
-            <>
+            <div key={item}>
               <TreeNode
                 title={
                   <>
@@ -56,7 +56,10 @@ const CampTree = ({ scrollToCampStatement }) => {
                         }
                       >
                         <Link
-                          href={data[item]?.link?.replace("#statement", "")}
+                          href={data[item]?.link
+                            ?.replace("#statement", "")
+                            .replace("//", "/")}
+                          passHref
                         >
                           <a
                             className={
@@ -103,7 +106,7 @@ const CampTree = ({ scrollToCampStatement }) => {
                 )}
                 {renderTreeNodes(data[item].children)}
               </TreeNode>
-            </>
+            </div>
           );
         } else {
           return null;
