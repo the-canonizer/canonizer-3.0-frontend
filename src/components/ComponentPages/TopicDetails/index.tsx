@@ -63,9 +63,7 @@ const TopicDetails = () => {
         camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
         asOf: asof,
         asofdate:
-          asof == ("default" || asof == "review")
-            ? Date.now() / 1000
-            : asofdate,
+          asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
         algorithm: algorithm,
         update_all: 1,
       };
@@ -75,7 +73,7 @@ const TopicDetails = () => {
         camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
         as_of: asof,
         as_of_date:
-          asof == ("default" || asof == "review")
+          asof == "default" || asof == "review"
             ? Date.now() / 1000
             : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
       };
