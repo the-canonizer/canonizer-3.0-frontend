@@ -87,8 +87,14 @@ const CampStatementCard = ({ myRefToCampStatement, onCampForumClick }) => {
             <Link
               href={
                 campStatement?.length > 0
-                  ? `/statement/history/${router?.query?.camp[0]}/${router?.query?.camp[1]}`
-                  : `/create/statement/${router?.query?.camp[0]}/${router?.query?.camp[1]}`
+                  ? `/statement/history/${router?.query?.camp[0]?.replace(
+                      "?",
+                      "%3f"
+                    )}/${router?.query?.camp[1]?.replace("?", "%3f")}`
+                  : `/create/statement/${router?.query?.camp[0]?.replace(
+                      "?",
+                      "%3f"
+                    )}/${router?.query?.camp[1]?.replace("?", "%3f")}`
               }
             >
               <a>
