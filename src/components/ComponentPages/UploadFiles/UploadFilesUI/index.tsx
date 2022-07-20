@@ -99,9 +99,11 @@ const UploadFileUI = ({
   setDeleteConfirmationVisible,
   flickringData,
   setFlickringData,
+  toggleFileView,
+  setToggleFileView,
 }) => {
   const [uploadStatus, setUploadStatus] = useState(false);
-  const [toggleFileView, setToggleFileView] = useState(false);
+  // const [toggleFileView, setToggleFileView] = useState(false);
   const [previewImageIndicator, setPreviewImageIndicator] = useState(false);
   const [addFileIndicator, setAddFileIndicator] = useState(false);
   const [loadingArray, setLoadingArray] = useState([]);
@@ -385,8 +387,7 @@ const UploadFileUI = ({
     editModal ? changeFolderName() : createNewFolder();
   };
   const onFinishValidation = () => {
-    uploadList(), uploadFun(), setToggleFileView(false);
-    setUploadFileList([]), setFolderFiles([]);
+    uploadList(), uploadFun();
   };
 
   const columns = [

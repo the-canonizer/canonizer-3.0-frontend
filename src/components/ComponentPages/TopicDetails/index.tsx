@@ -28,9 +28,10 @@ import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 import moment from "moment";
 import { GetCheckSupportExists } from "src/network/api/topicAPI";
 import queryParams from "src/utils/queryParams";
+import isAuth from "../../../hooks/isUserAuthenticated";
 const TopicDetails = () => {
   let myRefToCampStatement = useRef(null);
-
+  const isLogin = isAuth();
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [getTreeLoadingIndicator, setGetTreeLoadingIndicator] = useState(false);
   const [getCheckSupportStatus, setGetCheckSupportStatus] = useState({});
@@ -113,9 +114,12 @@ const TopicDetails = () => {
       );
     }
   };
+
   useEffect(() => {
-    GetCheckStatusData();
-  }, []);
+    if (isLogin) {
+      GetCheckStatusData();
+    }
+  }, [isLogin]);
 
   const scrollToCampStatement = () => {
     myRefToCampStatement.current?.scrollIntoView({ behavior: "smooth" });
