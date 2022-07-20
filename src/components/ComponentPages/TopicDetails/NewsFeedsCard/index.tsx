@@ -143,7 +143,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
                       </a>
 
                       {!(deleteNews && editNews) &&
-                        !!news?.submitter_nick_name(
+                        !!news?.submitter_nick_name && (
                           <>
                             (by{" "}
                             <strong className="text-orange">
