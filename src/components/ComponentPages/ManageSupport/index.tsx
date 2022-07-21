@@ -36,6 +36,7 @@ const ManageSupport = () => {
       setNickNameList(res.data);
     }
   };
+  const [submitButtonDisable, setSubmitButtonDisable] = useState(false);
 
   const breadCrumbData = () => {
     setPayloadBreadCrumb({
@@ -50,6 +51,7 @@ const ManageSupport = () => {
       breadCrumbData();
       getCanonizedNicknameList();
       getActiveSupportTopicList();
+      setSubmitButtonDisable(false);
     } else {
       router.push("/login");
     }
@@ -172,6 +174,7 @@ const ManageSupport = () => {
 
   //Submit NickName Supported Camps
   const submitNickNameSupportCamps = async () => {
+    setSubmitButtonDisable(true);
     let campIDsArr = [];
     //get support_flag status check
     let supportedCampsStatus = JSON.parse(
@@ -268,6 +271,9 @@ const ManageSupport = () => {
         pathname: manageSupportPath,
       });
     }
+    if (res && res.status_code != 200) {
+      setSubmitButtonDisable(false);
+    }
   };
   return (
     <>
@@ -299,6 +305,7 @@ const ManageSupport = () => {
         cancelManageRoute={cancelManageRoute}
         setSelectedtNickname={setSelectedtNickname}
         selectedtNickname={selectedtNickname}
+        submitButtonDisable={submitButtonDisable}
       />
     </>
   );

@@ -1010,11 +1010,15 @@ const UploadFileUI = ({
                     />
                   </div>
                   <div className={styles.search_users}>
-                    <SearchOutlined />
+                    <div className="searchinput">
+                      <SearchOutlined />
+                    </div>
+
                     <Input
                       disabled={show_UploadOptions || dragBoxStatus}
                       id="datePickerText"
                       placeholder="Search"
+                      autoComplete="off"
                       type="text"
                       name="search"
                       onChange={(e) => {
