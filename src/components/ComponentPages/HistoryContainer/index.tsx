@@ -13,9 +13,9 @@ import HistoryCollapse from "./Collapse";
 import { RootState } from "src/store";
 import CampInfoBar from "../TopicDetails/CampInfoBar";
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
-function CampList() {
+function HistoryContainer() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("all");
   const [selectedTopic, setSelectedTopic] = useState([]);
@@ -55,6 +55,7 @@ function CampList() {
       }
     };
     asynCall();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, agreecheck]);
 
   const campStatementApiCall = async () => {
@@ -309,4 +310,4 @@ function CampList() {
   );
 }
 
-export default CampList;
+export default HistoryContainer;

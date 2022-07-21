@@ -1,4 +1,4 @@
-import CampHistory from "../../../components/ComponentPages/CampHistory";
+import HistoryContainer from "../../../components/ComponentPages/HistoryContainer";
 
 import Layout from "../../../hoc/layout";
 
@@ -6,7 +6,7 @@ const CampHistoryPage = ({}) => {
   return (
     <>
       <Layout>
-        <CampHistory />
+        <HistoryContainer />
       </Layout>
     </>
   );
