@@ -29,15 +29,24 @@ const CampInfoBar = ({ payload = null, isTopicPage = false }) => {
   const [breadCrumbRes, setBreadCrumbRes] = useState([]);
   const didMount = useRef(false);
   const router = useRouter();
-  const { topicRecord, campRecord, campStatement, asofdate, asof, algorithm } =
-    useSelector((state: RootState) => ({
-      topicRecord: state?.topicDetails?.currentTopicRecord,
-      campRecord: state?.topicDetails?.currentCampRecord,
-      campStatement: state?.topicDetails?.campStatement,
-      asofdate: state.filters?.filterObject?.asofdate,
-      algorithm: state.filters?.filterObject?.algorithm,
-      asof: state?.filters?.filterObject?.asof,
-    }));
+  const {
+    topicRecord,
+    campRecord,
+    campStatement,
+    is_admin,
+    asofdate,
+    asof,
+    algorithm,
+  } = useSelector((state: RootState) => ({
+    topicRecord: state?.topicDetails?.currentTopicRecord,
+    campRecord: state?.topicDetails?.currentCampRecord,
+    campStatement: state?.topicDetails?.campStatement,
+
+    is_admin: state?.auth?.loggedInUser?.is_admin,
+    asofdate: state.filters?.filterObject?.asofdate,
+    algorithm: state.filters?.filterObject?.algorithm,
+    asof: state?.filters?.filterObject?.asof,
+  }));
   const [campSubscriptionID, setCampSubscriptionID] = useState(
     campRecord?.subscriptionId
   );
@@ -92,15 +101,15 @@ const CampInfoBar = ({ payload = null, isTopicPage = false }) => {
 
   const campForumDropdownMenu = (
     <Menu className={styles.campForumDropdownMenu}>
-      <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
-        <Link
-          href={isLogin ? router.asPath.replace("topic", "addnews") : "/login"}
-        >
-          <a rel="noopener noreferrer" href="/add-news">
-            Add News
-          </a>
-        </Link>
-      </Menu.Item>
+      {isLogin && is_admin && (
+        <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
+          <Link href={router.asPath.replace("topic", "addnews")}>
+            <a rel="noopener noreferrer" href="/add-news">
+              Add News
+            </a>
+          </Link>
+        </Menu.Item>
+      )}
       <Menu.Item
         icon={
           <i
