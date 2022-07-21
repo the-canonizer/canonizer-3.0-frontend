@@ -1,33 +1,27 @@
 import { handleError } from "../../utils/generalUtility";
 import { store } from "../../store";
 import {
-  pushToCampStatementHistory,
+  pushToCampHistory,
   setHistory,
 } from "../../store/slices/campDetailSlice";
 import NetworkCall from "../networkCall";
-import CampStatementHistoryRequest from "../request/campStatementHistoryRequest";
+import historyRequest from "../request/historyRequest";
 
 export const getHistoryApi = async (reqBody, pageNumber, historyOf: string) => {
   let state = store.getState();
   const { auth } = state;
   try {
-    const campStatementHistory = await NetworkCall.fetch(
-      CampStatementHistoryRequest.getHistory(
-        reqBody,
-        auth.loggedInUser?.token,
-        historyOf
-      ),
+    const history = await NetworkCall.fetch(
+      historyRequest.getHistory(reqBody, auth.loggedInUser?.token, historyOf),
       false
     );
     if (pageNumber == 1) {
-      store.dispatch(setHistory(campStatementHistory.data));
+      store.dispatch(setHistory(history.data));
     } else {
-      store.dispatch(
-        pushToCampStatementHistory(campStatementHistory.data.items || [])
-      );
+      store.dispatch(pushToCampHistory(history.data.items || []));
     }
     // debugger;
-    return campStatementHistory?.data;
+    return history?.data;
   } catch (error) {
     // message.error(error.message);
   }
@@ -37,12 +31,13 @@ export const getLiveHistoryApi = async (reqBody, historyOf) => {
   let state = store.getState();
   const { auth } = state;
   try {
-    const campStatementHistory = await NetworkCall.fetch(
-      CampStatementHistoryRequest.getLiveHistory(reqBody, historyOf),
+    const history = await NetworkCall.fetch(
+      historyRequest.getLiveHistory(reqBody, historyOf),
       false
     );
-    store.dispatch(setHistory({ items: campStatementHistory.data }));
-    return campStatementHistory.data;
+
+    store.dispatch(setHistory({ items: history.data }));
+    return history.data;
   } catch (error) {
     return error;
   }
@@ -51,7 +46,7 @@ export const getLiveHistoryApi = async (reqBody, historyOf) => {
 export const getCompareStatement = async (reqBody) => {
   try {
     const res = await NetworkCall.fetch(
-      CampStatementHistoryRequest.statementCompare(reqBody),
+      historyRequest.statementCompare(reqBody),
       false
     );
 
@@ -64,7 +59,7 @@ export const getCompareStatement = async (reqBody) => {
 export const changeCommitStatement = async (reqBody) => {
   try {
     const res = await NetworkCall.fetch(
-      CampStatementHistoryRequest.commitChangeStatement(reqBody),
+      historyRequest.commitChangeStatement(reqBody),
       false
     );
 
@@ -77,7 +72,7 @@ export const changeCommitStatement = async (reqBody) => {
 export const agreeToChangeApi = async (reqBody) => {
   try {
     const res = await NetworkCall.fetch(
-      CampStatementHistoryRequest.agreeToChange(reqBody),
+      historyRequest.agreeToChange(reqBody),
       false
     );
 

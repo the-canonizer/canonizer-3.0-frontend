@@ -56,7 +56,7 @@ export const treeSlice = createSlice({
     setHistory: (state, action) => {
       state.history = action.payload;
     },
-    pushToCampStatementHistory: (state, action) => {
+    pushToCampHistory: (state, action) => {
       state.history = {
         ...state.history,
         items: [...state.history.items, ...action.payload],
@@ -76,7 +76,7 @@ export const {
   setHistory,
   setCurrentTopicRecordSubscriptionId,
   setCurrentCampRecordSubscriptionId,
-  pushToCampStatementHistory,
+  pushToCampHistory,
 } = treeSlice.actions;
 
 export default treeSlice.reducer;

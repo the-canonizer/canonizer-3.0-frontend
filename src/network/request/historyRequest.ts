@@ -24,8 +24,10 @@ export default class CampStatementHistoryRequest extends Request {
       liveHistoryUrl = "GetCampStatement";
     } else if (historyOf == "camp") {
       historyUrl = "GetCampHistory";
+      liveHistoryUrl = "GetCampStatement";
     } else if (historyOf == "topic") {
       historyUrl = "GetTopicHistory";
+      liveHistoryUrl = "GetCampStatement";
     }
     return { historyUrl, liveHistoryUrl };
   }
