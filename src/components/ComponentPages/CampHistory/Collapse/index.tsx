@@ -16,11 +16,14 @@ import { useState, useEffect, useRef } from "react";
 import {
   changeCommitStatement,
   agreeToChangeApi,
-} from "../../../../network/api/campStatementHistory";
+} from "../../../../network/api/history";
 import { useDispatch } from "react-redux";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 
 import styles from ".././campHistory.module.scss";
+import StatementHistory from "./statementHistory";
+import CampHistory from "./campHistory";
+import TopicHistory from "./topicHistory";
 
 const { Panel } = Collapse;
 const { Title } = Typography;
@@ -45,7 +48,7 @@ function HistoryCollapse({
       })
     );
   };
-
+  const historyOf = router?.asPath.split("/")[1];
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
@@ -72,6 +75,19 @@ function HistoryCollapse({
     let res = await agreeToChangeApi(reqBody);
     changeAgree();
   };
+
+  let historyTitle = () => {
+    let title: string;
+    if (historyOf == "statement") {
+      title = "Statement";
+    } else if (historyOf == "camp") {
+      title = "Camp";
+    } else if (historyOf == "topic") {
+      title = "Topic";
+    }
+    return title;
+  };
+
   return (
     <div>
       <Space
@@ -95,7 +111,7 @@ function HistoryCollapse({
             showArrow={false}
           >
             <>
-              <Title level={5}>Statement :</Title>
+              <Title level={5}>{historyTitle()} :</Title>
               <div
                 dangerouslySetInnerHTML={{
                   __html: campStatement?.parsed_value,
@@ -107,7 +123,17 @@ function HistoryCollapse({
           <>
             <div className={styles.campCollapseSummaryWrap}>
               <div className={styles.campStatementCollapseSummary}>
-                <Title level={5}>
+                {historyOf == "statement" && (
+                  <StatementHistory campStatement={campStatement} />
+                )}
+                {historyOf == "camp" && (
+                  <CampHistory campStatement={campStatement} />
+                )}
+                {historyOf == "topic" && (
+                  <TopicHistory campStatement={campStatement} />
+                )}
+
+                {/* <Title level={5}>
                   Edit summary :{" "}
                   <span className={styles.updateSurveyPrj}>
                     {campStatement?.note}
@@ -146,7 +172,7 @@ function HistoryCollapse({
                 <Title level={5}>
                   Go live Time :{" "}
                   <span>{covertToTime(campStatement?.go_live_time)}</span>
-                </Title>
+                </Title> */}
                 <Checkbox
                   className={styles.campSelectCheckbox}
                   onChange={onSelectCompare.bind(this, campStatement)}

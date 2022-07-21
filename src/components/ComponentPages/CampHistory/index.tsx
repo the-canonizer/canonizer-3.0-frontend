@@ -7,10 +7,7 @@ import InfiniteScroll from "react-infinite-scroller";
 
 import styles from "./campHistory.module.scss";
 
-import {
-  getHistoryApi,
-  getLiveHistoryApi,
-} from "../../../network/api/campStatementHistory";
+import { getHistoryApi, getLiveHistoryApi } from "../../../network/api/history";
 
 import HistoryCollapse from "./Collapse";
 import { RootState } from "src/store";
