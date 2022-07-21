@@ -37,15 +37,15 @@ function CampList() {
   };
   const count = useRef(1);
 
-  const { campStatementHistory } = useSelector((state: RootState) => ({
-    campStatementHistory: state?.topicDetails?.campStatementHistory,
+  const { history } = useSelector((state: RootState) => ({
+    history: state?.topicDetails?.history,
   }));
   const [loadingIndicator, setLoadingIndicator] = useState(false);
-  const [campHistory, setCampHistory] = useState(campStatementHistory);
+  const [campHistory, setCampHistory] = useState(history);
 
   useEffect(() => {
-    setCampHistory(campStatementHistory);
-  }, [campStatementHistory]);
+    setCampHistory(history);
+  }, [history]);
 
   useEffect(() => {
     const asynCall = async () => {
