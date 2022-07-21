@@ -143,6 +143,18 @@ function CampList() {
     </div>
   );
 
+  let historyTitle = () => {
+    let title: string;
+    if (historyOf == "statement") {
+      title = "Camp Statement History";
+    } else if (historyOf == "camp") {
+      title = "Camp History";
+    } else if (historyOf == "topic") {
+      title = "Topic History";
+    }
+    return title;
+  };
+
   const renderCampHistories =
     campHistory && campHistory?.items?.length ? (
       campHistory?.items?.map((campHistoryData, index) => {
@@ -191,7 +203,7 @@ function CampList() {
         >
           <div className={styles.tabHead}>
             <div className={styles.filterOt}>
-              <Title level={4}>Camp Statement History</Title>
+              <Title level={4}>{historyTitle()}</Title>
               <Spin spinning={loadingIndicator} size="default">
                 <List className={styles.campStatementHistory} size="small">
                   <List.Item
