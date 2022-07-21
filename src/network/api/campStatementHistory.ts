@@ -31,6 +31,30 @@ export const getCampStatementHistoryApi = async (reqBody, pageNumber) => {
     // message.error(error.message);
   }
 };
+export const getCampHistoryApi = async (reqBody, pageNumber) => {
+  let state = store.getState();
+  const { auth } = state;
+  try {
+    const campStatementHistory = await NetworkCall.fetch(
+      CampStatementHistoryRequest.campHistory(
+        reqBody,
+        auth.loggedInUser?.token
+      ),
+      false
+    );
+    if (pageNumber == 1) {
+      store.dispatch(setCampStatementHistory(campStatementHistory?.data));
+    } else {
+      store.dispatch(
+        pushToCampStatementHistory(campStatementHistory?.data?.items || [])
+      );
+    }
+    // debugger;
+    return campStatementHistory?.data;
+  } catch (error) {
+    // message.error(error.message);
+  }
+};
 
 export const getLiveCampStatementApi = async (reqBody, pageNumber) => {
   let state = store.getState();

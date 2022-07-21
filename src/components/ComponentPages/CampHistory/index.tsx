@@ -8,6 +8,7 @@ import InfiniteScroll from "react-infinite-scroller";
 import styles from "./campHistory.module.scss";
 
 import {
+  getCampHistoryApi,
   getCampStatementHistoryApi,
   getLiveCampStatementApi,
 } from "../../../network/api/campStatementHistory";
@@ -29,6 +30,7 @@ function CampList() {
   const changeAgree = () => {
     setAgreeCheck(!agreecheck);
   };
+  const isHistoryOf = router?.asPath.split("/")[1];
   let payload = {
     camp_num: router?.query?.camp[1]?.split("-")[0],
     topic_num: router?.query?.camp[0]?.split("-")[0],
@@ -69,7 +71,13 @@ function CampList() {
         per_page: 4,
         page: count.current,
       };
-      const res = await getCampStatementHistoryApi(reqBody, count.current);
+      let res;
+      if (isHistoryOf == "statement") {
+        res = await getCampStatementHistoryApi(reqBody, count.current);
+      } else if (isHistoryOf == "camp") {
+        res = await getCampHistoryApi(reqBody, count.current);
+      }
+      console.log("res=> ", res);
       if (!res || !res?.last_page) {
         setLoadMoreItems(false);
         setLoadingIndicator(false);

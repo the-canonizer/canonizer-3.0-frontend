@@ -16,6 +16,16 @@ export default class CampStatementHistoryRequest extends Request {
       token
     );
   }
+  static campHistory(body, token) {
+    return new Request(
+      K.Network.URL.GetCampHistory,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
   static getLiveCampStatement(reqBody) {
     return new Request(
       K.Network.URL.GetCampStatement,
