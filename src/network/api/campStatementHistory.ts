@@ -2,51 +2,28 @@ import { handleError } from "../../utils/generalUtility";
 import { store } from "../../store";
 import {
   pushToCampStatementHistory,
-  setCampStatementHistory,
+  setHistory,
 } from "../../store/slices/campDetailSlice";
 import NetworkCall from "../networkCall";
 import CampStatementHistoryRequest from "../request/campStatementHistoryRequest";
 
-export const getCampStatementHistoryApi = async (reqBody, pageNumber) => {
+export const getHistoryApi = async (reqBody, pageNumber, historyOf: string) => {
   let state = store.getState();
   const { auth } = state;
   try {
     const campStatementHistory = await NetworkCall.fetch(
-      CampStatementHistoryRequest.statementHistory(
+      CampStatementHistoryRequest.getHistory(
         reqBody,
-        auth.loggedInUser?.token
+        auth.loggedInUser?.token,
+        historyOf
       ),
       false
     );
     if (pageNumber == 1) {
-      store.dispatch(setCampStatementHistory(campStatementHistory?.data));
+      store.dispatch(setHistory(campStatementHistory.data));
     } else {
       store.dispatch(
-        pushToCampStatementHistory(campStatementHistory?.data?.items || [])
-      );
-    }
-    // debugger;
-    return campStatementHistory?.data;
-  } catch (error) {
-    // message.error(error.message);
-  }
-};
-export const getCampHistoryApi = async (reqBody, pageNumber) => {
-  let state = store.getState();
-  const { auth } = state;
-  try {
-    const campStatementHistory = await NetworkCall.fetch(
-      CampStatementHistoryRequest.campHistory(
-        reqBody,
-        auth.loggedInUser?.token
-      ),
-      false
-    );
-    if (pageNumber == 1) {
-      store.dispatch(setCampStatementHistory(campStatementHistory?.data));
-    } else {
-      store.dispatch(
-        pushToCampStatementHistory(campStatementHistory?.data?.items || [])
+        pushToCampStatementHistory(campStatementHistory.data.items || [])
       );
     }
     // debugger;
@@ -56,18 +33,16 @@ export const getCampHistoryApi = async (reqBody, pageNumber) => {
   }
 };
 
-export const getLiveCampStatementApi = async (reqBody, pageNumber) => {
+export const getLiveHistoryApi = async (reqBody, historyOf) => {
   let state = store.getState();
   const { auth } = state;
   try {
     const campStatementHistory = await NetworkCall.fetch(
-      CampStatementHistoryRequest.getLiveCampStatement(reqBody),
+      CampStatementHistoryRequest.getLiveHistory(reqBody, historyOf),
       false
     );
-    store.dispatch(
-      setCampStatementHistory({ items: campStatementHistory?.data })
-    );
-    return campStatementHistory?.data;
+    store.dispatch(setHistory({ items: campStatementHistory.data }));
+    return campStatementHistory.data;
   } catch (error) {
     return error;
   }

@@ -53,7 +53,7 @@ export const treeSlice = createSlice({
         ...action.payload,
       ];
     },
-    setCampStatementHistory: (state, action) => {
+    setHistory: (state, action) => {
       state.campStatementHistory = action.payload;
     },
     pushToCampStatementHistory: (state, action) => {
@@ -73,7 +73,7 @@ export const {
   pushToCampSupportingTree,
   setCurrentTopicRecord,
   setCurrentCampRecord,
-  setCampStatementHistory,
+  setHistory,
   setCurrentTopicRecordSubscriptionId,
   setCurrentCampRecordSubscriptionId,
   pushToCampStatementHistory,

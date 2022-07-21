@@ -6,7 +6,7 @@ export default class CampStatementHistoryRequest extends Request {
     super(params);
   }
 
-  static statementHistory(body, token) {
+  static campHistory(body, token) {
     return new Request(
       K.Network.URL.CampStatementHistory,
       K.Network.Method.POST,
@@ -16,9 +16,24 @@ export default class CampStatementHistoryRequest extends Request {
       token
     );
   }
-  static campHistory(body, token) {
+
+  static getHistoryUrl(historyOf: string) {
+    let historyUrl: string, liveHistoryUrl: string;
+    if (historyOf == "statement") {
+      historyUrl = "CampStatementHistory";
+      liveHistoryUrl = "GetCampStatement";
+    } else if (historyOf == "camp") {
+      historyUrl = "GetCampHistory";
+    } else if (historyOf == "topic") {
+      historyUrl = "GetTopicHistory";
+    }
+    return { historyUrl, liveHistoryUrl };
+  }
+
+  static getHistory(body, token, historyOf: string) {
+    let { historyUrl } = CampStatementHistoryRequest.getHistoryUrl(historyOf);
     return new Request(
-      K.Network.URL.GetCampHistory,
+      K.Network.URL[historyUrl],
       K.Network.Method.POST,
       body,
       K.Network.Header.Type.Json,
@@ -26,9 +41,11 @@ export default class CampStatementHistoryRequest extends Request {
       token
     );
   }
-  static getLiveCampStatement(reqBody) {
+  static getLiveHistory(reqBody, historyOf: string) {
+    let { liveHistoryUrl } =
+      CampStatementHistoryRequest.getHistoryUrl(historyOf);
     return new Request(
-      K.Network.URL.GetCampStatement,
+      K.Network.URL[liveHistoryUrl],
       K.Network.Method.POST,
       reqBody,
       K.Network.Header.Type.Json,

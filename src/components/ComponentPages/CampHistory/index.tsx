@@ -8,9 +8,8 @@ import InfiniteScroll from "react-infinite-scroller";
 import styles from "./campHistory.module.scss";
 
 import {
-  getCampHistoryApi,
-  getCampStatementHistoryApi,
-  getLiveCampStatementApi,
+  getHistoryApi,
+  getLiveHistoryApi,
 } from "../../../network/api/campStatementHistory";
 
 import HistoryCollapse from "./Collapse";
@@ -30,7 +29,7 @@ function CampList() {
   const changeAgree = () => {
     setAgreeCheck(!agreecheck);
   };
-  const isHistoryOf = router?.asPath.split("/")[1];
+  const historyOf = router?.asPath.split("/")[1];
   let payload = {
     camp_num: router?.query?.camp[1]?.split("-")[0],
     topic_num: router?.query?.camp[0]?.split("-")[0],
@@ -71,12 +70,9 @@ function CampList() {
         per_page: 4,
         page: count.current,
       };
-      let res;
-      if (isHistoryOf == "statement") {
-        res = await getCampStatementHistoryApi(reqBody, count.current);
-      } else if (isHistoryOf == "camp") {
-        res = await getCampHistoryApi(reqBody, count.current);
-      }
+
+      let res = await getHistoryApi(reqBody, count.current, historyOf);
+
       console.log("res=> ", res);
       if (!res || !res?.last_page) {
         setLoadMoreItems(false);
@@ -99,7 +95,7 @@ function CampList() {
       topic_num: +router.query.camp[0].split("-")[0],
       camp_num: +router.query.camp[1].split("-")[0],
     };
-    const res = await getLiveCampStatementApi(reqBody, count.current);
+    const res = await getLiveHistoryApi(reqBody, historyOf);
     setLoadMoreItems(false);
     setLoadingIndicator(false);
   };
