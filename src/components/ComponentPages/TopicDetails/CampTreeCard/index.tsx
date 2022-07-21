@@ -1,12 +1,9 @@
 import { Collapse, Popover } from "antd";
 import CampTree from "../CampTree";
 import Link from "next/link";
-
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
-
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
-
 import styles from "../topicDetails.module.scss";
 import { useRouter } from "next/router";
 
@@ -32,9 +29,12 @@ const addContent = (
 );
 
 const CampTreeCard = ({ scrollToCampStatement }) => {
-  const { tree } = useSelector((state: RootState) => ({
+  const { tree, is_admin } = useSelector((state: RootState) => ({
     tree: state?.topicDetails?.tree,
+
+    is_admin: state?.auth?.loggedInUser?.is_admin,
   }));
+
   const router = useRouter();
   const isLogin = useAuthentication();
   return (
@@ -55,14 +55,8 @@ const CampTreeCard = ({ scrollToCampStatement }) => {
                 event.stopPropagation();
               }}
             >
-              {tree && (
-                <Link
-                  href={
-                    isLogin
-                      ? router.asPath.replace("topic", "addnews")
-                      : "/login"
-                  }
-                >
+              {isLogin && is_admin && tree && (
+                <Link href={router.asPath.replace("topic", "addnews")}>
                   <a
                     className={styles.addNew}
                     onClick={(event) => {
