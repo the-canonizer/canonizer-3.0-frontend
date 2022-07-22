@@ -35,6 +35,10 @@ export default function AddOrManage({ add }) {
   const [form] = Form.useForm();
   let objection = router?.query?.statement[1]?.split("-")[1] == "objection";
   let update = router?.query?.statement[1]?.split("-")[1] == "update";
+  let manageFormOf = router?.asPath.split("/")[2];
+
+  console.log("router =", router?.asPath.split("/")[2]);
+  console.log("router query =", router?.query);
 
   const onFinish = async (values: any) => {
     setScreenLoading(true);
@@ -104,7 +108,7 @@ export default function AddOrManage({ add }) {
       let res;
       if (!add) {
         res = await getEditStatementApi(
-          router?.query?.statement[1]?.split("-")[0]
+          router?.query?.statement[0]?.split("-")[0]
         );
         setEditStatementData(res);
         setPayloadBreadCrumb({
@@ -149,6 +153,18 @@ export default function AddOrManage({ add }) {
     isLogin ? nickNameListApiCall() : router.push("/login");
   }, []);
 
+  let formTitle = () => {
+    let update: string;
+    if (manageFormOf == "statement") {
+      update = "Statement Update";
+    } else if (manageFormOf == "camp") {
+      update = "Camp Update";
+    } else if (manageFormOf == "topic") {
+      update = "Topic Update";
+    }
+    return update;
+  };
+
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
@@ -165,7 +181,7 @@ export default function AddOrManage({ add }) {
                 add
                   ? K?.exceptionalMessages?.addCampStatement
                   : !objection
-                  ? K?.exceptionalMessages?.statementUpdate
+                  ? formTitle()
                   : K?.exceptionalMessages?.objectionStatementHeading
               }
               className={styles.card}

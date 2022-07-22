@@ -80,7 +80,7 @@ function HistoryCollapse({
     if (historyOf == "statement") {
       title = "Statement";
     } else if (historyOf == "camp") {
-      title = "Camp";
+      title = "Camp Name";
     } else if (historyOf == "topic") {
       title = "Topic";
     }
@@ -111,11 +111,19 @@ function HistoryCollapse({
           >
             <>
               <Title level={5}>{historyTitle()} :</Title>
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: campStatement?.parsed_value,
-                }}
-              />
+              {historyOf == "statement" && (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: campStatement?.parsed_value,
+                  }}
+                />
+              )}
+
+              {historyOf == "camp" && (
+                <span className={styles.updateSurveyPrj}>
+                  {campStatement?.camp_name}
+                </span>
+              )}
               <Divider />
             </>
           </Panel>
@@ -176,9 +184,15 @@ function HistoryCollapse({
                 <Button
                   type="primary"
                   className={`mr-3 ${styles.campUpdateButton}`}
-                  onClick={() =>
-                    router.push(`/manage/statement/${campStatement?.id}`)
-                  }
+                  onClick={() => {
+                    if (historyOf == "statement") {
+                      router.push(`/manage/statement/${campStatement?.id}`);
+                    } else if (historyOf == "camp") {
+                      router.push(`/manage/camp/${campStatement?.id}`);
+                    } else if (historyOf == "topic") {
+                      router.push(`/manage/topic/${campStatement?.id}`);
+                    }
+                  }}
                 >
                   Submit Statement Update Based on This
                 </Button>
