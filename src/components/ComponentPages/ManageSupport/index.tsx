@@ -36,6 +36,7 @@ const ManageSupport = () => {
       setNickNameList(res.data);
     }
   };
+  const [submitButtonDisable, setSubmitButtonDisable] = useState(false);
 
   const breadCrumbData = () => {
     setPayloadBreadCrumb({
@@ -50,6 +51,7 @@ const ManageSupport = () => {
       breadCrumbData();
       getCanonizedNicknameList();
       getActiveSupportTopicList();
+      setSubmitButtonDisable(false);
     } else {
       router.push("/login");
     }
@@ -109,7 +111,10 @@ const ManageSupport = () => {
   const camp_Name = router?.query?.manageSupport?.at(1)?.split(/-(.*)/s);
   //replace use to - change to space
   const camp_Name_ = camp_Name[1].replace("-", " ");
-
+  //split on ?
+  const CampNameData = camp_Name_.split("?");
+  //after split Data Value
+  const CampName = CampNameData[0];
   const body = { topic_num: topicNum };
   const getActiveSupportTopicList = async () => {
     let response = await GetActiveSupportTopic(topicNum && body);
@@ -134,7 +139,7 @@ const ManageSupport = () => {
           manageSupportArr.push({
             topic_num: parseInt(topicNum),
             camp_num: parseInt(campNum),
-            camp_name: camp_Name_,
+            camp_name: CampName,
             support_order: supportOrderLen,
           });
         }
@@ -149,7 +154,7 @@ const ManageSupport = () => {
           supportedCampsList.push({
             topic_num: parseInt(topicNum),
             camp_num: parseInt(campNum),
-            camp_name: camp_Name_,
+            camp_name: CampName,
             support_order: supportOrderLen,
           });
         }
@@ -169,6 +174,7 @@ const ManageSupport = () => {
 
   //Submit NickName Supported Camps
   const submitNickNameSupportCamps = async () => {
+    setSubmitButtonDisable(true);
     let campIDsArr = [];
     //get support_flag status check
     let supportedCampsStatus = JSON.parse(
@@ -265,6 +271,9 @@ const ManageSupport = () => {
         pathname: manageSupportPath,
       });
     }
+    if (res && res.status_code != 200) {
+      setSubmitButtonDisable(false);
+    }
   };
   return (
     <>
@@ -296,6 +305,7 @@ const ManageSupport = () => {
         cancelManageRoute={cancelManageRoute}
         setSelectedtNickname={setSelectedtNickname}
         selectedtNickname={selectedtNickname}
+        submitButtonDisable={submitButtonDisable}
       />
     </>
   );

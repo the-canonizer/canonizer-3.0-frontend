@@ -44,9 +44,10 @@ const LoggedOutHeader = () => {
       id: 3,
     },
     {
-      link: "/white-paper",
+      link: "/files/2012_amplifying_final.pdf",
       linkTitle: "White Paper",
       id: 4,
+      external: true,
     },
     {
       link: "/blog",
@@ -83,7 +84,20 @@ const LoggedOutHeader = () => {
                     className={router.asPath === item.link ? styles.active : ""}
                     key={item.id}
                   >
-                    <Link href={item.link}>{item.linkTitle}</Link>
+                    {item?.external ? (
+                      <a
+                        href={item.link}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                        className="dsadas"
+                      >
+                        {item.linkTitle}
+                      </a>
+                    ) : (
+                      <Link href={item.link} passHref>
+                        <a>{item.linkTitle}</a>
+                      </Link>
+                    )}
                   </li>
                 );
               })}
