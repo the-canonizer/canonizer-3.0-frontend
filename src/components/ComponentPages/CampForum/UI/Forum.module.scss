@@ -100,6 +100,8 @@
   display: flex;
 
   .tabBtn {
+    text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
+    box-shadow: 0 2px #0000000b;
     border-color: #0f2a4d;
     color: #0f2a4d;
     font-size: 13px;
@@ -109,6 +111,9 @@
     padding: 5px 10px;
     min-width: 95px;
     height: 30px;
+    outline: none;
+    border-width: 1px;
+    cursor: pointer;
 
     &.orange {
       border-color: #f89d15;
@@ -314,6 +319,8 @@
   white-space: break-spaces;
   overflow: hidden;
   word-break: break-word;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .threadListTitle {

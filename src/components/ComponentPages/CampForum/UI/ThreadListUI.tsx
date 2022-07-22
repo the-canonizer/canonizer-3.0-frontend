@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState, useEffect } from "react";
 import {
   Card,
   Input,
@@ -35,7 +35,14 @@ const ThreadListUI = ({
   onEditClick,
   paramsList,
 }) => {
-  const isLog = isUserAuthenticated();
+  const [isLog, setIsLog] = useState(false);
+  const auth = isUserAuthenticated();
+
+  useEffect(() => {
+    if (auth) {
+      setIsLog(auth);
+    }
+  }, [auth]);
 
   return (
     <Fragment>
