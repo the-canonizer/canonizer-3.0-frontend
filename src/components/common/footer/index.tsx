@@ -43,9 +43,10 @@ function Footer() {
       id: 4,
     },
     {
-      link: "/white-paper",
+      link: "/files/2012_amplifying_final.pdf",
       linkTitle: "White Paper",
       id: 6,
+      external: true,
     },
     {
       link: "/blog",
@@ -121,12 +122,23 @@ function Footer() {
                       {mockLinks2?.map((item) => {
                         return (
                           <li key={item.id}>
-                            <Link href={item.link}>
-                              <a>
+                            {item?.external ? (
+                              <a
+                                href={item.link}
+                                rel="noopener noreferrer"
+                                target="_blank"
+                              >
                                 <i className="icon-angle-right"></i>{" "}
                                 {item.linkTitle}
                               </a>
-                            </Link>
+                            ) : (
+                              <Link href={item.link}>
+                                <a>
+                                  <i className="icon-angle-right"></i>{" "}
+                                  {item.linkTitle}
+                                </a>
+                              </Link>
+                            )}
                           </li>
                         );
                       })}

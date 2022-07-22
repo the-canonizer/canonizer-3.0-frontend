@@ -69,6 +69,7 @@ const UploadFiles = () => {
   const [flickringData, setFlickringData] = useState(false);
   const [DeleteConfirmationVisible, setDeleteConfirmationVisible] =
     useState(false);
+  const [toggleFileView, setToggleFileView] = useState(false);
   const isLogIn = isAuth();
   const ref = useRef();
   const closeFolder = () => {
@@ -82,6 +83,7 @@ const UploadFiles = () => {
   };
 
   const uploadFun = async () => {
+    //addButtonHide is use to, when upload fun is loaded button is hide
     addButtonHide();
     const formData = new FormData();
     for (const key of Object.keys(
@@ -107,22 +109,41 @@ const UploadFiles = () => {
       }
     }
     formData.append("folder_id", openFolderID);
-    let res = await uploadFile(formData);
-    if (res && res.status_code == 200) {
-      showAddButton();
-      //fileStatusHide();
-      openFolder ? disbleCreateFolderBtn() : enableCreateFolderBtn();
-      uploadOptionsHide();
-      shownFolder();
-      hideFiles();
-      showUploadsAfter();
-      GetUploadFileAndFolder();
-      if (openFolderID) {
-        GetFileInsideFolderData(openFolderID);
+    let formDataFileNames = formData.getAll("name[]");
+    //here seen is retun a array of data, when upload new file with same name
+    let seen = formDataFileNames.filter(
+      (
+        (s) => (v) =>
+          s.has(v) || !s.add(v)
+      )(new Set())
+    );
+    //seen length is 0 , no file name is repeated
+    if (seen.length == 0) {
+      let res = await uploadFile(formData);
+      if (res && res.status_code == 200) {
+        setToggleFileView(false);
+        setUploadFileList([]), setFolderFiles([]);
+        showAddButton();
+        //fileStatusHide();
+        openFolder ? disbleCreateFolderBtn() : enableCreateFolderBtn();
+        uploadOptionsHide();
+        shownFolder();
+        hideFiles();
+        showUploadsAfter();
+        GetUploadFileAndFolder();
+        if (openFolderID) {
+          GetFileInsideFolderData(openFolderID);
+        }
+        uploadOptionsHide();
+        GetUploadFileAndFolder();
       }
+      if (res && res.status_code == 400) {
+        //when response is getting 400 issue screen show same
+      }
+    } //else condition show error message if file name is same when upload new image
+    else {
+      message.error("File Name is Repeated please Fill Again");
     }
-    uploadOptionsHide();
-    GetUploadFileAndFolder();
   };
   const handleCancel = () => {
     //if open folder is open and check using local storage
@@ -291,6 +312,8 @@ const UploadFiles = () => {
       setDeleteConfirmationVisible={setDeleteConfirmationVisible}
       flickringData={flickringData}
       setFlickringData={setFlickringData}
+      toggleFileView={toggleFileView}
+      setToggleFileView={setToggleFileView}
     />
   );
 };

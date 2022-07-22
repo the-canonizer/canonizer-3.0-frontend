@@ -1650,3 +1650,9 @@ div[role="option"]::before {
   max-width: 108px;
  }
 } 
+.searchinput 
+{
+  position: relative;
+  pointer-events: none;
+  z-index: 999;
+}
