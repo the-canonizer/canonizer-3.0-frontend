@@ -56,11 +56,14 @@ const CampTree = ({ scrollToCampStatement }) => {
                         }
                       >
                         <Link
-                          // href={data[item]?.link
-                          //   ?.replace("#statement", "")
-                          //   .replace("//", "/")}
-                          href={`${router?.query?.camp[0]}/${router?.query?.camp[1]}`}
-                          passHref
+                          href={
+                            includeReview
+                              ? data[item]?.review_link?.replace(
+                                  "#statement",
+                                  ""
+                                )
+                              : data[item]?.link?.replace("#statement", "")
+                          }
                         >
                           <a
                             className={
