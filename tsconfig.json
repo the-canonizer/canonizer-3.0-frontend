@@ -27,6 +27,6 @@
     "src/components/common/helpCard/help.tsx",
     "src/components/common/headers/loggedOutHeader/index.jsx",
     "src/utils/testUtils.tsx"
-  ],
+, "src/firebaseConfig/firebase.ts"  ],
   "exclude": ["node_modules"]
 }

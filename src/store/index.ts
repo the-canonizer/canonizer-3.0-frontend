@@ -1,16 +1,4 @@
-import homePageSlice from "./slices/homePageSlice";
-import filtersSlice from "./slices/filtersSlice";
-import recentActivitiesSlice from "./slices/recentActivitiesSlice";
-
-// // reducers
-import Auth from "./slices/authSlice";
-import Tree from "./slices/campDetailSlice";
-import UiReducer from "./slices/uiSlice";
-import TopicSlice from "./slices/topicSlice";
-import ForumSlice from "./slices/campForumSlice";
-
 import { createStore, Store } from "redux";
-
 import { MakeStore, createWrapper, Context } from "next-redux-wrapper";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import {
@@ -24,7 +12,18 @@ import {
   persistStore,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+
+// reducers
+import homePageSlice from "./slices/homePageSlice";
+import filtersSlice from "./slices/filtersSlice";
+import recentActivitiesSlice from "./slices/recentActivitiesSlice";
+import Auth from "./slices/authSlice";
+import Tree from "./slices/campDetailSlice";
+import UiReducer from "./slices/uiSlice";
+import TopicSlice from "./slices/topicSlice";
+import ForumSlice from "./slices/campForumSlice";
 import campNewsSlice from "./slices/news";
+import notifications from "./slices/notificationSlice";
 // reducers
 
 let combinedReducer = combineReducers({
@@ -37,6 +36,7 @@ let combinedReducer = combineReducers({
   filters: filtersSlice,
   campNews: campNewsSlice,
   forum: ForumSlice,
+  notifications,
 });
 
 const rootReducer = (state, action) => {
@@ -64,14 +64,15 @@ const store = configureStore({
     }),
   // .concat(logger),
 });
+
+const makeStore = (context: Context) => createStore(persistedReducer);
+const persistor = persistStore(store);
+
 export type RootState = ReturnType<typeof rootReducer>;
 export type AppDispatch = typeof store.dispatch;
 export interface State {
   tree: string;
 }
-
-const makeStore = (context: Context) => createStore(persistedReducer);
-const persistor = persistStore(store);
 export { persistor, store };
 
 export const wrapper = createWrapper(makeStore, { debug: true });
