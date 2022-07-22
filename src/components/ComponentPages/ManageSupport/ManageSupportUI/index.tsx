@@ -22,6 +22,7 @@ const ManageSupportUI = ({
   submitNickNameSupportCamps,
   selectedtNickname,
   setSelectedtNickname,
+  submitButtonDisable,
 }) => {
   useEffect(() => {
     if (nickNameList.length > 0) {
@@ -164,6 +165,7 @@ const ManageSupportUI = ({
                 htmlType="submit"
                 className={styles.Upload_Btn}
                 onClick={submitNickNameSupportCamps}
+                disabled={submitButtonDisable}
               >
                 Submit
               </Button>

@@ -99,9 +99,11 @@ const UploadFileUI = ({
   setDeleteConfirmationVisible,
   flickringData,
   setFlickringData,
+  toggleFileView,
+  setToggleFileView,
 }) => {
   const [uploadStatus, setUploadStatus] = useState(false);
-  const [toggleFileView, setToggleFileView] = useState(false);
+  // const [toggleFileView, setToggleFileView] = useState(false);
   const [previewImageIndicator, setPreviewImageIndicator] = useState(false);
   const [addFileIndicator, setAddFileIndicator] = useState(false);
   const [loadingArray, setLoadingArray] = useState([]);
@@ -385,8 +387,7 @@ const UploadFileUI = ({
     editModal ? changeFolderName() : createNewFolder();
   };
   const onFinishValidation = () => {
-    uploadList(), uploadFun(), setToggleFileView(false);
-    setUploadFileList([]), setFolderFiles([]);
+    uploadList(), uploadFun();
   };
 
   const columns = [
@@ -1009,11 +1010,15 @@ const UploadFileUI = ({
                     />
                   </div>
                   <div className={styles.search_users}>
-                    <SearchOutlined />
+                    <div className="searchinput">
+                      <SearchOutlined />
+                    </div>
+
                     <Input
                       disabled={show_UploadOptions || dragBoxStatus}
                       id="datePickerText"
                       placeholder="Search"
+                      autoComplete="off"
                       type="text"
                       name="search"
                       onChange={(e) => {
