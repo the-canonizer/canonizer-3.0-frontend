@@ -4,7 +4,7 @@ import HtmlDiff from "htmldiff-js";
 
 import CompareStatementUI from "./UI";
 
-import { getCompareStatement } from "../../../network/api/campStatementHistory";
+import { getCompareStatement } from "../../../network/api/history";
 
 function CompareStatement() {
   const [isLoading, setIsLoading] = useState(false);

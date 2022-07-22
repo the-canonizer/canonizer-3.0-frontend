@@ -7,18 +7,15 @@ import InfiniteScroll from "react-infinite-scroller";
 
 import styles from "./campHistory.module.scss";
 
-import {
-  getCampStatementHistoryApi,
-  getLiveCampStatementApi,
-} from "../../../network/api/campStatementHistory";
+import { getHistoryApi, getLiveHistoryApi } from "../../../network/api/history";
 
 import HistoryCollapse from "./Collapse";
 import { RootState } from "src/store";
 import CampInfoBar from "../TopicDetails/CampInfoBar";
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
-function CampList() {
+function HistoryContainer() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("all");
   const [selectedTopic, setSelectedTopic] = useState([]);
@@ -29,6 +26,7 @@ function CampList() {
   const changeAgree = () => {
     setAgreeCheck(!agreecheck);
   };
+  const historyOf = router?.asPath.split("/")[1];
   let payload = {
     camp_num: router?.query?.camp[1]?.split("-")[0],
     topic_num: router?.query?.camp[0]?.split("-")[0],
@@ -36,15 +34,15 @@ function CampList() {
   };
   const count = useRef(1);
 
-  const { campStatementHistory } = useSelector((state: RootState) => ({
-    campStatementHistory: state?.topicDetails?.campStatementHistory,
+  const { history } = useSelector((state: RootState) => ({
+    history: state?.topicDetails?.history,
   }));
   const [loadingIndicator, setLoadingIndicator] = useState(false);
-  const [campHistory, setCampHistory] = useState(campStatementHistory);
+  const [campHistory, setCampHistory] = useState(history);
 
   useEffect(() => {
-    setCampHistory(campStatementHistory);
-  }, [campStatementHistory]);
+    setCampHistory(history);
+  }, [history]);
 
   useEffect(() => {
     const asynCall = async () => {
@@ -57,6 +55,7 @@ function CampList() {
       }
     };
     asynCall();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, agreecheck]);
 
   const campStatementApiCall = async () => {
@@ -69,7 +68,10 @@ function CampList() {
         per_page: 4,
         page: count.current,
       };
-      const res = await getCampStatementHistoryApi(reqBody, count.current);
+
+      let res = await getHistoryApi(reqBody, count.current, historyOf);
+
+      console.log("res=> ", res);
       if (!res || !res?.last_page) {
         setLoadMoreItems(false);
         setLoadingIndicator(false);
@@ -91,7 +93,7 @@ function CampList() {
       topic_num: +router.query.camp[0].split("-")[0],
       camp_num: +router.query.camp[1].split("-")[0],
     };
-    const res = await getLiveCampStatementApi(reqBody, count.current);
+    const res = await getLiveHistoryApi(reqBody, historyOf);
     setLoadMoreItems(false);
     setLoadingIndicator(false);
   };
@@ -142,6 +144,18 @@ function CampList() {
     </div>
   );
 
+  let historyTitle = () => {
+    let title: string;
+    if (historyOf == "statement") {
+      title = "Camp Statement History";
+    } else if (historyOf == "camp") {
+      title = "Camp History";
+    } else if (historyOf == "topic") {
+      title = "Topic History";
+    }
+    return title;
+  };
+
   const renderCampHistories =
     campHistory && campHistory?.items?.length ? (
       campHistory?.items?.map((campHistoryData, index) => {
@@ -190,7 +204,7 @@ function CampList() {
         >
           <div className={styles.tabHead}>
             <div className={styles.filterOt}>
-              <Title level={4}>Camp Statement History</Title>
+              <Title level={4}>{historyTitle()}</Title>
               <Spin spinning={loadingIndicator} size="default">
                 <List className={styles.campStatementHistory} size="small">
                   <List.Item
@@ -296,4 +310,4 @@ function CampList() {
   );
 }
 
-export default CampList;
+export default HistoryContainer;

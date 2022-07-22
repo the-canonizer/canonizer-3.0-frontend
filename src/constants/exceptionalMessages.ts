@@ -5,7 +5,9 @@ const ExceptionalMessageConstants = {
   deleteCampNewsTooltipMessage:
     "Are you sure you want to delete this news feed?",
   manageCampStatementButton: "Manage/Edit Camp Statement",
+  manageTopicButton: "Manage/Edit This Topic",
   addCampStatementButton: "Add Camp Statement",
+  manageCampButton: "Manage/Edit This Camp",
   tooltipNewsEdit: "Only the author of this news is allowed to edit.",
   tooltipNewsDelete: "Only the author of this news is allowed to delete.",
   selectNickNameErrorMsg: "Please select Nick name",
