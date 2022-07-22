@@ -17,7 +17,7 @@ const HeaderMenu = () => {
             <a href="">Help</a>
           </Menu.Item>
           <Menu.Item key={3}>
-            <a href="">White Paper</a>
+            <a href="/files/2012_amplifying_final.pdf" target="_blank">White Paper</a>
           </Menu.Item>
           <Menu.Item key={4}>
             <a href="">Blog</a>

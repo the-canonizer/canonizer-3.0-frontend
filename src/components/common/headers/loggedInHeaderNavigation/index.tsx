@@ -48,9 +48,10 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
       id: 3,
     },
     {
-      link: "/white-paper",
+      link: "/files/2012_amplifying_final.pdf",
       linkTitle: "White Paper",
       id: 4,
+      external: true,
     },
     {
       link: "/blog",
@@ -127,7 +128,17 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
                 {mockLinks?.map((item) => {
                   return (
                     <li key={item.id}>
-                      <Link href={item.link}>{item.linkTitle}</Link>
+                      {item?.external ? (
+                        <a
+                          href={item.link}
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          {item.linkTitle}
+                        </a>
+                      ) : (
+                        <Link href={item.link}>{item.linkTitle}</Link>
+                      )}
                     </li>
                   );
                 })}
