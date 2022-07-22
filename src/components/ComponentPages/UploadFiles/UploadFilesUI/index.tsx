@@ -15,7 +15,9 @@ import {
   Popover,
   Table,
   Spin,
+  Alert,
   Empty,
+  Skeleton,
 } from "antd";
 import Icon, {
   InboxOutlined,
@@ -160,6 +162,7 @@ const UploadFileUI = ({
   const shownFolder = () => dispatch(showFolder());
   const showUploadsAfter = () => dispatch(showAfterUploads());
   const [imageStatus, setImageStatus] = useState("");
+  const [loadingImage, setLoadingImage] = useState(false);
   const router = useRouter();
   const campRoute = () => {
     router.push("/create/topic");
@@ -1121,8 +1124,10 @@ const UploadFileUI = ({
                   let length = info.fileList.length;
                   if (info.file.status == "uploading") {
                     setAddFileIndicator(true);
+                    setLoadingImage(true);
                   }
                   if (info.file.status == "done") {
+                    setLoadingImage(false);
                     setTimeout(() => {
                       setLoadingArray([]);
                       setAddFileIndicator(false);
@@ -1286,6 +1291,21 @@ const UploadFileUI = ({
                   dataSource={filteredArray()}
                   columns={columns}
                 />
+              </div>
+            ) : (
+              ""
+            )}
+
+            {loadingImage ? (
+              <div>
+                <Spin tip="Loading..." spinning={loadingImage} size="large">
+                  <Alert
+                    message="Image is loading. Please wait..."
+                    type="info"
+                  />
+                </Spin>
+                <br />
+                <br />
               </div>
             ) : (
               ""
