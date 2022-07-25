@@ -261,38 +261,45 @@ const TopicsList = () => {
             }
             bordered
             dataSource={topicsData?.topics}
-            renderItem={(item: any) => (
-              <List.Item className={styles.item}>
-                <>
-                  <Link
-                    href={{
-                      pathname: `/topic/${item?.topic_id}-${
-                        isReview
-                          ? item?.tree_structure[1]?.review_title
-                              ?.split(" ")
-                              .join("-")
-                          : item?.topic_name?.split(" ").join("-")
-                      }/1-Agreement`,
-                    }}
-                  >
-                    <a
-                      onClick={() => {
-                        handleTopicClick();
+            renderItem={(item: any) => {
+              debugger;
+              return (
+                <List.Item key={item.topic_id} className={styles.item}>
+                  <>
+                    <Link
+                      href={{
+                        pathname: `/topic/${item?.topic_id}-${
+                          isReview
+                            ? item?.tree_structure[1]?.review_title
+                                ?.split(" ")
+                                .join("-")
+                                ?.replace("/", "-")
+                            : item?.topic_name
+                                ?.split(" ")
+                                .join("-")
+                                ?.replace("/", "-")
+                        }/1-Agreement`,
                       }}
                     >
-                      <Text className={styles.text}>
-                        {isReview
-                          ? item?.tree_structure[1].review_title
-                          : item?.topic_name}
-                      </Text>
-                      <Tag className={styles.tag}>
-                        {item?.topic_score?.toFixed(2)}
-                      </Tag>
-                    </a>
-                  </Link>
-                </>
-              </List.Item>
-            )}
+                      <a
+                        onClick={() => {
+                          handleTopicClick();
+                        }}
+                      >
+                        <Text className={styles.text}>
+                          {isReview
+                            ? item?.tree_structure[1].review_title
+                            : item?.topic_name}
+                        </Text>
+                        <Tag className={styles.tag}>
+                          {item?.topic_score?.toFixed(2)}
+                        </Tag>
+                      </a>
+                    </Link>
+                  </>
+                </List.Item>
+              );
+            }}
           />
         </Spin>
         <BackTop />
