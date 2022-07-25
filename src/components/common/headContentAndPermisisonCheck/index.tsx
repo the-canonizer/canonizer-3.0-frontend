@@ -49,9 +49,11 @@ const HeadContentAndPermissionComponent = ({
     // set default meta tags if page meta data not added
     const metaKeys = Object.keys(MetaTags);
 
-    metaKeys.includes(componentName)
-      ? setMeta(MetaTags[componentName])
-      : setMeta(MetaTags["default"]);
+    if (metaKeys.includes(componentName)) {
+      setMeta(MetaTags[componentName]);
+    } else {
+      setMeta(MetaTags["default"]);
+    }
   }, [componentName, isUserAuthenticated, isAllowed, router]);
 
   return (

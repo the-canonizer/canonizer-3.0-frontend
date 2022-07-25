@@ -2,6 +2,7 @@ import { Fragment, useState, useEffect } from "react";
 import { Form, message } from "antd";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
+import localforage from "localforage";
 
 import {
   createCamp,
@@ -163,6 +164,9 @@ const CreateNewCamp = ({
       form.validateFields(["camp_name"]);
       return true;
     }
+
+    const fcm_token = await localforage.getItem("fcm_token");
+
     const body = {
       camp_about_nick_id: values.camp_about_nick_id || "",
       camp_about_url: values.camp_about_url || "",
@@ -172,6 +176,7 @@ const CreateNewCamp = ({
       parent_camp_num: values.parent_camp_num,
       nick_name: values.nick_name,
       topic_num: params["topic_num"],
+      fcm_token,
     };
 
     const res = await createCamp(body);
