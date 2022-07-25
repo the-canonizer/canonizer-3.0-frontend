@@ -2,7 +2,7 @@ import HistoryContainer from "../../../components/ComponentPages/HistoryContaine
 
 import Layout from "../../../hoc/layout";
 
-const StatementHistoryPage = ({}) => {
+const TopicHistoryPage = ({}) => {
   return (
     <>
       <Layout>
@@ -12,5 +12,5 @@ const StatementHistoryPage = ({}) => {
   );
 };
 
-StatementHistoryPage.displayName = "StatementHistoryPage";
-export default StatementHistoryPage;
+TopicHistoryPage.displayName = "TopicHistoryPage";
+export default TopicHistoryPage;
