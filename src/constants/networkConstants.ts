@@ -129,8 +129,13 @@ const NetworkConstants = {
     // compare statement
     CompareStatement: `${BaseCanonizerApiUrl}/get-statement-comparison`,
 
+    // notification list
+    GetList: `${BaseCanonizerApiUrl}/notification-list`,
+    MarkRead: `${BaseCanonizerApiUrl}/notification-is-read/update/`,
+
     //Get Active support topic
     GetActiveSupportTopic: `${BaseCanonizerApiUrl}/topic-support-list`,
+
     //Get Check if support exists
     GetCheckSupportExists: `${BaseCanonizerApiUrl}/support/check`,
   },
