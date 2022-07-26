@@ -27,7 +27,7 @@ const CurrentTopicCard = () => {
             {topicRecord && topicRecord?.topic_name}
           </Descriptions.Item>
           <Descriptions.Item label="Namespace">
-            {topicRecord && `/${topicRecord?.namespace_name}/`}
+            {topicRecord && topicRecord?.namespace_name}
           </Descriptions.Item>
         </Descriptions>
         <div className="topicDetailsCollapseFooter">
