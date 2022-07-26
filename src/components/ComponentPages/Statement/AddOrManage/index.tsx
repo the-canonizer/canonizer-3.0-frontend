@@ -15,12 +15,20 @@ import { useRouter } from "next/router";
 import "antd/dist/antd.css";
 import styles from "../addEditNews.module.scss";
 import K from "../../../../constants";
-import { getAllUsedNickNames } from "../../../../network/api/campDetailApi";
+import {
+  getAllUsedNickNames,
+  getAllParentsCamp,
+  getAllCampNickNames,
+} from "../../../../network/api/campDetailApi";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
-import { getEditStatementApi } from "../../../../network/api/campManageStatementApi";
+import {
+  getEditStatementApi,
+  getEditCampApi,
+} from "../../../../network/api/campManageStatementApi";
 import { updateStatementApi } from "../../../../network/api/campManageStatementApi";
 import SideBarNoFilter from "../../../ComponentPages/Home/SideBarNoFilter";
 import CampInfoBar from "../../TopicDetails/CampInfoBar";
+
 import Link from "next/link";
 import localforage from "localforage";
 
@@ -33,13 +41,16 @@ export default function AddOrManage({ add }) {
   const [nickNameData, setNickNameData] = useState([]);
   const [screenLoading, setScreenLoading] = useState(false);
   const [payloadBreadCrumb, setPayloadBreadCrumb] = useState({});
+  const [parentCamp, setParentCamps] = useState([]);
+
+  const [campNickName, setCampNickName] = useState([]);
   const [form] = Form.useForm();
-  let objection = router?.query?.statement[1]?.split("-")[1] == "objection";
-  let update = router?.query?.statement[1]?.split("-")[1] == "update";
+  let objection = router?.query?.statement[0]?.split("-")[1] == "objection";
+  let update = router?.query?.statement[0]?.split("-")[1] == "update";
   let manageFormOf = router?.asPath.split("/")[2];
 
-  console.log("router =", router?.asPath.split("/")[2]);
-  console.log("router query =", router?.query);
+  // console.log("router =", router?.asPath.split("/")[2]);
+  // console.log("manage form =", manageFormOf);
 
   const onFinish = async (values: any) => {
     setScreenLoading(true);
@@ -68,6 +79,7 @@ export default function AddOrManage({ add }) {
   };
 
   const addOrManageStatement = async (values) => {
+    console.log("edt value",values)
     let res_for_add;
     if (add) {
       let res = await getEditStatementApi(values?.nick_name);
@@ -97,14 +109,27 @@ export default function AddOrManage({ add }) {
         ? "objection"
         : "update",
       statement_id: !!(objection || update)
-        ? router?.query?.statement[1]?.split("-")[0]
+        ? router?.query?.statement[0]?.split("-")[0]
         : null,
       objection_reason: objection ? values?.objection_reason : null,
       statement_update: update ? 1 : null,
-      fcm_token
+      fcm_token,
     };
     let res = await updateStatementApi(reqBody);
     return res;
+  };
+  const fetchCampNickNameList = async () => {
+    let response = await getAllCampNickNames();
+    if (response && response.status_code === 200) {
+      setCampNickName(response.data);
+    }
+  };
+  const fetchParentsCampList = async (topic_num: number) => {
+    const body = { topic_num: topic_num };
+    let res = await getAllParentsCamp(body);
+    if (res && res.status_code === 200) {
+      setParentCamps(res.data);
+    }
   };
 
   useEffect(() => {
@@ -115,7 +140,25 @@ export default function AddOrManage({ add }) {
         res = await getEditStatementApi(
           router?.query?.statement[0]?.split("-")[0]
         );
-        setEditStatementData(res);
+
+        // console.log("edit camp res", res2);
+
+        // console.log("edit sattement res", res);
+
+        if (manageFormOf == "camp") {
+          res = await getEditStatementApi(
+            router?.query?.statement[0]?.split("-")[0]
+          );
+          fetchCampNickNameList();
+          fetchParentsCampList(res?.data?.statement?.topic_num);
+        } else {
+          res = await getEditStatementApi(
+            router?.query?.statement[0]?.split("-")[0]
+          );
+        }
+        if (res && res.status_code === 200) {
+          setEditStatementData(res);
+        }
         setPayloadBreadCrumb({
           camp_num: res?.data?.statement?.camp_num,
           topic_num: res?.data?.statement?.topic_num,
@@ -133,7 +176,10 @@ export default function AddOrManage({ add }) {
           ? router?.query?.statement[0]?.split("-")[0]
           : res?.data?.topic?.topic_num,
       };
+      console.log("res", res);
       const result = await getAllUsedNickNames(reqBody);
+      console.log("result", result);
+
       if (result?.status_code == 200) {
         form.setFieldsValue(
           add
@@ -143,12 +189,14 @@ export default function AddOrManage({ add }) {
             : !!(objection || update)
             ? {
                 nick_name: res?.data?.nick_name[0]?.id,
+                parent_camp_num: res?.data?.statement?.camp_num,
                 statement: res?.data?.statement?.value,
                 edit_summary: res?.data?.statement?.note,
               }
             : {
                 nick_name: res?.data?.nick_name[0]?.id,
                 statement: res?.data?.statement?.value,
+                parent_camp_num: res?.data?.statement?.camp_num,
               }
         );
         setNickNameData(result?.data);
@@ -169,7 +217,14 @@ export default function AddOrManage({ add }) {
     }
     return update;
   };
-
+  console.log("parent ", parentCamp);
+  console.log(" camp nick name", campNickName);
+  console.log(" editStatementData ", editStatementData?.data);
+  console.log(
+    "paranet data lentght"
+    // editStatementData?.data?.parent_camp.length
+  );
+  console.log("objection ", objection, router?.query?.statement[0]?.split("-")[1]);
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
@@ -227,45 +282,134 @@ export default function AddOrManage({ add }) {
                       </Select>
                     </Form.Item>
                   </Col>
-                  <Col xs={24} xl={24}>
-                    <Form.Item
-                      className={`${styles.formItem} mb-2`}
-                      name="statement"
-                      label={
-                        <>
-                          Statement <span className="required">*</span>
-                        </>
-                      }
-                      rules={[
-                        {
-                          required: true,
-                          message:
-                            K?.exceptionalMessages?.statementRequiredErrorMsg,
-                        },
-                        {
-                          pattern: /[^ \s]/,
-                          message:
-                            K?.exceptionalMessages?.statementRequiredErrorMsg,
-                        },
-                      ]}
-                    >
-                      <Input.TextArea
-                        size="large"
-                        rows={7}
-                        disabled={objection}
-                      />
-                    </Form.Item>
-                    <small className="mb-3 d-block">
-                      {K?.exceptionalMessages?.wikiMarkupSupportMsg}{" "}
-                      <Link
-                        href={
-                          "/topic/132-Help/5-Canonizer-wiki-text-formatting"
+                  {/* paraent Camp
+                   */}
+                  {manageFormOf == "camp" && (
+                    <>
+                      {/* // editStatementData?.data?.parent_camp.length > 1 && */}
+                      <Col xs={24} sm={24} xl={12}>
+                        <Form.Item
+                          className={`${styles.formItem} mb-2`}
+                          label={
+                            <>
+                              Parent Camp <span className="required">*</span>
+                            </>
+                          }
+                          name="parent_camp_num"
+                          rules={[
+                            {
+                              required: true,
+                              message:
+                                K?.exceptionalMessages?.selectNickNameErrorMsg,
+                            },
+                          ]}
+                          initialValue={
+                            editStatementData?.data?.statement?.camp_num
+                          }
+                        >
+                          <Select
+                            value={editStatementData?.data?.statement?.camp_num}
+                            size={"large"}
+                            placeholder="Parent camp"
+                            // data-id="parent-camp"
+                          >
+                            {parentCamp.map((camp) => (
+                              <Select.Option
+                                value={camp.camp_num}
+                                key={camp.id}
+                              >
+                                {camp.camp_name}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </Form.Item>
+                      </Col>
+                      {/* cmap -------------------------------------------------------- */}
+                      <Col xs={24} sm={24} xl={12}>
+                        <Form.Item
+                          className={`${styles.formItem} mb-2`}
+                          label={
+                            <>
+                              Camp Name <span className="required">*</span>
+                              <span>(Limit 30 Chars)</span>
+                            </>
+                          }
+                          name="camp_name"
+                          rules={[
+                            {
+                              required: true,
+                              message:
+                                K?.exceptionalMessages?.selectNickNameErrorMsg,
+                            },
+                          ]}
+                          // initialValue={
+                          //   editStatementData?.data?.statement?.camp_num
+                          // }
+                        >
+                          <Input />
+                        </Form.Item>
+                      </Col>
+                      {/* keywords  --------------------------------------------------- */}
+                      <Col xs={24} sm={24} xl={12}>
+                        <Form.Item
+                          className={`${styles.formItem} mb-2`}
+                          label={<>Keywords</>}
+                          name="keywords"
+                          rules={[
+                            {
+                              required: true,
+                              message:
+                                K?.exceptionalMessages?.selectNickNameErrorMsg,
+                            },
+                          ]}
+                        >
+                          <Input />
+                        </Form.Item>
+                      </Col>
+                    </>
+                  )}
+
+                  {manageFormOf != "camp" && (
+                    <Col xs={24} xl={24}>
+                      <Form.Item
+                        className={`${styles.formItem} mb-2`}
+                        name="statement"
+                        label={
+                          <>
+                            Statement <span className="required">*</span>
+                          </>
                         }
+                        rules={[
+                          {
+                            required: true,
+                            message:
+                              K?.exceptionalMessages?.statementRequiredErrorMsg,
+                          },
+                          {
+                            pattern: /[^ \s]/,
+                            message:
+                              K?.exceptionalMessages?.statementRequiredErrorMsg,
+                          },
+                        ]}
                       >
-                        <a>click here.</a>
-                      </Link>
-                    </small>
-                  </Col>
+                        <Input.TextArea
+                          size="large"
+                          rows={7}
+                          disabled={objection}
+                        />
+                      </Form.Item>
+                      <small className="mb-3 d-block">
+                        {K?.exceptionalMessages?.wikiMarkupSupportMsg}{" "}
+                        <Link
+                          href={
+                            "/topic/132-Help/5-Canonizer-wiki-text-formatting"
+                          }
+                        >
+                          <a>click here.</a>
+                        </Link>
+                      </small>
+                    </Col>
+                  )}
                   <Col xs={24} xl={24}>
                     {objection ? (
                       <Form.Item
@@ -293,18 +437,71 @@ export default function AddOrManage({ add }) {
                         <Input.TextArea size="large" rows={1} maxLength={100} />
                       </Form.Item>
                     ) : (
-                      <Form.Item
-                        className={styles.formItem}
-                        name="edit_summary"
-                        label={
+                      <>
+                        <Form.Item
+                          className={styles.formItem}
+                          name="edit_summary"
+                          label={
+                            <>
+                              Edit Summary{" "}
+                              <small>(Briefly describe your changes)</small>
+                            </>
+                          }
+                        >
+                          <Input.TextArea size="large" rows={7} />
+                        </Form.Item>
+                        {/* Camp about url ===================================================== */}
+                        {manageFormOf == "camp" && (
                           <>
-                            Edit Summary{" "}
-                            <small>(Briefly describe your changes)</small>
+                            <Form.Item
+                              className={`${styles.formItem} mb-2`}
+                              label={
+                                <>
+                                  Camp About URL
+                                  <span>(Limit 1024 Chars)</span>
+                                </>
+                              }
+                              name="camp_about_url"
+                              rules={[
+                                {
+                                  required: true,
+                                  message:
+                                    K?.exceptionalMessages
+                                      ?.selectNickNameErrorMsg,
+                                },
+                              ]}
+                            >
+                              <Input />
+                            </Form.Item>
+                            {/* cmap about nick name ========================================== */}
+                            <Form.Item
+                              className={`${styles.formItem} mb-2`}
+                              label={<>Camp About Nick Name</>}
+                              name="camp_about_nick_name"
+                              rules={[
+                                {
+                                  required: true,
+                                  message:
+                                    K?.exceptionalMessages
+                                      ?.selectNickNameErrorMsg,
+                                },
+                              ]}
+                            >
+                              <Select
+                                size={"large"}
+                                placeholder="--Select Camp About Nick Name"
+                                // data-id="parent-camp"
+                              >
+                                {campNickName.map((camp) => (
+                                  <Select.Option value={camp.id} key={camp.id}>
+                                    {camp.nick_name}
+                                  </Select.Option>
+                                ))}
+                              </Select>
+                            </Form.Item>
                           </>
-                        }
-                      >
-                        <Input.TextArea size="large" rows={7} />
-                      </Form.Item>
+                        )}
+                      </>
                     )}
                   </Col>
                   <Col xs={24} xl={24}>

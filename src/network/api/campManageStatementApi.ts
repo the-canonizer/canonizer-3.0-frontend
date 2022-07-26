@@ -20,7 +20,20 @@ export const getEditStatementApi = async (body) => {
     return error?.error?.data;
   }
 };
-
+export const getEditCampApi = async (body) => {
+  let state = store.getState();
+  const { auth } = state;
+  try {
+    const res = await NetworkCall.fetch(
+      campManageStatementRequest.getEditCamp(body, auth?.loggedInUser?.token),
+      false
+    );
+    return res;
+  } catch (error) {
+    message.error(error?.error?.data?.message);
+    return error?.error?.data;
+  }
+};
 export const updateStatementApi = async (body) => {
   let state = store.getState();
   const { auth } = state;
