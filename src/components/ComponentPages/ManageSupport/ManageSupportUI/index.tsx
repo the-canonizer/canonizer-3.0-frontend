@@ -38,7 +38,7 @@ const ManageSupportUI = ({
         }))
       : "";
   }
-
+  let CheckDelegatedOrDirect = localStorage.getItem("delegatedSupportClick");
   return (
     <>
       <Card
@@ -82,29 +82,32 @@ const ManageSupportUI = ({
           Note : To change support order of camp, drag & drop the camp box on
           your choice position.
         </div>
-
-        <div className="mb-4">
-          <span className={styles.quickAction}>
-            Quick Action:
-            <span className={styles.checkbox}>
-              <input
-                type="checkbox"
-                checked={checked}
-                onClick={(e) =>
-                  removeAll((e.target as any).checked, manageSupportList)
-                }
-              ></input>
+        {CheckDelegatedOrDirect ? (
+          ""
+        ) : (
+          <div className="mb-4">
+            <span className={styles.quickAction}>
+              Quick Action:
+              <span className={styles.checkbox}>
+                <input
+                  type="checkbox"
+                  checked={checked}
+                  onClick={(e) =>
+                    removeAll((e.target as any).checked, manageSupportList)
+                  }
+                ></input>
+              </span>
+              <span className={styles.removeAll}>Remove all</span>
+              <Button
+                htmlType="button"
+                className={styles.clear_Btn}
+                onClick={(e) => clearAllChanges(manageSupportList)}
+              >
+                Clear all changes
+              </Button>
             </span>
-            <span className={styles.removeAll}>Remove all</span>
-            <Button
-              htmlType="button"
-              className={styles.clear_Btn}
-              onClick={(e) => clearAllChanges(manageSupportList)}
-            >
-              Clear all changes
-            </Button>
-          </span>
-        </div>
+          </div>
+        )}
         <DraggableArea
           tags={tagsArrayList}
           render={({ tag, index }) => (
@@ -126,9 +129,15 @@ const ManageSupportUI = ({
                     <a className={styles.Bluecolor}> {tag.camp_name}</a>
                   </Link>
                 </div>
-                <CloseCircleOutlined
-                  onClick={() => handleClose(tag, tag.topic_num, tagsArrayList)}
-                />
+                {CheckDelegatedOrDirect ? (
+                  ""
+                ) : (
+                  <CloseCircleOutlined
+                    onClick={() =>
+                      handleClose(tag, tag.topic_num, tagsArrayList)
+                    }
+                  />
+                )}
               </Button>
             </div>
           )}

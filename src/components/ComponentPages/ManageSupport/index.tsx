@@ -8,7 +8,7 @@ import dynamic from "next/dynamic";
 import { getAllUsedNickNames } from "src/network/api/campDetailApi";
 import { useRouter } from "next/router";
 import { GetActiveSupportTopic } from "src/network/api/topicAPI";
-import { addSupport } from "src/network/api/userApi";
+import { addDelegateSupportCamps, addSupport } from "src/network/api/userApi";
 import isAuth from "../../../hooks/isUserAuthenticated";
 import localforage from "localforage";
 const ManageSupportUI = dynamic(() => import("./ManageSupportUI"), {
@@ -165,7 +165,10 @@ const ManageSupport = () => {
     }
   };
 
-  const manageSupportPath = router.asPath.replace("/support/", "/topic/");
+  let manageSupportPath = router.asPath.replace("/support/", "/topic/");
+  //remove add id for cancel and submit
+  let remove_ = manageSupportPath.split("_");
+  manageSupportPath = remove_[0];
   //Cancel Button
   const cancelManageRoute = () => {
     router.push({
@@ -176,6 +179,7 @@ const ManageSupport = () => {
   //Submit NickName Supported Camps
   const submitNickNameSupportCamps = async () => {
     setSubmitButtonDisable(true);
+    //const fcm_token = await localforage.getItem("fcm_token")
     let campIDsArr = [];
     //get support_flag status check
     let supportedCampsStatus = JSON.parse(
@@ -255,6 +259,7 @@ const ManageSupport = () => {
       addCampsData = add_camp_data;
     }
     const fcm_token = await localforage.getItem("fcm_token");
+    //debugger;
     const addSupportId = {
       topic_num: topicNumId,
       add_camp: addCampsData,
@@ -263,19 +268,46 @@ const ManageSupport = () => {
       action: "add",
       nick_name_id: nickNameIDValue,
       order_update: filterArrayResult,
-      fcm_token
+      fcm_token,
     };
 
-    let res = await addSupport(addSupportId);
-    if (res && res.status_code == 200) {
-      message.success(res.message);
-      //After Submit page is redirect to previous
-      router.push({
-        pathname: manageSupportPath,
-      });
-    }
-    if (res && res.status_code != 200) {
-      setSubmitButtonDisable(false);
+    let CheckDelegatedOrDirect = localStorage.getItem("delegatedSupportClick");
+    if (CheckDelegatedOrDirect) {
+      let nickNameID = nickNameList.filter(
+        (values) => selectedtNickname == values.id
+      );
+      let nickNameIDValue = nickNameID[0].id;
+      let delegated_user_id = router?.query?.manageSupport[1].split("_");
+
+      const addDelegatedSupport = {
+        nick_name_id: nickNameIDValue,
+        delegated_nick_name_id: delegated_user_id[1],
+        topic_num: topicNumId,
+        fcm_token,
+      };
+      let res = await addDelegateSupportCamps(addDelegatedSupport);
+      if (res && res.status_code == 200) {
+        message.success(res.message);
+        //After Submit page is redirect to previous
+        router.push({
+          pathname: manageSupportPath,
+        });
+      }
+      if (res && res.status_code != 200) {
+        setSubmitButtonDisable(false);
+      }
+    } else {
+      let res = await addSupport(addSupportId);
+      if (res && res.status_code == 200) {
+        message.success(res.message);
+        //After Submit page is redirect to previous
+        router.push({
+          pathname: manageSupportPath,
+        });
+      }
+      if (res && res.status_code != 200) {
+        setSubmitButtonDisable(false);
+      }
     }
   };
   return (

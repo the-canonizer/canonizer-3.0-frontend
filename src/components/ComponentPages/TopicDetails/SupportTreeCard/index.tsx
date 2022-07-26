@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import CustomButton from "../../../common/button";
 import { Card, Button, Typography, List, Collapse, Popover } from "antd";
 import Link from "next/link";
@@ -27,11 +28,19 @@ const supportContent = (
     </div>
   </>
 );
-
 const SupportTreeCard = ({
   handleLoadMoreSupporters,
   getCheckSupportStatus,
 }) => {
+  useEffect(() => {
+    localStorage.removeItem("delegatedSupportClick");
+  }, []);
+
+  //Delegate Support Camp
+  const handleDelegatedClick = () => {
+    localStorage.removeItem("delegatedSupportClick");
+    localStorage.setItem("delegatedSupportClick", "true");
+  };
   const router = useRouter();
   const manageSupportPath = router.asPath.replace("/topic/", "/support/");
   const { campSupportingTree } = useSelector((state: RootState) => ({
@@ -77,6 +86,17 @@ const SupportTreeCard = ({
                     <a>
                       {supporter.name}
                       <span className="number-style">{supporter.score}</span>
+                    </a>
+                  </Link>
+
+                  <Link href={manageSupportPath + `_${supporter.id}`}>
+                    <a>
+                      <span
+                        onClick={handleDelegatedClick}
+                        className="delegate-support-style"
+                      >
+                        {"Delegate Your Support"}
+                      </span>
                     </a>
                   </Link>
                 </List.Item>

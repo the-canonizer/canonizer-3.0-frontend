@@ -5,6 +5,7 @@ import {
 } from "src/network/api/userApi";
 import { message } from "antd";
 import DelegatedSupportCampsUI from "./DelegatedSupportCampsUI";
+import localforage from "localforage";
 
 const DelegatedSupportCamps = ({ search }) => {
   const [delegatedSupportCampsList, setDelegatedSupportCampsList] = useState(
@@ -35,12 +36,14 @@ const DelegatedSupportCamps = ({ search }) => {
     setViewmoreModalVisible(false);
   };
   const removeSupport = async () => {
+    let fcm_token = await localforage.getItem("fcm_token");
     const removeEntireData = {
       topic_num: removeTopicNumDataId,
       camp_num: "",
       type: "delegate",
       action: "all",
       nick_name_id: nickNameId,
+      fcm_token,
     };
     let res = await removeSupportedCampsEntireTopic(removeEntireData);
     if (res && res.status_code == 200) {
