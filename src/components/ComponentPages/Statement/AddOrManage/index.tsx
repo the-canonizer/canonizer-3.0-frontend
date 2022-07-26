@@ -25,7 +25,10 @@ import {
   getEditStatementApi,
   getEditCampApi,
 } from "../../../../network/api/campManageStatementApi";
-import { updateStatementApi } from "../../../../network/api/campManageStatementApi";
+import {
+  updateStatementApi,
+  updateCampApi,
+} from "../../../../network/api/campManageStatementApi";
 import SideBarNoFilter from "../../../ComponentPages/Home/SideBarNoFilter";
 import CampInfoBar from "../../TopicDetails/CampInfoBar";
 
@@ -72,14 +75,18 @@ export default function AddOrManage({ add }) {
         }-${parent_camp[parent_camp?.length - 1]?.camp_name
           ?.split(" ")
           .join("-")}`;
-        router.push(`/statement/history/${route}`);
+        if (manageFormOf == "camp") {
+          router.push(`/camp/history/${route}`);
+        } else {
+          router.push(`/statement/history/${route}`);
+        }
       }
     }
     setScreenLoading(false);
   };
 
   const addOrManageStatement = async (values) => {
-    console.log("edt value",values)
+    console.log("edt camp  value", values);
     let res_for_add;
     if (add) {
       let res = await getEditStatementApi(values?.nick_name);
@@ -99,6 +106,8 @@ export default function AddOrManage({ add }) {
       note: values?.edit_summary?.trim(),
       submitter: add
         ? res_for_add?.statement?.submitter_nick_id
+        : manageFormOf == "camp"
+        ? editInfo?.camp?.submitter_nick_id
         : editInfo?.statement?.submitter_nick_id,
       statement: values?.statement?.trim(),
       event_type: add
@@ -113,9 +122,28 @@ export default function AddOrManage({ add }) {
         : null,
       objection_reason: objection ? values?.objection_reason : null,
       statement_update: update ? 1 : null,
+      camp_id: manageFormOf == "camp" ? editInfo?.camp?.id : null,
+      camp_name: manageFormOf == "camp" ? values.camp_name : null,
+      keywords: manageFormOf == "camp" ? values.keywords : null,
+      camp_about_url: manageFormOf == "camp" ? values?.camp_about_url : null,
+      camp_about_nick_id:
+        manageFormOf == "camp" ? values?.camp_about_nick_name : null,
+      parent_camp_num:
+        manageFormOf == "camp" && editInfo?.parent_camp.length > 1
+          ? values?.parent_camp_num
+          : null,
+      old_parent_camp_num:
+        manageFormOf == "camp" ? editInfo?.camp?.parent_camp_num : null,
       fcm_token,
     };
-    let res = await updateStatementApi(reqBody);
+    console.log("req body", reqBody);
+
+    let res;
+    if (manageFormOf == "camp") {
+      res = await updateCampApi(reqBody);
+    } else {
+      res = await updateStatementApi(reqBody);
+    }
     return res;
   };
   const fetchCampNickNameList = async () => {
@@ -137,20 +165,26 @@ export default function AddOrManage({ add }) {
     async function nickNameListApiCall() {
       let res;
       if (!add) {
-        res = await getEditStatementApi(
-          router?.query?.statement[0]?.split("-")[0]
-        );
-
-        // console.log("edit camp res", res2);
-
-        // console.log("edit sattement res", res);
-
-        if (manageFormOf == "camp") {
+        if (manageFormOf == "statement") {
           res = await getEditStatementApi(
             router?.query?.statement[0]?.split("-")[0]
           );
+          setPayloadBreadCrumb({
+            camp_num: res?.data?.statement?.camp_num,
+            topic_num: res?.data?.statement?.topic_num,
+            topic_name: res?.data?.topic?.topic_name,
+          });
+        } else if (manageFormOf == "camp") {
+          res = await getEditCampApi(
+            router?.query?.statement[0]?.split("-")[0]
+          );
           fetchCampNickNameList();
-          fetchParentsCampList(res?.data?.statement?.topic_num);
+          fetchParentsCampList(res?.data?.camp?.topic_num);
+          setPayloadBreadCrumb({
+            camp_num: res?.data?.camp?.camp_num,
+            topic_num: res?.data?.camp?.topic_num,
+            topic_name: res?.data?.topic?.topic_name,
+          });
         } else {
           res = await getEditStatementApi(
             router?.query?.statement[0]?.split("-")[0]
@@ -159,11 +193,6 @@ export default function AddOrManage({ add }) {
         if (res && res.status_code === 200) {
           setEditStatementData(res);
         }
-        setPayloadBreadCrumb({
-          camp_num: res?.data?.statement?.camp_num,
-          topic_num: res?.data?.statement?.topic_num,
-          topic_name: res?.data?.topic?.topic_name,
-        });
       } else {
         setPayloadBreadCrumb({
           camp_num: router?.query?.statement[1].split("-")[0],
@@ -176,9 +205,9 @@ export default function AddOrManage({ add }) {
           ? router?.query?.statement[0]?.split("-")[0]
           : res?.data?.topic?.topic_num,
       };
-      console.log("res", res);
+      // console.log("res", res);
       const result = await getAllUsedNickNames(reqBody);
-      console.log("result", result);
+      // console.log("result", result);
 
       if (result?.status_code == 200) {
         form.setFieldsValue(
@@ -192,6 +221,20 @@ export default function AddOrManage({ add }) {
                 parent_camp_num: res?.data?.statement?.camp_num,
                 statement: res?.data?.statement?.value,
                 edit_summary: res?.data?.statement?.note,
+              }
+            : manageFormOf == "camp"
+            ? {
+                nick_name: res?.data?.nick_name[0]?.id,
+                statement: res?.data?.camp?.note,
+                parent_camp_num: res?.data?.camp?.parent_camp_num,
+                camp_name: res?.data?.camp?.camp_name,
+                keywords: res?.data?.camp?.key_words,
+                camp_about_url: res?.data?.camp?.camp_about_url,
+                camp_about_nick_name:
+                  res?.data?.camp?.camp_about_nick_id > 0
+                    ? res?.data?.camp?.camp_about_nick_id
+                    : null,
+                //  edit_summary: res?.data?.camp?.note,
               }
             : {
                 nick_name: res?.data?.nick_name[0]?.id,
@@ -217,14 +260,19 @@ export default function AddOrManage({ add }) {
     }
     return update;
   };
-  console.log("parent ", parentCamp);
-  console.log(" camp nick name", campNickName);
-  console.log(" editStatementData ", editStatementData?.data);
-  console.log(
-    "paranet data lentght"
-    // editStatementData?.data?.parent_camp.length
-  );
-  console.log("objection ", objection, router?.query?.statement[0]?.split("-")[1]);
+  // console.log("parent ", parentCamp);
+  // console.log(" camp nick name", campNickName);
+  // console.log(" editStatementData ", editStatementData?.data);
+  // console.log(
+  //   "paranet data lentght"
+  //   // editStatementData?.data?.parent_camp.length
+  // );
+  // console.log(
+  //   "objection ",
+  //   objection,
+  //   router?.query?.statement[0]?.split("-")[1]
+  // );
+  console.log("manage of ", manageFormOf);
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
@@ -282,49 +330,47 @@ export default function AddOrManage({ add }) {
                       </Select>
                     </Form.Item>
                   </Col>
-                  {/* paraent Camp
-                   */}
+                  {/* paraent Camp -----------------------===============--------------------------*/}
                   {manageFormOf == "camp" && (
                     <>
-                      {/* // editStatementData?.data?.parent_camp.length > 1 && */}
-                      <Col xs={24} sm={24} xl={12}>
-                        <Form.Item
-                          className={`${styles.formItem} mb-2`}
-                          label={
-                            <>
-                              Parent Camp <span className="required">*</span>
-                            </>
-                          }
-                          name="parent_camp_num"
-                          rules={[
-                            {
-                              required: true,
-                              message:
-                                K?.exceptionalMessages?.selectNickNameErrorMsg,
-                            },
-                          ]}
-                          initialValue={
-                            editStatementData?.data?.statement?.camp_num
-                          }
-                        >
-                          <Select
-                            value={editStatementData?.data?.statement?.camp_num}
-                            size={"large"}
-                            placeholder="Parent camp"
-                            // data-id="parent-camp"
+                      {editStatementData?.data?.parent_camp.length > 1 && (
+                        <Col xs={24} sm={24} xl={12}>
+                          <Form.Item
+                            className={`${styles.formItem} mb-2`}
+                            label={
+                              <>
+                                Parent Camp <span className="required">*</span>
+                              </>
+                            }
+                            name="parent_camp_num"
+                            rules={[
+                              {
+                                required: true,
+                                message:
+                                  K?.exceptionalMessages
+                                    ?.selectNickNameErrorMsg,
+                              },
+                            ]}
                           >
-                            {parentCamp.map((camp) => (
-                              <Select.Option
-                                value={camp.camp_num}
-                                key={camp.id}
-                              >
-                                {camp.camp_name}
-                              </Select.Option>
-                            ))}
-                          </Select>
-                        </Form.Item>
-                      </Col>
-                      {/* cmap -------------------------------------------------------- */}
+                            <Select
+                              // value={editStatementData?.data?.statement?.camp_num}
+                              size={"large"}
+                              placeholder="Parent camp"
+                              // data-id="parent-camp"
+                            >
+                              {parentCamp.map((camp) => (
+                                <Select.Option
+                                  value={camp.camp_num}
+                                  key={camp.id}
+                                >
+                                  {camp.camp_name}
+                                </Select.Option>
+                              ))}
+                            </Select>
+                          </Form.Item>
+                        </Col>
+                      )}
+                      {/* camp name -------------------------------------------------------- -----------------------*/}
                       <Col xs={24} sm={24} xl={12}>
                         <Form.Item
                           className={`${styles.formItem} mb-2`}
@@ -342,11 +388,12 @@ export default function AddOrManage({ add }) {
                                 K?.exceptionalMessages?.selectNickNameErrorMsg,
                             },
                           ]}
-                          // initialValue={
-                          //   editStatementData?.data?.statement?.camp_num
-                          // }
                         >
-                          <Input />
+                          <Input
+                            disabled={
+                              editStatementData?.data?.parent_camp.length <= 1
+                            }
+                          />
                         </Form.Item>
                       </Col>
                       {/* keywords  --------------------------------------------------- */}
@@ -450,7 +497,7 @@ export default function AddOrManage({ add }) {
                         >
                           <Input.TextArea size="large" rows={7} />
                         </Form.Item>
-                        {/* Camp about url ===================================================== */}
+                        {/* Camp about url ===================================================== ----------------- */}
                         {manageFormOf == "camp" && (
                           <>
                             <Form.Item
@@ -473,7 +520,7 @@ export default function AddOrManage({ add }) {
                             >
                               <Input />
                             </Form.Item>
-                            {/* cmap about nick name ========================================== */}
+                            {/* cmap about nick name ========================================== --------------------- */}
                             <Form.Item
                               className={`${styles.formItem} mb-2`}
                               label={<>Camp About Nick Name</>}
