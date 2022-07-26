@@ -29,6 +29,7 @@ import moment from "moment";
 import { GetCheckSupportExists } from "src/network/api/topicAPI";
 import queryParams from "src/utils/queryParams";
 import isAuth from "../../../hooks/isUserAuthenticated";
+import CampRecentActivities from "../Home/CampRecentActivities";
 const TopicDetails = () => {
   let myRefToCampStatement = useRef(null);
   const isLogin = isAuth();
@@ -91,6 +92,7 @@ const TopicDetails = () => {
       setLoadingIndicator(false);
     }
     getTreeApiCall();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asofdate, algorithm, +router?.query?.camp[1]?.split("-")[0]]);
   const reqBodyData = {
     topic_num: +router?.query?.camp[0]?.split("-")[0],
@@ -117,6 +119,7 @@ const TopicDetails = () => {
     if (isLogin) {
       GetCheckStatusData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLogin]);
 
   const scrollToCampStatement = () => {
@@ -166,12 +169,17 @@ const TopicDetails = () => {
 
         <aside className={styles.miniSide + " leftSideBar miniSideBar"}>
           <SideBar onCreateCamp={onCreateCamp} />
-        </aside>
 
-        <div className={styles.pageContent + " pageContentWrap"}>
           <Spin spinning={loadingIndicator} size="large">
             {!!newsFeed?.length && <NewsFeedsCard newsFeed={newsFeed} />}
           </Spin>
+          <CampRecentActivities />
+        </aside>
+
+        <div className={styles.pageContent + " pageContentWrap"}>
+          {/* <Spin spinning={loadingIndicator} size="large">
+            {!!newsFeed?.length && <NewsFeedsCard newsFeed={newsFeed} />}
+          </Spin> */}
           <Spin spinning={getTreeLoadingIndicator} size="large">
             <CampTreeCard scrollToCampStatement={scrollToCampStatement} />
           </Spin>
@@ -182,6 +190,10 @@ const TopicDetails = () => {
             />
           </Spin>
 
+          <Spin spinning={loadingIndicator} size="large">
+            {!!newsFeed?.length && <NewsFeedsCard newsFeed={newsFeed} />}
+          </Spin>
+          <CampRecentActivities />
           <Spin spinning={loadingIndicator} size="large">
             <CurrentTopicCard />
           </Spin>
