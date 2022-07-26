@@ -1296,7 +1296,7 @@ body {
   }
 }
 
-@media screen and(max-width:332px) {
+@media screen and (max-width:332px) {
   .campHistoryCollapseCards .ant-collapse-item {
     &:not(.ant-collapse-item-active) {
       .ant-collapse-header {
@@ -1306,7 +1306,7 @@ body {
   }
 }
 
-@media screen and(min-width:333px) and(max-width:453px) {
+@media screen and (min-width:333px) and (max-width:453px) {
   .campHistoryCollapseCards .ant-collapse-item {
     &:not(.ant-collapse-item-active) {
       .ant-collapse-header {
@@ -1316,7 +1316,7 @@ body {
   }
 }
 
-@media screen and(min-width:454px) and (max-width: 1032px) {
+@media screen and (min-width:454px) and (max-width: 1032px) {
   .campHistoryCollapseCards .ant-collapse-item {
     &:not(.ant-collapse-item-active) {
       .ant-collapse-header {
