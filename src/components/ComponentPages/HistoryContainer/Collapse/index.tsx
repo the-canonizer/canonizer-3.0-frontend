@@ -54,7 +54,7 @@ function HistoryCollapse({
 
   const commitChanges = async () => {
     let reqBody = {
-      type: "statement",
+      type: historyOf,
       id: campStatement?.id,
     };
     let res = await changeCommitStatement(reqBody);
@@ -68,7 +68,8 @@ function HistoryCollapse({
       record_id: campStatement.id,
       topic_num: router.query.camp[0].split("-")[0],
       camp_num: router.query.camp[1].split("-")[0],
-      change_for: "statement",
+      change_for: historyOf,
+
       nick_name_id: campStatement?.submitter_nick_id,
     };
     let res = await agreeToChangeApi(reqBody);
@@ -77,6 +78,7 @@ function HistoryCollapse({
 
   let historyTitle = () => {
     let title: string;
+
     if (historyOf == "statement") {
       title = "Statement";
     } else if (historyOf == "camp") {
@@ -172,7 +174,9 @@ function HistoryCollapse({
                       }
                       onClick={() =>
                         router.push(
-                          `/manage/statement/${campStatement?.id}-objection`
+                          historyOf == "camp"
+                            ? `/manage/camp/${campStatement?.id}-objection`
+                            : `/manage/statement/${campStatement?.id}-objection`
                         )
                       }
                       className={`mr-3 ${styles.campUpdateButton}`}
@@ -233,7 +237,11 @@ function HistoryCollapse({
                       </span>
                       <Button type="primary" className=" mr-3">
                         <Link
-                          href={`/manage/statement/${campStatement?.id}-update`}
+                          href={
+                            historyOf == "camp"
+                              ? `/manage/camp/${campStatement?.id}-update`
+                              : `/manage/statement/${campStatement?.id}-update`
+                          }
                         >
                           Edit Change
                         </Link>

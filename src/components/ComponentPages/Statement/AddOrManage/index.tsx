@@ -45,15 +45,18 @@ export default function AddOrManage({ add }) {
   const [screenLoading, setScreenLoading] = useState(false);
   const [payloadBreadCrumb, setPayloadBreadCrumb] = useState({});
   const [parentCamp, setParentCamps] = useState([]);
+  const [errors, setErrors] = useState({
+    CampNameError: false,
+    campNameMsg: "",
+    displayTextError: false,
+    displayTextErrorMsg: "",
+  });
 
   const [campNickName, setCampNickName] = useState([]);
   const [form] = Form.useForm();
   let objection = router?.query?.statement[0]?.split("-")[1] == "objection";
   let update = router?.query?.statement[0]?.split("-")[1] == "update";
   let manageFormOf = router?.asPath.split("/")[2];
-
-  // console.log("router =", router?.asPath.split("/")[2]);
-  // console.log("manage form =", manageFormOf);
 
   const onFinish = async (values: any) => {
     setScreenLoading(true);
@@ -81,12 +84,13 @@ export default function AddOrManage({ add }) {
           router.push(`/statement/history/${route}`);
         }
       }
+    } else if (res?.status_code == 400) {
+      // console.log("error in res =>", res);
     }
     setScreenLoading(false);
   };
 
   const addOrManageStatement = async (values) => {
-    console.log("edt camp  value", values);
     let res_for_add;
     if (add) {
       let res = await getEditStatementApi(values?.nick_name);
@@ -117,17 +121,21 @@ export default function AddOrManage({ add }) {
         : objection
         ? "objection"
         : "update",
-      statement_id: !!(objection || update)
+      statement_id: !!((objection || update) && manageFormOf == "statement")
         ? router?.query?.statement[0]?.split("-")[0]
         : null,
       objection_reason: objection ? values?.objection_reason : null,
-      statement_update: update ? 1 : null,
+      statement_update: update && manageFormOf == "statement" ? 1 : null,
       camp_id: manageFormOf == "camp" ? editInfo?.camp?.id : null,
       camp_name: manageFormOf == "camp" ? values.camp_name : null,
       keywords: manageFormOf == "camp" ? values.keywords : null,
       camp_about_url: manageFormOf == "camp" ? values?.camp_about_url : null,
       camp_about_nick_id:
-        manageFormOf == "camp" ? values?.camp_about_nick_name : null,
+        manageFormOf == "camp"
+          ? objection
+            ? editInfo?.camp?.camp_about_nick_id
+            : values?.camp_about_nick_name
+          : null,
       parent_camp_num:
         manageFormOf == "camp" && editInfo?.parent_camp.length > 1
           ? values?.parent_camp_num
@@ -136,7 +144,6 @@ export default function AddOrManage({ add }) {
         manageFormOf == "camp" ? editInfo?.camp?.parent_camp_num : null,
       fcm_token,
     };
-    console.log("req body", reqBody);
 
     let res;
     if (manageFormOf == "camp") {
@@ -205,17 +212,14 @@ export default function AddOrManage({ add }) {
           ? router?.query?.statement[0]?.split("-")[0]
           : res?.data?.topic?.topic_num,
       };
-      // console.log("res", res);
       const result = await getAllUsedNickNames(reqBody);
-      // console.log("result", result);
-
       if (result?.status_code == 200) {
         form.setFieldsValue(
           add
             ? {
                 nick_name: result?.data[0].id,
               }
-            : !!(objection || update)
+            : !!((objection || update) && manageFormOf == "statement")
             ? {
                 nick_name: res?.data?.nick_name[0]?.id,
                 parent_camp_num: res?.data?.statement?.camp_num,
@@ -234,7 +238,7 @@ export default function AddOrManage({ add }) {
                   res?.data?.camp?.camp_about_nick_id > 0
                     ? res?.data?.camp?.camp_about_nick_id
                     : null,
-                //  edit_summary: res?.data?.camp?.note,
+                edit_summary: update ? res?.data?.camp?.note : null,
               }
             : {
                 nick_name: res?.data?.nick_name[0]?.id,
@@ -260,19 +264,7 @@ export default function AddOrManage({ add }) {
     }
     return update;
   };
-  // console.log("parent ", parentCamp);
-  // console.log(" camp nick name", campNickName);
-  // console.log(" editStatementData ", editStatementData?.data);
-  // console.log(
-  //   "paranet data lentght"
-  //   // editStatementData?.data?.parent_camp.length
-  // );
-  // console.log(
-  //   "objection ",
-  //   objection,
-  //   router?.query?.statement[0]?.split("-")[1]
-  // );
-  console.log("manage of ", manageFormOf);
+
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
@@ -357,6 +349,7 @@ export default function AddOrManage({ add }) {
                               size={"large"}
                               placeholder="Parent camp"
                               // data-id="parent-camp"
+                              disabled={objection}
                             >
                               {parentCamp.map((camp) => (
                                 <Select.Option
@@ -384,34 +377,44 @@ export default function AddOrManage({ add }) {
                           rules={[
                             {
                               required: true,
-                              message:
-                                K?.exceptionalMessages?.selectNickNameErrorMsg,
+                              message: K?.exceptionalMessages?.campNameReqErr,
+                            },
+                            {
+                              pattern: /[^ \s]/,
+                              message: K?.exceptionalMessages?.campNameReqErr,
                             },
                           ]}
                         >
                           <Input
                             disabled={
-                              editStatementData?.data?.parent_camp.length <= 1
+                              !!(
+                                editStatementData?.data?.parent_camp.length <=
+                                  1 || objection
+                              )
                             }
+                            maxLength={30}
                           />
                         </Form.Item>
                       </Col>
                       {/* keywords  --------------------------------------------------- */}
                       <Col xs={24} sm={24} xl={12}>
-                        <Form.Item
-                          className={`${styles.formItem} mb-2`}
-                          label={<>Keywords</>}
-                          name="keywords"
-                          rules={[
-                            {
-                              required: true,
-                              message:
-                                K?.exceptionalMessages?.selectNickNameErrorMsg,
-                            },
-                          ]}
-                        >
-                          <Input />
-                        </Form.Item>
+                        {objection && (
+                          <Form.Item
+                            className={`${styles.formItem} mb-2`}
+                            label={<>Keywords</>}
+                            name="keywords"
+                            rules={[
+                              {
+                                required: true,
+                                message:
+                                  K?.exceptionalMessages
+                                    ?.selectNickNameErrorMsg,
+                              },
+                            ]}
+                          >
+                            <Input />
+                          </Form.Item>
+                        )}
                       </Col>
                     </>
                   )}
@@ -511,28 +514,18 @@ export default function AddOrManage({ add }) {
                               name="camp_about_url"
                               rules={[
                                 {
-                                  required: true,
-                                  message:
-                                    K?.exceptionalMessages
-                                      ?.selectNickNameErrorMsg,
+                                  pattern: /[^ \s]/,
+                                  message: "Enter a valid link",
                                 },
                               ]}
                             >
-                              <Input />
+                              <Input maxLength={1024} />
                             </Form.Item>
                             {/* cmap about nick name ========================================== --------------------- */}
                             <Form.Item
                               className={`${styles.formItem} mb-2`}
                               label={<>Camp About Nick Name</>}
                               name="camp_about_nick_name"
-                              rules={[
-                                {
-                                  required: true,
-                                  message:
-                                    K?.exceptionalMessages
-                                      ?.selectNickNameErrorMsg,
-                                },
-                              ]}
                             >
                               <Select
                                 size={"large"}
@@ -585,19 +578,33 @@ export default function AddOrManage({ add }) {
                                     )}`
                                   )
                                 : router?.push(
-                                    `/statement/history/${
-                                      backdata?.topic?.topic_num
-                                    }-${backdata?.topic?.topic_name
-                                      ?.split(" ")
-                                      ?.join("-")}/${
-                                      backdata?.parent_camp[
-                                        backdata?.parent_camp.length - 1
-                                      ].camp_num
-                                    }-${backdata?.parent_camp[
-                                      backdata?.parent_camp.length - 1
-                                    ].camp_name
-                                      ?.split(" ")
-                                      ?.join("-")}`
+                                    manageFormOf == "camp"
+                                      ? `/camp/history/${
+                                          backdata?.topic?.topic_num
+                                        }-${backdata?.topic?.topic_name
+                                          ?.split(" ")
+                                          ?.join("-")}/${
+                                          backdata?.parent_camp[
+                                            backdata?.parent_camp.length - 1
+                                          ].camp_num
+                                        }-${backdata?.parent_camp[
+                                          backdata?.parent_camp.length - 1
+                                        ].camp_name
+                                          ?.split(" ")
+                                          ?.join("-")}`
+                                      : `/statement/history/${
+                                          backdata?.topic?.topic_num
+                                        }-${backdata?.topic?.topic_name
+                                          ?.split(" ")
+                                          ?.join("-")}/${
+                                          backdata?.parent_camp[
+                                            backdata?.parent_camp.length - 1
+                                          ].camp_num
+                                        }-${backdata?.parent_camp[
+                                          backdata?.parent_camp.length - 1
+                                        ].camp_name
+                                          ?.split(" ")
+                                          ?.join("-")}`
                                   );
                             }}
                           >
