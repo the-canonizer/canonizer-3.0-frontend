@@ -263,7 +263,7 @@ const ManageSupport = () => {
       action: "add",
       nick_name_id: nickNameIDValue,
       order_update: filterArrayResult,
-      fcm_token
+      fcm_token,
     };
 
     let res = await addSupport(addSupportId);

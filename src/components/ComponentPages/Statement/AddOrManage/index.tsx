@@ -97,7 +97,7 @@ export default function AddOrManage({ add }) {
         : null,
       objection_reason: objection ? values?.objection_reason : null,
       statement_update: update ? 1 : null,
-      fcm_token
+      fcm_token,
     };
     let res = await updateStatementApi(reqBody);
     return res;

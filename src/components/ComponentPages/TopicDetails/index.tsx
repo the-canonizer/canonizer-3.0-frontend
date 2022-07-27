@@ -145,20 +145,27 @@ const TopicDetails = () => {
     const campName = campRecord?.camp_name.replaceAll(" ", "-");
 
     router.push({
-      pathname: `/camp/create/${topicRecord?.topic_num}-${encodeURIComponent(topicName)}/${campRecord?.camp_num}-${encodeURIComponent(campName)}`,
+      pathname: `/camp/create/${topicRecord?.topic_num}-${encodeURIComponent(
+        topicName
+      )}/${campRecord?.camp_num}-${encodeURIComponent(campName)}`,
     });
 
     setCurrentTopics(data);
   };
 
-  const onCampForumClick = () => {
-    const topicName = topicRecord?.topic_name.replaceAll(" ", "-");
-    const campName = campRecord?.camp_name.replaceAll(" ", "-");
-    router.push({
-      pathname: `/forum/${topicRecord?.topic_num}-${encodeURIComponent(
-        topicName
-      )}/${campRecord?.camp_num}-${encodeURIComponent(campName)}/threads`,
-    });
+  const onCampForumClick = async () => {
+    const topicName = await topicRecord?.topic_name.replaceAll(" ", "-"),
+      topicNum = topicRecord?.topic_num,
+      campName = await campRecord?.camp_name.replaceAll(" ", "-"),
+      campNum = campRecord?.camp_num;
+
+    if (topicName && topicNum && campName && campNum) {
+      router.push({
+        pathname: `/forum/${topicNum}-${encodeURIComponent(
+          topicName
+        )}/${campNum}-${encodeURIComponent(campName)}/threads`,
+      });
+    }
   };
 
   return (
