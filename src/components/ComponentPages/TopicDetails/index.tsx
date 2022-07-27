@@ -145,7 +145,7 @@ const TopicDetails = () => {
     const campName = campRecord?.camp_name.replaceAll(" ", "-");
 
     router.push({
-      pathname: `/camp/create/${topicRecord?.topic_num}-${topicName}/${campRecord?.camp_num}-${campName}`,
+      pathname: `/camp/create/${topicRecord?.topic_num}-${encodeURIComponent(topicName)}/${campRecord?.camp_num}-${encodeURIComponent(campName)}`,
     });
 
     setCurrentTopics(data);
@@ -155,7 +155,9 @@ const TopicDetails = () => {
     const topicName = topicRecord?.topic_name.replaceAll(" ", "-");
     const campName = campRecord?.camp_name.replaceAll(" ", "-");
     router.push({
-      pathname: `/forum/${topicRecord?.topic_num}-${topicName}/${campRecord?.camp_num}-${campName}/threads`,
+      pathname: `/forum/${topicRecord?.topic_num}-${encodeURIComponent(
+        topicName
+      )}/${campRecord?.camp_num}-${encodeURIComponent(campName)}/threads`,
     });
   };
 
