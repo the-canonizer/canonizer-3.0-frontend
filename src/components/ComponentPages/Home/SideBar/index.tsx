@@ -1,8 +1,8 @@
 import { Button, Drawer } from "antd";
-import React, { useState } from "react";
+import { useState } from "react";
 import { isServer } from "src/utils/generalUtility";
 import TopicsFilter from "../../../common/topicsFilter";
-
+import { AppstoreAddOutlined } from "@ant-design/icons";
 export default function HomeSideBar({ onCreateCamp = () => {} }) {
   const [visible, setVisible] = useState(false);
 
@@ -20,9 +20,11 @@ export default function HomeSideBar({ onCreateCamp = () => {} }) {
       )}
       {!isServer && window.innerWidth <= 767 && (
         <>
-          <Button type="primary" onClick={showDrawer}>
-            Open
-          </Button>
+          <Button
+            type="primary"
+            onClick={showDrawer}
+            icon={<AppstoreAddOutlined />}
+          ></Button>
           <Drawer
             title="Filters"
             placement="right"
