@@ -30,6 +30,7 @@ import { GetCheckSupportExists } from "src/network/api/topicAPI";
 import queryParams from "src/utils/queryParams";
 import isAuth from "../../../hooks/isUserAuthenticated";
 import CampRecentActivities from "../Home/CampRecentActivities";
+import { isServer } from "src/utils/generalUtility";
 const TopicDetails = () => {
   let myRefToCampStatement = useRef(null);
   const isLogin = isAuth();
@@ -169,17 +170,17 @@ const TopicDetails = () => {
 
         <aside className={styles.miniSide + " leftSideBar miniSideBar"}>
           <SideBar onCreateCamp={onCreateCamp} />
-
-          <Spin spinning={loadingIndicator} size="large">
-            {!!newsFeed?.length && <NewsFeedsCard newsFeed={newsFeed} />}
-          </Spin>
-          <CampRecentActivities />
+          {!isServer && window.innerWidth >= 768 && (
+            <>
+              <Spin spinning={loadingIndicator} size="large">
+                {!!newsFeed?.length && <NewsFeedsCard newsFeed={newsFeed} />}
+              </Spin>
+              <CampRecentActivities />
+            </>
+          )}{" "}
         </aside>
 
         <div className={styles.pageContent + " pageContentWrap"}>
-          {/* <Spin spinning={loadingIndicator} size="large">
-            {!!newsFeed?.length && <NewsFeedsCard newsFeed={newsFeed} />}
-          </Spin> */}
           <Spin spinning={getTreeLoadingIndicator} size="large">
             <CampTreeCard scrollToCampStatement={scrollToCampStatement} />
           </Spin>
@@ -189,11 +190,14 @@ const TopicDetails = () => {
               onCampForumClick={onCampForumClick}
             />
           </Spin>
-
-          <Spin spinning={loadingIndicator} size="large">
-            {!!newsFeed?.length && <NewsFeedsCard newsFeed={newsFeed} />}
-          </Spin>
-          <CampRecentActivities />
+          {!isServer && window.innerWidth <= 767 && (
+            <>
+              <Spin spinning={loadingIndicator} size="large">
+                {!!newsFeed?.length && <NewsFeedsCard newsFeed={newsFeed} />}
+              </Spin>
+              <CampRecentActivities />
+            </>
+          )}
           <Spin spinning={loadingIndicator} size="large">
             <CurrentTopicCard />
           </Spin>
