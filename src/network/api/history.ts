@@ -20,7 +20,6 @@ export const getHistoryApi = async (reqBody, pageNumber, historyOf: string) => {
     } else {
       store.dispatch(pushToCampHistory(history.data.items || []));
     }
-    // debugger;
     return history?.data;
   } catch (error) {
     // message.error(error.message);

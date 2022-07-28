@@ -262,7 +262,6 @@ const TopicsList = () => {
             bordered
             dataSource={topicsData?.topics}
             renderItem={(item: any) => {
-              debugger;
               return (
                 <List.Item key={item.topic_id} className={styles.item}>
                   <>
