@@ -412,10 +412,6 @@ const ForumComponent = ({}) => {
     } else {
       res = await createPost(body);
     }
-    console.log(
-      "🚀 ~ file: index.tsx ~ line 425 ~ onFinishPost ~ res----",
-      res
-    );
 
     if (res && res.status_code === 200) {
       message.success(res.message);

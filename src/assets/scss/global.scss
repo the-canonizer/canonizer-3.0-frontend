@@ -704,6 +704,7 @@ body {
   .ant-list-item {
     padding: 0;
     border: none;
+    justify-content: inherit;
     a {
       color: #2e68db;
     }
