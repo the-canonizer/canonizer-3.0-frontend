@@ -29,6 +29,7 @@ const { Title } = Typography;
 
 function HistoryCollapse({
   ifIamSupporter,
+  ifSupportDelayed,
   campStatement,
   onSelectCompare,
   isDisabledCheck,
@@ -156,7 +157,7 @@ function HistoryCollapse({
                 {campStatement?.status == "in_review" && (
                   <Tooltip
                     title={
-                      ifIamSupporter == 0
+                      !!(ifIamSupporter == 0 && ifSupportDelayed == 0)
                         ? "Only admin can object"
                         : campStatement?.isAuthor
                         ? "Only admin can object"
@@ -166,7 +167,7 @@ function HistoryCollapse({
                     <Button
                       type="primary"
                       disabled={
-                        ifIamSupporter == 0
+                        !!(ifIamSupporter == 0 && ifSupportDelayed == 0)
                           ? true
                           : campStatement?.isAuthor
                           ? true
@@ -252,16 +253,17 @@ function HistoryCollapse({
                     </div>
                   </div>
                 )}
-              {campStatement?.status == "in_review" && ifIamSupporter != 0 && (
-                <div className={styles.campStatementCollapseButtons}>
-                  <Checkbox
-                    className={styles.campSelectCheckbox}
-                    onChange={agreeWithChange}
-                  >
-                    I agree with this statement change
-                  </Checkbox>
-                </div>
-              )}
+              {campStatement?.status == "in_review" &&
+                !!(ifIamSupporter != 0 || ifSupportDelayed != 0) && (
+                  <div className={styles.campStatementCollapseButtons}>
+                    <Checkbox
+                      className={styles.campSelectCheckbox}
+                      onChange={agreeWithChange}
+                    >
+                      I agree with this statement change
+                    </Checkbox>
+                  </div>
+                )}
             </div>
           </>
         </Collapse>

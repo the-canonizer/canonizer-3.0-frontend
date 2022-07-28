@@ -265,6 +265,8 @@ export default function AddOrManage({ add }) {
     return update;
   };
 
+  console.log("camp dataaaaata", editStatementData?.data?.camp?.camp_num);
+
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
@@ -351,14 +353,19 @@ export default function AddOrManage({ add }) {
                               // data-id="parent-camp"
                               disabled={objection}
                             >
-                              {parentCamp.map((camp) => (
-                                <Select.Option
-                                  value={camp.camp_num}
-                                  key={camp.id}
-                                >
-                                  {camp.camp_name}
-                                </Select.Option>
-                              ))}
+                              {parentCamp.map((camp) =>
+                                camp?.camp_num !==
+                                editStatementData?.data?.camp?.camp_num ? (
+                                  <Select.Option
+                                    value={camp.camp_num}
+                                    key={camp.id}
+                                  >
+                                    {camp.camp_name}
+                                  </Select.Option>
+                                ) : (
+                                  ""
+                                )
+                              )}
                             </Select>
                           </Form.Item>
                         </Col>
@@ -398,7 +405,7 @@ export default function AddOrManage({ add }) {
                       </Col>
                       {/* keywords  --------------------------------------------------- */}
                       <Col xs={24} sm={24} xl={12}>
-                        {objection && (
+                        {!objection && (
                           <Form.Item
                             className={`${styles.formItem} mb-2`}
                             label={<>Keywords</>}
@@ -653,9 +660,27 @@ export default function AddOrManage({ add }) {
           column={{ xxl: 1, lg: 1 }}
           // layout="vertical"
         >
-          <Descriptions.Item label="Statement">
-            {form?.getFieldValue("statement")}
-          </Descriptions.Item>
+          {manageFormOf != "camp" && (
+            <Descriptions.Item label="Statement">
+              {form?.getFieldValue("statement")}
+            </Descriptions.Item>
+          )}
+
+          {manageFormOf == "camp" && (
+            <>
+              <Descriptions.Item label="Camp Name">
+                {form?.getFieldValue("camp_name")}
+              </Descriptions.Item>
+
+              <Descriptions.Item label="Keywords">
+                {form?.getFieldValue("keywords")}
+              </Descriptions.Item>
+
+              <Descriptions.Item label="Camp About Url">
+                {form?.getFieldValue("camp_about_url")}
+              </Descriptions.Item>
+            </>
+          )}
 
           <Descriptions.Item label="Edit Summary">
             {" "}

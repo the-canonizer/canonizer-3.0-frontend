@@ -1,4 +1,5 @@
 import { Typography, Collapse } from "antd";
+// import Link from "next/link";
 import styles from ".././campHistory.module.scss";
 
 const { Title } = Typography;
@@ -11,6 +12,14 @@ const CampHistory = ({ campStatement }) => {
   console.log("camp  data => ", campStatement);
   return (
     <>
+      {!!campStatement?.parent_camp_name && (
+        <Title level={5}>
+          Parent Camp :{" "}
+          <span className={styles.updateSurveyPrj}>
+            {campStatement?.parent_camp_name}
+          </span>
+        </Title>
+      )}
       <Title level={5}>
         Keywords :{" "}
         <span className={styles.updateSurveyPrj}>
@@ -24,7 +33,12 @@ const CampHistory = ({ campStatement }) => {
       <Title level={5}>
         Camp About URL :{" "}
         <span className={styles.updateSurveyPrj}>
-          {campStatement?.camp_about_url}
+          {campStatement?.camp_about_url && (
+            <Link href={campStatement?.camp_about_url}>
+              <a target="_blank">{campStatement?.camp_about_url}</a>
+            </Link>
+          )}
+          {/* {campStatement?.camp_about_url} */}
         </span>
       </Title>
 

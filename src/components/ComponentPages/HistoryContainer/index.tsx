@@ -165,6 +165,7 @@ function HistoryContainer() {
             campStatement={campHistoryData}
             onSelectCompare={onSelectCompare}
             ifIamSupporter={campHistory?.details?.ifIamSupporter}
+            ifSupportDelayed={campHistory?.details?.ifSupportDelayed}
             changeAgree={changeAgree}
             isDisabledCheck={
               selectedTopic.length >= 2 &&

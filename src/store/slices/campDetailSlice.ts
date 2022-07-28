@@ -13,6 +13,7 @@ export const treeSlice = createSlice({
       items: [],
       details: {
         ifIamSupporter: null,
+        ifSupportDelayed: null,
       },
     },
   },
