@@ -265,7 +265,7 @@ export default function AddOrManage({ add }) {
     return update;
   };
 
-  console.log("camp dataaaaata", editStatementData?.data?.camp?.camp_num);
+  console.log("campnick ", parentCamp);
 
   return (
     <>
@@ -672,12 +672,33 @@ export default function AddOrManage({ add }) {
                 {form?.getFieldValue("camp_name")}
               </Descriptions.Item>
 
+              {editStatementData?.data?.parent_camp.length > 1 && (
+                <Descriptions.Item label="parent Camp Num">
+                  {
+                    parentCamp?.find(
+                      (parent) =>
+                        parent?.camp_num ==
+                        form?.getFieldValue("parent_camp_num")
+                    )?.camp_name
+                  }
+                </Descriptions.Item>
+              )}
+
               <Descriptions.Item label="Keywords">
                 {form?.getFieldValue("keywords")}
               </Descriptions.Item>
 
               <Descriptions.Item label="Camp About Url">
                 {form?.getFieldValue("camp_about_url")}
+              </Descriptions.Item>
+
+              <Descriptions.Item label="Camp About Nick Name">
+                {
+                  campNickName?.find(
+                    (id) =>
+                      id?.id == form?.getFieldValue("camp_about_nick_name")
+                  )?.nick_name
+                }
               </Descriptions.Item>
             </>
           )}
@@ -690,7 +711,7 @@ export default function AddOrManage({ add }) {
             {" "}
             {
               nickNameData?.find(
-                (id) => id.id == form?.getFieldValue("nick_name")
+                (id) => id?.id == form?.getFieldValue("nick_name")
               )?.nick_name
             }
           </Descriptions.Item>
