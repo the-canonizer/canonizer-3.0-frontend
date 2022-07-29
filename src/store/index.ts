@@ -24,6 +24,7 @@ import TopicSlice from "./slices/topicSlice";
 import ForumSlice from "./slices/campForumSlice";
 import campNewsSlice from "./slices/news";
 import notifications from "./slices/notificationSlice";
+import supportTreeCard from "./slices/supportTreeCard";
 // reducers
 
 let combinedReducer = combineReducers({
@@ -36,6 +37,7 @@ let combinedReducer = combineReducers({
   filters: filtersSlice,
   campNews: campNewsSlice,
   forum: ForumSlice,
+  supportTreeCard: supportTreeCard,
   notifications,
 });
 
@@ -49,7 +51,14 @@ const rootReducer = (state, action) => {
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth", "filters", "topic", "forum"],
+  whitelist: [
+    "auth",
+    "filters",
+    "topic",
+    "forum",
+    "supportTreeCard",
+    "topicDetails",
+  ],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -704,6 +704,7 @@ body {
   .ant-list-item {
     padding: 0;
     border: none;
+    justify-content: inherit;
     a {
       color: #2e68db;
     }
@@ -725,6 +726,15 @@ body {
   font-size: 11px;
   color: #fff;
   background-color: #f89d15;
+  border-radius: 6px;
+  font-weight: 400;
+  margin-left: 10px;
+}
+.delegate-support-style{
+  padding: 2px 7px;
+  font-size: 11px;
+  color: #fff;
+  background-color: #5215f8;
   border-radius: 6px;
   font-weight: 400;
   margin-left: 10px;

@@ -7,7 +7,8 @@ import { Button, Col } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { DraggableArea } from "react-draggable-tags";
 import { placeholders } from "./../../../../messages/placeholder";
-
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
 const ManageSupportUI = ({
   nickNameList,
   manageSupportList,
@@ -24,6 +25,14 @@ const ManageSupportUI = ({
   setSelectedtNickname,
   submitButtonDisable,
 }) => {
+  const { currentDelegatedSupportedClick } = useSelector(
+    (state: RootState) => ({
+      currentDelegatedSupportedClick:
+        state.supportTreeCard.currentDelegatedSupportedClick,
+    })
+  );
+  const CheckDelegatedOrDirect =
+    currentDelegatedSupportedClick.delegatedSupportClick;
   useEffect(() => {
     if (nickNameList.length > 0) {
       setSelectedtNickname(nickNameList[0]?.id);
@@ -38,7 +47,6 @@ const ManageSupportUI = ({
         }))
       : "";
   }
-
   return (
     <>
       <Card
@@ -83,28 +91,32 @@ const ManageSupportUI = ({
           your choice position.
         </div>
 
-        <div className="mb-4">
-          <span className={styles.quickAction}>
-            Quick Action:
-            <span className={styles.checkbox}>
-              <input
-                type="checkbox"
-                checked={checked}
-                onClick={(e) =>
-                  removeAll((e.target as any).checked, manageSupportList)
-                }
-              ></input>
+        {CheckDelegatedOrDirect ? (
+          ""
+        ) : (
+          <div className="mb-4">
+            <span className={styles.quickAction}>
+              Quick Action:
+              <span className={styles.checkbox}>
+                <input
+                  type="checkbox"
+                  checked={checked}
+                  onClick={(e) =>
+                    removeAll((e.target as any).checked, manageSupportList)
+                  }
+                ></input>
+              </span>
+              <span className={styles.removeAll}>Remove all</span>
+              <Button
+                htmlType="button"
+                className={styles.clear_Btn}
+                onClick={(e) => clearAllChanges(manageSupportList)}
+              >
+                Clear all changes
+              </Button>
             </span>
-            <span className={styles.removeAll}>Remove all</span>
-            <Button
-              htmlType="button"
-              className={styles.clear_Btn}
-              onClick={(e) => clearAllChanges(manageSupportList)}
-            >
-              Clear all changes
-            </Button>
-          </span>
-        </div>
+          </div>
+        )}
         <DraggableArea
           tags={tagsArrayList}
           render={({ tag, index }) => (
@@ -126,9 +138,15 @@ const ManageSupportUI = ({
                     <a className={styles.Bluecolor}> {tag.camp_name}</a>
                   </Link>
                 </div>
-                <CloseCircleOutlined
-                  onClick={() => handleClose(tag, tag.topic_num, tagsArrayList)}
-                />
+                {CheckDelegatedOrDirect ? (
+                  ""
+                ) : (
+                  <CloseCircleOutlined
+                    onClick={() =>
+                      handleClose(tag, tag.topic_num, tagsArrayList)
+                    }
+                  />
+                )}
               </Button>
             </div>
           )}

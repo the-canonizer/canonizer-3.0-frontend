@@ -12,6 +12,10 @@ import styles from "./topicsList.module.scss";
 import { Spin, Checkbox } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import useAuthentication from "src/hooks/isUserAuthenticated";
+import {
+  setCheckSupportExistsData,
+  setCurrentCheckSupportStatus,
+} from "src/store/slices/campDetailSlice";
 
 const antIcon = <LoadingOutlined spin />;
 const { Title, Text } = Typography;
@@ -192,8 +196,9 @@ const TopicsList = () => {
     setGetTopicsLoadingIndicator(true);
   };
   useEffect(() => {
-    localStorage.removeItem("GetCheckSupportStatus");
-    localStorage.removeItem("GetCheckSupportExistsData");
+    //When Page is render remove data from GetCheckSupportStatus and GetCheckSupportExistsData
+    dispatch(setCurrentCheckSupportStatus({}));
+    dispatch(setCheckSupportExistsData({}));
   }, []);
   return (
     <>
@@ -262,9 +267,8 @@ const TopicsList = () => {
             bordered
             dataSource={topicsData?.topics}
             renderItem={(item: any) => {
-              debugger;
               return (
-                <List.Item key={item.topic_id} className={styles.item}>
+                <List.Item className={styles.item}>
                   <>
                     <Link
                       href={{
@@ -274,10 +278,7 @@ const TopicsList = () => {
                                 ?.split(" ")
                                 .join("-")
                                 ?.replace("/", "-")
-                            : item?.topic_name
-                                ?.split(" ")
-                                .join("-")
-                                ?.replace("/", "-")
+                            : item?.topic_name?.split(" ").join("-")
                         }/1-Agreement`,
                       }}
                     >

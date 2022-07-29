@@ -520,6 +520,23 @@ export const addSupport = async (body) => {
   return res;
 };
 
+//add Delegated Supported Camps
+export const addDelegateSupportCamps = async (body) => {
+  let state = store.getState();
+  const { auth } = state;
+
+  const res = await NetworkCall.fetch(
+    UserRequest.addDelegatedSupport(body, auth.loggedInUser.token)
+  )
+    .then((value) => {
+      return value;
+    })
+    .catch((errors) => {
+      handleError(errors);
+    });
+  return res;
+};
+
 export const getDelegatedSupportCampsList = async () => {
   let state = store.getState();
   const { auth } = state;
