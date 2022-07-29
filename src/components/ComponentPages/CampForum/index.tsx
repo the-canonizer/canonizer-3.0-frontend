@@ -108,9 +108,7 @@ const ForumComponent = ({}) => {
   ) {
     let res = null;
 
-    console.log(" [ForumComponent] ~ isLoggedIn", isLoggedIn);
-
-    if (isLoggedIn) {
+    if (isLoggedIn && type !== "all") {
       let q = `?camp_num=${camp}&topic_num=${topic}&type=${type}&page=${page}&per_page=${per_page}&like=${like}`;
 
       res = await getThreadsList(q);
@@ -248,8 +246,6 @@ const ForumComponent = ({}) => {
   async function fetchNickNameList(topic_num) {
     setLoading(false);
 
-    console.log("[line 265 ~ useEffect ~ isLoggedIn]", isLoggedIn, topic_num);
-
     if (isLoggedIn && topic_num) {
       const body = { topic_num };
       let response = await getAllUsedNickNames(body);
@@ -270,7 +266,13 @@ const ForumComponent = ({}) => {
 
     getThreads(camp_num, topic_num, type, page, searchQuery);
 
-    fetchNickNameList(topic_num);
+    if (
+      router?.pathname === "/forum/[topic]/[camp]/threads/create" ||
+      router?.pathname === "/forum/[topic]/[camp]/threads/edit/[tId]" ||
+      router?.pathname === "/forum/[topic]/[camp]/threads/[id]"
+    ) {
+      fetchNickNameList(topic_num);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router, page, searchQuery, isLoggedIn]);
 
@@ -422,6 +424,12 @@ const ForumComponent = ({}) => {
       message.success(res.message);
       getPosts(q.id, ppage);
       setQuillContent("");
+
+      const queries = router?.query;
+      const topicArr = (queries?.topic as string)?.split("-");
+      const topic_num = topicArr?.shift();
+
+      fetchNickNameList(topic_num);
     }
     setPostLoading(false);
   };

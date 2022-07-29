@@ -11,22 +11,24 @@ const Threads = ({
   form,
   initialValue,
   isLoading,
-}) => (
-  <div className="d-flex">
-    <ThreadSidebar />
-    <div className="pageContentWrap">
-      <Spin spinning={isLoading} size="large">
-        <CreateThread
-          onFinish={onFinish}
-          onCancel={onCancelCreateThread}
-          form={form}
-          initialValue={initialValue}
-          nickNameList={nickNameList}
-          isThreadUpdate={isThreadUpdate}
-        />
-      </Spin>
+}) => {
+  return (
+    <div className="d-flex">
+      <ThreadSidebar />
+      <div className="pageContentWrap">
+        <Spin spinning={isLoading} size="large">
+          <CreateThread
+            onFinish={onFinish}
+            onCancel={onCancelCreateThread}
+            form={form}
+            initialValue={initialValue}
+            nickNameList={nickNameList}
+            isThreadUpdate={isThreadUpdate}
+          />
+        </Spin>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default Threads;
