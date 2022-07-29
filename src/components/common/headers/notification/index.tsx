@@ -17,9 +17,14 @@ import {
 } from "../../../../network/api/notificationAPI";
 import { RootState } from "../../../../store";
 import Fav from "./icon";
+import isUserAuthenticated from "../../../../hooks/isUserAuthenticated";
 
 const Notifications = ({}) => {
+  const auth = isUserAuthenticated();
+  const [isLog, setIsLog] = useState(auth);
   const [checked, setChecked] = useState(false);
+
+  useEffect(() => setIsLog(auth), [auth]);
 
   const { count, list } = useSelector((state: RootState) => {
     return {
@@ -38,8 +43,10 @@ const Notifications = ({}) => {
   };
 
   useEffect(() => {
-    getListData();
-  }, []);
+    if (isLog) {
+      getListData();
+    }
+  }, [isLog]);
 
   useEffect(() => {
     async function setToken() {
