@@ -351,7 +351,7 @@ export default class UserRequest extends Request {
 
   static removeSupportedCampsEntireTopic(body, authToken) {
     return new Request(
-      K.Network.URL.RemoveSupportesCampsEntireTopic,
+      K.Network.URL.RemoveSupportedCampsEntireTopic,
       K.Network.Method.POST,
       body,
       K.Network.Header.Type.Json,
@@ -373,6 +373,16 @@ export default class UserRequest extends Request {
   static addSupport(body, authToken) {
     return new Request(
       K.Network.URL.AddSupport,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
+  static addDelegatedSupport(body, authToken) {
+    return new Request(
+      K.Network.URL.AddDelegatedSupport,
       K.Network.Method.POST,
       body,
       K.Network.Header.Type.Json,

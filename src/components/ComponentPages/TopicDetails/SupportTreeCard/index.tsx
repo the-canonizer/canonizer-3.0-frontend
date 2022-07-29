@@ -1,14 +1,14 @@
+import { useEffect } from "react";
 import CustomButton from "../../../common/button";
 import { Card, Button, Typography, List, Collapse, Popover } from "antd";
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-
 import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
 
 import K from "src/constants";
-
+import { setDelegatedSupportClick } from "../../../../store/slices/supportTreeCard";
 const { Paragraph } = Typography;
 
 const { Panel } = Collapse;
@@ -27,11 +27,23 @@ const supportContent = (
     </div>
   </>
 );
-
 const SupportTreeCard = ({
   handleLoadMoreSupporters,
   getCheckSupportStatus,
 }) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setDelegatedSupportClick({ delegatedSupportClick: false }));
+  }, []);
+
+  //Delegate Support Camp
+  const handleDelegatedClick = () => {
+    dispatch(
+      setDelegatedSupportClick({
+        delegatedSupportClick: true,
+      })
+    );
+  };
   const router = useRouter();
   const manageSupportPath = router.asPath.replace("/topic/", "/support/");
   const { campSupportingTree } = useSelector((state: RootState) => ({
@@ -77,6 +89,17 @@ const SupportTreeCard = ({
                     <a>
                       {supporter.name}
                       <span className="number-style">{supporter.score}</span>
+                    </a>
+                  </Link>
+
+                  <Link href={manageSupportPath + `_${supporter.id}`}>
+                    <a>
+                      <span
+                        onClick={handleDelegatedClick}
+                        className="delegate-support-style"
+                      >
+                        {"Delegate Your Support"}
+                      </span>
                     </a>
                   </Link>
                 </List.Item>
