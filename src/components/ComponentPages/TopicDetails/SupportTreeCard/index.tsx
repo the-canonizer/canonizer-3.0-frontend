@@ -2,14 +2,13 @@ import { useEffect } from "react";
 import CustomButton from "../../../common/button";
 import { Card, Button, Typography, List, Collapse, Popover } from "antd";
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-
 import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
 
 import K from "src/constants";
-
+import { setDelegatedSupportClick } from "../../../../store/slices/supportTreeCard";
 const { Paragraph } = Typography;
 
 const { Panel } = Collapse;
@@ -32,14 +31,18 @@ const SupportTreeCard = ({
   handleLoadMoreSupporters,
   getCheckSupportStatus,
 }) => {
+  const dispatch = useDispatch();
   useEffect(() => {
-    localStorage.removeItem("delegatedSupportClick");
+    dispatch(setDelegatedSupportClick({ delegatedSupportClick: false }));
   }, []);
 
   //Delegate Support Camp
   const handleDelegatedClick = () => {
-    localStorage.removeItem("delegatedSupportClick");
-    localStorage.setItem("delegatedSupportClick", "true");
+    dispatch(
+      setDelegatedSupportClick({
+        delegatedSupportClick: true,
+      })
+    );
   };
   const router = useRouter();
   const manageSupportPath = router.asPath.replace("/topic/", "/support/");

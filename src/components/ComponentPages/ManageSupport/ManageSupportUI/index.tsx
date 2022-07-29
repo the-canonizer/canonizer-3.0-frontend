@@ -7,7 +7,8 @@ import { Button, Col } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { DraggableArea } from "react-draggable-tags";
 import { placeholders } from "./../../../../messages/placeholder";
-
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
 const ManageSupportUI = ({
   nickNameList,
   manageSupportList,
@@ -24,6 +25,14 @@ const ManageSupportUI = ({
   setSelectedtNickname,
   submitButtonDisable,
 }) => {
+  const { currentDelegatedSupportedClick } = useSelector(
+    (state: RootState) => ({
+      currentDelegatedSupportedClick:
+        state.supportTreeCard.currentDelegatedSupportedClick,
+    })
+  );
+  const CheckDelegatedOrDirect =
+    currentDelegatedSupportedClick.delegatedSupportClick;
   useEffect(() => {
     if (nickNameList.length > 0) {
       setSelectedtNickname(nickNameList[0]?.id);
@@ -38,7 +47,6 @@ const ManageSupportUI = ({
         }))
       : "";
   }
-  let CheckDelegatedOrDirect = localStorage.getItem("delegatedSupportClick");
   return (
     <>
       <Card
@@ -82,6 +90,7 @@ const ManageSupportUI = ({
           Note : To change support order of camp, drag & drop the camp box on
           your choice position.
         </div>
+
         {CheckDelegatedOrDirect ? (
           ""
         ) : (

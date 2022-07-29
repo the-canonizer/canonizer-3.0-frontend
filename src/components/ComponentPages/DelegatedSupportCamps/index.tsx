@@ -15,6 +15,8 @@ const DelegatedSupportCamps = ({ search }) => {
     useState(false);
   const [removeTopicNumDataId, setRemoveTopicNumDataId] = useState("");
   const [nickNameId, setNickNameId] = useState("");
+  const [delegated_nick_name_id, setDelegated_nick_name_id] = useState("");
+  const [removeSupportCampsData, setRemoveSupportCampsData] = useState({});
   const handleSupportedCampsCancel = () => {
     setIsRemoveSupportModalVisible(false);
   };
@@ -23,6 +25,8 @@ const DelegatedSupportCamps = ({ search }) => {
     setRemoveTopicNumDataId(data.topic_num);
     setNickNameId(data.nick_name_id);
     setIsRemoveSupportModalVisible(true);
+    setDelegated_nick_name_id(data.delegated_nick_name_id);
+    setRemoveSupportCampsData(data);
   };
 
   const [viewMoreModalVisible, setViewmoreModalVisible] = useState(false);
@@ -39,16 +43,16 @@ const DelegatedSupportCamps = ({ search }) => {
     let fcm_token = await localforage.getItem("fcm_token");
     const removeEntireData = {
       topic_num: removeTopicNumDataId,
-      camp_num: "",
-      type: "delegate",
-      action: "all",
       nick_name_id: nickNameId,
+      delegated_nick_name_id: delegated_nick_name_id,
       fcm_token,
     };
+
     let res = await removeSupportedCampsEntireTopic(removeEntireData);
     if (res && res.status_code == 200) {
       message.success(res.message);
-      setViewmoreModalVisible(false);
+      //setViewmoreModalVisible(false);
+      setIsRemoveSupportModalVisible(false);
       fetchDelegatedSupportCampsList();
     }
   };
@@ -75,6 +79,7 @@ const DelegatedSupportCamps = ({ search }) => {
       delegatedSupportCampsList={delegatedSupportCampsList}
       search={search}
       removeSupport={removeSupport}
+      removeSupportCampsData={removeSupportCampsData}
     />
   );
 };

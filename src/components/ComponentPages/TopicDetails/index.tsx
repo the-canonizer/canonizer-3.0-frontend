@@ -29,6 +29,10 @@ import moment from "moment";
 import { GetCheckSupportExists } from "src/network/api/topicAPI";
 import queryParams from "src/utils/queryParams";
 import isAuth from "../../../hooks/isUserAuthenticated";
+import {
+  setCheckSupportExistsData,
+  setCurrentCheckSupportStatus,
+} from "src/store/slices/campDetailSlice";
 const TopicDetails = () => {
   let myRefToCampStatement = useRef(null);
   const isLogin = isAuth();
@@ -100,15 +104,17 @@ const TopicDetails = () => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
     if (response && response.status_code === 200) {
       setGetCheckSupportStatus(response.data);
-      localStorage.removeItem("GetCheckSupportStatus");
-      localStorage.removeItem("GetCheckSupportExistsData");
-      localStorage.setItem(
-        "GetCheckSupportStatus",
-        response.data.warning ? response.data.warning : ""
+      //dispatch remove
+      dispatch(setCurrentCheckSupportStatus(""));
+      dispatch(setCheckSupportExistsData({}));
+      //dispatch add Values data
+      dispatch(
+        setCurrentCheckSupportStatus(
+          response.data.warning ? response.data.warning : ""
+        )
       );
-      localStorage.setItem(
-        "GetCheckSupportExistsData",
-        JSON.stringify(response.data)
+      dispatch(
+        setCheckSupportExistsData({ GetCheckSupportExistsData: response.data })
       );
     }
   };

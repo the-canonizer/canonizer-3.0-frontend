@@ -138,7 +138,7 @@ const DirectSupportedCamps = ({ search }) => {
         order: key + 1,
       });
     });
-
+    const fcm_token = await localforage.getItem("fcm_token");
     const tagsDeletedId = {
       topic_num: removeTopicNumDataId,
       remove_camps: campIds,
@@ -146,6 +146,7 @@ const DirectSupportedCamps = ({ search }) => {
       action: "partial",
       nick_name_id: nickNameId,
       order_update: filterArrayResult,
+      fcm_token,
     };
     let res = await removeOrUpdateDirectSupportCamps(tagsDeletedId);
     if (res && res.status_code == 200) {

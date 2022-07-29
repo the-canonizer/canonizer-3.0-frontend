@@ -11,6 +11,8 @@ import { GetActiveSupportTopic } from "src/network/api/topicAPI";
 import { addDelegateSupportCamps, addSupport } from "src/network/api/userApi";
 import isAuth from "../../../hooks/isUserAuthenticated";
 import localforage from "localforage";
+import { RootState } from "src/store";
+import { useSelector } from "react-redux";
 const ManageSupportUI = dynamic(() => import("./ManageSupportUI"), {
   ssr: false,
 });
@@ -38,7 +40,28 @@ const ManageSupport = () => {
     }
   };
   const [submitButtonDisable, setSubmitButtonDisable] = useState(false);
+  const { currentDelegatedSupportedClick } = useSelector(
+    (state: RootState) => ({
+      currentDelegatedSupportedClick:
+        state.supportTreeCard.currentDelegatedSupportedClick,
+    })
+  );
+  const { currentGetCheckSupportExistsData } = useSelector(
+    (state: RootState) => ({
+      currentGetCheckSupportExistsData: state.topicDetails,
+    })
+  );
+  const { CurrentCheckSupportStatus } = useSelector((state: RootState) => ({
+    CurrentCheckSupportStatus: state.topicDetails.CurrentCheckSupportStatus,
+  }));
+  //GetCheckSupportExistsData check support_id is 0 or 1
+  let supportedStatus = currentGetCheckSupportExistsData;
+  let Status =
+    supportedStatus.currentGetCheckSupportExistsData.GetCheckSupportExistsData;
+  let supportedCampsStatus = Status;
 
+  const CheckDelegatedOrDirect =
+    currentDelegatedSupportedClick.delegatedSupportClick;
   const breadCrumbData = () => {
     setPayloadBreadCrumb({
       camp_num: router?.query?.manageSupport[1].split("-")[0],
@@ -119,8 +142,8 @@ const ManageSupport = () => {
   const body = { topic_num: topicNum };
   const getActiveSupportTopicList = async () => {
     let response = await GetActiveSupportTopic(topicNum && body);
-    const dataValue = localStorage.getItem("GetCheckSupportStatus");
-
+    //get dataValue from CurrentCheckSupportStatus
+    const dataValue = CurrentCheckSupportStatus;
     if (response && response.status_code === 200) {
       setCardCamp_ID("");
       response.data?.map((val) => {
@@ -181,12 +204,8 @@ const ManageSupport = () => {
     setSubmitButtonDisable(true);
     //const fcm_token = await localforage.getItem("fcm_token")
     let campIDsArr = [];
-    //get support_flag status check
-    let supportedCampsStatus = JSON.parse(
-      localStorage.getItem("GetCheckSupportExistsData")
-    );
+    //get support_flag status check from GetCheckSupportExistsData
     let support_flag_Status = supportedCampsStatus.support_flag;
-
     let topicNumId =
       manageSupportRevertData.length > 0
         ? manageSupportRevertData[0].topic_num
@@ -259,7 +278,6 @@ const ManageSupport = () => {
       addCampsData = add_camp_data;
     }
     const fcm_token = await localforage.getItem("fcm_token");
-    //debugger;
     const addSupportId = {
       topic_num: topicNumId,
       add_camp: addCampsData,
@@ -271,7 +289,6 @@ const ManageSupport = () => {
       fcm_token,
     };
 
-    let CheckDelegatedOrDirect = localStorage.getItem("delegatedSupportClick");
     if (CheckDelegatedOrDirect) {
       let nickNameID = nickNameList.filter(
         (values) => selectedtNickname == values.id
@@ -292,8 +309,7 @@ const ManageSupport = () => {
         router.push({
           pathname: manageSupportPath,
         });
-      }
-      if (res && res.status_code != 200) {
+      } else {
         setSubmitButtonDisable(false);
       }
     } else {
@@ -304,8 +320,7 @@ const ManageSupport = () => {
         router.push({
           pathname: manageSupportPath,
         });
-      }
-      if (res && res.status_code != 200) {
+      } else {
         setSubmitButtonDisable(false);
       }
     }

@@ -42,7 +42,7 @@ const NetworkConstants = {
     //add direct Support
     AddSupport: `${BaseCanonizerApiUrl}/support/add`,
     //Delegated Support Camps
-    RemoveSupportesCampsEntireTopic: `${BaseCanonizerApiUrl}/support/remove`,
+    RemoveSupportedCampsEntireTopic: `${BaseCanonizerApiUrl}/support/remove-delegate`,
     //Add delegated Support
     AddDelegatedSupport: `${BaseCanonizerApiUrl}/support/add-delegate`,
     //Delegated Supported Camps
