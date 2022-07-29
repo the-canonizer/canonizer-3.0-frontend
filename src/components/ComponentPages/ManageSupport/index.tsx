@@ -8,9 +8,11 @@ import dynamic from "next/dynamic";
 import { getAllUsedNickNames } from "src/network/api/campDetailApi";
 import { useRouter } from "next/router";
 import { GetActiveSupportTopic } from "src/network/api/topicAPI";
-import { addSupport } from "src/network/api/userApi";
+import { addDelegateSupportCamps, addSupport } from "src/network/api/userApi";
 import isAuth from "../../../hooks/isUserAuthenticated";
 import localforage from "localforage";
+import { RootState } from "src/store";
+import { useSelector } from "react-redux";
 const ManageSupportUI = dynamic(() => import("./ManageSupportUI"), {
   ssr: false,
 });
@@ -38,7 +40,26 @@ const ManageSupport = () => {
     }
   };
   const [submitButtonDisable, setSubmitButtonDisable] = useState(false);
+  const { currentDelegatedSupportedClick } = useSelector(
+    (state: RootState) => ({
+      currentDelegatedSupportedClick:
+        state.supportTreeCard.currentDelegatedSupportedClick,
+    })
+  );
+  const { currentGetCheckSupportExistsData } = useSelector(
+    (state: RootState) => ({
+      currentGetCheckSupportExistsData:
+        state.topicDetails.currentGetCheckSupportExistsData,
+    })
+  );
+  const { CurrentCheckSupportStatus } = useSelector((state: RootState) => ({
+    CurrentCheckSupportStatus: state.topicDetails.CurrentCheckSupportStatus,
+  }));
+  //GetCheckSupportExistsData check support_id is 0 or 1
+  let supportedCampsStatus = currentGetCheckSupportExistsData;
 
+  const CheckDelegatedOrDirect =
+    currentDelegatedSupportedClick.delegatedSupportClick;
   const breadCrumbData = () => {
     setPayloadBreadCrumb({
       camp_num: router?.query?.manageSupport[1].split("-")[0],
@@ -119,8 +140,8 @@ const ManageSupport = () => {
   const body = { topic_num: topicNum };
   const getActiveSupportTopicList = async () => {
     let response = await GetActiveSupportTopic(topicNum && body);
-    const dataValue = localStorage.getItem("GetCheckSupportStatus");
-
+    //get dataValue from CurrentCheckSupportStatus
+    const dataValue = CurrentCheckSupportStatus;
     if (response && response.status_code === 200) {
       setCardCamp_ID("");
       response.data?.map((val) => {
@@ -165,7 +186,10 @@ const ManageSupport = () => {
     }
   };
 
-  const manageSupportPath = router.asPath.replace("/support/", "/topic/");
+  let manageSupportPath = router.asPath.replace("/support/", "/topic/");
+  //remove add id for cancel and submit
+  let remove_ = manageSupportPath.split("_");
+  manageSupportPath = remove_[0];
   //Cancel Button
   const cancelManageRoute = () => {
     router.push({
@@ -177,12 +201,8 @@ const ManageSupport = () => {
   const submitNickNameSupportCamps = async () => {
     setSubmitButtonDisable(true);
     let campIDsArr = [];
-    //get support_flag status check
-    let supportedCampsStatus = JSON.parse(
-      localStorage.getItem("GetCheckSupportExistsData")
-    );
+    //get support_flag status check from GetCheckSupportExistsData
     let support_flag_Status = supportedCampsStatus.support_flag;
-
     let topicNumId =
       manageSupportRevertData.length > 0
         ? manageSupportRevertData[0].topic_num
@@ -266,16 +286,40 @@ const ManageSupport = () => {
       fcm_token,
     };
 
-    let res = await addSupport(addSupportId);
-    if (res && res.status_code == 200) {
-      message.success(res.message);
-      //After Submit page is redirect to previous
-      router.push({
-        pathname: manageSupportPath,
-      });
-    }
-    if (res && res.status_code != 200) {
-      setSubmitButtonDisable(false);
+    if (CheckDelegatedOrDirect) {
+      let nickNameID = nickNameList.filter(
+        (values) => selectedtNickname == values.id
+      );
+      let nickNameIDValue = nickNameID[0].id;
+      let delegated_user_id = router?.query?.manageSupport[1].split("_");
+
+      const addDelegatedSupport = {
+        nick_name_id: nickNameIDValue,
+        delegated_nick_name_id: delegated_user_id[1],
+        topic_num: topicNumId,
+        fcm_token,
+      };
+      let res = await addDelegateSupportCamps(addDelegatedSupport);
+      if (res && res.status_code == 200) {
+        message.success(res.message);
+        //After Submit page is redirect to previous
+        router.push({
+          pathname: manageSupportPath,
+        });
+      } else {
+        setSubmitButtonDisable(false);
+      }
+    } else {
+      let res = await addSupport(addSupportId);
+      if (res && res.status_code == 200) {
+        message.success(res.message);
+        //After Submit page is redirect to previous
+        router.push({
+          pathname: manageSupportPath,
+        });
+      } else {
+        setSubmitButtonDisable(false);
+      }
     }
   };
   return (

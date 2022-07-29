@@ -18,6 +18,7 @@ export default function DelegatedSupportCampsUI({
   delegatedSupportCampsList,
   search,
   removeSupport,
+  removeSupportCampsData,
 }) {
   const limit = 3;
   function CardTitle(props) {
@@ -157,10 +158,21 @@ export default function DelegatedSupportCampsUI({
         <Form>
           <Form.Item style={{ marginBottom: "0px" }}>
             <p>
-              Are you sure, you want to remove your delegate support given to
-              pranav_telentelgia under the topic{" "}
+              Are you sure, you want to remove your delegate support given to{" "}
+              <span>
+                &quot;
+                <Link href={removeSupportCampsData.delegated_to_nick_name_link}>
+                  <a>{removeSupportCampsData.delegated_to_nick_name}</a>
+                </Link>
+                &quot;
+              </span>{" "}
+              under the topic{" "}
               <span className={styles.Bluecolor}>
-                &quot;Theories of Consiousness&quot;
+                &quot;
+                <Link href={removeSupportCampsData.title_link}>
+                  <a>{removeSupportCampsData.title}</a>
+                </Link>
+                &quot;
               </span>{" "}
               ?
             </p>
