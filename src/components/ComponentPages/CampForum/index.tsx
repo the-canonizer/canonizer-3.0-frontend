@@ -6,7 +6,7 @@ import localforage from "localforage";
 
 import { RootState } from "../../../store";
 import isUserAuthenticated from "../../../hooks/isUserAuthenticated";
-import TopBar from "./UI/TopBar";
+// import TopBar from "./UI/TopBar";
 import ForumUIList from "./List";
 import ForumUICreate from "./Create";
 import ForumUIPost from "./Post";
@@ -29,6 +29,8 @@ import { setThread, setPost } from "../../../store/slices/campForumSlice";
 import CampInfoBar from "../TopicDetails/CampInfoBar";
 
 const ForumComponent = ({}) => {
+  const auth = isUserAuthenticated();
+
   const [paramsList, setParamsList] = useState({});
   const [threadList, setThreadList] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -37,7 +39,7 @@ const ForumComponent = ({}) => {
   const [nickNameList, setNickNameList] = useState([]);
   const [initialValue, setInitialValues] = useState({});
   const [postList, setPostList] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(auth);
   const [ppage, setPpage] = useState(1);
   const [pTotalRecords, setPtotalRecords] = useState(0);
   const [quillContent, setQuillContent] = useState("");
@@ -48,7 +50,9 @@ const ForumComponent = ({}) => {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const isLog = isUserAuthenticated();
+  useEffect(() => {
+    setIsLoggedIn(auth);
+  }, [auth]);
 
   const {
     topicRecord,
@@ -94,23 +98,34 @@ const ForumComponent = ({}) => {
     ]);
   };
 
-  const getThreads = async (
+  async function getThreads(
     camp,
     topic,
     type = "all",
     page = 1,
     like = "",
     per_page = 10
-  ) => {
-    const q = `?camp_num=${camp}&topic_num=${topic}&type=${type}&page=${page}&per_page=${per_page}&like=${like}`;
+  ) {
+    let res = null;
 
-    const res = await getThreadsList(q);
+    console.log(" [ForumComponent] ~ isLoggedIn", isLoggedIn);
+
+    if (isLoggedIn) {
+      let q = `?camp_num=${camp}&topic_num=${topic}&type=${type}&page=${page}&per_page=${per_page}&like=${like}`;
+
+      res = await getThreadsList(q);
+    } else {
+      let q = `?camp_num=${camp}&topic_num=${topic}&type=all&page=${page}&per_page=${per_page}&like=${like}`;
+
+      res = await getThreadsList(q);
+    }
+
     if (res && res.status_code === 200) {
       setThreadList(res.data?.items);
       setTotalRecords(res.data?.total_rows);
       setPage(res.data?.current_page);
     }
-  };
+  }
 
   const getPosts = async (id, page = 1, like = "", per_page = 10) => {
     const q = `?page=${page}&per_page=${per_page}&like=${like}`;
@@ -124,21 +139,14 @@ const ForumComponent = ({}) => {
   };
 
   useEffect(() => {
-    if (isLog) {
-      setIsLoggedIn(isLog);
-    }
-  }, [isLog]);
-
-  useEffect(() => {
     if (router && router?.query) {
       const queries = router?.query;
       const campArr = (queries.camp as string).split("-");
       const camp_num = campArr.shift();
       getSelectedNode(camp_num);
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router, router?.query]);
+  }, [router]);
 
   useEffect(() => {
     const queries = router?.query;
@@ -166,20 +174,9 @@ const ForumComponent = ({}) => {
     };
 
     setParamsList(paramsLists);
-  }, [campRecord, router?.query]);
+  }, [campRecord, router]);
 
   // start thread List section
-
-  useEffect(() => {
-    const queries = router?.query;
-    const campArr = (queries.camp as string).split("-");
-    const camp_num = campArr.shift();
-    const topicArr = (queries?.topic as string)?.split("-");
-    const topic_num = topicArr?.shift();
-    const type = queries["by"] as string;
-
-    getThreads(camp_num, topic_num, type, page, searchQuery);
-  }, [router, router?.query, page, searchQuery]);
 
   const onSearch = (v) => {
     setSearchQuery(v.trim());
@@ -194,7 +191,7 @@ const ForumComponent = ({}) => {
 
   const onCreateThread = () => {
     const queries = router?.query;
-    if (isLog) {
+    if (isLoggedIn) {
       router.push({
         pathname: `/forum/${queries.topic}/${queries.camp}/threads/create`,
       });
@@ -248,26 +245,34 @@ const ForumComponent = ({}) => {
 
   const [form] = Form.useForm();
 
-  const fetchNickNameList = async () => {
+  async function fetchNickNameList(topic_num) {
     setLoading(false);
 
-    const body = { topic_num: paramsList["topic_num"] };
+    console.log("[line 265 ~ useEffect ~ isLoggedIn]", isLoggedIn, topic_num);
 
-    if (isLog) {
+    if (isLoggedIn && topic_num) {
+      const body = { topic_num };
       let response = await getAllUsedNickNames(body);
       if (response && response.status_code === 200) {
         setNickNameList(response.data);
         setInitialValues({ nick_name: response.data[0]?.id });
       }
     }
-  };
+  }
 
   useEffect(() => {
-    if (paramsList["topic_num"]) {
-      fetchNickNameList();
-    }
+    const queries = router?.query;
+    const campArr = (queries.camp as string).split("-");
+    const camp_num = campArr.shift();
+    const topicArr = (queries?.topic as string)?.split("-");
+    const topic_num = topicArr?.shift();
+    const type = queries["by"] as string;
+
+    getThreads(camp_num, topic_num, type, page, searchQuery);
+
+    fetchNickNameList(topic_num);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paramsList, isLog]);
+  }, [router, page, searchQuery, isLoggedIn]);
 
   const onCancelCreateThread = () => {
     const queries = router?.query;
@@ -363,7 +368,7 @@ const ForumComponent = ({}) => {
   }, [router, router?.query, ppage]);
 
   const onContentChange = (v) => {
-    v = v.replace(/(^|>)\s+|\s+(?=<|$)/g, "$1");
+    // v = v.replace(/(^|>)\s+|\s+(?=<|$)/g, "$1");
 
     setQuillContent(v);
     setIsError(false);
@@ -395,7 +400,7 @@ const ForumComponent = ({}) => {
     const topic_num = topicArr?.shift();
 
     const body = {
-      body: quillContent,
+      body: quillContent?.replace(/(^|>)\s+|\s+(?=<|$)/g, "$1"),
       nick_name: values.nick_name,
       thread_id: +q.id,
       camp_num: +camp_num,
@@ -412,10 +417,6 @@ const ForumComponent = ({}) => {
     } else {
       res = await createPost(body);
     }
-    console.log(
-      "🚀 ~ file: index.tsx ~ line 425 ~ onFinishPost ~ res----",
-      res
-    );
 
     if (res && res.status_code === 200) {
       message.success(res.message);
@@ -446,6 +447,7 @@ const ForumComponent = ({}) => {
     if (res && res.status_code === 200) {
       message.success(res.message);
       getPosts(q.id, ppage);
+      setCurrentPost({});
     }
   };
 
@@ -522,7 +524,7 @@ const ForumComponent = ({}) => {
           isError={isError}
           onPostEditClick={onPostEditClick}
           onDeleteClick={onDeleteClick}
-          isLog={isLog}
+          isLog={isLoggedIn}
           isLoading={postLoading}
         />
       ) : null}
