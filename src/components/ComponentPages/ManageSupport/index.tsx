@@ -48,17 +48,15 @@ const ManageSupport = () => {
   );
   const { currentGetCheckSupportExistsData } = useSelector(
     (state: RootState) => ({
-      currentGetCheckSupportExistsData: state.topicDetails,
+      currentGetCheckSupportExistsData:
+        state.topicDetails.currentGetCheckSupportExistsData,
     })
   );
   const { CurrentCheckSupportStatus } = useSelector((state: RootState) => ({
     CurrentCheckSupportStatus: state.topicDetails.CurrentCheckSupportStatus,
   }));
   //GetCheckSupportExistsData check support_id is 0 or 1
-  let supportedStatus = currentGetCheckSupportExistsData;
-  let Status =
-    supportedStatus.currentGetCheckSupportExistsData.GetCheckSupportExistsData;
-  let supportedCampsStatus = Status;
+  let supportedCampsStatus = currentGetCheckSupportExistsData;
 
   const CheckDelegatedOrDirect =
     currentDelegatedSupportedClick.delegatedSupportClick;
@@ -202,7 +200,6 @@ const ManageSupport = () => {
   //Submit NickName Supported Camps
   const submitNickNameSupportCamps = async () => {
     setSubmitButtonDisable(true);
-    //const fcm_token = await localforage.getItem("fcm_token")
     let campIDsArr = [];
     //get support_flag status check from GetCheckSupportExistsData
     let support_flag_Status = supportedCampsStatus.support_flag;

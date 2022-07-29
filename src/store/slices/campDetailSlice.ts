@@ -16,7 +16,14 @@ export const treeSlice = createSlice({
       },
     },
     CurrentCheckSupportStatus: null,
-    currentGetCheckSupportExistsData: {},
+    currentGetCheckSupportExistsData: {
+      camp_num: null,
+      is_confirm: null,
+      is_delegator: null,
+      support_flag: null,
+      topic_num: null,
+      warning: null,
+    },
   },
   reducers: {
     setTree: (state, action) => {
@@ -68,7 +75,14 @@ export const treeSlice = createSlice({
       state.CurrentCheckSupportStatus = action.payload;
     },
     setCheckSupportExistsData: (state, action) => {
-      state.currentGetCheckSupportExistsData = action.payload;
+      state.currentGetCheckSupportExistsData = {
+        camp_num: action.payload.camp_num,
+        is_confirm: action.payload.is_confirm,
+        is_delegator: action.payload.is_delegator,
+        support_flag: action.payload.support_flag,
+        topic_num: action.payload.topic_num,
+        warning: action.payload.warning,
+      };
     },
   },
 });
