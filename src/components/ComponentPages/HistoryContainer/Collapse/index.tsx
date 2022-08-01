@@ -23,6 +23,7 @@ import styles from ".././campHistory.module.scss";
 import StatementHistory from "./statementHistory";
 import CampHistory from "./campHistory";
 import TopicHistory from "./topicHistory";
+import useAuthentication from "src/hooks/isUserAuthenticated";
 
 const { Panel } = Collapse;
 const { Title } = Typography;
@@ -39,6 +40,7 @@ function HistoryCollapse({
   const router = useRouter();
   const [commited, setCommited] = useState(false);
   const dispatch = useDispatch();
+  const isLoggedIn = useAuthentication();
 
   const handleViewThisVersion = (goLiveTime) => {
     dispatch(
@@ -157,7 +159,11 @@ function HistoryCollapse({
                 {campStatement?.status == "in_review" && (
                   <Tooltip
                     title={
-                      !!(ifIamSupporter == 0 && ifSupportDelayed == 0)
+                      !!(
+                        !isLoggedIn &&
+                        ifIamSupporter == 0 &&
+                        ifSupportDelayed == 0
+                      )
                         ? "Only admin can object"
                         : campStatement?.isAuthor
                         ? "Only admin can object"
@@ -167,7 +173,9 @@ function HistoryCollapse({
                     <Button
                       type="primary"
                       disabled={
-                        !!(ifIamSupporter == 0 && ifSupportDelayed == 0)
+                        !isLoggedIn
+                          ? true
+                          : !!(ifIamSupporter == 0 && ifSupportDelayed == 0)
                           ? true
                           : campStatement?.isAuthor
                           ? true
@@ -190,7 +198,9 @@ function HistoryCollapse({
                   type="primary"
                   className={`mr-3 ${styles.campUpdateButton}`}
                   onClick={() => {
-                    if (historyOf == "statement") {
+                    if (!isLoggedIn) {
+                      router.push("/login");
+                    } else if (historyOf == "statement") {
                       router.push(`/manage/statement/${campStatement?.id}`);
                     } else if (historyOf == "camp") {
                       router.push(`/manage/camp/${campStatement?.id}`);
@@ -254,7 +264,8 @@ function HistoryCollapse({
                   </div>
                 )}
               {campStatement?.status == "in_review" &&
-                !!(ifIamSupporter != 0 || ifSupportDelayed != 0) && (
+                !!(ifIamSupporter != 0 || ifSupportDelayed != 0) &&
+                isLoggedIn && (
                   <div className={styles.campStatementCollapseButtons}>
                     <Checkbox
                       className={styles.campSelectCheckbox}
