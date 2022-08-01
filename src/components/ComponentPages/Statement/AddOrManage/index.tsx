@@ -166,12 +166,6 @@ export default function AddOrManage({ add }) {
     if (res && res.status_code === 200) {
       console.log("parent camp res", res.data);
       setParentCamps(res.data);
-      form.setFieldsValue({
-        parent_camp_num: res?.data?.find(
-          (camp) =>
-            camp.camp_num == parent_camp_num || camp.id == parent_camp_num
-        )?.id,
-      });
     }
   };
 
@@ -241,9 +235,7 @@ export default function AddOrManage({ add }) {
             ? {
                 nick_name: res?.data?.nick_name[0]?.id,
                 statement: res?.data?.camp?.note,
-                // parent_camp_num: parentCamp.find(
-                //   (camp) => camp.camp_num == res?.data?.camp?.parent_camp_num
-                // )?.id,
+                parent_camp_num: res?.data?.camp?.parent_camp_num,
                 camp_name: res?.data?.camp?.camp_name,
                 keywords: res?.data?.camp?.key_words,
                 camp_about_url: res?.data?.camp?.camp_about_url,
@@ -360,7 +352,6 @@ export default function AddOrManage({ add }) {
                             ]}
                           >
                             <Select
-                              // value={editStatementData?.data?.statement?.camp_num}
                               size={"large"}
                               placeholder="Parent camp"
                               // data-id="parent-camp"
@@ -369,7 +360,10 @@ export default function AddOrManage({ add }) {
                               {parentCamp.map((camp) =>
                                 camp?.camp_num !==
                                 editStatementData?.data?.camp?.camp_num ? (
-                                  <Select.Option value={camp.id} key={camp.id}>
+                                  <Select.Option
+                                    value={camp.camp_num}
+                                    key={camp.id}
+                                  >
                                     {camp.camp_name}
                                   </Select.Option>
                                 ) : (
@@ -682,7 +676,8 @@ export default function AddOrManage({ add }) {
                   {
                     parentCamp?.find(
                       (parent) =>
-                        parent?.id == form?.getFieldValue("parent_camp_num")
+                        parent?.camp_num ==
+                        form?.getFieldValue("parent_camp_num")
                     )?.camp_name
                   }
                 </Descriptions.Item>
