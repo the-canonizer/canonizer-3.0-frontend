@@ -159,11 +159,19 @@ export default function AddOrManage({ add }) {
       setCampNickName(response.data);
     }
   };
-  const fetchParentsCampList = async (topic_num: number) => {
+  const fetchParentsCampList = async (topic_num: number, parent_camp_num) => {
+    console.log("parant camo ", parent_camp_num);
     const body = { topic_num: topic_num };
     let res = await getAllParentsCamp(body);
     if (res && res.status_code === 200) {
+      console.log("parent camp res", res.data);
       setParentCamps(res.data);
+      form.setFieldsValue({
+        parent_camp_num: res?.data?.find(
+          (camp) =>
+            camp.camp_num == parent_camp_num || camp.id == parent_camp_num
+        )?.id,
+      });
     }
   };
 
@@ -186,7 +194,10 @@ export default function AddOrManage({ add }) {
             router?.query?.statement[0]?.split("-")[0]
           );
           fetchCampNickNameList();
-          fetchParentsCampList(res?.data?.camp?.topic_num);
+          fetchParentsCampList(
+            res?.data?.camp?.topic_num,
+            res?.data?.camp?.parent_camp_num
+          );
           setPayloadBreadCrumb({
             camp_num: res?.data?.camp?.camp_num,
             topic_num: res?.data?.camp?.topic_num,
@@ -230,7 +241,9 @@ export default function AddOrManage({ add }) {
             ? {
                 nick_name: res?.data?.nick_name[0]?.id,
                 statement: res?.data?.camp?.note,
-                parent_camp_num: res?.data?.camp?.parent_camp_num,
+                // parent_camp_num: parentCamp.find(
+                //   (camp) => camp.camp_num == res?.data?.camp?.parent_camp_num
+                // )?.id,
                 camp_name: res?.data?.camp?.camp_name,
                 keywords: res?.data?.camp?.key_words,
                 camp_about_url: res?.data?.camp?.camp_about_url,
@@ -327,7 +340,7 @@ export default function AddOrManage({ add }) {
                   {/* paraent Camp -----------------------===============--------------------------*/}
                   {manageFormOf == "camp" && (
                     <>
-                      {editStatementData?.data?.parent_camp.length > 1 && (
+                      {parentCamp.length > 1 && (
                         <Col xs={24} sm={24} xl={12}>
                           <Form.Item
                             className={`${styles.formItem} mb-2`}
@@ -356,10 +369,7 @@ export default function AddOrManage({ add }) {
                               {parentCamp.map((camp) =>
                                 camp?.camp_num !==
                                 editStatementData?.data?.camp?.camp_num ? (
-                                  <Select.Option
-                                    value={camp.camp_num}
-                                    key={camp.id}
-                                  >
+                                  <Select.Option value={camp.id} key={camp.id}>
                                     {camp.camp_name}
                                   </Select.Option>
                                 ) : (
@@ -393,12 +403,7 @@ export default function AddOrManage({ add }) {
                           ]}
                         >
                           <Input
-                            disabled={
-                              !!(
-                                editStatementData?.data?.parent_camp.length <=
-                                  1 || objection
-                              )
-                            }
+                            disabled={!!(parentCamp.length <= 1 || objection)}
                             maxLength={30}
                           />
                         </Form.Item>
@@ -672,13 +677,12 @@ export default function AddOrManage({ add }) {
                 {form?.getFieldValue("camp_name")}
               </Descriptions.Item>
 
-              {editStatementData?.data?.parent_camp.length > 1 && (
+              {parentCamp.length > 1 && (
                 <Descriptions.Item label="parent Camp Num">
                   {
                     parentCamp?.find(
                       (parent) =>
-                        parent?.camp_num ==
-                        form?.getFieldValue("parent_camp_num")
+                        parent?.id == form?.getFieldValue("parent_camp_num")
                     )?.camp_name
                   }
                 </Descriptions.Item>

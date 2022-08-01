@@ -154,7 +154,9 @@ function HistoryCollapse({
                 </Checkbox>
               </div>
               <div className={styles.campStatementCollapseButtons}>
-                {campStatement?.status == "in_review" && (
+                {(campStatement?.status == "in_review" ||
+                  (campStatement?.status == "objected" &&
+                    historyOf == "camp")) && (
                   <Tooltip
                     title={
                       !!(ifIamSupporter == 0 && ifSupportDelayed == 0)

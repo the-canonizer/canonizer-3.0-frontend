@@ -1,5 +1,5 @@
-import firebase from "firebase/app";
-import "firebase/messaging";
+// import firebase from "firebase/app";
+// import "firebase/messaging";
 import localforage from "localforage";
 // import { notification } from "antd";
 
