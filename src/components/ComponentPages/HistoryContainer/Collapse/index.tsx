@@ -29,6 +29,7 @@ const { Title } = Typography;
 
 function HistoryCollapse({
   ifIamSupporter,
+  ifSupportDelayed,
   campStatement,
   onSelectCompare,
   isDisabledCheck,
@@ -54,7 +55,7 @@ function HistoryCollapse({
 
   const commitChanges = async () => {
     let reqBody = {
-      type: "statement",
+      type: historyOf,
       id: campStatement?.id,
     };
     let res = await changeCommitStatement(reqBody);
@@ -68,7 +69,8 @@ function HistoryCollapse({
       record_id: campStatement.id,
       topic_num: router.query.camp[0].split("-")[0],
       camp_num: router.query.camp[1].split("-")[0],
-      change_for: "statement",
+      change_for: historyOf,
+
       nick_name_id: campStatement?.submitter_nick_id,
     };
     let res = await agreeToChangeApi(reqBody);
@@ -77,10 +79,11 @@ function HistoryCollapse({
 
   let historyTitle = () => {
     let title: string;
+
     if (historyOf == "statement") {
       title = "Statement";
     } else if (historyOf == "camp") {
-      title = "Camp";
+      title = "Camp Name";
     } else if (historyOf == "topic") {
       title = "Topic";
     }
@@ -111,11 +114,19 @@ function HistoryCollapse({
           >
             <>
               <Title level={5}>{historyTitle()} :</Title>
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: campStatement?.parsed_value,
-                }}
-              />
+              {historyOf == "statement" && (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: campStatement?.parsed_value,
+                  }}
+                />
+              )}
+
+              {historyOf == "camp" && (
+                <span className={styles.updateSurveyPrj}>
+                  {campStatement?.camp_name}
+                </span>
+              )}
               <Divider />
             </>
           </Panel>
@@ -146,7 +157,7 @@ function HistoryCollapse({
                 {campStatement?.status == "in_review" && (
                   <Tooltip
                     title={
-                      ifIamSupporter == 0
+                      !!(ifIamSupporter == 0 && ifSupportDelayed == 0)
                         ? "Only admin can object"
                         : campStatement?.isAuthor
                         ? "Only admin can object"
@@ -156,7 +167,7 @@ function HistoryCollapse({
                     <Button
                       type="primary"
                       disabled={
-                        ifIamSupporter == 0
+                        !!(ifIamSupporter == 0 && ifSupportDelayed == 0)
                           ? true
                           : campStatement?.isAuthor
                           ? true
@@ -164,7 +175,9 @@ function HistoryCollapse({
                       }
                       onClick={() =>
                         router.push(
-                          `/manage/statement/${campStatement?.id}-objection`
+                          historyOf == "camp"
+                            ? `/manage/camp/${campStatement?.id}-objection`
+                            : `/manage/statement/${campStatement?.id}-objection`
                         )
                       }
                       className={`mr-3 ${styles.campUpdateButton}`}
@@ -176,9 +189,15 @@ function HistoryCollapse({
                 <Button
                   type="primary"
                   className={`mr-3 ${styles.campUpdateButton}`}
-                  onClick={() =>
-                    router.push(`/manage/statement/${campStatement?.id}`)
-                  }
+                  onClick={() => {
+                    if (historyOf == "statement") {
+                      router.push(`/manage/statement/${campStatement?.id}`);
+                    } else if (historyOf == "camp") {
+                      router.push(`/manage/camp/${campStatement?.id}`);
+                    } else if (historyOf == "topic") {
+                      router.push(`/manage/topic/${campStatement?.id}`);
+                    }
+                  }}
                 >
                   Submit Statement Update Based on This
                 </Button>
@@ -219,7 +238,11 @@ function HistoryCollapse({
                       </span>
                       <Button type="primary" className=" mr-3">
                         <Link
-                          href={`/manage/statement/${campStatement?.id}-update`}
+                          href={
+                            historyOf == "camp"
+                              ? `/manage/camp/${campStatement?.id}-update`
+                              : `/manage/statement/${campStatement?.id}-update`
+                          }
                         >
                           Edit Change
                         </Link>
@@ -230,16 +253,17 @@ function HistoryCollapse({
                     </div>
                   </div>
                 )}
-              {campStatement?.status == "in_review" && ifIamSupporter != 0 && (
-                <div className={styles.campStatementCollapseButtons}>
-                  <Checkbox
-                    className={styles.campSelectCheckbox}
-                    onChange={agreeWithChange}
-                  >
-                    I agree with this statement change
-                  </Checkbox>
-                </div>
-              )}
+              {campStatement?.status == "in_review" &&
+                !!(ifIamSupporter != 0 || ifSupportDelayed != 0) && (
+                  <div className={styles.campStatementCollapseButtons}>
+                    <Checkbox
+                      className={styles.campSelectCheckbox}
+                      onChange={agreeWithChange}
+                    >
+                      I agree with this statement change
+                    </Checkbox>
+                  </div>
+                )}
             </div>
           </>
         </Collapse>

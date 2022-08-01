@@ -18,10 +18,29 @@ export class campManageStatementRequest extends Request {
       token
     );
   }
-
+  static getEditCamp(reqBody, token) {
+    return new Request(
+      K.Network.URL.GetEditCamp + "/" + reqBody,
+      K.Network.Method.GET,
+      null,
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
   static updateStatement(reqBody, token) {
     return new Request(
       K.Network.URL.UpdateStatement,
+      K.Network.Method.POST,
+      reqBody,
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
+  static updateCamp(reqBody, token) {
+    return new Request(
+      K.Network.URL.UpdateCamp,
       K.Network.Method.POST,
       reqBody,
       K.Network.Header.Type.Json,

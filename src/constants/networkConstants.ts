@@ -122,7 +122,11 @@ const NetworkConstants = {
 
     //manage statement
     GetEditStatement: `${BaseCanonizerApiUrl}/edit-camp-statement`,
+    GetEditCamp: `${BaseCanonizerApiUrl}/edit-camp`,
+
     UpdateStatement: `${BaseCanonizerApiUrl}/store-camp-statement`,
+    UpdateCamp: `${BaseCanonizerApiUrl}/manage-camp`,
+
     // subscriptions
     GetSubscriptions: `${BaseCanonizerApiUrl}/camp/subscription/list`,
 
