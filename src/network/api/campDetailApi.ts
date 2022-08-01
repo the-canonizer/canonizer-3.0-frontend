@@ -187,7 +187,6 @@ export const createCamp = async (body) => {
     const res = await NetworkCall.fetch(TreeRequest.createCamp(body));
     return res;
   } catch (err) {
-    console.log("[err.error.data.error]", err.error.data.error);
     if (
       err &&
       err.error &&
@@ -198,7 +197,7 @@ export const createCamp = async (body) => {
     ) {
       handleError(err);
     } else {
-      return err.error.data;
+      return err?.error?.data;
     }
   }
 };

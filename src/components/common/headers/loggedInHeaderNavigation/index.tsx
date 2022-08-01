@@ -170,7 +170,9 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
               <div className={styles.btnsLoginRegister}>
                 <div className="hdrUserdropdown">
                   <Space size={40}>
-                    <Notifications />
+                    <div className={styles.not_2}>
+                      <Notifications />
+                    </div>
                     <Dropdown
                       overlay={menu}
                       trigger={["click"]}
