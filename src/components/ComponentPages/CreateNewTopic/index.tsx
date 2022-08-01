@@ -75,9 +75,9 @@ const CreateNewTopic = ({
       };
       dispatch(setCurrentTopic(data));
       router.push({
-        pathname: `/topic/${res.data.topic_num}-${res.data.topic_name
-          ?.split(" ")
-          .join("-")}/1-Agreement`,
+        pathname: `/topic/${res.data.topic_num}-${encodeURIComponent(
+          res.data.topic_name?.split(" ").join("-")
+        )}/1-Agreement`,
       });
     }
 

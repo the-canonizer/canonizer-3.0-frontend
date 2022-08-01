@@ -190,9 +190,9 @@ const CreateNewCamp = ({
       const { camp } = router.query;
 
       router.push({
-        pathname: `/topic/${camp[0]}/${res?.data?.camp_num}-${values.camp_name
-          ?.split(" ")
-          .join("-")}`,
+        pathname: `/topic/${encodeURIComponent(camp[0])}/${
+          res?.data?.camp_num
+        }-${encodeURIComponent(values.camp_name?.split(" ").join("-"))}`,
       });
     }
 

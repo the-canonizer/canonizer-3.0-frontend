@@ -206,6 +206,11 @@
       @media screen and (max-width: 575px) {
         display: none;
       }
+      .not_2 {
+        @media screen and (max-width: 767px) {
+          display: none;
+        }
+      }
       .btnLogin {
         margin-right: 1rem;
       }

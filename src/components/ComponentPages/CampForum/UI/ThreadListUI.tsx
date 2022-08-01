@@ -39,9 +39,7 @@ const ThreadListUI = ({
   const auth = isUserAuthenticated();
 
   useEffect(() => {
-    if (auth) {
-      setIsLog(auth);
-    }
+    setIsLog(auth);
   }, [auth]);
 
   return (
@@ -140,7 +138,7 @@ const ThreadListUI = ({
                   id={"thread-name-" + text?.split(" ")[0].toLowerCase()}
                 >
                   {text}
-                  {paramsList.by === "my" ? (
+                  {isLog && paramsList.by === "my" ? (
                     <Tooltip title="edit">
                       <a
                         onClick={(e) => onEditClick(e, others)}
