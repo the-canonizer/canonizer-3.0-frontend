@@ -14,6 +14,7 @@ import Lists from "../../../ComponentPages/Notifications/UI/List";
 import {
   getLists,
   markNotificationRead,
+  updateFCMToken,
 } from "../../../../network/api/notificationAPI";
 import { RootState } from "../../../../store";
 import Fav from "./icon";
@@ -34,6 +35,10 @@ const Notifications = ({}) => {
   });
 
   const router = useRouter();
+
+  const updateToken = async (tc) => {
+    const res = await updateFCMToken(tc);
+  };
 
   const getListData = async () => {
     const res = await getLists();
@@ -56,6 +61,7 @@ const Notifications = ({}) => {
         if (token || token2) {
           console.log("[useEffect notification] token", token, token2);
           localforage.setItem("fcm_token", token2);
+          // await updateToken(token2);
           setChecked(true);
           getMessage();
         }
@@ -85,6 +91,7 @@ const Notifications = ({}) => {
           // Set token in our local storage
           if (fcm_token) {
             localforage.setItem("fcm_token", fcm_token);
+            await updateToken(fcm_token);
             setChecked(true);
             getMessage();
           }
@@ -92,6 +99,7 @@ const Notifications = ({}) => {
       }
     } else {
       await localforage.removeItem("fcm_token");
+      await updateToken(null);
       setChecked(false);
     }
   };

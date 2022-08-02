@@ -25,4 +25,14 @@ export default class NotificationRequest extends Request {
       {}
     );
   }
+
+  static updateNotificationToken(body) {
+    return new Request(
+      K.Network.URL.UpdateToken,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
 }
