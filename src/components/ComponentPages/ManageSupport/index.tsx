@@ -10,7 +10,6 @@ import { useRouter } from "next/router";
 import { GetActiveSupportTopic } from "src/network/api/topicAPI";
 import { addDelegateSupportCamps, addSupport } from "src/network/api/userApi";
 import isAuth from "../../../hooks/isUserAuthenticated";
-import localforage from "localforage";
 import { RootState } from "src/store";
 import { useSelector } from "react-redux";
 const ManageSupportUI = dynamic(() => import("./ManageSupportUI"), {
@@ -274,7 +273,6 @@ const ManageSupport = () => {
     } else {
       addCampsData = add_camp_data;
     }
-    const fcm_token = await localforage.getItem("fcm_token");
     const addSupportId = {
       topic_num: topicNumId,
       add_camp: addCampsData,
@@ -283,7 +281,6 @@ const ManageSupport = () => {
       action: "add",
       nick_name_id: nickNameIDValue,
       order_update: filterArrayResult,
-      fcm_token,
     };
 
     if (CheckDelegatedOrDirect) {
@@ -297,7 +294,6 @@ const ManageSupport = () => {
         nick_name_id: nickNameIDValue,
         delegated_nick_name_id: delegated_user_id[1],
         topic_num: topicNumId,
-        fcm_token,
       };
       let res = await addDelegateSupportCamps(addDelegatedSupport);
       if (res && res.status_code == 200) {

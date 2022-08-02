@@ -272,14 +272,16 @@ const TopicsList = () => {
                   <>
                     <Link
                       href={{
-                        pathname: `/topic/${item?.topic_id}-${
+                        pathname: `/topic/${
+                          item?.topic_id
+                        }-${encodeURIComponent(
                           isReview
                             ? item?.tree_structure[1]?.review_title
                                 ?.split(" ")
                                 .join("-")
                                 ?.replace("/", "-")
                             : item?.topic_name?.split(" ").join("-")
-                        }/1-Agreement`,
+                        )}/1-Agreement`,
                       }}
                     >
                       <a

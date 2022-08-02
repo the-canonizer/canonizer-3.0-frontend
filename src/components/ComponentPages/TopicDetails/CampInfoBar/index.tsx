@@ -92,10 +92,12 @@ const CampInfoBar = ({
   }, [campRecord?.subscriptionId, topicRecord?.topicSubscriptionId]);
 
   const onCampForumClick = () => {
-    const topicName = topicRecord?.topic_name.replaceAll(" ", "-");
-    const campName = campRecord?.camp_name.replaceAll(" ", "-");
+    const topicName = topicRecord?.topic_name?.replaceAll(" ", "-");
+    const campName = campRecord?.camp_name?.replaceAll(" ", "-");
     router.push({
-      pathname: `/forum/${topicRecord?.topic_num}-${topicName}/${campRecord?.camp_num}-${campName}/threads`,
+      pathname: `/forum/${topicRecord?.topic_num}-${encodeURIComponent(
+        topicName
+      )}/${campRecord?.camp_num}-${encodeURIComponent(campName)}/threads`,
     });
   };
 

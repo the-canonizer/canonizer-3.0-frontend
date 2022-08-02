@@ -149,6 +149,8 @@ const NetworkConstants = {
 
     //Get Check if support exists
     GetCheckSupportExists: `${BaseCanonizerApiUrl}/support/check`,
+
+    UpdateToken: `${BaseCanonizerApiUrl}/update-fcm-token`,
   },
   Method: {
     GET: "GET",
