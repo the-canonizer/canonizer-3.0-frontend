@@ -77,6 +77,5 @@ export const updateFCMToken = async (token: string) => {
     }
 
     return res;
-  } catch (error) {
-  }
+  } catch (error) {}
 };
