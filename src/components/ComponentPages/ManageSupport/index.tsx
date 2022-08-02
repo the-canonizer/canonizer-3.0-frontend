@@ -294,7 +294,6 @@ const ManageSupport = () => {
         nick_name_id: nickNameIDValue,
         delegated_nick_name_id: delegated_user_id[1],
         topic_num: topicNumId,
-        fcm_token,
       };
       let res = await addDelegateSupportCamps(addDelegatedSupport);
       if (res && res.status_code == 200) {
