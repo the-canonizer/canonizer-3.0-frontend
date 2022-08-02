@@ -33,7 +33,6 @@ import SideBarNoFilter from "../../../ComponentPages/Home/SideBarNoFilter";
 import CampInfoBar from "../../TopicDetails/CampInfoBar";
 
 import Link from "next/link";
-import localforage from "localforage";
 
 export default function AddOrManage({ add }) {
   const isLogin = useAuthentication();
@@ -98,7 +97,6 @@ export default function AddOrManage({ add }) {
     }
     let editInfo = editStatementData?.data;
     let parent_camp = editInfo?.parent_camp;
-    const fcm_token = await localforage.getItem("fcm_token");
     let reqBody = {
       topic_num: add
         ? router?.query?.statement[0]?.split("-")[0]
@@ -142,7 +140,6 @@ export default function AddOrManage({ add }) {
           : null,
       old_parent_camp_num:
         manageFormOf == "camp" ? editInfo?.camp?.parent_camp_num : null,
-      fcm_token,
     };
 
     let res;

@@ -145,8 +145,8 @@ const TopicDetails = () => {
       parent_camp_num: topicRecord?.camp_num,
     };
 
-    const topicName = topicRecord?.topic_name.replaceAll(" ", "-");
-    const campName = campRecord?.camp_name.replaceAll(" ", "-");
+    const topicName = topicRecord?.topic_name?.replaceAll(" ", "-");
+    const campName = campRecord?.camp_name?.replaceAll(" ", "-");
 
     router.push({
       pathname: `/camp/create/${topicRecord?.topic_num}-${encodeURIComponent(
@@ -158,9 +158,9 @@ const TopicDetails = () => {
   };
 
   const onCampForumClick = async () => {
-    const topicName = await topicRecord?.topic_name.replaceAll(" ", "-"),
+    const topicName = await topicRecord?.topic_name?.replaceAll(" ", "-"),
       topicNum = topicRecord?.topic_num,
-      campName = await campRecord?.camp_name.replaceAll(" ", "-"),
+      campName = await campRecord?.camp_name?.replaceAll(" ", "-"),
       campNum = campRecord?.camp_num;
 
     if (topicName && topicNum && campName && campNum) {
