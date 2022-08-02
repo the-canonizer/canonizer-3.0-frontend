@@ -62,3 +62,21 @@ export const markNotificationRead = async (id: number) => {
     handleError(error);
   }
 };
+
+export const updateFCMToken = async (token: string) => {
+  try {
+    const body = { fcm_token: token };
+    const res = await NetworkCall.fetch(
+      NotificationRequests.updateNotificationToken(body),
+      false
+    );
+
+    if (res && res?.status_code == 200) {
+      await getNotificationsList();
+      await getLists();
+    }
+
+    return res;
+  } catch (error) {
+  }
+};
