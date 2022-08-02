@@ -33,7 +33,7 @@ const CurrentTopicCard = () => {
         <div className="topicDetailsCollapseFooter">
           <CustomButton className="btn-green">
             <Link
-              href={`/topic-history/${router?.query?.camp[0]?.replace(
+              href={`/topic/history/${router?.query?.camp[0]?.replace(
                 "?",
                 "%3f"
               )}`}

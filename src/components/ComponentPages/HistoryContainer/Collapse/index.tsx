@@ -68,7 +68,7 @@ function HistoryCollapse({
     let reqBody = {
       record_id: campStatement.id,
       topic_num: router.query.camp[0].split("-")[0],
-      camp_num: router.query.camp[1].split("-")[0],
+      camp_num: historyOf == "topic" ? 1 : router.query.camp[1].split("-")[0],
       change_for: historyOf,
 
       nick_name_id: campStatement?.submitter_nick_id,
@@ -127,6 +127,12 @@ function HistoryCollapse({
                   {campStatement?.camp_name}
                 </span>
               )}
+              {historyOf == "topic" && (
+                <span className={styles.updateSurveyPrj}>
+                  {campStatement?.topic_name}
+                </span>
+              )}
+
               <Divider />
             </>
           </Panel>
@@ -156,7 +162,7 @@ function HistoryCollapse({
               <div className={styles.campStatementCollapseButtons}>
                 {(campStatement?.status == "in_review" ||
                   (campStatement?.status == "objected" &&
-                    historyOf == "camp")) && (
+                    historyOf != "statement")) && (
                   <Tooltip
                     title={
                       !!(ifIamSupporter == 0 && ifSupportDelayed == 0)
@@ -179,6 +185,8 @@ function HistoryCollapse({
                         router.push(
                           historyOf == "camp"
                             ? `/manage/camp/${campStatement?.id}-objection`
+                            : historyOf == "topic"
+                            ? `/manage/topic/${campStatement?.id}-objection`
                             : `/manage/statement/${campStatement?.id}-objection`
                         )
                       }
@@ -243,6 +251,8 @@ function HistoryCollapse({
                           href={
                             historyOf == "camp"
                               ? `/manage/camp/${campStatement?.id}-update`
+                              : historyOf == "topic"
+                              ? `/manage/topic/${campStatement?.id}-update`
                               : `/manage/statement/${campStatement?.id}-update`
                           }
                         >

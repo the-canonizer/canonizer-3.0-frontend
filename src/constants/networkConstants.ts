@@ -92,6 +92,7 @@ const NetworkConstants = {
     GetCampNickNames: `${BaseCanonizerApiUrl}/camp/all-about-nickname`,
     CampStatementHistory: `${BaseCanonizerApiUrl}/get-statement-history`,
     GetCampHistory: `${BaseCanonizerApiUrl}/get-camp-history`,
+    GetTopicHistory: `${BaseCanonizerApiUrl}/get-topic-history`,
     CommitChangeStatement: `${BaseCanonizerApiUrl}/commit/change`,
     AgreeToChange: `${BaseCanonizerApiUrl}/agree-to-change`,
 
@@ -123,9 +124,11 @@ const NetworkConstants = {
     //manage statement
     GetEditStatement: `${BaseCanonizerApiUrl}/edit-camp-statement`,
     GetEditCamp: `${BaseCanonizerApiUrl}/edit-camp`,
+    GetEditTopic: `${BaseCanonizerApiUrl}/edit-topic`,
 
     UpdateStatement: `${BaseCanonizerApiUrl}/store-camp-statement`,
     UpdateCamp: `${BaseCanonizerApiUrl}/manage-camp`,
+    UpdateTopic: `${BaseCanonizerApiUrl}/manage-topic`,
 
     // subscriptions
     GetSubscriptions: `${BaseCanonizerApiUrl}/camp/subscription/list`,

@@ -21,8 +21,13 @@ import {
 } from "@ant-design/icons";
 import Link from "next/link";
 
-const CampInfoBar = ({ payload = null, isTopicPage = false }) => {
+const CampInfoBar = ({
+  payload = null,
+  isTopicPage = false,
+  isTopicHistoryPage = false,
+}) => {
   const isLogin = useAuthentication();
+  console.log("final ", isTopicHistoryPage);
 
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [payloadData, setPayloadData] = useState(payload);
@@ -66,7 +71,12 @@ const CampInfoBar = ({ payload = null, isTopicPage = false }) => {
       setBreadCrumbRes(res?.data?.bread_crumb);
       setLoadingIndicator(false);
     }
-    if (!isTopicPage && payload && Object.keys(payload).length > 0) {
+    if (
+      !isTopicPage &&
+      payload &&
+      Object.keys(payload).length > 0 &&
+      !isTopicHistoryPage
+    ) {
       getBreadCrumbApiCall();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -225,7 +235,9 @@ const CampInfoBar = ({ payload = null, isTopicPage = false }) => {
             </Typography.Paragraph>
             <div className={styles.breadcrumbLinks}>
               {" "}
-              <span className="bold mr-1"> Camp : </span>
+              <span className="bold mr-1">
+                {!isTopicHistoryPage ? "Camp :" : ""}{" "}
+              </span>
               {isTopicPage
                 ? campRecord
                   ? campRecord?.parentCamps?.map((camp, index) => {
