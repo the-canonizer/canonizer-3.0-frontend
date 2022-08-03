@@ -63,7 +63,8 @@ function HistoryContainer() {
       setLoadingIndicator(true);
       const reqBody = {
         topic_num: +router.query.camp[0].split("-")[0],
-        camp_num: +router.query.camp[1].split("-")[0],
+        camp_num:
+          historyOf != "topic" ? +router.query.camp[1].split("-")[0] : null,
         type: activeTab,
         per_page: 4,
         page: count.current,
@@ -186,9 +187,13 @@ function HistoryContainer() {
         No Camp History Found
       </h2>
     );
+
   return (
     <div className={styles.wrap}>
-      <CampInfoBar payload={payload} />
+      <CampInfoBar
+        payload={payload}
+        isTopicHistoryPage={historyOf == "topic" ? true : false}
+      />
       <div className={styles.btnGroup}>
         <Button size="large" className={styles.createBtn} onClick={topicRoute}>
           <i className="icon-topic"></i>Create New Topic

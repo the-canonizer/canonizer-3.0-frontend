@@ -15,6 +15,9 @@ const TopicHistory = ({ campStatement }) => {
         <span className={styles.updateSurveyPrj}>{campStatement?.note}</span>
       </Title>
       <Title level={5}>
+        Namespace : <span></span>
+      </Title>
+      <Title level={5}>
         Submitted on : <span>{covertToTime(campStatement?.submit_time)}</span>
       </Title>
       <Title level={5}>

@@ -99,7 +99,7 @@ const Notifications = ({}) => {
       }
     } else {
       await localforage.removeItem("fcm_token");
-      await updateToken('disabled');
+      await updateToken("disabled");
       setChecked(false);
     }
   };
