@@ -14,13 +14,23 @@ import TreeRequest from "../request/campDetailRequest";
 import { message } from "antd";
 import { store } from "../../store";
 import { handleError, isServer } from "../../utils/generalUtility";
+import { TreeStructure } from "src/typeScriptResponseStructure/treeStructure";
 
 export const getTreesApi = async (reqBody) => {
   try {
-    const trees = await NetworkCall.fetch(TreeRequest.getTrees(reqBody), false);
-
-    store.dispatch(setTree(trees?.data[0]));
-    return trees?.data[0];
+    // const {
+    //   data,
+    //   code,
+    //   success,
+    // }: { data: TreeStructure[]; code: string; success: number } =
+    //   await NetworkCall.fetch(TreeRequest.getTrees(reqBody), false);
+    const trees = (await NetworkCall.fetch(
+      TreeRequest.getTrees(reqBody),
+      false
+    )) as TreeStructure;
+    debugger;
+    store.dispatch(setTree(trees.data[0]));
+    return trees.data[0];
   } catch (error) {
     // message.error(error.message);
   }
