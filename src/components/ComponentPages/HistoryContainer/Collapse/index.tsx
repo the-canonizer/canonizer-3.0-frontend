@@ -19,6 +19,8 @@ import {
 import { useDispatch } from "react-redux";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 
+import useAuthentication from "src/hooks/isUserAuthenticated";
+
 import styles from ".././campHistory.module.scss";
 import StatementHistory from "./statementHistory";
 import CampHistory from "./campHistory";
@@ -39,7 +41,7 @@ function HistoryCollapse({
   const router = useRouter();
   const [commited, setCommited] = useState(false);
   const dispatch = useDispatch();
-
+  const isLoggedIn = useAuthentication();
   const handleViewThisVersion = (goLiveTime) => {
     dispatch(
       setFilterCanonizedTopics({
@@ -68,7 +70,7 @@ function HistoryCollapse({
     let reqBody = {
       record_id: campStatement.id,
       topic_num: router.query.camp[0].split("-")[0],
-      camp_num: router.query.camp[1].split("-")[0],
+      camp_num: historyOf == "topic" ? 1 : router.query.camp[1].split("-")[0],
       change_for: historyOf,
 
       nick_name_id: campStatement?.submitter_nick_id,
@@ -127,6 +129,12 @@ function HistoryCollapse({
                   {campStatement?.camp_name}
                 </span>
               )}
+              {historyOf == "topic" && (
+                <span className={styles.updateSurveyPrj}>
+                  {campStatement?.topic_name}
+                </span>
+              )}
+
               <Divider />
             </>
           </Panel>
@@ -154,7 +162,9 @@ function HistoryCollapse({
                 </Checkbox>
               </div>
               <div className={styles.campStatementCollapseButtons}>
-                {campStatement?.status == "in_review" && (
+                {(campStatement?.status == "in_review" ||
+                  (campStatement?.status == "objected" &&
+                    historyOf != "statement")) && (
                   <Tooltip
                     title={
                       !!(ifIamSupporter == 0 && ifSupportDelayed == 0)
@@ -167,7 +177,9 @@ function HistoryCollapse({
                     <Button
                       type="primary"
                       disabled={
-                        !!(ifIamSupporter == 0 && ifSupportDelayed == 0)
+                        !isLoggedIn
+                          ? true
+                          : !!(ifIamSupporter == 0 && ifSupportDelayed == 0)
                           ? true
                           : campStatement?.isAuthor
                           ? true
@@ -177,6 +189,8 @@ function HistoryCollapse({
                         router.push(
                           historyOf == "camp"
                             ? `/manage/camp/${campStatement?.id}-objection`
+                            : historyOf == "topic"
+                            ? `/manage/topic/${campStatement?.id}-objection`
                             : `/manage/statement/${campStatement?.id}-objection`
                         )
                       }
@@ -190,7 +204,9 @@ function HistoryCollapse({
                   type="primary"
                   className={`mr-3 ${styles.campUpdateButton}`}
                   onClick={() => {
-                    if (historyOf == "statement") {
+                    if (!isLoggedIn) {
+                      router.push("/login");
+                    } else if (historyOf == "statement") {
                       router.push(`/manage/statement/${campStatement?.id}`);
                     } else if (historyOf == "camp") {
                       router.push(`/manage/camp/${campStatement?.id}`);
@@ -241,6 +257,8 @@ function HistoryCollapse({
                           href={
                             historyOf == "camp"
                               ? `/manage/camp/${campStatement?.id}-update`
+                              : historyOf == "topic"
+                              ? `/manage/topic/${campStatement?.id}-update`
                               : `/manage/statement/${campStatement?.id}-update`
                           }
                         >
@@ -254,7 +272,8 @@ function HistoryCollapse({
                   </div>
                 )}
               {campStatement?.status == "in_review" &&
-                !!(ifIamSupporter != 0 || ifSupportDelayed != 0) && (
+                !!(ifIamSupporter != 0 || ifSupportDelayed != 0) &&
+                isLoggedIn && (
                   <div className={styles.campStatementCollapseButtons}>
                     <Checkbox
                       className={styles.campSelectCheckbox}
