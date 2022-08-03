@@ -130,12 +130,12 @@ const ThreadListUI = ({
             title="Thread Name"
             dataIndex="title"
             key="title"
-            render={(text, others) => {
+            render={(text, others, idx) => {
               return (
                 <a
                   onClick={(e) => onThreadClick(e, others)}
                   className={styles.threadListTitle}
-                  id={"thread-name-" + text?.split(" ")[0].toLowerCase()}
+                  id={"thread-label-" + (+idx + 1)}
                 >
                   {text}
                   {isLog && paramsList.by === "my" ? (
