@@ -41,7 +41,7 @@ function CompareStatement() {
 
   useEffect(() => {
     const ids = (router?.query?.statements as String).split("_");
-    
+
     if (ids.length) getStatement(ids);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
