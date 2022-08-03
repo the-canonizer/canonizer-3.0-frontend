@@ -72,7 +72,6 @@ function HistoryContainer() {
 
       let res = await getHistoryApi(reqBody, count.current, historyOf);
 
-      console.log("res=> ", res);
       if (!res || !res?.last_page) {
         setLoadMoreItems(false);
         setLoadingIndicator(false);

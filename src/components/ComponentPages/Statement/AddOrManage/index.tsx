@@ -717,7 +717,8 @@ export default function AddOrManage({ add }) {
                                         ].camp_name
                                           ?.split(" ")
                                           ?.join("-")}`
-                                      : `/statement/history/${
+                                      : manageFormOf == "statement"
+                                      ? `/statement/history/${
                                           backdata?.topic?.topic_num
                                         }-${backdata?.topic?.topic_name
                                           ?.split(" ")
@@ -728,6 +729,11 @@ export default function AddOrManage({ add }) {
                                         }-${backdata?.parent_camp[
                                           backdata?.parent_camp.length - 1
                                         ].camp_name
+                                          ?.split(" ")
+                                          ?.join("-")}`
+                                      : `/topic/history/${
+                                          backdata?.topic?.topic_num
+                                        }-${backdata?.topic?.topic_name
                                           ?.split(" ")
                                           ?.join("-")}`
                                   );
@@ -778,12 +784,26 @@ export default function AddOrManage({ add }) {
           column={{ xxl: 1, lg: 1 }}
           // layout="vertical"
         >
-          {manageFormOf != "camp" && (
+          {manageFormOf == "statement" && (
             <Descriptions.Item label="Statement">
               {form?.getFieldValue("statement")}
             </Descriptions.Item>
           )}
-
+          {manageFormOf == "topic" && (
+            <>
+              <Descriptions.Item label="Topic Name">
+                {form?.getFieldValue("topic_name")}
+              </Descriptions.Item>
+              <Descriptions.Item label="Namespace">
+                {
+                  canNameSpace?.find(
+                    (id) => id?.id == form?.getFieldValue("name_space")
+                  )?.name
+                  // form?.getFieldValue("name_space")
+                }
+              </Descriptions.Item>
+            </>
+          )}
           {manageFormOf == "camp" && (
             <>
               <Descriptions.Item label="Camp Name">
