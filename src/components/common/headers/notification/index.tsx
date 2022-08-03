@@ -99,7 +99,7 @@ const Notifications = ({}) => {
       }
     } else {
       await localforage.removeItem("fcm_token");
-      await updateToken('disabled');
+      await updateToken("disabled");
       setChecked(false);
     }
   };
@@ -162,8 +162,23 @@ const Notifications = ({}) => {
   }
 
   const onNotifyClick = async (id) => {
-    await markNotificationRead(id);
+    const res = await markNotificationRead(id);
+    if (res && res.status_code === 200) {
+      router.query.from = "";
+      router.replace(router);
+    }
   };
+
+  useEffect(() => {
+    const q = router.query;
+    if (q && q.from && q.from.includes("notify_")) {
+      const fArr = (q.from as String).split("_");
+      if (+fArr[1]) {
+        onNotifyClick(+fArr[1]);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router]);
 
   const notificationDropdown = (
     <Card
@@ -194,7 +209,7 @@ const Notifications = ({}) => {
         </Link>,
       ]}
     >
-      <Lists list={list} onNotifyClick={onNotifyClick} />
+      <Lists list={list} />
     </Card>
   );
 

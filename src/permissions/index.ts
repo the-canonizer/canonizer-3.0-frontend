@@ -39,6 +39,11 @@ const PermissionsForPages: PermissionsObj = {
     isPermissionRequired: false,
     permissionName: "compare_statement",
   },
+  NotificationsListPage: {
+    isAuthenticationRequired: true,
+    isPermissionRequired: false,
+    permissionName: "notification",
+  },
 };
 
 export default PermissionsForPages;

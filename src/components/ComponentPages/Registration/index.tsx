@@ -89,6 +89,7 @@ const Registration = ({ isModal, isTest = false }) => {
     let formBody = {
       username: formData.email?.trim(),
       otp: values.otp?.trim(),
+      is_login: 0,
     };
 
     if (values.otp?.trim()) {
