@@ -131,8 +131,7 @@ function HistoryContainer() {
     router.push({
       pathname: `/statement/compare/${router.query.camp[0]}/${router.query.camp[1]}`,
       query: {
-        s1: selectedTopic[0],
-        s2: selectedTopic[1],
+        statements: selectedTopic[0] + "_" + selectedTopic[1],
       },
     });
   };

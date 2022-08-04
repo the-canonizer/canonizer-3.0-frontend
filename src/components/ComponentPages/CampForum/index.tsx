@@ -168,6 +168,7 @@ const ForumComponent = ({}) => {
       camp_num,
       topic_num,
       by: queries.by,
+      camp_name: camp,
     };
 
     setParamsList(paramsLists);
@@ -310,6 +311,7 @@ const ForumComponent = ({}) => {
           title: values.thread_title?.trim(),
           topic_num: paramsList["topic_num"],
           camp_num: paramsList["camp_num"],
+          camp_name: paramsList["camp_name"],
         };
         res = await updateThread(body, +q.tId);
       } else {
@@ -319,6 +321,7 @@ const ForumComponent = ({}) => {
           camp_num: paramsList["camp_num"],
           topic_num: paramsList["topic_num"],
           topic_name: paramsList["topic"],
+          camp_name: paramsList["camp_name"],
         };
         res = await createThread(body);
       }
@@ -402,6 +405,7 @@ const ForumComponent = ({}) => {
       camp_num: +camp_num,
       topic_num: +topic_num,
       topic_name: topicArr.join(" "),
+      camp_name: campArr.join(" "),
     };
 
     let res = null;
@@ -448,7 +452,9 @@ const ForumComponent = ({}) => {
     if (res && res.status_code === 200) {
       message.success(res.message);
       getPosts(q.id, ppage);
-      setCurrentPost({});
+      if (id === +currentPost["id"]) {
+        setCurrentPost({});
+      }
     }
   };
 

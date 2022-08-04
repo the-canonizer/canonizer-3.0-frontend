@@ -110,6 +110,7 @@ const Login = ({ isModal, isTest = false }) => {
       let formBody = {
         username: formData.email?.trim(),
         otp: values.otp,
+        is_login: 1,
       };
 
       let res = await verifyOtp(formBody);

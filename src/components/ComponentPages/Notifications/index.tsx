@@ -2,10 +2,7 @@ import { useState, Fragment, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 import NotificationsListUI from "./UI";
-import {
-  getNotificationsList,
-  markNotificationRead,
-} from "../../../network/api/notificationAPI";
+import { getNotificationsList } from "../../../network/api/notificationAPI";
 import { RootState } from "../../../store";
 
 const SettingsUI = () => {
@@ -38,10 +35,6 @@ const SettingsUI = () => {
     setPage(p);
   };
 
-  const onNotifyClick = async (id) => {
-    await markNotificationRead(id);
-  };
-
   return (
     <Fragment>
       <NotificationsListUI
@@ -51,7 +44,6 @@ const SettingsUI = () => {
         onViewMoreClick={onViewMoreClick}
         total={total}
         per_page={per_page}
-        onNotifyClick={onNotifyClick}
       />
     </Fragment>
   );
