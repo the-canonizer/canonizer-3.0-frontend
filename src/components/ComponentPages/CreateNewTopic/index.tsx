@@ -81,14 +81,34 @@ const CreateNewTopic = ({
       });
     }
 
-    if (res && res.status_code === 400 && res.error.topic_name) {
-      form.setFields([
-        {
-          name: "topic_name",
-          value: values.topic_name,
-          errors: [res.error.topic_name],
-        },
-      ]);
+    if (res && res.status_code === 400) {
+      if (res?.error) {
+        const errors_key = Object.keys(res.error);
+
+        if (errors_key.length) {
+          errors_key.forEach((key) => {
+            form.setFields([
+              {
+                name: key,
+                value: values[key],
+                errors: [res.error[key]],
+              },
+            ]);
+          });
+        }
+      }
+
+      const error_data = res?.data;
+
+      if (error_data && error_data?.if_exist) {
+        setTimeout(() => {
+          router.push({
+            pathname: `/topic/${error_data?.topic_num}-${encodeURIComponent(
+              error_data?.topic_name?.split(" ").join("-")
+            )}/1-Agreement`,
+          });
+        }, 500);
+      }
     }
   };
 
