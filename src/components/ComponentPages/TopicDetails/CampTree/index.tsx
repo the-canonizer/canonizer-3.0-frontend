@@ -56,14 +56,14 @@ const CampTree = ({ scrollToCampStatement }) => {
                         }
                       >
                         <Link
-                          href={
-                            includeReview
+                          href={{
+                            pathname: includeReview
                               ? data[item]?.review_link?.replace(
                                   "#statement",
                                   ""
                                 )
-                              : data[item]?.link?.replace("#statement", "")
-                          }
+                              : data[item]?.link?.replace("#statement", ""),
+                          }}
                         >
                           <a
                             className={
@@ -98,9 +98,13 @@ const CampTree = ({ scrollToCampStatement }) => {
                     title={
                       <p className={styles.startNew}>
                         <Link
-                          href={`/camp/create/${
-                            router.query.camp[0] + "/" + router.query.camp[1]
-                          }`}
+                          href={{
+                            pathname: `/camp/create/${
+                              encodeURIComponent(router.query.camp[0]) +
+                              "/" +
+                              encodeURIComponent(router.query.camp[1])
+                            }`,
+                          }}
                         >
                           <a>{`<Start new supporting camp here>`} </a>
                         </Link>
