@@ -762,7 +762,11 @@ export default function AddOrManage({ add }) {
         </div>
       </div>
       <Modal
-        title="Statement preview"
+        title={
+          manageFormOf.charAt(0).toUpperCase() +
+          manageFormOf.slice(1) +
+          " preview"
+        }
         style={{
           top: 20,
         }}
@@ -811,7 +815,7 @@ export default function AddOrManage({ add }) {
               </Descriptions.Item>
 
               {parentCamp.length > 1 && (
-                <Descriptions.Item label="parent Camp Num">
+                <Descriptions.Item label="Parent Camp">
                   {
                     parentCamp?.find(
                       (parent) =>
