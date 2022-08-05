@@ -87,7 +87,7 @@ function HistoryCollapse({
     } else if (historyOf == "camp") {
       title = "Camp Name";
     } else if (historyOf == "topic") {
-      title = "Topic";
+      title = "Topic Name";
     }
     return title;
   };
