@@ -12,6 +12,7 @@ import { addDelegateSupportCamps, addSupport } from "src/network/api/userApi";
 import isAuth from "../../../hooks/isUserAuthenticated";
 import { RootState } from "src/store";
 import { useSelector } from "react-redux";
+const fcm_token = process.env.NEXT_PUBLIC_FCM_API_KEY;
 const ManageSupportUI = dynamic(() => import("./ManageSupportUI"), {
   ssr: false,
 });
@@ -29,6 +30,7 @@ const ManageSupport = () => {
   const [checked, setChecked] = useState(false);
   const [getSupportStatusData, setGetSupportStatusData] = useState<any>();
   const [payloadBreadCrumb, setPayloadBreadCrumb] = useState({});
+  console.log("fcm token ", process.env.NEXT_PUBLIC_FCM_API_KEY);
   const getCanonizedNicknameList = async () => {
     const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
     const body = { topic_num: topicNum };
@@ -281,6 +283,7 @@ const ManageSupport = () => {
       action: "add",
       nick_name_id: nickNameIDValue,
       order_update: filterArrayResult,
+      fcm_token: fcm_token,
     };
 
     if (CheckDelegatedOrDirect) {

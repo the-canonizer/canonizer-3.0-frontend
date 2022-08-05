@@ -226,7 +226,11 @@ function HistoryCollapse({
                 >
                   <Link
                     href={`/topic/${
-                      router?.query?.camp[0] + "/" + router?.query?.camp[1]
+                      router?.query?.camp[0] +
+                      "/" +
+                      (historyOf != "topic"
+                        ? router?.query?.camp[1]
+                        : "1-Agreement")
                     }`}
                   >
                     View This Version
