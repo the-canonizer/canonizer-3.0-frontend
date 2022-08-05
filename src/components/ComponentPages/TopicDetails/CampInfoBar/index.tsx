@@ -245,16 +245,19 @@ const CampInfoBar = ({
                   ? campRecord?.parentCamps?.map((camp, index) => {
                       return (
                         <Link
-                          href={
-                            router.asPath.split("/")[1] == "support"
-                              ? router.asPath.replace("/support/", "/topic/")
-                              : `${(router.query?.camp
-                                  ? router.query?.camp
-                                  : router.query?.manageSupport
-                                )?.at(0)}/${
-                                  camp?.camp_num
-                                }-${camp?.camp_name?.replaceAll(" ", "-")}`
-                          }
+                          href={{
+                            pathname:
+                              router.asPath.split("/")[1] == "support"
+                                ? router.asPath.replace("/support/", "/topic/")
+                                : `${(router.query?.camp
+                                    ? router.query?.camp
+                                    : router.query?.manageSupport
+                                  )?.at(0)}/${
+                                    camp?.camp_num
+                                  }-${encodeURIComponent(
+                                    camp?.camp_name?.replaceAll(" ", "-")
+                                  )}`,
+                          }}
                           key={camp?.camp_num}
                         >
                           <a>
@@ -269,11 +272,15 @@ const CampInfoBar = ({
                 ? breadCrumbRes?.map((camp, index) => {
                     return (
                       <Link
-                        href={`/topic/${
-                          payloadData?.topic_num
-                        }-${payloadData?.topic_name?.replaceAll(" ", "-")}/${
-                          camp?.camp_num
-                        }-${camp?.camp_name?.replaceAll(" ", "-")}`}
+                        href={{
+                          pathname: `/topic/${
+                            payloadData?.topic_num
+                          }-${encodeURIComponent(
+                            payloadData?.topic_name?.replaceAll(" ", "-")
+                          )}/${camp?.camp_num}-${encodeURIComponent(
+                            camp?.camp_name?.replaceAll(" ", "-")
+                          )}`,
+                        }}
                         key={index}
                       >
                         <a>

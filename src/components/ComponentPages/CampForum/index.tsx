@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../../../store";
 import isUserAuthenticated from "../../../hooks/isUserAuthenticated";
-// import TopBar from "./UI/TopBar";
 import ForumUIList from "./List";
 import ForumUICreate from "./Create";
 import ForumUIPost from "./Post";
@@ -191,7 +190,9 @@ const ForumComponent = ({}) => {
     const queries = router?.query;
     if (isLoggedIn) {
       router.push({
-        pathname: `/forum/${queries.topic}/${queries.camp}/threads/create`,
+        pathname: `/forum/${encodeURIComponent(
+          queries?.topic as string
+        )}/${encodeURIComponent(queries?.camp as string)}/threads/create`,
       });
     } else {
       router.push({
@@ -210,7 +211,9 @@ const ForumComponent = ({}) => {
     e.stopPropagation();
 
     router.push({
-      pathname: `/forum/${queries.topic}/${queries.camp}/threads/${data.id}`,
+      pathname: `/forum/${encodeURIComponent(
+        queries.topic as string
+      )}/${encodeURIComponent(queries.camp as string)}/threads/${data.id}`,
     });
   };
 
@@ -233,7 +236,9 @@ const ForumComponent = ({}) => {
     e.stopPropagation();
 
     router.push({
-      pathname: `/forum/${queries.topic}/${queries.camp}/threads/edit/${item.id}`,
+      pathname: `/forum/${encodeURIComponent(
+        queries.topic as string
+      )}/${encodeURIComponent(queries.camp as string)}/threads/edit/${item.id}`,
     });
   };
 
@@ -281,13 +286,17 @@ const ForumComponent = ({}) => {
     if (queries.tId) {
       const queries = router?.query;
       router.push({
-        pathname: `/forum/${queries.topic}/${queries.camp}/threads`,
+        pathname: `/forum/${encodeURIComponent(
+          queries.topic as string
+        )}/${encodeURIComponent(queries.camp as string)}/threads`,
         query: { by: "my" },
       });
     } else {
       const queries = router?.query;
       router.push({
-        pathname: `/forum/${queries.topic}/${queries.camp}/threads`,
+        pathname: `/forum/${encodeURIComponent(
+          queries.topic as string
+        )}/${encodeURIComponent(queries.camp as string)}/threads`,
       });
     }
   };
@@ -341,13 +350,17 @@ const ForumComponent = ({}) => {
       if (q.tId) {
         const queries = router?.query;
         router.push({
-          pathname: `/forum/${queries.topic}/${queries.camp}/threads`,
+          pathname: `/forum/${encodeURIComponent(
+            queries.topic as string
+          )}/${encodeURIComponent(queries.camp as string)}/threads`,
           query: { by: "my" },
         });
       } else {
         const queries = router?.query;
         router.push({
-          pathname: `/forum/${queries.topic}/${queries.camp}/threads`,
+          pathname: `/forum/${encodeURIComponent(
+            queries.topic as string
+          )}/${encodeURIComponent(queries.camp as string)}/threads`,
         });
       }
     }
@@ -475,7 +488,6 @@ const ForumComponent = ({}) => {
   };
   return (
     <Fragment>
-      {/* <TopBar topicRecord={topicRecord} campRecord={campRecord} /> */}
       <CampInfoBar payload={payload} />
       {router?.pathname === "/forum/[topic]/[camp]/threads" ? (
         <ForumUIList
