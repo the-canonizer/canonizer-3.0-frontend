@@ -6,7 +6,6 @@ import Spinner from "../../components/common/spinner/spinner";
 import styles from "./layout.module.scss";
 import Footer from "../../components/common/footer";
 import Link from "next/link";
-import DisclaimerMsg from "../../components/common/disclaimer";
 
 function Layout(props) {
   const isLogin = useAuthentication();
@@ -15,7 +14,6 @@ function Layout(props) {
     <>
       <div className={styles.pageWrap}>
         {isLogin ? <LoggedInHeader /> : <LoggedOutHeader />}
-        <DisclaimerMsg />
         <Spinner>{""}</Spinner>
         <div className={styles.contentWrap}>
           <div className={styles.contentArea}>{props.children} </div>
