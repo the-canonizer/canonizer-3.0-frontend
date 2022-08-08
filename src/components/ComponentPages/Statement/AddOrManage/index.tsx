@@ -463,14 +463,6 @@ export default function AddOrManage({ add }) {
                             className={`${styles.formItem} mb-2`}
                             label={<>Keywords</>}
                             name="keywords"
-                            rules={[
-                              {
-                                required: true,
-                                message:
-                                  K?.exceptionalMessages
-                                    ?.selectNickNameErrorMsg,
-                              },
-                            ]}
                           >
                             <Input />
                           </Form.Item>
@@ -531,7 +523,7 @@ export default function AddOrManage({ add }) {
                             <Select size={"large"} placeholder="Name Space">
                               {canNameSpace.map((camp) => (
                                 <Select.Option value={camp.id} key={camp.id}>
-                                  {camp.name}
+                                  {camp.label}
                                 </Select.Option>
                               ))}
                             </Select>
@@ -762,7 +754,11 @@ export default function AddOrManage({ add }) {
         </div>
       </div>
       <Modal
-        title="Statement preview"
+        title={
+          manageFormOf.charAt(0).toUpperCase() +
+          manageFormOf.slice(1) +
+          " preview"
+        }
         style={{
           top: 20,
         }}
@@ -811,7 +807,7 @@ export default function AddOrManage({ add }) {
               </Descriptions.Item>
 
               {parentCamp.length > 1 && (
-                <Descriptions.Item label="parent Camp Num">
+                <Descriptions.Item label="Parent Camp">
                   {
                     parentCamp?.find(
                       (parent) =>
