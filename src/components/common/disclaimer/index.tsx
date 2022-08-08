@@ -1,5 +1,4 @@
 import { Card } from "antd";
-import Link from "next/link";
 
 import styles from "./disclaimer.module.scss";
 
