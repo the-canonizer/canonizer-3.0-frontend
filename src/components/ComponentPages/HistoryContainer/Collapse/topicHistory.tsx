@@ -41,12 +41,12 @@ const TopicHistory = ({ campStatement }) => {
 
       {campStatement?.object_reason && (
         <Title level={5}>
-          Object reason :<span> {campStatement?.object_reason}</span>
+          Object Reason :<span> {campStatement?.object_reason}</span>
         </Title>
       )}
       {campStatement?.objector_nick_name && (
         <Title level={5}>
-          Object Nick Name :
+          Objector Nick Name :
           <span>
             <Link
               href={`/user/supports/${

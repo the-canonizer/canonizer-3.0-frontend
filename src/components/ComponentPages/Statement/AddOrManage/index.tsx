@@ -523,7 +523,7 @@ export default function AddOrManage({ add }) {
                             <Select size={"large"} placeholder="Name Space">
                               {canNameSpace.map((camp) => (
                                 <Select.Option value={camp.id} key={camp.id}>
-                                  {camp.name}
+                                  {camp.label}
                                 </Select.Option>
                               ))}
                             </Select>
