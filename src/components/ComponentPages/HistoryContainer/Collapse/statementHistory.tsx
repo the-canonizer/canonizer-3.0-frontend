@@ -39,7 +39,19 @@ const StatementHistory = ({ campStatement }) => {
       )}
       {campStatement?.objector_nick_name && (
         <Title level={5}>
-          Object Nick Name : <span>{campStatement?.objector_nick_name}</span>
+          Object Nick Name :
+          <span>
+            <Link
+              href={`/user/supports/${
+                campStatement?.objector_nick_id || ""
+              }?topicnum=${campStatement?.topic_num || ""}&campnum=${
+                campStatement?.camp_num || ""
+              }&namespace=1`}
+              passHref
+            >
+              <a> {campStatement?.objector_nick_name}</a>
+            </Link>
+          </span>
         </Title>
       )}
       <Title level={5}>
