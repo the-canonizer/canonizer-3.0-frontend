@@ -21,9 +21,7 @@ const DisclaimerMsg = () => {
         canonizer.com
       </a>
     </Card>
-  ) : (
-    ""
-  );
+  ) : null;
 };
 
 export default DisclaimerMsg;
