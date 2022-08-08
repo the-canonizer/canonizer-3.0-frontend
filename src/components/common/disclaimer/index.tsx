@@ -1,9 +1,9 @@
 import { Card } from "antd";
+import { useEffect, useState } from "react";
 
 import styles from "./disclaimer.module.scss";
 
 import useAuthenticated from "../../../hooks/isUserAuthenticated";
-import { useEffect, useState } from "react";
 
 const DisclaimerMsg = () => {
   const auth = useAuthenticated();
