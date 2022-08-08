@@ -196,9 +196,11 @@ function HistoryContainer() {
         <Button size="large" className={styles.createBtn} onClick={topicRoute}>
           <i className="icon-topic"></i>Create New Topic
         </Button>
-        <Button size="large" className={styles.createBtn} onClick={campRoute}>
-          <i className="icon-topic"></i>Create New Camp
-        </Button>
+        {historyOf !== "topic" ? (
+          <Button size="large" className={styles.createBtn} onClick={campRoute}>
+            <i className="icon-topic"></i>Create New Camp
+          </Button>
+        ) : null}
       </div>
       <div className={styles.campStatement}>
         <Affix

@@ -56,7 +56,9 @@ const CampTreeCard = ({ scrollToCampStatement }) => {
               }}
             >
               {isLogin && is_admin && tree && (
-                <Link href={router.asPath.replace("topic", "addnews")}>
+                <Link
+                  href={{ pathname: router.asPath.replace("topic", "addnews") }}
+                >
                   <a
                     className={styles.addNew}
                     onClick={(event) => {
