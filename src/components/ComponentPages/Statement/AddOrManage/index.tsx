@@ -463,14 +463,6 @@ export default function AddOrManage({ add }) {
                             className={`${styles.formItem} mb-2`}
                             label={<>Keywords</>}
                             name="keywords"
-                            rules={[
-                              {
-                                required: true,
-                                message:
-                                  K?.exceptionalMessages
-                                    ?.selectNickNameErrorMsg,
-                              },
-                            ]}
                           >
                             <Input />
                           </Form.Item>
