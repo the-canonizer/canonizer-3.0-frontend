@@ -7,6 +7,7 @@ import LoggedOutHeader from "../../components/common/headers/loggedOutHeader";
 import Spinner from "../../components/common/spinner/spinner";
 import styles from "./withoutSidebarLayout.module.scss";
 import Footer from "../../components/common/footer";
+import DisclaimerMsg from "../../components/common/disclaimer";
 
 function WithoutSidebarLayout(props) {
   const isLogin = useAuthentication();
@@ -15,6 +16,7 @@ function WithoutSidebarLayout(props) {
     <Fragment>
       <div className={styles.pageWrap}>
         {isLogin ? <LoggedInHeader /> : <LoggedOutHeader />}
+        <DisclaimerMsg />
         <Spinner>{""}</Spinner>
         <div className={styles.contentWrap}>
           <div className={styles.contentArea}>{props.children} </div>
