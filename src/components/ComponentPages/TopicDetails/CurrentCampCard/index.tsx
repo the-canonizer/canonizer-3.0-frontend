@@ -16,6 +16,9 @@ const CurrentCampCard = () => {
     campRecord: state?.topicDetails?.currentCampRecord,
   }));
 
+  console.log("current record const ", currentCampRecordConstants);
+  console.log("camprecodr on point ", campRecord);
+
   return (
     <Collapse
       accordion={true}
@@ -27,7 +30,13 @@ const CurrentCampCard = () => {
         <Descriptions column={1}>
           {currentCampRecordConstants?.map((description) => (
             <Descriptions.Item label={description.label} key={description.key}>
-              {campRecord && campRecord[description.key]}
+              {campRecord && description.key != "camp_about_url" ? (
+                campRecord[description.key]
+              ) : (
+                <Link href={campRecord[description.key]}>
+                  <a target="_blank">{campRecord[description.key]}</a>
+                </Link>
+              )}
             </Descriptions.Item>
           ))}
         </Descriptions>
