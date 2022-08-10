@@ -82,7 +82,7 @@ const Registration = ({ isModal, isTest = false }) => {
                 {
                   name: key,
                   value: values[key],
-                  errors: [...res.error[key]],
+                  errors: [res.error[key]],
                 },
               ]);
             });
