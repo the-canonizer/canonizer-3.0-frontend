@@ -130,7 +130,7 @@ const ManageSupportUI = ({
                   {" "}
                   <span className={styles.count}>
                     {getSupportStatusData !== ""
-                      ? tag.camp_num
+                      ? index + 1
                       : tag.support_order}
                     .{" "}
                   </span>
