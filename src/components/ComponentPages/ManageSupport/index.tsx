@@ -28,7 +28,7 @@ const ManageSupport = () => {
   const [parentSupportDataList, setParentSupportDataList] = useState([]);
   const [selectedtNickname, setSelectedtNickname] = useState();
   const [checked, setChecked] = useState(false);
-  const [getSupportStatusData, setGetSupportStatusData] = useState<any>();
+  const [getSupportStatusData, setGetSupportStatusData] = useState("");
   const [payloadBreadCrumb, setPayloadBreadCrumb] = useState({});
   console.log("fcm token ", process.env.NEXT_PUBLIC_FCM_API_KEY);
   const getCanonizedNicknameList = async () => {
@@ -99,9 +99,9 @@ const ManageSupport = () => {
   //removeAll function
   const removeAll = (checked, val) => {
     setCardCamp_ID("");
-    setcampIds([]);
     setChecked(checked);
     const disabeleAllTopic = val.map((obj) => {
+      setcampIds([obj.camp_num]);
       obj.dis = checked;
       return obj;
     });
@@ -134,6 +134,7 @@ const ManageSupport = () => {
   const camp_Name = router?.query?.manageSupport?.at(1)?.split(/-(.*)/s);
   //replace use to - change to space
   const camp_Name_ = camp_Name[1].replace("-", " ");
+
   //split on ?
   const CampNameData = camp_Name_.split("?");
   //after split Data Value
@@ -209,6 +210,7 @@ const ManageSupport = () => {
         ? manageSupportRevertData[0].topic_num
         : "";
     //order Update
+
     let resultCamp = manageSupportList.filter(
       (values) => !campIds.includes(values.camp_num)
     );
