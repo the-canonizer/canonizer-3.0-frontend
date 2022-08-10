@@ -319,7 +319,6 @@ export default function AddOrManage({ add }) {
     }
     return update;
   };
-
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
@@ -798,7 +797,7 @@ export default function AddOrManage({ add }) {
                 {
                   canNameSpace?.find(
                     (id) => id?.id == form?.getFieldValue("name_space")
-                  )?.name
+                  )?.label
                   // form?.getFieldValue("name_space")
                 }
               </Descriptions.Item>
@@ -845,7 +844,7 @@ export default function AddOrManage({ add }) {
             {" "}
             {form?.getFieldValue("edit_summary")}
           </Descriptions.Item>
-          <Descriptions.Item label="Submitter Nick Name:">
+          <Descriptions.Item label="Submitter Nick Name">
             {" "}
             {
               nickNameData?.find(
