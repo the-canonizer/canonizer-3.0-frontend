@@ -16,9 +16,6 @@ const CurrentCampCard = () => {
     campRecord: state?.topicDetails?.currentCampRecord,
   }));
 
-  console.log("current record const ", currentCampRecordConstants);
-  console.log("camprecodr on point ", campRecord);
-
   return (
     <Collapse
       accordion={true}
