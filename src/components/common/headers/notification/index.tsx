@@ -58,8 +58,16 @@ const Notifications = ({}) => {
       try {
         const token = await firebaseCloudMessaging.init();
         const token2 = await localforage.getItem("fcm_token");
+
+        // const messaging = firebase.messaging();
+        // const fcm_token = await messaging.getToken({
+        //   vapidKey: process.env.NEXT_PUBLIC_FCM_CERTIFICATE_KEY,
+        // });
+        // console.log("[messaging.getToken]", fcm_token);
+
         if (token || token2) {
-          console.log("[useEffect notification] token", token, token2);
+          console.log("[SET-TOKEN ~ TOKEN2]", token2, "[TOKEN]", token);
+
           localforage.setItem("fcm_token", token2);
           // await updateToken(token2);
           setChecked(true);

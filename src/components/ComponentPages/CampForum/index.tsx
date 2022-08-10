@@ -4,7 +4,7 @@ import { Form, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../../../store";
-import isUserAuthenticated from "../../../hooks/isUserAuthenticated";
+import useIsUserAuthenticated from "../../../hooks/isUserAuthenticated";
 import ForumUIList from "./List";
 import ForumUICreate from "./Create";
 import ForumUIPost from "./Post";
@@ -27,7 +27,7 @@ import { setThread, setPost } from "../../../store/slices/campForumSlice";
 import CampInfoBar from "../TopicDetails/CampInfoBar";
 
 const ForumComponent = ({}) => {
-  const auth = isUserAuthenticated();
+  const auth = useIsUserAuthenticated();
 
   const [paramsList, setParamsList] = useState({});
   const [threadList, setThreadList] = useState([]);
@@ -480,12 +480,14 @@ const ForumComponent = ({}) => {
   const pOnChange = (p, size) => {
     setPpage(p);
   };
+
   //  post section end
   let payload = {
     camp_num: (router?.query?.camp as string)?.split("-")[0],
     topic_num: (router?.query?.topic as string)?.split("-")[0],
     topic_name: (router?.query?.topic as string)?.split("-").slice(1).join(" "),
   };
+
   return (
     <Fragment>
       <CampInfoBar payload={payload} />

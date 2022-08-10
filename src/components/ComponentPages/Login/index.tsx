@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { Form } from "antd";
