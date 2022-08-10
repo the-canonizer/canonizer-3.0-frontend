@@ -72,6 +72,23 @@ const Registration = ({ isModal, isTest = false }) => {
         setIsReCaptchaRef(true);
         setFailedMsg(res.message);
       }
+      if (res && res.status_code === 400) {
+        if (res?.error) {
+          const errors_key = Object.keys(res.error);
+
+          if (errors_key.length) {
+            errors_key.forEach((key) => {
+              form.setFields([
+                {
+                  name: key,
+                  value: values[key],
+                  errors: [res.error[key]],
+                },
+              ]);
+            });
+          }
+        }
+      }
 
       if (res && res.status_code === 200) {
         form.resetFields();

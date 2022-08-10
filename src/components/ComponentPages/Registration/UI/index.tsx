@@ -158,7 +158,6 @@ function RegistrationUi({
                   placeholder={messages.placeholders.phone}
                   autoComplete="new-phone"
                   maxLength={10}
-                  max={10}
                   onKeyDown={(e) =>
                     e.key === " " && e.keyCode === 32 && e.preventDefault()
                   }

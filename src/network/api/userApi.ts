@@ -108,7 +108,8 @@ export const register = async (values: object) => {
       error &&
       error.error &&
       error.error.data &&
-      error.error.data.status_code === 403
+      (error.error.data.status_code === 403 ||
+        (error.error.data.status_code === 400 && error.error.data.error))
     ) {
       return error.error.data;
     }
