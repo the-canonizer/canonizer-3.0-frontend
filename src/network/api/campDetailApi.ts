@@ -1,3 +1,4 @@
+import Joi from "joi";
 import {
   setTree,
   setNewsFeed,
@@ -14,7 +15,7 @@ import TreeRequest from "../request/campDetailRequest";
 import { message } from "antd";
 import { store } from "../../store";
 import { handleError, isServer } from "../../utils/generalUtility";
-import { TreeStructure } from "src/typeScriptResponseStructure/treeStructure";
+import { TreeStructureSchema } from "src/typeScriptResponseStructure/treeStructure";
 
 export const getTreesApi = async (reqBody) => {
   try {
@@ -24,10 +25,14 @@ export const getTreesApi = async (reqBody) => {
     //   success,
     // }: { data: TreeStructure[]; code: string; success: number } =
     //   await NetworkCall.fetch(TreeRequest.getTrees(reqBody), false);
-    const trees = (await NetworkCall.fetch(
-      TreeRequest.getTrees(reqBody),
-      false
-    )) as TreeStructure;
+    const trees = await NetworkCall.fetch(TreeRequest.getTrees(reqBody), false);
+    debugger;
+    // const result = Joi.validate(trees, removeRelationSchema);
+    const result = TreeStructureSchema.validate(trees.data[0]);
+    console.log("first", result);
+    // const validate = ajv.compile(schema);
+    // const valid = validate(trees);
+    // if (!valid) console.log("validator", validate);
     debugger;
     store.dispatch(setTree(trees.data[0]));
     return trees.data[0];
