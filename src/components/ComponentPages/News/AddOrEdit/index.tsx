@@ -285,6 +285,7 @@ export default function AddOrEdit({ edit }) {
               className={`btn-orange mr-3 ${styles.btnSubmit}`}
               htmlType="submit"
               disabled={loading}
+              id="create-news-btn"
             >
               {edit ? "Submit" : " Create News"}
               {loading && <Spin indicator={antIcon} />}
@@ -294,6 +295,7 @@ export default function AddOrEdit({ edit }) {
               className="cancel-btn"
               type="ghost"
               size="large"
+              id="cancel-news-btn"
               onClick={goBack}
             >
               Cancel
