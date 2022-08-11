@@ -19,6 +19,8 @@ import {
 import { useDispatch } from "react-redux";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 
+import useAuthentication from "src/hooks/isUserAuthenticated";
+
 import styles from ".././campHistory.module.scss";
 import StatementHistory from "./statementHistory";
 import CampHistory from "./campHistory";
@@ -41,7 +43,6 @@ function HistoryCollapse({
   const [commited, setCommited] = useState(false);
   const dispatch = useDispatch();
   const isLoggedIn = useAuthentication();
-
   const handleViewThisVersion = (goLiveTime) => {
     dispatch(
       setFilterCanonizedTopics({
@@ -70,7 +71,7 @@ function HistoryCollapse({
     let reqBody = {
       record_id: campStatement.id,
       topic_num: router.query.camp[0].split("-")[0],
-      camp_num: router.query.camp[1].split("-")[0],
+      camp_num: historyOf == "topic" ? 1 : router.query.camp[1].split("-")[0],
       change_for: historyOf,
 
       nick_name_id: campStatement?.submitter_nick_id,
@@ -87,7 +88,7 @@ function HistoryCollapse({
     } else if (historyOf == "camp") {
       title = "Camp Name";
     } else if (historyOf == "topic") {
-      title = "Topic";
+      title = "Topic Name";
     }
     return title;
   };
@@ -129,6 +130,12 @@ function HistoryCollapse({
                   {campStatement?.camp_name}
                 </span>
               )}
+              {historyOf == "topic" && (
+                <span className={styles.updateSurveyPrj}>
+                  {campStatement?.topic_name}
+                </span>
+              )}
+
               <Divider />
             </>
           </Panel>
@@ -156,7 +163,9 @@ function HistoryCollapse({
                 </Checkbox>
               </div>
               <div className={styles.campStatementCollapseButtons}>
-                {campStatement?.status == "in_review" && (
+                {(campStatement?.status == "in_review" ||
+                  (campStatement?.status == "objected" &&
+                    historyOf != "statement")) && (
                   <Tooltip
                     title={
                       !!(
@@ -185,6 +194,8 @@ function HistoryCollapse({
                         router.push(
                           historyOf == "camp"
                             ? `/manage/camp/${campStatement?.id}-objection`
+                            : historyOf == "topic"
+                            ? `/manage/topic/${campStatement?.id}-objection`
                             : `/manage/statement/${campStatement?.id}-objection`
                         )
                       }
@@ -220,7 +231,11 @@ function HistoryCollapse({
                 >
                   <Link
                     href={`/topic/${
-                      router?.query?.camp[0] + "/" + router?.query?.camp[1]
+                      router?.query?.camp[0] +
+                      "/" +
+                      (historyOf != "topic"
+                        ? router?.query?.camp[1]
+                        : "1-Agreement")
                     }`}
                   >
                     View This Version
@@ -251,6 +266,8 @@ function HistoryCollapse({
                           href={
                             historyOf == "camp"
                               ? `/manage/camp/${campStatement?.id}-update`
+                              : historyOf == "topic"
+                              ? `/manage/topic/${campStatement?.id}-update`
                               : `/manage/statement/${campStatement?.id}-update`
                           }
                         >

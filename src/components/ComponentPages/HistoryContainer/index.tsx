@@ -63,7 +63,8 @@ function HistoryContainer() {
       setLoadingIndicator(true);
       const reqBody = {
         topic_num: +router.query.camp[0].split("-")[0],
-        camp_num: +router.query.camp[1].split("-")[0],
+        camp_num:
+          historyOf != "topic" ? +router.query.camp[1].split("-")[0] : null,
         type: activeTab,
         per_page: 4,
         page: count.current,
@@ -71,7 +72,6 @@ function HistoryContainer() {
 
       let res = await getHistoryApi(reqBody, count.current, historyOf);
 
-      console.log("res=> ", res);
       if (!res || !res?.last_page) {
         setLoadMoreItems(false);
         setLoadingIndicator(false);
@@ -130,8 +130,7 @@ function HistoryContainer() {
     router.push({
       pathname: `/statement/compare/${router.query.camp[0]}/${router.query.camp[1]}`,
       query: {
-        s1: selectedTopic[0],
-        s2: selectedTopic[1],
+        statements: selectedTopic[0] + "_" + selectedTopic[1],
       },
     });
   };
@@ -186,16 +185,22 @@ function HistoryContainer() {
         No Camp History Found
       </h2>
     );
+
   return (
     <div className={styles.wrap}>
-      <CampInfoBar payload={payload} />
+      <CampInfoBar
+        payload={payload}
+        isTopicHistoryPage={historyOf == "topic" ? true : false}
+      />
       <div className={styles.btnGroup}>
         <Button size="large" className={styles.createBtn} onClick={topicRoute}>
           <i className="icon-topic"></i>Create New Topic
         </Button>
-        <Button size="large" className={styles.createBtn} onClick={campRoute}>
-          <i className="icon-topic"></i>Create New Camp
-        </Button>
+        {historyOf !== "topic" ? (
+          <Button size="large" className={styles.createBtn} onClick={campRoute}>
+            <i className="icon-topic"></i>Create New Camp
+          </Button>
+        ) : null}
       </div>
       <div className={styles.campStatement}>
         <Affix

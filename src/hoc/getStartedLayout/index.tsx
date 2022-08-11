@@ -9,7 +9,6 @@ function GetStartedLayout(props) {
     <>
       <div className="app-layout">
         <GetStartedHeader />
-
         <div className="app-content">{props.children}</div>
         <Footer />
       </div>

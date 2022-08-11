@@ -2,11 +2,9 @@ import { Fragment, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Form, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import localforage from "localforage";
 
 import { RootState } from "../../../store";
-import isUserAuthenticated from "../../../hooks/isUserAuthenticated";
-// import TopBar from "./UI/TopBar";
+import useIsUserAuthenticated from "../../../hooks/isUserAuthenticated";
 import ForumUIList from "./List";
 import ForumUICreate from "./Create";
 import ForumUIPost from "./Post";
@@ -29,7 +27,7 @@ import { setThread, setPost } from "../../../store/slices/campForumSlice";
 import CampInfoBar from "../TopicDetails/CampInfoBar";
 
 const ForumComponent = ({}) => {
-  const auth = isUserAuthenticated();
+  const auth = useIsUserAuthenticated();
 
   const [paramsList, setParamsList] = useState({});
   const [threadList, setThreadList] = useState([]);
@@ -169,6 +167,7 @@ const ForumComponent = ({}) => {
       camp_num,
       topic_num,
       by: queries.by,
+      camp_name: camp,
     };
 
     setParamsList(paramsLists);
@@ -191,7 +190,9 @@ const ForumComponent = ({}) => {
     const queries = router?.query;
     if (isLoggedIn) {
       router.push({
-        pathname: `/forum/${queries.topic}/${queries.camp}/threads/create`,
+        pathname: `/forum/${encodeURIComponent(
+          queries?.topic as string
+        )}/${encodeURIComponent(queries?.camp as string)}/threads/create`,
       });
     } else {
       router.push({
@@ -210,7 +211,9 @@ const ForumComponent = ({}) => {
     e.stopPropagation();
 
     router.push({
-      pathname: `/forum/${queries.topic}/${queries.camp}/threads/${data.id}`,
+      pathname: `/forum/${encodeURIComponent(
+        queries.topic as string
+      )}/${encodeURIComponent(queries.camp as string)}/threads/${data.id}`,
     });
   };
 
@@ -233,7 +236,9 @@ const ForumComponent = ({}) => {
     e.stopPropagation();
 
     router.push({
-      pathname: `/forum/${queries.topic}/${queries.camp}/threads/edit/${item.id}`,
+      pathname: `/forum/${encodeURIComponent(
+        queries.topic as string
+      )}/${encodeURIComponent(queries.camp as string)}/threads/edit/${item.id}`,
     });
   };
 
@@ -281,13 +286,17 @@ const ForumComponent = ({}) => {
     if (queries.tId) {
       const queries = router?.query;
       router.push({
-        pathname: `/forum/${queries.topic}/${queries.camp}/threads`,
+        pathname: `/forum/${encodeURIComponent(
+          queries.topic as string
+        )}/${encodeURIComponent(queries.camp as string)}/threads`,
         query: { by: "my" },
       });
     } else {
       const queries = router?.query;
       router.push({
-        pathname: `/forum/${queries.topic}/${queries.camp}/threads`,
+        pathname: `/forum/${encodeURIComponent(
+          queries.topic as string
+        )}/${encodeURIComponent(queries.camp as string)}/threads`,
       });
     }
   };
@@ -305,14 +314,13 @@ const ForumComponent = ({}) => {
     const q = router.query;
     let res = null;
 
-    const fcm_token = await localforage.getItem("fcm_token");
-
     if (values.thread_title.trim()) {
       if (q.tId) {
         const body = {
           title: values.thread_title?.trim(),
           topic_num: paramsList["topic_num"],
           camp_num: paramsList["camp_num"],
+          camp_name: paramsList["camp_name"],
         };
         res = await updateThread(body, +q.tId);
       } else {
@@ -322,7 +330,7 @@ const ForumComponent = ({}) => {
           camp_num: paramsList["camp_num"],
           topic_num: paramsList["topic_num"],
           topic_name: paramsList["topic"],
-          fcm_token,
+          camp_name: paramsList["camp_name"],
         };
         res = await createThread(body);
       }
@@ -342,13 +350,17 @@ const ForumComponent = ({}) => {
       if (q.tId) {
         const queries = router?.query;
         router.push({
-          pathname: `/forum/${queries.topic}/${queries.camp}/threads`,
+          pathname: `/forum/${encodeURIComponent(
+            queries.topic as string
+          )}/${encodeURIComponent(queries.camp as string)}/threads`,
           query: { by: "my" },
         });
       } else {
         const queries = router?.query;
         router.push({
-          pathname: `/forum/${queries.topic}/${queries.camp}/threads`,
+          pathname: `/forum/${encodeURIComponent(
+            queries.topic as string
+          )}/${encodeURIComponent(queries.camp as string)}/threads`,
         });
       }
     }
@@ -394,8 +406,6 @@ const ForumComponent = ({}) => {
 
     setIsError(false);
 
-    const fcm_token = await localforage.getItem("fcm_token");
-
     const campArr = (q.camp as string).split("-");
     const camp_num = campArr.shift();
     const topicArr = (q?.topic as string)?.split("-");
@@ -408,7 +418,7 @@ const ForumComponent = ({}) => {
       camp_num: +camp_num,
       topic_num: +topic_num,
       topic_name: topicArr.join(" "),
-      fcm_token,
+      camp_name: campArr.join(" "),
     };
 
     let res = null;
@@ -455,7 +465,9 @@ const ForumComponent = ({}) => {
     if (res && res.status_code === 200) {
       message.success(res.message);
       getPosts(q.id, ppage);
-      setCurrentPost({});
+      if (id === +currentPost["id"]) {
+        setCurrentPost({});
+      }
     }
   };
 
@@ -468,15 +480,16 @@ const ForumComponent = ({}) => {
   const pOnChange = (p, size) => {
     setPpage(p);
   };
+
   //  post section end
   let payload = {
     camp_num: (router?.query?.camp as string)?.split("-")[0],
     topic_num: (router?.query?.topic as string)?.split("-")[0],
     topic_name: (router?.query?.topic as string)?.split("-").slice(1).join(" "),
   };
+
   return (
     <Fragment>
-      {/* <TopBar topicRecord={topicRecord} campRecord={campRecord} /> */}
       <CampInfoBar payload={payload} />
       {router?.pathname === "/forum/[topic]/[camp]/threads" ? (
         <ForumUIList

@@ -16,7 +16,6 @@ const NotificationsListUI = ({
   onViewMoreClick,
   total,
   per_page,
-  onNotifyClick,
 }) => {
   const LoadMoreTopics = (
     <div className="text-center">
@@ -57,7 +56,6 @@ const NotificationsListUI = ({
                 className={styles.listPagination}
               />
             }
-            onNotifyClick={onNotifyClick}
           />
         </Card>
       </div>

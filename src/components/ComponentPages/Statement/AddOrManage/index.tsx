@@ -24,16 +24,23 @@ import useAuthentication from "../../../../hooks/isUserAuthenticated";
 import {
   getEditStatementApi,
   getEditCampApi,
+  getEditTopicApi,
 } from "../../../../network/api/campManageStatementApi";
 import {
   updateStatementApi,
+  updateTopicApi,
   updateCampApi,
 } from "../../../../network/api/campManageStatementApi";
+
+import { getCanonizedNameSpacesApi } from "../../../../network/api/homePageApi";
+// "../../../network/api/homePageApi";
 import SideBarNoFilter from "../../../ComponentPages/Home/SideBarNoFilter";
 import CampInfoBar from "../../TopicDetails/CampInfoBar";
+import { RootState } from "../../../../store";
+
+import { useDispatch, useSelector } from "react-redux";
 
 import Link from "next/link";
-import localforage from "localforage";
 
 export default function AddOrManage({ add }) {
   const isLogin = useAuthentication();
@@ -53,6 +60,8 @@ export default function AddOrManage({ add }) {
   });
 
   const [campNickName, setCampNickName] = useState([]);
+  const [canNameSpace, setCanNameSpace] = useState([]);
+
   const [form] = Form.useForm();
   let objection = router?.query?.statement[0]?.split("-")[1] == "objection";
   let update = router?.query?.statement[0]?.split("-")[1] == "update";
@@ -71,17 +80,24 @@ export default function AddOrManage({ add }) {
           router.asPath.replace("create/statement", "statement/history")
         );
       } else {
-        let route = `${editInfo?.topic?.topic_num}-${editInfo?.topic?.topic_name
-          ?.split(" ")
-          .join("-")}/${
-          parent_camp[parent_camp?.length - 1]?.camp_num
-        }-${parent_camp[parent_camp?.length - 1]?.camp_name
-          ?.split(" ")
-          .join("-")}`;
+        let route =
+          manageFormOf == "topic"
+            ? `${editInfo?.topic?.topic_num}-${editInfo?.topic?.topic_name
+                ?.split(" ")
+                .join("-")}`
+            : `${editInfo?.topic?.topic_num}-${editInfo?.topic?.topic_name
+                ?.split(" ")
+                .join("-")}/${
+                parent_camp[parent_camp?.length - 1]?.camp_num
+              }-${parent_camp[parent_camp?.length - 1]?.camp_name
+                ?.split(" ")
+                .join("-")}`;
         if (manageFormOf == "camp") {
           router.push(`/camp/history/${route}`);
-        } else {
+        } else if (manageFormOf == "statement") {
           router.push(`/statement/history/${route}`);
+        } else if (manageFormOf == "topic") {
+          router.push(`/topic/history/${route}`);
         }
       }
     } else if (res?.status_code == 400) {
@@ -98,13 +114,24 @@ export default function AddOrManage({ add }) {
     }
     let editInfo = editStatementData?.data;
     let parent_camp = editInfo?.parent_camp;
-    const fcm_token = await localforage.getItem("fcm_token");
     let reqBody = {
       topic_num: add
         ? router?.query?.statement[0]?.split("-")[0]
+        : manageFormOf == "topic"
+        ? editInfo?.topic?.topic_num
         : parent_camp[parent_camp?.length - 1]?.topic_num,
+      topic_id: manageFormOf == "topic" ? editInfo?.topic?.id : null,
+      topic_name: manageFormOf == "topic" ? values?.topic_name : null,
+      namespace_id:
+        manageFormOf == "topic"
+          ? values?.name_space
+            ? values?.name_space
+            : editInfo?.topic?.namespace_id
+          : null,
       camp_num: add
         ? router?.query?.statement[1]?.split("-")[0]
+        : manageFormOf == "topic"
+        ? null
         : parent_camp[parent_camp?.length - 1]?.camp_num,
       nick_name: values?.nick_name,
       note: values?.edit_summary?.trim(),
@@ -112,6 +139,8 @@ export default function AddOrManage({ add }) {
         ? res_for_add?.statement?.submitter_nick_id
         : manageFormOf == "camp"
         ? editInfo?.camp?.submitter_nick_id
+        : manageFormOf == "topic"
+        ? editInfo?.topic?.submitter_nick_id
         : editInfo?.statement?.submitter_nick_id,
       statement: values?.statement?.trim(),
       event_type: add
@@ -142,14 +171,14 @@ export default function AddOrManage({ add }) {
           : null,
       old_parent_camp_num:
         manageFormOf == "camp" ? editInfo?.camp?.parent_camp_num : null,
-      fcm_token,
     };
-
     let res;
     if (manageFormOf == "camp") {
       res = await updateCampApi(reqBody);
-    } else {
+    } else if (manageFormOf == "statement") {
       res = await updateStatementApi(reqBody);
+    } else if (manageFormOf == "topic") {
+      res = await updateTopicApi(reqBody);
     }
     return res;
   };
@@ -159,7 +188,14 @@ export default function AddOrManage({ add }) {
       setCampNickName(response.data);
     }
   };
-  const fetchParentsCampList = async (topic_num: number) => {
+  const fetchNameSpaceList = async () => {
+    let response = await getCanonizedNameSpacesApi();
+    if (response && response.status_code === 200) {
+      setCanNameSpace(response.data);
+    }
+  };
+
+  const fetchParentsCampList = async (topic_num: number, parent_camp_num) => {
     const body = { topic_num: topic_num };
     let res = await getAllParentsCamp(body);
     if (res && res.status_code === 200) {
@@ -186,10 +222,23 @@ export default function AddOrManage({ add }) {
             router?.query?.statement[0]?.split("-")[0]
           );
           fetchCampNickNameList();
-          fetchParentsCampList(res?.data?.camp?.topic_num);
+          fetchParentsCampList(
+            res?.data?.camp?.topic_num,
+            res?.data?.camp?.parent_camp_num
+          );
           setPayloadBreadCrumb({
             camp_num: res?.data?.camp?.camp_num,
             topic_num: res?.data?.camp?.topic_num,
+            topic_name: res?.data?.topic?.topic_name,
+          });
+        } else if (manageFormOf == "topic") {
+          res = await getEditTopicApi(
+            router?.query?.statement[0]?.split("-")[0]
+          );
+
+          fetchNameSpaceList();
+          setPayloadBreadCrumb({
+            topic_num: res?.data?.topic?.topic_num,
             topic_name: res?.data?.topic?.topic_name,
           });
         } else {
@@ -240,6 +289,12 @@ export default function AddOrManage({ add }) {
                     : null,
                 edit_summary: update ? res?.data?.camp?.note : null,
               }
+            : manageFormOf == "topic"
+            ? {
+                nick_name: res?.data?.nick_name[0]?.id,
+                topic_name: res?.data?.topic?.topic_name,
+                name_space: res?.data?.topic?.namespace_id,
+              }
             : {
                 nick_name: res?.data?.nick_name[0]?.id,
                 statement: res?.data?.statement?.value,
@@ -265,12 +320,15 @@ export default function AddOrManage({ add }) {
     return update;
   };
 
-  console.log("campnick ", parentCamp);
-
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
-        {payloadBreadCrumb && <CampInfoBar payload={payloadBreadCrumb} />}
+        {payloadBreadCrumb && (
+          <CampInfoBar
+            payload={payloadBreadCrumb}
+            isTopicHistoryPage={manageFormOf == "topic" ? true : false}
+          />
+        )}
 
         <aside className="leftSideBar miniSideBar">
           <SideBarNoFilter />
@@ -298,6 +356,7 @@ export default function AddOrManage({ add }) {
               >
                 <Row gutter={28}>
                   <Col xs={24} sm={24} xl={12}>
+                    {/* Nick name=================================================================== */}
                     <Form.Item
                       className={styles.formItem}
                       label={
@@ -327,7 +386,7 @@ export default function AddOrManage({ add }) {
                   {/* paraent Camp -----------------------===============--------------------------*/}
                   {manageFormOf == "camp" && (
                     <>
-                      {editStatementData?.data?.parent_camp.length > 1 && (
+                      {parentCamp.length > 1 && (
                         <Col xs={24} sm={24} xl={12}>
                           <Form.Item
                             className={`${styles.formItem} mb-2`}
@@ -347,7 +406,6 @@ export default function AddOrManage({ add }) {
                             ]}
                           >
                             <Select
-                              // value={editStatementData?.data?.statement?.camp_num}
                               size={"large"}
                               placeholder="Parent camp"
                               // data-id="parent-camp"
@@ -393,12 +451,7 @@ export default function AddOrManage({ add }) {
                           ]}
                         >
                           <Input
-                            disabled={
-                              !!(
-                                editStatementData?.data?.parent_camp.length <=
-                                  1 || objection
-                              )
-                            }
+                            disabled={!!(parentCamp.length <= 1 || objection)}
                             maxLength={30}
                           />
                         </Form.Item>
@@ -410,6 +463,54 @@ export default function AddOrManage({ add }) {
                             className={`${styles.formItem} mb-2`}
                             label={<>Keywords</>}
                             name="keywords"
+                          >
+                            <Input />
+                          </Form.Item>
+                        )}
+                      </Col>
+                    </>
+                  )}
+                  {/* Topic name =========================================== */}
+                  {manageFormOf == "topic" && (
+                    <>
+                      <Col xs={24} sm={24} xl={12}>
+                        <Form.Item
+                          className={`${styles.formItem} mb-2`}
+                          label={
+                            <>
+                              Topic Name <span className="required">*</span>
+                              <span>(Limit 30 Chars)</span>
+                            </>
+                          }
+                          name="topic_name"
+                          rules={[
+                            {
+                              required: true,
+                              message: K?.exceptionalMessages?.campNameReqErr,
+                            },
+                            {
+                              pattern: /[^ \s]/,
+                              message: K?.exceptionalMessages?.campNameReqErr,
+                            },
+                          ]}
+                        >
+                          <Input disabled={objection} maxLength={30} />
+                        </Form.Item>
+
+                        {/* Name space -------------------------------------------------------------------- */}
+                        {!objection && (
+                          <Form.Item
+                            className={`${styles.formItem} mb-2`}
+                            label={
+                              <>
+                                Namespace <span className="required">*</span>
+                                <span>
+                                  (General is recommended, unless you know
+                                  otherwise)
+                                </span>
+                              </>
+                            }
+                            name="name_space"
                             rules={[
                               {
                                 required: true,
@@ -419,14 +520,21 @@ export default function AddOrManage({ add }) {
                               },
                             ]}
                           >
-                            <Input />
+                            <Select size={"large"} placeholder="Name Space">
+                              {canNameSpace.map((camp) => (
+                                <Select.Option value={camp.id} key={camp.id}>
+                                  {camp.label}
+                                </Select.Option>
+                              ))}
+                            </Select>
                           </Form.Item>
                         )}
                       </Col>
                     </>
                   )}
 
-                  {manageFormOf != "camp" && (
+                  {/* statement================================================================================ */}
+                  {manageFormOf == "statement" && (
                     <Col xs={24} xl={24}>
                       <Form.Item
                         className={`${styles.formItem} mb-2`}
@@ -468,6 +576,7 @@ export default function AddOrManage({ add }) {
                     </Col>
                   )}
                   <Col xs={24} xl={24}>
+                    {/* object reason  =================================================================================? */}
                     {objection ? (
                       <Form.Item
                         rules={[
@@ -495,6 +604,7 @@ export default function AddOrManage({ add }) {
                       </Form.Item>
                     ) : (
                       <>
+                        {/* edit sumaruy ========================================================================================= */}
                         <Form.Item
                           className={styles.formItem}
                           name="edit_summary"
@@ -599,7 +709,8 @@ export default function AddOrManage({ add }) {
                                         ].camp_name
                                           ?.split(" ")
                                           ?.join("-")}`
-                                      : `/statement/history/${
+                                      : manageFormOf == "statement"
+                                      ? `/statement/history/${
                                           backdata?.topic?.topic_num
                                         }-${backdata?.topic?.topic_name
                                           ?.split(" ")
@@ -610,6 +721,11 @@ export default function AddOrManage({ add }) {
                                         }-${backdata?.parent_camp[
                                           backdata?.parent_camp.length - 1
                                         ].camp_name
+                                          ?.split(" ")
+                                          ?.join("-")}`
+                                      : `/topic/history/${
+                                          backdata?.topic?.topic_num
+                                        }-${backdata?.topic?.topic_name
                                           ?.split(" ")
                                           ?.join("-")}`
                                   );
@@ -638,7 +754,11 @@ export default function AddOrManage({ add }) {
         </div>
       </div>
       <Modal
-        title="Statement preview"
+        title={
+          manageFormOf.charAt(0).toUpperCase() +
+          manageFormOf.slice(1) +
+          " preview"
+        }
         style={{
           top: 20,
         }}
@@ -660,20 +780,34 @@ export default function AddOrManage({ add }) {
           column={{ xxl: 1, lg: 1 }}
           // layout="vertical"
         >
-          {manageFormOf != "camp" && (
+          {manageFormOf == "statement" && (
             <Descriptions.Item label="Statement">
               {form?.getFieldValue("statement")}
             </Descriptions.Item>
           )}
-
+          {manageFormOf == "topic" && (
+            <>
+              <Descriptions.Item label="Topic Name">
+                {form?.getFieldValue("topic_name")}
+              </Descriptions.Item>
+              <Descriptions.Item label="Namespace">
+                {
+                  canNameSpace?.find(
+                    (id) => id?.id == form?.getFieldValue("name_space")
+                  )?.name
+                  // form?.getFieldValue("name_space")
+                }
+              </Descriptions.Item>
+            </>
+          )}
           {manageFormOf == "camp" && (
             <>
               <Descriptions.Item label="Camp Name">
                 {form?.getFieldValue("camp_name")}
               </Descriptions.Item>
 
-              {editStatementData?.data?.parent_camp.length > 1 && (
-                <Descriptions.Item label="parent Camp Num">
+              {parentCamp.length > 1 && (
+                <Descriptions.Item label="Parent Camp">
                   {
                     parentCamp?.find(
                       (parent) =>

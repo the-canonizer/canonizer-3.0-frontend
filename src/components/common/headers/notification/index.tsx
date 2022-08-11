@@ -14,6 +14,7 @@ import Lists from "../../../ComponentPages/Notifications/UI/List";
 import {
   getLists,
   markNotificationRead,
+  updateFCMToken,
 } from "../../../../network/api/notificationAPI";
 import { RootState } from "../../../../store";
 import Fav from "./icon";
@@ -35,6 +36,10 @@ const Notifications = ({}) => {
 
   const router = useRouter();
 
+  const updateToken = async (tc) => {
+    const res = await updateFCMToken(tc);
+  };
+
   const getListData = async () => {
     const res = await getLists();
     // if (res && res.status_code === 200) {
@@ -53,9 +58,18 @@ const Notifications = ({}) => {
       try {
         const token = await firebaseCloudMessaging.init();
         const token2 = await localforage.getItem("fcm_token");
+
+        // const messaging = firebase.messaging();
+        // const fcm_token = await messaging.getToken({
+        //   vapidKey: process.env.NEXT_PUBLIC_FCM_CERTIFICATE_KEY,
+        // });
+        // console.log("[messaging.getToken]", fcm_token);
+
         if (token || token2) {
-          console.log("[useEffect notification] token", token, token2);
+          console.log("[SET-TOKEN ~ TOKEN2]", token2, "[TOKEN]", token);
+
           localforage.setItem("fcm_token", token2);
+          // await updateToken(token2);
           setChecked(true);
           getMessage();
         }
@@ -85,6 +99,7 @@ const Notifications = ({}) => {
           // Set token in our local storage
           if (fcm_token) {
             localforage.setItem("fcm_token", fcm_token);
+            await updateToken(fcm_token);
             setChecked(true);
             getMessage();
           }
@@ -92,6 +107,7 @@ const Notifications = ({}) => {
       }
     } else {
       await localforage.removeItem("fcm_token");
+      await updateToken("disabled");
       setChecked(false);
     }
   };
@@ -154,8 +170,23 @@ const Notifications = ({}) => {
   }
 
   const onNotifyClick = async (id) => {
-    await markNotificationRead(id);
+    const res = await markNotificationRead(id);
+    if (res && res.status_code === 200) {
+      router.query.from = "";
+      router.replace(router);
+    }
   };
+
+  useEffect(() => {
+    const q = router.query;
+    if (q && q.from && q.from.includes("notify_")) {
+      const fArr = (q.from as String).split("_");
+      if (+fArr[1]) {
+        onNotifyClick(+fArr[1]);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router]);
 
   const notificationDropdown = (
     <Card
@@ -186,7 +217,7 @@ const Notifications = ({}) => {
         </Link>,
       ]}
     >
-      <Lists list={list} onNotifyClick={onNotifyClick} />
+      <Lists list={list} />
     </Card>
   );
 

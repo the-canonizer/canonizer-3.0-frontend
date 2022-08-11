@@ -6,7 +6,6 @@ import {
 } from "../../../network/api/userApi";
 import { message } from "antd";
 import dynamic from "next/dynamic";
-import localforage from "localforage";
 const DirectSupportedCampsUI = dynamic(
   () => import("./DirectSupportedCampsUI"),
   { ssr: false }
@@ -138,7 +137,6 @@ const DirectSupportedCamps = ({ search }) => {
         order: key + 1,
       });
     });
-    const fcm_token = await localforage.getItem("fcm_token");
     const tagsDeletedId = {
       topic_num: removeTopicNumDataId,
       remove_camps: campIds,
@@ -146,7 +144,6 @@ const DirectSupportedCamps = ({ search }) => {
       action: "partial",
       nick_name_id: nickNameId,
       order_update: filterArrayResult,
-      fcm_token,
     };
     let res = await removeOrUpdateDirectSupportCamps(tagsDeletedId);
     if (res && res.status_code == 200) {
@@ -165,7 +162,6 @@ const DirectSupportedCamps = ({ search }) => {
   };
   //remove Entire Card
   const removeSupport = async () => {
-    const fcm_token = await localforage.getItem("fcm_token");
     const removeEntireData = {
       topic_num: removeTopicNumDataId,
       remove_camps: [],
@@ -173,7 +169,6 @@ const DirectSupportedCamps = ({ search }) => {
       action: "all",
       nick_name_id: nickNameId,
       order_update: [],
-      fcm_token,
     };
     let res = await removeOrUpdateDirectSupportCamps(removeEntireData);
     if (res && res.status_code == 200) {

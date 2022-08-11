@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { Form } from "antd";
@@ -110,6 +110,7 @@ const Login = ({ isModal, isTest = false }) => {
       let formBody = {
         username: formData.email?.trim(),
         otp: values.otp,
+        is_login: 1,
       };
 
       let res = await verifyOtp(formBody);

@@ -329,7 +329,7 @@ export const topicNameRule = {
       message: validations.topiNameMax30,
     },
     // {
-    //   pattern: patterns.alphaNumSpace,
+    //   pattern: patterns.allowed_chars,
     //   message: validations.topicNameSpace,
     // },
   ],
@@ -404,7 +404,7 @@ export const threadTitleRule = {
       message: validations.Max100,
     },
     // {
-    //   pattern: patterns.alphaNumSpace,
+    //   pattern: patterns.allowed_chars,
     //   message: validations.threadAlpha,
     // },
   ],
