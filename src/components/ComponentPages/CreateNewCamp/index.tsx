@@ -210,18 +210,6 @@ const CreateNewCamp = ({
       }
 
       const error_data = res?.data;
-
-      if (error_data && error_data?.if_exist) {
-        setTimeout(() => {
-          router.push({
-            pathname: `/topic/${error_data?.topic_num}-${encodeURIComponent(
-              error_data?.topic_name?.split(" ").join("-")
-            )}/${error_data?.camp_num}-${encodeURIComponent(
-              error_data.camp_name?.split(" ").join("-")
-            )}`,
-          });
-        }, 500);
-      }
     }
   };
 

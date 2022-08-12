@@ -99,16 +99,6 @@ const CreateNewTopic = ({
       }
 
       const error_data = res?.data;
-
-      if (error_data && error_data?.if_exist) {
-        setTimeout(() => {
-          router.push({
-            pathname: `/topic/${error_data?.topic_num}-${encodeURIComponent(
-              error_data?.topic_name?.split(" ").join("-")
-            )}/1-Agreement`,
-          });
-        }, 500);
-      }
     }
   };
 
