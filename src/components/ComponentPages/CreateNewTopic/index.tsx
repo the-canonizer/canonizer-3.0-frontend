@@ -97,8 +97,6 @@ const CreateNewTopic = ({
           });
         }
       }
-
-      const error_data = res?.data;
     }
   };
 
