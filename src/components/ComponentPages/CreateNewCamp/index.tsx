@@ -208,8 +208,6 @@ const CreateNewCamp = ({
           });
         }
       }
-
-      const error_data = res?.data;
     }
   };
 
