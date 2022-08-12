@@ -83,9 +83,11 @@ export default function AddOrManage({ add }) {
         let route =
           manageFormOf == "topic"
             ? `${editInfo?.topic?.topic_num}-${editInfo?.topic?.topic_name
+                ?.replace(/[^a-zA-Z0-9 ]/g, "")
                 ?.split(" ")
                 .join("-")}`
             : `${editInfo?.topic?.topic_num}-${editInfo?.topic?.topic_name
+                ?.replace(/[^a-zA-Z0-9 ]/g, "")
                 ?.split(" ")
                 .join("-")}/${
                 parent_camp[parent_camp?.length - 1]?.camp_num
@@ -699,6 +701,7 @@ export default function AddOrManage({ add }) {
                                       ? `/camp/history/${
                                           backdata?.topic?.topic_num
                                         }-${backdata?.topic?.topic_name
+                                          ?.replace(/[^a-zA-Z0-9 ]/g, "")
                                           ?.split(" ")
                                           ?.join("-")}/${
                                           backdata?.parent_camp[
@@ -713,6 +716,7 @@ export default function AddOrManage({ add }) {
                                       ? `/statement/history/${
                                           backdata?.topic?.topic_num
                                         }-${backdata?.topic?.topic_name
+                                          ?.replace(/[^a-zA-Z0-9 ]/g, "")
                                           ?.split(" ")
                                           ?.join("-")}/${
                                           backdata?.parent_camp[
@@ -726,6 +730,7 @@ export default function AddOrManage({ add }) {
                                       : `/topic/history/${
                                           backdata?.topic?.topic_num
                                         }-${backdata?.topic?.topic_name
+                                          ?.replace(/[^a-zA-Z0-9 ]/g, "")
                                           ?.split(" ")
                                           ?.join("-")}`
                                   );

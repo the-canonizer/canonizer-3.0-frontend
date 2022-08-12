@@ -7,6 +7,7 @@ import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
 import { Dropdown, Menu, Button } from "antd";
 import K from "../../../../constants";
+import moment from "moment";
 
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import {
@@ -33,6 +34,7 @@ const CampInfoBar = ({
   const [payloadData, setPayloadData] = useState(payload);
   const [breadCrumbRes, setBreadCrumbRes] = useState([]);
   const didMount = useRef(false);
+  const didMount1 = useRef(false);
   const router = useRouter();
   const {
     topicRecord,
@@ -58,7 +60,31 @@ const CampInfoBar = ({
   const [topicSubscriptionID, setTopicSubscriptionID] = useState(
     topicRecord?.topicSubscriptionId
   );
+  // useEffect(() => {
+  //   async function getTopicRecordCall() {
+  //     console.log("iiiiiinnnnnnnnnnnnnnnn");
+  //     if (didMount1.current) {
+  //       console.log("iiiiiinnnnnnnnnnnnnnnn1");
+  //       const reqBodyTopic = {
+  //         topic_num: payload?.topic_num,
+  //         camp_num: payload?.camp_num,
+  //         as_of: asof,
+  //         as_of_date:
+  //           asof == "default" || asof == "review"
+  //             ? Date.now() / 1000
+  //             : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
+  //       };
 
+  //       await getCurrentTopicRecordApi(reqBodyTopic);
+  //     } else didMount1.current = true;
+  //   }
+  //   if (
+  //     router?.asPath?.split("/").slice(1, 3)?.join("/") == "create/statement"
+  //   ) {
+  //     getTopicRecordCall();
+  //   }
+  // }, []);
+  console.log("router", router?.asPath?.split("/").slice(1, 3)?.join("/"));
   useEffect(() => {
     setPayloadData(payload);
     async function getBreadCrumbApiCall() {
@@ -69,6 +95,7 @@ const CampInfoBar = ({
       };
       let res = await getCampBreadCrumbApi(reqBody);
       setBreadCrumbRes(res?.data?.bread_crumb);
+
       setLoadingIndicator(false);
     }
     if (
@@ -225,9 +252,7 @@ const CampInfoBar = ({
             <Typography.Paragraph className={"mb-0 " + styles.topicTitleStyle}>
               {" "}
               <span className="bold"> Topic: </span>
-              {isTopicPage
-                ? topicRecord && topicRecord?.topic_name
-                : payloadData?.topic_name}
+              {topicRecord && topicRecord?.topic_name}
               {"  "}
               {!!topicSubscriptionID && (
                 <small>

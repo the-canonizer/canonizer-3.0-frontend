@@ -280,7 +280,11 @@ const TopicsList = () => {
                                 ?.split(" ")
                                 .join("-")
                                 ?.replace("/", "-")
-                            : item?.topic_name?.split(" ").join("-")
+                                ?.replace(/[^a-zA-Z0-9 ]/g, "")
+                            : item?.topic_name
+                                ?.split(" ")
+                                .join("-")
+                                ?.replace(/[^a-zA-Z0-9 ]/g, "")
                         )}/1-Agreement`,
                       }}
                     >
