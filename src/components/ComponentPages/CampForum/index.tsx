@@ -2,11 +2,9 @@ import { Fragment, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Form, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import localforage from "localforage";
 
 import { RootState } from "../../../store";
-import isUserAuthenticated from "../../../hooks/isUserAuthenticated";
-import TopBar from "./UI/TopBar";
+import useIsUserAuthenticated from "../../../hooks/isUserAuthenticated";
 import ForumUIList from "./List";
 import ForumUICreate from "./Create";
 import ForumUIPost from "./Post";
@@ -29,6 +27,8 @@ import { setThread, setPost } from "../../../store/slices/campForumSlice";
 import CampInfoBar from "../TopicDetails/CampInfoBar";
 
 const ForumComponent = ({}) => {
+  const auth = useIsUserAuthenticated();
+
   const [paramsList, setParamsList] = useState({});
   const [threadList, setThreadList] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -37,7 +37,7 @@ const ForumComponent = ({}) => {
   const [nickNameList, setNickNameList] = useState([]);
   const [initialValue, setInitialValues] = useState({});
   const [postList, setPostList] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(auth);
   const [ppage, setPpage] = useState(1);
   const [pTotalRecords, setPtotalRecords] = useState(0);
   const [quillContent, setQuillContent] = useState("");
@@ -48,7 +48,9 @@ const ForumComponent = ({}) => {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const isLog = isUserAuthenticated();
+  useEffect(() => {
+    setIsLoggedIn(auth);
+  }, [auth]);
 
   const {
     topicRecord,
@@ -94,23 +96,32 @@ const ForumComponent = ({}) => {
     ]);
   };
 
-  const getThreads = async (
+  async function getThreads(
     camp,
     topic,
     type = "all",
     page = 1,
     like = "",
     per_page = 10
-  ) => {
-    const q = `?camp_num=${camp}&topic_num=${topic}&type=${type}&page=${page}&per_page=${per_page}&like=${like}`;
+  ) {
+    let res = null;
 
-    const res = await getThreadsList(q);
+    if (isLoggedIn && type !== "all") {
+      let q = `?camp_num=${camp}&topic_num=${topic}&type=${type}&page=${page}&per_page=${per_page}&like=${like}`;
+
+      res = await getThreadsList(q);
+    } else {
+      let q = `?camp_num=${camp}&topic_num=${topic}&type=all&page=${page}&per_page=${per_page}&like=${like}`;
+
+      res = await getThreadsList(q);
+    }
+
     if (res && res.status_code === 200) {
       setThreadList(res.data?.items);
       setTotalRecords(res.data?.total_rows);
       setPage(res.data?.current_page);
     }
-  };
+  }
 
   const getPosts = async (id, page = 1, like = "", per_page = 10) => {
     const q = `?page=${page}&per_page=${per_page}&like=${like}`;
@@ -124,21 +135,14 @@ const ForumComponent = ({}) => {
   };
 
   useEffect(() => {
-    if (isLog) {
-      setIsLoggedIn(isLog);
-    }
-  }, [isLog]);
-
-  useEffect(() => {
     if (router && router?.query) {
       const queries = router?.query;
       const campArr = (queries.camp as string).split("-");
       const camp_num = campArr.shift();
       getSelectedNode(camp_num);
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router, router?.query]);
+  }, [router]);
 
   useEffect(() => {
     const queries = router?.query;
@@ -163,23 +167,13 @@ const ForumComponent = ({}) => {
       camp_num,
       topic_num,
       by: queries.by,
+      camp_name: camp,
     };
 
     setParamsList(paramsLists);
-  }, [campRecord, router?.query]);
+  }, [campRecord, router]);
 
   // start thread List section
-
-  useEffect(() => {
-    const queries = router?.query;
-    const campArr = (queries.camp as string).split("-");
-    const camp_num = campArr.shift();
-    const topicArr = (queries?.topic as string)?.split("-");
-    const topic_num = topicArr?.shift();
-    const type = queries["by"] as string;
-
-    getThreads(camp_num, topic_num, type, page, searchQuery);
-  }, [router, router?.query, page, searchQuery]);
 
   const onSearch = (v) => {
     setSearchQuery(v.trim());
@@ -194,9 +188,11 @@ const ForumComponent = ({}) => {
 
   const onCreateThread = () => {
     const queries = router?.query;
-    if (isLog) {
+    if (isLoggedIn) {
       router.push({
-        pathname: `/forum/${queries.topic}/${queries.camp}/threads/create`,
+        pathname: `/forum/${encodeURIComponent(
+          queries?.topic as string
+        )}/${encodeURIComponent(queries?.camp as string)}/threads/create`,
       });
     } else {
       router.push({
@@ -215,7 +211,9 @@ const ForumComponent = ({}) => {
     e.stopPropagation();
 
     router.push({
-      pathname: `/forum/${queries.topic}/${queries.camp}/threads/${data.id}`,
+      pathname: `/forum/${encodeURIComponent(
+        queries.topic as string
+      )}/${encodeURIComponent(queries.camp as string)}/threads/${data.id}`,
     });
   };
 
@@ -238,7 +236,9 @@ const ForumComponent = ({}) => {
     e.stopPropagation();
 
     router.push({
-      pathname: `/forum/${queries.topic}/${queries.camp}/threads/edit/${item.id}`,
+      pathname: `/forum/${encodeURIComponent(
+        queries.topic as string
+      )}/${encodeURIComponent(queries.camp as string)}/threads/edit/${item.id}`,
     });
   };
 
@@ -248,39 +248,55 @@ const ForumComponent = ({}) => {
 
   const [form] = Form.useForm();
 
-  const fetchNickNameList = async () => {
+  async function fetchNickNameList(topic_num) {
     setLoading(false);
 
-    const body = { topic_num: paramsList["topic_num"] };
-
-    if (isLog) {
+    if (isLoggedIn && topic_num) {
+      const body = { topic_num };
       let response = await getAllUsedNickNames(body);
       if (response && response.status_code === 200) {
         setNickNameList(response.data);
         setInitialValues({ nick_name: response.data[0]?.id });
       }
     }
-  };
+  }
 
   useEffect(() => {
-    if (paramsList["topic_num"]) {
-      fetchNickNameList();
+    const queries = router?.query;
+    const campArr = (queries.camp as string).split("-");
+    const camp_num = campArr.shift();
+    const topicArr = (queries?.topic as string)?.split("-");
+    const topic_num = topicArr?.shift();
+    const type = queries["by"] as string;
+
+    getThreads(camp_num, topic_num, type, page, searchQuery);
+
+    if (
+      router?.pathname === "/forum/[topic]/[camp]/threads/create" ||
+      router?.pathname === "/forum/[topic]/[camp]/threads/edit/[tId]" ||
+      router?.pathname === "/forum/[topic]/[camp]/threads/[id]"
+    ) {
+      fetchNickNameList(topic_num);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paramsList, isLog]);
+  }, [router, page, searchQuery, isLoggedIn]);
 
   const onCancelCreateThread = () => {
     const queries = router?.query;
     if (queries.tId) {
       const queries = router?.query;
       router.push({
-        pathname: `/forum/${queries.topic}/${queries.camp}/threads`,
+        pathname: `/forum/${encodeURIComponent(
+          queries.topic as string
+        )}/${encodeURIComponent(queries.camp as string)}/threads`,
         query: { by: "my" },
       });
     } else {
       const queries = router?.query;
       router.push({
-        pathname: `/forum/${queries.topic}/${queries.camp}/threads`,
+        pathname: `/forum/${encodeURIComponent(
+          queries.topic as string
+        )}/${encodeURIComponent(queries.camp as string)}/threads`,
       });
     }
   };
@@ -298,14 +314,13 @@ const ForumComponent = ({}) => {
     const q = router.query;
     let res = null;
 
-    const fcm_token = await localforage.getItem("fcm_token");
-
     if (values.thread_title.trim()) {
       if (q.tId) {
         const body = {
           title: values.thread_title?.trim(),
           topic_num: paramsList["topic_num"],
           camp_num: paramsList["camp_num"],
+          camp_name: paramsList["camp_name"],
         };
         res = await updateThread(body, +q.tId);
       } else {
@@ -315,7 +330,7 @@ const ForumComponent = ({}) => {
           camp_num: paramsList["camp_num"],
           topic_num: paramsList["topic_num"],
           topic_name: paramsList["topic"],
-          fcm_token,
+          camp_name: paramsList["camp_name"],
         };
         res = await createThread(body);
       }
@@ -335,13 +350,17 @@ const ForumComponent = ({}) => {
       if (q.tId) {
         const queries = router?.query;
         router.push({
-          pathname: `/forum/${queries.topic}/${queries.camp}/threads`,
+          pathname: `/forum/${encodeURIComponent(
+            queries.topic as string
+          )}/${encodeURIComponent(queries.camp as string)}/threads`,
           query: { by: "my" },
         });
       } else {
         const queries = router?.query;
         router.push({
-          pathname: `/forum/${queries.topic}/${queries.camp}/threads`,
+          pathname: `/forum/${encodeURIComponent(
+            queries.topic as string
+          )}/${encodeURIComponent(queries.camp as string)}/threads`,
         });
       }
     }
@@ -363,7 +382,7 @@ const ForumComponent = ({}) => {
   }, [router, router?.query, ppage]);
 
   const onContentChange = (v) => {
-    v = v.replace(/(^|>)\s+|\s+(?=<|$)/g, "$1");
+    // v = v.replace(/(^|>)\s+|\s+(?=<|$)/g, "$1");
 
     setQuillContent(v);
     setIsError(false);
@@ -387,21 +406,19 @@ const ForumComponent = ({}) => {
 
     setIsError(false);
 
-    const fcm_token = await localforage.getItem("fcm_token");
-
     const campArr = (q.camp as string).split("-");
     const camp_num = campArr.shift();
     const topicArr = (q?.topic as string)?.split("-");
     const topic_num = topicArr?.shift();
 
     const body = {
-      body: quillContent,
+      body: quillContent?.replace(/(^|>)\s+|\s+(?=<|$)/g, "$1"),
       nick_name: values.nick_name,
       thread_id: +q.id,
       camp_num: +camp_num,
       topic_num: +topic_num,
       topic_name: topicArr.join(" "),
-      fcm_token,
+      camp_name: campArr.join(" "),
     };
 
     let res = null;
@@ -412,12 +429,17 @@ const ForumComponent = ({}) => {
     } else {
       res = await createPost(body);
     }
-    console.log("🚀 ~ file: index.tsx ~ line 425 ~ onFinishPost ~ res----", res)
 
     if (res && res.status_code === 200) {
       message.success(res.message);
       getPosts(q.id, ppage);
       setQuillContent("");
+
+      const queries = router?.query;
+      const topicArr = (queries?.topic as string)?.split("-");
+      const topic_num = topicArr?.shift();
+
+      fetchNickNameList(topic_num);
     }
     setPostLoading(false);
   };
@@ -443,6 +465,9 @@ const ForumComponent = ({}) => {
     if (res && res.status_code === 200) {
       message.success(res.message);
       getPosts(q.id, ppage);
+      if (id === +currentPost["id"]) {
+        setCurrentPost({});
+      }
     }
   };
 
@@ -455,15 +480,16 @@ const ForumComponent = ({}) => {
   const pOnChange = (p, size) => {
     setPpage(p);
   };
+
   //  post section end
   let payload = {
     camp_num: (router?.query?.camp as string)?.split("-")[0],
     topic_num: (router?.query?.topic as string)?.split("-")[0],
     topic_name: (router?.query?.topic as string)?.split("-").slice(1).join(" "),
   };
+
   return (
     <Fragment>
-      {/* <TopBar topicRecord={topicRecord} campRecord={campRecord} /> */}
       <CampInfoBar payload={payload} />
       {router?.pathname === "/forum/[topic]/[camp]/threads" ? (
         <ForumUIList
@@ -519,7 +545,7 @@ const ForumComponent = ({}) => {
           isError={isError}
           onPostEditClick={onPostEditClick}
           onDeleteClick={onDeleteClick}
-          isLog={isLog}
+          isLog={isLoggedIn}
           isLoading={postLoading}
         />
       ) : null}

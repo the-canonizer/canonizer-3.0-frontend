@@ -80,7 +80,7 @@ const CreateCampFormUI = ({
           </Space>
         </div>
         <div
-          className={styles.htmlContainer + " ql-editor"}
+          className={styles.htmlContainer + " ql-editor ql-html-editor"}
           dangerouslySetInnerHTML={{
             __html: sanitizeHtml(content, {
               allowedAttributes: {

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, Modal, Row, Col, Button, Form } from "antd";
+import { Card, Modal, Row, Col, Button, Form, Empty } from "antd";
 import Icon, {
   CloseCircleOutlined,
   PlusCircleOutlined,
@@ -18,6 +18,7 @@ export default function DelegatedSupportCampsUI({
   delegatedSupportCampsList,
   search,
   removeSupport,
+  removeSupportCampsData,
 }) {
   const limit = 3;
   function CardTitle(props) {
@@ -67,83 +68,94 @@ export default function DelegatedSupportCampsUI({
       </>
     );
   }
+  const showEmpty = (msg) => {
+    return <Empty description={msg} />;
+  };
+  const filteredArray = () => {
+    return delegatedSupportCampsList.filter((val) => {
+      if (search.trim() == "") {
+        return val;
+      } else if (
+        val.title.toLowerCase().trim().includes(search.toLowerCase().trim())
+      ) {
+        return val;
+      }
+    });
+  };
   return (
     <div>
-      {delegatedSupportCampsList
-        .filter((val) => {
-          if (search.trim() == "") {
-            return val;
-          } else if (
-            val.title.toLowerCase().trim().includes(search.toLowerCase().trim())
-          ) {
-            return val;
-          }
-        })
-        ?.map((data, i) => {
-          return (
-            <Card
-              key={i}
-              className={styles.cardBox_tags}
-              type="inner"
-              size="default"
-              title={
-                <CardTitle title_link={data.title_link} value={data.title} />
-              }
-              extra={
-                <div
-                  className={styles.RemoveCardSupported}
-                  onClick={() => removeCardDelegatedSupportedCamps(data)}
-                >
-                  <CloseCircleOutlined /> {messages.labels.removeSupport}{" "}
-                </div>
-              }
-              style={{ width: 760, marginBottom: 16 }}
-            >
-              <div>
-                <Row className={styles.flex_wrap}>
-                  <Col span={12} className={styles.flex_wrap_col}>
-                    <>
-                      <SupportedCampsTo
-                        supportedto={data.delegated_to_nick_name}
-                        supportedto_link={data.delegated_to_nick_name_link}
-                        NickName={data.my_nick_name}
-                        NickNameLink={data.my_nick_name_link}
-                      />
-                    </>
-                  </Col>
-                  <Col span={12} className={styles.border_left}>
-                    <div className={styles.line_height1}>
-                      <p>
-                        <b>{messages.labels.currentSupportedCamps}</b>
-                      </p>
-
-                      {data.camps?.slice(0, limit).map((val, i) => {
-                        return (
-                          <CurrentSupportedCamps
-                            key={i}
-                            value={val.camp_name}
-                            id_data={val.support_order + "."}
-                            camp_link={val.camp_link}
-                          />
-                        );
-                      })}
+      {delegatedSupportCampsList.length > 0
+        ? filteredArray().length > 0
+          ? filteredArray()?.map((data, i) => {
+              return (
+                <Card
+                  key={i}
+                  className={styles.cardBox_tags}
+                  type="inner"
+                  size="default"
+                  title={
+                    <CardTitle
+                      title_link={data.title_link}
+                      value={data.title}
+                    />
+                  }
+                  extra={
+                    <div
+                      className={styles.RemoveCardSupported}
+                      onClick={() => removeCardDelegatedSupportedCamps(data)}
+                    >
+                      <CloseCircleOutlined /> {messages.labels.removeSupport}{" "}
                     </div>
-                    {data.camps.length > limit ? (
-                      <a
-                        className={styles.mrgn_left}
-                        onClick={(e) => showViewMoreModal(e, data)}
-                      >
-                        {messages.labels.viewMore}
-                      </a>
-                    ) : (
-                      ""
-                    )}
-                  </Col>
-                </Row>
-              </div>
-            </Card>
-          );
-        })}
+                  }
+                  style={{ width: 760, marginBottom: 16 }}
+                >
+                  <div>
+                    <Row className={styles.flex_wrap}>
+                      <Col span={12} className={styles.flex_wrap_col}>
+                        <>
+                          <SupportedCampsTo
+                            supportedto={data.delegated_to_nick_name}
+                            supportedto_link={data.delegated_to_nick_name_link}
+                            NickName={data.my_nick_name}
+                            NickNameLink={data.my_nick_name_link}
+                          />
+                        </>
+                      </Col>
+                      <Col span={12} className={styles.border_left}>
+                        <div className={styles.line_height1}>
+                          <p>
+                            <b>{messages.labels.currentSupportedCamps}</b>
+                          </p>
+
+                          {data.camps?.slice(0, limit).map((val, i) => {
+                            return (
+                              <CurrentSupportedCamps
+                                key={i}
+                                value={val.camp_name}
+                                id_data={val.support_order + "."}
+                                camp_link={val.camp_link}
+                              />
+                            );
+                          })}
+                        </div>
+                        {data.camps.length > limit ? (
+                          <a
+                            className={styles.mrgn_left}
+                            onClick={(e) => showViewMoreModal(e, data)}
+                          >
+                            {messages.labels.viewMore}
+                          </a>
+                        ) : (
+                          ""
+                        )}
+                      </Col>
+                    </Row>
+                  </div>
+                </Card>
+              );
+            })
+          : showEmpty("No Data Found")
+        : showEmpty("No Data Found")}
 
       <Modal
         className={styles.modal_cross}
@@ -157,10 +169,21 @@ export default function DelegatedSupportCampsUI({
         <Form>
           <Form.Item style={{ marginBottom: "0px" }}>
             <p>
-              Are you sure, you want to remove your delegate support given to
-              pranav_telentelgia under the topic{" "}
+              Are you sure, you want to remove your delegate support given to{" "}
+              <span>
+                &quot;
+                <Link href={removeSupportCampsData.delegated_to_nick_name_link}>
+                  <a>{removeSupportCampsData.delegated_to_nick_name}</a>
+                </Link>
+                &quot;
+              </span>{" "}
+              under the topic{" "}
               <span className={styles.Bluecolor}>
-                &quot;Theories of Consiousness&quot;
+                &quot;
+                <Link href={removeSupportCampsData.title_link}>
+                  <a>{removeSupportCampsData.title}</a>
+                </Link>
+                &quot;
               </span>{" "}
               ?
             </p>

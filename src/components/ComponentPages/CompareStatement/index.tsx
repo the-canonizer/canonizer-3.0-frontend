@@ -40,9 +40,10 @@ function CompareStatement() {
   };
 
   useEffect(() => {
-    const q = router?.query;
-    const ids = [q?.s1, q?.s2];
-    getStatement(ids);
+    const ids = (router?.query?.statements as String).split("_");
+
+    if (ids.length) getStatement(ids);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 

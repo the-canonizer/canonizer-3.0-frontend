@@ -12,6 +12,10 @@ import styles from "./topicsList.module.scss";
 import { Spin, Checkbox } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import useAuthentication from "src/hooks/isUserAuthenticated";
+import {
+  setCheckSupportExistsData,
+  setCurrentCheckSupportStatus,
+} from "src/store/slices/campDetailSlice";
 
 const antIcon = <LoadingOutlined spin />;
 const { Title, Text } = Typography;
@@ -192,8 +196,9 @@ const TopicsList = () => {
     setGetTopicsLoadingIndicator(true);
   };
   useEffect(() => {
-    localStorage.removeItem("GetCheckSupportStatus");
-    localStorage.removeItem("GetCheckSupportExistsData");
+    //When Page is render remove data from GetCheckSupportStatus and GetCheckSupportExistsData
+    dispatch(setCurrentCheckSupportStatus({}));
+    dispatch(setCheckSupportExistsData({}));
   }, []);
   return (
     <>
@@ -261,38 +266,43 @@ const TopicsList = () => {
             }
             bordered
             dataSource={topicsData?.topics}
-            renderItem={(item: any) => (
-              <List.Item className={styles.item}>
-                <>
-                  <Link
-                    href={{
-                      pathname: `/topic/${item?.topic_id}-${
-                        isReview
-                          ? item?.tree_structure[1]?.review_title
-                              ?.split(" ")
-                              .join("-")
-                          : item?.topic_name?.split(" ").join("-")
-                      }/1-Agreement`,
-                    }}
-                  >
-                    <a
-                      onClick={() => {
-                        handleTopicClick();
+            renderItem={(item: any) => {
+              return (
+                <List.Item className={styles.item}>
+                  <>
+                    <Link
+                      href={{
+                        pathname: `/topic/${
+                          item?.topic_id
+                        }-${encodeURIComponent(
+                          isReview
+                            ? item?.tree_structure[1]?.review_title
+                                ?.split(" ")
+                                .join("-")
+                                ?.replace("/", "-")
+                            : item?.topic_name?.split(" ").join("-")
+                        )}/1-Agreement`,
                       }}
                     >
-                      <Text className={styles.text}>
-                        {isReview
-                          ? item?.tree_structure[1].review_title
-                          : item?.topic_name}
-                      </Text>
-                      <Tag className={styles.tag}>
-                        {item?.topic_score?.toFixed(2)}
-                      </Tag>
-                    </a>
-                  </Link>
-                </>
-              </List.Item>
-            )}
+                      <a
+                        onClick={() => {
+                          handleTopicClick();
+                        }}
+                      >
+                        <Text className={styles.text}>
+                          {isReview
+                            ? item?.tree_structure[1].review_title
+                            : item?.topic_name}
+                        </Text>
+                        <Tag className={styles.tag}>
+                          {item?.topic_score?.toFixed(2)}
+                        </Tag>
+                      </a>
+                    </Link>
+                  </>
+                </List.Item>
+              );
+            }}
           />
         </Spin>
         <BackTop />

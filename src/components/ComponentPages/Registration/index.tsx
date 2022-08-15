@@ -72,6 +72,23 @@ const Registration = ({ isModal, isTest = false }) => {
         setIsReCaptchaRef(true);
         setFailedMsg(res.message);
       }
+      if (res && res.status_code === 400) {
+        if (res?.error) {
+          const errors_key = Object.keys(res.error);
+
+          if (errors_key.length) {
+            errors_key.forEach((key) => {
+              form.setFields([
+                {
+                  name: key,
+                  value: values[key],
+                  errors: [res.error[key]],
+                },
+              ]);
+            });
+          }
+        }
+      }
 
       if (res && res.status_code === 200) {
         form.resetFields();
@@ -89,6 +106,7 @@ const Registration = ({ isModal, isTest = false }) => {
     let formBody = {
       username: formData.email?.trim(),
       otp: values.otp?.trim(),
+      is_login: 0,
     };
 
     if (values.otp?.trim()) {
@@ -118,15 +136,46 @@ const Registration = ({ isModal, isTest = false }) => {
     }
   };
 
+  const sort_unique = (arr: Object[]) => {
+    const key = "phone_code";
+
+    if (arr.length === 0) return arr;
+
+    arr = arr.sort((a, b) => a[key] - b[key]);
+
+    var ret = [arr[0]];
+
+    for (var i = 1; i < arr.length; i++) {
+      if (arr[i - 1] !== arr[i]) {
+        ret.push(arr[i]);
+      }
+    }
+
+    var flags = [],
+      output = [],
+      l = arr.length,
+      j;
+    for (j = 0; j < l; j++) {
+      if (flags[arr[j][key]]) continue;
+      flags[arr[j][key]] = true;
+      output.push(arr[j]);
+    }
+
+    return output;
+  };
+
   const getCodes = async () => {
     let response = await getCountryCodes();
     if (response && response.status_code === 200) {
-      setCountry(response.data);
+      const codes_list = sort_unique(response.data);
+     
+      setCountry(codes_list);
     }
   };
 
   useEffect(() => {
     getCodes();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // on resend click

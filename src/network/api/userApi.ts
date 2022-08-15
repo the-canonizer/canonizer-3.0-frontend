@@ -108,7 +108,8 @@ export const register = async (values: object) => {
       error &&
       error.error &&
       error.error.data &&
-      error.error.data.status_code === 403
+      (error.error.data.status_code === 403 ||
+        (error.error.data.status_code === 400 && error.error.data.error))
     ) {
       return error.error.data;
     }
@@ -510,6 +511,23 @@ export const addSupport = async (body) => {
 
   const res = await NetworkCall.fetch(
     UserRequest.addSupport(body, auth.loggedInUser.token)
+  )
+    .then((value) => {
+      return value;
+    })
+    .catch((errors) => {
+      handleError(errors);
+    });
+  return res;
+};
+
+//add Delegated Supported Camps
+export const addDelegateSupportCamps = async (body) => {
+  let state = store.getState();
+  const { auth } = state;
+
+  const res = await NetworkCall.fetch(
+    UserRequest.addDelegatedSupport(body, auth.loggedInUser.token)
   )
     .then((value) => {
       return value;

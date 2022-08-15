@@ -137,7 +137,6 @@ const DirectSupportedCamps = ({ search }) => {
         order: key + 1,
       });
     });
-
     const tagsDeletedId = {
       topic_num: removeTopicNumDataId,
       remove_camps: campIds,

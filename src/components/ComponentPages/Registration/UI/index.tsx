@@ -36,7 +36,21 @@ function RegistrationUi({
 
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
-      <Select style={{ width: 90 }}>
+      <Select
+        style={{ width: 90 }}
+        showSearch
+        optionFilterProp="children"
+        filterOption={(input, option) =>
+          (option!.children as unknown as string).includes(input)
+        }
+        filterSort={(optionA, optionB) =>
+          (optionA!.children as unknown as string)
+            .toLowerCase()
+            .localeCompare(
+              (optionB!.children as unknown as string).toLowerCase()
+            )
+        }
+      >
         {country.map((code) => (
           <Option value={code.phone_code} key={code.country_code}>
             {code.phone_code}
@@ -151,12 +165,12 @@ function RegistrationUi({
                 className={styles.phoneInput}
               >
                 <Input
-                  type="number"
                   addonBefore={prefixSelector}
                   style={{ width: "100%" }}
                   className={`${styles.phoneInput} numberInput`}
                   placeholder={messages.placeholders.phone}
                   autoComplete="new-phone"
+                  maxLength={10}
                   onKeyDown={(e) =>
                     e.key === " " && e.keyCode === 32 && e.preventDefault()
                   }

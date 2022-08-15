@@ -37,7 +37,7 @@ export const getThreadsList = async (queries) => {
 
     return response;
   } catch (error) {
-    handleError(error);
+    // handleError(error);
   }
 };
 

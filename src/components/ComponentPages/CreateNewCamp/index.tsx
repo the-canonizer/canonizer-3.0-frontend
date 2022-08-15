@@ -2,7 +2,6 @@ import { Fragment, useState, useEffect } from "react";
 import { Form, message } from "antd";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
-import localforage from "localforage";
 
 import {
   createCamp,
@@ -165,8 +164,6 @@ const CreateNewCamp = ({
       return true;
     }
 
-    const fcm_token = await localforage.getItem("fcm_token");
-
     const body = {
       camp_about_nick_id: values.camp_about_nick_id || "",
       camp_about_url: values.camp_about_url || "",
@@ -176,7 +173,6 @@ const CreateNewCamp = ({
       parent_camp_num: values.parent_camp_num,
       nick_name: values.nick_name,
       topic_num: params["topic_num"],
-      fcm_token,
     };
 
     const res = await createCamp(body);
@@ -190,30 +186,42 @@ const CreateNewCamp = ({
       const { camp } = router.query;
 
       router.push({
-        pathname: `/topic/${camp[0]}/${res?.data?.camp_num}-${values.camp_name
-          ?.split(" ")
-          .join("-")}`,
+        pathname: `/topic/${encodeURIComponent(camp[0])}/${
+          res?.data?.camp_num
+        }-${encodeURIComponent(values.camp_name?.split(" ").join("-"))}`,
       });
     }
 
-    if (res && res.status_code === 400 && res.error?.camp_name) {
-      form.setFields([
-        {
-          name: "camp_name",
-          value: values.camp_name,
-          errors: [res.error.camp_name],
-        },
-      ]);
-    }
+    if (res && res.status_code === 400) {
+      if (res?.error) {
+        const errors_key = Object.keys(res.error);
 
-    if (res && res.status_code === 400 && res.error?.camp_about_url) {
-      form.setFields([
-        {
-          name: "camp_about_url",
-          value: values.camp_about_url,
-          errors: [res.error.camp_about_url],
-        },
-      ]);
+        if (errors_key.length) {
+          errors_key.forEach((key) => {
+            form.setFields([
+              {
+                name: key,
+                value: values[key],
+                errors: [res.error[key]],
+              },
+            ]);
+          });
+        }
+      }
+
+      const error_data = res?.data;
+
+      if (error_data && error_data?.if_exist) {
+        setTimeout(() => {
+          router.push({
+            pathname: `/topic/${error_data?.topic_num}-${encodeURIComponent(
+              error_data?.topic_name?.split(" ").join("-")
+            )}/${error_data?.camp_num}-${encodeURIComponent(
+              error_data.camp_name?.split(" ").join("-")
+            )}`,
+          });
+        }, 500);
+      }
     }
   };
 

@@ -6,6 +6,7 @@ export const patterns = {
   emailPhone: /^([0-9]{9})|([A-Za-z0-9._%\+\-]+@[a-z0-9.\-]+\.[a-z]{2,3})$/,
   email:
     /[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?/,
+  allowed_chars: /^[a-zA-Z0-9 !@#$'*+=?^_'"\[\]{|}()~-]*$/,
   password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*]).{8,}$/,
   alphaSpace: /^[a-zA-Z ]*$/,
   alphaNumSpace: /^[a-zA-Z0-9 ]*$/,
@@ -51,7 +52,7 @@ export const validations: ErrorContainer = {
   lastNameSpace: "The last name should only contain alphabets and spaces.",
   alphaSpace: "The field must be in alphabets and space only.",
   otpMsgs:
-    " Note : OTP has been sent to your registered email address and phone number.",
+    "Note : OTP has been sent to your registered email address and phone number.",
   nickNm: "Please select nick name!",
   topicName: "Please enter topic name!",
   topiNameMax30: "Maximum 30 character allowed!",
@@ -70,4 +71,5 @@ export const validations: ErrorContainer = {
   threadAlpha: "Title can only contain space and alphanumeric characters.",
   Max100: "Maximum 100 character allowed!",
   reply: " The reply field is required.",
+  custom_label: "%&<>,.\\/ are not allowed!",
 };

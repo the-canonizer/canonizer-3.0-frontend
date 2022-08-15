@@ -21,8 +21,13 @@ import {
 } from "@ant-design/icons";
 import Link from "next/link";
 
-const CampInfoBar = ({ payload = null, isTopicPage = false }) => {
+const CampInfoBar = ({
+  payload = null,
+  isTopicPage = false,
+  isTopicHistoryPage = false,
+}) => {
   const isLogin = useAuthentication();
+  console.log("final ", isTopicHistoryPage);
 
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [payloadData, setPayloadData] = useState(payload);
@@ -66,7 +71,12 @@ const CampInfoBar = ({ payload = null, isTopicPage = false }) => {
       setBreadCrumbRes(res?.data?.bread_crumb);
       setLoadingIndicator(false);
     }
-    if (!isTopicPage && payload && Object.keys(payload).length > 0) {
+    if (
+      !isTopicPage &&
+      payload &&
+      Object.keys(payload).length > 0 &&
+      !isTopicHistoryPage
+    ) {
       getBreadCrumbApiCall();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -82,10 +92,12 @@ const CampInfoBar = ({ payload = null, isTopicPage = false }) => {
   }, [campRecord?.subscriptionId, topicRecord?.topicSubscriptionId]);
 
   const onCampForumClick = () => {
-    const topicName = topicRecord?.topic_name.replaceAll(" ", "-");
-    const campName = campRecord?.camp_name.replaceAll(" ", "-");
+    const topicName = topicRecord?.topic_name?.replaceAll(" ", "-");
+    const campName = campRecord?.camp_name?.replaceAll(" ", "-");
     router.push({
-      pathname: `/forum/${topicRecord?.topic_num}-${topicName}/${campRecord?.camp_num}-${campName}/threads`,
+      pathname: `/forum/${topicRecord?.topic_num}-${encodeURIComponent(
+        topicName
+      )}/${campRecord?.camp_num}-${encodeURIComponent(campName)}/threads`,
     });
   };
 
@@ -225,22 +237,27 @@ const CampInfoBar = ({ payload = null, isTopicPage = false }) => {
             </Typography.Paragraph>
             <div className={styles.breadcrumbLinks}>
               {" "}
-              <span className="bold mr-1"> Camp : </span>
+              <span className="bold mr-1">
+                {!isTopicHistoryPage ? "Camp :" : ""}{" "}
+              </span>
               {isTopicPage
                 ? campRecord
                   ? campRecord?.parentCamps?.map((camp, index) => {
                       return (
                         <Link
-                          href={
-                            router.asPath.split("/")[1] == "support"
-                              ? router.asPath.replace("/support/", "/topic/")
-                              : `${(router.query?.camp
-                                  ? router.query?.camp
-                                  : router.query?.manageSupport
-                                )?.at(0)}/${
-                                  camp?.camp_num
-                                }-${camp?.camp_name?.replaceAll(" ", "-")}`
-                          }
+                          href={{
+                            pathname:
+                              router.asPath.split("/")[1] == "support"
+                                ? router.asPath.replace("/support/", "/topic/")
+                                : `${(router.query?.camp
+                                    ? router.query?.camp
+                                    : router.query?.manageSupport
+                                  )?.at(0)}/${
+                                    camp?.camp_num
+                                  }-${encodeURIComponent(
+                                    camp?.camp_name?.replaceAll(" ", "-")
+                                  )}`,
+                          }}
                           key={camp?.camp_num}
                         >
                           <a>
@@ -255,11 +272,15 @@ const CampInfoBar = ({ payload = null, isTopicPage = false }) => {
                 ? breadCrumbRes?.map((camp, index) => {
                     return (
                       <Link
-                        href={`/topic/${
-                          payloadData?.topic_num
-                        }-${payloadData?.topic_name?.replaceAll(" ", "-")}/${
-                          camp?.camp_num
-                        }-${camp?.camp_name?.replaceAll(" ", "-")}`}
+                        href={{
+                          pathname: `/topic/${
+                            payloadData?.topic_num
+                          }-${encodeURIComponent(
+                            payloadData?.topic_name?.replaceAll(" ", "-")
+                          )}/${camp?.camp_num}-${encodeURIComponent(
+                            camp?.camp_name?.replaceAll(" ", "-")
+                          )}`,
+                        }}
                         key={index}
                       >
                         <a>

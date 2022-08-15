@@ -11,6 +11,7 @@ const ExceptionalMessageConstants = {
   tooltipNewsEdit: "Only the author of this news is allowed to edit.",
   tooltipNewsDelete: "Only the author of this news is allowed to delete.",
   selectNickNameErrorMsg: "Please select Nick name",
+  campNameReqErr: "Camp name is required",
   statementRequiredErrorMsg: "Statement is required",
   objectionIsRequire: "Objection is required",
   objectionRequireErrorMsg: "The objection reason field is required.",

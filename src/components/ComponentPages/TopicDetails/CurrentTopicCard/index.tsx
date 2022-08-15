@@ -27,13 +27,13 @@ const CurrentTopicCard = () => {
             {topicRecord && topicRecord?.topic_name}
           </Descriptions.Item>
           <Descriptions.Item label="Namespace">
-            {topicRecord && `/${topicRecord?.namespace_name}/`}
+            {topicRecord && topicRecord?.namespace_name}
           </Descriptions.Item>
         </Descriptions>
         <div className="topicDetailsCollapseFooter">
           <CustomButton className="btn-green">
             <Link
-              href={`/topic-history/${router?.query?.camp[0]?.replace(
+              href={`/topic/history/${router?.query?.camp[0]?.replace(
                 "?",
                 "%3f"
               )}`}

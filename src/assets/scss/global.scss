@@ -704,6 +704,7 @@ body {
   .ant-list-item {
     padding: 0;
     border: none;
+    justify-content: inherit;
     a {
       color: #2e68db;
     }
@@ -725,6 +726,15 @@ body {
   font-size: 11px;
   color: #fff;
   background-color: #f89d15;
+  border-radius: 6px;
+  font-weight: 400;
+  margin-left: 10px;
+}
+.delegate-support-style{
+  padding: 2px 7px;
+  font-size: 11px;
+  color: #fff;
+  background-color: #5215f8;
   border-radius: 6px;
   font-weight: 400;
   margin-left: 10px;
@@ -813,10 +823,8 @@ body {
 }
 .datepIcker {
   width: 120px;
-  @media screen and (max-width:1280px)
-  {
-    .ant-picker 
-    {
+  @media screen and (max-width: 1280px) {
+    .ant-picker {
       padding: 0;
       height: 32px;
       width: 35px;
@@ -824,18 +832,15 @@ body {
       align-items: center;
       justify-content: center;
     }
-    .ant-picker-input 
-    {
+    .ant-picker-input {
       margin: auto;
       width: auto;
     }
     width: auto;
-    input 
-    {
+    input {
       display: none !important;
     }
-    .ant-picker-suffix 
-    {
+    .ant-picker-suffix {
       margin: 0;
     }
   }
@@ -1287,7 +1292,7 @@ body {
   }
 }
 
-@media screen and(max-width:332px) {
+@media screen and (max-width: 332px) {
   .campHistoryCollapseCards .ant-collapse-item {
     &:not(.ant-collapse-item-active) {
       .ant-collapse-header {
@@ -1297,7 +1302,7 @@ body {
   }
 }
 
-@media screen and(min-width:333px) and(max-width:453px) {
+@media screen and (min-width: 333px) and (max-width: 453px) {
   .campHistoryCollapseCards .ant-collapse-item {
     &:not(.ant-collapse-item-active) {
       .ant-collapse-header {
@@ -1307,7 +1312,7 @@ body {
   }
 }
 
-@media screen and(min-width:454px) and (max-width: 1032px) {
+@media screen and (min-width: 454px) and (max-width: 1032px) {
   .campHistoryCollapseCards .ant-collapse-item {
     &:not(.ant-collapse-item-active) {
       .ant-collapse-header {
@@ -1619,18 +1624,14 @@ div[role="option"]::before {
   min-width: 150px;
 }
 
-.tab--card > .ant-card-head 
-{
-  .ant-card-head-wrapper 
-  {
+.tab--card > .ant-card-head {
+  .ant-card-head-wrapper {
     flex: inherit !important;
   }
-  .ant-tabs 
-  {
+  .ant-tabs {
     flex: 1;
     overflow: hidden;
-    .ant-tabs-nav-list 
-    {
+    .ant-tabs-nav-list {
       margin-left: auto;
     }
   }
@@ -1644,15 +1645,31 @@ div[role="option"]::before {
     max-height: calc(100vh - 150px);
     overflow-x: hidden;
   }
- .ant-descriptions-item-label {
-  font-weight: bold;
-  min-width: 108px;
-  max-width: 108px;
- }
-} 
-.searchinput 
-{
+  .ant-descriptions-item-label {
+    font-weight: bold;
+    min-width: 108px;
+    max-width: 108px;
+  }
+}
+.searchinput {
   position: relative;
   pointer-events: none;
   z-index: 999;
+}
+
+.ql-html-editor {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    span {
+      position: relative;
+      &::before {
+        content: " ";
+      }
+    }
+  }
 }

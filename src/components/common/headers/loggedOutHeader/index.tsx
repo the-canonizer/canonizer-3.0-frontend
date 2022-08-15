@@ -14,6 +14,7 @@ import {
   showRegistrationModal,
 } from "../../../../store/slices/uiSlice";
 import ForgotModal from "../../../ComponentPages/ForgotPassword/forgotPasswordModal";
+import DisclaimerMsg from "../../disclaimer";
 
 const { Header } = Layout;
 
@@ -147,6 +148,7 @@ const LoggedOutHeader = () => {
         ></div>
       </Header>
       <SearchSection />
+      <DisclaimerMsg />
       <LoginModal />
       <RegistrationModal />
       <ForgotModal />

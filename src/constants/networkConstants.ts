@@ -38,10 +38,13 @@ const NetworkConstants = {
     UpdateNickName: `${BaseCanonizerApiUrl}/update-nick-name`,
     //Direct Supported camps
     GetDirectSupportedCamps: `${BaseCanonizerApiUrl}/get-direct-supported-camps`,
-    RemoveSupportesCampsEntireTopic: `${BaseCanonizerApiUrl}/support/remove`,
     RemoveOrUpdateDirectSupportCamps: `${BaseCanonizerApiUrl}/support/update`,
     //add direct Support
     AddSupport: `${BaseCanonizerApiUrl}/support/add`,
+    //Delegated Support Camps
+    RemoveSupportedCampsEntireTopic: `${BaseCanonizerApiUrl}/support/remove-delegate`,
+    //Add delegated Support
+    AddDelegatedSupport: `${BaseCanonizerApiUrl}/support/add-delegate`,
     //Delegated Supported Camps
     GetDelegatedSupportCamps: `${BaseCanonizerApiUrl}/get-delegated-supported-camps`,
     // topic details page api's
@@ -89,6 +92,7 @@ const NetworkConstants = {
     GetCampNickNames: `${BaseCanonizerApiUrl}/camp/all-about-nickname`,
     CampStatementHistory: `${BaseCanonizerApiUrl}/get-statement-history`,
     GetCampHistory: `${BaseCanonizerApiUrl}/get-camp-history`,
+    GetTopicHistory: `${BaseCanonizerApiUrl}/get-topic-history`,
     CommitChangeStatement: `${BaseCanonizerApiUrl}/commit/change`,
     AgreeToChange: `${BaseCanonizerApiUrl}/agree-to-change`,
 
@@ -119,7 +123,13 @@ const NetworkConstants = {
 
     //manage statement
     GetEditStatement: `${BaseCanonizerApiUrl}/edit-camp-statement`,
+    GetEditCamp: `${BaseCanonizerApiUrl}/edit-camp`,
+    GetEditTopic: `${BaseCanonizerApiUrl}/edit-topic`,
+
     UpdateStatement: `${BaseCanonizerApiUrl}/store-camp-statement`,
+    UpdateCamp: `${BaseCanonizerApiUrl}/manage-camp`,
+    UpdateTopic: `${BaseCanonizerApiUrl}/manage-topic`,
+
     // subscriptions
     GetSubscriptions: `${BaseCanonizerApiUrl}/camp/subscription/list`,
 
@@ -139,6 +149,8 @@ const NetworkConstants = {
 
     //Get Check if support exists
     GetCheckSupportExists: `${BaseCanonizerApiUrl}/support/check`,
+
+    UpdateToken: `${BaseCanonizerApiUrl}/update-fcm-token`,
   },
   Method: {
     GET: "GET",

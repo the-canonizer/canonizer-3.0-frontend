@@ -29,8 +29,14 @@ import moment from "moment";
 import { GetCheckSupportExists } from "src/network/api/topicAPI";
 import queryParams from "src/utils/queryParams";
 import isAuth from "../../../hooks/isUserAuthenticated";
+
 import CampRecentActivities from "../Home/CampRecentActivities";
 import { isServer } from "src/utils/generalUtility";
+import {
+  setCheckSupportExistsData,
+  setCurrentCheckSupportStatus,
+} from "src/store/slices/campDetailSlice";
+
 const TopicDetails = () => {
   let myRefToCampStatement = useRef(null);
   const isLogin = isAuth();
@@ -103,16 +109,16 @@ const TopicDetails = () => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
     if (response && response.status_code === 200) {
       setGetCheckSupportStatus(response.data);
-      localStorage.removeItem("GetCheckSupportStatus");
-      localStorage.removeItem("GetCheckSupportExistsData");
-      localStorage.setItem(
-        "GetCheckSupportStatus",
-        response.data.warning ? response.data.warning : ""
+      //dispatch remove
+      dispatch(setCurrentCheckSupportStatus({}));
+      dispatch(setCheckSupportExistsData({}));
+      //dispatch add Values data
+      dispatch(
+        setCurrentCheckSupportStatus(
+          response.data.warning ? response.data.warning : ""
+        )
       );
-      localStorage.setItem(
-        "GetCheckSupportExistsData",
-        JSON.stringify(response.data)
-      );
+      dispatch(setCheckSupportExistsData(response.data));
     }
   };
 
@@ -145,22 +151,31 @@ const TopicDetails = () => {
       parent_camp_num: topicRecord?.camp_num,
     };
 
-    const topicName = topicRecord?.topic_name.replaceAll(" ", "-");
-    const campName = campRecord?.camp_name.replaceAll(" ", "-");
+    const topicName = topicRecord?.topic_name?.replaceAll(" ", "-");
+    const campName = campRecord?.camp_name?.replaceAll(" ", "-");
 
     router.push({
-      pathname: `/camp/create/${topicRecord?.topic_num}-${topicName}/${campRecord?.camp_num}-${campName}`,
+      pathname: `/camp/create/${topicRecord?.topic_num}-${encodeURIComponent(
+        topicName
+      )}/${campRecord?.camp_num}-${encodeURIComponent(campName)}`,
     });
 
     setCurrentTopics(data);
   };
 
-  const onCampForumClick = () => {
-    const topicName = topicRecord?.topic_name.replaceAll(" ", "-");
-    const campName = campRecord?.camp_name.replaceAll(" ", "-");
-    router.push({
-      pathname: `/forum/${topicRecord?.topic_num}-${topicName}/${campRecord?.camp_num}-${campName}/threads`,
-    });
+  const onCampForumClick = async () => {
+    const topicName = await topicRecord?.topic_name?.replaceAll(" ", "-"),
+      topicNum = topicRecord?.topic_num,
+      campName = await campRecord?.camp_name?.replaceAll(" ", "-"),
+      campNum = campRecord?.camp_num;
+
+    if (topicName && topicNum && campName && campNum) {
+      router.push({
+        pathname: `/forum/${topicNum}-${encodeURIComponent(
+          topicName
+        )}/${campNum}-${encodeURIComponent(campName)}/threads`,
+      });
+    }
   };
 
   return (
