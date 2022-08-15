@@ -19,8 +19,6 @@ import {
 import { useDispatch } from "react-redux";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 
-import useAuthentication from "src/hooks/isUserAuthenticated";
-
 import styles from ".././campHistory.module.scss";
 import StatementHistory from "./statementHistory";
 import CampHistory from "./campHistory";

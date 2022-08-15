@@ -4,7 +4,7 @@ import Link from "next/link";
 import { BellOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
 import localforage from "localforage";
-// import firebase from "firebase/app";
+import firebase from "firebase/app";
 import { useSelector } from "react-redux";
 
 import styles from "../siteHeader.module.scss";
