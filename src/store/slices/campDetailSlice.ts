@@ -14,6 +14,7 @@ export const treeSlice = createSlice({
       details: {
         ifIamSupporter: null,
         ifSupportDelayed: null,
+        topic: null,
       },
     },
     CurrentCheckSupportStatus: null,

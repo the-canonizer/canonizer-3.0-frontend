@@ -26,6 +26,7 @@ import {
   getEditCampApi,
   getEditTopicApi,
 } from "../../../../network/api/campManageStatementApi";
+import { getCurrentTopicRecordApi } from "../../../../network/api/campDetailApi";
 import {
   updateStatementApi,
   updateTopicApi,
@@ -252,10 +253,14 @@ export default function AddOrManage({ add }) {
           setEditStatementData(res);
         }
       } else {
+        let topic_res = await getCurrentTopicRecordApi({
+          topic_num: router?.query?.statement[0].split("-")[0],
+          camp_num: router?.query?.statement[1].split("-")[0],
+        });
         setPayloadBreadCrumb({
           camp_num: router?.query?.statement[1].split("-")[0],
           topic_num: router?.query?.statement[0].split("-")[0],
-          topic_name: router?.query?.statement[0].split("-").slice(1).join(" "),
+          topic_name: topic_res?.topic_name,
         });
       }
       const reqBody = {
