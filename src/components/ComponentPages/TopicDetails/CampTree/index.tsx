@@ -91,24 +91,32 @@ const CampTree = ({ scrollToCampStatement }) => {
                 }
                 key={data[item].camp_id}
               >
+                {console.log(
+                  "[data[item]]",
+                  data[item]?.is_disabled,
+                  "One Level",
+                  data[item]?.is_one_level
+                )}
                 {data[item].camp_id ===
                   +router?.query?.camp?.at(1)?.split("-")?.at(0) && (
                   <TreeNode
                     key={"custom"}
                     title={
-                      <p className={styles.startNew}>
-                        <Link
-                          href={{
-                            pathname: `/camp/create/${
-                              encodeURIComponent(router.query.camp[0]) +
-                              "/" +
-                              encodeURIComponent(router.query.camp[1])
-                            }`,
-                          }}
-                        >
-                          <a>{`<Start new supporting camp here>`} </a>
-                        </Link>
-                      </p>
+                      data[item]?.is_disabled !== 1 ? (
+                        <p className={styles.startNew}>
+                          <Link
+                            href={{
+                              pathname: `/camp/create/${
+                                encodeURIComponent(router.query.camp[0]) +
+                                "/" +
+                                encodeURIComponent(router.query.camp[1])
+                              }`,
+                            }}
+                          >
+                            <a>{`<Start new supporting camp here>`} </a>
+                          </Link>
+                        </p>
+                      ) : null
                     }
                   />
                 )}

@@ -34,9 +34,11 @@ function HistoryContainer() {
   };
   const count = useRef(1);
 
-  const { history } = useSelector((state: RootState) => ({
+  const { history, currentCampRecord } = useSelector((state: RootState) => ({
     history: state?.topicDetails?.history,
+    currentCampRecord: state.topicDetails.currentCampRecord,
   }));
+  console.log("[currentCampRecord history container]", currentCampRecord);
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [campHistory, setCampHistory] = useState(history);
 
@@ -196,7 +198,7 @@ function HistoryContainer() {
         <Button size="large" className={styles.createBtn} onClick={topicRoute}>
           <i className="icon-topic"></i>Create New Topic
         </Button>
-        {historyOf !== "topic" ? (
+        {historyOf !== "topic" && currentCampRecord !== 1 ? (
           <Button size="large" className={styles.createBtn} onClick={campRoute}>
             <i className="icon-topic"></i>Create New Camp
           </Button>
