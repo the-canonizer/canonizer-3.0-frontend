@@ -9,6 +9,7 @@ import {
   Spin,
   Input,
   Select,
+  Typography,
   Descriptions,
 } from "antd";
 import { useRouter } from "next/router";
@@ -41,6 +42,8 @@ import { RootState } from "../../../../store";
 import { useDispatch, useSelector } from "react-redux";
 
 import Link from "next/link";
+
+const { Text } = Typography;
 
 export default function AddOrManage({ add }) {
   const isLogin = useAuthentication();
@@ -617,6 +620,10 @@ export default function AddOrManage({ add }) {
                         >
                           <Input.TextArea size="large" rows={7} />
                         </Form.Item>
+                        <Text type="danger">
+                          The following fields are rarely used and are for
+                          advanced users only.
+                        </Text>
                         {/* Camp about url ===================================================== ----------------- */}
                         {manageFormOf == "camp" && (
                           <>
