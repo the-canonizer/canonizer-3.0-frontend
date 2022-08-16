@@ -37,10 +37,13 @@ import { getCanonizedNameSpacesApi } from "../../../../network/api/homePageApi";
 import SideBarNoFilter from "../../../ComponentPages/Home/SideBarNoFilter";
 import CampInfoBar from "../../TopicDetails/CampInfoBar";
 import { RootState } from "../../../../store";
+import PreventSubCamps from "../../../common/preventSubCampCheckbox";
+import messages from "../../../../messages";
 
 import { useDispatch, useSelector } from "react-redux";
 
 import Link from "next/link";
+import { CheckboxChangeEvent } from "antd/es/checkbox";
 
 export default function AddOrManage({ add }) {
   const isLogin = useAuthentication();
@@ -61,6 +64,7 @@ export default function AddOrManage({ add }) {
 
   const [campNickName, setCampNickName] = useState([]);
   const [canNameSpace, setCanNameSpace] = useState([]);
+  const [options, setOptions] = useState([...messages.preventCampLabel]);
 
   const [form] = Form.useForm();
   let objection = router?.query?.statement[0]?.split("-")[1] == "objection";
@@ -72,6 +76,7 @@ export default function AddOrManage({ add }) {
     let res;
     let editInfo = editStatementData?.data;
     let parent_camp = editInfo?.parent_camp;
+    options.map((op) => (values[op.id] = op.checked ? 1 : 0));
     res = await addOrManageStatement(values);
 
     if (res?.status_code == 200) {
@@ -302,6 +307,9 @@ export default function AddOrManage({ add }) {
               }
         );
         setNickNameData(result?.data);
+        if (manageFormOf == "camp" || manageFormOf == "topic") {
+          console.log("[res?.data?]", res?.data);
+        }
       }
       setScreenLoading(false);
     }
@@ -318,6 +326,28 @@ export default function AddOrManage({ add }) {
       update = "Topic Update";
     }
     return update;
+  };
+
+  // checkbox
+  const onCheckboxChange = async (e: CheckboxChangeEvent) => {
+    const oldOptions = [...options];
+    await oldOptions.map((op) =>
+      op.id === e.target.value ? (op.checked = e.target.checked) : ""
+    );
+    setOptions(oldOptions);
+  };
+
+  const extra = () => {
+    if (manageFormOf == "camp" || manageFormOf == "topic") {
+      return (
+        <PreventSubCamps
+          options={options}
+          onCheckboxChange={onCheckboxChange}
+        />
+      );
+    } else {
+      return null;
+    }
   };
   return (
     <>
@@ -344,6 +374,7 @@ export default function AddOrManage({ add }) {
                   : K?.exceptionalMessages?.objectionStatementHeading
               }
               className={styles.card}
+              extra={extra()}
             >
               <Form
                 form={form}

@@ -17,6 +17,9 @@ const CreateNewCampUI = ({
   campNickName,
   topicRecord,
   campRecord,
+  options,
+  onCheckboxChange,
+  onParentCampChange,
 }) => {
   const router = useRouter();
 
@@ -61,6 +64,9 @@ const CreateNewCampUI = ({
             nickNameList={nickNameList}
             parentCamp={parentCamp}
             campNickName={campNickName}
+            options={options}
+            onCheckboxChange={onCheckboxChange}
+            onParentCampChange={onParentCampChange}
           />
         </div>
       </div>

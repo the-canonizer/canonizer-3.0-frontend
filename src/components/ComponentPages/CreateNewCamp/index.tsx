@@ -1,5 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import { Form, message } from "antd";
+import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -14,6 +15,7 @@ import {
 import { RootState } from "../../../store";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
 import isAuth from "../../../hooks/isUserAuthenticated";
+import messages from "../../../messages";
 
 import CreateNewCampUI from "./UI/CampUI";
 
@@ -28,6 +30,7 @@ const CreateNewCamp = ({
   const [parentCamp, setParentCamps] = useState(parentCamps);
   const [campNickName, setCampNickName] = useState(campNickNames);
   const [params, setParams] = useState({});
+  const [options, setOptions] = useState([...messages.preventCampLabel]);
 
   const router = useRouter();
   const [form] = Form.useForm();
@@ -175,6 +178,8 @@ const CreateNewCamp = ({
       topic_num: params["topic_num"],
     };
 
+    options.map((op) => (body[op.id] = op.checked ? 1 : 0));
+
     const res = await createCamp(body);
     if (res && res.status_code === 200) {
       message.success(res.message);
@@ -190,6 +195,10 @@ const CreateNewCamp = ({
           res?.data?.camp_num
         }-${encodeURIComponent(values.camp_name?.split(" ").join("-"))}`,
       });
+
+      const oldOptions = [...options];
+      await oldOptions.map((op) => (op.checked = false));
+      setOptions(oldOptions);
     }
 
     if (res && res.status_code === 400) {
@@ -216,6 +225,24 @@ const CreateNewCamp = ({
     router.push({ pathname: `/topic/${camp[0]}/${camp[1]}` });
   };
 
+  // checkbox
+  const onCheckboxChange = async (e: CheckboxChangeEvent) => {
+    const oldOptions = [...options];
+    await oldOptions.map((op) =>
+      op.id === e.target.value ? (op.checked = e.target.checked) : ""
+    );
+    setOptions(oldOptions);
+  };
+
+  const onParentCampChange = (value: any, currentOption: any) => {
+    console.log(
+      "[OPTION CHANGE ON INDEX FILE]",
+      value,
+      "OPTION OBJECT",
+      currentOption
+    );
+  };
+
   return (
     <Fragment>
       <CreateNewCampUI
@@ -229,6 +256,9 @@ const CreateNewCamp = ({
         campNickName={campNickName}
         topicRecord={topicRecord}
         campRecord={campRecord}
+        options={options}
+        onCheckboxChange={onCheckboxChange}
+        onParentCampChange={onParentCampChange}
       />
     </Fragment>
   );
