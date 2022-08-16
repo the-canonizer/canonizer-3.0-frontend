@@ -235,7 +235,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
                 Canonizer Algorithm:
               </Title>
               <Popover content="Algorithm Information" placement="top">
-                <NextLink href="/topic/53-Canonizer-Algorithms/1-Agreement">
+                <NextLink href="/topic/132-Help/1-Agreement">
                   <a>Help</a>
                 </NextLink>
               </Popover>
