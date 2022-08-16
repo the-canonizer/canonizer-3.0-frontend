@@ -7,12 +7,15 @@ import CampInfoBar from "../TopicDetails/CampInfoBar";
 import dynamic from "next/dynamic";
 import { getAllUsedNickNames } from "src/network/api/campDetailApi";
 import { useRouter } from "next/router";
-import { GetActiveSupportTopic } from "src/network/api/topicAPI";
+import {
+  GetActiveSupportTopic,
+  GetCheckSupportExists,
+} from "src/network/api/topicAPI";
 import { addDelegateSupportCamps, addSupport } from "src/network/api/userApi";
 import isAuth from "../../../hooks/isUserAuthenticated";
 import { RootState } from "src/store";
 import { useSelector } from "react-redux";
-const fcm_token = process.env.NEXT_PUBLIC_FCM_API_KEY;
+
 const ManageSupportUI = dynamic(() => import("./ManageSupportUI"), {
   ssr: false,
 });
@@ -30,7 +33,6 @@ const ManageSupport = () => {
   const [checked, setChecked] = useState(false);
   const [getSupportStatusData, setGetSupportStatusData] = useState("");
   const [payloadBreadCrumb, setPayloadBreadCrumb] = useState({});
-  console.log("fcm token ", process.env.NEXT_PUBLIC_FCM_API_KEY);
   const getCanonizedNicknameList = async () => {
     const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
     const body = { topic_num: topicNum };
@@ -40,6 +42,7 @@ const ManageSupport = () => {
       setNickNameList(res.data);
     }
   };
+
   const [submitButtonDisable, setSubmitButtonDisable] = useState(false);
   const { currentDelegatedSupportedClick } = useSelector(
     (state: RootState) => ({
@@ -56,6 +59,7 @@ const ManageSupport = () => {
   const { CurrentCheckSupportStatus } = useSelector((state: RootState) => ({
     CurrentCheckSupportStatus: state.topicDetails.CurrentCheckSupportStatus,
   }));
+
   //GetCheckSupportExistsData check support_id is 0 or 1
   let supportedCampsStatus = currentGetCheckSupportExistsData;
 
@@ -143,7 +147,7 @@ const ManageSupport = () => {
   const getActiveSupportTopicList = async () => {
     let response = await GetActiveSupportTopic(topicNum && body);
     //get dataValue from CurrentCheckSupportStatus
-    const dataValue = CurrentCheckSupportStatus;
+    let dataValue = CurrentCheckSupportStatus;
     if (response && response.status_code === 200) {
       setCardCamp_ID("");
       response.data?.map((val) => {
@@ -154,7 +158,7 @@ const ManageSupport = () => {
       let resultFilterSupportCamp = response.data.filter(
         (values) => values.camp_num == campNum
       );
-      if (dataValue) {
+      if (dataValue.length > 0) {
         setGetSupportStatusData(dataValue);
         //if Warning message is show
         if (resultFilterSupportCamp.length == 0) {
@@ -210,7 +214,7 @@ const ManageSupport = () => {
         ? manageSupportRevertData[0].topic_num
         : "";
     //order Update
-
+    const manageListOrder = manageSupportList.length;
     let resultCamp = manageSupportList.filter(
       (values) => !campIds.includes(values.camp_num)
     );
@@ -224,7 +228,7 @@ const ManageSupport = () => {
     resultCamp.map((data, key) => {
       filterArrayResult.push({
         camp_num: data.camp_num,
-        order: key + 1,
+        order: manageListOrder,
       });
     });
     let add_camp_data = {};
@@ -239,7 +243,7 @@ const ManageSupport = () => {
         ? filterArrayResult[0]
           ? {
               camp_num: filterArrayResult[0].camp_num,
-              support_order: filterArrayResult[0].order,
+              support_order: manageListOrder,
             }
           : {}
         : {};
@@ -285,7 +289,6 @@ const ManageSupport = () => {
       action: "add",
       nick_name_id: nickNameIDValue,
       order_update: filterArrayResult,
-      fcm_token: fcm_token,
     };
 
     if (CheckDelegatedOrDirect) {

@@ -130,9 +130,9 @@ const ManageSupportUI = ({
                   {" "}
                   <span className={styles.count}>
                     {getSupportStatusData !== ""
-                      ? tag.camp_num
+                      ? index + 1
                       : tag.support_order}
-                    .{" "}
+                    . .{" "}
                   </span>
                   <Link href="">
                     <a className={styles.Bluecolor}> {tag.camp_name}</a>
