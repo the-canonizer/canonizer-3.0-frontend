@@ -5,7 +5,6 @@ import { RootState } from "src/store";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styles from "../topicDetails.module.scss";
-import { TreeStructure } from "src/typeScriptResponseStructure/treeStructure";
 
 const { TreeNode } = Tree;
 
@@ -37,7 +36,7 @@ const CampTree = ({ scrollToCampStatement }) => {
     setIncludeReview(review == "review" ? true : false);
   }, [filterByScore, review]);
 
-  const renderTreeNodes = (data: TreeStructure[]) =>
+  const renderTreeNodes = (data) =>
     Object.keys(data).map((item) => {
       if (data[item].children) {
         if (data[item].score >= scoreFilter) {
