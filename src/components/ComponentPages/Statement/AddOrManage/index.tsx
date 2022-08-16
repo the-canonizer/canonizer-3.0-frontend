@@ -9,6 +9,7 @@ import {
   Spin,
   Input,
   Select,
+  Typography,
   Descriptions,
 } from "antd";
 import { useRouter } from "next/router";
@@ -41,6 +42,8 @@ import { RootState } from "../../../../store";
 import { useDispatch, useSelector } from "react-redux";
 
 import Link from "next/link";
+
+const { Text } = Typography;
 
 export default function AddOrManage({ add }) {
   const isLogin = useAuthentication();
@@ -222,10 +225,12 @@ export default function AddOrManage({ add }) {
             router?.query?.statement[0]?.split("-")[0]
           );
           fetchCampNickNameList();
-          fetchParentsCampList(
-            res?.data?.camp?.topic_num,
-            res?.data?.camp?.parent_camp_num
-          );
+          if (res?.data?.camp?.parent_camp_num) {
+            fetchParentsCampList(
+              res?.data?.camp?.topic_num,
+              res?.data?.camp?.parent_camp_num
+            );
+          }
           setPayloadBreadCrumb({
             camp_num: res?.data?.camp?.camp_num,
             topic_num: res?.data?.camp?.topic_num,
@@ -616,6 +621,12 @@ export default function AddOrManage({ add }) {
                         >
                           <Input.TextArea size="large" rows={7} />
                         </Form.Item>
+                        {manageFormOf == "camp" && (
+                          <Text type="danger">
+                            The following fields are rarely used and are for
+                            advanced users only.
+                          </Text>
+                        )}
                         {/* Camp about url ===================================================== ----------------- */}
                         {manageFormOf == "camp" && (
                           <>
