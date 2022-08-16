@@ -216,7 +216,6 @@ const CampInfoBar = ({
       </Menu.Item>
     </Menu>
   );
-
   return (
     <>
       <div className={styles.topicDetailContentHead}>
@@ -225,9 +224,19 @@ const CampInfoBar = ({
             <Typography.Paragraph className={"mb-0 " + styles.topicTitleStyle}>
               {" "}
               <span className="bold"> Topic: </span>
-              {isTopicPage
-                ? topicRecord && topicRecord?.topic_name
-                : payloadData?.topic_name}
+              {isTopicPage ? (
+                topicRecord && topicRecord?.topic_name
+              ) : isTopicHistoryPage ? (
+                <Link
+                  href={`/topic/${
+                    payload?.topic_num
+                  }-${payload?.topic_name?.replaceAll(" ", "-")}/1-Agreement`}
+                >
+                  <a>{payloadData?.topic_name}</a>
+                </Link>
+              ) : (
+                payloadData?.topic_name
+              )}
               {"  "}
               {!!topicSubscriptionID && (
                 <small>

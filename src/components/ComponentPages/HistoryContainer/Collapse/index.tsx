@@ -19,12 +19,11 @@ import {
 import { useDispatch } from "react-redux";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 
-import useAuthentication from "src/hooks/isUserAuthenticated";
-
 import styles from ".././campHistory.module.scss";
 import StatementHistory from "./statementHistory";
 import CampHistory from "./campHistory";
 import TopicHistory from "./topicHistory";
+import useAuthentication from "src/hooks/isUserAuthenticated";
 
 const { Panel } = Collapse;
 const { Title } = Typography;
@@ -167,7 +166,11 @@ function HistoryCollapse({
                     historyOf != "statement")) && (
                   <Tooltip
                     title={
-                      !!(ifIamSupporter == 0 && ifSupportDelayed == 0)
+                      !!(
+                        !isLoggedIn &&
+                        ifIamSupporter == 0 &&
+                        ifSupportDelayed == 0
+                      )
                         ? "Only admin can object"
                         : campStatement?.isAuthor
                         ? "Only admin can object"

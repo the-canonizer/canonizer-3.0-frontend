@@ -168,14 +168,14 @@ const Registration = ({ isModal, isTest = false }) => {
     let response = await getCountryCodes();
     if (response && response.status_code === 200) {
       const codes_list = sort_unique(response.data);
-     
+
       setCountry(codes_list);
     }
   };
 
   useEffect(() => {
     getCodes();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // on resend click
