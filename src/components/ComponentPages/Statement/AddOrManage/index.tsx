@@ -621,10 +621,12 @@ export default function AddOrManage({ add }) {
                         >
                           <Input.TextArea size="large" rows={7} />
                         </Form.Item>
-                        <Text type="danger">
-                          The following fields are rarely used and are for
-                          advanced users only.
-                        </Text>
+                        {manageFormOf == "camp" && (
+                          <Text type="danger">
+                            The following fields are rarely used and are for
+                            advanced users only.
+                          </Text>
+                        )}
                         {/* Camp about url ===================================================== ----------------- */}
                         {manageFormOf == "camp" && (
                           <>
