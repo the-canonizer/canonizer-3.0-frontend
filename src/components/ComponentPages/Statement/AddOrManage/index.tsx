@@ -225,10 +225,12 @@ export default function AddOrManage({ add }) {
             router?.query?.statement[0]?.split("-")[0]
           );
           fetchCampNickNameList();
-          fetchParentsCampList(
-            res?.data?.camp?.topic_num,
-            res?.data?.camp?.parent_camp_num
-          );
+          if (res?.data?.camp?.parent_camp_num) {
+            fetchParentsCampList(
+              res?.data?.camp?.topic_num,
+              res?.data?.camp?.parent_camp_num
+            );
+          }
           setPayloadBreadCrumb({
             camp_num: res?.data?.camp?.camp_num,
             topic_num: res?.data?.camp?.topic_num,
