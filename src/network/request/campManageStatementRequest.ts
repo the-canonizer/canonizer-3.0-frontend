@@ -38,6 +38,15 @@ export class campManageStatementRequest extends Request {
       token
     );
   }
+  static getParseCampStatement(reqBody) {
+    return new Request(
+      K.Network.URL.GetParseCampStatement,
+      K.Network.Method.POST,
+      reqBody,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
   static updateStatement(reqBody, token) {
     return new Request(
       K.Network.URL.UpdateStatement,

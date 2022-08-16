@@ -23,6 +23,7 @@ import {
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
 import {
   getEditStatementApi,
+  getParseCampStatementApi,
   getEditCampApi,
   getEditTopicApi,
 } from "../../../../network/api/campManageStatementApi";
@@ -61,6 +62,7 @@ export default function AddOrManage({ add }) {
 
   const [campNickName, setCampNickName] = useState([]);
   const [canNameSpace, setCanNameSpace] = useState([]);
+  const [wikiStatement, setWikiStatement] = useState("");
 
   const [form] = Form.useForm();
   let objection = router?.query?.statement[0]?.split("-")[1] == "objection";
@@ -738,7 +740,14 @@ export default function AddOrManage({ add }) {
                             className="cancel-btn"
                             type="primary"
                             size="large"
-                            onClick={() => setModalVisible(true)}
+                            onClick={async () => {
+                              let res = await getParseCampStatementApi({
+                                value: form?.getFieldValue("statement"),
+                              });
+                              setWikiStatement(res?.data);
+                              console.log("res ", res);
+                              setModalVisible(true);
+                            }}
                           >
                             Preview
                           </Button>
@@ -781,7 +790,11 @@ export default function AddOrManage({ add }) {
         >
           {manageFormOf == "statement" && (
             <Descriptions.Item label="Statement">
-              {form?.getFieldValue("statement")}
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: wikiStatement,
+                }}
+              ></div>
             </Descriptions.Item>
           )}
           {manageFormOf == "topic" && (

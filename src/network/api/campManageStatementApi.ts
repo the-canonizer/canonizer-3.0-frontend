@@ -49,7 +49,17 @@ export const getEditTopicApi = async (body) => {
     return error?.error?.data;
   }
 };
-
+export const getParseCampStatementApi = async (body) => {
+  try {
+    const res = await NetworkCall.fetch(
+      campManageStatementRequest.getParseCampStatement(body)
+    );
+    return res;
+  } catch (error) {
+    // message.error(error?.error?.data?.message);
+    return error;
+  }
+};
 export const updateStatementApi = async (body) => {
   let state = store.getState();
   const { auth } = state;
