@@ -15,6 +15,7 @@ import useAuthentication from "src/hooks/isUserAuthenticated";
 import {
   setCheckSupportExistsData,
   setCurrentCheckSupportStatus,
+  setManageSupportStatusCheck,
 } from "src/store/slices/campDetailSlice";
 
 const antIcon = <LoadingOutlined spin />;
@@ -197,8 +198,9 @@ const TopicsList = () => {
   };
   useEffect(() => {
     //When Page is render remove data from GetCheckSupportStatus and GetCheckSupportExistsData
-    dispatch(setCurrentCheckSupportStatus({}));
-    dispatch(setCheckSupportExistsData({}));
+    dispatch(setCurrentCheckSupportStatus(""));
+    dispatch(setCheckSupportExistsData(""));
+    dispatch(setManageSupportStatusCheck(null));
   }, []);
   return (
     <>
