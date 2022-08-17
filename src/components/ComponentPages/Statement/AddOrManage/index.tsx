@@ -802,12 +802,12 @@ export default function AddOrManage({ add }) {
             ? K?.exceptionalMessages?.submitStatementButton
             : K?.exceptionalMessages?.submitUpdateButton
         }
+        className="statementPreviewModal"
       >
         <Descriptions
-          className="statementPreviewModal"
           size="small"
-          column={{ xxl: 1, lg: 1 }}
-          // layout="vertical"
+          column={{ xs: 1, sm: 1 }}
+          //layout="vertical"
         >
           {manageFormOf == "statement" && (
             <Descriptions.Item label="Statement">

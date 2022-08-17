@@ -1644,6 +1644,9 @@ div[role="option"]::before {
   .ant-modal-body {
     max-height: calc(100vh - 150px);
     overflow-x: hidden;
+    pre {
+      white-space: inherit;
+    }
   }
   .ant-descriptions-item-label {
     font-weight: bold;
