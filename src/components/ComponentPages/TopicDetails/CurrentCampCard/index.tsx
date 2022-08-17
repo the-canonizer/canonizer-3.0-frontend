@@ -25,17 +25,28 @@ const CurrentCampCard = () => {
     >
       <Panel header={<h3>Current Camp Record</h3>} key="1">
         <Descriptions column={1}>
-          {currentCampRecordConstants?.map((description) => (
-            <Descriptions.Item label={description.label} key={description.key}>
-              {campRecord && description.key != "camp_about_url" ? (
-                campRecord[description.key]
-              ) : (
-                <Link href={campRecord[description.key]}>
-                  <a target="_blank">{campRecord[description.key]}</a>
-                </Link>
-              )}
-            </Descriptions.Item>
-          ))}
+          {currentCampRecordConstants?.map((description) => {
+            return (
+              <Descriptions.Item
+                label={description.label}
+                key={description.key}
+              >
+                {campRecord && description.key != "camp_about_url"
+                  ? campRecord[description.key]
+                  : campRecord && (
+                      // <Link href={campRecord[description.key]}>
+                      <a
+                        href={campRecord[description.key]}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {campRecord[description.key]}
+                      </a>
+                      // </Link>
+                    )}
+              </Descriptions.Item>
+            );
+          })}
         </Descriptions>
         <div className="topicDetailsCollapseFooter">
           <CustomButton className="btn-green">

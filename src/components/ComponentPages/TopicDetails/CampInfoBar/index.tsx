@@ -27,7 +27,6 @@ const CampInfoBar = ({
   isTopicHistoryPage = false,
 }) => {
   const isLogin = useAuthentication();
-  console.log("final ", isTopicHistoryPage);
 
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [payloadData, setPayloadData] = useState(payload);
