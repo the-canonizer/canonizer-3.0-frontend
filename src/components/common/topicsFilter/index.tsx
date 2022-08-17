@@ -243,9 +243,17 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
             <Select
               size="large"
               className={styles.algoSelect}
-              defaultValue={selectedAlgorithm}
+              defaultValue={
+                algorithms?.filter(
+                  (algo) => algo.algorithm_key == "blind_popularity"
+                )[0].algorithm_label
+              }
               onChange={selectAlgorithm}
-              value={selectedAlgorithm}
+              value={
+                algorithms?.filter(
+                  (algo) => algo.algorithm_key == "blind_popularity"
+                )[0].algorithm_label
+              }
             >
               {algorithms?.map((algo) => {
                 return (
