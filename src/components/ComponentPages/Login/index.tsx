@@ -18,6 +18,7 @@ import {
 import { AppDispatch } from "../../../store";
 import Spinner from "../../common/spinner/spinner";
 import OTPVerify from "../Registration/UI/otp";
+import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 
 const Login = ({ isModal, isTest = false }) => {
   const [isOtpScreen, setIsOtpScreen] = useState(isTest);
@@ -62,6 +63,11 @@ const Login = ({ isModal, isTest = false }) => {
     }
 
     if (res && res.status_code === 200) {
+      dispatch(
+        setFilterCanonizedTopics({
+          algorithm: res?.data?.user?.default_algo,
+        })
+      );
       form.resetFields();
 
       isModal ? closeModal() : "";
@@ -121,7 +127,6 @@ const Login = ({ isModal, isTest = false }) => {
 
       if (res && res.status_code === 200) {
         otpForm.resetFields();
-
         setIsOtpScreen(false);
         isModal ? closeModal() : "";
 

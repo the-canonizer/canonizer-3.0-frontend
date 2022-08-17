@@ -27,11 +27,7 @@ function HistoryContainer() {
     setAgreeCheck(!agreecheck);
   };
   const historyOf = router?.asPath.split("/")[1];
-  let payload = {
-    camp_num: router?.query?.camp[1]?.split("-")[0],
-    topic_num: router?.query?.camp[0]?.split("-")[0],
-    topic_name: router?.query?.camp[0].split("-").slice(1).join(" "),
-  };
+
   const count = useRef(1);
 
   const { history } = useSelector((state: RootState) => ({
@@ -40,6 +36,14 @@ function HistoryContainer() {
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [campHistory, setCampHistory] = useState(history);
 
+  let payload = history && {
+    camp_num: router?.query?.camp[1]?.split("-")[0],
+    topic_num: router?.query?.camp[0]?.split("-")[0],
+    topic_name:
+      historyOf == "topic"
+        ? history?.items[0]?.topic_name
+        : history?.details?.topic?.topic_name,
+  };
   useEffect(() => {
     setCampHistory(history);
   }, [history]);

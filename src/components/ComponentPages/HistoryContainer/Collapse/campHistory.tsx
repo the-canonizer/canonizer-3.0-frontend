@@ -9,7 +9,6 @@ const CampHistory = ({ campStatement }) => {
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
-  console.log("camp  data => ", campStatement);
   return (
     <>
       {!!campStatement?.parent_camp_name && (
