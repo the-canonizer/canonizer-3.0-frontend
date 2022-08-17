@@ -27,6 +27,7 @@ import {
   getEditCampApi,
   getEditTopicApi,
 } from "../../../../network/api/campManageStatementApi";
+import { getCurrentTopicRecordApi } from "../../../../network/api/campDetailApi";
 import {
   updateStatementApi,
   updateTopicApi,
@@ -86,9 +87,11 @@ export default function AddOrManage({ add }) {
         let route =
           manageFormOf == "topic"
             ? `${editInfo?.topic?.topic_num}-${editInfo?.topic?.topic_name
+                ?.replace(/[^a-zA-Z0-9 ]/g, "")
                 ?.split(" ")
                 .join("-")}`
             : `${editInfo?.topic?.topic_num}-${editInfo?.topic?.topic_name
+                ?.replace(/[^a-zA-Z0-9 ]/g, "")
                 ?.split(" ")
                 .join("-")}/${
                 parent_camp[parent_camp?.length - 1]?.camp_num
@@ -255,10 +258,14 @@ export default function AddOrManage({ add }) {
           setEditStatementData(res);
         }
       } else {
+        let topic_res = await getCurrentTopicRecordApi({
+          topic_num: router?.query?.statement[0].split("-")[0],
+          camp_num: router?.query?.statement[1].split("-")[0],
+        });
         setPayloadBreadCrumb({
           camp_num: router?.query?.statement[1].split("-")[0],
           topic_num: router?.query?.statement[0].split("-")[0],
-          topic_name: router?.query?.statement[0].split("-").slice(1).join(" "),
+          topic_name: topic_res?.topic_name,
         });
       }
       const reqBody = {
@@ -709,6 +716,7 @@ export default function AddOrManage({ add }) {
                                       ? `/camp/history/${
                                           backdata?.topic?.topic_num
                                         }-${backdata?.topic?.topic_name
+                                          ?.replace(/[^a-zA-Z0-9 ]/g, "")
                                           ?.split(" ")
                                           ?.join("-")}/${
                                           backdata?.parent_camp[
@@ -723,6 +731,7 @@ export default function AddOrManage({ add }) {
                                       ? `/statement/history/${
                                           backdata?.topic?.topic_num
                                         }-${backdata?.topic?.topic_name
+                                          ?.replace(/[^a-zA-Z0-9 ]/g, "")
                                           ?.split(" ")
                                           ?.join("-")}/${
                                           backdata?.parent_camp[
@@ -736,6 +745,7 @@ export default function AddOrManage({ add }) {
                                       : `/topic/history/${
                                           backdata?.topic?.topic_num
                                         }-${backdata?.topic?.topic_name
+                                          ?.replace(/[^a-zA-Z0-9 ]/g, "")
                                           ?.split(" ")
                                           ?.join("-")}`
                                   );

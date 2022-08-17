@@ -7,6 +7,7 @@ import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
 import { Dropdown, Menu, Button } from "antd";
 import K from "../../../../constants";
+import moment from "moment";
 
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import {
@@ -32,6 +33,7 @@ const CampInfoBar = ({
   const [payloadData, setPayloadData] = useState(payload);
   const [breadCrumbRes, setBreadCrumbRes] = useState([]);
   const didMount = useRef(false);
+  const didMount1 = useRef(false);
   const router = useRouter();
   const {
     topicRecord,
@@ -57,7 +59,6 @@ const CampInfoBar = ({
   const [topicSubscriptionID, setTopicSubscriptionID] = useState(
     topicRecord?.topicSubscriptionId
   );
-
   useEffect(() => {
     setPayloadData(payload);
     async function getBreadCrumbApiCall() {
@@ -68,6 +69,7 @@ const CampInfoBar = ({
       };
       let res = await getCampBreadCrumbApi(reqBody);
       setBreadCrumbRes(res?.data?.bread_crumb);
+
       setLoadingIndicator(false);
     }
     if (
