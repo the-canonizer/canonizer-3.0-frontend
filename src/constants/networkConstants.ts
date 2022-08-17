@@ -1,6 +1,7 @@
 const BaseCanonizerServiceUrl = process.env.NEXT_PUBLIC_BASE_SERVICE_URL;
 const BaseCanonizerApiUrl = process.env.NEXT_PUBLIC_BASE_API_URL;
 const BaseImagesURL = process.env.NEXT_PUBLIC_BASE_IMAGES_URL;
+const HelpTopicUrl = process.env.Help_Topic_URL;
 const NetworkConstants = {
   URL: {
     BaseImagesURL,
@@ -11,6 +12,8 @@ const NetworkConstants = {
       BaseHost: process.env.NEXT_PUBLIC_CLIENT_BASE_HOST,
       BasePort: process.env.NEXT_PUBLIC_CLIENT_BASE_PORT,
     },
+    // Redirect URLs
+    helpTopicUrl: HelpTopicUrl,
     // User
     CreateToken: `${BaseCanonizerApiUrl}/client-token`,
     LoginUser: `${BaseCanonizerApiUrl}/user/login`,

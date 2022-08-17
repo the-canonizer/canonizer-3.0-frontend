@@ -24,6 +24,7 @@ const { Option } = Select;
 import styles from "./topicListFilter.module.scss";
 import { useRouter } from "next/router";
 import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
+import K from "src/constants";
 
 const infoContent = (
   <>
@@ -235,7 +236,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
                 Canonizer Algorithm:
               </Title>
               <Popover content="Algorithm Information" placement="top">
-                <NextLink href="/topic/132-Help/1-Agreement">
+                <NextLink href={K.Network.URL.helpTopicUrl}>
                   <a>Help</a>
                 </NextLink>
               </Popover>
