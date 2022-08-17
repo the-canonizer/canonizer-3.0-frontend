@@ -145,7 +145,7 @@ const TopicsList = () => {
   }
 
   const onSearch = (value) => {
-    /[a-zA-Z0-9]/.test(value) ? setInputSearch(value) : setInputSearch("");
+    setInputSearch(value);
     dispatch(
       setFilterCanonizedTopics({
         search: value || "",
