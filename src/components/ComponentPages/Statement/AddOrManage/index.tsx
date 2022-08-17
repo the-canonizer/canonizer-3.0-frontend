@@ -497,11 +497,11 @@ export default function AddOrManage({ add }) {
                           rules={[
                             {
                               required: true,
-                              message: K?.exceptionalMessages?.campNameReqErr,
+                              message: K?.exceptionalMessages?.topicNameReqErr,
                             },
                             {
                               pattern: /[^ \s]/,
-                              message: K?.exceptionalMessages?.campNameReqErr,
+                              message: K?.exceptionalMessages?.topicNameReqErr,
                             },
                           ]}
                         >
