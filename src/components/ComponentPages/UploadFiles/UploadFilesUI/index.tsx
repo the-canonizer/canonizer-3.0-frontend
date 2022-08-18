@@ -359,6 +359,11 @@ const UploadFileUI = ({
     });
   };
 
+  const cancelBtn = () => {
+    handleCancel();
+    setLoadingImage(false);
+  };
+
   const changeFolderName = async () => {
     let res = await createFolderApi({
       name: rename,
@@ -1324,7 +1329,7 @@ const UploadFileUI = ({
                     id="cancelBtn"
                     htmlType="button"
                     className={styles.cancel_Btn}
-                    onClick={handleCancel}
+                    onClick={cancelBtn}
                   >
                     Cancel
                   </Button>

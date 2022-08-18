@@ -5,7 +5,7 @@ import { BellOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
 import localforage from "localforage";
 import firebase from "firebase/app";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import styles from "../siteHeader.module.scss";
 
@@ -19,12 +19,13 @@ import {
 import { RootState } from "../../../../store";
 import Fav from "./icon";
 import isUserAuthenticated from "../../../../hooks/isUserAuthenticated";
+import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 
 const Notifications = ({}) => {
+  const dispatch = useDispatch();
   const auth = isUserAuthenticated();
   const [isLog, setIsLog] = useState(auth);
   const [checked, setChecked] = useState(false);
-
   useEffect(() => setIsLog(auth), [auth]);
 
   const { count, list } = useSelector((state: RootState) => {
@@ -52,6 +53,11 @@ const Notifications = ({}) => {
       getListData();
     }
   }, [isLog]);
+
+  // useEffect(() => {
+  //   //When Page is render remove data from setManageSupportStatusCheck
+  //   dispatch(setManageSupportStatusCheck(null));
+  // }, []);
 
   useEffect(() => {
     async function setToken() {
@@ -170,6 +176,7 @@ const Notifications = ({}) => {
   }
 
   const onNotifyClick = async (id) => {
+    dispatch(setManageSupportStatusCheck(null));
     const res = await markNotificationRead(id);
     if (res && res.status_code === 200) {
       router.query.from = "";
