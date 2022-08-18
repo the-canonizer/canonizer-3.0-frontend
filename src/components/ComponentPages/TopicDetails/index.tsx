@@ -32,6 +32,7 @@ import isAuth from "../../../hooks/isUserAuthenticated";
 import {
   setCheckSupportExistsData,
   setCurrentCheckSupportStatus,
+  setManageSupportStatusCheck,
 } from "src/store/slices/campDetailSlice";
 const TopicDetails = () => {
   let myRefToCampStatement = useRef(null);
@@ -114,14 +115,16 @@ const TopicDetails = () => {
         )
       );
       dispatch(setCheckSupportExistsData(response.data));
+      dispatch(setManageSupportStatusCheck(true));
     }
   };
 
   useEffect(() => {
     if (isLogin) {
+      dispatch(setManageSupportStatusCheck(null));
       GetCheckStatusData();
     }
-  }, [isLogin]);
+  }, [isLogin, router]);
 
   const scrollToCampStatement = () => {
     myRefToCampStatement.current?.scrollIntoView({ behavior: "smooth" });

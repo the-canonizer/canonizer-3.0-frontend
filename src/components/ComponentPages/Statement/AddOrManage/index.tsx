@@ -9,6 +9,7 @@ import {
   Spin,
   Input,
   Select,
+  Typography,
   Descriptions,
 } from "antd";
 import { useRouter } from "next/router";
@@ -23,9 +24,11 @@ import {
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
 import {
   getEditStatementApi,
+  getParseCampStatementApi,
   getEditCampApi,
   getEditTopicApi,
 } from "../../../../network/api/campManageStatementApi";
+import { getCurrentTopicRecordApi } from "../../../../network/api/campDetailApi";
 import {
   updateStatementApi,
   updateTopicApi,
@@ -43,7 +46,6 @@ import messages from "../../../../messages";
 import { useDispatch, useSelector } from "react-redux";
 
 import Link from "next/link";
-import { CheckboxChangeEvent } from "antd/es/checkbox";
 
 export default function AddOrManage({ add }) {
   const isLogin = useAuthentication();
@@ -64,7 +66,6 @@ export default function AddOrManage({ add }) {
 
   const [campNickName, setCampNickName] = useState([]);
   const [canNameSpace, setCanNameSpace] = useState([]);
-  const [options, setOptions] = useState([...messages.preventCampLabel]);
 
   const [form] = Form.useForm();
   let objection = router?.query?.statement[0]?.split("-")[1] == "objection";
@@ -88,9 +89,11 @@ export default function AddOrManage({ add }) {
         let route =
           manageFormOf == "topic"
             ? `${editInfo?.topic?.topic_num}-${editInfo?.topic?.topic_name
+                ?.replace(/[^a-zA-Z0-9 ]/g, "")
                 ?.split(" ")
                 .join("-")}`
             : `${editInfo?.topic?.topic_num}-${editInfo?.topic?.topic_name
+                ?.replace(/[^a-zA-Z0-9 ]/g, "")
                 ?.split(" ")
                 .join("-")}/${
                 parent_camp[parent_camp?.length - 1]?.camp_num
@@ -227,10 +230,12 @@ export default function AddOrManage({ add }) {
             router?.query?.statement[0]?.split("-")[0]
           );
           fetchCampNickNameList();
-          fetchParentsCampList(
-            res?.data?.camp?.topic_num,
-            res?.data?.camp?.parent_camp_num
-          );
+          if (res?.data?.camp?.parent_camp_num) {
+            fetchParentsCampList(
+              res?.data?.camp?.topic_num,
+              res?.data?.camp?.parent_camp_num
+            );
+          }
           setPayloadBreadCrumb({
             camp_num: res?.data?.camp?.camp_num,
             topic_num: res?.data?.camp?.topic_num,
@@ -255,10 +260,14 @@ export default function AddOrManage({ add }) {
           setEditStatementData(res);
         }
       } else {
+        let topic_res = await getCurrentTopicRecordApi({
+          topic_num: router?.query?.statement[0].split("-")[0],
+          camp_num: router?.query?.statement[1].split("-")[0],
+        });
         setPayloadBreadCrumb({
           camp_num: router?.query?.statement[1].split("-")[0],
           topic_num: router?.query?.statement[0].split("-")[0],
-          topic_name: router?.query?.statement[0].split("-").slice(1).join(" "),
+          topic_name: topic_res?.topic_name,
         });
       }
       const reqBody = {
@@ -516,11 +525,11 @@ export default function AddOrManage({ add }) {
                           rules={[
                             {
                               required: true,
-                              message: K?.exceptionalMessages?.campNameReqErr,
+                              message: K?.exceptionalMessages?.topicNameReqErr,
                             },
                             {
                               pattern: /[^ \s]/,
-                              message: K?.exceptionalMessages?.campNameReqErr,
+                              message: K?.exceptionalMessages?.topicNameReqErr,
                             },
                           ]}
                         >
@@ -647,6 +656,12 @@ export default function AddOrManage({ add }) {
                         >
                           <Input.TextArea size="large" rows={7} />
                         </Form.Item>
+                        {manageFormOf == "camp" && (
+                          <Text type="danger">
+                            The following fields are rarely used and are for
+                            advanced users only.
+                          </Text>
+                        )}
                         {/* Camp about url ===================================================== ----------------- */}
                         {manageFormOf == "camp" && (
                           <>
@@ -729,6 +744,7 @@ export default function AddOrManage({ add }) {
                                       ? `/camp/history/${
                                           backdata?.topic?.topic_num
                                         }-${backdata?.topic?.topic_name
+                                          ?.replace(/[^a-zA-Z0-9 ]/g, "")
                                           ?.split(" ")
                                           ?.join("-")}/${
                                           backdata?.parent_camp[
@@ -743,6 +759,7 @@ export default function AddOrManage({ add }) {
                                       ? `/statement/history/${
                                           backdata?.topic?.topic_num
                                         }-${backdata?.topic?.topic_name
+                                          ?.replace(/[^a-zA-Z0-9 ]/g, "")
                                           ?.split(" ")
                                           ?.join("-")}/${
                                           backdata?.parent_camp[
@@ -756,6 +773,7 @@ export default function AddOrManage({ add }) {
                                       : `/topic/history/${
                                           backdata?.topic?.topic_num
                                         }-${backdata?.topic?.topic_name
+                                          ?.replace(/[^a-zA-Z0-9 ]/g, "")
                                           ?.split(" ")
                                           ?.join("-")}`
                                   );
@@ -769,7 +787,14 @@ export default function AddOrManage({ add }) {
                             className="cancel-btn"
                             type="primary"
                             size="large"
-                            onClick={() => setModalVisible(true)}
+                            onClick={async () => {
+                              let res = await getParseCampStatementApi({
+                                value: form?.getFieldValue("statement"),
+                              });
+                              setWikiStatement(res?.data);
+                              console.log("res ", res);
+                              setModalVisible(true);
+                            }}
                           >
                             Preview
                           </Button>
@@ -803,16 +828,20 @@ export default function AddOrManage({ add }) {
             ? K?.exceptionalMessages?.submitStatementButton
             : K?.exceptionalMessages?.submitUpdateButton
         }
+        className="statementPreviewModal"
       >
         <Descriptions
-          className="statementPreviewModal"
           size="small"
-          column={{ xxl: 1, lg: 1 }}
-          // layout="vertical"
+          column={{ xs: 1, sm: 1 }}
+          //layout="vertical"
         >
           {manageFormOf == "statement" && (
             <Descriptions.Item label="Statement">
-              {form?.getFieldValue("statement")}
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: wikiStatement,
+                }}
+              ></div>
             </Descriptions.Item>
           )}
           {manageFormOf == "topic" && (

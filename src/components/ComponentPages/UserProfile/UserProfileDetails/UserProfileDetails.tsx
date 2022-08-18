@@ -17,7 +17,11 @@ const UserProfileDetails = ({ profileData }) => {
                 <label className={styles.userProfileLabel}>
                   {messages.labels.name}
                 </label>
-                <h3>{profileData.first_name}</h3>
+                <h3>
+                  {(profileData.first_name ? profileData.first_name : "") +
+                    " " +
+                    (profileData.last_name ? profileData.last_name : "")}
+                </h3>
               </Col>
               <Col md={12}>
                 <label className={styles.userProfileLabel}>

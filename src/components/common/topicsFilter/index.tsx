@@ -15,15 +15,16 @@ import { LeftOutlined } from "@ant-design/icons";
 import { RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsReviewCanonizedTopics } from "../../../store/slices/filtersSlice";
-import NextLink from "next/link";
+import Link from "next/link";
 
-const { Title, Text, Paragraph, Link } = Typography;
+const { Title, Text, Paragraph } = Typography;
 const { Panel } = Collapse;
 const { Option } = Select;
 
 import styles from "./topicListFilter.module.scss";
 import { useRouter } from "next/router";
 import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
+import K from "src/constants";
 
 const infoContent = (
   <>
@@ -238,17 +239,25 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
                 Canonizer Algorithm:
               </Title>
               <Popover content="Algorithm Information" placement="top">
-                <NextLink href="/topic/53-Canonizer-Algorithms/1-Agreement">
+                <Link href={K?.Network?.URL?.helpTopicUrl}>
                   <a>Help</a>
-                </NextLink>
+                </Link>
               </Popover>
             </div>
             <Select
               size="large"
               className={styles.algoSelect}
-              defaultValue={selectedAlgorithm}
+              defaultValue={
+                algorithms?.filter(
+                  (algo) => algo.algorithm_key == "blind_popularity"
+                )[0].algorithm_label
+              }
               onChange={selectAlgorithm}
-              value={selectedAlgorithm}
+              value={
+                algorithms?.filter(
+                  (algo) => algo.algorithm_key == "blind_popularity"
+                )[0].algorithm_label
+              }
             >
               {algorithms?.map((algo) => {
                 return (

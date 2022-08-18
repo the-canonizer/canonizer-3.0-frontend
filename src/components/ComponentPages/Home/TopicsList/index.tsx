@@ -15,6 +15,7 @@ import useAuthentication from "src/hooks/isUserAuthenticated";
 import {
   setCheckSupportExistsData,
   setCurrentCheckSupportStatus,
+  setManageSupportStatusCheck,
 } from "src/store/slices/campDetailSlice";
 
 const antIcon = <LoadingOutlined spin />;
@@ -145,7 +146,7 @@ const TopicsList = () => {
   }
 
   const onSearch = (value) => {
-    /[a-zA-Z0-9]/.test(value) ? setInputSearch(value) : setInputSearch("");
+    setInputSearch(value);
     dispatch(
       setFilterCanonizedTopics({
         search: value || "",
@@ -197,8 +198,9 @@ const TopicsList = () => {
   };
   useEffect(() => {
     //When Page is render remove data from GetCheckSupportStatus and GetCheckSupportExistsData
-    dispatch(setCurrentCheckSupportStatus({}));
-    dispatch(setCheckSupportExistsData({}));
+    dispatch(setCurrentCheckSupportStatus(""));
+    dispatch(setCheckSupportExistsData(""));
+    dispatch(setManageSupportStatusCheck(null));
   }, []);
   return (
     <>
@@ -280,7 +282,11 @@ const TopicsList = () => {
                                 ?.split(" ")
                                 .join("-")
                                 ?.replace("/", "-")
-                            : item?.topic_name?.split(" ").join("-")
+                                ?.replace(/[^a-zA-Z0-9 ]/g, "")
+                            : item?.topic_name
+                                ?.split(" ")
+                                .join("-")
+                                ?.replace(/[^a-zA-Z0-9 ]/g, "")
                         )}/1-Agreement`,
                       }}
                     >

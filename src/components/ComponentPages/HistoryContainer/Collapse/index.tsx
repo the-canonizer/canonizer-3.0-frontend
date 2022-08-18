@@ -218,7 +218,11 @@ function HistoryCollapse({
                     }
                   }}
                 >
-                  Submit Statement Update Based on This
+                  {historyOf == "camp"
+                    ? "Submit Camp Update Based on This"
+                    : historyOf == "topic"
+                    ? "Submit Topic Update Based on This"
+                    : "Submit Statement Update Based on This"}
                 </Button>
                 <Button
                   type="primary"

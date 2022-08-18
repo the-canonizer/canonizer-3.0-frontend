@@ -146,9 +146,7 @@ export default function DirectSupportedCampsUI({
                           >
                             <div className={styles.btndiv}>
                               {" "}
-                              <span className="count">
-                                {tag.support_order}.{" "}
-                              </span>
+                              <span className="count">{tag.id}. </span>
                               <Link href={tag.camp_link}>
                                 <a className={styles.Bluecolor}>
                                   {" "}
