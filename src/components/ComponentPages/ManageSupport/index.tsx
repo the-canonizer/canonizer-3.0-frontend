@@ -16,7 +16,10 @@ import isAuth from "../../../hooks/isUserAuthenticated";
 import { RootState } from "src/store";
 import { useDispatch, useSelector } from "react-redux";
 import queryParams from "src/utils/queryParams";
-import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
+import {
+  setCheckSupportExistsData,
+  setManageSupportStatusCheck,
+} from "src/store/slices/campDetailSlice";
 
 const ManageSupportUI = dynamic(() => import("./ManageSupportUI"), {
   ssr: false,
@@ -118,6 +121,8 @@ const ManageSupport = () => {
         response.data.warning,
         response.data.support_flag
       );
+      dispatch(setCheckSupportExistsData({}));
+      dispatch(setCheckSupportExistsData(response.data));
       setSubmitButtonDisable(false);
     }
   };
@@ -181,7 +186,9 @@ const ManageSupport = () => {
   //split on ?
   const CampNameData = camp_Name_.split("?");
   //after split Data Value
+  //_ split is used to remove from camp name  like camp_1 o/p camp
   const CampName = CampNameData[0];
+
   const body = { topic_num: topicNum };
   const getActiveSupportTopicList = async (
     warning?: string,
@@ -257,9 +264,7 @@ const ManageSupport = () => {
     setSubmitButtonDisable(true);
     let campIDsArr = [];
     //get support_flag status check from GetCheckSupportExistsData
-    let support_flag_Status = manageSupportStatusCheck
-      ? supportedCampsStatus.support_flag
-      : supportStatus;
+    let support_flag_Status = supportedCampsStatus.support_flag;
     // let support_flag_Status = supportStatus;
     let topicNumId =
       manageSupportRevertData.length > 0
