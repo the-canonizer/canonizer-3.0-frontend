@@ -52,6 +52,7 @@ const SupportTreeCard = ({
   const { topicRecord } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
   }));
+
   return (
     <Collapse
       defaultActiveKey={["1"]}
@@ -59,7 +60,12 @@ const SupportTreeCard = ({
       className="topicDetailsCollapse"
     >
       <Panel
-        header={<h3>Support Tree for &quot;Agreement&quot; Camp</h3>}
+        header={
+          <h3>
+            Support Tree for &quot;
+            {router?.query?.camp[1]?.split("-").slice(1).join(" ")}&quot; Camp
+          </h3>
+        }
         key="1"
         extra={
           <Popover content={supportContent} placement="left">
