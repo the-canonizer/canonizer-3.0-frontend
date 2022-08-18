@@ -251,8 +251,13 @@ function HistoryCollapse({
                     <Divider className="mt-0"></Divider>
                     <p className="w-100">
                       Note: This countdown timer is the grace period in which
-                      you can make minor changes to your statement before other
-                      direct supporters are notified.
+                      you can make minor changes to your{" "}
+                      {historyOf == "topic"
+                        ? "topic"
+                        : historyOf == "camp"
+                        ? "camp"
+                        : "statement"}{" "}
+                      before other direct supporters are notified.
                     </p>
                     <div className="mb-3 text-right">
                       <span className="ant-btn ant-btn-primary mr-3">
