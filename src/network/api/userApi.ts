@@ -212,10 +212,12 @@ export const socialLoginCallback = async (values: object, router) => {
       error &&
       error.error &&
       error.error.data &&
-      error.error.data.status_code === 400
+      (error.error.data.status_code === 400 ||
+        error.error.data.status_code === 402)
     ) {
       router.push("/login");
     }
+
     handleError(error);
   }
 };
