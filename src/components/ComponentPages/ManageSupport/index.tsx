@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 // import ManageSupportUI from "./ManageSupportUI";
-import { Image, message } from "antd";
+import { Button, Image, message } from "antd";
 import CreateNewCampButton from "../../common/button/createNewTopicBtn";
 import styles from "./ManageSupportUI/ManageSupport.module.scss";
 import CampInfoBar from "../TopicDetails/CampInfoBar";
@@ -48,6 +48,9 @@ const ManageSupport = () => {
     if (res && res.status_code == 200) {
       setNickNameList(res.data);
     }
+  };
+  const campRoute = () => {
+    router.push("/create/topic");
   };
 
   const [submitButtonDisable, setSubmitButtonDisable] = useState(false);
@@ -387,9 +390,21 @@ const ManageSupport = () => {
     <>
       {payloadBreadCrumb && <CampInfoBar payload={payloadBreadCrumb} />}
       <div className={styles.card}>
-        <div className={styles.btnsWrap}>
-          <CreateNewCampButton />
+        <div className="leftSideBar_Card p-0 m-0">
+          <div className="btnsWrap">
+            <Button
+              id="createNewTopicBtn"
+              size="large"
+              className={"btn"}
+              onClick={campRoute}
+            >
+              <i className="icon-topic"></i> Create New Topic
+            </Button>
+          </div>
         </div>
+        {/* <div className={styles.btnsWrap}>
+          <CreateNewCampButton />
+        </div> */}
         <div className="siteAds">
           <Image
             alt="adOne"
