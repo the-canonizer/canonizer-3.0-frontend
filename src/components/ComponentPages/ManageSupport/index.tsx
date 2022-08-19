@@ -88,12 +88,12 @@ const ManageSupport = () => {
   //isLogin
   useEffect(() => {
     if (isLogin) {
-      if (manageSupportStatusCheck != null) {
+      if (manageSupportStatusCheck) {
         //GetCheckStatusData();
         getCanonizedNicknameList();
         getActiveSupportTopicList();
         setSubmitButtonDisable(false);
-        dispatch(setManageSupportStatusCheck(null));
+        dispatch(setManageSupportStatusCheck(false));
       } else {
         GetCheckStatusData();
       }

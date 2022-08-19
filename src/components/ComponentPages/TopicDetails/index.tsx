@@ -106,8 +106,8 @@ const TopicDetails = () => {
     if (response && response.status_code === 200) {
       setGetCheckSupportStatus(response.data);
       //dispatch remove
-      dispatch(setCurrentCheckSupportStatus({}));
-      dispatch(setCheckSupportExistsData({}));
+      dispatch(setCurrentCheckSupportStatus(""));
+      dispatch(setCheckSupportExistsData(""));
       //dispatch add Values data
       dispatch(
         setCurrentCheckSupportStatus(
@@ -115,13 +115,12 @@ const TopicDetails = () => {
         )
       );
       dispatch(setCheckSupportExistsData(response.data));
-      dispatch(setManageSupportStatusCheck(true));
+      // dispatch(setManageSupportStatusCheck(true));
     }
   };
 
   useEffect(() => {
     if (isLogin) {
-      dispatch(setManageSupportStatusCheck(null));
       GetCheckStatusData();
     }
   }, [isLogin, router]);

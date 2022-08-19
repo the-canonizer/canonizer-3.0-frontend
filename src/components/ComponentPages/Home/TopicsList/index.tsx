@@ -200,7 +200,7 @@ const TopicsList = () => {
     //When Page is render remove data from GetCheckSupportStatus and GetCheckSupportExistsData
     dispatch(setCurrentCheckSupportStatus(""));
     dispatch(setCheckSupportExistsData(""));
-    dispatch(setManageSupportStatusCheck(null));
+    dispatch(setManageSupportStatusCheck(false));
   }, []);
   return (
     <>
