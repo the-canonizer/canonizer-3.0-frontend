@@ -1400,6 +1400,21 @@ body {
       }
     }
   }
+  .campStatementPanel {
+    .ant-collapse-header {
+      @media screen and (min-width: 576px) {
+        align-items: center;
+      }
+      @media screen and (max-width: 575px) {
+        display: block;
+      }
+    }
+    .ant-collapse-extra {
+      @media screen and (max-width: 575px) {
+        margin-top: .5rem;
+      }
+    }
+  }
   .ant-collapse-item-disabled {
     .ant-collapse-header {
       cursor: inherit;

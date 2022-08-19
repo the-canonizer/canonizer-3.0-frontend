@@ -202,20 +202,20 @@ function HistoryContainer() {
           </Button>
         ) : null}
       </div>
-      <div className={styles.campStatement}>
+      <div className={styles.campStatementHistoryCard}>
         <Affix
           offsetTop={top}
-          style={{ position: isAbs ? "absolute" : "static", left: "36px" }}
+          style={{ position: isAbs ? "absolute" : "static", left: "16px" }}
           onChange={setIsAbs}
         >
-          <div className={styles.tabHead}>
-            <div className={styles.filterOt}>
+          <div className={styles.cshcHead}>
+            <div className={styles.cshcHeadFilterWrap}>
               <Title level={4}>{historyTitle()}</Title>
               <Spin spinning={loadingIndicator} size="default">
-                <List className={styles.campStatementHistory} size="small">
+                <List className={styles.cshcHeadFilter} size="small">
                   <List.Item
                     className={`${styles.campStatementViewAll} ${
-                      styles.campStatementListItem
+                      styles.cshcHeadFilterItem
                     } ${activeTab == "all" ? styles.active : null}`}
                   >
                     <a
@@ -228,7 +228,7 @@ function HistoryContainer() {
                   </List.Item>
                   <List.Item
                     className={`${styles.campStatementObjected}  ${
-                      styles.campStatementListItem
+                      styles.cshcHeadFilterItem
                     }  ${activeTab == "objected" ? styles.active : null}`}
                   >
                     <a
@@ -241,7 +241,7 @@ function HistoryContainer() {
                   </List.Item>
                   <List.Item
                     className={`${styles.campStatementLive} ${
-                      styles.campStatementListItem
+                      styles.cshcHeadFilterItem
                     } ${activeTab == "live" ? styles.active : null}`}
                   >
                     <a
@@ -254,7 +254,7 @@ function HistoryContainer() {
                   </List.Item>
                   <List.Item
                     className={`${styles.campStatementNotLive} ${
-                      styles.campStatementListItem
+                      styles.cshcHeadFilterItem
                     } ${activeTab == "in_review" ? styles.active : null}`}
                   >
                     <a
@@ -267,7 +267,7 @@ function HistoryContainer() {
                   </List.Item>
                   <List.Item
                     className={`${styles.campStatementOld} ${
-                      styles.campStatementListItem
+                      styles.cshcHeadFilterItem
                     } ${activeTab == "old" ? styles.active : null}`}
                   >
                     <a

@@ -214,10 +214,9 @@ const TopicDetails = () => {
               getCheckSupportStatus={getCheckSupportStatus}
             />
           </Spin>
-
-          <BackTop />
         </div>
       </div>
+      <BackTop />
     </>
   );
 };
