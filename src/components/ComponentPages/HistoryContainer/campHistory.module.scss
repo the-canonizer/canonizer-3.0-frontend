@@ -1,6 +1,9 @@
 .wrap {
-  padding: 20px;
+  padding-bottom: 20px;
   width: 100%;
+  @media screen and (min-width: 768px) {
+    padding-right: 8px;
+  }
 
   .heading {
     display: flex;
@@ -28,14 +31,19 @@
 
   .btnGroup {
     display: flex;
+    flex-wrap: wrap;
 
     .createBtn {
-      width: 199px;
       font-size: 1.125rem;
       font-weight: 600;
       color: #0f2a4d;
       border: solid 1px #d9d9d9;
-
+      @media screen and (min-width: 576px) {
+        width: 200px;
+      }
+      @media screen and (max-width: 575px) {
+        width: 100%;
+      }
       i {
         color: #2e68db;
         margin-right: 8px;
@@ -44,29 +52,29 @@
       }
 
       & + button {
-        margin-left: 15px;
+        @media screen and (min-width: 576px) {
+          margin-left: 15px;
+        }
+        @media screen and (max-width: 575px) {
+          margin-top: 15px;
+        }
       }
     }
   }
 }
 
-.campStatement {
+.campStatementHistoryCard {
   margin-top: 20px;
   border: solid 1px #d9d9d9;
   background-color: #ffffff;
 
-  .tabHead {
+  .cshcHead {
     padding: 20px;
     align-items: center;
-    justify-content: space-between;
     border-bottom: solid 1px #d9d9d9;
     background-color: #ffffff;
 
-    @media screen and (min-width: 992px) {
-      display: flex;
-    }
-
-    @media screen and (min-width: 720px) and (max-width: 768px) {
+    @media screen and (min-width: 576px) {
       display: flex;
     }
 
@@ -75,6 +83,16 @@
       border: none;
       background-color: var(--primary);
       transition: all 0.3s;
+      
+      @media screen and (max-width: 575px) {
+        margin-top: 1rem;
+        display: block;
+        width: 100%;
+      }
+
+      @media screen and (min-width: 576px) {
+        margin-left: auto;
+      }
 
       &:hover {
         background-color: #2777d3;
@@ -103,33 +121,122 @@
         }
       }
 
-      @media screen and (min-width: 320px) and (max-width: 719px) {
+      /* @media screen and (min-width: 320px) and (max-width: 719px) {
         width: 100%;
         margin-top: 15px;
-      }
+      } */
     }
   }
 
   h4 {
     font-weight: 400;
     margin-bottom: 0;
-    margin-right: 34px;
-
-    @media screen and (min-width: 320px) and (max-width: 719px) {
-      text-align: center;
-      margin-bottom: 15px;
+    @media screen and (min-width: 1200px) {
+      margin-right: 34px;
+    }
+    @media screen and (max-width: 1199px) {
+      margin-bottom: .5rem;
     }
   }
 
-  .filterOt {
+  .cshcHeadFilterWrap {
     // width: calc(100% - 162px);
+    @media screen and (min-width: 576px) {
+      flex: 1;
+      margin-right: 1rem;
+    }
 
     @media screen and (min-width: 1200px) {
       display: flex;
     }
+    .cshcHeadFilter {
+      & > div {
+        width: 100%;
+    
+        & > div {
+          display: flex;
+          align-items: center;
+          max-width: 420px;
+          width: 100%;
+          flex-wrap: wrap;
+          @media screen and (min-width: 992px) {
+            min-width: 420px;
+          }
+          @media screen and (min-width: 576px) {
+            justify-content: space-between;
+          }
+    
+          .cshcHeadFilterItem {
+            border-bottom: none;
+            font-size: 14px;
+            padding: 3px 0;
+            @media screen and (max-width: 575px) {
+              margin-right: 1.5rem;
+            }
+    
+            &.active {
+              a {
+                color: #2e68db;
+                border-bottom: 1px solid #2e68db !important;
+                font-weight: bold;
+              }
+            }
+    
+            & > a {
+              color: #1c1b24;
+              display: flex;
+              align-items: center;
+            }
+            &:not(:first-child) {
+              & > a {
+                &::before {
+                  content: "";
+                  width: 10px;
+                  height: 10px;
+                  margin-right: 7px;
+                  border-radius: 2px;
+                }
+              }
+            }
+          }
+    
+          & > .campStatementObjected {
+            & > a {
+              &:before {
+                background-color: #ef5e5e;
+              }
+            }
+          }
+    
+          & > .campStatementLive {
+            & > a {
+              &:before {
+                background-color: #12c879;
+              }
+            }
+          }
+    
+          & > .campStatementNotLive {
+            & > a {
+              &:before {
+                background-color: #ffdd00;
+              }
+            }
+          }
+    
+          & > .campStatementOld {
+            & > a {
+              &:before {
+                background-color: #4484ce;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
-  .filters {
+  /* .filters {
     list-style: none;
     padding-left: 35px;
     margin-bottom: 0;
@@ -162,84 +269,10 @@
         }
       }
     }
-  }
+  } */
 }
 
-.campStatementHistory {
-  & > div {
-    width: 100%;
 
-    & > div {
-      display: flex;
-      align-items: center;
-      min-width: 420px;
-      justify-content: space-between;
-
-      .campStatementListItem {
-        border-bottom: none;
-        font-size: 14px;
-        padding: 3px 0;
-
-        &.active {
-          a {
-            color: #2e68db;
-            border-bottom: 1px solid #2e68db !important;
-            font-weight: bold;
-          }
-        }
-
-        & > a {
-          color: #1c1b24;
-          display: flex;
-          align-items: center;
-        }
-        &:not(:first-child) {
-          & > a {
-            &::before {
-              content: "";
-              width: 10px;
-              height: 10px;
-              margin-right: 7px;
-              border-radius: 2px;
-            }
-          }
-        }
-      }
-
-      & > .campStatementObjected {
-        & > a {
-          &:before {
-            background-color: #ef5e5e;
-          }
-        }
-      }
-
-      & > .campStatementLive {
-        & > a {
-          &:before {
-            background-color: #12c879;
-          }
-        }
-      }
-
-      & > .campStatementNotLive {
-        & > a {
-          &:before {
-            background-color: #ffdd00;
-          }
-        }
-      }
-
-      & > .campStatementOld {
-        & > a {
-          &:before {
-            background-color: #4484ce;
-          }
-        }
-      }
-    }
-  }
-}
 
 .campStatementCollapseHistory {
   width: 100%;

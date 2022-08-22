@@ -34,6 +34,8 @@ import {
   setCurrentCheckSupportStatus,
   setManageSupportStatusCheck,
 } from "src/store/slices/campDetailSlice";
+
+import CampRecentActivities from "../Home/CampRecentActivities";
 const TopicDetails = () => {
   let myRefToCampStatement = useRef(null);
   const isLogin = isAuth();
@@ -184,9 +186,6 @@ const TopicDetails = () => {
         </aside>
 
         <div className={styles.pageContent + " pageContentWrap"}>
-          <Spin spinning={loadingIndicator} size="large">
-            {!!newsFeed?.length && <NewsFeedsCard newsFeed={newsFeed} />}
-          </Spin>
           <Spin spinning={getTreeLoadingIndicator} size="large">
             <CampTreeCard scrollToCampStatement={scrollToCampStatement} />
           </Spin>
@@ -196,7 +195,14 @@ const TopicDetails = () => {
               onCampForumClick={onCampForumClick}
             />
           </Spin>
-
+          {typeof window !== "undefined" && window.innerWidth < 767 && (
+            <>
+              {router.asPath.includes("topic") && <CampRecentActivities />}
+              <Spin spinning={loadingIndicator} size="large">
+                {!!newsFeed?.length && <NewsFeedsCard newsFeed={newsFeed} />}
+              </Spin>
+            </>
+          )}
           <Spin spinning={loadingIndicator} size="large">
             <CurrentTopicCard />
           </Spin>
@@ -210,10 +216,9 @@ const TopicDetails = () => {
               getCheckSupportStatus={getCheckSupportStatus}
             />
           </Spin>
-
-          <BackTop />
         </div>
       </div>
+      <BackTop />
     </>
   );
 };
