@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 // import ManageSupportUI from "./ManageSupportUI";
-import { Image, message } from "antd";
+import { Button, Image, message } from "antd";
 import CreateNewCampButton from "../../common/button/createNewTopicBtn";
 import styles from "./ManageSupportUI/ManageSupport.module.scss";
 import CampInfoBar from "../TopicDetails/CampInfoBar";
@@ -38,7 +38,6 @@ const ManageSupport = () => {
   const [selectedtNickname, setSelectedtNickname] = useState();
   const [checked, setChecked] = useState(false);
   const [getSupportStatusData, setGetSupportStatusData] = useState("");
-  const [payloadBreadCrumb, setPayloadBreadCrumb] = useState({});
   const [supportStatus, setsupportStatus] = useState<number>(0);
   const getCanonizedNicknameList = async () => {
     const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
@@ -48,6 +47,9 @@ const ManageSupport = () => {
     if (res && res.status_code == 200) {
       setNickNameList(res.data);
     }
+  };
+  const campRoute = () => {
+    router.push("/create/topic");
   };
 
   const [submitButtonDisable, setSubmitButtonDisable] = useState(false);
@@ -77,13 +79,7 @@ const ManageSupport = () => {
 
   const CheckDelegatedOrDirect =
     currentDelegatedSupportedClick.delegatedSupportClick;
-  const breadCrumbData = () => {
-    setPayloadBreadCrumb({
-      camp_num: router?.query?.manageSupport[1].split("-")[0],
-      topic_num: router?.query?.manageSupport[0].split("-")[0],
-      topic_name: router?.query?.manageSupport[0].split("-").slice(1).join(" "),
-    });
-  };
+
   const reqBodyData = {
     topic_num: +router?.query?.manageSupport[0]?.split("-")[0],
     camp_num: +router?.query?.manageSupport[1]?.split("-")[0],
@@ -92,15 +88,13 @@ const ManageSupport = () => {
   //isLogin
   useEffect(() => {
     if (isLogin) {
-      if (manageSupportStatusCheck != null) {
-        breadCrumbData();
+      if (manageSupportStatusCheck) {
         //GetCheckStatusData();
         getCanonizedNicknameList();
         getActiveSupportTopicList();
         setSubmitButtonDisable(false);
-        dispatch(setManageSupportStatusCheck(null));
+        dispatch(setManageSupportStatusCheck(false));
       } else {
-        breadCrumbData();
         GetCheckStatusData();
       }
     } else {
@@ -116,13 +110,13 @@ const ManageSupport = () => {
       supportSts = response.data.support_flag;
       setsupportStatus(response.data.support_flag);
       //Api's call for list
+      dispatch(setCheckSupportExistsData({}));
+      dispatch(setCheckSupportExistsData(response.data));
       getCanonizedNicknameList();
       getActiveSupportTopicList(
         response.data.warning,
         response.data.support_flag
       );
-      dispatch(setCheckSupportExistsData({}));
-      dispatch(setCheckSupportExistsData(response.data));
       setSubmitButtonDisable(false);
     }
   };
@@ -186,8 +180,9 @@ const ManageSupport = () => {
   //split on ?
   const CampNameData = camp_Name_.split("?");
   //after split Data Value
-  //_ split is used to remove from camp name  like camp_1 o/p camp
-  const CampName = CampNameData[0];
+  let Camp_len = CampNameData[0].lastIndexOf("_");
+  let CampRes = CampNameData[0].substring(0, Camp_len);
+  const CampName = CheckDelegatedOrDirect ? CampRes : CampNameData[0];
 
   const body = { topic_num: topicNum };
   const getActiveSupportTopicList = async (
@@ -250,12 +245,16 @@ const ManageSupport = () => {
 
   let manageSupportPath = router.asPath.replace("/support/", "/topic/");
   //remove add id for cancel and submit
-  let remove_ = manageSupportPath.split("_");
-  manageSupportPath = remove_[0];
+  let remove_ = manageSupportPath.lastIndexOf("_");
+  let resDat = manageSupportPath.substring(0, remove_);
+  let manageSupportPathData = CheckDelegatedOrDirect
+    ? resDat
+    : manageSupportPath;
+
   //Cancel Button
   const cancelManageRoute = () => {
     router.push({
-      pathname: manageSupportPath,
+      pathname: manageSupportPathData,
     });
   };
 
@@ -385,11 +384,23 @@ const ManageSupport = () => {
   };
   return (
     <>
-      {payloadBreadCrumb && <CampInfoBar payload={payloadBreadCrumb} />}
+      <CampInfoBar isTopicPage={true} />
       <div className={styles.card}>
-        <div className={styles.btnsWrap}>
-          <CreateNewCampButton />
+        <div className="leftSideBar_Card p-0 m-0">
+          <div className="btnsWrap">
+            <Button
+              id="createNewTopicBtn"
+              size="large"
+              className={"btn"}
+              onClick={campRoute}
+            >
+              <i className="icon-topic"></i> Create New Topic
+            </Button>
+          </div>
         </div>
+        {/* <div className={styles.btnsWrap}>
+          <CreateNewCampButton />
+        </div> */}
         <div className="siteAds">
           <Image
             alt="adOne"

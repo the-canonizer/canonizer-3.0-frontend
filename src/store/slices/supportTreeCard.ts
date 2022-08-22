@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const treeCard = createSlice({
   name: "supportTreeCard",
   initialState: {
-    currentDelegatedSupportedClick: { delegatedSupportClick: "false" },
+    currentDelegatedSupportedClick: { delegatedSupportClick: false },
   },
   reducers: {
     setDelegatedSupportClick: (state, action) => {

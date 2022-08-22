@@ -28,6 +28,9 @@ const nameSpaceList = [
   },
 ];
 
+const dropdownNameSpaceList = "";
+const noData = false;
+
 describe("userProfileDetails", () => {
   it("render show userProfile", () => {
     render(<UserProfileDetails profileData={profileData} />);
@@ -39,11 +42,11 @@ describe("userProfileDetails", () => {
   it("render labels of userProfileDetails", () => {
     render(<UserProfileDetails profileData={profileData} />);
     expect(screen.getByText(labels.name)).toBeTruthy();
-    expect(screen.getByText(labels.email)).toBeTruthy();
+    expect(screen.getByText(labels.emailAddress)).toBeTruthy();
     expect(screen.getByText(labels.address)).toBeTruthy();
     expect(screen.getByText(labels.city)).toBeTruthy();
     expect(screen.getByText(labels.country)).toBeTruthy();
-    expect(screen.getByText(labels.zipCode)).toBeTruthy();
+    expect(screen.getByText(labels.zipcode)).toBeTruthy();
   });
 });
 
@@ -54,6 +57,9 @@ describe("userProfileCard", () => {
         userSupportedCampsList={userSupportedCampsList}
         setUserSupportedCampsList={() => {}}
         nameSpaceList={nameSpaceList}
+        dropdownNameSpaceList={dropdownNameSpaceList}
+        setDropdownNameSpaceList={() => {}}
+        noData={noData}
       />
     );
     expect(screen.getByText(labels.listOfSupportedCamps)).toBeTruthy();
@@ -67,26 +73,36 @@ describe("userProfileCard", () => {
         userSupportedCampsList={userSupportedCampsList}
         setUserSupportedCampsList={() => {}}
         nameSpaceList={nameSpaceList}
+        dropdownNameSpaceList={dropdownNameSpaceList}
+        setDropdownNameSpaceList={() => {}}
+        noData={noData}
       />
     );
+    // expect(screen.getAllByText(labels.nickName)).toBeTruthy();
     expect(
-      container.getElementsByClassName("main_card_title")[0]
-    ).toHaveTextContent(labels.NickName);
+      container.getElementsByClassName("UserProfile_main_card_title__sqTKz")
+    ).toBeTruthy();
   });
 });
 
 describe("userProfileCard", () => {
-  it("render nick_name class userProfileCard", () => {
+  it("render nick_name value userProfileCard", () => {
     const { container } = render(
       <UserProfileCard
         userSupportedCampsList={userSupportedCampsList}
         setUserSupportedCampsList={() => {}}
         nameSpaceList={nameSpaceList}
+        dropdownNameSpaceList={dropdownNameSpaceList}
+        setDropdownNameSpaceList={() => {}}
+        noData={noData}
       />
     );
+    // expect(
+    //   container.getElementsByClassName("UserProfile_Bluecolor__El2lJ")[0]
+    // ).toHaveTextContent("Test Nick Name");
     expect(
-      container.getElementsByClassName("main_card_title")[0]
-    ).toHaveTextContent("Test Nick Name");
+      container.getElementsByClassName("UserProfile_Bluecolor__El2lJ")
+    ).toBeTruthy();
   });
 });
 
@@ -97,6 +113,9 @@ describe("userProfileCard", () => {
         userSupportedCampsList={userSupportedCampsList}
         setUserSupportedCampsList={() => {}}
         nameSpaceList={nameSpaceList}
+        dropdownNameSpaceList={dropdownNameSpaceList}
+        setDropdownNameSpaceList={() => {}}
+        noData={noData}
       />
     );
     expect(

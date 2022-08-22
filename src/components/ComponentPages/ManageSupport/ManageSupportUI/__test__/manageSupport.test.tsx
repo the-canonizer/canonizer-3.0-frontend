@@ -16,6 +16,8 @@ const setManageSupportList = [],
   cancelManageRoute = jest.fn(),
   setSelectedtNickname = jest.fn(),
   selectedtNickname = "";
+const submitButtonDisable = false;
+
 describe("ManageSupportUI", () => {
   it("render show SupportedCamps", () => {
     render(
@@ -33,6 +35,7 @@ describe("ManageSupportUI", () => {
         cancelManageRoute={cancelManageRoute}
         setSelectedtNickname={setSelectedtNickname}
         selectedtNickname={selectedtNickname}
+        submitButtonDisable={submitButtonDisable}
       />
     );
     expect(screen.getByText(labels.SupportedCamps)).toBeTruthy();
@@ -56,6 +59,7 @@ describe("ManageSupportUI", () => {
         cancelManageRoute={cancelManageRoute}
         setSelectedtNickname={setSelectedtNickname}
         selectedtNickname={selectedtNickname}
+        submitButtonDisable={submitButtonDisable}
       />
     );
     expect(screen.getByText("Nick Name To Support Above Camps")).toBeTruthy();
@@ -78,6 +82,7 @@ it("render show submit button", () => {
       cancelManageRoute={cancelManageRoute}
       setSelectedtNickname={setSelectedtNickname}
       selectedtNickname={selectedtNickname}
+      submitButtonDisable={submitButtonDisable}
     />
   );
   const submitButton = getAllByText("Submit")[0] as HTMLButtonElement;
@@ -100,6 +105,7 @@ it("render show cancel button", () => {
       cancelManageRoute={cancelManageRoute}
       setSelectedtNickname={setSelectedtNickname}
       selectedtNickname={selectedtNickname}
+      submitButtonDisable={submitButtonDisable}
     />
   );
   const cancelButton = getAllByText("Cancel")[0] as HTMLButtonElement;
@@ -122,6 +128,7 @@ it("render show clear changes button", () => {
       cancelManageRoute={cancelManageRoute}
       setSelectedtNickname={setSelectedtNickname}
       selectedtNickname={selectedtNickname}
+      submitButtonDisable={submitButtonDisable}
     />
   );
   const clearChangesButton = getAllByText(
@@ -146,6 +153,7 @@ it("render show Quick Action Text", () => {
       cancelManageRoute={cancelManageRoute}
       setSelectedtNickname={setSelectedtNickname}
       selectedtNickname={selectedtNickname}
+      submitButtonDisable={submitButtonDisable}
     />
   );
   const quickActionText = getAllByText("Quick Action:");
@@ -168,6 +176,7 @@ it("render show Remove all Text", () => {
       cancelManageRoute={cancelManageRoute}
       setSelectedtNickname={setSelectedtNickname}
       selectedtNickname={selectedtNickname}
+      submitButtonDisable={submitButtonDisable}
     />
   );
   const removeAllText = getAllByText("Remove all");
@@ -190,6 +199,7 @@ it("render show checkbox", () => {
       cancelManageRoute={cancelManageRoute}
       setSelectedtNickname={setSelectedtNickname}
       selectedtNickname={selectedtNickname}
+      submitButtonDisable={submitButtonDisable}
     />
   );
   expect(
