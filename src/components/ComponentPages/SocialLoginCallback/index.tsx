@@ -37,6 +37,7 @@ function SocialLoginCallback() {
           })
         );
       }
+      console.log('[response]',response)
       if (
         (response && response.status_code === 200) ||
         (response && response.status_code === 400)
