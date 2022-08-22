@@ -244,6 +244,16 @@ body {
       }
     }
   }
+  .leftSidebarNewsFeeds {
+    .topicDetailsCollapse {
+      .ant-collapse-header {
+        display: block;
+      }
+      .ant-collapse-extra {
+        margin-top: .5rem;
+      }
+    }
+  }
 }
 
 .topicsList_card,
