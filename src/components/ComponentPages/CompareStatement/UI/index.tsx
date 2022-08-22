@@ -24,6 +24,19 @@ function CompareStatementUI({ statements, isLoading, liveStatement }) {
     topic_name: router?.query?.routes[0].split("-").slice(1).join(" "),
   };
 
+  const getBackUrl = () => {
+    const query = router?.query;
+    if (query.from === "topic") {
+      router.push({
+        pathname: `/topic/history/${router?.query?.routes[0]}}`,
+      });
+    } else {
+      router.push({
+        pathname: `/statement/history/${router?.query?.routes[0]}/${router?.query?.routes[1]}`,
+      });
+    }
+  };
+
   return (
     <Fragment>
       <div className={styles.wrap}>
@@ -42,11 +55,7 @@ function CompareStatementUI({ statements, isLoading, liveStatement }) {
               <Button
                 className={styles.active}
                 type="primary"
-                onClick={() =>
-                  router.push({
-                    pathname: `/statement/history/${router?.query?.routes[0]}/${router?.query?.routes[1]}`,
-                  })
-                }
+                onClick={getBackUrl}
               >
                 <ArrowLeftOutlined />
               </Button>

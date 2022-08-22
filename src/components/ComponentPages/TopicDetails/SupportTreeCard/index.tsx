@@ -9,6 +9,7 @@ import styles from "../topicDetails.module.scss";
 
 import K from "src/constants";
 import { setDelegatedSupportClick } from "../../../../store/slices/supportTreeCard";
+import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 const { Paragraph } = Typography;
 
 const { Panel } = Collapse;
@@ -34,15 +35,20 @@ const SupportTreeCard = ({
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(setDelegatedSupportClick({ delegatedSupportClick: false }));
+    dispatch(setManageSupportStatusCheck(false));
   }, []);
 
   //Delegate Support Camp
   const handleDelegatedClick = () => {
+    dispatch(setManageSupportStatusCheck(true));
     dispatch(
       setDelegatedSupportClick({
         delegatedSupportClick: true,
       })
     );
+  };
+  const handleClickSupportCheck = () => {
+    dispatch(setManageSupportStatusCheck(true));
   };
   const router = useRouter();
   const manageSupportPath = router.asPath.replace("/topic/", "/support/");
@@ -52,6 +58,7 @@ const SupportTreeCard = ({
   const { topicRecord } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
   }));
+
   return (
     <Collapse
       defaultActiveKey={["1"]}
@@ -59,7 +66,12 @@ const SupportTreeCard = ({
       className="topicDetailsCollapse"
     >
       <Panel
-        header={<h3>Support Tree for &quot;Agreement&quot; Camp</h3>}
+        header={
+          <h3>
+            Support Tree for &quot;
+            {router?.query?.camp[1]?.split("-").slice(1).join(" ")}&quot; Camp
+          </h3>
+        }
         key="1"
         extra={
           <Popover content={supportContent} placement="left">
@@ -120,7 +132,10 @@ const SupportTreeCard = ({
         )}
         <Link href={manageSupportPath}>
           <a>
-            <div className="topicDetailsCollapseFooter">
+            <div
+              className="topicDetailsCollapseFooter"
+              onClick={handleClickSupportCheck}
+            >
               <CustomButton className="btn-orange">
                 {/* {K?.exceptionalMessages?.directJoinSupport} */}
                 {getCheckSupportStatus.support_flag == 1

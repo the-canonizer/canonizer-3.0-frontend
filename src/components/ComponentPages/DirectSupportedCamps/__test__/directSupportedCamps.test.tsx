@@ -90,18 +90,10 @@
 //     ).toBeInTheDocument();
 //   });
 // });
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-} from "../../../../utils/testUtils";
-import userEvent from "@testing-library/user-event";
+import { render, screen } from "../../../../utils/testUtils";
 import DirectSupportedCampsUI from "../DirectSupportedCampsUI/index";
 import messages from "../../../../messages";
-import { Input } from "antd";
-
-const { labels, placeholders, validations } = messages;
+const { labels } = messages;
 
 const isSupportedCampsModalVisible = true;
 const removeCardSupportedCamps = jest.fn();
@@ -115,7 +107,9 @@ const handleOk = jest.fn();
 const handleCancel = jest.fn();
 const handleRevertBack = jest.fn();
 const setRevertBack = jest.fn();
-const showSaveChanges = jest.fn();
+const showSaveChanges = false;
+const setCardCamp_ID = jest.fn();
+const setShowSaveChanges = jest.fn();
 const saveChanges = jest.fn();
 const handleClose = jest.fn();
 const setSearch = jest.fn();
@@ -147,18 +141,33 @@ const directSupportedCampsList = [
     ],
   },
   {
-    id: "2",
+    id: "3",
     title_link: "https://www.google.com/",
     title: "User profile",
     camps: [
       {
         camp_link: "https://www.google.com/",
-        support_order: 2,
+        support_order: 3,
         camp_name: "Sample User profile",
       },
     ],
   },
 ];
+const removeSupportCampsData = {
+  camps: [
+    {
+      id: 1,
+      camp_num: 1,
+      camp_name: "Agreement",
+      support_order: 1,
+      camp_link: "/topic/788-absd---/1-Agreement#statement",
+    },
+  ],
+  nick_name_id: 571,
+  title: "absd@#$",
+  title_link: "/topic/788-absd---/1-Agreement",
+  topic_num: 788,
+};
 describe("Direct Support camps page", () => {
   it("render Modal when Remove support is clicked", () => {
     render(
@@ -169,10 +178,12 @@ describe("Direct Support camps page", () => {
         directSupportedCampsList={directSupportedCampsList}
         setDirectSupportedCampsList={setDirectSupportedCampsList}
         search={search}
+        setCardCamp_ID={setCardCamp_ID}
         removeSupport={removeSupport}
         handleClose={handleClose}
         saveChanges={saveChanges}
         showSaveChanges={showSaveChanges}
+        setShowSaveChanges={setShowSaveChanges}
         setRevertBack={setRevertBack}
         revertBack={revertBack}
         handleRevertBack={handleRevertBack}
@@ -180,6 +191,7 @@ describe("Direct Support camps page", () => {
         idData={idData}
         handleOk={handleOk}
         handleCancel={handleCancel}
+        removeSupportCampsData={removeSupportCampsData}
       />
     );
     expect(screen.getByText("Remove")).toBeTruthy();
@@ -197,10 +209,12 @@ describe("Direct Support camps page", () => {
         directSupportedCampsList={directSupportedCampsList}
         setDirectSupportedCampsList={setDirectSupportedCampsList}
         search={search}
+        setCardCamp_ID={setCardCamp_ID}
         removeSupport={removeSupport}
         handleClose={handleClose}
         saveChanges={saveChanges}
         showSaveChanges={showSaveChanges}
+        setShowSaveChanges={setShowSaveChanges}
         setRevertBack={setRevertBack}
         revertBack={revertBack}
         handleRevertBack={handleRevertBack}
@@ -208,6 +222,7 @@ describe("Direct Support camps page", () => {
         idData={idData}
         handleOk={handleOk}
         handleCancel={handleCancel}
+        removeSupportCampsData={removeSupportCampsData}
       />
     );
     expect(
@@ -223,10 +238,12 @@ describe("Direct Support camps page", () => {
         directSupportedCampsList={directSupportedCampsList}
         setDirectSupportedCampsList={setDirectSupportedCampsList}
         search={search}
+        setCardCamp_ID={setCardCamp_ID}
         removeSupport={removeSupport}
         handleClose={handleClose}
         saveChanges={saveChanges}
         showSaveChanges={showSaveChanges}
+        setShowSaveChanges={setShowSaveChanges}
         setRevertBack={setRevertBack}
         revertBack={revertBack}
         handleRevertBack={handleRevertBack}
@@ -234,6 +251,7 @@ describe("Direct Support camps page", () => {
         idData={idData}
         handleOk={handleOk}
         handleCancel={handleCancel}
+        removeSupportCampsData={removeSupportCampsData}
       />
     );
     expect(
@@ -252,10 +270,12 @@ describe("Direct Support camps page", () => {
         directSupportedCampsList={directSupportedCampsList}
         setDirectSupportedCampsList={setDirectSupportedCampsList}
         search={search}
+        setCardCamp_ID={setCardCamp_ID}
         removeSupport={removeSupport}
         handleClose={handleClose}
         saveChanges={saveChanges}
         showSaveChanges={showSaveChanges}
+        setShowSaveChanges={setShowSaveChanges}
         setRevertBack={setRevertBack}
         revertBack={revertBack}
         handleRevertBack={handleRevertBack}
@@ -263,6 +283,7 @@ describe("Direct Support camps page", () => {
         idData={idData}
         handleOk={handleOk}
         handleCancel={handleCancel}
+        removeSupportCampsData={removeSupportCampsData}
       />
     );
     expect(screen.getByText("OK")).toBeTruthy();
@@ -277,10 +298,12 @@ describe("Direct Support camps page", () => {
         directSupportedCampsList={directSupportedCampsList}
         setDirectSupportedCampsList={setDirectSupportedCampsList}
         search={search}
+        setCardCamp_ID={setCardCamp_ID}
         removeSupport={removeSupport}
         handleClose={handleClose}
         saveChanges={saveChanges}
         showSaveChanges={showSaveChanges}
+        setShowSaveChanges={setShowSaveChanges}
         setRevertBack={setRevertBack}
         revertBack={revertBack}
         handleRevertBack={handleRevertBack}
@@ -288,36 +311,13 @@ describe("Direct Support camps page", () => {
         idData={idData}
         handleOk={handleOk}
         handleCancel={handleCancel}
+        removeSupportCampsData={removeSupportCampsData}
       />
     );
     <input placeholder="Search by topic name" />;
     screen.queryByPlaceholderText(/Search by topic name/i);
   });
-  it("update a value when write in search box", () => {
-    render(
-      <DirectSupportedCampsUI
-        removeCardSupportedCamps={removeCardSupportedCamps}
-        handleSupportedCampsCancel={handleSupportedCampsCancel}
-        isSupportedCampsModalVisible={isSupportedCampsModalVisible}
-        directSupportedCampsList={directSupportedCampsList}
-        setDirectSupportedCampsList={setDirectSupportedCampsList}
-        search={search}
-        removeSupport={removeSupport}
-        handleClose={handleClose}
-        saveChanges={saveChanges}
-        showSaveChanges={showSaveChanges}
-        setRevertBack={setRevertBack}
-        revertBack={revertBack}
-        handleRevertBack={handleRevertBack}
-        visible={visible}
-        idData={idData}
-        handleOk={handleOk}
-        handleCancel={handleCancel}
-      />
-    );
-    const searchInput = screen.getByText("Search by topic name");
-    console.log(searchInput);
-  });
+
   it("render click on topic cross button then two buttons are activated", () => {
     const { container } = render(
       <DirectSupportedCampsUI
@@ -327,10 +327,12 @@ describe("Direct Support camps page", () => {
         directSupportedCampsList={directSupportedCampsList}
         setDirectSupportedCampsList={setDirectSupportedCampsList}
         search={search}
+        setCardCamp_ID={setCardCamp_ID}
         removeSupport={removeSupport}
         handleClose={handleClose}
         saveChanges={saveChanges}
         showSaveChanges={showSaveChanges}
+        setShowSaveChanges={setShowSaveChanges}
         setRevertBack={setRevertBack}
         revertBack={revertBack}
         handleRevertBack={handleRevertBack}
@@ -338,6 +340,7 @@ describe("Direct Support camps page", () => {
         idData={idData}
         handleOk={handleOk}
         handleCancel={handleCancel}
+        removeSupportCampsData={removeSupportCampsData}
       />
     );
     expect(

@@ -93,6 +93,28 @@ const viewMoreDataValue = {
     },
   ],
 };
+const removeSupportCampsData = {
+  camps: [
+    {
+      camp_num: 2,
+      camp_name: "AI can only be friendly",
+      support_order: 1,
+      camp_link:
+        "/topic/16-Friendly-AI-Importance/2-AI-can-only-be-friendly#statement",
+      support_added: "2022-08-10",
+    },
+  ],
+  delegated_nick_name_id: 1,
+  delegated_to_nick_name: "Brent_Allsop",
+  delegated_to_nick_name_link:
+    "/user/supports/1?topicnum=16&campnum=2&namespace=1",
+  my_nick_name: "Nick",
+  my_nick_name_link: "/user/supports/643?topicnum=16&campnum=2&namespace=1",
+  nick_name_id: 643,
+  title: "Friendly AI Importance",
+  title_link: "/topic/16-Friendly-AI-Importance/1-Agreement",
+  topic_num: 16,
+};
 describe("Delegated Support camps page", () => {
   it("render Modal when Remove support is clicked", () => {
     const { getByText } = render(
@@ -100,13 +122,14 @@ describe("Delegated Support camps page", () => {
         removeCardDelegatedSupportedCamps={removeCardDelegatedSupportedCamps}
         handleSupportedCampsCancel={handleSupportedCampsCancel}
         isRemoveSupportModalVisible={isRemoveSupportModalVisible}
-        showViewMoreModal={showViewMoreModal}
+        showViewMoreModal={(e, data) => showViewMoreModal(e, data)}
+        viewMoreDataValue={viewMoreDataValue}
         handelViewMoreModalCancel={handelViewMoreModalCancel}
         viewMoreModalVisible={viewMoreModalVisible}
         delegatedSupportCampsList={delegatedSupportCampsList}
-        viewMoreDataValue={viewMoreDataValue}
         search={search}
         removeSupport={removeSupport}
+        removeSupportCampsData={removeSupportCampsData}
       />
     );
     expect(getByText("Remove")).toBeTruthy();
@@ -123,13 +146,14 @@ describe("Delegated Support camps page", () => {
         removeCardDelegatedSupportedCamps={removeCardDelegatedSupportedCamps}
         handleSupportedCampsCancel={handleSupportedCampsCancel}
         isRemoveSupportModalVisible={isRemoveSupportModalVisible}
-        showViewMoreModal={showViewMoreModal}
+        showViewMoreModal={(e, data) => showViewMoreModal(e, data)}
+        viewMoreDataValue={viewMoreDataValue}
         handelViewMoreModalCancel={handelViewMoreModalCancel}
         viewMoreModalVisible={viewMoreModalVisible}
         delegatedSupportCampsList={delegatedSupportCampsList}
         search={search}
-        viewMoreDataValue={viewMoreDataValue}
         removeSupport={removeSupport}
+        removeSupportCampsData={removeSupportCampsData}
       />
     );
     expect(
@@ -142,13 +166,14 @@ describe("Delegated Support camps page", () => {
         removeCardDelegatedSupportedCamps={removeCardDelegatedSupportedCamps}
         handleSupportedCampsCancel={handleSupportedCampsCancel}
         isRemoveSupportModalVisible={isRemoveSupportModalVisible}
-        showViewMoreModal={showViewMoreModal}
+        showViewMoreModal={(e, data) => showViewMoreModal(e, data)}
+        viewMoreDataValue={viewMoreDataValue}
         handelViewMoreModalCancel={handelViewMoreModalCancel}
         viewMoreModalVisible={viewMoreModalVisible}
         delegatedSupportCampsList={delegatedSupportCampsList}
         search={search}
-        viewMoreDataValue={viewMoreDataValue}
         removeSupport={removeSupport}
+        removeSupportCampsData={removeSupportCampsData}
       />
     );
     expect(
@@ -177,13 +202,14 @@ describe("Delegated Support camps page", () => {
         removeCardDelegatedSupportedCamps={removeCardDelegatedSupportedCamps}
         handleSupportedCampsCancel={handleSupportedCampsCancel}
         isRemoveSupportModalVisible={isRemoveSupportModalVisible}
-        showViewMoreModal={showViewMoreModal}
+        showViewMoreModal={(e, data) => showViewMoreModal(e, data)}
+        viewMoreDataValue={viewMoreDataValue}
         handelViewMoreModalCancel={handelViewMoreModalCancel}
         viewMoreModalVisible={viewMoreModalVisible}
         delegatedSupportCampsList={delegatedSupportCampsList}
         search={search}
-        viewMoreDataValue={viewMoreDataValue}
         removeSupport={removeSupport}
+        removeSupportCampsData={removeSupportCampsData}
       />
     );
     expect(
@@ -196,13 +222,14 @@ describe("Delegated Support camps page", () => {
         removeCardDelegatedSupportedCamps={removeCardDelegatedSupportedCamps}
         handleSupportedCampsCancel={handleSupportedCampsCancel}
         isRemoveSupportModalVisible={isRemoveSupportModalVisible}
-        showViewMoreModal={showViewMoreModal}
+        showViewMoreModal={(e, data) => showViewMoreModal(e, data)}
         viewMoreDataValue={viewMoreDataValue}
         handelViewMoreModalCancel={handelViewMoreModalCancel}
         viewMoreModalVisible={viewMoreModalVisible}
         delegatedSupportCampsList={delegatedSupportCampsList}
         search={search}
         removeSupport={removeSupport}
+        removeSupportCampsData={removeSupportCampsData}
       />
     );
     expect(

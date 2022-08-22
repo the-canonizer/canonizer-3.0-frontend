@@ -22,7 +22,7 @@ export const getHistoryApi = async (reqBody, pageNumber, historyOf: string) => {
     }
     return history?.data;
   } catch (error) {
-    // message.error(error.message);
+    store.dispatch(pushToCampHistory([]));
   }
 };
 
