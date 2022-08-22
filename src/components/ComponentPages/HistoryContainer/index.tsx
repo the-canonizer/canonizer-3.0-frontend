@@ -304,12 +304,12 @@ function HistoryContainer() {
               type="primary"
               onClick={onCompareClick}
             >
-              Compare
-              {historyOf == "camp"
-                ? " Camps"
-                : historyOf == "topic"
-                ? " Topics"
-                : " Statements"}
+              Compare{" "}
+              {historyOf == "topic"
+                ? "Topics"
+                : historyOf == "camp"
+                ? "Camps"
+                : "Statements"}
             </Button>
           </div>
         </Affix>
