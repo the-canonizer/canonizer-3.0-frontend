@@ -25,6 +25,7 @@ import ForumSlice from "./slices/campForumSlice";
 import campNewsSlice from "./slices/news";
 import notifications from "./slices/notificationSlice";
 import supportTreeCard from "./slices/supportTreeCard";
+import utilsSlice from "./slices/utilsSlice";
 // reducers
 
 let combinedReducer = combineReducers({
@@ -39,6 +40,7 @@ let combinedReducer = combineReducers({
   forum: ForumSlice,
   supportTreeCard: supportTreeCard,
   notifications,
+  utilsSlice: utilsSlice,
 });
 
 const rootReducer = (state, action) => {
@@ -58,6 +60,7 @@ const persistConfig = {
     "forum",
     "supportTreeCard",
     "topicDetails",
+    "utilsSlice",
   ],
 };
 

@@ -89,7 +89,10 @@ const CreateNewTopic = ({
       });
 
       const oldOptions = [...options];
-      await oldOptions.map((op) => (op.checked = false));
+      await oldOptions.map((op) => {
+        op.checked = false;
+        op.disable = false;
+      });
       setOptions(oldOptions);
     }
 
@@ -127,9 +130,21 @@ const CreateNewTopic = ({
   // checkbox
   const onCheckboxChange = async (e: CheckboxChangeEvent) => {
     const oldOptions = [...options];
+
     await oldOptions.map((op) =>
       op.id === e.target.value ? (op.checked = e.target.checked) : ""
     );
+
+    const option1 = oldOptions[0],
+      option2 = oldOptions[1];
+
+    if (option1.id === "is_disabled" && option1.checked) {
+      option2.checked = false;
+      option2.disable = true;
+    } else {
+      option2.disable = false;
+    }
+
     setOptions(oldOptions);
   };
 

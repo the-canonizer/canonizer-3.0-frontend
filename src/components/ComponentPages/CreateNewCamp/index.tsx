@@ -14,7 +14,6 @@ import {
 } from "../../../network/api/campDetailApi";
 import { RootState } from "../../../store";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
-import isAuth from "../../../hooks/isUserAuthenticated";
 import messages from "../../../messages";
 
 import CreateNewCampUI from "./UI/CampUI";
@@ -35,8 +34,6 @@ const CreateNewCamp = ({
   const router = useRouter();
   const [form] = Form.useForm();
   const dispatch = useDispatch();
-
-  const isLoggedIn = isAuth();
 
   const { topicRecord, campRecord, asof, asofdate, algorithm } = useSelector(
     (state: RootState) => ({
@@ -197,7 +194,10 @@ const CreateNewCamp = ({
       });
 
       const oldOptions = [...options];
-      await oldOptions.map((op) => (op.checked = false));
+      await oldOptions.map((op) => {
+        op.checked = false;
+        op.disable = false;
+      });
       setOptions(oldOptions);
     }
 
@@ -228,9 +228,21 @@ const CreateNewCamp = ({
   // checkbox
   const onCheckboxChange = async (e: CheckboxChangeEvent) => {
     const oldOptions = [...options];
+
     await oldOptions.map((op) =>
       op.id === e.target.value ? (op.checked = e.target.checked) : ""
     );
+
+    const option1 = oldOptions[0],
+      option2 = oldOptions[1];
+
+    if (option1.id === "is_disabled" && option1.checked) {
+      option2.checked = false;
+      option2.disable = true;
+    } else {
+      option2.disable = false;
+    }
+
     setOptions(oldOptions);
   };
 

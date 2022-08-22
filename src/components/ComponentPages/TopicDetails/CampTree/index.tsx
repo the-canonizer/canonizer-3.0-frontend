@@ -36,8 +36,23 @@ const CampTree = ({ scrollToCampStatement }) => {
     setIncludeReview(review == "review" ? true : false);
   }, [filterByScore, review]);
 
-  const renderTreeNodes = (data: any) =>
-    Object.keys(data).map((item) => {
+  const renderTreeNodes = (data: any) => {
+    let disableOneLevel = false;
+    let disableAll = false;
+
+    return Object.keys(data).map((item) => {
+      if (data[item].is_disabled && data[item].children) {
+        disableAll = true;
+      } else {
+        disableAll = false;
+      }
+
+      if (data[item].is_one_level && data[item].children) {
+        disableOneLevel = true;
+      } else {
+        disableOneLevel = false;
+      }
+
       if (data[item].children) {
         if (data[item].score >= scoreFilter) {
           return (
@@ -93,6 +108,8 @@ const CampTree = ({ scrollToCampStatement }) => {
               >
                 {console.log(
                   "[data[item]]",
+                  data[item],
+                  "[data[item]is_disabled]",
                   data[item]?.is_disabled,
                   "One Level",
                   data[item]?.is_one_level
@@ -102,7 +119,7 @@ const CampTree = ({ scrollToCampStatement }) => {
                   <TreeNode
                     key={"custom"}
                     title={
-                      data[item]?.is_disabled !== 1 ? (
+                      data[item]?.is_disabled !== 1 || disableAll ? (
                         <p className={styles.startNew}>
                           <Link
                             href={{
@@ -130,6 +147,7 @@ const CampTree = ({ scrollToCampStatement }) => {
       }
       return <TreeNode key={data[item].key} {...data[item]} />;
     });
+  };
 
   return tree ? (
     <Tree

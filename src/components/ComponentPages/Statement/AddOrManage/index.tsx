@@ -46,6 +46,9 @@ import messages from "../../../../messages";
 import { useDispatch, useSelector } from "react-redux";
 
 import Link from "next/link";
+import { CheckboxChangeEvent } from "antd/es/checkbox";
+
+const { Text } = Typography;
 
 export default function AddOrManage({ add }) {
   const isLogin = useAuthentication();
@@ -57,6 +60,7 @@ export default function AddOrManage({ add }) {
   const [screenLoading, setScreenLoading] = useState(false);
   const [payloadBreadCrumb, setPayloadBreadCrumb] = useState({});
   const [parentCamp, setParentCamps] = useState([]);
+  const [wikiStatement, setWikiStatement] = useState("");
   const [errors, setErrors] = useState({
     CampNameError: false,
     campNameMsg: "",
@@ -66,6 +70,7 @@ export default function AddOrManage({ add }) {
 
   const [campNickName, setCampNickName] = useState([]);
   const [canNameSpace, setCanNameSpace] = useState([]);
+  const [options, setOptions] = useState([...messages.preventCampLabel]);
 
   const [form] = Form.useForm();
   let objection = router?.query?.statement[0]?.split("-")[1] == "objection";
@@ -108,6 +113,12 @@ export default function AddOrManage({ add }) {
           router.push(`/topic/history/${route}`);
         }
       }
+      const oldOptions = [...options];
+      await oldOptions.map((op) => {
+        op.checked = false;
+        op.disable = false;
+      });
+      setOptions(oldOptions);
     } else if (res?.status_code == 400) {
       // console.log("error in res =>", res);
     }
@@ -182,10 +193,12 @@ export default function AddOrManage({ add }) {
     };
     let res;
     if (manageFormOf == "camp") {
+      options.map((op) => (reqBody[op.id] = op.checked ? 1 : 0));
       res = await updateCampApi(reqBody);
     } else if (manageFormOf == "statement") {
       res = await updateStatementApi(reqBody);
     } else if (manageFormOf == "topic") {
+      options.map((op) => (reqBody[op.id] = op.checked ? 1 : 0));
       res = await updateTopicApi(reqBody);
     }
     return res;
@@ -316,8 +329,31 @@ export default function AddOrManage({ add }) {
               }
         );
         setNickNameData(result?.data);
-        if (manageFormOf == "camp" || manageFormOf == "topic") {
-          console.log("[res?.data?]", res?.data);
+        if (manageFormOf == "topic" || manageFormOf == "camp") {
+          const oldOptions = [...options];
+
+          await oldOptions.map((op) => {
+            if (op.id === "is_disabled") {
+              op.checked =
+                res?.data[manageFormOf]?.is_disabled === 1 ? true : false;
+            }
+            if (op.id === "is_one_level") {
+              op.checked =
+                res?.data[manageFormOf]?.is_one_level === 1 ? true : false;
+            }
+          });
+
+          const option1 = oldOptions[0],
+            option2 = oldOptions[1];
+
+          if (option1.id === "is_disabled" && option1.checked) {
+            option2.checked = false;
+            option2.disable = true;
+          } else {
+            option2.disable = false;
+          }
+
+          setOptions(oldOptions);
         }
       }
       setScreenLoading(false);
@@ -343,6 +379,17 @@ export default function AddOrManage({ add }) {
     await oldOptions.map((op) =>
       op.id === e.target.value ? (op.checked = e.target.checked) : ""
     );
+
+    const option1 = oldOptions[0],
+      option2 = oldOptions[1];
+
+    if (option1.id === "is_disabled" && option1.checked) {
+      option2.checked = false;
+      option2.disable = true;
+    } else {
+      option2.disable = false;
+    }
+
     setOptions(oldOptions);
   };
 

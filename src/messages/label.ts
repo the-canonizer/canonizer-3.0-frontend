@@ -79,6 +79,7 @@ export const preventCampLabel = [
     tooltip: "Disable the ability to add additional sub camps.",
     id: "is_disabled",
     checked: false,
+    disable: false,
   },
   {
     label: "Single level sub camps only.",
@@ -86,5 +87,6 @@ export const preventCampLabel = [
       "Disable the ability to add additional sub camps beyond direct sub camps.",
     id: "is_one_level",
     checked: false,
+    disable: false,
   },
 ];
