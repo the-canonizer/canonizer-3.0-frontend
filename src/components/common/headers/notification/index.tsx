@@ -176,7 +176,7 @@ const Notifications = ({}) => {
   }
 
   const onNotifyClick = async (id) => {
-    dispatch(setManageSupportStatusCheck(null));
+    dispatch(setManageSupportStatusCheck(false));
     const res = await markNotificationRead(id);
     if (res && res.status_code === 200) {
       router.query.from = "";

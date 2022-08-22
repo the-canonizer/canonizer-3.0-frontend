@@ -137,7 +137,12 @@ function HistoryContainer() {
       }`,
       query: {
         statements: selectedTopic[0] + "_" + selectedTopic[1],
-        from: router.query.camp[1] ? "camp" : "topic",
+        from:
+          historyOf == "statement"
+            ? "statement"
+            : historyOf == "camp"
+            ? "camp"
+            : "topic",
       },
     });
   };
@@ -299,7 +304,12 @@ function HistoryContainer() {
               type="primary"
               onClick={onCompareClick}
             >
-              Compare Statements
+              Compare
+              {historyOf == "camp"
+                ? " Camps"
+                : historyOf == "topic"
+                ? " Topics"
+                : " Statements"}
             </Button>
           </div>
         </Affix>

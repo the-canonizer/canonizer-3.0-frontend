@@ -17,7 +17,7 @@ export const treeSlice = createSlice({
         topic: null,
       },
     },
-    manageSupportStatusCheck: null,
+    manageSupportStatusCheck: false,
     CurrentCheckSupportStatus: null,
     currentGetCheckSupportExistsData: {
       camp_num: null,

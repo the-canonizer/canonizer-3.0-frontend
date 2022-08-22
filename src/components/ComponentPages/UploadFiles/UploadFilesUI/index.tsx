@@ -962,12 +962,12 @@ const UploadFileUI = ({
   return (
     <>
       <div>
-        <div className={styles.card}>
-          <div className={styles.btnsWrap}>
+        <div className="leftSideBar_Card p-0 m-0">
+          <div className="btnsWrap">
             <Button
               id="createNewTopicBtn"
               size="large"
-              className={styles.btn}
+              className={"btn"}
               onClick={campRoute}
             >
               <i className="icon-topic"></i> Create New Topic

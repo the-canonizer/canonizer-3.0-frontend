@@ -30,9 +30,13 @@ function CompareStatementUI({ statements, isLoading, liveStatement }) {
       router.push({
         pathname: `/topic/history/${router?.query?.routes[0]}}`,
       });
-    } else {
+    } else if (query.from === "statement") {
       router.push({
         pathname: `/statement/history/${router?.query?.routes[0]}/${router?.query?.routes[1]}`,
+      });
+    } else {
+      router.push({
+        pathname: `/camp/history/${router?.query?.routes[0]}/${router?.query?.routes[1]}`,
       });
     }
   };
@@ -59,7 +63,14 @@ function CompareStatementUI({ statements, isLoading, liveStatement }) {
               >
                 <ArrowLeftOutlined />
               </Button>
-              <Title level={4}>Camp Statement History Comparison</Title>
+              <Title level={4}>
+                {router?.query?.from === "topic"
+                  ? "Topic "
+                  : router?.query?.from === "camp"
+                  ? "Camp "
+                  : "Camp Statement "}
+                History Comparison
+              </Title>
             </div>
           </div>
           <div className={styles.contentBody}>
