@@ -28,7 +28,7 @@ export const getCanonizedTopicsApi = async (reqBody, loadMore = false) => {
     }
     return topics?.data;
   } catch (error) {
-    // message.error(error.message);
+    store.dispatch(setCanonizedTopics(null));
   }
 };
 
@@ -40,7 +40,7 @@ export const getCanonizedNameSpacesApi = async () => {
     store.dispatch(setCanonizedNameSpaces(nameSpaces));
     return nameSpaces;
   } catch (error) {
-    // message.error(error.message);
+    store.dispatch(setCanonizedNameSpaces(null));
   }
 };
 
@@ -50,14 +50,6 @@ export const getRecentActivitiesApi = async (
   topicType
 ) => {
   try {
-    /////////////////////////////////////////////////////////////////////////////
-    // Once API gets completed I'll uncomment this chunk and remove mockData  //
-    ///////////////////////////////////////////////////////////////////////////
-
-    // const recentActivities = await NetworkCall.fetch(
-    //   HomePageRequests.getCanonizedRecentActivities(reqBody),
-    //   false
-    // );
     let state = store.getState();
     const { auth } = state;
 
@@ -78,7 +70,7 @@ export const getRecentActivitiesApi = async (
         : store.dispatch(setThreads(recentActivities?.data));
     }
   } catch (error) {
-    // message.error(error.message);
+    store.dispatch(setThreads(null));
   }
 };
 
@@ -91,7 +83,7 @@ export const getCanonizedAlgorithmsApi = async () => {
     store.dispatch(setCanonizedAlgorithms(algorithms));
     return algorithms;
   } catch (error) {
-    // message.error(error.message);
+    store.dispatch(setCanonizedAlgorithms(null));
   }
 };
 

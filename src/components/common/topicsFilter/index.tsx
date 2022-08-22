@@ -246,13 +246,13 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
               className={styles.algoSelect}
               defaultValue={
                 algorithms?.filter(
-                  (algo) => algo.algorithm_key == "blind_popularity"
+                  (algo) => algo.algorithm_key == selectedAlgorithm
                 )[0].algorithm_label
               }
               onChange={selectAlgorithm}
               value={
                 algorithms?.filter(
-                  (algo) => algo.algorithm_key == "blind_popularity"
+                  (algo) => algo.algorithm_key == selectedAlgorithm
                 )[0].algorithm_label
               }
             >
