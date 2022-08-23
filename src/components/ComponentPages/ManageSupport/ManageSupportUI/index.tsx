@@ -24,6 +24,7 @@ const ManageSupportUI = ({
   selectedtNickname,
   setSelectedtNickname,
   submitButtonDisable,
+  setUpdatePostion,
 }) => {
   const { currentDelegatedSupportedClick } = useSelector(
     (state: RootState) => ({
@@ -151,6 +152,7 @@ const ManageSupportUI = ({
             </div>
           )}
           onChange={(tags) => {
+            setUpdatePostion(true);
             setManageSupportList(tags);
           }}
         />
