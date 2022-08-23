@@ -194,6 +194,17 @@ body {
       }
     }
   }
+  .btnFilter {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 99;
+    border-radius: 2px 0 0 2px;
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.25rem;
+  }
   &_Card {
     padding-top: 15px;
     padding-right: 15px;
@@ -1389,6 +1400,21 @@ body {
       }
     }
   }
+  .campStatementPanel {
+    .ant-collapse-header {
+      @media screen and (min-width: 576px) {
+        align-items: center;
+      }
+      @media screen and (max-width: 575px) {
+        display: block;
+      }
+    }
+    .ant-collapse-extra {
+      @media screen and (max-width: 575px) {
+        margin-top: .5rem;
+      }
+    }
+  }
   .ant-collapse-item-disabled {
     .ant-collapse-header {
       cursor: inherit;
@@ -1675,4 +1701,8 @@ div[role="option"]::before {
       }
     }
   }
+}
+
+.ant-drawer-content-wrapper {
+  max-width: 100%;
 }
