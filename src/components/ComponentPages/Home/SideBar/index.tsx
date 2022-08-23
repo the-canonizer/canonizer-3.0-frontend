@@ -3,12 +3,11 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { Button, Drawer } from "antd";
-import { AppstoreAddOutlined } from '@ant-design/icons';
+import { AppstoreAddOutlined } from "@ant-design/icons";
 import TopicsFilter from "../../../common/topicsFilter";
 import CampRecentActivities from "../CampRecentActivities";
 import NewsFeedsCard from "../../TopicDetails/NewsFeedsCard";
 import styles from "../../../../hoc/layout/layout.module.scss";
-
 
 export default function HomeSideBar({ onCreateCamp = () => {} }) {
   const router = useRouter();
