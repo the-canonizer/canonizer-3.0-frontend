@@ -120,7 +120,7 @@ function CompareStatementUI({ statements, isLoading, liveStatement }) {
                       <Fragment>
                         <Paragraph>
                           <Text strong>Parent Camp : </Text>
-                          <Text>{s1?.parent_camp}</Text>
+                          <Text>{s1?.parent_camp_name}</Text>
                         </Paragraph>
                         <Paragraph>
                           <Text strong>Keywords : </Text>
@@ -194,7 +194,7 @@ function CompareStatementUI({ statements, isLoading, liveStatement }) {
                       <Fragment>
                         <Paragraph>
                           <Text strong>Parent Camp : </Text>
-                          <Text>{s2?.parent_camp}</Text>
+                          <Text>{s2?.parent_camp_name}</Text>
                         </Paragraph>
                         <Paragraph>
                           <Text strong>Keywords : </Text>
@@ -286,7 +286,7 @@ function CompareStatementUI({ statements, isLoading, liveStatement }) {
                       <Fragment>
                         <Paragraph>
                           <Text strong>Parent Camp : </Text>
-                          <Text>{liveStatement?.parent_camp}</Text>
+                          <Text>{liveStatement?.parent_camp_name}</Text>
                         </Paragraph>
                         <Paragraph>
                           <Text strong>Keywords : </Text>
