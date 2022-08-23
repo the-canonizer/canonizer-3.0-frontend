@@ -297,7 +297,7 @@ function HistoryContainer() {
               disabled={
                 !(
                   selectedTopic.length >= 2 &&
-                  !selectedTopic?.includes(campHistory["id"])
+                  !selectedTopic?.includes(campHistory && campHistory["id"])
                 )
               }
               className={styles.active}
