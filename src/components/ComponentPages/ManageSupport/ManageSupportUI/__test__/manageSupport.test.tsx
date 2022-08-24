@@ -15,7 +15,8 @@ const setManageSupportList = [],
   submitNickNameSupportCamps = jest.fn(),
   cancelManageRoute = jest.fn(),
   setSelectedtNickname = jest.fn(),
-  selectedtNickname = "";
+  selectedtNickname = "",
+  setUpdatePostion = jest.fn();
 const submitButtonDisable = false;
 
 describe("ManageSupportUI", () => {
@@ -36,6 +37,7 @@ describe("ManageSupportUI", () => {
         setSelectedtNickname={setSelectedtNickname}
         selectedtNickname={selectedtNickname}
         submitButtonDisable={submitButtonDisable}
+        setUpdatePostion={setUpdatePostion}
       />
     );
     expect(screen.getByText(labels.SupportedCamps)).toBeTruthy();
@@ -60,6 +62,7 @@ describe("ManageSupportUI", () => {
         setSelectedtNickname={setSelectedtNickname}
         selectedtNickname={selectedtNickname}
         submitButtonDisable={submitButtonDisable}
+        setUpdatePostion={setUpdatePostion}
       />
     );
     expect(screen.getByText("Nick Name To Support Above Camps")).toBeTruthy();
@@ -83,6 +86,7 @@ it("render show submit button", () => {
       setSelectedtNickname={setSelectedtNickname}
       selectedtNickname={selectedtNickname}
       submitButtonDisable={submitButtonDisable}
+      setUpdatePostion={setUpdatePostion}
     />
   );
   const submitButton = getAllByText("Submit")[0] as HTMLButtonElement;
@@ -106,6 +110,7 @@ it("render show cancel button", () => {
       setSelectedtNickname={setSelectedtNickname}
       selectedtNickname={selectedtNickname}
       submitButtonDisable={submitButtonDisable}
+      setUpdatePostion={setUpdatePostion}
     />
   );
   const cancelButton = getAllByText("Cancel")[0] as HTMLButtonElement;
@@ -129,6 +134,7 @@ it("render show clear changes button", () => {
       setSelectedtNickname={setSelectedtNickname}
       selectedtNickname={selectedtNickname}
       submitButtonDisable={submitButtonDisable}
+      setUpdatePostion={setUpdatePostion}
     />
   );
   const clearChangesButton = getAllByText(
@@ -154,6 +160,7 @@ it("render show Quick Action Text", () => {
       setSelectedtNickname={setSelectedtNickname}
       selectedtNickname={selectedtNickname}
       submitButtonDisable={submitButtonDisable}
+      setUpdatePostion={setUpdatePostion}
     />
   );
   const quickActionText = getAllByText("Quick Action:");
@@ -177,6 +184,7 @@ it("render show Remove all Text", () => {
       setSelectedtNickname={setSelectedtNickname}
       selectedtNickname={selectedtNickname}
       submitButtonDisable={submitButtonDisable}
+      setUpdatePostion={setUpdatePostion}
     />
   );
   const removeAllText = getAllByText("Remove all");
@@ -200,6 +208,7 @@ it("render show checkbox", () => {
       setSelectedtNickname={setSelectedtNickname}
       selectedtNickname={selectedtNickname}
       submitButtonDisable={submitButtonDisable}
+      setUpdatePostion={setUpdatePostion}
     />
   );
   expect(
