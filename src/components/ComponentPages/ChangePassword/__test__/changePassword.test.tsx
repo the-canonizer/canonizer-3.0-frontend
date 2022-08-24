@@ -16,9 +16,11 @@ describe("ChangePassword page", () => {
 
   it("render inputs field and submit button", () => {
     render(<ChangePassword />);
-    const currentPassword = screen.getByLabelText(labels.currentPassword);
-    const newPassword = screen.getByLabelText(labels.newPassword);
-    const confirmPassword = screen.getByLabelText(labels.confirmPassword);
+    const currentPassword = screen.getByPlaceholderText(labels.currentPassword);
+    const newPassword = screen.getByPlaceholderText(labels.newPassword);
+    const confirmPassword = screen.getByPlaceholderText(
+      "Enter Confirm Password"
+    );
 
     expect(currentPassword).toBeInTheDocument();
     expect(currentPassword).toHaveAttribute("type", "password");
@@ -44,7 +46,7 @@ describe("ChangePassword page", () => {
 
   it("check password minimum length > 8", async () => {
     render(<ChangePassword isModal={false} />);
-    const inputEl = screen.getByLabelText(labels.newPassword);
+    const inputEl = screen.getByPlaceholderText(labels.newPassword);
     userEvent.type(inputEl, "123");
     await waitFor(() => {
       expect(inputEl).toHaveValue("123");
@@ -59,7 +61,7 @@ describe("ChangePassword page", () => {
 
   it("pass valid password", async () => {
     render(<ChangePassword />);
-    const inputEl = screen.getByLabelText(labels.newPassword);
+    const inputEl = screen.getByPlaceholderText(labels.newPassword);
     userEvent.type(inputEl, "Abc@1234");
     await waitFor(() => {
       expect(inputEl).toHaveValue("Abc@1234");
@@ -69,8 +71,8 @@ describe("ChangePassword page", () => {
 
   it("pass invalid confirm password", async () => {
     render(<ChangePassword />);
-    const inputEl = screen.getByLabelText(labels.newPassword);
-    const inputEl2 = screen.getByLabelText(labels.confirmPassword);
+    const inputEl = screen.getByPlaceholderText(labels.newPassword);
+    const inputEl2 = screen.getByPlaceholderText("Enter Confirm Password");
     userEvent.type(inputEl, "Abc@1234");
     userEvent.type(inputEl2, "Abc@12344");
     await waitFor(() => {
@@ -85,13 +87,14 @@ describe("ChangePassword page", () => {
 
   it("pass valid confirm password", async () => {
     render(<ChangePassword />);
-    const inputEl = screen.getByLabelText(labels.newPassword);
-    const inputEl2 = screen.getByLabelText(labels.confirmPassword);
+    const inputEl = screen.getByPlaceholderText(labels.newPassword);
+    const inputEl2 = screen.getByPlaceholderText("Enter Confirm Password");
     userEvent.type(inputEl, "Abc@1234");
     userEvent.type(inputEl2, "Abc@1234");
     await waitFor(() => {
       expect(inputEl).toHaveValue("Abc@1234");
       expect(inputEl2).toHaveValue("Abc@1234");
+
       expect(screen.queryByRole("alert")).not.toBeInTheDocument();
     });
   });

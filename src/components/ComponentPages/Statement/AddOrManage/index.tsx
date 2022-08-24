@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 import "antd/dist/antd.css";
 import styles from "../addEditNews.module.scss";
 import K from "../../../../constants";
+import messages from "src/messages";
 import {
   getAllUsedNickNames,
   getAllParentsCamp,
@@ -49,6 +50,8 @@ import Link from "next/link";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
 
 const { Text } = Typography;
+
+const { campAboutUrlRule } = messages;
 
 export default function AddOrManage({ add }) {
   const isLogin = useAuthentication();
@@ -435,6 +438,7 @@ export default function AddOrManage({ add }) {
               <Form
                 form={form}
                 layout={"vertical"}
+                validateTrigger={messages.formValidationTypes()}
                 initialValues={{
                   available_for_child: 0,
                 }}
@@ -721,12 +725,14 @@ export default function AddOrManage({ add }) {
                                 </>
                               }
                               name="camp_about_url"
-                              rules={[
-                                {
-                                  pattern: /[^ \s]/,
-                                  message: "Enter a valid link",
-                                },
-                              ]}
+                              // rules={[
+                              //   {
+                              //     pattern: /[^ \s]/,
+                              //     message: "Enter a valid link",
+                              //   },
+                              // ]}
+
+                              {...campAboutUrlRule}
                             >
                               <Input maxLength={1024} />
                             </Form.Item>
