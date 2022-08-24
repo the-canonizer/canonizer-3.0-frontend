@@ -3,11 +3,17 @@ import { createSlice } from "@reduxjs/toolkit";
 export const utilsSlice = createSlice({
   name: "utils",
   initialState: {
-    isLink: false,
+    is_link: false,
+    logout_type: null,
+    email: "",
+    remember_me: null,
+    social_login_keys: null,
+    redirect_type: null,
+    redirect_tab_setting: null,
   },
   reducers: {
     setIsLink: (state, action) => {
-      state.isLink = action.payload.isLink;
+      state.is_link = action.payload.isLink;
     },
   },
 });
