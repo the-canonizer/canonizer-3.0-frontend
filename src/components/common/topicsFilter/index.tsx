@@ -103,6 +103,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
     selectedAsOf,
     filteredAsOfDate,
     currentCampRecord,
+    currentCampNode,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filterObject: state?.filters?.filterObject,
@@ -111,8 +112,9 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
     selectedAsOf: state?.filters?.filterObject?.asof,
     filteredAsOfDate: state?.filters?.filterObject?.asofdate,
     currentCampRecord: state.topicDetails.currentCampRecord,
+    currentCampNode: state?.filters?.selectedCampNode,
   }));
-  console.log("[currentCampRecord]", currentCampRecord);
+  console.log("[currentCampRecord]", currentCampNode);
   const [value, setValue] = useState(
     selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3
   );
@@ -213,7 +215,9 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
           <Button size="large" className="mb-3 btn" onClick={campRoute}>
             <i className="icon-topic"></i> Create New Topic
           </Button>
-          {isCampBtnVisible && currentCampRecord?.is_disabled !== 1 ? (
+          {isCampBtnVisible &&
+          (!currentCampNode?.parent_camp_is_one_level ||
+            currentCampNode?.parent_camp_is_disabled) ? (
             <Button size="large" className="btn" onClick={onCreateCamp}>
               <i className="icon-camp"></i> Create New Camp
             </Button>

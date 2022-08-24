@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Tree } from "antd";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "src/store";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styles from "../topicDetails.module.scss";
+
+import { setCurrentCamp } from "src/store/slices/filtersSlice";
 
 const { TreeNode } = Tree;
 
@@ -20,6 +22,7 @@ const CampTree = ({ scrollToCampStatement }) => {
     review == "review" ? true : false
   );
   const router = useRouter();
+  const dispatch = useDispatch();
   const onSelect = (
     selectedKeys,
     e: { selected; selectedNodes; node; event }
@@ -27,6 +30,7 @@ const CampTree = ({ scrollToCampStatement }) => {
     if (selectedKeys.join() === "custom" || selectedKeys.join() === "") {
       console.log("selected", selectedKeys, e);
     } else {
+      dispatch(setCurrentCamp(e.node));
       setSelectedNodeID(+selectedKeys.join(""));
       scrollToCampStatement();
     }
@@ -37,18 +41,18 @@ const CampTree = ({ scrollToCampStatement }) => {
   }, [filterByScore, review]);
 
   const renderTreeNodes = (
-    data: any,
-    isDisabledSubCamp: number = 0,
-    isSingleLevelOnly: number = 0
+    data: any
+    // isDisabledSubCamp: number = 0,
+    // isSingleLevelOnly: number = 0
   ) => {
-    let disableOneLevel = isSingleLevelOnly;
-    let disableAll = isDisabledSubCamp;
+    // let disableOneLevel = isSingleLevelOnly;
+    // let disableAll = isDisabledSubCamp;
 
     return Object.keys(data).map((item) => {
-      disableOneLevel =
-        isSingleLevelOnly == 1 || data[item].is_one_level == 1 ? 1 : 0;
-      disableAll =
-        isDisabledSubCamp == 1 || data[item].is_disabled == 1 ? 1 : 0;
+      // disableOneLevel =
+      //   isSingleLevelOnly == 1 || data[item].is_one_level == 1 ? 1 : 0;
+      // disableAll =
+      //   isDisabledSubCamp == 1 || data[item].is_disabled == 1 ? 1 : 0;
 
       // if (data[item].is_disabled && data[item].children) {
       //   disableAll = true;
@@ -61,15 +65,14 @@ const CampTree = ({ scrollToCampStatement }) => {
       // } else {
       //   disableOneLevel = false;
       // }
-      console.group("[TOPIC TREE]");
       console.log(
+        "[TOPIC TREE]",
         includeReview ? data[item]?.review_title : data[item]?.title,
         "---isSingleLevelOnly:-",
-        disableOneLevel,
+        data[item]?.parent_camp_is_one_level,
         "---isDisabledSubCamp:-",
-        disableAll
+        data[item]?.parent_camp_is_disabled
       );
-      console.group("[TOPIC TREE]");
 
       if (data[item].children) {
         if (data[item].score >= scoreFilter) {
@@ -129,7 +132,8 @@ const CampTree = ({ scrollToCampStatement }) => {
                   <TreeNode
                     key={"custom"}
                     title={
-                      disableAll != 1 || disableOneLevel != 0 ? (
+                      !data[item].parent_camp_is_one_level ||
+                      data[item].parent_camp_is_disabled ? (
                         <p className={styles.startNew}>
                           <Link
                             href={{
@@ -147,11 +151,7 @@ const CampTree = ({ scrollToCampStatement }) => {
                     }
                   />
                 )}
-                {renderTreeNodes(
-                  data[item].children,
-                  data[item].is_disabled,
-                  data[item].is_one_level
-                )}
+                {renderTreeNodes(data[item].children)}
               </TreeNode>
             </>
           );
