@@ -42,7 +42,6 @@ import SideBarNoFilter from "../../../ComponentPages/Home/SideBarNoFilter";
 import CampInfoBar from "../../TopicDetails/CampInfoBar";
 import { RootState } from "../../../../store";
 import PreventSubCamps from "../../../common/preventSubCampCheckbox";
-import messages from "../../../../messages";
 
 import { useDispatch, useSelector } from "react-redux";
 
