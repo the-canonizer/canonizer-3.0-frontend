@@ -55,18 +55,7 @@ export default function AddOrEdit({ edit }) {
 
   const onFinish = async (values: any) => {
     setLoading(true);
-    console.log(
-      "newsfeed_id:",
-      dataToUpdate?.id,
-      "display_text:",
-      values.display_text,
-      "link:",
-      values.link.trim(),
-      "available_for_child:",
-      values.available_for_child,
-      "submitter_nick_id:",
-      nickNameData[0]?.id
-    );
+
     let res;
     edit
       ? (res = await updateNewsFeedApi({
