@@ -279,13 +279,7 @@ const TopicsList = () => {
                         }-${encodeURIComponent(
                           isReview
                             ? item?.tree_structure[1]?.review_title
-                            : // ?.split(" ")
-                              // .join("-")
-                              // ?.replace("/", "-")
-                              // ?.replace(/[^a-zA-Z0-9 ]/g, "")
-                              item?.topic_name
-                          // ?.split(" ").join("-")
-                          // ?.replace(/[^a-zA-Z0-9 ]/g, "")
+                            : item?.topic_name
                         )}/1-Agreement`,
                       }}
                     >
