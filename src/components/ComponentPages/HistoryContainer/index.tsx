@@ -137,7 +137,12 @@ function HistoryContainer() {
       }`,
       query: {
         statements: selectedTopic[0] + "_" + selectedTopic[1],
-        from: router.query.camp[1] ? "camp" : "topic",
+        from:
+          historyOf == "statement"
+            ? "statement"
+            : historyOf == "camp"
+            ? "camp"
+            : "topic",
       },
     });
   };
@@ -292,7 +297,7 @@ function HistoryContainer() {
               disabled={
                 !(
                   selectedTopic.length >= 2 &&
-                  !selectedTopic?.includes(campHistory["id"])
+                  !selectedTopic?.includes(campHistory && campHistory["id"])
                 )
               }
               className={styles.active}
