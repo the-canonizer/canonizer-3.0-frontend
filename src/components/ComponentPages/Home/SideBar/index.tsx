@@ -48,7 +48,9 @@ export default function HomeSideBar({ onCreateCamp = () => {} }) {
       {typeof window !== "undefined" && window.innerWidth > 767 && (
         <>
           {router.asPath.includes("topic") && <CampRecentActivities />}
-          {!!newsFeed?.length && <NewsFeedsCard newsFeed={newsFeed} />}
+          <div className="leftSidebarNewsFeeds">
+            {!!newsFeed?.length && <NewsFeedsCard newsFeed={newsFeed} />}
+          </div>
         </>
       )}
     </>
