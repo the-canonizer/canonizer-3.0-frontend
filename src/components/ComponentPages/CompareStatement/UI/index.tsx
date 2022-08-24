@@ -16,7 +16,8 @@ const { Title, Text, Paragraph } = Typography;
 function CompareStatementUI({ statements, isLoading, liveStatement }) {
   const router = useRouter();
   const s1 = statements[0] || {},
-    s2 = statements[1] || {};
+    s2 = statements[1] || {},
+    from = router?.query?.from;
 
   let payload = {
     camp_num: router?.query?.routes[1]?.split("-")[0],
@@ -64,9 +65,9 @@ function CompareStatementUI({ statements, isLoading, liveStatement }) {
                 <ArrowLeftOutlined />
               </Button>
               <Title level={4}>
-                {router?.query?.from === "topic"
+                {from === "topic"
                   ? "Topic "
-                  : router?.query?.from === "camp"
+                  : from === "camp"
                   ? "Camp "
                   : "Camp Statement "}
                 History Comparison
@@ -109,7 +110,35 @@ function CompareStatementUI({ statements, isLoading, liveStatement }) {
                       <Text strong>Go live time : </Text>
                       <Text>{s1?.go_live_time}</Text>
                     </Paragraph>
-                    <Text strong>Statement : </Text>
+                    {from == "topic" ? (
+                      <Paragraph>
+                        <Text strong>Namespace : </Text>
+                        <Text>{s1?.namespace}</Text>
+                      </Paragraph>
+                    ) : null}
+                    {from == "camp" ? (
+                      <Fragment>
+                        <Paragraph>
+                          <Text strong>Parent Camp : </Text>
+                          <Text>{s1?.parent_camp_name}</Text>
+                        </Paragraph>
+                        <Paragraph>
+                          <Text strong>Keywords : </Text>
+                          <Text>{s1?.key_words}</Text>
+                        </Paragraph>
+                        <Paragraph>
+                          <Text strong>Camp About URL : </Text>
+                          <Text>{s1?.camp_about_url}</Text>
+                        </Paragraph>
+                        <Paragraph>
+                          <Text strong>Camp About Nick Name : </Text>
+                          <Text>{s1?.camp_about_nick_name}</Text>
+                        </Paragraph>
+                      </Fragment>
+                    ) : null}
+                    <Text strong style={{ textTransform: "capitalize" }}>
+                      {from} :{" "}
+                    </Text>
                     <Card
                       bordered
                       className={
@@ -155,7 +184,35 @@ function CompareStatementUI({ statements, isLoading, liveStatement }) {
                       <Text strong>Go live time : </Text>
                       <Text>{s2?.go_live_time}</Text>
                     </Paragraph>
-                    <Text strong>Statement : </Text>
+                    {from == "topic" ? (
+                      <Paragraph>
+                        <Text strong>Namespace : </Text>
+                        <Text>{s2?.namespace}</Text>
+                      </Paragraph>
+                    ) : null}
+                    {from == "camp" ? (
+                      <Fragment>
+                        <Paragraph>
+                          <Text strong>Parent Camp : </Text>
+                          <Text>{s2?.parent_camp_name}</Text>
+                        </Paragraph>
+                        <Paragraph>
+                          <Text strong>Keywords : </Text>
+                          <Text>{s2?.key_words}</Text>
+                        </Paragraph>
+                        <Paragraph>
+                          <Text strong>Camp About URL : </Text>
+                          <Text>{s2?.camp_about_url}</Text>
+                        </Paragraph>
+                        <Paragraph>
+                          <Text strong>Camp About Nick Name : </Text>
+                          <Text>{s2?.camp_about_nick_name}</Text>
+                        </Paragraph>
+                      </Fragment>
+                    ) : null}
+                    <Text strong style={{ textTransform: "capitalize" }}>
+                      {from} :{" "}
+                    </Text>
                     <Card
                       bordered
                       className={
@@ -182,7 +239,9 @@ function CompareStatementUI({ statements, isLoading, liveStatement }) {
                       </Text>
                     }
                   >
-                    <Text strong>Statement : </Text>
+                    <Text strong style={{ textTransform: "capitalize" }}>
+                      {from} :{" "}
+                    </Text>
                     <div
                       dangerouslySetInnerHTML={{
                         __html: liveStatement?.parsed_value,
@@ -217,6 +276,32 @@ function CompareStatementUI({ statements, isLoading, liveStatement }) {
                       <Text strong>Go live time : </Text>
                       <Text>{liveStatement?.go_live_time}</Text>
                     </Paragraph>
+                    {from == "topic" ? (
+                      <Paragraph>
+                        <Text strong>Namespace : </Text>
+                        <Text>{liveStatement?.namespace}</Text>
+                      </Paragraph>
+                    ) : null}
+                    {from == "camp" ? (
+                      <Fragment>
+                        <Paragraph>
+                          <Text strong>Parent Camp : </Text>
+                          <Text>{liveStatement?.parent_camp_name}</Text>
+                        </Paragraph>
+                        <Paragraph>
+                          <Text strong>Keywords : </Text>
+                          <Text>{liveStatement?.key_words}</Text>
+                        </Paragraph>
+                        <Paragraph>
+                          <Text strong>Camp About URL : </Text>
+                          <Text>{liveStatement?.camp_about_url}</Text>
+                        </Paragraph>
+                        <Paragraph>
+                          <Text strong>Camp About Nick Name : </Text>
+                          <Text>{liveStatement?.camp_about_nick_name}</Text>
+                        </Paragraph>
+                      </Fragment>
+                    ) : null}
                   </Card>
                 </Col>
               </Row>
