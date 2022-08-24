@@ -138,8 +138,12 @@ const CampTree = ({ scrollToCampStatement }) => {
                   : "hide"} */}
                 {data[item].camp_id ===
                   +router?.query?.camp?.at(1)?.split("-")?.at(0) &&
-                  (!data[item].parent_camp_is_one_level ||
-                    data[item].parent_camp_is_disabled) && (
+                  (!(
+                    data[item].parent_camp_is_one_level ||
+                    data[item].is_one_level
+                  ) ||
+                    data[item].parent_camp_is_disabled ||
+                    data[item].is_disabled) && (
                     <TreeNode
                       key={"custom"}
                       title={
