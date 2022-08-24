@@ -12,6 +12,7 @@ const editNickName = jest.fn();
 const handleAddNickName = jest.fn();
 const handleNickNameCancel = jest.fn();
 const onAddUpdateNickName = jest.fn();
+const disableButton = false;
 const nickNameList = [
   {
     id: "1",
@@ -37,6 +38,7 @@ describe("NickName page", () => {
         handleNickNameCancel={handleNickNameCancel}
         onAddUpdateNickName={onAddUpdateNickName}
         nickNameList={nickNameList}
+        disableButton={disableButton}
       />
     );
 
@@ -60,6 +62,7 @@ describe("NickName page", () => {
         handleNickNameCancel={handleNickNameCancel}
         onAddUpdateNickName={onAddUpdateNickName}
         nickNameList={nickNameList}
+        disableButton={disableButton}
       />
     );
     expect(screen.getByText("Sr.No.")).toBeInTheDocument();
@@ -90,6 +93,7 @@ describe("NickName page", () => {
         handleNickNameCancel={handleNickNameCancel}
         onAddUpdateNickName={onAddUpdateNickName}
         nickNameList={nickNameList}
+        disableButton={disableButton}
       />
     );
     const addbutton = getAllByText(
@@ -112,6 +116,7 @@ describe("NickName page", () => {
         handleNickNameCancel={handleNickNameCancel}
         onAddUpdateNickName={onAddUpdateNickName}
         nickNameList={nickNameList}
+        disableButton={disableButton}
       />
     );
 
@@ -140,10 +145,11 @@ describe("NickName page", () => {
         handleNickNameCancel={handleNickNameCancel}
         onAddUpdateNickName={onAddUpdateNickName}
         nickNameList={nickNameList}
+        disableButton={disableButton}
       />
     );
 
-    const nickname = screen.getByLabelText(labels.nickName);
+    const nickname = screen.getByPlaceholderText("Enter nick name");
     const addbutton = getByText("Update");
     expect(addbutton).toBeTruthy();
     expect(screen.getByText("Edit Nick Name")).toBeInTheDocument();
@@ -170,9 +176,10 @@ describe("NickName page", () => {
         handleNickNameCancel={handleNickNameCancel}
         onAddUpdateNickName={onAddUpdateNickName}
         nickNameList={nickNameList}
+        disableButton={disableButton}
       />
     );
-    const nickname = screen.getByLabelText(labels.nickName);
+    const nickname = screen.getByPlaceholderText("Enter nick name");
 
     expect(nickname).toHaveAttribute("type", "text");
     expect(nickname).toHaveAttribute("disabled");
@@ -189,6 +196,7 @@ describe("NickName page", () => {
         handleNickNameCancel={handleNickNameCancel}
         onAddUpdateNickName={onAddUpdateNickName}
         nickNameList={nickNameList}
+        disableButton={disableButton}
       />
     );
     const btnEl = screen.getByTestId("submitButton");
