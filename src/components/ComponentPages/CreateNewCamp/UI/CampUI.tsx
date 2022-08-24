@@ -32,9 +32,9 @@ const CreateNewCampUI = ({
             ? campRecord.parentCamps?.map((camp, index) => {
                 return (
                   <Link
-                    href={`/topic/${router.query.camp[0]}/${
+                    href={`/topic/${encodeURIComponent(router.query.camp[0])}/${
                       camp?.camp_num
-                    }-${camp?.camp_name?.split(" ").join("-")}`}
+                    }-${encodeURIComponent(camp?.camp_name)}`}
                     key={camp?.camp_num}
                   >
                     <a>
