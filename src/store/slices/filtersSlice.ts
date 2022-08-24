@@ -15,7 +15,7 @@ export const filtersSlice = createSlice({
       search: "",
       includeReview: false,
     },
-    currentCamp: null,
+    selectedCampNode: null,
   },
   reducers: {
     setFilterCanonizedTopics: (state, action) => {
@@ -32,7 +32,7 @@ export const filtersSlice = createSlice({
       };
     },
     setCurrentCamp: (state, action) => {
-      state.currentCamp = action.payload;
+      state.selectedCampNode = action.payload;
     },
   },
 });
