@@ -98,8 +98,8 @@ const NewsFeedsCard = ({ newsFeed }) => {
                           // } else {
                           //   router.push("/login");
                           // }
-                          setEditNews(true);
-                          setDeleteNews(false);
+                          setEditNews(false);
+                          setDeleteNews(true);
                         }}
                       >
                         <i className={"icon-delete"} />

@@ -19,12 +19,13 @@ function CompareStatement() {
       ids,
       topic_num: +router.query.routes[0].split("-")[0],
       camp_num: +router.query.routes[1].split("-")[0],
+      compare: router?.query?.from,
     };
     const res = await getCompareStatement(reqBody);
 
     const statements = res.data?.comparison,
-      s1 = statements[0],
-      s2 = statements[1],
+      s1 = statements.length ? statements[0] : { parsed_value: "" },
+      s2 = statements.length > 1 ? statements[1] : { parsed_value: "" },
       statementLive = res.data?.liveStatement;
 
     statementLive.revision_date = res.data?.latestRevision;
@@ -33,6 +34,7 @@ function CompareStatement() {
     s2.parsed_v = HtmlDiff.execute(s1?.parsed_value, s2?.parsed_value);
 
     setIsLoading(false);
+
     if (res && res.status_code === 200) {
       setStatements(statements);
       setLiveStatement(statementLive);
