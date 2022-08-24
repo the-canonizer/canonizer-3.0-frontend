@@ -30,7 +30,8 @@ const CampTree = ({ scrollToCampStatement }) => {
     if (selectedKeys.join() === "custom" || selectedKeys.join() === "") {
       console.log("selected", selectedKeys, e);
     } else {
-      dispatch(setCurrentCamp(e.node));
+      console.log("[ON_SELECT]", e?.selectedNodes[0]?.data);
+      dispatch(setCurrentCamp(e?.selectedNodes[0]?.data));
       setSelectedNodeID(+selectedKeys.join(""));
       scrollToCampStatement();
     }
@@ -67,11 +68,14 @@ const CampTree = ({ scrollToCampStatement }) => {
       // }
       console.log(
         "[TOPIC TREE]",
+        data[item],
+        "KEYS",
         includeReview ? data[item]?.review_title : data[item]?.title,
-        "---isSingleLevelOnly:-",
+        "---parent_camp_is_one_level:-",
         data[item]?.parent_camp_is_one_level,
-        "---isDisabledSubCamp:-",
-        data[item]?.parent_camp_is_disabled
+        "---parent_camp_is_disabled:-",
+        data[item]?.parent_camp_is_disabled,
+        "end"
       );
 
       if (data[item].children) {
@@ -126,14 +130,19 @@ const CampTree = ({ scrollToCampStatement }) => {
                   </>
                 }
                 key={data[item].camp_id}
+                data={data[item]}
               >
+                {/* {!data[item].parent_camp_is_one_level ||
+                data[item].parent_camp_is_disabled
+                  ? "show"
+                  : "hide"} */}
                 {data[item].camp_id ===
-                  +router?.query?.camp?.at(1)?.split("-")?.at(0) && (
-                  <TreeNode
-                    key={"custom"}
-                    title={
-                      !data[item].parent_camp_is_one_level ||
-                      data[item].parent_camp_is_disabled ? (
+                  +router?.query?.camp?.at(1)?.split("-")?.at(0) &&
+                  (!data[item].parent_camp_is_one_level ||
+                    data[item].parent_camp_is_disabled) && (
+                    <TreeNode
+                      key={"custom"}
+                      title={
                         <p className={styles.startNew}>
                           <Link
                             href={{
@@ -147,10 +156,10 @@ const CampTree = ({ scrollToCampStatement }) => {
                             <a>{`<Start new supporting camp here>`} </a>
                           </Link>
                         </p>
-                      ) : null
-                    }
-                  />
-                )}
+                      }
+                    />
+                  )}
+
                 {renderTreeNodes(data[item].children)}
               </TreeNode>
             </>
