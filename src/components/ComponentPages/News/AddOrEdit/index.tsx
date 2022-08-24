@@ -55,6 +55,18 @@ export default function AddOrEdit({ edit }) {
 
   const onFinish = async (values: any) => {
     setLoading(true);
+    console.log(
+      "newsfeed_id:",
+      dataToUpdate?.id,
+      "display_text:",
+      values.display_text,
+      "link:",
+      values.link.trim(),
+      "available_for_child:",
+      values.available_for_child,
+      "submitter_nick_id:",
+      nickNameData[0]?.id
+    );
     let res;
     edit
       ? (res = await updateNewsFeedApi({
@@ -62,7 +74,7 @@ export default function AddOrEdit({ edit }) {
           display_text: values.display_text,
           link: values.link.trim(),
           available_for_child: values.available_for_child,
-          submitter_nick_id: dataToUpdate?.submitter_nick_id,
+          submitter_nick_id: nickNameData[0]?.id,
         }))
       : (res = await addNewsFeedApi({
           topic_num: +router.query?.camp[0]?.split("-")[0],
@@ -141,8 +153,7 @@ export default function AddOrEdit({ edit }) {
         };
         const result = await getAllUsedNickNames(reqBodyNickName);
         form.setFieldsValue({
-          nick_name: result?.data.find((id) => id.id == news.submitter_nick_id)
-            ?.id,
+          nick_name: result?.data[0]?.id,
         });
         setNickNameData(result?.data);
         setScreenLoading(false);
