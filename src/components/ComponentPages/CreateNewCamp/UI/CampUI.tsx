@@ -3,8 +3,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 import SideBar from "../../CampForum/UI/sidebar";
-import styles from "../../CreateNewTopic/UI/createNewTopic.module.scss";
 import FormUI from "./FormUI";
+import CampInfoBar from "../../TopicDetails/CampInfoBar";
 
 const CreateNewCampUI = ({
   onFinish,
@@ -15,38 +15,23 @@ const CreateNewCampUI = ({
   nickNameList,
   parentCamp,
   campNickName,
-  topicRecord,
-  campRecord,
+  options,
+  onCheckboxChange,
+  onParentCampChange,
 }) => {
   const router = useRouter();
 
+  //  post section end
+  let payload = {
+    camp_num: (router.query.camp[1] as string)?.split("-")[0],
+    topic_num: (router.query.camp[0] as string)?.split("-")[0],
+    topic_name: (router.query.camp[0] as string)?.split("-").slice(1).join(" "),
+  };
+
   return (
     <Fragment>
-      <div className={`${styles.upperTitle}`}>
-        <p id="topic-name">
-          <strong>Topic: </strong> {topicRecord && topicRecord?.topic_name}
-        </p>
-        <p id="camp-name">
-          <strong>Camp: </strong>{" "}
-          {campRecord
-            ? campRecord.parentCamps?.map((camp, index) => {
-                return (
-                  <Link
-                    href={`/topic/${encodeURIComponent(router.query.camp[0])}/${
-                      camp?.camp_num
-                    }-${encodeURIComponent(camp?.camp_name)}`}
-                    key={camp?.camp_num}
-                  >
-                    <a>
-                      {index !== 0 && "/ "}
-                      {`${camp?.camp_name}`}
-                    </a>
-                  </Link>
-                );
-              })
-            : null}
-        </p>
-      </div>
+      <CampInfoBar payload={payload} />
+
       <div className="d-flex">
         <aside className="leftSideBar miniSideBar">
           <SideBar />
@@ -61,6 +46,9 @@ const CreateNewCampUI = ({
             nickNameList={nickNameList}
             parentCamp={parentCamp}
             campNickName={campNickName}
+            options={options}
+            onCheckboxChange={onCheckboxChange}
+            onParentCampChange={onParentCampChange}
           />
         </div>
       </div>

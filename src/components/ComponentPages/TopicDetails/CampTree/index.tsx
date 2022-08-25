@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Tree } from "antd";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "src/store";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styles from "../topicDetails.module.scss";
+
+import { setCurrentCamp } from "src/store/slices/filtersSlice";
 
 const { TreeNode } = Tree;
 
@@ -20,6 +22,7 @@ const CampTree = ({ scrollToCampStatement }) => {
     review == "review" ? true : false
   );
   const router = useRouter();
+  const dispatch = useDispatch();
   const onSelect = (
     selectedKeys,
     e: { selected; selectedNodes; node; event }
@@ -27,6 +30,8 @@ const CampTree = ({ scrollToCampStatement }) => {
     if (selectedKeys.join() === "custom" || selectedKeys.join() === "") {
       console.log("selected", selectedKeys, e);
     } else {
+      console.log("[ON_SELECT]", e?.selectedNodes[0]?.data);
+      dispatch(setCurrentCamp(e?.selectedNodes[0]?.data));
       setSelectedNodeID(+selectedKeys.join(""));
       scrollToCampStatement();
     }
@@ -36,8 +41,50 @@ const CampTree = ({ scrollToCampStatement }) => {
     setIncludeReview(review == "review" ? true : false);
   }, [filterByScore, review]);
 
-  const renderTreeNodes = (data: any) =>
-    Object.keys(data).map((item) => {
+  const renderTreeNodes = (data: any) => {
+    return Object.keys(data).map((item) => {
+      
+      // isDisabledSubCamp: number = 0,
+      // isSingleLevelOnly: number = 0
+      // let disableOneLevel = isSingleLevelOnly;
+      // let disableAll = isDisabledSubCamp;
+      // disableOneLevel =
+      //   isSingleLevelOnly == 1 || data[item].is_one_level == 1 ? 1 : 0;
+      // disableAll =
+      //   isDisabledSubCamp == 1 || data[item].is_disabled == 1 ? 1 : 0;
+
+      // if (data[item].is_disabled && data[item].children) {
+      //   disableAll = true;
+      // } else {
+      //   disableAll = false;
+      // }
+
+      // if (data[item].is_one_level && data[item].children) {
+      //   disableOneLevel = true;
+      // } else {
+      //   disableOneLevel = false;
+      // }
+
+      console.log(
+        "<<<<<<<<<<<<<<<<<<<<<<[VIEW PAGE START]>>>>>>>>>>>>>>>>>>>>>>>"
+      );
+      console.table("[TOPIC TREE]:-", data[item]);
+      console.table(
+        "[TITLE]:-",
+        includeReview ? data[item]?.review_title : data[item]?.title
+      );
+      console.table(
+        "[KEYS ---parent_camp_is_one_level]:-",
+        data[item]?.parent_camp_is_one_level
+      );
+      console.table(
+        "[KEYS ---parent_camp_is_disabled]:-",
+        data[item]?.parent_camp_is_disabled
+      );
+      console.log(
+        "<<<<<<<<<<<<<<<<<<<<<<[VIEW PAGE END]>>>>>>>>>>>>>>>>>>>>>>>"
+      );
+
       if (data[item].children) {
         if (data[item].score >= scoreFilter) {
           return (
@@ -90,28 +137,38 @@ const CampTree = ({ scrollToCampStatement }) => {
                   </>
                 }
                 key={data[item].camp_id}
+                data={data[item]}
               >
+                {/* {!data[item].parent_camp_is_one_level ||
+                data[item].parent_camp_is_disabled
+                  ? "show"
+                  : "hide"} */}
                 {data[item].camp_id ===
-                  +router?.query?.camp?.at(1)?.split("-")?.at(0) && (
-                  <TreeNode
-                    key={"custom"}
-                    title={
-                      <p className={styles.startNew}>
-                        <Link
-                          href={{
-                            pathname: `/camp/create/${
-                              encodeURIComponent(router.query.camp[0]) +
-                              "/" +
-                              encodeURIComponent(router.query.camp[1])
-                            }`,
-                          }}
-                        >
-                          <a>{`<Start new supporting camp here>`} </a>
-                        </Link>
-                      </p>
-                    }
-                  />
-                )}
+                  +router?.query?.camp?.at(1)?.split("-")?.at(0) &&
+                  (data[item].parent_camp_is_one_level != 1 ||
+                    data[item].is_one_level == 1 ||
+                    data[item].parent_camp_is_disabled != 1 ||
+                    data[item].is_disabled != 1) && (
+                    <TreeNode
+                      key={"custom"}
+                      title={
+                        <p className={styles.startNew}>
+                          <Link
+                            href={{
+                              pathname: `/camp/create/${
+                                encodeURIComponent(router.query.camp[0]) +
+                                "/" +
+                                encodeURIComponent(router.query.camp[1])
+                              }`,
+                            }}
+                          >
+                            <a>{`<Start new supporting camp here>`} </a>
+                          </Link>
+                        </p>
+                      }
+                    />
+                  )}
+
                 {renderTreeNodes(data[item].children)}
               </TreeNode>
             </>
@@ -122,6 +179,7 @@ const CampTree = ({ scrollToCampStatement }) => {
       }
       return <TreeNode key={data[item].key} {...data[item]} />;
     });
+  };
 
   return tree ? (
     <Tree

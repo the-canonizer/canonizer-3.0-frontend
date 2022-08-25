@@ -1,5 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import { Form, message } from "antd";
+import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 
@@ -10,6 +11,7 @@ import { setCurrentTopic } from "../../../store/slices/topicSlice";
 import CreateNewTopicUI from "./UI/TopicUI";
 import isAuth from "../../../hooks/isUserAuthenticated";
 import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
+import messages from "../../../messages";
 
 const CreateNewTopic = ({
   testNickName = [],
@@ -18,6 +20,7 @@ const CreateNewTopic = ({
 }) => {
   const [nickNameList, setNickNameList] = useState(testNickName);
   const [initialValue, setInitialValues] = useState(testInitialValue);
+  const [options, setOptions] = useState([...messages.preventCampLabel]);
 
   const nameSpaces =
     useSelector((state: RootState) => state.homePage.nameSpaces) ||
@@ -62,6 +65,8 @@ const CreateNewTopic = ({
       note: values.edit_summary?.trim(),
     };
 
+    options.map((op) => (body[op.id] = op.checked ? 1 : 0));
+
     const res = await createTopic(body);
 
     if (res && res.status_code === 200) {
@@ -79,6 +84,13 @@ const CreateNewTopic = ({
           res.data.topic_name
         )}/1-Agreement`,
       });
+
+      const oldOptions = [...options];
+      await oldOptions.map((op) => {
+        op.checked = false;
+        op.disable = false;
+      });
+      setOptions(oldOptions);
     }
 
     if (res && res.status_code === 400) {
@@ -112,6 +124,27 @@ const CreateNewTopic = ({
     router.push({ pathname: "/" });
   };
 
+  // checkbox
+  const onCheckboxChange = async (e: CheckboxChangeEvent) => {
+    const oldOptions = [...options];
+
+    await oldOptions.map((op) =>
+      op.id === e.target.value ? (op.checked = e.target.checked) : ""
+    );
+
+    const option1 = oldOptions[0],
+      option2 = oldOptions[1];
+
+    if (option1.id === "is_disabled" && option1.checked) {
+      option2.checked = false;
+      option2.disable = true;
+    } else {
+      option2.disable = false;
+    }
+
+    setOptions(oldOptions);
+  };
+
   return (
     <Fragment>
       <CreateNewTopicUI
@@ -121,6 +154,8 @@ const CreateNewTopic = ({
         nameSpaces={nameSpaces}
         nickNameList={nickNameList}
         onCancel={onCancel}
+        options={options}
+        onCheckboxChange={onCheckboxChange}
       />
     </Fragment>
   );

@@ -41,10 +41,12 @@ import { getCanonizedNameSpacesApi } from "../../../../network/api/homePageApi";
 import SideBarNoFilter from "../../../ComponentPages/Home/SideBarNoFilter";
 import CampInfoBar from "../../TopicDetails/CampInfoBar";
 import { RootState } from "../../../../store";
+import PreventSubCamps from "../../../common/preventSubCampCheckbox";
 
 import { useDispatch, useSelector } from "react-redux";
 
 import Link from "next/link";
+import { CheckboxChangeEvent } from "antd/es/checkbox";
 
 const { Text } = Typography;
 
@@ -60,6 +62,7 @@ export default function AddOrManage({ add }) {
   const [screenLoading, setScreenLoading] = useState(false);
   const [payloadBreadCrumb, setPayloadBreadCrumb] = useState({});
   const [parentCamp, setParentCamps] = useState([]);
+  const [wikiStatement, setWikiStatement] = useState("");
   const [errors, setErrors] = useState({
     CampNameError: false,
     campNameMsg: "",
@@ -69,7 +72,7 @@ export default function AddOrManage({ add }) {
 
   const [campNickName, setCampNickName] = useState([]);
   const [canNameSpace, setCanNameSpace] = useState([]);
-  const [wikiStatement, setWikiStatement] = useState("");
+  const [options, setOptions] = useState([...messages.preventCampLabel]);
 
   const [form] = Form.useForm();
   let objection = router?.query?.statement[0]?.split("-")[1] == "objection";
@@ -81,6 +84,7 @@ export default function AddOrManage({ add }) {
     let res;
     let editInfo = editStatementData?.data;
     let parent_camp = editInfo?.parent_camp;
+    options.map((op) => (values[op.id] = op.checked ? 1 : 0));
     res = await addOrManageStatement(values);
 
     if (res?.status_code == 200) {
@@ -109,6 +113,12 @@ export default function AddOrManage({ add }) {
           router.push(`/topic/history/${route}`);
         }
       }
+      const oldOptions = [...options];
+      await oldOptions.map((op) => {
+        op.checked = false;
+        op.disable = false;
+      });
+      setOptions(oldOptions);
     } else if (res?.status_code == 400) {
       // console.log("error in res =>", res);
     }
@@ -183,10 +193,12 @@ export default function AddOrManage({ add }) {
     };
     let res;
     if (manageFormOf == "camp") {
+      options.map((op) => (reqBody[op.id] = op.checked ? 1 : 0));
       res = await updateCampApi(reqBody);
     } else if (manageFormOf == "statement") {
       res = await updateStatementApi(reqBody);
     } else if (manageFormOf == "topic") {
+      options.map((op) => (reqBody[op.id] = op.checked ? 1 : 0));
       res = await updateTopicApi(reqBody);
     }
     return res;
@@ -317,6 +329,32 @@ export default function AddOrManage({ add }) {
               }
         );
         setNickNameData(result?.data);
+        if (manageFormOf == "topic" || manageFormOf == "camp") {
+          const oldOptions = [...options];
+
+          await oldOptions.map((op) => {
+            if (op.id === "is_disabled") {
+              op.checked =
+                res?.data[manageFormOf]?.is_disabled === 1 ? true : false;
+            }
+            if (op.id === "is_one_level") {
+              op.checked =
+                res?.data[manageFormOf]?.is_one_level === 1 ? true : false;
+            }
+          });
+
+          const option1 = oldOptions[0],
+            option2 = oldOptions[1];
+
+          if (option1.id === "is_disabled" && option1.checked) {
+            option2.checked = false;
+            option2.disable = true;
+          } else {
+            option2.disable = false;
+          }
+
+          setOptions(oldOptions);
+        }
       }
       setScreenLoading(false);
     }
@@ -333,6 +371,39 @@ export default function AddOrManage({ add }) {
       update = "Topic Update";
     }
     return update;
+  };
+
+  // checkbox
+  const onCheckboxChange = async (e: CheckboxChangeEvent) => {
+    const oldOptions = [...options];
+    await oldOptions.map((op) =>
+      op.id === e.target.value ? (op.checked = e.target.checked) : ""
+    );
+
+    const option1 = oldOptions[0],
+      option2 = oldOptions[1];
+
+    if (option1.id === "is_disabled" && option1.checked) {
+      option2.checked = false;
+      option2.disable = true;
+    } else {
+      option2.disable = false;
+    }
+
+    setOptions(oldOptions);
+  };
+
+  const extra = () => {
+    if (manageFormOf == "camp" || manageFormOf == "topic") {
+      return (
+        <PreventSubCamps
+          options={options}
+          onCheckboxChange={onCheckboxChange}
+        />
+      );
+    } else {
+      return null;
+    }
   };
   return (
     <>
@@ -359,6 +430,7 @@ export default function AddOrManage({ add }) {
                   : K?.exceptionalMessages?.objectionStatementHeading
               }
               className={styles.card}
+              extra={extra()}
             >
               <Form
                 form={form}

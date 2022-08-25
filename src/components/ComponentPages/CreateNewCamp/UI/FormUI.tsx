@@ -3,6 +3,7 @@ import { Card, Form, Input, Button, Select, Row, Col, Typography } from "antd";
 
 import styles from "../../CreateNewTopic/UI/createNewTopic.module.scss";
 import messages from "../../../../messages";
+import PreventSubCamps from "../../../common/preventSubCampCheckbox";
 
 const { Option } = Select;
 const { Text } = Typography;
@@ -26,6 +27,9 @@ const CreateCampFormUI = ({
   nickNameList,
   parentCamp,
   campNickName,
+  options,
+  onCheckboxChange,
+  onParentCampChange,
 }) => {
   const CardTitle = (
     <span className={styles.cardTitle} data-testid="head" id="card-title">
@@ -35,7 +39,16 @@ const CreateCampFormUI = ({
 
   return (
     <Fragment>
-      <Card title={CardTitle} className="can-card-style">
+      <Card
+        title={CardTitle}
+        className="can-card-style"
+        extra={
+          <PreventSubCamps
+            options={options}
+            onCheckboxChange={onCheckboxChange}
+          />
+        }
+      >
         <Form
           autoComplete="off"
           form={form}
@@ -110,9 +123,16 @@ const CreateCampFormUI = ({
                     size={"large"}
                     placeholder="Parent camp"
                     data-id="parent-camp"
+                    onChange={onParentCampChange}
                   >
                     {parentCamp.map((camp) => (
-                      <Option value={camp.camp_num} key={camp.id}>
+                      <Option
+                        value={camp.camp_num}
+                        key={camp.id}
+                        id={camp.id}
+                        camp={camp}
+                        disabled={camp.is_disabled === 1 ? true : false}
+                      >
                         {camp.camp_name}
                       </Option>
                     ))}

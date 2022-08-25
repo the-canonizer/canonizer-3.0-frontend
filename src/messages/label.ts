@@ -72,3 +72,21 @@ export const labels = {
   otpTitle: "One Time Verification Code",
   emailTitle: "Social Email Confirmation",
 };
+
+export const preventCampLabel = [
+  {
+    label: "Disable additional sub camps.",
+    tooltip: "Disable the ability to add additional sub camps.",
+    id: "is_disabled",
+    checked: false,
+    disable: false,
+  },
+  {
+    label: "Single level sub camps only.",
+    tooltip:
+      "Disable the ability to add additional sub camps beyond direct sub camps.",
+    id: "is_one_level",
+    checked: false,
+    disable: false,
+  },
+];
