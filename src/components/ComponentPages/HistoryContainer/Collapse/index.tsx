@@ -233,10 +233,10 @@ function HistoryCollapse({
                 >
                   <Link
                     href={`/topic/${
-                      router?.query?.camp[0] +
+                      encodeURIComponent(router?.query?.camp[0]) +
                       "/" +
                       (historyOf != "topic"
-                        ? router?.query?.camp[1]
+                        ? encodeURIComponent(router?.query?.camp[1])
                         : "1-Agreement")
                     }`}
                   >

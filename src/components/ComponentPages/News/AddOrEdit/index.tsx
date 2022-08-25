@@ -47,7 +47,11 @@ export default function AddOrEdit({ edit }) {
 
   const goBack = () => {
     if (edit) {
-      router.push(`/topic/${router?.query?.camp[0]}/${router?.query?.camp[1]}`);
+      router.push(
+        `/topic/${encodeURIComponent(
+          router?.query?.camp[0]
+        )}/${encodeURIComponent(router?.query?.camp[1])}`
+      );
     } else {
       router.push(router.asPath.replace("addnews", "topic"));
     }
@@ -75,7 +79,9 @@ export default function AddOrEdit({ edit }) {
     if (res?.status_code == 200) {
       if (edit) {
         router.push(
-          `/topic/${router?.query?.camp[0]}/${router?.query?.camp[1]}`
+          `/topic/${encodeURIComponent(
+            router?.query?.camp[0]
+          )}/${encodeURIComponent(router?.query?.camp[1])}`
         );
         return;
       } else {

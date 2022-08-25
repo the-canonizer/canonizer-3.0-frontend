@@ -33,18 +33,14 @@ const CurrentTopicCard = () => {
         <div className="topicDetailsCollapseFooter">
           <CustomButton className="btn-green">
             <Link
-              href={`/topic/history/${router?.query?.camp[0]?.replace(
-                "?",
-                "%3f"
+              href={`/topic/history/${encodeURIComponent(
+                router?.query?.camp[0]
               )}`}
             >
-              <a>{K?.exceptionalMessages?.manageTopicButton}</a>
+              <a>{K?.exceptionalMessages?.manageTopicButton} </a>
             </Link>
           </CustomButton>
         </div>
-        {/* <div className="topicDetailsCollapseFooter">
-          <Button className="btn-green">Manage/Edit This Topic</Button>
-        </div> */}
       </Panel>
     </Collapse>
   );
