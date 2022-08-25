@@ -216,10 +216,10 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
             <i className="icon-topic"></i> Create New Topic
           </Button>
           {isCampBtnVisible &&
-          (currentCampNode.parent_camp_is_one_level != 1 ||
-            currentCampNode.is_one_level == 1 ||
-            currentCampNode.parent_camp_is_disabled != 1 ||
-            currentCampNode.is_disabled != 1) ? (
+          (currentCampNode?.parent_camp_is_one_level != 1 ||
+            currentCampNode?.is_one_level == 1 ||
+            currentCampNode?.parent_camp_is_disabled != 1 ||
+            currentCampNode?.is_disabled != 1) ? (
             <Button size="large" className="btn" onClick={onCreateCamp}>
               <i className="icon-camp"></i> Create New Camp
             </Button>
