@@ -91,18 +91,16 @@ export default function AddOrManage({ add }) {
       } else {
         let route =
           manageFormOf == "topic"
-            ? `${editInfo?.topic?.topic_num}-${editInfo?.topic?.topic_name
-                ?.replace(/[^a-zA-Z0-9 ]/g, "")
-                ?.split(" ")
-                .join("-")}`
-            : `${editInfo?.topic?.topic_num}-${editInfo?.topic?.topic_name
-                ?.replace(/[^a-zA-Z0-9 ]/g, "")
-                ?.split(" ")
-                .join("-")}/${
+            ? `${editInfo?.topic?.topic_num}-${encodeURIComponent(
+                editInfo?.topic?.topic_name
+              )}`
+            : `${editInfo?.topic?.topic_num}-${encodeURIComponent(
+                editInfo?.topic?.topic_name
+              )}/${
                 parent_camp[parent_camp?.length - 1]?.camp_num
-              }-${parent_camp[parent_camp?.length - 1]?.camp_name
-                ?.split(" ")
-                .join("-")}`;
+              }-${encodeURIComponent(
+                parent_camp[parent_camp?.length - 1]?.camp_name
+              )}`;
         if (manageFormOf == "camp") {
           router.push(`/camp/history/${route}`);
         } else if (manageFormOf == "statement") {
@@ -711,51 +709,46 @@ export default function AddOrManage({ add }) {
                               setScreenLoading(true);
                               add
                                 ? router.push(
-                                    `/topic/${router?.query?.statement[0].replace(
-                                      " ",
-                                      "-"
-                                    )}/${router?.query?.statement[1].replace(
-                                      " ",
-                                      "-"
+                                    `/topic/${encodeURIComponent(
+                                      router?.query?.statement[0]
+                                    )}/${encodeURIComponent(
+                                      router?.query?.statement[1]
                                     )}`
                                   )
                                 : router?.push(
                                     manageFormOf == "camp"
                                       ? `/camp/history/${
                                           backdata?.topic?.topic_num
-                                        }-${backdata?.topic?.topic_name
-                                          ?.replace(/[^a-zA-Z0-9 ]/g, "")
-                                          ?.split(" ")
-                                          ?.join("-")}/${
+                                        }-${encodeURIComponent(
+                                          backdata?.topic?.topic_name
+                                        )}/${
                                           backdata?.parent_camp[
                                             backdata?.parent_camp.length - 1
                                           ].camp_num
-                                        }-${backdata?.parent_camp[
-                                          backdata?.parent_camp.length - 1
-                                        ].camp_name
-                                          ?.split(" ")
-                                          ?.join("-")}`
+                                        }-${encodeURIComponent(
+                                          backdata?.parent_camp[
+                                            backdata?.parent_camp.length - 1
+                                          ].camp_name
+                                        )}`
                                       : manageFormOf == "statement"
                                       ? `/statement/history/${
                                           backdata?.topic?.topic_num
-                                        }-${backdata?.topic?.topic_name
-                                          ?.replace(/[^a-zA-Z0-9 ]/g, "")
-                                          ?.split(" ")
-                                          ?.join("-")}/${
+                                        }-${encodeURIComponent(
+                                          backdata?.topic?.topic_name
+                                        )}/${
                                           backdata?.parent_camp[
                                             backdata?.parent_camp.length - 1
                                           ].camp_num
-                                        }-${backdata?.parent_camp[
-                                          backdata?.parent_camp.length - 1
-                                        ].camp_name
-                                          ?.split(" ")
-                                          ?.join("-")}`
+                                        }-${encodeURIComponent(
+                                          backdata?.parent_camp[
+                                            backdata?.parent_camp.length - 1
+                                          ].camp_name
+                                        )}`
                                       : `/topic/history/${
                                           backdata?.topic?.topic_num
-                                        }-${backdata?.topic?.topic_name
-                                          ?.replace(/[^a-zA-Z0-9 ]/g, "")
-                                          ?.split(" ")
-                                          ?.join("-")}`
+                                        }-${encodeURIComponent(
+                                          backdata?.topic?.topic_name
+                                        )}`
                                   );
                             }}
                           >

@@ -58,12 +58,11 @@ const CurrentCampCard = () => {
         <div className="topicDetailsCollapseFooter">
           <CustomButton className="btn-green">
             <Link
-              href={`/camp/history/${router?.query?.camp[0]?.replace(
-                "?",
-                "%3f"
-              )}/${router?.query?.camp[1]?.replace("?", "%3f")}`}
+              href={`/camp/history/${encodeURIComponent(
+                router?.query?.camp[0]
+              )}/${encodeURIComponent(router?.query?.camp[1])}`}
             >
-              <a>{K?.exceptionalMessages?.manageCampButton}</a>
+              <a>{K?.exceptionalMessages?.manageCampButton} abc</a>
             </Link>
           </CustomButton>
         </div>

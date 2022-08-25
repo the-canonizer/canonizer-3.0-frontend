@@ -77,9 +77,6 @@ const CreateNewTopic = ({
       router.push({
         pathname: `/topic/${res.data.topic_num}-${encodeURIComponent(
           res.data.topic_name
-            ?.split(" ")
-            .join("-")
-            ?.replace(/[^a-zA-Z0-9 ]/g, "")
         )}/1-Agreement`,
       });
     }
