@@ -145,7 +145,7 @@ const CampTree = ({ scrollToCampStatement }) => {
                   : "hide"} */}
                 {data[item].camp_id ===
                   +router?.query?.camp?.at(1)?.split("-")?.at(0) &&
-                  (data[item].parent_camp_is_one_level != 0 ||
+                  (data[item].parent_camp_is_one_level != 1 ||
                     data[item].is_one_level == 1 ||
                     data[item].parent_camp_is_disabled != 1 ||
                     data[item].is_disabled != 1) && (

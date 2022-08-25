@@ -215,7 +215,7 @@ function HistoryContainer() {
         </Button>
         {historyOf !== "topic" &&
         currentCampRecord !== 1 &&
-        (currentCampNode.parent_camp_is_one_level != 0 ||
+        (currentCampNode.parent_camp_is_one_level != 1 ||
           currentCampNode.is_one_level == 1 ||
           currentCampNode.parent_camp_is_disabled != 1 ||
           currentCampNode.is_disabled != 1) ? (
