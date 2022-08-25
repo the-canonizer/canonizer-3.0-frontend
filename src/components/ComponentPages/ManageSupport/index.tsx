@@ -38,7 +38,6 @@ const ManageSupport = () => {
   const [checked, setChecked] = useState(false);
   const [getSupportStatusData, setGetSupportStatusData] = useState("");
   const [updatePostion, setUpdatePostion] = useState<boolean>(false);
-  const [supportStatus, setsupportStatus] = useState<number>(0);
   const getCanonizedNicknameList = async () => {
     const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
     const body = { topic_num: topicNum };
@@ -90,7 +89,6 @@ const ManageSupport = () => {
     if (isLogin) {
       setUpdatePostion(false);
       if (manageSupportStatusCheck) {
-        //GetCheckStatusData();
         getCanonizedNicknameList();
         getActiveSupportTopicList();
         setSubmitButtonDisable(false);
@@ -109,7 +107,6 @@ const ManageSupport = () => {
     if (response && response.status_code === 200) {
       warningMsg = response.data.warning;
       supportSts = response.data.support_flag;
-      setsupportStatus(response.data.support_flag);
       //Api's call for list
       dispatch(setCheckSupportExistsData({}));
       dispatch(setCheckSupportExistsData(response.data));
@@ -265,7 +262,6 @@ const ManageSupport = () => {
     let campIDsArr = [];
     //get support_flag status check from GetCheckSupportExistsData
     let support_flag_Status = supportedCampsStatus.support_flag;
-    // let support_flag_Status = supportStatus;
     let topicNumId =
       manageSupportRevertData.length > 0
         ? manageSupportRevertData[0].topic_num

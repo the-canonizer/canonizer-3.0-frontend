@@ -28,7 +28,6 @@ export default function DirectSupportedCampsUI({
   removeSupportCampsData,
 }) {
   const [valData, setValData] = useState({});
-  const [disState, setDisState] = useState("");
   const [tagsDataArrValue, setTagsDataArrValue] = useState([]);
   const [tagsCampsOrderID, setTagsCampsOrderID] = useState("");
   let tagsArrayList = [];
@@ -89,113 +88,93 @@ export default function DirectSupportedCampsUI({
     <div>
       {directSupportedCampsList.length > 0
         ? filteredArray().length > 0
-          ? filteredArray()
-              // directSupportedCampsList
-              // .filter((val) => {
-              //   if (search.trim() == "") {
-              //     return val;
-              //   } else if (
-              //     val.title.toLowerCase().trim().includes(search.toLowerCase().trim())
-              //   ) {
-              //     return val;
-              //   }
-              // })
-
-              ?.map((data, id) => {
-                DataArr = data;
-                tagsArrayList = data.camps;
-                tagsArrayList.forEach((obj, index) => {
-                  obj.id = index + 1;
-                });
-                return (
-                  <Card
-                    key={data.topic_num}
-                    className={styles.cardBox_tags}
-                    type="inner"
-                    size="default"
-                    title={
-                      <CardTitle
-                        title_link={data.title_link}
-                        value={data.title}
-                      />
-                    }
-                    extra={
-                      <div
-                        className={styles.RemoveCardSupported}
-                        onClick={() => removeCardSupportedCamps(data)}
-                      >
-                        <CloseCircleOutlined /> {messages.labels.removeSupport}{" "}
-                      </div>
-                    }
-                    style={{ width: 760, marginBottom: 16 }}
-                  >
-                    <DraggableArea
-                      tags={tagsArrayList}
-                      render={({ tag, index }) => (
-                        <div
-                          className={
-                            tag.dis && disState == tag.id
-                              ? "tag tags_disable"
-                              : "tag"
-                          }
-                        >
-                          <Button
-                            key={tag.camp_num}
-                            className={styles.tag_btn}
-                            disabled={tag.dis && disState == tag.id}
-                          >
-                            <div className={styles.btndiv}>
-                              {" "}
-                              <span className="count">{tag.id}. </span>
-                              <Link href={tag.camp_link}>
-                                <a className={styles.Bluecolor}>
-                                  {" "}
-                                  {tag.camp_name}
-                                </a>
-                              </Link>
-                            </div>
-                            <CloseCircleOutlined
-                              onClick={(e) => {
-                                handleClose(tag, data.topic_num, data, []),
-                                  setValData(tag),
-                                  setRevertBack([]);
-                                setDisState(tag.id);
-                              }}
-                            />
-                          </Button>
-                        </div>
-                      )}
-                      onChange={(tags) => {
-                        tagsOrder(data.topic_num, data, tags);
-                      }}
+          ? filteredArray()?.map((data, id) => {
+              DataArr = data;
+              tagsArrayList = data.camps;
+              tagsArrayList.forEach((obj, index) => {
+                obj.id = index + 1;
+              });
+              return (
+                <Card
+                  key={data.topic_num}
+                  className={styles.cardBox_tags}
+                  type="inner"
+                  size="default"
+                  title={
+                    <CardTitle
+                      title_link={data.title_link}
+                      value={data.title}
                     />
-
-                    {showSaveChanges && idData == data.topic_num ? (
-                      <div className={styles.tag_Changes}>
+                  }
+                  extra={
+                    <div
+                      className={styles.RemoveCardSupported}
+                      onClick={() => removeCardSupportedCamps(data)}
+                    >
+                      <CloseCircleOutlined /> {messages.labels.removeSupport}{" "}
+                    </div>
+                  }
+                  style={{ width: 760, marginBottom: 16 }}
+                >
+                  <DraggableArea
+                    tags={tagsArrayList}
+                    render={({ tag, index }) => (
+                      <div className={tag.dis ? "tag tags_disable" : "tag"}>
                         <Button
-                          className={styles.save_Changes_Btn}
-                          onClick={saveChanges}
+                          key={tag.camp_num}
+                          className={styles.tag_btn}
+                          disabled={tag.dis}
                         >
-                          Save Changes
-                        </Button>
-                        <Button
-                          className={styles.revert_Btn}
-                          onClick={(e) => {
-                            handleRevertBack(idData, data.camps);
-                            setCardCamp_ID("");
-                            setShowSaveChanges(false);
-                            setDisState("");
-                          }}
-                        >
-                          Revert
+                          <div className={styles.btndiv}>
+                            {" "}
+                            <span className="count">{tag.id}. </span>
+                            <Link href={tag.camp_link}>
+                              <a className={styles.Bluecolor}>
+                                {" "}
+                                {tag.camp_name}
+                              </a>
+                            </Link>
+                          </div>
+                          <CloseCircleOutlined
+                            onClick={(e) => {
+                              handleClose(tag, data.topic_num, data, []),
+                                setValData(tag),
+                                setRevertBack([]);
+                            }}
+                          />
                         </Button>
                       </div>
-                    ) : (
-                      ""
                     )}
-                  </Card>
-                );
-              })
+                    onChange={(tags) => {
+                      tagsOrder(data.topic_num, data, tags);
+                    }}
+                  />
+
+                  {showSaveChanges && idData == data.topic_num ? (
+                    <div className={styles.tag_Changes}>
+                      <Button
+                        className={styles.save_Changes_Btn}
+                        onClick={saveChanges}
+                      >
+                        Save Changes
+                      </Button>
+                      <Button
+                        className={styles.revert_Btn}
+                        onClick={(e) => {
+                          handleRevertBack(idData, data.camps);
+                          setCardCamp_ID("");
+                          setShowSaveChanges(false);
+                        }}
+                      >
+                        Revert
+                      </Button>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </Card>
+              );
+            })
           : showEmpty("No Data Found ")
         : showEmpty("No Data Found")}
 
