@@ -12,12 +12,21 @@ export const utilsSlice = createSlice({
     redirect_tab_setting: null,
   },
   reducers: {
-    setIsLink: (state, action) => {
-      state.is_link = action.payload.isLink;
+    setValue: (state, action) => {
+      state[action.payload.key] = action.payload.value;
+    },
+    resetValue: (state, action) => {
+      state.is_link = false;
+      state.logout_type = null;
+      state.email = "";
+      state.remember_me = null;
+      state.social_login_keys = null;
+      state.redirect_type = null;
+      state.redirect_tab_setting = null;
     },
   },
 });
 
-export const { setIsLink } = utilsSlice.actions;
+export const { setValue, resetValue } = utilsSlice.actions;
 
 export default utilsSlice.reducer;
