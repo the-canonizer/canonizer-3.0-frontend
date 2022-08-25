@@ -41,15 +41,13 @@ const CampTree = ({ scrollToCampStatement }) => {
     setIncludeReview(review == "review" ? true : false);
   }, [filterByScore, review]);
 
-  const renderTreeNodes = (
-    data: any
-    // isDisabledSubCamp: number = 0,
-    // isSingleLevelOnly: number = 0
-  ) => {
-    // let disableOneLevel = isSingleLevelOnly;
-    // let disableAll = isDisabledSubCamp;
-
+  const renderTreeNodes = (data: any) => {
     return Object.keys(data).map((item) => {
+      
+      // isDisabledSubCamp: number = 0,
+      // isSingleLevelOnly: number = 0
+      // let disableOneLevel = isSingleLevelOnly;
+      // let disableAll = isDisabledSubCamp;
       // disableOneLevel =
       //   isSingleLevelOnly == 1 || data[item].is_one_level == 1 ? 1 : 0;
       // disableAll =

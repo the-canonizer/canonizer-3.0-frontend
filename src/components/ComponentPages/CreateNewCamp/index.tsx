@@ -2,17 +2,14 @@ import { Fragment, useState, useEffect } from "react";
 import { Form, message } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useRouter } from "next/router";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import {
   createCamp,
   getAllParentsCamp,
   getAllCampNickNames,
   getAllUsedNickNames,
-  getCurrentCampRecordApi,
-  getCurrentTopicRecordApi,
 } from "../../../network/api/campDetailApi";
-import { RootState } from "../../../store";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
 import messages from "../../../messages";
 
@@ -35,16 +32,6 @@ const CreateNewCamp = ({
   const [form] = Form.useForm();
   const dispatch = useDispatch();
 
-  const { topicRecord, campRecord, asof, asofdate, algorithm } = useSelector(
-    (state: RootState) => ({
-      topicRecord: state?.topicDetails?.currentTopicRecord,
-      campRecord: state?.topicDetails?.currentCampRecord,
-      asof: state?.filters?.filterObject?.asof,
-      asofdate: state.filters?.filterObject?.asofdate,
-      algorithm: state.filters?.filterObject?.algorithm,
-    })
-  );
-
   const getRouterParams = () => {
     const q = router.query;
 
@@ -65,56 +52,20 @@ const CreateNewCamp = ({
     return pr;
   };
 
-  const getSelectedNode = async (nodeKey) => {
-    const q = getRouterParams();
-
-    const reqBody = {
-      topic_num: q.topic_num,
-      camp_num: +nodeKey,
-      as_of: asof,
-      asofdate: asofdate || Date.now() / 1000,
-      algorithm: algorithm,
-      update_all: 1,
-    };
-
-    await Promise.all([
-      getCurrentTopicRecordApi(reqBody),
-      getCurrentCampRecordApi(reqBody),
-    ]);
-  };
-
-  useEffect(() => {
-    if (router && router.query) {
-      const q = getRouterParams();
-      getSelectedNode(q.camp_num);
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router, router?.query]);
-
   useEffect(() => {
     const q = getRouterParams();
-    let p_camps = "";
-
-    if (campRecord && campRecord.parentCamps) {
-      campRecord.parentCamps?.map((camp, index) => {
-        p_camps += index !== 0 ? " / " : "";
-        p_camps += `${camp?.camp_name}`;
-      });
-    }
 
     const p = {
       topic: q.topic_name,
-      camp: p_camps,
       camp_num: q.camp_num,
       topic_num: q.topic_num,
       topic_name: q.topic_name,
-      camp_name: p_camps,
+      camp_name: q.camp_name,
     };
 
     setParams(p);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [campRecord, router.query]);
+  }, [router.query]);
 
   const fetchNickNameList = async () => {
     const q = getRouterParams();
@@ -270,8 +221,6 @@ const CreateNewCamp = ({
         nickNameList={nickNameList}
         parentCamp={parentCamp}
         campNickName={campNickName}
-        topicRecord={topicRecord}
-        campRecord={campRecord}
         options={options}
         onCheckboxChange={onCheckboxChange}
         onParentCampChange={onParentCampChange}
