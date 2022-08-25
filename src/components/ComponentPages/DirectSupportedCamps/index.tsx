@@ -36,7 +36,6 @@ const DirectSupportedCamps = ({ search }) => {
   const [idData, setIdData] = useState("");
 
   const handleRevertBack = (topicId, camps) => {
-    ////////////
     let data = directSopportedCampsListRevert.filter((val) => {
       return val.topic_num == topicId;
     });
@@ -51,7 +50,6 @@ const DirectSupportedCamps = ({ search }) => {
       });
       setDirectSupportedCampsList(newData);
     }
-    ///////////
     camps.map((val) => {
       val.dis = false;
     });
@@ -73,16 +71,7 @@ const DirectSupportedCamps = ({ search }) => {
     Object.keys(val).length === 0
       ? setcampIds([])
       : ((val.dis = true), setcampIds([val.camp_num]));
-    //setcampIds([val.camp_num],
-    // setCampArrData([
-    //   {
-    //     camp_num: val.camp_num,
-    //     order: val.support_order,
-    //   },
-    // ]),
-    setIdData(topicId),
-      //val.dis = true,
-      setCardCamp_ID(topicId);
+    setIdData(topicId), setCardCamp_ID(topicId);
     setVisible(false);
   };
 
@@ -96,27 +85,12 @@ const DirectSupportedCamps = ({ search }) => {
       setShowSaveChanges(true);
       setCardCamp_ID(id);
       setIdData(id);
-
-      // setCampArrData([
-      //   {
-      //     camp_num: val.camp_num,
-      //     order: val.support_order,
-      //   },
-      // ]);
     } else if (cardCamp_ID && cardCamp_ID == id) {
       Object.keys(val).length === 0
         ? setcampIds([])
         : ((val.dis = true), setcampIds([...campIds, val.camp_num]));
       setShowSaveChanges(true);
       setCardCamp_ID(id);
-
-      // setCampArrData([
-      //   ...CampArrData,
-      //   {
-      //     camp_num: val.camp_num,
-      //     order: val.support_order,
-      //   },
-      // ]);
     } else if (cardCamp_ID && cardCamp_ID != id) {
       setIdData(id);
       setVisible(true);
@@ -148,7 +122,6 @@ const DirectSupportedCamps = ({ search }) => {
     let res = await removeOrUpdateDirectSupportCamps(tagsDeletedId);
     if (res && res.status_code == 200) {
       message.success(res.message);
-      //setIsSupportedCampsModalVisible(false);
       setShowSaveChanges(false);
       setCardCamp_ID("");
       fetchDirectSupportedCampsList();
@@ -188,6 +161,7 @@ const DirectSupportedCamps = ({ search }) => {
   useEffect(() => {
     fetchDirectSupportedCampsList();
   }, []);
+  console.log(campIds, "campIds");
   return (
     <DirectSupportedCampsUI
       removeCardSupportedCamps={removeCardSupportedCamps}

@@ -66,16 +66,25 @@ const CampTree = ({ scrollToCampStatement }) => {
       // } else {
       //   disableOneLevel = false;
       // }
+
       console.log(
-        "[TOPIC TREE]",
-        data[item],
-        "KEYS",
-        includeReview ? data[item]?.review_title : data[item]?.title,
-        "---parent_camp_is_one_level:-",
-        data[item]?.parent_camp_is_one_level,
-        "---parent_camp_is_disabled:-",
-        data[item]?.parent_camp_is_disabled,
-        "end"
+        "<<<<<<<<<<<<<<<<<<<<<<[VIEW PAGE START]>>>>>>>>>>>>>>>>>>>>>>>"
+      );
+      console.table("[TOPIC TREE]:-", data[item]);
+      console.table(
+        "[TITLE]:-",
+        includeReview ? data[item]?.review_title : data[item]?.title
+      );
+      console.table(
+        "[KEYS ---parent_camp_is_one_level]:-",
+        data[item]?.parent_camp_is_one_level
+      );
+      console.table(
+        "[KEYS ---parent_camp_is_disabled]:-",
+        data[item]?.parent_camp_is_disabled
+      );
+      console.log(
+        "<<<<<<<<<<<<<<<<<<<<<<[VIEW PAGE END]>>>>>>>>>>>>>>>>>>>>>>>"
       );
 
       if (data[item].children) {
@@ -138,12 +147,10 @@ const CampTree = ({ scrollToCampStatement }) => {
                   : "hide"} */}
                 {data[item].camp_id ===
                   +router?.query?.camp?.at(1)?.split("-")?.at(0) &&
-                  (!(
-                    data[item].parent_camp_is_one_level ||
-                    data[item].is_one_level
-                  ) ||
-                    data[item].parent_camp_is_disabled ||
-                    data[item].is_disabled) && (
+                  (data[item].parent_camp_is_one_level != 0 ||
+                    data[item].is_one_level == 1 ||
+                    data[item].parent_camp_is_disabled != 1 ||
+                    data[item].is_disabled != 1) && (
                     <TreeNode
                       key={"custom"}
                       title={

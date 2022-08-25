@@ -222,7 +222,11 @@ const CreateNewCamp = ({
 
   const onCancel = () => {
     const { camp } = router.query;
-    router.push({ pathname: `/topic/${camp[0]}/${camp[1]}` });
+    router.push({
+      pathname: `/topic/${encodeURIComponent(camp[0])}/${encodeURIComponent(
+        camp[1]
+      )}`,
+    });
   };
 
   // checkbox

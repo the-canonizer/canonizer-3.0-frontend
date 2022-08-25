@@ -187,24 +187,24 @@ const CampInfoBar = ({
           <Link
             href={
               campStatement?.length > 0
-                ? `/statement/history/${
+                ? `/statement/history/${encodeURIComponent(
                     router?.query?.camp
                       ? router?.query?.camp[0]
                       : router?.query?.manageSupport[0]
-                  }/${
+                  )}/${encodeURIComponent(
                     router?.query?.camp
                       ? router?.query?.camp[1]
                       : router?.query?.manageSupport[1]
-                  }`
-                : `/create/statement/${
+                  )}`
+                : `/create/statement/${encodeURIComponent(
                     router?.query?.camp
                       ? router?.query?.camp[0]
                       : router?.query?.manageSupport[0]
-                  }/${
+                  )}/${encodeURIComponent(
                     router?.query?.camp
                       ? router?.query?.camp[1]
                       : router?.query?.manageSupport[1]
-                  }`
+                  )}`
             }
           >
             <a>
@@ -229,9 +229,9 @@ const CampInfoBar = ({
                 topicRecord && topicRecord?.topic_name
               ) : isTopicHistoryPage ? (
                 <Link
-                  href={`/topic/${
-                    payload?.topic_num
-                  }-${payload?.topic_name?.replaceAll(" ", "-")}/1-Agreement`}
+                  href={`/topic/${payload?.topic_num}-${encodeURIComponent(
+                    payload?.topic_name
+                  )}/1-Agreement`}
                 >
                   <a>{payloadData?.topic_name}</a>
                 </Link>
@@ -264,9 +264,7 @@ const CampInfoBar = ({
                                     : router.query?.manageSupport
                                   )?.at(0)}/${
                                     camp?.camp_num
-                                  }-${encodeURIComponent(
-                                    camp?.camp_name?.replaceAll(" ", "-")
-                                  )}`,
+                                  }-${encodeURIComponent(camp?.camp_name)}`,
                           }}
                           key={camp?.camp_num}
                         >
@@ -285,11 +283,9 @@ const CampInfoBar = ({
                         href={{
                           pathname: `/topic/${
                             payloadData?.topic_num
-                          }-${encodeURIComponent(
-                            payloadData?.topic_name?.replaceAll(" ", "-")
-                          )}/${camp?.camp_num}-${encodeURIComponent(
-                            camp?.camp_name?.replaceAll(" ", "-")
-                          )}`,
+                          }-${encodeURIComponent(payloadData?.topic_name)}/${
+                            camp?.camp_num
+                          }-${encodeURIComponent(camp?.camp_name)}`,
                         }}
                         key={index}
                       >
