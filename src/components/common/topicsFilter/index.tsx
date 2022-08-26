@@ -25,6 +25,7 @@ import styles from "./topicListFilter.module.scss";
 import { useRouter } from "next/router";
 import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
 import K from "src/constants";
+import { showCreateCampButton } from "src/utils/generalUtility";
 
 const infoContent = (
   <>
@@ -215,15 +216,12 @@ const CreateTopic = ({ onCreateCamp = () => { } }) => {
           <Button size="large" className="mb-3 btn" onClick={campRoute}>
             <i className="icon-topic"></i> Create New Topic
           </Button>
-          {isCampBtnVisible &&
-            (currentCampNode?.parent_camp_is_one_level != 1 ||
-              currentCampNode?.is_one_level == 1) &&
-            (currentCampNode?.parent_camp_is_disabled != 1 ||
-              currentCampNode?.is_disabled != 1) ? (
-            <Button size="large" className="btn" onClick={onCreateCamp}>
-              <i className="icon-camp"></i> Create New Camp
-            </Button>
-          ) : null}
+          {isCampBtnVisible && showCreateCampButton(currentCampNode)
+            ? (
+              <Button size="large" className="btn" onClick={onCreateCamp}>
+                <i className="icon-camp"></i> Create New Camp
+              </Button>
+            ) : null}
         </div>
         <Collapse
           className={`${styles.cardAccordian} topicListFilterCardCollapse`}

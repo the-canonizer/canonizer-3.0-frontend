@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import styles from "../topicDetails.module.scss";
 
 import { setCurrentCamp } from "src/store/slices/filtersSlice";
+import { showCreateCampButton } from 'src/utils/generalUtility'
 
 const { TreeNode } = Tree;
 
@@ -80,9 +81,32 @@ const CampTree = ({ scrollToCampStatement }) => {
         "[KEYS ---parent_camp_is_disabled]:-",
         data[item]?.parent_camp_is_disabled
       );
-      console.log(
-        "<<<<<<<<<<<<<<<<<<<<<<[VIEW PAGE END]>>>>>>>>>>>>>>>>>>>>>>>"
+      console.table(
+        "[KEYS ---is_disabled]:-",
+        data[item]?.is_disabled
       );
+      console.table(
+        "[KEYS ---is_one_level]:-",
+        data[item]?.is_one_level
+      );
+      console.log(showCreateCampButton(data[item]),
+        "<<<<<<<<<<<<<<<<<<<<<<<[VIEW PAGE END]>>>>>>>>>>>>>>>>>>>>>>>"
+      );
+
+      /**
+       * 
+       * Shahab, 19:56
+if (disable===1){
+                    if( parent_camp_is_one_level===1){
+                    show  parent level info
+                    }
+                    if( parent_camp_is_one_level== undefined){
+                    return ;
+                    }
+                  }else(disable===0){
+                    show link 
+                  }
+       */
 
       if (data[item].children) {
         if (data[item].score >= scoreFilter) {
@@ -144,10 +168,7 @@ const CampTree = ({ scrollToCampStatement }) => {
                   : "hide"} */}
                 {data[item].camp_id ===
                   +router?.query?.camp?.at(1)?.split("-")?.at(0) &&
-                  (data[item].parent_camp_is_one_level != 1 ||
-                    data[item].is_one_level == 1) &&
-                  (data[item].parent_camp_is_disabled != 1 ||
-                    data[item].is_disabled != 1) && (
+                  showCreateCampButton(data[item]) && (
                     <TreeNode
                       key={"custom"}
                       title={
