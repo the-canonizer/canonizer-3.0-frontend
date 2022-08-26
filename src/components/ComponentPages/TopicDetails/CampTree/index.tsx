@@ -43,7 +43,6 @@ const CampTree = ({ scrollToCampStatement }) => {
 
   const renderTreeNodes = (data: any) => {
     return Object.keys(data).map((item) => {
-      
       // isDisabledSubCamp: number = 0,
       // isSingleLevelOnly: number = 0
       // let disableOneLevel = isSingleLevelOnly;

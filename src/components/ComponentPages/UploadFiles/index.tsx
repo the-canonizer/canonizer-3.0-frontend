@@ -24,6 +24,8 @@ import {
   hideCrossBtn,
   hideUploadFiles,
   showUploadFiles,
+  setIsFolderOpen,
+  setFolderId,
 } from "src/store/slices/uiSlice";
 import {
   deleteFolderApi,
@@ -58,6 +60,14 @@ const UploadFiles = () => {
   const hideFiles = () => dispatch(hideUploadFiles());
   const openFolder = useSelector((state: RootState) => state.ui.folderOpen);
 
+  const { isFolderOpen } = useSelector((state: RootState) => ({
+    isFolderOpen: state.ui.isFolderOpen,
+  }));
+
+  const { folderId } = useSelector((state: RootState) => ({
+    folderId: state.ui.folderId,
+  }));
+
   const [input, setInput] = useState("");
   const [selectedFolderID, setSelectedFolderID] = useState("");
   const [fileLists, setFileLists] = useState([]);
@@ -78,8 +88,10 @@ const UploadFiles = () => {
     showUploadsAfter();
     enableCreateFolderBtn();
     openFolderHide();
-    localStorage.removeItem("isFolderOpen");
+    //localStorage.removeItem("isFolderOpen");
     localStorage.removeItem("folderId");
+    dispatch(setIsFolderOpen(false));
+    dispatch(setFolderId(null));
   };
 
   const uploadFun = async () => {
@@ -147,7 +159,10 @@ const UploadFiles = () => {
   };
   const handleCancel = () => {
     //if open folder is open and check using local storage
-    if (localStorage.getItem("isFolderOpen")) {
+    //useSelecter
+
+    //if (localStorage.getItem("isFolderOpen")) {
+    if (openFolder) {
       //setUploadFileList([]);
       setFolderFiles([]);
       uploadOptionsHide();
@@ -196,10 +211,13 @@ const UploadFiles = () => {
     disbleCreateFolderBtn();
     hideUploadsAfter();
     GetFileInsideFolderData(i);
-    localStorage.setItem("isFolderOpen", "true"),
-      localStorage.setItem("folderId", i);
-  };
+    //localStorage.setItem("isFolderOpen", "true"),
+    dispatch(setIsFolderOpen(true));
+    // localStorage.setItem("folderId", i);
+    dispatch(setFolderId(i));
 
+    console.log(localStorage.setItem("folderId", i), "folderId");
+  };
   const removeFiles = async (originNode, file, currFileList) => {
     if (originNode.type == "folder") {
       let res = await deleteFolderApi(originNode.id);
@@ -247,7 +265,8 @@ const UploadFiles = () => {
     }
   };
   const GetUploadFileAndFolder = async () => {
-    const isFolderOpen = localStorage.getItem("isFolderOpen");
+    //const isFolderOpen = localStorage.getItem("isFolderOpen");
+    const isFolderOpen = openFolder;
     let response = await getUploadFileAndFolder();
     if (response) {
       let filesArr = response.data.files;
@@ -262,14 +281,12 @@ const UploadFiles = () => {
         arr.length > 0
           ? (dragBoxHide(),
             shownAddButton(),
-            openFolder || isFolderOpen
-              ? disbleCreateFolderBtn()
-              : enableCreateFolderBtn(),
+            //openFolder || isFolderOpen
+            openFolder ? disbleCreateFolderBtn() : enableCreateFolderBtn(),
             showUploadsAfter())
           : (dragBoxShow(), hideAddButton());
-        openFolder || isFolderOpen
-          ? disbleCreateFolderBtn()
-          : enableCreateFolderBtn();
+        //openFolder || isFolderOpen
+        openFolder ? disbleCreateFolderBtn() : enableCreateFolderBtn();
       }
     }
   };
@@ -280,8 +297,8 @@ const UploadFiles = () => {
       setOpenFolderID("");
       openFolderHide();
       uploadOptionsHide();
-      if (localStorage.getItem("isFolderOpen")) {
-        Openfolder(localStorage.getItem("folderId"));
+      if (openFolder) {
+        Openfolder(folderId);
       }
     }
   }, [isLogIn]);

@@ -44,7 +44,7 @@ describe("Verify Mobile Number Page", () => {
       />
     );
 
-    const inputEl = screen.getByLabelText(labels.phoneNumber);
+    const inputEl = screen.getByPlaceholderText("Enter Phone Number");
     userEvent.type(inputEl, "12345678");
     await waitFor(() => {
       expect(inputEl).toHaveValue(12345678);
@@ -66,7 +66,7 @@ describe("Verify Mobile Number Page", () => {
       />
     );
 
-    const inputEl = screen.getByLabelText(labels.phoneNumber);
+    const inputEl = screen.getByPlaceholderText("Enter Phone Number");
     userEvent.type(inputEl, "123456789");
     await waitFor(() => {
       expect(inputEl).toHaveValue(123456789);

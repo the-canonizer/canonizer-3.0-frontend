@@ -567,4 +567,14 @@ export default class UserRequest extends Request {
       {}
     );
   }
+
+  static SupportTree(body) {
+    return new Request(
+      K.Network.URL.SupportTree,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
 }
