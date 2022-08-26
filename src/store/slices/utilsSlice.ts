@@ -1,32 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const defaultValue = {
+  logout_type: false,
+  email_id: "",
+  remember_me: null,
+  social_login_keys: null,
+  redirect_type: false,
+  redirect_tab_setting: "",
+};
+
 export const utilsSlice = createSlice({
   name: "utils",
   initialState: {
-    is_link: false,
-    logout_type: null,
-    email: "",
-    remember_me: null,
-    social_login_keys: null,
-    redirect_type: null,
-    redirect_tab_setting: null,
+    ...defaultValue,
   },
   reducers: {
     setValue: (state, action) => {
-      state[action.payload.key] = action.payload.value;
-    },
-    resetValue: (state, action) => {
-      state.is_link = false;
-      state.logout_type = null;
-      state.email = "";
-      state.remember_me = null;
-      state.social_login_keys = null;
-      state.redirect_type = null;
-      state.redirect_tab_setting = null;
+      state[action.payload.label] = action.payload.value;
     },
   },
 });
 
-export const { setValue, resetValue } = utilsSlice.actions;
+export const { setValue } = utilsSlice.actions;
 
 export default utilsSlice.reducer;

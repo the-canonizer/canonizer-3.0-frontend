@@ -10,6 +10,7 @@ import {
   setLogout,
 } from "../../store/slices/authSlice";
 import { showMultiUserModal, updateStatus } from "../../store/slices/uiSlice";
+import { setValue } from "../../store/slices/utilsSlice";
 import NetworkCall from "../networkCall";
 import UserRequest from "../request/userRequest";
 import { store } from "../../store";
@@ -28,19 +29,17 @@ export const login = async (email: string, password: string) => {
     const authToken = await createToken();
 
     const res = await NetworkCall.fetch(
-      UserRequest.loginUser(email, password, authToken.access_token)
+      UserRequest.loginUser(email, password, authToken?.access_token)
     );
 
-    !isServer &&
-      window.localStorage.setItem("token", res.data.auth.access_token);
     let payload = {
       ...res.data.user,
-      token: res.data.auth.access_token,
-      refresh_token: res.data.auth.refresh_token,
+      token: res.data.auth?.access_token,
+      refresh_token: res.data?.auth?.refresh_token,
     };
 
     store.dispatch(setLoggedInUser(payload));
-    store.dispatch(setAuthToken(authToken.access_token));
+    store.dispatch(setAuthToken(authToken?.access_token));
 
     return res;
   } catch (err) {
@@ -62,7 +61,6 @@ export const logout = async (error = "", status = null) => {
 
   try {
     if (error) {
-      !isServer() && window.localStorage.removeItem("token");
       store.dispatch(logoutUser());
       store.dispatch(removeAuthToken());
       store.dispatch(updateStatus(status));
@@ -76,19 +74,19 @@ export const logout = async (error = "", status = null) => {
       return true;
     }
 
-    !isServer() && localStorage.setItem("logout_type", "a");
+    if (!isServer()) {
+      store.dispatch(setValue({ label: "logout_type", value: true }));
+    }
 
     let res = await NetworkCall.fetch(
       UserRequest.logoutCall(auth.token, error)
     );
 
-    !isServer() && window.localStorage.removeItem("token");
     store.dispatch(setLogout());
     store.dispatch(logoutUser());
     store.dispatch(removeAuthToken());
     return res;
   } catch (error) {
-    !isServer() && window.localStorage.removeItem("token");
     store.dispatch(logoutUser());
     store.dispatch(removeAuthToken());
     handleError(error);
@@ -100,7 +98,7 @@ export const register = async (values: object) => {
     const authToken = await createToken();
 
     const res = await NetworkCall.fetch(
-      UserRequest.registerUser(values, authToken.access_token)
+      UserRequest.registerUser(values, authToken?.access_token)
     );
     return res;
   } catch (error) {
@@ -122,19 +120,17 @@ export const verifyOtp = async (values: object) => {
     const authToken = await createToken();
 
     const res = await NetworkCall.fetch(
-      UserRequest.verifyUser(values, authToken.access_token)
+      UserRequest.verifyUser(values, authToken?.access_token)
     );
 
-    !isServer &&
-      window.localStorage.setItem("token", res.data.auth.access_token);
     let payload = {
       ...res.data.user,
-      token: res.data.auth.access_token,
-      refresh_token: res.data.auth.refresh_token,
+      token: res.data.auth?.access_token,
+      refresh_token: res.data?.auth?.refresh_token,
     };
 
     store.dispatch(setLoggedInUser(payload));
-    store.dispatch(setAuthToken(authToken.access_token));
+    store.dispatch(setAuthToken(authToken?.access_token));
 
     return res;
   } catch (err) {
@@ -158,7 +154,7 @@ export const socialLogin = async (values: object) => {
     const authToken = await createToken();
 
     const res = await NetworkCall.fetch(
-      UserRequest.userSocialLogin(values, authToken.access_token)
+      UserRequest.userSocialLogin(values, authToken?.access_token)
     );
 
     return res;
@@ -178,23 +174,21 @@ export const socialLoginCallback = async (values: object, router) => {
       token = state.auth.token;
     } else {
       authToken = await createToken();
-      token = authToken.access_token;
+      token = authToken?.access_token;
     }
 
     const res = await NetworkCall.fetch(
       UserRequest.userSocialLoginCallback(values, token)
     );
 
-    !isServer &&
-      window.localStorage.setItem("token", res.data.auth.access_token);
     let payload = {
       ...res.data.user,
-      token: res.data.auth.access_token,
-      refresh_token: res.data.auth.refresh_token,
+      token: res.data.auth?.access_token,
+      refresh_token: res.data?.auth?.refresh_token,
     };
 
     store.dispatch(setLoggedInUser(payload));
-    store.dispatch(setAuthToken(authToken.access_token));
+    store.dispatch(setAuthToken(authToken?.access_token));
 
     return res;
   } catch (error) {
@@ -226,7 +220,7 @@ export const getCountryCodes = async () => {
   try {
     const authToken = await createToken();
     const res = await NetworkCall.fetch(
-      UserRequest.getCountryCodes(authToken.access_token)
+      UserRequest.getCountryCodes(authToken?.access_token)
     );
 
     return res;
@@ -357,7 +351,7 @@ export const forgotPasswordSendOTP = async (values: object) => {
     const authToken = await createToken();
 
     const res = await NetworkCall.fetch(
-      UserRequest.forgotPasswordSendOTP(values, authToken.access_token)
+      UserRequest.forgotPasswordSendOTP(values, authToken?.access_token)
     );
 
     return res;
@@ -371,7 +365,7 @@ export const forgotPasswordVerifyOTP = async (values: object) => {
     const authToken = await createToken();
 
     const res = await NetworkCall.fetch(
-      UserRequest.forgotPasswordVerifyOTP(values, authToken.access_token)
+      UserRequest.forgotPasswordVerifyOTP(values, authToken?.access_token)
     );
 
     return res;
@@ -385,7 +379,7 @@ export const forgotPasswordUpdate = async (values: object) => {
     const authToken = await createToken();
 
     const res = await NetworkCall.fetch(
-      UserRequest.forgotPasswordUpdatePassword(values, authToken.access_token)
+      UserRequest.forgotPasswordUpdatePassword(values, authToken?.access_token)
     );
 
     return res;
@@ -448,7 +442,7 @@ export const resendOTPForRegistration = async (values: object) => {
     const authToken = await createToken();
 
     const res = await NetworkCall.fetch(
-      UserRequest.resendOTPForRegistration(values, authToken.access_token)
+      UserRequest.resendOTPForRegistration(values, authToken?.access_token)
     );
 
     return res;
@@ -806,13 +800,10 @@ export const verifyEmailOnSocial = async (body) => {
   try {
     const res = await NetworkCall.fetch(UserRequest.postVerifyEmail(body));
 
-    !isServer &&
-      window.localStorage.setItem("token", res.data.auth.access_token);
-
     let payload = {
       ...res.data.user,
-      token: res.data.auth.access_token,
-      refresh_token: res.data.auth.refresh_token,
+      token: res.data.auth?.access_token,
+      refresh_token: res.data?.auth?.refresh_token,
     };
 
     store.dispatch(setLoggedInUser(payload));

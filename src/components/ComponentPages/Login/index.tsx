@@ -1,6 +1,6 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Form } from "antd";
 
 import LoginUI from "./UI";
@@ -15,22 +15,36 @@ import {
   resendOTPForRegistration,
   verifyOtp,
 } from "../../../network/api/userApi";
-import { AppDispatch } from "../../../store";
+import { AppDispatch, RootState } from "../../../store";
 import Spinner from "../../common/spinner/spinner";
 import OTPVerify from "../Registration/UI/otp";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
+import { setValue } from "../../../store/slices/utilsSlice";
 
 const Login = ({ isModal, isTest = false }) => {
+  const remember = useSelector((state: RootState) => state.utils.remember_me);
+
   const [isOtpScreen, setIsOtpScreen] = useState(isTest);
   const [isResend, setIsResend] = useState(false);
   const [formData, setFormData] = useState({ email: "" });
   const [failedMsg, setFailedMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+  const [rememberValue, setRememberValue] = useState(remember);
 
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const [form] = Form.useForm();
   const [otpForm] = Form.useForm();
+
+  useEffect(() => setRememberValue(remember), [remember]);
+
+  // useEffect(() => {
+  //   if (rememberValue) {
+  //     form.setFieldsValue({ username: rememberValue.username });
+  //     form.setFieldsValue({ password: rememberValue.password });
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [rememberValue]);
 
   const closeModal = () => {
     dispatch(hideLoginModal());
@@ -84,11 +98,13 @@ const Login = ({ isModal, isTest = false }) => {
     }
 
     if (values.remember) {
-      localStorage.setItem(
-        "rememberme",
-        JSON.stringify({
-          username: values.username?.trim(),
-          password: values.password,
+      dispatch(
+        setValue({
+          label: "remember_me",
+          value: {
+            username: values.username?.trim(),
+            password: values.password,
+          },
         })
       );
     }
@@ -175,6 +191,7 @@ const Login = ({ isModal, isTest = false }) => {
             openRegistration={openRegistration}
             onOTPClick={onOTPClick}
             errorMsg={errorMsg}
+            rememberValue={rememberValue}
           />
         )}
       </Spinner>

@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Skeleton, message } from "antd";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   socialLoginCallback,
@@ -14,19 +14,30 @@ import {
   showSocialNamePopup,
 } from "../../../store/slices/uiSlice";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
+import { setValue } from "src/store/slices/utilsSlice";
+import { RootState } from "src/store";
 
 function SocialLoginCallback() {
+  const { rdType, rdSlTab } = useSelector((state: RootState) => ({
+    rdType: state.utils.redirect_type,
+    rdSlTab: state.utils.redirect_tab_setting,
+  }));
+
   const [isLoading, setIsLoading] = useState(false);
+  const [redirectType, setRedirectType] = useState(rdType);
+  // const [redirectSocialTab, setRedirectSocialTab] = useState(rdSlTab);
 
   const router = useRouter();
   const dispatch = useDispatch();
+
+  useEffect(() => setRedirectType(rdType), [rdType]);
+  // useEffect(() => setRedirectSocialTab(rdSlTab), [rdSlTab]);
 
   const openModal = () => dispatch(showSocialEmailPopup());
   const openNameModal = () => dispatch(showSocialNamePopup());
 
   const sendData = async (data) => {
     const redirectTab = localStorage.getItem("redirectTab");
-    const redirectSocial = localStorage.getItem("rd_s");
 
     if (!redirectTab) {
       const response = await socialLoginCallback(data, router);
@@ -42,8 +53,9 @@ function SocialLoginCallback() {
         (response && response.status_code === 200) ||
         (response && response.status_code === 400)
       ) {
-        if (redirectSocial) {
-          localStorage.removeItem("rd_s");
+        if (redirectType) {
+          dispatch(setValue({ label: "redirect_type", value: false }));
+
           router.push("/settings?tab=profile");
         } else {
           router.push("/");
@@ -52,14 +64,17 @@ function SocialLoginCallback() {
 
       if (response && response.status_code === 422) {
         openModal();
-        localStorage.setItem("s_l", JSON.stringify(data));
+        dispatch(setValue({ label: "social_login_keys", value: data }));
       }
 
       if (response && response.status_code === 423) {
         openNameModal();
-        localStorage.setItem(
-          "s_l",
-          JSON.stringify({ email: response.data.email, ...data })
+
+        dispatch(
+          setValue({
+            label: "social_login_keys",
+            value: { email: response.data.email, ...data },
+          })
         );
       }
     } else {
@@ -98,7 +113,8 @@ function SocialLoginCallback() {
       if (queryParams.provider && params.code) {
         sendData(body);
       } else {
-        localStorage.removeItem("rd_s");
+        dispatch(setValue({ label: "redirect_type", value: false }));
+
         if (!redirectTab) {
           router.push("/");
         } else {

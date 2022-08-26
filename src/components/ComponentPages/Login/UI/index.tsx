@@ -31,18 +31,18 @@ const LoginUi = ({
   openRegistration,
   onOTPClick,
   errorMsg,
+  rememberValue,
 }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const userValue = JSON.parse(localStorage.getItem("rememberme"));
-    if (userValue) {
-      form.setFieldsValue({ username: userValue.username });
-      form.setFieldsValue({ password: userValue.password });
+    if (rememberValue) {
+      form.setFieldsValue({ username: rememberValue.username });
+      form.setFieldsValue({ password: rememberValue.password });
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [rememberValue]);
 
   const onForgotPasswordClick = (e) => {
     e.preventDefault();
