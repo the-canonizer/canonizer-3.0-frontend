@@ -105,16 +105,16 @@ const CampTree = ({ scrollToCampStatement }) => {
                           href={{
                             pathname: includeReview
                               ? data[item]?.review_link?.replace(
-                                  "#statement",
-                                  ""
-                                )
+                                "#statement",
+                                ""
+                              )
                               : data[item]?.link?.replace("#statement", ""),
                           }}
                         >
                           <a
                             className={
                               data[item]?.camp_id ==
-                              router?.query?.camp?.at(1)?.split("-")?.at(0)
+                                router?.query?.camp?.at(1)?.split("-")?.at(0)
                                 ? "font-weight-bold text-primary"
                                 : ""
                             }
@@ -145,8 +145,8 @@ const CampTree = ({ scrollToCampStatement }) => {
                 {data[item].camp_id ===
                   +router?.query?.camp?.at(1)?.split("-")?.at(0) &&
                   (data[item].parent_camp_is_one_level != 1 ||
-                    data[item].is_one_level == 1 ||
-                    data[item].parent_camp_is_disabled != 1 ||
+                    data[item].is_one_level == 1) &&
+                  (data[item].parent_camp_is_disabled != 1 ||
                     data[item].is_disabled != 1) && (
                     <TreeNode
                       key={"custom"}
@@ -154,11 +154,10 @@ const CampTree = ({ scrollToCampStatement }) => {
                         <p className={styles.startNew}>
                           <Link
                             href={{
-                              pathname: `/camp/create/${
-                                encodeURIComponent(router.query.camp[0]) +
+                              pathname: `/camp/create/${encodeURIComponent(router.query.camp[0]) +
                                 "/" +
                                 encodeURIComponent(router.query.camp[1])
-                              }`,
+                                }`,
                             }}
                           >
                             <a>{`<Start new supporting camp here>`} </a>
@@ -190,7 +189,7 @@ const CampTree = ({ scrollToCampStatement }) => {
       ]}
       onSelect={onSelect}
       autoExpandParent={true}
-      // filterTreeNode={filterTreeNode}
+    // filterTreeNode={filterTreeNode}
     >
       {tree && renderTreeNodes(tree)}
     </Tree>
