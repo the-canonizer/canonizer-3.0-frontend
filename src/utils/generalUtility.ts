@@ -252,25 +252,25 @@ export const showCreateCampButton = (camp: {
   parent_camp_is_disabled: number;
   is_one_level: number;
 }) => {
-  if (camp.is_disabled === 1) {
-    if (camp.parent_camp_is_one_level === 1) {
+  if (camp?.is_disabled === 1) {
+    if (camp?.parent_camp_is_one_level === 1) {
       return false;
-    } else if (camp.parent_camp_is_one_level == undefined) {
+    } else if (camp?.parent_camp_is_one_level == undefined) {
       // return true;
-    } else if (camp.parent_camp_is_disabled === 1) {
+    } else if (camp?.parent_camp_is_disabled === 1) {
       return false;
-    } else if (camp.parent_camp_is_disabled == undefined) {
+    } else if (camp?.parent_camp_is_disabled == undefined) {
       // return true;
     }
     return false;
-  } else if (camp.is_disabled === 0) {
-    if (camp.parent_camp_is_disabled === 1) {
+  } else if (camp?.is_disabled === 0) {
+    if (camp?.parent_camp_is_disabled === 1) {
       return false;
-    } else if (camp.parent_camp_is_disabled == undefined) {
+    } else if (camp?.parent_camp_is_disabled == undefined) {
       return true;
-    } else if (camp.parent_camp_is_one_level === 1) {
+    } else if (camp?.parent_camp_is_one_level === 1) {
       return false;
-    } else if (camp.parent_camp_is_one_level == undefined) {
+    } else if (camp?.parent_camp_is_one_level == undefined) {
       return true;
     }
 
