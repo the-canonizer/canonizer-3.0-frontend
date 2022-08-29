@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import styles from "../topicDetails.module.scss";
 
 import { setCurrentCamp } from "src/store/slices/filtersSlice";
-import { showCreateCampButton } from 'src/utils/generalUtility'
+import { showCreateCampButton } from "src/utils/generalUtility";
 
 const { TreeNode } = Tree;
 
@@ -44,69 +44,28 @@ const CampTree = ({ scrollToCampStatement }) => {
 
   const renderTreeNodes = (data: any) => {
     return Object.keys(data).map((item) => {
-      // isDisabledSubCamp: number = 0,
-      // isSingleLevelOnly: number = 0
-      // let disableOneLevel = isSingleLevelOnly;
-      // let disableAll = isDisabledSubCamp;
-      // disableOneLevel =
-      //   isSingleLevelOnly == 1 || data[item].is_one_level == 1 ? 1 : 0;
-      // disableAll =
-      //   isDisabledSubCamp == 1 || data[item].is_disabled == 1 ? 1 : 0;
-
-      // if (data[item].is_disabled && data[item].children) {
-      //   disableAll = true;
-      // } else {
-      //   disableAll = false;
-      // }
-
-      // if (data[item].is_one_level && data[item].children) {
-      //   disableOneLevel = true;
-      // } else {
-      //   disableOneLevel = false;
-      // }
-
       console.log(
         "<<<<<<<<<<<<<<<<<<<<<<[VIEW PAGE START]>>>>>>>>>>>>>>>>>>>>>>>"
       );
       console.table("[TOPIC TREE]:-", data[item]);
-      console.table(
-        "[TITLE]:-",
-        includeReview ? data[item]?.review_title : data[item]?.title
+      console.log(
+        "[title:- ",
+        includeReview ? data[item]?.review_title : data[item]?.title,
+        ", parent_is_one_level:- ",
+        data[item]?.parent_camp_is_one_level,
+        ", parent_is_disabled:- ",
+        data[item]?.parent_camp_is_disabled,
+        ", disabled:- ",
+        data[item]?.is_disabled,
+        ", one_level:- ",
+        data[item]?.is_one_level,
+        ", show_button:- ",
+        showCreateCampButton(data[item]),
+        "]"
       );
-      console.table(
-        "[KEYS ---parent_camp_is_one_level]:-",
-        data[item]?.parent_camp_is_one_level
-      );
-      console.table(
-        "[KEYS ---parent_camp_is_disabled]:-",
-        data[item]?.parent_camp_is_disabled
-      );
-      console.table(
-        "[KEYS ---is_disabled]:-",
-        data[item]?.is_disabled
-      );
-      console.table(
-        "[KEYS ---is_one_level]:-",
-        data[item]?.is_one_level
-      );
-      console.log(showCreateCampButton(data[item]),
+      console.log(
         "<<<<<<<<<<<<<<<<<<<<<<<[VIEW PAGE END]>>>>>>>>>>>>>>>>>>>>>>>"
       );
-
-      /**
-       * 
-       * Shahab, 19:56
-if (disable===1){
-                    if( parent_camp_is_one_level===1){
-                    show  parent level info
-                    }
-                    if( parent_camp_is_one_level== undefined){
-                    return ;
-                    }
-                  }else(disable===0){
-                    show link 
-                  }
-       */
 
       if (data[item].children) {
         if (data[item].score >= scoreFilter) {
@@ -129,16 +88,16 @@ if (disable===1){
                           href={{
                             pathname: includeReview
                               ? data[item]?.review_link?.replace(
-                                "#statement",
-                                ""
-                              )
+                                  "#statement",
+                                  ""
+                                )
                               : data[item]?.link?.replace("#statement", ""),
                           }}
                         >
                           <a
                             className={
                               data[item]?.camp_id ==
-                                router?.query?.camp?.at(1)?.split("-")?.at(0)
+                              router?.query?.camp?.at(1)?.split("-")?.at(0)
                                 ? "font-weight-bold text-primary"
                                 : ""
                             }
@@ -162,10 +121,6 @@ if (disable===1){
                 key={data[item].camp_id}
                 data={data[item]}
               >
-                {/* {!data[item].parent_camp_is_one_level ||
-                data[item].parent_camp_is_disabled
-                  ? "show"
-                  : "hide"} */}
                 {data[item].camp_id ===
                   +router?.query?.camp?.at(1)?.split("-")?.at(0) &&
                   showCreateCampButton(data[item]) && (
@@ -175,10 +130,11 @@ if (disable===1){
                         <p className={styles.startNew}>
                           <Link
                             href={{
-                              pathname: `/camp/create/${encodeURIComponent(router.query.camp[0]) +
+                              pathname: `/camp/create/${
+                                encodeURIComponent(router.query.camp[0]) +
                                 "/" +
                                 encodeURIComponent(router.query.camp[1])
-                                }`,
+                              }`,
                             }}
                           >
                             <a>{`<Start new supporting camp here>`} </a>
@@ -210,7 +166,7 @@ if (disable===1){
       ]}
       onSelect={onSelect}
       autoExpandParent={true}
-    // filterTreeNode={filterTreeNode}
+      // filterTreeNode={filterTreeNode}
     >
       {tree && renderTreeNodes(tree)}
     </Tree>
