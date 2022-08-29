@@ -41,14 +41,7 @@ function SocialLoginCallback() {
 
     if (!redirectTab) {
       const response = await socialLoginCallback(data, router);
-      if (response && response.status_code === 200) {
-        dispatch(
-          setFilterCanonizedTopics({
-            algorithm: response?.data?.user?.default_algo,
-          })
-        );
-      }
-      console.log("[response]", response);
+
       if (
         (response && response.status_code === 200) ||
         (response && response.status_code === 400)
