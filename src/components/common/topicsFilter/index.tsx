@@ -25,7 +25,7 @@ import styles from "./topicListFilter.module.scss";
 import { useRouter } from "next/router";
 import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
 import K from "src/constants";
-import { showCreateCampButton } from "src/utils/generalUtility";
+// import { showCreateCampButton } from "src/utils/generalUtility";
 
 const infoContent = (
   <>
@@ -81,7 +81,7 @@ function disabledDateTime() {
   };
 }
 
-const CreateTopic = ({ onCreateCamp = () => { } }) => {
+const CreateTopic = ({ onCreateCamp = () => {} }) => {
   const [isDatePicker, setIsDatePicker] = useState(false);
   const [isPanelCollapse, setIsPanelCollapse] = useState(false);
 
@@ -216,12 +216,13 @@ const CreateTopic = ({ onCreateCamp = () => { } }) => {
           <Button size="large" className="mb-3 btn" onClick={campRoute}>
             <i className="icon-topic"></i> Create New Topic
           </Button>
-          {isCampBtnVisible && showCreateCampButton(currentCampNode)
-            ? (
-              <Button size="large" className="btn" onClick={onCreateCamp}>
-                <i className="icon-camp"></i> Create New Camp
-              </Button>
-            ) : null}
+          {isCampBtnVisible &&
+          currentCampNode.isDisabled == 0 &&
+          currentCampNode.parentIsOneLevel == 0 ? (
+            <Button size="large" className="btn" onClick={onCreateCamp}>
+              <i className="icon-camp"></i> Create New Camp
+            </Button>
+          ) : null}
         </div>
         <Collapse
           className={`${styles.cardAccordian} topicListFilterCardCollapse`}

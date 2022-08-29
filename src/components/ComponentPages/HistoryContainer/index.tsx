@@ -12,7 +12,7 @@ import { getHistoryApi, getLiveHistoryApi } from "../../../network/api/history";
 import HistoryCollapse from "./Collapse";
 import { RootState } from "src/store";
 import CampInfoBar from "../TopicDetails/CampInfoBar";
-import { showCreateCampButton } from "src/utils/generalUtility";
+// import { showCreateCampButton } from "src/utils/generalUtility";
 
 const { Title } = Typography;
 
@@ -138,16 +138,17 @@ function HistoryContainer() {
 
   const onCompareClick = () => {
     router.push({
-      pathname: `/statement/compare/${router.query.camp[0]}/${router.query.camp[1] ? router.query.camp[1] : "1-Agreement"
-        }`,
+      pathname: `/statement/compare/${router.query.camp[0]}/${
+        router.query.camp[1] ? router.query.camp[1] : "1-Agreement"
+      }`,
       query: {
         statements: selectedTopic[0] + "_" + selectedTopic[1],
         from:
           historyOf == "statement"
             ? "statement"
             : historyOf == "camp"
-              ? "camp"
-              : "topic",
+            ? "camp"
+            : "topic",
       },
     });
   };
@@ -213,12 +214,13 @@ function HistoryContainer() {
         <Button size="large" className={styles.createBtn} onClick={topicRoute}>
           <i className="icon-topic"></i>Create New Topic
         </Button>
-        {historyOf !== "topic" && showCreateCampButton(currentCampRecord)
-          ? (
-            <Button size="large" className={styles.createBtn} onClick={campRoute}>
-              <i className="icon-topic"></i>Create New Camp
-            </Button>
-          ) : null}
+        {historyOf !== "topic" &&
+        currentCampRecord.isDisabled == 0 &&
+        currentCampRecord.parentIsOneLevel == 0 ? (
+          <Button size="large" className={styles.createBtn} onClick={campRoute}>
+            <i className="icon-topic"></i>Create New Camp
+          </Button>
+        ) : null}
       </div>
       <div className={styles.campStatementHistoryCard}>
         <Affix
@@ -232,8 +234,9 @@ function HistoryContainer() {
               <Spin spinning={loadingIndicator} size="default">
                 <List className={styles.cshcHeadFilter} size="small">
                   <List.Item
-                    className={`${styles.campStatementViewAll} ${styles.cshcHeadFilterItem
-                      } ${activeTab == "all" ? styles.active : null}`}
+                    className={`${styles.campStatementViewAll} ${
+                      styles.cshcHeadFilterItem
+                    } ${activeTab == "all" ? styles.active : null}`}
                   >
                     <a
                       onClick={() => {
@@ -244,8 +247,9 @@ function HistoryContainer() {
                     </a>
                   </List.Item>
                   <List.Item
-                    className={`${styles.campStatementObjected}  ${styles.cshcHeadFilterItem
-                      }  ${activeTab == "objected" ? styles.active : null}`}
+                    className={`${styles.campStatementObjected}  ${
+                      styles.cshcHeadFilterItem
+                    }  ${activeTab == "objected" ? styles.active : null}`}
                   >
                     <a
                       onClick={() => {
@@ -256,8 +260,9 @@ function HistoryContainer() {
                     </a>
                   </List.Item>
                   <List.Item
-                    className={`${styles.campStatementLive} ${styles.cshcHeadFilterItem
-                      } ${activeTab == "live" ? styles.active : null}`}
+                    className={`${styles.campStatementLive} ${
+                      styles.cshcHeadFilterItem
+                    } ${activeTab == "live" ? styles.active : null}`}
                   >
                     <a
                       onClick={() => {
@@ -268,8 +273,9 @@ function HistoryContainer() {
                     </a>
                   </List.Item>
                   <List.Item
-                    className={`${styles.campStatementNotLive} ${styles.cshcHeadFilterItem
-                      } ${activeTab == "in_review" ? styles.active : null}`}
+                    className={`${styles.campStatementNotLive} ${
+                      styles.cshcHeadFilterItem
+                    } ${activeTab == "in_review" ? styles.active : null}`}
                   >
                     <a
                       onClick={() => {
@@ -280,8 +286,9 @@ function HistoryContainer() {
                     </a>
                   </List.Item>
                   <List.Item
-                    className={`${styles.campStatementOld} ${styles.cshcHeadFilterItem
-                      } ${activeTab == "old" ? styles.active : null}`}
+                    className={`${styles.campStatementOld} ${
+                      styles.cshcHeadFilterItem
+                    } ${activeTab == "old" ? styles.active : null}`}
                   >
                     <a
                       onClick={() => {
@@ -309,8 +316,8 @@ function HistoryContainer() {
               {historyOf == "topic"
                 ? "Topics"
                 : historyOf == "camp"
-                  ? "Camps"
-                  : "Statements"}
+                ? "Camps"
+                : "Statements"}
             </Button>
           </div>
         </Affix>
