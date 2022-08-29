@@ -8,6 +8,9 @@ const CreateNewCampButton = (props) => {
   const router = useRouter();
 
   const campRoute = () => {
+    if (props.click) {
+      props.click();
+    }
     router.push({
       pathname: props.url,
     });

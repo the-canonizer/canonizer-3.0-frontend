@@ -119,9 +119,6 @@ function HistoryContainer() {
 
   const campRoute = () => {
     setLoadingIndicator(true);
-    // router.push(
-    //   `/camp/create/${router.query.camp[0] + "/" + router.query.camp[1]}`
-    // );
   };
 
   const onSelectCompare = ({ id }, e: CheckboxChangeEvent) => {
@@ -213,7 +210,7 @@ function HistoryContainer() {
         isTopicHistoryPage={historyOf == "topic" ? true : false}
       />
       <div className={styles.btnGroup}>
-        <CreateNewTopicButton className={styles.createBtn} />
+        <CreateNewTopicButton className={styles.createBtn} click={topicRoute} />
 
         {historyOf !== "topic" &&
         currentCampRecord !== 1 &&
@@ -223,6 +220,7 @@ function HistoryContainer() {
           currentCampNode?.is_disabled != 1) ? (
           <CreateNewCampButton
             className={styles.createBtn}
+            click={campRoute}
             url={`/camp/create/${
               router.query.camp[0] + "/" + router.query.camp[1]
             }`}
