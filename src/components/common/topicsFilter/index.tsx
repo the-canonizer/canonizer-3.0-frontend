@@ -115,7 +115,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
     currentCampRecord: state.topicDetails.currentCampRecord,
     currentCampNode: state?.filters?.selectedCampNode,
   }));
-  console.log("[CURRENT_CAMP_NODE]", currentCampNode);
+  
   const [value, setValue] = useState(
     selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3
   );

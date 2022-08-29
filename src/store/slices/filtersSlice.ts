@@ -16,7 +16,6 @@ export const filtersSlice = createSlice({
       includeReview: false,
     },
     selectedCampNode: null,
-    showCreateCampButton: true,
   },
   reducers: {
     setFilterCanonizedTopics: (state, action) => {
@@ -35,9 +34,6 @@ export const filtersSlice = createSlice({
     setCurrentCamp: (state, action) => {
       state.selectedCampNode = action.payload;
     },
-    setCreateCampButton: (state, action) => {
-      state.showCreateCampButton = action.payload;
-    },
   },
 });
 
@@ -45,7 +41,6 @@ export const {
   setFilterCanonizedTopics,
   setIsReviewCanonizedTopics,
   setCurrentCamp,
-  setCreateCampButton,
 } = filtersSlice.actions;
 
 export default filtersSlice.reducer;
