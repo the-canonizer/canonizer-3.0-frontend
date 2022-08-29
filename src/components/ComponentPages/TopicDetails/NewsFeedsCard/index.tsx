@@ -98,8 +98,8 @@ const NewsFeedsCard = ({ newsFeed }) => {
                           // } else {
                           //   router.push("/login");
                           // }
-                          setEditNews(true);
-                          setDeleteNews(false);
+                          setEditNews(false);
+                          setDeleteNews(true);
                         }}
                       >
                         <i className={"icon-delete"} />
@@ -224,7 +224,11 @@ const NewsFeedsCard = ({ newsFeed }) => {
                           // disabled={!news.owner_flag}
                           onClick={() =>
                             router.push(
-                              `/editnews/${router?.query?.camp[0]}/${router?.query?.camp[1]}/camp-id-${news?.id}`
+                              `/editnews/${encodeURIComponent(
+                                router?.query?.camp[0]
+                              )}/${encodeURIComponent(
+                                router?.query?.camp[1]
+                              )}/news-id-${news?.id}`
                             )
                           }
                         >

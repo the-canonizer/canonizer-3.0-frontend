@@ -45,12 +45,15 @@ export default function HomeSideBar({ onCreateCamp = () => {} }) {
           </Drawer>
         </>
       )}
-      {typeof window !== "undefined" && window.innerWidth > 767 && (
-        <>
-          {router.asPath.includes("topic") && <CampRecentActivities />}
-          {!!newsFeed?.length && <NewsFeedsCard newsFeed={newsFeed} />}
-        </>
-      )}
+
+      {typeof window !== "undefined" &&
+        window.innerWidth > 767 &&
+        router.asPath.includes("topic") && (
+          <>
+            {<CampRecentActivities />}
+            {!!newsFeed?.length && <NewsFeedsCard newsFeed={newsFeed} />}
+          </>
+        )}
     </>
   );
 }

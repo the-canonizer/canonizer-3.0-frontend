@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 // import ManageSupportUI from "./ManageSupportUI";
 import { Button, Image, message } from "antd";
-import CreateNewCampButton from "../../common/button/createNewTopicBtn";
 import styles from "./ManageSupportUI/ManageSupport.module.scss";
 import CampInfoBar from "../TopicDetails/CampInfoBar";
 import dynamic from "next/dynamic";
@@ -38,7 +37,7 @@ const ManageSupport = () => {
   const [selectedtNickname, setSelectedtNickname] = useState();
   const [checked, setChecked] = useState(false);
   const [getSupportStatusData, setGetSupportStatusData] = useState("");
-  const [supportStatus, setsupportStatus] = useState<number>(0);
+  const [updatePostion, setUpdatePostion] = useState<boolean>(false);
   const getCanonizedNicknameList = async () => {
     const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
     const body = { topic_num: topicNum };
@@ -88,8 +87,8 @@ const ManageSupport = () => {
   //isLogin
   useEffect(() => {
     if (isLogin) {
+      setUpdatePostion(false);
       if (manageSupportStatusCheck) {
-        //GetCheckStatusData();
         getCanonizedNicknameList();
         getActiveSupportTopicList();
         setSubmitButtonDisable(false);
@@ -108,7 +107,6 @@ const ManageSupport = () => {
     if (response && response.status_code === 200) {
       warningMsg = response.data.warning;
       supportSts = response.data.support_flag;
-      setsupportStatus(response.data.support_flag);
       //Api's call for list
       dispatch(setCheckSupportExistsData({}));
       dispatch(setCheckSupportExistsData(response.data));
@@ -264,7 +262,6 @@ const ManageSupport = () => {
     let campIDsArr = [];
     //get support_flag status check from GetCheckSupportExistsData
     let support_flag_Status = supportedCampsStatus.support_flag;
-    // let support_flag_Status = supportStatus;
     let topicNumId =
       manageSupportRevertData.length > 0
         ? manageSupportRevertData[0].topic_num
@@ -276,17 +273,25 @@ const ManageSupport = () => {
     );
     //if supported camps  flag is 0 means not supported else same as previous
     resultCamp =
-      support_flag_Status == 0
+      !updatePostion && support_flag_Status == 0
         ? resultCamp.filter((value) => value.camp_num == campNum)
         : resultCamp;
-
     let filterArrayResult = [];
-    resultCamp.map((data, key) => {
-      filterArrayResult.push({
-        camp_num: data.camp_num,
-        order: manageListOrder,
-      });
-    });
+
+    //check support Camps is 1 or 0  and update order of camps
+    support_flag_Status == 1 || updatePostion
+      ? resultCamp.map((data, key) => {
+          filterArrayResult.push({
+            camp_num: data.camp_num,
+            order: key + 1,
+          });
+        })
+      : resultCamp.map((data, key) => {
+          filterArrayResult.push({
+            camp_num: data.camp_num,
+            order: manageListOrder,
+          });
+        });
     let add_camp_data = {};
     if (getSupportStatusData !== "") {
       parentSupportDataList.length > 0 &&
@@ -308,6 +313,7 @@ const ManageSupport = () => {
       let filterRes = filterArrayResult.filter(
         (values) => values.camp_num == campNum
       );
+      //checks for support order add new camps data
       add_camp_data =
         filterRes.length > 0
           ? filterRes[0]
@@ -347,6 +353,7 @@ const ManageSupport = () => {
       order_update: filterArrayResult,
     };
 
+    //Case if data pass from delegated or direct
     if (CheckDelegatedOrDirect) {
       let nickNameID = nickNameList.filter(
         (values) => selectedtNickname == values.id
@@ -425,6 +432,7 @@ const ManageSupport = () => {
         setSelectedtNickname={setSelectedtNickname}
         selectedtNickname={selectedtNickname}
         submitButtonDisable={submitButtonDisable}
+        setUpdatePostion={setUpdatePostion}
       />
     </>
   );

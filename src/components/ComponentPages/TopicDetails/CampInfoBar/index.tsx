@@ -1,20 +1,17 @@
 import { Spin, Tooltip, Typography } from "antd";
 import { useRouter } from "next/router";
 import { useState, useEffect, useRef, memo } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { subscribeToCampApi } from "../../../../network/api/campDetailApi";
 import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
 import { Dropdown, Menu, Button } from "antd";
 import K from "../../../../constants";
-import moment from "moment";
+
+import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
-import {
-  getCurrentTopicRecordApi,
-  getCurrentCampRecordApi,
-  getCampBreadCrumbApi,
-} from "../../../../network/api/campDetailApi";
+import { getCampBreadCrumbApi } from "../../../../network/api/campDetailApi";
 import {
   MoreOutlined,
   FileTextOutlined,
@@ -26,9 +23,11 @@ const CampInfoBar = ({
   payload = null,
   isTopicPage = false,
   isTopicHistoryPage = false,
+  getCheckSupportStatus = null,
 }) => {
   const isLogin = useAuthentication();
 
+  const dispatch = useDispatch();
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [payloadData, setPayloadData] = useState(payload);
   const [breadCrumbRes, setBreadCrumbRes] = useState([]);
@@ -91,6 +90,16 @@ const CampInfoBar = ({
       } else didMount.current = true;
     }
   }, [campRecord?.subscriptionId, topicRecord?.topicSubscriptionId]);
+
+  useEffect(() => {
+    if (isTopicPage) {
+      dispatch(setManageSupportStatusCheck(false));
+    }
+  }, []);
+
+  const handleClickSupportCheck = () => {
+    dispatch(setManageSupportStatusCheck(true));
+  };
 
   const onCampForumClick = () => {
     const topicName = topicRecord?.topic_name?.replaceAll(" ", "-");
@@ -175,36 +184,76 @@ const CampInfoBar = ({
           "Subscribe to the Camp"
         )}
       </Menu.Item>
-      <Menu.Item icon={<HeartOutlined />}>Directly Join and Support </Menu.Item>
+      <Menu.Item icon={<HeartOutlined />}>
+        {isTopicPage && (
+          <Link href={router.asPath.replace("/topic/", "/support/")}>
+            <a>
+              <div
+                className="topicDetailsCollapseFooter"
+                onClick={handleClickSupportCheck}
+              >
+                {/* {K?.exceptionalMessages?.directJoinSupport} */}
+                {getCheckSupportStatus?.support_flag == 1
+                  ? K?.exceptionalMessages?.manageSupport
+                  : K?.exceptionalMessages?.directJoinSupport}
+              </div>
+            </a>
+          </Link>
+        )}
+      </Menu.Item>
       <Menu.Item icon={<i className="icon-camp"></i>}>
-        Manage/Edit the Camp
+        {isTopicPage && (
+          <Link
+            href={`/camp/history/${encodeURIComponent(
+              router?.query?.camp
+                ? router?.query?.camp[0]
+                : router?.query?.manageSupport[0]
+            )}/${encodeURIComponent(
+              router?.query?.camp
+                ? router?.query?.camp[1]
+                : router?.query?.manageSupport[1]
+            )}`}
+          >
+            <a>{K?.exceptionalMessages?.manageCampButton}</a>
+          </Link>
+        )}
       </Menu.Item>
       <Menu.Item icon={<i className="icon-topic"></i>}>
-        Manage/Edit the Topic
+        {isTopicPage && (
+          <Link
+            href={`/topic/history/${encodeURIComponent(
+              router?.query?.camp
+                ? router?.query?.camp[0]
+                : router?.query?.manageSupport[0]
+            )}`}
+          >
+            <a>{K?.exceptionalMessages?.manageTopicButton} </a>
+          </Link>
+        )}
       </Menu.Item>
       <Menu.Item icon={<FileTextOutlined />}>
         {isTopicPage && (
           <Link
             href={
               campStatement?.length > 0
-                ? `/statement/history/${
+                ? `/statement/history/${encodeURIComponent(
                     router?.query?.camp
                       ? router?.query?.camp[0]
                       : router?.query?.manageSupport[0]
-                  }/${
+                  )}/${encodeURIComponent(
                     router?.query?.camp
                       ? router?.query?.camp[1]
                       : router?.query?.manageSupport[1]
-                  }`
-                : `/create/statement/${
+                  )}`
+                : `/create/statement/${encodeURIComponent(
                     router?.query?.camp
                       ? router?.query?.camp[0]
                       : router?.query?.manageSupport[0]
-                  }/${
+                  )}/${encodeURIComponent(
                     router?.query?.camp
                       ? router?.query?.camp[1]
                       : router?.query?.manageSupport[1]
-                  }`
+                  )}`
             }
           >
             <a>
@@ -229,9 +278,9 @@ const CampInfoBar = ({
                 topicRecord && topicRecord?.topic_name
               ) : isTopicHistoryPage ? (
                 <Link
-                  href={`/topic/${
-                    payload?.topic_num
-                  }-${payload?.topic_name?.replaceAll(" ", "-")}/1-Agreement`}
+                  href={`/topic/${payload?.topic_num}-${encodeURIComponent(
+                    payload?.topic_name
+                  )}/1-Agreement`}
                 >
                   <a>{payloadData?.topic_name}</a>
                 </Link>
@@ -264,9 +313,7 @@ const CampInfoBar = ({
                                     : router.query?.manageSupport
                                   )?.at(0)}/${
                                     camp?.camp_num
-                                  }-${encodeURIComponent(
-                                    camp?.camp_name?.replaceAll(" ", "-")
-                                  )}`,
+                                  }-${encodeURIComponent(camp?.camp_name)}`,
                           }}
                           key={camp?.camp_num}
                         >
@@ -285,11 +332,9 @@ const CampInfoBar = ({
                         href={{
                           pathname: `/topic/${
                             payloadData?.topic_num
-                          }-${encodeURIComponent(
-                            payloadData?.topic_name?.replaceAll(" ", "-")
-                          )}/${camp?.camp_num}-${encodeURIComponent(
-                            camp?.camp_name?.replaceAll(" ", "-")
-                          )}`,
+                          }-${encodeURIComponent(payloadData?.topic_name)}/${
+                            camp?.camp_num
+                          }-${encodeURIComponent(camp?.camp_name)}`,
                         }}
                         key={index}
                       >

@@ -32,9 +32,14 @@ function HistoryContainer() {
 
   const count = useRef(1);
 
-  const { history } = useSelector((state: RootState) => ({
-    history: state?.topicDetails?.history,
-  }));
+  const { history, currentCampRecord, currentCampNode } = useSelector(
+    (state: RootState) => ({
+      history: state?.topicDetails?.history,
+      currentCampRecord: state.topicDetails.currentCampRecord,
+      currentCampNode: state?.filters?.selectedCampNode,
+    })
+  );
+  console.log("[currentCampRecord history container]", currentCampRecord);
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [campHistory, setCampHistory] = useState(history);
 
@@ -149,11 +154,13 @@ function HistoryContainer() {
   };
 
   const loader = (
-    <div className="p-3">
-      <Skeleton active />
-      <Skeleton active />
-      <Skeleton active />
-    </div>
+    <></>
+    // will be replaced with alternate
+    // <div className="p-3">
+    //   <Skeleton active />
+    //   <Skeleton active />
+    //   <Skeleton active />
+    // </div>
   );
 
   let historyTitle = () => {
@@ -208,7 +215,12 @@ function HistoryContainer() {
       <div className={styles.btnGroup}>
         <CreateNewTopicButton className={styles.createBtn} />
 
-        {historyOf !== "topic" ? (
+        {historyOf !== "topic" &&
+        currentCampRecord !== 1 &&
+        (currentCampNode?.parent_camp_is_one_level != 1 ||
+          currentCampNode?.is_one_level == 1 ||
+          currentCampNode?.parent_camp_is_disabled != 1 ||
+          currentCampNode?.is_disabled != 1) ? (
           <CreateNewCampButton
             className={styles.createBtn}
             url={`/camp/create/${
@@ -300,7 +312,7 @@ function HistoryContainer() {
               disabled={
                 !(
                   selectedTopic.length >= 2 &&
-                  !selectedTopic?.includes(campHistory["id"])
+                  !selectedTopic?.includes(campHistory && campHistory["id"])
                 )
               }
               className={styles.active}

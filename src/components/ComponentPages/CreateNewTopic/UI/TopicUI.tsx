@@ -10,6 +10,8 @@ const CreateNewTopicUI = ({
   nameSpaces,
   nickNameList,
   onCancel,
+  options,
+  onCheckboxChange,
 }) => {
   return (
     <Fragment>
@@ -32,6 +34,8 @@ const CreateNewTopicUI = ({
           nameSpaces={nameSpaces}
           nickNameList={nickNameList}
           onCancel={onCancel}
+          options={options}
+          onCheckboxChange={onCheckboxChange}
         />
       </div>
     </Fragment>

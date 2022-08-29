@@ -29,7 +29,9 @@ export default function NotificationList({
             title={
               <Link
                 href={{
-                  pathname: item["url"],
+                  pathname: item["url"]
+                    ?.replace("#statement", "")
+                    ?.replaceAll(" ", "-"),
                   query: {
                     from: "notify_" + item["id"],
                   },

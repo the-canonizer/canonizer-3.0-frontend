@@ -233,10 +233,10 @@ function HistoryCollapse({
                 >
                   <Link
                     href={`/topic/${
-                      router?.query?.camp[0] +
+                      encodeURIComponent(router?.query?.camp[0]) +
                       "/" +
                       (historyOf != "topic"
-                        ? router?.query?.camp[1]
+                        ? encodeURIComponent(router?.query?.camp[1])
                         : "1-Agreement")
                     }`}
                   >
@@ -289,7 +289,8 @@ function HistoryCollapse({
                 )}
               {campStatement?.status == "in_review" &&
                 !!(ifIamSupporter != 0 || ifSupportDelayed != 0) &&
-                isLoggedIn && (
+                isLoggedIn &&
+                !campStatement?.isAuthor && (
                   <div className={styles.campStatementCollapseButtons}>
                     <Checkbox
                       className={styles.campSelectCheckbox}
