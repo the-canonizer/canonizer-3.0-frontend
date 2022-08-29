@@ -179,7 +179,10 @@ const TopicDetails = () => {
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
-        <CampInfoBar isTopicPage={true} />
+        <CampInfoBar
+          isTopicPage={true}
+          getCheckSupportStatus={getCheckSupportStatus}
+        />
 
         <aside className={styles.miniSide + " leftSideBar miniSideBar"}>
           <SideBar onCreateCamp={onCreateCamp} />
