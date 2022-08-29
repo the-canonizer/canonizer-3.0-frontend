@@ -55,8 +55,9 @@ const SupportTreeCard = ({
   const { campSupportingTree } = useSelector((state: RootState) => ({
     campSupportingTree: state?.topicDetails?.campSupportingTree,
   }));
-  const { topicRecord } = useSelector((state: RootState) => ({
+  const { topicRecord, campRecord } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
+    campRecord: state?.topicDetails?.currentCampRecord,
   }));
 
   return (
@@ -69,7 +70,7 @@ const SupportTreeCard = ({
         header={
           <h3>
             Support Tree for &quot;
-            {router?.query?.camp[1]?.split("-").slice(1).join(" ")}&quot; Camp
+            {campRecord?.camp_name}&quot; Camp
           </h3>
         }
         key="1"

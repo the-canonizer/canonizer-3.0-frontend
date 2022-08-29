@@ -62,7 +62,7 @@ const CurrentCampCard = () => {
                 router?.query?.camp[0]
               )}/${encodeURIComponent(router?.query?.camp[1])}`}
             >
-              <a>{K?.exceptionalMessages?.manageCampButton} abc</a>
+              <a>{K?.exceptionalMessages?.manageCampButton} </a>
             </Link>
           </CustomButton>
         </div>
