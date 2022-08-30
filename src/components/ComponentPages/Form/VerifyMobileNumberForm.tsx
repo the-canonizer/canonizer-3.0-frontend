@@ -55,7 +55,9 @@ function VerifyMobileNumberForm({
                 label={
                   <>
                     {messages.labels.phoneNumber}
-                    <span className="required">*</span>
+                    <span className="required" id="asteriskPhonenumber">
+                      *
+                    </span>
                   </>
                 }
                 {...messages.phoneNumberRule}
@@ -83,7 +85,9 @@ function VerifyMobileNumberForm({
                 label={
                   <>
                     {messages.labels.mobileCarrier}
-                    <span className="required">*</span>
+                    <span className="required" id="asteriskMobileCarrier">
+                      *
+                    </span>
                   </>
                 }
                 {...messages.mobileCarrierRule}

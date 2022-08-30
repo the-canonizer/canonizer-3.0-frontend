@@ -42,7 +42,9 @@ export default function ChangePasswordUI({
                   label={
                     <>
                       {messages.labels.currentPassword}
-                      <span className="required">*</span>
+                      <span className="required" id="asteriskCurrentPassword">
+                        *
+                      </span>
                     </>
                   }
                   {...messages.currentPasswordRule}
@@ -69,7 +71,9 @@ export default function ChangePasswordUI({
                   label={
                     <>
                       {messages.labels.newPassword}
-                      <span className="required">*</span>
+                      <span className="required" id="asteriskNewPassword">
+                        *
+                      </span>
                     </>
                   }
                   {...messages.newPasswordRule}
@@ -93,7 +97,9 @@ export default function ChangePasswordUI({
                   label={
                     <>
                       {messages.labels.confirmPassword}
-                      <span className="required">*</span>
+                      <span className="required" id="asteriskConfirmPassword">
+                        *
+                      </span>
                     </>
                   }
                   dependencies={["new_password"]}
