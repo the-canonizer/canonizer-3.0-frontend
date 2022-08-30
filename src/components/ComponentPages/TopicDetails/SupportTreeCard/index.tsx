@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import CustomButton from "../../../common/button";
 import { Card, Button, Typography, List, Collapse, Popover } from "antd";
 import Link from "next/link";
@@ -55,12 +55,13 @@ const SupportTreeCard = ({
   const { campSupportingTree } = useSelector((state: RootState) => ({
     campSupportingTree: state?.topicDetails?.campSupportingTree,
   }));
-  const { topicRecord } = useSelector((state: RootState) => ({
+  const [loadMore, setLoadMore] = useState(false);
+  const { topicRecord, campRecord } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
+    campRecord: state?.topicDetails?.currentCampRecord,
   }));
-  const {campName}= useSelector((state: RootState) => ({
-    campName: state?.campTree?.campName,
-  }));
+
+  const supportLength = 15;
   return (
     <Collapse
       defaultActiveKey={["1"]}
@@ -71,7 +72,7 @@ const SupportTreeCard = ({
         header={
           <h3>
             Support Tree for &quot;
-            {campName!==""? campName :router?.query?.camp[1]?.split("-").slice(1).join(" ")}&quot; Camp
+            {campRecord?.camp_name}&quot; Camp
           </h3>
         }
         key="1"
@@ -86,50 +87,53 @@ const SupportTreeCard = ({
           <span className="number-style">65.4</span>
         </Paragraph>
         <List className={"can-card-list "}>
-          {campSupportingTree?.length &&
+          {campSupportingTree?.length > 0 &&
             campSupportingTree.map((supporter, index) => {
-              return (
-                <List.Item key={index}>
-                  <Link
-                    href={{
-                      pathname: `/user/supports/${supporter.id}`,
-                      query: {
-                        topicnum: topicRecord?.topic_num,
-                        campnum: topicRecord?.camp_num,
-                        namespace: topicRecord?.namespace_id,
-                      },
-                    }}
-                  >
-                    <a>
-                      {supporter.name}
-                      <span className="number-style">{supporter.score}</span>
-                    </a>
-                  </Link>
+              if ((!loadMore && index < supportLength) || loadMore) {
+                return (
+                  <List.Item key={index}>
+                    <Link
+                      href={{
+                        pathname: `/user/supports/${supporter.nick_name_id}`,
+                        query: {
+                          topicnum: topicRecord?.topic_num,
+                          campnum: topicRecord?.camp_num,
+                          namespace: topicRecord?.namespace_id,
+                        },
+                      }}
+                    >
+                      <a>
+                        {supporter.nick_name}
+                        <span className="number-style">{supporter.score}</span>
+                      </a>
+                    </Link>
 
-                  <Link href={manageSupportPath + `_${supporter.id}`}>
-                    <a>
-                      <span
-                        onClick={handleDelegatedClick}
-                        className="delegate-support-style"
-                      >
-                        {"Delegate Your Support"}
-                      </span>
-                    </a>
-                  </Link>
-                </List.Item>
-              );
+                    <Link href={manageSupportPath + `_${supporter.id}`}>
+                      <a>
+                        <span
+                          onClick={handleDelegatedClick}
+                          className="delegate-support-style"
+                        >
+                          {"Delegate Your Support"}
+                        </span>
+                      </a>
+                    </Link>
+                  </List.Item>
+                );
+              }
             })}
         </List>
-        {campSupportingTree?.length && (
+        {campSupportingTree?.length > supportLength && (
           <CustomButton
             type="primary"
             ghost
             className="load-more-btn"
             onClick={() => {
-              handleLoadMoreSupporters();
+              // handleLoadMoreSupporters();
+              setLoadMore(!loadMore);
             }}
           >
-            Load More
+            {!loadMore ? "Load More" : "Load Less"}
           </CustomButton>
         )}
         <Link href={manageSupportPath}>
