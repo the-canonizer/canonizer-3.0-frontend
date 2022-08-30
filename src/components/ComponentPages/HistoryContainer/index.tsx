@@ -217,8 +217,8 @@ function HistoryContainer() {
           <i className="icon-topic"></i>Create New Topic
         </Button>
         {historyOf !== "topic" &&
-        currentCampNode.isDisabled == 0 &&
-        currentCampNode.parentIsOneLevel == 0 ? (
+        currentCampNode?.isDisabled == 0 &&
+        currentCampNode?.parentIsOneLevel == 0 ? (
           <Button size="large" className={styles.createBtn} onClick={campRoute}>
             <i className="icon-topic"></i>Create New Camp
           </Button>

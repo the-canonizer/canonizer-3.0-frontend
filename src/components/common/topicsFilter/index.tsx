@@ -115,7 +115,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
     currentCampRecord: state.topicDetails.currentCampRecord,
     currentCampNode: state?.filters?.selectedCampNode,
   }));
-  
+
   const [value, setValue] = useState(
     selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3
   );
@@ -217,8 +217,8 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
             <i className="icon-topic"></i> Create New Topic
           </Button>
           {isCampBtnVisible &&
-          currentCampNode.isDisabled == 0 &&
-          currentCampNode.parentIsOneLevel == 0 ? (
+          currentCampNode?.isDisabled == 0 &&
+          currentCampNode?.parentIsOneLevel == 0 ? (
             <Button size="large" className="btn" onClick={onCreateCamp}>
               <i className="icon-camp"></i> Create New Camp
             </Button>
