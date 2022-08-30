@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import CustomButton from "../../../common/button";
 import { Card, Button, Typography, List, Collapse, Popover } from "antd";
 import Link from "next/link";
@@ -55,12 +55,12 @@ const SupportTreeCard = ({
   const { campSupportingTree } = useSelector((state: RootState) => ({
     campSupportingTree: state?.topicDetails?.campSupportingTree,
   }));
-  const [loadMore, setLoadMore] = useState(false);
   const { topicRecord } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
   }));
-  const supportLength = 15;
-
+  const {campName}= useSelector((state: RootState) => ({
+    campName: state?.campTree?.campName,
+  }));
   return (
     <Collapse
       defaultActiveKey={["1"]}
@@ -71,7 +71,7 @@ const SupportTreeCard = ({
         header={
           <h3>
             Support Tree for &quot;
-            {router?.query?.camp[1]?.split("-").slice(1).join(" ")}&quot; Camp
+            {campName!==""? campName :router?.query?.camp[1]?.split("-").slice(1).join(" ")}&quot; Camp
           </h3>
         }
         key="1"
@@ -83,56 +83,53 @@ const SupportTreeCard = ({
       >
         <Paragraph>
           Total Support for This Camp (including sub-camps):
-          <span className="number-style">64.5</span>
+          <span className="number-style">65.4</span>
         </Paragraph>
         <List className={"can-card-list "}>
           {campSupportingTree?.length &&
             campSupportingTree.map((supporter, index) => {
-              if ((!loadMore && index < supportLength) || loadMore) {
-                return (
-                  <List.Item key={index}>
-                    <Link
-                      href={{
-                        pathname: `/user/supports/${supporter.nick_name_id}`,
-                        query: {
-                          topicnum: topicRecord?.topic_num,
-                          campnum: topicRecord?.camp_num,
-                          namespace: topicRecord?.namespace_id,
-                        },
-                      }}
-                    >
-                      <a>
-                        {supporter.nick_name}
-                        <span className="number-style">{supporter.score}</span>
-                      </a>
-                    </Link>
+              return (
+                <List.Item key={index}>
+                  <Link
+                    href={{
+                      pathname: `/user/supports/${supporter.id}`,
+                      query: {
+                        topicnum: topicRecord?.topic_num,
+                        campnum: topicRecord?.camp_num,
+                        namespace: topicRecord?.namespace_id,
+                      },
+                    }}
+                  >
+                    <a>
+                      {supporter.name}
+                      <span className="number-style">{supporter.score}</span>
+                    </a>
+                  </Link>
 
-                    <Link href={manageSupportPath + `_${supporter.id}`}>
-                      <a>
-                        <span
-                          onClick={handleDelegatedClick}
-                          className="delegate-support-style"
-                        >
-                          {"Delegate Your Support"}
-                        </span>
-                      </a>
-                    </Link>
-                  </List.Item>
-                );
-              }
+                  <Link href={manageSupportPath + `_${supporter.id}`}>
+                    <a>
+                      <span
+                        onClick={handleDelegatedClick}
+                        className="delegate-support-style"
+                      >
+                        {"Delegate Your Support"}
+                      </span>
+                    </a>
+                  </Link>
+                </List.Item>
+              );
             })}
         </List>
-        {campSupportingTree?.length > supportLength && (
+        {campSupportingTree?.length && (
           <CustomButton
             type="primary"
             ghost
             className="load-more-btn"
             onClick={() => {
-              // handleLoadMoreSupporters();
-              setLoadMore(!loadMore);
+              handleLoadMoreSupporters();
             }}
           >
-            {!loadMore ? "Load More" : "Load Less"}
+            Load More
           </CustomButton>
         )}
         <Link href={manageSupportPath}>

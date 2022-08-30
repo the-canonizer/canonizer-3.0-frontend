@@ -13,6 +13,7 @@ import { showMultiUserModal, updateStatus } from "../../store/slices/uiSlice";
 import NetworkCall from "../networkCall";
 import UserRequest from "../request/userRequest";
 import { store } from "../../store";
+import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 
 export const createToken = async () => {
   try {
@@ -195,6 +196,14 @@ export const socialLoginCallback = async (values: object, router) => {
 
     store.dispatch(setLoggedInUser(payload));
     store.dispatch(setAuthToken(authToken.access_token));
+
+    if (res && res.status_code === 200) {
+      store.dispatch(
+        setFilterCanonizedTopics({
+          algorithm: res?.data?.user?.default_algo,
+        })
+      );
+    }
 
     return res;
   } catch (error) {

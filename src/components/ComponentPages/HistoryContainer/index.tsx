@@ -153,11 +153,13 @@ function HistoryContainer() {
   };
 
   const loader = (
-    <div className="p-3">
-      <Skeleton active />
-      <Skeleton active />
-      <Skeleton active />
-    </div>
+    <></>
+    // will be replaced with alternate
+    // <div className="p-3">
+    //   <Skeleton active />
+    //   <Skeleton active />
+    //   <Skeleton active />
+    // </div>
   );
 
   let historyTitle = () => {

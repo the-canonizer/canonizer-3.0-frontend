@@ -289,7 +289,8 @@ function HistoryCollapse({
                 )}
               {campStatement?.status == "in_review" &&
                 !!(ifIamSupporter != 0 || ifSupportDelayed != 0) &&
-                isLoggedIn && (
+                isLoggedIn &&
+                !campStatement?.isAuthor && (
                   <div className={styles.campStatementCollapseButtons}>
                     <Checkbox
                       className={styles.campSelectCheckbox}
