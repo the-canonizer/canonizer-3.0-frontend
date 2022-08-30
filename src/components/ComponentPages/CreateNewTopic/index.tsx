@@ -80,7 +80,7 @@ const CreateNewTopic = ({
       };
       dispatch(setCurrentTopic(data));
       router.push({
-        pathname: `/topic/${res.data.topic_num}-${encodeURIComponent(
+        pathname: `/topic/${res.data.topic_num}-${replaceSpecialCharacters(
           res.data.topic_name
         )}/1-Agreement`,
       });

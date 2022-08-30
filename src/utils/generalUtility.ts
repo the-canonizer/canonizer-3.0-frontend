@@ -245,3 +245,11 @@ export const routeToUserPage = (
     },
   });
 };
+
+export const replaceSpecialCharacters = (url: string, character: string) => {
+  return url
+    ?.replace(/[^a-zA-Z0-9]/g, character)
+    ?.split(character)
+    ?.filter((item) => item !== "")
+    ?.join(character);
+};
