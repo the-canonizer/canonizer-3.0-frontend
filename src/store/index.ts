@@ -40,7 +40,7 @@ let combinedReducer = combineReducers({
   forum: ForumSlice,
   supportTreeCard: supportTreeCard,
   notifications,
-  utilsSlice: utilsSlice,
+  utils: utilsSlice,
 });
 
 const rootReducer = (state, action) => {
@@ -60,7 +60,7 @@ const persistConfig = {
     "forum",
     "supportTreeCard",
     "topicDetails",
-    "utilsSlice",
+    "utils",
   ],
 };
 
