@@ -44,7 +44,9 @@ const ManageSupport = () => {
   const [selectedtNickname, setSelectedtNickname] = useState();
   const [checked, setChecked] = useState(false);
   const [getSupportStatusData, setGetSupportStatusData] = useState("");
+  const [unableToFindCamp, setUnableToFindCamp] = useState<boolean>(false);
   const [updatePostion, setUpdatePostion] = useState<boolean>(false);
+  const [submitButtonDisable, setSubmitButtonDisable] = useState(false);
   //get NickName List Data
   const getCanonizedNicknameList = async () => {
     const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
@@ -70,7 +72,6 @@ const ManageSupport = () => {
     router.push("/create/topic");
   };
 
-  const [submitButtonDisable, setSubmitButtonDisable] = useState(false);
   const { currentDelegatedSupportedClick } = useSelector(
     (state: RootState) => ({
       currentDelegatedSupportedClick:
@@ -204,10 +205,10 @@ const ManageSupport = () => {
     warning?: string,
     statusFlag?: number
   ) => {
-    let response = await GetActiveSupportTopic(topicNum && body);
+    const response = await GetActiveSupportTopic(topicNum && body);
     //get dataValue from CurrentCheckSupportStatus
 
-    let dataValue = manageSupportStatusCheck
+    const dataValue = manageSupportStatusCheck
       ? CurrentCheckSupportStatus
       : warning
       ? warning
@@ -225,6 +226,10 @@ const ManageSupport = () => {
       );
 
       if (dataValue !== "") {
+        const unavailable_camp =
+          dataValue && dataValue.includes("unable to find this camp");
+        setUnableToFindCamp(unavailable_camp);
+        setSubmitButtonDisable(unavailable_camp ? unavailable_camp : false);
         setGetSupportStatusData(dataValue);
         //if Warning message is show
         if (resultFilterSupportCamp.length == 0) {
@@ -450,6 +455,7 @@ const ManageSupport = () => {
         selectedtNickname={selectedtNickname}
         submitButtonDisable={submitButtonDisable}
         setUpdatePostion={setUpdatePostion}
+        unableToFindCamp={unableToFindCamp}
       />
     </>
   );

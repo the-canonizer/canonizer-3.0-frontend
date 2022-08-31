@@ -38,7 +38,7 @@ function HistoryContainer() {
       currentCampNode: state?.filters?.selectedCampNode,
     })
   );
- 
+
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [campHistory, setCampHistory] = useState(history);
 
