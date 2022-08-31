@@ -4,7 +4,10 @@ import { Button, Image, message } from "antd";
 import styles from "./ManageSupportUI/ManageSupport.module.scss";
 import CampInfoBar from "../TopicDetails/CampInfoBar";
 import dynamic from "next/dynamic";
-import { getAllUsedNickNames } from "src/network/api/campDetailApi";
+import {
+  getAllUsedNickNames,
+  getCurrentCampRecordApi,
+} from "src/network/api/campDetailApi";
 import { useRouter } from "next/router";
 import {
   GetActiveSupportTopic,
@@ -19,12 +22,16 @@ import {
   setCheckSupportExistsData,
   setManageSupportStatusCheck,
 } from "src/store/slices/campDetailSlice";
-
+import moment from "moment";
 const ManageSupportUI = dynamic(() => import("./ManageSupportUI"), {
   ssr: false,
 });
 
 const ManageSupport = () => {
+  const { asof, asofdate } = useSelector((state: RootState) => ({
+    asofdate: state.filters?.filterObject?.asofdate,
+    asof: state?.filters?.filterObject?.asof,
+  }));
   const dispatch = useDispatch();
   const isLogin = isAuth();
   const router = useRouter();
@@ -38,6 +45,7 @@ const ManageSupport = () => {
   const [checked, setChecked] = useState(false);
   const [getSupportStatusData, setGetSupportStatusData] = useState("");
   const [updatePostion, setUpdatePostion] = useState<boolean>(false);
+  //get NickName List Data
   const getCanonizedNicknameList = async () => {
     const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
     const body = { topic_num: topicNum };
@@ -47,6 +55,17 @@ const ManageSupport = () => {
       setNickNameList(res.data);
     }
   };
+  //get Data for CurrentCampName from Api
+  const reqBody = {
+    topic_num: +router?.query?.manageSupport?.at(0)?.split("-")?.at(0),
+    camp_num: +router?.query?.manageSupport?.at(1)?.split("-")?.at(0),
+    as_of: asof,
+    as_of_date:
+      asof == "default" || asof == "review"
+        ? Date.now() / 1000
+        : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
+  };
+
   const campRoute = () => {
     router.push("/create/topic");
   };
@@ -83,11 +102,14 @@ const ManageSupport = () => {
     topic_num: +router?.query?.manageSupport[0]?.split("-")[0],
     camp_num: +router?.query?.manageSupport[1]?.split("-")[0],
   };
-
+  const { campRecord } = useSelector((state: RootState) => ({
+    campRecord: state?.topicDetails?.currentCampRecord,
+  }));
   //isLogin
   useEffect(() => {
     if (isLogin) {
       setUpdatePostion(false);
+      getCurrentCampRecordApi(reqBody);
       if (manageSupportStatusCheck) {
         getCanonizedNicknameList();
         getActiveSupportTopicList();
@@ -167,20 +189,15 @@ const ManageSupport = () => {
       setChecked(false);
     }
   };
+
   //get data from url
   const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
   const campNum = router?.query?.manageSupport?.at(1)?.split("-")?.at(0);
-  const camp_Name = router?.query?.manageSupport?.at(1)?.split(/-(.*)/s);
+  //const camp_Name = router?.query?.manageSupport?.at(1)?.split(/-(.*)/s);
 
   //replace use to - change to space
-  const camp_Name_ = camp_Name[1].replace("-", " ");
-
-  //split on ?
-  const CampNameData = camp_Name_.split("?");
-  //after split Data Value
-  let Camp_len = CampNameData[0].lastIndexOf("_");
-  let CampRes = CampNameData[0].substring(0, Camp_len);
-  const CampName = CheckDelegatedOrDirect ? CampRes : CampNameData[0];
+  const camp_Name_ = campRecord?.camp_name?.replace("-", "");
+  const CampName = camp_Name_;
 
   const body = { topic_num: topicNum };
   const getActiveSupportTopicList = async (

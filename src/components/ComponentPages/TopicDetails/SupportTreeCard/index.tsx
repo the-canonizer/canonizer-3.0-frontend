@@ -108,7 +108,9 @@ const SupportTreeCard = ({
                       </a>
                     </Link>
 
-                    <Link href={manageSupportPath + `_${supporter.id}`}>
+                    <Link
+                      href={manageSupportPath + `_${supporter.nick_name_id}`}
+                    >
                       <a>
                         <span
                           onClick={handleDelegatedClick}
