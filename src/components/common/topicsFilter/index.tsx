@@ -25,6 +25,7 @@ import styles from "./topicListFilter.module.scss";
 import { useRouter } from "next/router";
 import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
 import K from "src/constants";
+// import { showCreateCampButton } from "src/utils/generalUtility";
 
 const infoContent = (
   <>
@@ -114,7 +115,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
     currentCampRecord: state.topicDetails.currentCampRecord,
     currentCampNode: state?.filters?.selectedCampNode,
   }));
-  console.log("[CURRENT_CAMP_NODE]", currentCampNode);
+
   const [value, setValue] = useState(
     selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3
   );
@@ -216,10 +217,8 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
             <i className="icon-topic"></i> Create New Topic
           </Button>
           {isCampBtnVisible &&
-          (currentCampNode?.parent_camp_is_one_level != 1 ||
-            currentCampNode?.is_one_level == 1 ||
-            currentCampNode?.parent_camp_is_disabled != 1 ||
-            currentCampNode?.is_disabled != 1) ? (
+          currentCampNode?.isDisabled == 0 &&
+          currentCampNode?.parentIsOneLevel == 0 ? (
             <Button size="large" className="btn" onClick={onCreateCamp}>
               <i className="icon-camp"></i> Create New Camp
             </Button>

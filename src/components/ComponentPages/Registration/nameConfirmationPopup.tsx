@@ -1,6 +1,6 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Form } from "antd";
 
 import NameConfirmation from "./UI/nameConfirmation";
@@ -10,17 +10,28 @@ import {
   SendOTPForVerify,
   resendOTPForRegistration,
 } from "../../../network/api/userApi";
-import { AppDispatch } from "../../../store";
+import { AppDispatch, RootState } from "../../../store";
+import { setValue } from "../../../store/slices/utilsSlice";
 import Spinner from "../../common/spinner/spinner";
 
 const EmailPopup = ({ isModal = false }) => {
+  const { socialKeys, rdType } = useSelector((state: RootState) => ({
+    socialKeys: state.utils.social_login_keys,
+    rdType: state.utils.redirect_type,
+  }));
+
   const [isOTP, setIsOTP] = useState(false);
   const [isResend, setIsResend] = useState(false);
   const [formData, setFormData] = useState({});
   const [failedMsg, setFailedMsg] = useState("");
+  const [socialLoginKeys, setSocialLoginKeys] = useState(socialKeys);
+  const [redirectType, setRedirectType] = useState(rdType);
 
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
+
+  useEffect(() => setSocialLoginKeys(socialKeys), [socialKeys]);
+  useEffect(() => setRedirectType(rdType), [rdType]);
 
   const [form] = Form.useForm();
 
@@ -33,14 +44,12 @@ const EmailPopup = ({ isModal = false }) => {
   };
 
   const onSubmit = async (values: any) => {
-    const social_keys = JSON.parse(localStorage.getItem("s_l"));
-
     let formBody = {
       first_name: values?.first_name?.trim(),
       last_name: values?.last_name?.trim(),
-      email: social_keys.email,
-      code: social_keys?.code,
-      provider: social_keys?.provider,
+      email: socialLoginKeys?.email,
+      code: socialLoginKeys?.code,
+      provider: socialLoginKeys?.provider,
       client_id: process.env.NEXT_PUBLIC_AUTH_CLIENT_PASSWORD_ID,
       client_secret: process.env.NEXT_PUBLIC_AUTH_CLIENT_PASSWORD_SECRET,
       type: "nameVerify",
@@ -49,7 +58,7 @@ const EmailPopup = ({ isModal = false }) => {
     setFormData({
       first_name: values?.first_name?.trim(),
       last_name: values?.last_name?.trim(),
-      email: social_keys.email,
+      email: socialLoginKeys?.email,
     });
 
     let res = await SendOTPForVerify(formBody);
@@ -62,16 +71,13 @@ const EmailPopup = ({ isModal = false }) => {
   };
 
   const onOTPSubmit = async (values: any) => {
-    const social_keys = JSON.parse(localStorage.getItem("s_l"));
-    const redirectSocial = localStorage.getItem("rd_s");
-
     let body = {
       email: formData["email"]?.trim(),
       first_name: formData["first_name"]?.trim(),
       last_name: formData["last_name"]?.trim(),
       otp: values.otp?.trim(),
-      code: social_keys?.code,
-      provider: social_keys?.provider,
+      code: socialLoginKeys?.code,
+      provider: socialLoginKeys?.provider,
       client_id: process.env.NEXT_PUBLIC_AUTH_CLIENT_PASSWORD_ID,
       client_secret: process.env.NEXT_PUBLIC_AUTH_CLIENT_PASSWORD_SECRET,
       type: "nameVerify",
@@ -88,8 +94,9 @@ const EmailPopup = ({ isModal = false }) => {
         setIsResend(false);
         isModal ? closeModal() : "";
 
-        if (redirectSocial) {
-          localStorage.removeItem("rd_s");
+        if (redirectType) {
+          dispatch(setValue({ label: "redirect_type", value: false }));
+
           router.push({
             pathname: "/settings",
             query: {

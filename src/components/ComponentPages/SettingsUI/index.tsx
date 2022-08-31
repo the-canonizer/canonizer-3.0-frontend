@@ -49,7 +49,6 @@ const SettingsUI = () => {
   const [search, setSearch] = useState("");
   const [activeTabKey, setActiveTabKey] = useState("profile_info");
   const onTabChange = (key) => {
-    //localStorage.setItem("settings_Tabs_keys", key);
     setActiveTabKey(key);
     router.push("/settings?tab=" + key);
   };

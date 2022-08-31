@@ -5,13 +5,17 @@ import {
   GithubFilled,
   LinkedinFilled,
 } from "@ant-design/icons";
+import { useDispatch } from "react-redux";
 
 import styles from "./social-login.module.scss";
 import { socialLogin } from "../../../network/api/userApi";
+import { setValue } from "src/store/slices/utilsSlice";
 
 const { Text } = Typography;
 
 export default function SocialLoginUi({ isNotLogin = false }) {
+  const dispatch = useDispatch();
+
   // social login api call
   const onSocialLogin = async (provider, e) => {
     e.preventDefault();
@@ -20,7 +24,7 @@ export default function SocialLoginUi({ isNotLogin = false }) {
     try {
       if (res.data) {
         if (isNotLogin) {
-          localStorage.setItem("rd_s", "rg");
+          dispatch(setValue({ label: "redirect_type", value: true }));
         }
         window.location.href = res.data.url;
       }

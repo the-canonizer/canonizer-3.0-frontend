@@ -12,6 +12,7 @@ import { getHistoryApi, getLiveHistoryApi } from "../../../network/api/history";
 import HistoryCollapse from "./Collapse";
 import { RootState } from "src/store";
 import CampInfoBar from "../TopicDetails/CampInfoBar";
+// import { showCreateCampButton } from "src/utils/generalUtility";
 
 const { Title } = Typography;
 
@@ -37,7 +38,7 @@ function HistoryContainer() {
       currentCampNode: state?.filters?.selectedCampNode,
     })
   );
-  console.log("[currentCampRecord history container]", currentCampRecord);
+ 
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [campHistory, setCampHistory] = useState(history);
 
@@ -216,11 +217,8 @@ function HistoryContainer() {
           <i className="icon-topic"></i>Create New Topic
         </Button>
         {historyOf !== "topic" &&
-        currentCampRecord !== 1 &&
-        (currentCampNode?.parent_camp_is_one_level != 1 ||
-          currentCampNode?.is_one_level == 1 ||
-          currentCampNode?.parent_camp_is_disabled != 1 ||
-          currentCampNode?.is_disabled != 1) ? (
+        currentCampNode?.isDisabled == 0 &&
+        currentCampNode?.parentIsOneLevel == 0 ? (
           <Button size="large" className={styles.createBtn} onClick={campRoute}>
             <i className="icon-topic"></i>Create New Camp
           </Button>
