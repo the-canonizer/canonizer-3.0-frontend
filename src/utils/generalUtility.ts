@@ -253,3 +253,35 @@ export const replaceSpecialCharacters = (url: string, character: string) => {
     ?.filter((item) => item !== "")
     ?.join(character);
 };
+
+export const showCreateCampButton = (camp: {
+  is_disabled: number;
+  parent_camp_is_one_level: number;
+  parent_camp_is_disabled: number;
+  is_one_level: number;
+}) => {
+  if (camp?.is_disabled === 1) {
+    if (camp?.parent_camp_is_one_level === 1) {
+      return false;
+    } else if (camp?.parent_camp_is_one_level == undefined) {
+      // return true;
+    } else if (camp?.parent_camp_is_disabled === 1) {
+      return false;
+    } else if (camp?.parent_camp_is_disabled == undefined) {
+      // return true;
+    }
+    return false;
+  } else if (camp?.is_disabled === 0) {
+    if (camp?.parent_camp_is_disabled === 1) {
+      return false;
+    } else if (camp?.parent_camp_is_disabled == undefined) {
+      return true;
+    } else if (camp?.parent_camp_is_one_level === 1) {
+      return false;
+    } else if (camp?.parent_camp_is_one_level == undefined) {
+      return true;
+    }
+
+    return true;
+  }
+};

@@ -12,6 +12,7 @@ import {
 } from "../../../network/api/userApi";
 import { AppDispatch } from "../../../store";
 import Spinner from "../../common/spinner/spinner";
+import { setValue } from "../../../store/slices/utilsSlice";
 
 const ForgotPassword = ({ isModal, isTestScreen = 0 }) => {
   const [isScreen, setIsScreen] = useState(isTestScreen);
@@ -37,7 +38,7 @@ const ForgotPassword = ({ isModal, isTestScreen = 0 }) => {
     if (res && res.status_code === 200) {
       form.resetFields();
       message.success(res.message);
-
+      dispatch(setValue({ label: "email_id", value: values.email_id }));
       setIsScreen(1);
     }
   };
@@ -55,7 +56,6 @@ const ForgotPassword = ({ isModal, isTestScreen = 0 }) => {
         otpForm.resetFields();
         message.success(res.message);
         setIsScreen(0);
-        localStorage.setItem("email_id", formData.email_id);
         isModal && closeModal();
         router.push("/reset-password");
       }
