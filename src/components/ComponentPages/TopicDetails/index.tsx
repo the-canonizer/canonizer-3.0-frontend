@@ -24,7 +24,7 @@ import CurrentCampCard from "./CurrentCampCard";
 import CurrentTopicCard from "./CurrentTopicCard";
 import NewsFeedsCard from "./NewsFeedsCard";
 import SupportTreeCard from "./SupportTreeCard";
-import { BackTop, Image } from "antd";
+import { BackTop, Image, Typography } from "antd";
 import { Spin, Button } from "antd";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
 
@@ -40,6 +40,7 @@ import {
 } from "src/store/slices/campDetailSlice";
 
 import CampRecentActivities from "../Home/CampRecentActivities";
+const { Link } = Typography;
 const TopicDetails = () => {
   let myRefToCampStatement = useRef(null);
   const isLogin = isAuth();
@@ -242,23 +243,29 @@ const TopicDetails = () => {
           </>
         ) : (
           <div className={styles.imageWrapper}>
-            <Image
-              preview={false}
-              alt="No topic created"
-              src={"/images/empty-img-default.png"}
-              fallback={fallBackSrc}
-              width={200}
-              id="forgot-modal-img"
-            />
-            <Button
-              onClick={() => {
-                onCreateTreeDate();
-              }}
-            >
-              {new Date(
-                (tree && tree["1"]?.created_date) * 1000
-              ).toLocaleString()}
-            </Button>
+            <div>
+              <Image
+                preview={false}
+                alt="No topic created"
+                src={"/images/empty-img-default.png"}
+                fallback={fallBackSrc}
+                width={200}
+                id="forgot-modal-img"
+              />
+              <p>
+                The topic was created on
+                <Link
+                  onClick={() => {
+                    onCreateTreeDate();
+                  }}
+                >
+                  {" "}
+                  {new Date(
+                    (tree && tree["1"]?.created_date) * 1000
+                  ).toLocaleString()}
+                </Link>
+              </p>
+            </div>
           </div>
         )}
       </div>
