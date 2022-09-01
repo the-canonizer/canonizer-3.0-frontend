@@ -37,12 +37,12 @@ const CreateTopicFromUI = ({
       <Card
         title={CardTitle}
         className="can-card-style"
-        extra={
-          <PreventSubCamps
-            options={options}
-            onCheckboxChange={onCheckboxChange}
-          />
-        }
+        // extra={
+        //   <PreventSubCamps
+        //     options={options}
+        //     onCheckboxChange={onCheckboxChange}
+        //   />
+        // }
       >
         <Form
           form={form}

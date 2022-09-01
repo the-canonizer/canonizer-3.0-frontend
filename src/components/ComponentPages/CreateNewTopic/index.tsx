@@ -65,7 +65,7 @@ const CreateNewTopic = ({
       note: values.edit_summary?.trim(),
     };
 
-    options.map((op) => (body[op.id] = op.checked ? 1 : 0));
+    // options.map((op) => (body[op.id] = op.checked ? 1 : 0));
 
     const res = await createTopic(body);
 

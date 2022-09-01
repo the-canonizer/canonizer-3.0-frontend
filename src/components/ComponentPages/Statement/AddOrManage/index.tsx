@@ -198,7 +198,7 @@ export default function AddOrManage({ add }) {
     } else if (manageFormOf == "statement") {
       res = await updateStatementApi(reqBody);
     } else if (manageFormOf == "topic") {
-      options.map((op) => (reqBody[op.id] = op.checked ? 1 : 0));
+      // options.map((op) => (reqBody[op.id] = op.checked ? 1 : 0));
       res = await updateTopicApi(reqBody);
     }
     return res;
@@ -394,7 +394,7 @@ export default function AddOrManage({ add }) {
   };
 
   const extra = () => {
-    if (manageFormOf == "camp" || manageFormOf == "topic") {
+    if (manageFormOf == "camp") {
       return (
         <PreventSubCamps
           options={options}
