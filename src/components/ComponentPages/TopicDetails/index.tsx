@@ -91,7 +91,7 @@ const TopicDetails = () => {
         getCurrentTopicRecordApi(reqBody),
         getCurrentCampRecordApi(reqBody),
         getCanonizedCampStatementApi(reqBody),
-        getCanonizedCampSupportingTreeApi(reqBody),
+        getCanonizedCampSupportingTreeApi(reqBody, algorithm),
         getCanonizedAlgorithmsApi(),
       ]);
       setGetTreeLoadingIndicator(false);
@@ -133,7 +133,7 @@ const TopicDetails = () => {
 
   const handleLoadMoreSupporters = async () => {
     const reqBody = { topic_num: 45, camp_num: 1 };
-    await getCanonizedCampSupportingTreeApi(reqBody, true);
+    await getCanonizedCampSupportingTreeApi(reqBody, algorithm, true);
   };
 
   const setCurrentTopics = (data) => dispatch(setCurrentTopic(data));

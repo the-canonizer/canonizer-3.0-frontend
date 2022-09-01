@@ -1,4 +1,9 @@
-import { render, screen, waitFor } from "../../../../utils/testUtils";
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "../../../../utils/testUtils";
 import userEvent from "@testing-library/user-event";
 
 import ProfileInfoForm from "../../Form/ProfileInfoForm";
@@ -15,7 +20,42 @@ const handleAddressSelect = jest.fn();
 const algorithmList = [];
 const languageList = [];
 const address = "";
+const setupGoogleMock = () => {
+  /** Mock Google Maps JavaScript API **/
+  const google = {
+    maps: {
+      places: {
+        Autocomplete: class {},
+        AutocompleteService: class {},
+        PlacesServiceStatus: {
+          INVALID_REQUEST: "INVALID_REQUEST",
+          NOT_FOUND: "NOT_FOUND",
+          OK: "OK",
+          OVER_QUERY_LIMIT: "OVER_QUERY_LIMIT",
+          REQUEST_DENIED: "REQUEST_DENIED",
+          UNKNOWN_ERROR: "UNKNOWN_ERROR",
+          ZERO_RESULTS: "ZERO_RESULTS",
+        },
+      },
+      Geocoder: () => {},
+      GeocoderStatus: {
+        ERROR: "ERROR",
+        INVALID_REQUEST: "INVALID_REQUEST",
+        OK: "OK",
+        OVER_QUERY_LIMIT: "OVER_QUERY_LIMIT",
+        REQUEST_DENIED: "REQUEST_DENIED",
+        UNKNOWN_ERROR: "UNKNOWN_ERROR",
+        ZERO_RESULTS: "ZERO_RESULTS",
+      },
+    },
+  };
+  global.window.google = google;
+};
 
+// in test file.
+beforeAll(() => {
+  setupGoogleMock();
+});
 describe("Profile Info Page", () => {
   it("render heading and labels Of Profile Info Form", () => {
     render(
@@ -64,20 +104,21 @@ describe("Profile Info Page", () => {
         handleAddressChange={handleAddressChange}
         handleAddressSelect={handleAddressSelect}
         address={address}
-        disableButton={true}
+        disableButton={false}
       />
     );
-    const firstName = screen.getByLabelText(labels.firstName);
-    const middleName = screen.getByLabelText(labels.middleName);
-    const lastName = screen.getByLabelText(labels.lastName);
-    const email = screen.getByLabelText(labels.email);
-    const addressLine1 = screen.getByLabelText(labels.addressLine1);
-    const addressLine2 = screen.getByLabelText(labels.addressLine2);
-    const city = screen.getByLabelText(labels.city);
-    const zipCode = screen.getByLabelText(labels.zipCode);
-    const country = screen.getByLabelText(labels.country);
-    const language = screen.getByLabelText(labels.language);
-    const chooseAlgorithm = screen.getByLabelText(labels.chooseAlgorithm);
+
+    const firstName = screen.getByPlaceholderText(placeholders.firstName);
+    const middleName = screen.getByPlaceholderText(placeholders.middleName);
+    const lastName = screen.getByPlaceholderText(placeholders.lastName);
+    const email = screen.getByPlaceholderText(placeholders.email);
+    const addressLine1 = screen.getByPlaceholderText(placeholders.addressLine1);
+    const addressLine2 = screen.getByPlaceholderText(placeholders.addressLine2);
+    const city = screen.getByPlaceholderText(placeholders.city);
+    const zipCode = screen.getByPlaceholderText(placeholders.zipCode);
+    const country = screen.getByPlaceholderText(placeholders.country);
+    expect(screen.getByText(labels.language)).toBeInTheDocument();
+    //const chooseAlgorithm = screen.getByPlaceholderText(labels.chooseAlgorithm);
 
     expect(firstName).toBeInTheDocument();
     expect(firstName).toHaveAttribute("type", "text");
@@ -120,59 +161,6 @@ describe("Profile Info Page", () => {
     expect(country).toBeInTheDocument();
     expect(country).toHaveAttribute("type", "text");
     expect(country).toHaveAttribute("placeholder", placeholders.country);
-
-    expect(language).toBeInTheDocument();
-    expect(language).toHaveAttribute("type", "search");
-
-    expect(chooseAlgorithm).toBeInTheDocument();
-    expect(chooseAlgorithm).toHaveAttribute("type", "search");
-  });
-
-  it("pass valid email to test email input field", async () => {
-    render(
-      <ProfileInfoForm
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        handleselectAfter={handleselectAfter}
-        privateFlags={privateFlags}
-        algorithmList={algorithmList}
-        languageList={languageList}
-        handleAddressChange={handleAddressChange}
-        handleAddressSelect={handleAddressSelect}
-        address={address}
-        disableButton={true}
-      />
-    );
-    const inputEl = screen.getByLabelText(labels.email);
-    userEvent.type(inputEl, "canonizer@gmail.com");
-    await waitFor(() => {
-      expect(inputEl).toHaveValue("canonizer@gmail.com");
-      expect(screen.queryByRole("alert")).not.toBeInTheDocument();
-    });
-  });
-
-  it("should show error when invalid email enter in field", async () => {
-    render(
-      <ProfileInfoForm
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        handleselectAfter={handleselectAfter}
-        privateFlags={privateFlags}
-        algorithmList={algorithmList}
-        languageList={languageList}
-        handleAddressChange={handleAddressChange}
-        handleAddressSelect={handleAddressSelect}
-        address={address}
-        disableButton={true}
-      />
-    );
-    const inputEl = screen.getByLabelText(labels.email);
-    userEvent.type(inputEl, "canonizer.gmail.com");
-    await waitFor(() => {
-      expect(
-        screen.queryByText("The input is not valid E-mail!")
-      ).toBeVisible();
-    });
   });
 
   it("blank Profile info form should not be submit", async () => {
@@ -187,7 +175,7 @@ describe("Profile Info Page", () => {
         handleAddressChange={handleAddressChange}
         handleAddressSelect={handleAddressSelect}
         address={address}
-        disableButton={true}
+        disableButton={false}
       />
     );
     const btnEl = screen.getByTestId("submitButton");
@@ -199,5 +187,100 @@ describe("Profile Info Page", () => {
       expect(screen.queryByText(validations.lastName)).toBeVisible();
       expect(screen.queryByText(validations.email)).toBeVisible();
     });
+  });
+
+  it("render update button", () => {
+    render(
+      <ProfileInfoForm
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        handleselectAfter={handleselectAfter}
+        privateFlags={privateFlags}
+        algorithmList={algorithmList}
+        languageList={languageList}
+        handleAddressChange={handleAddressChange}
+        handleAddressSelect={handleAddressSelect}
+        address={address}
+        disableButton={false}
+      />
+    );
+    expect(
+      screen.getAllByText("Update")[0] as HTMLButtonElement
+    ).toBeInTheDocument();
+  });
+
+  it("render update button", () => {
+    render(
+      <ProfileInfoForm
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        handleselectAfter={handleselectAfter}
+        privateFlags={privateFlags}
+        algorithmList={algorithmList}
+        languageList={languageList}
+        handleAddressChange={handleAddressChange}
+        handleAddressSelect={handleAddressSelect}
+        address={address}
+        disableButton={false}
+      />
+    );
+    expect(screen.getAllByText("*")).toBeTruthy();
+  });
+
+  it("render update button", () => {
+    render(
+      <ProfileInfoForm
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        handleselectAfter={handleselectAfter}
+        privateFlags={privateFlags}
+        algorithmList={algorithmList}
+        languageList={languageList}
+        handleAddressChange={handleAddressChange}
+        handleAddressSelect={handleAddressSelect}
+        address={address}
+        disableButton={false}
+      />
+    );
+    expect(screen.getAllByText("*")).toBeTruthy();
+  });
+
+  // it("radio",  () => {
+
+  //   const { getByLabelText }= render(
+  //     <form>
+  //     <label>
+  //        Male <input type="radio" name="radio1" value="male" />
+  //     </label>
+  //     <label>
+  //       Female <input type="radio" name="radio1" value="female" />
+  //     </label>
+  //   </form>
+  //   );
+
+  //   const radio = getByLabelText('First')
+  // fireEvent.change(radio, { target: { value: "female" } });
+  // expect(radio.)value).toBe('female')
+
+  // });
+
+  it("render update button", () => {
+    render(
+      <ProfileInfoForm
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        handleselectAfter={handleselectAfter}
+        privateFlags={privateFlags}
+        algorithmList={algorithmList}
+        languageList={languageList}
+        handleAddressChange={handleAddressChange}
+        handleAddressSelect={handleAddressSelect}
+        address={address}
+        disableButton={false}
+      />
+    );
+    expect(screen.getAllByText("Male")).toBeTruthy();
+    expect(screen.getAllByText("Female")).toBeTruthy();
+    expect(screen.getAllByText("Other")).toBeTruthy();
   });
 });
