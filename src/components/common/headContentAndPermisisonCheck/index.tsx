@@ -5,6 +5,9 @@ import { useRouter } from "next/router";
 import PermissionsForPages from "../../../permissions";
 import usePermission from "../../../hooks/usePermissions";
 import useAuthentication from "../../../hooks/isUserAuthenticated";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "src/store";
+import { setValue } from "src/store/slices/utilsSlice";
 
 type HeadContentComponentProps = {
   componentName: string;
@@ -18,6 +21,14 @@ const HeadContentAndPermissionComponent = ({
   const { isAllowed } = usePermission();
   const isUserAuthenticated = useAuthentication();
 
+  const lg_type = useSelector((state: RootState) => state.utils.logout_type);
+
+  const dispatch = useDispatch();
+
+  const [logType, setLogType] = useState(lg_type);
+
+  useEffect(() => setLogType(lg_type), [lg_type]);
+
   useEffect(() => {
     //Check permission
     let permission = PermissionsForPages[componentName];
@@ -29,8 +40,7 @@ const HeadContentAndPermissionComponent = ({
     //redirect if authentication is required and user is not loggedIn
 
     if (requiredAuthentication && !isUserAuthenticated) {
-      const lgt = localStorage.getItem("logout_type");
-      if (lgt) {
+      if (logType) {
         router.push("/");
       } else {
         router.push({
@@ -38,7 +48,7 @@ const HeadContentAndPermissionComponent = ({
           query: { returnUrl: router.asPath },
         });
       }
-      localStorage.removeItem("logout_type");
+      dispatch(setValue({ label: "logout_type", value: false }));
     }
 
     //redirect if user doesn't have specific permission to view that page
@@ -54,7 +64,14 @@ const HeadContentAndPermissionComponent = ({
     } else {
       setMeta(MetaTags["default"]);
     }
-  }, [componentName, isUserAuthenticated, isAllowed, router]);
+  }, [
+    componentName,
+    isUserAuthenticated,
+    isAllowed,
+    router,
+    logType,
+    dispatch,
+  ]);
 
   return (
     <HeadContent

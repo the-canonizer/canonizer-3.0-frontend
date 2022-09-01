@@ -1,24 +1,32 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { Row, Col, Button, Form, Input, Typography, message } from "antd";
+import { useDispatch, useSelector } from "react-redux";
 
 import styles from "../Registration/UI/Registration.module.scss";
 
 import messages from "../../../messages";
 import { forgotPasswordUpdate } from "../../../network/api/userApi";
+import { RootState } from "src/store";
+import { setValue } from "src/store/slices/utilsSlice";
 
 const { Title } = Typography;
 
 const ResetPassword = () => {
+  const emailId = useSelector((state: RootState) => state.utils.email_id);
+
+  const [email, setEmail] = useState(emailId);
+
+  const dispatch = useDispatch();
   const router = useRouter();
   const [form] = Form.useForm();
 
-  const onFinish = async (values: any) => {
-    const email_id = localStorage.getItem("email_id");
+  useEffect(() => setEmail(emailId), [emailId]);
 
+  const onFinish = async (values: any) => {
     let body = {
-      username: email_id?.trim(),
+      username: email?.trim(),
       new_password: values.password,
       confirm_password: values.confirm,
     };
@@ -28,7 +36,7 @@ const ResetPassword = () => {
     if (res && res.status_code === 200) {
       message.success(res.message);
       form.resetFields();
-      localStorage.removeItem("email_id");
+      dispatch(setValue({ label: "email_id", value: "" }));
     }
 
     router.push("/login");
