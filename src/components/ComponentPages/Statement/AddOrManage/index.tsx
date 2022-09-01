@@ -493,10 +493,12 @@ export default function AddOrManage({ add }) {
                             ]}
                           >
                             <Select
+                              showSearch
                               size={"large"}
                               placeholder="Parent camp"
                               // data-id="parent-camp"
                               disabled={objection}
+                              optionFilterProp="children"
                             >
                               {parentCamp.map((camp) =>
                                 camp?.camp_num !==
