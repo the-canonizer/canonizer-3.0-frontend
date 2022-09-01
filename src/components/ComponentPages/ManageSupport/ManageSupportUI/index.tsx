@@ -25,6 +25,7 @@ const ManageSupportUI = ({
   setSelectedtNickname,
   submitButtonDisable,
   setUpdatePostion,
+  unableToFindCamp,
 }) => {
   const { currentDelegatedSupportedClick } = useSelector(
     (state: RootState) => ({
@@ -58,105 +59,115 @@ const ManageSupportUI = ({
           </div>
         }
       >
-        {getSupportStatusData !== "" ? (
+        {unableToFindCamp ? (
           <>
             <span className={styles.warning}>
               <strong> Warning! </strong>
               {getSupportStatusData}
             </span>
-            <Col md={12}>
-              {parentSupportDataList?.map((tag) => {
-                return (
-                  <Tag key={tag.camp_num} className={styles.tag_btn}>
-                    <div>
-                      {""}
-                      <span className={styles.count}>{""}</span>
-                    </div>
-                    <Link href="">
-                      <a>
-                        {tag.support_order} . {tag.camp_name}
-                      </a>
-                    </Link>
-                  </Tag>
-                );
-              })}
-            </Col>
           </>
         ) : (
-          ""
-        )}
-        <div className={styles.hrtag}></div>
-        <div className={styles.notes}>
-          {" "}
-          Note : To change support order of camp, drag & drop the camp box on
-          your choice position.
-        </div>
-
-        {CheckDelegatedOrDirect ? (
-          ""
-        ) : (
-          <div className="mb-4">
-            <span className={styles.quickAction}>
-              Quick Action:
-              <span className={styles.checkbox}>
-                <input
-                  type="checkbox"
-                  checked={checked}
-                  onClick={(e) =>
-                    removeAll((e.target as any).checked, manageSupportList)
-                  }
-                ></input>
-              </span>
-              <span className={styles.removeAll}>Remove all</span>
-              <Button
-                htmlType="button"
-                className={styles.clear_Btn}
-                onClick={(e) => clearAllChanges(manageSupportList)}
-              >
-                Clear all changes
-              </Button>
-            </span>
-          </div>
-        )}
-        <DraggableArea
-          tags={tagsArrayList}
-          render={({ tag, index }) => (
-            <div className="">
-              <Button
-                key={tag.camp_num}
-                className={styles.tag_btn}
-                disabled={tag.dis}
-              >
-                <div className={styles.btndiv}>
-                  {" "}
-                  <span className={styles.count}>
-                    {getSupportStatusData !== ""
-                      ? index + 1
-                      : tag.support_order}
-                    .{" "}
-                  </span>
-                  <Link href="">
-                    <a className={styles.Bluecolor}> {tag.camp_name}</a>
-                  </Link>
-                </div>
-                {CheckDelegatedOrDirect ? (
-                  ""
-                ) : (
-                  <CloseCircleOutlined
-                    onClick={() =>
-                      handleClose(tag, tag.topic_num, tagsArrayList)
-                    }
-                  />
-                )}
-              </Button>
+          <>
+            {getSupportStatusData !== "" ? (
+              <>
+                <span className={styles.warning}>
+                  <strong> Warning! </strong>
+                  {getSupportStatusData}
+                </span>
+                <Col md={12}>
+                  {parentSupportDataList?.map((tag) => {
+                    return (
+                      <Tag key={tag.camp_num} className={styles.tag_btn}>
+                        <div>
+                          {""}
+                          <span className={styles.count}>{""}</span>
+                        </div>
+                        <Link href="">
+                          <a>
+                            {tag.support_order} . {tag.camp_name}
+                          </a>
+                        </Link>
+                      </Tag>
+                    );
+                  })}
+                </Col>
+              </>
+            ) : (
+              ""
+            )}
+            <div className={styles.hrtag}></div>
+            <div className={styles.notes}>
+              {" "}
+              Note : To change support order of camp, drag & drop the camp box
+              on your choice position.
             </div>
-          )}
-          onChange={(tags) => {
-            setUpdatePostion(true);
-            setManageSupportList(tags);
-          }}
-        />
 
+            {CheckDelegatedOrDirect ? (
+              ""
+            ) : (
+              <div className="mb-4">
+                <span className={styles.quickAction}>
+                  Quick Action:
+                  <span className={styles.checkbox}>
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      onClick={(e) =>
+                        removeAll((e.target as any).checked, manageSupportList)
+                      }
+                    ></input>
+                  </span>
+                  <span className={styles.removeAll}>Remove all</span>
+                  <Button
+                    htmlType="button"
+                    className={styles.clear_Btn}
+                    onClick={(e) => clearAllChanges(manageSupportList)}
+                  >
+                    Clear all changes
+                  </Button>
+                </span>
+              </div>
+            )}
+            <DraggableArea
+              tags={tagsArrayList}
+              render={({ tag, index }) => (
+                <div className="">
+                  <Button
+                    key={tag.camp_num}
+                    className={styles.tag_btn}
+                    disabled={tag.dis}
+                  >
+                    <div className={styles.btndiv}>
+                      {" "}
+                      <span className={styles.count}>
+                        {getSupportStatusData !== ""
+                          ? index + 1
+                          : tag.support_order}
+                        .{" "}
+                      </span>
+                      <Link href="">
+                        <a className={styles.Bluecolor}> {tag.camp_name}</a>
+                      </Link>
+                    </div>
+                    {CheckDelegatedOrDirect ? (
+                      ""
+                    ) : (
+                      <CloseCircleOutlined
+                        onClick={() =>
+                          handleClose(tag, tag.topic_num, tagsArrayList)
+                        }
+                      />
+                    )}
+                  </Button>
+                </div>
+              )}
+              onChange={(tags) => {
+                setUpdatePostion(true);
+                setManageSupportList(tags);
+              }}
+            />
+          </>
+        )}
         <div>
           <Card className={styles.margin_top} type="inner">
             <div className={styles.card_heading}>

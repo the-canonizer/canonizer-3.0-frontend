@@ -141,6 +141,9 @@ const NetworkConstants = {
     PostVerifyEmail: `${BaseCanonizerApiUrl}/user/post-verify-email`,
     OTPSendVerifyEmail: `${BaseCanonizerApiUrl}/user/resend-otp-verify-email`,
 
+    //supportTreeAndScoreCount
+    SupportTree: `${BaseCanonizerApiUrl}/support-and-score-count`,
+
     // compare statement
     CompareStatement: `${BaseCanonizerApiUrl}/get-statement-comparison`,
 
