@@ -30,7 +30,11 @@ export const UserProfileCard = ({
                   {messages.labels.nickname}{" "}
                   <span className={styles.Bluecolor}>
                     {" "}
-                    <b>{supportedCampList.nick_name}</b>
+                    <b>
+                      {supportedCampList.private == 1
+                        ? ""
+                        : supportedCampList.nick_name}
+                    </b>
                   </span>
                 </div>
               }

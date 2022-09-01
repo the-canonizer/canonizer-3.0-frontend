@@ -20,7 +20,7 @@ import CurrentCampCard from "./CurrentCampCard";
 import CurrentTopicCard from "./CurrentTopicCard";
 import NewsFeedsCard from "./NewsFeedsCard";
 import SupportTreeCard from "./SupportTreeCard";
-import { BackTop } from "antd";
+import { BackTop, message } from "antd";
 import { Spin } from "antd";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
 
@@ -36,6 +36,7 @@ import {
 } from "src/store/slices/campDetailSlice";
 
 import CampRecentActivities from "../Home/CampRecentActivities";
+import { addSupport, getNickNameList } from "src/network/api/userApi";
 const TopicDetails = () => {
   let myRefToCampStatement = useRef(null);
   const isLogin = isAuth();
@@ -62,6 +63,16 @@ const TopicDetails = () => {
     campStatement: state?.topicDetails?.campStatement,
   }));
 
+  const reqBody = {
+    topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+    camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
+    as_of: asof,
+    as_of_date:
+      asof == "default" || asof == "review"
+        ? Date.now() / 1000
+        : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
+  };
+
   useEffect(() => {
     async function getTreeApiCall() {
       setGetTreeLoadingIndicator(true);
@@ -76,15 +87,6 @@ const TopicDetails = () => {
         update_all: 1,
       };
 
-      const reqBody = {
-        topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
-        camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
-        as_of: asof,
-        as_of_date:
-          asof == "default" || asof == "review"
-            ? Date.now() / 1000
-            : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
-      };
       await Promise.all([
         getTreesApi(reqBodyForService),
         getNewsFeedApi(reqBody),
@@ -103,6 +105,26 @@ const TopicDetails = () => {
     topic_num: +router?.query?.camp[0]?.split("-")[0],
     camp_num: +router?.query?.camp[1]?.split("-")[0],
   };
+
+  const removeSupport = async (supportedId) => {
+    const RemoveSupportId = {
+      topic_num: reqBodyData.topic_num,
+      add_camp: {},
+      remove_camps: [reqBodyData.camp_num],
+      type: "direct",
+      action: "add",
+      nick_name_id: supportedId,
+      order_update: [],
+    };
+    let res = await addSupport(RemoveSupportId);
+    console.log(res, "res");
+    if (res && res.status_code == 200) {
+      message.success(res.message);
+      GetCheckStatusData();
+      getCanonizedCampSupportingTreeApi(reqBody, algorithm);
+    }
+  };
+
   const GetCheckStatusData = async () => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
     if (response && response.status_code === 200) {
@@ -217,6 +239,7 @@ const TopicDetails = () => {
             <SupportTreeCard
               handleLoadMoreSupporters={handleLoadMoreSupporters}
               getCheckSupportStatus={getCheckSupportStatus}
+              removeSupport={removeSupport}
             />
           </Spin>
         </div>
