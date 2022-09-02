@@ -27,11 +27,13 @@ export const UserProfileCard = ({
               type="inner"
               title={
                 <div className={styles.main_card_title}>
-                  {messages.labels.nickname}{" "}
+                  {supportedCampList.private_status == 0
+                    ? messages.labels.nickname
+                    : ""}{" "}
                   <span className={styles.Bluecolor}>
                     {" "}
                     <b>
-                      {supportedCampList.private == 1
+                      {supportedCampList.private_status == 1
                         ? ""
                         : supportedCampList.nick_name}
                     </b>

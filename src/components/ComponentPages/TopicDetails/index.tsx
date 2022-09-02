@@ -38,6 +38,7 @@ import {
 import CampRecentActivities from "../Home/CampRecentActivities";
 import { addSupport, getNickNameList } from "src/network/api/userApi";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import { SupportTreeTotalScore } from "src/network/api/campDetailApi";
 
 const TopicDetails = () => {
   let myRefToCampStatement = useRef(null);
@@ -45,6 +46,8 @@ const TopicDetails = () => {
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [getTreeLoadingIndicator, setGetTreeLoadingIndicator] = useState(false);
   const [getCheckSupportStatus, setGetCheckSupportStatus] = useState({});
+  const [totalSupportScore, setTotalSupportScore] = useState<number>(0);
+
   const router = useRouter();
   const dispatch = useDispatch();
   const {
@@ -127,6 +130,28 @@ const TopicDetails = () => {
     }
   };
 
+  const totalScoreData = {
+    topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+    camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
+    asOf: asof,
+    asofdate:
+      asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+    algorithm: algorithm,
+  };
+  const fetchTotalScore = async () => {
+    const CampTotalScore = {
+      topic_num: totalScoreData.topic_num,
+      camp_num: totalScoreData.camp_num,
+      asOf: totalScoreData.asOf,
+      asofdate: totalScoreData.asofdate,
+      algorithm: totalScoreData.algorithm,
+    };
+    let response = await SupportTreeTotalScore(CampTotalScore);
+    if (response && response.status_code == 200) {
+      setTotalSupportScore(response.data.score);
+    }
+  };
+
   const GetCheckStatusData = async () => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
     if (response && response.status_code === 200) {
@@ -148,6 +173,7 @@ const TopicDetails = () => {
   useEffect(() => {
     if (isLogin) {
       GetCheckStatusData();
+      fetchTotalScore();
     }
   }, [isLogin, router]);
 
@@ -245,6 +271,8 @@ const TopicDetails = () => {
               handleLoadMoreSupporters={handleLoadMoreSupporters}
               getCheckSupportStatus={getCheckSupportStatus}
               removeSupport={removeSupport}
+              fetchTotalScore={fetchTotalScore}
+              totalSupportScore={totalSupportScore}
             />
           </Spin>
         </div>

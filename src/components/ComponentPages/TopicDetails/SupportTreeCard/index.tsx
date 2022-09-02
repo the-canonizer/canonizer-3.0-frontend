@@ -41,6 +41,8 @@ const SupportTreeCard = ({
   handleLoadMoreSupporters,
   getCheckSupportStatus,
   removeSupport,
+  fetchTotalScore,
+  totalSupportScore,
 }) => {
   const router = useRouter();
   const [userNickNameList, setUserNickNameList] = useState([]);
@@ -106,7 +108,7 @@ const SupportTreeCard = ({
       >
         <Paragraph>
           Total Support for This Camp (including sub-camps):
-          <span className="number-style">65.4</span>
+          <span className="number-style">{totalSupportScore.toFixed(2)}</span>
         </Paragraph>
         <List className={"can-card-list "}>
           {campSupportingTree?.length > 0 &&
