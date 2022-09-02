@@ -261,28 +261,21 @@ export const showCreateCampButton = (camp: {
   is_one_level: number;
 }) => {
   if (camp?.is_disabled === 1) {
-    if (camp?.parent_camp_is_one_level === 1) {
-      return false;
-    } else if (camp?.parent_camp_is_one_level == undefined) {
-      // return true;
-    } else if (camp?.parent_camp_is_disabled === 1) {
-      return false;
-    } else if (camp?.parent_camp_is_disabled == undefined) {
-      // return true;
-    }
-    return false;
+    return camp?.parent_camp_is_one_level === 1
+      ? false
+      : camp?.parent_camp_is_disabled === 1
+      ? false
+      : false;
   } else if (camp?.is_disabled === 0) {
-    if (camp?.parent_camp_is_disabled === 1) {
-      return false;
-    } else if (camp?.parent_camp_is_disabled == undefined) {
-      return true;
-    } else if (camp?.parent_camp_is_one_level === 1) {
-      return false;
-    } else if (camp?.parent_camp_is_one_level == undefined) {
-      return true;
-    }
-
-    return true;
+    return camp?.parent_camp_is_disabled === 1
+      ? false
+      : camp?.parent_camp_is_disabled == undefined
+      ? true
+      : camp?.parent_camp_is_one_level === 1
+      ? false
+      : camp?.parent_camp_is_one_level == undefined
+      ? true
+      : true;
   }
 };
 
@@ -293,23 +286,16 @@ export const disableInput = (camp: {
   is_one_level: number;
 }) => {
   if (camp?.is_disabled === 1) {
-    if (camp?.parent_camp_is_one_level == undefined) {
-      // return true;
-    } else if (camp?.parent_camp_is_disabled == undefined) {
-      // return true;
-    }
     return true;
   } else if (camp?.is_disabled === 0) {
-    if (camp?.parent_camp_is_disabled === 1) {
-      return true;
-    } else if (camp?.parent_camp_is_disabled == undefined) {
-      return false;
-    } else if (camp?.parent_camp_is_one_level === 1) {
-      return true;
-    } else if (camp?.parent_camp_is_one_level == undefined) {
-      return false;
-    }
-
-    return false;
+    return camp?.parent_camp_is_disabled === 1
+      ? true
+      : camp?.parent_camp_is_disabled == undefined
+      ? false
+      : camp?.parent_camp_is_one_level === 1
+      ? true
+      : camp?.parent_camp_is_one_level == undefined
+      ? false
+      : false;
   }
 };
