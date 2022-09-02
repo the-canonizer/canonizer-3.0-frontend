@@ -37,6 +37,8 @@ import {
 
 import CampRecentActivities from "../Home/CampRecentActivities";
 import { addSupport, getNickNameList } from "src/network/api/userApi";
+import { replaceSpecialCharacters } from "src/utils/generalUtility";
+
 const TopicDetails = () => {
   let myRefToCampStatement = useRef(null);
   const isLogin = isAuth();
@@ -175,9 +177,11 @@ const TopicDetails = () => {
     const campName = campRecord?.camp_name?.replaceAll(" ", "-");
 
     router.push({
-      pathname: `/camp/create/${topicRecord?.topic_num}-${encodeURIComponent(
-        topicName
-      )}/${campRecord?.camp_num}-${encodeURIComponent(campName)}`,
+      pathname: `/camp/create/${
+        topicRecord?.topic_num
+      }-${replaceSpecialCharacters(topicName, "-")}/${
+        campRecord?.camp_num
+      }-${replaceSpecialCharacters(campName, "-")}`,
     });
 
     setCurrentTopics(data);
@@ -191,9 +195,10 @@ const TopicDetails = () => {
 
     if (topicName && topicNum && campName && campNum) {
       router.push({
-        pathname: `/forum/${topicNum}-${encodeURIComponent(
-          topicName
-        )}/${campNum}-${encodeURIComponent(campName)}/threads`,
+        pathname: `/forum/${topicNum}-${replaceSpecialCharacters(
+          topicName,
+          "-"
+        )}/${campNum}-${replaceSpecialCharacters(campName, "-")}/threads`,
       });
     }
   };

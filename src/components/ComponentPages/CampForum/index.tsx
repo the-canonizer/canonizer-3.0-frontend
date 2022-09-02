@@ -25,6 +25,7 @@ import {
 } from "../../../network/api/campDetailApi";
 import { setThread, setPost } from "../../../store/slices/campForumSlice";
 import CampInfoBar from "../TopicDetails/CampInfoBar";
+import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 const ForumComponent = ({}) => {
   const auth = useIsUserAuthenticated();
@@ -190,9 +191,13 @@ const ForumComponent = ({}) => {
     const queries = router?.query;
     if (isLoggedIn) {
       router.push({
-        pathname: `/forum/${encodeURIComponent(
-          queries?.topic as string
-        )}/${encodeURIComponent(queries?.camp as string)}/threads/create`,
+        pathname: `/forum/${replaceSpecialCharacters(
+          queries?.topic as string,
+          "-"
+        )}/${replaceSpecialCharacters(
+          queries?.camp as string,
+          "-"
+        )}/threads/create`,
       });
     } else {
       router.push({
@@ -211,9 +216,12 @@ const ForumComponent = ({}) => {
     e.stopPropagation();
 
     router.push({
-      pathname: `/forum/${encodeURIComponent(
-        queries.topic as string
-      )}/${encodeURIComponent(queries.camp as string)}/threads/${data.id}`,
+      pathname: `/forum/${replaceSpecialCharacters(
+        queries.topic as string,
+        "-"
+      )}/${replaceSpecialCharacters(queries.camp as string, "-")}/threads/${
+        data.id
+      }`,
     });
   };
 
@@ -236,9 +244,13 @@ const ForumComponent = ({}) => {
     e.stopPropagation();
 
     router.push({
-      pathname: `/forum/${encodeURIComponent(
-        queries.topic as string
-      )}/${encodeURIComponent(queries.camp as string)}/threads/edit/${item.id}`,
+      pathname: `/forum/${replaceSpecialCharacters(
+        queries.topic as string,
+        "-"
+      )}/${replaceSpecialCharacters(
+        queries.camp as string,
+        "-"
+      )}/threads/edit/${item.id}`,
     });
   };
 
@@ -286,17 +298,19 @@ const ForumComponent = ({}) => {
     if (queries.tId) {
       const queries = router?.query;
       router.push({
-        pathname: `/forum/${encodeURIComponent(
-          queries.topic as string
-        )}/${encodeURIComponent(queries.camp as string)}/threads`,
+        pathname: `/forum/${replaceSpecialCharacters(
+          queries.topic as string,
+          "-"
+        )}/${replaceSpecialCharacters(queries.camp as string, "-")}/threads`,
         query: { by: "my" },
       });
     } else {
       const queries = router?.query;
       router.push({
-        pathname: `/forum/${encodeURIComponent(
-          queries.topic as string
-        )}/${encodeURIComponent(queries.camp as string)}/threads`,
+        pathname: `/forum/${replaceSpecialCharacters(
+          queries.topic as string,
+          "-"
+        )}/${replaceSpecialCharacters(queries.camp as string, "-")}/threads`,
       });
     }
   };
@@ -350,17 +364,19 @@ const ForumComponent = ({}) => {
       if (q.tId) {
         const queries = router?.query;
         router.push({
-          pathname: `/forum/${encodeURIComponent(
-            queries.topic as string
-          )}/${encodeURIComponent(queries.camp as string)}/threads`,
+          pathname: `/forum/${replaceSpecialCharacters(
+            queries.topic as string,
+            "-"
+          )}/${replaceSpecialCharacters(queries.camp as string, "-")}/threads`,
           query: { by: "my" },
         });
       } else {
         const queries = router?.query;
         router.push({
-          pathname: `/forum/${encodeURIComponent(
-            queries.topic as string
-          )}/${encodeURIComponent(queries.camp as string)}/threads`,
+          pathname: `/forum/${replaceSpecialCharacters(
+            queries.topic as string,
+            "-"
+          )}/${replaceSpecialCharacters(queries.camp as string, "-")}/threads`,
         });
       }
     }
