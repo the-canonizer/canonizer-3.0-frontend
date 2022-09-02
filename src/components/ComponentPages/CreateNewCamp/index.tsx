@@ -88,31 +88,6 @@ const CreateNewCamp = ({
     }
   };
 
-  function list_to_tree(list) {
-    var map = {},
-      node,
-      roots = [],
-      i;
-
-    for (i = 0; i < list.length; i += 1) {
-      map[list[i].id] = i; // initialize the map
-      list[i].children = []; // initialize the children
-    }
-
-    for (i = 0; i < list.length; i += 1) {
-      node = list[i];
-      if (node.parentId !== "0") {
-        // if you have dangling branches check that map[node.parentId] exists
-        list[map[node.parentId]]?.children.push(node);
-      } else {
-        roots.push(node);
-      }
-    }
-
-    console.log("[ROOT]", roots);
-    return roots;
-  }
-
   const fetchParentsCampList = async () => {
     const q = getRouterParams();
     const body = { topic_num: q.topic_num };
@@ -228,14 +203,7 @@ const CreateNewCamp = ({
     setOptions(oldOptions);
   };
 
-  const onParentCampChange = (value: any, currentOption: any) => {
-    console.log(
-      "[OPTION CHANGE ON INDEX FILE]",
-      value,
-      "OPTION OBJECT",
-      currentOption
-    );
-  };
+  const onParentCampChange = (value: any, currentOption: any) => {};
 
   return (
     <Fragment>
