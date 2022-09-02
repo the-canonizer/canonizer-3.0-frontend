@@ -246,6 +246,14 @@ export const routeToUserPage = (
   });
 };
 
+export const replaceSpecialCharacters = (url: string, character: string) => {
+  return url
+    ?.replace(/[^a-zA-Z0-9]/g, character)
+    ?.split(character)
+    ?.filter((item) => item !== "")
+    ?.join(character);
+};
+
 export const showCreateCampButton = (camp: {
   is_disabled: number;
   parent_camp_is_one_level: number;

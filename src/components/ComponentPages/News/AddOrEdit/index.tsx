@@ -23,6 +23,7 @@ import {
 import { getAllUsedNickNames } from "../../../../network/api/campDetailApi";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
 import K from "src/constants";
+import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 const antIcon = <LoadingOutlined spin />;
 const { Text } = Typography;
@@ -48,9 +49,10 @@ export default function AddOrEdit({ edit }) {
   const goBack = () => {
     if (edit) {
       router.push(
-        `/topic/${encodeURIComponent(
-          router?.query?.camp[0]
-        )}/${encodeURIComponent(router?.query?.camp[1])}`
+        `/topic/${replaceSpecialCharacters(
+          router?.query?.camp[0],
+          "-"
+        )}/${replaceSpecialCharacters(router?.query?.camp[1], "-")}`
       );
     } else {
       router.push(router.asPath.replace("addnews", "topic"));
@@ -80,9 +82,10 @@ export default function AddOrEdit({ edit }) {
     if (res?.status_code == 200) {
       if (edit) {
         router.push(
-          `/topic/${encodeURIComponent(
-            router?.query?.camp[0]
-          )}/${encodeURIComponent(router?.query?.camp[1])}`
+          `/topic/${replaceSpecialCharacters(
+            router?.query?.camp[0],
+            "-"
+          )}/${replaceSpecialCharacters(router?.query?.camp[1], "-")}`
         );
         return;
       } else {
