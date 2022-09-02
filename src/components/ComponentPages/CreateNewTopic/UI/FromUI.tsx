@@ -3,7 +3,6 @@ import { Card, Form, Input, Button, Select, Row, Col } from "antd";
 
 import messages from "../../../../messages";
 import styles from "./createNewTopic.module.scss";
-import PreventSubCamps from "../../../common/preventSubCampCheckbox";
 
 const { Option } = Select;
 
@@ -34,16 +33,7 @@ const CreateTopicFromUI = ({
 
   return (
     <Fragment>
-      <Card
-        title={CardTitle}
-        className="can-card-style"
-        // extra={
-        //   <PreventSubCamps
-        //     options={options}
-        //     onCheckboxChange={onCheckboxChange}
-        //   />
-        // }
-      >
+      <Card title={CardTitle} className="can-card-style">
         <Form
           form={form}
           onFinish={onFinish}
