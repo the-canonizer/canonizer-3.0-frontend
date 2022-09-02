@@ -39,7 +39,7 @@ function HistoryContainer() {
       currentCampNode: state?.filters?.selectedCampNode,
     })
   );
-  console.log("[currentCampRecord history container]", currentCampRecord);
+
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [campHistory, setCampHistory] = useState(history);
 
@@ -213,11 +213,8 @@ function HistoryContainer() {
         <CreateNewTopicButton className={styles.createBtn} click={topicRoute} />
 
         {historyOf !== "topic" &&
-        currentCampRecord !== 1 &&
-        (currentCampNode?.parent_camp_is_one_level != 1 ||
-          currentCampNode?.is_one_level == 1 ||
-          currentCampNode?.parent_camp_is_disabled != 1 ||
-          currentCampNode?.is_disabled != 1) ? (
+        currentCampNode?.isDisabled == 0 &&
+        currentCampNode?.parentIsOneLevel == 0 ? (
           <CreateNewCampButton
             className={styles.createBtn}
             click={campRoute}

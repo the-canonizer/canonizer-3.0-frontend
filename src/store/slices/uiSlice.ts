@@ -21,6 +21,8 @@ export const uiSlice = createSlice({
     showSocialLoginEmailPopup: false,
     apiStatus: null,
     showSocialLoginNamePopup: false,
+    isFolderOpen: false,
+    folderId: null,
   },
   reducers: {
     showLoginModal: (state) => {
@@ -122,6 +124,12 @@ export const uiSlice = createSlice({
     updateStatus: (state, action) => {
       state.apiStatus = action.payload;
     },
+    setIsFolderOpen: (state, action) => {
+      state.isFolderOpen = action.payload;
+    },
+    setFolderId: (state, action) => {
+      state.folderId = action.payload;
+    },
     showSocialNamePopup: (state) => {
       state.showSocialLoginNamePopup = true;
     },
@@ -167,6 +175,8 @@ export const {
   updateStatus,
   showSocialNamePopup,
   hideSocialNamePopup,
+  setIsFolderOpen,
+  setFolderId,
 } = uiSlice.actions;
 
 export default uiSlice.reducer;

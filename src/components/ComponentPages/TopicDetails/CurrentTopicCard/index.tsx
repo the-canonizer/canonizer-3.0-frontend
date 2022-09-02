@@ -7,6 +7,7 @@ import K from "../../../../constants";
 import { Card, Typography, Button, Descriptions, Collapse } from "antd";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
+import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 const { Panel } = Collapse;
 
@@ -33,8 +34,9 @@ const CurrentTopicCard = () => {
         <div className="topicDetailsCollapseFooter">
           <CustomButton className="btn-green">
             <Link
-              href={`/topic/history/${encodeURIComponent(
-                router?.query?.camp[0]
+              href={`/topic/history/${replaceSpecialCharacters(
+                router?.query?.camp[0],
+                "-"
               )}`}
             >
               <a>{K?.exceptionalMessages?.manageTopicButton} </a>

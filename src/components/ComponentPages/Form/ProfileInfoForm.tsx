@@ -137,7 +137,9 @@ function ProfileInfoForm({
                 label={
                   <>
                     {messages.labels.firstName}
-                    <span className="required">*</span>
+                    <span className="required" id="asteriskFirstName">
+                      *
+                    </span>
                   </>
                 }
                 {...messages.firstNameRule}
@@ -162,7 +164,9 @@ function ProfileInfoForm({
                 label={
                   <>
                     {messages.labels.lastName}
-                    <span className="required">*</span>
+                    <span className="required" id="asteriskLastName">
+                      *
+                    </span>
                   </>
                 }
                 {...messages.lastNameRule}

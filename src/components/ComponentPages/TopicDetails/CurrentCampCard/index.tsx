@@ -7,6 +7,7 @@ import K from "../../../../constants";
 
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
+import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 const { Panel } = Collapse;
 
@@ -58,9 +59,10 @@ const CurrentCampCard = () => {
         <div className="topicDetailsCollapseFooter">
           <CustomButton className="btn-green">
             <Link
-              href={`/camp/history/${encodeURIComponent(
-                router?.query?.camp[0]
-              )}/${encodeURIComponent(router?.query?.camp[1])}`}
+              href={`/camp/history/${replaceSpecialCharacters(
+                router?.query?.camp[0],
+                "-"
+              )}/${replaceSpecialCharacters(router?.query?.camp[1], "-")}`}
             >
               <a>{K?.exceptionalMessages?.manageCampButton} </a>
             </Link>

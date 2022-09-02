@@ -7,6 +7,7 @@ import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
 import K from "../../../../constants";
 import moment from "moment";
+import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 const { Paragraph } = Typography;
 
@@ -58,12 +59,14 @@ const CampStatementCard = ({ myRefToCampStatement, onCampForumClick }) => {
             <Link
               href={
                 campStatement?.length > 0
-                  ? `/statement/history/${encodeURIComponent(
-                      router?.query?.camp[0]
-                    )}/${encodeURIComponent(router?.query?.camp[1])}`
-                  : `/create/statement/${encodeURIComponent(
-                      router?.query?.camp[0]
-                    )}/${encodeURIComponent(router?.query?.camp[1])}`
+                  ? `/statement/history/${replaceSpecialCharacters(
+                      router?.query?.camp[0],
+                      "-"
+                    )}/${replaceSpecialCharacters(router?.query?.camp[1], "-")}`
+                  : `/create/statement/${replaceSpecialCharacters(
+                      router?.query?.camp[0],
+                      "-"
+                    )}/${replaceSpecialCharacters(router?.query?.camp[1], "-")}`
               }
             >
               <a>
