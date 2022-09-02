@@ -41,7 +41,6 @@ function HistoryContainer() {
 
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [campHistory, setCampHistory] = useState(history);
-
   let payload = history && {
     camp_num: router?.query?.camp[1]?.split("-")[0],
     topic_num: router?.query?.camp[0]?.split("-")[0],
@@ -101,9 +100,11 @@ function HistoryContainer() {
     setLoadingIndicator(true);
     const reqBody = {
       topic_num: +router.query.camp[0].split("-")[0],
-      camp_num: +router.query.camp[1].split("-")[0],
+      camp_num:
+        historyOf != "topic" ? +router.query.camp[1].split("-")[0] : "1",
     };
     const res = await getLiveHistoryApi(reqBody, historyOf);
+
     setLoadMoreItems(false);
     setLoadingIndicator(false);
   };
@@ -205,7 +206,6 @@ function HistoryContainer() {
         No Camp History Found
       </h2>
     );
-
   return (
     <div className={styles.wrap}>
       <CampInfoBar
