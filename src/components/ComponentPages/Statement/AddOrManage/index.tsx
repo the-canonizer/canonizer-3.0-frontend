@@ -47,6 +47,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Link from "next/link";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
+import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 const { Text } = Typography;
 
@@ -95,15 +96,18 @@ export default function AddOrManage({ add }) {
       } else {
         let route =
           manageFormOf == "topic"
-            ? `${editInfo?.topic?.topic_num}-${encodeURIComponent(
-                editInfo?.topic?.topic_name
+            ? `${editInfo?.topic?.topic_num}-${replaceSpecialCharacters(
+                editInfo?.topic?.topic_name,
+                "-"
               )}`
-            : `${editInfo?.topic?.topic_num}-${encodeURIComponent(
-                editInfo?.topic?.topic_name
+            : `${editInfo?.topic?.topic_num}-${replaceSpecialCharacters(
+                editInfo?.topic?.topic_name,
+                "-"
               )}/${
                 parent_camp[parent_camp?.length - 1]?.camp_num
-              }-${encodeURIComponent(
-                parent_camp[parent_camp?.length - 1]?.camp_name
+              }-${replaceSpecialCharacters(
+                parent_camp[parent_camp?.length - 1]?.camp_name,
+                "-"
               )}`;
         if (manageFormOf == "camp") {
           router.push(`/camp/history/${route}`);
@@ -781,45 +785,52 @@ export default function AddOrManage({ add }) {
                               setScreenLoading(true);
                               add
                                 ? router.push(
-                                    `/topic/${encodeURIComponent(
-                                      router?.query?.statement[0]
-                                    )}/${encodeURIComponent(
-                                      router?.query?.statement[1]
+                                    `/topic/${replaceSpecialCharacters(
+                                      router?.query?.statement[0],
+                                      "-"
+                                    )}/${replaceSpecialCharacters(
+                                      router?.query?.statement[1],
+                                      "-"
                                     )}`
                                   )
                                 : router?.push(
                                     manageFormOf == "camp"
                                       ? `/camp/history/${
                                           backdata?.topic?.topic_num
-                                        }-${encodeURIComponent(
-                                          backdata?.topic?.topic_name
+                                        }-${replaceSpecialCharacters(
+                                          backdata?.topic?.topic_name,
+                                          "-"
                                         )}/${
                                           backdata?.parent_camp[
                                             backdata?.parent_camp.length - 1
                                           ].camp_num
-                                        }-${encodeURIComponent(
+                                        }-${replaceSpecialCharacters(
                                           backdata?.parent_camp[
                                             backdata?.parent_camp.length - 1
-                                          ].camp_name
+                                          ].camp_name,
+                                          "-"
                                         )}`
                                       : manageFormOf == "statement"
                                       ? `/statement/history/${
                                           backdata?.topic?.topic_num
-                                        }-${encodeURIComponent(
-                                          backdata?.topic?.topic_name
+                                        }-${replaceSpecialCharacters(
+                                          backdata?.topic?.topic_name,
+                                          "-"
                                         )}/${
                                           backdata?.parent_camp[
                                             backdata?.parent_camp.length - 1
                                           ].camp_num
-                                        }-${encodeURIComponent(
+                                        }-${replaceSpecialCharacters(
                                           backdata?.parent_camp[
                                             backdata?.parent_camp.length - 1
-                                          ].camp_name
+                                          ].camp_name,
+                                          "-"
                                         )}`
                                       : `/topic/history/${
                                           backdata?.topic?.topic_num
-                                        }-${encodeURIComponent(
-                                          backdata?.topic?.topic_name
+                                        }-${replaceSpecialCharacters(
+                                          backdata?.topic?.topic_name,
+                                          "-"
                                         )}`
                                   );
                             }}

@@ -24,6 +24,7 @@ import StatementHistory from "./statementHistory";
 import CampHistory from "./campHistory";
 import TopicHistory from "./topicHistory";
 import useAuthentication from "src/hooks/isUserAuthenticated";
+import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 const { Panel } = Collapse;
 const { Title } = Typography;
@@ -233,10 +234,10 @@ function HistoryCollapse({
                 >
                   <Link
                     href={`/topic/${
-                      encodeURIComponent(router?.query?.camp[0]) +
+                      replaceSpecialCharacters(router?.query?.camp[0], "-") +
                       "/" +
                       (historyOf != "topic"
-                        ? encodeURIComponent(router?.query?.camp[1])
+                        ? replaceSpecialCharacters(router?.query?.camp[1], "-")
                         : "1-Agreement")
                     }`}
                   >
