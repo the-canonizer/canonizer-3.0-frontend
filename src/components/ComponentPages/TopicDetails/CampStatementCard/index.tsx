@@ -17,10 +17,10 @@ const covertToTime = (unixTime) => {
 };
 const CampStatementCard = ({ myRefToCampStatement, onCampForumClick }) => {
   const router = useRouter();
-  const { campStatement } = useSelector((state: RootState) => ({
+  const { campStatement, history } = useSelector((state: RootState) => ({
     campStatement: state?.topicDetails?.campStatement,
+    history: state?.topicDetails?.history,
   }));
-
   return (
     <Collapse
       defaultActiveKey={["1"]}
@@ -58,7 +58,7 @@ const CampStatementCard = ({ myRefToCampStatement, onCampForumClick }) => {
           <CustomButton className="btn-green">
             <Link
               href={
-                campStatement?.length > 0
+                history?.items?.length > 0
                   ? `/statement/history/${replaceSpecialCharacters(
                       router?.query?.camp[0],
                       "-"
@@ -70,7 +70,7 @@ const CampStatementCard = ({ myRefToCampStatement, onCampForumClick }) => {
               }
             >
               <a>
-                {campStatement?.length > 0
+                {history?.items?.length > 0
                   ? K?.exceptionalMessages?.manageCampStatementButton
                   : K?.exceptionalMessages?.addCampStatementButton}
               </a>
