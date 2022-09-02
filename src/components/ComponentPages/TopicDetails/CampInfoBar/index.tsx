@@ -18,6 +18,7 @@ import {
   HeartOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
+import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 const CampInfoBar = ({
   payload = null,
@@ -105,9 +106,13 @@ const CampInfoBar = ({
     const topicName = topicRecord?.topic_name?.replaceAll(" ", "-");
     const campName = campRecord?.camp_name?.replaceAll(" ", "-");
     router.push({
-      pathname: `/forum/${topicRecord?.topic_num}-${encodeURIComponent(
-        topicName
-      )}/${campRecord?.camp_num}-${encodeURIComponent(campName)}/threads`,
+      pathname: `/forum/${topicRecord?.topic_num}-${replaceSpecialCharacters(
+        topicName,
+        "-"
+      )}/${campRecord?.camp_num}-${replaceSpecialCharacters(
+        campName,
+        "-"
+      )}/threads`,
     });
   };
 
@@ -204,14 +209,16 @@ const CampInfoBar = ({
       <Menu.Item icon={<i className="icon-camp"></i>}>
         {isTopicPage && (
           <Link
-            href={`/camp/history/${encodeURIComponent(
+            href={`/camp/history/${replaceSpecialCharacters(
               router?.query?.camp
                 ? router?.query?.camp[0]
-                : router?.query?.manageSupport[0]
-            )}/${encodeURIComponent(
+                : router?.query?.manageSupport[0],
+              "-"
+            )}/${replaceSpecialCharacters(
               router?.query?.camp
                 ? router?.query?.camp[1]
-                : router?.query?.manageSupport[1]
+                : router?.query?.manageSupport[1],
+              "-"
             )}`}
           >
             <a>{K?.exceptionalMessages?.manageCampButton}</a>
@@ -221,10 +228,11 @@ const CampInfoBar = ({
       <Menu.Item icon={<i className="icon-topic"></i>}>
         {isTopicPage && (
           <Link
-            href={`/topic/history/${encodeURIComponent(
+            href={`/topic/history/${replaceSpecialCharacters(
               router?.query?.camp
                 ? router?.query?.camp[0]
-                : router?.query?.manageSupport[0]
+                : router?.query?.manageSupport[0],
+              "-"
             )}`}
           >
             <a>{K?.exceptionalMessages?.manageTopicButton} </a>
@@ -236,23 +244,27 @@ const CampInfoBar = ({
           <Link
             href={
               campStatement?.length > 0
-                ? `/statement/history/${encodeURIComponent(
+                ? `/statement/history/${replaceSpecialCharacters(
                     router?.query?.camp
                       ? router?.query?.camp[0]
-                      : router?.query?.manageSupport[0]
-                  )}/${encodeURIComponent(
+                      : router?.query?.manageSupport[0],
+                    "-"
+                  )}/${replaceSpecialCharacters(
                     router?.query?.camp
                       ? router?.query?.camp[1]
-                      : router?.query?.manageSupport[1]
+                      : router?.query?.manageSupport[1],
+                    "-"
                   )}`
-                : `/create/statement/${encodeURIComponent(
+                : `/create/statement/${replaceSpecialCharacters(
                     router?.query?.camp
                       ? router?.query?.camp[0]
-                      : router?.query?.manageSupport[0]
-                  )}/${encodeURIComponent(
+                      : router?.query?.manageSupport[0],
+                    "-"
+                  )}/${replaceSpecialCharacters(
                     router?.query?.camp
                       ? router?.query?.camp[1]
-                      : router?.query?.manageSupport[1]
+                      : router?.query?.manageSupport[1],
+                    "-"
                   )}`
             }
           >
@@ -278,8 +290,11 @@ const CampInfoBar = ({
                 topicRecord && topicRecord?.topic_name
               ) : isTopicHistoryPage ? (
                 <Link
-                  href={`/topic/${payload?.topic_num}-${encodeURIComponent(
-                    payload?.topic_name
+                  href={`/topic/${
+                    payload?.topic_num
+                  }-${replaceSpecialCharacters(
+                    payload?.topic_name,
+                    "-"
                   )}/1-Agreement`}
                 >
                   <a>{payloadData?.topic_name}</a>
@@ -313,7 +328,10 @@ const CampInfoBar = ({
                                     : router.query?.manageSupport
                                   )?.at(0)}/${
                                     camp?.camp_num
-                                  }-${encodeURIComponent(camp?.camp_name)}`,
+                                  }-${replaceSpecialCharacters(
+                                    camp?.camp_name,
+                                    "-"
+                                  )}`,
                           }}
                           key={camp?.camp_num}
                         >
@@ -332,9 +350,13 @@ const CampInfoBar = ({
                         href={{
                           pathname: `/topic/${
                             payloadData?.topic_num
-                          }-${encodeURIComponent(payloadData?.topic_name)}/${
-                            camp?.camp_num
-                          }-${encodeURIComponent(camp?.camp_name)}`,
+                          }-${replaceSpecialCharacters(
+                            payloadData?.topic_name,
+                            "-"
+                          )}/${camp?.camp_num}-${replaceSpecialCharacters(
+                            camp?.camp_name,
+                            "-"
+                          )}`,
                         }}
                         key={index}
                       >

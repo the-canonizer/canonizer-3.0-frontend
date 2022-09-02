@@ -12,6 +12,7 @@ import CreateNewTopicUI from "./UI/TopicUI";
 import isAuth from "../../../hooks/isUserAuthenticated";
 import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
 import messages from "../../../messages";
+import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 const CreateNewTopic = ({
   testNickName = [],
@@ -80,8 +81,9 @@ const CreateNewTopic = ({
       };
       dispatch(setCurrentTopic(data));
       router.push({
-        pathname: `/topic/${res.data.topic_num}-${encodeURIComponent(
-          res.data.topic_name
+        pathname: `/topic/${res.data.topic_num}-${replaceSpecialCharacters(
+          res.data.topic_name,
+          "-"
         )}/1-Agreement`,
       });
 
