@@ -44,21 +44,22 @@ const CampTree = ({ scrollToCampStatement }) => {
   useEffect(() => {
     let isDisabled = 0,
       isOneLevel = 0;
+    if (tree != null) {
+      Object.keys(tree).map((item) => {
+        const parentIsOneLevel = isOneLevel;
 
-    Object.keys(tree).map((item) => {
-      const parentIsOneLevel = isOneLevel;
+        isOneLevel = tree[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
+        isDisabled = tree[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
 
-      isOneLevel = tree[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
-      isDisabled = tree[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
-
-      if (
-        tree[item].camp_id === +router?.query?.camp?.at(1)?.split("-")?.at(0)
-      ) {
-        dispatch(
-          setCurrentCamp({ ...tree[item], parentIsOneLevel, isDisabled })
-        );
-      }
-    });
+        if (
+          tree[item].camp_id === +router?.query?.camp?.at(1)?.split("-")?.at(0)
+        ) {
+          dispatch(
+            setCurrentCamp({ ...tree[item], parentIsOneLevel, isDisabled })
+          );
+        }
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tree]);
 
