@@ -20,7 +20,7 @@ import CurrentCampCard from "./CurrentCampCard";
 import CurrentTopicCard from "./CurrentTopicCard";
 import NewsFeedsCard from "./NewsFeedsCard";
 import SupportTreeCard from "./SupportTreeCard";
-import { BackTop } from "antd";
+import { BackTop, message } from "antd";
 import { Spin } from "antd";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
 
@@ -36,13 +36,18 @@ import {
 } from "src/store/slices/campDetailSlice";
 
 import CampRecentActivities from "../Home/CampRecentActivities";
+import { addSupport, getNickNameList } from "src/network/api/userApi";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import { SupportTreeTotalScore } from "src/network/api/campDetailApi";
+
 const TopicDetails = () => {
   let myRefToCampStatement = useRef(null);
   const isLogin = isAuth();
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [getTreeLoadingIndicator, setGetTreeLoadingIndicator] = useState(false);
   const [getCheckSupportStatus, setGetCheckSupportStatus] = useState({});
+  const [totalSupportScore, setTotalSupportScore] = useState<number>(0);
+
   const router = useRouter();
   const dispatch = useDispatch();
   const {
@@ -63,6 +68,16 @@ const TopicDetails = () => {
     campStatement: state?.topicDetails?.campStatement,
   }));
 
+  const reqBody = {
+    topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+    camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
+    as_of: asof,
+    as_of_date:
+      asof == "default" || asof == "review"
+        ? Date.now() / 1000
+        : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
+  };
+
   useEffect(() => {
     async function getTreeApiCall() {
       setGetTreeLoadingIndicator(true);
@@ -77,15 +92,6 @@ const TopicDetails = () => {
         update_all: 1,
       };
 
-      const reqBody = {
-        topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
-        camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
-        as_of: asof,
-        as_of_date:
-          asof == "default" || asof == "review"
-            ? Date.now() / 1000
-            : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
-      };
       await Promise.all([
         getTreesApi(reqBodyForService),
         getNewsFeedApi(reqBody),
@@ -104,6 +110,48 @@ const TopicDetails = () => {
     topic_num: +router?.query?.camp[0]?.split("-")[0],
     camp_num: +router?.query?.camp[1]?.split("-")[0],
   };
+
+  const removeSupport = async (supportedId) => {
+    const RemoveSupportId = {
+      topic_num: reqBodyData.topic_num,
+      add_camp: {},
+      remove_camps: [reqBodyData.camp_num],
+      type: "direct",
+      action: "add",
+      nick_name_id: supportedId,
+      order_update: [],
+    };
+    let res = await addSupport(RemoveSupportId);
+    console.log(res, "res");
+    if (res && res.status_code == 200) {
+      message.success(res.message);
+      GetCheckStatusData();
+      getCanonizedCampSupportingTreeApi(reqBody, algorithm);
+    }
+  };
+
+  const totalScoreData = {
+    topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+    camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
+    asOf: asof,
+    asofdate:
+      asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+    algorithm: algorithm,
+  };
+  const fetchTotalScore = async () => {
+    const CampTotalScore = {
+      topic_num: totalScoreData.topic_num,
+      camp_num: totalScoreData.camp_num,
+      asOf: totalScoreData.asOf,
+      asofdate: totalScoreData.asofdate,
+      algorithm: totalScoreData.algorithm,
+    };
+    let response = await SupportTreeTotalScore(CampTotalScore);
+    if (response && response.status_code == 200) {
+      setTotalSupportScore(response.data.score);
+    }
+  };
+
   const GetCheckStatusData = async () => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
     if (response && response.status_code === 200) {
@@ -125,6 +173,7 @@ const TopicDetails = () => {
   useEffect(() => {
     if (isLogin) {
       GetCheckStatusData();
+      fetchTotalScore();
     }
   }, [isLogin, router]);
 
@@ -221,6 +270,9 @@ const TopicDetails = () => {
             <SupportTreeCard
               handleLoadMoreSupporters={handleLoadMoreSupporters}
               getCheckSupportStatus={getCheckSupportStatus}
+              removeSupport={removeSupport}
+              fetchTotalScore={fetchTotalScore}
+              totalSupportScore={totalSupportScore}
             />
           </Spin>
         </div>

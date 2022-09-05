@@ -263,3 +263,20 @@ export const getTopicActivityLogApi = async (reqBody) => {
     message.error(error.message);
   }
 };
+
+export const SupportTreeTotalScore = async (reqbody) => {
+  try {
+    const res = await NetworkCall.fetch(TreeRequest.TotalScore(reqbody));
+    return res;
+  } catch (err) {
+    handleError(err);
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400
+    ) {
+      return err.error.data;
+    }
+  }
+};

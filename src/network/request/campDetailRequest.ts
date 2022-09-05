@@ -156,4 +156,14 @@ export default class TreeRequest extends Request {
       {}
     );
   }
+
+  static TotalScore(reqbody) {
+    return new Request(
+      K.Network.URL.TotalScore,
+      K.Network.Method.POST,
+      reqbody,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
 }

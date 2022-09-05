@@ -141,8 +141,8 @@ const NetworkConstants = {
     PostVerifyEmail: `${BaseCanonizerApiUrl}/user/post-verify-email`,
     OTPSendVerifyEmail: `${BaseCanonizerApiUrl}/user/resend-otp-verify-email`,
 
-    //supportTreeAndScoreCount
-    SupportTree: `${BaseCanonizerApiUrl}/support-and-score-count`,
+    //supportTotalScore
+    TotalScore: `${BaseCanonizerApiUrl}/camp-total-support-score`,
 
     // compare statement
     CompareStatement: `${BaseCanonizerApiUrl}/get-statement-comparison`,
@@ -156,6 +156,9 @@ const NetworkConstants = {
 
     //Get Check if support exists
     GetCheckSupportExists: `${BaseCanonizerApiUrl}/support/check`,
+
+    //supportTreeAndScoreCount
+    SupportTree: `${BaseCanonizerApiUrl}/support-and-score-count`,
 
     UpdateToken: `${BaseCanonizerApiUrl}/update-fcm-token`,
   },

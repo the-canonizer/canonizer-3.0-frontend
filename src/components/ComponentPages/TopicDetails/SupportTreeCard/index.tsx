@@ -1,6 +1,14 @@
 import { useEffect, useState } from "react";
 import CustomButton from "../../../common/button";
-import { Card, Button, Typography, List, Collapse, Popover } from "antd";
+import {
+  Card,
+  Button,
+  Typography,
+  List,
+  Collapse,
+  Popover,
+  message,
+} from "antd";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
@@ -10,6 +18,7 @@ import styles from "../topicDetails.module.scss";
 import K from "src/constants";
 import { setDelegatedSupportClick } from "../../../../store/slices/supportTreeCard";
 import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
+import { addSupport, getNickNameList } from "src/network/api/userApi";
 const { Paragraph } = Typography;
 
 const { Panel } = Collapse;
@@ -31,13 +40,28 @@ const supportContent = (
 const SupportTreeCard = ({
   handleLoadMoreSupporters,
   getCheckSupportStatus,
+  removeSupport,
+  fetchTotalScore,
+  totalSupportScore,
 }) => {
+  const router = useRouter();
+  const [userNickNameList, setUserNickNameList] = useState([]);
   const dispatch = useDispatch();
+  const arr = [];
+  const getNickNameListData = async () => {
+    const res = await getNickNameList();
+    res.data?.map((value, key) => {
+      arr.push(value.id);
+    });
+    setUserNickNameList(arr);
+    console.log(res, "res", arr, "arr");
+  };
   useEffect(() => {
     dispatch(setDelegatedSupportClick({ delegatedSupportClick: false }));
     dispatch(setManageSupportStatusCheck(false));
+    getNickNameListData();
   }, []);
-
+  console.log(arr);
   //Delegate Support Camp
   const handleDelegatedClick = () => {
     dispatch(setManageSupportStatusCheck(true));
@@ -50,7 +74,7 @@ const SupportTreeCard = ({
   const handleClickSupportCheck = () => {
     dispatch(setManageSupportStatusCheck(true));
   };
-  const router = useRouter();
+
   const manageSupportPath = router.asPath.replace("/topic/", "/support/");
   const { campSupportingTree } = useSelector((state: RootState) => ({
     campSupportingTree: state?.topicDetails?.campSupportingTree,
@@ -84,7 +108,7 @@ const SupportTreeCard = ({
       >
         <Paragraph>
           Total Support for This Camp (including sub-camps):
-          <span className="number-style">65.4</span>
+          <span className="number-style">{totalSupportScore.toFixed(2)}</span>
         </Paragraph>
         <List className={"can-card-list "}>
           {campSupportingTree?.length > 0 &&
@@ -107,19 +131,31 @@ const SupportTreeCard = ({
                         <span className="number-style">{supporter.score}</span>
                       </a>
                     </Link>
-
-                    <Link
-                      href={manageSupportPath + `_${supporter.nick_name_id}`}
-                    >
+                    {!userNickNameList.includes(supporter.nick_name_id) ? (
+                      <Link
+                        href={manageSupportPath + `_${supporter.nick_name_id}`}
+                      >
+                        <a>
+                          <span
+                            onClick={handleDelegatedClick}
+                            className="delegate-support-style"
+                          >
+                            {"Delegate Your Support"}
+                          </span>
+                        </a>
+                      </Link>
+                    ) : (
                       <a>
                         <span
-                          onClick={handleDelegatedClick}
+                          onClick={() => {
+                            removeSupport(supporter.nick_name_id);
+                          }}
                           className="delegate-support-style"
                         >
-                          {"Delegate Your Support"}
+                          {"Remove Your Support"}
                         </span>
                       </a>
-                    </Link>
+                    )}
                   </List.Item>
                 );
               }
