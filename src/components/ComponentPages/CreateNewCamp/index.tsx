@@ -203,14 +203,7 @@ const CreateNewCamp = ({
     setOptions(oldOptions);
   };
 
-  const onParentCampChange = (value: any, currentOption: any) => {
-    console.log(
-      "[OPTION CHANGE ON INDEX FILE]",
-      value,
-      "OPTION OBJECT",
-      currentOption
-    );
-  };
+  const onParentCampChange = (value: any, currentOption: any) => {};
 
   return (
     <Fragment>
