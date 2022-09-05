@@ -42,6 +42,10 @@ function CompareStatementUI({ statements, isLoading, liveStatement }) {
     }
   };
 
+  const covertToTime = (unixTime) => {
+    return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
+  };
+
   return (
     <Fragment>
       <div className={styles.wrap}>
@@ -90,7 +94,7 @@ function CompareStatementUI({ statements, isLoading, liveStatement }) {
                     </Paragraph>
                     <Paragraph>
                       <Text strong>Submitted on : </Text>
-                      <Text>{s1?.submit_time}</Text>
+                      <Text>{covertToTime(s1?.submit_time)}</Text>
                     </Paragraph>
                     <Paragraph>
                       <Text strong>Submitter Nick Name : </Text>
@@ -108,7 +112,7 @@ function CompareStatementUI({ statements, isLoading, liveStatement }) {
                     </Paragraph>
                     <Paragraph>
                       <Text strong>Go live time : </Text>
-                      <Text>{s1?.go_live_time}</Text>
+                      <Text>{covertToTime(s1?.go_live_time)}</Text>
                     </Paragraph>
                     {from == "topic" ? (
                       <Paragraph>
@@ -164,7 +168,7 @@ function CompareStatementUI({ statements, isLoading, liveStatement }) {
                     </Paragraph>
                     <Paragraph>
                       <Text strong>Submitted on : </Text>
-                      <Text>{s2?.submit_time}</Text>
+                      <Text>{covertToTime(s2?.submit_time)}</Text>
                     </Paragraph>
                     <Paragraph>
                       <Text strong>Submitter Nick Name : </Text>
@@ -182,7 +186,7 @@ function CompareStatementUI({ statements, isLoading, liveStatement }) {
                     </Paragraph>
                     <Paragraph>
                       <Text strong>Go live time : </Text>
-                      <Text>{s2?.go_live_time}</Text>
+                      <Text>{covertToTime(s2?.go_live_time)}</Text>
                     </Paragraph>
                     {from == "topic" ? (
                       <Paragraph>
@@ -232,10 +236,8 @@ function CompareStatementUI({ statements, isLoading, liveStatement }) {
                     className={styles.latestCard}
                     title={
                       <Text>
-                        Latest revision as of
-                        {moment(liveStatement?.revision_date).format(
-                          " hh:mm, DD MMMM YYYY"
-                        )}
+                        Latest revision as of{" "}
+                        {covertToTime(liveStatement?.revision_date)}
                       </Text>
                     }
                   >
@@ -254,7 +256,7 @@ function CompareStatementUI({ statements, isLoading, liveStatement }) {
                     </Paragraph>
                     <Paragraph>
                       <Text strong>Submitted on : </Text>
-                      <Text>{liveStatement?.submit_time}</Text>
+                      <Text>{covertToTime(liveStatement?.submit_time)}</Text>
                     </Paragraph>
                     <Paragraph>
                       <Text strong>Submitter Nick Name : </Text>
@@ -274,7 +276,7 @@ function CompareStatementUI({ statements, isLoading, liveStatement }) {
                     </Paragraph>
                     <Paragraph>
                       <Text strong>Go live time : </Text>
-                      <Text>{liveStatement?.go_live_time}</Text>
+                      <Text>{covertToTime(liveStatement?.go_live_time)}</Text>
                     </Paragraph>
                     {from == "topic" ? (
                       <Paragraph>

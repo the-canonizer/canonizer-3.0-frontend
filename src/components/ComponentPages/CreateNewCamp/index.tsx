@@ -14,6 +14,7 @@ import { setCurrentTopic } from "../../../store/slices/topicSlice";
 import messages from "../../../messages";
 
 import CreateNewCampUI from "./UI/CampUI";
+import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 const CreateNewCamp = ({
   nickNames = [],
@@ -139,9 +140,9 @@ const CreateNewCamp = ({
       const { camp } = router.query;
 
       router.push({
-        pathname: `/topic/${encodeURIComponent(camp[0])}/${
+        pathname: `/topic/${replaceSpecialCharacters(camp[0], "-")}/${
           res?.data?.camp_num
-        }-${encodeURIComponent(values.camp_name?.split(" ").join("-"))}`,
+        }-${replaceSpecialCharacters(values.camp_name, "-")}`,
       });
 
       const oldOptions = [...options];
@@ -156,7 +157,7 @@ const CreateNewCamp = ({
       if (res?.error) {
         const errors_key = Object.keys(res.error);
 
-        if (errors_key.length) {
+        if (errors_key?.length) {
           errors_key.forEach((key) => {
             form.setFields([
               {
@@ -174,9 +175,10 @@ const CreateNewCamp = ({
   const onCancel = () => {
     const { camp } = router.query;
     router.push({
-      pathname: `/topic/${encodeURIComponent(camp[0])}/${encodeURIComponent(
-        camp[1]
-      )}`,
+      pathname: `/topic/${replaceSpecialCharacters(
+        camp[0],
+        "-"
+      )}/${replaceSpecialCharacters(camp[1], "-")}`,
     });
   };
 
@@ -201,14 +203,7 @@ const CreateNewCamp = ({
     setOptions(oldOptions);
   };
 
-  const onParentCampChange = (value: any, currentOption: any) => {
-    console.log(
-      "[OPTION CHANGE ON INDEX FILE]",
-      value,
-      "OPTION OBJECT",
-      currentOption
-    );
-  };
+  const onParentCampChange = (value: any, currentOption: any) => {};
 
   return (
     <Fragment>

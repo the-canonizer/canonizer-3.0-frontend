@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import K from "../../../../constants";
 import Link from "next/link";
+import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 ////////////////////////////////////////////////////////////
 //   The commented code bellow  will be used in future   //
@@ -224,10 +225,12 @@ const NewsFeedsCard = ({ newsFeed }) => {
                           // disabled={!news.owner_flag}
                           onClick={() =>
                             router.push(
-                              `/editnews/${encodeURIComponent(
-                                router?.query?.camp[0]
-                              )}/${encodeURIComponent(
-                                router?.query?.camp[1]
+                              `/editnews/${replaceSpecialCharacters(
+                                router?.query?.camp[0],
+                                "-"
+                              )}/${replaceSpecialCharacters(
+                                router?.query?.camp[1],
+                                "-"
                               )}/news-id-${news?.id}`
                             )
                           }

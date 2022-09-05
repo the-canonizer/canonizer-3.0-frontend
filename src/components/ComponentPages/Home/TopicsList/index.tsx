@@ -17,6 +17,7 @@ import {
   setCurrentCheckSupportStatus,
   setManageSupportStatusCheck,
 } from "src/store/slices/campDetailSlice";
+import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 const antIcon = <LoadingOutlined spin />;
 const { Title, Text } = Typography;
@@ -156,7 +157,7 @@ const TopicsList = () => {
 
   const LoadMoreTopics = (
     <div className="text-center">
-      {pageNumber < topicsData?.numOfPages && (
+      {pageNumber < topicsData?.numOfPages && topicsData?.topics?.length > 1 && (
         <Button
           className={styles.viewAll}
           onClick={() => {
@@ -276,10 +277,11 @@ const TopicsList = () => {
                       href={{
                         pathname: `/topic/${
                           item?.topic_id
-                        }-${encodeURIComponent(
+                        }-${replaceSpecialCharacters(
                           isReview
                             ? item?.tree_structure[1]?.review_title
-                            : item?.topic_name
+                            : item?.topic_name,
+                          "-"
                         )}/1-Agreement`,
                       }}
                     >

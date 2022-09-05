@@ -32,31 +32,23 @@
   .btnGroup {
     display: flex;
     flex-wrap: wrap;
+    button {
+      &:first-child {
+        margin-right: 15px;
+      }
+    }
 
-    .createBtn {
-      font-size: 1.125rem;
-      font-weight: 600;
-      color: #0f2a4d;
-      border: solid 1px #d9d9d9;
-      @media screen and (min-width: 576px) {
-        width: 200px;
+    @media screen and (min-width: 576px) {
+      button {
+        max-width: 200px;
       }
-      @media screen and (max-width: 575px) {
-        width: 100%;
-      }
-      i {
-        color: #2e68db;
-        margin-right: 8px;
-        position: relative;
-        top: 2px;
-      }
+    }
 
-      & + button {
-        @media screen and (min-width: 576px) {
-          margin-left: 15px;
-        }
-        @media screen and (max-width: 575px) {
-          margin-top: 15px;
+    @media screen and (max-width: 575px) {
+      button {
+        max-width: 100%;
+        &:first-child {
+          margin-right: 0;
         }
       }
     }
@@ -83,7 +75,7 @@
       border: none;
       background-color: var(--primary);
       transition: all 0.3s;
-      
+
       @media screen and (max-width: 575px) {
         margin-top: 1rem;
         display: block;
@@ -135,7 +127,7 @@
       margin-right: 34px;
     }
     @media screen and (max-width: 1199px) {
-      margin-bottom: .5rem;
+      margin-bottom: 0.5rem;
     }
   }
 
@@ -152,7 +144,7 @@
     .cshcHeadFilter {
       & > div {
         width: 100%;
-    
+
         & > div {
           display: flex;
           align-items: center;
@@ -165,7 +157,7 @@
           @media screen and (min-width: 576px) {
             justify-content: space-between;
           }
-    
+
           .cshcHeadFilterItem {
             border-bottom: none;
             font-size: 14px;
@@ -173,7 +165,7 @@
             @media screen and (max-width: 575px) {
               margin-right: 1.5rem;
             }
-    
+
             &.active {
               a {
                 color: #2e68db;
@@ -181,7 +173,7 @@
                 font-weight: bold;
               }
             }
-    
+
             & > a {
               color: #1c1b24;
               display: flex;
@@ -199,7 +191,7 @@
               }
             }
           }
-    
+
           & > .campStatementObjected {
             & > a {
               &:before {
@@ -207,7 +199,7 @@
               }
             }
           }
-    
+
           & > .campStatementLive {
             & > a {
               &:before {
@@ -215,7 +207,7 @@
               }
             }
           }
-    
+
           & > .campStatementNotLive {
             & > a {
               &:before {
@@ -223,7 +215,7 @@
               }
             }
           }
-    
+
           & > .campStatementOld {
             & > a {
               &:before {
@@ -271,8 +263,6 @@
     }
   } */
 }
-
-
 
 .campStatementCollapseHistory {
   width: 100%;
@@ -414,7 +404,8 @@ $btn-bkg: #4484ce;
     @media screen and (max-width: 1018px) {
     }
 
-    .campUpdateButton, span.campUpdateButton button {
+    .campUpdateButton,
+    span.campUpdateButton button {
       font-size: 15px;
       font-weight: 500;
       min-height: 38px;

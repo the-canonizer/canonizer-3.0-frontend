@@ -4,6 +4,7 @@ import { Card, Form, Input, Button, Select, Row, Col, Typography } from "antd";
 import styles from "../../CreateNewTopic/UI/createNewTopic.module.scss";
 import messages from "../../../../messages";
 import PreventSubCamps from "../../../common/preventSubCampCheckbox";
+import { disableInput } from "../../../../utils/generalUtility";
 
 const { Option } = Select;
 const { Text } = Typography;
@@ -64,7 +65,7 @@ const CreateCampFormUI = ({
         >
           <Row gutter={16}>
             <Col xs={24} sm={12}>
-              {nickNameList.length > 0 ? (
+              {nickNameList?.length > 0 ? (
                 <Form.Item
                   label={
                     <>
@@ -90,7 +91,7 @@ const CreateCampFormUI = ({
                   </Select>
                 </Form.Item>
               ) : null}
-              {nickNameList.length <= 0 ? (
+              {nickNameList?.length <= 0 ? (
                 <Form.Item
                   label={labels.cr_nick_name}
                   name="nick_name"
@@ -106,7 +107,7 @@ const CreateCampFormUI = ({
               ) : null}
             </Col>
             <Col xs={24} sm={12}>
-              {parentCamp.length > 0 ? (
+              {parentCamp?.length > 0 ? (
                 <Form.Item
                   label={
                     <>
@@ -131,7 +132,7 @@ const CreateCampFormUI = ({
                         key={camp.id}
                         id={camp.id}
                         camp={camp}
-                        disabled={camp.is_disabled === 1 ? true : false}
+                        // disabled={disableInput(camp)}
                       >
                         {camp.camp_name}
                       </Option>
@@ -139,7 +140,7 @@ const CreateCampFormUI = ({
                   </Select>
                 </Form.Item>
               ) : null}
-              {parentCamp.length <= 0 ? (
+              {parentCamp?.length <= 0 ? (
                 <Form.Item
                   label={labels.cr_parent_camp}
                   name="parent_camp_num"
@@ -218,7 +219,7 @@ const CreateCampFormUI = ({
             </Col>
 
             <Col xs={24} sm={12}>
-              {campNickName.length > 0 ? (
+              {campNickName?.length > 0 ? (
                 <Form.Item
                   label={labels.cr_nick_name_about}
                   name="camp_about_nick_id"

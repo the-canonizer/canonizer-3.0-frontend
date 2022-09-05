@@ -14,6 +14,7 @@ import TreeRequest from "../request/campDetailRequest";
 import { message } from "antd";
 import { store } from "../../store";
 import { handleError, isServer } from "../../utils/generalUtility";
+import { SupportTreeAndScoreCount } from "./userApi";
 
 export const getTreesApi = async (reqBody) => {
   try {
@@ -113,12 +114,19 @@ export const subscribeToCampApi = async (reqBody, isTopic: Boolean) => {
 
 export const getCanonizedCampSupportingTreeApi = async (
   reqBody,
+  algorithm,
   loadMore = false
 ) => {
   try {
     // const supportingTree = await NetworkCall.fetch(
     //   TreeRequest.getCampSupportingTree(reqBody), false
     // );
+
+    const supportTreeCard = await SupportTreeAndScoreCount({
+      algorithm: algorithm,
+      topic_num: reqBody.topic_num,
+      camp_num: reqBody.camp_num,
+    });
     const mockSupporters = [
       {
         id: 1,
@@ -172,11 +180,11 @@ export const getCanonizedCampSupportingTreeApi = async (
       },
     ];
     if (loadMore) {
-      store.dispatch(pushToCampSupportingTree(mockSupporters));
+      store.dispatch(pushToCampSupportingTree(supportTreeCard.data));
     } else {
-      store.dispatch(setCampSupportingTree(mockSupporters));
+      store.dispatch(setCampSupportingTree(supportTreeCard.data));
     }
-    return mockSupporters;
+    return supportTreeCard.data;
   } catch (error) {
     message.error(error.message);
   }
@@ -253,5 +261,22 @@ export const getTopicActivityLogApi = async (reqBody) => {
     return newsFeed;
   } catch (error) {
     message.error(error.message);
+  }
+};
+
+export const SupportTreeTotalScore = async (reqbody) => {
+  try {
+    const res = await NetworkCall.fetch(TreeRequest.TotalScore(reqbody));
+    return res;
+  } catch (err) {
+    handleError(err);
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400
+    ) {
+      return err.error.data;
+    }
   }
 };

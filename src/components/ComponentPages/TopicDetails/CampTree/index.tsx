@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import styles from "../topicDetails.module.scss";
 
 import { setCurrentCamp } from "src/store/slices/filtersSlice";
+import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 const { TreeNode } = Tree;
 
@@ -58,6 +59,7 @@ const CampTree = ({ scrollToCampStatement }) => {
         );
       }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tree]);
 
   const renderTreeNodes = (data: any, isDisabled = 0, isOneLevel = 0) => {
@@ -137,9 +139,15 @@ const CampTree = ({ scrollToCampStatement }) => {
                           <Link
                             href={{
                               pathname: `/camp/create/${
-                                encodeURIComponent(router.query.camp[0]) +
+                                replaceSpecialCharacters(
+                                  router.query.camp[0],
+                                  "-"
+                                ) +
                                 "/" +
-                                encodeURIComponent(router.query.camp[1])
+                                replaceSpecialCharacters(
+                                  router.query.camp[1],
+                                  "-"
+                                )
                               }`,
                             }}
                           >

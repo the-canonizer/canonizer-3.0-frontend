@@ -105,7 +105,9 @@ export default function NickNameUI({
               label={
                 <>
                   {messages.labels.nickName}
-                  <span className="required">*</span>
+                  <span className="required" id="asteriskNickName">
+                    *
+                  </span>
                 </>
               }
               {...messages.nickNameRule}

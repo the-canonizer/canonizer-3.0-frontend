@@ -12,7 +12,8 @@ import { getHistoryApi, getLiveHistoryApi } from "../../../network/api/history";
 import HistoryCollapse from "./Collapse";
 import { RootState } from "src/store";
 import CampInfoBar from "../TopicDetails/CampInfoBar";
-// import { showCreateCampButton } from "src/utils/generalUtility";
+import CreateNewCampButton from "../../common/button/createNewCampBtn";
+import CreateNewTopicButton from "../../common/button/createNewTopicBtn";
 
 const { Title } = Typography;
 
@@ -38,7 +39,7 @@ function HistoryContainer() {
       currentCampNode: state?.filters?.selectedCampNode,
     })
   );
- 
+
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [campHistory, setCampHistory] = useState(history);
 
@@ -114,14 +115,10 @@ function HistoryContainer() {
 
   const topicRoute = () => {
     setLoadingIndicator(true);
-    router.push("/create/topic");
   };
 
   const campRoute = () => {
     setLoadingIndicator(true);
-    router.push(
-      `/camp/create/${router.query.camp[0] + "/" + router.query.camp[1]}`
-    );
   };
 
   const onSelectCompare = ({ id }, e: CheckboxChangeEvent) => {
@@ -213,15 +210,18 @@ function HistoryContainer() {
         isTopicHistoryPage={historyOf == "topic" ? true : false}
       />
       <div className={styles.btnGroup}>
-        <Button size="large" className={styles.createBtn} onClick={topicRoute}>
-          <i className="icon-topic"></i>Create New Topic
-        </Button>
+        <CreateNewTopicButton className={styles.createBtn} click={topicRoute} />
+
         {historyOf !== "topic" &&
         currentCampNode?.isDisabled == 0 &&
         currentCampNode?.parentIsOneLevel == 0 ? (
-          <Button size="large" className={styles.createBtn} onClick={campRoute}>
-            <i className="icon-topic"></i>Create New Camp
-          </Button>
+          <CreateNewCampButton
+            className={styles.createBtn}
+            click={campRoute}
+            url={`/camp/create/${
+              router.query.camp[0] + "/" + router.query.camp[1]
+            }`}
+          />
         ) : null}
       </div>
       <div className={styles.campStatementHistoryCard}>

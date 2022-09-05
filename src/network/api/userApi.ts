@@ -14,7 +14,7 @@ import { setValue } from "../../store/slices/utilsSlice";
 import NetworkCall from "../networkCall";
 import UserRequest from "../request/userRequest";
 import { store } from "../../store";
-import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
+import { setFilterCanonizedTopics } from "../../store/slices/filtersSlice";
 
 export const createToken = async () => {
   try {
@@ -834,6 +834,23 @@ export const verifyEmailOnSocial = async (body) => {
 export const SendOTPForVerify = async (body) => {
   try {
     const res = await NetworkCall.fetch(UserRequest.OTPSendVerifyEmail(body));
+    return res;
+  } catch (err) {
+    handleError(err);
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400
+    ) {
+      return err.error.data;
+    }
+  }
+};
+
+export const SupportTreeAndScoreCount = async (body) => {
+  try {
+    const res = await NetworkCall.fetch(UserRequest.SupportTree(body));
     return res;
   } catch (err) {
     handleError(err);
