@@ -157,7 +157,7 @@ const TopicsList = () => {
 
   const LoadMoreTopics = (
     <div className="text-center">
-      {pageNumber < topicsData?.numOfPages && (
+      {pageNumber < topicsData?.numOfPages && topicsData?.topics?.length > 1 && (
         <Button
           className={styles.viewAll}
           onClick={() => {

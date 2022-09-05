@@ -157,7 +157,7 @@ const CreateNewCamp = ({
       if (res?.error) {
         const errors_key = Object.keys(res.error);
 
-        if (errors_key.length) {
+        if (errors_key?.length) {
           errors_key.forEach((key) => {
             form.setFields([
               {
@@ -203,14 +203,7 @@ const CreateNewCamp = ({
     setOptions(oldOptions);
   };
 
-  const onParentCampChange = (value: any, currentOption: any) => {
-    console.log(
-      "[OPTION CHANGE ON INDEX FILE]",
-      value,
-      "OPTION OBJECT",
-      currentOption
-    );
-  };
+  const onParentCampChange = (value: any, currentOption: any) => {};
 
   return (
     <Fragment>

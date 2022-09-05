@@ -202,7 +202,6 @@ export default function AddOrManage({ add }) {
     } else if (manageFormOf == "statement") {
       res = await updateStatementApi(reqBody);
     } else if (manageFormOf == "topic") {
-      options.map((op) => (reqBody[op.id] = op.checked ? 1 : 0));
       res = await updateTopicApi(reqBody);
     }
     return res;
@@ -398,7 +397,7 @@ export default function AddOrManage({ add }) {
   };
 
   const extra = () => {
-    if (manageFormOf == "camp" || manageFormOf == "topic") {
+    if (manageFormOf == "camp") {
       return (
         <PreventSubCamps
           options={options}
@@ -497,10 +496,12 @@ export default function AddOrManage({ add }) {
                             ]}
                           >
                             <Select
+                              showSearch
                               size={"large"}
                               placeholder="Parent camp"
                               // data-id="parent-camp"
                               disabled={objection}
+                              optionFilterProp="children"
                             >
                               {parentCamp.map((camp) =>
                                 camp?.camp_num !==

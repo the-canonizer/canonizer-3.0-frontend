@@ -14,7 +14,7 @@ import { setValue } from "../../store/slices/utilsSlice";
 import NetworkCall from "../networkCall";
 import UserRequest from "../request/userRequest";
 import { store } from "../../store";
-import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
+import { setFilterCanonizedTopics } from "../../store/slices/filtersSlice";
 
 export const createToken = async () => {
   try {
