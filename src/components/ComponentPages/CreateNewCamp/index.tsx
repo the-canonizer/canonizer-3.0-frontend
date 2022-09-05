@@ -157,7 +157,7 @@ const CreateNewCamp = ({
       if (res?.error) {
         const errors_key = Object.keys(res.error);
 
-        if (errors_key.length) {
+        if (errors_key?.length) {
           errors_key.forEach((key) => {
             form.setFields([
               {
