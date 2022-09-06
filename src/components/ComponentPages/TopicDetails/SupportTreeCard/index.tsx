@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
-
+import isAuth from "../../../../hooks/isUserAuthenticated";
 import K from "src/constants";
 import { setDelegatedSupportClick } from "../../../../store/slices/supportTreeCard";
 import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
@@ -44,6 +44,7 @@ const SupportTreeCard = ({
   fetchTotalScore,
   totalSupportScore,
 }) => {
+  const isLogin = isAuth();
   const router = useRouter();
   const [userNickNameList, setUserNickNameList] = useState([]);
   const dispatch = useDispatch();
@@ -54,12 +55,15 @@ const SupportTreeCard = ({
       arr.push(value.id);
     });
     setUserNickNameList(arr);
-    console.log(res, "res", arr, "arr");
   };
+  useEffect(() => {
+    if (isLogin) {
+      getNickNameListData();
+    }
+  }, [isLogin]);
   useEffect(() => {
     dispatch(setDelegatedSupportClick({ delegatedSupportClick: false }));
     dispatch(setManageSupportStatusCheck(false));
-    getNickNameListData();
   }, []);
   console.log(arr);
   //Delegate Support Camp
@@ -131,30 +135,37 @@ const SupportTreeCard = ({
                         <span className="number-style">{supporter.score}</span>
                       </a>
                     </Link>
-                    {!userNickNameList.includes(supporter.nick_name_id) ? (
-                      <Link
-                        href={manageSupportPath + `_${supporter.nick_name_id}`}
-                      >
+
+                    {isLogin ? (
+                      !userNickNameList.includes(supporter.nick_name_id) ? (
+                        <Link
+                          href={
+                            manageSupportPath + `_${supporter.nick_name_id}`
+                          }
+                        >
+                          <a>
+                            <span
+                              onClick={handleDelegatedClick}
+                              className="delegate-support-style"
+                            >
+                              {"Delegate Your Support"}
+                            </span>
+                          </a>
+                        </Link>
+                      ) : (
                         <a>
                           <span
-                            onClick={handleDelegatedClick}
+                            onClick={() => {
+                              removeSupport(supporter.nick_name_id);
+                            }}
                             className="delegate-support-style"
                           >
-                            {"Delegate Your Support"}
+                            {"Remove Your Support"}
                           </span>
                         </a>
-                      </Link>
+                      )
                     ) : (
-                      <a>
-                        <span
-                          onClick={() => {
-                            removeSupport(supporter.nick_name_id);
-                          }}
-                          className="delegate-support-style"
-                        >
-                          {"Remove Your Support"}
-                        </span>
-                      </a>
+                      ""
                     )}
                   </List.Item>
                 );
