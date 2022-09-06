@@ -38,6 +38,8 @@ import {
   setManageSupportStatusCheck,
 } from "src/store/slices/campDetailSlice";
 
+import { getHistoryApi } from "../../../network/api/history";
+
 import CampRecentActivities from "../Home/CampRecentActivities";
 const { Link } = Typography;
 import { addSupport, getNickNameList } from "src/network/api/userApi";
@@ -99,6 +101,22 @@ const TopicDetails = () => {
         update_all: 1,
       };
 
+      const reqBody = {
+        topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+        camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
+        as_of: asof,
+        as_of_date:
+          asof == "default" || asof == "review"
+            ? Date.now() / 1000
+            : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
+      };
+      const reqBodyForCampData = {
+        topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+        camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
+        type: "all",
+        per_page: 4,
+        page: 1,
+      };
       await Promise.all([
         getTreesApi(reqBodyForService),
         getNewsFeedApi(reqBody),
@@ -106,6 +124,7 @@ const TopicDetails = () => {
         getCurrentCampRecordApi(reqBody),
         getCanonizedCampStatementApi(reqBody),
         getCanonizedCampSupportingTreeApi(reqBody, algorithm),
+        getHistoryApi(reqBodyForCampData, "1", "statement"),
         getCanonizedAlgorithmsApi(),
       ]);
       setGetTreeLoadingIndicator(false);
