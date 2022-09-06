@@ -1,6 +1,9 @@
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+
+import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
+//  "../../../store/slices/filtersSlice";
 import {
   getCanonizedCampStatementApi,
   getNewsFeedApi,
@@ -9,6 +12,7 @@ import {
   getCurrentTopicRecordApi,
   getCurrentCampRecordApi,
 } from "src/network/api/campDetailApi";
+import { fallBackSrc } from "src/assets/data-images";
 import { RootState } from "src/store";
 import SideBar from "../Home/SideBar";
 import CampStatementCard from "./CampStatementCard";
@@ -20,10 +24,9 @@ import CurrentCampCard from "./CurrentCampCard";
 import CurrentTopicCard from "./CurrentTopicCard";
 import NewsFeedsCard from "./NewsFeedsCard";
 import SupportTreeCard from "./SupportTreeCard";
-import { BackTop, message } from "antd";
+import { BackTop, Image, Typography, message } from "antd";
 import { Spin } from "antd";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
-
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 import moment from "moment";
 import { GetCheckSupportExists } from "src/network/api/topicAPI";
@@ -36,6 +39,7 @@ import {
 } from "src/store/slices/campDetailSlice";
 
 import CampRecentActivities from "../Home/CampRecentActivities";
+const { Link } = Typography;
 import { addSupport, getNickNameList } from "src/network/api/userApi";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import { SupportTreeTotalScore } from "src/network/api/campDetailApi";
@@ -43,6 +47,7 @@ import { SupportTreeTotalScore } from "src/network/api/campDetailApi";
 const TopicDetails = () => {
   let myRefToCampStatement = useRef(null);
   const isLogin = isAuth();
+
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [getTreeLoadingIndicator, setGetTreeLoadingIndicator] = useState(false);
   const [getCheckSupportStatus, setGetCheckSupportStatus] = useState({});
@@ -58,6 +63,7 @@ const TopicDetails = () => {
     topicRecord,
     campRecord,
     campStatement,
+    tree,
   } = useSelector((state: RootState) => ({
     asofdate: state.filters?.filterObject?.asofdate,
     algorithm: state.filters?.filterObject?.algorithm,
@@ -66,6 +72,7 @@ const TopicDetails = () => {
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
     campStatement: state?.topicDetails?.campStatement,
+    tree: state?.topicDetails?.tree,
   }));
 
   const reqBody = {
@@ -106,6 +113,7 @@ const TopicDetails = () => {
     }
     getTreeApiCall();
   }, [asofdate, algorithm, +router?.query?.camp[1]?.split("-")[0]]);
+
   const reqBodyData = {
     topic_num: +router?.query?.camp[0]?.split("-")[0],
     camp_num: +router?.query?.camp[1]?.split("-")[0],
@@ -229,6 +237,14 @@ const TopicDetails = () => {
     }
   };
 
+  const onCreateTreeDate = () => {
+    dispatch(
+      setFilterCanonizedTopics({
+        asofdate: tree["1"]?.created_date,
+        asof: "bydate",
+      })
+    );
+  };
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
@@ -240,42 +256,73 @@ const TopicDetails = () => {
         <aside className={styles.miniSide + " leftSideBar miniSideBar"}>
           <SideBar onCreateCamp={onCreateCamp} />
         </aside>
-
-        <div className={styles.pageContent + " pageContentWrap"}>
-          <Spin spinning={getTreeLoadingIndicator} size="large">
-            <CampTreeCard scrollToCampStatement={scrollToCampStatement} />
-          </Spin>
-          <Spin spinning={loadingIndicator} size="large">
-            <CampStatementCard
-              myRefToCampStatement={myRefToCampStatement}
-              onCampForumClick={onCampForumClick}
-            />
-          </Spin>
-          {typeof window !== "undefined" && window.innerWidth < 767 && (
-            <>
-              {router.asPath.includes("topic") && <CampRecentActivities />}
-              <Spin spinning={loadingIndicator} size="large">
-                {!!newsFeed?.length && <NewsFeedsCard newsFeed={newsFeed} />}
+        {tree && tree["1"]?.is_valid_as_of_time ? (
+          <>
+            <div className={styles.pageContent + " pageContentWrap"}>
+              <Spin spinning={getTreeLoadingIndicator} size="large">
+                <CampTreeCard scrollToCampStatement={scrollToCampStatement} />
               </Spin>
-            </>
-          )}
-          <Spin spinning={loadingIndicator} size="large">
-            <CurrentTopicCard />
-          </Spin>
-          <Spin spinning={loadingIndicator} size="large">
-            <CurrentCampCard />
-          </Spin>
+              <Spin spinning={loadingIndicator} size="large">
+                <CampStatementCard
+                  myRefToCampStatement={myRefToCampStatement}
+                  onCampForumClick={onCampForumClick}
+                />
+              </Spin>
+              {typeof window !== "undefined" && window.innerWidth < 767 && (
+                <>
+                  {router.asPath.includes("topic") && <CampRecentActivities />}
+                  <Spin spinning={loadingIndicator} size="large">
+                    {!!newsFeed?.length && (
+                      <NewsFeedsCard newsFeed={newsFeed} />
+                    )}
+                  </Spin>
+                </>
+              )}
+              <Spin spinning={loadingIndicator} size="large">
+                <CurrentTopicCard />
+              </Spin>
+              <Spin spinning={loadingIndicator} size="large">
+                <CurrentCampCard />
+              </Spin>
 
-          <Spin spinning={loadingIndicator} size="large">
-            <SupportTreeCard
-              handleLoadMoreSupporters={handleLoadMoreSupporters}
-              getCheckSupportStatus={getCheckSupportStatus}
-              removeSupport={removeSupport}
-              fetchTotalScore={fetchTotalScore}
-              totalSupportScore={totalSupportScore}
-            />
-          </Spin>
-        </div>
+              <Spin spinning={loadingIndicator} size="large">
+                <SupportTreeCard
+                  handleLoadMoreSupporters={handleLoadMoreSupporters}
+                  getCheckSupportStatus={getCheckSupportStatus}
+                  removeSupport={removeSupport}
+                  fetchTotalScore={fetchTotalScore}
+                  totalSupportScore={totalSupportScore}
+                />
+              </Spin>
+            </div>
+          </>
+        ) : (
+          <div className={styles.imageWrapper}>
+            <div>
+              <Image
+                preview={false}
+                alt="No topic created"
+                src={"/images/empty-img-default.png"}
+                fallback={fallBackSrc}
+                width={200}
+                id="forgot-modal-img"
+              />
+              <p>
+                The topic was created on
+                <Link
+                  onClick={() => {
+                    onCreateTreeDate();
+                  }}
+                >
+                  {" "}
+                  {new Date(
+                    (tree && tree["1"]?.created_date) * 1000
+                  ).toLocaleString()}
+                </Link>
+              </p>
+            </div>
+          </div>
+        )}
       </div>
       <BackTop />
     </>
