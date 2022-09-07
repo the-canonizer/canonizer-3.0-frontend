@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { Typography, Button, List, Spin, Affix, Skeleton } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import InfiniteScroll from "react-infinite-scroller";
 
 import styles from "./campHistory.module.scss";
@@ -14,6 +14,7 @@ import { RootState } from "src/store";
 import CampInfoBar from "../TopicDetails/CampInfoBar";
 import CreateNewCampButton from "../../common/button/createNewCampBtn";
 import CreateNewTopicButton from "../../common/button/createNewTopicBtn";
+import { setCurrentCamp } from "src/store/slices/filtersSlice";
 
 const { Title } = Typography;
 
@@ -32,13 +33,16 @@ function HistoryContainer() {
 
   const count = useRef(1);
 
-  const { history, currentCampRecord, currentCampNode } = useSelector(
+  const { history, currentCampRecord, currentCampNode, tree } = useSelector(
     (state: RootState) => ({
       history: state?.topicDetails?.history,
       currentCampRecord: state.topicDetails.currentCampRecord,
       currentCampNode: state?.filters?.selectedCampNode,
+      tree: state?.topicDetails?.tree,
     })
   );
+
+  const dispatch = useDispatch();
 
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [campHistory, setCampHistory] = useState(history);
@@ -50,6 +54,29 @@ function HistoryContainer() {
         ? history?.items[0]?.topic_name
         : history?.details?.topic?.topic_name,
   };
+
+  useEffect(() => {
+    let isDisabled = 0,
+      isOneLevel = 0;
+    if (tree != null) {
+      Object.keys(tree).map((item) => {
+        const parentIsOneLevel = isOneLevel;
+
+        isOneLevel = tree[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
+        isDisabled = tree[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
+
+        if (
+          tree[item].camp_id === +router?.query?.camp?.at(1)?.split("-")?.at(0)
+        ) {
+          dispatch(
+            setCurrentCamp({ ...tree[item], parentIsOneLevel, isDisabled })
+          );
+        }
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tree]);
+
   useEffect(() => {
     setCampHistory(history);
   }, [history]);
