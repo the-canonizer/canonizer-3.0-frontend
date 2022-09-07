@@ -19,7 +19,7 @@ const HeadContentAndPermissionComponent = ({
   const router = useRouter();
   const [meta, setMeta] = useState(MetaTags[componentName]);
   const { isAllowed } = usePermission();
-  const isUserAuthenticated = useAuthentication();
+  const { isUserAuthenticated } = useAuthentication();
 
   const lg_type = useSelector((state: RootState) => state.utils.logout_type);
 

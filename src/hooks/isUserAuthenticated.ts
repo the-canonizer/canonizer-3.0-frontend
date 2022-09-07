@@ -3,15 +3,18 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store/index";
 
 const useAuthentication = () => {
-  const authenticated = useSelector(
-    (state: RootState) => state.auth?.authenticated
-  );
-  const [isLogin, setIsLogin] = useState(authenticated);
+  const { authenticated, id } = useSelector((state: RootState) => ({
+    authenticated: state.auth?.authenticated,
+    id: state.auth?.id,
+  }));
+  const [isUserAuthenticated, setIsUserAuthenticated] = useState(authenticated);
+  const [userID, setuserID] = useState(id);
   useEffect(() => {
-    setIsLogin(authenticated);
-  }, [authenticated]);
+    setIsUserAuthenticated(authenticated);
+    setuserID(id);
+  }, [authenticated, id]);
 
-  return isLogin;
+  return { isUserAuthenticated, userID };
 };
 
 export default useAuthentication;

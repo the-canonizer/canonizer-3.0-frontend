@@ -29,7 +29,7 @@ const CreateNewTopic = ({
 
   const router = useRouter();
   const dispatch = useDispatch();
-  const isLogIn = isAuth();
+  const { isUserAuthenticated } = isAuth();
 
   const [form] = Form.useForm();
 
@@ -42,10 +42,10 @@ const CreateNewTopic = ({
   };
 
   useEffect(() => {
-    if (isLogIn) {
+    if (isUserAuthenticated) {
       fetchNickNameList();
     }
-  }, [isLogIn]);
+  }, [isUserAuthenticated]);
 
   const onFinish = async (values: any) => {
     if (!values.topic_name?.trim()) {

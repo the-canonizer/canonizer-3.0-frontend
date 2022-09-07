@@ -80,7 +80,7 @@ const UploadFiles = () => {
   const [DeleteConfirmationVisible, setDeleteConfirmationVisible] =
     useState(false);
   const [toggleFileView, setToggleFileView] = useState(false);
-  const isLogIn = isAuth();
+  const { isUserAuthenticated } = isAuth();
   const ref = useRef();
   const closeFolder = () => {
     setGetFileListFromFolderID([]);
@@ -292,7 +292,7 @@ const UploadFiles = () => {
   };
   //onLoad
   useEffect(() => {
-    if (isLogIn) {
+    if (isUserAuthenticated) {
       GetUploadFileAndFolder();
       setOpenFolderID("");
       openFolderHide();
@@ -301,7 +301,7 @@ const UploadFiles = () => {
         Openfolder(folderId);
       }
     }
-  }, [isLogIn]);
+  }, [isUserAuthenticated]);
   return (
     <UploadFileUI
       input={input}

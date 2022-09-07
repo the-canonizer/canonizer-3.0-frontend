@@ -27,7 +27,7 @@ function SocialAuthVerification() {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const isLog = isAuth();
+  const { isUserAuthenticated } = isAuth();
 
   const fetchList = async () => {
     const res = await userSocialAccountsList();
@@ -46,10 +46,10 @@ function SocialAuthVerification() {
   };
 
   useEffect(() => {
-    if (isLog) {
+    if (isUserAuthenticated) {
       fetchList();
     }
-  }, [isLog]);
+  }, [isUserAuthenticated]);
 
   const onLinkClick = async (provider) => {
     let body = { provider };

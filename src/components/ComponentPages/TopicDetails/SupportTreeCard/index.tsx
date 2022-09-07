@@ -50,7 +50,7 @@ const SupportTreeCard = ({
   const arr = [];
   const getNickNameListData = async () => {
     const res = await getNickNameList();
-    res.data?.map((value, key) => {
+    res?.data?.map((value, key) => {
       arr.push(value.id);
     });
     setUserNickNameList(arr);
