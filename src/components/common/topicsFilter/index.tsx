@@ -353,6 +353,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
               disabled={isDatePicker || selectedAsOf == "bydate" ? false : true}
               format="YYYY-MM-DD"
               defaultValue={moment(selectedAsOFDate * 1000)}
+              value={moment(selectedAsOFDate * 1000)}
               suffixIcon={<i className="icon-calendar"></i>}
               size={"large"}
               className={`${styles.date} w-100`}

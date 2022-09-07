@@ -1,6 +1,9 @@
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+
+import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
+//  "../../../store/slices/filtersSlice";
 import {
   getCanonizedCampStatementApi,
   getNewsFeedApi,
@@ -9,6 +12,7 @@ import {
   getCurrentTopicRecordApi,
   getCurrentCampRecordApi,
 } from "src/network/api/campDetailApi";
+import { fallBackSrc } from "src/assets/data-images";
 import { RootState } from "src/store";
 import SideBar from "../Home/SideBar";
 import CampStatementCard from "./CampStatementCard";
@@ -20,10 +24,9 @@ import CurrentCampCard from "./CurrentCampCard";
 import CurrentTopicCard from "./CurrentTopicCard";
 import NewsFeedsCard from "./NewsFeedsCard";
 import SupportTreeCard from "./SupportTreeCard";
-import { BackTop, message } from "antd";
+import { BackTop, Image, Typography, message } from "antd";
 import { Spin } from "antd";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
-
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 import moment from "moment";
 import { GetCheckSupportExists } from "src/network/api/topicAPI";
@@ -35,7 +38,10 @@ import {
   setManageSupportStatusCheck,
 } from "src/store/slices/campDetailSlice";
 
+import { getHistoryApi } from "../../../network/api/history";
+
 import CampRecentActivities from "../Home/CampRecentActivities";
+const { Link } = Typography;
 import { addSupport, getNickNameList } from "src/network/api/userApi";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import { SupportTreeTotalScore } from "src/network/api/campDetailApi";
@@ -58,6 +64,7 @@ const TopicDetails = () => {
     topicRecord,
     campRecord,
     campStatement,
+    tree,
   } = useSelector((state: RootState) => ({
     asofdate: state.filters?.filterObject?.asofdate,
     algorithm: state.filters?.filterObject?.algorithm,
@@ -66,6 +73,7 @@ const TopicDetails = () => {
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
     campStatement: state?.topicDetails?.campStatement,
+    tree: state?.topicDetails?.tree,
   }));
 
   const reqBody = {
@@ -92,6 +100,22 @@ const TopicDetails = () => {
         update_all: 1,
       };
 
+      const reqBody = {
+        topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+        camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
+        as_of: asof,
+        as_of_date:
+          asof == "default" || asof == "review"
+            ? Date.now() / 1000
+            : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
+      };
+      const reqBodyForCampData = {
+        topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+        camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
+        type: "all",
+        per_page: 4,
+        page: 1,
+      };
       await Promise.all([
         getTreesApi(reqBodyForService),
         getNewsFeedApi(reqBody),
@@ -99,6 +123,7 @@ const TopicDetails = () => {
         getCurrentCampRecordApi(reqBody),
         getCanonizedCampStatementApi(reqBody),
         getCanonizedCampSupportingTreeApi(reqBody, algorithm),
+        getHistoryApi(reqBodyForCampData, "1", "statement"),
         getCanonizedAlgorithmsApi(),
       ]);
       setGetTreeLoadingIndicator(false);
@@ -106,6 +131,7 @@ const TopicDetails = () => {
     }
     getTreeApiCall();
   }, [asofdate, algorithm, +router?.query?.camp[1]?.split("-")[0]]);
+
   const reqBodyData = {
     topic_num: +router?.query?.camp[0]?.split("-")[0],
     camp_num: +router?.query?.camp[1]?.split("-")[0],
@@ -229,6 +255,14 @@ const TopicDetails = () => {
     }
   };
 
+  const onCreateTreeDate = () => {
+    dispatch(
+      setFilterCanonizedTopics({
+        asofdate: tree["1"]?.created_date,
+        asof: "bydate",
+      })
+    );
+  };
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
@@ -240,42 +274,73 @@ const TopicDetails = () => {
         <aside className={styles.miniSide + " leftSideBar miniSideBar"}>
           <SideBar onCreateCamp={onCreateCamp} />
         </aside>
-
-        <div className={styles.pageContent + " pageContentWrap"}>
-          <Spin spinning={getTreeLoadingIndicator} size="large">
-            <CampTreeCard scrollToCampStatement={scrollToCampStatement} />
-          </Spin>
-          <Spin spinning={loadingIndicator} size="large">
-            <CampStatementCard
-              myRefToCampStatement={myRefToCampStatement}
-              onCampForumClick={onCampForumClick}
-            />
-          </Spin>
-          {typeof window !== "undefined" && window.innerWidth < 767 && (
-            <>
-              {router.asPath.includes("topic") && <CampRecentActivities />}
-              <Spin spinning={loadingIndicator} size="large">
-                {!!newsFeed?.length && <NewsFeedsCard newsFeed={newsFeed} />}
+        {tree && tree["1"]?.is_valid_as_of_time ? (
+          <>
+            <div className={styles.pageContent + " pageContentWrap"}>
+              <Spin spinning={getTreeLoadingIndicator} size="large">
+                <CampTreeCard scrollToCampStatement={scrollToCampStatement} />
               </Spin>
-            </>
-          )}
-          <Spin spinning={loadingIndicator} size="large">
-            <CurrentTopicCard />
-          </Spin>
-          <Spin spinning={loadingIndicator} size="large">
-            <CurrentCampCard />
-          </Spin>
+              <Spin spinning={loadingIndicator} size="large">
+                <CampStatementCard
+                  myRefToCampStatement={myRefToCampStatement}
+                  onCampForumClick={onCampForumClick}
+                />
+              </Spin>
+              {typeof window !== "undefined" && window.innerWidth < 767 && (
+                <>
+                  {router.asPath.includes("topic") && <CampRecentActivities />}
+                  <Spin spinning={loadingIndicator} size="large">
+                    {!!newsFeed?.length && (
+                      <NewsFeedsCard newsFeed={newsFeed} />
+                    )}
+                  </Spin>
+                </>
+              )}
+              <Spin spinning={loadingIndicator} size="large">
+                <CurrentTopicCard />
+              </Spin>
+              <Spin spinning={loadingIndicator} size="large">
+                <CurrentCampCard />
+              </Spin>
 
-          <Spin spinning={loadingIndicator} size="large">
-            <SupportTreeCard
-              handleLoadMoreSupporters={handleLoadMoreSupporters}
-              getCheckSupportStatus={getCheckSupportStatus}
-              removeSupport={removeSupport}
-              fetchTotalScore={fetchTotalScore}
-              totalSupportScore={totalSupportScore}
-            />
-          </Spin>
-        </div>
+              <Spin spinning={loadingIndicator} size="large">
+                <SupportTreeCard
+                  handleLoadMoreSupporters={handleLoadMoreSupporters}
+                  getCheckSupportStatus={getCheckSupportStatus}
+                  removeSupport={removeSupport}
+                  fetchTotalScore={fetchTotalScore}
+                  totalSupportScore={totalSupportScore}
+                />
+              </Spin>
+            </div>
+          </>
+        ) : (
+          <div className={styles.imageWrapper}>
+            <div>
+              <Image
+                preview={false}
+                alt="No topic created"
+                src={"/images/empty-img-default.png"}
+                fallback={fallBackSrc}
+                width={200}
+                id="forgot-modal-img"
+              />
+              <p>
+                The topic was created on
+                <Link
+                  onClick={() => {
+                    onCreateTreeDate();
+                  }}
+                >
+                  {" "}
+                  {new Date(
+                    (tree && tree["1"]?.created_date) * 1000
+                  ).toLocaleString()}
+                </Link>
+              </p>
+            </div>
+          </div>
+        )}
       </div>
       <BackTop />
     </>
