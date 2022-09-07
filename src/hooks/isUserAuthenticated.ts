@@ -5,7 +5,7 @@ import { RootState } from "../store/index";
 const useAuthentication = () => {
   const { authenticated, id } = useSelector((state: RootState) => ({
     authenticated: state.auth?.authenticated,
-    id: state.auth?.id,
+    id: state.auth?.loggedInUser?.id,
   }));
   const [isUserAuthenticated, setIsUserAuthenticated] = useState(authenticated);
   const [userID, setuserID] = useState(id);

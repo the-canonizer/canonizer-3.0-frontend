@@ -37,7 +37,8 @@ const CampTree = ({ scrollToCampStatement }) => {
       scrollToCampStatement();
     }
   };
-  const { userID, isUserAuthenticated } = useAuthentication();
+  const { isUserAuthenticated, userID } = useAuthentication();
+
   useEffect(() => {
     setScoreFilter(filterByScore);
     setIncludeReview(review == "review" ? true : false);
@@ -66,7 +67,7 @@ const CampTree = ({ scrollToCampStatement }) => {
 
   const subScriptionStatus = (subscribedUsers: {}) => {
     return Object.keys(subscribedUsers).length > 0 &&
-      Object.keys(subscribedUsers)?.includes(userID) ? (
+      Object.keys(subscribedUsers)?.includes(`${userID}`) ? (
       subscribedUsers[userID].explicit ? (
         <i className={`icon-subscribe ${"text-primary"}`}></i>
       ) : (
@@ -77,7 +78,9 @@ const CampTree = ({ scrollToCampStatement }) => {
               : "child camp"
           }`}
         >
-          <i className={`icon-subscribe ${"text-secondary"}`}></i>
+          <i
+            className={`icon-subscribe text-secondary  ${styles.implicitIcon}`}
+          ></i>
         </Tooltip>
       )
     ) : null;
