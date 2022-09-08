@@ -40,6 +40,7 @@ const CampInfoBar = ({
     campRecord,
     campStatement,
     is_admin,
+    history,
     asofdate,
     asof,
     algorithm,
@@ -47,8 +48,8 @@ const CampInfoBar = ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
     campStatement: state?.topicDetails?.campStatement,
-
     is_admin: state?.auth?.loggedInUser?.is_admin,
+    history: state?.topicDetails?.history,
     asofdate: state.filters?.filterObject?.asofdate,
     algorithm: state.filters?.filterObject?.algorithm,
     asof: state?.filters?.filterObject?.asof,
@@ -269,7 +270,7 @@ const CampInfoBar = ({
             }
           >
             <a>
-              {campStatement?.length > 0
+              {history?.items?.length > 0
                 ? K?.exceptionalMessages?.manageCampStatementButton
                 : K?.exceptionalMessages?.addCampStatementButton}
             </a>
