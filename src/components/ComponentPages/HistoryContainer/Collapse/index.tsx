@@ -17,14 +17,14 @@ import {
   agreeToChangeApi,
 } from "../../../../network/api/history";
 import { useDispatch } from "react-redux";
-import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
+import { setFilterCanonizedTopics } from "../../../../store/slices/filtersSlice";
 
 import styles from ".././campHistory.module.scss";
 import StatementHistory from "./statementHistory";
 import CampHistory from "./campHistory";
 import TopicHistory from "./topicHistory";
-import useAuthentication from "src/hooks/isUserAuthenticated";
-import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import useAuthentication from "../../../../hooks/isUserAuthenticated";
+import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 
 const { Panel } = Collapse;
 const { Title } = Typography;
@@ -234,10 +234,16 @@ function HistoryCollapse({
                 >
                   <Link
                     href={`/topic/${
-                      replaceSpecialCharacters(router?.query?.camp[0], "-") +
+                      replaceSpecialCharacters(
+                        router?.query?.camp?.at(0),
+                        "-"
+                      ) +
                       "/" +
                       (historyOf != "topic"
-                        ? replaceSpecialCharacters(router?.query?.camp[1], "-")
+                        ? replaceSpecialCharacters(
+                            router?.query?.camp?.at(1),
+                            "-"
+                          )
                         : "1-Agreement")
                     }`}
                   >
