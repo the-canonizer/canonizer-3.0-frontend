@@ -23,8 +23,8 @@ export default function PrivacyPolicys() {
     async function nickNameListApiCall() {
       setScreenLoading(true);
       const res = await getTermsAndServicesContent();
-      let a = await new Promise((r) => setTimeout(r, 2000));
-      setTermsData(res && res[0]?.terms_and_services_content);
+
+      setTermsData(res?.at(0)?.privacy_policy_content);
       setScreenLoading(false);
     }
     nickNameListApiCall();
