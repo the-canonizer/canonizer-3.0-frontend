@@ -43,8 +43,8 @@ function HistoryContainer() {
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [campHistory, setCampHistory] = useState(history);
   let payload = history && {
-    camp_num: router?.query?.camp[1]?.split("-")[0],
-    topic_num: router?.query?.camp[0]?.split("-")[0],
+    camp_num: router?.query?.camp?.at(1)?.split("-")?.at(0),
+    topic_num: router?.query?.camp?.at(0)?.split("-")?.at(0),
     topic_name:
       historyOf == "topic"
         ? history?.items[0]?.topic_name
