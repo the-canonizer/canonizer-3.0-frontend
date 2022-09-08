@@ -6,8 +6,8 @@ import K from "../../../../constants";
 
 import { Card, Typography, Button, Descriptions, Collapse } from "antd";
 import { useSelector } from "react-redux";
-import { RootState } from "src/store";
-import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import { RootState } from "../../../../store";
+import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 
 const { Panel } = Collapse;
 

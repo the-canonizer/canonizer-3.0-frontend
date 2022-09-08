@@ -15,10 +15,10 @@ import { useRouter } from "next/router";
 import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
 import isAuth from "../../../../hooks/isUserAuthenticated";
-import K from "src/constants";
+import K from "../../../../constants";
 import { setDelegatedSupportClick } from "../../../../store/slices/supportTreeCard";
-import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
-import { addSupport, getNickNameList } from "src/network/api/userApi";
+import { setManageSupportStatusCheck } from "../../../../store/slices/campDetailSlice";
+import { addSupport, getNickNameList } from "../../../../network/api/userApi";
 const { Paragraph } = Typography;
 
 const { Panel } = Collapse;
@@ -112,7 +112,7 @@ const SupportTreeCard = ({
       >
         <Paragraph>
           Total Support for This Camp (including sub-camps):
-          <span className="number-style">{totalSupportScore.toFixed(2)}</span>
+          <span className="number-style">{totalSupportScore?.toFixed(2)}</span>
         </Paragraph>
         <List className={"can-card-list "}>
           {campSupportingTree?.length > 0 &&
@@ -193,7 +193,7 @@ const SupportTreeCard = ({
             >
               <CustomButton className="btn-orange">
                 {/* {K?.exceptionalMessages?.directJoinSupport} */}
-                {getCheckSupportStatus.support_flag == 1
+                {getCheckSupportStatus?.support_flag == 1
                   ? K?.exceptionalMessages?.manageSupport
                   : K?.exceptionalMessages?.directJoinSupport}
               </CustomButton>

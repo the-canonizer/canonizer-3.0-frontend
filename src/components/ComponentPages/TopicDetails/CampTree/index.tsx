@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Tree } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "src/store";
+import { RootState } from "../../../../store";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styles from "../topicDetails.module.scss";
 
-import { setCurrentCamp } from "src/store/slices/filtersSlice";
-import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import { setCurrentCamp } from "../../../../store/slices/filtersSlice";
+import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 
 const { TreeNode } = Tree;
 

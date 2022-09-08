@@ -153,10 +153,10 @@ function HistoryCollapse({
 
                 <Checkbox
                   className={styles.campSelectCheckbox}
-                  onChange={onSelectCompare.bind(this, campStatement)}
+                  onChange={onSelectCompare?.bind(this, campStatement)}
                   disabled={isDisabledCheck}
                   defaultChecked={isChecked}
-                  key={campStatement.id}
+                  key={campStatement?.id}
                 >
                   Select to Compare
                 </Checkbox>

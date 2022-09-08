@@ -22,8 +22,8 @@ import {
 } from "../../../../network/api/campNewsApi";
 import { getAllUsedNickNames } from "../../../../network/api/campDetailApi";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
-import K from "src/constants";
-import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import K from "../../../../constants";
+import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 
 const antIcon = <LoadingOutlined spin />;
 const { Text } = Typography;
