@@ -34,14 +34,14 @@ const CreateNewCamp = ({
   const dispatch = useDispatch();
 
   const getRouterParams = () => {
-    const q = router.query;
+    const q = router?.query;
 
-    const topicArr = (q.camp[0] as string).split("-");
-    const campArr = (q.camp[1] as string).split("-");
-    const topic_num = topicArr.shift();
-    const camp_num = campArr.shift();
-    const topic = topicArr.join(" ");
-    const camp = campArr.join(" ");
+    const topicArr = (q?.camp[0] as string).split("-");
+    const campArr = (q?.camp[1] as string).split("-");
+    const topic_num = topicArr?.shift();
+    const camp_num = campArr?.shift();
+    const topic = topicArr?.join(" ");
+    const camp = campArr?.join(" ");
 
     const pr = {
       topic_name: topic,
@@ -57,20 +57,20 @@ const CreateNewCamp = ({
     const q = getRouterParams();
 
     const p = {
-      topic: q.topic_name,
-      camp_num: q.camp_num,
-      topic_num: q.topic_num,
-      topic_name: q.topic_name,
-      camp_name: q.camp_name,
+      topic: q?.topic_name,
+      camp_num: q?.camp_num,
+      topic_num: q?.topic_num,
+      topic_name: q?.topic_name,
+      camp_name: q?.camp_name,
     };
 
     setParams(p);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.query]);
+  }, [router?.query]);
 
   const fetchNickNameList = async () => {
     const q = getRouterParams();
-    const body = { topic_num: q.topic_num };
+    const body = { topic_num: q?.topic_num };
     let response = await getAllUsedNickNames(body);
     if (response && response.status_code === 200) {
       setNickNameList(response.data);
@@ -90,7 +90,7 @@ const CreateNewCamp = ({
 
   const fetchParentsCampList = async () => {
     const q = getRouterParams();
-    const body = { topic_num: q.topic_num };
+    const body = { topic_num: q?.topic_num };
     let res = await getAllParentsCamp(body);
     if (res && res.status_code === 200) {
       setParentCamps(res.data);

@@ -4,7 +4,6 @@ import { Card, Form, Input, Button, Select, Row, Col, Typography } from "antd";
 import styles from "../../CreateNewTopic/UI/createNewTopic.module.scss";
 import messages from "../../../../messages";
 import PreventSubCamps from "../../../common/preventSubCampCheckbox";
-import { disableInput } from "../../../../utils/generalUtility";
 
 const { Option } = Select;
 const { Text } = Typography;

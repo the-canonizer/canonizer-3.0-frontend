@@ -1,4 +1,4 @@
-import { render, screen } from "../../../../utils/testUtils";
+import { render, screen, waitFor } from "../../../../utils/testUtils";
 import userEvent from "@testing-library/user-event";
 
 import SubscriptionList from "../";
@@ -38,36 +38,37 @@ const subsList = [
 describe("Subscriptions List Component", () => {
   it("render heading and labels", () => {
     render(<SubscriptionList isTestData={subsList} />);
-
-    expect(screen.getAllByText("For topic").length).toEqual(2);
-    expect(screen.getByText(subsList[0].title)).toBeInTheDocument();
-    expect(screen.getByText(subsList[1].title)).toBeInTheDocument();
-    expect(screen.getAllByText("Remove subscription").length).toEqual(2);
-    expect(screen.getByText("Agreement")).toBeInTheDocument();
-    expect(screen.getByText("Agreement-2")).toBeInTheDocument();
+    waitFor(async () => {
+      expect(screen.getAllByText("For topic").length).toEqual(2);
+      expect(screen.getByText(subsList[0].title)).toBeInTheDocument();
+      expect(screen.getByText(subsList[1].title)).toBeInTheDocument();
+      expect(screen.getAllByText("Remove subscription").length).toEqual(2);
+      expect(screen.getByText("Agreement")).toBeInTheDocument();
+      expect(screen.getByText("Agreement-2")).toBeInTheDocument();
+    });
   });
 
   it("click on remove subscription button and open modal", () => {
     render(<SubscriptionList isTestData={subsList} />);
-    const btns = screen.getAllByText("Remove subscription");
+    waitFor(async () => {
+      const btns = screen.getAllByText("Remove subscription");
 
-    userEvent.click(btns[0]);
+      userEvent.click(btns[0]);
 
-    expect(screen.getByText(subsList[0].title)).toBeInTheDocument();
-    expect(screen.getByText("Remove")).toBeInTheDocument();
-    expect(screen.getByText("Cancel")).toBeInTheDocument();
-    // expect(
-    //   screen.getByText("Your Support for all the camps under the Topics")
-    // ).toBeInTheDocument();
-    // expect(screen.getByText("will be removed. Are you sure you want to continue?")).toBeInTheDocument();
+      expect(screen.getByText(subsList[0].title)).toBeInTheDocument();
+      expect(screen.getByText("Remove")).toBeInTheDocument();
+      expect(screen.getByText("Cancel")).toBeInTheDocument();
+    });
   });
 
   it("click on remove camp button", async () => {
     render(<SubscriptionList isTestData={subsList} />);
-    const btns = screen.getAllByRole("img", {
-      name: "close-circle",
-    });
+    waitFor(async () => {
+      const btns = screen.getAllByRole("img", {
+        name: "close-circle",
+      });
 
-    userEvent.click(btns[0]);
+      userEvent.click(btns[0]);
+    });
   });
 });
