@@ -73,7 +73,7 @@ describe("Footer", () => {
     expect(termsAndServicesLink.getAttribute("href")).toBe(
       "/terms-and-services"
     );
-    expect(privacyPolicyLink.getAttribute("href")).toBe("/privacy-policy");
+    expect(privacyPolicyLink.getAttribute("href")).toBe("/privacypolicy");
     expect(createNewTopicLink.getAttribute("href")).toBe("/create/topic");
     expect(supportingMailLink.getAttribute("href")).toBe(
       "mailto:support@canonizer.com"
