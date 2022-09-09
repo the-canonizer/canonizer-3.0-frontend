@@ -21,6 +21,7 @@ function HistoryContainer() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("all");
   const [selectedTopic, setSelectedTopic] = useState([]);
+  const [selectedTopicStatus, setSelectedTopicStatus] = useState([]);
   const [top, setTop] = useState(0);
   const [isAbs, setIsAbs] = useState(false);
   const [loadMoreItems, setLoadMoreItems] = useState(true);
@@ -122,8 +123,9 @@ function HistoryContainer() {
     setLoadingIndicator(true);
   };
 
-  const onSelectCompare = ({ id }, e: CheckboxChangeEvent) => {
+  const onSelectCompare = ({ id, status }, e: CheckboxChangeEvent) => {
     let oldTopics = [...selectedTopic];
+    let oldTopicsStatus = [...selectedTopicStatus];
 
     if (e.target.checked && !oldTopics.includes(id)) {
       oldTopics.push(id);
@@ -131,7 +133,15 @@ function HistoryContainer() {
       oldTopics = oldTopics.filter((item) => item !== id);
     }
 
+    if (e.target.checked && !oldTopicsStatus.includes(`${id}_${status}`)) {
+      oldTopicsStatus.push(`${id}_${status}`);
+    } else {
+      oldTopicsStatus = oldTopicsStatus.filter(
+        (item) => item !== `${id}_${status}`
+      );
+    }
     setSelectedTopic(oldTopics);
+    setSelectedTopicStatus(oldTopicsStatus);
   };
 
   const onCompareClick = () => {
@@ -147,6 +157,7 @@ function HistoryContainer() {
             : historyOf == "camp"
             ? "camp"
             : "topic",
+        status: selectedTopicStatus.join("-"),
       },
     });
   };
