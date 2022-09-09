@@ -78,8 +78,8 @@ const TopicDetails = () => {
   }));
 
   const reqBody = {
-    topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
-    camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
+    topic_num: +router?.query?.camp[0]?.split("-")[0],
+    camp_num: +router?.query?.camp[1]?.split("-")[0],
     as_of: asof,
     as_of_date:
       asof == "default" || asof == "review"
@@ -111,8 +111,8 @@ const TopicDetails = () => {
             : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
       };
       const reqBodyForCampData = {
-        topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
-        camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
+        topic_num: +router?.query?.camp[0]?.split("-")[0],
+        camp_num: +router?.query?.camp[1]?.split("-")[0],
         type: "all",
         per_page: 4,
         page: 1,
@@ -158,8 +158,8 @@ const TopicDetails = () => {
   };
 
   const totalScoreData = {
-    topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
-    camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
+    topic_num: +router?.query?.camp[0]?.split("-")[0],
+    camp_num: +router?.query?.camp[1]?.split("-")[0],
     asOf: asof,
     asofdate:
       asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
@@ -275,7 +275,7 @@ const TopicDetails = () => {
         <aside className={styles.miniSide + " leftSideBar miniSideBar"}>
           <SideBar onCreateCamp={onCreateCamp} />
         </aside>
-        {tree && tree["1"]?.is_valid_as_of_time ? (
+        {tree && tree["1"]?.is_valid_as_of_time && (
           <>
             <div className={styles.pageContent + " pageContentWrap"}>
               <Spin spinning={getTreeLoadingIndicator} size="large">
@@ -315,7 +315,8 @@ const TopicDetails = () => {
               </Spin>
             </div>
           </>
-        ) : (
+        )}
+        {tree && !tree["1"]?.is_valid_as_of_time && (
           <div className={styles.imageWrapper}>
             <div>
               <Image
