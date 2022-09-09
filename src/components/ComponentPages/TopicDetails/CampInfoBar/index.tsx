@@ -368,7 +368,7 @@ const CampInfoBar = ({
                     );
                   })
                 : null}
-              {!!campSubscriptionID && (
+              {!!campSubscriptionID && !isTopicHistoryPage && (
                 <small style={{ alignSelf: "center", marginLeft: "10px" }}>
                   <i className="icon-subscribe text-primary"></i>
                 </small>
