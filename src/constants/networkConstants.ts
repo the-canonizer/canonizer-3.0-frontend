@@ -161,6 +161,8 @@ const NetworkConstants = {
     SupportTree: `${BaseCanonizerApiUrl}/support-and-score-count`,
 
     UpdateToken: `${BaseCanonizerApiUrl}/update-fcm-token`,
+
+    GetTermsAndServicesContent: `${BaseCanonizerApiUrl}/get-terms-and-services-content`,
   },
   Method: {
     GET: "GET",
