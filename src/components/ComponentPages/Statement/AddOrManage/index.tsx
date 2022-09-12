@@ -54,7 +54,7 @@ const { Text } = Typography;
 const { campAboutUrlRule } = messages;
 
 export default function AddOrManage({ add }) {
-  const isLogin = useAuthentication();
+  const { isUserAuthenticated } = useAuthentication();
   const router = useRouter();
   const [editStatementData, setEditStatementData] = useState({ data: null });
 
@@ -361,7 +361,7 @@ export default function AddOrManage({ add }) {
       }
       setScreenLoading(false);
     }
-    isLogin ? nickNameListApiCall() : router.push("/login");
+    isUserAuthenticated ? nickNameListApiCall() : router.push("/login");
   }, []);
 
   let formTitle = () => {

@@ -48,8 +48,7 @@ import { SupportTreeTotalScore } from "src/network/api/campDetailApi";
 
 const TopicDetails = () => {
   let myRefToCampStatement = useRef(null);
-  const isLogin = isAuth();
-
+  const { isUserAuthenticated } = isAuth();
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [getTreeLoadingIndicator, setGetTreeLoadingIndicator] = useState(false);
   const [getCheckSupportStatus, setGetCheckSupportStatus] = useState({});
@@ -78,8 +77,8 @@ const TopicDetails = () => {
   }));
 
   const reqBody = {
-    topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
-    camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
+    topic_num: +router?.query?.camp[0]?.split("-")[0],
+    camp_num: +router?.query?.camp[1]?.split("-")[0],
     as_of: asof,
     as_of_date:
       asof == "default" || asof == "review"
@@ -92,8 +91,8 @@ const TopicDetails = () => {
       setGetTreeLoadingIndicator(true);
       setLoadingIndicator(true);
       const reqBodyForService = {
-        topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
-        camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
+        topic_num: +router?.query?.camp[0]?.split("-")[0],
+        camp_num: +router?.query?.camp[1]?.split("-")[0],
         asOf: asof,
         asofdate:
           asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
@@ -158,8 +157,8 @@ const TopicDetails = () => {
   };
 
   const totalScoreData = {
-    topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
-    camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
+    topic_num: +router?.query?.camp[0]?.split("-")[0],
+    camp_num: +router?.query?.camp[1]?.split("-")[0],
     asOf: asof,
     asofdate:
       asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
@@ -198,11 +197,11 @@ const TopicDetails = () => {
   };
 
   useEffect(() => {
-    if (isLogin) {
+    if (isUserAuthenticated) {
       GetCheckStatusData();
       fetchTotalScore();
     }
-  }, [isLogin, router]);
+  }, [isUserAuthenticated, router]);
 
   const scrollToCampStatement = () => {
     myRefToCampStatement.current?.scrollIntoView({ behavior: "smooth" });

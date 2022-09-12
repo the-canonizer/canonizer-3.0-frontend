@@ -23,8 +23,8 @@ export default function RecentActivities() {
     threadsData: state?.recentActivities?.threadsData,
   }));
 
+  const { isUserAuthenticated } = useAuthentication();
   const router = useRouter();
-  const isLogin = useAuthentication();
   const [position] = useState(["left", "right"]);
   const [recentActivities, setRecentActivities] = useState(topicsData);
   const [topicPageNumber, setTopicPageNumber] = useState(1);
@@ -60,7 +60,7 @@ export default function RecentActivities() {
       await getTopicsApiCallWithReqBody(false, selectedTab);
       setGetTopicsLoadingIndicator(false);
     }
-    if (isLogin) {
+    if (isUserAuthenticated) {
       linksApiCall();
     } else {
       setGetTopicsLoadingIndicator(true);

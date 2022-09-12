@@ -101,7 +101,7 @@ const ProfileInfo = () => {
       setDisableButton(false);
     }
   };
-  const isLogIn = isAuth();
+  const { isUserAuthenticated } = isAuth();
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
@@ -267,7 +267,7 @@ const ProfileInfo = () => {
         }
       }
     }
-    if (isLogIn) {
+    if (isUserAuthenticated) {
       fetchMobileCarrier()
         .then(function () {
           return fetchAlgorithmsList();
@@ -279,7 +279,7 @@ const ProfileInfo = () => {
           return fetchUserProfileInfo();
         });
     }
-  }, [isLogIn]);
+  }, [isUserAuthenticated]);
 
   return (
     <ProfileInfoUI
