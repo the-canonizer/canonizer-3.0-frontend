@@ -48,7 +48,7 @@ const SupportTreeCard = ({
   fetchTotalScore,
   totalSupportScore,
 }) => {
-  const isLogin = isAuth();
+  const { isUserAuthenticated } = isAuth();
   const router = useRouter();
   const [userNickNameList, setUserNickNameList] = useState([]);
   const dispatch = useDispatch();
@@ -61,10 +61,10 @@ const SupportTreeCard = ({
     setUserNickNameList(arr);
   };
   useEffect(() => {
-    if (isLogin) {
+    if (isUserAuthenticated) {
       getNickNameListData();
     }
-  }, [isLogin]);
+  }, [isUserAuthenticated]);
   useEffect(() => {
     dispatch(setDelegatedSupportClick({ delegatedSupportClick: false }));
     dispatch(setManageSupportStatusCheck(false));
@@ -140,7 +140,7 @@ const SupportTreeCard = ({
                         {data[item].score?.toFixed(2)}
                       </span>
 
-                      {isLogin ? (
+                      {isUserAuthenticated ? (
                         !userNickNameList.includes(data[item].nick_name_id) ? (
                           <Link
                             href={
