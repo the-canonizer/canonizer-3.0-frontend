@@ -139,6 +139,7 @@ const SupportTreeCard = ({
                       >
                         {data[item].score?.toFixed(2)}
                       </span>
+
                       {isLogin ? (
                         !userNickNameList.includes(data[item].nick_name_id) ? (
                           <Link
@@ -146,14 +147,20 @@ const SupportTreeCard = ({
                               manageSupportPath + `_${data[item].nick_name_id}`
                             }
                           >
-                            <a>
-                              <span
-                                onClick={handleDelegatedClick}
-                                className="delegate-support-style"
-                              >
-                                {"Delegate Your Support"}
-                              </span>
-                            </a>
+                            {data[item].delegates?.findIndex((obj) =>
+                              userNickNameList.includes(obj.nick_name_id)
+                            ) > -1 ? (
+                              ""
+                            ) : (
+                              <a>
+                                <span
+                                  onClick={handleDelegatedClick}
+                                  className="delegate-support-style"
+                                >
+                                  {"Delegate Your Support"}
+                                </span>
+                              </a>
+                            )}
                           </Link>
                         ) : (
                           <a>
