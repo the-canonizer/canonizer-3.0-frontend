@@ -7,10 +7,11 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
+import Link from "next/link";
 
 const antIcon = <LoadingOutlined spin />;
 const { TabPane } = Tabs;
-const { Title, Link, Text } = Typography;
+const { Title, Link: AntLink, Text } = Typography;
 
 const OperationsSlot = {
   left: <Title level={3}>Recent Activities</Title>,
@@ -23,15 +24,18 @@ export default function RecentActivities() {
   }));
 
   const { isUserAuthenticated } = useAuthentication();
+  const router = useRouter();
   const [position] = useState(["left", "right"]);
   const [recentActivities, setRecentActivities] = useState(topicsData);
   const [topicPageNumber, setTopicPageNumber] = useState(1);
   const [threadPageNumber, setThreadPageNumber] = useState(1);
-  const [selectedTab, setSelectedTab] = useState("topic/camps");
+  const [selectedTab, setSelectedTab] = useState(
+    router?.query?.tabName || "topic/camps"
+  );
   const [loadMoreIndicator, setLoadMoreIndicator] = useState(false);
   const [getTopicsLoadingIndicator, setGetTopicsLoadingIndicator] =
     useState(false);
-  const router = useRouter();
+
   const slot = useMemo(() => {
     if (position.length === 0) return null;
     return position.reduce(
@@ -74,7 +78,6 @@ export default function RecentActivities() {
     }
     setSelectedTab(key);
   };
-
   const decodeUrlLink = (threadData) => {
     return JSON.parse(threadData?.activity?.properties)?.url?.replace(
       /\s+/g,
@@ -125,9 +128,14 @@ export default function RecentActivities() {
     return (
       recentActivities?.topics?.length > 0 && (
         <div className={styles.footer}>
-          <Link href="/activities" className={styles.viewAll}>
-            <Text>{ViewAllName}</Text>
-            <i className="icon-angle-right"></i>
+          <Link
+            href={{ pathname: "/activities", query: { tabName: selectedTab } }}
+            as="/activities"
+          >
+            <a className={styles.viewAll}>
+              <Text>{ViewAllName}</Text>
+              <i className="icon-angle-right"></i>
+            </a>
           </Link>
         </div>
       )
@@ -159,14 +167,15 @@ export default function RecentActivities() {
       )
     );
   };
-
   return (
     <>
       <div className={`${styles.listCard} recentActivities_listWrap`}>
         <Spin spinning={getTopicsLoadingIndicator} size="large">
           <Tabs
             className={`${styles.listCardTabs} recentActivities_listCardTabs`}
-            defaultActiveKey="topic/camps"
+            defaultActiveKey={`${
+              router?.query?.tabName ? router?.query?.tabName : "topic/camps"
+            }`}
             tabBarExtraContent={slot}
             onChange={handleTabChange}
           >
@@ -186,7 +195,9 @@ export default function RecentActivities() {
                   );
                   return (
                     <List.Item className={styles.listItem}>
-                      <Link href={decodedProperties?.url?.replace(/\s+/g, "-")}>
+                      <AntLink
+                        href={decodedProperties?.url?.replace(/\s+/g, "-")}
+                      >
                         <>
                           <Text className={styles.text}>
                             {activity?.activity?.description}
@@ -217,7 +228,7 @@ export default function RecentActivities() {
                             {covertToTime(activity.updated_at)}
                           </Text>
                         </>
-                      </Link>
+                      </AntLink>
                     </List.Item>
                   );
                 }}
@@ -235,7 +246,7 @@ export default function RecentActivities() {
                 dataSource={recentActivities?.topics}
                 renderItem={(activity: any) => (
                   <List.Item className={styles.listItem}>
-                    <Link href={decodeUrlLink(activity)}>
+                    <AntLink href={decodeUrlLink(activity)}>
                       <>
                         <Text className={styles.text}>
                           {activity?.activity?.description}
@@ -245,7 +256,7 @@ export default function RecentActivities() {
                           {covertToTime(activity.updated_at)}
                         </Text>
                       </>
-                    </Link>
+                    </AntLink>
                   </List.Item>
                 )}
               />

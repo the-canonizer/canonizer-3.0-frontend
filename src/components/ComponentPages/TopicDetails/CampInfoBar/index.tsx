@@ -8,7 +8,7 @@ import styles from "../topicDetails.module.scss";
 import { Dropdown, Menu, Button } from "antd";
 import K from "../../../../constants";
 
-import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
+import { setManageSupportStatusCheck } from "../../../../store/slices/campDetailSlice";
 
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import { getCampBreadCrumbApi } from "../../../../network/api/campDetailApi";
@@ -18,7 +18,7 @@ import {
   HeartOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
-import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 
 const CampInfoBar = ({
   payload = null,
@@ -368,7 +368,7 @@ const CampInfoBar = ({
                     );
                   })
                 : null}
-              {!!campSubscriptionID && (
+              {!!campSubscriptionID && !isTopicHistoryPage && (
                 <small style={{ alignSelf: "center", marginLeft: "10px" }}>
                   <i className="icon-subscribe text-primary"></i>
                 </small>

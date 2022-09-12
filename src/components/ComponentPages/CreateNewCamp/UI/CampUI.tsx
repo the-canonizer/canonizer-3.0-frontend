@@ -1,5 +1,4 @@
 import { Fragment } from "react";
-import Link from "next/link";
 import { useRouter } from "next/router";
 
 import SideBar from "../../CampForum/UI/sidebar";
@@ -23,9 +22,9 @@ const CreateNewCampUI = ({
 
   //  post section end
   let payload = {
-    camp_num: (router.query.camp[1] as string)?.split("-")[0],
-    topic_num: (router.query.camp[0] as string)?.split("-")[0],
-    topic_name: (router.query.camp[0] as string)?.split("-").slice(1).join(" "),
+    camp_num: (router?.query.camp[1] as string)?.split("-")[0],
+    topic_num: (router?.query.camp[0] as string)?.split("-")[0],
+    topic_name: (router?.query.camp[0] as string)?.split("-").slice(1).join(" "),
   };
 
   return (

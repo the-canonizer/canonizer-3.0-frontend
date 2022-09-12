@@ -40,7 +40,7 @@ const LoggedOutHeader = () => {
       id: 2,
     },
     {
-      link: "/help",
+      link: "/topic/132-Help/1-Agreement",
       linkTitle: "Help",
       id: 3,
     },
@@ -51,12 +51,12 @@ const LoggedOutHeader = () => {
       external: true,
     },
     {
-      link: "/blog",
+      link: "https://canonizer.com/blog/",
       linkTitle: "Blog",
       id: 5,
     },
     {
-      link: "/jobs",
+      link: "/topic/6-Canonizer-Jobs/1-Agreement",
       linkTitle: "Jobs",
       id: 6,
     },
