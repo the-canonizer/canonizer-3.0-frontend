@@ -76,7 +76,7 @@ function HistoryContainer() {
       setLoadingIndicator(false);
     }
     getTreeApiCall();
-  }, [asofdate, algorithm, +router?.query?.camp[1]?.split("-")[0]]);
+  }, [asofdate, algorithm, +router?.query?.camp?.at(1)?.split("-")[0]]);
 
   useEffect(() => {
     let isDisabled = 0,
