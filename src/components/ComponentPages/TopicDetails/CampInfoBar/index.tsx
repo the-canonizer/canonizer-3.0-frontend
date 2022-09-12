@@ -26,7 +26,7 @@ const CampInfoBar = ({
   isTopicHistoryPage = false,
   getCheckSupportStatus = null,
 }) => {
-  const isLogin = useAuthentication();
+  const { isUserAuthenticated } = useAuthentication();
 
   const dispatch = useDispatch();
   const [loadingIndicator, setLoadingIndicator] = useState(false);
@@ -128,7 +128,7 @@ const CampInfoBar = ({
 
   const campForumDropdownMenu = (
     <Menu className={styles.campForumDropdownMenu}>
-      {isLogin && is_admin && (
+      {isUserAuthenticated && is_admin && (
         <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
           <Link href={router.asPath.replace("topic", "addnews")}>
             <a rel="noopener noreferrer" href="/add-news">
@@ -146,7 +146,7 @@ const CampInfoBar = ({
           ></i>
         }
         onClick={() => {
-          if (isLogin) {
+          if (isUserAuthenticated) {
             campOrTopicScribe(true);
           } else {
             setLoadingIndicator(true);
@@ -169,7 +169,7 @@ const CampInfoBar = ({
         }
         disabled={!!campSubscriptionID && campRecord?.flag == 2 ? true : false}
         onClick={() => {
-          if (isLogin) {
+          if (isUserAuthenticated) {
             campOrTopicScribe(false);
           } else {
             setLoadingIndicator(true);
@@ -368,7 +368,7 @@ const CampInfoBar = ({
                     );
                   })
                 : null}
-              {!!campSubscriptionID && (
+              {!!campSubscriptionID && !isTopicHistoryPage && (
                 <small style={{ alignSelf: "center", marginLeft: "10px" }}>
                   <i className="icon-subscribe text-primary"></i>
                 </small>

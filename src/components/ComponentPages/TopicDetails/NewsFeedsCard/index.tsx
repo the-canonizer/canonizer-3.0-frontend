@@ -20,7 +20,7 @@ const { Paragraph } = Typography;
 const { Panel } = Collapse;
 
 const NewsFeedsCard = ({ newsFeed }) => {
-  const isLogin = useAuthentication();
+  const { isUserAuthenticated } = useAuthentication();
   const [deleteNews, setDeleteNews] = useState(false);
   const [editNews, setEditNews] = useState(false);
   const { is_admin } = useSelector((state: RootState) => ({
@@ -70,44 +70,46 @@ const NewsFeedsCard = ({ newsFeed }) => {
                 <>
                   {/* {!(deleteNews || editNews) && ( */}
 
-                  {!(deleteNews || editNews) && is_admin && isLogin && (
-                    <>
-                      <Button
-                        type="link"
-                        onClick={() => {
-                          // if (isLogin) {
-                          //   setEditNews(true);
-                          //   setDeleteNews(false);
-                          // } else {
-                          //   router.push("/login");
-                          // }
+                  {!(deleteNews || editNews) &&
+                    is_admin &&
+                    isUserAuthenticated && (
+                      <>
+                        <Button
+                          type="link"
+                          onClick={() => {
+                            // if (isUserAuthenticated) {
+                            //   setEditNews(true);
+                            //   setDeleteNews(false);
+                            // } else {
+                            //   router.push("/login");
+                            // }
 
-                          setEditNews(true);
-                          setDeleteNews(false);
-                        }}
-                      >
-                        <i className={"icon-edit "} />
-                        Edit News
-                      </Button>
+                            setEditNews(true);
+                            setDeleteNews(false);
+                          }}
+                        >
+                          <i className={"icon-edit "} />
+                          Edit News
+                        </Button>
 
-                      <Button
-                        type="link"
-                        onClick={() => {
-                          // if (isLogin) {
-                          //   setDeleteNews(true);
-                          //   setEditNews(false);
-                          // } else {
-                          //   router.push("/login");
-                          // }
-                          setEditNews(false);
-                          setDeleteNews(true);
-                        }}
-                      >
-                        <i className={"icon-delete"} />
-                        Delete News
-                      </Button>
-                    </>
-                  )}
+                        <Button
+                          type="link"
+                          onClick={() => {
+                            // if (isUserAuthenticated) {
+                            //   setDeleteNews(true);
+                            //   setEditNews(false);
+                            // } else {
+                            //   router.push("/login");
+                            // }
+                            setEditNews(false);
+                            setDeleteNews(true);
+                          }}
+                        >
+                          <i className={"icon-delete"} />
+                          Delete News
+                        </Button>
+                      </>
+                    )}
                   {(deleteNews || editNews) && (
                     <Button
                       type="link"

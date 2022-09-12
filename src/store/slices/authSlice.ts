@@ -5,6 +5,7 @@ import K from "../../constants";
 export const authSlice = createSlice({
   name: "auth",
   initialState: {
+    id: null,
     loggedInUser: null,
     authenticated: false,
     authToken: null,

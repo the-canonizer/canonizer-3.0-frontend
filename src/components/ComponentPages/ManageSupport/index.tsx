@@ -33,7 +33,7 @@ const ManageSupport = () => {
     asof: state?.filters?.filterObject?.asof,
   }));
   const dispatch = useDispatch();
-  const isLogin = isAuth();
+  const { isUserAuthenticated } = isAuth();
   const router = useRouter();
   const [nickNameList, setNickNameList] = useState([]);
   const [cardCamp_ID, setCardCamp_ID] = useState("");
@@ -106,9 +106,9 @@ const ManageSupport = () => {
   const { campRecord } = useSelector((state: RootState) => ({
     campRecord: state?.topicDetails?.currentCampRecord,
   }));
-  //isLogin
+  //isUserAuthenticated
   useEffect(() => {
-    if (isLogin) {
+    if (isUserAuthenticated) {
       setUpdatePostion(false);
       getCurrentCampRecordApi(reqBody);
       if (manageSupportStatusCheck) {
@@ -122,7 +122,7 @@ const ManageSupport = () => {
     } else {
       router.push("/login");
     }
-  }, [isLogin, reqBodyData.topic_num]);
+  }, [isUserAuthenticated, reqBodyData.topic_num]);
 
   let warningMsg, supportSts;
   const GetCheckStatusData = async () => {
@@ -284,10 +284,11 @@ const ManageSupport = () => {
     let campIDsArr = [];
     //get support_flag status check from GetCheckSupportExistsData
     let support_flag_Status = supportedCampsStatus.support_flag;
+
     let topicNumId =
       manageSupportRevertData.length > 0
         ? manageSupportRevertData[0].topic_num
-        : "";
+        : router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
     //order Update
     const manageListOrder = manageSupportList.length;
     let resultCamp = manageSupportList.filter(

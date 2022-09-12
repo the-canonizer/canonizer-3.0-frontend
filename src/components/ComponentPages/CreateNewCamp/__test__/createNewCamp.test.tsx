@@ -61,16 +61,17 @@ describe("Create New Topic page", () => {
       />
     );
 
-    expect(screen.getByTestId("head")).toBeInTheDocument();
-    expect(screen.getByText(labels.cr_parent_camp)).toBeInTheDocument();
-    expect(screen.getByText(labels.cr_camp_name)).toBeInTheDocument();
-    expect(screen.getByText(labels.cr_keywords)).toBeInTheDocument();
-    expect(screen.getByText(labels.cr_edit_summary)).toBeInTheDocument();
-    expect(screen.getByText(labels.cr_keywords_sp)).toBeInTheDocument();
-    expect(screen.getByText(labels.cr_camp_url)).toBeInTheDocument();
-    expect(screen.getByText(labels.cr_nick_name_about)).toBeInTheDocument();
-    expect(screen.getByTestId("btn")).toBeInTheDocument();
-    expect(screen.getByText("Cancel")).toBeInTheDocument();
+    waitFor(async () => {
+      expect(screen.getByTestId("head")).toBeInTheDocument();
+      expect(screen.getByText(labels.cr_camp_name)).toBeInTheDocument();
+      expect(screen.getByText(labels.cr_keywords)).toBeInTheDocument();
+      expect(screen.getByText(labels.cr_edit_summary)).toBeInTheDocument();
+      expect(screen.getByText(labels.cr_keywords_sp)).toBeInTheDocument();
+      expect(screen.getByText(labels.cr_camp_url)).toBeInTheDocument();
+      expect(screen.getByText(labels.cr_nick_name_about)).toBeInTheDocument();
+      expect(screen.getByTestId("btn")).toBeInTheDocument();
+      expect(screen.getByText("Cancel")).toBeInTheDocument();
+    });
   });
 
   it("render inputs field and submit button", () => {
@@ -83,28 +84,26 @@ describe("Create New Topic page", () => {
       />
     );
 
-    const parentCamp = screen.getByLabelText(labels.cr_parent_camp);
-    expect(parentCamp).toBeInTheDocument();
-    expect(parentCamp).toHaveAttribute("type", "search");
+    waitFor(async () => {
+      const campName = screen.getByLabelText(labels.cr_camp_name);
+      expect(campName).toBeInTheDocument();
+      expect(campName).toHaveAttribute("type", "text");
 
-    const campName = screen.getByLabelText(labels.cr_camp_name);
-    expect(campName).toBeInTheDocument();
-    expect(campName).toHaveAttribute("type", "text");
+      const keywords = screen.getByLabelText(labels.cr_keywords);
+      expect(keywords).toBeInTheDocument();
+      expect(keywords).toHaveAttribute("type", "text");
 
-    const keywords = screen.getByLabelText(labels.cr_keywords);
-    expect(keywords).toBeInTheDocument();
-    expect(keywords).toHaveAttribute("type", "text");
+      const editSummary = screen.getByLabelText(labels.cr_edit_summary);
+      expect(editSummary).toBeInTheDocument();
 
-    const editSummary = screen.getByLabelText(labels.cr_edit_summary);
-    expect(editSummary).toBeInTheDocument();
+      const campUrl = screen.getByLabelText(labels.cr_camp_url);
+      expect(campUrl).toBeInTheDocument();
+      expect(campUrl).toHaveAttribute("type", "text");
 
-    const campUrl = screen.getByLabelText(labels.cr_camp_url);
-    expect(campUrl).toBeInTheDocument();
-    expect(campUrl).toHaveAttribute("type", "text");
-
-    const nickNameAbout = screen.getByLabelText(labels.cr_nick_name_about);
-    expect(nickNameAbout).toBeInTheDocument();
-    expect(nickNameAbout).toHaveAttribute("type", "search");
+      const nickNameAbout = screen.getByLabelText(labels.cr_nick_name_about);
+      expect(nickNameAbout).toBeInTheDocument();
+      expect(nickNameAbout).toHaveAttribute("type", "search");
+    });
   });
 
   it("blank form should not be submit", async () => {

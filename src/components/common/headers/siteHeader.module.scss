@@ -235,6 +235,33 @@
   padding: 15px;
   position: relative;
 
+  div[class="ant-card-head"] {
+    padding-left: 0;
+    padding-right: 0;
+    div {
+      &[class="ant-card-head-title"] {
+        width: 100%;
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+    }
+  }
+
+  div[class="ant-card-body"] {
+    padding-top: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+  }
+
+  ul[class="ant-card-actions"] {
+    border-top: 0;
+    li {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+
   &::before {
     content: "";
     position: absolute;

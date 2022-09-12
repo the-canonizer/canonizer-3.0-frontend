@@ -18,15 +18,15 @@ import {
 } from "../../../../network/api/notificationAPI";
 import { RootState } from "../../../../store";
 import Fav from "./icon";
-import isUserAuthenticated from "../../../../hooks/isUserAuthenticated";
+import useAuthentication from "../../../../hooks/isUserAuthenticated";
 import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 
 const Notifications = ({}) => {
   const dispatch = useDispatch();
-  const auth = isUserAuthenticated();
-  const [isLog, setIsLog] = useState(auth);
+  const { isUserAuthenticated } = useAuthentication();
+  const [isLog, setIsLog] = useState(isUserAuthenticated);
   const [checked, setChecked] = useState(false);
-  useEffect(() => setIsLog(auth), [auth]);
+  useEffect(() => setIsLog(isUserAuthenticated), [isUserAuthenticated]);
 
   const { count, list } = useSelector((state: RootState) => {
     return {

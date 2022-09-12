@@ -41,7 +41,7 @@ function HistoryCollapse({
   const router = useRouter();
   const [commited, setCommited] = useState(false);
   const dispatch = useDispatch();
-  const isLoggedIn = useAuthentication();
+  const { isUserAuthenticated } = useAuthentication();
   const handleViewThisVersion = (goLiveTime) => {
     dispatch(
       setFilterCanonizedTopics({
@@ -168,7 +168,7 @@ function HistoryCollapse({
                   <Tooltip
                     title={
                       !!(
-                        !isLoggedIn &&
+                        !isUserAuthenticated &&
                         ifIamSupporter == 0 &&
                         ifSupportDelayed == 0
                       )
@@ -181,7 +181,7 @@ function HistoryCollapse({
                     <Button
                       type="primary"
                       disabled={
-                        !isLoggedIn
+                        !isUserAuthenticated
                           ? true
                           : !!(ifIamSupporter == 0 && ifSupportDelayed == 0)
                           ? true
@@ -208,7 +208,7 @@ function HistoryCollapse({
                   type="primary"
                   className={`mr-3 ${styles.campUpdateButton}`}
                   onClick={() => {
-                    if (!isLoggedIn) {
+                    if (!isUserAuthenticated) {
                       router.push("/login");
                     } else if (historyOf == "statement") {
                       router.push(`/manage/statement/${campStatement?.id}`);
@@ -296,7 +296,7 @@ function HistoryCollapse({
                 )}
               {campStatement?.status == "in_review" &&
                 !!(ifIamSupporter != 0 || ifSupportDelayed != 0) &&
-                isLoggedIn &&
+                isUserAuthenticated &&
                 !campStatement?.isAuthor && (
                   <div className={styles.campStatementCollapseButtons}>
                     <Checkbox
