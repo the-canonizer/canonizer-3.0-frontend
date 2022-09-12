@@ -91,7 +91,7 @@ function Footer() {
               <p>Pattent: US 8,160,970 B2</p>
               <ul className={styles.privacyTerms}>
                 <li>
-                  <Link href="/privacypolicy">
+                  <Link href="/privacy-policy">
                     <a>Privacy Policy</a>
                   </Link>
                 </li>
