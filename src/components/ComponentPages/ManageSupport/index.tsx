@@ -284,10 +284,11 @@ const ManageSupport = () => {
     let campIDsArr = [];
     //get support_flag status check from GetCheckSupportExistsData
     let support_flag_Status = supportedCampsStatus.support_flag;
+
     let topicNumId =
       manageSupportRevertData.length > 0
         ? manageSupportRevertData[0].topic_num
-        : "";
+        : router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
     //order Update
     const manageListOrder = manageSupportList.length;
     let resultCamp = manageSupportList.filter(
