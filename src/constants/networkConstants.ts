@@ -162,7 +162,7 @@ const NetworkConstants = {
 
     UpdateToken: `${BaseCanonizerApiUrl}/update-fcm-token`,
     // terms and services and privacy
-    GetTermAndServicesContent: `${BaseCanonizerApiUrl}/get-policy-policy-content`,
+    GetTermAndServicesContent: `${BaseCanonizerApiUrl}/get-privacy-policy-content`,
   },
   Method: {
     GET: "GET",

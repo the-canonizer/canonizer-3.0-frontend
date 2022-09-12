@@ -11,7 +11,7 @@ function PrivacyPolicy({ termsAndServicesConrent }) {
     </>
   );
 }
-export async function getServerSideProps() {
+export async function getStaticProps() {
   const res = await getTermsAndServicesContent();
   return {
     props: {
