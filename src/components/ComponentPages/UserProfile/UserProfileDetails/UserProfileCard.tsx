@@ -101,11 +101,39 @@ export const UserProfileCard = ({
                                           <span className={styles.count}>
                                             {""}
                                           </span>
-                                          <Link href={campData.camp_link}>
-                                            <a className={styles.Bluecolor}>
-                                              {campData.camp_name}
-                                            </a>
-                                          </Link>
+                                          {campData.delegate_nick_name_id !=
+                                          0 ? (
+                                            <>
+                                              <p
+                                                className={
+                                                  styles.userProfileLabel
+                                                }
+                                              >
+                                                Support deligated to{" "}
+                                                <a className={styles.Bluecolor}>
+                                                  {
+                                                    campData.delegate_nick_name_id
+                                                  }
+                                                </a>
+                                              </p>
+                                              <b
+                                                className={
+                                                  styles.userProfileLabel
+                                                }
+                                              >
+                                                Supported camp list:{" "}
+                                              </b>
+                                              <a className={styles.Bluecolor}>
+                                                {campData.camp_name}
+                                              </a>
+                                            </>
+                                          ) : (
+                                            <Link href={campData.camp_link}>
+                                              <a className={styles.Bluecolor}>
+                                                {campData.camp_name}
+                                              </a>
+                                            </Link>
+                                          )}
                                         </div>
                                       </Tag>
                                     );
