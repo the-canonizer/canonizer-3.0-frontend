@@ -165,15 +165,21 @@ export const emRule = {
       message: validations.email,
     },
     {
-      pattern: patterns.email,
+      pattern: patterns.reg_email,
       message: validations.validEmail,
     },
     // ({}) => ({
     //   validator(_, value) {
-    //     if (value && value?.trim().match(patterns.email)) {
+    //     if (value && value?.trim().match(patterns.reg_email)) {
     //       return Promise.resolve();
+    //     } else if (
+    //       value &&
+    //       value.length > 0 &&
+    //       !value?.trim().match(patterns.reg_email)
+    //     ) {
+    //       return Promise.reject(new Error(validations.validEmail));
     //     }
-    //     return Promise.reject(new Error(validations.validEmail));
+    //     return Promise.reject(new Error());
     //   },
     // }),
   ],

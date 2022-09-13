@@ -1,4 +1,10 @@
-import { render, screen, waitFor, act } from "../../../../utils/testUtils";
+import {
+  render,
+  screen,
+  waitFor,
+  act,
+  fireEvent,
+} from "../../../../utils/testUtils";
 import userEvent from "@testing-library/user-event";
 
 import ResetPassword from "../index";
@@ -40,11 +46,11 @@ describe("Reset Password page", () => {
   it("check password minimum length > 8", async () => {
     render(<ResetPassword />);
     const inputEl = screen.getByPlaceholderText(placeholders.newPassword);
-    await act(async () => {
-      await userEvent.type(inputEl, "1234567", { delay: 1 });
-      await userEvent.tab();
-    });
-    await waitFor(() => {
+    await fireEvent.change(inputEl, { target: { value: "1234567" } });
+    await userEvent.tab();
+    // await act(async () => {
+    // });
+     waitFor(() => {
       expect(inputEl).toHaveValue("1234567");
       expect(screen.queryByRole("alert")).toBeInTheDocument();
       expect(screen.queryByText(validations.passwordPattern)).toBeVisible();
@@ -54,7 +60,7 @@ describe("Reset Password page", () => {
   it("pass valid password", async () => {
     render(<ResetPassword />);
     const inputEl = screen.getByPlaceholderText(placeholders.newPassword);
-    await userEvent.type(inputEl, "Abc@1234", { delay: 1 });
+    await fireEvent.change(inputEl, { target: { value: "Abc@1234" } });
     expect(inputEl).toHaveValue("Abc@1234");
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
   });
@@ -64,9 +70,9 @@ describe("Reset Password page", () => {
     const inputEl = screen.getByPlaceholderText(placeholders.newPassword);
     const inputEl2 = screen.getByPlaceholderText(placeholders.confirmPassword);
     act(async () => {
-      await userEvent.type(inputEl, "Abc@1234", { delay: 1 });
+      await fireEvent.change(inputEl, { target: { value: "Abc@1234" } });
       await userEvent.tab();
-      await userEvent.type(inputEl2, "Abc@12344", { delay: 1 });
+      await fireEvent.change(inputEl2, { target: { value: "Abc@12344" } });
       await userEvent.tab();
     });
     waitFor(() => {
@@ -81,15 +87,11 @@ describe("Reset Password page", () => {
     render(<ResetPassword />);
     const inputEl = screen.getByPlaceholderText(placeholders.newPassword);
     const inputEl2 = screen.getByPlaceholderText(placeholders.confirmPassword);
-    // await act(async () => {
-    await userEvent.type(inputEl, "Abc@1234");
-    await userEvent.type(inputEl2, "Abc@1234");
-    // });
-    // await waitFor(() => {
+    await fireEvent.change(inputEl, { target: { value: "Abc@1234" } });
+    await fireEvent.change(inputEl2, { target: { value: "Abc@1234" } });
     expect(inputEl).toHaveValue("Abc@1234");
     expect(inputEl2).toHaveValue("Abc@1234");
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
-    // });
   });
 
   it("blank form should not be submit", async () => {
