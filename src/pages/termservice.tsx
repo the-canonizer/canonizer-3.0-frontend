@@ -7,9 +7,7 @@ function TermService({ termsAndServicesConrent }) {
   return (
     <>
       <Layout>
-        <div className="pageContentWrap">
-          <TermsService termsAndServicesConrent={termsAndServicesConrent} />
-        </div>
+        <TermsService termsAndServicesConrent={termsAndServicesConrent} />
       </Layout>
     </>
   );
