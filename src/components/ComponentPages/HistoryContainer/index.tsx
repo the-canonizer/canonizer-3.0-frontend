@@ -7,7 +7,7 @@ import InfiniteScroll from "react-infinite-scroller";
 
 import styles from "./campHistory.module.scss";
 
-import { getHistoryApi, getLiveHistoryApi } from "../../../network/api/history";
+import { getHistoryApi } from "../../../network/api/history";
 import { getTreesApi } from "src/network/api/campDetailApi";
 
 import HistoryCollapse from "./Collapse";
@@ -52,10 +52,7 @@ function HistoryContainer() {
   let payload = history && {
     camp_num: router?.query?.camp?.at(1)?.split("-")?.at(0),
     topic_num: router?.query?.camp?.at(0)?.split("-")?.at(0),
-    topic_name:
-      historyOf == "topic"
-        ? history?.items[0]?.topic_name
-        : history?.details?.topic?.topic_name,
+    topic_name: history?.details?.topic?.topic_name,
   };
 
   useEffect(() => {
@@ -108,11 +105,11 @@ function HistoryContainer() {
     const asynCall = async () => {
       setLoadMoreItems(true);
       count.current = 1;
-      if (activeTab === "live") {
-        await liveCampStatementApiCall();
-      } else {
-        await campStatementApiCall();
-      }
+      // if (activeTab === "live") {
+      //   await liveCampStatementApiCall();
+      // } else {
+      await campStatementApiCall();
+      // }
     };
     asynCall();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -147,18 +144,18 @@ function HistoryContainer() {
       //console.log(error)
     }
   };
-  const liveCampStatementApiCall = async () => {
-    setLoadingIndicator(true);
-    const reqBody = {
-      topic_num: +router.query.camp[0].split("-")[0],
-      camp_num:
-        historyOf != "topic" ? +router.query.camp[1].split("-")[0] : "1",
-    };
-    const res = await getLiveHistoryApi(reqBody, historyOf);
+  // const liveCampStatementApiCall = async () => {
+  //   setLoadingIndicator(true);
+  //   const reqBody = {
+  //     topic_num: +router.query.camp[0].split("-")[0],
+  //     camp_num:
+  //       historyOf != "topic" ? +router.query.camp[1].split("-")[0] : "1",
+  //   };
+  //   const res = await getLiveHistoryApi(reqBody, historyOf);
 
-    setLoadMoreItems(false);
-    setLoadingIndicator(false);
-  };
+  //   setLoadMoreItems(false);
+  //   setLoadingIndicator(false);
+  // };
 
   const handleTabButton = async (tabName) => {
     setActiveTab(tabName);

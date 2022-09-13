@@ -26,21 +26,21 @@ export const getHistoryApi = async (reqBody, pageNumber, historyOf: string) => {
   }
 };
 
-export const getLiveHistoryApi = async (reqBody, historyOf) => {
-  let state = store.getState();
-  const { auth } = state;
-  try {
-    const history = await NetworkCall.fetch(
-      historyRequest.getLiveHistory(reqBody, historyOf),
-      false
-    );
+// export const getLiveHistoryApi = async (reqBody, historyOf) => {
+//   let state = store.getState();
+//   const { auth } = state;
+//   try {
+//     const history = await NetworkCall.fetch(
+//       historyRequest.getLiveHistory(reqBody, historyOf),
+//       false
+//     );
 
-    store.dispatch(setHistory({ items: history.data }));
-    return history.data;
-  } catch (error) {
-    return error;
-  }
-};
+//     store.dispatch(setHistory({ items: history.data }));
+//     return history.data;
+//   } catch (error) {
+//     return error;
+//   }
+// };
 
 export const getCompareStatement = async (reqBody) => {
   try {

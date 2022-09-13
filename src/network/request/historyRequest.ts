@@ -21,13 +21,13 @@ export default class CampStatementHistoryRequest extends Request {
     let historyUrl: string, liveHistoryUrl: string;
     if (historyOf == "statement") {
       historyUrl = "CampStatementHistory";
-      liveHistoryUrl = "GetCampStatement";
+      // liveHistoryUrl = "GetCampStatement";
     } else if (historyOf == "camp") {
       historyUrl = "GetCampHistory";
-      liveHistoryUrl = "GetCampStatement";
+      // liveHistoryUrl = "GetCampStatement";
     } else if (historyOf == "topic") {
       historyUrl = "GetTopicHistory";
-      liveHistoryUrl = "GetCampStatement";
+      // liveHistoryUrl = "GetCampStatement";
     }
     return { historyUrl, liveHistoryUrl };
   }
@@ -43,17 +43,17 @@ export default class CampStatementHistoryRequest extends Request {
       token
     );
   }
-  static getLiveHistory(reqBody, historyOf: string) {
-    let { liveHistoryUrl } =
-      CampStatementHistoryRequest.getHistoryUrl(historyOf);
-    return new Request(
-      K.Network.URL[liveHistoryUrl],
-      K.Network.Method.POST,
-      reqBody,
-      K.Network.Header.Type.Json,
-      {}
-    );
-  }
+  // static getLiveHistory(reqBody, historyOf: string) {
+  //   let { liveHistoryUrl } =
+  //     CampStatementHistoryRequest.getHistoryUrl(historyOf);
+  //   return new Request(
+  //     K.Network.URL[liveHistoryUrl],
+  //     K.Network.Method.POST,
+  //     reqBody,
+  //     K.Network.Header.Type.Json,
+  //     {}
+  //   );
+  // }
 
   static statementCompare(body) {
     return new Request(
