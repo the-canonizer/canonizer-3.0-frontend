@@ -88,16 +88,20 @@ describe("LoggedOutHeader", () => {
     expect(container.getElementsByTagName("nav")).toHaveLength(1);
     expect(container.getElementsByTagName("ul")).toHaveLength(1);
     expect(container.getElementsByTagName("li")).toHaveLength(6);
-    expect(container.getElementsByTagName("a")).toHaveLength(8);
+    expect(container.getElementsByTagName("a")).toHaveLength(9);
     expect(container.getElementsByTagName("button")).toHaveLength(8);
     expect(container.getElementsByTagName("img")).toHaveLength(1);
 
     expect(logoLink.getAttribute("href")).toBe("/");
     expect(browseLink.getAttribute("href")).toBe("/browse");
     expect(uploadFilesLink.getAttribute("href")).toBe("/uploadFile");
-    expect(helpLink.getAttribute("href")).toBe("/help");
-    expect(whitePaperLink.getAttribute("href")).toBe("/white-paper");
-    expect(blogLink.getAttribute("href")).toBe("/blog");
-    expect(jobsLink.getAttribute("href")).toBe("/jobs");
+    expect(helpLink.getAttribute("href")).toBe("/topic/132-Help/1-Agreement");
+    expect(whitePaperLink.getAttribute("href")).toBe(
+      "/files/2012_amplifying_final.pdf"
+    );
+    expect(blogLink.getAttribute("href")).toBe("https://canonizer.com/blog/");
+    expect(jobsLink.getAttribute("href")).toBe(
+      "/topic/6-Canonizer-Jobs/1-Agreement"
+    );
   });
 });
