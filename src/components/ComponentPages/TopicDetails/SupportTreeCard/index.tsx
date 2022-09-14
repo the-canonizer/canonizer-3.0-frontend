@@ -129,7 +129,14 @@ const SupportTreeCard = ({
                           },
                         }}
                       >
-                        <a>{data[item].nick_name}</a>
+                        {
+                          <div>
+                            <a className={styles.Bluecolor}>
+                              {data[item].support_order}:
+                            </a>
+                            <a>{data[item].nick_name}</a>
+                          </div>
+                        }
                       </Link>
 
                       {/* </span> */}

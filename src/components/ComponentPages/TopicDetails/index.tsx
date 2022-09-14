@@ -143,7 +143,7 @@ const TopicDetails = () => {
       add_camp: {},
       remove_camps: [reqBodyData.camp_num],
       type: "direct",
-      action: "add",
+      action: "remove",
       nick_name_id: supportedId,
       order_update: [],
     };
