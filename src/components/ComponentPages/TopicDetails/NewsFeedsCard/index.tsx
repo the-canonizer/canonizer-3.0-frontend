@@ -49,7 +49,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
     <Collapse
       defaultActiveKey={["1"]}
       expandIconPosition="right"
-      className="topicDetailsCollapse"
+      className="topicDetailsCollapse news-feeds"
     >
       <Panel
         header={
