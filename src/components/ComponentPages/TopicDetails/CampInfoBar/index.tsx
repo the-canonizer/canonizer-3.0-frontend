@@ -2,7 +2,10 @@ import { Spin, Tooltip, Typography } from "antd";
 import { useRouter } from "next/router";
 import { useState, useEffect, useRef, memo } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { subscribeToCampApi } from "../../../../network/api/campDetailApi";
+import {
+  getTreesApi,
+  subscribeToCampApi,
+} from "../../../../network/api/campDetailApi";
 import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
 import { Dropdown, Menu, Button } from "antd";
@@ -26,7 +29,7 @@ const CampInfoBar = ({
   isTopicHistoryPage = false,
   getCheckSupportStatus = null,
 }) => {
-  const isLogin = useAuthentication();
+  const { isUserAuthenticated } = useAuthentication();
 
   const dispatch = useDispatch();
   const [loadingIndicator, setLoadingIndicator] = useState(false);
@@ -116,19 +119,31 @@ const CampInfoBar = ({
     });
   };
 
-  const campOrTopicScribe = (isTopic: Boolean) => {
+  const campOrTopicScribe = async (isTopic: Boolean) => {
+    const reqBodyForService = {
+      topic_num: +router?.query?.camp[0]?.split("-")[0],
+      camp_num: +router?.query?.camp[1]?.split("-")[0],
+      asOf: asof,
+      asofdate:
+        asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+      algorithm: algorithm,
+      update_all: 1,
+    };
     const reqBody = {
       topic_num: campRecord.topic_num,
       camp_num: isTopic ? 0 : campRecord.camp_num,
       checked: isTopic ? !topicSubscriptionID : !campSubscriptionID,
       subscription_id: isTopic ? topicSubscriptionID : campSubscriptionID,
     };
-    subscribeToCampApi(reqBody, isTopic);
+    let result = await subscribeToCampApi(reqBody, isTopic);
+    if (result?.status_code === 200) {
+      getTreesApi(reqBodyForService);
+    }
   };
 
   const campForumDropdownMenu = (
     <Menu className={styles.campForumDropdownMenu}>
-      {isLogin && is_admin && (
+      {isUserAuthenticated && is_admin && (
         <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
           <Link href={router.asPath.replace("topic", "addnews")}>
             <a rel="noopener noreferrer" href="/add-news">
@@ -146,7 +161,7 @@ const CampInfoBar = ({
           ></i>
         }
         onClick={() => {
-          if (isLogin) {
+          if (isUserAuthenticated) {
             campOrTopicScribe(true);
           } else {
             setLoadingIndicator(true);
@@ -169,7 +184,7 @@ const CampInfoBar = ({
         }
         disabled={!!campSubscriptionID && campRecord?.flag == 2 ? true : false}
         onClick={() => {
-          if (isLogin) {
+          if (isUserAuthenticated) {
             campOrTopicScribe(false);
           } else {
             setLoadingIndicator(true);

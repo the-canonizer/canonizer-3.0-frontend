@@ -29,7 +29,7 @@ const antIcon = <LoadingOutlined spin />;
 const { Text } = Typography;
 
 export default function AddOrEdit({ edit }) {
-  const isLogin = useAuthentication();
+  const { isUserAuthenticated } = useAuthentication();
   const [loading, setLoading] = useState(false);
   const [screenLoading, setScreenLoading] = useState(false);
   const [errors, setErrors] = useState({
@@ -167,7 +167,7 @@ export default function AddOrEdit({ edit }) {
         setScreenLoading(false);
       }
     }
-    if (isLogin) {
+    if (isUserAuthenticated) {
       nickNameListApiCall();
     } else {
       router.push("/login");

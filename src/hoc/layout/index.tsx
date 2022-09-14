@@ -8,12 +8,12 @@ import Footer from "../../components/common/footer";
 import Link from "next/link";
 
 function Layout(props) {
-  const isLogin = useAuthentication();
+  const { isUserAuthenticated } = useAuthentication();
 
   return (
     <>
       <div className={styles.pageWrap}>
-        {isLogin ? <LoggedInHeader /> : <LoggedOutHeader />}
+        {isUserAuthenticated ? <LoggedInHeader /> : <LoggedOutHeader />}
         <Spinner>{""}</Spinner>
         <div className={styles.contentWrap}>
           <div className={styles.contentArea}>{props.children} </div>

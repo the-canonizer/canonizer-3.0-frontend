@@ -44,7 +44,7 @@ const TopicsList = () => {
   const router = useRouter();
   const [pageNumber, setPageNumber, pageNumberRef] = useState(1);
   const dispatch = useDispatch();
-  const isLogin = useAuthentication();
+  const { isUserAuthenticated } = useAuthentication();
   const {
     canonizedTopics,
     asofdate,
@@ -221,7 +221,7 @@ const TopicsList = () => {
                     <i className="icon-info cursor-pointer"></i>
                   </Popover>
                 </Title>
-                {router.asPath === "/browse" && isLogin && (
+                {router.asPath === "/browse" && isUserAuthenticated && (
                   <Checkbox
                     className={styles.checkboxOnlyMyTopics}
                     onChange={handleCheckbox}

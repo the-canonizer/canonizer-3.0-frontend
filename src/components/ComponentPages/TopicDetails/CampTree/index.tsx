@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Tree } from "antd";
+import { Tree, Tooltip } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../../store";
 import Link from "next/link";
@@ -8,6 +8,7 @@ import styles from "../topicDetails.module.scss";
 
 import { setCurrentCamp } from "../../../../store/slices/filtersSlice";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
+import useAuthentication from "src/hooks/isUserAuthenticated";
 
 const { TreeNode } = Tree;
 
@@ -36,6 +37,8 @@ const CampTree = ({ scrollToCampStatement }) => {
       scrollToCampStatement();
     }
   };
+  const { isUserAuthenticated, userID } = useAuthentication();
+
   useEffect(() => {
     setScoreFilter(filterByScore);
     setIncludeReview(review == "review" ? true : false);
@@ -62,6 +65,27 @@ const CampTree = ({ scrollToCampStatement }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tree]);
+
+  const subScriptionStatus = (subscribedUsers: {}) => {
+    return Object.keys(subscribedUsers).length > 0 &&
+      Object.keys(subscribedUsers)?.includes(`${userID}`) ? (
+      subscribedUsers[userID].explicit ? (
+        <i className={`icon-subscribe ${"text-primary"}`}></i>
+      ) : (
+        <Tooltip
+          title={`You are subscribed to ${
+            subscribedUsers[userID].child_camp_name
+              ? subscribedUsers[userID].child_camp_name
+              : "child camp"
+          }`}
+        >
+          <i
+            className={`icon-subscribe text-secondary  ${styles.implicitIcon}`}
+          ></i>
+        </Tooltip>
+      )
+    ) : null;
+  };
 
   const renderTreeNodes = (data: any, isDisabled = 0, isOneLevel = 0) => {
     return Object.keys(data).map((item) => {
@@ -122,6 +146,10 @@ const CampTree = ({ scrollToCampStatement }) => {
                         }
                       >
                         {data[item].score?.toFixed(2)}
+                      </span>
+                      <span className={styles.subScriptionIcon}>
+                        {isUserAuthenticated &&
+                          subScriptionStatus(data[item].subscribed_users)}
                       </span>
                     </div>
                   </>

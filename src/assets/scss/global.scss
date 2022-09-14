@@ -1716,3 +1716,17 @@ div[role="option"]::before {
 .ant-drawer-content-wrapper {
   max-width: 100%;
 }
+.Parent_Leaf .ant-tree-switcher{
+  display: none !important;
+}
+
+.topicDetailsCollapse {
+  &.news-feeds {
+    .ant-collapse-header {
+      display: block;
+    }
+    .ant-collapse-extra {
+      margin-top: .5rem;
+    }
+  }
+}

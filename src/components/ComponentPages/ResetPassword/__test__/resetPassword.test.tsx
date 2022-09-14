@@ -82,13 +82,13 @@ describe("Reset Password page", () => {
     const inputEl = screen.getByPlaceholderText(placeholders.newPassword);
     const inputEl2 = screen.getByPlaceholderText(placeholders.confirmPassword);
     // await act(async () => {
-      await userEvent.type(inputEl, "Abc@1234");
-      await userEvent.type(inputEl2, "Abc@1234");
+    await userEvent.type(inputEl, "Abc@1234");
+    await userEvent.type(inputEl2, "Abc@1234");
     // });
     // await waitFor(() => {
-      expect(inputEl).toHaveValue("Abc@1234");
-      expect(inputEl2).toHaveValue("Abc@1234");
-      expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    expect(inputEl).toHaveValue("Abc@1234");
+    expect(inputEl2).toHaveValue("Abc@1234");
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
     // });
   });
 

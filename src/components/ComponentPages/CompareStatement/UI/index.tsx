@@ -13,7 +13,12 @@ import CampInfoBar from "../../TopicDetails/CampInfoBar";
 
 const { Title, Text, Paragraph } = Typography;
 
-function CompareStatementUI({ statements, isLoading, liveStatement }) {
+function CompareStatementUI({
+  statements,
+  isLoading,
+  liveStatement,
+  itemsStatus,
+}) {
   const router = useRouter();
   const s1 = statements[0] || {},
     s2 = statements[1] || {},
@@ -85,7 +90,9 @@ function CompareStatementUI({ statements, isLoading, liveStatement }) {
                   <Card
                     bordered
                     className={
-                      styles.compareCard + " " + styles[s1?.status || "old"]
+                      styles.compareCard +
+                      " " +
+                      styles[itemsStatus[s1?.id] || "old"]
                     }
                   >
                     <Paragraph>
@@ -159,9 +166,12 @@ function CompareStatementUI({ statements, isLoading, liveStatement }) {
                   <Card
                     bordered
                     className={
-                      styles.compareCard + " " + styles[s2?.status || "old"]
+                      styles.compareCard +
+                      " " +
+                      styles[itemsStatus[s2?.id] || "old"]
                     }
                   >
+                    {console.log(itemsStatus[s2?.id])}
                     <Paragraph>
                       <Text strong>Edit Summary : </Text>
                       <Text>{s2?.note}</Text>

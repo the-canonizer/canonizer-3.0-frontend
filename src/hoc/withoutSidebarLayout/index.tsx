@@ -9,12 +9,12 @@ import styles from "./withoutSidebarLayout.module.scss";
 import Footer from "../../components/common/footer";
 
 function WithoutSidebarLayout(props) {
-  const isLogin = useAuthentication();
+  const { isUserAuthenticated } = useAuthentication();
 
   return (
     <Fragment>
       <div className={styles.pageWrap}>
-        {isLogin ? <LoggedInHeader /> : <LoggedOutHeader />}
+        {isUserAuthenticated ? <LoggedInHeader /> : <LoggedOutHeader />}
         <Spinner>{""}</Spinner>
         <div className={styles.contentWrap}>
           <div className={styles.contentArea}>{props.children} </div>
