@@ -1719,3 +1719,14 @@ div[role="option"]::before {
 .Parent_Leaf .ant-tree-switcher{
   display: none !important;
 }
+
+.topicDetailsCollapse {
+  &.news-feeds {
+    .ant-collapse-header {
+      display: block;
+    }
+    .ant-collapse-extra {
+      margin-top: .5rem;
+    }
+  }
+}
