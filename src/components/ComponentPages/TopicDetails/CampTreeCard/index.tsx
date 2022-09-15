@@ -36,7 +36,7 @@ const CampTreeCard = ({ scrollToCampStatement }) => {
   }));
 
   const router = useRouter();
-  const isLogin = useAuthentication();
+  const { isUserAuthenticated } = useAuthentication();
   return (
     <Collapse
       defaultActiveKey={["1"]}
@@ -55,7 +55,7 @@ const CampTreeCard = ({ scrollToCampStatement }) => {
                 event.stopPropagation();
               }}
             >
-              {isLogin && is_admin && tree && (
+              {isUserAuthenticated && is_admin && tree && (
                 <Link
                   href={{ pathname: router.asPath.replace("topic", "addnews") }}
                 >

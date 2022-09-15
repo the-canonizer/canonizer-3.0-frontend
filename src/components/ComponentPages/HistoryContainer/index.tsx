@@ -1,26 +1,31 @@
 import { useEffect, useState, useRef } from "react";
-import { Typography, Button, List, Spin, Affix, Skeleton } from "antd";
+import { Typography, Button, List, Spin, Affix } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import InfiniteScroll from "react-infinite-scroller";
 
 import styles from "./campHistory.module.scss";
 
 import { getHistoryApi, getLiveHistoryApi } from "../../../network/api/history";
+import { getTreesApi } from "src/network/api/campDetailApi";
 
 import HistoryCollapse from "./Collapse";
 import { RootState } from "src/store";
 import CampInfoBar from "../TopicDetails/CampInfoBar";
 import CreateNewCampButton from "../../common/button/createNewCampBtn";
 import CreateNewTopicButton from "../../common/button/createNewTopicBtn";
+import { setCurrentCamp } from "src/store/slices/filtersSlice";
 
 const { Title } = Typography;
 
 function HistoryContainer() {
   const router = useRouter();
+  const dispatch = useDispatch();
+
   const [activeTab, setActiveTab] = useState("all");
   const [selectedTopic, setSelectedTopic] = useState([]);
+  const [selectedTopicStatus, setSelectedTopicStatus] = useState([]);
   const [top, setTop] = useState(0);
   const [isAbs, setIsAbs] = useState(false);
   const [loadMoreItems, setLoadMoreItems] = useState(true);
@@ -32,13 +37,16 @@ function HistoryContainer() {
 
   const count = useRef(1);
 
-  const { history, currentCampRecord, currentCampNode } = useSelector(
-    (state: RootState) => ({
+  const { history, currentCampNode, tree, asofdate, asof, algorithm } =
+    useSelector((state: RootState) => ({
       history: state?.topicDetails?.history,
       currentCampRecord: state.topicDetails.currentCampRecord,
       currentCampNode: state?.filters?.selectedCampNode,
-    })
-  );
+      tree: state?.topicDetails?.tree,
+      asofdate: state.filters?.filterObject?.asofdate,
+      asof: state?.filters?.filterObject?.asof,
+      algorithm: state.filters?.filterObject?.algorithm,
+    }));
 
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [campHistory, setCampHistory] = useState(history);
@@ -50,6 +58,49 @@ function HistoryContainer() {
         ? history?.items[0]?.topic_name
         : history?.details?.topic?.topic_name,
   };
+
+  useEffect(() => {
+    async function getTreeApiCall() {
+      setLoadingIndicator(true);
+      console.log(router.query);
+      const reqBodyForService = {
+        topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+        camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
+        asOf: asof,
+        asofdate:
+          asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+        algorithm: algorithm,
+        update_all: 1,
+      };
+
+      await Promise.all([getTreesApi(reqBodyForService)]);
+      setLoadingIndicator(false);
+    }
+    getTreeApiCall();
+  }, [asofdate, algorithm, +router?.query?.camp?.at(1)?.split("-")[0]]);
+
+  useEffect(() => {
+    let isDisabled = 0,
+      isOneLevel = 0;
+    if (tree != null) {
+      Object.keys(tree).map((item) => {
+        const parentIsOneLevel = isOneLevel;
+
+        isOneLevel = tree[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
+        isDisabled = tree[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
+
+        if (
+          tree[item].camp_id === +router?.query?.camp?.at(1)?.split("-")?.at(0)
+        ) {
+          dispatch(
+            setCurrentCamp({ ...tree[item], parentIsOneLevel, isDisabled })
+          );
+        }
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tree]);
+
   useEffect(() => {
     setCampHistory(history);
   }, [history]);
@@ -122,8 +173,9 @@ function HistoryContainer() {
     setLoadingIndicator(true);
   };
 
-  const onSelectCompare = ({ id }, e: CheckboxChangeEvent) => {
+  const onSelectCompare = ({ id, status }, e: CheckboxChangeEvent) => {
     let oldTopics = [...selectedTopic];
+    let oldTopicsStatus = [...selectedTopicStatus];
 
     if (e.target.checked && !oldTopics.includes(id)) {
       oldTopics.push(id);
@@ -131,7 +183,15 @@ function HistoryContainer() {
       oldTopics = oldTopics.filter((item) => item !== id);
     }
 
+    if (e.target.checked && !oldTopicsStatus.includes(`${id}_${status}`)) {
+      oldTopicsStatus.push(`${id}_${status}`);
+    } else {
+      oldTopicsStatus = oldTopicsStatus.filter(
+        (item) => item !== `${id}_${status}`
+      );
+    }
     setSelectedTopic(oldTopics);
+    setSelectedTopicStatus(oldTopicsStatus);
   };
 
   const onCompareClick = () => {
@@ -147,19 +207,12 @@ function HistoryContainer() {
             : historyOf == "camp"
             ? "camp"
             : "topic",
+        status: selectedTopicStatus.join("-"),
       },
     });
   };
 
-  const loader = (
-    <></>
-    // will be replaced with alternate
-    // <div className="p-3">
-    //   <Skeleton active />
-    //   <Skeleton active />
-    //   <Skeleton active />
-    // </div>
-  );
+  const loader = <></>;
 
   let historyTitle = () => {
     let title: string;

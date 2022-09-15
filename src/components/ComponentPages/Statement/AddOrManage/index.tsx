@@ -16,7 +16,7 @@ import { useRouter } from "next/router";
 import "antd/dist/antd.css";
 import styles from "../addEditNews.module.scss";
 import K from "../../../../constants";
-import messages from "src/messages";
+import messages from "../../../../messages";
 import {
   getAllUsedNickNames,
   getAllParentsCamp,
@@ -47,14 +47,14 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Link from "next/link";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
-import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 
 const { Text } = Typography;
 
 const { campAboutUrlRule } = messages;
 
 export default function AddOrManage({ add }) {
-  const isLogin = useAuthentication();
+  const { isUserAuthenticated } = useAuthentication();
   const router = useRouter();
   const [editStatementData, setEditStatementData] = useState({ data: null });
 
@@ -76,8 +76,8 @@ export default function AddOrManage({ add }) {
   const [options, setOptions] = useState([...messages.preventCampLabel]);
 
   const [form] = Form.useForm();
-  let objection = router?.query?.statement[0]?.split("-")[1] == "objection";
-  let update = router?.query?.statement[0]?.split("-")[1] == "update";
+  let objection = router?.query?.statement?.at(0)?.split("-")[1] == "objection";
+  let update = router?.query?.statement?.at(0)?.split("-")[1] == "update";
   let manageFormOf = router?.asPath.split("/")[2];
 
   const onFinish = async (values: any) => {
@@ -361,7 +361,7 @@ export default function AddOrManage({ add }) {
       }
       setScreenLoading(false);
     }
-    isLogin ? nickNameListApiCall() : router.push("/login");
+    isUserAuthenticated ? nickNameListApiCall() : router.push("/login");
   }, []);
 
   let formTitle = () => {
@@ -867,8 +867,8 @@ export default function AddOrManage({ add }) {
       </div>
       <Modal
         title={
-          manageFormOf.charAt(0).toUpperCase() +
-          manageFormOf.slice(1) +
+          manageFormOf?.charAt(0).toUpperCase() +
+          manageFormOf?.slice(1) +
           " preview"
         }
         style={{

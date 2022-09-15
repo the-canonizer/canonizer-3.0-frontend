@@ -1,6 +1,12 @@
 import Footer from "../";
 import { cleanup, render, screen } from "@testing-library/react";
 import { windowMatchMedia } from "../../../../utils/testUtils";
+import { loadEnvConfig } from "@next/env";
+
+export default async () => {
+  const projectDir = process.cwd();
+  loadEnvConfig(projectDir);
+};
 
 windowMatchMedia();
 
@@ -56,7 +62,6 @@ describe("Footer", () => {
 
       return nodeHasText && childrenDontHaveText;
     });
-
     expect(container.getElementsByTagName("footer")).toHaveLength(1);
     expect(container.getElementsByTagName("ul")).toHaveLength(3);
     expect(container.getElementsByTagName("li")).toHaveLength(9);
@@ -66,10 +71,14 @@ describe("Footer", () => {
     expect(logoLink.getAttribute("href")).toBe("/");
     expect(browseLink.getAttribute("href")).toBe("/browse");
     expect(uploadFilesLink.getAttribute("href")).toBe("/uploadFile");
-    expect(helpLink.getAttribute("href")).toBe("/help");
-    expect(whitePaperLink.getAttribute("href")).toBe("/white-paper");
-    expect(blogLink.getAttribute("href")).toBe("/blog");
-    expect(jobsLink.getAttribute("href")).toBe("/jobs");
+    expect(helpLink.getAttribute("href")).toBe("/topic/132-Help/1-Agreement");
+    expect(whitePaperLink.getAttribute("href")).toBe(
+      "/files/2012_amplifying_final.pdf"
+    );
+    expect(blogLink.getAttribute("href")).toBe("https://canonizer.com/blog/");
+    expect(jobsLink.getAttribute("href")).toBe(
+      "/topic/6-Canonizer-Jobs/1-Agreement"
+    );
     expect(termsAndServicesLink.getAttribute("href")).toBe(
       "/terms-and-services"
     );

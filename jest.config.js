@@ -24,7 +24,7 @@ const jestConfig = {
     "<rootDir>/pages",
   ],
   moduleNameMapper: {
-    "@src/(.*)": "<rootDir>/src/$1",
+    "src/(.*)": "<rootDir>/src/$1",
     "@pages/(.*)": "<rootDir>/src/pages/$1",
     "@components/(.*)": "<rootDir>/src/components/$1",
     "@styles/(.*)": "<rootDir>/styles/$1",

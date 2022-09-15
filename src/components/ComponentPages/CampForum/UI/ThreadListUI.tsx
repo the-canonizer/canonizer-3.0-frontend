@@ -15,7 +15,7 @@ import Link from "next/link";
 import styles from "./Forum.module.scss";
 import messages from "../../../../messages";
 import { getTime } from "../../../../utils/generalUtility";
-import isUserAuthenticated from "../../../../hooks/isUserAuthenticated";
+import useAuthentication from "../../../../hooks/isUserAuthenticated";
 
 const { Text } = Typography;
 const { Column } = Table;
@@ -36,11 +36,11 @@ const ThreadListUI = ({
   paramsList,
 }) => {
   const [isLog, setIsLog] = useState(false);
-  const auth = isUserAuthenticated();
+  const { isUserAuthenticated } = useAuthentication();
 
   useEffect(() => {
-    setIsLog(auth);
-  }, [auth]);
+    setIsLog(isUserAuthenticated);
+  }, [isUserAuthenticated]);
 
   return (
     <Fragment>

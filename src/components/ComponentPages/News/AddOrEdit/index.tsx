@@ -22,14 +22,14 @@ import {
 } from "../../../../network/api/campNewsApi";
 import { getAllUsedNickNames } from "../../../../network/api/campDetailApi";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
-import K from "src/constants";
-import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import K from "../../../../constants";
+import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 
 const antIcon = <LoadingOutlined spin />;
 const { Text } = Typography;
 
 export default function AddOrEdit({ edit }) {
-  const isLogin = useAuthentication();
+  const { isUserAuthenticated } = useAuthentication();
   const [loading, setLoading] = useState(false);
   const [screenLoading, setScreenLoading] = useState(false);
   const [errors, setErrors] = useState({
@@ -167,7 +167,7 @@ export default function AddOrEdit({ edit }) {
         setScreenLoading(false);
       }
     }
-    if (isLogin) {
+    if (isUserAuthenticated) {
       nickNameListApiCall();
     } else {
       router.push("/login");

@@ -28,7 +28,7 @@ import CampInfoBar from "../TopicDetails/CampInfoBar";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 const ForumComponent = ({}) => {
-  const auth = useIsUserAuthenticated();
+  const { isUserAuthenticated } = useIsUserAuthenticated();
 
   const [paramsList, setParamsList] = useState({});
   const [threadList, setThreadList] = useState([]);
@@ -38,7 +38,7 @@ const ForumComponent = ({}) => {
   const [nickNameList, setNickNameList] = useState([]);
   const [initialValue, setInitialValues] = useState({});
   const [postList, setPostList] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(auth);
+  const [isLoggedIn, setIsLoggedIn] = useState(isUserAuthenticated);
   const [ppage, setPpage] = useState(1);
   const [pTotalRecords, setPtotalRecords] = useState(0);
   const [quillContent, setQuillContent] = useState("");
@@ -50,8 +50,8 @@ const ForumComponent = ({}) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setIsLoggedIn(auth);
-  }, [auth]);
+    setIsLoggedIn(isUserAuthenticated);
+  }, [isUserAuthenticated]);
 
   const {
     topicRecord,

@@ -10,6 +10,7 @@ function CompareStatement() {
   const [isLoading, setIsLoading] = useState(false);
   const [statements, setStatements] = useState([]);
   const [liveStatement, setLiveStatement] = useState({});
+  const [itemsStatus, setItemsStatus] = useState({});
 
   const router = useRouter();
 
@@ -42,10 +43,19 @@ function CompareStatement() {
   };
 
   useEffect(() => {
-    const ids = (router?.query?.statements as String).split("_");
+    const ids = (router?.query?.statements as String)?.split("_");
+    const status = (router?.query?.status as String)?.split("-");
 
-    if (ids.length) getStatement(ids);
-
+    if (ids?.length) getStatement(ids);
+    if (status?.length) {
+      const oldStatus = {};
+      status.forEach((st) => {
+        const ct = st?.split("_");
+        oldStatus[ct[0]] = ct[1];
+      });
+      setItemsStatus(oldStatus);
+    }
+    console.log("ss", itemsStatus);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
@@ -54,6 +64,7 @@ function CompareStatement() {
       statements={statements}
       isLoading={isLoading}
       liveStatement={liveStatement}
+      itemsStatus={itemsStatus}
     />
   );
 }

@@ -8,7 +8,7 @@ import useAuthentication from "../hooks/isUserAuthenticated";
 
 const ForgotPasswordPage = () => {
   const router = useRouter();
-  const isUserAuthenticated = useAuthentication();
+  const { isUserAuthenticated } = useAuthentication();
   useEffect(() => {
     isUserAuthenticated && router.push("/");
     // eslint-disable-next-line react-hooks/exhaustive-deps
