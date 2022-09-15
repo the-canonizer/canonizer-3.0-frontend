@@ -85,22 +85,22 @@ describe("Create New Topic page", () => {
     );
 
     waitFor(async () => {
-      const campName = screen.getByLabelText(labels.cr_camp_name);
+      const campName = screen.getByText(labels.cr_camp_name);
       expect(campName).toBeInTheDocument();
       expect(campName).toHaveAttribute("type", "text");
 
-      const keywords = screen.getByLabelText(labels.cr_keywords);
+      const keywords = screen.getByText(labels.cr_keywords);
       expect(keywords).toBeInTheDocument();
       expect(keywords).toHaveAttribute("type", "text");
 
-      const editSummary = screen.getByLabelText(labels.cr_edit_summary);
+      const editSummary = screen.getByText(labels.cr_edit_summary);
       expect(editSummary).toBeInTheDocument();
 
-      const campUrl = screen.getByLabelText(labels.cr_camp_url);
+      const campUrl = screen.getByText(labels.cr_camp_url);
       expect(campUrl).toBeInTheDocument();
       expect(campUrl).toHaveAttribute("type", "text");
 
-      const nickNameAbout = screen.getByLabelText(labels.cr_nick_name_about);
+      const nickNameAbout = screen.getByText(labels.cr_nick_name_about);
       expect(nickNameAbout).toBeInTheDocument();
       expect(nickNameAbout).toHaveAttribute("type", "search");
     });

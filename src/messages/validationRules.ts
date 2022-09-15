@@ -165,17 +165,9 @@ export const emRule = {
       message: validations.email,
     },
     {
-      pattern: patterns.email,
+      pattern: patterns.reg_email,
       message: validations.validEmail,
     },
-    // ({}) => ({
-    //   validator(_, value) {
-    //     if (value && value?.trim().match(patterns.email)) {
-    //       return Promise.resolve();
-    //     }
-    //     return Promise.reject(new Error(validations.validEmail));
-    //   },
-    // }),
   ],
 };
 
