@@ -1,5 +1,35 @@
 import NewsAdd from "..";
 import { cleanup, render, screen } from "@testing-library/react";
+import { Provider } from "react-redux";
+import { store } from "../../../../../store";
+import { RouterContext } from "next/dist/shared/lib/router-context";
+
+function createMockRouter() {
+  return {
+    basePath: "",
+    pathname: "/",
+    route: "/",
+    query: {},
+    asPath: "/",
+    back: jest.fn(),
+    beforePopState: jest.fn(),
+    prefetch: jest.fn(),
+    push: jest.fn(),
+    reload: jest.fn(),
+    replace: jest.fn(),
+    events: {
+      on: jest.fn(),
+      off: jest.fn(),
+      emit: jest.fn(),
+    },
+    isFallback: false,
+    isLocaleDomain: false,
+    isReady: true,
+    defaultLocale: "en",
+    domainLocales: [],
+    isPreview: false,
+  };
+}
 
 window.matchMedia =
   window.matchMedia ||
@@ -14,7 +44,13 @@ window.matchMedia =
 afterEach(cleanup);
 describe("Should render Addnews", () => {
   it("Render without crash", () => {
-    const { container } = render(<NewsAdd />);
+    const { container } = render(
+      <Provider store={store}>
+        <RouterContext.Provider value={createMockRouter()}>
+          <NewsAdd />
+        </RouterContext.Provider>
+      </Provider>
+    );
 
     const submitButton = screen.getByRole("button", {
       name: /Create News/i,
@@ -27,10 +63,10 @@ describe("Should render Addnews", () => {
     expect(container.getElementsByTagName("textarea")).toHaveLength(1);
     expect(container.getElementsByTagName("input")).toHaveLength(3);
     expect(screen.getByText(/display text/i).textContent).toBe(
-      "Display Text (Limit 256 chars)"
+      "Display Text * (Limit 256 chars)"
     );
 
-    expect(submitButton.textContent).toBe("Create News");
+    expect(submitButton.textContent).toBe(" Create News");
     expect(cancelButton.textContent).toBe("Cancel");
   });
 });

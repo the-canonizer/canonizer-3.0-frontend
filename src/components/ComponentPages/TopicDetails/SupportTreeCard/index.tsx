@@ -18,12 +18,9 @@ import isAuth from "../../../../hooks/isUserAuthenticated";
 import K from "../../../../constants";
 import { setDelegatedSupportClick } from "../../../../store/slices/supportTreeCard";
 import { setManageSupportStatusCheck } from "../../../../store/slices/campDetailSlice";
-import { addSupport, getNickNameList } from "../../../../network/api/userApi";
-import { CarryOutOutlined, FormOutlined } from "@ant-design/icons";
-import { Switch, Tree } from "antd";
-import type { DataNode } from "antd/es/tree";
-import { sassFalse } from "sass";
+import { getNickNameList } from "../../../../network/api/userApi";
 const { Paragraph } = Typography;
+import { Tree } from "antd";
 
 const { Panel } = Collapse;
 const { TreeNode } = Tree;
@@ -214,7 +211,7 @@ const SupportTreeCard = ({
       >
         <Paragraph>
           Total Support for This Camp (including sub-camps):
-          <span className="number-style">{totalSupportScore.toFixed(2)}</span>
+          <span className="number-style">{totalSupportScore?.toFixed(2)}</span>
         </Paragraph>
 
         {campSupportingTree?.length > 0 ? (
@@ -256,7 +253,7 @@ const SupportTreeCard = ({
             >
               <CustomButton className="btn-orange">
                 {/* {K?.exceptionalMessages?.directJoinSupport} */}
-                {getCheckSupportStatus.support_flag == 1
+                {getCheckSupportStatus?.support_flag == 1
                   ? K?.exceptionalMessages?.manageSupport
                   : K?.exceptionalMessages?.directJoinSupport}
               </CustomButton>

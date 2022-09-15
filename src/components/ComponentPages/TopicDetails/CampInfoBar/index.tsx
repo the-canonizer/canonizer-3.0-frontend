@@ -227,12 +227,12 @@ const CampInfoBar = ({
             href={`/camp/history/${replaceSpecialCharacters(
               router?.query?.camp
                 ? router?.query?.camp[0]
-                : router?.query?.manageSupport[0],
+                : router?.query?.manageSupport?.at(0),
               "-"
             )}/${replaceSpecialCharacters(
               router?.query?.camp
                 ? router?.query?.camp[1]
-                : router?.query?.manageSupport[1],
+                : router?.query?.manageSupport?.at(1),
               "-"
             )}`}
           >
@@ -246,7 +246,7 @@ const CampInfoBar = ({
             href={`/topic/history/${replaceSpecialCharacters(
               router?.query?.camp
                 ? router?.query?.camp[0]
-                : router?.query?.manageSupport[0],
+                : router?.query?.manageSupport?.at(0),
               "-"
             )}`}
           >
@@ -273,12 +273,12 @@ const CampInfoBar = ({
                 : `/create/statement/${replaceSpecialCharacters(
                     router?.query?.camp
                       ? router?.query?.camp[0]
-                      : router?.query?.manageSupport[0],
+                      : router?.query?.manageSupport?.at(0),
                     "-"
                   )}/${replaceSpecialCharacters(
                     router?.query?.camp
                       ? router?.query?.camp[1]
-                      : router?.query?.manageSupport[1],
+                      : router?.query?.manageSupport?.at(1),
                     "-"
                   )}`
             }
