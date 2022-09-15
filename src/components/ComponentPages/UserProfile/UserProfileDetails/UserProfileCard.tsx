@@ -10,6 +10,7 @@ export const UserProfileCard = ({
   dropdownNameSpaceList,
   setDropdownNameSpaceList,
   noData,
+  profileData,
 }) => {
   const renderFilter = () => {
     const filteredVal = nameSpaceList.filter(
@@ -27,16 +28,10 @@ export const UserProfileCard = ({
               type="inner"
               title={
                 <div className={styles.main_card_title}>
-                  {supportedCampList.private_status == 0
-                    ? messages.labels.nickname
-                    : ""}{" "}
+                  {messages.labels.nickname}{" "}
                   <span className={styles.Bluecolor}>
                     {" "}
-                    <b>
-                      {supportedCampList.private_status == 1
-                        ? ""
-                        : supportedCampList.nick_name}
-                    </b>
+                    <b>{supportedCampList.nick_name}</b>
                   </span>
                 </div>
               }

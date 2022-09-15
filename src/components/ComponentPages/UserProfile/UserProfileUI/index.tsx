@@ -52,7 +52,10 @@ const UserProfile = () => {
   return (
     <>
       <div className={styles.userProfileData}>
-        <UserProfileDetails profileData={profileData} />
+        <UserProfileDetails
+          profileData={profileData}
+          userSupportedCampsList={userSupportedCampsList}
+        />
         <UserProfileCard
           userSupportedCampsList={userSupportedCampsList}
           setUserSupportedCampsList={setUserSupportedCampsList}
