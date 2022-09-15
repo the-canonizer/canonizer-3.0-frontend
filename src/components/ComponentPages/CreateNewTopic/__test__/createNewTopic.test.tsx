@@ -34,7 +34,7 @@ const nameSpaceList = [
 ];
 
 describe("Create New Topic page", () => {
-  it("render heading and labels", () => {
+  it("render heading and labels", async () => {
     render(
       <CreateNewTopic
         testNickName={nickNamesList}
@@ -43,9 +43,9 @@ describe("Create New Topic page", () => {
       />
     );
 
-    waitFor(async () => {
+    await waitFor(async () => {
       expect(screen.getByTestId("head")).toBeInTheDocument();
-      expect(screen.getByLabelText(labels.cr_nick_name)).toBeInTheDocument();
+      expect(screen.getByText(labels.cr_nick_name)).toBeInTheDocument();
       expect(screen.getByText(labels.cr_topic_name)).toBeInTheDocument();
       expect(screen.getByText(labels.cr_nick_name_sp)).toBeInTheDocument();
       expect(screen.getByText(labels.cr_namespace)).toBeInTheDocument();
@@ -64,19 +64,19 @@ describe("Create New Topic page", () => {
       />
     );
     waitFor(async () => {
-      const nickName = screen.getByLabelText(labels.cr_nick_name);
+      const nickName = screen.getByText(labels.cr_nick_name);
       expect(nickName).toBeInTheDocument();
       expect(nickName).toHaveAttribute("type", "search");
 
-      const topicName = screen.getByLabelText(labels.cr_topic_name);
+      const topicName = screen.getByText(labels.cr_topic_name);
       expect(topicName).toBeInTheDocument();
       expect(topicName).toHaveAttribute("type", "text");
 
-      const nameSpace = screen.getByLabelText(labels.cr_namespace);
+      const nameSpace = screen.getByText(labels.cr_namespace);
       expect(nameSpace).toBeInTheDocument();
       expect(nameSpace).toHaveAttribute("type", "search");
 
-      const editSummary = screen.getByLabelText(labels.cr_edit_summary);
+      const editSummary = screen.getByText(labels.cr_edit_summary);
       expect(editSummary).toBeInTheDocument();
     });
   });
@@ -93,7 +93,7 @@ describe("Create New Topic page", () => {
 
     userEvent.click(btnEl);
 
-    await waitFor(() => {
+    waitFor(() => {
       expect(screen.queryByRole("alert")).toBeInTheDocument();
     });
   });

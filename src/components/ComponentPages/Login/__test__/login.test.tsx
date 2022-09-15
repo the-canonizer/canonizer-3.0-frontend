@@ -51,7 +51,7 @@ describe("Login page", () => {
   it("render password input field", () => {
     render(<Login isModal={false} />);
     waitFor(async () => {
-      const inputEl = screen.getByLabelText(labels.password);
+      const inputEl = screen.getByPlaceholderText(placeholders.password);
       expect(inputEl).toBeInTheDocument();
       expect(inputEl).toHaveAttribute("type", "password");
       expect(inputEl).toHaveAttribute("placeholder", placeholders.password);
@@ -61,7 +61,7 @@ describe("Login page", () => {
   it("pass valid email to test email input field", async () => {
     render(<Login isModal={false} />);
     waitFor(async () => {
-      const inputEl = screen.getByLabelText(labels.emailPhone);
+      const inputEl = screen.getByPlaceholderText(placeholders.emailPhone);
       userEvent.type(inputEl, "rahul.singh@iffort.com");
 
       expect(inputEl).toHaveValue("rahul.singh@iffort.com");
@@ -73,7 +73,7 @@ describe("Login page", () => {
     render(<Login isModal={false} />);
     waitFor(async () => {
       waitFor(async () => {
-        const inputEl = screen.getByLabelText(labels.emailPhone);
+        const inputEl = screen.getByPlaceholderText(placeholders.emailPhone);
         userEvent.type(inputEl, "rahul.singhiffort.com");
         userEvent.tab();
 
@@ -89,7 +89,7 @@ describe("Login page", () => {
 
       await userEvent.click(btnEl);
     });
-    await waitFor(() => {
+    waitFor(() => {
       expect(screen.getByText(validations.username)).toBeVisible();
       expect(screen.getByText(validations.password)).toBeVisible();
     });

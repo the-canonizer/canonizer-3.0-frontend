@@ -2,7 +2,10 @@ import { Spin, Tooltip, Typography } from "antd";
 import { useRouter } from "next/router";
 import { useState, useEffect, useRef, memo } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { subscribeToCampApi } from "../../../../network/api/campDetailApi";
+import {
+  getTreesApi,
+  subscribeToCampApi,
+} from "../../../../network/api/campDetailApi";
 import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
 import { Dropdown, Menu, Button } from "antd";
@@ -116,14 +119,26 @@ const CampInfoBar = ({
     });
   };
 
-  const campOrTopicScribe = (isTopic: Boolean) => {
+  const campOrTopicScribe = async (isTopic: Boolean) => {
+    const reqBodyForService = {
+      topic_num: +router?.query?.camp[0]?.split("-")[0],
+      camp_num: +router?.query?.camp[1]?.split("-")[0],
+      asOf: asof,
+      asofdate:
+        asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+      algorithm: algorithm,
+      update_all: 1,
+    };
     const reqBody = {
       topic_num: campRecord.topic_num,
       camp_num: isTopic ? 0 : campRecord.camp_num,
       checked: isTopic ? !topicSubscriptionID : !campSubscriptionID,
       subscription_id: isTopic ? topicSubscriptionID : campSubscriptionID,
     };
-    subscribeToCampApi(reqBody, isTopic);
+    let result = await subscribeToCampApi(reqBody, isTopic);
+    if (result?.status_code === 200) {
+      getTreesApi(reqBodyForService);
+    }
   };
 
   const campForumDropdownMenu = (
@@ -212,12 +227,12 @@ const CampInfoBar = ({
             href={`/camp/history/${replaceSpecialCharacters(
               router?.query?.camp
                 ? router?.query?.camp[0]
-                : router?.query?.manageSupport[0],
+                : router?.query?.manageSupport?.at(0),
               "-"
             )}/${replaceSpecialCharacters(
               router?.query?.camp
                 ? router?.query?.camp[1]
-                : router?.query?.manageSupport[1],
+                : router?.query?.manageSupport?.at(1),
               "-"
             )}`}
           >
@@ -231,7 +246,7 @@ const CampInfoBar = ({
             href={`/topic/history/${replaceSpecialCharacters(
               router?.query?.camp
                 ? router?.query?.camp[0]
-                : router?.query?.manageSupport[0],
+                : router?.query?.manageSupport?.at(0),
               "-"
             )}`}
           >
@@ -258,12 +273,12 @@ const CampInfoBar = ({
                 : `/create/statement/${replaceSpecialCharacters(
                     router?.query?.camp
                       ? router?.query?.camp[0]
-                      : router?.query?.manageSupport[0],
+                      : router?.query?.manageSupport?.at(0),
                     "-"
                   )}/${replaceSpecialCharacters(
                     router?.query?.camp
                       ? router?.query?.camp[1]
-                      : router?.query?.manageSupport[1],
+                      : router?.query?.manageSupport?.at(1),
                     "-"
                   )}`
             }
