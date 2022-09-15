@@ -96,7 +96,9 @@ function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <a href="/terms-and-services">Terms &amp; Services</a>
+                  <Link href="/terms-and-services">
+                    <a>Terms &amp; Services</a>
+                  </Link>
                 </li>
               </ul>
             </Col>
