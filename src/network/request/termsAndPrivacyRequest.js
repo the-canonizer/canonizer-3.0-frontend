@@ -1,5 +1,6 @@
 import K from "../../constants";
 import Request from ".";
+import { store } from "../../store";
 
 export default class TermsAndPrivacyRequest extends Request {
   constructor(params) {
@@ -10,7 +11,7 @@ export default class TermsAndPrivacyRequest extends Request {
 
   static getTermsAndServicesContent() {
     return new Request(
-      K.Network.URL.GetPrivacyPolicyContent,
+      K.Network.URL.GetTermsAndServicesContent,
       K.Network.Method.GET,
       null,
       K.Network.Header.Type.Json,
