@@ -63,6 +63,7 @@ const UserProfile = () => {
           dropdownNameSpaceList={dropdownNameSpaceList}
           setDropdownNameSpaceList={setDropdownNameSpaceList}
           noData={noData}
+          profileData={profileData}
         />
       </div>
     </>
