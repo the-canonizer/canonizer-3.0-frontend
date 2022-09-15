@@ -153,10 +153,10 @@ function HistoryCollapse({
 
                 <Checkbox
                   className={styles.campSelectCheckbox}
-                  onChange={onSelectCompare.bind(this, campStatement)}
+                  onChange={onSelectCompare?.bind(this, campStatement)}
                   disabled={isDisabledCheck}
                   defaultChecked={isChecked}
-                  key={campStatement.id}
+                  key={campStatement?.id}
                 >
                   Select to Compare
                 </Checkbox>
@@ -235,15 +235,29 @@ function HistoryCollapse({
                   <Link
                     href={`/topic/${
                       replaceSpecialCharacters(
-                        router?.query?.camp?.at(0),
+                        historyOf == "topic"
+                          ? replaceSpecialCharacters(
+                              campStatement?.topic_num +
+                                "-" +
+                                campStatement?.topic_name?.replaceAll(" ", "-"),
+                              "-"
+                            )
+                          : router?.query?.camp?.at(0),
                         "-"
                       ) +
                       "/" +
                       (historyOf != "topic"
-                        ? replaceSpecialCharacters(
-                            router?.query?.camp?.at(1),
-                            "-"
-                          )
+                        ? historyOf == "camp"
+                          ? replaceSpecialCharacters(
+                              campStatement?.camp_num +
+                                "-" +
+                                campStatement?.camp_name?.replaceAll(" ", "-"),
+                              "-"
+                            )
+                          : replaceSpecialCharacters(
+                              router?.query?.camp?.at(1),
+                              "-"
+                            )
                         : "1-Agreement")
                     }`}
                   >

@@ -6,7 +6,7 @@ import { store } from "../../../../../store";
 import { NextRouter } from "next/router";
 import { RouterContext } from "next/dist/shared/lib/router-context";
 
-function createMockRouter(): NextRouter {
+function createMockRouter(router: Partial<NextRouter>): NextRouter {
   return {
     basePath: "",
     pathname: "/",
@@ -30,6 +30,7 @@ function createMockRouter(): NextRouter {
     defaultLocale: "en",
     domainLocales: [],
     isPreview: false,
+    ...router,
   };
 }
 
@@ -48,11 +49,14 @@ describe("Should render Addnews", () => {
   it("Render without crash", () => {
     const { container } = render(
       <Provider store={store}>
-        <RouterContext.Provider value={createMockRouter()}>
+        <RouterContext.Provider
+          value={createMockRouter({ asPath: "/manage/statement/3267" })}
+        >
           <AddOrManage add={false} />
         </RouterContext.Provider>
       </Provider>
     );
+
     const mainHeading = screen.getByText(/statement update/i);
     const submitButton = screen.getByRole("button", {
       name: /submit update/i,
@@ -65,12 +69,13 @@ describe("Should render Addnews", () => {
     });
 
     expect(screen.getByText(/nick name/i)).toBeInTheDocument();
-    expect(screen.getAllByText(/statement/i)[1].textContent).toBe("Statement");
+    expect(screen.getAllByText(/statement/i)[1]).toBeInTheDocument();
+
     expect(
       screen.getByText(/\(briefly describe your changes\)/i)
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/note: we support wiki markup\. to get reference \./i)
+      screen.getByText(/note: we support wiki markup\. to get reference/i)
     ).toBeInTheDocument();
     expect(screen.getByText(/click here/i)).toBeInTheDocument();
 

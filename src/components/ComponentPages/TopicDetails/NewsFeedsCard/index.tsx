@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import K from "../../../../constants";
 import Link from "next/link";
-import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 
 ////////////////////////////////////////////////////////////
 //   The commented code bellow  will be used in future   //

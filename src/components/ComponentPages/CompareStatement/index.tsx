@@ -43,8 +43,8 @@ function CompareStatement() {
   };
 
   useEffect(() => {
-    const ids = (router?.query?.statements as String).split("_");
-    const status = (router?.query?.status as String).split("-");
+    const ids = (router?.query?.statements as String)?.split("_");
+    const status = (router?.query?.status as String)?.split("-");
 
     if (ids?.length) getStatement(ids);
     if (status?.length) {

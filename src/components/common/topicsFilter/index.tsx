@@ -24,7 +24,7 @@ const { Option } = Select;
 import styles from "./topicListFilter.module.scss";
 import { useRouter } from "next/router";
 import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
-import K from "src/constants";
+import K from "../../../constants";
 // import { showCreateCampButton } from "src/utils/generalUtility";
 
 const infoContent = (
