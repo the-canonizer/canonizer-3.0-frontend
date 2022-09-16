@@ -9,7 +9,7 @@ import { DraggableArea } from "react-draggable-tags";
 import { placeholders } from "./../../../../messages/placeholder";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
-import router from "next/router";
+import { useRouter } from "next/router";
 import { addSupport } from "src/network/api/userApi";
 const ManageSupportUI = ({
   nickNameList,
@@ -35,6 +35,7 @@ const ManageSupportUI = ({
         state.supportTreeCard.currentDelegatedSupportedClick,
     })
   );
+  const router = useRouter();
   const manageSupportArr = [];
   const supportOrderLen = manageSupportArr.length + 1;
 

@@ -172,6 +172,8 @@ const UploadFileUI = ({
   const validateMessages = {
     required: "${name} is required !",
   };
+  //File Name Length
+  const fileNameLength = 30;
 
   //Regex
   const textFileRegex = /^text\/(plain$|html$|rtf$|csv$)/;
@@ -215,7 +217,10 @@ const UploadFileUI = ({
           onClick={() =>
             setPreview({
               previewVisible: true,
-              previewName: item.file_name,
+              previewName:
+                item.file_name.length > fileNameLength
+                  ? item.file_name.substring(0, 30) + "..."
+                  : item.file_name,
               previewPath: item.file_path,
               previewCopyShortCode: item.short_code,
               previewCreatedAt: item.created_at,
