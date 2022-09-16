@@ -57,6 +57,7 @@ const SupportTreeCard = ({
     });
     setUserNickNameList(arr);
   };
+  console.log(getCheckSupportStatus, "get");
   useEffect(() => {
     if (isUserAuthenticated) {
       getNickNameListData();
@@ -125,7 +126,14 @@ const SupportTreeCard = ({
                           },
                         }}
                       >
-                        <a>{data[item].nick_name}</a>
+                        {
+                          <div>
+                            <a className={styles.Bluecolor}>
+                              {data[item].support_order}:
+                            </a>
+                            <a>{data[item].nick_name}</a>
+                          </div>
+                        }
                       </Link>
 
                       {/* </span> */}
@@ -253,9 +261,10 @@ const SupportTreeCard = ({
             >
               <CustomButton className="btn-orange">
                 {/* {K?.exceptionalMessages?.directJoinSupport} */}
-                {getCheckSupportStatus?.support_flag == 1
-                  ? K?.exceptionalMessages?.manageSupport
-                  : K?.exceptionalMessages?.directJoinSupport}
+                {getCheckSupportStatus.is_delegator == 1 ||
+                getCheckSupportStatus.support_flag != 1
+                  ? K?.exceptionalMessages?.directJoinSupport
+                  : K?.exceptionalMessages?.manageSupport}
               </CustomButton>
             </div>
           </a>
