@@ -47,11 +47,14 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Link from "next/link";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
-import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import {
+  replaceSpecialCharacters,
+  allowedEmojies,
+} from "src/utils/generalUtility";
 
 const { Text } = Typography;
 
-const { campAboutUrlRule } = messages;
+const { campAboutUrlRule, summaryRule } = messages;
 
 export default function AddOrManage({ add }) {
   const { isUserAuthenticated } = useAuthentication();
@@ -647,6 +650,7 @@ export default function AddOrManage({ add }) {
                             message:
                               K?.exceptionalMessages?.statementRequiredErrorMsg,
                           },
+                          allowedEmojies(),
                         ]}
                       >
                         <Input.TextArea
@@ -681,6 +685,7 @@ export default function AddOrManage({ add }) {
                             pattern: /[^ \s]/,
                             message: K?.exceptionalMessages?.objectionIsRequire,
                           },
+                          allowedEmojies(),
                         ]}
                         className={styles.formItem}
                         name="objection_reason"
@@ -706,6 +711,7 @@ export default function AddOrManage({ add }) {
                               <small>(Briefly describe your changes)</small>
                             </>
                           }
+                          {...summaryRule}
                         >
                           <Input.TextArea size="large" rows={7} />
                         </Form.Item>

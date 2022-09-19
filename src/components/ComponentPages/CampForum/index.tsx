@@ -45,6 +45,8 @@ const ForumComponent = ({}) => {
   const [isError, setIsError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [postLoading, setPostLoading] = useState(false);
+  const [perPage, setPerPage] = useState(10);
+  const [postperPage, setPostPerPage] = useState(10);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -103,7 +105,7 @@ const ForumComponent = ({}) => {
     type = "all",
     page = 1,
     like = "",
-    per_page = 10
+    per_page = perPage
   ) {
     let res = null;
 
@@ -124,7 +126,7 @@ const ForumComponent = ({}) => {
     }
   }
 
-  const getPosts = async (id, page = 1, like = "", per_page = 10) => {
+  const getPosts = async (id, page = 1, like = "", per_page = postperPage) => {
     const q = `?page=${page}&per_page=${per_page}&like=${like}`;
 
     const res = await getPostsList(id, q);
