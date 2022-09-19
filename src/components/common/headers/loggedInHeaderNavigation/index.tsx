@@ -128,16 +128,22 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
                 {mockLinks?.map((item) => {
                   return (
                     <li key={item.id}>
-                      {item?.external ? (
+                      {router.asPath.includes("/topic") ? (
                         <a
                           href={item.link}
                           rel="noopener noreferrer"
-                          target="_blank"
+                          target={
+                            item?.linkTitle == "White Paper"
+                              ? "_blank"
+                              : "_self"
+                          }
                         >
                           {item.linkTitle}
                         </a>
                       ) : (
-                        <Link href={item.link}>{item.linkTitle}</Link>
+                        <Link href={item.link}>
+                          <a>{item.linkTitle}</a>
+                        </Link>
                       )}
                     </li>
                   );
