@@ -10,6 +10,7 @@ import {
   Input,
   DatePicker,
   Popover,
+  Tooltip,
 } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
 import { RootState } from "../../../store";
@@ -221,14 +222,24 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
           {isCampBtnVisible &&
           currentCampNode?.isDisabled == 0 &&
           currentCampNode?.parentIsOneLevel == 0 ? (
-            <Button
-              size="large"
-              className="btn"
-              disabled={tree && !tree["1"]?.is_valid_as_of_time ? true : false}
-              onClick={onCreateCamp}
+            <Tooltip
+              title={
+                tree && !tree["1"]?.is_valid_as_of_time
+                  ? "this topic is not created"
+                  : ""
+              }
             >
-              <i className="icon-camp"></i> Create New Camp
-            </Button>
+              <Button
+                className="btn"
+                size="large"
+                disabled={
+                  tree && !tree["1"]?.is_valid_as_of_time ? true : false
+                }
+                onClick={onCreateCamp}
+              >
+                <i className="icon-camp"></i> Create New Camp
+              </Button>
+            </Tooltip>
           ) : null}
         </div>
         <Collapse
