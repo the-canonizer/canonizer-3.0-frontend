@@ -25,6 +25,7 @@ import styles from "./topicListFilter.module.scss";
 import { useRouter } from "next/router";
 import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
 import K from "../../../constants";
+import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 // import { showCreateCampButton } from "src/utils/generalUtility";
 
 const infoContent = (
@@ -158,6 +159,9 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
     setSelectedAsOFDate(filteredAsOfDate);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filteredAsOfDate]);
+  useEffect(() => {
+    getCanonizedAlgorithmsApi();
+  }, []);
 
   const selectAlgorithm = (value) => {
     dispatch(

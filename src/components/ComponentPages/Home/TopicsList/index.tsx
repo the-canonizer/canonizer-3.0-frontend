@@ -6,7 +6,10 @@ import { Typography, List, Select, Tag, Input, Button, Popover } from "antd";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store";
-import { getCanonizedTopicsApi } from "../../../../network/api/homePageApi";
+import {
+  getCanonizedNameSpacesApi,
+  getCanonizedTopicsApi,
+} from "../../../../network/api/homePageApi";
 import { setFilterCanonizedTopics } from "../../../../store/slices/filtersSlice";
 import styles from "./topicsList.module.scss";
 import { Spin, Checkbox } from "antd";
@@ -203,6 +206,7 @@ const TopicsList = () => {
     dispatch(setCurrentCheckSupportStatus(""));
     dispatch(setCheckSupportExistsData(""));
     dispatch(setManageSupportStatusCheck(false));
+    getCanonizedNameSpacesApi();
   }, []);
   return (
     <>

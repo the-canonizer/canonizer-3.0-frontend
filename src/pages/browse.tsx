@@ -11,10 +11,10 @@ import {
   setCanonizedNameSpaces,
 } from "../store/slices/homePageSlice";
 import { useDispatch } from "react-redux";
-const BrowsePage = ({ nameSpacesList, algorithms }) => {
-  const dispatch = useDispatch();
-  dispatch(setCanonizedNameSpaces(nameSpacesList));
-  dispatch(setCanonizedAlgorithms(algorithms));
+const BrowsePage = () => {
+  // const dispatch = useDispatch();
+  // dispatch(setCanonizedNameSpaces(nameSpacesList));
+  // dispatch(setCanonizedAlgorithms(algorithms));
   return (
     <>
       <Layout routeName={"browse"}>
@@ -33,19 +33,19 @@ const BrowsePage = ({ nameSpacesList, algorithms }) => {
   );
 };
 
-export async function getServerSideProps() {
-  const [nameSpaces, canonizedAlgorithms] = await Promise.all([
-    getCanonizedNameSpacesApi(),
-    getCanonizedAlgorithmsApi(),
-  ]);
+// export async function getServerSideProps() {
+//   const [nameSpaces, canonizedAlgorithms] = await Promise.all([
+//     getCanonizedNameSpacesApi(),
+//     getCanonizedAlgorithmsApi(),
+//   ]);
 
-  return {
-    props: {
-      nameSpacesList: nameSpaces || [],
-      algorithms: canonizedAlgorithms || [],
-    },
-  };
-}
+//   return {
+//     props: {
+//       nameSpacesList: nameSpaces || [],
+//       algorithms: canonizedAlgorithms || [],
+//     },
+//   };
+// }
 
 BrowsePage.displayName = "BrowsePage";
 

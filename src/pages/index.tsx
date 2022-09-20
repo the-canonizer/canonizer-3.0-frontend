@@ -27,9 +27,7 @@ function Home() {
   );
 
   useEffect(() => {
-    getCanonizedNameSpacesApi();
     getCanonizedWhatsNewContentApi();
-    getCanonizedAlgorithmsApi();
   }, []);
 
   return (
