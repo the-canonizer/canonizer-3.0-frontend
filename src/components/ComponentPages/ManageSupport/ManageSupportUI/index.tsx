@@ -9,6 +9,8 @@ import { DraggableArea } from "react-draggable-tags";
 import { placeholders } from "./../../../../messages/placeholder";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
+import { useRouter } from "next/router";
+import { addSupport } from "src/network/api/userApi";
 const ManageSupportUI = ({
   nickNameList,
   manageSupportList,
@@ -33,6 +35,59 @@ const ManageSupportUI = ({
         state.supportTreeCard.currentDelegatedSupportedClick,
     })
   );
+  const router = useRouter();
+  const manageSupportArr = [];
+  const supportOrderLen = manageSupportArr.length + 1;
+
+  const manageListOrder = manageSupportList.length;
+
+  const reqBodyData = {
+    topic_num: +router?.query?.manageSupport[0]?.split("-")[0],
+    camp_num: +router?.query?.manageSupport[1]?.split("-")[0],
+  };
+  const addRemoveApi = async () => {
+    // const removeSupport = async (supportedId) => {
+    const RemoveSupportId = {
+      topic_num: reqBodyData.topic_num,
+      add_camp: {},
+      remove_camps: [reqBodyData.camp_num],
+      type: "deligate",
+      action: "remove",
+      nick_name_id: nickNameList[0].id,
+      order_update: [],
+    };
+    let res = await addSupport(RemoveSupportId);
+    if (res && res.status_code == 200) {
+      const addSupportId = {
+        topic_num: reqBodyData.topic_num,
+        add_camp: {
+          camp_num: reqBodyData.camp_num,
+          support_order: supportOrderLen,
+        },
+        remove_camps: [],
+        type: "direct",
+        action: "add",
+        nick_name_id: nickNameList[0].id,
+        order_update: [
+          { camp_num: reqBodyData.camp_num, order: supportOrderLen },
+        ],
+      };
+      let addedRes = await addSupport(addSupportId);
+      if (addedRes && addedRes.status_code == 200) {
+        let manageSupportPath = router.asPath.replace("/support/", "/topic/");
+        if (manageSupportPath.lastIndexOf("_") > -1)
+          manageSupportPath = manageSupportPath.substring(
+            0,
+            manageSupportPath.lastIndexOf("_")
+          );
+        router.push({
+          pathname: manageSupportPath,
+        });
+      }
+    }
+    // };
+  };
+
   const CheckDelegatedOrDirect =
     currentDelegatedSupportedClick.delegatedSupportClick;
   useEffect(() => {
@@ -195,7 +250,11 @@ const ManageSupportUI = ({
                 id="uploadBtn"
                 htmlType="submit"
                 className={styles.Upload_Btn}
-                onClick={submitNickNameSupportCamps}
+                onClick={
+                  CheckDelegatedOrDirect
+                    ? submitNickNameSupportCamps
+                    : addRemoveApi
+                }
                 disabled={submitButtonDisable}
               >
                 Submit

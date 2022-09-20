@@ -7,7 +7,7 @@ import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
 import K from "../../../../constants";
 import moment from "moment";
-import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 
 const { Paragraph } = Typography;
 

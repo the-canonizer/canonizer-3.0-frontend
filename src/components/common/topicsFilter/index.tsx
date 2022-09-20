@@ -24,7 +24,7 @@ const { Option } = Select;
 import styles from "./topicListFilter.module.scss";
 import { useRouter } from "next/router";
 import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
-import K from "src/constants";
+import K from "../../../constants";
 // import { showCreateCampButton } from "src/utils/generalUtility";
 
 const infoContent = (
@@ -105,6 +105,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
     filteredAsOfDate,
     currentCampRecord,
     currentCampNode,
+    tree,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filterObject: state?.filters?.filterObject,
@@ -114,6 +115,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
     filteredAsOfDate: state?.filters?.filterObject?.asofdate,
     currentCampRecord: state.topicDetails.currentCampRecord,
     currentCampNode: state?.filters?.selectedCampNode,
+    tree: state?.topicDetails?.tree,
   }));
 
   const [value, setValue] = useState(
@@ -219,7 +221,12 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
           {isCampBtnVisible &&
           currentCampNode?.isDisabled == 0 &&
           currentCampNode?.parentIsOneLevel == 0 ? (
-            <Button size="large" className="btn" onClick={onCreateCamp}>
+            <Button
+              size="large"
+              className="btn"
+              disabled={tree && !tree["1"]?.is_valid_as_of_time ? true : false}
+              onClick={onCreateCamp}
+            >
               <i className="icon-camp"></i> Create New Camp
             </Button>
           ) : null}

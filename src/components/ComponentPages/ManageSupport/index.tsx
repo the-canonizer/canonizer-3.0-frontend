@@ -264,6 +264,11 @@ const ManageSupport = () => {
   };
 
   let manageSupportPath = router.asPath.replace("/support/", "/topic/");
+  if (manageSupportPath.lastIndexOf("_") > -1)
+    manageSupportPath = manageSupportPath.substring(
+      0,
+      manageSupportPath.lastIndexOf("_")
+    );
   //remove add id for cancel and submit
   let remove_ = manageSupportPath.lastIndexOf("_");
   let resDat = manageSupportPath.substring(0, remove_);
