@@ -381,3 +381,9 @@ export const threadTitleRule = {
     emojiValidation(patterns.emoji_restrication, validations.not_allowed),
   ],
 };
+
+export const keywordsRule = {
+  rules: [
+    emojiValidation(patterns.emoji_restrication, validations.not_allowed),
+  ],
+};

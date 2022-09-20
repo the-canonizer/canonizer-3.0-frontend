@@ -50,11 +50,13 @@ import { CheckboxChangeEvent } from "antd/es/checkbox";
 import {
   replaceSpecialCharacters,
   allowedEmojies,
+  emojiValidation,
 } from "src/utils/generalUtility";
 
 const { Text } = Typography;
 
-const { campAboutUrlRule, summaryRule } = messages;
+const { campAboutUrlRule, summaryRule, keywordsRule, patterns, validations } =
+  messages;
 
 export default function AddOrManage({ add }) {
   const { isUserAuthenticated } = useAuthentication();
@@ -543,6 +545,10 @@ export default function AddOrManage({ add }) {
                               pattern: /[^ \s]/,
                               message: K?.exceptionalMessages?.campNameReqErr,
                             },
+                            emojiValidation(
+                              patterns.emoji_restrication,
+                              validations.not_allowed
+                            ),
                           ]}
                         >
                           <Input
@@ -558,6 +564,7 @@ export default function AddOrManage({ add }) {
                             className={`${styles.formItem} mb-2`}
                             label={<>Keywords</>}
                             name="keywords"
+                            {...keywordsRule}
                           >
                             <Input />
                           </Form.Item>
@@ -587,6 +594,10 @@ export default function AddOrManage({ add }) {
                               pattern: /[^ \s]/,
                               message: K?.exceptionalMessages?.topicNameReqErr,
                             },
+                            emojiValidation(
+                              patterns.emoji_restrication,
+                              validations.not_allowed
+                            ),
                           ]}
                         >
                           <Input disabled={objection} maxLength={30} />
