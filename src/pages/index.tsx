@@ -12,18 +12,25 @@ import {
   setCanonizedAlgorithms,
 } from "../store/slices/homePageSlice";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
+import { useEffect } from "react";
 
-function Home({ nameSpacesList, whatsNew, algorithms }) {
+function Home() {
   const dispatch = useDispatch();
 
-  dispatch(setCanonizedNameSpaces(nameSpacesList));
-  dispatch(setWhatsNewContent(whatsNew));
-  dispatch(setCanonizedAlgorithms(algorithms));
+  // dispatch(setCanonizedNameSpaces(nameSpacesList));
+  // dispatch(setWhatsNewContent(whatsNew));
+  // dispatch(setCanonizedAlgorithms(algorithms));
   dispatch(
     setFilterCanonizedTopics({
       search: "",
     })
   );
+
+  useEffect(() => {
+    getCanonizedNameSpacesApi();
+    getCanonizedWhatsNewContentApi();
+    getCanonizedAlgorithmsApi();
+  }, []);
 
   return (
     <>
@@ -34,21 +41,21 @@ function Home({ nameSpacesList, whatsNew, algorithms }) {
   );
 }
 
-export async function getServerSideProps() {
-  const [nameSpaces, whatsNewResult, canonizedAlgorithms] = await Promise.all([
-    getCanonizedNameSpacesApi(),
-    getCanonizedWhatsNewContentApi(),
-    getCanonizedAlgorithmsApi(),
-  ]);
+// export async function getServerSideProps() {
+//   const [nameSpaces, whatsNewResult, canonizedAlgorithms] = await Promise.all([
+//     getCanonizedNameSpacesApi(),
+//     getCanonizedWhatsNewContentApi(),
+//     getCanonizedAlgorithmsApi(),
+//   ]);
 
-  return {
-    props: {
-      nameSpacesList: nameSpaces || [],
-      whatsNew: whatsNewResult || [],
-      algorithms: canonizedAlgorithms || [],
-    },
-  };
-}
+//   return {
+//     props: {
+//       nameSpacesList: nameSpaces || [],
+//       whatsNew: whatsNewResult || [],
+//       algorithms: canonizedAlgorithms || [],
+//     },
+//   };
+// }
 
 Home.displayName = "Home";
 

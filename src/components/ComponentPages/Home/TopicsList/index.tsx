@@ -70,7 +70,7 @@ const TopicsList = () => {
   }));
 
   const [topicsData, setTopicsData] = useState(canonizedTopics);
-  const [nameSpacesList] = useState(nameSpaces);
+  const [nameSpacesList, setNameSpacesList] = useState(nameSpaces);
 
   const [isReview, setIsReview] = useState(asof == "review");
   const [inputSearch, setInputSearch] = useState(search || "");
@@ -99,7 +99,8 @@ const TopicsList = () => {
     setSelectedNameSpace(filterNameSpace);
     setNameSpaceId(filterNameSpaceId);
     setInputSearch(search);
-  }, [filterNameSpace, filterNameSpaceId, search]);
+    setNameSpacesList(nameSpaces);
+  }, [filterNameSpace, filterNameSpaceId, search, nameSpaces]);
 
   useEffect(() => {
     setTopicsData(canonizedTopics);
