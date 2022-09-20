@@ -171,7 +171,6 @@ function CompareStatementUI({
                       styles[itemsStatus[s2?.id] || "old"]
                     }
                   >
-                    {console.log(itemsStatus[s2?.id])}
                     <Paragraph>
                       <Text strong>Edit Summary : </Text>
                       <Text>{s2?.note}</Text>

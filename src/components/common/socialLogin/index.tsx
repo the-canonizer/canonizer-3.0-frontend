@@ -29,7 +29,6 @@ export default function SocialLoginUi({ isNotLogin = false }) {
         window.location.href = res.data.url;
       }
     } catch (error) {
-      console.log(error);
     }
   };
 
