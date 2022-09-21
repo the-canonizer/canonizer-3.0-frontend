@@ -1,7 +1,6 @@
 import { message } from "antd";
 import K from "../constants";
-// import history from "./history";
-// import User from "../models/user/user";
+// import emojiUnicode from "emoji-unicode";
 
 export const handleError = (error, log = false, dispatch = null) => {
   log ? console.log(error) : "";
@@ -299,3 +298,41 @@ export const disableInput = (camp: {
       : false;
   }
 };
+
+export const emojiValidation =
+  (exp, msg) =>
+  ({ setFieldValue }) => ({
+    validator(currentField, value) {
+      if (value && !value?.trim().match(exp)) {
+        return Promise.resolve();
+      } else if (value && value.length > 0 && value?.trim().match(exp)) {
+        setFieldValue(currentField.field, value.replace(exp, "")?.trim());
+        return Promise.resolve();
+      }
+      return Promise.resolve();
+    },
+  });
+
+export const allowedEmojies =
+  () =>
+  ({ setFieldValue }) => ({
+    validator(currentField, value) {
+      const emojies = process.env.NEXT_PUBLIC_NOT_ALLOWED_EMOJIS?.split(",");
+      if (value) {
+        if (Array.isArray(emojies) && emojies.length) {
+          for (let i = 0; i < emojies.length; i++) {
+            const em = emojies[i];
+            if (value.includes(em)) {
+              console.log("emojies", value.replace(new RegExp(em, "g"), ""));
+              setFieldValue(
+                currentField.field,
+                value.replace(new RegExp(em, "g"), "")
+              );
+            }
+          }
+          return Promise.resolve();
+        }
+      }
+      return Promise.resolve();
+    },
+  });

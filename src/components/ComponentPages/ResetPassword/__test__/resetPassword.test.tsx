@@ -98,7 +98,7 @@ describe("Reset Password page", () => {
     render(<ResetPassword />);
     const btnEl = screen.getByTestId("submitButton");
     await act(async () => {
-      await userEvent.click(btnEl);
+      await fireEvent.click(btnEl);
     });
 
     await waitFor(() => {

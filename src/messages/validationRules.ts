@@ -1,4 +1,5 @@
 import { patterns, validations } from "./validation";
+import { emojiValidation, allowedEmojies } from "../utils/generalUtility";
 
 export const formValidationTypes = () => {
   return ["onSubmit", "onBlur"];
@@ -40,10 +41,7 @@ export const firstNameRule = {
       max: 100,
       message: validations.firstNameMax,
     },
-    // {
-    //   pattern: patterns.alphaSpace,
-    //   message: validations.firstNameSpace,
-    // },
+    emojiValidation(patterns.emoji_restrication, validations.not_allowed),
   ],
 };
 
@@ -57,10 +55,7 @@ export const lastNameRule = {
       max: 100,
       message: validations.firstNameMax,
     },
-    // {
-    //   pattern: patterns.alphaSpace,
-    //   message: validations.lastNameSpace,
-    // },
+    emojiValidation(patterns.emoji_restrication, validations.not_allowed),
   ],
 };
 
@@ -70,10 +65,7 @@ export const middleNameRule = {
       max: 100,
       message: validations.firstNameMax,
     },
-    {
-      pattern: patterns.alphaSpace,
-      message: validations.alphaSpace,
-    },
+    emojiValidation(patterns.emoji_restrication, validations.not_allowed),
   ],
 };
 
@@ -211,10 +203,6 @@ export const usernameRule = {
       required: true,
       message: validations.username,
     },
-    // {
-    //   pattern: patterns.emailPhone,
-    //   message: validations.usernameNotValid,
-    // },
     ({}) => ({
       validator(_, value) {
         if (value && value?.trim().match(patterns.emailPhone)) {
@@ -285,7 +273,7 @@ export const nickNameRule = {
       required: true,
       message: validations.nickName,
     },
-    ({ getFieldValue }) => ({
+    ({}) => ({
       validator(_, value) {
         if (!value || value.trim().length > 0) {
           return Promise.resolve();
@@ -320,10 +308,7 @@ export const topicNameRule = {
       max: 30,
       message: validations.topiNameMax30,
     },
-    // {
-    //   pattern: patterns.allowed_chars,
-    //   message: validations.topicNameSpace,
-    // },
+    emojiValidation(patterns.emoji_restrication, validations.not_allowed),
   ],
 };
 
@@ -342,6 +327,7 @@ export const summaryRule = {
       max: 500,
       message: validations.summaryMax,
     },
+    allowedEmojies(),
   ],
 };
 
@@ -356,10 +342,7 @@ export const campNameRule = {
       max: 30,
       message: validations.topiNameMax30,
     },
-    // {
-    //   pattern: patterns.alphaNumSpace,
-    //   message: validations.campAlpha,
-    // },
+    emojiValidation(patterns.emoji_restrication, validations.not_allowed),
   ],
 };
 
@@ -395,9 +378,12 @@ export const threadTitleRule = {
       max: 100,
       message: validations.Max100,
     },
-    // {
-    //   pattern: patterns.allowed_chars,
-    //   message: validations.threadAlpha,
-    // },
+    emojiValidation(patterns.emoji_restrication, validations.not_allowed),
+  ],
+};
+
+export const keywordsRule = {
+  rules: [
+    emojiValidation(patterns.emoji_restrication, validations.not_allowed),
   ],
 };

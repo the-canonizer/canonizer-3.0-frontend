@@ -95,6 +95,7 @@ const PostUI = ({
               current={pCurrent}
               onChange={pOnChange}
               total={pTotal}
+              showSizeChanger={false}
             />
           ) : null}
         </div>
