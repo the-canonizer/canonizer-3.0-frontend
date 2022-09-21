@@ -235,6 +235,6 @@ describe("Delegated Support camps page", () => {
     expect(
       screen.getAllByText(labels.viewMore)[0] as HTMLLabelElement
     ).toBeInTheDocument();
-    expect(screen.getByText("Current Supported Campus:")).toBeInTheDocument();
+    expect(screen.getByText("Current Supported Camps:")).toBeInTheDocument();
   });
 });
