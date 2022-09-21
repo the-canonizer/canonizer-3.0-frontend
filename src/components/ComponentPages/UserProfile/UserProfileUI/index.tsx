@@ -52,7 +52,10 @@ const UserProfile = () => {
   return (
     <>
       <div className={styles.userProfileData}>
-        <UserProfileDetails profileData={profileData} />
+        <UserProfileDetails
+          profileData={profileData}
+          userSupportedCampsList={userSupportedCampsList}
+        />
         <UserProfileCard
           userSupportedCampsList={userSupportedCampsList}
           setUserSupportedCampsList={setUserSupportedCampsList}
@@ -60,6 +63,7 @@ const UserProfile = () => {
           dropdownNameSpaceList={dropdownNameSpaceList}
           setDropdownNameSpaceList={setDropdownNameSpaceList}
           noData={noData}
+          profileData={profileData}
         />
       </div>
     </>

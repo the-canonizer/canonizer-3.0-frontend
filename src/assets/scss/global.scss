@@ -221,7 +221,10 @@ body {
     .btnsWrap {
       margin-bottom: 15px;
     }
-    .btn {
+    span.btn {
+      display: block !important;
+    }
+    button.btn, button.ant-btn {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -239,9 +242,9 @@ body {
         color: var(--primary);
         border-color: var(--primary);
       }
-      & + .btn {
+      /* & + .btn {
         margin-top: 0.5rem;
-      }
+      } */
     }
   }
   .leftSidebarNewsFeeds {

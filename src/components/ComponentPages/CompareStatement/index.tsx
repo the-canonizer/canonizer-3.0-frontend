@@ -55,7 +55,6 @@ function CompareStatement() {
       });
       setItemsStatus(oldStatus);
     }
-    console.log("ss", itemsStatus);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 

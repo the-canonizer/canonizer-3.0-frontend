@@ -50,7 +50,7 @@ describe("Reset Password page", () => {
     await userEvent.tab();
     // await act(async () => {
     // });
-     waitFor(() => {
+    waitFor(() => {
       expect(inputEl).toHaveValue("1234567");
       expect(screen.queryByRole("alert")).toBeInTheDocument();
       expect(screen.queryByText(validations.passwordPattern)).toBeVisible();
@@ -98,7 +98,7 @@ describe("Reset Password page", () => {
     render(<ResetPassword />);
     const btnEl = screen.getByTestId("submitButton");
     await act(async () => {
-      await userEvent.click(btnEl);
+      await fireEvent.click(btnEl);
     });
 
     await waitFor(() => {

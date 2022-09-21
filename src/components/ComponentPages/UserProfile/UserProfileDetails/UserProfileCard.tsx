@@ -10,6 +10,7 @@ export const UserProfileCard = ({
   dropdownNameSpaceList,
   setDropdownNameSpaceList,
   noData,
+  profileData,
 }) => {
   const renderFilter = () => {
     const filteredVal = nameSpaceList.filter(
@@ -27,16 +28,10 @@ export const UserProfileCard = ({
               type="inner"
               title={
                 <div className={styles.main_card_title}>
-                  {supportedCampList.private_status == 0
-                    ? messages.labels.nickname
-                    : ""}{" "}
+                  {messages.labels.nickname}{" "}
                   <span className={styles.Bluecolor}>
                     {" "}
-                    <b>
-                      {supportedCampList.private_status == 1
-                        ? ""
-                        : supportedCampList.nick_name}
-                    </b>
+                    <b>{supportedCampList.nick_name}</b>
                   </span>
                 </div>
               }
@@ -101,11 +96,39 @@ export const UserProfileCard = ({
                                           <span className={styles.count}>
                                             {""}
                                           </span>
-                                          <Link href={campData.camp_link}>
-                                            <a className={styles.Bluecolor}>
-                                              {campData.camp_name}
-                                            </a>
-                                          </Link>
+                                          {campData.delegate_nick_name_id !=
+                                          0 ? (
+                                            <>
+                                              <p
+                                                className={
+                                                  styles.userProfileLabel
+                                                }
+                                              >
+                                                Support deligated to{" "}
+                                                <a className={styles.Bluecolor}>
+                                                  {
+                                                    campData.delegate_nick_name_id
+                                                  }
+                                                </a>
+                                              </p>
+                                              <b
+                                                className={
+                                                  styles.userProfileLabel
+                                                }
+                                              >
+                                                Supported camp list:{" "}
+                                              </b>
+                                              <a className={styles.Bluecolor}>
+                                                {campData.camp_name}
+                                              </a>
+                                            </>
+                                          ) : (
+                                            <Link href={campData.camp_link}>
+                                              <a className={styles.Bluecolor}>
+                                                {campData.camp_name}
+                                              </a>
+                                            </Link>
+                                          )}
                                         </div>
                                       </Tag>
                                     );

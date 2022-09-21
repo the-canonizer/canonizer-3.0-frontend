@@ -12,6 +12,7 @@ export const patterns = {
   alphaSpace: /^[a-zA-Z ]*$/,
   alphaNumSpace: /^[a-zA-Z0-9 ]*$/,
   url: /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g,
+  emoji_restrication: /([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g,
 };
 
 export const validations: ErrorContainer = {
@@ -73,4 +74,5 @@ export const validations: ErrorContainer = {
   Max100: "Maximum 100 character allowed!",
   reply: " The reply field is required.",
   custom_label: "%&<>,.\\/ are not allowed!",
+  not_allowed: "Emojis not allowed!",
 };
