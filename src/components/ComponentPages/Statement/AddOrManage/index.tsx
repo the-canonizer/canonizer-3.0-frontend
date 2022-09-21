@@ -47,11 +47,16 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Link from "next/link";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
-import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
+import {
+  replaceSpecialCharacters,
+  allowedEmojies,
+  emojiValidation,
+} from "src/utils/generalUtility";
 
 const { Text } = Typography;
 
-const { campAboutUrlRule } = messages;
+const { campAboutUrlRule, summaryRule, keywordsRule, patterns, validations } =
+  messages;
 
 export default function AddOrManage({ add }) {
   const { isUserAuthenticated } = useAuthentication();
@@ -540,6 +545,10 @@ export default function AddOrManage({ add }) {
                               pattern: /[^ \s]/,
                               message: K?.exceptionalMessages?.campNameReqErr,
                             },
+                            emojiValidation(
+                              patterns.emoji_restrication,
+                              validations.not_allowed
+                            ),
                           ]}
                         >
                           <Input
@@ -555,6 +564,7 @@ export default function AddOrManage({ add }) {
                             className={`${styles.formItem} mb-2`}
                             label={<>Keywords</>}
                             name="keywords"
+                            {...keywordsRule}
                           >
                             <Input />
                           </Form.Item>
@@ -584,6 +594,10 @@ export default function AddOrManage({ add }) {
                               pattern: /[^ \s]/,
                               message: K?.exceptionalMessages?.topicNameReqErr,
                             },
+                            emojiValidation(
+                              patterns.emoji_restrication,
+                              validations.not_allowed
+                            ),
                           ]}
                         >
                           <Input disabled={objection} maxLength={30} />
@@ -647,6 +661,7 @@ export default function AddOrManage({ add }) {
                             message:
                               K?.exceptionalMessages?.statementRequiredErrorMsg,
                           },
+                          allowedEmojies(),
                         ]}
                       >
                         <Input.TextArea
@@ -681,6 +696,7 @@ export default function AddOrManage({ add }) {
                             pattern: /[^ \s]/,
                             message: K?.exceptionalMessages?.objectionIsRequire,
                           },
+                          allowedEmojies(),
                         ]}
                         className={styles.formItem}
                         name="objection_reason"
@@ -706,6 +722,7 @@ export default function AddOrManage({ add }) {
                               <small>(Briefly describe your changes)</small>
                             </>
                           }
+                          {...summaryRule}
                         >
                           <Input.TextArea size="large" rows={7} />
                         </Form.Item>

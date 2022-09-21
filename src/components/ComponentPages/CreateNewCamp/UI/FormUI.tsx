@@ -16,6 +16,7 @@ const {
   campNameRule,
   campAboutUrlRule,
   parentCampRule,
+  keywordsRule,
 } = messages;
 
 const CreateCampFormUI = ({
@@ -177,7 +178,11 @@ const CreateCampFormUI = ({
               </Form.Item>
             </Col>
             <Col xs={24} sm={12}>
-              <Form.Item label={labels.cr_keywords} name="key_words">
+              <Form.Item
+                label={labels.cr_keywords}
+                name="key_words"
+                {...keywordsRule}
+              >
                 <Input size={"large"} placeholder="Keywords" />
               </Form.Item>
             </Col>
