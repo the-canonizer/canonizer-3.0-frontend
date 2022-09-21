@@ -17,10 +17,8 @@ export const getPrivacyPolicyContent = async () => {
     const res = await NetworkCall.fetch(
       TermsAndPrivacyRequest.getPrivacyPolicyContent()
     );
-    console.log("res =>", res);
     return res.data;
   } catch (error) {
-    console.log("eroro");
     handleError(error);
   }
 };

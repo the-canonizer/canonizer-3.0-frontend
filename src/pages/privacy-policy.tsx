@@ -4,7 +4,6 @@ import TermsAndPrivacy from "../components/ComponentPages/TermsAndPrivacy";
 import { getPrivacyPolicyContent } from "src/network/api/termsAndPrivacyApi";
 
 function PrivacyPolicy({ privacyPolicyContent }) {
-  console.log("inn main ", privacyPolicyContent);
   return (
     <>
       <Layout>
