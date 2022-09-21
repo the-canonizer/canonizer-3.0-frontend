@@ -177,7 +177,12 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
   };
 
   const pickDate = (e) => {
-    const IsoDateFormat = Date.parse(e?._d) / 1000;
+    let IsoDateFormat;
+    if (e == null) {
+      IsoDateFormat = Date.now() / 1000;
+    } else {
+      IsoDateFormat = Date.parse(e?._d) / 1000;
+    }
     setDatePickerValue(e?._d);
     dispatch(
       setFilterCanonizedTopics({
