@@ -41,7 +41,7 @@ const CampTree = ({ scrollToCampStatement }) => {
   const { isUserAuthenticated, userID } = useAuthentication();
 
   const showSelectedCamp = (data, select_camp) => {
-    let a = Object.keys(data).map((item) => {
+    let a = Object?.keys(data).map((item) => {
       if (data[item].children) {
         if (data[item].score >= scoreFilter) {
           if (data[item]?.camp_id == select_camp) {
@@ -64,12 +64,13 @@ const CampTree = ({ scrollToCampStatement }) => {
   useEffect(() => {
     setScoreFilter(filterByScore);
     setIncludeReview(review == "review" ? true : false);
-    showSelectedCamp(
-      tree,
-      +router?.query?.camp?.at(1)?.split("-")?.at(0) == 1
-        ? 2
-        : +router?.query?.camp?.at(1)?.split("-")?.at(0)
-    );
+    tree &&
+      showSelectedCamp(
+        tree,
+        +router?.query?.camp?.at(1)?.split("-")?.at(0) == 1
+          ? 2
+          : +router?.query?.camp?.at(1)?.split("-")?.at(0)
+      );
   }, [filterByScore, review]);
 
   useEffect(() => {
@@ -91,12 +92,14 @@ const CampTree = ({ scrollToCampStatement }) => {
         }
       });
     }
-    showSelectedCamp(
-      tree,
-      +router?.query?.camp?.at(1)?.split("-")?.at(0) == 1
-        ? 2
-        : +router?.query?.camp?.at(1)?.split("-")?.at(0)
-    );
+    console.log("treeee => ", tree);
+    tree &&
+      showSelectedCamp(
+        tree,
+        +router?.query?.camp?.at(1)?.split("-")?.at(0) == 1
+          ? 2
+          : +router?.query?.camp?.at(1)?.split("-")?.at(0)
+      );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tree]);
 

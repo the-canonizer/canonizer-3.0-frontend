@@ -239,7 +239,7 @@ function HistoryCollapse({
                           ? replaceSpecialCharacters(
                               campStatement?.topic_num +
                                 "-" +
-                                campStatement?.topic_name?.replaceAll(" ", "-"),
+                                campStatement?.topic_name?.replace(/ /g, "-"),
                               "-"
                             )
                           : router?.query?.camp?.at(0),
@@ -251,7 +251,7 @@ function HistoryCollapse({
                           ? replaceSpecialCharacters(
                               campStatement?.camp_num +
                                 "-" +
-                                campStatement?.camp_name?.replaceAll(" ", "-"),
+                                campStatement?.camp_name?.replace(/ /g, "-"),
                               "-"
                             )
                           : replaceSpecialCharacters(
