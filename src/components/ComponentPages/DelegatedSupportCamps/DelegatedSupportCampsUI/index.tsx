@@ -217,7 +217,7 @@ export default function DelegatedSupportCampsUI({
         </Form>
       </Modal>
       <Modal
-        title={<h3>Current Supported Campus:</h3>}
+        title={<h3>Current Supported Camps:</h3>}
         footer={null}
         visible={viewMoreModalVisible}
         onOk={handelViewMoreModalCancel}

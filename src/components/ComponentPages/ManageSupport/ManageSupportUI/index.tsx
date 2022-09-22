@@ -36,9 +36,11 @@ const ManageSupportUI = ({
     })
   );
   const [removeCampsSupport, setRemoveCampsSupport] = useState(false);
+
   const router = useRouter();
   const manageSupportArr = [];
   const supportOrderLen = manageSupportArr.length + 1;
+  const campSupportPath = router.asPath.replace("/support/", "/topic/");
 
   const manageListOrder = manageSupportList.length;
 
@@ -52,7 +54,7 @@ const ManageSupportUI = ({
       topic_num: reqBodyData.topic_num,
       add_camp: {},
       remove_camps: [reqBodyData.camp_num],
-      type: "deligate",
+      type: "delegate",
       action: "remove",
       nick_name_id: nickNameList[0].id,
       order_update: [],
@@ -205,7 +207,7 @@ const ManageSupportUI = ({
                           : tag.support_order}
                         .{" "}
                       </span>
-                      <Link href="">
+                      <Link href={campSupportPath}>
                         <a className={styles.Bluecolor}> {tag.camp_name}</a>
                       </Link>
                     </div>
