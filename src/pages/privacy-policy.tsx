@@ -1,21 +1,22 @@
 import Layout from "../hoc/layout";
-import PrivacyPolicys from "../components/ComponentPages/privacyPolicy";
-import { getTermsAndServicesContent } from "src/network/api/termsAndPrivacyApi";
 
-function PrivacyPolicy({ termsAndServicesConrent }) {
+import TermsAndPrivacy from "../components/ComponentPages/TermsAndPrivacy";
+import { getPrivacyPolicyContent } from "src/network/api/termsAndPrivacyApi";
+
+function PrivacyPolicy({ privacyPolicyContent }) {
   return (
     <>
       <Layout>
-        <PrivacyPolicys termsAndServicesConrent={termsAndServicesConrent} />
+        <TermsAndPrivacy termsAndPrivacyContent={privacyPolicyContent} />
       </Layout>
     </>
   );
 }
 export async function getStaticProps() {
-  const res = await getTermsAndServicesContent();
+  const res = await getPrivacyPolicyContent();
   return {
     props: {
-      termsAndServicesConrent: res || [],
+      privacyPolicyContent: res || [],
     },
   };
 }

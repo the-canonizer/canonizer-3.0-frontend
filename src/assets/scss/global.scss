@@ -1733,3 +1733,22 @@ div[role="option"]::before {
     }
   }
 }
+.policy-content .p1, .policy-content .p2, .policy-content .p3,
+  .policy-content h1, .policy-content h2, .policy-content h3, .policy-content h4, .policy-content h5, .policy-content h6 {
+  font-weight: bold;
+}
+.policy-content .p1, .policy-content h1 {
+  font-size: 2rem;
+}
+.policy-content .p2, .policy-content h2 {
+  font-size: 1.75rem;
+}
+.policy-content .p3, .policy-content h3 {
+  font-size: 1.5rem;
+}
+.policy-content .p4, .policy-content h4 {
+  font-size: 1.25rem;
+}
+.policy-content .p5, .policy-content h5 {
+  font-size: 1.125rem;
+}
