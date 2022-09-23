@@ -10,6 +10,7 @@ import {
   Input,
   DatePicker,
   Popover,
+  Tooltip,
 } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
 import { RootState } from "../../../store";
@@ -25,6 +26,7 @@ import styles from "./topicListFilter.module.scss";
 import { useRouter } from "next/router";
 import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
 import K from "../../../constants";
+import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 // import { showCreateCampButton } from "src/utils/generalUtility";
 
 const infoContent = (
@@ -158,6 +160,9 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
     setSelectedAsOFDate(filteredAsOfDate);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filteredAsOfDate]);
+  useEffect(() => {
+    getCanonizedAlgorithmsApi();
+  }, []);
 
   const selectAlgorithm = (value) => {
     dispatch(
@@ -177,7 +182,12 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
   };
 
   const pickDate = (e) => {
-    const IsoDateFormat = Date.parse(e?._d) / 1000;
+    let IsoDateFormat;
+    if (e == null) {
+      IsoDateFormat = Date.now() / 1000;
+    } else {
+      IsoDateFormat = Date.parse(e?._d) / 1000;
+    }
     setDatePickerValue(e?._d);
     dispatch(
       setFilterCanonizedTopics({
@@ -221,14 +231,24 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
           {isCampBtnVisible &&
           currentCampNode?.isDisabled == 0 &&
           currentCampNode?.parentIsOneLevel == 0 ? (
-            <Button
-              size="large"
-              className="btn"
-              disabled={tree && !tree["1"]?.is_valid_as_of_time ? true : false}
-              onClick={onCreateCamp}
+            <Tooltip
+              title={
+                tree && !tree["1"]?.is_valid_as_of_time
+                  ? "this topic is not created"
+                  : ""
+              }
             >
-              <i className="icon-camp"></i> Create New Camp
-            </Button>
+              <Button
+                className="btn"
+                size="large"
+                disabled={
+                  tree && !tree["1"]?.is_valid_as_of_time ? true : false
+                }
+                onClick={onCreateCamp}
+              >
+                <i className="icon-camp"></i> Create New Camp
+              </Button>
+            </Tooltip>
           ) : null}
         </div>
         <Collapse

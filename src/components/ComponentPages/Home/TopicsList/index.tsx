@@ -6,7 +6,10 @@ import { Typography, List, Select, Tag, Input, Button, Popover } from "antd";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store";
-import { getCanonizedTopicsApi } from "../../../../network/api/homePageApi";
+import {
+  getCanonizedNameSpacesApi,
+  getCanonizedTopicsApi,
+} from "../../../../network/api/homePageApi";
 import { setFilterCanonizedTopics } from "../../../../store/slices/filtersSlice";
 import styles from "./topicsList.module.scss";
 import { Spin, Checkbox } from "antd";
@@ -70,7 +73,7 @@ const TopicsList = () => {
   }));
 
   const [topicsData, setTopicsData] = useState(canonizedTopics);
-  const [nameSpacesList] = useState(nameSpaces);
+  const [nameSpacesList, setNameSpacesList] = useState(nameSpaces);
 
   const [isReview, setIsReview] = useState(asof == "review");
   const [inputSearch, setInputSearch] = useState(search || "");
@@ -99,7 +102,8 @@ const TopicsList = () => {
     setSelectedNameSpace(filterNameSpace);
     setNameSpaceId(filterNameSpaceId);
     setInputSearch(search);
-  }, [filterNameSpace, filterNameSpaceId, search]);
+    setNameSpacesList(nameSpaces);
+  }, [filterNameSpace, filterNameSpaceId, search, nameSpaces]);
 
   useEffect(() => {
     setTopicsData(canonizedTopics);
@@ -202,6 +206,7 @@ const TopicsList = () => {
     dispatch(setCurrentCheckSupportStatus(""));
     dispatch(setCheckSupportExistsData(""));
     dispatch(setManageSupportStatusCheck(false));
+    getCanonizedNameSpacesApi();
   }, []);
   return (
     <>

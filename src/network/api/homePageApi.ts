@@ -7,6 +7,7 @@ import {
   setCanonizedTopics,
   pushToCanonizedTopics,
   setCanonizedAlgorithms,
+  setWhatsNewContent,
 } from "../../store/slices/homePageSlice";
 import {
   setThreads,
@@ -92,6 +93,7 @@ export const getCanonizedWhatsNewContentApi = async () => {
     const whatsNew = await NetworkCall.fetch(
       HomePageRequests.getCanonizedWhatsNewContent()
     );
+    store.dispatch(setWhatsNewContent(whatsNew?.data));
     return whatsNew?.data;
   } catch (error) {
     // message.error(error.message);

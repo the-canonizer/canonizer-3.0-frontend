@@ -23,6 +23,7 @@ const CampTree = ({ scrollToCampStatement }) => {
   const [includeReview, setIncludeReview] = useState(
     review == "review" ? true : false
   );
+  const [showTree, setShowTree] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
   const onSelect = (
@@ -39,9 +40,37 @@ const CampTree = ({ scrollToCampStatement }) => {
   };
   const { isUserAuthenticated, userID } = useAuthentication();
 
+  const showSelectedCamp = (data, select_camp) => {
+    let a = Object?.keys(data).map((item) => {
+      if (data[item].children) {
+        if (data[item].score >= scoreFilter) {
+          if (data[item]?.camp_id == select_camp) {
+            setShowTree(true);
+
+            return;
+          }
+          showSelectedCamp(data[item].children, select_camp);
+        } else {
+          return null;
+        }
+      }
+      if (data[item]?.camp_id == select_camp) {
+        setShowTree(true);
+        return;
+      }
+    });
+  };
+
   useEffect(() => {
     setScoreFilter(filterByScore);
     setIncludeReview(review == "review" ? true : false);
+    tree &&
+      showSelectedCamp(
+        tree,
+        +router?.query?.camp?.at(1)?.split("-")?.at(0) == 1
+          ? 2
+          : +router?.query?.camp?.at(1)?.split("-")?.at(0)
+      );
   }, [filterByScore, review]);
 
   useEffect(() => {
@@ -63,6 +92,14 @@ const CampTree = ({ scrollToCampStatement }) => {
         }
       });
     }
+    console.log("treeee => ", tree);
+    tree &&
+      showSelectedCamp(
+        tree,
+        +router?.query?.camp?.at(1)?.split("-")?.at(0) == 1
+          ? 2
+          : +router?.query?.camp?.at(1)?.split("-")?.at(0)
+      );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tree]);
 
@@ -200,19 +237,21 @@ const CampTree = ({ scrollToCampStatement }) => {
   };
 
   return tree ? (
-    <Tree
-      showLine={{ showLeafIcon: false }}
-      defaultExpandedKeys={[
-        +router?.query?.camp?.at(1)?.split("-")?.at(0) == 1
-          ? 2
-          : +router?.query?.camp?.at(1)?.split("-")?.at(0),
-      ]}
-      onSelect={onSelect}
-      autoExpandParent={true}
-      // filterTreeNode={filterTreeNode}
-    >
-      {tree && renderTreeNodes(tree)}
-    </Tree>
+    showTree && (
+      <Tree
+        showLine={{ showLeafIcon: false }}
+        defaultExpandedKeys={[
+          +router?.query?.camp?.at(1)?.split("-")?.at(0) == 1
+            ? 2
+            : +router?.query?.camp?.at(1)?.split("-")?.at(0),
+        ]}
+        onSelect={onSelect}
+        autoExpandParent={true}
+        // filterTreeNode={filterTreeNode}
+      >
+        {tree && renderTreeNodes(tree)}
+      </Tree>
+    )
   ) : (
     <p>No Camp Tree Found</p>
   );

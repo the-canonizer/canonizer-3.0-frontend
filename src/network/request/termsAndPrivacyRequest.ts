@@ -8,9 +8,18 @@ export default class TermsAndPrivacyRequest extends Request {
 
   // Define request functions below.
 
-  static getTermsAndServicesContent() {
+  static getPrivacyPolicyContent() {
     return new Request(
       K.Network.URL.GetPrivacyPolicyContent,
+      K.Network.Method.GET,
+      null,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
+  static getTermsAndServicesContent() {
+    return new Request(
+      K.Network.URL.GetTermsAndServicesContent,
       K.Network.Method.GET,
       null,
       K.Network.Header.Type.Json,

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { Row, Col, Typography } from "antd";
 import styles from "./siteFooter.module.scss";
 import { getFooterSocialLinksApi } from "../../../network/api/footerSocialLinksApi";
@@ -8,6 +9,7 @@ const { Title } = Typography;
 import K from "../../../constants";
 
 function Footer() {
+  const router = useRouter();
   const [socialLinks, setSocialLinks] = useState(null);
   useEffect(() => {
     async function linksApiCall() {
@@ -126,11 +128,15 @@ function Footer() {
                       {mockLinks2?.map((item) => {
                         return (
                           <li key={item.id}>
-                            {item?.external ? (
+                            {router.asPath.includes("/topic") ? (
                               <a
                                 href={item.link}
                                 rel="noopener noreferrer"
-                                target="_blank"
+                                target={
+                                  item?.linkTitle == "White Paper"
+                                    ? "_blank"
+                                    : "_self"
+                                }
                               >
                                 <i className="icon-angle-right"></i>{" "}
                                 {item.linkTitle}

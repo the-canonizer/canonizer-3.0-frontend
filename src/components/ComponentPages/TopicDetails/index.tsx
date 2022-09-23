@@ -263,18 +263,31 @@ const TopicDetails = () => {
       })
     );
   };
+
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
-        <CampInfoBar
-          isTopicPage={true}
-          getCheckSupportStatus={getCheckSupportStatus}
-        />
+        {tree && tree["1"]?.is_valid_as_of_time ? (
+          <CampInfoBar
+            isTopicPage={true}
+            getCheckSupportStatus={getCheckSupportStatus}
+          />
+        ) : (
+          <CampInfoBar
+            payload={{
+              topic_num: topicRecord?.topic_num,
+              topic_name: topicRecord?.topic_name,
+              camp_name: topicRecord?.camp_name,
+            }}
+            isTopicHistoryPage={true}
+            getCheckSupportStatus={getCheckSupportStatus}
+          />
+        )}
 
         <aside className={styles.miniSide + " leftSideBar miniSideBar"}>
           <SideBar onCreateCamp={onCreateCamp} />
         </aside>
-        {tree && tree["1"]?.is_valid_as_of_time && (
+        {tree && tree["1"]?.is_valid_as_of_time ? (
           <>
             <div className={styles.pageContent + " pageContentWrap"}>
               <Spin spinning={getTreeLoadingIndicator} size="large">
@@ -314,8 +327,8 @@ const TopicDetails = () => {
               </Spin>
             </div>
           </>
-        )}
-        {tree && !tree["1"]?.is_valid_as_of_time && (
+        ) : (
+          // {tree && !tree["1"]?.is_valid_as_of_time &&
           <div className={styles.imageWrapper}>
             <div>
               <Image

@@ -261,8 +261,8 @@ const SupportTreeCard = ({
             >
               <CustomButton className="btn-orange">
                 {/* {K?.exceptionalMessages?.directJoinSupport} */}
-                {getCheckSupportStatus.is_delegator == 1 ||
-                getCheckSupportStatus.support_flag != 1
+                {getCheckSupportStatus?.is_delegator == 1 ||
+                getCheckSupportStatus?.support_flag != 1
                   ? K?.exceptionalMessages?.directJoinSupport
                   : K?.exceptionalMessages?.manageSupport}
               </CustomButton>

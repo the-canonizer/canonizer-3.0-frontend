@@ -35,9 +35,12 @@ const ManageSupportUI = ({
         state.supportTreeCard.currentDelegatedSupportedClick,
     })
   );
+  const [removeCampsSupport, setRemoveCampsSupport] = useState(false);
+
   const router = useRouter();
   const manageSupportArr = [];
   const supportOrderLen = manageSupportArr.length + 1;
+  const campSupportPath = router.asPath.replace("/support/", "/topic/");
 
   const manageListOrder = manageSupportList.length;
 
@@ -51,7 +54,7 @@ const ManageSupportUI = ({
       topic_num: reqBodyData.topic_num,
       add_camp: {},
       remove_camps: [reqBodyData.camp_num],
-      type: "deligate",
+      type: "delegate",
       action: "remove",
       nick_name_id: nickNameList[0].id,
       order_update: [],
@@ -167,16 +170,20 @@ const ManageSupportUI = ({
                     <input
                       type="checkbox"
                       checked={checked}
-                      onClick={(e) =>
-                        removeAll((e.target as any).checked, manageSupportList)
-                      }
+                      onClick={(e) => {
+                        removeAll((e.target as any).checked, manageSupportList);
+                        setRemoveCampsSupport(!removeCampsSupport);
+                      }}
                     ></input>
                   </span>
                   <span className={styles.removeAll}>Remove all</span>
                   <Button
                     htmlType="button"
                     className={styles.clear_Btn}
-                    onClick={(e) => clearAllChanges(manageSupportList)}
+                    onClick={(e) => {
+                      clearAllChanges(manageSupportList);
+                      setRemoveCampsSupport(false);
+                    }}
                   >
                     Clear all changes
                   </Button>
@@ -195,12 +202,12 @@ const ManageSupportUI = ({
                     <div className={styles.btndiv}>
                       {" "}
                       <span className={styles.count}>
-                        {getSupportStatusData !== ""
+                        {getSupportStatusData == ""
                           ? index + 1
                           : tag.support_order}
                         .{" "}
                       </span>
-                      <Link href="">
+                      <Link href={campSupportPath}>
                         <a className={styles.Bluecolor}> {tag.camp_name}</a>
                       </Link>
                     </div>
@@ -208,9 +215,10 @@ const ManageSupportUI = ({
                       ""
                     ) : (
                       <CloseCircleOutlined
-                        onClick={() =>
-                          handleClose(tag, tag.topic_num, tagsArrayList)
-                        }
+                        onClick={() => {
+                          handleClose(tag, tag.topic_num, tagsArrayList);
+                          setRemoveCampsSupport(true);
+                        }}
                       />
                     )}
                   </Button>
@@ -251,7 +259,7 @@ const ManageSupportUI = ({
                 htmlType="submit"
                 className={styles.Upload_Btn}
                 onClick={
-                  CheckDelegatedOrDirect
+                  CheckDelegatedOrDirect || removeCampsSupport
                     ? submitNickNameSupportCamps
                     : addRemoveApi
                 }
