@@ -65,12 +65,7 @@ const CampTree = ({ scrollToCampStatement }) => {
     setScoreFilter(filterByScore);
     setIncludeReview(review == "review" ? true : false);
     tree &&
-      showSelectedCamp(
-        tree,
-        +router?.query?.camp?.at(1)?.split("-")?.at(0) == 1
-          ? 2
-          : +router?.query?.camp?.at(1)?.split("-")?.at(0)
-      );
+      showSelectedCamp(tree, -+router?.query?.camp?.at(1)?.split("-")?.at(0));
   }, [filterByScore, review]);
 
   useEffect(() => {
@@ -92,14 +87,8 @@ const CampTree = ({ scrollToCampStatement }) => {
         }
       });
     }
-    console.log("treeee => ", tree);
     tree &&
-      showSelectedCamp(
-        tree,
-        +router?.query?.camp?.at(1)?.split("-")?.at(0) == 1
-          ? 2
-          : +router?.query?.camp?.at(1)?.split("-")?.at(0)
-      );
+      showSelectedCamp(tree, +router?.query?.camp?.at(1)?.split("-")?.at(0));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tree]);
 
