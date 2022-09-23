@@ -65,7 +65,7 @@ const CampTree = ({ scrollToCampStatement }) => {
     setScoreFilter(filterByScore);
     setIncludeReview(review == "review" ? true : false);
     tree &&
-      showSelectedCamp(tree, -+router?.query?.camp?.at(1)?.split("-")?.at(0));
+      showSelectedCamp(tree, +router?.query?.camp?.at(1)?.split("-")?.at(0));
   }, [filterByScore, review]);
 
   useEffect(() => {
