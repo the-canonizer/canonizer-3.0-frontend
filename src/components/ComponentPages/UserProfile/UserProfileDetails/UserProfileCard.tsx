@@ -5,12 +5,10 @@ import Link from "next/link";
 import { Card, Tag, Select, Spin } from "antd";
 export const UserProfileCard = ({
   userSupportedCampsList,
-  setUserSupportedCampsList,
   nameSpaceList,
   dropdownNameSpaceList,
   setDropdownNameSpaceList,
   noData,
-  profileData,
 }) => {
   const renderFilter = () => {
     const filteredVal = nameSpaceList.filter(
@@ -106,9 +104,7 @@ export const UserProfileCard = ({
                                               >
                                                 Support deligated to{" "}
                                                 <a className={styles.Bluecolor}>
-                                                  {
-                                                    campData.delegate_nick_name_id
-                                                  }
+                                                  {campData.delegate_nick_name}
                                                 </a>
                                               </p>
                                               <b

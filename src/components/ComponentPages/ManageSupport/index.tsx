@@ -53,6 +53,8 @@ const ManageSupport = () => {
     const body = { topic_num: topicNum };
 
     let res = await getAllUsedNickNames(topicNum && body);
+    console.log(res, "pop");
+
     if (res && res.status_code == 200) {
       setNickNameList(res.data);
     }
@@ -199,6 +201,7 @@ const ManageSupport = () => {
   //replace use to - change to space
   const camp_Name_ = campRecord?.camp_name?.replace("-", "");
   const CampName = camp_Name_;
+  const campSupportPath = router.asPath.replace("/support/", "/topic/");
 
   const body = { topic_num: topicNum };
   const getActiveSupportTopicList = async (
@@ -240,6 +243,7 @@ const ManageSupport = () => {
             camp_num: parseInt(campNum),
             camp_name: CampName,
             support_order: supportOrderLen,
+            link: campSupportPath,
           });
         }
         setManageSupportList(manageSupportArr);
@@ -255,6 +259,7 @@ const ManageSupport = () => {
             camp_num: parseInt(campNum),
             camp_name: CampName,
             support_order: supportOrderLen,
+            link: campSupportPath,
           });
         }
         setManageSupportList(supportedCampsList);
@@ -299,6 +304,7 @@ const ManageSupport = () => {
     let resultCamp = manageSupportList.filter(
       (values) => !campIds.includes(values.camp_num)
     );
+
     //if supported camps  flag is 0 means not supported else same as previous
     resultCamp =
       !updatePostion && support_flag_Status == 0

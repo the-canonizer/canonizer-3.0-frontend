@@ -207,7 +207,7 @@ const ManageSupportUI = ({
                           : tag.support_order}
                         .{" "}
                       </span>
-                      <Link href={campSupportPath}>
+                      <Link href={tag.link}>
                         <a className={styles.Bluecolor}> {tag.camp_name}</a>
                       </Link>
                     </div>

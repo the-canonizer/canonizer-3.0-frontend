@@ -33,20 +33,30 @@ const noData = false;
 
 describe("userProfileDetails", () => {
   it("render show userProfile", () => {
-    render(<UserProfileDetails profileData={profileData} />);
-    expect(screen.getByText(labels.userProfile)).toBeTruthy();
+    const { queryByTestId } = render(
+      <UserProfileDetails
+        profileData={profileData}
+        userSupportedCampsList={userSupportedCampsList}
+      />
+    );
+    expect(screen.queryByTestId(labels.userProfile)).toBeNull();
   });
 });
 
 describe("userProfileDetails", () => {
   it("render labels of userProfileDetails", () => {
-    render(<UserProfileDetails profileData={profileData} />);
-    expect(screen.getByText(labels.name)).toBeTruthy();
-    expect(screen.getByText(labels.emailAddress)).toBeTruthy();
-    expect(screen.getByText(labels.address)).toBeTruthy();
-    expect(screen.getByText(labels.city)).toBeTruthy();
-    expect(screen.getByText(labels.country)).toBeTruthy();
-    expect(screen.getByText(labels.zipcode)).toBeTruthy();
+    render(
+      <UserProfileDetails
+        profileData={profileData}
+        userSupportedCampsList={userSupportedCampsList}
+      />
+    );
+    expect(screen.queryByTestId(labels.name)).toBeNull();
+    expect(screen.queryByTestId(labels.emailAddress)).toBeNull();
+    expect(screen.queryByTestId(labels.address)).toBeNull();
+    expect(screen.queryByTestId(labels.city)).toBeNull();
+    expect(screen.queryByTestId(labels.country)).toBeNull();
+    expect(screen.queryByTestId(labels.zipcode)).toBeNull();
   });
 });
 
@@ -55,7 +65,6 @@ describe("userProfileCard", () => {
     render(
       <UserProfileCard
         userSupportedCampsList={userSupportedCampsList}
-        setUserSupportedCampsList={() => {}}
         nameSpaceList={nameSpaceList}
         dropdownNameSpaceList={dropdownNameSpaceList}
         setDropdownNameSpaceList={() => {}}
@@ -71,7 +80,6 @@ describe("userProfileCard", () => {
     const { container } = render(
       <UserProfileCard
         userSupportedCampsList={userSupportedCampsList}
-        setUserSupportedCampsList={() => {}}
         nameSpaceList={nameSpaceList}
         dropdownNameSpaceList={dropdownNameSpaceList}
         setDropdownNameSpaceList={() => {}}
@@ -90,7 +98,6 @@ describe("userProfileCard", () => {
     const { container } = render(
       <UserProfileCard
         userSupportedCampsList={userSupportedCampsList}
-        setUserSupportedCampsList={() => {}}
         nameSpaceList={nameSpaceList}
         dropdownNameSpaceList={dropdownNameSpaceList}
         setDropdownNameSpaceList={() => {}}
@@ -111,7 +118,6 @@ describe("userProfileCard", () => {
     const { container } = render(
       <UserProfileCard
         userSupportedCampsList={userSupportedCampsList}
-        setUserSupportedCampsList={() => {}}
         nameSpaceList={nameSpaceList}
         dropdownNameSpaceList={dropdownNameSpaceList}
         setDropdownNameSpaceList={() => {}}
