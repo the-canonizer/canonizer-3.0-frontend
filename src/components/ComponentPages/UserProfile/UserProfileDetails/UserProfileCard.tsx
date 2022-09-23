@@ -9,6 +9,8 @@ export const UserProfileCard = ({
   dropdownNameSpaceList,
   setDropdownNameSpaceList,
   noData,
+  setUserSupportedCampsList,
+  profileData
 }) => {
   const renderFilter = () => {
     const filteredVal = nameSpaceList.filter(
