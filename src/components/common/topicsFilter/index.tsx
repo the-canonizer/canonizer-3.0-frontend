@@ -234,7 +234,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
             <Tooltip
               title={
                 tree && !tree["1"]?.is_valid_as_of_time
-                  ? "this topic is not created"
+                  ? "Topic doesn't exist"
                   : ""
               }
             >
