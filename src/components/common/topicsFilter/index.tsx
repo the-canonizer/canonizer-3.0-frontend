@@ -229,7 +229,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
             <i className="icon-topic"></i> Create New Topic
           </Button>
           {isCampBtnVisible &&
-          currentCampNode?.isDisabled == 0 &&
+          currentCampNode?._isDisabled == 0 &&
           currentCampNode?.parentIsOneLevel == 0 ? (
             <Tooltip
               title={

@@ -31,7 +31,6 @@ const CampTree = ({ scrollToCampStatement }) => {
     e: { selected; selectedNodes; node; event }
   ) => {
     if (selectedKeys.join() === "custom" || selectedKeys.join() === "") {
-      console.log("selected", selectedKeys, e);
     } else {
       dispatch(setCurrentCamp(e?.selectedNodes[0]?.data));
       setSelectedNodeID(+selectedKeys.join(""));
@@ -73,24 +72,36 @@ const CampTree = ({ scrollToCampStatement }) => {
       );
   }, [filterByScore, review]);
 
+  const dispatchData = (data, isDisabled = 0, isOneLevel = 0) => {
+    const keys = Object.keys(data);
+    for (let i = 0; i < keys.length; i++) {
+      const item = keys[i];
+      const parentIsOneLevel = isOneLevel;
+      let _isOneLevel = data[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
+      let _isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
+
+      if (
+        data[item].camp_id === +router?.query?.camp?.at(1)?.split("-")?.at(0)
+      ) {
+        dispatch(
+          setCurrentCamp({
+            ...data[item],
+            parentIsOneLevel,
+            _isDisabled,
+            _isOneLevel,
+          })
+        );
+        break;
+      }
+      if (data[item].children) {
+        dispatchData(data[item], _isDisabled, _isOneLevel);
+      }
+    }
+  };
+
   useEffect(() => {
-    let isDisabled = 0,
-      isOneLevel = 0;
     if (tree != null) {
-      Object.keys(tree).map((item) => {
-        const parentIsOneLevel = isOneLevel;
-
-        isOneLevel = tree[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
-        isDisabled = tree[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
-
-        if (
-          tree[item].camp_id === +router?.query?.camp?.at(1)?.split("-")?.at(0)
-        ) {
-          dispatch(
-            setCurrentCamp({ ...tree[item], parentIsOneLevel, isDisabled })
-          );
-        }
-      });
+      dispatchData(tree);
     }
     console.log("treeee => ", tree);
     tree &&
@@ -127,14 +138,8 @@ const CampTree = ({ scrollToCampStatement }) => {
   const renderTreeNodes = (data: any, isDisabled = 0, isOneLevel = 0) => {
     return Object.keys(data).map((item) => {
       const parentIsOneLevel = isOneLevel;
-      isOneLevel = data[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
-      isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
-      console.log(
-        "check_one_level =====>   ",
-        data[item].camp_id,
-        isOneLevel,
-        isDisabled
-      );
+      let _isOneLevel = data[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
+      let _isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
 
       if (data[item].children) {
         if (data[item].score >= scoreFilter) {
@@ -192,11 +197,16 @@ const CampTree = ({ scrollToCampStatement }) => {
                   </>
                 }
                 key={data[item].camp_id}
-                data={{ ...data[item], parentIsOneLevel, isDisabled }}
+                data={{
+                  ...data[item],
+                  parentIsOneLevel,
+                  _isDisabled,
+                  _isOneLevel,
+                }}
               >
                 {data[item].camp_id ===
                   +router?.query?.camp?.at(1)?.split("-")?.at(0) &&
-                  isDisabled == 0 &&
+                  _isDisabled == 0 &&
                   parentIsOneLevel == 0 && (
                     <TreeNode
                       key={"custom"}
@@ -224,7 +234,7 @@ const CampTree = ({ scrollToCampStatement }) => {
                     />
                   )}
 
-                {renderTreeNodes(data[item].children, isDisabled, isOneLevel)}
+                {renderTreeNodes(data[item].children, _isDisabled, _isOneLevel)}
               </TreeNode>
             </>
           );
