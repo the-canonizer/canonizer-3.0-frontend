@@ -259,7 +259,7 @@ const CampInfoBar = ({
         {isTopicPage && (
           <Link
             href={
-              campStatement?.length > 0
+              history?.items?.length > 0
                 ? `/statement/history/${replaceSpecialCharacters(
                     router?.query?.camp
                       ? router?.query?.camp[0]
