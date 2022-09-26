@@ -90,7 +90,7 @@ const CreateNewCamp = ({
 
   const fetchParentsCampList = async () => {
     const q = getRouterParams();
-    const body = { topic_num: q?.topic_num };
+    const body = { topic_num: q?.topic_num, parent_camp_num: q.camp_num };
     let res = await getAllParentsCamp(body);
     if (res && res.status_code === 200) {
       setParentCamps(res.data);
