@@ -44,7 +44,6 @@ const Notifications = ({}) => {
   const getListData = async () => {
     const res = await getLists();
     // if (res && res.status_code === 200) {
-    //   console.log("[notification header]", res);
     // }
   };
 
@@ -69,10 +68,8 @@ const Notifications = ({}) => {
         // const fcm_token = await messaging.getToken({
         //   vapidKey: process.env.NEXT_PUBLIC_FCM_CERTIFICATE_KEY,
         // });
-        // console.log("[messaging.getToken]", fcm_token);
 
         if (token || token2) {
-          console.log("[SET-TOKEN ~ TOKEN2]", token2, "[TOKEN]", token);
 
           localforage.setItem("fcm_token", token2);
           // await updateToken(token2);
@@ -80,7 +77,6 @@ const Notifications = ({}) => {
           getMessage();
         }
       } catch (error) {
-        // console.log(error);
       }
     }
 
@@ -94,13 +90,11 @@ const Notifications = ({}) => {
       const messaging = firebase.messaging();
       if ("serviceWorker" in navigator && "PushManager" in window) {
         const status = await Notification.requestPermission();
-        // console.log("[onSwitch ~ status]", status);
 
         if (status && status === "granted") {
           const fcm_token = await messaging.getToken({
             vapidKey: process.env.NEXT_PUBLIC_FCM_CERTIFICATE_KEY,
           });
-          console.log("[onSwitch ~ fcm_token]", fcm_token);
 
           // Set token in our local storage
           if (fcm_token) {
@@ -123,17 +117,8 @@ const Notifications = ({}) => {
     if ("serviceWorker" in navigator && "PushManager" in window) {
       // () => handleClickPushNotification(message?.data?.url)
       // navigator.serviceWorker.addEventListener("message", async (event) => {
-      //   console.log("(event for the service worker event)", event);
-      // console.log("(event for the service worker event data)", event.data);
       //   const url = event?.data.data["gcm.notification.url"];
-      //   console.log(
-      //     "🚀 ~ file: index.tsx ~ line 96 ~ navigator.serviceWorker.addEventListener ~ url",
-      //     url,
-      //     "title",
-      //     event?.data?.notification?.title,
-      //     "body",
-      //     event?.data?.notification?.body
-      //   );
+     
       //   notification.open({
       //     message: event?.data?.notification?.title,
       //     description: event?.data?.notification?.body,
@@ -147,12 +132,6 @@ const Notifications = ({}) => {
 
       messaging.onMessage((message) => {
         const url = message.data["gcm.notification.url"];
-        console.log(
-          "[messaging.onMessage foreground Message]",
-          message,
-          "url",
-          url
-        );
 
         // const title = message.notification.title;
 

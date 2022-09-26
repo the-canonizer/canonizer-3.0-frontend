@@ -323,7 +323,6 @@ export const allowedEmojies =
           for (let i = 0; i < emojies.length; i++) {
             const em = emojies[i];
             if (value.includes(em)) {
-              console.log("emojies", value.replace(new RegExp(em, "g"), ""));
               setFieldValue(
                 currentField.field,
                 value.replace(new RegExp(em, "g"), "")

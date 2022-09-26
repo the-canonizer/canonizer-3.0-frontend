@@ -129,7 +129,6 @@ export default function AddOrManage({ add }) {
       });
       setOptions(oldOptions);
     } else if (res?.status_code == 400) {
-      // console.log("error in res =>", res);
     }
     setScreenLoading(false);
   };
@@ -185,7 +184,7 @@ export default function AddOrManage({ add }) {
       statement_update: update && manageFormOf == "statement" ? 1 : null,
       camp_id: manageFormOf == "camp" ? editInfo?.camp?.id : null,
       camp_name: manageFormOf == "camp" ? values.camp_name : null,
-      keywords: manageFormOf == "camp" ? values.keywords : null,
+      key_words: manageFormOf == "camp" ? values.keywords : null,
       camp_about_url: manageFormOf == "camp" ? values?.camp_about_url : null,
       camp_about_nick_id:
         manageFormOf == "camp"
@@ -224,8 +223,12 @@ export default function AddOrManage({ add }) {
     }
   };
 
-  const fetchParentsCampList = async (topic_num: number, parent_camp_num) => {
-    const body = { topic_num: topic_num };
+  const fetchParentsCampList = async (
+    topic_num: number,
+    parent_camp_num: number,
+    camp_num: number
+  ) => {
+    const body = { topic_num, parent_camp_num, camp_num };
     let res = await getAllParentsCamp(body);
     if (res && res.status_code === 200) {
       setParentCamps(res.data);
@@ -247,6 +250,7 @@ export default function AddOrManage({ add }) {
             topic_name: res?.data?.topic?.topic_name,
           });
         } else if (manageFormOf == "camp") {
+          
           res = await getEditCampApi(
             router?.query?.statement[0]?.split("-")[0]
           );
@@ -254,7 +258,8 @@ export default function AddOrManage({ add }) {
           if (res?.data?.camp?.parent_camp_num) {
             fetchParentsCampList(
               res?.data?.camp?.topic_num,
-              res?.data?.camp?.parent_camp_num
+              res?.data?.camp?.parent_camp_num,
+              res?.data?.camp?.camp_num
             );
           }
           setPayloadBreadCrumb({
@@ -866,7 +871,6 @@ export default function AddOrManage({ add }) {
                                 value: form?.getFieldValue("statement"),
                               });
                               setWikiStatement(res?.data);
-                              console.log("res ", res);
                               setModalVisible(true);
                             }}
                           >

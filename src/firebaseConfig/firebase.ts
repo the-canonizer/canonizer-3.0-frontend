@@ -24,15 +24,12 @@ export const firebaseCloudMessaging = {
 
       if ("serviceWorker" in navigator && "PushManager" in window) {
         navigator.serviceWorker.addEventListener("message", async (event) => {
-          // console.log("(event for the service worker)", event, event.data);
-
           await getLists();
         });
 
         navigator.serviceWorker
           .register("/firebase-messaging-sw.js")
           .then(async (objServiceWorker) => {
-            // console.log("[service worker registered]", objServiceWorker);
             messaging.useServiceWorker(objServiceWorker);
           })
           .catch((err) => console.error(`OOps! ${err}`));
