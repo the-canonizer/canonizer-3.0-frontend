@@ -184,7 +184,7 @@ export default function AddOrManage({ add }) {
       statement_update: update && manageFormOf == "statement" ? 1 : null,
       camp_id: manageFormOf == "camp" ? editInfo?.camp?.id : null,
       camp_name: manageFormOf == "camp" ? values.camp_name : null,
-      keywords: manageFormOf == "camp" ? values.keywords : null,
+      key_words: manageFormOf == "camp" ? values.keywords : null,
       camp_about_url: manageFormOf == "camp" ? values?.camp_about_url : null,
       camp_about_nick_id:
         manageFormOf == "camp"
