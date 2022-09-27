@@ -127,7 +127,12 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
               </li> */}
                 {mockLinks?.map((item) => {
                   return (
-                    <li key={item.id}>
+                    <li
+                      className={
+                        router.asPath === "/browse" ? styles.active : ""
+                      }
+                      key={item.id}
+                    >
                       {router.asPath.includes("/topic") ? (
                         <a
                           href={item.link}
