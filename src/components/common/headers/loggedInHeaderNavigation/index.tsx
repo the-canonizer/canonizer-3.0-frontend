@@ -128,9 +128,9 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
                 {mockLinks?.map((item) => {
                   return (
                     <li
-                      className={
-                        router.asPath === "/browse" ? styles.active : ""
-                      }
+                      // className={
+                      //   router.asPath === "/browse" ? styles.active : ""
+                      // }
                       key={item.id}
                     >
                       {router.asPath.includes("/topic") ? (
@@ -142,6 +142,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
                               ? "_blank"
                               : "_self"
                           }
+                          // className="dsadas"
                         >
                           {item.linkTitle}
                         </a>
