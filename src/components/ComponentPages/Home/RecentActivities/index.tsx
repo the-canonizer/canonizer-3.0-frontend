@@ -122,7 +122,6 @@ export default function RecentActivities() {
     var convertedTime = month + " " + date + ", " + year + ", " + time;
     return " " + convertedTime;
   };
-
   const ViewAllTopics = (isTopic) => {
     const ViewAllName = isTopic ? "View All Topics" : "View All Threads";
     return (
@@ -141,7 +140,6 @@ export default function RecentActivities() {
       )
     );
   };
-
   const LoadMoreTopics = (topicType) => {
     const pageNumber =
       topicType == "topic/camps" ? topicPageNumber : threadPageNumber;
@@ -157,7 +155,9 @@ export default function RecentActivities() {
                   getTopicsApiCallWithReqBody(true, topicType);
                 }}
               >
-                <Text>Load More topics !</Text>
+                <Text>
+                  Load More {topicType == "threads" ? "threads" : "topics"}
+                </Text>
                 {!loadMoreIndicator && <i className="icon-angle-right"></i>}
                 {loadMoreIndicator && <Spin indicator={antIcon} />}
               </Button>
