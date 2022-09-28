@@ -128,7 +128,7 @@ function Footer() {
                       {mockLinks2?.map((item) => {
                         return (
                           <li key={item.id}>
-                            {router.asPath.includes("/topic") ? (
+                            {router?.asPath.includes("/topic") ? (
                               <a
                                 href={item.link}
                                 rel="noopener noreferrer"

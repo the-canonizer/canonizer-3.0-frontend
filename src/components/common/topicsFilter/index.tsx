@@ -260,7 +260,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
             </div>
           )}
           bordered={false}
-          activeKey={["1", "2"]}
+          defaultActiveKey={["1", "2"]}
         >
           <Panel
             header={<span className={styles.title}>Canonizer</span>}
