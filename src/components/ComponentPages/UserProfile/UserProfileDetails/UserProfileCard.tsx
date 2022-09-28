@@ -10,7 +10,7 @@ export const UserProfileCard = ({
   setDropdownNameSpaceList,
   noData,
   setUserSupportedCampsList,
-  profileData
+  profileData,
 }) => {
   const renderFilter = () => {
     const filteredVal = nameSpaceList.filter(
@@ -85,6 +85,17 @@ export const UserProfileCard = ({
                                           {data.title}
                                         </a>
                                       </Link>
+                                      {!data.delegate_nick_name_id ? (
+                                        " "
+                                      ) : (
+                                        <p className={styles.userProfileLabel}>
+                                          {" "}
+                                          (Support delegated to{" "}
+                                          <a className={styles.Bluecolor}>
+                                            {data.delegate_nick_name})
+                                          </a>
+                                        </p>
+                                      )}
                                     </div>
                                   }
                                 >
@@ -96,37 +107,11 @@ export const UserProfileCard = ({
                                           <span className={styles.count}>
                                             {""}
                                           </span>
-                                          {campData.delegate_nick_name_id !=
-                                          0 ? (
-                                            <>
-                                              <p
-                                                className={
-                                                  styles.userProfileLabel
-                                                }
-                                              >
-                                                Support deligated to{" "}
-                                                <a className={styles.Bluecolor}>
-                                                  {campData.delegate_nick_name}
-                                                </a>
-                                              </p>
-                                              <b
-                                                className={
-                                                  styles.userProfileLabel
-                                                }
-                                              >
-                                                Supported camp list:{" "}
-                                              </b>
-                                              <a className={styles.Bluecolor}>
-                                                {campData.camp_name}
-                                              </a>
-                                            </>
-                                          ) : (
-                                            <Link href={campData.camp_link}>
-                                              <a className={styles.Bluecolor}>
-                                                {campData.camp_name}
-                                              </a>
-                                            </Link>
-                                          )}
+                                          <Link href={campData.camp_link}>
+                                            <a className={styles.Bluecolor}>
+                                              {campData.camp_name}
+                                            </a>
+                                          </Link>
                                         </div>
                                       </Tag>
                                     );

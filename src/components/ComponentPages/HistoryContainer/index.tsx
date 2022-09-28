@@ -107,7 +107,7 @@ function HistoryContainer() {
       dispatchData(tree);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tree]); 
+  }, [tree]);
 
   useEffect(() => {
     setCampHistory(history);

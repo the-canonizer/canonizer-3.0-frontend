@@ -53,8 +53,6 @@ const ManageSupport = () => {
     const body = { topic_num: topicNum };
 
     let res = await getAllUsedNickNames(topicNum && body);
-    console.log(res, "pop");
-
     if (res && res.status_code == 200) {
       setNickNameList(res.data);
     }
@@ -100,7 +98,6 @@ const ManageSupport = () => {
 
   const CheckDelegatedOrDirect =
     currentDelegatedSupportedClick.delegatedSupportClick;
-
   const reqBodyData = {
     topic_num: +router?.query?.manageSupport[0]?.split("-")[0],
     camp_num: +router?.query?.manageSupport[1]?.split("-")[0],
@@ -131,6 +128,7 @@ const ManageSupport = () => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
     if (response && response.status_code === 200) {
       warningMsg = response.data.warning;
+
       supportSts = response.data.support_flag;
       //Api's call for list
       dispatch(setCheckSupportExistsData({}));
@@ -216,6 +214,7 @@ const ManageSupport = () => {
       : warning
       ? warning
       : "";
+
     // let dataValue = warningMessage;
     if (response && response.status_code === 200) {
       setCardCamp_ID("");
@@ -284,7 +283,7 @@ const ManageSupport = () => {
   //Cancel Button
   const cancelManageRoute = () => {
     router.push({
-      pathname: manageSupportPathData,
+      pathname: manageSupportPath,
     });
   };
 

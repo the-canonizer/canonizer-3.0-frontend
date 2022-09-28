@@ -250,7 +250,6 @@ export default function AddOrManage({ add }) {
             topic_name: res?.data?.topic?.topic_name,
           });
         } else if (manageFormOf == "camp") {
-          
           res = await getEditCampApi(
             router?.query?.statement[0]?.split("-")[0]
           );
