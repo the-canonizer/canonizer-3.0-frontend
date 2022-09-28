@@ -119,6 +119,8 @@ const ForumComponent = ({}) => {
       res = await getThreadsList(q);
     }
 
+    setLoading(false);
+
     if (res && res.status_code === 200) {
       setThreadList(res.data?.items);
       setTotalRecords(res.data?.total_rows);
@@ -130,6 +132,7 @@ const ForumComponent = ({}) => {
     const q = `?page=${page}&per_page=${per_page}&like=${like}`;
 
     const res = await getPostsList(id, q);
+    setPostLoading(false);
     if (res && res.status_code === 200) {
       setPostList(res.data?.items);
       setPtotalRecords(res.data?.total_rows);
@@ -183,6 +186,7 @@ const ForumComponent = ({}) => {
   };
 
   const onChange = (p, size) => {
+    setLoading(true);
     setPage(p);
     const queries = router?.query;
     queries.page = p;
@@ -496,6 +500,7 @@ const ForumComponent = ({}) => {
   };
 
   const pOnChange = (p, size) => {
+    setPostLoading(true);
     setPpage(p);
   };
 
@@ -522,6 +527,7 @@ const ForumComponent = ({}) => {
           filterThread={filterThread}
           isLoggedIn={isLoggedIn}
           paramsList={paramsList}
+          isLoading={loading}
         />
       ) : null}
       {router?.pathname === "/forum/[topic]/[camp]/threads/create" ? (
