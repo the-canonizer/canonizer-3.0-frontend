@@ -59,7 +59,6 @@ function HistoryContainer() {
   useEffect(() => {
     async function getTreeApiCall() {
       setLoadingIndicator(true);
-      console.log(router.query);
       const reqBodyForService = {
         topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
         camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
@@ -76,27 +75,39 @@ function HistoryContainer() {
     getTreeApiCall();
   }, [asofdate, algorithm, +router?.query?.camp?.at(1)?.split("-")[0]]);
 
+  const dispatchData = (data, isDisabled = 0, isOneLevel = 0) => {
+    const keys = Object.keys(data);
+    for (let i = 0; i < keys.length; i++) {
+      const item = keys[i];
+      const parentIsOneLevel = isOneLevel;
+      let _isOneLevel = data[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
+      let _isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
+
+      if (
+        data[item].camp_id === +router?.query?.camp?.at(1)?.split("-")?.at(0)
+      ) {
+        dispatch(
+          setCurrentCamp({
+            ...data[item],
+            parentIsOneLevel,
+            _isDisabled,
+            _isOneLevel,
+          })
+        );
+        break;
+      }
+      if (data[item].children) {
+        dispatchData(data[item], _isDisabled, _isOneLevel);
+      }
+    }
+  };
+
   useEffect(() => {
-    let isDisabled = 0,
-      isOneLevel = 0;
     if (tree != null) {
-      Object.keys(tree).map((item) => {
-        const parentIsOneLevel = isOneLevel;
-
-        isOneLevel = tree[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
-        isDisabled = tree[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
-
-        if (
-          tree[item].camp_id === +router?.query?.camp?.at(1)?.split("-")?.at(0)
-        ) {
-          dispatch(
-            setCurrentCamp({ ...tree[item], parentIsOneLevel, isDisabled })
-          );
-        }
-      });
+      dispatchData(tree);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tree]);
+  }, [tree]); 
 
   useEffect(() => {
     setCampHistory(history);
@@ -137,9 +148,7 @@ function HistoryContainer() {
         count.current = count.current + 1;
       }
       setLoadingIndicator(false);
-    } catch (error) {
-      //console.log(error)
-    }
+    } catch (error) {}
   };
 
   const handleTabButton = async (tabName) => {
@@ -247,7 +256,7 @@ function HistoryContainer() {
         <CreateNewTopicButton className={styles.createBtn} click={topicRoute} />
 
         {historyOf !== "topic" &&
-        currentCampNode?.isDisabled == 0 &&
+        currentCampNode?._isDisabled == 0 &&
         currentCampNode?.parentIsOneLevel == 0 ? (
           <CreateNewCampButton
             className={styles.createBtn}

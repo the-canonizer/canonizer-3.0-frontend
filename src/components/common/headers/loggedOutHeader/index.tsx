@@ -85,11 +85,13 @@ const LoggedOutHeader = () => {
                     className={router.asPath === item.link ? styles.active : ""}
                     key={item.id}
                   >
-                    {item?.external ? (
+                    {router.asPath.includes("/topic") ? (
                       <a
                         href={item.link}
                         rel="noopener noreferrer"
-                        target="_blank"
+                        target={
+                          item?.linkTitle == "White Paper" ? "_blank" : "_self"
+                        }
                         className="dsadas"
                       >
                         {item.linkTitle}

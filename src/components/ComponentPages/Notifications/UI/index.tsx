@@ -1,6 +1,5 @@
 import { Fragment } from "react";
-import { Card, Typography, Button, Spin, Pagination } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
+import { Card, Typography, Spin, Pagination } from "antd";
 
 import styles from "./Notifications.module.scss";
 
@@ -17,47 +16,38 @@ const NotificationsListUI = ({
   total,
   per_page,
 }) => {
-  const LoadMoreTopics = (
-    <div className="text-center">
-      {page < total / per_page && (
-        <Button className={styles.viewAll} onClick={onViewMoreClick}>
-          <Text>View More</Text>
-          {isLoading && <Spin indicator={<LoadingOutlined spin />} />}
-        </Button>
-      )}
-    </div>
-  );
-
   return (
     <Fragment>
       <SideBar />
       <div className="pageContentWrap">
-        <Card
-          title={
-            <Title level={3} className={styles.cardTitle}>
-              Notifications
-            </Title>
-          }
-          className={styles.notify_card}
-          id="card-title"
-        >
-          <Lists
-            list={list}
-            isFooter={true}
-            LoadMoreTopics={
-              <Pagination
-                current={page}
-                total={total}
-                pageSize={per_page}
-                responsive={true}
-                showSizeChanger={false}
-                onChange={onViewMoreClick}
-                hideOnSinglePage={true}
-                className={styles.listPagination}
-              />
+        <Spin spinning={isLoading} size="large">
+          <Card
+            title={
+              <Title level={3} className={styles.cardTitle}>
+                Notifications
+              </Title>
             }
-          />
-        </Card>
+            className={styles.notify_card}
+            id="card-title"
+          >
+            <Lists
+              list={list}
+              isFooter={true}
+              LoadMoreTopics={
+                <Pagination
+                  current={page}
+                  total={total}
+                  pageSize={per_page}
+                  responsive={true}
+                  showSizeChanger={false}
+                  onChange={onViewMoreClick}
+                  hideOnSinglePage={true}
+                  className={styles.listPagination}
+                />
+              }
+            />
+          </Card>
+        </Spin>
       </div>
     </Fragment>
   );

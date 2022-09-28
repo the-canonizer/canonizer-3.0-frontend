@@ -14,11 +14,6 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 messaging.setBackgroundMessageHandler(function (payload) {
-  console.log(
-    "🚀 ~ file: firebase-messaging-sw.js ~ line 17 ~ payload",
-    payload
-  );
-
   const notificationTitle = "Hello world is awesome";
 
   const notificationOptions = {
@@ -30,10 +25,6 @@ messaging.setBackgroundMessageHandler(function (payload) {
 });
 
 messaging.onBackgroundMessage(messaging, (payload) => {
-  console.log(
-    "[firebase-messaging-sw.js] Received background message ",
-    payload
-  );
   // Customize notification here
   const notificationTitle = "Background Message Title";
   const notificationOptions = {

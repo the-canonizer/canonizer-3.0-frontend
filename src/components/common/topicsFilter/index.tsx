@@ -229,12 +229,12 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
             <i className="icon-topic"></i> Create New Topic
           </Button>
           {isCampBtnVisible &&
-          currentCampNode?.isDisabled == 0 &&
+          currentCampNode?._isDisabled == 0 &&
           currentCampNode?.parentIsOneLevel == 0 ? (
             <Tooltip
               title={
                 tree && !tree["1"]?.is_valid_as_of_time
-                  ? "this topic is not created"
+                  ? "Topic doesn't exist"
                   : ""
               }
             >
@@ -260,7 +260,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
             </div>
           )}
           bordered={false}
-          activeKey={["1", "2"]}
+          defaultActiveKey={["1", "2"]}
         >
           <Panel
             header={<span className={styles.title}>Canonizer</span>}
