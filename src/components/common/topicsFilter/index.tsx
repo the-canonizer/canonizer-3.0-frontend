@@ -234,7 +234,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
             <Tooltip
               title={
                 tree && !tree["1"]?.is_valid_as_of_time
-                  ? "A new camp cannot be created since the topic didn’t exist on the selected date."
+                  ? K.exceptionalMessages.createNewCampTooltipMsg
                   : ""
               }
             >
