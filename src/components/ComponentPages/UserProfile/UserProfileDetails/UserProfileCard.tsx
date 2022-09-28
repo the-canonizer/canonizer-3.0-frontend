@@ -82,19 +82,19 @@ export const UserProfileCard = ({
                                     <div className={styles.card_heading_title}>
                                       <Link href={data.title_link}>
                                         <a className={styles.Bluecolor}>
-                                          {data.title}
+                                          {data.title}{" "}
                                         </a>
                                       </Link>
                                       {!data.delegate_nick_name_id ? (
                                         " "
                                       ) : (
-                                        <p className={styles.userProfileLabel}>
+                                        <div className={styles.delegatedSupport}>
                                           {" "}
                                           (Support delegated to{" "}
                                           <a className={styles.Bluecolor}>
                                             {data.delegate_nick_name})
                                           </a>
-                                        </p>
+                                        </div>
                                       )}
                                     </div>
                                   }
@@ -107,11 +107,16 @@ export const UserProfileCard = ({
                                           <span className={styles.count}>
                                             {""}
                                           </span>
+                                          {!data.delegate_nick_name_id ? "" : 
+                                          <span className={styles.Bluecolor}>
+                                            {campData.support_order} {": "}
+                                            </span>}
                                           <Link href={campData.camp_link}>
                                             <a className={styles.Bluecolor}>
                                               {campData.camp_name}
                                             </a>
                                           </Link>
+                                         
                                         </div>
                                       </Tag>
                                     );
