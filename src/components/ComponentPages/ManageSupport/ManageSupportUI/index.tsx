@@ -54,7 +54,6 @@ const ManageSupportUI = ({
   const router = useRouter();
   const manageSupportArr = [];
   const supportOrderLen = manageSupportArr.length + 1;
-  const campSupportPath = router.asPath.replace("/support/", "/topic/");
 
   const manageListOrder = manageSupportList.length;
   const warningForDirecteSupportedCamps =
@@ -240,7 +239,7 @@ const ManageSupportUI = ({
                         .{" "}
                       </span>
                       <Link href={tag.link}>
-                        <a className={styles.Bluecolor}> {tag.camp_name}</a>
+                        <a className={styles.Bluecolor}>{tag.camp_name}</a>
                       </Link>
                     </div>
                     {CheckDelegatedOrDirect ? (
