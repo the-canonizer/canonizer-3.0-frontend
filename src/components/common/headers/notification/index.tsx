@@ -70,14 +70,12 @@ const Notifications = ({}) => {
         // });
 
         if (token || token2) {
-
           localforage.setItem("fcm_token", token2);
           // await updateToken(token2);
           setChecked(true);
           getMessage();
         }
-      } catch (error) {
-      }
+      } catch (error) {}
     }
 
     setToken();
@@ -118,7 +116,7 @@ const Notifications = ({}) => {
       // () => handleClickPushNotification(message?.data?.url)
       // navigator.serviceWorker.addEventListener("message", async (event) => {
       //   const url = event?.data.data["gcm.notification.url"];
-     
+
       //   notification.open({
       //     message: event?.data?.notification?.title,
       //     description: event?.data?.notification?.body,

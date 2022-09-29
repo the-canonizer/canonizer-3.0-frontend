@@ -98,7 +98,6 @@ const ManageSupport = () => {
 
   const CheckDelegatedOrDirect =
     currentDelegatedSupportedClick.delegatedSupportClick;
-
   const reqBodyData = {
     topic_num: +router?.query?.manageSupport[0]?.split("-")[0],
     camp_num: +router?.query?.manageSupport[1]?.split("-")[0],
@@ -129,6 +128,7 @@ const ManageSupport = () => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
     if (response && response.status_code === 200) {
       warningMsg = response.data.warning;
+
       supportSts = response.data.support_flag;
       //Api's call for list
       dispatch(setCheckSupportExistsData({}));
@@ -199,6 +199,7 @@ const ManageSupport = () => {
   //replace use to - change to space
   const camp_Name_ = campRecord?.camp_name?.replace("-", "");
   const CampName = camp_Name_;
+  const campSupportPath = router.asPath.replace("/support/", "/topic/");
 
   const body = { topic_num: topicNum };
   const getActiveSupportTopicList = async (
@@ -213,6 +214,7 @@ const ManageSupport = () => {
       : warning
       ? warning
       : "";
+
     // let dataValue = warningMessage;
     if (response && response.status_code === 200) {
       setCardCamp_ID("");
@@ -240,6 +242,7 @@ const ManageSupport = () => {
             camp_num: parseInt(campNum),
             camp_name: CampName,
             support_order: supportOrderLen,
+            link: campSupportPath,
           });
         }
         setManageSupportList(manageSupportArr);
@@ -255,6 +258,7 @@ const ManageSupport = () => {
             camp_num: parseInt(campNum),
             camp_name: CampName,
             support_order: supportOrderLen,
+            link: campSupportPath,
           });
         }
         setManageSupportList(supportedCampsList);
@@ -279,7 +283,7 @@ const ManageSupport = () => {
   //Cancel Button
   const cancelManageRoute = () => {
     router.push({
-      pathname: manageSupportPathData,
+      pathname: manageSupportPath,
     });
   };
 
@@ -299,6 +303,7 @@ const ManageSupport = () => {
     let resultCamp = manageSupportList.filter(
       (values) => !campIds.includes(values.camp_num)
     );
+
     //if supported camps  flag is 0 means not supported else same as previous
     resultCamp =
       !updatePostion && support_flag_Status == 0

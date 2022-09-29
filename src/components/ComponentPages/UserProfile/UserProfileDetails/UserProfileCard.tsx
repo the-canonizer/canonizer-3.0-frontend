@@ -5,11 +5,11 @@ import Link from "next/link";
 import { Card, Tag, Select, Spin } from "antd";
 export const UserProfileCard = ({
   userSupportedCampsList,
-  setUserSupportedCampsList,
   nameSpaceList,
   dropdownNameSpaceList,
   setDropdownNameSpaceList,
   noData,
+  setUserSupportedCampsList,
   profileData,
 }) => {
   const renderFilter = () => {
@@ -82,9 +82,20 @@ export const UserProfileCard = ({
                                     <div className={styles.card_heading_title}>
                                       <Link href={data.title_link}>
                                         <a className={styles.Bluecolor}>
-                                          {data.title}
+                                          {data.title}{" "}
                                         </a>
                                       </Link>
+                                      {!data.delegate_nick_name_id ? (
+                                        " "
+                                      ) : (
+                                        <div className={styles.delegatedSupport}>
+                                          {" "}
+                                          (Support delegated to{" "}
+                                          <a className={styles.Bluecolor}>
+                                            {data.delegate_nick_name})
+                                          </a>
+                                        </div>
+                                      )}
                                     </div>
                                   }
                                 >
@@ -96,39 +107,16 @@ export const UserProfileCard = ({
                                           <span className={styles.count}>
                                             {""}
                                           </span>
-                                          {campData.delegate_nick_name_id !=
-                                          0 ? (
-                                            <>
-                                              <p
-                                                className={
-                                                  styles.userProfileLabel
-                                                }
-                                              >
-                                                Support deligated to{" "}
-                                                <a className={styles.Bluecolor}>
-                                                  {
-                                                    campData.delegate_nick_name_id
-                                                  }
-                                                </a>
-                                              </p>
-                                              <b
-                                                className={
-                                                  styles.userProfileLabel
-                                                }
-                                              >
-                                                Supported camp list:{" "}
-                                              </b>
-                                              <a className={styles.Bluecolor}>
-                                                {campData.camp_name}
-                                              </a>
-                                            </>
-                                          ) : (
-                                            <Link href={campData.camp_link}>
-                                              <a className={styles.Bluecolor}>
-                                                {campData.camp_name}
-                                              </a>
-                                            </Link>
-                                          )}
+                                          {!data.delegate_nick_name_id ? "" : 
+                                          <span className={styles.Bluecolor}>
+                                            {campData.support_order} {": "}
+                                            </span>}
+                                          <Link href={campData.camp_link}>
+                                            <a className={styles.Bluecolor}>
+                                              {campData.camp_name}
+                                            </a>
+                                          </Link>
+                                         
                                         </div>
                                       </Tag>
                                     );
