@@ -15,6 +15,7 @@ import messages from "../../../messages";
 
 import CreateNewCampUI from "./UI/CampUI";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import isAuth from "../../../hooks/isUserAuthenticated";
 
 const CreateNewCamp = ({
   nickNames = [],
@@ -32,6 +33,8 @@ const CreateNewCamp = ({
   const router = useRouter();
   const [form] = Form.useForm();
   const dispatch = useDispatch();
+
+  const { isUserAuthenticated } = isAuth();
 
   const getRouterParams = () => {
     const q = router?.query;
@@ -98,11 +101,12 @@ const CreateNewCamp = ({
   };
 
   useEffect(() => {
-    fetchCampNickNameList();
-    fetchParentsCampList();
-    fetchNickNameList();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (isUserAuthenticated) {
+      fetchCampNickNameList();
+      fetchParentsCampList();
+      fetchNickNameList();
+    }
+  }, [isUserAuthenticated]);
 
   const onFinish = async (values: any) => {
     if (!values.camp_name?.trim()) {
