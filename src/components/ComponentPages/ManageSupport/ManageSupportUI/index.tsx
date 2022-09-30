@@ -54,7 +54,6 @@ const ManageSupportUI = ({
   const router = useRouter();
   const manageSupportArr = [];
   const supportOrderLen = manageSupportArr.length + 1;
-  const campSupportPath = router.asPath.replace("/support/", "/topic/");
 
   const manageListOrder = manageSupportList.length;
   const warningForDirecteSupportedCamps =
@@ -63,6 +62,7 @@ const ManageSupportUI = ({
     topic_num: +router?.query?.manageSupport[0]?.split("-")[0],
     camp_num: +router?.query?.manageSupport[1]?.split("-")[0],
   };
+
   const addRemoveApi = async () => {
     // const removeSupport = async (supportedId) => {
 
@@ -72,49 +72,36 @@ const ManageSupportUI = ({
     const removeVals = response.data.map((obj) => {
       return obj.camp_num;
     });
-    const RemoveSupportId = {
+
+    const addSupportId = {
       topic_num: reqBodyData.topic_num,
-      add_camp: {},
-      remove_camps: [...removeVals, reqBodyData.camp_num],
-      type: "delegate",
-      action: "remove",
+      add_camp: {
+        camp_num: reqBodyData.camp_num,
+        support_order: supportOrderLen,
+      },
+
+      remove_camps:
+        currentGetCheckSupportExistsData.is_confirm == 1 ? removeVals : [],
+      type: "direct",
+      action: "add",
       nick_name_id: nickNameList[0].id,
-      order_update: [],
+      order_update: [
+        { camp_num: reqBodyData.camp_num, order: supportOrderLen },
+      ],
     };
-    let res = await addSupport(RemoveSupportId);
-
-    if (res && res.status_code == 200) {
-      const addSupportId = {
-        topic_num: reqBodyData.topic_num,
-        add_camp: {
-          camp_num: reqBodyData.camp_num,
-          support_order: supportOrderLen,
-        },
-
-        remove_camps:
-          currentGetCheckSupportExistsData.is_confirm == 1
-            ? [response.data?.[0]?.camp_num]
-            : [],
-        type: "direct",
-        action: "add",
-        nick_name_id: nickNameList[0].id,
-        order_update: [
-          { camp_num: reqBodyData.camp_num, order: supportOrderLen },
-        ],
-      };
-      let addedRes = await addSupport(addSupportId);
-      if (addedRes && addedRes.status_code == 200) {
-        let manageSupportPath = router.asPath.replace("/support/", "/topic/");
-        if (manageSupportPath.lastIndexOf("_") > -1)
-          manageSupportPath = manageSupportPath.substring(
-            0,
-            manageSupportPath.lastIndexOf("_")
-          );
-        router.push({
-          pathname: manageSupportPath,
-        });
-      }
+    let addedRes = await addSupport(addSupportId);
+    if (addedRes && addedRes.status_code == 200) {
+      let manageSupportPath = router.asPath.replace("/support/", "/topic/");
+      if (manageSupportPath.lastIndexOf("_") > -1)
+        manageSupportPath = manageSupportPath.substring(
+          0,
+          manageSupportPath.lastIndexOf("_")
+        );
+      router.push({
+        pathname: manageSupportPath,
+      });
     }
+
     // };
   };
 
@@ -240,7 +227,7 @@ const ManageSupportUI = ({
                         .{" "}
                       </span>
                       <Link href={tag.link}>
-                        <a className={styles.Bluecolor}> {tag.camp_name}</a>
+                        <a className={styles.Bluecolor}>{tag.camp_name}</a>
                       </Link>
                     </div>
                     {CheckDelegatedOrDirect ? (

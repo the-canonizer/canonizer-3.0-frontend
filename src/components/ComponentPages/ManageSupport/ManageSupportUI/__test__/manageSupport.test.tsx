@@ -18,6 +18,7 @@ const setManageSupportList = [],
   selectedtNickname = "",
   setUpdatePostion = jest.fn();
 const submitButtonDisable = false;
+const unableToFindCamp = false;
 
 describe("ManageSupportUI", () => {
   it("render show SupportedCamps", () => {
@@ -38,6 +39,7 @@ describe("ManageSupportUI", () => {
         selectedtNickname={selectedtNickname}
         submitButtonDisable={submitButtonDisable}
         setUpdatePostion={setUpdatePostion}
+        unableToFindCamp={unableToFindCamp}
       />
     );
     expect(screen.getByText(labels.SupportedCamps)).toBeTruthy();
@@ -63,6 +65,7 @@ describe("ManageSupportUI", () => {
         selectedtNickname={selectedtNickname}
         submitButtonDisable={submitButtonDisable}
         setUpdatePostion={setUpdatePostion}
+        unableToFindCamp={unableToFindCamp}
       />
     );
     expect(screen.getByText("Nick Name To Support Above Camps")).toBeTruthy();
@@ -87,6 +90,7 @@ it("render show submit button", () => {
       selectedtNickname={selectedtNickname}
       submitButtonDisable={submitButtonDisable}
       setUpdatePostion={setUpdatePostion}
+      unableToFindCamp={unableToFindCamp}
     />
   );
   const submitButton = getAllByText("Submit")[0] as HTMLButtonElement;
@@ -111,6 +115,7 @@ it("render show cancel button", () => {
       selectedtNickname={selectedtNickname}
       submitButtonDisable={submitButtonDisable}
       setUpdatePostion={setUpdatePostion}
+      unableToFindCamp={unableToFindCamp}
     />
   );
   const cancelButton = getAllByText("Cancel")[0] as HTMLButtonElement;
@@ -135,6 +140,7 @@ it("render show clear changes button", () => {
       selectedtNickname={selectedtNickname}
       submitButtonDisable={submitButtonDisable}
       setUpdatePostion={setUpdatePostion}
+      unableToFindCamp={unableToFindCamp}
     />
   );
   const clearChangesButton = getAllByText(
@@ -161,6 +167,7 @@ it("render show Quick Action Text", () => {
       selectedtNickname={selectedtNickname}
       submitButtonDisable={submitButtonDisable}
       setUpdatePostion={setUpdatePostion}
+      unableToFindCamp={unableToFindCamp}
     />
   );
   const quickActionText = getAllByText("Quick Action:");
@@ -185,6 +192,7 @@ it("render show Remove all Text", () => {
       selectedtNickname={selectedtNickname}
       submitButtonDisable={submitButtonDisable}
       setUpdatePostion={setUpdatePostion}
+      unableToFindCamp={unableToFindCamp}
     />
   );
   const removeAllText = getAllByText("Remove all");
@@ -209,6 +217,7 @@ it("render show checkbox", () => {
       selectedtNickname={selectedtNickname}
       submitButtonDisable={submitButtonDisable}
       setUpdatePostion={setUpdatePostion}
+      unableToFindCamp={unableToFindCamp}
     />
   );
   expect(

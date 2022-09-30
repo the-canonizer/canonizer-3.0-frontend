@@ -1056,6 +1056,7 @@ const UploadFileUI = ({
                               setUpdateList({});
                             setUploadStatus(true);
                             setDatePick("");
+                            setSearch("");
                           }}
                         >
                           <Image
