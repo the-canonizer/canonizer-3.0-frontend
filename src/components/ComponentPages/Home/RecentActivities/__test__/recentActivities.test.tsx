@@ -397,7 +397,7 @@ describe("RecentActivities on HomePage for authenticated user", () => {
       expect(mainHeadig.textContent).toBe("Recent Activities");
       expect(topictab.textContent).toBe("Topics/Camps");
       expect(threadtab.textContent).toBe("Threads");
-      expect(loadmorebutton.textContent).toBe("Load More topics !");
+      expect(loadmorebutton.textContent).toBe("Load More topics");
 
       // when asPath "/" then use this
 
