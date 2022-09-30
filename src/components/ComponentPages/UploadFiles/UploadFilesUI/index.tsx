@@ -1008,6 +1008,7 @@ const UploadFileUI = ({
                               ? setDatePick("")
                               : setDatePick(date ? date.toLocaleString() : "");
                           }}
+                          value={datePick && moment(new Date(datePick))}
                         />
                       </div>
                       <div className={styles.search_users}>
@@ -1054,7 +1055,7 @@ const UploadFileUI = ({
                             addNewFile(),
                               setToggleFileView(false),
                               setUpdateList({});
-                            setUploadStatus(true);
+                            // setUploadStatus(true);
                             setDatePick("");
                             setSearch("");
                           }}
@@ -1113,7 +1114,11 @@ const UploadFileUI = ({
                 <div className={styles.uploded_Files}>
                   {showCrossBtn ? (
                     <div className={styles.Back_from_browser}>
-                      <CloseCircleOutlined onClick={handle_X_btn} />
+                      <CloseCircleOutlined
+                        onClick={() => {
+                          handle_X_btn();
+                        }}
+                      />
                     </div>
                   ) : (
                     ""

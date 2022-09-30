@@ -197,7 +197,7 @@ const ManageSupport = () => {
   //const camp_Name = router?.query?.manageSupport?.at(1)?.split(/-(.*)/s);
 
   //replace use to - change to space
-  const camp_Name_ = campRecord?.camp_name?.replace("-", "");
+  const camp_Name_ = campRecord?.camp_name;
   const CampName = camp_Name_;
   const campSupportPath = router.asPath.replace("/support/", "/topic/");
 
