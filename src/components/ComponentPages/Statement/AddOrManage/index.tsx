@@ -485,7 +485,7 @@ export default function AddOrManage({ add }) {
                   {/* paraent Camp -----------------------===============--------------------------*/}
                   {manageFormOf == "camp" && (
                     <>
-                      {parentCamp.length > 1 && (
+                      {parentCamp.length >= 1 && (
                         <Col xs={24} sm={24} xl={12}>
                           <Form.Item
                             className={`${styles.formItem} mb-2`}
@@ -556,7 +556,7 @@ export default function AddOrManage({ add }) {
                           ]}
                         >
                           <Input
-                            disabled={!!(parentCamp.length <= 1 || objection)}
+                            disabled={!!(parentCamp.length < 1 || objection)}
                             maxLength={30}
                           />
                         </Form.Item>
