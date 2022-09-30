@@ -76,6 +76,7 @@ export const logout = async (error = "", status = null) => {
     }
 
     if (!isServer()) {
+      localStorage.setItem("logout_type", "true");
       store.dispatch(setValue({ label: "logout_type", value: true }));
     }
 
