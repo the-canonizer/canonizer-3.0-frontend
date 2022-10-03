@@ -26,6 +26,8 @@ export const treeSlice = createSlice({
       support_flag: null,
       topic_num: null,
       warning: null,
+      remove_camps: [],
+      message: null,
     },
   },
   reducers: {
@@ -88,6 +90,8 @@ export const treeSlice = createSlice({
         support_flag: action.payload.support_flag,
         topic_num: action.payload.topic_num,
         warning: action.payload.warning,
+        remove_camps: action.payload.remove_camps,
+        message: action.payload.message,
       };
     },
   },

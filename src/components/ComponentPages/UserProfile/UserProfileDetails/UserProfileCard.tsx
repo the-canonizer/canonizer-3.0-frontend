@@ -101,30 +101,54 @@ export const UserProfileCard = ({
                                     </div>
                                   }
                                 >
-                                  {data.camps?.map((campData, id) => {
-                                    return (
-                                      <Tag className={styles.tag_btn} key={id}>
-                                        <div>
-                                          {""}
-                                          <span className={styles.count}>
+                                  {data.camps?.length > 0 ? (
+                                    data.camps?.map((campData, id) => {
+                                      return (
+                                        <Tag
+                                          className={styles.tag_btn}
+                                          key={id}
+                                        >
+                                          <div>
                                             {""}
-                                          </span>
-                                          {!data.delegate_nick_name_id ? (
-                                            ""
-                                          ) : (
-                                            <span className={styles.Bluecolor}>
-                                              {campData.support_order} {": "}
+                                            <span className={styles.count}>
+                                              {""}
                                             </span>
-                                          )}
-                                          <Link href={campData.camp_link}>
-                                            <a className={styles.Bluecolor}>
-                                              {campData.camp_name}
-                                            </a>
-                                          </Link>
-                                        </div>
-                                      </Tag>
-                                    );
-                                  })}
+                                            {!data.delegate_nick_name_id ? (
+                                              ""
+                                            ) : (
+                                              <span
+                                                className={styles.Bluecolor}
+                                              >
+                                                {campData.support_order} {": "}
+                                              </span>
+                                            )}
+                                            <Link href={campData.camp_link}>
+                                              <a className={styles.Bluecolor}>
+                                                {campData.camp_name}
+                                              </a>
+                                            </Link>
+                                          </div>
+                                        </Tag>
+                                      );
+                                    })
+                                  ) : (
+                                    <Tag
+                                      className={styles.tag_btn}
+                                      key={data.topic_num}
+                                    >
+                                      <div>
+                                        {""}
+                                        <span className={styles.count}>
+                                          {""}
+                                        </span>
+                                        <Link href={data.title_link}>
+                                          <a className={styles.Bluecolor}>
+                                            {"Agreement"}
+                                          </a>
+                                        </Link>
+                                      </div>
+                                    </Tag>
+                                  )}
                                 </Card>
                               </div>
                             </div>

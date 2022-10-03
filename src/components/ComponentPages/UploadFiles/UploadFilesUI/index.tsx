@@ -1265,14 +1265,15 @@ const UploadFileUI = ({
                                 />
                               </Form.Item>
                             </div>
-                            {fileSizeFlag ? (
-                              <p className={styles.maxLimit}>
-                                This file is exceeding the max limit and will
-                                not be uploaded{" "}
-                              </p>
-                            ) : (
-                              " "
-                            )}
+                            {fileSizeFlag
+                              ? (uploadOptionsHide(),
+                                (
+                                  <p className={styles.maxLimit}>
+                                    This file is exceeding the max limit and
+                                    will not be uploaded{" "}
+                                  </p>
+                                ))
+                              : " "}
                           </Spin>
                         </div>
                       );

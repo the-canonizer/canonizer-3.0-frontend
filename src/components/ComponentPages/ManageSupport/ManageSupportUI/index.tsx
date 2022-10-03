@@ -53,9 +53,12 @@ const ManageSupportUI = ({
 
   const router = useRouter();
   const manageSupportArr = [];
-  const supportOrderLen = manageSupportArr.length + 1;
+  // const supportOrderLen = manageSupportArr.length + 1;
 
-  const manageListOrder = manageSupportList.length;
+  const manageListOrder =
+    manageSupportList.length > 0
+      ? manageSupportList[manageSupportList.length - 1].support_order
+      : 1;
   const warningForDirecteSupportedCamps =
     "You are directly supporting one or more camps under this topic. If you continue your direct support will be removed.";
   const reqBodyData = {
@@ -64,30 +67,27 @@ const ManageSupportUI = ({
   };
 
   const addRemoveApi = async () => {
-    // const removeSupport = async (supportedId) => {
-
-    const body = { topic_num: reqBodyData.topic_num };
-
-    const response = await GetActiveSupportTopic(reqBodyData.topic_num && body);
-    const removeVals = response.data.map((obj) => {
-      return obj.camp_num;
-    });
-
     const addSupportId = {
       topic_num: reqBodyData.topic_num,
-      add_camp: {
-        camp_num: reqBodyData.camp_num,
-        support_order: supportOrderLen,
-      },
+      add_camp:
+        currentGetCheckSupportExistsData.support_flag == 1
+          ? {}
+          : {
+              camp_num: reqBodyData.camp_num,
+              support_order: manageListOrder,
+            },
 
       remove_camps:
-        currentGetCheckSupportExistsData.is_confirm == 1 ? removeVals : [],
+        currentGetCheckSupportExistsData.is_confirm == 1
+          ? [currentGetCheckSupportExistsData.remove_camps[0].camp_num]
+          : [],
       type: "direct",
       action: "add",
       nick_name_id: nickNameList[0].id,
-      order_update: [
-        { camp_num: reqBodyData.camp_num, order: supportOrderLen },
-      ],
+      order_update:
+        currentGetCheckSupportExistsData.support_flag == 1
+          ? []
+          : [{ camp_num: reqBodyData.camp_num, order: manageListOrder }],
     };
     let addedRes = await addSupport(addSupportId);
     if (addedRes && addedRes.status_code == 200) {
@@ -101,8 +101,6 @@ const ManageSupportUI = ({
         pathname: manageSupportPath,
       });
     }
-
-    // };
   };
 
   const CheckDelegatedOrDirect =
