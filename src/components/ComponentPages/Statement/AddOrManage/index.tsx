@@ -125,7 +125,6 @@ export default function AddOrManage({ add }) {
       const oldOptions = [...options];
       await oldOptions.map((op) => {
         op.checked = false;
-        op.disable = false;
       });
       setOptions(oldOptions);
     } else if (res?.status_code == 400) {
@@ -354,16 +353,6 @@ export default function AddOrManage({ add }) {
                 res?.data[manageFormOf]?.is_one_level === 1 ? true : false;
             }
           });
-
-          const option1 = oldOptions[0],
-            option2 = oldOptions[1];
-
-          if (option1.id === "is_disabled" && option1.checked) {
-            option2.checked = false;
-            option2.disable = true;
-          } else {
-            option2.disable = false;
-          }
 
           setOptions(oldOptions);
         }
