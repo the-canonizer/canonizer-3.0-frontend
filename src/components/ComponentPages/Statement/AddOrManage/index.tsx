@@ -386,8 +386,20 @@ export default function AddOrManage({ add }) {
   };
 
   // checkbox
+  useEffect(() => {
+    return () => {
+      const oldOptions = [...options];
+      oldOptions.map((op) => {
+        op.checked = false;
+      });
+
+      setOptions(oldOptions);
+    };
+  }, []);
+
   const onCheckboxChange = async (e: CheckboxChangeEvent) => {
     const oldOptions = [...options];
+
     await oldOptions.map((op) => {
       if (op.id === e.target.value) {
         op.checked = e.target.checked;

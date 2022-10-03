@@ -187,6 +187,17 @@ const CreateNewCamp = ({
   };
 
   // checkbox
+  useEffect(() => {
+    return () => {
+      const oldOptions = [...options];
+      oldOptions.map((op) => {
+        op.checked = false;
+      });
+
+      setOptions(oldOptions);
+    };
+  }, []);
+
   const onCheckboxChange = async (e: CheckboxChangeEvent) => {
     const oldOptions = [...options];
 
