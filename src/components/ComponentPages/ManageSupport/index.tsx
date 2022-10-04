@@ -424,7 +424,13 @@ const ManageSupport = () => {
   };
   return (
     <>
-      <CampInfoBar isTopicPage={true} />
+      <CampInfoBar
+        isTopicPage={true}
+        payload={{
+          topic_num: router?.query?.manageSupport?.at(0)?.split("-")?.at(0),
+          camp_num: router?.query?.manageSupport?.at(1)?.split("-")?.at(0),
+        }}
+      />
       <div className={styles.card}>
         <div className="leftSideBar_Card p-0 m-0">
           <div className="btnsWrap">

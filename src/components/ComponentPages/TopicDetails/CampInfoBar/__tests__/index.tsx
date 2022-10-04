@@ -36,7 +36,6 @@ afterEach(cleanup);
 const payload = {
   camp_num: 1,
   topic_num: 88,
-  topic_name: "Theories-of-Consciousness",
 };
 describe("Camp statement on camp details page", () => {
   it("Should render without crash", () => {

@@ -270,13 +270,16 @@ const TopicDetails = () => {
         {tree && tree["1"]?.is_valid_as_of_time ? (
           <CampInfoBar
             isTopicPage={true}
+            payload={{
+              topic_num: +router?.query?.camp[0]?.split("-")[0],
+              camp_num: +router?.query?.camp[1]?.split("-")[0],
+            }}
             getCheckSupportStatus={getCheckSupportStatus}
           />
         ) : (
           <CampInfoBar
             payload={{
               topic_num: topicRecord?.topic_num,
-              topic_name: topicRecord?.topic_name,
               camp_name: topicRecord?.camp_name,
             }}
             isTopicHistoryPage={true}

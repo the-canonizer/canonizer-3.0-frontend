@@ -27,7 +27,6 @@ function CompareStatementUI({
   let payload = {
     camp_num: router?.query?.routes[1]?.split("-")[0],
     topic_num: router?.query?.routes[0]?.split("-")[0],
-    topic_name: router?.query?.routes[0].split("-").slice(1).join(" "),
   };
 
   const getBackUrl = () => {
