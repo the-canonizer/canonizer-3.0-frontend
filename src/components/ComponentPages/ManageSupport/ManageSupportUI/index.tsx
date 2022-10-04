@@ -70,11 +70,13 @@ const ManageSupportUI = ({
     const addSupportId = {
       topic_num: reqBodyData.topic_num,
       add_camp:
-        currentGetCheckSupportExistsData.support_flag == 1
+        currentGetCheckSupportExistsData.is_confirm == 0
           ? {}
           : {
               camp_num: reqBodyData.camp_num,
-              support_order: manageListOrder,
+              support_order:
+                currentGetCheckSupportExistsData.remove_camps?.[0]
+                  ?.support_order || manageListOrder,
             },
 
       remove_camps:
@@ -87,7 +89,14 @@ const ManageSupportUI = ({
       order_update:
         currentGetCheckSupportExistsData.support_flag == 1
           ? []
-          : [{ camp_num: reqBodyData.camp_num, order: manageListOrder }],
+          : [
+              {
+                camp_num: reqBodyData.camp_num,
+                order:
+                  currentGetCheckSupportExistsData.remove_camps?.[0]
+                    ?.support_order || manageListOrder,
+              },
+            ],
     };
     let addedRes = await addSupport(addSupportId);
     if (addedRes && addedRes.status_code == 200) {
