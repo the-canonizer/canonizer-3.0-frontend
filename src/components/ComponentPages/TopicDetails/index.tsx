@@ -65,6 +65,7 @@ const TopicDetails = () => {
     campRecord,
     campStatement,
     tree,
+    campExist,
   } = useSelector((state: RootState) => ({
     asofdate: state.filters?.filterObject?.asofdate,
     algorithm: state.filters?.filterObject?.algorithm,
@@ -73,7 +74,8 @@ const TopicDetails = () => {
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
     campStatement: state?.topicDetails?.campStatement,
-    tree: state?.topicDetails?.tree,
+    tree: state?.topicDetails?.tree?.at(0),
+    campExist: state?.topicDetails?.tree?.at(1),
   }));
 
   const reqBody = {
@@ -263,7 +265,14 @@ const TopicDetails = () => {
       })
     );
   };
-
+  const onCreateCampDate = () => {
+    dispatch(
+      setFilterCanonizedTopics({
+        asofdate: campExist?.created_at,
+        asof: "bydate",
+      })
+    );
+  };
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
@@ -293,38 +302,66 @@ const TopicDetails = () => {
               <Spin spinning={getTreeLoadingIndicator} size="large">
                 <CampTreeCard scrollToCampStatement={scrollToCampStatement} />
               </Spin>
-              <Spin spinning={loadingIndicator} size="large">
-                <CampStatementCard
-                  myRefToCampStatement={myRefToCampStatement}
-                  onCampForumClick={onCampForumClick}
-                />
-              </Spin>
-              {typeof window !== "undefined" && window.innerWidth < 767 && (
-                <>
-                  {router.asPath.includes("topic") && <CampRecentActivities />}
-                  <Spin spinning={loadingIndicator} size="large">
-                    {!!newsFeed?.length && (
-                      <NewsFeedsCard newsFeed={newsFeed} />
-                    )}
-                  </Spin>
-                </>
+              {campExist && !campExist?.camp_exist && (
+                <Spin spinning={loadingIndicator} size="large">
+                  <div>
+                    <p>
+                      The camp was created on
+                      <Link
+                        onClick={() => {
+                          onCreateCampDate();
+                        }}
+                      >
+                        {" "}
+                        {new Date(
+                          (campExist && campExist?.created_at) * 1000
+                        ).toLocaleString()}
+                      </Link>
+                    </p>
+                  </div>
+                </Spin>
               )}
-              <Spin spinning={loadingIndicator} size="large">
-                <CurrentTopicCard />
-              </Spin>
-              <Spin spinning={loadingIndicator} size="large">
-                <CurrentCampCard />
-              </Spin>
+              {campExist
+                ? campExist?.camp_exist
+                : true && (
+                    <>
+                      <Spin spinning={loadingIndicator} size="large">
+                        <CampStatementCard
+                          myRefToCampStatement={myRefToCampStatement}
+                          onCampForumClick={onCampForumClick}
+                        />
+                      </Spin>
+                      {typeof window !== "undefined" &&
+                        window.innerWidth < 767 && (
+                          <>
+                            {router.asPath.includes("topic") && (
+                              <CampRecentActivities />
+                            )}
+                            <Spin spinning={loadingIndicator} size="large">
+                              {!!newsFeed?.length && (
+                                <NewsFeedsCard newsFeed={newsFeed} />
+                              )}
+                            </Spin>
+                          </>
+                        )}
+                      <Spin spinning={loadingIndicator} size="large">
+                        <CurrentTopicCard />
+                      </Spin>
+                      <Spin spinning={loadingIndicator} size="large">
+                        <CurrentCampCard />
+                      </Spin>
 
-              <Spin spinning={loadingIndicator} size="large">
-                <SupportTreeCard
-                  handleLoadMoreSupporters={handleLoadMoreSupporters}
-                  getCheckSupportStatus={getCheckSupportStatus}
-                  removeSupport={removeSupport}
-                  fetchTotalScore={fetchTotalScore}
-                  totalSupportScore={totalSupportScore}
-                />
-              </Spin>
+                      <Spin spinning={loadingIndicator} size="large">
+                        <SupportTreeCard
+                          handleLoadMoreSupporters={handleLoadMoreSupporters}
+                          getCheckSupportStatus={getCheckSupportStatus}
+                          removeSupport={removeSupport}
+                          fetchTotalScore={fetchTotalScore}
+                          totalSupportScore={totalSupportScore}
+                        />
+                      </Spin>
+                    </>
+                  )}
             </div>
           </>
         )}
