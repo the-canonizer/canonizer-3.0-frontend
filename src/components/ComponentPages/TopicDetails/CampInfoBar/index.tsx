@@ -329,7 +329,7 @@ const CampInfoBar = ({
               <span className="bold mr-1">
                 {!isTopicHistoryPage ? "Camp :" : ""}{" "}
               </span>
-              {breadCrumbRes
+              {!isTopicHistoryPage && breadCrumbRes
                 ? breadCrumbRes?.bread_crumb?.map((camp, index) => {
                     return (
                       <Link
