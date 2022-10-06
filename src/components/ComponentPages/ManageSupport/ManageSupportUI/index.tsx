@@ -85,18 +85,15 @@ const ManageSupportUI = ({
           : [],
       type: "direct",
       action: "add",
-      nick_name_id: nickNameList[0].id,
-      order_update:
-        currentGetCheckSupportExistsData.support_flag == 1
-          ? []
-          : [
-              {
-                camp_num: reqBodyData.camp_num,
-                order:
-                  currentGetCheckSupportExistsData.remove_camps?.[0]
-                    ?.support_order || manageListOrder,
-              },
-            ],
+      nick_name_id: nickNameList[0]?.id,
+      order_update: [
+        {
+          camp_num: reqBodyData.camp_num,
+          order:
+            currentGetCheckSupportExistsData.remove_camps?.[0]?.support_order ||
+            manageListOrder,
+        },
+      ],
     };
     let addedRes = await addSupport(addSupportId);
     if (addedRes && addedRes.status_code == 200) {
@@ -128,6 +125,7 @@ const ManageSupportUI = ({
         }))
       : "";
   }
+
   return (
     <>
       <Card
