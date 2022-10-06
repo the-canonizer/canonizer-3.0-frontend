@@ -28,6 +28,7 @@ const ExceptionalMessageConstants = {
   directJoinSupport: "Directly join and support",
   manageSupport: "Manage support",
   noRecentActivityFound: "No Recent Activity Found",
+  createNewCampTooltipMsg:"A new camp cannot be created since the topic didn’t exist on the selected date."
 };
 
 export default ExceptionalMessageConstants;
