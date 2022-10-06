@@ -9,6 +9,7 @@ import styles from "./campHistory.module.scss";
 
 import { getHistoryApi } from "../../../network/api/history";
 import { getTreesApi } from "src/network/api/campDetailApi";
+import { getAllUsedNickNames } from "../../../network/api/campDetailApi";
 
 import HistoryCollapse from "./Collapse";
 import { RootState } from "src/store";
@@ -24,6 +25,8 @@ function HistoryContainer() {
   const dispatch = useDispatch();
 
   const [activeTab, setActiveTab] = useState("all");
+
+  const [nickName, setNickName] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState([]);
   const [selectedTopicStatus, setSelectedTopicStatus] = useState([]);
   const [top, setTop] = useState(0);
@@ -58,6 +61,10 @@ function HistoryContainer() {
   useEffect(() => {
     async function getTreeApiCall() {
       setLoadingIndicator(true);
+      let response = await getAllUsedNickNames({
+        topic_num: router?.query?.camp?.at(0)?.split("-")[0],
+      });
+      setNickName(response?.data);
       const reqBodyForService = {
         topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
         camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
@@ -223,6 +230,7 @@ function HistoryContainer() {
             key={index}
             campStatement={campHistoryData}
             onSelectCompare={onSelectCompare}
+            userNickNameData={nickName}
             ifIamSupporter={campHistory?.details?.ifIamSupporter}
             ifSupportDelayed={campHistory?.details?.ifSupportDelayed}
             ifIAmExplicitSupporter={
