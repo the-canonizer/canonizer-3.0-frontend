@@ -39,7 +39,13 @@ const CurrentCampCard = () => {
                   key={description.key}
                 >
                   {campRecord && description.key != "camp_about_url"
-                    ? campRecord[description.key]
+                    ? campRecord &&
+                      (description.key == "is_disabled" ||
+                        description.key == "is_one_level")
+                      ? campRecord[description.key] == 1
+                        ? "Yes"
+                        : "No"
+                      : campRecord[description.key]
                     : campRecord && (
                         // <Link href={campRecord[description.key]}>
                         <a

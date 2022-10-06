@@ -57,6 +57,14 @@ const CampHistory = ({ campStatement }) => {
         </span>
       </Title>
       <Title level={5}>
+        Disable additional sub camps :{" "}
+        <span>{campStatement?.is_disabled == 1 ? "Yes" : "No"}</span>
+      </Title>
+      <Title level={5}>
+        Single level camps only :{" "}
+        <span>{campStatement?.is_one_level == 1 ? "Yes" : "No"}</span>
+      </Title>
+      <Title level={5}>
         Submitted on : <span>{covertToTime(campStatement?.submit_time)}</span>
       </Title>
 
