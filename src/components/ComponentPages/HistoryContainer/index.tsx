@@ -51,9 +51,8 @@ function HistoryContainer() {
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [campHistory, setCampHistory] = useState(history);
   let payload = history && {
-    camp_num: router?.query?.camp?.at(1)?.split("-")?.at(0),
+    camp_num: router?.query?.camp?.at(1)?.split("-")?.at(0) ?? "1",
     topic_num: router?.query?.camp?.at(0)?.split("-")?.at(0),
-    topic_name: history?.details?.topic?.topic_name,
   };
 
   useEffect(() => {
@@ -226,6 +225,9 @@ function HistoryContainer() {
             onSelectCompare={onSelectCompare}
             ifIamSupporter={campHistory?.details?.ifIamSupporter}
             ifSupportDelayed={campHistory?.details?.ifSupportDelayed}
+            ifIAmExplicitSupporter={
+              campHistory?.details?.ifIAmExplicitSupporter
+            }
             changeAgree={changeAgree}
             isDisabledCheck={
               selectedTopic.length >= 2 &&

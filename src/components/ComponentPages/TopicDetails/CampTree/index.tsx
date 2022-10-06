@@ -70,7 +70,7 @@ const CampTree = ({ scrollToCampStatement }) => {
     tree?.at(0) &&
       showSelectedCamp(
         tree?.at(0),
-        +router?.query?.camp?.at(1)?.split("-")?.at(0),
+        +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1),
         tree?.at(1)
       );
   }, [filterByScore, review]);
@@ -84,7 +84,8 @@ const CampTree = ({ scrollToCampStatement }) => {
       let _isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
 
       if (
-        data[item].camp_id === +router?.query?.camp?.at(1)?.split("-")?.at(0)
+        data[item].camp_id ===
+        +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1)
       ) {
         dispatch(
           setCurrentCamp({
@@ -109,7 +110,7 @@ const CampTree = ({ scrollToCampStatement }) => {
     tree?.at(0) &&
       showSelectedCamp(
         tree?.at(0),
-        +router?.query?.camp?.at(1)?.split("-")?.at(0),
+        +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1),
         tree?.at(1)
       );
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -172,7 +173,8 @@ const CampTree = ({ scrollToCampStatement }) => {
                           <a
                             className={
                               data[item]?.camp_id ==
-                              router?.query?.camp?.at(1)?.split("-")?.at(0)
+                                router?.query?.camp?.at(1)?.split("-")?.at(0) ??
+                              "1"
                                 ? "font-weight-bold text-primary"
                                 : ""
                             }
@@ -206,7 +208,7 @@ const CampTree = ({ scrollToCampStatement }) => {
                 }}
               >
                 {data[item].camp_id ===
-                  +router?.query?.camp?.at(1)?.split("-")?.at(0) &&
+                  +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) &&
                   _isDisabled == 0 &&
                   parentIsOneLevel == 0 && (
                     <TreeNode
@@ -252,9 +254,9 @@ const CampTree = ({ scrollToCampStatement }) => {
       <Tree
         showLine={{ showLeafIcon: false }}
         defaultExpandedKeys={[
-          +router?.query?.camp?.at(1)?.split("-")?.at(0) == 1
+          +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) == 1
             ? 2
-            : +router?.query?.camp?.at(1)?.split("-")?.at(0),
+            : +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1),
         ]}
         onSelect={onSelect}
         autoExpandParent={true}

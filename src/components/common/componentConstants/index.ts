@@ -19,4 +19,12 @@ export const currentCampRecordConstants = [
     label: "Camp About Nick Name",
     key: "nick_name",
   },
+  {
+    label: "Disable additional sub camps",
+    key: "is_disabled",
+  },
+  {
+    label: "Single level camps only",
+    key: "is_one_level",
+  },
 ];

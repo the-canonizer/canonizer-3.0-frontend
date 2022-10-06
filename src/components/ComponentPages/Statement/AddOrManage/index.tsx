@@ -125,7 +125,6 @@ export default function AddOrManage({ add }) {
       const oldOptions = [...options];
       await oldOptions.map((op) => {
         op.checked = false;
-        op.disable = false;
       });
       setOptions(oldOptions);
     } else if (res?.status_code == 400) {
@@ -247,7 +246,6 @@ export default function AddOrManage({ add }) {
           setPayloadBreadCrumb({
             camp_num: res?.data?.statement?.camp_num,
             topic_num: res?.data?.statement?.topic_num,
-            topic_name: res?.data?.topic?.topic_name,
           });
         } else if (manageFormOf == "camp") {
           res = await getEditCampApi(
@@ -264,7 +262,6 @@ export default function AddOrManage({ add }) {
           setPayloadBreadCrumb({
             camp_num: res?.data?.camp?.camp_num,
             topic_num: res?.data?.camp?.topic_num,
-            topic_name: res?.data?.topic?.topic_name,
           });
         } else if (manageFormOf == "topic") {
           res = await getEditTopicApi(
@@ -274,7 +271,7 @@ export default function AddOrManage({ add }) {
           fetchNameSpaceList();
           setPayloadBreadCrumb({
             topic_num: res?.data?.topic?.topic_num,
-            topic_name: res?.data?.topic?.topic_name,
+            camp_num: "1",
           });
         } else {
           res = await getEditStatementApi(
@@ -292,7 +289,6 @@ export default function AddOrManage({ add }) {
         setPayloadBreadCrumb({
           camp_num: router?.query?.statement[1].split("-")[0],
           topic_num: router?.query?.statement[0].split("-")[0],
-          topic_name: topic_res?.topic_name,
         });
       }
       const reqBody = {
@@ -355,16 +351,6 @@ export default function AddOrManage({ add }) {
             }
           });
 
-          const option1 = oldOptions[0],
-            option2 = oldOptions[1];
-
-          if (option1.id === "is_disabled" && option1.checked) {
-            option2.checked = false;
-            option2.disable = true;
-          } else {
-            option2.disable = false;
-          }
-
           setOptions(oldOptions);
         }
       }
@@ -386,21 +372,27 @@ export default function AddOrManage({ add }) {
   };
 
   // checkbox
+  useEffect(() => {
+    return () => {
+      const oldOptions = [...options];
+      oldOptions.map((op) => {
+        op.checked = false;
+      });
+
+      setOptions(oldOptions);
+    };
+  }, []);
+
   const onCheckboxChange = async (e: CheckboxChangeEvent) => {
     const oldOptions = [...options];
-    await oldOptions.map((op) =>
-      op.id === e.target.value ? (op.checked = e.target.checked) : ""
-    );
 
-    const option1 = oldOptions[0],
-      option2 = oldOptions[1];
-
-    if (option1.id === "is_disabled" && option1.checked) {
-      option2.checked = false;
-      option2.disable = true;
-    } else {
-      option2.disable = false;
-    }
+    await oldOptions.map((op) => {
+      if (op.id === e.target.value) {
+        op.checked = e.target.checked;
+      } else {
+        op.checked = false;
+      }
+    });
 
     setOptions(oldOptions);
   };
@@ -485,7 +477,7 @@ export default function AddOrManage({ add }) {
                   {/* paraent Camp -----------------------===============--------------------------*/}
                   {manageFormOf == "camp" && (
                     <>
-                      {parentCamp.length > 1 && (
+                      {parentCamp.length >= 1 && (
                         <Col xs={24} sm={24} xl={12}>
                           <Form.Item
                             className={`${styles.formItem} mb-2`}
@@ -556,7 +548,7 @@ export default function AddOrManage({ add }) {
                           ]}
                         >
                           <Input
-                            disabled={!!(parentCamp.length <= 1 || objection)}
+                            disabled={!!(parentCamp.length < 1 || objection)}
                             maxLength={30}
                           />
                         </Form.Item>

@@ -14,6 +14,7 @@ const NetworkConstants = {
     },
     // Redirect URLs
     helpTopicUrl: "/topic/132-Help/1-Agreement",
+    algoInfoUrl: "/topic/53-Canonizer-Algorithms/1-Agreement",
     // User
     CreateToken: `${BaseCanonizerApiUrl}/client-token`,
     LoginUser: `${BaseCanonizerApiUrl}/user/login`,

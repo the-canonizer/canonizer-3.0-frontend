@@ -197,7 +197,7 @@ const ManageSupport = () => {
   //const camp_Name = router?.query?.manageSupport?.at(1)?.split(/-(.*)/s);
 
   //replace use to - change to space
-  const camp_Name_ = campRecord?.camp_name?.replace("-", "");
+  const camp_Name_ = campRecord?.camp_name;
   const CampName = camp_Name_;
   const campSupportPath = router.asPath.replace("/support/", "/topic/");
 
@@ -424,7 +424,13 @@ const ManageSupport = () => {
   };
   return (
     <>
-      <CampInfoBar isTopicPage={true} />
+      <CampInfoBar
+        isTopicPage={true}
+        payload={{
+          topic_num: router?.query?.manageSupport?.at(0)?.split("-")?.at(0),
+          camp_num: router?.query?.manageSupport?.at(1)?.split("-")?.at(0),
+        }}
+      />
       <div className={styles.card}>
         <div className="leftSideBar_Card p-0 m-0">
           <div className="btnsWrap">

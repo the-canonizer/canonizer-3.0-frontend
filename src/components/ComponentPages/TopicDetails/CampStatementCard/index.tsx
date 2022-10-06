@@ -62,11 +62,17 @@ const CampStatementCard = ({ myRefToCampStatement, onCampForumClick }) => {
                   ? `/statement/history/${replaceSpecialCharacters(
                       router?.query?.camp[0],
                       "-"
-                    )}/${replaceSpecialCharacters(router?.query?.camp[1], "-")}`
+                    )}/${replaceSpecialCharacters(
+                      router?.query?.camp[1] ?? "1-Agreement",
+                      "-"
+                    )}`
                   : `/create/statement/${replaceSpecialCharacters(
                       router?.query?.camp[0],
                       "-"
-                    )}/${replaceSpecialCharacters(router?.query?.camp[1], "-")}`
+                    )}/${replaceSpecialCharacters(
+                      router?.query?.camp[1] ?? "1-Agreement",
+                      "-"
+                    )}`
               }
             >
               <a>

@@ -272,10 +272,12 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
               </Title>
               <Popover content="Algorithm Information" placement="top">
                 {router.asPath.includes("/topic") ? (
-                  <a href={K?.Network?.URL?.helpTopicUrl}>Help</a>
+                  <a href={K?.Network?.URL?.algoInfoUrl}>
+                    Algorithm Information
+                  </a>
                 ) : (
-                  <Link href={K?.Network?.URL?.helpTopicUrl}>
-                    <a>Help</a>
+                  <Link href={K?.Network?.URL?.algoInfoUrl}>
+                    <a>Algorithm Information</a>
                   </Link>
                 )}
               </Popover>

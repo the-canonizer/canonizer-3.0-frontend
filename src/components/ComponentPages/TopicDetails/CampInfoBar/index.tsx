@@ -34,7 +34,10 @@ const CampInfoBar = ({
   const dispatch = useDispatch();
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [payloadData, setPayloadData] = useState(payload);
-  const [breadCrumbRes, setBreadCrumbRes] = useState([]);
+  const [breadCrumbRes, setBreadCrumbRes] = useState({
+    topic_name: "",
+    bread_crumb: [],
+  });
   const didMount = useRef(false);
   const didMount1 = useRef(false);
   const router = useRouter();
@@ -72,16 +75,11 @@ const CampInfoBar = ({
         camp_num: payload?.camp_num,
       };
       let res = await getCampBreadCrumbApi(reqBody);
-      setBreadCrumbRes(res?.data?.bread_crumb);
+      setBreadCrumbRes(res?.data);
 
       setLoadingIndicator(false);
     }
-    if (
-      !isTopicPage &&
-      payload &&
-      Object.keys(payload).length > 0 &&
-      !isTopicHistoryPage
-    ) {
+    if (payload && Object.keys(payload).length > 0) {
       getBreadCrumbApiCall();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -123,7 +121,7 @@ const CampInfoBar = ({
   const campOrTopicScribe = async (isTopic: Boolean) => {
     const reqBodyForService = {
       topic_num: +router?.query?.camp[0]?.split("-")[0],
-      camp_num: +router?.query?.camp[1]?.split("-")[0],
+      camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
       asOf: asof,
       asofdate:
         asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
@@ -232,7 +230,7 @@ const CampInfoBar = ({
               "-"
             )}/${replaceSpecialCharacters(
               router?.query?.camp
-                ? router?.query?.camp[1]
+                ? router?.query?.camp[1] ?? "1-Agreement"
                 : router?.query?.manageSupport?.at(1),
               "-"
             )}`}
@@ -267,7 +265,7 @@ const CampInfoBar = ({
                     "-"
                   )}/${replaceSpecialCharacters(
                     router?.query?.camp
-                      ? router?.query?.camp[1]
+                      ? router?.query?.camp[1] ?? "1-Agreement"
                       : router?.query?.manageSupport[1],
                     "-"
                   )}`
@@ -278,7 +276,7 @@ const CampInfoBar = ({
                     "-"
                   )}/${replaceSpecialCharacters(
                     router?.query?.camp
-                      ? router?.query?.camp[1]
+                      ? router?.query?.camp[1] ?? "1-Agreement"
                       : router?.query?.manageSupport?.at(1),
                     "-"
                   )}`
@@ -302,21 +300,22 @@ const CampInfoBar = ({
             <Typography.Paragraph className={"mb-0 " + styles.topicTitleStyle}>
               {" "}
               <span className="bold"> Topic: </span>
-              {isTopicPage ? (
-                topicRecord && topicRecord?.topic_name
-              ) : isTopicHistoryPage ? (
-                <Link
-                  href={`/topic/${
-                    payload?.topic_num
-                  }-${replaceSpecialCharacters(
-                    payload?.topic_name,
-                    "-"
-                  )}/1-Agreement`}
-                >
-                  <a>{payloadData?.topic_name}</a>
-                </Link>
+              {isTopicHistoryPage ? (
+                <>
+                  {" "}
+                  <Link
+                    href={`/topic/${
+                      payload?.topic_num
+                    }-${replaceSpecialCharacters(
+                      breadCrumbRes?.topic_name,
+                      "-"
+                    )}/1-Agreement`}
+                  >
+                    <a>{breadCrumbRes?.topic_name}</a>
+                  </Link>
+                </>
               ) : (
-                payloadData?.topic_name
+                breadCrumbRes?.topic_name
               )}
               {"  "}
               {!!topicSubscriptionID && (
@@ -330,44 +329,15 @@ const CampInfoBar = ({
               <span className="bold mr-1">
                 {!isTopicHistoryPage ? "Camp :" : ""}{" "}
               </span>
-              {isTopicPage
-                ? campRecord
-                  ? campRecord?.parentCamps?.map((camp, index) => {
-                      return (
-                        <Link
-                          href={{
-                            pathname:
-                              router.asPath.split("/")[1] == "support"
-                                ? router.asPath.replace("/support/", "/topic/")
-                                : `${(router.query?.camp
-                                    ? router.query?.camp
-                                    : router.query?.manageSupport
-                                  )?.at(0)}/${
-                                    camp?.camp_num
-                                  }-${replaceSpecialCharacters(
-                                    camp?.camp_name,
-                                    "-"
-                                  )}`,
-                          }}
-                          key={camp?.camp_num}
-                        >
-                          <a>
-                            {index !== 0 && "/ "}
-                            {`${camp?.camp_name}`}
-                          </a>
-                        </Link>
-                      );
-                    })
-                  : null
-                : breadCrumbRes
-                ? breadCrumbRes?.map((camp, index) => {
+              {!isTopicHistoryPage && breadCrumbRes
+                ? breadCrumbRes?.bread_crumb?.map((camp, index) => {
                     return (
                       <Link
                         href={{
                           pathname: `/topic/${
                             payloadData?.topic_num
                           }-${replaceSpecialCharacters(
-                            payloadData?.topic_name,
+                            breadCrumbRes?.topic_name,
                             "-"
                           )}/${camp?.camp_num}-${replaceSpecialCharacters(
                             camp?.camp_name,

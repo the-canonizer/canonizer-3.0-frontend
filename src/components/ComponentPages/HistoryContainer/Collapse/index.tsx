@@ -32,6 +32,8 @@ const { Title } = Typography;
 function HistoryCollapse({
   ifIamSupporter,
   ifSupportDelayed,
+  ifIAmExplicitSupporter,
+
   campStatement,
   onSelectCompare,
   isDisabledCheck,
@@ -170,7 +172,8 @@ function HistoryCollapse({
                       !!(
                         !isUserAuthenticated &&
                         ifIamSupporter == 0 &&
-                        ifSupportDelayed == 0
+                        ifSupportDelayed == 0 &&
+                        !ifIAmExplicitSupporter
                       )
                         ? "Only admin can object"
                         : campStatement?.isAuthor
@@ -183,7 +186,11 @@ function HistoryCollapse({
                       disabled={
                         !isUserAuthenticated
                           ? true
-                          : !!(ifIamSupporter == 0 && ifSupportDelayed == 0)
+                          : !!(
+                              ifIamSupporter == 0 &&
+                              ifSupportDelayed == 0 &&
+                              !ifIAmExplicitSupporter
+                            )
                           ? true
                           : campStatement?.isAuthor
                           ? true
@@ -309,7 +316,11 @@ function HistoryCollapse({
                   </div>
                 )}
               {campStatement?.status == "in_review" &&
-                !!(ifIamSupporter != 0 || ifSupportDelayed != 0) &&
+                !!(
+                  ifIamSupporter != 0 ||
+                  ifSupportDelayed != 0 ||
+                  ifIAmExplicitSupporter
+                ) &&
                 isUserAuthenticated &&
                 !campStatement?.isAuthor && (
                   <div className={styles.campStatementCollapseButtons}>

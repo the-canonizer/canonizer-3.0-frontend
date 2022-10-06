@@ -35,7 +35,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
     if (res?.status_code == 200) {
       const reqBody = {
         topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
-        camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
+        camp_num: +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1),
       };
       await getNewsFeedApi(reqBody);
     }

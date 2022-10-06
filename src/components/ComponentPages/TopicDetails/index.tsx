@@ -80,7 +80,7 @@ const TopicDetails = () => {
 
   const reqBody = {
     topic_num: +router?.query?.camp[0]?.split("-")[0],
-    camp_num: +router?.query?.camp[1]?.split("-")[0],
+    camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
     as_of: asof,
     as_of_date:
       asof == "default" || asof == "review"
@@ -94,7 +94,7 @@ const TopicDetails = () => {
       setLoadingIndicator(true);
       const reqBodyForService = {
         topic_num: +router?.query?.camp[0]?.split("-")[0],
-        camp_num: +router?.query?.camp[1]?.split("-")[0],
+        camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
         asOf: asof,
         asofdate:
           asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
@@ -104,7 +104,7 @@ const TopicDetails = () => {
 
       const reqBody = {
         topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
-        camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
+        camp_num: +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1),
         as_of: asof,
         as_of_date:
           asof == "default" || asof == "review"
@@ -113,7 +113,7 @@ const TopicDetails = () => {
       };
       const reqBodyForCampData = {
         topic_num: +router?.query?.camp[0]?.split("-")[0],
-        camp_num: +router?.query?.camp[1]?.split("-")[0],
+        camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
         type: "all",
         per_page: 4,
         page: 1,
@@ -132,11 +132,11 @@ const TopicDetails = () => {
       setLoadingIndicator(false);
     }
     getTreeApiCall();
-  }, [asofdate, algorithm, +router?.query?.camp[1]?.split("-")[0]]);
+  }, [asofdate, algorithm, +(router?.query?.camp[1]?.split("-")[0] ?? 1)]);
 
   const reqBodyData = {
     topic_num: +router?.query?.camp[0]?.split("-")[0],
-    camp_num: +router?.query?.camp[1]?.split("-")[0],
+    camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
   };
 
   const removeSupport = async (supportedId) => {
@@ -150,7 +150,6 @@ const TopicDetails = () => {
       order_update: [],
     };
     let res = await addSupport(RemoveSupportId);
-    console.log(res, "res");
     if (res && res.status_code == 200) {
       message.success(res.message);
       GetCheckStatusData();
@@ -160,7 +159,7 @@ const TopicDetails = () => {
 
   const totalScoreData = {
     topic_num: +router?.query?.camp[0]?.split("-")[0],
-    camp_num: +router?.query?.camp[1]?.split("-")[0],
+    camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
     asOf: asof,
     asofdate:
       asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
@@ -279,14 +278,17 @@ const TopicDetails = () => {
         {tree && tree["1"]?.is_valid_as_of_time ? (
           <CampInfoBar
             isTopicPage={true}
+            payload={{
+              topic_num: +router?.query?.camp[0]?.split("-")[0],
+              camp_num: +router?.query?.camp[1]?.split("-")[0],
+            }}
             getCheckSupportStatus={getCheckSupportStatus}
           />
         ) : (
           <CampInfoBar
             payload={{
-              topic_num: topicRecord?.topic_num,
-              topic_name: topicRecord?.topic_name,
-              camp_name: topicRecord?.camp_name,
+              topic_num: +router?.query?.camp[0]?.split("-")[0],
+              camp_num: +router?.query?.camp[1]?.split("-")[0],
             }}
             isTopicHistoryPage={true}
             getCheckSupportStatus={getCheckSupportStatus}

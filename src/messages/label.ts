@@ -39,7 +39,7 @@ export const labels = {
     "(Once you pick a nick name, for any contribution to a topic, you must always use the same nick name for any other contribution or forum post to this topic.)",
   cr_topic_name: "Topic Name",
   cr_namespace: "Namespace",
-  cr_edit_summary: "Edit summary",
+  cr_edit_summary: "Edit Summary",
   cr_camp_name: "Camp Name",
   cr_parent_camp: "Parent Camp",
   cr_keywords: "Keywords",
@@ -71,6 +71,7 @@ export const labels = {
     "Note: Your name is not returned from your social account. You have to enter the name.",
   otpTitle: "One Time Verification Code",
   emailTitle: "Social Email Confirmation",
+  brief: "(Briefly describe your changes)",
 };
 
 export const preventCampLabel = [
