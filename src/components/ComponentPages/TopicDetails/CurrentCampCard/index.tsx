@@ -62,7 +62,10 @@ const CurrentCampCard = () => {
               href={`/camp/history/${replaceSpecialCharacters(
                 router?.query?.camp[0],
                 "-"
-              )}/${replaceSpecialCharacters(router?.query?.camp[1], "-")}`}
+              )}/${replaceSpecialCharacters(
+                router?.query?.camp[1] ?? "1-Agreement",
+                "-"
+              )}`}
             >
               <a>{K?.exceptionalMessages?.manageCampButton} </a>
             </Link>

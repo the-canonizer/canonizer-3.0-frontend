@@ -64,7 +64,10 @@ const CampTree = ({ scrollToCampStatement }) => {
     setScoreFilter(filterByScore);
     setIncludeReview(review == "review" ? true : false);
     tree &&
-      showSelectedCamp(tree, +router?.query?.camp?.at(1)?.split("-")?.at(0));
+      showSelectedCamp(
+        tree,
+        +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1)
+      );
   }, [filterByScore, review]);
 
   const dispatchData = (data, isDisabled = 0, isOneLevel = 0) => {
@@ -76,7 +79,8 @@ const CampTree = ({ scrollToCampStatement }) => {
       let _isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
 
       if (
-        data[item].camp_id === +router?.query?.camp?.at(1)?.split("-")?.at(0)
+        data[item].camp_id ===
+        +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1)
       ) {
         dispatch(
           setCurrentCamp({
@@ -99,7 +103,10 @@ const CampTree = ({ scrollToCampStatement }) => {
       dispatchData(tree);
     }
     tree &&
-      showSelectedCamp(tree, +router?.query?.camp?.at(1)?.split("-")?.at(0));
+      showSelectedCamp(
+        tree,
+        +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1)
+      );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tree]);
 
@@ -160,7 +167,8 @@ const CampTree = ({ scrollToCampStatement }) => {
                           <a
                             className={
                               data[item]?.camp_id ==
-                              router?.query?.camp?.at(1)?.split("-")?.at(0)
+                                router?.query?.camp?.at(1)?.split("-")?.at(0) ??
+                              "1"
                                 ? "font-weight-bold text-primary"
                                 : ""
                             }
@@ -194,7 +202,7 @@ const CampTree = ({ scrollToCampStatement }) => {
                 }}
               >
                 {data[item].camp_id ===
-                  +router?.query?.camp?.at(1)?.split("-")?.at(0) &&
+                  +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) &&
                   _isDisabled == 0 &&
                   parentIsOneLevel == 0 && (
                     <TreeNode
@@ -240,9 +248,9 @@ const CampTree = ({ scrollToCampStatement }) => {
       <Tree
         showLine={{ showLeafIcon: false }}
         defaultExpandedKeys={[
-          +router?.query?.camp?.at(1)?.split("-")?.at(0) == 1
+          +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) == 1
             ? 2
-            : +router?.query?.camp?.at(1)?.split("-")?.at(0),
+            : +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1),
         ]}
         onSelect={onSelect}
         autoExpandParent={true}

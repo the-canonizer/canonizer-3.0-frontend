@@ -22,14 +22,14 @@ export default function CampRecentActivities() {
 
       let reqBody = {
         topic_num: router?.query?.camp[0]?.split("-")[0],
-        camp_num: router?.query?.camp[1]?.split("-")[0],
+        camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
       };
       let res = await getTopicActivityLogApi(reqBody);
       setData(res?.data);
       setLoadingIndicator(false);
     }
     getTopicActivityLogCall();
-  }, [router?.query?.camp[1]?.split("-")[0]]);
+  }, [router?.query?.camp[1]?.split("-")[0] ?? 1]);
   return (
     <>
       <Spin spinning={loadingIndicator} size="large">

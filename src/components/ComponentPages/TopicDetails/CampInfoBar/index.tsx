@@ -121,7 +121,7 @@ const CampInfoBar = ({
   const campOrTopicScribe = async (isTopic: Boolean) => {
     const reqBodyForService = {
       topic_num: +router?.query?.camp[0]?.split("-")[0],
-      camp_num: +router?.query?.camp[1]?.split("-")[0],
+      camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
       asOf: asof,
       asofdate:
         asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
@@ -230,7 +230,7 @@ const CampInfoBar = ({
               "-"
             )}/${replaceSpecialCharacters(
               router?.query?.camp
-                ? router?.query?.camp[1]
+                ? router?.query?.camp[1] ?? "1-Agreement"
                 : router?.query?.manageSupport?.at(1),
               "-"
             )}`}
@@ -265,7 +265,7 @@ const CampInfoBar = ({
                     "-"
                   )}/${replaceSpecialCharacters(
                     router?.query?.camp
-                      ? router?.query?.camp[1]
+                      ? router?.query?.camp[1] ?? "1-Agreement"
                       : router?.query?.manageSupport[1],
                     "-"
                   )}`
@@ -276,7 +276,7 @@ const CampInfoBar = ({
                     "-"
                   )}/${replaceSpecialCharacters(
                     router?.query?.camp
-                      ? router?.query?.camp[1]
+                      ? router?.query?.camp[1] ?? "1-Agreement"
                       : router?.query?.manageSupport?.at(1),
                     "-"
                   )}`
