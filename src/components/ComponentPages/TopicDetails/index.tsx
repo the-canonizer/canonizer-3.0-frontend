@@ -24,7 +24,7 @@ import CurrentCampCard from "./CurrentCampCard";
 import CurrentTopicCard from "./CurrentTopicCard";
 import NewsFeedsCard from "./NewsFeedsCard";
 import SupportTreeCard from "./SupportTreeCard";
-import { BackTop, Image, Typography, message } from "antd";
+import { BackTop, Image, Typography, message, Alert } from "antd";
 import { Spin } from "antd";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
@@ -74,8 +74,8 @@ const TopicDetails = () => {
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
     campStatement: state?.topicDetails?.campStatement,
-    tree: state?.topicDetails?.tree?.at(0),
-    campExist: state?.topicDetails?.tree?.at(1),
+    tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
+    campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
   }));
 
   const reqBody = {
@@ -272,6 +272,23 @@ const TopicDetails = () => {
       })
     );
   };
+  const createdOnMsg = () => {
+    return (
+      <>
+        The camp was created on
+        <Link
+          onClick={() => {
+            onCreateCampDate();
+          }}
+        >
+          {" "}
+          {new Date(
+            (campExist && campExist?.created_at) * 1000
+          ).toLocaleString()}
+        </Link>
+      </>
+    );
+  };
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
@@ -306,21 +323,26 @@ const TopicDetails = () => {
               </Spin>
               {campExist && !campExist?.camp_exist && (
                 <Spin spinning={loadingIndicator} size="large">
-                  <div>
-                    <p>
-                      The camp was created on
-                      <Link
-                        onClick={() => {
-                          onCreateCampDate();
-                        }}
-                      >
-                        {" "}
-                        {new Date(
-                          (campExist && campExist?.created_at) * 1000
-                        ).toLocaleString()}
-                      </Link>
-                    </p>
-                  </div>
+                  <>
+                    <Alert
+                      message="The camp was created on"
+                      type="info"
+                      description={
+                        <span>
+                          <Link
+                            onClick={() => {
+                              onCreateCampDate();
+                            }}
+                          >
+                            {" "}
+                            {new Date(
+                              (campExist && campExist?.created_at) * 1000
+                            ).toLocaleString()}
+                          </Link>
+                        </span>
+                      }
+                    />
+                  </>
                 </Spin>
               )}
               {campExist
