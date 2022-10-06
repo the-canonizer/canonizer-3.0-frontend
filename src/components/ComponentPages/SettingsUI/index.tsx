@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import SocialOauth from "../socialAuthVerification";
 import CreateTopicButton from "../../common/button/createNewTopicBtn";
 import SubscriptionsList from "../SubscriptionsList";
+import FullScoreCheckbox from "../FullScoreCheckbox";
 
 const { TabPane } = Tabs;
 const tabList = [
@@ -73,10 +74,12 @@ const SettingsUI = () => {
         </div>
         <Tabs onChange={callback} type="card">
           <TabPane tab="Direct Supported Camps" key="1">
-            <div className={styles.notes}>
-              {" "}
-              Note : To change support order of camp, drag & drop the camp box
-              on your choice position.
+            <div className={styles.text_checkbox_cont}>
+              <div className={styles.notes}>
+                Note : To change support order of camp, drag & drop the camp box
+                on your choice position.
+              </div>
+              <FullScoreCheckbox />
             </div>
             <DirectSupportedCamps search={search} />
           </TabPane>
