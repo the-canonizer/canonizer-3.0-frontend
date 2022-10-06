@@ -325,7 +325,8 @@ const TopicDetails = () => {
                 <Spin spinning={loadingIndicator} size="large">
                   <>
                     <Alert
-                      message="The camp was created on"
+                      className="alert-camp-created-on"
+                      message="The camp was first created on"
                       type="info"
                       description={
                         <span>
