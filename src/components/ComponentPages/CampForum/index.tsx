@@ -508,7 +508,6 @@ const ForumComponent = ({}) => {
   let payload = {
     camp_num: (router?.query?.camp as string)?.split("-")[0],
     topic_num: (router?.query?.topic as string)?.split("-")[0],
-    topic_name: (router?.query?.topic as string)?.split("-").slice(1).join(" "),
   };
 
   return (

@@ -247,7 +247,6 @@ export default function AddOrManage({ add }) {
           setPayloadBreadCrumb({
             camp_num: res?.data?.statement?.camp_num,
             topic_num: res?.data?.statement?.topic_num,
-            topic_name: res?.data?.topic?.topic_name,
           });
         } else if (manageFormOf == "camp") {
           res = await getEditCampApi(
@@ -264,7 +263,6 @@ export default function AddOrManage({ add }) {
           setPayloadBreadCrumb({
             camp_num: res?.data?.camp?.camp_num,
             topic_num: res?.data?.camp?.topic_num,
-            topic_name: res?.data?.topic?.topic_name,
           });
         } else if (manageFormOf == "topic") {
           res = await getEditTopicApi(
@@ -274,7 +272,7 @@ export default function AddOrManage({ add }) {
           fetchNameSpaceList();
           setPayloadBreadCrumb({
             topic_num: res?.data?.topic?.topic_num,
-            topic_name: res?.data?.topic?.topic_name,
+            camp_num: "1",
           });
         } else {
           res = await getEditStatementApi(
@@ -292,7 +290,6 @@ export default function AddOrManage({ add }) {
         setPayloadBreadCrumb({
           camp_num: router?.query?.statement[1].split("-")[0],
           topic_num: router?.query?.statement[0].split("-")[0],
-          topic_name: topic_res?.topic_name,
         });
       }
       const reqBody = {
