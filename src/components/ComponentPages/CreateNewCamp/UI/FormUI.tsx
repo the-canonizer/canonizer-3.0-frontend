@@ -188,7 +188,12 @@ const CreateCampFormUI = ({
             </Col>
             <Col span={24}>
               <Form.Item
-                label={labels.cr_edit_summary}
+                label={
+                  <Fragment>
+                    {labels.cr_edit_summary}
+                    <span>{labels.brief}</span>
+                  </Fragment>
+                }
                 name="note"
                 {...summaryRule}
               >
