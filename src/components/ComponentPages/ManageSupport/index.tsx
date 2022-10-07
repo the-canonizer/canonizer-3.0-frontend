@@ -216,11 +216,11 @@ const ManageSupport = () => {
     statusFlag?: number
   ) => {
     const response = await GetActiveSupportTopic(topicNum && body);
-    //get dataValue from CurrentCheckSupportStatus
     const fiterSupportedCamps = response.data.filter((val) => {
       return (
-        val.camp_num !=
-        currentGetCheckSupportExistsData.remove_camps?.[0]?.camp_num
+        currentGetCheckSupportExistsData.remove_camps?.findIndex(
+          (obj) => obj.camp_num == val.camp_num
+        ) == -1
       );
     });
     const dataValue = manageSupportStatusCheck
@@ -241,8 +241,6 @@ const ManageSupport = () => {
         (values) => values.camp_num == campNum
       );
 
-      // setManageSupportList([...manageSupportList, ...fiterSupportedCamps])
-
       if (dataValue !== "") {
         const unavailable_camp =
           dataValue && dataValue.includes("unable to find this camp");
@@ -251,7 +249,8 @@ const ManageSupport = () => {
         setGetSupportStatusData(dataValue);
         //if Warning message is show
         if (resultFilterSupportCamp.length == 0) {
-          let supportOrderLen = manageSupportArr.length + 1;
+          let supportOrderLen =
+            fiterSupportedCamps.length + manageSupportArr.length + 1;
           //push data into a array of manageSupportArray
           manageSupportArr.push({
             topic_num: parseInt(topicNum),
@@ -263,7 +262,6 @@ const ManageSupport = () => {
         }
         setManageSupportList([...fiterSupportedCamps, ...manageSupportArr]);
 
-        // setManageSupportList(manageSupportArr);
         setManageSupportRevertData(manageSupportArr);
       } else {
         //warning  message is not show
@@ -496,6 +494,9 @@ const ManageSupport = () => {
         submitButtonDisable={submitButtonDisable}
         setUpdatePostion={setUpdatePostion}
         unableToFindCamp={unableToFindCamp}
+        updatePostion={updatePostion}
+        campIds={campIds}
+        setcampIds={setcampIds}
       />
     </>
   );
