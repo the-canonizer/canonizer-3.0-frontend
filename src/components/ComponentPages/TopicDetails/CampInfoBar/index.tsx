@@ -164,8 +164,10 @@ const CampInfoBar = ({
             campOrTopicScribe(true);
           } else {
             setLoadingIndicator(true);
-
-            router.push("/login");
+            router.push({
+              pathname: "/login",
+              query: { returnUrl: router.asPath },
+            });
           }
         }}
       >
@@ -187,7 +189,10 @@ const CampInfoBar = ({
             campOrTopicScribe(false);
           } else {
             setLoadingIndicator(true);
-            router.push("/login");
+            router.push({
+              pathname: "/login",
+              query: { returnUrl: router.asPath },
+            });
           }
         }}
       >
