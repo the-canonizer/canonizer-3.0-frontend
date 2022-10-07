@@ -65,7 +65,6 @@ const ManageSupportUI = ({
     topic_num: +router?.query?.manageSupport[0]?.split("-")[0],
     camp_num: +router?.query?.manageSupport[1]?.split("-")[0],
   };
-
   const addRemoveApi = async () => {
     const addSupportId = {
       topic_num: reqBodyData.topic_num,
@@ -86,14 +85,17 @@ const ManageSupportUI = ({
       type: "direct",
       action: "add",
       nick_name_id: nickNameList[0]?.id,
-      order_update: [
-        {
-          camp_num: reqBodyData.camp_num,
-          order:
-            currentGetCheckSupportExistsData.remove_camps?.[0]?.support_order ||
-            manageListOrder,
-        },
-      ],
+      order_update:
+        currentGetCheckSupportExistsData.is_confirm == 0
+          ? []
+          : [
+              {
+                camp_num: reqBodyData.camp_num,
+                order:
+                  currentGetCheckSupportExistsData.remove_camps?.[0]
+                    ?.support_order || manageListOrder,
+              },
+            ],
     };
     let addedRes = await addSupport(addSupportId);
     if (addedRes && addedRes.status_code == 200) {
