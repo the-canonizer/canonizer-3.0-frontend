@@ -353,7 +353,7 @@ const CampInfoBar = ({
                       </Link>
                     );
                   })
-                : null}
+                : "N/A"}
               {!!campSubscriptionID && !isTopicHistoryPage && (
                 <small style={{ alignSelf: "center", marginLeft: "10px" }}>
                   <i className="icon-subscribe text-primary"></i>

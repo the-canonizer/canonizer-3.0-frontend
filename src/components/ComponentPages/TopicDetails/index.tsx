@@ -271,7 +271,7 @@ const TopicDetails = () => {
             isTopicPage={true}
             payload={{
               topic_num: +router?.query?.camp[0]?.split("-")[0],
-              camp_num: +router?.query?.camp[1]?.split("-")[0],
+              camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
             }}
             getCheckSupportStatus={getCheckSupportStatus}
           />
@@ -279,7 +279,7 @@ const TopicDetails = () => {
           <CampInfoBar
             payload={{
               topic_num: +router?.query?.camp[0]?.split("-")[0],
-              camp_num: +router?.query?.camp[1]?.split("-")[0],
+              camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
             }}
             isTopicHistoryPage={true}
             getCheckSupportStatus={getCheckSupportStatus}

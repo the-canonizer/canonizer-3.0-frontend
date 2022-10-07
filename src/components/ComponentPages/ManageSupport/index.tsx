@@ -428,7 +428,8 @@ const ManageSupport = () => {
         isTopicPage={true}
         payload={{
           topic_num: router?.query?.manageSupport?.at(0)?.split("-")?.at(0),
-          camp_num: router?.query?.manageSupport?.at(1)?.split("-")?.at(0),
+          camp_num:
+            router?.query?.manageSupport?.at(1)?.split("-")?.at(0) ?? "1",
         }}
       />
       <div className={styles.card}>
