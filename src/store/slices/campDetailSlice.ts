@@ -19,6 +19,7 @@ export const treeSlice = createSlice({
       },
     },
     manageSupportStatusCheck: false,
+    manageSupportUrlLink: null,
     CurrentCheckSupportStatus: null,
     currentGetCheckSupportExistsData: {
       camp_num: null,
@@ -80,6 +81,9 @@ export const treeSlice = createSlice({
     setManageSupportStatusCheck: (state, action) => {
       state.manageSupportStatusCheck = action.payload;
     },
+    setManageSupportUrlLink: (state, action) => {
+      state.manageSupportUrlLink = action.payload;
+    },
     setCurrentCheckSupportStatus: (state, action) => {
       state.CurrentCheckSupportStatus = action.payload;
     },
@@ -113,6 +117,7 @@ export const {
   setCurrentCheckSupportStatus,
   setCheckSupportExistsData,
   setManageSupportStatusCheck,
+  setManageSupportUrlLink,
 } = treeSlice.actions;
 
 export default treeSlice.reducer;

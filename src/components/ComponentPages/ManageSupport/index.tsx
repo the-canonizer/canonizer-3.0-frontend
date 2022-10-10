@@ -21,6 +21,7 @@ import queryParams from "src/utils/queryParams";
 import {
   setCheckSupportExistsData,
   setManageSupportStatusCheck,
+  setManageSupportUrlLink,
 } from "src/store/slices/campDetailSlice";
 import moment from "moment";
 const ManageSupportUI = dynamic(() => import("./ManageSupportUI"), {
@@ -71,6 +72,10 @@ const ManageSupport = () => {
   const campRoute = () => {
     router.push("/create/topic");
   };
+  //Support page Link Url
+  const { manageSupportUrlLink } = useSelector((state: RootState) => ({
+    manageSupportUrlLink: state.topicDetails.manageSupportUrlLink,
+  }));
 
   const { currentDelegatedSupportedClick } = useSelector(
     (state: RootState) => ({
@@ -115,9 +120,10 @@ const ManageSupport = () => {
         getActiveSupportTopicList();
         setSubmitButtonDisable(false);
         dispatch(setManageSupportStatusCheck(false));
-      } else {
-        GetCheckStatusData();
       }
+      // else {
+      GetCheckStatusData();
+      // }
     } else {
       router.push("/login");
     }
@@ -127,18 +133,21 @@ const ManageSupport = () => {
   const GetCheckStatusData = async () => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
     if (response && response.status_code === 200) {
-      warningMsg = response.data.warning;
-
-      supportSts = response.data.support_flag;
-      //Api's call for list
-      dispatch(setCheckSupportExistsData({}));
-      dispatch(setCheckSupportExistsData(response.data));
-      getCanonizedNicknameList();
-      getActiveSupportTopicList(
-        response.data.warning,
-        response.data.support_flag
-      );
-      setSubmitButtonDisable(false);
+      if (response.data?.remove_camps)
+        setParentSupportDataList(response.data.remove_camps);
+      if (!manageSupportStatusCheck) {
+        warningMsg = response.data.warning;
+        supportSts = response.data.support_flag;
+        //Api's call for list
+        dispatch(setCheckSupportExistsData({}));
+        dispatch(setCheckSupportExistsData(response.data));
+        getCanonizedNicknameList();
+        getActiveSupportTopicList(
+          response.data.warning,
+          response.data.support_flag
+        );
+        setSubmitButtonDisable(false);
+      }
     }
   };
 
@@ -207,8 +216,13 @@ const ManageSupport = () => {
     statusFlag?: number
   ) => {
     const response = await GetActiveSupportTopic(topicNum && body);
-    //get dataValue from CurrentCheckSupportStatus
-
+    const fiterSupportedCamps = response.data.filter((val) => {
+      return (
+        currentGetCheckSupportExistsData.remove_camps?.findIndex(
+          (obj) => obj.camp_num == val.camp_num
+        ) == -1
+      );
+    });
     const dataValue = manageSupportStatusCheck
       ? CurrentCheckSupportStatus
       : warning
@@ -222,7 +236,7 @@ const ManageSupport = () => {
         supportArrayListData.push(val);
         supportedCampsList.push(val);
       });
-      setParentSupportDataList(supportArrayListData);
+      // setParentSupportDataList(supportArrayListData);
       let resultFilterSupportCamp = response.data.filter(
         (values) => values.camp_num == campNum
       );
@@ -235,7 +249,8 @@ const ManageSupport = () => {
         setGetSupportStatusData(dataValue);
         //if Warning message is show
         if (resultFilterSupportCamp.length == 0) {
-          let supportOrderLen = manageSupportArr.length + 1;
+          let supportOrderLen =
+            fiterSupportedCamps.length + manageSupportArr.length + 1;
           //push data into a array of manageSupportArray
           manageSupportArr.push({
             topic_num: parseInt(topicNum),
@@ -245,11 +260,13 @@ const ManageSupport = () => {
             link: campSupportPath,
           });
         }
-        setManageSupportList(manageSupportArr);
+        setManageSupportList([...fiterSupportedCamps, ...manageSupportArr]);
+
         setManageSupportRevertData(manageSupportArr);
       } else {
         //warning  message is not show
         setGetSupportStatusData("");
+
         if (resultFilterSupportCamp.length == 0) {
           let supportOrderLen = supportedCampsList.length + 1;
           //push data into a array of manageSupportArray
@@ -261,6 +278,7 @@ const ManageSupport = () => {
             link: campSupportPath,
           });
         }
+
         setManageSupportList(supportedCampsList);
         setManageSupportRevertData(supportedCampsList);
       }
@@ -282,8 +300,12 @@ const ManageSupport = () => {
 
   //Cancel Button
   const cancelManageRoute = () => {
+    let manageSupportPath1 = manageSupportUrlLink.replace(
+      "/support/",
+      "/topic/"
+    );
     router.push({
-      pathname: manageSupportPath,
+      pathname: CheckDelegatedOrDirect ? manageSupportPath : manageSupportPath1,
     });
   };
 
@@ -303,7 +325,6 @@ const ManageSupport = () => {
     let resultCamp = manageSupportList.filter(
       (values) => !campIds.includes(values.camp_num)
     );
-
     //if supported camps  flag is 0 means not supported else same as previous
     resultCamp =
       !updatePostion && support_flag_Status == 0
@@ -473,6 +494,9 @@ const ManageSupport = () => {
         submitButtonDisable={submitButtonDisable}
         setUpdatePostion={setUpdatePostion}
         unableToFindCamp={unableToFindCamp}
+        updatePostion={updatePostion}
+        campIds={campIds}
+        setcampIds={setcampIds}
       />
     </>
   );
