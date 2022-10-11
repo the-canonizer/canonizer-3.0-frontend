@@ -164,8 +164,10 @@ const CampInfoBar = ({
             campOrTopicScribe(true);
           } else {
             setLoadingIndicator(true);
-
-            router.push("/login");
+            router.push({
+              pathname: "/login",
+              query: { returnUrl: router.asPath },
+            });
           }
         }}
       >
@@ -187,7 +189,10 @@ const CampInfoBar = ({
             campOrTopicScribe(false);
           } else {
             setLoadingIndicator(true);
-            router.push("/login");
+            router.push({
+              pathname: "/login",
+              query: { returnUrl: router.asPath },
+            });
           }
         }}
       >
@@ -353,7 +358,7 @@ const CampInfoBar = ({
                       </Link>
                     );
                   })
-                : null}
+                : "N/A"}
               {!!campSubscriptionID && !isTopicHistoryPage && (
                 <small style={{ alignSelf: "center", marginLeft: "10px" }}>
                   <i className="icon-subscribe text-primary"></i>

@@ -30,7 +30,7 @@ const addContent = (
 
 const CampTreeCard = ({ scrollToCampStatement }) => {
   const { tree, is_admin } = useSelector((state: RootState) => ({
-    tree: state?.topicDetails?.tree,
+    tree: state?.topicDetails?.tree?.at(0),
 
     is_admin: state?.auth?.loggedInUser?.is_admin,
   }));

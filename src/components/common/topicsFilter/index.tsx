@@ -117,7 +117,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
     filteredAsOfDate: state?.filters?.filterObject?.asofdate,
     currentCampRecord: state.topicDetails.currentCampRecord,
     currentCampNode: state?.filters?.selectedCampNode,
-    tree: state?.topicDetails?.tree,
+    tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
   }));
 
   const [value, setValue] = useState(
