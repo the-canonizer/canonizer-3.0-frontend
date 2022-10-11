@@ -33,7 +33,7 @@ function HistoryCollapse({
   ifIamSupporter,
   ifSupportDelayed,
   ifIAmExplicitSupporter,
-
+  userNickNameData,
   campStatement,
   onSelectCompare,
   isDisabledCheck,
@@ -75,7 +75,7 @@ function HistoryCollapse({
       camp_num: historyOf == "topic" ? 1 : router.query.camp[1].split("-")[0],
       change_for: historyOf,
 
-      nick_name_id: campStatement?.submitter_nick_id,
+      nick_name_id: userNickNameData[0]?.id,
     };
     let res = await agreeToChangeApi(reqBody);
     changeAgree();
@@ -325,6 +325,8 @@ function HistoryCollapse({
                 !campStatement?.isAuthor && (
                   <div className={styles.campStatementCollapseButtons}>
                     <Checkbox
+                      defaultChecked={campStatement?.agreed_to_change}
+                      disabled={campStatement?.agreed_to_change}
                       className={styles.campSelectCheckbox}
                       onChange={agreeWithChange}
                     >
