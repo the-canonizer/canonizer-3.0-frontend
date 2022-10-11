@@ -45,7 +45,7 @@ function HistoryContainer() {
       history: state?.topicDetails?.history,
       currentCampRecord: state.topicDetails.currentCampRecord,
       currentCampNode: state?.filters?.selectedCampNode,
-      tree: state?.topicDetails?.tree,
+      tree: state?.topicDetails?.tree?.at(0),
       asofdate: state.filters?.filterObject?.asofdate,
       asof: state?.filters?.filterObject?.asof,
       algorithm: state.filters?.filterObject?.algorithm,
