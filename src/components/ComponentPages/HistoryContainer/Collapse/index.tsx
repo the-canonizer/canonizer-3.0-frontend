@@ -94,6 +94,17 @@ function HistoryCollapse({
     return title;
   };
 
+  const submitUpdateRedirect = (historyOf:string) => {
+    if (!isUserAuthenticated) {
+      router.push({
+        pathname: "/login",
+        query: { returnUrl: `/manage/${historyOf}/${campStatement?.id}` },
+      });
+    } else{
+      router.push(`/manage/${historyOf}/${campStatement?.id}`);
+    } 
+  }
+
   return (
     <div>
       <Space
@@ -214,17 +225,8 @@ function HistoryCollapse({
                 <Button
                   type="primary"
                   className={`mr-3 ${styles.campUpdateButton}`}
-                  onClick={() => {
-                    if (!isUserAuthenticated) {
-                      router.push("/login");
-                    } else if (historyOf == "statement") {
-                      router.push(`/manage/statement/${campStatement?.id}`);
-                    } else if (historyOf == "camp") {
-                      router.push(`/manage/camp/${campStatement?.id}`);
-                    } else if (historyOf == "topic") {
-                      router.push(`/manage/topic/${campStatement?.id}`);
-                    }
-                  }}
+                  onClick={() => submitUpdateRedirect(historyOf)
+                  }
                 >
                   {historyOf == "camp"
                     ? "Submit Camp Update Based on This"
