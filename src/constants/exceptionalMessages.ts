@@ -25,8 +25,8 @@ const ExceptionalMessageConstants = {
   wikiMarkupSupportMsg: "Note: We support wiki markup. To get reference",
   addNewsTextPlaceHolder: "Add news text.",
   objectionStatementHeading: "Object to this proposed update",
-  directJoinSupport: "Directly join and support",
-  manageSupport: "Manage support",
+  directJoinSupport: "Directly Join and Support",
+  manageSupport: "Manage Support",
   noRecentActivityFound: "No Recent Activity Found",
   createNewCampTooltipMsg:
     "A new camp cannot be created since the topic didn’t exist on the selected date.",
