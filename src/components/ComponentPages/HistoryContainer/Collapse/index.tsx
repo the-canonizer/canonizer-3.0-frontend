@@ -94,16 +94,16 @@ function HistoryCollapse({
     return title;
   };
 
-  const submitUpdateRedirect = (historyOf:string) => {
+  const submitUpdateRedirect = (historyOf: string) => {
     if (!isUserAuthenticated) {
       router.push({
         pathname: "/login",
         query: { returnUrl: `/manage/${historyOf}/${campStatement?.id}` },
       });
-    } else{
+    } else {
       router.push(`/manage/${historyOf}/${campStatement?.id}`);
-    } 
-  }
+    }
+  };
 
   return (
     <div>
@@ -225,8 +225,7 @@ function HistoryCollapse({
                 <Button
                   type="primary"
                   className={`mr-3 ${styles.campUpdateButton}`}
-                  onClick={() => submitUpdateRedirect(historyOf)
-                  }
+                  onClick={() => submitUpdateRedirect(historyOf)}
                 >
                   {historyOf == "camp"
                     ? "Submit Camp Update Based on This"
@@ -276,7 +275,8 @@ function HistoryCollapse({
               </div>
               {campStatement?.status == "in_review" &&
                 !commited &&
-                !!campStatement?.grace_period && (
+                !!campStatement?.grace_period &&
+                moment.now() < campStatement?.submit_time * 1000 + 3600000 && (
                   <div className={styles.campStatementCollapseButtons}>
                     <Divider className="mt-0"></Divider>
                     <p className="w-100">

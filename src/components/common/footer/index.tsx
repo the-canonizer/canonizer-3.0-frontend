@@ -90,7 +90,7 @@ function Footer() {
                   </a>
                 </Link>
               </div>
-              <p>Pattent: US 8,160,970 B2</p>
+              <p>Patent: US 8,160,970 B2</p>
               <ul className={styles.privacyTerms}>
                 <li>
                   <Link href="/privacy-policy">
