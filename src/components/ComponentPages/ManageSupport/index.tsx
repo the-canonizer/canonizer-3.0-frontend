@@ -124,8 +124,6 @@ const ManageSupport = () => {
       // else {
       GetCheckStatusData();
       // }
-    } else {
-      router.push("/login");
     }
   }, [isUserAuthenticated, reqBodyData.topic_num]);
 
