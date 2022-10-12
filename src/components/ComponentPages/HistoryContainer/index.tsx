@@ -17,10 +17,12 @@ import CampInfoBar from "../TopicDetails/CampInfoBar";
 import CreateNewCampButton from "../../common/button/createNewCampBtn";
 import CreateNewTopicButton from "../../common/button/createNewTopicBtn";
 import { setCurrentCamp } from "src/store/slices/filtersSlice";
+import useIsUserAuthenticated from "../../../hooks/isUserAuthenticated";
 
 const { Title } = Typography;
 
 function HistoryContainer() {
+  const { isUserAuthenticated } = useIsUserAuthenticated();
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -61,10 +63,12 @@ function HistoryContainer() {
   useEffect(() => {
     async function getTreeApiCall() {
       setLoadingIndicator(true);
-      let response = await getAllUsedNickNames({
-        topic_num: router?.query?.camp?.at(0)?.split("-")[0],
-      });
-      setNickName(response?.data);
+      if (isUserAuthenticated) {
+        let response = await getAllUsedNickNames({
+          topic_num: router?.query?.camp?.at(0)?.split("-")[0],
+        });
+        setNickName(response?.data);
+      }
       const reqBodyForService = {
         topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
         camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
