@@ -275,7 +275,8 @@ function HistoryCollapse({
               </div>
               {campStatement?.status == "in_review" &&
                 !commited &&
-                !!campStatement?.grace_period && (
+                !!campStatement?.grace_period &&
+                moment.now() < campStatement?.submit_time * 1000 + 3600000 && (
                   <div className={styles.campStatementCollapseButtons}>
                     <Divider className="mt-0"></Divider>
                     <p className="w-100">
