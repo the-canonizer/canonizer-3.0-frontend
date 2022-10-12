@@ -79,6 +79,7 @@ export default function RecentActivities() {
     setSelectedTab(key);
   };
   const decodeUrlLink = (threadData) => {
+    console.log("threadData", threadData);
     return JSON.parse(threadData?.activity?.properties)?.url?.replace(
       /\s+/g,
       "-"

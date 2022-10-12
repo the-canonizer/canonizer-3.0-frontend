@@ -101,11 +101,12 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-
+  font-size: 12px;
+  
   a {
-    font-weight: bold;
     color: var(--primary);
     text-decoration: underline;
+    font-weight: 550;
   }
 }
 
