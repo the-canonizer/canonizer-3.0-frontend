@@ -29,6 +29,9 @@ const ManageSupportUI = ({
   submitButtonDisable,
   setUpdatePostion,
   unableToFindCamp,
+  updatePostion,
+  campIds,
+  setcampIds,
 }) => {
   const { currentDelegatedSupportedClick } = useSelector(
     (state: RootState) => ({
@@ -53,7 +56,19 @@ const ManageSupportUI = ({
 
   const router = useRouter();
   const manageSupportArr = [];
-  // const supportOrderLen = manageSupportArr.length + 1;
+  const filteredList = manageSupportList.map((obj) => {
+    return {
+      camp_num: obj.camp_num,
+      order: obj.support_order,
+    };
+  });
+  const filterList = (campNum, position) => {
+    const index = filteredList.findIndex((obj) => obj.camp_num === campNum);
+    filteredList[index] = {
+      camp_num: campNum,
+      order: position + 1,
+    };
+  };
 
   const manageListOrder =
     manageSupportList.length > 0
@@ -65,7 +80,6 @@ const ManageSupportUI = ({
     topic_num: +router?.query?.manageSupport[0]?.split("-")[0],
     camp_num: +router?.query?.manageSupport[1]?.split("-")[0],
   };
-
   const addRemoveApi = async () => {
     const addSupportId = {
       topic_num: reqBodyData.topic_num,
@@ -85,10 +99,10 @@ const ManageSupportUI = ({
           : [],
       type: "direct",
       action: "add",
-      nick_name_id: nickNameList[0].id,
+      nick_name_id: nickNameList[0]?.id,
       order_update:
-        currentGetCheckSupportExistsData.support_flag == 1
-          ? []
+        filteredList.length > 0
+          ? filteredList
           : [
               {
                 camp_num: reqBodyData.camp_num,
@@ -128,6 +142,7 @@ const ManageSupportUI = ({
         }))
       : "";
   }
+
   return (
     <>
       <Card
@@ -227,11 +242,12 @@ const ManageSupportUI = ({
                   >
                     <div className={styles.btndiv}>
                       {" "}
+                      {filterList(tag.camp_num, index)}
                       <span className={styles.count}>
-                        {getSupportStatusData == ""
+                        {/* {getSupportStatusData == ""
                           ? index + 1
-                          : tag.support_order}
-                        .{" "}
+                          : tag.support_order} */}
+                        {index + 1}.{" "}
                       </span>
                       <Link href={tag.link}>
                         <a className={styles.Bluecolor}>{tag.camp_name}</a>

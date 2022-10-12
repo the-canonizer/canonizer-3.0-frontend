@@ -33,7 +33,7 @@ function HistoryCollapse({
   ifIamSupporter,
   ifSupportDelayed,
   ifIAmExplicitSupporter,
-
+  userNickNameData,
   campStatement,
   onSelectCompare,
   isDisabledCheck,
@@ -75,7 +75,7 @@ function HistoryCollapse({
       camp_num: historyOf == "topic" ? 1 : router.query.camp[1].split("-")[0],
       change_for: historyOf,
 
-      nick_name_id: campStatement?.submitter_nick_id,
+      nick_name_id: userNickNameData[0]?.id,
     };
     let res = await agreeToChangeApi(reqBody);
     changeAgree();
@@ -92,6 +92,17 @@ function HistoryCollapse({
       title = "Topic Name";
     }
     return title;
+  };
+
+  const submitUpdateRedirect = (historyOf: string) => {
+    if (!isUserAuthenticated) {
+      router.push({
+        pathname: "/login",
+        query: { returnUrl: `/manage/${historyOf}/${campStatement?.id}` },
+      });
+    } else {
+      router.push(`/manage/${historyOf}/${campStatement?.id}`);
+    }
   };
 
   return (
@@ -215,17 +226,7 @@ function HistoryCollapse({
                 <Button
                   type="primary"
                   className={`mr-3 ${styles.campUpdateButton}`}
-                  onClick={() => {
-                    if (!isUserAuthenticated) {
-                      router.push("/login");
-                    } else if (historyOf == "statement") {
-                      router.push(`/manage/statement/${campStatement?.id}`);
-                    } else if (historyOf == "camp") {
-                      router.push(`/manage/camp/${campStatement?.id}`);
-                    } else if (historyOf == "topic") {
-                      router.push(`/manage/topic/${campStatement?.id}`);
-                    }
-                  }}
+                  onClick={() => submitUpdateRedirect(historyOf)}
                 >
                   {historyOf == "camp"
                     ? "Submit Camp Update Based on This"
@@ -275,7 +276,8 @@ function HistoryCollapse({
               </div>
               {campStatement?.status == "in_review" &&
                 !commited &&
-                !!campStatement?.grace_period && (
+                !!campStatement?.grace_period &&
+                moment.now() < campStatement?.submit_time * 1000 + 3600000 && (
                   <div className={styles.campStatementCollapseButtons}>
                     <Divider className="mt-0"></Divider>
                     <p className="w-100">
@@ -326,6 +328,8 @@ function HistoryCollapse({
                 !campStatement?.isAuthor && (
                   <div className={styles.campStatementCollapseButtons}>
                     <Checkbox
+                      defaultChecked={campStatement?.agreed_to_change}
+                      disabled={campStatement?.agreed_to_change}
                       className={styles.campSelectCheckbox}
                       onChange={agreeWithChange}
                     >

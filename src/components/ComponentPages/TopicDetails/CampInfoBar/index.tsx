@@ -164,8 +164,10 @@ const CampInfoBar = ({
             campOrTopicScribe(true);
           } else {
             setLoadingIndicator(true);
-
-            router.push("/login");
+            router.push({
+              pathname: "/login",
+              query: { returnUrl: router.asPath },
+            });
           }
         }}
       >
@@ -187,7 +189,10 @@ const CampInfoBar = ({
             campOrTopicScribe(false);
           } else {
             setLoadingIndicator(true);
-            router.push("/login");
+            router.push({
+              pathname: "/login",
+              query: { returnUrl: router.asPath },
+            });
           }
         }}
       >
@@ -329,6 +334,7 @@ const CampInfoBar = ({
               <span className="bold mr-1">
                 {!isTopicHistoryPage ? "Camp :" : ""}{" "}
               </span>
+<<<<<<< HEAD
               {!isTopicHistoryPage
                 ? breadCrumbRes
                   ? breadCrumbRes?.bread_crumb?.map((camp, index) => {
@@ -356,6 +362,33 @@ const CampInfoBar = ({
                     })
                   : "N/A"
                 : null}
+=======
+              {!isTopicHistoryPage && breadCrumbRes
+                ? breadCrumbRes?.bread_crumb?.map((camp, index) => {
+                    return (
+                      <Link
+                        href={{
+                          pathname: `/topic/${
+                            payloadData?.topic_num
+                          }-${replaceSpecialCharacters(
+                            breadCrumbRes?.topic_name,
+                            "-"
+                          )}/${camp?.camp_num}-${replaceSpecialCharacters(
+                            camp?.camp_name,
+                            "-"
+                          )}`,
+                        }}
+                        key={index}
+                      >
+                        <a>
+                          {index !== 0 && "/ "}
+                          {`${camp?.camp_name}`}
+                        </a>
+                      </Link>
+                    );
+                  })
+                : "N/A"}
+>>>>>>> 317fc2dde6b7738bcfdc416142ff07336e7c4e34
               {!!campSubscriptionID && !isTopicHistoryPage && (
                 <small style={{ alignSelf: "center", marginLeft: "10px" }}>
                   <i className="icon-subscribe text-primary"></i>

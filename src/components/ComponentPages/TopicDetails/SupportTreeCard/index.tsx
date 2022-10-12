@@ -17,7 +17,10 @@ import styles from "../topicDetails.module.scss";
 import isAuth from "../../../../hooks/isUserAuthenticated";
 import K from "../../../../constants";
 import { setDelegatedSupportClick } from "../../../../store/slices/supportTreeCard";
-import { setManageSupportStatusCheck } from "../../../../store/slices/campDetailSlice";
+import {
+  setManageSupportStatusCheck,
+  setManageSupportUrlLink,
+} from "../../../../store/slices/campDetailSlice";
 import { getNickNameList } from "../../../../network/api/userApi";
 const { Paragraph } = Typography;
 import { Tree } from "antd";
@@ -77,6 +80,7 @@ const SupportTreeCard = ({
     );
   };
   const handleClickSupportCheck = () => {
+    dispatch(setManageSupportUrlLink(manageSupportPath));
     dispatch(setManageSupportStatusCheck(true));
   };
 

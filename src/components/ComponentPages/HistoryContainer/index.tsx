@@ -9,6 +9,7 @@ import styles from "./campHistory.module.scss";
 
 import { getHistoryApi } from "../../../network/api/history";
 import { getTreesApi } from "src/network/api/campDetailApi";
+import { getAllUsedNickNames } from "../../../network/api/campDetailApi";
 
 import HistoryCollapse from "./Collapse";
 import { RootState } from "src/store";
@@ -16,14 +17,18 @@ import CampInfoBar from "../TopicDetails/CampInfoBar";
 import CreateNewCampButton from "../../common/button/createNewCampBtn";
 import CreateNewTopicButton from "../../common/button/createNewTopicBtn";
 import { setCurrentCamp } from "src/store/slices/filtersSlice";
+import useIsUserAuthenticated from "../../../hooks/isUserAuthenticated";
 
 const { Title } = Typography;
 
 function HistoryContainer() {
+  const { isUserAuthenticated } = useIsUserAuthenticated();
   const router = useRouter();
   const dispatch = useDispatch();
 
   const [activeTab, setActiveTab] = useState("all");
+
+  const [nickName, setNickName] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState([]);
   const [selectedTopicStatus, setSelectedTopicStatus] = useState([]);
   const [top, setTop] = useState(0);
@@ -42,7 +47,7 @@ function HistoryContainer() {
       history: state?.topicDetails?.history,
       currentCampRecord: state.topicDetails.currentCampRecord,
       currentCampNode: state?.filters?.selectedCampNode,
-      tree: state?.topicDetails?.tree,
+      tree: state?.topicDetails?.tree?.at(0),
       asofdate: state.filters?.filterObject?.asofdate,
       asof: state?.filters?.filterObject?.asof,
       algorithm: state.filters?.filterObject?.algorithm,
@@ -58,6 +63,12 @@ function HistoryContainer() {
   useEffect(() => {
     async function getTreeApiCall() {
       setLoadingIndicator(true);
+      if (isUserAuthenticated) {
+        let response = await getAllUsedNickNames({
+          topic_num: router?.query?.camp?.at(0)?.split("-")[0],
+        });
+        setNickName(response?.data);
+      }
       const reqBodyForService = {
         topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
         camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
@@ -223,6 +234,7 @@ function HistoryContainer() {
             key={index}
             campStatement={campHistoryData}
             onSelectCompare={onSelectCompare}
+            userNickNameData={nickName}
             ifIamSupporter={campHistory?.details?.ifIamSupporter}
             ifSupportDelayed={campHistory?.details?.ifSupportDelayed}
             ifIAmExplicitSupporter={

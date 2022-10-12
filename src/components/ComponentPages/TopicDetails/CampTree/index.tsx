@@ -39,7 +39,7 @@ const CampTree = ({ scrollToCampStatement }) => {
   };
   const { isUserAuthenticated, userID } = useAuthentication();
 
-  const showSelectedCamp = (data, select_camp) => {
+  const showSelectedCamp = (data, select_camp, campExist) => {
     let a = Object?.keys(data).map((item) => {
       if (data[item].children) {
         if (data[item].score >= scoreFilter) {
@@ -48,25 +48,30 @@ const CampTree = ({ scrollToCampStatement }) => {
 
             return;
           }
-          showSelectedCamp(data[item].children, select_camp);
+          showSelectedCamp(data[item].children, select_camp, "");
         } else {
           return null;
         }
       }
+
       if (data[item]?.camp_id == select_camp) {
         setShowTree(true);
         return;
       }
     });
+    if (campExist ? !campExist.camp_exist : false) {
+      setShowTree(true);
+    }
   };
-
   useEffect(() => {
     setScoreFilter(filterByScore);
     setIncludeReview(review == "review" ? true : false);
-    tree &&
+
+    tree?.at(0) &&
       showSelectedCamp(
-        tree,
-        +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1)
+        tree?.at(0),
+        +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1),
+        tree?.at(1)
       );
   }, [filterByScore, review]);
 
@@ -99,16 +104,17 @@ const CampTree = ({ scrollToCampStatement }) => {
   };
 
   useEffect(() => {
-    if (tree != null) {
-      dispatchData(tree);
+    if (tree?.at(0) != null) {
+      dispatchData(tree?.at(0));
     }
-    tree &&
+    tree?.at(0) &&
       showSelectedCamp(
-        tree,
-        +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1)
+        tree?.at(0),
+        +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1),
+        tree?.at(1)
       );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tree]);
+  }, [tree?.at(0)]);
 
   const subScriptionStatus = (subscribedUsers: {}) => {
     return Object.keys(subscribedUsers).length > 0 &&
@@ -243,7 +249,7 @@ const CampTree = ({ scrollToCampStatement }) => {
     });
   };
 
-  return tree ? (
+  return tree?.at(0) ? (
     showTree && (
       <Tree
         showLine={{ showLeafIcon: false }}
@@ -256,7 +262,7 @@ const CampTree = ({ scrollToCampStatement }) => {
         autoExpandParent={true}
         // filterTreeNode={filterTreeNode}
       >
-        {tree && renderTreeNodes(tree)}
+        {tree?.at(0) && renderTreeNodes(tree?.at(0))}
       </Tree>
     )
   ) : (
