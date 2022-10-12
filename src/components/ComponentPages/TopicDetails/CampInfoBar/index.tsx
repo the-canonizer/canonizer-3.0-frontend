@@ -334,31 +334,33 @@ const CampInfoBar = ({
               <span className="bold mr-1">
                 {!isTopicHistoryPage ? "Camp :" : ""}{" "}
               </span>
-              {!isTopicHistoryPage && breadCrumbRes
-                ? breadCrumbRes?.bread_crumb?.map((camp, index) => {
-                    return (
-                      <Link
-                        href={{
-                          pathname: `/topic/${
-                            payloadData?.topic_num
-                          }-${replaceSpecialCharacters(
-                            breadCrumbRes?.topic_name,
-                            "-"
-                          )}/${camp?.camp_num}-${replaceSpecialCharacters(
-                            camp?.camp_name,
-                            "-"
-                          )}`,
-                        }}
-                        key={index}
-                      >
-                        <a>
-                          {index !== 0 && "/ "}
-                          {`${camp?.camp_name}`}
-                        </a>
-                      </Link>
-                    );
-                  })
-                : "N/A"}
+              {!isTopicHistoryPage
+                ? breadCrumbRes
+                  ? breadCrumbRes?.bread_crumb?.map((camp, index) => {
+                      return (
+                        <Link
+                          href={{
+                            pathname: `/topic/${
+                              payloadData?.topic_num
+                            }-${replaceSpecialCharacters(
+                              breadCrumbRes?.topic_name,
+                              "-"
+                            )}/${camp?.camp_num}-${replaceSpecialCharacters(
+                              camp?.camp_name,
+                              "-"
+                            )}`,
+                          }}
+                          key={index}
+                        >
+                          <a>
+                            {index !== 0 && "/ "}
+                            {`${camp?.camp_name}`}
+                          </a>
+                        </Link>
+                      );
+                    })
+                  : "N/A"
+                : null}
               {!!campSubscriptionID && !isTopicHistoryPage && (
                 <small style={{ alignSelf: "center", marginLeft: "10px" }}>
                   <i className="icon-subscribe text-primary"></i>

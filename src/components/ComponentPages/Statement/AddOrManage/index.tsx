@@ -261,7 +261,7 @@ export default function AddOrManage({ add }) {
             router?.query?.statement[0]?.split("-")[0]
           );
           setPayloadBreadCrumb({
-            camp_num: res?.data?.statement?.camp_num,
+            camp_num: res?.data?.statement?.camp_num ?? "1",
             topic_num: res?.data?.statement?.topic_num,
           });
         } else if (manageFormOf == "camp") {
@@ -277,7 +277,7 @@ export default function AddOrManage({ add }) {
             );
           }
           setPayloadBreadCrumb({
-            camp_num: res?.data?.camp?.camp_num,
+            camp_num: res?.data?.camp?.camp_num ?? "1",
             topic_num: res?.data?.camp?.topic_num,
           });
         } else if (manageFormOf == "topic") {
@@ -301,10 +301,10 @@ export default function AddOrManage({ add }) {
       } else {
         let topic_res = await getCurrentTopicRecordApi({
           topic_num: router?.query?.statement[0].split("-")[0],
-          camp_num: router?.query?.statement[1].split("-")[0],
+          camp_num: router?.query?.statement[1].split("-")[0] ?? "1",
         });
         setPayloadBreadCrumb({
-          camp_num: router?.query?.statement[1].split("-")[0],
+          camp_num: router?.query?.statement[1].split("-")[0] ?? "1",
           topic_num: router?.query?.statement[0].split("-")[0],
         });
       }

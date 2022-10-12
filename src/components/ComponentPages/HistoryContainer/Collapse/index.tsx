@@ -180,14 +180,15 @@ function HistoryCollapse({
                     historyOf != "statement")) && (
                   <Tooltip
                     title={
-                      !!(
-                        !isUserAuthenticated &&
-                        ifIamSupporter == 0 &&
-                        ifSupportDelayed == 0 &&
-                        !ifIAmExplicitSupporter
-                      )
+                      !isUserAuthenticated
                         ? "Only admin can object"
                         : campStatement?.isAuthor
+                        ? false
+                        : !!(
+                            ifIamSupporter == 0 &&
+                            ifSupportDelayed == 0 &&
+                            !ifIAmExplicitSupporter
+                          )
                         ? "Only admin can object"
                         : false
                     }
@@ -197,13 +198,13 @@ function HistoryCollapse({
                       disabled={
                         !isUserAuthenticated
                           ? true
+                          : campStatement?.isAuthor
+                          ? false
                           : !!(
                               ifIamSupporter == 0 &&
                               ifSupportDelayed == 0 &&
                               !ifIAmExplicitSupporter
                             )
-                          ? true
-                          : campStatement?.isAuthor
                           ? true
                           : false
                       }
