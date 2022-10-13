@@ -166,14 +166,19 @@ const ManageSupport = () => {
     setManageSupportList(ClearDataRes);
   };
   //removeAll function
+  console.log(manageSupportList, "mng");
+  const removeAllCampNum = manageSupportList.map((obj) => {
+    return obj.camp_num;
+  });
   const removeAll = (checked, val) => {
     setCardCamp_ID("");
     setChecked(checked);
     const disabeleAllTopic = val.map((obj) => {
-      setcampIds([obj.camp_num]);
+      setcampIds(removeAllCampNum);
       obj.dis = checked;
       return obj;
     });
+    console.log(disabeleAllTopic, "remove");
     setManageSupportList(disabeleAllTopic);
   };
   //handleClose function

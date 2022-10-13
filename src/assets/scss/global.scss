@@ -1762,3 +1762,7 @@ div[role="option"]::before {
 .policy-content .p5, .policy-content h5 {
   font-size: 1.125rem;
 }
+.profileInfoPointer #selectCountry, #email, #selectCity, #selectState{
+  pointer-events: none
+}
+
