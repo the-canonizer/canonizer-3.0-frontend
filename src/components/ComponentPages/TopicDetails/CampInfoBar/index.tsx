@@ -304,7 +304,7 @@ const CampInfoBar = ({
           <div className={styles.topicDetailContentHead_Left}>
             <Typography.Paragraph className={"mb-0 " + styles.topicTitleStyle}>
               {" "}
-              <span className="bold"> Topic: </span>
+              <span className="bold"> Topic : </span>
               {isTopicHistoryPage ? (
                 <>
                   {" "}
