@@ -62,6 +62,7 @@ const ManageSupportUI = ({
       order: obj.support_order,
     };
   });
+
   const filterList = (campNum, position) => {
     const index = filteredList.findIndex((obj) => obj.camp_num === campNum);
     filteredList[index] = {
@@ -69,7 +70,10 @@ const ManageSupportUI = ({
       order: position + 1,
     };
   };
-
+  const removeCampFilterdList =
+    currentGetCheckSupportExistsData?.remove_camps?.map((obj) => {
+      return obj.camp_num;
+    });
   const manageListOrder =
     manageSupportList.length > 0
       ? manageSupportList[manageSupportList.length - 1].support_order
@@ -95,7 +99,7 @@ const ManageSupportUI = ({
 
       remove_camps:
         currentGetCheckSupportExistsData.is_confirm == 1
-          ? [currentGetCheckSupportExistsData.remove_camps[0].camp_num]
+          ? removeCampFilterdList
           : [],
       type: "direct",
       action: "add",
