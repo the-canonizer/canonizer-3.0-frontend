@@ -52,7 +52,6 @@ import {
   allowedEmojies,
   emojiValidation,
 } from "src/utils/generalUtility";
-import { addSupport } from "src/network/api/userApi";
 
 const { Text } = Typography;
 
@@ -86,8 +85,6 @@ export default function AddOrManage({ add }) {
   let update = router?.query?.statement?.at(0)?.split("-")[1] == "update";
   let manageFormOf = router?.asPath.split("/")[2];
 
-  // let addedRes = await addSupport(addSupportId);
-
   const onFinish = async (values: any) => {
     setScreenLoading(true);
     let res;
@@ -95,20 +92,6 @@ export default function AddOrManage({ add }) {
     let parent_camp = editInfo?.parent_camp;
     options.map((op) => (values[op.id] = op.checked ? 1 : 0));
     res = await addOrManageStatement(values);
-    const addSupportId = {
-      topic_num: res.data.topic_num,
-      add_camp: {},
-
-      remove_camps:
-        res.data.parent_camp_num == null ? [] : [res.data.parent_camp_num],
-      type: "direct",
-      action: "remove",
-
-      nick_name_id: res.data.submitter_nick_id,
-      order_update: {},
-    };
-    let addedRes;
-    addedRes = await addSupport(addSupportId);
 
     if (res?.status_code == 200) {
       if (add) {
