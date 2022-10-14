@@ -18,18 +18,18 @@ describe("Login page", () => {
     render(<Login isModal={false} />);
     waitFor(async () => {
       let heading = screen.getByRole("heading", {
-        name: /Login to Canonizer/i,
+        name: /Login To Canonizer/i,
       });
       expect(heading).toBeInTheDocument();
       expect(screen.getByText(labels.emailPhone)).toBeInTheDocument();
       expect(screen.getByText(labels.password)).toBeInTheDocument();
-      expect(screen.getByText("Forgot password").closest("a")).toHaveAttribute(
+      expect(screen.getByText("Forgot Password").closest("a")).toHaveAttribute(
         "href",
         "/"
       );
       expect(screen.getByText("Don't have an account?")).toBeVisible();
       expect(screen.getByText("Register Now")).toBeVisible();
-      expect(screen.getByText("Remember me")).toBeInTheDocument();
+      expect(screen.getByText("Remember Me")).toBeInTheDocument();
       expect(
         screen.getByText(
           "Enter to the best leaderless consensus building and tracking system in the world."
