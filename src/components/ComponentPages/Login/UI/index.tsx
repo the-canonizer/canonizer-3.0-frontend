@@ -80,7 +80,7 @@ const LoginUi = ({
         <Col md={12}>
           <div className={styles.form_section}>
             <Title level={2} className={styles.titles} id="login-title">
-              Login to Canonizer
+              Login To Canonizer
             </Title>
             {errorMsg && (
               <Text
@@ -131,7 +131,7 @@ const LoginUi = ({
               </Form.Item>
               <Form.Item className={styles.remember}>
                 <Form.Item name="remember" valuePropName="checked" noStyle>
-                  <Checkbox>Remember me</Checkbox>
+                  <Checkbox>Remember Me</Checkbox>
                 </Form.Item>
                 <Link href="/">
                   <a
@@ -139,7 +139,7 @@ const LoginUi = ({
                     className={styles["login-form-forgot"]}
                     onClick={onForgotPasswordClick}
                   >
-                    Forgot password
+                    Forgot Password
                   </a>
                 </Link>
               </Form.Item>
