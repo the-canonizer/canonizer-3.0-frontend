@@ -5,6 +5,7 @@ import {
   Space,
   Checkbox,
   Divider,
+  Modal,
   Tooltip,
 } from "antd";
 import moment from "moment";
@@ -42,6 +43,8 @@ function HistoryCollapse({
 }) {
   const router = useRouter();
   const [commited, setCommited] = useState(false);
+
+  const [modal1Open, setModal1Open] = useState(false);
   const dispatch = useDispatch();
   const { isUserAuthenticated } = useAuthentication();
   const handleViewThisVersion = (goLiveTime) => {
@@ -178,25 +181,11 @@ function HistoryCollapse({
                 {(campStatement?.status == "in_review" ||
                   (campStatement?.status == "objected" &&
                     historyOf != "statement")) && (
-                  <Tooltip
-                    title={
-                      !isUserAuthenticated
-                        ? "Only admin can object"
-                        : campStatement?.isAuthor
-                        ? false
-                        : !!(
-                            ifIamSupporter == 0 &&
-                            ifSupportDelayed == 0 &&
-                            !ifIAmExplicitSupporter
-                          )
-                        ? "Only admin can object"
-                        : false
-                    }
-                  >
+                  <>
                     <Button
                       type="primary"
-                      disabled={
-                        !isUserAuthenticated
+                      onClick={() => {
+                        let isModelPop = !isUserAuthenticated
                           ? true
                           : campStatement?.isAuthor
                           ? false
@@ -206,22 +195,73 @@ function HistoryCollapse({
                               !ifIAmExplicitSupporter
                             )
                           ? true
-                          : false
-                      }
-                      onClick={() =>
-                        router.push(
-                          historyOf == "camp"
-                            ? `/manage/camp/${campStatement?.id}-objection`
-                            : historyOf == "topic"
-                            ? `/manage/topic/${campStatement?.id}-objection`
-                            : `/manage/statement/${campStatement?.id}-objection`
+                          : false;
+                        if (isModelPop) {
+                          setModal1Open(true);
+                        } else {
+                          router.push(
+                            historyOf == "camp"
+                              ? `/manage/camp/${campStatement?.id}-objection`
+                              : historyOf == "topic"
+                              ? `/manage/topic/${campStatement?.id}-objection`
+                              : `/manage/statement/${campStatement?.id}-objection`
+                          );
+                        }
+                      }}
+                      className={`mr-3 ${
+                        (
+                          !isUserAuthenticated
+                            ? true
+                            : campStatement?.isAuthor
+                            ? false
+                            : !!(
+                                ifIamSupporter == 0 &&
+                                ifSupportDelayed == 0 &&
+                                !ifIAmExplicitSupporter
+                              )
+                            ? true
+                            : false
                         )
-                      }
-                      className={`mr-3 ${styles.campUpdateButton}`}
+                          ? "disable-style"
+                          : ""
+                      } ${styles.campUpdateButton}`}
                     >
                       Object
                     </Button>
-                  </Tooltip>
+                    <Modal
+                      title="Why can't i object?"
+                      style={{
+                        top: 20,
+                      }}
+                      centered
+                      okText="Close"
+                      visible={modal1Open}
+                      footer={[
+                        <Button
+                          danger
+                          type="primary"
+                          onClick={() => setModal1Open(false)}
+                        >
+                          Close
+                        </Button>,
+                      ]}
+                    >
+                      <p>
+                        To object to this change, you should be a direct
+                        supporter of the topic/camp and should have supported it
+                        before the change was submitted.
+                      </p>
+                      <p>
+                        For more information about disagreement, please read
+                        topic:
+                      </p>
+                      <Link href="/topic/132-Help/4-Disagreement">
+                        <a style={{ fontSize: "16px" }}>
+                          https://canonizer.com/topic/132-Help/4-Disagreement
+                        </a>
+                      </Link>
+                    </Modal>
+                  </>
                 )}
                 <Button
                   type="primary"
