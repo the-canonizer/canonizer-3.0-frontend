@@ -161,6 +161,9 @@ const NetworkConstants = {
     //supportTreeAndScoreCount
     SupportTree: `${BaseCanonizerApiUrl}/support-and-score-count`,
 
+    //removeSupportedCamps
+    RemoveCamps: `${BaseCanonizerApiUrl}/support/update`,
+
     UpdateToken: `${BaseCanonizerApiUrl}/update-fcm-token`,
 
     GetTermsAndServicesContent: `${BaseCanonizerApiUrl}/get-terms-and-services-content`,

@@ -577,4 +577,14 @@ export default class UserRequest extends Request {
       {}
     );
   }
+
+  static removeCamps(body) {
+    return new Request(
+      K.Network.URL.RemoveCamps,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
 }
