@@ -87,7 +87,6 @@ const TopicDetails = () => {
         ? Date.now() / 1000
         : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
   };
-
   useEffect(() => {
     async function getTreeApiCall() {
       setGetTreeLoadingIndicator(true);
@@ -100,6 +99,7 @@ const TopicDetails = () => {
           asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
         algorithm: algorithm,
         update_all: 1,
+        fetch_topic_history: +router?.query?.topic_history,
       };
 
       const reqBody = {
