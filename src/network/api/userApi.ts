@@ -865,3 +865,20 @@ export const SupportTreeAndScoreCount = async (body) => {
     }
   }
 };
+
+export const removeSupportedCamps = async (body) => {
+  try {
+    const res = await NetworkCall.fetch(UserRequest.removeCamps(body));
+    return res;
+  } catch (err) {
+    handleError(err);
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400
+    ) {
+      return err.error.data;
+    }
+  }
+};

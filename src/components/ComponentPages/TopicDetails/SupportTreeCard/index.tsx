@@ -44,8 +44,10 @@ const supportContent = (
 const SupportTreeCard = ({
   handleLoadMoreSupporters,
   getCheckSupportStatus,
-  removeSupport,
+  removeApiSupport,
   fetchTotalScore,
+  removeSupport,
+  topicList,
   totalSupportScore,
 }) => {
   const { isUserAuthenticated } = isAuth();
@@ -60,7 +62,6 @@ const SupportTreeCard = ({
     });
     setUserNickNameList(arr);
   };
-  console.log(getCheckSupportStatus, "get");
   useEffect(() => {
     if (isUserAuthenticated) {
       getNickNameListData();
@@ -88,7 +89,6 @@ const SupportTreeCard = ({
   const { campSupportingTree } = useSelector((state: RootState) => ({
     campSupportingTree: state?.topicDetails?.campSupportingTree,
   }));
-
   const [loadMore, setLoadMore] = useState(false);
   const { topicRecord, campRecord } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
@@ -175,7 +175,9 @@ const SupportTreeCard = ({
                           <a>
                             <span
                               onClick={() => {
-                                removeSupport(data[item].nick_name_id);
+                                topicList.length <= 1
+                                  ? removeApiSupport(data[item].nick_name_id)
+                                  : removeSupport(data[item].nick_name_id);
                               }}
                               className="delegate-support-style"
                             >

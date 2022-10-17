@@ -52,7 +52,7 @@ function HistoryContainer() {
       asof: state?.filters?.filterObject?.asof,
       algorithm: state.filters?.filterObject?.algorithm,
     }));
-
+  const [isTreesApiCallStop, setIsTreesApiCallStop] = useState(false);
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [campHistory, setCampHistory] = useState(history);
   let payload = history && {
@@ -82,7 +82,9 @@ function HistoryContainer() {
       await Promise.all([getTreesApi(reqBodyForService)]);
       setLoadingIndicator(false);
     }
-    getTreeApiCall();
+    if (!isTreesApiCallStop) {
+      getTreeApiCall();
+    }
   }, [asofdate, algorithm, +router?.query?.camp?.at(1)?.split("-")[0]]);
 
   const dispatchData = (data, isDisabled = 0, isOneLevel = 0) => {
@@ -246,6 +248,7 @@ function HistoryContainer() {
               !selectedTopic?.includes(campHistoryData?.id)
             }
             isChecked={selectedTopic?.includes(campHistoryData?.id)}
+            setIsTreesApiCallStop={setIsTreesApiCallStop}
           />
         );
       })

@@ -40,6 +40,7 @@ function HistoryCollapse({
   isDisabledCheck,
   changeAgree,
   isChecked,
+  setIsTreesApiCallStop,
 }) {
   const router = useRouter();
   const [commited, setCommited] = useState(false);
@@ -48,6 +49,7 @@ function HistoryCollapse({
   const dispatch = useDispatch();
   const { isUserAuthenticated } = useAuthentication();
   const handleViewThisVersion = (goLiveTime) => {
+    setIsTreesApiCallStop(true);
     dispatch(
       setFilterCanonizedTopics({
         asofdate: goLiveTime,
@@ -283,33 +285,36 @@ function HistoryCollapse({
                   }
                 >
                   <Link
-                    href={`/topic/${
-                      replaceSpecialCharacters(
-                        historyOf == "topic"
-                          ? replaceSpecialCharacters(
-                              campStatement?.topic_num +
-                                "-" +
-                                campStatement?.topic_name?.replace(/ /g, "-"),
-                              "-"
-                            )
-                          : router?.query?.camp?.at(0),
-                        "-"
-                      ) +
-                      "/" +
-                      (historyOf != "topic"
-                        ? historyOf == "camp"
-                          ? replaceSpecialCharacters(
-                              campStatement?.camp_num +
-                                "-" +
-                                campStatement?.camp_name?.replace(/ /g, "-"),
-                              "-"
-                            )
-                          : replaceSpecialCharacters(
-                              router?.query?.camp?.at(1),
-                              "-"
-                            )
-                        : "1-Agreement")
-                    }`}
+                    href={{
+                      pathname: `/topic/${
+                        replaceSpecialCharacters(
+                          historyOf == "topic"
+                            ? replaceSpecialCharacters(
+                                campStatement?.topic_num +
+                                  "-" +
+                                  campStatement?.topic_name?.replace(/ /g, "-"),
+                                "-"
+                              )
+                            : router?.query?.camp?.at(0),
+                          "-"
+                        ) +
+                        "/" +
+                        (historyOf != "topic"
+                          ? historyOf == "camp"
+                            ? replaceSpecialCharacters(
+                                campStatement?.camp_num +
+                                  "-" +
+                                  campStatement?.camp_name?.replace(/ /g, "-"),
+                                "-"
+                              )
+                            : replaceSpecialCharacters(
+                                router?.query?.camp?.at(1),
+                                "-"
+                              )
+                          : "1-Agreement")
+                      }`,
+                      query: { topic_history: 1 },
+                    }}
                   >
                     View This Version
                   </Link>
