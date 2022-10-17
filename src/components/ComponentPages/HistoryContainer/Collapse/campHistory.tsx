@@ -26,7 +26,7 @@ const CampHistory = ({ campStatement }) => {
         </span>
       </Title>
       <Title level={5}>
-        Edit summary :{" "}
+        Edit Summary :{" "}
         <span className={styles.updateSurveyPrj}>{campStatement?.note}</span>
       </Title>
       <Title level={5}>
@@ -57,19 +57,19 @@ const CampHistory = ({ campStatement }) => {
         </span>
       </Title>
       <Title level={5}>
-        Disable additional sub camps :{" "}
+        Disable Additional Sub Camps :{" "}
         <span>{campStatement?.is_disabled == 1 ? "Yes" : "No"}</span>
       </Title>
       <Title level={5}>
-        Single level camps only :{" "}
+        Single Level Camps Only :{" "}
         <span>{campStatement?.is_one_level == 1 ? "Yes" : "No"}</span>
       </Title>
       <Title level={5}>
-        Submitted on : <span>{covertToTime(campStatement?.submit_time)}</span>
+        Submitted On : <span>{covertToTime(campStatement?.submit_time)}</span>
       </Title>
 
       <Title level={5}>
-        Go live Time : <span>{covertToTime(campStatement?.go_live_time)}</span>
+        Go Live Time : <span>{covertToTime(campStatement?.go_live_time)}</span>
       </Title>
       {campStatement?.object_reason && (
         <Title level={5}>
