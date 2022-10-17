@@ -56,13 +56,12 @@ const ManageSupportUI = ({
 
   const router = useRouter();
   const manageSupportArr = [];
-  const filteredList = manageSupportList.map((obj) => {
+  const filteredList = manageSupportList.map((obj, index) => {
     return {
       camp_num: obj.camp_num,
-      order: obj.support_order,
+      order: index + 1, //obj.support_order,
     };
   });
-
   const filterList = (campNum, position) => {
     const index = filteredList.findIndex((obj) => obj.camp_num === campNum);
     filteredList[index] = {

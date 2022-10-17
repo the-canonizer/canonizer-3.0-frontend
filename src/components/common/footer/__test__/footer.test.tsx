@@ -3,8 +3,6 @@ import { cleanup, render, screen } from "@testing-library/react";
 import { windowMatchMedia } from "../../../../utils/testUtils";
 import { loadEnvConfig } from "@next/env";
 
-
-
 const loadConfig = async () => {
   const projectDir = process.cwd();
   loadEnvConfig(projectDir);
@@ -91,7 +89,5 @@ describe("Footer", () => {
     );
   });
 });
-
-
 
 export default loadConfig;
