@@ -166,7 +166,6 @@ const ManageSupport = () => {
     setManageSupportList(ClearDataRes);
   };
   //removeAll function
-  console.log(manageSupportList, "mng");
   const removeAllCampNum = manageSupportList.map((obj) => {
     return obj.camp_num;
   });
@@ -178,7 +177,6 @@ const ManageSupport = () => {
       obj.dis = checked;
       return obj;
     });
-    console.log(disabeleAllTopic, "remove");
     setManageSupportList(disabeleAllTopic);
   };
   //handleClose function

@@ -29,7 +29,10 @@ import { Spin } from "antd";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 import moment from "moment";
-import { GetCheckSupportExists } from "src/network/api/topicAPI";
+import {
+  GetActiveSupportTopic,
+  GetCheckSupportExists,
+} from "src/network/api/topicAPI";
 import queryParams from "src/utils/queryParams";
 import isAuth from "../../../hooks/isUserAuthenticated";
 import {
@@ -42,7 +45,11 @@ import { getHistoryApi } from "../../../network/api/history";
 
 import CampRecentActivities from "../Home/CampRecentActivities";
 const { Link } = Typography;
-import { addSupport, getNickNameList } from "src/network/api/userApi";
+import {
+  addSupport,
+  getNickNameList,
+  removeSupportedCamps,
+} from "src/network/api/userApi";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import { SupportTreeTotalScore } from "src/network/api/campDetailApi";
 
@@ -53,6 +60,7 @@ const TopicDetails = () => {
   const [getTreeLoadingIndicator, setGetTreeLoadingIndicator] = useState(false);
   const [getCheckSupportStatus, setGetCheckSupportStatus] = useState({});
   const [totalSupportScore, setTotalSupportScore] = useState<number>(0);
+  const [topicList, setTopicList] = useState([]);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -111,6 +119,9 @@ const TopicDetails = () => {
             ? Date.now() / 1000
             : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
       };
+      const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
+
+      const body = { topic_num: topicNum };
       const reqBodyForCampData = {
         topic_num: +router?.query?.camp[0]?.split("-")[0],
         camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
@@ -128,6 +139,10 @@ const TopicDetails = () => {
         getHistoryApi(reqBodyForCampData, "1", "statement"),
         getCanonizedAlgorithmsApi(),
       ]);
+      const reponse = await GetActiveSupportTopic(topicNum && body);
+      if (reponse.status_code == 200) {
+        setTopicList(reponse.data);
+      }
       setGetTreeLoadingIndicator(false);
       setLoadingIndicator(false);
     }
@@ -139,6 +154,23 @@ const TopicDetails = () => {
     camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
   };
 
+  const removeApiSupport = async (supportedId) => {
+    const supportedCampsRemove = {
+      topic_num: reqBodyData.topic_num,
+      remove_camps: [reqBodyData.camp_num],
+      type: "direct",
+      action: "all",
+      nick_name_id: supportedId,
+      order_update: [],
+    };
+
+    const res = await removeSupportedCamps(supportedCampsRemove);
+    if (res && res.status_code == 200) {
+      message.success(res.message);
+      GetCheckStatusData();
+      getCanonizedCampSupportingTreeApi(reqBody, algorithm);
+    }
+  };
   const removeSupport = async (supportedId) => {
     const RemoveSupportId = {
       topic_num: reqBodyData.topic_num,
@@ -380,9 +412,11 @@ const TopicDetails = () => {
                         <SupportTreeCard
                           handleLoadMoreSupporters={handleLoadMoreSupporters}
                           getCheckSupportStatus={getCheckSupportStatus}
-                          removeSupport={removeSupport}
+                          removeApiSupport={removeApiSupport}
                           fetchTotalScore={fetchTotalScore}
                           totalSupportScore={totalSupportScore}
+                          removeSupport={removeSupport}
+                          topicList={topicList}
                         />
                       </Spin>
                     </>
