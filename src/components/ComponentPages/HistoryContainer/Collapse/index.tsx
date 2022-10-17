@@ -238,6 +238,7 @@ function HistoryCollapse({
                       visible={modal1Open}
                       footer={[
                         <Button
+                          key="submit"
                           danger
                           type="primary"
                           onClick={() => setModal1Open(false)}
