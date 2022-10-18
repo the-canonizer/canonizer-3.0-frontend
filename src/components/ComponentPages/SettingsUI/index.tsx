@@ -13,7 +13,6 @@ import { useRouter } from "next/router";
 import SocialOauth from "../socialAuthVerification";
 import CreateTopicButton from "../../common/button/createNewTopicBtn";
 import SubscriptionsList from "../SubscriptionsList";
-import FullScoreCheckbox from "../FullScoreCheckbox";
 
 const { TabPane } = Tabs;
 const tabList = [
@@ -79,7 +78,6 @@ const SettingsUI = () => {
                 Note : To change support order of camp, drag & drop the camp box
                 on your choice position.
               </div>
-              <FullScoreCheckbox />
             </div>
             <DirectSupportedCamps search={search} />
           </TabPane>
