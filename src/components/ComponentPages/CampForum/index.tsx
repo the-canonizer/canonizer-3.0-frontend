@@ -28,12 +28,14 @@ import CampInfoBar from "../TopicDetails/CampInfoBar";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 const ForumComponent = ({}) => {
+  const router = useRouter();
+
   const { isUserAuthenticated } = useIsUserAuthenticated();
 
   const [paramsList, setParamsList] = useState({});
   const [threadList, setThreadList] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(+router?.query?.page || 1);
   const [totalRecords, setTotalRecords] = useState(0);
   const [nickNameList, setNickNameList] = useState([]);
   const [initialValue, setInitialValues] = useState({});
@@ -48,30 +50,21 @@ const ForumComponent = ({}) => {
   const [perPage, setPerPage] = useState(10);
   const [postperPage, setPostPerPage] = useState(10);
 
-  const router = useRouter();
   const dispatch = useDispatch();
 
   useEffect(() => {
     setIsLoggedIn(isUserAuthenticated);
   }, [isUserAuthenticated]);
 
-  const {
-    topicRecord,
-    campRecord,
-    asof,
-    asofdate,
-    algorithm,
-    currentThread,
-    currentPost,
-  } = useSelector((state: RootState) => ({
-    topicRecord: state?.topicDetails?.currentTopicRecord,
-    campRecord: state?.topicDetails?.currentCampRecord,
-    asof: state?.filters?.filterObject?.asof,
-    asofdate: state.filters?.filterObject?.asofdate,
-    algorithm: state.filters?.filterObject?.algorithm,
-    currentThread: state.forum.currentThread,
-    currentPost: state.forum.currentPost,
-  }));
+  const { campRecord, asof, asofdate, algorithm, currentThread, currentPost } =
+    useSelector((state: RootState) => ({
+      campRecord: state?.topicDetails?.currentCampRecord,
+      asof: state?.filters?.filterObject?.asof,
+      asofdate: state.filters?.filterObject?.asofdate,
+      algorithm: state.filters?.filterObject?.algorithm,
+      currentThread: state.forum.currentThread,
+      currentPost: state.forum.currentPost,
+    }));
 
   const setCurrentThread = (data) => dispatch(setThread(data));
 
@@ -103,18 +96,18 @@ const ForumComponent = ({}) => {
     camp,
     topic,
     type = "all",
-    page = 1,
+    pp = 1,
     like = "",
     per_page = perPage
   ) {
     let res = null;
 
     if (isLoggedIn && type !== "all") {
-      let q = `?camp_num=${camp}&topic_num=${topic}&type=${type}&page=${page}&per_page=${per_page}&like=${like}`;
+      let q = `?camp_num=${camp}&topic_num=${topic}&type=${type}&page=${pp}&per_page=${per_page}&like=${like}`;
 
       res = await getThreadsList(q);
     } else {
-      let q = `?camp_num=${camp}&topic_num=${topic}&type=all&page=${page}&per_page=${per_page}&like=${like}`;
+      let q = `?camp_num=${camp}&topic_num=${topic}&type=all&page=${pp}&per_page=${per_page}&like=${like}`;
 
       res = await getThreadsList(q);
     }
@@ -124,19 +117,17 @@ const ForumComponent = ({}) => {
     if (res && res.status_code === 200) {
       setThreadList(res.data?.items);
       setTotalRecords(res.data?.total_rows);
-      setPage(res.data?.current_page);
     }
   }
 
-  const getPosts = async (id, page = 1, like = "", per_page = postperPage) => {
-    const q = `?page=${page}&per_page=${per_page}&like=${like}`;
+  const getPosts = async (id, pp = 1, like = "", per_page = postperPage) => {
+    const q = `?page=${pp}&per_page=${per_page}&like=${like}`;
 
     const res = await getPostsList(id, q);
     setPostLoading(false);
     if (res && res.status_code === 200) {
       setPostList(res.data?.items);
       setPtotalRecords(res.data?.total_rows);
-      setPpage(res.data?.current_page);
     }
   };
 
@@ -287,7 +278,16 @@ const ForumComponent = ({}) => {
     const topic_num = topicArr?.shift();
     const type = queries["by"] as string;
 
-    getThreads(camp_num, topic_num, type, page, searchQuery);
+    let timer = 0;
+
+    if (timer) {
+      clearTimeout(timer);
+      timer = 0;
+    }
+
+    timer = window.setTimeout(async () => {
+      getThreads(camp_num, topic_num, type, page, searchQuery);
+    }, 800);
 
     if (
       router?.pathname === "/forum/[topic]/[camp]/threads/create" ||
@@ -506,7 +506,7 @@ const ForumComponent = ({}) => {
 
   //  post section end
   let payload = {
-    camp_num: (router?.query?.camp as string)?.split("-")[0],
+    camp_num: (router?.query?.camp as string)?.split("-")[0] ?? "1",
     topic_num: (router?.query?.topic as string)?.split("-")[0],
   };
 

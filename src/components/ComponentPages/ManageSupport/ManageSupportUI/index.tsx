@@ -10,7 +10,7 @@ import { placeholders } from "./../../../../messages/placeholder";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { useRouter } from "next/router";
-import { addSupport } from "src/network/api/userApi";
+import { addSupport, removeSupportedCamps } from "src/network/api/userApi";
 import { GetActiveSupportTopic } from "src/network/api/topicAPI";
 const ManageSupportUI = ({
   nickNameList,
@@ -29,6 +29,9 @@ const ManageSupportUI = ({
   submitButtonDisable,
   setUpdatePostion,
   unableToFindCamp,
+  updatePostion,
+  campIds,
+  setcampIds,
 }) => {
   const { currentDelegatedSupportedClick } = useSelector(
     (state: RootState) => ({
@@ -53,8 +56,33 @@ const ManageSupportUI = ({
 
   const router = useRouter();
   const manageSupportArr = [];
-  // const supportOrderLen = manageSupportArr.length + 1;
+  const filteredList = manageSupportList.map((obj) => {
+    return {
+      camp_num: obj.camp_num,
+      order: obj.support_order,
+    };
+  });
 
+  const filterList = (campNum, position) => {
+    const index = filteredList.findIndex((obj) => obj.camp_num === campNum);
+    filteredList[index] = {
+      camp_num: campNum,
+      order: position + 1,
+    };
+  };
+  const removeAllCampNum = () => {
+    const filteredList = manageSupportList.filter((obj) => obj.dis);
+    return filteredList.map((obj) => obj.camp_num);
+  };
+  const removeAllIsSelected = () => {
+    const filteredList = manageSupportList.filter((obj) => obj.dis);
+    if (filteredList.length == manageSupportList.length) return true;
+    else false;
+  };
+  const removeCampFilterdList =
+    currentGetCheckSupportExistsData?.remove_camps?.map((obj) => {
+      return obj.camp_num;
+    });
   const manageListOrder =
     manageSupportList.length > 0
       ? manageSupportList[manageSupportList.length - 1].support_order
@@ -65,7 +93,38 @@ const ManageSupportUI = ({
     topic_num: +router?.query?.manageSupport[0]?.split("-")[0],
     camp_num: +router?.query?.manageSupport[1]?.split("-")[0],
   };
+  const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
 
+  const body = { topic_num: topicNum };
+
+  // let topicSupport;
+  // const topicSupportCampNum = topicSupport?.map((obj)=>{
+  //   return obj.camp_num
+  // })
+
+  const removeCampsApi = async () => {
+    const supportedCampsRemove = {
+      topic_num: reqBodyData.topic_num,
+      remove_camps: removeAllCampNum(),
+      type: "direct",
+      action: "all",
+      nick_name_id: nickNameList[0]?.id,
+      order_update: [],
+    };
+    await GetActiveSupportTopic(topicNum && body);
+    const response = await removeSupportedCamps(supportedCampsRemove);
+    if (response && response.status_code == 200) {
+      let manageSupportPath = router.asPath.replace("/support/", "/topic/");
+      if (manageSupportPath.lastIndexOf("_") > -1)
+        manageSupportPath = manageSupportPath.substring(
+          0,
+          manageSupportPath.lastIndexOf("_")
+        );
+      router.push({
+        pathname: manageSupportPath,
+      });
+    }
+  };
   const addRemoveApi = async () => {
     const addSupportId = {
       topic_num: reqBodyData.topic_num,
@@ -81,14 +140,14 @@ const ManageSupportUI = ({
 
       remove_camps:
         currentGetCheckSupportExistsData.is_confirm == 1
-          ? [currentGetCheckSupportExistsData.remove_camps[0].camp_num]
+          ? removeCampFilterdList
           : [],
       type: "direct",
       action: "add",
-      nick_name_id: nickNameList[0].id,
+      nick_name_id: nickNameList[0]?.id,
       order_update:
-        currentGetCheckSupportExistsData.support_flag == 1
-          ? []
+        filteredList.length > 0
+          ? filteredList
           : [
               {
                 camp_num: reqBodyData.camp_num,
@@ -128,6 +187,7 @@ const ManageSupportUI = ({
         }))
       : "";
   }
+
   return (
     <>
       <Card
@@ -227,11 +287,12 @@ const ManageSupportUI = ({
                   >
                     <div className={styles.btndiv}>
                       {" "}
+                      {filterList(tag.camp_num, index)}
                       <span className={styles.count}>
-                        {getSupportStatusData == ""
+                        {/* {getSupportStatusData == ""
                           ? index + 1
-                          : tag.support_order}
-                        .{" "}
+                          : tag.support_order} */}
+                        {index + 1}.{" "}
                       </span>
                       <Link href={tag.link}>
                         <a className={styles.Bluecolor}>{tag.camp_name}</a>
@@ -285,7 +346,9 @@ const ManageSupportUI = ({
                 htmlType="submit"
                 className={styles.Upload_Btn}
                 onClick={
-                  CheckDelegatedOrDirect || removeCampsSupport
+                  removeAllIsSelected()
+                    ? removeCampsApi
+                    : CheckDelegatedOrDirect || removeCampsSupport
                     ? submitNickNameSupportCamps
                     : addRemoveApi
                 }

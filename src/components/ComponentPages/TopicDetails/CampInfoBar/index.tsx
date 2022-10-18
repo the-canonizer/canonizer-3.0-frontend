@@ -164,8 +164,10 @@ const CampInfoBar = ({
             campOrTopicScribe(true);
           } else {
             setLoadingIndicator(true);
-
-            router.push("/login");
+            router.push({
+              pathname: "/login",
+              query: { returnUrl: router.asPath },
+            });
           }
         }}
       >
@@ -187,7 +189,10 @@ const CampInfoBar = ({
             campOrTopicScribe(false);
           } else {
             setLoadingIndicator(true);
-            router.push("/login");
+            router.push({
+              pathname: "/login",
+              query: { returnUrl: router.asPath },
+            });
           }
         }}
       >
@@ -299,7 +304,7 @@ const CampInfoBar = ({
           <div className={styles.topicDetailContentHead_Left}>
             <Typography.Paragraph className={"mb-0 " + styles.topicTitleStyle}>
               {" "}
-              <span className="bold"> Topic: </span>
+              <span className="bold"> Topic : </span>
               {isTopicHistoryPage ? (
                 <>
                   {" "}
@@ -329,30 +334,32 @@ const CampInfoBar = ({
               <span className="bold mr-1">
                 {!isTopicHistoryPage ? "Camp :" : ""}{" "}
               </span>
-              {!isTopicHistoryPage && breadCrumbRes
-                ? breadCrumbRes?.bread_crumb?.map((camp, index) => {
-                    return (
-                      <Link
-                        href={{
-                          pathname: `/topic/${
-                            payloadData?.topic_num
-                          }-${replaceSpecialCharacters(
-                            breadCrumbRes?.topic_name,
-                            "-"
-                          )}/${camp?.camp_num}-${replaceSpecialCharacters(
-                            camp?.camp_name,
-                            "-"
-                          )}`,
-                        }}
-                        key={index}
-                      >
-                        <a>
-                          {index !== 0 && "/ "}
-                          {`${camp?.camp_name}`}
-                        </a>
-                      </Link>
-                    );
-                  })
+              {!isTopicHistoryPage
+                ? breadCrumbRes
+                  ? breadCrumbRes?.bread_crumb?.map((camp, index) => {
+                      return (
+                        <Link
+                          href={{
+                            pathname: `/topic/${
+                              payloadData?.topic_num
+                            }-${replaceSpecialCharacters(
+                              breadCrumbRes?.topic_name,
+                              "-"
+                            )}/${camp?.camp_num}-${replaceSpecialCharacters(
+                              camp?.camp_name,
+                              "-"
+                            )}`,
+                          }}
+                          key={index}
+                        >
+                          <a>
+                            {index !== 0 && "/ "}
+                            {`${camp?.camp_name}`}
+                          </a>
+                        </Link>
+                      );
+                    })
+                  : "N/A"
                 : null}
               {!!campSubscriptionID && !isTopicHistoryPage && (
                 <small style={{ alignSelf: "center", marginLeft: "10px" }}>

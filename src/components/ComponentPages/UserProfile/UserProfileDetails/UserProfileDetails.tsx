@@ -3,6 +3,8 @@ import styles from "../UserProfileUI/UserProfile.module.scss";
 import messages from "../../../../messages";
 import { Card, Image, Row, Col, Form, message, Tag } from "antd";
 const UserProfileDetails = ({ profileData, userSupportedCampsList }) => {
+  const firstNameLength = 15;
+  const lastNameLength = 15;
   return (
     <>
       {userSupportedCampsList[0]?.private_status == 0 ? (
@@ -19,9 +21,17 @@ const UserProfileDetails = ({ profileData, userSupportedCampsList }) => {
                     {messages.labels.name}
                   </label>
                   <h3>
-                    {(profileData.first_name ? profileData.first_name : "") +
+                    {(profileData.first_name?.length > firstNameLength
+                      ? profileData.first_name.substring(0, 15) + "..."
+                      : profileData.first_name
+                      ? profileData.first_name
+                      : "") +
                       " " +
-                      (profileData.last_name ? profileData.last_name : "")}
+                      (profileData.last_name?.length > lastNameLength
+                        ? profileData.last_name.substring(0, 15) + "..."
+                        : profileData.last_name
+                        ? profileData.last_name
+                        : "")}
                   </h3>
                 </Col>
                 <Col md={12}>

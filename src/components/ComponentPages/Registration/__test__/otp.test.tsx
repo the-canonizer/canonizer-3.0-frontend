@@ -11,7 +11,7 @@ const { placeholders, validations } = messages;
 describe("OTP page", () => {
   it("render heading and text", () => {
     render(<Registration isModal={false} isTest={true} />);
-    let heading = screen.getByText("Log in One Time Verification Code");
+    let heading = screen.getByText("Log In One Time Verification Code");
     expect(heading).toBeInTheDocument();
     expect(
       screen.getByText(

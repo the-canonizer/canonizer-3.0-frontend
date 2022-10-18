@@ -89,7 +89,7 @@ function RegistrationUi({
         autoComplete="off"
       >
         <Title level={2} className={styles.titles} id="registration-title">
-          Register Now on Canonizer
+          Register Now On Canonizer
         </Title>
         {isModal && (
           <Button

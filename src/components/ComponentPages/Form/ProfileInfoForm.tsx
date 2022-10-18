@@ -125,6 +125,7 @@ function ProfileInfoForm({
         onFinishFailed={onFinishFailed}
         layout="vertical"
         scrollToFirstError
+        className="profileInfoPointer"
       >
         <Title level={4} className="form-Title">
           Personal Information

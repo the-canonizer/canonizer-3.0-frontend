@@ -25,7 +25,7 @@ function CompareStatementUI({
     from = router?.query?.from;
 
   let payload = {
-    camp_num: router?.query?.routes[1]?.split("-")[0],
+    camp_num: router?.query?.routes[1]?.split("-")[0] ?? "1",
     topic_num: router?.query?.routes[0]?.split("-")[0],
   };
 

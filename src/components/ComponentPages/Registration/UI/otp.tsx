@@ -34,7 +34,7 @@ export default function OTPVerify({
         validateTrigger={messages.formValidationTypes()}
       >
         <Title level={2} className={styles.titles} id="otp-title-text">
-          Log in One Time Verification Code
+          Log In One Time Verification Code
         </Title>
         {isModal && (
           <Button

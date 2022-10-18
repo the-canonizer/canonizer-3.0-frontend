@@ -44,6 +44,11 @@ const PermissionsForPages: PermissionsObj = {
     isPermissionRequired: false,
     permissionName: "notification",
   },
+  ManageSupport: {
+    isAuthenticationRequired: true,
+    isPermissionRequired: false,
+    permissionName: "manageSupport",
+  },
 };
 
 export default PermissionsForPages;

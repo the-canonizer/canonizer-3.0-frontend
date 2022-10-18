@@ -5,6 +5,7 @@ import {
   Space,
   Checkbox,
   Divider,
+  Modal,
   Tooltip,
 } from "antd";
 import moment from "moment";
@@ -33,18 +34,22 @@ function HistoryCollapse({
   ifIamSupporter,
   ifSupportDelayed,
   ifIAmExplicitSupporter,
-
+  userNickNameData,
   campStatement,
   onSelectCompare,
   isDisabledCheck,
   changeAgree,
   isChecked,
+  setIsTreesApiCallStop,
 }) {
   const router = useRouter();
   const [commited, setCommited] = useState(false);
+
+  const [modal1Open, setModal1Open] = useState(false);
   const dispatch = useDispatch();
   const { isUserAuthenticated } = useAuthentication();
   const handleViewThisVersion = (goLiveTime) => {
+    setIsTreesApiCallStop(true);
     dispatch(
       setFilterCanonizedTopics({
         asofdate: goLiveTime,
@@ -75,7 +80,7 @@ function HistoryCollapse({
       camp_num: historyOf == "topic" ? 1 : router.query.camp[1].split("-")[0],
       change_for: historyOf,
 
-      nick_name_id: campStatement?.submitter_nick_id,
+      nick_name_id: userNickNameData[0]?.id,
     };
     let res = await agreeToChangeApi(reqBody);
     changeAgree();
@@ -92,6 +97,17 @@ function HistoryCollapse({
       title = "Topic Name";
     }
     return title;
+  };
+
+  const submitUpdateRedirect = (historyOf: string) => {
+    if (!isUserAuthenticated) {
+      router.push({
+        pathname: "/login",
+        query: { returnUrl: `/manage/${historyOf}/${campStatement?.id}` },
+      });
+    } else {
+      router.push(`/manage/${historyOf}/${campStatement?.id}`);
+    }
   };
 
   return (
@@ -167,64 +183,93 @@ function HistoryCollapse({
                 {(campStatement?.status == "in_review" ||
                   (campStatement?.status == "objected" &&
                     historyOf != "statement")) && (
-                  <Tooltip
-                    title={
-                      !!(
-                        !isUserAuthenticated &&
-                        ifIamSupporter == 0 &&
-                        ifSupportDelayed == 0 &&
-                        !ifIAmExplicitSupporter
-                      )
-                        ? "Only admin can object"
-                        : campStatement?.isAuthor
-                        ? "Only admin can object"
-                        : false
-                    }
-                  >
+                  <>
                     <Button
                       type="primary"
-                      disabled={
-                        !isUserAuthenticated
+                      onClick={() => {
+                        let isModelPop = !isUserAuthenticated
                           ? true
+                          : campStatement?.isAuthor
+                          ? false
                           : !!(
                               ifIamSupporter == 0 &&
                               ifSupportDelayed == 0 &&
                               !ifIAmExplicitSupporter
                             )
                           ? true
-                          : campStatement?.isAuthor
-                          ? true
-                          : false
-                      }
-                      onClick={() =>
-                        router.push(
-                          historyOf == "camp"
-                            ? `/manage/camp/${campStatement?.id}-objection`
-                            : historyOf == "topic"
-                            ? `/manage/topic/${campStatement?.id}-objection`
-                            : `/manage/statement/${campStatement?.id}-objection`
+                          : false;
+                        if (isModelPop) {
+                          setModal1Open(true);
+                        } else {
+                          router.push(
+                            historyOf == "camp"
+                              ? `/manage/camp/${campStatement?.id}-objection`
+                              : historyOf == "topic"
+                              ? `/manage/topic/${campStatement?.id}-objection`
+                              : `/manage/statement/${campStatement?.id}-objection`
+                          );
+                        }
+                      }}
+                      className={`mr-3 ${
+                        (
+                          !isUserAuthenticated
+                            ? true
+                            : campStatement?.isAuthor
+                            ? false
+                            : !!(
+                                ifIamSupporter == 0 &&
+                                ifSupportDelayed == 0 &&
+                                !ifIAmExplicitSupporter
+                              )
+                            ? true
+                            : false
                         )
-                      }
-                      className={`mr-3 ${styles.campUpdateButton}`}
+                          ? "disable-style"
+                          : ""
+                      } ${styles.campUpdateButton}`}
                     >
                       Object
                     </Button>
-                  </Tooltip>
+                    <Modal
+                      title="Why can't i object?"
+                      style={{
+                        top: 20,
+                      }}
+                      centered
+                      okText="Close"
+                      visible={modal1Open}
+                      footer={[
+                        <Button
+                          key="submit"
+                          danger
+                          type="primary"
+                          onClick={() => setModal1Open(false)}
+                        >
+                          Close
+                        </Button>,
+                      ]}
+                    >
+                      <p>
+                        To object to this change, you should be a direct
+                        supporter of the topic/camp and should have supported it
+                        before the change was submitted.
+                      </p>
+                      <p>
+                        For more information about disagreement, please read
+                        topic:
+                      </p>
+                      <Link href="/topic/132-Help/4-Disagreement">
+                        <a style={{ fontSize: "16px" }}>
+                          https://canonizer.com/topic/132-Help/4-Disagreement
+                        </a>
+                      </Link>
+                    </Modal>
+                  </>
                 )}
                 <Button
                   type="primary"
                   className={`mr-3 ${styles.campUpdateButton}`}
-                  onClick={() => {
-                    if (!isUserAuthenticated) {
-                      router.push("/login");
-                    } else if (historyOf == "statement") {
-                      router.push(`/manage/statement/${campStatement?.id}`);
-                    } else if (historyOf == "camp") {
-                      router.push(`/manage/camp/${campStatement?.id}`);
-                    } else if (historyOf == "topic") {
-                      router.push(`/manage/topic/${campStatement?.id}`);
-                    }
-                  }}
+                  onClick={() => submitUpdateRedirect(historyOf)}
                 >
                   {historyOf == "camp"
                     ? "Submit Camp Update Based on This"
@@ -240,33 +285,36 @@ function HistoryCollapse({
                   }
                 >
                   <Link
-                    href={`/topic/${
-                      replaceSpecialCharacters(
-                        historyOf == "topic"
-                          ? replaceSpecialCharacters(
-                              campStatement?.topic_num +
-                                "-" +
-                                campStatement?.topic_name?.replace(/ /g, "-"),
-                              "-"
-                            )
-                          : router?.query?.camp?.at(0),
-                        "-"
-                      ) +
-                      "/" +
-                      (historyOf != "topic"
-                        ? historyOf == "camp"
-                          ? replaceSpecialCharacters(
-                              campStatement?.camp_num +
-                                "-" +
-                                campStatement?.camp_name?.replace(/ /g, "-"),
-                              "-"
-                            )
-                          : replaceSpecialCharacters(
-                              router?.query?.camp?.at(1),
-                              "-"
-                            )
-                        : "1-Agreement")
-                    }`}
+                    href={{
+                      pathname: `/topic/${
+                        replaceSpecialCharacters(
+                          historyOf == "topic"
+                            ? replaceSpecialCharacters(
+                                campStatement?.topic_num +
+                                  "-" +
+                                  campStatement?.topic_name?.replace(/ /g, "-"),
+                                "-"
+                              )
+                            : router?.query?.camp?.at(0),
+                          "-"
+                        ) +
+                        "/" +
+                        (historyOf != "topic"
+                          ? historyOf == "camp"
+                            ? replaceSpecialCharacters(
+                                campStatement?.camp_num +
+                                  "-" +
+                                  campStatement?.camp_name?.replace(/ /g, "-"),
+                                "-"
+                              )
+                            : replaceSpecialCharacters(
+                                router?.query?.camp?.at(1),
+                                "-"
+                              )
+                          : "1-Agreement")
+                      }`,
+                      query: { topic_history: 1 },
+                    }}
                   >
                     View This Version
                   </Link>
@@ -274,7 +322,8 @@ function HistoryCollapse({
               </div>
               {campStatement?.status == "in_review" &&
                 !commited &&
-                !!campStatement?.grace_period && (
+                !!campStatement?.grace_period &&
+                moment.now() < campStatement?.submit_time * 1000 + 3600000 && (
                   <div className={styles.campStatementCollapseButtons}>
                     <Divider className="mt-0"></Divider>
                     <p className="w-100">
@@ -325,6 +374,8 @@ function HistoryCollapse({
                 !campStatement?.isAuthor && (
                   <div className={styles.campStatementCollapseButtons}>
                     <Checkbox
+                      defaultChecked={campStatement?.agreed_to_change}
+                      disabled={campStatement?.agreed_to_change}
                       className={styles.campSelectCheckbox}
                       onChange={agreeWithChange}
                     >

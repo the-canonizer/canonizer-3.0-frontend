@@ -22,7 +22,7 @@ const CreateNewCampUI = ({
 
   //  post section end
   let payload = {
-    camp_num: (router?.query.camp[1] as string)?.split("-")[0],
+    camp_num: (router?.query.camp[1] as string)?.split("-")[0] ?? "1",
     topic_num: (router?.query.camp[0] as string)?.split("-")[0],
   };
 

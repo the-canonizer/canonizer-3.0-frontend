@@ -17,7 +17,10 @@ import styles from "../topicDetails.module.scss";
 import isAuth from "../../../../hooks/isUserAuthenticated";
 import K from "../../../../constants";
 import { setDelegatedSupportClick } from "../../../../store/slices/supportTreeCard";
-import { setManageSupportStatusCheck } from "../../../../store/slices/campDetailSlice";
+import {
+  setManageSupportStatusCheck,
+  setManageSupportUrlLink,
+} from "../../../../store/slices/campDetailSlice";
 import { getNickNameList } from "../../../../network/api/userApi";
 const { Paragraph } = Typography;
 import { Tree } from "antd";
@@ -41,8 +44,10 @@ const supportContent = (
 const SupportTreeCard = ({
   handleLoadMoreSupporters,
   getCheckSupportStatus,
-  removeSupport,
+  removeApiSupport,
   fetchTotalScore,
+  removeSupport,
+  topicList,
   totalSupportScore,
 }) => {
   const { isUserAuthenticated } = isAuth();
@@ -57,7 +62,6 @@ const SupportTreeCard = ({
     });
     setUserNickNameList(arr);
   };
-  console.log(getCheckSupportStatus, "get");
   useEffect(() => {
     if (isUserAuthenticated) {
       getNickNameListData();
@@ -77,6 +81,7 @@ const SupportTreeCard = ({
     );
   };
   const handleClickSupportCheck = () => {
+    dispatch(setManageSupportUrlLink(manageSupportPath));
     dispatch(setManageSupportStatusCheck(true));
   };
 
@@ -84,7 +89,6 @@ const SupportTreeCard = ({
   const { campSupportingTree } = useSelector((state: RootState) => ({
     campSupportingTree: state?.topicDetails?.campSupportingTree,
   }));
-
   const [loadMore, setLoadMore] = useState(false);
   const { topicRecord, campRecord } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
@@ -171,7 +175,9 @@ const SupportTreeCard = ({
                           <a>
                             <span
                               onClick={() => {
-                                removeSupport(data[item].nick_name_id);
+                                topicList.length <= 1
+                                  ? removeApiSupport(data[item].nick_name_id)
+                                  : removeSupport(data[item].nick_name_id);
                               }}
                               className="delegate-support-style"
                             >
