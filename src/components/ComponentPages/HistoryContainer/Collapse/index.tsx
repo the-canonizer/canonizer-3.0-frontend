@@ -379,7 +379,13 @@ function HistoryCollapse({
                       className={styles.campSelectCheckbox}
                       onChange={agreeWithChange}
                     >
-                      I agree with this statement change
+                      I agree with this{" "}
+                      {historyOf == "camp"
+                        ? "camp"
+                        : historyOf == "topic"
+                        ? "topic"
+                        : "statement"}{" "}
+                      change
                     </Checkbox>
                   </div>
                 )}

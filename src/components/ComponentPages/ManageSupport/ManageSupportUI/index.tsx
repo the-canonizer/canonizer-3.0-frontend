@@ -235,11 +235,11 @@ const ManageSupportUI = ({
                     );
                   })}
                 </Col>
+                <div className={styles.hrtag}></div>
               </>
             ) : (
               ""
             )}
-            <div className={styles.hrtag}></div>
             <div className={styles.notes}>
               {" "}
               Note : To change support order of camp, drag & drop the camp box
