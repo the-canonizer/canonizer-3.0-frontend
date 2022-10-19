@@ -76,6 +76,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
                       <>
                         <Button
                           type="link"
+                          id="edit-news-btn"
                           onClick={() => {
                             // if (isUserAuthenticated) {
                             //   setEditNews(true);
@@ -94,6 +95,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
 
                         <Button
                           type="link"
+                          id="delete-news-btn"
                           onClick={() => {
                             // if (isUserAuthenticated) {
                             //   setDeleteNews(true);
@@ -113,6 +115,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
                   {(deleteNews || editNews) && (
                     <Button
                       type="link"
+                      id="close-new-btn"
                       danger
                       onClick={() => {
                         setDeleteNews(false);
@@ -141,6 +144,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
                             : news?.link
                         }
                         target={"__blank"}
+                        id="news-a-tag"
                       >
                         {news?.display_text}{" "}
                       </a>
@@ -178,6 +182,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
                               <Button
                                 size="small"
                                 type="link"
+                                id="delete-btn-news"
                                 danger
                                 // disabled={!news.owner_flag}
                               >
@@ -191,7 +196,10 @@ const NewsFeedsCard = ({ newsFeed }) => {
                               title={
                                 <>
                                   This news is inherited from
-                                  <Link href={news?.parent_camp_url}>
+                                  <Link
+                                    href={news?.parent_camp_url}
+                                    id="inherit-btn"
+                                  >
                                     <a>{news?.parent_camp_name}</a>
                                   </Link>
                                 </>
@@ -225,6 +233,7 @@ const NewsFeedsCard = ({ newsFeed }) => {
                           size="small"
                           type="link"
                           // disabled={!news.owner_flag}
+                          id="news-edit-btn"
                           onClick={() =>
                             router.push(
                               `/editnews/${replaceSpecialCharacters(
