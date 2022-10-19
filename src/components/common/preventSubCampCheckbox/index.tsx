@@ -14,7 +14,7 @@ const PreventSubCamps = ({ options, onCheckboxChange }) => {
             id={option.id}
             disabled={option.disable}
           >
-            {option.label}
+            {option?.label?.replace(/\.$/, "")}
           </Checkbox>
         </Tooltip>
       ))}
