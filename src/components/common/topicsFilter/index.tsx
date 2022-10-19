@@ -333,7 +333,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
           <Panel
             header={
               <span className={styles.title}>
-                As of
+                As Of
                 <Popover content={asContent} placement="right">
                   <i className="icon-info"></i>
                 </Popover>
