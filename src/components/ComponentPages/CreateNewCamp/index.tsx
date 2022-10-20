@@ -29,6 +29,7 @@ const CreateNewCamp = ({
   const [campNickName, setCampNickName] = useState(campNickNames);
   const [params, setParams] = useState({});
   const [options, setOptions] = useState([...messages.preventCampLabel]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
   const [form] = Form.useForm();
@@ -72,6 +73,7 @@ const CreateNewCamp = ({
   }, [router?.query]);
 
   const fetchNickNameList = async () => {
+    setIsLoading(true);
     const q = getRouterParams();
     const body = { topic_num: q?.topic_num };
     let response = await getAllUsedNickNames(body);
@@ -82,22 +84,27 @@ const CreateNewCamp = ({
     } else {
       return response.status ?? "";
     }
+    setIsLoading(false);
   };
 
   const fetchCampNickNameList = async () => {
+    setIsLoading(true);
     let response = await getAllCampNickNames();
     if (response && response.status_code === 200) {
       setCampNickName(response.data);
     }
+    setIsLoading(false);
   };
 
   const fetchParentsCampList = async () => {
+    setIsLoading(true);
     const q = getRouterParams();
     const body = { topic_num: q?.topic_num, parent_camp_num: q.camp_num };
     let res = await getAllParentsCamp(body);
     if (res && res.status_code === 200) {
       setParentCamps(res.data);
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -109,6 +116,7 @@ const CreateNewCamp = ({
   }, [isUserAuthenticated]);
 
   const onFinish = async (values: any) => {
+    setIsLoading(true);
     if (!values.camp_name?.trim()) {
       form.setFields([
         {
@@ -174,6 +182,7 @@ const CreateNewCamp = ({
         }
       }
     }
+    setIsLoading(false);
   };
 
   const onCancel = () => {
@@ -228,6 +237,7 @@ const CreateNewCamp = ({
         options={options}
         onCheckboxChange={onCheckboxChange}
         onParentCampChange={onParentCampChange}
+        isLoading={isLoading}
       />
     </Fragment>
   );
