@@ -192,9 +192,9 @@ function HistoryCollapse({
                           : campStatement?.isAuthor
                           ? false
                           : !!(
-                              ifIamSupporter == 0 &&
-                              ifSupportDelayed == 0 &&
-                              !ifIAmExplicitSupporter
+                              (ifIamSupporter == 0 && ifSupportDelayed == 0)
+                              // &&
+                              // !ifIAmExplicitSupporter
                             )
                           ? true
                           : false;
@@ -217,9 +217,9 @@ function HistoryCollapse({
                             : campStatement?.isAuthor
                             ? false
                             : !!(
-                                ifIamSupporter == 0 &&
-                                ifSupportDelayed == 0 &&
-                                !ifIAmExplicitSupporter
+                                (ifIamSupporter == 0 && ifSupportDelayed == 0)
+                                // &&
+                                // !ifIAmExplicitSupporter
                               )
                             ? true
                             : false
@@ -366,9 +366,9 @@ function HistoryCollapse({
                 )}
               {campStatement?.status == "in_review" &&
                 !!(
-                  ifIamSupporter != 0 ||
-                  ifSupportDelayed != 0 ||
-                  ifIAmExplicitSupporter
+                  (ifIamSupporter != 0 || ifSupportDelayed != 0)
+                  //  ||
+                  // ifIAmExplicitSupporter
                 ) &&
                 isUserAuthenticated &&
                 !campStatement?.isAuthor && (
