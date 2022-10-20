@@ -11,11 +11,11 @@ const StatementHistory = ({ campStatement }) => {
   return (
     <>
       <Title level={5}>
-        Edit summary :{" "}
+        Edit Summary :{" "}
         <span className={styles.updateSurveyPrj}>{campStatement?.note}</span>
       </Title>
       <Title level={5}>
-        Submitted on : <span>{covertToTime(campStatement?.submit_time)}</span>
+        Submitted On : <span>{covertToTime(campStatement?.submit_time)}</span>
       </Title>
       <Title level={5}>
         Submitter Nick Name :{" "}
@@ -55,7 +55,7 @@ const StatementHistory = ({ campStatement }) => {
         </Title>
       )}
       <Title level={5}>
-        Go live Time : <span>{covertToTime(campStatement?.go_live_time)}</span>
+        Go Live Time : <span>{covertToTime(campStatement?.go_live_time)}</span>
       </Title>
     </>
   );

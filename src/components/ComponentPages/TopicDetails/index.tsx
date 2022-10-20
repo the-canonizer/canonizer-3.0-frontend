@@ -140,7 +140,7 @@ const TopicDetails = () => {
         getCanonizedAlgorithmsApi(),
       ]);
       const reponse = await GetActiveSupportTopic(topicNum && body);
-      if (reponse.status_code == 200) {
+      if (reponse?.status_code == 200) {
         setTopicList(reponse.data);
       }
       setGetTreeLoadingIndicator(false);

@@ -882,7 +882,7 @@ export default function AddOrManage({ add }) {
         title={
           manageFormOf?.charAt(0).toUpperCase() +
           manageFormOf?.slice(1) +
-          " preview"
+          " Preview"
         }
         style={{
           top: 20,

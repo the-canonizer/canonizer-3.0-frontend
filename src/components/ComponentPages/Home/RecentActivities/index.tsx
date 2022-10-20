@@ -156,9 +156,7 @@ export default function RecentActivities() {
                   getTopicsApiCallWithReqBody(true, topicType);
                 }}
               >
-                <Text>
-                  Load More {topicType == "threads" ? "threads" : "topics"}
-                </Text>
+                <Text>Load More</Text>
                 {!loadMoreIndicator && <i className="icon-angle-right"></i>}
                 {loadMoreIndicator && <Spin indicator={antIcon} />}
               </Button>
