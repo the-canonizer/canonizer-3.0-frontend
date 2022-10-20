@@ -111,7 +111,7 @@ const UploadFileUI = ({
   const [previewImageIndicator, setPreviewImageIndicator] = useState(false);
   const [addFileIndicator, setAddFileIndicator] = useState(false);
   const [loadingArray, setLoadingArray] = useState([]);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState<any>("");
   const [updateList, setUpdateList] = useState({});
   const [datePick, setDatePick] = useState("");
   const [createFolderForm] = Form.useForm();
@@ -1115,8 +1115,9 @@ const UploadFileUI = ({
                   {showCrossBtn ? (
                     <div className={styles.Back_from_browser}>
                       <CloseCircleOutlined
-                        onClick={() => {
+                        onClick={(e) => {
                           handle_X_btn();
+                          setSearch("");
                         }}
                       />
                     </div>
@@ -1209,13 +1210,13 @@ const UploadFileUI = ({
                               }
                             >
                               <CloseCircleOutlined
-                                onClick={() =>
+                                onClick={() => {
                                   removeUploadFiles(
                                     originNode,
                                     file,
                                     fileStatus ? folderFiles : uploadFileList
-                                  )
-                                }
+                                  );
+                                }}
                               />
                               <div className="imgWrap">
                                 {(!imageRegexData.test(file.type) ||

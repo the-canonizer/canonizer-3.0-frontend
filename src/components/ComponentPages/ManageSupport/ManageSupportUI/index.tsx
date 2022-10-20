@@ -49,6 +49,7 @@ const ManageSupportUI = ({
         state.topicDetails.currentGetCheckSupportExistsData,
     })
   );
+  const [topicList, setTopicList] = useState([]);
   const [removeCampsSupport, setRemoveCampsSupport] = useState(false);
   const currentCampRecord = useSelector(
     (state: RootState) => state.topicDetails.currentCampRecord
@@ -111,6 +112,7 @@ const ManageSupportUI = ({
       order_update: [],
     };
     await GetActiveSupportTopic(topicNum && body);
+
     const response = await removeSupportedCamps(supportedCampsRemove);
     if (response && response.status_code == 200) {
       let manageSupportPath = router.asPath.replace("/support/", "/topic/");
@@ -345,7 +347,8 @@ const ManageSupportUI = ({
                 htmlType="submit"
                 className={styles.Upload_Btn}
                 onClick={
-                  removeAllIsSelected()
+                  removeAllIsSelected() &&
+                  !currentGetCheckSupportExistsData.is_delegator
                     ? removeCampsApi
                     : CheckDelegatedOrDirect || removeCampsSupport
                     ? submitNickNameSupportCamps

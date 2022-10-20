@@ -18,7 +18,13 @@ import {
   getLatLng,
   geocodeByPlaceId,
 } from "react-places-autocomplete";
-
+type UpdateAddress = {
+  city?: string;
+  state?: string;
+  country?: string;
+  postal_code?: string;
+  email?: string;
+};
 const ProfileInfo = () => {
   const [form] = Form.useForm();
   const [formVerify] = Form.useForm();
@@ -36,6 +42,7 @@ const ProfileInfo = () => {
   const [toggleVerifyButton, setToggleVerifyButton] = useState(0);
   const [disableButton, setDisableButton] = useState(false);
   const [postalCodeDisable, setPostalCodeDisable] = useState(false);
+  const [updateAddress, setUpdateAddress] = useState<UpdateAddress>({});
   const publicPrivateArray = {
     first_name: "first_name",
     last_name: "last_name",
@@ -68,7 +75,6 @@ const ProfileInfo = () => {
   }
   //on update profile click
   const onFinish = async (values: any) => {
-    // console.log(values, 'valuessss')
     let birthday = values.birthday._d;
     setDisableButton(true);
     //Set Private Public flags
@@ -79,7 +85,6 @@ const ProfileInfo = () => {
     values.address_1_bit = isPublicOrPrivate(publicPrivateArray.address_1);
     values.address_2_bit = isPublicOrPrivate(publicPrivateArray.address_2);
     values.postal_code_bit = isPublicOrPrivate(publicPrivateArray.postal_code);
-    values.city_bit = isPublicOrPrivate(publicPrivateArray.city);
     values.state_bit = isPublicOrPrivate(publicPrivateArray.state);
     values.country_bit = isPublicOrPrivate(publicPrivateArray.country);
     values.birthday_bit = isPublicOrPrivate(publicPrivateArray.birthday);
@@ -93,6 +98,7 @@ const ProfileInfo = () => {
       publicPrivateArray.phone_number
     );
     values.address_1 = address;
+    values = { ...values, ...updateAddress };
     let res = await UpdateUserProfileInfo(values);
     if (res && res.status_code === 200) {
       message.success(res.message);
@@ -197,6 +203,15 @@ const ProfileInfo = () => {
       ["state"]: state,
       ["country"]: country,
     });
+    const updateAdd: UpdateAddress = {
+      city: city,
+      state: state,
+      country: country,
+      email: updateAddress?.email,
+      // postal_code: updateAddress?.postal_code
+    };
+    if (postalCode) updateAdd.postal_code = postalCode;
+    setUpdateAddress(updateAdd);
   };
   const getAddress = (type, address, component) => {
     if (
@@ -264,6 +279,16 @@ const ProfileInfo = () => {
           setMobileNumber(profileData.phone_number);
           setToggleVerifyButton(profileData.mobile_verified);
           setMobileVerified(profileData.mobile_verified);
+          const updateAddress: UpdateAddress = {
+            city: profileData.city,
+            state: profileData.state,
+            country: profileData.country,
+            email: profileData?.email,
+            postal_code: profileData?.postal_code,
+          };
+          if (profileData.postalCode)
+            updateAddress.postal_code = profileData.postalCode;
+          setUpdateAddress(updateAddress);
         }
       }
     }
