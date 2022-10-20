@@ -28,6 +28,8 @@ import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
 import K from "../../../constants";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 // import { showCreateCampButton } from "src/utils/generalUtility";
+import FullScoreCheckbox from "../../ComponentPages/FullScoreCheckbox";
+import useAuthentication from "src/hooks/isUserAuthenticated";
 
 const infoContent = (
   <>
@@ -84,6 +86,8 @@ function disabledDateTime() {
 }
 
 const CreateTopic = ({ onCreateCamp = () => {} }) => {
+  const isAuth = useAuthentication();
+
   const [isDatePicker, setIsDatePicker] = useState(false);
   const [isPanelCollapse, setIsPanelCollapse] = useState(false);
 
@@ -160,6 +164,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
     setSelectedAsOFDate(filteredAsOfDate);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filteredAsOfDate]);
+
   useEffect(() => {
     getCanonizedAlgorithmsApi();
   }, []);
@@ -260,7 +265,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
             </div>
           )}
           bordered={false}
-          defaultActiveKey={["1", "2"]}
+          defaultActiveKey={["1", "2", "3"]}
         >
           <Panel
             header={<span className={styles.title}>Canonizer</span>}
@@ -328,7 +333,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
           <Panel
             header={
               <span className={styles.title}>
-                As of
+                As Of
                 <Popover content={asContent} placement="right">
                   <i className="icon-info"></i>
                 </Popover>
@@ -391,6 +396,20 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
               disabledDate={(current) => current.isAfter(moment())}
             />
           </Panel>
+          {isAuth.isUserAuthenticated ? (
+            <Panel
+              header={
+                <span className={styles.title}>
+                  Score on all supported camps
+                </span>
+              }
+              key="3"
+            >
+              <div className={styles.scoreCheckbox}>
+                <FullScoreCheckbox />
+              </div>
+            </Panel>
+          ) : null}
         </Collapse>
       </div>
     </>
