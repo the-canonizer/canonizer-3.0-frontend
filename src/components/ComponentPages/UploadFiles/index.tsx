@@ -26,6 +26,7 @@ import {
   showUploadFiles,
   setIsFolderOpen,
   setFolderId,
+  setSearch,
 } from "src/store/slices/uiSlice";
 import {
   deleteFolderApi,

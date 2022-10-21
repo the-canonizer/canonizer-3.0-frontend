@@ -39,7 +39,9 @@ const ManageSupportUI = ({
         state.supportTreeCard.currentDelegatedSupportedClick,
     })
   );
-
+  const { topicRecord } = useSelector((state: RootState) => ({
+    topicRecord: state?.topicDetails?.currentTopicRecord,
+  }));
   const { manageSupportStatusCheck } = useSelector((state: RootState) => ({
     manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
   }));
@@ -49,7 +51,7 @@ const ManageSupportUI = ({
         state.topicDetails.currentGetCheckSupportExistsData,
     })
   );
-  const [topicList, setTopicList] = useState([]);
+  const [topicSupportList, setTopicSupportList] = useState([]);
   const [removeCampsSupport, setRemoveCampsSupport] = useState(false);
   const currentCampRecord = useSelector(
     (state: RootState) => state.topicDetails.currentCampRecord
@@ -101,7 +103,12 @@ const ManageSupportUI = ({
   // const topicSupportCampNum = topicSupport?.map((obj)=>{
   //   return obj.camp_num
   // })
-
+  useEffect(async () => {
+    const topicList = await GetActiveSupportTopic(topicNum && body);
+    if (topicList && topicList.status_code == 200) {
+      setTopicSupportList(topicList.data);
+    }
+  }, []);
   const removeCampsApi = async () => {
     const supportedCampsRemove = {
       topic_num: reqBodyData.topic_num,
@@ -111,8 +118,10 @@ const ManageSupportUI = ({
       nick_name_id: nickNameList[0]?.id,
       order_update: [],
     };
-    await GetActiveSupportTopic(topicNum && body);
-
+    const topicList = await GetActiveSupportTopic(topicNum && body);
+    if (topicList && topicList.status_code == 200) {
+      setTopicSupportList(topicList.data);
+    }
     const response = await removeSupportedCamps(supportedCampsRemove);
     if (response && response.status_code == 200) {
       let manageSupportPath = router.asPath.replace("/support/", "/topic/");
@@ -246,7 +255,19 @@ const ManageSupportUI = ({
               Note : To change support order of camp, drag & drop the camp box
               on your choice position.
             </div>
-
+            {!CheckDelegatedOrDirect && topicSupportList.length != 0 ? (
+              <div>
+                <Card className={styles.margin_top} type="inner">
+                  <b>
+                    Your supporting camp list for topic &quot;{""}
+                    {topicRecord?.topic_name}
+                    {""}&quot;
+                  </b>
+                </Card>
+              </div>
+            ) : (
+              ""
+            )}
             {CheckDelegatedOrDirect ? (
               ""
             ) : (

@@ -1021,6 +1021,7 @@ const UploadFileUI = ({
                           id="datePickerText"
                           placeholder="Search"
                           autoComplete="off"
+                          value={search}
                           type="text"
                           name="search"
                           onChange={(e) => {
@@ -1115,7 +1116,7 @@ const UploadFileUI = ({
                   {showCrossBtn ? (
                     <div className={styles.Back_from_browser}>
                       <CloseCircleOutlined
-                        onClick={(e) => {
+                        onClick={() => {
                           handle_X_btn();
                           setSearch("");
                         }}
@@ -1183,9 +1184,7 @@ const UploadFileUI = ({
                         message.error(`${info.file.name} file upload failed.`);
                       }
                     }}
-                    onDrop={(e) => {
-                      console.log("Dropped files", e.dataTransfer.files);
-                    }}
+                    onDrop={(e) => {}}
                     itemRender={(originNode, file, currFileList) => {
                       const fileSizeFlag = file.size / (1024 * 1024) > 5;
                       return (file.type && file.type == "folder") ||
