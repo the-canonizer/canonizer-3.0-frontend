@@ -136,6 +136,8 @@ const PostForm = ({
                     allowClear
                     size={"large"}
                     data-id="nick-name-label"
+                    showSearch
+                    optionFilterProp="children"
                   >
                     {nickNameList.map((nick) => (
                       <Option key={nick.id} value={nick.id}>
@@ -163,6 +165,8 @@ const PostForm = ({
                     allowClear
                     size={"large"}
                     data-id="nick-name-label"
+                    showSearch
+                    optionFilterProp="children"
                   ></Select>
                 </Form.Item>
               ) : null}

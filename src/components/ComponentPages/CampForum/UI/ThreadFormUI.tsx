@@ -78,6 +78,8 @@ const CreateThreadForm = ({
                         allowClear
                         size={"large"}
                         data-id="nick-names"
+                        showSearch
+                        optionFilterProp="children"
                       >
                         {nickNameList.map((nick) => (
                           <Option key={nick.id} value={nick.id}>
@@ -105,6 +107,8 @@ const CreateThreadForm = ({
                         allowClear
                         size={"large"}
                         data-id="nick-names"
+                        showSearch
+                        optionFilterProp="children"
                       ></Select>
                     </Form.Item>
                   ) : null}

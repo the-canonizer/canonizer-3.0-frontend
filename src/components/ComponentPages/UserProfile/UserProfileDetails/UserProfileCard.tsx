@@ -49,6 +49,8 @@ export const UserProfileCard = ({
                     onChange={(selectedNameSpaceList) => {
                       setDropdownNameSpaceList(selectedNameSpaceList);
                     }}
+                    showSearch
+                    optionFilterProp="children"
                   >
                     {nameSpaceList?.map((item) => {
                       return (

@@ -276,6 +276,8 @@ export default function AddOrEdit({ edit }) {
                   value={nickNameData[0]?.id}
                   size="large"
                   disabled={edit}
+                  showSearch
+                  optionFilterProp="children"
                 >
                   {nickNameData &&
                     nickNameData?.map((names) => (
