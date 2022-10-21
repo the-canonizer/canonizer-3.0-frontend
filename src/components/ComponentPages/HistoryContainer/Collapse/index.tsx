@@ -79,7 +79,6 @@ function HistoryCollapse({
       topic_num: router.query.camp[0].split("-")[0],
       camp_num: historyOf == "topic" ? 1 : router.query.camp[1].split("-")[0],
       change_for: historyOf,
-
       nick_name_id: userNickNameData[0]?.id,
     };
     let res = await agreeToChangeApi(reqBody);
@@ -191,11 +190,7 @@ function HistoryCollapse({
                           ? true
                           : campStatement?.isAuthor
                           ? false
-                          : !!(
-                              (ifIamSupporter == 0 && ifSupportDelayed == 0)
-                              // &&
-                              // !ifIAmExplicitSupporter
-                            )
+                          : !!(ifIamSupporter == 0 && ifSupportDelayed == 0)
                           ? true
                           : false;
                         if (isModelPop) {
@@ -216,11 +211,7 @@ function HistoryCollapse({
                             ? true
                             : campStatement?.isAuthor
                             ? false
-                            : !!(
-                                (ifIamSupporter == 0 && ifSupportDelayed == 0)
-                                // &&
-                                // !ifIAmExplicitSupporter
-                              )
+                            : !!(ifIamSupporter == 0 && ifSupportDelayed == 0)
                             ? true
                             : false
                         )
@@ -365,11 +356,7 @@ function HistoryCollapse({
                   </div>
                 )}
               {campStatement?.status == "in_review" &&
-                !!(
-                  (ifIamSupporter != 0 || ifSupportDelayed != 0)
-                  //  ||
-                  // ifIAmExplicitSupporter
-                ) &&
+                !!(ifIamSupporter != 0 || ifSupportDelayed != 0) &&
                 isUserAuthenticated &&
                 !campStatement?.isAuthor && (
                   <div className={styles.campStatementCollapseButtons}>
