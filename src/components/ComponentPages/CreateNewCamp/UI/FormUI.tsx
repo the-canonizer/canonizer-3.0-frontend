@@ -125,6 +125,8 @@ const CreateCampFormUI = ({
                     placeholder="Parent camp"
                     data-id="parent-camp"
                     onChange={onParentCampChange}
+                    showSearch
+                    optionFilterProp="children"
                   >
                     {parentCamp.map((camp) => (
                       <Option
@@ -238,6 +240,8 @@ const CreateCampFormUI = ({
                     allowClear
                     size={"large"}
                     data-id="camp-about-nick-id"
+                    showSearch
+                    optionFilterProp="children"
                   >
                     <Option value="">{placeholders.campAboutNickName}</Option>
                     {campNickName.map((nc) => (

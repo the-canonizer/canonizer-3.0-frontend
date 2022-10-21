@@ -241,7 +241,10 @@ function CompareStatementUI({
                   <Divider />
                   <Card
                     bordered={false}
-                    className={styles.latestCard}
+                    className={
+                      styles.latestCard + " " + styles[liveStatement?.status] ||
+                      "live"
+                    }
                     title={
                       <Text>
                         Latest revision as of{" "}

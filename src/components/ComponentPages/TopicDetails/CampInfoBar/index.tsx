@@ -83,7 +83,7 @@ const CampInfoBar = ({
       getBreadCrumbApiCall();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [payload]);
+  }, [router]);
 
   useEffect(() => {
     if (isTopicPage) {
@@ -297,6 +297,7 @@ const CampInfoBar = ({
       </Menu.Item>
     </Menu>
   );
+
   return (
     <>
       <div className={styles.topicDetailContentHead}>

@@ -59,6 +59,7 @@ const TopicsList = () => {
     userEmail,
     filterNameSpaceId,
     search,
+    is_checked,
   } = useSelector((state: RootState) => ({
     canonizedTopics: state.homePage?.canonizedTopicsData,
     asofdate: state.filters?.filterObject?.asofdate,
@@ -70,6 +71,7 @@ const TopicsList = () => {
     userEmail: state?.auth?.loggedInUser?.email,
     filterNameSpaceId: state?.filters?.filterObject?.namespace_id,
     search: state?.filters?.filterObject?.search,
+    is_checked: state?.utils?.score_checkbox,
   }));
 
   const [topicsData, setTopicsData] = useState(canonizedTopics);
@@ -301,7 +303,10 @@ const TopicsList = () => {
                             : item?.topic_name}
                         </Text>
                         <Tag className={styles.tag}>
-                          {item?.topic_score?.toFixed(2)}
+                          {/* // ? item?.topic_full_score // : item?.full_score?.toFixed(2) */}
+                          {is_checked && isUserAuthenticated
+                            ? item?.topic_full_score?.toFixed(2)
+                            : item?.topic_score?.toFixed(2)}
                         </Tag>
                       </a>
                     </Link>

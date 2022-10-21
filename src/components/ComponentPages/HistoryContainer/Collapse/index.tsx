@@ -182,7 +182,7 @@ function HistoryCollapse({
                   defaultChecked={isChecked}
                   key={campStatement?.id}
                 >
-                  Select to Compare
+                  Select To Compare
                 </Checkbox>
               </div>
               <div className={styles.campStatementCollapseButtons}>
@@ -278,10 +278,10 @@ function HistoryCollapse({
                   onClick={() => submitUpdateRedirect(historyOf)}
                 >
                   {historyOf == "camp"
-                    ? "Submit Camp Update Based on This"
+                    ? "Submit Camp Update Based On This"
                     : historyOf == "topic"
-                    ? "Submit Topic Update Based on This"
-                    : "Submit Statement Update Based on This"}
+                    ? "Submit Topic Update Based On This"
+                    : "Submit Statement Update Based On This"}
                 </Button>
                 <Button
                   type="primary"
@@ -387,7 +387,13 @@ function HistoryCollapse({
                         className={styles.campSelectCheckbox}
                         onChange={agreeWithChange}
                       >
-                        I agree with this statement change
+                        I agree with this{" "}
+                        {historyOf == "camp"
+                          ? "camp"
+                          : historyOf == "topic"
+                          ? "topic"
+                          : "statement"}{" "}
+                        change
                       </Checkbox>
                     </Spin>
                   </div>
