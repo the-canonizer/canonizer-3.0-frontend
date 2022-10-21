@@ -86,9 +86,11 @@ const SupportTreeCard = ({
   };
 
   const manageSupportPath = router.asPath.replace("/topic/", "/support/");
-  const { campSupportingTree } = useSelector((state: RootState) => ({
+  const { campSupportingTree, asof } = useSelector((state: RootState) => ({
     campSupportingTree: state?.topicDetails?.campSupportingTree,
+    asof: state?.filters?.filterObject?.asof,
   }));
+
   const [loadMore, setLoadMore] = useState(false);
   const { topicRecord, campRecord } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
@@ -265,7 +267,7 @@ const SupportTreeCard = ({
               className="topicDetailsCollapseFooter"
               onClick={handleClickSupportCheck}
             >
-              <CustomButton className="btn-orange">
+              <CustomButton className="btn-orange" disabled={asof == "bydate"}>
                 {/* {K?.exceptionalMessages?.directJoinSupport} */}
                 {getCheckSupportStatus?.is_delegator == 1 ||
                 getCheckSupportStatus?.support_flag != 1
