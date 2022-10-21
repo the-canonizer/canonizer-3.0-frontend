@@ -66,7 +66,10 @@ export default function AddOrManage({ add }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [nickNameData, setNickNameData] = useState([]);
   const [screenLoading, setScreenLoading] = useState(false);
-  const [payloadBreadCrumb, setPayloadBreadCrumb] = useState({});
+  const [payloadBreadCrumb, setPayloadBreadCrumb] = useState({
+    topic_num: "",
+    camp_num: "",
+  });
   const [parentCamp, setParentCamps] = useState([]);
   const [wikiStatement, setWikiStatement] = useState("");
   const [errors, setErrors] = useState({
@@ -413,7 +416,7 @@ export default function AddOrManage({ add }) {
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
-        {payloadBreadCrumb && (
+        {!!payloadBreadCrumb?.camp_num && (
           <CampInfoBar
             payload={payloadBreadCrumb}
             isTopicHistoryPage={manageFormOf == "topic" ? true : false}
@@ -882,7 +885,7 @@ export default function AddOrManage({ add }) {
         title={
           manageFormOf?.charAt(0).toUpperCase() +
           manageFormOf?.slice(1) +
-          " preview"
+          " Preview"
         }
         style={{
           top: 20,

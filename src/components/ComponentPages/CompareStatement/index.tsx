@@ -51,7 +51,8 @@ function CompareStatement() {
       const oldStatus = {};
       status.forEach((st) => {
         const ct = st?.split("_");
-        oldStatus[ct[0]] = ct[1];
+        const id = ct.shift();
+        oldStatus[id] = ct.join("_");
       });
       setItemsStatus(oldStatus);
     }

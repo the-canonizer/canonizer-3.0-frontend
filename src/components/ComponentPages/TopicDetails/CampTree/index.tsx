@@ -13,11 +13,15 @@ import useAuthentication from "src/hooks/isUserAuthenticated";
 const { TreeNode } = Tree;
 
 const CampTree = ({ scrollToCampStatement }) => {
-  const { tree, filterByScore, review } = useSelector((state: RootState) => ({
-    tree: state?.topicDetails?.tree,
-    filterByScore: state.filters?.filterObject?.filterByScore,
-    review: state?.filters?.filterObject?.asof,
-  }));
+  const { tree, filterByScore, review, is_checked } = useSelector(
+    (state: RootState) => ({
+      tree: state?.topicDetails?.tree,
+      filterByScore: state.filters?.filterObject?.filterByScore,
+      review: state?.filters?.filterObject?.asof,
+      is_checked: state?.utils?.score_checkbox,
+    })
+  );
+
   const [selectedNodeID, setSelectedNodeID] = useState(1);
   const [scoreFilter, setScoreFilter] = useState(filterByScore);
   const [includeReview, setIncludeReview] = useState(
@@ -190,7 +194,12 @@ const CampTree = ({ scrollToCampStatement }) => {
                           "treeListItemNumber " + styles.treeListItemNumber
                         }
                       >
-                        {data[item].score?.toFixed(2)}
+                        {/* data[item].topic_score
+                            ? data[item].topic_score?.toFixed(2)
+                            : */}
+                        {is_checked && isUserAuthenticated
+                          ? data[item].full_score?.toFixed(2)
+                          : data[item].score?.toFixed(2)}
                       </span>
                       <span className={styles.subScriptionIcon}>
                         {isUserAuthenticated &&

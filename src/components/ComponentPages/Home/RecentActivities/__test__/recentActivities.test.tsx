@@ -390,14 +390,14 @@ describe("RecentActivities on HomePage for authenticated user", () => {
         name: /threads/i,
       });
       const loadmorebutton = screen.getByRole("button", {
-        name: /load more topics/i,
+        name: /load more/i,
       });
       expect(container.getElementsByTagName("li")).toHaveLength(15);
       expect(container.getElementsByTagName("button")).toHaveLength(2);
       expect(mainHeadig.textContent).toBe("Recent Activities");
       expect(topictab.textContent).toBe("Topics/Camps");
       expect(threadtab.textContent).toBe("Threads");
-      expect(loadmorebutton.textContent).toBe("Load More topics");
+      expect(loadmorebutton.textContent).toBe("Load More");
 
       // when asPath "/" then use this
 
