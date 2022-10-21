@@ -173,7 +173,9 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
                 </div>
                 <div className="mobile_tag">
                   <Link href="/settings">Account Settings</Link>
-                  <a>Support Camps</a>
+                  <Link href="/settings?tab=supported_camps" passHref>
+                    <a>Support Camps</a>
+                  </Link>
                   <a onClick={logOut}>Logout</a>
                 </div>
               </>
