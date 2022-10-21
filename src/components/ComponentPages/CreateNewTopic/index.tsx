@@ -22,6 +22,7 @@ const CreateNewTopic = ({
   const [nickNameList, setNickNameList] = useState(testNickName);
   const [initialValue, setInitialValues] = useState(testInitialValue);
   const [options, setOptions] = useState([...messages.preventCampLabel]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const nameSpaces =
     useSelector((state: RootState) => state.homePage.nameSpaces) ||
@@ -48,6 +49,7 @@ const CreateNewTopic = ({
   }, [isUserAuthenticated]);
 
   const onFinish = async (values: any) => {
+    setIsLoading(true);
     if (!values.topic_name?.trim()) {
       form.setFields([
         {
@@ -91,6 +93,7 @@ const CreateNewTopic = ({
         op.disable = false;
       });
       setOptions(oldOptions);
+      setIsLoading(false);
     }
 
     if (res && res.status_code === 400) {
@@ -161,6 +164,7 @@ const CreateNewTopic = ({
         onCancel={onCancel}
         options={options}
         onCheckboxChange={onCheckboxChange}
+        isLoading={isLoading}
       />
     </Fragment>
   );
