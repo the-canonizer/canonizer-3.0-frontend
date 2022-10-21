@@ -103,11 +103,13 @@ const ManageSupportUI = ({
   // const topicSupportCampNum = topicSupport?.map((obj)=>{
   //   return obj.camp_num
   // })
-  useEffect(async () => {
-    const topicList = await GetActiveSupportTopic(topicNum && body);
-    if (topicList && topicList.status_code == 200) {
-      setTopicSupportList(topicList.data);
-    }
+  useEffect(() => {
+    (async () => {
+      const topicList = await GetActiveSupportTopic(topicNum && body);
+      if (topicList && topicList.status_code == 200) {
+        setTopicSupportList(topicList.data);
+      }
+    })();
   }, []);
   const removeCampsApi = async () => {
     const supportedCampsRemove = {
