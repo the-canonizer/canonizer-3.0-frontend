@@ -88,10 +88,12 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item key="1">
-        <a>
-          <CheckCircleOutlined />
-          Supported Camps
-        </a>
+        <Link href="/settings?tab=supported_camps" passHref>
+          <a>
+            <CheckCircleOutlined />
+            Supported Camps
+          </a>
+        </Link>
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item key="3">
