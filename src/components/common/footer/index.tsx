@@ -1,4 +1,4 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Row, Col, Typography } from "antd";
 import styles from "./siteFooter.module.scss";
@@ -11,7 +11,7 @@ import K from "../../../constants";
 function Footer() {
   const router = useRouter();
   const [socialLinks, setSocialLinks] = useState(null);
-  
+
   useEffect(() => {
     async function linksApiCall() {
       const result = await getFooterSocialLinksApi();
@@ -89,7 +89,7 @@ function Footer() {
                   </a>
                 </Link>
               </div>
-              <p>Patent: US 8,160,970 B2</p>
+              <p>Pattent: US 8,160,970 B2</p>
               <ul className={styles.privacyTerms}>
                 <li>
                   <Link href="/privacy-policy">
