@@ -92,10 +92,12 @@ export const UserProfileCard = ({
                                           className={styles.delegatedSupport}
                                         >
                                           {" "}
-                                          (Support delegated to{" "}
-                                          <a className={styles.Bluecolor}>
-                                            {data.delegate_nick_name})
-                                          </a>
+                                          (Support Delegated to{" "}
+                                          <Link href={data.title_link}>
+                                            <a className={styles.Bluecolor}>
+                                              {data.delegate_nick_name})
+                                            </a>
+                                          </Link>
                                         </div>
                                       )}
                                     </div>
