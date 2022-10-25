@@ -468,7 +468,12 @@ export default function AddOrManage({ add }) {
                         },
                       ]}
                     >
-                      <Select value={nickNameData[0]?.id} size="large">
+                      <Select
+                        value={nickNameData[0]?.id}
+                        size="large"
+                        showSearch
+                        optionFilterProp="children"
+                      >
                         {!!nickNameData &&
                           nickNameData?.map((names) => (
                             <Select.Option value={names.id} key={names?.id}>
@@ -626,7 +631,12 @@ export default function AddOrManage({ add }) {
                               },
                             ]}
                           >
-                            <Select size={"large"} placeholder="Name Space">
+                            <Select
+                              size={"large"}
+                              placeholder="Name Space"
+                              showSearch
+                              optionFilterProp="children"
+                            >
                               {canNameSpace.map((camp) => (
                                 <Select.Option value={camp.id} key={camp.id}>
                                   {camp.label}
@@ -765,6 +775,8 @@ export default function AddOrManage({ add }) {
                                 size={"large"}
                                 placeholder="--Select Camp About Nick Name"
                                 // data-id="parent-camp"
+                                showSearch
+                                optionFilterProp="children"
                               >
                                 {campNickName.map((camp) => (
                                   <Select.Option value={camp.id} key={camp.id}>

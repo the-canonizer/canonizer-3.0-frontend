@@ -289,6 +289,8 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
             </div>
             <Select
               size="large"
+              showSearch
+              optionFilterProp="children"
               className={styles.algoSelect}
               defaultValue={
                 algorithms?.filter(

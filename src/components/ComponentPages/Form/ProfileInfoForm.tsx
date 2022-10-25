@@ -258,6 +258,8 @@ function ProfileInfoForm({
                       defaultValue={publicOrPrivate("birthday")}
                       onChange={handleselectAfter("birthday")}
                       className={styles.select_after}
+                      showSearch
+                      optionFilterProp="children"
                     >
                       <Option value="private">Private</Option>
                       <Option value="public">Public</Option>
@@ -353,6 +355,8 @@ function ProfileInfoForm({
                   size="large"
                   placeholder="Select a language"
                   tabIndex={10}
+                  showSearch
+                  optionFilterProp="children"
                 >
                   {listOfOption(languageList, "languages")}
                 </Select>
@@ -368,6 +372,8 @@ function ProfileInfoForm({
                   size="large"
                   placeholder={messages.placeholders.algorithm}
                   tabIndex={11}
+                  showSearch
+                  optionFilterProp="children"
                 >
                   {listOfOption(algorithmList, "algorithms")}
                 </Select>

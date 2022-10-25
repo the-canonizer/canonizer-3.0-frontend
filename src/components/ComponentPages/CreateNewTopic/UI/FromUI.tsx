@@ -69,6 +69,8 @@ const CreateTopicFromUI = ({
                     size={"large"}
                     defaultValue={nickNameList[0]?.id}
                     data-id="nick-name"
+                    showSearch
+                    optionFilterProp="children"
                   >
                     {nickNameList.map((nick, idx) => (
                       <Option key={nick.id} value={nick.id}>
@@ -117,6 +119,8 @@ const CreateTopicFromUI = ({
                     size={"large"}
                     defaultValue={nameSpaces[0]?.id}
                     data-id="namespace"
+                    showSearch
+                    optionFilterProp="children"
                   >
                     {nameSpaces.map((name, idx) => (
                       <Option key={name.id} value={name.id}>

@@ -355,6 +355,8 @@ const ManageSupportUI = ({
               onChange={(value) => {
                 setSelectedtNickname(value);
               }}
+              showSearch
+              optionFilterProp="children"
             >
               {nickNameList?.map((nick) => {
                 return (
