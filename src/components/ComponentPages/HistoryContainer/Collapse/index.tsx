@@ -436,14 +436,18 @@ const Timer = ({ unixTime, setCommited }) => {
   });
 
   const timeall = () => {
-    let now_time = moment.now();
     if (moment.now() < unixTime * 1000 + 3600000) {
-      let currenttime = new Date();
-      let subtime = new Date(unixTime * 1000 + 3600000);
-      convertMsToTime(unixTime * 1000 + 3600000 - moment.now() + 34900);
+      let resetSecLim = Math.floor(
+        (unixTime * 1000 + 3600000 - moment.now() + 53000) / 1000
+      );
+      let resetMinLim = Math.floor(resetSecLim / 60) % 60;
+      if (resetMinLim >= 59 && resetSecLim % 60 >= 55) {
+        convertMsToTime(3600000);
+      } else {
+        convertMsToTime(unixTime * 1000 + 3600000 - moment.now());
+      }
     }
   };
-
   function convertMsToTime(milliseconds) {
     let seconds = Math.floor(milliseconds / 1000);
     let minutes = Math.floor(seconds / 60);
