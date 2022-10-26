@@ -6,6 +6,7 @@ import {
   Checkbox,
   Divider,
   Modal,
+  Spin,
   Tooltip,
 } from "antd";
 import moment from "moment";
@@ -45,6 +46,9 @@ function HistoryCollapse({
   const router = useRouter();
   const [commited, setCommited] = useState(false);
 
+  const [loadingIndicatorForIAgree, setLoadingIndicatorForIAgree] =
+    useState(false);
+
   const [modal1Open, setModal1Open] = useState(false);
   const dispatch = useDispatch();
   const { isUserAuthenticated } = useAuthentication();
@@ -74,16 +78,17 @@ function HistoryCollapse({
   };
 
   const agreeWithChange = async () => {
+    setLoadingIndicatorForIAgree(true);
     let reqBody = {
       record_id: campStatement.id,
       topic_num: router.query.camp[0].split("-")[0],
       camp_num: historyOf == "topic" ? 1 : router.query.camp[1].split("-")[0],
       change_for: historyOf,
-
       nick_name_id: userNickNameData[0]?.id,
     };
     let res = await agreeToChangeApi(reqBody);
     changeAgree();
+    setLoadingIndicatorForIAgree(false);
   };
 
   let historyTitle = () => {
@@ -191,11 +196,7 @@ function HistoryCollapse({
                           ? true
                           : campStatement?.isAuthor
                           ? false
-                          : !!(
-                              ifIamSupporter == 0 &&
-                              ifSupportDelayed == 0 &&
-                              !ifIAmExplicitSupporter
-                            )
+                          : !!(ifIamSupporter == 0 && ifSupportDelayed == 0)
                           ? true
                           : false;
                         if (isModelPop) {
@@ -216,11 +217,7 @@ function HistoryCollapse({
                             ? true
                             : campStatement?.isAuthor
                             ? false
-                            : !!(
-                                ifIamSupporter == 0 &&
-                                ifSupportDelayed == 0 &&
-                                !ifIAmExplicitSupporter
-                              )
+                            : !!(ifIamSupporter == 0 && ifSupportDelayed == 0)
                             ? true
                             : false
                         )
@@ -365,28 +362,27 @@ function HistoryCollapse({
                   </div>
                 )}
               {campStatement?.status == "in_review" &&
-                !!(
-                  ifIamSupporter != 0 ||
-                  ifSupportDelayed != 0 ||
-                  ifIAmExplicitSupporter
-                ) &&
+                !!(ifIamSupporter != 0 || ifSupportDelayed != 0) &&
                 isUserAuthenticated &&
                 !campStatement?.isAuthor && (
                   <div className={styles.campStatementCollapseButtons}>
-                    <Checkbox
-                      defaultChecked={campStatement?.agreed_to_change}
-                      disabled={campStatement?.agreed_to_change}
-                      className={styles.campSelectCheckbox}
-                      onChange={agreeWithChange}
-                    >
-                      I agree with this{" "}
-                      {historyOf == "camp"
-                        ? "camp"
-                        : historyOf == "topic"
-                        ? "topic"
-                        : "statement"}{" "}
-                      change
-                    </Checkbox>
+                    <Spin spinning={loadingIndicatorForIAgree} size="default">
+                      {" "}
+                      <Checkbox
+                        defaultChecked={campStatement?.agreed_to_change}
+                        disabled={campStatement?.agreed_to_change}
+                        className={styles.campSelectCheckbox}
+                        onChange={agreeWithChange}
+                      >
+                        I agree with this{" "}
+                        {historyOf == "camp"
+                          ? "camp"
+                          : historyOf == "topic"
+                          ? "topic"
+                          : "statement"}{" "}
+                        change
+                      </Checkbox>
+                    </Spin>
                   </div>
                 )}
             </div>

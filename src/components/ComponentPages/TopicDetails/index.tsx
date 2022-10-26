@@ -141,7 +141,7 @@ const TopicDetails = () => {
       ]);
       const reponse = await GetActiveSupportTopic(topicNum && body);
       if (reponse?.status_code == 200) {
-        setTopicList(reponse.data);
+        setTopicList(reponse?.data);
       }
       setGetTreeLoadingIndicator(false);
       setLoadingIndicator(false);
