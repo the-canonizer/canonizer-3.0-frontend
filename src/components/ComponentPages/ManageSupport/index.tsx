@@ -322,7 +322,10 @@ const ManageSupport = () => {
         ? manageSupportRevertData[0].topic_num
         : router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
     //order Update
-    const manageListOrder = manageSupportList.length;
+    const filteredManageSupportList = manageSupportList.filter((obj) => {
+      return !obj.dis;
+    });
+    const manageListOrder = filteredManageSupportList.length;
     let resultCamp = manageSupportList.filter(
       (values) => !campIds.includes(values.camp_num)
     );

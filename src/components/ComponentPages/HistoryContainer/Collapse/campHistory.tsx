@@ -1,5 +1,4 @@
 import { Typography, Collapse } from "antd";
-// import Link from "next/link";
 import styles from ".././campHistory.module.scss";
 
 const { Title } = Typography;
@@ -37,7 +36,6 @@ const CampHistory = ({ campStatement }) => {
               <a target="_blank">{campStatement?.camp_about_url}</a>
             </Link>
           )}
-          {/* {campStatement?.camp_about_url} */}
         </span>
       </Title>
 
@@ -91,7 +89,6 @@ const CampHistory = ({ campStatement }) => {
               <a>{campStatement?.objector_nick_name}</a>
             </Link>
           </span>
-          {/* <span>{campStatement?.objector_nick_name}</span> */}
         </Title>
       )}
     </>

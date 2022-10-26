@@ -53,7 +53,7 @@ export default function DelegatedSupportCampsUI({
       <>
         <div className={styles.line_height}>
           <p>
-            Support delegated to:{" "}
+            Support Delegated to:{" "}
             <Link href={props.supportedto_link}>
               <a className={styles.Bluecolor}>{props.supportedto}</a>
             </Link>
@@ -227,7 +227,7 @@ export default function DelegatedSupportCampsUI({
         <>
           <h3>
             {" "}
-            For topic{" "}
+            For Topic{" "}
             <span className={styles.Bluecolor}>
               &quot;{" "}
               <Link href={viewMoreDataValue.title_link}>

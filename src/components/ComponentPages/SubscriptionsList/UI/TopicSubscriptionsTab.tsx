@@ -32,7 +32,7 @@ function TopicSubscriptionsTab({
           size="default"
           title={
             <Title level={5} className={styles.card_heading_title}>
-              For topic{" "}
+              For Topic{" "}
               <span>
                 &quot;
                 <Link href={data.title_link}>

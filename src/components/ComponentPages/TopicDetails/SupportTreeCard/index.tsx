@@ -86,9 +86,11 @@ const SupportTreeCard = ({
   };
 
   const manageSupportPath = router.asPath.replace("/topic/", "/support/");
-  const { campSupportingTree } = useSelector((state: RootState) => ({
+  const { campSupportingTree, asof } = useSelector((state: RootState) => ({
     campSupportingTree: state?.topicDetails?.campSupportingTree,
+    asof: state?.filters?.filterObject?.asof,
   }));
+
   const [loadMore, setLoadMore] = useState(false);
   const { topicRecord, campRecord } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
@@ -97,12 +99,16 @@ const SupportTreeCard = ({
 
   const supportLength = 15;
 
-  const renderTreeNodes = (data: any, isDisabled = 0, isOneLevel = 0) => {
+  const renderTreeNodes = (
+    data: any,
+    isDisabled = 0,
+    isOneLevel = 0,
+    loggedInUserDelegate = false
+  ) => {
     return Object.keys(data).map((item, index) => {
       const parentIsOneLevel = isOneLevel;
       isOneLevel = data[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
       //isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
-
       if ((!loadMore && index < supportLength) || loadMore) {
         if (data[item].delegates) {
           return (
@@ -148,7 +154,6 @@ const SupportTreeCard = ({
                       >
                         {data[item].score?.toFixed(2)}
                       </span>
-
                       {isUserAuthenticated ? (
                         !userNickNameList.includes(data[item].nick_name_id) ? (
                           <Link
@@ -156,7 +161,8 @@ const SupportTreeCard = ({
                               manageSupportPath + `_${data[item].nick_name_id}`
                             }
                           >
-                            {data[item].delegates?.findIndex((obj) =>
+                            {loggedInUserDelegate ||
+                            data[item].delegates?.findIndex((obj) =>
                               userNickNameList.includes(obj.nick_name_id)
                             ) > -1 ? (
                               ""
@@ -194,7 +200,12 @@ const SupportTreeCard = ({
                 key={data[item].camp_id}
                 data={{ ...data[item], parentIsOneLevel, isDisabled }}
               >
-                {renderTreeNodes(data[item].delegates, isDisabled, isOneLevel)}
+                {renderTreeNodes(
+                  data[item].delegates,
+                  isDisabled,
+                  isOneLevel,
+                  userNickNameList.includes(data[item].nick_name_id)
+                )}
               </TreeNode>
             </>
           );
@@ -265,7 +276,7 @@ const SupportTreeCard = ({
               className="topicDetailsCollapseFooter"
               onClick={handleClickSupportCheck}
             >
-              <CustomButton className="btn-orange">
+              <CustomButton className="btn-orange" disabled={asof == "bydate"}>
                 {/* {K?.exceptionalMessages?.directJoinSupport} */}
                 {getCheckSupportStatus?.is_delegator == 1 ||
                 getCheckSupportStatus?.support_flag != 1

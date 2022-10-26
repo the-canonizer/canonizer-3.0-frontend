@@ -111,7 +111,7 @@ const UploadFileUI = ({
   const [previewImageIndicator, setPreviewImageIndicator] = useState(false);
   const [addFileIndicator, setAddFileIndicator] = useState(false);
   const [loadingArray, setLoadingArray] = useState([]);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState<any>("");
   const [updateList, setUpdateList] = useState({});
   const [datePick, setDatePick] = useState("");
   const [createFolderForm] = Form.useForm();
@@ -1021,6 +1021,7 @@ const UploadFileUI = ({
                           id="datePickerText"
                           placeholder="Search"
                           autoComplete="off"
+                          value={search}
                           type="text"
                           name="search"
                           onChange={(e) => {
@@ -1117,6 +1118,7 @@ const UploadFileUI = ({
                       <CloseCircleOutlined
                         onClick={() => {
                           handle_X_btn();
+                          setSearch("");
                         }}
                       />
                     </div>
@@ -1182,9 +1184,7 @@ const UploadFileUI = ({
                         message.error(`${info.file.name} file upload failed.`);
                       }
                     }}
-                    onDrop={(e) => {
-                      console.log("Dropped files", e.dataTransfer.files);
-                    }}
+                    onDrop={(e) => {}}
                     itemRender={(originNode, file, currFileList) => {
                       const fileSizeFlag = file.size / (1024 * 1024) > 5;
                       return (file.type && file.type == "folder") ||
@@ -1209,13 +1209,13 @@ const UploadFileUI = ({
                               }
                             >
                               <CloseCircleOutlined
-                                onClick={() =>
+                                onClick={() => {
                                   removeUploadFiles(
                                     originNode,
                                     file,
                                     fileStatus ? folderFiles : uploadFileList
-                                  )
-                                }
+                                  );
+                                }}
                               />
                               <div className="imgWrap">
                                 {(!imageRegexData.test(file.type) ||

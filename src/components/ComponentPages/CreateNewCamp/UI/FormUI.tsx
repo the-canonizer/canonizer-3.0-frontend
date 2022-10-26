@@ -82,6 +82,8 @@ const CreateCampFormUI = ({
                     allowClear
                     size={"large"}
                     data-id="nick-name"
+                    showSearch
+                    optionFilterProp="children"
                   >
                     {nickNameList.map((nick) => (
                       <Option key={nick.id} value={nick.id}>
@@ -102,6 +104,8 @@ const CreateCampFormUI = ({
                     allowClear
                     size={"large"}
                     data-id="nick-name"
+                    showSearch
+                    optionFilterProp="children"
                   ></Select>
                 </Form.Item>
               ) : null}
@@ -154,6 +158,8 @@ const CreateCampFormUI = ({
                     size={"large"}
                     placeholder="Parent camp"
                     data-id="parent-camp"
+                    showSearch
+                    optionFilterProp="children"
                   >
                     <Option value={topicData?.camp_num}>
                       {topicData?.camp_name}
@@ -261,6 +267,8 @@ const CreateCampFormUI = ({
                     allowClear
                     size={"large"}
                     data-id="camp-about-nick-id"
+                    showSearch
+                    optionFilterProp="children"
                   >
                     <Option value="">{placeholders.campAboutNickName}</Option>
                   </Select>
