@@ -14,7 +14,7 @@ const { Title, Text } = Typography;
 const { Option } = Select;
 
 declare global {
-  interface Window {
+  interface window {
     grecaptcha: any;
   }
 }

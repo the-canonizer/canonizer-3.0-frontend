@@ -13,7 +13,6 @@ import {
   showSocialEmailPopup,
   showSocialNamePopup,
 } from "../../../store/slices/uiSlice";
-import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 import { setValue } from "src/store/slices/utilsSlice";
 import { RootState } from "src/store";
 
