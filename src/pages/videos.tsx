@@ -10,6 +10,6 @@ export default function VideosPage({}: Props): ReactElement {
     return (
         <Layout>
             <CanonVideos/>
-        </Layout>
+         </Layout>
     )
 }
