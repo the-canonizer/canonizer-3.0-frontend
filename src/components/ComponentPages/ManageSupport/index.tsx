@@ -103,10 +103,13 @@ const ManageSupport = () => {
 
   const CheckDelegatedOrDirect =
     currentDelegatedSupportedClick.delegatedSupportClick;
-  const reqBodyData = {
+  const reqBodyData: any = {
     topic_num: +router?.query?.manageSupport[0]?.split("-")[0],
     camp_num: +router?.query?.manageSupport[1]?.split("-")[0],
   };
+  if (CheckDelegatedOrDirect && router?.query?.manageSupport[1]?.split("_")[1])
+    reqBodyData.delegated_nick_name_id =
+      router?.query?.manageSupport[1]?.split("_")[1];
   const { campRecord } = useSelector((state: RootState) => ({
     campRecord: state?.topicDetails?.currentCampRecord,
   }));
