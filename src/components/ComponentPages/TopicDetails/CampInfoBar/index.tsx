@@ -10,6 +10,7 @@ import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
 import { Dropdown, Menu, Button } from "antd";
 import K from "../../../../constants";
+import moment from "moment";
 
 import { setManageSupportStatusCheck } from "../../../../store/slices/campDetailSlice";
 
@@ -73,6 +74,11 @@ const CampInfoBar = ({
       let reqBody = {
         topic_num: payload?.topic_num,
         camp_num: payload?.camp_num,
+        as_of: asof,
+        as_of_date:
+          asof == "default" || asof == "review"
+            ? Date.now() / 1000
+            : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
       };
       let res = await getCampBreadCrumbApi(reqBody);
       setBreadCrumbRes(res?.data);
@@ -83,7 +89,7 @@ const CampInfoBar = ({
       getBreadCrumbApiCall();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router]);
+  }, [router, asofdate]);
 
   useEffect(() => {
     if (isTopicPage) {
