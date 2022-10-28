@@ -58,6 +58,7 @@ const CreateNewTopic = ({
         },
       ]);
       form.validateFields(["topic_name"]);
+      setIsLoading(false);
       return true;
     }
 
@@ -112,6 +113,7 @@ const CreateNewTopic = ({
           });
         }
       }
+      setIsLoading(false);
     }
   };
 
