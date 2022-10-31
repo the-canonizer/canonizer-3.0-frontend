@@ -228,7 +228,7 @@ function HistoryCollapse({
                       Object
                     </Button>
                     <Modal
-                      title="Why can't i object?"
+                      title="Why can't I object?"
                       style={{
                         top: 20,
                       }}
@@ -245,11 +245,11 @@ function HistoryCollapse({
                           Close
                         </Button>,
                       ]}
+                      onCancel={() => setModal1Open(false)}
                     >
                       <p>
-                        To object to this change, you should be a direct
-                        supporter of the topic/camp and should have supported it
-                        before the change was submitted.
+                        Only direct supporters at the time this change was
+                        submitted can object.
                       </p>
                       <p>
                         For more information about disagreement, please read
