@@ -321,9 +321,15 @@ const ManageSupportUI = ({
                           : tag.support_order} */}
                         {index + 1}.{" "}
                       </span>
-                      <Link href={tag.link}>
-                        <a className={styles.Bluecolor}>{tag.camp_name}</a>
-                      </Link>
+                      <a
+                        className={styles.Bluecolor}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.location.href = tag.link;
+                        }}
+                      >
+                        {tag.camp_name}
+                      </a>
                     </div>
                     {CheckDelegatedOrDirect ? (
                       ""
