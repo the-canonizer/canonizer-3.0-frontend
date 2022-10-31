@@ -194,9 +194,11 @@ function HistoryCollapse({
                       onClick={() => {
                         let isModelPop = !isUserAuthenticated
                           ? true
-                          : campStatement?.isAuthor
-                          ? false
-                          : !!(ifIamSupporter == 0 && ifSupportDelayed == 0)
+                          : !!(
+                              ifIamSupporter == 0 &&
+                              ifSupportDelayed == 0 &&
+                              !ifIAmExplicitSupporter
+                            )
                           ? true
                           : false;
                         if (isModelPop) {
@@ -215,9 +217,11 @@ function HistoryCollapse({
                         (
                           !isUserAuthenticated
                             ? true
-                            : campStatement?.isAuthor
-                            ? false
-                            : !!(ifIamSupporter == 0 && ifSupportDelayed == 0)
+                            : !!(
+                                ifIamSupporter == 0 &&
+                                ifSupportDelayed == 0 &&
+                                !ifIAmExplicitSupporter
+                              )
                             ? true
                             : false
                         )
@@ -362,7 +366,11 @@ function HistoryCollapse({
                   </div>
                 )}
               {campStatement?.status == "in_review" &&
-                !!(ifIamSupporter != 0 || ifSupportDelayed != 0) &&
+                !!(
+                  ifIamSupporter != 0 ||
+                  ifSupportDelayed != 0 ||
+                  ifIAmExplicitSupporter
+                ) &&
                 isUserAuthenticated &&
                 !campStatement?.isAuthor && (
                   <div className={styles.campStatementCollapseButtons}>
