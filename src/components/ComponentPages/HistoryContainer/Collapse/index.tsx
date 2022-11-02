@@ -21,6 +21,8 @@ import {
 import { useDispatch } from "react-redux";
 import { setFilterCanonizedTopics } from "../../../../store/slices/filtersSlice";
 
+import K from "../../../../constants";
+
 import styles from ".././campHistory.module.scss";
 import StatementHistory from "./statementHistory";
 import CampHistory from "./campHistory";
@@ -232,7 +234,7 @@ function HistoryCollapse({
                       Object
                     </Button>
                     <Modal
-                      title="Why can't I object?"
+                      title={K?.exceptionalMessages?.objectedModelTitle}
                       style={{
                         top: 20,
                       }}
@@ -251,13 +253,9 @@ function HistoryCollapse({
                       ]}
                       onCancel={() => setModal1Open(false)}
                     >
+                      <p>{K?.exceptionalMessages?.objectedModalMsg}</p>
                       <p>
-                        Only direct supporters at the time this change was
-                        submitted can object.
-                      </p>
-                      <p>
-                        For more information about disagreement, please read
-                        topic:
+                        {K?.exceptionalMessages?.objectedModalMsgForMoreInfo}
                       </p>
                       <Link href="/topic/132-Help/4-Disagreement">
                         <a style={{ fontSize: "16px" }}>
