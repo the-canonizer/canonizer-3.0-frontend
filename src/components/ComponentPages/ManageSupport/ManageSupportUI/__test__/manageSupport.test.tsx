@@ -224,3 +224,51 @@ it("render show checkbox", () => {
     container.getElementsByClassName("ManageSupport_checkbox__DQcrk")
   ).toBeTruthy();
 });
+
+it("render show the text line when the topic list array is not empty", () => {
+  render(
+    <ManageSupportUI
+      nickNameList={nickNameList}
+      manageSupportList={manageSupportList}
+      clearAllChanges={clearAllChanges}
+      removeAll={removeAll}
+      handleClose={handleClose}
+      checked={checked}
+      setManageSupportList={setManageSupportList}
+      parentSupportDataList={parentSupportDataList}
+      getSupportStatusData={getSupportStatusData}
+      submitNickNameSupportCamps={submitNickNameSupportCamps}
+      cancelManageRoute={cancelManageRoute}
+      setSelectedtNickname={setSelectedtNickname}
+      selectedtNickname={selectedtNickname}
+      submitButtonDisable={submitButtonDisable}
+      setUpdatePostion={setUpdatePostion}
+      unableToFindCamp={unableToFindCamp}
+    />
+  );
+  expect(screen.queryByTestId(labels.topicSupportText)).toBeNull();
+});
+
+it("render show manage support note", () => {
+  render(
+    <ManageSupportUI
+      nickNameList={nickNameList}
+      manageSupportList={manageSupportList}
+      clearAllChanges={clearAllChanges}
+      removeAll={removeAll}
+      handleClose={handleClose}
+      checked={checked}
+      setManageSupportList={setManageSupportList}
+      parentSupportDataList={parentSupportDataList}
+      getSupportStatusData={getSupportStatusData}
+      submitNickNameSupportCamps={submitNickNameSupportCamps}
+      cancelManageRoute={cancelManageRoute}
+      setSelectedtNickname={setSelectedtNickname}
+      selectedtNickname={selectedtNickname}
+      submitButtonDisable={submitButtonDisable}
+      setUpdatePostion={setUpdatePostion}
+      unableToFindCamp={unableToFindCamp}
+    />
+  );
+  expect(screen.getByText(labels.manageSupportNote)).toBeTruthy();
+});
