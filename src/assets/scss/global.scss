@@ -59,6 +59,50 @@ body {
     margin-bottom: 1.5rem;
   }
 }
+
+.pb {
+  &-0 {
+    padding-bottom: 0 !important;
+  }
+
+  &-2 {
+    padding-bottom: 0.5rem;
+  }
+
+  &-3 {
+    padding-bottom: 1rem;
+  }
+
+  &-4 {
+    padding-bottom: 1.5rem;
+  }
+    &-4 {
+      padding-bottom: 2rem;
+    }
+}
+
+.pt {
+  &-0 {
+    padding-top: 0 !important;
+  }
+
+  &-2 {
+    padding-top: 0.5rem;
+  }
+
+  &-3 {
+    padding-top: 1rem;
+  }
+
+  &-4 {
+    padding-top: 1.5rem;
+  }
+
+  &-4 {
+    padding-top: 2rem;
+  }
+}
+
 .mr {
   &-1 {
     margin-right: 5px !important;
