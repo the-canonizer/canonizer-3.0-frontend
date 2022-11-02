@@ -30,6 +30,11 @@ const ExceptionalMessageConstants = {
   noRecentActivityFound: "No Recent Activity Found",
   createNewCampTooltipMsg:
     "A new camp cannot be created since the topic didn’t exist on the selected date.",
+  objectedModelTitle: "Why can't I object?",
+  objectedModalMsg:
+    "Only direct supporters at the time this change was submitted can object.",
+  objectedModalMsgForMoreInfo:
+    "For more information about disagreement, please read topic:",
 };
 
 export default ExceptionalMessageConstants;
