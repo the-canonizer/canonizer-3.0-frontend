@@ -75,6 +75,8 @@ export const labels = {
   topicSupportText: "Your supporting camp list for topic",
   manageSupportNote:
     "Note : To change support order of camp, drag & drop the camp boxon your choice position",
+  remove: "Remove",
+  cancel: "Cancel",
 };
 
 export const preventCampLabel = [
