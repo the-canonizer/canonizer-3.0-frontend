@@ -132,9 +132,9 @@ describe("Delegated Support camps page", () => {
         removeSupportCampsData={removeSupportCampsData}
       />
     );
-    expect(getByText("Remove")).toBeTruthy();
-    expect(getByText("Cancel")).toBeTruthy();
-    expect(screen.getAllByText("Remove Support")).toBeTruthy();
+    expect(getByText(labels.remove)).toBeTruthy();
+    expect(getByText(labels.cancel)).toBeTruthy();
+    expect(screen.getAllByText(labels.removeSupport)).toBeTruthy();
     expect(
       screen.getAllByText(labels.removeSupport)[1] as HTMLLabelElement
     ).toBeInTheDocument();
