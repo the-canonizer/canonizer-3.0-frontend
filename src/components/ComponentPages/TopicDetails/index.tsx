@@ -49,6 +49,7 @@ import {
   addSupport,
   getNickNameList,
   removeSupportedCamps,
+  removeSupportedCampsEntireTopic,
 } from "src/network/api/userApi";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import { SupportTreeTotalScore } from "src/network/api/campDetailApi";
@@ -182,6 +183,20 @@ const TopicDetails = () => {
       order_update: [],
     };
     let res = await addSupport(RemoveSupportId);
+    if (res && res.status_code == 200) {
+      message.success(res.message);
+      GetCheckStatusData();
+      getCanonizedCampSupportingTreeApi(reqBody, algorithm);
+    }
+  };
+  const removeSupportForDelegate = async () => {
+    const removeEntireData = {
+      topic_num: topicList[0].topic_num,
+      nick_name_id: topicList[0].nick_name_id,
+      delegated_nick_name_id: topicList[0].delegate_nick_name_id,
+    };
+
+    let res = await removeSupportedCampsEntireTopic(removeEntireData);
     if (res && res.status_code == 200) {
       message.success(res.message);
       GetCheckStatusData();
@@ -417,6 +432,7 @@ const TopicDetails = () => {
                           totalSupportScore={totalSupportScore}
                           removeSupport={removeSupport}
                           topicList={topicList}
+                          removeSupportForDelegate={removeSupportForDelegate}
                         />
                       </Spin>
                     </>

@@ -220,7 +220,7 @@ const ManageSupport = () => {
     statusFlag?: number
   ) => {
     const response = await GetActiveSupportTopic(topicNum && body);
-    const fiterSupportedCamps = response.data.filter((val) => {
+    const fiterSupportedCamps = response?.data?.filter((val) => {
       return (
         currentGetCheckSupportExistsData.remove_camps?.findIndex(
           (obj) => obj.camp_num == val.camp_num

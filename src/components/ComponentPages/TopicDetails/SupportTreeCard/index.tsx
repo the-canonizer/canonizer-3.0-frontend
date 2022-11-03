@@ -49,7 +49,14 @@ const SupportTreeCard = ({
   removeSupport,
   topicList,
   totalSupportScore,
+  removeSupportForDelegate,
 }) => {
+  const { currentGetCheckSupportExistsData } = useSelector(
+    (state: RootState) => ({
+      currentGetCheckSupportExistsData:
+        state.topicDetails.currentGetCheckSupportExistsData,
+    })
+  );
   const { isUserAuthenticated } = isAuth();
   const router = useRouter();
   const [userNickNameList, setUserNickNameList] = useState([]);
@@ -181,7 +188,9 @@ const SupportTreeCard = ({
                           <a>
                             <span
                               onClick={() => {
-                                topicList.length <= 1
+                                currentGetCheckSupportExistsData.is_delegator
+                                  ? removeSupportForDelegate()
+                                  : topicList.length <= 1
                                   ? removeApiSupport(data[item].nick_name_id)
                                   : removeSupport(data[item].nick_name_id);
                               }}
