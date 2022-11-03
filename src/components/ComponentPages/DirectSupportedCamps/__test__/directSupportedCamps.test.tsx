@@ -195,7 +195,7 @@ describe("Direct Support camps page", () => {
       />
     );
     expect(screen.getByText("Remove")).toBeTruthy();
-    expect(screen.getByText("Remove Support")).toBeInTheDocument();
+    expect(screen.getAllByText("Remove Support")).toBeTruthy();
     expect(
       screen.getAllByText(labels.removeSupport)[1] as HTMLLabelElement
     ).toBeInTheDocument();
