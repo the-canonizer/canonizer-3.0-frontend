@@ -3,6 +3,7 @@ import messages from "../../../../messages";
 import styles from "../UserProfileUI/UserProfile.module.scss";
 import Link from "next/link";
 import { Card, Tag, Select, Spin } from "antd";
+import router, { useRouter } from "next/router";
 export const UserProfileCard = ({
   userSupportedCampsList,
   nameSpaceList,
@@ -18,6 +19,9 @@ export const UserProfileCard = ({
     );
     return filteredVal[0];
   };
+  const router = useRouter();
+  console.log(router, "rout");
+  const reqBody = { campNum: +router?.query?.supports[0] };
   return (
     <div className="user--cards-outer">
       <div className={styles.card_spacing}>
@@ -95,7 +99,16 @@ export const UserProfileCard = ({
                                         >
                                           {" "}
                                           (Support Delegated To{" "}
-                                          <Link href={data.title_link}>
+                                          <Link
+                                            href={{
+                                              pathname: `/user/supports/${data.delegate_nick_name_id}`,
+                                              query: {
+                                                topicnum: data?.topic_num,
+                                                campnum: reqBody?.campNum,
+                                                namespace: data?.namespace_id,
+                                              },
+                                            }}
+                                          >
                                             <a className={styles.Bluecolor}>
                                               {data.delegate_nick_name})
                                             </a>
