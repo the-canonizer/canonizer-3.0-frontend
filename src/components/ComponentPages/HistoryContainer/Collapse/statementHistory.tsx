@@ -4,6 +4,7 @@ import styles from ".././campHistory.module.scss";
 const { Title } = Typography;
 import moment from "moment";
 import Link from "next/link";
+import K from "src/constants";
 const StatementHistory = ({ campStatement }) => {
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
@@ -39,7 +40,7 @@ const StatementHistory = ({ campStatement }) => {
       )}
       {campStatement?.objector_nick_name && (
         <Title level={5}>
-          Objector Nick Name :
+          {K?.exceptionalMessages?.objectorNickNameHeading}
           <span>
             <Link
               href={`/user/supports/${
@@ -49,7 +50,7 @@ const StatementHistory = ({ campStatement }) => {
               }&namespace=1`}
               passHref
             >
-              <a> {campStatement?.objector_nick_name}</a>
+              <a>{campStatement?.objector_nick_name}</a>
             </Link>
           </span>
         </Title>
