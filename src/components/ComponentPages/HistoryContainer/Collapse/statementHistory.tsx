@@ -40,9 +40,7 @@ const StatementHistory = ({ campStatement }) => {
       )}
       {campStatement?.objector_nick_name && (
         <Title level={5}>
-          {
-            K?.exceptionalMessages?.objectorNickNameHeading
-          }
+          {K?.exceptionalMessages?.objectorNickNameHeading}
           <span>
             <Link
               href={`/user/supports/${
