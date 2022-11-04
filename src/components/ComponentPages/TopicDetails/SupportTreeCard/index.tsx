@@ -105,7 +105,6 @@ const SupportTreeCard = ({
   }));
 
   const supportLength = 15;
-
   const renderTreeNodes = (
     data: any,
     isDisabled = 0,
