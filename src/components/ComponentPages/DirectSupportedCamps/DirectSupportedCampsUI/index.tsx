@@ -128,12 +128,16 @@ export default function DirectSupportedCampsUI({
                           <div className={styles.btndiv}>
                             {" "}
                             <span className="count">{tag.id}. </span>
-                            <Link href={tag.camp_link}>
-                              <a className={styles.Bluecolor}>
-                                {" "}
-                                {tag.camp_name}
-                              </a>
-                            </Link>
+                            <a
+                              className={styles.Bluecolor}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                window.location.href = tag.camp_link;
+                              }}
+                            >
+                              {" "}
+                              {tag.camp_name}
+                            </a>
                           </div>
                           <CloseCircleOutlined
                             onClick={(e) => {

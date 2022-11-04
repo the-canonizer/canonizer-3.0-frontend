@@ -213,7 +213,9 @@ const ManageSupportUI = ({
           </div>
         }
       >
-        {unableToFindCamp ? (
+        {(CheckDelegatedOrDirect &&
+          currentGetCheckSupportExistsData.is_confirm) ||
+        unableToFindCamp ? (
           <>
             <span className={styles.warning}>
               <strong> Warning! </strong>
