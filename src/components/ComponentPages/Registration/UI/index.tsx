@@ -165,11 +165,12 @@ function RegistrationUi({
                 className={styles.phoneInput}
               >
                 <Input
+                  type="tel"
                   addonBefore={prefixSelector}
                   style={{ width: "100%" }}
                   className={`${styles.phoneInput} numberInput`}
                   placeholder={messages.placeholders.phone}
-                  autoComplete="new-phone"
+                  autoComplete="off"
                   maxLength={10}
                   onKeyDown={(e) =>
                     e.key === " " && e.keyCode === 32 && e.preventDefault()
@@ -192,7 +193,7 @@ function RegistrationUi({
                   className={styles.passwordInput}
                   type="password"
                   placeholder={messages.placeholders.password}
-                  autoComplete="new-password"
+                  autoComplete="off"
                 />
               </Form.Item>
             </Col>
@@ -212,7 +213,7 @@ function RegistrationUi({
                   className={styles.passwordInput}
                   type="password"
                   placeholder={messages.placeholders.confirmPassword}
-                  autoComplete="new-conf-password"
+                  autoComplete="off"
                 />
               </Form.Item>
             </Col>
