@@ -383,6 +383,7 @@ const CampInfoBar = ({
                   type="primary"
                   className={styles.btnCampForum}
                   onClick={onCampForumClick}
+                  id="camp-forum-btn"
                 >
                   Camp Forum
                 </Button>
