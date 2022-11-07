@@ -48,6 +48,8 @@ function HistoryCollapse({
   const router = useRouter();
   const [commited, setCommited] = useState(false);
 
+  const [isSelectChecked, setIsSelectChecked] = useState(false);
+
   const [loadingIndicatorForIAgree, setLoadingIndicatorForIAgree] =
     useState(false);
 
@@ -81,6 +83,7 @@ function HistoryCollapse({
 
   const agreeWithChange = async () => {
     setLoadingIndicatorForIAgree(true);
+    setIsSelectChecked(true);
     let reqBody = {
       record_id: campStatement.id,
       topic_num: router.query.camp[0].split("-")[0],
@@ -376,7 +379,9 @@ function HistoryCollapse({
                       {" "}
                       <Checkbox
                         defaultChecked={campStatement?.agreed_to_change}
-                        disabled={campStatement?.agreed_to_change}
+                        disabled={
+                          campStatement?.agreed_to_change || isSelectChecked
+                        }
                         className={styles.campSelectCheckbox}
                         onChange={agreeWithChange}
                       >
