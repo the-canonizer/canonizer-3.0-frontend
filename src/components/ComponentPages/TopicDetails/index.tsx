@@ -164,12 +164,23 @@ const TopicDetails = () => {
       nick_name_id: supportedId,
       order_update: [],
     };
+    const reqBodyForService = {
+      topic_num: +router?.query?.camp[0]?.split("-")[0],
+      camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+      asOf: asof,
+      asofdate:
+        asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+      algorithm: algorithm,
+      update_all: 1,
+      fetch_topic_history: +router?.query?.topic_history,
+    };
 
     const res = await removeSupportedCamps(supportedCampsRemove);
     if (res && res.status_code == 200) {
       message.success(res.message);
       GetCheckStatusData();
       getCanonizedCampSupportingTreeApi(reqBody, algorithm);
+      getTreesApi(reqBodyForService);
     }
   };
   const removeSupport = async (supportedId) => {
@@ -182,11 +193,22 @@ const TopicDetails = () => {
       nick_name_id: supportedId,
       order_update: [],
     };
+    const reqBodyForService = {
+      topic_num: +router?.query?.camp[0]?.split("-")[0],
+      camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+      asOf: asof,
+      asofdate:
+        asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+      algorithm: algorithm,
+      update_all: 1,
+      fetch_topic_history: +router?.query?.topic_history,
+    };
     let res = await addSupport(RemoveSupportId);
     if (res && res.status_code == 200) {
       message.success(res.message);
       GetCheckStatusData();
       getCanonizedCampSupportingTreeApi(reqBody, algorithm);
+      getTreesApi(reqBodyForService);
     }
   };
   const removeSupportForDelegate = async () => {
@@ -195,12 +217,23 @@ const TopicDetails = () => {
       nick_name_id: topicList[0].nick_name_id,
       delegated_nick_name_id: topicList[0].delegate_nick_name_id,
     };
+    const reqBodyForService = {
+      topic_num: +router?.query?.camp[0]?.split("-")[0],
+      camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+      asOf: asof,
+      asofdate:
+        asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+      algorithm: algorithm,
+      update_all: 1,
+      fetch_topic_history: +router?.query?.topic_history,
+    };
 
     let res = await removeSupportedCampsEntireTopic(removeEntireData);
     if (res && res.status_code == 200) {
       message.success(res.message);
       GetCheckStatusData();
       getCanonizedCampSupportingTreeApi(reqBody, algorithm);
+      getTreesApi(reqBodyForService);
     }
   };
 
