@@ -171,7 +171,8 @@ const SupportTreeCard = ({
                             }
                           >
                             {loggedInUserDelegate ||
-                            loggedInUserChild ||
+                            (loggedInUserChild &&
+                              data[item].delegate_nick_name_id) ||
                             data[item].delegates?.findIndex((obj) =>
                               userNickNameList.includes(obj.nick_name_id)
                             ) > -1 ? (
