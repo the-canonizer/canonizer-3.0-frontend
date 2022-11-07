@@ -1,6 +1,7 @@
 import { render, screen, waitFor } from "../../../../../utils/testUtils";
 import messages from "../../../../../messages";
 import ManageSupportUI from "../index";
+import { CloseCircleOutlined } from "@ant-design/icons";
 
 const { labels } = messages;
 const nickNameList = [];
@@ -147,6 +148,7 @@ it("render show clear changes button", () => {
     "Clear all changes"
   )[0] as HTMLButtonElement;
   expect(clearChangesButton).toBeTruthy();
+  expect(<CloseCircleOutlined />).toBeTruthy();
 });
 
 it("render show Quick Action Text", () => {
@@ -222,5 +224,79 @@ it("render show checkbox", () => {
   );
   expect(
     container.getElementsByClassName("ManageSupport_checkbox__DQcrk")
+  ).toBeTruthy();
+});
+
+it("render show the text line when the topic list array is not empty", () => {
+  render(
+    <ManageSupportUI
+      nickNameList={nickNameList}
+      manageSupportList={manageSupportList}
+      clearAllChanges={clearAllChanges}
+      removeAll={removeAll}
+      handleClose={handleClose}
+      checked={checked}
+      setManageSupportList={setManageSupportList}
+      parentSupportDataList={parentSupportDataList}
+      getSupportStatusData={getSupportStatusData}
+      submitNickNameSupportCamps={submitNickNameSupportCamps}
+      cancelManageRoute={cancelManageRoute}
+      setSelectedtNickname={setSelectedtNickname}
+      selectedtNickname={selectedtNickname}
+      submitButtonDisable={submitButtonDisable}
+      setUpdatePostion={setUpdatePostion}
+      unableToFindCamp={unableToFindCamp}
+    />
+  );
+  expect(screen.queryByTestId(labels.topicSupportText)).toBeNull();
+});
+
+it("render show manage support note", () => {
+  render(
+    <ManageSupportUI
+      nickNameList={nickNameList}
+      manageSupportList={manageSupportList}
+      clearAllChanges={clearAllChanges}
+      removeAll={removeAll}
+      handleClose={handleClose}
+      checked={checked}
+      setManageSupportList={setManageSupportList}
+      parentSupportDataList={parentSupportDataList}
+      getSupportStatusData={getSupportStatusData}
+      submitNickNameSupportCamps={submitNickNameSupportCamps}
+      cancelManageRoute={cancelManageRoute}
+      setSelectedtNickname={setSelectedtNickname}
+      selectedtNickname={selectedtNickname}
+      submitButtonDisable={submitButtonDisable}
+      setUpdatePostion={setUpdatePostion}
+      unableToFindCamp={unableToFindCamp}
+    />
+  );
+  expect(screen.getByText(labels.manageSupportNote)).toBeTruthy();
+});
+
+it("render show dropdown", () => {
+  const { container } = render(
+    <ManageSupportUI
+      nickNameList={nickNameList}
+      manageSupportList={manageSupportList}
+      clearAllChanges={clearAllChanges}
+      removeAll={removeAll}
+      handleClose={handleClose}
+      checked={checked}
+      setManageSupportList={setManageSupportList}
+      parentSupportDataList={parentSupportDataList}
+      getSupportStatusData={getSupportStatusData}
+      submitNickNameSupportCamps={submitNickNameSupportCamps}
+      cancelManageRoute={cancelManageRoute}
+      setSelectedtNickname={setSelectedtNickname}
+      selectedtNickname={selectedtNickname}
+      submitButtonDisable={submitButtonDisable}
+      setUpdatePostion={setUpdatePostion}
+      unableToFindCamp={unableToFindCamp}
+    />
+  );
+  expect(
+    container.getElementsByClassName("ant-select-selection-item")
   ).toBeTruthy();
 });

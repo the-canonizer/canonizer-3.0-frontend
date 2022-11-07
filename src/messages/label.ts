@@ -29,7 +29,7 @@ export const labels = {
 
   removeSupport: "Remove Support",
   fortopic: "For Topic",
-  supportdelegatedto: "Support Delegated to:",
+  supportdelegatedto: "Support Delegated To:",
   nickname: "Nick Name:",
   viewMore: "View More",
   currentSupportedCamps: "Current Supported Camps:",
@@ -72,6 +72,11 @@ export const labels = {
   otpTitle: "One Time Verification Code",
   emailTitle: "Social Email Confirmation",
   brief: "(Briefly describe your changes)",
+  topicSupportText: "Your supporting camp list for topic",
+  manageSupportNote:
+    "Note : To change support order of camp, drag & drop the camp boxon your choice position",
+  remove: "Remove",
+  cancel: "Cancel",
 };
 
 export const preventCampLabel = [

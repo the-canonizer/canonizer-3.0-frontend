@@ -257,14 +257,13 @@ const ManageSupportUI = ({
             )}
             <div className={styles.notes}>
               {" "}
-              Note : To change support order of camp, drag & drop the camp box
-              on your choice position.
+              {messages.labels.manageSupportNote}
             </div>
             {!CheckDelegatedOrDirect && topicSupportList.length != 0 ? (
               <div>
                 <Card className={styles.margin_top} type="inner">
                   <b>
-                    Your supporting camp list for topic &quot;{""}
+                    {messages.labels.topicSupportText} &quot;{""}
                     {topicRecord?.topic_name}
                     {""}&quot;
                   </b>

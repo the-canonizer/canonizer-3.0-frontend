@@ -57,7 +57,8 @@
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.4.1",
     "sanitize-html": "^2.7.0",
-    "sass": "^1.44.0"
+    "sass": "^1.44.0",
+    "react-player": "^2.11.0"
   },
   "devDependencies": {
     "@testing-library/dom": "^8.11.3",

@@ -49,7 +49,14 @@ const SupportTreeCard = ({
   removeSupport,
   topicList,
   totalSupportScore,
+  removeSupportForDelegate,
 }) => {
+  const { currentGetCheckSupportExistsData } = useSelector(
+    (state: RootState) => ({
+      currentGetCheckSupportExistsData:
+        state.topicDetails.currentGetCheckSupportExistsData,
+    })
+  );
   const { isUserAuthenticated } = isAuth();
   const router = useRouter();
   const [userNickNameList, setUserNickNameList] = useState([]);
@@ -103,9 +110,12 @@ const SupportTreeCard = ({
     data: any,
     isDisabled = 0,
     isOneLevel = 0,
-    loggedInUserDelegate = false
+    loggedInUserDelegate = false,
+    loggedInUserChild = false
   ) => {
     return Object.keys(data).map((item, index) => {
+      if (userNickNameList.includes(data[item].nick_name_id))
+        loggedInUserChild = true;
       const parentIsOneLevel = isOneLevel;
       isOneLevel = data[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
       //isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
@@ -162,6 +172,7 @@ const SupportTreeCard = ({
                             }
                           >
                             {loggedInUserDelegate ||
+                            loggedInUserChild ||
                             data[item].delegates?.findIndex((obj) =>
                               userNickNameList.includes(obj.nick_name_id)
                             ) > -1 ? (
@@ -181,7 +192,9 @@ const SupportTreeCard = ({
                           <a>
                             <span
                               onClick={() => {
-                                topicList.length <= 1
+                                currentGetCheckSupportExistsData.is_delegator
+                                  ? removeSupportForDelegate()
+                                  : topicList.length <= 1
                                   ? removeApiSupport(data[item].nick_name_id)
                                   : removeSupport(data[item].nick_name_id);
                               }}
@@ -204,7 +217,8 @@ const SupportTreeCard = ({
                   data[item].delegates,
                   isDisabled,
                   isOneLevel,
-                  userNickNameList.includes(data[item].nick_name_id)
+                  userNickNameList.includes(data[item].nick_name_id),
+                  loggedInUserChild
                 )}
               </TreeNode>
             </>
