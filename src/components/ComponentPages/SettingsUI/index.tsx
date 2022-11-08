@@ -75,8 +75,7 @@ const SettingsUI = () => {
           <TabPane tab="Direct Supported Camps" key="1">
             <div className={styles.text_checkbox_cont}>
               <div className={styles.notes}>
-                Note : To change support order of camp, drag & drop the camp box
-                on your choice position.
+                Note : To change support order of camp, drag & drop the camp box on your choice position.
               </div>
             </div>
             <DirectSupportedCamps search={search} />
