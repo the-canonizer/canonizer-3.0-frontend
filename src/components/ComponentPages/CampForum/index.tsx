@@ -17,6 +17,7 @@ import {
   updatePost,
   getPostsList,
   deletePost,
+  getThreadData,
 } from "../../../network/api/campForumApi";
 import {
   getAllUsedNickNames,
@@ -129,6 +130,21 @@ const ForumComponent = ({}) => {
       setPostList(res.data?.items);
       setPtotalRecords(res.data?.total_rows);
     }
+  };
+
+  const threadDetails = async (id) => {
+    setPostLoading(true);
+
+    const res = await getThreadData(id);
+
+    if (res && res.status_code === 200) {
+      const data = res.data;
+      setCurrentThread(data);
+      // router.query.from = "";
+      // router.replace(router, undefined, { shallow: true });
+    }
+
+    setPostLoading(false);
   };
 
   useEffect(() => {
@@ -297,11 +313,11 @@ const ForumComponent = ({}) => {
       fetchNickNameList(topic_num);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router, page, searchQuery, isLoggedIn]);
+  }, [router?.query, page, searchQuery, isLoggedIn]);
 
   const onCancelCreateThread = () => {
     const queries = router?.query;
-    if (queries.tId) {
+    if (queries?.tId) {
       const queries = router?.query;
       router.push({
         pathname: `/forum/${replaceSpecialCharacters(
@@ -310,6 +326,9 @@ const ForumComponent = ({}) => {
         )}/${replaceSpecialCharacters(queries.camp as string, "-")}/threads`,
         query: { by: "my" },
       });
+    } else if (queries?.from) {
+      const redirects = queries?.from as string;
+      router.push({ pathname: redirects });
     } else {
       const queries = router?.query;
       router.push({
@@ -396,12 +415,18 @@ const ForumComponent = ({}) => {
   const [formPost] = Form.useForm();
 
   useEffect(() => {
-    const q = router?.query;
+    const q = router?.query,
+      from = q?.from,
+      threadId = q?.id;
+    console.log("router", router.query);
+    if (from) {
+      threadDetails(threadId);
+    }
 
     if (q.id) {
       getPosts(q.id, ppage);
     }
-  }, [router, router?.query, ppage]);
+  }, [router?.query?.id, ppage]);
 
   const onContentChange = (v) => {
     // v = v.replace(/(^|>)\s+|\s+(?=<|$)/g, "$1");
