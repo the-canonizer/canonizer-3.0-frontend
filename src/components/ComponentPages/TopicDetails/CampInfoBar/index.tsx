@@ -214,7 +214,7 @@ const CampInfoBar = ({
           "Subscribe to the Camp"
         )}
       </Menu.Item>
-      <Menu.Item icon={<HeartOutlined />}>
+      <Menu.Item icon={<HeartOutlined />} disabled={asof == "bydate"}>
         {isTopicPage && (
           <Link href={router.asPath.replace("/topic/", "/support/")}>
             <a>
