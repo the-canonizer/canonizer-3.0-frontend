@@ -14,7 +14,7 @@ describe("OTP page", () => {
     expect(heading).toBeInTheDocument();
     expect(
       screen.getByText(
-        "Note : OTP has been sent to your registered email address and phone number."
+        "Note : OTP has been sent to your registered email address."
       )
     ).toBeInTheDocument();
   });
