@@ -153,11 +153,12 @@ const CampTree = ({ scrollToCampStatement }) => {
             <>
               <TreeNode
                 title={
-                  <>
+                  <div id={`camp-${data[item].camp_id}`}>
                     <div
                       className={
                         "treeListItem " + styles.topicDetailsTreeListItem
                       }
+                      id={`camp-${data[item].camp_id}`}
                     >
                       <span
                         className={
@@ -206,7 +207,7 @@ const CampTree = ({ scrollToCampStatement }) => {
                           subScriptionStatus(data[item].subscribed_users)}
                       </span>
                     </div>
-                  </>
+                  </div>
                 }
                 key={data[item].camp_id}
                 data={{

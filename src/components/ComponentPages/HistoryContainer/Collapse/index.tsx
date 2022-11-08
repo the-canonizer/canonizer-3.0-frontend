@@ -181,6 +181,7 @@ function HistoryCollapse({
 
                 <Checkbox
                   className={styles.campSelectCheckbox}
+                  id={`select-to-compare-${campStatement?.id}`}
                   onChange={onSelectCompare?.bind(this, campStatement)}
                   disabled={isDisabledCheck}
                   defaultChecked={isChecked}
@@ -196,6 +197,7 @@ function HistoryCollapse({
                   <>
                     <Button
                       type="primary"
+                      id={`object-change-${campStatement?.id}`}
                       onClick={() => {
                         let isModelPop = !isUserAuthenticated
                           ? true
@@ -234,7 +236,7 @@ function HistoryCollapse({
                           : ""
                       } ${styles.campUpdateButton}`}
                     >
-                      Object
+                      Object 
                     </Button>
                     <Modal
                       title={K?.exceptionalMessages?.objectedModelTitle}
@@ -270,6 +272,7 @@ function HistoryCollapse({
                 )}
                 <Button
                   type="primary"
+                  id={`submit-update-${campStatement?.id}`}
                   className={`mr-3 ${styles.campUpdateButton}`}
                   onClick={() => submitUpdateRedirect(historyOf)}
                 >
@@ -281,6 +284,7 @@ function HistoryCollapse({
                 </Button>
                 <Button
                   type="primary"
+                  id={`view-this-version-${campStatement?.id}`}
                   className={styles.campVersionButton}
                   onClick={() =>
                     handleViewThisVersion(campStatement?.go_live_time)
@@ -347,7 +351,7 @@ function HistoryCollapse({
                           />
                         )}
                       </span>
-                      <Button type="primary" className=" mr-3">
+                      <Button type="primary" className=" mr-3" id={`edit-change-${campStatement?.id}`}>
                         <Link
                           href={
                             historyOf == "camp"
@@ -360,7 +364,7 @@ function HistoryCollapse({
                           Edit Change
                         </Link>
                       </Button>
-                      <Button type="primary" onClick={commitChanges}>
+                      <Button type="primary" onClick={commitChanges} id={`commit-change-${campStatement?.id}`}>
                         Commit Change
                       </Button>
                     </div>
