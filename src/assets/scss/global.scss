@@ -820,6 +820,9 @@ body {
     border-color: #5215f8 !important;
     color: #fff !important;
   }
+  &:disabled {
+    color: rgba(0, 0, 0, 0.5);
+  }
 }
 .ant-breadcrumb-separator {
   margin: 0;
@@ -1509,6 +1512,9 @@ body {
       color: #fff;
       font-weight: 500;
       border: none;
+      &:disabled {
+        color: rgba(0, 0, 0, 0.25);
+      }
       @media screen and (min-width: 576px) {
         &:not(:last-child) {
           margin-right: 28px;
