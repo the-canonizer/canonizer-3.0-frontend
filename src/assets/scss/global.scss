@@ -808,14 +808,18 @@ body {
   font-weight: 400;
   margin-left: 10px;
 }
-.delegate-support-style{
+.delegate-support-style {
   padding: 2px 7px;
   font-size: 11px;
-  color: #fff;
-  background-color: #5215f8;
   border-radius: 6px;
   font-weight: 400;
   margin-left: 10px;
+  height: auto;
+  &:not([disabled]) {
+    background-color: #5215f8 !important;
+    border-color: #5215f8 !important;
+    color: #fff !important;
+  }
 }
 .ant-breadcrumb-separator {
   margin: 0;
