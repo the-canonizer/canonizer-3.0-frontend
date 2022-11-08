@@ -114,6 +114,7 @@ export default function RecentActivities() {
     await getRecentActivitiesApi(reqBody, loadMore, topicType);
     setLoadMoreIndicator(false);
   }
+
   const covertToTime = (unixTime) => {
     let uTime = new Date(unixTime * 1000);
     var year = uTime.getFullYear();
@@ -123,6 +124,7 @@ export default function RecentActivities() {
     var convertedTime = month + " " + date + ", " + year + ", " + time;
     return " " + convertedTime;
   };
+
   const ViewAllTopics = (isTopic) => {
     const ViewAllName = isTopic ? "View All Topics" : "View All Threads";
     return (
@@ -141,6 +143,7 @@ export default function RecentActivities() {
       )
     );
   };
+
   const LoadMoreTopics = (topicType) => {
     const pageNumber =
       topicType == "topic/camps" ? topicPageNumber : threadPageNumber;
@@ -166,6 +169,7 @@ export default function RecentActivities() {
       )
     );
   };
+
   return (
     <>
       <div className={`${styles.listCard} recentActivities_listWrap`}>
@@ -245,8 +249,14 @@ export default function RecentActivities() {
                 dataSource={recentActivities?.topics}
                 renderItem={(activity: any) => (
                   <List.Item className={styles.listItem}>
-                    <AntLink href={decodeUrlLink(activity)}>
-                      <>
+                    <Link
+                      href={{
+                        pathname: decodeUrlLink(activity),
+                        query: { from: router?.asPath },
+                      }}
+                      passHref
+                    >
+                      <a>
                         <Text className={styles.text}>
                           {activity?.activity?.description}
                         </Text>
@@ -254,8 +264,8 @@ export default function RecentActivities() {
                           <i className="icon-calendar"></i>
                           {covertToTime(activity.updated_at)}
                         </Text>
-                      </>
-                    </AntLink>
+                      </a>
+                    </Link>
                   </List.Item>
                 )}
               />
