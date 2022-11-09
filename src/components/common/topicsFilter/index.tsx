@@ -128,6 +128,8 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
     selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3
   );
   const [selectedAsOFDate, setSelectedAsOFDate] = useState(filteredAsOfDate);
+  const [timer, setTimer] = useState(null);
+  const [inputValue, setInputValue] = useState(filteredScore);
 
   // /////////////////////////////////////////////////////////////////////////
   // Discussion required on this functionality after that I will remove or //
@@ -205,14 +207,18 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
 
   const filterOnScore = (e) => {
     const { value } = e.target;
-
+    setInputValue(value);
+    clearTimeout(timer);
     const reg = /^-?\d*(\.\d*)?$/;
     if ((!isNaN(value) && reg.test(value)) || value === "") {
-      dispatch(
-        setFilterCanonizedTopics({
-          filterByScore: value,
-        })
-      );
+      const newTimer = setTimeout(() => {
+        dispatch(
+          setFilterCanonizedTopics({
+            filterByScore: value,
+          })
+        );
+      }, 500);
+      setTimer(newTimer);
     }
   };
 
@@ -319,11 +325,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
             <div className={styles.filter}>
               <Text>Filter</Text>
               <LeftOutlined className={styles.LeftOutlined} />
-              <Input
-                size="large"
-                onChange={filterOnScore}
-                value={filteredScore}
-              />
+              <Input size="large" onChange={filterOnScore} value={inputValue} />
               <Popover
                 content={infoContent}
                 placement="right"
