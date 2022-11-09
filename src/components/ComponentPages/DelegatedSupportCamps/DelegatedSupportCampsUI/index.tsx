@@ -7,7 +7,7 @@ import Icon, {
 import Link from "next/link";
 import styles from "./DelegatedSupportedCamps.module.scss";
 import messages from "../../../../messages";
-import Spinner from "@/components/common/spinner/spinner";
+import Spinner from "../../../common/spinner/spinner";
 export default function DelegatedSupportCampsUI({
   removeCardDelegatedSupportedCamps,
   handleSupportedCampsCancel,
@@ -123,7 +123,9 @@ export default function DelegatedSupportCampsUI({
                     <Col span={12} className={styles.border_left}>
                       <div className={styles.line_height1}>
                         <p>
-                          <b>{messages.labels.currentSupportedCamps}</b>
+                          <b id="currentSupportedCamp">
+                            {messages.labels.currentSupportedCamps}
+                          </b>
                         </p>
 
                         {data.camps?.slice(0, limit).map((val, i) => {
@@ -178,7 +180,7 @@ export default function DelegatedSupportCampsUI({
       >
         <Form>
           <Form.Item style={{ marginBottom: "0px" }}>
-            <p>
+            <p id="remove_confirmation">
               Are you sure, you want to remove your delegate support given to{" "}
               <span>
                 &quot;
@@ -203,6 +205,7 @@ export default function DelegatedSupportCampsUI({
             style={{ marginBottom: "0px" }}
           >
             <Button
+              id="removeBtn"
               onClick={removeSupport}
               type="primary"
               style={{
@@ -214,6 +217,7 @@ export default function DelegatedSupportCampsUI({
               Remove
             </Button>
             <Button
+              id="cancelBtn"
               onClick={handleSupportedCampsCancel}
               type="default"
               style={{
@@ -227,7 +231,7 @@ export default function DelegatedSupportCampsUI({
         </Form>
       </Modal>
       <Modal
-        title={<h3>Current Supported Camps:</h3>}
+        title={<h3 id="currentSupportedCamps">Current Supported Camps:</h3>}
         footer={null}
         visible={viewMoreModalVisible}
         onOk={handelViewMoreModalCancel}
@@ -235,7 +239,7 @@ export default function DelegatedSupportCampsUI({
         closeIcon={<CloseCircleOutlined />}
       >
         <>
-          <h3>
+          <h3 id="forTopic">
             {" "}
             For Topic{" "}
             <span className={styles.Bluecolor}>
@@ -264,7 +268,9 @@ export default function DelegatedSupportCampsUI({
               </Link>
             </p>
           </div>
-          <h3 className={styles.marginTop}>List of current supported camps</h3>
+          <h3 id="ListOfCurrentSupportedCamps" className={styles.marginTop}>
+            List of current supported camps
+          </h3>
           <div className={styles.list_Content}>
             {viewMoreDataValue.camps?.map((val, i) => {
               return (

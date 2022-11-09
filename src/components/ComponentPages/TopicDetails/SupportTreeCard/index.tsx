@@ -190,6 +190,7 @@ const SupportTreeCard = ({
                             ) : (
                               <a>
                                 <Button
+                                  id="supportTreeDelegateYourSupport"
                                   disabled={asof == "bydate"}
                                   onClick={handleDelegatedClick}
                                   className="delegate-support-style"
@@ -202,6 +203,7 @@ const SupportTreeCard = ({
                         ) : (
                           <a>
                             <Button
+                              id="supportTreeRemoveSupport"
                               onClick={() => {
                                 setIsSupportTreeCardModal(true);
                                 setModalData(data[item]);
@@ -285,6 +287,7 @@ const SupportTreeCard = ({
 
           {campSupportingTree?.length > supportLength && (
             <CustomButton
+              id="loadMoreButton"
               type="primary"
               ghost
               className="load-more-btn"
@@ -303,6 +306,7 @@ const SupportTreeCard = ({
                 onClick={handleClickSupportCheck}
               >
                 <CustomButton
+                  id="directJoin_manageSupportButton"
                   className="btn-orange"
                   disabled={asof == "bydate"}
                 >
@@ -331,10 +335,12 @@ const SupportTreeCard = ({
             <p>Are you sure you want to remove your support?</p>
           </Form.Item>
           <Form.Item
+            id="supportTreeModalForm"
             className={styles.text_right}
             style={{ marginBottom: "0px" }}
           >
             <Button
+              id="supportTreeModalRemoveApi"
               disabled={asof == "bydate"}
               onClick={() => {
                 currentGetCheckSupportExistsData.is_delegator
@@ -354,6 +360,7 @@ const SupportTreeCard = ({
               Remove
             </Button>
             <Button
+              id="supportTreeModalCancel"
               onClick={handleSupportTreeCardCancel}
               type="default"
               style={{

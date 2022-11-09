@@ -243,17 +243,25 @@ const TopicsList = () => {
                   value={selectedNameSpace}
                   onChange={selectNameSpace}
                   showSearch
-                  optionFilterProp="children" 
+                  optionFilterProp="children"
                   id="name-space-dropdown"
                 >
                   {nameSpacesList?.map((item) => {
                     return (
-                      <Select.Option id={`name-space-${item.id}`} key={item.id} value={item.id}>
+                      <Select.Option
+                        id={`name-space-${item.id}`}
+                        key={item.id}
+                        value={item.id}
+                      >
                         {item.label}
                       </Select.Option>
                     );
                   })}
-                  <Select.Option id="name-space-custom" key="custom-key" value="">
+                  <Select.Option
+                    id="name-space-custom"
+                    key="custom-key"
+                    value=""
+                  >
                     All
                   </Select.Option>
                 </Select>
@@ -281,7 +289,10 @@ const TopicsList = () => {
             dataSource={topicsData?.topics}
             renderItem={(item: any) => {
               return (
-                <List.Item className={styles.item} id={`topic-${item?.topic_id}`}>
+                <List.Item
+                  className={styles.item}
+                  id={`topic-${item?.topic_id}`}
+                >
                   <>
                     <Link
                       href={{

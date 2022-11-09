@@ -5,7 +5,7 @@ import { DraggableArea } from "react-draggable-tags";
 import styles from "./DirectSupportedCamps.module.scss";
 import Link from "next/link";
 import messages from "../../../../messages";
-import Spinner from "@/components/common/spinner/spinner";
+import Spinner from "../../../common/spinner/spinner";
 export default function DirectSupportedCampsUI({
   removeCardSupportedCamps,
   handleSupportedCampsCancel,
@@ -120,6 +120,7 @@ export default function DirectSupportedCampsUI({
                   render={({ tag, index }) => (
                     <div className={tag.dis ? "tag tags_disable" : "tag"}>
                       <Button
+                        id="campsBtn"
                         key={tag.camp_num}
                         className={styles.tag_btn}
                         disabled={tag.dis}
@@ -156,12 +157,14 @@ export default function DirectSupportedCampsUI({
                 {showSaveChanges && idData == data.topic_num ? (
                   <div className={styles.tag_Changes}>
                     <Button
+                      id="saveChangeBtn"
                       className={styles.save_Changes_Btn}
                       onClick={saveChanges}
                     >
                       Save Changes
                     </Button>
                     <Button
+                      id="revertBtn"
                       className={styles.revert_Btn}
                       onClick={(e) => {
                         handleRevertBack(idData, data.camps);
@@ -203,7 +206,7 @@ export default function DirectSupportedCampsUI({
       >
         <Form>
           <Form.Item style={{ marginBottom: "0px" }}>
-            <p>
+            <p id="all_camps_topics">
               Your Support for all the camps under the Topics{" "}
               <span>
                 &quot;
@@ -216,10 +219,12 @@ export default function DirectSupportedCampsUI({
             </p>
           </Form.Item>
           <Form.Item
+            id="directCampsModalForm"
             className={styles.text_right}
             style={{ marginBottom: "0px" }}
           >
             <Button
+              id="removeBtn"
               onClick={removeSupport}
               type="primary"
               style={{
@@ -231,6 +236,7 @@ export default function DirectSupportedCampsUI({
               Remove
             </Button>
             <Button
+              id="cancelBtn"
               onClick={handleSupportedCampsCancel}
               type="default"
               style={{
@@ -252,7 +258,7 @@ export default function DirectSupportedCampsUI({
         }}
         onCancel={handleCancel}
       >
-        <h1>Changes will be reverted ?</h1>
+        <h1 id="changesWillBeReverted">Changes will be reverted ?</h1>
       </Modal>
     </div>
   );

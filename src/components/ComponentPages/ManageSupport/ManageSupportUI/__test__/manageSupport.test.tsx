@@ -172,8 +172,7 @@ it("render show Quick Action Text", () => {
       unableToFindCamp={unableToFindCamp}
     />
   );
-  const quickActionText = getAllByText("Quick Action:");
-  expect(quickActionText).toBeTruthy();
+  expect(screen.getByText("Quick Actions:")).toBeTruthy();
 });
 
 it("render show Remove all Text", () => {
