@@ -371,6 +371,7 @@ function HistoryContainer() {
                 )
               }
               className={styles.active}
+              id={`compare-${historyOf}`}
               type="primary"
               onClick={onCompareClick}
             >

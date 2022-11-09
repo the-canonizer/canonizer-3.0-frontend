@@ -340,6 +340,7 @@ function ProfileInfoForm({
                   size="large"
                   maxLength={255}
                   disabled={postalCodeDisable}
+                  autoComplete="off"
                 />
               </Form.Item>
             </Col>

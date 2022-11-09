@@ -171,25 +171,28 @@ const SupportTreeCard = ({
                             }
                           >
                             {loggedInUserDelegate ||
-                            loggedInUserChild ||
+                            (loggedInUserChild &&
+                              data[item].delegate_nick_name_id) ||
                             data[item].delegates?.findIndex((obj) =>
                               userNickNameList.includes(obj.nick_name_id)
                             ) > -1 ? (
                               ""
                             ) : (
                               <a>
-                                <span
+                                <Button
+                                  disabled={asof == "bydate"}
                                   onClick={handleDelegatedClick}
                                   className="delegate-support-style"
                                 >
                                   {"Delegate Your Support"}
-                                </span>
+                                </Button>
                               </a>
                             )}
                           </Link>
                         ) : (
                           <a>
-                            <span
+                            <Button
+                              disabled={asof == "bydate"}
                               onClick={() => {
                                 currentGetCheckSupportExistsData.is_delegator
                                   ? removeSupportForDelegate()
@@ -200,7 +203,7 @@ const SupportTreeCard = ({
                               className="delegate-support-style"
                             >
                               {"Remove Your Support"}
-                            </span>
+                            </Button>
                           </a>
                         )
                       ) : (
