@@ -279,7 +279,7 @@ const ManageSupportUI = ({
             ) : (
               <div className="mb-4">
                 <span className={styles.quickAction}>
-                  Quick Action:
+                  Quick Actions:
                   <span className={styles.checkbox}>
                     <input
                       type="checkbox"

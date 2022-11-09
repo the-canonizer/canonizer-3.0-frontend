@@ -16,6 +16,8 @@ const DelegatedSupportCamps = ({ search }) => {
   const [nickNameId, setNickNameId] = useState("");
   const [delegated_nick_name_id, setDelegated_nick_name_id] = useState("");
   const [removeSupportCampsData, setRemoveSupportCampsData] = useState({});
+  const [statusFlag, setStatusFlag] = useState(true);
+
   const handleSupportedCampsCancel = () => {
     setIsRemoveSupportModalVisible(false);
   };
@@ -56,9 +58,13 @@ const DelegatedSupportCamps = ({ search }) => {
   const fetchDelegatedSupportCampsList = async () => {
     let response = await getDelegatedSupportCampsList();
     if (response && response.status_code === 200) {
+      {
+        response.data.length > 0 ? "" : setStatusFlag(false);
+      }
       setDelegatedSupportCampsList(response.data);
     }
   };
+  useEffect(() => {}, [statusFlag]);
   //onLoad
   useEffect(() => {
     fetchDelegatedSupportCampsList();
@@ -77,6 +83,7 @@ const DelegatedSupportCamps = ({ search }) => {
       search={search}
       removeSupport={removeSupport}
       removeSupportCampsData={removeSupportCampsData}
+      statusFlag={statusFlag}
     />
   );
 };
