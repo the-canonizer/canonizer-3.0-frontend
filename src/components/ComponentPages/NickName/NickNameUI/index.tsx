@@ -19,13 +19,15 @@ export default function NickNameUI({
   nickNameList,
   disableButton,
 }) {
+  const [page, setPage] = useState(1);
+  const [paginationSize, setPaginationSize] = useState(10);
   const isDisable = addEditBtn == "Update";
   const columns = [
     {
       title: "Sr.No.",
       dataIndex: "srNo",
       width: "5%",
-      render: (text, record, index) => index + 1,
+      render: (text, record, index) => (page - 1) * paginationSize + index + 1,
     },
     {
       title: "Nick Name ID",
@@ -67,7 +69,13 @@ export default function NickNameUI({
               dataSource={nickNameList}
               columns={columns}
               rowClassName="editable-row"
-              pagination={false}
+              pagination={{
+                onChange(current, pageSize) {
+                  setPage(current);
+                  setPaginationSize(pageSize);
+                },
+                pageSize: 3,
+              }}
               className={"NickName_TableHead"}
             />
           </Form.Item>

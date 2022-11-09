@@ -77,6 +77,7 @@ const ProfileInfo = () => {
   const onFinish = async (values: any) => {
     let birthday = values.birthday._d;
     setDisableButton(true);
+    setPostalCodeDisable(true);
     //Set Private Public flags
     values.first_name_bit = isPublicOrPrivate(publicPrivateArray.first_name);
     values.last_name_bit = isPublicOrPrivate(publicPrivateArray.last_name);
