@@ -46,7 +46,6 @@ const ProfileInfo = () => {
   const publicPrivateArray = {
     first_name: "first_name",
     last_name: "last_name",
-    middle_name: "middle_name",
     email: "email",
     address_1: "address_1",
     address_2: "address_2",
@@ -81,7 +80,6 @@ const ProfileInfo = () => {
     //Set Private Public flags
     values.first_name_bit = isPublicOrPrivate(publicPrivateArray.first_name);
     values.last_name_bit = isPublicOrPrivate(publicPrivateArray.last_name);
-    values.middle_name_bit = isPublicOrPrivate(publicPrivateArray.middle_name);
     values.email_bit = isPublicOrPrivate(publicPrivateArray.email);
     values.address_1_bit = isPublicOrPrivate(publicPrivateArray.address_1);
     values.address_2_bit = isPublicOrPrivate(publicPrivateArray.address_2);

@@ -201,26 +201,6 @@ function ProfileInfoForm({
             </Col>
             <Col md={12}>
               <Form.Item
-                name="middle_name"
-                label={messages.labels.middleName}
-                {...messages.middleNameRule}
-              >
-                <Input
-                  id="middleName"
-                  addonAfter={selectAfter(
-                    "middle_name",
-                    publicOrPrivate("middle_name")
-                  )}
-                  placeholder={messages.placeholders.middleName}
-                  size="large"
-                  tabIndex={5}
-                  onKeyDown={(e) =>
-                    e.key === " " && e.keyCode === 32 && e.preventDefault()
-                  }
-                  maxLength={100}
-                />
-              </Form.Item>
-              <Form.Item
                 name="email"
                 label={messages.labels.email}
                 {...messages.emailRule}
