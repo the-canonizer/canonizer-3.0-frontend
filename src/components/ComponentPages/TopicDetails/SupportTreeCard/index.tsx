@@ -8,6 +8,8 @@ import {
   Collapse,
   Popover,
   message,
+  Modal,
+  Form,
 } from "antd";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,6 +26,7 @@ import {
 import { getNickNameList } from "../../../../network/api/userApi";
 const { Paragraph } = Typography;
 import { Tree } from "antd";
+import { CloseCircleOutlined } from "@ant-design/icons";
 
 const { Panel } = Collapse;
 const { TreeNode } = Tree;
@@ -50,6 +53,9 @@ const SupportTreeCard = ({
   topicList,
   totalSupportScore,
   removeSupportForDelegate,
+  isSupportTreeCardModal,
+  setIsSupportTreeCardModal,
+  handleSupportTreeCardCancel,
 }) => {
   const { currentGetCheckSupportExistsData } = useSelector(
     (state: RootState) => ({
@@ -93,12 +99,16 @@ const SupportTreeCard = ({
   };
 
   const manageSupportPath = router.asPath.replace("/topic/", "/support/");
+
   const { campSupportingTree, asof } = useSelector((state: RootState) => ({
     campSupportingTree: state?.topicDetails?.campSupportingTree,
     asof: state?.filters?.filterObject?.asof,
   }));
-
+  {
+    console.log(campSupportingTree, "campSupportingTree");
+  }
   const [loadMore, setLoadMore] = useState(false);
+  const [modalData, setModalData] = useState<any>({});
   const { topicRecord, campRecord } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -180,6 +190,7 @@ const SupportTreeCard = ({
                             ) : (
                               <a>
                                 <Button
+                                  id="supportTreeDelegateYourSupport"
                                   disabled={asof == "bydate"}
                                   onClick={handleDelegatedClick}
                                   className="delegate-support-style"
@@ -192,13 +203,10 @@ const SupportTreeCard = ({
                         ) : (
                           <a>
                             <Button
-                              disabled={asof == "bydate"}
+                              id="supportTreeRemoveSupport"
                               onClick={() => {
-                                currentGetCheckSupportExistsData.is_delegator
-                                  ? removeSupportForDelegate()
-                                  : topicList.length <= 1
-                                  ? removeApiSupport(data[item].nick_name_id)
-                                  : removeSupport(data[item].nick_name_id);
+                                setIsSupportTreeCardModal(true);
+                                setModalData(data[item]);
                               }}
                               className="delegate-support-style"
                             >
@@ -231,79 +239,141 @@ const SupportTreeCard = ({
     });
   };
   return (
-    <Collapse
-      defaultActiveKey={["1"]}
-      expandIconPosition="right"
-      className="topicDetailsCollapse"
-    >
-      <Panel
-        header={
-          <h3>
-            Support Tree for &quot;
-            {campRecord?.camp_name}&quot; Camp
-          </h3>
-        }
-        key="1"
-        extra={
-          <Popover content={supportContent} placement="left">
-            <i className="icon-info tooltip-icon-style"></i>
-          </Popover>
-        }
+    <>
+      <Collapse
+        defaultActiveKey={["1"]}
+        expandIconPosition="right"
+        className="topicDetailsCollapse"
       >
-        <Paragraph>
-          Total Support for This Camp (including sub-camps):
-          <span className="number-style">{totalSupportScore?.toFixed(2)}</span>
-        </Paragraph>
+        <Panel
+          header={
+            <h3>
+              Support Tree for &quot;
+              {campRecord?.camp_name}&quot; Camp
+            </h3>
+          }
+          key="1"
+          extra={
+            <Popover content={supportContent} placement="left">
+              <i className="icon-info tooltip-icon-style"></i>
+            </Popover>
+          }
+        >
+          <Paragraph>
+            Total Support for This Camp (including sub-camps):
+            <span className="number-style">
+              {totalSupportScore?.toFixed(2)}
+            </span>
+          </Paragraph>
 
-        {campSupportingTree?.length > 0 ? (
-          <Tree
-            className={"Parent_Leaf"}
-            showLine={false}
-            showIcon={false}
-            defaultExpandedKeys={[
-              +router?.query?.camp?.at(1)?.split("-")?.at(0) == 1
-                ? 2
-                : +router?.query?.camp?.at(1)?.split("-")?.at(0),
-            ]}
-            defaultExpandAll={true}
-          >
-            {campSupportingTree && renderTreeNodes(campSupportingTree)}
-          </Tree>
-        ) : (
-          <p>No Camp Tree Found</p>
-        )}
-
-        {campSupportingTree?.length > supportLength && (
-          <CustomButton
-            type="primary"
-            ghost
-            className="load-more-btn"
-            onClick={() => {
-              // handleLoadMoreSupporters();
-              setLoadMore(!loadMore);
-            }}
-          >
-            {!loadMore ? "Load More" : "Load Less"}
-          </CustomButton>
-        )}
-        <Link href={manageSupportPath}>
-          <a>
-            <div
-              className="topicDetailsCollapseFooter"
-              onClick={handleClickSupportCheck}
+          {campSupportingTree?.length > 0 ? (
+            <Tree
+              className={"Parent_Leaf"}
+              showLine={false}
+              showIcon={false}
+              defaultExpandedKeys={[
+                +router?.query?.camp?.at(1)?.split("-")?.at(0) == 1
+                  ? 2
+                  : +router?.query?.camp?.at(1)?.split("-")?.at(0),
+              ]}
+              defaultExpandAll={true}
             >
-              <CustomButton className="btn-orange" disabled={asof == "bydate"}>
-                {/* {K?.exceptionalMessages?.directJoinSupport} */}
-                {getCheckSupportStatus?.is_delegator == 1 ||
-                getCheckSupportStatus?.support_flag != 1
-                  ? K?.exceptionalMessages?.directJoinSupport
-                  : K?.exceptionalMessages?.manageSupport}
-              </CustomButton>
-            </div>
-          </a>
-        </Link>
-      </Panel>
-    </Collapse>
+              {console.log(campSupportingTree, "campSupportingTree")}
+              {campSupportingTree && renderTreeNodes(campSupportingTree)}
+            </Tree>
+          ) : (
+            <p>No Camp Tree Found</p>
+          )}
+
+          {campSupportingTree?.length > supportLength && (
+            <CustomButton
+              id="loadMoreButton"
+              type="primary"
+              ghost
+              className="load-more-btn"
+              onClick={() => {
+                // handleLoadMoreSupporters();
+                setLoadMore(!loadMore);
+              }}
+            >
+              {!loadMore ? "Load More" : "Load Less"}
+            </CustomButton>
+          )}
+          <Link href={manageSupportPath}>
+            <a>
+              <div
+                className="topicDetailsCollapseFooter"
+                onClick={handleClickSupportCheck}
+              >
+                <CustomButton
+                  id="directJoin_manageSupportButton"
+                  className="btn-orange"
+                  disabled={asof == "bydate"}
+                >
+                  {/* {K?.exceptionalMessages?.directJoinSupport} */}
+                  {getCheckSupportStatus?.is_delegator == 1 ||
+                  getCheckSupportStatus?.support_flag != 1
+                    ? K?.exceptionalMessages?.directJoinSupport
+                    : K?.exceptionalMessages?.manageSupport}
+                </CustomButton>
+              </div>
+            </a>
+          </Link>
+        </Panel>
+      </Collapse>
+      <Modal
+        className={styles.modal_cross}
+        title="Remove Support"
+        visible={isSupportTreeCardModal}
+        onOk={handleSupportTreeCardCancel}
+        onCancel={handleSupportTreeCardCancel}
+        footer={null}
+        closeIcon={<CloseCircleOutlined />}
+      >
+        <Form>
+          <Form.Item style={{ marginBottom: "0px" }}>
+            <p>Are you sure you want to remove your support?</p>
+          </Form.Item>
+          <Form.Item
+            id="supportTreeModalForm"
+            className={styles.text_right}
+            style={{ marginBottom: "0px" }}
+          >
+            <Button
+              id="supportTreeModalRemoveApi"
+              disabled={asof == "bydate"}
+              onClick={() => {
+                currentGetCheckSupportExistsData.is_delegator
+                  ? removeSupportForDelegate()
+                  : topicList.length <= 1
+                  ? removeApiSupport(modalData?.nick_name_id)
+                  : removeSupport(modalData?.nick_name_id);
+                setModalData({});
+              }}
+              type="primary"
+              style={{
+                marginTop: 10,
+                marginRight: 10,
+              }}
+              className="ant-btn ant-btn-orange"
+            >
+              Remove
+            </Button>
+            <Button
+              id="supportTreeModalCancel"
+              onClick={handleSupportTreeCardCancel}
+              type="default"
+              style={{
+                marginTop: 10,
+              }}
+              className="ant-btn"
+            >
+              Cancel
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
+    </>
   );
 };
 export default SupportTreeCard;

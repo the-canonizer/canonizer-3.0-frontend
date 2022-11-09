@@ -236,7 +236,7 @@ function HistoryCollapse({
                           : ""
                       } ${styles.campUpdateButton}`}
                     >
-                      Object 
+                      Object
                     </Button>
                     <Modal
                       title={K?.exceptionalMessages?.objectedModelTitle}
@@ -351,7 +351,11 @@ function HistoryCollapse({
                           />
                         )}
                       </span>
-                      <Button type="primary" className=" mr-3" id={`edit-change-${campStatement?.id}`}>
+                      <Button
+                        type="primary"
+                        className=" mr-3"
+                        id={`edit-change-${campStatement?.id}`}
+                      >
                         <Link
                           href={
                             historyOf == "camp"
@@ -364,7 +368,11 @@ function HistoryCollapse({
                           Edit Change
                         </Link>
                       </Button>
-                      <Button type="primary" onClick={commitChanges} id={`commit-change-${campStatement?.id}`}>
+                      <Button
+                        type="primary"
+                        onClick={commitChanges}
+                        id={`commit-change-${campStatement?.id}`}
+                      >
                         Commit Change
                       </Button>
                     </div>
