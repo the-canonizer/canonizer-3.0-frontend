@@ -243,7 +243,8 @@ const TopicsList = () => {
                   value={selectedNameSpace}
                   onChange={selectNameSpace}
                   showSearch
-                  optionFilterProp="children"
+                  optionFilterProp="children" 
+                  id="name-space-dropdown"
                 >
                   {nameSpacesList?.map((item) => {
                     return (

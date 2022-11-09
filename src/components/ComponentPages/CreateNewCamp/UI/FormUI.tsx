@@ -84,9 +84,14 @@ const CreateCampFormUI = ({
                     data-id="nick-name"
                     showSearch
                     optionFilterProp="children"
+                    id="nickname-dropdown"
                   >
-                    {nickNameList.map((nick) => (
-                      <Option key={nick.id} value={nick.id}>
+                    {nickNameList.map((nick, idx) => (
+                      <Option
+                        key={nick.id}
+                        value={nick.id}
+                        id={`nick-name-${idx}`}
+                      >
                         {nick.nick_name}
                       </Option>
                     ))}
@@ -106,6 +111,7 @@ const CreateCampFormUI = ({
                     data-id="nick-name"
                     showSearch
                     optionFilterProp="children"
+                    id="nickname-dropdown"
                   ></Select>
                 </Form.Item>
               ) : null}
@@ -131,12 +137,13 @@ const CreateCampFormUI = ({
                     onChange={onParentCampChange}
                     showSearch
                     optionFilterProp="children"
+                    id="parent-camp-dropdown"
                   >
                     {parentCamp.map((camp) => (
                       <Option
                         value={camp.camp_num}
                         key={camp.id}
-                        id={camp.id}
+                        id={`parent-camp-${camp.id}`}
                         camp={camp}
                         // disabled={disableInput(camp)}
                       >
@@ -160,8 +167,12 @@ const CreateCampFormUI = ({
                     data-id="parent-camp"
                     showSearch
                     optionFilterProp="children"
+                    id="parent-camp-dropdown"
                   >
-                    <Option value={topicData?.camp_num}>
+                    <Option
+                      value={topicData?.camp_num}
+                      id={`parent-camp-${topicData?.camp_num}`}
+                    >
                       {topicData?.camp_name}
                     </Option>
                   </Select>
@@ -248,10 +259,17 @@ const CreateCampFormUI = ({
                     data-id="camp-about-nick-id"
                     showSearch
                     optionFilterProp="children"
+                    id="camp-about-nick-dropdown"
                   >
-                    <Option value="">{placeholders.campAboutNickName}</Option>
+                    <Option value="" id="camp-about-nick-custom">
+                      {placeholders.campAboutNickName}
+                    </Option>
                     {campNickName.map((nc) => (
-                      <Option value={nc.id} key={nc.id}>
+                      <Option
+                        value={nc.id}
+                        key={nc.id}
+                        id={`camp-about-nick-${nc.id}`}
+                      >
                         {nc.nick_name}
                       </Option>
                     ))}
@@ -269,8 +287,11 @@ const CreateCampFormUI = ({
                     data-id="camp-about-nick-id"
                     showSearch
                     optionFilterProp="children"
+                    id="camp-about-nick-dropdown"
                   >
-                    <Option value="">{placeholders.campAboutNickName}</Option>
+                    <Option value="" id="camp-about-nick-custom">
+                      {placeholders.campAboutNickName}
+                    </Option>
                   </Select>
                 </Form.Item>
               )}
