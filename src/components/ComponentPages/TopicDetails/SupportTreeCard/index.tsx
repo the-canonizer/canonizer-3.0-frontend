@@ -286,12 +286,13 @@ const SupportTreeCard = ({
             {!loadMore ? "Load More" : "Load Less"}
           </CustomButton>
         )}
-        <Link href={manageSupportPath}>
-          <a>
+        
             <div
               className="topicDetailsCollapseFooter"
               onClick={handleClickSupportCheck}
             >
+              <Link href={manageSupportPath}>
+              <a>
               <CustomButton className="btn-orange" disabled={asof == "bydate"}>
                 {/* {K?.exceptionalMessages?.directJoinSupport} */}
                 {getCheckSupportStatus?.is_delegator == 1 ||
@@ -299,9 +300,9 @@ const SupportTreeCard = ({
                   ? K?.exceptionalMessages?.directJoinSupport
                   : K?.exceptionalMessages?.manageSupport}
               </CustomButton>
+            </a>
+            </Link>
             </div>
-          </a>
-        </Link>
       </Panel>
     </Collapse>
   );
