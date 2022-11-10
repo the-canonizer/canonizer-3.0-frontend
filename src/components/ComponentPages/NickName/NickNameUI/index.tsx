@@ -19,6 +19,7 @@ export default function NickNameUI({
   nickNameList,
   disableButton,
 }) {
+  const pageSizeLength = 10;
   const [page, setPage] = useState(1);
   const [paginationSize, setPaginationSize] = useState(10);
   const isDisable = addEditBtn == "Update";
@@ -74,7 +75,7 @@ export default function NickNameUI({
                   setPage(current);
                   setPaginationSize(pageSize);
                 },
-                pageSize: 3,
+                pageSize: pageSizeLength,
               }}
               className={"NickName_TableHead"}
             />

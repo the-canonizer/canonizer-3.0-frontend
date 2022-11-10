@@ -30,7 +30,7 @@ export default function CampRecentActivities() {
     }
     getTopicActivityLogCall();
   }, [router?.query?.camp[1]?.split("-")[0] ?? 1]);
-  
+
   return (
     <>
       <Spin spinning={loadingIndicator} size="large">

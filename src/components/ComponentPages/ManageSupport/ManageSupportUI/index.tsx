@@ -217,7 +217,7 @@ const ManageSupportUI = ({
           currentGetCheckSupportExistsData.is_confirm) ||
         unableToFindCamp ? (
           <>
-            <span className={styles.warning}>
+            <span id="warning" className={styles.warning}>
               <strong> Warning! </strong>
               {getSupportStatusData}
             </span>
@@ -228,7 +228,10 @@ const ManageSupportUI = ({
               <>
                 {parentSupportDataList != "" ? (
                   <>
-                    <span className={styles.warning}>
+                    <span
+                      className={styles.warning}
+                      id="getSupportStatusDataWarning"
+                    >
                       <strong> Warning! </strong>
                       {getSupportStatusData != ""
                         ? getSupportStatusData
@@ -237,7 +240,11 @@ const ManageSupportUI = ({
                     <Col md={12}>
                       {parentSupportDataList?.map((tag) => {
                         return (
-                          <Tag key={tag.camp_num} className={styles.tag_btn}>
+                          <Tag
+                            key={tag.camp_num}
+                            className={styles.tag_btn}
+                            id="tags"
+                          >
                             <div>
                               {""}
                               <span className={styles.count}>{""}</span>
@@ -280,10 +287,11 @@ const ManageSupportUI = ({
               ""
             ) : (
               <div className="mb-4">
-                <span className={styles.quickAction}>
-                  Quick Action:
+                <span id="quickActions" className={styles.quickAction}>
+                  Quick Actions:
                   <span className={styles.checkbox}>
                     <input
+                      id="checkbox"
                       type="checkbox"
                       checked={checked}
                       onClick={(e) => {
@@ -294,6 +302,7 @@ const ManageSupportUI = ({
                   </span>
                   <span className={styles.removeAll}>Remove all</span>
                   <Button
+                    id="clearAllChangesBtn"
                     htmlType="button"
                     className={styles.clear_Btn}
                     onClick={(e) => {
@@ -357,7 +366,7 @@ const ManageSupportUI = ({
         <div>
           <Card className={styles.margin_top} type="inner">
             <div className={styles.card_heading}>
-              <p>Nick Name To Support Above Camps</p>
+              <p id="nickNameToSupport">Nick Name To Support Above Camps</p>
             </div>
             <Select
               placeholder={placeholders.nickName}
