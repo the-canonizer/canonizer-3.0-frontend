@@ -77,6 +77,9 @@ export const labels = {
     "Note : To change support order of camp, drag & drop the camp box on your choice position",
   remove: "Remove",
   cancel: "Cancel",
+  settingNote:
+    "Note : To change support order of camp, drag & drop the camp box on your choice position.",
+  testOtp: "Note : OTP has been sent to your registered email address.",
 };
 
 export const preventCampLabel = [

@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import ForgotPassword from "../index";
 import messages from "../../../../messages";
 
-const { placeholders, validations } = messages;
+const { placeholders, validations, labels } = messages;
 
 describe("OTP page", () => {
   it("render heading and text", () => {
@@ -12,11 +12,7 @@ describe("OTP page", () => {
 
     let heading = screen.getByText("Create password verification code");
     expect(heading).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        "Note : OTP has been sent to your registered email address."
-      )
-    ).toBeInTheDocument();
+    expect(screen.getByText(labels.testOtp)).toBeInTheDocument();
   });
 
   it("render inputs field and submit button", () => {
