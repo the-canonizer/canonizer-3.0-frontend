@@ -93,7 +93,7 @@ export const deletePost = async (id) => {
   }
 };
 
-export const getThreadData = async (thread_id: number) => {
+export const getThreadData = async (thread_id: any) => {
   try {
     const response = await NetworkCall.fetch(
       ForumRequests.getThreadDetails(thread_id),
