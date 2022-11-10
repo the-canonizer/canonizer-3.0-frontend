@@ -217,7 +217,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
             filterByScore: value,
           })
         );
-      }, 500);
+      }, 1000);
       setTimer(newTimer);
     }
   };
