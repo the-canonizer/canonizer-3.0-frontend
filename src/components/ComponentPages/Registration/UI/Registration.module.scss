@@ -193,11 +193,17 @@
       }
     }
 
-    .captchaCol {
-      margin-bottom: 15px;
-      // width: 70%;
-      // height: 60px;
-      // border: 1px solid #d9d9d9;
+    .captchaContainer {
+      margin-top: 15px;
+      margin-bottom: 10px;
+
+      .captchaCol {
+        width: 100%;
+        margin: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
     }
     .captchaEnter {
       width: 70%;
