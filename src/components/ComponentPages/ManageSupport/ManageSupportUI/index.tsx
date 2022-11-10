@@ -227,32 +227,34 @@ const ManageSupportUI = ({
             {getSupportStatusData != "" || CheckDelegatedOrDirect ? (
               <>
                 {parentSupportDataList != "" ? (
-                  <span className={styles.warning}>
-                    <strong> Warning! </strong>
-                    {getSupportStatusData != ""
-                      ? getSupportStatusData
-                      : warningForDirecteSupportedCamps}
-                  </span>
+                  <>
+                    <span className={styles.warning}>
+                      <strong> Warning! </strong>
+                      {getSupportStatusData != ""
+                        ? getSupportStatusData
+                        : warningForDirecteSupportedCamps}
+                    </span>
+                    <Col md={12}>
+                      {parentSupportDataList?.map((tag) => {
+                        return (
+                          <Tag key={tag.camp_num} className={styles.tag_btn}>
+                            <div>
+                              {""}
+                              <span className={styles.count}>{""}</span>
+                            </div>
+
+                            <a href="#">
+                              {tag.support_order} . {tag.camp_name}
+                            </a>
+                          </Tag>
+                        );
+                      })}
+                    </Col>
+                    <div className={styles.hrtag}></div>
+                  </>
                 ) : (
                   ""
                 )}
-                <Col md={12}>
-                  {parentSupportDataList?.map((tag) => {
-                    return (
-                      <Tag key={tag.camp_num} className={styles.tag_btn}>
-                        <div>
-                          {""}
-                          <span className={styles.count}>{""}</span>
-                        </div>
-
-                        <a href="#">
-                          {tag.support_order} . {tag.camp_name}
-                        </a>
-                      </Tag>
-                    );
-                  })}
-                </Col>
-                <div className={styles.hrtag}></div>
               </>
             ) : (
               ""
