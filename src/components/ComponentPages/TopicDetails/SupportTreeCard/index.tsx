@@ -8,6 +8,8 @@ import {
   Collapse,
   Popover,
   message,
+  Modal,
+  Form,
 } from "antd";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,6 +26,7 @@ import {
 import { getNickNameList } from "../../../../network/api/userApi";
 const { Paragraph } = Typography;
 import { Tree } from "antd";
+import { CloseCircleOutlined } from "@ant-design/icons";
 
 const { Panel } = Collapse;
 const { TreeNode } = Tree;
@@ -50,6 +53,9 @@ const SupportTreeCard = ({
   topicList,
   totalSupportScore,
   removeSupportForDelegate,
+  isSupportTreeCardModal,
+  setIsSupportTreeCardModal,
+  handleSupportTreeCardCancel,
 }) => {
   const { currentGetCheckSupportExistsData } = useSelector(
     (state: RootState) => ({
@@ -93,12 +99,16 @@ const SupportTreeCard = ({
   };
 
   const manageSupportPath = router.asPath.replace("/topic/", "/support/");
+
   const { campSupportingTree, asof } = useSelector((state: RootState) => ({
     campSupportingTree: state?.topicDetails?.campSupportingTree,
     asof: state?.filters?.filterObject?.asof,
   }));
-
+  {
+    console.log(campSupportingTree, "campSupportingTree");
+  }
   const [loadMore, setLoadMore] = useState(false);
+  const [modalData, setModalData] = useState<any>({});
   const { topicRecord, campRecord } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -180,6 +190,7 @@ const SupportTreeCard = ({
                             ) : (
                               <a>
                                 <Button
+                                  id="supportTreeDelegateYourSupport"
                                   disabled={asof == "bydate"}
                                   onClick={handleDelegatedClick}
                                   className="delegate-support-style"
@@ -192,13 +203,10 @@ const SupportTreeCard = ({
                         ) : (
                           <a>
                             <Button
-                              disabled={asof == "bydate"}
+                              id="supportTreeRemoveSupport"
                               onClick={() => {
-                                currentGetCheckSupportExistsData.is_delegator
-                                  ? removeSupportForDelegate()
-                                  : topicList.length <= 1
-                                  ? removeApiSupport(data[item].nick_name_id)
-                                  : removeSupport(data[item].nick_name_id);
+                                setIsSupportTreeCardModal(true);
+                                setModalData(data[item]);
                               }}
                               className="delegate-support-style"
                             >
@@ -231,29 +239,32 @@ const SupportTreeCard = ({
     });
   };
   return (
-    <Collapse
-      defaultActiveKey={["1"]}
-      expandIconPosition="right"
-      className="topicDetailsCollapse"
-    >
-      <Panel
-        header={
-          <h3>
-            Support Tree for &quot;
-            {campRecord?.camp_name}&quot; Camp
-          </h3>
-        }
-        key="1"
-        extra={
-          <Popover content={supportContent} placement="left">
-            <i className="icon-info tooltip-icon-style"></i>
-          </Popover>
-        }
+    <>
+      <Collapse
+        defaultActiveKey={["1"]}
+        expandIconPosition="right"
+        className="topicDetailsCollapse"
       >
-        <Paragraph>
-          Total Support for This Camp (including sub-camps):
-          <span className="number-style">{totalSupportScore?.toFixed(2)}</span>
-        </Paragraph>
+        <Panel
+          header={
+            <h3>
+              Support Tree for &quot;
+              {campRecord?.camp_name}&quot; Camp
+            </h3>
+          }
+          key="1"
+          extra={
+            <Popover content={supportContent} placement="left">
+              <i className="icon-info tooltip-icon-style"></i>
+            </Popover>
+          }
+        >
+          <Paragraph>
+            Total Support for This Camp (including sub-camps):
+            <span className="number-style">
+              {totalSupportScore?.toFixed(2)}
+            </span>
+          </Paragraph>
 
         {campSupportingTree?.length > 0 ? (
           <Tree
@@ -305,6 +316,7 @@ const SupportTreeCard = ({
             </div>
       </Panel>
     </Collapse>
+    </>
   );
 };
 export default SupportTreeCard;

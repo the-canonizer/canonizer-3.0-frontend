@@ -36,6 +36,7 @@ import {
 import queryParams from "src/utils/queryParams";
 import isAuth from "../../../hooks/isUserAuthenticated";
 import {
+  setCampSupportingTree,
   setCheckSupportExistsData,
   setCurrentCheckSupportStatus,
   setManageSupportStatusCheck,
@@ -62,6 +63,7 @@ const TopicDetails = () => {
   const [getCheckSupportStatus, setGetCheckSupportStatus] = useState({});
   const [totalSupportScore, setTotalSupportScore] = useState<number>(0);
   const [topicList, setTopicList] = useState([]);
+  const [isSupportTreeCardModal, setIsSupportTreeCardModal] = useState(false);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -136,6 +138,7 @@ const TopicDetails = () => {
         getCurrentTopicRecordApi(reqBody),
         getCurrentCampRecordApi(reqBody),
         getCanonizedCampStatementApi(reqBody),
+        dispatch(setCampSupportingTree({})),
         getCanonizedCampSupportingTreeApi(reqBody, algorithm),
         getHistoryApi(reqBodyForCampData, "1", "statement"),
         getCanonizedAlgorithmsApi(),
@@ -178,6 +181,7 @@ const TopicDetails = () => {
     const res = await removeSupportedCamps(supportedCampsRemove);
     if (res && res.status_code == 200) {
       message.success(res.message);
+      setIsSupportTreeCardModal(false);
       GetCheckStatusData();
       getCanonizedCampSupportingTreeApi(reqBody, algorithm);
       getTreesApi(reqBodyForService);
@@ -206,6 +210,7 @@ const TopicDetails = () => {
     let res = await addSupport(RemoveSupportId);
     if (res && res.status_code == 200) {
       message.success(res.message);
+      setIsSupportTreeCardModal(false);
       GetCheckStatusData();
       getCanonizedCampSupportingTreeApi(reqBody, algorithm);
       getTreesApi(reqBodyForService);
@@ -227,10 +232,10 @@ const TopicDetails = () => {
       update_all: 1,
       fetch_topic_history: +router?.query?.topic_history,
     };
-
     let res = await removeSupportedCampsEntireTopic(removeEntireData);
     if (res && res.status_code == 200) {
       message.success(res.message);
+      setIsSupportTreeCardModal(false);
       GetCheckStatusData();
       getCanonizedCampSupportingTreeApi(reqBody, algorithm);
       getTreesApi(reqBodyForService);
@@ -276,7 +281,9 @@ const TopicDetails = () => {
       // dispatch(setManageSupportStatusCheck(true));
     }
   };
-
+  const handleSupportTreeCardCancel = () => {
+    setIsSupportTreeCardModal(false);
+  };
   useEffect(() => {
     if (isUserAuthenticated) {
       GetCheckStatusData();
@@ -466,6 +473,11 @@ const TopicDetails = () => {
                           removeSupport={removeSupport}
                           topicList={topicList}
                           removeSupportForDelegate={removeSupportForDelegate}
+                          isSupportTreeCardModal={isSupportTreeCardModal}
+                          setIsSupportTreeCardModal={setIsSupportTreeCardModal}
+                          handleSupportTreeCardCancel={
+                            handleSupportTreeCardCancel
+                          }
                         />
                       </Spin>
                     </>
