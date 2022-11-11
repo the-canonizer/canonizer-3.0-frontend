@@ -105,7 +105,9 @@ export default function CanonVideos({}: Props): ReactElement {
               width={"100%"}
               height={"auto"}
               url={`${
-               K.Network.URL?.BaseVideosURL + videosCollection[selectedVideoId]?.url + videoResolution
+                K.Network.URL?.BaseVideosURL +
+                videosCollection[selectedVideoId]?.url +
+                videoResolution
               }.mp4`}
               controls
               ref={playeref}

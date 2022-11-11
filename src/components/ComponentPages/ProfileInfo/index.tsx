@@ -91,7 +91,6 @@ const ProfileInfo = () => {
     //values.birthday = formatDate(birthday);
     if (birthday == "" || birthday == null) {
       values.birthday = "";
-
     } else {
       values.birthday = formatDate(birthday);
     }
