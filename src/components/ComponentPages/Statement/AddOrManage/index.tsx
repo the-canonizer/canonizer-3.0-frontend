@@ -966,7 +966,7 @@ export default function AddOrManage({ add }) {
                 {form?.getFieldValue("keywords")}
               </Descriptions.Item>
 
-              <Descriptions.Item label="Camp About Url">
+              <Descriptions.Item label="Camp About URL">
                 {form?.getFieldValue("camp_about_url")}
               </Descriptions.Item>
 

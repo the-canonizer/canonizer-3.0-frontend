@@ -227,39 +227,41 @@ const ManageSupportUI = ({
             {getSupportStatusData != "" || CheckDelegatedOrDirect ? (
               <>
                 {parentSupportDataList != "" ? (
-                  <span
-                    id="getSupportStatusDataWarning"
-                    className={styles.warning}
-                  >
-                    <strong> Warning! </strong>
-                    {getSupportStatusData != ""
-                      ? getSupportStatusData
-                      : warningForDirecteSupportedCamps}
-                  </span>
+                  <>
+                    <span
+                      className={styles.warning}
+                      id="getSupportStatusDataWarning"
+                    >
+                      <strong> Warning! </strong>
+                      {getSupportStatusData != ""
+                        ? getSupportStatusData
+                        : warningForDirecteSupportedCamps}
+                    </span>
+                    <Col md={12}>
+                      {parentSupportDataList?.map((tag) => {
+                        return (
+                          <Tag
+                            key={tag.camp_num}
+                            className={styles.tag_btn}
+                            id="tags"
+                          >
+                            <div>
+                              {""}
+                              <span className={styles.count}>{""}</span>
+                            </div>
+
+                            <a href="#">
+                              {tag.support_order} . {tag.camp_name}
+                            </a>
+                          </Tag>
+                        );
+                      })}
+                    </Col>
+                    <div className={styles.hrtag}></div>
+                  </>
                 ) : (
                   ""
                 )}
-                <Col md={12}>
-                  {parentSupportDataList?.map((tag) => {
-                    return (
-                      <Tag
-                        id="tags"
-                        key={tag.camp_num}
-                        className={styles.tag_btn}
-                      >
-                        <div>
-                          {""}
-                          <span className={styles.count}>{""}</span>
-                        </div>
-
-                        <a href="#">
-                          {tag.support_order} . {tag.camp_name}
-                        </a>
-                      </Tag>
-                    );
-                  })}
-                </Col>
-                <div className={styles.hrtag}></div>
               </>
             ) : (
               ""
@@ -364,9 +366,7 @@ const ManageSupportUI = ({
         <div>
           <Card className={styles.margin_top} type="inner">
             <div className={styles.card_heading}>
-              <p id="nickNameToSupport">
-                Nick Name To Support Above Camps
-              </p>
+              <p id="nickNameToSupport">Nick Name To Support Above Camps</p>
             </div>
             <Select
               placeholder={placeholders.nickName}

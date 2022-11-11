@@ -217,29 +217,24 @@ function RegistrationUi({
                 />
               </Form.Item>
             </Col>
-            <Col md={{ span: 12, offset: 6 }} style={{ width: "100%" }}>
-              <Form.Item
-                // label={messages.labels.captcha}
-                name="captcha"
-                {...messages.getCaptchaRule(showCaptchaError)}
-                style={{
-                  paddingLeft: "30px",
-                  marginTop: "15px",
-                  marginBottom: "0",
-                }}
-              >
-                <div className={styles.captchaCol}>
-                  <ReCAPTCHA
-                    ref={recaptchaRef}
-                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-                    onChange={onReCAPTCHAChange}
-                    grecaptcha={global?.window?.grecaptcha}
-                  />
-                </div>
-              </Form.Item>
-            </Col>
           </Row>
         </div>
+
+        <Form.Item
+          name="captcha"
+          {...messages.getCaptchaRule(showCaptchaError)}
+          className={styles.captchaContainer}
+        >
+          <div className={styles.captchaCol}>
+            <ReCAPTCHA
+              ref={recaptchaRef}
+              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+              onChange={onReCAPTCHAChange}
+              grecaptcha={global?.window?.grecaptcha}
+            />
+          </div>
+        </Form.Item>
+
         <Form.Item>
           <Button
             type="primary"

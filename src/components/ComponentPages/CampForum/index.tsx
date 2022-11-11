@@ -418,7 +418,7 @@ const ForumComponent = ({}) => {
     const q = router?.query,
       from = q?.from,
       threadId = q?.id;
-    console.log("router", router.query);
+
     if (from) {
       threadDetails(threadId);
     }

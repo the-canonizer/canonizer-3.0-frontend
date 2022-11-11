@@ -74,9 +74,12 @@ export const labels = {
   brief: "(Briefly describe your changes)",
   topicSupportText: "Your supporting camp list for topic",
   manageSupportNote:
-    "Note : To change support order of camp, drag & drop the camp boxon your choice position",
+    "Note : To change support order of camp, drag & drop the camp box on your choice position",
   remove: "Remove",
   cancel: "Cancel",
+  settingNote:
+    "Note : To change support order of camp, drag & drop the camp box on your choice position.",
+  testOtp: "Note : OTP has been sent to your registered email address.",
 };
 
 export const preventCampLabel = [
