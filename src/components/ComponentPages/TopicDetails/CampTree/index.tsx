@@ -158,7 +158,6 @@ const CampTree = ({ scrollToCampStatement }) => {
                       className={
                         "treeListItem " + styles.topicDetailsTreeListItem
                       }
-                      id={`camp-${data[item].camp_id}`}
                     >
                       <span
                         className={
@@ -180,7 +179,7 @@ const CampTree = ({ scrollToCampStatement }) => {
                               data[item]?.camp_id ==
                                 router?.query?.camp?.at(1)?.split("-")?.at(0) ??
                               "1"
-                                ? "font-weight-bold text-primary"
+                                ? `font-weight-bold ${styles.activeCamp}`
                                 : ""
                             }
                           >
