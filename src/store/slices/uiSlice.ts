@@ -23,6 +23,7 @@ export const uiSlice = createSlice({
     showSocialLoginNamePopup: false,
     isFolderOpen: false,
     folderId: null,
+    disabledResetBtn: false,
   },
   reducers: {
     showLoginModal: (state) => {
@@ -136,6 +137,12 @@ export const uiSlice = createSlice({
     hideSocialNamePopup: (state) => {
       state.showSocialLoginNamePopup = false;
     },
+    resetBtnDisabled: (state) => {
+      state.disabledResetBtn = true;
+    },
+    resetBtnEnabled: (state) => {
+      state.disabledResetBtn = false;
+    },
   },
 });
 
@@ -177,6 +184,8 @@ export const {
   hideSocialNamePopup,
   setIsFolderOpen,
   setFolderId,
+  resetBtnDisabled,
+  resetBtnEnabled,
 } = uiSlice.actions;
 
 export default uiSlice.reducer;

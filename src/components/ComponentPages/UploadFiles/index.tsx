@@ -26,6 +26,8 @@ import {
   showUploadFiles,
   setIsFolderOpen,
   setFolderId,
+  resetBtnDisabled,
+  resetBtnEnabled,
 } from "src/store/slices/uiSlice";
 import {
   deleteFolderApi,
@@ -58,6 +60,9 @@ const UploadFiles = () => {
   const shownCrossBtn = () => dispatch(showCrossBtn());
   const showFiles = () => dispatch(showUploadFiles());
   const hideFiles = () => dispatch(hideUploadFiles());
+  const disabledResetBtn = () => dispatch(resetBtnDisabled());
+  const enabledResetBtn = () => dispatch(resetBtnEnabled());
+
   const openFolder = useSelector((state: RootState) => state.ui.folderOpen);
 
   const { isFolderOpen } = useSelector((state: RootState) => ({
@@ -67,6 +72,9 @@ const UploadFiles = () => {
   const { folderId } = useSelector((state: RootState) => ({
     folderId: state.ui.folderId,
   }));
+  const disabledResetButton = useSelector(
+    (state: RootState) => state.ui.disabledResetBtn
+  );
 
   const [input, setInput] = useState("");
   const [selectedFolderID, setSelectedFolderID] = useState("");
@@ -184,6 +192,7 @@ const UploadFiles = () => {
     uploadFileList.length == 0
       ? (uploadOptionsHide(), GetUploadFileAndFolder())
       : uploadOptionsShow();
+    enabledResetBtn();
   };
   const addNewFile = () => {
     hideFiles();
@@ -193,6 +202,7 @@ const UploadFiles = () => {
     folderHide();
     uploadOptionsHide();
     shownCrossBtn();
+    disabledResetBtn();
   };
 
   const GetFileInsideFolderData = async (id) => {

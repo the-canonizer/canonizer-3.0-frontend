@@ -48,6 +48,7 @@ import ListViewActive from "../../../../assets/image/listViewActive.svg";
 import folderOpenOutLine from "../../../../assets/image/folderOpen.svg";
 import CopyShortCode from "../../../../assets/image/copyShortCode.svg";
 import eyeImage from "../../../../assets/image/eye.svg";
+import reset from "../../../../assets/image/reset.png";
 import addFolder from "../../../../assets/image/add-folder.png";
 import addFile from "../../../../assets/image/add.png";
 import download from "../../../../assets/image/DownloadFile.svg";
@@ -67,6 +68,7 @@ import {
   showUploadFiles,
   showFolder,
   showAfterUploads,
+  createFolderBtnEnable,
 } from "../../../../store/slices/uiSlice";
 import CreateFolder from "../CreateFolder";
 import {
@@ -137,6 +139,9 @@ const UploadFileUI = ({
   const disabledCreateFolder = useSelector(
     (state: RootState) => state.ui.disabledCreateFolderBtn
   );
+  const disabledResetButton = useSelector(
+    (state: RootState) => state.ui.disabledResetBtn
+  );
   const dragBoxStatus = useSelector((state: RootState) => state.ui.dragBox);
   const show_UploadOptions = useSelector(
     (state: RootState) => state.ui.visibleUploadOptions
@@ -152,6 +157,8 @@ const UploadFileUI = ({
   const afterUploadClass = useSelector(
     (state: RootState) => state.ui.showFiles
   );
+  const enableCreateFolderBtn = () => dispatch(createFolderBtnEnable());
+
   const dragBoxShow = () => dispatch(showDrageBox());
   const dragBoxHide = () => dispatch(hideDrageBox());
   const uploadOptionsHide = () => dispatch(hideUploadOptions());
@@ -1028,6 +1035,24 @@ const UploadFileUI = ({
                             setSearch(e.target.value);
                           }}
                         />
+                      </div>
+                      <div>
+                        <Button
+                          disabled={disabledResetButton}
+                          onClick={() => {
+                            setSearch("");
+                            setDatePick("");
+                          }}
+                          className={styles.create_folder_btn}
+                        >
+                          <Image
+                            alt="adOne"
+                            src={reset}
+                            width={20}
+                            height={22}
+                          />
+                          Reset
+                        </Button>
                       </div>
                       <Button
                         id="createFolderBtn"
