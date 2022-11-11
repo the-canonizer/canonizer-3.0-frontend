@@ -195,32 +195,8 @@ function HistoryCollapse({
                   (campStatement?.status == "objected" &&
                     historyOf != "statement")) && (
                   <>
-                    <Button
-                      type="primary"
-                      id={`object-change-${campStatement?.id}`}
-                      onClick={() => {
-                        let isModelPop = !isUserAuthenticated
-                          ? true
-                          : !!(
-                              ifIamSupporter == 0 &&
-                              ifSupportDelayed == 0 &&
-                              !ifIAmExplicitSupporter
-                            )
-                          ? true
-                          : false;
-                        if (isModelPop) {
-                          setModal1Open(true);
-                        } else {
-                          router.push(
-                            historyOf == "camp"
-                              ? `/manage/camp/${campStatement?.id}-objection`
-                              : historyOf == "topic"
-                              ? `/manage/topic/${campStatement?.id}-objection`
-                              : `/manage/statement/${campStatement?.id}-objection`
-                          );
-                        }
-                      }}
-                      className={`mr-3 ${
+                    <Tooltip
+                      title={
                         (
                           !isUserAuthenticated
                             ? true
@@ -232,12 +208,55 @@ function HistoryCollapse({
                             ? true
                             : false
                         )
-                          ? "disable-style"
-                          : ""
-                      } ${styles.campUpdateButton}`}
+                          ? K?.exceptionalMessages?.objectedTooltipMsg
+                          : // "Only direct supporters at the time this change was submitted can object.."
+                            ""
+                      }
                     >
-                      Object
-                    </Button>
+                      <Button
+                        type="primary"
+                        id={`object-change-${campStatement?.id}`}
+                        onClick={() => {
+                          let isModelPop = !isUserAuthenticated
+                            ? true
+                            : !!(
+                                ifIamSupporter == 0 &&
+                                ifSupportDelayed == 0 &&
+                                !ifIAmExplicitSupporter
+                              )
+                            ? true
+                            : false;
+                          if (isModelPop) {
+                            setModal1Open(true);
+                          } else {
+                            router.push(
+                              historyOf == "camp"
+                                ? `/manage/camp/${campStatement?.id}-objection`
+                                : historyOf == "topic"
+                                ? `/manage/topic/${campStatement?.id}-objection`
+                                : `/manage/statement/${campStatement?.id}-objection`
+                            );
+                          }
+                        }}
+                        className={`mr-3 ${
+                          (
+                            !isUserAuthenticated
+                              ? true
+                              : !!(
+                                  ifIamSupporter == 0 &&
+                                  ifSupportDelayed == 0 &&
+                                  !ifIAmExplicitSupporter
+                                )
+                              ? true
+                              : false
+                          )
+                            ? "disable-style"
+                            : ""
+                        } ${styles.campUpdateButton}`}
+                      >
+                        Object
+                      </Button>
+                    </Tooltip>
                     <Modal
                       title={K?.exceptionalMessages?.objectedModelTitle}
                       style={{
