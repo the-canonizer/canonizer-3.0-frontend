@@ -6,7 +6,7 @@ import ProfileInfo from "../ProfileInfo";
 import NickName from "../NickName";
 import styles from "./Settings.module.scss";
 import DirectSupportedCamps from "../DirectSupportedCamps";
-import { SearchOutlined } from "@ant-design/icons";
+import { SearchOutlined, SyncOutlined } from "@ant-design/icons";
 import { Tabs } from "antd";
 import DelegatedSupportCamps from "../DelegatedSupportCamps";
 import { useRouter } from "next/router";
@@ -62,16 +62,30 @@ const SettingsUI = () => {
     supported_camps: (
       <div className={styles.supported_camps}>
         <div className={styles.search_users}>
-          <SearchOutlined />
-          <input
-            placeholder="Search by topic name"
-            type="text"
-            name="search"
-            onChange={(e) => {
-              setSearch(e.target.value);
-            }}
-          />
+          <div className={styles.search_box}>
+            <div className={styles.search01}>
+              <SearchOutlined />
+              <input
+                value={search}
+                placeholder="Search by topic name"
+                type="text"
+                name="search"
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                }}
+              />
+            </div>
+            <Button
+              onClick={() => {
+                setSearch("");
+              }}
+              className={styles.btn}
+            >
+              Reset
+            </Button>
+          </div>
         </div>
+
         <Tabs onChange={callback} type="card">
           <TabPane tab="Direct Supported Camps" key="1">
             <div className={styles.text_checkbox_cont}>

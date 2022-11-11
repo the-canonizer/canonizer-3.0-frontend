@@ -64,7 +64,7 @@ const TopicDetails = () => {
   const [totalSupportScore, setTotalSupportScore] = useState<number>(0);
   const [topicList, setTopicList] = useState([]);
   const [isSupportTreeCardModal, setIsSupportTreeCardModal] = useState(false);
-
+  const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
   const {
@@ -177,6 +177,7 @@ const TopicDetails = () => {
       update_all: 1,
       fetch_topic_history: +router?.query?.topic_history,
     };
+    setRemoveSupportSpinner(true);
 
     const res = await removeSupportedCamps(supportedCampsRemove);
     if (res && res.status_code == 200) {
@@ -207,6 +208,8 @@ const TopicDetails = () => {
       update_all: 1,
       fetch_topic_history: +router?.query?.topic_history,
     };
+    setRemoveSupportSpinner(true);
+
     let res = await addSupport(RemoveSupportId);
     if (res && res.status_code == 200) {
       message.success(res.message);
@@ -232,6 +235,8 @@ const TopicDetails = () => {
       update_all: 1,
       fetch_topic_history: +router?.query?.topic_history,
     };
+    setRemoveSupportSpinner(true);
+
     let res = await removeSupportedCampsEntireTopic(removeEntireData);
     if (res && res.status_code == 200) {
       message.success(res.message);
@@ -478,6 +483,7 @@ const TopicDetails = () => {
                           handleSupportTreeCardCancel={
                             handleSupportTreeCardCancel
                           }
+                          removeSupportSpinner={removeSupportSpinner}
                         />
                       </Spin>
                     </>

@@ -327,6 +327,7 @@ function ProfileInfoForm({
                   maxLength={255}
                   disabled={postalCodeDisable}
                   autoComplete="off"
+                  defaultValue={publicOrPrivate("postal_code")}
                 />
               </Form.Item>
             </Col>

@@ -92,3 +92,23 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.search_box{
+  column-gap: 5px;
+  display: flex;
+  align-items: center;
+  .search01{
+    position: relative;
+  }
+  button{
+    height: 37px;
+    background: #eaedf2 !important;
+    border: none;
+    border-radius: 0;
+    span {
+      position: unset !important;
+      font-size: 14px !important;
+      color: #000 !important;
+    }
+  }
+}
