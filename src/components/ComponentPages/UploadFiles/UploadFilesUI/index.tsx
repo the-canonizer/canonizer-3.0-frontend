@@ -226,7 +226,7 @@ const UploadFileUI = ({
               previewVisible: true,
               previewName:
                 item.file_name.length > fileNameLength
-                  ? item.file_name.substring(0, 30) + "..."
+                  ? item.file_name.substring(0, fileNameLength) + "..."
                   : item.file_name,
               previewPath: item.file_path,
               previewCopyShortCode: item.short_code,
@@ -266,7 +266,7 @@ const UploadFileUI = ({
       <Menu.Item
         onClick={() => {
           {
-            navigator.clipboard.writeText(item.short_code),
+            navigator.clipboard.writeText(item.file_path),
               message.success("Short code copied");
           }
         }}
@@ -448,16 +448,20 @@ const UploadFileUI = ({
       render: (code, obj) => {
         return (
           <div className={styles.CopyShortCode}>
-            {obj.short_code ? (
+            {obj.file_path ? (
               <>
                 <div className={styles.icon_height}>
-                  {`[[${obj.short_code}]]`}
+                  {`[[${
+                    obj.file_path.length > fileNameLength
+                      ? obj.file_path.substring(0, fileNameLength) + "..."
+                      : obj.file_path
+                  }]]`}
                 </div>
                 <div className={styles.shortcode_icon}>
                   <span
                     className={styles.folder_icons}
                     onClick={() => {
-                      navigator.clipboard.writeText(obj.short_code),
+                      navigator.clipboard.writeText(obj.file_path),
                         message.success("Short code copied");
                     }}
                   >
@@ -554,7 +558,7 @@ const UploadFileUI = ({
                     <div
                       className={styles.menu_item}
                       onClick={() => {
-                        navigator.clipboard.writeText(keyParam.short_code),
+                        navigator.clipboard.writeText(keyParam.file_path),
                           message.success("Short code copied");
                       }}
                     >
@@ -725,7 +729,7 @@ const UploadFileUI = ({
               <span
                 className="copySpan"
                 onClick={() => {
-                  navigator.clipboard.writeText(item.short_code),
+                  navigator.clipboard.writeText(item.file_path),
                     message.success("Short code copied");
                 }}
               >
@@ -938,7 +942,7 @@ const UploadFileUI = ({
             <span
               className="copySpan"
               onClick={() => {
-                navigator.clipboard.writeText(file.short_code),
+                navigator.clipboard.writeText(file.file_path),
                   message.success("Short code copied");
               }}
             >
@@ -1441,7 +1445,7 @@ const UploadFileUI = ({
                 <div
                   className="copy_wrap"
                   onClick={() => {
-                    navigator.clipboard.writeText(preview.previewCopyShortCode),
+                    navigator.clipboard.writeText(preview.previewPath),
                       message.success("Short code copied");
                   }}
                 >
@@ -1451,7 +1455,14 @@ const UploadFileUI = ({
                     width={"16px"}
                     height={"10px"}
                   />
-                  <span> [[{preview.previewCopyShortCode}]]</span>
+                  <span>
+                    {" "}
+                    [[
+                    {preview.previewPath.length > fileNameLength
+                      ? preview.previewPath.substring(0, fileNameLength) + "..."
+                      : preview.previewPath}
+                    ]]
+                  </span>
                 </div>
               </div>
               <div className="date_wrap">

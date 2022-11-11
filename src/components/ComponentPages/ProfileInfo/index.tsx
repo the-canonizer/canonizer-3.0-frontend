@@ -74,6 +74,7 @@ const ProfileInfo = () => {
   }
   //on update profile click
   const onFinish = async (values: any) => {
+    debugger;
     let birthday = values.birthday?._d;
     let code = values.postal_code;
     setDisableButton(true);
@@ -91,7 +92,6 @@ const ProfileInfo = () => {
     //values.birthday = formatDate(birthday);
     if (birthday == "" || birthday == null) {
       values.birthday = "";
-
     } else {
       values.birthday = formatDate(birthday);
     }
@@ -279,7 +279,8 @@ const ProfileInfo = () => {
           };
           formVerify.setFieldsValue(verify);
           //format date for datepicker
-          profileData.birthday = moment(profileData.birthday, "YYYY-MM-DD");
+          if (profileData.birthday != null && profileData.birthday != "")
+            profileData.birthday = moment(profileData.birthday, "YYYY-MM-DD");
           if (profileData.postal_code) setPostalCodeDisable(true);
           form.setFieldsValue(profileData);
           setPrivateFlags(profileData.private_flags);
