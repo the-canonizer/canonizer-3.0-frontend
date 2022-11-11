@@ -219,6 +219,36 @@
   }
 }
 
+.top_btn .reset_btn {
+  color: rgb(20, 159, 223);
+  border-color: rgb(20, 159, 223);
+  margin-right: 0px;
+  margin-left: 5px;
+  padding: -1 8px;
+  @media screen and (max-width: 400px) {
+    margin-right: 3px;
+    margin-left: 2px;
+  }
+
+  img {
+    display: none !important;
+  }
+
+  @media screen and (max-width: 1280px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    width: 35px;
+    span {
+      font-size: 0 !important;
+    }
+    img {
+      display: block !important;
+    }
+  }
+}
+
 .top_btn .add_file_btn {
   color: rgb(20, 159, 223);
   border-color: rgb(20, 159, 223);

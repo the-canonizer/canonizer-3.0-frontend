@@ -74,7 +74,8 @@ const ProfileInfo = () => {
   }
   //on update profile click
   const onFinish = async (values: any) => {
-    let birthday = values.birthday._d;
+    let birthday = values.birthday?._d;
+    let code = values.postal_code;
     setDisableButton(true);
     setPostalCodeDisable(true);
     //Set Private Public flags
@@ -87,7 +88,13 @@ const ProfileInfo = () => {
     values.state_bit = isPublicOrPrivate(publicPrivateArray.state);
     values.country_bit = isPublicOrPrivate(publicPrivateArray.country);
     values.birthday_bit = isPublicOrPrivate(publicPrivateArray.birthday);
-    values.birthday = formatDate(birthday);
+    //values.birthday = formatDate(birthday);
+    if (birthday == "" || birthday == null) {
+      values.birthday = "";
+
+    } else {
+      values.birthday = formatDate(birthday);
+    }
 
     //End Set Private Public flags
     values.mobile_carrier = formVerify.getFieldValue(
@@ -97,6 +104,7 @@ const ProfileInfo = () => {
       publicPrivateArray.phone_number
     );
     values.address_1 = address;
+    values.postal_code = code;
     values = { ...values, ...updateAddress };
     let res = await UpdateUserProfileInfo(values);
     if (res && res.status_code === 200) {
@@ -106,6 +114,7 @@ const ProfileInfo = () => {
       setDisableButton(false);
     }
   };
+
   const { isUserAuthenticated } = isAuth();
 
   const onFinishFailed = (errorInfo) => {
@@ -119,7 +128,6 @@ const ProfileInfo = () => {
       message.success(res.message);
       setIsOTPModalVisible(true);
       setOTP("");
-      console.log(res.data.otp);
       //setOTP(res.data.otp)
     }
   };
@@ -161,6 +169,12 @@ const ProfileInfo = () => {
   };
   const handleAddressChange = (value) => {
     setAddress(value);
+
+    setPostalCodeDisable(false);
+    let postalCode = "";
+    form.setFieldsValue({
+      ["postal_code"]: postalCode,
+    });
   };
 
   const handleAddressSelect = async (address, placeId) => {

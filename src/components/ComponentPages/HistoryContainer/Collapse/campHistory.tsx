@@ -76,7 +76,7 @@ const CampHistory = ({ campStatement }) => {
       )}
       {campStatement?.objector_nick_name && (
         <Title level={5}>
-          Objector Nick Name : {" "}
+          Objector Nick Name :{" "}
           <span>
             <Link
               href={`/user/supports/${

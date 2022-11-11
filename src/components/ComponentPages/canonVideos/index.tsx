@@ -1,63 +1,57 @@
-import Link from "next/link";
 import React, { ReactElement, useRef, useState } from "react";
 import styles from "./style.module.scss";
 import { RadioChangeEvent, Typography } from "antd";
 import { Radio } from "antd";
 import ReactPlayer from "react-player/lazy";
+import K from "src/constants";
 
 const { Title } = Typography;
-// Render a YouTube video player
 
 interface Props {}
 
 export default function CanonVideos({}: Props): ReactElement {
   const playeref = useRef();
-  // debugger
-  console.log("object", playeref);
-  const handleOnReady = (player) => {};
 
   let videosCollection = {
     1: {
       id: 1,
       label: "Introduction",
-      // url:"https://storage.googleapis.com/shaka-demo-assets/angel-one-hls/hls.m3u8",
-      url: "https://canonizer.com/videos/consciousness/introduction_",
+      url: "/introduction_",
     },
     2: {
       id: 2,
       label: "Perceiving a Strawberry",
-      // url:'/sample-video/file_example_mp4_1920_18mg.m3u8'
-      url: "https://canonizer.com/videos/consciousness/perceiving_a_strawberry_",
+      url: "/perceiving_a_strawberry_",
     },
     3: {
       id: 3,
       label: "Differentiating Reality and Knowledge of Reality",
-      url: "https://canonizer.com/videos/consciousness/differentiate_reality_knowledge_",
+      url: "/differentiate_reality_knowledge_",
     },
     4: {
       id: 4,
       label: "Computational Binding",
-      url: "https://canonizer.com/videos/consciousness/",
+      url: "/computational_binding_",
     },
     5: {
       id: 5,
       label: "Cognitive Knowledge",
-      url: "https://canonizer.com/videos/consciousness/cognitive_knowledge_",
+      url: "/cognitive_knowledge_",
     },
     6: {
       id: 6,
       label: "Simulation_Hypothesis",
-      url: "https://canonizer.com/videos/consciousness/simulation_hypothesis_",
+      url: "/simulation_hypothesis_",
     },
     7: {
       id: 7,
       label: "Representational Qualia Theory Consensus",
-      url: "https://canonizer.com/videos/consciousness/representational_qualia_consensus_",
+      url: "/representational_qualia_consensus_",
     },
     8: {
       id: 8,
       label: "Conclusion",
-      url: "https://canonizer.com/videos/consciousness/conclusion_",
+      url: "/conclusion_",
     },
   };
 
@@ -111,7 +105,7 @@ export default function CanonVideos({}: Props): ReactElement {
               width={"100%"}
               height={"auto"}
               url={`${
-                videosCollection[selectedVideoId]?.url + videoResolution
+               K.Network.URL?.BaseVideosURL + videosCollection[selectedVideoId]?.url + videoResolution
               }.mp4`}
               controls
               ref={playeref}
