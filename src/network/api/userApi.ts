@@ -56,7 +56,8 @@ export const login = async (email: string, password: string) => {
   }
 };
 
-export const logout = async (error = "", status = null) => {
+export const logout = async (error = "", status = null, count:number) => {
+  console.log('ccccc', count)
   let state = store.getState();
   const { auth } = state;
 
@@ -70,7 +71,7 @@ export const logout = async (error = "", status = null) => {
         return;
       }
 
-      message.error("Your session has expired. Please log in again!");
+    count===1 && message.error("Your session has expired. Please log in again!");
 
       return true;
     }
