@@ -79,7 +79,7 @@ function HistoryContainer() {
         update_all: 1,
       };
 
-      await Promise.all([getTreesApi(reqBodyForService)]);
+      await getTreesApi(reqBodyForService);
       setLoadingIndicator(false);
     }
     if (!isTreesApiCallStop) {
