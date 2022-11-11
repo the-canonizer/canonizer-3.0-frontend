@@ -92,10 +92,8 @@ const ProfileInfo = () => {
     if (birthday == "" || birthday == null) {
       values.birthday = "";
 
-      console.log("output", values.birthday);
     } else {
       values.birthday = formatDate(birthday);
-      console.log("output1", values.birthday);
     }
 
     //End Set Private Public flags
@@ -130,7 +128,6 @@ const ProfileInfo = () => {
       message.success(res.message);
       setIsOTPModalVisible(true);
       setOTP("");
-      console.log(res.data.otp);
       //setOTP(res.data.otp)
     }
   };
