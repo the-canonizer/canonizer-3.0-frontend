@@ -57,11 +57,7 @@ export default function OTPVerify({
             />
           </div>
           <Text type="danger" className={styles.otpNote} id="otp-note-text">
-            {isResend
-              ? failedMsg
-              : logMsg
-              ? logMsg
-              : "Note : Registration code has been sent to your registered email address and Phone Number."}
+            {isResend ? failedMsg : logMsg ? logMsg : messages?.labels?.regOtp}
           </Text>
           <Form.Item
             name="otp"

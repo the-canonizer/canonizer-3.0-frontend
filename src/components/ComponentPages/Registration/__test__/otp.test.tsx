@@ -6,18 +6,14 @@ import Registration from "../index";
 import messages from "../../../../messages";
 import React from "react";
 
-const { placeholders, validations } = messages;
+const { placeholders, validations, labels } = messages;
 
 describe("OTP page", () => {
   it("render heading and text", () => {
     render(<Registration isModal={false} isTest={true} />);
     let heading = screen.getByText("Log In One Time Verification Code");
     expect(heading).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        "Note : Registration code has been sent to your registered email address and Phone Number."
-      )
-    ).toBeInTheDocument();
+    expect(screen.getByText(labels.regOtp)).toBeInTheDocument();
   });
 
   it("render inputs field and submit button", () => {
