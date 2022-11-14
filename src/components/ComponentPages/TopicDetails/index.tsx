@@ -186,6 +186,7 @@ const TopicDetails = () => {
       GetCheckStatusData();
       getCanonizedCampSupportingTreeApi(reqBody, algorithm);
       getTreesApi(reqBodyForService);
+      fetchTotalScore();
     }
   };
   const removeSupport = async (supportedId) => {
@@ -217,6 +218,7 @@ const TopicDetails = () => {
       GetCheckStatusData();
       getCanonizedCampSupportingTreeApi(reqBody, algorithm);
       getTreesApi(reqBodyForService);
+      fetchTotalScore();
     }
   };
   const removeSupportForDelegate = async () => {
@@ -244,6 +246,7 @@ const TopicDetails = () => {
       GetCheckStatusData();
       getCanonizedCampSupportingTreeApi(reqBody, algorithm);
       getTreesApi(reqBodyForService);
+      fetchTotalScore();
     }
   };
 
