@@ -56,7 +56,7 @@ export const login = async (email: string, password: string) => {
   }
 };
 
-export const logout = async (error = "", status = null, count:number) => {
+export const logout = async (error = "", status = null, count:number=1) => {
   console.log('ccccc', count)
   let state = store.getState();
   const { auth } = state;
