@@ -399,9 +399,8 @@ export default function AddOrManage({ add }) {
 
     setOptions(oldOptions);
   };
-
   const extra = () => {
-    if (manageFormOf == "camp") {
+    if (manageFormOf == "camp" && !objection) {
       return (
         <PreventSubCamps
           options={options}
