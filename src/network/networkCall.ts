@@ -25,6 +25,9 @@ export default class NetworkCall {
       const response: any = useLoading
         ? await trackPromise(axiosCall())
         : await axiosCall();
+      if(response?.data?.auth?.access_token){
+         NetworkCall.counter=1
+      }
       store.dispatch(updateStatus(response.data.status));
       return response.data;
     } catch (err) {
