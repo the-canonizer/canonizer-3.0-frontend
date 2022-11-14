@@ -62,6 +62,7 @@ export default function AddOrManage({ add }) {
   const { isUserAuthenticated } = useAuthentication();
   const router = useRouter();
   const [editStatementData, setEditStatementData] = useState({ data: null });
+  const [submitIsDisable, setSubmitIsDisable] = useState(true);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [nickNameData, setNickNameData] = useState([]);
@@ -470,6 +471,7 @@ export default function AddOrManage({ add }) {
                 initialValues={{
                   available_for_child: 0,
                 }}
+                onValuesChange={() => setSubmitIsDisable(false)}
                 onFinish={onFinish}
               >
                 <Row gutter={28}>
@@ -819,6 +821,9 @@ export default function AddOrManage({ add }) {
                         size="large"
                         className={`btn-orange mr-3 ${styles.btnSubmit}`}
                         htmlType="submit"
+                        disabled={
+                          manageFormOf == "statement" ? false : submitIsDisable
+                        }
                       >
                         {add
                           ? K?.exceptionalMessages?.submitStatementButton
@@ -930,6 +935,9 @@ export default function AddOrManage({ add }) {
         onOk={() => {
           form?.submit();
           setModalVisible(false);
+        }}
+        okButtonProps={{
+          disabled: manageFormOf == "statement" ? false : submitIsDisable,
         }}
         okText={
           add
