@@ -210,7 +210,6 @@ function ProfileInfoForm({
                 <Input.Group compact className={styles.date_picker}>
                   <Form.Item
                     name="birthday"
-                    {...messages.dobRule}
                     className={styles.date_picker_input_item}
                   >
                     <DatePicker

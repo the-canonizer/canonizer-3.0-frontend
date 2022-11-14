@@ -99,6 +99,10 @@ const ManageSupportUI = ({
   const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
 
   const body = { topic_num: topicNum };
+  const nickNameloop = nickNameList.filter((nickName) => {
+    return selectedtNickname == nickName.id;
+  });
+  const nickNameIDValue = nickNameloop[0]?.id;
 
   // let topicSupport;
   // const topicSupportCampNum = topicSupport?.map((obj)=>{
@@ -119,7 +123,7 @@ const ManageSupportUI = ({
       remove_camps: removeAllCampNum(),
       type: "direct",
       action: "all",
-      nick_name_id: nickNameList[0]?.id,
+      nick_name_id: nickNameIDValue,
       order_update: [],
     };
     const topicList = await GetActiveSupportTopic(topicNum && body);
@@ -139,6 +143,7 @@ const ManageSupportUI = ({
       });
     }
   };
+
   const addRemoveApi = async () => {
     setSpinner(true);
     const addSupportId = {
@@ -159,7 +164,7 @@ const ManageSupportUI = ({
           : [],
       type: "direct",
       action: "add",
-      nick_name_id: nickNameList[0]?.id,
+      nick_name_id: nickNameIDValue,
       order_update:
         filteredList.length > 0
           ? filteredList
