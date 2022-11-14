@@ -177,12 +177,14 @@ const UploadFiles = () => {
       //fileStatusHide();
       shownFileStatus();
       GetUploadFileAndFolder();
+      enabledResetBtn();
     } else {
       setUploadFileList([]);
       // setFolderFiles([]);
       uploadOptionsHide();
       fileStatusHide();
       GetUploadFileAndFolder();
+      enabledResetBtn();
     }
   };
   const handle_X_btn = () => {
