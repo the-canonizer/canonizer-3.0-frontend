@@ -246,36 +246,59 @@ export default function AddOrManage({ add }) {
           res = await getEditStatementApi(
             router?.query?.statement[0]?.split("-")[0]
           );
-          setPayloadBreadCrumb({
-            camp_num: res?.data?.statement?.camp_num ?? "1",
-            topic_num: res?.data?.statement?.topic_num,
-          });
+          if (
+            res?.data?.statement?.go_live_time <
+              Math.floor(new Date().getTime() / 1000) &&
+            objection
+          ) {
+            router?.back();
+          } else {
+            setPayloadBreadCrumb({
+              camp_num: res?.data?.statement?.camp_num ?? "1",
+              topic_num: res?.data?.statement?.topic_num,
+            });
+          }
         } else if (manageFormOf == "camp") {
           res = await getEditCampApi(
             router?.query?.statement[0]?.split("-")[0]
           );
-          fetchCampNickNameList();
-          if (res?.data?.camp?.parent_camp_num) {
-            fetchParentsCampList(
-              res?.data?.camp?.topic_num,
-              res?.data?.camp?.parent_camp_num,
-              res?.data?.camp?.camp_num
-            );
+          if (
+            res?.data?.camp?.go_live_time <
+              Math.floor(new Date().getTime() / 1000) &&
+            objection
+          ) {
+            router?.back();
+          } else {
+            fetchCampNickNameList();
+            if (res?.data?.camp?.parent_camp_num) {
+              fetchParentsCampList(
+                res?.data?.camp?.topic_num,
+                res?.data?.camp?.parent_camp_num,
+                res?.data?.camp?.camp_num
+              );
+            }
+            setPayloadBreadCrumb({
+              camp_num: res?.data?.camp?.camp_num ?? "1",
+              topic_num: res?.data?.camp?.topic_num,
+            });
           }
-          setPayloadBreadCrumb({
-            camp_num: res?.data?.camp?.camp_num ?? "1",
-            topic_num: res?.data?.camp?.topic_num,
-          });
         } else if (manageFormOf == "topic") {
           res = await getEditTopicApi(
             router?.query?.statement[0]?.split("-")[0]
           );
-
-          fetchNameSpaceList();
-          setPayloadBreadCrumb({
-            topic_num: res?.data?.topic?.topic_num,
-            camp_num: "1",
-          });
+          if (
+            res?.data?.topic?.go_live_time <
+              Math.floor(new Date().getTime() / 1000) &&
+            objection
+          ) {
+            router?.back();
+          } else {
+            fetchNameSpaceList();
+            setPayloadBreadCrumb({
+              topic_num: res?.data?.topic?.topic_num,
+              camp_num: "1",
+            });
+          }
         } else {
           res = await getEditStatementApi(
             router?.query?.statement[0]?.split("-")[0]
