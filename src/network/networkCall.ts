@@ -7,7 +7,9 @@ import { store } from "../store";
 import { updateStatus } from "../store/slices/uiSlice";
 
 export default class NetworkCall {
+ static counter=1;
   static async fetch(request, useLoading = true) {
+
     const axiosCall = () => {
       return NetworkCall.axios({
         method: request.method,
@@ -23,6 +25,9 @@ export default class NetworkCall {
       const response: any = useLoading
         ? await trackPromise(axiosCall())
         : await axiosCall();
+      if(response?.data?.auth?.access_token){
+         NetworkCall.counter=1
+      }
       store.dispatch(updateStatus(response.data.status));
       return response.data;
     } catch (err) {
@@ -36,14 +41,13 @@ export default class NetworkCall {
             error.config.url?.includes("/forgot-password/verify-otp")
           )
         ) {
-          logout("Invalid User", error.status);
+          logout("Invalid User", error.status, NetworkCall.counter);
+          NetworkCall.counter++
         }
+         
 
         store.dispatch(updateStatus(error.status));
-      } else if (error.status === K.Network.StatusCode.Unauthorized) {
-        logout("User unauthorized", error.status);
-      }
-
+      } 
       if (typeof error.data === "object" && "errors" in error.data)
         error.data.errors = camelCaseKeys(error.data.errors);
       return Promise.reject({ error: error });
