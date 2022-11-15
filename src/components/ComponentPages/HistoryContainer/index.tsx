@@ -228,6 +228,28 @@ function HistoryContainer() {
     return title;
   };
 
+  const NoRecordsMessage = () => {
+    let title: string;
+    if (historyOf == "statement") {
+      title = "No Camp Statement History Found";
+    } else if (historyOf == "camp") {
+      title = "No Camp History Found";
+    } else if (historyOf == "topic") {
+      title = "No Topic History Found";
+    }
+    return (
+      <h2
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          margin: "20px 0px",
+        }}
+      >
+        {title}
+      </h2>
+    );
+  };
+
   const renderCampHistories =
     campHistory && campHistory?.items?.length ? (
       campHistory?.items?.map((campHistoryData, index) => {
@@ -253,15 +275,7 @@ function HistoryContainer() {
         );
       })
     ) : (
-      <h2
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          margin: "20px 0px",
-        }}
-      >
-        No Camp History Found
-      </h2>
+      <NoRecordsMessage />
     );
   return (
     <div className={styles.wrap}>
