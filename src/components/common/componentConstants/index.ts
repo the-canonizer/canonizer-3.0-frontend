@@ -4,7 +4,7 @@ export const currentCampRecordConstants = [
     key: "camp_name",
   },
   {
-    label: "Parent Camp Name",
+    label: "Parent Camp",
     key: "parent_camp_name",
   },
   {
