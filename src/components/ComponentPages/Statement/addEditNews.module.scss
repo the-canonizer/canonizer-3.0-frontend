@@ -11,7 +11,7 @@
   .formItem {
     display: flex;
     width: 100%;
-    [class="ant-row ant-form-item-row"]{
+    [class="ant-row ant-form-item-row"] {
       width: 100%;
     }
     label {
@@ -38,11 +38,11 @@
       font-size: 16px;
     }
   }
- 
+
   .btnSubmit {
     display: inline-flex;
     align-items: center;
-    
+
     & > div {
       height: 20px;
       margin-left: 0.5rem;
