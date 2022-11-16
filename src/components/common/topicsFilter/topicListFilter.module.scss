@@ -32,6 +32,11 @@
     display: flex;
     align-items: center;
     margin-bottom: 5px;
+
+    .filterText {
+      white-space: nowrap;
+    }
+
     input {
       width: 100%;
       margin: 0 7px;
@@ -102,7 +107,7 @@
   justify-content: space-between;
   align-items: flex-start;
   font-size: 12px;
-  
+
   a {
     color: var(--primary);
     text-decoration: underline;

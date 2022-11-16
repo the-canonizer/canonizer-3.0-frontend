@@ -10,6 +10,10 @@
   }
   .formItem {
     display: flex;
+    width: 100%;
+    [class="ant-row ant-form-item-row"] {
+      width: 100%;
+    }
     label {
       color: #6e7880;
       font-weight: 500;
@@ -23,9 +27,19 @@
         font-size: 13px;
         padding-left: 5px;
       }
+      .small {
+        font-size: 92%;
+        margin-left: 5px;
+      }
     }
     .error {
       border-color: #ff4d4f;
+    }
+    &.namespace_in {
+      .small {
+        font-size: 92%;
+        margin-left: 5px;
+      }
     }
   }
   .formItemCheckbox {
@@ -34,9 +48,11 @@
       font-size: 16px;
     }
   }
+
   .btnSubmit {
     display: inline-flex;
     align-items: center;
+
     & > div {
       height: 20px;
       margin-left: 0.5rem;
