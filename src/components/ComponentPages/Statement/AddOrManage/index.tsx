@@ -561,7 +561,9 @@ export default function AddOrManage({ add }) {
                           label={
                             <>
                               Camp Name <span className="required">*</span>
-                              <span>(Limit 30 Chars)</span>
+                              <span className={styles.small}>
+                                (Limit 30 Chars)
+                              </span>
                             </>
                           }
                           name="camp_name"
@@ -610,7 +612,9 @@ export default function AddOrManage({ add }) {
                           label={
                             <>
                               Topic Name <span className="required">*</span>
-                              <span>(Limit 30 Chars)</span>
+                              <span className={styles.small}>
+                                (Limit 30 Chars)
+                              </span>
                             </>
                           }
                           name="topic_name"
@@ -631,15 +635,16 @@ export default function AddOrManage({ add }) {
                         >
                           <Input disabled={objection} maxLength={30} />
                         </Form.Item>
-
-                        {/* Name space -------------------------------------------------------------------- */}
-                        {!objection && (
+                      </Col>
+                      {/* Name space -------------------------------------------------------------------- */}
+                      {!objection && (
+                        <Col xs={24} sm={24} xl={12}>
                           <Form.Item
-                            className={`${styles.formItem} mb-2`}
+                            className={`${styles.formItem} namespace_in mb-2`}
                             label={
                               <>
                                 Namespace <span className="required">*</span>
-                                <span>
+                                <span className={styles.small}>
                                   (General is recommended, unless you know
                                   otherwise)
                                 </span>
@@ -668,8 +673,8 @@ export default function AddOrManage({ add }) {
                               ))}
                             </Select>
                           </Form.Item>
-                        )}
-                      </Col>
+                        </Col>
+                      )}
                     </>
                   )}
 
@@ -753,7 +758,9 @@ export default function AddOrManage({ add }) {
                           label={
                             <>
                               Edit Summary{" "}
-                              <small>(Briefly describe your changes)</small>
+                              <small className={styles.small}>
+                                (Briefly describe your changes)
+                              </small>
                             </>
                           }
                           {...summaryRule}
@@ -774,7 +781,9 @@ export default function AddOrManage({ add }) {
                               label={
                                 <>
                                   Camp About URL
-                                  <span>(Limit 1024 Chars)</span>
+                                  <span className={styles.small}>
+                                    (Limit 1024 Chars)
+                                  </span>
                                 </>
                               }
                               name="camp_about_url"

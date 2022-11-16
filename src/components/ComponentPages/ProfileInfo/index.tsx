@@ -43,6 +43,9 @@ const ProfileInfo = () => {
   const [disableButton, setDisableButton] = useState(false);
   const [postalCodeDisable, setPostalCodeDisable] = useState(false);
   const [updateAddress, setUpdateAddress] = useState<UpdateAddress>({});
+  const [zipCode, setZipCode] = useState(false);
+  const [add, setAdd] = useState(false);
+
   const publicPrivateArray = {
     first_name: "first_name",
     last_name: "last_name",
@@ -110,8 +113,12 @@ const ProfileInfo = () => {
     if (res && res.status_code === 200) {
       message.success(res.message);
       setDisableButton(false);
+      setAdd(false);
+      setZipCode(false);
     } else {
       setDisableButton(false);
+      setAdd(false);
+      setZipCode(false);
     }
   };
 
@@ -168,13 +175,17 @@ const ProfileInfo = () => {
     }
   };
   const handleAddressChange = (value) => {
-    setAddress(value);
-
-    setPostalCodeDisable(false);
-    let postalCode = "";
-    form.setFieldsValue({
-      ["postal_code"]: postalCode,
-    });
+    if (zipCode && !add) {
+      setAddress(value);
+      setPostalCodeDisable(false);
+    } else {
+      setAddress(value);
+      setPostalCodeDisable(false);
+      let postalCode = "";
+      form.setFieldsValue({
+        ["postal_code"]: postalCode,
+      });
+    }
   };
 
   const handleAddressSelect = async (address, placeId) => {
@@ -298,10 +309,16 @@ const ProfileInfo = () => {
             state: profileData.state,
             country: profileData.country,
             email: profileData?.email,
-            postal_code: profileData?.postal_code,
+            // postal_code: profileData?.postal_code,
           };
           if (profileData.postalCode)
             updateAddress.postal_code = profileData.postalCode;
+          if (profileData.postal_code !== "") {
+            setZipCode(true);
+          }
+          if (profileData.address_1 !== "") {
+            setAdd(true);
+          }
           setUpdateAddress(updateAddress);
         }
       }
