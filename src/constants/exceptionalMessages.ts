@@ -29,7 +29,7 @@ const ExceptionalMessageConstants = {
   manageSupport: "Manage Support",
   noRecentActivityFound: "No Recent Activity Found",
   objectedTooltipMsg:
-    "Only direct supporters at the time this change was submitted can object..",
+    "Only direct supporters at the time this change was submitted can object.",
   createNewCampTooltipMsg:
     "A new camp cannot be created since the topic didn’t exist on the selected date.",
   objectorNickNameHeading: "Objector Nick Name : ",

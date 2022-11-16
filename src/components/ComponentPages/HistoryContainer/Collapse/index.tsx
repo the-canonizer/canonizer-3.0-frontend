@@ -209,8 +209,7 @@ function HistoryCollapse({
                             : false
                         )
                           ? K?.exceptionalMessages?.objectedTooltipMsg
-                          : // "Only direct supporters at the time this change was submitted can object.."
-                            ""
+                          : ""
                       }
                     >
                       <Button
