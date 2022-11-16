@@ -10,6 +10,10 @@
   }
   .formItem {
     display: flex;
+    width: 100%;
+    [class="ant-row ant-form-item-row"]{
+      width: 100%;
+    }
     label {
       color: #6e7880;
       font-weight: 500;
