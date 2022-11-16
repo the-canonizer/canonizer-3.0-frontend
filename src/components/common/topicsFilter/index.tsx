@@ -323,7 +323,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
               {/* <i className="icon-fish-bones"></i> Algorithm Information */}
             </Paragraph>
             <div className={styles.filter}>
-              <Text>Filter</Text>
+              <Text className={styles.filterText}>Filter</Text>
               <LeftOutlined className={styles.LeftOutlined} />
               <Input size="large" onChange={filterOnScore} value={inputValue} />
               <Popover

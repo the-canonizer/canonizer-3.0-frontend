@@ -561,7 +561,9 @@ export default function AddOrManage({ add }) {
                           label={
                             <>
                               Camp Name <span className="required">*</span>
-                              <span className={styles.small}>(Limit 30 Chars)</span>
+                              <span className={styles.small}>
+                                (Limit 30 Chars)
+                              </span>
                             </>
                           }
                           name="camp_name"
@@ -610,7 +612,9 @@ export default function AddOrManage({ add }) {
                           label={
                             <>
                               Topic Name <span className="required">*</span>
-                              <span className={styles.small}>(Limit 30 Chars)</span>
+                              <span className={styles.small}>
+                                (Limit 30 Chars)
+                              </span>
                             </>
                           }
                           name="topic_name"
@@ -754,7 +758,9 @@ export default function AddOrManage({ add }) {
                           label={
                             <>
                               Edit Summary{" "}
-                              <small className={styles.small}>(Briefly describe your changes)</small>
+                              <small className={styles.small}>
+                                (Briefly describe your changes)
+                              </small>
                             </>
                           }
                           {...summaryRule}
@@ -775,7 +781,9 @@ export default function AddOrManage({ add }) {
                               label={
                                 <>
                                   Camp About URL
-                                  <span className={styles.small}>(Limit 1024 Chars)</span>
+                                  <span className={styles.small}>
+                                    (Limit 1024 Chars)
+                                  </span>
                                 </>
                               }
                               name="camp_about_url"
