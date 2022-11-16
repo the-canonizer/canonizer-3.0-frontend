@@ -27,9 +27,19 @@
         font-size: 13px;
         padding-left: 5px;
       }
+      .small {
+        font-size: 92%;
+        margin-left: 5px;
+      }
     }
     .error {
       border-color: #ff4d4f;
+    }
+    &.namespace_in {
+      .small {
+        font-size: 92%;
+        margin-left: 5px;
+      }
     }
   }
   .formItemCheckbox {
