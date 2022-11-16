@@ -40,7 +40,7 @@ export default function NotificationList({
                 <a
                   style={{
                     color: item["is_read"] === 1 ? "#566f8f" : "#0f2a4d",
-                    fontWeight: item["is_read"] === 1 ? "500" : "600",
+                    fontWeight: item["is_read"] === 1 ? 500 : 600,
                   }}
                 >
                   {item["message_body"]}
