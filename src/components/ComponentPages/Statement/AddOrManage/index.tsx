@@ -62,6 +62,7 @@ export default function AddOrManage({ add }) {
   const { isUserAuthenticated } = useAuthentication();
   const router = useRouter();
   const [editStatementData, setEditStatementData] = useState({ data: null });
+  const [submitIsDisable, setSubmitIsDisable] = useState(true);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [nickNameData, setNickNameData] = useState([]);
@@ -246,36 +247,59 @@ export default function AddOrManage({ add }) {
           res = await getEditStatementApi(
             router?.query?.statement[0]?.split("-")[0]
           );
-          setPayloadBreadCrumb({
-            camp_num: res?.data?.statement?.camp_num ?? "1",
-            topic_num: res?.data?.statement?.topic_num,
-          });
+          if (
+            res?.data?.statement?.go_live_time <
+              Math.floor(new Date().getTime() / 1000) &&
+            objection
+          ) {
+            router?.back();
+          } else {
+            setPayloadBreadCrumb({
+              camp_num: res?.data?.statement?.camp_num ?? "1",
+              topic_num: res?.data?.statement?.topic_num,
+            });
+          }
         } else if (manageFormOf == "camp") {
           res = await getEditCampApi(
             router?.query?.statement[0]?.split("-")[0]
           );
-          fetchCampNickNameList();
-          if (res?.data?.camp?.parent_camp_num) {
-            fetchParentsCampList(
-              res?.data?.camp?.topic_num,
-              res?.data?.camp?.parent_camp_num,
-              res?.data?.camp?.camp_num
-            );
+          if (
+            res?.data?.camp?.go_live_time <
+              Math.floor(new Date().getTime() / 1000) &&
+            objection
+          ) {
+            router?.back();
+          } else {
+            fetchCampNickNameList();
+            if (res?.data?.camp?.parent_camp_num) {
+              fetchParentsCampList(
+                res?.data?.camp?.topic_num,
+                res?.data?.camp?.parent_camp_num,
+                res?.data?.camp?.camp_num
+              );
+            }
+            setPayloadBreadCrumb({
+              camp_num: res?.data?.camp?.camp_num ?? "1",
+              topic_num: res?.data?.camp?.topic_num,
+            });
           }
-          setPayloadBreadCrumb({
-            camp_num: res?.data?.camp?.camp_num ?? "1",
-            topic_num: res?.data?.camp?.topic_num,
-          });
         } else if (manageFormOf == "topic") {
           res = await getEditTopicApi(
             router?.query?.statement[0]?.split("-")[0]
           );
-
-          fetchNameSpaceList();
-          setPayloadBreadCrumb({
-            topic_num: res?.data?.topic?.topic_num,
-            camp_num: "1",
-          });
+          if (
+            res?.data?.topic?.go_live_time <
+              Math.floor(new Date().getTime() / 1000) &&
+            objection
+          ) {
+            router?.back();
+          } else {
+            fetchNameSpaceList();
+            setPayloadBreadCrumb({
+              topic_num: res?.data?.topic?.topic_num,
+              camp_num: "1",
+            });
+          }
         } else {
           res = await getEditStatementApi(
             router?.query?.statement[0]?.split("-")[0]
@@ -399,9 +423,8 @@ export default function AddOrManage({ add }) {
 
     setOptions(oldOptions);
   };
-
   const extra = () => {
-    if (manageFormOf == "camp") {
+    if (manageFormOf == "camp" && !objection) {
       return (
         <PreventSubCamps
           options={options}
@@ -447,6 +470,7 @@ export default function AddOrManage({ add }) {
                 initialValues={{
                   available_for_child: 0,
                 }}
+                onValuesChange={() => setSubmitIsDisable(false)}
                 onFinish={onFinish}
               >
                 <Row gutter={28}>
@@ -537,7 +561,9 @@ export default function AddOrManage({ add }) {
                           label={
                             <>
                               Camp Name <span className="required">*</span>
-                              <span>(Limit 30 Chars)</span>
+                              <span className={styles.small}>
+                                (Limit 30 Chars)
+                              </span>
                             </>
                           }
                           name="camp_name"
@@ -586,7 +612,9 @@ export default function AddOrManage({ add }) {
                           label={
                             <>
                               Topic Name <span className="required">*</span>
-                              <span>(Limit 30 Chars)</span>
+                              <span className={styles.small}>
+                                (Limit 30 Chars)
+                              </span>
                             </>
                           }
                           name="topic_name"
@@ -607,15 +635,16 @@ export default function AddOrManage({ add }) {
                         >
                           <Input disabled={objection} maxLength={30} />
                         </Form.Item>
-
-                        {/* Name space -------------------------------------------------------------------- */}
-                        {!objection && (
+                      </Col>
+                      {/* Name space -------------------------------------------------------------------- */}
+                      {!objection && (
+                        <Col xs={24} sm={24} xl={12}>
                           <Form.Item
-                            className={`${styles.formItem} mb-2`}
+                            className={`${styles.formItem} namespace_in mb-2`}
                             label={
                               <>
                                 Namespace <span className="required">*</span>
-                                <span>
+                                <span className={styles.small}>
                                   (General is recommended, unless you know
                                   otherwise)
                                 </span>
@@ -644,8 +673,8 @@ export default function AddOrManage({ add }) {
                               ))}
                             </Select>
                           </Form.Item>
-                        )}
-                      </Col>
+                        </Col>
+                      )}
                     </>
                   )}
 
@@ -729,7 +758,9 @@ export default function AddOrManage({ add }) {
                           label={
                             <>
                               Edit Summary{" "}
-                              <small>(Briefly describe your changes)</small>
+                              <small className={styles.small}>
+                                (Briefly describe your changes)
+                              </small>
                             </>
                           }
                           {...summaryRule}
@@ -750,7 +781,9 @@ export default function AddOrManage({ add }) {
                               label={
                                 <>
                                   Camp About URL
-                                  <span>(Limit 1024 Chars)</span>
+                                  <span className={styles.small}>
+                                    (Limit 1024 Chars)
+                                  </span>
                                 </>
                               }
                               name="camp_about_url"
@@ -796,6 +829,9 @@ export default function AddOrManage({ add }) {
                         size="large"
                         className={`btn-orange mr-3 ${styles.btnSubmit}`}
                         htmlType="submit"
+                        disabled={
+                          manageFormOf == "statement" ? false : submitIsDisable
+                        }
                       >
                         {add
                           ? K?.exceptionalMessages?.submitStatementButton
@@ -907,6 +943,9 @@ export default function AddOrManage({ add }) {
         onOk={() => {
           form?.submit();
           setModalVisible(false);
+        }}
+        okButtonProps={{
+          disabled: manageFormOf == "statement" ? false : submitIsDisable,
         }}
         okText={
           add

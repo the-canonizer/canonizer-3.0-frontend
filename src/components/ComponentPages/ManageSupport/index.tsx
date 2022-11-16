@@ -409,7 +409,7 @@ const ManageSupport = () => {
       add_camp: addCampsData,
       remove_camps: campIDsArr,
       type: "direct",
-      action: "add",
+      action: campIDsArr.length > 0 ? "partial" : "add",
       nick_name_id: nickNameIDValue,
       order_update: filterArrayResult,
     };

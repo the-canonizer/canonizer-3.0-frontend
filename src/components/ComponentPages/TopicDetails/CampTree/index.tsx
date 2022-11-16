@@ -142,7 +142,11 @@ const CampTree = ({ scrollToCampStatement }) => {
   };
 
   const renderTreeNodes = (data: any, isDisabled = 0, isOneLevel = 0) => {
-    return Object.keys(data).map((item) => {
+    let sortedData = Object.keys(data)
+      .map((key) => [Number(key), data[key]])
+      .sort((a, b) => b[1].score - a[1].score);
+    return sortedData.map((itemWithData) => {
+      let item = itemWithData[0];
       const parentIsOneLevel = isOneLevel;
       let _isOneLevel = data[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
       let _isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
