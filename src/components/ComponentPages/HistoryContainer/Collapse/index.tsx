@@ -201,16 +201,15 @@ function HistoryCollapse({
                           !isUserAuthenticated
                             ? true
                             : !!(
-                                ifIamSupporter == 0 &&
-                                ifSupportDelayed == 0 &&
-                                !ifIAmExplicitSupporter
+                                (ifIamSupporter == 0 &&
+                                  !ifIAmExplicitSupporter) ||
+                                ifSupportDelayed != 0
                               )
                             ? true
                             : false
                         )
                           ? K?.exceptionalMessages?.objectedTooltipMsg
-                          : // "Only direct supporters at the time this change was submitted can object.."
-                            ""
+                          : ""
                       }
                     >
                       <Button
@@ -220,9 +219,9 @@ function HistoryCollapse({
                           let isModelPop = !isUserAuthenticated
                             ? true
                             : !!(
-                                ifIamSupporter == 0 &&
-                                ifSupportDelayed == 0 &&
-                                !ifIAmExplicitSupporter
+                                (ifIamSupporter == 0 &&
+                                  !ifIAmExplicitSupporter) ||
+                                ifSupportDelayed != 0
                               )
                             ? true
                             : false;
@@ -243,9 +242,9 @@ function HistoryCollapse({
                             !isUserAuthenticated
                               ? true
                               : !!(
-                                  ifIamSupporter == 0 &&
-                                  ifSupportDelayed == 0 &&
-                                  !ifIAmExplicitSupporter
+                                  (ifIamSupporter == 0 &&
+                                    !ifIAmExplicitSupporter) ||
+                                  ifSupportDelayed != 0
                                 )
                               ? true
                               : false
@@ -399,9 +398,8 @@ function HistoryCollapse({
                 )}
               {campStatement?.status == "in_review" &&
                 !!(
-                  ifIamSupporter != 0 ||
-                  ifSupportDelayed != 0 ||
-                  ifIAmExplicitSupporter
+                  (ifIamSupporter != 0 || ifIAmExplicitSupporter) &&
+                  ifSupportDelayed == 0
                 ) &&
                 isUserAuthenticated &&
                 !campStatement?.isAuthor && (
