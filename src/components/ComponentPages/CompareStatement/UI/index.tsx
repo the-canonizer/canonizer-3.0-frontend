@@ -147,7 +147,12 @@ function CompareStatementUI({
                       </Fragment>
                     ) : null}
                     <Text strong style={{ textTransform: "capitalize" }}>
-                      {from} :{" "}
+                      {from === "topic"
+                        ? "Topic Name"
+                        : from === "camp"
+                        ? "Camp Name"
+                        : from}{" "}
+                      :{" "}
                     </Text>
                     <Card
                       bordered
@@ -223,7 +228,12 @@ function CompareStatementUI({
                       </Fragment>
                     ) : null}
                     <Text strong style={{ textTransform: "capitalize" }}>
-                      {from} :{" "}
+                      {from === "topic"
+                        ? "Topic Name"
+                        : from === "camp"
+                        ? "Camp Name"
+                        : from}{" "}
+                      :{" "}
                     </Text>
                     <Card
                       bordered
@@ -253,7 +263,12 @@ function CompareStatementUI({
                     }
                   >
                     <Text strong style={{ textTransform: "capitalize" }}>
-                      {from} :{" "}
+                      {from === "topic"
+                        ? "Topic Name"
+                        : from === "camp"
+                        ? "Camp Name"
+                        : from}{" "}
+                      :{" "}
                     </Text>
                     <div
                       dangerouslySetInnerHTML={{
