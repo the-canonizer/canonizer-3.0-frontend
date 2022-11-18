@@ -128,10 +128,15 @@ function CompareStatementUI({
                     ) : null}
                     {from == "camp" ? (
                       <Fragment>
-                        <Paragraph>
-                          <Text strong>Parent Camp : </Text>
-                          <Text>{s1?.parent_camp_name}</Text>
-                        </Paragraph>
+                        {s1?.camp_num != 1 ? (
+                          <Paragraph>
+                            <Text strong>Parent Camp : </Text>
+                            <Text>{s1?.parent_camp_name}</Text>
+                          </Paragraph>
+                        ) : (
+                          ""
+                        )}
+
                         <Paragraph>
                           <Text strong>Keywords : </Text>
                           <Text>{s1?.key_words}</Text>
@@ -209,10 +214,14 @@ function CompareStatementUI({
                     ) : null}
                     {from == "camp" ? (
                       <Fragment>
-                        <Paragraph>
-                          <Text strong>Parent Camp : </Text>
-                          <Text>{s2?.parent_camp_name}</Text>
-                        </Paragraph>
+                        {s2?.camp_num != 1 ? (
+                          <Paragraph>
+                            <Text strong>Parent Camp : </Text>
+                            <Text>{s2?.parent_camp_name}</Text>
+                          </Paragraph>
+                        ) : (
+                          ""
+                        )}
                         <Paragraph>
                           <Text strong>Keywords : </Text>
                           <Text>{s2?.key_words}</Text>
@@ -312,10 +321,14 @@ function CompareStatementUI({
                     ) : null}
                     {from == "camp" ? (
                       <Fragment>
-                        <Paragraph>
-                          <Text strong>Parent Camp : </Text>
-                          <Text>{liveStatement?.parent_camp_name}</Text>
-                        </Paragraph>
+                        {liveStatement?.camp_num != 1 ? (
+                          <Paragraph>
+                            <Text strong>Parent Camp : </Text>
+                            <Text>{liveStatement?.parent_camp_name}</Text>
+                          </Paragraph>
+                        ) : (
+                          ""
+                        )}
                         <Paragraph>
                           <Text strong>Keywords : </Text>
                           <Text>{liveStatement?.key_words}</Text>
