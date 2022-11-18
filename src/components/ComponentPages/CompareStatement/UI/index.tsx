@@ -143,11 +143,25 @@ function CompareStatementUI({
                         </Paragraph>
                         <Paragraph>
                           <Text strong>Camp About URL : </Text>
-                          <Text>{s1?.camp_about_url}</Text>
+                          <Text>
+                            <Link href={s1?.camp_about_url || ""}>
+                              <a>{s1?.camp_about_url}</a>
+                            </Link>
+                          </Text>
                         </Paragraph>
                         <Paragraph>
                           <Text strong>Camp About Nick Name : </Text>
-                          <Text>{s1?.camp_about_nick_name}</Text>
+                          <Text>
+                            <Link
+                              href={`/user/supports/${
+                                s1["camp_about_nick_id"] || ""
+                              }?topicnum=${s1["topic_num"] || ""}&campnum=${
+                                s1["camp_num"] || ""
+                              }&namespace=${s1["namespace_id"] || 1}`}
+                            >
+                              <a>{s1?.camp_about_nick_name}</a>
+                            </Link>
+                          </Text>
                         </Paragraph>
                       </Fragment>
                     ) : null}
@@ -228,11 +242,25 @@ function CompareStatementUI({
                         </Paragraph>
                         <Paragraph>
                           <Text strong>Camp About URL : </Text>
-                          <Text>{s2?.camp_about_url}</Text>
+                          <Text>
+                            <Link href={s2?.camp_about_url || ""}>
+                              <a>{s2?.camp_about_url}</a>
+                            </Link>
+                          </Text>
                         </Paragraph>
                         <Paragraph>
                           <Text strong>Camp About Nick Name : </Text>
-                          <Text>{s2?.camp_about_nick_name}</Text>
+                          <Text>
+                            <Link
+                              href={`/user/supports/${
+                                s2["camp_about_nick_id"] || ""
+                              }?topicnum=${s2["topic_num"] || ""}&campnum=${
+                                s2["camp_num"] || ""
+                              }&namespace=${s2["namespace_id"] || 1}`}
+                            >
+                              <a>{s2?.camp_about_nick_name}</a>
+                            </Link>
+                          </Text>
                         </Paragraph>
                       </Fragment>
                     ) : null}
@@ -335,11 +363,29 @@ function CompareStatementUI({
                         </Paragraph>
                         <Paragraph>
                           <Text strong>Camp About URL : </Text>
-                          <Text>{liveStatement?.camp_about_url}</Text>
+                          <Text>
+                            <Link href={liveStatement?.camp_about_url || ""}>
+                              <a>{liveStatement?.camp_about_url}</a>
+                            </Link>
+                          </Text>
                         </Paragraph>
                         <Paragraph>
                           <Text strong>Camp About Nick Name : </Text>
-                          <Text>{liveStatement?.camp_about_nick_name}</Text>
+                          <Text>
+                            <Link
+                              href={`/user/supports/${
+                                liveStatement["camp_about_nick_id"] || ""
+                              }?topicnum=${
+                                liveStatement["topic_num"] || ""
+                              }&campnum=${
+                                liveStatement["camp_num"] || ""
+                              }&namespace=${
+                                liveStatement["namespace_id"] || 1
+                              }`}
+                            >
+                              <a>{liveStatement?.camp_about_nick_name}</a>
+                            </Link>
+                          </Text>
                         </Paragraph>
                       </Fragment>
                     ) : null}
