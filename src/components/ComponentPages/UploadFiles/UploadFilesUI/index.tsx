@@ -524,7 +524,7 @@ const UploadFileUI = ({
                             previewVisible: true,
                             previewName: obj.file_name,
                             previewPath: obj.file_path,
-                            prevShort: item.short_code_path,
+                            prevShort: obj.short_code_path,
                             previewCopyShortCode: obj.short_code,
                             previewCreatedAt: obj.created_at,
                           })
