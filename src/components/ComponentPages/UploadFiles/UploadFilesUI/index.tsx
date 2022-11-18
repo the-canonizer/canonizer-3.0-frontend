@@ -126,6 +126,7 @@ const UploadFileUI = ({
     previewVisible: false,
     previewPath: "",
     previewName: "",
+    prevShort: "",
     previewCopyShortCode: "",
     previewCreatedAt: 0,
   });
@@ -229,6 +230,7 @@ const UploadFileUI = ({
                   ? item.file_name.substring(0, fileNameLength) + "..."
                   : item.file_name,
               previewPath: item.file_path,
+              prevShort: item.short_code_path,
               previewCopyShortCode: item.short_code,
               previewCreatedAt: item.created_at,
             })
@@ -522,6 +524,7 @@ const UploadFileUI = ({
                             previewVisible: true,
                             previewName: obj.file_name,
                             previewPath: obj.file_path,
+                            prevShort: obj.short_code_path,
                             previewCopyShortCode: obj.short_code,
                             previewCreatedAt: obj.created_at,
                           })
@@ -1445,7 +1448,7 @@ const UploadFileUI = ({
                 <div
                   className="copy_wrap"
                   onClick={() => {
-                    navigator.clipboard.writeText(preview.previewPath),
+                    navigator.clipboard.writeText(preview.prevShort),
                       message.success("Short code copied");
                   }}
                 >
@@ -1458,9 +1461,9 @@ const UploadFileUI = ({
                   <span>
                     {" "}
                     [[
-                    {preview.previewPath.length > fileNameLength
-                      ? preview.previewPath.substring(0, fileNameLength) + "..."
-                      : preview.previewPath}
+                    {preview.prevShort.length > fileNameLength
+                      ? preview.prevShort.substring(0, fileNameLength) + "..."
+                      : preview.prevShort}
                     ]]
                   </span>
                 </div>
