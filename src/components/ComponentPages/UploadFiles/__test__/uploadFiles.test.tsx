@@ -42,6 +42,8 @@ const fileLists = [
     file_name: "Third.jpg",
     file_path:
       "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
+    short_code_path:
+      "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
     file_type: "image/jpeg",
     folder_id: null,
     id: 132,
