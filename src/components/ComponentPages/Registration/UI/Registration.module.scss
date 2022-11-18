@@ -315,6 +315,13 @@
   display: flex;
 }
 
+.captchaContainer {
+  [class="ant-form-item-explain ant-form-item-explain-connected"] {
+    text-align: center;
+    margin-left: -72px;
+  }
+}
+
 @media screen and (min-width: 769px) and (max-width: 992px) {
   .wrapper {
     display: grid;
