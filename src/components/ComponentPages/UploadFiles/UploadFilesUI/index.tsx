@@ -228,7 +228,7 @@ const UploadFileUI = ({
                 item.file_name.length > fileNameLength
                   ? item.file_name.substring(0, fileNameLength) + "..."
                   : item.file_name,
-              previewPath: item.short_code_path,
+              previewPath: item.file_path,
               previewCopyShortCode: item.short_code,
               previewCreatedAt: item.created_at,
             })
@@ -248,7 +248,7 @@ const UploadFileUI = ({
       ) : (
         <Menu.Item
           onClick={() => {
-            window.location.href = item.short_code_path;
+            window.location.href = item.file_path;
           }}
         >
           <span className={styles.menu_item}>
@@ -521,7 +521,7 @@ const UploadFileUI = ({
                           setPreview({
                             previewVisible: true,
                             previewName: obj.file_name,
-                            previewPath: obj.short_code_path,
+                            previewPath: obj.file_path,
                             previewCopyShortCode: obj.short_code,
                             previewCreatedAt: obj.created_at,
                           })
@@ -540,7 +540,7 @@ const UploadFileUI = ({
                       <div
                         className={styles.menu_item}
                         onClick={() => {
-                          window.location.href = obj.short_code_path;
+                          window.location.href = obj.file_path;
                         }}
                       >
                         <Image
@@ -720,7 +720,7 @@ const UploadFileUI = ({
               </div>
             </Dropdown>
             <div className={styles.imageFiles}>
-              {displayImage(item, item.short_code_path)}
+              {displayImage(item, item.file_path)}
             </div>
             <h3 className="BoxcopyWrap">
               <span className="value">
