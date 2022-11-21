@@ -46,7 +46,7 @@ const ThreadListUI = ({
     <Fragment>
       <Card
         title={<span className={styles.cardTitle}>Camp Forum</span>}
-        className="can-card-style"
+        className={`can-card-style ${styles.thread_card}`}
         extra={
           <div className={styles.inputSearchTopic}>
             <Input.Search

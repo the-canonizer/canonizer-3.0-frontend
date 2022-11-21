@@ -96,6 +96,30 @@
       color: #ffffff;
     }
   }
+
+  .btn_box {
+    width: 100%;
+  }
+
+  @media screen and (max-width: 767px) {
+    .edit_summary_input {
+      label {
+        display: block;
+      }
+    }
+  }
+
+  @media screen and (max-width: 320px) {
+    .btn_box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .submit_btn {
+        margin-right: 5px;
+      }
+    }
+  }
 }
 
 .cardTitle {
@@ -129,5 +153,19 @@
 
   @media screen and (max-width: 767px) {
     flex-flow: column;
+  }
+}
+
+.form_card {
+  @media screen and (max-width: 767px) {
+    [class="ant-card-body"] {
+      padding: 15px;
+    }
+    [class="ant-card-extra"] {
+      [class="ant-checkbox-wrapper"] {
+        margin-left: 0;
+        margin-bottom: 10px;
+      }
+    }
   }
 }
