@@ -17,7 +17,7 @@ describe("Should render Addnews", () => {
   it("Render without crash", async () => {
     const { container } = await render(<CampRecentActivities />);
     const userList = await waitFor(() =>
-      screen.getByText(/no recent activity found/i)
+      screen.getByText(/No Recent Activity Found/i)
     );
     expect(screen.getByText(/recent activities/i)).toBeInTheDocument();
     expect(userList).toBeInTheDocument();
