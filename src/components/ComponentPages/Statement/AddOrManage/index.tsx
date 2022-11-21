@@ -474,7 +474,8 @@ export default function AddOrManage({ add }) {
                   available_for_child: 0,
                 }}
                 onValuesChange={(value) => {
-                  let abcinitial = Object.keys(initialFormValues).reduce(
+                  let initialFormStatus = { edit_summary: "" } as any;
+                  initialFormStatus = Object.keys(initialFormValues).reduce(
                     (acc, key) => {
                       acc[key] =
                         initialFormValues[key] === null
@@ -494,12 +495,9 @@ export default function AddOrManage({ add }) {
                     },
                     {}
                   );
-                  if (abcinitial?.edit_summary || objection) {
-                  } else {
-                    abcinitial?.edit_summary = "";
-                  }
-
-                  if (JSON.stringify(abcform) == JSON.stringify(abcinitial)) {
+                  if (
+                    JSON.stringify(abcform) == JSON.stringify(initialFormStatus)
+                  ) {
                     setSubmitIsDisable(true);
                   } else {
                     setSubmitIsDisable(false);
