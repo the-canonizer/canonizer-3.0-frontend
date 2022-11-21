@@ -24,12 +24,12 @@ function CompareStatement() {
     };
     const res = await getCompareStatement(reqBody);
 
-    const statements = res.data?.comparison,
-      s1 = statements.length ? statements[0] : { parsed_value: "" },
-      s2 = statements.length > 1 ? statements[1] : { parsed_value: "" },
-      statementLive = res.data?.liveStatement;
+    const statements = res?.data?.comparison,
+      s1 = statements?.length ? statements[0] : { parsed_value: "" },
+      s2 = statements?.length > 1 ? statements[1] : { parsed_value: "" },
+      statementLive = res?.data?.liveStatement;
 
-    statementLive.revision_date = res.data?.latestRevision;
+    statementLive.revision_date = res?.data?.latestRevision;
 
     s1.parsed_v = HtmlDiff.execute(s2?.parsed_value, s1?.parsed_value);
     s2.parsed_v = HtmlDiff.execute(s1?.parsed_value, s2?.parsed_value);
