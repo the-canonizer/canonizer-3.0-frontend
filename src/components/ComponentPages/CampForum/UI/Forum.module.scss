@@ -345,3 +345,19 @@
     }
   }
 }
+
+.thread_card {
+  @media screen and (max-width: 992px) {
+    [class="ant-card-head-wrapper"] {
+      justify-content: space-between;
+    }
+  }
+  @media screen and (max-width: 767px) {
+    [class="ant-card-head-wrapper"] {
+      display: block;
+      [class="ant-card-extra"] {
+        width: 100%;
+      }
+    }
+  }
+}

@@ -204,6 +204,13 @@
         justify-content: center;
         align-items: center;
       }
+
+      @media screen and (max-width: 767px) {
+        .captchaCol {
+          justify-content: flex-start;
+          align-items: flex-start;
+        }
+      }
     }
     .captchaEnter {
       width: 70%;
@@ -264,7 +271,9 @@
   }
 
   @media screen and (max-width: 767px) {
+    overflow: hidden;
     form {
+      padding: 15px;
       .section_one {
         input {
           &:not([type="checkbox"]) {
