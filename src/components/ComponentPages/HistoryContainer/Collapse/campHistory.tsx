@@ -4,7 +4,7 @@ import styles from ".././campHistory.module.scss";
 const { Title } = Typography;
 import moment from "moment";
 import Link from "next/link";
-const CampHistory = ({ campStatement }) => {
+const CampHistory = ({ campStatement, topicNamespaceId }) => {
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
@@ -47,7 +47,7 @@ const CampHistory = ({ campStatement }) => {
               campStatement?.submitter_nick_id || ""
             }?topicnum=${campStatement?.topic_num || ""}&campnum=${
               campStatement?.camp_num || ""
-            }&namespace=1`}
+            }&namespace=${topicNamespaceId || ""}`}
             passHref
           >
             <a>{campStatement?.submitter_nick_name}</a>
