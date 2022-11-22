@@ -67,6 +67,7 @@ export default function AddOrManage({ add }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [nickNameData, setNickNameData] = useState([]);
   const [screenLoading, setScreenLoading] = useState(false);
+  const [initialFormValues, setInitialFormValues] = useState({});
   const [payloadBreadCrumb, setPayloadBreadCrumb] = useState({
     topic_num: "",
     camp_num: "",
@@ -325,44 +326,46 @@ export default function AddOrManage({ add }) {
       };
       const result = await getAllUsedNickNames(reqBody);
       if (result?.status_code == 200) {
-        form.setFieldsValue(
-          add
-            ? {
-                nick_name: result?.data[0].id,
-              }
-            : !!((objection || update) && manageFormOf == "statement")
-            ? {
-                nick_name: res?.data?.nick_name[0]?.id,
-                parent_camp_num: res?.data?.statement?.camp_num,
-                statement: res?.data?.statement?.value,
-                edit_summary: res?.data?.statement?.note,
-              }
-            : manageFormOf == "camp"
-            ? {
-                nick_name: res?.data?.nick_name[0]?.id,
-                statement: res?.data?.camp?.note,
-                parent_camp_num: res?.data?.camp?.parent_camp_num,
-                camp_name: res?.data?.camp?.camp_name,
-                keywords: res?.data?.camp?.key_words,
-                camp_about_url: res?.data?.camp?.camp_about_url,
-                camp_about_nick_name:
-                  res?.data?.camp?.camp_about_nick_id > 0
-                    ? res?.data?.camp?.camp_about_nick_id
-                    : null,
-                edit_summary: update ? res?.data?.camp?.note : null,
-              }
-            : manageFormOf == "topic"
-            ? {
-                nick_name: res?.data?.nick_name[0]?.id,
-                topic_name: res?.data?.topic?.topic_name,
-                name_space: res?.data?.topic?.namespace_id,
-              }
-            : {
-                nick_name: res?.data?.nick_name[0]?.id,
-                statement: res?.data?.statement?.value,
-                parent_camp_num: res?.data?.statement?.camp_num,
-              }
-        );
+        let fieldSValuesForForm = add
+          ? {
+              nick_name: result?.data[0].id,
+            }
+          : !!((objection || update) && manageFormOf == "statement")
+          ? {
+              nick_name: res?.data?.nick_name[0]?.id,
+              parent_camp_num: res?.data?.statement?.camp_num,
+              statement: res?.data?.statement?.value,
+              edit_summary: res?.data?.statement?.note,
+            }
+          : manageFormOf == "camp"
+          ? {
+              nick_name: res?.data?.nick_name[0]?.id,
+              statement: res?.data?.camp?.note,
+              parent_camp_num: res?.data?.camp?.parent_camp_num,
+              camp_name: res?.data?.camp?.camp_name,
+              keywords: res?.data?.camp?.key_words,
+              camp_about_url: res?.data?.camp?.camp_about_url,
+              camp_about_nick_name:
+                res?.data?.camp?.camp_about_nick_id > 0
+                  ? res?.data?.camp?.camp_about_nick_id
+                  : null,
+              edit_summary: update ? res?.data?.camp?.note : null,
+            }
+          : manageFormOf == "topic"
+          ? {
+              nick_name: res?.data?.nick_name[0]?.id,
+              topic_name: res?.data?.topic?.topic_name,
+              name_space: res?.data?.topic?.namespace_id,
+            }
+          : {
+              nick_name: res?.data?.nick_name[0]?.id,
+              statement: res?.data?.statement?.value,
+              parent_camp_num: res?.data?.statement?.camp_num,
+            };
+
+        form.setFieldsValue(fieldSValuesForForm);
+
+        setInitialFormValues(form?.getFieldsValue());
         setNickNameData(result?.data);
         if (manageFormOf == "topic" || manageFormOf == "camp") {
           const oldOptions = [...options];
@@ -470,7 +473,36 @@ export default function AddOrManage({ add }) {
                 initialValues={{
                   available_for_child: 0,
                 }}
-                onValuesChange={() => setSubmitIsDisable(false)}
+                onValuesChange={(value) => {
+                  let initialFormStatus = { edit_summary: "" } as any;
+                  initialFormStatus = Object.keys(initialFormValues).reduce(
+                    (acc, key) => {
+                      acc[key] =
+                        initialFormValues[key] === null
+                          ? ""
+                          : initialFormValues[key];
+                      return acc;
+                    },
+                    {}
+                  );
+                  let abcform = Object.keys(form?.getFieldsValue()).reduce(
+                    (acc, key) => {
+                      acc[key] =
+                        form?.getFieldsValue()[key] === null
+                          ? ""
+                          : form?.getFieldsValue()[key];
+                      return acc;
+                    },
+                    {}
+                  );
+                  if (
+                    JSON.stringify(abcform) == JSON.stringify(initialFormStatus)
+                  ) {
+                    setSubmitIsDisable(true);
+                  } else {
+                    setSubmitIsDisable(false);
+                  }
+                }}
                 onFinish={onFinish}
               >
                 <Row gutter={28}>
