@@ -5,10 +5,14 @@ import { camelCaseKeys } from "../utils/generalUtility";
 import { logout } from "./api/userApi";
 import { store } from "../store";
 import { updateStatus } from "../store/slices/uiSlice";
+import { setLoadingAction } from "src/store/slices/loading";
+
 
 export default class NetworkCall {
   static counter = 1;
+  
   static async fetch(request, useLoading = true) {
+    store.dispatch(setLoadingAction(true))
     const axiosCall = () => {
       return NetworkCall.axios({
         method: request.method,
@@ -28,6 +32,7 @@ export default class NetworkCall {
         NetworkCall.counter = 1;
       }
       store.dispatch(updateStatus(response.data.status));
+      store.dispatch(setLoadingAction(false))
       return response.data;
     } catch (err) {
       let error = err.response;
@@ -48,8 +53,10 @@ export default class NetworkCall {
       }
       if (typeof error.data === "object" && "errors" in error.data)
         error.data.errors = camelCaseKeys(error.data.errors);
+        store.dispatch(setLoadingAction(false))
       return Promise.reject({ error: error });
     }
+
   }
   static axios(arg0: {
     method: any;
