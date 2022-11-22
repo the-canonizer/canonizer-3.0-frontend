@@ -224,7 +224,7 @@ const ManageSupportUI = ({
           <>
             <span id="warning" className={styles.warning}>
               <strong> Warning! </strong>
-              {getSupportStatusData}
+              {getSupportStatusData || currentGetCheckSupportExistsData.warning}
             </span>
           </>
         ) : (
@@ -406,7 +406,10 @@ const ManageSupportUI = ({
                       ? submitNickNameSupportCamps
                       : addRemoveApi
                   }
-                  disabled={submitButtonDisable}
+                  disabled={
+                    submitButtonDisable ||
+                    currentGetCheckSupportExistsData.disable_submit
+                  }
                 >
                   Submit
                 </Button>

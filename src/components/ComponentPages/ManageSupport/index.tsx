@@ -24,7 +24,7 @@ import {
   setManageSupportUrlLink,
 } from "src/store/slices/campDetailSlice";
 import moment from "moment";
-const ManageSupportUI = dynamic(() => import("./ManageSupportUI"), {
+const ManageSupportUI = dynamic(async () => await import("./ManageSupportUI"), {
   ssr: false,
 });
 
@@ -148,6 +148,9 @@ const ManageSupport = () => {
           response.data.support_flag
         );
         setSubmitButtonDisable(false);
+      }
+      if (manageSupportStatusCheck && response.data.disable_submit) {
+        dispatch(setCheckSupportExistsData(response.data));
       }
     }
   };

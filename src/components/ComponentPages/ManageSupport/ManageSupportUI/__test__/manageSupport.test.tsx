@@ -1,7 +1,15 @@
-import { render, screen, waitFor } from "../../../../../utils/testUtils";
+import {
+  act,
+  fireEvent,
+  getByTestId,
+  render,
+  screen,
+  waitFor,
+} from "../../../../../utils/testUtils";
 import messages from "../../../../../messages";
 import ManageSupportUI from "../index";
 import { CloseCircleOutlined } from "@ant-design/icons";
+import { Button } from "antd";
 
 const { labels } = messages;
 const nickNameList = [];
@@ -297,5 +305,34 @@ it("render show dropdown", () => {
   );
   expect(
     container.getElementsByClassName("ant-select-selection-item")
+  ).toBeTruthy();
+});
+
+it("Check the checkbox is checked/unchecked", () => {
+  const { getAllByTestId, getByTestId, container } = render(
+    <ManageSupportUI
+      nickNameList={nickNameList}
+      manageSupportList={manageSupportList}
+      clearAllChanges={clearAllChanges}
+      removeAll={removeAll}
+      handleClose={handleClose}
+      checked={checked}
+      setManageSupportList={setManageSupportList}
+      parentSupportDataList={parentSupportDataList}
+      getSupportStatusData={getSupportStatusData}
+      submitNickNameSupportCamps={submitNickNameSupportCamps}
+      cancelManageRoute={cancelManageRoute}
+      setSelectedtNickname={setSelectedtNickname}
+      selectedtNickname={selectedtNickname}
+      submitButtonDisable={submitButtonDisable}
+      setUpdatePostion={setUpdatePostion}
+      unableToFindCamp={unableToFindCamp}
+    />
+  );
+  expect(
+    container.getElementsByClassName("ant-select-selection-item")
+  ).toBeTruthy();
+  expect(
+    container.getElementsByClassName("ManageSupport_checkbox__DQcrk")
   ).toBeTruthy();
 });
