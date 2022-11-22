@@ -112,6 +112,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
     currentCampRecord,
     currentCampNode,
     tree,
+    loading
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filterObject: state?.filters?.filterObject,
@@ -122,6 +123,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
     currentCampRecord: state.topicDetails.currentCampRecord,
     currentCampNode: state?.filters?.selectedCampNode,
     tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
+    loading:state?.loading?.loading
   }));
 
   const [value, setValue] = useState(
@@ -130,6 +132,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
   const [selectedAsOFDate, setSelectedAsOFDate] = useState(filteredAsOfDate);
   const [timer, setTimer] = useState(null);
   const [inputValue, setInputValue] = useState(filteredScore);
+  const [isLoading, setIsLoading] = useState(loading);
 
   // /////////////////////////////////////////////////////////////////////////
   // Discussion required on this functionality after that I will remove or //
@@ -150,6 +153,10 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
   //     }
   //   } else didMount.current = true;
   // }, [filterObject]);
+
+  useEffect(() => {
+    setIsLoading(loading)
+  }, [isLoading]);
 
   useEffect(() => {
     setValue(selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3);
@@ -310,6 +317,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
                   (algo) => algo.algorithm_key == selectedAlgorithm
                 )[0].algorithm_label
               }
+              disabled={loading}
             >
               {algorithms?.map((algo) => {
                 return (
@@ -325,7 +333,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
             <div className={styles.filter}>
               <Text className={styles.filterText}>Filter</Text>
               <LeftOutlined className={styles.LeftOutlined} />
-              <Input size="large" onChange={filterOnScore} value={inputValue} />
+              <Input size="large" onChange={filterOnScore} value={inputValue} disabled={loading} />
               <Popover
                 content={infoContent}
                 placement="right"
@@ -346,7 +354,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
             }
             key="2"
           >
-            <Radio.Group onChange={onChange} value={value}>
+            <Radio.Group onChange={onChange} value={value} disabled={loading}>
               <Space direction="vertical" style={{ gap: "12px" }}>
                 <Radio
                   className={styles.radio}
