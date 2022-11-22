@@ -38,6 +38,7 @@ function HistoryCollapse({
   ifSupportDelayed,
   ifIAmExplicitSupporter,
   userNickNameData,
+  topicNamespaceId,
   campStatement,
   onSelectCompare,
   isDisabledCheck,
@@ -170,13 +171,22 @@ function HistoryCollapse({
             <div className={styles.campCollapseSummaryWrap}>
               <div className={styles.campStatementCollapseSummary}>
                 {historyOf == "statement" && (
-                  <StatementHistory campStatement={campStatement} />
+                  <StatementHistory
+                    campStatement={campStatement}
+                    topicNamespaceId={topicNamespaceId}
+                  />
                 )}
                 {historyOf == "camp" && (
-                  <CampHistory campStatement={campStatement} />
+                  <CampHistory
+                    campStatement={campStatement}
+                    topicNamespaceId={topicNamespaceId}
+                  />
                 )}
                 {historyOf == "topic" && (
-                  <TopicHistory campStatement={campStatement} />
+                  <TopicHistory
+                    campStatement={campStatement}
+                    topicNamespaceId={topicNamespaceId}
+                  />
                 )}
 
                 <Checkbox
