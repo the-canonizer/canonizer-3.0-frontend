@@ -16,7 +16,7 @@ const UserProfileDetails = ({ profileData, userSupportedCampsList }) => {
           <div>
             <div style={{ paddingBottom: "8px" }}>
               <Row gutter={30}>
-                <Col md={12}>
+                <Col md={12} sm={12} xs={12}>
                   <label className={styles.userProfileLabel}>
                     {messages.labels.name}
                   </label>
@@ -34,7 +34,7 @@ const UserProfileDetails = ({ profileData, userSupportedCampsList }) => {
                         : "")}
                   </h3>
                 </Col>
-                <Col md={12}>
+                <Col md={12} sm={12} xs={12}>
                   <label className={styles.userProfileLabel}>
                     {messages.labels.emailAddress}
                   </label>
@@ -45,13 +45,13 @@ const UserProfileDetails = ({ profileData, userSupportedCampsList }) => {
 
             <div style={{ paddingBottom: "8px" }}>
               <Row gutter={30}>
-                <Col md={12}>
+                <Col md={12} sm={12} xs={12}>
                   <label className={styles.userProfileLabel}>
                     {messages.labels.address}
                   </label>
                   <h3>{profileData.address_1}</h3>
                 </Col>
-                <Col md={12}>
+                <Col md={12} sm={12} xs={12}>
                   <label className={styles.userProfileLabel}>
                     {messages.labels.City}
                   </label>
@@ -61,13 +61,13 @@ const UserProfileDetails = ({ profileData, userSupportedCampsList }) => {
             </div>
             <div style={{ paddingBottom: "8px" }}>
               <Row gutter={30}>
-                <Col md={12}>
+                <Col md={12} sm={12} xs={12}>
                   <label className={styles.userProfileLabel}>
                     {messages.labels.zipcode}
                   </label>
                   <h3>{profileData.postal_code}</h3>
                 </Col>
-                <Col md={12}>
+                <Col md={12} sm={12} xs={12}>
                   <label className={styles.userProfileLabel}>
                     {messages.labels.country}
                   </label>
