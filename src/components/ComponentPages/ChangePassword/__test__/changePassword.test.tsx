@@ -51,11 +51,8 @@ describe("ChangePassword page", () => {
     await waitFor(() => {
       expect(inputEl).toHaveValue("123");
       const alerts = screen.getAllByRole("alert");
-      expect(alerts).toHaveLength(2);
-      expect(alerts[0]).toHaveTextContent(
-        /Password must be at least 8 characters long!/i
-      );
-      expect(alerts[1]).toHaveTextContent(validations.passwordPattern);
+      expect(alerts).toHaveLength(1);
+      expect(alerts[0]).toHaveTextContent(validations.passwordPattern);
     });
   });
 

@@ -42,7 +42,7 @@ const CreateCampFormUI = ({
     <Fragment>
       <Card
         title={CardTitle}
-        className="can-card-style"
+        className={`can-card-style ${styles.form_card}`}
         extra={
           <PreventSubCamps
             options={options}
@@ -207,6 +207,7 @@ const CreateCampFormUI = ({
             </Col>
             <Col span={24}>
               <Form.Item
+                className={styles.edit_summary_input}
                 label={
                   <Fragment>
                     {labels.cr_edit_summary}
@@ -298,7 +299,7 @@ const CreateCampFormUI = ({
             </Col>
           </Row>
 
-          <Form.Item noStyle>
+          <div className={styles.btn_box}>
             <Button
               type="primary"
               htmlType="submit"
@@ -320,7 +321,7 @@ const CreateCampFormUI = ({
             >
               Cancel
             </Button>
-          </Form.Item>
+          </div>
         </Form>
       </Card>
     </Fragment>

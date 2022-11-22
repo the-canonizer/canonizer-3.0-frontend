@@ -16,6 +16,7 @@ export const treeSlice = createSlice({
         ifSupportDelayed: null,
         ifIAmExplicitSupporter: null,
         topic: null,
+        liveCamp: null,
       },
     },
     manageSupportStatusCheck: false,
@@ -30,6 +31,7 @@ export const treeSlice = createSlice({
       warning: null,
       remove_camps: [],
       message: null,
+      disable_submit: null,
     },
   },
   reducers: {
@@ -97,6 +99,7 @@ export const treeSlice = createSlice({
         warning: action.payload.warning,
         remove_camps: action.payload.remove_camps,
         message: action.payload.message,
+        disable_submit: action.payload.disable_submit,
       };
     },
   },

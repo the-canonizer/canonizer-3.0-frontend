@@ -25,6 +25,8 @@
   }
   @media screen and (max-width: 767px) {
     font-size: 13px;
+    word-break: break-word;
+    white-space: pre-wrap;
   }
 }
 
@@ -38,6 +40,25 @@
   box-shadow: 4px 4px 0px #0000000d;
   border: 1px solid #ececec;
   width: 100% !important;
+
+  @media screen and (max-width: 767px) {
+    [class="ant-card-head"] {
+      [class="ant-card-head-wrapper"] {
+        flex-wrap: wrap;
+        width: 100%;
+        [class="ant-card-head-title"] {
+          margin-right: 0;
+          padding-top: 8px;
+          padding-bottom: 5px;
+        }
+        [class="ant-card-extra"] {
+          margin: 0;
+          padding: 4px 0;
+          margin-left: auto;
+        }
+      }
+    }
+  }
 }
 .topic_content {
   background-color: rgb(246, 246, 246);

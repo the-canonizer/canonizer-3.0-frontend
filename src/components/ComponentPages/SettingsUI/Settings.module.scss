@@ -51,10 +51,6 @@
     right: 0;
     z-index: 99;
     min-width: 250px;
-    @media screen and (max-width: 1023px) {
-      position: relative;
-      margin-bottom: 10px;
-    }
     span {
       position: absolute;
       right: 8px;
@@ -79,6 +75,47 @@
       background-color: #1c1b24 !important;
     }
   }
+  @media screen and (max-width: 1024px) {
+    .search_users {
+      top: 55px;
+    }
+    [class="ant-tabs ant-tabs-top ant-tabs-mobile ant-tabs-card"] {
+      [class="ant-tabs-nav"] {
+        margin-bottom: 60px;
+      }
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .search_users {
+      top: 110px;
+    }
+    [class="ant-tabs ant-tabs-top ant-tabs-mobile ant-tabs-card"] {
+      [class="ant-tabs-nav"] {
+        [class="ant-tabs-nav-list"] {
+          flex-flow: column;
+          overflow: hidden;
+          [class="ant-tabs-tab"] {
+            margin-right: 0;
+            margin-bottom: 10px;
+            white-space: pre-wrap;
+            word-break: break-word;
+          }
+          [class="ant-tabs-tab ant-tabs-tab-active"] {
+            white-space: pre-wrap;
+            word-break: break-word;
+          }
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 350px) {
+    .search_users {
+      min-width: 100%;
+      top: 155px;
+    }
+  }
 }
 
 .notes {
@@ -93,14 +130,14 @@
   align-items: center;
 }
 
-.search_box{
+.search_box {
   column-gap: 5px;
   display: flex;
   align-items: center;
-  .search01{
+  .search01 {
     position: relative;
   }
-  button{
+  button {
     height: 37px;
     background: #eaedf2 !important;
     border: none;

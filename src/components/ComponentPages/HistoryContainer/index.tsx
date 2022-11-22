@@ -264,6 +264,7 @@ function HistoryContainer() {
             ifIAmExplicitSupporter={
               campHistory?.details?.ifIAmExplicitSupporter
             }
+            topicNamespaceId={campHistory?.details?.topic?.namespace_id}
             changeAgree={changeAgree}
             isDisabledCheck={
               selectedTopic.length >= 2 &&

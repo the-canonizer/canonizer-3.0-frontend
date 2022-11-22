@@ -128,26 +128,50 @@ function CompareStatementUI({
                     ) : null}
                     {from == "camp" ? (
                       <Fragment>
-                        <Paragraph>
-                          <Text strong>Parent Camp : </Text>
-                          <Text>{s1?.parent_camp_name}</Text>
-                        </Paragraph>
+                        {s1?.camp_num != 1 ? (
+                          <Paragraph>
+                            <Text strong>Parent Camp : </Text>
+                            <Text>{s1?.parent_camp_name}</Text>
+                          </Paragraph>
+                        ) : (
+                          ""
+                        )}
+
                         <Paragraph>
                           <Text strong>Keywords : </Text>
                           <Text>{s1?.key_words}</Text>
                         </Paragraph>
                         <Paragraph>
                           <Text strong>Camp About URL : </Text>
-                          <Text>{s1?.camp_about_url}</Text>
+                          <Text>
+                            <Link href={s1?.camp_about_url || ""}>
+                              <a>{s1?.camp_about_url}</a>
+                            </Link>
+                          </Text>
                         </Paragraph>
                         <Paragraph>
                           <Text strong>Camp About Nick Name : </Text>
-                          <Text>{s1?.camp_about_nick_name}</Text>
+                          <Text>
+                            <Link
+                              href={`/user/supports/${
+                                s1["camp_about_nick_id"] || ""
+                              }?topicnum=${s1["topic_num"] || ""}&campnum=${
+                                s1["camp_num"] || ""
+                              }&namespace=${s1["namespace_id"] || 1}`}
+                            >
+                              <a>{s1?.camp_about_nick_name}</a>
+                            </Link>
+                          </Text>
                         </Paragraph>
                       </Fragment>
                     ) : null}
                     <Text strong style={{ textTransform: "capitalize" }}>
-                      {from} :{" "}
+                      {from === "topic"
+                        ? "Topic Name"
+                        : from === "camp"
+                        ? "Camp Name"
+                        : from}{" "}
+                      :{" "}
                     </Text>
                     <Card
                       bordered
@@ -204,26 +228,49 @@ function CompareStatementUI({
                     ) : null}
                     {from == "camp" ? (
                       <Fragment>
-                        <Paragraph>
-                          <Text strong>Parent Camp : </Text>
-                          <Text>{s2?.parent_camp_name}</Text>
-                        </Paragraph>
+                        {s2?.camp_num != 1 ? (
+                          <Paragraph>
+                            <Text strong>Parent Camp : </Text>
+                            <Text>{s2?.parent_camp_name}</Text>
+                          </Paragraph>
+                        ) : (
+                          ""
+                        )}
                         <Paragraph>
                           <Text strong>Keywords : </Text>
                           <Text>{s2?.key_words}</Text>
                         </Paragraph>
                         <Paragraph>
                           <Text strong>Camp About URL : </Text>
-                          <Text>{s2?.camp_about_url}</Text>
+                          <Text>
+                            <Link href={s2?.camp_about_url || ""}>
+                              <a>{s2?.camp_about_url}</a>
+                            </Link>
+                          </Text>
                         </Paragraph>
                         <Paragraph>
                           <Text strong>Camp About Nick Name : </Text>
-                          <Text>{s2?.camp_about_nick_name}</Text>
+                          <Text>
+                            <Link
+                              href={`/user/supports/${
+                                s2["camp_about_nick_id"] || ""
+                              }?topicnum=${s2["topic_num"] || ""}&campnum=${
+                                s2["camp_num"] || ""
+                              }&namespace=${s2["namespace_id"] || 1}`}
+                            >
+                              <a>{s2?.camp_about_nick_name}</a>
+                            </Link>
+                          </Text>
                         </Paragraph>
                       </Fragment>
                     ) : null}
                     <Text strong style={{ textTransform: "capitalize" }}>
-                      {from} :{" "}
+                      {from === "topic"
+                        ? "Topic Name"
+                        : from === "camp"
+                        ? "Camp Name"
+                        : from}{" "}
+                      :{" "}
                     </Text>
                     <Card
                       bordered
@@ -253,7 +300,12 @@ function CompareStatementUI({
                     }
                   >
                     <Text strong style={{ textTransform: "capitalize" }}>
-                      {from} :{" "}
+                      {from === "topic"
+                        ? "Topic Name"
+                        : from === "camp"
+                        ? "Camp Name"
+                        : from}{" "}
+                      :{" "}
                     </Text>
                     <div
                       dangerouslySetInnerHTML={{
@@ -297,21 +349,43 @@ function CompareStatementUI({
                     ) : null}
                     {from == "camp" ? (
                       <Fragment>
-                        <Paragraph>
-                          <Text strong>Parent Camp : </Text>
-                          <Text>{liveStatement?.parent_camp_name}</Text>
-                        </Paragraph>
+                        {liveStatement?.camp_num != 1 ? (
+                          <Paragraph>
+                            <Text strong>Parent Camp : </Text>
+                            <Text>{liveStatement?.parent_camp_name}</Text>
+                          </Paragraph>
+                        ) : (
+                          ""
+                        )}
                         <Paragraph>
                           <Text strong>Keywords : </Text>
                           <Text>{liveStatement?.key_words}</Text>
                         </Paragraph>
                         <Paragraph>
                           <Text strong>Camp About URL : </Text>
-                          <Text>{liveStatement?.camp_about_url}</Text>
+                          <Text>
+                            <Link href={liveStatement?.camp_about_url || ""}>
+                              <a>{liveStatement?.camp_about_url}</a>
+                            </Link>
+                          </Text>
                         </Paragraph>
                         <Paragraph>
                           <Text strong>Camp About Nick Name : </Text>
-                          <Text>{liveStatement?.camp_about_nick_name}</Text>
+                          <Text>
+                            <Link
+                              href={`/user/supports/${
+                                liveStatement["camp_about_nick_id"] || ""
+                              }?topicnum=${
+                                liveStatement["topic_num"] || ""
+                              }&campnum=${
+                                liveStatement["camp_num"] || ""
+                              }&namespace=${
+                                liveStatement["namespace_id"] || 1
+                              }`}
+                            >
+                              <a>{liveStatement?.camp_about_nick_name}</a>
+                            </Link>
+                          </Text>
                         </Paragraph>
                       </Fragment>
                     ) : null}
