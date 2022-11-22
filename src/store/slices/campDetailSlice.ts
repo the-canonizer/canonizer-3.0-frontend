@@ -16,6 +16,7 @@ export const treeSlice = createSlice({
         ifSupportDelayed: null,
         ifIAmExplicitSupporter: null,
         topic: null,
+        liveCamp: null,
       },
     },
     manageSupportStatusCheck: false,
