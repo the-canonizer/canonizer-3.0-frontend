@@ -40,6 +40,22 @@ const CampHistory = ({ campStatement, topicNamespaceId }) => {
       </Title>
 
       <Title level={5}>
+        Camp About Nick Name :{" "}
+        <span>
+          <Link
+            href={`/user/supports/${
+              campStatement?.camp_about_nick_id || ""
+            }?topicnum=${campStatement?.topic_num || ""}&campnum=${
+              campStatement?.camp_num || ""
+            }&namespace=${topicNamespaceId || ""}`}
+            passHref
+          >
+            <a>{campStatement?.camp_about_nick_name}</a>
+          </Link>
+        </span>
+      </Title>
+
+      <Title level={5}>
         Submitter Nick Name :{" "}
         <span>
           <Link
