@@ -105,6 +105,7 @@ const UploadFiles = () => {
   const uploadFun = async () => {
     //addButtonHide is use to, when upload fun is loaded button is hide
     addButtonHide();
+    enabledResetBtn();
     const formData = new FormData();
     for (const key of Object.keys(
       openFolderID ? folderFiles : uploadFileList
