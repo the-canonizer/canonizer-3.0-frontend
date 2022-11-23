@@ -1079,9 +1079,14 @@ export default function AddOrManage({ add }) {
               href={`/user/supports/${
                 form?.getFieldValue("nick_name") || ""
               }?topicnum=${
-                editStatementData?.data?.topic?.topic_num || ""
+                editStatementData?.data?.topic?.topic_num ||
+                router?.query?.statement?.at(0)?.split("-")[0] ||
+                ""
               }&campnum=${
-                editStatementData?.data?.camp?.camp_num || 1
+                editStatementData?.data?.camp?.camp_num ||
+                editStatementData?.data?.topic?.camp_num ||
+                router?.query?.statement?.at(1)?.split("-")[0] ||
+                1
               }&namespace=${editStatementData?.data?.topic?.namespace_id || 1}`}
               passHref
             >
