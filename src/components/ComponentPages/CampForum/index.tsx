@@ -419,12 +419,12 @@ const ForumComponent = ({}) => {
       from = q?.from,
       threadId = q?.id;
 
-    if (from) {
+    if (from && threadId) {
       threadDetails(threadId);
     }
 
-    if (q.id) {
-      getPosts(q.id, ppage);
+    if (threadId) {
+      getPosts(threadId, ppage);
     }
   }, [router?.query?.id, ppage]);
 

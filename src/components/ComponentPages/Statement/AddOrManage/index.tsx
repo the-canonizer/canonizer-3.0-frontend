@@ -1038,16 +1038,34 @@ export default function AddOrManage({ add }) {
               </Descriptions.Item>
 
               <Descriptions.Item label="Camp About URL">
-                {form?.getFieldValue("camp_about_url")}
+                <Link href={form?.getFieldValue("camp_about_url")}>
+                  <a>{form?.getFieldValue("camp_about_url")}</a>
+                </Link>
               </Descriptions.Item>
 
               <Descriptions.Item label="Camp About Nick Name">
-                {
-                  campNickName?.find(
-                    (id) =>
-                      id?.id == form?.getFieldValue("camp_about_nick_name")
-                  )?.nick_name
-                }
+                <Link
+                  href={`/user/supports/${
+                    form?.getFieldValue("camp_about_nick_name") || ""
+                  }?topicnum=${
+                    editStatementData?.data?.topic?.topic_num || ""
+                  }&campnum=${
+                    editStatementData?.data?.camp?.camp_num || ""
+                  }&namespace=${
+                    editStatementData?.data?.topic?.namespace_id || 1
+                  }`}
+                  passHref
+                >
+                  <a>
+                    {" "}
+                    {
+                      campNickName?.find(
+                        (id) =>
+                          id?.id == form?.getFieldValue("camp_about_nick_name")
+                      )?.nick_name
+                    }
+                  </a>
+                </Link>
               </Descriptions.Item>
             </>
           )}
@@ -1057,12 +1075,30 @@ export default function AddOrManage({ add }) {
             {form?.getFieldValue("edit_summary")}
           </Descriptions.Item>
           <Descriptions.Item label="Submitter Nick Name">
-            {" "}
-            {
-              nickNameData?.find(
-                (id) => id?.id == form?.getFieldValue("nick_name")
-              )?.nick_name
-            }
+            <Link
+              href={`/user/supports/${
+                form?.getFieldValue("nick_name") || ""
+              }?topicnum=${
+                editStatementData?.data?.topic?.topic_num ||
+                router?.query?.statement?.at(0)?.split("-")[0] ||
+                ""
+              }&campnum=${
+                editStatementData?.data?.camp?.camp_num ||
+                editStatementData?.data?.topic?.camp_num ||
+                router?.query?.statement?.at(1)?.split("-")[0] ||
+                1
+              }&namespace=${editStatementData?.data?.topic?.namespace_id || 1}`}
+              passHref
+            >
+              <a>
+                {" "}
+                {
+                  nickNameData?.find(
+                    (id) => id?.id == form?.getFieldValue("nick_name")
+                  )?.nick_name
+                }
+              </a>
+            </Link>
           </Descriptions.Item>
         </Descriptions>
       </Modal>
