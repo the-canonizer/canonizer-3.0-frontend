@@ -13,9 +13,13 @@ const { Panel } = Collapse;
 
 const CurrentCampCard = () => {
   const router = useRouter();
-  const { campRecord } = useSelector((state: RootState) => ({
-    campRecord: state?.topicDetails?.currentCampRecord,
-  }));
+  const { campRecord, topicRecord, history } = useSelector(
+    (state: RootState) => ({
+      campRecord: state?.topicDetails?.currentCampRecord,
+      topicRecord: state?.topicDetails?.currentTopicRecord,
+      history: state?.topicDetails?.history,
+    })
+  );
 
   return (
     <Collapse
@@ -45,6 +49,21 @@ const CurrentCampCard = () => {
                       ? campRecord[description.key] == 1
                         ? "Yes"
                         : "No"
+                      : campRecord && description.key == "nick_name"
+                      ? campRecord &&
+                        history && (
+                          <Link
+                            href={`/user/supports/${
+                              history?.details?.liveCamp?.camp_about_nick_id ||
+                              ""
+                            }?topicnum=${campRecord?.topic_num || ""}&campnum=${
+                              campRecord?.camp_num || ""
+                            }&namespace=${topicRecord?.namespace_id || ""}`}
+                            passHref
+                          >
+                            <a> {campRecord[description.key]}</a>
+                          </Link>
+                        )
                       : campRecord[description.key]
                     : campRecord && (
                         // <Link href={campRecord[description.key]}>

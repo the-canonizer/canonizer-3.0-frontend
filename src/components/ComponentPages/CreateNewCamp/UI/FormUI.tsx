@@ -206,7 +206,8 @@ const CreateCampFormUI = ({
               </Form.Item>
             </Col>
             <Col span={24}>
-              <Form.Item  className={styles.edit_summary_input}
+              <Form.Item
+                className={styles.edit_summary_input}
                 label={
                   <Fragment>
                     {labels.cr_edit_summary}
