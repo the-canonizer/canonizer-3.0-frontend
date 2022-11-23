@@ -474,29 +474,52 @@ export default function AddOrManage({ add }) {
                   available_for_child: 0,
                 }}
                 onValuesChange={(value) => {
-                  let initialFormStatus = { edit_summary: "" } as any;
+                  let initialFormStatus = {
+                    statement: "",
+                    edit_summary: "",
+                  } as any;
+
+                  let nowFormStatus = {
+                    statement: "",
+                    edit_summary: "",
+                  } as any;
+
                   initialFormStatus = Object.keys(initialFormValues).reduce(
                     (acc, key) => {
                       acc[key] =
-                        initialFormValues[key] === null
+                        initialFormValues[key] === null || undefined
                           ? ""
                           : initialFormValues[key];
                       return acc;
                     },
                     {}
                   );
-                  let abcform = Object.keys(form?.getFieldsValue()).reduce(
+                  if (initialFormStatus?.edit_summary == null || undefined) {
+                    initialFormStatus.edit_summary = "";
+                  }
+                  if (initialFormStatus?.statement == null || undefined) {
+                    initialFormStatus.statement = "";
+                  }
+                  nowFormStatus = Object.keys(form?.getFieldsValue()).reduce(
                     (acc, key) => {
                       acc[key] =
-                        form?.getFieldsValue()[key] === null
+                        form?.getFieldsValue()[key] === null || undefined
                           ? ""
                           : form?.getFieldsValue()[key];
                       return acc;
                     },
                     {}
                   );
+                  if (nowFormStatus?.edit_summary == null || undefined) {
+                    nowFormStatus.edit_summary = "";
+                  }
+                  if (nowFormStatus?.statement == null || undefined) {
+                    nowFormStatus.statement = "";
+                  }
+
                   if (
-                    JSON.stringify(abcform) == JSON.stringify(initialFormStatus)
+                    JSON.stringify(nowFormStatus) ==
+                    JSON.stringify(initialFormStatus)
                   ) {
                     setSubmitIsDisable(true);
                   } else {
@@ -861,9 +884,7 @@ export default function AddOrManage({ add }) {
                         size="large"
                         className={`btn-orange mr-3 ${styles.btnSubmit}`}
                         htmlType="submit"
-                        disabled={
-                          manageFormOf == "statement" ? false : submitIsDisable
-                        }
+                        disabled={submitIsDisable}
                       >
                         {add
                           ? K?.exceptionalMessages?.submitStatementButton
