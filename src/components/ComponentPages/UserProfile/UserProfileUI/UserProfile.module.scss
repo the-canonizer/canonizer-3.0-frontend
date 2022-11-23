@@ -32,7 +32,7 @@
   margin: 0 8px !important;
   border: 1px solid #f0f0f0;
 
-  @media screen and (max-width:767px) {
+  @media screen and (max-width: 767px) {
     width: 100%;
   }
 }
@@ -121,6 +121,10 @@
   color: grey;
   font-weight: 600;
   font-size: 14px;
+  & + h3 {
+    word-break: break-word;
+    white-space: pre-wrap;
+  }
 }
 
 .card_spacing {
