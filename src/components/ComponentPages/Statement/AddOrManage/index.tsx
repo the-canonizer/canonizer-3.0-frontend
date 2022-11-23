@@ -1044,7 +1044,6 @@ export default function AddOrManage({ add }) {
               </Descriptions.Item>
 
               <Descriptions.Item label="Camp About Nick Name">
-                {console.log("router-bottom", editStatementData?.data)}
                 <Link
                   href={`/user/supports/${
                     form?.getFieldValue("camp_about_nick_name") || ""
