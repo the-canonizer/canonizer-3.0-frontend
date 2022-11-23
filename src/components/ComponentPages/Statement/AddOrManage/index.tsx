@@ -1081,7 +1081,7 @@ export default function AddOrManage({ add }) {
               }?topicnum=${
                 editStatementData?.data?.topic?.topic_num || ""
               }&campnum=${
-                editStatementData?.data?.camp?.camp_num || ""
+                editStatementData?.data?.camp?.camp_num || 1
               }&namespace=${editStatementData?.data?.topic?.namespace_id || 1}`}
               passHref
             >
