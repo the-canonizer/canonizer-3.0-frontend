@@ -112,7 +112,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
     currentCampRecord,
     currentCampNode,
     tree,
-    loading
+    loading,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filterObject: state?.filters?.filterObject,
@@ -123,7 +123,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
     currentCampRecord: state.topicDetails.currentCampRecord,
     currentCampNode: state?.filters?.selectedCampNode,
     tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
-    loading:state?.loading?.loading
+    loading: state?.loading?.loading,
   }));
 
   const [value, setValue] = useState(
@@ -155,7 +155,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
   // }, [filterObject]);
 
   useEffect(() => {
-    setIsLoading(loading)
+    setIsLoading(loading);
   }, [isLoading]);
 
   useEffect(() => {
@@ -333,7 +333,12 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
             <div className={styles.filter}>
               <Text className={styles.filterText}>Filter</Text>
               <LeftOutlined className={styles.LeftOutlined} />
-              <Input size="large" onChange={filterOnScore} value={inputValue} disabled={loading} />
+              <Input
+                size="large"
+                onChange={filterOnScore}
+                value={inputValue}
+                disabled={loading}
+              />
               <Popover
                 content={infoContent}
                 placement="right"

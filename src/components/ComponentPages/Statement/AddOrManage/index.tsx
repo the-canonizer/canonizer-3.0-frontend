@@ -386,7 +386,12 @@ export default function AddOrManage({ add }) {
       }
       setScreenLoading(false);
     }
-    isUserAuthenticated ? nickNameListApiCall() : router.push("/login");
+    isUserAuthenticated
+      ? nickNameListApiCall()
+      : router.push({
+          pathname: "/login",
+          query: { returnUrl: router.asPath },
+        });
   }, []);
 
   let formTitle = () => {
