@@ -33,6 +33,9 @@ const ManageSupportUI = ({
   campIds,
   setcampIds,
 }) => {
+  const [tagsArrayList, setTagsArrayList] = useState([]);
+  const [isTagDragged, setIsTagDragged] = useState(false);
+
   const { currentDelegatedSupportedClick } = useSelector(
     (state: RootState) => ({
       currentDelegatedSupportedClick:
@@ -86,6 +89,9 @@ const ManageSupportUI = ({
     currentGetCheckSupportExistsData?.remove_camps?.map((obj) => {
       return obj.camp_num;
     });
+  const parentSupportOrder = parentSupportDataList.map((obj) => {
+    return obj.support_order;
+  });
   const manageListOrder =
     manageSupportList.length > 0
       ? manageSupportList[manageSupportList.length - 1].support_order
@@ -103,7 +109,13 @@ const ManageSupportUI = ({
     return selectedtNickname == nickName.id;
   });
   const nickNameIDValue = nickNameloop[0]?.id;
-
+  const campNumFromRemoveCamp =
+    currentGetCheckSupportExistsData.remove_camps?.map((obj) => {
+      return obj.camp_num;
+    });
+  const filterCampNum = topicSupportList.filter((obj) => {
+    return obj.camp_num == campNumFromRemoveCamp;
+  });
   // let topicSupport;
   // const topicSupportCampNum = topicSupport?.map((obj)=>{
   //   return obj.camp_num
@@ -115,6 +127,7 @@ const ManageSupportUI = ({
         setTopicSupportList(topicList.data);
       }
     })();
+    setIsTagDragged(false);
   }, []);
   const removeCampsApi = async () => {
     setSpinner(true);
@@ -198,15 +211,34 @@ const ManageSupportUI = ({
       setSelectedtNickname(nickNameList[0]?.id);
     }
   }, [nickNameList]);
-  let tagsArrayList = [];
-  {
-    manageSupportList && manageSupportList.length > 0
-      ? ((tagsArrayList = manageSupportList),
-        tagsArrayList.forEach((obj) => {
-          obj.id = obj.camp_num;
-        }))
-      : "";
-  }
+  // let tagsArrayList1 = [];
+  // {
+  //   manageSupportList && manageSupportList.length > 0
+  //     ? ((tagsArrayList = manageSupportList),
+  //       tagsArrayList.forEach((obj) => {
+  //         obj.id = obj.camp_num;
+  //       }))
+  //     : "";
+  // }
+
+  useEffect(() => {
+    if (manageSupportList && manageSupportList.length > 0) {
+      const newTagList = manageSupportList.map((obj) => {
+        obj.id = obj.camp_num;
+        return obj;
+      });
+      if (!isTagDragged && parentSupportDataList.length > 0) {
+        let shouldArrayReverse = true;
+        newTagList.forEach((element) => {
+          if (element.support_order != newTagList.length) {
+            shouldArrayReverse = false;
+          }
+        });
+        if (shouldArrayReverse) setTagsArrayList(newTagList.reverse());
+        else setTagsArrayList(newTagList);
+      } else setTagsArrayList(newTagList);
+    }
+  }, [manageSupportList, parentSupportDataList]);
 
   return (
     <>
@@ -362,6 +394,7 @@ const ManageSupportUI = ({
                 </div>
               )}
               onChange={(tags) => {
+                setIsTagDragged(true);
                 setUpdatePostion(true);
                 setManageSupportList(tags);
               }}
