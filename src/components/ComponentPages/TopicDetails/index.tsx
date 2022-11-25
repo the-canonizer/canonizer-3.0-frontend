@@ -258,6 +258,7 @@ const TopicDetails = () => {
       asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
     algorithm: algorithm,
   };
+
   const fetchTotalScore = async () => {
     const CampTotalScore = {
       topic_num: totalScoreData.topic_num,
@@ -297,7 +298,7 @@ const TopicDetails = () => {
       GetCheckStatusData();
       fetchTotalScore();
     }
-  }, [isUserAuthenticated, router]);
+  }, [isUserAuthenticated, router, algorithm]);
 
   const scrollToCampStatement = () => {
     myRefToCampStatement.current?.scrollIntoView({ behavior: "smooth" });
