@@ -201,21 +201,21 @@ const ForumComponent = ({}) => {
   };
 
   const onCreateThread = () => {
-    const queries = router?.query;
+    const queries = router?.query,
+      create_path = `/forum/${replaceSpecialCharacters(
+        queries?.topic as string,
+        "-"
+      )}/${replaceSpecialCharacters(
+        queries?.camp as string,
+        "-"
+      )}/threads/create`;
+
     if (isLoggedIn) {
-      router.push({
-        pathname: `/forum/${replaceSpecialCharacters(
-          queries?.topic as string,
-          "-"
-        )}/${replaceSpecialCharacters(
-          queries?.camp as string,
-          "-"
-        )}/threads/create`,
-      });
+      router.push({ pathname: create_path });
     } else {
       router.push({
         pathname: "/login",
-        query: { returnUrl: router.asPath },
+        query: { returnUrl: create_path },
       });
     }
   };
@@ -419,12 +419,12 @@ const ForumComponent = ({}) => {
       from = q?.from,
       threadId = q?.id;
 
-    if (from) {
+    if (from && threadId) {
       threadDetails(threadId);
     }
 
-    if (q.id) {
-      getPosts(q.id, ppage);
+    if (threadId) {
+      getPosts(threadId, ppage);
     }
   }, [router?.query?.id, ppage]);
 

@@ -138,11 +138,6 @@ export default function AddOrManage({ add }) {
   };
 
   const addOrManageStatement = async (values) => {
-    let res_for_add;
-    if (add) {
-      let res = await getEditStatementApi(values?.nick_name);
-      res_for_add = res?.data;
-    }
     let editInfo = editStatementData?.data;
     let parent_camp = editInfo?.parent_camp;
     let reqBody = {
@@ -167,7 +162,7 @@ export default function AddOrManage({ add }) {
       nick_name: values?.nick_name,
       note: values?.edit_summary?.trim(),
       submitter: add
-        ? res_for_add?.statement?.submitter_nick_id
+        ? nickNameData[0]?.id
         : manageFormOf == "camp"
         ? editInfo?.camp?.submitter_nick_id
         : manageFormOf == "topic"
@@ -244,10 +239,12 @@ export default function AddOrManage({ add }) {
     async function nickNameListApiCall() {
       let res;
       if (!add) {
+        let getDataPayload = {
+          record_id: router?.query?.statement[0]?.split("-")[0],
+          event_type: objection ? "objection" : "edit",
+        };
         if (manageFormOf == "statement") {
-          res = await getEditStatementApi(
-            router?.query?.statement[0]?.split("-")[0]
-          );
+          res = await getEditStatementApi(getDataPayload);
           if (
             res?.data?.statement?.go_live_time <
               Math.floor(new Date().getTime() / 1000) &&
@@ -261,9 +258,7 @@ export default function AddOrManage({ add }) {
             });
           }
         } else if (manageFormOf == "camp") {
-          res = await getEditCampApi(
-            router?.query?.statement[0]?.split("-")[0]
-          );
+          res = await getEditCampApi(getDataPayload);
           if (
             res?.data?.camp?.go_live_time <
               Math.floor(new Date().getTime() / 1000) &&
@@ -285,9 +280,7 @@ export default function AddOrManage({ add }) {
             });
           }
         } else if (manageFormOf == "topic") {
-          res = await getEditTopicApi(
-            router?.query?.statement[0]?.split("-")[0]
-          );
+          res = await getEditTopicApi(getDataPayload);
           if (
             res?.data?.topic?.go_live_time <
               Math.floor(new Date().getTime() / 1000) &&
@@ -302,9 +295,7 @@ export default function AddOrManage({ add }) {
             });
           }
         } else {
-          res = await getEditStatementApi(
-            router?.query?.statement[0]?.split("-")[0]
-          );
+          res = await getEditStatementApi(getDataPayload);
         }
         if (res && res.status_code === 200) {
           setEditStatementData(res);
@@ -386,7 +377,12 @@ export default function AddOrManage({ add }) {
       }
       setScreenLoading(false);
     }
-    isUserAuthenticated ? nickNameListApiCall() : router.push("/login");
+    isUserAuthenticated
+      ? nickNameListApiCall()
+      : router.push({
+          pathname: "/login",
+          query: { returnUrl: router.asPath },
+        });
   }, []);
 
   let formTitle = () => {
@@ -474,29 +470,52 @@ export default function AddOrManage({ add }) {
                   available_for_child: 0,
                 }}
                 onValuesChange={(value) => {
-                  let initialFormStatus = { edit_summary: "" } as any;
+                  let initialFormStatus = {
+                    statement: "",
+                    edit_summary: "",
+                  } as any;
+
+                  let nowFormStatus = {
+                    statement: "",
+                    edit_summary: "",
+                  } as any;
+
                   initialFormStatus = Object.keys(initialFormValues).reduce(
                     (acc, key) => {
                       acc[key] =
-                        initialFormValues[key] === null
+                        initialFormValues[key] === null || undefined
                           ? ""
                           : initialFormValues[key];
                       return acc;
                     },
                     {}
                   );
-                  let abcform = Object.keys(form?.getFieldsValue()).reduce(
+                  if (initialFormStatus?.edit_summary == null || undefined) {
+                    initialFormStatus.edit_summary = "";
+                  }
+                  if (initialFormStatus?.statement == null || undefined) {
+                    initialFormStatus.statement = "";
+                  }
+                  nowFormStatus = Object.keys(form?.getFieldsValue()).reduce(
                     (acc, key) => {
                       acc[key] =
-                        form?.getFieldsValue()[key] === null
+                        form?.getFieldsValue()[key] === null || undefined
                           ? ""
                           : form?.getFieldsValue()[key];
                       return acc;
                     },
                     {}
                   );
+                  if (nowFormStatus?.edit_summary == null || undefined) {
+                    nowFormStatus.edit_summary = "";
+                  }
+                  if (nowFormStatus?.statement == null || undefined) {
+                    nowFormStatus.statement = "";
+                  }
+
                   if (
-                    JSON.stringify(abcform) == JSON.stringify(initialFormStatus)
+                    JSON.stringify(nowFormStatus) ==
+                    JSON.stringify(initialFormStatus)
                   ) {
                     setSubmitIsDisable(true);
                   } else {
@@ -861,9 +880,7 @@ export default function AddOrManage({ add }) {
                         size="large"
                         className={`btn-orange mr-3 ${styles.btnSubmit}`}
                         htmlType="submit"
-                        disabled={
-                          manageFormOf == "statement" ? false : submitIsDisable
-                        }
+                        disabled={submitIsDisable}
                       >
                         {add
                           ? K?.exceptionalMessages?.submitStatementButton
@@ -1038,16 +1055,34 @@ export default function AddOrManage({ add }) {
               </Descriptions.Item>
 
               <Descriptions.Item label="Camp About URL">
-                {form?.getFieldValue("camp_about_url")}
+                <Link href={form?.getFieldValue("camp_about_url")}>
+                  <a>{form?.getFieldValue("camp_about_url")}</a>
+                </Link>
               </Descriptions.Item>
 
               <Descriptions.Item label="Camp About Nick Name">
-                {
-                  campNickName?.find(
-                    (id) =>
-                      id?.id == form?.getFieldValue("camp_about_nick_name")
-                  )?.nick_name
-                }
+                <Link
+                  href={`/user/supports/${
+                    form?.getFieldValue("camp_about_nick_name") || ""
+                  }?topicnum=${
+                    editStatementData?.data?.topic?.topic_num || ""
+                  }&campnum=${
+                    editStatementData?.data?.camp?.camp_num || ""
+                  }&namespace=${
+                    editStatementData?.data?.topic?.namespace_id || 1
+                  }`}
+                  passHref
+                >
+                  <a>
+                    {" "}
+                    {
+                      campNickName?.find(
+                        (id) =>
+                          id?.id == form?.getFieldValue("camp_about_nick_name")
+                      )?.nick_name
+                    }
+                  </a>
+                </Link>
               </Descriptions.Item>
             </>
           )}
@@ -1057,12 +1092,30 @@ export default function AddOrManage({ add }) {
             {form?.getFieldValue("edit_summary")}
           </Descriptions.Item>
           <Descriptions.Item label="Submitter Nick Name">
-            {" "}
-            {
-              nickNameData?.find(
-                (id) => id?.id == form?.getFieldValue("nick_name")
-              )?.nick_name
-            }
+            <Link
+              href={`/user/supports/${
+                form?.getFieldValue("nick_name") || ""
+              }?topicnum=${
+                editStatementData?.data?.topic?.topic_num ||
+                router?.query?.statement?.at(0)?.split("-")[0] ||
+                ""
+              }&campnum=${
+                editStatementData?.data?.camp?.camp_num ||
+                editStatementData?.data?.topic?.camp_num ||
+                router?.query?.statement?.at(1)?.split("-")[0] ||
+                1
+              }&namespace=${editStatementData?.data?.topic?.namespace_id || 1}`}
+              passHref
+            >
+              <a>
+                {" "}
+                {
+                  nickNameData?.find(
+                    (id) => id?.id == form?.getFieldValue("nick_name")
+                  )?.nick_name
+                }
+              </a>
+            </Link>
           </Descriptions.Item>
         </Descriptions>
       </Modal>
