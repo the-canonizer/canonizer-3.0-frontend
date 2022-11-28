@@ -296,8 +296,9 @@ const TopicDetails = () => {
   useEffect(() => {
     if (isUserAuthenticated) {
       GetCheckStatusData();
-      fetchTotalScore();
     }
+    fetchTotalScore();
+
   }, [isUserAuthenticated, router, algorithm]);
 
   const scrollToCampStatement = () => {
