@@ -14,6 +14,7 @@ const MetaTags: MetaTagsTypes = {
     title: "Canonizer",
     description: "Short description ",
     route: "/",
+    image_url:'https://canonizer3.canonizer.com/color-problem.png'
   },
   AboutUsPage: {
     title: "Canonizer",
