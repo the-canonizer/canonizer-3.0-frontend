@@ -67,7 +67,7 @@ const ResetPassword = ({ is_test = false }) => {
             validateTrigger={messages.formValidationTypes()}
           >
             <Title level={2} className={styles.titles} id="create-pass-title">
-              Create new password
+              {messages.labels.createPassword}
             </Title>
             <div className={styles.section_one}>
               <div className={styles.imageWrapper}>
