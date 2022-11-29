@@ -14,7 +14,7 @@ const { placeholders, labels, validations } = messages;
 
 describe("Reset Password page", () => {
   it("render heading labels and text", async () => {
-    render(<ResetPassword />);
+    render(<ResetPassword is_test={true} />);
     let heading = screen.getByText("Create new password");
     expect(heading).toBeInTheDocument();
     expect(screen.getByText(labels.newPassword)).toBeInTheDocument();
@@ -22,7 +22,7 @@ describe("Reset Password page", () => {
   });
 
   it("render inputs field and submit button", async () => {
-    render(<ResetPassword />);
+    render(<ResetPassword is_test={true} />);
     const newPassword = screen.getByPlaceholderText(placeholders.newPassword);
     const confirmPassword = screen.getByPlaceholderText(
       placeholders.confirmPassword
@@ -44,7 +44,7 @@ describe("Reset Password page", () => {
   });
 
   it("check password minimum length > 8", async () => {
-    render(<ResetPassword />);
+    render(<ResetPassword is_test={true} />);
     const inputEl = screen.getByPlaceholderText(placeholders.newPassword);
     await fireEvent.change(inputEl, { target: { value: "1234567" } });
     await userEvent.tab();
@@ -58,7 +58,7 @@ describe("Reset Password page", () => {
   });
 
   it("pass valid password", async () => {
-    render(<ResetPassword />);
+    render(<ResetPassword is_test={true} />);
     const inputEl = screen.getByPlaceholderText(placeholders.newPassword);
     await fireEvent.change(inputEl, { target: { value: "Abc@1234" } });
     expect(inputEl).toHaveValue("Abc@1234");
@@ -66,7 +66,7 @@ describe("Reset Password page", () => {
   });
 
   it("pass invalid confirm password", async () => {
-    render(<ResetPassword />);
+    render(<ResetPassword is_test={true} />);
     const inputEl = screen.getByPlaceholderText(placeholders.newPassword);
     const inputEl2 = screen.getByPlaceholderText(placeholders.confirmPassword);
     act(async () => {
@@ -84,7 +84,7 @@ describe("Reset Password page", () => {
   });
 
   it("pass valid confirm password", async () => {
-    render(<ResetPassword />);
+    render(<ResetPassword is_test={true} />);
     const inputEl = screen.getByPlaceholderText(placeholders.newPassword);
     const inputEl2 = screen.getByPlaceholderText(placeholders.confirmPassword);
     await fireEvent.change(inputEl, { target: { value: "Abc@1234" } });
@@ -95,7 +95,8 @@ describe("Reset Password page", () => {
   });
 
   it("blank form should not be submit", async () => {
-    render(<ResetPassword />);
+    render(<ResetPassword is_test={true} />);
+
     const btnEl = screen.getByTestId("submitButton");
     await act(async () => {
       await fireEvent.click(btnEl);

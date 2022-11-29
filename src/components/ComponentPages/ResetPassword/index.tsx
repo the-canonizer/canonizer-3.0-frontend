@@ -1,30 +1,41 @@
 import { Fragment, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Image from "next/image";
 import { Row, Col, Button, Form, Input, Typography, message } from "antd";
-import { useDispatch, useSelector } from "react-redux";
 
 import styles from "../Registration/UI/Registration.module.scss";
 
 import messages from "../../../messages";
 import { forgotPasswordUpdate } from "../../../network/api/userApi";
-import { RootState } from "src/store";
-import { setValue } from "src/store/slices/utilsSlice";
+import SideBar from "../CampForum/UI/sidebar";
 
 const { Title } = Typography;
 
-const ResetPassword = () => {
-  const emailId = useSelector((state: RootState) => state.utils.email_id);
-
-  const [email, setEmail] = useState(emailId);
-
-  const dispatch = useDispatch();
+const ResetPassword = ({ is_test = false }) => {
   const router = useRouter();
   const [form] = Form.useForm();
 
-  useEffect(() => setEmail(emailId), [emailId]);
+  const backToLogin = async () => {
+    if (localStorage.getItem("verified")) {
+      await localStorage.removeItem("verified");
+    }
+
+    router.push({ pathname: "/login" });
+  };
+
+  useEffect(() => {
+    const getData = async () => {
+      const verified = await localStorage.getItem("verified");
+
+      if (!verified && !is_test) {
+        backToLogin();
+      }
+    };
+
+    getData();
+  }, []);
 
   const onFinish = async (values: any) => {
+    const email = await localStorage.getItem("verified");
     let body = {
       username: email?.trim(),
       new_password: values.password,
@@ -36,38 +47,14 @@ const ResetPassword = () => {
     if (res && res.status_code === 200) {
       message.success(res.message);
       form.resetFields();
-      dispatch(setValue({ label: "email_id", value: "" }));
+      backToLogin();
     }
-
-    router.push("/login");
-  };
-
-  const campRoute = () => {
-    router.push("/create/topic");
   };
 
   return (
     <div className={styles.wrapper}>
       <aside className="leftSideBar miniSideBar">
-        <div className={styles.wrap}>
-          <Button
-            size="large"
-            className={styles.createBtn}
-            onClick={campRoute}
-            id="create-topic-btn"
-          >
-            <i className="icon-topic"></i>Create New Topic
-          </Button>
-        </div>
-        <aside className={styles.rightSidebar}>
-          <Image
-            src="/images/right-sidebar-adv.png"
-            width={200}
-            height={532}
-            alt=""
-            id="ad-img"
-          />
-        </aside>
+        <SideBar />
       </aside>
       <div className={`pageContentWrap ${styles.pageContentWrap}`}>
         <div className={`${styles.signup_wrapper} ${styles.resetPassword}`}>
