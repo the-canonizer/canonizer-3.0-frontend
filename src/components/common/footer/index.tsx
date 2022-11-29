@@ -157,7 +157,7 @@ function Footer() {
               </div>
             </Col>
             <Col xs={24} sm={12} md={7} lg={6}>
-              <div className={styles.widgetFollowUs}>
+              {/* <div className={styles.widgetFollowUs}>
                 <Title level={5}>Follow Us</Title>
                 <div className={styles.smIcons}>
                   {socialLinks?.map((social) => {
@@ -176,7 +176,7 @@ function Footer() {
                     );
                   })}
                 </div>
-              </div>
+              </div> */}
               <div className={styles.supportWidget}>
                 <Title level={5}>Comments and Questions:</Title>
                 <Link href="mailto:support@canonizer.com">

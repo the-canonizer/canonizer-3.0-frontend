@@ -62,6 +62,7 @@ const TopicDetails = () => {
   const [getTreeLoadingIndicator, setGetTreeLoadingIndicator] = useState(false);
   const [getCheckSupportStatus, setGetCheckSupportStatus] = useState({});
   const [totalSupportScore, setTotalSupportScore] = useState<number>(0);
+  const [totalFullSupportScore, setTotalFullSupportScore] = useState<number>(0);
   const [topicList, setTopicList] = useState([]);
   const [isSupportTreeCardModal, setIsSupportTreeCardModal] = useState(false);
   const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
@@ -258,6 +259,7 @@ const TopicDetails = () => {
       asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
     algorithm: algorithm,
   };
+
   const fetchTotalScore = async () => {
     const CampTotalScore = {
       topic_num: totalScoreData.topic_num,
@@ -269,6 +271,7 @@ const TopicDetails = () => {
     let response = await SupportTreeTotalScore(CampTotalScore);
     if (response && response.status_code == 200) {
       setTotalSupportScore(response.data.score);
+      setTotalFullSupportScore(response.data.full_score);
     }
   };
 
@@ -295,9 +298,10 @@ const TopicDetails = () => {
   useEffect(() => {
     if (isUserAuthenticated) {
       GetCheckStatusData();
-      fetchTotalScore();
     }
-  }, [isUserAuthenticated, router]);
+    fetchTotalScore();
+
+  }, [isUserAuthenticated, router, algorithm]);
 
   const scrollToCampStatement = () => {
     myRefToCampStatement.current?.scrollIntoView({ behavior: "smooth" });
@@ -478,6 +482,7 @@ const TopicDetails = () => {
                           removeApiSupport={removeApiSupport}
                           fetchTotalScore={fetchTotalScore}
                           totalSupportScore={totalSupportScore}
+                          totalFullSupportScore={totalFullSupportScore}
                           removeSupport={removeSupport}
                           topicList={topicList}
                           removeSupportForDelegate={removeSupportForDelegate}

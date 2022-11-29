@@ -26,7 +26,7 @@ import campNewsSlice from "./slices/news";
 import notifications from "./slices/notificationSlice";
 import supportTreeCard from "./slices/supportTreeCard";
 import utilsSlice from "./slices/utilsSlice";
-import  loadingSlice  from "./slices/loading";
+import loadingSlice from "./slices/loading";
 // reducers
 
 let combinedReducer = combineReducers({
@@ -42,7 +42,7 @@ let combinedReducer = combineReducers({
   supportTreeCard: supportTreeCard,
   notifications,
   utils: utilsSlice,
-  loading: loadingSlice
+  loading: loadingSlice,
 });
 
 const rootReducer = (state, action) => {

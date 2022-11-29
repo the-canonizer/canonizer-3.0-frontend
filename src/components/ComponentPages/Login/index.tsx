@@ -87,10 +87,13 @@ const Login = ({ isModal, isTest = false }) => {
 
       isModal ? closeModal() : "";
 
+      console.log("router_aspath", router);
+
       if (router.query.returnUrl) {
         router.push(`${router.query.returnUrl}`);
       } else {
-        if (!router.pathname?.includes("/forum/")) {
+        if (router.pathname == "/login") {
+          console.log("router_aspath-inside");
           router.push("/");
         } else {
           closeModal();

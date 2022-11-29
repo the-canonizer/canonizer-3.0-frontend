@@ -335,6 +335,18 @@ body {
     margin-bottom: 18px;
     &-wrap {
       flex: unset !important;
+      @media screen and (max-width: 576px) {
+        display: block !important;
+        .ant-tabs-nav-list {
+          transform: none !important;
+          justify-content: flex-start;
+        }
+      }
+    }
+    @media screen and (max-width: 576px) {
+      .ant-tabs-nav-operations {
+        display: none;
+      }
     }
     @media screen and (min-width: 1200px) and (max-width: 1499px) {
       display: block;

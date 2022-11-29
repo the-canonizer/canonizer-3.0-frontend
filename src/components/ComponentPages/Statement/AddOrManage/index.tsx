@@ -138,15 +138,6 @@ export default function AddOrManage({ add }) {
   };
 
   const addOrManageStatement = async (values) => {
-    let res_for_add;
-    if (add) {
-      let editStatementPayload = {
-        record_id: values?.nick_name,
-        event_type: "edit",
-      };
-      let res = await getEditStatementApi(editStatementPayload);
-      res_for_add = res?.data;
-    }
     let editInfo = editStatementData?.data;
     let parent_camp = editInfo?.parent_camp;
     let reqBody = {
@@ -171,7 +162,7 @@ export default function AddOrManage({ add }) {
       nick_name: values?.nick_name,
       note: values?.edit_summary?.trim(),
       submitter: add
-        ? res_for_add?.statement?.submitter_nick_id
+        ? nickNameData[0]?.id
         : manageFormOf == "camp"
         ? editInfo?.camp?.submitter_nick_id
         : manageFormOf == "topic"
@@ -386,7 +377,12 @@ export default function AddOrManage({ add }) {
       }
       setScreenLoading(false);
     }
-    isUserAuthenticated ? nickNameListApiCall() : router.push("/login");
+    isUserAuthenticated
+      ? nickNameListApiCall()
+      : router.push({
+          pathname: "/login",
+          query: { returnUrl: router.asPath },
+        });
   }, []);
 
   let formTitle = () => {
