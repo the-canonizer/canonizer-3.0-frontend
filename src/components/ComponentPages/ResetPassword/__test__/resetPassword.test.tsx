@@ -15,7 +15,7 @@ const { placeholders, labels, validations } = messages;
 describe("Reset Password page", () => {
   it("render heading labels and text", async () => {
     render(<ResetPassword />);
-    let heading = screen.getByText("Create new password");
+    let heading = screen.getByText(labels.createPassword);
     expect(heading).toBeInTheDocument();
     expect(screen.getByText(labels.newPassword)).toBeInTheDocument();
     expect(screen.getByText(labels.confirmPassword)).toBeInTheDocument();
