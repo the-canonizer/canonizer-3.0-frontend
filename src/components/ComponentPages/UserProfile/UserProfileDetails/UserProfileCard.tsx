@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import messages from "../../../../messages";
 import styles from "../UserProfileUI/UserProfile.module.scss";
 import Link from "next/link";
-import { Card, Tag, Select, Spin } from "antd";
+import { Card, Tag, Select, Spin, BackTop } from "antd";
 import router, { useRouter } from "next/router";
 export const UserProfileCard = ({
   userSupportedCampsList,
@@ -178,6 +178,7 @@ export const UserProfileCard = ({
           );
         })}
       </div>
+      <BackTop />
     </div>
   );
 };
