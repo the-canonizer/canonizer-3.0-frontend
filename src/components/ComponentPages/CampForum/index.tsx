@@ -17,6 +17,7 @@ import {
   updatePost,
   getPostsList,
   deletePost,
+  getThreadData,
 } from "../../../network/api/campForumApi";
 import {
   getAllUsedNickNames,
@@ -131,6 +132,21 @@ const ForumComponent = ({}) => {
     }
   };
 
+  const threadDetails = async (id) => {
+    setPostLoading(true);
+
+    const res = await getThreadData(id);
+
+    if (res && res.status_code === 200) {
+      const data = res.data;
+      setCurrentThread(data);
+      // router.query.from = "";
+      // router.replace(router, undefined, { shallow: true });
+    }
+
+    setPostLoading(false);
+  };
+
   useEffect(() => {
     if (router && router?.query) {
       const queries = router?.query;
@@ -185,21 +201,21 @@ const ForumComponent = ({}) => {
   };
 
   const onCreateThread = () => {
-    const queries = router?.query;
+    const queries = router?.query,
+      create_path = `/forum/${replaceSpecialCharacters(
+        queries?.topic as string,
+        "-"
+      )}/${replaceSpecialCharacters(
+        queries?.camp as string,
+        "-"
+      )}/threads/create`;
+
     if (isLoggedIn) {
-      router.push({
-        pathname: `/forum/${replaceSpecialCharacters(
-          queries?.topic as string,
-          "-"
-        )}/${replaceSpecialCharacters(
-          queries?.camp as string,
-          "-"
-        )}/threads/create`,
-      });
+      router.push({ pathname: create_path });
     } else {
       router.push({
         pathname: "/login",
-        query: { returnUrl: router.asPath },
+        query: { returnUrl: create_path },
       });
     }
   };
@@ -297,11 +313,11 @@ const ForumComponent = ({}) => {
       fetchNickNameList(topic_num);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router, page, searchQuery, isLoggedIn]);
+  }, [router?.query, page, searchQuery, isLoggedIn]);
 
   const onCancelCreateThread = () => {
     const queries = router?.query;
-    if (queries.tId) {
+    if (queries?.tId) {
       const queries = router?.query;
       router.push({
         pathname: `/forum/${replaceSpecialCharacters(
@@ -310,6 +326,9 @@ const ForumComponent = ({}) => {
         )}/${replaceSpecialCharacters(queries.camp as string, "-")}/threads`,
         query: { by: "my" },
       });
+    } else if (queries?.from) {
+      const redirects = queries?.from as string;
+      router.push({ pathname: redirects });
     } else {
       const queries = router?.query;
       router.push({
@@ -396,12 +415,18 @@ const ForumComponent = ({}) => {
   const [formPost] = Form.useForm();
 
   useEffect(() => {
-    const q = router?.query;
+    const q = router?.query,
+      from = q?.from,
+      threadId = q?.id;
 
-    if (q.id) {
-      getPosts(q.id, ppage);
+    if (from && threadId) {
+      threadDetails(threadId);
     }
-  }, [router, router?.query, ppage]);
+
+    if (threadId) {
+      getPosts(threadId, ppage);
+    }
+  }, [router?.query?.id, ppage]);
 
   const onContentChange = (v) => {
     // v = v.replace(/(^|>)\s+|\s+(?=<|$)/g, "$1");

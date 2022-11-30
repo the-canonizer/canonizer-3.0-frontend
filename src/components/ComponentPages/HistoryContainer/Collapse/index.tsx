@@ -38,6 +38,7 @@ function HistoryCollapse({
   ifSupportDelayed,
   ifIAmExplicitSupporter,
   userNickNameData,
+  topicNamespaceId,
   campStatement,
   onSelectCompare,
   isDisabledCheck,
@@ -47,6 +48,8 @@ function HistoryCollapse({
 }) {
   const router = useRouter();
   const [commited, setCommited] = useState(false);
+
+  const [isSelectChecked, setIsSelectChecked] = useState(false);
 
   const [loadingIndicatorForIAgree, setLoadingIndicatorForIAgree] =
     useState(false);
@@ -81,6 +84,7 @@ function HistoryCollapse({
 
   const agreeWithChange = async () => {
     setLoadingIndicatorForIAgree(true);
+    setIsSelectChecked(true);
     let reqBody = {
       record_id: campStatement.id,
       topic_num: router.query.camp[0].split("-")[0],
@@ -167,17 +171,27 @@ function HistoryCollapse({
             <div className={styles.campCollapseSummaryWrap}>
               <div className={styles.campStatementCollapseSummary}>
                 {historyOf == "statement" && (
-                  <StatementHistory campStatement={campStatement} />
+                  <StatementHistory
+                    campStatement={campStatement}
+                    topicNamespaceId={topicNamespaceId}
+                  />
                 )}
                 {historyOf == "camp" && (
-                  <CampHistory campStatement={campStatement} />
+                  <CampHistory
+                    campStatement={campStatement}
+                    topicNamespaceId={topicNamespaceId}
+                  />
                 )}
                 {historyOf == "topic" && (
-                  <TopicHistory campStatement={campStatement} />
+                  <TopicHistory
+                    campStatement={campStatement}
+                    topicNamespaceId={topicNamespaceId}
+                  />
                 )}
 
                 <Checkbox
                   className={styles.campSelectCheckbox}
+                  id={`select-to-compare-${campStatement?.id}`}
                   onChange={onSelectCompare?.bind(this, campStatement)}
                   disabled={isDisabledCheck}
                   defaultChecked={isChecked}
@@ -191,48 +205,67 @@ function HistoryCollapse({
                   (campStatement?.status == "objected" &&
                     historyOf != "statement")) && (
                   <>
-                    <Button
-                      type="primary"
-                      onClick={() => {
-                        let isModelPop = !isUserAuthenticated
-                          ? true
-                          : !!(
-                              ifIamSupporter == 0 &&
-                              ifSupportDelayed == 0 &&
-                              !ifIAmExplicitSupporter
-                            )
-                          ? true
-                          : false;
-                        if (isModelPop) {
-                          setModal1Open(true);
-                        } else {
-                          router.push(
-                            historyOf == "camp"
-                              ? `/manage/camp/${campStatement?.id}-objection`
-                              : historyOf == "topic"
-                              ? `/manage/topic/${campStatement?.id}-objection`
-                              : `/manage/statement/${campStatement?.id}-objection`
-                          );
-                        }
-                      }}
-                      className={`mr-3 ${
+                    <Tooltip
+                      title={
                         (
                           !isUserAuthenticated
                             ? true
                             : !!(
-                                ifIamSupporter == 0 &&
-                                ifSupportDelayed == 0 &&
-                                !ifIAmExplicitSupporter
+                                (ifIamSupporter == 0 &&
+                                  !ifIAmExplicitSupporter) ||
+                                ifSupportDelayed != 0
                               )
                             ? true
                             : false
                         )
-                          ? "disable-style"
+                          ? K?.exceptionalMessages?.objectedTooltipMsg
                           : ""
-                      } ${styles.campUpdateButton}`}
+                      }
                     >
-                      Object
-                    </Button>
+                      <Button
+                        type="primary"
+                        id={`object-change-${campStatement?.id}`}
+                        onClick={() => {
+                          let isModelPop = !isUserAuthenticated
+                            ? true
+                            : !!(
+                                (ifIamSupporter == 0 &&
+                                  !ifIAmExplicitSupporter) ||
+                                ifSupportDelayed != 0
+                              )
+                            ? true
+                            : false;
+                          if (isModelPop) {
+                            setModal1Open(true);
+                          } else {
+                            router.push(
+                              historyOf == "camp"
+                                ? `/manage/camp/${campStatement?.id}-objection`
+                                : historyOf == "topic"
+                                ? `/manage/topic/${campStatement?.id}-objection`
+                                : `/manage/statement/${campStatement?.id}-objection`
+                            );
+                          }
+                        }}
+                        className={`mr-3 ${
+                          (
+                            !isUserAuthenticated
+                              ? true
+                              : !!(
+                                  (ifIamSupporter == 0 &&
+                                    !ifIAmExplicitSupporter) ||
+                                  ifSupportDelayed != 0
+                                )
+                              ? true
+                              : false
+                          )
+                            ? "disable-style"
+                            : ""
+                        } ${styles.campUpdateButton}`}
+                      >
+                        Object
+                      </Button>
+                    </Tooltip>
                     <Modal
                       title={K?.exceptionalMessages?.objectedModelTitle}
                       style={{
@@ -267,6 +300,7 @@ function HistoryCollapse({
                 )}
                 <Button
                   type="primary"
+                  id={`submit-update-${campStatement?.id}`}
                   className={`mr-3 ${styles.campUpdateButton}`}
                   onClick={() => submitUpdateRedirect(historyOf)}
                 >
@@ -278,6 +312,7 @@ function HistoryCollapse({
                 </Button>
                 <Button
                   type="primary"
+                  id={`view-this-version-${campStatement?.id}`}
                   className={styles.campVersionButton}
                   onClick={() =>
                     handleViewThisVersion(campStatement?.go_live_time)
@@ -344,7 +379,11 @@ function HistoryCollapse({
                           />
                         )}
                       </span>
-                      <Button type="primary" className=" mr-3">
+                      <Button
+                        type="primary"
+                        className=" mr-3"
+                        id={`edit-change-${campStatement?.id}`}
+                      >
                         <Link
                           href={
                             historyOf == "camp"
@@ -357,7 +396,11 @@ function HistoryCollapse({
                           Edit Change
                         </Link>
                       </Button>
-                      <Button type="primary" onClick={commitChanges}>
+                      <Button
+                        type="primary"
+                        onClick={commitChanges}
+                        id={`commit-change-${campStatement?.id}`}
+                      >
                         Commit Change
                       </Button>
                     </div>
@@ -365,9 +408,8 @@ function HistoryCollapse({
                 )}
               {campStatement?.status == "in_review" &&
                 !!(
-                  ifIamSupporter != 0 ||
-                  ifSupportDelayed != 0 ||
-                  ifIAmExplicitSupporter
+                  (ifIamSupporter != 0 || ifIAmExplicitSupporter) &&
+                  ifSupportDelayed == 0
                 ) &&
                 isUserAuthenticated &&
                 !campStatement?.isAuthor && (
@@ -376,7 +418,9 @@ function HistoryCollapse({
                       {" "}
                       <Checkbox
                         defaultChecked={campStatement?.agreed_to_change}
-                        disabled={campStatement?.agreed_to_change}
+                        disabled={
+                          campStatement?.agreed_to_change || isSelectChecked
+                        }
                         className={styles.campSelectCheckbox}
                         onChange={agreeWithChange}
                       >

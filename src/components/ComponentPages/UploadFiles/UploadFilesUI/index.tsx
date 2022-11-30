@@ -48,6 +48,7 @@ import ListViewActive from "../../../../assets/image/listViewActive.svg";
 import folderOpenOutLine from "../../../../assets/image/folderOpen.svg";
 import CopyShortCode from "../../../../assets/image/copyShortCode.svg";
 import eyeImage from "../../../../assets/image/eye.svg";
+import reset from "../../../../assets/image/reset.png";
 import addFolder from "../../../../assets/image/add-folder.png";
 import addFile from "../../../../assets/image/add.png";
 import download from "../../../../assets/image/DownloadFile.svg";
@@ -67,6 +68,7 @@ import {
   showUploadFiles,
   showFolder,
   showAfterUploads,
+  createFolderBtnEnable,
 } from "../../../../store/slices/uiSlice";
 import CreateFolder from "../CreateFolder";
 import {
@@ -124,6 +126,7 @@ const UploadFileUI = ({
     previewVisible: false,
     previewPath: "",
     previewName: "",
+    prevShort: "",
     previewCopyShortCode: "",
     previewCreatedAt: 0,
   });
@@ -136,6 +139,9 @@ const UploadFileUI = ({
   const drageBoxVisible = useSelector((state: RootState) => state.ui.dragBox);
   const disabledCreateFolder = useSelector(
     (state: RootState) => state.ui.disabledCreateFolderBtn
+  );
+  const disabledResetButton = useSelector(
+    (state: RootState) => state.ui.disabledResetBtn
   );
   const dragBoxStatus = useSelector((state: RootState) => state.ui.dragBox);
   const show_UploadOptions = useSelector(
@@ -152,6 +158,8 @@ const UploadFileUI = ({
   const afterUploadClass = useSelector(
     (state: RootState) => state.ui.showFiles
   );
+  const enableCreateFolderBtn = () => dispatch(createFolderBtnEnable());
+
   const dragBoxShow = () => dispatch(showDrageBox());
   const dragBoxHide = () => dispatch(hideDrageBox());
   const uploadOptionsHide = () => dispatch(hideUploadOptions());
@@ -219,9 +227,10 @@ const UploadFileUI = ({
               previewVisible: true,
               previewName:
                 item.file_name.length > fileNameLength
-                  ? item.file_name.substring(0, 30) + "..."
+                  ? item.file_name.substring(0, fileNameLength) + "..."
                   : item.file_name,
               previewPath: item.file_path,
+              prevShort: item.short_code_path,
               previewCopyShortCode: item.short_code,
               previewCreatedAt: item.created_at,
             })
@@ -259,7 +268,7 @@ const UploadFileUI = ({
       <Menu.Item
         onClick={() => {
           {
-            navigator.clipboard.writeText(item.short_code),
+            navigator.clipboard.writeText(item.short_code_path),
               message.success("Short code copied");
           }
         }}
@@ -441,16 +450,20 @@ const UploadFileUI = ({
       render: (code, obj) => {
         return (
           <div className={styles.CopyShortCode}>
-            {obj.short_code ? (
+            {obj.short_code_path ? (
               <>
                 <div className={styles.icon_height}>
-                  {`[[${obj.short_code}]]`}
+                  {`[[${
+                    obj.short_code_path.length > fileNameLength
+                      ? obj.short_code_path.substring(0, fileNameLength) + "..."
+                      : obj.short_code_path
+                  }]]`}
                 </div>
                 <div className={styles.shortcode_icon}>
                   <span
                     className={styles.folder_icons}
                     onClick={() => {
-                      navigator.clipboard.writeText(obj.short_code),
+                      navigator.clipboard.writeText(obj.short_code_path),
                         message.success("Short code copied");
                     }}
                   >
@@ -511,6 +524,7 @@ const UploadFileUI = ({
                             previewVisible: true,
                             previewName: obj.file_name,
                             previewPath: obj.file_path,
+                            prevShort: obj.short_code_path,
                             previewCopyShortCode: obj.short_code,
                             previewCreatedAt: obj.created_at,
                           })
@@ -547,7 +561,7 @@ const UploadFileUI = ({
                     <div
                       className={styles.menu_item}
                       onClick={() => {
-                        navigator.clipboard.writeText(keyParam.short_code),
+                        navigator.clipboard.writeText(keyParam.short_code_path),
                           message.success("Short code copied");
                       }}
                     >
@@ -718,7 +732,7 @@ const UploadFileUI = ({
               <span
                 className="copySpan"
                 onClick={() => {
-                  navigator.clipboard.writeText(item.short_code),
+                  navigator.clipboard.writeText(item.short_code_path),
                     message.success("Short code copied");
                 }}
               >
@@ -924,14 +938,14 @@ const UploadFileUI = ({
             </div>
           </Dropdown>
           <div className={styles.imageFiles}>
-            {displayImage(file, file.file_path)}
+            {displayImage(file, file.short_code_path)}
           </div>
           <h3 className="BoxcopyWrap">
             <span className="value">{subStringData(file.file_name)}</span>
             <span
               className="copySpan"
               onClick={() => {
-                navigator.clipboard.writeText(file.short_code),
+                navigator.clipboard.writeText(file.short_code_path),
                   message.success("Short code copied");
               }}
             >
@@ -1028,6 +1042,24 @@ const UploadFileUI = ({
                             setSearch(e.target.value);
                           }}
                         />
+                      </div>
+                      <div>
+                        <Button
+                          disabled={disabledResetButton}
+                          onClick={() => {
+                            setSearch("");
+                            setDatePick("");
+                          }}
+                          className={styles.create_folder_btn}
+                        >
+                          <Image
+                            alt="adOne"
+                            src={reset}
+                            width={20}
+                            height={22}
+                          />
+                          Reset
+                        </Button>
                       </div>
                       <Button
                         id="createFolderBtn"
@@ -1416,7 +1448,7 @@ const UploadFileUI = ({
                 <div
                   className="copy_wrap"
                   onClick={() => {
-                    navigator.clipboard.writeText(preview.previewCopyShortCode),
+                    navigator.clipboard.writeText(preview.prevShort),
                       message.success("Short code copied");
                   }}
                 >
@@ -1426,7 +1458,14 @@ const UploadFileUI = ({
                     width={"16px"}
                     height={"10px"}
                   />
-                  <span> [[{preview.previewCopyShortCode}]]</span>
+                  <span>
+                    {" "}
+                    [[
+                    {preview.prevShort.length > fileNameLength
+                      ? preview.prevShort.substring(0, fileNameLength) + "..."
+                      : preview.prevShort}
+                    ]]
+                  </span>
                 </div>
               </div>
               <div className="date_wrap">

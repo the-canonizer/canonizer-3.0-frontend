@@ -62,10 +62,13 @@ export default function AddOrManage({ add }) {
   const { isUserAuthenticated } = useAuthentication();
   const router = useRouter();
   const [editStatementData, setEditStatementData] = useState({ data: null });
+  const [submitIsDisable, setSubmitIsDisable] = useState(true);
+  const [submitIsDisableCheck, setSubmitIsDisableCheck] = useState(true);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [nickNameData, setNickNameData] = useState([]);
   const [screenLoading, setScreenLoading] = useState(false);
+  const [initialFormValues, setInitialFormValues] = useState({});
   const [payloadBreadCrumb, setPayloadBreadCrumb] = useState({
     topic_num: "",
     camp_num: "",
@@ -82,6 +85,7 @@ export default function AddOrManage({ add }) {
   const [campNickName, setCampNickName] = useState([]);
   const [canNameSpace, setCanNameSpace] = useState([]);
   const [options, setOptions] = useState([...messages.preventCampLabel]);
+  const [initialOptions, setInitialOptions] = useState([]);
 
   const [form] = Form.useForm();
   let objection = router?.query?.statement?.at(0)?.split("-")[1] == "objection";
@@ -136,11 +140,6 @@ export default function AddOrManage({ add }) {
   };
 
   const addOrManageStatement = async (values) => {
-    let res_for_add;
-    if (add) {
-      let res = await getEditStatementApi(values?.nick_name);
-      res_for_add = res?.data;
-    }
     let editInfo = editStatementData?.data;
     let parent_camp = editInfo?.parent_camp;
     let reqBody = {
@@ -165,7 +164,7 @@ export default function AddOrManage({ add }) {
       nick_name: values?.nick_name,
       note: values?.edit_summary?.trim(),
       submitter: add
-        ? res_for_add?.statement?.submitter_nick_id
+        ? nickNameData[0]?.id
         : manageFormOf == "camp"
         ? editInfo?.camp?.submitter_nick_id
         : manageFormOf == "topic"
@@ -242,44 +241,63 @@ export default function AddOrManage({ add }) {
     async function nickNameListApiCall() {
       let res;
       if (!add) {
+        let getDataPayload = {
+          record_id: router?.query?.statement[0]?.split("-")[0],
+          event_type: objection ? "objection" : "edit",
+        };
         if (manageFormOf == "statement") {
-          res = await getEditStatementApi(
-            router?.query?.statement[0]?.split("-")[0]
-          );
-          setPayloadBreadCrumb({
-            camp_num: res?.data?.statement?.camp_num ?? "1",
-            topic_num: res?.data?.statement?.topic_num,
-          });
-        } else if (manageFormOf == "camp") {
-          res = await getEditCampApi(
-            router?.query?.statement[0]?.split("-")[0]
-          );
-          fetchCampNickNameList();
-          if (res?.data?.camp?.parent_camp_num) {
-            fetchParentsCampList(
-              res?.data?.camp?.topic_num,
-              res?.data?.camp?.parent_camp_num,
-              res?.data?.camp?.camp_num
-            );
+          res = await getEditStatementApi(getDataPayload);
+          if (
+            res?.data?.statement?.go_live_time <
+              Math.floor(new Date().getTime() / 1000) &&
+            objection
+          ) {
+            router?.back();
+          } else {
+            setPayloadBreadCrumb({
+              camp_num: res?.data?.statement?.camp_num ?? "1",
+              topic_num: res?.data?.statement?.topic_num,
+            });
           }
-          setPayloadBreadCrumb({
-            camp_num: res?.data?.camp?.camp_num ?? "1",
-            topic_num: res?.data?.camp?.topic_num,
-          });
+        } else if (manageFormOf == "camp") {
+          res = await getEditCampApi(getDataPayload);
+          if (
+            res?.data?.camp?.go_live_time <
+              Math.floor(new Date().getTime() / 1000) &&
+            objection
+          ) {
+            router?.back();
+          } else {
+            fetchCampNickNameList();
+            if (res?.data?.camp?.parent_camp_num) {
+              fetchParentsCampList(
+                res?.data?.camp?.topic_num,
+                res?.data?.camp?.parent_camp_num,
+                res?.data?.camp?.camp_num
+              );
+            }
+            setPayloadBreadCrumb({
+              camp_num: res?.data?.camp?.camp_num ?? "1",
+              topic_num: res?.data?.camp?.topic_num,
+            });
+          }
         } else if (manageFormOf == "topic") {
-          res = await getEditTopicApi(
-            router?.query?.statement[0]?.split("-")[0]
-          );
-
-          fetchNameSpaceList();
-          setPayloadBreadCrumb({
-            topic_num: res?.data?.topic?.topic_num,
-            camp_num: "1",
-          });
+          res = await getEditTopicApi(getDataPayload);
+          if (
+            res?.data?.topic?.go_live_time <
+              Math.floor(new Date().getTime() / 1000) &&
+            objection
+          ) {
+            router?.back();
+          } else {
+            fetchNameSpaceList();
+            setPayloadBreadCrumb({
+              topic_num: res?.data?.topic?.topic_num,
+              camp_num: "1",
+            });
+          }
         } else {
-          res = await getEditStatementApi(
-            router?.query?.statement[0]?.split("-")[0]
-          );
+          res = await getEditStatementApi(getDataPayload);
         }
         if (res && res.status_code === 200) {
           setEditStatementData(res);
@@ -301,44 +319,46 @@ export default function AddOrManage({ add }) {
       };
       const result = await getAllUsedNickNames(reqBody);
       if (result?.status_code == 200) {
-        form.setFieldsValue(
-          add
-            ? {
-                nick_name: result?.data[0].id,
-              }
-            : !!((objection || update) && manageFormOf == "statement")
-            ? {
-                nick_name: res?.data?.nick_name[0]?.id,
-                parent_camp_num: res?.data?.statement?.camp_num,
-                statement: res?.data?.statement?.value,
-                edit_summary: res?.data?.statement?.note,
-              }
-            : manageFormOf == "camp"
-            ? {
-                nick_name: res?.data?.nick_name[0]?.id,
-                statement: res?.data?.camp?.note,
-                parent_camp_num: res?.data?.camp?.parent_camp_num,
-                camp_name: res?.data?.camp?.camp_name,
-                keywords: res?.data?.camp?.key_words,
-                camp_about_url: res?.data?.camp?.camp_about_url,
-                camp_about_nick_name:
-                  res?.data?.camp?.camp_about_nick_id > 0
-                    ? res?.data?.camp?.camp_about_nick_id
-                    : null,
-                edit_summary: update ? res?.data?.camp?.note : null,
-              }
-            : manageFormOf == "topic"
-            ? {
-                nick_name: res?.data?.nick_name[0]?.id,
-                topic_name: res?.data?.topic?.topic_name,
-                name_space: res?.data?.topic?.namespace_id,
-              }
-            : {
-                nick_name: res?.data?.nick_name[0]?.id,
-                statement: res?.data?.statement?.value,
-                parent_camp_num: res?.data?.statement?.camp_num,
-              }
-        );
+        let fieldSValuesForForm = add
+          ? {
+              nick_name: result?.data[0].id,
+            }
+          : !!((objection || update) && manageFormOf == "statement")
+          ? {
+              nick_name: res?.data?.nick_name[0]?.id,
+              parent_camp_num: res?.data?.statement?.camp_num,
+              statement: res?.data?.statement?.value,
+              edit_summary: res?.data?.statement?.note,
+            }
+          : manageFormOf == "camp"
+          ? {
+              nick_name: res?.data?.nick_name[0]?.id,
+              statement: res?.data?.camp?.note,
+              parent_camp_num: res?.data?.camp?.parent_camp_num,
+              camp_name: res?.data?.camp?.camp_name,
+              keywords: res?.data?.camp?.key_words,
+              camp_about_url: res?.data?.camp?.camp_about_url,
+              camp_about_nick_name:
+                res?.data?.camp?.camp_about_nick_id > 0
+                  ? res?.data?.camp?.camp_about_nick_id
+                  : null,
+              edit_summary: update ? res?.data?.camp?.note : null,
+            }
+          : manageFormOf == "topic"
+          ? {
+              nick_name: res?.data?.nick_name[0]?.id,
+              topic_name: res?.data?.topic?.topic_name,
+              name_space: res?.data?.topic?.namespace_id,
+            }
+          : {
+              nick_name: res?.data?.nick_name[0]?.id,
+              statement: res?.data?.statement?.value,
+              parent_camp_num: res?.data?.statement?.camp_num,
+            };
+
+        form.setFieldsValue(fieldSValuesForForm);
+
+        setInitialFormValues(form?.getFieldsValue());
         setNickNameData(result?.data);
         if (manageFormOf == "topic" || manageFormOf == "camp") {
           const oldOptions = [...options];
@@ -355,11 +375,26 @@ export default function AddOrManage({ add }) {
           });
 
           setOptions(oldOptions);
+          setInitialOptions([
+            {
+              checked: oldOptions[0]?.checked,
+              disable: oldOptions[0]?.disable,
+            },
+            {
+              checked: oldOptions[1]?.checked,
+              disable: oldOptions[1]?.disable,
+            },
+          ]);
         }
       }
       setScreenLoading(false);
     }
-    isUserAuthenticated ? nickNameListApiCall() : router.push("/login");
+    isUserAuthenticated
+      ? nickNameListApiCall()
+      : router.push({
+          pathname: "/login",
+          query: { returnUrl: router.asPath },
+        });
   }, []);
 
   let formTitle = () => {
@@ -383,6 +418,16 @@ export default function AddOrManage({ add }) {
       });
 
       setOptions(oldOptions);
+      setInitialOptions([
+        {
+          checked: oldOptions[0]?.checked,
+          disable: oldOptions[0]?.disable,
+        },
+        {
+          checked: oldOptions[1]?.checked,
+          disable: oldOptions[1]?.disable,
+        },
+      ]);
     };
   }, []);
 
@@ -396,12 +441,20 @@ export default function AddOrManage({ add }) {
         op.checked = false;
       }
     });
-
     setOptions(oldOptions);
+    if (
+      oldOptions[0]?.checked == initialOptions[0]?.checked &&
+      oldOptions[0]?.disable == initialOptions[0]?.disable &&
+      oldOptions[1]?.checked == initialOptions[1]?.checked &&
+      oldOptions[1]?.disable == initialOptions[1]?.disable
+    ) {
+      setSubmitIsDisableCheck(true);
+    } else {
+      setSubmitIsDisableCheck(false);
+    }
   };
-
   const extra = () => {
-    if (manageFormOf == "camp") {
+    if (manageFormOf == "camp" && !objection) {
       return (
         <PreventSubCamps
           options={options}
@@ -446,6 +499,59 @@ export default function AddOrManage({ add }) {
                 validateTrigger={messages.formValidationTypes()}
                 initialValues={{
                   available_for_child: 0,
+                }}
+                onValuesChange={(value) => {
+                  let initialFormStatus = {
+                    statement: "",
+                    edit_summary: "",
+                  } as any;
+
+                  let nowFormStatus = {
+                    statement: "",
+                    edit_summary: "",
+                  } as any;
+
+                  initialFormStatus = Object.keys(initialFormValues).reduce(
+                    (acc, key) => {
+                      acc[key] =
+                        initialFormValues[key] === null || undefined
+                          ? ""
+                          : initialFormValues[key];
+                      return acc;
+                    },
+                    {}
+                  );
+                  if (initialFormStatus?.edit_summary == null || undefined) {
+                    initialFormStatus.edit_summary = "";
+                  }
+                  if (initialFormStatus?.statement == null || undefined) {
+                    initialFormStatus.statement = "";
+                  }
+                  nowFormStatus = Object.keys(form?.getFieldsValue()).reduce(
+                    (acc, key) => {
+                      acc[key] =
+                        form?.getFieldsValue()[key] === null || undefined
+                          ? ""
+                          : form?.getFieldsValue()[key];
+                      return acc;
+                    },
+                    {}
+                  );
+                  if (nowFormStatus?.edit_summary == null || undefined) {
+                    nowFormStatus.edit_summary = "";
+                  }
+                  if (nowFormStatus?.statement == null || undefined) {
+                    nowFormStatus.statement = "";
+                  }
+
+                  if (
+                    JSON.stringify(nowFormStatus) ==
+                    JSON.stringify(initialFormStatus)
+                  ) {
+                    setSubmitIsDisable(true);
+                  } else {
+                    setSubmitIsDisable(false);
+                  }
                 }}
                 onFinish={onFinish}
               >
@@ -537,7 +643,9 @@ export default function AddOrManage({ add }) {
                           label={
                             <>
                               Camp Name <span className="required">*</span>
-                              <span>(Limit 30 Chars)</span>
+                              <span className={styles.small}>
+                                (Limit 30 Chars)
+                              </span>
                             </>
                           }
                           name="camp_name"
@@ -586,7 +694,9 @@ export default function AddOrManage({ add }) {
                           label={
                             <>
                               Topic Name <span className="required">*</span>
-                              <span>(Limit 30 Chars)</span>
+                              <span className={styles.small}>
+                                (Limit 30 Chars)
+                              </span>
                             </>
                           }
                           name="topic_name"
@@ -607,15 +717,16 @@ export default function AddOrManage({ add }) {
                         >
                           <Input disabled={objection} maxLength={30} />
                         </Form.Item>
-
-                        {/* Name space -------------------------------------------------------------------- */}
-                        {!objection && (
+                      </Col>
+                      {/* Name space -------------------------------------------------------------------- */}
+                      {!objection && (
+                        <Col xs={24} sm={24} xl={12}>
                           <Form.Item
-                            className={`${styles.formItem} mb-2`}
+                            className={`${styles.formItem} namespace_in mb-2`}
                             label={
                               <>
                                 Namespace <span className="required">*</span>
-                                <span>
+                                <span className={styles.small}>
                                   (General is recommended, unless you know
                                   otherwise)
                                 </span>
@@ -644,8 +755,8 @@ export default function AddOrManage({ add }) {
                               ))}
                             </Select>
                           </Form.Item>
-                        )}
-                      </Col>
+                        </Col>
+                      )}
                     </>
                   )}
 
@@ -729,7 +840,9 @@ export default function AddOrManage({ add }) {
                           label={
                             <>
                               Edit Summary{" "}
-                              <small>(Briefly describe your changes)</small>
+                              <small className={styles.small}>
+                                (Briefly describe your changes)
+                              </small>
                             </>
                           }
                           {...summaryRule}
@@ -750,7 +863,9 @@ export default function AddOrManage({ add }) {
                               label={
                                 <>
                                   Camp About URL
-                                  <span>(Limit 1024 Chars)</span>
+                                  <span className={styles.small}>
+                                    (Limit 1024 Chars)
+                                  </span>
                                 </>
                               }
                               name="camp_about_url"
@@ -796,6 +911,7 @@ export default function AddOrManage({ add }) {
                         size="large"
                         className={`btn-orange mr-3 ${styles.btnSubmit}`}
                         htmlType="submit"
+                        disabled={submitIsDisable && submitIsDisableCheck}
                       >
                         {add
                           ? K?.exceptionalMessages?.submitStatementButton
@@ -908,6 +1024,9 @@ export default function AddOrManage({ add }) {
           form?.submit();
           setModalVisible(false);
         }}
+        okButtonProps={{
+          disabled: manageFormOf == "statement" ? false : submitIsDisable,
+        }}
         okText={
           add
             ? K?.exceptionalMessages?.submitStatementButton
@@ -966,17 +1085,35 @@ export default function AddOrManage({ add }) {
                 {form?.getFieldValue("keywords")}
               </Descriptions.Item>
 
-              <Descriptions.Item label="Camp About Url">
-                {form?.getFieldValue("camp_about_url")}
+              <Descriptions.Item label="Camp About URL">
+                <Link href={form?.getFieldValue("camp_about_url")}>
+                  <a>{form?.getFieldValue("camp_about_url")}</a>
+                </Link>
               </Descriptions.Item>
 
               <Descriptions.Item label="Camp About Nick Name">
-                {
-                  campNickName?.find(
-                    (id) =>
-                      id?.id == form?.getFieldValue("camp_about_nick_name")
-                  )?.nick_name
-                }
+                <Link
+                  href={`/user/supports/${
+                    form?.getFieldValue("camp_about_nick_name") || ""
+                  }?topicnum=${
+                    editStatementData?.data?.topic?.topic_num || ""
+                  }&campnum=${
+                    editStatementData?.data?.camp?.camp_num || ""
+                  }&namespace=${
+                    editStatementData?.data?.topic?.namespace_id || 1
+                  }`}
+                  passHref
+                >
+                  <a>
+                    {" "}
+                    {
+                      campNickName?.find(
+                        (id) =>
+                          id?.id == form?.getFieldValue("camp_about_nick_name")
+                      )?.nick_name
+                    }
+                  </a>
+                </Link>
               </Descriptions.Item>
             </>
           )}
@@ -986,12 +1123,30 @@ export default function AddOrManage({ add }) {
             {form?.getFieldValue("edit_summary")}
           </Descriptions.Item>
           <Descriptions.Item label="Submitter Nick Name">
-            {" "}
-            {
-              nickNameData?.find(
-                (id) => id?.id == form?.getFieldValue("nick_name")
-              )?.nick_name
-            }
+            <Link
+              href={`/user/supports/${
+                form?.getFieldValue("nick_name") || ""
+              }?topicnum=${
+                editStatementData?.data?.topic?.topic_num ||
+                router?.query?.statement?.at(0)?.split("-")[0] ||
+                ""
+              }&campnum=${
+                editStatementData?.data?.camp?.camp_num ||
+                editStatementData?.data?.topic?.camp_num ||
+                router?.query?.statement?.at(1)?.split("-")[0] ||
+                1
+              }&namespace=${editStatementData?.data?.topic?.namespace_id || 1}`}
+              passHref
+            >
+              <a>
+                {" "}
+                {
+                  nickNameData?.find(
+                    (id) => id?.id == form?.getFieldValue("nick_name")
+                  )?.nick_name
+                }
+              </a>
+            </Link>
           </Descriptions.Item>
         </Descriptions>
       </Modal>

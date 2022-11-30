@@ -33,7 +33,7 @@ const CreateTopicFromUI = ({
 
   return (
     <Fragment>
-      <Card title={CardTitle} className="can-card-style">
+      <Card title={CardTitle} className={`can-card-style ${styles.form_card}`}>
         <Form
           form={form}
           onFinish={onFinish}
@@ -133,6 +133,7 @@ const CreateTopicFromUI = ({
             </Col>
             <Col xs={24} sm={12}>
               <Form.Item
+                className={styles.edit_summary_input}
                 label={
                   <Fragment>
                     {labels.cr_edit_summary}
@@ -150,7 +151,7 @@ const CreateTopicFromUI = ({
             </Col>
           </Row>
 
-          <Form.Item noStyle>
+          <div className={styles.btn_box}>
             <Button
               type="primary"
               htmlType="submit"
@@ -171,7 +172,7 @@ const CreateTopicFromUI = ({
             >
               Cancel
             </Button>
-          </Form.Item>
+          </div>
         </Form>
       </Card>
     </Fragment>

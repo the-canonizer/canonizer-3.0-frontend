@@ -92,3 +92,16 @@ export const deletePost = async (id) => {
     handleError(error);
   }
 };
+
+export const getThreadData = async (thread_id: any) => {
+  try {
+    const response = await NetworkCall.fetch(
+      ForumRequests.getThreadDetails(thread_id),
+      false
+    );
+
+    return response;
+  } catch (error) {
+    handleError(error);
+  }
+};

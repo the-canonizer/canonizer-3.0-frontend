@@ -193,11 +193,24 @@
       }
     }
 
-    .captchaCol {
-      margin-bottom: 15px;
-      // width: 70%;
-      // height: 60px;
-      // border: 1px solid #d9d9d9;
+    .captchaContainer {
+      margin-top: 15px;
+      margin-bottom: 10px;
+
+      .captchaCol {
+        width: 100%;
+        margin: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      @media screen and (max-width: 767px) {
+        .captchaCol {
+          justify-content: flex-start;
+          align-items: flex-start;
+        }
+      }
     }
     .captchaEnter {
       width: 70%;
@@ -258,7 +271,9 @@
   }
 
   @media screen and (max-width: 767px) {
+    overflow: hidden;
     form {
+      padding: 15px;
       .section_one {
         input {
           &:not([type="checkbox"]) {
@@ -307,6 +322,13 @@
   width: 100%;
   height: 100%;
   display: flex;
+}
+
+.captchaContainer {
+  [class="ant-form-item-explain ant-form-item-explain-connected"] {
+    text-align: center;
+    margin-left: -72px;
+  }
 }
 
 @media screen and (min-width: 769px) and (max-width: 992px) {

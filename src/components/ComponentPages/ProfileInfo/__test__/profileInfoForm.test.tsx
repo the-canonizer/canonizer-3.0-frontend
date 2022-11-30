@@ -78,7 +78,6 @@ describe("Profile Info Page", () => {
     });
     expect(heading).toBeInTheDocument();
     expect(screen.getByText(labels.firstName)).toBeInTheDocument();
-    expect(screen.getByText(labels.middleName)).toBeInTheDocument();
     expect(screen.getByText(labels.lastName)).toBeInTheDocument();
     expect(screen.getByText(labels.email)).toBeInTheDocument();
     expect(screen.getByText(labels.gender)).toBeInTheDocument();
@@ -109,7 +108,6 @@ describe("Profile Info Page", () => {
     );
 
     const firstName = screen.getByPlaceholderText(placeholders.firstName);
-    const middleName = screen.getByPlaceholderText(placeholders.middleName);
     const lastName = screen.getByPlaceholderText(placeholders.lastName);
     const email = screen.getByPlaceholderText(placeholders.email);
     const addressLine1 = screen.getByPlaceholderText(placeholders.addressLine1);
@@ -123,10 +121,6 @@ describe("Profile Info Page", () => {
     expect(firstName).toBeInTheDocument();
     expect(firstName).toHaveAttribute("type", "text");
     expect(firstName).toHaveAttribute("placeholder", placeholders.firstName);
-
-    expect(middleName).toBeInTheDocument();
-    expect(middleName).toHaveAttribute("type", "text");
-    expect(middleName).toHaveAttribute("placeholder", placeholders.middleName);
 
     expect(lastName).toBeInTheDocument();
     expect(lastName).toHaveAttribute("type", "text");

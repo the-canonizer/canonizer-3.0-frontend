@@ -56,8 +56,7 @@ export const validations: ErrorContainer = {
   firstNameSpace: "The first name should only contain alphabets and spaces.",
   lastNameSpace: "The last name should only contain alphabets and spaces.",
   alphaSpace: "The field must be in alphabets and space only.",
-  otpMsgs:
-    "Note : OTP has been sent to your registered email address and phone number.",
+  otpMsgs: "Note : OTP has been sent to your registered email address.",
   nickNm: "Please select nick name!",
   topicName: "Please enter topic name!",
   topiNameMax30: "Maximum 30 character allowed!",

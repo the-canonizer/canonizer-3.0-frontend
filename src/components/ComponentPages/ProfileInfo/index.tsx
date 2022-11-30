@@ -43,10 +43,12 @@ const ProfileInfo = () => {
   const [disableButton, setDisableButton] = useState(false);
   const [postalCodeDisable, setPostalCodeDisable] = useState(false);
   const [updateAddress, setUpdateAddress] = useState<UpdateAddress>({});
+  const [zipCode, setZipCode] = useState(false);
+  const [add, setAdd] = useState(false);
+
   const publicPrivateArray = {
     first_name: "first_name",
     last_name: "last_name",
-    middle_name: "middle_name",
     email: "email",
     address_1: "address_1",
     address_2: "address_2",
@@ -75,12 +77,14 @@ const ProfileInfo = () => {
   }
   //on update profile click
   const onFinish = async (values: any) => {
-    let birthday = values.birthday._d;
+    debugger;
+    let birthday = values.birthday?._d;
+    let code = values.postal_code;
     setDisableButton(true);
+    setPostalCodeDisable(true);
     //Set Private Public flags
     values.first_name_bit = isPublicOrPrivate(publicPrivateArray.first_name);
     values.last_name_bit = isPublicOrPrivate(publicPrivateArray.last_name);
-    values.middle_name_bit = isPublicOrPrivate(publicPrivateArray.middle_name);
     values.email_bit = isPublicOrPrivate(publicPrivateArray.email);
     values.address_1_bit = isPublicOrPrivate(publicPrivateArray.address_1);
     values.address_2_bit = isPublicOrPrivate(publicPrivateArray.address_2);
@@ -88,7 +92,12 @@ const ProfileInfo = () => {
     values.state_bit = isPublicOrPrivate(publicPrivateArray.state);
     values.country_bit = isPublicOrPrivate(publicPrivateArray.country);
     values.birthday_bit = isPublicOrPrivate(publicPrivateArray.birthday);
-    values.birthday = formatDate(birthday);
+    //values.birthday = formatDate(birthday);
+    if (birthday == "" || birthday == null) {
+      values.birthday = "";
+    } else {
+      values.birthday = formatDate(birthday);
+    }
 
     //End Set Private Public flags
     values.mobile_carrier = formVerify.getFieldValue(
@@ -98,15 +107,21 @@ const ProfileInfo = () => {
       publicPrivateArray.phone_number
     );
     values.address_1 = address;
+    values.postal_code = code;
     values = { ...values, ...updateAddress };
     let res = await UpdateUserProfileInfo(values);
     if (res && res.status_code === 200) {
       message.success(res.message);
       setDisableButton(false);
+      setAdd(false);
+      setZipCode(false);
     } else {
       setDisableButton(false);
+      setAdd(false);
+      setZipCode(false);
     }
   };
+
   const { isUserAuthenticated } = isAuth();
 
   const onFinishFailed = (errorInfo) => {
@@ -120,7 +135,6 @@ const ProfileInfo = () => {
       message.success(res.message);
       setIsOTPModalVisible(true);
       setOTP("");
-      console.log(res.data.otp);
       //setOTP(res.data.otp)
     }
   };
@@ -161,7 +175,17 @@ const ProfileInfo = () => {
     }
   };
   const handleAddressChange = (value) => {
-    setAddress(value);
+    if (zipCode && !add) {
+      setAddress(value);
+      setPostalCodeDisable(false);
+    } else {
+      setAddress(value);
+      setPostalCodeDisable(false);
+      let postalCode = "";
+      form.setFieldsValue({
+        ["postal_code"]: postalCode,
+      });
+    }
   };
 
   const handleAddressSelect = async (address, placeId) => {
@@ -266,7 +290,8 @@ const ProfileInfo = () => {
           };
           formVerify.setFieldsValue(verify);
           //format date for datepicker
-          profileData.birthday = moment(profileData.birthday, "YYYY-MM-DD");
+          if (profileData.birthday != null && profileData.birthday != "")
+            profileData.birthday = moment(profileData.birthday, "YYYY-MM-DD");
           if (profileData.postal_code) setPostalCodeDisable(true);
           form.setFieldsValue(profileData);
           setPrivateFlags(profileData.private_flags);
@@ -284,10 +309,16 @@ const ProfileInfo = () => {
             state: profileData.state,
             country: profileData.country,
             email: profileData?.email,
-            postal_code: profileData?.postal_code,
+            // postal_code: profileData?.postal_code,
           };
           if (profileData.postalCode)
             updateAddress.postal_code = profileData.postalCode;
+          if (profileData.postal_code !== "") {
+            setZipCode(true);
+          }
+          if (profileData.address_1 !== "") {
+            setAdd(true);
+          }
           setUpdateAddress(updateAddress);
         }
       }

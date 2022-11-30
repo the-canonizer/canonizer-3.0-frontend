@@ -20,6 +20,7 @@ import Spinner from "../../common/spinner/spinner";
 import OTPVerify from "../Registration/UI/otp";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 import { setValue } from "../../../store/slices/utilsSlice";
+import messages from "../../../messages";
 
 const Login = ({ isModal, isTest = false }) => {
   const remember = useSelector((state: RootState) => state.utils.remember_me);
@@ -86,10 +87,13 @@ const Login = ({ isModal, isTest = false }) => {
 
       isModal ? closeModal() : "";
 
+      console.log("router_aspath", router);
+
       if (router.query.returnUrl) {
         router.push(`${router.query.returnUrl}`);
       } else {
-        if (!router.pathname?.includes("/forum/")) {
+        if (router.pathname == "/login") {
+          console.log("router_aspath-inside");
           router.push("/");
         } else {
           closeModal();
@@ -179,7 +183,7 @@ const Login = ({ isModal, isTest = false }) => {
             isResend={isResend}
             failedMsg={failedMsg}
             onResendClick={onResendClick}
-            logMsg="Note: Verification code has been sent to your registered email address."
+            logMsg={messages?.labels?.otLabel}
           />
         ) : (
           <LoginUI

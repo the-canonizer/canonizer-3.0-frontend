@@ -32,11 +32,12 @@
   .btnGroup {
     display: flex;
     flex-wrap: wrap;
-    button {
+    gap: 10px;
+    /* button {
       &:first-child {
         margin-right: 15px;
       }
-    }
+    } */
 
     @media screen and (min-width: 576px) {
       button {
@@ -47,9 +48,9 @@
     @media screen and (max-width: 575px) {
       button {
         max-width: 100%;
-        &:first-child {
+        /* &:first-child {
           margin-right: 0;
-        }
+        } */
       }
     }
   }

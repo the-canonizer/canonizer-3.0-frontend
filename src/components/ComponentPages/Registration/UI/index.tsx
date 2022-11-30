@@ -165,11 +165,12 @@ function RegistrationUi({
                 className={styles.phoneInput}
               >
                 <Input
+                  type="tel"
                   addonBefore={prefixSelector}
                   style={{ width: "100%" }}
                   className={`${styles.phoneInput} numberInput`}
                   placeholder={messages.placeholders.phone}
-                  autoComplete="new-phone"
+                  autoComplete="off"
                   maxLength={10}
                   onKeyDown={(e) =>
                     e.key === " " && e.keyCode === 32 && e.preventDefault()
@@ -192,7 +193,7 @@ function RegistrationUi({
                   className={styles.passwordInput}
                   type="password"
                   placeholder={messages.placeholders.password}
-                  autoComplete="new-password"
+                  autoComplete="off"
                 />
               </Form.Item>
             </Col>
@@ -212,33 +213,28 @@ function RegistrationUi({
                   className={styles.passwordInput}
                   type="password"
                   placeholder={messages.placeholders.confirmPassword}
-                  autoComplete="new-conf-password"
+                  autoComplete="off"
                 />
-              </Form.Item>
-            </Col>
-            <Col md={{ span: 12, offset: 6 }} style={{ width: "100%" }}>
-              <Form.Item
-                // label={messages.labels.captcha}
-                name="captcha"
-                {...messages.getCaptchaRule(showCaptchaError)}
-                style={{
-                  paddingLeft: "30px",
-                  marginTop: "15px",
-                  marginBottom: "0",
-                }}
-              >
-                <div className={styles.captchaCol}>
-                  <ReCAPTCHA
-                    ref={recaptchaRef}
-                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-                    onChange={onReCAPTCHAChange}
-                    grecaptcha={global?.window?.grecaptcha}
-                  />
-                </div>
               </Form.Item>
             </Col>
           </Row>
         </div>
+
+        <Form.Item
+          name="captcha"
+          {...messages.getCaptchaRule(showCaptchaError)}
+          className={styles.captchaContainer}
+        >
+          <div className={styles.captchaCol}>
+            <ReCAPTCHA
+              ref={recaptchaRef}
+              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+              onChange={onReCAPTCHAChange}
+              grecaptcha={global?.window?.grecaptcha}
+            />
+          </div>
+        </Form.Item>
+
         <Form.Item>
           <Button
             type="primary"

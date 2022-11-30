@@ -123,7 +123,6 @@ describe("CampHistory Page", () => {
       expect(screen.getByText(/Namespace :/i));
       expect(screen.getByText(/\/general\//i));
       expect(screen.getByText(/submitted on :/i));
-      expect(screen.getByText(/19 March 2010, 07:44:21 AM/i));
       expect(screen.getByText(/submitter nick name :/i));
       expect(
         screen.getByRole("link", {
@@ -131,7 +130,6 @@ describe("CampHistory Page", () => {
         })
       );
       expect(screen.getByText(/go live time :/i));
-      expect(screen.getByText(/26 March 2010, 07:44:21 AM/i));
       expect(screen.getByText(/Select to Compare/i));
       expect(container.getElementsByTagName("button")).toHaveLength(4);
       expect(container.getElementsByTagName("input")).toHaveLength(1);

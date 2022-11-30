@@ -1,10 +1,12 @@
 const BaseCanonizerServiceUrl = process.env.NEXT_PUBLIC_BASE_SERVICE_URL;
 const BaseCanonizerApiUrl = process.env.NEXT_PUBLIC_BASE_API_URL;
 const BaseImagesURL = process.env.NEXT_PUBLIC_BASE_IMAGES_URL;
+const BaseVideosURL = process.env.NEXT_PUBLIC_BASE_VIDEOS_URL;
 
 const NetworkConstants = {
   URL: {
     BaseImagesURL,
+    BaseVideosURL,
     BaseAPI: BaseCanonizerApiUrl,
     Base: process.env.NEXT_PUBLIC_BASE_URL,
     Timeout: process.env.NEXT_PUBLIC_TIMEOUT,
@@ -118,6 +120,7 @@ const NetworkConstants = {
     PostUpdate: `${BaseCanonizerApiUrl}/post/update`,
     PostList: `${BaseCanonizerApiUrl}/post/list`,
     PostDelete: `${BaseCanonizerApiUrl}/post/delete`,
+    GetThreadData: `${BaseCanonizerApiUrl}/thread/`,
 
     //camp news feed add edit update
     GetEditCampNewsFeed: `${BaseCanonizerApiUrl}/edit-camp-newsfeed`,

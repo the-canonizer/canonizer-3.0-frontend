@@ -145,7 +145,7 @@ const Notifications = ({}) => {
           description: message?.notification?.body,
           icon: <Fav />,
           onClick: () => {
-            router.push({ pathname: url });
+            router.push({ pathname: url, query: { from: router?.asPath } });
           },
         });
       });

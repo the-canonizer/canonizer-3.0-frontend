@@ -76,4 +76,14 @@ export default class TreeRequest extends Request {
       {}
     );
   }
+
+  static getThreadDetails(id) {
+    return new Request(
+      K.Network.URL.GetThreadData + id,
+      K.Network.Method.GET,
+      null,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
 }

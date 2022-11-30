@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 // import ManageSupportUI from "./ManageSupportUI";
 import { Button, Image, message } from "antd";
 import styles from "./ManageSupportUI/ManageSupport.module.scss";
@@ -24,7 +24,7 @@ import {
   setManageSupportUrlLink,
 } from "src/store/slices/campDetailSlice";
 import moment from "moment";
-const ManageSupportUI = dynamic(() => import("./ManageSupportUI"), {
+const ManageSupportUI = dynamic(async () => await import("./ManageSupportUI"), {
   ssr: false,
 });
 
@@ -100,7 +100,7 @@ const ManageSupport = () => {
 
   //GetCheckSupportExistsData check support_id is 0 or 1
   let supportedCampsStatus = currentGetCheckSupportExistsData;
-
+  const campRef = useRef(null);
   const CheckDelegatedOrDirect =
     currentDelegatedSupportedClick.delegatedSupportClick;
   const reqBodyData: any = {
@@ -113,25 +113,31 @@ const ManageSupport = () => {
   const { campRecord } = useSelector((state: RootState) => ({
     campRecord: state?.topicDetails?.currentCampRecord,
   }));
+
+  const refSetter = async (reqBody) => {
+    const res = await getCurrentCampRecordApi(reqBody);
+    campRef.current = res;
+  };
+
   //isUserAuthenticated
   useEffect(() => {
     if (isUserAuthenticated) {
       setUpdatePostion(false);
-      getCurrentCampRecordApi(reqBody);
+      refSetter(reqBody);
       if (manageSupportStatusCheck) {
         getCanonizedNicknameList();
-        getActiveSupportTopicList();
+        getActiveSupportTopicList(null, null, campRef.current);
         setSubmitButtonDisable(false);
         dispatch(setManageSupportStatusCheck(false));
       }
       // else {
-      GetCheckStatusData();
+      GetCheckStatusData(campRef);
       // }
     }
   }, [isUserAuthenticated, reqBodyData.topic_num]);
 
   let warningMsg, supportSts;
-  const GetCheckStatusData = async () => {
+  const GetCheckStatusData = async (campReff: any) => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
     if (response && response.status_code === 200) {
       if (response.data?.remove_camps)
@@ -145,9 +151,13 @@ const ManageSupport = () => {
         getCanonizedNicknameList();
         getActiveSupportTopicList(
           response.data.warning,
-          response.data.support_flag
+          response.data.support_flag,
+          campReff
         );
         setSubmitButtonDisable(false);
+      }
+      if (manageSupportStatusCheck && response.data.disable_submit) {
+        dispatch(setCheckSupportExistsData(response.data));
       }
     }
   };
@@ -217,7 +227,8 @@ const ManageSupport = () => {
   const body = { topic_num: topicNum };
   const getActiveSupportTopicList = async (
     warning?: string,
-    statusFlag?: number
+    statusFlag?: number,
+    campRecordRef?: any
   ) => {
     const response = await GetActiveSupportTopic(topicNum && body);
     const fiterSupportedCamps = response?.data?.filter((val) => {
@@ -259,7 +270,7 @@ const ManageSupport = () => {
           manageSupportArr.push({
             topic_num: parseInt(topicNum),
             camp_num: parseInt(campNum),
-            camp_name: CampName,
+            camp_name: CampName ?? campRecordRef?.current?.camp_name,
             support_order: supportOrderLen,
             link: campSupportPath,
           });
@@ -277,7 +288,7 @@ const ManageSupport = () => {
           supportedCampsList.push({
             topic_num: parseInt(topicNum),
             camp_num: parseInt(campNum),
-            camp_name: CampName,
+            camp_name: CampName ?? campRecordRef?.current?.camp_name,
             support_order: supportOrderLen,
             link: campSupportPath,
           });
@@ -409,7 +420,7 @@ const ManageSupport = () => {
       add_camp: addCampsData,
       remove_camps: campIDsArr,
       type: "direct",
-      action: "add",
+      action: campIDsArr.length > 0 ? "partial" : "add",
       nick_name_id: nickNameIDValue,
       order_update: filterArrayResult,
     };

@@ -34,7 +34,7 @@ const DirectSupportedCamps = ({ search }) => {
   const [originalDataArr, setoriginalDataArr] = useState([]);
   const [revertBack, setRevertBack] = useState([]);
   const [idData, setIdData] = useState("");
-
+  const [statusFlag, setStatusFlag] = useState(true);
   const handleRevertBack = (topicId, camps) => {
     let data = directSopportedCampsListRevert.filter((val) => {
       return val.topic_num == topicId;
@@ -153,10 +153,14 @@ const DirectSupportedCamps = ({ search }) => {
   const fetchDirectSupportedCampsList = async () => {
     let response = await getDirectSupportedCampsList();
     if (response && response.status_code === 200) {
+      {
+        response.data.length > 0 ? "" : setStatusFlag(false);
+      }
       setDirectSupportedCampsList(response.data);
       setdirectSopportedCampsListRevert(response.data);
     }
   };
+  useEffect(() => {}, [statusFlag]);
   //onLoad
   useEffect(() => {
     fetchDirectSupportedCampsList();
@@ -184,6 +188,7 @@ const DirectSupportedCamps = ({ search }) => {
       handleOk={handleOk}
       handleCancel={handleCancel}
       removeSupportCampsData={removeSupportCampsData}
+      statusFlag={statusFlag}
     />
   );
 };

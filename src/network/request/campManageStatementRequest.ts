@@ -10,9 +10,9 @@ export class campManageStatementRequest extends Request {
 
   static getEditStatement(reqBody, token) {
     return new Request(
-      K.Network.URL.GetEditStatement + "/" + reqBody,
-      K.Network.Method.GET,
-      null,
+      K.Network.URL.GetEditStatement,
+      K.Network.Method.POST,
+      reqBody,
       K.Network.Header.Type.Json,
       {},
       token
@@ -20,9 +20,9 @@ export class campManageStatementRequest extends Request {
   }
   static getEditCamp(reqBody, token) {
     return new Request(
-      K.Network.URL.GetEditCamp + "/" + reqBody,
-      K.Network.Method.GET,
-      null,
+      K.Network.URL.GetEditCamp,
+      K.Network.Method.POST,
+      reqBody,
       K.Network.Header.Type.Json,
       {},
       token
@@ -30,9 +30,9 @@ export class campManageStatementRequest extends Request {
   }
   static getEditTopic(reqBody, token) {
     return new Request(
-      K.Network.URL.GetEditTopic + "/" + reqBody,
-      K.Network.Method.GET,
-      null,
+      K.Network.URL.GetEditTopic,
+      K.Network.Method.POST,
+      reqBody,
       K.Network.Header.Type.Json,
       {},
       token

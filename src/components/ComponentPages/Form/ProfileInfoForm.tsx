@@ -160,6 +160,8 @@ function ProfileInfoForm({
                   maxLength={100}
                 />
               </Form.Item>
+            </Col>
+            <Col md={12}>
               <Form.Item
                 name="last_name"
                 label={
@@ -187,39 +189,8 @@ function ProfileInfoForm({
                   maxLength={100}
                 />
               </Form.Item>
-              <Form.Item name="gender" label={messages.labels.gender}>
-                <Radio.Group name="radiogroup" defaultValue={1}>
-                  <Space size="large" className={styles.radio_Btn}>
-                    <Radio value={0} tabIndex={7}>
-                      Male
-                    </Radio>
-                    <Radio value={1}>Female</Radio>
-                    <Radio value={2}>Other</Radio>
-                  </Space>
-                </Radio.Group>
-              </Form.Item>
             </Col>
             <Col md={12}>
-              <Form.Item
-                name="middle_name"
-                label={messages.labels.middleName}
-                {...messages.middleNameRule}
-              >
-                <Input
-                  id="middleName"
-                  addonAfter={selectAfter(
-                    "middle_name",
-                    publicOrPrivate("middle_name")
-                  )}
-                  placeholder={messages.placeholders.middleName}
-                  size="large"
-                  tabIndex={5}
-                  onKeyDown={(e) =>
-                    e.key === " " && e.keyCode === 32 && e.preventDefault()
-                  }
-                  maxLength={100}
-                />
-              </Form.Item>
               <Form.Item
                 name="email"
                 label={messages.labels.email}
@@ -233,11 +204,12 @@ function ProfileInfoForm({
                   disabled
                 />
               </Form.Item>
+            </Col>
+            <Col md={12}>
               <Form.Item label="Date of Birth">
                 <Input.Group compact className={styles.date_picker}>
                   <Form.Item
                     name="birthday"
-                    {...messages.dobRule}
                     className={styles.date_picker_input_item}
                   >
                     <DatePicker
@@ -266,6 +238,19 @@ function ProfileInfoForm({
                     </Select>
                   </Form.Item>
                 </Input.Group>
+              </Form.Item>
+            </Col>
+            <Col md={12}>
+              <Form.Item name="gender" label={messages.labels.gender}>
+                <Radio.Group name="radiogroup" defaultValue={1}>
+                  <Space size="large" className={styles.radio_Btn}>
+                    <Radio value={0} tabIndex={7}>
+                      Male
+                    </Radio>
+                    <Radio value={1}>Female</Radio>
+                    <Radio value={2}>Other</Radio>
+                  </Space>
+                </Radio.Group>
               </Form.Item>
             </Col>
           </Row>
@@ -340,6 +325,8 @@ function ProfileInfoForm({
                   size="large"
                   maxLength={255}
                   disabled={postalCodeDisable}
+                  autoComplete="off"
+                  defaultValue={publicOrPrivate("postal_code")}
                 />
               </Form.Item>
             </Col>

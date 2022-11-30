@@ -160,5 +160,20 @@
     .img_section {
       display: none;
     }
+    .form_section {
+      padding: 15px;
+
+      form {
+        button {
+          word-break: break-word;
+          white-space: pre-wrap;
+        }
+      }
+    }
+  }
+  @media screen and (max-width: 319px) {
+    .img_section {
+      display: none;
+    }
   }
 }

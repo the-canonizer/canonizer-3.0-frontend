@@ -84,4 +84,10 @@
       }
     }
   }
+
+  @media screen and (max-width: 767px) {
+    button {
+      padding: 5px !important;
+    }
+  }
 }

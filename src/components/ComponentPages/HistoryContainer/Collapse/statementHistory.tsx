@@ -5,7 +5,7 @@ const { Title } = Typography;
 import moment from "moment";
 import Link from "next/link";
 import K from "src/constants";
-const StatementHistory = ({ campStatement }) => {
+const StatementHistory = ({ campStatement, topicNamespaceId }) => {
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
@@ -26,7 +26,7 @@ const StatementHistory = ({ campStatement }) => {
               campStatement?.submitter_nick_id || ""
             }?topicnum=${campStatement?.topic_num || ""}&campnum=${
               campStatement?.camp_num || ""
-            }&namespace=1`}
+            }&namespace=${topicNamespaceId || ""}`}
             passHref
           >
             <a>{campStatement?.submitter_nick_name}</a>
@@ -40,16 +40,14 @@ const StatementHistory = ({ campStatement }) => {
       )}
       {campStatement?.objector_nick_name && (
         <Title level={5}>
-          {
-            K?.exceptionalMessages?.objectorNickNameHeading
-          }
+          {K?.exceptionalMessages?.objectorNickNameHeading}
           <span>
             <Link
               href={`/user/supports/${
                 campStatement?.objector_nick_id || ""
               }?topicnum=${campStatement?.topic_num || ""}&campnum=${
                 campStatement?.camp_num || ""
-              }&namespace=1`}
+              }&namespace=${topicNamespaceId || ""}`}
               passHref
             >
               <a>{campStatement?.objector_nick_name}</a>

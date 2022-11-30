@@ -33,6 +33,9 @@ const ManageSupportUI = ({
   campIds,
   setcampIds,
 }) => {
+  const [tagsArrayList, setTagsArrayList] = useState([]);
+  const [isTagDragged, setIsTagDragged] = useState(false);
+
   const { currentDelegatedSupportedClick } = useSelector(
     (state: RootState) => ({
       currentDelegatedSupportedClick:
@@ -86,6 +89,9 @@ const ManageSupportUI = ({
     currentGetCheckSupportExistsData?.remove_camps?.map((obj) => {
       return obj.camp_num;
     });
+  const parentSupportOrder = parentSupportDataList.map((obj) => {
+    return obj.support_order;
+  });
   const manageListOrder =
     manageSupportList.length > 0
       ? manageSupportList[manageSupportList.length - 1].support_order
@@ -99,7 +105,17 @@ const ManageSupportUI = ({
   const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
 
   const body = { topic_num: topicNum };
-
+  const nickNameloop = nickNameList.filter((nickName) => {
+    return selectedtNickname == nickName.id;
+  });
+  const nickNameIDValue = nickNameloop[0]?.id;
+  const campNumFromRemoveCamp =
+    currentGetCheckSupportExistsData.remove_camps?.map((obj) => {
+      return obj.camp_num;
+    });
+  const filterCampNum = topicSupportList.filter((obj) => {
+    return obj.camp_num == campNumFromRemoveCamp;
+  });
   // let topicSupport;
   // const topicSupportCampNum = topicSupport?.map((obj)=>{
   //   return obj.camp_num
@@ -111,6 +127,7 @@ const ManageSupportUI = ({
         setTopicSupportList(topicList.data);
       }
     })();
+    setIsTagDragged(false);
   }, []);
   const removeCampsApi = async () => {
     setSpinner(true);
@@ -119,7 +136,7 @@ const ManageSupportUI = ({
       remove_camps: removeAllCampNum(),
       type: "direct",
       action: "all",
-      nick_name_id: nickNameList[0]?.id,
+      nick_name_id: nickNameIDValue,
       order_update: [],
     };
     const topicList = await GetActiveSupportTopic(topicNum && body);
@@ -139,6 +156,7 @@ const ManageSupportUI = ({
       });
     }
   };
+
   const addRemoveApi = async () => {
     setSpinner(true);
     const addSupportId = {
@@ -159,7 +177,7 @@ const ManageSupportUI = ({
           : [],
       type: "direct",
       action: "add",
-      nick_name_id: nickNameList[0]?.id,
+      nick_name_id: nickNameIDValue,
       order_update:
         filteredList.length > 0
           ? filteredList
@@ -193,15 +211,34 @@ const ManageSupportUI = ({
       setSelectedtNickname(nickNameList[0]?.id);
     }
   }, [nickNameList]);
-  let tagsArrayList = [];
-  {
-    manageSupportList && manageSupportList.length > 0
-      ? ((tagsArrayList = manageSupportList),
-        tagsArrayList.forEach((obj) => {
-          obj.id = obj.camp_num;
-        }))
-      : "";
-  }
+  // let tagsArrayList1 = [];
+  // {
+  //   manageSupportList && manageSupportList.length > 0
+  //     ? ((tagsArrayList = manageSupportList),
+  //       tagsArrayList.forEach((obj) => {
+  //         obj.id = obj.camp_num;
+  //       }))
+  //     : "";
+  // }
+
+  useEffect(() => {
+    if (manageSupportList && manageSupportList.length > 0) {
+      const newTagList = manageSupportList.map((obj) => {
+        obj.id = obj.camp_num;
+        return obj;
+      });
+      if (!isTagDragged && parentSupportDataList.length > 0) {
+        let shouldArrayReverse = true;
+        newTagList.forEach((element) => {
+          if (element.support_order != newTagList.length) {
+            shouldArrayReverse = false;
+          }
+        });
+        if (shouldArrayReverse) setTagsArrayList(newTagList.reverse());
+        else setTagsArrayList(newTagList);
+      } else setTagsArrayList(newTagList);
+    }
+  }, [manageSupportList, parentSupportDataList]);
 
   return (
     <>
@@ -213,11 +250,13 @@ const ManageSupportUI = ({
           </div>
         }
       >
-        {unableToFindCamp ? (
+        {(CheckDelegatedOrDirect &&
+          currentGetCheckSupportExistsData.is_confirm) ||
+        unableToFindCamp ? (
           <>
-            <span className={styles.warning}>
+            <span id="warning" className={styles.warning}>
               <strong> Warning! </strong>
-              {getSupportStatusData}
+              {getSupportStatusData || currentGetCheckSupportExistsData.warning}
             </span>
           </>
         ) : (
@@ -225,32 +264,41 @@ const ManageSupportUI = ({
             {getSupportStatusData != "" || CheckDelegatedOrDirect ? (
               <>
                 {parentSupportDataList != "" ? (
-                  <span className={styles.warning}>
-                    <strong> Warning! </strong>
-                    {getSupportStatusData != ""
-                      ? getSupportStatusData
-                      : warningForDirecteSupportedCamps}
-                  </span>
+                  <>
+                    <span
+                      className={styles.warning}
+                      id="getSupportStatusDataWarning"
+                    >
+                      <strong> Warning! </strong>
+                      {getSupportStatusData != ""
+                        ? getSupportStatusData
+                        : warningForDirecteSupportedCamps}
+                    </span>
+                    <Col md={12}>
+                      {parentSupportDataList?.map((tag) => {
+                        return (
+                          <Tag
+                            key={tag.camp_num}
+                            className={styles.tag_btn}
+                            id="tags"
+                          >
+                            <div>
+                              {""}
+                              <span className={styles.count}>{""}</span>
+                            </div>
+
+                            <a href="#">
+                              {tag.support_order} . {tag.camp_name}
+                            </a>
+                          </Tag>
+                        );
+                      })}
+                    </Col>
+                    <div className={styles.hrtag}></div>
+                  </>
                 ) : (
                   ""
                 )}
-                <Col md={12}>
-                  {parentSupportDataList?.map((tag) => {
-                    return (
-                      <Tag key={tag.camp_num} className={styles.tag_btn}>
-                        <div>
-                          {""}
-                          <span className={styles.count}>{""}</span>
-                        </div>
-
-                        <a href="#">
-                          {tag.support_order} . {tag.camp_name}
-                        </a>
-                      </Tag>
-                    );
-                  })}
-                </Col>
-                <div className={styles.hrtag}></div>
               </>
             ) : (
               ""
@@ -276,10 +324,11 @@ const ManageSupportUI = ({
               ""
             ) : (
               <div className="mb-4">
-                <span className={styles.quickAction}>
-                  Quick Action:
+                <span id="quickActions" className={styles.quickAction}>
+                  Quick Actions:
                   <span className={styles.checkbox}>
                     <input
+                      id="checkbox"
                       type="checkbox"
                       checked={checked}
                       onClick={(e) => {
@@ -290,6 +339,7 @@ const ManageSupportUI = ({
                   </span>
                   <span className={styles.removeAll}>Remove all</span>
                   <Button
+                    id="clearAllChangesBtn"
                     htmlType="button"
                     className={styles.clear_Btn}
                     onClick={(e) => {
@@ -344,6 +394,7 @@ const ManageSupportUI = ({
                 </div>
               )}
               onChange={(tags) => {
+                setIsTagDragged(true);
                 setUpdatePostion(true);
                 setManageSupportList(tags);
               }}
@@ -353,7 +404,7 @@ const ManageSupportUI = ({
         <div>
           <Card className={styles.margin_top} type="inner">
             <div className={styles.card_heading}>
-              <p>Nick Name To Support Above Camps</p>
+              <p id="nickNameToSupport">Nick Name To Support Above Camps</p>
             </div>
             <Select
               placeholder={placeholders.nickName}
@@ -388,7 +439,10 @@ const ManageSupportUI = ({
                       ? submitNickNameSupportCamps
                       : addRemoveApi
                   }
-                  disabled={submitButtonDisable}
+                  disabled={
+                    submitButtonDisable ||
+                    currentGetCheckSupportExistsData.disable_submit
+                  }
                 >
                   Submit
                 </Button>

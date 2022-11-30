@@ -15,7 +15,7 @@ const FormItem = ({
       <Input
         type={type}
         placeholder={placeholder}
-        autoComplete={"new-" + name}
+        autoComplete="off"
         onKeyDown={onKeyDown}
         maxLength={maxLength}
       />
