@@ -64,6 +64,9 @@ export default function AddOrManage({ add }) {
   const [editStatementData, setEditStatementData] = useState({ data: null });
   const [submitIsDisable, setSubmitIsDisable] = useState(true);
   const [submitIsDisableCheck, setSubmitIsDisableCheck] = useState(true);
+  const [currentTopicData, setCurrentTopicData] = useState({
+    namespace_id: "",
+  });
 
   const [modalVisible, setModalVisible] = useState(false);
   const [nickNameData, setNickNameData] = useState([]);
@@ -307,6 +310,8 @@ export default function AddOrManage({ add }) {
           topic_num: router?.query?.statement[0].split("-")[0],
           camp_num: router?.query?.statement[1].split("-")[0] ?? "1",
         });
+        setCurrentTopicData(topic_res);
+        console.log("topic_res", topic_res);
         setPayloadBreadCrumb({
           camp_num: router?.query?.statement[1].split("-")[0] ?? "1",
           topic_num: router?.query?.statement[0].split("-")[0],
@@ -1086,8 +1091,8 @@ export default function AddOrManage({ add }) {
               </Descriptions.Item>
 
               <Descriptions.Item label="Camp About URL">
-                <Link href={form?.getFieldValue("camp_about_url")}>
-                  <a>{form?.getFieldValue("camp_about_url")}</a>
+                <Link href={form?.getFieldValue("camp_about_url") || ""}>
+                  <a>{form?.getFieldValue("camp_about_url") || ""}</a>
                 </Link>
               </Descriptions.Item>
 
@@ -1135,7 +1140,11 @@ export default function AddOrManage({ add }) {
                 editStatementData?.data?.topic?.camp_num ||
                 router?.query?.statement?.at(1)?.split("-")[0] ||
                 1
-              }&namespace=${editStatementData?.data?.topic?.namespace_id || 1}`}
+              }&namespace=${
+                editStatementData?.data?.topic?.namespace_id ||
+                currentTopicData?.namespace_id ||
+                ""
+              }`}
               passHref
             >
               <a>

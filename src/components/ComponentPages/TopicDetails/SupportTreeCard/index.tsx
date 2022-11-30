@@ -60,11 +60,11 @@ const SupportTreeCard = ({
   handleSupportTreeCardCancel,
   removeSupportSpinner,
 }) => {
-  const { currentGetCheckSupportExistsData,is_checked } = useSelector(
+  const { currentGetCheckSupportExistsData, is_checked } = useSelector(
     (state: RootState) => ({
       currentGetCheckSupportExistsData:
         state.topicDetails.currentGetCheckSupportExistsData,
-        is_checked: state?.utils?.score_checkbox,
+      is_checked: state?.utils?.score_checkbox,
     })
   );
   const { isUserAuthenticated } = isAuth();
@@ -178,7 +178,7 @@ const SupportTreeCard = ({
                         {is_checked && isUserAuthenticated
                           ? data[item].full_score?.toFixed(2)
                           : data[item].score?.toFixed(2)}
-                          {/* {data[item].score?.toFixed(2)} */}
+                        {/* {data[item].score?.toFixed(2)} */}
                       </span>
                       {isUserAuthenticated ? (
                         !userNickNameList.includes(data[item].nick_name_id) ? (
@@ -269,10 +269,9 @@ const SupportTreeCard = ({
           <Paragraph>
             Total Support for This Camp (including sub-camps):
             <span className="number-style">
-            {is_checked && isUserAuthenticated
-                          ? totalFullSupportScore?.toFixed(2)
-                          : totalSupportScore?.toFixed(2)}
-                          
+              {is_checked && isUserAuthenticated
+                ? totalFullSupportScore?.toFixed(2)
+                : totalSupportScore?.toFixed(2)}
             </span>
           </Paragraph>
 
