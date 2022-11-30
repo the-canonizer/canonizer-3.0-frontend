@@ -994,6 +994,7 @@ export default function AddOrManage({ add }) {
                                 value: form?.getFieldValue("statement"),
                               });
                               setWikiStatement(res?.data);
+
                               setModalVisible(true);
                             }}
                           >
@@ -1025,7 +1026,7 @@ export default function AddOrManage({ add }) {
           setModalVisible(false);
         }}
         okButtonProps={{
-          disabled: manageFormOf == "statement" ? false : submitIsDisable,
+          disabled: submitIsDisable && submitIsDisableCheck,
         }}
         okText={
           add
@@ -1086,9 +1087,11 @@ export default function AddOrManage({ add }) {
               </Descriptions.Item>
 
               <Descriptions.Item label="Camp About URL">
-                <Link href={form?.getFieldValue("camp_about_url")}>
-                  <a>{form?.getFieldValue("camp_about_url")}</a>
-                </Link>
+                {form?.getFieldValue("camp_about_url") && (
+                  <Link href={form?.getFieldValue("camp_about_url")}>
+                    <a>{form?.getFieldValue("camp_about_url")}</a>
+                  </Link>
+                )}
               </Descriptions.Item>
 
               <Descriptions.Item label="Camp About Nick Name">
