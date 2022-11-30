@@ -38,7 +38,7 @@ const ForgotPassword = ({ isModal, isTestScreen = 0 }) => {
     if (res && res.status_code === 200) {
       form.resetFields();
       message.success(res.message);
-      dispatch(setValue({ label: "email_id", value: values.email_id }));
+      // dispatch(setValue({ label: "email_id", value: formData?.email_id }));
       setIsScreen(1);
     }
   };
@@ -57,7 +57,9 @@ const ForgotPassword = ({ isModal, isTestScreen = 0 }) => {
         message.success(res.message);
         setIsScreen(0);
         isModal && closeModal();
-        router.push("/reset-password");
+        // dispatch(setValue({ label: "email_id", value: formData?.email_id }));
+        localStorage.setItem("verified", formData?.email_id);
+        router.push({ pathname: "/reset-password" });
       }
     } else {
       if (isScreen === 1) {

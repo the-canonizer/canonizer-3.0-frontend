@@ -300,7 +300,6 @@ const TopicDetails = () => {
       GetCheckStatusData();
     }
     fetchTotalScore();
-
   }, [isUserAuthenticated, router, algorithm]);
 
   const scrollToCampStatement = () => {
