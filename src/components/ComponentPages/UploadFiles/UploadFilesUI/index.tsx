@@ -325,11 +325,11 @@ const UploadFileUI = ({
     return (
       <div>
         {(() => {
-          if (imageRegexData.test(obj.file_type) && obj.short_code_path) {
+          if (imageRegexData.test(obj.file_type) && obj.file_path) {
             return (
               <Image
                 alt="Image"
-                src={obj.short_code_path}
+                src={obj.file_path}
                 height={"150px"}
                 width={"140px"}
               />
