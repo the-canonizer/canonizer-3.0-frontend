@@ -63,6 +63,7 @@ export default function AddOrManage({ add }) {
   const router = useRouter();
   const [editStatementData, setEditStatementData] = useState({ data: null });
   const [submitIsDisable, setSubmitIsDisable] = useState(true);
+  const [submitIsDisableCheck, setSubmitIsDisableCheck] = useState(true);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [nickNameData, setNickNameData] = useState([]);
@@ -84,6 +85,7 @@ export default function AddOrManage({ add }) {
   const [campNickName, setCampNickName] = useState([]);
   const [canNameSpace, setCanNameSpace] = useState([]);
   const [options, setOptions] = useState([...messages.preventCampLabel]);
+  const [initialOptions, setInitialOptions] = useState([]);
 
   const [form] = Form.useForm();
   let objection = router?.query?.statement?.at(0)?.split("-")[1] == "objection";
@@ -373,6 +375,16 @@ export default function AddOrManage({ add }) {
           });
 
           setOptions(oldOptions);
+          setInitialOptions([
+            {
+              checked: oldOptions[0]?.checked,
+              disable: oldOptions[0]?.disable,
+            },
+            {
+              checked: oldOptions[1]?.checked,
+              disable: oldOptions[1]?.disable,
+            },
+          ]);
         }
       }
       setScreenLoading(false);
@@ -406,6 +418,16 @@ export default function AddOrManage({ add }) {
       });
 
       setOptions(oldOptions);
+      setInitialOptions([
+        {
+          checked: oldOptions[0]?.checked,
+          disable: oldOptions[0]?.disable,
+        },
+        {
+          checked: oldOptions[1]?.checked,
+          disable: oldOptions[1]?.disable,
+        },
+      ]);
     };
   }, []);
 
@@ -419,8 +441,17 @@ export default function AddOrManage({ add }) {
         op.checked = false;
       }
     });
-
     setOptions(oldOptions);
+    if (
+      oldOptions[0]?.checked == initialOptions[0]?.checked &&
+      oldOptions[0]?.disable == initialOptions[0]?.disable &&
+      oldOptions[1]?.checked == initialOptions[1]?.checked &&
+      oldOptions[1]?.disable == initialOptions[1]?.disable
+    ) {
+      setSubmitIsDisableCheck(true);
+    } else {
+      setSubmitIsDisableCheck(false);
+    }
   };
   const extra = () => {
     if (manageFormOf == "camp" && !objection) {
@@ -880,7 +911,7 @@ export default function AddOrManage({ add }) {
                         size="large"
                         className={`btn-orange mr-3 ${styles.btnSubmit}`}
                         htmlType="submit"
-                        disabled={submitIsDisable}
+                        disabled={submitIsDisable && submitIsDisableCheck}
                       >
                         {add
                           ? K?.exceptionalMessages?.submitStatementButton
