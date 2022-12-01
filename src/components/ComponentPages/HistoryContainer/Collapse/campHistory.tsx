@@ -99,7 +99,7 @@ const CampHistory = ({ campStatement, topicNamespaceId }) => {
                 campStatement?.objector_nick_id || ""
               }?topicnum=${campStatement?.topic_num || ""}&campnum=${
                 campStatement?.camp_num || ""
-              }&namespace=1`}
+              }&namespace=${topicNamespaceId || ""}`}
               passHref
             >
               <a>{campStatement?.objector_nick_name}</a>
