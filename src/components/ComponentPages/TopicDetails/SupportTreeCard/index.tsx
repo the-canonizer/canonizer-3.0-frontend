@@ -88,6 +88,7 @@ const SupportTreeCard = ({
     dispatch(setDelegatedSupportClick({ delegatedSupportClick: false }));
     dispatch(setManageSupportStatusCheck(false));
   }, []);
+
   //Delegate Support Camp
   const handleDelegatedClick = () => {
     dispatch(setManageSupportStatusCheck(true));
@@ -108,16 +109,27 @@ const SupportTreeCard = ({
     campSupportingTree: state?.topicDetails?.campSupportingTree,
     asof: state?.filters?.filterObject?.asof,
   }));
-  {
-    console.log(campSupportingTree, "campSupportingTree");
-  }
+  useEffect(() => {
+    if (campSupportingTree?.length > 0) {
+      getDelegateNicknameId(campSupportingTree);
+    }
+  }, [campSupportingTree]);
   const [loadMore, setLoadMore] = useState(false);
   const [modalData, setModalData] = useState<any>({});
+  const [delegateNickNameId, setDelegateNickNameId] = useState<number>();
   const { topicRecord, campRecord } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
   }));
-
+  const getDelegateNicknameId = (delegates) => {
+    delegates.forEach((element) => {
+      if (userNickNameList.includes(element?.nick_name_id)) {
+        setDelegateNickNameId(element?.delegate_nick_name_id);
+      } else if (element?.delegates?.length > 0) {
+        getDelegateNicknameId(element?.delegates);
+      }
+    });
+  };
   const supportLength = 15;
   const renderTreeNodes = (
     data: any,
@@ -189,7 +201,8 @@ const SupportTreeCard = ({
                           >
                             {loggedInUserDelegate ||
                             (loggedInUserChild &&
-                              data[item].delegate_nick_name_id) ||
+                              delegateNickNameId !=
+                                data[item].delegate_nick_name_id) ||
                             data[item].delegates?.findIndex((obj) =>
                               userNickNameList.includes(obj.nick_name_id)
                             ) > -1 ? (
