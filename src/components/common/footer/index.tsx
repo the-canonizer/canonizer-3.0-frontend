@@ -63,7 +63,7 @@ function Footer() {
 
   return (
     <>
-      <section className={styles.adv}>
+      {/* <section className={styles.adv}>
         <Image
           src="/images/footer-adv-img.png"
           alt=""
@@ -71,7 +71,7 @@ function Footer() {
           height={184}
           layout="intrinsic"
         />
-      </section>
+      </section> */}
       <footer className={styles.wrap}>
         <div className={styles.container}>
           <Row>
