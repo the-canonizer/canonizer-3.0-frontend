@@ -74,10 +74,13 @@ import CreateFolder from "../CreateFolder";
 import {
   createFolderApi,
   deactivateUser,
+  globalSearchUploadFiles,
 } from "../../../../network/api/userApi";
 import { labels } from "../../../../messages/label";
 import { setTimeout } from "timers";
 import SideBar from "../../CampForum/UI/sidebar";
+import queryParams from "src/utils/queryParams";
+import { searchParams } from "src/utils/generalUtility";
 
 const UploadFileUI = ({
   input,
@@ -122,6 +125,7 @@ const UploadFileUI = ({
   const [editFolderNameVal, setEditFolderNameVal] = useState("");
   const [editModal, setEditModal] = useState(false);
   const [editModalId, setEditModalId] = useState("");
+  const [filteredList, setFilteredList] = useState([]);
   const [preview, setPreview] = useState({
     previewVisible: false,
     previewPath: "",
@@ -631,6 +635,9 @@ const UploadFileUI = ({
     const createdAtValue = (val) =>
       moment.unix(val.created_at).format("MMM DD, YYYY");
     let searchName = "";
+    if (!openFolder && search !== "") {
+      return filteredList;
+    }
     return (openFolder ? getFileListFromFolderID : fileLists).filter((val) => {
       if (val.id) {
         val.key = val.id;
@@ -798,6 +805,7 @@ const UploadFileUI = ({
                               closeFolder();
                               StatusHideFile();
                               setFlickringData(false);
+                              setSearch("");
                             }}
                           >
                             <Image
@@ -911,6 +919,14 @@ const UploadFileUI = ({
   //   message.info("Clicked on Yes.");
   //   removeFiles(keyParam);
   // };
+  const getGlobalSearchUploadFile = async (queryString) => {
+    let response = await globalSearchUploadFiles(
+      queryParams({ query: queryString })
+    );
+    if (response && response.status_code == 200) {
+      setFilteredList(response.data.files.map((v) => ({ ...v, type: "file" })));
+    }
+  };
   const openFolderInGridView = (file, i) => {
     return (
       <div
@@ -1040,6 +1056,9 @@ const UploadFileUI = ({
                           name="search"
                           onChange={(e) => {
                             setSearch(e.target.value);
+                            openFolder
+                              ? filteredArray()
+                              : getGlobalSearchUploadFile(e.target.value);
                           }}
                         />
                       </div>

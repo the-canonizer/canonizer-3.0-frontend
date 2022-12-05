@@ -89,6 +89,9 @@ const NetworkConstants = {
     CreateFolder: `${BaseCanonizerApiUrl}/add-folder`,
     //DeleteFolder
     DeleteFolder: `${BaseCanonizerApiUrl}/folder/delete/`,
+    //GlobalSearchUploadedFile
+    GlobalSearchUploadedFile: `${BaseCanonizerApiUrl}/global-search-uploaded-files`,
+
     //AllSupportedCampsList
     AllSupportedCampsList: `${BaseCanonizerApiUrl}/user/supports/`,
 

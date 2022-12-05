@@ -587,4 +587,15 @@ export default class UserRequest extends Request {
       {}
     );
   }
+
+  static GlobalSearchUploadedFiles(reqbody, authToken) {
+    return new Request(
+      K.Network.URL.GlobalSearchUploadedFile + reqbody,
+      K.Network.Method.GET,
+      {},
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
 }
