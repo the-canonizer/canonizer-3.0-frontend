@@ -172,6 +172,7 @@ const NetworkConstants = {
     GetTermsAndServicesContent: `${BaseCanonizerApiUrl}/get-terms-and-services-content`,
     // terms and services and privacy
     GetPrivacyPolicyContent: `${BaseCanonizerApiUrl}/get-privacy-policy-content`,
+    VideosContent: `${BaseCanonizerApiUrl}/videos`,
   },
   Method: {
     GET: "GET",
