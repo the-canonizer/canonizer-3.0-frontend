@@ -110,7 +110,6 @@ const UploadFileUI = ({
   setFlickringData,
   toggleFileView,
   setToggleFileView,
-  setGetFileListFromFolderID,
 }) => {
   const [uploadStatus, setUploadStatus] = useState(false);
   // const [toggleFileView, setToggleFileView] = useState(false);
