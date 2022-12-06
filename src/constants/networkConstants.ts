@@ -89,6 +89,9 @@ const NetworkConstants = {
     CreateFolder: `${BaseCanonizerApiUrl}/add-folder`,
     //DeleteFolder
     DeleteFolder: `${BaseCanonizerApiUrl}/folder/delete/`,
+    //GlobalSearchUploadedFile
+    GlobalSearchUploadedFile: `${BaseCanonizerApiUrl}/global-search-uploaded-files`,
+
     //AllSupportedCampsList
     AllSupportedCampsList: `${BaseCanonizerApiUrl}/user/supports/`,
 
@@ -172,6 +175,7 @@ const NetworkConstants = {
     GetTermsAndServicesContent: `${BaseCanonizerApiUrl}/get-terms-and-services-content`,
     // terms and services and privacy
     GetPrivacyPolicyContent: `${BaseCanonizerApiUrl}/get-privacy-policy-content`,
+    VideosContent: `${BaseCanonizerApiUrl}/videos`,
   },
   Method: {
     GET: "GET",
