@@ -1,0 +1,24 @@
+.wrapper {
+  width: 100%;
+  .social_login_text {
+    color: #0f2a4d;
+    display: block;
+    text-align: center;
+    font-size: 15px;
+  }
+  .btn_group {
+    padding: 22px 0 20px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    button {
+      transition: all 0.3s;
+
+      &:not(:last-child) {
+        margin-right: 15px;
+      }
+    }
+  }
+}
