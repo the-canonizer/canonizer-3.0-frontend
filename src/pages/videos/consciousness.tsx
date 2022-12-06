@@ -4,10 +4,13 @@ import CanonVideos from "@/components/ComponentPages/canonVideos";
 
 interface Props {}
 
-export default function VideosPage({}: Props): ReactElement {
+const VideosPage = ({}: Props): ReactElement => {
   return (
     <Layout>
       <CanonVideos />
     </Layout>
   );
-}
+};
+VideosPage.displayName = "VideosPage";
+
+export default VideosPage;
