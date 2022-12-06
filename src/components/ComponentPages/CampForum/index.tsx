@@ -82,7 +82,7 @@ const ForumComponent = ({}) => {
       topic_num: +topic_num,
       camp_num: +nodeKey,
       as_of: asof,
-      asofdate: asofdate || Date.now() / 1000,
+      as_of_date: asofdate || Date.now() / 1000,
       algorithm: algorithm,
       update_all: 1,
     };
