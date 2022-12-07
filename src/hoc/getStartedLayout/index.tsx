@@ -4,7 +4,7 @@ import { store } from "../../store";
 import GetStartedHeader from "../../components/common/headers/getStartedHeader";
 import Footer from "../../components/common/footer";
 
-function GetStartedLayout(props) {
+function GetStartedLayout(props: any) {
   return (
     <>
       <div className="app-layout">

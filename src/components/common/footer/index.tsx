@@ -6,16 +6,15 @@ import { getFooterSocialLinksApi } from "../../../network/api/footerSocialLinksA
 import Image from "next/image";
 import Link from "next/link";
 const { Title } = Typography;
-import K from "../../../constants";
 
 function Footer() {
   const router = useRouter();
-  const [socialLinks, setSocialLinks] = useState(null);
+  // const [socialLinks, setSocialLinks] = useState(null);
 
   useEffect(() => {
     async function linksApiCall() {
-      const result = await getFooterSocialLinksApi();
-      setSocialLinks(result);
+      await getFooterSocialLinksApi();
+      // setSocialLinks(result);
     }
     linksApiCall();
   }, []);

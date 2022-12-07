@@ -7,9 +7,8 @@ import { AppstoreAddOutlined } from "@ant-design/icons";
 import TopicsFilter from "../../../common/topicsFilter";
 import CampRecentActivities from "../CampRecentActivities";
 import NewsFeedsCard from "../../TopicDetails/NewsFeedsCard";
-import styles from "../../../../hoc/layout/layout.module.scss";
 
-export default function HomeSideBar({ onCreateCamp = () => {} }) {
+export default function HomeSideBar({ onCreateCamp = () => {} }: any) {
   const router = useRouter();
   const { newsFeed } = useSelector((state: RootState) => ({
     newsFeed: state?.topicDetails?.newsFeed,

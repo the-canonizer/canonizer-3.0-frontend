@@ -1,5 +1,4 @@
 import NetworkCall from "../networkCall";
-import { message } from "antd";
 import { store } from "../../store";
 import HomePageRequests from "../request/homePageRequests";
 import {

@@ -1,16 +1,8 @@
 import Layout from "../hoc/layout";
 import HomePageContainer from "../components/ComponentPages/Home";
-import {
-  getCanonizedNameSpacesApi,
-  getCanonizedWhatsNewContentApi,
-  getCanonizedAlgorithmsApi,
-} from "../network/api/homePageApi";
+import { getCanonizedWhatsNewContentApi } from "../network/api/homePageApi";
 import { useDispatch } from "react-redux";
-import {
-  setCanonizedNameSpaces,
-  setWhatsNewContent,
-  setCanonizedAlgorithms,
-} from "../store/slices/homePageSlice";
+
 import {
   setFilterCanonizedTopics,
   setCurrentDate,
@@ -23,7 +15,7 @@ function Home({ current_date }) {
   // dispatch(setCanonizedNameSpaces(nameSpacesList));
   // dispatch(setWhatsNewContent(whatsNew));
   // dispatch(setCanonizedAlgorithms(algorithms));
-  
+
   dispatch(
     setFilterCanonizedTopics({
       search: "",

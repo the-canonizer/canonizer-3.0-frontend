@@ -4,7 +4,7 @@ import styles from ".././campHistory.module.scss";
 const { Title } = Typography;
 import moment from "moment";
 import Link from "next/link";
-const TopicHistory = ({ campStatement, topicNamespaceId }) => {
+const TopicHistory = ({ campStatement, topicNamespaceId }: any) => {
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };

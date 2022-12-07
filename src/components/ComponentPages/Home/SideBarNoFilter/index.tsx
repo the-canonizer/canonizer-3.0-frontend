@@ -1,10 +1,8 @@
 import { useRouter } from "next/router";
-import TopicsFilter from "../../../common/topicsFilter";
-import CampRecentActivities from "../CampRecentActivities";
 import { Button } from "antd";
 import Image from "next/image";
 
-export default function HomeSideBar({ onCreateCamp = () => {} }) {
+export default function HomeSideBar({ onCreateCamp = () => {} }: any) {
   const router = useRouter();
   const campRoute = () => {
     router.push("/create/topic");

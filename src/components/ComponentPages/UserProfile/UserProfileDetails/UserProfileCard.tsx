@@ -1,18 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import messages from "../../../../messages";
 import styles from "../UserProfileUI/UserProfile.module.scss";
 import Link from "next/link";
-import { Card, Tag, Select, Spin, BackTop } from "antd";
-import router, { useRouter } from "next/router";
+import { Card, Tag, Select, BackTop } from "antd";
+import { useRouter } from "next/router";
 export const UserProfileCard = ({
   userSupportedCampsList,
   nameSpaceList,
   dropdownNameSpaceList,
   setDropdownNameSpaceList,
   noData,
-  setUserSupportedCampsList,
-  profileData,
-}) => {
+}: any) => {
   const renderFilter = () => {
     const filteredVal = nameSpaceList.filter(
       (obj) => obj.id == dropdownNameSpaceList
@@ -20,7 +18,6 @@ export const UserProfileCard = ({
     return filteredVal[0];
   };
   const router = useRouter();
-  console.log(router, "rout");
   const reqBody = { campNum: +router?.query?.supports[0] };
   return (
     <div className="user--cards-outer">

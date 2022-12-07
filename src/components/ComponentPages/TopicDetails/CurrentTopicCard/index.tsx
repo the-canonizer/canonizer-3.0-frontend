@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 
 import K from "../../../../constants";
 
-import { Card, Typography, Button, Descriptions, Collapse } from "antd";
+import { Descriptions, Collapse } from "antd";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";

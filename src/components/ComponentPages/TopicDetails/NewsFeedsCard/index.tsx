@@ -4,7 +4,7 @@ import { deleteNewsFeedApi } from "../../../../network/api/campNewsApi";
 import { getNewsFeedApi } from "../../../../network/api/campDetailApi";
 import { DeleteOutlined, EditOutlined, CloseOutlined } from "@ant-design/icons";
 import { RootState } from "src/store";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import K from "../../../../constants";
@@ -19,7 +19,7 @@ const { Paragraph } = Typography;
 
 const { Panel } = Collapse;
 
-const NewsFeedsCard = ({ newsFeed }) => {
+const NewsFeedsCard = ({ newsFeed }: any) => {
   const { isUserAuthenticated } = useAuthentication();
   const [deleteNews, setDeleteNews] = useState(false);
   const [editNews, setEditNews] = useState(false);

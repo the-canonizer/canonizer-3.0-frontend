@@ -6,11 +6,11 @@ import { useDispatch } from "react-redux";
 
 // import { wrapper } from "src/store";
 
-const TopicDetailsPage = ({ current_date }) => {
+const TopicDetailsPage = ({ current_date }: any) => {
   const dispatch = useDispatch();
 
   dispatch(setCurrentDate(current_date));
-  
+
   return (
     <>
       <Layout>

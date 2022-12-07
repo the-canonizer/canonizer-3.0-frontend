@@ -37,9 +37,6 @@ export default class TopicRequest extends Request {
   }
   //GetCheckSupportExists
   static GetCheckSupportExists(reqbody, authToken) {
-    let state = store.getState();
-    const { auth } = state;
-
     return new Request(
       K.Network.URL.GetCheckSupportExists + reqbody,
       K.Network.Method.GET,

@@ -5,9 +5,7 @@ import LoggedOutHeader from "../../components/common/headers/loggedOutHeader";
 import Spinner from "../../components/common/spinner/spinner";
 import styles from "./layout.module.scss";
 import Footer from "../../components/common/footer";
-import Link from "next/link";
-
-function Layout(props) {
+function Layout(props: any) {
   const { isUserAuthenticated } = useAuthentication();
 
   return (
