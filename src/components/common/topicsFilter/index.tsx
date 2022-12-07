@@ -113,6 +113,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
     currentCampNode,
     tree,
     loading,
+    current_date_filter,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filterObject: state?.filters?.filterObject,
@@ -124,6 +125,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
     currentCampNode: state?.filters?.selectedCampNode,
     tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
     loading: state?.loading?.loading,
+    current_date_filter: state?.filters?.current_date,
   }));
 
   const [value, setValue] = useState(
@@ -411,7 +413,9 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
               className={`${styles.date} w-100`}
               onChange={pickDate}
               inputReadOnly={true}
-              disabledDate={(current) => current.isAfter(moment())}
+              disabledDate={(current) =>
+                current.isAfter(moment(new Date(current_date_filter)))
+              }
             />
           </Panel>
           {isAuth.isUserAuthenticated ? (
