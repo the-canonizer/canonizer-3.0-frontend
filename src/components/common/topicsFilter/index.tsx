@@ -18,6 +18,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setIsReviewCanonizedTopics } from "../../../store/slices/filtersSlice";
 import Link from "next/link";
 
+import { setViewThisVersion } from "src/store/slices/filtersSlice";
+
 const { Title, Text, Paragraph } = Typography;
 const { Panel } = Collapse;
 const { Option } = Select;
@@ -198,6 +200,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
   };
 
   const pickDate = (e) => {
+    dispatch(setViewThisVersion(false));
     let IsoDateFormat;
     if (e == null) {
       IsoDateFormat = Date.now() / 1000;
@@ -367,6 +370,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
                   className={styles.radio}
                   value={1}
                   onClick={() => {
+                    dispatch(setViewThisVersion(false));
                     dispatch(
                       setIsReviewCanonizedTopics({
                         includeReview: true,
@@ -382,6 +386,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
                   className={styles.radio}
                   value={2}
                   onClick={() => {
+                    dispatch(setViewThisVersion(false));
                     dispatch(
                       setFilterCanonizedTopics({
                         asofdate: Date.now() / 1000,
@@ -396,6 +401,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
                   className={styles.radio}
                   value={3}
                   onClick={() => {
+                    dispatch(setViewThisVersion(false));
                     handleAsOfClick();
                   }}
                 >
