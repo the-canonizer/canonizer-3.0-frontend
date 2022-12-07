@@ -13,6 +13,7 @@ import {
   Descriptions,
 } from "antd";
 import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
 import "antd/dist/antd.css";
 import styles from "../addEditNews.module.scss";
 import K from "../../../../constants";
@@ -52,7 +53,15 @@ import {
   allowedEmojies,
   emojiValidation,
 } from "src/utils/generalUtility";
+import { EditorState, convertToRaw ,ContentState,
+  convertFromHTML,} from 'draft-js';
+  import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
+// import { Editor } from 'react-draft-wysiwyg';
+const Editor = dynamic(
+  () => import('react-draft-wysiwyg').then((mod) => mod.Editor),
+  { ssr: false }
+)
 const { Text } = Typography;
 
 const { campAboutUrlRule, summaryRule, keywordsRule, patterns, validations } =
@@ -84,6 +93,7 @@ export default function AddOrManage({ add }) {
     displayTextError: false,
     displayTextErrorMsg: "",
   });
+  const [editorState,setEditorState] = useState( () => EditorState.createEmpty())
 
   const [campNickName, setCampNickName] = useState([]);
   const [canNameSpace, setCanNameSpace] = useState([]);
@@ -101,6 +111,7 @@ export default function AddOrManage({ add }) {
     let editInfo = editStatementData?.data;
     let parent_camp = editInfo?.parent_camp;
     options.map((op) => (values[op.id] = op.checked ? 1 : 0));
+    console.log(values)
     res = await addOrManageStatement(values);
 
     if (res?.status_code == 200) {
@@ -145,6 +156,7 @@ export default function AddOrManage({ add }) {
   const addOrManageStatement = async (values) => {
     let editInfo = editStatementData?.data;
     let parent_camp = editInfo?.parent_camp;
+    debugger;
     let reqBody = {
       topic_num: add
         ? router?.query?.statement[0]?.split("-")[0]
@@ -173,7 +185,7 @@ export default function AddOrManage({ add }) {
         : manageFormOf == "topic"
         ? editInfo?.topic?.submitter_nick_id
         : editInfo?.statement?.submitter_nick_id,
-      statement: values?.statement?.trim(),
+      statement: values?.statement,
       event_type: add
         ? "create"
         : update
@@ -250,6 +262,13 @@ export default function AddOrManage({ add }) {
         };
         if (manageFormOf == "statement") {
           res = await getEditStatementApi(getDataPayload);
+          const contentBlocks = convertFromHTML(res.data.statement.value)
+          const contentState = ContentState.createFromBlockArray(
+            contentBlocks.contentBlocks,
+            contentBlocks.entityMap
+          );
+          setEditorState(EditorState.createWithContent(contentState));
+          // setEditorState(res.data.statement.value)
           if (
             res?.data?.statement?.go_live_time <
               Math.floor(new Date().getTime() / 1000) &&
@@ -401,7 +420,7 @@ export default function AddOrManage({ add }) {
           query: { returnUrl: router.asPath },
         });
   }, []);
-
+console.log(editorState,"editor")
   let formTitle = () => {
     let update: string;
     if (manageFormOf == "statement") {
@@ -790,11 +809,20 @@ export default function AddOrManage({ add }) {
                           allowedEmojies(),
                         ]}
                       >
-                        <Input.TextArea
+                        {/* <Input.TextArea
                           size="large"
                           rows={7}
                           disabled={objection}
+                        /> */}
+                        
+                        <Editor
+                        toolbarClassName="toolbarClassName"
+                        wrapperClassName="wrapperClassName"
+                        editorClassName={styles.reactDraftBox}
+                        editorState={editorState}
+                          onEditorStateChange={setEditorState}
                         />
+
                       </Form.Item>
                       <small className="mb-3 d-block">
                         {K?.exceptionalMessages?.wikiMarkupSupportMsg}{" "}
