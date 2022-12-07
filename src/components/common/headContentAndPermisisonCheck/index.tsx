@@ -55,8 +55,8 @@ const HeadContentAndPermissionComponent = ({
     const req ={
       page_name: componentName,
        keys: {
-        topic_num: router.asPath.includes('forum') ? router?.query?.topic?.split('-')[0] : router?.query?.camp?.length && router.query.camp[0].split("-")[0],
-        camp_num:  router.asPath.includes('forum') ? router.query.camp.split('-')[0] : router?.query?.camp?.length > 1 ? router.query.camp[1].split("-")[0] : '1',
+        topic_num: router.asPath.includes('forum') ? router?.query?.topic?.toLocaleString().split('-')[0] : router?.query?.camp?.length && router.query.camp[0].split("-")[0],
+        camp_num:  router.asPath.includes('forum') ? router.query.camp?.toLocaleString().split('-')[0] : router?.query?.camp?.length > 1 ? router.query.camp[1].split("-")[0] : '1',
         forum_num: router?.query?.camp?.length > 2 ? router.query.camp[2].split("-")[0] : null
     }
     }
