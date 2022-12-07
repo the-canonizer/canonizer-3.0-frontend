@@ -23,7 +23,7 @@ function Home({ current_date }) {
   // dispatch(setCanonizedNameSpaces(nameSpacesList));
   // dispatch(setWhatsNewContent(whatsNew));
   // dispatch(setCanonizedAlgorithms(algorithms));
-  
+
   dispatch(
     setFilterCanonizedTopics({
       search: "",
