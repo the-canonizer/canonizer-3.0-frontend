@@ -10,7 +10,7 @@ const TopicDetailsPage = ({ current_date }) => {
   const dispatch = useDispatch();
 
   dispatch(setCurrentDate(current_date));
-  
+
   return (
     <>
       <Layout>
