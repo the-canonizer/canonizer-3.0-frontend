@@ -14,8 +14,7 @@ const HeadContentAndPermissionComponent = ({
   componentName,
 }: HeadContentComponentProps) => {
   const router = useRouter();
-  const pageRoute = process.env.SITE_NAME + router?.asPath
-
+  const pageRoute = process.env.NEXT_PUBLIC_SITE_NAME  + router?.asPath
 
   const { isAllowed } = usePermission();
   const { isUserAuthenticated } = useAuthentication();
@@ -56,9 +55,9 @@ const HeadContentAndPermissionComponent = ({
     const req ={
       page_name: componentName,
        keys: {
-        topic_num: router.query.camp.length && router.query.camp[0].split("-")[0],
-        camp_num: router.query.camp.length > 1 ? router.query.camp[1].split("-")[0] : '1',
-        forum_num: router.query.camp.length > 2 ? router.query.camp[2].split("-")[0] : null
+        topic_num: router.asPath.includes('forum') ? router?.query?.topic?.split('-')[0] : router?.query?.camp?.length && router.query.camp[0].split("-")[0],
+        camp_num:  router.asPath.includes('forum') ? router.query.camp.split('-')[0] : router?.query?.camp?.length > 1 ? router.query.camp[1].split("-")[0] : '1',
+        forum_num: router?.query?.camp?.length > 2 ? router.query.camp[2].split("-")[0] : null
     }
     }
     async function apiCall(){
