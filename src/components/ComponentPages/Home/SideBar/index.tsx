@@ -1,7 +1,7 @@
 import { useState, Fragment } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-import { Button, Drawer } from "antd";
+import { Button, Drawer, Card } from "antd";
 import { AppstoreAddOutlined } from "@ant-design/icons";
 
 import styles from "../../../../hoc/layout/layout.module.scss";
@@ -56,12 +56,22 @@ export default function HomeSideBar({ onCreateCamp = () => {} }) {
             {!!newsFeed?.length && <NewsFeedsCard newsFeed={newsFeed} />}
           </>
         )}
-      <div className="text-center">
+      <span
+        style={{ display: "block", textAlign: "center", background: "#fff" }}
+      >
         <GoogleAd
           ad_client={process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}
           ad_slot={process.env.NEXT_PUBLIC_GOOGLE_ADS_LEFT_SLOT}
+          style={{
+            display: "inline-block",
+            width: "auto",
+            maxWidth: "100%",
+            minHeight: "10px",
+            maxHeight: "100%",
+            height: "auto",
+          }}
         />
-      </div>
+      </span>
     </Fragment>
   );
 }
