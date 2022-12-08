@@ -179,7 +179,6 @@ const NetworkConstants = {
     // Meta Tags
     GetMetaContent: `${BaseCanonizerApiUrl}/meta-tags`,
 
-    
     VideosContent: `${BaseCanonizerApiUrl}/videos`,
   },
   Method: {

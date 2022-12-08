@@ -4,7 +4,7 @@ import MetaTagsRequest from "../request/metaTagsRequest";
 export const metaTagsApi = async (body) => {
   try {
     const metaContent = await NetworkCall.fetch(
-       MetaTagsRequest.getMetaTagsContent(body)
+      MetaTagsRequest.getMetaTagsContent(body)
     );
     return metaContent;
   } catch (error) {

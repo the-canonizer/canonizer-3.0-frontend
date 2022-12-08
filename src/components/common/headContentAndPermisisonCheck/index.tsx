@@ -14,7 +14,7 @@ const HeadContentAndPermissionComponent = ({
   componentName,
 }: HeadContentComponentProps) => {
   const router = useRouter();
-  const pageRoute = process.env.NEXT_PUBLIC_SITE_NAME  + router?.asPath
+  const pageRoute = process.env.NEXT_PUBLIC_SITE_NAME + router?.asPath;
 
   const { isAllowed } = usePermission();
   const { isUserAuthenticated } = useAuthentication();
@@ -47,24 +47,31 @@ const HeadContentAndPermissionComponent = ({
     if (requiredPermission && !isAllowed(permission.permissionName)) {
       router.push("/required-permission");
     }
-
   }, [componentName, isUserAuthenticated, isAllowed, router]);
 
-
   useEffect(() => {
-    const req ={
+    const req = {
       page_name: componentName,
-       keys: {
-        topic_num: router.asPath.includes('forum') ? router?.query?.topic?.toLocaleString().split('-')[0] : router?.query?.camp?.length && router.query.camp[0].split("-")[0],
-        camp_num:  router.asPath.includes('forum') ? router.query.camp?.toLocaleString().split('-')[0] : router?.query?.camp?.length > 1 ? router.query.camp[1].split("-")[0] : '1',
-        forum_num: router?.query?.camp?.length > 2 ? router.query.camp[2].split("-")[0] : null
+      keys: {
+        topic_num: router.asPath.includes("forum")
+          ? router?.query?.topic?.toLocaleString().split("-")[0]
+          : router?.query?.camp?.length && router.query.camp[0].split("-")[0],
+        camp_num: router.asPath.includes("forum")
+          ? router.query.camp?.toLocaleString().split("-")[0]
+          : router?.query?.camp?.length > 1
+          ? router.query.camp[1].split("-")[0]
+          : "1",
+        forum_num:
+          router?.query?.camp?.length > 2
+            ? router.query.camp[2].split("-")[0]
+            : null,
+      },
+    };
+    async function apiCall() {
+      const result = await metaTagsApi(req);
+      setMetaContent(result?.data);
     }
-    }
-    async function apiCall(){
-     const result = await metaTagsApi(req)
-     setMetaContent(result?.data)
-    }
-  apiCall()
+    apiCall();
   }, [componentName]);
 
   return (

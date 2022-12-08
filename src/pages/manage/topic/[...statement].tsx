@@ -11,7 +11,7 @@ const ManageTopicPage = () => {
       </Layout>
     </>
   );
-}
+};
 
-ManageTopicPage.displayName = 'ManageTopicPage'
-export default ManageTopicPage
+ManageTopicPage.displayName = "ManageTopicPage";
+export default ManageTopicPage;

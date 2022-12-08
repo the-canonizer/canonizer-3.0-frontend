@@ -17,5 +17,4 @@ export default class MetaTagsRequest extends Request {
       {}
     );
   }
- 
 }
