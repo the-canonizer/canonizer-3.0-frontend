@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { Button } from "antd";
-import Script from "next/script";
+import GoogleAd from "../../../googleAds";
 
 export default function HomeSideBar({
   onCreateCamp = () => {},
@@ -29,12 +29,10 @@ export default function HomeSideBar({
         )}
       </div>
       <div className="text-center">
-        <Script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6646446076038181"
-        ></Script>
-
-        <Script>{`(adsbygoogle = window.adsbygoogle || []).push({});`}</Script>
+        <GoogleAd
+          ad_client={process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}
+          ad_slot={process.env.NEXT_PUBLIC_GOOGLE_ADS_LEFT_SLOT}
+        />
       </div>
     </>
   );
