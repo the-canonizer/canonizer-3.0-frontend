@@ -21,8 +21,7 @@ function HeadContent({
     <Head>
       <script
         async
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6971863585610170"
-        // crossorigin="anonymous"
+        src={`Https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}`}
       ></script>
 
       {/* Meta tags for browser link preview  */}
