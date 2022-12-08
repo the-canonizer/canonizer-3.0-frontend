@@ -406,7 +406,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
             <DatePicker
               disabled={isDatePicker || selectedAsOf == "bydate" ? false : true}
               format="YYYY-MM-DD"
-              defaultValue={moment(selectedAsOFDate * 1000)}
+              defaultValue={moment(current_date_filter * 1000)}
               value={moment(selectedAsOFDate * 1000)}
               suffixIcon={<i className="icon-calendar"></i>}
               size={"large"}
