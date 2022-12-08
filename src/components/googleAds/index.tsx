@@ -18,8 +18,6 @@ function GoogleAd({
       className="adsbygoogle"
       style={{
         display: "block",
-        border: "2px solid green",
-        borderRadius: "2px",
         width: "100%",
         height: "auto",
       }}
