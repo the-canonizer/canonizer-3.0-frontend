@@ -3,7 +3,6 @@ import { useEffect } from "react";
 function GoogleAd({
   ad_client = process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT,
   ad_slot,
-  style = {},
 }) {
   useEffect(() => {
     try {
@@ -17,15 +16,11 @@ function GoogleAd({
   return (
     <ins
       className="adsbygoogle"
-      style={
-        style || {
-          display: "block",
-          width: "100%",
-          height: "auto",
-          border: "none",
-          maxWidth: "100%",
-        }
-      }
+      style={{
+        display: "block",
+        width: "100%",
+        height: "auto",
+      }}
       data-ad-client={ad_client}
       data-ad-slot={ad_slot}
       data-ad-format="auto"
