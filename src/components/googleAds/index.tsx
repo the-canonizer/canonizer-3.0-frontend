@@ -18,9 +18,8 @@ function GoogleAd({
       className="adsbygoogle"
       style={{
         display: "block",
-        border: "2px solid green",
-        width: "200px",
-        height: "635px",
+        width: "100%",
+        height: "auto",
       }}
       data-ad-client={ad_client}
       data-ad-slot={ad_slot}
