@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { Card, Typography, Pagination } from "antd";
+import { Card, Typography, Pagination, Popover } from "antd";
 import moment from "moment";
 import Link from "next/link";
 
@@ -33,9 +33,15 @@ const PostUI = ({
     <Fragment>
       <Card
         title={
-          <span className={styles.cardTitle} id="card-title">
-            {currentThread["title"]}
-          </span>
+          <Popover
+            content={currentThread["title"]}
+            key={currentThread["created_at"]}
+            placement="topLeft"
+          >
+            <span className={styles.cardTitle} id="card-title">
+              {currentThread["title"]}
+            </span>
+          </Popover>
         }
         className={`can-card-style ${styles.forum_post_card}`}
         extra={
