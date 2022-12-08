@@ -62,14 +62,6 @@ export default function HomeSideBar({ onCreateCamp = () => {} }) {
         <GoogleAd
           ad_client={process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}
           ad_slot={process.env.NEXT_PUBLIC_GOOGLE_ADS_LEFT_SLOT}
-          style={{
-            display: "inline-block",
-            width: "auto",
-            maxWidth: "100%",
-            minHeight: "10px",
-            maxHeight: "100%",
-            height: "auto",
-          }}
         />
       </span>
     </Fragment>
