@@ -7,8 +7,7 @@ type HeadContentProps = {
   title: string;
   route: string;
   keywords: string;
-  author: string
-  
+  author: string;
 };
 
 function HeadContent({
@@ -16,10 +15,10 @@ function HeadContent({
   title,
   route,
   keywords,
-  author
+  author,
 }: HeadContentProps) {
   const url = process.env.NEXT_PUBLIC_SITE_NAME;
-  const image_url = `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/site-images/logo.svg`
+  const image_url = `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/site-images/logo.svg`;
   return (
     <Head>
       <script
@@ -37,13 +36,10 @@ function HeadContent({
         name="viewport"
         content="width=device-width,minimum-scale=1, initial-scale=1, maximum-scale=1, user-scalable=no"
       />
-      <meta name="author" content={author}/>
+      <meta name="author" content={author} />
       <meta name="type" content="website" />
       {/* <meta name="url" rel="canonical" content={url + route} /> */}
-      <meta
-        name="image"
-        content={image_url }
-      />
+      <meta name="image" content={image_url} />
       <link rel="shortcut icon" href="/images/canonizer-fav.png" />
 
       {/* Meta tags for social media link preview  */}
@@ -51,24 +47,18 @@ function HeadContent({
       <meta property="og:description" content={description} />
       <meta property="og:type" content="website" />
       <meta property="og:url" content={url + route} />
+      <meta property="og:image" content={image_url} />
+      <meta property="og:image:alt" content="canonizer" />
       <meta
-        property="og:image"
-        content={image_url}
+        property="fb:app_id"
+        content={process.env.NEXT_PUBLIC_FACEBOOK_APP_ID}
       />
-      <meta
-        property="og:image:alt"
-        content='canonizer'
-      />
-      <meta property="fb:app_id" content={process.env.NEXT_PUBLIC_FACEBOOK_APP_ID} />
       {/* Meta tags for twitter link preview  */}
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:site" content={url + route} />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
-      <meta
-        name="twitter:image"
-        content={image_url}
-      />
+      <meta name="twitter:image" content={image_url} />
     </Head>
   );
 }
