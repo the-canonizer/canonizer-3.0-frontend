@@ -1,7 +1,7 @@
 import AddOrManage from "../../../components/ComponentPages/Statement/AddOrManage";
 import Layout from "../../../hoc/layout";
 
-export default function ManageStatement() {
+const ManageTopicPage = () => {
   return (
     <>
       <Layout>
@@ -12,3 +12,6 @@ export default function ManageStatement() {
     </>
   );
 }
+
+ManageTopicPage.displayName = 'ManageTopicPage'
+export default ManageTopicPage
