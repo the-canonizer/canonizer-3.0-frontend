@@ -1,7 +1,7 @@
 import AddOrManage from "../../../components/ComponentPages/Statement/AddOrManage";
 import Layout from "../../../hoc/layout";
 
-export default function ManageStatement() {
+const ManageCampPage = () => {
   return (
     <>
       <Layout>
@@ -11,4 +11,7 @@ export default function ManageStatement() {
       </Layout>
     </>
   );
-}
+};
+ManageCampPage.displayName = "ManageCampPage";
+
+export default ManageCampPage;
