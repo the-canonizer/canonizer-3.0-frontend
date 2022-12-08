@@ -3,7 +3,7 @@ import Layout from "../../hoc/layout";
 import SideBarNoFilter from "../../components/ComponentPages/Home/SideBarNoFilter";
 import React from "react";
 
-export default function EditNewsPage() {
+function EditNewsPage() {
   return (
     <>
       <Layout>
@@ -17,3 +17,6 @@ export default function EditNewsPage() {
     </>
   );
 }
+EditNewsPage.displayName = "EditNewsPage";
+
+export default EditNewsPage;
