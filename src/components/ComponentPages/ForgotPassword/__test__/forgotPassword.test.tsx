@@ -11,7 +11,7 @@ describe("Forgot Password", () => {
     render(<ForgotPassword isModal={false} />);
     waitFor(async () => {
       let heading = screen.getByRole("heading", {
-        name: /Forgot your password?/i,
+        name: labels.forgotModalLabel,
       });
       expect(heading).toBeInTheDocument();
       expect(

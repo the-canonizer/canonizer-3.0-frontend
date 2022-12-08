@@ -3,7 +3,7 @@ import styles from "./disclaimer.module.scss";
 const DisclaimerMsg = () => {
   return (typeof window !== "undefined" &&
     window.location.origin.includes(
-      process.env.NEXT_PUBLIC_BETA_URL.replace(/\/$/, "")
+      process.env.NEXT_PUBLIC_BETA_URL?.replace(/\/$/, "")
     )) ||
     process.env.NEXT_PUBLIC_HIDE_DISCLAIMER === "true" ? (
     <div></div>

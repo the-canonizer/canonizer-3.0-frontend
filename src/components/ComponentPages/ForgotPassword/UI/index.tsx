@@ -8,6 +8,7 @@ import { fallBackSrc } from "../../../../assets/data-images";
 import { Fragment } from "react";
 
 const { Title, Text } = Typography;
+const { labels } = messages;
 
 function ForgotPasswordUI({ form, onFinish, isModal, closeModal, isScreen }) {
   return (
@@ -21,9 +22,7 @@ function ForgotPasswordUI({ form, onFinish, isModal, closeModal, isScreen }) {
         validateTrigger={messages.formValidationTypes()}
       >
         <Title level={2} className={styles.titles} id="forgot-password-title">
-          {isScreen === 1
-            ? "Create password verification code"
-            : "Forgot your password?"}
+          {isScreen === 1 ? labels.verificationLabel : labels.forgotModalLabel}
         </Title>
         {isModal && (
           <Button
