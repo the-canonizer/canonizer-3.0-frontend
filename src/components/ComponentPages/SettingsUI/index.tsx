@@ -1,19 +1,19 @@
 import { useState, Fragment, useEffect } from "react";
-import { Layout, Card, Col, Row, Button } from "antd";
-import Image from "next/image";
+import { Card, Col, Row, Button, Tabs } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
+import { useRouter } from "next/router";
+
+import styles from "./Settings.module.scss";
+
 import ChangePassword from "../ChangePassword";
 import ProfileInfo from "../ProfileInfo";
 import NickName from "../NickName";
-import styles from "./Settings.module.scss";
 import DirectSupportedCamps from "../DirectSupportedCamps";
-import { SearchOutlined, SyncOutlined } from "@ant-design/icons";
-import { Tabs } from "antd";
 import DelegatedSupportCamps from "../DelegatedSupportCamps";
-import { useRouter } from "next/router";
 import SocialOauth from "../socialAuthVerification";
-import CreateTopicButton from "../../common/button/createNewTopicBtn";
 import SubscriptionsList from "../SubscriptionsList";
 import messages from "../../../messages";
+import Sidebar from "../Home/SideBarNoFilter";
 
 const { TabPane } = Tabs;
 const tabList = [
@@ -121,21 +121,9 @@ const SettingsUI = () => {
     else setActiveTabKey("profile_info");
   }, [router.query]);
   return (
-    <>
+    <Fragment>
       <div>
-        <div className={styles.card}>
-          <div className={styles.btnsWrap}>
-            <CreateTopicButton />
-          </div>
-        </div>
-        <div className="siteAds">
-          <Image
-            alt="adOne"
-            src={"/images/left-sidebar-adv1.jpg"}
-            width={200}
-            height={400}
-          />
-        </div>
+        <Sidebar />
       </div>
       <Row gutter={16} className={styles.accountSetting}>
         <Col xs={24} sm={24} xl={24}>
@@ -153,7 +141,7 @@ const SettingsUI = () => {
           </Card>
         </Col>
       </Row>
-    </>
+    </Fragment>
   );
 };
 export default SettingsUI;
