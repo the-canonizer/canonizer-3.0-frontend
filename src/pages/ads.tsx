@@ -10,7 +10,7 @@ const ADS: React.FunctionComponent<IADSProps> = (props) => {
   return (
     <>
       <h1>ads</h1>
-      <GoogleAd />
+      <GoogleAd ad_slot="" ad_client="" />
       <h1>ads</h1>
     </>
   );

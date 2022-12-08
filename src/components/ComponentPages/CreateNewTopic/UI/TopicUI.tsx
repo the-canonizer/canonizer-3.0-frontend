@@ -1,8 +1,9 @@
 import { Fragment } from "react";
-import Image from "next/image";
 import { Spin } from "antd";
+import Script from "next/script";
 
 import FromUI from "./FromUI";
+import Sidebar from "../../Home/SideBarNoFilter";
 
 const CreateNewTopicUI = ({
   onFinish,
@@ -18,15 +19,7 @@ const CreateNewTopicUI = ({
   return (
     <Fragment>
       <aside className="leftSideBar miniSideBar bg-white">
-        <div className="siteAds">
-          <Image
-            alt="adOne"
-            src={"/images/left-sidebar-adv1.jpg"}
-            width={200}
-            height={400}
-            id="ads-img"
-          />
-        </div>
+        <Sidebar isShowBtn={false} />
       </aside>
       <div className="pageContentWrap">
         <Spin spinning={isLoading} size="large">
