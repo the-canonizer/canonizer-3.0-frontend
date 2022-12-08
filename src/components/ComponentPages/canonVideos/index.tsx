@@ -67,7 +67,7 @@ export default function CanonVideos({}: Props): ReactElement {
                 {videos[selectedVideoId - 1]?.resolutions?.map((data) => {
                   return (
                     <Radio key={data?.id} value={data?.link}>
-                      {data?.title + "    " + data.id}
+                      {data?.title}
                     </Radio>
                   );
                 })}
