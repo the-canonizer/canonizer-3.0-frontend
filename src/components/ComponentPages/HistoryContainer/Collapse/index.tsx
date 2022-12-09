@@ -30,6 +30,7 @@ import TopicHistory from "./topicHistory";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 
+import { setViewThisVersion } from "src/store/slices/filtersSlice";
 const { Panel } = Collapse;
 const { Title } = Typography;
 
@@ -59,6 +60,7 @@ function HistoryCollapse({
   const { isUserAuthenticated } = useAuthentication();
   const handleViewThisVersion = (goLiveTime) => {
     setIsTreesApiCallStop(true);
+    dispatch(setViewThisVersion(true));
     dispatch(
       setFilterCanonizedTopics({
         asofdate: goLiveTime,
@@ -341,7 +343,6 @@ function HistoryCollapse({
                               )
                           : "1-Agreement")
                       }`,
-                      query: { topic_history: 1 },
                     }}
                   >
                     View This Version

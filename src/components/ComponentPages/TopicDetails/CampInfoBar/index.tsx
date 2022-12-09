@@ -49,6 +49,7 @@ const CampInfoBar = ({
     asofdate,
     asof,
     algorithm,
+    viewThisVersionCheck,
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -57,6 +58,7 @@ const CampInfoBar = ({
     asofdate: state.filters?.filterObject?.asofdate,
     algorithm: state.filters?.filterObject?.algorithm,
     asof: state?.filters?.filterObject?.asof,
+    viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
   }));
   const [campSubscriptionID, setCampSubscriptionID] = useState(
     campRecord?.subscriptionId
@@ -71,7 +73,10 @@ const CampInfoBar = ({
       let reqBody = {
         topic_num: payload?.topic_num,
         camp_num: payload?.camp_num,
-        as_of: router?.pathname == "/topic/[...camp]" ? asof : "default",
+        as_of:
+          router?.pathname == "/topic/[...camp]" || viewThisVersionCheck
+            ? asof
+            : "default",
         as_of_date:
           asof == "default" || asof == "review"
             ? Date.now() / 1000
@@ -79,7 +84,6 @@ const CampInfoBar = ({
       };
       let res = await getCampBreadCrumbApi(reqBody);
       setBreadCrumbRes(res?.data);
-
       setLoadingIndicator(false);
     }
     if (payload && Object.keys(payload).length > 0) {

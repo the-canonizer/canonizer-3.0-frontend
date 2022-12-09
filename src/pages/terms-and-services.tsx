@@ -2,7 +2,7 @@ import Layout from "../hoc/layout";
 import TermsAndPrivacy from "../components/ComponentPages/TermsAndPrivacy";
 import { getTermsAndServicesContent } from "src/network/api/termsAndPrivacyApi";
 
-function TermService({ termsAndServicesContent }: any) {
+function TermAndService({ termsAndServicesContent }: any) {
   return (
     <>
       <Layout>
@@ -19,6 +19,6 @@ export async function getStaticProps() {
     },
   };
 }
-TermService.displayName = "TermService";
+TermAndService.displayName = "TermAndService";
 
-export default TermService;
+export default TermAndService;

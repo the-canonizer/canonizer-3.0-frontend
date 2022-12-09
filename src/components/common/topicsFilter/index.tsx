@@ -18,6 +18,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setIsReviewCanonizedTopics } from "../../../store/slices/filtersSlice";
 import Link from "next/link";
 
+import { setViewThisVersion } from "src/store/slices/filtersSlice";
+
 const { Title, Text, Paragraph } = Typography;
 const { Panel } = Collapse;
 const { Option } = Select;
@@ -193,6 +195,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   };
 
   const pickDate = (e) => {
+    dispatch(setViewThisVersion(false));
     let IsoDateFormat;
     if (e == null) {
       IsoDateFormat = Date.now() / 1000;
@@ -362,6 +365,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                   className={styles.radio}
                   value={1}
                   onClick={() => {
+                    dispatch(setViewThisVersion(false));
                     dispatch(
                       setIsReviewCanonizedTopics({
                         includeReview: true,
@@ -377,6 +381,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                   className={styles.radio}
                   value={2}
                   onClick={() => {
+                    dispatch(setViewThisVersion(false));
                     dispatch(
                       setFilterCanonizedTopics({
                         asofdate: Date.now() / 1000,
@@ -391,6 +396,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                   className={styles.radio}
                   value={3}
                   onClick={() => {
+                    dispatch(setViewThisVersion(false));
                     handleAsOfClick();
                   }}
                 >
@@ -401,7 +407,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
             <DatePicker
               disabled={isDatePicker || selectedAsOf == "bydate" ? false : true}
               format="YYYY-MM-DD"
-              defaultValue={moment(selectedAsOFDate * 1000)}
+              defaultValue={moment(current_date_filter * 1000)}
               value={moment(selectedAsOFDate * 1000)}
               suffixIcon={<i className="icon-calendar"></i>}
               size={"large"}

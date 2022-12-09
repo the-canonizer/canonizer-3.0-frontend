@@ -1,6 +1,9 @@
 import { useEffect } from "react";
 
-function GoogleAd() {
+function GoogleAd({
+  ad_client = process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT,
+  ad_slot,
+}) {
   useEffect(() => {
     try {
       // @ts-ignore
@@ -15,12 +18,11 @@ function GoogleAd() {
       className="adsbygoogle"
       style={{
         display: "block",
-        border: "2px solid green",
-        width: "200px",
-        height: "635px",
+        width: "100%",
+        height: "auto",
       }}
-      data-ad-client="ca-pub-6971863585610170"
-      data-ad-slot="4564205621"
+      data-ad-client={ad_client}
+      data-ad-slot={ad_slot}
       data-ad-format="auto"
       data-adtest="on"
       data-full-width-responsive="true"
