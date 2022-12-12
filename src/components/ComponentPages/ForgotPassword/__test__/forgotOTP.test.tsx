@@ -10,7 +10,10 @@ describe("OTP page", () => {
   it("render heading and text", () => {
     render(<ForgotPassword isModal={false} isTestScreen={1} />);
 
-    let heading = screen.getByText("Create password verification code");
+    // let heading = screen.getByText("Create password verification code");
+    let heading = screen.getByRole("heading", {
+      name: /create password verification code/i,
+    });
     expect(heading).toBeInTheDocument();
     expect(screen.getByText(labels.testOtp)).toBeInTheDocument();
   });
