@@ -2,7 +2,7 @@ import Add from "../../components/ComponentPages/News/AddOrEdit";
 import SideBarNoFilter from "../../components/ComponentPages/Home/SideBarNoFilter";
 import Layout from "../../hoc/layout";
 
-export default function AddNewsPage() {
+function AddNewsPage() {
   return (
     <>
       <Layout>
@@ -16,3 +16,6 @@ export default function AddNewsPage() {
     </>
   );
 }
+AddNewsPage.displayName = "AddNewsPage";
+
+export default AddNewsPage;
