@@ -102,7 +102,9 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
       </Menu.Item>
     </Menu>
   );
-
+  const filterMockLinks = mockLinks.filter((obj) => {
+    return obj.linkTitle != "Upload File";
+  });
   useEffect(() => {
     setLoggedUser(loggedInUser);
   }, [loggedInUser]);
@@ -122,12 +124,17 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
             >
               <CloseOutlined />
             </Button>
+
             <nav className={styles.nav}>
               <ul>
                 {/* <li className={router.asPath === "/browse" ? styles.active : ""}>
                 <Link href="/browse"> Browse </Link>
               </li> */}
-                {mockLinks?.map((item) => {
+
+                {(loggedInUser?.is_admin == true
+                  ? mockLinks
+                  : filterMockLinks
+                )?.map((item) => {
                   return (
                     <li
                       // className={

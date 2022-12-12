@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { Button, Layout } from "antd";
 import { MenuOutlined, CloseOutlined } from "@ant-design/icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "../siteHeader.module.scss";
 import Logo from "../logoHeader";
 import SearchSection from "../../searchSection";
@@ -15,10 +15,15 @@ import {
 } from "../../../../store/slices/uiSlice";
 import ForgotModal from "../../../ComponentPages/ForgotPassword/forgotPasswordModal";
 import DisclaimerMsg from "../../disclaimer";
+import { RootState } from "src/store";
 
 const { Header } = Layout;
 
-const LoggedOutHeader = () => {
+const LoggedOutHeader = ({ isLoginPage = false }) => {
+  const loggedInUser = useSelector(
+    (state: RootState) => state.auth.loggedInUser
+  );
+  console.log(loggedInUser, "loguser");
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -64,6 +69,9 @@ const LoggedOutHeader = () => {
 
   const openLoginModal = () => dispatch(showLoginModal());
   const openRegistrationModal = () => dispatch(showRegistrationModal());
+  const filterMockLinks = mockLinks.filter((obj) => {
+    return obj.linkTitle != "Upload File";
+  });
 
   return (
     <React.Fragment>
@@ -79,31 +87,37 @@ const LoggedOutHeader = () => {
           </Button>
           <nav className={styles.nav}>
             <ul>
-              {mockLinks?.map((item) => {
-                return (
-                  <li
-                    className={router.asPath === item.link ? styles.active : ""}
-                    key={item.id}
-                  >
-                    {router.asPath.includes("/topic") ? (
-                      <a
-                        href={item.link}
-                        rel="noopener noreferrer"
-                        target={
-                          item?.linkTitle == "White Paper" ? "_blank" : "_self"
+              {isLoginPage
+                ? mockLinks
+                : filterMockLinks?.map((item) => {
+                    return (
+                      <li
+                        className={
+                          router.asPath === item.link ? styles.active : ""
                         }
-                        className="dsadas"
+                        key={item.id}
                       >
-                        {item.linkTitle}
-                      </a>
-                    ) : (
-                      <Link href={item.link} passHref>
-                        <a>{item.linkTitle}</a>
-                      </Link>
-                    )}
-                  </li>
-                );
-              })}
+                        {router.asPath.includes("/topic") ? (
+                          <a
+                            href={item.link}
+                            rel="noopener noreferrer"
+                            target={
+                              item?.linkTitle == "White Paper"
+                                ? "_blank"
+                                : "_self"
+                            }
+                            className="dsadas"
+                          >
+                            {item.linkTitle}
+                          </a>
+                        ) : (
+                          <Link href={item.link} passHref>
+                            <a>{item.linkTitle}</a>
+                          </Link>
+                        )}
+                      </li>
+                    );
+                  })}
             </ul>
           </nav>
           <div className={styles.btnsLoginRegister}>

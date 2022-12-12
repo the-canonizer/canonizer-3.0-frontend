@@ -59,7 +59,8 @@
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.4.1",
     "sanitize-html": "^2.7.0",
-    "sass": "^1.44.0"
+    "sass": "^1.44.0",
+    "video.js": "^7.20.3"
   },
   "devDependencies": {
     "@testing-library/dom": "^8.11.3",
