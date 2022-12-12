@@ -53,10 +53,10 @@ import {
   allowedEmojies,
   emojiValidation,
 } from "src/utils/generalUtility";
-import { EditorState, convertToRaw ,ContentState,
-  convertFromHTML,} from 'draft-js';
+import { EditorState, convertToRaw ,ContentState, convertFromRaw,
+  convertFromHTML} from 'draft-js';
   import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-
+ import draftToHtml from 'draftjs-to-html';
 // import { Editor } from 'react-draft-wysiwyg';
 const Editor = dynamic(
   () => import('react-draft-wysiwyg').then((mod) => mod.Editor),
@@ -99,6 +99,7 @@ export default function AddOrManage({ add }) {
   const [canNameSpace, setCanNameSpace] = useState([]);
   const [options, setOptions] = useState([...messages.preventCampLabel]);
   const [initialOptions, setInitialOptions] = useState([]);
+  const [uploadImage,setUploadImage] = useState([])
 
   const [form] = Form.useForm();
   let objection = router?.query?.statement?.at(0)?.split("-")[1] == "objection";
@@ -111,7 +112,6 @@ export default function AddOrManage({ add }) {
     let editInfo = editStatementData?.data;
     let parent_camp = editInfo?.parent_camp;
     options.map((op) => (values[op.id] = op.checked ? 1 : 0));
-    console.log(values)
     res = await addOrManageStatement(values);
 
     if (res?.status_code == 200) {
@@ -154,9 +154,10 @@ export default function AddOrManage({ add }) {
   };
 
   const addOrManageStatement = async (values) => {
+    const blocks =draftToHtml(convertToRaw(editorState.getCurrentContent()));
+    // const contentState = editorState.getCurrentContent();
     let editInfo = editStatementData?.data;
     let parent_camp = editInfo?.parent_camp;
-    debugger;
     let reqBody = {
       topic_num: add
         ? router?.query?.statement[0]?.split("-")[0]
@@ -185,7 +186,7 @@ export default function AddOrManage({ add }) {
         : manageFormOf == "topic"
         ? editInfo?.topic?.submitter_nick_id
         : editInfo?.statement?.submitter_nick_id,
-      statement: values?.statement,
+      statement: blocks,//JSON.stringify(convertToRaw(contentState)),//values?.statement?.blocks[0].text.trim(),
       event_type: add
         ? "create"
         : update
@@ -250,7 +251,13 @@ export default function AddOrManage({ add }) {
       setParentCamps(res.data);
     }
   };
-
+  const isJSON = (str) => {
+    try {
+        return (JSON.parse(str) && !!str);
+    } catch (e) {
+        return false;
+    }
+}
   useEffect(() => {
     setScreenLoading(true);
     async function nickNameListApiCall() {
@@ -262,13 +269,16 @@ export default function AddOrManage({ add }) {
         };
         if (manageFormOf == "statement") {
           res = await getEditStatementApi(getDataPayload);
-          const contentBlocks = convertFromHTML(res.data.statement.value)
-          const contentState = ContentState.createFromBlockArray(
-            contentBlocks.contentBlocks,
-            contentBlocks.entityMap
-          );
-          setEditorState(EditorState.createWithContent(contentState));
-          // setEditorState(res.data.statement.value)
+          
+          if(isJSON(res.data.statement.value))setEditorState(EditorState.createWithContent(convertFromRaw(JSON.parse(res.data.statement.value))));
+          else{
+            const contentBlocks = convertFromHTML(res.data.statement.value)
+            const contentState = ContentState.createFromBlockArray(
+              contentBlocks.contentBlocks,
+              contentBlocks.entityMap
+            );
+            setEditorState(EditorState.createWithContent(contentState));
+          } 
           if (
             res?.data?.statement?.go_live_time <
               Math.floor(new Date().getTime() / 1000) &&
@@ -330,7 +340,6 @@ export default function AddOrManage({ add }) {
           camp_num: router?.query?.statement[1].split("-")[0] ?? "1",
         });
         setCurrentTopicData(topic_res);
-        console.log("topic_res", topic_res);
         setPayloadBreadCrumb({
           camp_num: router?.query?.statement[1].split("-")[0] ?? "1",
           topic_num: router?.query?.statement[0].split("-")[0],
@@ -420,7 +429,6 @@ export default function AddOrManage({ add }) {
           query: { returnUrl: router.asPath },
         });
   }, []);
-console.log(editorState,"editor")
   let formTitle = () => {
     let update: string;
     if (manageFormOf == "statement") {
@@ -489,7 +497,33 @@ console.log(editorState,"editor")
       return null;
     }
   };
+  const uploadImageCallBack=(file)=>{
+    // long story short, every time we upload an image, we
+    // need to save it to the state so we can get it's data
+    // later when we decide what to do with it.
+    
+   // Make sure you have a uploadImages: [] as your default state
+    let uploadedImages = uploadImage;
 
+    const imageObject = {
+      file: file,
+      localSrc: URL.createObjectURL(file),
+    }
+
+    uploadedImages.push(imageObject);
+
+    setUploadImage(uploadImage)
+    
+    // We need to return a promise with the image src
+    // the img src we will use here will be what's needed
+    // to preview it in the browser. This will be different than what
+    // we will see in the index.md file we generate.
+    return new Promise(
+      (resolve, reject) => {
+        resolve({ data: { link: imageObject.localSrc } });
+      }
+    );
+  }
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
@@ -817,10 +851,12 @@ console.log(editorState,"editor")
                         
                         <Editor
                         toolbarClassName="toolbarClassName"
-                        wrapperClassName="wrapperClassName"
+                        wrapperClassName={"wrapperClassName"}
+                        editorStyle={{ height: "176px" }}
                         editorClassName={styles.reactDraftBox}
                         editorState={editorState}
                           onEditorStateChange={setEditorState}
+                          toolbar={{ image: { uploadCallback: uploadImageCallBack,previewImage: true,alt: { present: true, mandatory: false },inputAccept: 'image/gif,image/jpeg,image/jpg,image/png,image/svg', }}}
                         />
 
                       </Form.Item>
