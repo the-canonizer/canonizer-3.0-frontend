@@ -39,6 +39,7 @@ import {
 } from "src/network/api/userApi";
 import { message } from "antd";
 import isAuth from "../../../hooks/isUserAuthenticated";
+import { useRouter } from "next/router";
 const UploadFiles = () => {
   const dispatch = useDispatch<AppDispatch>();
   const dragBoxShow = () => dispatch(showDrageBox());
@@ -76,6 +77,9 @@ const UploadFiles = () => {
   const disabledResetButton = useSelector(
     (state: RootState) => state.ui.disabledResetBtn
   );
+  const loggedInUser = useSelector(
+    (state: RootState) => state.auth.loggedInUser
+  );
 
   const [input, setInput] = useState("");
   const [selectedFolderID, setSelectedFolderID] = useState("");
@@ -102,7 +106,7 @@ const UploadFiles = () => {
     dispatch(setIsFolderOpen(false));
     dispatch(setFolderId(null));
   };
-
+  const router = useRouter();
   const uploadFun = async () => {
     //addButtonHide is use to, when upload fun is loaded button is hide
     addButtonHide();
@@ -304,6 +308,13 @@ const UploadFiles = () => {
       }
     }
   };
+  useEffect(() => {
+    isUserAuthenticated &&
+    loggedInUser.is_admin == false &&
+    location.pathname == "/uploadFile"
+      ? router.push("/")
+      : "";
+  }, []);
   //onLoad
   useEffect(() => {
     if (isUserAuthenticated) {
