@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 // import ManageSupportUI from "./ManageSupportUI";
-import { Button, Image, message } from "antd";
+import { message } from "antd";
 import styles from "./ManageSupportUI/ManageSupport.module.scss";
 import CampInfoBar from "../TopicDetails/CampInfoBar";
 import dynamic from "next/dynamic";
@@ -24,6 +24,8 @@ import {
   setManageSupportUrlLink,
 } from "src/store/slices/campDetailSlice";
 import moment from "moment";
+import Sidebar from "../Home/SideBarNoFilter";
+
 const ManageSupportUI = dynamic(async () => await import("./ManageSupportUI"), {
   ssr: false,
 });
@@ -69,9 +71,6 @@ const ManageSupport = () => {
         : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
   };
 
-  const campRoute = () => {
-    router.push("/create/topic");
-  };
   //Support page Link Url
   const { manageSupportUrlLink } = useSelector((state: RootState) => ({
     manageSupportUrlLink: state.topicDetails.manageSupportUrlLink,
@@ -472,29 +471,7 @@ const ManageSupport = () => {
         }}
       />
       <div className={styles.card}>
-        <div className="leftSideBar_Card p-0 m-0">
-          <div className="btnsWrap">
-            <Button
-              id="createNewTopicBtn"
-              size="large"
-              className={"btn"}
-              onClick={campRoute}
-            >
-              <i className="icon-topic"></i> Create New Topic
-            </Button>
-          </div>
-        </div>
-        {/* <div className={styles.btnsWrap}>
-          <CreateNewCampButton />
-        </div> */}
-        <div className="siteAds">
-          <Image
-            alt="adOne"
-            src={"/images/left-sidebar-adv1.jpg"}
-            width={200}
-            height={400}
-          />
-        </div>
+        <Sidebar />
       </div>
       <ManageSupportUI
         nickNameList={nickNameList}

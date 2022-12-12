@@ -18,6 +18,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setIsReviewCanonizedTopics } from "../../../store/slices/filtersSlice";
 import Link from "next/link";
 
+import { setViewThisVersion } from "src/store/slices/filtersSlice";
+
 const { Title, Text, Paragraph } = Typography;
 const { Panel } = Collapse;
 const { Option } = Select;
@@ -113,6 +115,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
     currentCampNode,
     tree,
     loading,
+    current_date_filter,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filterObject: state?.filters?.filterObject,
@@ -124,6 +127,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
     currentCampNode: state?.filters?.selectedCampNode,
     tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
     loading: state?.loading?.loading,
+    current_date_filter: state?.filters?.current_date,
   }));
 
   const [value, setValue] = useState(
@@ -196,6 +200,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
   };
 
   const pickDate = (e) => {
+    dispatch(setViewThisVersion(false));
     let IsoDateFormat;
     if (e == null) {
       IsoDateFormat = Date.now() / 1000;
@@ -365,6 +370,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
                   className={styles.radio}
                   value={1}
                   onClick={() => {
+                    dispatch(setViewThisVersion(false));
                     dispatch(
                       setIsReviewCanonizedTopics({
                         includeReview: true,
@@ -380,6 +386,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
                   className={styles.radio}
                   value={2}
                   onClick={() => {
+                    dispatch(setViewThisVersion(false));
                     dispatch(
                       setFilterCanonizedTopics({
                         asofdate: Date.now() / 1000,
@@ -394,6 +401,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
                   className={styles.radio}
                   value={3}
                   onClick={() => {
+                    dispatch(setViewThisVersion(false));
                     handleAsOfClick();
                   }}
                 >
@@ -404,14 +412,16 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
             <DatePicker
               disabled={isDatePicker || selectedAsOf == "bydate" ? false : true}
               format="YYYY-MM-DD"
-              defaultValue={moment(selectedAsOFDate * 1000)}
+              defaultValue={moment(current_date_filter * 1000)}
               value={moment(selectedAsOFDate * 1000)}
               suffixIcon={<i className="icon-calendar"></i>}
               size={"large"}
               className={`${styles.date} w-100`}
               onChange={pickDate}
               inputReadOnly={true}
-              disabledDate={(current) => current.isAfter(moment())}
+              disabledDate={(current) =>
+                current && current > moment(current_date_filter).endOf("day")
+              }
             />
           </Panel>
           {isAuth.isUserAuthenticated ? (

@@ -82,7 +82,7 @@ const ForumComponent = ({}) => {
       topic_num: +topic_num,
       camp_num: +nodeKey,
       as_of: asof,
-      asofdate: asofdate || Date.now() / 1000,
+      as_of_date: asofdate || Date.now() / 1000,
       algorithm: algorithm,
       update_all: 1,
     };
@@ -221,8 +221,6 @@ const ForumComponent = ({}) => {
   };
 
   const onThreadClick = (e, data) => {
-    setCurrentThread(data);
-
     const queries = router?.query;
 
     e.preventDefault();
@@ -419,9 +417,14 @@ const ForumComponent = ({}) => {
       from = q?.from,
       threadId = q?.id;
 
-    if (from && threadId) {
+    if (threadId) {
       threadDetails(threadId);
     }
+  }, [router?.query?.id]);
+
+  useEffect(() => {
+    const q = router?.query,
+      threadId = q?.id;
 
     if (threadId) {
       getPosts(threadId, ppage);

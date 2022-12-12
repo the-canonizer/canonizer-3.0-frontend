@@ -85,6 +85,8 @@ export const labels = {
   otLabel:
     "Note: Verification code has been sent to your registered email address.",
   createPassword: "Create New Password",
+  verificationLabel: "Create Password Verification Code",
+  forgotModalLabel: "Forgot Your Password?",
 };
 
 export const preventCampLabel = [

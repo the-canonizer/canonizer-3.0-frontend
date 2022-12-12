@@ -7,10 +7,15 @@ import Image from "next/image";
 import Link from "next/link";
 const { Title } = Typography;
 import K from "../../../constants";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
 
 function Footer() {
   const router = useRouter();
   const [socialLinks, setSocialLinks] = useState(null);
+  const loggedInUser = useSelector(
+    (state: RootState) => state.auth.loggedInUser
+  );
 
   useEffect(() => {
     async function linksApiCall() {
@@ -60,6 +65,9 @@ function Footer() {
       id: 8,
     },
   ];
+  const filterMockLinks = mockLinks1.filter((obj) => {
+    return obj.id != 5;
+  });
 
   return (
     <>
@@ -108,7 +116,10 @@ function Footer() {
                 <Row gutter={20}>
                   <Col xs={24} md={12}>
                     <ul>
-                      {mockLinks1?.map((item) => {
+                      {(loggedInUser?.is_admin == true
+                        ? mockLinks1
+                        : filterMockLinks
+                      )?.map((item) => {
                         return (
                           <li key={item.id}>
                             <Link href={item.link}>
