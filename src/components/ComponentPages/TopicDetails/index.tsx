@@ -371,7 +371,7 @@ const TopicDetails = () => {
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
-        {tree && tree["1"]?.is_valid_as_of_time ? (
+        {(tree && tree["1"]?.is_valid_as_of_time) || asof == "default" ? (
           <CampInfoBar
             isTopicPage={true}
             payload={{
@@ -394,7 +394,7 @@ const TopicDetails = () => {
         <aside className={styles.miniSide + " leftSideBar miniSideBar"}>
           <SideBar onCreateCamp={onCreateCamp} />
         </aside>
-        {tree && tree["1"]?.is_valid_as_of_time && (
+        {((tree && tree["1"]?.is_valid_as_of_time) || asof == "default") && (
           <>
             <div className={styles.pageContent + " pageContentWrap"}>
               <Spin spinning={getTreeLoadingIndicator} size="large">
