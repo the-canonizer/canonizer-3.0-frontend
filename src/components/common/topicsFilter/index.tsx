@@ -420,7 +420,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
               onChange={pickDate}
               inputReadOnly={true}
               disabledDate={(current) =>
-                current.isAfter(moment(new Date(current_date_filter)))
+                current && current > moment(current_date_filter).endOf("day")
               }
             />
           </Panel>
