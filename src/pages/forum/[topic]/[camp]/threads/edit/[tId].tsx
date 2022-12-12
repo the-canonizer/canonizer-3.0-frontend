@@ -15,6 +15,6 @@ function CampForumEditPage() {
   );
 }
 
-CampForumEditPage.displayName = "CampForumPage";
+CampForumEditPage.displayName = "CampForumEditPage";
 
 export default CampForumEditPage;
