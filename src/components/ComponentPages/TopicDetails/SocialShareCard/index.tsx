@@ -6,6 +6,7 @@ import styles from "../topicDetails.module.scss";
 
 import SocialShareUI from "../../../common/socialShare";
 import { RootState } from "src/store";
+import { isServer } from "../../../../utils/generalUtility";
 
 const { Paragraph } = Typography;
 const { Panel } = Collapse;
@@ -41,7 +42,7 @@ const SocialShareCard = ({}) => {
         >
           <SocialShareUI
             campName={campRecord?.camp_name}
-            campUrl={window.location.href}
+            campUrl={!isServer() && window?.location?.href}
           />
         </Panel>
       </Collapse>

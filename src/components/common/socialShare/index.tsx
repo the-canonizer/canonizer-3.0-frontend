@@ -10,6 +10,8 @@ import {
 
 import styles from "./social-share.module.scss";
 
+import { isServer } from "../../../utils/generalUtility";
+
 const { Text } = Typography;
 
 const SocialShare = ({ campUrl, campName }) => {
@@ -22,7 +24,7 @@ const SocialShare = ({ campUrl, campName }) => {
         <FacebookShareButton
           url={campUrl}
           quote={campName}
-          hashtag={`#${window?.location?.hostname}`}
+          hashtag={`#${!isServer() && window?.location?.hostname}`}
         >
           <FacebookIcon size={32} round />
         </FacebookShareButton>
