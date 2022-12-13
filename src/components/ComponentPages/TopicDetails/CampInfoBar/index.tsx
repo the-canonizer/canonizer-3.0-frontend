@@ -77,13 +77,6 @@ const CampInfoBar = ({
         topic_num: payload?.topic_num,
         camp_num: payload?.camp_num,
         as_of: "default",
-        // router?.pathname == "/topic/[...camp]" || viewThisVersionCheck
-        //   ? asof
-        //   : "default",
-        // as_of_date:
-        //   asof == "default" || asof == "review"
-        //     ? Date.now() / 1000
-        //     : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
       };
       let res = await getCampBreadCrumbApi(reqBody);
       setBreadCrumbRes(res?.data);
