@@ -48,10 +48,10 @@ const Notifications = ({}) => {
   };
 
   useEffect(() => {
-    if (isLog) {
+    if (isUserAuthenticated) {
       getListData();
     }
-  }, [isLog]);
+  }, [isUserAuthenticated]);
 
   // useEffect(() => {
   //   //When Page is render remove data from setManageSupportStatusCheck
