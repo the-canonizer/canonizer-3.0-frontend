@@ -17,9 +17,6 @@ const { Text } = Typography;
 const SocialShare = ({ campUrl, campName }) => {
   return (
     <div className={styles.wrapper}>
-      <Text className={styles.social_login_text} id="social-login-title">
-        Share current topic/camp on the social media.
-      </Text>
       <div className={styles.btn_group}>
         <FacebookShareButton
           url={campUrl}
