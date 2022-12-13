@@ -16,14 +16,14 @@ function Footer() {
   const loggedInUser = useSelector(
     (state: RootState) => state.auth.loggedInUser
   );
-
-  useEffect(() => {
-    async function linksApiCall() {
-      const result = await getFooterSocialLinksApi();
-      setSocialLinks(result);
-    }
-    linksApiCall();
-  }, []);
+  // Will be used later for social icons 
+  // useEffect(() => {
+  //   async function linksApiCall() {
+  //     const result = await getFooterSocialLinksApi();
+  //     setSocialLinks(result);
+  //   }
+  //   linksApiCall();
+  // }, []);
 
   const mockLinks1 = [
     {
