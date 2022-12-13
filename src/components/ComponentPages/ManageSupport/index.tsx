@@ -221,7 +221,7 @@ const ManageSupport = () => {
   //replace use to - change to space
   const camp_Name_ = campRecord?.camp_name;
   const CampName = camp_Name_;
-  const campSupportPath = router.asPath.replace("/support/", "/topic/");
+  const campSupportPath = router.asPath?.replace("/support/", "/topic/");
 
   const body = { topic_num: topicNum };
   const getActiveSupportTopicList = async (
@@ -299,7 +299,7 @@ const ManageSupport = () => {
     }
   };
 
-  let manageSupportPath = router.asPath.replace("/support/", "/topic/");
+  let manageSupportPath = router.asPath?.replace("/support/", "/topic/");
   if (manageSupportPath.lastIndexOf("_") > -1)
     manageSupportPath = manageSupportPath.substring(
       0,
@@ -314,13 +314,17 @@ const ManageSupport = () => {
 
   //Cancel Button
   const cancelManageRoute = () => {
-    let manageSupportPath1 = manageSupportUrlLink.replace(
+    let manageSupportPath1 = manageSupportUrlLink?.replace(
       "/support/",
       "/topic/"
     );
-    router.push({
-      pathname: CheckDelegatedOrDirect ? manageSupportPath : manageSupportPath1,
-    });
+    if (manageSupportPath || manageSupportPath1) {
+      router.push({
+        pathname: CheckDelegatedOrDirect
+          ? manageSupportPath
+          : manageSupportPath1,
+      });
+    }
   };
 
   //Submit NickName Supported Camps

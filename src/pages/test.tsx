@@ -2,8 +2,8 @@
 
 // // This imports the functional component from the previous sample.
 // import VideoJS from './../components/videoJs'
-import { useEffect } from 'react';
-import videojs from 'video.js';
+import { useEffect } from "react";
+import videojs from "video.js";
 // const Test = () => {
 //   const playerRef = React.useRef(null);
 
@@ -16,7 +16,7 @@ import videojs from 'video.js';
 //     //   src: '/path/to/video.mp4',
 //       src:'https://canonizer3.canonizer.com/static/videos/consciousness/perceiving_a_strawberry_360.mp4',
 //       type: 'video/mp4'
-      
+
 //     }]
 //   };
 
@@ -43,38 +43,40 @@ import videojs from 'video.js';
 //   );
 // }
 
-
- 
 // export default Test;
 
-
-
-
 const Test = () => {
+  useEffect(() => {
+    var player = videojs("content_video");
 
-useEffect(() => {
-    
-    
-        var player = videojs('content_video');
-    
-    player.on('ready', function() {
+    player.on("ready", function () {
       player.vhs = null;
-      
     });
-}, []);
+  }, []);
 
+  return (
+    <body>
+      <div className="container">
+        <video
+          id="content_video"
+          className="video-js vjs-default-skin vjs-16-9"
+          controls
+          preload="auto"
+          width="640"
+          height="360"
+        >
+          <source src="https://vjs.zencdn.net/v/oceans.mp4" type="video/mp4" />
+          <track
+            label="English"
+            kind="chapters"
+            srcLang="en"
+            src="https://kot-politiken.s3-eu-west-1.amazonaws.com/2019/114_en.vtt.txt"
+            default
+          />
+        </video>
+      </div>
+    </body>
+  );
+};
 
-
-    return (
-          <body>
-    <div className='container'>
-      <video id="content_video" className="video-js vjs-default-skin vjs-16-9" controls preload="auto" width="640" height="360">
-        <source src="https://vjs.zencdn.net/v/oceans.mp4" type="video/mp4" />
-        <track label="English" kind="chapters" srcLang="en" src="https://kot-politiken.s3-eu-west-1.amazonaws.com/2019/114_en.vtt.txt" default />
-      </video>
-    </div>
-  </body>
-      );
-}
- 
 export default Test;
