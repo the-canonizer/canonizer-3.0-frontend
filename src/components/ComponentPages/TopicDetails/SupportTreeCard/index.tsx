@@ -49,7 +49,7 @@ const SupportTreeCard = ({
   handleLoadMoreSupporters,
   getCheckSupportStatus,
   removeApiSupport,
-  fetchTotalScore,
+  // fetchTotalScore,
   removeSupport,
   topicList,
   totalSupportScore,
@@ -59,7 +59,9 @@ const SupportTreeCard = ({
   setIsSupportTreeCardModal,
   handleSupportTreeCardCancel,
   removeSupportSpinner,
+  totalCampScoreForSupportTree
 }) => {
+
   const { currentGetCheckSupportExistsData, is_checked } = useSelector(
     (state: RootState) => ({
       currentGetCheckSupportExistsData:
@@ -280,11 +282,9 @@ const SupportTreeCard = ({
           }
         >
           <Paragraph>
-            Total Support for This Camp (including sub-camps):
+            Total Support for This Camp (including sub-camps): 
             <span className="number-style">
-              {is_checked && isUserAuthenticated
-                ? totalFullSupportScore?.toFixed(2)
-                : totalSupportScore?.toFixed(2)}
+            { totalCampScoreForSupportTree?.toFixed(2)}
             </span>
           </Paragraph>
 
