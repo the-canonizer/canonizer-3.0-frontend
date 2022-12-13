@@ -49,6 +49,16 @@ const PermissionsForPages: PermissionsObj = {
     isPermissionRequired: false,
     permissionName: "manageSupport",
   },
+  EditNewsPage: {
+    isAuthenticationRequired: true,
+    isPermissionRequired: false,
+    permissionName: "editNews",
+  },
+  AddNewsPage: {
+    isAuthenticationRequired: true,
+    isPermissionRequired: false,
+    permissionName: "addNews",
+  },
 };
 
 export default PermissionsForPages;
