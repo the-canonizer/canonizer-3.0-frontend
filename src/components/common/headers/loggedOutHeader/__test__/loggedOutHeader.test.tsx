@@ -66,9 +66,9 @@ describe("LoggedOutHeader", () => {
     const browseLink = screen.getByRole("link", {
       name: /Browse/i,
     });
-    const uploadFilesLink = screen.getByRole("link", {
-      name: /Upload File/i,
-    });
+    // const uploadFilesLink = screen.getByRole("link", {
+    //   name: /Upload File/i,
+    // });
 
     const helpLink = screen.getByRole("link", {
       name: /Help/i,
@@ -87,14 +87,14 @@ describe("LoggedOutHeader", () => {
     expect(container.getElementsByTagName("header")).toHaveLength(1);
     expect(container.getElementsByTagName("nav")).toHaveLength(1);
     expect(container.getElementsByTagName("ul")).toHaveLength(1);
-    expect(container.getElementsByTagName("li")).toHaveLength(6);
-    expect(container.getElementsByTagName("a")).toHaveLength(9);
+    expect(container.getElementsByTagName("li")).toHaveLength(5);
+    expect(container.getElementsByTagName("a")).toHaveLength(8);
     expect(container.getElementsByTagName("button")).toHaveLength(8);
     expect(container.getElementsByTagName("img")).toHaveLength(1);
 
     expect(logoLink.getAttribute("href")).toBe("/");
     expect(browseLink.getAttribute("href")).toBe("/browse");
-    expect(uploadFilesLink.getAttribute("href")).toBe("/uploadFile");
+    // expect(uploadFilesLink.getAttribute("href")).toBe("/uploadFile");
     expect(helpLink.getAttribute("href")).toBe("/topic/132-Help/1-Agreement");
     expect(whitePaperLink.getAttribute("href")).toBe(
       "/files/2012_amplifying_final.pdf"
