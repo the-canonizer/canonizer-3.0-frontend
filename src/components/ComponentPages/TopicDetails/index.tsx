@@ -51,6 +51,7 @@ import {
 } from "src/network/api/userApi";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import { SupportTreeTotalScore } from "src/network/api/campDetailApi";
+// import SocialShareCard from "./SocialShareCard";
 
 const TopicDetails = () => {
   let myRefToCampStatement = useRef(null);
@@ -63,6 +64,7 @@ const TopicDetails = () => {
   const [topicList, setTopicList] = useState([]);
   const [isSupportTreeCardModal, setIsSupportTreeCardModal] = useState(false);
   const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
+  const [totalCampScoreForSupportTree, setTotalCampScoreForSupportTree] = useState<number>(null);
   const router = useRouter();
   const dispatch = useDispatch();
   const {
@@ -184,7 +186,7 @@ const TopicDetails = () => {
       GetCheckStatusData();
       getCanonizedCampSupportingTreeApi(reqBody, algorithm);
       getTreesApi(reqBodyForService);
-      fetchTotalScore();
+      // fetchTotalScore();
     }
   };
   const removeSupport = async (supportedId) => {
@@ -216,7 +218,7 @@ const TopicDetails = () => {
       GetCheckStatusData();
       getCanonizedCampSupportingTreeApi(reqBody, algorithm);
       getTreesApi(reqBodyForService);
-      fetchTotalScore();
+      // fetchTotalScore();
     }
   };
   const removeSupportForDelegate = async () => {
@@ -244,7 +246,7 @@ const TopicDetails = () => {
       GetCheckStatusData();
       getCanonizedCampSupportingTreeApi(reqBody, algorithm);
       getTreesApi(reqBodyForService);
-      fetchTotalScore();
+      // fetchTotalScore();
     }
   };
 
@@ -257,20 +259,20 @@ const TopicDetails = () => {
     algorithm: algorithm,
   };
 
-  const fetchTotalScore = async () => {
-    const CampTotalScore = {
-      topic_num: totalScoreData.topic_num,
-      camp_num: totalScoreData.camp_num,
-      asOf: totalScoreData.asOf,
-      asofdate: totalScoreData.asofdate,
-      algorithm: totalScoreData.algorithm,
-    };
-    let response = await SupportTreeTotalScore(CampTotalScore);
-    if (response && response.status_code == 200) {
-      setTotalSupportScore(response.data.score);
-      setTotalFullSupportScore(response.data.full_score);
-    }
-  };
+  // const fetchTotalScore = async () => {
+  //   const CampTotalScore = {
+  //     topic_num: totalScoreData.topic_num,
+  //     camp_num: totalScoreData.camp_num,
+  //     asOf: totalScoreData.asOf,
+  //     asofdate: totalScoreData.asofdate,
+  //     algorithm: totalScoreData.algorithm,
+  //   };
+  //   let response = await SupportTreeTotalScore(CampTotalScore);
+  //   if (response && response.status_code == 200) {
+  //     setTotalSupportScore(response.data.score);
+  //     setTotalFullSupportScore(response.data.full_score);
+  //   }
+  // };
 
   const GetCheckStatusData = async () => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
@@ -296,7 +298,7 @@ const TopicDetails = () => {
     if (isUserAuthenticated) {
       GetCheckStatusData();
     }
-    fetchTotalScore();
+    // fetchTotalScore();
   }, [isUserAuthenticated, router, algorithm]);
 
   const scrollToCampStatement = () => {
@@ -398,7 +400,7 @@ const TopicDetails = () => {
           <>
             <div className={styles.pageContent + " pageContentWrap"}>
               <Spin spinning={getTreeLoadingIndicator} size="large">
-                <CampTreeCard scrollToCampStatement={scrollToCampStatement} />
+                <CampTreeCard scrollToCampStatement={scrollToCampStatement} setTotalCampScoreForSupportTree={setTotalCampScoreForSupportTree} />
               </Spin>
               {campExist && !campExist?.camp_exist && (
                 <Spin spinning={loadingIndicator} size="large">
@@ -457,7 +459,7 @@ const TopicDetails = () => {
                           handleLoadMoreSupporters={handleLoadMoreSupporters}
                           getCheckSupportStatus={getCheckSupportStatus}
                           removeApiSupport={removeApiSupport}
-                          fetchTotalScore={fetchTotalScore}
+                          // fetchTotalScore={fetchTotalScore}
                           totalSupportScore={totalSupportScore}
                           totalFullSupportScore={totalFullSupportScore}
                           removeSupport={removeSupport}
@@ -469,8 +471,13 @@ const TopicDetails = () => {
                             handleSupportTreeCardCancel
                           }
                           removeSupportSpinner={removeSupportSpinner}
+                          totalCampScoreForSupportTree={totalCampScoreForSupportTree}
                         />
                       </Spin>
+
+                      {/* <Spin spinning={loadingIndicator} size="large">
+                        <SocialShareCard />
+                      </Spin> */}
                     </>
                   )}
             </div>

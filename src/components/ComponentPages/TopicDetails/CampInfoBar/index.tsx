@@ -1,6 +1,6 @@
 import { Spin, Tooltip, Typography } from "antd";
 import { useRouter } from "next/router";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getTreesApi,
@@ -22,7 +22,11 @@ import {
   HeartOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
-import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
+import {
+  replaceSpecialCharacters,
+  isServer,
+} from "../../../../utils/generalUtility";
+import SocialShareUI from "../../../common/socialShare";
 
 const CampInfoBar = ({
   payload = null,
@@ -379,7 +383,11 @@ const CampInfoBar = ({
 
           <div className={styles.topicDetailContentHead_Right}>
             {isTopicPage && (
-              <>
+              <Fragment>
+                <SocialShareUI
+                  campName={campRecord?.camp_name}
+                  campUrl={!isServer() && window?.location?.href}
+                />
                 <Button
                   type="primary"
                   className={styles.btnCampForum}
@@ -401,7 +409,7 @@ const CampInfoBar = ({
                     <MoreOutlined />
                   </a>
                 </Dropdown>
-              </>
+              </Fragment>
             )}
           </div>
         </Spin>
