@@ -41,7 +41,6 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
   };
 
   const getListData = async () => {
-    console.log("called");
     if (isUserAuthenticated) {
       await getLists();
     }
