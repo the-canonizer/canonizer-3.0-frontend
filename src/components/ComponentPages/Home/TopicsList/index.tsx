@@ -163,20 +163,19 @@ const TopicsList = () => {
 
   const LoadMoreTopics = (
     <div className="text-center">
-      {pageNumber < topicsData?.numOfPages &&
-        topicsData?.topics?.length > 1 && (
-          <Button
-            className={styles.viewAll}
-            onClick={() => {
-              getTopicsApiCallWithReqBody(true);
-              setLoadMoreIndicator(true);
-            }}
-          >
-            <Text>Load More</Text>
-            {!loadMoreIndicator && <i className="icon-angle-right"></i>}
-            {loadMoreIndicator && <Spin indicator={antIcon} />}
-          </Button>
-        )}
+      {pageNumber < topicsData?.numOfPages && topicsData?.topics?.length > 1 && (
+        <Button
+          className={styles.viewAll}
+          onClick={() => {
+            getTopicsApiCallWithReqBody(true);
+            setLoadMoreIndicator(true);
+          }}
+        >
+          <Text>Load More</Text>
+          {!loadMoreIndicator && <i className="icon-angle-right"></i>}
+          {loadMoreIndicator && <Spin indicator={antIcon} />}
+        </Button>
+      )}
     </div>
   );
 
