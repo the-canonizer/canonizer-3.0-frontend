@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { Dropdown, Badge, Card, Typography, Switch, notification } from "antd";
 import Link from "next/link";
 import { BellOutlined } from "@ant-design/icons";
@@ -11,22 +11,14 @@ import styles from "../siteHeader.module.scss";
 
 import { firebaseCloudMessaging } from "../../../../firebaseConfig/firebase";
 import Lists from "../../../ComponentPages/Notifications/UI/List";
-import {
-  getLists,
-  markNotificationRead,
-  updateFCMToken,
-} from "../../../../network/api/notificationAPI";
+import { updateFCMToken } from "../../../../network/api/notificationAPI";
 import { RootState } from "../../../../store";
 import Fav from "./icon";
-import useAuthentication from "../../../../hooks/isUserAuthenticated";
-import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 
 const Notifications = ({}) => {
-  const dispatch = useDispatch();
-  const { isUserAuthenticated } = useAuthentication();
-  const [isLog, setIsLog] = useState(isUserAuthenticated);
   const [checked, setChecked] = useState(false);
-  useEffect(() => setIsLog(isUserAuthenticated), [isUserAuthenticated]);
+
+  const dispatch = useDispatch();
 
   const { count, list } = useSelector((state: RootState) => {
     return {
@@ -40,18 +32,6 @@ const Notifications = ({}) => {
   const updateToken = async (tc) => {
     const res = await updateFCMToken(tc);
   };
-
-  const getListData = async () => {
-    const res = await getLists();
-    // if (res && res.status_code === 200) {
-    // }
-  };
-
-  useEffect(() => {
-    if (isUserAuthenticated) {
-      getListData();
-    }
-  }, [isUserAuthenticated]);
 
   // useEffect(() => {
   //   //When Page is render remove data from setManageSupportStatusCheck
@@ -151,26 +131,6 @@ const Notifications = ({}) => {
       });
     }
   }
-
-  const onNotifyClick = async (id) => {
-    dispatch(setManageSupportStatusCheck(false));
-    const res = await markNotificationRead(id);
-    if (res && res.status_code === 200) {
-      router.query.from = "";
-      router.replace(router);
-    }
-  };
-
-  useEffect(() => {
-    const q = router.query;
-    if (q && q.from && q.from.includes("notify_")) {
-      const fArr = (q.from as String).split("_");
-      if (+fArr[1]) {
-        onNotifyClick(+fArr[1]);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router]);
 
   const notificationDropdown = (
     <Card
