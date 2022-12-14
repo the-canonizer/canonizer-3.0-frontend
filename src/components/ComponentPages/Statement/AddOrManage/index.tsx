@@ -128,7 +128,6 @@ export default function AddOrManage({ add }: any) {
         op.checked = false;
       });
       setOptions(oldOptions);
-    } else if (res?.status_code == 400) {
     }
     setScreenLoading(false);
   };

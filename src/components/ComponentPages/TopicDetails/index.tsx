@@ -50,8 +50,6 @@ import {
   removeSupportedCampsEntireTopic,
 } from "src/network/api/userApi";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
-import { SupportTreeTotalScore } from "src/network/api/campDetailApi";
-// import SocialShareCard from "./SocialShareCard";
 
 const TopicDetails = () => {
   let myRefToCampStatement = useRef(null);
@@ -64,7 +62,8 @@ const TopicDetails = () => {
   const [topicList, setTopicList] = useState([]);
   const [isSupportTreeCardModal, setIsSupportTreeCardModal] = useState(false);
   const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
-  const [totalCampScoreForSupportTree, setTotalCampScoreForSupportTree] = useState<number>(null);
+  const [totalCampScoreForSupportTree, setTotalCampScoreForSupportTree] =
+    useState<number>(null);
   const router = useRouter();
   const dispatch = useDispatch();
   const {
@@ -250,14 +249,14 @@ const TopicDetails = () => {
     }
   };
 
-  const totalScoreData = {
-    topic_num: +router?.query?.camp[0]?.split("-")[0],
-    camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
-    asOf: asof,
-    asofdate:
-      asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
-    algorithm: algorithm,
-  };
+  // const totalScoreData = {
+  //   topic_num: +router?.query?.camp[0]?.split("-")[0],
+  //   camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+  //   asOf: asof,
+  //   asofdate:
+  //     asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+  //   algorithm: algorithm,
+  // };
 
   // const fetchTotalScore = async () => {
   //   const CampTotalScore = {
@@ -400,7 +399,12 @@ const TopicDetails = () => {
           <>
             <div className={styles.pageContent + " pageContentWrap"}>
               <Spin spinning={getTreeLoadingIndicator} size="large">
-                <CampTreeCard scrollToCampStatement={scrollToCampStatement} setTotalCampScoreForSupportTree={setTotalCampScoreForSupportTree} />
+                <CampTreeCard
+                  scrollToCampStatement={scrollToCampStatement}
+                  setTotalCampScoreForSupportTree={
+                    setTotalCampScoreForSupportTree
+                  }
+                />
               </Spin>
               {campExist && !campExist?.camp_exist && (
                 <Spin spinning={loadingIndicator} size="large">
@@ -471,7 +475,9 @@ const TopicDetails = () => {
                             handleSupportTreeCardCancel
                           }
                           removeSupportSpinner={removeSupportSpinner}
-                          totalCampScoreForSupportTree={totalCampScoreForSupportTree}
+                          totalCampScoreForSupportTree={
+                            totalCampScoreForSupportTree
+                          }
                         />
                       </Spin>
 

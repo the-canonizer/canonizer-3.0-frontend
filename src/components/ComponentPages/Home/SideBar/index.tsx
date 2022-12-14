@@ -1,10 +1,8 @@
 import { useState, Fragment } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-import { Button, Drawer, Card } from "antd";
+import { Button, Drawer } from "antd";
 import { AppstoreAddOutlined } from "@ant-design/icons";
-
-import styles from "../../../../hoc/layout/layout.module.scss";
 
 import { RootState } from "src/store";
 import TopicsFilter from "../../../common/topicsFilter";
