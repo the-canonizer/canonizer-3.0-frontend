@@ -28,7 +28,7 @@ const addContent = (
   </>
 );
 
-const CampTreeCard = ({ scrollToCampStatement }) => {
+const CampTreeCard = ({ scrollToCampStatement, setTotalCampScoreForSupportTree }) => {
   const { tree, is_admin } = useSelector((state: RootState) => ({
     tree: state?.topicDetails?.tree?.at(0),
 
@@ -77,7 +77,7 @@ const CampTreeCard = ({ scrollToCampStatement }) => {
           </>
         }
       >
-        <CampTree scrollToCampStatement={scrollToCampStatement} />
+        <CampTree scrollToCampStatement={scrollToCampStatement} setTotalCampScoreForSupportTree={setTotalCampScoreForSupportTree} />
       </Panel>
     </Collapse>
   );

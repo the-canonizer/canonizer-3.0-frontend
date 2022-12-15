@@ -18,11 +18,11 @@ import {
   changeCommitStatement,
   agreeToChangeApi,
 } from "../../../../network/api/history";
-import { useDispatch } from "react-redux";
 import { setFilterCanonizedTopics } from "../../../../store/slices/filtersSlice";
-
+import { RootState } from "../../../../store";
 import K from "../../../../constants";
 
+import { useDispatch, useSelector } from "react-redux";
 import styles from ".././campHistory.module.scss";
 import StatementHistory from "./statementHistory";
 import CampHistory from "./campHistory";
@@ -49,11 +49,10 @@ function HistoryCollapse({
 }) {
   const router = useRouter();
   const [commited, setCommited] = useState(false);
-
   const [isSelectChecked, setIsSelectChecked] = useState(false);
-
-  const [loadingIndicatorForIAgree, setLoadingIndicatorForIAgree] =
-    useState(false);
+  const { loading } = useSelector((state: RootState) => ({
+    loading: state?.loading?.loading,
+  }));
 
   const [modal1Open, setModal1Open] = useState(false);
   const dispatch = useDispatch();
@@ -85,7 +84,6 @@ function HistoryCollapse({
   };
 
   const agreeWithChange = async () => {
-    setLoadingIndicatorForIAgree(true);
     setIsSelectChecked(true);
     let reqBody = {
       record_id: campStatement.id,
@@ -96,7 +94,6 @@ function HistoryCollapse({
     };
     let res = await agreeToChangeApi(reqBody);
     changeAgree();
-    setLoadingIndicatorForIAgree(false);
   };
 
   let historyTitle = () => {
@@ -401,6 +398,7 @@ function HistoryCollapse({
                         type="primary"
                         onClick={commitChanges}
                         id={`commit-change-${campStatement?.id}`}
+                        disabled={loading}
                       >
                         Commit Change
                       </Button>
@@ -415,7 +413,7 @@ function HistoryCollapse({
                 isUserAuthenticated &&
                 !campStatement?.isAuthor && (
                   <div className={styles.campStatementCollapseButtons}>
-                    <Spin spinning={loadingIndicatorForIAgree} size="default">
+                    <Spin spinning={loading} size="default">
                       {" "}
                       <Checkbox
                         defaultChecked={campStatement?.agreed_to_change}
