@@ -6,7 +6,7 @@ import styles from "./layout.module.scss";
 import Footer from "../../components/common/footer";
 import GoogleAd from "../../components/googleAds";
 
-function Layout(props) {
+function Layout(props: any) {
   const { isUserAuthenticated } = useAuthentication();
 
   return (

@@ -1,5 +1,4 @@
 import NetworkCall from "../networkCall";
-import { message } from "antd";
 
 import FooterRequests from "../request/footerRequests";
 

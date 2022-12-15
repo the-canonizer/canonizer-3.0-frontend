@@ -15,7 +15,7 @@ const { Panel } = Collapse;
 const covertToTime = (unixTime) => {
   return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm A");
 };
-const CampStatementCard = ({ myRefToCampStatement, onCampForumClick }) => {
+const CampStatementCard = () => {
   const router = useRouter();
   const { campStatement, history } = useSelector((state: RootState) => ({
     campStatement: state?.topicDetails?.campStatement,

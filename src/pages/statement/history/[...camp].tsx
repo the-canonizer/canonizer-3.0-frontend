@@ -2,7 +2,7 @@ import HistoryContainer from "../../../components/ComponentPages/HistoryContaine
 
 import Layout from "../../../hoc/layout";
 
-const StatementHistoryPage = ({}) => {
+const StatementHistoryPage = () => {
   return (
     <>
       <Layout>

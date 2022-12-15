@@ -23,7 +23,7 @@ const UserProfile = () => {
     }
   };
 
-  const UserSupportCampListNewSpaces = async (id) => {
+  const UserSupportCampListNewSpaces = async () => {
     let res = await getCanonizedNameSpacesApi();
     if (res && res.status_code === 200) {
       setNameSpaceList(res.data);

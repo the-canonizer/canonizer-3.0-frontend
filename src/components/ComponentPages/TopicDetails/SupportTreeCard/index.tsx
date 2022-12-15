@@ -1,17 +1,6 @@
 import { useEffect, useState } from "react";
 import CustomButton from "../../../common/button";
-import {
-  Card,
-  Button,
-  Typography,
-  List,
-  Collapse,
-  Popover,
-  message,
-  Modal,
-  Form,
-  Spin,
-} from "antd";
+import { Button, Typography, Collapse, Popover, Modal, Form, Spin } from "antd";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
@@ -46,10 +35,9 @@ const supportContent = (
   </>
 );
 const SupportTreeCard = ({
-  handleLoadMoreSupporters,
   getCheckSupportStatus,
   removeApiSupport,
-  // fetchTotalScore,
+  fetchTotalScore,
   removeSupport,
   topicList,
   totalSupportScore,
@@ -75,7 +63,7 @@ const SupportTreeCard = ({
   const arr = [];
   const getNickNameListData = async () => {
     const res = await getNickNameList();
-    res?.data?.map((value, key) => {
+    res?.data?.map((value) => {
       arr.push(value.id);
     });
     setUserNickNameList(arr);
