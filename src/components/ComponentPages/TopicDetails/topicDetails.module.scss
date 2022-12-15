@@ -15,6 +15,7 @@
     font-weight: 500;
   }
 }
+
 .topicDetailContentHead {
   width: 100%;
   padding: 0 8px 10px 0;
@@ -30,7 +31,7 @@
     @media screen and (min-width: 992px) {
       display: flex;
       flex-wrap: wrap;
-      width: calc(100% - 170px);
+      width: calc(100% - 300px);
     }
     .topicTitleStyle,
     .breadcrumbLinks {
@@ -79,6 +80,7 @@
     }
   }
 }
+
 .imageWrapper {
   width: calc(100% - 316px);
   background: #fff;
@@ -93,6 +95,7 @@
     margin: 0;
   }
 }
+
 .breadcrumbLinks {
   display: flex;
   font-size: 16px;
@@ -162,6 +165,7 @@
     }
   }
 }
+
 .addSupportText {
   width: 300px;
   font-size: 12px;

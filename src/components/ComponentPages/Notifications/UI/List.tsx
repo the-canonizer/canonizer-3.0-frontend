@@ -19,7 +19,7 @@ export default function NotificationList({
       className={styles.list}
       id="list-items"
       renderItem={(item) => (
-        <List.Item id={"list-item-" + item["id"]} key={item["id"]}>
+        <List.Item id={"list-item-" + item["id"]} key={"list-item-" + item["id"]}>
           <List.Item.Meta
             avatar={
               <div className={styles.avatarBell}>
