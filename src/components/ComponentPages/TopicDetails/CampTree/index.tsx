@@ -12,7 +12,10 @@ import useAuthentication from "src/hooks/isUserAuthenticated";
 
 const { TreeNode } = Tree;
 
-const CampTree = ({ scrollToCampStatement, setTotalCampScoreForSupportTree }) => {
+const CampTree = ({
+  scrollToCampStatement,
+  setTotalCampScoreForSupportTree,
+}) => {
   const { tree, filterByScore, review, is_checked } = useSelector(
     (state: RootState) => ({
       tree: state?.topicDetails?.tree,
@@ -150,19 +153,21 @@ const CampTree = ({ scrollToCampStatement, setTotalCampScoreForSupportTree }) =>
       const parentIsOneLevel = isOneLevel;
       let _isOneLevel = data[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
       let _isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
-      if(router?.query?.camp?.at(1)?.split("-")?.at(0)){
-        if(data[item]?.camp_id == router?.query?.camp?.at(1)?.split("-")?.at(0)){
+      if (router?.query?.camp?.at(1)?.split("-")?.at(0)) {
+        if (
+          data[item]?.camp_id == router?.query?.camp?.at(1)?.split("-")?.at(0)
+        ) {
           is_checked && isUserAuthenticated
             ? setTotalCampScoreForSupportTree(data[item].full_score)
-            : setTotalCampScoreForSupportTree(data[item].score)     
+            : setTotalCampScoreForSupportTree(data[item].score);
         }
-        }else{
-          if(data[item]?.camp_id == 1){
-            is_checked && isUserAuthenticated
-              ? setTotalCampScoreForSupportTree(data[item].full_score)
-              : setTotalCampScoreForSupportTree(data[item].score)     
+      } else {
+        if (data[item]?.camp_id == 1) {
+          is_checked && isUserAuthenticated
+            ? setTotalCampScoreForSupportTree(data[item].full_score)
+            : setTotalCampScoreForSupportTree(data[item].score);
         }
-      }    
+      }
       if (data[item].children) {
         if (data[item].score >= scoreFilter) {
           return (
