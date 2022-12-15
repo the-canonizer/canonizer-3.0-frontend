@@ -1,8 +1,6 @@
 import NetworkCall from "../networkCall";
 import VideosContent from "../request/videosRequest";
 
-import { store } from "../../store";
-
 export const getVideosContentApi = async () => {
   try {
     const videosData = await NetworkCall.fetch(

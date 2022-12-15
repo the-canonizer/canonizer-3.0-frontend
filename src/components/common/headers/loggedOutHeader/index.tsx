@@ -19,11 +19,10 @@ import { RootState } from "src/store";
 
 const { Header } = Layout;
 
-const LoggedOutHeader = ({ isLoginPage = false }) => {
+const LoggedOutHeader = ({ isLoginPage = false }: any) => {
   const loggedInUser = useSelector(
     (state: RootState) => state.auth.loggedInUser
   );
-  console.log(loggedInUser, "loguser");
   const dispatch = useDispatch();
   const router = useRouter();
 

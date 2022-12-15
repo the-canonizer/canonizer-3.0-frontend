@@ -1,5 +1,4 @@
 import { message } from "antd";
-import K from "../constants";
 // import emojiUnicode from "emoji-unicode";
 
 export const handleError = (error, log = false, dispatch = null) => {
@@ -300,7 +299,7 @@ export const disableInput = (camp: {
 };
 
 export const emojiValidation =
-  (exp, msg) =>
+  (exp) =>
   ({ setFieldValue }) => ({
     validator(currentField, value) {
       if (value && !value?.trim().match(exp)) {

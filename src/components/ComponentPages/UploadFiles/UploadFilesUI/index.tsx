@@ -17,9 +17,8 @@ import {
   Spin,
   Alert,
   Empty,
-  Skeleton,
 } from "antd";
-import Icon, {
+import {
   InboxOutlined,
   SearchOutlined,
   CloseCircleOutlined,
@@ -73,14 +72,12 @@ import {
 import CreateFolder from "../CreateFolder";
 import {
   createFolderApi,
-  deactivateUser,
   globalSearchUploadFiles,
 } from "../../../../network/api/userApi";
 import { labels } from "../../../../messages/label";
 import { setTimeout } from "timers";
 import SideBar from "../../CampForum/UI/sidebar";
 import queryParams from "src/utils/queryParams";
-import { searchParams } from "src/utils/generalUtility";
 
 const UploadFileUI = ({
   input,
@@ -110,7 +107,7 @@ const UploadFileUI = ({
   setFlickringData,
   toggleFileView,
   setToggleFileView,
-}) => {
+}: any) => {
   const [uploadStatus, setUploadStatus] = useState(false);
   // const [toggleFileView, setToggleFileView] = useState(false);
   const [previewImageIndicator, setPreviewImageIndicator] = useState(false);
@@ -120,7 +117,7 @@ const UploadFileUI = ({
   const [updateList, setUpdateList] = useState({});
   const [datePick, setDatePick] = useState("");
   const [createFolderForm] = Form.useForm();
-  const imageTimer = 2500;
+  // const imageTimer = 2500;
   const [rename, setRename] = useState("");
   const [editFolderNameVal, setEditFolderNameVal] = useState("");
   const [editModal, setEditModal] = useState(false);
@@ -152,9 +149,9 @@ const UploadFileUI = ({
     (state: RootState) => state.ui.visibleUploadOptions
   );
   const afterUpload = useSelector((state: RootState) => state.ui.uploadAfter);
-  const showFolderData = useSelector(
-    (state: RootState) => state.ui.folderShown
-  );
+  // const showFolderData = useSelector(
+  //   (state: RootState) => state.ui.folderShown
+  // );
   const openFolder = useSelector((state: RootState) => state.ui.folderOpen);
   const addButtonShow = useSelector((state: RootState) => state.ui.addButton);
   const fileStatus = useSelector((state: RootState) => state.ui.fileStatus);
@@ -411,7 +408,7 @@ const UploadFileUI = ({
     }
   };
 
-  const onFinish = (values) => {
+  const onFinish = () => {
     editModal ? changeFolderName() : createNewFolder();
   };
   const onFinishValidation = () => {

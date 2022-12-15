@@ -1,10 +1,8 @@
 import { useState, Fragment } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-import { Button, Drawer, Card } from "antd";
+import { Button, Drawer } from "antd";
 import { AppstoreAddOutlined } from "@ant-design/icons";
-
-import styles from "../../../../hoc/layout/layout.module.scss";
 
 import { RootState } from "src/store";
 import TopicsFilter from "../../../common/topicsFilter";
@@ -12,7 +10,7 @@ import CampRecentActivities from "../CampRecentActivities";
 import NewsFeedsCard from "../../TopicDetails/NewsFeedsCard";
 import GoogleAd from "../../../googleAds";
 
-export default function HomeSideBar({ onCreateCamp = () => {} }) {
+export default function HomeSideBar({ onCreateCamp = () => {} }: any) {
   const router = useRouter();
   const { newsFeed } = useSelector((state: RootState) => ({
     newsFeed: state?.topicDetails?.newsFeed,

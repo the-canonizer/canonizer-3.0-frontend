@@ -57,7 +57,6 @@ export const login = async (email: string, password: string) => {
 };
 
 export const logout = async (error = "", status = null, count: number = 1) => {
-  console.log("ccccc", count);
   let state = store.getState();
   const { auth } = state;
 
@@ -788,8 +787,6 @@ export const unsubscribeTopicOrCampAPI = async (body: object) => {
 };
 
 export const getUserSupportedCampList = async (params: string) => {
-  let state = store.getState();
-  const { auth } = state;
   try {
     const res = await NetworkCall.fetch(
       UserRequest.UserSupportedCampList(params)

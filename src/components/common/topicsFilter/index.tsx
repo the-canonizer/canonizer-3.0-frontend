@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 import {
   Typography,
@@ -66,38 +66,37 @@ const asContent = (
   </>
 );
 
-function range(start, end) {
-  const result = [];
-  for (let i = start; i < end; i++) {
-    result.push(i);
-  }
-  return result;
-}
+// function range(start, end) {
+//   const result = [];
+//   for (let i = start; i < end; i++) {
+//     result.push(i);
+//   }
+//   return result;
+// }
 
-function disabledDate(current) {
-  // Can not select days before today and today
-  return current && current < moment().endOf("day");
-}
+// function disabledDate(current) {
+//   // Can not select days before today and today
+//   return current && current < moment().endOf("day");
+// }
 
-function disabledDateTime() {
-  return {
-    disabledHours: () => range(0, 24).splice(4, 20),
-    disabledMinutes: () => range(30, 60),
-    disabledSeconds: () => [55, 56],
-  };
-}
+// function disabledDateTime() {
+//   return {
+//     disabledHours: () => range(0, 24).splice(4, 20),
+//     disabledMinutes: () => range(30, 60),
+//     disabledSeconds: () => [55, 56],
+//   };
+// }
 
-const CreateTopic = ({ onCreateCamp = () => {} }) => {
+const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   const isAuth = useAuthentication();
 
   const [isDatePicker, setIsDatePicker] = useState(false);
-  const [isPanelCollapse, setIsPanelCollapse] = useState(false);
+  // const [isPanelCollapse, setIsPanelCollapse] = useState(false);
 
   const [datePickerValue, setDatePickerValue] = useState(null);
 
   const dispatch = useDispatch();
   const router = useRouter();
-  const didMount = useRef(false);
   const [isCampBtnVisible, setIsCampBtnVisible] = useState(false);
 
   const campRoute = () => {
@@ -106,24 +105,20 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
 
   const {
     algorithms,
-    filterObject,
     filteredScore,
     selectedAlgorithm,
     selectedAsOf,
     filteredAsOfDate,
-    currentCampRecord,
     currentCampNode,
     tree,
     loading,
     current_date_filter,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
-    filterObject: state?.filters?.filterObject,
     filteredScore: state?.filters?.filterObject?.filterByScore,
     selectedAlgorithm: state?.filters?.filterObject?.algorithm,
     selectedAsOf: state?.filters?.filterObject?.asof,
     filteredAsOfDate: state?.filters?.filterObject?.asofdate,
-    currentCampRecord: state.topicDetails.currentCampRecord,
     currentCampNode: state?.filters?.selectedCampNode,
     tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
     loading: state?.loading?.loading,
@@ -168,7 +163,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }) => {
 
   useEffect(() => {
     if (router.pathname.includes("/topic/")) {
-      setIsPanelCollapse(true);
+      // setIsPanelCollapse(true);
       setIsCampBtnVisible(true);
     }
   }, [router.pathname]);

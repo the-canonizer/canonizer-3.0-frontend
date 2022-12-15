@@ -1,4 +1,4 @@
-import { handleError, isServer } from "../../utils/generalUtility";
+import { handleError } from "../../utils/generalUtility";
 import NetworkCall from "../networkCall";
 import TermsAndPrivacyRequest from "../request/termsAndPrivacyRequest";
 
