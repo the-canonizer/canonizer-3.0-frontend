@@ -67,7 +67,8 @@ const TopicDetails = () => {
   const [topicList, setTopicList] = useState([]);
   const [isSupportTreeCardModal, setIsSupportTreeCardModal] = useState(false);
   const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
-  const [totalCampScoreForSupportTree, setTotalCampScoreForSupportTree] = useState<number>(null);
+  const [totalCampScoreForSupportTree, setTotalCampScoreForSupportTree] =
+    useState<number>(null);
   const router = useRouter();
   const dispatch = useDispatch();
   const {
@@ -421,7 +422,12 @@ const TopicDetails = () => {
           <>
             <div className={styles.pageContent + " pageContentWrap"}>
               <Spin spinning={getTreeLoadingIndicator} size="large">
-                <CampTreeCard scrollToCampStatement={scrollToCampStatement} setTotalCampScoreForSupportTree={setTotalCampScoreForSupportTree} />
+                <CampTreeCard
+                  scrollToCampStatement={scrollToCampStatement}
+                  setTotalCampScoreForSupportTree={
+                    setTotalCampScoreForSupportTree
+                  }
+                />
               </Spin>
               {campExist && !campExist?.camp_exist && (
                 <Spin spinning={loadingIndicator} size="large">
@@ -495,7 +501,9 @@ const TopicDetails = () => {
                             handleSupportTreeCardCancel
                           }
                           removeSupportSpinner={removeSupportSpinner}
-                          totalCampScoreForSupportTree={totalCampScoreForSupportTree}
+                          totalCampScoreForSupportTree={
+                            totalCampScoreForSupportTree
+                          }
                         />
                       </Spin>
 
