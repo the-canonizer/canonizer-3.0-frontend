@@ -299,7 +299,7 @@ export const disableInput = (camp: {
 };
 
 export const emojiValidation =
-  (exp) =>
+  (exp, msg) =>
   ({ setFieldValue }) => ({
     validator(currentField, value) {
       if (value && !value?.trim().match(exp)) {
