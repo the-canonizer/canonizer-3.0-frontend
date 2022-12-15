@@ -16,7 +16,7 @@ function Footer() {
   const loggedInUser = useSelector(
     (state: RootState) => state.auth.loggedInUser
   );
-  // Will be used later for social icons 
+  // Will be used later for social icons
   // useEffect(() => {
   //   async function linksApiCall() {
   //     const result = await getFooterSocialLinksApi();
