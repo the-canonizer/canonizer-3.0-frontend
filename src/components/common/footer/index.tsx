@@ -1,22 +1,21 @@
-import { useEffect, useState } from "react";
+// import { useState } from "react";
 import { useRouter } from "next/router";
 import { Row, Col, Typography } from "antd";
 import styles from "./siteFooter.module.scss";
-import { getFooterSocialLinksApi } from "../../../network/api/footerSocialLinksApi";
+// import { getFooterSocialLinksApi } from "../../../network/api/footerSocialLinksApi";
 import Image from "next/image";
 import Link from "next/link";
 const { Title } = Typography;
-import K from "../../../constants";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 
 function Footer() {
   const router = useRouter();
-  const [socialLinks, setSocialLinks] = useState(null);
+  // const [socialLinks, setSocialLinks] = useState(null);
   const loggedInUser = useSelector(
     (state: RootState) => state.auth.loggedInUser
   );
-  // Will be used later for social icons 
+  // Will be used later for social icons
   // useEffect(() => {
   //   async function linksApiCall() {
   //     const result = await getFooterSocialLinksApi();

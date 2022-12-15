@@ -1,5 +1,4 @@
 import { message } from "antd";
-import K from "../constants";
 // import emojiUnicode from "emoji-unicode";
 
 export const handleError = (error, log = false, dispatch = null) => {

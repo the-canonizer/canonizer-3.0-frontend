@@ -1,6 +1,6 @@
 import { Spin, Tooltip, Typography } from "antd";
 import { useRouter } from "next/router";
-import { useState, useEffect, useRef, memo, Fragment } from "react";
+import { useState, useEffect, useRef, Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getTreesApi,
@@ -33,7 +33,7 @@ const CampInfoBar = ({
   isTopicPage = false,
   isTopicHistoryPage = false,
   getCheckSupportStatus = null,
-}) => {
+}: any) => {
   const { isUserAuthenticated } = useAuthentication();
 
   const dispatch = useDispatch();
@@ -44,12 +44,10 @@ const CampInfoBar = ({
     bread_crumb: [],
   });
   const didMount = useRef(false);
-  const didMount1 = useRef(false);
   const router = useRouter();
   const {
     topicRecord,
     campRecord,
-    campStatement,
     is_admin,
     history,
     asofdate,
@@ -59,7 +57,6 @@ const CampInfoBar = ({
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
-    campStatement: state?.topicDetails?.campStatement,
     is_admin: state?.auth?.loggedInUser?.is_admin,
     history: state?.topicDetails?.history,
     asofdate: state.filters?.filterObject?.asofdate,
@@ -185,7 +182,7 @@ const CampInfoBar = ({
           }
         }}
       >
-        {!!topicSubscriptionID
+        {topicSubscriptionID
           ? " Unsubscribe to Entire Topic"
           : " Subscribe to Entire Topic"}
       </Menu.Item>
