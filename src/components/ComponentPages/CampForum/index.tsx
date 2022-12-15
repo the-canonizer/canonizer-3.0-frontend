@@ -420,7 +420,7 @@ const ForumComponent = ({}) => {
     if (threadId) {
       threadDetails(threadId);
     }
-  }, [router?.query?.id]);
+  }, [router]);
 
   useEffect(() => {
     const q = router?.query,
