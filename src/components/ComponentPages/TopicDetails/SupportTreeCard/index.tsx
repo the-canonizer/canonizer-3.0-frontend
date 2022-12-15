@@ -35,9 +35,10 @@ const supportContent = (
   </>
 );
 const SupportTreeCard = ({
+  handleLoadMoreSupporters,
   getCheckSupportStatus,
   removeApiSupport,
-  fetchTotalScore,
+  // fetchTotalScore,
   removeSupport,
   topicList,
   totalSupportScore,
