@@ -331,8 +331,8 @@ const UploadFileUI = ({
               <Image
                 alt="Image"
                 src={obj.file_path}
-                height={"150px"}
-                width={"140px"}
+                height={150}
+                width={140}
               />
             );
           } else if (obj.type == "folder") {
@@ -889,8 +889,8 @@ const UploadFileUI = ({
               <Image
                 alt="Image"
                 src={imageData}
-                height={"150px"}
-                width={"140px"}
+                height={150}
+                width={140}
               />
             );
           } else if (textFileRegex.test(file.file_type || file.type)) {
@@ -1451,8 +1451,8 @@ const UploadFileUI = ({
                 id="modalImageId"
                 alt={imageStatus}
                 src={preview.previewPath}
-                width={"470px"}
-                height={"470px"}
+                width={470}
+                height={470}
                 onLoad={handleImageLoaded}
                 onError={handleImageErrored}
               />
@@ -1471,8 +1471,8 @@ const UploadFileUI = ({
                   <Image
                     alt="copyShortCode"
                     src={CopyShortCodeImage}
-                    width={"16px"}
-                    height={"10px"}
+                    width={16}
+                    height={10}
                   />
                   <span>
                     {" "}
@@ -1488,8 +1488,8 @@ const UploadFileUI = ({
                 <Image
                   src={DatePickerImage}
                   alt="datePicker"
-                  width={"18px"}
-                  height={"20px"}
+                  width={18}
+                  height={20}
                 />
                 <span>
                   {moment

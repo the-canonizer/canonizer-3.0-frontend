@@ -82,7 +82,7 @@ export const logout = async (error = "", status = null, count: number = 1) => {
     }
 
     let res = await NetworkCall.fetch(
-      UserRequest.logoutCall(auth.token, error)
+      UserRequest.logoutCall(auth.token)
     );
 
     store.dispatch(setLogout());
