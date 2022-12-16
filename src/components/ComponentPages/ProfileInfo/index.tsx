@@ -77,7 +77,6 @@ const ProfileInfo = () => {
   }
   //on update profile click
   const onFinish = async (values: any) => {
-    debugger;
     let birthday = values.birthday?._d;
     let code = values.postal_code;
     setDisableButton(true);

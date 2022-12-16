@@ -3,7 +3,7 @@ import Layout from "../hoc/layout";
 import TermsAndPrivacy from "../components/ComponentPages/TermsAndPrivacy";
 import { getPrivacyPolicyContent } from "src/network/api/termsAndPrivacyApi";
 
-function PrivacyPolicy({ privacyPolicyContent }) {
+function PrivacyPolicy({ privacyPolicyContent }: any) {
   return (
     <>
       <Layout>

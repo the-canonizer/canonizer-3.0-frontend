@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { Layout, Menu, Dropdown, Button, Space } from "antd";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import { logout } from "../../../../network/api/userApi";
 import { RootState } from "../../../../store";
@@ -16,12 +16,22 @@ import {
   CheckCircleOutlined,
 } from "@ant-design/icons";
 import Notifications from "../notification";
+import useAuthentication from "src/hooks/isUserAuthenticated";
+import {
+  getLists,
+  markNotificationRead,
+} from "src/network/api/notificationAPI";
+import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 
 const { Header } = Layout;
 const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
-  const loggedInUser = useSelector(
-    (state: RootState) => state.auth.loggedInUser
-  );
+  const { loggedInUser, list } = useSelector((state: RootState) => ({
+    loggedInUser: state.auth.loggedInUser,
+    list: state.notifications.headerNotification.list,
+  }));
+
+  const { isUserAuthenticated } = useAuthentication();
+  const dispatch = useDispatch();
 
   const [loggedUser, setLoggedUser] = useState(loggedInUser);
   const router = useRouter();
@@ -29,6 +39,38 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
   const toggleMobNav = () => {
     setActive(!isActive);
   };
+
+  const getListData = async () => {
+    if (isUserAuthenticated) {
+      await getLists();
+    }
+  };
+
+  useEffect(() => {
+    if (!list?.length) {
+      getListData();
+    }
+  }, [isUserAuthenticated]);
+
+  const onNotifyClick = async (id) => {
+    dispatch(setManageSupportStatusCheck(false));
+    const res = await markNotificationRead(id);
+    if (res && res.status_code === 200) {
+      router.query.from = "";
+      router.replace(router);
+    }
+  };
+
+  useEffect(() => {
+    const q = router.query;
+    if (q && q.from && q.from.includes("notify_")) {
+      const fArr = (q.from as String).split("_");
+      if (+fArr[1]) {
+        onNotifyClick(+fArr[1]);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router]);
 
   const mockLinks = [
     {

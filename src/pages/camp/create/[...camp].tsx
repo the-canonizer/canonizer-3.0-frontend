@@ -5,7 +5,7 @@ import CreateNewCamp from "../../../components/ComponentPages/CreateNewCamp";
 
 import Layout from "../../../hoc/layout";
 
-const CreateNewCampPage = ({ algorithms }) => {
+const CreateNewCampPage = ({ algorithms }: any) => {
   const dispatch = useDispatch();
 
   dispatch(setCanonizedAlgorithms(algorithms));

@@ -12,7 +12,10 @@ import useAuthentication from "src/hooks/isUserAuthenticated";
 
 const { TreeNode } = Tree;
 
-const CampTree = ({ scrollToCampStatement }) => {
+const CampTree = ({
+  scrollToCampStatement,
+  setTotalCampScoreForSupportTree,
+}: any) => {
   const { tree, filterByScore, review, is_checked } = useSelector(
     (state: RootState) => ({
       tree: state?.topicDetails?.tree,
@@ -22,7 +25,7 @@ const CampTree = ({ scrollToCampStatement }) => {
     })
   );
 
-  const [selectedNodeID, setSelectedNodeID] = useState(1);
+  // const [selectedNodeID, setSelectedNodeID] = useState(1);
   const [scoreFilter, setScoreFilter] = useState(filterByScore);
   const [includeReview, setIncludeReview] = useState(
     review == "review" ? true : false
@@ -34,17 +37,16 @@ const CampTree = ({ scrollToCampStatement }) => {
     selectedKeys,
     e: { selected; selectedNodes; node; event }
   ) => {
-    if (selectedKeys.join() === "custom" || selectedKeys.join() === "") {
-    } else {
+    if (!(selectedKeys.join() === "custom" || selectedKeys.join() === "")) {
       dispatch(setCurrentCamp(e?.selectedNodes[0]?.data));
-      setSelectedNodeID(+selectedKeys.join(""));
+      // setSelectedNodeID(+selectedKeys.join(""));
       scrollToCampStatement();
     }
   };
   const { isUserAuthenticated, userID } = useAuthentication();
 
   const showSelectedCamp = (data, select_camp, campExist) => {
-    let a = Object?.keys(data).map((item) => {
+    Object?.keys(data).map((item) => {
       if (data[item].children) {
         if (data[item].score >= scoreFilter) {
           if (data[item]?.camp_id == select_camp) {
@@ -150,7 +152,21 @@ const CampTree = ({ scrollToCampStatement }) => {
       const parentIsOneLevel = isOneLevel;
       let _isOneLevel = data[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
       let _isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
-
+      if (router?.query?.camp?.at(1)?.split("-")?.at(0)) {
+        if (
+          data[item]?.camp_id == router?.query?.camp?.at(1)?.split("-")?.at(0)
+        ) {
+          is_checked && isUserAuthenticated
+            ? setTotalCampScoreForSupportTree(data[item].full_score)
+            : setTotalCampScoreForSupportTree(data[item].score);
+        }
+      } else {
+        if (data[item]?.camp_id == 1) {
+          is_checked && isUserAuthenticated
+            ? setTotalCampScoreForSupportTree(data[item].full_score)
+            : setTotalCampScoreForSupportTree(data[item].score);
+        }
+      }
       if (data[item].children) {
         if (data[item].score >= scoreFilter) {
           return (

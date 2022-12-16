@@ -1,17 +1,6 @@
 import { useEffect, useState } from "react";
 import CustomButton from "../../../common/button";
-import {
-  Card,
-  Button,
-  Typography,
-  List,
-  Collapse,
-  Popover,
-  message,
-  Modal,
-  Form,
-  Spin,
-} from "antd";
+import { Button, Typography, Collapse, Popover, Modal, Form, Spin } from "antd";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
@@ -49,7 +38,7 @@ const SupportTreeCard = ({
   handleLoadMoreSupporters,
   getCheckSupportStatus,
   removeApiSupport,
-  fetchTotalScore,
+  // fetchTotalScore,
   removeSupport,
   topicList,
   totalSupportScore,
@@ -59,6 +48,7 @@ const SupportTreeCard = ({
   setIsSupportTreeCardModal,
   handleSupportTreeCardCancel,
   removeSupportSpinner,
+  totalCampScoreForSupportTree,
 }) => {
   const { currentGetCheckSupportExistsData, is_checked } = useSelector(
     (state: RootState) => ({
@@ -74,7 +64,7 @@ const SupportTreeCard = ({
   const arr = [];
   const getNickNameListData = async () => {
     const res = await getNickNameList();
-    res?.data?.map((value, key) => {
+    res?.data?.map((value) => {
       arr.push(value.id);
     });
     setUserNickNameList(arr);
@@ -282,9 +272,7 @@ const SupportTreeCard = ({
           <Paragraph>
             Total Support for This Camp (including sub-camps):
             <span className="number-style">
-              {is_checked && isUserAuthenticated
-                ? totalFullSupportScore?.toFixed(2)
-                : totalSupportScore?.toFixed(2)}
+              {totalCampScoreForSupportTree?.toFixed(2)}
             </span>
           </Paragraph>
 

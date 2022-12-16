@@ -1,6 +1,5 @@
 import K from "../../constants";
 import Request from ".";
-import { connect } from "react-redux";
 
 export class campNewsRequest extends Request {
   constructor(params) {

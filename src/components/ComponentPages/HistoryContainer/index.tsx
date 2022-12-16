@@ -31,7 +31,7 @@ function HistoryContainer() {
   const [nickName, setNickName] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState([]);
   const [selectedTopicStatus, setSelectedTopicStatus] = useState([]);
-  const [top, setTop] = useState(0);
+
   const [isAbs, setIsAbs] = useState(false);
   const [loadMoreItems, setLoadMoreItems] = useState(true);
   const [agreecheck, setAgreeCheck] = useState(false);
@@ -301,7 +301,7 @@ function HistoryContainer() {
       </div>
       <div className={styles.campStatementHistoryCard}>
         <Affix
-          offsetTop={top}
+          offsetTop={0}
           style={{ position: isAbs ? "absolute" : "static", left: "16px" }}
           onChange={setIsAbs}
         >
