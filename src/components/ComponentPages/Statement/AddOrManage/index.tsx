@@ -513,7 +513,7 @@ export default function AddOrManage({ add }) {
     // long story short, every time we upload an image, we
     // need to save it to the state so we can get it's data
     // later when we decide what to do with it.
-
+debugger;
     // Make sure you have a uploadImages: [] as your default state
     let uploadedImages = uploadImage;
 
@@ -1076,8 +1076,9 @@ export default function AddOrManage({ add }) {
                             type="primary"
                             size="large"
                             onClick={async () => {
+                              const editorValues = draftToHtml(convertToRaw(editorState.getCurrentContent()));
                               let res = await getParseCampStatementApi({
-                                value: form?.getFieldValue("statement"),
+                                value: editorValues,
                               });
                               setWikiStatement(res?.data);
                               setModalVisible(true);
