@@ -5,7 +5,7 @@ const { Title } = Typography;
 import moment from "moment";
 import Link from "next/link";
 import K from "src/constants";
-const StatementHistory = ({ campStatement, topicNamespaceId }) => {
+const StatementHistory = ({ campStatement, topicNamespaceId }: any) => {
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };

@@ -46,7 +46,7 @@ function HistoryCollapse({
   changeAgree,
   isChecked,
   setIsTreesApiCallStop,
-}) {
+}: any) {
   const router = useRouter();
   const [commited, setCommited] = useState(false);
   const [isSelectChecked, setIsSelectChecked] = useState(false);
@@ -68,9 +68,9 @@ function HistoryCollapse({
     );
   };
   const historyOf = router?.asPath.split("/")[1];
-  const covertToTime = (unixTime) => {
-    return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
-  };
+  // const covertToTime = (unixTime) => {
+  //   return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
+  // };
 
   const commitChanges = async () => {
     let reqBody = {
@@ -92,7 +92,7 @@ function HistoryCollapse({
       change_for: historyOf,
       nick_name_id: userNickNameData[0]?.id,
     };
-    let res = await agreeToChangeApi(reqBody);
+    await agreeToChangeApi(reqBody);
     changeAgree();
   };
 
@@ -210,11 +210,9 @@ function HistoryCollapse({
                         (
                           !isUserAuthenticated
                             ? true
-                            : !!(
-                                (ifIamSupporter == 0 &&
-                                  !ifIAmExplicitSupporter) ||
-                                ifSupportDelayed != 0
-                              )
+                            : (ifIamSupporter == 0 &&
+                                !ifIAmExplicitSupporter) ||
+                              ifSupportDelayed != 0
                             ? true
                             : false
                         )
@@ -228,11 +226,9 @@ function HistoryCollapse({
                         onClick={() => {
                           let isModelPop = !isUserAuthenticated
                             ? true
-                            : !!(
-                                (ifIamSupporter == 0 &&
-                                  !ifIAmExplicitSupporter) ||
-                                ifSupportDelayed != 0
-                              )
+                            : (ifIamSupporter == 0 &&
+                                !ifIAmExplicitSupporter) ||
+                              ifSupportDelayed != 0
                             ? true
                             : false;
                           if (isModelPop) {
@@ -251,11 +247,9 @@ function HistoryCollapse({
                           (
                             !isUserAuthenticated
                               ? true
-                              : !!(
-                                  (ifIamSupporter == 0 &&
-                                    !ifIAmExplicitSupporter) ||
-                                  ifSupportDelayed != 0
-                                )
+                              : (ifIamSupporter == 0 &&
+                                  !ifIAmExplicitSupporter) ||
+                                ifSupportDelayed != 0
                               ? true
                               : false
                           )
@@ -445,7 +439,7 @@ function HistoryCollapse({
 
 export default HistoryCollapse;
 
-const Timer = ({ unixTime, setCommited }) => {
+const Timer = ({ unixTime, setCommited }: any) => {
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
   const [hours, setHours] = useState(0);

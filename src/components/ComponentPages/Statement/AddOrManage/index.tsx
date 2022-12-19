@@ -41,10 +41,7 @@ import { getCanonizedNameSpacesApi } from "../../../../network/api/homePageApi";
 // "../../../network/api/homePageApi";
 import SideBarNoFilter from "../../../ComponentPages/Home/SideBarNoFilter";
 import CampInfoBar from "../../TopicDetails/CampInfoBar";
-import { RootState } from "../../../../store";
 import PreventSubCamps from "../../../common/preventSubCampCheckbox";
-
-import { useDispatch, useSelector } from "react-redux";
 
 import Link from "next/link";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
@@ -77,7 +74,7 @@ const { Text } = Typography;
 const { campAboutUrlRule, summaryRule, keywordsRule, patterns, validations } =
   messages;
 
-export default function AddOrManage({ add }) {
+export default function AddOrManage({ add }: any) {
   const { isUserAuthenticated } = useAuthentication();
   const router = useRouter();
   const [editStatementData, setEditStatementData] = useState({ data: null });
@@ -160,7 +157,6 @@ export default function AddOrManage({ add }) {
         op.checked = false;
       });
       setOptions(oldOptions);
-    } else if (res?.status_code == 400) {
     }
     setScreenLoading(false);
   };
@@ -206,9 +202,10 @@ export default function AddOrManage({ add }) {
         : objection
         ? "objection"
         : "update",
-      statement_id: !!((objection || update) && manageFormOf == "statement")
-        ? router?.query?.statement[0]?.split("-")[0]
-        : null,
+      statement_id:
+        (objection || update) && manageFormOf == "statement"
+          ? router?.query?.statement[0]?.split("-")[0]
+          : null,
       objection_reason: objection ? values?.objection_reason : null,
       statement_update: update && manageFormOf == "statement" ? 1 : null,
       camp_id: manageFormOf == "camp" ? editInfo?.camp?.id : null,
@@ -368,7 +365,7 @@ export default function AddOrManage({ add }) {
           ? {
               nick_name: result?.data[0].id,
             }
-          : !!((objection || update) && manageFormOf == "statement")
+          : (objection || update) && manageFormOf == "statement"
           ? {
               nick_name: res?.data?.nick_name[0]?.id,
               parent_camp_num: res?.data?.statement?.camp_num,
@@ -543,7 +540,7 @@ export default function AddOrManage({ add }) {
                 initialValues={{
                   available_for_child: 0,
                 }}
-                onValuesChange={(value) => {
+                onValuesChange={() => {
                   let initialFormStatus = {
                     statement: "",
                     edit_summary: "",

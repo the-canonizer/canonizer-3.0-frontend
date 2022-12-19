@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./style.module.scss";
 import { RadioChangeEvent, Typography } from "antd";
 import { Radio } from "antd";
@@ -8,9 +8,7 @@ import { getVideosContentApi } from "src/network/api/videos";
 
 const { Title } = Typography;
 
-interface Props {}
-
-export default function CanonVideos({}: Props): ReactElement {
+export default function CanonVideos() {
   const playeref = useRef();
   const [videos, setVideos] = useState([]);
   const [selectedVideoId, setSelectedVideoId] = useState(1);
@@ -35,7 +33,6 @@ export default function CanonVideos({}: Props): ReactElement {
     }
     getTreeApiCall();
   }, []);
-
   return (
     <>
       <div className="w-100 pt-4 pb-4 ">
@@ -50,6 +47,7 @@ export default function CanonVideos({}: Props): ReactElement {
               <li
                 className={video.id === selectedVideoId && styles.active}
                 onClick={() => handleVideoSelection(video)}
+                key={video?.id}
               >
                 {video?.title}
               </li>
