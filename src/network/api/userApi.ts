@@ -81,9 +81,7 @@ export const logout = async (error = "", status = null, count: number = 1) => {
       store.dispatch(setValue({ label: "logout_type", value: true }));
     }
 
-    let res = await NetworkCall.fetch(
-      UserRequest.logoutCall(auth.token)
-    );
+    let res = await NetworkCall.fetch(UserRequest.logoutCall(auth.token));
 
     store.dispatch(setLogout());
     store.dispatch(logoutUser());
