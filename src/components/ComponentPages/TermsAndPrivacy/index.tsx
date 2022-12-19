@@ -1,7 +1,7 @@
 import styles from "./terms.module.scss";
 import { useRouter } from "next/router";
 
-export default function TermsAndPrivacy({ termsAndPrivacyContent }) {
+export default function TermsAndPrivacy({ termsAndPrivacyContent }: any) {
   const router = useRouter();
 
   return (

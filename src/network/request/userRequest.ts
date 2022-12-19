@@ -40,7 +40,7 @@ export default class UserRequest extends Request {
     );
   }
 
-  static logoutCall(token, error: string = "") {
+  static logoutCall(token) {
     return new Request(
       K.Network.URL.LogoutUser,
       K.Network.Method.GET,

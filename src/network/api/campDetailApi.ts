@@ -127,58 +127,7 @@ export const getCanonizedCampSupportingTreeApi = async (
       topic_num: reqBody.topic_num,
       camp_num: reqBody.camp_num,
     });
-    const mockSupporters = [
-      {
-        id: 1,
-        name: "1:shahab",
-        score: 1,
-      },
-      {
-        id: 1,
-        name: "Awais",
-        score: 234,
-      },
-      {
-        id: 1,
-        name: "Umair",
-        score: 234,
-      },
-      {
-        id: 1,
-        name: "Shawaiz",
-        score: 234,
-      },
-      {
-        id: 1,
-        name: "Ahmed",
-        score: 234,
-      },
-      {
-        id: 1,
-        name: "Darab",
-        score: 234,
-      },
-      {
-        id: 1,
-        name: "wahaj",
-        score: 234,
-      },
-      {
-        id: 1,
-        name: "shahzaib",
-        score: 234,
-      },
-      {
-        id: 1,
-        name: "Talha",
-        score: 234,
-      },
-      {
-        id: 1,
-        name: "Saim",
-        score: 234,
-      },
-    ];
+
     if (loadMore) {
       store.dispatch(pushToCampSupportingTree(supportTreeCard.data));
     } else {

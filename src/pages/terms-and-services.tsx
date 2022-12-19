@@ -2,7 +2,7 @@ import Layout from "../hoc/layout";
 import TermsAndPrivacy from "../components/ComponentPages/TermsAndPrivacy";
 import { getTermsAndServicesContent } from "src/network/api/termsAndPrivacyApi";
 
-function TermAndService({ termsAndServicesContent }) {
+function TermAndService({ termsAndServicesContent }: any) {
   return (
     <>
       <Layout>

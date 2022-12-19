@@ -7,7 +7,7 @@ import Spinner from "../../components/common/spinner/spinner";
 import styles from "./withoutSidebarLayout.module.scss";
 import Footer from "../../components/common/footer";
 
-function WithoutSidebarLayout(props) {
+function WithoutSidebarLayout(props: any) {
   const { isUserAuthenticated } = useAuthentication();
 
   return (

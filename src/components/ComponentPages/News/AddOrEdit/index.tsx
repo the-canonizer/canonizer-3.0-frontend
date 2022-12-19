@@ -28,7 +28,7 @@ import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 const antIcon = <LoadingOutlined spin />;
 const { Text } = Typography;
 
-export default function AddOrEdit({ edit }) {
+export default function AddOrEdit({ edit }: any) {
   const { isUserAuthenticated } = useAuthentication();
   const [loading, setLoading] = useState(false);
   const [screenLoading, setScreenLoading] = useState(false);

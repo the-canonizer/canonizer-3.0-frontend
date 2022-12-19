@@ -25,7 +25,7 @@ const CampTree = ({
     })
   );
 
-  const [selectedNodeID, setSelectedNodeID] = useState(1);
+  // const [selectedNodeID, setSelectedNodeID] = useState(1);
   const [scoreFilter, setScoreFilter] = useState(filterByScore);
   const [includeReview, setIncludeReview] = useState(
     review == "review" ? true : false
@@ -37,17 +37,16 @@ const CampTree = ({
     selectedKeys,
     e: { selected; selectedNodes; node; event }
   ) => {
-    if (selectedKeys.join() === "custom" || selectedKeys.join() === "") {
-    } else {
+    if (!(selectedKeys.join() === "custom" || selectedKeys.join() === "")) {
       dispatch(setCurrentCamp(e?.selectedNodes[0]?.data));
-      setSelectedNodeID(+selectedKeys.join(""));
+      // setSelectedNodeID(+selectedKeys.join(""));
       scrollToCampStatement();
     }
   };
   const { isUserAuthenticated, userID } = useAuthentication();
 
   const showSelectedCamp = (data, select_camp, campExist) => {
-    let a = Object?.keys(data).map((item) => {
+    Object?.keys(data).map((item) => {
       if (data[item].children) {
         if (data[item].score >= scoreFilter) {
           if (data[item]?.camp_id == select_camp) {

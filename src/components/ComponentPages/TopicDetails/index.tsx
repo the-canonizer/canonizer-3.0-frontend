@@ -17,7 +17,6 @@ import { RootState } from "src/store";
 import SideBar from "../Home/SideBar";
 import CampStatementCard from "./CampStatementCard";
 import CampInfoBar from "./CampInfoBar";
-import K from "../../../constants";
 import styles from "./topicDetails.module.scss";
 import CampTreeCard from "./CampTreeCard";
 import CurrentCampCard from "./CurrentCampCard";
@@ -39,7 +38,6 @@ import {
   setCampSupportingTree,
   setCheckSupportExistsData,
   setCurrentCheckSupportStatus,
-  setManageSupportStatusCheck,
 } from "src/store/slices/campDetailSlice";
 
 import { getHistoryApi } from "../../../network/api/history";
@@ -48,7 +46,6 @@ import CampRecentActivities from "../Home/CampRecentActivities";
 const { Link } = Typography;
 import {
   addSupport,
-  getNickNameList,
   removeSupportedCamps,
   removeSupportedCampsEntireTopic,
 } from "src/network/api/userApi";
@@ -77,7 +74,6 @@ const TopicDetails = () => {
     newsFeed,
     topicRecord,
     campRecord,
-    campStatement,
     tree,
     campExist,
     viewThisVersionCheck,
@@ -88,7 +84,6 @@ const TopicDetails = () => {
     asof: state?.filters?.filterObject?.asof,
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
-    campStatement: state?.topicDetails?.campStatement,
     tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
     campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
     viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
@@ -255,14 +250,14 @@ const TopicDetails = () => {
     }
   };
 
-  const totalScoreData = {
-    topic_num: +router?.query?.camp[0]?.split("-")[0],
-    camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
-    asOf: asof,
-    asofdate:
-      asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
-    algorithm: algorithm,
-  };
+  // const totalScoreData = {
+  //   topic_num: +router?.query?.camp[0]?.split("-")[0],
+  //   camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+  //   asOf: asof,
+  //   asofdate:
+  //     asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+  //   algorithm: algorithm,
+  // };
 
   // const fetchTotalScore = async () => {
   //   const CampTotalScore = {
@@ -318,7 +313,7 @@ const TopicDetails = () => {
   const setCurrentTopics = (data) => dispatch(setCurrentTopic(data));
 
   const onCreateCamp = () => {
-    const queryParams = router.query;
+    // const queryParams = router.query;
 
     const data = {
       message: null,
@@ -374,23 +369,7 @@ const TopicDetails = () => {
       })
     );
   };
-  const createdOnMsg = () => {
-    return (
-      <>
-        The camp was created on
-        <Link
-          onClick={() => {
-            onCreateCampDate();
-          }}
-        >
-          {" "}
-          {new Date(
-            (campExist && campExist?.created_at) * 1000
-          ).toLocaleString()}
-        </Link>
-      </>
-    );
-  };
+
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
@@ -458,10 +437,7 @@ const TopicDetails = () => {
                 : true && (
                     <>
                       <Spin spinning={loadingIndicator} size="large">
-                        <CampStatementCard
-                          myRefToCampStatement={myRefToCampStatement}
-                          onCampForumClick={onCampForumClick}
-                        />
+                        <CampStatementCard />
                       </Spin>
                       {typeof window !== "undefined" &&
                         window.innerWidth < 767 && (
