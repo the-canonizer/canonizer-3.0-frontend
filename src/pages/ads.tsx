@@ -1,4 +1,3 @@
-import dynamic from "next/dynamic";
 import * as React from "react";
 import GoogleAd from "../components/googleAds";
 // const GoogleAd = dynamic(() => import("../components/googleAds"), {
@@ -6,11 +5,11 @@ import GoogleAd from "../components/googleAds";
 // });
 interface IADSProps {}
 
-const ADS: React.FunctionComponent<IADSProps> = (props) => {
+const ADS: React.FunctionComponent<IADSProps> = () => {
   return (
     <>
       <h1>ads</h1>
-      <GoogleAd />
+      <GoogleAd ad_slot="" ad_client="" />
       <h1>ads</h1>
     </>
   );

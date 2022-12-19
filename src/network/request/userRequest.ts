@@ -1,6 +1,5 @@
 import K from "../../constants";
 import Request from ".";
-import { store } from "../../store";
 export default class UserRequest extends Request {
   constructor(url, met, body, head, obj, token) {
     super(url, met, body, head, obj, token);
@@ -40,7 +39,7 @@ export default class UserRequest extends Request {
     );
   }
 
-  static logoutCall(token, error: string = "") {
+  static logoutCall(token) {
     return new Request(
       K.Network.URL.LogoutUser,
       K.Network.Method.GET,
@@ -585,6 +584,17 @@ export default class UserRequest extends Request {
       body,
       K.Network.Header.Type.Json,
       {}
+    );
+  }
+
+  static GlobalSearchUploadedFiles(reqbody, authToken) {
+    return new Request(
+      K.Network.URL.GlobalSearchUploadedFile + reqbody,
+      K.Network.Method.GET,
+      {},
+      K.Network.Header.Type.Json,
+      {},
+      authToken
     );
   }
 }

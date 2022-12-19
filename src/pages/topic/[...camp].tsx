@@ -1,10 +1,16 @@
 import Layout from "../../hoc/layout";
 
 import TopicDetails from "../../components/ComponentPages/TopicDetails";
+import { setCurrentDate } from "src/store/slices/filtersSlice";
+import { useDispatch } from "react-redux";
 
 // import { wrapper } from "src/store";
 
-const TopicDetailsPage = () => {
+const TopicDetailsPage = ({ current_date }: any) => {
+  const dispatch = useDispatch();
+
+  dispatch(setCurrentDate(current_date));
+
   return (
     <>
       <Layout>
@@ -13,6 +19,16 @@ const TopicDetailsPage = () => {
     </>
   );
 };
+
+export async function getServerSideProps() {
+  const currentDate = new Date().valueOf();
+
+  return {
+    props: {
+      current_date: currentDate,
+    },
+  };
+}
 
 //////////////////////////////////////////////
 // Bellow commented code will be used later//

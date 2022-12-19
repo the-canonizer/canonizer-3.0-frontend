@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styles from "../UserProfileUI/UserProfile.module.scss";
 import messages from "../../../../messages";
-import { Card, Image, Row, Col, Form, message, Tag } from "antd";
-const UserProfileDetails = ({ profileData, userSupportedCampsList }) => {
+import { Card, Row, Col } from "antd";
+const UserProfileDetails = ({ profileData, userSupportedCampsList }: any) => {
   const firstNameLength = 15;
   const lastNameLength = 15;
   return (

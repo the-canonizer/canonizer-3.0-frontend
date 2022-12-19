@@ -1,10 +1,9 @@
 import { useRouter } from "next/router";
-import TopicsFilter from "../../../common/topicsFilter";
-import CampRecentActivities from "../CampRecentActivities";
 import { Button } from "antd";
-import Image from "next/image";
 
-export default function HomeSideBar({ onCreateCamp = () => {} }) {
+import GoogleAd from "../../../googleAds";
+
+export default function HomeSideBar({ isShowBtn = true }: any) {
   const router = useRouter();
   const campRoute = () => {
     router.push("/create/topic");
@@ -12,19 +11,25 @@ export default function HomeSideBar({ onCreateCamp = () => {} }) {
 
   return (
     <>
-      <div className="leftSideBar_Card noFilter">
-        <div className="btnsWrap">
-          <Button size="large" className={"btn"} onClick={campRoute}>
-            <i className="icon-topic"></i>Create New Topic
-          </Button>
-        </div>
+      <div
+        className="leftSideBar_Card noFilter"
+        style={{
+          padding: !isShowBtn ? "0" : "",
+          border: !isShowBtn ? "none" : "",
+        }}
+      >
+        {isShowBtn && (
+          <div className="btnsWrap">
+            <Button size="large" className={"btn"} onClick={campRoute}>
+              <i className="icon-topic"></i>Create New Topic
+            </Button>
+          </div>
+        )}
       </div>
       <div className="text-center">
-        <Image
-          src="/images/left-sidebar-adv1.jpg"
-          width={217}
-          height={433}
-          alt=""
+        <GoogleAd
+          ad_client={process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}
+          ad_slot={process.env.NEXT_PUBLIC_GOOGLE_ADS_LEFT_SLOT}
         />
       </div>
     </>

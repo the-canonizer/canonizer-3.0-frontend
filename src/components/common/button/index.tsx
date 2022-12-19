@@ -1,6 +1,6 @@
 import { Button } from "antd";
 import styles from "./button.module.scss";
-const CustomButton = (props) => {
+const CustomButton = (props: any) => {
   return (
     <Button className={styles.customButton} {...props}>
       {props.children}

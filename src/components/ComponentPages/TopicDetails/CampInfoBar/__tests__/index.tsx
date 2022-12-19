@@ -53,7 +53,7 @@ describe("Camp statement on camp details page", () => {
     expect(screen.getByText(/topic/i)).toBeInTheDocument();
     // expect(screen.getByText(/Theories-of-Consciousness/i)).toBeInTheDocument();
     expect(screen.getByText(/camp :/i)).toBeInTheDocument();
-    expect(container.getElementsByTagName("button")).toHaveLength(1);
+    expect(container.getElementsByTagName("button")).toHaveLength(4);
     expect(forumButton.textContent).toBe("Camp Forum");
   });
 });

@@ -17,9 +17,8 @@ import {
   Spin,
   Alert,
   Empty,
-  Skeleton,
 } from "antd";
-import Icon, {
+import {
   InboxOutlined,
   SearchOutlined,
   CloseCircleOutlined,
@@ -73,11 +72,12 @@ import {
 import CreateFolder from "../CreateFolder";
 import {
   createFolderApi,
-  deactivateUser,
+  globalSearchUploadFiles,
 } from "../../../../network/api/userApi";
 import { labels } from "../../../../messages/label";
 import { setTimeout } from "timers";
 import SideBar from "../../CampForum/UI/sidebar";
+import queryParams from "src/utils/queryParams";
 
 const UploadFileUI = ({
   input,
@@ -107,7 +107,7 @@ const UploadFileUI = ({
   setFlickringData,
   toggleFileView,
   setToggleFileView,
-}) => {
+}: any) => {
   const [uploadStatus, setUploadStatus] = useState(false);
   // const [toggleFileView, setToggleFileView] = useState(false);
   const [previewImageIndicator, setPreviewImageIndicator] = useState(false);
@@ -117,11 +117,12 @@ const UploadFileUI = ({
   const [updateList, setUpdateList] = useState({});
   const [datePick, setDatePick] = useState("");
   const [createFolderForm] = Form.useForm();
-  const imageTimer = 2500;
+  // const imageTimer = 2500;
   const [rename, setRename] = useState("");
   const [editFolderNameVal, setEditFolderNameVal] = useState("");
   const [editModal, setEditModal] = useState(false);
   const [editModalId, setEditModalId] = useState("");
+  const [filteredList, setFilteredList] = useState([]);
   const [preview, setPreview] = useState({
     previewVisible: false,
     previewPath: "",
@@ -148,9 +149,9 @@ const UploadFileUI = ({
     (state: RootState) => state.ui.visibleUploadOptions
   );
   const afterUpload = useSelector((state: RootState) => state.ui.uploadAfter);
-  const showFolderData = useSelector(
-    (state: RootState) => state.ui.folderShown
-  );
+  // const showFolderData = useSelector(
+  //   (state: RootState) => state.ui.folderShown
+  // );
   const openFolder = useSelector((state: RootState) => state.ui.folderOpen);
   const addButtonShow = useSelector((state: RootState) => state.ui.addButton);
   const fileStatus = useSelector((state: RootState) => state.ui.fileStatus);
@@ -330,8 +331,8 @@ const UploadFileUI = ({
               <Image
                 alt="Image"
                 src={obj.file_path}
-                height={"150px"}
-                width={"140px"}
+                height={150}
+                width={140}
               />
             );
           } else if (obj.type == "folder") {
@@ -407,7 +408,7 @@ const UploadFileUI = ({
     }
   };
 
-  const onFinish = (values) => {
+  const onFinish = () => {
     editModal ? changeFolderName() : createNewFolder();
   };
   const onFinishValidation = () => {
@@ -631,6 +632,9 @@ const UploadFileUI = ({
     const createdAtValue = (val) =>
       moment.unix(val.created_at).format("MMM DD, YYYY");
     let searchName = "";
+    if (!openFolder && search !== "") {
+      return filteredList;
+    }
     return (openFolder ? getFileListFromFolderID : fileLists).filter((val) => {
       if (val.id) {
         val.key = val.id;
@@ -798,6 +802,7 @@ const UploadFileUI = ({
                               closeFolder();
                               StatusHideFile();
                               setFlickringData(false);
+                              setSearch("");
                             }}
                           >
                             <Image
@@ -884,8 +889,8 @@ const UploadFileUI = ({
               <Image
                 alt="Image"
                 src={imageData}
-                height={"150px"}
-                width={"140px"}
+                height={150}
+                width={140}
               />
             );
           } else if (textFileRegex.test(file.file_type || file.type)) {
@@ -911,6 +916,14 @@ const UploadFileUI = ({
   //   message.info("Clicked on Yes.");
   //   removeFiles(keyParam);
   // };
+  const getGlobalSearchUploadFile = async (queryString) => {
+    let response = await globalSearchUploadFiles(
+      queryParams({ query: queryString })
+    );
+    if (response && response.status_code == 200) {
+      setFilteredList(response.data.files.map((v) => ({ ...v, type: "file" })));
+    }
+  };
   const openFolderInGridView = (file, i) => {
     return (
       <div
@@ -1040,6 +1053,9 @@ const UploadFileUI = ({
                           name="search"
                           onChange={(e) => {
                             setSearch(e.target.value);
+                            openFolder
+                              ? filteredArray()
+                              : getGlobalSearchUploadFile(e.target.value);
                           }}
                         />
                       </div>
@@ -1435,8 +1451,8 @@ const UploadFileUI = ({
                 id="modalImageId"
                 alt={imageStatus}
                 src={preview.previewPath}
-                width={"470px"}
-                height={"470px"}
+                width={470}
+                height={470}
                 onLoad={handleImageLoaded}
                 onError={handleImageErrored}
               />
@@ -1455,8 +1471,8 @@ const UploadFileUI = ({
                   <Image
                     alt="copyShortCode"
                     src={CopyShortCodeImage}
-                    width={"16px"}
-                    height={"10px"}
+                    width={16}
+                    height={10}
                   />
                   <span>
                     {" "}
@@ -1472,8 +1488,8 @@ const UploadFileUI = ({
                 <Image
                   src={DatePickerImage}
                   alt="datePicker"
-                  width={"18px"}
-                  height={"20px"}
+                  width={18}
+                  height={20}
                 />
                 <span>
                   {moment

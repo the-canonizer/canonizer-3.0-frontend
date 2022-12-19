@@ -18,11 +18,11 @@ import {
   changeCommitStatement,
   agreeToChangeApi,
 } from "../../../../network/api/history";
-import { useDispatch } from "react-redux";
 import { setFilterCanonizedTopics } from "../../../../store/slices/filtersSlice";
-
+import { RootState } from "../../../../store";
 import K from "../../../../constants";
 
+import { useDispatch, useSelector } from "react-redux";
 import styles from ".././campHistory.module.scss";
 import StatementHistory from "./statementHistory";
 import CampHistory from "./campHistory";
@@ -30,6 +30,7 @@ import TopicHistory from "./topicHistory";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 
+import { setViewThisVersion } from "src/store/slices/filtersSlice";
 const { Panel } = Collapse;
 const { Title } = Typography;
 
@@ -45,20 +46,20 @@ function HistoryCollapse({
   changeAgree,
   isChecked,
   setIsTreesApiCallStop,
-}) {
+}: any) {
   const router = useRouter();
   const [commited, setCommited] = useState(false);
-
   const [isSelectChecked, setIsSelectChecked] = useState(false);
-
-  const [loadingIndicatorForIAgree, setLoadingIndicatorForIAgree] =
-    useState(false);
+  const { loading } = useSelector((state: RootState) => ({
+    loading: state?.loading?.loading,
+  }));
 
   const [modal1Open, setModal1Open] = useState(false);
   const dispatch = useDispatch();
   const { isUserAuthenticated } = useAuthentication();
   const handleViewThisVersion = (goLiveTime) => {
     setIsTreesApiCallStop(true);
+    dispatch(setViewThisVersion(true));
     dispatch(
       setFilterCanonizedTopics({
         asofdate: goLiveTime,
@@ -67,9 +68,9 @@ function HistoryCollapse({
     );
   };
   const historyOf = router?.asPath.split("/")[1];
-  const covertToTime = (unixTime) => {
-    return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
-  };
+  // const covertToTime = (unixTime) => {
+  //   return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
+  // };
 
   const commitChanges = async () => {
     let reqBody = {
@@ -83,7 +84,6 @@ function HistoryCollapse({
   };
 
   const agreeWithChange = async () => {
-    setLoadingIndicatorForIAgree(true);
     setIsSelectChecked(true);
     let reqBody = {
       record_id: campStatement.id,
@@ -92,9 +92,8 @@ function HistoryCollapse({
       change_for: historyOf,
       nick_name_id: userNickNameData[0]?.id,
     };
-    let res = await agreeToChangeApi(reqBody);
+    await agreeToChangeApi(reqBody);
     changeAgree();
-    setLoadingIndicatorForIAgree(false);
   };
 
   let historyTitle = () => {
@@ -210,11 +209,9 @@ function HistoryCollapse({
                         (
                           !isUserAuthenticated
                             ? true
-                            : !!(
-                                (ifIamSupporter == 0 &&
-                                  !ifIAmExplicitSupporter) ||
-                                ifSupportDelayed != 0
-                              )
+                            : (ifIamSupporter == 0 &&
+                                !ifIAmExplicitSupporter) ||
+                              ifSupportDelayed != 0
                             ? true
                             : false
                         )
@@ -228,11 +225,9 @@ function HistoryCollapse({
                         onClick={() => {
                           let isModelPop = !isUserAuthenticated
                             ? true
-                            : !!(
-                                (ifIamSupporter == 0 &&
-                                  !ifIAmExplicitSupporter) ||
-                                ifSupportDelayed != 0
-                              )
+                            : (ifIamSupporter == 0 &&
+                                !ifIAmExplicitSupporter) ||
+                              ifSupportDelayed != 0
                             ? true
                             : false;
                           if (isModelPop) {
@@ -251,11 +246,9 @@ function HistoryCollapse({
                           (
                             !isUserAuthenticated
                               ? true
-                              : !!(
-                                  (ifIamSupporter == 0 &&
-                                    !ifIAmExplicitSupporter) ||
-                                  ifSupportDelayed != 0
-                                )
+                              : (ifIamSupporter == 0 &&
+                                  !ifIAmExplicitSupporter) ||
+                                ifSupportDelayed != 0
                               ? true
                               : false
                           )
@@ -347,7 +340,6 @@ function HistoryCollapse({
                               )
                           : "1-Agreement")
                       }`,
-                      query: { topic_history: 1 },
                     }}
                   >
                     View This Version
@@ -400,6 +392,7 @@ function HistoryCollapse({
                         type="primary"
                         onClick={commitChanges}
                         id={`commit-change-${campStatement?.id}`}
+                        disabled={loading}
                       >
                         Commit Change
                       </Button>
@@ -414,7 +407,7 @@ function HistoryCollapse({
                 isUserAuthenticated &&
                 !campStatement?.isAuthor && (
                   <div className={styles.campStatementCollapseButtons}>
-                    <Spin spinning={loadingIndicatorForIAgree} size="default">
+                    <Spin spinning={loading} size="default">
                       {" "}
                       <Checkbox
                         defaultChecked={campStatement?.agreed_to_change}
@@ -445,7 +438,7 @@ function HistoryCollapse({
 
 export default HistoryCollapse;
 
-const Timer = ({ unixTime, setCommited }) => {
+const Timer = ({ unixTime, setCommited }: any) => {
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
   const [hours, setHours] = useState(0);

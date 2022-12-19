@@ -1,13 +1,12 @@
 import useAuthentication from "../../hooks/isUserAuthenticated";
-import Image from "next/image";
 import LoggedInHeader from "../../components/common/headers/loggedInHeader";
 import LoggedOutHeader from "../../components/common/headers/loggedOutHeader";
 import Spinner from "../../components/common/spinner/spinner";
 import styles from "./layout.module.scss";
 import Footer from "../../components/common/footer";
-import Link from "next/link";
+import GoogleAd from "../../components/googleAds";
 
-function Layout(props) {
+function Layout(props: any) {
   const { isUserAuthenticated } = useAuthentication();
 
   return (
@@ -18,11 +17,9 @@ function Layout(props) {
         <div className={styles.contentWrap}>
           <div className={styles.contentArea}>{props.children} </div>
           <aside className={styles.rightSidebar}>
-            <Image
-              src="/images/right-sidebar-adv.png"
-              width={200}
-              height={635}
-              alt=""
+            <GoogleAd
+              ad_client={process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}
+              ad_slot={process.env.NEXT_PUBLIC_GOOGLE_ADS_RIGHT_SLOT}
             />
           </aside>
         </div>

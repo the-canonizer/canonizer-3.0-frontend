@@ -1,72 +1,38 @@
-import React, { ReactElement, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./style.module.scss";
 import { RadioChangeEvent, Typography } from "antd";
 import { Radio } from "antd";
 import ReactPlayer from "react-player/lazy";
 import K from "src/constants";
+import { getVideosContentApi } from "src/network/api/videos";
 
 const { Title } = Typography;
 
-interface Props {}
-
-export default function CanonVideos({}: Props): ReactElement {
+export default function CanonVideos() {
   const playeref = useRef();
-
-  let videosCollection = {
-    1: {
-      id: 1,
-      label: "Introduction",
-      url: "/introduction_",
-    },
-    2: {
-      id: 2,
-      label: "Perceiving a Strawberry",
-      url: "/perceiving_a_strawberry_",
-    },
-    3: {
-      id: 3,
-      label: "Differentiating Reality and Knowledge of Reality",
-      url: "/differentiate_reality_knowledge_",
-    },
-    4: {
-      id: 4,
-      label: "Computational Binding",
-      url: "/computational_binding_",
-    },
-    5: {
-      id: 5,
-      label: "Cognitive Knowledge",
-      url: "/cognitive_knowledge_",
-    },
-    6: {
-      id: 6,
-      label: "Simulation_Hypothesis",
-      url: "/simulation_hypothesis_",
-    },
-    7: {
-      id: 7,
-      label: "Representational Qualia Theory Consensus",
-      url: "/representational_qualia_consensus_",
-    },
-    8: {
-      id: 8,
-      label: "Conclusion",
-      url: "/conclusion_",
-    },
-  };
-
-  const [videos, setVideos] = useState(videosCollection);
+  const [videos, setVideos] = useState([]);
   const [selectedVideoId, setSelectedVideoId] = useState(1);
 
-  const handleVideoSelection = (id: number) => {
-    setSelectedVideoId(id);
+  const handleVideoSelection = (videodata: any) => {
+    setSelectedVideoId(videodata?.id);
+    setVideoResolution(videodata?.resolutions[0]?.link);
   };
 
-  const [videoResolution, setVideoResolution] = useState(360);
+  const [videoResolution, setVideoResolution] = useState();
   const onChange = (e: RadioChangeEvent) => {
     setVideoResolution(e.target.value);
   };
 
+  useEffect(() => {
+    async function getTreeApiCall() {
+      let data = await getVideosContentApi();
+      if (data?.status_code == 200) {
+        setVideos(data?.data);
+        setVideoResolution(data?.data[0]?.resolutions[0].link);
+      }
+    }
+    getTreeApiCall();
+  }, []);
   return (
     <>
       <div className="w-100 pt-4 pb-4 ">
@@ -80,35 +46,39 @@ export default function CanonVideos({}: Props): ReactElement {
             {Object.values(videos)?.map((video) => (
               <li
                 className={video.id === selectedVideoId && styles.active}
-                onClick={() => handleVideoSelection(video.id)}
+                onClick={() => handleVideoSelection(video)}
+                key={video?.id}
               >
-                {video.label}
+                {video?.title}
               </li>
             ))}
           </ul>
           <div>
             <Title level={5}>Video Format:</Title>
-            <Radio.Group
-              className={styles.radioGroup}
-              onChange={onChange}
-              value={videoResolution}
-            >
-              <Radio value={360}>360 P</Radio>
-              <Radio value={720}>720 P</Radio>
-              <Radio value={1080}>1080 P</Radio>
-            </Radio.Group>
+
+            {videos && (
+              <Radio.Group
+                className={styles.radioGroup}
+                onChange={onChange}
+                value={videoResolution}
+              >
+                {videos[selectedVideoId - 1]?.resolutions?.map((data) => {
+                  return (
+                    <Radio key={data?.id} value={data?.link}>
+                      {data?.title}
+                    </Radio>
+                  );
+                })}
+              </Radio.Group>
+            )}
           </div>
         </div>
         <div className={styles.videoPlayer}>
-          {videosCollection[selectedVideoId]?.url ? (
+          {videos ? (
             <ReactPlayer
               width={"100%"}
               height={"auto"}
-              url={`${
-                K.Network.URL?.BaseVideosURL +
-                videosCollection[selectedVideoId]?.url +
-                videoResolution
-              }.mp4`}
+              url={K.Network.URL?.BaseVideosURL + "/" + videoResolution}
               controls
               ref={playeref}
               // playing

@@ -1,24 +1,28 @@
-import { useEffect, useState } from "react";
+// import { useState } from "react";
 import { useRouter } from "next/router";
 import { Row, Col, Typography } from "antd";
 import styles from "./siteFooter.module.scss";
-import { getFooterSocialLinksApi } from "../../../network/api/footerSocialLinksApi";
+// import { getFooterSocialLinksApi } from "../../../network/api/footerSocialLinksApi";
 import Image from "next/image";
 import Link from "next/link";
 const { Title } = Typography;
-import K from "../../../constants";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
 
 function Footer() {
   const router = useRouter();
-  const [socialLinks, setSocialLinks] = useState(null);
-
-  useEffect(() => {
-    async function linksApiCall() {
-      const result = await getFooterSocialLinksApi();
-      setSocialLinks(result);
-    }
-    linksApiCall();
-  }, []);
+  // const [socialLinks, setSocialLinks] = useState(null);
+  const loggedInUser = useSelector(
+    (state: RootState) => state.auth.loggedInUser
+  );
+  // Will be used later for social icons
+  // useEffect(() => {
+  //   async function linksApiCall() {
+  //     const result = await getFooterSocialLinksApi();
+  //     setSocialLinks(result);
+  //   }
+  //   linksApiCall();
+  // }, []);
 
   const mockLinks1 = [
     {
@@ -60,10 +64,13 @@ function Footer() {
       id: 8,
     },
   ];
+  const filterMockLinks = mockLinks1.filter((obj) => {
+    return obj.id != 5;
+  });
 
   return (
     <>
-      <section className={styles.adv}>
+      {/* <section className={styles.adv}>
         <Image
           src="/images/footer-adv-img.png"
           alt=""
@@ -71,7 +78,7 @@ function Footer() {
           height={184}
           layout="intrinsic"
         />
-      </section>
+      </section> */}
       <footer className={styles.wrap}>
         <div className={styles.container}>
           <Row>
@@ -108,7 +115,10 @@ function Footer() {
                 <Row gutter={20}>
                   <Col xs={24} md={12}>
                     <ul>
-                      {mockLinks1?.map((item) => {
+                      {(loggedInUser?.is_admin == true
+                        ? mockLinks1
+                        : filterMockLinks
+                      )?.map((item) => {
                         return (
                           <li key={item.id}>
                             <Link href={item.link}>

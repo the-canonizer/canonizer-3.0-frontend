@@ -1,15 +1,16 @@
-import { useState } from "react";
+import { useState, Fragment } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-import { RootState } from "src/store";
 import { Button, Drawer } from "antd";
 import { AppstoreAddOutlined } from "@ant-design/icons";
+
+import { RootState } from "src/store";
 import TopicsFilter from "../../../common/topicsFilter";
 import CampRecentActivities from "../CampRecentActivities";
 import NewsFeedsCard from "../../TopicDetails/NewsFeedsCard";
-import styles from "../../../../hoc/layout/layout.module.scss";
+import GoogleAd from "../../../googleAds";
 
-export default function HomeSideBar({ onCreateCamp = () => {} }) {
+export default function HomeSideBar({ onCreateCamp = () => {} }: any) {
   const router = useRouter();
   const { newsFeed } = useSelector((state: RootState) => ({
     newsFeed: state?.topicDetails?.newsFeed,
@@ -26,12 +27,12 @@ export default function HomeSideBar({ onCreateCamp = () => {} }) {
   };
 
   return (
-    <>
+    <Fragment>
       {" "}
       {typeof window !== "undefined" && window.innerWidth > 767 ? (
         <TopicsFilter onCreateCamp={onCreateCamp} />
       ) : (
-        <>
+        <Fragment>
           <Button type="primary" onClick={showDrawer} className="btnFilter">
             <AppstoreAddOutlined />
           </Button>
@@ -43,7 +44,7 @@ export default function HomeSideBar({ onCreateCamp = () => {} }) {
           >
             <TopicsFilter onCreateCamp={onCreateCamp} />
           </Drawer>
-        </>
+        </Fragment>
       )}
       {typeof window !== "undefined" &&
         window.innerWidth > 767 &&
@@ -53,6 +54,14 @@ export default function HomeSideBar({ onCreateCamp = () => {} }) {
             {!!newsFeed?.length && <NewsFeedsCard newsFeed={newsFeed} />}
           </>
         )}
-    </>
+      <span
+        style={{ display: "block", textAlign: "center", background: "#fff" }}
+      >
+        <GoogleAd
+          ad_client={process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}
+          ad_slot={process.env.NEXT_PUBLIC_GOOGLE_ADS_LEFT_SLOT}
+        />
+      </span>
+    </Fragment>
   );
 }

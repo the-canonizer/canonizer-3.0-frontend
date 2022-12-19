@@ -1,6 +1,6 @@
 import { Spin, Tooltip, Typography } from "antd";
 import { useRouter } from "next/router";
-import { useState, useEffect, useRef, memo } from "react";
+import { useState, useEffect, useRef, Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getTreesApi,
@@ -22,14 +22,18 @@ import {
   HeartOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
-import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
+import {
+  replaceSpecialCharacters,
+  isServer,
+} from "../../../../utils/generalUtility";
+import SocialShareUI from "../../../common/socialShare";
 
 const CampInfoBar = ({
   payload = null,
   isTopicPage = false,
   isTopicHistoryPage = false,
   getCheckSupportStatus = null,
-}) => {
+}: any) => {
   const { isUserAuthenticated } = useAuthentication();
 
   const dispatch = useDispatch();
@@ -40,26 +44,25 @@ const CampInfoBar = ({
     bread_crumb: [],
   });
   const didMount = useRef(false);
-  const didMount1 = useRef(false);
   const router = useRouter();
   const {
     topicRecord,
     campRecord,
-    campStatement,
     is_admin,
     history,
     asofdate,
     asof,
     algorithm,
+    viewThisVersionCheck,
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
-    campStatement: state?.topicDetails?.campStatement,
     is_admin: state?.auth?.loggedInUser?.is_admin,
     history: state?.topicDetails?.history,
     asofdate: state.filters?.filterObject?.asofdate,
     algorithm: state.filters?.filterObject?.algorithm,
     asof: state?.filters?.filterObject?.asof,
+    viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
   }));
   const [campSubscriptionID, setCampSubscriptionID] = useState(
     campRecord?.subscriptionId
@@ -74,7 +77,10 @@ const CampInfoBar = ({
       let reqBody = {
         topic_num: payload?.topic_num,
         camp_num: payload?.camp_num,
-        as_of: asof,
+        as_of:
+          router?.pathname == "/topic/[...camp]" || viewThisVersionCheck
+            ? asof
+            : "default",
         as_of_date:
           asof == "default" || asof == "review"
             ? Date.now() / 1000
@@ -82,7 +88,6 @@ const CampInfoBar = ({
       };
       let res = await getCampBreadCrumbApi(reqBody);
       setBreadCrumbRes(res?.data);
-
       setLoadingIndicator(false);
     }
     if (payload && Object.keys(payload).length > 0) {
@@ -177,7 +182,7 @@ const CampInfoBar = ({
           }
         }}
       >
-        {!!topicSubscriptionID
+        {topicSubscriptionID
           ? " Unsubscribe to Entire Topic"
           : " Subscribe to Entire Topic"}
       </Menu.Item>
@@ -378,7 +383,11 @@ const CampInfoBar = ({
 
           <div className={styles.topicDetailContentHead_Right}>
             {isTopicPage && (
-              <>
+              <Fragment>
+                <SocialShareUI
+                  campName={campRecord?.camp_name}
+                  campUrl={!isServer() && window?.location?.href}
+                />
                 <Button
                   type="primary"
                   className={styles.btnCampForum}
@@ -400,7 +409,7 @@ const CampInfoBar = ({
                     <MoreOutlined />
                   </a>
                 </Dropdown>
-              </>
+              </Fragment>
             )}
           </div>
         </Spin>

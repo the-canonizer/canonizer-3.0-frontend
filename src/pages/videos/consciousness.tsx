@@ -1,13 +1,14 @@
 import Layout from "../../hoc/layout";
-import React, { ReactElement } from "react";
+import React from "react";
 import CanonVideos from "@/components/ComponentPages/canonVideos";
 
-interface Props {}
-
-export default function VideosPage({}: Props): ReactElement {
+function VideosPage() {
   return (
     <Layout>
       <CanonVideos />
     </Layout>
   );
 }
+VideosPage.displayName = "VideosPage";
+
+export default VideosPage;

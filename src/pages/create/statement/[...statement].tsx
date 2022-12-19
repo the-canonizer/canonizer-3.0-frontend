@@ -1,7 +1,7 @@
 import AddOrManage from "../../../components/ComponentPages/Statement/AddOrManage";
 import Layout from "../../../hoc/layout";
 
-export default function AddStatement() {
+const CreateNewStatement = () => {
   return (
     <>
       <Layout>
@@ -11,4 +11,7 @@ export default function AddStatement() {
       </Layout>
     </>
   );
-}
+};
+CreateNewStatement.displayName = "CreateNewStatement";
+
+export default CreateNewStatement;

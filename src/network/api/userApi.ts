@@ -57,7 +57,6 @@ export const login = async (email: string, password: string) => {
 };
 
 export const logout = async (error = "", status = null, count: number = 1) => {
-  console.log("ccccc", count);
   let state = store.getState();
   const { auth } = state;
 
@@ -83,7 +82,7 @@ export const logout = async (error = "", status = null, count: number = 1) => {
     }
 
     let res = await NetworkCall.fetch(
-      UserRequest.logoutCall(auth.token, error)
+      UserRequest.logoutCall(auth.token)
     );
 
     store.dispatch(setLogout());
@@ -788,8 +787,6 @@ export const unsubscribeTopicOrCampAPI = async (body: object) => {
 };
 
 export const getUserSupportedCampList = async (params: string) => {
-  let state = store.getState();
-  const { auth } = state;
   try {
     const res = await NetworkCall.fetch(
       UserRequest.UserSupportedCampList(params)
@@ -871,6 +868,27 @@ export const SupportTreeAndScoreCount = async (body) => {
 export const removeSupportedCamps = async (body) => {
   try {
     const res = await NetworkCall.fetch(UserRequest.removeCamps(body));
+    return res;
+  } catch (err) {
+    handleError(err);
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400
+    ) {
+      return err.error.data;
+    }
+  }
+};
+
+export const globalSearchUploadFiles = async (reqbody) => {
+  let state = store.getState();
+  const { auth } = state;
+  try {
+    const res = await NetworkCall.fetch(
+      UserRequest.GlobalSearchUploadedFiles(reqbody, auth.loggedInUser?.token)
+    );
     return res;
   } catch (err) {
     handleError(err);
