@@ -80,11 +80,12 @@ const CreateNewCamp = ({
     if (response && response.status_code === 200) {
       setNickNameList(response.data);
       setInitialValues({ nick_name: response.data[0]?.id });
+      setIsLoading(false);
       return response.status_code;
     } else {
+      setIsLoading(false);
       return response.status ?? "";
     }
-    setIsLoading(false);
   };
 
   const fetchCampNickNameList = async () => {
@@ -223,7 +224,7 @@ const CreateNewCamp = ({
     setOptions(oldOptions);
   };
 
-  const onParentCampChange = (value: any, currentOption: any) => {};
+  const onParentCampChange = () => {};
 
   return (
     <Fragment>

@@ -22,8 +22,6 @@ const CreateTopicFromUI = ({
   nameSpaces,
   nickNameList,
   onCancel,
-  options,
-  onCheckboxChange,
 }) => {
   const CardTitle = (
     <span className={styles.cardTitle} data-testid="head">
@@ -72,7 +70,7 @@ const CreateTopicFromUI = ({
                     showSearch
                     optionFilterProp="children"
                   >
-                    {nickNameList.map((nick, idx) => (
+                    {nickNameList.map((nick) => (
                       <Option key={nick.id} value={nick.id}>
                         {nick.nick_name}
                       </Option>
@@ -122,7 +120,7 @@ const CreateTopicFromUI = ({
                     showSearch
                     optionFilterProp="children"
                   >
-                    {nameSpaces.map((name, idx) => (
+                    {nameSpaces.map((name) => (
                       <Option key={name.id} value={name.id}>
                         {name.label}
                       </Option>

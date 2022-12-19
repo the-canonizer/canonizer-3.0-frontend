@@ -13,7 +13,7 @@ import NetworkCall from "../networkCall";
 import TreeRequest from "../request/campDetailRequest";
 import { message } from "antd";
 import { store } from "../../store";
-import { handleError, isServer } from "../../utils/generalUtility";
+import { handleError } from "../../utils/generalUtility";
 import { SupportTreeAndScoreCount } from "./userApi";
 
 export const getTreesApi = async (reqBody) => {

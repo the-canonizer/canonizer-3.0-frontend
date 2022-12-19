@@ -60,15 +60,4 @@ describe("Subscriptions List Component", () => {
       expect(screen.getByText("Cancel")).toBeInTheDocument();
     });
   });
-
-  it("click on remove camp button", async () => {
-    render(<SubscriptionList isTestData={subsList} />);
-    waitFor(async () => {
-      const btns = screen.getAllByRole("img", {
-        name: "close-circle",
-      });
-
-      userEvent.click(btns[0]);
-    });
-  });
 });

@@ -1,6 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import CryptoJS from "crypto-js";
-import K from "../../constants";
 
 export const authSlice = createSlice({
   name: "auth",
@@ -22,10 +20,6 @@ export const authSlice = createSlice({
       state.authToken = null;
     },
     setLoggedInUser: (state, action) => {
-      // let encryptedUser = CryptoJS.AES.encrypt(
-      //   JSON.stringify(action.payload),
-      //   K.EncryptionConstants.AESEncryptionKey
-      // );
       state.loggedInUser = action.payload;
       state.token = action.payload.token;
       state.authenticated = true;
@@ -45,7 +39,7 @@ export const authSlice = createSlice({
     removeSocialUsers: (state) => {
       state.socialUsers = [];
     },
-    setLogout: (state) => {
+    setLogout: () => {
       // From here we can take action only at this "auth" state
       // But, as we have taken care of this particular "logout" action
       // in rootReducer, we can use it to CLEAR the complete Redux Store's state

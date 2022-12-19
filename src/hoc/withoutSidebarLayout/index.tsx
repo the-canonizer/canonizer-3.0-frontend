@@ -1,5 +1,4 @@
 import { Fragment } from "react";
-import Image from "next/image";
 
 import useAuthentication from "../../hooks/isUserAuthenticated";
 import LoggedInHeader from "../../components/common/headers/loggedInHeader";

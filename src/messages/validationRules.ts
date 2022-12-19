@@ -41,7 +41,7 @@ export const firstNameRule = {
       max: 100,
       message: validations.firstNameMax,
     },
-    emojiValidation(patterns.emoji_restrication, validations.not_allowed),
+    emojiValidation(patterns.emoji_restrication),
   ],
 };
 
@@ -55,7 +55,7 @@ export const lastNameRule = {
       max: 100,
       message: validations.firstNameMax,
     },
-    emojiValidation(patterns.emoji_restrication, validations.not_allowed),
+    emojiValidation(patterns.emoji_restrication),
   ],
 };
 
@@ -65,7 +65,7 @@ export const middleNameRule = {
       max: 100,
       message: validations.firstNameMax,
     },
-    emojiValidation(patterns.emoji_restrication, validations.not_allowed),
+    emojiValidation(patterns.emoji_restrication),
   ],
 };
 
@@ -203,7 +203,7 @@ export const usernameRule = {
       required: true,
       message: validations.username,
     },
-    ({}) => ({
+    () => ({
       validator(_, value) {
         if (value && value?.trim().match(patterns.emailPhone)) {
           return Promise.resolve();
@@ -273,7 +273,7 @@ export const nickNameRule = {
       required: true,
       message: validations.nickName,
     },
-    ({}) => ({
+    () => ({
       validator(_, value) {
         if (!value || value.trim().length > 0) {
           return Promise.resolve();
@@ -308,7 +308,7 @@ export const topicNameRule = {
       max: 30,
       message: validations.topiNameMax30,
     },
-    emojiValidation(patterns.emoji_restrication, validations.not_allowed),
+    emojiValidation(patterns.emoji_restrication),
   ],
 };
 
@@ -342,7 +342,7 @@ export const campNameRule = {
       max: 30,
       message: validations.topiNameMax30,
     },
-    emojiValidation(patterns.emoji_restrication, validations.not_allowed),
+    emojiValidation(patterns.emoji_restrication),
   ],
 };
 
@@ -378,12 +378,10 @@ export const threadTitleRule = {
       max: 100,
       message: validations.Max100,
     },
-    emojiValidation(patterns.emoji_restrication, validations.not_allowed),
+    emojiValidation(patterns.emoji_restrication),
   ],
 };
 
 export const keywordsRule = {
-  rules: [
-    emojiValidation(patterns.emoji_restrication, validations.not_allowed),
-  ],
+  rules: [emojiValidation(patterns.emoji_restrication)],
 };

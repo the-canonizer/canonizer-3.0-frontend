@@ -1,6 +1,6 @@
 import NetworkCall from "../networkCall";
 import TopicRequest from "../request/topicRequests";
-import { handleError, isServer } from "../../utils/generalUtility";
+import { handleError } from "../../utils/generalUtility";
 import { store } from "src/store";
 
 export const createTopic = async (body) => {
@@ -61,7 +61,7 @@ export const GetCheckSupportExists = async (reqbody) => {
     ) {
       handleError(err);
     } else {
-      return err.error.data;
+      return err?.error?.data;
     }
   }
 };

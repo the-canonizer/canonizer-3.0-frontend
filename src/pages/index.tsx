@@ -1,28 +1,16 @@
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+
 import Layout from "../hoc/layout";
 import HomePageContainer from "../components/ComponentPages/Home";
-import {
-  getCanonizedNameSpacesApi,
-  getCanonizedWhatsNewContentApi,
-  getCanonizedAlgorithmsApi,
-} from "../network/api/homePageApi";
-import { useDispatch } from "react-redux";
-import {
-  setCanonizedNameSpaces,
-  setWhatsNewContent,
-  setCanonizedAlgorithms,
-} from "../store/slices/homePageSlice";
+import { getCanonizedWhatsNewContentApi } from "../network/api/homePageApi";
 import {
   setFilterCanonizedTopics,
   setCurrentDate,
 } from "src/store/slices/filtersSlice";
-import { useEffect } from "react";
 
 function Home({ current_date }) {
   const dispatch = useDispatch();
-
-  // dispatch(setCanonizedNameSpaces(nameSpacesList));
-  // dispatch(setWhatsNewContent(whatsNew));
-  // dispatch(setCanonizedAlgorithms(algorithms));
 
   dispatch(
     setFilterCanonizedTopics({
