@@ -309,13 +309,13 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
               defaultValue={
                 algorithms?.filter(
                   (algo) => algo.algorithm_key == selectedAlgorithm
-                )[0]?.algorithm_label
+                )[0].algorithm_label
               }
               onChange={selectAlgorithm}
               value={
                 algorithms?.filter(
                   (algo) => algo.algorithm_key == selectedAlgorithm
-                )[0]?.algorithm_label
+                )[0].algorithm_label
               }
               disabled={loading}
             >

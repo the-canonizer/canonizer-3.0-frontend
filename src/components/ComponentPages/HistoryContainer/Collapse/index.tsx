@@ -119,6 +119,7 @@ function HistoryCollapse({
       router.push(`/manage/${historyOf}/${campStatement?.id}`);
     }
   };
+
   return (
     <div>
       <Space
@@ -143,15 +144,13 @@ function HistoryCollapse({
           >
             <>
               <Title level={5}>{historyTitle()} :</Title>
-              <div>
-                {historyOf == "statement" && (
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: campStatement?.parsed_value,
-                    }}
-                  />
-                )}
-              </div>
+              {historyOf == "statement" && (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: campStatement?.parsed_value,
+                  }}
+                />
+              )}
 
               {historyOf == "camp" && (
                 <span className={styles.updateSurveyPrj}>

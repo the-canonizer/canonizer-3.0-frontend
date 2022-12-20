@@ -13,7 +13,6 @@ import {
   Descriptions,
 } from "antd";
 import { useRouter } from "next/router";
-import dynamic from "next/dynamic";
 import "antd/dist/antd.css";
 import styles from "../addEditNews.module.scss";
 import K from "../../../../constants";
@@ -50,25 +49,7 @@ import {
   allowedEmojies,
   emojiValidation,
 } from "src/utils/generalUtility";
-import {
-  EditorState,
-  convertToRaw,
-  ContentState,
-  convertFromRaw,
-  convertFromHTML,
-} from "draft-js";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import draftToHtml from "draftjs-to-html";
-// import htmlToDraft from "html-to-draftjs";
-// import { Editor } from 'react-draft-wysiwyg';
-const Editor: any = dynamic(
-  () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
-  { ssr: false }
-);
-let htmlToDraft = null;
-if (typeof window === 'object') {
-    htmlToDraft = require('html-to-draftjs').default;
-}
+
 const { Text } = Typography;
 
 const { campAboutUrlRule, summaryRule, keywordsRule, patterns, validations } =
@@ -94,21 +75,11 @@ export default function AddOrManage({ add }: any) {
   });
   const [parentCamp, setParentCamps] = useState([]);
   const [wikiStatement, setWikiStatement] = useState("");
-  const [errors, setErrors] = useState({
-    CampNameError: false,
-    campNameMsg: "",
-    displayTextError: false,
-    displayTextErrorMsg: "",
-  });
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
 
   const [campNickName, setCampNickName] = useState([]);
   const [canNameSpace, setCanNameSpace] = useState([]);
   const [options, setOptions] = useState([...messages.preventCampLabel]);
   const [initialOptions, setInitialOptions] = useState([]);
-  const [uploadImage, setUploadImage] = useState([]);
 
   const [form] = Form.useForm();
   let objection = router?.query?.statement?.at(0)?.split("-")[1] == "objection";
@@ -162,8 +133,6 @@ export default function AddOrManage({ add }: any) {
   };
 
   const addOrManageStatement = async (values) => {
-    const blocks = draftToHtml(convertToRaw(editorState.getCurrentContent()));
-    // const contentState = editorState.getCurrentContent();
     let editInfo = editStatementData?.data;
     let parent_camp = editInfo?.parent_camp;
     let reqBody = {
@@ -194,7 +163,7 @@ export default function AddOrManage({ add }: any) {
         : manageFormOf == "topic"
         ? editInfo?.topic?.submitter_nick_id
         : editInfo?.statement?.submitter_nick_id,
-      statement: blocks, //JSON.stringify(convertToRaw(contentState)),//values?.statement?.blocks[0].text.trim(),
+      statement: values?.statement?.trim(),
       event_type: add
         ? "create"
         : update
@@ -260,13 +229,7 @@ export default function AddOrManage({ add }: any) {
       setParentCamps(res.data);
     }
   };
-  const isJSON = (str) => {
-    try {
-      return JSON.parse(str) && !!str;
-    } catch (e) {
-      return false;
-    }
-  };
+
   useEffect(() => {
     setScreenLoading(true);
     async function nickNameListApiCall() {
@@ -278,16 +241,6 @@ export default function AddOrManage({ add }: any) {
         };
         if (manageFormOf == "statement") {
           res = await getEditStatementApi(getDataPayload);
-
-          // if(isJSON(res.data.statement.parsed_value))setEditorState(EditorState.createWithContent(convertFromRaw(JSON.parse(res.data.statement.parsed_value))));
-
-          const contentBlocks = htmlToDraft(res.data.statement.parsed_value);
-          const contentState = ContentState.createFromBlockArray(
-            contentBlocks.contentBlocks
-            // contentBlocks.entityMap
-          );
-          setEditorState(EditorState.createWithContent(contentState));
-
           if (
             res?.data?.statement?.go_live_time <
               Math.floor(new Date().getTime() / 1000) &&
@@ -369,7 +322,7 @@ export default function AddOrManage({ add }: any) {
           ? {
               nick_name: res?.data?.nick_name[0]?.id,
               parent_camp_num: res?.data?.statement?.camp_num,
-              statement: res?.data?.statement?.parsed_value,
+              statement: res?.data?.statement?.value,
               edit_summary: res?.data?.statement?.note,
             }
           : manageFormOf == "camp"
@@ -394,7 +347,7 @@ export default function AddOrManage({ add }: any) {
             }
           : {
               nick_name: res?.data?.nick_name[0]?.id,
-              statement: res?.data?.statement?.parsed_value,
+              statement: res?.data?.statement?.value,
               parent_camp_num: res?.data?.statement?.camp_num,
             };
 
@@ -438,6 +391,7 @@ export default function AddOrManage({ add }: any) {
           query: { returnUrl: router.asPath },
         });
   }, []);
+
   let formTitle = () => {
     let update: string;
     if (manageFormOf == "statement") {
@@ -506,6 +460,7 @@ export default function AddOrManage({ add }: any) {
       return null;
     }
   };
+
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
@@ -819,19 +774,10 @@ export default function AddOrManage({ add }: any) {
                           //allowedEmojies(), this needs to be moved to validation file
                         ]}
                       >
-                        {/* <Input.TextArea
+                        <Input.TextArea
                           size="large"
                           rows={7}
                           disabled={objection}
-                        /> */}
-
-                        <Editor
-                          toolbarClassName="toolbarClassName"
-                          wrapperClassName={"wrapperClassName"}
-                          editorStyle={{ height: "176px" }}
-                          editorClassName={styles.reactDraftBox}
-                          editorState={editorState}
-                          onEditorStateChange={setEditorState}
                         />
                       </Form.Item>
                       <small className="mb-3 d-block">
@@ -1033,9 +979,8 @@ export default function AddOrManage({ add }: any) {
                             type="primary"
                             size="large"
                             onClick={async () => {
-                              const editorValues = draftToHtml(convertToRaw(editorState.getCurrentContent()));
                               let res = await getParseCampStatementApi({
-                                value: editorValues,
+                                value: form?.getFieldValue("statement"),
                               });
                               setWikiStatement(res?.data);
 
