@@ -19,8 +19,6 @@ export default function CanonVideos() {
   const handleVideoSelection = (videodata: any) => {
     setSelectedVideoId(videodata?.id);
     setVideoResolution(videodata?.resolutions[0]?.link);
-
-    console.log("function ", vttPath());
   };
 
   const [videoResolution, setVideoResolution] = useState("");
@@ -35,15 +33,7 @@ export default function CanonVideos() {
     if (topic != playeref?.current?.textTracks[0]?.activeCues[0]?.text) {
       setTopic(playeref?.current?.textTracks[0]?.activeCues[0]?.text);
     }
-
-    console.log(
-      "active tab : ",
-      playeref?.current?.textTracks[0]?.activeCues[0]?.text
-    );
   }
-  // useEffect(() => {
-  //   console.log("useeffect call");
-  // }, [selectedVideoId, videoResolution]);
 
   useEffect(() => {
     async function getTreeApiCall() {
@@ -55,24 +45,12 @@ export default function CanonVideos() {
     }
     getTreeApiCall();
   }, []);
-  console.log("use ref ", playeref);
-  console.log("path ", K.Network.URL?.BaseVideosURL + "/" + videoResolution);
-
-  console.log("use ref 2", playeref);
-  console.log("active tab : ", playeref?.current?.textTracks[0]?.activeCues);
-  console.log("video resolution", videoResolution);
 
   function vttPath() {
     let path = videoResolution?.split("_");
-    console.log("path 1", path);
     path = path?.splice(0, path.length - 1)?.join("_");
-
-    console.log("path", path);
     return path;
   }
-
-  console.log("function ", vttPath());
-  console.log("vttt file path => ", "/subs/" + vttPath() + ".vtt");
 
   return (
     <>
@@ -177,7 +155,6 @@ export default function CanonVideos() {
           ) : (
             <h1>Something went wrong!</h1>
           )}
-
           {/* <video>
         <source  src="https://storage.googleapis.com/shaka-demo-assets/angel-one-hls/hls.m3u8"/>
         <track  kind="chapters" label="Locations" src='/subs/introduction.vtt'  default></track> 
