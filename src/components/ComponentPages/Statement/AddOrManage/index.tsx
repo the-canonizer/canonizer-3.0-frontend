@@ -1038,6 +1038,7 @@ export default function AddOrManage({ add }: any) {
                                 value: editorValues,
                               });
                               setWikiStatement(res?.data);
+
                               setModalVisible(true);
                             }}
                           >
@@ -1069,7 +1070,7 @@ export default function AddOrManage({ add }: any) {
           setModalVisible(false);
         }}
         okButtonProps={{
-          disabled: manageFormOf == "statement" ? false : submitIsDisable,
+          disabled: submitIsDisable && submitIsDisableCheck,
         }}
         okText={
           add
