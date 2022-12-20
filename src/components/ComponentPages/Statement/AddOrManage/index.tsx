@@ -822,7 +822,7 @@ export default function AddOrManage({ add }: any) {
                             message:
                               K?.exceptionalMessages?.statementRequiredErrorMsg,
                           },
-                          allowedEmojies(),
+                          //allowedEmojies(), this needs to be moved to validation file
                         ]}
                       >
                         {/* <Input.TextArea
