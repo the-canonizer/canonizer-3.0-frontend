@@ -17,8 +17,17 @@ export default function CanonVideos() {
   const [topic, setTopic] = useState("");
 
   const handleVideoSelection = (videodata: any) => {
+    playeref.current
     setSelectedVideoId(videodata?.id);
     setVideoResolution(videodata?.resolutions[0]?.link);
+    const node = document.getElementsByTagName('video')[0]
+    node.src =
+      K.Network.URL?.BaseVideosURL + "/" + videodata?.resolutions[0]?.link;
+    node.play()
+    
+    // debugger
+
+    // playeref?.current = K.Network.URL?.BaseVideosURL + "/" + videodata?.resolutions[0]?.link
   };
 
   const [videoResolution, setVideoResolution] = useState("");
