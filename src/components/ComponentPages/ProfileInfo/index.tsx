@@ -15,7 +15,6 @@ import {
 import ProfileInfoUI from "./ProfileInfoUI";
 import {
   geocodeByAddress,
-  getLatLng,
   geocodeByPlaceId,
 } from "react-places-autocomplete";
 type UpdateAddress = {
@@ -124,7 +123,7 @@ const ProfileInfo = () => {
   const { isUserAuthenticated } = isAuth();
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    window.console.log("Failed:", errorInfo);
   };
 
   //Send OTP to mobile number

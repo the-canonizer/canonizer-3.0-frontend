@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Card, Tag, Select, Spin } from "antd";
 import messages from "../../../../messages";
 import styles from "../ManageSupportUI/ManageSupport.module.scss";
-import Link from "next/link";
 import { Button, Col } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { DraggableArea } from "react-draggable-tags";
@@ -29,10 +28,7 @@ const ManageSupportUI = ({
   submitButtonDisable,
   setUpdatePostion,
   unableToFindCamp,
-  updatePostion,
-  campIds,
-  setcampIds,
-}) => {
+}:any) => {
   const [tagsArrayList, setTagsArrayList] = useState([]);
   const [isTagDragged, setIsTagDragged] = useState(false);
 
@@ -45,9 +41,6 @@ const ManageSupportUI = ({
   const { topicRecord } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
   }));
-  const { manageSupportStatusCheck } = useSelector((state: RootState) => ({
-    manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
-  }));
   const { currentGetCheckSupportExistsData } = useSelector(
     (state: RootState) => ({
       currentGetCheckSupportExistsData:
@@ -57,13 +50,9 @@ const ManageSupportUI = ({
   const [spinner, setSpinner] = useState(false);
   const [topicSupportList, setTopicSupportList] = useState([]);
   const [removeCampsSupport, setRemoveCampsSupport] = useState(false);
-  const currentCampRecord = useSelector(
-    (state: RootState) => state.topicDetails.currentCampRecord
-  );
 
   const router = useRouter();
-  const manageSupportArr = [];
-  const filteredList = manageSupportList.map((obj, index) => {
+  const filteredList = manageSupportList.map((obj:any, index:any) => {
     return {
       camp_num: obj.camp_num,
       order: index + 1, //obj.support_order,
@@ -77,11 +66,11 @@ const ManageSupportUI = ({
     };
   };
   const removeAllCampNum = () => {
-    const filteredList = manageSupportList.filter((obj) => obj.dis);
+    const filteredList = manageSupportList.filter((obj:any) => obj.dis);
     return filteredList.map((obj) => obj.camp_num);
   };
   const removeAllIsSelected = () => {
-    const filteredList = manageSupportList.filter((obj) => obj.dis);
+    const filteredList = manageSupportList.filter((obj:any) => obj.dis);
     if (filteredList.length == manageSupportList.length) return true;
     else false;
   };
@@ -89,9 +78,6 @@ const ManageSupportUI = ({
     currentGetCheckSupportExistsData?.remove_camps?.map((obj) => {
       return obj.camp_num;
     });
-  const parentSupportOrder = parentSupportDataList.map((obj) => {
-    return obj.support_order;
-  });
   const manageListOrder =
     manageSupportList.length > 0
       ? manageSupportList[manageSupportList.length - 1].support_order
@@ -109,17 +95,6 @@ const ManageSupportUI = ({
     return selectedtNickname == nickName.id;
   });
   const nickNameIDValue = nickNameloop[0]?.id;
-  const campNumFromRemoveCamp =
-    currentGetCheckSupportExistsData.remove_camps?.map((obj) => {
-      return obj.camp_num;
-    });
-  const filterCampNum = topicSupportList.filter((obj) => {
-    return obj.camp_num == campNumFromRemoveCamp;
-  });
-  // let topicSupport;
-  // const topicSupportCampNum = topicSupport?.map((obj)=>{
-  //   return obj.camp_num
-  // })
   useEffect(() => {
     (async () => {
       const topicList = await GetActiveSupportTopic(topicNum && body);
@@ -342,7 +317,7 @@ const ManageSupportUI = ({
                     id="clearAllChangesBtn"
                     htmlType="button"
                     className={styles.clear_Btn}
-                    onClick={(e) => {
+                    onClick={() => {
                       clearAllChanges(manageSupportList);
                       setRemoveCampsSupport(false);
                     }}

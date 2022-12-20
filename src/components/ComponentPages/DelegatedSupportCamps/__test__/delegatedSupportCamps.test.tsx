@@ -1,9 +1,8 @@
-import { render, screen, waitFor } from "../../../../utils/testUtils";
-import userEvent from "@testing-library/user-event";
+import { render, screen} from "../../../../utils/testUtils";
 import DelegatedSupportCampsUI from "../DelegatedSupportCampsUI/index";
 import messages from "../../../../messages";
 
-const { labels, placeholders, validations } = messages;
+const { labels} = messages;
 
 const viewMoreModalVisible = true;
 const isRemoveSupportModalVisible = true;

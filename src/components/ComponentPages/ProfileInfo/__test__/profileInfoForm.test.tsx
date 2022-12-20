@@ -1,5 +1,4 @@
 import {
-  fireEvent,
   render,
   screen,
   waitFor,

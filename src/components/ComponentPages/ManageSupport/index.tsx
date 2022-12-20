@@ -21,7 +21,6 @@ import queryParams from "src/utils/queryParams";
 import {
   setCheckSupportExistsData,
   setManageSupportStatusCheck,
-  setManageSupportUrlLink,
 } from "src/store/slices/campDetailSlice";
 import moment from "moment";
 import Sidebar from "../Home/SideBarNoFilter";
@@ -135,15 +134,15 @@ const ManageSupport = () => {
     }
   }, [isUserAuthenticated, reqBodyData.topic_num]);
 
-  let warningMsg, supportSts;
+  
   const GetCheckStatusData = async (campReff: any) => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
     if (response && response.status_code === 200) {
       if (response.data?.remove_camps)
         setParentSupportDataList(response.data.remove_camps);
       if (!manageSupportStatusCheck) {
-        warningMsg = response.data.warning;
-        supportSts = response.data.support_flag;
+         response.data.warning;
+         response.data.support_flag;
         //Api's call for list
         dispatch(setCheckSupportExistsData({}));
         dispatch(setCheckSupportExistsData(response.data));
@@ -306,11 +305,11 @@ const ManageSupport = () => {
       manageSupportPath.lastIndexOf("_")
     );
   //remove add id for cancel and submit
-  let remove_ = manageSupportPath.lastIndexOf("_");
-  let resDat = manageSupportPath.substring(0, remove_);
-  let manageSupportPathData = CheckDelegatedOrDirect
-    ? resDat
-    : manageSupportPath;
+  // let remove_ = manageSupportPath.lastIndexOf("_");
+  // let resDat = manageSupportPath.substring(0, remove_);
+  // let manageSupportPathData = CheckDelegatedOrDirect
+  //   ? resDat
+  //   : manageSupportPath;
 
   //Cancel Button
   const cancelManageRoute = () => {
@@ -361,7 +360,7 @@ const ManageSupport = () => {
             order: key + 1,
           });
         })
-      : resultCamp.map((data, key) => {
+      : resultCamp.map((data) => {
           filterArrayResult.push({
             camp_num: data.camp_num,
             order: manageListOrder,
