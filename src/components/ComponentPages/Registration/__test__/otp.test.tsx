@@ -1,12 +1,11 @@
 import { render, screen, waitFor } from "../../../../utils/testUtils";
 import userEvent from "@testing-library/user-event";
-import { Form } from "antd";
 
 import Registration from "../index";
 import messages from "../../../../messages";
 import React from "react";
 
-const { placeholders, validations, labels } = messages;
+const { placeholders, labels } = messages;
 
 describe("OTP page", () => {
   it("render heading and text", () => {

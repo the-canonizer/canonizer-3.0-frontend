@@ -9,13 +9,11 @@ import {
 } from "../../../network/api/userApi";
 
 function SubscriptionsList({ isTestData = [] }) {
-  const [activeKey, setActiveKey] = useState("topic_subs");
-  const [searchQuery, setSearchQuery] = useState("");
   const [subscriptionsList, setSubscriptionsList] = useState(isTestData);
   const [isVisible, setIsVisible] = useState(false);
   const [currentTopic, setCurrentTopic] = useState({});
-  const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState("");
+  const [page] = useState(1);
+  const [perPage] = useState("");
   const [isCamp, setIsCamp] = useState(false);
   const [camp, setCamp] = useState({});
 
@@ -31,12 +29,6 @@ function SubscriptionsList({ isTestData = [] }) {
     const query = `?page=${page}&per_page=${perPage}`;
     getSubscriptionsList(query);
   }, [page, perPage]);
-
-  // const tabCallBack = (key: string) => {
-  //   setActiveKey(key);
-  // };
-
-  // const onSearch = (ev: any) => setSearchQuery(ev.target.value);
 
   const campOrTopicUnsubscribe = async (body: Object) => {
     const res = await unsubscribeTopicOrCampAPI(body);
@@ -95,7 +87,6 @@ function SubscriptionsList({ isTestData = [] }) {
 
   return (
     <SubscriptionsListUI
-      activeKey={activeKey}
       onRemoveSubscription={onRemoveSubscription}
       onConfirm={onConfirm}
       subscriptionsList={subscriptionsList}

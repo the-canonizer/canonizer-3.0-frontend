@@ -6,7 +6,7 @@ import styles from "./Notifications.module.scss";
 import SideBar from "../../CampForum/UI/sidebar";
 import Lists from "./List";
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 const NotificationsListUI = ({
   list,

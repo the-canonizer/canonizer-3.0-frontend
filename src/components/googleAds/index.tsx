@@ -9,7 +9,7 @@ function GoogleAd({
       // @ts-ignore
       (window.adsbygoogle = window.adsbygoogle || []).push({});
     } catch (err) {
-      console.error(err);
+      // console.error(err);
     }
   }, []);
 

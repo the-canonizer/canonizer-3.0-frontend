@@ -1,12 +1,4 @@
-import {
-  Card,
-  Tag,
-  Button,
-  Tooltip,
-  Typography,
-  Empty,
-  Popconfirm,
-} from "antd";
+import { Card, Tag, Button, Tooltip, Typography, Empty } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 
 import Link from "next/link";
@@ -68,14 +60,7 @@ function TopicSubscriptionsTab({
                 onClose={(e) => onConfirm(e, data, camp)}
                 closeIcon={
                   <Tooltip title="Remove camp subscription">
-                    {/* <Popconfirm
-                      title={`Your subscription from the Camp - "${camp.camp_name}" will be removed. Do you want to continue?`}
-                      okText="Yes"
-                      cancelText="No"
-                      onConfirm={(e) => onConfirm(e, data, camp)}
-                    > */}
                     <CloseCircleOutlined />
-                    {/* </Popconfirm> */}
                   </Tooltip>
                 }
               >

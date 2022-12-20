@@ -15,7 +15,7 @@ const { TreeNode } = Tree;
 const CampTree = ({
   scrollToCampStatement,
   setTotalCampScoreForSupportTree,
-}: any) => {
+}) => {
   const { tree, filterByScore, review, is_checked } = useSelector(
     (state: RootState) => ({
       tree: state?.topicDetails?.tree,

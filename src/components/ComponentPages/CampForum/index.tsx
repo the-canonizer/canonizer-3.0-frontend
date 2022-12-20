@@ -28,7 +28,7 @@ import { setThread, setPost } from "../../../store/slices/campForumSlice";
 import CampInfoBar from "../TopicDetails/CampInfoBar";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
-const ForumComponent = ({}) => {
+const ForumComponent = () => {
   const router = useRouter();
 
   const { isUserAuthenticated } = useIsUserAuthenticated();
@@ -48,8 +48,8 @@ const ForumComponent = ({}) => {
   const [isError, setIsError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [postLoading, setPostLoading] = useState(false);
-  const [perPage, setPerPage] = useState(10);
-  const [postperPage, setPostPerPage] = useState(10);
+  const [perPage] = useState(10);
+  const [postperPage] = useState(10);
 
   const dispatch = useDispatch();
 
@@ -75,8 +75,6 @@ const ForumComponent = ({}) => {
     const queries = router?.query;
     const topicArr = (queries.topic as string).split("-");
     const topic_num = topicArr.shift();
-    const campArr = (queries.camp as string).split("-");
-    const camp_num = campArr.shift();
 
     const reqBody = {
       topic_num: +topic_num,
@@ -192,7 +190,7 @@ const ForumComponent = ({}) => {
     setSearchQuery(v.trim());
   };
 
-  const onChange = (p, size) => {
+  const onChange = (p) => {
     setLoading(true);
     setPage(p);
     const queries = router?.query;
@@ -414,7 +412,6 @@ const ForumComponent = ({}) => {
 
   useEffect(() => {
     const q = router?.query,
-      from = q?.from,
       threadId = q?.id;
 
     if (threadId) {
@@ -527,7 +524,7 @@ const ForumComponent = ({}) => {
     setCurrentPost({});
   };
 
-  const pOnChange = (p, size) => {
+  const pOnChange = (p) => {
     setPostLoading(true);
     setPpage(p);
   };
@@ -552,7 +549,6 @@ const ForumComponent = ({}) => {
           current={page}
           total={totalRecords}
           filterThread={filterThread}
-          isLoggedIn={isLoggedIn}
           paramsList={paramsList}
           isLoading={loading}
         />

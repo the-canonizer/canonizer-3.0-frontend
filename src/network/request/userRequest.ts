@@ -1,5 +1,6 @@
 import K from "../../constants";
 import Request from ".";
+
 export default class UserRequest extends Request {
   constructor(url, met, body, head, obj, token) {
     super(url, met, body, head, obj, token);

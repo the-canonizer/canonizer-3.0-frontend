@@ -12,7 +12,6 @@ import {
 } from "../../../network/api/userApi";
 import { AppDispatch } from "../../../store";
 import Spinner from "../../common/spinner/spinner";
-import { setValue } from "../../../store/slices/utilsSlice";
 
 const ForgotPassword = ({ isModal, isTestScreen = 0 }) => {
   const [isScreen, setIsScreen] = useState(isTestScreen);

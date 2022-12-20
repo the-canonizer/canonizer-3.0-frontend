@@ -111,6 +111,7 @@ const LoginUi = ({
                 rules={messages.usernameRule}
                 placeholder={messages.placeholders.emailPhone}
                 dataid="username"
+                onKeyDown={() => {}}
               />
 
               <Form.Item

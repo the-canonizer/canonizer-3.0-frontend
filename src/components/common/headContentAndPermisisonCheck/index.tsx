@@ -68,14 +68,17 @@ const HeadContentAndPermissionComponent = ({
       },
     };
     const defaultTags = {
-    "page_name": "Home",
-    "title": "Build consensus by canonizing what you believe is right",
-    "description": "Bringing the world together by canonizing what you believe is right. Your thoughts are processed through our pattented algorithims in a qualified & quantified camp where others can see, join & together change the world.",
-    "author": "",
-    }
+      page_name: "Home",
+      title: "Build consensus by canonizing what you believe is right",
+      description:
+        "Bringing the world together by canonizing what you believe is right. Your thoughts are processed through our pattented algorithims in a qualified & quantified camp where others can see, join & together change the world.",
+      author: "",
+    };
     async function apiCall() {
       const result = await metaTagsApi(req);
-      result?.status_code == 200 ? setMetaContent(result?.data) : setMetaContent(defaultTags)
+      result?.status_code == 200
+        ? setMetaContent(result?.data)
+        : setMetaContent(defaultTags);
     }
     apiCall();
   }, [componentName]);
