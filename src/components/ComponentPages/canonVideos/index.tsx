@@ -9,34 +9,29 @@ import { getVideosContentApi } from "src/network/api/videos";
 const { Title } = Typography;
 
 export default function CanonVideos() {
-  const playeref = useRef();
-  const playeref2 = useRef();
-
+  const playeref = useRef<any>({});
   const [videos, setVideos] = useState([]);
   const [selectedVideoId, setSelectedVideoId] = useState(1);
   const [topic, setTopic] = useState("");
 
   const handleVideoSelection = (videodata: any) => {
-    playeref.current
+    playeref.current;
     setSelectedVideoId(videodata?.id);
     setVideoResolution(videodata?.resolutions[0]?.link);
-    const node = document.getElementsByTagName('video')[0]
+    const node = document.getElementsByTagName("video")[0];
     node.src =
       K.Network.URL?.BaseVideosURL + "/" + videodata?.resolutions[0]?.link;
-    node.play()
-    
-    // debugger
-
-    // playeref?.current = K.Network.URL?.BaseVideosURL + "/" + videodata?.resolutions[0]?.link
+    node.play();
   };
 
   const [videoResolution, setVideoResolution] = useState("");
   const onChange = (e: RadioChangeEvent) => {
     setVideoResolution(e.target.value);
+    const node = document.getElementsByTagName("video")[0];
+    node.src = K.Network.URL?.BaseVideosURL + "/" + e.target.value;
+    node.play();
   };
-  function getChaptersReady() {
-    console.log("ready", playeref2);
-  }
+
   function updateTime() {
     console.log("update", playeref);
     if (topic != playeref?.current?.textTracks[0]?.activeCues[0]?.text) {
@@ -57,8 +52,8 @@ export default function CanonVideos() {
 
   function vttPath() {
     let path = videoResolution?.split("_");
-    path = path?.splice(0, path.length - 1)?.join("_");
-    return path;
+    let finalPath = path?.splice(0, path.length - 1)?.join("_");
+    return finalPath;
   }
 
   return (
@@ -103,36 +98,6 @@ export default function CanonVideos() {
         </div>
         <div className={styles.videoPlayer}>
           {videos && videoResolution ? (
-            // <ReactPlayer
-            //   width={"100%"}
-            //   height={"auto"}
-            //   url={K.Network.URL?.BaseVideosURL + "/" + videoResolution}
-            //   controls
-            //   ref={playeref}
-            //   // onReady={}
-            //   playing
-            //   //        config={{ file: {
-            //   //   tracks: [
-            //   //     {kind: 'subtitles', src: 'subs/subtitles.en.vtt', srcLang: 'en', default: true},
-            //   //     {kind: 'subtitles', src: 'subs/subtitles.ja.vtt', srcLang: 'ja'},
-            //   //     {kind: 'subtitles', src: 'subs/subtitles.de.vtt', srcLang: 'de'}
-            //   //   ]
-            //   // }}}
-            //   config={{
-            //     file: {
-            //       tracks: [
-            //         {
-            //           kind: "chapters",
-            //           src: "/subs/chapters.vtt",
-            //           srcLang: "en",
-            //           default: true,
-            //           label: "Locations",
-            //         },
-            //       ],
-            //     },
-            //   }}
-            // />
-            // =============================================================================================
             <>
               <video
                 onTimeUpdate={updateTime}
@@ -150,8 +115,8 @@ export default function CanonVideos() {
                   kind="chapters"
                   label="Locations"
                   src={"/subs/" + vttPath() + ".vtt"}
-                  ref={playeref2}
-                  onLoad={getChaptersReady}
+                  // ref={playeref2}
+                  // onLoad={getChaptersReady}
                   default
                 ></track>
               </video>
@@ -164,10 +129,6 @@ export default function CanonVideos() {
           ) : (
             <h1>Something went wrong!</h1>
           )}
-          {/* <video>
-        <source  src="https://storage.googleapis.com/shaka-demo-assets/angel-one-hls/hls.m3u8"/>
-        <track  kind="chapters" label="Locations" src='/subs/introduction.vtt'  default></track> 
-      </video> */}
         </div>
       </div>
     </>
