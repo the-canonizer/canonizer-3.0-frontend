@@ -3,6 +3,8 @@ import { Spin } from "antd";
 import CreateThread from "./UI/ThreadFormUI";
 import ThreadSidebar from "./UI/sidebar";
 
+// email link issue with ashutosh/gautam's bro.
+
 const Threads = ({
   isThreadUpdate,
   nickNameList,

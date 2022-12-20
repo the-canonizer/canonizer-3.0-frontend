@@ -23,7 +23,6 @@ const EmailPopup = ({ isModal = false }) => {
   const [isOTP, setIsOTP] = useState(false);
   const [isResend, setIsResend] = useState(false);
   const [formData, setFormData] = useState({});
-  const [failedMsg, setFailedMsg] = useState("");
   const [socialLoginKeys, setSocialLoginKeys] = useState(socialKeys);
   const [redirectType, setRedirectType] = useState(rdType);
 
@@ -85,9 +84,7 @@ const EmailPopup = ({ isModal = false }) => {
 
     if (values.otp?.trim()) {
       let res = await verifyEmailOnSocial(body);
-      if (res) {
-        setFailedMsg(res.message);
-      }
+
       if (res && res.status_code === 200) {
         form.resetFields();
         setIsOTP(false);

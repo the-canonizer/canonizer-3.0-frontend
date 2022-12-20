@@ -61,7 +61,7 @@ export const GetCheckSupportExists = async (reqbody) => {
     ) {
       handleError(err);
     } else {
-      return err.error.data;
+      return err?.error?.data;
     }
   }
 };

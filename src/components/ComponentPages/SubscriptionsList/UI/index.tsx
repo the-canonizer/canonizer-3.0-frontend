@@ -6,7 +6,6 @@ import TopicSubscriptionsTab from "./TopicSubscriptionsTab";
 import TopicRemoveModal from "./RemoveModal";
 
 function SubscriptionsListUI({
-  activeKey,
   subscriptionsList,
   onRemoveSubscription,
   onConfirm,
@@ -19,9 +18,6 @@ function SubscriptionsListUI({
   campTitle,
   campLink,
 }) {
-  const placeholder =
-    activeKey === "topic_subs" ? "Search by topic name" : "Search by camp name";
-
   return (
     <div className={styles.supported_camps}>
       <Card

@@ -17,7 +17,7 @@ import { setValue } from "src/store/slices/utilsSlice";
 import { RootState } from "src/store";
 
 function SocialLoginCallback() {
-  const { rdType, rdSlTab } = useSelector((state: RootState) => ({
+  const { rdType } = useSelector((state: RootState) => ({
     rdType: state.utils.redirect_type,
     rdSlTab: state.utils.redirect_tab_setting,
   }));
@@ -114,7 +114,7 @@ function SocialLoginCallback() {
         }
       }
     } catch (error) {
-      console.error(error);
+      // log error
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query]);

@@ -1,4 +1,3 @@
-import { Typography } from "antd";
 import {
   FacebookShareButton,
   TwitterShareButton,
@@ -11,8 +10,6 @@ import {
 import styles from "./social-share.module.scss";
 
 import { isServer } from "../../../utils/generalUtility";
-
-const { Text } = Typography;
 
 const SocialShare = ({ campUrl, campName }) => {
   return (

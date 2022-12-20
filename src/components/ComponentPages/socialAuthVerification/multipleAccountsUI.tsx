@@ -5,8 +5,6 @@ import styles from "./Social.module.scss";
 
 import messages from "../../../messages";
 
-const { labels } = messages;
-
 const MultiUserModalForm = ({ visible, onFinish, closeModal, users }) => {
   const [form] = Form.useForm();
   return (

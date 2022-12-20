@@ -31,7 +31,6 @@ const ThreadListUI = ({
   current,
   total,
   filterThread,
-  isLoggedIn,
   onEditClick,
   paramsList,
 }) => {

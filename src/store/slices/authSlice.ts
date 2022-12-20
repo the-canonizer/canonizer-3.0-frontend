@@ -20,10 +20,6 @@ export const authSlice = createSlice({
       state.authToken = null;
     },
     setLoggedInUser: (state, action) => {
-      // let encryptedUser = CryptoJS.AES.encrypt(
-      //   JSON.stringify(action.payload),
-      //   K.EncryptionConstants.AESEncryptionKey
-      // );
       state.loggedInUser = action.payload;
       state.token = action.payload.token;
       state.authenticated = true;

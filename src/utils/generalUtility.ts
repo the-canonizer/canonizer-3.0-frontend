@@ -1,8 +1,7 @@
 import { message } from "antd";
-// import emojiUnicode from "emoji-unicode";
 
-export const handleError = (error, log = false, dispatch = null) => {
-  log ? console.log(error) : "";
+export const handleError = (error, log = false) => {
+  log ? "" : "";
 
   const nestedErrs = error
     ? error.error
@@ -299,7 +298,7 @@ export const disableInput = (camp: {
 };
 
 export const emojiValidation =
-  (exp, msg) =>
+  (exp) =>
   ({ setFieldValue }) => ({
     validator(currentField, value) {
       if (value && !value?.trim().match(exp)) {

@@ -698,10 +698,7 @@ export default function AddOrManage({ add }: any) {
                               pattern: /[^ \s]/,
                               message: K?.exceptionalMessages?.campNameReqErr,
                             },
-                            emojiValidation(
-                              patterns.emoji_restrication,
-                              validations.not_allowed
-                            ),
+                            emojiValidation(patterns.emoji_restrication),
                           ]}
                         >
                           <Input
@@ -749,10 +746,7 @@ export default function AddOrManage({ add }: any) {
                               pattern: /[^ \s]/,
                               message: K?.exceptionalMessages?.topicNameReqErr,
                             },
-                            emojiValidation(
-                              patterns.emoji_restrication,
-                              validations.not_allowed
-                            ),
+                            emojiValidation(patterns.emoji_restrication),
                           ]}
                         >
                           <Input disabled={objection} maxLength={30} />

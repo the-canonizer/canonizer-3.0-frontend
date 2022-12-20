@@ -50,6 +50,7 @@ import {
   removeSupportedCampsEntireTopic,
 } from "src/network/api/userApi";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import { SupportTreeTotalScore } from "src/network/api/campDetailApi";
 
 const TopicDetails = () => {
   let myRefToCampStatement = useRef(null);
@@ -480,10 +481,6 @@ const TopicDetails = () => {
                           }
                         />
                       </Spin>
-
-                      {/* <Spin spinning={loadingIndicator} size="large">
-                        <SocialShareCard />
-                      </Spin> */}
                     </>
                   )}
             </div>
