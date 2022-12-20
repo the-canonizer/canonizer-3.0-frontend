@@ -1,6 +1,5 @@
 import { Fragment, useState, useEffect } from "react";
 import { Form, message } from "antd";
-import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 
@@ -141,20 +140,6 @@ const CreateNewTopic = ({
     };
   }, []);
 
-  const onCheckboxChange = async (e: CheckboxChangeEvent) => {
-    const oldOptions = [...options];
-
-    await oldOptions.map((op) => {
-      if (op.id === e.target.value) {
-        op.checked = e.target.checked;
-      } else {
-        op.checked = false;
-      }
-    });
-
-    setOptions(oldOptions);
-  };
-
   return (
     <Fragment>
       <CreateNewTopicUI
@@ -164,8 +149,6 @@ const CreateNewTopic = ({
         nameSpaces={nameSpaces}
         nickNameList={nickNameList}
         onCancel={onCancel}
-        options={options}
-        onCheckboxChange={onCheckboxChange}
         isLoading={isLoading}
       />
     </Fragment>

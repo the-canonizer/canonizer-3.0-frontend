@@ -1,10 +1,8 @@
 import firebase from "firebase/app";
 import "firebase/messaging";
 import localforage from "localforage";
-// import { notification } from "antd";
 
 import { getLists } from "../network/api/notificationAPI";
-// import Fav from "../components/common/headers/notification/icon";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FCM_API_KEY,
@@ -23,7 +21,7 @@ export const firebaseCloudMessaging = {
       const messaging = firebase.messaging(app);
 
       if ("serviceWorker" in navigator && "PushManager" in window) {
-        navigator.serviceWorker.addEventListener("message", async (event) => {
+        navigator.serviceWorker.addEventListener("message", async () => {
           await getLists();
         });
 
@@ -32,7 +30,9 @@ export const firebaseCloudMessaging = {
           .then(async (objServiceWorker) => {
             messaging.useServiceWorker(objServiceWorker);
           })
-          .catch((err) => console.error(`OOps! ${err}`));
+          .catch(() => {
+            // console.error(`OOps! ${err}`);
+          });
       }
 
       try {
@@ -43,7 +43,7 @@ export const firebaseCloudMessaging = {
           return token;
         }
       } catch (error) {
-        console.error(error);
+        // console.error(error);
         return null;
       }
     }

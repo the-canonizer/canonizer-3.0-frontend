@@ -9,12 +9,7 @@ type HeadContentProps = {
   author: string;
 };
 
-function HeadContent({
-  description,
-  title,
-  route,
-  author,
-}: HeadContentProps) {
+function HeadContent({ description, title, route, author }: HeadContentProps) {
   const url = process.env.NEXT_PUBLIC_SITE_NAME;
   const image_url = `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/canonizer_preview.jpg`;
   return (

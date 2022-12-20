@@ -10,11 +10,14 @@ import {
   Typography,
   Input,
   Select,
+  message,
 } from "antd";
 import { useRouter } from "next/router";
 import { LoadingOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
 import styles from "../addEditNews.module.scss";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
 import {
   addNewsFeedApi,
   getEditCampNewsFeedApi,
@@ -45,6 +48,10 @@ export default function AddOrEdit({ edit }: any) {
   });
   const router = useRouter();
   const [form] = Form.useForm();
+
+  const { is_admin } = useSelector((state: RootState) => ({
+    is_admin: state?.auth?.loggedInUser?.is_admin,
+  }));
 
   const goBack = () => {
     if (edit) {
@@ -167,8 +174,11 @@ export default function AddOrEdit({ edit }: any) {
         setScreenLoading(false);
       }
     }
-    if (isUserAuthenticated) {
+    if (isUserAuthenticated && is_admin) {
       nickNameListApiCall();
+    } else if (!is_admin) {
+      message.error("Only admin can add/edit news");
+      router.push("/");
     } else {
       router.push("/login");
     }

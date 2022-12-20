@@ -1,4 +1,4 @@
-import { Typography, Form, Input, Button, Image, Row, Col } from "antd";
+import { Typography, Form, Input, Button, Image } from "antd";
 import { CloseCircleOutlined, ArrowRightOutlined } from "@ant-design/icons";
 
 import styles from "../../Registration/UI/Registration.module.scss";

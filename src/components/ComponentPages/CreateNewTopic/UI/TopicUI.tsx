@@ -1,6 +1,5 @@
 import { Fragment } from "react";
 import { Spin } from "antd";
-import Script from "next/script";
 
 import FromUI from "./FromUI";
 import Sidebar from "../../Home/SideBarNoFilter";
@@ -12,8 +11,6 @@ const CreateNewTopicUI = ({
   nameSpaces,
   nickNameList,
   onCancel,
-  options,
-  onCheckboxChange,
   isLoading,
 }) => {
   return (
@@ -30,8 +27,6 @@ const CreateNewTopicUI = ({
             nameSpaces={nameSpaces}
             nickNameList={nickNameList}
             onCancel={onCancel}
-            options={options}
-            onCheckboxChange={onCheckboxChange}
           />
         </Spin>
       </div>

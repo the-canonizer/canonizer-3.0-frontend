@@ -12,7 +12,6 @@ const Threads = ({
   current,
   total,
   filterThread,
-  isLoggedIn,
   onEditClick,
   paramsList,
   isLoading,
@@ -30,7 +29,6 @@ const Threads = ({
           current={current}
           total={total}
           filterThread={filterThread}
-          isLoggedIn={isLoggedIn}
           onEditClick={onEditClick}
           paramsList={paramsList}
         />
