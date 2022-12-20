@@ -223,9 +223,9 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
                 <div className="mobile_tag">
                   <Link href="/settings">Account Settings</Link>
                   <Link href="/settings?tab=supported_camps" passHref>
-                    <a>Support Camps</a>
+                    <a>Supported Camps</a>
                   </Link>
-                  <a onClick={logOut}>Logout</a>
+                  <a onClick={logOut}>Log Out</a>
                 </div>
               </>
             ) : null}

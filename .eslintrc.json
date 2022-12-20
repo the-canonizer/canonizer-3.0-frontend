@@ -1,11 +1,49 @@
 {
-  "extends":[ "next/core-web-vitals","eslint:recommended","plugin:react/recommended"],
+  "extends": [
+    "next/core-web-vitals",
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:jest/recommended"
+  ],
+  "overrides": [
+    {
+      "files": ["**/*.spec.ts", "**/*.spec.tsx", "**/*.test.tsx"],
+      "env": {
+        "jest": true
+      }
+    }
+  ],
   "rules": {
     "react/react-in-jsx-scope": "off",
     "react-hooks/exhaustive-deps": "off",
+    "react/prop-types": "off",
     "no-await-in-loop": "warning",
+    " no-empty": "off",
+    "no-useless-escape": "off",
     "no-debugger": "warning",
-    "no-console": "warning"
+    "no-console": "warning",
+    "no-unused-vars": [
+      "warning",
+      {
+        "varsIgnorePattern": "Window"
+      }
+    ]
+  },
+  "plugins": ["jest", "eslint-plugin-jest"],
+  "env": {
+    "jest/globals": true,
+    "jest": true
+  },
+  "settings": {
+    "jest": {
+      "globalAliases": {
+        "describe": ["context"],
+        "fdescribe": ["fcontext"],
+        "xdescribe": ["xcontext"],
+        "it": ["context"],
+        "expect": ["context"],
+        "afterEach": ["context"]
+      }
+    }
   }
-  
 }

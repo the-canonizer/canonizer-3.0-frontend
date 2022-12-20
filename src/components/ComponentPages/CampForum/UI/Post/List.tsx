@@ -12,7 +12,6 @@ import { getTime } from "../../../../../utils/generalUtility";
 const { Text } = Typography;
 
 const CreateCampFormUI = ({
-  postedBy = null,
   postedTime = null,
   content = null,
   postedUpdatedTime = null,

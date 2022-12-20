@@ -5,7 +5,7 @@ const FormItem = ({
   label,
   rules,
   placeholder,
-  onKeyDown = (e) => {},
+  onKeyDown,
   type = "text",
   maxLength = null,
   dataid = "",

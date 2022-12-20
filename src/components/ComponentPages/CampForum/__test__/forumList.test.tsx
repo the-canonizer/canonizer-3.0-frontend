@@ -1,53 +1,9 @@
-import { render, screen, waitFor, act } from "../../../../utils/testUtils";
+import { render, screen } from "../../../../utils/testUtils";
 
 import ForumList from "../List";
 import messages from "../../../../messages";
 
 const { placeholders } = messages;
-
-const initialValues = {
-  nick_name: 36,
-  namespace: 1,
-};
-
-const nickNamesList = [
-  {
-    id: 36,
-    nick_name: "Rahul-Singh775",
-    create_time: "7963-03-24",
-    owner_code: "TWFsaWEzNk1hbGlh",
-    private: 0,
-  },
-  {
-    id: 45,
-    nick_name: "Redwin75",
-    create_time: "7963-03-27",
-    owner_code: "TWFsaWEzNk1hbGlh",
-    private: 0,
-  },
-];
-
-const parentCampsList = [
-  {
-    camp_name: "Design Change...",
-    camp_num: 5,
-    id: 119,
-    parent_camp_num: 2,
-    topic_num: 1,
-  },
-  {
-    camp_name: "Second camp",
-    camp_num: 7,
-    id: 114,
-    parent_camp_num: 4,
-    topic_num: 4,
-  },
-];
-
-const campNickNamesList = [
-  { id: 20, nick_name: "Akash-Akash" },
-  { id: 22, nick_name: "Rahul -Singh919" },
-];
 
 const data = [
   {
@@ -65,20 +21,6 @@ const data = [
 ];
 
 const params = { topic: "topic-88", camp: "camp-22" };
-const postList = [];
-const campRecords = {
-  parentCamps: [
-    {
-      camp_num: 22,
-      camp_name: "camp",
-    },
-  ],
-};
-
-const topicRecords = {
-  topic_name: "topic",
-  topic_num: 1,
-};
 
 describe("Camp forum page", () => {
   it("render heading and labels before login", () => {

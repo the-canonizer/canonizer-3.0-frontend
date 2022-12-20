@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import CreateNewCamp from "..";
 import messages from "../../../../messages";
 
-const { labels, placeholders } = messages;
+const { labels } = messages;
 
 const initialValues = {
   nick_name: 36,

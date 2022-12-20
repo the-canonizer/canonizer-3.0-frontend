@@ -7,7 +7,6 @@ import {
   GithubFilled,
   LinkedinFilled,
 } from "@ant-design/icons";
-import { useDispatch } from "react-redux";
 
 import styles from "./Social.module.scss";
 
@@ -19,13 +18,9 @@ import {
 import IconWrapper from "./iconWrapper";
 import MultiUserModal from "./multipleAccounts";
 import isAuth from "../../../hooks/isUserAuthenticated";
-import { setValue } from "../../../store/slices/utilsSlice";
-import { AppDispatch } from "../../../store";
 
 function SocialAuthVerification() {
   const [socialLinks, setSocialLinks] = useState({});
-
-  const dispatch = useDispatch<AppDispatch>();
 
   const { isUserAuthenticated } = isAuth();
 

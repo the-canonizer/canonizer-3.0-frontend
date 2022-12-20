@@ -6,19 +6,12 @@ type HeadContentProps = {
   description: string;
   title: string;
   route: string;
-  keywords: string;
   author: string;
 };
 
-function HeadContent({
-  description,
-  title,
-  route,
-  keywords,
-  author,
-}: HeadContentProps) {
+function HeadContent({ description, title, route, author }: HeadContentProps) {
   const url = process.env.NEXT_PUBLIC_SITE_NAME;
-  const image_url = `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/site-images/logo.svg`;
+  const image_url = `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/canonizer_preview.jpg`;
   return (
     <Head>
       <script
@@ -31,7 +24,6 @@ function HeadContent({
       <meta charSet="utf-8" />
       <meta name="title" content={title} />
       <meta name="description" content={description} />
-      <meta name="keywords" content={keywords} />
       <meta
         name="viewport"
         content="width=device-width,minimum-scale=1, initial-scale=1, maximum-scale=1, user-scalable=no"

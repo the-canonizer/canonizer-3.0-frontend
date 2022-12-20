@@ -77,10 +77,7 @@ const CampInfoBar = ({
       let reqBody = {
         topic_num: payload?.topic_num,
         camp_num: payload?.camp_num,
-        as_of:
-          router?.pathname == "/topic/[...camp]" || viewThisVersionCheck
-            ? asof
-            : "default",
+        as_of: router?.pathname == "/topic/[...camp]" ? asof : "default",
         as_of_date:
           asof == "default" || asof == "review"
             ? Date.now() / 1000

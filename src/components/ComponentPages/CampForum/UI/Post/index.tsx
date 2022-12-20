@@ -83,7 +83,6 @@ const PostUI = ({
 
         {postList.map((post) => (
           <PostList
-            postedBy={post.post_by}
             postedTime={post.created_at}
             postedUpdatedTime={post.updated_at}
             content={post.body}

@@ -22,7 +22,7 @@ const MultiUserModal = () => {
   const closeModal = () => dispatch(hideMultiUserModal());
   const removeUsers = () => dispatch(removeSocialUsers());
 
-  const onFinish = async (v: any, f: any) => {
+  const onFinish = async (v: any) => {
     const body = { user_id: v.selected_user };
 
     const res = await deactivateUser(body);

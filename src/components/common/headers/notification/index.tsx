@@ -5,7 +5,7 @@ import { BellOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
 import localforage from "localforage";
 import firebase from "firebase/app";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import styles from "../siteHeader.module.scss";
 
@@ -15,10 +15,8 @@ import { updateFCMToken } from "../../../../network/api/notificationAPI";
 import { RootState } from "../../../../store";
 import Fav from "./icon";
 
-const Notifications = ({}) => {
+const Notifications = () => {
   const [checked, setChecked] = useState(false);
-
-  const dispatch = useDispatch();
 
   const { count, list } = useSelector((state: RootState) => {
     return {
@@ -30,13 +28,8 @@ const Notifications = ({}) => {
   const router = useRouter();
 
   const updateToken = async (tc) => {
-    const res = await updateFCMToken(tc);
+    await updateFCMToken(tc);
   };
-
-  // useEffect(() => {
-  //   //When Page is render remove data from setManageSupportStatusCheck
-  //   dispatch(setManageSupportStatusCheck(null));
-  // }, []);
 
   useEffect(() => {
     async function setToken() {
@@ -44,18 +37,14 @@ const Notifications = ({}) => {
         const token = await firebaseCloudMessaging.init();
         const token2 = await localforage.getItem("fcm_token");
 
-        // const messaging = firebase.messaging();
-        // const fcm_token = await messaging.getToken({
-        //   vapidKey: process.env.NEXT_PUBLIC_FCM_CERTIFICATE_KEY,
-        // });
-
         if (token || token2) {
           localforage.setItem("fcm_token", token2);
-          // await updateToken(token2);
           setChecked(true);
           getMessage();
         }
-      } catch (error) {}
+      } catch (error) {
+        // log error or whateever you do
+      }
     }
 
     setToken();

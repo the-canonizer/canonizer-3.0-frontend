@@ -3,15 +3,8 @@ import userEvent from "@testing-library/user-event";
 
 import Login from "../index";
 import messages from "../../../../messages";
-import { login } from "../../../../network/api/userApi";
 
 const { labels, placeholders, validations } = messages;
-
-const API = {
-  login() {
-    return login("test222@gmail.com", "Test@123");
-  },
-};
 
 describe("Login page", () => {
   it("render heading and labels", () => {
