@@ -1,4 +1,4 @@
-import { Form, Input, Button, Tabs, Row, Col } from "antd";
+import { Form, Input, Button, Row, Col } from "antd";
 import styles from "./ChangePassword.module.scss";
 import messages from "../../../../messages";
 import { useState } from "react";
@@ -9,7 +9,7 @@ export default function ChangePasswordUI({
   onFinishFailed,
   incorrectPasswordData,
   setIncorrectPasswordData,
-}) {
+}:any) {
   const [currentPassWord, setCurrentPassWord] = useState("");
   const validateFun = {
     validateStatus: "error" as any,

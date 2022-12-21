@@ -35,21 +35,18 @@ const supportContent = (
   </>
 );
 const SupportTreeCard = ({
-  handleLoadMoreSupporters,
   getCheckSupportStatus,
   removeApiSupport,
   // fetchTotalScore,
   removeSupport,
   topicList,
-  totalSupportScore,
-  totalFullSupportScore,
   removeSupportForDelegate,
   isSupportTreeCardModal,
   setIsSupportTreeCardModal,
   handleSupportTreeCardCancel,
   removeSupportSpinner,
   totalCampScoreForSupportTree,
-}) => {
+}:any) => {
   const { currentGetCheckSupportExistsData, is_checked } = useSelector(
     (state: RootState) => ({
       currentGetCheckSupportExistsData:

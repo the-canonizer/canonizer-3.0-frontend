@@ -31,11 +31,11 @@ function ProfileInfoForm({
   address,
   disableButton,
   postalCodeDisable,
-}) {
+}:any) {
   const listOfOption = (optionList, algoOrLang): any => {
     let option = [];
     optionList.length > 0 &&
-      optionList.map((item, i) => {
+      optionList.map((item) => {
         if (algoOrLang == "algorithms") {
           option.push(
             <Option key={item.algorithm_key} value={item.algorithm_key}>

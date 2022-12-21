@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import NickNameUI from "../NickNameUI/index";
 import messages from "../../../../messages";
 
-const { labels, placeholders, validations } = messages;
+const { labels, validations } = messages;
 var addEditTitle = "";
 var addEditBtn = "";
 const isNickNameModalVisible = true;

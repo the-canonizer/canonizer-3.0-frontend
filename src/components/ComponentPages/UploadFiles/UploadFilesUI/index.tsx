@@ -34,7 +34,6 @@ import {
 } from "@ant-design/icons";
 import Image from "next/image";
 import styles from "./UploadFile.module.scss";
-import { useRouter } from "next/router";
 import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../../../store";
@@ -67,7 +66,7 @@ import {
   showUploadFiles,
   showFolder,
   showAfterUploads,
-  createFolderBtnEnable,
+  
 } from "../../../../store/slices/uiSlice";
 import CreateFolder from "../CreateFolder";
 import {
@@ -108,7 +107,7 @@ const UploadFileUI = ({
   toggleFileView,
   setToggleFileView,
 }: any) => {
-  const [uploadStatus, setUploadStatus] = useState(false);
+  const [uploadStatus] = useState(false);
   // const [toggleFileView, setToggleFileView] = useState(false);
   const [previewImageIndicator, setPreviewImageIndicator] = useState(false);
   const [addFileIndicator, setAddFileIndicator] = useState(false);
@@ -159,7 +158,6 @@ const UploadFileUI = ({
   const afterUploadClass = useSelector(
     (state: RootState) => state.ui.showFiles
   );
-  const enableCreateFolderBtn = () => dispatch(createFolderBtnEnable());
 
   const dragBoxShow = () => dispatch(showDrageBox());
   const dragBoxHide = () => dispatch(hideDrageBox());
@@ -174,10 +172,6 @@ const UploadFileUI = ({
   const showUploadsAfter = () => dispatch(showAfterUploads());
   const [imageStatus, setImageStatus] = useState("");
   const [loadingImage, setLoadingImage] = useState(false);
-  const router = useRouter();
-  const campRoute = () => {
-    router.push("/create/topic");
-  };
   const validateMessages = {
     required: "${name} is required !",
   };
@@ -415,7 +409,7 @@ const UploadFileUI = ({
       title: "File Name",
       dataIndex: "name",
       key: "name",
-      render: (name, obj, index) => {
+      render: (name, obj) => {
         return (
           <div className={styles.CopyShortCode}>
             <div className={styles.icon_Width}>
@@ -608,7 +602,7 @@ const UploadFileUI = ({
     },
   ];
   const uploadList = () => {
-    Object.entries(updateList).map(([k, v], i) => {
+    Object.entries(updateList).map(([k, v]) => {
       const fileIndex = fileLists.findIndex((obj) => k == obj.uid);
       const fileListsArr = [...fileLists];
       if (fileListsArr[fileIndex]) {
@@ -1020,7 +1014,7 @@ const UploadFileUI = ({
                             current.isAfter(moment().subtract(0, "day"))
                           }
                           disabled={show_UploadOptions || dragBoxStatus}
-                          onChange={(date, dateString) => {
+                          onChange={(date) => {
                             uploadStatus == true
                               ? setDatePick("")
                               : setDatePick(date ? date.toLocaleString() : "");
@@ -1174,7 +1168,7 @@ const UploadFileUI = ({
                       setLoadingArray([...fileList]);
                     }}
                     onChange={(info) => {
-                      let fileListData = [...info.fileList];
+                      
                       let length = info.fileList.length;
                       if (info.file.status == "uploading") {
                         setAddFileIndicator(true);
@@ -1214,16 +1208,16 @@ const UploadFileUI = ({
                       }
 
                       const { status } = info.file;
-                      if (status !== "uploading") {
-                      }
+                      if (status !== "uploading") 
+                      
                       if (status === "done") {
                         showFiles();
                       } else if (status === "error") {
                         message.error(`${info.file.name} file upload failed.`);
                       }
                     }}
-                    onDrop={(e) => {}}
-                    itemRender={(originNode, file, currFileList) => {
+                    onDrop={() => {}}
+                    itemRender={(originNode, file) => {
                       const fileSizeFlag = file.size / (1024 * 1024) > 5;
                       return (file.type && file.type == "folder") ||
                         toggleFileView ? (

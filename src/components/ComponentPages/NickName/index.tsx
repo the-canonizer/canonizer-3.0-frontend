@@ -51,7 +51,6 @@ const NickName = () => {
             ? 0
             : parseInt(values.visibility_status),
       };
-      console.log(formBody, "formBody");
       let res = await addNickName(formBody);
       if (res && res.status_code === 200) {
         nickNameForm.resetFields();

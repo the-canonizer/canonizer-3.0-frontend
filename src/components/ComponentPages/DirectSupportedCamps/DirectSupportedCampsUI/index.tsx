@@ -20,7 +20,6 @@ export default function DirectSupportedCampsUI({
   showSaveChanges,
   setShowSaveChanges,
   setRevertBack,
-  revertBack,
   handleRevertBack,
   visible,
   idData,
@@ -28,14 +27,12 @@ export default function DirectSupportedCampsUI({
   handleCancel,
   removeSupportCampsData,
   statusFlag,
-}) {
+}:any) {
   const [valData, setValData] = useState({});
   const [tagsDataArrValue, setTagsDataArrValue] = useState([]);
   const [tagsCampsOrderID, setTagsCampsOrderID] = useState("");
   let tagsArrayList = [];
-  let DataArr = [];
-  let data;
-  const CardTitle = (props) => {
+  const CardTitle = (props:any) => {
     return (
       <div className={styles.card_heading_title}>
         {messages.labels.fortopic}
@@ -60,7 +57,7 @@ export default function DirectSupportedCampsUI({
 
   useEffect(() => {
     if (tagsDataArrValue.length > 0) {
-      let newData = directSupportedCampsList.map((val) => {
+      let newData = directSupportedCampsList.map((val:any) => {
         if (val.topic_num == tagsCampsOrderID) {
           return { ...val, camps: tagsDataArrValue };
         } else {
@@ -75,7 +72,7 @@ export default function DirectSupportedCampsUI({
     return <Empty description={msg} />;
   };
   const filteredArray = () => {
-    return directSupportedCampsList.filter((val) => {
+    return directSupportedCampsList.filter((val:any) => {
       if (search.trim() == "") {
         return val;
       } else if (
@@ -90,8 +87,8 @@ export default function DirectSupportedCampsUI({
     <div>
       {directSupportedCampsList && directSupportedCampsList.length > 0 ? (
         filteredArray().length > 0 ? (
-          filteredArray()?.map((data, id) => {
-            DataArr = data;
+          filteredArray()?.map((data) => {
+            
             tagsArrayList = data.camps;
             tagsArrayList.forEach((obj, index) => {
               obj.id = index + 1;
@@ -117,7 +114,7 @@ export default function DirectSupportedCampsUI({
               >
                 <DraggableArea
                   tags={tagsArrayList}
-                  render={({ tag, index }) => (
+                  render={({ tag}) => (
                     <div className={tag.dis ? "tag tags_disable" : "tag"}>
                       <Button
                         id="campsBtn"
@@ -140,7 +137,7 @@ export default function DirectSupportedCampsUI({
                           </a>
                         </div>
                         <CloseCircleOutlined
-                          onClick={(e) => {
+                          onClick={() => {
                             handleClose(tag, data.topic_num, data, []),
                               setValData(tag),
                               setRevertBack([]);
@@ -166,7 +163,7 @@ export default function DirectSupportedCampsUI({
                     <Button
                       id="revertBtn"
                       className={styles.revert_Btn}
-                      onClick={(e) => {
+                      onClick={() => {
                         handleRevertBack(idData, data.camps);
                         setCardCamp_ID("");
                         setShowSaveChanges(false);
@@ -198,7 +195,7 @@ export default function DirectSupportedCampsUI({
       <Modal
         className={styles.modal_cross}
         title="Remove Support"
-        visible={isSupportedCampsModalVisible}
+        open={isSupportedCampsModalVisible}
         onOk={handleSupportedCampsCancel}
         onCancel={handleSupportedCampsCancel}
         footer={null}
@@ -252,7 +249,7 @@ export default function DirectSupportedCampsUI({
       <Modal
         className={styles.modal}
         title={null}
-        visible={visible}
+        open={visible}
         onOk={() => {
           handleOk(idData, valData);
         }}

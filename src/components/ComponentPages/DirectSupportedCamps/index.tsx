@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   getDirectSupportedCampsList,
-  removeSupportedCampsEntireTopic,
   removeOrUpdateDirectSupportCamps,
 } from "../../../network/api/userApi";
 import { message } from "antd";
@@ -12,7 +11,7 @@ const DirectSupportedCampsUI = dynamic(
 );
 //import DirectSupportedCampsUI from "./DirectSupportedCampsUI";
 
-const DirectSupportedCamps = ({ search }) => {
+const DirectSupportedCamps = ({ search }:any) => {
   const [directSupportedCampsList, setDirectSupportedCampsList] = useState([]);
   const [directSopportedCampsListRevert, setdirectSopportedCampsListRevert] =
     useState([]);
@@ -23,15 +22,12 @@ const DirectSupportedCamps = ({ search }) => {
   const [nickNameId, setNickNameId] = useState("");
   const [showSaveChanges, setShowSaveChanges] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [ConfirmOkRevert, setConfirmOkRevert] = useState(false);
   const handleSupportedCampsCancel = () => {
     setIsSupportedCampsModalVisible(false);
   };
   const [cardCamp_ID, setCardCamp_ID] = useState("");
-  const [CampArrData, setCampArrData] = useState([]);
   const [campIds, setcampIds] = useState([]);
   const [CardData, setCardData] = useState([]);
-  const [originalDataArr, setoriginalDataArr] = useState([]);
   const [revertBack, setRevertBack] = useState([]);
   const [idData, setIdData] = useState("");
   const [statusFlag, setStatusFlag] = useState(true);
@@ -62,7 +58,6 @@ const DirectSupportedCamps = ({ search }) => {
     setShowSaveChanges(true);
   };
   const handleOk = (topicId, val) => {
-    setConfirmOkRevert(true);
     setShowSaveChanges(true);
     let data = directSupportedCampsList.filter(
       (value) => value.topic_num == cardCamp_ID
@@ -76,7 +71,6 @@ const DirectSupportedCamps = ({ search }) => {
   };
 
   const handleClose = (val, id, data, CampsOrder) => {
-    setoriginalDataArr(data);
     setCardData(CampsOrder.length > 0 ? CampsOrder : data.camps);
     if (cardCamp_ID == "") {
       Object.keys(val).length === 0
@@ -165,7 +159,6 @@ const DirectSupportedCamps = ({ search }) => {
   useEffect(() => {
     fetchDirectSupportedCampsList();
   }, []);
-  console.log(campIds, "campIds");
   return (
     <DirectSupportedCampsUI
       removeCardSupportedCamps={removeCardSupportedCamps}

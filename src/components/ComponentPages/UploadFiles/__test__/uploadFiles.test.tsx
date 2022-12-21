@@ -1,7 +1,6 @@
-import { render, screen, waitFor } from "../../../../utils/testUtils";
+import { render, screen } from "../../../../utils/testUtils";
 import UploadFileUI from "../UploadFilesUI";
 import messages from "../../../../messages";
-import { wrapper } from "src/store";
 
 const { labels } = messages;
 
@@ -18,7 +17,6 @@ const handle_X_btn = jest.fn();
 const addNewFile = jest.fn();
 const Openfolder = jest.fn();
 const removeFiles = jest.fn();
-const onFinish = jest.fn();
 const uploadFileList = [];
 const setUploadFileList = jest.fn();
 const removeUploadFiles = jest.fn();
@@ -64,7 +62,6 @@ const fileLists = [
   },
 ];
 describe("Upload File Page", () => {
-  const data = { image: "listView.svg" };
   it("render Upload Files Page ", () => {
     render(
       <UploadFileUI
