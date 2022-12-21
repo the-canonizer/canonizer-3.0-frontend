@@ -50,7 +50,6 @@ import {
   removeSupportedCampsEntireTopic,
 } from "src/network/api/userApi";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
-import { SupportTreeTotalScore } from "src/network/api/campDetailApi";
 
 const TopicDetails = () => {
   let myRefToCampStatement = useRef(null);
@@ -58,8 +57,8 @@ const TopicDetails = () => {
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [getTreeLoadingIndicator, setGetTreeLoadingIndicator] = useState(false);
   const [getCheckSupportStatus, setGetCheckSupportStatus] = useState({});
-  const [totalSupportScore, setTotalSupportScore] = useState<number>(0);
-  const [totalFullSupportScore, setTotalFullSupportScore] = useState<number>(0);
+  const [totalSupportScore] = useState<number>(0);
+  const [totalFullSupportScore] = useState<number>(0);
   const [topicList, setTopicList] = useState([]);
   const [isSupportTreeCardModal, setIsSupportTreeCardModal] = useState(false);
   const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
@@ -181,7 +180,7 @@ const TopicDetails = () => {
 
     const res = await removeSupportedCamps(supportedCampsRemove);
     if (res && res.status_code == 200) {
-      setRemoveSupportSpinner(false)
+      setRemoveSupportSpinner(false);
       message.success(res.message);
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
@@ -214,7 +213,7 @@ const TopicDetails = () => {
 
     let res = await addSupport(RemoveSupportId);
     if (res && res.status_code == 200) {
-      setRemoveSupportSpinner(false)
+      setRemoveSupportSpinner(false);
       message.success(res.message);
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();

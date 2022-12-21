@@ -17,7 +17,9 @@ export default class ErrorBoundary extends Component {
   }
 
   componentDidCatch(error, info) {
+    /* eslint-disable  no-console */
     console.error("ErrorBoundary caught an error", error, info);
+    /* eslint-enable  no-console */
   }
 
   componentDidUpdate() {

@@ -50,13 +50,7 @@ import {
   allowedEmojies,
   emojiValidation,
 } from "src/utils/generalUtility";
-import {
-  EditorState,
-  convertToRaw,
-  ContentState,
-  convertFromRaw,
-  convertFromHTML,
-} from "draft-js";
+import { EditorState, convertToRaw, ContentState } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
 // import htmlToDraft from "html-to-draftjs";
@@ -66,8 +60,8 @@ const Editor: any = dynamic(
   { ssr: false }
 );
 let htmlToDraft = null;
-if (typeof window === 'object') {
-    htmlToDraft = require('html-to-draftjs').default;
+if (typeof window === "object") {
+  htmlToDraft = require("html-to-draftjs").default;
 }
 const { Text } = Typography;
 
@@ -94,12 +88,7 @@ export default function AddOrManage({ add }: any) {
   });
   const [parentCamp, setParentCamps] = useState([]);
   const [wikiStatement, setWikiStatement] = useState("");
-  const [errors, setErrors] = useState({
-    CampNameError: false,
-    campNameMsg: "",
-    displayTextError: false,
-    displayTextErrorMsg: "",
-  });
+
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
@@ -108,7 +97,6 @@ export default function AddOrManage({ add }: any) {
   const [canNameSpace, setCanNameSpace] = useState([]);
   const [options, setOptions] = useState([...messages.preventCampLabel]);
   const [initialOptions, setInitialOptions] = useState([]);
-  const [uploadImage, setUploadImage] = useState([]);
 
   const [form] = Form.useForm();
   let objection = router?.query?.statement?.at(0)?.split("-")[1] == "objection";
@@ -1033,7 +1021,9 @@ export default function AddOrManage({ add }: any) {
                             type="primary"
                             size="large"
                             onClick={async () => {
-                              const editorValues = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+                              const editorValues = draftToHtml(
+                                convertToRaw(editorState.getCurrentContent())
+                              );
                               let res = await getParseCampStatementApi({
                                 value: editorValues,
                               });

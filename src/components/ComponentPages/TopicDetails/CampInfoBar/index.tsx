@@ -53,7 +53,6 @@ const CampInfoBar = ({
     asofdate,
     asof,
     algorithm,
-    viewThisVersionCheck,
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -62,7 +61,6 @@ const CampInfoBar = ({
     asofdate: state.filters?.filterObject?.asofdate,
     algorithm: state.filters?.filterObject?.algorithm,
     asof: state?.filters?.filterObject?.asof,
-    viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
   }));
   const [campSubscriptionID, setCampSubscriptionID] = useState(
     campRecord?.subscriptionId

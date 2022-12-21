@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Radio, Input } from "antd";
+import { Button, Input } from "antd";
 
 import styles from "./searchSection.module.scss";
 

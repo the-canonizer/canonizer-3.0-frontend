@@ -160,7 +160,9 @@ function HistoryContainer() {
         count.current = count.current + 1;
       }
       setLoadingIndicator(false);
-    } catch (error) {}
+    } catch (error) {
+      // console.error(error);
+    }
   };
 
   const handleTabButton = async (tabName) => {
