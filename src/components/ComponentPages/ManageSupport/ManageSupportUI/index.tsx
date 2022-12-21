@@ -78,10 +78,8 @@ const ManageSupportUI = ({
     currentGetCheckSupportExistsData?.remove_camps?.map((obj) => {
       return obj.camp_num;
     });
-  const manageListOrder =
-    manageSupportList.length > 0
-      ? manageSupportList[manageSupportList.length - 1].support_order
-      : 1;
+    
+  
   const warningForDirecteSupportedCamps =
     "You are directly supporting one or more camps under this topic. If you continue your direct support will be removed.";
   const reqBodyData = {
@@ -89,7 +87,14 @@ const ManageSupportUI = ({
     camp_num: +router?.query?.manageSupport[1]?.split("-")[0],
   };
   const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
-
+  const findManageOrder = filteredList.findIndex((obj:any)=>{
+    return obj.camp_num === reqBodyData.camp_num
+  })
+  const manageListOrder =
+    manageSupportList.length > 0
+      ? findManageOrder > -1 ? filteredList[findManageOrder].order
+      : manageSupportList[manageSupportList.length - 1] ?.support_order
+      : 1;
   const body = { topic_num: topicNum };
   const nickNameloop = nickNameList.filter((nickName) => {
     return selectedtNickname == nickName.id;
@@ -131,7 +136,6 @@ const ManageSupportUI = ({
       });
     }
   };
-
   const addRemoveApi = async () => {
     setSpinner(true);
     const addSupportId = {

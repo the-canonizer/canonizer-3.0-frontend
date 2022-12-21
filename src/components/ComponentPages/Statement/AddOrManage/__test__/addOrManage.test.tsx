@@ -81,8 +81,7 @@ describe("Should render Addnews", () => {
 
     expect(container.getElementsByTagName("button")).toHaveLength(4);
     expect(container.getElementsByTagName("input")).toHaveLength(1);
-    expect(container.getElementsByTagName("textarea")).toHaveLength(2);
-
+    expect(container.getElementsByClassName("wrapperClassName rdw-editor-wrapper"))
     expect(submitButton.textContent).toBe("Submit Update");
     expect(previewButton.textContent).toBe("Preview");
     expect(createNewTopicButton.textContent).toBe("Create New Topic");
