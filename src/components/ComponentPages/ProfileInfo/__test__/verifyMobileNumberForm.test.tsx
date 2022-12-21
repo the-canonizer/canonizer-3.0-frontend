@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import VerifyMobileNumberForm from "../../Form/VerifyMobileNumberForm";
 import messages from "../../../../messages";
 
-const { labels, placeholders, validations } = messages;
+const { labels, validations } = messages;
 const onVerifyClick = jest.fn();
 const onOTPBtnClick = jest.fn();
 const handleOTPCancel = jest.fn();

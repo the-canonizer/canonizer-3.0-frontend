@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import UploadFileUI from "./UploadFilesUI";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "src/store";
 import {
-  hideFolderModal,
   showDrageBox,
   hideDrageBox,
   createFolderBtnDisable,
@@ -35,7 +34,7 @@ import {
   getFileInsideFolderApi,
   getUploadFileAndFolder,
   uploadFile,
-  globalSearchUploadFiles,
+  
 } from "src/network/api/userApi";
 import { message } from "antd";
 import isAuth from "../../../hooks/isUserAuthenticated";
@@ -67,16 +66,9 @@ const UploadFiles = () => {
 
   const openFolder = useSelector((state: RootState) => state.ui.folderOpen);
 
-  const { isFolderOpen } = useSelector((state: RootState) => ({
-    isFolderOpen: state.ui.isFolderOpen,
-  }));
-
   const { folderId } = useSelector((state: RootState) => ({
     folderId: state.ui.folderId,
   }));
-  const disabledResetButton = useSelector(
-    (state: RootState) => state.ui.disabledResetBtn
-  );
   const loggedInUser = useSelector(
     (state: RootState) => state.auth.loggedInUser
   );
@@ -94,14 +86,12 @@ const UploadFiles = () => {
     useState(false);
   const [toggleFileView, setToggleFileView] = useState(false);
   const { isUserAuthenticated } = isAuth();
-  const ref = useRef();
   const closeFolder = () => {
     setGetFileListFromFolderID([]);
     setOpenFolderID("");
     showUploadsAfter();
     enableCreateFolderBtn();
     openFolderHide();
-    //localStorage.removeItem("isFolderOpen");
     localStorage.removeItem("folderId");
     dispatch(setIsFolderOpen(false));
     dispatch(setFolderId(null));
@@ -150,7 +140,6 @@ const UploadFiles = () => {
         setToggleFileView(false);
         setUploadFileList([]), setFolderFiles([]);
         showAddButton();
-        //fileStatusHide();
         openFolder ? disbleCreateFolderBtn() : enableCreateFolderBtn();
         uploadOptionsHide();
         shownFolder();
@@ -175,18 +164,14 @@ const UploadFiles = () => {
     //if open folder is open and check using local storage
     //useSelecter
 
-    //if (localStorage.getItem("isFolderOpen")) {
     if (openFolder) {
-      //setUploadFileList([]);
       setFolderFiles([]);
       uploadOptionsHide();
-      //fileStatusHide();
       shownFileStatus();
       GetUploadFileAndFolder();
       enabledResetBtn();
     } else {
       setUploadFileList([]);
-      // setFolderFiles([]);
       uploadOptionsHide();
       fileStatusHide();
       GetUploadFileAndFolder();
@@ -234,9 +219,9 @@ const UploadFiles = () => {
     // localStorage.setItem("folderId", i);
     dispatch(setFolderId(i));
 
-    console.log(localStorage.setItem("folderId", i), "folderId");
+    
   };
-  const removeFiles = async (originNode, file, currFileList) => {
+  const removeFiles = async (originNode) => {
     if (originNode.type == "folder") {
       let res = await deleteFolderApi(originNode.id);
       if (res && res.status_code == 200) {
@@ -283,8 +268,6 @@ const UploadFiles = () => {
     }
   };
   const GetUploadFileAndFolder = async () => {
-    //const isFolderOpen = localStorage.getItem("isFolderOpen");
-    const isFolderOpen = openFolder;
     let response = await getUploadFileAndFolder();
     if (response) {
       let filesArr = response.data.files;
@@ -299,11 +282,9 @@ const UploadFiles = () => {
         arr.length > 0
           ? (dragBoxHide(),
             shownAddButton(),
-            //openFolder || isFolderOpen
             openFolder ? disbleCreateFolderBtn() : enableCreateFolderBtn(),
             showUploadsAfter())
           : (dragBoxShow(), hideAddButton());
-        //openFolder || isFolderOpen
         openFolder ? disbleCreateFolderBtn() : enableCreateFolderBtn();
       }
     }

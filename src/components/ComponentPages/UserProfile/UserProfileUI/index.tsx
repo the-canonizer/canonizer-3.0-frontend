@@ -23,7 +23,7 @@ const UserProfile = () => {
     }
   };
 
-  const UserSupportCampListNewSpaces = async (userId) => {
+  const UserSupportCampListNewSpaces = async () => {
     let res = await getCanonizedNameSpacesApi();
     if (res && res.status_code === 200) {
       setNameSpaceList(res.data);
@@ -44,7 +44,7 @@ const UserProfile = () => {
       const query = `${userId}?topicnum=${topic_num}&campnum=${camp_num}&namespace=${namespace_name_id}`;
       UserSupportedCampsListApi(query);
     } else {
-      UserSupportCampListNewSpaces(userId);
+      UserSupportCampListNewSpaces();
       setDropdownNameSpaceList(namespace_name_id as any);
     }
   }, [dropdownNameSpaceList, router?.query]);

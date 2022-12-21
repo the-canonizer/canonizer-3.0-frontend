@@ -1,7 +1,7 @@
 import { message } from "antd";
 
 export const handleError = (error, log = false) => {
-  log ? "" : "";
+  log ? window.console.log(error) : "";
 
   const nestedErrs = error
     ? error.error
@@ -79,11 +79,11 @@ export const isRolePresent = (roles, userRoles) => {
   }
   return hasRole;
 };
-declare global {
-  interface Window {
-    Location: any;
-  }
-}
+// declare global {
+//   interface Window {
+//     Location: any;
+//   }
+// }
 export const redirectToLogin = (error = "") => {
   if (typeof window !== "undefined") {
     // we will correct this later
@@ -122,7 +122,7 @@ export const setFieldErrorsFromServer = (error, form, values = undefined) => {
   let fieldErrors = [];
 
   for (let key in errors) {
-    if (errors.hasOwnProperty(key)) {
+    if (errors.Object.prototype.hasOwnProperty.call(key)) {
       fieldErrors.push({
         name: key,
         errors: errors[key],

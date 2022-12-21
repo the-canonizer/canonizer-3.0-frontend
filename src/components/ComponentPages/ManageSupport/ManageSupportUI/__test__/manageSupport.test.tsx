@@ -1,15 +1,10 @@
 import {
-  act,
-  fireEvent,
-  getByTestId,
   render,
   screen,
-  waitFor,
 } from "../../../../../utils/testUtils";
 import messages from "../../../../../messages";
 import ManageSupportUI from "../index";
 import { CloseCircleOutlined } from "@ant-design/icons";
-import { Button } from "antd";
 
 const { labels } = messages;
 const nickNameList = [];
@@ -160,7 +155,7 @@ it("render show clear changes button", () => {
 });
 
 it("render show Quick Action Text", () => {
-  const { getAllByText } = render(
+  render(
     <ManageSupportUI
       nickNameList={nickNameList}
       manageSupportList={manageSupportList}
@@ -309,7 +304,7 @@ it("render show dropdown", () => {
 });
 
 it("Check the checkbox is checked/unchecked", () => {
-  const { getAllByTestId, getByTestId, container } = render(
+  const { container } = render(
     <ManageSupportUI
       nickNameList={nickNameList}
       manageSupportList={manageSupportList}
