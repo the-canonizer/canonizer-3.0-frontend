@@ -1,10 +1,7 @@
-import { render, screen, waitFor } from "../../../../utils/testUtils";
+import { render, screen} from "../../../../utils/testUtils";
 import UserProfileDetails from "../UserProfileDetails/UserProfileDetails";
 import { UserProfileCard } from "../UserProfileDetails/UserProfileCard";
 import messages from "../../../../messages";
-import UserProfile from "../UserProfileUI";
-import { Container } from "postcss";
-
 const { labels } = messages;
 const profileData = {
   name: "first_name",
@@ -33,7 +30,7 @@ const noData = false;
 
 describe("userProfileDetails", () => {
   it("render show userProfile", () => {
-    const { queryByTestId } = render(
+   render(
       <UserProfileDetails
         profileData={profileData}
         userSupportedCampsList={userSupportedCampsList}

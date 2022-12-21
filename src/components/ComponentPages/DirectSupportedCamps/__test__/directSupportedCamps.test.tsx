@@ -112,7 +112,6 @@ const setCardCamp_ID = jest.fn();
 const setShowSaveChanges = jest.fn();
 const saveChanges = jest.fn();
 const handleClose = jest.fn();
-const setSearch = jest.fn();
 const setDirectSupportedCampsList = [];
 
 const directSupportedCampsList = [
@@ -201,7 +200,7 @@ describe("Direct Support camps page", () => {
     ).toBeInTheDocument();
   });
   it("render Remove support is clicked", () => {
-    const { getByText } = render(
+    render(
       <DirectSupportedCampsUI
         removeCardSupportedCamps={removeCardSupportedCamps}
         handleSupportedCampsCancel={handleSupportedCampsCancel}

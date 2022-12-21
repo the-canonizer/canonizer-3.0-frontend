@@ -18,7 +18,7 @@ export default function NickNameUI({
   onAddUpdateNickName,
   nickNameList,
   disableButton,
-}) {
+}:any) {
   const pageSizeLength = 10;
   const [page, setPage] = useState(1);
   const [paginationSize, setPaginationSize] = useState(10);
@@ -44,7 +44,7 @@ export default function NickNameUI({
       title: "Visibility Status",
       dataIndex: "private",
       width: "20%",
-      render: (text, record, index) => (text == 0 ? "Public" : "Private"),
+      render: (text) => (text == 0 ? "Public" : "Private"),
     },
     {
       title: "",

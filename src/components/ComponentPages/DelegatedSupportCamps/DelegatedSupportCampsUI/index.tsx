@@ -1,8 +1,6 @@
-import React, { useState } from "react";
 import { Card, Modal, Row, Col, Button, Form, Empty } from "antd";
-import Icon, {
+import{
   CloseCircleOutlined,
-  PlusCircleOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
 import styles from "./DelegatedSupportedCamps.module.scss";
@@ -21,9 +19,9 @@ export default function DelegatedSupportCampsUI({
   removeSupport,
   removeSupportCampsData,
   statusFlag,
-}) {
+}:any) {
   const limit = 3;
-  function CardTitle(props) {
+  function CardTitle(props:any) {
     return (
       <div className={styles.card_heading_title}>
         {messages.labels.fortopic}
@@ -38,7 +36,7 @@ export default function DelegatedSupportCampsUI({
       </div>
     );
   }
-  function CurrentSupportedCamps(props) {
+  function CurrentSupportedCamps(props:any) {
     return (
       <>
         <p>
@@ -50,7 +48,7 @@ export default function DelegatedSupportCampsUI({
       </>
     );
   }
-  function SupportedCampsTo(props) {
+  function SupportedCampsTo(props:any) {
     return (
       <>
         <div className={styles.line_height}>
@@ -172,7 +170,7 @@ export default function DelegatedSupportCampsUI({
       <Modal
         className={styles.modal_cross}
         title="Remove Support"
-        visible={isRemoveSupportModalVisible}
+        open={isRemoveSupportModalVisible}
         onOk={handleSupportedCampsCancel}
         onCancel={handleSupportedCampsCancel}
         footer={null}
