@@ -121,6 +121,7 @@ export default function CanonVideos() {
                 ></track>
               </video>
               <div
+                className="video-chap-content"
                 dangerouslySetInnerHTML={{
                   __html: topic,
                 }}
