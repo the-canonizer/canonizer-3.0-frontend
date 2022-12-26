@@ -24,7 +24,9 @@ const CampTree = ({
       is_checked: state?.utils?.score_checkbox,
     })
   );
+  let childExpandTree = [];
 
+  const [defaultExpandKeys, setDefaultExpandKeys] = useState([]);
   // const [selectedNodeID, setSelectedNodeID] = useState(1);
   const [scoreFilter, setScoreFilter] = useState(filterByScore);
   const [includeReview, setIncludeReview] = useState(
@@ -69,6 +71,19 @@ const CampTree = ({
       setShowTree(true);
     }
   };
+
+  const getAllDefaultExpandKeys = (data) => {
+    if (data?.children) {
+      Object?.keys(data?.children).map((item) => {
+        if (data?.score / 2 < data?.children[item]?.score) {
+          childExpandTree.push(data?.children[item]?.camp_id);
+          getAllDefaultExpandKeys(data?.children[item]);
+        } else return childExpandTree;
+      });
+    } else return childExpandTree;
+    return childExpandTree;
+  };
+
   useEffect(() => {
     setScoreFilter(filterByScore);
     setIncludeReview(review == "review" ? true : false);
@@ -79,6 +94,14 @@ const CampTree = ({
         +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1),
         tree?.at(1)
       );
+    let expandKeys = tree?.at(0) && getAllDefaultExpandKeys(tree?.at(0)["1"]);
+    tree?.at(0) &&
+      expandKeys.push(
+        +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) == 1
+          ? 2
+          : +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1)
+      );
+    setDefaultExpandKeys(expandKeys);
   }, [filterByScore, review]);
 
   const dispatchData = (data, isDisabled = 0, isOneLevel = 0) => {
@@ -119,6 +142,17 @@ const CampTree = ({
         +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1),
         tree?.at(1)
       );
+
+    let expandKeys = tree?.at(0) && getAllDefaultExpandKeys(tree?.at(0)["1"]);
+    tree?.at(0) &&
+      expandKeys.push(
+        +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) == 1
+          ? 2
+          : +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1)
+      );
+    setDefaultExpandKeys(expandKeys);
+    console.log("final aawaser ", expandKeys);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tree?.at(0)]);
 
@@ -282,11 +316,7 @@ const CampTree = ({
     showTree && (
       <Tree
         showLine={{ showLeafIcon: false }}
-        defaultExpandedKeys={[
-          +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) == 1
-            ? 2
-            : +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1),
-        ]}
+        defaultExpandedKeys={defaultExpandKeys}
         onSelect={onSelect}
         autoExpandParent={true}
         // filterTreeNode={filterTreeNode}
