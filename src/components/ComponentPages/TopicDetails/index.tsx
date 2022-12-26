@@ -181,6 +181,7 @@ const TopicDetails = () => {
 
     const res = await removeSupportedCamps(supportedCampsRemove);
     if (res && res.status_code == 200) {
+      setRemoveSupportSpinner(false)
       message.success(res.message);
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
@@ -213,6 +214,7 @@ const TopicDetails = () => {
 
     let res = await addSupport(RemoveSupportId);
     if (res && res.status_code == 200) {
+      setRemoveSupportSpinner(false)
       message.success(res.message);
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();

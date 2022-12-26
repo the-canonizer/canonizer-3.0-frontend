@@ -8,12 +8,9 @@ import { logout } from "../../../network/api/userApi";
 const ChangePassword = () => {
   const router = useRouter();
   const [incorrectPasswordData, setIncorrectPasswordData] = useState("");
-  const [formData, setFormData] = useState();
   const [form] = Form.useForm();
 
   const onFinish = async (values: any) => {
-    setFormData(values);
-
     let formBody = {
       current_password: values.current_password.trim(),
       new_password: values.new_password.trim(),
@@ -45,7 +42,7 @@ const ChangePassword = () => {
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    window.console.log("Faileds:", errorInfo);
   };
 
   return (
