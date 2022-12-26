@@ -43,15 +43,17 @@ const CampStatementCard = () => {
         }
       >
         <Paragraph>
-          {campStatement?.length ? (
-            <div
-              dangerouslySetInnerHTML={{
-                __html: campStatement[0]?.parsed_value,
-              }}
-            />
-          ) : (
-            K?.exceptionalMessages?.campStatement
-          )}
+          <div className={styles.campStatement}>
+            {campStatement?.length ? (
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: campStatement[0]?.parsed_value,
+                }}
+              />
+            ) : (
+              K?.exceptionalMessages?.campStatement
+            )}
+          </div>
         </Paragraph>
 
         <div className="topicDetailsCollapseFooter">
