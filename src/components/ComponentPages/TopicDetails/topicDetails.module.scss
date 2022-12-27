@@ -105,6 +105,9 @@
     color: var(--primary) !important;
     font-weight: 400;
     /* white-space: nowrap; */
+    &:hover {
+      color: #71b1fc!important;
+    }
   }
 }
 
@@ -137,8 +140,9 @@
     color: #0f2a4d;
     margin-left: 4px;
     a {
-      color: rgba(0, 0, 0, 0.85);
+      color: var(--primary);
       &:hover {
+        font-weight: bold;
         color: #4484ce;
       }
       &.activeCamp {
@@ -215,4 +219,21 @@
   ul, ol {
     padding-left: 40px;
   }
+}
+
+
+.boldBreadcrumb {
+    font-weight: 700;
+    font-size: 17px;
+}
+
+.slashStyle {
+  align-self: center;
+  margin-inline: 5px;
+}
+
+.greenIndicateText {
+  font-weight: 700;
+  font-size: 17px;
+  color: #08b608;
 }

@@ -325,11 +325,15 @@ const CampInfoBar = ({
                       "-"
                     )}/1-Agreement`}
                   >
-                    <a>{breadCrumbRes?.topic_name}</a>
+                    <a className={styles.boldBreadcrumb}>
+                      {breadCrumbRes?.topic_name}
+                    </a>
                   </Link>
                 </>
               ) : (
-                breadCrumbRes?.topic_name
+                <span className={styles.boldBreadcrumb}>
+                  {breadCrumbRes?.topic_name}
+                </span>
               )}
               {"  "}
               {!!topicSubscriptionID && (
@@ -362,8 +366,17 @@ const CampInfoBar = ({
                           key={index}
                         >
                           <a>
-                            {index !== 0 && "/ "}
-                            {`${camp?.camp_name}`}
+                            <span className={styles.slashStyle}>
+                              {" "}
+                              {index !== 0 && "/"}{" "}
+                            </span>
+                            <span
+                              className={
+                                breadCrumbRes?.bread_crumb.length - 1 == index
+                                  ? styles.greenIndicateText
+                                  : styles.boldBreadcrumb
+                              }
+                            >{`${camp?.camp_name}`}</span>
                           </a>
                         </Link>
                       );
