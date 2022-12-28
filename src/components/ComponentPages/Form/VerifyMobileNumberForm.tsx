@@ -19,7 +19,7 @@ function VerifyMobileNumberForm({
   handleChangeOTP,
   toggleVerifyButton,
   handleMobileNumberChange,
-}:any) {
+}: any) {
   const [symbolsArr] = useState(["e", "E", "+", "-", "."]);
   const [maxLengthKeysAllowed] = useState([
     "backspace",
@@ -31,7 +31,7 @@ function VerifyMobileNumberForm({
   ]);
   const mobileCarrierList =
     mobileCarrier.length > 0 &&
-    mobileCarrier.map((item:any, i:any) => {
+    mobileCarrier.map((item: any, i: any) => {
       return (
         <Option key={i} value={item.id}>
           {item.name}

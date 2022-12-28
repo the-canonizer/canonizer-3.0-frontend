@@ -11,7 +11,7 @@ const DirectSupportedCampsUI = dynamic(
 );
 //import DirectSupportedCampsUI from "./DirectSupportedCampsUI";
 
-const DirectSupportedCamps = ({ search }:any) => {
+const DirectSupportedCamps = ({ search }: any) => {
   const [directSupportedCampsList, setDirectSupportedCampsList] = useState([]);
   const [directSopportedCampsListRevert, setdirectSopportedCampsListRevert] =
     useState([]);
