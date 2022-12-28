@@ -9,7 +9,7 @@ export default function ChangePasswordUI({
   onFinishFailed,
   incorrectPasswordData,
   setIncorrectPasswordData,
-}:any) {
+}: any) {
   const [currentPassWord, setCurrentPassWord] = useState("");
   const validateFun = {
     validateStatus: "error" as any,

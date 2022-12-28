@@ -1,8 +1,8 @@
 import { render } from "@testing-library/react";
 import { Provider } from "react-redux";
-import {jest} from '@jest/globals'
+import { jest } from "@jest/globals";
 import { store } from "../store";
-function ReduxProvider({ children }:any) {
+function ReduxProvider({ children }: any) {
   return <Provider store={store}>{children}</Provider>;
 }
 

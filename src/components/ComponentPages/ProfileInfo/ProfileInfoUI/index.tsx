@@ -26,7 +26,7 @@ function ProfileInfoUI({
   handleMobileNumberChange,
   disableButton,
   postalCodeDisable,
-}:any) {
+}: any) {
   return (
     <section className={styles.profileInfo_wrapper}>
       <VerifyMobileNumber

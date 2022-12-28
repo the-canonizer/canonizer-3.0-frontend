@@ -1,17 +1,16 @@
 import SupportTreeCard from "../../../TopicDetails/SupportTreeCard/index";
-import { cleanup, render} from "@testing-library/react";
+import { cleanup, render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { store } from "../../../../../store";
 import { windowMatchMedia } from "../../../../../utils/testUtils";
 import { RouterContext } from "next/dist/shared/lib/router-context";
-
 
 const handleLoadMoreSupporters = jest.fn();
 const getCheckSupportStatus = {};
 const removeSupport = jest.fn();
 const fetchTotalScore = jest.fn();
 const totalSupportScore = 0;
-function createMockRouter(){
+function createMockRouter() {
   return {
     basePath: "",
     pathname: "/",
@@ -57,7 +56,7 @@ describe("SupportTreeCard on camp details page", () => {
     );
   });
   it("show heading of supported camps", () => {
-    const {getByText } = render(
+    const { getByText } = render(
       <Provider store={store}>
         <RouterContext.Provider value={createMockRouter()}>
           <SupportTreeCard
@@ -78,7 +77,7 @@ describe("SupportTreeCard on camp details page", () => {
   });
 
   it("show heading of supported camps", () => {
-    const { container} = render(
+    const { container } = render(
       <Provider store={store}>
         <RouterContext.Provider value={createMockRouter()}>
           <SupportTreeCard

@@ -13,10 +13,7 @@ import {
   GetLanguageList,
 } from "../../../network/api/userApi";
 import ProfileInfoUI from "./ProfileInfoUI";
-import {
-  geocodeByAddress,
-  geocodeByPlaceId,
-} from "react-places-autocomplete";
+import { geocodeByAddress, geocodeByPlaceId } from "react-places-autocomplete";
 type UpdateAddress = {
   city?: string;
   state?: string;
