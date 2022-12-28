@@ -1,7 +1,4 @@
 .signup_wrapper {
-  :root {
-    // --primary: #007ec1;
-  }
   width: 100%;
   margin: 0 auto;
   background-color: white;
@@ -197,12 +194,12 @@
       margin-top: 15px;
       margin-bottom: 10px;
 
-      .captchaCol {
-        width: 100%;
-        margin: auto;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+      & > [class="ant-row ant-form-item-row"] {
+        & > [class="ant-col ant-form-item-control"] {
+          display: inline-block;
+          width: auto;
+          margin: auto;
+        }
       }
 
       @media screen and (max-width: 767px) {
@@ -326,8 +323,8 @@
 
 .captchaContainer {
   [class="ant-form-item-explain ant-form-item-explain-connected"] {
-    text-align: center;
-    margin-left: -72px;
+    // text-align: center;
+    // margin-left: -72px;
   }
 }
 
