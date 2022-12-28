@@ -201,13 +201,6 @@
           margin: auto;
         }
       }
-
-      @media screen and (max-width: 767px) {
-        .captchaCol {
-          justify-content: flex-start;
-          align-items: flex-start;
-        }
-      }
     }
     .captchaEnter {
       width: 70%;
