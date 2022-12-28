@@ -48,6 +48,18 @@
   border: 1px solid #ececec;
   width: 100% !important;
   margin-bottom: 16px;
+  
+  @media screen and (max-width: 767px) {
+    [class="ant-card-head"] {
+      [class="ant-card-head-wrapper"] {
+        flex-wrap: wrap;
+        width: 100%;
+        [class="ant-card-head-title"] {
+          white-space: inherit;
+        }
+      }
+    }
+  }
 }
 
 .tag_btn {

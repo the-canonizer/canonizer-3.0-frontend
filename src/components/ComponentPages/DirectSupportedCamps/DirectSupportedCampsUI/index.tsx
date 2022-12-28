@@ -27,12 +27,12 @@ export default function DirectSupportedCampsUI({
   handleCancel,
   removeSupportCampsData,
   statusFlag,
-}:any) {
+}: any) {
   const [valData, setValData] = useState({});
   const [tagsDataArrValue, setTagsDataArrValue] = useState([]);
   const [tagsCampsOrderID, setTagsCampsOrderID] = useState("");
   let tagsArrayList = [];
-  const CardTitle = (props:any) => {
+  const CardTitle = (props: any) => {
     return (
       <div className={styles.card_heading_title}>
         {messages.labels.fortopic}
@@ -57,7 +57,7 @@ export default function DirectSupportedCampsUI({
 
   useEffect(() => {
     if (tagsDataArrValue.length > 0) {
-      let newData = directSupportedCampsList.map((val:any) => {
+      let newData = directSupportedCampsList.map((val: any) => {
         if (val.topic_num == tagsCampsOrderID) {
           return { ...val, camps: tagsDataArrValue };
         } else {
@@ -72,7 +72,7 @@ export default function DirectSupportedCampsUI({
     return <Empty description={msg} />;
   };
   const filteredArray = () => {
-    return directSupportedCampsList.filter((val:any) => {
+    return directSupportedCampsList.filter((val: any) => {
       if (search.trim() == "") {
         return val;
       } else if (
@@ -88,7 +88,6 @@ export default function DirectSupportedCampsUI({
       {directSupportedCampsList && directSupportedCampsList.length > 0 ? (
         filteredArray().length > 0 ? (
           filteredArray()?.map((data) => {
-            
             tagsArrayList = data.camps;
             tagsArrayList.forEach((obj, index) => {
               obj.id = index + 1;
@@ -114,7 +113,7 @@ export default function DirectSupportedCampsUI({
               >
                 <DraggableArea
                   tags={tagsArrayList}
-                  render={({ tag}) => (
+                  render={({ tag }) => (
                     <div className={tag.dis ? "tag tags_disable" : "tag"}>
                       <Button
                         id="campsBtn"

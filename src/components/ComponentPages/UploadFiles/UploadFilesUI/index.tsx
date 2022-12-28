@@ -66,7 +66,6 @@ import {
   showUploadFiles,
   showFolder,
   showAfterUploads,
-  
 } from "../../../../store/slices/uiSlice";
 import CreateFolder from "../CreateFolder";
 import {
@@ -1168,7 +1167,6 @@ const UploadFileUI = ({
                       setLoadingArray([...fileList]);
                     }}
                     onChange={(info) => {
-                      
                       let length = info.fileList.length;
                       if (info.file.status == "uploading") {
                         setAddFileIndicator(true);
@@ -1208,13 +1206,14 @@ const UploadFileUI = ({
                       }
 
                       const { status } = info.file;
-                      if (status !== "uploading") 
-                      
-                      if (status === "done") {
-                        showFiles();
-                      } else if (status === "error") {
-                        message.error(`${info.file.name} file upload failed.`);
-                      }
+                      if (status !== "uploading")
+                        if (status === "done") {
+                          showFiles();
+                        } else if (status === "error") {
+                          message.error(
+                            `${info.file.name} file upload failed.`
+                          );
+                        }
                     }}
                     onDrop={() => {}}
                     itemRender={(originNode, file) => {

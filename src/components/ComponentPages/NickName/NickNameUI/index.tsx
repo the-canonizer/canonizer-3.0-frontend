@@ -18,7 +18,7 @@ export default function NickNameUI({
   onAddUpdateNickName,
   nickNameList,
   disableButton,
-}:any) {
+}: any) {
   const pageSizeLength = 10;
   const [page, setPage] = useState(1);
   const [paginationSize, setPaginationSize] = useState(10);

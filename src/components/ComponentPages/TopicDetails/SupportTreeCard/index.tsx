@@ -46,7 +46,7 @@ const SupportTreeCard = ({
   handleSupportTreeCardCancel,
   removeSupportSpinner,
   totalCampScoreForSupportTree,
-}:any) => {
+}: any) => {
   const { currentGetCheckSupportExistsData, is_checked } = useSelector(
     (state: RootState) => ({
       currentGetCheckSupportExistsData:
