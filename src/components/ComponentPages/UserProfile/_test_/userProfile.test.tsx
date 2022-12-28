@@ -1,4 +1,4 @@
-import { render, screen} from "../../../../utils/testUtils";
+import { render, screen } from "../../../../utils/testUtils";
 import UserProfileDetails from "../UserProfileDetails/UserProfileDetails";
 import { UserProfileCard } from "../UserProfileDetails/UserProfileCard";
 import messages from "../../../../messages";
@@ -30,7 +30,7 @@ const noData = false;
 
 describe("userProfileDetails", () => {
   it("render show userProfile", () => {
-   render(
+    render(
       <UserProfileDetails
         profileData={profileData}
         userSupportedCampsList={userSupportedCampsList}

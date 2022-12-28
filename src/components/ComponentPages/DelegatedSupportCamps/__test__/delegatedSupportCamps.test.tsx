@@ -1,8 +1,8 @@
-import { render, screen} from "../../../../utils/testUtils";
+import { render, screen } from "../../../../utils/testUtils";
 import DelegatedSupportCampsUI from "../DelegatedSupportCampsUI/index";
 import messages from "../../../../messages";
 
-const { labels} = messages;
+const { labels } = messages;
 
 const viewMoreModalVisible = true;
 const isRemoveSupportModalVisible = true;

@@ -34,7 +34,6 @@ import {
   getFileInsideFolderApi,
   getUploadFileAndFolder,
   uploadFile,
-  
 } from "src/network/api/userApi";
 import { message } from "antd";
 import isAuth from "../../../hooks/isUserAuthenticated";
@@ -218,8 +217,6 @@ const UploadFiles = () => {
     dispatch(setIsFolderOpen(true));
     // localStorage.setItem("folderId", i);
     dispatch(setFolderId(i));
-
-    
   };
   const removeFiles = async (originNode) => {
     if (originNode.type == "folder") {

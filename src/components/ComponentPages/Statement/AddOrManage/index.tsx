@@ -162,7 +162,7 @@ export default function AddOrManage({ add }: any) {
   };
 
   const addOrManageStatement = async (values) => {
-   // const blocks = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+    // const blocks = draftToHtml(convertToRaw(editorState.getCurrentContent()));
     // const contentState = editorState.getCurrentContent();
     let editInfo = editStatementData?.data;
     let parent_camp = editInfo?.parent_camp;

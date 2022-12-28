@@ -31,7 +31,7 @@ function ProfileInfoForm({
   address,
   disableButton,
   postalCodeDisable,
-}:any) {
+}: any) {
   const listOfOption = (optionList, algoOrLang): any => {
     let option = [];
     optionList.length > 0 &&

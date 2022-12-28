@@ -28,7 +28,7 @@ const ManageSupportUI = ({
   submitButtonDisable,
   setUpdatePostion,
   unableToFindCamp,
-}:any) => {
+}: any) => {
   const [tagsArrayList, setTagsArrayList] = useState([]);
   const [isTagDragged, setIsTagDragged] = useState(false);
 
@@ -52,7 +52,7 @@ const ManageSupportUI = ({
   const [removeCampsSupport, setRemoveCampsSupport] = useState(false);
 
   const router = useRouter();
-  const filteredList = manageSupportList.map((obj:any, index:any) => {
+  const filteredList = manageSupportList.map((obj: any, index: any) => {
     return {
       camp_num: obj.camp_num,
       order: index + 1, //obj.support_order,
@@ -66,11 +66,11 @@ const ManageSupportUI = ({
     };
   };
   const removeAllCampNum = () => {
-    const filteredList = manageSupportList.filter((obj:any) => obj.dis);
+    const filteredList = manageSupportList.filter((obj: any) => obj.dis);
     return filteredList.map((obj) => obj.camp_num);
   };
   const removeAllIsSelected = () => {
-    const filteredList = manageSupportList.filter((obj:any) => obj.dis);
+    const filteredList = manageSupportList.filter((obj: any) => obj.dis);
     if (filteredList.length == manageSupportList.length) return true;
     else false;
   };
@@ -78,8 +78,7 @@ const ManageSupportUI = ({
     currentGetCheckSupportExistsData?.remove_camps?.map((obj) => {
       return obj.camp_num;
     });
-    
-  
+
   const warningForDirecteSupportedCamps =
     "You are directly supporting one or more camps under this topic. If you continue your direct support will be removed.";
   const reqBodyData = {
@@ -87,13 +86,14 @@ const ManageSupportUI = ({
     camp_num: +router?.query?.manageSupport[1]?.split("-")[0],
   };
   const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
-  const findManageOrder = filteredList.findIndex((obj:any)=>{
-    return obj.camp_num === reqBodyData.camp_num
-  })
+  const findManageOrder = filteredList.findIndex((obj: any) => {
+    return obj.camp_num === reqBodyData.camp_num;
+  });
   const manageListOrder =
     manageSupportList.length > 0
-      ? findManageOrder > -1 ? filteredList[findManageOrder].order
-      : manageSupportList[manageSupportList.length - 1] ?.support_order
+      ? findManageOrder > -1
+        ? filteredList[findManageOrder].order
+        : manageSupportList[manageSupportList.length - 1]?.support_order
       : 1;
   const body = { topic_num: topicNum };
   const nickNameloop = nickNameList.filter((nickName) => {
