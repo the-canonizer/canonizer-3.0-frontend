@@ -1,28 +1,21 @@
-// import { useState } from "react";
 import { useRouter } from "next/router";
 import { Row, Col, Typography } from "antd";
-import styles from "./siteFooter.module.scss";
-// import { getFooterSocialLinksApi } from "../../../network/api/footerSocialLinksApi";
 import Image from "next/image";
 import Link from "next/link";
-const { Title } = Typography;
 import { useSelector } from "react-redux";
+
+import styles from "./siteFooter.module.scss";
+
 import { RootState } from "src/store";
+import { Fragment } from "react";
+
+const { Title } = Typography;
 
 function Footer() {
   const router = useRouter();
-  // const [socialLinks, setSocialLinks] = useState(null);
   const loggedInUser = useSelector(
     (state: RootState) => state.auth.loggedInUser
   );
-  // Will be used later for social icons
-  // useEffect(() => {
-  //   async function linksApiCall() {
-  //     const result = await getFooterSocialLinksApi();
-  //     setSocialLinks(result);
-  //   }
-  //   linksApiCall();
-  // }, []);
 
   const mockLinks1 = [
     {
@@ -54,9 +47,10 @@ function Footer() {
       external: true,
     },
     {
-      link: "https://canonizer.com/blog/",
+      link: process.env.NEXT_PUBLIC_BLOG_URL,
       linkTitle: "Blog",
       id: 7,
+      external: true,
     },
     {
       link: "/topic/6-Canonizer-Jobs/1-Agreement",
@@ -64,21 +58,13 @@ function Footer() {
       id: 8,
     },
   ];
+
   const filterMockLinks = mockLinks1.filter((obj) => {
     return obj.id != 5;
   });
 
   return (
-    <>
-      {/* <section className={styles.adv}>
-        <Image
-          src="/images/footer-adv-img.png"
-          alt=""
-          width={1054}
-          height={184}
-          layout="intrinsic"
-        />
-      </section> */}
+    <Fragment>
       <footer className={styles.wrap}>
         <div className={styles.container}>
           <Row>
@@ -137,15 +123,12 @@ function Footer() {
                       {mockLinks2?.map((item) => {
                         return (
                           <li key={item.id}>
-                            {router?.asPath.includes("/topic") ? (
+                            {router?.asPath.includes("/topic") ||
+                            item.external ? (
                               <a
                                 href={item.link}
                                 rel="noopener noreferrer"
-                                target={
-                                  item?.linkTitle == "White Paper"
-                                    ? "_blank"
-                                    : "_self"
-                                }
+                                target={item.external ? "_blank" : "_self"}
                               >
                                 <i className="icon-angle-right"></i>{" "}
                                 {item.linkTitle}
@@ -167,26 +150,6 @@ function Footer() {
               </div>
             </Col>
             <Col xs={24} sm={12} md={7} lg={6}>
-              {/* <div className={styles.widgetFollowUs}>
-                <Title level={5}>Follow Us</Title>
-                <div className={styles.smIcons}>
-                  {socialLinks?.map((social) => {
-                    return (
-                      <Link key={social.id} href={social.link}>
-                        <a target="_blank">
-                          <Image
-                            src={K.Network.URL.BaseImagesURL + social.icon}
-                            alt={social.label}
-                            width={28}
-                            height={28}
-                            layout="intrinsic"
-                          />
-                        </a>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div> */}
               <div className={styles.supportWidget}>
                 <Title level={5}>Comments and Questions:</Title>
                 <Link href="mailto:support@canonizer.com">
@@ -205,7 +168,7 @@ function Footer() {
           </p>
         </div>
       </footer>
-    </>
+    </Fragment>
   );
 }
 
