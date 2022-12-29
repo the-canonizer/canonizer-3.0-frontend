@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import { useState, Fragment, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { Button, Drawer } from "antd";
@@ -9,9 +9,15 @@ import TopicsFilter from "../../../common/topicsFilter";
 import CampRecentActivities from "../CampRecentActivities";
 import NewsFeedsCard from "../../TopicDetails/NewsFeedsCard";
 import GoogleAd from "../../../googleAds";
+import useAuthentication from "src/hooks/isUserAuthenticated";
 
 export default function HomeSideBar({ onCreateCamp = () => {} }: any) {
+  const { isUserAuthenticated } = useAuthentication();
+
+  const [isAuth, setIsAuth] = useState(isUserAuthenticated);
+
   const router = useRouter();
+
   const { newsFeed } = useSelector((state: RootState) => ({
     newsFeed: state?.topicDetails?.newsFeed,
   }));
@@ -25,6 +31,8 @@ export default function HomeSideBar({ onCreateCamp = () => {} }: any) {
   const onClose = () => {
     setVisible(false);
   };
+
+  useEffect(() => setIsAuth(isUserAuthenticated), [isUserAuthenticated]);
 
   return (
     <Fragment>
@@ -48,11 +56,12 @@ export default function HomeSideBar({ onCreateCamp = () => {} }: any) {
       )}
       {typeof window !== "undefined" &&
         window.innerWidth > 767 &&
-        router.asPath.includes("topic") && (
-          <>
+        router.asPath.includes("topic") &&
+        isAuth && (
+          <Fragment>
             {<CampRecentActivities />}
             {!!newsFeed?.length && <NewsFeedsCard newsFeed={newsFeed} />}
-          </>
+          </Fragment>
         )}
       <span
         style={{ display: "block", textAlign: "center", background: "#fff" }}

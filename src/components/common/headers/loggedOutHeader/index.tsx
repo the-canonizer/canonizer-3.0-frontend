@@ -55,9 +55,10 @@ const LoggedOutHeader = ({ isLoginPage = false }: any) => {
       external: true,
     },
     {
-      link: "https://canonizer.com/blog/",
+      link: process.env.NEXT_PUBLIC_BLOG_URL,
       linkTitle: "Blog",
       id: 5,
+      external: true,
     },
     {
       link: "/topic/6-Canonizer-Jobs/1-Agreement",
