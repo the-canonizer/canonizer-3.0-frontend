@@ -139,10 +139,10 @@ const TopicDetails = () => {
         getCurrentCampRecordApi(reqBody),
         getCanonizedCampStatementApi(reqBody),
         dispatch(setCampSupportingTree({})),
-        getCanonizedCampSupportingTreeApi(reqBody, algorithm),
         getHistoryApi(reqBodyForCampData, "1", "statement"),
         getCanonizedAlgorithmsApi(),
       ]);
+      getCanonizedCampSupportingTreeApi(reqBody, algorithm);
       const reponse = await GetActiveSupportTopic(topicNum && body);
       if (reponse?.status_code == 200) {
         setTopicList(reponse?.data);
