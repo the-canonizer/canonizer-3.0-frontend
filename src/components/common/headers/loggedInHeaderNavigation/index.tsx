@@ -96,10 +96,9 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
       external: true,
     },
     {
-      link: process.env.NEXT_PUBLIC_BLOG_URL,
+      link: "https://canonizer.com/blog/",
       linkTitle: "Blog",
       id: 5,
-      external: true,
     },
     {
       link: "/topic/6-Canonizer-Jobs/1-Agreement",
@@ -185,7 +184,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
                       // }
                       key={item.id}
                     >
-                      {item.external ? (
+                      {router.asPath.includes("/topic") ? (
                         <a
                           href={item.link}
                           rel="noopener noreferrer"
