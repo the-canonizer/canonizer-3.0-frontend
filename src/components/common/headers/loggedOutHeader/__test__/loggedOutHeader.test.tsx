@@ -99,7 +99,7 @@ describe("LoggedOutHeader", () => {
     expect(whitePaperLink.getAttribute("href")).toBe(
       "/files/2012_amplifying_final.pdf"
     );
-    expect(blogLink.getAttribute("href")).toBe("https://canonizer.com/blog/");
+    expect(blogLink.getAttribute("href")).toBe("https://blog.canonizer.com/");
     expect(jobsLink.getAttribute("href")).toBe(
       "/topic/6-Canonizer-Jobs/1-Agreement"
     );
