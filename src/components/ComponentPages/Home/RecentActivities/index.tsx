@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
 import Link from "next/link";
+import { convert } from "html-to-text";
 
 const antIcon = <LoadingOutlined spin />;
 const { TabPane } = Tabs;
@@ -206,15 +207,14 @@ export default function RecentActivities() {
                             <br />
                             <Tooltip
                               title={
-                                decodedProperties?.description?.substring(
-                                  0,
-                                  90
-                                ) + "..."
+                                convert(decodedProperties?.description, {
+                                  wordwrap: 130,
+                                }).substring(0, 90) + "..."
                               }
                             >
-                            <div dangerouslySetInnerHTML={{
-                              __html: decodedProperties?.description,
-                            }}/>
+                              {convert(decodedProperties?.description, {
+                                wordwrap: 130,
+                              })}
                             </Tooltip>
                             {/* {decodedProperties?.description?.length > 100 ? (
                                 <Tooltip title={decodedProperties?.description}>
