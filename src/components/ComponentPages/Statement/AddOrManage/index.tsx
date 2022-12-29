@@ -66,8 +66,8 @@ const Editor: any = dynamic(
   { ssr: false }
 );
 let htmlToDraft = null;
-if (typeof window === 'object') {
-    htmlToDraft = require('html-to-draftjs').default;
+if (typeof window === "object") {
+  htmlToDraft = require("html-to-draftjs").default;
 }
 const { Text } = Typography;
 
@@ -194,8 +194,8 @@ export default function AddOrManage({ add }: any) {
         : manageFormOf == "topic"
         ? editInfo?.topic?.submitter_nick_id
         : editInfo?.statement?.submitter_nick_id,
-        statement: blocks, //JSON.stringify(convertToRaw(contentState)),//values?.statement?.blocks[0].text.trim(),
-        //statement: values?.statement?.trim(), //JSON.stringify(convertToRaw(contentState)),//values?.statement?.blocks[0].text.trim(),
+      statement: blocks, //JSON.stringify(convertToRaw(contentState)),//values?.statement?.blocks[0].text.trim(),
+      //statement: values?.statement?.trim(), //JSON.stringify(convertToRaw(contentState)),//values?.statement?.blocks[0].text.trim(),
       event_type: add
         ? "create"
         : update
@@ -1034,7 +1034,9 @@ export default function AddOrManage({ add }: any) {
                             type="primary"
                             size="large"
                             onClick={async () => {
-                              const editorValues = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+                              const editorValues = draftToHtml(
+                                convertToRaw(editorState.getCurrentContent())
+                              );
                               let res = await getParseCampStatementApi({
                                 value: editorValues,
                               });
