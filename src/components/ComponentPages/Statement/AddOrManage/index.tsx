@@ -835,7 +835,7 @@ export default function AddOrManage({ add }: any) {
                           onEditorStateChange={setEditorState}
                         />
                       </Form.Item>
-                      <small className="mb-3 d-block">
+                      {/* <small className="mb-3 d-block">
                         {K?.exceptionalMessages?.wikiMarkupSupportMsg}{" "}
                         <Link
                           href={
@@ -844,7 +844,7 @@ export default function AddOrManage({ add }: any) {
                         >
                           <a>click here.</a>
                         </Link>
-                      </small>
+                      </small> */}
                     </Col>
                   )}
                   <Col xs={24} xl={24}>
