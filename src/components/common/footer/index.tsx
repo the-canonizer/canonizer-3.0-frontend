@@ -54,10 +54,9 @@ function Footer() {
       external: true,
     },
     {
-      link: process.env.NEXT_PUBLIC_BLOG_URL,
+      link: "https://canonizer.com/blog/",
       linkTitle: "Blog",
       id: 7,
-      external: true,
     },
     {
       link: "/topic/6-Canonizer-Jobs/1-Agreement",
