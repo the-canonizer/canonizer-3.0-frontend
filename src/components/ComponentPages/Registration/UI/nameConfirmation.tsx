@@ -33,7 +33,7 @@ const NameConfirmation = ({
       validateTrigger={messages.formValidationTypes()}
     >
       <Title level={2} className={styles.titles} id="name-title">
-        Name Confirmation
+        {isOTP ? labels.otpTitle : labels.nameConfirmationTitle}
       </Title>
       {isModal && (
         <Button
@@ -47,7 +47,7 @@ const NameConfirmation = ({
       )}
       <div className={styles.section_one}>
         <Text type="danger" className={styles.otpNote} id="note-text">
-          {labels.nameLabel}
+          {isOTP ? labels.otpLabel : labels.nameLabel}
         </Text>
         {isOTP ? (
           <Form.Item
