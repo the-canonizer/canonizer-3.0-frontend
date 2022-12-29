@@ -212,7 +212,9 @@ export default function RecentActivities() {
                                 ) + "..."
                               }
                             >
-                              {decodedProperties?.description}
+                            <div dangerouslySetInnerHTML={{
+                              __html: decodedProperties?.description,
+                            }}/>
                             </Tooltip>
                             {/* {decodedProperties?.description?.length > 100 ? (
                                 <Tooltip title={decodedProperties?.description}>
