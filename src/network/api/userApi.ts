@@ -848,7 +848,7 @@ export const SendOTPForVerify = async (body) => {
 
 export const SupportTreeAndScoreCount = async (body) => {
   try {
-    const res = await NetworkCall.fetch(UserRequest.SupportTree(body));
+    const res = await NetworkCall.fetch(UserRequest.SupportTree(body), false);
     return res;
   } catch (err) {
     handleError(err);
