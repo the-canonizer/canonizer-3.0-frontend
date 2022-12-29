@@ -287,7 +287,7 @@ describe("Upload File Page", () => {
       />
     );
     expect(screen.getByText("File Name")).toBeTruthy();
-    expect(screen.getByText("Short Code")).toBeTruthy();
+    expect(screen.getByText("Perma Link")).toBeTruthy();
     expect(screen.getByText("Created Date")).toBeTruthy();
     expect(screen.getByText("Action")).toBeTruthy();
   });
