@@ -263,7 +263,7 @@ const UploadFileUI = ({
         onClick={() => {
           {
             navigator.clipboard.writeText(item.short_code_path),
-              message.success("Short code copied");
+              message.success("Perma Link Copied");
           }
         }}
       >
@@ -275,7 +275,7 @@ const UploadFileUI = ({
             width={12}
             height={15}
           />
-          <span className={styles.marginLeftView}>Copy Short Code</span>
+          <span className={styles.marginLeftView}>Copy Perma Link</span>
         </span>
       </Menu.Item>
       <span
@@ -433,7 +433,7 @@ const UploadFileUI = ({
       },
     },
     {
-      title: "Short Code",
+      title: "Perma Link",
       dataIndex: "code",
       key: "code",
       render: (code, obj) => {
@@ -453,7 +453,7 @@ const UploadFileUI = ({
                     className={styles.folder_icons}
                     onClick={() => {
                       navigator.clipboard.writeText(obj.short_code_path),
-                        message.success("Short code copied");
+                        message.success("Perma Link Copied");
                     }}
                   >
                     <Image
@@ -551,7 +551,7 @@ const UploadFileUI = ({
                       className={styles.menu_item}
                       onClick={() => {
                         navigator.clipboard.writeText(keyParam.short_code_path),
-                          message.success("Short code copied");
+                          message.success("Perma Link Copied");
                       }}
                     >
                       <Image
@@ -561,7 +561,7 @@ const UploadFileUI = ({
                         height={15}
                       />
                       <span className={styles.marginLeftView}>
-                        Copy Short Code
+                      Copy Perma Link
                       </span>
                     </div>
                     <div
@@ -725,7 +725,7 @@ const UploadFileUI = ({
                 className="copySpan"
                 onClick={() => {
                   navigator.clipboard.writeText(item.short_code_path),
-                    message.success("Short code copied");
+                    message.success("Perma Link Copied");
                 }}
               >
                 <Image
@@ -942,7 +942,7 @@ const UploadFileUI = ({
               className="copySpan"
               onClick={() => {
                 navigator.clipboard.writeText(file.short_code_path),
-                  message.success("Short code copied");
+                  message.success("Perma Link Copied");
               }}
             >
               <Image
@@ -1448,7 +1448,7 @@ const UploadFileUI = ({
                   className="copy_wrap"
                   onClick={() => {
                     navigator.clipboard.writeText(preview.prevShort),
-                      message.success("Short code copied");
+                      message.success("Perma Link Copied");
                   }}
                 >
                   <Image
