@@ -87,6 +87,7 @@ export const labels = {
   createPassword: "Create New Password",
   verificationLabel: "Create Password Verification Code",
   forgotModalLabel: "Forgot Your Password?",
+  nameConfirmationTitle: "Name Confirmation",
 };
 
 export const preventCampLabel = [

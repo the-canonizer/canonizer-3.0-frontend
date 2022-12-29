@@ -561,7 +561,7 @@ const UploadFileUI = ({
                         height={15}
                       />
                       <span className={styles.marginLeftView}>
-                      Copy Perma Link
+                        Copy Perma Link
                       </span>
                     </div>
                     <div
