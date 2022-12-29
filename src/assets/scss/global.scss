@@ -1566,7 +1566,7 @@ body {
   }
   .ant-tree-list {
     .ant-tree-list-holder-inner {
-      & > .ant-tree-treenode-switcher-open:first-child {
+      & > .ant-tree-treenode-switcher-open {
         .treeListItemTitle {
           font-size: 16px;
           font-weight: 600;

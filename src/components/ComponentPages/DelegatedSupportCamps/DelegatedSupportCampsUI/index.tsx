@@ -1,7 +1,5 @@
 import { Card, Modal, Row, Col, Button, Form, Empty } from "antd";
-import{
-  CloseCircleOutlined,
-} from "@ant-design/icons";
+import { CloseCircleOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import styles from "./DelegatedSupportedCamps.module.scss";
 import messages from "../../../../messages";
@@ -19,9 +17,9 @@ export default function DelegatedSupportCampsUI({
   removeSupport,
   removeSupportCampsData,
   statusFlag,
-}:any) {
+}: any) {
   const limit = 3;
-  function CardTitle(props:any) {
+  function CardTitle(props: any) {
     return (
       <div className={styles.card_heading_title}>
         {messages.labels.fortopic}
@@ -36,7 +34,7 @@ export default function DelegatedSupportCampsUI({
       </div>
     );
   }
-  function CurrentSupportedCamps(props:any) {
+  function CurrentSupportedCamps(props: any) {
     return (
       <>
         <p>
@@ -48,7 +46,7 @@ export default function DelegatedSupportCampsUI({
       </>
     );
   }
-  function SupportedCampsTo(props:any) {
+  function SupportedCampsTo(props: any) {
     return (
       <>
         <div className={styles.line_height}>

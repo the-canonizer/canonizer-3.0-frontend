@@ -134,15 +134,14 @@ const ManageSupport = () => {
     }
   }, [isUserAuthenticated, reqBodyData.topic_num]);
 
-  
   const GetCheckStatusData = async (campReff: any) => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
     if (response && response.status_code === 200) {
       if (response.data?.remove_camps)
         setParentSupportDataList(response.data.remove_camps);
       if (!manageSupportStatusCheck) {
-         response.data.warning;
-         response.data.support_flag;
+        response.data.warning;
+        response.data.support_flag;
         //Api's call for list
         dispatch(setCheckSupportExistsData({}));
         dispatch(setCheckSupportExistsData(response.data));

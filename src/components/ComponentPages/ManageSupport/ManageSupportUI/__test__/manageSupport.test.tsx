@@ -1,7 +1,4 @@
-import {
-  render,
-  screen,
-} from "../../../../../utils/testUtils";
+import { render, screen } from "../../../../../utils/testUtils";
 import messages from "../../../../../messages";
 import ManageSupportUI from "../index";
 import { CloseCircleOutlined } from "@ant-design/icons";

@@ -6,7 +6,7 @@ import {
 import { message } from "antd";
 import DelegatedSupportCampsUI from "./DelegatedSupportCampsUI";
 
-const DelegatedSupportCamps = ({ search }:any) => {
+const DelegatedSupportCamps = ({ search }: any) => {
   const [delegatedSupportCampsList, setDelegatedSupportCampsList] = useState(
     []
   );

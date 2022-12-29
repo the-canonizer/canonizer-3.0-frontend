@@ -11,7 +11,7 @@ const CreateFolder = ({
   setRename,
   setInput,
   editFolderNameVal,
-}:any) => {
+}: any) => {
   return (
     <>
       <Form
