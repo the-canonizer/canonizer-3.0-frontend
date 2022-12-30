@@ -1,3 +1,4 @@
+import axios from "axios";
 import {
   setTree,
   setNewsFeed,
@@ -15,7 +16,8 @@ import { message } from "antd";
 import { store } from "../../store";
 import { handleError } from "../../utils/generalUtility";
 import { SupportTreeAndScoreCount } from "./userApi";
-
+const CancelToken = axios.CancelToken;
+const source = CancelToken.source();
 export const getTreesApi = async (reqBody) => {
   try {
     const trees = await NetworkCall.fetch(TreeRequest.getTrees(reqBody), false);
@@ -118,25 +120,52 @@ export const getCanonizedCampSupportingTreeApi = async (
   loadMore = false
 ) => {
   try {
-    // const supportingTree = await NetworkCall.fetch(
-    //   TreeRequest.getCampSupportingTree(reqBody), false
-    // );
-
-    const supportTreeCard = await SupportTreeAndScoreCount({
-      algorithm: algorithm,
-      topic_num: reqBody.topic_num,
-      camp_num: reqBody.camp_num,
-    });
+    const supportTreeCard = await axios.post(
+      "https://beta-api3.canonizer.com/api/v3/support-and-score-count",
+      {
+        algorithm: algorithm,
+        topic_num: reqBody.topic_num,
+        camp_num: reqBody.camp_num,
+      },
+      {
+        cancelToken: source.token,
+      }
+    );
 
     if (loadMore) {
-      store.dispatch(pushToCampSupportingTree(supportTreeCard.data));
+      store.dispatch(pushToCampSupportingTree(supportTreeCard?.data?.data));
     } else {
-      store.dispatch(setCampSupportingTree(supportTreeCard.data));
+      store.dispatch(setCampSupportingTree(supportTreeCard?.data?.data));
     }
+    setTimeout(() => {
+      source.cancel("Operation canceled by the user.");
+    }, 50000);
+
     return supportTreeCard.data;
   } catch (error) {
     message.error(error.message);
   }
+
+  // try {
+  //   // const supportingTree = await NetworkCall.fetch(
+  //   //   TreeRequest.getCampSupportingTree(reqBody), false
+  //   // );
+
+  //   const supportTreeCard = await SupportTreeAndScoreCount({
+  //     algorithm: algorithm,
+  //     topic_num: reqBody.topic_num,
+  //     camp_num: reqBody.camp_num,
+  //   });
+
+  //   if (loadMore) {
+  //     store.dispatch(pushToCampSupportingTree(supportTreeCard.data));
+  //   } else {
+  //     store.dispatch(setCampSupportingTree(supportTreeCard.data));
+  //   }
+  //   return supportTreeCard.data;
+  // } catch (error) {
+  //   message.error(error.message);
+  // }
 };
 
 export const createCamp = async (body) => {
