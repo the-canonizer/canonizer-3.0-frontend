@@ -211,6 +211,7 @@ const SupportTreeCard = ({
                           <a>
                             <Button
                               id="supportTreeRemoveSupport"
+                              disabled={asof == "bydate"}
                               onClick={() => {
                                 setIsSupportTreeCardModal(true);
                                 setModalData(data[item]);
@@ -329,7 +330,7 @@ const SupportTreeCard = ({
       <Modal
         className={styles.modal_cross}
         title="Remove Support"
-        visible={isSupportTreeCardModal}
+        open={isSupportTreeCardModal}
         onOk={handleSupportTreeCardCancel}
         onCancel={handleSupportTreeCardCancel}
         footer={null}
