@@ -6,7 +6,7 @@ const Test = () => {
       skeltonFor="card"
       count={3}
       stylingClass="test"
-      button={false}
+      isButton={false}
     />
   );
 };

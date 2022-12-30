@@ -8,15 +8,23 @@ import { Descriptions, Collapse } from "antd";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
+import CustomSkelton from "@/components/common/customSkelton";
 
 const { Panel } = Collapse;
 
-const CurrentTopicCard = () => {
+const CurrentTopicCard = ({ loadingIndicator }) => {
   const router = useRouter();
   const { topicRecord } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
   }));
-  return (
+  return loadingIndicator ? (
+    <CustomSkelton
+      skeltonFor="card"
+      bodyCount={2}
+      stylingClass="test"
+      isButton={false}
+    />
+  ) : (
     <Collapse
       defaultActiveKey={["1"]}
       expandIconPosition="right"

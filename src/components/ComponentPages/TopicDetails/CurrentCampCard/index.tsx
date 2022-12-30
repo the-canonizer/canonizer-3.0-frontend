@@ -9,10 +9,11 @@ import K from "../../../../constants";
 
 import { RootState } from "../../../../store";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
+import CustomSkelton from "@/components/common/customSkelton";
 
 const { Panel } = Collapse;
 
-const CurrentCampCard = () => {
+const CurrentCampCard = ({ loadingIndicator }) => {
   const router = useRouter();
   const { campRecord, topicRecord, history } = useSelector(
     (state: RootState) => ({
@@ -22,7 +23,14 @@ const CurrentCampCard = () => {
     })
   );
 
-  return (
+  return loadingIndicator ? (
+    <CustomSkelton
+      skeltonFor="card"
+      bodyCount={6}
+      stylingClass="test"
+      isButton={false}
+    />
+  ) : (
     <Collapse
       accordion={true}
       defaultActiveKey={["1"]}

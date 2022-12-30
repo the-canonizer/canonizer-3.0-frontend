@@ -438,9 +438,7 @@ const TopicDetails = () => {
                 ? campExist?.camp_exist
                 : true && (
                     <>
-                      <Spin spinning={loadingIndicator} size="large">
-                        <CampStatementCard />
-                      </Spin>
+                      <CampStatementCard loadingIndicator={loadingIndicator} />
                       {typeof window !== "undefined" &&
                         window.innerWidth < 767 && (
                           <>
@@ -454,12 +452,10 @@ const TopicDetails = () => {
                             </Spin>
                           </>
                         )}
-                      <Spin spinning={loadingIndicator} size="large">
-                        <CurrentTopicCard />
-                      </Spin>
-                      <Spin spinning={loadingIndicator} size="large">
-                        <CurrentCampCard />
-                      </Spin>
+
+                      <CurrentTopicCard loadingIndicator={loadingIndicator} />
+
+                      <CurrentCampCard loadingIndicator={loadingIndicator} />
 
                       <Spin spinning={loadingIndicator} size="large">
                         <SupportTreeCard
