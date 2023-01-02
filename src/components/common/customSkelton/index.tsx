@@ -24,7 +24,57 @@ const CustomSkelton = ({ skeltonFor, bodyCount, stylingClass, isButton }) => {
     </Card>
   ) : skeltonFor == "list" ? (
       <Skeleton className={styles.listSkeleton} count={bodyCount} />
-  ) : null;
+  ) : skeltonFor == "tree" ? (
+    <ul className={styles.treeSkeleton}>
+      <li>
+        <Skeleton />
+        <ul>
+          <li>
+            <Skeleton />
+            <ul>
+              <li>
+                <Skeleton />
+                <ul>
+                <li>
+                    <Skeleton />
+                  </li>
+                  <li>
+                    <Skeleton />
+                  </li>
+                  <li>
+                    <Skeleton />
+                  </li>
+                  <li>
+                    <Skeleton />
+                  </li>
+                  <li>
+                    <Skeleton />
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <Skeleton />
+          </li>
+        </ul>
+      </li>
+      <li>
+        <Skeleton />
+        <ul>
+          <li>
+            <Skeleton />
+          </li>
+          <li>
+            <Skeleton />
+          </li>
+          <li>
+            <Skeleton />
+          </li>
+        </ul>
+      </li>
+    </ul>
+) : null;
 };
 
 export default CustomSkelton;

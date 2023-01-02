@@ -41,3 +41,14 @@
     display: none;
   }
 }
+
+.treeSkeleton {
+  list-style: none;
+  padding-left: 0;
+  span {
+    max-width: 300px;
+  }
+  ul {
+    list-style: none;
+  }
+}

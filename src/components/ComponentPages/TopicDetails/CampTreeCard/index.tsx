@@ -6,6 +6,7 @@ import { RootState } from "src/store";
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import styles from "../topicDetails.module.scss";
 import { useRouter } from "next/router";
+import CustomSkelton from "@/components/common/customSkelton";
 
 const { Panel } = Collapse;
 
@@ -80,6 +81,10 @@ const CampTreeCard = ({
           </>
         }
       >
+        <CustomSkelton
+            skeltonFor="tree"
+            bodyCount={4}
+          />
         <CampTree
           scrollToCampStatement={scrollToCampStatement}
           setTotalCampScoreForSupportTree={setTotalCampScoreForSupportTree}
