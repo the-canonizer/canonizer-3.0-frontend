@@ -63,7 +63,9 @@ const HeadContentAndPermissionComponent = ({
           : "1",
         forum_num:
           router?.query?.camp?.length > 2
-            ? router.query.camp[2].split("-")[0]
+            ? Object.keys(router.query)?.length > 2
+              ? router?.query?.id
+              : null
             : null,
       },
     };
