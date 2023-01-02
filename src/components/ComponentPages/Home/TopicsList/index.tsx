@@ -21,6 +21,7 @@ import {
   setManageSupportStatusCheck,
 } from "src/store/slices/campDetailSlice";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import CustomSkelton from "@/components/common/customSkelton";
 
 const antIcon = <LoadingOutlined spin />;
 const { Title, Text } = Typography;
@@ -328,6 +329,10 @@ const TopicsList = () => {
                 </List.Item>
               );
             }}
+          />
+          <CustomSkelton
+            skeltonFor="list"
+            bodyCount={15}
           />
         </Spin>
         <BackTop />

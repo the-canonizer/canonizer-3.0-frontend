@@ -9,20 +9,21 @@ const { Meta } = Card;
 const CustomSkelton = ({ skeltonFor, bodyCount, stylingClass, isButton }) => {
   return skeltonFor == "card" ? (
     <Card
+      className={styles.cardSkeleton}
       actions={[
-        <div style={{ textAlign: "right" }}>
-          {" "}
+        <div className={styles.cardSkeleton_actions}>
           <Skeleton
-            style={{ height: "38px", width: "230px", marginRight: "1rem" }}
-            className={styles[stylingClass]}
+            className={styles.cardSkeleton_actions_button}
             count={1}
           />
         </div>,
       ]}
-      title=<Skeleton height={28} className={styles[stylingClass]} count={1} />
+      title=<Skeleton height={29} className={styles[stylingClass]} style={{margin: '2px 0'}} count={1} />
     >
       <Skeleton className={styles[stylingClass]} count={bodyCount} />
     </Card>
+  ) : skeltonFor == "list" ? (
+      <Skeleton className={styles.listSkeleton} count={bodyCount} />
   ) : null;
 };
 

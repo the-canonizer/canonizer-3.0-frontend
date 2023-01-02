@@ -1,7 +1,43 @@
+.card-skeleton {
+  span {
+    display: block;
+  }
+}
+
 .test {
   //   background-color: bisque;
   width: 100%;
   min-width: 300px;
-  //   height: 25px;
-  margin: 10px 0px;
+  height: 22px;
+  margin: 0 0 16px 0px;
+}
+.cardSkeleton {
+  &>div:first-child>div {
+    margin-top: 1px;
+    margin-bottom: 1px;
+  }
+  span {
+    display: block;
+    &+ br {
+      display: none;
+    }
+  }
+  &_actions {
+    display: flex;
+    justify-content: flex-end;
+    margin: 8px 0;
+    &_button {
+      height: 38px;
+      width: 190px;
+      margin-right: 24px;
+    }
+  }
+}
+.listSkeleton {
+  display: block;
+  margin-top: 8px;
+  height: 39px;
+  &+br {
+    display: none;
+  }
 }
