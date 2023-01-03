@@ -15,7 +15,9 @@
     font-weight: 500;
   }
 }
-
+.startNew {
+  margin-bottom: 0;
+}
 .topicDetailContentHead {
   width: 100%;
   padding: 0 8px 10px 0;
@@ -90,7 +92,7 @@
   justify-content: center;
   align-items: center;
   padding: 24px;
-  @media screen and (max-width: 991px){
+  @media screen and (max-width: 991px) {
     width: 100%;
     margin: 0;
   }
@@ -106,7 +108,7 @@
     font-weight: 400;
     /* white-space: nowrap; */
     &:hover {
-      color: #71b1fc!important;
+      color: #71b1fc !important;
     }
   }
 }
@@ -146,8 +148,9 @@
         color: #4484ce;
       }
       &.activeCamp {
-          color: #08b608 !important;
-        }
+        font-size: 15px;
+        color: #08b608 !important;
+      }
     }
   }
   .treeListItemNumber {
@@ -216,24 +219,25 @@
 }
 
 .campStatement {
-  ul, ol {
+  ul,
+  ol {
     padding-left: 40px;
   }
 }
 
-
 .boldBreadcrumb {
-    font-weight: 700;
-    font-size: 17px;
+  // font-weight: 700;
+  // font-size: 17px;
 }
 
 .slashStyle {
   align-self: center;
-  margin-inline: 5px;
+  margin-left: 5px;
+  // font-size: 14px;
 }
 
 .greenIndicateText {
-  font-weight: 700;
-  font-size: 17px;
+  // font-weight: 600;
+  // font-size: 16px;
   color: #08b608;
 }

@@ -366,10 +366,9 @@ const CampInfoBar = ({
                           key={index}
                         >
                           <a>
-                            <span className={styles.slashStyle}>
-                              {" "}
-                              {index !== 0 && "/"}{" "}
-                            </span>
+                            
+                              {index !== 0 && <span className={styles.slashStyle}>|</span>}{" "}
+                            
                             <span
                               className={
                                 breadCrumbRes?.bread_crumb.length - 1 == index

@@ -24,10 +24,10 @@ const CurrentTopicCard = () => {
     >
       <Panel header={<h3>Current Topic Record</h3>} key="1">
         <Descriptions column={1}>
-          <Descriptions.Item label="Topic Name">
+          <Descriptions.Item label={<span className="boldLabel">Topic Name</span>}>
             {topicRecord && topicRecord?.topic_name}
           </Descriptions.Item>
-          <Descriptions.Item label="Namespace">
+          <Descriptions.Item label={<span className="boldLabel">Namespace</span>}>
             {topicRecord && topicRecord?.namespace_name}
           </Descriptions.Item>
         </Descriptions>

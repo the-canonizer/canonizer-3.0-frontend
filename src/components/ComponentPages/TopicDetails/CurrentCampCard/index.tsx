@@ -40,7 +40,7 @@ const CurrentCampCard = () => {
             } else {
               return (
                 <Descriptions.Item
-                  label={description.label}
+                  label={<span className="boldLabel">{description.label}</span>}
                   key={description.key}
                 >
                   {campRecord && description.key != "camp_about_url"
