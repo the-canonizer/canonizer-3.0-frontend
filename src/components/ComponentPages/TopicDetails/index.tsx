@@ -401,14 +401,14 @@ const TopicDetails = () => {
         {((tree && tree["1"]?.is_valid_as_of_time) || asof == "default") && (
           <>
             <div className={styles.pageContent + " pageContentWrap"}>
-              <Spin spinning={getTreeLoadingIndicator} size="large">
-                <CampTreeCard
-                  scrollToCampStatement={scrollToCampStatement}
-                  setTotalCampScoreForSupportTree={
-                    setTotalCampScoreForSupportTree
-                  }
-                />
-              </Spin>
+              <CampTreeCard
+                getTreeLoadingIndicator={getTreeLoadingIndicator}
+                scrollToCampStatement={scrollToCampStatement}
+                setTotalCampScoreForSupportTree={
+                  setTotalCampScoreForSupportTree
+                }
+              />
+
               {campExist && !campExist?.camp_exist && (
                 <Spin spinning={loadingIndicator} size="large">
                   <>

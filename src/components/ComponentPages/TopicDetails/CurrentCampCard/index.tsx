@@ -23,7 +23,7 @@ const CurrentCampCard = ({ loadingIndicator }) => {
     })
   );
 
-  return true ? (
+  return loadingIndicator ? (
     <CustomSkelton
       skeltonFor="card"
       bodyCount={6}

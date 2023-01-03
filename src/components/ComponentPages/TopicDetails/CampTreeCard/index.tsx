@@ -30,6 +30,7 @@ const addContent = (
 );
 
 const CampTreeCard = ({
+  getTreeLoadingIndicator,
   scrollToCampStatement,
   setTotalCampScoreForSupportTree,
 }) => {
@@ -81,14 +82,19 @@ const CampTreeCard = ({
           </>
         }
       >
-        <CustomSkelton
+        {getTreeLoadingIndicator ? (
+          <CustomSkelton
             skeltonFor="tree"
             bodyCount={4}
+            isButton={false}
+            stylingClass=""
           />
-        <CampTree
-          scrollToCampStatement={scrollToCampStatement}
-          setTotalCampScoreForSupportTree={setTotalCampScoreForSupportTree}
-        />
+        ) : (
+          <CampTree
+            scrollToCampStatement={scrollToCampStatement}
+            setTotalCampScoreForSupportTree={setTotalCampScoreForSupportTree}
+          />
+        )}
       </Panel>
     </Collapse>
   );
