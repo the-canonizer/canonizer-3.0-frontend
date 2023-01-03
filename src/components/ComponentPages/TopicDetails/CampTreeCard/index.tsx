@@ -31,7 +31,7 @@ const addContent = (
 const CampTreeCard = ({
   scrollToCampStatement,
   setTotalCampScoreForSupportTree,
-  setSupportTreeForCamp
+  setSupportTreeForCamp,
 }) => {
   const { tree, is_admin } = useSelector((state: RootState) => ({
     tree: state?.topicDetails?.tree?.at(0),
