@@ -45,6 +45,7 @@ const SupportTreeCard = ({
   setIsSupportTreeCardModal,
   handleSupportTreeCardCancel,
   removeSupportSpinner,
+  supportTreeForCamp,
   totalCampScoreForSupportTree,
 }: any) => {
   const { currentGetCheckSupportExistsData, is_checked } = useSelector(
@@ -92,8 +93,12 @@ const SupportTreeCard = ({
 
   const manageSupportPath = router.asPath.replace("/topic/", "/support/");
 
+  // const { campSupportingTree, asof } = useSelector((state: RootState) => ({
+  //   campSupportingTree: state?.topicDetails?.campSupportingTree,
+  //   asof: state?.filters?.filterObject?.asof,
+  // }));
   const { campSupportingTree, asof } = useSelector((state: RootState) => ({
-    campSupportingTree: state?.topicDetails?.campSupportingTree,
+    campSupportingTree: supportTreeForCamp,
     asof: state?.filters?.filterObject?.asof,
   }));
   useEffect(() => {
@@ -211,6 +216,7 @@ const SupportTreeCard = ({
                           <a>
                             <Button
                               id="supportTreeRemoveSupport"
+                              disabled={asof == "bydate"}
                               onClick={() => {
                                 setIsSupportTreeCardModal(true);
                                 setModalData(data[item]);
@@ -329,7 +335,7 @@ const SupportTreeCard = ({
       <Modal
         className={styles.modal_cross}
         title="Remove Support"
-        visible={isSupportTreeCardModal}
+        open={isSupportTreeCardModal}
         onOk={handleSupportTreeCardCancel}
         onCancel={handleSupportTreeCardCancel}
         footer={null}

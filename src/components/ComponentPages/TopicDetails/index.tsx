@@ -65,6 +65,8 @@ const TopicDetails = () => {
   const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
   const [totalCampScoreForSupportTree, setTotalCampScoreForSupportTree] =
     useState<number>(null);
+  const [supportTreeForCamp, setSupportTreeForCamp] =
+    useState<number>(null);
   const router = useRouter();
   const dispatch = useDispatch();
   const {
@@ -142,7 +144,7 @@ const TopicDetails = () => {
         getHistoryApi(reqBodyForCampData, "1", "statement"),
         getCanonizedAlgorithmsApi(),
       ]);
-      getCanonizedCampSupportingTreeApi(reqBody, algorithm);
+      //getCanonizedCampSupportingTreeApi(reqBody, algorithm);
       const reponse = await GetActiveSupportTopic(topicNum && body);
       if (reponse?.status_code == 200) {
         setTopicList(reponse?.data);
@@ -185,7 +187,7 @@ const TopicDetails = () => {
       message.success(res.message);
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
-      getCanonizedCampSupportingTreeApi(reqBody, algorithm);
+      //getCanonizedCampSupportingTreeApi(reqBody, algorithm);
       getTreesApi(reqBodyForService);
       // fetchTotalScore();
     }
@@ -218,7 +220,7 @@ const TopicDetails = () => {
       message.success(res.message);
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
-      getCanonizedCampSupportingTreeApi(reqBody, algorithm);
+      //getCanonizedCampSupportingTreeApi(reqBody, algorithm);
       getTreesApi(reqBodyForService);
       // fetchTotalScore();
     }
@@ -246,7 +248,7 @@ const TopicDetails = () => {
       message.success(res.message);
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
-      getCanonizedCampSupportingTreeApi(reqBody, algorithm);
+      //getCanonizedCampSupportingTreeApi(reqBody, algorithm);
       getTreesApi(reqBodyForService);
       // fetchTotalScore();
     }
@@ -309,7 +311,7 @@ const TopicDetails = () => {
 
   const handleLoadMoreSupporters = async () => {
     const reqBody = { topic_num: 45, camp_num: 1 };
-    await getCanonizedCampSupportingTreeApi(reqBody, algorithm, true);
+    //await getCanonizedCampSupportingTreeApi(reqBody, algorithm, true);
   };
 
   const setCurrentTopics = (data) => dispatch(setCurrentTopic(data));
@@ -407,6 +409,7 @@ const TopicDetails = () => {
                   setTotalCampScoreForSupportTree={
                     setTotalCampScoreForSupportTree
                   }
+                  setSupportTreeForCamp={setSupportTreeForCamp}
                 />
               </Spin>
               {campExist && !campExist?.camp_exist && (
@@ -478,6 +481,7 @@ const TopicDetails = () => {
                             handleSupportTreeCardCancel
                           }
                           removeSupportSpinner={removeSupportSpinner}
+                          supportTreeForCamp={supportTreeForCamp}
                           totalCampScoreForSupportTree={
                             totalCampScoreForSupportTree
                           }
