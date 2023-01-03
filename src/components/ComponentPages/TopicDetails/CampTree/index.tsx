@@ -15,6 +15,7 @@ const { TreeNode } = Tree;
 const CampTree = ({
   scrollToCampStatement,
   setTotalCampScoreForSupportTree,
+  setSupportTreeForCamp
 }) => {
   const { tree, filterByScore, review, is_checked } = useSelector(
     (state: RootState) => ({
@@ -183,6 +184,7 @@ const CampTree = ({
       .sort((a, b) => b[1].score - a[1].score);
     return sortedData.map((itemWithData) => {
       let item = itemWithData[0];
+      console.log('data',data[item]);
       const parentIsOneLevel = isOneLevel;
       let _isOneLevel = data[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
       let _isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
@@ -190,12 +192,14 @@ const CampTree = ({
         if (
           data[item]?.camp_id == router?.query?.camp?.at(1)?.split("-")?.at(0)
         ) {
+          setSupportTreeForCamp(data[item].support_tree);
           is_checked && isUserAuthenticated
             ? setTotalCampScoreForSupportTree(data[item].full_score)
             : setTotalCampScoreForSupportTree(data[item].score);
         }
       } else {
         if (data[item]?.camp_id == 1) {
+          setSupportTreeForCamp(data[item].support_tree);
           is_checked && isUserAuthenticated
             ? setTotalCampScoreForSupportTree(data[item].full_score)
             : setTotalCampScoreForSupportTree(data[item].score);

@@ -33,6 +33,7 @@ const CampTreeCard = ({
   getTreeLoadingIndicator,
   scrollToCampStatement,
   setTotalCampScoreForSupportTree,
+  setSupportTreeForCamp,
 }) => {
   const { tree, is_admin } = useSelector((state: RootState) => ({
     tree: state?.topicDetails?.tree?.at(0),
@@ -93,6 +94,7 @@ const CampTreeCard = ({
           <CampTree
             scrollToCampStatement={scrollToCampStatement}
             setTotalCampScoreForSupportTree={setTotalCampScoreForSupportTree}
+            setSupportTreeForCamp={setSupportTreeForCamp}
           />
         )}
       </Panel>
