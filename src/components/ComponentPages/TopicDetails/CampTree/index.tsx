@@ -152,7 +152,6 @@ const CampTree = ({
           : +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1)
       );
     setDefaultExpandKeys(expandKeys);
-    console.log("final aawaser ", expandKeys);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tree?.at(0)]);
