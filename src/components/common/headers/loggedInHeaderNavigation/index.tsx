@@ -186,16 +186,17 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
                       key={item.id}
                     >
                       {router.asPath.includes("/topic") || item.external ? (
-                        <a
-                          href={item.link}
-                          rel="noopener noreferrer"
-                          target={item.external ? "_blank" : "_self"}
-                          // className="dsadas"
-                        >
-                          {item.linkTitle}
-                        </a>
+                        <Link href={{ pathname: item.link }}>
+                          <a
+                            rel="noopener noreferrer"
+                            target={item.external ? "_blank" : "_self"}
+                            // className="dsadas"
+                          >
+                            {item.linkTitle}
+                          </a>
+                        </Link>
                       ) : (
-                        <Link href={item.link}>
+                        <Link href={{ pathname: item.link }}>
                           <a>{item.linkTitle}</a>
                         </Link>
                       )}
