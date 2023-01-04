@@ -1285,8 +1285,9 @@ const UploadFileUI = ({
                                   }
                                   placeholder="Full Name (with no extension)"
                                   onKeyDown={(e) => {
-                                    if (/[^\w]|_/g.test(e.key))
-                                      return e.preventDefault();
+                                    // ============================ Allowed Special Chracter=====================================================
+                                    // if (/[^\w]|_/g.test(e.key))
+                                    //   return e.preventDefault();
                                     return (
                                       (e.key === "." || e.key === " ") &&
                                       (e.keyCode === 190 || e.keyCode === 32) &&

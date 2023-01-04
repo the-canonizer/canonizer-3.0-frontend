@@ -65,8 +65,7 @@ const TopicDetails = () => {
   const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
   const [totalCampScoreForSupportTree, setTotalCampScoreForSupportTree] =
     useState<number>(null);
-  const [supportTreeForCamp, setSupportTreeForCamp] =
-    useState<number>(null);
+  const [supportTreeForCamp, setSupportTreeForCamp] = useState<number>(null);
   const router = useRouter();
   const dispatch = useDispatch();
   const {
