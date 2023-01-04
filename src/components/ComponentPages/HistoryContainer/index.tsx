@@ -403,12 +403,36 @@ function HistoryContainer() {
           <div style={{ overflow: "auto" }}>
             {loadingIndicator ? (
               <>
-                <CustomSkelton
-                  skeltonFor="HistoryCards"
-                  bodyCount={2}
-                  stylingClass="test"
-                  isButton={false}
-                />
+                <div className="px-3 py-2">
+                  <CustomSkelton
+                    skeltonFor="card"
+                    bodyCount={4}
+                    stylingClass="test"
+                    isButton={false}
+                    action={false}
+                    title={false}
+                  />
+                </div>{" "}
+                <div className="px-3 py-2">
+                  <CustomSkelton
+                    skeltonFor="card"
+                    bodyCount={4}
+                    stylingClass="test"
+                    isButton={false}
+                    action={false}
+                    title={false}
+                  />{" "}
+                </div>
+                <div className="px-3 py-2">
+                  <CustomSkelton
+                    skeltonFor="card"
+                    bodyCount={4}
+                    stylingClass="test"
+                    isButton={false}
+                    action={false}
+                    title={false}
+                  />
+                </div>
               </>
             ) : activeTab === "live" ? (
               renderCampHistories
