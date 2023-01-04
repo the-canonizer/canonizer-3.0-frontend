@@ -10,6 +10,7 @@ import styles from "./index.module.scss";
 import CreateCampBtn from "../../../common/button/createNewCampBtn";
 import CreateTopicBtn from "../../../common/button/createNewTopicBtn";
 import CampInfoBar from "../../TopicDetails/CampInfoBar";
+import CustomSkelton from "@/components/common/customSkelton";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -83,316 +84,328 @@ function CompareStatementUI({
             </div>
           </div>
           <div className={styles.contentBody}>
-            <Spin spinning={isLoading} size="large">
-              <Row gutter={50}>
-                <Col span={12}>
-                  <Card
-                    bordered
-                    className={
-                      styles.compareCard +
-                      " " +
-                      styles[itemsStatus[s1?.id] || "old"]
-                    }
-                  >
-                    <Paragraph>
-                      <Text strong>Edit Summary : </Text>
-                      <Text>{s1?.note}</Text>
-                    </Paragraph>
-                    <Paragraph>
-                      <Text strong>Submitted on : </Text>
-                      <Text>{covertToTime(s1?.submit_time)}</Text>
-                    </Paragraph>
-                    <Paragraph>
-                      <Text strong>Submitter Nick Name : </Text>
-                      <Text>
-                        <Link
-                          href={`/user/supports/${
-                            s1["submitter_nick_id"] || ""
-                          }?topicnum=${s1["topic_num"] || ""}&campnum=${
-                            s1["camp_num"] || ""
-                          }&namespace=${liveStatement["namespace_id"] || 1}`}
-                        >
-                          <a>{s1?.submitter_nick_name}</a>
-                        </Link>
-                      </Text>
-                    </Paragraph>
-                    <Paragraph>
-                      <Text strong>Go live time : </Text>
-                      <Text>{covertToTime(s1?.go_live_time)}</Text>
-                    </Paragraph>
-                    {from == "topic" ? (
+            {isLoading ? (
+              <>
+                <CustomSkelton
+                  skeltonFor="CompareCards"
+                  bodyCount={5}
+                  stylingClass="test"
+                  isButton={false}
+                />
+              </>
+            ) : (
+              <>
+                <Row gutter={50}>
+                  <Col span={12}>
+                    <Card
+                      bordered
+                      className={
+                        styles.compareCard +
+                        " " +
+                        styles[itemsStatus[s1?.id] || "old"]
+                      }
+                    >
                       <Paragraph>
-                        <Text strong>Namespace : </Text>
-                        <Text>{s1?.namespace}</Text>
+                        <Text strong>Edit Summary : </Text>
+                        <Text>{s1?.note}</Text>
                       </Paragraph>
-                    ) : null}
-                    {from == "camp" ? (
-                      <Fragment>
-                        {s1?.camp_num != 1 ? (
-                          <Paragraph>
-                            <Text strong>Parent Camp : </Text>
-                            <Text>{s1?.parent_camp_name}</Text>
-                          </Paragraph>
-                        ) : (
-                          ""
-                        )}
+                      <Paragraph>
+                        <Text strong>Submitted on : </Text>
+                        <Text>{covertToTime(s1?.submit_time)}</Text>
+                      </Paragraph>
+                      <Paragraph>
+                        <Text strong>Submitter Nick Name : </Text>
+                        <Text>
+                          <Link
+                            href={`/user/supports/${
+                              s1["submitter_nick_id"] || ""
+                            }?topicnum=${s1["topic_num"] || ""}&campnum=${
+                              s1["camp_num"] || ""
+                            }&namespace=${liveStatement["namespace_id"] || 1}`}
+                          >
+                            <a>{s1?.submitter_nick_name}</a>
+                          </Link>
+                        </Text>
+                      </Paragraph>
+                      <Paragraph>
+                        <Text strong>Go live time : </Text>
+                        <Text>{covertToTime(s1?.go_live_time)}</Text>
+                      </Paragraph>
+                      {from == "topic" ? (
+                        <Paragraph>
+                          <Text strong>Namespace : </Text>
+                          <Text>{s1?.namespace}</Text>
+                        </Paragraph>
+                      ) : null}
+                      {from == "camp" ? (
+                        <Fragment>
+                          {s1?.camp_num != 1 ? (
+                            <Paragraph>
+                              <Text strong>Parent Camp : </Text>
+                              <Text>{s1?.parent_camp_name}</Text>
+                            </Paragraph>
+                          ) : (
+                            ""
+                          )}
 
-                        <Paragraph>
-                          <Text strong>Keywords : </Text>
-                          <Text>{s1?.key_words}</Text>
-                        </Paragraph>
-                        <Paragraph>
-                          <Text strong>Camp About URL : </Text>
-                          <Text>
-                            <Link href={s1?.camp_about_url || ""}>
-                              <a>{s1?.camp_about_url}</a>
-                            </Link>
-                          </Text>
-                        </Paragraph>
-                        <Paragraph>
-                          <Text strong>Camp About Nick Name : </Text>
-                          <Text>
-                            <Link
-                              href={`/user/supports/${
-                                s1["camp_about_nick_id"] || ""
-                              }?topicnum=${s1["topic_num"] || ""}&campnum=${
-                                s1["camp_num"] || ""
-                              }&namespace=${s1["namespace_id"] || 1}`}
-                            >
-                              <a>{s1?.camp_about_nick_name}</a>
-                            </Link>
-                          </Text>
-                        </Paragraph>
-                      </Fragment>
-                    ) : null}
-                    <Text strong style={{ textTransform: "capitalize" }}>
-                      {from === "topic"
-                        ? "Topic Name"
-                        : from === "camp"
-                        ? "Camp Name"
-                        : from}{" "}
-                      :{" "}
-                    </Text>
-                    <Card
-                      bordered
-                      className={
-                        styles.compareCardInternal + " " + styles.inter1
-                      }
-                    >
-                      <div
-                        dangerouslySetInnerHTML={{ __html: s1?.parsed_v }}
-                      ></div>
-                    </Card>
-                  </Card>
-                </Col>
-                <Col span={12}>
-                  <Card
-                    bordered
-                    className={
-                      styles.compareCard +
-                      " " +
-                      styles[itemsStatus[s2?.id] || "old"]
-                    }
-                  >
-                    <Paragraph>
-                      <Text strong>Edit Summary : </Text>
-                      <Text>{s2?.note}</Text>
-                    </Paragraph>
-                    <Paragraph>
-                      <Text strong>Submitted on : </Text>
-                      <Text>{covertToTime(s2?.submit_time)}</Text>
-                    </Paragraph>
-                    <Paragraph>
-                      <Text strong>Submitter Nick Name : </Text>
-                      <Text>
-                        <Link
-                          href={`/user/supports/${
-                            s2["submitter_nick_id"] || ""
-                          }?topicnum=${s2["topic_num"] || ""}&campnum=${
-                            s2["camp_num"] || ""
-                          }&namespace=${liveStatement["namespace_id"] || 1}`}
-                        >
-                          <a>{s2?.submitter_nick_name}</a>
-                        </Link>
-                      </Text>
-                    </Paragraph>
-                    <Paragraph>
-                      <Text strong>Go live time : </Text>
-                      <Text>{covertToTime(s2?.go_live_time)}</Text>
-                    </Paragraph>
-                    {from == "topic" ? (
-                      <Paragraph>
-                        <Text strong>Namespace : </Text>
-                        <Text>{s2?.namespace}</Text>
-                      </Paragraph>
-                    ) : null}
-                    {from == "camp" ? (
-                      <Fragment>
-                        {s2?.camp_num != 1 ? (
                           <Paragraph>
-                            <Text strong>Parent Camp : </Text>
-                            <Text>{s2?.parent_camp_name}</Text>
+                            <Text strong>Keywords : </Text>
+                            <Text>{s1?.key_words}</Text>
                           </Paragraph>
-                        ) : (
-                          ""
-                        )}
-                        <Paragraph>
-                          <Text strong>Keywords : </Text>
-                          <Text>{s2?.key_words}</Text>
-                        </Paragraph>
-                        <Paragraph>
-                          <Text strong>Camp About URL : </Text>
-                          <Text>
-                            <Link href={s2?.camp_about_url || ""}>
-                              <a>{s2?.camp_about_url}</a>
-                            </Link>
-                          </Text>
-                        </Paragraph>
-                        <Paragraph>
-                          <Text strong>Camp About Nick Name : </Text>
-                          <Text>
-                            <Link
-                              href={`/user/supports/${
-                                s2["camp_about_nick_id"] || ""
-                              }?topicnum=${s2["topic_num"] || ""}&campnum=${
-                                s2["camp_num"] || ""
-                              }&namespace=${s2["namespace_id"] || 1}`}
-                            >
-                              <a>{s2?.camp_about_nick_name}</a>
-                            </Link>
-                          </Text>
-                        </Paragraph>
-                      </Fragment>
-                    ) : null}
-                    <Text strong style={{ textTransform: "capitalize" }}>
-                      {from === "topic"
-                        ? "Topic Name"
-                        : from === "camp"
-                        ? "Camp Name"
-                        : from}{" "}
-                      :{" "}
-                    </Text>
+                          <Paragraph>
+                            <Text strong>Camp About URL : </Text>
+                            <Text>
+                              <Link href={s1?.camp_about_url || ""}>
+                                <a>{s1?.camp_about_url}</a>
+                              </Link>
+                            </Text>
+                          </Paragraph>
+                          <Paragraph>
+                            <Text strong>Camp About Nick Name : </Text>
+                            <Text>
+                              <Link
+                                href={`/user/supports/${
+                                  s1["camp_about_nick_id"] || ""
+                                }?topicnum=${s1["topic_num"] || ""}&campnum=${
+                                  s1["camp_num"] || ""
+                                }&namespace=${s1["namespace_id"] || 1}`}
+                              >
+                                <a>{s1?.camp_about_nick_name}</a>
+                              </Link>
+                            </Text>
+                          </Paragraph>
+                        </Fragment>
+                      ) : null}
+                      <Text strong style={{ textTransform: "capitalize" }}>
+                        {from === "topic"
+                          ? "Topic Name"
+                          : from === "camp"
+                          ? "Camp Name"
+                          : from}{" "}
+                        :{" "}
+                      </Text>
+                      <Card
+                        bordered
+                        className={
+                          styles.compareCardInternal + " " + styles.inter1
+                        }
+                      >
+                        <div
+                          dangerouslySetInnerHTML={{ __html: s1?.parsed_v }}
+                        ></div>
+                      </Card>
+                    </Card>
+                  </Col>
+                  <Col span={12}>
                     <Card
                       bordered
                       className={
-                        styles.compareCardInternal + " " + styles.inter2
+                        styles.compareCard +
+                        " " +
+                        styles[itemsStatus[s2?.id] || "old"]
                       }
                     >
-                      <div
-                        dangerouslySetInnerHTML={{ __html: s2?.parsed_v }}
-                      ></div>
-                    </Card>
-                  </Card>
-                </Col>
-                <Col span={24}>
-                  <Divider />
-                  <Card
-                    bordered={false}
-                    className={
-                      styles.latestCard + " " + styles[liveStatement?.status] ||
-                      "live"
-                    }
-                    title={
-                      <Text>
-                        Latest revision as of{" "}
-                        {covertToTime(liveStatement?.revision_date)}
+                      <Paragraph>
+                        <Text strong>Edit Summary : </Text>
+                        <Text>{s2?.note}</Text>
+                      </Paragraph>
+                      <Paragraph>
+                        <Text strong>Submitted on : </Text>
+                        <Text>{covertToTime(s2?.submit_time)}</Text>
+                      </Paragraph>
+                      <Paragraph>
+                        <Text strong>Submitter Nick Name : </Text>
+                        <Text>
+                          <Link
+                            href={`/user/supports/${
+                              s2["submitter_nick_id"] || ""
+                            }?topicnum=${s2["topic_num"] || ""}&campnum=${
+                              s2["camp_num"] || ""
+                            }&namespace=${liveStatement["namespace_id"] || 1}`}
+                          >
+                            <a>{s2?.submitter_nick_name}</a>
+                          </Link>
+                        </Text>
+                      </Paragraph>
+                      <Paragraph>
+                        <Text strong>Go live time : </Text>
+                        <Text>{covertToTime(s2?.go_live_time)}</Text>
+                      </Paragraph>
+                      {from == "topic" ? (
+                        <Paragraph>
+                          <Text strong>Namespace : </Text>
+                          <Text>{s2?.namespace}</Text>
+                        </Paragraph>
+                      ) : null}
+                      {from == "camp" ? (
+                        <Fragment>
+                          {s2?.camp_num != 1 ? (
+                            <Paragraph>
+                              <Text strong>Parent Camp : </Text>
+                              <Text>{s2?.parent_camp_name}</Text>
+                            </Paragraph>
+                          ) : (
+                            ""
+                          )}
+                          <Paragraph>
+                            <Text strong>Keywords : </Text>
+                            <Text>{s2?.key_words}</Text>
+                          </Paragraph>
+                          <Paragraph>
+                            <Text strong>Camp About URL : </Text>
+                            <Text>
+                              <Link href={s2?.camp_about_url || ""}>
+                                <a>{s2?.camp_about_url}</a>
+                              </Link>
+                            </Text>
+                          </Paragraph>
+                          <Paragraph>
+                            <Text strong>Camp About Nick Name : </Text>
+                            <Text>
+                              <Link
+                                href={`/user/supports/${
+                                  s2["camp_about_nick_id"] || ""
+                                }?topicnum=${s2["topic_num"] || ""}&campnum=${
+                                  s2["camp_num"] || ""
+                                }&namespace=${s2["namespace_id"] || 1}`}
+                              >
+                                <a>{s2?.camp_about_nick_name}</a>
+                              </Link>
+                            </Text>
+                          </Paragraph>
+                        </Fragment>
+                      ) : null}
+                      <Text strong style={{ textTransform: "capitalize" }}>
+                        {from === "topic"
+                          ? "Topic Name"
+                          : from === "camp"
+                          ? "Camp Name"
+                          : from}{" "}
+                        :{" "}
                       </Text>
-                    }
-                  >
-                    <Text strong style={{ textTransform: "capitalize" }}>
-                      {from === "topic"
-                        ? "Topic Name"
-                        : from === "camp"
-                        ? "Camp Name"
-                        : from}{" "}
-                      :{" "}
-                    </Text>
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: liveStatement?.parsed_value,
-                      }}
-                    ></div>
+                      <Card
+                        bordered
+                        className={
+                          styles.compareCardInternal + " " + styles.inter2
+                        }
+                      >
+                        <div
+                          dangerouslySetInnerHTML={{ __html: s2?.parsed_v }}
+                        ></div>
+                      </Card>
+                    </Card>
+                  </Col>
+                  <Col span={24}>
                     <Divider />
-                    <Paragraph>
-                      <Text strong>Edit Summary : </Text>
-                      <Text>{liveStatement?.note}</Text>
-                    </Paragraph>
-                    <Paragraph>
-                      <Text strong>Submitted on : </Text>
-                      <Text>{covertToTime(liveStatement?.submit_time)}</Text>
-                    </Paragraph>
-                    <Paragraph>
-                      <Text strong>Submitter Nick Name : </Text>
-                      <Text>
-                        <Link
-                          href={`/user/supports/${
-                            liveStatement["submitter_nick_id"] || ""
-                          }?topicnum=${
-                            liveStatement["topic_num"] || ""
-                          }&campnum=${
-                            liveStatement["camp_num"] || ""
-                          }&namespace=${liveStatement["namespace_id"] || 1}`}
-                        >
-                          <a>{liveStatement?.submitter_nick_name}</a>
-                        </Link>
+                    <Card
+                      bordered={false}
+                      className={
+                        styles.latestCard +
+                          " " +
+                          styles[liveStatement?.status] || "live"
+                      }
+                      title={
+                        <Text>
+                          Latest revision as of{" "}
+                          {covertToTime(liveStatement?.revision_date)}
+                        </Text>
+                      }
+                    >
+                      <Text strong style={{ textTransform: "capitalize" }}>
+                        {from === "topic"
+                          ? "Topic Name"
+                          : from === "camp"
+                          ? "Camp Name"
+                          : from}{" "}
+                        :{" "}
                       </Text>
-                    </Paragraph>
-                    <Paragraph>
-                      <Text strong>Go live time : </Text>
-                      <Text>{covertToTime(liveStatement?.go_live_time)}</Text>
-                    </Paragraph>
-                    {from == "topic" ? (
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: liveStatement?.parsed_value,
+                        }}
+                      ></div>
+                      <Divider />
                       <Paragraph>
-                        <Text strong>Namespace : </Text>
-                        <Text>{liveStatement?.namespace}</Text>
+                        <Text strong>Edit Summary : </Text>
+                        <Text>{liveStatement?.note}</Text>
                       </Paragraph>
-                    ) : null}
-                    {from == "camp" ? (
-                      <Fragment>
-                        {liveStatement?.camp_num != 1 ? (
+                      <Paragraph>
+                        <Text strong>Submitted on : </Text>
+                        <Text>{covertToTime(liveStatement?.submit_time)}</Text>
+                      </Paragraph>
+                      <Paragraph>
+                        <Text strong>Submitter Nick Name : </Text>
+                        <Text>
+                          <Link
+                            href={`/user/supports/${
+                              liveStatement["submitter_nick_id"] || ""
+                            }?topicnum=${
+                              liveStatement["topic_num"] || ""
+                            }&campnum=${
+                              liveStatement["camp_num"] || ""
+                            }&namespace=${liveStatement["namespace_id"] || 1}`}
+                          >
+                            <a>{liveStatement?.submitter_nick_name}</a>
+                          </Link>
+                        </Text>
+                      </Paragraph>
+                      <Paragraph>
+                        <Text strong>Go live time : </Text>
+                        <Text>{covertToTime(liveStatement?.go_live_time)}</Text>
+                      </Paragraph>
+                      {from == "topic" ? (
+                        <Paragraph>
+                          <Text strong>Namespace : </Text>
+                          <Text>{liveStatement?.namespace}</Text>
+                        </Paragraph>
+                      ) : null}
+                      {from == "camp" ? (
+                        <Fragment>
+                          {liveStatement?.camp_num != 1 ? (
+                            <Paragraph>
+                              <Text strong>Parent Camp : </Text>
+                              <Text>{liveStatement?.parent_camp_name}</Text>
+                            </Paragraph>
+                          ) : (
+                            ""
+                          )}
                           <Paragraph>
-                            <Text strong>Parent Camp : </Text>
-                            <Text>{liveStatement?.parent_camp_name}</Text>
+                            <Text strong>Keywords : </Text>
+                            <Text>{liveStatement?.key_words}</Text>
                           </Paragraph>
-                        ) : (
-                          ""
-                        )}
-                        <Paragraph>
-                          <Text strong>Keywords : </Text>
-                          <Text>{liveStatement?.key_words}</Text>
-                        </Paragraph>
-                        <Paragraph>
-                          <Text strong>Camp About URL : </Text>
-                          <Text>
-                            <Link href={liveStatement?.camp_about_url || ""}>
-                              <a>{liveStatement?.camp_about_url}</a>
-                            </Link>
-                          </Text>
-                        </Paragraph>
-                        <Paragraph>
-                          <Text strong>Camp About Nick Name : </Text>
-                          <Text>
-                            <Link
-                              href={`/user/supports/${
-                                liveStatement["camp_about_nick_id"] || ""
-                              }?topicnum=${
-                                liveStatement["topic_num"] || ""
-                              }&campnum=${
-                                liveStatement["camp_num"] || ""
-                              }&namespace=${
-                                liveStatement["namespace_id"] || 1
-                              }`}
-                            >
-                              <a>{liveStatement?.camp_about_nick_name}</a>
-                            </Link>
-                          </Text>
-                        </Paragraph>
-                      </Fragment>
-                    ) : null}
-                  </Card>
-                </Col>
-              </Row>
-            </Spin>
+                          <Paragraph>
+                            <Text strong>Camp About URL : </Text>
+                            <Text>
+                              <Link href={liveStatement?.camp_about_url || ""}>
+                                <a>{liveStatement?.camp_about_url}</a>
+                              </Link>
+                            </Text>
+                          </Paragraph>
+                          <Paragraph>
+                            <Text strong>Camp About Nick Name : </Text>
+                            <Text>
+                              <Link
+                                href={`/user/supports/${
+                                  liveStatement["camp_about_nick_id"] || ""
+                                }?topicnum=${
+                                  liveStatement["topic_num"] || ""
+                                }&campnum=${
+                                  liveStatement["camp_num"] || ""
+                                }&namespace=${
+                                  liveStatement["namespace_id"] || 1
+                                }`}
+                              >
+                                <a>{liveStatement?.camp_about_nick_name}</a>
+                              </Link>
+                            </Text>
+                          </Paragraph>
+                        </Fragment>
+                      ) : null}
+                    </Card>
+                  </Col>
+                </Row>
+              </>
+            )}
           </div>
         </div>
       </div>

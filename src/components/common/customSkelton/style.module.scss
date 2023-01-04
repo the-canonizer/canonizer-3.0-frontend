@@ -52,3 +52,9 @@
     list-style: none;
   }
 }
+
+.fullSkeleton {
+  &>div {
+    border: none;
+  }
+}
