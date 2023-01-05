@@ -83,7 +83,6 @@ const HeadContentAndPermissionComponent = ({
         : setMetaContent(defaultTags);
     }
     apiCall();
-    console.log("are bhaiya kesse ho");
   }, [componentName, router?.query]);
 
   return (
