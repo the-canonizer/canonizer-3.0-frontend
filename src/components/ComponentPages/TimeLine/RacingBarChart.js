@@ -7,17 +7,35 @@ function RacingBarChart({ data }) {
   const wrapperRef = useRef();
   const dimensions = useResizeObserver(wrapperRef);
 
+  //Manage X axis
+
+  const manageXAxis = (level) => {
+    return level * 10;
+  };
+
+  const pickColor = (level) => {
+    if (level === 1) {
+      return "#f4efd3";
+    } else if (level === 2) {
+      return "#cccccc";
+    } else if (level === 3) {
+      return "#c2b0c9";
+    } else if (level === 4) {
+      return "#fcc169";
+    }
+  };
+
   // will be called initially and on every data change
   useEffect(() => {
     const svg = select(svgRef.current);
     if (!dimensions) return;
 
     // sorting the data
-    data.sort((a, b) => b.value - a.value);
+    // data.sort((a, b) => b.value - a.value);
 
     const yScale = scaleBand()
       .paddingInner(0.1)
-      .domain(data.map((value, index) => index)) // [0,1,2,3,4,5]
+      .domain(data?.map((value, index) => index)) // [0,1,2,3,4,5]
       .range([0, dimensions.height]); // [0, 200]
 
     const xScale = scaleLinear()
@@ -32,9 +50,9 @@ function RacingBarChart({ data }) {
       .join((enter) =>
         enter.append("rect").attr("y", (entry, index) => yScale(index))
       )
-      .attr("fill", (entry) => entry.color)
+      .attr("fill", (entry) => pickColor(entry.level))
       .attr("class", "bar")
-      .attr("x", 0)
+      .attr("x", (entry) => manageXAxis(entry.level))
       .attr("height", yScale.bandwidth())
       .transition()
       .attr("width", (entry) => xScale(entry.value))
@@ -54,7 +72,7 @@ function RacingBarChart({ data }) {
       )
       .text((entry) => `🐎 ... ${entry.name} (${entry.value} meters)`)
       .attr("class", "label")
-      .attr("x", 10)
+      .attr("x", (entry) => manageXAxis(entry.level) + 10)
       .transition()
       .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5);
   }, [data, dimensions]);
