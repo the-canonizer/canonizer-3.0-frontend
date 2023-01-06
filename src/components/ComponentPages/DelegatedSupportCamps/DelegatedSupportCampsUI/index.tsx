@@ -4,6 +4,7 @@ import Link from "next/link";
 import styles from "./DelegatedSupportedCamps.module.scss";
 import messages from "../../../../messages";
 import Spinner from "../../../common/spinner/spinner";
+import CustomSkelton from "@/components/common/customSkelton";
 export default function DelegatedSupportCampsUI({
   removeCardDelegatedSupportedCamps,
   handleSupportedCampsCancel,
@@ -155,14 +156,13 @@ export default function DelegatedSupportCampsUI({
           showEmpty("No Data Found")
         )
       ) : (
-        <>
-          {" "}
-          {statusFlag && statusFlag ? (
-            <Spinner> </Spinner>
-          ) : (
-            showEmpty("No Data Found ")
-          )}{" "}
-        </>
+        <CustomSkelton
+  skeltonFor="delegateSupportedCampListCard"
+  bodyCount={3}
+  stylingClass=""
+  isButton={false}
+/>
+
       )}
 
       <Modal

@@ -111,7 +111,9 @@ const CustomSkelton = ({
     <PostCustomSkelton bodyCount={bodyCount} stylingClass={stylingClass} />
   ) : skeltonFor == "subscription_card" ? (
     <SubscriptionCustomSkelton stylingClass={stylingClass} />
-  ) : null;
+  ) : skeltonFor == "directSupportCampsCard" ? (
+    <Skeleton className={styles.directSupportedCampsListSkeleton} count={bodyCount} />) : skeltonFor == "delegateSupportedCampListCard" ? (
+    <Skeleton className={styles.delegateSupportedCampsListSkeleton} count={bodyCount} />): null;
 };
 
 export default CustomSkelton;

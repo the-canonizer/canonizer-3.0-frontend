@@ -6,6 +6,7 @@ import styles from "./DirectSupportedCamps.module.scss";
 import Link from "next/link";
 import messages from "../../../../messages";
 import Spinner from "../../../common/spinner/spinner";
+import CustomSkelton from "@/components/common/customSkelton";
 export default function DirectSupportedCampsUI({
   removeCardSupportedCamps,
   handleSupportedCampsCancel,
@@ -181,14 +182,13 @@ export default function DirectSupportedCampsUI({
           showEmpty("No Data Found ")
         )
       ) : (
-        <>
-          {" "}
-          {statusFlag && statusFlag ? (
-            <Spinner> </Spinner>
-          ) : (
-            showEmpty("No Data Found ")
-          )}{" "}
-        </>
+        <CustomSkelton
+  skeltonFor="directSupportCampsCard"
+  bodyCount={18}
+  stylingClass=""
+  isButton={false}
+/>
+
       )}
 
       <Modal

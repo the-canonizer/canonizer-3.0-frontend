@@ -148,3 +148,25 @@
     }
   }
 }
+
+.delegateSupportedCampsListSkeleton {
+  display: block;
+  margin-top: 8px;
+  height: 159px;
+  border-radius: 6px;
+  &+br {
+    display: none;
+  }
+}
+
+.directSupportedCampsListSkeleton {
+  display: block;
+  margin-top: 8px;
+  margin-bottom: 8px;
+
+  height: 126px;
+  border-radius: 6px;
+  &+br {
+    display: none;
+  }
+}
