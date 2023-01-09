@@ -42,9 +42,7 @@ const tabList = [
     tab: "Subscriptions",
   },
 ];
-function callback(key) {
-  console.log(key);
-}
+function callback(key) {}
 
 const SettingsUI = () => {
   const [search, setSearch] = useState("");

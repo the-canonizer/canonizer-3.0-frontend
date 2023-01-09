@@ -41,6 +41,7 @@ export default function CampRecentActivities() {
           {data ? (
             <List
               itemLayout="horizontal"
+              className="activeListWrap"
               dataSource={data}
               renderItem={(item) => (
                 <List.Item className={styles.activitiesList}>
