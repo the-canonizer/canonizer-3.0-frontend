@@ -10,6 +10,7 @@ const getRandomIndex = (array) => {
 function TimeLine() {
   const [iteration, setIteration] = useState(0);
   const [start, setStart] = useState(false);
+  const [eventDescription, setEventDescription] = useState("Hello");
   const [data, setData] = useState([
     {
       name: "alpha",
@@ -50,145 +51,160 @@ function TimeLine() {
   ]);
 
   const mockData = {
-    1: [
-      {
-        name: "alpha",
-        value: 10,
-        color: "#f4efd3",
-        level: 1,
+    1: {
+      event: {
+        name: "support added",
       },
-      {
-        name: "beta 2",
-        value: 15,
-        color: "#cccccc",
-        level: 2,
+      data: [
+        {
+          name: "alpha",
+          value: 10,
+          color: "#f4efd3",
+          level: 1,
+        },
+        {
+          name: "beta 2",
+          value: 15,
+          color: "#cccccc",
+          level: 2,
+        },
+        {
+          name: "charlie",
+          value: 20,
+          color: "#c2b0c9",
+          level: 3,
+        },
+        {
+          name: "delta",
+          value: 25,
+          color: "#9656a1",
+          level: 3,
+        },
+        {
+          name: "echo",
+          value: 30,
+          color: "#fa697c",
+          level: 1,
+        },
+        {
+          name: "foxtrot",
+          value: 35,
+          color: "#fcc169",
+          level: 2,
+        },
+      ],
+    },
+    2: {
+      event: {
+        name: "camp name changed",
       },
-      {
-        name: "charlie",
-        value: 20,
-        color: "#c2b0c9",
-        level: 3,
+      data: [
+        {
+          name: "alpha",
+          value: 35,
+          color: "#f4efd3",
+          level: 1,
+        },
+        {
+          name: "beta 3",
+          value: 15,
+          color: "#cccccc",
+          level: 2,
+        },
+        {
+          name: "charlie",
+          value: 20,
+          color: "#c2b0c9",
+          level: 3,
+        },
+        {
+          name: "delta",
+          value: 25,
+          color: "#9656a1",
+          level: 3,
+        },
+        {
+          name: "test1",
+          value: 25,
+          color: "#9656a1",
+          level: 3,
+        },
+        {
+          name: "echo",
+          value: 30,
+          color: "#fa697c",
+          level: 1,
+        },
+        {
+          name: "foxtrot",
+          value: 10,
+          color: "#fcc169",
+          level: 2,
+        },
+        {
+          name: "test2",
+          value: 25,
+          color: "#9656a1",
+          level: 2,
+        },
+      ],
+    },
+    3: {
+      event: {
+        name: "support removed",
       },
-      {
-        name: "delta",
-        value: 25,
-        color: "#9656a1",
-        level: 3,
-      },
-      {
-        name: "echo",
-        value: 30,
-        color: "#fa697c",
-        level: 1,
-      },
-      {
-        name: "foxtrot",
-        value: 35,
-        color: "#fcc169",
-        level: 2,
-      },
-    ],
-    2: [
-      {
-        name: "alpha",
-        value: 35,
-        color: "#f4efd3",
-        level: 1,
-      },
-      {
-        name: "beta 3",
-        value: 15,
-        color: "#cccccc",
-        level: 2,
-      },
-      {
-        name: "charlie",
-        value: 20,
-        color: "#c2b0c9",
-        level: 3,
-      },
-      {
-        name: "delta",
-        value: 25,
-        color: "#9656a1",
-        level: 3,
-      },
-      {
-        name: "test1",
-        value: 25,
-        color: "#9656a1",
-        level: 3,
-      },
-      {
-        name: "echo",
-        value: 30,
-        color: "#fa697c",
-        level: 1,
-      },
-      {
-        name: "foxtrot",
-        value: 10,
-        color: "#fcc169",
-        level: 2,
-      },
-      {
-        name: "test2",
-        value: 25,
-        color: "#9656a1",
-        level: 2,
-      },
-    ],
-    3: [
-      {
-        name: "alpha",
-        value: 35,
-        color: "#f4efd3",
-        level: 1,
-      },
-      {
-        name: "beta 4",
-        value: 15,
-        color: "#cccccc",
-        level: 2,
-      },
-      {
-        name: "charlie",
-        value: 20,
-        color: "#c2b0c9",
-        level: 3,
-      },
-      {
-        name: "test1",
-        value: 25,
-        color: "#9656a1",
-        level: 4,
-      },
-      {
-        name: "delta",
-        value: 25,
-        color: "#9656a1",
-        level: 3,
-      },
+      data: [
+        {
+          name: "alpha",
+          value: 35,
+          color: "#f4efd3",
+          level: 1,
+        },
+        {
+          name: "beta 4",
+          value: 15,
+          color: "#cccccc",
+          level: 2,
+        },
+        {
+          name: "charlie",
+          value: 20,
+          color: "#c2b0c9",
+          level: 3,
+        },
+        {
+          name: "test1",
+          value: 25,
+          color: "#9656a1",
+          level: 4,
+        },
+        {
+          name: "delta",
+          value: 25,
+          color: "#9656a1",
+          level: 3,
+        },
 
-      {
-        name: "echo",
-        value: 30,
-        color: "#fa697c",
-        level: 1,
-      },
-      {
-        name: "foxtrot",
-        value: 10,
-        color: "#fcc169",
-        level: 2,
-      },
-      {
-        name: "test2",
-        value: 25,
-        color: "#9656a1",
-        level: 2,
-      },
-    ],
+        {
+          name: "echo",
+          value: 30,
+          color: "#fa697c",
+          level: 1,
+        },
+        {
+          name: "foxtrot",
+          value: 10,
+          color: "#fcc169",
+          level: 2,
+        },
+        {
+          name: "test2",
+          value: 25,
+          color: "#9656a1",
+          level: 2,
+        },
+      ],
+    },
   };
 
   const events = Object.keys(mockData);
@@ -208,7 +224,10 @@ function TimeLine() {
       //       : entry
       //   )
       // );
-      setData(mockData[events[iteration]]);
+      console.log(mockData[events[iteration]].data);
+      debugger;
+      setData(mockData[events[iteration]].data);
+      setEventDescription(mockData[events[iteration]].event?.name);
       console.log(data);
       setIteration(iteration + 1);
       iterationCount++;
@@ -216,26 +235,28 @@ function TimeLine() {
   }, 1000);
 
   const handleEventSelection = (index) => {
-    setData(mockData[events[index]]);
+    console.log(mockData[events[index]].data);
+    debugger;
+    setData(mockData[events[index]].data);
+    setEventDescription(mockData[events[index]].event?.name);
     setIteration(index);
-    setStart(false);
-  };
-
-  const handleStart = () => {
-    if (start) {
-      setStart(false);
-    }
   };
 
   return (
     <React.Fragment>
-      <h1>Racing Bar Chart</h1>
+      <h1 style={{ marginTop: "30px" }}>Racing Camps</h1>
       <RacingBarChart data={data} />
       <HorizontalTimelineComp
         iteration={iteration}
         handleEventSelection={handleEventSelection}
+        eventDescription={eventDescription}
       />
-      <button onClick={() => setStart(!start)}>
+      <button
+        onClick={() => {
+          setStart(!start);
+          setIteration(0);
+        }}
+      >
         {start ? "Stop the race" : "Start the race!"}
       </button>
       {iteration > 0 && (
@@ -249,6 +270,7 @@ function TimeLine() {
         </button>
       )}
       <p>Iteration: {iteration}</p>
+      {/* <DateTimeLine iteration={iteration} /> */}
     </React.Fragment>
   );
 }

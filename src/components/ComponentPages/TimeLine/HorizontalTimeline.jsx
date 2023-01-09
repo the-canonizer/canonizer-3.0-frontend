@@ -15,13 +15,18 @@ const VALUES = [
   "2019-08-01",
 ];
 
-const HorizontalTimelineComp = ({ iteration, handleEventSelection }) => {
+const HorizontalTimelineComp = ({
+  iteration,
+  handleEventSelection,
+  eventDescription,
+}) => {
   const [value, setValue] = useState(0);
   const [previous, setPrevious] = useState(0);
 
   return (
     <div>
       {/* Bounding box for the Timeline */}
+      <div className="text-center">{eventDescription}</div>
       <div style={{ width: "60%", height: "100px", margin: "0 auto" }}>
         <HorizontalTimeline
           // index={this.state.value}
