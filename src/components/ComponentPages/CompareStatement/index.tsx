@@ -28,8 +28,12 @@ function CompareStatement() {
       s1 = statements?.length ? statements[0] : { parsed_value: "" },
       s2 = statements?.length > 1 ? statements[1] : { parsed_value: "" },
       statementLive = res?.data?.liveStatement;
-
-    statementLive.revision_date = res?.data?.latestRevision;
+    if (
+      statementLive != null &&
+      statementLive != "" &&
+      statementLive != undefined
+    )
+      statementLive.revision_date = res?.data?.latestRevision;
 
     s1.parsed_v = HtmlDiff.execute(s2?.parsed_value, s1?.parsed_value);
     s2.parsed_v = HtmlDiff.execute(s1?.parsed_value, s2?.parsed_value);
