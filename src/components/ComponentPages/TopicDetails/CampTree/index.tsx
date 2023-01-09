@@ -210,7 +210,10 @@ const CampTree = ({
             <>
               <TreeNode
                 title={
-                  <div id={`camp-${data[item].camp_id}`}>
+                  <div
+                    style={{ overflowX: "auto", overflowY: "clip" }}
+                    id={`camp-${data[item].camp_id}`}
+                  >
                     <div
                       className={
                         "treeListItem " + styles.topicDetailsTreeListItem
