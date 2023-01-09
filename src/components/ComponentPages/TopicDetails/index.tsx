@@ -399,126 +399,104 @@ const TopicDetails = () => {
         <aside className={styles.miniSide + " leftSideBar miniSideBar"}>
           <SideBar onCreateCamp={onCreateCamp} />
         </aside>
-        {((tree && tree["1"]?.is_valid_as_of_time) || asof == "default") && (
-          <>
-            <div className={styles.pageContent + " pageContentWrap"}>
-              <Spin spinning={getTreeLoadingIndicator} size="large">
-                <CampTreeCard
-                  scrollToCampStatement={scrollToCampStatement}
-                  setTotalCampScoreForSupportTree={
-                    setTotalCampScoreForSupportTree
-                  }
-                  setSupportTreeForCamp={setSupportTreeForCamp}
-                />
-              </Spin>
-              {campExist && !campExist?.camp_exist && (
-                <Spin spinning={loadingIndicator} size="large">
-                  <>
-                    <Alert
-                      className="alert-camp-created-on"
-                      message="The camp was first created on"
-                      type="info"
-                      description={
-                        <span>
-                          <Link
-                            onClick={() => {
-                              onCreateCampDate();
-                            }}
-                          >
-                            {" "}
-                            {new Date(
-                              (campExist && campExist?.created_at) * 1000
-                            ).toLocaleString()}
-                          </Link>
-                        </span>
-                      }
-                    />
-                  </>
-                </Spin>
-              )}
-              {campExist
-                ? campExist?.camp_exist
-                : true && (
-                    <>
-                      <Spin spinning={loadingIndicator} size="large">
-                        <CampStatementCard />
-                      </Spin>
-                      {typeof window !== "undefined" &&
-                        window.innerWidth < 767 && (
-                          <>
-                            {router.asPath.includes("topic") && (
-                              <CampRecentActivities />
-                            )}
-                            <Spin spinning={loadingIndicator} size="large">
-                              {!!newsFeed?.length && (
-                                <NewsFeedsCard newsFeed={newsFeed} />
-                              )}
-                            </Spin>
-                          </>
-                        )}
-                      <Spin spinning={loadingIndicator} size="large">
-                        <CurrentTopicCard />
-                      </Spin>
-                      <Spin spinning={loadingIndicator} size="large">
-                        <CurrentCampCard />
-                      </Spin>
-
-                      <Spin spinning={loadingIndicator} size="large">
-                        <SupportTreeCard
-                          handleLoadMoreSupporters={handleLoadMoreSupporters}
-                          getCheckSupportStatus={getCheckSupportStatus}
-                          removeApiSupport={removeApiSupport}
-                          // fetchTotalScore={fetchTotalScore}
-                          totalSupportScore={totalSupportScore}
-                          totalFullSupportScore={totalFullSupportScore}
-                          removeSupport={removeSupport}
-                          topicList={topicList}
-                          removeSupportForDelegate={removeSupportForDelegate}
-                          isSupportTreeCardModal={isSupportTreeCardModal}
-                          setIsSupportTreeCardModal={setIsSupportTreeCardModal}
-                          handleSupportTreeCardCancel={
-                            handleSupportTreeCardCancel
-                          }
-                          removeSupportSpinner={removeSupportSpinner}
-                          supportTreeForCamp={supportTreeForCamp}
-                          totalCampScoreForSupportTree={
-                            totalCampScoreForSupportTree
-                          }
-                        />
-                      </Spin>
-                    </>
-                  )}
-            </div>
-          </>
-        )}
-        {tree && !tree["1"]?.is_valid_as_of_time && (
-          // {tree && !tree["1"]?.is_valid_as_of_time &&
-          <div className={styles.imageWrapper}>
-            <div>
-              <Image
-                preview={false}
-                alt="No topic created"
-                src={"/images/empty-img-default.png"}
-                fallback={fallBackSrc}
-                width={200}
-                id="forgot-modal-img"
+        <>
+          <div className={styles.pageContent + " pageContentWrap"}>
+            <Spin spinning={getTreeLoadingIndicator} size="large">
+              <CampTreeCard
+                scrollToCampStatement={scrollToCampStatement}
+                setTotalCampScoreForSupportTree={
+                  setTotalCampScoreForSupportTree
+                }
+                setSupportTreeForCamp={setSupportTreeForCamp}
               />
-              <p>
-                The topic was created on
-                <Link
-                  onClick={() => {
-                    onCreateTreeDate();
-                  }}
-                >
-                  {" "}
-                  {new Date(
-                    (tree && tree["1"]?.created_date) * 1000
-                  ).toLocaleString()}
-                </Link>
-              </p>
-            </div>
+            </Spin>
+
+            {((tree && tree["1"]?.is_valid_as_of_time) ||
+              asof == "default") && (
+              <>
+                {campExist && !campExist?.camp_exist && (
+                  <Spin spinning={loadingIndicator} size="large">
+                    <>
+                      <Alert
+                        className="alert-camp-created-on"
+                        message="The camp was first created on"
+                        type="info"
+                        description={
+                          <span>
+                            <Link
+                              onClick={() => {
+                                onCreateCampDate();
+                              }}
+                            >
+                              {" "}
+                              {new Date(
+                                (campExist && campExist?.created_at) * 1000
+                              ).toLocaleString()}
+                            </Link>
+                          </span>
+                        }
+                      />
+                    </>
+                  </Spin>
+                )}
+                {campExist
+                  ? campExist?.camp_exist
+                  : true && (
+                      <>
+                        <Spin spinning={loadingIndicator} size="large">
+                          <CampStatementCard />
+                        </Spin>
+                        {typeof window !== "undefined" &&
+                          window.innerWidth < 767 && (
+                            <>
+                              {router.asPath.includes("topic") && (
+                                <CampRecentActivities />
+                              )}
+                              <Spin spinning={loadingIndicator} size="large">
+                                {!!newsFeed?.length && (
+                                  <NewsFeedsCard newsFeed={newsFeed} />
+                                )}
+                              </Spin>
+                            </>
+                          )}
+                        <Spin spinning={loadingIndicator} size="large">
+                          <CurrentTopicCard />
+                        </Spin>
+                        <Spin spinning={loadingIndicator} size="large">
+                          <CurrentCampCard />
+                        </Spin>
+
+                        <Spin spinning={loadingIndicator} size="large">
+                          <SupportTreeCard
+                            handleLoadMoreSupporters={handleLoadMoreSupporters}
+                            getCheckSupportStatus={getCheckSupportStatus}
+                            removeApiSupport={removeApiSupport}
+                            // fetchTotalScore={fetchTotalScore}
+                            totalSupportScore={totalSupportScore}
+                            totalFullSupportScore={totalFullSupportScore}
+                            removeSupport={removeSupport}
+                            topicList={topicList}
+                            removeSupportForDelegate={removeSupportForDelegate}
+                            isSupportTreeCardModal={isSupportTreeCardModal}
+                            setIsSupportTreeCardModal={
+                              setIsSupportTreeCardModal
+                            }
+                            handleSupportTreeCardCancel={
+                              handleSupportTreeCardCancel
+                            }
+                            removeSupportSpinner={removeSupportSpinner}
+                            supportTreeForCamp={supportTreeForCamp}
+                            totalCampScoreForSupportTree={
+                              totalCampScoreForSupportTree
+                            }
+                          />
+                        </Spin>
+                      </>
+                    )}
+              </>
+            )}
           </div>
-        )}
+        </>
       </div>
       <BackTop />
     </>

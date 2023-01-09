@@ -183,7 +183,6 @@ const CampTree = ({
       .sort((a, b) => b[1].score - a[1].score);
     return sortedData.map((itemWithData) => {
       let item = itemWithData[0];
-      console.log("data", data[item]);
       const parentIsOneLevel = isOneLevel;
       let _isOneLevel = data[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
       let _isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
@@ -316,7 +315,7 @@ const CampTree = ({
   };
 
   return tree?.at(0) ? (
-    showTree && (
+    showTree && tree?.at(0)["1"].title != "" && defaultExpandKeys ? (
       <Tree
         showLine={{ showLeafIcon: false }}
         defaultExpandedKeys={defaultExpandKeys}
@@ -326,7 +325,7 @@ const CampTree = ({
       >
         {tree?.at(0) && renderTreeNodes(tree?.at(0))}
       </Tree>
-    )
+    ) : null
   ) : (
     <p>No Camp Tree Found</p>
   );
