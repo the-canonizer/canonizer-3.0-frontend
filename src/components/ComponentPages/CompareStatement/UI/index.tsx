@@ -119,7 +119,7 @@ function CompareStatementUI({
                             s1["submitter_nick_id"] || ""
                           }?topicnum=${s1["topic_num"] || ""}&campnum=${
                             s1["camp_num"] || ""
-                          }&namespace=${liveStatement["namespace_id"] || 1}`}
+                          }&namespace=${s1["namespace_id"] || 1}`}
                         >
                           <a>{s1?.submitter_nick_name}</a>
                         </Link>
@@ -229,7 +229,7 @@ function CompareStatementUI({
                             s2["submitter_nick_id"] || ""
                           }?topicnum=${s2["topic_num"] || ""}&campnum=${
                             s2["camp_num"] || ""
-                          }&namespace=${liveStatement["namespace_id"] || 1}`}
+                          }&namespace=${s2["namespace_id"] || 1}`}
                         >
                           <a>{s2?.submitter_nick_name}</a>
                         </Link>
@@ -316,7 +316,7 @@ function CompareStatementUI({
                     bordered={false}
                     cardStylingClass="fullSkeleton"
                   />
-                ) : (
+                ) : liveStatement ? (
                   <Card
                     bordered={false}
                     className={
@@ -421,6 +421,8 @@ function CompareStatementUI({
                       </Fragment>
                     ) : null}
                   </Card>
+                ) : (
+                  ""
                 )}
               </Col>
             </Row>

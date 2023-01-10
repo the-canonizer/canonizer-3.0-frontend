@@ -216,14 +216,26 @@ export default function RecentActivities() {
                             <br />
                             <Tooltip
                               title={
-                                convert(decodedProperties?.description, {
-                                  wordwrap: 130,
-                                }).substring(0, 90) + "..."
+                                convert(
+                                  decodedProperties?.description?.replace(
+                                    /<img[^>]*>/gi,
+                                    ""
+                                  ),
+                                  {
+                                    wordwrap: 130,
+                                  }
+                                ).substring(0, 90) + "..."
                               }
                             >
-                              {convert(decodedProperties?.description, {
-                                wordwrap: 130,
-                              })}
+                              {convert(
+                                decodedProperties?.description?.replace(
+                                  /<img[^>]*>/gi,
+                                  ""
+                                ),
+                                {
+                                  wordwrap: 130,
+                                }
+                              )}
                             </Tooltip>
                             {/* {decodedProperties?.description?.length > 100 ? (
                                 <Tooltip title={decodedProperties?.description}>

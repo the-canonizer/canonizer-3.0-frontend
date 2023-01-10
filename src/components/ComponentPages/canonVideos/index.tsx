@@ -36,7 +36,6 @@ export default function CanonVideos() {
   };
 
   function updateTime() {
-    console.log("update", playeref);
     if (topic != playeref?.current?.textTracks[0]?.activeCues[0]?.text) {
       setTopic(playeref?.current?.textTracks[0]?.activeCues[0]?.text);
     }
