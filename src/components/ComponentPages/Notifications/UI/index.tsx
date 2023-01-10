@@ -1,10 +1,11 @@
 import { Fragment } from "react";
-import { Card, Typography, Spin, Pagination } from "antd";
+import { Card, Typography, Pagination } from "antd";
 
 import styles from "./Notifications.module.scss";
 
 import SideBar from "../../CampForum/UI/sidebar";
 import Lists from "./List";
+import CustomSkelton from "../../../common/customSkelton";
 
 const { Title } = Typography;
 
@@ -20,16 +21,24 @@ const NotificationsListUI = ({
     <Fragment>
       <SideBar />
       <div className="pageContentWrap">
-        <Spin spinning={isLoading} size="large">
-          <Card
-            title={
-              <Title level={3} className={styles.cardTitle}>
-                Notifications
-              </Title>
-            }
-            className={styles.notify_card}
-            id="card-title"
-          >
+        <Card
+          title={
+            <Title level={3} className={styles.cardTitle}>
+              Notifications
+            </Title>
+          }
+          className={styles.notify_card}
+          id="card-title"
+        >
+          {isLoading ? (
+            <CustomSkelton
+              skeltonFor="list"
+              bodyCount={10}
+              stylingClass=""
+              listStyle=""
+              isButton={false}
+            />
+          ) : (
             <Lists
               list={list}
               isFooter={true}
@@ -46,8 +55,8 @@ const NotificationsListUI = ({
                 />
               }
             />
-          </Card>
-        </Spin>
+          )}
+        </Card>
       </div>
     </Fragment>
   );

@@ -4,7 +4,8 @@ import "react-loading-skeleton/dist/skeleton.css";
 
 import styles from "./style.module.scss";
 
-const { Meta } = Card;
+import PostCustomSkelton from "./postCard";
+import SubscriptionCustomSkelton from "./subscriptionCard";
 
 const CustomSkelton = ({
   titleName = "",
@@ -16,6 +17,7 @@ const CustomSkelton = ({
   bordered = true,
   title = true,
   cardStylingClass = "",
+  listStyle = "blank",
 }) => {
   return skeltonFor == "card" ? (
     <Card
@@ -49,7 +51,10 @@ const CustomSkelton = ({
       <Skeleton className={styles[stylingClass]} count={bodyCount} />
     </Card>
   ) : skeltonFor == "list" ? (
-    <Skeleton className={styles[stylingClass]} count={bodyCount} />
+    <Skeleton
+      className={`${styles[stylingClass]} ${styles[listStyle]}`}
+      count={bodyCount}
+    />
   ) : skeltonFor == "tree" ? (
     <ul className={styles.treeSkeleton}>
       <li>
@@ -102,6 +107,10 @@ const CustomSkelton = ({
     </ul>
   ) : skeltonFor == "video" ? (
     <Skeleton height={400} width={"100%"} />
+  ) : skeltonFor == "post_card" ? (
+    <PostCustomSkelton bodyCount={bodyCount} stylingClass={stylingClass} />
+  ) : skeltonFor == "subscription_card" ? (
+    <SubscriptionCustomSkelton stylingClass={stylingClass} />
   ) : null;
 };
 

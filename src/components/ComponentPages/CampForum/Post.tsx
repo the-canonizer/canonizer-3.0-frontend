@@ -21,30 +21,35 @@ const Threads = ({
   currentThread,
   isLog,
   isLoading,
+  postperPage,
+  threadDetailsLoading,
 }) => (
   <div className="d-flex">
     <ThreadSidebar />
     <div className="pageContentWrap">
-      <Spin spinning={isLoading} size="large">
-        <Post
-          onFinishPost={onFinishPost}
-          onCancel={onCancel}
-          formPost={formPost}
-          initialValue={initialValue}
-          nickNameList={nickNameList}
-          postList={postList}
-          pCurrent={pCurrent}
-          pTotal={pTotal}
-          pOnChange={pOnChange}
-          quillContent={quillContent}
-          onContentChange={onContentChange}
-          isError={isError}
-          onEditClick={onPostEditClick}
-          onDeleteClick={onDeleteClick}
-          currentThread={currentThread}
-          isLog={isLog}
-        />
-      </Spin>
+      {/* <Spin spinning={isLoading} size="large"> */}
+      <Post
+        onFinishPost={onFinishPost}
+        onCancel={onCancel}
+        formPost={formPost}
+        initialValue={initialValue}
+        nickNameList={nickNameList}
+        postList={postList}
+        pCurrent={pCurrent}
+        pTotal={pTotal}
+        pOnChange={pOnChange}
+        quillContent={quillContent}
+        onContentChange={onContentChange}
+        isError={isError}
+        onEditClick={onPostEditClick}
+        onDeleteClick={onDeleteClick}
+        currentThread={currentThread}
+        isLog={isLog}
+        isLoading={isLoading}
+        postperPage={postperPage}
+        threadDetailsLoading={threadDetailsLoading}
+      />
+      {/* </Spin> */}
     </div>
   </div>
 );
