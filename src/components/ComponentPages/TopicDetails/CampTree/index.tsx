@@ -152,7 +152,6 @@ const CampTree = ({
           : +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1)
       );
     setDefaultExpandKeys(expandKeys);
-    console.log("final aawaser ", expandKeys);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tree?.at(0)]);
@@ -211,7 +210,10 @@ const CampTree = ({
             <>
               <TreeNode
                 title={
-                  <div id={`camp-${data[item].camp_id}`}>
+                  <div
+                    style={{ overflowX: "auto", overflowY: "clip" }}
+                    id={`camp-${data[item].camp_id}`}
+                  >
                     <div
                       className={
                         "treeListItem " + styles.topicDetailsTreeListItem

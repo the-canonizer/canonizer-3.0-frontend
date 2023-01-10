@@ -9,6 +9,7 @@ import { RootState } from "src/store";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
 import Link from "next/link";
 import { convert } from "html-to-text";
+import CustomSkelton from "@/components/common/customSkelton";
 
 const antIcon = <LoadingOutlined spin />;
 const { TabPane } = Tabs;
@@ -173,16 +174,24 @@ export default function RecentActivities() {
   return (
     <>
       <div className={`${styles.listCard} recentActivities_listWrap`}>
-        <Spin spinning={getTopicsLoadingIndicator} size="large">
-          <Tabs
-            className={`${styles.listCardTabs} recentActivities_listCardTabs`}
-            defaultActiveKey={`${
-              router?.query?.tabName ? router?.query?.tabName : "topic/camps"
-            }`}
-            tabBarExtraContent={slot}
-            onChange={handleTabChange}
-          >
-            <TabPane tab="Topics/Camps" key="topic/camps">
+        {/* <Spin spinning={getTopicsLoadingIndicator} size="large"> */}
+        <Tabs
+          className={`${styles.listCardTabs} recentActivities_listCardTabs`}
+          defaultActiveKey={`${
+            router?.query?.tabName ? router?.query?.tabName : "topic/camps"
+          }`}
+          tabBarExtraContent={slot}
+          onChange={handleTabChange}
+        >
+          <TabPane tab="Topics/Camps" key="topic/camps">
+            {getTopicsLoadingIndicator ? (
+              <CustomSkelton
+                skeltonFor="list"
+                bodyCount={10}
+                stylingClass="listSkeleton"
+                isButton={false}
+              />
+            ) : (
               <List
                 className={styles.listWrap}
                 footer={
@@ -207,14 +216,26 @@ export default function RecentActivities() {
                             <br />
                             <Tooltip
                               title={
-                                convert(decodedProperties?.description, {
-                                  wordwrap: 130,
-                                }).substring(0, 90) + "..."
+                                convert(
+                                  decodedProperties?.description?.replace(
+                                    /<img[^>]*>/gi,
+                                    ""
+                                  ),
+                                  {
+                                    wordwrap: 130,
+                                  }
+                                ).substring(0, 90) + "..."
                               }
                             >
-                              {convert(decodedProperties?.description, {
-                                wordwrap: 130,
-                              })}
+                              {convert(
+                                decodedProperties?.description?.replace(
+                                  /<img[^>]*>/gi,
+                                  ""
+                                ),
+                                {
+                                  wordwrap: 130,
+                                }
+                              )}
                             </Tooltip>
                             {/* {decodedProperties?.description?.length > 100 ? (
                                 <Tooltip title={decodedProperties?.description}>
@@ -237,8 +258,17 @@ export default function RecentActivities() {
                   );
                 }}
               />
-            </TabPane>
-            <TabPane tab="Threads" key="threads">
+            )}
+          </TabPane>
+          <TabPane tab="Threads" key="threads">
+            {getTopicsLoadingIndicator ? (
+              <CustomSkelton
+                skeltonFor="list"
+                bodyCount={15}
+                stylingClass="listSkeleton"
+                isButton={false}
+              />
+            ) : (
               <List
                 className={styles.listWrap}
                 footer={
@@ -270,9 +300,10 @@ export default function RecentActivities() {
                   </List.Item>
                 )}
               />
-            </TabPane>
-          </Tabs>
-        </Spin>
+            )}
+          </TabPane>
+        </Tabs>
+        {/* </Spin> */}
       </div>
     </>
   );

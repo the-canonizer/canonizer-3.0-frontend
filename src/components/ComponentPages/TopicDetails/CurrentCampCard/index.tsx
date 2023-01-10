@@ -25,6 +25,7 @@ const CurrentCampCard = ({ loadingIndicator }) => {
 
   return loadingIndicator ? (
     <CustomSkelton
+      titleName={K?.exceptionalMessages?.campRecordHeading}
       skeltonFor="card"
       bodyCount={6}
       stylingClass="test"
@@ -37,7 +38,10 @@ const CurrentCampCard = ({ loadingIndicator }) => {
       expandIconPosition="right"
       className="topicDetailsCollapse"
     >
-      <Panel header={<h3>Current Camp Record</h3>} key="1">
+      <Panel
+        header={<h3>{K?.exceptionalMessages?.campRecordHeading}</h3>}
+        key="1"
+      >
         <Descriptions column={1}>
           {currentCampRecordConstants?.map((description) => {
             if (

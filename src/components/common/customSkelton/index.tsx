@@ -1,5 +1,5 @@
-import { Card } from "antd";
-import Skeleton from "react-loading-skeleton";
+import { Avatar, Card, Switch, Row, Col } from "antd";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
 import styles from "./style.module.scss";
@@ -8,34 +8,51 @@ import PostCustomSkelton from "./postCard";
 import SubscriptionCustomSkelton from "./subscriptionCard";
 
 const CustomSkelton = ({
+  titleName = "",
   skeltonFor,
   bodyCount,
   stylingClass,
-  listStyle = "blank",
   isButton,
+  action = true,
+  bordered = true,
+  title = true,
+  cardStylingClass = "",
+  listStyle = "blank",
 }) => {
   return skeltonFor == "card" ? (
     <Card
-      className={styles.cardSkeleton}
-      actions={[
-        <div className={styles.cardSkeleton_actions}>
-          <Skeleton className={styles.cardSkeleton_actions_button} count={1} />
-        </div>,
-      ]}
+      className={` ${styles.cardSkeleton} ${styles[cardStylingClass]}`}
+      bordered={bordered}
+      actions={
+        action
+          ? [
+              <div className={styles.cardSkeleton_actions}>
+                <Skeleton
+                  className={styles.cardSkeleton_actions_button}
+                  count={1}
+                />
+              </div>,
+            ]
+          : []
+      }
       title={
-        <Skeleton
-          height={29}
-          className={styles[stylingClass]}
-          style={{ margin: "2px 0" }}
-          count={1}
-        />
+        title ? (
+          <h3>{titleName}</h3>
+        ) : (
+          <Skeleton
+            height={29}
+            className={styles[stylingClass]}
+            style={{ margin: "2px 0" }}
+            count={1}
+          />
+        )
       }
     >
       <Skeleton className={styles[stylingClass]} count={bodyCount} />
     </Card>
   ) : skeltonFor == "list" ? (
     <Skeleton
-      className={`${styles.listSkeleton} ${styles[listStyle]}`}
+      className={`${styles[stylingClass]} ${styles[listStyle]}`}
       count={bodyCount}
     />
   ) : skeltonFor == "tree" ? (
@@ -88,6 +105,8 @@ const CustomSkelton = ({
         </ul>
       </li>
     </ul>
+  ) : skeltonFor == "video" ? (
+    <Skeleton height={400} width={"100%"} />
   ) : skeltonFor == "post_card" ? (
     <PostCustomSkelton bodyCount={bodyCount} stylingClass={stylingClass} />
   ) : skeltonFor == "subscription_card" ? (

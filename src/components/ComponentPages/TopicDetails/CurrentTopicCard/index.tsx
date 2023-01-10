@@ -19,6 +19,7 @@ const CurrentTopicCard = ({ loadingIndicator }) => {
   }));
   return loadingIndicator ? (
     <CustomSkelton
+      titleName={K?.exceptionalMessages?.topicRecordHeading}
       skeltonFor="card"
       bodyCount={2}
       stylingClass="test"
@@ -30,7 +31,10 @@ const CurrentTopicCard = ({ loadingIndicator }) => {
       expandIconPosition="right"
       className="topicDetailsCollapse"
     >
-      <Panel header={<h3>Current Topic Record</h3>} key="1">
+      <Panel
+        header={<h3>{K?.exceptionalMessages?.topicRecordHeading}</h3>}
+        key="1"
+      >
         <Descriptions column={1}>
           <Descriptions.Item label="Topic Name">
             {topicRecord && topicRecord?.topic_name}
