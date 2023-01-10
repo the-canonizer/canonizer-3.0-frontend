@@ -289,7 +289,7 @@ const TopicsList = () => {
               <CustomSkelton
                 skeltonFor="list"
                 bodyCount={10}
-                stylingClass=""
+                stylingClass="listSkeleton"
                 isButton={false}
               />
             ) : (

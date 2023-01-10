@@ -7,6 +7,7 @@ import styles from "./style.module.scss";
 const { Meta } = Card;
 
 const CustomSkelton = ({
+  titleName = "",
   skeltonFor,
   bodyCount,
   stylingClass,
@@ -34,21 +35,21 @@ const CustomSkelton = ({
       }
       title={
         title ? (
+          <h3>{titleName}</h3>
+        ) : (
           <Skeleton
             height={29}
             className={styles[stylingClass]}
             style={{ margin: "2px 0" }}
             count={1}
           />
-        ) : (
-          ""
         )
       }
     >
       <Skeleton className={styles[stylingClass]} count={bodyCount} />
     </Card>
   ) : skeltonFor == "list" ? (
-    <Skeleton className={styles.listSkeleton} count={bodyCount} />
+    <Skeleton className={styles[stylingClass]} count={bodyCount} />
   ) : skeltonFor == "tree" ? (
     <ul className={styles.treeSkeleton}>
       <li>
@@ -99,6 +100,8 @@ const CustomSkelton = ({
         </ul>
       </li>
     </ul>
+  ) : skeltonFor == "video" ? (
+    <Skeleton height={400} width={"100%"} />
   ) : null;
 };
 

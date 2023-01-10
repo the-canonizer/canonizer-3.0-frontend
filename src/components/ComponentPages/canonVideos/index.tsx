@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./style.module.scss";
-import { RadioChangeEvent, Typography } from "antd";
+import { RadioChangeEvent, Spin, Typography } from "antd";
 import { Radio } from "antd";
 
 import K from "src/constants";
 import { getVideosContentApi } from "src/network/api/videos";
+import CustomSkelton from "@/components/common/customSkelton";
 
 const { Title } = Typography;
 
@@ -13,6 +14,8 @@ export default function CanonVideos() {
   const [videos, setVideos] = useState([]);
   const [selectedVideoId, setSelectedVideoId] = useState(1);
   const [topic, setTopic] = useState("");
+
+  const [loader, setLoader] = useState(false);
 
   const handleVideoSelection = (videodata: any) => {
     playeref.current;
@@ -41,11 +44,14 @@ export default function CanonVideos() {
 
   useEffect(() => {
     async function getTreeApiCall() {
+      setLoader(true);
       let data = await getVideosContentApi();
+
       if (data?.status_code == 200) {
         setVideos(data?.data);
         setVideoResolution(data?.data[0]?.resolutions[0].link);
       }
+      setLoader(false);
     }
     getTreeApiCall();
   }, []);
@@ -65,21 +71,32 @@ export default function CanonVideos() {
       </div>
       <div className={styles.videosContainer}>
         <div className={styles.sideBarWrap}>
-          <ul>
-            {Object.values(videos)?.map((video) => (
-              <li
-                className={video.id === selectedVideoId && styles.active}
-                onClick={() => handleVideoSelection(video)}
-                key={video?.id}
-              >
-                {video?.title}
-              </li>
-            ))}
-          </ul>
+          {loader ? (
+            <CustomSkelton
+              skeltonFor="list"
+              bodyCount={7}
+              stylingClass=""
+              isButton={false}
+              action={false}
+              title={false}
+            />
+          ) : (
+            <ul>
+              {Object.values(videos)?.map((video) => (
+                <li
+                  className={video.id === selectedVideoId && styles.active}
+                  onClick={() => handleVideoSelection(video)}
+                  key={video?.id}
+                >
+                  {video?.title}
+                </li>
+              ))}
+            </ul>
+          )}
           <div>
             <Title level={5}>Video Format:</Title>
 
-            {videos && (
+            {videos && !loader ? (
               <Radio.Group
                 className={styles.radioGroup}
                 onChange={onChange}
@@ -93,6 +110,15 @@ export default function CanonVideos() {
                   );
                 })}
               </Radio.Group>
+            ) : (
+              <CustomSkelton
+                skeltonFor="list"
+                bodyCount={3}
+                stylingClass=""
+                isButton={false}
+                action={false}
+                title={false}
+              />
             )}
           </div>
         </div>
@@ -128,7 +154,7 @@ export default function CanonVideos() {
               ></div>
             </>
           ) : (
-            <h1>Something went wrong!</h1>
+            <CustomSkelton bodyCount stylingClass isButton skeltonFor="video" />
           )}
         </div>
       </div>

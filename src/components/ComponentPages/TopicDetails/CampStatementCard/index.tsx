@@ -25,6 +25,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
   return loadingIndicator ? (
     <CustomSkelton
       skeltonFor="card"
+      titleName={K?.exceptionalMessages?.campStatementHeading}
       bodyCount={2}
       stylingClass="test"
       isButton={false}
@@ -38,7 +39,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
       <Panel
         className="campStatementPanel"
         disabled
-        header={<h3>Camp Statement</h3>}
+        header={<h3>{K?.exceptionalMessages?.campStatementHeading}</h3>}
         key="1"
         extra={
           campStatement?.length ? (
