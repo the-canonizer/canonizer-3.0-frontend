@@ -1,13 +1,22 @@
-import { Collapse, Popover } from "antd";
+import { Collapse, Popover, Image, Typography } from "antd";
+import React, { useEffect, useState } from "react";
 import CampTree from "../CampTree";
 import Link from "next/link";
-import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import styles from "../topicDetails.module.scss";
 import { useRouter } from "next/router";
 
+import { useSelector, useDispatch } from "react-redux";
+import { store } from "../../../../store";
+import { setTree } from "../../../../store/slices/campDetailSlice";
+
+import { fallBackSrc } from "src/assets/data-images";
+
+import { setFilterCanonizedTopics } from "../../../../store/slices/filtersSlice";
+
 const { Panel } = Collapse;
+const { Link: AntLink } = Typography;
 
 const addContent = (
   <>
@@ -33,6 +42,10 @@ const CampTreeCard = ({
   setTotalCampScoreForSupportTree,
   setSupportTreeForCamp,
 }) => {
+  const { asof, asofdate } = useSelector((state: RootState) => ({
+    asofdate: state.filters?.filterObject?.asofdate,
+    asof: state?.filters?.filterObject?.asof,
+  }));
   const { tree, is_admin } = useSelector((state: RootState) => ({
     tree: state?.topicDetails?.tree?.at(0),
 
@@ -41,53 +54,104 @@ const CampTreeCard = ({
 
   const router = useRouter();
   const { isUserAuthenticated } = useAuthentication();
+
+  const dispatch = useDispatch();
+  const onCreateTreeDate = () => {
+    dispatch(
+      setFilterCanonizedTopics({
+        asofdate: tree["1"]?.created_date,
+        asof: "bydate",
+      })
+    );
+  };
+  useEffect(() => {
+    return () => {
+      store.dispatch(setTree([]));
+    };
+  }, []);
+
   return (
-    <Collapse
-      defaultActiveKey={["1"]}
-      expandIconPosition="right"
-      className="topicDetailsCollapse"
-    >
-      <Panel
-        disabled
-        header={<h3>Canonizer Sorted Camp Tree</h3>}
-        key="1"
-        extra={
-          <>
-            <div
-              className="ant-checkbox-wrapper"
-              onClick={(event) => {
-                event.stopPropagation();
-              }}
-            >
-              {isUserAuthenticated && is_admin && tree && (
-                <Link
-                  href={{ pathname: router.asPath.replace("topic", "addnews") }}
+    <>
+      {((tree && tree["1"]?.is_valid_as_of_time) || asof == "default") && (
+        <Collapse
+          defaultActiveKey={["1"]}
+          expandIconPosition="right"
+          className="topicDetailsCollapse"
+        >
+          <Panel
+            disabled
+            header={<h3>Canonizer Sorted Camp Tree</h3>}
+            key="1"
+            extra={
+              <>
+                <div
+                  className="ant-checkbox-wrapper"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                  }}
                 >
-                  <a
-                    className={styles.addNew}
-                    onClick={(event) => {
-                      event.stopPropagation();
-                    }}
-                  >
-                    <i className={"icon-fi-document " + styles.iconMr} />
-                    Add News
-                  </a>
-                </Link>
-              )}
-              <Popover content={addContent} placement="left">
-                <i className="icon-info tooltip-icon-style"></i>
-              </Popover>
-            </div>
-          </>
-        }
-      >
-        <CampTree
-          scrollToCampStatement={scrollToCampStatement}
-          setTotalCampScoreForSupportTree={setTotalCampScoreForSupportTree}
-          setSupportTreeForCamp={setSupportTreeForCamp}
-        />
-      </Panel>
-    </Collapse>
+                  {isUserAuthenticated && is_admin && tree && (
+                    <Link
+                      href={{
+                        pathname: router.asPath.replace("topic", "addnews"),
+                      }}
+                    >
+                      <a
+                        className={styles.addNew}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                        }}
+                      >
+                        <i className={"icon-fi-document " + styles.iconMr} />
+                        Add News
+                      </a>
+                    </Link>
+                  )}
+                  <Popover content={addContent} placement="left">
+                    <i className="icon-info tooltip-icon-style"></i>
+                  </Popover>
+                </div>
+              </>
+            }
+          >
+            <CampTree
+              scrollToCampStatement={scrollToCampStatement}
+              setTotalCampScoreForSupportTree={setTotalCampScoreForSupportTree}
+              setSupportTreeForCamp={setSupportTreeForCamp}
+            />
+          </Panel>
+        </Collapse>
+      )}
+      {tree && !tree["1"]?.is_valid_as_of_time && (
+        // {tree && !tree["1"]?.is_valid_as_of_time &&
+        <div className={styles.imageWrapper}>
+          <div>
+            <Image
+              preview={false}
+              alt="No topic created"
+              src={"/images/empty-img-default.png"}
+              fallback={fallBackSrc}
+              width={200}
+              id="forgot-modal-img"
+            />
+            <p>
+              The topic was created on
+              <AntLink
+                onClick={() => {
+                  onCreateTreeDate();
+                }}
+              >
+                {" "}
+                {new Date(
+                  (tree && tree["1"]?.created_date) * 1000
+                ).toLocaleString()}
+              </AntLink>
+            </p>
+          </div>
+        </div>
+      )}
+    </>
+    // )}
   );
 };
 export default CampTreeCard;
