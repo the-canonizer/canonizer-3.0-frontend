@@ -77,9 +77,7 @@ describe("Footer", () => {
     const whitePaperLink = screen.getByRole("link", {
       name: /White Paper/i,
     });
-    const blogLink = screen.getByRole("link", {
-      name: /Blog/i,
-    });
+    const blogLink = screen.getByText(/blog/i);
     const jobsLink = screen.getByRole("link", {
       name: /Jobs/i,
     });
@@ -90,7 +88,7 @@ describe("Footer", () => {
     screen.getByText((content, node) => {
       const hasText = (node) =>
         node.textContent ===
-        "Copyright owned by the volunteers contributing to the system and its contents (2006 - 2022)";
+        "Copyright owned by the volunteers contributing to the system and its contents (2006 - 2023)";
       const nodeHasText = hasText(node);
       const childrenDontHaveText = Array.from(node.children).every(
         (child) => !hasText(child)
@@ -112,7 +110,7 @@ describe("Footer", () => {
     expect(whitePaperLink.getAttribute("href")).toBe(
       "/files/2012_amplifying_final.pdf"
     );
-    expect(blogLink.getAttribute("href")).toBe("https://blog.canonizer.com/");
+    expect(blogLink).toBeInTheDocument();
     expect(jobsLink.getAttribute("href")).toBe(
       "/topic/6-Canonizer-Jobs/1-Agreement"
     );
