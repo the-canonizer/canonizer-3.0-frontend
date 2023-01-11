@@ -122,8 +122,8 @@ function HistoryContainer() {
   }, [tree]);
 
   useEffect(() => {
-    if(isUserAuthenticated){
-    setCampHistory(history);
+    if (isUserAuthenticated) {
+      setCampHistory(history);
     }
   }, [history]);
 
