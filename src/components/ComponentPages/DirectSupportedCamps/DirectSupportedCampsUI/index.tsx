@@ -124,15 +124,15 @@ export default function DirectSupportedCampsUI({
                         <div className={styles.btndiv}>
                           {" "}
                           <span className="count">{tag.id}. </span>
-                          <Link  href={tag.camp_link}>
-                          <a
-                            className={styles.Bluecolor}
-                            draggable="false"
-                            href="javascript:;"
-                          >
-                            {" "}
-                            {tag.camp_name}
-                          </a>
+                          <Link href={tag.camp_link}>
+                            <a
+                              className={styles.Bluecolor}
+                              draggable="false"
+                              href="javascript:;"
+                            >
+                              {" "}
+                              {tag.camp_name}
+                            </a>
                           </Link>
                         </div>
                         <CloseCircleOutlined
