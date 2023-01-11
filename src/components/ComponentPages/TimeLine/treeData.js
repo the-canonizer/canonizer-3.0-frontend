@@ -462,3 +462,162 @@ const data = {
     ],
   },
 };
+
+////////////
+
+// const mockData = {
+//   1: {
+//     event: {
+//       name: "support added",
+//     },
+//     data: [
+//       {
+//         name: "alpha",
+//         value: 10,
+//         color: "#f4efd3",
+//         level: 1,
+//       },
+//       {
+//         name: "beta 2",
+//         value: 15,
+//         color: "#cccccc",
+//         level: 2,
+//       },
+//       {
+//         name: "charlie",
+//         value: 20,
+//         color: "#c2b0c9",
+//         level: 3,
+//       },
+//       {
+//         name: "delta",
+//         value: 25,
+//         color: "#9656a1",
+//         level: 3,
+//       },
+//       {
+//         name: "echo",
+//         value: 30,
+//         color: "#fa697c",
+//         level: 1,
+//       },
+//       {
+//         name: "foxtrot",
+//         value: 35,
+//         color: "#fcc169",
+//         level: 2,
+//       },
+//     ],
+//   },
+//   2: {
+//     event: {
+//       name: "camp name changed",
+//     },
+//     data: [
+//       {
+//         name: "alpha",
+//         value: 35,
+//         color: "#f4efd3",
+//         level: 1,
+//       },
+//       {
+//         name: "beta 3",
+//         value: 15,
+//         color: "#cccccc",
+//         level: 2,
+//       },
+//       {
+//         name: "charlie",
+//         value: 20,
+//         color: "#c2b0c9",
+//         level: 3,
+//       },
+//       {
+//         name: "delta",
+//         value: 25,
+//         color: "#9656a1",
+//         level: 3,
+//       },
+//       {
+//         name: "test1",
+//         value: 25,
+//         color: "#9656a1",
+//         level: 3,
+//       },
+//       {
+//         name: "echo",
+//         value: 30,
+//         color: "#fa697c",
+//         level: 1,
+//       },
+//       {
+//         name: "foxtrot",
+//         value: 10,
+//         color: "#fcc169",
+//         level: 2,
+//       },
+//       {
+//         name: "test2",
+//         value: 25,
+//         color: "#9656a1",
+//         level: 2,
+//       },
+//     ],
+//   },
+//   3: {
+//     event: {
+//       name: "support removed",
+//     },
+//     data: [
+//       {
+//         name: "alpha",
+//         value: 35,
+//         color: "#f4efd3",
+//         level: 1,
+//       },
+//       {
+//         name: "beta 4",
+//         value: 15,
+//         color: "#cccccc",
+//         level: 2,
+//       },
+//       {
+//         name: "charlie",
+//         value: 20,
+//         color: "#c2b0c9",
+//         level: 3,
+//       },
+//       {
+//         name: "test1",
+//         value: 25,
+//         color: "#9656a1",
+//         level: 4,
+//       },
+//       {
+//         name: "delta",
+//         value: 25,
+//         color: "#9656a1",
+//         level: 3,
+//       },
+
+//       {
+//         name: "echo",
+//         value: 30,
+//         color: "#fa697c",
+//         level: 1,
+//       },
+//       {
+//         name: "foxtrot",
+//         value: 10,
+//         color: "#fcc169",
+//         level: 2,
+//       },
+//       {
+//         name: "test2",
+//         value: 25,
+//         color: "#9656a1",
+//         level: 2,
+//       },
+//     ],
+//   },
+// };

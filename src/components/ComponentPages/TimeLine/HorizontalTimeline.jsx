@@ -13,30 +13,36 @@ const VALUES = [
   "2019-01-01",
   "2019-06-17",
   "2019-08-01",
+  "2020-08-01",
+  "2021-08-01",
 ];
 
 const HorizontalTimelineComp = ({
   iteration,
   handleEventSelection,
   eventDescription,
+  events,
 }) => {
-  const [value, setValue] = useState(0);
-  const [previous, setPrevious] = useState(0);
-
+  let eventTimes = [];
+  (function () {
+    for (let i = 0; i < events.length; i++) {
+      const date = new Date(events[i] * 1000);
+      eventTimes[i] = `${date.getFullYear()}-${
+        date.getMonth() ? date.getMonth() : 1
+      }-${date.getDate()} `;
+    }
+  })();
   return (
     <div>
       {/* Bounding box for the Timeline */}
       <div className="text-center">{eventDescription}</div>
       <div style={{ width: "60%", height: "100px", margin: "0 auto" }}>
         <HorizontalTimeline
-          // index={this.state.value}
           index={iteration}
           indexClick={(index) => {
-            // setValue(index);
             handleEventSelection(index);
-            // setPrevious(value);
           }}
-          values={VALUES}
+          values={eventTimes}
         />
       </div>
       <div className="text-center">

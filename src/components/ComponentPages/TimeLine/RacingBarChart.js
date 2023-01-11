@@ -10,7 +10,7 @@ function RacingBarChart({ data }) {
   //Manage X axis
 
   const manageXAxis = (level) => {
-    return level * 10;
+    return level * 30;
   };
 
   const pickColor = (level) => {
@@ -39,14 +39,14 @@ function RacingBarChart({ data }) {
       .range([0, dimensions.height]); // [0, 200]
 
     const xScale = scaleLinear()
-      .domain([0, max(data, (entry) => entry.value)]) // [0, 65 (example)]
+      .domain([0, max(data, (entry) => entry.score)]) // [0, 65 (example)]
       .range([0, dimensions.width]); // [0, 400 (example)]
     console.log("yScale", yScale);
     console.log("xScale", xScale);
     // draw the bars
     svg
       .selectAll(".bar")
-      .data(data, (entry, index) => entry.name)
+      .data(data, (entry, index) => entry.title)
       .join((enter) =>
         enter.append("rect").attr("y", (entry, index) => yScale(index))
       )
@@ -55,13 +55,13 @@ function RacingBarChart({ data }) {
       .attr("x", (entry) => manageXAxis(entry.level))
       .attr("height", yScale.bandwidth())
       .transition()
-      .attr("width", (entry) => xScale(entry.value))
+      .attr("width", (entry) => xScale(entry.score))
       .attr("y", (entry, index) => yScale(index));
 
     // draw the labels
     svg
       .selectAll(".label")
-      .data(data, (entry, index) => entry.name)
+      .data(data, (entry, index) => entry.title)
       .join((enter) =>
         enter
           .append("text")
@@ -70,7 +70,7 @@ function RacingBarChart({ data }) {
             (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5
           )
       )
-      .text((entry) => `🐎 ... ${entry.name} (${entry.value} meters)`)
+      .text((entry) => ` ${entry.title} (${entry.score} score)`)
       .attr("class", "label")
       .attr("x", (entry) => manageXAxis(entry.level) + 10)
       .transition()
@@ -79,7 +79,7 @@ function RacingBarChart({ data }) {
 
   return (
     <div ref={wrapperRef} style={{ marginBottom: "2rem" }}>
-      <svg ref={svgRef}></svg>
+      <svg height={data.length * 30} ref={svgRef}></svg>
     </div>
   );
 }
