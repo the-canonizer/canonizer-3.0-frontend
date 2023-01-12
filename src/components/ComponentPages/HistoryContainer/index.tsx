@@ -20,6 +20,9 @@ import CreateNewTopicButton from "../../common/button/createNewTopicBtn";
 import { setCurrentCamp } from "src/store/slices/filtersSlice";
 import useIsUserAuthenticated from "../../../hooks/isUserAuthenticated";
 
+import { store } from "../../../store";
+import { setTree } from "../../../store/slices/campDetailSlice";
+
 const { Title } = Typography;
 
 function HistoryContainer() {
@@ -123,7 +126,9 @@ function HistoryContainer() {
   }, [tree]);
 
   useEffect(() => {
+    if(isUserAuthenticated){
     setCampHistory(history);
+    }
   }, [history]);
 
   useEffect(() => {
@@ -135,6 +140,11 @@ function HistoryContainer() {
     asynCall();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, agreecheck]);
+  useEffect(() => {
+    return () => {
+      store.dispatch(setTree([]));
+    };
+  }, []);
 
   const campStatementApiCall = async () => {
     try {
