@@ -240,7 +240,6 @@ const ManageSupport = () => {
       : warning
       ? warning
       : "";
-
     // let dataValue = warningMessage;
     if (response && response.status_code === 200) {
       setCardCamp_ID("");
@@ -495,6 +494,7 @@ const ManageSupport = () => {
         updatePostion={updatePostion}
         campIds={campIds}
         setcampIds={setcampIds}
+        CurrentCheckSupportStatus={CurrentCheckSupportStatus}
       />
     </>
   );

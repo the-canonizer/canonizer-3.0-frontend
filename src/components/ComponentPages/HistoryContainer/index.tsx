@@ -126,8 +126,8 @@ function HistoryContainer() {
   }, [tree]);
 
   useEffect(() => {
-    if(isUserAuthenticated){
-    setCampHistory(history);
+    if (isUserAuthenticated) {
+      setCampHistory(history);
     }
   }, [history]);
 
@@ -157,18 +157,19 @@ function HistoryContainer() {
         per_page: 4,
         page: count.current,
       };
+      if (isUserAuthenticated) {
+        let res = await getHistoryApi(reqBody, count.current, historyOf);
 
-      let res = await getHistoryApi(reqBody, count.current, historyOf);
-
-      if (!res || !res?.last_page) {
-        setLoadMoreItems(false);
-        setLoadingIndicator(false);
-        return;
-      }
-      if (count.current >= res?.last_page) {
-        setLoadMoreItems(false);
-      } else {
-        count.current = count.current + 1;
+        if (!res || !res?.last_page) {
+          setLoadMoreItems(false);
+          setLoadingIndicator(false);
+          return;
+        }
+        if (count.current >= res?.last_page) {
+          setLoadMoreItems(false);
+        } else {
+          count.current = count.current + 1;
+        }
       }
       setLoadingIndicator(false);
     } catch (error) {}
