@@ -28,6 +28,11 @@ const CampTree = ({
   let childExpandTree = [];
 
   const [defaultExpandKeys, setDefaultExpandKeys] = useState([]);
+
+  const [selectedExpand, setSelectedExpand] = useState([]);
+  const [expandedKeys, setExpandedKeys] = useState([]);
+  const [autoExpandParent, setAutoExpandParent] = useState(true);
+
   // const [selectedNodeID, setSelectedNodeID] = useState(1);
   const [scoreFilter, setScoreFilter] = useState(filterByScore);
   const [includeReview, setIncludeReview] = useState(
@@ -41,11 +46,15 @@ const CampTree = ({
     e: { selected; selectedNodes; node; event }
   ) => {
     if (!(selectedKeys.join() === "custom" || selectedKeys.join() === "")) {
+      setSelectedExpand(selectedKeys);
+      // setSelectedExpand(selectedKeys);
       dispatch(setCurrentCamp(e?.selectedNodes[0]?.data));
       // setSelectedNodeID(+selectedKeys.join(""));
       scrollToCampStatement();
+      // expandNode(selectedKeys[0]);
     }
   };
+
   const { isUserAuthenticated, userID } = useAuthentication();
 
   const showSelectedCamp = (data, select_camp, campExist) => {
@@ -151,7 +160,12 @@ const CampTree = ({
           ? 2
           : +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1)
       );
+    // expandNode(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1);
     setDefaultExpandKeys(expandKeys);
+    // onExpand(expandKeys)
+    // setAutoExpandParent(false);
+    // setExpandedKeys(expandKeys);
+    // setAutoExpandParent(false);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tree?.at(0)]);
@@ -318,14 +332,61 @@ const CampTree = ({
     });
   };
 
+  // changes
+
+  // function expandNode(key) {
+  //   setAutoExpandParent(false);
+  //   setExpandedKeys((prev) => {
+  //     const outArr = [];
+  //     if (prev.includes(key)) {
+  //       for (let i = 0; i < prev.length; i++) {
+  //         if (prev[i] !== key) {
+  //           outArr.push(prev[i]);
+  //         }
+  //       }
+  //       return outArr;
+  //     } else {
+  //       prev.push(key);
+  //       return prev;
+  //     }
+  //   });
+  // }
+
+  const onExpand = (expandedKeys) => {
+    setExpandedKeys(expandedKeys);
+    setAutoExpandParent(false);
+  };
+
+  // changes end
+
   return tree?.at(0) ? (
     showTree && (
       <Tree
         showLine={{ showLeafIcon: false }}
-        defaultExpandedKeys={defaultExpandKeys}
+        defaultExpandedKeys={[
+          ...selectedExpand,
+          ...defaultExpandKeys,
+          ...expandedKeys,
+        ]}
         onSelect={onSelect}
-        autoExpandParent={true}
+        // autoExpandParent={true}
+        // expandedKeys={[...selectedExpand, ...defaultExpandKeys]}
         // filterTreeNode={filterTreeNode}
+        // autoExpandParent={true}
+        // expandable={true}
+
+        onExpand={onExpand}
+        expandedKeys={[
+          ...selectedExpand,
+          ...defaultExpandKeys,
+          ...expandedKeys,
+        ]}
+        autoExpandParent={autoExpandParent}
+        selectedKeys={[
+          ...selectedExpand,
+          ...defaultExpandKeys,
+          ...expandedKeys,
+        ]}
       >
         {tree?.at(0) && renderTreeNodes(tree?.at(0))}
       </Tree>
