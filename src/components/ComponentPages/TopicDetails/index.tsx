@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
+import CustomSkelton from "../../common/customSkelton";
+
 //  "../../../store/slices/filtersSlice";
 import {
   getCanonizedCampStatementApi,
@@ -399,23 +401,29 @@ const TopicDetails = () => {
         <aside className={styles.miniSide + " leftSideBar miniSideBar"}>
           <SideBar onCreateCamp={onCreateCamp} />
         </aside>
+
         <>
           <div className={styles.pageContent + " pageContentWrap"}>
-            <Spin spinning={getTreeLoadingIndicator} size="large">
-              <CampTreeCard
-                scrollToCampStatement={scrollToCampStatement}
-                setTotalCampScoreForSupportTree={
-                  setTotalCampScoreForSupportTree
-                }
-                setSupportTreeForCamp={setSupportTreeForCamp}
-              />
-            </Spin>
+            <CampTreeCard
+              getTreeLoadingIndicator={getTreeLoadingIndicator}
+              scrollToCampStatement={scrollToCampStatement}
+              setTotalCampScoreForSupportTree={setTotalCampScoreForSupportTree}
+              setSupportTreeForCamp={setSupportTreeForCamp}
+            />
 
             {((tree && tree["1"]?.is_valid_as_of_time) ||
               asof == "default") && (
               <>
-                {campExist && !campExist?.camp_exist && (
-                  <Spin spinning={loadingIndicator} size="large">
+                {campExist &&
+                  !campExist?.camp_exist &&
+                  (loadingIndicator ? (
+                    <CustomSkelton
+                      skeltonFor="list"
+                      bodyCount={1}
+                      stylingClass=""
+                      isButton={false}
+                    />
+                  ) : (
                     <>
                       <Alert
                         className="alert-camp-created-on"
@@ -437,15 +445,15 @@ const TopicDetails = () => {
                         }
                       />
                     </>
-                  </Spin>
-                )}
+                  ))}
                 {campExist
                   ? campExist?.camp_exist
                   : true && (
                       <>
-                        <Spin spinning={loadingIndicator} size="large">
-                          <CampStatementCard />
-                        </Spin>
+                        <CampStatementCard
+                          loadingIndicator={loadingIndicator}
+                        />
+
                         {typeof window !== "undefined" &&
                           window.innerWidth < 767 && (
                             <>
@@ -459,38 +467,32 @@ const TopicDetails = () => {
                               </Spin>
                             </>
                           )}
-                        <Spin spinning={loadingIndicator} size="large">
-                          <CurrentTopicCard />
-                        </Spin>
-                        <Spin spinning={loadingIndicator} size="large">
-                          <CurrentCampCard />
-                        </Spin>
+                        <CurrentTopicCard loadingIndicator={loadingIndicator} />
 
-                        <Spin spinning={loadingIndicator} size="large">
-                          <SupportTreeCard
-                            handleLoadMoreSupporters={handleLoadMoreSupporters}
-                            getCheckSupportStatus={getCheckSupportStatus}
-                            removeApiSupport={removeApiSupport}
-                            // fetchTotalScore={fetchTotalScore}
-                            totalSupportScore={totalSupportScore}
-                            totalFullSupportScore={totalFullSupportScore}
-                            removeSupport={removeSupport}
-                            topicList={topicList}
-                            removeSupportForDelegate={removeSupportForDelegate}
-                            isSupportTreeCardModal={isSupportTreeCardModal}
-                            setIsSupportTreeCardModal={
-                              setIsSupportTreeCardModal
-                            }
-                            handleSupportTreeCardCancel={
-                              handleSupportTreeCardCancel
-                            }
-                            removeSupportSpinner={removeSupportSpinner}
-                            supportTreeForCamp={supportTreeForCamp}
-                            totalCampScoreForSupportTree={
-                              totalCampScoreForSupportTree
-                            }
-                          />
-                        </Spin>
+                        <CurrentCampCard loadingIndicator={loadingIndicator} />
+
+                        <SupportTreeCard
+                          loadingIndicator={loadingIndicator}
+                          handleLoadMoreSupporters={handleLoadMoreSupporters}
+                          getCheckSupportStatus={getCheckSupportStatus}
+                          removeApiSupport={removeApiSupport}
+                          // fetchTotalScore={fetchTotalScore}
+                          totalSupportScore={totalSupportScore}
+                          totalFullSupportScore={totalFullSupportScore}
+                          removeSupport={removeSupport}
+                          topicList={topicList}
+                          removeSupportForDelegate={removeSupportForDelegate}
+                          isSupportTreeCardModal={isSupportTreeCardModal}
+                          setIsSupportTreeCardModal={setIsSupportTreeCardModal}
+                          handleSupportTreeCardCancel={
+                            handleSupportTreeCardCancel
+                          }
+                          removeSupportSpinner={removeSupportSpinner}
+                          supportTreeForCamp={supportTreeForCamp}
+                          totalCampScoreForSupportTree={
+                            totalCampScoreForSupportTree
+                          }
+                        />
                       </>
                     )}
               </>

@@ -6,6 +6,7 @@ import { RootState } from "src/store";
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import styles from "../topicDetails.module.scss";
 import { useRouter } from "next/router";
+import CustomSkelton from "@/components/common/customSkelton";
 
 import { useSelector, useDispatch } from "react-redux";
 import { store } from "../../../../store";
@@ -38,6 +39,7 @@ const addContent = (
 );
 
 const CampTreeCard = ({
+  getTreeLoadingIndicator,
   scrollToCampStatement,
   setTotalCampScoreForSupportTree,
   setSupportTreeForCamp,
@@ -114,16 +116,26 @@ const CampTreeCard = ({
               </>
             }
           >
-            <CampTree
-              scrollToCampStatement={scrollToCampStatement}
-              setTotalCampScoreForSupportTree={setTotalCampScoreForSupportTree}
-              setSupportTreeForCamp={setSupportTreeForCamp}
-            />
+            {getTreeLoadingIndicator ? (
+              <CustomSkelton
+                skeltonFor="tree"
+                bodyCount={4}
+                isButton={false}
+                stylingClass=""
+              />
+            ) : (
+              <CampTree
+                scrollToCampStatement={scrollToCampStatement}
+                setTotalCampScoreForSupportTree={
+                  setTotalCampScoreForSupportTree
+                }
+                setSupportTreeForCamp={setSupportTreeForCamp}
+              />
+            )}
           </Panel>
         </Collapse>
       )}
       {tree && !tree["1"]?.is_valid_as_of_time && (
-        // {tree && !tree["1"]?.is_valid_as_of_time &&
         <div className={styles.imageWrapper}>
           <div>
             <Image
@@ -151,7 +163,6 @@ const CampTreeCard = ({
         </div>
       )}
     </>
-    // )}
   );
 };
 export default CampTreeCard;

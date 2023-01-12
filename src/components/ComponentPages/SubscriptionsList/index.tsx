@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { message } from "antd";
 
 import SubscriptionsListUI from "./UI";
+import CustomSkelton from "../../common/customSkelton";
 
 import {
   GetAllSubscriptionsList,
@@ -11,6 +12,7 @@ import {
 function SubscriptionsList({ isTestData = [] }) {
   const [subscriptionsList, setSubscriptionsList] = useState(isTestData);
   const [isVisible, setIsVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [currentTopic, setCurrentTopic] = useState({});
   const [page] = useState(1);
   const [perPage] = useState("");
@@ -23,14 +25,17 @@ function SubscriptionsList({ isTestData = [] }) {
     if (res?.status_code === 200) {
       setSubscriptionsList(res?.data.items);
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
+    setIsLoading(true);
     const query = `?page=${page}&per_page=${perPage}`;
     getSubscriptionsList(query);
   }, [page, perPage]);
 
   const campOrTopicUnsubscribe = async (body: Object) => {
+    setIsLoading(true);
     const res = await unsubscribeTopicOrCampAPI(body);
 
     const query = `?page=${page}&per_page=${perPage}`;
@@ -40,21 +45,26 @@ function SubscriptionsList({ isTestData = [] }) {
       setIsVisible(false);
       getSubscriptionsList(query);
     }
+    setIsLoading(false);
   };
 
   const onRemoveSubscription = (e: any, topic: object) => {
     e.preventDefault();
+    setIsLoading(true);
     setIsVisible(true);
     setCurrentTopic(topic);
     setIsCamp(false);
+    setIsLoading(false);
   };
 
   const onConfirm = (e: any, topic: any, camp: any) => {
     e.preventDefault();
+    setIsLoading(true);
     setIsVisible(true);
     setIsCamp(true);
     setCurrentTopic(topic);
     setCamp(camp);
+    setIsLoading(false);
   };
 
   const onCancel = () => {
@@ -64,6 +74,7 @@ function SubscriptionsList({ isTestData = [] }) {
   };
 
   const onRemove = () => {
+    setIsLoading(true);
     let body = null;
     if (isCamp) {
       body = {
@@ -83,9 +94,18 @@ function SubscriptionsList({ isTestData = [] }) {
     if (body) {
       campOrTopicUnsubscribe(body);
     }
+    setIsLoading(false);
   };
 
-  return (
+  return isLoading ? (
+    <CustomSkelton
+      skeltonFor="subscription_card"
+      bodyCount={1}
+      stylingClass=""
+      listStyle="liHeight"
+      isButton={false}
+    />
+  ) : (
     <SubscriptionsListUI
       onRemoveSubscription={onRemoveSubscription}
       onConfirm={onConfirm}
