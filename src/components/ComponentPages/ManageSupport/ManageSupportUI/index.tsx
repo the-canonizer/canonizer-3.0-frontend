@@ -28,6 +28,7 @@ const ManageSupportUI = ({
   submitButtonDisable,
   setUpdatePostion,
   unableToFindCamp,
+  CurrentCheckSupportStatus,
 }: any) => {
   const [tagsArrayList, setTagsArrayList] = useState([]);
   const [isTagDragged, setIsTagDragged] = useState(false);
@@ -218,7 +219,6 @@ const ManageSupportUI = ({
       } else setTagsArrayList(newTagList);
     }
   }, [manageSupportList, parentSupportDataList]);
-
   return (
     <>
       <Card
@@ -230,7 +230,8 @@ const ManageSupportUI = ({
         }
       >
         {(CheckDelegatedOrDirect &&
-          currentGetCheckSupportExistsData.is_confirm) ||
+          currentGetCheckSupportExistsData.is_confirm &&
+          currentGetCheckSupportExistsData.remove_camps.length < 0) ||
         unableToFindCamp ? (
           <>
             <span id="warning" className={styles.warning}>
@@ -249,9 +250,9 @@ const ManageSupportUI = ({
                       id="getSupportStatusDataWarning"
                     >
                       <strong> Warning! </strong>
-                      {getSupportStatusData != ""
-                        ? getSupportStatusData
-                        : warningForDirecteSupportedCamps}
+                      {CheckDelegatedOrDirect
+                        ? warningForDirecteSupportedCamps
+                        : CurrentCheckSupportStatus}
                     </span>
                     <Col md={12}>
                       {parentSupportDataList?.map((tag) => {

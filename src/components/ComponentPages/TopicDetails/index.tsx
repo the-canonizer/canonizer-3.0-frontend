@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
+import CustomSkelton from "../../common/customSkelton";
+
 //  "../../../store/slices/filtersSlice";
 import {
   getCanonizedCampStatementApi,
@@ -399,69 +401,78 @@ const TopicDetails = () => {
         <aside className={styles.miniSide + " leftSideBar miniSideBar"}>
           <SideBar onCreateCamp={onCreateCamp} />
         </aside>
-        {((tree && tree["1"]?.is_valid_as_of_time) || asof == "default") && (
-          <>
-            <div className={styles.pageContent + " pageContentWrap"}>
-              <Spin spinning={getTreeLoadingIndicator} size="large">
-                <CampTreeCard
-                  getTreeLoadingIndicator={getTreeLoadingIndicator}
-                  scrollToCampStatement={scrollToCampStatement}
-                  setTotalCampScoreForSupportTree={
-                    setTotalCampScoreForSupportTree
-                  }
-                  setSupportTreeForCamp={setSupportTreeForCamp}
-                />
-              </Spin>
-              {campExist && !campExist?.camp_exist && (
-                <Spin spinning={loadingIndicator} size="large">
-                  <>
-                    <Alert
-                      className="alert-camp-created-on"
-                      message="The camp was first created on"
-                      type="info"
-                      description={
-                        <span>
-                          <Link
-                            onClick={() => {
-                              onCreateCampDate();
-                            }}
-                          >
-                            {" "}
-                            {new Date(
-                              (campExist && campExist?.created_at) * 1000
-                            ).toLocaleString()}
-                          </Link>
-                        </span>
-                      }
+
+        <>
+          <div className={styles.pageContent + " pageContentWrap"}>
+            <CampTreeCard
+              getTreeLoadingIndicator={getTreeLoadingIndicator}
+              scrollToCampStatement={scrollToCampStatement}
+              setTotalCampScoreForSupportTree={setTotalCampScoreForSupportTree}
+              setSupportTreeForCamp={setSupportTreeForCamp}
+            />
+
+            {((tree && tree["1"]?.is_valid_as_of_time) ||
+              asof == "default") && (
+              <>
+                {campExist &&
+                  !campExist?.camp_exist &&
+                  (loadingIndicator ? (
+                    <CustomSkelton
+                      skeltonFor="list"
+                      bodyCount={1}
+                      stylingClass=""
+                      isButton={false}
                     />
-                  </>
-                </Spin>
-              )}
-              {campExist
-                ? campExist?.camp_exist
-                : true && (
+                  ) : (
                     <>
-                      <CampStatementCard loadingIndicator={loadingIndicator} />
-                      {typeof window !== "undefined" &&
-                        window.innerWidth < 767 && (
-                          <>
-                            {router.asPath.includes("topic") && (
-                              <CampRecentActivities />
-                            )}
-                            <Spin spinning={loadingIndicator} size="large">
-                              {!!newsFeed?.length && (
-                                <NewsFeedsCard newsFeed={newsFeed} />
+                      <Alert
+                        className="alert-camp-created-on"
+                        message="The camp was first created on"
+                        type="info"
+                        description={
+                          <span>
+                            <Link
+                              onClick={() => {
+                                onCreateCampDate();
+                              }}
+                            >
+                              {" "}
+                              {new Date(
+                                (campExist && campExist?.created_at) * 1000
+                              ).toLocaleString()}
+                            </Link>
+                          </span>
+                        }
+                      />
+                    </>
+                  ))}
+                {campExist
+                  ? campExist?.camp_exist
+                  : true && (
+                      <>
+                        <CampStatementCard
+                          loadingIndicator={loadingIndicator}
+                        />
+
+                        {typeof window !== "undefined" &&
+                          window.innerWidth < 767 && (
+                            <>
+                              {router.asPath.includes("topic") && (
+                                <CampRecentActivities />
                               )}
-                            </Spin>
-                          </>
-                        )}
+                              <Spin spinning={loadingIndicator} size="large">
+                                {!!newsFeed?.length && (
+                                  <NewsFeedsCard newsFeed={newsFeed} />
+                                )}
+                              </Spin>
+                            </>
+                          )}
+                        <CurrentTopicCard loadingIndicator={loadingIndicator} />
 
-                      <CurrentTopicCard loadingIndicator={loadingIndicator} />
+                        <CurrentCampCard loadingIndicator={loadingIndicator} />
 
-                      <CurrentCampCard loadingIndicator={loadingIndicator} />
-
-                      <Spin spinning={loadingIndicator} size="large">
                         <SupportTreeCard
+                          loadingIndicator={loadingIndicator}
                           handleLoadMoreSupporters={handleLoadMoreSupporters}
                           getCheckSupportStatus={getCheckSupportStatus}
                           removeApiSupport={removeApiSupport}
@@ -482,40 +493,12 @@ const TopicDetails = () => {
                             totalCampScoreForSupportTree
                           }
                         />
-                      </Spin>
-                    </>
-                  )}
-            </div>
-          </>
-        )}
-        {tree && !tree["1"]?.is_valid_as_of_time && (
-          // {tree && !tree["1"]?.is_valid_as_of_time &&
-          <div className={styles.imageWrapper}>
-            <div>
-              <Image
-                preview={false}
-                alt="No topic created"
-                src={"/images/empty-img-default.png"}
-                fallback={fallBackSrc}
-                width={200}
-                id="forgot-modal-img"
-              />
-              <p>
-                The topic was created on
-                <Link
-                  onClick={() => {
-                    onCreateTreeDate();
-                  }}
-                >
-                  {" "}
-                  {new Date(
-                    (tree && tree["1"]?.created_date) * 1000
-                  ).toLocaleString()}
-                </Link>
-              </p>
-            </div>
+                      </>
+                    )}
+              </>
+            )}
           </div>
-        )}
+        </>
       </div>
       <BackTop />
     </>

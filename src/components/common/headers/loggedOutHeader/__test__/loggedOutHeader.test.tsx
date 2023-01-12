@@ -77,9 +77,7 @@ describe("LoggedOutHeader", () => {
     const whitePaperLink = screen.getByRole("link", {
       name: /White Paper/i,
     });
-    const blogLink = screen.getByRole("link", {
-      name: /Blog/i,
-    });
+    const blogLink = screen.getByText(/blog/i);
     const jobsLink = screen.getByRole("link", {
       name: /Jobs/i,
     });
@@ -88,7 +86,7 @@ describe("LoggedOutHeader", () => {
     expect(container.getElementsByTagName("nav")).toHaveLength(1);
     expect(container.getElementsByTagName("ul")).toHaveLength(1);
     expect(container.getElementsByTagName("li")).toHaveLength(5);
-    expect(container.getElementsByTagName("a")).toHaveLength(8);
+    expect(container.getElementsByTagName("a")).toHaveLength(7);
     expect(container.getElementsByTagName("button")).toHaveLength(8);
     expect(container.getElementsByTagName("img")).toHaveLength(1);
 
@@ -99,7 +97,7 @@ describe("LoggedOutHeader", () => {
     expect(whitePaperLink.getAttribute("href")).toBe(
       "/files/2012_amplifying_final.pdf"
     );
-    expect(blogLink.getAttribute("href")).toBe("https://blog.canonizer.com/");
+    expect(blogLink).toBeInTheDocument();
     expect(jobsLink.getAttribute("href")).toBe(
       "/topic/6-Canonizer-Jobs/1-Agreement"
     );

@@ -20,6 +20,9 @@ import CreateNewTopicButton from "../../common/button/createNewTopicBtn";
 import { setCurrentCamp } from "src/store/slices/filtersSlice";
 import useIsUserAuthenticated from "../../../hooks/isUserAuthenticated";
 
+import { store } from "../../../store";
+import { setTree } from "../../../store/slices/campDetailSlice";
+
 const { Title } = Typography;
 
 function HistoryContainer() {
@@ -123,7 +126,9 @@ function HistoryContainer() {
   }, [tree]);
 
   useEffect(() => {
-    setCampHistory(history);
+    if (isUserAuthenticated) {
+      setCampHistory(history);
+    }
   }, [history]);
 
   useEffect(() => {
@@ -135,6 +140,11 @@ function HistoryContainer() {
     asynCall();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, agreecheck]);
+  useEffect(() => {
+    return () => {
+      store.dispatch(setTree([]));
+    };
+  }, []);
 
   const campStatementApiCall = async () => {
     try {
@@ -147,18 +157,19 @@ function HistoryContainer() {
         per_page: 4,
         page: count.current,
       };
+      if (isUserAuthenticated) {
+        let res = await getHistoryApi(reqBody, count.current, historyOf);
 
-      let res = await getHistoryApi(reqBody, count.current, historyOf);
-
-      if (!res || !res?.last_page) {
-        setLoadMoreItems(false);
-        setLoadingIndicator(false);
-        return;
-      }
-      if (count.current >= res?.last_page) {
-        setLoadMoreItems(false);
-      } else {
-        count.current = count.current + 1;
+        if (!res || !res?.last_page) {
+          setLoadMoreItems(false);
+          setLoadingIndicator(false);
+          return;
+        }
+        if (count.current >= res?.last_page) {
+          setLoadMoreItems(false);
+        } else {
+          count.current = count.current + 1;
+        }
       }
       setLoadingIndicator(false);
     } catch (error) {}
