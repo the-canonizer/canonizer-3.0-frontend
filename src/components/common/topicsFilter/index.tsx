@@ -127,8 +127,6 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
     campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
   }));
 
-  console.log("camp existr  => ", campExist);
-
   const [value, setValue] = useState(
     selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3
   );
