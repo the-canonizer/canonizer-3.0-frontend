@@ -113,6 +113,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
     tree,
     loading,
     current_date_filter,
+    campExist,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filteredScore: state?.filters?.filterObject?.filterByScore,
@@ -123,7 +124,10 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
     tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
     loading: state?.loading?.loading,
     current_date_filter: state?.filters?.current_date,
+    campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
   }));
+
+  console.log("camp existr  => ", campExist);
 
   const [value, setValue] = useState(
     selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3
@@ -261,7 +265,10 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                 className="btn"
                 size="large"
                 disabled={
-                  tree && !tree["1"]?.is_valid_as_of_time ? true : false
+                  (tree && !tree["1"]?.is_valid_as_of_time) ||
+                  (campExist && !campExist?.camp_exist)
+                    ? true
+                    : false
                 }
                 onClick={onCreateCamp}
               >
