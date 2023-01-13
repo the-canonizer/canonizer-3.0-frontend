@@ -136,7 +136,6 @@ const TopicDetails = () => {
         page: 1,
       };
       await Promise.all([
-        getTreesApi(reqBodyForService),
         getNewsFeedApi(reqBody),
         getCurrentTopicRecordApi(reqBody),
         getCurrentCampRecordApi(reqBody),
@@ -144,6 +143,7 @@ const TopicDetails = () => {
         dispatch(setCampSupportingTree({})),
         getHistoryApi(reqBodyForCampData, "1", "statement"),
         getCanonizedAlgorithmsApi(),
+        getTreesApi(reqBodyForService),
       ]);
       //getCanonizedCampSupportingTreeApi(reqBody, algorithm);
       const reponse = await GetActiveSupportTopic(topicNum && body);
