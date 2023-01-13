@@ -157,12 +157,11 @@ export default function DelegatedSupportCampsUI({
         )
       ) : (
         <CustomSkelton
-  skeltonFor="delegateSupportedCampListCard"
-  bodyCount={3}
-  stylingClass=""
-  isButton={false}
-/>
-
+          skeltonFor="delegateSupportedCampListCard"
+          bodyCount={3}
+          stylingClass=""
+          isButton={false}
+        />
       )}
 
       <Modal

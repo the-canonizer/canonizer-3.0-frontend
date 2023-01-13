@@ -49,6 +49,10 @@ const ManageSupport = () => {
   const [unableToFindCamp, setUnableToFindCamp] = useState<boolean>(false);
   const [updatePostion, setUpdatePostion] = useState<boolean>(false);
   const [submitButtonDisable, setSubmitButtonDisable] = useState(false);
+  const [
+    getManageSupportLoadingIndicator,
+    setGetManageSupportLoadingIndicator,
+  ] = useState(false);
   //get NickName List Data
   const getCanonizedNicknameList = async () => {
     const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
@@ -119,19 +123,24 @@ const ManageSupport = () => {
 
   //isUserAuthenticated
   useEffect(() => {
-    if (isUserAuthenticated) {
-      setUpdatePostion(false);
-      refSetter(reqBody);
-      if (manageSupportStatusCheck) {
-        getCanonizedNicknameList();
-        getActiveSupportTopicList(null, null, campRef.current);
-        setSubmitButtonDisable(false);
-        dispatch(setManageSupportStatusCheck(false));
+    (async () => {
+      if (isUserAuthenticated) {
+        setUpdatePostion(false);
+        refSetter(reqBody);
+        if (manageSupportStatusCheck) {
+          setGetManageSupportLoadingIndicator(true);
+          await getCanonizedNicknameList();
+          setGetManageSupportLoadingIndicator(false);
+
+          getActiveSupportTopicList(null, null, campRef.current);
+          setSubmitButtonDisable(false);
+          dispatch(setManageSupportStatusCheck(false));
+        }
+        // else {
+        GetCheckStatusData(campRef);
+        // }
       }
-      // else {
-      GetCheckStatusData(campRef);
-      // }
-    }
+    })();
   }, [isUserAuthenticated, reqBodyData.topic_num]);
 
   const GetCheckStatusData = async (campReff: any) => {
@@ -495,6 +504,7 @@ const ManageSupport = () => {
         campIds={campIds}
         setcampIds={setcampIds}
         CurrentCheckSupportStatus={CurrentCheckSupportStatus}
+        getManageSupportLoadingIndicator={getManageSupportLoadingIndicator}
       />
     </>
   );

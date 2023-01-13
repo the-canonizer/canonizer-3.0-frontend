@@ -84,6 +84,9 @@ const UploadFiles = () => {
   const [DeleteConfirmationVisible, setDeleteConfirmationVisible] =
     useState(false);
   const [toggleFileView, setToggleFileView] = useState(false);
+  const [getUploadFilesLoadingIndicator, setGetUploadFilesLoadingIndicator] =
+    useState(false);
+
   const { isUserAuthenticated } = isAuth();
   const closeFolder = () => {
     setGetFileListFromFolderID([]);
@@ -295,15 +298,19 @@ const UploadFiles = () => {
   }, []);
   //onLoad
   useEffect(() => {
-    if (isUserAuthenticated) {
-      GetUploadFileAndFolder();
-      setOpenFolderID("");
-      openFolderHide();
-      uploadOptionsHide();
-      if (openFolder) {
-        Openfolder(folderId);
+    (async () => {
+      if (isUserAuthenticated) {
+        setGetUploadFilesLoadingIndicator(true);
+        await GetUploadFileAndFolder();
+        setGetUploadFilesLoadingIndicator(false);
+        setOpenFolderID("");
+        openFolderHide();
+        uploadOptionsHide();
+        if (openFolder) {
+          Openfolder(folderId);
+        }
       }
-    }
+    })();
   }, [isUserAuthenticated]);
   return (
     <UploadFileUI
@@ -334,6 +341,7 @@ const UploadFiles = () => {
       setFlickringData={setFlickringData}
       toggleFileView={toggleFileView}
       setToggleFileView={setToggleFileView}
+      getUploadFilesLoadingIndicator={getUploadFilesLoadingIndicator}
     />
   );
 };

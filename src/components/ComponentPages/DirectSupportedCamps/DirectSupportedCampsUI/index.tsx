@@ -183,12 +183,11 @@ export default function DirectSupportedCampsUI({
         )
       ) : (
         <CustomSkelton
-  skeltonFor="directSupportCampsCard"
-  bodyCount={18}
-  stylingClass=""
-  isButton={false}
-/>
-
+          skeltonFor="directSupportCampsCard"
+          bodyCount={18}
+          stylingClass=""
+          isButton={false}
+        />
       )}
 
       <Modal

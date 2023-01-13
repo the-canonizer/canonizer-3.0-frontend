@@ -41,7 +41,7 @@ const ProfileInfo = () => {
   const [updateAddress, setUpdateAddress] = useState<UpdateAddress>({});
   const [zipCode, setZipCode] = useState(false);
   const [add, setAdd] = useState(false);
-
+  const [userProfileSkeleton, setUserProfileSkeleton] = useState(false);
   const publicPrivateArray = {
     first_name: "first_name",
     last_name: "last_name",
@@ -319,15 +319,18 @@ const ProfileInfo = () => {
       }
     }
     if (isUserAuthenticated) {
+      setUserProfileSkeleton(true);
+
       fetchMobileCarrier()
         .then(function () {
-          return fetchAlgorithmsList();
+          return fetchAlgorithmsList(), setUserProfileSkeleton(false);
         })
         .then(function () {
           return fetchLanguageList();
         })
         .then(function () {
-          return fetchUserProfileInfo();
+          setUserProfileSkeleton(true);
+          return fetchUserProfileInfo(), setUserProfileSkeleton(false);
         });
     }
   }, [isUserAuthenticated]);
@@ -356,6 +359,7 @@ const ProfileInfo = () => {
       handleMobileNumberChange={handleMobileNumberChange}
       disableButton={disableButton}
       postalCodeDisable={postalCodeDisable}
+      userProfileSkeleton={userProfileSkeleton}
     />
   );
 };
