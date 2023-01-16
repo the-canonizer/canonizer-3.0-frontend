@@ -58,11 +58,18 @@ function HistoryCollapse({
   const dispatch = useDispatch();
   const { isUserAuthenticated } = useAuthentication();
   const handleViewThisVersion = (goLiveTime) => {
+    let liveTimeWithlocalTime = moment(goLiveTime * 1000)
+      .set({
+        hour: moment().hour(),
+        minute: moment().minute(),
+        second: moment().second(),
+      })
+      .unix();
     setIsTreesApiCallStop(true);
     dispatch(setViewThisVersion(true));
     dispatch(
       setFilterCanonizedTopics({
-        asofdate: goLiveTime,
+        asofdate: liveTimeWithlocalTime,
         asof: "bydate",
       })
     );

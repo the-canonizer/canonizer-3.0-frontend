@@ -202,8 +202,19 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
     if (e == null) {
       IsoDateFormat = Date.now() / 1000;
     } else {
-      IsoDateFormat = Date.parse(e?._d) / 1000;
-      setDatePickerValue(e?._d);
+      let datepicker =
+        moment().unix() > moment(e?._d).unix() &&
+        moment().format("YYYY-MM-DD") > moment(e?._d).format("YYYY-MM-DD")
+          ? momentDateObject(moment(e?._d).endOf("day"))
+          : momentDateObject(
+              moment(e?._d).set({
+                hour: moment().hour(),
+                minute: moment().minute(),
+                second: moment().second(),
+              })
+            );
+      setDatePickerValue(datepicker);
+      IsoDateFormat = Date.parse(datepicker) / 1000;
     }
 
     dispatch(
@@ -233,14 +244,30 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
 
   const handleAsOfClick = () => {
     if (datePickerValue !== null) {
+      let dateValue =
+        moment().unix() > moment(datePickerValue).unix() &&
+        moment().format("YYYY-MM-DD") >
+          moment(datePickerValue).format("YYYY-MM-DD")
+          ? momentDateObject(moment(datePickerValue).endOf("day"))
+          : momentDateObject(
+              moment(datePickerValue).set({
+                hour: moment().hour(),
+                minute: moment().minute(),
+                second: moment().second(),
+              })
+            );
       dispatch(
         setFilterCanonizedTopics({
-          asofdate: Date.parse(datePickerValue) / 1000,
+          asofdate: Date.parse(dateValue) / 1000,
           asof: "bydate",
         })
       );
     }
   };
+
+  function momentDateObject(e) {
+    return e?._d;
+  }
 
   return (
     <>
