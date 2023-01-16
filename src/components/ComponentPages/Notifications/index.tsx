@@ -20,13 +20,15 @@ const SettingsUI = () => {
 
   const getList = async (p) => {
     const res = await getNotificationsList(p, per_page);
-    setIsLoading(false);
     if (res && res?.status_code == 200) {
       setTotal(res?.data?.total_rows);
     }
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
+    setIsLoading(true);
     getList(page);
   }, [page]);
 

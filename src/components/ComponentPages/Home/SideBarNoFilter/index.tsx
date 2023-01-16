@@ -26,12 +26,6 @@ export default function HomeSideBar({ isShowBtn = true }: any) {
           </div>
         )}
       </div>
-      <div className="text-center">
-        <GoogleAd
-          ad_client={process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}
-          ad_slot={process.env.NEXT_PUBLIC_GOOGLE_ADS_LEFT_SLOT}
-        />
-      </div>
     </>
   );
 }

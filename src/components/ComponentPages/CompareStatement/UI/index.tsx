@@ -10,6 +10,7 @@ import styles from "./index.module.scss";
 import CreateCampBtn from "../../../common/button/createNewCampBtn";
 import CreateTopicBtn from "../../../common/button/createNewTopicBtn";
 import CampInfoBar from "../../TopicDetails/CampInfoBar";
+import CustomSkelton from "@/components/common/customSkelton";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -83,9 +84,17 @@ function CompareStatementUI({
             </div>
           </div>
           <div className={styles.contentBody}>
-            <Spin spinning={isLoading} size="large">
-              <Row gutter={50}>
-                <Col span={12}>
+            <Row gutter={[50, 15]}>
+              <Col xs={24} md={12}>
+                {isLoading ? (
+                  <CustomSkelton
+                    skeltonFor="card"
+                    bodyCount={5}
+                    stylingClass="test"
+                    isButton={false}
+                    action={false}
+                  />
+                ) : (
                   <Card
                     bordered
                     className={
@@ -184,8 +193,18 @@ function CompareStatementUI({
                       ></div>
                     </Card>
                   </Card>
-                </Col>
-                <Col span={12}>
+                )}
+              </Col>
+              <Col xs={24} md={12}>
+                {isLoading ? (
+                  <CustomSkelton
+                    skeltonFor="card"
+                    bodyCount={5}
+                    stylingClass="test"
+                    isButton={false}
+                    action={false}
+                  />
+                ) : (
                   <Card
                     bordered
                     className={
@@ -283,121 +302,130 @@ function CompareStatementUI({
                       ></div>
                     </Card>
                   </Card>
-                </Col>
-                <Col span={24}>
-                  <Divider />
-                  {liveStatement ? (
-                    <Card
-                      bordered={false}
-                      className={
-                        styles.latestCard +
-                          " " +
-                          styles[liveStatement?.status] || "live"
-                      }
-                      title={
-                        <Text>
-                          Latest revision as of{" "}
-                          {covertToTime(liveStatement?.revision_date)}
-                        </Text>
-                      }
-                    >
-                      <Text strong style={{ textTransform: "capitalize" }}>
-                        {from === "topic"
-                          ? "Topic Name"
-                          : from === "camp"
-                          ? "Camp Name"
-                          : from}{" "}
-                        :{" "}
+                )}
+              </Col>
+              <Col span={24}>
+                <Divider />
+                {isLoading ? (
+                  <CustomSkelton
+                    skeltonFor="card"
+                    bodyCount={5}
+                    stylingClass="test"
+                    isButton={false}
+                    action={false}
+                    bordered={false}
+                    cardStylingClass="fullSkeleton"
+                  />
+                ) : liveStatement ? (
+                  <Card
+                    bordered={false}
+                    className={
+                      styles.latestCard + " " + styles[liveStatement?.status] ||
+                      "live"
+                    }
+                    title={
+                      <Text>
+                        Latest revision as of{" "}
+                        {covertToTime(liveStatement?.revision_date)}
                       </Text>
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: liveStatement?.parsed_value,
-                        }}
-                      ></div>
-                      <Divider />
+                    }
+                  >
+                    <Text strong style={{ textTransform: "capitalize" }}>
+                      {from === "topic"
+                        ? "Topic Name"
+                        : from === "camp"
+                        ? "Camp Name"
+                        : from}{" "}
+                      :{" "}
+                    </Text>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: liveStatement?.parsed_value,
+                      }}
+                    ></div>
+                    <Divider />
+                    <Paragraph>
+                      <Text strong>Edit Summary : </Text>
+                      <Text>{liveStatement?.note}</Text>
+                    </Paragraph>
+                    <Paragraph>
+                      <Text strong>Submitted on : </Text>
+                      <Text>{covertToTime(liveStatement?.submit_time)}</Text>
+                    </Paragraph>
+                    <Paragraph>
+                      <Text strong>Submitter Nick Name : </Text>
+                      <Text>
+                        <Link
+                          href={`/user/supports/${
+                            liveStatement["submitter_nick_id"] || ""
+                          }?topicnum=${
+                            liveStatement["topic_num"] || ""
+                          }&campnum=${
+                            liveStatement["camp_num"] || ""
+                          }&namespace=${liveStatement["namespace_id"] || 1}`}
+                        >
+                          <a>{liveStatement?.submitter_nick_name}</a>
+                        </Link>
+                      </Text>
+                    </Paragraph>
+                    <Paragraph>
+                      <Text strong>Go live time : </Text>
+                      <Text>{covertToTime(liveStatement?.go_live_time)}</Text>
+                    </Paragraph>
+                    {from == "topic" ? (
                       <Paragraph>
-                        <Text strong>Edit Summary : </Text>
-                        <Text>{liveStatement?.note}</Text>
+                        <Text strong>Namespace : </Text>
+                        <Text>{liveStatement?.namespace}</Text>
                       </Paragraph>
-                      <Paragraph>
-                        <Text strong>Submitted on : </Text>
-                        <Text>{covertToTime(liveStatement?.submit_time)}</Text>
-                      </Paragraph>
-                      <Paragraph>
-                        <Text strong>Submitter Nick Name : </Text>
-                        <Text>
-                          <Link
-                            href={`/user/supports/${
-                              liveStatement["submitter_nick_id"] || ""
-                            }?topicnum=${
-                              liveStatement["topic_num"] || ""
-                            }&campnum=${
-                              liveStatement["camp_num"] || ""
-                            }&namespace=${liveStatement["namespace_id"] || 1}`}
-                          >
-                            <a>{liveStatement?.submitter_nick_name}</a>
-                          </Link>
-                        </Text>
-                      </Paragraph>
-                      <Paragraph>
-                        <Text strong>Go live time : </Text>
-                        <Text>{covertToTime(liveStatement?.go_live_time)}</Text>
-                      </Paragraph>
-                      {from == "topic" ? (
+                    ) : null}
+                    {from == "camp" ? (
+                      <Fragment>
+                        {liveStatement?.camp_num != 1 ? (
+                          <Paragraph>
+                            <Text strong>Parent Camp : </Text>
+                            <Text>{liveStatement?.parent_camp_name}</Text>
+                          </Paragraph>
+                        ) : (
+                          ""
+                        )}
                         <Paragraph>
-                          <Text strong>Namespace : </Text>
-                          <Text>{liveStatement?.namespace}</Text>
+                          <Text strong>Keywords : </Text>
+                          <Text>{liveStatement?.key_words}</Text>
                         </Paragraph>
-                      ) : null}
-                      {from == "camp" ? (
-                        <Fragment>
-                          {liveStatement?.camp_num != 1 ? (
-                            <Paragraph>
-                              <Text strong>Parent Camp : </Text>
-                              <Text>{liveStatement?.parent_camp_name}</Text>
-                            </Paragraph>
-                          ) : (
-                            ""
-                          )}
-                          <Paragraph>
-                            <Text strong>Keywords : </Text>
-                            <Text>{liveStatement?.key_words}</Text>
-                          </Paragraph>
-                          <Paragraph>
-                            <Text strong>Camp About URL : </Text>
-                            <Text>
-                              <Link href={liveStatement?.camp_about_url || ""}>
-                                <a>{liveStatement?.camp_about_url}</a>
-                              </Link>
-                            </Text>
-                          </Paragraph>
-                          <Paragraph>
-                            <Text strong>Camp About Nick Name : </Text>
-                            <Text>
-                              <Link
-                                href={`/user/supports/${
-                                  liveStatement["camp_about_nick_id"] || ""
-                                }?topicnum=${
-                                  liveStatement["topic_num"] || ""
-                                }&campnum=${
-                                  liveStatement["camp_num"] || ""
-                                }&namespace=${
-                                  liveStatement["namespace_id"] || 1
-                                }`}
-                              >
-                                <a>{liveStatement?.camp_about_nick_name}</a>
-                              </Link>
-                            </Text>
-                          </Paragraph>
-                        </Fragment>
-                      ) : null}
-                    </Card>
-                  ) : (
-                    ""
-                  )}
-                </Col>
-              </Row>
-            </Spin>
+                        <Paragraph>
+                          <Text strong>Camp About URL : </Text>
+                          <Text>
+                            <Link href={liveStatement?.camp_about_url || ""}>
+                              <a>{liveStatement?.camp_about_url}</a>
+                            </Link>
+                          </Text>
+                        </Paragraph>
+                        <Paragraph>
+                          <Text strong>Camp About Nick Name : </Text>
+                          <Text>
+                            <Link
+                              href={`/user/supports/${
+                                liveStatement["camp_about_nick_id"] || ""
+                              }?topicnum=${
+                                liveStatement["topic_num"] || ""
+                              }&campnum=${
+                                liveStatement["camp_num"] || ""
+                              }&namespace=${
+                                liveStatement["namespace_id"] || 1
+                              }`}
+                            >
+                              <a>{liveStatement?.camp_about_nick_name}</a>
+                            </Link>
+                          </Text>
+                        </Paragraph>
+                      </Fragment>
+                    ) : null}
+                  </Card>
+                ) : (
+                  ""
+                )}
+              </Col>
+            </Row>
           </div>
         </div>
       </div>

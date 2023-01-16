@@ -38,6 +38,9 @@ const ExceptionalMessageConstants = {
     "Only direct supporters at the time this change was submitted can object.",
   objectedModalMsgForMoreInfo:
     "For more information about disagreement, please read topic:",
+  campStatementHeading: "Camp Statement",
+  topicRecordHeading: "Current Topic Record",
+  campRecordHeading: "Current Camp Record",
 };
 
 export default ExceptionalMessageConstants;

@@ -48,6 +48,7 @@ const ForumComponent = () => {
   const [isError, setIsError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [postLoading, setPostLoading] = useState(false);
+  const [threadDetailsLoading, setthreadDetailsLoading] = useState(false);
   const [perPage] = useState(10);
   const [postperPage] = useState(10);
 
@@ -99,6 +100,7 @@ const ForumComponent = () => {
     like = "",
     per_page = perPage
   ) {
+    setLoading(true);
     let res = null;
 
     if (isLoggedIn && type !== "all") {
@@ -120,6 +122,7 @@ const ForumComponent = () => {
   }
 
   const getPosts = async (id, pp = 1, like = "", per_page = postperPage) => {
+    setPostLoading(true);
     const q = `?page=${pp}&per_page=${per_page}&like=${like}`;
 
     const res = await getPostsList(id, q);
@@ -131,6 +134,7 @@ const ForumComponent = () => {
   };
 
   const threadDetails = async (id) => {
+    setthreadDetailsLoading(true);
     setPostLoading(true);
 
     const res = await getThreadData(id);
@@ -138,11 +142,10 @@ const ForumComponent = () => {
     if (res && res.status_code === 200) {
       const data = res.data;
       setCurrentThread(data);
-      // router.query.from = "";
-      // router.replace(router, undefined, { shallow: true });
     }
 
     setPostLoading(false);
+    setthreadDetailsLoading(false);
   };
 
   useEffect(() => {
@@ -238,12 +241,14 @@ const ForumComponent = () => {
     const queries = router?.query;
 
     if (type !== queries.by) {
-      setTotalRecords(0);
-      setThreadList([]);
+      setLoading(true);
+      // setTotalRecords(0);
+      // setThreadList([]);
       setPage(1);
       queries.by = type;
       router.push(router, undefined, { shallow: true });
     }
+    setLoading(false);
   };
 
   const onEditClick = (e, item) => {
@@ -283,6 +288,7 @@ const ForumComponent = () => {
   }
 
   useEffect(() => {
+    setLoading(true);
     const queries = router?.query;
     const campArr = (queries.camp as string).split("-");
     const camp_num = campArr.shift();
@@ -594,6 +600,8 @@ const ForumComponent = () => {
           onDeleteClick={onDeleteClick}
           isLog={isLoggedIn}
           isLoading={postLoading}
+          postperPage={postperPage}
+          threadDetailsLoading={threadDetailsLoading}
         />
       ) : null}
     </Fragment>
