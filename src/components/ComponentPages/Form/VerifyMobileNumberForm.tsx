@@ -20,7 +20,7 @@ function VerifyMobileNumberForm({
   handleChangeOTP,
   toggleVerifyButton,
   handleMobileNumberChange,
-  userProfileSkeleton,
+  userProfileSkeletonV,
 }: any) {
   const [symbolsArr] = useState(["e", "E", "+", "-", "."]);
   const [maxLengthKeysAllowed] = useState([
@@ -48,9 +48,9 @@ function VerifyMobileNumberForm({
         layout="vertical"
         onFinish={onVerifyClick}
       >
-        {userProfileSkeleton ? (
+        {userProfileSkeletonV ? (
           <CustomSkelton
-            skeltonFor="profileInfoForm"
+            skeltonFor="verifyInfoForm"
             bodyCount={1}
             stylingClass=""
             isButton={false}

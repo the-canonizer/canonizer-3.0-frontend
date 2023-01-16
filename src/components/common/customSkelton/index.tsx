@@ -154,6 +154,17 @@ const CustomSkelton = ({
         </Col>
       </Row>
     </Form>
+  ) : skeltonFor == "verifyInfoForm" ? (
+    <Form className={styles.verifyInfoForm} layout="vertical">
+      <Row gutter={30}>
+        <Col md={12}>
+          <Skeleton className={styles.profileInfoForm} count={bodyCount} />
+        </Col>
+        <Col md={12}>
+          <Skeleton className={styles.profileInfoForm} count={bodyCount} />
+        </Col>
+      </Row>
+    </Form>
   ) : skeltonFor == "table" ? (
     <Form>
       <Col>

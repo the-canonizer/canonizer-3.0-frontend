@@ -42,6 +42,8 @@ const ProfileInfo = () => {
   const [zipCode, setZipCode] = useState(false);
   const [add, setAdd] = useState(false);
   const [userProfileSkeleton, setUserProfileSkeleton] = useState(false);
+  const [userProfileSkeletonV, setUserProfileSkeletonV] = useState(true);
+
   const publicPrivateArray = {
     first_name: "first_name",
     last_name: "last_name",
@@ -319,18 +321,15 @@ const ProfileInfo = () => {
       }
     }
     if (isUserAuthenticated) {
-      setUserProfileSkeleton(true);
-
       fetchMobileCarrier()
-        .then(function () {
-          return fetchAlgorithmsList(), setUserProfileSkeleton(false);
+        .then(async function () {
+          return await fetchAlgorithmsList(), setUserProfileSkeletonV(false);
         })
-        .then(function () {
-          return fetchLanguageList();
+        .then(async function () {
+          return await fetchLanguageList();
         })
-        .then(function () {
-          setUserProfileSkeleton(true);
-          return fetchUserProfileInfo(), setUserProfileSkeleton(false);
+        .then(async function () {
+          return await fetchUserProfileInfo(), setUserProfileSkeleton(false);
         });
     }
   }, [isUserAuthenticated]);
@@ -360,6 +359,7 @@ const ProfileInfo = () => {
       disableButton={disableButton}
       postalCodeDisable={postalCodeDisable}
       userProfileSkeleton={userProfileSkeleton}
+      userProfileSkeletonV={userProfileSkeletonV}
     />
   );
 };

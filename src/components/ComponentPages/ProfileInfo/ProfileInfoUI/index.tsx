@@ -26,7 +26,7 @@ function ProfileInfoUI({
   handleMobileNumberChange,
   disableButton,
   postalCodeDisable,
-  userProfileSkeleton,
+  userProfileSkeletonV,
 }: any) {
   return (
     <section className={styles.profileInfo_wrapper}>
@@ -41,7 +41,7 @@ function ProfileInfoUI({
         handleChangeOTP={handleChangeOTP}
         toggleVerifyButton={toggleVerifyButton}
         handleMobileNumberChange={handleMobileNumberChange}
-        userProfileSkeleton={userProfileSkeleton}
+        userProfileSkeletonV={userProfileSkeletonV}
       />
 
       <ProfileInfoForm
@@ -57,7 +57,6 @@ function ProfileInfoUI({
         address={address}
         disableButton={disableButton}
         postalCodeDisable={postalCodeDisable}
-        userProfileSkeleton={userProfileSkeleton}
       />
     </section>
   );
