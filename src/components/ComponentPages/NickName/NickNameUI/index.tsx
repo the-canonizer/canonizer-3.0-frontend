@@ -3,6 +3,7 @@ import { Table, Input, Select, Form, Typography, Button, Modal } from "antd";
 import Icon, { PlusCircleOutlined } from "@ant-design/icons";
 import styles from "./NickName.module.scss";
 import messages from "../../../../messages";
+import CustomSkelton from "@/components/common/customSkelton";
 
 const { Option } = Select;
 
@@ -18,6 +19,7 @@ export default function NickNameUI({
   onAddUpdateNickName,
   nickNameList,
   disableButton,
+  getNickNamesLoadingIndicator,
 }: any) {
   const pageSizeLength = 10;
   const [page, setPage] = useState(1);
@@ -60,7 +62,14 @@ export default function NickNameUI({
     },
   ];
 
-  return (
+  return getNickNamesLoadingIndicator ? (
+    <CustomSkelton
+      skeltonFor="table"
+      bodyCount={5}
+      stylingClass=""
+      isButton={false}
+    />
+  ) : (
     <>
       <section className={styles.nick_name}>
         <Form form={nickNameForm} component={false}>
