@@ -45,7 +45,6 @@ const CustomSkelton = ({
             className={styles[stylingClass]}
             style={{ margin: "2px 0" }}
             count={1}
-            count={2}
           />
         )
       }
