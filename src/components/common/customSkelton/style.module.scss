@@ -148,3 +148,127 @@
     }
   }
 }
+
+.delegateSupportedCampsListSkeleton {
+  display: block;
+  margin-top: 8px;
+  height: 159px;
+  border-radius: 6px;
+  &+br {
+    display: none;
+  }
+}
+
+.directSupportedCampsListSkeleton {
+  display: block;
+  margin-top: 8px;
+  margin-bottom: 8px;
+
+  height: 126px;
+  border-radius: 6px;
+  &+br {
+    display: none;
+  }
+}
+
+.card_width{
+  width: 82%;
+  // height: 64%;
+}
+
+.main_card_title{
+  font-size: 20px;
+  font-weight: 600;
+
+}
+
+.Upload_Cancel_Btn .Upload_Btn {
+  margin-right: 10px;
+  background-color: rgb(249, 157, 22);
+  border-color: rgb(249, 157, 22);
+  color: white;
+  border-radius: 2px;
+  width: 130px;
+  height: 38px;
+  font-size: 16px;
+  padding: 4px 32px;
+  height: 38px;
+}
+
+.manageCardSkeleton {
+  &>div:first-child>div {
+  width: 1000px;
+  height:50px ;
+    margin-top: 1px;
+    margin-bottom: 1px;
+  }
+  span {
+    padding-top: 10px;
+    display: block;
+    &+ br {
+      display: none;
+    }
+  }
+  &_actions {
+    // display: flex;
+    justify-content: flex-end;
+    margin: 8px 0;
+    &_button {
+      height: 55px;
+      width: 190px;
+      margin-left: 24px;
+    }
+  }
+}
+
+.profileInfoForm {
+  height: 40px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  width: 484px;
+  // &+br {
+  //   display: none;
+  // }
+}
+
+.header_column{
+  height: 51px;
+}
+
+.body_column{
+  height: 35px;
+}
+
+.table_form{
+  line-height: 35px;
+  margin: 5px;
+}
+
+.card_upload_file_skeleton{
+  width: 76%;
+  margin-top: 2px;
+  margin-left: 8px;
+  height: 100%;
+}
+.outer_div_upload_file span 
+{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  row-gap: 20px;
+}
+
+.upload_files_skeleton{
+  
+  // display: inherit;
+  box-sizing: border-box;
+  width: 158px;
+  height: 187px;
+  border-radius: 2px;
+  display: flex;
+  flex-direction: row;
+}
+
+.verifyInfoForm{
+  margin-bottom: 70px;
+}

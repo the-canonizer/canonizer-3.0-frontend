@@ -1,6 +1,7 @@
-import { Avatar, Card, Switch, Row, Col } from "antd";
+import { Avatar, Card, Col, Form, Input, Row, Switch, Table } from "antd";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import FormItem from "../formElements";
 
 import styles from "./style.module.scss";
 
@@ -111,7 +112,89 @@ const CustomSkelton = ({
     <PostCustomSkelton bodyCount={bodyCount} stylingClass={stylingClass} />
   ) : skeltonFor == "subscription_card" ? (
     <SubscriptionCustomSkelton stylingClass={stylingClass} />
-  ) : null;
+  ) : skeltonFor == "directSupportCampsCard" ? (
+    <Skeleton
+      className={styles.directSupportedCampsListSkeleton}
+      count={bodyCount}
+    />
+  ) : skeltonFor == "delegateSupportedCampListCard" ? (
+    <Skeleton
+      className={styles.delegateSupportedCampsListSkeleton}
+      count={bodyCount}
+    />
+  ) : skeltonFor == "manageSupportCard" ? (
+    <Card
+      className={styles.manageCardSkeleton}
+      actions={[
+        <div className={styles.manageCardSkeleton_actions}>
+          <Skeleton
+            className={styles.manageCardSkeleton_actions_button}
+            count={1}
+          />
+        </div>,
+      ]}
+      title=<Skeleton
+        height={29}
+        className={styles[stylingClass]}
+        style={{ margin: "2px 0" }}
+        count={1}
+      />
+    >
+      <Skeleton className={styles[stylingClass]} count={bodyCount} />
+    </Card>
+  ) : skeltonFor == "profileInfoForm" ? (
+    <Form layout="vertical">
+      <Row gutter={30}>
+        <Col md={12}>
+          <Skeleton className={styles.profileInfoForm} count={bodyCount} />
+        </Col>
+        <Col md={12}>
+          <Skeleton className={styles.profileInfoForm} count={bodyCount} />
+        </Col>
+      </Row>
+    </Form>
+  ) : skeltonFor == "verifyInfoForm" ? (
+    <Form className={styles.verifyInfoForm} layout="vertical">
+      <Row gutter={30}>
+        <Col md={12}>
+          <Skeleton className={styles.profileInfoForm} count={bodyCount} />
+        </Col>
+        <Col md={12}>
+          <Skeleton className={styles.profileInfoForm} count={bodyCount} />
+        </Col>
+      </Row>
+    </Form>
+  ) : skeltonFor == "table" ? (
+    <Form>
+      <Col>
+        <Skeleton className={styles.header_column} count={1} />
+      </Col>
+      <Form className={styles.table_form}>
+        <Col>
+          <Skeleton className={styles.body_column} count={bodyCount} />
+        </Col>
+      </Form>
+    </Form>
+  ) : (
+    (skeltonFor = "cardForUploadFile" ? (
+      <Card
+        className={styles.card_upload_file_skeleton}
+        title=<Skeleton
+          height={29}
+          className={styles[stylingClass]}
+          style={{ margin: "2px 0" }}
+          count={1}
+        />
+      >
+        <div className={styles.outer_div_upload_file}>
+          <Skeleton
+            className={styles.upload_files_skeleton}
+            count={bodyCount}
+          />
+        </div>
+      </Card>
+    ) : null)
+  );
 };
 
 export default CustomSkelton;
