@@ -11,6 +11,7 @@ import styles from "../topicDetails.module.scss";
 import { Dropdown, Menu, Button } from "antd";
 import K from "../../../../constants";
 import moment from "moment";
+import CustomSkelton from "../../../common/customSkelton";
 
 import { setManageSupportStatusCheck } from "../../../../store/slices/campDetailSlice";
 
@@ -309,120 +310,131 @@ const CampInfoBar = ({
   return (
     <>
       <div className={styles.topicDetailContentHead}>
-        <Spin spinning={loadingIndicator} size="small">
-          <div className={styles.topicDetailContentHead_Left}>
-            <Typography.Paragraph className={"mb-0 " + styles.topicTitleStyle}>
-              {" "}
-              <span className="bold"> Topic : </span>
-              {isTopicHistoryPage ? (
-                <>
-                  {" "}
-                  <Link
-                    href={`/topic/${
-                      payload?.topic_num
-                    }-${replaceSpecialCharacters(
-                      breadCrumbRes?.topic_name,
-                      "-"
-                    )}/1-Agreement`}
-                  >
-                    <a className={styles.boldBreadcrumb}>
-                      {breadCrumbRes?.topic_name}
-                    </a>
-                  </Link>
-                </>
-              ) : (
-                <span className={styles.boldBreadcrumb}>
-                  {breadCrumbRes?.topic_name}
+        {loadingIndicator ? (
+          <CustomSkelton
+            skeltonFor="list"
+            bodyCount={1}
+            stylingClass=""
+            isButton={false}
+          />
+        ) : (
+          <Spin spinning={false}>
+            <div className={styles.topicDetailContentHead_Left}>
+              <Typography.Paragraph
+                className={"mb-0 " + styles.topicTitleStyle}
+              >
+                {" "}
+                <span className="bold"> Topic : </span>
+                {isTopicHistoryPage ? (
+                  <>
+                    {" "}
+                    <Link
+                      href={`/topic/${
+                        payload?.topic_num
+                      }-${replaceSpecialCharacters(
+                        breadCrumbRes?.topic_name,
+                        "-"
+                      )}/1-Agreement`}
+                    >
+                      <a className={styles.boldBreadcrumb}>
+                        {breadCrumbRes?.topic_name}
+                      </a>
+                    </Link>
+                  </>
+                ) : (
+                  <span className={styles.boldBreadcrumb}>
+                    {breadCrumbRes?.topic_name}
+                  </span>
+                )}
+                {"  "}
+                {!!topicSubscriptionID && (
+                  <small>
+                    <i className="icon-subscribe text-primary"></i>
+                  </small>
+                )}
+              </Typography.Paragraph>
+              <div className={styles.breadcrumbLinks}>
+                {" "}
+                <span className="bold mr-1">
+                  {!isTopicHistoryPage ? "Camp :" : ""}{" "}
                 </span>
-              )}
-              {"  "}
-              {!!topicSubscriptionID && (
-                <small>
-                  <i className="icon-subscribe text-primary"></i>
-                </small>
-              )}
-            </Typography.Paragraph>
-            <div className={styles.breadcrumbLinks}>
-              {" "}
-              <span className="bold mr-1">
-                {!isTopicHistoryPage ? "Camp :" : ""}{" "}
-              </span>
-              {!isTopicHistoryPage
-                ? breadCrumbRes
-                  ? breadCrumbRes?.bread_crumb?.map((camp, index) => {
-                      return (
-                        <Link
-                          href={{
-                            pathname: `/topic/${
-                              payloadData?.topic_num
-                            }-${replaceSpecialCharacters(
-                              breadCrumbRes?.topic_name,
-                              "-"
-                            )}/${camp?.camp_num}-${replaceSpecialCharacters(
-                              camp?.camp_name,
-                              "-"
-                            )}`,
-                          }}
-                          key={index}
-                        >
-                          <a>
-                            <span className={styles.slashStyle}>
-                              {" "}
-                              {index !== 0 && "/"}{" "}
-                            </span>
-                            <span
-                              className={
-                                breadCrumbRes?.bread_crumb.length - 1 == index
-                                  ? styles.greenIndicateText
-                                  : styles.boldBreadcrumb
-                              }
-                            >{`${camp?.camp_name}`}</span>
-                          </a>
-                        </Link>
-                      );
-                    })
-                  : "N/A"
-                : null}
-              {!!campSubscriptionID && !isTopicHistoryPage && (
-                <small style={{ alignSelf: "center", marginLeft: "10px" }}>
-                  <i className="icon-subscribe text-primary"></i>
-                </small>
+                {!isTopicHistoryPage
+                  ? breadCrumbRes
+                    ? breadCrumbRes?.bread_crumb?.map((camp, index) => {
+                        return (
+                          <Link
+                            href={{
+                              pathname: `/topic/${
+                                payloadData?.topic_num
+                              }-${replaceSpecialCharacters(
+                                breadCrumbRes?.topic_name,
+                                "-"
+                              )}/${camp?.camp_num}-${replaceSpecialCharacters(
+                                camp?.camp_name,
+                                "-"
+                              )}`,
+                            }}
+                            key={index}
+                          >
+                            <a>
+                              <span className={styles.slashStyle}>
+                                {" "}
+                                {index !== 0 && "/"}{" "}
+                              </span>
+                              <span
+                                className={
+                                  breadCrumbRes?.bread_crumb.length - 1 == index
+                                    ? styles.greenIndicateText
+                                    : styles.boldBreadcrumb
+                                }
+                              >{`${camp?.camp_name}`}</span>
+                            </a>
+                          </Link>
+                        );
+                      })
+                    : "N/A"
+                  : null}
+                {!!campSubscriptionID && !isTopicHistoryPage && (
+                  <small style={{ alignSelf: "center", marginLeft: "10px" }}>
+                    <i className="icon-subscribe text-primary"></i>
+                  </small>
+                )}
+              </div>
+            </div>
+
+            <div className={styles.topicDetailContentHead_Right}>
+              {isTopicPage && (
+                <Fragment>
+                  <SocialShareUI
+                    campName={campRecord?.camp_name}
+                    campUrl={!isServer() && window?.location?.href}
+                  />
+                  <Button
+                    type="primary"
+                    className={styles.btnCampForum}
+                    onClick={onCampForumClick}
+                    id="camp-forum-btn"
+                  >
+                    Camp Forum
+                  </Button>
+                  <Dropdown
+                    className={styles.campForumDropdown}
+                    placement="bottomRight"
+                    overlay={campForumDropdownMenu}
+                    trigger={["click"]}
+                  >
+                    <a
+                      className={styles.iconMore}
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      <MoreOutlined />
+                    </a>
+                  </Dropdown>
+                </Fragment>
               )}
             </div>
-          </div>
-
-          <div className={styles.topicDetailContentHead_Right}>
-            {isTopicPage && (
-              <Fragment>
-                <SocialShareUI
-                  campName={campRecord?.camp_name}
-                  campUrl={!isServer() && window?.location?.href}
-                />
-                <Button
-                  type="primary"
-                  className={styles.btnCampForum}
-                  onClick={onCampForumClick}
-                  id="camp-forum-btn"
-                >
-                  Camp Forum
-                </Button>
-                <Dropdown
-                  className={styles.campForumDropdown}
-                  placement="bottomRight"
-                  overlay={campForumDropdownMenu}
-                  trigger={["click"]}
-                >
-                  <a
-                    className={styles.iconMore}
-                    onClick={(e) => e.preventDefault()}
-                  >
-                    <MoreOutlined />
-                  </a>
-                </Dropdown>
-              </Fragment>
-            )}
-          </div>
-        </Spin>
+          </Spin>
+        )}
       </div>
     </>
   );
