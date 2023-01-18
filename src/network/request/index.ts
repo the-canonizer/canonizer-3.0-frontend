@@ -1,5 +1,6 @@
 import K from "../../constants";
 import { store } from "../../store";
+
 export default class Request {
   url: string = "";
   method: string = "";
@@ -19,7 +20,11 @@ export default class Request {
 
     let bearerToken = "";
 
-    token ? (bearerToken = token) : (bearerToken = auth?.loggedInUser?.token);
+    if (auth?.loggedInUser) {
+      token ? (bearerToken = token) : (bearerToken = auth?.loggedInUser?.token);
+    } else {
+      bearerToken = auth?.authToken;
+    }
 
     headers = {
       ...(defaultHeaderType === K.Network.Header.Type.Json ||
