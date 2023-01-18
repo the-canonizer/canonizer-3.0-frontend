@@ -5,14 +5,19 @@ import Spinner from "../../components/common/spinner/spinner";
 import styles from "./layout.module.scss";
 import Footer from "../../components/common/footer";
 import GoogleAd from "../../components/googleAds";
+import { useEffect, useState } from "react";
 
 function Layout(props: any) {
   const { isUserAuthenticated } = useAuthentication();
 
+  const [log, setLog] = useState(isUserAuthenticated);
+
+  useEffect(() => setLog(isUserAuthenticated), [isUserAuthenticated]);
+
   return (
     <>
       <div className={styles.pageWrap}>
-        {isUserAuthenticated ? <LoggedInHeader /> : <LoggedOutHeader />}
+        {log ? <LoggedInHeader /> : <LoggedOutHeader />}
         <Spinner>{""}</Spinner>
         <div className={styles.contentWrap}>
           <div className={styles.contentArea}>{props.children} </div>
