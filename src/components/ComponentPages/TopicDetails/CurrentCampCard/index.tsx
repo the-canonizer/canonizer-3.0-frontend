@@ -34,7 +34,7 @@ const CurrentCampCard = ({ loadingIndicator }) => {
   ) : (
     <Collapse
       accordion={true}
-      defaultActiveKey={["1"]}
+      defaultActiveKey={[]}
       expandIconPosition="right"
       className="topicDetailsCollapse"
     >

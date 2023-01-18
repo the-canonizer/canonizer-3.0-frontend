@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 import useAuthentication from "../../hooks/isUserAuthenticated";
 import LoggedInHeader from "../../components/common/headers/loggedInHeader";
@@ -10,10 +10,14 @@ import Footer from "../../components/common/footer";
 function WithoutSidebarLayout(props: any) {
   const { isUserAuthenticated } = useAuthentication();
 
+  const [log, setLog] = useState(isUserAuthenticated);
+
+  useEffect(() => setLog(isUserAuthenticated), [isUserAuthenticated]);
+
   return (
     <Fragment>
       <div className={styles.pageWrap}>
-        {isUserAuthenticated ? <LoggedInHeader /> : <LoggedOutHeader />}
+        {log ? <LoggedInHeader /> : <LoggedOutHeader />}
         <Spinner>{""}</Spinner>
         <div className={styles.contentWrap}>
           <div className={styles.contentArea}>{props.children} </div>
