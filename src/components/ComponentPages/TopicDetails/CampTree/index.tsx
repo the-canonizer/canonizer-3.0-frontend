@@ -47,11 +47,8 @@ const CampTree = ({
   ) => {
     if (!(selectedKeys.join() === "custom" || selectedKeys.join() === "")) {
       setSelectedExpand(selectedKeys);
-      // setSelectedExpand(selectedKeys);
       dispatch(setCurrentCamp(e?.selectedNodes[0]?.data));
-      // setSelectedNodeID(+selectedKeys.join(""));
       scrollToCampStatement();
-      // expandNode(selectedKeys[0]);
     }
   };
 
@@ -160,12 +157,7 @@ const CampTree = ({
           ? 2
           : +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1)
       );
-    // expandNode(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1);
     setDefaultExpandKeys(expandKeys);
-    // onExpand(expandKeys)
-    // setAutoExpandParent(false);
-    // setExpandedKeys(expandKeys);
-    // setAutoExpandParent(false);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tree?.at(0)]);
@@ -331,61 +323,36 @@ const CampTree = ({
     });
   };
 
-  // changes
-
-  // function expandNode(key) {
-  //   setAutoExpandParent(false);
-  //   setExpandedKeys((prev) => {
-  //     const outArr = [];
-  //     if (prev.includes(key)) {
-  //       for (let i = 0; i < prev.length; i++) {
-  //         if (prev[i] !== key) {
-  //           outArr.push(prev[i]);
-  //         }
-  //       }
-  //       return outArr;
-  //     } else {
-  //       prev.push(key);
-  //       return prev;
-  //     }
-  //   });
-  // }
-
   const onExpand = (expandedKeys) => {
     setExpandedKeys(expandedKeys);
     setAutoExpandParent(false);
   };
 
-  // changes end
+  const allkeys = [...selectedExpand, ...defaultExpandKeys, ...expandedKeys];
+
+  const toFindDuplicates = (arry) =>
+    arry.map((item, index, self) => {
+      if (self.indexOf(item) === index) {
+        console.log("self", self[index]);
+        return self[index]?.toString();
+      }
+      return item;
+    });
+
+  const uniqueKeys = toFindDuplicates(allkeys);
 
   return tree?.at(0) ? (
     showTree && tree?.at(0)["1"].title != "" && defaultExpandKeys ? (
       <Tree
         showLine={{ showLeafIcon: false }}
-        defaultExpandedKeys={[
-          ...selectedExpand,
-          ...defaultExpandKeys,
-          ...expandedKeys,
-        ]}
+        defaultExpandedKeys={uniqueKeys}
+        defaultSelectedKeys={uniqueKeys}
         onSelect={onSelect}
-        // autoExpandParent={true}
-        // expandedKeys={[...selectedExpand, ...defaultExpandKeys]}
-        // filterTreeNode={filterTreeNode}
-        // autoExpandParent={true}
-        // expandable={true}
-
         onExpand={onExpand}
-        expandedKeys={[
-          ...selectedExpand,
-          ...defaultExpandKeys,
-          ...expandedKeys,
-        ]}
+        expandedKeys={uniqueKeys}
         autoExpandParent={autoExpandParent}
-        selectedKeys={[
-          ...selectedExpand,
-          ...defaultExpandKeys,
-          ...expandedKeys,
-        ]}
+        selectedKeys={uniqueKeys}
+        selectable={true}
       >
         {tree?.at(0) && renderTreeNodes(tree?.at(0))}
       </Tree>
