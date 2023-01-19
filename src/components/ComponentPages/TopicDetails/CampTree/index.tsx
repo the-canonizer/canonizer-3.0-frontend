@@ -325,7 +325,7 @@ const CampTree = ({
 
   const onExpand = (expandedKeys) => {
     setExpandedKeys(expandedKeys);
-    setAutoExpandParent(false);
+    // setAutoExpandParent(false);
   };
 
   const allkeys = [...selectedExpand, ...defaultExpandKeys, ...expandedKeys];
@@ -345,13 +345,13 @@ const CampTree = ({
       <Tree
         showLine={{ showLeafIcon: false }}
         defaultExpandedKeys={uniqueKeys}
-        defaultSelectedKeys={uniqueKeys}
         onSelect={onSelect}
-        onExpand={onExpand}
-        expandedKeys={uniqueKeys}
-        autoExpandParent={autoExpandParent}
-        selectedKeys={uniqueKeys}
-        selectable={true}
+        // defaultSelectedKeys={uniqueKeys}
+        // onExpand={onExpand}
+        // expandedKeys={uniqueKeys}
+        // autoExpandParent={autoExpandParent}
+        // selectedKeys={uniqueKeys}
+        // selectable={true}
       >
         {tree?.at(0) && renderTreeNodes(tree?.at(0))}
       </Tree>
