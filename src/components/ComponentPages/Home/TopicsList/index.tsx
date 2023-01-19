@@ -21,6 +21,7 @@ import {
   setManageSupportStatusCheck,
 } from "src/store/slices/campDetailSlice";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import CustomSkelton from "@/components/common/customSkelton";
 
 const antIcon = <LoadingOutlined spin />;
 const { Title, Text } = Typography;
@@ -214,123 +215,122 @@ const TopicsList = () => {
   return (
     <>
       <div className={`${styles.card} topicsList_card`}>
-        <Spin spinning={getTopicsLoadingIndicator} size="large">
-          <List
-            className={styles.wrap}
-            header={
-              <div
-                className={`${styles.head} ${
-                  router.asPath.includes("/browse") ? styles.browsePage : ""
-                }`}
+        <List
+          className={styles.wrap}
+          header={
+            <div
+              className={`${styles.head} ${
+                router.asPath.includes("/browse") ? styles.browsePage : ""
+              }`}
+            >
+              <Title level={3}>
+                Select Namespace
+                <Popover content={infoContent} placement="right">
+                  <i className="icon-info cursor-pointer"></i>
+                </Popover>
+              </Title>
+              {router.asPath === "/browse" && isUserAuthenticated && (
+                <Checkbox
+                  className={styles.checkboxOnlyMyTopics}
+                  onChange={handleCheckbox}
+                >
+                  Only My Topics
+                </Checkbox>
+              )}
+              <Select
+                size="large"
+                className={styles.dropdown}
+                defaultValue={selectedNameSpace}
+                value={selectedNameSpace}
+                onChange={selectNameSpace}
+                showSearch
+                optionFilterProp="children"
+                id="name-space-dropdown"
               >
-                <Title level={3}>
-                  Select Namespace
-                  <Popover content={infoContent} placement="right">
-                    <i className="icon-info cursor-pointer"></i>
-                  </Popover>
-                </Title>
-                {router.asPath === "/browse" && isUserAuthenticated && (
-                  <Checkbox
-                    className={styles.checkboxOnlyMyTopics}
-                    onChange={handleCheckbox}
+                {nameSpacesList?.map((item) => {
+                  return (
+                    <Select.Option
+                      id={`name-space-${item.id}`}
+                      key={item.id}
+                      value={item.id}
+                    >
+                      {item.label}
+                    </Select.Option>
+                  );
+                })}
+                <Select.Option id="name-space-custom" key="custom-key" value="">
+                  All
+                </Select.Option>
+              </Select>
+              {router.asPath.includes("/browse") && (
+                <div className={styles.inputSearchTopic}>
+                  <Search
+                    placeholder="Search by topic name"
+                    allowClear
+                    className={styles.topic}
+                    defaultValue={inputSearch}
+                    onSearch={onSearch}
+                  />
+                </div>
+              )}
+            </div>
+          }
+          footer={
+            <div className={styles.footer}>
+              {router.asPath.includes("/browse")
+                ? LoadMoreTopics
+                : ViewAllTopics}
+            </div>
+          }
+          bordered
+          dataSource={topicsData?.topics}
+          renderItem={(item: any) => {
+            return getTopicsLoadingIndicator ? (
+              <CustomSkelton
+                skeltonFor="list"
+                bodyCount={10}
+                stylingClass="listSkeleton"
+                isButton={false}
+              />
+            ) : (
+              <List.Item className={styles.item} id={`topic-${item?.topic_id}`}>
+                <>
+                  <Link
+                    href={{
+                      pathname: `/topic/${
+                        item?.topic_id
+                      }-${replaceSpecialCharacters(
+                        isReview
+                          ? item?.tree_structure[1]?.review_title
+                          : item?.topic_name,
+                        "-"
+                      )}/1-Agreement`,
+                    }}
                   >
-                    Only My Topics
-                  </Checkbox>
-                )}
-                <Select
-                  size="large"
-                  className={styles.dropdown}
-                  defaultValue={selectedNameSpace}
-                  value={selectedNameSpace}
-                  onChange={selectNameSpace}
-                  showSearch
-                  optionFilterProp="children"
-                  id="name-space-dropdown"
-                >
-                  {nameSpacesList?.map((item) => {
-                    return (
-                      <Select.Option
-                        id={`name-space-${item.id}`}
-                        key={item.id}
-                        value={item.id}
-                      >
-                        {item.label}
-                      </Select.Option>
-                    );
-                  })}
-                  <Select.Option
-                    id="name-space-custom"
-                    key="custom-key"
-                    value=""
-                  >
-                    All
-                  </Select.Option>
-                </Select>
-                {router.asPath.includes("/browse") && (
-                  <div className={styles.inputSearchTopic}>
-                    <Search
-                      placeholder="Search by topic name"
-                      allowClear
-                      className={styles.topic}
-                      defaultValue={inputSearch}
-                      onSearch={onSearch}
-                    />
-                  </div>
-                )}
-              </div>
-            }
-            footer={
-              <div className={styles.footer}>
-                {router.asPath.includes("/browse")
-                  ? LoadMoreTopics
-                  : ViewAllTopics}
-              </div>
-            }
-            bordered
-            dataSource={topicsData?.topics}
-            renderItem={(item: any) => {
-              return (
-                <List.Item
-                  className={styles.item}
-                  id={`topic-${item?.topic_id}`}
-                >
-                  <>
-                    <Link
-                      href={{
-                        pathname: `/topic/${
-                          item?.topic_id
-                        }-${replaceSpecialCharacters(
-                          isReview
-                            ? item?.tree_structure[1]?.review_title
-                            : item?.topic_name,
-                          "-"
-                        )}/1-Agreement`,
+                    <a
+                      onClick={() => {
+                        handleTopicClick();
                       }}
                     >
-                      <a
-                        onClick={() => {
-                          handleTopicClick();
-                        }}
-                      >
-                        <Text className={styles.text}>
-                          {isReview
-                            ? item?.tree_structure[1].review_title
-                            : item?.topic_name}
-                        </Text>
-                        <Tag className={styles.tag}>
-                          {/* // ? item?.topic_full_score // : item?.full_score?.toFixed(2) */}
-                          {is_checked && isUserAuthenticated
-                            ? item?.topic_full_score?.toFixed(2)
-                            : item?.topic_score?.toFixed(2)}
-                        </Tag>
-                      </a>
-                    </Link>
-                  </>
-                </List.Item>
-              );
-            }}
-          />
-        </Spin>
+                      <Text className={styles.text}>
+                        {isReview
+                          ? item?.tree_structure[1].review_title
+                          : item?.topic_name}
+                      </Text>
+                      <Tag className={styles.tag}>
+                        {/* // ? item?.topic_full_score // : item?.full_score?.toFixed(2) */}
+                        {is_checked && isUserAuthenticated
+                          ? item?.topic_full_score?.toFixed(2)
+                          : item?.topic_score?.toFixed(2)}
+                      </Tag>
+                    </a>
+                  </Link>
+                </>
+              </List.Item>
+            );
+          }}
+        />
+
         <BackTop />
       </div>
     </>

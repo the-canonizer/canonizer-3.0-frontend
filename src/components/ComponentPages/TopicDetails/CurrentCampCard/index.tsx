@@ -9,10 +9,11 @@ import K from "../../../../constants";
 
 import { RootState } from "../../../../store";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
+import CustomSkelton from "@/components/common/customSkelton";
 
 const { Panel } = Collapse;
 
-const CurrentCampCard = () => {
+const CurrentCampCard = ({ loadingIndicator }) => {
   const router = useRouter();
   const { campRecord, topicRecord, history } = useSelector(
     (state: RootState) => ({
@@ -22,14 +23,25 @@ const CurrentCampCard = () => {
     })
   );
 
-  return (
+  return loadingIndicator ? (
+    <CustomSkelton
+      titleName={K?.exceptionalMessages?.campRecordHeading}
+      skeltonFor="card"
+      bodyCount={6}
+      stylingClass="test"
+      isButton={false}
+    />
+  ) : (
     <Collapse
       accordion={true}
-      defaultActiveKey={["1"]}
+      defaultActiveKey={[]}
       expandIconPosition="right"
       className="topicDetailsCollapse"
     >
-      <Panel header={<h3>Current Camp Record</h3>} key="1">
+      <Panel
+        header={<h3>{K?.exceptionalMessages?.campRecordHeading}</h3>}
+        key="1"
+      >
         <Descriptions column={1}>
           {currentCampRecordConstants?.map((description) => {
             if (
