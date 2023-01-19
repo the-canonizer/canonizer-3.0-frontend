@@ -377,6 +377,7 @@ const CampInfoBar = ({
                                   : styles.boldBreadcrumb
                               }
                             >{`${camp?.camp_name}`}</span>
+                            &nbsp;
                           </a>
                         </Link>
                       );

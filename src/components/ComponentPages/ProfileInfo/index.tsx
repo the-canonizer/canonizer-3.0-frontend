@@ -41,6 +41,8 @@ const ProfileInfo = () => {
   const [updateAddress, setUpdateAddress] = useState<UpdateAddress>({});
   const [zipCode, setZipCode] = useState(false);
   const [add, setAdd] = useState(false);
+  const [userProfileSkeleton, setUserProfileSkeleton] = useState(false);
+  const [userProfileSkeletonV, setUserProfileSkeletonV] = useState(true);
 
   const publicPrivateArray = {
     first_name: "first_name",
@@ -320,14 +322,14 @@ const ProfileInfo = () => {
     }
     if (isUserAuthenticated) {
       fetchMobileCarrier()
-        .then(function () {
-          return fetchAlgorithmsList();
+        .then(async function () {
+          return await fetchAlgorithmsList(), setUserProfileSkeletonV(false);
         })
-        .then(function () {
-          return fetchLanguageList();
+        .then(async function () {
+          return await fetchLanguageList();
         })
-        .then(function () {
-          return fetchUserProfileInfo();
+        .then(async function () {
+          return await fetchUserProfileInfo(), setUserProfileSkeleton(false);
         });
     }
   }, [isUserAuthenticated]);
@@ -356,6 +358,8 @@ const ProfileInfo = () => {
       handleMobileNumberChange={handleMobileNumberChange}
       disableButton={disableButton}
       postalCodeDisable={postalCodeDisable}
+      userProfileSkeleton={userProfileSkeleton}
+      userProfileSkeletonV={userProfileSkeletonV}
     />
   );
 };
