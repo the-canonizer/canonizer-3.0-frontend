@@ -81,14 +81,13 @@ const HeaderMenu = ({ loggedUser }) => {
                 key={item.id + "_" + item.link + "___" + idx}
               >
                 {router.asPath.includes("/topic") || item.external ? (
-                  <Link href={{ pathname: item.link }} passHref>
-                    <a
-                      rel="noopener noreferrer"
-                      target={item.external ? "_blank" : "_self"}
-                    >
-                      {item.linkTitle}
-                    </a>
-                  </Link>
+                  <a
+                    href={item.link}
+                    rel="noopener noreferrer"
+                    target={item.external ? "_blank" : "_self"}
+                  >
+                    {item.linkTitle}
+                  </a>
                 ) : (
                   <Link href={{ pathname: item.link }} passHref>
                     <a>{item.linkTitle}</a>
