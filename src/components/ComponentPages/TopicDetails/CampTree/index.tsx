@@ -333,7 +333,6 @@ const CampTree = ({
   const toFindDuplicates = (arry) =>
     arry.map((item, index, self) => {
       if (self.indexOf(item) === index) {
-        console.log("self", self[index]);
         return self[index]?.toString();
       }
       return item;
