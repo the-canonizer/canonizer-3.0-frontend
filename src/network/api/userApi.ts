@@ -19,6 +19,7 @@ import { setFilterCanonizedTopics } from "../../store/slices/filtersSlice";
 export const createToken = async () => {
   try {
     const token = await NetworkCall.fetch(UserRequest.createToken());
+    store.dispatch(setAuthToken(token?.data?.access_token));
     return token.data;
   } catch (error) {
     handleError(error);
@@ -40,7 +41,6 @@ export const login = async (email: string, password: string) => {
     };
 
     store.dispatch(setLoggedInUser(payload));
-    store.dispatch(setAuthToken(authToken?.access_token));
 
     return res;
   } catch (err) {
@@ -101,6 +101,7 @@ export const register = async (values: object) => {
     const res = await NetworkCall.fetch(
       UserRequest.registerUser(values, authToken?.access_token)
     );
+
     return res;
   } catch (error) {
     if (
@@ -131,7 +132,6 @@ export const verifyOtp = async (values: object) => {
     };
 
     store.dispatch(setLoggedInUser(payload));
-    store.dispatch(setAuthToken(authToken?.access_token));
 
     return res;
   } catch (err) {
@@ -189,7 +189,6 @@ export const socialLoginCallback = async (values: object, router) => {
     };
 
     store.dispatch(setLoggedInUser(payload));
-    store.dispatch(setAuthToken(authToken?.access_token));
 
     if (res && res.status_code === 200) {
       store.dispatch(
