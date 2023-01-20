@@ -9,6 +9,7 @@ import {
   setCanonizedAlgorithms,
   setCanonizedNameSpaces,
 } from "../../store/slices/homePageSlice";
+import { createToken } from "../../network/api/userApi";
 
 const CreateNewTopicPage = ({ nameSpacesList, algorithms }: any) => {
   const dispatch = useDispatch();
@@ -24,8 +25,12 @@ const CreateNewTopicPage = ({ nameSpacesList, algorithms }: any) => {
 };
 
 export async function getServerSideProps() {
-  const nameSpaces = await getCanonizedNameSpacesApi();
-  const canonizedAlgorithms = await getCanonizedAlgorithmsApi();
+  const response = await createToken();
+
+  const nameSpaces = await getCanonizedNameSpacesApi(response?.access_token);
+  const canonizedAlgorithms = await getCanonizedAlgorithmsApi(
+    response?.access_token
+  );
 
   return {
     props: {
