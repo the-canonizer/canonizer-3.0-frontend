@@ -142,13 +142,13 @@ const ManageSupport = () => {
       }
     })();
   }, [isUserAuthenticated, reqBodyData.topic_num]);
-
   const GetCheckStatusData = async (campReff: any) => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
     if (response && response.status_code === 200) {
       if (response.data?.remove_camps)
         setParentSupportDataList(response.data.remove_camps);
-      if (!manageSupportStatusCheck) {
+
+      if (!manageSupportStatusCheck || CheckDelegatedOrDirect) {
         response.data.warning;
         response.data.support_flag;
         //Api's call for list
@@ -229,7 +229,6 @@ const ManageSupport = () => {
   const camp_Name_ = campRecord?.camp_name;
   const CampName = camp_Name_;
   const campSupportPath = router.asPath?.replace("/support/", "/topic/");
-
   const body = { topic_num: topicNum };
   const getActiveSupportTopicList = async (
     warning?: string,
@@ -245,7 +244,7 @@ const ManageSupport = () => {
       );
     });
     const dataValue = manageSupportStatusCheck
-      ? CurrentCheckSupportStatus
+      ? CurrentCheckSupportStatus 
       : warning
       ? warning
       : "";

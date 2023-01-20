@@ -17,8 +17,7 @@ function Layout(props: any) {
   return (
     <>
       <div className={styles.pageWrap}>
-        {log ? <LoggedInHeader /> : <LoggedOutHeader />}
-        <Spinner>{""}</Spinner>
+        {isUserAuthenticated ? <LoggedInHeader /> : <LoggedOutHeader />}
         <div className={styles.contentWrap}>
           <div className={styles.contentArea}>{props.children} </div>
           <aside className={styles.rightSidebar}>
