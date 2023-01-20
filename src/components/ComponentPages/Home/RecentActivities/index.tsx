@@ -187,7 +187,7 @@ export default function RecentActivities() {
             {getTopicsLoadingIndicator ? (
               <CustomSkelton
                 skeltonFor="list"
-                bodyCount={10}
+                bodyCount={22}
                 stylingClass="listSkeleton"
                 isButton={false}
               />
@@ -264,7 +264,7 @@ export default function RecentActivities() {
             {getTopicsLoadingIndicator ? (
               <CustomSkelton
                 skeltonFor="list"
-                bodyCount={15}
+                bodyCount={22}
                 stylingClass="listSkeleton"
                 isButton={false}
               />
