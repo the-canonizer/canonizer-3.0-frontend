@@ -19,9 +19,16 @@ export default class Request {
     const { auth } = state;
 
     let bearerToken = "";
-
-    if (auth?.loggedInUser) {
-      token ? (bearerToken = token) : (bearerToken = auth?.loggedInUser?.token);
+    if (token) {
+      bearerToken = token;
+      if (auth?.loggedInUser) {
+        bearerToken = auth?.loggedInUser?.token;
+        // token
+        //   ? (bearerToken = token)
+        //   : (bearerToken = auth?.loggedInUser?.token);
+      } else {
+        bearerToken = auth?.authToken;
+      }
     } else {
       bearerToken = auth?.authToken;
     }

@@ -15,13 +15,14 @@ export default class HomePageRequests extends Request {
     );
   }
 
-  static getCanonizedNameSpaces() {
+  static getCanonizedNameSpaces(token) {
     return new Request(
       K.Network.URL.GetCanonizedNameSpaces,
       K.Network.Method.GET,
       null,
       K.Network.Header.Type.Json,
-      {}
+      {},
+      token
     );
   }
 
@@ -36,23 +37,25 @@ export default class HomePageRequests extends Request {
     );
   }
 
-  static getCanonizedAlgorithms() {
+  static getCanonizedAlgorithms(token) {
     return new Request(
       K.Network.URL.GetCanonizedAlgorithms,
       K.Network.Method.GET,
       null,
       K.Network.Header.Type.Json,
-      {}
+      {},
+      token
     );
   }
 
-  static getCanonizedWhatsNewContent() {
+  static getCanonizedWhatsNewContent(token) {
     return new Request(
       K.Network.URL.GetWhatsNewContent,
       K.Network.Method.GET,
       null,
       K.Network.Header.Type.Json,
-      {}
+      {},
+      token
     );
   }
 }
