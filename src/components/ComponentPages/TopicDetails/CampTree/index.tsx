@@ -28,6 +28,11 @@ const CampTree = ({
   let childExpandTree = [];
 
   const [defaultExpandKeys, setDefaultExpandKeys] = useState([]);
+
+  const [selectedExpand, setSelectedExpand] = useState([]);
+  const [expandedKeys, setExpandedKeys] = useState([]);
+  const [autoExpandParent, setAutoExpandParent] = useState(true);
+
   // const [selectedNodeID, setSelectedNodeID] = useState(1);
   const [scoreFilter, setScoreFilter] = useState(filterByScore);
   const [includeReview, setIncludeReview] = useState(
@@ -41,11 +46,12 @@ const CampTree = ({
     e: { selected; selectedNodes; node; event }
   ) => {
     if (!(selectedKeys.join() === "custom" || selectedKeys.join() === "")) {
+      setSelectedExpand(selectedKeys);
       dispatch(setCurrentCamp(e?.selectedNodes[0]?.data));
-      // setSelectedNodeID(+selectedKeys.join(""));
       scrollToCampStatement();
     }
   };
+
   const { isUserAuthenticated, userID } = useAuthentication();
 
   const showSelectedCamp = (data, select_camp, campExist) => {
@@ -317,14 +323,35 @@ const CampTree = ({
     });
   };
 
+  const onExpand = (expandedKeys) => {
+    setExpandedKeys(expandedKeys);
+    // setAutoExpandParent(false);
+  };
+
+  const allkeys = [...selectedExpand, ...defaultExpandKeys, ...expandedKeys];
+
+  const toFindDuplicates = (arry) =>
+    arry.map((item, index, self) => {
+      if (self.indexOf(item) === index) {
+        return self[index]?.toString();
+      }
+      return item;
+    });
+
+  const uniqueKeys = toFindDuplicates(allkeys);
+
   return tree?.at(0) ? (
     showTree && tree?.at(0)["1"].title != "" && defaultExpandKeys ? (
       <Tree
         showLine={{ showLeafIcon: false }}
-        defaultExpandedKeys={defaultExpandKeys}
+        defaultExpandedKeys={uniqueKeys}
         onSelect={onSelect}
-        autoExpandParent={true}
-        // filterTreeNode={filterTreeNode}
+        // defaultSelectedKeys={uniqueKeys}
+        // onExpand={onExpand}
+        // expandedKeys={uniqueKeys}
+        // autoExpandParent={autoExpandParent}
+        // selectedKeys={uniqueKeys}
+        // selectable={true}
       >
         {tree?.at(0) && renderTreeNodes(tree?.at(0))}
       </Tree>
