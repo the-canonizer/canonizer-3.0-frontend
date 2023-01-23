@@ -1,15 +1,22 @@
 import React from "react";
-import messages from "../../../../messages";
-import styles from "../UserProfileUI/UserProfile.module.scss";
-import Link from "next/link";
-import { Card, Tag, Select, BackTop } from "antd";
 import { useRouter } from "next/router";
+import { Card, Tag, Select, BackTop } from "antd";
+import Link from "next/link";
+
+import styles from "../UserProfileUI/UserProfile.module.scss";
+
+import messages from "../../../../messages";
+
 export const UserProfileCard = ({
   userSupportedCampsList,
   nameSpaceList,
   dropdownNameSpaceList,
   setDropdownNameSpaceList,
   noData,
+  nickNames,
+  defaultNickname,
+  selectedNikname,
+  onNickNameChange,
 }: any) => {
   const renderFilter = () => {
     const filteredVal = nameSpaceList.filter(
@@ -17,8 +24,11 @@ export const UserProfileCard = ({
     );
     return filteredVal[0];
   };
+
   const router = useRouter();
+
   const reqBody = { campNum: +router?.query?.supports[0] };
+
   return (
     <div className="user--cards-outer">
       <div className={styles.card_spacing}>
@@ -34,6 +44,33 @@ export const UserProfileCard = ({
                     {" "}
                     <b>{supportedCampList.nick_name}</b>
                   </span>
+                </div>
+              }
+              extra={
+                <div className={styles.nickname_box}>
+                  <span className={styles.labels}>Select {messages.labels.nickname}</span>
+                  <Select
+                    size="large"
+                    className={styles.nickname_dropdown}
+                    defaultValue={defaultNickname}
+                    value={selectedNikname}
+                    onChange={onNickNameChange}
+                    showSearch
+                    optionFilterProp="children"
+                    id="user-nick-name-dropdown"
+                  >
+                    {nickNames?.map((nick) => {
+                      return (
+                        <Select.Option
+                          id={`name-space-${nick.id}`}
+                          key={nick.id}
+                          value={nick.id}
+                        >
+                          {nick.label}
+                        </Select.Option>
+                      );
+                    })}
+                  </Select>
                 </div>
               }
             >

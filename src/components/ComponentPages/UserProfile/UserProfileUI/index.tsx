@@ -1,17 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+
 import styles from "./UserProfile.module.scss";
+
 import UserProfileDetails from "../UserProfileDetails/UserProfileDetails";
 import { UserProfileCard } from "../UserProfileDetails/UserProfileCard";
 
 import { getUserSupportedCampList } from "src/network/api/userApi";
 import { getCanonizedNameSpacesApi } from "src/network/api/homePageApi";
+
 const UserProfile = () => {
   const [profileData, setProfileData] = useState({} as any);
   const [userSupportedCampsList, setUserSupportedCampsList] = useState([]);
   const [nameSpaceList, setNameSpaceList] = useState([]);
   const [dropdownNameSpaceList, setDropdownNameSpaceList] = useState();
   const [noData, setNoData] = useState(false);
+  const [nickNameList, setNickNameList] = useState([]);
+  const [defaultNickname, setDefaultNickname] = useState([]);
+  const [selectedNikname, setSelectedNikname] = useState([]);
+
   const router = useRouter();
 
   const UserSupportedCampsListApi = async (id) => {
@@ -31,7 +38,6 @@ const UserProfile = () => {
   };
 
   //onLoad
-
   useEffect(() => {
     setNoData(false);
     const userId = router?.query?.supports[0];
@@ -49,6 +55,8 @@ const UserProfile = () => {
     }
   }, [dropdownNameSpaceList, router?.query]);
 
+  const onNickNameChange = (id, nickname) => {};
+
   return (
     <>
       <div className={styles.userProfileData}>
@@ -64,6 +72,10 @@ const UserProfile = () => {
           setDropdownNameSpaceList={setDropdownNameSpaceList}
           noData={noData}
           profileData={profileData}
+          nickNames={nickNameList}
+          defaultNickname={defaultNickname}
+          selectedNikname={selectedNikname}
+          onNickNameChange={onNickNameChange}
         />
       </div>
     </>
