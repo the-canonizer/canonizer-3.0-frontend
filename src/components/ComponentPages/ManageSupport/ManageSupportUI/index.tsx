@@ -259,7 +259,8 @@ const ManageSupportUI = ({
                       id="getSupportStatusDataWarning"
                     >
                       <strong> Warning! </strong>
-                      {CheckDelegatedOrDirect && !currentGetCheckSupportExistsData.is_delegator 
+                      {CheckDelegatedOrDirect &&
+                      !currentGetCheckSupportExistsData.is_delegator
                         ? warningForDirecteSupportedCamps
                         : currentGetCheckSupportExistsData.warning}
                     </span>

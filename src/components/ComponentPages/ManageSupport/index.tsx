@@ -244,7 +244,7 @@ const ManageSupport = () => {
       );
     });
     const dataValue = manageSupportStatusCheck
-      ? CurrentCheckSupportStatus 
+      ? CurrentCheckSupportStatus
       : warning
       ? warning
       : "";
