@@ -102,6 +102,14 @@ body {
     padding-top: 2rem;
   }
 }
+.px-3 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
 
 .mr {
   &-1 {
@@ -128,7 +136,6 @@ body {
 .font-weight {
   &-bold {
     font-weight: 700;
-    white-space: nowrap;
   }
 }
 
@@ -1453,6 +1460,7 @@ body {
     padding-right: 50px;
     i[class^="icon-"] {
       margin-right: 5px;
+      margin-left: 5px;
     }
     h3 {
       font-size: 18px;
@@ -1567,6 +1575,9 @@ body {
   }
   .ant-tree-list {
     .ant-tree-list-holder-inner {
+      overflow-x: auto;
+      overflow-y: clip;
+      white-space: nowrap;
       & > .ant-tree-treenode-switcher-open {
         .treeListItemTitle {
           // font-size: 16px;
@@ -1864,6 +1875,18 @@ div[role="option"]::before {
   ol {
     margin-left: 30px !important;
     padding-left: 0 !important;
+  }
+}
+
+.activeListWrap {
+  ul {
+    padding-left: 26px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .adsbygoogle {
+    display: none !important;
   }
 }
 

@@ -14,6 +14,7 @@ import moment from "moment";
 import styles from "../ProfileInfo/ProfileInfoUI/ProfileInfo.module.scss";
 import messages from "../../../messages";
 import PlacesAutocomplete from "react-places-autocomplete";
+import CustomSkelton from "@/components/common/customSkelton";
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -383,7 +384,17 @@ function ProfileInfoForm({
         </Form.Item>
       </Form>
     );
-  else return <div></div>;
+  else
+    return (
+      <div>
+        <CustomSkelton
+          skeltonFor="profileInfoForm"
+          bodyCount={7}
+          stylingClass=""
+          isButton={false}
+        />
+      </div>
+    );
 }
 
 export default ProfileInfoForm;

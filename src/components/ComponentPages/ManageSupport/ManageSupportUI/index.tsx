@@ -11,6 +11,7 @@ import { RootState } from "src/store";
 import { useRouter } from "next/router";
 import { addSupport, removeSupportedCamps } from "src/network/api/userApi";
 import { GetActiveSupportTopic } from "src/network/api/topicAPI";
+import CustomSkelton from "@/components/common/customSkelton";
 const ManageSupportUI = ({
   nickNameList,
   manageSupportList,
@@ -28,6 +29,8 @@ const ManageSupportUI = ({
   submitButtonDisable,
   setUpdatePostion,
   unableToFindCamp,
+  CurrentCheckSupportStatus,
+  getManageSupportLoadingIndicator,
 }: any) => {
   const [tagsArrayList, setTagsArrayList] = useState([]);
   const [isTagDragged, setIsTagDragged] = useState(false);
@@ -218,8 +221,14 @@ const ManageSupportUI = ({
       } else setTagsArrayList(newTagList);
     }
   }, [manageSupportList, parentSupportDataList]);
-
-  return (
+  return getManageSupportLoadingIndicator ? (
+    <CustomSkelton
+      skeltonFor="manageSupportCard"
+      bodyCount={15}
+      stylingClass=""
+      isButton={true}
+    />
+  ) : (
     <>
       <Card
         className={styles.card_width}
@@ -230,7 +239,8 @@ const ManageSupportUI = ({
         }
       >
         {(CheckDelegatedOrDirect &&
-          currentGetCheckSupportExistsData.is_confirm) ||
+          currentGetCheckSupportExistsData.is_confirm &&
+          currentGetCheckSupportExistsData.remove_camps.length < 0) ||
         unableToFindCamp ? (
           <>
             <span id="warning" className={styles.warning}>
@@ -249,9 +259,10 @@ const ManageSupportUI = ({
                       id="getSupportStatusDataWarning"
                     >
                       <strong> Warning! </strong>
-                      {getSupportStatusData != ""
-                        ? getSupportStatusData
-                        : warningForDirecteSupportedCamps}
+                      {CheckDelegatedOrDirect &&
+                      !currentGetCheckSupportExistsData.is_delegator
+                        ? warningForDirecteSupportedCamps
+                        : currentGetCheckSupportExistsData.warning}
                     </span>
                     <Col md={12}>
                       {parentSupportDataList?.map((tag) => {

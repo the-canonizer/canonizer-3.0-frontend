@@ -23,6 +23,7 @@ export const getTreesApi = async (reqBody) => {
     store.dispatch(setTree(trees?.data));
     return trees?.data[0];
   } catch (error) {
+    store.dispatch(setTree([]));
     // message.error(error.message);
   }
 };

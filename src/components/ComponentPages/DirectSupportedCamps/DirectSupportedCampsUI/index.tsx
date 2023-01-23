@@ -6,6 +6,7 @@ import styles from "./DirectSupportedCamps.module.scss";
 import Link from "next/link";
 import messages from "../../../../messages";
 import Spinner from "../../../common/spinner/spinner";
+import CustomSkelton from "@/components/common/customSkelton";
 export default function DirectSupportedCampsUI({
   removeCardSupportedCamps,
   handleSupportedCampsCancel,
@@ -124,16 +125,16 @@ export default function DirectSupportedCampsUI({
                         <div className={styles.btndiv}>
                           {" "}
                           <span className="count">{tag.id}. </span>
-                          <a
-                            className={styles.Bluecolor}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              window.location.href = tag.camp_link;
-                            }}
-                          >
-                            {" "}
-                            {tag.camp_name}
-                          </a>
+                          <Link href={tag.camp_link}>
+                            <a
+                              className={styles.Bluecolor}
+                              draggable="false"
+                              href="javascript:;"
+                            >
+                              {" "}
+                              {tag.camp_name}
+                            </a>
+                          </Link>
                         </div>
                         <CloseCircleOutlined
                           onClick={() => {
@@ -181,14 +182,12 @@ export default function DirectSupportedCampsUI({
           showEmpty("No Data Found ")
         )
       ) : (
-        <>
-          {" "}
-          {statusFlag && statusFlag ? (
-            <Spinner> </Spinner>
-          ) : (
-            showEmpty("No Data Found ")
-          )}{" "}
-        </>
+        <CustomSkelton
+          skeltonFor="directSupportCampsCard"
+          bodyCount={18}
+          stylingClass=""
+          isButton={false}
+        />
       )}
 
       <Modal

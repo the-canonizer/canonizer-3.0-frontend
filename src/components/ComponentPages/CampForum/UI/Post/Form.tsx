@@ -7,6 +7,8 @@ import styles from "../Forum.module.scss";
 import messages from "../../../../../messages";
 import { showLoginModal } from "../../../../../store/slices/uiSlice";
 
+import CustomSkelton from "../../../../common/customSkelton";
+
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 const { Option } = Select;
@@ -70,6 +72,7 @@ const PostForm = ({
   onContentChange,
   isError = false,
   isLog,
+  isLoading,
 }) => {
   const dispatch = useDispatch();
   const openModal = () => dispatch(showLoginModal());
@@ -93,7 +96,17 @@ const PostForm = ({
               style={{ marginBottom: "10px", display: "block" }}
               id="post-count-label"
             >
-              Number of Post in this thread: {postCount}
+              {isLoading ? (
+                <CustomSkelton
+                  skeltonFor="list"
+                  bodyCount={1}
+                  stylingClass=""
+                  listStyle="countLi"
+                  isButton={false}
+                />
+              ) : (
+                `Number of Post in this thread: ${postCount}`
+              )}
             </Text>
             {!isLog && (
               <Text id="sign-in-msg">

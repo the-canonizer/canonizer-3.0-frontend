@@ -28,6 +28,11 @@ const CampTree = ({
   let childExpandTree = [];
 
   const [defaultExpandKeys, setDefaultExpandKeys] = useState([]);
+
+  const [selectedExpand, setSelectedExpand] = useState([]);
+  const [expandedKeys, setExpandedKeys] = useState([]);
+  const [autoExpandParent, setAutoExpandParent] = useState(true);
+
   // const [selectedNodeID, setSelectedNodeID] = useState(1);
   const [scoreFilter, setScoreFilter] = useState(filterByScore);
   const [includeReview, setIncludeReview] = useState(
@@ -41,11 +46,12 @@ const CampTree = ({
     e: { selected; selectedNodes; node; event }
   ) => {
     if (!(selectedKeys.join() === "custom" || selectedKeys.join() === "")) {
+      setSelectedExpand(selectedKeys);
       dispatch(setCurrentCamp(e?.selectedNodes[0]?.data));
-      // setSelectedNodeID(+selectedKeys.join(""));
       scrollToCampStatement();
     }
   };
+
   const { isUserAuthenticated, userID } = useAuthentication();
 
   const showSelectedCamp = (data, select_camp, campExist) => {
@@ -152,7 +158,6 @@ const CampTree = ({
           : +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1)
       );
     setDefaultExpandKeys(expandKeys);
-    console.log("final aawaser ", expandKeys);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tree?.at(0)]);
@@ -184,7 +189,6 @@ const CampTree = ({
       .sort((a, b) => b[1].score - a[1].score);
     return sortedData.map((itemWithData) => {
       let item = itemWithData[0];
-      console.log("data", data[item]);
       const parentIsOneLevel = isOneLevel;
       let _isOneLevel = data[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
       let _isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
@@ -211,7 +215,10 @@ const CampTree = ({
             <>
               <TreeNode
                 title={
-                  <div id={`camp-${data[item].camp_id}`}>
+                  <div
+                    style={{ overflowX: "auto", overflowY: "clip" }}
+                    id={`camp-${data[item].camp_id}`}
+                  >
                     <div
                       className={
                         "treeListItem " + styles.topicDetailsTreeListItem
@@ -316,18 +323,39 @@ const CampTree = ({
     });
   };
 
+  const onExpand = (expandedKeys) => {
+    setExpandedKeys(expandedKeys);
+    // setAutoExpandParent(false);
+  };
+
+  const allkeys = [...selectedExpand, ...defaultExpandKeys, ...expandedKeys];
+
+  const toFindDuplicates = (arry) =>
+    arry.map((item, index, self) => {
+      if (self.indexOf(item) === index) {
+        return self[index]?.toString();
+      }
+      return item;
+    });
+
+  const uniqueKeys = toFindDuplicates(allkeys);
+
   return tree?.at(0) ? (
-    showTree && (
+    showTree && tree?.at(0)["1"].title != "" && defaultExpandKeys ? (
       <Tree
         showLine={{ showLeafIcon: false }}
-        defaultExpandedKeys={defaultExpandKeys}
+        defaultExpandedKeys={uniqueKeys}
         onSelect={onSelect}
-        autoExpandParent={true}
-        // filterTreeNode={filterTreeNode}
+        // defaultSelectedKeys={uniqueKeys}
+        // onExpand={onExpand}
+        // expandedKeys={uniqueKeys}
+        // autoExpandParent={autoExpandParent}
+        // selectedKeys={uniqueKeys}
+        // selectable={true}
       >
         {tree?.at(0) && renderTreeNodes(tree?.at(0))}
       </Tree>
-    )
+    ) : null
   ) : (
     <p>No Camp Tree Found</p>
   );

@@ -281,8 +281,11 @@ export default function AddOrManage({ add }: any) {
           res = await getEditStatementApi(getDataPayload);
 
           //if(isJSON(res.data.statement.parsed_value))setEditorState(EditorState.createWithContent(convertFromRaw(JSON.parse(res.data.statement.parsed_value))));
-          if(!res.data.statement.parsed_value?.startsWith('<p>') && !res.data.statement.parsed_value?.startsWith('<div>'))
-            res.data.statement.parsed_value = `<div></div> ${res.data.statement.parsed_value}`
+          if (
+            !res.data.statement.parsed_value?.startsWith("<p>") &&
+            !res.data.statement.parsed_value?.startsWith("<div>")
+          )
+            res.data.statement.parsed_value = `<div></div> ${res.data.statement.parsed_value}`;
           const contentBlocks = htmlToDraft(res.data.statement.parsed_value);
           const contentState = ContentState.createFromBlockArray(
             contentBlocks.contentBlocks

@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import { Card, List, Spin } from "antd";
+import { Card, List } from "antd";
 import { BellFilled } from "@ant-design/icons";
 import { useRouter } from "next/router";
 import moment from "moment";
 import { getTopicActivityLogApi } from "../../../../network/api/campDetailApi";
 import K from "../../../../constants";
 import styles from "./campRecentActivities.module.scss";
+
+import CustomSkelton from "@/components/common/customSkelton";
 
 export default function CampRecentActivities() {
   const router = useRouter();
@@ -33,31 +35,37 @@ export default function CampRecentActivities() {
 
   return (
     <>
-      <Spin spinning={loadingIndicator} size="large">
-        <Card
-          title="Recent Activities"
-          className={"activities " + styles.campActivities}
-        >
-          {data ? (
-            <List
-              itemLayout="horizontal"
-              dataSource={data}
-              renderItem={(item) => (
-                <List.Item className={styles.activitiesList}>
-                  <List.Item.Meta
-                    avatar={<BellFilled className={styles.bellIcon} />}
-                    title={item?.description}
-                    description={covertToTime(item?.updated_at)}
-                    className={styles.listItem}
-                  />
-                </List.Item>
-              )}
-            />
-          ) : (
-            K?.exceptionalMessages?.noRecentActivityFound
-          )}
-        </Card>
-      </Spin>
+      <Card
+        title="Recent Activities"
+        className={"activities " + styles.campActivities}
+      >
+        {loadingIndicator ? (
+          <CustomSkelton
+            skeltonFor="list"
+            bodyCount={7}
+            stylingClass="listSkeleton"
+            isButton={false}
+          />
+        ) : data ? (
+          <List
+            itemLayout="horizontal"
+            className="activeListWrap"
+            dataSource={data}
+            renderItem={(item) => (
+              <List.Item className={styles.activitiesList}>
+                <List.Item.Meta
+                  avatar={<BellFilled className={styles.bellIcon} />}
+                  title={item?.description}
+                  description={covertToTime(item?.updated_at)}
+                  className={styles.listItem}
+                />
+              </List.Item>
+            )}
+          />
+        ) : (
+          K?.exceptionalMessages?.noRecentActivityFound
+        )}
+      </Card>
     </>
   );
 }
