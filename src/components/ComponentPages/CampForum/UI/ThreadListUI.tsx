@@ -43,6 +43,41 @@ const ThreadListUI = ({
     setIsLog(isUserAuthenticated);
   }, [isUserAuthenticated]);
 
+  const loadingData = threadList.length
+    ? threadList
+    : [
+        {
+          id: 1,
+          title: "",
+          post_count: 2,
+          post_updated_at: 1342405587,
+        },
+        {
+          id: 2,
+          title: "",
+          post_count: 2,
+          post_updated_at: 1342405587,
+        },
+        {
+          id: 3,
+          title: "",
+          post_count: 2,
+          post_updated_at: 1342405587,
+        },
+        {
+          id: 4,
+          title: "",
+          post_count: 2,
+          post_updated_at: 1342405587,
+        },
+        {
+          id: 5,
+          title: "",
+          post_count: 2,
+          post_updated_at: 1342405587,
+        },
+      ];
+
   return (
     <Fragment>
       <Card
@@ -129,7 +164,7 @@ const ThreadListUI = ({
 
         {isLoading ? (
           <Fragment>
-            <Table dataSource={threadList} pagination={false}>
+            <Table dataSource={loadingData} pagination={false}>
               <Column
                 title="Thread Name"
                 dataIndex="title"
