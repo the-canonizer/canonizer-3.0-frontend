@@ -272,3 +272,35 @@
 .verifyInfoForm{
   margin-bottom: 70px;
 }
+
+.delegateSupportedCapms {
+  height: 25px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  width: 49%;
+  // &+br {
+  //   display: none;
+  // }
+}
+.border_left {
+  left: 22%;
+}
+
+.line_height1 {
+  border-left: 1px solid #ddd;
+  padding-left: 20px;
+  @media screen and (max-width: 767px) {
+    border-left: none;
+    padding: 0;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+    margin-top: 20px;
+  }
+  @media screen and (max-width: 767px) {
+    max-width: 100%;
+    flex: 0 0 100%;
+  }
+  p {
+    margin-bottom: 4px;
+  }
+}
