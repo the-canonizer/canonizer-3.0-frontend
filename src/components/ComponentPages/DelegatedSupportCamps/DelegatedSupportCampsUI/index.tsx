@@ -158,7 +158,7 @@ export default function DelegatedSupportCampsUI({
       ) : (
         <CustomSkelton
           skeltonFor="delegateSupportedCampListCard"
-          bodyCount={3}
+          bodyCount={4}
           stylingClass=""
           isButton={false}
         />

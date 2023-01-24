@@ -1,11 +1,11 @@
-import { Card, Typography, Tag } from "antd";
+import { Card, Typography, Tag, Row, Col, Form } from "antd";
 import Skeleton from "react-loading-skeleton";
 
 import styles from "./style.module.scss";
 
 const { Title } = Typography;
 
-const SubscriptionCustomSkelton = ({ bodyCount, stylingClass }) => {
+const DelegateCardSkeleton = ({ bodyCount, stylingClass }) => {
   const cardArray = [];
   if (bodyCount == null || bodyCount == undefined || bodyCount == "") {
     bodyCount = 1;
@@ -37,24 +37,24 @@ const SubscriptionCustomSkelton = ({ bodyCount, stylingClass }) => {
             />
           </Title>
         }
-        style={{ width: "100%", marginBottom: 16 }}
+        style={{ width: 760, marginBottom: 16 }}
       >
-        {[1, 2]?.map((camp, i) => {
-          return (
-            <div className={`${styles.tag_btn}`}>
-              <Skeleton
-                height={30}
-                className={`${styles[stylingClass]} ${styles.tag_btn}`}
-                style={{ margin: "0 0" }}
-                count={1}
-              />
-            </div>
-          );
-        })}
+        <Form layout="vertical">
+          <Row gutter={30}>
+            <Col md={12}>
+              <Skeleton className={styles.delegateSupportedCapms} count={2} />
+            </Col>
+            <Col span={12}>
+              <div className={styles.line_height1}>
+                <Skeleton className={styles.delegateSupportedCapms} count={2} />
+              </div>
+            </Col>
+          </Row>
+        </Form>
       </Card>
     );
   }
   return <div>{cardArray}</div>;
 };
 
-export default SubscriptionCustomSkelton;
+export default DelegateCardSkeleton;

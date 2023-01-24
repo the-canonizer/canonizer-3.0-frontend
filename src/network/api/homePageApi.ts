@@ -14,6 +14,7 @@ import {
   pushToThreads,
   pushToTopics,
 } from "../../store/slices/recentActivitiesSlice";
+import { createToken } from "./userApi";
 
 export const getCanonizedTopicsApi = async (reqBody, loadMore = false) => {
   try {
@@ -32,10 +33,16 @@ export const getCanonizedTopicsApi = async (reqBody, loadMore = false) => {
   }
 };
 
-export const getCanonizedNameSpacesApi = async () => {
+export const getCanonizedNameSpacesApi = async (tc = "") => {
+  let token = tc;
+  if (!tc) {
+    const response = await createToken();
+    token = response?.access_token;
+  }
+
   try {
     const nameSpaces = await NetworkCall.fetch(
-      HomePageRequests.getCanonizedNameSpaces()
+      HomePageRequests.getCanonizedNameSpaces(token)
     );
     store.dispatch(setCanonizedNameSpaces(nameSpaces));
     return nameSpaces;
@@ -50,7 +57,7 @@ export const getRecentActivitiesApi = async (
   topicType
 ) => {
   try {
-    let state = store.getState();
+    let state = await store.getState();
     const { auth } = state;
 
     const recentActivities = await NetworkCall.fetch(
@@ -74,10 +81,16 @@ export const getRecentActivitiesApi = async (
   }
 };
 
-export const getCanonizedAlgorithmsApi = async () => {
+export const getCanonizedAlgorithmsApi = async (tc = "") => {
+  let token = tc;
+  if (!tc) {
+    const response = await createToken();
+    token = response?.access_token;
+  }
+
   try {
     const algorithms = await NetworkCall.fetch(
-      HomePageRequests.getCanonizedAlgorithms(),
+      HomePageRequests.getCanonizedAlgorithms(token),
       false
     );
     store.dispatch(setCanonizedAlgorithms(algorithms));
@@ -87,10 +100,16 @@ export const getCanonizedAlgorithmsApi = async () => {
   }
 };
 
-export const getCanonizedWhatsNewContentApi = async () => {
+export const getCanonizedWhatsNewContentApi = async (tc = "") => {
+  let token = tc;
+  if (!tc) {
+    const response = await createToken();
+    token = response?.access_token;
+  }
+
   try {
     const whatsNew = await NetworkCall.fetch(
-      HomePageRequests.getCanonizedWhatsNewContent()
+      HomePageRequests.getCanonizedWhatsNewContent(token)
     );
     store.dispatch(setWhatsNewContent(whatsNew?.data));
     return whatsNew?.data;

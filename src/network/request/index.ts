@@ -19,12 +19,17 @@ export default class Request {
     const { auth } = state;
 
     let bearerToken = "";
-
+    // if (token) {
+    // bearerToken = token;
     if (auth?.loggedInUser) {
+      // bearerToken = auth?.loggedInUser?.token;
       token ? (bearerToken = token) : (bearerToken = auth?.loggedInUser?.token);
     } else {
       bearerToken = auth?.authToken;
     }
+    // } else {
+    // bearerToken = auth?.authToken;
+    // }
 
     headers = {
       ...(defaultHeaderType === K.Network.Header.Type.Json ||

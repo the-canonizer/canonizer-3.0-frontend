@@ -17,8 +17,7 @@ function WithoutSidebarLayout(props: any) {
   return (
     <Fragment>
       <div className={styles.pageWrap}>
-        {log ? <LoggedInHeader /> : <LoggedOutHeader />}
-        <Spinner>{""}</Spinner>
+        {isUserAuthenticated ? <LoggedInHeader /> : <LoggedOutHeader />}
         <div className={styles.contentWrap}>
           <div className={styles.contentArea}>{props.children} </div>
         </div>
