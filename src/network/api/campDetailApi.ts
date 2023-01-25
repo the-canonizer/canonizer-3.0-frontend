@@ -230,3 +230,12 @@ export const SupportTreeTotalScore = async (reqbody) => {
     }
   }
 };
+
+export const GetSupportedNickNames = async (id) => {
+  try {
+    const res = await NetworkCall.fetch(TreeRequest.NickNamesSupported(id));
+    return res;
+  } catch (err) {
+    handleError(err);
+  }
+};

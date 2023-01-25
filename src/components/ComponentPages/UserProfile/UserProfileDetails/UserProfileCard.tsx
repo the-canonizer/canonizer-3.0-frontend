@@ -48,7 +48,9 @@ export const UserProfileCard = ({
               }
               extra={
                 <div className={styles.nickname_box}>
-                  <span className={styles.labels}>Select {messages.labels.nickname}</span>
+                  <span className={styles.labels}>
+                    Select {messages.labels.nickname}
+                  </span>
                   <Select
                     size="large"
                     className={styles.nickname_dropdown}
@@ -64,7 +66,7 @@ export const UserProfileCard = ({
                         <Select.Option
                           id={`name-space-${nick.id}`}
                           key={nick.id}
-                          value={nick.id}
+                          value={nick.value}
                         >
                           {nick.label}
                         </Select.Option>

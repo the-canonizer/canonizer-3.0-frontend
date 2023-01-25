@@ -8,6 +8,7 @@ import { UserProfileCard } from "../UserProfileDetails/UserProfileCard";
 
 import { getUserSupportedCampList } from "src/network/api/userApi";
 import { getCanonizedNameSpacesApi } from "src/network/api/homePageApi";
+import { GetSupportedNickNames } from "src/network/api/campDetailApi";
 
 const UserProfile = () => {
   const [profileData, setProfileData] = useState({} as any);
@@ -16,8 +17,8 @@ const UserProfile = () => {
   const [dropdownNameSpaceList, setDropdownNameSpaceList] = useState();
   const [noData, setNoData] = useState(false);
   const [nickNameList, setNickNameList] = useState([]);
-  const [defaultNickname, setDefaultNickname] = useState([]);
-  const [selectedNikname, setSelectedNikname] = useState([]);
+  const [defaultNickname, setDefaultNickname] = useState(null);
+  const [selectedNikname, setSelectedNikname] = useState(null);
 
   const router = useRouter();
 
@@ -34,6 +35,24 @@ const UserProfile = () => {
     let res = await getCanonizedNameSpacesApi();
     if (res && res.status_code === 200) {
       setNameSpaceList(res.data);
+    }
+  };
+
+  const getSupportedNickNames = async (id) => {
+    const response = await GetSupportedNickNames(id);
+    if (response && response.status_code === 200) {
+      let nickNames = response?.data;
+      nickNames = nickNames.map((nick) => ({
+        ...nick,
+        label: nick.nick_name,
+        value: +nick.id,
+      }));
+
+      setNickNameList(nickNames);
+
+      const selectedNickname = nickNames.filter((nick) => +nick.id === +id);
+      setDefaultNickname(selectedNickname[0]?.label);
+      setSelectedNikname(selectedNickname[0]?.label);
     }
   };
 
@@ -55,7 +74,23 @@ const UserProfile = () => {
     }
   }, [dropdownNameSpaceList, router?.query]);
 
-  const onNickNameChange = (id, nickname) => {};
+  useEffect(() => {
+    const q = router?.query,
+      nick_id = q?.supports[0];
+    if (nick_id) {
+      getSupportedNickNames(nick_id);
+    }
+    console.log("router", q);
+  }, [router]);
+
+  const onNickNameChange = (value, nickname) => {
+    let pathQueries = router.query.supports;
+    pathQueries = [value];
+    router.query.supports = pathQueries;
+    router.push(router);
+    console.log(value, nickname);
+    setSelectedNikname(value);
+  };
 
   return (
     <>
