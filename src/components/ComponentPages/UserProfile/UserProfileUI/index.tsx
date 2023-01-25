@@ -80,7 +80,6 @@ const UserProfile = () => {
     if (nick_id) {
       getSupportedNickNames(nick_id);
     }
-    console.log("router", q);
   }, [router]);
 
   const onNickNameChange = (value, nickname) => {
@@ -88,7 +87,6 @@ const UserProfile = () => {
     pathQueries = [value];
     router.query.supports = pathQueries;
     router.push(router);
-    console.log(value, nickname);
     setSelectedNikname(value);
   };
 
