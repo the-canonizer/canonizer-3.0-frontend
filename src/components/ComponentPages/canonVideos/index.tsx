@@ -153,7 +153,13 @@ export default function CanonVideos() {
               ></div>
             </>
           ) : (
-            <CustomSkelton bodyCount stylingClass isButton skeltonFor="video" />
+            <CustomSkelton
+              bodyCount
+              stylingClass
+              isButton
+              height={400}
+              skeltonFor="video"
+            />
           )}
         </div>
       </div>

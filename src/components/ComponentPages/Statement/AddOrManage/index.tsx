@@ -30,6 +30,8 @@ import {
   getEditCampApi,
   getEditTopicApi,
 } from "../../../../network/api/campManageStatementApi";
+
+import CustomSkelton from "@/components/common/customSkelton";
 import { getCurrentTopicRecordApi } from "../../../../network/api/campDetailApi";
 import {
   updateStatementApi,
@@ -526,99 +528,105 @@ export default function AddOrManage({ add }: any) {
         </aside>
 
         <div className="pageContentWrap">
-          <Spin spinning={screenLoading} size="large">
-            <Card
-              title={
-                add
-                  ? K?.exceptionalMessages?.addCampStatement
-                  : !objection
-                  ? formTitle()
-                  : K?.exceptionalMessages?.objectionStatementHeading
-              }
-              className={styles.card}
-              extra={extra()}
+          <Card
+            title={
+              add
+                ? K?.exceptionalMessages?.addCampStatement
+                : !objection
+                ? formTitle()
+                : K?.exceptionalMessages?.objectionStatementHeading
+            }
+            className={styles.card}
+            extra={extra()}
+          >
+            <Form
+              form={form}
+              layout={"vertical"}
+              validateTrigger={messages.formValidationTypes()}
+              initialValues={{
+                available_for_child: 0,
+              }}
+              onValuesChange={() => {
+                let initialFormStatus = {
+                  statement: "",
+                  edit_summary: "",
+                } as any;
+
+                let nowFormStatus = {
+                  statement: "",
+                  edit_summary: "",
+                } as any;
+
+                initialFormStatus = Object.keys(initialFormValues).reduce(
+                  (acc, key) => {
+                    acc[key] =
+                      initialFormValues[key] === null || undefined
+                        ? ""
+                        : initialFormValues[key];
+                    return acc;
+                  },
+                  {}
+                );
+                if (initialFormStatus?.edit_summary == null || undefined) {
+                  initialFormStatus.edit_summary = "";
+                }
+                if (initialFormStatus?.statement == null || undefined) {
+                  initialFormStatus.statement = "";
+                }
+                nowFormStatus = Object.keys(form?.getFieldsValue()).reduce(
+                  (acc, key) => {
+                    acc[key] =
+                      form?.getFieldsValue()[key] === null || undefined
+                        ? ""
+                        : form?.getFieldsValue()[key];
+                    return acc;
+                  },
+                  {}
+                );
+                if (nowFormStatus?.edit_summary == null || undefined) {
+                  nowFormStatus.edit_summary = "";
+                }
+                if (nowFormStatus?.statement == null || undefined) {
+                  nowFormStatus.statement = "";
+                }
+
+                if (
+                  JSON.stringify(nowFormStatus) ==
+                  JSON.stringify(initialFormStatus)
+                ) {
+                  setSubmitIsDisable(true);
+                } else {
+                  setSubmitIsDisable(false);
+                }
+              }}
+              onFinish={onFinish}
             >
-              <Form
-                form={form}
-                layout={"vertical"}
-                validateTrigger={messages.formValidationTypes()}
-                initialValues={{
-                  available_for_child: 0,
-                }}
-                onValuesChange={() => {
-                  let initialFormStatus = {
-                    statement: "",
-                    edit_summary: "",
-                  } as any;
-
-                  let nowFormStatus = {
-                    statement: "",
-                    edit_summary: "",
-                  } as any;
-
-                  initialFormStatus = Object.keys(initialFormValues).reduce(
-                    (acc, key) => {
-                      acc[key] =
-                        initialFormValues[key] === null || undefined
-                          ? ""
-                          : initialFormValues[key];
-                      return acc;
-                    },
-                    {}
-                  );
-                  if (initialFormStatus?.edit_summary == null || undefined) {
-                    initialFormStatus.edit_summary = "";
-                  }
-                  if (initialFormStatus?.statement == null || undefined) {
-                    initialFormStatus.statement = "";
-                  }
-                  nowFormStatus = Object.keys(form?.getFieldsValue()).reduce(
-                    (acc, key) => {
-                      acc[key] =
-                        form?.getFieldsValue()[key] === null || undefined
-                          ? ""
-                          : form?.getFieldsValue()[key];
-                      return acc;
-                    },
-                    {}
-                  );
-                  if (nowFormStatus?.edit_summary == null || undefined) {
-                    nowFormStatus.edit_summary = "";
-                  }
-                  if (nowFormStatus?.statement == null || undefined) {
-                    nowFormStatus.statement = "";
-                  }
-
-                  if (
-                    JSON.stringify(nowFormStatus) ==
-                    JSON.stringify(initialFormStatus)
-                  ) {
-                    setSubmitIsDisable(true);
-                  } else {
-                    setSubmitIsDisable(false);
-                  }
-                }}
-                onFinish={onFinish}
-              >
-                <Row gutter={28}>
-                  <Col xs={24} sm={24} xl={12}>
-                    {/* Nick name=================================================================== */}
-                    <Form.Item
-                      className={styles.formItem}
-                      label={
-                        <>
-                          Nick Name <span className="required">*</span>
-                        </>
-                      }
-                      name="nick_name"
-                      rules={[
-                        {
-                          required: true,
-                          message:
-                            K?.exceptionalMessages?.selectNickNameErrorMsg,
-                        },
-                      ]}
-                    >
+              <Row gutter={28}>
+                <Col xs={24} sm={24} xl={12}>
+                  {/* Nick name=================================================================== */}
+                  <Form.Item
+                    className={styles.formItem}
+                    label={
+                      <>
+                        Nick Name <span className="required">*</span>
+                      </>
+                    }
+                    name="nick_name"
+                    rules={[
+                      {
+                        required: true,
+                        message: K?.exceptionalMessages?.selectNickNameErrorMsg,
+                      },
+                    ]}
+                  >
+                    {screenLoading ? (
+                      <CustomSkelton
+                        skeltonFor="list"
+                        bodyCount={1}
+                        stylingClass="listSkeleton"
+                        isButton={false}
+                      />
+                    ) : (
                       <Select
                         value={nickNameData[0]?.id}
                         size="large"
@@ -632,30 +640,38 @@ export default function AddOrManage({ add }: any) {
                             </Select.Option>
                           ))}
                       </Select>
-                    </Form.Item>
-                  </Col>
-                  {/* paraent Camp -----------------------===============--------------------------*/}
-                  {manageFormOf == "camp" && (
-                    <>
-                      {parentCamp.length >= 1 && (
-                        <Col xs={24} sm={24} xl={12}>
-                          <Form.Item
-                            className={`${styles.formItem} mb-2`}
-                            label={
-                              <>
-                                Parent Camp <span className="required">*</span>
-                              </>
-                            }
-                            name="parent_camp_num"
-                            rules={[
-                              {
-                                required: true,
-                                message:
-                                  K?.exceptionalMessages
-                                    ?.selectNickNameErrorMsg,
-                              },
-                            ]}
-                          >
+                    )}
+                  </Form.Item>
+                </Col>
+                {/* paraent Camp -----------------------===============--------------------------*/}
+                {manageFormOf == "camp" && (
+                  <>
+                    {parentCamp.length >= 1 && (
+                      <Col xs={24} sm={24} xl={12}>
+                        <Form.Item
+                          className={`${styles.formItem} mb-2`}
+                          label={
+                            <>
+                              Parent Camp <span className="required">*</span>
+                            </>
+                          }
+                          name="parent_camp_num"
+                          rules={[
+                            {
+                              required: true,
+                              message:
+                                K?.exceptionalMessages?.selectNickNameErrorMsg,
+                            },
+                          ]}
+                        >
+                          {screenLoading ? (
+                            <CustomSkelton
+                              skeltonFor="list"
+                              bodyCount={1}
+                              stylingClass="listSkeleton"
+                              isButton={false}
+                            />
+                          ) : (
                             <Select
                               showSearch
                               size={"large"}
@@ -678,109 +694,144 @@ export default function AddOrManage({ add }: any) {
                                 )
                               )}
                             </Select>
-                          </Form.Item>
-                        </Col>
-                      )}
-                      {/* camp name -------------------------------------------------------- -----------------------*/}
-                      <Col xs={24} sm={24} xl={12}>
-                        <Form.Item
-                          className={`${styles.formItem} mb-2`}
-                          label={
-                            <>
-                              Camp Name <span className="required">*</span>
-                              <span className={styles.small}>
-                                (Limit 30 Chars)
-                              </span>
-                            </>
-                          }
-                          name="camp_name"
-                          rules={[
-                            {
-                              required: true,
-                              message: K?.exceptionalMessages?.campNameReqErr,
-                            },
-                            {
-                              pattern: /[^ \s]/,
-                              message: K?.exceptionalMessages?.campNameReqErr,
-                            },
-                            emojiValidation(patterns.emoji_restrication),
-                          ]}
-                        >
+                          )}
+                        </Form.Item>
+                      </Col>
+                    )}
+                    {/* camp name -------------------------------------------------------- -----------------------*/}
+                    <Col xs={24} sm={24} xl={12}>
+                      <Form.Item
+                        className={`${styles.formItem} mb-2`}
+                        label={
+                          <>
+                            Camp Name <span className="required">*</span>
+                            <span className={styles.small}>
+                              (Limit 30 Chars)
+                            </span>
+                          </>
+                        }
+                        name="camp_name"
+                        rules={[
+                          {
+                            required: true,
+                            message: K?.exceptionalMessages?.campNameReqErr,
+                          },
+                          {
+                            pattern: /[^ \s]/,
+                            message: K?.exceptionalMessages?.campNameReqErr,
+                          },
+                          emojiValidation(patterns.emoji_restrication),
+                        ]}
+                      >
+                        {screenLoading ? (
+                          <CustomSkelton
+                            skeltonFor="list"
+                            bodyCount={1}
+                            stylingClass="listSkeleton"
+                            isButton={false}
+                          />
+                        ) : (
                           <Input
                             disabled={!!(parentCamp.length < 1 || objection)}
                             maxLength={30}
                           />
-                        </Form.Item>
-                      </Col>
-                      {/* keywords  --------------------------------------------------- */}
-                      <Col xs={24} sm={24} xl={12}>
-                        {!objection && (
-                          <Form.Item
-                            className={`${styles.formItem} mb-2`}
-                            label={<>Keywords</>}
-                            name="keywords"
-                            {...keywordsRule}
-                          >
-                            <Input />
-                          </Form.Item>
                         )}
-                      </Col>
-                    </>
-                  )}
-                  {/* Topic name =========================================== */}
-                  {manageFormOf == "topic" && (
-                    <>
-                      <Col xs={24} sm={24} xl={12}>
+                      </Form.Item>
+                    </Col>
+                    {/* keywords  --------------------------------------------------- */}
+                    <Col xs={24} sm={24} xl={12}>
+                      {!objection && (
                         <Form.Item
                           className={`${styles.formItem} mb-2`}
+                          label={<>Keywords</>}
+                          name="keywords"
+                          {...keywordsRule}
+                        >
+                          {screenLoading ? (
+                            <CustomSkelton
+                              skeltonFor="list"
+                              bodyCount={1}
+                              stylingClass="listSkeleton"
+                              isButton={false}
+                            />
+                          ) : (
+                            <Input />
+                          )}
+                        </Form.Item>
+                      )}
+                    </Col>
+                  </>
+                )}
+                {/* Topic name =========================================== */}
+                {manageFormOf == "topic" && (
+                  <>
+                    <Col xs={24} sm={24} xl={12}>
+                      <Form.Item
+                        className={`${styles.formItem} mb-2`}
+                        label={
+                          <>
+                            Topic Name <span className="required">*</span>
+                            <span className={styles.small}>
+                              (Limit 30 Chars)
+                            </span>
+                          </>
+                        }
+                        name="topic_name"
+                        rules={[
+                          {
+                            required: true,
+                            message: K?.exceptionalMessages?.topicNameReqErr,
+                          },
+                          {
+                            pattern: /[^ \s]/,
+                            message: K?.exceptionalMessages?.topicNameReqErr,
+                          },
+                          emojiValidation(patterns.emoji_restrication),
+                        ]}
+                      >
+                        {screenLoading ? (
+                          <CustomSkelton
+                            skeltonFor="list"
+                            bodyCount={1}
+                            stylingClass="listSkeleton"
+                            isButton={false}
+                          />
+                        ) : (
+                          <Input disabled={objection} maxLength={30} />
+                        )}
+                      </Form.Item>
+                    </Col>
+                    {/* Name space -------------------------------------------------------------------- */}
+                    {!objection && (
+                      <Col xs={24} sm={24} xl={12}>
+                        <Form.Item
+                          className={`${styles.formItem} namespace_in mb-2`}
                           label={
                             <>
-                              Topic Name <span className="required">*</span>
+                              Namespace <span className="required">*</span>
                               <span className={styles.small}>
-                                (Limit 30 Chars)
+                                (General is recommended, unless you know
+                                otherwise)
                               </span>
                             </>
                           }
-                          name="topic_name"
+                          name="name_space"
                           rules={[
                             {
                               required: true,
-                              message: K?.exceptionalMessages?.topicNameReqErr,
+                              message:
+                                K?.exceptionalMessages?.selectNickNameErrorMsg,
                             },
-                            {
-                              pattern: /[^ \s]/,
-                              message: K?.exceptionalMessages?.topicNameReqErr,
-                            },
-                            emojiValidation(patterns.emoji_restrication),
                           ]}
                         >
-                          <Input disabled={objection} maxLength={30} />
-                        </Form.Item>
-                      </Col>
-                      {/* Name space -------------------------------------------------------------------- */}
-                      {!objection && (
-                        <Col xs={24} sm={24} xl={12}>
-                          <Form.Item
-                            className={`${styles.formItem} namespace_in mb-2`}
-                            label={
-                              <>
-                                Namespace <span className="required">*</span>
-                                <span className={styles.small}>
-                                  (General is recommended, unless you know
-                                  otherwise)
-                                </span>
-                              </>
-                            }
-                            name="name_space"
-                            rules={[
-                              {
-                                required: true,
-                                message:
-                                  K?.exceptionalMessages
-                                    ?.selectNickNameErrorMsg,
-                              },
-                            ]}
-                          >
+                          {screenLoading ? (
+                            <CustomSkelton
+                              skeltonFor="list"
+                              bodyCount={1}
+                              stylingClass="listSkeleton"
+                              isButton={false}
+                            />
+                          ) : (
                             <Select
                               size={"large"}
                               placeholder="Name Space"
@@ -793,43 +844,47 @@ export default function AddOrManage({ add }: any) {
                                 </Select.Option>
                               ))}
                             </Select>
-                          </Form.Item>
-                        </Col>
-                      )}
-                    </>
-                  )}
+                          )}
+                        </Form.Item>
+                      </Col>
+                    )}
+                  </>
+                )}
 
-                  {/* statement================================================================================ */}
-                  {manageFormOf == "statement" && (
-                    <Col xs={24} xl={24}>
-                      <Form.Item
-                        className={`${styles.formItem} mb-2`}
-                        name="statement"
-                        label={
-                          <>
-                            Statement <span className="required">*</span>
-                          </>
-                        }
-                        rules={[
-                          {
-                            required: true,
-                            message:
-                              K?.exceptionalMessages?.statementRequiredErrorMsg,
-                          },
-                          {
-                            pattern: /[^ \s]/,
-                            message:
-                              K?.exceptionalMessages?.statementRequiredErrorMsg,
-                          },
-                          //allowedEmojies(), this needs to be moved to validation file
-                        ]}
-                      >
-                        {/* <Input.TextArea
-                          size="large"
-                          rows={7}
-                          disabled={objection}
-                        /> */}
-
+                {/* statement================================================================================ */}
+                {manageFormOf == "statement" && (
+                  <Col xs={24} xl={24}>
+                    <Form.Item
+                      className={`${styles.formItem} mb-2`}
+                      name="statement"
+                      label={
+                        <>
+                          Statement <span className="required">*</span>
+                        </>
+                      }
+                      rules={[
+                        {
+                          required: true,
+                          message:
+                            K?.exceptionalMessages?.statementRequiredErrorMsg,
+                        },
+                        {
+                          pattern: /[^ \s]/,
+                          message:
+                            K?.exceptionalMessages?.statementRequiredErrorMsg,
+                        },
+                        //allowedEmojies(), this needs to be moved to validation file
+                      ]}
+                    >
+                      {screenLoading ? (
+                        <CustomSkelton
+                          bodyCount
+                          stylingClass
+                          isButton
+                          height={250}
+                          skeltonFor="video"
+                        />
+                      ) : (
                         <Editor
                           toolbarClassName="toolbarClassName"
                           wrapperClassName={"wrapperClassName"}
@@ -838,102 +893,129 @@ export default function AddOrManage({ add }: any) {
                           editorState={editorState}
                           onEditorStateChange={setEditorState}
                         />
-                      </Form.Item>
-                      {/* <small className="mb-3 d-block">
-                        {K?.exceptionalMessages?.wikiMarkupSupportMsg}{" "}
-                        <Link
-                          href={
-                            "/topic/132-Help/5-Canonizer-wiki-text-formatting"
-                          }
-                        >
-                          <a>click here.</a>
-                        </Link>
-                      </small> */}
-                    </Col>
-                  )}
-                  <Col xs={24} xl={24}>
-                    {/* object reason  =================================================================================? */}
-                    {objection ? (
+                      )}
+                    </Form.Item>
+                  </Col>
+                )}
+                <Col xs={24} xl={24}>
+                  {/* object reason  =================================================================================? */}
+                  {objection ? (
+                    <Form.Item
+                      rules={[
+                        {
+                          required: true,
+                          message:
+                            K?.exceptionalMessages?.objectionRequireErrorMsg,
+                        },
+                        {
+                          pattern: /[^ \s]/,
+                          message: K?.exceptionalMessages?.objectionIsRequire,
+                        },
+                        allowedEmojies(),
+                      ]}
+                      className={styles.formItem}
+                      name="objection_reason"
+                      label={
+                        <>
+                          Your Objection Reason{" "}
+                          <span className="required">*</span>{" "}
+                          <small>(Limit 100 Char) </small>
+                        </>
+                      }
+                    >
+                      {screenLoading ? (
+                        <CustomSkelton
+                          skeltonFor="list"
+                          bodyCount={1}
+                          stylingClass="listSkeleton"
+                          isButton={false}
+                        />
+                      ) : (
+                        <Input.TextArea size="large" rows={1} maxLength={100} />
+                      )}
+                    </Form.Item>
+                  ) : (
+                    <>
+                      {/* edit sumaruy ========================================================================================= */}
                       <Form.Item
-                        rules={[
-                          {
-                            required: true,
-                            message:
-                              K?.exceptionalMessages?.objectionRequireErrorMsg,
-                          },
-                          {
-                            pattern: /[^ \s]/,
-                            message: K?.exceptionalMessages?.objectionIsRequire,
-                          },
-                          allowedEmojies(),
-                        ]}
                         className={styles.formItem}
-                        name="objection_reason"
+                        name="edit_summary"
                         label={
                           <>
-                            Your Objection Reason{" "}
-                            <span className="required">*</span>{" "}
-                            <small>(Limit 100 Char) </small>
+                            Edit Summary{" "}
+                            <small className={styles.small}>
+                              (Briefly describe your changes)
+                            </small>
                           </>
                         }
+                        {...summaryRule}
                       >
-                        <Input.TextArea size="large" rows={1} maxLength={100} />
-                      </Form.Item>
-                    ) : (
-                      <>
-                        {/* edit sumaruy ========================================================================================= */}
-                        <Form.Item
-                          className={styles.formItem}
-                          name="edit_summary"
-                          label={
-                            <>
-                              Edit Summary{" "}
-                              <small className={styles.small}>
-                                (Briefly describe your changes)
-                              </small>
-                            </>
-                          }
-                          {...summaryRule}
-                        >
+                        {screenLoading ? (
+                          <CustomSkelton
+                            bodyCount
+                            stylingClass
+                            isButton
+                            height={200}
+                            skeltonFor="video"
+                          />
+                        ) : (
                           <Input.TextArea size="large" rows={7} />
-                        </Form.Item>
-                        {manageFormOf == "camp" && (
-                          <Text type="danger">
-                            The following fields are rarely used and are for
-                            advanced users only.
-                          </Text>
                         )}
-                        {/* Camp about url ===================================================== ----------------- */}
-                        {manageFormOf == "camp" && (
-                          <>
-                            <Form.Item
-                              className={`${styles.formItem} mb-2`}
-                              label={
-                                <>
-                                  Camp About URL
-                                  <span className={styles.small}>
-                                    (Limit 1024 Chars)
-                                  </span>
-                                </>
-                              }
-                              name="camp_about_url"
-                              // rules={[
-                              //   {
-                              //     pattern: /[^ \s]/,
-                              //     message: "Enter a valid link",
-                              //   },
-                              // ]}
+                      </Form.Item>
+                      {manageFormOf == "camp" && (
+                        <Text type="danger">
+                          The following fields are rarely used and are for
+                          advanced users only.
+                        </Text>
+                      )}
+                      {/* Camp about url ===================================================== ----------------- */}
+                      {manageFormOf == "camp" && (
+                        <>
+                          <Form.Item
+                            className={`${styles.formItem} mb-2`}
+                            label={
+                              <>
+                                Camp About URL
+                                <span className={styles.small}>
+                                  (Limit 1024 Chars)
+                                </span>
+                              </>
+                            }
+                            name="camp_about_url"
+                            // rules={[
+                            //   {
+                            //     pattern: /[^ \s]/,
+                            //     message: "Enter a valid link",
+                            //   },
+                            // ]}
 
-                              {...campAboutUrlRule}
-                            >
+                            {...campAboutUrlRule}
+                          >
+                            {screenLoading ? (
+                              <CustomSkelton
+                                skeltonFor="list"
+                                bodyCount={1}
+                                stylingClass="listSkeleton"
+                                isButton={false}
+                              />
+                            ) : (
                               <Input maxLength={1024} />
-                            </Form.Item>
-                            {/* cmap about nick name ========================================== --------------------- */}
-                            <Form.Item
-                              className={`${styles.formItem} mb-2`}
-                              label={<>Camp About Nick Name</>}
-                              name="camp_about_nick_name"
-                            >
+                            )}
+                          </Form.Item>
+                          {/* cmap about nick name ========================================== --------------------- */}
+                          <Form.Item
+                            className={`${styles.formItem} mb-2`}
+                            label={<>Camp About Nick Name</>}
+                            name="camp_about_nick_name"
+                          >
+                            {screenLoading ? (
+                              <CustomSkelton
+                                skeltonFor="list"
+                                bodyCount={1}
+                                stylingClass="listSkeleton"
+                                isButton={false}
+                              />
+                            ) : (
                               <Select
                                 size={"large"}
                                 placeholder="--Select Camp About Nick Name"
@@ -947,118 +1029,118 @@ export default function AddOrManage({ add }: any) {
                                   </Select.Option>
                                 ))}
                               </Select>
-                            </Form.Item>
-                          </>
-                        )}
-                      </>
-                    )}
-                  </Col>
-                  <Col xs={24} xl={24}>
-                    <Form.Item className="mb-0">
-                      <Button
-                        size="large"
-                        className={`btn-orange mr-3 ${styles.btnSubmit}`}
-                        htmlType="submit"
-                        disabled={submitIsDisable && submitIsDisableCheck}
-                      >
-                        {add
-                          ? K?.exceptionalMessages?.submitStatementButton
-                          : !objection
-                          ? K?.exceptionalMessages?.submitUpdateButton
-                          : "Submit Objection"}
-                      </Button>
-                      {!objection && (
-                        <>
-                          <Button
-                            htmlType="button"
-                            className="cancel-btn mr-3"
-                            type="ghost"
-                            size="large"
-                            onClick={() => {
-                              let backdata = editStatementData?.data;
-                              setScreenLoading(true);
-                              add
-                                ? router.push(
-                                    `/topic/${replaceSpecialCharacters(
-                                      router?.query?.statement[0],
-                                      "-"
-                                    )}/${replaceSpecialCharacters(
-                                      router?.query?.statement[1],
-                                      "-"
-                                    )}`
-                                  )
-                                : router?.push(
-                                    manageFormOf == "camp"
-                                      ? `/camp/history/${
-                                          backdata?.topic?.topic_num
-                                        }-${replaceSpecialCharacters(
-                                          backdata?.topic?.topic_name,
-                                          "-"
-                                        )}/${
-                                          backdata?.parent_camp[
-                                            backdata?.parent_camp.length - 1
-                                          ].camp_num
-                                        }-${replaceSpecialCharacters(
-                                          backdata?.parent_camp[
-                                            backdata?.parent_camp.length - 1
-                                          ].camp_name,
-                                          "-"
-                                        )}`
-                                      : manageFormOf == "statement"
-                                      ? `/statement/history/${
-                                          backdata?.topic?.topic_num
-                                        }-${replaceSpecialCharacters(
-                                          backdata?.topic?.topic_name,
-                                          "-"
-                                        )}/${
-                                          backdata?.parent_camp[
-                                            backdata?.parent_camp.length - 1
-                                          ].camp_num
-                                        }-${replaceSpecialCharacters(
-                                          backdata?.parent_camp[
-                                            backdata?.parent_camp.length - 1
-                                          ].camp_name,
-                                          "-"
-                                        )}`
-                                      : `/topic/history/${
-                                          backdata?.topic?.topic_num
-                                        }-${replaceSpecialCharacters(
-                                          backdata?.topic?.topic_name,
-                                          "-"
-                                        )}`
-                                  );
-                            }}
-                          >
-                            Cancel
-                          </Button>
-
-                          <Button
-                            htmlType="button"
-                            className="cancel-btn"
-                            type="primary"
-                            size="large"
-                            onClick={async () => {
-                              const editorValues = draftToHtml(
-                                convertToRaw(editorState.getCurrentContent())
-                              );
-                              let res = await getParseCampStatementApi({
-                                value: editorValues,
-                              });
-                              setWikiStatement(res?.data);
-
-                              setModalVisible(true);
-                            }}
-                          >
-                            Preview
-                          </Button>
+                            )}
+                          </Form.Item>
                         </>
                       )}
-                    </Form.Item>
-                  </Col>
-                </Row>
-              </Form>
-            </Card>
-          </Spin>
+                    </>
+                  )}
+                </Col>
+                <Col xs={24} xl={24}>
+                  <Form.Item className="mb-0">
+                    <Button
+                      size="large"
+                      className={`btn-orange mr-3 ${styles.btnSubmit}`}
+                      htmlType="submit"
+                      disabled={submitIsDisable && submitIsDisableCheck}
+                    >
+                      {add
+                        ? K?.exceptionalMessages?.submitStatementButton
+                        : !objection
+                        ? K?.exceptionalMessages?.submitUpdateButton
+                        : "Submit Objection"}
+                    </Button>
+                    {!objection && (
+                      <>
+                        <Button
+                          htmlType="button"
+                          className="cancel-btn mr-3"
+                          type="ghost"
+                          size="large"
+                          onClick={() => {
+                            let backdata = editStatementData?.data;
+                            setScreenLoading(true);
+                            add
+                              ? router.push(
+                                  `/topic/${replaceSpecialCharacters(
+                                    router?.query?.statement[0],
+                                    "-"
+                                  )}/${replaceSpecialCharacters(
+                                    router?.query?.statement[1],
+                                    "-"
+                                  )}`
+                                )
+                              : router?.push(
+                                  manageFormOf == "camp"
+                                    ? `/camp/history/${
+                                        backdata?.topic?.topic_num
+                                      }-${replaceSpecialCharacters(
+                                        backdata?.topic?.topic_name,
+                                        "-"
+                                      )}/${
+                                        backdata?.parent_camp[
+                                          backdata?.parent_camp.length - 1
+                                        ].camp_num
+                                      }-${replaceSpecialCharacters(
+                                        backdata?.parent_camp[
+                                          backdata?.parent_camp.length - 1
+                                        ].camp_name,
+                                        "-"
+                                      )}`
+                                    : manageFormOf == "statement"
+                                    ? `/statement/history/${
+                                        backdata?.topic?.topic_num
+                                      }-${replaceSpecialCharacters(
+                                        backdata?.topic?.topic_name,
+                                        "-"
+                                      )}/${
+                                        backdata?.parent_camp[
+                                          backdata?.parent_camp.length - 1
+                                        ].camp_num
+                                      }-${replaceSpecialCharacters(
+                                        backdata?.parent_camp[
+                                          backdata?.parent_camp.length - 1
+                                        ].camp_name,
+                                        "-"
+                                      )}`
+                                    : `/topic/history/${
+                                        backdata?.topic?.topic_num
+                                      }-${replaceSpecialCharacters(
+                                        backdata?.topic?.topic_name,
+                                        "-"
+                                      )}`
+                                );
+                          }}
+                        >
+                          Cancel
+                        </Button>
+
+                        <Button
+                          htmlType="button"
+                          className="cancel-btn"
+                          type="primary"
+                          size="large"
+                          onClick={async () => {
+                            const editorValues = draftToHtml(
+                              convertToRaw(editorState.getCurrentContent())
+                            );
+                            let res = await getParseCampStatementApi({
+                              value: editorValues,
+                            });
+                            setWikiStatement(res?.data);
+
+                            setModalVisible(true);
+                          }}
+                        >
+                          Preview
+                        </Button>
+                      </>
+                    )}
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Form>
+          </Card>
         </div>
       </div>
       <Modal
