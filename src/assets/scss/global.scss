@@ -1887,3 +1887,11 @@ div[role="option"]::before {
     display: none !important;
   }
 }
+
+.manage-form-btnwrap {
+  display: flex;
+  gap: 15px;
+  &> span {
+    width: 100px;
+  }
+}

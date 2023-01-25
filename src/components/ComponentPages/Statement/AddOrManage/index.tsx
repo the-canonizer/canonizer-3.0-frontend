@@ -1038,102 +1038,133 @@ export default function AddOrManage({ add }: any) {
                 </Col>
                 <Col xs={24} xl={24}>
                   <Form.Item className="mb-0">
-                    <Button
-                      size="large"
-                      className={`btn-orange mr-3 ${styles.btnSubmit}`}
-                      htmlType="submit"
-                      disabled={submitIsDisable && submitIsDisableCheck}
-                    >
-                      {add
-                        ? K?.exceptionalMessages?.submitStatementButton
-                        : !objection
-                        ? K?.exceptionalMessages?.submitUpdateButton
-                        : "Submit Objection"}
-                    </Button>
-                    {!objection && (
+                    {screenLoading ? (
+                      <>
+                        <div className="manage-form-btnwrap">
+                          <CustomSkelton
+                            skeltonFor="list"
+                            bodyCount={1}
+                            stylingClass="listSkeleton"
+                            isButton={false}
+                          />
+                          {!objection && (
+                            <>
+                              <CustomSkelton
+                                skeltonFor="list"
+                                bodyCount={1}
+                                stylingClass="listSkeleton"
+                                isButton={false}
+                              />{" "}
+                              <CustomSkelton
+                                skeltonFor="list"
+                                bodyCount={1}
+                                stylingClass="listSkeleton"
+                                isButton={false}
+                              />
+                            </>
+                          )}
+                        </div>
+                      </>
+                    ) : (
                       <>
                         <Button
-                          htmlType="button"
-                          className="cancel-btn mr-3"
-                          type="ghost"
                           size="large"
-                          onClick={() => {
-                            let backdata = editStatementData?.data;
-                            setScreenLoading(true);
-                            add
-                              ? router.push(
-                                  `/topic/${replaceSpecialCharacters(
-                                    router?.query?.statement[0],
-                                    "-"
-                                  )}/${replaceSpecialCharacters(
-                                    router?.query?.statement[1],
-                                    "-"
-                                  )}`
-                                )
-                              : router?.push(
-                                  manageFormOf == "camp"
-                                    ? `/camp/history/${
-                                        backdata?.topic?.topic_num
-                                      }-${replaceSpecialCharacters(
-                                        backdata?.topic?.topic_name,
+                          className={`btn-orange mr-3 ${styles.btnSubmit}`}
+                          htmlType="submit"
+                          disabled={submitIsDisable && submitIsDisableCheck}
+                        >
+                          {add
+                            ? K?.exceptionalMessages?.submitStatementButton
+                            : !objection
+                            ? K?.exceptionalMessages?.submitUpdateButton
+                            : "Submit Objection"}
+                        </Button>
+                        {!objection && (
+                          <>
+                            <Button
+                              htmlType="button"
+                              className="cancel-btn mr-3"
+                              type="ghost"
+                              size="large"
+                              onClick={() => {
+                                let backdata = editStatementData?.data;
+                                setScreenLoading(true);
+                                add
+                                  ? router.push(
+                                      `/topic/${replaceSpecialCharacters(
+                                        router?.query?.statement[0],
                                         "-"
-                                      )}/${
-                                        backdata?.parent_camp[
-                                          backdata?.parent_camp.length - 1
-                                        ].camp_num
-                                      }-${replaceSpecialCharacters(
-                                        backdata?.parent_camp[
-                                          backdata?.parent_camp.length - 1
-                                        ].camp_name,
-                                        "-"
-                                      )}`
-                                    : manageFormOf == "statement"
-                                    ? `/statement/history/${
-                                        backdata?.topic?.topic_num
-                                      }-${replaceSpecialCharacters(
-                                        backdata?.topic?.topic_name,
-                                        "-"
-                                      )}/${
-                                        backdata?.parent_camp[
-                                          backdata?.parent_camp.length - 1
-                                        ].camp_num
-                                      }-${replaceSpecialCharacters(
-                                        backdata?.parent_camp[
-                                          backdata?.parent_camp.length - 1
-                                        ].camp_name,
+                                      )}/${replaceSpecialCharacters(
+                                        router?.query?.statement[1],
                                         "-"
                                       )}`
-                                    : `/topic/history/${
-                                        backdata?.topic?.topic_num
-                                      }-${replaceSpecialCharacters(
-                                        backdata?.topic?.topic_name,
-                                        "-"
-                                      )}`
+                                    )
+                                  : router?.push(
+                                      manageFormOf == "camp"
+                                        ? `/camp/history/${
+                                            backdata?.topic?.topic_num
+                                          }-${replaceSpecialCharacters(
+                                            backdata?.topic?.topic_name,
+                                            "-"
+                                          )}/${
+                                            backdata?.parent_camp[
+                                              backdata?.parent_camp.length - 1
+                                            ].camp_num
+                                          }-${replaceSpecialCharacters(
+                                            backdata?.parent_camp[
+                                              backdata?.parent_camp.length - 1
+                                            ].camp_name,
+                                            "-"
+                                          )}`
+                                        : manageFormOf == "statement"
+                                        ? `/statement/history/${
+                                            backdata?.topic?.topic_num
+                                          }-${replaceSpecialCharacters(
+                                            backdata?.topic?.topic_name,
+                                            "-"
+                                          )}/${
+                                            backdata?.parent_camp[
+                                              backdata?.parent_camp.length - 1
+                                            ].camp_num
+                                          }-${replaceSpecialCharacters(
+                                            backdata?.parent_camp[
+                                              backdata?.parent_camp.length - 1
+                                            ].camp_name,
+                                            "-"
+                                          )}`
+                                        : `/topic/history/${
+                                            backdata?.topic?.topic_num
+                                          }-${replaceSpecialCharacters(
+                                            backdata?.topic?.topic_name,
+                                            "-"
+                                          )}`
+                                    );
+                              }}
+                            >
+                              Cancel
+                            </Button>
+
+                            <Button
+                              htmlType="button"
+                              className="cancel-btn"
+                              type="primary"
+                              size="large"
+                              onClick={async () => {
+                                const editorValues = draftToHtml(
+                                  convertToRaw(editorState.getCurrentContent())
                                 );
-                          }}
-                        >
-                          Cancel
-                        </Button>
+                                let res = await getParseCampStatementApi({
+                                  value: editorValues,
+                                });
+                                setWikiStatement(res?.data);
 
-                        <Button
-                          htmlType="button"
-                          className="cancel-btn"
-                          type="primary"
-                          size="large"
-                          onClick={async () => {
-                            const editorValues = draftToHtml(
-                              convertToRaw(editorState.getCurrentContent())
-                            );
-                            let res = await getParseCampStatementApi({
-                              value: editorValues,
-                            });
-                            setWikiStatement(res?.data);
-
-                            setModalVisible(true);
-                          }}
-                        >
-                          Preview
-                        </Button>
+                                setModalVisible(true);
+                              }}
+                            >
+                              Preview
+                            </Button>
+                          </>
+                        )}
                       </>
                     )}
                   </Form.Item>

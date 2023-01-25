@@ -13,11 +13,22 @@
     width: 100%;
     [class="ant-row ant-form-item-row"] {
       width: 100%;
+      @media screen and (max-width:767px) {
+        flex-direction: row;
+      }
+    }
+    [class="ant-col ant-form-item-label"] {
+      @media screen and (max-width:767px) {
+        width: 100%;
+      }
     }
     label {
       color: #6e7880;
       font-weight: 500;
       font-size: 13px;
+      @media screen and (max-width:767px) {
+        width: 100%;
+      }
       &:before {
         order: 3;
         font-weight: normal;
