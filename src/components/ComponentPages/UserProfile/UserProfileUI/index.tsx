@@ -9,8 +9,11 @@ import { UserProfileCard } from "../UserProfileDetails/UserProfileCard";
 import { getUserSupportedCampList } from "src/network/api/userApi";
 import { getCanonizedNameSpacesApi } from "src/network/api/homePageApi";
 import { GetSupportedNickNames } from "src/network/api/campDetailApi";
+import useAuthentication from "../../../../hooks/isUserAuthenticated";
 
 const UserProfile = () => {
+  const { isUserAuthenticated } = useAuthentication();
+
   const [profileData, setProfileData] = useState({} as any);
   const [userSupportedCampsList, setUserSupportedCampsList] = useState([]);
   const [nameSpaceList, setNameSpaceList] = useState([]);
@@ -19,6 +22,7 @@ const UserProfile = () => {
   const [nickNameList, setNickNameList] = useState([]);
   const [defaultNickname, setDefaultNickname] = useState(null);
   const [selectedNikname, setSelectedNikname] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(isUserAuthenticated);
 
   const router = useRouter();
 
@@ -56,6 +60,8 @@ const UserProfile = () => {
     }
   };
 
+  useEffect(() => setIsLoggedIn(isUserAuthenticated), [isUserAuthenticated]);
+
   //onLoad
   useEffect(() => {
     setNoData(false);
@@ -80,7 +86,7 @@ const UserProfile = () => {
     if (nick_id) {
       getSupportedNickNames(nick_id);
     }
-  }, [router]);
+  }, [router, isLoggedIn]);
 
   const onNickNameChange = (value, nickname) => {
     let pathQueries = router.query.supports;
