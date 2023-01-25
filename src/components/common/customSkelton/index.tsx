@@ -7,6 +7,7 @@ import styles from "./style.module.scss";
 
 import PostCustomSkelton from "./postCard";
 import SubscriptionCustomSkelton from "./subscriptionCard";
+import DelegateCardSkeleton from "./delegateCard";
 
 const CustomSkelton = ({
   titleName = "",
@@ -113,17 +114,17 @@ const CustomSkelton = ({
   ) : skeltonFor == "post_card" ? (
     <PostCustomSkelton bodyCount={bodyCount} stylingClass={stylingClass} />
   ) : skeltonFor == "subscription_card" ? (
-    <SubscriptionCustomSkelton stylingClass={stylingClass} />
+    <SubscriptionCustomSkelton
+      bodyCount={bodyCount}
+      stylingClass={stylingClass}
+    />
   ) : skeltonFor == "directSupportCampsCard" ? (
     <Skeleton
       className={styles.directSupportedCampsListSkeleton}
       count={bodyCount}
     />
   ) : skeltonFor == "delegateSupportedCampListCard" ? (
-    <Skeleton
-      className={styles.delegateSupportedCampsListSkeleton}
-      count={bodyCount}
-    />
+    <DelegateCardSkeleton bodyCount={bodyCount} stylingClass={stylingClass} />
   ) : skeltonFor == "manageSupportCard" ? (
     <Card
       className={styles.manageCardSkeleton}
