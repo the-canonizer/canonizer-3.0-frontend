@@ -23,16 +23,19 @@ const UserProfile = () => {
   const [defaultNickname, setDefaultNickname] = useState(null);
   const [selectedNikname, setSelectedNikname] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(isUserAuthenticated);
+  const [userProfileCardSkeleton, SetUserProfileCardSkeleton] = useState(false);
 
   const router = useRouter();
 
   const UserSupportedCampsListApi = async (id) => {
+    SetUserProfileCardSkeleton(true);
     let res = await getUserSupportedCampList(id);
     if (res && res.status_code === 200) {
       setNoData(true);
       setUserSupportedCampsList(res.data.support_list);
       setProfileData(res.data.profile);
     }
+    SetUserProfileCardSkeleton(false);
   };
 
   const UserSupportCampListNewSpaces = async () => {
@@ -102,6 +105,7 @@ const UserProfile = () => {
         <UserProfileDetails
           profileData={profileData}
           userSupportedCampsList={userSupportedCampsList}
+          userProfileCardSkeleton={userProfileCardSkeleton}
         />
         <UserProfileCard
           userSupportedCampsList={userSupportedCampsList}
@@ -115,6 +119,7 @@ const UserProfile = () => {
           defaultNickname={defaultNickname}
           selectedNikname={selectedNikname}
           onNickNameChange={onNickNameChange}
+          userProfileCardSkeleton={userProfileCardSkeleton}
         />
       </div>
     </>

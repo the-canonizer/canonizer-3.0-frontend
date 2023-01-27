@@ -19,6 +19,7 @@ export default function DelegatedSupportCampsUI({
   removeSupport,
   removeSupportCampsData,
   statusFlag,
+  delegateSupportedSkeleton,
 }: any) {
   const [displayList, setDisplayList] = useState([]);
   const limit = 3;
@@ -95,97 +96,106 @@ export default function DelegatedSupportCampsUI({
   };
   return (
     <div>
-      {delegatedSupportCampsList && delegatedSupportCampsList.length > 0 ? (
-        filteredArray().length > 0 ? (
-          filteredArray()?.map((data, i) => {
-            return (
-              <Card
-                key={i}
-                className={styles.cardBox_tags}
-                type="inner"
-                size="default"
-                title={
-                  <CardTitle title_link={data.title_link} value={data.title} />
-                }
-                extra={
-                  <div
-                    className={styles.RemoveCardSupported}
-                    onClick={() => removeCardDelegatedSupportedCamps(data)}
-                  >
-                    <CloseCircleOutlined /> {messages.labels.removeSupport}{" "}
-                  </div>
-                }
-                style={{ width: 760, marginBottom: 16 }}
-              >
-                <div>
-                  <Row className={styles.flex_wrap}>
-                    <Col span={12} className={styles.flex_wrap_col}>
-                      <>
-                        <SupportedCampsTo
-                          supportedto={data.delegated_to_nick_name}
-                          supportedto_link={data.delegated_to_nick_name_link}
-                          NickName={data.my_nick_name}
-                          NickNameLink={data.my_nick_name_link}
-                        />
-                      </>
-                    </Col>
-                    <Col span={12} className={styles.border_left}>
-                      <div className={styles.line_height1}>
-                        <p>
-                          <b id="currentSupportedCamp">
-                            {messages.labels.currentSupportedCamps}
-                          </b>
-                        </p>
-
-                        {data.camps?.slice(0, limit).map((val, i) => {
-                          return (
-                            <CurrentSupportedCamps
-                              key={i}
-                              value={val.camp_name}
-                              id_data={val.support_order + "."}
-                              camp_link={val.camp_link}
-                            />
-                          );
-                        })}
-                      </div>
-                      {data.camps.length > limit ? (
-                        <a
-                          className={styles.mrgn_left}
-                          onClick={(e) => showViewMoreModal(e, data)}
-                        >
-                          {messages.labels.viewMore}
-                        </a>
-                      ) : (
-                        ""
-                      )}
-                    </Col>
-                  </Row>
-                </div>
-              </Card>
-            );
-          })
-        ) : (
-          showEmpty("No Data Found")
-        )
-      ) : (
+      {delegateSupportedSkeleton ? (
         <CustomSkelton
           skeltonFor="delegateSupportedCampListCard"
           bodyCount={4}
           stylingClass=""
           isButton={false}
         />
-      )}
-      {delegatedSupportCampsList && delegatedSupportCampsList.length > 0 ? (
-        <Pagination
-          hideOnSinglePage={true}
-          total={delegatedSupportCampsList.length}
-          pageSize={5}
-          onChange={pageChange}
-        />
       ) : (
-        ""
-      )}
+        <div>
+          {delegatedSupportCampsList && delegatedSupportCampsList.length > 0
+            ? filteredArray().length > 0
+              ? filteredArray()?.map((data, i) => {
+                  return (
+                    <Card
+                      key={i}
+                      className={styles.cardBox_tags}
+                      type="inner"
+                      size="default"
+                      title={
+                        <CardTitle
+                          title_link={data.title_link}
+                          value={data.title}
+                        />
+                      }
+                      extra={
+                        <div
+                          className={styles.RemoveCardSupported}
+                          onClick={() =>
+                            removeCardDelegatedSupportedCamps(data)
+                          }
+                        >
+                          <CloseCircleOutlined />{" "}
+                          {messages.labels.removeSupport}{" "}
+                        </div>
+                      }
+                      style={{ width: 760, marginBottom: 16 }}
+                    >
+                      <div>
+                        <Row className={styles.flex_wrap}>
+                          <Col span={12} className={styles.flex_wrap_col}>
+                            <>
+                              <SupportedCampsTo
+                                supportedto={data.delegated_to_nick_name}
+                                supportedto_link={
+                                  data.delegated_to_nick_name_link
+                                }
+                                NickName={data.my_nick_name}
+                                NickNameLink={data.my_nick_name_link}
+                              />
+                            </>
+                          </Col>
+                          <Col span={12} className={styles.border_left}>
+                            <div className={styles.line_height1}>
+                              <p>
+                                <b id="currentSupportedCamp">
+                                  {messages.labels.currentSupportedCamps}
+                                </b>
+                              </p>
 
+                              {data.camps?.slice(0, limit).map((val, i) => {
+                                return (
+                                  <CurrentSupportedCamps
+                                    key={i}
+                                    value={val.camp_name}
+                                    id_data={val.support_order + "."}
+                                    camp_link={val.camp_link}
+                                  />
+                                );
+                              })}
+                            </div>
+                            {data.camps.length > limit ? (
+                              <a
+                                className={styles.mrgn_left}
+                                onClick={(e) => showViewMoreModal(e, data)}
+                              >
+                                {messages.labels.viewMore}
+                              </a>
+                            ) : (
+                              ""
+                            )}
+                          </Col>
+                        </Row>
+                      </div>
+                    </Card>
+                  );
+                })
+              : showEmpty("No Data Found")
+            : showEmpty("No Data Found")}
+          {delegatedSupportCampsList && delegatedSupportCampsList.length > 0 ? (
+            <Pagination
+              hideOnSinglePage={true}
+              total={delegatedSupportCampsList.length}
+              pageSize={5}
+              onChange={pageChange}
+            />
+          ) : (
+            ""
+          )}
+        </div>
+      )}
       <Modal
         className={styles.modal_cross}
         title="Remove Support"
