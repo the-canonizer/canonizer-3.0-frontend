@@ -107,8 +107,8 @@ body {
   padding-right: 1rem;
 }
 .py-2 {
-  padding-top: .5rem;
-  padding-bottom: .5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 .mr {
@@ -1888,7 +1888,6 @@ div[role="option"]::before {
   }
 }
 
-
 .socail-skeleton {
   display: flex;
   gap: 15px;
@@ -1902,15 +1901,15 @@ div[role="option"]::before {
 }
 
 .cam-social-ot {
-.camp-social {
-  padding: 0;
-}
-
-.manage-form-btnwrap {
-  display: flex;
-  gap: 15px;
-  &> span {
-    width: 100px;
+  .camp-social {
+    padding: 0;
   }
 
+  .manage-form-btnwrap {
+    display: flex;
+    gap: 15px;
+    & > span {
+      width: 100px;
+    }
+  }
 }
