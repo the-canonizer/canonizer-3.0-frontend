@@ -14,7 +14,7 @@ import { isServer } from "../../../utils/generalUtility";
 const SocialShare = ({ campUrl, campName }) => {
   return (
     <div className={styles.wrapper}>
-      <div className={styles.btn_group}>
+      <div className={"camp-social " + styles.btn_group}>
         <FacebookShareButton
           url={campUrl}
           quote={campName}

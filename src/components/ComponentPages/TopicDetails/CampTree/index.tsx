@@ -28,6 +28,7 @@ const CampTree = ({
   let childExpandTree = [];
 
   const [defaultExpandKeys, setDefaultExpandKeys] = useState([]);
+  const [uniqueKeys, setUniqueKeys] = useState([]);
 
   const [selectedExpand, setSelectedExpand] = useState([]);
   const [expandedKeys, setExpandedKeys] = useState([]);
@@ -94,21 +95,6 @@ const CampTree = ({
   useEffect(() => {
     setScoreFilter(filterByScore);
     setIncludeReview(review == "review" ? true : false);
-
-    tree?.at(0) &&
-      showSelectedCamp(
-        tree?.at(0),
-        +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1),
-        tree?.at(1)
-      );
-    let expandKeys = tree?.at(0) && getAllDefaultExpandKeys(tree?.at(0)["1"]);
-    tree?.at(0) &&
-      expandKeys.push(
-        +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) == 1
-          ? 2
-          : +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1)
-      );
-    setDefaultExpandKeys(expandKeys);
   }, [filterByScore, review]);
 
   const dispatchData = (data, isDisabled = 0, isOneLevel = 0) => {
@@ -143,22 +129,43 @@ const CampTree = ({
     if (tree?.at(0) != null) {
       dispatchData(tree?.at(0));
     }
-    tree?.at(0) &&
-      showSelectedCamp(
-        tree?.at(0),
-        +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1),
-        tree?.at(1)
-      );
 
-    let expandKeys = tree?.at(0) && getAllDefaultExpandKeys(tree?.at(0)["1"]);
-    tree?.at(0) &&
-      expandKeys.push(
-        +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) == 1
-          ? 2
-          : +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1)
-      );
-    setDefaultExpandKeys(expandKeys);
+    let sesionexpandkeys = JSON.parse(sessionStorage.getItem("value")) || [];
+    let keyexistSession =
+      sesionexpandkeys &&
+      tree?.at(0) &&
+      sesionexpandkeys.find((age) => age.topic_id == tree?.at(0)["1"].topic_id);
 
+    if (keyexistSession && tree?.at(0)) {
+      setDefaultExpandKeys(keyexistSession.sessionexpandsKeys);
+      setUniqueKeys(keyexistSession.sessionexpandsKeys);
+      setShowTree(true);
+    } else {
+      tree?.at(0) &&
+        showSelectedCamp(
+          tree?.at(0),
+          +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1),
+          tree?.at(1)
+        );
+
+      let expandKeys = tree?.at(0) && getAllDefaultExpandKeys(tree?.at(0)["1"]);
+      tree?.at(0) &&
+        expandKeys.push(
+          +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) == 1
+            ? 2
+            : +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1)
+        );
+      let allkeys = [...selectedExpand, ...(expandKeys || []), ...expandedKeys];
+      let uniquekeyss = toFindDuplicates(allkeys);
+      setDefaultExpandKeys(expandKeys);
+      setUniqueKeys(uniquekeyss);
+      tree?.at(0) &&
+        sesionexpandkeys.push({
+          topic_id: tree?.at(0)["1"].topic_id,
+          sessionexpandsKeys: uniquekeyss,
+        });
+      sessionStorage.setItem("value", JSON.stringify(sesionexpandkeys));
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tree?.at(0)]);
 
@@ -324,21 +331,30 @@ const CampTree = ({
   };
 
   const onExpand = (expandedKeys) => {
+    let topic_id = tree?.at(0) && tree?.at(0)["1"].topic_id;
+    let sesionexpandkeys = JSON.parse(sessionStorage.getItem("value"));
+
+    let sesionExpandnewKeys = sesionexpandkeys.map((keys) => {
+      if (keys.topic_id == topic_id) {
+        return { topic_id: topic_id, sessionexpandsKeys: expandedKeys };
+      } else {
+        return keys;
+      }
+    });
+
+    sessionStorage.setItem("value", JSON.stringify(sesionExpandnewKeys));
+    setUniqueKeys(expandedKeys);
     setExpandedKeys(expandedKeys);
     // setAutoExpandParent(false);
   };
 
-  const allkeys = [...selectedExpand, ...defaultExpandKeys, ...expandedKeys];
-
-  const toFindDuplicates = (arry) =>
-    arry.map((item, index, self) => {
-      if (self.indexOf(item) === index) {
-        return self[index]?.toString();
-      }
-      return item;
+  const toFindDuplicates = (arry) => {
+    let uniqueArray = arry.filter(function (item, pos, self) {
+      return self.indexOf(item) == pos;
     });
-
-  const uniqueKeys = toFindDuplicates(allkeys);
+    let uniqueArraytoString = uniqueArray.map(String);
+    return uniqueArraytoString;
+  };
 
   return tree?.at(0) ? (
     showTree && tree?.at(0)["1"].title != "" && defaultExpandKeys ? (
@@ -347,7 +363,7 @@ const CampTree = ({
         defaultExpandedKeys={uniqueKeys}
         onSelect={onSelect}
         // defaultSelectedKeys={uniqueKeys}
-        // onExpand={onExpand}
+        onExpand={onExpand}
         // expandedKeys={uniqueKeys}
         // autoExpandParent={autoExpandParent}
         // selectedKeys={uniqueKeys}
