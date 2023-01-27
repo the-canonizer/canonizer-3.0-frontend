@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { Card, Tag, Select, BackTop } from "antd";
+import { Card, Tag, Select, BackTop, Pagination } from "antd";
 import Link from "next/link";
 
 import styles from "../UserProfileUI/UserProfile.module.scss";
@@ -18,6 +18,9 @@ export const UserProfileCard = ({
   selectedNikname,
   onNickNameChange,
 }: any) => {
+  const [startingPosition, setStartingPosition] = useState(0);
+  const [endingPosition, setEndingPosition] = useState(5);
+  
   const renderFilter = () => {
     const filteredVal = nameSpaceList.filter(
       (obj) => obj.id == dropdownNameSpaceList
@@ -28,6 +31,11 @@ export const UserProfileCard = ({
   const router = useRouter();
 
   const reqBody = { campNum: +router?.query?.supports[0] };
+
+  const pageChange = (pageNumber, pageSize) => {
+    setStartingPosition((pageNumber - 1) * pageSize);
+    setEndingPosition((pageNumber - 1) * pageSize + pageSize);
+  };
 
   return (
     <div className="user--cards-outer">
@@ -114,6 +122,7 @@ export const UserProfileCard = ({
                           return obj;
                         }
                       })
+                      .slice(startingPosition, endingPosition)
                       .map((data, i) => {
                         return (
                           <span key={i}>
@@ -210,6 +219,16 @@ export const UserProfileCard = ({
                       })
                   : noData && <div>No Data Available !</div>}
               </div>
+              {userSupportedCampsList ? (
+                <Pagination
+                  hideOnSinglePage={true}
+                  total={userSupportedCampsList?.[0]?.topic?.length}
+                  pageSize={5}
+                  onChange={pageChange}
+                />
+              ) : (
+                ""
+              )}
             </Card>
           );
         })}

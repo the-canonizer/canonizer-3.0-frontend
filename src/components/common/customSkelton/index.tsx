@@ -20,6 +20,7 @@ const CustomSkelton = ({
   title = true,
   cardStylingClass = "",
   listStyle = "blank",
+  height = 0,
 }) => {
   return skeltonFor == "card" ? (
     <Card
@@ -108,7 +109,7 @@ const CustomSkelton = ({
       </li>
     </ul>
   ) : skeltonFor == "video" ? (
-    <Skeleton height={400} width={"100%"} />
+    <Skeleton height={height} width={"100%"} />
   ) : skeltonFor == "post_card" ? (
     <PostCustomSkelton bodyCount={bodyCount} stylingClass={stylingClass} />
   ) : skeltonFor == "subscription_card" ? (
