@@ -13,7 +13,7 @@ export const getTermsAndServicesContent = async (tc = "") => {
     const res = await NetworkCall.fetch(
       TermsAndPrivacyRequest.getTermsAndServicesContent(token)
     );
-    console.log(res, "term and service");
+   
     return res.data;
   } catch (error) {
     handleError(error);
@@ -29,7 +29,7 @@ export const getPrivacyPolicyContent = async (tc = "") => {
     const res = await NetworkCall.fetch(
       TermsAndPrivacyRequest.getPrivacyPolicyContent(token)
     );
-    console.log(res, "privacy policy");
+    
     return res.data;
   } catch (error) {
     handleError(error);
