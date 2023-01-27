@@ -20,7 +20,11 @@ const CustomSkelton = ({
   title = true,
   cardStylingClass = "",
   listStyle = "blank",
+
+  circle = false,
+
   height = 0,
+
 }) => {
   return skeltonFor == "card" ? (
     <Card
@@ -57,6 +61,7 @@ const CustomSkelton = ({
     <Skeleton
       className={`${styles[stylingClass]} ${styles[listStyle]}`}
       count={bodyCount}
+      circle={circle}
     />
   ) : skeltonFor == "tree" ? (
     <ul className={styles.treeSkeleton}>
