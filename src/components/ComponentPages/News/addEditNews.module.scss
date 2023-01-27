@@ -13,6 +13,9 @@
     width: 100%;
     [class="ant-row ant-form-item-row"] {
       width: 100%;
+      @media screen and (max-width:767px) {
+        flex-direction: row;
+      }
     }
     label {
       color: #6e7880;
