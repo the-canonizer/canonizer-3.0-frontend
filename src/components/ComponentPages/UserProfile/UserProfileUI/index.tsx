@@ -1,17 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+
 import styles from "./UserProfile.module.scss";
+
 import UserProfileDetails from "../UserProfileDetails/UserProfileDetails";
 import { UserProfileCard } from "../UserProfileDetails/UserProfileCard";
 
 import { getUserSupportedCampList } from "src/network/api/userApi";
 import { getCanonizedNameSpacesApi } from "src/network/api/homePageApi";
+import { GetSupportedNickNames } from "src/network/api/campDetailApi";
+import useAuthentication from "../../../../hooks/isUserAuthenticated";
+
 const UserProfile = () => {
+  const { isUserAuthenticated } = useAuthentication();
+
   const [profileData, setProfileData] = useState({} as any);
   const [userSupportedCampsList, setUserSupportedCampsList] = useState([]);
   const [nameSpaceList, setNameSpaceList] = useState([]);
   const [dropdownNameSpaceList, setDropdownNameSpaceList] = useState();
   const [noData, setNoData] = useState(false);
+  const [nickNameList, setNickNameList] = useState([]);
+  const [defaultNickname, setDefaultNickname] = useState(null);
+  const [selectedNikname, setSelectedNikname] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(isUserAuthenticated);
+
   const router = useRouter();
 
   const UserSupportedCampsListApi = async (id) => {
@@ -30,8 +42,27 @@ const UserProfile = () => {
     }
   };
 
-  //onLoad
+  const getSupportedNickNames = async (id) => {
+    const response = await GetSupportedNickNames(id);
+    if (response && response.status_code === 200) {
+      let nickNames = response?.data;
+      nickNames = nickNames.map((nick) => ({
+        ...nick,
+        label: nick.nick_name,
+        value: +nick.id,
+      }));
 
+      setNickNameList(nickNames);
+
+      const selectedNickname = nickNames.filter((nick) => +nick.id === +id);
+      setDefaultNickname(selectedNickname[0]?.label);
+      setSelectedNikname(selectedNickname[0]?.label);
+    }
+  };
+
+  useEffect(() => setIsLoggedIn(isUserAuthenticated), [isUserAuthenticated]);
+
+  //onLoad
   useEffect(() => {
     setNoData(false);
     const userId = router?.query?.supports[0];
@@ -49,6 +80,22 @@ const UserProfile = () => {
     }
   }, [dropdownNameSpaceList, router?.query]);
 
+  useEffect(() => {
+    const q = router?.query,
+      nick_id = q?.supports[0];
+    if (nick_id) {
+      getSupportedNickNames(nick_id);
+    }
+  }, [router, isLoggedIn]);
+
+  const onNickNameChange = (value, nickname) => {
+    let pathQueries = router.query.supports;
+    pathQueries = [value];
+    router.query.supports = pathQueries;
+    router.push(router);
+    setSelectedNikname(value);
+  };
+
   return (
     <>
       <div className={styles.userProfileData}>
@@ -64,6 +111,10 @@ const UserProfile = () => {
           setDropdownNameSpaceList={setDropdownNameSpaceList}
           noData={noData}
           profileData={profileData}
+          nickNames={nickNameList}
+          defaultNickname={defaultNickname}
+          selectedNikname={selectedNikname}
+          onNickNameChange={onNickNameChange}
         />
       </div>
     </>

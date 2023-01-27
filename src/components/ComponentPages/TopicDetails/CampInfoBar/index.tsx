@@ -310,131 +310,204 @@ const CampInfoBar = ({
   return (
     <>
       <div className={styles.topicDetailContentHead}>
-        {loadingIndicator ? (
+        {/* {loadingIndicator ? (
           <CustomSkelton
             skeltonFor="list"
             bodyCount={1}
             stylingClass=""
             isButton={false}
-          />
-        ) : (
-          <Spin spinning={false}>
-            <div className={styles.topicDetailContentHead_Left}>
+          /> */}
+
+        <Spin spinning={false}>
+          <div className={styles.topicDetailContentHead_Left}>
+            <Typography.Paragraph
+              className={
+                "mb-0 " +
+                `${
+                  loadingIndicator
+                    ? styles.topicTitleSkeleton
+                    : styles.topicTitleStyle
+                }`
+              }
+            >
+              {" "}
+              <span className="bold"> Topic : </span>
+              {loadingIndicator ? (
+                <CustomSkelton
+                  skeltonFor="list"
+                  bodyCount={1}
+                  stylingClass="topic-skeleton"
+                  isButton={false}
+                />
+              ) : isTopicHistoryPage ? (
+                <>
+                  {" "}
+                  <Link
+                    href={`/topic/${
+                      payload?.topic_num
+                    }-${replaceSpecialCharacters(
+                      breadCrumbRes?.topic_name,
+                      "-"
+                    )}/1-Agreement`}
+                  >
+                    <a className={styles.boldBreadcrumb}>
+                      {breadCrumbRes?.topic_name}
+                    </a>
+                  </Link>
+                </>
+              ) : (
+                <span className={styles.boldBreadcrumb}>
+                  {breadCrumbRes?.topic_name}
+                </span>
+              )}
+              {"  "}
+              {!!topicSubscriptionID && (
+                <small>
+                  <i className="icon-subscribe text-primary"></i>
+                </small>
+              )}
+            </Typography.Paragraph>
+            <div className={styles.breadcrumbLinks}>
+              {" "}
               <Typography.Paragraph
                 className={"mb-0 " + styles.topicTitleStyle}
               >
-                {" "}
-                <span className="bold"> Topic : </span>
-                {isTopicHistoryPage ? (
-                  <>
-                    {" "}
-                    <Link
-                      href={`/topic/${
-                        payload?.topic_num
-                      }-${replaceSpecialCharacters(
-                        breadCrumbRes?.topic_name,
-                        "-"
-                      )}/1-Agreement`}
-                    >
-                      <a className={styles.boldBreadcrumb}>
-                        {breadCrumbRes?.topic_name}
-                      </a>
-                    </Link>
-                  </>
-                ) : (
-                  <span className={styles.boldBreadcrumb}>
-                    {breadCrumbRes?.topic_name}
-                  </span>
-                )}
-                {"  "}
-                {!!topicSubscriptionID && (
-                  <small>
-                    <i className="icon-subscribe text-primary"></i>
-                  </small>
-                )}
-              </Typography.Paragraph>
-              <div className={styles.breadcrumbLinks}>
-                {" "}
                 <span className="bold mr-1">
                   {!isTopicHistoryPage ? "Camp :" : ""}{" "}
                 </span>
-                {!isTopicHistoryPage
-                  ? breadCrumbRes
-                    ? breadCrumbRes?.bread_crumb?.map((camp, index) => {
-                        return (
-                          <Link
-                            href={{
-                              pathname: `/topic/${
-                                payloadData?.topic_num
-                              }-${replaceSpecialCharacters(
-                                breadCrumbRes?.topic_name,
-                                "-"
-                              )}/${camp?.camp_num}-${replaceSpecialCharacters(
-                                camp?.camp_name,
-                                "-"
-                              )}`,
-                            }}
-                            key={index}
-                          >
-                            <a>
-                              <span className={styles.slashStyle}>
-                                {" "}
-                                {index !== 0 && "/"}{" "}
-                              </span>
-                              <span
-                                className={
-                                  breadCrumbRes?.bread_crumb.length - 1 == index
-                                    ? styles.greenIndicateText
-                                    : styles.boldBreadcrumb
-                                }
-                              >{`${camp?.camp_name}`}</span>
-                            </a>
-                          </Link>
-                        );
-                      })
-                    : "N/A"
-                  : null}
+                {loadingIndicator ? (
+                  <CustomSkelton
+                    skeltonFor="list"
+                    bodyCount={1}
+                    stylingClass="topic-skeleton"
+                    isButton={false}
+                  />
+                ) : !isTopicHistoryPage ? (
+                  breadCrumbRes ? (
+                    breadCrumbRes?.bread_crumb?.map((camp, index) => {
+                      return (
+                        <Link
+                          href={{
+                            pathname: `/topic/${
+                              payloadData?.topic_num
+                            }-${replaceSpecialCharacters(
+                              breadCrumbRes?.topic_name,
+                              "-"
+                            )}/${camp?.camp_num}-${replaceSpecialCharacters(
+                              camp?.camp_name,
+                              "-"
+                            )}`,
+                          }}
+                          key={index}
+                        >
+                          <a>
+                            <span className={styles.slashStyle}>
+                              {" "}
+                              {index !== 0 && "/"}{" "}
+                            </span>
+                            <span
+                              className={
+                                breadCrumbRes?.bread_crumb.length - 1 == index
+                                  ? styles.greenIndicateText
+                                  : styles.boldBreadcrumb
+                              }
+                            >{`${camp?.camp_name}`}</span>
+                          </a>
+                        </Link>
+                      );
+                    })
+                  ) : (
+                    "N/A"
+                  )
+                ) : null}
                 {!!campSubscriptionID && !isTopicHistoryPage && (
                   <small style={{ alignSelf: "center", marginLeft: "10px" }}>
                     <i className="icon-subscribe text-primary"></i>
                   </small>
                 )}
-              </div>
+              </Typography.Paragraph>
             </div>
+          </div>
 
-            <div className={styles.topicDetailContentHead_Right}>
+          <div className={styles.topicDetailContentHead_Right}>
+            <Typography.Paragraph
+              className={"mb-0 campInfoRight " + styles.topicTitleStyle}
+            >
               {isTopicPage && (
                 <Fragment>
-                  <SocialShareUI
-                    campName={campRecord?.camp_name}
-                    campUrl={!isServer() && window?.location?.href}
-                  />
-                  <Button
-                    type="primary"
-                    className={styles.btnCampForum}
-                    onClick={onCampForumClick}
-                    id="camp-forum-btn"
-                  >
-                    Camp Forum
-                  </Button>
-                  <Dropdown
-                    className={styles.campForumDropdown}
-                    placement="bottomRight"
-                    overlay={campForumDropdownMenu}
-                    trigger={["click"]}
-                  >
-                    <a
-                      className={styles.iconMore}
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      <MoreOutlined />
-                    </a>
-                  </Dropdown>
+                  {loadingIndicator ? (
+                    <>
+                      <div className="socail-skeleton mr-3">
+                        <CustomSkelton
+                          skeltonFor="list"
+                          bodyCount={1}
+                          stylingClass="skeleton-item"
+                          isButton={false}
+                          circle={true}
+                        />
+                        <CustomSkelton
+                          skeltonFor="list"
+                          bodyCount={1}
+                          stylingClass="skeleton-item"
+                          isButton={false}
+                          circle={true}
+                        />
+                        <CustomSkelton
+                          skeltonFor="list"
+                          bodyCount={1}
+                          stylingClass="skeleton-item"
+                          isButton={false}
+                          circle={true}
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    <div className="cam-social-ot">
+                      <SocialShareUI
+                        campName={campRecord?.camp_name}
+                        campUrl={!isServer() && window?.location?.href}
+                      />
+                    </div>
+                  )}
+                  {loadingIndicator ? (
+                    <CustomSkelton
+                      skeltonFor="list"
+                      bodyCount={1}
+                      stylingClass="header-skeleton-btn"
+                      // stylingClass="skeleton-item"
+                      isButton={false}
+                    />
+                  ) : (
+                    <>
+                      <Button
+                        type="primary"
+                        className={styles.btnCampForum}
+                        onClick={onCampForumClick}
+                        id="camp-forum-btn"
+                      >
+                        Camp Forum
+                      </Button>
+
+                      <Dropdown
+                        className={styles.campForumDropdown}
+                        placement="bottomRight"
+                        overlay={campForumDropdownMenu}
+                        trigger={["click"]}
+                      >
+                        <a
+                          className={styles.iconMore}
+                          onClick={(e) => e.preventDefault()}
+                        >
+                          <MoreOutlined />
+                        </a>
+                      </Dropdown>
+                    </>
+                  )}
                 </Fragment>
               )}
-            </div>
-          </Spin>
-        )}
+            </Typography.Paragraph>
+          </div>
+        </Spin>
       </div>
     </>
   );

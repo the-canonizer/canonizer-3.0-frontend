@@ -2,6 +2,7 @@ import Layout from "../hoc/layout";
 
 import TermsAndPrivacy from "../components/ComponentPages/TermsAndPrivacy";
 import { getPrivacyPolicyContent } from "src/network/api/termsAndPrivacyApi";
+import { createToken } from "src/network/api/userApi";
 
 function PrivacyPolicy({ privacyPolicyContent }: any) {
   return (
@@ -13,7 +14,8 @@ function PrivacyPolicy({ privacyPolicyContent }: any) {
   );
 }
 export async function getStaticProps() {
-  const res = await getPrivacyPolicyContent();
+  const response = await createToken();
+  const res = await getPrivacyPolicyContent(response?.access_token);
   return {
     props: {
       privacyPolicyContent: res || [],
