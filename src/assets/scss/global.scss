@@ -1888,6 +1888,7 @@ div[role="option"]::before {
   }
 }
 
+
 .socail-skeleton {
   display: flex;
   gap: 15px;
@@ -1904,4 +1905,12 @@ div[role="option"]::before {
 .camp-social {
   padding: 0;
 }
+
+.manage-form-btnwrap {
+  display: flex;
+  gap: 15px;
+  &> span {
+    width: 100px;
+  }
+
 }
