@@ -1,6 +1,7 @@
 import Layout from "../hoc/layout";
 import TermsAndPrivacy from "../components/ComponentPages/TermsAndPrivacy";
 import { getTermsAndServicesContent } from "src/network/api/termsAndPrivacyApi";
+import { createToken } from "src/network/api/userApi";
 
 function TermAndService({ termsAndServicesContent }: any) {
   return (
@@ -12,7 +13,8 @@ function TermAndService({ termsAndServicesContent }: any) {
   );
 }
 export async function getStaticProps() {
-  const res = await getTermsAndServicesContent();
+  const response = await createToken();
+  const res = await getTermsAndServicesContent(response?.access_token);
   return {
     props: {
       termsAndServicesContent: res || [],
