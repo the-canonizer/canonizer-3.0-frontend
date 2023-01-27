@@ -48,7 +48,7 @@
   border: 1px solid #ececec;
   width: 100% !important;
   margin-bottom: 16px;
-  
+
   @media screen and (max-width: 767px) {
     [class="ant-card-head"] {
       [class="ant-card-head-wrapper"] {
@@ -148,4 +148,37 @@
   font-weight: 600;
   font-size: 14px;
   display: inline-block;
+}
+
+.nickname_box {
+  display: flex;
+  width: 350px;
+  align-items: center;
+  .labels {
+    display: inline-block;
+    white-space: nowrap;
+    margin-right: 10px;
+  }
+  .nickname_dropdown {
+    max-width: 100%;
+    border-color: #d9d9d9;
+    font-size: 13px;
+    width: 100%;
+    > div:first-child {
+      height: 40px !important;
+      border: none;
+    }
+  }
+  @media screen and (min-width: 576px) {
+    .nickname_dropdown {
+      max-width: 225px;
+      width: 100%;
+    }
+  }
+  @media screen and (min-width: 1200px) and (max-width: 1499px) {
+    .nickname_dropdown {
+      width: 100%;
+      max-width: inherit;
+    }
+  }
 }
