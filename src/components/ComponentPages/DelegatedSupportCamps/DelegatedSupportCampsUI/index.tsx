@@ -1,10 +1,11 @@
-import { Card, Modal, Row, Col, Button, Form, Empty } from "antd";
+import { Card, Modal, Row, Col, Button, Form, Empty, Pagination } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import styles from "./DelegatedSupportedCamps.module.scss";
 import messages from "../../../../messages";
 import Spinner from "../../../common/spinner/spinner";
 import CustomSkelton from "@/components/common/customSkelton";
+import { useEffect, useState } from "react";
 export default function DelegatedSupportCampsUI({
   removeCardDelegatedSupportedCamps,
   handleSupportedCampsCancel,
@@ -19,6 +20,7 @@ export default function DelegatedSupportCampsUI({
   removeSupportCampsData,
   statusFlag,
 }: any) {
+  const [displayList, setDisplayList] = useState([]);
   const limit = 3;
   function CardTitle(props: any) {
     return (
@@ -71,7 +73,7 @@ export default function DelegatedSupportCampsUI({
     return <Empty description={msg} />;
   };
   const filteredArray = () => {
-    return delegatedSupportCampsList.filter((val) => {
+    return displayList.filter((val) => {
       if (search.trim() == "") {
         return val;
       } else if (
@@ -80,6 +82,16 @@ export default function DelegatedSupportCampsUI({
         return val;
       }
     });
+  };
+  useEffect(() => {
+    pageChange(1, 5);
+  }, [delegatedSupportCampsList]);
+  const pageChange = (pageNumber, pageSize) => {
+    const startingPosition = (pageNumber - 1) * pageSize;
+    const endingPosition = startingPosition + pageSize;
+    setDisplayList(
+      delegatedSupportCampsList.slice(startingPosition, endingPosition)
+    );
   };
   return (
     <div>
@@ -158,10 +170,20 @@ export default function DelegatedSupportCampsUI({
       ) : (
         <CustomSkelton
           skeltonFor="delegateSupportedCampListCard"
-          bodyCount={3}
+          bodyCount={4}
           stylingClass=""
           isButton={false}
         />
+      )}
+      {delegatedSupportCampsList && delegatedSupportCampsList.length > 0 ? (
+        <Pagination
+          hideOnSinglePage={true}
+          total={delegatedSupportCampsList.length}
+          pageSize={5}
+          onChange={pageChange}
+        />
+      ) : (
+        ""
       )}
 
       <Modal

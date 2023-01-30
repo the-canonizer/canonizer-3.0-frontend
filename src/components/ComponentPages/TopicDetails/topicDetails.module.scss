@@ -43,6 +43,9 @@
     .topicTitleStyle {
       margin-right: 50px;
     }
+    .topicTitleSkeleton {
+      margin-right: 100px;
+    }
     .breadcrumbLinks {
       display: flex;
       a {
@@ -240,4 +243,10 @@
   // font-weight: 600;
   // font-size: 16px;
   color: #08b608;
+}
+
+.campinfoSocialOt {
+  .btn_group {
+    padding: 0;
+  }
 }

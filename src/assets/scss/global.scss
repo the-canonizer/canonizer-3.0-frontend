@@ -1890,6 +1890,32 @@ div[role="option"]::before {
   }
 }
 
+.socail-skeleton {
+  display: flex;
+  gap: 15px;
+  span {
+    width: 30px;
+    height: 30px;
+  }
+}
+.campInfoRight {
+  display: flex;
+}
+
+.cam-social-ot {
+  .camp-social {
+    padding: 0;
+  }
+
+  .manage-form-btnwrap {
+    display: flex;
+    gap: 15px;
+    & > span {
+      width: 100px;
+    }
+  }
+}
+
 .ant-descriptions-item-label::after {
   margin: 0 4px 0 1px;
 }

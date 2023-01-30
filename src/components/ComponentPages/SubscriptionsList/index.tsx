@@ -100,7 +100,7 @@ function SubscriptionsList({ isTestData = [] }) {
   return isLoading ? (
     <CustomSkelton
       skeltonFor="subscription_card"
-      bodyCount={1}
+      bodyCount={4}
       stylingClass=""
       listStyle="liHeight"
       isButton={false}

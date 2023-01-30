@@ -7,6 +7,7 @@ import styles from "./style.module.scss";
 
 import PostCustomSkelton from "./postCard";
 import SubscriptionCustomSkelton from "./subscriptionCard";
+import DelegateCardSkeleton from "./delegateCard";
 
 const CustomSkelton = ({
   titleName = "",
@@ -19,6 +20,11 @@ const CustomSkelton = ({
   title = true,
   cardStylingClass = "",
   listStyle = "blank",
+
+  circle = false,
+
+  height = 0,
+
 }) => {
   return skeltonFor == "card" ? (
     <Card
@@ -55,6 +61,7 @@ const CustomSkelton = ({
     <Skeleton
       className={`${styles[stylingClass]} ${styles[listStyle]}`}
       count={bodyCount}
+      circle={circle}
     />
   ) : skeltonFor == "tree" ? (
     <ul className={styles.treeSkeleton}>
@@ -107,21 +114,21 @@ const CustomSkelton = ({
       </li>
     </ul>
   ) : skeltonFor == "video" ? (
-    <Skeleton height={400} width={"100%"} />
+    <Skeleton height={height} width={"100%"} />
   ) : skeltonFor == "post_card" ? (
     <PostCustomSkelton bodyCount={bodyCount} stylingClass={stylingClass} />
   ) : skeltonFor == "subscription_card" ? (
-    <SubscriptionCustomSkelton stylingClass={stylingClass} />
+    <SubscriptionCustomSkelton
+      bodyCount={bodyCount}
+      stylingClass={stylingClass}
+    />
   ) : skeltonFor == "directSupportCampsCard" ? (
     <Skeleton
       className={styles.directSupportedCampsListSkeleton}
       count={bodyCount}
     />
   ) : skeltonFor == "delegateSupportedCampListCard" ? (
-    <Skeleton
-      className={styles.delegateSupportedCampsListSkeleton}
-      count={bodyCount}
-    />
+    <DelegateCardSkeleton bodyCount={bodyCount} stylingClass={stylingClass} />
   ) : skeltonFor == "manageSupportCard" ? (
     <Card
       className={styles.manageCardSkeleton}
