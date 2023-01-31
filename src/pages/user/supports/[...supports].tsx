@@ -1,13 +1,13 @@
 import Layout from "../../../hoc/layout";
 import UserProfiles from "../../../components/ComponentPages/UserProfile";
 
-function Support() {
+function UserProfile() {
   return (
     <Layout>
       <UserProfiles />
     </Layout>
   );
 }
-Support.displayName = "Support";
+UserProfile.displayName = "UserProfile";
 
-export default Support;
+export default UserProfile;
