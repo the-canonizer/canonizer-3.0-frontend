@@ -150,35 +150,42 @@
   display: inline-block;
 }
 
-.nickname_box {
-  display: flex;
-  width: 350px;
-  align-items: center;
-  .labels {
-    display: inline-block;
-    white-space: nowrap;
-    margin-right: 10px;
+.userCaRdBox {
+  [class="ant-card-head-wrapper"] {
+    display: block;
+    [class="ant-card-head-title"] {
+      display: block;
+    }
+  }
+  .titleBox {
+    margin: 0;
+    display: flex;
+    align-items: center;
+  }
+  .nickname_box {
+    margin-left: auto;
+    .labels {
+      display: inline-block;
+      white-space: nowrap;
+      margin-right: 10px;
+    }
   }
   .nickname_dropdown {
-    max-width: 100%;
-    border-color: #d9d9d9;
-    font-size: 13px;
-    width: 100%;
+    height: 40px !important;
+    width: 25%;
+    margin: 0 !important;
+    display: inline-block;
     > div:first-child {
+      border: 1px solid #ffffff;
+      background-color: #eaedf2;
       height: 40px !important;
-      border: none;
     }
   }
-  @media screen and (min-width: 576px) {
-    .nickname_dropdown {
-      max-width: 225px;
-      width: 100%;
-    }
-  }
-  @media screen and (min-width: 1200px) and (max-width: 1499px) {
-    .nickname_dropdown {
-      width: 100%;
-      max-width: inherit;
+  @media screen and (max-width: 767px) {
+    .nickname_box {
+      .nickname_dropdown {
+        width: 100%;
+      }
     }
   }
 }

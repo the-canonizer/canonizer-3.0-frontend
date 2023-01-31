@@ -115,6 +115,7 @@ const UserProfile = () => {
           defaultNickname={defaultNickname}
           selectedNikname={selectedNikname}
           onNickNameChange={onNickNameChange}
+          isLoggedIn={isLoggedIn}
         />
       </div>
     </>

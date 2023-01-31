@@ -88,7 +88,7 @@ const TopicsList = () => {
     useState(false);
   const [selectedNameSpace, setSelectedNameSpace] = useState(filterNameSpace);
   let onlyMyTopicsCheck = useRef();
-console.log('filterNameSpace',filterNameSpace,filterNameSpaceId)
+
   const selectNameSpace = (id, nameSpace) => {
     setNameSpaceId(id);
     setSelectedNameSpace(nameSpace?.children);
