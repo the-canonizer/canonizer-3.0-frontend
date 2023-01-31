@@ -7,6 +7,8 @@ import styles from "../UserProfileUI/UserProfile.module.scss";
 
 import messages from "../../../../messages";
 
+import CustomSkelton from "@/components/common/customSkelton";
+
 export const UserProfileCard = ({
   userSupportedCampsList,
   nameSpaceList,
@@ -18,6 +20,7 @@ export const UserProfileCard = ({
   selectedNikname,
   onNickNameChange,
   isLoggedIn,
+  userProfileCardSkeleton,
 }: any) => {
   const [startingPosition, setStartingPosition] = useState(0);
   const [endingPosition, setEndingPosition] = useState(5);
@@ -42,213 +45,225 @@ export const UserProfileCard = ({
 
   return (
     <div className="user--cards-outer">
-      <div
-        className={
-          userSupportedCampsList[0]?.private_status == 0
-            ? styles.card_spacing
-            : ""
-        }
-      >
-        {userSupportedCampsList?.map((supportedCampList, i) => {
-          return (
-            <Card
-              key={i}
-              type="inner"
-              className={styles.userCaRdBox}
-              title={
-                <div className={`Headings--wrap ${styles.titleBox}`}>
-                  <div className={styles.main_card_title}>
-                    {messages.labels.nickname}{" "}
-                    <span className={styles.Bluecolor}>
-                      {" "}
-                      <b>{supportedCampList.nick_name}</b>
-                    </span>
-                  </div>
-                  <div className={styles.nickname_box}>
-                    <span
-                      className={`${styles.main_card_title} ${styles.labels}`}
+      {userProfileCardSkeleton ? (
+        <CustomSkelton
+          skeltonFor="profileCard"
+          bodyCount={3}
+          stylingClass=""
+          isButton={false}
+        />
+      ) : (
+        <div
+          className={
+            userSupportedCampsList[0]?.private_status == 0
+              ? styles.card_spacing
+              : ""
+          }
+        >
+          {userSupportedCampsList?.map((supportedCampList, i) => {
+            return (
+              <Card
+                key={i}
+                type="inner"
+                className={styles.userCaRdBox}
+                title={
+                  <div className={`Headings--wrap ${styles.titleBox}`}>
+                    <div className={styles.main_card_title}>
+                      {messages.labels.nickname}{" "}
+                      <span className={styles.Bluecolor}>
+                        {" "}
+                        <b>{supportedCampList.nick_name}</b>
+                      </span>
+                    </div>
+                    <div className={styles.nickname_box}>
+                      <span
+                        className={`${styles.main_card_title} ${styles.labels}`}
+                      >
+                        Select {messages.labels.nickname}
+                      </span>
+                    </div>
+                    <Select
+                      size="large"
+                      className={`${styles.dropdown} ${styles.nickname_dropdown}`}
+                      defaultValue={defaultNickname}
+                      value={selectedNikname}
+                      onChange={onNickNameChange}
+                      showSearch
+                      optionFilterProp="children"
+                      id="user-nick-name-dropdown"
+                      disabled={
+                        userSupportedCampsList[0]?.private_status == 1 &&
+                        !isLoggedIn
+                      }
                     >
-                      Select {messages.labels.nickname}
-                    </span>
-                  </div>
-                  <Select
-                    size="large"
-                    className={`${styles.dropdown} ${styles.nickname_dropdown}`}
-                    defaultValue={defaultNickname}
-                    value={selectedNikname}
-                    onChange={onNickNameChange}
-                    showSearch
-                    optionFilterProp="children"
-                    id="user-nick-name-dropdown"
-                    disabled={
-                      userSupportedCampsList[0]?.private_status == 1 &&
-                      !isLoggedIn
-                    }
-                  >
-                    {nickNames?.map((nick) => {
-                      return (
-                        <Select.Option
-                          id={`name-space-${nick.id}`}
-                          key={nick.id}
-                          value={nick.value}
-                        >
-                          {nick.label}
-                        </Select.Option>
-                      );
-                    })}
-                  </Select>
-                </div>
-              }
-            >
-              <div className="Headings--wrap">
-                <div className="Headings--inn">
-                  <span className={styles.main_card_Heading}>
-                    {messages.labels.listOfSupportedCamps}
-                  </span>
-
-                  <Select
-                    size="large"
-                    className={styles.dropdown}
-                    value={renderFilter()}
-                    onChange={(selectedNameSpaceList) => {
-                      setDropdownNameSpaceList(selectedNameSpaceList);
-                    }}
-                    showSearch
-                    optionFilterProp="children"
-                  >
-                    {nameSpaceList?.map((item) => {
-                      return (
-                        <Select.Option key={item.id} value={item.id}>
-                          {item.label}
-                        </Select.Option>
-                      );
-                    })}
-                  </Select>
-                </div>
-              </div>
-              <div>
-                {supportedCampList.topic?.filter((obj) => {
-                  if (dropdownNameSpaceList == obj.namespace_id) {
-                    return obj;
-                  }
-                }).length > 0
-                  ? supportedCampList.topic
-                      .filter((obj) => {
-                        if (dropdownNameSpaceList == obj.namespace_id) {
-                          return obj;
-                        }
-                      })
-                      .slice(startingPosition, endingPosition)
-                      .map((data, i) => {
+                      {nickNames?.map((nick) => {
                         return (
-                          <span key={i}>
-                            <div className="inner--cards">
-                              <div className={styles.cardBox_tags}>
-                                <Card
-                                  title={
-                                    <div className={styles.card_heading_title}>
-                                      <Link href={data.title_link}>
-                                        <a className={styles.Bluecolor}>
-                                          {data.title}{" "}
-                                        </a>
-                                      </Link>
-                                      {!data.delegate_nick_name_id ? (
-                                        " "
-                                      ) : (
-                                        <div
-                                          className={styles.delegatedSupport}
-                                        >
-                                          {" "}
-                                          (Support Delegated To{" "}
-                                          <Link
-                                            href={{
-                                              pathname: `/user/supports/${data.delegate_nick_name_id}`,
-                                              query: {
-                                                topicnum: data?.topic_num,
-                                                campnum: reqBody?.campNum,
-                                                namespace: data?.namespace_id,
-                                              },
-                                            }}
+                          <Select.Option
+                            id={`name-space-${nick.id}`}
+                            key={nick.id}
+                            value={nick.value}
+                          >
+                            {nick.label}
+                          </Select.Option>
+                        );
+                      })}
+                    </Select>
+                  </div>
+                }
+              >
+                <div className="Headings--wrap">
+                  <div className="Headings--inn">
+                    <span className={styles.main_card_Heading}>
+                      {messages.labels.listOfSupportedCamps}
+                    </span>
+
+                    <Select
+                      size="large"
+                      className={styles.dropdown}
+                      value={renderFilter()}
+                      onChange={(selectedNameSpaceList) => {
+                        setDropdownNameSpaceList(selectedNameSpaceList);
+                      }}
+                      showSearch
+                      optionFilterProp="children"
+                    >
+                      {nameSpaceList?.map((item) => {
+                        return (
+                          <Select.Option key={item.id} value={item.id}>
+                            {item.label}
+                          </Select.Option>
+                        );
+                      })}
+                    </Select>
+                  </div>
+                </div>
+                <div>
+                  {supportedCampList.topic?.filter((obj) => {
+                    if (dropdownNameSpaceList == obj.namespace_id) {
+                      return obj;
+                    }
+                  }).length > 0
+                    ? supportedCampList.topic
+                        .filter((obj) => {
+                          if (dropdownNameSpaceList == obj.namespace_id) {
+                            return obj;
+                          }
+                        })
+                        .slice(startingPosition, endingPosition)
+                        .map((data, i) => {
+                          return (
+                            <span key={i}>
+                              <div className="inner--cards">
+                                <div className={styles.cardBox_tags}>
+                                  <Card
+                                    title={
+                                      <div
+                                        className={styles.card_heading_title}
+                                      >
+                                        <Link href={data.title_link}>
+                                          <a className={styles.Bluecolor}>
+                                            {data.title}{" "}
+                                          </a>
+                                        </Link>
+                                        {!data.delegate_nick_name_id ? (
+                                          " "
+                                        ) : (
+                                          <div
+                                            className={styles.delegatedSupport}
                                           >
-                                            <a className={styles.Bluecolor}>
-                                              {data.delegate_nick_name})
-                                            </a>
-                                          </Link>
-                                        </div>
-                                      )}
-                                    </div>
-                                  }
-                                >
-                                  {data.camps?.length > 0 ? (
-                                    data.camps?.map((campData, id) => {
-                                      return (
-                                        <Tag
-                                          className={styles.tag_btn}
-                                          key={id}
-                                        >
-                                          <div>
-                                            {""}
-                                            <span className={styles.count}>
-                                              {""}
-                                            </span>
-                                            {!data.delegate_nick_name_id ? (
-                                              ""
-                                            ) : (
-                                              <span
-                                                className={styles.Bluecolor}
-                                              >
-                                                {campData.support_order} {": "}
-                                              </span>
-                                            )}
-                                            <Link href={campData.camp_link}>
+                                            {" "}
+                                            (Support Delegated To{" "}
+                                            <Link
+                                              href={{
+                                                pathname: `/user/supports/${data.delegate_nick_name_id}`,
+                                                query: {
+                                                  topicnum: data?.topic_num,
+                                                  campnum: reqBody?.campNum,
+                                                  namespace: data?.namespace_id,
+                                                },
+                                              }}
+                                            >
                                               <a className={styles.Bluecolor}>
-                                                {campData.camp_name}
+                                                {data.delegate_nick_name})
                                               </a>
                                             </Link>
                                           </div>
-                                        </Tag>
-                                      );
-                                    })
-                                  ) : (
-                                    <Tag
-                                      className={styles.tag_btn}
-                                      key={data.topic_num}
-                                    >
-                                      <div>
-                                        {""}
-                                        <span className={styles.count}>
-                                          {""}
-                                        </span>
-                                        <Link href={data.title_link}>
-                                          <a className={styles.Bluecolor}>
-                                            {"Agreement"}
-                                          </a>
-                                        </Link>
+                                        )}
                                       </div>
-                                    </Tag>
-                                  )}
-                                </Card>
+                                    }
+                                  >
+                                    {data.camps?.length > 0 ? (
+                                      data.camps?.map((campData, id) => {
+                                        return (
+                                          <Tag
+                                            className={styles.tag_btn}
+                                            key={id}
+                                          >
+                                            <div>
+                                              {""}
+                                              <span className={styles.count}>
+                                                {""}
+                                              </span>
+                                              {!data.delegate_nick_name_id ? (
+                                                ""
+                                              ) : (
+                                                <span
+                                                  className={styles.Bluecolor}
+                                                >
+                                                  {campData.support_order}{" "}
+                                                  {": "}
+                                                </span>
+                                              )}
+                                              <Link href={campData.camp_link}>
+                                                <a className={styles.Bluecolor}>
+                                                  {campData.camp_name}
+                                                </a>
+                                              </Link>
+                                            </div>
+                                          </Tag>
+                                        );
+                                      })
+                                    ) : (
+                                      <Tag
+                                        className={styles.tag_btn}
+                                        key={data.topic_num}
+                                      >
+                                        <div>
+                                          {""}
+                                          <span className={styles.count}>
+                                            {""}
+                                          </span>
+                                          <Link href={data.title_link}>
+                                            <a className={styles.Bluecolor}>
+                                              {"Agreement"}
+                                            </a>
+                                          </Link>
+                                        </div>
+                                      </Tag>
+                                    )}
+                                  </Card>
+                                </div>
                               </div>
-                            </div>
-                          </span>
-                        );
-                      })
-                  : noData && <div>No Data Available !</div>}
-              </div>
-              {userSupportedCampsList ? (
-                <Pagination
-                  hideOnSinglePage={true}
-                  total={userSupportedCampsList?.[0]?.topic?.length}
-                  pageSize={5}
-                  onChange={pageChange}
-                />
-              ) : (
-                ""
-              )}
-            </Card>
-          );
-        })}
-      </div>
+                            </span>
+                          );
+                        })
+                    : noData && <div>No Data Available !</div>}
+                </div>
+                {userSupportedCampsList ? (
+                  <Pagination
+                    hideOnSinglePage={true}
+                    total={userSupportedCampsList?.[0]?.topic?.length}
+                    pageSize={5}
+                    onChange={pageChange}
+                  />
+                ) : (
+                  ""
+                )}
+              </Card>
+            );
+          })}
+        </div>
+      )}
       <BackTop />
     </div>
   );

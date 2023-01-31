@@ -1,4 +1,14 @@
-import { Avatar, Card, Col, Form, Input, Row, Switch, Table } from "antd";
+import {
+  Avatar,
+  Card,
+  Col,
+  Form,
+  Input,
+  Row,
+  Switch,
+  Table,
+  Typography,
+} from "antd";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import FormItem from "../formElements";
@@ -8,6 +18,8 @@ import styles from "./style.module.scss";
 import PostCustomSkelton from "./postCard";
 import SubscriptionCustomSkelton from "./subscriptionCard";
 import DelegateCardSkeleton from "./delegateCard";
+import UserProfileCardSkeleton from "./userProfileSupportCars";
+const { Title } = Typography;
 
 const CustomSkelton = ({
   titleName = "",
@@ -24,7 +36,6 @@ const CustomSkelton = ({
   circle = false,
 
   height = 0,
-
 }) => {
   return skeltonFor == "card" ? (
     <Card
@@ -122,6 +133,11 @@ const CustomSkelton = ({
       bodyCount={bodyCount}
       stylingClass={stylingClass}
     />
+  ) : skeltonFor == "profileCard" ? (
+    <UserProfileCardSkeleton
+      bodyCount={bodyCount}
+      stylingClass={stylingClass}
+    />
   ) : skeltonFor == "directSupportCampsCard" ? (
     <Skeleton
       className={styles.directSupportedCampsListSkeleton}
@@ -182,6 +198,17 @@ const CustomSkelton = ({
         </Col>
       </Form>
     </Form>
+  ) : skeltonFor == "profileDetails" ? (
+    <div>
+      <Row gutter={30}>
+        <Col md={12} sm={12} xs={12}>
+          <Skeleton className={styles.userProfileLabel} count={bodyCount} />
+        </Col>
+        <Col md={12} sm={12} xs={12}>
+          <Skeleton className={styles.userProfileLabel} count={bodyCount} />
+        </Col>
+      </Row>
+    </div>
   ) : (
     (skeltonFor = "cardForUploadFile" ? (
       <Card
