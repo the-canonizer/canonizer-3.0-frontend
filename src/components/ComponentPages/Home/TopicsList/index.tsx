@@ -118,7 +118,6 @@ const TopicsList = () => {
         (n) => n.label == q.namespace
       );
 
-      // console.log("nameSpacesList",  filterNameSpace);
       if (filteredName) {
         dispatch(
           setFilterCanonizedTopics({
