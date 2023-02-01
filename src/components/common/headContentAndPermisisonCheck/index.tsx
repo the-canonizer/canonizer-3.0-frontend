@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
-import HeadContent from "./headContent";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+
+import HeadContent from "./headContent";
 import PermissionsForPages from "../../../permissions";
 import usePermission from "../../../hooks/usePermissions";
 import useAuthentication from "../../../hooks/isUserAuthenticated";
 import { metaTagsApi } from "src/network/api/metaTagsAPI";
+import { RootState } from "src/store";
+import { createToken } from "src/network/api/userApi";
 
 type HeadContentComponentProps = {
   componentName: string;
@@ -16,9 +20,23 @@ const HeadContentAndPermissionComponent = ({
   const router = useRouter();
   const pageRoute = process.env.NEXT_PUBLIC_SITE_NAME + router?.asPath;
 
+  const { authToken } = useSelector((state: RootState) => ({
+    authToken: state.auth.authToken,
+  }));
+
   const { isAllowed } = usePermission();
   const { isUserAuthenticated } = useAuthentication();
   const [metaContent, setMetaContent] = useState(null);
+  const [bearerToken, setBearerToken] = useState(authToken);
+
+  useEffect(() => setBearerToken(authToken), [authToken]);
+
+  useEffect(() => {
+    const getToken = async () => {
+      if (!authToken) await createToken();
+    };
+    getToken();
+  }, [bearerToken]);
 
   useEffect(() => {
     //Check permission
