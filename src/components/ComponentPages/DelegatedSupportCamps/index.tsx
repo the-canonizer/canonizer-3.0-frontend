@@ -32,6 +32,8 @@ const DelegatedSupportCamps = ({ search }: any) => {
 
   const [viewMoreModalVisible, setViewmoreModalVisible] = useState(false);
   const [viewMoreDataValue, setviewMoreDataValue] = useState([]);
+  const [delegateSupportedSkeleton, setDelegateSupportedSkeleton] =
+    useState(false);
 
   const showViewMoreModal = (e, data) => {
     setViewmoreModalVisible(true);
@@ -56,6 +58,7 @@ const DelegatedSupportCamps = ({ search }: any) => {
     }
   };
   const fetchDelegatedSupportCampsList = async () => {
+    setDelegateSupportedSkeleton(true);
     let response = await getDelegatedSupportCampsList();
     if (response && response.status_code === 200) {
       {
@@ -63,6 +66,7 @@ const DelegatedSupportCamps = ({ search }: any) => {
       }
       setDelegatedSupportCampsList(response.data);
     }
+    setDelegateSupportedSkeleton(false);
   };
   useEffect(() => {}, [statusFlag]);
   //onLoad
@@ -84,6 +88,7 @@ const DelegatedSupportCamps = ({ search }: any) => {
       removeSupport={removeSupport}
       removeSupportCampsData={removeSupportCampsData}
       statusFlag={statusFlag}
+      delegateSupportedSkeleton={delegateSupportedSkeleton}
     />
   );
 };

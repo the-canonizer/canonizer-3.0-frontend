@@ -28,6 +28,8 @@ export default function DirectSupportedCampsUI({
   handleOk,
   handleCancel,
   removeSupportCampsData,
+  statusFlag,
+  directSkeletonIndicator,
 }: any) {
   const [valData, setValData] = useState({});
   const [tagsDataArrValue, setTagsDataArrValue] = useState([]);
@@ -99,123 +101,128 @@ export default function DirectSupportedCampsUI({
   };
   return (
     <div>
-      {directSupportedCampsList && directSupportedCampsList.length > 0 ? (
-        filteredArray().length > 0 ? (
-          filteredArray()?.map((data) => {
-            tagsArrayList = data.camps;
-            tagsArrayList.forEach((obj, index) => {
-              obj.id = index + 1;
-            });
-            return (
-              <>
-                <Card
-                  key={data.topic_num}
-                  className={styles.cardBox_tags}
-                  type="inner"
-                  size="default"
-                  title={
-                    <CardTitle
-                      title_link={data.title_link}
-                      value={data.title}
-                    />
-                  }
-                  extra={
-                    <div
-                      className={styles.RemoveCardSupported}
-                      onClick={() => removeCardSupportedCamps(data)}
-                    >
-                      <CloseCircleOutlined /> {messages.labels.removeSupport}{" "}
-                    </div>
-                  }
-                  style={{ width: 760, marginBottom: 16 }}
-                >
-                  <DraggableArea
-                    tags={tagsArrayList}
-                    render={({ tag }) => (
-                      <div className={tag.dis ? "tag tags_disable" : "tag"}>
-                        <Button
-                          id="campsBtn"
-                          key={tag.camp_num}
-                          className={styles.tag_btn}
-                          disabled={tag.dis}
-                        >
-                          <div className={styles.btndiv}>
-                            {" "}
-                            <span className="count">{tag.id}. </span>
-                            <Link href={tag.camp_link}>
-                              <a
-                                className={styles.Bluecolor}
-                                draggable="false"
-                                href="javascript:;"
-                              >
-                                {" "}
-                                {tag.camp_name}
-                              </a>
-                            </Link>
-                          </div>
-                          <CloseCircleOutlined
-                            onClick={() => {
-                              handleClose(tag, data.topic_num, data, []),
-                                setValData(tag),
-                                setRevertBack([]);
-                            }}
-                          />
-                        </Button>
-                      </div>
-                    )}
-                    onChange={(tags) => {
-                      tagsOrder(data.topic_num, data, tags);
-                    }}
-                  />
-
-                  {showSaveChanges && idData == data.topic_num ? (
-                    <div className={styles.tag_Changes}>
-                      <Button
-                        id="saveChangeBtn"
-                        className={styles.save_Changes_Btn}
-                        onClick={saveChanges}
-                      >
-                        Save Changes
-                      </Button>
-                      <Button
-                        id="revertBtn"
-                        className={styles.revert_Btn}
-                        onClick={() => {
-                          handleRevertBack(idData, data.camps);
-                          setCardCamp_ID("");
-                          setShowSaveChanges(false);
-                        }}
-                      >
-                        Revert
-                      </Button>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                </Card>
-              </>
-            );
-          })
-        ) : (
-          showEmpty("No Data Found ")
-        )
-      ) : (
+      {directSkeletonIndicator ? (
         <CustomSkelton
           skeltonFor="subscription_card"
           bodyCount={4}
           stylingClass=""
           isButton={false}
         />
-      )}
-      {directSupportedCampsList && directSupportedCampsList.length > 0 ? (
-        <Pagination
-          hideOnSinglePage={true}
-          total={directSupportedCampsList.length}
-          pageSize={5}
-          onChange={pageChange}
-        />
       ) : (
-        ""
+        <div>
+          {directSupportedCampsList && directSupportedCampsList.length > 0
+            ? filteredArray().length > 0
+              ? filteredArray()?.map((data) => {
+                  tagsArrayList = data.camps;
+                  tagsArrayList.forEach((obj, index) => {
+                    obj.id = index + 1;
+                  });
+                  return (
+                    <>
+                      <Card
+                        key={data.topic_num}
+                        className={styles.cardBox_tags}
+                        type="inner"
+                        size="default"
+                        title={
+                          <CardTitle
+                            title_link={data.title_link}
+                            value={data.title}
+                          />
+                        }
+                        extra={
+                          <div
+                            className={styles.RemoveCardSupported}
+                            onClick={() => removeCardSupportedCamps(data)}
+                          >
+                            <CloseCircleOutlined />{" "}
+                            {messages.labels.removeSupport}{" "}
+                          </div>
+                        }
+                        style={{ width: 760, marginBottom: 16 }}
+                      >
+                        <DraggableArea
+                          tags={tagsArrayList}
+                          render={({ tag }) => (
+                            <div
+                              className={tag.dis ? "tag tags_disable" : "tag"}
+                            >
+                              <Button
+                                id="campsBtn"
+                                key={tag.camp_num}
+                                className={styles.tag_btn}
+                                disabled={tag.dis}
+                              >
+                                <div className={styles.btndiv}>
+                                  {" "}
+                                  <span className="count">{tag.id}. </span>
+                                  <Link href={tag.camp_link}>
+                                    <a
+                                      className={styles.Bluecolor}
+                                      draggable="false"
+                                      href="javascript:;"
+                                    >
+                                      {" "}
+                                      {tag.camp_name}
+                                    </a>
+                                  </Link>
+                                </div>
+                                <CloseCircleOutlined
+                                  onClick={() => {
+                                    handleClose(tag, data.topic_num, data, []),
+                                      setValData(tag),
+                                      setRevertBack([]);
+                                  }}
+                                />
+                              </Button>
+                            </div>
+                          )}
+                          onChange={(tags) => {
+                            tagsOrder(data.topic_num, data, tags);
+                          }}
+                        />
+
+                        {showSaveChanges && idData == data.topic_num ? (
+                          <div className={styles.tag_Changes}>
+                            <Button
+                              id="saveChangeBtn"
+                              className={styles.save_Changes_Btn}
+                              onClick={saveChanges}
+                            >
+                              Save Changes
+                            </Button>
+                            <Button
+                              id="revertBtn"
+                              className={styles.revert_Btn}
+                              onClick={() => {
+                                handleRevertBack(idData, data.camps);
+                                setCardCamp_ID("");
+                                setShowSaveChanges(false);
+                              }}
+                            >
+                              Revert
+                            </Button>
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                      </Card>
+                    </>
+                  );
+                })
+              : showEmpty("No Data Found ")
+            : showEmpty("No Data Found ")}
+          {directSupportedCampsList && directSupportedCampsList.length > 0 ? (
+            <Pagination
+              hideOnSinglePage={true}
+              total={directSupportedCampsList.length}
+              pageSize={5}
+              onChange={pageChange}
+            />
+          ) : (
+            ""
+          )}
+        </div>
       )}
       <Modal
         className={styles.modal_cross}
