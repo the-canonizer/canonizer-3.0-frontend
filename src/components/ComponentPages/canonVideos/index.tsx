@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./style.module.scss";
-import { RadioChangeEvent, Typography } from "antd";
+import { RadioChangeEvent, Spin, Typography } from "antd";
 import { Radio } from "antd";
 
 import K from "src/constants";
@@ -128,7 +128,7 @@ export default function CanonVideos() {
               ></div>
             </>
           ) : (
-            <h1>Something went wrong!</h1>
+            <Spin size="large" className={styles.videoPlayerloader}></Spin>
           )}
         </div>
       </div>
