@@ -8,13 +8,14 @@ export default class MetaTagsRequest extends Request {
 
   // Define request functions below.
 
-  static getMetaTagsContent(payload) {
+  static getMetaTagsContent(payload, token) {
     return new Request(
       K.Network.URL.GetMetaContent,
       K.Network.Method.POST,
       payload,
       K.Network.Header.Type.Json,
-      {}
+      {},
+      token
     );
   }
 }
