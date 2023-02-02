@@ -1,12 +1,8 @@
 import React, { Fragment, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
 
 import styles from "../siteHeader.module.scss";
-
-import { RootState } from "../../../../store";
-import { createToken } from "../../../../network/api/userApi";
 
 const HeaderMenu = ({ loggedUser }) => {
   const links = [
@@ -44,12 +40,7 @@ const HeaderMenu = ({ loggedUser }) => {
     },
   ];
 
-  const { authToken } = useSelector((state: RootState) => ({
-    authToken: state.auth.authToken,
-  }));
-
   const [mockLinks, setMockLinks] = useState(links);
-  const [bearerToken, setBearerToken] = useState(authToken);
 
   const router = useRouter();
 
@@ -63,12 +54,6 @@ const HeaderMenu = ({ loggedUser }) => {
       setMockLinks(filteredLinks);
     }
   }, [loggedUser]);
-
-  useEffect(() => setBearerToken(authToken), [authToken]);
-
-  useEffect(() => {
-    if (!authToken) createToken();
-  }, [bearerToken]);
 
   return (
     <Fragment>

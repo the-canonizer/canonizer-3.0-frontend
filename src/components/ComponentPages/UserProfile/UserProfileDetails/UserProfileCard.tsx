@@ -8,6 +8,7 @@ import styles from "../UserProfileUI/UserProfile.module.scss";
 import messages from "../../../../messages";
 
 import CustomSkelton from "@/components/common/customSkelton";
+
 export const UserProfileCard = ({
   userSupportedCampsList,
   nameSpaceList,
@@ -18,6 +19,7 @@ export const UserProfileCard = ({
   defaultNickname,
   selectedNikname,
   onNickNameChange,
+  isLoggedIn,
   userProfileCardSkeleton,
 }: any) => {
   const [startingPosition, setStartingPosition] = useState(0);
@@ -29,6 +31,8 @@ export const UserProfileCard = ({
     );
     return filteredVal[0];
   };
+
+  // userSupportedCampsList[0]?.private_status == 0
 
   const router = useRouter();
 
@@ -49,35 +53,48 @@ export const UserProfileCard = ({
           isButton={false}
         />
       ) : (
-        <div className={styles.card_spacing}>
+        <div
+          className={
+            userSupportedCampsList[0]?.private_status == 0
+              ? styles.card_spacing
+              : ""
+          }
+        >
           {userSupportedCampsList?.map((supportedCampList, i) => {
             return (
               <Card
                 key={i}
                 type="inner"
+                className={styles.userCaRdBox}
                 title={
-                  <div className={styles.main_card_title}>
-                    {messages.labels.nickname}{" "}
-                    <span className={styles.Bluecolor}>
-                      {" "}
-                      <b>{supportedCampList.nick_name}</b>
-                    </span>
-                  </div>
-                }
-                extra={
-                  <div className={styles.nickname_box}>
-                    <span className={styles.labels}>
-                      Select {messages.labels.nickname}
-                    </span>
+                  <div className={`Headings--wrap ${styles.titleBox}`}>
+                    <div className={styles.main_card_title}>
+                      {messages.labels.nickname}{" "}
+                      <span className={styles.Bluecolor}>
+                        {" "}
+                        <b>{supportedCampList.nick_name}</b>
+                      </span>
+                    </div>
+                    <div className={styles.nickname_box}>
+                      <span
+                        className={`${styles.main_card_title} ${styles.labels}`}
+                      >
+                        Select {messages.labels.nickname}
+                      </span>
+                    </div>
                     <Select
                       size="large"
-                      className={styles.nickname_dropdown}
+                      className={`${styles.dropdown} ${styles.nickname_dropdown}`}
                       defaultValue={defaultNickname}
                       value={selectedNikname}
                       onChange={onNickNameChange}
                       showSearch
                       optionFilterProp="children"
                       id="user-nick-name-dropdown"
+                      disabled={
+                        userSupportedCampsList[0]?.private_status == 1 &&
+                        !isLoggedIn
+                      }
                     >
                       {nickNames?.map((nick) => {
                         return (

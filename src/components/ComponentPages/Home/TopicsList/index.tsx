@@ -88,10 +88,12 @@ const TopicsList = () => {
     useState(false);
   const [selectedNameSpace, setSelectedNameSpace] = useState(filterNameSpace);
   let onlyMyTopicsCheck = useRef();
-  console.log("filterNameSpace", filterNameSpace, filterNameSpaceId);
   const selectNameSpace = (id, nameSpace) => {
     setNameSpaceId(id);
     setSelectedNameSpace(nameSpace?.children);
+
+    router.query.namespace = nameSpace?.children;
+    router.replace(router, undefined, { shallow: true });
 
     dispatch(
       setFilterCanonizedTopics({
@@ -100,6 +102,31 @@ const TopicsList = () => {
       })
     );
   };
+
+  useEffect(() => {
+    const q = router.query;
+
+    router.query.namespace = filterNameSpace;
+    router.replace(router, undefined, { shallow: true });
+  }, []);
+
+  useEffect(() => {
+    const q = router.query;
+    if (q.namespace) {
+      const filteredName = nameSpacesList?.filter(
+        (n) => n.label == q.namespace
+      );
+
+      if (filteredName) {
+        dispatch(
+          setFilterCanonizedTopics({
+            nameSpace: q.namespace,
+            namespace_id: filteredName[0]?.id,
+          })
+        );
+      }
+    }
+  }, []);
 
   useEffect(() => {
     setSelectedNameSpace(filterNameSpace);
