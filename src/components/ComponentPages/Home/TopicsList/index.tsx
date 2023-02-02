@@ -92,6 +92,9 @@ const TopicsList = () => {
     setNameSpaceId(id);
     setSelectedNameSpace(nameSpace?.children);
 
+    router.query.namespace = nameSpace?.children;
+    router.push(router, undefined, { shallow: true });
+
     dispatch(
       setFilterCanonizedTopics({
         namespace_id: id,
@@ -99,6 +102,31 @@ const TopicsList = () => {
       })
     );
   };
+
+  useEffect(() => {
+    const q = router.query;
+
+    router.query.namespace = filterNameSpace;
+    router.push(router, undefined, { shallow: true });
+  }, []);
+
+  useEffect(() => {
+    const q = router.query;
+    if (q.namespace) {
+      const filteredName = nameSpacesList?.filter(
+        (n) => n.label == q.namespace
+      );
+
+      if (filteredName) {
+        dispatch(
+          setFilterCanonizedTopics({
+            nameSpace: q.namespace,
+            namespace_id: filteredName[0]?.id,
+          })
+        );
+      }
+    }
+  }, [router]);
 
   useEffect(() => {
     setSelectedNameSpace(filterNameSpace);
