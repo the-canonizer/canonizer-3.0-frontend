@@ -265,6 +265,12 @@ const CampTree = ({
                         className={
                           "treeListItemNumber " + styles.treeListItemNumber
                         }
+                        style={{
+                          width:
+                            (data[item].score * 460) / tree?.at(0)["1"].score +
+                            40,
+                          justifyContent: "flex-start",
+                        }}
                       >
                         {/* data[item].topic_score
                             ? data[item].topic_score?.toFixed(2)

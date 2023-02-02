@@ -302,7 +302,7 @@ const ManageSupportUI = ({
                 <Card className={styles.margin_top} type="inner">
                   <b>
                     {messages.labels.topicSupportText} &quot;{""}
-                    {topicRecord?.topic_name}
+                    {topicSupportList[0]?.title}
                     {""}&quot;
                   </b>
                 </Card>
