@@ -36,10 +36,14 @@ const CurrentTopicCard = ({ loadingIndicator }) => {
         key="1"
       >
         <Descriptions column={1}>
-          <Descriptions.Item label={<span className="boldLabel">Topic Name</span>}>
+          <Descriptions.Item
+            label={<span className="boldLabel">Topic Name</span>}
+          >
             {topicRecord && topicRecord?.topic_name}
           </Descriptions.Item>
-          <Descriptions.Item label={<span className="boldLabel">Namespace</span>}>
+          <Descriptions.Item
+            label={<span className="boldLabel">Namespace</span>}
+          >
             {topicRecord && topicRecord?.namespace_name}
           </Descriptions.Item>
         </Descriptions>
