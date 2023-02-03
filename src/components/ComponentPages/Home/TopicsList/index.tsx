@@ -126,7 +126,7 @@ const TopicsList = () => {
         );
       }
     }
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     setSelectedNameSpace(filterNameSpace);
