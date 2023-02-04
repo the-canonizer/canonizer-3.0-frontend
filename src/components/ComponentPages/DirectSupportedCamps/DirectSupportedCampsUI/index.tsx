@@ -6,7 +6,7 @@ import styles from "./DirectSupportedCamps.module.scss";
 import Link from "next/link";
 import messages from "../../../../messages";
 import Spinner from "../../../common/spinner/spinner";
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "../../../common/customSkelton";
 
 export default function DirectSupportedCampsUI({
   removeCardSupportedCamps,
@@ -218,6 +218,7 @@ export default function DirectSupportedCampsUI({
               total={directSupportedCampsList.length}
               pageSize={5}
               onChange={pageChange}
+              showSizeChanger={false}
             />
           ) : (
             ""

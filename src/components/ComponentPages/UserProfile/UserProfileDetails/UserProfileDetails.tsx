@@ -2,7 +2,7 @@ import React from "react";
 import styles from "../UserProfileUI/UserProfile.module.scss";
 import messages from "../../../../messages";
 import { Card, Row, Col } from "antd";
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "../../../common/customSkelton";
 const UserProfileDetails = ({
   profileData,
   userSupportedCampsList,

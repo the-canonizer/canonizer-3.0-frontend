@@ -504,6 +504,9 @@ const ManageSupport = () => {
         setcampIds={setcampIds}
         CurrentCheckSupportStatus={CurrentCheckSupportStatus}
         getManageSupportLoadingIndicator={getManageSupportLoadingIndicator}
+        setGetManageSupportLoadingIndicator={
+          setGetManageSupportLoadingIndicator
+        }
       />
     </>
   );

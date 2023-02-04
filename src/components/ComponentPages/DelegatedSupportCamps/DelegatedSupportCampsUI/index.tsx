@@ -190,6 +190,7 @@ export default function DelegatedSupportCampsUI({
               total={delegatedSupportCampsList.length}
               pageSize={5}
               onChange={pageChange}
+              showSizeChanger={false}
             />
           ) : (
             ""

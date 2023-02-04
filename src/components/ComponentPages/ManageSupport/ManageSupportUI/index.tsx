@@ -31,6 +31,7 @@ const ManageSupportUI = ({
   unableToFindCamp,
   CurrentCheckSupportStatus,
   getManageSupportLoadingIndicator,
+  setGetManageSupportLoadingIndicator,
 }: any) => {
   const [tagsArrayList, setTagsArrayList] = useState([]);
   const [isTagDragged, setIsTagDragged] = useState(false);
@@ -50,7 +51,6 @@ const ManageSupportUI = ({
         state.topicDetails.currentGetCheckSupportExistsData,
     })
   );
-  const [spinner, setSpinner] = useState(false);
   const [topicSupportList, setTopicSupportList] = useState([]);
   const [removeCampsSupport, setRemoveCampsSupport] = useState(false);
 
@@ -113,7 +113,7 @@ const ManageSupportUI = ({
     setIsTagDragged(false);
   }, []);
   const removeCampsApi = async () => {
-    setSpinner(true);
+    setGetManageSupportLoadingIndicator(true);
     const supportedCampsRemove = {
       topic_num: reqBodyData.topic_num,
       remove_camps: removeAllCampNum(),
@@ -140,7 +140,7 @@ const ManageSupportUI = ({
     }
   };
   const addRemoveApi = async () => {
-    setSpinner(true);
+    setGetManageSupportLoadingIndicator(true);
     const addSupportId = {
       topic_num: reqBodyData.topic_num,
       add_camp:
@@ -415,38 +415,36 @@ const ManageSupportUI = ({
                 );
               })}
             </Select>
-            <Spin spinning={spinner} size="large">
-              <div className={styles.Upload_Cancel_Btn}>
-                <Button
-                  id="uploadBtn"
-                  htmlType="submit"
-                  className={styles.Upload_Btn}
-                  onClick={
-                    removeAllIsSelected() &&
-                    !currentGetCheckSupportExistsData.is_delegator
-                      ? removeCampsApi
-                      : CheckDelegatedOrDirect || removeCampsSupport
-                      ? submitNickNameSupportCamps
-                      : addRemoveApi
-                  }
-                  disabled={
-                    submitButtonDisable ||
-                    currentGetCheckSupportExistsData.disable_submit
-                  }
-                >
-                  Submit
-                </Button>
+            <div className={styles.Upload_Cancel_Btn}>
+              <Button
+                id="uploadBtn"
+                htmlType="submit"
+                className={styles.Upload_Btn}
+                onClick={
+                  removeAllIsSelected() &&
+                  !currentGetCheckSupportExistsData.is_delegator
+                    ? removeCampsApi
+                    : CheckDelegatedOrDirect || removeCampsSupport
+                    ? submitNickNameSupportCamps
+                    : addRemoveApi
+                }
+                disabled={
+                  submitButtonDisable ||
+                  currentGetCheckSupportExistsData.disable_submit
+                }
+              >
+                Submit
+              </Button>
 
-                <Button
-                  id="cancelBtn"
-                  htmlType="button"
-                  className={styles.cancel_Btn}
-                  onClick={cancelManageRoute}
-                >
-                  Cancel
-                </Button>
-              </div>
-            </Spin>
+              <Button
+                id="cancelBtn"
+                htmlType="button"
+                className={styles.cancel_Btn}
+                onClick={cancelManageRoute}
+              >
+                Cancel
+              </Button>
+            </div>
           </Card>
         </div>
       </Card>
