@@ -1,11 +1,11 @@
-import GetStartedLayout from "../../../hoc/getStartedLayout";
+import Layout from "../../../hoc/layout";
 import SocialLoginCallback from "../../../components/ComponentPages/SocialLoginCallback";
 
 function SocialLoginCallbackPage() {
   return (
-    <GetStartedLayout initialProps={undefined} initialState={undefined}>
+    <Layout>
       <SocialLoginCallback />
-    </GetStartedLayout>
+    </Layout>
   );
 }
 
