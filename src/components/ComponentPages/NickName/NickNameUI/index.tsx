@@ -3,7 +3,7 @@ import { Table, Input, Select, Form, Typography, Button, Modal } from "antd";
 import Icon, { PlusCircleOutlined } from "@ant-design/icons";
 import styles from "./NickName.module.scss";
 import messages from "../../../../messages";
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "../../../common/customSkelton";
 
 const { Option } = Select;
 

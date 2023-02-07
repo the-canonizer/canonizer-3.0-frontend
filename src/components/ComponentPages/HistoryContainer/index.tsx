@@ -10,7 +10,7 @@ import styles from "./campHistory.module.scss";
 import { getHistoryApi } from "../../../network/api/history";
 import { getTreesApi } from "src/network/api/campDetailApi";
 import { getAllUsedNickNames } from "../../../network/api/campDetailApi";
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "../../common/customSkelton";
 
 import HistoryCollapse from "./Collapse";
 import { RootState } from "src/store";

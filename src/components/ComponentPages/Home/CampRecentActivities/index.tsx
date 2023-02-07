@@ -7,7 +7,7 @@ import { getTopicActivityLogApi } from "../../../../network/api/campDetailApi";
 import K from "../../../../constants";
 import styles from "./campRecentActivities.module.scss";
 
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "../../../common/customSkelton";
 
 export default function CampRecentActivities() {
   const router = useRouter();

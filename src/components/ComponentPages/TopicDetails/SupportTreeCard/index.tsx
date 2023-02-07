@@ -9,7 +9,7 @@ import styles from "../topicDetails.module.scss";
 import isAuth from "../../../../hooks/isUserAuthenticated";
 import K from "../../../../constants";
 import { setDelegatedSupportClick } from "../../../../store/slices/supportTreeCard";
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "../../../common/customSkelton";
 import {
   setManageSupportStatusCheck,
   setManageSupportUrlLink,
