@@ -1,9 +1,18 @@
-import NewsAdd from "..";
-import { cleanup, render, screen } from "@testing-library/react";
+import React from "react";
+import {
+  render,
+  fireEvent,
+  waitFor,
+  screen,
+  cleanup,
+} from "@testing-library/react";
+import AddOrEdit from "../";
+import { addNewsFeedApi } from "../../../../../network/api/campNewsApi";
+import { Router } from "next/router";
 import { Provider } from "react-redux";
 import { store } from "../../../../../store";
 import { RouterContext } from "next/dist/shared/lib/router-context";
-
+import NewsAdd from "..";
 function createMockRouter() {
   return {
     basePath: "",
@@ -43,30 +52,36 @@ window.matchMedia =
 
 afterEach(cleanup);
 describe("Should render Addnews", () => {
-  it("Render without crash", () => {
-    const { container } = render(
+  beforeEach(() => {
+    jest.mock("../../../../../network/api/campNewsApi", () => ({
+      addNewsFeedApi: jest.fn(() => Promise.resolve({ status_code: 200 })),
+    }));
+  });
+  it("Render without crash", async () => {
+    const { container } = await render(
       <Provider store={store}>
         <RouterContext.Provider value={createMockRouter()}>
           <NewsAdd />
         </RouterContext.Provider>
       </Provider>
     );
+    waitFor(() => {
+      const submitButton = screen.getByRole("button", {
+        name: /Create News/i,
+      });
+      const cancelButton = screen.getByRole("button", {
+        name: /Cancel/i,
+      });
 
-    const submitButton = screen.getByRole("button", {
-      name: /Create News/i,
+      expect(container.getElementsByTagName("button")).toHaveLength(2);
+      expect(container.getElementsByTagName("textarea")).toHaveLength(1);
+      expect(container.getElementsByTagName("input")).toHaveLength(3);
+      expect(screen.getByText(/display text/i).textContent).toBe(
+        "Display Text * (Limit 256 chars)"
+      );
+
+      expect(submitButton.textContent).toBe(" Create News");
+      expect(cancelButton.textContent).toBe("Cancel");
     });
-    const cancelButton = screen.getByRole("button", {
-      name: /Cancel/i,
-    });
-
-    expect(container.getElementsByTagName("button")).toHaveLength(2);
-    expect(container.getElementsByTagName("textarea")).toHaveLength(1);
-    expect(container.getElementsByTagName("input")).toHaveLength(3);
-    expect(screen.getByText(/display text/i).textContent).toBe(
-      "Display Text * (Limit 256 chars)"
-    );
-
-    expect(submitButton.textContent).toBe(" Create News");
-    expect(cancelButton.textContent).toBe("Cancel");
   });
 });

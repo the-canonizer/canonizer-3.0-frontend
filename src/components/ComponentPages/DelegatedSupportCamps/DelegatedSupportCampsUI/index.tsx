@@ -4,7 +4,7 @@ import Link from "next/link";
 import styles from "./DelegatedSupportedCamps.module.scss";
 import messages from "../../../../messages";
 import Spinner from "../../../common/spinner/spinner";
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "../../../common/customSkelton";
 import { useEffect, useState } from "react";
 export default function DelegatedSupportCampsUI({
   removeCardDelegatedSupportedCamps,

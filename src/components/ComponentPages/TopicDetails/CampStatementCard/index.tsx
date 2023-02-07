@@ -8,7 +8,7 @@ import styles from "../topicDetails.module.scss";
 import K from "../../../../constants";
 import moment from "moment";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "../../../common/customSkelton";
 
 const { Paragraph } = Typography;
 

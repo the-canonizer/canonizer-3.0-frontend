@@ -76,7 +76,7 @@ import { labels } from "../../../../messages/label";
 import { setTimeout } from "timers";
 import SideBar from "../../CampForum/UI/sidebar";
 import queryParams from "src/utils/queryParams";
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "../../../common/customSkelton";
 
 const UploadFileUI = ({
   input,

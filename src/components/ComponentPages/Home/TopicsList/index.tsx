@@ -21,7 +21,7 @@ import {
   setManageSupportStatusCheck,
 } from "src/store/slices/campDetailSlice";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "../../../common/customSkelton";
 
 const antIcon = <LoadingOutlined spin />;
 const { Title, Text } = Typography;
