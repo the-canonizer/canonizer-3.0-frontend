@@ -161,7 +161,7 @@ const TopicDetails = () => {
     camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
   };
 
-  const removeApiSupport = async (supportedId) => {
+  const removeApiSupport = async (supportedId, reasonData = {}) => {
     const supportedCampsRemove = {
       topic_num: reqBodyData.topic_num,
       remove_camps: [reqBodyData.camp_num],
@@ -169,6 +169,7 @@ const TopicDetails = () => {
       action: "all",
       nick_name_id: supportedId,
       order_update: [],
+      ...reasonData,
     };
     const reqBodyForService = {
       topic_num: +router?.query?.camp[0]?.split("-")[0],
@@ -193,7 +194,7 @@ const TopicDetails = () => {
       // fetchTotalScore();
     }
   };
-  const removeSupport = async (supportedId) => {
+  const removeSupport = async (supportedId, reasonData = {}) => {
     const RemoveSupportId = {
       topic_num: reqBodyData.topic_num,
       add_camp: {},
@@ -202,6 +203,7 @@ const TopicDetails = () => {
       action: "partial",
       nick_name_id: supportedId,
       order_update: [],
+      ...reasonData,
     };
     const reqBodyForService = {
       topic_num: +router?.query?.camp[0]?.split("-")[0],
@@ -226,11 +228,12 @@ const TopicDetails = () => {
       // fetchTotalScore();
     }
   };
-  const removeSupportForDelegate = async () => {
+  const removeSupportForDelegate = async (reasonData = {}) => {
     const removeEntireData = {
       topic_num: topicList[0].topic_num,
       nick_name_id: topicList[0].nick_name_id,
       delegated_nick_name_id: topicList[0].delegate_nick_name_id,
+      ...reasonData,
     };
     const reqBodyForService = {
       topic_num: +router?.query?.camp[0]?.split("-")[0],

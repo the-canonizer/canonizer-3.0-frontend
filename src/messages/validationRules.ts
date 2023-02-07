@@ -385,3 +385,30 @@ export const threadTitleRule = {
 export const keywordsRule = {
   rules: [emojiValidation(patterns.emoji_restrication)],
 };
+
+export const removedReasonRule = {
+  rules: [
+    {
+      required: true,
+      message: validations.reason,
+    },
+    {
+      max: 500,
+      message: validations.summaryMax,
+    },
+    emojiValidation(patterns.emoji_restrication),
+  ],
+};
+
+export const removedURLRule = {
+  rules: [
+    {
+      pattern: patterns.url,
+      message: validations.site_url,
+    },
+    {
+      max: 1024,
+      message: validations.campUrlLim,
+    },
+  ],
+};

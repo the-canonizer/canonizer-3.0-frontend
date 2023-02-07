@@ -1,11 +1,12 @@
+import { useEffect, useState } from "react";
+import Link from "next/link";
 import { Card, Modal, Row, Col, Button, Form, Empty, Pagination } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
-import Link from "next/link";
+
 import styles from "./DelegatedSupportedCamps.module.scss";
 import messages from "../../../../messages";
-import Spinner from "../../../common/spinner/spinner";
 import CustomSkelton from "@/components/common/customSkelton";
-import { useEffect, useState } from "react";
+
 export default function DelegatedSupportCampsUI({
   removeCardDelegatedSupportedCamps,
   handleSupportedCampsCancel,
@@ -23,6 +24,7 @@ export default function DelegatedSupportCampsUI({
 }: any) {
   const [displayList, setDisplayList] = useState([]);
   const limit = 3;
+
   function CardTitle(props: any) {
     return (
       <div className={styles.card_heading_title}>
@@ -38,6 +40,7 @@ export default function DelegatedSupportCampsUI({
       </div>
     );
   }
+
   function CurrentSupportedCamps(props: any) {
     return (
       <>
@@ -50,6 +53,7 @@ export default function DelegatedSupportCampsUI({
       </>
     );
   }
+
   function SupportedCampsTo(props: any) {
     return (
       <>
@@ -70,9 +74,11 @@ export default function DelegatedSupportCampsUI({
       </>
     );
   }
+
   const showEmpty = (msg) => {
     return <Empty description={msg} />;
   };
+
   const filteredArray = () => {
     return displayList.filter((val) => {
       if (search.trim() == "") {
@@ -84,9 +90,11 @@ export default function DelegatedSupportCampsUI({
       }
     });
   };
+
   useEffect(() => {
     pageChange(1, 5);
   }, [delegatedSupportCampsList]);
+
   const pageChange = (pageNumber, pageSize) => {
     const startingPosition = (pageNumber - 1) * pageSize;
     const endingPosition = startingPosition + pageSize;
@@ -94,6 +102,7 @@ export default function DelegatedSupportCampsUI({
       delegatedSupportCampsList.slice(startingPosition, endingPosition)
     );
   };
+
   return (
     <div>
       {delegateSupportedSkeleton ? (

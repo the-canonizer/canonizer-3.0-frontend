@@ -77,4 +77,7 @@ export const validations: ErrorContainer = {
   reply: " The reply field is required.",
   custom_label: "%&<>,.\\/ are not allowed!",
   not_allowed: "Emojis not allowed!",
+  reason: "Reason is requied!",
+  site_url:
+    "URL format is invalid. (Example: https://www.example.com?post=1234)",
 };
