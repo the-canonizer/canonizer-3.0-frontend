@@ -24,7 +24,7 @@ import {
   updateNewsFeedApi,
 } from "../../../../network/api/campNewsApi";
 
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "../../../common/customSkelton";
 import { getAllUsedNickNames } from "../../../../network/api/campDetailApi";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
 import K from "../../../../constants";
