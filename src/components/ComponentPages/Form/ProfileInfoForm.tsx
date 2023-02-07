@@ -14,7 +14,7 @@ import moment from "moment";
 import styles from "../ProfileInfo/ProfileInfoUI/ProfileInfo.module.scss";
 import messages from "../../../messages";
 import PlacesAutocomplete from "react-places-autocomplete";
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "../../common/customSkelton";
 
 const { Title } = Typography;
 const { Option } = Select;

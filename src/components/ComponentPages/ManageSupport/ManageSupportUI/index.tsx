@@ -11,7 +11,7 @@ import { RootState } from "src/store";
 import { useRouter } from "next/router";
 import { addSupport, removeSupportedCamps } from "src/network/api/userApi";
 import { GetActiveSupportTopic } from "src/network/api/topicAPI";
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "../../../common/customSkelton";
 const ManageSupportUI = ({
   nickNameList,
   manageSupportList,

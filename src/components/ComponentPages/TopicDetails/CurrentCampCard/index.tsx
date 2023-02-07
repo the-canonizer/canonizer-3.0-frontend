@@ -9,7 +9,7 @@ import K from "../../../../constants";
 
 import { RootState } from "../../../../store";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "../../../common/customSkelton";
 
 const { Panel } = Collapse;
 

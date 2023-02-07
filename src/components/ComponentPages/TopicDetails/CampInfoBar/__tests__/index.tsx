@@ -1,5 +1,5 @@
 import CampInfoBar from "..";
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { store } from "../../../../../store";
 
@@ -38,22 +38,31 @@ const payload = {
   topic_num: 88,
 };
 describe("Camp statement on camp details page", () => {
-  it("Should render without crash", () => {
-    const { container } = render(
+  beforeEach(() => {
+    jest.mock("../../../../../network/api/campDetailApi", () => ({
+      getCampBreadCrumbApi: jest.fn(() =>
+        Promise.resolve({ data: {}, status_code: 200 })
+      ),
+    }));
+  });
+  it("Should render without crash", async () => {
+    const { container } = await render(
       <Provider store={store}>
         <RouterContext.Provider value={createMockRouter()}>
           <CampInfoBar payload={payload} isTopicPage={true} />
         </RouterContext.Provider>
       </Provider>
     );
-    const forumButton = screen.getByRole("button", {
-      name: /camp forum/i,
-    });
+    waitFor(() => {
+      const forumButton = screen.getByRole("button", {
+        name: /camp forum/i,
+      });
 
-    expect(screen.getByText(/topic/i)).toBeInTheDocument();
-    // expect(screen.getByText(/Theories-of-Consciousness/i)).toBeInTheDocument();
-    expect(screen.getByText(/camp :/i)).toBeInTheDocument();
-    expect(container.getElementsByTagName("button")).toHaveLength(4);
-    expect(forumButton.textContent).toBe("Camp Forum");
+      expect(screen.getByText(/topic/i)).toBeInTheDocument();
+      // expect(screen.getByText(/Theories-of-Consciousness/i)).toBeInTheDocument();
+      expect(screen.getByText(/camp :/i)).toBeInTheDocument();
+      expect(container.getElementsByTagName("button")).toHaveLength(4);
+      expect(forumButton.textContent).toBe("Camp Forum");
+    });
   });
 });

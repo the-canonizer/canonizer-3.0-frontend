@@ -10,7 +10,7 @@ import styles from "./index.module.scss";
 import CreateCampBtn from "../../../common/button/createNewCampBtn";
 import CreateTopicBtn from "../../../common/button/createNewTopicBtn";
 import CampInfoBar from "../../TopicDetails/CampInfoBar";
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "../../../common/customSkelton";
 
 const { Title, Text, Paragraph } = Typography;
 
