@@ -21,7 +21,7 @@ import {
   setManageSupportStatusCheck,
 } from "src/store/slices/campDetailSlice";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "../../../common/customSkelton";
 
 const antIcon = <LoadingOutlined spin />;
 const { Title, Text } = Typography;
@@ -92,8 +92,10 @@ const TopicsList = () => {
     setNameSpaceId(id);
     setSelectedNameSpace(nameSpace?.children);
 
-    router.query.namespace = nameSpace?.children;
-    router.replace(router, undefined, { shallow: true });
+    if (nameSpace?.children?.toLowerCase() !== "/general/") {
+      router.query.namespace = nameSpace?.children;
+      router.replace(router, undefined, { shallow: true });
+    }
 
     dispatch(
       setFilterCanonizedTopics({
@@ -104,10 +106,10 @@ const TopicsList = () => {
   };
 
   useEffect(() => {
-    const q = router.query;
-
-    router.query.namespace = filterNameSpace;
-    router.replace(router, undefined, { shallow: true });
+    if (filterNameSpace?.toLowerCase() !== "/general/") {
+      router.query.namespace = filterNameSpace;
+      router.replace(router, undefined, { shallow: true });
+    }
   }, []);
 
   useEffect(() => {

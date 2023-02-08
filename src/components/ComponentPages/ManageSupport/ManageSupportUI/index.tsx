@@ -14,10 +14,6 @@ import { addSupport, removeSupportedCamps } from "src/network/api/userApi";
 import { GetActiveSupportTopic } from "src/network/api/topicAPI";
 import CustomSkelton from "src/components/common/customSkelton";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
-import {
-  hideRemoveSupportModal,
-  showRemoveSupportModal,
-} from "src/store/slices/uiSlice";
 
 const { placeholders } = messages;
 

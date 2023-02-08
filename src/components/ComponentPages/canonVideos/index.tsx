@@ -5,7 +5,7 @@ import { Radio } from "antd";
 
 import K from "src/constants";
 import { getVideosContentApi } from "src/network/api/videos";
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "../../common/customSkelton";
 
 const { Title } = Typography;
 

@@ -9,7 +9,7 @@ import { RootState } from "src/store";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
 import Link from "next/link";
 import { convert } from "html-to-text";
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "../../../common/customSkelton";
 
 const antIcon = <LoadingOutlined spin />;
 const { TabPane } = Tabs;

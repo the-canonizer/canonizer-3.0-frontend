@@ -31,7 +31,7 @@ import {
   getEditTopicApi,
 } from "../../../../network/api/campManageStatementApi";
 
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "../../../common/customSkelton";
 import { getCurrentTopicRecordApi } from "../../../../network/api/campDetailApi";
 import {
   updateStatementApi,
