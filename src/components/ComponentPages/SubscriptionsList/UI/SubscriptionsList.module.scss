@@ -134,3 +134,55 @@
     padding: 0;
   }
 }
+
+.nickname_box {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  .labels {
+    display: inline-block;
+    white-space: nowrap;
+    margin-right: 10px;
+  }
+}
+.dropdown {
+  height: 40px !important;
+  border: solid 1px #d9d9d9 !important;
+  width: 25%;
+  display: inline-block;
+  margin-left: auto;
+  @media screen and (max-width: 767px) {
+    margin-top: 10px;
+    width: 100%;
+  }
+}
+.nickname_dropdown {
+  height: 40px !important;
+  margin: 0 !important;
+  display: inline-block;
+  > div:first-child {
+    border: 1px solid #ffffff;
+    background-color: #eaedf2;
+    height: 40px !important;
+  }
+}
+
+.reasonList {
+  font-size: 16px;
+  font-weight: 500;
+}
+.reasonLink {
+  @extend .reasonList;
+  font-size: 13px;
+}
+
+.main_card_title {
+  font-size: 16px;
+  font-weight: 500;
+}
+.supportedCard {
+  [class="ant-card-head"] {
+    background: transparent;
+  }
+}

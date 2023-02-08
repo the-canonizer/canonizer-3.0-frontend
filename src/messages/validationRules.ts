@@ -386,6 +386,15 @@ export const keywordsRule = {
   rules: [emojiValidation(patterns.emoji_restrication)],
 };
 
+export const removedReasonSelectRule = {
+  rules: [
+    {
+      required: true,
+      message: validations.reason,
+    },
+  ],
+};
+
 export const removedReasonRule = {
   rules: [
     {

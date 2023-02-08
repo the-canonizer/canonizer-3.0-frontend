@@ -1,36 +1,33 @@
-import { useState, Fragment, useEffect } from "react";
-import { Button, Col, Form, Input, Modal, Row } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { useState, Fragment } from "react";
+import { Button, Col, Form, Input, Row, Select } from "antd";
 
 import classes from "./support-removed-modal.module.scss";
 import messages from "src/messages";
-import { RootState } from "src/store";
-import { hideRemoveSupportModal } from "src/store/slices/uiSlice";
-import { setReasonData } from "src/store/slices/utilsSlice";
 
-const { labels, removedReasonRule, removedURLRule, placeholders } = messages;
+const {
+  labels,
+  removedReasonRule,
+  removedURLRule,
+  placeholders,
+  removedReasonSelectRule,
+} = messages;
+const { Option } = Select;
 
 const SupportRemovedModal = ({ onFinish, handleCancel, form }) => {
-  // const { isModalOpen } = useSelector((state: RootState) => ({
-  //   isModalOpen: state.ui.remove_support_modal,
-  // }));
+  const [selectedValue, setSelectedValue] = useState(null);
 
-  // const [open, setOpen] = useState(isModalOpen);
+  const reasons = [
+    { id: 1, label: "Reason 1" },
+    { id: 2, label: "Reason 2" },
+    { id: 3, label: "Other" },
+  ];
 
-  // const dispatch = useDispatch();
-  // const [form] = Form.useForm();
-
-  // useEffect(() => setOpen(isModalOpen), [isModalOpen]);
-
-  // const handleCancel = () => {
-  //   dispatch(hideRemoveSupportModal());
-  // };
-
-  // const onFinish = async (values: any) => setReasonData(values);
+  const onSelectChange = (value, option) => {
+    setSelectedValue(value);
+  };
 
   return (
     <Fragment>
-      {/* <Modal title="Reason for support end!" open={open} footer={null}> */}
       <Form
         form={form}
         onFinish={onFinish}
@@ -44,7 +41,6 @@ const SupportRemovedModal = ({ onFinish, handleCancel, form }) => {
         <Row gutter={16}>
           <Col xs={24} sm={24}>
             <Form.Item
-              className={classes.edit_summary_input}
               label={
                 <Fragment>
                   {labels.reasonLabel}
@@ -52,10 +48,46 @@ const SupportRemovedModal = ({ onFinish, handleCancel, form }) => {
                 </Fragment>
               }
               name="end_reason"
-              {...removedReasonRule}
+              {...removedReasonSelectRule}
             >
-              <Input.TextArea rows={5} placeholder={placeholders.editSummary} />
+              <Select
+                placeholder={placeholders.nickName}
+                allowClear
+                size={"large"}
+                defaultValue={null}
+                data-id="reason-name"
+                showSearch
+                optionFilterProp="children"
+                onChange={onSelectChange}
+              >
+                <Option key="select" value={null}>
+                  Select
+                </Option>
+                {reasons.map((nick) => (
+                  <Option key={nick.id} value={nick.id}>
+                    {nick.label}
+                  </Option>
+                ))}
+              </Select>
             </Form.Item>
+            {selectedValue == 3 && (
+              <Form.Item
+                className={classes.edit_summary_input}
+                label={
+                  <Fragment>
+                    {labels.reasonLabelSummary}
+                    <span className="required">*</span>
+                  </Fragment>
+                }
+                name="reason_summary"
+                {...removedReasonRule}
+              >
+                <Input.TextArea
+                  rows={5}
+                  placeholder={placeholders.editSummary}
+                />
+              </Form.Item>
+            )}
           </Col>
           <Col xs={24} sm={24}>
             <Form.Item
@@ -95,7 +127,6 @@ const SupportRemovedModal = ({ onFinish, handleCancel, form }) => {
           </Button>
         </div>
       </Form>
-      {/* </Modal> */}
     </Fragment>
   );
 };

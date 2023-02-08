@@ -93,7 +93,7 @@
   justify-content: center;
   align-items: center;
   padding: 24px;
-  @media screen and (max-width: 991px){
+  @media screen and (max-width: 991px) {
     width: 100%;
     margin: 0;
   }
@@ -109,7 +109,7 @@
     font-weight: 400;
     /* white-space: nowrap; */
     &:hover {
-      color: #71b1fc!important;
+      color: #71b1fc !important;
     }
   }
 }
@@ -149,8 +149,8 @@
         color: #4484ce;
       }
       &.activeCamp {
-          color: #08b608 !important;
-        }
+        color: #08b608 !important;
+      }
     }
   }
   .treeListItemNumber {
@@ -163,10 +163,10 @@
     padding: 2px 7px;
     border-radius: 2px;
     color: #fff;
-    margin-left: 6px ;
-    @media screen and (max-width:767px) {
-      width:auto !important;
-  }
+    margin-left: 6px;
+    @media screen and (max-width: 767px) {
+      width: auto !important;
+    }
   }
   .subScriptionIcon {
     margin-left: 6px;
@@ -222,15 +222,15 @@
 }
 
 .campStatement {
-  ul, ol {
+  ul,
+  ol {
     padding-left: 40px;
   }
 }
 
-
 .boldBreadcrumb {
-    font-weight: 700;
-    font-size: 17px;
+  font-weight: 700;
+  font-size: 17px;
 }
 
 .slashStyle {
@@ -248,4 +248,10 @@
   .btn_group {
     padding: 0;
   }
+}
+
+.modalTitle {
+  margin: 0;
+  font-size: 16px;
+  width: 95%;
 }

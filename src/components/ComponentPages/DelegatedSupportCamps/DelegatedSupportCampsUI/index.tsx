@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Card, Modal, Row, Col, Button, Form, Empty, Pagination } from "antd";
+import { Card, Modal, Row, Col, Form, Empty, Pagination, Spin } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 
 import styles from "./DelegatedSupportedCamps.module.scss";
 import messages from "../../../../messages";
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "src/components/common/customSkelton";
+import SupportRemovedModal from "src/components/common/supportRemovedModal";
 
 export default function DelegatedSupportCampsUI({
   removeCardDelegatedSupportedCamps,
@@ -23,6 +24,7 @@ export default function DelegatedSupportCampsUI({
   delegateSupportedSkeleton,
 }: any) {
   const [displayList, setDisplayList] = useState([]);
+  const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
   const limit = 3;
 
   function CardTitle(props: any) {
@@ -102,6 +104,21 @@ export default function DelegatedSupportCampsUI({
       delegatedSupportCampsList.slice(startingPosition, endingPosition)
     );
   };
+
+  // remove support popup added.
+
+  const [removeForm] = Form.useForm();
+
+  const onRemoveFinish = (values) => {
+    setRemoveSupportSpinner(true);
+
+    removeSupport(values);
+
+    removeForm.resetFields();
+    setRemoveSupportSpinner(false);
+  };
+
+  // remove support popup added.
 
   return (
     <div>
@@ -208,64 +225,40 @@ export default function DelegatedSupportCampsUI({
       )}
       <Modal
         className={styles.modal_cross}
-        title="Remove Support"
+        title={
+          <p id="remove_confirmation" className={styles.modalTitle}>
+            Your delegate support given to{" "}
+            <span>
+              &quot;
+              <Link href={removeSupportCampsData.delegated_to_nick_name_link}>
+                <a>{removeSupportCampsData.delegated_to_nick_name}</a>
+              </Link>
+              &quot;
+            </span>{" "}
+            under the topic{" "}
+            <span className={styles.Bluecolor}>
+              &quot;
+              <Link href={removeSupportCampsData.title_link}>
+                <a>{removeSupportCampsData.title}</a>
+              </Link>
+              &quot;
+            </span>{" "}
+            will be removed. Please help us with the reason.
+          </p>
+        }
         open={isRemoveSupportModalVisible}
         onOk={handleSupportedCampsCancel}
         onCancel={handleSupportedCampsCancel}
         footer={null}
         closeIcon={<CloseCircleOutlined />}
       >
-        <Form>
-          <Form.Item style={{ marginBottom: "0px" }}>
-            <p id="remove_confirmation">
-              Are you sure, you want to remove your delegate support given to{" "}
-              <span>
-                &quot;
-                <Link href={removeSupportCampsData.delegated_to_nick_name_link}>
-                  <a>{removeSupportCampsData.delegated_to_nick_name}</a>
-                </Link>
-                &quot;
-              </span>{" "}
-              under the topic{" "}
-              <span className={styles.Bluecolor}>
-                &quot;
-                <Link href={removeSupportCampsData.title_link}>
-                  <a>{removeSupportCampsData.title}</a>
-                </Link>
-                &quot;
-              </span>{" "}
-              ?
-            </p>
-          </Form.Item>
-          <Form.Item
-            className={styles.text_right}
-            style={{ marginBottom: "0px" }}
-          >
-            <Button
-              id="removeBtn"
-              onClick={removeSupport}
-              type="primary"
-              style={{
-                marginTop: 10,
-                marginRight: 10,
-              }}
-              className="ant-btn ant-btn-orange"
-            >
-              Remove
-            </Button>
-            <Button
-              id="cancelBtn"
-              onClick={handleSupportedCampsCancel}
-              type="default"
-              style={{
-                marginTop: 10,
-              }}
-              className="ant-btn"
-            >
-              Cancel
-            </Button>
-          </Form.Item>
-        </Form>
+        <Spin spinning={removeSupportSpinner} size="small">
+          <SupportRemovedModal
+            onFinish={onRemoveFinish}
+            handleCancel={handleSupportedCampsCancel}
+            form={removeForm}
+          />
+        </Spin>
       </Modal>
       <Modal
         title={<h3 id="currentSupportedCamps">Current Supported Camps:</h3>}

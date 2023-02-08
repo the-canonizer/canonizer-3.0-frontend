@@ -27,11 +27,6 @@ import {
   setManageSupportUrlLink,
 } from "../../../../store/slices/campDetailSlice";
 import { getNickNameList } from "../../../../network/api/userApi";
-import {
-  showRemoveSupportModal,
-  hideRemoveSupportModal,
-} from "src/store/slices/uiSlice";
-import { labels } from "src/messages/label";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
 
 const { Paragraph } = Typography;
@@ -70,14 +65,12 @@ const SupportTreeCard = ({
   const {
     currentGetCheckSupportExistsData,
     is_checked,
-    reasonData,
     topicRecord,
     campRecord,
   } = useSelector((state: RootState) => ({
     currentGetCheckSupportExistsData:
       state.topicDetails.currentGetCheckSupportExistsData,
     is_checked: state?.utils?.score_checkbox,
-    reasonData: state.utils.reasonData,
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
   }));
@@ -88,12 +81,9 @@ const SupportTreeCard = ({
   const [loadMore, setLoadMore] = useState(false);
   const [modalData, setModalData] = useState<any>({});
   const [delegateNickNameId, setDelegateNickNameId] = useState<number>();
-  const [reasonPopupValue, setReasonPopupValue] = useState(reasonData);
 
   const dispatch = useDispatch();
   const arr = [];
-
-  useEffect(() => setReasonPopupValue(reasonData), [reasonData]);
 
   const getNickNameListData = async () => {
     const res = await getNickNameList();
@@ -286,8 +276,6 @@ const SupportTreeCard = ({
   // remove support popup added.
 
   const [removeForm] = Form.useForm();
-  const openPopup = () => dispatch(showRemoveSupportModal());
-  const closePopup = () => dispatch(hideRemoveSupportModal());
 
   const onRemoveFinish = (values) => {
     currentGetCheckSupportExistsData.is_delegator
@@ -390,66 +378,39 @@ const SupportTreeCard = ({
           </div>
         </Panel>
       </Collapse>
+
       <Modal
         className={styles.modal_cross}
-        title={labels.reasonModalTitle}
+        title={
+          <p id="all_camps_topics" className={styles.modalTitle}>
+            Your Support from{" "}
+            <span>
+              &quot;
+              <Link
+                href={{
+                  pathname: `/topic/${topicRecord?.topic_num}-${topicRecord?.topic_name}/${campRecord?.camp_num}-${campRecord?.camp_name}`,
+                }}
+              >
+                <a>{campRecord?.camp_name}</a>
+              </Link>
+              &quot;
+            </span>{" "}
+            camp will be removed. Please help us with the reason.
+          </p>
+        }
         open={isSupportTreeCardModal}
         onOk={handleSupportTreeCardCancel}
         onCancel={handleSupportTreeCardCancel}
         footer={null}
         closeIcon={<CloseCircleOutlined />}
       >
-        <SupportRemovedModal
-          onFinish={onRemoveFinish}
-          handleCancel={() => setIsSupportTreeCardModal(false)}
-          form={removeForm}
-        />
-        {/* <Form>
-          <Form.Item style={{ marginBottom: "0px" }}>
-            <p>Are you sure you want to remove your support?</p>
-          </Form.Item>
-          <Form.Item
-            id="supportTreeModalForm"
-            className={styles.text_right}
-            style={{ marginBottom: "0px" }}
-          >
-            <Spin spinning={removeSupportSpinner} size="small">
-              <div className="text-right">
-                <Button
-                  id="supportTreeModalRemoveApi"
-                  disabled={asof == "bydate"}
-                  onClick={() => {
-                    currentGetCheckSupportExistsData.is_delegator
-                      ? removeSupportForDelegate()
-                      : topicList.length <= 1
-                      ? removeApiSupport(modalData?.nick_name_id)
-                      : removeSupport(modalData?.nick_name_id);
-                    setModalData({});
-                  }}
-                  type="primary"
-                  style={{
-                    marginTop: 10,
-                    marginRight: 10,
-                  }}
-                  className="ant-btn ant-btn-orange"
-                >
-                  Remove
-                </Button>
-                <Button
-                  id="supportTreeModalCancel"
-                  onClick={handleSupportTreeCardCancel}
-                  type="default"
-                  style={{
-                    marginTop: 10,
-                  }}
-                  className="ant-btn"
-                >
-                  Cancel
-                </Button>
-              </div>
-            </Spin>
-          </Form.Item>
-        </Form> */}
+        <Spin spinning={removeSupportSpinner} size="small">
+          <SupportRemovedModal
+            onFinish={onRemoveFinish}
+            handleCancel={() => setIsSupportTreeCardModal(false)}
+            form={removeForm}
+          />
+        </Spin>
       </Modal>
     </>
   );
