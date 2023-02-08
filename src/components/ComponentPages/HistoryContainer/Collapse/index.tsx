@@ -210,7 +210,9 @@ function HistoryCollapse({
                         (
                           !isUserAuthenticated
                             ? true
-                            : ifIamSupporter == 0 || ifSupportDelayed != 0
+                            : (ifIamSupporter == 0 &&
+                                !ifIAmExplicitSupporter) ||
+                              ifSupportDelayed != 0
                             ? true
                             : false
                         )
@@ -224,7 +226,9 @@ function HistoryCollapse({
                         onClick={() => {
                           let isModelPop = !isUserAuthenticated
                             ? true
-                            : ifIamSupporter == 0 || ifSupportDelayed != 0
+                            : (ifIamSupporter == 0 &&
+                                !ifIAmExplicitSupporter) ||
+                              ifSupportDelayed != 0
                             ? true
                             : false;
                           if (isModelPop) {
@@ -243,7 +247,9 @@ function HistoryCollapse({
                           (
                             !isUserAuthenticated
                               ? true
-                              : ifIamSupporter == 0 || ifSupportDelayed != 0
+                              : (ifIamSupporter == 0 &&
+                                  !ifIAmExplicitSupporter) ||
+                                ifSupportDelayed != 0
                               ? true
                               : false
                           )
@@ -395,7 +401,10 @@ function HistoryCollapse({
                   </div>
                 )}
               {campStatement?.status == "in_review" &&
-                !!(ifIamSupporter != 0 && ifSupportDelayed == 0) &&
+                !!(
+                  (ifIamSupporter != 0 || ifIAmExplicitSupporter) &&
+                  ifSupportDelayed == 0
+                ) &&
                 isUserAuthenticated &&
                 !campStatement?.isAuthor && (
                   <div className={styles.campStatementCollapseButtons}>
