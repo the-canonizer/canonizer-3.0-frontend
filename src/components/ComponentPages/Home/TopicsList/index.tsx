@@ -88,12 +88,25 @@ const TopicsList = () => {
     useState(false);
   const [selectedNameSpace, setSelectedNameSpace] = useState(filterNameSpace);
   let onlyMyTopicsCheck = useRef();
+
+  const formatnamespace = (namespace, reverse = false) => {
+    if (reverse) {
+      let addslash = `/${namespace}/`;
+      addslash = addslash?.replace(/-/g, "/");
+      return addslash;
+    } else {
+      let removednamespace = namespace?.replace(/^\/|\/$/g, "");
+      removednamespace = removednamespace?.replace(/\//g, "-");
+      return removednamespace;
+    }
+  };
+
   const selectNameSpace = (id, nameSpace) => {
     setNameSpaceId(id);
     setSelectedNameSpace(nameSpace?.children);
 
     if (nameSpace?.children?.toLowerCase() !== "/general/") {
-      router.query.namespace = nameSpace?.children;
+      router.query.namespace = formatnamespace(nameSpace?.children);
       router.replace(router, undefined, { shallow: true });
     }
 
@@ -107,7 +120,7 @@ const TopicsList = () => {
 
   useEffect(() => {
     if (filterNameSpace?.toLowerCase() !== "/general/") {
-      router.query.namespace = filterNameSpace;
+      router.query.namespace = formatnamespace(filterNameSpace);
       router.replace(router, undefined, { shallow: true });
     }
   }, []);
