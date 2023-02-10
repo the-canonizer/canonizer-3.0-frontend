@@ -33,9 +33,11 @@ export default function CanonVideos() {
   const handleVideoSelection = (videodata: any) => {
     playeref.current;
 
-    router.query.title = replaceString(videodata?.title);
-    router.query.resolution = videodata?.resolutions[0]?.title?.split(" ")[0];
-    router.push(router, null, { shallow: true });
+    addQueryParams(
+      replaceString(videodata?.title),
+      videodata?.resolutions[0]?.title?.split(" ")[0],
+      null
+    );
 
     setSelectedVideoId(videodata?.id);
     setVideoResolution(videodata?.resolutions[0]?.link);
@@ -49,12 +51,20 @@ export default function CanonVideos() {
   const onChange = (e: RadioChangeEvent, res) => {
     setVideoResolution(e.target.value);
 
-    router.query.resolution = res?.split(" ")[0];
-    router.push(router, null, { shallow: true });
+    const filtredVides = videos?.filter((vd) => vd?.id === selectedVideoId);
+    if (filtredVides && filtredVides.length) {
+      addQueryParams(
+        filtredVides[0].title,
+        res?.split(" ")[0],
+        playeref?.current?.currentTime
+      );
+    }
 
     const node = document.getElementsByTagName("video")[0];
-    node.src = K.Network.URL?.BaseVideosURL + "/" + e.target.value;
-    node.play();
+    if (node) {
+      node.src = K.Network.URL?.BaseVideosURL + "/" + e.target.value;
+      node.play();
+    }
   };
 
   useEffect(() => {
@@ -68,8 +78,8 @@ export default function CanonVideos() {
 
         const videoss = data?.data;
 
-        if (q?.title || q?.resolution) {
-          const videoTitle = replaceString(q?.title as string, true);
+        if (q?.ch || q?.res) {
+          const videoTitle = replaceString(q?.ch as string, true);
           const filteredVideo = Object.values(videoss)?.filter((video) => {
             if (video["title"] === videoTitle) {
               return video;
@@ -84,7 +94,7 @@ export default function CanonVideos() {
             setSelectedVideoId(selectedVideo["id"]);
 
             selectedVideo["resolutions"]?.map((res) => {
-              if (res?.title.includes(q?.resolution)) {
+              if (res?.title?.includes(q?.res)) {
                 setVideoResolution(res?.link);
                 resLink = res?.link;
                 return;
@@ -92,8 +102,11 @@ export default function CanonVideos() {
             });
 
             const node = document.getElementsByTagName("video")[0];
-            node.src = K.Network.URL?.BaseVideosURL + "/" + resLink;
-            node.play();
+            if (node) {
+              node.src = K.Network.URL?.BaseVideosURL + "/" + resLink;
+              node.play();
+              playeref.current.play();
+            }
           }
         } else {
           setVideoResolution(data?.data[0]?.resolutions[0]?.link);
@@ -121,20 +134,41 @@ export default function CanonVideos() {
 
   useEffect(() => {
     if (topic) {
-      router.query.duration = playeref?.current?.currentTime;
-      router.push(router, null, { shallow: true });
+      const filtredVides = videos?.filter((vd) => vd?.id === selectedVideoId);
+      if (filtredVides && filtredVides.length) {
+        const splitedarray = videoResolution?.split("_");
+        const res = splitedarray[splitedarray?.length - 1]?.split(".")[0];
+
+        addQueryParams(
+          filtredVides[0].title,
+          res,
+          playeref?.current?.currentTime
+        );
+      }
     }
   }, [topic]);
 
   useEffect(() => {
-    const ct = router?.query?.duration;
+    const ct = router?.query?.t;
     setTimeout(() => {
       const node = document.getElementsByTagName("video")[0];
       if (node && ct) {
         node.currentTime = Number(ct);
+        node.play();
       }
     }, 800);
   }, []);
+
+  function addQueryParams(ch, res, t) {
+    router.query.ch = ch;
+    router.query.res = res;
+    if (t) {
+      router.query.t = t;
+    } else {
+      delete router.query.t;
+    }
+    router.push(router, null, { shallow: true });
+  }
 
   return (
     <>
