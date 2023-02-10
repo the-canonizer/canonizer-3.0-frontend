@@ -5,12 +5,16 @@ import Spinner from "../../components/common/spinner/spinner";
 import styles from "./layout.module.scss";
 import Footer from "../../components/common/footer";
 import GoogleAd from "../../components/googleAds";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import CampRecentActivities from "@/components/ComponentPages/Home/CampRecentActivities";
 
 function Layout(props: any) {
+  const router = useRouter();
   const { isUserAuthenticated } = useAuthentication();
 
   const [log, setLog] = useState(isUserAuthenticated);
+  console.log("router", router);
 
   useEffect(() => setLog(isUserAuthenticated), [isUserAuthenticated]);
 
@@ -21,10 +25,14 @@ function Layout(props: any) {
         <div className={styles.contentWrap}>
           <div className={styles.contentArea}>{props.children} </div>
           <aside className={styles.rightSidebar}>
-            <GoogleAd
-              ad_client={process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}
-              ad_slot={process.env.NEXT_PUBLIC_GOOGLE_ADS_RIGHT_SLOT}
-            />
+            {router.asPath.includes("timelinetest") ? (
+              <CampRecentActivities />
+            ) : (
+              <GoogleAd
+                ad_client={process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}
+                ad_slot={process.env.NEXT_PUBLIC_GOOGLE_ADS_RIGHT_SLOT}
+              />
+            )}
           </aside>
         </div>
         <Footer />
