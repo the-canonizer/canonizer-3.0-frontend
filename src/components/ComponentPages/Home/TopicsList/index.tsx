@@ -108,6 +108,11 @@ const TopicsList = () => {
     if (nameSpace?.children?.toLowerCase() !== "/general/") {
       router.query.namespace = formatnamespace(nameSpace?.children);
       router.replace(router, undefined, { shallow: true });
+    } else {
+      if (router.query.namespace) {
+        router.query.namespace = "";
+        router.replace(router, undefined, { shallow: true });
+      }
     }
 
     dispatch(
@@ -129,13 +134,13 @@ const TopicsList = () => {
     const q = router.query;
     if (q.namespace) {
       const filteredName = nameSpacesList?.filter(
-        (n) => n.label == q.namespace
+        (n) => n.label == formatnamespace(q.namespace, true)
       );
 
       if (filteredName && filteredName.length) {
         dispatch(
           setFilterCanonizedTopics({
-            nameSpace: q.namespace,
+            nameSpace: formatnamespace(q.namespace, true),
             namespace_id: filteredName[0]?.id,
           })
         );
