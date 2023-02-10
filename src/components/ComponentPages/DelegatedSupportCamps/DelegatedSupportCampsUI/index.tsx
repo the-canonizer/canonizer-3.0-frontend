@@ -227,15 +227,7 @@ export default function DelegatedSupportCampsUI({
         className={styles.modal_cross}
         title={
           <p id="remove_confirmation" className={styles.modalTitle}>
-            Your delegate support given to{" "}
-            <span>
-              &quot;
-              <Link href={removeSupportCampsData.delegated_to_nick_name_link}>
-                <a>{removeSupportCampsData.delegated_to_nick_name}</a>
-              </Link>
-              &quot;
-            </span>{" "}
-            under the topic{" "}
+            You are about to remove your support from the camp:{" "}
             <span className={styles.Bluecolor}>
               &quot;
               <Link href={removeSupportCampsData.title_link}>
@@ -243,7 +235,7 @@ export default function DelegatedSupportCampsUI({
               </Link>
               &quot;
             </span>{" "}
-            will be removed. Please help us with the reason.
+            Before proceeding, please provide us with the following information.
           </p>
         }
         open={isRemoveSupportModalVisible}

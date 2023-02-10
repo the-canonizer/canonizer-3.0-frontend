@@ -8,7 +8,10 @@ import {
   GetAllSubscriptionsList,
   unsubscribeTopicOrCampAPI,
 } from "../../../network/api/userApi";
-import { getAllUsedNickNames } from "src/network/api/campDetailApi";
+import {
+  getAllUsedNickNames,
+  getAllRemovedReasons,
+} from "src/network/api/campDetailApi";
 
 const { Text } = Typography;
 
@@ -26,6 +29,8 @@ function RemovedSupportList({ isTestData = [] }) {
 
   const getSubscriptionsList = async (q: string) => {
     const res = await GetAllSubscriptionsList(q);
+
+    await getAllRemovedReasons();
 
     if (res?.status_code === 200) {
       setSubscriptionsList(res?.data.items);

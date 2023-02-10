@@ -383,7 +383,7 @@ const SupportTreeCard = ({
         className={styles.modal_cross}
         title={
           <p id="all_camps_topics" className={styles.modalTitle}>
-            Your Support from{" "}
+            You are about to remove your support from the camp:{" "}
             <span>
               &quot;
               <Link
@@ -391,11 +391,11 @@ const SupportTreeCard = ({
                   pathname: `/topic/${topicRecord?.topic_num}-${topicRecord?.topic_name}/${campRecord?.camp_num}-${campRecord?.camp_name}`,
                 }}
               >
-                <a>{campRecord?.camp_name}</a>
+                <a>{campRecord?.camp_name}.</a>
               </Link>
               &quot;
             </span>{" "}
-            camp will be removed. Please help us with the reason.
+            Before proceeding, please provide us with the following information.
           </p>
         }
         open={isSupportTreeCardModal}

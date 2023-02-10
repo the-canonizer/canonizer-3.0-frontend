@@ -257,7 +257,7 @@ export default function DirectSupportedCampsUI({
         className={styles.modal_cross}
         title={
           <p id="all_camps_topics" className={styles.modalTitle}>
-            Your Support from{" "}
+           You are about to remove your support from the camp:{" "}
             <span>
               &quot;
               <Link
@@ -265,11 +265,11 @@ export default function DirectSupportedCampsUI({
                   pathname: removeSupportCampsData.title_link,
                 }}
               >
-                <a>{removeSupportCampsData.title}</a>
+                <a>{removeSupportCampsData.title}.</a>
               </Link>
               &quot;
             </span>{" "}
-            camp will be removed. Please help us with the reason.
+            Before proceeding, please provide us with the following information.
           </p>
         }
         open={isSupportedCampsModalVisible}

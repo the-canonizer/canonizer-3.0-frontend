@@ -1,8 +1,10 @@
-import { useState, Fragment } from "react";
+import { useState, Fragment, useEffect } from "react";
 import { Button, Col, Form, Input, Row, Select } from "antd";
+import { useSelector } from "react-redux";
 
 import classes from "./support-removed-modal.module.scss";
 import messages from "src/messages";
+import { RootState } from "src/store";
 
 const {
   labels,
@@ -14,13 +16,23 @@ const {
 const { Option } = Select;
 
 const SupportRemovedModal = ({ onFinish, handleCancel, form }) => {
-  const [selectedValue, setSelectedValue] = useState(null);
+  const reasons = useSelector(
+    (state: RootState) => state?.topicDetails?.removedReasons
+  );
 
-  const reasons = [
-    { id: 1, label: "Reason 1" },
-    { id: 2, label: "Reason 2" },
-    { id: 3, label: "Other" },
-  ];
+  const [selectedValue, setSelectedValue] = useState(null);
+  const [availableReasons, setReasons] = useState(reasons);
+
+  useEffect(() => {
+    const reasons = [
+      { id: 1, label: "Reason 1" },
+      { id: 2, label: "Reason 2" },
+      { id: 3, label: "Other" },
+    ];
+    setReasons(reasons);
+  }, [reasons]);
+
+  console.log("reasons", reasons, availableReasons);
 
   const onSelectChange = (value, option) => {
     setSelectedValue(value);
@@ -63,7 +75,7 @@ const SupportRemovedModal = ({ onFinish, handleCancel, form }) => {
                 <Option key="select" value={null}>
                   Select
                 </Option>
-                {reasons.map((nick) => (
+                {availableReasons?.map((nick) => (
                   <Option key={nick.id} value={nick.id}>
                     {nick.label}
                   </Option>

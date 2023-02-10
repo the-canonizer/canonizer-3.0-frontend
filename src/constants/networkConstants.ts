@@ -182,6 +182,8 @@ const NetworkConstants = {
     VideosContent: `${BaseCanonizerApiUrl}/videos`,
 
     GetNickSupportUser: `${BaseCanonizerApiUrl}/get-nick-support-user/`,
+
+    GetRemovedReasons: `${BaseCanonizerApiUrl}/get-nick-support-user/`,
   },
   Method: {
     GET: "GET",
