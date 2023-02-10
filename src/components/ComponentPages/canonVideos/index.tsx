@@ -192,7 +192,7 @@ export default function CanonVideos() {
             <ul>
               {Object.values(videos)?.map((video) => (
                 <li
-                  className={video.id === selectedVideoId && styles.active}
+                  className={video.id === selectedVideoId ? styles.active : ""}
                   onClick={() => handleVideoSelection(video)}
                   key={video?.id}
                 >
