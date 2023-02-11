@@ -110,7 +110,9 @@ const TopicsList = () => {
       router.replace(router, undefined, { shallow: true });
     } else {
       if (router.query.namespace) {
-        router.query.namespace = "";
+        const params = router.query;
+        delete params.namespace;
+        router.query = params;
         router.replace(router, undefined, { shallow: true });
       }
     }
@@ -133,9 +135,11 @@ const TopicsList = () => {
   useEffect(() => {
     const q = router.query;
     if (q.namespace) {
-      const filteredName = nameSpacesList?.filter(
-        (n) => n.label == formatnamespace(q.namespace, true)
-      );
+      const filteredName = nameSpacesList?.filter((n) => {
+        if (n.label === formatnamespace(q.namespace, true)) {
+          return n;
+        }
+      });
 
       if (filteredName && filteredName.length) {
         dispatch(
@@ -146,7 +150,7 @@ const TopicsList = () => {
         );
       }
     }
-  }, [router]);
+  }, [router, nameSpacesList]);
 
   useEffect(() => {
     setSelectedNameSpace(filterNameSpace);
