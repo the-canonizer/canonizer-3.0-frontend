@@ -43,6 +43,7 @@ import { getHistoryApi } from "../../../network/api/history";
 const { Link } = Typography;
 
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import TimeLine from "../TimeLine";
 
 const TopicDetails = () => {
   let myRefToCampStatement = useRef(null);
@@ -234,14 +235,15 @@ const TopicDetails = () => {
         <>
           <div className={styles.pageContent + " pageContentWrap"}>
             <TimelineSlider />
-            <CampTreeCard
+            <TimeLine/>
+            {/* <CampTreeCard
               getTreeLoadingIndicator={getTreeLoadingIndicator}
               scrollToCampStatement={scrollToCampStatement}
               setTotalCampScoreForSupportTree={setTotalCampScoreForSupportTree}
               setSupportTreeForCamp={setSupportTreeForCamp}
-            />
+            /> */}
 
-            {((tree && tree["1"]?.is_valid_as_of_time) ||
+            {/* {((tree && tree["1"]?.is_valid_as_of_time) ||
               asof == "default") && (
               <>
                 {campExist &&
@@ -277,7 +279,7 @@ const TopicDetails = () => {
                     </>
                   ))}
               </>
-            )}
+            )} */}
           </div>
         </>
       </div>

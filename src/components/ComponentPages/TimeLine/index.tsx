@@ -526,12 +526,12 @@ function TimeLine() {
     <React.Fragment>
       <h1 style={{ marginTop: "30px" }}>Racing Camps</h1>
       <RacingBarChart data={data} />
-      <HorizontalTimelineComp
+      {/* <HorizontalTimelineComp
         iteration={iteration}
         handleEventSelection={handleEventSelection}
         eventDescription={eventDescription}
         events={events}
-      />
+      /> */}
       <button
         onClick={() => {
           setStart(!start);
