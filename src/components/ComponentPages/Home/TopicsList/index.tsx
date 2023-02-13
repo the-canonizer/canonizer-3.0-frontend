@@ -352,7 +352,8 @@ const TopicsList = () => {
                         item?.topic_id
                       }-${replaceSpecialCharacters(
                         isReview
-                          ? item?.tree_structure[1]?.review_title
+                          ? item?.tree_structure &&
+                              item?.tree_structure[1]?.review_title
                           : item?.topic_name,
                         "-"
                       )}/1-Agreement`,
@@ -365,7 +366,8 @@ const TopicsList = () => {
                     >
                       <Text className={styles.text}>
                         {isReview
-                          ? item?.tree_structure[1].review_title
+                          ? item?.tree_structure &&
+                            item?.tree_structure[1].review_title
                           : item?.topic_name}
                       </Text>
                       <Tag className={styles.tag}>

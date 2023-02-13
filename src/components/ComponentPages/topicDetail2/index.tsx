@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
 import CustomSkelton from "../../common/customSkelton";
+import TimelineSlider from "./timelineSlider";
 
 //  "../../../store/slices/filtersSlice";
 import {
@@ -40,11 +41,7 @@ import {
 import { getHistoryApi } from "../../../network/api/history";
 
 const { Link } = Typography;
-import {
-  addSupport,
-  removeSupportedCamps,
-  removeSupportedCampsEntireTopic,
-} from "src/network/api/userApi";
+
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 const TopicDetails = () => {
@@ -236,6 +233,7 @@ const TopicDetails = () => {
 
         <>
           <div className={styles.pageContent + " pageContentWrap"}>
+            <TimelineSlider />
             <CampTreeCard
               getTreeLoadingIndicator={getTreeLoadingIndicator}
               scrollToCampStatement={scrollToCampStatement}
