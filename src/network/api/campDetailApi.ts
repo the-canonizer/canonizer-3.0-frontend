@@ -20,7 +20,7 @@ export const getTreesApi = async (reqBody) => {
   try {
     const trees = await NetworkCall.fetch(TreeRequest.getTrees(reqBody), false);
 
-    store.dispatch(setTree(trees?.data));
+    store.dispatch(setTree(trees?.data || []));
     return trees?.data[0];
   } catch (error) {
     store.dispatch(setTree([]));

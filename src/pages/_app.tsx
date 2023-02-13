@@ -9,6 +9,7 @@ import "react-quill/dist/quill.snow.css";
 import "../../styles/globals.scss";
 import "../../styles/variables.less";
 import "../assets/fonticons/style.css";
+import "../components/ComponentPages/TimeLine/timeline.css";
 import "../assets/scss/global.scss";
 
 import ErrorBoundary from "../hoc/ErrorBoundary";
