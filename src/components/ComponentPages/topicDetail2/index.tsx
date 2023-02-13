@@ -18,7 +18,7 @@ import {
 import { fallBackSrc } from "src/assets/data-images";
 import { RootState } from "src/store";
 import SideBar from "../Home/SideBar";
-import CampInfoBar from "../TopicDetails/CampInfoBar";
+import TimelineInfoBar from "./TimelineInfoBar";
 import styles from "./topicDetails.module.scss";
 import CampTreeCard from "../TopicDetails/CampTreeCard";
 import { BackTop, Image, Typography, message, Alert } from "antd";
@@ -208,23 +208,9 @@ const TopicDetails = () => {
     <>
       <div className={styles.topicDetailContentWrap}>
         {(tree && tree["1"]?.is_valid_as_of_time) || asof == "default" ? (
-          <CampInfoBar
-            isTopicPage={true}
-            payload={{
-              topic_num: +router?.query?.camp[0]?.split("-")[0],
-              camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
-            }}
-            getCheckSupportStatus={getCheckSupportStatus}
-          />
+          <TimelineInfoBar />
         ) : (
-          <CampInfoBar
-            payload={{
-              topic_num: +router?.query?.camp[0]?.split("-")[0],
-              camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
-            }}
-            isTopicHistoryPage={true}
-            getCheckSupportStatus={getCheckSupportStatus}
-          />
+          <TimelineInfoBar />
         )}
 
         <aside className={styles.miniSide + " leftSideBar miniSideBar"}>
@@ -233,7 +219,7 @@ const TopicDetails = () => {
 
         <>
           <div className={styles.pageContent + " pageContentWrap"}>
-            <TimelineSlider />
+            {/* <TimelineSlider /> */}
             <CampTreeCard
               getTreeLoadingIndicator={getTreeLoadingIndicator}
               scrollToCampStatement={scrollToCampStatement}
