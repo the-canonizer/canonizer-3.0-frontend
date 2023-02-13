@@ -11,17 +11,6 @@ function TimeLine() {
   const [iteration, setIteration] = useState(0);
   const [start, setStart] = useState(false);
   const [eventDescription, setEventDescription] = useState("Hello");
-  const [data, setData] = useState([
-    {
-      topic_id: 88,
-      camp_id: 1,
-      title: "Mind and Consciousness",
-      link: "https://canonizer.com/topic/88-Theories-of-Consciousness/1-Agreement",
-      score: 0,
-      level: 1,
-    },
-  ]);
-
   const mockData = {
     1228141435: {
       event: {
@@ -486,8 +475,24 @@ function TimeLine() {
       ],
     },
   };
-
   const events = Object.keys(mockData);
+  const [data, setData] = useState(
+    mockData[events[7]].data
+  //   [
+  //   {
+  //     topic_id: 88,
+  //     camp_id: 1,
+  //     title: "Mind and Consciousness",
+  //     link: "https://canonizer.com/topic/88-Theories-of-Consciousness/1-Agreement",
+  //     score: 0,
+  //     level: 1,
+  //   },
+  // ]
+  );
+
+  
+
+  
 
   let iterationCount = 0;
 
