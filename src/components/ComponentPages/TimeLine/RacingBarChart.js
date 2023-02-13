@@ -9,8 +9,8 @@ function RacingBarChart({ data }) {
 
   //Manage X axis
 
-  const manageXAxis = (level) => {
-    return level * 30;
+  const manageXAxis = (entry) => {
+    return entry.level * 30;
   };
 
   const pickColor = (level) => {
@@ -43,20 +43,6 @@ function RacingBarChart({ data }) {
       .range([0, dimensions.width]); // [0, 400 (example)]
     console.log("yScale", yScale);
     console.log("xScale", xScale);
-    // draw the bars
-    svg
-      .selectAll(".bar")
-      .data(data, (entry, index) => entry.title)
-      .join((enter) =>
-        enter.append("rect").attr("y", (entry, index) => yScale(index))
-      )
-      .attr("fill", (entry) => pickColor(entry.level))
-      .attr("class", "bar")
-      .attr("x", (entry) => manageXAxis(entry.level))
-      .attr("height", yScale.bandwidth())
-      .transition()
-      .attr("width", (entry) => xScale(entry.score))
-      .attr("y", (entry, index) => yScale(index));
 
     // draw the labels
     svg
@@ -70,11 +56,47 @@ function RacingBarChart({ data }) {
             (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5
           )
       )
-      .text((entry) => ` ${entry.title} (${entry.score} score)`)
+      .text((entry) => ` ${entry.title} `)
       .attr("class", "label")
-      .attr("x", (entry) => manageXAxis(entry.level) + 10)
+      .attr("x", (entry) => manageXAxis(entry) + 10)
       .transition()
       .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5);
+
+      // draw the labels
+    svg
+    .selectAll(".label1")
+    .data(data, (entry, index) => entry.title)
+    .join((enter) =>
+      enter
+        .append("text")
+        .attr(
+          "y",
+          (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5
+        )
+    )
+    .text((entry) => ` (${entry.score} score)`)
+    .attr("class", "label")
+    .attr("x", (entry) => manageXAxis(entry) + 180)
+    .transition()
+    .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5);
+
+    // draw the bars
+    svg
+      .selectAll(".bar")
+      .data(data, (entry, index) => entry.title)
+      .join((enter) =>
+        enter.append("rect").attr("y", (entry, index) => yScale(index))
+      )
+      .attr("fill", (entry) => '#f89d15')
+      .attr("class", "bar")
+      .attr("x", (entry) =>  manageXAxis(entry) + 180)
+      .attr("height", yScale.bandwidth())
+      .transition()
+      .attr("width", (entry) => xScale(entry.score))
+      .attr("y", (entry, index) => yScale(index));
+
+    
+
   }, [data, dimensions]);
 
   return (
