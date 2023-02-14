@@ -144,7 +144,7 @@ function TimeLine() {
           camp_id: 2,
           title: "Approachable Via Science",
           link: "https://canonizer.com/topic/88-Theories-of-Consciousness/2-Approachable-Via-Science#statement",
-          score: 13,
+          score: 19,
           level: 2,
         },
         {

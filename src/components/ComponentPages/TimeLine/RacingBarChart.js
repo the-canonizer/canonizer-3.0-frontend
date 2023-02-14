@@ -19,17 +19,6 @@ function RacingBarChart({ data }) {
    return length + entry.level * 30 + 30;
   };
 
-  const pickColor = (level) => {
-    if (level === 1) {
-      return "#f4efd3";
-    } else if (level === 2) {
-      return "#cccccc";
-    } else if (level === 3) {
-      return "#c2b0c9";
-    } else if (level === 4) {
-      return "#fcc169";
-    }
-  };
 
   // will be called initially and on every data change
   useEffect(() => {
@@ -46,7 +35,7 @@ function RacingBarChart({ data }) {
 
     const xScale = scaleLinear()
       .domain([0, max(data, (entry) => entry.score)]) // [0, 65 (example)]
-      .range([0, dimensions.width]); // [0, 400 (example)]
+      .range([0, 900]); // [0, 400 (example)]
     // console.log("yScale", yScale);
     // console.log("xScale", xScale);
 
@@ -62,6 +51,7 @@ function RacingBarChart({ data }) {
             (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5
           )
       )
+      // .attr("fill", (entry) => '#f89d15')
       .text((entry) => ` ${entry.title} `) 
       .attr("class", "label")
       .attr("id", (entry)=> entry.camp_id)
@@ -69,24 +59,7 @@ function RacingBarChart({ data }) {
       .transition()
       .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5);
 
-      // draw the Score labels
-    svg
-    .selectAll(".label1")
-    .data(data, (entry, index) => entry.title)
-    .join((enter) =>
-      enter
-        .append("text")
-        .attr(
-          "y",
-          (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5
-        )
-    )
-    .text((entry) => ` ${entry.score}`)
-    .attr("fill", (entry) => '#fff')
-    .attr("class", "label")
-    .attr("x", (entry) => manageBarXAxis(entry) + 7)
-    .transition()
-    .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5);
+  
 
     // draw the bars
     svg
@@ -97,13 +70,30 @@ function RacingBarChart({ data }) {
       )
       .attr("fill", (entry) => '#f89d15')
       .attr("class", "bar")
-      .attr("x", (entry) =>   manageBarXAxis(entry)  )
+      .attr("x", (entry) =>   manageBarXAxis(entry))
       .attr("height", yScale.bandwidth())
       .transition()
       .attr("width", (entry) => xScale(entry.score) + 25)
       .attr("y", (entry, index) => yScale(index));
 
-    
+        // draw the Score labels
+        svg
+        .selectAll(".label1")
+        .data(data, (entry, index) => entry.title)
+        .join((enter) =>
+          enter
+            .append("text")
+            .attr(
+              "y",
+              (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5
+            )
+        )
+        .attr("fill", (entry) => '#fff')
+        .text((entry) => ` ${entry.score}`)
+        .attr("class", "label")
+        .attr("x", (entry) => manageBarXAxis(entry) + 7)
+        .transition()
+        .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5);
 
   }, [data, dimensions]);
 
