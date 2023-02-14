@@ -31,3 +31,7 @@ video {
   top: auto;
   width: 100%;
 }
+
+.score{
+  color: blue;
+}

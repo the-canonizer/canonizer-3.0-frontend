@@ -44,7 +44,7 @@ function RacingBarChart({ data }) {
     console.log("yScale", yScale);
     console.log("xScale", xScale);
 
-    // draw the labels
+    // draw the Title labels
     svg
       .selectAll(".label")
       .data(data, (entry, index) => entry.title)
@@ -62,7 +62,7 @@ function RacingBarChart({ data }) {
       .transition()
       .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5);
 
-      // draw the labels
+      // draw the Score labels
     svg
     .selectAll(".label1")
     .data(data, (entry, index) => entry.title)
@@ -74,9 +74,10 @@ function RacingBarChart({ data }) {
           (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5
         )
     )
-    .text((entry) => ` (${entry.score} score)`)
+    .text((entry) => ` ${entry.score}`)
+    .attr("fill", (entry) => '#fff')
     .attr("class", "label")
-    .attr("x", (entry) => manageXAxis(entry) + 180)
+    .attr("x", (entry) => manageXAxis(entry) + 190)
     .transition()
     .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5);
 
