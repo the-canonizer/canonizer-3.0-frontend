@@ -20,7 +20,7 @@ import { RootState } from "src/store";
 import SideBar from "../Home/SideBar";
 import TimelineInfoBar from "./TimelineInfoBar";
 import styles from "./topicDetails.module.scss";
-import CampTreeCard from "../TopicDetails/CampTreeCard";
+import CampTreeCard from "./CampTreeCard/index";
 import { BackTop, Image, Typography, message, Alert } from "antd";
 
 import { setCurrentTopic } from "../../../store/slices/topicSlice";

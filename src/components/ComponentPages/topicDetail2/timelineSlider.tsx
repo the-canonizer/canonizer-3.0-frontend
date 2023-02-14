@@ -1,5 +1,14 @@
 import { useEffect, useState } from "react";
-import { Col, InputNumber, Row, Slider, Space } from "antd";
+import { Button, Col, InputNumber, Row, Slider, Space } from "antd";
+import {
+  CaretRightOutlined,
+  PauseOutlined,
+  BackwardOutlined,
+  ForwardOutlined,
+  StepBackwardOutlined,
+  StepForwardOutlined,
+} from "@ant-design/icons";
+import styles from "./timeBarControl.module.scss";
 
 function TimelineSlider() {
   const mainData = [
@@ -4078,12 +4087,12 @@ function TimelineSlider() {
     600: "April6,2022-11:03",
     680: " ",
 
-    900: "May27,2022-11:03",
-    992: {
+    800: "May27,2022-11:03",
+    962: {
       style: {
-        color: "#f50",
+        whiteSpace: "nowrap",
       },
-      label: <strong>November20,2022-11:03</strong>,
+      label: "Nov20,2022-11:03",
     },
   };
   useEffect(() => {
@@ -4097,25 +4106,27 @@ function TimelineSlider() {
 
   return (
     <>
-      <div>
-        <span>
-          <button>backward</button>
-          {"     "}
-          <button onClick={handleClick}>{isPlaying ? "Pause" : "Play"}</button>
-          {"   "}
-          <button onClick={handleClickForward}>Forward</button>
-        </span>
-      </div>
-      <div>
-        <Slider
-          // defaultValue={progress}
-
-          onChange={onChange}
-          value={typeof count === "number" ? count : 0}
-          marks={marks}
-          max={1000}
+      <div className={styles.timeBarControl}>
+        <StepBackwardOutlined className={styles.controlBtnSecond} />
+        <BackwardOutlined className={styles.controlBtn} />
+        {"     "}
+        <div className={styles.playBtn} onClick={handleClick}>
+          {isPlaying ? <PauseOutlined /> : <CaretRightOutlined />}
+        </div>
+        {"   "}
+        <ForwardOutlined
+          className={styles.controlBtn}
+          onClick={handleClickForward}
         />
+        <StepForwardOutlined className={styles.controlBtnSecond} />
       </div>
+      <Slider
+        className="rang-slider"
+        onChange={onChange}
+        value={typeof count === "number" ? count : 0}
+        marks={marks}
+        max={1000}
+      />
       <h1>data = {showData}</h1>
     </>
   );

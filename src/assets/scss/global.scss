@@ -1928,3 +1928,42 @@ div[role="option"]::before {
     }
   }
 }
+
+.rang-slider {
+  .ant-slider-mark {
+    top:-22px;
+    &-text {
+      color: var(--primary);
+      font-size: 10px;
+      &:first-child {
+      left:42px!important;
+      }
+    }
+  }
+  .ant-slider-handle {
+    border-color:  var(--primary);
+    background-color:  var(--primary);
+  }
+  .ant-slider-rail, .ant-slider-track {
+    height: 2px;
+  }
+  .ant-slider-handle {
+    margin-top: -6px;
+  }
+  .ant-slider-rail {
+    background-color: #BBDBFF;
+  }
+  .ant-slider-track {
+    background-color: var(--primary);
+  }
+  .ant-slider-dot {
+    width: 1px;
+    border-width: 1px;
+    height: 4px;
+    border-color: #BBDBFF;
+    &-active {
+      border-color: var(--primary);
+    }
+    top:-4px;
+  }
+}

@@ -1,13 +1,13 @@
 import { Collapse, Popover, Image, Typography } from "antd";
 import React, { useEffect, useState } from "react";
-import CampTree from "../CampTree";
+import CampTree from "../../TopicDetails/CampTree/index";
 import Link from "next/link";
 import { RootState } from "src/store";
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import styles from "../topicDetails.module.scss";
 import { useRouter } from "next/router";
 import CustomSkelton from "../../../common/customSkelton";
-
+import TimelineSlider from "../timelineSlider";
 import { useSelector, useDispatch } from "react-redux";
 import { store } from "../../../../store";
 import { setTree } from "../../../../store/slices/campDetailSlice";
@@ -124,13 +124,17 @@ const CampTreeCard = ({
                 stylingClass=""
               />
             ) : (
-              <CampTree
-                scrollToCampStatement={scrollToCampStatement}
-                setTotalCampScoreForSupportTree={
-                  setTotalCampScoreForSupportTree
-                }
-                setSupportTreeForCamp={setSupportTreeForCamp}
-              />
+              <>
+                {" "}
+                <TimelineSlider />
+                <CampTree
+                  scrollToCampStatement={scrollToCampStatement}
+                  setTotalCampScoreForSupportTree={
+                    setTotalCampScoreForSupportTree
+                  }
+                  setSupportTreeForCamp={setSupportTreeForCamp}
+                />
+              </>
             )}
           </Panel>
         </Collapse>
