@@ -20,24 +20,9 @@ const CampInfoBar = () => {
   });
   const didMount = useRef(false);
   const router = useRouter();
-  const {
-    topicRecord,
-    campRecord,
-    is_admin,
-    history,
-    asofdate,
-    asof,
-    algorithm,
-    viewThisVersionCheck,
-  } = useSelector((state: RootState) => ({
+  const { topicRecord, campRecord } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
-    is_admin: state?.auth?.loggedInUser?.is_admin,
-    history: state?.topicDetails?.history,
-    asofdate: state.filters?.filterObject?.asofdate,
-    algorithm: state.filters?.filterObject?.algorithm,
-    asof: state?.filters?.filterObject?.asof,
-    viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
   }));
   const [campSubscriptionID, setCampSubscriptionID] = useState(
     campRecord?.subscriptionId

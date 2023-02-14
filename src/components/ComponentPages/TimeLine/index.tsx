@@ -478,21 +478,17 @@ function TimeLine() {
   const events = Object.keys(mockData);
   const [data, setData] = useState(
     mockData[events[7]].data
-  //   [
-  //   {
-  //     topic_id: 88,
-  //     camp_id: 1,
-  //     title: "Mind and Consciousness",
-  //     link: "https://canonizer.com/topic/88-Theories-of-Consciousness/1-Agreement",
-  //     score: 0,
-  //     level: 1,
-  //   },
-  // ]
+    //   [
+    //   {
+    //     topic_id: 88,
+    //     camp_id: 1,
+    //     title: "Mind and Consciousness",
+    //     link: "https://canonizer.com/topic/88-Theories-of-Consciousness/1-Agreement",
+    //     score: 0,
+    //     level: 1,
+    //   },
+    // ]
   );
-
-  
-
-  
 
   let iterationCount = 0;
 
@@ -530,13 +526,15 @@ function TimeLine() {
   return (
     <React.Fragment>
       <h1 style={{ marginTop: "30px" }}>Racing Camps</h1>
-      <RacingBarChart data={data} />
-      {/* <HorizontalTimelineComp
+      <div style={{ overflow: "hidden" }}>
+        <RacingBarChart data={data} />
+        {/* <HorizontalTimelineComp
         iteration={iteration}
         handleEventSelection={handleEventSelection}
         eventDescription={eventDescription}
         events={events}
       /> */}
+      </div>
       <button
         onClick={() => {
           setStart(!start);

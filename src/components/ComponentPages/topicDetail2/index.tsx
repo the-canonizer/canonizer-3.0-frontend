@@ -21,7 +21,15 @@ import SideBar from "../Home/SideBar";
 import TimelineInfoBar from "./TimelineInfoBar";
 import styles from "./topicDetails.module.scss";
 import CampTreeCard from "./CampTreeCard/index";
-import { BackTop, Image, Typography, message, Alert } from "antd";
+import {
+  BackTop,
+  Image,
+  Typography,
+  message,
+  Alert,
+  Collapse,
+  Popover,
+} from "antd";
 
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
@@ -44,6 +52,8 @@ const { Link } = Typography;
 
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import TimeLine from "../TimeLine";
+const { Panel } = Collapse;
+const { Link: AntLink } = Typography;
 
 const TopicDetails = () => {
   let myRefToCampStatement = useRef(null);
@@ -220,52 +230,21 @@ const TopicDetails = () => {
 
         <>
           <div className={styles.pageContent + " pageContentWrap"}>
-            <TimelineSlider />
-            <TimeLine/>
-            {/* <CampTreeCard
-              getTreeLoadingIndicator={getTreeLoadingIndicator}
-              scrollToCampStatement={scrollToCampStatement}
-              setTotalCampScoreForSupportTree={setTotalCampScoreForSupportTree}
-              setSupportTreeForCamp={setSupportTreeForCamp}
-            /> */}
-
-            {/* {((tree && tree["1"]?.is_valid_as_of_time) ||
-              asof == "default") && (
-              <>
-                {campExist &&
-                  !campExist?.camp_exist &&
-                  (loadingIndicator ? (
-                    <CustomSkelton
-                      skeltonFor="list"
-                      bodyCount={1}
-                      stylingClass=""
-                      isButton={false}
-                    />
-                  ) : (
-                    <>
-                      <Alert
-                        className="alert-camp-created-on"
-                        message="The camp was first created on"
-                        type="info"
-                        description={
-                          <span>
-                            <Link
-                              onClick={() => {
-                                onCreateCampDate();
-                              }}
-                            >
-                              {" "}
-                              {new Date(
-                                (campExist && campExist?.created_at) * 1000
-                              ).toLocaleString()}
-                            </Link>
-                          </span>
-                        }
-                      />
-                    </>
-                  ))}
-              </>
-            )} */}
+            {" "}
+            <Collapse
+              defaultActiveKey={["1"]}
+              expandIconPosition="right"
+              className="topicDetailsCollapse"
+            >
+              <Panel
+                disabled
+                header={<h3>Canonizer Sorted Camp Race</h3>}
+                key="1"
+              >
+                <TimelineSlider />
+                <TimeLine />
+              </Panel>
+            </Collapse>
           </div>
         </>
       </div>
