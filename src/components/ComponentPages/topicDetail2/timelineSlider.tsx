@@ -4065,7 +4065,7 @@ function TimelineSlider() {
         console.log("isplay 2.f", isPlaying);
 
         console.log("forw 2.f", isPlaying);
-      }, 500);
+      }, 100);
       console.log("isplay 3.f", isPlaying);
 
       console.log("forw 3.f", isPlaying);
