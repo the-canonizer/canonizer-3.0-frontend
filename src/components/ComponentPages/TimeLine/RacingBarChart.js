@@ -62,7 +62,7 @@ function RacingBarChart({ data }) {
             (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5
           )
       )
-      .text((entry) => ` ${entry.title} `)
+      .text((entry) => ` ${entry.title} `) 
       .attr("class", "label")
       .attr("id", (entry)=> entry.camp_id)
       .attr("x", (entry) => manageXAxis(entry) + 10)
