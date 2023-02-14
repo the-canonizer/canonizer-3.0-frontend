@@ -73,7 +73,7 @@ function RacingBarChart({ data }) {
       .attr("x", (entry) =>   manageBarXAxis(entry))
       .attr("height", yScale.bandwidth())
       .transition()
-      .attr("width", (entry) => xScale(entry.score) + 25)
+      .attr("width", (entry) => xScale(entry.score) + 39)
       .attr("y", (entry, index) => yScale(index));
 
         // draw the Score labels
@@ -89,7 +89,7 @@ function RacingBarChart({ data }) {
             )
         )
         .attr("fill", (entry) => '#fff')
-        .text((entry) => ` ${entry.score}`)
+        .text((entry) => ` ${entry.score.toFixed(2)}`)
         .attr("class", "label")
         .attr("x", (entry) => manageBarXAxis(entry) + 7)
         .transition()
