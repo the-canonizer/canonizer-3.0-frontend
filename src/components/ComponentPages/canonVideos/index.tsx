@@ -53,11 +53,7 @@ export default function CanonVideos() {
 
     const filtredVides = videos?.filter((vd) => vd?.id === selectedVideoId);
     if (filtredVides && filtredVides.length) {
-      addQueryParams(
-        filtredVides[0].title,
-        res?.split(" ")[0],
-        playeref?.current?.currentTime
-      );
+      addQueryParams(filtredVides[0].title, res?.split(" ")[0], null);
     }
 
     const node = document.getElementsByTagName("video")[0];
