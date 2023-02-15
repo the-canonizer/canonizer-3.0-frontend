@@ -98,7 +98,7 @@ const TopicDetails = () => {
                 header={<h3>Canonizer Sorted Camp Race</h3>}
                 key="1"
               >
-                <TimelineSlider />
+                
                 <TimeLine />
               </Panel>
             </Collapse>

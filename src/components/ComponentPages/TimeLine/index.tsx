@@ -3,6 +3,7 @@ import RacingBarChart from "./RacingBarChart.js";
 import useInterval from "./useInterval";
 // import "./App.css";
 import HorizontalTimelineComp from "./HorizontalTimeline";
+import TimelineSlider from "../topicDetail2/timelineSlider";
 const getRandomIndex = (array) => {
   return Math.floor(array.length * Math.random());
 };
@@ -494,17 +495,7 @@ function TimeLine() {
 
   useInterval(() => {
     if (start && events.length > iteration) {
-      // const randomIndex = getRandomIndex(data);
-      // setData(
-      //   data.map((entry, index) =>
-      //     index === randomIndex
-      //       ? {
-      //           ...entry,
-      //           value: entry.value + 10,
-      //         }
-      //       : entry
-      //   )
-      // );
+    
       console.log(mockData[events[iteration]].data);
 
       setData(mockData[events[iteration]].data);
@@ -526,35 +517,10 @@ function TimeLine() {
   return (
     <React.Fragment>
       <h1 style={{ marginTop: "30px" }}>Racing Camps</h1>
+      <TimelineSlider  setStart={setStart} start={start}/>
       <div style={{ overflow: "hidden" }}>
         <RacingBarChart data={data} />
-        {/* <HorizontalTimelineComp
-        iteration={iteration}
-        handleEventSelection={handleEventSelection}
-        eventDescription={eventDescription}
-        events={events}
-      /> */}
       </div>
-      <button
-        onClick={() => {
-          setStart(!start);
-          setIteration(0);
-        }}
-      >
-        {start ? "Stop the race" : "Start the race!"}
-      </button>
-      {iteration > 0 && (
-        <button
-          onClick={() => {
-            setStart(!start);
-            setIteration(0);
-          }}
-        >
-          Reset
-        </button>
-      )}
-      <p>Iteration: {iteration}</p>
-      {/* <DateTimeLine iteration={iteration} /> */}
     </React.Fragment>
   );
 }

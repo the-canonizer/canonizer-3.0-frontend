@@ -10,7 +10,7 @@ import {
 } from "@ant-design/icons";
 import styles from "./timeBarControl.module.scss";
 
-function TimelineSlider() {
+function TimelineSlider({ setStart, start }) {
   const mockData = {
     1228141435: {
       event: {
@@ -485,6 +485,7 @@ function TimelineSlider() {
 
   const [showData2, setShowData2] = useState(mockData["1228141435"]);
   const handleClick = () => {
+    setStart(!start);
     if (isPlaying) {
       clearInterval(intervalId);
       setIntervalId(null);
