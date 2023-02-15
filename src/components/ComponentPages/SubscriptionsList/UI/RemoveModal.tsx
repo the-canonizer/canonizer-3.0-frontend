@@ -44,17 +44,13 @@ function TopicRemoveModal({
       {!isCamp ? (
         <Typography.Text>
           Your subscription will be removed from the entire Topic -
-          <Link href={topicLink}>
-            <a> &quot;{topicTitle}&quot;. </a>
-          </Link>
+          <Link href={topicLink}>&quot;{topicTitle}&quot;.</Link>
           Do you want to continue?
         </Typography.Text>
       ) : (
         <Typography.Text>
           Your subscription will be removed from the Camp -
-          <Link href={campLink}>
-            <a> &quot;{campTitle}&quot;. </a>
-          </Link>
+          <Link href={campLink}>&quot;{campTitle}&quot;.</Link>
           Do you want to continue?
         </Typography.Text>
       )}

@@ -83,10 +83,9 @@ const PostUI = ({
                       currentThread["camp_id"] || ""
                     }&namespace=${currentThread["namespace_id"] || 1}`}
                     passHref
+                    className={styles.by}
                   >
-                    <a className={styles.by}>
-                      {currentThread["creation_nick_name"]}
-                    </a>
+                    {currentThread["creation_nick_name"]}
                   </Link>
                 </Text>
               </Fragment>

@@ -71,28 +71,22 @@ function Footer() {
             <Col xs={24} sm={10} md={7} lg={6}>
               <div className={styles.logo}>
                 <Link href="/">
-                  <a>
-                    <Image
-                      src={`${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/site-images/logo.svg`}
-                      alt="Canonizer"
-                      width={142}
-                      height={26}
-                      layout="intrinsic"
-                    />
-                  </a>
+                  <Image
+                    src={`${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/site-images/logo.svg`}
+                    alt="Canonizer"
+                    width={142}
+                    height={26}
+                    layout="intrinsic"
+                  />
                 </Link>
               </div>
               <p>Patent: US 8,160,970 B2</p>
               <ul className={styles.privacyTerms}>
                 <li>
-                  <Link href="/privacy-policy">
-                    <a>Privacy Policy</a>
-                  </Link>
+                  <Link href="/privacy-policy">Privacy Policy</Link>
                 </li>
                 <li>
-                  <Link href="/terms-and-services">
-                    <a>Terms &amp; Services</a>
-                  </Link>
+                  <Link href="/terms-and-services">Terms &amp; Services</Link>
                 </li>
               </ul>
             </Col>
@@ -108,10 +102,8 @@ function Footer() {
                         return (
                           <li key={item.id}>
                             <Link href={item.link}>
-                              <a>
-                                <i className="icon-angle-right"></i>{" "}
-                                {item.linkTitle}
-                              </a>
+                              <i className="icon-angle-right"></i>{" "}
+                              {item.linkTitle}
                             </Link>
                           </li>
                         );
@@ -135,10 +127,8 @@ function Footer() {
                               </a>
                             ) : (
                               <Link href={item.link}>
-                                <a>
-                                  <i className="icon-angle-right"></i>{" "}
-                                  {item.linkTitle}
-                                </a>
+                                <i className="icon-angle-right"></i>{" "}
+                                {item.linkTitle}
                               </Link>
                             )}
                           </li>
@@ -153,9 +143,7 @@ function Footer() {
               <div className={styles.supportWidget}>
                 <Title level={5}>Comments and Questions:</Title>
                 <Link href="mailto:support@canonizer.com">
-                  <a>
-                    <i className="icon-envelope"></i> support@canonizer.com
-                  </a>
+                  <i className="icon-envelope"></i> support@canonizer.com
                 </Link>
               </div>
             </Col>

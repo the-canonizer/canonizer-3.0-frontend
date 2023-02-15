@@ -153,10 +153,12 @@ const CampInfoBar = ({
     <Menu className={styles.campForumDropdownMenu}>
       {isUserAuthenticated && is_admin && (
         <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
-          <Link href={router.asPath.replace("topic", "addnews")}>
-            <a rel="noopener noreferrer" href="/add-news">
-              Add News
-            </a>
+          <Link
+            href={router.asPath.replace("topic", "addnews")}
+            rel="noopener noreferrer"
+            href="/add-news"
+          >
+            Add News
           </Link>
         </Menu.Item>
       )}
@@ -220,17 +222,15 @@ const CampInfoBar = ({
       <Menu.Item icon={<HeartOutlined />} disabled={asof == "bydate"}>
         {isTopicPage && (
           <Link href={router.asPath.replace("/topic/", "/support/")}>
-            <a>
-              <div
-                className="topicDetailsCollapseFooter"
-                onClick={handleClickSupportCheck}
-              >
-                {/* {K?.exceptionalMessages?.directJoinSupport} */}
-                {getCheckSupportStatus?.support_flag == 1
-                  ? K?.exceptionalMessages?.manageSupport
-                  : K?.exceptionalMessages?.directJoinSupport}
-              </div>
-            </a>
+            <div
+              className="topicDetailsCollapseFooter"
+              onClick={handleClickSupportCheck}
+            >
+              {/* {K?.exceptionalMessages?.directJoinSupport} */}
+              {getCheckSupportStatus?.support_flag == 1
+                ? K?.exceptionalMessages?.manageSupport
+                : K?.exceptionalMessages?.directJoinSupport}
+            </div>
           </Link>
         )}
       </Menu.Item>
@@ -249,7 +249,7 @@ const CampInfoBar = ({
               "-"
             )}`}
           >
-            <a>{K?.exceptionalMessages?.manageCampButton}</a>
+            {K?.exceptionalMessages?.manageCampButton}
           </Link>
         )}
       </Menu.Item>
@@ -263,7 +263,7 @@ const CampInfoBar = ({
               "-"
             )}`}
           >
-            <a>{K?.exceptionalMessages?.manageTopicButton} </a>
+            {K?.exceptionalMessages?.manageTopicButton}
           </Link>
         )}
       </Menu.Item>
@@ -296,11 +296,9 @@ const CampInfoBar = ({
                   )}`
             }
           >
-            <a>
-              {history?.items?.length > 0
-                ? K?.exceptionalMessages?.manageCampStatementButton
-                : K?.exceptionalMessages?.addCampStatementButton}
-            </a>
+            {history?.items?.length > 0
+              ? K?.exceptionalMessages?.manageCampStatementButton
+              : K?.exceptionalMessages?.addCampStatementButton}
           </Link>
         )}
       </Menu.Item>
@@ -349,10 +347,9 @@ const CampInfoBar = ({
                       breadCrumbRes?.topic_name,
                       "-"
                     )}/1-Agreement`}
+                    className={styles.boldBreadcrumb}
                   >
-                    <a className={styles.boldBreadcrumb}>
-                      {breadCrumbRes?.topic_name}
-                    </a>
+                    {breadCrumbRes?.topic_name}
                   </Link>
                 </>
               ) : (
@@ -400,19 +397,17 @@ const CampInfoBar = ({
                           }}
                           key={index}
                         >
-                          <a>
-                            <span className={styles.slashStyle}>
-                              {" "}
-                              {index !== 0 && "/"}{" "}
-                            </span>
-                            <span
-                              className={
-                                breadCrumbRes?.bread_crumb.length - 1 == index
-                                  ? styles.greenIndicateText
-                                  : styles.boldBreadcrumb
-                              }
-                            >{`${camp?.camp_name}`}</span>
-                          </a>
+                          <span className={styles.slashStyle}>
+                            {" "}
+                            {index !== 0 && "/"}{" "}
+                          </span>
+                          <span
+                            className={
+                              breadCrumbRes?.bread_crumb.length - 1 == index
+                                ? styles.greenIndicateText
+                                : styles.boldBreadcrumb
+                            }
+                          >{`${camp?.camp_name}`}</span>
                         </Link>
                       );
                     })

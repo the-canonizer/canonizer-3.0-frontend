@@ -76,7 +76,7 @@ const CurrentCampCard = ({ loadingIndicator }) => {
                             }&namespace=${topicRecord?.namespace_id || ""}`}
                             passHref
                           >
-                            <a>{campRecord[description.key]}</a>
+                            {campRecord[description.key]}
                           </Link>
                         ) : (
                           campRecord[description.key]
@@ -107,14 +107,10 @@ const CurrentCampCard = ({ loadingIndicator }) => {
                 "-"
               )}`}
             >
-              <a>{K?.exceptionalMessages?.manageCampButton} </a>
+              {K?.exceptionalMessages?.manageCampButton}
             </Link>
           </CustomButton>
         </div>
-
-        {/* <div className="topicDetailsCollapseFooter">
-          <Button className="btn-green">Manage/Edit This Camp</Button>
-        </div> */}
       </Panel>
     </Collapse>
   );

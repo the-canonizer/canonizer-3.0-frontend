@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 import Layout from "../hoc/layout";
@@ -25,11 +25,11 @@ function Home({ current_date }) {
   }, []);
 
   return (
-    <>
+    <Fragment>
       <Layout>
         <HomePageContainer />
       </Layout>
-    </>
+    </Fragment>
   );
 }
 

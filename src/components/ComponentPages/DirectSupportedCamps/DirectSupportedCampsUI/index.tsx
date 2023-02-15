@@ -45,9 +45,7 @@ export default function DirectSupportedCampsUI({
         <span>
           {" "}
           &quot;
-          <Link href={props.title_link}>
-            <a>{props.value}</a>
-          </Link>
+          <Link href={props.title_link}>{props.value}</Link>
           &quot;
         </span>
       </div>
@@ -156,15 +154,13 @@ export default function DirectSupportedCampsUI({
                                 <div className={styles.btndiv}>
                                   {" "}
                                   <span className="count">{tag.id}. </span>
-                                  <Link href={tag.camp_link}>
-                                    <a
-                                      className={styles.Bluecolor}
-                                      draggable="false"
-                                      href="javascript:;"
-                                    >
-                                      {" "}
-                                      {tag.camp_name}
-                                    </a>
+                                  <Link
+                                    href={tag.camp_link}
+                                    className={styles.Bluecolor}
+                                    draggable="false"
+                                  >
+                                    {" "}
+                                    {tag.camp_name}
                                   </Link>
                                 </div>
                                 <CloseCircleOutlined
@@ -241,7 +237,7 @@ export default function DirectSupportedCampsUI({
               <span>
                 &quot;
                 <Link href={removeSupportCampsData.title_link}>
-                  <a>{removeSupportCampsData.title}</a>
+                  {removeSupportCampsData.title}
                 </Link>
                 &quot;
               </span>{" "}

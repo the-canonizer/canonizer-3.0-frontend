@@ -328,7 +328,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                   </a>
                 ) : (
                   <Link href={K?.Network?.URL?.algoInfoUrl}>
-                    <a>Algorithm Information</a>
+                    Algorithm Information
                   </Link>
                 )}
               </Popover>

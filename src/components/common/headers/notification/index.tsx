@@ -145,8 +145,8 @@ const Notifications = () => {
         </Fragment>
       }
       actions={[
-        <Link href="/notifications" passHref key="view_all">
-          <a id="view-all-btn">View All</a>
+        <Link href="/notifications" passHref key="view_all" id="view-all-btn">
+          View All
         </Link>,
       ]}
     >

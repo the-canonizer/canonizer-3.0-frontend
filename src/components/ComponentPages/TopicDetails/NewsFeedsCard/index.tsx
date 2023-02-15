@@ -200,7 +200,7 @@ const NewsFeedsCard = ({ newsFeed }: any) => {
                                     href={news?.parent_camp_url}
                                     id="inherit-btn"
                                   >
-                                    <a>{news?.parent_camp_name}</a>
+                                    {news?.parent_camp_name}
                                   </Link>
                                 </>
                               }

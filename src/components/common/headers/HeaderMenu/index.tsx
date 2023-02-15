@@ -75,7 +75,7 @@ const HeaderMenu = ({ loggedUser }) => {
                   </a>
                 ) : (
                   <Link href={{ pathname: item.link }} passHref>
-                    <a>{item.linkTitle}</a>
+                    {item.linkTitle}
                   </Link>
                 )}
               </li>

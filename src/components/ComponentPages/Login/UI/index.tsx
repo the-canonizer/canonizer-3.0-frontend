@@ -134,14 +134,13 @@ const LoginUi = ({
                 <Form.Item name="remember" valuePropName="checked" noStyle>
                   <Checkbox>Remember Me</Checkbox>
                 </Form.Item>
-                <Link href="/">
-                  <a
-                    id="forgot-password-link"
-                    className={styles["login-form-forgot"]}
-                    onClick={onForgotPasswordClick}
-                  >
-                    Forgot Password
-                  </a>
+                <Link
+                  href="/"
+                  id="forgot-password-link"
+                  className={styles["login-form-forgot"]}
+                  onClick={onForgotPasswordClick}
+                >
+                  Forgot Password
                 </Link>
               </Form.Item>
 

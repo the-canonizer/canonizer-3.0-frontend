@@ -121,7 +121,7 @@ function CompareStatementUI({
                             s1["camp_num"] || ""
                           }&namespace=${s1["namespace_id"] || 1}`}
                         >
-                          <a>{s1?.submitter_nick_name}</a>
+                          {s1?.submitter_nick_name}
                         </Link>
                       </Text>
                     </Paragraph>
@@ -154,7 +154,7 @@ function CompareStatementUI({
                           <Text strong>Camp About URL : </Text>
                           <Text>
                             <Link href={s1?.camp_about_url || ""}>
-                              <a>{s1?.camp_about_url}</a>
+                              {s1?.camp_about_url}
                             </Link>
                           </Text>
                         </Paragraph>
@@ -168,7 +168,7 @@ function CompareStatementUI({
                                 s1["camp_num"] || ""
                               }&namespace=${s1["namespace_id"] || 1}`}
                             >
-                              <a>{s1?.camp_about_nick_name}</a>
+                              {s1?.camp_about_nick_name}
                             </Link>
                           </Text>
                         </Paragraph>
@@ -231,7 +231,7 @@ function CompareStatementUI({
                             s2["camp_num"] || ""
                           }&namespace=${s2["namespace_id"] || 1}`}
                         >
-                          <a>{s2?.submitter_nick_name}</a>
+                          {s2?.submitter_nick_name}
                         </Link>
                       </Text>
                     </Paragraph>
@@ -263,7 +263,7 @@ function CompareStatementUI({
                           <Text strong>Camp About URL : </Text>
                           <Text>
                             <Link href={s2?.camp_about_url || ""}>
-                              <a>{s2?.camp_about_url}</a>
+                              {s2?.camp_about_url}
                             </Link>
                           </Text>
                         </Paragraph>
@@ -277,7 +277,7 @@ function CompareStatementUI({
                                 s2["camp_num"] || ""
                               }&namespace=${s2["namespace_id"] || 1}`}
                             >
-                              <a>{s2?.camp_about_nick_name}</a>
+                              {s2?.camp_about_nick_name}
                             </Link>
                           </Text>
                         </Paragraph>
@@ -364,7 +364,7 @@ function CompareStatementUI({
                             liveStatement["camp_num"] || ""
                           }&namespace=${liveStatement["namespace_id"] || 1}`}
                         >
-                          <a>{liveStatement?.submitter_nick_name}</a>
+                          {liveStatement?.submitter_nick_name}
                         </Link>
                       </Text>
                     </Paragraph>
@@ -396,7 +396,7 @@ function CompareStatementUI({
                           <Text strong>Camp About URL : </Text>
                           <Text>
                             <Link href={liveStatement?.camp_about_url || ""}>
-                              <a>{liveStatement?.camp_about_url}</a>
+                              {liveStatement?.camp_about_url}
                             </Link>
                           </Text>
                         </Paragraph>
@@ -414,7 +414,7 @@ function CompareStatementUI({
                                 liveStatement["namespace_id"] || 1
                               }`}
                             >
-                              <a>{liveStatement?.camp_about_nick_name}</a>
+                              {liveStatement?.camp_about_nick_name}
                             </Link>
                           </Text>
                         </Paragraph>

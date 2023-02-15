@@ -29,10 +29,8 @@ const My404 = () => {
             {`We're sorry, the page you requested could not be found Please go
             back to the homepage`}
           </p>
-          <Link href={""}>
-            <a onClick={goBack} className={styles.btnGoBack}>
-              Go Back
-            </a>
+          <Link href={""} onClick={goBack} className={styles.btnGoBack}>
+            Go Back
           </Link>
         </div>
       </div>

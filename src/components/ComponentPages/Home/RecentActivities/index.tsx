@@ -134,11 +134,10 @@ export default function RecentActivities() {
           <Link
             href={{ pathname: "/activities", query: { tabName: selectedTab } }}
             as="/activities"
+            className={styles.viewAll}
           >
-            <a className={styles.viewAll}>
-              <Text>{ViewAllName}</Text>
-              <i className="icon-angle-right"></i>
-            </a>
+            <Text>{ViewAllName}</Text>
+            <i className="icon-angle-right"></i>
           </Link>
         </div>
       )
@@ -287,15 +286,13 @@ export default function RecentActivities() {
                       }}
                       passHref
                     >
-                      <a>
-                        <Text className={styles.text}>
-                          {activity?.activity?.description}
-                        </Text>
-                        <Text className={styles.secondary} type="secondary">
-                          <i className="icon-calendar"></i>
-                          {covertToTime(activity.updated_at)}
-                        </Text>
-                      </a>
+                      <Text className={styles.text}>
+                        {activity?.activity?.description}
+                      </Text>
+                      <Text className={styles.secondary} type="secondary">
+                        <i className="icon-calendar"></i>
+                        {covertToTime(activity.updated_at)}
+                      </Text>
                     </Link>
                   </List.Item>
                 )}

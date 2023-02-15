@@ -30,9 +30,7 @@ export default function DelegatedSupportCampsUI({
         <span>
           {" "}
           &quot;
-          <Link href={props.title_link}>
-            <a>{props.value}</a>
-          </Link>
+          <Link href={props.title_link}>{props.value}</Link>
           &quot;
         </span>
       </div>
@@ -43,8 +41,8 @@ export default function DelegatedSupportCampsUI({
       <>
         <p>
           {props.id_data} &nbsp;
-          <Link href={props.camp_link}>
-            <a className={styles.Bluecolor}>{props.value}</a>
+          <Link href={props.camp_link} className={styles.Bluecolor}>
+            {props.value}
           </Link>
         </p>
       </>
@@ -56,14 +54,14 @@ export default function DelegatedSupportCampsUI({
         <div className={styles.line_height}>
           <p>
             Support Delegated To:{" "}
-            <Link href={props.supportedto_link}>
-              <a className={styles.Bluecolor}>{props.supportedto}</a>
+            <Link href={props.supportedto_link} className={styles.Bluecolor}>
+              {props.supportedto}
             </Link>
           </p>
           <p>
             Nick Name:{" "}
-            <Link href={props.NickNameLink}>
-              <a className={styles.Bluecolor}>{props.NickName}</a>
+            <Link href={props.NickNameLink} className={styles.Bluecolor}>
+              {props.NickName}
             </Link>
           </p>
         </div>
@@ -213,7 +211,7 @@ export default function DelegatedSupportCampsUI({
               <span>
                 &quot;
                 <Link href={removeSupportCampsData.delegated_to_nick_name_link}>
-                  <a>{removeSupportCampsData.delegated_to_nick_name}</a>
+                  {removeSupportCampsData.delegated_to_nick_name}
                 </Link>
                 &quot;
               </span>{" "}
@@ -221,7 +219,7 @@ export default function DelegatedSupportCampsUI({
               <span className={styles.Bluecolor}>
                 &quot;
                 <Link href={removeSupportCampsData.title_link}>
-                  <a>{removeSupportCampsData.title}</a>
+                  {removeSupportCampsData.title}
                 </Link>
                 &quot;
               </span>{" "}
@@ -273,7 +271,7 @@ export default function DelegatedSupportCampsUI({
             <span className={styles.Bluecolor}>
               &quot;{" "}
               <Link href={viewMoreDataValue.title_link}>
-                <a>{viewMoreDataValue.title}</a>
+                {viewMoreDataValue.title}
               </Link>{" "}
               &quot;
             </span>{" "}
@@ -281,18 +279,20 @@ export default function DelegatedSupportCampsUI({
           <div className={styles.topic_content}>
             <p>
               {messages.labels.supportdelegatedto}{" "}
-              <Link href={viewMoreDataValue.delegated_to_nick_name_link}>
-                <a className={styles.Bluecolor}>
-                  {viewMoreDataValue.delegated_to_nick_name}
-                </a>
+              <Link
+                href={viewMoreDataValue.delegated_to_nick_name_link}
+                className={styles.Bluecolor}
+              >
+                {viewMoreDataValue.delegated_to_nick_name}
               </Link>
             </p>
             <p>
               {messages.labels.nickname}{" "}
-              <Link href={viewMoreDataValue.my_nick_name_link}>
-                <a className={styles.Bluecolor}>
-                  {viewMoreDataValue.my_nick_name}
-                </a>
+              <Link
+                href={viewMoreDataValue.my_nick_name_link}
+                className={styles.Bluecolor}
+              >
+                {viewMoreDataValue.my_nick_name}
               </Link>
             </p>
           </div>

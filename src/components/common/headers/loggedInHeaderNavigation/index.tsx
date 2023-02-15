@@ -94,19 +94,15 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
     <Menu onClick={onClick} className={styles.menuItems}>
       <Menu.Item key="0">
         <Link href="/settings" passHref>
-          <a>
-            <SettingOutlined />
-            Account Settings
-          </a>
+          <SettingOutlined />
+          Account Settings
         </Link>
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item key="1">
         <Link href="/settings?tab=supported_camps" passHref>
-          <a>
-            <CheckCircleOutlined />
-            Supported Camps
-          </a>
+          <CheckCircleOutlined />
+          Supported Camps
         </Link>
       </Menu.Item>
       <Menu.Divider />
@@ -155,7 +151,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
                 <div className="mobile_tag">
                   <Link href="/settings">Account Settings</Link>
                   <Link href="/settings?tab=supported_camps" passHref>
-                    <a>Supported Camps</a>
+                    Supported Camps
                   </Link>
                   <a onClick={logOut}>Log Out</a>
                 </div>

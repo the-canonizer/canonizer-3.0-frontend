@@ -36,9 +36,7 @@ const infoContent = (
         cities to separate topics exclusively for them from the topics of
         general interest. To get a namespace created for your organization,
         contact{" "}
-        <Link href="mailto:support@canonizer.com">
-          <a>support@canonizer.com</a>
-        </Link>
+        <Link href="mailto:support@canonizer.com">support@canonizer.com</Link>
       </p>
     </div>
   </>
@@ -235,11 +233,9 @@ const TopicsList = () => {
   const ViewAllTopics = (
     <div className="text-right">
       {topicsData?.topics?.length ? (
-        <Link href="/browse">
-          <a className={styles.viewAll}>
-            <Text>View All Topics</Text>
-            <i className="icon-angle-right"></i>
-          </a>
+        <Link href="/browse" className={styles.viewAll}>
+          <Text>View All Topics</Text>
+          <i className="icon-angle-right"></i>
         </Link>
       ) : null}
     </div>
@@ -358,25 +354,22 @@ const TopicsList = () => {
                         "-"
                       )}/1-Agreement`,
                     }}
+                    onClick={() => {
+                      handleTopicClick();
+                    }}
                   >
-                    <a
-                      onClick={() => {
-                        handleTopicClick();
-                      }}
-                    >
-                      <Text className={styles.text}>
-                        {isReview
-                          ? item?.tree_structure &&
-                            item?.tree_structure[1].review_title
-                          : item?.topic_name}
-                      </Text>
-                      <Tag className={styles.tag}>
-                        {/* // ? item?.topic_full_score // : item?.full_score?.toFixed(2) */}
-                        {is_checked && isUserAuthenticated
-                          ? item?.topic_full_score?.toFixed(2)
-                          : item?.topic_score?.toFixed(2)}
-                      </Tag>
-                    </a>
+                    <Text className={styles.text}>
+                      {isReview
+                        ? item?.tree_structure &&
+                          item?.tree_structure[1].review_title
+                        : item?.topic_name}
+                    </Text>
+                    <Tag className={styles.tag}>
+                      {/* // ? item?.topic_full_score // : item?.full_score?.toFixed(2) */}
+                      {is_checked && isUserAuthenticated
+                        ? item?.topic_full_score?.toFixed(2)
+                        : item?.topic_score?.toFixed(2)}
+                    </Tag>
                   </Link>
                 </>
               </List.Item>

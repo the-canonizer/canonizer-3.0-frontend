@@ -276,12 +276,10 @@ const ThreadListUI = ({
                             }&namespace=${others["namespace_id"] || 1}`}
                             passHref
                           >
-                            <a>
-                              {others["nick_name"] === null ||
-                              others["nick_name"] === ""
-                                ? ""
-                                : others["nick_name"]}
-                            </a>
+                            {others["nick_name"] === null ||
+                            others["nick_name"] === ""
+                              ? ""
+                              : others["nick_name"]}
                           </Link>{" "}
                           {`replied ${moment(getTime(dt))
                             .local()

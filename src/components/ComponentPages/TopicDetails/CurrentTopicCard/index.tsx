@@ -51,7 +51,7 @@ const CurrentTopicCard = ({ loadingIndicator }) => {
                 "-"
               )}`}
             >
-              <a>{K?.exceptionalMessages?.manageTopicButton} </a>
+              {K?.exceptionalMessages?.manageTopicButton}
             </Link>
           </CustomButton>
         </div>

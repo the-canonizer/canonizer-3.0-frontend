@@ -159,10 +159,11 @@ export const UserProfileCard = ({
                                       <div
                                         className={styles.card_heading_title}
                                       >
-                                        <Link href={data.title_link}>
-                                          <a className={styles.Bluecolor}>
-                                            {data.title}{" "}
-                                          </a>
+                                        <Link
+                                          href={data.title_link}
+                                          className={styles.Bluecolor}
+                                        >
+                                          {data.title}{" "}
                                         </Link>
                                         {!data.delegate_nick_name_id ? (
                                           " "
@@ -181,10 +182,9 @@ export const UserProfileCard = ({
                                                   namespace: data?.namespace_id,
                                                 },
                                               }}
+                                              className={styles.Bluecolor}
                                             >
-                                              <a className={styles.Bluecolor}>
-                                                {data.delegate_nick_name})
-                                              </a>
+                                              {data.delegate_nick_name})
                                             </Link>
                                           </div>
                                         )}
@@ -213,10 +213,11 @@ export const UserProfileCard = ({
                                                   {": "}
                                                 </span>
                                               )}
-                                              <Link href={campData.camp_link}>
-                                                <a className={styles.Bluecolor}>
-                                                  {campData.camp_name}
-                                                </a>
+                                              <Link
+                                                href={campData.camp_link}
+                                                className={styles.Bluecolor}
+                                              >
+                                                {campData.camp_name}
                                               </Link>
                                             </div>
                                           </Tag>
@@ -232,10 +233,11 @@ export const UserProfileCard = ({
                                           <span className={styles.count}>
                                             {""}
                                           </span>
-                                          <Link href={data.title_link}>
-                                            <a className={styles.Bluecolor}>
-                                              {"Agreement"}
-                                            </a>
+                                          <Link
+                                            href={data.title_link}
+                                            className={styles.Bluecolor}
+                                          >
+                                            {"Agreement"}
                                           </Link>
                                         </div>
                                       </Tag>

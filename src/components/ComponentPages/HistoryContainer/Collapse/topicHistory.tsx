@@ -31,7 +31,7 @@ const TopicHistory = ({ campStatement, topicNamespaceId }: any) => {
             }&namespace=${topicNamespaceId || ""}`}
             passHref
           >
-            <a>{campStatement?.submitter_nick_name}</a>
+            {campStatement?.submitter_nick_name}
           </Link>
         </span>
       </Title>
@@ -56,7 +56,7 @@ const TopicHistory = ({ campStatement, topicNamespaceId }: any) => {
               }&namespace=${topicNamespaceId || ""}`}
               passHref
             >
-              <a> {campStatement?.objector_nick_name}</a>
+              {campStatement?.objector_nick_name}
             </Link>
           </span>
           {/* <span>{campStatement?.objector_nick_name}</span> */}

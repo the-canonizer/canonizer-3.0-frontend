@@ -245,20 +245,17 @@ const CampTree = ({
                                 )
                               : data[item]?.link?.replace("#statement", ""),
                           }}
+                          className={
+                            data[item]?.camp_id ==
+                              router?.query?.camp?.at(1)?.split("-")?.at(0) ??
+                            "1"
+                              ? `font-weight-bold ${styles.activeCamp}`
+                              : ""
+                          }
                         >
-                          <a
-                            className={
-                              data[item]?.camp_id ==
-                                router?.query?.camp?.at(1)?.split("-")?.at(0) ??
-                              "1"
-                                ? `font-weight-bold ${styles.activeCamp}`
-                                : ""
-                            }
-                          >
-                            {includeReview
-                              ? data[item]?.review_title
-                              : data[item]?.title}
-                          </a>
+                          {includeReview
+                            ? data[item]?.review_title
+                            : data[item]?.title}
                         </Link>
                       </span>
                       <span
@@ -317,7 +314,7 @@ const CampTree = ({
                               }`,
                             }}
                           >
-                            <a>{`<Start new supporting camp here>`} </a>
+                            {`<Start new supporting camp here>`}
                           </Link>
                         </p>
                       }

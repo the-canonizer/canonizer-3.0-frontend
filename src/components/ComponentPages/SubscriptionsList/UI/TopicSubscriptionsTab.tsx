@@ -27,9 +27,7 @@ function TopicSubscriptionsTab({
               For Topic{" "}
               <span>
                 &quot;
-                <Link href={data.title_link}>
-                  <a>{data.title}</a>
-                </Link>
+                <Link href={data.title_link}>{data.title}</Link>
                 &quot;
               </span>
             </Title>
@@ -66,8 +64,9 @@ function TopicSubscriptionsTab({
               >
                 <div>
                   <span className={styles.count}>{i + 1}. </span>
-                  <Link href={camp.camp_link}>
-                    <a className={styles.Bluecolor}> {camp.camp_name}</a>
+                  <Link href={camp.camp_link} className={styles.Bluecolor}>
+                    {" "}
+                    {camp.camp_name}
                   </Link>
                 </div>
               </Tag>

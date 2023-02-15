@@ -8,15 +8,13 @@ const LogoHeader = () => {
     <>
       <div className={styles.logo}>
         <Link href="/" passHref>
-          <a>
-            <Image
-              src={`${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/site-images/logo.svg`}
-              alt="Picture of the author"
-              layout="responsive"
-              width={200}
-              height={42}
-            />
-          </a>
+          <Image
+            src={`${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/site-images/logo.svg`}
+            alt="Picture of the author"
+            layout="responsive"
+            width={200}
+            height={42}
+          />
         </Link>
       </div>
     </>

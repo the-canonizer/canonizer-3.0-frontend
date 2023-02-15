@@ -39,15 +39,12 @@ export default function NotificationList({
                     from: "notify_" + item["id"],
                   },
                 }}
+                style={{
+                  color: item["is_read"] === 1 ? "#566f8f" : "#0f2a4d",
+                  fontWeight: item["is_read"] === 1 ? 500 : 600,
+                }}
               >
-                <a
-                  style={{
-                    color: item["is_read"] === 1 ? "#566f8f" : "#0f2a4d",
-                    fontWeight: item["is_read"] === 1 ? 500 : 600,
-                  }}
-                >
-                  {item["message_body"]}
-                </a>
+                {item["message_body"]}
               </Link>
             }
             description={moment(getTime(item["created_at"]))

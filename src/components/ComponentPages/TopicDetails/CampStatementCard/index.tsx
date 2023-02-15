@@ -86,11 +86,9 @@ const CampStatementCard = ({ loadingIndicator }) => {
                     )}`
               }
             >
-              <a>
-                {history?.items?.length > 0
-                  ? K?.exceptionalMessages?.manageCampStatementButton
-                  : K?.exceptionalMessages?.addCampStatementButton}
-              </a>
+              {history?.items?.length > 0
+                ? K?.exceptionalMessages?.manageCampStatementButton
+                : K?.exceptionalMessages?.addCampStatementButton}
             </Link>
           </CustomButton>
         </div>

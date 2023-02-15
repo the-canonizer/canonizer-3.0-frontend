@@ -97,16 +97,13 @@ const CampTreeCard = ({
                       href={{
                         pathname: router.asPath.replace("topic", "addnews"),
                       }}
+                      className={styles.addNew}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                      }}
                     >
-                      <a
-                        className={styles.addNew}
-                        onClick={(event) => {
-                          event.stopPropagation();
-                        }}
-                      >
-                        <i className={"icon-fi-document " + styles.iconMr} />
-                        Add News
-                      </a>
+                      <i className={"icon-fi-document " + styles.iconMr} />
+                      Add News
                     </Link>
                   )}
                   <Popover content={addContent} placement="left">

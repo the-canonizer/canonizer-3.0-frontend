@@ -1252,7 +1252,7 @@ export default function AddOrManage({ add }: any) {
 
               <Descriptions.Item label="Camp About URL">
                 <Link href={form?.getFieldValue("camp_about_url") || ""}>
-                  <a>{form?.getFieldValue("camp_about_url") || ""}</a>
+                  {form?.getFieldValue("camp_about_url") || ""}
                 </Link>
               </Descriptions.Item>
 
@@ -1269,15 +1269,13 @@ export default function AddOrManage({ add }: any) {
                   }`}
                   passHref
                 >
-                  <a>
-                    {" "}
-                    {
-                      campNickName?.find(
-                        (id) =>
-                          id?.id == form?.getFieldValue("camp_about_nick_name")
-                      )?.nick_name
-                    }
-                  </a>
+                  {" "}
+                  {
+                    campNickName?.find(
+                      (id) =>
+                        id?.id == form?.getFieldValue("camp_about_nick_name")
+                    )?.nick_name
+                  }
                 </Link>
               </Descriptions.Item>
             </>
@@ -1307,14 +1305,12 @@ export default function AddOrManage({ add }: any) {
               }`}
               passHref
             >
-              <a>
-                {" "}
-                {
-                  nickNameData?.find(
-                    (id) => id?.id == form?.getFieldValue("nick_name")
-                  )?.nick_name
-                }
-              </a>
+              {" "}
+              {
+                nickNameData?.find(
+                  (id) => id?.id == form?.getFieldValue("nick_name")
+                )?.nick_name
+              }
             </Link>
           </Descriptions.Item>
         </Descriptions>

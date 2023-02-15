@@ -167,10 +167,10 @@ const SupportTreeCard = ({
                       >
                         {
                           <div>
-                            <a className={styles.Bluecolor}>
+                            <span className={styles.Bluecolor}>
                               {data[item].support_order}:
-                            </a>
-                            <a>{data[item].nick_name}</a>
+                            </span>
+                            <span>{data[item].nick_name}</span>
                           </div>
                         }
                       </Link>
@@ -202,16 +202,14 @@ const SupportTreeCard = ({
                             ) > -1 ? (
                               ""
                             ) : (
-                              <a>
-                                <Button
-                                  id="supportTreeDelegateYourSupport"
-                                  disabled={asof == "bydate"}
-                                  onClick={handleDelegatedClick}
-                                  className="delegate-support-style"
-                                >
-                                  {"Delegate Your Support"}
-                                </Button>
-                              </a>
+                              <Button
+                                id="supportTreeDelegateYourSupport"
+                                disabled={asof == "bydate"}
+                                onClick={handleDelegatedClick}
+                                className="delegate-support-style"
+                              >
+                                {"Delegate Your Support"}
+                              </Button>
                             )}
                           </Link>
                         ) : (
@@ -326,18 +324,13 @@ const SupportTreeCard = ({
             onClick={handleClickSupportCheck}
           >
             <Link href={manageSupportPath}>
-              <a>
-                <CustomButton
-                  className="btn-orange"
-                  disabled={asof == "bydate"}
-                >
-                  {/* {K?.exceptionalMessages?.directJoinSupport} */}
-                  {getCheckSupportStatus?.is_delegator == 1 ||
-                  getCheckSupportStatus?.support_flag != 1
-                    ? K?.exceptionalMessages?.directJoinSupport
-                    : K?.exceptionalMessages?.manageSupport}
-                </CustomButton>
-              </a>
+              <CustomButton className="btn-orange" disabled={asof == "bydate"}>
+                {/* {K?.exceptionalMessages?.directJoinSupport} */}
+                {getCheckSupportStatus?.is_delegator == 1 ||
+                getCheckSupportStatus?.support_flag != 1
+                  ? K?.exceptionalMessages?.directJoinSupport
+                  : K?.exceptionalMessages?.manageSupport}
+              </CustomButton>
             </Link>
           </div>
         </Panel>
