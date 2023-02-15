@@ -8,10 +8,6 @@ const CampInfoBar = () => {
   const [loadingIndicator, setLoadingIndicator] = useState(false);
 
   const router = useRouter();
-  // console.log("rouref", router.query.camp[0].split("-").slice(1).join(" "));
-  console.log("id ->", router.query.camp[0].split("-")[0]);
-
-  console.log("id ->", router.query.camp[1].split("-")[0]);
 
   return (
     <>
