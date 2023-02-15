@@ -169,7 +169,7 @@ export default function CanonVideos() {
   return (
     <>
       <div className="w-100 pt-4 pb-4 ">
-        <Title className="text-center" level={1}>
+        <Title className={`text-center ${styles.pageTitle}`} level={1}>
           Consciousness: Not a Hard Problem, Just a Color Problem
         </Title>
       </div>
@@ -255,7 +255,7 @@ export default function CanonVideos() {
                 ></track>
               </video>
               <div
-                className="video-chap-content"
+                className={`video-chap-content ${styles.vttComtainer}`}
                 dangerouslySetInnerHTML={{
                   __html: topic,
                 }}
