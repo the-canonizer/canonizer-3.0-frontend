@@ -153,24 +153,47 @@ function RacingBarChart({ data }) {
     //   .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 - 8);
 
         // Draw lines 
-        svg
-        .selectAll(".line")
-          .data(data, (entry, index) => index)
-          .join((enter) =>
-          enter
-          .append('line')
-    .style("stroke", "lightgreen")
-    .style("stroke-width", 10)
-    .attr("x1", 0)
-    .attr("y1", 0)
-    .attr("x2", 0)
-    .attr("y2", 200)
-        )
+        for(let i=0; i<10; i++){
+
+          svg
+          .selectAll(`.line${i}`)
+            .data(data, (entry, index) => index)
+            .join((enter) =>
+            enter
+            .append('line')
+      .style("stroke", "lightgreen")
+      .style("stroke-width", 2)
+      .attr("x1",  57 + i * 30)
+      .attr("y1", 50)
+      .attr("x2", 57 + i * 30)
+      .attr("y2", 638)
+          )
           // .text((entry) => ` ${entry.title} `) 
           .attr("class", "line")
           // .attr("x", (entry) => manageXAxis(entry) + 20)
           .transition()
           // .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5);
+        }
+
+    //     svg
+    //     .selectAll(".line1")
+    //       .data(data, (entry, index) => index)
+    //       .join((enter) =>
+    //       enter
+    //       .append('line')
+    // .style("stroke", "lightgreen")
+    // .style("stroke-width", 2)
+    // .attr("x1",  87)
+    // .attr("y1", 50)
+    // .attr("x2", 87)
+    // .attr("y2", 638)
+    //     )
+    //     // .text((entry) => ` ${entry.title} `) 
+    //     .attr("class", "line")
+    //     // .attr("x", (entry) => manageXAxis(entry) + 20)
+    //     .transition()
+    //     // .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5);
+    //   // }
 
   }, [data, dimensions]);
 
