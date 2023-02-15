@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import { select, scaleBand, scaleLinear, max } from "d3";
+import { select, scaleBand, scaleLinear, max , linkHorizontal} from "d3";
 import useResizeObserver from "./useResizeObserver";
 
 function RacingBarChart({ data }) {
@@ -28,6 +28,11 @@ function RacingBarChart({ data }) {
     // sorting the data
     // data.sort((a, b) => b.value - a.value);
 
+    const linkGenerator = linkHorizontal()
+    // .x(link => link.y)
+    // .y(link => link.x);
+
+
     const yScale = scaleBand()
       .paddingInner(0.1)
       .domain(data?.map((value, index) => index)) // [0,1,2,3,4,5]
@@ -38,6 +43,40 @@ function RacingBarChart({ data }) {
       .range([0, 900]); // [0, 400 (example)]
     // console.log("yScale", yScale);
     // console.log("xScale", xScale);
+
+
+    // var today = new Date();
+    // svg.append("line")
+    // .attr("x1", today)  //<<== change your code here
+    // .attr("y1", 0)
+    // .attr("x2", today)  //<<== and here
+    // .attr("y2", 40)
+    // .style("stroke-width", 2)
+    // .style("stroke", "red")
+    // .style("fill", "none");
+
+    
+
+
+    // Add minus square icon
+    svg
+    .selectAll(".icon")
+      .data(data, (entry, index) => entry.title)
+      .join((enter) =>
+      enter
+      .append("image")
+      .attr("class", "circle")
+      .attr("href", (entry) => entry.level == 2 || entry.level == 3 ? "/images/minus-square.svg" : '')
+      .attr("height", 14)
+      .attr("width", 14)
+    )
+    .text((entry) => ` ${entry.title} `) 
+      .attr("class", "icon")
+      .attr("x", (entry) => manageXAxis(entry) - 10 )
+      .transition()
+      .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 - 8);
+
+  
 
     // draw the Title labels
     svg
@@ -94,6 +133,44 @@ function RacingBarChart({ data }) {
         .attr("x", (entry) => manageBarXAxis(entry) + 7)
         .transition()
         .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5);
+
+
+    //     svg
+    // .selectAll(".icon")
+    //   .data(data, (entry, index) => entry.title)
+    //   .join((enter) =>
+    //   enter
+    //   .append("image")
+    //   .attr("class", "circle")
+    //   .attr("href", (entry) => entry.level == 2 || entry.level == 3 ? "/images/minus-square.svg" : '')
+    //   .attr("height", 14)
+    //   .attr("width", 14)
+    // )
+    // .text((entry) => ` ${entry.title} `) 
+    //   .attr("class", "icon")
+    //   .attr("x", (entry) => manageXAxis(entry) - 10 )
+    //   .transition()
+    //   .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 - 8);
+
+        // Draw lines 
+        svg
+        .selectAll(".line")
+          .data(data, (entry, index) => index)
+          .join((enter) =>
+          enter
+          .append('line')
+    .style("stroke", "lightgreen")
+    .style("stroke-width", 10)
+    .attr("x1", 0)
+    .attr("y1", 0)
+    .attr("x2", 0)
+    .attr("y2", 200)
+        )
+          // .text((entry) => ` ${entry.title} `) 
+          .attr("class", "line")
+          // .attr("x", (entry) => manageXAxis(entry) + 20)
+          .transition()
+          // .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5);
 
   }, [data, dimensions]);
 

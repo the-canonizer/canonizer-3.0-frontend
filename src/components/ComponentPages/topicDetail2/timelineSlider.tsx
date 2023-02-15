@@ -10,7 +10,7 @@ import {
 } from "@ant-design/icons";
 import styles from "./timeBarControl.module.scss";
 
-function TimelineSlider() {
+function TimelineSlider({setStart, start}) {
   const mainData = [
     {
       id: 0,
@@ -4027,7 +4027,7 @@ function TimelineSlider() {
 
   const handleClick = () => {
     console.log("isplay 1", isPlaying);
-
+   setStart(!start)
     console.log("forw 1", isPlaying);
     if (isPlaying) {
       clearInterval(intervalId);
