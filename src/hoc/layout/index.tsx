@@ -14,7 +14,6 @@ function Layout(props: any) {
   const { isUserAuthenticated } = useAuthentication();
 
   const [log, setLog] = useState(isUserAuthenticated);
-  console.log("router", router);
 
   useEffect(() => setLog(isUserAuthenticated), [isUserAuthenticated]);
 

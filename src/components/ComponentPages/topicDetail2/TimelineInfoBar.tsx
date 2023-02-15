@@ -1,35 +1,17 @@
-import { Button, Spin, Tooltip, Typography } from "antd";
+import { Button, Spin, Typography } from "antd";
 import { useRouter } from "next/router";
-import { useState, useEffect, useRef, Fragment } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "src/store";
+import { useState } from "react";
 import styles from "./topicDetails.module.scss";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 
-import useAuthentication from "../../../hooks/isUserAuthenticated";
-
 const CampInfoBar = () => {
-  const { isUserAuthenticated } = useAuthentication();
-
-  const dispatch = useDispatch();
   const [loadingIndicator, setLoadingIndicator] = useState(false);
-  //   const [payloadData, setPayloadData] = useState(payload);
-  const [breadCrumbRes, setBreadCrumbRes] = useState({
-    topic_name: "",
-    bread_crumb: [],
-  });
-  const didMount = useRef(false);
+
   const router = useRouter();
-  const { topicRecord, campRecord } = useSelector((state: RootState) => ({
-    topicRecord: state?.topicDetails?.currentTopicRecord,
-    campRecord: state?.topicDetails?.currentCampRecord,
-  }));
-  const [campSubscriptionID, setCampSubscriptionID] = useState(
-    campRecord?.subscriptionId
-  );
-  const [topicSubscriptionID, setTopicSubscriptionID] = useState(
-    topicRecord?.topicSubscriptionId
-  );
+  // console.log("rouref", router.query.camp[0].split("-").slice(1).join(" "));
+  console.log("id ->", router.query.camp[0].split("-")[0]);
+
+  console.log("id ->", router.query.camp[1].split("-")[0]);
 
   return (
     <>
@@ -40,6 +22,9 @@ const CampInfoBar = () => {
               className={styles.backButton}
               type="text"
               icon={<ArrowLeftOutlined />}
+              onClick={() =>
+                router.push(router.asPath.replace("timelinetest", "topic"))
+              }
             >
               Back
             </Button>
@@ -54,7 +39,10 @@ const CampInfoBar = () => {
               }
             >
               {" "}
-              <span className="bold"> Topic : Theories of Consciousness</span>
+              <span className="bold">
+                {" "}
+                Topic : {router.query.camp[0].split("-").slice(1).join(" ")}
+              </span>
             </Typography.Paragraph>
           </div>
         </Spin>

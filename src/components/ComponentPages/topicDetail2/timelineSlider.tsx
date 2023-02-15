@@ -4026,9 +4026,6 @@ function TimelineSlider() {
   const [showData, setShowData] = useState("zero");
 
   const handleClick = () => {
-    console.log("isplay 1", isPlaying);
-
-    console.log("forw 1", isPlaying);
     if (isPlaying) {
       clearInterval(intervalId);
       setIntervalId(null);
@@ -4037,23 +4034,13 @@ function TimelineSlider() {
     } else {
       const id = setInterval(() => {
         setCount((c) => c + 1);
-
-        console.log("isplay 2", isPlaying);
-
-        console.log("forw 2", isPlaying);
       }, 1000);
 
-      console.log("isplay 3", isPlaying);
-
-      console.log("forw 3", isPlaying);
       setIntervalId(id);
       setIsPlaying(true);
     }
   };
   const handleClickForward = () => {
-    console.log("isplay 1.f", isPlaying);
-
-    console.log("forw 1.f", isPlaying);
     if (forward) {
       clearInterval(intervalId);
       setIntervalId(null);
@@ -4062,13 +4049,8 @@ function TimelineSlider() {
     } else {
       const id = setInterval(() => {
         setCount((c) => c + 1);
-        console.log("isplay 2.f", isPlaying);
-
-        console.log("forw 2.f", isPlaying);
       }, 100);
-      console.log("isplay 3.f", isPlaying);
 
-      console.log("forw 3.f", isPlaying);
       setIntervalId(id);
       setForward(true);
     }
@@ -4097,7 +4079,6 @@ function TimelineSlider() {
   };
   useEffect(() => {
     let a = mainData.filter((id) => id.id === count);
-    console.log("a value 0.2 ", a);
 
     setShowData(a[0].data);
   }, [count]);
