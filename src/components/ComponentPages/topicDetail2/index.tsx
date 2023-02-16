@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import TimelineSlider from "./timelineSlider";
 
+import CampRecentActivities from "@/components/ComponentPages/Home/CampRecentActivities";
+
 import { RootState } from "src/store";
 import SideBarTimeline from "../Home/SideBarTimeline";
 import TimelineInfoBar from "./TimelineInfoBar";
@@ -49,6 +51,8 @@ const TopicDetails = () => {
     viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
   }));
 
+  const [timelineDescript, setTimelineDescript] = useState("");
+
   const setCurrentTopics = (data) => dispatch(setCurrentTopic(data));
 
   const onCreateCamp = () => {
@@ -86,7 +90,9 @@ const TopicDetails = () => {
         </aside>
 
         <>
-          <div className={styles.pageContent + " pageContentWrap"}>
+          <div
+            className={styles.pageContent + " pageContentWrap timelineContent"}
+          >
             {" "}
             <Collapse
               defaultActiveKey={["1"]}
@@ -98,12 +104,17 @@ const TopicDetails = () => {
                 header={<h3>Canonizer Sorted Camp Race</h3>}
                 key="1"
               >
-                
-                <TimeLine />
+                <TimeLine
+                  timelineDescript={timelineDescript}
+                  setTimelineDescript={setTimelineDescript}
+                />
               </Panel>
             </Collapse>
           </div>
         </>
+        <aside className={"timelineRightSidebar"}>
+          <CampRecentActivities timelineDescript={timelineDescript} />
+        </aside>
       </div>
       <BackTop />
     </>

@@ -10,7 +10,7 @@ import {
 } from "@ant-design/icons";
 import styles from "./timeBarControl.module.scss";
 
-function TimelineSlider({ setStart, start }) {
+function TimelineSlider({ setStart, start, setTimelineDescript }) {
   const mockData = {
     1228141435: {
       event: {
@@ -477,13 +477,12 @@ function TimelineSlider({ setStart, start }) {
   };
   const [count, setCount] = useState(0);
 
-  const [count2, setCount2] = useState("1228141435");
   const [forward, setForward] = useState(false);
   const [backward, setbackward] = useState(false);
   const [intervalId, setIntervalId] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const [showData2, setShowData2] = useState(mockData["1228141435"]);
+  const [showData, setShowData] = useState({});
   const handleClick = () => {
     setStart(!start);
     if (isPlaying) {
@@ -538,9 +537,9 @@ function TimelineSlider({ setStart, start }) {
   //   },
   // };
   useEffect(() => {
-    let show2 = Object.keys(mockData)[count];
-    setCount2(show2);
-    setShowData2(mockData[show2]);
+    let showkey = Object.keys(mockData)[count];
+    setShowData(mockData[showkey]);
+    setTimelineDescript(mockData[showkey]?.event?.description);
   }, [count]);
 
   return (
@@ -567,7 +566,7 @@ function TimelineSlider({ setStart, start }) {
         min={0}
         max={Object.keys(mockData).length - 1}
       />
-      <h1>data = {showData2.event.description}</h1>
+      <h1>data = {showData?.event?.description}</h1>
     </>
   );
 }

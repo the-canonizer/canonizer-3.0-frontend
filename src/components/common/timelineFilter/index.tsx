@@ -371,36 +371,32 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
               </Space>
             </Radio.Group>
           </Panel>
-          {isAuth.isUserAuthenticated ? (
-            <Panel
-              header={
-                <span className={styles.title}>
-                  Date Range{" "}
-                  <Popover content={asContent} placement="right">
-                    <i className="icon-info"></i>
-                  </Popover>
-                </span>
+          <Panel
+            header={
+              <span className={styles.title}>
+                Date Range{" "}
+                <Popover content={asContent} placement="right">
+                  <i className="icon-info"></i>
+                </Popover>
+              </span>
+            }
+            key="3"
+          >
+            <DatePicker
+              disabled={isDatePicker || selectedAsOf == "bydate" ? false : true}
+              format="YYYY-MM-DD"
+              defaultValue={moment(current_date_filter * 1000)}
+              value={moment(selectedAsOFDate * 1000)}
+              suffixIcon={<i className="icon-calendar"></i>}
+              size={"large"}
+              className={`${styles.date} w-100`}
+              onChange={pickDate}
+              inputReadOnly={true}
+              disabledDate={(current) =>
+                current && current > moment(current_date_filter).endOf("day")
               }
-              key="3"
-            >
-              <DatePicker
-                disabled={
-                  isDatePicker || selectedAsOf == "bydate" ? false : true
-                }
-                format="YYYY-MM-DD"
-                defaultValue={moment(current_date_filter * 1000)}
-                value={moment(selectedAsOFDate * 1000)}
-                suffixIcon={<i className="icon-calendar"></i>}
-                size={"large"}
-                className={`${styles.date} w-100`}
-                onChange={pickDate}
-                inputReadOnly={true}
-                disabledDate={(current) =>
-                  current && current > moment(current_date_filter).endOf("day")
-                }
-              />
-            </Panel>
-          ) : null}
+            />
+          </Panel>
         </Collapse>
       </div>
     </>

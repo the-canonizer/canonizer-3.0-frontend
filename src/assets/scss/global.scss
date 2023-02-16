@@ -212,8 +212,14 @@ body {
   &.miniSideBar {
     @media screen and (min-width: 992px) {
       width: 300px;
-      & + .pageContentWrap {
+      & + .pageContentWrap:not(.timelineContent) {
         width: calc(100% - 300px);
+      }
+      & + .pageContentWrap.timelineContent {
+        width: calc(100% - 550px);
+        & + .timelineRightSidebar {
+          width: 250px;
+        }
       }
     }
     @media screen and (max-width: 991px) {
@@ -221,6 +227,11 @@ body {
       & + .pageContentWrap {
         width: 100%;
         margin: 0;
+        &.timelineContent {
+          & + .timelineRightSidebar {
+            width: 100%;
+          }
+        }
       }
     }
     @media screen and (max-width: 767px) {

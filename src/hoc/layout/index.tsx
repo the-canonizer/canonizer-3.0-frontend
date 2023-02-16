@@ -22,19 +22,28 @@ function Layout(props: any) {
       <div className={styles.pageWrap}>
         {isUserAuthenticated ? <LoggedInHeader /> : <LoggedOutHeader />}
         <div className={styles.contentWrap}>
-          <div className={styles.contentArea}>{props.children} </div>
-          <aside className={styles.rightSidebar}>
-            {router.asPath.includes("timelinetest") ? (
-              <div className={styles.recentActivitySider}>
-                <CampRecentActivities />
-              </div>
-            ) : (
+          <div
+            className={
+              styles.contentArea +
+              " " +
+              `${
+                router.asPath.includes("timelinetest")
+                  ? styles.timelineLayout
+                  : ""
+              }`
+            }
+          >
+            {props.children}{" "}
+          </div>
+
+          {!router.asPath.includes("timelinetest") && (
+            <aside className={styles.rightSidebar}>
               <GoogleAd
                 ad_client={process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}
                 ad_slot={process.env.NEXT_PUBLIC_GOOGLE_ADS_RIGHT_SLOT}
               />
-            )}
-          </aside>
+            </aside>
+          )}
         </div>
         <Footer />
       </div>
