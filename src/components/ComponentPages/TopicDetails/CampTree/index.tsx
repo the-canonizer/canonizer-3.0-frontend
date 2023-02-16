@@ -267,9 +267,13 @@ const CampTree = ({
                         }
                         style={{
                           width:
-                            (data[item].score * 460) / tree?.at(0)["1"].score +
-                            40,
-                          justifyContent: "flex-start",
+                            data[item].score > 5
+                              ? (data[item].score * 460) /
+                                  tree?.at(0)["1"].score +
+                                40
+                              : "",
+                          justifyContent:
+                            data[item].score > 5 ? "flex-start" : "",
                         }}
                       >
                         {/* data[item].topic_score
