@@ -61,8 +61,6 @@ import {
 } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
-//import htmlToDraft from "html-to-draftjs";
-//import { Editor } from 'react-draft-wysiwyg';
 const Editor: any = dynamic(
   () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
   { ssr: false }

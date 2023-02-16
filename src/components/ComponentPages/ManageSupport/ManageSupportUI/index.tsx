@@ -193,15 +193,6 @@ const ManageSupportUI = ({
       setSelectedtNickname(nickNameList[0]?.id);
     }
   }, [nickNameList]);
-  // let tagsArrayList1 = [];
-  // {
-  //   manageSupportList && manageSupportList.length > 0
-  //     ? ((tagsArrayList = manageSupportList),
-  //       tagsArrayList.forEach((obj) => {
-  //         obj.id = obj.camp_num;
-  //       }))
-  //     : "";
-  // }
 
   useEffect(() => {
     if (manageSupportList && manageSupportList.length > 0) {

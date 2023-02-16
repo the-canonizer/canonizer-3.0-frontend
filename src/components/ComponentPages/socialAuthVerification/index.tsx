@@ -51,9 +51,6 @@ function SocialAuthVerification() {
     const res = await socialLogin(body);
 
     if (res && res.status_code === 200) {
-      // dispatch(
-      //   setValue({ label: "redirect_tab_setting", value: "tab=social" })
-      // );
       localStorage.setItem("redirectTab", "tab=social");
       window.location.href = res.data.url;
     }

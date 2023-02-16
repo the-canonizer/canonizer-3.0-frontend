@@ -8,13 +8,15 @@ import { RootState } from "src/store";
 import TopicsFilter from "../../../common/topicsFilter";
 import CampRecentActivities from "../CampRecentActivities";
 import NewsFeedsCard from "../../TopicDetails/NewsFeedsCard";
-import GoogleAd from "../../../googleAds";
 import useAuthentication from "src/hooks/isUserAuthenticated";
+import useHasMounted from "src/hooks/useHasMounted";
 
 export default function HomeSideBar({ onCreateCamp = () => {} }: any) {
   const { isUserAuthenticated } = useAuthentication();
+  const hasMounted = useHasMounted();
 
   const [isAuth, setIsAuth] = useState(isUserAuthenticated);
+  const [isClient, setIsClient] = useState(false);
 
   const router = useRouter();
 
@@ -34,10 +36,20 @@ export default function HomeSideBar({ onCreateCamp = () => {} }: any) {
 
   useEffect(() => setIsAuth(isUserAuthenticated), [isUserAuthenticated]);
 
+  useEffect(() => {
+    if (hasMounted) {
+      if (typeof window !== "undefined" && window.innerWidth > 767) {
+        setIsClient(true);
+      } else {
+        setIsClient(false);
+      }
+    }
+  }, []);
+
   return (
     <Fragment>
       {" "}
-      {typeof window !== "undefined" && window.innerWidth > 767 ? (
+      {isClient ? (
         <TopicsFilter onCreateCamp={onCreateCamp} />
       ) : (
         <Fragment>
@@ -48,21 +60,18 @@ export default function HomeSideBar({ onCreateCamp = () => {} }: any) {
             title="Filters"
             placement="right"
             onClose={onClose}
-            visible={visible}
+            open={visible}
           >
             <TopicsFilter onCreateCamp={onCreateCamp} />
           </Drawer>
         </Fragment>
       )}
-      {typeof window !== "undefined" &&
-        window.innerWidth > 767 &&
-        router.asPath.includes("topic") &&
-        isAuth && (
-          <Fragment>
-            {<CampRecentActivities />}
-            {!!newsFeed?.length && <NewsFeedsCard newsFeed={newsFeed} />}
-          </Fragment>
-        )}
+      {isClient && router.asPath.includes("topic") && isAuth && (
+        <Fragment>
+          {<CampRecentActivities />}
+          {!!newsFeed?.length && <NewsFeedsCard newsFeed={newsFeed} />}
+        </Fragment>
+      )}
     </Fragment>
   );
 }

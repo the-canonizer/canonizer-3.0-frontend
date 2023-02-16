@@ -5,16 +5,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
 import CustomSkelton from "../../common/customSkelton";
 
-//  "../../../store/slices/filtersSlice";
 import {
   getCanonizedCampStatementApi,
   getNewsFeedApi,
   getTreesApi,
-  getCanonizedCampSupportingTreeApi,
   getCurrentTopicRecordApi,
   getCurrentCampRecordApi,
 } from "src/network/api/campDetailApi";
-import { fallBackSrc } from "src/assets/data-images";
 import { RootState } from "src/store";
 import SideBar from "../Home/SideBar";
 import CampStatementCard from "./CampStatementCard";
@@ -25,7 +22,7 @@ import CurrentCampCard from "./CurrentCampCard";
 import CurrentTopicCard from "./CurrentTopicCard";
 import NewsFeedsCard from "./NewsFeedsCard";
 import SupportTreeCard from "./SupportTreeCard";
-import { BackTop, Image, Typography, message, Alert } from "antd";
+import { BackTop, Typography, message, Alert } from "antd";
 import { Spin } from "antd";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
@@ -52,9 +49,10 @@ import {
   removeSupportedCampsEntireTopic,
 } from "src/network/api/userApi";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
-import { SupportTreeTotalScore } from "src/network/api/campDetailApi";
+import useHasMounted from "src/hooks/useHasMounted";
 
 const TopicDetails = () => {
+  const hadMounted = useHasMounted();
   let myRefToCampStatement = useRef(null);
   const { isUserAuthenticated } = isAuth();
   const [loadingIndicator, setLoadingIndicator] = useState(false);
@@ -68,6 +66,7 @@ const TopicDetails = () => {
   const [totalCampScoreForSupportTree, setTotalCampScoreForSupportTree] =
     useState<number>(null);
   const [supportTreeForCamp, setSupportTreeForCamp] = useState<number>(null);
+  const [isClient, setIsClient] = useState<boolean>(false);
   const router = useRouter();
   const dispatch = useDispatch();
   const {
@@ -145,7 +144,7 @@ const TopicDetails = () => {
         getCanonizedAlgorithmsApi(),
         getTreesApi(reqBodyForService),
       ]);
-      //getCanonizedCampSupportingTreeApi(reqBody, algorithm);
+
       const reponse = await GetActiveSupportTopic(topicNum && body);
       if (reponse?.status_code == 200) {
         setTopicList(reponse?.data);
@@ -188,9 +187,7 @@ const TopicDetails = () => {
       message.success(res.message);
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
-      //getCanonizedCampSupportingTreeApi(reqBody, algorithm);
       getTreesApi(reqBodyForService);
-      // fetchTotalScore();
     }
   };
   const removeSupport = async (supportedId) => {
@@ -221,9 +218,7 @@ const TopicDetails = () => {
       message.success(res.message);
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
-      //getCanonizedCampSupportingTreeApi(reqBody, algorithm);
       getTreesApi(reqBodyForService);
-      // fetchTotalScore();
     }
   };
   const removeSupportForDelegate = async () => {
@@ -249,51 +244,22 @@ const TopicDetails = () => {
       message.success(res.message);
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
-      //getCanonizedCampSupportingTreeApi(reqBody, algorithm);
       getTreesApi(reqBodyForService);
-      // fetchTotalScore();
     }
   };
-
-  // const totalScoreData = {
-  //   topic_num: +router?.query?.camp[0]?.split("-")[0],
-  //   camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
-  //   asOf: asof,
-  //   asofdate:
-  //     asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
-  //   algorithm: algorithm,
-  // };
-
-  // const fetchTotalScore = async () => {
-  //   const CampTotalScore = {
-  //     topic_num: totalScoreData.topic_num,
-  //     camp_num: totalScoreData.camp_num,
-  //     asOf: totalScoreData.asOf,
-  //     asofdate: totalScoreData.asofdate,
-  //     algorithm: totalScoreData.algorithm,
-  //   };
-  //   let response = await SupportTreeTotalScore(CampTotalScore);
-  //   if (response && response.status_code == 200) {
-  //     setTotalSupportScore(response.data.score);
-  //     setTotalFullSupportScore(response.data.full_score);
-  //   }
-  // };
 
   const GetCheckStatusData = async () => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
     if (response && response.status_code === 200) {
       setGetCheckSupportStatus(response.data);
-      //dispatch remove
       dispatch(setCurrentCheckSupportStatus(""));
       dispatch(setCheckSupportExistsData(""));
-      //dispatch add Values data
       dispatch(
         setCurrentCheckSupportStatus(
           response.data.warning ? response.data.warning : ""
         )
       );
       dispatch(setCheckSupportExistsData(response.data));
-      // dispatch(setManageSupportStatusCheck(true));
     }
   };
   const handleSupportTreeCardCancel = () => {
@@ -303,7 +269,6 @@ const TopicDetails = () => {
     if (isUserAuthenticated) {
       GetCheckStatusData();
     }
-    // fetchTotalScore();
   }, [isUserAuthenticated, router, algorithm]);
 
   const scrollToCampStatement = () => {
@@ -312,14 +277,11 @@ const TopicDetails = () => {
 
   const handleLoadMoreSupporters = async () => {
     const reqBody = { topic_num: 45, camp_num: 1 };
-    //await getCanonizedCampSupportingTreeApi(reqBody, algorithm, true);
   };
 
   const setCurrentTopics = (data) => dispatch(setCurrentTopic(data));
 
   const onCreateCamp = () => {
-    // const queryParams = router.query;
-
     const data = {
       message: null,
       topic_num: topicRecord?.topic_num,
@@ -342,30 +304,6 @@ const TopicDetails = () => {
     setCurrentTopics(data);
   };
 
-  const onCampForumClick = async () => {
-    const topicName = await topicRecord?.topic_name?.replaceAll(" ", "-"),
-      topicNum = topicRecord?.topic_num,
-      campName = await campRecord?.camp_name?.replaceAll(" ", "-"),
-      campNum = campRecord?.camp_num;
-
-    if (topicName && topicNum && campName && campNum) {
-      router.push({
-        pathname: `/forum/${topicNum}-${replaceSpecialCharacters(
-          topicName,
-          "-"
-        )}/${campNum}-${replaceSpecialCharacters(campName, "-")}/threads`,
-      });
-    }
-  };
-
-  const onCreateTreeDate = () => {
-    dispatch(
-      setFilterCanonizedTopics({
-        asofdate: tree["1"]?.created_date,
-        asof: "bydate",
-      })
-    );
-  };
   const onCreateCampDate = () => {
     dispatch(
       setFilterCanonizedTopics({
@@ -374,6 +312,16 @@ const TopicDetails = () => {
       })
     );
   };
+
+  useEffect(() => {
+    if (hadMounted) {
+      if (typeof window !== "undefined" && window.innerWidth < 767) {
+        setIsClient(true);
+      } else {
+        setIsClient(false);
+      }
+    }
+  }, []);
 
   return (
     <>
@@ -454,19 +402,18 @@ const TopicDetails = () => {
                           loadingIndicator={loadingIndicator}
                         />
 
-                        {typeof window !== "undefined" &&
-                          window.innerWidth < 767 && (
-                            <>
-                              {router.asPath.includes("topic") && (
-                                <CampRecentActivities />
+                        {isClient && (
+                          <>
+                            {router.asPath.includes("topic") && (
+                              <CampRecentActivities />
+                            )}
+                            <Spin spinning={loadingIndicator} size="large">
+                              {!!newsFeed?.length && (
+                                <NewsFeedsCard newsFeed={newsFeed} />
                               )}
-                              <Spin spinning={loadingIndicator} size="large">
-                                {!!newsFeed?.length && (
-                                  <NewsFeedsCard newsFeed={newsFeed} />
-                                )}
-                              </Spin>
-                            </>
-                          )}
+                            </Spin>
+                          </>
+                        )}
                         <CurrentTopicCard loadingIndicator={loadingIndicator} />
 
                         <CurrentCampCard loadingIndicator={loadingIndicator} />
@@ -476,7 +423,6 @@ const TopicDetails = () => {
                           handleLoadMoreSupporters={handleLoadMoreSupporters}
                           getCheckSupportStatus={getCheckSupportStatus}
                           removeApiSupport={removeApiSupport}
-                          // fetchTotalScore={fetchTotalScore}
                           totalSupportScore={totalSupportScore}
                           totalFullSupportScore={totalFullSupportScore}
                           removeSupport={removeSupport}
