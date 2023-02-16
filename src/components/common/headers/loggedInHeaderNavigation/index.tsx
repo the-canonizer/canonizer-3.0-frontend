@@ -61,7 +61,8 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
     dispatch(setManageSupportStatusCheck(false));
     const res = await markNotificationRead(id);
     if (res && res.status_code === 200) {
-      router.query.from = "";
+      delete router?.query?.from;
+      // router.query.from = "";
       router.replace(router);
     }
   };
