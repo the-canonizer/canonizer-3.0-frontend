@@ -9,7 +9,7 @@ import styles from "./campRecentActivities.module.scss";
 
 import CustomSkelton from "../../../common/customSkelton";
 
-export default function CampRecentActivities() {
+export default function CampRecentActivities({ timelineDescript = "" }) {
   const router = useRouter();
   const [data, setData] = useState([]);
   const [loadingIndicator, setLoadingIndicator] = useState(false);
@@ -17,11 +17,9 @@ export default function CampRecentActivities() {
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
-
   useEffect(() => {
     async function getTopicActivityLogCall() {
       setLoadingIndicator(true);
-
       let reqBody = {
         topic_num: router?.query?.camp[0]?.split("-")[0],
         camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
@@ -39,6 +37,7 @@ export default function CampRecentActivities() {
         title="Recent Activities"
         className={"activities " + styles.campActivities}
       >
+        <h1>{timelineDescript}</h1>
         {loadingIndicator ? (
           <CustomSkelton
             skeltonFor="list"

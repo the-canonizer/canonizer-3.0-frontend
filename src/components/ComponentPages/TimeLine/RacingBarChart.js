@@ -15,7 +15,7 @@ function RacingBarChart({ data }) {
 
   const manageBarXAxis = (entry) => {
    const length = document.getElementById(entry.camp_id).getComputedTextLength();
-   console.log(entry.title , 'width' , length)
+   
    return length + entry.level * 30 + 30;
   };
 

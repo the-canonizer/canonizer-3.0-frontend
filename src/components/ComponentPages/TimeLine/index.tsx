@@ -8,7 +8,7 @@ const getRandomIndex = (array) => {
   return Math.floor(array.length * Math.random());
 };
 
-function TimeLine() {
+function TimeLine({ timelineDescript, setTimelineDescript }) {
   const [iteration, setIteration] = useState(0);
   const [start, setStart] = useState(false);
   const [eventDescription, setEventDescription] = useState("Hello");
@@ -1223,20 +1223,15 @@ function TimeLine() {
 
   useInterval(() => {
     if (start && events.length > iteration) {
-    
-      console.log(mockData[events[iteration]].data);
-
       setData(mockData[events[iteration]].data);
       setEventDescription(mockData[events[iteration]].event?.description);
-      console.log(data);
+
       setIteration(iteration + 1);
       iterationCount++;
     }
   }, 1000);
 
   const handleEventSelection = (index) => {
-    console.log(mockData[events[index]].data);
-
     setData(mockData[events[index]].data);
     setEventDescription(mockData[events[index]].event?.description);
     setIteration(index);
@@ -1245,7 +1240,11 @@ function TimeLine() {
   return (
     <React.Fragment>
       <h1 style={{ marginTop: "30px" }}>Racing Camps</h1>
-      <TimelineSlider  setStart={setStart} start={start}/>
+      <TimelineSlider
+        setStart={setStart}
+        start={start}
+        setTimelineDescript={setTimelineDescript}
+      />
       <div style={{ overflow: "hidden" }}>
         <RacingBarChart data={data} />
       </div>
