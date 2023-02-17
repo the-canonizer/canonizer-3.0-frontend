@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import { addSupport, removeSupportedCamps } from "src/network/api/userApi";
 import { GetActiveSupportTopic } from "src/network/api/topicAPI";
 import CustomSkelton from "../../../common/customSkelton";
+
 const ManageSupportUI = ({
   nickNameList,
   manageSupportList,
@@ -134,9 +135,7 @@ const ManageSupportUI = ({
           0,
           manageSupportPath.lastIndexOf("_")
         );
-      router.push({
-        pathname: manageSupportPath,
-      });
+      router.push(manageSupportPath);
     }
   };
   const addRemoveApi = async () => {
@@ -180,9 +179,7 @@ const ManageSupportUI = ({
           0,
           manageSupportPath.lastIndexOf("_")
         );
-      router.push({
-        pathname: manageSupportPath,
-      });
+      router.push(manageSupportPath);
     }
   };
 
@@ -193,15 +190,6 @@ const ManageSupportUI = ({
       setSelectedtNickname(nickNameList[0]?.id);
     }
   }, [nickNameList]);
-  // let tagsArrayList1 = [];
-  // {
-  //   manageSupportList && manageSupportList.length > 0
-  //     ? ((tagsArrayList = manageSupportList),
-  //       tagsArrayList.forEach((obj) => {
-  //         obj.id = obj.camp_num;
-  //       }))
-  //     : "";
-  // }
 
   useEffect(() => {
     if (manageSupportList && manageSupportList.length > 0) {
