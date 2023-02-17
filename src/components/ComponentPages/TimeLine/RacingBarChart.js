@@ -66,7 +66,8 @@ function RacingBarChart({ data }) {
       enter
       .append("image")
       .attr("class", "circle")
-      .attr("href", (entry) => entry.level == 2 || entry.level == 3 ? "/images/minus-square.svg" : '')
+      // .attr("href", (entry) => entry.level == 2 || entry.level == 3 ? "/images/minus-square.svg" : '')
+      .attr("href", (entry) =>  "/images/minus-square.svg" )
       .attr("height", 14)
       .attr("width", 14)
     )
@@ -134,39 +135,38 @@ function RacingBarChart({ data }) {
         .transition()
         .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5);
 
+        // Lines Data
 
-    //     svg
-    // .selectAll(".icon")
-    //   .data(data, (entry, index) => entry.title)
-    //   .join((enter) =>
-    //   enter
-    //   .append("image")
-    //   .attr("class", "circle")
-    //   .attr("href", (entry) => entry.level == 2 || entry.level == 3 ? "/images/minus-square.svg" : '')
-    //   .attr("height", 14)
-    //   .attr("width", 14)
-    // )
-    // .text((entry) => ` ${entry.title} `) 
-    //   .attr("class", "icon")
-    //   .attr("x", (entry) => manageXAxis(entry) - 10 )
-    //   .transition()
-    //   .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 - 8);
+        const linesData = [
+          { x1: 1, x2: 27, level: 2 },
+          { x1: 2, x2: 20, level: 3 },
+          { x1: 3, x2: 16, level: 4 },
+          { x1: 4, x2: 10, level: 5 },
+          { x1: 5, x2: 9, level: 6 },
+          { x1: 10, x2: 13, level: 5 },
+          { x1: 16, x2: 19, level: 4 },
+          { x1: 20, x2: 23, level: 3 },
+          { x1: 23, x2: 25, level: 3 },
+          { x1: 27, x2: 30, level: 2 },
+          { x1: 33, x2: 35, level: 2 }
+        ]
 
         // Draw lines 
-        for(let i=0; i<10; i++){
-
+        let count = 0
+        for(let i=0; i<linesData.length; i++){
+          count = count + .001
           svg
           .selectAll(`.line${i}`)
-            .data(data, (entry, index) => index)
+            .data(data, (entry, index) => null)
             .join((enter) =>
             enter
             .append('line')
       .style("stroke", "lightgreen")
       .style("stroke-width", 2)
-      .attr("x1",  57 + i * 30)
-      .attr("y1", 50)
-      .attr("x2", 57 + i * 30)
-      .attr("y2", 638)
+      .attr("x1",    linesData[i].level * 30 +  count - 2)
+      .attr("y1", linesData[i].x1 * 30 + 23 )
+      .attr("x2", linesData[i].level * 30 + count - 2)
+      .attr("y2",  linesData[i].x1 * 30 + (linesData[i].x2 - linesData[i].x1) * 30 + 5 )
           )
           // .text((entry) => ` ${entry.title} `) 
           .attr("class", "line")
