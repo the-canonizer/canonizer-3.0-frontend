@@ -45,15 +45,6 @@ function RacingBarChart({ data }) {
     // console.log("xScale", xScale);
 
 
-    // var today = new Date();
-    // svg.append("line")
-    // .attr("x1", today)  //<<== change your code here
-    // .attr("y1", 0)
-    // .attr("x2", today)  //<<== and here
-    // .attr("y2", 40)
-    // .style("stroke-width", 2)
-    // .style("stroke", "red")
-    // .style("fill", "none");
 
     
 
@@ -67,7 +58,7 @@ function RacingBarChart({ data }) {
       .append("image")
       .attr("class", "circle")
       // .attr("href", (entry) => entry.level == 2 || entry.level == 3 ? "/images/minus-square.svg" : '')
-      .attr("href", (entry) =>  "/images/minus-square.svg" )
+      .attr("href", (entry, index) => (index == 0 || (index > 0 && index < data.length-1 && (data[index].level < data[index+1].level || data[index].level < data[index-1].level))) ? "/images/minus-square.svg" : null )
       .attr("height", 14)
       .attr("width", 14)
     )
@@ -157,7 +148,7 @@ function RacingBarChart({ data }) {
           count = count + .001
           svg
           .selectAll(`.line${i}`)
-            .data(data, (entry, index) => null)
+            .data(data, (entry, index) => index)
             .join((enter) =>
             enter
             .append('line')
@@ -175,25 +166,7 @@ function RacingBarChart({ data }) {
           // .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5);
         }
 
-    //     svg
-    //     .selectAll(".line1")
-    //       .data(data, (entry, index) => index)
-    //       .join((enter) =>
-    //       enter
-    //       .append('line')
-    // .style("stroke", "lightgreen")
-    // .style("stroke-width", 2)
-    // .attr("x1",  87)
-    // .attr("y1", 50)
-    // .attr("x2", 87)
-    // .attr("y2", 638)
-    //     )
-    //     // .text((entry) => ` ${entry.title} `) 
-    //     .attr("class", "line")
-    //     // .attr("x", (entry) => manageXAxis(entry) + 20)
-    //     .transition()
-    //     // .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5);
-    //   // }
+  
 
   }, [data, dimensions]);
 
