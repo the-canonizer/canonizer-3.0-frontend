@@ -1928,3 +1928,11 @@ div[role="option"]::before {
     }
   }
 }
+
+.progress-bar {
+  margin-left: 10px;
+  span {
+    font-size: 11px!important;
+    font-weight: 400!important;
+  }
+}
