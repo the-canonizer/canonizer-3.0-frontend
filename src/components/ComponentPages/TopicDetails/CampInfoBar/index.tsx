@@ -156,7 +156,6 @@ const CampInfoBar = ({
           <Link
             href={router.asPath.replace("topic", "addnews")}
             rel="noopener noreferrer"
-            href="/add-news"
           >
             Add News
           </Link>

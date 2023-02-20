@@ -76,7 +76,6 @@ function Footer() {
                     alt="Canonizer"
                     width={142}
                     height={26}
-                    layout="intrinsic"
                   />
                 </Link>
               </div>

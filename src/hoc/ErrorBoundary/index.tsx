@@ -43,7 +43,6 @@ export default class ErrorBoundary extends Component {
                 alt=""
                 width={487}
                 height={552}
-                layout="fixed"
               />
             </div>
             <div className={styles.errorPageContent}>
