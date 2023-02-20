@@ -424,6 +424,15 @@ const ManageSupportUI = ({
                 setManageSupportList(tags);
               }}
             />
+
+            <Card className={styles.support_reason} type="inner">
+              <SupportRemovedModal
+                onFinish={onRemoveFinish}
+                handleCancel={closePopup}
+                form={removeForm}
+                isAdd={true}
+              />
+            </Card>
           </>
         )}
         <div>

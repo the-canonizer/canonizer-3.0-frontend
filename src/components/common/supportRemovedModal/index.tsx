@@ -15,7 +15,12 @@ const {
 } = messages;
 const { Option } = Select;
 
-const SupportRemovedModal = ({ onFinish, handleCancel, form }) => {
+const SupportRemovedModal = ({
+  onFinish,
+  handleCancel,
+  form,
+  isAdd = false,
+}) => {
   const reasons = useSelector(
     (state: RootState) => state?.topicDetails?.removedReasons
   );
@@ -27,7 +32,7 @@ const SupportRemovedModal = ({ onFinish, handleCancel, form }) => {
     const reasons = [
       { id: 1, label: "Reason 1" },
       { id: 2, label: "Reason 2" },
-      { id: 3, label: "Other" },
+      { id: 3, label: "Custom Reason" },
     ];
     setReasons(reasons);
   }, [reasons]);
@@ -56,7 +61,7 @@ const SupportRemovedModal = ({ onFinish, handleCancel, form }) => {
               label={
                 <Fragment>
                   {labels.reasonLabel}
-                  <span className="required">*</span>
+                  {/* <span className="required">*</span> */}
                 </Fragment>
               }
               name="end_reason"
@@ -116,28 +121,30 @@ const SupportRemovedModal = ({ onFinish, handleCancel, form }) => {
           </Col>
         </Row>
 
-        <div className={classes.btn_box}>
-          <Button
-            type="primary"
-            htmlType="submit"
-            size={"large"}
-            className={`${classes.submit_btn}`}
-            id="create-topic-btn"
-          >
-            Remove
-          </Button>
+        {!isAdd && (
+          <div className={classes.btn_box}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              size={"large"}
+              className={`${classes.submit_btn}`}
+              id="create-topic-btn"
+            >
+              Remove
+            </Button>
 
-          <Button
-            type="primary"
-            htmlType="button"
-            size={"large"}
-            className={`${classes.cancel_btn}`}
-            onClick={handleCancel}
-            id="cancel-btn"
-          >
-            Cancel
-          </Button>
-        </div>
+            <Button
+              type="primary"
+              htmlType="button"
+              size={"large"}
+              className={`${classes.cancel_btn}`}
+              onClick={handleCancel}
+              id="cancel-btn"
+            >
+              Cancel
+            </Button>
+          </div>
+        )}
       </Form>
     </Fragment>
   );
