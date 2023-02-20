@@ -61,7 +61,7 @@ const SupportRemovedModal = ({
               label={
                 <Fragment>
                   {labels.reasonLabel}
-                  {/* <span className="required">*</span> */}
+                  <span className="required">*</span>
                 </Fragment>
               }
               name="end_reason"
