@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import { addSupport, removeSupportedCamps } from "src/network/api/userApi";
 import { GetActiveSupportTopic } from "src/network/api/topicAPI";
 import CustomSkelton from "../../../common/customSkelton";
+
 const ManageSupportUI = ({
   nickNameList,
   manageSupportList,
@@ -134,9 +135,7 @@ const ManageSupportUI = ({
           0,
           manageSupportPath.lastIndexOf("_")
         );
-      router.push({
-        pathname: manageSupportPath,
-      });
+      router.push(manageSupportPath);
     }
   };
   const addRemoveApi = async () => {
@@ -180,9 +179,7 @@ const ManageSupportUI = ({
           0,
           manageSupportPath.lastIndexOf("_")
         );
-      router.push({
-        pathname: manageSupportPath,
-      });
+      router.push(manageSupportPath);
     }
   };
 

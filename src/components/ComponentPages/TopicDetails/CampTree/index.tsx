@@ -9,6 +9,7 @@ import styles from "../topicDetails.module.scss";
 import { setCurrentCamp } from "../../../../store/slices/filtersSlice";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 import useAuthentication from "src/hooks/isUserAuthenticated";
+import ProgressBar from "@ramonak/react-progress-bar";
 
 const { TreeNode } = Tree;
 
@@ -258,23 +259,30 @@ const CampTree = ({
                             : data[item]?.title}
                         </Link>
                       </span>
-                      <span
-                        className={
-                          "treeListItemNumber " + styles.treeListItemNumber
-                        }
-                        style={{
-                          width:
-                            (data[item].score * 460) / tree?.at(0)["1"].score +
-                            40,
-                          justifyContent: "flex-start",
-                        }}
-                      >
-                        {/* data[item].topic_score
-                            ? data[item].topic_score?.toFixed(2)
-                            : */}
-                        {is_checked && isUserAuthenticated
-                          ? data[item].full_score?.toFixed(2)
-                          : data[item].score?.toFixed(2)}
+                      <span>
+                        <ProgressBar
+                          completed={77}
+                          animateOnRender={true}
+                          className="progress-bar"
+                          width={String(
+                            data[item].score > 5
+                              ? (data[item].score * 460) /
+                                  tree?.at(0)["1"].score +
+                                  40 +
+                                  "px"
+                              : "40px"
+                          )}
+                          baseBgColor={"#fff"}
+                          labelAlignment={"left"}
+                          bgColor={"#f89d15"}
+                          borderRadius={"2px"}
+                          height="16px"
+                          customLabel={
+                            is_checked && isUserAuthenticated
+                              ? data[item].full_score?.toFixed(2)
+                              : data[item].score?.toFixed(2)
+                          }
+                        />
                       </span>
                       <span className={styles.subScriptionIcon}>
                         {isUserAuthenticated &&
