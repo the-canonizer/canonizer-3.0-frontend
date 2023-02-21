@@ -27,7 +27,7 @@ const SearchSection = () => {
                   <input
                     type="radio"
                     name="sitesearch"
-                    defaultValue={googleSearch}
+                    defaultValue={process.env.NEXT_PUBLIC_SITE_NAME}
                     id="ss1"
                     defaultChecked
                   />
