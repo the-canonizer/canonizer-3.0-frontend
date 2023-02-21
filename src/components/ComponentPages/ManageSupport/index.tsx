@@ -279,7 +279,11 @@ const ManageSupport = () => {
             link: campSupportPath,
           });
         }
-        setManageSupportList([...fiterSupportedCamps, ...manageSupportArr]);
+        if (CheckDelegatedOrDirect && resultFilterSupportCamp.length == 0) {
+          setManageSupportList(manageSupportArr);
+        } else {
+          setManageSupportList([...fiterSupportedCamps, ...manageSupportArr]);
+        }
 
         setManageSupportRevertData(manageSupportArr);
       } else {
