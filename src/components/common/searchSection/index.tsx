@@ -54,19 +54,6 @@ const SearchSection = () => {
               </Button>
             </div>
           </form>
-          <p>
-            (This is a free{" "}
-            <a
-              href="https://github.com/the-canonizer/canonizer-3.0-frontend"
-              rel="noreferrer"
-              target="_blank"
-            >
-              {" "}
-              open source{" "}
-            </a>
-            prototype being developed by volunteers. Please be patient with what
-            we have so far and/or be willing to help.)
-          </p>
         </div>
       </section>
     </>
