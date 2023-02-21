@@ -10,6 +10,7 @@ import styles from "./campHistory.module.scss";
 import { getHistoryApi } from "../../../network/api/history";
 import { getTreesApi } from "src/network/api/campDetailApi";
 import { getAllUsedNickNames } from "../../../network/api/campDetailApi";
+import CustomSkelton from "../../common/customSkelton";
 
 import HistoryCollapse from "./Collapse";
 import { RootState } from "src/store";
@@ -18,6 +19,9 @@ import CreateNewCampButton from "../../common/button/createNewCampBtn";
 import CreateNewTopicButton from "../../common/button/createNewTopicBtn";
 import { setCurrentCamp } from "src/store/slices/filtersSlice";
 import useIsUserAuthenticated from "../../../hooks/isUserAuthenticated";
+
+import { store } from "../../../store";
+import { setTree } from "../../../store/slices/campDetailSlice";
 
 const { Title } = Typography;
 
@@ -133,7 +137,12 @@ function HistoryContainer() {
     };
     asynCall();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeTab, agreecheck]);
+  }, [activeTab, agreecheck, isUserAuthenticated]);
+  useEffect(() => {
+    return () => {
+      store.dispatch(setTree([]));
+    };
+  }, []);
 
   const campStatementApiCall = async () => {
     try {
@@ -146,7 +155,6 @@ function HistoryContainer() {
         per_page: 4,
         page: count.current,
       };
-
       let res = await getHistoryApi(reqBody, count.current, historyOf);
 
       if (!res || !res?.last_page) {
@@ -308,75 +316,74 @@ function HistoryContainer() {
           <div className={styles.cshcHead}>
             <div className={styles.cshcHeadFilterWrap}>
               <Title level={4}>{historyTitle()}</Title>
-              <Spin spinning={loadingIndicator} size="default">
-                <List className={styles.cshcHeadFilter} size="small">
-                  <List.Item
-                    className={`${styles.campStatementViewAll} ${
-                      styles.cshcHeadFilterItem
-                    } ${activeTab == "all" ? styles.active : null}`}
+              {/* <Spin spinning={loadingIndicator} size="default"> */}
+              <List className={styles.cshcHeadFilter} size="small">
+                <List.Item
+                  className={`${styles.campStatementViewAll} ${
+                    styles.cshcHeadFilterItem
+                  } ${activeTab == "all" ? styles.active : null}`}
+                >
+                  <a
+                    onClick={() => {
+                      handleTabButton("all");
+                    }}
                   >
-                    <a
-                      onClick={() => {
-                        handleTabButton("all");
-                      }}
-                    >
-                      View All
-                    </a>
-                  </List.Item>
-                  <List.Item
-                    className={`${styles.campStatementObjected}  ${
-                      styles.cshcHeadFilterItem
-                    }  ${activeTab == "objected" ? styles.active : null}`}
+                    View All
+                  </a>
+                </List.Item>
+                <List.Item
+                  className={`${styles.campStatementObjected}  ${
+                    styles.cshcHeadFilterItem
+                  }  ${activeTab == "objected" ? styles.active : null}`}
+                >
+                  <a
+                    onClick={() => {
+                      handleTabButton("objected");
+                    }}
                   >
-                    <a
-                      onClick={() => {
-                        handleTabButton("objected");
-                      }}
-                    >
-                      Objected
-                    </a>
-                  </List.Item>
-                  <List.Item
-                    className={`${styles.campStatementLive} ${
-                      styles.cshcHeadFilterItem
-                    } ${activeTab == "live" ? styles.active : null}`}
+                    Objected
+                  </a>
+                </List.Item>
+                <List.Item
+                  className={`${styles.campStatementLive} ${
+                    styles.cshcHeadFilterItem
+                  } ${activeTab == "live" ? styles.active : null}`}
+                >
+                  <a
+                    onClick={() => {
+                      handleTabButton("live");
+                    }}
                   >
-                    <a
-                      onClick={() => {
-                        handleTabButton("live");
-                      }}
-                    >
-                      Live
-                    </a>
-                  </List.Item>
-                  <List.Item
-                    className={`${styles.campStatementNotLive} ${
-                      styles.cshcHeadFilterItem
-                    } ${activeTab == "in_review" ? styles.active : null}`}
+                    Live
+                  </a>
+                </List.Item>
+                <List.Item
+                  className={`${styles.campStatementNotLive} ${
+                    styles.cshcHeadFilterItem
+                  } ${activeTab == "in_review" ? styles.active : null}`}
+                >
+                  <a
+                    onClick={() => {
+                      handleTabButton("in_review");
+                    }}
                   >
-                    <a
-                      onClick={() => {
-                        handleTabButton("in_review");
-                      }}
-                    >
-                      Not Live
-                    </a>
-                  </List.Item>
-                  <List.Item
-                    className={`${styles.campStatementOld} ${
-                      styles.cshcHeadFilterItem
-                    } ${activeTab == "old" ? styles.active : null}`}
+                    Not Live
+                  </a>
+                </List.Item>
+                <List.Item
+                  className={`${styles.campStatementOld} ${
+                    styles.cshcHeadFilterItem
+                  } ${activeTab == "old" ? styles.active : null}`}
+                >
+                  <a
+                    onClick={() => {
+                      handleTabButton("old");
+                    }}
                   >
-                    <a
-                      onClick={() => {
-                        handleTabButton("old");
-                      }}
-                    >
-                      Old
-                    </a>
-                  </List.Item>
-                </List>
-              </Spin>
+                    Old
+                  </a>
+                </List.Item>
+              </List>
             </div>
             <Button
               disabled={
@@ -401,7 +408,40 @@ function HistoryContainer() {
         </Affix>
         <div style={{ paddingBottom: "20px" }}>
           <div style={{ overflow: "auto" }}>
-            {activeTab === "live" ? (
+            {loadingIndicator ? (
+              <>
+                <div className="px-3 py-2">
+                  <CustomSkelton
+                    skeltonFor="card"
+                    bodyCount={4}
+                    stylingClass="test"
+                    isButton={false}
+                    action={false}
+                    title={false}
+                  />
+                </div>{" "}
+                <div className="px-3 py-2">
+                  <CustomSkelton
+                    skeltonFor="card"
+                    bodyCount={4}
+                    stylingClass="test"
+                    isButton={false}
+                    action={false}
+                    title={false}
+                  />{" "}
+                </div>
+                <div className="px-3 py-2">
+                  <CustomSkelton
+                    skeltonFor="card"
+                    bodyCount={4}
+                    stylingClass="test"
+                    isButton={false}
+                    action={false}
+                    title={false}
+                  />
+                </div>
+              </>
+            ) : activeTab === "live" ? (
               renderCampHistories
             ) : (
               <InfiniteScroll

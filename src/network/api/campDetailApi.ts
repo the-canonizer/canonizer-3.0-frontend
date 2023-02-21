@@ -23,6 +23,7 @@ export const getTreesApi = async (reqBody) => {
     store.dispatch(setTree(trees?.data));
     return trees?.data[0];
   } catch (error) {
+    store.dispatch(setTree([]));
     // message.error(error.message);
   }
 };
@@ -227,5 +228,14 @@ export const SupportTreeTotalScore = async (reqbody) => {
     ) {
       return err.error.data;
     }
+  }
+};
+
+export const GetSupportedNickNames = async (id) => {
+  try {
+    const res = await NetworkCall.fetch(TreeRequest.NickNamesSupported(id));
+    return res;
+  } catch (err) {
+    handleError(err);
   }
 };

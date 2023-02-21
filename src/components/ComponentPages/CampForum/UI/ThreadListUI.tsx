@@ -16,6 +16,7 @@ import styles from "./Forum.module.scss";
 import messages from "../../../../messages";
 import { getTime } from "../../../../utils/generalUtility";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
+import CustomSkelton from "../../../common/customSkelton";
 
 const { Text } = Typography;
 const { Column } = Table;
@@ -33,6 +34,7 @@ const ThreadListUI = ({
   filterThread,
   onEditClick,
   paramsList,
+  isLoading,
 }) => {
   const [isLog, setIsLog] = useState(false);
   const { isUserAuthenticated } = useAuthentication();
@@ -40,6 +42,41 @@ const ThreadListUI = ({
   useEffect(() => {
     setIsLog(isUserAuthenticated);
   }, [isUserAuthenticated]);
+
+  const loadingData = threadList.length
+    ? threadList
+    : [
+        {
+          id: 1,
+          title: "",
+          post_count: 2,
+          post_updated_at: 1342405587,
+        },
+        {
+          id: 2,
+          title: "",
+          post_count: 2,
+          post_updated_at: 1342405587,
+        },
+        {
+          id: 3,
+          title: "",
+          post_count: 2,
+          post_updated_at: 1342405587,
+        },
+        {
+          id: 4,
+          title: "",
+          post_count: 2,
+          post_updated_at: 1342405587,
+        },
+        {
+          id: 5,
+          title: "",
+          post_count: 2,
+          post_updated_at: 1342405587,
+        },
+      ];
 
   return (
     <Fragment>
@@ -124,91 +161,154 @@ const ThreadListUI = ({
             Create Thread
           </Button>
         </div>
-        <Table dataSource={threadList} pagination={false}>
-          <Column
-            title="Thread Name"
-            dataIndex="title"
-            key="title"
-            render={(text, others, idx) => {
-              return (
-                <a
-                  onClick={(e) => onThreadClick(e, others)}
-                  className={styles.threadListTitle}
-                  id={"thread-label-" + (+idx + 1)}
-                >
-                  {text}
-                  {isLog && paramsList.by === "my" ? (
-                    <Tooltip title="edit">
-                      <a
-                        onClick={(e) => onEditClick(e, others)}
-                        className="linkCss"
-                      >
-                        <EditOutlined />
-                      </a>
-                    </Tooltip>
-                  ) : null}
-                </a>
-              );
-            }}
-            width="350px"
-          />
-          <Column
-            title="Replies"
-            dataIndex="post_count"
-            key="post_count"
-            responsive={["lg"]}
-          />
-          <Column
-            title="Last Updated On"
-            dataIndex="post_updated_at"
-            key="post_updated_at"
-            responsive={["lg"]}
-            render={(dt, others) => {
-              return (
-                <Text>
-                  {others["post_count"] === 0 ? (
-                    "This thread doesn't have any posts yet."
-                  ) : (
-                    <Fragment>
-                      <Link
-                        href={`/user/supports/${
-                          others["nick_name_id"] || ""
-                        }?topicnum=${others["topic_id"] || ""}&campnum=${
-                          others["camp_id"] || ""
-                        }&namespace=${others["namespace_id"] || 1}`}
-                        passHref
-                      >
-                        <a>
-                          {others["nick_name"] === null ||
-                          others["nick_name"] === ""
-                            ? ""
-                            : others["nick_name"]}
-                        </a>
-                      </Link>{" "}
-                      {`replied ${moment(getTime(dt))
-                        .local()
-                        .startOf("seconds")
-                        .fromNow()} (${moment(getTime(dt)).format(
-                        "MMM Do YYYY, h:mm:ss a"
-                      )})`}
-                    </Fragment>
-                  )}
-                </Text>
-              );
-            }}
-          />
-        </Table>
 
-        <div className={`paginationCon`}>
-          {total > 10 ? (
-            <Pagination
-              current={current}
-              onChange={onChange}
-              showSizeChanger={false}
-              total={total}
-            />
-          ) : null}
-        </div>
+        {isLoading ? (
+          <Fragment>
+            <Table dataSource={loadingData} pagination={false}>
+              <Column
+                title="Thread Name"
+                dataIndex="title"
+                key="title"
+                render={() => (
+                  <CustomSkelton
+                    skeltonFor="list"
+                    bodyCount={1}
+                    stylingClass=""
+                    isButton={false}
+                  />
+                )}
+                width="350px"
+              />
+              <Column
+                title="Replies"
+                dataIndex="post_count"
+                key="post_count"
+                responsive={["lg"]}
+                render={() => (
+                  <CustomSkelton
+                    skeltonFor="list"
+                    bodyCount={1}
+                    stylingClass=""
+                    isButton={false}
+                  />
+                )}
+              />
+              <Column
+                title="Last Updated On"
+                dataIndex="post_updated_at"
+                key="post_updated_at"
+                responsive={["lg"]}
+                render={() => (
+                  <CustomSkelton
+                    skeltonFor="list"
+                    bodyCount={1}
+                    stylingClass=""
+                    isButton={false}
+                  />
+                )}
+              />
+            </Table>
+            <div className={`paginationCon`}>
+              {total > 10 ? (
+                <CustomSkelton
+                  skeltonFor="list"
+                  bodyCount={1}
+                  stylingClass=""
+                  listStyle="liHeight"
+                  isButton={false}
+                />
+              ) : null}
+            </div>
+          </Fragment>
+        ) : (
+          <Fragment>
+            <Table dataSource={threadList} pagination={false}>
+              <Column
+                title="Thread Name"
+                dataIndex="title"
+                key="title"
+                render={(text, others, idx) => {
+                  return (
+                    <a
+                      onClick={(e) => onThreadClick(e, others)}
+                      className={styles.threadListTitle}
+                      id={"thread-label-" + (+idx + 1)}
+                    >
+                      {text}
+                      {isLog && paramsList.by === "my" ? (
+                        <Tooltip title="edit">
+                          <a
+                            onClick={(e) => onEditClick(e, others)}
+                            className="linkCss"
+                          >
+                            <EditOutlined />
+                          </a>
+                        </Tooltip>
+                      ) : null}
+                    </a>
+                  );
+                }}
+                width="350px"
+              />
+              <Column
+                title="Replies"
+                dataIndex="post_count"
+                key="post_count"
+                responsive={["lg"]}
+              />
+              <Column
+                title="Last Updated On"
+                dataIndex="post_updated_at"
+                key="post_updated_at"
+                responsive={["lg"]}
+                render={(dt, others) => {
+                  return (
+                    <Text>
+                      {others["post_count"] === 0 ? (
+                        "This thread doesn't have any posts yet."
+                      ) : (
+                        <Fragment>
+                          <Link
+                            href={`/user/supports/${
+                              others["nick_name_id"] || ""
+                            }?topicnum=${others["topic_id"] || ""}&campnum=${
+                              others["camp_id"] || ""
+                            }&namespace=${others["namespace_id"] || 1}`}
+                            passHref
+                          >
+                            <a>
+                              {others["nick_name"] === null ||
+                              others["nick_name"] === ""
+                                ? ""
+                                : others["nick_name"]}
+                            </a>
+                          </Link>{" "}
+                          {`replied ${moment(getTime(dt))
+                            .local()
+                            .startOf("seconds")
+                            .fromNow()} (${moment(getTime(dt)).format(
+                            "MMM Do YYYY, h:mm:ss a"
+                          )})`}
+                        </Fragment>
+                      )}
+                    </Text>
+                  );
+                }}
+              />
+            </Table>
+
+            <div className={`paginationCon`}>
+              {total > 10 ? (
+                <Pagination
+                  current={current}
+                  onChange={onChange}
+                  showSizeChanger={false}
+                  total={total}
+                />
+              ) : null}
+            </div>
+          </Fragment>
+        )}
       </Card>
     </Fragment>
   );

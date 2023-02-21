@@ -8,6 +8,7 @@ import styles from "../topicDetails.module.scss";
 import K from "../../../../constants";
 import moment from "moment";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
+import CustomSkelton from "../../../common/customSkelton";
 
 const { Paragraph } = Typography;
 
@@ -15,13 +16,21 @@ const { Panel } = Collapse;
 const covertToTime = (unixTime) => {
   return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm A");
 };
-const CampStatementCard = () => {
+const CampStatementCard = ({ loadingIndicator }) => {
   const router = useRouter();
   const { campStatement, history } = useSelector((state: RootState) => ({
     campStatement: state?.topicDetails?.campStatement,
     history: state?.topicDetails?.history,
   }));
-  return (
+  return loadingIndicator ? (
+    <CustomSkelton
+      skeltonFor="card"
+      titleName={K?.exceptionalMessages?.campStatementHeading}
+      bodyCount={2}
+      stylingClass="test"
+      isButton={false}
+    />
+  ) : (
     <Collapse
       defaultActiveKey={["1"]}
       expandIconPosition="right"
@@ -30,7 +39,7 @@ const CampStatementCard = () => {
       <Panel
         className="campStatementPanel"
         disabled
-        header={<h3>Camp Statement</h3>}
+        header={<h3>{K?.exceptionalMessages?.campStatementHeading}</h3>}
         key="1"
         extra={
           campStatement?.length ? (

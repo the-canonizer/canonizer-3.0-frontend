@@ -5,6 +5,7 @@ import messages from "../../../messages";
 import verifyIcon from "../../../../public/images/checkbox-icn.svg";
 import Icon from "@ant-design/icons";
 import Image from "next/image";
+import CustomSkelton from "../../common/customSkelton";
 
 const { Option } = Select;
 
@@ -19,6 +20,7 @@ function VerifyMobileNumberForm({
   handleChangeOTP,
   toggleVerifyButton,
   handleMobileNumberChange,
+  userProfileSkeletonV,
 }: any) {
   const [symbolsArr] = useState(["e", "E", "+", "-", "."]);
   const [maxLengthKeysAllowed] = useState([
@@ -46,122 +48,131 @@ function VerifyMobileNumberForm({
         layout="vertical"
         onFinish={onVerifyClick}
       >
-        <div className={styles.section_one}>
-          <Row gutter={30}>
-            <Col md={12}>
-              {/* <Icon component={() => (<Image alt="adOne" src={verifyIcon} />)} /> */}
-              <Form.Item
-                name="phone_number"
-                label={
-                  <>
-                    {messages.labels.phoneNumber}
-                    <span className="required" id="asteriskPhonenumber">
-                      *
-                    </span>
-                  </>
-                }
-                {...messages.phoneNumberRule}
-              >
-                <Input
-                  id="phoneNumber"
-                  type="number"
-                  placeholder={messages.placeholders.phoneNumber}
-                  size="large"
-                  maxLength={10}
-                  onChange={handleMobileNumberChange}
-                  onKeyDown={(e) => {
-                    symbolsArr.includes(e.key) && e.preventDefault();
-                    e.currentTarget.value.length >= 10 &&
-                      !maxLengthKeysAllowed.includes(e.key.toLowerCase()) &&
-                      e.preventDefault();
-                  }}
-                  tabIndex={1}
-                />
-              </Form.Item>
-            </Col>
-            <Col md={12}>
-              <Form.Item
-                name="mobile_carrier"
-                label={
-                  <>
-                    {messages.labels.mobileCarrier}
-                    <span className="required" id="asteriskMobileCarrier">
-                      *
-                    </span>
-                  </>
-                }
-                {...messages.mobileCarrierRule}
-              >
-                <Select
-                  showSearch
-                  placeholder={messages.placeholders.mobileCarrier}
-                  optionFilterProp="children"
-                  size="large"
-                  filterOption={(input: any, option: any) =>
-                    option.children
-                      .toLowerCase()
-                      .indexOf(input.toLowerCase()) >= 0
+        {userProfileSkeletonV ? (
+          <CustomSkelton
+            skeltonFor="verifyInfoForm"
+            bodyCount={1}
+            stylingClass=""
+            isButton={false}
+          />
+        ) : (
+          <div className={styles.section_one}>
+            <Row gutter={30}>
+              <Col md={12}>
+                {/* <Icon component={() => (<Image alt="adOne" src={verifyIcon} />)} /> */}
+                <Form.Item
+                  name="phone_number"
+                  label={
+                    <>
+                      {messages.labels.phoneNumber}
+                      <span className="required" id="asteriskPhonenumber">
+                        *
+                      </span>
+                    </>
                   }
-                  filterSort={(optionA, optionB) =>
-                    optionA.children
-                      .toLowerCase()
-                      .localeCompare(optionB.children.toLowerCase())
-                  }
-                  tabIndex={2}
+                  {...messages.phoneNumberRule}
                 >
-                  {mobileCarrierList}
-                </Select>
-              </Form.Item>
-            </Col>
-          </Row>
-          <Form.Item>
-            {!toggleVerifyButton ? (
-              <Button
-                id="verifyBtn"
-                type="primary"
-                className="Profile_btn ant-btn ant-btn-orange ant-btn-lg"
-                htmlType="submit"
-                data-testid="submitButton"
-                tabIndex={3}
-              >
-                Verify
-              </Button>
-            ) : (
-              <div>
-                <Icon
-                  component={() => (
-                    <Image id="siteAddImage" alt="adOne" src={verifyIcon} />
-                  )}
-                />{" "}
-                <span> Your phone number is verified</span>
-              </div>
-            )}
-          </Form.Item>
-          <Modal
-            title=""
-            visible={isOTPModalVisible}
-            footer=""
-            onCancel={handleOTPCancel}
-          >
-            <p>OTP has been sent on your phone number.</p>
-            <Input
-              id="otpInput"
-              placeholder={messages.placeholders.otp}
-              value={otp}
-              onChange={handleChangeOTP}
-              size="large"
-            />
-            <p></p> {/* For Empty Row */}
-            <Button
-              id="submitBtn"
-              type="primary"
-              className="ant-btn ant-btn-orange ant-btn-lg"
-              onClick={onOTPBtnClick}
+                  <Input
+                    id="phoneNumber"
+                    type="number"
+                    placeholder={messages.placeholders.phoneNumber}
+                    size="large"
+                    maxLength={10}
+                    onChange={handleMobileNumberChange}
+                    onKeyDown={(e) => {
+                      symbolsArr.includes(e.key) && e.preventDefault();
+                      e.currentTarget.value.length >= 10 &&
+                        !maxLengthKeysAllowed.includes(e.key.toLowerCase()) &&
+                        e.preventDefault();
+                    }}
+                    tabIndex={1}
+                  />
+                </Form.Item>
+              </Col>
+              <Col md={12}>
+                <Form.Item
+                  name="mobile_carrier"
+                  label={
+                    <>
+                      {messages.labels.mobileCarrier}
+                      <span className="required" id="asteriskMobileCarrier">
+                        *
+                      </span>
+                    </>
+                  }
+                  {...messages.mobileCarrierRule}
+                >
+                  <Select
+                    showSearch
+                    placeholder={messages.placeholders.mobileCarrier}
+                    optionFilterProp="children"
+                    size="large"
+                    filterOption={(input: any, option: any) =>
+                      option.children
+                        .toLowerCase()
+                        .indexOf(input.toLowerCase()) >= 0
+                    }
+                    filterSort={(optionA, optionB) =>
+                      optionA.children
+                        .toLowerCase()
+                        .localeCompare(optionB.children.toLowerCase())
+                    }
+                    tabIndex={2}
+                  >
+                    {mobileCarrierList}
+                  </Select>
+                </Form.Item>
+              </Col>
+            </Row>
+            <Form.Item>
+              {!toggleVerifyButton ? (
+                <Button
+                  id="verifyBtn"
+                  type="primary"
+                  className="Profile_btn ant-btn ant-btn-orange ant-btn-lg"
+                  htmlType="submit"
+                  data-testid="submitButton"
+                  tabIndex={3}
+                >
+                  Verify
+                </Button>
+              ) : (
+                <div>
+                  <Icon
+                    component={() => (
+                      <Image id="siteAddImage" alt="adOne" src={verifyIcon} />
+                    )}
+                  />{" "}
+                  <span> Your phone number is verified</span>
+                </div>
+              )}
+            </Form.Item>
+            <Modal
+              title=""
+              visible={isOTPModalVisible}
+              footer=""
+              onCancel={handleOTPCancel}
             >
-              Submit
-            </Button>
-          </Modal>
-        </div>
+              <p>OTP has been sent on your phone number.</p>
+              <Input
+                id="otpInput"
+                placeholder={messages.placeholders.otp}
+                value={otp}
+                onChange={handleChangeOTP}
+                size="large"
+              />
+              <p></p> {/* For Empty Row */}
+              <Button
+                id="submitBtn"
+                type="primary"
+                className="ant-btn ant-btn-orange ant-btn-lg"
+                onClick={onOTPBtnClick}
+              >
+                Submit
+              </Button>
+            </Modal>
+          </div>
+        )}
       </Form>
     </section>
   );

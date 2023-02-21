@@ -17,6 +17,8 @@ const NickName = () => {
   const [selectedNickNameList, setSelectedNickNameList] = useState([]);
   const create = "Create";
   const [disableButton, setDisableButton] = useState(false);
+  const [getNickNamesLoadingIndicator, setGetNickNamesIndicator] =
+    useState(false);
 
   const editNickName = (record) => {
     setAddEditTitle("Edit Nick Name");
@@ -89,7 +91,11 @@ const NickName = () => {
     }
   };
   useEffect(() => {
-    fetchNickNameList();
+    (async () => {
+      setGetNickNamesIndicator(true);
+      await fetchNickNameList();
+      setGetNickNamesIndicator(false);
+    })();
   }, []);
 
   return (
@@ -105,6 +111,7 @@ const NickName = () => {
       onAddUpdateNickName={onAddUpdateNickName}
       nickNameList={nickNameList}
       disableButton={disableButton}
+      getNickNamesLoadingIndicator={getNickNamesLoadingIndicator}
     />
   );
 };

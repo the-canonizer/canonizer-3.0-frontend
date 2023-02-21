@@ -11,6 +11,8 @@ import { RootState } from "src/store";
 import { useRouter } from "next/router";
 import { addSupport, removeSupportedCamps } from "src/network/api/userApi";
 import { GetActiveSupportTopic } from "src/network/api/topicAPI";
+import CustomSkelton from "../../../common/customSkelton";
+
 const ManageSupportUI = ({
   nickNameList,
   manageSupportList,
@@ -28,6 +30,9 @@ const ManageSupportUI = ({
   submitButtonDisable,
   setUpdatePostion,
   unableToFindCamp,
+  CurrentCheckSupportStatus,
+  getManageSupportLoadingIndicator,
+  setGetManageSupportLoadingIndicator,
 }: any) => {
   const [tagsArrayList, setTagsArrayList] = useState([]);
   const [isTagDragged, setIsTagDragged] = useState(false);
@@ -47,7 +52,6 @@ const ManageSupportUI = ({
         state.topicDetails.currentGetCheckSupportExistsData,
     })
   );
-  const [spinner, setSpinner] = useState(false);
   const [topicSupportList, setTopicSupportList] = useState([]);
   const [removeCampsSupport, setRemoveCampsSupport] = useState(false);
 
@@ -110,7 +114,7 @@ const ManageSupportUI = ({
     setIsTagDragged(false);
   }, []);
   const removeCampsApi = async () => {
-    setSpinner(true);
+    setGetManageSupportLoadingIndicator(true);
     const supportedCampsRemove = {
       topic_num: reqBodyData.topic_num,
       remove_camps: removeAllCampNum(),
@@ -131,13 +135,11 @@ const ManageSupportUI = ({
           0,
           manageSupportPath.lastIndexOf("_")
         );
-      router.push({
-        pathname: manageSupportPath,
-      });
+      router.push(manageSupportPath);
     }
   };
   const addRemoveApi = async () => {
-    setSpinner(true);
+    setGetManageSupportLoadingIndicator(true);
     const addSupportId = {
       topic_num: reqBodyData.topic_num,
       add_camp:
@@ -177,9 +179,7 @@ const ManageSupportUI = ({
           0,
           manageSupportPath.lastIndexOf("_")
         );
-      router.push({
-        pathname: manageSupportPath,
-      });
+      router.push(manageSupportPath);
     }
   };
 
@@ -190,15 +190,6 @@ const ManageSupportUI = ({
       setSelectedtNickname(nickNameList[0]?.id);
     }
   }, [nickNameList]);
-  // let tagsArrayList1 = [];
-  // {
-  //   manageSupportList && manageSupportList.length > 0
-  //     ? ((tagsArrayList = manageSupportList),
-  //       tagsArrayList.forEach((obj) => {
-  //         obj.id = obj.camp_num;
-  //       }))
-  //     : "";
-  // }
 
   useEffect(() => {
     if (manageSupportList && manageSupportList.length > 0) {
@@ -218,8 +209,14 @@ const ManageSupportUI = ({
       } else setTagsArrayList(newTagList);
     }
   }, [manageSupportList, parentSupportDataList]);
-
-  return (
+  return getManageSupportLoadingIndicator ? (
+    <CustomSkelton
+      skeltonFor="manageSupportCard"
+      bodyCount={15}
+      stylingClass=""
+      isButton={true}
+    />
+  ) : (
     <>
       <Card
         className={styles.card_width}
@@ -230,7 +227,8 @@ const ManageSupportUI = ({
         }
       >
         {(CheckDelegatedOrDirect &&
-          currentGetCheckSupportExistsData.is_confirm) ||
+          currentGetCheckSupportExistsData.is_confirm &&
+          currentGetCheckSupportExistsData.remove_camps.length < 0) ||
         unableToFindCamp ? (
           <>
             <span id="warning" className={styles.warning}>
@@ -249,9 +247,10 @@ const ManageSupportUI = ({
                       id="getSupportStatusDataWarning"
                     >
                       <strong> Warning! </strong>
-                      {getSupportStatusData != ""
-                        ? getSupportStatusData
-                        : warningForDirecteSupportedCamps}
+                      {CheckDelegatedOrDirect &&
+                      !currentGetCheckSupportExistsData.is_delegator
+                        ? warningForDirecteSupportedCamps
+                        : currentGetCheckSupportExistsData.warning}
                     </span>
                     <Col md={12}>
                       {parentSupportDataList?.map((tag) => {
@@ -291,7 +290,7 @@ const ManageSupportUI = ({
                 <Card className={styles.margin_top} type="inner">
                   <b>
                     {messages.labels.topicSupportText} &quot;{""}
-                    {topicRecord?.topic_name}
+                    {topicSupportList[0]?.title}
                     {""}&quot;
                   </b>
                 </Card>
@@ -404,38 +403,36 @@ const ManageSupportUI = ({
                 );
               })}
             </Select>
-            <Spin spinning={spinner} size="large">
-              <div className={styles.Upload_Cancel_Btn}>
-                <Button
-                  id="uploadBtn"
-                  htmlType="submit"
-                  className={styles.Upload_Btn}
-                  onClick={
-                    removeAllIsSelected() &&
-                    !currentGetCheckSupportExistsData.is_delegator
-                      ? removeCampsApi
-                      : CheckDelegatedOrDirect || removeCampsSupport
-                      ? submitNickNameSupportCamps
-                      : addRemoveApi
-                  }
-                  disabled={
-                    submitButtonDisable ||
-                    currentGetCheckSupportExistsData.disable_submit
-                  }
-                >
-                  Submit
-                </Button>
+            <div className={styles.Upload_Cancel_Btn}>
+              <Button
+                id="uploadBtn"
+                htmlType="submit"
+                className={styles.Upload_Btn}
+                onClick={
+                  removeAllIsSelected() &&
+                  !currentGetCheckSupportExistsData.is_delegator
+                    ? removeCampsApi
+                    : CheckDelegatedOrDirect || removeCampsSupport
+                    ? submitNickNameSupportCamps
+                    : addRemoveApi
+                }
+                disabled={
+                  submitButtonDisable ||
+                  currentGetCheckSupportExistsData.disable_submit
+                }
+              >
+                Submit
+              </Button>
 
-                <Button
-                  id="cancelBtn"
-                  htmlType="button"
-                  className={styles.cancel_Btn}
-                  onClick={cancelManageRoute}
-                >
-                  Cancel
-                </Button>
-              </div>
-            </Spin>
+              <Button
+                id="cancelBtn"
+                htmlType="button"
+                className={styles.cancel_Btn}
+                onClick={cancelManageRoute}
+              >
+                Cancel
+              </Button>
+            </div>
           </Card>
         </div>
       </Card>

@@ -10,6 +10,7 @@ import styles from "./index.module.scss";
 import CreateCampBtn from "../../../common/button/createNewCampBtn";
 import CreateTopicBtn from "../../../common/button/createNewTopicBtn";
 import CampInfoBar from "../../TopicDetails/CampInfoBar";
+import CustomSkelton from "../../../common/customSkelton";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -83,9 +84,17 @@ function CompareStatementUI({
             </div>
           </div>
           <div className={styles.contentBody}>
-            <Spin spinning={isLoading} size="large">
-              <Row gutter={50}>
-                <Col span={12}>
+            <Row gutter={[50, 15]}>
+              <Col xs={24} md={12}>
+                {isLoading ? (
+                  <CustomSkelton
+                    skeltonFor="card"
+                    bodyCount={5}
+                    stylingClass="test"
+                    isButton={false}
+                    action={false}
+                  />
+                ) : (
                   <Card
                     bordered
                     className={
@@ -110,7 +119,7 @@ function CompareStatementUI({
                             s1["submitter_nick_id"] || ""
                           }?topicnum=${s1["topic_num"] || ""}&campnum=${
                             s1["camp_num"] || ""
-                          }&namespace=${liveStatement["namespace_id"] || 1}`}
+                          }&namespace=${s1["namespace_id"] || 1}`}
                         >
                           <a>{s1?.submitter_nick_name}</a>
                         </Link>
@@ -184,8 +193,18 @@ function CompareStatementUI({
                       ></div>
                     </Card>
                   </Card>
-                </Col>
-                <Col span={12}>
+                )}
+              </Col>
+              <Col xs={24} md={12}>
+                {isLoading ? (
+                  <CustomSkelton
+                    skeltonFor="card"
+                    bodyCount={5}
+                    stylingClass="test"
+                    isButton={false}
+                    action={false}
+                  />
+                ) : (
                   <Card
                     bordered
                     className={
@@ -210,7 +229,7 @@ function CompareStatementUI({
                             s2["submitter_nick_id"] || ""
                           }?topicnum=${s2["topic_num"] || ""}&campnum=${
                             s2["camp_num"] || ""
-                          }&namespace=${liveStatement["namespace_id"] || 1}`}
+                          }&namespace=${s2["namespace_id"] || 1}`}
                         >
                           <a>{s2?.submitter_nick_name}</a>
                         </Link>
@@ -283,9 +302,21 @@ function CompareStatementUI({
                       ></div>
                     </Card>
                   </Card>
-                </Col>
-                <Col span={24}>
-                  <Divider />
+                )}
+              </Col>
+              <Col span={24}>
+                <Divider />
+                {isLoading ? (
+                  <CustomSkelton
+                    skeltonFor="card"
+                    bodyCount={5}
+                    stylingClass="test"
+                    isButton={false}
+                    action={false}
+                    bordered={false}
+                    cardStylingClass="fullSkeleton"
+                  />
+                ) : liveStatement ? (
                   <Card
                     bordered={false}
                     className={
@@ -390,9 +421,11 @@ function CompareStatementUI({
                       </Fragment>
                     ) : null}
                   </Card>
-                </Col>
-              </Row>
-            </Spin>
+                ) : (
+                  ""
+                )}
+              </Col>
+            </Row>
           </div>
         </div>
       </div>

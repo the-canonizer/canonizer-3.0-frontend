@@ -180,6 +180,8 @@ const NetworkConstants = {
     GetMetaContent: `${BaseCanonizerApiUrl}/meta-tags`,
 
     VideosContent: `${BaseCanonizerApiUrl}/videos`,
+
+    GetNickSupportUser: `${BaseCanonizerApiUrl}/get-nick-support-user/`,
   },
   Method: {
     GET: "GET",

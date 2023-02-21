@@ -8,21 +8,33 @@ import { Descriptions, Collapse } from "antd";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
+import CustomSkelton from "../../../common/customSkelton";
 
 const { Panel } = Collapse;
 
-const CurrentTopicCard = () => {
+const CurrentTopicCard = ({ loadingIndicator }) => {
   const router = useRouter();
   const { topicRecord } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
   }));
-  return (
+  return loadingIndicator ? (
+    <CustomSkelton
+      titleName={K?.exceptionalMessages?.topicRecordHeading}
+      skeltonFor="card"
+      bodyCount={2}
+      stylingClass="test"
+      isButton={false}
+    />
+  ) : (
     <Collapse
-      defaultActiveKey={["1"]}
+      defaultActiveKey={[]}
       expandIconPosition="right"
       className="topicDetailsCollapse"
     >
-      <Panel header={<h3>Current Topic Record</h3>} key="1">
+      <Panel
+        header={<h3>{K?.exceptionalMessages?.topicRecordHeading}</h3>}
+        key="1"
+      >
         <Descriptions column={1}>
           <Descriptions.Item label="Topic Name">
             {topicRecord && topicRecord?.topic_name}

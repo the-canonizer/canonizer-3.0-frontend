@@ -9,6 +9,7 @@ import styles from "../topicDetails.module.scss";
 import isAuth from "../../../../hooks/isUserAuthenticated";
 import K from "../../../../constants";
 import { setDelegatedSupportClick } from "../../../../store/slices/supportTreeCard";
+import CustomSkelton from "../../../common/customSkelton";
 import {
   setManageSupportStatusCheck,
   setManageSupportUrlLink,
@@ -35,6 +36,7 @@ const supportContent = (
   </>
 );
 const SupportTreeCard = ({
+  loadingIndicator,
   getCheckSupportStatus,
   removeApiSupport,
   // fetchTotalScore,
@@ -251,7 +253,15 @@ const SupportTreeCard = ({
       //return <TreeNode key={data[item].key} {...data[item]} />;
     });
   };
-  return (
+  return loadingIndicator ? (
+    <CustomSkelton
+      skeltonFor="card"
+      titleName='Support Tree for "Agreement" Camp'
+      bodyCount={3}
+      stylingClass="test"
+      isButton={false}
+    />
+  ) : (
     <>
       <Collapse
         defaultActiveKey={["1"]}

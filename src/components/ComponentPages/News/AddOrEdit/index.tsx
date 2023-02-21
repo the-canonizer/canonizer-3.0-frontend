@@ -23,6 +23,8 @@ import {
   getEditCampNewsFeedApi,
   updateNewsFeedApi,
 } from "../../../../network/api/campNewsApi";
+
+import CustomSkelton from "../../../common/customSkelton";
 import { getAllUsedNickNames } from "../../../../network/api/campDetailApi";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
 import K from "../../../../constants";
@@ -185,79 +187,104 @@ export default function AddOrEdit({ edit }: any) {
   }, []);
 
   return (
-    <Spin spinning={screenLoading} size="large">
-      <Card title={edit ? "Edit News" : "Add News"} className={styles.card}>
-        <Form
-          form={form}
-          layout={"vertical"}
-          initialValues={{
-            available_for_child: 0,
-          }}
-          onFinish={onFinish}
-        >
-          <Row gutter={28}>
-            <Col xl={14} md={24} xs={24}>
-              <Form.Item
-                className={styles.formItem}
-                name="display_text"
-                label={
-                  <>
-                    Display Text <span className="required">*</span>{" "}
-                    <small>(Limit 256 chars)</small>
-                  </>
-                }
-                rules={[
-                  {
-                    required: true,
-                    message: "Display text is required",
-                  },
-                  {
-                    pattern: /[^ \s]/,
-                    message: "Display text is required",
-                  },
-                ]}
-              >
+    // <Spin spinning={screenLoading} size="large">
+    <Card title={edit ? "Edit News" : "Add News"} className={styles.card}>
+      <Form
+        form={form}
+        layout={"vertical"}
+        initialValues={{
+          available_for_child: 0,
+        }}
+        onFinish={onFinish}
+      >
+        <Row gutter={28}>
+          <Col xl={14} md={24} xs={24}>
+            <Form.Item
+              className={styles.formItem}
+              name="display_text"
+              label={
+                <>
+                  Display Text <span className="required">*</span>{" "}
+                  <small>(Limit 256 chars)</small>
+                </>
+              }
+              rules={[
+                {
+                  required: true,
+                  message: "Display text is required",
+                },
+                {
+                  pattern: /[^ \s]/,
+                  message: "Display text is required",
+                },
+              ]}
+            >
+              {screenLoading ? (
+                <CustomSkelton
+                  bodyCount
+                  stylingClass
+                  isButton
+                  height={180}
+                  skeltonFor="video"
+                />
+              ) : (
                 <Input.TextArea
                   size="large"
                   placeholder={K?.exceptionalMessages?.addNewsTextPlaceHolder}
                   maxLength={256}
                   rows={7}
                 />
-              </Form.Item>
-
-              {errors.displayTextError && (
-                <Text type="danger">{errors.displayTextErrorMsg}</Text>
               )}
-            </Col>
+            </Form.Item>
 
-            <Col xl={10} md={24} xs={24}>
-              <Form.Item
-                className={`${styles.formItem} mb-3`}
-                label={
-                  <>
-                    Link <span className="required">*</span>{" "}
-                    <small>(Limit 2000 chars)</small>
-                  </>
-                }
-                name="link"
-                rules={[
-                  {
-                    required: true,
-                    message: "Link is required.",
-                  },
-                  {
-                    pattern: /[^ \s]/,
-                    message: "Enter a valid link",
-                  },
-                ]}
-              >
+            {errors.displayTextError && (
+              <Text type="danger">{errors.displayTextErrorMsg}</Text>
+            )}
+          </Col>
+
+          <Col xl={10} md={24} xs={24}>
+            <Form.Item
+              className={`${styles.formItem} mb-3`}
+              label={
+                <>
+                  Link <span className="required">*</span>{" "}
+                  <small>(Limit 2000 chars)</small>
+                </>
+              }
+              name="link"
+              rules={[
+                {
+                  required: true,
+                  message: "Link is required.",
+                },
+                {
+                  pattern: /[^ \s]/,
+                  message: "Enter a valid link",
+                },
+              ]}
+            >
+              {screenLoading ? (
+                <CustomSkelton
+                  skeltonFor="list"
+                  bodyCount={1}
+                  stylingClass="listSkeleton"
+                  isButton={false}
+                />
+              ) : (
                 <Input size="large" maxLength={2000} />
-              </Form.Item>
-
-              {errors.urlError && (
-                <Text type="danger">{errors.urlErrorMsg}</Text>
               )}
+            </Form.Item>
 
+            {errors.urlError && <Text type="danger">{errors.urlErrorMsg}</Text>}
+
+            {screenLoading ? (
+              <CustomSkelton
+                skeltonFor="list"
+                bodyCount={1}
+                stylingClass="listSkeleton"
+                isButton={false}
+              />
+            ) : (
               <Form.Item
                 className={styles.formItemCheckbox}
                 name="available_for_child"
@@ -265,23 +292,32 @@ export default function AddOrEdit({ edit }: any) {
               >
                 <Checkbox>Available for child camps</Checkbox>
               </Form.Item>
+            )}
 
-              <Form.Item
-                className={styles.formItem}
-                label={
-                  <>
-                    Nick Name
-                    <span className="required">*</span>
-                  </>
-                }
-                name="nick_name"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select Nick name",
-                  },
-                ]}
-              >
+            <Form.Item
+              className={styles.formItem}
+              label={
+                <>
+                  Nick Name
+                  <span className="required">*</span>
+                </>
+              }
+              name="nick_name"
+              rules={[
+                {
+                  required: true,
+                  message: "Please select Nick name",
+                },
+              ]}
+            >
+              {screenLoading ? (
+                <CustomSkelton
+                  skeltonFor="list"
+                  bodyCount={1}
+                  stylingClass="listSkeleton"
+                  isButton={false}
+                />
+              ) : (
                 <Select
                   value={nickNameData[0]?.id}
                   size="large"
@@ -296,34 +332,54 @@ export default function AddOrEdit({ edit }: any) {
                       </Select.Option>
                     ))}
                 </Select>
-              </Form.Item>
-            </Col>
-          </Row>
+              )}
+            </Form.Item>
+          </Col>
+        </Row>
 
-          <Form.Item>
-            <Button
-              size="large"
-              className={`btn-orange mr-3 ${styles.btnSubmit}`}
-              htmlType="submit"
-              disabled={loading}
-              id="create-news-btn"
-            >
-              {edit ? "Submit" : " Create News"}
-              {loading && <Spin indicator={antIcon} />}
-            </Button>
-            <Button
-              htmlType="button"
-              className="cancel-btn"
-              type="ghost"
-              size="large"
-              id="cancel-news-btn"
-              onClick={goBack}
-            >
-              Cancel
-            </Button>
-          </Form.Item>
-        </Form>
-      </Card>
-    </Spin>
+        <Form.Item>
+          {screenLoading ? (
+            <div className="manage-form-btnwrap">
+              <CustomSkelton
+                skeltonFor="list"
+                bodyCount={1}
+                stylingClass="listSkeleton"
+                isButton={false}
+              />
+              <CustomSkelton
+                skeltonFor="list"
+                bodyCount={1}
+                stylingClass="listSkeleton"
+                isButton={false}
+              />
+            </div>
+          ) : (
+            <>
+              <Button
+                size="large"
+                className={`btn-orange mr-3 ${styles.btnSubmit}`}
+                htmlType="submit"
+                disabled={loading}
+                id="create-news-btn"
+              >
+                {edit ? "Submit" : " Create News"}
+                {loading && <Spin indicator={antIcon} />}
+              </Button>
+              <Button
+                htmlType="button"
+                className="cancel-btn"
+                type="ghost"
+                size="large"
+                id="cancel-news-btn"
+                onClick={goBack}
+              >
+                Cancel
+              </Button>
+            </>
+          )}
+        </Form.Item>
+      </Form>
+    </Card>
+    // </Spin>
   );
 }

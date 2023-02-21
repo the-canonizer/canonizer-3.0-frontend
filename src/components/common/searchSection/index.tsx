@@ -4,7 +4,7 @@ import { Button, Radio, Input } from "antd";
 import styles from "./searchSection.module.scss";
 
 const { Search } = Input;
-
+const googleSearch = process.env.NEXT_PUBLIC_SITE_NAME;
 const SearchSection = () => {
   return (
     <>
@@ -31,7 +31,7 @@ const SearchSection = () => {
                     id="ss1"
                     defaultChecked
                   />
-                  <label htmlFor="ss1" title="Search canonizer3.canonizer.com">
+                  <label htmlFor="ss1" title={googleSearch}>
                     canonizer.com
                   </label>
                 </div>

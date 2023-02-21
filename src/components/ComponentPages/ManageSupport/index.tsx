@@ -49,6 +49,10 @@ const ManageSupport = () => {
   const [unableToFindCamp, setUnableToFindCamp] = useState<boolean>(false);
   const [updatePostion, setUpdatePostion] = useState<boolean>(false);
   const [submitButtonDisable, setSubmitButtonDisable] = useState(false);
+  const [
+    getManageSupportLoadingIndicator,
+    setGetManageSupportLoadingIndicator,
+  ] = useState(false);
   //get NickName List Data
   const getCanonizedNicknameList = async () => {
     const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
@@ -119,27 +123,32 @@ const ManageSupport = () => {
 
   //isUserAuthenticated
   useEffect(() => {
-    if (isUserAuthenticated) {
-      setUpdatePostion(false);
-      refSetter(reqBody);
-      if (manageSupportStatusCheck) {
-        getCanonizedNicknameList();
-        getActiveSupportTopicList(null, null, campRef.current);
-        setSubmitButtonDisable(false);
-        dispatch(setManageSupportStatusCheck(false));
-      }
-      // else {
-      GetCheckStatusData(campRef);
-      // }
-    }
-  }, [isUserAuthenticated, reqBodyData.topic_num]);
+    (async () => {
+      if (isUserAuthenticated) {
+        setUpdatePostion(false);
+        refSetter(reqBody);
+        if (manageSupportStatusCheck) {
+          setGetManageSupportLoadingIndicator(true);
+          await getCanonizedNicknameList();
+          setGetManageSupportLoadingIndicator(false);
 
+          getActiveSupportTopicList(null, null, campRef.current);
+          setSubmitButtonDisable(false);
+          dispatch(setManageSupportStatusCheck(false));
+        }
+        // else {
+        GetCheckStatusData(campRef);
+        // }
+      }
+    })();
+  }, [isUserAuthenticated, reqBodyData.topic_num]);
   const GetCheckStatusData = async (campReff: any) => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
     if (response && response.status_code === 200) {
       if (response.data?.remove_camps)
         setParentSupportDataList(response.data.remove_camps);
-      if (!manageSupportStatusCheck) {
+
+      if (!manageSupportStatusCheck || CheckDelegatedOrDirect) {
         response.data.warning;
         response.data.support_flag;
         //Api's call for list
@@ -220,7 +229,6 @@ const ManageSupport = () => {
   const camp_Name_ = campRecord?.camp_name;
   const CampName = camp_Name_;
   const campSupportPath = router.asPath?.replace("/support/", "/topic/");
-
   const body = { topic_num: topicNum };
   const getActiveSupportTopicList = async (
     warning?: string,
@@ -240,7 +248,6 @@ const ManageSupport = () => {
       : warning
       ? warning
       : "";
-
     // let dataValue = warningMessage;
     if (response && response.status_code === 200) {
       setCardCamp_ID("");
@@ -495,6 +502,11 @@ const ManageSupport = () => {
         updatePostion={updatePostion}
         campIds={campIds}
         setcampIds={setcampIds}
+        CurrentCheckSupportStatus={CurrentCheckSupportStatus}
+        getManageSupportLoadingIndicator={getManageSupportLoadingIndicator}
+        setGetManageSupportLoadingIndicator={
+          setGetManageSupportLoadingIndicator
+        }
       />
     </>
   );

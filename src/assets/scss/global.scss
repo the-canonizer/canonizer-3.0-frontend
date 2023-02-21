@@ -76,9 +76,9 @@ body {
   &-4 {
     padding-bottom: 1.5rem;
   }
-    &-4 {
-      padding-bottom: 2rem;
-    }
+  &-4 {
+    padding-bottom: 2rem;
+  }
 }
 
 .pt {
@@ -101,6 +101,14 @@ body {
   &-4 {
     padding-top: 2rem;
   }
+}
+.px-3 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 .mr {
@@ -128,7 +136,6 @@ body {
 .font-weight {
   &-bold {
     font-weight: 700;
-    white-space: nowrap;
   }
 }
 
@@ -278,7 +285,8 @@ body {
     span.btn {
       display: block !important;
     }
-    button.btn, button.ant-btn {
+    button.btn,
+    button.ant-btn {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -307,7 +315,7 @@ body {
         display: block;
       }
       .ant-collapse-extra {
-        margin-top: .5rem;
+        margin-top: 0.5rem;
       }
     }
   }
@@ -1452,6 +1460,7 @@ body {
     padding-right: 50px;
     i[class^="icon-"] {
       margin-right: 5px;
+      margin-left: 5px;
     }
     h3 {
       font-size: 18px;
@@ -1497,7 +1506,7 @@ body {
     }
     .ant-collapse-extra {
       @media screen and (max-width: 575px) {
-        margin-top: .5rem;
+        margin-top: 0.5rem;
       }
     }
   }
@@ -1566,6 +1575,9 @@ body {
   }
   .ant-tree-list {
     .ant-tree-list-holder-inner {
+      overflow-x: auto;
+      overflow-y: clip;
+      white-space: nowrap;
       & > .ant-tree-treenode-switcher-open {
         .treeListItemTitle {
           font-size: 16px;
@@ -1708,7 +1720,9 @@ div[role="option"]::before {
   cursor: not-allowed;
 }
 .ant-form-item-label
-  > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before {
+  > label.ant-form-item-required:not(
+    .ant-form-item-required-mark-optional
+  )::before {
   display: none;
 }
 .ant-form-item-required {
@@ -1795,7 +1809,7 @@ div[role="option"]::before {
 .ant-drawer-content-wrapper {
   max-width: 100%;
 }
-.Parent_Leaf .ant-tree-switcher{
+.Parent_Leaf .ant-tree-switcher {
   display: none !important;
 }
 
@@ -1805,43 +1819,120 @@ div[role="option"]::before {
       display: block;
     }
     .ant-collapse-extra {
-      margin-top: .5rem;
+      margin-top: 0.5rem;
     }
   }
 }
-.policy-content .p1, .policy-content .p2, .policy-content .p3,
-  .policy-content h1, .policy-content h2, .policy-content h3, .policy-content h4, .policy-content h5, .policy-content h6 {
+.policy-content .p1,
+.policy-content .p2,
+.policy-content .p3,
+.policy-content h1,
+.policy-content h2,
+.policy-content h3,
+.policy-content h4,
+.policy-content h5,
+.policy-content h6 {
   font-weight: bold;
 }
-.policy-content .p1, .policy-content h1 {
+.policy-content .p1,
+.policy-content h1 {
   font-size: 2rem;
 }
-.policy-content .p2, .policy-content h2 {
+.policy-content .p2,
+.policy-content h2 {
   font-size: 1.75rem;
 }
-.policy-content .p3, .policy-content h3 {
+.policy-content .p3,
+.policy-content h3 {
   font-size: 1.5rem;
 }
-.policy-content .p4, .policy-content h4 {
+.policy-content .p4,
+.policy-content h4 {
   font-size: 1.25rem;
 }
-.policy-content .p5, .policy-content h5 {
+.policy-content .p5,
+.policy-content h5 {
   font-size: 1.125rem;
 }
-.profileInfoPointer #selectCountry, #email, #selectCity, #selectState{
-  pointer-events: none
+.profileInfoPointer #selectCountry,
+#email,
+#selectCity,
+#selectState {
+  pointer-events: none;
 }
 
 .disable-style {
   color: rgba(0, 0, 0, 0.25) !important;
   border-color: #d9d9d9;
   background: #f5f5f5 !important;
- }
+}
 
- .video-chap-content {
+.video-chap-content {
   padding: 10px 0;
-  ul, ol {
+  ul,
+  ol {
     margin-left: 30px !important;
     padding-left: 0 !important;
+    font-size: 1rem !important;
+    font-weight: 400 !important;
+    line-height: 1.8 !important;
+    li {
+      line-height: 1.3 !important;
+      &::marker {
+        font-size: 1rem;
+      }
+    }
   }
- }
+  p,
+  a {
+    font-size: 1rem !important;
+    font-weight: 400 !important;
+    line-height: 1.8 !important;
+  }
+}
+
+.activeListWrap {
+  ul {
+    padding-left: 26px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .adsbygoogle {
+    display: none !important;
+  }
+}
+
+.socail-skeleton {
+  display: flex;
+  gap: 15px;
+  span {
+    width: 30px;
+    height: 30px;
+  }
+}
+.campInfoRight {
+  display: flex;
+}
+
+.cam-social-ot {
+  .camp-social {
+    padding: 0 !important;
+  }
+
+  .manage-form-btnwrap {
+    display: flex;
+    gap: 15px;
+    & > span {
+      width: 100px;
+    }
+  }
+}
+
+.progress-bar {
+  margin-left: 10px;
+  span {
+    font-size: 11px!important;
+    font-weight: 400!important;
+  }
+}

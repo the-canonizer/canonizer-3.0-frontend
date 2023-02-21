@@ -63,14 +63,6 @@ export default function HomeSideBar({ onCreateCamp = () => {} }: any) {
             {!!newsFeed?.length && <NewsFeedsCard newsFeed={newsFeed} />}
           </Fragment>
         )}
-      <span
-        style={{ display: "block", textAlign: "center", background: "#fff" }}
-      >
-        <GoogleAd
-          ad_client={process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}
-          ad_slot={process.env.NEXT_PUBLIC_GOOGLE_ADS_LEFT_SLOT}
-        />
-      </span>
     </Fragment>
   );
 }

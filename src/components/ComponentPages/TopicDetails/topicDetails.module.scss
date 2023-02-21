@@ -41,6 +41,9 @@
     .topicTitleStyle {
       margin-right: 50px;
     }
+    .topicTitleSkeleton {
+      margin-right: 100px;
+    }
     .breadcrumbLinks {
       display: flex;
       a {
@@ -160,7 +163,12 @@
     padding: 2px 7px;
     border-radius: 2px;
     color: #fff;
-    margin-left: 6px;
+    margin-left: 6px ;
+    width: 0;
+    transition: all ease 50s;
+    @media screen and (max-width:767px) {
+      width:auto !important;
+  }
   }
   .subScriptionIcon {
     margin-left: 6px;
@@ -229,11 +237,17 @@
 
 .slashStyle {
   align-self: center;
-  margin-inline: 5px;
+  // margin-inline: 5px;
 }
 
 .greenIndicateText {
   font-weight: 700;
   font-size: 17px;
   color: #08b608;
+}
+
+.campinfoSocialOt {
+  .btn_group {
+    padding: 0;
+  }
 }

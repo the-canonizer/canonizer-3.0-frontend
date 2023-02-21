@@ -48,7 +48,7 @@
   border: 1px solid #ececec;
   width: 100% !important;
   margin-bottom: 16px;
-  
+
   @media screen and (max-width: 767px) {
     [class="ant-card-head"] {
       [class="ant-card-head-wrapper"] {
@@ -148,4 +148,44 @@
   font-weight: 600;
   font-size: 14px;
   display: inline-block;
+}
+
+.userCaRdBox {
+  [class="ant-card-head-wrapper"] {
+    display: block;
+    [class="ant-card-head-title"] {
+      display: block;
+    }
+  }
+  .titleBox {
+    margin: 0;
+    display: flex;
+    align-items: center;
+  }
+  .nickname_box {
+    margin-left: auto;
+    .labels {
+      display: inline-block;
+      white-space: nowrap;
+      margin-right: 10px;
+    }
+  }
+  .nickname_dropdown {
+    height: 40px !important;
+    width: 25%;
+    margin: 0 !important;
+    display: inline-block;
+    > div:first-child {
+      border: 1px solid #ffffff;
+      background-color: #eaedf2;
+      height: 40px !important;
+    }
+  }
+  @media screen and (max-width: 767px) {
+    .nickname_box {
+      .nickname_dropdown {
+        width: 100%;
+      }
+    }
+  }
 }

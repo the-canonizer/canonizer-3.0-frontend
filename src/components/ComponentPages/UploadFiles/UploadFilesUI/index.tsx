@@ -76,6 +76,7 @@ import { labels } from "../../../../messages/label";
 import { setTimeout } from "timers";
 import SideBar from "../../CampForum/UI/sidebar";
 import queryParams from "src/utils/queryParams";
+import CustomSkelton from "../../../common/customSkelton";
 
 const UploadFileUI = ({
   input,
@@ -105,6 +106,7 @@ const UploadFileUI = ({
   setFlickringData,
   toggleFileView,
   setToggleFileView,
+  getUploadFilesLoadingIndicator,
 }: any) => {
   const [uploadStatus] = useState(false);
   // const [toggleFileView, setToggleFileView] = useState(false);
@@ -984,412 +986,432 @@ const UploadFileUI = ({
             <SideBar />
           </div>
         </aside>
-        <div className="pageContentWrap">
-          <div className={styles.uploadFilesData}>
-            <Form
-              //name={editModal ? "Edit your folder name" : labels.CreateaFolder}
-              form={createFolderForm}
-              onFinish={onFinishValidation}
-              validateMessages={validateMessages}
-              layout="vertical"
-              scrollToFirstError
-            >
-              <Card
-                title={
-                  <h3>
-                    {messages.labels.uploadFiles}{" "}
-                    <span className={styles.span}>
-                      {messages.labels.maxSize}
-                    </span>
-                  </h3>
-                }
-                className={styles.Card}
-                extra={
-                  <div className="d-flex">
-                    <div className={styles.top_btn}>
-                      <div className="datepIcker">
-                        <DatePicker
-                          disabledDate={(current) =>
-                            current.isAfter(moment().subtract(0, "day"))
-                          }
-                          disabled={show_UploadOptions || dragBoxStatus}
-                          onChange={(date) => {
-                            uploadStatus == true
-                              ? setDatePick("")
-                              : setDatePick(date ? date.toLocaleString() : "");
-                          }}
-                          value={datePick && moment(new Date(datePick))}
-                        />
-                      </div>
-                      <div className={styles.search_users}>
-                        <div className="searchinput">
-                          <SearchOutlined />
+        {getUploadFilesLoadingIndicator ? (
+          <CustomSkelton
+            skeltonFor="cardForUploadFile"
+            bodyCount={15}
+            stylingClass=""
+            isButton={false}
+          />
+        ) : (
+          <div className="pageContentWrap">
+            <div className={styles.uploadFilesData}>
+              <Form
+                //name={editModal ? "Edit your folder name" : labels.CreateaFolder}
+                form={createFolderForm}
+                onFinish={onFinishValidation}
+                validateMessages={validateMessages}
+                layout="vertical"
+                scrollToFirstError
+              >
+                <Card
+                  title={
+                    <h3>
+                      {messages.labels.uploadFiles}{" "}
+                      <span className={styles.span}>
+                        {messages.labels.maxSize}
+                      </span>
+                    </h3>
+                  }
+                  className={styles.Card}
+                  extra={
+                    <div className="d-flex">
+                      <div className={styles.top_btn}>
+                        <div className="datepIcker">
+                          <DatePicker
+                            disabledDate={(current) =>
+                              current.isAfter(moment().subtract(0, "day"))
+                            }
+                            disabled={show_UploadOptions || dragBoxStatus}
+                            onChange={(date) => {
+                              uploadStatus == true
+                                ? setDatePick("")
+                                : setDatePick(
+                                    date ? date.toLocaleString() : ""
+                                  );
+                            }}
+                            value={datePick && moment(new Date(datePick))}
+                          />
                         </div>
+                        <div className={styles.search_users}>
+                          <div className="searchinput">
+                            <SearchOutlined />
+                          </div>
 
-                        <Input
-                          disabled={show_UploadOptions || dragBoxStatus}
-                          id="datePickerText"
-                          placeholder="Search"
-                          autoComplete="off"
-                          value={search}
-                          type="text"
-                          name="search"
-                          onChange={(e) => {
-                            setSearch(e.target.value);
-                            openFolder
-                              ? filteredArray()
-                              : getGlobalSearchUploadFile(e.target.value);
-                          }}
-                        />
-                      </div>
-                      <div>
+                          <Input
+                            disabled={show_UploadOptions || dragBoxStatus}
+                            id="datePickerText"
+                            placeholder="Search"
+                            autoComplete="off"
+                            value={search}
+                            type="text"
+                            name="search"
+                            onChange={(e) => {
+                              setSearch(e.target.value);
+                              openFolder
+                                ? filteredArray()
+                                : getGlobalSearchUploadFile(e.target.value);
+                            }}
+                          />
+                        </div>
+                        <div>
+                          <Button
+                            disabled={disabledResetButton}
+                            onClick={() => {
+                              setSearch("");
+                              setDatePick("");
+                            }}
+                            className={styles.create_folder_btn}
+                          >
+                            <Image
+                              alt="adOne"
+                              src={reset}
+                              width={20}
+                              height={22}
+                            />
+                            Reset
+                          </Button>
+                        </div>
                         <Button
-                          disabled={disabledResetButton}
-                          onClick={() => {
-                            setSearch("");
-                            setDatePick("");
-                          }}
+                          id="createFolderBtn"
+                          disabled={disabledCreateFolder}
                           className={styles.create_folder_btn}
+                          onClick={() => {
+                            createFolderForm.resetFields();
+                            setShowCreateFolderModal(true),
+                              setToggleFileView(false),
+                              setEditModal(false);
+                          }}
                         >
                           <Image
                             alt="adOne"
-                            src={reset}
+                            src={addFolder}
                             width={20}
                             height={22}
                           />
-                          Reset
+                          Create a Folder
                         </Button>
+                        {addButtonShow && !dragBoxStatus ? (
+                          <Button
+                            id="addAFileBtn"
+                            className={styles.add_file_btn}
+                            onClick={() => {
+                              addNewFile(),
+                                setToggleFileView(false),
+                                setUpdateList({});
+                              // setUploadStatus(true);
+                              setDatePick("");
+                              setSearch("");
+                            }}
+                          >
+                            <Image
+                              alt="adOne"
+                              src={addFile}
+                              width={20}
+                              height={18}
+                            />
+                            Add a File
+                          </Button>
+                        ) : (
+                          ""
+                        )}
+
+                        <div className={styles.top_icon}>
+                          {show_UploadOptions || dragBoxStatus ? (
+                            ""
+                          ) : (
+                            <span
+                              style={{ cursor: "pointer" }}
+                              onClick={() => {
+                                setToggleFileView(true);
+                              }}
+                            >
+                              <Image
+                                alt="listView"
+                                src={toggleFileView ? ListViewActive : ListView}
+                                width={24}
+                                height={20}
+                              />
+                            </span>
+                          )}
+                          {show_UploadOptions || dragBoxStatus ? (
+                            ""
+                          ) : (
+                            <span
+                              onClick={() => {
+                                setToggleFileView(false), showUploadsAfter();
+                              }}
+                            >
+                              <Image
+                                alt="gridView"
+                                src={
+                                  !toggleFileView ? GridViewActive : GridView
+                                }
+                                width={24}
+                                height={20}
+                              />
+                            </span>
+                          )}
+                        </div>
                       </div>
-                      <Button
-                        id="createFolderBtn"
-                        disabled={disabledCreateFolder}
-                        className={styles.create_folder_btn}
-                        onClick={() => {
-                          createFolderForm.resetFields();
-                          setShowCreateFolderModal(true),
-                            setToggleFileView(false),
-                            setEditModal(false);
-                        }}
-                      >
-                        <Image
-                          alt="adOne"
-                          src={addFolder}
-                          width={20}
-                          height={22}
-                        />
-                        Create a Folder
-                      </Button>
-                      {addButtonShow && !dragBoxStatus ? (
-                        <Button
-                          id="addAFileBtn"
-                          className={styles.add_file_btn}
+                    </div>
+                  }
+                >
+                  <div className={styles.uploded_Files}>
+                    {showCrossBtn ? (
+                      <div className={styles.Back_from_browser}>
+                        <CloseCircleOutlined
                           onClick={() => {
-                            addNewFile(),
-                              setToggleFileView(false),
-                              setUpdateList({});
-                            // setUploadStatus(true);
-                            setDatePick("");
+                            handle_X_btn();
                             setSearch("");
                           }}
-                        >
-                          <Image
-                            alt="adOne"
-                            src={addFile}
-                            width={20}
-                            height={18}
-                          />
-                          Add a File
-                        </Button>
+                        />
+                      </div>
+                    ) : (
+                      ""
+                    )}
+
+                    <Upload
+                      className={styles.UploadDataFiles}
+                      name="file"
+                      listType="picture"
+                      multiple
+                      fileList={fileStatus ? folderFiles : uploadFileList}
+                      beforeUpload={(file, fileList) => {
+                        setLoadingArray([...fileList]);
+                      }}
+                      onChange={(info) => {
+                        let length = info.fileList.length;
+                        if (info.file.status == "uploading") {
+                          setAddFileIndicator(true);
+                          setLoadingImage(true);
+                        }
+                        if (info.file.status == "done") {
+                          setLoadingImage(false);
+                          setTimeout(() => {
+                            setLoadingArray([]);
+                            setAddFileIndicator(false);
+                          }, 1000);
+                        }
+                        if (length) {
+                          if (fileStatus) {
+                            if (
+                              info.file.status == "uploading" &&
+                              info.file.percent == 0
+                            ) {
+                              setFolderFiles(info.fileList);
+                              //setUploadFileList(info.fileList);
+                              setFileLists(info.fileList);
+                            }
+                          } else {
+                            let dataValues = info.fileList;
+
+                            setUploadFileList(dataValues);
+                            setFileLists(info.fileList);
+                          }
+                          dragBoxHide();
+                          crossBtnhide();
+                          shownAddButton();
+                          uploadOptionsShow();
+                        } else {
+                          dragBoxShow();
+                          uploadOptionsHide();
+                          hideButtonAdd();
+                        }
+
+                        const { status } = info.file;
+                        if (status !== "uploading")
+                          if (status === "done") {
+                            showFiles();
+                          } else if (status === "error") {
+                            message.error(
+                              `${info.file.name} file upload failed.`
+                            );
+                          }
+                      }}
+                      onDrop={() => {}}
+                      itemRender={(originNode, file) => {
+                        const fileSizeFlag = file.size / (1024 * 1024) > 5;
+                        return (file.type && file.type == "folder") ||
+                          toggleFileView ? (
+                          ""
+                        ) : (
+                          <div className={afterUploadClass}>
+                            <Spin
+                              size="large"
+                              className="styles_spin"
+                              spinning={
+                                addFileIndicator &&
+                                loadingArray.findIndex(
+                                  (o) => o.uid === file.uid
+                                ) > -1
+                              }
+                            >
+                              <div
+                                className={styles.After_Upload}
+                                style={
+                                  fileSizeFlag
+                                    ? { border: "1px solid red" }
+                                    : {}
+                                }
+                              >
+                                <CloseCircleOutlined
+                                  onClick={() => {
+                                    removeUploadFiles(
+                                      originNode,
+                                      file,
+                                      fileStatus ? folderFiles : uploadFileList
+                                    );
+                                  }}
+                                />
+                                <div className="imgWrap">
+                                  {(!imageRegexData.test(file.type) ||
+                                    (imageRegexData.test(file.type) &&
+                                      file.thumbUrl)) &&
+                                    displayImage(file, file.thumbUrl)}
+                                </div>
+
+                                <br />
+                                <label
+                                  className={
+                                    fileSizeFlag
+                                      ? "fileName_label_max_limit"
+                                      : "fileName_label"
+                                  }
+                                >
+                                  {file.name}
+                                </label>
+                                <Form.Item
+                                  label="Enter file name"
+                                  className={"fileName_span"}
+                                  name={file.uid}
+                                  rules={[
+                                    {
+                                      required: true,
+                                      message: "File Name is required",
+                                    },
+                                  ]}
+                                >
+                                  <Input
+                                    id="enterFileName"
+                                    className="mr0"
+                                    name={file.uid}
+                                    onChange={(e) =>
+                                      handleChangeFileName(e, file.uid)
+                                    }
+                                    placeholder="Full Name (with no extension)"
+                                    onKeyDown={(e) => {
+                                      // ============================ Allowed Special Chracter=====================================================
+                                      // if (/[^\w]|_/g.test(e.key))
+                                      //   return e.preventDefault();
+                                      return (
+                                        (e.key === "." || e.key === " ") &&
+                                        (e.keyCode === 190 ||
+                                          e.keyCode === 32) &&
+                                        e.preventDefault()
+                                      );
+                                    }}
+                                  />
+                                </Form.Item>
+                              </div>
+                              {fileSizeFlag
+                                ? (uploadOptionsHide(),
+                                  (
+                                    <p className={styles.maxLimit}>
+                                      This file is exceeding the max limit and
+                                      will not be uploaded{" "}
+                                    </p>
+                                  ))
+                                : " "}
+                            </Spin>
+                          </div>
+                        );
+                      }}
+                    >
+                      {drageBoxVisible !== false ? (
+                        <div className={styles.Dragebox}>
+                          <Button
+                            id="clickOrDragAreaBtn"
+                            className={styles.Drager}
+                          >
+                            <div className="uploadBTn">
+                              <InboxOutlined />
+                              <h2>
+                                <b>Click or drag file to this area to upload</b>
+                              </h2>
+                              <p className="ant-upload-hint">
+                                Support for a single or bulk upload. Strictly
+                                prohibit from uploading company data or other
+                                band files
+                              </p>
+                            </div>
+                          </Button>
+                        </div>
                       ) : (
                         ""
                       )}
-
-                      <div className={styles.top_icon}>
-                        {show_UploadOptions || dragBoxStatus ? (
-                          ""
-                        ) : (
-                          <span
-                            style={{ cursor: "pointer" }}
-                            onClick={() => {
-                              setToggleFileView(true);
-                            }}
-                          >
-                            <Image
-                              alt="listView"
-                              src={toggleFileView ? ListViewActive : ListView}
-                              width={24}
-                              height={20}
-                            />
-                          </span>
-                        )}
-                        {show_UploadOptions || dragBoxStatus ? (
-                          ""
-                        ) : (
-                          <span
-                            onClick={() => {
-                              setToggleFileView(false), showUploadsAfter();
-                            }}
-                          >
-                            <Image
-                              alt="gridView"
-                              src={!toggleFileView ? GridViewActive : GridView}
-                              width={24}
-                              height={20}
-                            />
-                          </span>
-                        )}
-                      </div>
-                    </div>
+                    </Upload>
                   </div>
-                }
-              >
-                <div className={styles.uploded_Files}>
-                  {showCrossBtn ? (
-                    <div className={styles.Back_from_browser}>
-                      <CloseCircleOutlined
-                        onClick={() => {
-                          handle_X_btn();
-                          setSearch("");
-                        }}
+                  <div className={styles.fileList}>{searchFilter()}</div>
+                  {toggleFileView && fileLists.length > 0 ? (
+                    <div className="TableContent">
+                      <Table
+                        id="tableColumn"
+                        className="contentValue"
+                        dataSource={filteredArray()}
+                        columns={columns}
                       />
                     </div>
                   ) : (
                     ""
                   )}
 
-                  <Upload
-                    className={styles.UploadDataFiles}
-                    name="file"
-                    listType="picture"
-                    multiple
-                    fileList={fileStatus ? folderFiles : uploadFileList}
-                    beforeUpload={(file, fileList) => {
-                      setLoadingArray([...fileList]);
-                    }}
-                    onChange={(info) => {
-                      let length = info.fileList.length;
-                      if (info.file.status == "uploading") {
-                        setAddFileIndicator(true);
-                        setLoadingImage(true);
-                      }
-                      if (info.file.status == "done") {
-                        setLoadingImage(false);
-                        setTimeout(() => {
-                          setLoadingArray([]);
-                          setAddFileIndicator(false);
-                        }, 1000);
-                      }
-                      if (length) {
-                        if (fileStatus) {
-                          if (
-                            info.file.status == "uploading" &&
-                            info.file.percent == 0
-                          ) {
-                            setFolderFiles(info.fileList);
-                            //setUploadFileList(info.fileList);
-                            setFileLists(info.fileList);
-                          }
-                        } else {
-                          let dataValues = info.fileList;
-
-                          setUploadFileList(dataValues);
-                          setFileLists(info.fileList);
-                        }
-                        dragBoxHide();
-                        crossBtnhide();
-                        shownAddButton();
-                        uploadOptionsShow();
-                      } else {
-                        dragBoxShow();
-                        uploadOptionsHide();
-                        hideButtonAdd();
-                      }
-
-                      const { status } = info.file;
-                      if (status !== "uploading")
-                        if (status === "done") {
-                          showFiles();
-                        } else if (status === "error") {
-                          message.error(
-                            `${info.file.name} file upload failed.`
-                          );
-                        }
-                    }}
-                    onDrop={() => {}}
-                    itemRender={(originNode, file) => {
-                      const fileSizeFlag = file.size / (1024 * 1024) > 5;
-                      return (file.type && file.type == "folder") ||
-                        toggleFileView ? (
-                        ""
-                      ) : (
-                        <div className={afterUploadClass}>
-                          <Spin
-                            size="large"
-                            className="styles_spin"
-                            spinning={
-                              addFileIndicator &&
-                              loadingArray.findIndex(
-                                (o) => o.uid === file.uid
-                              ) > -1
-                            }
-                          >
-                            <div
-                              className={styles.After_Upload}
-                              style={
-                                fileSizeFlag ? { border: "1px solid red" } : {}
-                              }
-                            >
-                              <CloseCircleOutlined
-                                onClick={() => {
-                                  removeUploadFiles(
-                                    originNode,
-                                    file,
-                                    fileStatus ? folderFiles : uploadFileList
-                                  );
-                                }}
-                              />
-                              <div className="imgWrap">
-                                {(!imageRegexData.test(file.type) ||
-                                  (imageRegexData.test(file.type) &&
-                                    file.thumbUrl)) &&
-                                  displayImage(file, file.thumbUrl)}
-                              </div>
-
-                              <br />
-                              <label
-                                className={
-                                  fileSizeFlag
-                                    ? "fileName_label_max_limit"
-                                    : "fileName_label"
-                                }
-                              >
-                                {file.name}
-                              </label>
-                              <Form.Item
-                                label="Enter file name"
-                                className={"fileName_span"}
-                                name={file.uid}
-                                rules={[
-                                  {
-                                    required: true,
-                                    message: "File Name is required",
-                                  },
-                                ]}
-                              >
-                                <Input
-                                  id="enterFileName"
-                                  className="mr0"
-                                  name={file.uid}
-                                  onChange={(e) =>
-                                    handleChangeFileName(e, file.uid)
-                                  }
-                                  placeholder="Full Name (with no extension)"
-                                  onKeyDown={(e) => {
-                                    // ============================ Allowed Special Chracter=====================================================
-                                    // if (/[^\w]|_/g.test(e.key))
-                                    //   return e.preventDefault();
-                                    return (
-                                      (e.key === "." || e.key === " ") &&
-                                      (e.keyCode === 190 || e.keyCode === 32) &&
-                                      e.preventDefault()
-                                    );
-                                  }}
-                                />
-                              </Form.Item>
-                            </div>
-                            {fileSizeFlag
-                              ? (uploadOptionsHide(),
-                                (
-                                  <p className={styles.maxLimit}>
-                                    This file is exceeding the max limit and
-                                    will not be uploaded{" "}
-                                  </p>
-                                ))
-                              : " "}
-                          </Spin>
-                        </div>
-                      );
-                    }}
-                  >
-                    {drageBoxVisible !== false ? (
-                      <div className={styles.Dragebox}>
+                  {loadingImage ? (
+                    <div>
+                      <Spin
+                        tip="Loading..."
+                        spinning={loadingImage}
+                        size="large"
+                      >
+                        <Alert
+                          message="Image is loading. Please wait..."
+                          type="info"
+                        />
+                      </Spin>
+                      <br />
+                      <br />
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  <Form.Item>
+                    {show_UploadOptions ? (
+                      <div className={styles.Upload_Cancel_Btn}>
                         <Button
-                          id="clickOrDragAreaBtn"
-                          className={styles.Drager}
+                          id="uploadBtn"
+                          htmlType="submit"
+                          className={styles.Upload_Btn}
                         >
-                          <div className="uploadBTn">
-                            <InboxOutlined />
-                            <h2>
-                              <b>Click or drag file to this area to upload</b>
-                            </h2>
-                            <p className="ant-upload-hint">
-                              Support for a single or bulk upload. Strictly
-                              prohibit from uploading company data or other band
-                              files
-                            </p>
-                          </div>
+                          Upload
+                        </Button>
+                        <Button
+                          id="cancelBtn"
+                          htmlType="button"
+                          className={styles.cancel_Btn}
+                          onClick={cancelBtn}
+                        >
+                          Cancel
                         </Button>
                       </div>
                     ) : (
                       ""
                     )}
-                  </Upload>
-                </div>
-                <div className={styles.fileList}>{searchFilter()}</div>
-                {toggleFileView && fileLists.length > 0 ? (
-                  <div className="TableContent">
-                    <Table
-                      id="tableColumn"
-                      className="contentValue"
-                      dataSource={filteredArray()}
-                      columns={columns}
-                    />
-                  </div>
-                ) : (
-                  ""
-                )}
-
-                {loadingImage ? (
-                  <div>
-                    <Spin tip="Loading..." spinning={loadingImage} size="large">
-                      <Alert
-                        message="Image is loading. Please wait..."
-                        type="info"
-                      />
-                    </Spin>
-                    <br />
-                    <br />
-                  </div>
-                ) : (
-                  ""
-                )}
-                <Form.Item>
-                  {show_UploadOptions ? (
-                    <div className={styles.Upload_Cancel_Btn}>
-                      <Button
-                        id="uploadBtn"
-                        htmlType="submit"
-                        className={styles.Upload_Btn}
-                      >
-                        Upload
-                      </Button>
-                      <Button
-                        id="cancelBtn"
-                        htmlType="button"
-                        className={styles.cancel_Btn}
-                        onClick={cancelBtn}
-                      >
-                        Cancel
-                      </Button>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                </Form.Item>
-              </Card>
-            </Form>
+                  </Form.Item>
+                </Card>
+              </Form>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       <Modal
