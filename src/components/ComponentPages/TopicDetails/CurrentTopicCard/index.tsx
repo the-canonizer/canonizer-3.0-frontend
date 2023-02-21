@@ -28,7 +28,7 @@ const CurrentTopicCard = ({ loadingIndicator }) => {
   ) : (
     <Collapse
       defaultActiveKey={[]}
-      expandIconPosition="right"
+      expandIconPosition="end"
       className="topicDetailsCollapse"
     >
       <Panel

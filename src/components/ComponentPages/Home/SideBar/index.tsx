@@ -44,7 +44,7 @@ export default function HomeSideBar({ onCreateCamp = () => {} }: any) {
         setIsClient(false);
       }
     }
-  }, []);
+  }, [hasMounted]);
 
   return (
     <Fragment>

@@ -77,7 +77,7 @@ const CampTreeCard = ({
       {((tree && tree["1"]?.is_valid_as_of_time) || asof == "default") && (
         <Collapse
           defaultActiveKey={["1"]}
-          expandIconPosition="right"
+          expandIconPosition="end"
           className="topicDetailsCollapse"
         >
           <Panel

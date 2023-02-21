@@ -8,4 +8,8 @@ module.exports = {
       "canonizer3.canonizer.com",
     ],
   },
+  reactStrictMode: false,
+  compiler: {
+    styledComponents: true,
+  },
 };

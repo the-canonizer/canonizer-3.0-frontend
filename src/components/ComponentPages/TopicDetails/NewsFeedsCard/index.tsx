@@ -48,7 +48,7 @@ const NewsFeedsCard = ({ newsFeed }: any) => {
   return (
     <Collapse
       defaultActiveKey={["1"]}
-      expandIconPosition="right"
+      expandIconPosition="end"
       className="topicDetailsCollapse news-feeds"
     >
       <Panel

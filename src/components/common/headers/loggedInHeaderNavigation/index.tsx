@@ -119,97 +119,93 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
   }, [loggedInUser]);
 
   return (
-    <>
-      <React.Fragment>
-        <Header className={styles.wrap}>
-          <Logo />
-          <div
-            className={`${styles.navWrap} ${isActive && styles.showMobMenu}`}
+    <React.Fragment>
+      <Header className={styles.wrap}>
+        <Logo />
+        <div className={`${styles.navWrap} ${isActive && styles.showMobMenu}`}>
+          <Button
+            size="large"
+            className={`${styles.btnCloseMobMenu} mb-4 float-right`}
+            onClick={toggleMobNav}
           >
-            <Button
-              size="large"
-              className={`${styles.btnCloseMobMenu} mb-4 float-right`}
-              onClick={toggleMobNav}
-            >
-              <CloseOutlined />
-            </Button>
+            <CloseOutlined />
+          </Button>
 
-            <HeaderMenu loggedUser={loggedUser} />
+          <HeaderMenu loggedUser={loggedUser} />
 
-            {!isLoginPage ? (
-              <Fragment>
-                <div className={styles.btnsLoginRegister}>
-                  <div className="hdrUserdropdown">
-                    <Space size="large">
-                      <i className="icon-user"></i>{" "}
-                      <div>
-                        {loggedUser ? loggedUser["first_name"] : ""}{" "}
-                        {loggedUser ? loggedUser["last_name"] : ""}
-                      </div>
-                    </Space>
-                  </div>
-                </div>
-                <div className="mobile_tag">
-                  <Link href="/settings">Account Settings</Link>
-                  <Link href="/settings?tab=supported_camps" passHref>
-                    Supported Camps
-                  </Link>
-                  <a onClick={logOut}>Log Out</a>
-                </div>
-              </Fragment>
-            ) : null}
-          </div>
-          <div className={styles.right}>
-            {!isLoginPage ? (
+          {!isLoginPage ? (
+            <Fragment>
               <div className={styles.btnsLoginRegister}>
                 <div className="hdrUserdropdown">
-                  <Space size={40}>
-                    <div className={styles.not_2}>
-                      <Notifications />
+                  <Space size="large">
+                    <i className="icon-user"></i>{" "}
+                    <div>
+                      {loggedUser ? loggedUser["first_name"] : ""}{" "}
+                      {loggedUser ? loggedUser["last_name"] : ""}
                     </div>
-                    <Dropdown
-                      overlay={menu}
-                      trigger={["click"]}
-                      placement="bottomLeft"
-                    >
-                      <Space size="small">
-                        <i className="icon-user"></i>{" "}
-                        <a
-                          className="ant-dropdown-link"
-                          onClick={(e) => e.preventDefault()}
-                        >
-                          {loggedUser ? loggedUser["first_name"] : ""}{" "}
-                          {loggedUser ? loggedUser["last_name"] : ""}
-                        </a>
-                        <DownOutlined
-                          style={{
-                            fontSize: "15px",
-                            color: "#fff",
-                            cursor: "pointer",
-                          }}
-                        />
-                      </Space>
-                    </Dropdown>
                   </Space>
                 </div>
               </div>
-            ) : null}
-            <div className={styles.iconMobMenu}>
-              <div className={styles.mob_noti}>
-                <Notifications />
+              <div className="mobile_tag">
+                <Link href="/settings">Account Settings</Link>
+                <Link href="/settings?tab=supported_camps" passHref>
+                  Supported Camps
+                </Link>
+                <a onClick={logOut}>Log Out</a>
               </div>
-              <Button size="middle" onClick={toggleMobNav}>
-                <MenuOutlined />
-              </Button>
+            </Fragment>
+          ) : null}
+        </div>
+        <div className={styles.right}>
+          {!isLoginPage ? (
+            <div className={styles.btnsLoginRegister}>
+              <div className="hdrUserdropdown">
+                <Space size={40}>
+                  <div className={styles.not_2}>
+                    <Notifications />
+                  </div>
+                  <Dropdown
+                    overlay={menu}
+                    trigger={["click"]}
+                    placement="bottomLeft"
+                  >
+                    <Space size="small">
+                      <i className="icon-user"></i>{" "}
+                      <a
+                        className="ant-dropdown-link"
+                        onClick={(e) => e.preventDefault()}
+                      >
+                        {loggedUser ? loggedUser["first_name"] : ""}{" "}
+                        {loggedUser ? loggedUser["last_name"] : ""}
+                      </a>
+                      <DownOutlined
+                        style={{
+                          fontSize: "15px",
+                          color: "#fff",
+                          cursor: "pointer",
+                        }}
+                      />
+                    </Space>
+                  </Dropdown>
+                </Space>
+              </div>
             </div>
+          ) : null}
+          <div className={styles.iconMobMenu}>
+            <div className={styles.mob_noti}>
+              <Notifications />
+            </div>
+            <Button size="middle" onClick={toggleMobNav}>
+              <MenuOutlined />
+            </Button>
           </div>
-          <div
-            className={`${styles.mobNavBG} ${isActive && styles.mobNavBGshow}`}
-            onClick={toggleMobNav}
-          ></div>
-        </Header>
-      </React.Fragment>
-    </>
+        </div>
+        <div
+          className={`${styles.mobNavBG} ${isActive && styles.mobNavBGshow}`}
+          onClick={toggleMobNav}
+        ></div>
+      </Header>
+    </React.Fragment>
   );
 };
 

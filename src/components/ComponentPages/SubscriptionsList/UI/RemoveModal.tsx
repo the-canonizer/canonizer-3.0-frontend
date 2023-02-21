@@ -22,7 +22,7 @@ function TopicRemoveModal({
           Remove Subscription
         </Typography.Title>
       }
-      visible={isVisible}
+      open={isVisible}
       onCancel={onCancel}
       footer={
         <div className={styles.text_right}>

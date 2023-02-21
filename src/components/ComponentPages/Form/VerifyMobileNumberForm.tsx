@@ -149,7 +149,7 @@ function VerifyMobileNumberForm({
             </Form.Item>
             <Modal
               title=""
-              visible={isOTPModalVisible}
+              open={isOTPModalVisible}
               footer=""
               onCancel={handleOTPCancel}
             >

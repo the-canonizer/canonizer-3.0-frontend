@@ -1,9 +1,13 @@
 import { Row, Col } from "antd";
 import Layout from "../hoc/layout";
 import SideBar from "../components/ComponentPages/Home/SideBar";
-import TopicsList from "../components/ComponentPages/Home/TopicsList";
+const TopicsList = dynamic(
+  () => import("../components/ComponentPages/Home/TopicsList"),
+  { ssr: false }
+);
 import { useDispatch } from "react-redux";
 import { setCurrentDate } from "src/store/slices/filtersSlice";
+import dynamic from "next/dynamic";
 
 const BrowsePage = ({ current_date }: any) => {
   const dispatch = useDispatch();

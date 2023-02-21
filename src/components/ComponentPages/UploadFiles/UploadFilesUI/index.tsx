@@ -1418,7 +1418,7 @@ const UploadFileUI = ({
         className={styles.modal_cross}
         centered
         title={editModal ? "Edit your folder name" : labels.CreateaFolder}
-        visible={showCreateFolderModal}
+        open={showCreateFolderModal}
         footer=""
         onCancel={() => setShowCreateFolderModal(false)}
         width={450}
@@ -1440,7 +1440,7 @@ const UploadFileUI = ({
       <Modal
         destroyOnClose={true}
         className="modalStyle"
-        visible={preview.previewVisible}
+        open={preview.previewVisible}
         footer={null}
         centered
         closeIcon={<CloseCircleOutlined className={styles.crossIcon} />}
@@ -1518,7 +1518,7 @@ const UploadFileUI = ({
       <Modal
         className={styles.modal_cross}
         title="Delete"
-        visible={DeleteConfirmationVisible}
+        open={DeleteConfirmationVisible}
         onOk={() => {
           setDeleteConfirmationVisible(false);
         }}

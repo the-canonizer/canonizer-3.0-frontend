@@ -12,7 +12,7 @@ const LoginModal = () => {
     <Fragment>
       <Modal
         style={{ top: "20px" }}
-        visible={visible}
+        open={visible}
         footer={null}
         closable={false}
         width={800}

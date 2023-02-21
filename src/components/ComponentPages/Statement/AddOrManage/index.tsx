@@ -6,7 +6,6 @@ import {
   Col,
   Card,
   Modal,
-  Spin,
   Input,
   Select,
   Typography,
@@ -1181,7 +1180,7 @@ export default function AddOrManage({ add }: any) {
         style={{
           top: 20,
         }}
-        visible={modalVisible}
+        open={modalVisible}
         onCancel={() => setModalVisible(false)}
         onOk={() => {
           form?.submit();

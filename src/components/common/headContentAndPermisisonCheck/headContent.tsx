@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Script from "next/script";
 
 import React from "react";
 
@@ -14,10 +15,10 @@ function HeadContent({ description, title, route, author }: HeadContentProps) {
   const image_url = `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/canonizer_preview.jpg`;
   return (
     <Head>
-      <script
+      <Script
         async
         src={`Https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}`}
-      ></script>
+      ></Script>
 
       {/* Meta tags for browser link preview  */}
       <title>{title}</title>

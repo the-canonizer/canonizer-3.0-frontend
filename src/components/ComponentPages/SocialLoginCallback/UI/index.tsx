@@ -24,7 +24,7 @@ function SocialLoginCallback() {
           </div>
           <Collapse
             className={`${styles.cardAccordian} topicListFilterCardCollapse`}
-            expandIconPosition="right"
+            expandIconPosition="end"
             bordered={false}
             defaultActiveKey={["1", "2", "3"]}
           >

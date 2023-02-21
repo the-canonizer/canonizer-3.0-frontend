@@ -34,36 +34,32 @@ import FullScoreCheckbox from "../../ComponentPages/FullScoreCheckbox";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 
 const infoContent = (
-  <>
-    <div className={styles.infoText}>
-      <Title level={5}>Score Value Filter </Title>
-      <p>
-        This option filters down the camp list with a score value greater than
-        the entered value. By default, the score value filter is 0, displaying
-        all camps.
-      </p>
-    </div>
-  </>
+  <div className={styles.infoText}>
+    <Title level={5}>Score Value Filter </Title>
+    <p>
+      This option filters down the camp list with a score value greater than the
+      entered value. By default, the score value filter is 0, displaying all
+      camps.
+    </p>
+  </div>
 );
 
 const asContent = (
-  <>
-    <div className={styles.asfoText}>
-      <Title level={5}>Include review</Title>
-      <Paragraph>
-        In addition to the published camps, this option shows camps in Review.
-      </Paragraph>
-      <Title level={5}>Default</Title>
-      <Paragraph>
-        This option lists down the latest (current date) version of camps.
-      </Paragraph>
-      <Title level={5}>As of date</Title>
-      <Paragraph>
-        This option shows the historical view of camps according to the selected
-        date.
-      </Paragraph>
-    </div>
-  </>
+  <div className={styles.asfoText}>
+    <Title level={5}>Include review</Title>
+    <Paragraph>
+      In addition to the published camps, this option shows camps in Review.
+    </Paragraph>
+    <Title level={5}>Default</Title>
+    <Paragraph>
+      This option lists down the latest (current date) version of camps.
+    </Paragraph>
+    <Title level={5}>As of date</Title>
+    <Paragraph>
+      This option shows the historical view of camps according to the selected
+      date.
+    </Paragraph>
+  </div>
 );
 
 // function range(start, end) {
@@ -270,204 +266,195 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   }
 
   return (
-    <>
-      <div className="leftSideBar_Card">
-        <div className="btnsWrap">
-          <Button size="large" className="mb-3 btn" onClick={campRoute}>
-            <i className="icon-topic"></i> Create New Topic
-          </Button>
-          {isCampBtnVisible &&
-          currentCampNode?._isDisabled == 0 &&
-          currentCampNode?.parentIsOneLevel == 0 ? (
-            <Tooltip
-              title={
-                tree && !tree["1"]?.is_valid_as_of_time
-                  ? K.exceptionalMessages.createNewCampTooltipMsg
-                  : ""
-              }
-            >
-              <Button
-                className="btn"
-                size="large"
-                disabled={
-                  (tree && !tree["1"]?.is_valid_as_of_time) ||
-                  (campExist && !campExist?.camp_exist)
-                    ? true
-                    : false
-                }
-                onClick={onCreateCamp}
-              >
-                <i className="icon-camp"></i> Create New Camp
-              </Button>
-            </Tooltip>
-          ) : null}
-        </div>
-        <Collapse
-          className={`${styles.cardAccordian} topicListFilterCardCollapse`}
-          expandIconPosition="right"
-          expandIcon={() => (
-            <div className={styles.collapseIcon}>
-              <i className="icon-angle-up"></i>
-            </div>
-          )}
-          bordered={false}
-          defaultActiveKey={["1", "2", "3"]}
-        >
-          <Panel
-            header={<span className={styles.title}>Canonizer</span>}
-            key="1"
+    <div className="leftSideBar_Card">
+      <div className="btnsWrap">
+        <Button size="large" className="mb-3 btn" onClick={campRoute}>
+          <i className="icon-topic"></i> Create New Topic
+        </Button>
+        {isCampBtnVisible &&
+        currentCampNode?._isDisabled == 0 &&
+        currentCampNode?.parentIsOneLevel == 0 ? (
+          <Tooltip
+            title={
+              tree && !tree["1"]?.is_valid_as_of_time
+                ? K.exceptionalMessages.createNewCampTooltipMsg
+                : ""
+            }
           >
-            <div className={styles.algo_title}>
-              <Title level={5} className={styles.algoText}>
-                Canonizer Algorithm:
-              </Title>
-              <Popover content="Algorithm Information" placement="top">
-                {router.asPath.includes("/topic") ? (
-                  <a href={K?.Network?.URL?.algoInfoUrl}>
-                    Algorithm Information
-                  </a>
-                ) : (
-                  <Link href={K?.Network?.URL?.algoInfoUrl}>
-                    Algorithm Information
-                  </Link>
-                )}
-              </Popover>
-            </div>
-            <Select
+            <Button
+              className="btn"
               size="large"
-              showSearch
-              optionFilterProp="children"
-              className={styles.algoSelect}
-              defaultValue={
-                algorithms?.filter(
-                  (algo) => algo.algorithm_key == selectedAlgorithm
-                )[0]?.algorithm_label
+              disabled={
+                (tree && !tree["1"]?.is_valid_as_of_time) ||
+                (campExist && !campExist?.camp_exist)
+                  ? true
+                  : false
               }
-              onChange={selectAlgorithm}
-              value={
-                algorithms?.filter(
-                  (algo) => algo.algorithm_key == selectedAlgorithm
-                )[0]?.algorithm_label
-              }
-              disabled={loading}
+              onClick={onCreateCamp}
             >
-              {algorithms?.map((algo) => {
-                return (
-                  <Option key={algo.id} value={algo.algorithm_key}>
-                    {algo.algorithm_label}
-                  </Option>
-                );
-              })}
-            </Select>
-            <Paragraph className={styles.algoInfo}>
-              {/* <i className="icon-fish-bones"></i> Algorithm Information */}
-            </Paragraph>
-            <div className={styles.filter}>
-              <Text className={styles.filterText}>Filter</Text>
-              <LeftOutlined className={styles.LeftOutlined} />
-              <Input
-                size="large"
-                onChange={filterOnScore}
-                value={inputValue}
-                disabled={loading}
-              />
-              <Popover
-                content={infoContent}
-                placement="right"
-                className={styles.infoIcon}
-              >
+              <i className="icon-camp"></i> Create New Camp
+            </Button>
+          </Tooltip>
+        ) : null}
+      </div>
+      <Collapse
+        className={`${styles.cardAccordian} topicListFilterCardCollapse`}
+        expandIconPosition="end"
+        expandIcon={() => (
+          <div className={styles.collapseIcon}>
+            <i className="icon-angle-up"></i>
+          </div>
+        )}
+        bordered={false}
+        defaultActiveKey={["1", "2", "3"]}
+      >
+        <Panel header={<span className={styles.title}>Canonizer</span>} key="1">
+          <div className={styles.algo_title}>
+            <Title level={5} className={styles.algoText}>
+              Canonizer Algorithm:
+            </Title>
+            <Popover content="Algorithm Information" placement="top">
+              {router.asPath.includes("/topic") ? (
+                <a href={K?.Network?.URL?.algoInfoUrl}>Algorithm Information</a>
+              ) : (
+                <Link href={K?.Network?.URL?.algoInfoUrl}>
+                  Algorithm Information
+                </Link>
+              )}
+            </Popover>
+          </div>
+          <Select
+            size="large"
+            showSearch
+            optionFilterProp="children"
+            className={styles.algoSelect}
+            defaultValue={
+              algorithms?.filter(
+                (algo) => algo.algorithm_key == selectedAlgorithm
+              )[0]?.algorithm_label
+            }
+            onChange={selectAlgorithm}
+            value={
+              algorithms?.filter(
+                (algo) => algo.algorithm_key == selectedAlgorithm
+              )[0]?.algorithm_label
+            }
+            disabled={loading}
+          >
+            {algorithms?.map((algo) => {
+              return (
+                <Option key={algo.id} value={algo.algorithm_key}>
+                  {algo.algorithm_label}
+                </Option>
+              );
+            })}
+          </Select>
+          <Paragraph className={styles.algoInfo}>
+            {/* <i className="icon-fish-bones"></i> Algorithm Information */}
+          </Paragraph>
+          <div className={styles.filter}>
+            <Text className={styles.filterText}>Filter</Text>
+            <LeftOutlined className={styles.LeftOutlined} />
+            <Input
+              size="large"
+              onChange={filterOnScore}
+              value={inputValue}
+              disabled={loading}
+            />
+            <Popover
+              content={infoContent}
+              placement="right"
+              className={styles.infoIcon}
+            >
+              <i className="icon-info"></i>
+            </Popover>
+          </div>
+        </Panel>
+        <Panel
+          header={
+            <span className={styles.title}>
+              As Of
+              <Popover content={asContent} placement="right">
                 <i className="icon-info"></i>
               </Popover>
-            </div>
-          </Panel>
+            </span>
+          }
+          key="2"
+        >
+          <Radio.Group onChange={onChange} value={value} disabled={loading}>
+            <Space direction="vertical" style={{ gap: "12px" }}>
+              <Radio
+                className={styles.radio}
+                value={1}
+                onClick={() => {
+                  dispatch(setViewThisVersion(false));
+                  dispatch(
+                    setIsReviewCanonizedTopics({
+                      includeReview: true,
+                      asof: "review",
+                      asofdate: Date.now() / 1000,
+                    })
+                  );
+                }}
+              >
+                Include review
+              </Radio>
+              <Radio
+                className={styles.radio}
+                value={2}
+                onClick={() => {
+                  dispatch(setViewThisVersion(false));
+                  dispatch(
+                    setFilterCanonizedTopics({
+                      asofdate: Date.now() / 1000,
+                      asof: "default",
+                    })
+                  );
+                }}
+              >
+                Default
+              </Radio>
+              <Radio
+                className={styles.radio}
+                value={3}
+                onClick={() => {
+                  dispatch(setViewThisVersion(false));
+                  handleAsOfClick();
+                }}
+              >
+                As of date
+              </Radio>
+            </Space>
+          </Radio.Group>
+          <DatePicker
+            disabled={isDatePicker || selectedAsOf == "bydate" ? false : true}
+            format="YYYY-MM-DD"
+            defaultValue={moment(current_date_filter * 1000)}
+            value={moment(selectedAsOFDate * 1000)}
+            suffixIcon={<i className="icon-calendar"></i>}
+            size={"large"}
+            className={`${styles.date} w-100`}
+            onChange={pickDate}
+            inputReadOnly={true}
+            disabledDate={(current) =>
+              current && current > moment(current_date_filter).endOf("day")
+            }
+          />
+        </Panel>
+        {isAuth.isUserAuthenticated ? (
           <Panel
             header={
-              <span className={styles.title}>
-                As Of
-                <Popover content={asContent} placement="right">
-                  <i className="icon-info"></i>
-                </Popover>
-              </span>
+              <span className={styles.title}>Score on all supported camps</span>
             }
-            key="2"
+            key="3"
           >
-            <Radio.Group onChange={onChange} value={value} disabled={loading}>
-              <Space direction="vertical" style={{ gap: "12px" }}>
-                <Radio
-                  className={styles.radio}
-                  value={1}
-                  onClick={() => {
-                    dispatch(setViewThisVersion(false));
-                    dispatch(
-                      setIsReviewCanonizedTopics({
-                        includeReview: true,
-                        asof: "review",
-                        asofdate: Date.now() / 1000,
-                      })
-                    );
-                  }}
-                >
-                  Include review
-                </Radio>
-                <Radio
-                  className={styles.radio}
-                  value={2}
-                  onClick={() => {
-                    dispatch(setViewThisVersion(false));
-                    dispatch(
-                      setFilterCanonizedTopics({
-                        asofdate: Date.now() / 1000,
-                        asof: "default",
-                      })
-                    );
-                  }}
-                >
-                  Default
-                </Radio>
-                <Radio
-                  className={styles.radio}
-                  value={3}
-                  onClick={() => {
-                    dispatch(setViewThisVersion(false));
-                    handleAsOfClick();
-                  }}
-                >
-                  As of date
-                </Radio>
-              </Space>
-            </Radio.Group>
-            <DatePicker
-              disabled={isDatePicker || selectedAsOf == "bydate" ? false : true}
-              format="YYYY-MM-DD"
-              defaultValue={moment(current_date_filter * 1000)}
-              value={moment(selectedAsOFDate * 1000)}
-              suffixIcon={<i className="icon-calendar"></i>}
-              size={"large"}
-              className={`${styles.date} w-100`}
-              onChange={pickDate}
-              inputReadOnly={true}
-              disabledDate={(current) =>
-                current && current > moment(current_date_filter).endOf("day")
-              }
-            />
+            <div className={styles.scoreCheckbox}>
+              <FullScoreCheckbox />
+            </div>
           </Panel>
-          {isAuth.isUserAuthenticated ? (
-            <Panel
-              header={
-                <span className={styles.title}>
-                  Score on all supported camps
-                </span>
-              }
-              key="3"
-            >
-              <div className={styles.scoreCheckbox}>
-                <FullScoreCheckbox />
-              </div>
-            </Panel>
-          ) : null}
-        </Collapse>
-      </div>
-    </>
+        ) : null}
+      </Collapse>
+    </div>
   );
 };
 

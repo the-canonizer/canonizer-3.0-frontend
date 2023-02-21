@@ -11,7 +11,7 @@ const MultiUserModalForm = ({ visible, onFinish, closeModal, users }) => {
     <Fragment>
       <Modal
         style={{ top: "20px" }}
-        visible={visible}
+        open={visible}
         footer={
           <div className={styles.buttonDiv}>
             <Button

@@ -21,7 +21,7 @@ const RegistrationModal = () => {
       {/* registration popup */}
       <Modal
         style={{ top: "20px" }}
-        visible={isOTPModal}
+        open={isOTPModal}
         footer={null}
         closable={false}
         width={800}
@@ -33,7 +33,7 @@ const RegistrationModal = () => {
       {/* email confirmation popup */}
       <Modal
         style={{ top: "20px" }}
-        visible={isEmailModal}
+        open={isEmailModal}
         footer={null}
         closable={false}
         width={800}
@@ -45,7 +45,7 @@ const RegistrationModal = () => {
       {/* name confirmation popup */}
       <Modal
         style={{ top: "20px" }}
-        visible={isNameModal}
+        open={isNameModal}
         footer={null}
         closable={false}
         width={800}

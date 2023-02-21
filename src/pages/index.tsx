@@ -1,8 +1,12 @@
 import { Fragment, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import dynamic from "next/dynamic";
 
 import Layout from "../hoc/layout";
-import HomePageContainer from "../components/ComponentPages/Home";
+const HomePageContainer = dynamic(
+  () => import("../components/ComponentPages/Home"),
+  { ssr: false }
+);
 import { getCanonizedWhatsNewContentApi } from "../network/api/homePageApi";
 import {
   setFilterCanonizedTopics,

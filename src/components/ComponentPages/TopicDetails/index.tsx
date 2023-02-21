@@ -321,7 +321,7 @@ const TopicDetails = () => {
         setIsClient(false);
       }
     }
-  }, []);
+  }, [hadMounted]);
 
   return (
     <>
