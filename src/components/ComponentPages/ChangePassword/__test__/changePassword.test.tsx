@@ -1,4 +1,9 @@
-import { render, screen, waitFor } from "../../../../utils/testUtils";
+import {
+  render,
+  screen,
+  waitFor,
+  fireEvent,
+} from "../../../../utils/testUtils";
 import userEvent from "@testing-library/user-event";
 
 import ChangePassword from "../index";
@@ -70,8 +75,8 @@ describe("ChangePassword page", () => {
     render(<ChangePassword />);
     const inputEl = screen.getByPlaceholderText(labels.newPassword);
     const inputEl2 = screen.getByPlaceholderText("Enter Confirm Password");
-    userEvent.type(inputEl, "Abc@1234");
-    userEvent.type(inputEl2, "Abc@12344");
+    fireEvent.change(inputEl, { target: { value: "Abc@1234" } });
+    fireEvent.change(inputEl2, { target: { value: "Abc@12344" } });
     await waitFor(() => {
       expect(inputEl).toHaveValue("Abc@1234");
       expect(inputEl2).toHaveValue("Abc@12344");
@@ -86,8 +91,9 @@ describe("ChangePassword page", () => {
     render(<ChangePassword />);
     const inputEl = screen.getByPlaceholderText(labels.newPassword);
     const inputEl2 = screen.getByPlaceholderText("Enter Confirm Password");
-    userEvent.type(inputEl, "Abc@1234");
-    userEvent.type(inputEl2, "Abc@1234");
+    fireEvent.change(inputEl, { target: { value: "Abc@1234" } });
+    fireEvent.change(inputEl2, { target: { value: "Abc@1234" } });
+
     await waitFor(() => {
       expect(inputEl).toHaveValue("Abc@1234");
       expect(inputEl2).toHaveValue("Abc@1234");

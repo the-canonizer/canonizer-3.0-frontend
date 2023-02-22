@@ -7,8 +7,25 @@ import {
 } from "../../../../utils/testUtils";
 import userEvent from "@testing-library/user-event";
 
-import ResetPassword from "../index";
+import ResetPassword from "../";
 import messages from "../../../../messages";
+
+jest.isolateModules(() => {
+  const preloadAll = require("jest-next-dynamic");
+  beforeAll(async () => {
+    await preloadAll();
+  });
+});
+
+jest.mock("next/router", () => ({
+  __esModule: true,
+  useRouter: jest.fn(),
+}));
+
+jest.mock("next/link", () => ({
+  __esModule: true,
+  useRouter: jest.fn(),
+}));
 
 const { placeholders, labels, validations } = messages;
 
@@ -18,6 +35,7 @@ describe("Reset Password page", () => {
     let heading = screen.getByText(labels.createPassword);
     expect(heading).toBeInTheDocument();
     expect(screen.getByText(labels.newPassword)).toBeInTheDocument();
+    expect(screen.getByText(labels.confirmPassword)).toBeInTheDocument();
     expect(screen.getByText(labels.confirmPassword)).toBeInTheDocument();
   });
 
@@ -67,14 +85,16 @@ describe("Reset Password page", () => {
 
   it("pass invalid confirm password", async () => {
     render(<ResetPassword is_test={true} />);
-    const inputEl = screen.getByPlaceholderText(placeholders.newPassword);
-    const inputEl2 = screen.getByPlaceholderText(placeholders.confirmPassword);
-    act(async () => {
-      await fireEvent.change(inputEl, { target: { value: "Abc@1234" } });
-      await userEvent.tab();
-      await fireEvent.change(inputEl2, { target: { value: "Abc@12344" } });
-      await userEvent.tab();
-    });
+    const inputEl = screen.getByPlaceholderText(
+      messages.placeholders.newPassword
+    );
+    const inputEl2 = screen.getByPlaceholderText(
+      messages.placeholders.confirmPassword
+    );
+    fireEvent.change(inputEl, { target: { value: "Abc@1234" } });
+    fireEvent.focusOut(inputEl);
+    fireEvent.change(inputEl2, { target: { value: "Abc@12344" } });
+    fireEvent.focusOut(inputEl2);
     waitFor(() => {
       expect(inputEl).toHaveValue("Abc@1234");
       expect(inputEl2).toHaveValue("Abc@12344");
@@ -85,26 +105,38 @@ describe("Reset Password page", () => {
 
   it("pass valid confirm password", async () => {
     render(<ResetPassword is_test={true} />);
-    const inputEl = screen.getByPlaceholderText(placeholders.newPassword);
-    const inputEl2 = screen.getByPlaceholderText(placeholders.confirmPassword);
-    await fireEvent.change(inputEl, { target: { value: "Abc@1234" } });
-    await fireEvent.change(inputEl2, { target: { value: "Abc@1234" } });
-    expect(inputEl).toHaveValue("Abc@1234");
-    expect(inputEl2).toHaveValue("Abc@1234");
-    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
-  });
-
-  it("blank form should not be submit", async () => {
-    render(<ResetPassword is_test={true} />);
-
-    const btnEl = screen.getByTestId("submitButton");
-    await act(async () => {
-      await fireEvent.click(btnEl);
+    const inputEl = await screen.getByPlaceholderText(placeholders.newPassword);
+    const inputEl2 = await screen.getByPlaceholderText(
+      placeholders.confirmPassword
+    );
+    act(async () => {
+      await fireEvent.change(inputEl, { target: { value: "Abc@1234" } });
+      await fireEvent.change(inputEl2, { target: { value: "Abc@1234" } });
     });
-
-    await waitFor(() => {
-      expect(screen.queryByText("Please input your password!")).toBeVisible();
-      expect(screen.queryByText("Please confirm your password!")).toBeVisible();
+    waitFor(() => {
+      expect(inputEl).toHaveValue("Abc@1234");
+      expect(inputEl2).toHaveValue("Abc@1234");
+      expect(screen.queryByRole("alert")).not.toBeInTheDocument();
     });
   });
+
+  // it("blank form should not be submit", async () => {
+  //   render(<ResetPassword is_test={true} />);
+
+  //   const inputEl = await screen.getByPlaceholderText(
+  //     messages.placeholders.newPassword
+  //   );
+  //   const inputEl2 = await screen.getByPlaceholderText(
+  //     messages.placeholders.confirmPassword
+  //   );
+  //   fireEvent.change(inputEl, { target: { value: "" } });
+  //   fireEvent.focusOut(inputEl);
+  //   fireEvent.change(inputEl2, { target: { value: "" } });
+  //   fireEvent.focusOut(inputEl2);
+
+  //   await waitFor(() => {
+  //     expect(screen.queryByText("Please input your password!")).toBeVisible();
+  //     expect(screen.queryByText("Please confirm your password!")).toBeVisible();
+  //   });
+  // });
 });

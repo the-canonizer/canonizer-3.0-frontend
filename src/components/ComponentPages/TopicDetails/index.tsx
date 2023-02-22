@@ -14,14 +14,22 @@ import {
 } from "src/network/api/campDetailApi";
 import { RootState } from "src/store";
 import SideBar from "../Home/SideBar";
-import CampStatementCard from "./CampStatementCard";
+const CampStatementCard = dynamic(() => import("./CampStatementCard"), {
+  ssr: false,
+});
 import CampInfoBar from "./CampInfoBar";
 import styles from "./topicDetails.module.scss";
-import CampTreeCard from "./CampTreeCard";
-import CurrentCampCard from "./CurrentCampCard";
-import CurrentTopicCard from "./CurrentTopicCard";
-import NewsFeedsCard from "./NewsFeedsCard";
-import SupportTreeCard from "./SupportTreeCard";
+const CampTreeCard = dynamic(() => import("./CampTreeCard"), { ssr: false });
+const CurrentCampCard = dynamic(() => import("./CurrentCampCard"), {
+  ssr: false,
+});
+const CurrentTopicCard = dynamic(() => import("./CurrentTopicCard"), {
+  ssr: false,
+});
+const NewsFeedsCard = dynamic(() => import("./NewsFeedsCard"), { ssr: false });
+const SupportTreeCard = dynamic(() => import("./SupportTreeCard"), {
+  ssr: false,
+});
 import { BackTop, Typography, message, Alert } from "antd";
 import { Spin } from "antd";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
@@ -50,6 +58,7 @@ import {
 } from "src/network/api/userApi";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import useHasMounted from "src/hooks/useHasMounted";
+import dynamic from "next/dynamic";
 
 const TopicDetails = () => {
   const hadMounted = useHasMounted();

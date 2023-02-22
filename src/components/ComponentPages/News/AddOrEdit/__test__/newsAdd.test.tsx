@@ -13,6 +13,21 @@ import { Provider } from "react-redux";
 import { store } from "../../../../../store";
 import { RouterContext } from "next/dist/shared/lib/router-context";
 import NewsAdd from "..";
+
+jest.isolateModules(() => {
+  const preloadAll = require("jest-next-dynamic");
+  beforeAll(async () => {
+    await preloadAll();
+  });
+});
+
+jest.mock(
+  "next/link",
+  () =>
+    ({ children }: any) =>
+      children
+);
+
 function createMockRouter() {
   return {
     basePath: "",

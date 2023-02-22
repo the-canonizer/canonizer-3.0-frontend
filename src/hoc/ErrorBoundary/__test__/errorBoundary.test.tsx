@@ -1,6 +1,18 @@
 import ErrorBoundary from "../";
 import { render, cleanup, screen } from "@testing-library/react";
 
+jest.isolateModules(() => {
+  const preloadAll = require("jest-next-dynamic");
+  beforeAll(async () => {
+    await preloadAll();
+  });
+});
+
+jest.mock("next/router", () => ({
+  __esModule: true,
+  useRouter: jest.fn(),
+}));
+
 afterEach(cleanup);
 
 describe("Error Boundary", () => {

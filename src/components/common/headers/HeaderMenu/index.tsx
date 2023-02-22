@@ -62,10 +62,10 @@ const HeaderMenu = ({ loggedUser }) => {
           {mockLinks?.map((item, idx) => {
             return (
               <li
-                className={router.asPath === item.link ? styles.active : ""}
+                className={router?.asPath === item.link ? styles.active : ""}
                 key={item.id + "_" + item.link + "___" + idx}
               >
-                {router.asPath.includes("/topic") || item.external ? (
+                {router?.asPath.includes("/topic") || item.external ? (
                   <a
                     href={item.link}
                     rel="noopener noreferrer"

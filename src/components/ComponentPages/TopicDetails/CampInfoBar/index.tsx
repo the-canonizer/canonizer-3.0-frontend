@@ -154,7 +154,7 @@ const CampInfoBar = ({
       {isUserAuthenticated && is_admin && (
         <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
           <Link
-            href={router.asPath.replace("topic", "addnews")}
+            href={router?.asPath.replace("topic", "addnews")}
             rel="noopener noreferrer"
           >
             Add News
@@ -176,7 +176,7 @@ const CampInfoBar = ({
             setLoadingIndicator(true);
             router.push({
               pathname: "/login",
-              query: { returnUrl: router.asPath },
+              query: { returnUrl: router?.asPath },
             });
           }
         }}
@@ -201,7 +201,7 @@ const CampInfoBar = ({
             setLoadingIndicator(true);
             router.push({
               pathname: "/login",
-              query: { returnUrl: router.asPath },
+              query: { returnUrl: router?.asPath },
             });
           }
         }}
@@ -220,7 +220,7 @@ const CampInfoBar = ({
       </Menu.Item>
       <Menu.Item icon={<HeartOutlined />} disabled={asof == "bydate"}>
         {isTopicPage && (
-          <Link href={router.asPath.replace("/topic/", "/support/")}>
+          <Link href={router?.asPath.replace("/topic/", "/support/")}>
             <div
               className="topicDetailsCollapseFooter"
               onClick={handleClickSupportCheck}

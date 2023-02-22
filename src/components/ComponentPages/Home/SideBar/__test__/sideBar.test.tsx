@@ -7,6 +7,18 @@ import { store } from "../../../../../store";
 import { NextRouter } from "next/router";
 import { RouterContext } from "next/dist/shared/lib/router-context";
 
+jest.isolateModules(() => {
+  const preloadAll = require("jest-next-dynamic");
+  beforeAll(async () => {
+    await preloadAll();
+  });
+});
+
+jest.mock("next/router", () => ({
+  __esModule: true,
+  useRouter: jest.fn(),
+}));
+
 function createMockRouter(): NextRouter {
   return {
     basePath: "",

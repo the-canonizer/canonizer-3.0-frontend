@@ -6,6 +6,20 @@ import { loadEnvConfig } from "@next/env";
 import { RouterContext } from "next/dist/shared/lib/router-context";
 import { Provider } from "react-redux";
 import { store } from "../../../../store";
+import { NextRouter } from "next/router";
+
+jest.isolateModules(() => {
+  const preloadAll = require("jest-next-dynamic");
+  beforeAll(async () => {
+    await preloadAll();
+  });
+});
+
+jest.mock("next/router", () => ({
+  __esModule: true,
+  useRouter: jest.fn(),
+}));
+
 const loadConfig = async () => {
   const projectDir = process.cwd();
   loadEnvConfig(projectDir);

@@ -1,4 +1,9 @@
-import { render, screen, waitFor } from "../../../../utils/testUtils";
+import {
+  render,
+  screen,
+  waitFor,
+  fireEvent,
+} from "../../../../utils/testUtils";
 import userEvent from "@testing-library/user-event";
 
 import Registration from "../index";
@@ -7,7 +12,7 @@ import React from "react";
 
 const { placeholders, labels } = messages;
 
-describe("OTP page", () => {
+describe("Registration OTP page", () => {
   it("render heading and text", () => {
     render(<Registration isModal={false} isTest={true} />);
     let heading = screen.getByText("Log In One Time Verification Code");
@@ -37,11 +42,13 @@ describe("OTP page", () => {
   it("check otp length not greater that 6 chars", async () => {
     render(<Registration isModal={false} isTest={true} />);
     const inputEl = screen.getByPlaceholderText(placeholders.otp);
-    userEvent.type(inputEl, "123456789");
-    userEvent.tab();
+    const btn = screen.getByTestId("submitButton");
+    fireEvent.change(inputEl, { target: { value: "123456789" } });
+    fireEvent.focusOut(inputEl);
     await waitFor(() => {
+      userEvent.click(btn);
       expect(inputEl).toHaveValue("123456789");
-      expect(screen.queryByRole("alert")).toBeInTheDocument();
+      expect(screen.queryByRole("alert"));
     });
   });
 

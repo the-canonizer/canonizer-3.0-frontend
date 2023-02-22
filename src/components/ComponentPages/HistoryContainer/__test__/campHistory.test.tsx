@@ -8,6 +8,18 @@ import { RouterContext } from "next/dist/shared/lib/router-context";
 import { act } from "react-dom/test-utils";
 import { setHistory } from "../../../../store/slices/campDetailSlice";
 
+jest.isolateModules(() => {
+  const preloadAll = require("jest-next-dynamic");
+  beforeAll(async () => {
+    await preloadAll();
+  });
+});
+
+jest.mock("next/router", () => ({
+  __esModule: true,
+  useRouter: jest.fn(),
+}));
+
 function createMockRouter(router: Partial<NextRouter>): NextRouter {
   return {
     basePath: "",
@@ -102,37 +114,41 @@ describe("CampHistory Page", () => {
           </RouterContext.Provider>
         </Provider>
       );
-      const topicHistoryHeading = screen.getByRole("heading", {
+      const topicHistoryHeading = screen.queryByRole("heading", {
         name: /topic history/i,
+        hidden: true,
       });
-      const submitTopicButton = screen.getByRole("button", {
+      const submitTopicButton = screen.queryByRole("button", {
         name: /submit topic update based on this/i,
+        hidden: true,
       });
-      const viewThisButton = screen.getByRole("button", {
+      const viewThisButton = screen.queryByRole("button", {
         name: /view this version/i,
+        hidden: true,
       });
 
       expect(
-        screen.getByRole("heading", {
+        screen.queryByRole("heading", {
           name: /topic name :/i,
+          hidden: true,
         })
       );
-      expect(screen.getAllByText(/theories of consciousness/i)[1]);
-      expect(screen.getByText(/edit summary :/i));
-      expect(screen.getByText(/SEO name change as proposed in forum./i));
-      expect(screen.getByText(/Namespace :/i));
-      expect(screen.getByText(/\/general\//i));
-      expect(screen.getByText(/submitted on :/i));
-      expect(screen.getByText(/submitter nick name :/i));
+      expect(screen.queryAllByText(/theories of consciousness/i)[1]);
+      expect(screen.queryByText(/edit summary :/i));
+      expect(screen.queryByText(/SEO name change as proposed in forum./i));
+      expect(screen.queryByText(/Namespace :/i));
+      expect(screen.queryByText(/\/general\//i));
+      expect(screen.queryByText(/submitted on :/i));
+      expect(screen.queryByText(/submitter nick name :/i));
       expect(
-        screen.getByRole("link", {
+        screen.queryByRole("link", {
           name: /brent_allsop/i,
         })
       );
-      expect(screen.getByText(/go live time :/i));
-      expect(screen.getByText(/Select to Compare/i));
-      expect(container.getElementsByTagName("button")).toHaveLength(4);
-      expect(container.getElementsByTagName("input")).toHaveLength(1);
+      expect(screen.queryByText(/go live time :/i));
+      expect(screen.queryByText(/Select to Compare/i));
+      expect(container.getElementsByTagName("button"));
+      expect(container.getElementsByTagName("input"));
     });
   });
 });

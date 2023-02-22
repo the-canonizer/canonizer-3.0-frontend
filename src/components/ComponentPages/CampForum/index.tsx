@@ -25,8 +25,11 @@ import {
   getCurrentTopicRecordApi,
 } from "../../../network/api/campDetailApi";
 import { setThread, setPost } from "../../../store/slices/campForumSlice";
-import CampInfoBar from "../TopicDetails/CampInfoBar";
+const CampInfoBar = dynamic(() => import("../TopicDetails/CampInfoBar"), {
+  ssr: false,
+});
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import dynamic from "next/dynamic";
 
 const ForumComponent = () => {
   const router = useRouter();

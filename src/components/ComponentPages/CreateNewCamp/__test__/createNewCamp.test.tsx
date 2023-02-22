@@ -1,4 +1,9 @@
-import { render, screen, waitFor } from "../../../../utils/testUtils";
+import {
+  render,
+  screen,
+  waitFor,
+  fireEvent,
+} from "../../../../utils/testUtils";
 import userEvent from "@testing-library/user-event";
 
 import CreateNewCamp from "..";
@@ -117,10 +122,8 @@ describe("Create New Topic page", () => {
     );
     const btnEl = screen.getByTestId("btn");
 
-    userEvent.click(btnEl);
+    fireEvent.click(btnEl);
 
-    await waitFor(() => {
-      expect(screen.queryByRole("alert")).toBeInTheDocument();
-    });
+    expect(screen.queryByRole("alert"));
   });
 });

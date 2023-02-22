@@ -1,4 +1,9 @@
-import { render, screen, waitFor } from "../../../../utils/testUtils";
+import {
+  render,
+  screen,
+  waitFor,
+  fireEvent,
+} from "../../../../utils/testUtils";
 import userEvent from "@testing-library/user-event";
 
 import ForgotPassword from "../index";
@@ -37,8 +42,8 @@ describe("OTP page", () => {
   it("check otp length not greater that 6 chars", async () => {
     render(<ForgotPassword isModal={false} isTestScreen={1} />);
     const inputEl = screen.getByPlaceholderText(placeholders.otp);
-    userEvent.type(inputEl, "123456789");
-    userEvent.tab();
+    fireEvent.change(inputEl, { target: { value: "123456789" } });
+    fireEvent.focusOut(inputEl);
     await waitFor(() => {
       expect(inputEl).toHaveValue("123456789");
       expect(screen.queryByRole("alert")).toBeInTheDocument();

@@ -66,7 +66,7 @@ export default function HomeSideBar({ onCreateCamp = () => {} }: any) {
           </Drawer>
         </Fragment>
       )}
-      {isClient && router.asPath.includes("topic") && isAuth && (
+      {isClient && router?.asPath?.includes("topic") && isAuth && (
         <Fragment>
           {<CampRecentActivities />}
           {!!newsFeed?.length && <NewsFeedsCard newsFeed={newsFeed} />}

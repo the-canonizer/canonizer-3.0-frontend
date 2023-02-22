@@ -1,8 +1,12 @@
 import Layout from "../../hoc/layout";
 
-import TopicDetails from "../../components/ComponentPages/TopicDetails";
+const TopicDetails = dynamic(
+  () => import("../../components/ComponentPages/TopicDetails"),
+  { ssr: false }
+);
 import { setCurrentDate } from "src/store/slices/filtersSlice";
 import { useDispatch } from "react-redux";
+import dynamic from "next/dynamic";
 
 // import { wrapper } from "src/store";
 

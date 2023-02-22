@@ -1,4 +1,4 @@
-import { act, render, screen, waitFor } from "../../../../utils/testUtils";
+import { act, render, screen, waitFor,fireEvent } from "../../../../utils/testUtils";
 import userEvent from "@testing-library/user-event";
 
 import Login from "../index";
@@ -77,11 +77,9 @@ describe("Login page", () => {
 
   it("blank form should not be submit", async () => {
     render(<Login isModal={false} />);
-    await act(async () => {
-      const btnEl = screen.getByTestId("submitButton");
-
-      await userEvent.click(btnEl);
-    });
+    const btnEl = screen.getByTestId("submitButton");
+    fireEvent.click(btnEl)
+   
     waitFor(() => {
       expect(screen.getByText(validations.username)).toBeVisible();
       expect(screen.getByText(validations.password)).toBeVisible();

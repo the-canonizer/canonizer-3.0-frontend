@@ -2,6 +2,18 @@ import CampRecentActivities from "..";
 import { cleanup, render, screen } from "@testing-library/react";
 import { waitFor } from "@testing-library/react";
 
+jest.isolateModules(() => {
+  const preloadAll = require("jest-next-dynamic");
+  beforeAll(async () => {
+    await preloadAll();
+  });
+});
+
+jest.mock("next/router", () => ({
+  __esModule: true,
+  useRouter: jest.fn(),
+}));
+
 window.matchMedia =
   window.matchMedia ||
   function () {
