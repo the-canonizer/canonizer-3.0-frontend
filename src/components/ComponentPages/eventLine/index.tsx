@@ -14,7 +14,7 @@ import { useState } from "react";
 const { Panel } = Collapse;
 const TopicDetails = () => {
   const router = useRouter();
-  const dispatch = useDispatch();
+
 
   const [timelineDescript, setTimelineDescript] = useState("");
 
@@ -47,7 +47,6 @@ const TopicDetails = () => {
                 key="1"
               >
                 <TimeLine
-                  timelineDescript={timelineDescript}
                   setTimelineDescript={setTimelineDescript}
                 />
               </Panel>

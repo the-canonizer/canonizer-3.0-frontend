@@ -3,6 +3,22 @@ import { select, scaleBand, scaleLinear, max , linkHorizontal} from "d3";
 import useResizeObserver from "./useResizeObserver";
 
 function RacingBarChart({ data }) {
+  const linesData = [] 
+        
+  for(let i=0; i<data.length ; i++){
+      for(let j=i+1; j<data.length -1 ; j++){
+          if(data[i].level > data[j].level  ){
+              break;
+          }
+          if(data[i].level === data[j].level && data[i].level < data[i+1].level ){
+      linesData.push( { x1: i, x2: j, level: data[i].level })
+      break;        
+          }
+      
+      }
+  }
+
+  console.log('lines', linesData)
   const svgRef = useRef();
   const wrapperRef = useRef();
   const dimensions = useResizeObserver(wrapperRef);
@@ -58,7 +74,7 @@ function RacingBarChart({ data }) {
       .append("image")
       .attr("class", "circle")
       // .attr("href", (entry) => entry.level == 2 || entry.level == 3 ? "/images/minus-square.svg" : '')
-      .attr("href", (entry, index) => (index == 0 || (index > 0 && index < data.length-1 && (data[index].level < data[index+1].level || data[index].level < data[index-1].level))) ? "/images/minus-square.svg" : null )
+      .attr("href", (entry, index) => ((index == 0 ) || (index > 0 && index < data?.length-1 && (data[index].level < data[index+1].level || data[index].level < data[index-1].level))) ? "/images/minus-square.svg" : null )
       .attr("height", 14)
       .attr("width", 14)
     )
@@ -128,23 +144,23 @@ function RacingBarChart({ data }) {
 
         // Lines Data
 
-        const linesData = [
-          { x1: 1, x2: 27, level: 2 },
-          { x1: 2, x2: 20, level: 3 },
-          { x1: 3, x2: 16, level: 4 },
-          { x1: 4, x2: 10, level: 5 },
-          { x1: 5, x2: 9, level: 6 },
-          { x1: 10, x2: 13, level: 5 },
-          { x1: 16, x2: 19, level: 4 },
-          { x1: 20, x2: 23, level: 3 },
-          { x1: 23, x2: 25, level: 3 },
-          { x1: 27, x2: 30, level: 2 },
-          { x1: 33, x2: 35, level: 2 }
-        ]
+        // const linesData = [
+        //   { x1: 1, x2: 27, level: 2 },
+        //   { x1: 2, x2: 20, level: 3 },
+        //   { x1: 3, x2: 16, level: 4 },
+        //   { x1: 4, x2: 10, level: 5 },
+        //   { x1: 5, x2: 9, level: 6 },
+        //   { x1: 10, x2: 13, level: 5 },
+        //   { x1: 16, x2: 19, level: 4 },
+        //   { x1: 20, x2: 23, level: 3 },
+        //   { x1: 23, x2: 25, level: 3 },
+        //   { x1: 27, x2: 30, level: 2 },
+        //   { x1: 33, x2: 35, level: 2 }
+        // ]
 
         // Draw lines 
         let count = 0
-        for(let i=0; i<linesData.length; i++){
+        for(let i=0; i<linesData?.length; i++){
           count = count + .001
           svg
           .selectAll(`.line${i}`)
@@ -172,7 +188,7 @@ function RacingBarChart({ data }) {
 
   return (
     <div ref={wrapperRef} style={{ marginBottom: "2rem" }}>
-      <svg height={data.length * 30} ref={svgRef}></svg>
+      <svg height={data?.length * 30} ref={svgRef}></svg>
     </div>
   );
 }
