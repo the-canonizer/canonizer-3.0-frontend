@@ -113,7 +113,7 @@ describe("Footer", () => {
     expect(container.getElementsByTagName("footer")).toHaveLength(1);
     expect(container.getElementsByTagName("ul")).toHaveLength(3);
     expect(container.getElementsByTagName("li")).toHaveLength(8);
-    expect(container.getElementsByTagName("a")).toHaveLength(10);
+    expect(container.getElementsByTagName("a")).toHaveLength(11);
     //we have commented socail icons coz we don't have social accounts yet
     // expect(container.getElementsByTagName("img")).toHaveLength(4);
 

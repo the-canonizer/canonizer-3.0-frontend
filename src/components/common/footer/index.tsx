@@ -79,6 +79,19 @@ function Footer() {
                   />
                 </Link>
               </div>
+              <p className={styles.note_text}>
+                Canonizer is an
+                <a
+                  href="https://github.com/the-canonizer/canonizer-3.0-frontend"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  {" "}
+                  open source{" "}
+                </a>{" "}
+                project designed to build consensus and bring people together.
+                Your collaboration can make all the difference. Join us!
+              </p>
               <p>Patent: US 8,160,970 B2</p>
               <ul className={styles.privacyTerms}>
                 <li>
