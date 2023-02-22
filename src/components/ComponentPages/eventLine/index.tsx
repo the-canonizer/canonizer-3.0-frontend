@@ -1,8 +1,7 @@
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
-import CampRecentActivities from "@/components/ComponentPages/Home/CampRecentActivities";
+import { Card, List } from "antd";
 
-import { RootState } from "src/store";
 import SideBarTimeline from "../Home/SideBarTimeline";
 import TimelineInfoBar from "./TimelineInfoBar";
 import styles from "./topicDetails.module.scss";
@@ -10,53 +9,18 @@ import {
   BackTop,
   Collapse,
 } from "antd";
-
-import { setCurrentTopic } from "../../../store/slices/topicSlice";
-
-import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import TimeLine from "../TimeLine";
 import { useState } from "react";
 const { Panel } = Collapse;
 const TopicDetails = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const {
-    topicRecord,
-    campRecord,
-  } = useSelector((state: RootState) => ({
-    topicRecord: state?.topicDetails?.currentTopicRecord,
-    campRecord: state?.topicDetails?.currentCampRecord,
-   
-  }));
 
   const [timelineDescript, setTimelineDescript] = useState("");
 
-  const setCurrentTopics = (data) => dispatch(setCurrentTopic(data));
+ 
 
-  const onCreateCamp = () => {
-    // const queryParams = router.query;
-
-    const data = {
-      message: null,
-      topic_num: topicRecord?.topic_num,
-      topic_name: topicRecord?.topic_name,
-      camp_name: topicRecord?.camp_name,
-      parent_camp_num: topicRecord?.camp_num,
-    };
-
-    const topicName = topicRecord?.topic_name?.replaceAll(" ", "-");
-    const campName = campRecord?.camp_name?.replaceAll(" ", "-");
-
-    router.push({
-      pathname: `/camp/create/${
-        topicRecord?.topic_num
-      }-${replaceSpecialCharacters(topicName, "-")}/${
-        campRecord?.camp_num
-      }-${replaceSpecialCharacters(campName, "-")}`,
-    });
-
-    setCurrentTopics(data);
-  };
+ 
 
   return (
     <>
@@ -64,7 +28,7 @@ const TopicDetails = () => {
         <TimelineInfoBar />
 
         <aside className={styles.miniSide + " leftSideBar miniSideBar"}>
-          <SideBarTimeline onCreateCamp={onCreateCamp} />
+          <SideBarTimeline  />
         </aside>
 
         <>
@@ -91,7 +55,41 @@ const TopicDetails = () => {
           </div>
         </>
         <aside className={"timelineRightSidebar"}>
-          <CampRecentActivities timelineDescript={timelineDescript} />
+         
+          <>
+      <Card
+        title="Events"
+        className={"activities " + styles.campActivities}
+      >
+        <h1>{timelineDescript}</h1>
+        {/* {loadingIndicator ? (
+          <CustomSkelton
+            skeltonFor="list"
+            bodyCount={7}
+            stylingClass="listSkeleton"
+            isButton={false}
+          />
+        ) : data ? (
+          <List
+            itemLayout="horizontal"
+            className="activeListWrap"
+            dataSource={data}
+            renderItem={(item) => (
+              <List.Item className={styles.activitiesList}>
+                <List.Item.Meta
+                  avatar={<BellFilled className={styles.bellIcon} />}
+                  title={item?.description}
+                  description={covertToTime(item?.updated_at)}
+                  className={styles.listItem}
+                />
+              </List.Item>
+            )}
+          />
+        ) : (
+          K?.exceptionalMessages?.noRecentActivityFound
+        )} */}
+      </Card>
+    </>
         </aside>
       </div>
       <BackTop />

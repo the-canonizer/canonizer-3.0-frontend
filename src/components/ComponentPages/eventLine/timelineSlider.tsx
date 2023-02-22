@@ -566,7 +566,7 @@ function TimelineSlider({ setStart, start, setTimelineDescript }) {
         min={0}
         max={Object.keys(mockData).length - 1}
       />
-      <h1>data = {showData?.event?.description}</h1>
+     
     </>
   );
 }

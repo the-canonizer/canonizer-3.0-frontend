@@ -9,7 +9,7 @@ import styles from "./campRecentActivities.module.scss";
 
 import CustomSkelton from "../../../common/customSkelton";
 
-export default function CampRecentActivities({ timelineDescript = "" }) {
+export default function CampRecentActivities() {
   const router = useRouter();
   const [data, setData] = useState([]);
   const [loadingIndicator, setLoadingIndicator] = useState(false);
@@ -37,7 +37,6 @@ export default function CampRecentActivities({ timelineDescript = "" }) {
         title="Recent Activities"
         className={"activities " + styles.campActivities}
       >
-        <h1>{timelineDescript}</h1>
         {loadingIndicator ? (
           <CustomSkelton
             skeltonFor="list"
