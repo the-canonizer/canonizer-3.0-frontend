@@ -1,21 +1,20 @@
 import K from "../../constants";
 import Request from ".";
 
-export default class VideosContent extends Request {
+export default class EventLine extends Request {
   constructor(params) {
     super(params);
   }
 
   // Define request functions below.
 
-  static getVideosContent(token) {
+  static getEventLine(reqBody) {
     return new Request(
-      K.Network.URL.VideosContent,
+      K.Network.URL.EventLineEndpoint,
       K.Network.Method.GET,
       null,
       K.Network.Header.Type.Json,
-      {},
-      token
+      reqBody
     );
   }
 }

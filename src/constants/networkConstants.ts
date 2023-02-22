@@ -182,6 +182,11 @@ const NetworkConstants = {
     VideosContent: `${BaseCanonizerApiUrl}/videos`,
 
     GetNickSupportUser: `${BaseCanonizerApiUrl}/get-nick-support-user/`,
+
+    // Evetline API
+    EventLineEndpoint: `${BaseCanonizerApiUrl}/api/v1/timeline/get`,
+
+
   },
   Method: {
     GET: "GET",

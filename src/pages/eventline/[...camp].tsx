@@ -1,12 +1,12 @@
 import Layout from "../../hoc/layout";
 
-import TopicDetails from "../../components/ComponentPages/topicDetail2";
+import EventLine from "../../components/ComponentPages/eventLine";
 import { setCurrentDate } from "src/store/slices/filtersSlice";
 import { useDispatch } from "react-redux";
 
 // import { wrapper } from "src/store";
 
-const TopicDetailsPage = ({ current_date }: any) => {
+const EventLinePage = ({ current_date }: any) => {
   const dispatch = useDispatch();
 
   dispatch(setCurrentDate(current_date));
@@ -14,7 +14,7 @@ const TopicDetailsPage = ({ current_date }: any) => {
   return (
     <>
       <Layout>
-        <TopicDetails />
+        <EventLine />
       </Layout>
     </>
   );
@@ -30,6 +30,6 @@ export async function getServerSideProps() {
   };
 }
 
-TopicDetailsPage.displayName = "TopicDetailsPage";
+EventLinePage.displayName = "EventLinePage";
 
-export default TopicDetailsPage;
+export default EventLinePage;

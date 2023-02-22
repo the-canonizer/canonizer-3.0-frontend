@@ -1,8 +1,5 @@
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import TimelineSlider from "./timelineSlider";
-
 import CampRecentActivities from "@/components/ComponentPages/Home/CampRecentActivities";
 
 import { RootState } from "src/store";
@@ -11,44 +8,25 @@ import TimelineInfoBar from "./TimelineInfoBar";
 import styles from "./topicDetails.module.scss";
 import {
   BackTop,
-  Image,
-  Typography,
-  message,
-  Alert,
   Collapse,
-  Popover,
 } from "antd";
 
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
 
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import TimeLine from "../TimeLine";
+import { useState } from "react";
 const { Panel } = Collapse;
-const { Link: AntLink } = Typography;
-
 const TopicDetails = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const {
-    asof,
-    asofdate,
-    algorithm,
-    newsFeed,
     topicRecord,
     campRecord,
-    tree,
-    campExist,
-    viewThisVersionCheck,
   } = useSelector((state: RootState) => ({
-    asofdate: state.filters?.filterObject?.asofdate,
-    algorithm: state.filters?.filterObject?.algorithm,
-    newsFeed: state?.topicDetails?.newsFeed,
-    asof: state?.filters?.filterObject?.asof,
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
-    tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
-    campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
-    viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
+   
   }));
 
   const [timelineDescript, setTimelineDescript] = useState("");

@@ -1976,5 +1976,12 @@ div[role="option"]::before {
       border-color: var(--primary);
     }
     top:-4px;
+.progress-bar {
+  margin-left: 10px;
+  span {
+    font-size: 11px!important;
+    font-weight: 400!important;
   }
+}
+}
 }

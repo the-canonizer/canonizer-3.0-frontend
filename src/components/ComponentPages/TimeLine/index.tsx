@@ -3,7 +3,7 @@ import RacingBarChart from "./RacingBarChart.js";
 import useInterval from "./useInterval";
 // import "./App.css";
 import HorizontalTimelineComp from "./HorizontalTimeline";
-import TimelineSlider from "../topicDetail2/timelineSlider";
+import TimelineSlider from "../eventLine/timelineSlider";
 const getRandomIndex = (array) => {
   return Math.floor(array.length * Math.random());
 };
@@ -1239,7 +1239,6 @@ function TimeLine({ timelineDescript, setTimelineDescript }) {
 
   return (
     <React.Fragment>
-      <h1 style={{ marginTop: "30px" }}>Racing Camps</h1>
       <TimelineSlider
         setStart={setStart}
         start={start}
