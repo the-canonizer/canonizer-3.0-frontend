@@ -55,9 +55,11 @@ setData( data[Object.keys(data)[0]].data)
   return (
     <React.Fragment>
       <TimelineSlider
+        mockData={mockData}
         setStart={setStart}
         start={start}
         setTimelineDescript={setTimelineDescript}
+        handleEventSelection={handleEventSelection}
       />
       <div style={{ overflow: "hidden" }}>
         <RacingBarChart data={data} />
