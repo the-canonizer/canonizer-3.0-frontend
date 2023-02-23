@@ -1,8 +1,9 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useLayoutEffect } from "react";
 import { select, scaleBand, scaleLinear, max , linkHorizontal} from "d3";
 import useResizeObserver from "./useResizeObserver";
 
 function RacingBarChart({ data }) {
+  
   const linesData = [] 
         
   for(let i=0; i<data.length ; i++){
@@ -37,8 +38,10 @@ function RacingBarChart({ data }) {
 
 
   // will be called initially and on every data change
-  useEffect(() => {
+  useLayoutEffect(() => {
     const svg = select(svgRef.current);
+    // d3.select("element").remove()
+svg.selectAll('line').remove()
     if (!dimensions) return;
 
     // sorting the data
@@ -81,7 +84,7 @@ function RacingBarChart({ data }) {
     .text((entry) => ` ${entry.title} `) 
       .attr("class", "icon")
       .attr("x", (entry) => manageXAxis(entry) - 10 )
-      .transition()
+      // .transition()
       .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 - 8);
 
   
@@ -164,7 +167,7 @@ function RacingBarChart({ data }) {
           count = count + .001
           svg
           .selectAll(`.line${i}`)
-            .data(data, (entry, index) => index)
+            .data(linesData)
             .join((enter) =>
             enter
             .append('line')
@@ -178,7 +181,7 @@ function RacingBarChart({ data }) {
           // .text((entry) => ` ${entry.title} `) 
           .attr("class", "line")
           // .attr("x", (entry) => manageXAxis(entry) + 20)
-          .transition()
+          // .transition()
           // .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5);
         }
 
