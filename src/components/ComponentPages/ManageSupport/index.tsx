@@ -38,6 +38,7 @@ const ManageSupport = () => {
   const { isUserAuthenticated } = isAuth();
   const router = useRouter();
   const [nickNameList, setNickNameList] = useState([]);
+  const [topicSupportListData,setTopicSupportListData] = useState([])
   const [cardCamp_ID, setCardCamp_ID] = useState("");
   const [campIds, setcampIds] = useState([]);
   const [manageSupportList, setManageSupportList] = useState([]);
@@ -236,6 +237,7 @@ const ManageSupport = () => {
     campRecordRef?: any
   ) => {
     const response = await GetActiveSupportTopic(topicNum && body);
+    setTopicSupportListData(response.data)
     const fiterSupportedCamps = response?.data?.filter((val) => {
       return (
         currentGetCheckSupportExistsData.remove_camps?.findIndex(
@@ -307,7 +309,6 @@ const ManageSupport = () => {
       }
     }
   };
-
   let manageSupportPath = router.asPath?.replace("/support/", "/topic/");
   if (manageSupportPath.lastIndexOf("_") > -1)
     manageSupportPath = manageSupportPath.substring(
@@ -511,6 +512,7 @@ const ManageSupport = () => {
         setGetManageSupportLoadingIndicator={
           setGetManageSupportLoadingIndicator
         }
+        topicSupportListData={topicSupportListData}
       />
     </>
   );
