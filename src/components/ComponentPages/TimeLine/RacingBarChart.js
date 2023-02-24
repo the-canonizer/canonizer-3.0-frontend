@@ -4,6 +4,7 @@ import useResizeObserver from "./useResizeObserver";
 
 function RacingBarChart({ data }) {
   
+  
   const linesData = [] 
         
   for(let i=0; i<data.length ; i++){

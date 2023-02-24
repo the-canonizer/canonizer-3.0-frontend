@@ -11,6 +11,7 @@ export default class NetworkCall {
   static counter = 1;
 
   static async fetch(request, useLoading = true) {
+
     store.dispatch(setLoadingAction(true));
     const axiosCall = () => {
       return NetworkCall.axios({

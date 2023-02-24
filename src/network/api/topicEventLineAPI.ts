@@ -6,12 +6,14 @@ import {mockData} from '../../components/ComponentPages/TimeLine/mockData'
 export const getEventLineApi = async (reqBody) => {
  
   try {
-    // const eventLineData = await NetworkCall.fetch(
-    //     EventLine.getEventLine(reqBody),
-    //   false
-    // );
+    const eventLineData = await NetworkCall.fetch(
+        EventLine.getEventLine(reqBody),
+      false
+    );
 
     // return eventLineData;
     return mockData
-  } catch (error) {}
+  } catch (error) {
+    return mockData
+  }
 };

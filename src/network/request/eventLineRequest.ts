@@ -11,10 +11,11 @@ export default class EventLine extends Request {
   static getEventLine(reqBody) {
     return new Request(
       K.Network.URL.EventLineEndpoint,
-      K.Network.Method.GET,
-      null,
+      K.Network.Method.POST,
+      reqBody,
       K.Network.Header.Type.Json,
-      reqBody
+      {}
+     
     );
   }
 }

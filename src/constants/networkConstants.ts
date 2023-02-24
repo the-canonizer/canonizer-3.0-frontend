@@ -184,7 +184,7 @@ const NetworkConstants = {
     GetNickSupportUser: `${BaseCanonizerApiUrl}/get-nick-support-user/`,
 
     // Evetline API
-    EventLineEndpoint: `${BaseCanonizerApiUrl}/api/v1/timeline/get`,
+    EventLineEndpoint: `${BaseCanonizerServiceUrl}/api/v1/timeline/get`,
 
 
   },

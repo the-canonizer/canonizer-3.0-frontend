@@ -25,7 +25,15 @@ function TimeLine({  setTimelineDescript }) {
   useEffect(() => {
    async function apiCall() {
     
-   const data = await getEventLineApi({})
+   const data = await getEventLineApi({
+    "topic_num": 1175,
+    "camp_num": 2,
+    "asOf": "default",
+    "asofdate": 1677160704.161,
+    "algorithm": "blind_popularity",
+    "update_all": 1,
+    "fetch_topic_history": null
+})
    setMockData(data)
 setData( data[Object.keys(data)[0]].data)
    }
