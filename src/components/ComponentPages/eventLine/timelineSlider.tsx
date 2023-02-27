@@ -10,7 +10,7 @@ import {
 } from "@ant-design/icons";
 import styles from "./timeBarControl.module.scss";
 
-function TimelineSlider({mockData, setStart, start, setTimelineDescript, handleEventSelection , animationSpeed, setAnimationSpeed, iteration, setIteration}) {
+function TimelineSlider({mockData, setStart, start, setTimelineDescript, handleEventSelection , animationSpeed, setAnimationSpeed, iteration, setIteration, handleForwardOrBackord}) {
   
   const [count, setCount] = useState(0);
 
@@ -37,19 +37,36 @@ function TimelineSlider({mockData, setStart, start, setTimelineDescript, handleE
     }
   };
   const handleClickForward = () => {
-    if (forward) {
-      clearInterval(intervalId);
-      setIntervalId(null);
-      setIsPlaying(false);
-      setForward(false);
-    } else {
-      const id = setInterval(() => {
-        setIteration((c) => c + 1);
-      }, 100);
-
-      setIntervalId(id);
+    // if (forward) {
+    //   clearInterval(intervalId);
+    //   setIntervalId(null);
+    //   setIsPlaying(false);
+    //   setForward(false);
+    // } else {
+      // const id = setInterval(() => {
+      //   setIteration((c) => c + 1);
+      // }, 100);
+      setIteration(iteration + 1)
+      // setIntervalId(id);
+      handleForwardOrBackord(iteration+1)
       setForward(true);
-    }
+    // }
+  };
+
+  const handleClickBackword = () => {
+    // if (forward) {
+    //   clearInterval(intervalId);
+    //   setIntervalId(null);
+    //   setIsPlaying(false);
+    //   setForward(false);
+    // } else {
+      // const id = setInterval(() => {
+      //   setIteration((c) => c + 1);
+      // }, 100);
+      setIteration(iteration - 1)
+      // setIntervalId(id);
+      handleForwardOrBackord(iteration - 1)
+    // }
   };
   const onChange = (newValue) => {
     setIteration(newValue);
@@ -65,7 +82,7 @@ function TimelineSlider({mockData, setStart, start, setTimelineDescript, handleE
   return (
     <>
       <div className={styles.timeBarControl}>
-        <StepBackwardOutlined className={styles.controlBtnSecond} />
+        <StepBackwardOutlined  onClick={()=>{handleClickBackword()}} className={styles.controlBtnSecond} />
         <BackwardOutlined className={styles.controlBtn} />
         {"     "}
         <div className={styles.playBtn} onClick={handleClick}>
@@ -76,7 +93,7 @@ function TimelineSlider({mockData, setStart, start, setTimelineDescript, handleE
           className={styles.controlBtn}
           onClick={handleClickForward}
         />
-        <StepForwardOutlined className={styles.controlBtnSecond} />
+        <StepForwardOutlined onClick={()=>{handleClickForward()}} className={styles.controlBtnSecond} />
       </div>
       <Slider
         className="rang-slider"

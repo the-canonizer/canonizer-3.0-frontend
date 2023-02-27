@@ -54,15 +54,7 @@ export default function SideBarTimeline({ onCreateCamp = () => {} }: any) {
           </Drawer>
         </Fragment>
       )}
-      {typeof window !== "undefined" &&
-        window.innerWidth > 767 &&
-        router.asPath.includes("topic") &&
-        isAuth && (
-          <Fragment>
-            {<CampRecentActivities />}
-            {!!newsFeed?.length && <NewsFeedsCard newsFeed={newsFeed} />}
-          </Fragment>
-        )}
+    
     </Fragment>
   );
 }

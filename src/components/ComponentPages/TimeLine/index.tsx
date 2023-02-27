@@ -59,6 +59,12 @@ setData( data[Object.keys(data)[0]].payload_response)
     setEventDescription(mockData[events[index]].event?.message);
     setIteration(index);
   };
+  
+  const handleForwardOrBackord = (iteration) => {
+
+    setData(mockData[events[iteration]].payload_response);
+    setEventDescription(mockData[events[iteration]].event?.message);
+  }
 
   return (
     <React.Fragment>
@@ -72,7 +78,7 @@ setData( data[Object.keys(data)[0]].payload_response)
         setAnimationSpeed={setAnimationSpeed}
         iteration={iteration}
         setIteration={setIteration}
-        
+        handleForwardOrBackord={handleForwardOrBackord}
       />
       <div style={{ overflow: "hidden" }}>
         {
