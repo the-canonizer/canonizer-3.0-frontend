@@ -31,11 +31,10 @@ const SearchSection = () => {
                 </label>
               </div>
             </div>
-            </div>
-          </form>
-        </div>
-      </section>
-    </>
+          </div>
+        </form>
+      </div>
+    </section>
   );
 };
 

@@ -15,7 +15,6 @@ jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
 
-
 function ReduxProvider({ children }: any) {
   return <Provider store={store}>{children}</Provider>;
 }
