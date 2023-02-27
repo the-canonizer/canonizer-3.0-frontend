@@ -13,7 +13,8 @@ function TimeLine({  setTimelineDescript }) {
   const [iteration, setIteration] = useState(0);
   const [start, setStart] = useState(false);
   const [mockData, setMockData] = useState({});
-  const [eventDescription, setEventDescription] = useState("Hello");
+  const [eventDescription, setEventDescription] = useState("");
+  const [animationSpeed, setAnimationSpeed] = useState(1000);
   
   const events = Object.keys(mockData);
   const [data, setData] = useState(
@@ -43,7 +44,6 @@ setData( data[Object.keys(data)[0]].payload_response)
 
   }, []);
 
-  let iterationCount = 0;
 
   useInterval(() => {
     if (start && events.length > iteration) {
@@ -51,9 +51,8 @@ setData( data[Object.keys(data)[0]].payload_response)
       setEventDescription(mockData[events[iteration]].event?.message);
 
       setIteration(iteration + 1);
-      iterationCount++;
     }
-  }, 1000);
+  }, animationSpeed);
 
   const handleEventSelection = (index) => {
     setData(mockData[events[index]].payload_response);
@@ -69,6 +68,11 @@ setData( data[Object.keys(data)[0]].payload_response)
         start={start}
         setTimelineDescript={setTimelineDescript}
         handleEventSelection={handleEventSelection}
+        animationSpeed={animationSpeed}
+        setAnimationSpeed={setAnimationSpeed}
+        iteration={iteration}
+        setIteration={setIteration}
+        
       />
       <div style={{ overflow: "hidden" }}>
         {

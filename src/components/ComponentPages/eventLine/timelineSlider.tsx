@@ -10,7 +10,7 @@ import {
 } from "@ant-design/icons";
 import styles from "./timeBarControl.module.scss";
 
-function TimelineSlider({mockData, setStart, start, setTimelineDescript, handleEventSelection }) {
+function TimelineSlider({mockData, setStart, start, setTimelineDescript, handleEventSelection , animationSpeed, setAnimationSpeed, iteration, setIteration}) {
   
   const [count, setCount] = useState(0);
 
@@ -29,8 +29,8 @@ function TimelineSlider({mockData, setStart, start, setTimelineDescript, handleE
       setForward(false);
     } else {
       const id = setInterval(() => {
-        setCount((c) => c + 1);
-      }, 1000);
+        setIteration((c) => c + 1);
+      }, animationSpeed);
 
       setIntervalId(id);
       setIsPlaying(true);
@@ -44,7 +44,7 @@ function TimelineSlider({mockData, setStart, start, setTimelineDescript, handleE
       setForward(false);
     } else {
       const id = setInterval(() => {
-        setCount((c) => c + 1);
+        setIteration((c) => c + 1);
       }, 100);
 
       setIntervalId(id);
@@ -52,15 +52,15 @@ function TimelineSlider({mockData, setStart, start, setTimelineDescript, handleE
     }
   };
   const onChange = (newValue) => {
-    setCount(newValue);
+    setIteration(newValue);
     handleEventSelection(newValue)
   };
   
   useEffect(() => {
-    let showkey = Object.keys(mockData)[count];
+    let showkey = Object.keys(mockData)[iteration];
     setShowData(mockData[showkey]);
     setTimelineDescript(mockData[showkey]?.event?.message);
-  }, [count]);
+  }, [iteration]);
 
   return (
     <>
@@ -81,7 +81,7 @@ function TimelineSlider({mockData, setStart, start, setTimelineDescript, handleE
       <Slider
         className="rang-slider"
         onChange={onChange}
-        value={Number(count)}
+        value={Number(iteration)}
         // marks={marks}
         min={0}
         max={Object.keys(mockData).length - 1}
