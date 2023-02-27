@@ -34,6 +34,7 @@ function TimeLine({  setTimelineDescript }) {
     "update_all": 1,
     "fetch_topic_history": null
 })
+// debugger
    setMockData(data)
 setData( data[Object.keys(data)[0]].data)
    }
@@ -47,7 +48,7 @@ setData( data[Object.keys(data)[0]].data)
   useInterval(() => {
     if (start && events.length > iteration) {
       setData(mockData[events[iteration]].data);
-      setEventDescription(mockData[events[iteration]].event?.description);
+      setEventDescription(mockData[events[iteration]].event?.message);
 
       setIteration(iteration + 1);
       iterationCount++;
@@ -56,7 +57,7 @@ setData( data[Object.keys(data)[0]].data)
 
   const handleEventSelection = (index) => {
     setData(mockData[events[index]].data);
-    setEventDescription(mockData[events[index]].event?.description);
+    setEventDescription(mockData[events[index]].event?.message);
     setIteration(index);
   };
 

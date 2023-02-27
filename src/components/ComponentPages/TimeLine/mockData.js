@@ -1,7 +1,7 @@
 export const mockData = {
   1228141435: {
     event: {
-      description: "Brent Created Topic",
+      message: "Brent Created Topic",
     },
     data: [
       {
@@ -16,7 +16,7 @@ export const mockData = {
   },
   1228227835: {
     event: {
-      description: "Michael added support",
+      message: "Michael added support",
     },
     data: [
       {
@@ -31,7 +31,7 @@ export const mockData = {
   },
   1228314235: {
     event: {
-      description: "Brent added support",
+      message: "Brent added support",
     },
     data: [
       {
@@ -46,7 +46,7 @@ export const mockData = {
   },
   1228659835: {
     event: {
-      description: "Robin Faichney added support",
+      message: "Robin Faichney added support",
     },
     data: [
       {
@@ -61,7 +61,7 @@ export const mockData = {
   },
   1228746359: {
     event: {
-      description: "Lenny added support",
+      message: "Lenny added support",
     },
     data: [
       {
@@ -76,7 +76,7 @@ export const mockData = {
   },
   1229178359: {
     event: {
-      description: "Richwil added support",
+      message: "Richwil added support",
     },
     data: [
       {
@@ -91,7 +91,7 @@ export const mockData = {
   },
   1230870093: {
     event: {
-      description: "Brent Created Topic Not Supernatural",
+      message: "Brent Created Topic Not Supernatural",
     },
     data: [
       {
@@ -115,7 +115,7 @@ export const mockData = {
   },
   1264738913: {
     event: {
-      description: "New camps added",
+      message: "New camps added",
     },
     data: [
       {
@@ -463,7 +463,7 @@ export const mockData = {
   },
   1885593600: {
     "event": {
-        "description": "message here",
+        "message": "message here",
         "type": "add_camp",
         "id": 1,
         "nickname_id": 1,
@@ -1191,7 +1191,7 @@ export const mockData = {
 },
 // 188559743600: {
 //   "event": {
-//       "description": "Mother Nature added",
+//       "message": "Mother Nature added",
 //       "type": "add_camp",
 //       "id": 1,
 //       "nickname_id": 1,
