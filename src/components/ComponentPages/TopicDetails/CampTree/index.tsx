@@ -9,6 +9,7 @@ import styles from "../topicDetails.module.scss";
 import { setCurrentCamp } from "../../../../store/slices/filtersSlice";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 import useAuthentication from "src/hooks/isUserAuthenticated";
+import ProgressBar from "@ramonak/react-progress-bar";
 
 const { TreeNode } = Tree;
 
@@ -29,6 +30,7 @@ const CampTree = ({
 
   const [defaultExpandKeys, setDefaultExpandKeys] = useState([]);
   const [uniqueKeys, setUniqueKeys] = useState([]);
+  const [showScoreBars, setShowScoreBars] = useState(false);
 
   const [selectedExpand, setSelectedExpand] = useState([]);
   const [expandedKeys, setExpandedKeys] = useState([]);
@@ -166,6 +168,16 @@ const CampTree = ({
         });
       sessionStorage.setItem("value", JSON.stringify(sesionexpandkeys));
     }
+
+    if( tree?.at(0)  ){
+      const agreementCamp = tree?.at(0)[1].score
+
+      if (agreementCamp > 5){
+        setShowScoreBars(true)
+      }else{
+        setShowScoreBars(false)
+      }
+      }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tree?.at(0)]);
 
@@ -192,8 +204,9 @@ const CampTree = ({
 
   const renderTreeNodes = (data: any, isDisabled = 0, isOneLevel = 0) => {
     let sortedData = Object.keys(data)
-      .map((key) => [Number(key), data[key]])
-      .sort((a, b) => b[1].score - a[1].score);
+    .map((key) => [Number(key), data[key]])
+    .sort((a, b) => b[1].score - a[1].score);
+    
     return sortedData.map((itemWithData) => {
       let item = itemWithData[0];
       const parentIsOneLevel = isOneLevel;
@@ -261,23 +274,30 @@ const CampTree = ({
                           </a>
                         </Link>
                       </span>
-                      <span
-                        className={
-                          "treeListItemNumber " + styles.treeListItemNumber
-                        }
-                        style={{
-                          width:
-                            (data[item].score * 460) / tree?.at(0)["1"].score +
-                            40,
-                          justifyContent: "flex-start",
-                        }}
-                      >
-                        {/* data[item].topic_score
-                            ? data[item].topic_score?.toFixed(2)
-                            : */}
-                        {is_checked && isUserAuthenticated
-                          ? data[item].full_score?.toFixed(2)
-                          : data[item].score?.toFixed(2)}
+                      <span>
+                        <ProgressBar
+                          completed={77}
+                          animateOnRender={true}
+                          className="progress-bar"
+                          width={String(
+                            showScoreBars
+                              ? (data[item].score * 460) /
+                                  tree?.at(0)["1"].score +
+                                  40 +
+                                  "px"
+                              : "40px"
+                          )}
+                          baseBgColor={"#fff"}
+                          labelAlignment={"left"}
+                          bgColor={"#f89d15"}
+                          borderRadius={"2px"}
+                          height="16px"
+                          customLabel={
+                            is_checked && isUserAuthenticated
+                              ? data[item].full_score?.toFixed(2)
+                              : data[item].score?.toFixed(2)
+                          }
+                        />
                       </span>
                       <span className={styles.subScriptionIcon}>
                         {isUserAuthenticated &&

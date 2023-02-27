@@ -163,10 +163,11 @@
     padding: 2px 7px;
     border-radius: 2px;
     color: #fff;
-    margin-left: 6px;
-    @media screen and (max-width: 767px) {
-      width: auto !important;
-    }
+    margin-left: 6px ;
+    transition: all ease 50s;
+    @media screen and (max-width:767px) {
+      width:auto !important;
+  }
   }
   .subScriptionIcon {
     margin-left: 6px;

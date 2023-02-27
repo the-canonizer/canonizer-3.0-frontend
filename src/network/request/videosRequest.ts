@@ -8,13 +8,14 @@ export default class VideosContent extends Request {
 
   // Define request functions below.
 
-  static getVideosContent() {
+  static getVideosContent(token) {
     return new Request(
       K.Network.URL.VideosContent,
       K.Network.Method.GET,
       null,
       K.Network.Header.Type.Json,
-      {}
+      {},
+      token
     );
   }
 }

@@ -88,13 +88,33 @@ const TopicsList = () => {
     useState(false);
   const [selectedNameSpace, setSelectedNameSpace] = useState(filterNameSpace);
   let onlyMyTopicsCheck = useRef();
+
+  const formatnamespace = (namespace, reverse = false) => {
+    if (reverse) {
+      let addslash = `/${namespace}/`;
+      addslash = addslash?.replace(/-/g, "/");
+      return addslash;
+    } else {
+      let removednamespace = namespace?.replace(/^\/|\/$/g, "");
+      removednamespace = removednamespace?.replace(/\//g, "-");
+      return removednamespace;
+    }
+  };
+
   const selectNameSpace = (id, nameSpace) => {
     setNameSpaceId(id);
     setSelectedNameSpace(nameSpace?.children);
 
     if (nameSpace?.children?.toLowerCase() !== "/general/") {
-      router.query.namespace = nameSpace?.children;
+      router.query.namespace = formatnamespace(nameSpace?.children);
       router.replace(router, undefined, { shallow: true });
+    } else {
+      if (router.query.namespace) {
+        const params = router.query;
+        delete params.namespace;
+        router.query = params;
+        router.replace(router, undefined, { shallow: true });
+      }
     }
 
     dispatch(
@@ -107,7 +127,7 @@ const TopicsList = () => {
 
   useEffect(() => {
     if (filterNameSpace?.toLowerCase() !== "/general/") {
-      router.query.namespace = filterNameSpace;
+      router.query.namespace = formatnamespace(filterNameSpace);
       router.replace(router, undefined, { shallow: true });
     }
   }, []);
@@ -115,20 +135,22 @@ const TopicsList = () => {
   useEffect(() => {
     const q = router.query;
     if (q.namespace) {
-      const filteredName = nameSpacesList?.filter(
-        (n) => n.label == q.namespace
-      );
+      const filteredName = nameSpacesList?.filter((n) => {
+        if (n.label === formatnamespace(q.namespace, true)) {
+          return n;
+        }
+      });
 
       if (filteredName && filteredName.length) {
         dispatch(
           setFilterCanonizedTopics({
-            nameSpace: q.namespace,
+            nameSpace: formatnamespace(q.namespace, true),
             namespace_id: filteredName[0]?.id,
           })
         );
       }
     }
-  }, [router]);
+  }, [router, nameSpacesList]);
 
   useEffect(() => {
     setSelectedNameSpace(filterNameSpace);
@@ -330,7 +352,8 @@ const TopicsList = () => {
                         item?.topic_id
                       }-${replaceSpecialCharacters(
                         isReview
-                          ? item?.tree_structure[1]?.review_title
+                          ? item?.tree_structure &&
+                              item?.tree_structure[1]?.review_title
                           : item?.topic_name,
                         "-"
                       )}/1-Agreement`,
@@ -343,7 +366,8 @@ const TopicsList = () => {
                     >
                       <Text className={styles.text}>
                         {isReview
-                          ? item?.tree_structure[1].review_title
+                          ? item?.tree_structure &&
+                            item?.tree_structure[1].review_title
                           : item?.topic_name}
                       </Text>
                       <Tag className={styles.tag}>
