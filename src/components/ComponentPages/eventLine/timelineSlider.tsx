@@ -59,7 +59,7 @@ function TimelineSlider({mockData, setStart, start, setTimelineDescript, handleE
   useEffect(() => {
     let showkey = Object.keys(mockData)[count];
     setShowData(mockData[showkey]);
-    setTimelineDescript(mockData[showkey]?.event?.description);
+    setTimelineDescript(mockData[showkey]?.event?.message);
   }, [count]);
 
   return (

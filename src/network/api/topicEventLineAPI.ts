@@ -11,7 +11,7 @@ export const getEventLineApi = async (reqBody) => {
       false
     );
 
-    // return eventLineData;
+    // return eventLineData?.data;
     return mockData
   } catch (error) {
     return mockData

@@ -3,7 +3,7 @@ export const mockData = {
     event: {
       message: "Brent Created Topic",
     },
-    data: [
+    payload_response: [
       {
         topic_id: 88,
         camp_id: 1,
@@ -18,7 +18,7 @@ export const mockData = {
     event: {
       message: "Michael added support",
     },
-    data: [
+    payload_response: [
       {
         topic_id: 88,
         camp_id: 1,
@@ -33,7 +33,7 @@ export const mockData = {
     event: {
       message: "Brent added support",
     },
-    data: [
+    payload_response: [
       {
         topic_id: 88,
         camp_id: 1,
@@ -48,7 +48,7 @@ export const mockData = {
     event: {
       message: "Robin Faichney added support",
     },
-    data: [
+    payload_response: [
       {
         topic_id: 88,
         camp_id: 1,
@@ -63,7 +63,7 @@ export const mockData = {
     event: {
       message: "Lenny added support",
     },
-    data: [
+    payload_response: [
       {
         topic_id: 88,
         camp_id: 1,
@@ -78,7 +78,7 @@ export const mockData = {
     event: {
       message: "Richwil added support",
     },
-    data: [
+    payload_response: [
       {
         topic_id: 88,
         camp_id: 1,
@@ -93,7 +93,7 @@ export const mockData = {
     event: {
       message: "Brent Created Topic Not Supernatural",
     },
-    data: [
+    payload_response: [
       {
         topic_id: 88,
         camp_id: 1,
@@ -117,7 +117,7 @@ export const mockData = {
     event: {
       message: "New camps added",
     },
-    data: [
+    payload_response: [
       {
         topic_id: 88,
         camp_id: 1,
@@ -478,7 +478,7 @@ export const mockData = {
         "submitter_nick_id": 1,
         "created_by_nick_id": 1
     },
-    "data": [
+    "payload_response": [
         {
             "topic_id": 2,
             "level": 1,
@@ -1206,7 +1206,7 @@ export const mockData = {
 //       "submitter_nick_id": 1,
 //       "created_by_nick_id": 1
 //   },
-//   "data": [
+//   "payload_response": [
 //       {
 //           "topic_id": 2,
 //           "level": 1,

@@ -34,9 +34,9 @@ function TimeLine({  setTimelineDescript }) {
     "update_all": 1,
     "fetch_topic_history": null
 })
-// debugger
+debugger
    setMockData(data)
-setData( data[Object.keys(data)[0]].data)
+setData( data[Object.keys(data)[0]].payload_response)
    }
 
    apiCall()
@@ -47,7 +47,7 @@ setData( data[Object.keys(data)[0]].data)
 
   useInterval(() => {
     if (start && events.length > iteration) {
-      setData(mockData[events[iteration]].data);
+      setData(mockData[events[iteration]].payload_response);
       setEventDescription(mockData[events[iteration]].event?.message);
 
       setIteration(iteration + 1);
@@ -56,7 +56,7 @@ setData( data[Object.keys(data)[0]].data)
   }, 1000);
 
   const handleEventSelection = (index) => {
-    setData(mockData[events[index]].data);
+    setData(mockData[events[index]].payload_response);
     setEventDescription(mockData[events[index]].event?.message);
     setIteration(index);
   };
@@ -71,7 +71,10 @@ setData( data[Object.keys(data)[0]].data)
         handleEventSelection={handleEventSelection}
       />
       <div style={{ overflow: "hidden" }}>
+        {
+          data?.length &&
         <RacingBarChart data={data} />
+        }
       </div>
     </React.Fragment>
   );

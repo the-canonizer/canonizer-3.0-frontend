@@ -2,6 +2,8 @@ import React, { useRef, useEffect, useLayoutEffect } from "react";
 import { select, scaleBand, scaleLinear, max , linkHorizontal} from "d3";
 import useResizeObserver from "./useResizeObserver";
 
+import styles from './timeline.module.scss'
+
 function RacingBarChart({ data }) {
   
   
@@ -191,7 +193,7 @@ svg.selectAll('line').remove()
   }, [data, dimensions]);
 
   return (
-    <div ref={wrapperRef} style={{ marginBottom: "2rem" }}>
+    <div className={styles.svgD3} ref={wrapperRef} style={{ marginBottom: "2rem" }}>
       <svg height={data?.length * 30} ref={svgRef}></svg>
     </div>
   );
