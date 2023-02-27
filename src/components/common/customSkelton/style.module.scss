@@ -31,7 +31,7 @@
       margin-right: 24px;
     }
   }
-  &>div:first-child .test {
+  & > div:first-child .test {
     min-width: 300px;
   }
 }
@@ -56,7 +56,7 @@
 }
 
 .fullSkeleton {
-  &>div {
+  & > div {
     padding-left: 0;
     padding-right: 0;
   }
@@ -154,7 +154,7 @@
   margin-top: 8px;
   height: 159px;
   border-radius: 6px;
-  &+br {
+  & + br {
     display: none;
   }
 }
@@ -166,20 +166,19 @@
 
   height: 126px;
   border-radius: 6px;
-  &+br {
+  & + br {
     display: none;
   }
 }
 
-.card_width{
+.card_width {
   width: 82%;
   // height: 64%;
 }
 
-.main_card_title{
+.main_card_title {
   font-size: 20px;
   font-weight: 600;
-
 }
 
 .Upload_Cancel_Btn .Upload_Btn {
@@ -196,16 +195,16 @@
 }
 
 .manageCardSkeleton {
-  &>div:first-child>div {
-  width: 1000px;
-  height:50px ;
+  & > div:first-child > div {
+    width: 1000px;
+    height: 50px;
     margin-top: 1px;
     margin-bottom: 1px;
   }
   span {
     padding-top: 10px;
     display: block;
-    &+ br {
+    & + br {
       display: none;
     }
   }
@@ -231,35 +230,33 @@
   // }
 }
 
-.header_column{
+.header_column {
   height: 51px;
 }
 
-.body_column{
+.body_column {
   height: 35px;
 }
 
-.table_form{
+.table_form {
   line-height: 35px;
   margin: 5px;
 }
 
-.card_upload_file_skeleton{
+.card_upload_file_skeleton {
   width: 76%;
   margin-top: 2px;
   margin-left: 8px;
   height: 100%;
 }
-.outer_div_upload_file span 
-{
+.outer_div_upload_file span {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   row-gap: 20px;
 }
 
-.upload_files_skeleton{
-  
+.upload_files_skeleton {
   // display: inherit;
   box-sizing: border-box;
   width: 158px;
@@ -269,7 +266,7 @@
   flex-direction: row;
 }
 
-.verifyInfoForm{
+.verifyInfoForm {
   margin-bottom: 70px;
 }
 
@@ -306,19 +303,29 @@
 }
 
 .header-skeleton-btn,
-.topic-skeleton
-{
+.topic-skeleton {
   width: 100px;
 }
 .header-skeleton-btn {
-height: 30px;
+  height: 30px;
 }
 .userProfileLabel {
-  width: 25%;  
+  width: 25%;
   margin-bottom: 23px;
 }
 
-  .user_profile{
-    width: 1046px;
-    height: 500px;
+.user_profile {
+  width: 1046px;
+  height: 500px;
+}
+
+.cardSkeleton_actions {
+  .cardSkeleton_actions_button {
+    width: 150px;
   }
+}
+.manageCardSkeleton_actions {
+  .manageCardSkeleton_actions_button {
+    width: 150px;
+  }
+}
