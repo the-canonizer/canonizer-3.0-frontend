@@ -243,16 +243,12 @@ export const GetSupportedNickNames = async (id) => {
 
 export const getAllRemovedReasons = async () => {
   try {
-    const reasons = [
-      { id: 1, label: "Reason 1" },
-      { id: 2, label: "Reason 2" },
-      { id: 3, label: "Other" },
-    ];
-
     const res = await NetworkCall.fetch(TreeRequest.removedReasons());
-    // if (res.status_code === 200) {
-    store.dispatch(setRemovedReasons(reasons));
-    // }
+    if (res.status_code === 200) {
+      let rs = res?.data;
+      rs = rs?.map((r: { reason: any }) => ({ ...r, label: r.reason }));
+      store.dispatch(setRemovedReasons(rs));
+    }
   } catch (err) {
     handleError(err);
   }

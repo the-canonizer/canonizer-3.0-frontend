@@ -37,7 +37,7 @@ const ManageSupportUI = ({
   CurrentCheckSupportStatus,
   getManageSupportLoadingIndicator,
   setGetManageSupportLoadingIndicator,
-  topicSupportListData
+  topicSupportListData,
 }: any) => {
   const [tagsArrayList, setTagsArrayList] = useState([]);
   const [isTagDragged, setIsTagDragged] = useState(false);
@@ -62,6 +62,10 @@ const ManageSupportUI = ({
 
   const dispatch = useDispatch();
   const router = useRouter();
+
+  const [removeForm] = Form.useForm();
+  const openPopup = () => setIsSupportTreeCardModal(true);
+  const closePopup = () => setIsSupportTreeCardModal(false);
 
   const filteredList = manageSupportList.map((obj: any, index: any) => {
     return {
@@ -132,7 +136,22 @@ const ManageSupportUI = ({
     setIsTagDragged(false);
   }, []);
 
+  const isFormValid = async () => {
+    const isDropdownValid = await removeForm.validateFields([
+      "end_reason",
+      "reason_summary",
+      "end_reason_link",
+    ]);
+
+    return isDropdownValid;
+  };
+
   const removeCampsApi = async (values) => {
+    const isDropdownValid = await isFormValid();
+    // if (isDropdownValid?.errorFields) {
+    console.log("removeCampsApi-is-valid", isDropdownValid);
+    return;
+    // }
     setGetManageSupportLoadingIndicator(true);
     const supportedCampsRemove = {
       topic_num: reqBodyData.topic_num,
@@ -160,6 +179,11 @@ const ManageSupportUI = ({
   };
 
   const addRemoveApi = async () => {
+    const isDropdownValid = await isFormValid();
+    if (isDropdownValid?.errorFields) {
+      console.log("addRemoveApi-is-valid", isDropdownValid);
+      return;
+    }
     setGetManageSupportLoadingIndicator(true);
     const addSupportId = {
       topic_num: reqBodyData.topic_num,
@@ -234,21 +258,25 @@ const ManageSupportUI = ({
 
   // remove support popup added.
 
-  const [removeForm] = Form.useForm();
-  const openPopup = () => setIsSupportTreeCardModal(true);
-  const closePopup = () => setIsSupportTreeCardModal(false);
-
   const onRemoveFinish = (values) => {
-    setRemoveSupportSpinner(true);
+    // setRemoveSupportSpinner(true);
+    // if (removeCampsSupport) {
+    // submitNickNameSupportCamps(values);
+    // } else {
+    // console.log(values);
+    // removeCampsApi(values);
+    // }
+    // removeForm.resetFields();
+    // setRemoveSupportSpinner(false);
+  };
 
-    if (removeCampsSupport) {
-      submitNickNameSupportCamps(values);
-    } else {
-      // console.log(values);
-      removeCampsApi(values);
-    }
-    removeForm.resetFields();
-    setRemoveSupportSpinner(false);
+  const checkNickNameSupportCamps = async () => {
+    const isDropdownValid = await isFormValid();
+    //  if (isDropdownValid?.errorFields) {
+    console.log("is-valid", isDropdownValid);
+    return;
+    // }
+    submitNickNameSupportCamps();
   };
 
   // remove support popup added.
@@ -464,11 +492,11 @@ const ManageSupportUI = ({
                 onClick={
                   removeAllIsSelected() &&
                   !currentGetCheckSupportExistsData.is_delegator
-                    ? openPopup
+                    ? removeCampsApi
                     : CheckDelegatedOrDirect
-                    ? submitNickNameSupportCamps
+                    ? checkNickNameSupportCamps
                     : removeCampsSupport
-                    ? openPopup
+                    ? checkNickNameSupportCamps
                     : addRemoveApi
                 }
                 disabled={
@@ -493,7 +521,7 @@ const ManageSupportUI = ({
       </Card>
 
       {/* modal data */}
-      <Modal
+      {/* <Modal
         className={styles.modal_cross}
         title={
           <p id="all_camps_topics" className={styles.modalTitle}>
@@ -505,11 +533,11 @@ const ManageSupportUI = ({
                   pathname: `/topic/${topicRecord?.topic_num}-${topicRecord?.topic_name}/${campRecord?.camp_num}-${campRecord?.camp_name}`,
                 }}
               >
-                <a>{campRecord?.camp_name}.</a>
+                <a>{campRecord?.camp_name}</a>.
               </Link>
               &quot;
             </span>{" "}
-            Before proceeding, please provide us with the following information.
+            You can optionally add a helpful reason, along with a citation link.
           </p>
         }
         open={isSupportTreeCardModal}
@@ -525,7 +553,7 @@ const ManageSupportUI = ({
             form={removeForm}
           />
         </Spin>
-      </Modal>
+      </Modal> */}
     </>
   );
 };

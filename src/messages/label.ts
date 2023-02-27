@@ -91,7 +91,7 @@ export const labels = {
   reasonLabel: "Reason for adding/removing support",
   reasonLabelAdd: "Reason for support",
   reasonLabelSummary: "Summary",
-  resonURLLabel: "Reference Link",
+  resonURLLabel: "Citation Link",
   reasonModalTitle: "Reason for support end!",
 };
 

@@ -389,7 +389,7 @@ export const keywordsRule = {
 export const removedReasonSelectRule = {
   rules: [
     {
-      required: true,
+      required: false,
       message: validations.reason,
     },
   ],

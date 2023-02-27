@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import classes from "./support-removed-modal.module.scss";
 import messages from "src/messages";
 import { RootState } from "src/store";
+import { getAllRemovedReasons } from "src/network/api/campDetailApi";
 
 const {
   labels,
@@ -28,16 +29,17 @@ const SupportRemovedModal = ({
   const [selectedValue, setSelectedValue] = useState(null);
   const [availableReasons, setReasons] = useState(reasons);
 
+  const getReasons = async () => {
+    await getAllRemovedReasons();
+  };
+
   useEffect(() => {
-    const reasons = [
-      { id: 1, label: "Reason 1" },
-      { id: 2, label: "Reason 2" },
-      { id: 3, label: "Custom Reason" },
-    ];
+    getReasons();
+  }, []);
+
+  useEffect(() => {
     setReasons(reasons);
   }, [reasons]);
-
-  console.log("reasons", reasons, availableReasons);
 
   const onSelectChange = (value, option) => {
     setSelectedValue(value);
@@ -58,12 +60,7 @@ const SupportRemovedModal = ({
         <Row gutter={16}>
           <Col xs={24} sm={24}>
             <Form.Item
-              label={
-                <Fragment>
-                  {labels.reasonLabel}
-                  <span className="required">*</span>
-                </Fragment>
-              }
+              label={<Fragment>{labels.reasonLabel}</Fragment>}
               name="end_reason"
               {...removedReasonSelectRule}
             >
@@ -78,16 +75,19 @@ const SupportRemovedModal = ({
                 onChange={onSelectChange}
               >
                 <Option key="select" value={null}>
-                  Select
+                  Select reason
                 </Option>
-                {availableReasons?.map((nick) => (
-                  <Option key={nick.id} value={nick.id}>
-                    {nick.label}
+                {availableReasons?.map((res) => (
+                  <Option key={res.id} value={res.id}>
+                    {res.label}
                   </Option>
                 ))}
+                <Option key="Others" value="others">
+                  Others
+                </Option>
               </Select>
             </Form.Item>
-            {selectedValue == 3 && (
+            {selectedValue == "others" && (
               <Form.Item
                 className={classes.edit_summary_input}
                 label={

@@ -183,7 +183,7 @@ const NetworkConstants = {
 
     GetNickSupportUser: `${BaseCanonizerApiUrl}/get-nick-support-user/`,
 
-    GetRemovedReasons: `${BaseCanonizerApiUrl}/get-nick-support-user/`,
+    GetRemovedReasons: `${BaseCanonizerApiUrl}/support-reason-list`,
   },
   Method: {
     GET: "GET",
