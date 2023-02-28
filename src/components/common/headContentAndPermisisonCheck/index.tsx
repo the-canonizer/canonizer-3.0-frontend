@@ -69,7 +69,8 @@ const HeadContentAndPermissionComponent = ({
 
   useEffect(() => {
     const req = {
-      page_name: componentName,
+      page_name:
+        componentName == "SocialLoginCallbackPage" ? "Home" : componentName,
       keys: {
         topic_num: router.asPath.includes("forum")
           ? router?.query?.topic?.toLocaleString().split("-")[0]

@@ -33,7 +33,7 @@ const ManageSupportUI = ({
   CurrentCheckSupportStatus,
   getManageSupportLoadingIndicator,
   setGetManageSupportLoadingIndicator,
-  topicSupportListData
+  topicSupportListData,
 }: any) => {
   const [tagsArrayList, setTagsArrayList] = useState([]);
   const [isTagDragged, setIsTagDragged] = useState(false);

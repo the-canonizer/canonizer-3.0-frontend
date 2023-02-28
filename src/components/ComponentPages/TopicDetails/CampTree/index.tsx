@@ -169,15 +169,15 @@ const CampTree = ({
       sessionStorage.setItem("value", JSON.stringify(sesionexpandkeys));
     }
 
-    if( tree?.at(0)  ){
-      const agreementCamp = tree?.at(0)[1].score
+    if (tree?.at(0)) {
+      const agreementCamp = tree?.at(0)[1].score;
 
-      if (agreementCamp > 5){
-        setShowScoreBars(true)
-      }else{
-        setShowScoreBars(false)
+      if (agreementCamp > 5) {
+        setShowScoreBars(true);
+      } else {
+        setShowScoreBars(false);
       }
-      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tree?.at(0)]);
 
@@ -204,9 +204,9 @@ const CampTree = ({
 
   const renderTreeNodes = (data: any, isDisabled = 0, isOneLevel = 0) => {
     let sortedData = Object.keys(data)
-    .map((key) => [Number(key), data[key]])
-    .sort((a, b) => b[1].score - a[1].score);
-    
+      .map((key) => [Number(key), data[key]])
+      .sort((a, b) => b[1].score - a[1].score);
+
     return sortedData.map((itemWithData) => {
       let item = itemWithData[0];
       const parentIsOneLevel = isOneLevel;
