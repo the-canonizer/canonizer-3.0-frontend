@@ -10,26 +10,24 @@ import {
 } from "@ant-design/icons";
 import styles from "./timeBarControl.module.scss";
 
-function TimelineSlider({mockData, setStart, start, setTimelineDescript, handleEventSelection , animationSpeed, setAnimationSpeed, iteration, setIteration, handleForwardOrBackord}) {
+function TimelineSlider({mockData, setStart, start, setTimelineDescript, handleEventSelection , animationSpeed, setAnimationSpeed, iteration, setIteration, handleForwardOrBackord, isPlaying, setIsPlaying}) {
   
-  const [count, setCount] = useState(0);
-
-  const [forward, setForward] = useState(false);
-  const [backward, setbackward] = useState(false);
+  
   const [intervalId, setIntervalId] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  
 
-  const [showData, setShowData] = useState({});
   const handleClick = () => {
     setStart(!start);
     if (isPlaying) {
       clearInterval(intervalId);
       setIntervalId(null);
       setIsPlaying(false);
-      setForward(false);
+      
     } else {
       const id = setInterval(() => {
-        setIteration((c) => c + 1);
+        if(isPlaying && start){
+          setIteration((c) => c + 1);
+        }
       }, animationSpeed);
 
       setIntervalId(id);
@@ -37,45 +35,48 @@ function TimelineSlider({mockData, setStart, start, setTimelineDescript, handleE
     }
   };
   const handleClickForward = () => {
-    // if (forward) {
-    //   clearInterval(intervalId);
-    //   setIntervalId(null);
-    //   setIsPlaying(false);
-    //   setForward(false);
-    // } else {
-      // const id = setInterval(() => {
-      //   setIteration((c) => c + 1);
-      // }, 100);
+ 
+      setIsPlaying(false)
+      setStart(false)
+      if(Object.keys(mockData).length - 1 !== iteration){
       setIteration(iteration + 1)
-      // setIntervalId(id);
+    
       handleForwardOrBackord(iteration+1)
-      setForward(true);
+      }
+      
     // }
   };
 
   const handleClickBackword = () => {
-    // if (forward) {
-    //   clearInterval(intervalId);
-    //   setIntervalId(null);
-    //   setIsPlaying(false);
-    //   setForward(false);
-    // } else {
-      // const id = setInterval(() => {
-      //   setIteration((c) => c + 1);
-      // }, 100);
-      setIteration(iteration - 1)
-      // setIntervalId(id);
-      handleForwardOrBackord(iteration - 1)
-    // }
+    
+
+      setIsPlaying(false)
+      setStart(false)
+      if(iteration > 0){
+
+        setIteration(iteration - 1)
+     
+        handleForwardOrBackord(iteration - 1)
+      }
+ 
   };
   const onChange = (newValue) => {
+    if(Object.keys(mockData).length  == newValue){
+      setIsPlaying(false)
+    }
+    
     setIteration(newValue);
     handleEventSelection(newValue)
   };
   
   useEffect(() => {
+    if(Object.keys(mockData).length == iteration){
+      setIsPlaying(false)
+      setIteration(0)
+      setStart(false)
+    }
+    
     let showkey = Object.keys(mockData)[iteration];
-    setShowData(mockData[showkey]);
     setTimelineDescript(mockData[showkey]?.event?.message);
   }, [iteration]);
 

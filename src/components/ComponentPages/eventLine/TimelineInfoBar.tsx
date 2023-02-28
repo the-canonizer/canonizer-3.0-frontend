@@ -19,7 +19,7 @@ const CampInfoBar = () => {
               type="text"
               icon={<ArrowLeftOutlined />}
               onClick={() =>
-                router.push(router.asPath.replace("timelinetest", "topic"))
+                router.push(router.asPath.replace("eventline", "topic"))
               }
             >
               Back

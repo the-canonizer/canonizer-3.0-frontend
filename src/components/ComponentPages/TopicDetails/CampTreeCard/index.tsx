@@ -92,6 +92,11 @@ const CampTreeCard = ({
                     event.stopPropagation();
                   }}
                 >
+                  <Link href={`/eventline/${router?.query?.camp[0]}`}>
+                    <a>
+                      Event Line
+                    </a>
+                  </Link>
                   {isUserAuthenticated && is_admin && tree && (
                     <Link
                       href={{
@@ -105,7 +110,7 @@ const CampTreeCard = ({
                         }}
                       >
                         <i className={"icon-fi-document " + styles.iconMr} />
-                        Add News
+                        Add News 
                       </a>
                     </Link>
                   )}

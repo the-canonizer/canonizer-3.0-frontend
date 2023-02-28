@@ -5,6 +5,7 @@ import useInterval from "./useInterval";
 import HorizontalTimelineComp from "./HorizontalTimeline";
 import TimelineSlider from "../eventLine/timelineSlider";
 import { getEventLineApi } from "src/network/api/topicEventLineAPI";
+import { useRouter } from "next/router.js";
 const getRandomIndex = (array) => {
   return Math.floor(array.length * Math.random());
 };
@@ -15,19 +16,18 @@ function TimeLine({  setTimelineDescript }) {
   const [mockData, setMockData] = useState({});
   const [eventDescription, setEventDescription] = useState("");
   const [animationSpeed, setAnimationSpeed] = useState(1000);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const router = useRouter()
   
   const events = Object.keys(mockData);
-  const [data, setData] = useState(
-   []
-    
-  );
+  const [data, setData] = useState([]);
 
 
   useEffect(() => {
    async function apiCall() {
     
    const data = await getEventLineApi({
-    "topic_num": 1175,
+    "topic_num": router?.query?.camp[0].split("-")[0],
     "camp_num": 2,
     "asOf": "default",
     "asofdate": 1677160704.161,
@@ -35,7 +35,7 @@ function TimeLine({  setTimelineDescript }) {
     "update_all": 1,
     "fetch_topic_history": null
 })
-debugger
+
    setMockData(data)
 setData( data[Object.keys(data)[0]].payload_response)
    }
@@ -49,8 +49,9 @@ setData( data[Object.keys(data)[0]].payload_response)
     if (start && events.length > iteration) {
       setData(mockData[events[iteration]].payload_response);
       setEventDescription(mockData[events[iteration]].event?.message);
-
-      setIteration(iteration + 1);
+      // if(isPlaying){
+        setIteration(iteration + 1);
+      // }
     }
   }, animationSpeed);
 
@@ -79,6 +80,8 @@ setData( data[Object.keys(data)[0]].payload_response)
         iteration={iteration}
         setIteration={setIteration}
         handleForwardOrBackord={handleForwardOrBackord}
+        isPlaying={isPlaying} 
+        setIsPlaying={setIsPlaying}
       />
       <div style={{ overflow: "hidden" }}>
         {
