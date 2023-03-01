@@ -33,6 +33,7 @@ const ManageSupportUI = ({
   CurrentCheckSupportStatus,
   getManageSupportLoadingIndicator,
   setGetManageSupportLoadingIndicator,
+  topicSupportListData,
 }: any) => {
   const [tagsArrayList, setTagsArrayList] = useState([]);
   const [isTagDragged, setIsTagDragged] = useState(false);
@@ -105,12 +106,12 @@ const ManageSupportUI = ({
   });
   const nickNameIDValue = nickNameloop[0]?.id;
   useEffect(() => {
-    (async () => {
-      const topicList = await GetActiveSupportTopic(topicNum && body);
-      if (topicList && topicList.status_code == 200) {
-        setTopicSupportList(topicList.data);
-      }
-    })();
+    // (async () => {
+    //   const topicList = await GetActiveSupportTopic(topicNum && body);
+    //   if (topicList && topicList.status_code == 200) {
+    //     setTopicSupportList(topicList.data);
+    //   }
+    // })();
     setIsTagDragged(false);
   }, []);
   const removeCampsApi = async () => {
@@ -123,10 +124,10 @@ const ManageSupportUI = ({
       nick_name_id: nickNameIDValue,
       order_update: [],
     };
-    const topicList = await GetActiveSupportTopic(topicNum && body);
-    if (topicList && topicList.status_code == 200) {
-      setTopicSupportList(topicList.data);
-    }
+    // const topicList = await GetActiveSupportTopic(topicNum && body);
+    // if (topicList && topicList.status_code == 200) {
+    //   setTopicSupportList(topicList.data);
+    // }
     const response = await removeSupportedCamps(supportedCampsRemove);
     if (response && response.status_code == 200) {
       let manageSupportPath = router.asPath.replace("/support/", "/topic/");
@@ -285,12 +286,12 @@ const ManageSupportUI = ({
               {" "}
               {messages.labels.manageSupportNote}
             </div>
-            {!CheckDelegatedOrDirect && topicSupportList.length != 0 ? (
+            {!CheckDelegatedOrDirect && topicSupportListData.length != 0 ? (
               <div>
                 <Card className={styles.margin_top} type="inner">
                   <b>
                     {messages.labels.topicSupportText} &quot;{""}
-                    {topicSupportList[0]?.title}
+                    {topicSupportListData[0]?.title}
                     {""}&quot;
                   </b>
                 </Card>

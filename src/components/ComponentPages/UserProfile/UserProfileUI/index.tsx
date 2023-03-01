@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 
 import styles from "./UserProfile.module.scss";
 
@@ -9,10 +10,12 @@ import { UserProfileCard } from "../UserProfileDetails/UserProfileCard";
 import { getUserSupportedCampList } from "src/network/api/userApi";
 import { getCanonizedNameSpacesApi } from "src/network/api/homePageApi";
 import { GetSupportedNickNames } from "src/network/api/campDetailApi";
-import useAuthentication from "../../../../hooks/isUserAuthenticated";
+import useAuthentication from "src/hooks/isUserAuthenticated";
+import { RootState } from "src/store";
 
 const UserProfile = () => {
   const { isUserAuthenticated } = useAuthentication();
+  const token = useSelector((state: RootState) => state.auth.authToken);
 
   const [profileData, setProfileData] = useState({} as any);
   const [userSupportedCampsList, setUserSupportedCampsList] = useState([]);
@@ -87,7 +90,13 @@ const UserProfile = () => {
     const q = router?.query,
       nick_id = q?.supports[0];
     if (nick_id) {
-      getSupportedNickNames(nick_id);
+      if (!token && !isLoggedIn) {
+        setTimeout(() => {
+          getSupportedNickNames(nick_id);
+        }, 1000);
+      } else {
+        getSupportedNickNames(nick_id);
+      }
     }
   }, [router, isLoggedIn]);
 
