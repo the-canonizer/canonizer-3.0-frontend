@@ -61,7 +61,7 @@ export default class NetworkCall {
     method: any;
     url: any;
     data: any;
-    headers: any;   // eslint-disable-next-line no-unused-vars
+    headers: any; // eslint-disable-next-line no-unused-vars
     validateStatus: (status: any) => boolean;
   }): Promise<unknown> {
     throw new Error("Method not implemented.");

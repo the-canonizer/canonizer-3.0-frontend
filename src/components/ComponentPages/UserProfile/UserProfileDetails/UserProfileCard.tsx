@@ -45,11 +45,7 @@ export const UserProfileCard = ({
   return (
     <div className="user--cards-outer">
       {userProfileCardSkeleton ? (
-        <CustomSkelton
-          skeltonFor="profileCard"
-          bodyCount={3}
-          stylingClass=""
-        />
+        <CustomSkelton skeltonFor="profileCard" bodyCount={3} stylingClass="" />
       ) : (
         <div
           className={
