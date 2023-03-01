@@ -51,7 +51,6 @@ export default function SocialLoginUi({ isNotLogin = false }) {
           skeltonFor="list"
           bodyCount={1}
           stylingClass="listSkeleton"
-          isButton={false}
         />
       ) : (
         <div className={styles.btn_group}>

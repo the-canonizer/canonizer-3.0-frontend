@@ -3,8 +3,6 @@ import { cleanup, render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { store } from "../../../../../store";
 import { windowMatchMedia } from "../../../../../utils/testUtils";
-import { NextRouter } from "next/router";
-import { RouterContext } from "next/dist/shared/lib/router-context";
 
 jest.isolateModules(() => {
   const preloadAll = require("jest-next-dynamic");

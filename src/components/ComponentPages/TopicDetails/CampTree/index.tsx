@@ -34,7 +34,7 @@ const CampTree = ({
 
   const [selectedExpand, setSelectedExpand] = useState([]);
   const [expandedKeys, setExpandedKeys] = useState([]);
-  const [autoExpandParent, setAutoExpandParent] = useState(true);
+  // const [autoExpandParent, setAutoExpandParent] = useState(true);
 
   // const [selectedNodeID, setSelectedNodeID] = useState(1);
   const [scoreFilter, setScoreFilter] = useState(filterByScore);

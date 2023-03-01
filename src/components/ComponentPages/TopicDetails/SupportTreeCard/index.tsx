@@ -257,7 +257,6 @@ const SupportTreeCard = ({
       titleName='Support Tree for "Agreement" Camp'
       bodyCount={3}
       stylingClass="test"
-      isButton={false}
     />
   ) : (
     <>

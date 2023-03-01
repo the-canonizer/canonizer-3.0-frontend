@@ -56,11 +56,12 @@ export default class NetworkCall {
       return Promise.reject({ error: error });
     }
   }
+  // eslint-disable-next-line no-unused-vars
   static axios(arg0: {
     method: any;
     url: any;
     data: any;
-    headers: any;
+    headers: any;   // eslint-disable-next-line no-unused-vars
     validateStatus: (status: any) => boolean;
   }): Promise<unknown> {
     throw new Error("Method not implemented.");

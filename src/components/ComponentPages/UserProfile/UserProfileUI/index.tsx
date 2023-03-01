@@ -100,7 +100,7 @@ const UserProfile = () => {
     }
   }, [router, isLoggedIn]);
 
-  const onNickNameChange = (value, nickname) => {
+  const onNickNameChange = (value) => {
     let pathQueries = router.query.supports;
     pathQueries = [value];
     router.query.supports = pathQueries;

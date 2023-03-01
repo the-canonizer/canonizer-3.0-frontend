@@ -54,7 +54,6 @@ const CampInfoBar = ({
     asofdate,
     asof,
     algorithm,
-    viewThisVersionCheck,
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -312,7 +311,6 @@ const CampInfoBar = ({
             skeltonFor="list"
             bodyCount={1}
             stylingClass=""
-            isButton={false}
           /> */}
 
         <Spin spinning={false}>
@@ -334,7 +332,6 @@ const CampInfoBar = ({
                   skeltonFor="list"
                   bodyCount={1}
                   stylingClass="topic-skeleton"
-                  isButton={false}
                 />
               ) : isTopicHistoryPage ? (
                 <>
@@ -376,7 +373,6 @@ const CampInfoBar = ({
                     skeltonFor="list"
                     bodyCount={1}
                     stylingClass="topic-skeleton"
-                    isButton={false}
                   />
                 ) : !isTopicHistoryPage ? (
                   breadCrumbRes ? (
@@ -436,21 +432,18 @@ const CampInfoBar = ({
                           skeltonFor="list"
                           bodyCount={1}
                           stylingClass="skeleton-item"
-                          isButton={false}
                           circle={true}
                         />
                         <CustomSkelton
                           skeltonFor="list"
                           bodyCount={1}
                           stylingClass="skeleton-item"
-                          isButton={false}
                           circle={true}
                         />
                         <CustomSkelton
                           skeltonFor="list"
                           bodyCount={1}
                           stylingClass="skeleton-item"
-                          isButton={false}
                           circle={true}
                         />
                       </div>
@@ -469,7 +462,6 @@ const CampInfoBar = ({
                       bodyCount={1}
                       stylingClass="header-skeleton-btn"
                       // stylingClass="skeleton-item"
-                      isButton={false}
                     />
                   ) : (
                     <>

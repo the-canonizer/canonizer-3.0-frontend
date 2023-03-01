@@ -66,8 +66,6 @@ describe("Reset Password page", () => {
     const inputEl = screen.getByPlaceholderText(placeholders.newPassword);
     await fireEvent.change(inputEl, { target: { value: "1234567" } });
     await userEvent.tab();
-    // await act(async () => {
-    // });
     waitFor(() => {
       expect(inputEl).toHaveValue("1234567");
       expect(screen.queryByRole("alert")).toBeInTheDocument();
@@ -119,24 +117,4 @@ describe("Reset Password page", () => {
       expect(screen.queryByRole("alert")).not.toBeInTheDocument();
     });
   });
-
-  // it("blank form should not be submit", async () => {
-  //   render(<ResetPassword is_test={true} />);
-
-  //   const inputEl = await screen.getByPlaceholderText(
-  //     messages.placeholders.newPassword
-  //   );
-  //   const inputEl2 = await screen.getByPlaceholderText(
-  //     messages.placeholders.confirmPassword
-  //   );
-  //   fireEvent.change(inputEl, { target: { value: "" } });
-  //   fireEvent.focusOut(inputEl);
-  //   fireEvent.change(inputEl2, { target: { value: "" } });
-  //   fireEvent.focusOut(inputEl2);
-
-  //   await waitFor(() => {
-  //     expect(screen.queryByText("Please input your password!")).toBeVisible();
-  //     expect(screen.queryByText("Please confirm your password!")).toBeVisible();
-  //   });
-  // });
 });

@@ -103,7 +103,6 @@ function SubscriptionsList({ isTestData = [] }) {
       bodyCount={4}
       stylingClass=""
       listStyle="liHeight"
-      isButton={false}
     />
   ) : (
     <SubscriptionsListUI

@@ -1,10 +1,9 @@
 import React from "react";
-import { Button, Radio, Input } from "antd";
 
 import styles from "./searchSection.module.scss";
 
-const { Search } = Input;
 const googleSearch = process.env.NEXT_PUBLIC_SITE_NAME;
+
 const SearchSection = () => {
   return (
     <section className={styles.wrap}>

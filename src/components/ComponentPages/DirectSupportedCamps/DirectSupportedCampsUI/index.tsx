@@ -5,7 +5,6 @@ import { DraggableArea } from "react-draggable-tags";
 import styles from "./DirectSupportedCamps.module.scss";
 import Link from "next/link";
 import messages from "../../../../messages";
-import Spinner from "../../../common/spinner/spinner";
 import CustomSkelton from "../../../common/customSkelton";
 
 export default function DirectSupportedCampsUI({
@@ -28,7 +27,6 @@ export default function DirectSupportedCampsUI({
   handleOk,
   handleCancel,
   removeSupportCampsData,
-  statusFlag,
   directSkeletonIndicator,
 }: any) {
   const [valData, setValData] = useState({});
@@ -104,7 +102,6 @@ export default function DirectSupportedCampsUI({
           skeltonFor="subscription_card"
           bodyCount={4}
           stylingClass=""
-          isButton={false}
         />
       ) : (
         <div>

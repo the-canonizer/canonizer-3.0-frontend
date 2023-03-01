@@ -1,5 +1,3 @@
-import { Spin } from "antd";
-
 import Post from "./UI/Post";
 import ThreadSidebar from "./UI/sidebar";
 

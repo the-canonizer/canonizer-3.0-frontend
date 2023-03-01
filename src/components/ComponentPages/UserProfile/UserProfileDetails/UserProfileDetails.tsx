@@ -24,7 +24,6 @@ const UserProfileDetails = ({
                 skeltonFor="profileDetails"
                 bodyCount={3}
                 stylingClass=""
-                isButton={false}
               />
             ) : (
               <div>
@@ -100,7 +99,6 @@ const UserProfileDetails = ({
         //   skeltonFor="profileDetails"
         //   bodyCount={3}
         //   stylingClass=""
-        //   isButton={false}
         // />
       }
     </>

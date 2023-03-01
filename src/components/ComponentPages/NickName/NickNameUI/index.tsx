@@ -63,12 +63,7 @@ export default function NickNameUI({
   ];
 
   return getNickNamesLoadingIndicator ? (
-    <CustomSkelton
-      skeltonFor="table"
-      bodyCount={5}
-      stylingClass=""
-      isButton={false}
-    />
+    <CustomSkelton skeltonFor="table" bodyCount={5} stylingClass="" />
   ) : (
     <>
       <section className={styles.nick_name}>

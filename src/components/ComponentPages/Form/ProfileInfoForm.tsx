@@ -391,7 +391,6 @@ function ProfileInfoForm({
           skeltonFor="profileInfoForm"
           bodyCount={7}
           stylingClass=""
-          isButton={false}
         />
       </div>
     );

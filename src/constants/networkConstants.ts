@@ -196,8 +196,8 @@ const NetworkConstants = {
       "Content-Type": "application/json",
       Accept: "application/json",
       Authorization: "Bearer " + token,
-    }),
-    Authorization: (token = "") => ({
+    }), // eslint-disable-next-line no-unused-vars
+    Authorization: (token) => ({
       // Authorization: "Bearer " + token,
       // "Content-Type": "multipart/form-data",
       // Accept: "application/json",

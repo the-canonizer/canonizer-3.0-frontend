@@ -3,7 +3,6 @@ import { CloseCircleOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import styles from "./DelegatedSupportedCamps.module.scss";
 import messages from "../../../../messages";
-import Spinner from "../../../common/spinner/spinner";
 import CustomSkelton from "../../../common/customSkelton";
 import { useEffect, useState } from "react";
 export default function DelegatedSupportCampsUI({
@@ -18,7 +17,6 @@ export default function DelegatedSupportCampsUI({
   search,
   removeSupport,
   removeSupportCampsData,
-  statusFlag,
   delegateSupportedSkeleton,
 }: any) {
   const [displayList, setDisplayList] = useState([]);
@@ -99,7 +97,6 @@ export default function DelegatedSupportCampsUI({
           skeltonFor="delegateSupportedCampListCard"
           bodyCount={4}
           stylingClass=""
-          isButton={false}
         />
       ) : (
         <div>

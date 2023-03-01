@@ -36,7 +36,6 @@ const NotificationsListUI = ({
               bodyCount={10}
               stylingClass=""
               listStyle=""
-              isButton={false}
             />
           ) : (
             <Lists

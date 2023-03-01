@@ -51,13 +51,7 @@ import {
   allowedEmojies,
   emojiValidation,
 } from "src/utils/generalUtility";
-import {
-  EditorState,
-  convertToRaw,
-  ContentState,
-  convertFromRaw,
-  convertFromHTML,
-} from "draft-js";
+import { EditorState, convertToRaw, ContentState } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
 const Editor: any = dynamic(
@@ -70,8 +64,7 @@ if (typeof window === "object") {
 }
 const { Text } = Typography;
 
-const { campAboutUrlRule, summaryRule, keywordsRule, patterns, validations } =
-  messages;
+const { campAboutUrlRule, summaryRule, keywordsRule, patterns } = messages;
 
 export default function AddOrManage({ add }: any) {
   const { isUserAuthenticated } = useAuthentication();
@@ -93,12 +86,12 @@ export default function AddOrManage({ add }: any) {
   });
   const [parentCamp, setParentCamps] = useState([]);
   const [wikiStatement, setWikiStatement] = useState("");
-  const [errors, setErrors] = useState({
-    CampNameError: false,
-    campNameMsg: "",
-    displayTextError: false,
-    displayTextErrorMsg: "",
-  });
+  // const [errors, setErrors] = useState({
+  //   CampNameError: false,
+  //   campNameMsg: "",
+  //   displayTextError: false,
+  //   displayTextErrorMsg: "",
+  // });
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
@@ -107,7 +100,7 @@ export default function AddOrManage({ add }: any) {
   const [canNameSpace, setCanNameSpace] = useState([]);
   const [options, setOptions] = useState([...messages.preventCampLabel]);
   const [initialOptions, setInitialOptions] = useState([]);
-  const [uploadImage, setUploadImage] = useState([]);
+  // const [uploadImage, setUploadImage] = useState([]);
 
   const [form] = Form.useForm();
   let objection = router?.query?.statement?.at(0)?.split("-")[1] == "objection";
@@ -260,13 +253,13 @@ export default function AddOrManage({ add }: any) {
       setParentCamps(res.data);
     }
   };
-  const isJSON = (str) => {
-    try {
-      return JSON.parse(str) && !!str;
-    } catch (e) {
-      return false;
-    }
-  };
+  // const isJSON = (str) => {
+  //   try {
+  //     return JSON.parse(str) && !!str;
+  //   } catch (e) {
+  //     return false;
+  //   }
+  // };
   useEffect(() => {
     setScreenLoading(true);
     async function nickNameListApiCall() {
@@ -621,7 +614,6 @@ export default function AddOrManage({ add }: any) {
                         skeltonFor="list"
                         bodyCount={1}
                         stylingClass="listSkeleton"
-                        isButton={false}
                       />
                     ) : (
                       <Select
@@ -666,7 +658,6 @@ export default function AddOrManage({ add }: any) {
                               skeltonFor="list"
                               bodyCount={1}
                               stylingClass="listSkeleton"
-                              isButton={false}
                             />
                           ) : (
                             <Select
@@ -725,7 +716,6 @@ export default function AddOrManage({ add }: any) {
                             skeltonFor="list"
                             bodyCount={1}
                             stylingClass="listSkeleton"
-                            isButton={false}
                           />
                         ) : (
                           <Input
@@ -749,7 +739,6 @@ export default function AddOrManage({ add }: any) {
                               skeltonFor="list"
                               bodyCount={1}
                               stylingClass="listSkeleton"
-                              isButton={false}
                             />
                           ) : (
                             <Input />
@@ -791,7 +780,6 @@ export default function AddOrManage({ add }: any) {
                             skeltonFor="list"
                             bodyCount={1}
                             stylingClass="listSkeleton"
-                            isButton={false}
                           />
                         ) : (
                           <Input disabled={objection} maxLength={30} />
@@ -826,7 +814,6 @@ export default function AddOrManage({ add }: any) {
                               skeltonFor="list"
                               bodyCount={1}
                               stylingClass="listSkeleton"
-                              isButton={false}
                             />
                           ) : (
                             <Select
@@ -877,7 +864,6 @@ export default function AddOrManage({ add }: any) {
                         <CustomSkelton
                           bodyCount
                           stylingClass
-                          isButton
                           height={250}
                           skeltonFor="video"
                         />
@@ -925,7 +911,6 @@ export default function AddOrManage({ add }: any) {
                           skeltonFor="list"
                           bodyCount={1}
                           stylingClass="listSkeleton"
-                          isButton={false}
                         />
                       ) : (
                         <Input.TextArea size="large" rows={1} maxLength={100} />
@@ -951,7 +936,6 @@ export default function AddOrManage({ add }: any) {
                           <CustomSkelton
                             bodyCount
                             stylingClass
-                            isButton
                             height={200}
                             skeltonFor="video"
                           />
@@ -993,7 +977,6 @@ export default function AddOrManage({ add }: any) {
                                 skeltonFor="list"
                                 bodyCount={1}
                                 stylingClass="listSkeleton"
-                                isButton={false}
                               />
                             ) : (
                               <Input maxLength={1024} />
@@ -1010,7 +993,6 @@ export default function AddOrManage({ add }: any) {
                                 skeltonFor="list"
                                 bodyCount={1}
                                 stylingClass="listSkeleton"
-                                isButton={false}
                               />
                             ) : (
                               <Select
@@ -1042,7 +1024,6 @@ export default function AddOrManage({ add }: any) {
                             skeltonFor="list"
                             bodyCount={1}
                             stylingClass="listSkeleton"
-                            isButton={false}
                           />
                           {!objection && (
                             <>
@@ -1050,13 +1031,11 @@ export default function AddOrManage({ add }: any) {
                                 skeltonFor="list"
                                 bodyCount={1}
                                 stylingClass="listSkeleton"
-                                isButton={false}
                               />{" "}
                               <CustomSkelton
                                 skeltonFor="list"
                                 bodyCount={1}
                                 stylingClass="listSkeleton"
-                                isButton={false}
                               />
                             </>
                           )}

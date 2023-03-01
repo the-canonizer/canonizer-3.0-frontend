@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useRouter } from "next/router";
 import { Button, Layout } from "antd";
 import { MenuOutlined, CloseOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
@@ -20,9 +19,8 @@ import HeaderMenu from "../HeaderMenu";
 
 const { Header } = Layout;
 
-const LoggedOutHeader = ({}: any) => {
+const LoggedOutHeader = () => {
   const dispatch = useDispatch();
-  const router = useRouter();
 
   const [isActive, setActive] = useState(false);
 

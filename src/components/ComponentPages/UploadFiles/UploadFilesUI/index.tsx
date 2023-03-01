@@ -991,7 +991,6 @@ const UploadFileUI = ({
             skeltonFor="cardForUploadFile"
             bodyCount={15}
             stylingClass=""
-            isButton={false}
           />
         ) : (
           <div className="pageContentWrap">

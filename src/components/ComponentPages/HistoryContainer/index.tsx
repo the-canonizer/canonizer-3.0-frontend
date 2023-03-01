@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { Typography, Button, List, Spin, Affix } from "antd";
+import { Typography, Button, List, Affix } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
@@ -168,7 +168,9 @@ function HistoryContainer() {
         count.current = count.current + 1;
       }
       setLoadingIndicator(false);
-    } catch (error) {}
+    } catch (error) {
+      //
+    }
   };
 
   const handleTabButton = async (tabName) => {
@@ -415,7 +417,6 @@ function HistoryContainer() {
                     skeltonFor="card"
                     bodyCount={4}
                     stylingClass="test"
-                    isButton={false}
                     action={false}
                     title={false}
                   />
@@ -425,7 +426,6 @@ function HistoryContainer() {
                     skeltonFor="card"
                     bodyCount={4}
                     stylingClass="test"
-                    isButton={false}
                     action={false}
                     title={false}
                   />{" "}
@@ -435,7 +435,6 @@ function HistoryContainer() {
                     skeltonFor="card"
                     bodyCount={4}
                     stylingClass="test"
-                    isButton={false}
                     action={false}
                     title={false}
                   />

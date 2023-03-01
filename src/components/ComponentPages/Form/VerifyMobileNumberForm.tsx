@@ -53,7 +53,6 @@ function VerifyMobileNumberForm({
             skeltonFor="verifyInfoForm"
             bodyCount={1}
             stylingClass=""
-            isButton={false}
           />
         ) : (
           <div className={styles.section_one}>

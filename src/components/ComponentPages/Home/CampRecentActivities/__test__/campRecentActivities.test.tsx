@@ -27,7 +27,7 @@ window.matchMedia =
 afterEach(cleanup);
 describe("Should render Addnews", () => {
   it("Render without crash", async () => {
-    const { container } = await render(<CampRecentActivities />);
+    await render(<CampRecentActivities />);
     const userList = await waitFor(() =>
       screen.getByText(/No Recent Activity Found/i)
     );

@@ -49,7 +49,6 @@ export const UserProfileCard = ({
           skeltonFor="profileCard"
           bodyCount={3}
           stylingClass=""
-          isButton={false}
         />
       ) : (
         <div

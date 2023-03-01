@@ -102,7 +102,6 @@ const PostForm = ({
                   bodyCount={1}
                   stylingClass=""
                   listStyle="countLi"
-                  isButton={false}
                 />
               ) : (
                 `Number of Post in this thread: ${postCount}`

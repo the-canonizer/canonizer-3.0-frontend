@@ -6,7 +6,7 @@ import helpStyles from "../../Home/HelpCard/helpCard.module.scss";
 
 import CustomSkelton from "../../../common/customSkelton";
 
-const { Title, Paragraph, Text } = Typography;
+const { Title, Paragraph } = Typography;
 const { Panel } = Collapse;
 
 function SocialLoginCallback() {
@@ -19,7 +19,6 @@ function SocialLoginCallback() {
               skeltonFor="list"
               bodyCount={1}
               stylingClass="listSkeleton"
-              isButton={false}
             />
           </div>
           <Collapse
@@ -35,7 +34,6 @@ function SocialLoginCallback() {
                     skeltonFor="list"
                     bodyCount={1}
                     stylingClass="listSkeleton"
-                    isButton={false}
                   />
                 </span>
               }
@@ -47,7 +45,6 @@ function SocialLoginCallback() {
                     skeltonFor="list"
                     bodyCount={1}
                     stylingClass="listSkeleton"
-                    isButton={false}
                   />
                 </Title>
               </div>
@@ -55,14 +52,12 @@ function SocialLoginCallback() {
                 skeltonFor="list"
                 bodyCount={1}
                 stylingClass="listSkeleton"
-                isButton={false}
               />
               <Paragraph className={styles.algoInfo}>
                 <CustomSkelton
                   skeltonFor="list"
                   bodyCount={1}
                   stylingClass="listSkeleton"
-                  isButton={false}
                 />
               </Paragraph>
               <div className={styles.filter}>
@@ -70,7 +65,6 @@ function SocialLoginCallback() {
                   skeltonFor="list"
                   bodyCount={1}
                   stylingClass="listSkeleton"
-                  isButton={false}
                 />
               </div>
             </Panel>
@@ -81,7 +75,6 @@ function SocialLoginCallback() {
                     skeltonFor="list"
                     bodyCount={1}
                     stylingClass="listSkeleton"
-                    isButton={false}
                   />
                 </span>
               }
@@ -91,14 +84,12 @@ function SocialLoginCallback() {
                 skeltonFor="list"
                 bodyCount={3}
                 stylingClass="listSkeleton"
-                isButton={false}
               />
 
               <CustomSkelton
                 skeltonFor="list"
                 bodyCount={1}
                 stylingClass="listSkeleton"
-                isButton={false}
               />
             </Panel>
 
@@ -109,7 +100,6 @@ function SocialLoginCallback() {
                     skeltonFor="list"
                     bodyCount={1}
                     stylingClass="listSkeleton"
-                    isButton={false}
                   />
                 </span>
               }
@@ -120,7 +110,6 @@ function SocialLoginCallback() {
                   skeltonFor="list"
                   bodyCount={1}
                   stylingClass="listSkeleton"
-                  isButton={false}
                 />
               </div>
             </Panel>
@@ -135,13 +124,12 @@ function SocialLoginCallback() {
                 className={styles.wrap}
                 bordered
                 dataSource={["", ""]}
-                renderItem={(item: any) => {
+                renderItem={() => {
                   return (
                     <CustomSkelton
                       skeltonFor="list"
                       bodyCount={5}
                       stylingClass="listSkeleton"
-                      isButton={false}
                     />
                   );
                 }}
@@ -155,7 +143,6 @@ function SocialLoginCallback() {
                   skeltonFor="list"
                   bodyCount={10}
                   stylingClass="listSkeleton"
-                  isButton={false}
                 />
               </div>
             </section>
@@ -167,7 +154,6 @@ function SocialLoginCallback() {
                   skeltonFor="list"
                   bodyCount={5}
                   stylingClass="listSkeleton"
-                  isButton={false}
                 />
               </div>
             </section>

@@ -29,7 +29,6 @@ const CurrentCampCard = ({ loadingIndicator }) => {
       skeltonFor="card"
       bodyCount={6}
       stylingClass="test"
-      isButton={false}
     />
   ) : (
     <Collapse

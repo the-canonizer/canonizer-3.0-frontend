@@ -337,7 +337,6 @@ const TopicsList = () => {
                 skeltonFor="list"
                 bodyCount={10}
                 stylingClass="listSkeleton"
-                isButton={false}
               />
             ) : (
               <List.Item className={styles.item} id={`topic-${item?.topic_id}`}>

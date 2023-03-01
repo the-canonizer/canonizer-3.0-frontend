@@ -1,14 +1,5 @@
 import React from "react";
-import {
-  render,
-  fireEvent,
-  waitFor,
-  screen,
-  cleanup,
-} from "@testing-library/react";
-import AddOrEdit from "../";
-import { addNewsFeedApi } from "../../../../../network/api/campNewsApi";
-import { Router } from "next/router";
+import { render, waitFor, screen, cleanup } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { store } from "../../../../../store";
 import { RouterContext } from "next/dist/shared/lib/router-context";

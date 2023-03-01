@@ -1,7 +1,7 @@
 import CampList from "..";
 import { Provider } from "react-redux";
 import { store } from "../../../../store";
-import { render, cleanup, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 
 import { NextRouter } from "next/router";
 import { RouterContext } from "next/dist/shared/lib/router-context";
@@ -114,15 +114,15 @@ describe("CampHistory Page", () => {
           </RouterContext.Provider>
         </Provider>
       );
-      const topicHistoryHeading = screen.queryByRole("heading", {
+      screen.queryByRole("heading", {
         name: /topic history/i,
         hidden: true,
       });
-      const submitTopicButton = screen.queryByRole("button", {
+      screen.queryByRole("button", {
         name: /submit topic update based on this/i,
         hidden: true,
       });
-      const viewThisButton = screen.queryByRole("button", {
+      screen.queryByRole("button", {
         name: /view this version/i,
         hidden: true,
       });

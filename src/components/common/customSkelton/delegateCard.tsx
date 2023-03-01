@@ -1,4 +1,4 @@
-import { Card, Typography, Tag, Row, Col, Form } from "antd";
+import { Card, Typography, Row, Col, Form } from "antd";
 import Skeleton from "react-loading-skeleton";
 
 import styles from "./style.module.scss";

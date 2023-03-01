@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 
 import styles from "./layout.module.scss";
@@ -20,10 +19,6 @@ const Footer = dynamic(() => import("../../components/common/footer"), {
 
 function Layout(props: any) {
   const { isUserAuthenticated } = useAuthentication();
-
-  const [log, setLog] = useState(isUserAuthenticated);
-
-  useEffect(() => setLog(isUserAuthenticated), [isUserAuthenticated]);
 
   return (
     <div className={styles.pageWrap}>

@@ -174,7 +174,6 @@ const ThreadListUI = ({
                     skeltonFor="list"
                     bodyCount={1}
                     stylingClass=""
-                    isButton={false}
                   />
                 )}
                 width="350px"
@@ -189,7 +188,6 @@ const ThreadListUI = ({
                     skeltonFor="list"
                     bodyCount={1}
                     stylingClass=""
-                    isButton={false}
                   />
                 )}
               />
@@ -203,7 +201,6 @@ const ThreadListUI = ({
                     skeltonFor="list"
                     bodyCount={1}
                     stylingClass=""
-                    isButton={false}
                   />
                 )}
               />
@@ -215,7 +212,6 @@ const ThreadListUI = ({
                   bodyCount={1}
                   stylingClass=""
                   listStyle="liHeight"
-                  isButton={false}
                 />
               ) : null}
             </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Tag, Select, Spin } from "antd";
+import { Card, Tag, Select } from "antd";
 import messages from "../../../../messages";
 import styles from "../ManageSupportUI/ManageSupport.module.scss";
 import { Button, Col } from "antd";
@@ -10,7 +10,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { useRouter } from "next/router";
 import { addSupport, removeSupportedCamps } from "src/network/api/userApi";
-import { GetActiveSupportTopic } from "src/network/api/topicAPI";
 import CustomSkelton from "../../../common/customSkelton";
 
 const ManageSupportUI = ({
@@ -30,7 +29,7 @@ const ManageSupportUI = ({
   submitButtonDisable,
   setUpdatePostion,
   unableToFindCamp,
-  CurrentCheckSupportStatus,
+  // CurrentCheckSupportStatus,
   getManageSupportLoadingIndicator,
   setGetManageSupportLoadingIndicator,
   topicSupportListData,
@@ -44,16 +43,16 @@ const ManageSupportUI = ({
         state.supportTreeCard.currentDelegatedSupportedClick,
     })
   );
-  const { topicRecord } = useSelector((state: RootState) => ({
-    topicRecord: state?.topicDetails?.currentTopicRecord,
-  }));
+  // const { topicRecord } = useSelector((state: RootState) => ({
+  //   topicRecord: state?.topicDetails?.currentTopicRecord,
+  // }));
   const { currentGetCheckSupportExistsData } = useSelector(
     (state: RootState) => ({
       currentGetCheckSupportExistsData:
         state.topicDetails.currentGetCheckSupportExistsData,
     })
   );
-  const [topicSupportList, setTopicSupportList] = useState([]);
+  // const [topicSupportList, setTopicSupportList] = useState([]);
   const [removeCampsSupport, setRemoveCampsSupport] = useState(false);
 
   const router = useRouter();
@@ -90,7 +89,7 @@ const ManageSupportUI = ({
     topic_num: +router?.query?.manageSupport[0]?.split("-")[0],
     camp_num: +router?.query?.manageSupport[1]?.split("-")[0],
   };
-  const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
+  // const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
   const findManageOrder = filteredList.findIndex((obj: any) => {
     return obj.camp_num === reqBodyData.camp_num;
   });
@@ -100,7 +99,7 @@ const ManageSupportUI = ({
         ? filteredList[findManageOrder].order
         : manageSupportList[manageSupportList.length - 1]?.support_order
       : 1;
-  const body = { topic_num: topicNum };
+  // const body = { topic_num: topicNum };
   const nickNameloop = nickNameList.filter((nickName) => {
     return selectedtNickname == nickName.id;
   });
@@ -215,7 +214,6 @@ const ManageSupportUI = ({
       skeltonFor="manageSupportCard"
       bodyCount={15}
       stylingClass=""
-      isButton={true}
     />
   ) : (
     <>

@@ -1,5 +1,5 @@
 import { Collapse, Popover, Image, Typography } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import CampTree from "../CampTree";
 import Link from "next/link";
 import { RootState } from "src/store";
@@ -44,7 +44,7 @@ const CampTreeCard = ({
   setTotalCampScoreForSupportTree,
   setSupportTreeForCamp,
 }) => {
-  const { asof, asofdate } = useSelector((state: RootState) => ({
+  const { asof } = useSelector((state: RootState) => ({
     asofdate: state.filters?.filterObject?.asofdate,
     asof: state?.filters?.filterObject?.asof,
   }));
@@ -114,12 +114,7 @@ const CampTreeCard = ({
             }
           >
             {getTreeLoadingIndicator ? (
-              <CustomSkelton
-                skeltonFor="tree"
-                bodyCount={4}
-                isButton={false}
-                stylingClass=""
-              />
+              <CustomSkelton skeltonFor="tree" bodyCount={4} stylingClass="" />
             ) : (
               <CampTree
                 scrollToCampStatement={scrollToCampStatement}

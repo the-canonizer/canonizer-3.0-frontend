@@ -188,7 +188,6 @@ export default function RecentActivities() {
                 skeltonFor="list"
                 bodyCount={22}
                 stylingClass="listSkeleton"
-                isButton={false}
               />
             ) : (
               <List
@@ -265,7 +264,6 @@ export default function RecentActivities() {
                 skeltonFor="list"
                 bodyCount={22}
                 stylingClass="listSkeleton"
-                isButton={false}
               />
             ) : (
               <List

@@ -44,7 +44,6 @@ export default function CampRecentActivities() {
             skeltonFor="list"
             bodyCount={7}
             stylingClass="listSkeleton"
-            isButton={false}
           />
         ) : data ? (
           <List

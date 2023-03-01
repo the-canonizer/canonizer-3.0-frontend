@@ -4,7 +4,6 @@ import {
   waitFor,
   fireEvent,
 } from "../../../../utils/testUtils";
-import userEvent from "@testing-library/user-event";
 
 import CreateNewCamp from "..";
 import messages from "../../../../messages";
@@ -123,7 +122,7 @@ describe("Create New Topic page", () => {
     const btnEl = screen.getByTestId("btn");
 
     fireEvent.click(btnEl);
-
+    // eslint-disable-next-line jest/valid-expect
     expect(screen.queryByRole("alert"));
   });
 });

@@ -23,7 +23,6 @@ const CurrentTopicCard = ({ loadingIndicator }) => {
       skeltonFor="card"
       bodyCount={2}
       stylingClass="test"
-      isButton={false}
     />
   ) : (
     <Collapse

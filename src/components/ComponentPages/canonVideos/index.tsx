@@ -180,7 +180,6 @@ export default function CanonVideos() {
               skeltonFor="list"
               bodyCount={7}
               stylingClass=""
-              isButton={false}
               action={false}
               title={false}
             />
@@ -223,7 +222,6 @@ export default function CanonVideos() {
                 skeltonFor="list"
                 bodyCount={3}
                 stylingClass=""
-                isButton={false}
                 action={false}
                 title={false}
               />
@@ -265,7 +263,6 @@ export default function CanonVideos() {
             <CustomSkelton
               bodyCount
               stylingClass
-              isButton
               height={400}
               skeltonFor="video"
             />

@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { useRouter } from "next/router";
-import { Typography, Button, Row, Col, Spin, Card, Divider } from "antd";
+import { Typography, Button, Row, Col, Card, Divider } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import moment from "moment";
@@ -91,7 +91,6 @@ function CompareStatementUI({
                     skeltonFor="card"
                     bodyCount={5}
                     stylingClass="test"
-                    isButton={false}
                     action={false}
                   />
                 ) : (
@@ -201,7 +200,6 @@ function CompareStatementUI({
                     skeltonFor="card"
                     bodyCount={5}
                     stylingClass="test"
-                    isButton={false}
                     action={false}
                   />
                 ) : (
@@ -311,7 +309,6 @@ function CompareStatementUI({
                     skeltonFor="card"
                     bodyCount={5}
                     stylingClass="test"
-                    isButton={false}
                     action={false}
                     bordered={false}
                     cardStylingClass="fullSkeleton"

@@ -43,7 +43,6 @@ const PostUI = ({
               bodyCount={1}
               stylingClass=""
               listStyle="liHeight"
-              isButton={false}
             />
           ) : (
             <Popover
@@ -66,7 +65,6 @@ const PostUI = ({
                 bodyCount={1}
                 stylingClass=""
                 listStyle="liWidth"
-                isButton={false}
               />
             ) : (
               <Fragment>
@@ -113,7 +111,6 @@ const PostUI = ({
             bodyCount={1}
             stylingClass=""
             listStyle=""
-            isButton={false}
           />
         ) : (
           postList.map((post) => (
@@ -137,7 +134,6 @@ const PostUI = ({
               bodyCount={1}
               stylingClass=""
               listStyle="liHeight"
-              isButton={false}
             />
           ) : pTotal > postperPage ? (
             <Pagination

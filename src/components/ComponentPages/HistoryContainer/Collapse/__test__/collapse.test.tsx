@@ -1,5 +1,5 @@
 import HistoryCollapse from "..";
-import { render, cleanup, screen } from "@testing-library/react";
+import { render, cleanup } from "@testing-library/react";
 import { RouterContext } from "next/dist/shared/lib/router-context";
 import { Provider } from "react-redux";
 import { store } from "../../../../../store";
@@ -47,7 +47,7 @@ afterEach(cleanup);
 
 describe("CampHistory Page", () => {
   it("should render without crash", () => {
-    const { container } = render(
+    render(
       <Provider store={store}>
         <RouterContext.Provider value={createMockRouter()}>
           <HistoryCollapse />

@@ -1,4 +1,4 @@
-import { Card, Typography, Tag } from "antd";
+import { Card, Typography } from "antd";
 import Skeleton from "react-loading-skeleton";
 
 import styles from "./style.module.scss";
@@ -31,7 +31,7 @@ const UserProfileCardSkeleton = ({ bodyCount, stylingClass }) => {
       >
         {[1, 2]?.map((camp, i) => {
           return (
-            <div className={`${styles.tag_btn}`}>
+            <div className={`${styles.tag_btn}`} key={camp + "_" + i}>
               <Skeleton
                 height={30}
                 className={`${styles[stylingClass]} ${styles.tag_btn}`}

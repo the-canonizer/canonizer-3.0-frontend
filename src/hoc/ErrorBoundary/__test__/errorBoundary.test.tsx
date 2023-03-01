@@ -1,5 +1,5 @@
 import ErrorBoundary from "../";
-import { render, cleanup, screen } from "@testing-library/react";
+import { render, cleanup } from "@testing-library/react";
 
 jest.isolateModules(() => {
   const preloadAll = require("jest-next-dynamic");
@@ -17,7 +17,7 @@ afterEach(cleanup);
 
 describe("Error Boundary", () => {
   it("should render without crash", () => {
-    const { container } = render(
+    render(
       <ErrorBoundary>
         <h1>error</h1>
       </ErrorBoundary>

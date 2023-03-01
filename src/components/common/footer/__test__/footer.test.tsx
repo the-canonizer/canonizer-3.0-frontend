@@ -20,7 +20,7 @@ jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
 
-const loadConfig = async () => {
+async () => {
   const projectDir = process.cwd();
   loadEnvConfig(projectDir);
 };
@@ -138,5 +138,3 @@ describe("Footer", () => {
     );
   });
 });
-
-export default loadConfig;

@@ -223,7 +223,6 @@ export default function AddOrEdit({ edit }: any) {
                 <CustomSkelton
                   bodyCount
                   stylingClass
-                  isButton
                   height={180}
                   skeltonFor="video"
                 />
@@ -268,7 +267,6 @@ export default function AddOrEdit({ edit }: any) {
                   skeltonFor="list"
                   bodyCount={1}
                   stylingClass="listSkeleton"
-                  isButton={false}
                 />
               ) : (
                 <Input size="large" maxLength={2000} />
@@ -282,7 +280,6 @@ export default function AddOrEdit({ edit }: any) {
                 skeltonFor="list"
                 bodyCount={1}
                 stylingClass="listSkeleton"
-                isButton={false}
               />
             ) : (
               <Form.Item
@@ -315,7 +312,6 @@ export default function AddOrEdit({ edit }: any) {
                   skeltonFor="list"
                   bodyCount={1}
                   stylingClass="listSkeleton"
-                  isButton={false}
                 />
               ) : (
                 <Select
@@ -344,13 +340,11 @@ export default function AddOrEdit({ edit }: any) {
                 skeltonFor="list"
                 bodyCount={1}
                 stylingClass="listSkeleton"
-                isButton={false}
               />
               <CustomSkelton
                 skeltonFor="list"
                 bodyCount={1}
                 stylingClass="listSkeleton"
-                isButton={false}
               />
             </div>
           ) : (

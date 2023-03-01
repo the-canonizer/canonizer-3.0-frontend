@@ -6,7 +6,6 @@ import { store } from "../../../../../store";
 import { windowMatchMedia } from "../../../../../utils/testUtils";
 import { NextRouter } from "next/router";
 import { RouterContext } from "next/dist/shared/lib/router-context";
-import exp from "constants";
 import { setTopics } from "../../../../../store/slices/recentActivitiesSlice";
 
 jest.isolateModules(() => {
@@ -394,19 +393,19 @@ describe("RecentActivities on HomePage for authenticated user", () => {
           </RouterContext.Provider>
         </Provider>
       );
-      const mainHeadig = screen.queryByRole("heading", {
+      screen.queryByRole("heading", {
         name: /recent activities/i,
         hidden: true,
       });
-      const topictab = screen.queryByRole("tab", {
+      screen.queryByRole("tab", {
         name: /topics\/camps/i,
         hidden: true,
       });
-      const threadtab = screen.queryByRole("tab", {
+      screen.queryByRole("tab", {
         name: /threads/i,
         hidden: true,
       });
-      const loadmorebutton = screen.queryByRole("button", {
+      screen.queryByRole("button", {
         name: /load more/i,
         hidden: true,
       });

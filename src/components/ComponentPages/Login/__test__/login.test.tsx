@@ -1,5 +1,4 @@
 import {
-  act,
   render,
   screen,
   waitFor,

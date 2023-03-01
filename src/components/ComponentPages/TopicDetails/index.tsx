@@ -67,8 +67,8 @@ const TopicDetails = () => {
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [getTreeLoadingIndicator, setGetTreeLoadingIndicator] = useState(false);
   const [getCheckSupportStatus, setGetCheckSupportStatus] = useState({});
-  const [totalSupportScore, setTotalSupportScore] = useState<number>(0);
-  const [totalFullSupportScore, setTotalFullSupportScore] = useState<number>(0);
+  const [totalSupportScore] = useState<number>(0);
+  const [totalFullSupportScore] = useState<number>(0);
   const [topicList, setTopicList] = useState([]);
   const [isSupportTreeCardModal, setIsSupportTreeCardModal] = useState(false);
   const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
@@ -100,15 +100,15 @@ const TopicDetails = () => {
     viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
   }));
 
-  const reqBody = {
-    topic_num: +router?.query?.camp[0]?.split("-")[0],
-    camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
-    as_of: asof,
-    as_of_date:
-      asof == "default" || asof == "review"
-        ? Date.now() / 1000
-        : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
-  };
+  // const reqBody = {
+  //   topic_num: +router?.query?.camp[0]?.split("-")[0],
+  //   camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+  //   as_of: asof,
+  //   as_of_date:
+  //     asof == "default" || asof == "review"
+  //       ? Date.now() / 1000
+  //       : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
+  // };
   useEffect(() => {
     async function getTreeApiCall() {
       setGetTreeLoadingIndicator(true);
@@ -285,7 +285,7 @@ const TopicDetails = () => {
   };
 
   const handleLoadMoreSupporters = async () => {
-    const reqBody = { topic_num: 45, camp_num: 1 };
+    // const reqBody = { topic_num: 45, camp_num: 1 };
   };
 
   const setCurrentTopics = (data) => dispatch(setCurrentTopic(data));
@@ -378,7 +378,6 @@ const TopicDetails = () => {
                       skeltonFor="list"
                       bodyCount={1}
                       stylingClass=""
-                      isButton={false}
                     />
                   ) : (
                     <>

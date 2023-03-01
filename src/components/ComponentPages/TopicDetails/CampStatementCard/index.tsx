@@ -28,7 +28,6 @@ const CampStatementCard = ({ loadingIndicator }) => {
       titleName={K?.exceptionalMessages?.campStatementHeading}
       bodyCount={2}
       stylingClass="test"
-      isButton={false}
     />
   ) : (
     <Collapse
