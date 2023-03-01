@@ -99,5 +99,6 @@
   "description": "This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).",
   "version": "1.0.0",
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "eslintIgnore": ["**/__tests__/*.tsx", "**/__test__/*.tsx"]
 }

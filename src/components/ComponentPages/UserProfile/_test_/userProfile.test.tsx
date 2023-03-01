@@ -38,9 +38,7 @@ describe("userProfileDetails", () => {
     );
     expect(screen.queryByTestId(labels.userProfile)).toBeNull();
   });
-});
 
-describe("userProfileDetails", () => {
   it("render labels of userProfileDetails", () => {
     render(
       <UserProfileDetails
@@ -70,9 +68,7 @@ describe("userProfileCard", () => {
     );
     expect(screen.getByText(labels.listOfSupportedCamps)).toBeTruthy();
   });
-});
 
-describe("userProfileCard", () => {
   it("render labels of nick_name  userProfileCard", () => {
     const { container } = render(
       <UserProfileCard
@@ -88,9 +84,7 @@ describe("userProfileCard", () => {
       container.getElementsByClassName("UserProfile_main_card_title__sqTKz")
     ).toBeTruthy();
   });
-});
 
-describe("userProfileCard", () => {
   it("render nick_name value userProfileCard", () => {
     const { container } = render(
       <UserProfileCard
@@ -108,9 +102,7 @@ describe("userProfileCard", () => {
       container.getElementsByClassName("UserProfile_Bluecolor__El2lJ")
     ).toBeTruthy();
   });
-});
 
-describe("userProfileCard", () => {
   it("render userProfileDropdown", () => {
     const { container } = render(
       <UserProfileCard

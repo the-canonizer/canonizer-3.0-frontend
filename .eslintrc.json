@@ -17,13 +17,13 @@
     "react/react-in-jsx-scope": "off",
     "react-hooks/exhaustive-deps": "off",
     "react/prop-types": "off",
-    "no-await-in-loop": "warning",
+    "no-await-in-loop": "error",
     " no-empty": "off",
     "no-useless-escape": "off",
-    "no-debugger": "warning",
-    "no-console": "warning",
+    "no-debugger": "error",
+    "no-console": "error",
     "no-unused-vars": [
-      "warning",
+      "error",
       {
         "varsIgnorePattern": "Window"
       }
