@@ -57,12 +57,22 @@
 
   [class="ant-card-head-title"] {
     margin-top: 10px;
+    white-space: break-spaces;
   }
 
   &.no_body {
     div[class="ant-card-body"] {
       padding: 0;
       display: none;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    [class="ant-card-head-title"] {
+      margin-right: 0 !important;
+    }
+    [class="ant-card-extra"] {
+      padding-top: 0;
     }
   }
 }
@@ -74,9 +84,8 @@
 
   @media screen and (max-width: 767px) {
     font-size: 0;
-  }
-  span {
-    @media screen and (max-width: 767px) {
+    padding-left: 0;
+    span {
       font-size: 13px;
     }
   }
