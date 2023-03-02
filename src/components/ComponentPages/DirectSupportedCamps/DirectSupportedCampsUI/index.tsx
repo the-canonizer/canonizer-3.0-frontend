@@ -257,7 +257,7 @@ export default function DirectSupportedCampsUI({
         className={styles.modal_cross}
         title={
           <p id="all_camps_topics" className={styles.modalTitle}>
-           You are about to remove your support from the camp:{" "}
+            You are about to remove your support from the camp:{" "}
             <span>
               &quot;
               <Link

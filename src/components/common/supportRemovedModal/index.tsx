@@ -61,7 +61,7 @@ const SupportRemovedModal = ({
           <Col xs={24} sm={24}>
             <Form.Item
               label={<Fragment>{labels.reasonLabel}</Fragment>}
-              name="end_reason"
+              name="reason"
               {...removedReasonSelectRule}
             >
               <Select
@@ -78,16 +78,16 @@ const SupportRemovedModal = ({
                   Select reason
                 </Option>
                 {availableReasons?.map((res) => (
-                  <Option key={res.id} value={res.id}>
+                  <Option key={res.id} value={res.reason}>
                     {res.label}
                   </Option>
                 ))}
-                <Option key="Others" value="others">
-                  Others
+                <Option key="Other" value="Other">
+                  Other
                 </Option>
               </Select>
             </Form.Item>
-            {selectedValue == "others" && (
+            {selectedValue == "Other" && (
               <Form.Item
                 className={classes.edit_summary_input}
                 label={
@@ -109,7 +109,7 @@ const SupportRemovedModal = ({
           <Col xs={24} sm={24}>
             <Form.Item
               label={<Fragment>{labels.resonURLLabel}</Fragment>}
-              name="end_reason_link"
+              name="reason_link"
               {...removedURLRule}
             >
               <Input

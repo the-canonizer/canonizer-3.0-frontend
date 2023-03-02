@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Card, Modal, Row, Col, Form, Empty, Pagination, Spin } from "antd";
+import { Card, Modal, Row, Col, Form, Empty, Pagination, Spin, Button } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 
 import styles from "./DelegatedSupportedCamps.module.scss";
@@ -223,7 +223,7 @@ export default function DelegatedSupportCampsUI({
           )}
         </div>
       )}
-      <Modal
+      {/* <Modal
         className={styles.modal_cross}
         title={
           <p id="remove_confirmation" className={styles.modalTitle}>
@@ -251,6 +251,67 @@ export default function DelegatedSupportCampsUI({
             form={removeForm}
           />
         </Spin>
+      </Modal> */}
+       <Modal
+        className={styles.modal_cross}
+        title="Remove Support"
+        open={isRemoveSupportModalVisible}
+        onOk={handleSupportedCampsCancel}
+        onCancel={handleSupportedCampsCancel}
+        footer={null}
+        closeIcon={<CloseCircleOutlined />}
+      >
+        <Form>
+          <Form.Item style={{ marginBottom: "0px" }}>
+            <p id="remove_confirmation">
+              Are you sure, you want to remove your delegate support given to{" "}
+              <span>
+                &quot;
+                <Link href={removeSupportCampsData.delegated_to_nick_name_link}>
+                  <a>{removeSupportCampsData.delegated_to_nick_name}</a>
+                </Link>
+                &quot;
+              </span>{" "}
+              under the topic{" "}
+              <span className={styles.Bluecolor}>
+                &quot;
+                <Link href={removeSupportCampsData.title_link}>
+                  <a>{removeSupportCampsData.title}</a>
+                </Link>
+                &quot;
+              </span>{" "}
+              ?
+            </p>
+          </Form.Item>
+          <Form.Item
+            className={styles.text_right}
+            style={{ marginBottom: "0px" }}
+          >
+            <Button
+              id="removeBtn"
+              onClick={removeSupport}
+              type="primary"
+              style={{
+                marginTop: 10,
+                marginRight: 10,
+              }}
+              className="ant-btn ant-btn-orange"
+            >
+              Remove
+            </Button>
+            <Button
+              id="cancelBtn"
+              onClick={handleSupportedCampsCancel}
+              type="default"
+              style={{
+                marginTop: 10,
+              }}
+              className="ant-btn"
+            >
+              Cancel
+            </Button>
+          </Form.Item>
+        </Form>
       </Modal>
       <Modal
         title={<h3 id="currentSupportedCamps">Current Supported Camps:</h3>}

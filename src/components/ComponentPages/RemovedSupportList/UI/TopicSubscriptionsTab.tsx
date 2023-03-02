@@ -60,7 +60,10 @@ function TopicSubscriptionsTab({
                   </Tag>
                 </Col>
                 <Col md={12}>
-                  <Text className={styles.reasonList}>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vero, placeat.</Text>
+                  <Text className={styles.reasonList}>
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                    Vero, placeat.
+                  </Text>
                   <br />
                   <Text className={`${styles.reasonLink} ${styles.Bluecolor}`}>
                     <Link href={""} passHref target="_blank">

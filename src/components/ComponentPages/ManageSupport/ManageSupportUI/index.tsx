@@ -138,20 +138,31 @@ const ManageSupportUI = ({
 
   const isFormValid = async () => {
     const isDropdownValid = await removeForm.validateFields([
-      "end_reason",
+      "reason",
       "reason_summary",
-      "end_reason_link",
+      "reason_link",
     ]);
 
     return isDropdownValid;
   };
 
-  const removeCampsApi = async (values) => {
+  const getReasonFormValue = async () => {
+    const formValue = await removeForm.getFieldsValue([
+      "reason",
+      "reason_summary",
+      "reason_link",
+    ]);
+
+    return formValue;
+  };
+
+  const removeCampsApi = async () => {
     const isDropdownValid = await isFormValid();
-    // if (isDropdownValid?.errorFields) {
-    console.log("removeCampsApi-is-valid", isDropdownValid);
-    return;
-    // }
+    const formData = await getReasonFormValue();
+    if (isDropdownValid?.errorFields) {
+      return;
+    }
+    console.log("removeCampsApi-is-valid", isDropdownValid, formData);
     setGetManageSupportLoadingIndicator(true);
     const supportedCampsRemove = {
       topic_num: reqBodyData.topic_num,
@@ -160,7 +171,7 @@ const ManageSupportUI = ({
       action: "all",
       nick_name_id: nickNameIDValue,
       order_update: [],
-      ...values,
+      ...formData,
     };
     // const topicList = await GetActiveSupportTopic(topicNum && body);
     // if (topicList && topicList.status_code == 200) {
@@ -180,10 +191,11 @@ const ManageSupportUI = ({
 
   const addRemoveApi = async () => {
     const isDropdownValid = await isFormValid();
+    const formData = await getReasonFormValue();
     if (isDropdownValid?.errorFields) {
-      console.log("addRemoveApi-is-valid", isDropdownValid);
       return;
     }
+    console.log("addRemoveApi-is-valid", isDropdownValid, formData);
     setGetManageSupportLoadingIndicator(true);
     const addSupportId = {
       topic_num: reqBodyData.topic_num,
@@ -215,6 +227,7 @@ const ManageSupportUI = ({
                     ?.support_order || manageListOrder,
               },
             ],
+      ...formData,
     };
     let addedRes = await addSupport(addSupportId);
     if (addedRes && addedRes.status_code == 200) {
@@ -272,11 +285,12 @@ const ManageSupportUI = ({
 
   const checkNickNameSupportCamps = async () => {
     const isDropdownValid = await isFormValid();
-    //  if (isDropdownValid?.errorFields) {
-    console.log("is-valid", isDropdownValid);
-    return;
-    // }
-    submitNickNameSupportCamps();
+    const formData = await getReasonFormValue();
+    if (isDropdownValid?.errorFields) {
+      return;
+    }
+    console.log("is-valid", isDropdownValid, formData);
+    submitNickNameSupportCamps(formData);
   };
 
   // remove support popup added.
@@ -450,14 +464,16 @@ const ManageSupportUI = ({
               }}
             />
 
-            <Card className={styles.support_reason} type="inner">
-              <SupportRemovedModal
-                onFinish={onRemoveFinish}
-                handleCancel={closePopup}
-                form={removeForm}
-                isAdd={true}
-              />
-            </Card>
+            {!CheckDelegatedOrDirect && (
+              <Card className={styles.support_reason} type="inner">
+                <SupportRemovedModal
+                  onFinish={onRemoveFinish}
+                  handleCancel={closePopup}
+                  form={removeForm}
+                  isAdd={true}
+                />
+              </Card>
+            )}
           </>
         )}
         <div>

@@ -61,6 +61,8 @@ const SupportTreeCard = ({
   removeSupportSpinner,
   supportTreeForCamp,
   totalCampScoreForSupportTree,
+  isDelegateSupportTreeCardModal,
+  setIsDelegateSupportTreeCardModal,
 }: any) => {
   const {
     currentGetCheckSupportExistsData,
@@ -238,8 +240,12 @@ const SupportTreeCard = ({
                               id="supportTreeRemoveSupport"
                               disabled={asof == "bydate"}
                               onClick={() => {
-                                // openPopup();
-                                setIsSupportTreeCardModal(true);
+                                currentGetCheckSupportExistsData.is_delegator
+                                  ? setIsDelegateSupportTreeCardModal(true)
+                                  : topicList.length <= 1
+                                  ? setIsSupportTreeCardModal(true)
+                                  : setIsSupportTreeCardModal(true);
+
                                 setModalData(data[item]);
                               }}
                               className="delegate-support-style"
@@ -411,6 +417,64 @@ const SupportTreeCard = ({
             form={removeForm}
           />
         </Spin>
+      </Modal>
+
+      {/* delegateremove */}
+      <Modal
+        className={styles.modal_cross}
+        title="Remove Support"
+        open={isDelegateSupportTreeCardModal}
+        onOk={handleSupportTreeCardCancel}
+        onCancel={handleSupportTreeCardCancel}
+        footer={null}
+        closeIcon={<CloseCircleOutlined />}
+      >
+        <Form>
+          <Form.Item style={{ marginBottom: "0px" }}>
+            <p>Are you sure you want to remove your support?</p>
+          </Form.Item>
+          <Form.Item
+            id="supportTreeModalForm"
+            className={styles.text_right}
+            style={{ marginBottom: "0px" }}
+          >
+            <Spin spinning={removeSupportSpinner} size="small">
+              <div className="text-right">
+                <Button
+                  id="supportTreeModalRemoveApi"
+                  disabled={asof == "bydate"}
+                  onClick={() => {
+                    currentGetCheckSupportExistsData.is_delegator
+                      ? removeSupportForDelegate()
+                      : topicList.length <= 1
+                      ? removeApiSupport(modalData?.nick_name_id)
+                      : removeSupport(modalData?.nick_name_id);
+                    setModalData({});
+                  }}
+                  type="primary"
+                  style={{
+                    marginTop: 10,
+                    marginRight: 10,
+                  }}
+                  className="ant-btn ant-btn-orange"
+                >
+                  Remove
+                </Button>
+                <Button
+                  id="supportTreeModalCancel"
+                  onClick={handleSupportTreeCardCancel}
+                  type="default"
+                  style={{
+                    marginTop: 10,
+                  }}
+                  className="ant-btn"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </Spin>
+          </Form.Item>
+        </Form>
       </Modal>
     </>
   );

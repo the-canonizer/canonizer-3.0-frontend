@@ -64,6 +64,8 @@ const TopicDetails = () => {
   const [totalFullSupportScore, setTotalFullSupportScore] = useState<number>(0);
   const [topicList, setTopicList] = useState([]);
   const [isSupportTreeCardModal, setIsSupportTreeCardModal] = useState(false);
+  const [isDelegateSupportTreeCardModal, setIsDelegateSupportTreeCardModal] =
+    useState(false);
   const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
   const [totalCampScoreForSupportTree, setTotalCampScoreForSupportTree] =
     useState<number>(null);
@@ -251,6 +253,7 @@ const TopicDetails = () => {
     if (res && res.status_code == 200) {
       message.success(res.message);
       setIsSupportTreeCardModal(false);
+      setIsDelegateSupportTreeCardModal(false);
       GetCheckStatusData();
       //getCanonizedCampSupportingTreeApi(reqBody, algorithm);
       getTreesApi(reqBodyForService);
@@ -301,6 +304,7 @@ const TopicDetails = () => {
   };
   const handleSupportTreeCardCancel = () => {
     setIsSupportTreeCardModal(false);
+    setIsDelegateSupportTreeCardModal(false);
   };
   useEffect(() => {
     if (isUserAuthenticated) {
@@ -487,6 +491,12 @@ const TopicDetails = () => {
                           removeSupportForDelegate={removeSupportForDelegate}
                           isSupportTreeCardModal={isSupportTreeCardModal}
                           setIsSupportTreeCardModal={setIsSupportTreeCardModal}
+                          isDelegateSupportTreeCardModal={
+                            isDelegateSupportTreeCardModal
+                          }
+                          setIsDelegateSupportTreeCardModal={
+                            setIsDelegateSupportTreeCardModal
+                          }
                           handleSupportTreeCardCancel={
                             handleSupportTreeCardCancel
                           }
