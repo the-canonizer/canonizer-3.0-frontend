@@ -235,7 +235,7 @@ export default function DelegatedSupportCampsUI({
               </Link>
               &quot;
             </span>{" "}
-            Before proceeding, please provide us with the following information.
+            You can optionally add a helpful reason, along with a citation link.
           </p>
         }
         open={isRemoveSupportModalVisible}

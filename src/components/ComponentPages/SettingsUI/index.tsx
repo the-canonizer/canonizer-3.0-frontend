@@ -14,7 +14,6 @@ import SocialOauth from "../socialAuthVerification";
 import SubscriptionsList from "../SubscriptionsList";
 import messages from "../../../messages";
 import Sidebar from "../Home/SideBarNoFilter";
-import RemovedSupportedCamps from "../RemovedSupportList";
 
 const { TabPane } = Tabs;
 const tabList = [
@@ -41,10 +40,6 @@ const tabList = [
   {
     key: "subscriptions",
     tab: "Subscriptions",
-  },
-  {
-    key: "removed_supported_camps",
-    tab: "Removed Supported Camps",
   },
 ];
 function callback(key) {}
@@ -112,7 +107,6 @@ const SettingsUI = () => {
         <SubscriptionsList />
       </Fragment>
     ),
-    removed_supported_camps: <RemovedSupportedCamps />,
   };
 
   useEffect(() => {

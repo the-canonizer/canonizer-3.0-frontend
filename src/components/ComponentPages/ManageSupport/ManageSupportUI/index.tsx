@@ -140,7 +140,7 @@ const ManageSupportUI = ({
     const isDropdownValid = await removeForm.validateFields([
       "reason",
       "reason_summary",
-      "reason_link",
+      "citation_link",
     ]);
 
     return isDropdownValid;
@@ -150,7 +150,7 @@ const ManageSupportUI = ({
     const formValue = await removeForm.getFieldsValue([
       "reason",
       "reason_summary",
-      "reason_link",
+      "citation_link",
     ]);
 
     return formValue;

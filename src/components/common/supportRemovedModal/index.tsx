@@ -82,12 +82,12 @@ const SupportRemovedModal = ({
                     {res.label}
                   </Option>
                 ))}
-                <Option key="Other" value="Other">
-                  Other
+                <Option key="custom_reason" value="Custom reason">
+                  Custom reason
                 </Option>
               </Select>
             </Form.Item>
-            {selectedValue == "Other" && (
+            {selectedValue == "Custom reason" && (
               <Form.Item
                 className={classes.edit_summary_input}
                 label={
@@ -109,13 +109,13 @@ const SupportRemovedModal = ({
           <Col xs={24} sm={24}>
             <Form.Item
               label={<Fragment>{labels.resonURLLabel}</Fragment>}
-              name="reason_link"
+              name="citation_link"
               {...removedURLRule}
             >
               <Input
                 placeholder={placeholders.campURL}
                 size={"large"}
-                maxLength={30}
+                maxLength={1024}
               />
             </Form.Item>
           </Col>
