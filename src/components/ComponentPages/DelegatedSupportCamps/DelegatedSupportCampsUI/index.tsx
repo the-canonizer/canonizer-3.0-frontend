@@ -1,11 +1,13 @@
-import { Card, Modal, Row, Col, Button, Form, Empty, Pagination } from "antd";
-import { CloseCircleOutlined } from "@ant-design/icons";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { Card, Modal, Row, Col, Form, Empty, Pagination, Button } from "antd";
+import { CloseCircleOutlined } from "@ant-design/icons";
+
 import styles from "./DelegatedSupportedCamps.module.scss";
 import messages from "../../../../messages";
-import Spinner from "../../../common/spinner/spinner";
-import CustomSkelton from "../../../common/customSkelton";
-import { useEffect, useState } from "react";
+import CustomSkelton from "src/components/common/customSkelton";
+// import SupportRemovedModal from "src/components/common/supportRemovedModal";
+
 export default function DelegatedSupportCampsUI({
   removeCardDelegatedSupportedCamps,
   handleSupportedCampsCancel,
@@ -22,7 +24,9 @@ export default function DelegatedSupportCampsUI({
   delegateSupportedSkeleton,
 }: any) {
   const [displayList, setDisplayList] = useState([]);
+  // const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
   const limit = 3;
+
   function CardTitle(props: any) {
     return (
       <div className={styles.card_heading_title}>
@@ -38,6 +42,7 @@ export default function DelegatedSupportCampsUI({
       </div>
     );
   }
+
   function CurrentSupportedCamps(props: any) {
     return (
       <>
@@ -50,6 +55,7 @@ export default function DelegatedSupportCampsUI({
       </>
     );
   }
+
   function SupportedCampsTo(props: any) {
     return (
       <>
@@ -70,9 +76,11 @@ export default function DelegatedSupportCampsUI({
       </>
     );
   }
+
   const showEmpty = (msg) => {
     return <Empty description={msg} />;
   };
+
   const filteredArray = () => {
     return displayList.filter((val) => {
       if (search.trim() == "") {
@@ -84,9 +92,11 @@ export default function DelegatedSupportCampsUI({
       }
     });
   };
+
   useEffect(() => {
     pageChange(1, 5);
   }, [delegatedSupportCampsList]);
+
   const pageChange = (pageNumber, pageSize) => {
     const startingPosition = (pageNumber - 1) * pageSize;
     const endingPosition = startingPosition + pageSize;
@@ -94,6 +104,22 @@ export default function DelegatedSupportCampsUI({
       delegatedSupportCampsList.slice(startingPosition, endingPosition)
     );
   };
+
+  // remove support popup added.
+
+  // const [removeForm] = Form.useForm();
+
+  // const onRemoveFinish = (values) => {
+  //   setRemoveSupportSpinner(true);
+
+  //   removeSupport(values);
+
+  //   removeForm.resetFields();
+  //   setRemoveSupportSpinner(false);
+  // };
+
+  // remove support popup added.
+
   return (
     <div>
       {delegateSupportedSkeleton ? (
@@ -197,6 +223,35 @@ export default function DelegatedSupportCampsUI({
           )}
         </div>
       )}
+      {/* <Modal
+        className={styles.modal_cross}
+        title={
+          <p id="remove_confirmation" className={styles.modalTitle}>
+            You are about to remove your support from the camp:{" "}
+            <span className={styles.Bluecolor}>
+              &quot;
+              <Link href={removeSupportCampsData.title_link}>
+                <a>{removeSupportCampsData.title}</a>
+              </Link>
+              &quot;
+            </span>{" "}
+            You can optionally add a helpful reason, along with a citation link.
+          </p>
+        }
+        open={isRemoveSupportModalVisible}
+        onOk={handleSupportedCampsCancel}
+        onCancel={handleSupportedCampsCancel}
+        footer={null}
+        closeIcon={<CloseCircleOutlined />}
+      >
+        <Spin spinning={removeSupportSpinner} size="small">
+          <SupportRemovedModal
+            onFinish={onRemoveFinish}
+            handleCancel={handleSupportedCampsCancel}
+            form={removeForm}
+          />
+        </Spin>
+      </Modal> */}
       <Modal
         className={styles.modal_cross}
         title="Remove Support"
