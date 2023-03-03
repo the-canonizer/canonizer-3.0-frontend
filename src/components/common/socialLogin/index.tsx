@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Typography, Button } from "antd";
 import {
   FacebookFilled,
@@ -5,19 +7,24 @@ import {
   GithubFilled,
   LinkedinFilled,
 } from "@ant-design/icons";
-import { useDispatch } from "react-redux";
 
 import styles from "./social-login.module.scss";
+
 import { socialLogin } from "../../../network/api/userApi";
 import { setValue } from "src/store/slices/utilsSlice";
+import CustomSkeleton from "../customSkelton";
 
 const { Text } = Typography;
 
 export default function SocialLoginUi({ isNotLogin = false }) {
+  const [isLoading, setIsLoading] = useState(false);
+
   const dispatch = useDispatch();
 
   // social login api call
   const onSocialLogin = async (provider, e) => {
+    setIsLoading(true);
+
     e.preventDefault();
     let body = { provider };
     const res = await socialLogin(body);
@@ -31,6 +38,7 @@ export default function SocialLoginUi({ isNotLogin = false }) {
     } catch (error) {
       // continue regardless of error
     }
+    setIsLoading(false);
   };
 
   return (
@@ -38,59 +46,68 @@ export default function SocialLoginUi({ isNotLogin = false }) {
       <Text className={styles.social_login_text} id="social-login-title">
         {`${isNotLogin ? "Signup" : "Login"} with social accounts.`}
       </Text>
-      <div className={styles.btn_group}>
-        <Button
-          shape="circle"
-          onClick={onSocialLogin.bind(this, "facebook")}
-          type="link"
-          icon={<FacebookFilled />}
-          data-testid="facebook"
-          className={styles["facebook-btn"]}
-          id="facebook-link"
+      {isLoading ? (
+        <CustomSkeleton
+          skeltonFor="list"
+          bodyCount={1}
+          stylingClass="listSkeleton"
+          isButton={false}
         />
-        <Button
-          shape="circle"
-          onClick={onSocialLogin.bind(this, "google")}
-          type="link"
-          icon={
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src="/images/google.svg" alt="google logo" />
-          }
-          data-testid="google"
-          className={styles["google-btn"]}
-          id="google-link"
-        />
+      ) : (
+        <div className={styles.btn_group}>
+          <Button
+            shape="circle"
+            onClick={onSocialLogin.bind(this, "facebook")}
+            type="link"
+            icon={<FacebookFilled />}
+            data-testid="facebook"
+            className={styles["facebook-btn"]}
+            id="facebook-link"
+          />
+          <Button
+            shape="circle"
+            onClick={onSocialLogin.bind(this, "google")}
+            type="link"
+            icon={
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src="/images/google.svg" alt="google logo" />
+            }
+            data-testid="google"
+            className={styles["google-btn"]}
+            id="google-link"
+          />
 
-        <Button
-          shape="circle"
-          onClick={onSocialLogin.bind(this, "twitter")}
-          type="link"
-          icon={<TwitterOutlined />}
-          data-testid="twitter"
-          className={styles["twitter-btn"]}
-          id="twitter-link"
-        />
+          <Button
+            shape="circle"
+            onClick={onSocialLogin.bind(this, "twitter")}
+            type="link"
+            icon={<TwitterOutlined />}
+            data-testid="twitter"
+            className={styles["twitter-btn"]}
+            id="twitter-link"
+          />
 
-        <Button
-          shape="circle"
-          onClick={onSocialLogin.bind(this, "linkedin")}
-          type="link"
-          icon={<LinkedinFilled />}
-          data-testid="linkedin"
-          className={styles["linkedin-btn"]}
-          id="linkedin-link"
-        />
+          <Button
+            shape="circle"
+            onClick={onSocialLogin.bind(this, "linkedin")}
+            type="link"
+            icon={<LinkedinFilled />}
+            data-testid="linkedin"
+            className={styles["linkedin-btn"]}
+            id="linkedin-link"
+          />
 
-        <Button
-          shape="circle"
-          onClick={onSocialLogin.bind(this, "github")}
-          type="link"
-          icon={<GithubFilled />}
-          data-testid="github"
-          className={styles["github-btn"]}
-          id="github-link"
-        />
-      </div>
+          <Button
+            shape="circle"
+            onClick={onSocialLogin.bind(this, "github")}
+            type="link"
+            icon={<GithubFilled />}
+            data-testid="github"
+            className={styles["github-btn"]}
+            id="github-link"
+          />
+        </div>
+      )}
     </div>
   );
 }

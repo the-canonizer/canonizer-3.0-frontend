@@ -224,7 +224,9 @@ function HistoryCollapse({
                         onClick={() => {
                           let isModelPop = !isUserAuthenticated
                             ? true
-                            : ifIamSupporter == 0 || ifSupportDelayed != 0
+                            : (!ifIAmExplicitSupporter &&
+                                ifIamSupporter == 0) ||
+                              ifSupportDelayed != 0
                             ? true
                             : false;
                           if (isModelPop) {
@@ -243,7 +245,9 @@ function HistoryCollapse({
                           (
                             !isUserAuthenticated
                               ? true
-                              : ifIamSupporter == 0 || ifSupportDelayed != 0
+                              : (!ifIAmExplicitSupporter &&
+                                  ifIamSupporter == 0) ||
+                                ifSupportDelayed != 0
                               ? true
                               : false
                           )

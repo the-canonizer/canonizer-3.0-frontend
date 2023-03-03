@@ -5,7 +5,7 @@ import messages from "../../../messages";
 import verifyIcon from "../../../../public/images/checkbox-icn.svg";
 import Icon from "@ant-design/icons";
 import Image from "next/image";
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "../../common/customSkelton";
 
 const { Option } = Select;
 

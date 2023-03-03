@@ -7,8 +7,7 @@ import styles from "../UserProfileUI/UserProfile.module.scss";
 
 import messages from "../../../../messages";
 
-import CustomSkelton from "@/components/common/customSkelton";
-
+import CustomSkelton from "../../../common/customSkelton";
 export const UserProfileCard = ({
   userSupportedCampsList,
   nameSpaceList,
@@ -255,6 +254,7 @@ export const UserProfileCard = ({
                     total={userSupportedCampsList?.[0]?.topic?.length}
                     pageSize={5}
                     onChange={pageChange}
+                    showSizeChanger={false}
                   />
                 ) : (
                   ""

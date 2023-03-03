@@ -1,5 +1,5 @@
 import AddOrManage from "..";
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { store } from "../../../../../store";
 
@@ -46,8 +46,24 @@ window.matchMedia =
 
 afterEach(cleanup);
 describe("Should render Addnews", () => {
-  it("Render without crash", () => {
-    const { container } = render(
+  beforeEach(() => {
+    jest.mock("../../../../../network/api/campDetailApi", () => ({
+      getAllUsedNickNames: jest.fn(() => Promise.resolve({ status_code: 200 })),
+      getAllParentsCamp: jest.fn(() => Promise.resolve({ status_code: 200 })),
+      getAllCampNickNames: jest.fn(() => Promise.resolve({ status_code: 200 })),
+    }));
+    jest.mock("../../../../../network/api/campManageStatementApi", () => ({
+      getEditStatementApi: jest.fn(() => Promise.resolve({ status_code: 200 })),
+      getParseCampStatementApi: jest.fn(() =>
+        Promise.resolve({ status_code: 200 })
+      ),
+      getEditCampApi: jest.fn(() => Promise.resolve({ status_code: 200 })),
+      getEditTopicApi: jest.fn(() => Promise.resolve({ status_code: 200 })),
+    }));
+  });
+
+  it("Render without crash", async () => {
+    const { container } = await render(
       <Provider store={store}>
         <RouterContext.Provider
           value={createMockRouter({ asPath: "/manage/statement/3267" })}
@@ -56,32 +72,33 @@ describe("Should render Addnews", () => {
         </RouterContext.Provider>
       </Provider>
     );
+    waitFor(() => {
+      const mainHeading = screen.getByText(/statement update/i);
+      const submitButton = screen.getByRole("button", {
+        name: /submit update/i,
+      });
+      const previewButton = screen.getByRole("button", {
+        name: /preview/i,
+      });
+      const createNewTopicButton = screen.getByRole("button", {
+        name: /create new topic/i,
+      });
 
-    const mainHeading = screen.getByText(/statement update/i);
-    const submitButton = screen.getByRole("button", {
-      name: /submit update/i,
-    });
-    const previewButton = screen.getByRole("button", {
-      name: /preview/i,
-    });
-    const createNewTopicButton = screen.getByRole("button", {
-      name: /create new topic/i,
-    });
+      expect(screen.getByText(/nick name/i)).toBeInTheDocument();
+      expect(screen.getAllByText(/statement/i)[1]).toBeInTheDocument();
 
-    expect(screen.getByText(/nick name/i)).toBeInTheDocument();
-    expect(screen.getAllByText(/statement/i)[1]).toBeInTheDocument();
-
-    expect(
-      screen.getByText(/\(briefly describe your changes\)/i)
-    ).toBeInTheDocument();
-    expect(container.getElementsByTagName("button")).toHaveLength(4);
-    expect(container.getElementsByTagName("input")).toHaveLength(1);
-    expect(
-      container.getElementsByClassName("wrapperClassName rdw-editor-wrapper")
-    );
-    expect(submitButton.textContent).toBe("Submit Update");
-    expect(previewButton.textContent).toBe("Preview");
-    expect(createNewTopicButton.textContent).toBe("Create New Topic");
-    expect(mainHeading.textContent).toBe("Statement Update");
+      expect(
+        screen.getByText(/\(briefly describe your changes\)/i)
+      ).toBeInTheDocument();
+      expect(container.getElementsByTagName("button")).toHaveLength(4);
+      expect(container.getElementsByTagName("input")).toHaveLength(1);
+      expect(
+        container.getElementsByClassName("wrapperClassName rdw-editor-wrapper")
+      );
+      expect(submitButton.textContent).toBe("Submit Update");
+      expect(previewButton.textContent).toBe("Preview");
+      expect(createNewTopicButton.textContent).toBe("Create New Topic");
+      expect(mainHeading.textContent).toBe("Statement Update");
+    });
   });
 });

@@ -6,7 +6,7 @@ import { RootState } from "src/store";
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import styles from "../topicDetails.module.scss";
 import { useRouter } from "next/router";
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "../../../common/customSkelton";
 
 import { useSelector, useDispatch } from "react-redux";
 import { store } from "../../../../store";

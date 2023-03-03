@@ -3,7 +3,7 @@ import { Table, Input, Select, Form, Typography, Button, Modal } from "antd";
 import Icon, { PlusCircleOutlined } from "@ant-design/icons";
 import styles from "./NickName.module.scss";
 import messages from "../../../../messages";
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "../../../common/customSkelton";
 
 const { Option } = Select;
 
@@ -51,7 +51,7 @@ export default function NickNameUI({
     {
       title: "",
       dataIndex: "operation",
-      width: "10%",
+      width: "100%",
       render: (_, record) => {
         return (
           <Typography.Link onClick={() => editNickName(record)}>
