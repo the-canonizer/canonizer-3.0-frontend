@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Card, Modal, Row, Col, Form, Empty, Pagination, Spin, Button } from "antd";
+import { Card, Modal, Row, Col, Form, Empty, Pagination, Button } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 
 import styles from "./DelegatedSupportedCamps.module.scss";
 import messages from "../../../../messages";
 import CustomSkelton from "src/components/common/customSkelton";
-import SupportRemovedModal from "src/components/common/supportRemovedModal";
+// import SupportRemovedModal from "src/components/common/supportRemovedModal";
 
 export default function DelegatedSupportCampsUI({
   removeCardDelegatedSupportedCamps,
@@ -24,7 +24,7 @@ export default function DelegatedSupportCampsUI({
   delegateSupportedSkeleton,
 }: any) {
   const [displayList, setDisplayList] = useState([]);
-  const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
+  // const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
   const limit = 3;
 
   function CardTitle(props: any) {
@@ -107,16 +107,16 @@ export default function DelegatedSupportCampsUI({
 
   // remove support popup added.
 
-  const [removeForm] = Form.useForm();
+  // const [removeForm] = Form.useForm();
 
-  const onRemoveFinish = (values) => {
-    setRemoveSupportSpinner(true);
+  // const onRemoveFinish = (values) => {
+  //   setRemoveSupportSpinner(true);
 
-    removeSupport(values);
+  //   removeSupport(values);
 
-    removeForm.resetFields();
-    setRemoveSupportSpinner(false);
-  };
+  //   removeForm.resetFields();
+  //   setRemoveSupportSpinner(false);
+  // };
 
   // remove support popup added.
 
@@ -252,7 +252,7 @@ export default function DelegatedSupportCampsUI({
           />
         </Spin>
       </Modal> */}
-       <Modal
+      <Modal
         className={styles.modal_cross}
         title="Remove Support"
         open={isRemoveSupportModalVisible}
