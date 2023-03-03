@@ -6,11 +6,15 @@ import HorizontalTimelineComp from "./HorizontalTimeline";
 import TimelineSlider from "../eventLine/timelineSlider";
 import { getEventLineApi } from "src/network/api/topicEventLineAPI";
 import { useRouter } from "next/router.js";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store/index.js";
+import CustomSkelton from "@/components/common/customSkelton";
 const getRandomIndex = (array) => {
   return Math.floor(array.length * Math.random());
 };
 
 function TimeLine({  setTimelineDescript }) {
+  const [loading, setLoading] = useState(false);
   const [iteration, setIteration] = useState(0);
   const [start, setStart] = useState(false);
   const [mockData, setMockData] = useState({});
@@ -19,22 +23,23 @@ function TimeLine({  setTimelineDescript }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const router = useRouter()
   
-  const events = Object.keys(mockData);
+  const events = mockData && Object.keys(mockData);
   const [data, setData] = useState([]);
-
+  const {
+    algorithm,
+  } = useSelector((state: RootState) => ({
+    algorithm: state.filters?.filterObject?.algorithm,
+  }))
 
   useEffect(() => {
+    setLoading(true)
    async function apiCall() {
-    
    const data = await getEventLineApi({
     "topic_num": router?.query?.camp[0].split("-")[0],
-    "camp_num": 2,
-    "asOf": "default",
-    "asofdate": 1677160704.161,
-    "algorithm": "blind_popularity",
-    "update_all": 1,
-    "fetch_topic_history": null
+    "algorithm": algorithm,
+    
 })
+debugger
 
    setMockData(data)
 setData( data[Object.keys(data)[0]].payload_response)
@@ -42,7 +47,8 @@ setData( data[Object.keys(data)[0]].payload_response)
 
    apiCall()
 
-  }, []);
+    setLoading(false)
+  }, [algorithm]);
 
 
   useInterval(() => {
@@ -85,7 +91,15 @@ setData( data[Object.keys(data)[0]].payload_response)
       />
       <div style={{ overflow: "hidden" }}>
         {
-          data?.length &&
+          loading ? 
+          <CustomSkelton
+          skeltonFor="tree"
+          bodyCount={4}
+          isButton={false}
+          stylingClass=""
+        />
+        :
+          // data?.length &&
         <RacingBarChart data={data} />
         }
       </div>
