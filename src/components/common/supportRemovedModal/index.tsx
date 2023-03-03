@@ -115,7 +115,7 @@ const SupportRemovedModal = ({
               <Input
                 placeholder={placeholders.campURL}
                 size={"large"}
-                maxLength={1024}
+                maxLength={255}
               />
             </Form.Item>
           </Col>

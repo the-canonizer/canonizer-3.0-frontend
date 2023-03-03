@@ -416,8 +416,8 @@ export const removedURLRule = {
       message: validations.site_url,
     },
     {
-      max: 1024,
-      message: validations.campUrlLim,
+      max: 255,
+      message: validations.UrlLim,
     },
   ],
 };

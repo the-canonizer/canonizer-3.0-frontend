@@ -68,6 +68,7 @@ export const validations: ErrorContainer = {
   parentCamp: "Please select parent camp!",
   keywords: "Please enter keywords!",
   campUrlLim: "Maximum 1024 character allowed!",
+  UrlLim: "Maximum 255 character allowed!",
   campUrl:
     "The camp about url format is invalid. (Example: https://www.example.com?post=1234)",
   campAlpha: "Camp name can only contain space and alphanumeric characters.",
