@@ -338,7 +338,7 @@ const ManageSupport = () => {
   };
 
   //Submit NickName Supported Camps
-  const submitNickNameSupportCamps = async () => {
+  const submitNickNameSupportCamps = async (reasonData) => {
     setSubmitButtonDisable(true);
     let campIDsArr = [];
     //get support_flag status check from GetCheckSupportExistsData
@@ -428,7 +428,7 @@ const ManageSupport = () => {
     } else {
       addCampsData = add_camp_data;
     }
-    const addSupportId = {
+    let addSupportId = {
       topic_num: topicNumId,
       add_camp: addCampsData,
       remove_camps: campIDsArr,
@@ -437,6 +437,10 @@ const ManageSupport = () => {
       nick_name_id: nickNameIDValue,
       order_update: filterArrayResult,
     };
+
+    if (campIDsArr.length > 0) {
+      addSupportId = { ...addSupportId, ...reasonData };
+    }
 
     //Case if data pass from delegated or direct
     if (CheckDelegatedOrDirect) {
