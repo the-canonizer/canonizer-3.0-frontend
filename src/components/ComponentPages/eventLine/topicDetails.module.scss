@@ -164,6 +164,7 @@
     border-radius: 2px;
     color: #fff;
     margin-left: 6px ;
+    transition: all ease 50s;
     @media screen and (max-width:767px) {
       width:auto !important;
   }
@@ -249,13 +250,13 @@
     padding: 0;
   }
 }
+.eventLineBtn {
+
+  margin-left: 10px;
+
+}
+
 
 .backButton {
-  font-size:1rem;
-  font-weight: 500;
-  padding:0;
-  height: auto;
-  color:#0F2A4D;
   margin-right: 25px;
-  margin-left: unset;
 }

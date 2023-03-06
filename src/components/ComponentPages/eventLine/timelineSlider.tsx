@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Slider } from "antd";
+import { Slider, Popover, Typography } from "antd";
 import {
   CaretRightOutlined,
   PauseOutlined,
@@ -7,14 +7,47 @@ import {
   ForwardOutlined,
   StepBackwardOutlined,
   StepForwardOutlined,
+  DashboardOutlined,
 } from "@ant-design/icons";
 import styles from "./timeBarControl.module.scss";
 
-function TimelineSlider({mockData, setStart, start, setTimelineDescript, handleEventSelection , animationSpeed, setAnimationSpeed, iteration, setIteration, handleForwardOrBackord, isPlaying, setIsPlaying}) {
-  
-  
+const { Title } = Typography;
+
+const marks = {
+  0: "0.5x",
+  26: "0.75x",
+  50: "1x(Normal)",
+  75: "1.25x",
+  100: "1.5x",
+};
+
+const content = (
+  <div className="speed-controller">
+    <Title level={4}>Playback speed</Title>
+    <Slider
+      marks={marks}
+      defaultValue={50}
+      step={null}
+      tooltip={{ open: false }}
+    />
+  </div>
+);
+
+function TimelineSlider({
+  mockData,
+  setStart,
+  start,
+  setTimelineDescript,
+  handleEventSelection,
+  animationSpeed,
+  setAnimationSpeed,
+  iteration,
+  setIteration,
+  handleForwardOrBackord,
+  isPlaying,
+  setIsPlaying,
+}) {
   const [intervalId, setIntervalId] = useState(null);
-  
 
   const handleClick = () => {
     setStart(!start);
@@ -22,10 +55,9 @@ function TimelineSlider({mockData, setStart, start, setTimelineDescript, handleE
       clearInterval(intervalId);
       setIntervalId(null);
       setIsPlaying(false);
-      
     } else {
       const id = setInterval(() => {
-        if(isPlaying && start){
+        if (isPlaying && start) {
           setIteration((c) => c + 1);
         }
       }, animationSpeed);
@@ -35,47 +67,42 @@ function TimelineSlider({mockData, setStart, start, setTimelineDescript, handleE
     }
   };
   const handleClickForward = () => {
- 
-      setIsPlaying(false)
-      setStart(false)
-      if(Object.keys(mockData).length - 1 !== iteration){
-      setIteration(iteration + 1)
-    
-      handleForwardOrBackord(iteration+1)
-      }
-      
+    setIsPlaying(false);
+    setStart(false);
+    if (Object.keys(mockData).length - 1 !== iteration) {
+      setIteration(iteration + 1);
+
+      handleForwardOrBackord(iteration + 1);
+    }
+
     // }
   };
 
   const handleClickBackword = () => {
-    
+    setIsPlaying(false);
+    setStart(false);
+    if (iteration > 0) {
+      setIteration(iteration - 1);
 
-      setIsPlaying(false)
-      setStart(false)
-      if(iteration > 0){
-
-        setIteration(iteration - 1)
-     
-        handleForwardOrBackord(iteration - 1)
-      }
- 
+      handleForwardOrBackord(iteration - 1);
+    }
   };
   const onChange = (newValue) => {
-    if(Object.keys(mockData).length  == newValue){
-      setIsPlaying(false)
+    if (Object.keys(mockData).length == newValue) {
+      setIsPlaying(false);
     }
-    
+
     setIteration(newValue);
-    handleEventSelection(newValue)
+    handleEventSelection(newValue);
   };
-  
+
   useEffect(() => {
-    if(Object.keys(mockData).length == iteration){
-      setIsPlaying(false)
-      setIteration(0)
-      setStart(false)
+    if (Object.keys(mockData).length == iteration) {
+      setIsPlaying(false);
+      setIteration(0);
+      setStart(false);
     }
-    
+
     let showkey = Object.keys(mockData)[iteration];
     setTimelineDescript(mockData[showkey]?.event?.message);
   }, [iteration]);
@@ -83,18 +110,29 @@ function TimelineSlider({mockData, setStart, start, setTimelineDescript, handleE
   return (
     <>
       <div className={styles.timeBarControl}>
-        <StepBackwardOutlined  onClick={()=>{handleClickBackword()}} className={styles.controlBtnSecond} />
-        <BackwardOutlined className={styles.controlBtn} />
+        <StepBackwardOutlined
+          onClick={() => {
+            handleClickBackword();
+          }}
+          className={styles.controlBtnSecond}
+        />
+        {/* <BackwardOutlined className={styles.controlBtn} /> */}
         {"     "}
         <div className={styles.playBtn} onClick={handleClick}>
           {isPlaying ? <PauseOutlined /> : <CaretRightOutlined />}
         </div>
         {"   "}
-        <ForwardOutlined
-          className={styles.controlBtn}
-          onClick={handleClickForward}
+        {/* <ForwardOutlined className={styles.controlBtn} onClick={handleClickForward} /> */}
+
+        <StepForwardOutlined
+          onClick={() => {
+            handleClickForward();
+          }}
+          className={styles.controlBtnSecond}
         />
-        <StepForwardOutlined onClick={()=>{handleClickForward()}} className={styles.controlBtnSecond} />
+        <Popover content={content} title={false} trigger="click">
+          <DashboardOutlined className="speed-icon" />
+        </Popover>
       </div>
       <Slider
         className="rang-slider"
@@ -104,7 +142,6 @@ function TimelineSlider({mockData, setStart, start, setTimelineDescript, handleE
         min={0}
         max={Object.keys(mockData).length - 1}
       />
-     
     </>
   );
 }

@@ -1,4 +1,4 @@
-import { Collapse, Popover, Image, Typography } from "antd";
+import { Collapse, Popover, Image, Typography, Button } from "antd";
 import React, { useEffect, useState } from "react";
 import CampTree from "../CampTree";
 import Link from "next/link";
@@ -82,7 +82,19 @@ const CampTreeCard = ({
         >
           <Panel
             disabled
-            header={<h3>Canonizer Sorted Camp Tree</h3>}
+            header={
+              <h3>
+                Canonizer Sorted Camp Tree{" "}
+                <Button
+                  type={"primary"}
+                  size="small"
+                  className={styles.eventLineBtn}
+                  href={`/eventline/${router?.query?.camp[0]}`}
+                >
+                  Event Line
+                </Button>
+              </h3>
+            }
             key="1"
             extra={
               <>
@@ -92,11 +104,6 @@ const CampTreeCard = ({
                     event.stopPropagation();
                   }}
                 >
-                  <Link href={`/eventline/${router?.query?.camp[0]}`}>
-                    <a>
-                      Event Line
-                    </a>
-                  </Link>
                   {isUserAuthenticated && is_admin && tree && (
                     <Link
                       href={{
@@ -110,7 +117,7 @@ const CampTreeCard = ({
                         }}
                       >
                         <i className={"icon-fi-document " + styles.iconMr} />
-                        Add News 
+                        Add News
                       </a>
                     </Link>
                   )}

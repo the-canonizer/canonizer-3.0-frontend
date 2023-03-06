@@ -16,7 +16,9 @@ const CampInfoBar = () => {
           <div className={styles.topicDetailContentHead_Left}>
             <Button
               className={styles.backButton}
-              type="text"
+              size="small"
+              type={"primary"}
+              ghost
               icon={<ArrowLeftOutlined />}
               onClick={() =>
                 router.push(router.asPath.replace("eventline", "topic"))
