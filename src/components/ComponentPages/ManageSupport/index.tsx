@@ -116,7 +116,6 @@ const ManageSupport = () => {
   const { campRecord } = useSelector((state: RootState) => ({
     campRecord: state?.topicDetails?.currentCampRecord,
   }));
-
   const refSetter = async (reqBody) => {
     const res = await getCurrentCampRecordApi(reqBody);
     campRef.current = res;
@@ -155,12 +154,12 @@ const ManageSupport = () => {
         //Api's call for list
         dispatch(setCheckSupportExistsData({}));
         dispatch(setCheckSupportExistsData(response.data));
-        getCanonizedNicknameList();
-        getActiveSupportTopicList(
-          response.data.warning,
-          response.data.support_flag,
-          campReff
-        );
+        // getCanonizedNicknameList();
+        // getActiveSupportTopicList(
+        //   response.data.warning,
+        //   response.data.support_flag,
+        //   campReff
+        // );
         setSubmitButtonDisable(false);
       }
       if (manageSupportStatusCheck && response.data.disable_submit) {
