@@ -21,17 +21,6 @@ const marks = {
   100: "1.5x",
 };
 
-const content = (
-  <div className="speed-controller">
-    <Title level={4}>Playback speed</Title>
-    <Slider
-      marks={marks}
-      defaultValue={50}
-      step={null}
-      tooltip={{ open: false }}
-    />
-  </div>
-);
 
 function TimelineSlider({
   mockData,
@@ -95,6 +84,37 @@ function TimelineSlider({
     setIteration(newValue);
     handleEventSelection(newValue);
   };
+
+  const handleSpeedChange = (playbackSpeed) => {
+    
+    if(playbackSpeed==0){
+      setAnimationSpeed(1500)
+    }else if(playbackSpeed == 26){
+      setAnimationSpeed(1250)
+    }else if(playbackSpeed == 50){
+      setAnimationSpeed(1000)
+    }else if(playbackSpeed == 75){
+      setAnimationSpeed(750)
+    }else if(playbackSpeed == 100){
+      setAnimationSpeed(500)  
+    }
+    
+    
+  }
+
+  const content = (
+    <div className="speed-controller">
+      <Title level={4}>Playback speed</Title>
+      <Slider
+        marks={marks}
+        defaultValue={50}
+        step={null}
+        tooltip={{ open: false }}
+        onChange={handleSpeedChange}
+      />
+    </div>
+  );
+  
 
   useEffect(() => {
     if (Object.keys(mockData).length == iteration) {
