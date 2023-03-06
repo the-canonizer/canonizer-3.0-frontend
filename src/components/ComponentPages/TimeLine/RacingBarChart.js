@@ -175,7 +175,7 @@ svg.selectAll('line').remove()
             enter
             .append('line')
       .style("stroke", "#d9d9d9")
-      .style("stroke-width", 0.1)
+      .style("stroke-width", 2.1)
       .attr("x1",    linesData[i].level * 30 +  count - 2)
       .attr("y1", linesData[i].x1 * 30 + 23 )
       .attr("x2", linesData[i].level * 30 + count - 2)

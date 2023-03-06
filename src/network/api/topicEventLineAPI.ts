@@ -10,10 +10,10 @@ export const getEventLineApi = async (reqBody) => {
         EventLine.getEventLine(reqBody),
       false
     );
-debugger
-    // return eventLineData?.data?.data;
-    return mockData
+
+    return eventLineData?.data;
+    // return mockData
   } catch (error) {
-    return mockData
+    // return mockData
   }
 };

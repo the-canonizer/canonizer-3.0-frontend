@@ -39,7 +39,6 @@ function TimeLine({  setTimelineDescript }) {
     "algorithm": algorithm,
     
 })
-debugger
 
    setMockData(data)
 setData( data[Object.keys(data)[0]].payload_response)
