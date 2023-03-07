@@ -187,5 +187,11 @@
         width: 100%;
       }
     }
+    .labels {
+      display: inline-block;
+      white-space: nowrap;
+      margin-left: 10px;
+      font-size: x-small;
+    }
   }
 }

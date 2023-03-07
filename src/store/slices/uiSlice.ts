@@ -24,6 +24,7 @@ export const uiSlice = createSlice({
     isFolderOpen: false,
     folderId: null,
     disabledResetBtn: false,
+    remove_support_modal: false,
   },
   reducers: {
     showLoginModal: (state) => {
@@ -143,6 +144,12 @@ export const uiSlice = createSlice({
     resetBtnEnabled: (state) => {
       state.disabledResetBtn = false;
     },
+    showRemoveSupportModal: (state) => {
+      state.remove_support_modal = true;
+    },
+    hideRemoveSupportModal: (state) => {
+      state.remove_support_modal = false;
+    },
   },
 });
 
@@ -186,6 +193,8 @@ export const {
   setFolderId,
   resetBtnDisabled,
   resetBtnEnabled,
+  showRemoveSupportModal,
+  hideRemoveSupportModal,
 } = uiSlice.actions;
 
 export default uiSlice.reducer;

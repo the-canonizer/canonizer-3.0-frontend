@@ -118,6 +118,7 @@ const SettingsUI = () => {
     } else if (query && query.tab) setActiveTabKey(query.tab.toString());
     else setActiveTabKey("profile_info");
   }, [router.query]);
+
   return (
     <Fragment>
       <div>
