@@ -46,6 +46,9 @@ function RacingBarChart({ data }) {
     // d3.select("element").remove()
 svg.selectAll('line').remove()
 svg.selectAll('image').remove()
+svg.selectAll('text').remove()
+// svg.selectAll('rect').remove()
+
 
     if (!dimensions) return;
 

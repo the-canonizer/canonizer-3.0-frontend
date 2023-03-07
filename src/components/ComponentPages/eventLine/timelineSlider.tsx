@@ -21,7 +21,6 @@ const marks = {
   100: "1.5x",
 };
 
-
 function TimelineSlider({
   mockData,
   setStart,
@@ -86,21 +85,18 @@ function TimelineSlider({
   };
 
   const handleSpeedChange = (playbackSpeed) => {
-    
-    if(playbackSpeed==0){
-      setAnimationSpeed(1500)
-    }else if(playbackSpeed == 26){
-      setAnimationSpeed(1250)
-    }else if(playbackSpeed == 50){
-      setAnimationSpeed(1000)
-    }else if(playbackSpeed == 75){
-      setAnimationSpeed(750)
-    }else if(playbackSpeed == 100){
-      setAnimationSpeed(500)  
+    if (playbackSpeed == 0) {
+      setAnimationSpeed(1500);
+    } else if (playbackSpeed == 26) {
+      setAnimationSpeed(1250);
+    } else if (playbackSpeed == 50) {
+      setAnimationSpeed(1000);
+    } else if (playbackSpeed == 75) {
+      setAnimationSpeed(750);
+    } else if (playbackSpeed == 100) {
+      setAnimationSpeed(500);
     }
-    
-    
-  }
+  };
 
   const content = (
     <div className="speed-controller">
@@ -114,7 +110,6 @@ function TimelineSlider({
       />
     </div>
   );
-  
 
   useEffect(() => {
     if (Object.keys(mockData).length == iteration) {

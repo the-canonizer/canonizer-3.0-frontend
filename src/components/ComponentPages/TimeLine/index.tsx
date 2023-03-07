@@ -13,7 +13,7 @@ const getRandomIndex = (array) => {
   return Math.floor(array.length * Math.random());
 };
 
-function TimeLine({  setTimelineDescript }) {
+function TimeLine({ setTimelineDescript }) {
   const [loading, setLoading] = useState(false);
   const [iteration, setIteration] = useState(0);
   const [start, setStart] = useState(false);
@@ -21,41 +21,38 @@ function TimeLine({  setTimelineDescript }) {
   const [eventDescription, setEventDescription] = useState("");
   const [animationSpeed, setAnimationSpeed] = useState(1000);
   const [isPlaying, setIsPlaying] = useState(false);
-  const router = useRouter()
-  
+  const router = useRouter();
+
   const events = mockData && Object.keys(mockData);
   const [data, setData] = useState([]);
-  const {
-    algorithm,
-  } = useSelector((state: RootState) => ({
+  const { algorithm, score } = useSelector((state: RootState) => ({
     algorithm: state.filters?.filterObject?.algorithm,
-  }))
+    score: state?.filters?.filterObject?.filterByScore,
+  }));
 
   useEffect(() => {
-    setLoading(true)
-   async function apiCall() {
-   const data = await getEventLineApi({
-    "topic_num": router?.query?.camp[0].split("-")[0],
-    "algorithm": algorithm,
-    
-})
+    setLoading(true);
+    async function apiCall() {
+      const data = await getEventLineApi({
+        topic_num: router?.query?.camp[0].split("-")[0],
+        algorithm: algorithm,
+      });
 
-   setMockData(data)
-setData( data[Object.keys(data)[0]].payload_response)
-   }
+      setMockData(data);
+      setData(data[Object.keys(data)[0]].payload_response);
+    }
 
-   apiCall()
+    apiCall();
 
-    setLoading(false)
+    setLoading(false);
   }, [algorithm]);
-
 
   useInterval(() => {
     if (start && events.length > iteration) {
       setData(mockData[events[iteration]].payload_response);
       setEventDescription(mockData[events[iteration]].event?.message);
       // if(isPlaying){
-        setIteration(iteration + 1);
+      setIteration(iteration + 1);
       // }
     }
   }, animationSpeed);
@@ -65,12 +62,11 @@ setData( data[Object.keys(data)[0]].payload_response)
     setEventDescription(mockData[events[index]].event?.message);
     setIteration(index);
   };
-  
-  const handleForwardOrBackord = (iteration) => {
 
+  const handleForwardOrBackord = (iteration) => {
     setData(mockData[events[iteration]].payload_response);
     setEventDescription(mockData[events[iteration]].event?.message);
-  }
+  };
 
   return (
     <React.Fragment>
@@ -85,22 +81,21 @@ setData( data[Object.keys(data)[0]].payload_response)
         iteration={iteration}
         setIteration={setIteration}
         handleForwardOrBackord={handleForwardOrBackord}
-        isPlaying={isPlaying} 
+        isPlaying={isPlaying}
         setIsPlaying={setIsPlaying}
       />
       <div style={{ overflow: "hidden" }}>
-        {
-          loading ? 
+        {loading ? (
           <CustomSkelton
-          skeltonFor="tree"
-          bodyCount={4}
-          isButton={false}
-          stylingClass=""
-        />
-        :
+            skeltonFor="tree"
+            bodyCount={4}
+            isButton={false}
+            stylingClass=""
+          />
+        ) : (
           // data?.length &&
-        <RacingBarChart data={data} />
-        }
+          <RacingBarChart data={data} />
+        )}
       </div>
     </React.Fragment>
   );

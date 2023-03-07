@@ -5,22 +5,14 @@ import { Card, List } from "antd";
 import SideBarTimeline from "../Home/SideBarTimeline";
 import TimelineInfoBar from "./TimelineInfoBar";
 import styles from "./topicDetails.module.scss";
-import {
-  BackTop,
-  Collapse,
-} from "antd";
+import { BackTop, Collapse } from "antd";
 import TimeLine from "../TimeLine";
 import { useState } from "react";
 const { Panel } = Collapse;
 const TopicDetails = () => {
   const router = useRouter();
 
-
   const [timelineDescript, setTimelineDescript] = useState("");
-
- 
-
- 
 
   return (
     <>
@@ -28,7 +20,7 @@ const TopicDetails = () => {
         <TimelineInfoBar />
 
         <aside className={styles.miniSide + " leftSideBar miniSideBar"}>
-          <SideBarTimeline  />
+          <SideBarTimeline />
         </aside>
 
         <>
@@ -46,22 +38,19 @@ const TopicDetails = () => {
                 header={<h3>Canonizer Sorted Camp Race</h3>}
                 key="1"
               >
-                <TimeLine
-                  setTimelineDescript={setTimelineDescript}
-                />
+                <TimeLine setTimelineDescript={setTimelineDescript} />
               </Panel>
             </Collapse>
           </div>
         </>
         <aside className={"timelineRightSidebar"}>
-         
           <>
-      <Card
-        title="Events"
-        className={"activities " + styles.campActivities}
-      >
-        <h1>{timelineDescript}</h1>
-        {/* {loadingIndicator ? (
+            <Card
+              title="Events"
+              className={"activities " + styles.campActivities}
+            >
+              <h1>{timelineDescript}</h1>
+              {/* {loadingIndicator ? (
           <CustomSkelton
             skeltonFor="list"
             bodyCount={7}
@@ -87,8 +76,8 @@ const TopicDetails = () => {
         ) : (
           K?.exceptionalMessages?.noRecentActivityFound
         )} */}
-      </Card>
-    </>
+            </Card>
+          </>
         </aside>
       </div>
       <BackTop />

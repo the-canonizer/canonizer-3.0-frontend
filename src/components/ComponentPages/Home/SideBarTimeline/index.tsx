@@ -54,7 +54,6 @@ export default function SideBarTimeline({ onCreateCamp = () => {} }: any) {
           </Drawer>
         </Fragment>
       )}
-    
     </Fragment>
   );
 }

@@ -15,7 +15,6 @@ export default class EventLine extends Request {
       reqBody,
       K.Network.Header.Type.Json,
       {}
-     
     );
   }
 }
