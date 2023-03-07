@@ -1947,8 +1947,8 @@ div[role="option"]::before {
     &-text {
       color: var(--primary);
       font-size: 10px;
-      &:first-child {
-      left:42px!important;
+      &:last-child {
+        white-space: nowrap;
       }
     }
   }
@@ -1977,6 +1977,10 @@ div[role="option"]::before {
       border-color: var(--primary);
     }
     top:-4px;
+    &:last-child {
+      left:auto!important;
+      right: 0;
+    }
 .progress-bar {
   margin-left: 10px;
   span {

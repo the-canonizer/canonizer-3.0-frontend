@@ -181,7 +181,7 @@ function TimelineSlider({
           }}
           className={styles.controlBtnSecond}
         />
-        <Popover content={content} title={false} trigger="click">
+        <Popover content={content} title={false} trigger="hover">
           <DashboardOutlined className="speed-icon" />
         </Popover>
       </div>
