@@ -51,7 +51,8 @@ export default function NickNameUI({
     {
       title: "",
       dataIndex: "operation",
-      width: "100%",
+      width: "10%",
+      className: "min-60",
       render: (_, record) => {
         return (
           <Typography.Link onClick={() => editNickName(record)}>

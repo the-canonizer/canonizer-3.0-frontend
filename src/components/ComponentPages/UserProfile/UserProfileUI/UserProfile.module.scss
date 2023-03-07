@@ -127,6 +127,11 @@
 .main_card_title {
   font-size: 16px;
   font-weight: 500;
+  @media screen and (max-width: 767px) {
+    width: 100%;
+    flex-grow: 1;
+    margin-bottom: 8px;
+  }
 }
 
 .userProfileLabel {
@@ -160,10 +165,16 @@
   .titleBox {
     margin: 0;
     display: flex;
-    align-items: center;
+    align-items: center;    
+    @media screen and (max-width: 767px) {
+      flex-wrap: wrap;
+    }
   }
   .nickname_box {
-    margin-left: auto;
+    margin-left: auto;    
+    @media screen and (max-width: 767px) {
+      margin: 0;
+    }
     .labels {
       display: inline-block;
       white-space: nowrap;
@@ -174,7 +185,12 @@
     height: 40px !important;
     width: 25%;
     margin: 0 !important;
-    display: inline-block;
+    display: inline-block;    
+    @media screen and (max-width: 767px) {
+      width: 100%;
+      position: relative;
+      top: -4px;
+    }
     > div:first-child {
       border: 1px solid #ffffff;
       background-color: #eaedf2;
@@ -187,11 +203,6 @@
         width: 100%;
       }
     }
-    .labels {
-      display: inline-block;
-      white-space: nowrap;
-      margin-left: 10px;
-      font-size: x-small;
-    }
+    
   }
 }
