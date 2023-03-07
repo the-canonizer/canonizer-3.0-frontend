@@ -21,7 +21,6 @@ const marks = {
   100: "1.5x",
 };
 
-
 function TimelineSlider({
   mockData,
   setStart,
@@ -86,21 +85,18 @@ function TimelineSlider({
   };
 
   const handleSpeedChange = (playbackSpeed) => {
-    
-    if(playbackSpeed==0){
-      setAnimationSpeed(1500)
-    }else if(playbackSpeed == 26){
-      setAnimationSpeed(1250)
-    }else if(playbackSpeed == 50){
-      setAnimationSpeed(1000)
-    }else if(playbackSpeed == 75){
-      setAnimationSpeed(750)
-    }else if(playbackSpeed == 100){
-      setAnimationSpeed(500)  
+    if (playbackSpeed == 0) {
+      setAnimationSpeed(1500);
+    } else if (playbackSpeed == 26) {
+      setAnimationSpeed(1250);
+    } else if (playbackSpeed == 50) {
+      setAnimationSpeed(1000);
+    } else if (playbackSpeed == 75) {
+      setAnimationSpeed(750);
+    } else if (playbackSpeed == 100) {
+      setAnimationSpeed(500);
     }
-    
-    
-  }
+  };
 
   const content = (
     <div className="speed-controller">
@@ -114,7 +110,42 @@ function TimelineSlider({
       />
     </div>
   );
-  
+  const MarkPointsData = () => {
+    let pdata: any = Object.keys(mockData);
+    let obj = {};
+    if (pdata.length - 1 < 4) {
+      pdata.map((value, index) => {
+        obj[index] = value;
+      });
+    } else {
+      pdata.map((value, index) => {
+        let a = (index + 1) * ((pdata.length - 1) / 4);
+        if (Math.round(a) < pdata.length) {
+          console.log("a value ", pdata[Math.round(a)].split("_")[1]);
+          let datess = new Date(pdata[Math.round(a)]?.split("_")[1] * 1000);
+          const months = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+          ];
+          const formattedDate = `${
+            months[datess.getMonth()]
+          } ${datess.getDate()},${datess.getFullYear()}`;
+          obj[Math.round(a)] = formattedDate;
+        }
+      });
+    }
+    return obj;
+  };
 
   useEffect(() => {
     if (Object.keys(mockData).length == iteration) {
@@ -158,9 +189,9 @@ function TimelineSlider({
         className="rang-slider"
         onChange={onChange}
         value={Number(iteration)}
-        // marks={marks}
+        marks={MarkPointsData()}
         min={0}
-        max={Object.keys(mockData).length - 1}
+        max={Object?.keys(mockData).length - 1}
       />
     </>
   );
