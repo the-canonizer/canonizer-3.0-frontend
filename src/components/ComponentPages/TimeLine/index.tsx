@@ -39,7 +39,6 @@ function TimeLine({ setTimelineDescript }) {
       });
 
       setMockData(data);
-      setData(data[Object.keys(data)[0]].payload_response);
     }
 
     apiCall();
@@ -47,9 +46,14 @@ function TimeLine({ setTimelineDescript }) {
     setLoading(false);
   }, [algorithm]);
 
+  useEffect(() => {
+      setData(mockData[Object.keys(mockData)[iteration]]?.payload_response?.filter(item => item.score > score) );
+    
+  }, [mockData, score]);
+
   useInterval(() => {
     if (start && events.length > iteration) {
-      setData(mockData[events[iteration]].payload_response);
+      setData(mockData[events[iteration]].payload_response?.filter(item => item.score > score));
       setEventDescription(mockData[events[iteration]].event?.message);
       // if(isPlaying){
       setIteration(iteration + 1);
@@ -58,13 +62,13 @@ function TimeLine({ setTimelineDescript }) {
   }, animationSpeed);
 
   const handleEventSelection = (index) => {
-    setData(mockData[events[index]].payload_response);
+    setData(mockData[events[index]].payload_response?.filter(item => item.score > score));
     setEventDescription(mockData[events[index]].event?.message);
     setIteration(index);
   };
 
   const handleForwardOrBackord = (iteration) => {
-    setData(mockData[events[iteration]].payload_response);
+    setData(mockData[events[iteration]].payload_response?.filter(item => item.score > score));
     setEventDescription(mockData[events[iteration]].event?.message);
   };
 
@@ -93,8 +97,9 @@ function TimeLine({ setTimelineDescript }) {
             stylingClass=""
           />
         ) : (
-          // data?.length &&
-          <RacingBarChart data={data} />
+          data?.length ?
+          <RacingBarChart data={data} /> :
+          <h1>No Camps Found</h1>
         )}
       </div>
     </React.Fragment>

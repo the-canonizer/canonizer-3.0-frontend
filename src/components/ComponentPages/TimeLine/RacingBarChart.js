@@ -9,7 +9,7 @@ function RacingBarChart({ data }) {
   
   const linesData = [] 
         
-  for(let i=0; i<data.length ; i++){
+  for(let i=0; i<data?.length ; i++){
       for(let j=i+1; j<data.length  ; j++){
           if(data[i].level > data[j].level  ){
               break;
