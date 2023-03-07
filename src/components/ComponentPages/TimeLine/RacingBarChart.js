@@ -10,7 +10,7 @@ function RacingBarChart({ data }) {
   const linesData = [] 
         
   for(let i=0; i<data.length ; i++){
-      for(let j=i+1; j<data.length -1 ; j++){
+      for(let j=i+1; j<data.length  ; j++){
           if(data[i].level > data[j].level  ){
               break;
           }
@@ -45,6 +45,8 @@ function RacingBarChart({ data }) {
     const svg = select(svgRef.current);
     // d3.select("element").remove()
 svg.selectAll('line').remove()
+svg.selectAll('image').remove()
+
     if (!dimensions) return;
 
     // sorting the data
@@ -80,7 +82,17 @@ svg.selectAll('line').remove()
       .append("image")
       .attr("class", "circle")
       // .attr("href", (entry) => entry.level == 2 || entry.level == 3 ? "/images/minus-square.svg" : '')
-      .attr("href", (entry, index) => ((index == 0 ) || (index > 0 && index < data?.length-1 && (data[index].level < data[index+1].level || data[index].level < data[index-1].level))) ? "/images/minus-square.svg" : null )
+      .attr("href", (entry, index) => ((index === 0 || (index == data?.length-1 && data[index].level < data[index - 1].level)) 
+      || (
+        (index > 0 && index < data?.length-1  ) 
+        && (
+          data[index].level < data[+index + 1].level 
+          ||
+           data[index].level < data[+index - 1].level
+           ) 
+        )
+        ) 
+        ? "/images/minus-square.svg" : null )
       .attr("height", 14)
       .attr("width", 14)
     )
