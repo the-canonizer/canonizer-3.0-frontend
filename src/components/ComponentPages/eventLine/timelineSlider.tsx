@@ -151,6 +151,9 @@ function TimelineSlider({
       });
     } else {
       pdata.map((value, index) => {
+        if (index == 0) {
+          obj[index] = DateFormate(new Date(value?.split("_")[1] * 1000));
+        }
         let pointDiff = (index + 1) * ((pdata.length - 1) / 4);
         if (Math.round(pointDiff) < pdata.length) {
           let datess = new Date(

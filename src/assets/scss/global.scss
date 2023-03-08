@@ -1996,3 +1996,11 @@ div[role="option"]::before {
       padding-left: 40px!important;
   }
 }
+
+.evenline-bars {
+  overflow: auto;
+  &> div {
+    width: 1160px;
+    white-space: nowrap;
+  }
+}

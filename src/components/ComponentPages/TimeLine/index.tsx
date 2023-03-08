@@ -47,13 +47,20 @@ function TimeLine({ setTimelineDescript }) {
   }, [algorithm]);
 
   useEffect(() => {
-      setData(mockData[Object.keys(mockData)[iteration]]?.payload_response?.filter(item => item.score >= score) );
-    
+    setData(
+      mockData[Object.keys(mockData)[iteration]]?.payload_response?.filter(
+        (item) => item.score >= score
+      )
+    );
   }, [mockData, score]);
 
   useInterval(() => {
     if (start && events.length > iteration) {
-      setData(mockData[events[iteration]].payload_response?.filter(item => item.score >= score));
+      setData(
+        mockData[events[iteration]].payload_response?.filter(
+          (item) => item.score >= score
+        )
+      );
       setEventDescription(mockData[events[iteration]].event?.message);
       // if(isPlaying){
       setIteration(iteration + 1);
@@ -62,13 +69,21 @@ function TimeLine({ setTimelineDescript }) {
   }, animationSpeed);
 
   const handleEventSelection = (index) => {
-    setData(mockData[events[index]].payload_response?.filter(item => item.score >= score));
+    setData(
+      mockData[events[index]].payload_response?.filter(
+        (item) => item.score >= score
+      )
+    );
     setEventDescription(mockData[events[index]].event?.message);
     setIteration(index);
   };
 
   const handleForwardOrBackord = (iteration) => {
-    setData(mockData[events[iteration]].payload_response?.filter(item => item.score >= score));
+    setData(
+      mockData[events[iteration]].payload_response?.filter(
+        (item) => item.score >= score
+      )
+    );
     setEventDescription(mockData[events[iteration]].event?.message);
   };
 
@@ -88,7 +103,7 @@ function TimeLine({ setTimelineDescript }) {
         isPlaying={isPlaying}
         setIsPlaying={setIsPlaying}
       />
-      <div style={{ overflow: "hidden" }}>
+      <div className="evenline-bars">
         {loading ? (
           <CustomSkelton
             skeltonFor="tree"
@@ -96,9 +111,9 @@ function TimeLine({ setTimelineDescript }) {
             isButton={false}
             stylingClass=""
           />
+        ) : data?.length ? (
+          <RacingBarChart data={data} />
         ) : (
-          data?.length ?
-          <RacingBarChart data={data} /> :
           <h1>No Camps Found</h1>
         )}
       </div>
