@@ -11,6 +11,7 @@ import activityStyle from "../Home/CampRecentActivities/campRecentActivities.mod
 import { BackTop, Collapse, Typography } from "antd";
 import TimeLine from "../TimeLine";
 import { useState } from "react";
+import Events from "./Events";
 const { Panel } = Collapse;
 const { Title } = Typography;
 const TopicDetails = () => {
@@ -24,7 +25,7 @@ const TopicDetails = () => {
         <TimelineInfoBar />
 
         <aside className={styles.miniSide + " leftSideBar miniSideBar"}>
-          <SideBarTimeline />
+          <SideBarTimeline timelineDescript={timelineDescript} />
         </aside>
 
         <>
@@ -47,56 +48,9 @@ const TopicDetails = () => {
             </Collapse>
           </div>
         </>
-        <aside className={"timelineRightSidebar"}>
-          <>
-            <Card
-              title="Events"
-              className={
-                "activities evntLineActivity " + activityStyle.campActivities
-              }
-            >
-              {/* {loadingIndicator ? (
-          <CustomSkelton
-            skeltonFor="list"
-            bodyCount={7}
-            stylingClass="listSkeleton"
-            isButton={false}
-          />
-        ) : data ? (
-          <List
-            itemLayout="horizontal"
-            className="activeListWrap"
-            dataSource={data}
-            renderItem={(item) => (
-              <List.Item className={styles.activitiesList}>
-                <List.Item.Meta
-                  avatar={<BellFilled className={styles.bellIcon} />}
-                  title={item?.description}
-                  description={covertToTime(item?.updated_at)}
-                  className={styles.listItem}
-                />
-              </List.Item>
-            )}
-          />
-        ) : (
-          K?.exceptionalMessages?.noRecentActivityFound
-        )} */}
-              <List itemLayout="horizontal" className="activeListWrap pl-4">
-                <List.Item className={activityStyle.activitiesList}>
-                  <List.Item.Meta
-                    avatar={
-                      timelineDescript && (
-                        <BellFilled className={activityStyle.bellIcon} />
-                      )
-                    }
-                    title={timelineDescript}
-                    className={styles.listItem}
-                  />
-                </List.Item>
-              </List>
-            </Card>
-          </>
-        </aside>
+        {/* <aside className={"timelineRightSidebar"}>
+          <Events timelineDescript={timelineDescript} />
+        </aside> */}
       </div>
       <BackTop />
     </>

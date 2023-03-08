@@ -6,12 +6,13 @@ import { AppstoreAddOutlined } from "@ant-design/icons";
 
 import { RootState } from "src/store";
 import TimelineFilter from "../../../common/timelineFilter";
-import CampRecentActivities from "../CampRecentActivities";
-import NewsFeedsCard from "../../TopicDetails/NewsFeedsCard";
-import GoogleAd from "../../../googleAds";
 import useAuthentication from "src/hooks/isUserAuthenticated";
+import Events from "../../eventLine/Events";
 
-export default function SideBarTimeline({ onCreateCamp = () => {} }: any) {
+export default function SideBarTimeline({
+  onCreateCamp = () => {},
+  timelineDescript,
+}: any) {
   const { isUserAuthenticated } = useAuthentication();
 
   const [isAuth, setIsAuth] = useState(isUserAuthenticated);
@@ -54,6 +55,12 @@ export default function SideBarTimeline({ onCreateCamp = () => {} }: any) {
           </Drawer>
         </Fragment>
       )}
+      {typeof window !== "undefined" &&
+        window.innerWidth > 767 &&
+        router.asPath.includes("eventline") &&
+        isAuth && (
+          <Fragment>{<Events timelineDescript={timelineDescript} />}</Fragment>
+        )}
     </Fragment>
   );
 }

@@ -132,6 +132,9 @@
         width: 100%;
       }
     }
+    &.eventListArea {
+      width: 100%;
+    }
     /* @media screen and (max-width: 991px) {
       &:not(.timelineLayout) {
         width: auto;

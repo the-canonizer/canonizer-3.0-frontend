@@ -343,7 +343,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
               </Popover>
             </div>
           </Panel>
-          <Panel
+          {/* <Panel
             header={
               <span className={styles.title}>
                 Granularity
@@ -370,8 +370,8 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                 </Radio>
               </Space>
             </Radio.Group>
-          </Panel>
-          <Panel
+          </Panel> */}
+          {/* <Panel
             header={
               <span className={styles.title}>
                 Date Range{" "}
@@ -396,7 +396,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                 current && current > moment(current_date_filter).endOf("day")
               }
             />
-          </Panel>
+          </Panel> */}
         </Collapse>
       </div>
     </>
