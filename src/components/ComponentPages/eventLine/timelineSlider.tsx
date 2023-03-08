@@ -112,12 +112,42 @@ function TimelineSlider({
       />
     </div>
   );
+  const DateFormate = (datess) => {
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    let formattedDate = `${
+      months[datess.getMonth()]
+    } ${datess.getDate()},${datess.getFullYear()}`;
+    return formattedDate;
+  };
+
+  const formatter = (value) => {
+    let pdata: any = Object.keys(mockData);
+    let formatedDate =
+      pdata.length > 0 &&
+      DateFormate(new Date(pdata[value]?.split("_")[1] * 1000));
+    return formatedDate;
+  };
   const MarkPointsData = () => {
     let pdata: any = Object.keys(mockData);
+
     let obj = {};
     if (pdata.length - 1 < 4) {
       pdata.map((value, index) => {
-        obj[index] = value;
+        let formattedDate = DateFormate(new Date(value?.split("_")[1] * 1000));
+        obj[index] = formattedDate;
       });
     } else {
       pdata.map((value, index) => {
@@ -126,23 +156,7 @@ function TimelineSlider({
           let datess = new Date(
             pdata[Math.round(pointDiff)]?.split("_")[1] * 1000
           );
-          const months = [
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December",
-          ];
-          const formattedDate = `${
-            months[datess.getMonth()]
-          } ${datess.getDate()},${datess.getFullYear()}`;
+          let formattedDate = DateFormate(datess);
           obj[Math.round(pointDiff)] = formattedDate;
         }
       });
@@ -198,6 +212,9 @@ function TimelineSlider({
       </div>
       <Slider
         className="rang-slider"
+        tooltip={{
+          formatter,
+        }}
         onChange={onChange}
         value={Number(iteration)}
         marks={MarkPointsData()}
