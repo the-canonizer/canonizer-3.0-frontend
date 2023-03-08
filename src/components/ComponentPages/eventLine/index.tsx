@@ -1,26 +1,22 @@
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
+import { BellFilled } from "@ant-design/icons";
+
 import { Card, List } from "antd";
 
 import SideBarTimeline from "../Home/SideBarTimeline";
 import TimelineInfoBar from "./TimelineInfoBar";
 import styles from "./topicDetails.module.scss";
-import {
-  BackTop,
-  Collapse,
-} from "antd";
+import activityStyle from "../Home/CampRecentActivities/campRecentActivities.module.scss";
+import { BackTop, Collapse, Typography } from "antd";
 import TimeLine from "../TimeLine";
 import { useState } from "react";
 const { Panel } = Collapse;
+const { Title } = Typography;
 const TopicDetails = () => {
   const router = useRouter();
 
-
   const [timelineDescript, setTimelineDescript] = useState("");
-
- 
-
- 
 
   return (
     <>
@@ -28,7 +24,7 @@ const TopicDetails = () => {
         <TimelineInfoBar />
 
         <aside className={styles.miniSide + " leftSideBar miniSideBar"}>
-          <SideBarTimeline  />
+          <SideBarTimeline />
         </aside>
 
         <>
@@ -46,22 +42,20 @@ const TopicDetails = () => {
                 header={<h3>Canonizer Sorted Camp Race</h3>}
                 key="1"
               >
-                <TimeLine
-                  setTimelineDescript={setTimelineDescript}
-                />
+                <TimeLine setTimelineDescript={setTimelineDescript} />
               </Panel>
             </Collapse>
           </div>
         </>
         <aside className={"timelineRightSidebar"}>
-         
           <>
-      <Card
-        title="Events"
-        className={"activities " + styles.campActivities}
-      >
-        <h1>{timelineDescript}</h1>
-        {/* {loadingIndicator ? (
+            <Card
+              title="Events"
+              className={
+                "activities evntLineActivity " + activityStyle.campActivities
+              }
+            >
+              {/* {loadingIndicator ? (
           <CustomSkelton
             skeltonFor="list"
             bodyCount={7}
@@ -87,8 +81,21 @@ const TopicDetails = () => {
         ) : (
           K?.exceptionalMessages?.noRecentActivityFound
         )} */}
-      </Card>
-    </>
+              <List itemLayout="horizontal" className="activeListWrap pl-4">
+                <List.Item className={activityStyle.activitiesList}>
+                  <List.Item.Meta
+                    avatar={
+                      timelineDescript && (
+                        <BellFilled className={activityStyle.bellIcon} />
+                      )
+                    }
+                    title={timelineDescript}
+                    className={styles.listItem}
+                  />
+                </List.Item>
+              </List>
+            </Card>
+          </>
         </aside>
       </div>
       <BackTop />
