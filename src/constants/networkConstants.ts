@@ -185,8 +185,7 @@ const NetworkConstants = {
 
     // Evetline API
     EventLineEndpoint: `${BaseCanonizerServiceUrl}/api/v1/timeline/get`,
-
-
+    GetRemovedReasons: `${BaseCanonizerApiUrl}/support-reason-list`,
   },
   Method: {
     GET: "GET",

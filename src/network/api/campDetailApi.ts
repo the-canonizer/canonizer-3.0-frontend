@@ -8,6 +8,7 @@ import {
   setCurrentCampRecord,
   setCurrentTopicRecordSubscriptionId,
   setCurrentCampRecordSubscriptionId,
+  setRemovedReasons,
 } from "../../store/slices/campDetailSlice";
 import NetworkCall from "../networkCall";
 import TreeRequest from "../request/campDetailRequest";
@@ -235,6 +236,19 @@ export const GetSupportedNickNames = async (id) => {
   try {
     const res = await NetworkCall.fetch(TreeRequest.NickNamesSupported(id));
     return res;
+  } catch (err) {
+    handleError(err);
+  }
+};
+
+export const getAllRemovedReasons = async () => {
+  try {
+    const res = await NetworkCall.fetch(TreeRequest.removedReasons());
+    if (res.status_code === 200) {
+      let rs = res?.data;
+      rs = rs?.map((r: { reason: any }) => ({ ...r, label: r.reason }));
+      store.dispatch(setRemovedReasons(rs));
+    }
   } catch (err) {
     handleError(err);
   }

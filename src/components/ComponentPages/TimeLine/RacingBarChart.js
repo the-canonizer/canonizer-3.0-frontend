@@ -9,7 +9,7 @@ function RacingBarChart({ data }) {
   
   const linesData = [] 
         
-  for(let i=0; i<data.length ; i++){
+  for(let i=0; i<data?.length ; i++){
       for(let j=i+1; j<data.length  ; j++){
           if(data[i].level > data[j].level  ){
               break;
@@ -46,6 +46,9 @@ function RacingBarChart({ data }) {
     // d3.select("element").remove()
 svg.selectAll('line').remove()
 svg.selectAll('image').remove()
+svg.selectAll('text').remove()
+// svg.selectAll('rect').remove()
+
 
     if (!dimensions) return;
 

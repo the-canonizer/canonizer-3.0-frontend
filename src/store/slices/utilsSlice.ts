@@ -8,6 +8,7 @@ const defaultValue = {
   redirect_type: false,
   redirect_tab_setting: "",
   score_checkbox: false,
+  reasonData: {},
 };
 
 export const utilsSlice = createSlice({
@@ -22,9 +23,12 @@ export const utilsSlice = createSlice({
     setScoreCheckBox: (state, action) => {
       state.score_checkbox = action.payload;
     },
+    setReasonData: (state, action) => {
+      state.reasonData = action.payload;
+    },
   },
 });
 
-export const { setValue, setScoreCheckBox } = utilsSlice.actions;
+export const { setValue, setScoreCheckBox, setReasonData } = utilsSlice.actions;
 
 export default utilsSlice.reducer;
