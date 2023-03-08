@@ -1947,8 +1947,12 @@ div[role="option"]::before {
     &-text {
       color: var(--primary);
       font-size: 10px;
+      &:first-child {
+        transform: translateX(0)!important;
+      }
       &:last-child {
         white-space: nowrap;
+        transform: translateX(-50px)!important;
       }
     }
   }
