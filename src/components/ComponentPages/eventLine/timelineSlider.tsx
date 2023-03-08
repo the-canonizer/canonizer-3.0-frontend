@@ -37,6 +37,7 @@ function TimelineSlider({
 }) {
   const [intervalId, setIntervalId] = useState(null);
 
+  const [speedBar, setSpeedBar] = useState(false);
   const handleClick = () => {
     setStart(!start);
     if (isPlaying) {
@@ -96,6 +97,7 @@ function TimelineSlider({
     } else if (playbackSpeed == 100) {
       setAnimationSpeed(500);
     }
+    setSpeedBar(false);
   };
 
   const content = (
@@ -119,10 +121,11 @@ function TimelineSlider({
       });
     } else {
       pdata.map((value, index) => {
-        let a = (index + 1) * ((pdata.length - 1) / 4);
-        if (Math.round(a) < pdata.length) {
-          console.log("a value ", pdata[Math.round(a)].split("_")[1]);
-          let datess = new Date(pdata[Math.round(a)]?.split("_")[1] * 1000);
+        let pointDiff = (index + 1) * ((pdata.length - 1) / 4);
+        if (Math.round(pointDiff) < pdata.length) {
+          let datess = new Date(
+            pdata[Math.round(pointDiff)]?.split("_")[1] * 1000
+          );
           const months = [
             "January",
             "February",
@@ -140,7 +143,7 @@ function TimelineSlider({
           const formattedDate = `${
             months[datess.getMonth()]
           } ${datess.getDate()},${datess.getFullYear()}`;
-          obj[Math.round(a)] = formattedDate;
+          obj[Math.round(pointDiff)] = formattedDate;
         }
       });
     }
@@ -181,7 +184,15 @@ function TimelineSlider({
           }}
           className={styles.controlBtnSecond}
         />
-        <Popover content={content} title={false} trigger="hover">
+        <Popover
+          content={content}
+          title={false}
+          trigger="hover"
+          open={speedBar}
+          onOpenChange={(newOpen) => {
+            setSpeedBar(newOpen);
+          }}
+        >
           <DashboardOutlined className="speed-icon" />
         </Popover>
       </div>
