@@ -401,6 +401,14 @@ export const removedReasonRule = {
       required: true,
       message: validations.reason,
     },
+    () => ({
+      validator(_, value) {
+        if (!value || value.trim().length > 0) {
+          return Promise.resolve();
+        }
+        return Promise.reject(new Error(validations.reason));
+      },
+    }),
     {
       max: 500,
       message: validations.summaryMax,
