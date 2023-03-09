@@ -214,7 +214,7 @@ export default function DirectSupportedCampsUI({
                               className={styles.save_Changes_Btn}
                               onClick={() => {
                                 setCurrentCamp(data.topic_num);
-                                handleSupportedCampsOpen();
+                                handleSupportedCampsOpen(data);
                               }}
                             >
                               Save Changes

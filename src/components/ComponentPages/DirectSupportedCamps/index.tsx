@@ -35,7 +35,8 @@ const DirectSupportedCamps = ({ search }: any) => {
     setIsSupportedCampsModalVisible(false);
   };
 
-  const handleSupportedCampsOpen = () => {
+  const handleSupportedCampsOpen = (data) => {
+    setremoveSupportCampsData(data);
     setIsSupportedCampsModalVisible(true);
   };
 
