@@ -176,7 +176,7 @@ function TimelineSlider({
 
     let showkey = Object.keys(mockData)[iteration];
     setTimelineDescript(mockData[showkey]?.event?.message);
-  }, [iteration]);
+  }, [iteration, mockData]);
 
   return (
     <>
