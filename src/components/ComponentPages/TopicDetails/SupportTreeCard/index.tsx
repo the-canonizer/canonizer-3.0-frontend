@@ -1,11 +1,23 @@
 import { useEffect, useState } from "react";
-import CustomButton from "../../../common/button";
-import { Button, Typography, Collapse, Popover, Modal, Form, Spin } from "antd";
 import Link from "next/link";
-import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import { RootState } from "src/store";
+import {
+  Tree,
+  Button,
+  Typography,
+  Collapse,
+  Popover,
+  Modal,
+  Form,
+  Spin,
+} from "antd";
+import { CloseCircleOutlined } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
+
 import styles from "../topicDetails.module.scss";
+
+import CustomButton from "../../../common/button";
+import { RootState } from "src/store";
 import isAuth from "../../../../hooks/isUserAuthenticated";
 import K from "../../../../constants";
 import { setDelegatedSupportClick } from "../../../../store/slices/supportTreeCard";
@@ -15,12 +27,12 @@ import {
   setManageSupportUrlLink,
 } from "../../../../store/slices/campDetailSlice";
 import { getNickNameList } from "../../../../network/api/userApi";
-const { Paragraph } = Typography;
-import { Tree } from "antd";
-import { CloseCircleOutlined } from "@ant-design/icons";
+import SupportRemovedModal from "src/components/common/supportRemovedModal";
 
+const { Paragraph } = Typography;
 const { Panel } = Collapse;
 const { TreeNode } = Tree;
+
 const supportContent = (
   <>
     <div className={styles.addSupportText}>
@@ -35,11 +47,11 @@ const supportContent = (
     </div>
   </>
 );
+
 const SupportTreeCard = ({
   loadingIndicator,
   getCheckSupportStatus,
   removeApiSupport,
-  // fetchTotalScore,
   removeSupport,
   topicList,
   removeSupportForDelegate,
@@ -49,19 +61,32 @@ const SupportTreeCard = ({
   removeSupportSpinner,
   supportTreeForCamp,
   totalCampScoreForSupportTree,
+  isDelegateSupportTreeCardModal,
+  setIsDelegateSupportTreeCardModal,
 }: any) => {
-  const { currentGetCheckSupportExistsData, is_checked } = useSelector(
-    (state: RootState) => ({
-      currentGetCheckSupportExistsData:
-        state.topicDetails.currentGetCheckSupportExistsData,
-      is_checked: state?.utils?.score_checkbox,
-    })
-  );
+  const {
+    currentGetCheckSupportExistsData,
+    is_checked,
+    topicRecord,
+    campRecord,
+  } = useSelector((state: RootState) => ({
+    currentGetCheckSupportExistsData:
+      state.topicDetails.currentGetCheckSupportExistsData,
+    is_checked: state?.utils?.score_checkbox,
+    topicRecord: state?.topicDetails?.currentTopicRecord,
+    campRecord: state?.topicDetails?.currentCampRecord,
+  }));
+
   const { isUserAuthenticated } = isAuth();
   const router = useRouter();
   const [userNickNameList, setUserNickNameList] = useState([]);
+  const [loadMore, setLoadMore] = useState(false);
+  const [modalData, setModalData] = useState<any>({});
+  const [delegateNickNameId, setDelegateNickNameId] = useState<number>();
+
   const dispatch = useDispatch();
   const arr = [];
+
   const getNickNameListData = async () => {
     const res = await getNickNameList();
     res?.data?.map((value) => {
@@ -69,11 +94,13 @@ const SupportTreeCard = ({
     });
     setUserNickNameList(arr);
   };
+
   useEffect(() => {
     if (isUserAuthenticated) {
       getNickNameListData();
     }
   }, [isUserAuthenticated]);
+
   useEffect(() => {
     dispatch(setDelegatedSupportClick({ delegatedSupportClick: false }));
     dispatch(setManageSupportStatusCheck(false));
@@ -88,6 +115,7 @@ const SupportTreeCard = ({
       })
     );
   };
+
   const handleClickSupportCheck = () => {
     dispatch(setManageSupportUrlLink(manageSupportPath));
     dispatch(setManageSupportStatusCheck(true));
@@ -95,26 +123,17 @@ const SupportTreeCard = ({
 
   const manageSupportPath = router?.asPath.replace("/topic/", "/support/");
 
-  // const { campSupportingTree, asof } = useSelector((state: RootState) => ({
-  //   campSupportingTree: state?.topicDetails?.campSupportingTree,
-  //   asof: state?.filters?.filterObject?.asof,
-  // }));
   const { campSupportingTree, asof } = useSelector((state: RootState) => ({
     campSupportingTree: supportTreeForCamp,
     asof: state?.filters?.filterObject?.asof,
   }));
+
   useEffect(() => {
     if (campSupportingTree?.length > 0) {
       getDelegateNicknameId(campSupportingTree);
     }
   }, [campSupportingTree]);
-  const [loadMore, setLoadMore] = useState(false);
-  const [modalData, setModalData] = useState<any>({});
-  const [delegateNickNameId, setDelegateNickNameId] = useState<number>();
-  const { topicRecord, campRecord } = useSelector((state: RootState) => ({
-    topicRecord: state?.topicDetails?.currentTopicRecord,
-    campRecord: state?.topicDetails?.currentCampRecord,
-  }));
+
   const getDelegateNicknameId = (delegates) => {
     delegates.forEach((element) => {
       if (userNickNameList.includes(element?.nick_name_id)) {
@@ -124,6 +143,7 @@ const SupportTreeCard = ({
       }
     });
   };
+
   const supportLength = 15;
   const renderTreeNodes = (
     data: any,
@@ -218,7 +238,12 @@ const SupportTreeCard = ({
                               id="supportTreeRemoveSupport"
                               disabled={asof == "bydate"}
                               onClick={() => {
-                                setIsSupportTreeCardModal(true);
+                                currentGetCheckSupportExistsData.is_delegator
+                                  ? setIsDelegateSupportTreeCardModal(true)
+                                  : topicList.length <= 1
+                                  ? setIsSupportTreeCardModal(true)
+                                  : setIsSupportTreeCardModal(true);
+
                                 setModalData(data[item]);
                               }}
                               className="delegate-support-style"
@@ -251,6 +276,23 @@ const SupportTreeCard = ({
       //return <TreeNode key={data[item].key} {...data[item]} />;
     });
   };
+
+  // remove support popup added.
+
+  const [removeForm] = Form.useForm();
+
+  const onRemoveFinish = (values) => {
+    currentGetCheckSupportExistsData.is_delegator
+      ? removeSupportForDelegate(values)
+      : topicList.length <= 1
+      ? removeApiSupport(modalData?.nick_name_id, values)
+      : removeSupport(modalData?.nick_name_id, values);
+    setModalData({});
+    removeForm.resetFields();
+  };
+
+  // remove support popup added.
+
   return loadingIndicator ? (
     <CustomSkelton
       skeltonFor="card"
@@ -334,10 +376,46 @@ const SupportTreeCard = ({
           </div>
         </Panel>
       </Collapse>
+
+      <Modal
+        className={styles.modal_cross}
+        title={
+          <p id="all_camps_topics" className={styles.modalTitle}>
+            You are about to remove your support from the camp:{" "}
+            <span>
+              &quot;
+              <Link
+                href={{
+                  pathname: `/topic/${topicRecord?.topic_num}-${topicRecord?.topic_name}/${campRecord?.camp_num}-${campRecord?.camp_name}`,
+                }}
+              >
+                <a>{campRecord?.camp_name}.</a>
+              </Link>
+              &quot;
+            </span>{" "}
+            You can optionally add a helpful reason, along with a citation link.
+          </p>
+        }
+        open={isSupportTreeCardModal}
+        onOk={handleSupportTreeCardCancel}
+        onCancel={handleSupportTreeCardCancel}
+        footer={null}
+        closeIcon={<CloseCircleOutlined />}
+      >
+        <Spin spinning={removeSupportSpinner} size="small">
+          <SupportRemovedModal
+            onFinish={onRemoveFinish}
+            handleCancel={() => setIsSupportTreeCardModal(false)}
+            form={removeForm}
+          />
+        </Spin>
+      </Modal>
+
+      {/* delegateremove */}
       <Modal
         className={styles.modal_cross}
         title="Remove Support"
-        open={isSupportTreeCardModal}
+        open={isDelegateSupportTreeCardModal}
         onOk={handleSupportTreeCardCancel}
         onCancel={handleSupportTreeCardCancel}
         footer={null}

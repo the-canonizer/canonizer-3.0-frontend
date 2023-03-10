@@ -89,6 +89,7 @@ const ProfileInfo = () => {
     values.state_bit = isPublicOrPrivate(publicPrivateArray.state);
     values.country_bit = isPublicOrPrivate(publicPrivateArray.country);
     values.birthday_bit = isPublicOrPrivate(publicPrivateArray.birthday);
+    values.city_bit = isPublicOrPrivate(publicPrivateArray.city);
     //values.birthday = formatDate(birthday);
     if (birthday == "" || birthday == null) {
       values.birthday = "";

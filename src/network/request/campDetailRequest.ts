@@ -176,4 +176,14 @@ export default class TreeRequest extends Request {
       {}
     );
   }
+
+  static removedReasons() {
+    return new Request(
+      K.Network.URL.GetRemovedReasons,
+      K.Network.Method.GET,
+      null,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
 }

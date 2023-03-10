@@ -1,5 +1,14 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Dropdown, Badge, Card, Typography, Switch, notification } from "antd";
+import {
+  Dropdown,
+  Badge,
+  Card,
+  Typography,
+  Switch,
+  notification,
+  Spin,
+  message,
+} from "antd";
 import Link from "next/link";
 import { BellOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
@@ -17,6 +26,7 @@ import Fav from "./icon";
 
 const Notifications = () => {
   const [checked, setChecked] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { count, list } = useSelector((state: RootState) => {
     return {
@@ -52,6 +62,7 @@ const Notifications = () => {
   }, []);
 
   const onSwitch = async (st, event) => {
+    setIsLoading(true);
     event.stopPropagation();
     if (st) {
       const messaging = firebase.messaging();
@@ -69,6 +80,10 @@ const Notifications = () => {
             await updateToken(fcm_token);
             setChecked(true);
             getMessage();
+            setIsLoading(false);
+          } else {
+            message.info("Something went wrong!");
+            setIsLoading(false);
           }
         }
       }
@@ -76,6 +91,7 @@ const Notifications = () => {
       await localforage.removeItem("fcm_token");
       await updateToken("disabled");
       setChecked(false);
+      setIsLoading(false);
     }
   };
 
@@ -135,12 +151,16 @@ const Notifications = () => {
           </Typography.Title>
           <Typography.Text className={styles.notificationEBTN}>
             <small>Enable push notification </small>
-            <Switch
-              size="small"
-              checked={checked}
-              onClick={onSwitch}
-              onChange={(e, e1) => e1.stopPropagation()}
-            />
+            {isLoading ? (
+              <Spin size="small" />
+            ) : (
+              <Switch
+                size="small"
+                checked={checked}
+                onClick={onSwitch}
+                onChange={(e, e1) => e1.stopPropagation()}
+              />
+            )}
           </Typography.Text>
         </Fragment>
       }

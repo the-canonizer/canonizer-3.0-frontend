@@ -385,3 +385,47 @@ export const threadTitleRule = {
 export const keywordsRule = {
   rules: [emojiValidation(patterns.emoji_restrication)],
 };
+
+export const removedReasonSelectRule = {
+  rules: [
+    {
+      required: false,
+      message: validations.reason,
+    },
+  ],
+};
+
+export const removedReasonRule = {
+  rules: [
+    {
+      required: true,
+      message: validations.reason,
+    },
+    () => ({
+      validator(_, value) {
+        if (!value || value.trim().length > 0) {
+          return Promise.resolve();
+        }
+        return Promise.reject(new Error(validations.reason));
+      },
+    }),
+    {
+      max: 500,
+      message: validations.summaryMax,
+    },
+    emojiValidation(patterns.emoji_restrication),
+  ],
+};
+
+export const removedURLRule = {
+  rules: [
+    {
+      pattern: patterns.url,
+      message: validations.site_url,
+    },
+    {
+      max: 255,
+      message: validations.UrlLim,
+    },
+  ],
+};
