@@ -33,6 +33,7 @@ export default function DirectSupportedCampsUI({
   statusFlag,
   directSkeletonIndicator,
   handleSupportedCampsOpen,
+  modalPopupText,
 }: any) {
   const [valData, setValData] = useState({});
   const [tagsDataArrValue, setTagsDataArrValue] = useState([]);
@@ -257,7 +258,7 @@ export default function DirectSupportedCampsUI({
         className={styles.modal_cross}
         title={
           <p id="all_camps_topics" className={styles.modalTitle}>
-            You are about to remove your support from the camp:{" "}
+           {modalPopupText ?" You are about to remove your support from all the camps:":"You are about to remove your support from the camp:"}{" "}
             <span>
               &quot;
               <Link

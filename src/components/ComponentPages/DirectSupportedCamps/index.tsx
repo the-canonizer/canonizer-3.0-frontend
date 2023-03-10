@@ -30,12 +30,15 @@ const DirectSupportedCamps = ({ search }: any) => {
   const [idData, setIdData] = useState("");
   const [statusFlag, setStatusFlag] = useState(true);
   const [directSkeletonIndicator, setDirectSkeletonIndicator] = useState(false);
+  const [modalPopupText, setModalPopupText] = useState(false);
+
 
   const handleSupportedCampsCancel = () => {
     setIsSupportedCampsModalVisible(false);
   };
 
   const handleSupportedCampsOpen = () => {
+    setModalPopupText(false)
     setIsSupportedCampsModalVisible(true);
   };
 
@@ -137,6 +140,7 @@ const DirectSupportedCamps = ({ search }: any) => {
   const removeCardSupportedCamps = (data) => {
     setRemoveTopicNumDataId(data.topic_num);
     setNickNameId(data.nick_name_id);
+    setModalPopupText(true)
     setIsSupportedCampsModalVisible(true);
     setremoveSupportCampsData(data);
   };
@@ -204,6 +208,7 @@ const DirectSupportedCamps = ({ search }: any) => {
       statusFlag={statusFlag}
       directSkeletonIndicator={directSkeletonIndicator}
       handleSupportedCampsOpen={handleSupportedCampsOpen}
+      modalPopupText={modalPopupText}
     />
   );
 };
