@@ -143,7 +143,7 @@ const ManageSupport = () => {
     })();
   }, [isUserAuthenticated, reqBodyData.topic_num]);
   // eslint-disable-next-line no-unused-vars
-  const GetCheckStatusData = async (_campReff: any) => {
+  const GetCheckStatusData = async (campReff: any) => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
     if (response && response.status_code === 200) {
       if (response.data?.remove_camps)
