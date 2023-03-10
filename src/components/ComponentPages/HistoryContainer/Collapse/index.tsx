@@ -91,6 +91,7 @@ function HistoryCollapse({
       camp_num: historyOf == "topic" ? 1 : router.query.camp[1].split("-")[0],
       change_for: historyOf,
       nick_name_id: userNickNameData[0]?.id,
+      user_agreed: campStatement?.agreed_to_change ? 0 : 1,
     };
     await agreeToChangeApi(reqBody);
     changeAgree();
@@ -188,7 +189,18 @@ function HistoryCollapse({
                     topicNamespaceId={topicNamespaceId}
                   />
                 )}
-
+                {campStatement?.status == "in_review" && (
+                  <>
+                    <Title level={5}>
+                      agreed supporters :
+                      <span> {campStatement?.agreed_supporters}</span>
+                    </Title>
+                    <Title level={5}>
+                      total supporters :
+                      <span> {campStatement?.total_supporters}</span>
+                    </Title>
+                  </>
+                )}
                 <Checkbox
                   className={styles.campSelectCheckbox}
                   id={`select-to-compare-${campStatement?.id}`}
@@ -407,9 +419,6 @@ function HistoryCollapse({
                       {" "}
                       <Checkbox
                         defaultChecked={campStatement?.agreed_to_change}
-                        disabled={
-                          campStatement?.agreed_to_change || isSelectChecked
-                        }
                         className={styles.campSelectCheckbox}
                         onChange={agreeWithChange}
                       >
@@ -421,6 +430,15 @@ function HistoryCollapse({
                           : "statement"}{" "}
                         change
                       </Checkbox>
+                      {campStatement?.total_supporters -
+                        campStatement?.agreed_supporters ==
+                        1 &&
+                        !campStatement?.agreed_to_change && (
+                          <h3>
+                            Since you are the last hold out, the instant you
+                            agree, this will go live.
+                          </h3>
+                        )}
                     </Spin>
                   </div>
                 )}
