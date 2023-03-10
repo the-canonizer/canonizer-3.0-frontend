@@ -65,7 +65,7 @@ const SupportRemovedModal = ({
               {...removedReasonSelectRule}
             >
               <Select
-                placeholder={placeholders.nickName}
+                placeholder={labels.reasonLabel}
                 allowClear
                 size={"large"}
                 defaultValue={null}
