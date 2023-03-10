@@ -154,12 +154,12 @@ const ManageSupport = () => {
         //Api's call for list
         dispatch(setCheckSupportExistsData({}));
         dispatch(setCheckSupportExistsData(response.data));
-        // getCanonizedNicknameList();
-        // getActiveSupportTopicList(
-        //   response.data.warning,
-        //   response.data.support_flag,
-        //   campReff
-        // );
+        getCanonizedNicknameList();
+        getActiveSupportTopicList(
+          response.data.warning,
+          response.data.support_flag,
+          campReff
+        );
         setSubmitButtonDisable(false);
       }
       if (manageSupportStatusCheck && response.data.disable_submit) {
