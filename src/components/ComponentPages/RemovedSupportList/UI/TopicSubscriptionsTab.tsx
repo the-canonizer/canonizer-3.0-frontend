@@ -1,4 +1,4 @@
-import { Card, Tag, Button, Tooltip, Typography, Empty, Row, Col } from "antd";
+import { Card, Tag, Tooltip, Typography, Empty, Row, Col } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 
 import Link from "next/link";
@@ -9,6 +9,7 @@ const { Title, Text } = Typography;
 
 function TopicSubscriptionsTab({
   subscriptionsList,
+  // eslint-disable-next-line no-unused-vars
   onRemoveSubscription,
   onConfirm,
 }) {
@@ -38,7 +39,7 @@ function TopicSubscriptionsTab({
         >
           {data.camps?.map((camp, i) => {
             return (
-              <Row gutter={30}>
+              <Row gutter={30} key={camp.id + "_" + i}>
                 <Col md={12}>
                   <Tag
                     key={camp.subscription_start + i}

@@ -41,7 +41,7 @@ const SupportRemovedModal = ({
     setReasons(reasons);
   }, [reasons]);
 
-  const onSelectChange = (value, option) => {
+  const onSelectChange = (value) => {
     setSelectedValue(value);
   };
 

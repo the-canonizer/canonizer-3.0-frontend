@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Modal, Button, Form, Empty, Pagination, Spin } from "antd";
+import { Card, Modal, Button, Form, Empty, Pagination } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { DraggableArea } from "react-draggable-tags";
 import Link from "next/link";
@@ -8,7 +8,6 @@ import styles from "./DirectSupportedCamps.module.scss";
 
 import messages from "../../../../messages";
 import CustomSkelton from "../../../common/customSkelton";
-import SupportRemovedModal from "@/components/common/supportRemovedModal";
 
 export default function DirectSupportedCampsUI({
   removeCardSupportedCamps,
@@ -20,6 +19,7 @@ export default function DirectSupportedCampsUI({
   setCardCamp_ID,
   removeSupport,
   handleClose,
+  // eslint-disable-next-line no-unused-vars
   saveChanges,
   showSaveChanges,
   setShowSaveChanges,
@@ -37,7 +37,8 @@ export default function DirectSupportedCampsUI({
   const [tagsDataArrValue, setTagsDataArrValue] = useState([]);
   const [tagsCampsOrderID, setTagsCampsOrderID] = useState("");
   const [displayList, setDisplayList] = useState([]);
-  const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
+  // const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [currentCamp, setCurrentCamp] = useState(null);
 
   let tagsArrayList = [];
@@ -104,20 +105,20 @@ export default function DirectSupportedCampsUI({
 
   // remove support popup added.
 
-  const [removeForm] = Form.useForm();
+  // const [removeForm] = Form.useForm();
 
-  const onRemoveFinish = (values) => {
-    setRemoveSupportSpinner(true);
+  // const onRemoveFinish = (values) => {
+  //   setRemoveSupportSpinner(true);
 
-    if (showSaveChanges && idData == currentCamp) {
-      saveChanges(values);
-    } else {
-      removeSupport(values);
-    }
+  //   if (showSaveChanges && idData == currentCamp) {
+  //     saveChanges(values);
+  //   } else {
+  //     removeSupport(values);
+  //   }
 
-    removeForm.resetFields();
-    setRemoveSupportSpinner(false);
-  };
+  //   removeForm.resetFields();
+  //   setRemoveSupportSpinner(false);
+  // };
 
   // remove support popup added.
 

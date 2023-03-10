@@ -233,7 +233,7 @@ const TopicsList = () => {
   const ViewAllTopics = (
     <div className="text-right">
       {topicsData?.topics?.length ? (
-        <Link href="/browse" className={styles.viewAll}>
+        <Link href="/browse" className={styles.viewAll} passHref>
           <Text>View All Topics</Text>
           <i className="icon-angle-right"></i>
         </Link>
@@ -356,6 +356,7 @@ const TopicsList = () => {
                     onClick={() => {
                       handleTopicClick();
                     }}
+                    passHref
                   >
                     <Text className={styles.text}>
                       {isReview

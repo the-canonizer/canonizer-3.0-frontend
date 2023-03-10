@@ -135,6 +135,7 @@ export default function RecentActivities() {
             href={{ pathname: "/activities", query: { tabName: selectedTab } }}
             as="/activities"
             className={styles.viewAll}
+            passHref
           >
             <Text>{ViewAllName}</Text>
             <i className="icon-angle-right"></i>
