@@ -35,7 +35,7 @@ const ManageSupportUI = ({
   // CurrentCheckSupportStatus,
   getManageSupportLoadingIndicator,
   setGetManageSupportLoadingIndicator,
-  topicSupportListData,
+  topicSupportListData = [],
 }: any) => {
   const [tagsArrayList, setTagsArrayList] = useState([]);
   const [isTagDragged, setIsTagDragged] = useState(false);
@@ -360,7 +360,7 @@ const ManageSupportUI = ({
               {" "}
               {messages.labels.manageSupportNote}
             </div>
-            {!CheckDelegatedOrDirect && topicSupportListData.length != 0 ? (
+            {!CheckDelegatedOrDirect && topicSupportListData?.length != 0 ? (
               <div>
                 <Card className={styles.margin_top} type="inner">
                   <b>
