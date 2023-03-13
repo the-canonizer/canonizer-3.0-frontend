@@ -82,15 +82,25 @@ export default function DelegatedSupportCampsUI({
   };
 
   const filteredArray = () => {
-    return displayList.filter((val) => {
-      if (search.trim() == "") {
-        return val;
-      } else if (
-        val.title.toLowerCase().trim().includes(search.toLowerCase().trim())
-      ) {
-        return val;
-      }
-    });
+    // return displayList.filter((val) => {
+    //   if (search.trim() == "") {
+    //     return val;
+    //   } else if (
+    //     val.title.toLowerCase().trim().includes(search.toLowerCase().trim())
+    //   ) {
+    //     return val;
+    //   }
+    // });
+    if (search.trim() == "") {
+      return displayList;
+    }
+    else {
+      return delegatedSupportCampsList.filter((val: any)=>{
+        if(val.title.toLowerCase().trim().includes(search.toLowerCase().trim())){
+          return val;
+        }
+      })
+    }
   };
 
   useEffect(() => {
