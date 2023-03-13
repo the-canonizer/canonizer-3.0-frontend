@@ -249,7 +249,7 @@ export default function DirectSupportedCampsUI({
                 })
               : showEmpty("No Data Found ")
             : showEmpty("No Data Found ")}
-          {directSupportedCampsList && directSupportedCampsList.length > 0 ? (
+          {directSupportedCampsList && directSupportedCampsList.length > 0 && search.length==0? (
             <Pagination
               hideOnSinglePage={true}
               total={directSupportedCampsList.length}

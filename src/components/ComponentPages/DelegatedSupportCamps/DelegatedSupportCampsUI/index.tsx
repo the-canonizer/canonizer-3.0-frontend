@@ -220,7 +220,7 @@ export default function DelegatedSupportCampsUI({
                 })
               : showEmpty("No Data Found")
             : showEmpty("No Data Found")}
-          {delegatedSupportCampsList && delegatedSupportCampsList.length > 0 ? (
+          {delegatedSupportCampsList && delegatedSupportCampsList.length > 0 && search.length == 0 ? (
             <Pagination
               hideOnSinglePage={true}
               total={delegatedSupportCampsList.length}
