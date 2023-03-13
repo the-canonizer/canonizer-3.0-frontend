@@ -32,13 +32,12 @@ const DirectSupportedCamps = ({ search }: any) => {
   const [directSkeletonIndicator, setDirectSkeletonIndicator] = useState(false);
   const [modalPopupText, setModalPopupText] = useState(false);
 
-
   const handleSupportedCampsCancel = () => {
     setIsSupportedCampsModalVisible(false);
   };
 
   const handleSupportedCampsOpen = () => {
-    setModalPopupText(false)
+    setModalPopupText(false);
     setIsSupportedCampsModalVisible(true);
   };
 
@@ -140,7 +139,7 @@ const DirectSupportedCamps = ({ search }: any) => {
   const removeCardSupportedCamps = (data) => {
     setRemoveTopicNumDataId(data.topic_num);
     setNickNameId(data.nick_name_id);
-    setModalPopupText(true)
+    setModalPopupText(true);
     setIsSupportedCampsModalVisible(true);
     setremoveSupportCampsData(data);
   };
