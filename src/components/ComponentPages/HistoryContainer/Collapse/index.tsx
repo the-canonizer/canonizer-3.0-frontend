@@ -189,18 +189,7 @@ function HistoryCollapse({
                     topicNamespaceId={topicNamespaceId}
                   />
                 )}
-                {campStatement?.status == "in_review" && (
-                  <>
-                    <Title level={5}>
-                      agreed supporters :
-                      <span> {campStatement?.agreed_supporters}</span>
-                    </Title>
-                    <Title level={5}>
-                      total supporters :
-                      <span> {campStatement?.total_supporters}</span>
-                    </Title>
-                  </>
-                )}
+
                 <Checkbox
                   className={styles.campSelectCheckbox}
                   id={`select-to-compare-${campStatement?.id}`}
@@ -417,9 +406,36 @@ function HistoryCollapse({
                   <div className={styles.campStatementCollapseButtons}>
                     <Spin spinning={loading} size="default">
                       {" "}
+                      <div className={styles.infoText}>
+                        {campStatement?.status == "in_review" && (
+                          <>
+                            <i
+                              className="icon-info tooltip-icon-style"
+                              style={{
+                                position: "relative",
+                                top: 2,
+                                marginRight: 8,
+                              }}
+                            ></i>
+                            {"    "}
+                            {campStatement?.agreed_supporters} out of{" "}
+                            {campStatement?.total_supporters} required
+                            supporters have agreed
+                            {campStatement?.total_supporters -
+                              campStatement?.agreed_supporters ==
+                              1 &&
+                              !campStatement?.agreed_to_change && (
+                                <>
+                                  , Since you are the last hold out, the instant
+                                  you agree, this will go live.
+                                </>
+                              )}
+                          </>
+                        )}
+                      </div>
                       <Checkbox
                         defaultChecked={campStatement?.agreed_to_change}
-                        className={styles.campSelectCheckbox}
+                        className={styles.campSelectCheckbox + " agreed-text"}
                         onChange={agreeWithChange}
                       >
                         I agree with this{" "}
@@ -430,15 +446,6 @@ function HistoryCollapse({
                           : "statement"}{" "}
                         change
                       </Checkbox>
-                      {campStatement?.total_supporters -
-                        campStatement?.agreed_supporters ==
-                        1 &&
-                        !campStatement?.agreed_to_change && (
-                          <h3>
-                            Since you are the last hold out, the instant you
-                            agree, this will go live.
-                          </h3>
-                        )}
                     </Spin>
                   </div>
                 )}
