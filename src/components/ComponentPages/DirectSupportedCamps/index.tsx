@@ -36,9 +36,10 @@ const DirectSupportedCamps = ({ search }: any) => {
     setIsSupportedCampsModalVisible(false);
   };
 
-  const handleSupportedCampsOpen = () => {
+  const handleSupportedCampsOpen = (data) => {
     setModalPopupText(false);
     setIsSupportedCampsModalVisible(true);
+    setremoveSupportCampsData(data);
   };
 
   const handleRevertBack = (topicId, camps) => {
@@ -105,7 +106,6 @@ const DirectSupportedCamps = ({ search }: any) => {
     setRemoveTopicNumDataId(data.topic_num);
     setNickNameId(data.nick_name_id);
   };
-
   const saveChanges = async (reasonData) => {
     let resultCamp = CardData.filter(
       (values) => !campIds.includes(values.camp_num)
@@ -208,6 +208,7 @@ const DirectSupportedCamps = ({ search }: any) => {
       directSkeletonIndicator={directSkeletonIndicator}
       handleSupportedCampsOpen={handleSupportedCampsOpen}
       modalPopupText={modalPopupText}
+      campIds={campIds}
     />
   );
 };
