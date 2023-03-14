@@ -82,15 +82,25 @@ export default function DelegatedSupportCampsUI({
   };
 
   const filteredArray = () => {
-    return displayList.filter((val) => {
-      if (search.trim() == "") {
-        return val;
-      } else if (
-        val.title.toLowerCase().trim().includes(search.toLowerCase().trim())
-      ) {
-        return val;
-      }
-    });
+    // return displayList.filter((val) => {
+    //   if (search.trim() == "") {
+    //     return val;
+    //   } else if (
+    //     val.title.toLowerCase().trim().includes(search.toLowerCase().trim())
+    //   ) {
+    //     return val;
+    //   }
+    // });
+    if (search.trim() == "") {
+      return displayList;
+    }
+    else {
+      return delegatedSupportCampsList.filter((val: any)=>{
+        if(val.title.toLowerCase().trim().includes(search.toLowerCase().trim())){
+          return val;
+        }
+      })
+    }
   };
 
   useEffect(() => {
@@ -210,7 +220,7 @@ export default function DelegatedSupportCampsUI({
                 })
               : showEmpty("No Data Found")
             : showEmpty("No Data Found")}
-          {delegatedSupportCampsList && delegatedSupportCampsList.length > 0 ? (
+          {delegatedSupportCampsList && delegatedSupportCampsList.length > 0 && search.length == 0 ? (
             <Pagination
               hideOnSinglePage={true}
               total={delegatedSupportCampsList.length}
