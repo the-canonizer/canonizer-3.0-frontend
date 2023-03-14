@@ -27,16 +27,14 @@ const HeadContentAndPermissionComponent = ({
   const { isAllowed } = usePermission();
   const { isUserAuthenticated } = useAuthentication();
   const [metaContent, setMetaContent] = useState(null);
-  const [bearerToken, setBearerToken] = useState(authToken);
 
-  useEffect(() => setBearerToken(authToken), [authToken]);
+  const getToken = async () => {
+    if (!authToken) await createToken();
+  };
 
   useEffect(() => {
-    const getToken = async () => {
-      if (!authToken) await createToken();
-    };
     getToken();
-  }, [bearerToken]);
+  }, [authToken, router]);
 
   useEffect(() => {
     //Check permission
