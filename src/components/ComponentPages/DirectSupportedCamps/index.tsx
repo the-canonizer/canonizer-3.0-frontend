@@ -32,14 +32,14 @@ const DirectSupportedCamps = ({ search }: any) => {
   const [directSkeletonIndicator, setDirectSkeletonIndicator] = useState(false);
   const [modalPopupText, setModalPopupText] = useState(false);
 
-
   const handleSupportedCampsCancel = () => {
     setIsSupportedCampsModalVisible(false);
   };
 
-  const handleSupportedCampsOpen = () => {
-    setModalPopupText(false)
+  const handleSupportedCampsOpen = (data) => {
+    setModalPopupText(false);
     setIsSupportedCampsModalVisible(true);
+    setremoveSupportCampsData(data);
   };
 
   const handleRevertBack = (topicId, camps) => {
@@ -106,7 +106,6 @@ const DirectSupportedCamps = ({ search }: any) => {
     setRemoveTopicNumDataId(data.topic_num);
     setNickNameId(data.nick_name_id);
   };
-
   const saveChanges = async (reasonData) => {
     let resultCamp = CardData.filter(
       (values) => !campIds.includes(values.camp_num)
@@ -140,7 +139,7 @@ const DirectSupportedCamps = ({ search }: any) => {
   const removeCardSupportedCamps = (data) => {
     setRemoveTopicNumDataId(data.topic_num);
     setNickNameId(data.nick_name_id);
-    setModalPopupText(true)
+    setModalPopupText(true);
     setIsSupportedCampsModalVisible(true);
     setremoveSupportCampsData(data);
   };
@@ -209,6 +208,7 @@ const DirectSupportedCamps = ({ search }: any) => {
       directSkeletonIndicator={directSkeletonIndicator}
       handleSupportedCampsOpen={handleSupportedCampsOpen}
       modalPopupText={modalPopupText}
+      campIds={campIds}
     />
   );
 };

@@ -211,7 +211,9 @@ function HistoryCollapse({
                         (
                           !isUserAuthenticated
                             ? true
-                            : ifIamSupporter == 0 || ifSupportDelayed != 0
+                            : (!ifIAmExplicitSupporter &&
+                                ifIamSupporter == 0) ||
+                              ifSupportDelayed != 0
                             ? true
                             : false
                         )
@@ -400,7 +402,10 @@ function HistoryCollapse({
                   </div>
                 )}
               {campStatement?.status == "in_review" &&
-                !!(ifIamSupporter != 0 && ifSupportDelayed == 0) &&
+                !!(
+                  (ifIamSupporter != 0 && ifSupportDelayed == 0) ||
+                  ifIAmExplicitSupporter
+                ) &&
                 isUserAuthenticated &&
                 !campStatement?.isAuthor && (
                   <div className={styles.campStatementCollapseButtons}>
