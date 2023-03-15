@@ -171,7 +171,10 @@ const CampTree = ({
 
     if (tree?.at(0)) {
       const agreementCamp = tree?.at(0)[1].score;
-      if (agreementCamp > 5 && Object.keys(tree?.at(0)[1].children).length>1) {
+      if (
+        agreementCamp > 5 &&
+        Object.keys(tree?.at(0)[1].children).length > 1
+      ) {
         setShowScoreBars(true);
       } else {
         setShowScoreBars(false);

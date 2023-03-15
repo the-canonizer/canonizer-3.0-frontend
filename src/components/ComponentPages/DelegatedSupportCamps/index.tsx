@@ -44,7 +44,7 @@ const DelegatedSupportCamps = ({ search }: any) => {
     setViewmoreModalVisible(false);
   };
 
-  const removeSupport = async (reasonData) => {
+  const removeSupport = async (_, reasonData) => {
     const removeEntireData = {
       topic_num: removeTopicNumDataId,
       nick_name_id: nickNameId,
