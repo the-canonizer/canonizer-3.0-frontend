@@ -217,7 +217,10 @@ export default function RecentActivities() {
                             <Tooltip
                               title={
                                 decodedProperties?.topic_name
-                                  ? `Topic: ${decodedProperties?.topic_name} | Camp: ${decodedProperties?.camp_name}`
+                                  ? `Topic: ${decodedProperties?.topic_name}` +
+                                    (decodedProperties?.camp_name
+                                      ? `| Camp: ${decodedProperties?.camp_name}`
+                                      : "")
                                   : convert(
                                       decodedProperties?.description?.replace(
                                         /<img[^>]*>/gi,
