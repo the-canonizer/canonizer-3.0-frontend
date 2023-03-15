@@ -26,10 +26,9 @@ function TopicSubscriptionsTab({
   useEffect(() => {
     pageChange(1, 5);
     setCurrent(1);
-
-    console.log("333");
   }, [subscriptionsList]);
   const pageChange = (pageNumber, pageSize) => {
+    setCurrent(pageNumber);
     const startingPosition = (pageNumber - 1) * pageSize;
     const endingPosition = startingPosition + pageSize;
     setSubList(subscriptionsList.slice(startingPosition, endingPosition));
