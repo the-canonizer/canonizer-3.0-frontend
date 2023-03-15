@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Card, Modal, Button, Form, Empty, Pagination } from "antd";
+import { Card, Modal, Button, Form, Empty, Pagination, Spin } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { DraggableArea } from "react-draggable-tags";
-import styles from "./DirectSupportedCamps.module.scss";
 import Link from "next/link";
+
+import styles from "./DirectSupportedCamps.module.scss";
+
 import messages from "../../../../messages";
-import Spinner from "../../../common/spinner/spinner";
 import CustomSkelton from "../../../common/customSkelton";
+import SupportRemovedModal from "@/components/common/supportRemovedModal";
 
 export default function DirectSupportedCampsUI({
   removeCardSupportedCamps,
@@ -30,12 +32,17 @@ export default function DirectSupportedCampsUI({
   removeSupportCampsData,
   statusFlag,
   directSkeletonIndicator,
+  handleSupportedCampsOpen,
+  modalPopupText,
+  campIds,
+  removeCampLink
 }: any) {
   const [valData, setValData] = useState({});
   const [tagsDataArrValue, setTagsDataArrValue] = useState([]);
   const [tagsCampsOrderID, setTagsCampsOrderID] = useState("");
   const [displayList, setDisplayList] = useState([]);
-  // const [noMore, setNoMore] = useState(true);
+  const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
+  const [currentCamp, setCurrentCamp] = useState(null);
 
   let tagsArrayList = [];
   const CardTitle = (props: any) => {
@@ -78,20 +85,29 @@ export default function DirectSupportedCampsUI({
     return <Empty description={msg} />;
   };
   const filteredArray = () => {
-    return displayList.filter((val: any) => {
-      if (search.trim() == "") {
-        return val;
-      } else if (
-        val.title.toLowerCase().trim().includes(search.toLowerCase().trim())
-      ) {
-        return val;
-      }
-    });
+    // return displayList.filter((val: any) => {
+    //   if (search.trim() == "") {
+    //     return val;
+    //   } else if (
+    //     val.title.toLowerCase().trim().includes(search.toLowerCase().trim())
+    //   ) {
+    //     return val;
+    //   }
+    // });
+    if (search.trim() == "") {
+      return displayList;
+    }
+    else {
+      return directSupportedCampsList.filter((val: any)=>{
+        if(val.title.toLowerCase().trim().includes(search.toLowerCase().trim())){
+          return val;
+        }
+      })
+    }
   };
   useEffect(() => {
     pageChange(1, 5);
-  }, [directSupportedCampsList]);
-
+  }, [directSupportedCampsList.length]);
   const pageChange = (pageNumber, pageSize) => {
     const startingPosition = (pageNumber - 1) * pageSize;
     const endingPosition = startingPosition + pageSize;
@@ -99,6 +115,24 @@ export default function DirectSupportedCampsUI({
       directSupportedCampsList.slice(startingPosition, endingPosition)
     );
   };
+
+  // remove support popup added.
+
+  const [removeForm] = Form.useForm();
+
+  const onRemoveFinish = (values) => {
+    setRemoveSupportSpinner(true);
+
+    if (showSaveChanges && idData == currentCamp) {
+      saveChanges(values);
+    } else {
+      removeSupport(values);
+    }
+
+    removeForm.resetFields();
+    setRemoveSupportSpinner(false);
+  };
+  // // remove support popup added.
   return (
     <div>
       {directSkeletonIndicator ? (
@@ -187,7 +221,10 @@ export default function DirectSupportedCampsUI({
                             <Button
                               id="saveChangeBtn"
                               className={styles.save_Changes_Btn}
-                              onClick={saveChanges}
+                              onClick={() => {
+                                setCurrentCamp(data.topic_num);
+                                handleSupportedCampsOpen(data);
+                              }}
                             >
                               Save Changes
                             </Button>
@@ -212,7 +249,7 @@ export default function DirectSupportedCampsUI({
                 })
               : showEmpty("No Data Found ")
             : showEmpty("No Data Found ")}
-          {directSupportedCampsList && directSupportedCampsList.length > 0 ? (
+          {directSupportedCampsList && directSupportedCampsList.length > 0 && search.length==0? (
             <Pagination
               hideOnSinglePage={true}
               total={directSupportedCampsList.length}
@@ -227,58 +264,54 @@ export default function DirectSupportedCampsUI({
       )}
       <Modal
         className={styles.modal_cross}
-        title="Remove Support"
+        title={
+          <p id="all_camps_topics" className={styles.modalTitle}>
+           {modalPopupText ?" You are about to remove your support from all the camps from the topic:":campIds.length>1?"You are about to remove your support from the camps:":"You are about to remove your support from the camp:"}{" "}
+            <span>
+              &quot;
+             
+              {modalPopupText?
+              <Link
+              href={{
+                pathname: removeSupportCampsData.title_link
+              }}
+            >
+              <a>{removeSupportCampsData.title}</a>
+            </Link>
+              :
+              removeCampLink.map((val, index)=>{
+                return( 
+                <Link
+                href={{
+                  pathname: val.camp_link
+                }}
+              >
+                
+                <a>{(index?', ':'')+ val.camp_name}</a>
+                
+              </Link>)
+              })
+                }
+              &quot;
+            </span>{". "}
+            You can optionally add a helpful reason, along with a citation link.
+          </p>
+        }
         open={isSupportedCampsModalVisible}
         onOk={handleSupportedCampsCancel}
         onCancel={handleSupportedCampsCancel}
         footer={null}
         closeIcon={<CloseCircleOutlined />}
       >
-        <Form>
-          <Form.Item style={{ marginBottom: "0px" }}>
-            <p id="all_camps_topics">
-              Your Support for all the camps under the Topics{" "}
-              <span>
-                &quot;
-                <Link href={removeSupportCampsData.title_link}>
-                  <a>{removeSupportCampsData.title}</a>
-                </Link>
-                &quot;
-              </span>{" "}
-              will be removed. Are you sure you want to continue?
-            </p>
-          </Form.Item>
-          <Form.Item
-            id="directCampsModalForm"
-            className={styles.text_right}
-            style={{ marginBottom: "0px" }}
-          >
-            <Button
-              id="removeBtn"
-              onClick={removeSupport}
-              type="primary"
-              style={{
-                marginTop: 10,
-                marginRight: 10,
-              }}
-              className="ant-btn ant-btn-orange"
-            >
-              Remove
-            </Button>
-            <Button
-              id="cancelBtn"
-              onClick={handleSupportedCampsCancel}
-              type="default"
-              style={{
-                marginTop: 10,
-              }}
-              className="ant-btn"
-            >
-              Cancel
-            </Button>
-          </Form.Item>
-        </Form>
+        <Spin spinning={removeSupportSpinner} size="small">
+          <SupportRemovedModal
+            onFinish={onRemoveFinish}
+            handleCancel={handleSupportedCampsCancel}
+            form={removeForm}
+          />
+        </Spin>
       </Modal>
+
       <Modal
         className={styles.modal}
         title={null}

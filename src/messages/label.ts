@@ -88,6 +88,11 @@ export const labels = {
   verificationLabel: "Create Password Verification Code",
   forgotModalLabel: "Forgot Your Password?",
   nameConfirmationTitle: "Name Confirmation",
+  reasonLabel: "Reason for adding/removing support",
+  reasonLabelAdd: "Reason for support",
+  reasonLabelSummary: "Summary",
+  resonURLLabel: "Citation Link",
+  reasonModalTitle: "Reason for support end!",
 };
 
 export const preventCampLabel = [

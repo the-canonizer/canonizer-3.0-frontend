@@ -64,6 +64,8 @@ const TopicDetails = () => {
   const [totalFullSupportScore, setTotalFullSupportScore] = useState<number>(0);
   const [topicList, setTopicList] = useState([]);
   const [isSupportTreeCardModal, setIsSupportTreeCardModal] = useState(false);
+  const [isDelegateSupportTreeCardModal, setIsDelegateSupportTreeCardModal] =
+    useState(false);
   const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
   const [totalCampScoreForSupportTree, setTotalCampScoreForSupportTree] =
     useState<number>(null);
@@ -136,11 +138,11 @@ const TopicDetails = () => {
         page: 1,
       };
       await Promise.all([
+        dispatch(setCampSupportingTree({})),
         getNewsFeedApi(reqBody),
         getCurrentTopicRecordApi(reqBody),
         getCurrentCampRecordApi(reqBody),
         getCanonizedCampStatementApi(reqBody),
-        dispatch(setCampSupportingTree({})),
         getHistoryApi(reqBodyForCampData, "1", "statement"),
         getCanonizedAlgorithmsApi(),
         getTreesApi(reqBodyForService),
@@ -161,7 +163,7 @@ const TopicDetails = () => {
     camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
   };
 
-  const removeApiSupport = async (supportedId) => {
+  const removeApiSupport = async (supportedId, reasonData = {}) => {
     const supportedCampsRemove = {
       topic_num: reqBodyData.topic_num,
       remove_camps: [reqBodyData.camp_num],
@@ -169,6 +171,7 @@ const TopicDetails = () => {
       action: "all",
       nick_name_id: supportedId,
       order_update: [],
+      ...reasonData,
     };
     const reqBodyForService = {
       topic_num: +router?.query?.camp[0]?.split("-")[0],
@@ -193,7 +196,7 @@ const TopicDetails = () => {
       // fetchTotalScore();
     }
   };
-  const removeSupport = async (supportedId) => {
+  const removeSupport = async (supportedId, reasonData = {}) => {
     const RemoveSupportId = {
       topic_num: reqBodyData.topic_num,
       add_camp: {},
@@ -202,6 +205,7 @@ const TopicDetails = () => {
       action: "partial",
       nick_name_id: supportedId,
       order_update: [],
+      ...reasonData,
     };
     const reqBodyForService = {
       topic_num: +router?.query?.camp[0]?.split("-")[0],
@@ -226,11 +230,12 @@ const TopicDetails = () => {
       // fetchTotalScore();
     }
   };
-  const removeSupportForDelegate = async () => {
+  const removeSupportForDelegate = async (reasonData = {}) => {
     const removeEntireData = {
       topic_num: topicList[0].topic_num,
       nick_name_id: topicList[0].nick_name_id,
       delegated_nick_name_id: topicList[0].delegate_nick_name_id,
+      ...reasonData,
     };
     const reqBodyForService = {
       topic_num: +router?.query?.camp[0]?.split("-")[0],
@@ -248,6 +253,7 @@ const TopicDetails = () => {
     if (res && res.status_code == 200) {
       message.success(res.message);
       setIsSupportTreeCardModal(false);
+      setIsDelegateSupportTreeCardModal(false);
       GetCheckStatusData();
       //getCanonizedCampSupportingTreeApi(reqBody, algorithm);
       getTreesApi(reqBodyForService);
@@ -298,6 +304,7 @@ const TopicDetails = () => {
   };
   const handleSupportTreeCardCancel = () => {
     setIsSupportTreeCardModal(false);
+    setIsDelegateSupportTreeCardModal(false);
   };
   useEffect(() => {
     if (isUserAuthenticated) {
@@ -484,6 +491,12 @@ const TopicDetails = () => {
                           removeSupportForDelegate={removeSupportForDelegate}
                           isSupportTreeCardModal={isSupportTreeCardModal}
                           setIsSupportTreeCardModal={setIsSupportTreeCardModal}
+                          isDelegateSupportTreeCardModal={
+                            isDelegateSupportTreeCardModal
+                          }
+                          setIsDelegateSupportTreeCardModal={
+                            setIsDelegateSupportTreeCardModal
+                          }
                           handleSupportTreeCardCancel={
                             handleSupportTreeCardCancel
                           }

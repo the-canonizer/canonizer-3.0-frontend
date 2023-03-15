@@ -8,13 +8,14 @@ import {
   setCurrentCampRecord,
   setCurrentTopicRecordSubscriptionId,
   setCurrentCampRecordSubscriptionId,
+  setRemovedReasons,
 } from "../../store/slices/campDetailSlice";
 import NetworkCall from "../networkCall";
 import TreeRequest from "../request/campDetailRequest";
 import { message } from "antd";
 import { store } from "../../store";
 import { handleError } from "../../utils/generalUtility";
-import { SupportTreeAndScoreCount } from "./userApi";
+import { createToken, SupportTreeAndScoreCount } from "./userApi";
 
 export const getTreesApi = async (reqBody) => {
   try {
@@ -29,11 +30,21 @@ export const getTreesApi = async (reqBody) => {
 };
 
 export const getNewsFeedApi = async (reqBody) => {
-  let state = store.getState();
-  const { auth } = state;
+  let state = await store.getState();
+
+  const { auth } = state,
+    tc = localStorage?.getItem("auth_token");
+
+  let token = auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
+
+  if (!token) {
+    const response = await createToken();
+    token = response?.access_token;
+  }
+
   try {
     const newsFeed = await NetworkCall.fetch(
-      TreeRequest.getNewsFeed(reqBody, auth?.loggedInUser?.token),
+      TreeRequest.getNewsFeed(reqBody, token),
       false
     );
     store.dispatch(setNewsFeed(newsFeed?.data));
@@ -44,9 +55,21 @@ export const getNewsFeedApi = async (reqBody) => {
 };
 
 export const getCanonizedCampStatementApi = async (reqBody) => {
+  let state = await store.getState();
+
+  const { auth } = state,
+    tc = localStorage?.getItem("auth_token");
+
+  let token = auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
+
+  if (!token) {
+    const response = await createToken();
+    token = response?.access_token;
+  }
+
   try {
     const campStatement = await NetworkCall.fetch(
-      TreeRequest.getCampStatement(reqBody),
+      TreeRequest.getCampStatement(reqBody, token),
       false
     );
     store.dispatch(setCampStatement(campStatement?.data));
@@ -57,9 +80,21 @@ export const getCanonizedCampStatementApi = async (reqBody) => {
 };
 
 export const getCurrentTopicRecordApi = async (reqBody) => {
+  let state = await store.getState();
+
+  const { auth } = state,
+    tc = localStorage?.getItem("auth_token");
+
+  let token = auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
+
+  if (!token) {
+    const response = await createToken();
+    token = response?.access_token;
+  }
+
   try {
     const currentTopicRecord = await NetworkCall.fetch(
-      TreeRequest.getCurrentTopicRecord(reqBody),
+      TreeRequest.getCurrentTopicRecord(reqBody, token),
       false
     );
     store.dispatch(setCurrentTopicRecord(currentTopicRecord?.data));
@@ -70,11 +105,21 @@ export const getCurrentTopicRecordApi = async (reqBody) => {
 };
 
 export const getCurrentCampRecordApi = async (reqBody) => {
-  let state = store.getState();
-  const { auth } = state;
+  let state = await store.getState();
+
+  const { auth } = state,
+    tc = localStorage?.getItem("auth_token");
+
+  let token = auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
+
+  if (!token) {
+    const response = await createToken();
+    token = response?.access_token;
+  }
+
   try {
     const currentCampRecord = await NetworkCall.fetch(
-      TreeRequest.getCurrentCampRecord(reqBody, auth.loggedInUser?.token),
+      TreeRequest.getCurrentCampRecord(reqBody, token),
       false
     );
 
@@ -191,9 +236,21 @@ export const getAllUsedNickNames = async (body) => {
   }
 };
 export const getCampBreadCrumbApi = async (reqBody) => {
+  let state = await store.getState();
+
+  const { auth } = state,
+    tc = localStorage?.getItem("auth_token");
+
+  let token = auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
+
+  if (!token) {
+    const response = await createToken();
+    token = response?.access_token;
+  }
+
   try {
     const currentTopicRecord = await NetworkCall.fetch(
-      TreeRequest.getCampBreadCrumb(reqBody),
+      TreeRequest.getCampBreadCrumb(reqBody, token),
       false
     );
     return currentTopicRecord;
@@ -235,6 +292,19 @@ export const GetSupportedNickNames = async (id) => {
   try {
     const res = await NetworkCall.fetch(TreeRequest.NickNamesSupported(id));
     return res;
+  } catch (err) {
+    handleError(err);
+  }
+};
+
+export const getAllRemovedReasons = async () => {
+  try {
+    const res = await NetworkCall.fetch(TreeRequest.removedReasons());
+    if (res.status_code === 200) {
+      let rs = res?.data;
+      rs = rs?.map((r: { reason: any }) => ({ ...r, label: r.reason }));
+      store.dispatch(setRemovedReasons(rs));
+    }
   } catch (err) {
     handleError(err);
   }

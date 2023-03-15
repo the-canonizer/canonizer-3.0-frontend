@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { message } from "antd";
+
 import {
   getDelegatedSupportCampsList,
   removeSupportedCampsEntireTopic,
 } from "src/network/api/userApi";
-import { message } from "antd";
 import DelegatedSupportCampsUI from "./DelegatedSupportCampsUI";
 
 const DelegatedSupportCamps = ({ search }: any) => {
@@ -17,6 +18,10 @@ const DelegatedSupportCamps = ({ search }: any) => {
   const [delegated_nick_name_id, setDelegated_nick_name_id] = useState("");
   const [removeSupportCampsData, setRemoveSupportCampsData] = useState({});
   const [statusFlag, setStatusFlag] = useState(true);
+  const [viewMoreModalVisible, setViewmoreModalVisible] = useState(false);
+  const [viewMoreDataValue, setviewMoreDataValue] = useState([]);
+  const [delegateSupportedSkeleton, setDelegateSupportedSkeleton] =
+    useState(false);
 
   const handleSupportedCampsCancel = () => {
     setIsRemoveSupportModalVisible(false);
@@ -30,33 +35,31 @@ const DelegatedSupportCamps = ({ search }: any) => {
     setRemoveSupportCampsData(data);
   };
 
-  const [viewMoreModalVisible, setViewmoreModalVisible] = useState(false);
-  const [viewMoreDataValue, setviewMoreDataValue] = useState([]);
-  const [delegateSupportedSkeleton, setDelegateSupportedSkeleton] =
-    useState(false);
-
   const showViewMoreModal = (e, data) => {
     setViewmoreModalVisible(true);
     setviewMoreDataValue(data);
   };
+
   const handelViewMoreModalCancel = () => {
     setViewmoreModalVisible(false);
   };
-  const removeSupport = async () => {
+
+  const removeSupport = async (_, reasonData) => {
     const removeEntireData = {
       topic_num: removeTopicNumDataId,
       nick_name_id: nickNameId,
       delegated_nick_name_id: delegated_nick_name_id,
+      ...reasonData,
     };
 
     let res = await removeSupportedCampsEntireTopic(removeEntireData);
     if (res && res.status_code == 200) {
       message.success(res.message);
-      //setViewmoreModalVisible(false);
       setIsRemoveSupportModalVisible(false);
       fetchDelegatedSupportCampsList();
     }
   };
+
   const fetchDelegatedSupportCampsList = async () => {
     setDelegateSupportedSkeleton(true);
     let response = await getDelegatedSupportCampsList();
@@ -68,7 +71,9 @@ const DelegatedSupportCamps = ({ search }: any) => {
     }
     setDelegateSupportedSkeleton(false);
   };
+
   useEffect(() => {}, [statusFlag]);
+
   //onLoad
   useEffect(() => {
     fetchDelegatedSupportCampsList();
