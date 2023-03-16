@@ -889,6 +889,7 @@ export default function AddOrManage({ add }: any) {
                           toolbarClassName="toolbarClassName"
                           wrapperClassName={"wrapperClassName"}
                           editorClassName={styles.reactDraftBox}
+                          editorStyle={{ height: "180px" }}
                           editorState={editorState}
                           onEditorStateChange={setEditorState}
                         />
