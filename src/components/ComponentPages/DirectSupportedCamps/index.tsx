@@ -31,6 +31,8 @@ const DirectSupportedCamps = ({ search }: any) => {
   const [statusFlag, setStatusFlag] = useState(true);
   const [directSkeletonIndicator, setDirectSkeletonIndicator] = useState(false);
   const [modalPopupText, setModalPopupText] = useState(false);
+  const [removeCampLink, setRemoveCamplink] = useState([]);
+
 
 
   const handleSupportedCampsCancel = () => {
@@ -38,7 +40,7 @@ const DirectSupportedCamps = ({ search }: any) => {
   };
 
   const handleSupportedCampsOpen = (data) => {
-    setModalPopupText(false)
+    setModalPopupText(false);
     setIsSupportedCampsModalVisible(true);
     setremoveSupportCampsData(data);
   };
@@ -62,6 +64,7 @@ const DirectSupportedCamps = ({ search }: any) => {
       val.dis = false;
     });
     setcampIds([]);
+    setRemoveCamplink([])
     setRevertBack(camps);
   };
 
@@ -79,7 +82,7 @@ const DirectSupportedCamps = ({ search }: any) => {
     handleRevertBack(cardCamp_ID, data[0].camps);
     Object.keys(val).length === 0
       ? setcampIds([])
-      : ((val.dis = true), setcampIds([val.camp_num]));
+      : ((val.dis = true), setcampIds([val.camp_num]),setRemoveCamplink([val]));
     setIdData(topicId), setCardCamp_ID(topicId);
     setVisible(false);
   };
@@ -89,14 +92,14 @@ const DirectSupportedCamps = ({ search }: any) => {
     if (cardCamp_ID == "") {
       Object.keys(val).length === 0
         ? setcampIds([])
-        : ((val.dis = true), setcampIds([val.camp_num]));
+        : ((val.dis = true), setcampIds([val.camp_num]),setRemoveCamplink([val]));
       setShowSaveChanges(true);
       setCardCamp_ID(id);
       setIdData(id);
     } else if (cardCamp_ID && cardCamp_ID == id) {
       Object.keys(val).length === 0
         ? setcampIds([])
-        : ((val.dis = true), setcampIds([...campIds, val.camp_num]));
+        : ((val.dis = true), setcampIds([...campIds, val.camp_num]),setRemoveCamplink([...removeCampLink,val]));
       setShowSaveChanges(true);
       setCardCamp_ID(id);
     } else if (cardCamp_ID && cardCamp_ID != id) {
@@ -140,7 +143,7 @@ const DirectSupportedCamps = ({ search }: any) => {
   const removeCardSupportedCamps = (data) => {
     setRemoveTopicNumDataId(data.topic_num);
     setNickNameId(data.nick_name_id);
-    setModalPopupText(true)
+    setModalPopupText(true);
     setIsSupportedCampsModalVisible(true);
     setremoveSupportCampsData(data);
   };
@@ -210,6 +213,8 @@ const DirectSupportedCamps = ({ search }: any) => {
       handleSupportedCampsOpen={handleSupportedCampsOpen}
       modalPopupText={modalPopupText}
       campIds={campIds}
+      CardData={CardData}
+      removeCampLink={removeCampLink}
     />
   );
 };

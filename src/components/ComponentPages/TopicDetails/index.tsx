@@ -138,11 +138,11 @@ const TopicDetails = () => {
         page: 1,
       };
       await Promise.all([
+        dispatch(setCampSupportingTree({})),
         getNewsFeedApi(reqBody),
         getCurrentTopicRecordApi(reqBody),
         getCurrentCampRecordApi(reqBody),
         getCanonizedCampStatementApi(reqBody),
-        dispatch(setCampSupportingTree({})),
         getHistoryApi(reqBodyForCampData, "1", "statement"),
         getCanonizedAlgorithmsApi(),
         getTreesApi(reqBodyForService),

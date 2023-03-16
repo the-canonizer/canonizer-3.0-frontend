@@ -34,7 +34,8 @@ export default function DirectSupportedCampsUI({
   directSkeletonIndicator,
   handleSupportedCampsOpen,
   modalPopupText,
-  campIds
+  campIds,
+  removeCampLink
 }: any) {
   const [valData, setValData] = useState({});
   const [tagsDataArrValue, setTagsDataArrValue] = useState([]);
@@ -106,7 +107,7 @@ export default function DirectSupportedCampsUI({
   };
   useEffect(() => {
     pageChange(1, 5);
-  }, [directSupportedCampsList]);
+  }, [directSupportedCampsList.length]);
   const pageChange = (pageNumber, pageSize) => {
     const startingPosition = (pageNumber - 1) * pageSize;
     const endingPosition = startingPosition + pageSize;
@@ -131,8 +132,7 @@ export default function DirectSupportedCampsUI({
     removeForm.resetFields();
     setRemoveSupportSpinner(false);
   };
-
-  // remove support popup added.
+  // // remove support popup added.
   return (
     <div>
       {directSkeletonIndicator ? (
@@ -266,18 +266,34 @@ export default function DirectSupportedCampsUI({
         className={styles.modal_cross}
         title={
           <p id="all_camps_topics" className={styles.modalTitle}>
-           {modalPopupText ?" You are about to remove your support from all the camps:":"You are about to remove your support from the camp:"}{" "}
+           {modalPopupText ?" You are about to remove your support from all the camps from the topic:":campIds.length>1?"You are about to remove your support from the camps:":"You are about to remove your support from the camp:"}{" "}
             <span>
               &quot;
+             
+              {modalPopupText?
               <Link
+              href={{
+                pathname: removeSupportCampsData.title_link
+              }}
+            >
+              <a>{removeSupportCampsData.title}</a>
+            </Link>
+              :
+              removeCampLink.map((val, index)=>{
+                return( 
+                <Link
                 href={{
-                  pathname: removeSupportCampsData.title_link,
+                  pathname: val.camp_link
                 }}
               >
-                <a>{removeSupportCampsData.title}.</a>
-              </Link>
+                
+                <a>{(index?', ':'')+ val.camp_name}</a>
+                
+              </Link>)
+              })
+                }
               &quot;
-            </span>{" "}
+            </span>{". "}
             You can optionally add a helpful reason, along with a citation link.
           </p>
         }
