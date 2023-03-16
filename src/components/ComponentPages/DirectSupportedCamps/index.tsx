@@ -33,8 +33,6 @@ const DirectSupportedCamps = ({ search }: any) => {
   const [modalPopupText, setModalPopupText] = useState(false);
   const [removeCampLink, setRemoveCamplink] = useState([]);
 
-
-
   const handleSupportedCampsCancel = () => {
     setIsSupportedCampsModalVisible(false);
   };
@@ -64,7 +62,7 @@ const DirectSupportedCamps = ({ search }: any) => {
       val.dis = false;
     });
     setcampIds([]);
-    setRemoveCamplink([])
+    setRemoveCamplink([]);
     setRevertBack(camps);
   };
 
@@ -82,7 +80,9 @@ const DirectSupportedCamps = ({ search }: any) => {
     handleRevertBack(cardCamp_ID, data[0].camps);
     Object.keys(val).length === 0
       ? setcampIds([])
-      : ((val.dis = true), setcampIds([val.camp_num]),setRemoveCamplink([val]));
+      : ((val.dis = true),
+        setcampIds([val.camp_num]),
+        setRemoveCamplink([val]));
     setIdData(topicId), setCardCamp_ID(topicId);
     setVisible(false);
   };
@@ -92,14 +92,18 @@ const DirectSupportedCamps = ({ search }: any) => {
     if (cardCamp_ID == "") {
       Object.keys(val).length === 0
         ? setcampIds([])
-        : ((val.dis = true), setcampIds([val.camp_num]),setRemoveCamplink([val]));
+        : ((val.dis = true),
+          setcampIds([val.camp_num]),
+          setRemoveCamplink([val]));
       setShowSaveChanges(true);
       setCardCamp_ID(id);
       setIdData(id);
     } else if (cardCamp_ID && cardCamp_ID == id) {
       Object.keys(val).length === 0
         ? setcampIds([])
-        : ((val.dis = true), setcampIds([...campIds, val.camp_num]),setRemoveCamplink([...removeCampLink,val]));
+        : ((val.dis = true),
+          setcampIds([...campIds, val.camp_num]),
+          setRemoveCamplink([...removeCampLink, val]));
       setShowSaveChanges(true);
       setCardCamp_ID(id);
     } else if (cardCamp_ID && cardCamp_ID != id) {
