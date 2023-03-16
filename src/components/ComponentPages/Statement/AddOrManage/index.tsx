@@ -1,17 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Form,
-  Button,
-  Row,
-  Col,
-  Card,
-  Modal,
-  Spin,
-  Input,
-  Select,
-  Typography,
-  Descriptions,
-} from "antd";
+import { Form, Button, Row, Col, Card, Input, Select, Typography } from "antd";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import "antd/dist/antd.css";
@@ -26,7 +14,6 @@ import {
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
 import {
   getEditStatementApi,
-  getParseCampStatementApi,
   getEditCampApi,
   getEditTopicApi,
 } from "../../../../network/api/campManageStatementApi";
@@ -45,20 +32,13 @@ import SideBarNoFilter from "../../../ComponentPages/Home/SideBarNoFilter";
 import CampInfoBar from "../../TopicDetails/CampInfoBar";
 import PreventSubCamps from "../../../common/preventSubCampCheckbox";
 
-import Link from "next/link";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
 import {
   replaceSpecialCharacters,
   allowedEmojies,
   emojiValidation,
 } from "src/utils/generalUtility";
-import {
-  EditorState,
-  convertToRaw,
-  ContentState,
-  convertFromRaw,
-  convertFromHTML,
-} from "draft-js";
+import { EditorState, convertToRaw, ContentState } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
 //import htmlToDraft from "html-to-draftjs";
@@ -82,11 +62,7 @@ export default function AddOrManage({ add }: any) {
   const [editStatementData, setEditStatementData] = useState({ data: null });
   const [submitIsDisable, setSubmitIsDisable] = useState(true);
   const [submitIsDisableCheck, setSubmitIsDisableCheck] = useState(true);
-  const [currentTopicData, setCurrentTopicData] = useState({
-    namespace_id: "",
-  });
 
-  const [modalVisible, setModalVisible] = useState(false);
   const [nickNameData, setNickNameData] = useState([]);
   const [screenLoading, setScreenLoading] = useState(false);
   const [initialFormValues, setInitialFormValues] = useState({});
@@ -95,13 +71,7 @@ export default function AddOrManage({ add }: any) {
     camp_num: "",
   });
   const [parentCamp, setParentCamps] = useState([]);
-  const [wikiStatement, setWikiStatement] = useState("");
-  const [errors, setErrors] = useState({
-    CampNameError: false,
-    campNameMsg: "",
-    displayTextError: false,
-    displayTextErrorMsg: "",
-  });
+
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
@@ -110,7 +80,6 @@ export default function AddOrManage({ add }: any) {
   const [canNameSpace, setCanNameSpace] = useState([]);
   const [options, setOptions] = useState([...messages.preventCampLabel]);
   const [initialOptions, setInitialOptions] = useState([]);
-  const [uploadImage, setUploadImage] = useState([]);
 
   const [form] = Form.useForm();
   let objection = router?.query?.statement?.at(0)?.split("-")[1] == "objection";
@@ -355,7 +324,6 @@ export default function AddOrManage({ add }: any) {
           topic_num: router?.query?.statement[0].split("-")[0],
           camp_num: router?.query?.statement[1].split("-")[0] ?? "1",
         });
-        setCurrentTopicData(topic_res);
         setPayloadBreadCrumb({
           camp_num: router?.query?.statement[1].split("-")[0] ?? "1",
           topic_num: router?.query?.statement[0].split("-")[0],
@@ -1143,26 +1111,6 @@ export default function AddOrManage({ add }: any) {
                             >
                               Cancel
                             </Button>
-
-                            <Button
-                              htmlType="button"
-                              className="cancel-btn"
-                              type="primary"
-                              size="large"
-                              onClick={async () => {
-                                const editorValues = draftToHtml(
-                                  convertToRaw(editorState.getCurrentContent())
-                                );
-                                let res = await getParseCampStatementApi({
-                                  value: editorValues,
-                                });
-                                setWikiStatement(res?.data);
-
-                                setModalVisible(true);
-                              }}
-                            >
-                              Preview
-                            </Button>
                           </>
                         )}
                       </>
@@ -1174,151 +1122,6 @@ export default function AddOrManage({ add }: any) {
           </Card>
         </div>
       </div>
-      <Modal
-        title={
-          manageFormOf?.charAt(0).toUpperCase() +
-          manageFormOf?.slice(1) +
-          " Preview"
-        }
-        style={{
-          top: 20,
-        }}
-        visible={modalVisible}
-        onCancel={() => setModalVisible(false)}
-        onOk={() => {
-          form?.submit();
-          setModalVisible(false);
-        }}
-        okButtonProps={{
-          disabled: submitIsDisable && submitIsDisableCheck,
-        }}
-        okText={
-          add
-            ? K?.exceptionalMessages?.submitStatementButton
-            : K?.exceptionalMessages?.submitUpdateButton
-        }
-        className="statementPreviewModal"
-      >
-        <Descriptions
-          size="small"
-          column={{ xs: 1, sm: 1 }}
-          //layout="vertical"
-        >
-          {manageFormOf == "statement" && (
-            <Descriptions.Item label="Statement">
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: wikiStatement,
-                }}
-              ></div>
-            </Descriptions.Item>
-          )}
-          {manageFormOf == "topic" && (
-            <>
-              <Descriptions.Item label="Topic Name">
-                {form?.getFieldValue("topic_name")}
-              </Descriptions.Item>
-              <Descriptions.Item label="Namespace">
-                {
-                  canNameSpace?.find(
-                    (id) => id?.id == form?.getFieldValue("name_space")
-                  )?.label
-                  // form?.getFieldValue("name_space")
-                }
-              </Descriptions.Item>
-            </>
-          )}
-          {manageFormOf == "camp" && (
-            <>
-              <Descriptions.Item label="Camp Name">
-                {form?.getFieldValue("camp_name")}
-              </Descriptions.Item>
-
-              {parentCamp.length > 1 && (
-                <Descriptions.Item label="Parent Camp">
-                  {
-                    parentCamp?.find(
-                      (parent) =>
-                        parent?.camp_num ==
-                        form?.getFieldValue("parent_camp_num")
-                    )?.camp_name
-                  }
-                </Descriptions.Item>
-              )}
-
-              <Descriptions.Item label="Keywords">
-                {form?.getFieldValue("keywords")}
-              </Descriptions.Item>
-
-              <Descriptions.Item label="Camp About URL">
-                <Link href={form?.getFieldValue("camp_about_url") || ""}>
-                  <a>{form?.getFieldValue("camp_about_url") || ""}</a>
-                </Link>
-              </Descriptions.Item>
-
-              <Descriptions.Item label="Camp About Nick Name">
-                <Link
-                  href={`/user/supports/${
-                    form?.getFieldValue("camp_about_nick_name") || ""
-                  }?topicnum=${
-                    editStatementData?.data?.topic?.topic_num || ""
-                  }&campnum=${
-                    editStatementData?.data?.camp?.camp_num || ""
-                  }&namespace=${
-                    editStatementData?.data?.topic?.namespace_id || 1
-                  }`}
-                  passHref
-                >
-                  <a>
-                    {" "}
-                    {
-                      campNickName?.find(
-                        (id) =>
-                          id?.id == form?.getFieldValue("camp_about_nick_name")
-                      )?.nick_name
-                    }
-                  </a>
-                </Link>
-              </Descriptions.Item>
-            </>
-          )}
-
-          <Descriptions.Item label="Edit Summary">
-            {" "}
-            {form?.getFieldValue("edit_summary")}
-          </Descriptions.Item>
-          <Descriptions.Item label="Submitter Nick Name">
-            <Link
-              href={`/user/supports/${
-                form?.getFieldValue("nick_name") || ""
-              }?topicnum=${
-                editStatementData?.data?.topic?.topic_num ||
-                router?.query?.statement?.at(0)?.split("-")[0] ||
-                ""
-              }&campnum=${
-                editStatementData?.data?.camp?.camp_num ||
-                editStatementData?.data?.topic?.camp_num ||
-                router?.query?.statement?.at(1)?.split("-")[0] ||
-                1
-              }&namespace=${
-                editStatementData?.data?.topic?.namespace_id ||
-                currentTopicData?.namespace_id ||
-                ""
-              }`}
-              passHref
-            >
-              <a>
-                {" "}
-                {
-                  nickNameData?.find(
-                    (id) => id?.id == form?.getFieldValue("nick_name")
-                  )?.nick_name
-                }
-              </a>
-            </Link>
-          </Descriptions.Item>
-        </Descriptions>
-      </Modal>
     </>
   );
 }
