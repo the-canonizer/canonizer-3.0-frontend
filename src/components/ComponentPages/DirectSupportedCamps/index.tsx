@@ -32,6 +32,7 @@ const DirectSupportedCamps = ({ search }: any) => {
   const [directSkeletonIndicator, setDirectSkeletonIndicator] = useState(false);
   const [modalPopupText, setModalPopupText] = useState(false);
   const [removeCampLink, setRemoveCamplink] = useState([]);
+  const [isChangingOrder, setIsChangingOrder] = useState(false);
 
   const handleSupportedCampsCancel = () => {
     setIsSupportedCampsModalVisible(false);
@@ -64,6 +65,7 @@ const DirectSupportedCamps = ({ search }: any) => {
     setcampIds([]);
     setRemoveCamplink([]);
     setRevertBack(camps);
+    setIsChangingOrder(false);
   };
 
   const handleCancel = () => {
@@ -219,6 +221,8 @@ const DirectSupportedCamps = ({ search }: any) => {
       campIds={campIds}
       CardData={CardData}
       removeCampLink={removeCampLink}
+      isChangingOrder={isChangingOrder}
+      setIsChangingOrder={setIsChangingOrder}
     />
   );
 };
