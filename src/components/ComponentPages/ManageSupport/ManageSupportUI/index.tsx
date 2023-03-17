@@ -471,6 +471,7 @@ const ManageSupportUI = ({
                   handleCancel={closePopup}
                   form={removeForm}
                   isAdd={true}
+                  isOrderChange={isTagDragged}
                 />
               </Card>
             )}
