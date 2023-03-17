@@ -152,17 +152,19 @@ const CampInfoBar = ({
     <Menu className={styles.campForumDropdownMenu}>
       {isUserAuthenticated && is_admin && (
         <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
-          {router.pathname == "/support/[...manageSupport]" ?
-          <Link href={router.asPath.replace("support", "addnews")}>
-            <a rel="noopener noreferrer" href="/add-news">
-              Add News
-            </a>
-          </Link>:
-          <Link href={router.asPath.replace("topic", "addnews")}>
-            <a rel="noopener noreferrer" href="/add-news">
-              Add News
-            </a>
-          </Link>}
+          {router.pathname == "/support/[...manageSupport]" ? (
+            <Link href={router.asPath.replace("support", "addnews")}>
+              <a rel="noopener noreferrer" href="/add-news">
+                Add News
+              </a>
+            </Link>
+          ) : (
+            <Link href={router.asPath.replace("topic", "addnews")}>
+              <a rel="noopener noreferrer" href="/add-news">
+                Add News
+              </a>
+            </Link>
+          )}
         </Menu.Item>
       )}
       <Menu.Item

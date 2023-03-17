@@ -1072,6 +1072,7 @@ export default function AddOrManage({ add }: any) {
                           className={`btn-orange mr-3 ${styles.btnSubmit}`}
                           htmlType="submit"
                           disabled={submitIsDisable && submitIsDisableCheck}
+                          id="update-submit-btn"
                         >
                           {add
                             ? K?.exceptionalMessages?.submitStatementButton
@@ -1140,6 +1141,7 @@ export default function AddOrManage({ add }: any) {
                                           )}`
                                     );
                               }}
+                              id="update-cancel-btn"
                             >
                               Cancel
                             </Button>
@@ -1160,6 +1162,7 @@ export default function AddOrManage({ add }: any) {
 
                                 setModalVisible(true);
                               }}
+                              id="update-preview-btn"
                             >
                               Preview
                             </Button>
