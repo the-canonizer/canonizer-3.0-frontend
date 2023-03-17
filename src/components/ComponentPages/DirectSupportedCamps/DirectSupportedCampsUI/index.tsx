@@ -35,7 +35,9 @@ export default function DirectSupportedCampsUI({
   handleSupportedCampsOpen,
   modalPopupText,
   campIds,
-  removeCampLink
+  removeCampLink,
+  isChangingOrder,
+  setIsChangingOrder,
 }: any) {
   const [valData, setValData] = useState({});
   const [tagsDataArrValue, setTagsDataArrValue] = useState([]);
@@ -66,6 +68,7 @@ export default function DirectSupportedCampsUI({
     setTagsDataArrValue(tags);
     handleClose({}, topic_num, data, tags);
     setValData({});
+    setIsChangingOrder(true);
   };
 
   useEffect(() => {
@@ -96,13 +99,14 @@ export default function DirectSupportedCampsUI({
     // });
     if (search.trim() == "") {
       return displayList;
-    }
-    else {
-      return directSupportedCampsList.filter((val: any)=>{
-        if(val.title.toLowerCase().trim().includes(search.toLowerCase().trim())){
+    } else {
+      return directSupportedCampsList.filter((val: any) => {
+        if (
+          val.title.toLowerCase().trim().includes(search.toLowerCase().trim())
+        ) {
           return val;
         }
-      })
+      });
     }
   };
   useEffect(() => {
@@ -249,7 +253,9 @@ export default function DirectSupportedCampsUI({
                 })
               : showEmpty("No Data Found ")
             : showEmpty("No Data Found ")}
-          {directSupportedCampsList && directSupportedCampsList.length > 0 && search.length==0? (
+          {directSupportedCampsList &&
+          directSupportedCampsList.length > 0 &&
+          search.length == 0 ? (
             <Pagination
               hideOnSinglePage={true}
               total={directSupportedCampsList.length}
@@ -266,34 +272,41 @@ export default function DirectSupportedCampsUI({
         className={styles.modal_cross}
         title={
           <p id="all_camps_topics" className={styles.modalTitle}>
-           {modalPopupText ?" You are about to remove your support from all the camps from the topic:":campIds.length>1?"You are about to remove your support from the camps:":"You are about to remove your support from the camp:"}{" "}
-            <span>
-              &quot;
-             
-              {modalPopupText?
-              <Link
-              href={{
-                pathname: removeSupportCampsData.title_link
-              }}
-            >
-              <a>{removeSupportCampsData.title}</a>
-            </Link>
-              :
-              removeCampLink.map((val, index)=>{
-                return( 
-                <Link
-                href={{
-                  pathname: val.camp_link
-                }}
-              >
-                
-                <a>{(index?', ':'')+ val.camp_name}</a>
-                
-              </Link>)
-              })
-                }
-              &quot;
-            </span>{". "}
+            {isChangingOrder
+              ? "You are about to change the order of your supported camps"
+              : modalPopupText
+              ? "You are about to remove your support from all the camps from the topic: "
+              : campIds.length > 1
+              ? "You are about to remove your support from the camps: "
+              : "You are about to remove your support from the camp: "}
+            {!isChangingOrder && (
+              <span>
+                &quot;
+                {modalPopupText ? (
+                  <Link
+                    href={{
+                      pathname: removeSupportCampsData.title_link,
+                    }}
+                  >
+                    <a>{removeSupportCampsData.title}</a>
+                  </Link>
+                ) : (
+                  removeCampLink.map((val, index) => {
+                    return (
+                      <Link
+                        href={{
+                          pathname: val.camp_link,
+                        }}
+                      >
+                        <a>{(index ? ", " : "") + val.camp_name}</a>
+                      </Link>
+                    );
+                  })
+                )}
+                &quot;
+              </span>
+            )}
+            {". "}
             You can optionally add a helpful reason, along with a citation link.
           </p>
         }
@@ -308,6 +321,7 @@ export default function DirectSupportedCampsUI({
             onFinish={onRemoveFinish}
             handleCancel={handleSupportedCampsCancel}
             form={removeForm}
+            isOrderChange={isChangingOrder}
           />
         </Spin>
       </Modal>
@@ -318,6 +332,11 @@ export default function DirectSupportedCampsUI({
         open={visible}
         onOk={() => {
           handleOk(idData, valData);
+
+          // setTagsCampsOrderID("");
+          // setTagsDataArrValue([]);
+          // setValData({});
+          // setIsChangingOrder(false);
         }}
         onCancel={handleCancel}
       >
