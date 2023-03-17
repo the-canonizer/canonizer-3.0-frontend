@@ -26,6 +26,12 @@ body {
   float: right;
 }
 
+.agreed-text {
+  .ant-checkbox {
+    margin-right: 5px;
+  }
+}
+
 .d-flex {
   display: flex;
 }
