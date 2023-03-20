@@ -48,7 +48,7 @@ describe("ManageSupportUI", () => {
 });
 
 describe("ManageSupportUI", () => {
-  it("render show Nick Name To Support Above Camps", () => {
+  it("render show Nickname To Support Above Camps", () => {
     render(
       <ManageSupportUI
         nickNameList={nickNameList}
@@ -69,7 +69,7 @@ describe("ManageSupportUI", () => {
         unableToFindCamp={unableToFindCamp}
       />
     );
-    expect(screen.getByText("Nick Name To Support Above Camps")).toBeTruthy();
+    expect(screen.getByText("Nickname To Support Above Camps")).toBeTruthy();
   });
 });
 

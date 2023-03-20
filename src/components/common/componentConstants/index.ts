@@ -16,7 +16,7 @@ export const currentCampRecordConstants = [
     key: "camp_about_url",
   },
   {
-    label: "Camp About Nick Name",
+    label: "Camp About Nickname",
     key: "nick_name",
   },
   {

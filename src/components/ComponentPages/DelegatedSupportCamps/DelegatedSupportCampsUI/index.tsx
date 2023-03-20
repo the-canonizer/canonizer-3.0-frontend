@@ -67,7 +67,7 @@ export default function DelegatedSupportCampsUI({
             </Link>
           </p>
           <p>
-            Nick Name:{" "}
+            Nickname:{" "}
             <Link href={props.NickNameLink}>
               <a className={styles.Bluecolor}>{props.NickName}</a>
             </Link>

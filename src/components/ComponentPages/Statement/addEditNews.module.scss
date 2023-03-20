@@ -69,6 +69,13 @@
       margin-left: 0.5rem;
     }
   }
+  @media screen and (max-width: 767px) {
+    [class="ant-checkbox-wrapper"] {
+      & + [class="ant-checkbox-wrapper"] {
+        margin-left: 0;
+      }
+    }
+  }
 }
 
 .newsFormFieldsCard {

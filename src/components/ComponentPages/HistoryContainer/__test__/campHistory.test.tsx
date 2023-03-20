@@ -123,7 +123,7 @@ describe("CampHistory Page", () => {
       expect(screen.getByText(/Namespace :/i));
       expect(screen.getByText(/\/general\//i));
       expect(screen.getByText(/submitted on :/i));
-      expect(screen.getByText(/submitter nick name :/i));
+      expect(screen.getByText(/submitter nickname :/i));
       expect(
         screen.getByRole("link", {
           name: /brent_allsop/i,
