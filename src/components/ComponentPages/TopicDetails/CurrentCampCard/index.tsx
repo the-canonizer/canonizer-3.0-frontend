@@ -97,7 +97,7 @@ const CurrentCampCard = ({ loadingIndicator }) => {
           })}
         </Descriptions>
         <div className="topicDetailsCollapseFooter">
-          <CustomButton className="btn-green">
+          <CustomButton className="btn-green" id="manage-camp-btn">
             <Link
               href={`/camp/history/${replaceSpecialCharacters(
                 router?.query?.camp[0],
