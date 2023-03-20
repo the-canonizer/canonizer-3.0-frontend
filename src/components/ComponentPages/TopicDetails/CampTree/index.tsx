@@ -48,6 +48,8 @@ const CampTree = ({
     selectedKeys,
     e: { selected; selectedNodes; node; event }
   ) => {
+    let uniquekeyss = toFindDuplicates([...selectedKeys, ...uniqueKeys]);
+    onExpand(uniquekeyss);
     if (!(selectedKeys.join() === "custom" || selectedKeys.join() === "")) {
       setSelectedExpand(selectedKeys);
       dispatch(setCurrentCamp(e?.selectedNodes[0]?.data));

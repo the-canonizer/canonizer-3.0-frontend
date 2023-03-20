@@ -40,7 +40,7 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
       </Title>
 
       <Title level={5}>
-        Camp About Nick Name :{" "}
+        Camp About Nickname :{" "}
         <span>
           <Link
             href={`/user/supports/${
@@ -56,7 +56,7 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
       </Title>
 
       <Title level={5}>
-        Submitter Nick Name :{" "}
+        Submitter Nickname :{" "}
         <span>
           <Link
             href={`/user/supports/${
@@ -92,7 +92,7 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
       )}
       {campStatement?.objector_nick_name && (
         <Title level={5}>
-          Objector Nick Name :{" "}
+          Objector Nickname :{" "}
           <span>
             <Link
               href={`/user/supports/${

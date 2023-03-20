@@ -571,12 +571,12 @@ export default function AddOrManage({ add }: any) {
             >
               <Row gutter={28}>
                 <Col xs={24} sm={24} xl={12}>
-                  {/* Nick name=================================================================== */}
+                  {/* Nickname=================================================================== */}
                   <Form.Item
                     className={styles.formItem}
                     label={
                       <>
-                        Nick Name <span className="required">*</span>
+                        Nickname <span className="required">*</span>
                       </>
                     }
                     name="nick_name"
@@ -856,8 +856,8 @@ export default function AddOrManage({ add }: any) {
                         <Editor
                           toolbarClassName="toolbarClassName"
                           wrapperClassName={"wrapperClassName"}
-                          editorStyle={{ height: "176px" }}
                           editorClassName={styles.reactDraftBox}
+                          editorStyle={{ height: "180px" }}
                           editorState={editorState}
                           onEditorStateChange={setEditorState}
                         />
@@ -970,10 +970,10 @@ export default function AddOrManage({ add }: any) {
                               <Input maxLength={1024} />
                             )}
                           </Form.Item>
-                          {/* cmap about nick name ========================================== --------------------- */}
+                          {/* cmap about Nickname ========================================== --------------------- */}
                           <Form.Item
                             className={`${styles.formItem} mb-2`}
-                            label={<>Camp About Nick Name</>}
+                            label={<>Camp About Nickname</>}
                             name="camp_about_nick_name"
                           >
                             {screenLoading ? (
@@ -986,7 +986,7 @@ export default function AddOrManage({ add }: any) {
                             ) : (
                               <Select
                                 size={"large"}
-                                placeholder="--Select Camp About Nick Name"
+                                placeholder="--Select Camp About Nickname"
                                 // data-id="parent-camp"
                                 showSearch
                                 optionFilterProp="children"
@@ -1040,6 +1040,7 @@ export default function AddOrManage({ add }: any) {
                           className={`btn-orange mr-3 ${styles.btnSubmit}`}
                           htmlType="submit"
                           disabled={submitIsDisable && submitIsDisableCheck}
+                          id="update-submit-btn"
                         >
                           {add
                             ? K?.exceptionalMessages?.submitStatementButton
@@ -1108,6 +1109,7 @@ export default function AddOrManage({ add }: any) {
                                           )}`
                                     );
                               }}
+                              id="update-cancel-btn"
                             >
                               Cancel
                             </Button>

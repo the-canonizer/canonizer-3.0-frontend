@@ -372,6 +372,7 @@ const SupportTreeCard = ({
                 <CustomButton
                   className="btn-orange"
                   disabled={asof == "bydate"}
+                  id="manage-support-btn"
                 >
                   {/* {K?.exceptionalMessages?.directJoinSupport} */}
                   {getCheckSupportStatus?.is_delegator == 1 ||

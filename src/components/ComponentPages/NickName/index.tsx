@@ -21,7 +21,7 @@ const NickName = () => {
     useState(false);
 
   const editNickName = (record) => {
-    setAddEditTitle("Edit Nick Name");
+    setAddEditTitle("Edit Nickname");
     setAddEditBtn("Update");
     setIsNickNameModalVisible(true);
     setSelectedNickNameList(record);
@@ -37,7 +37,7 @@ const NickName = () => {
 
   const handleAddNickName = () => {
     add_edit_form.resetFields();
-    setAddEditTitle("Add New Nick Name");
+    setAddEditTitle("Add New Nickname");
     setIsNickNameModalVisible(true);
     setAddEditBtn("Create");
   };
