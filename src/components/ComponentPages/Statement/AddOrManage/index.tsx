@@ -603,12 +603,12 @@ export default function AddOrManage({ add }: any) {
             >
               <Row gutter={28}>
                 <Col xs={24} sm={24} xl={12}>
-                  {/* Nick name=================================================================== */}
+                  {/* Nickname=================================================================== */}
                   <Form.Item
                     className={styles.formItem}
                     label={
                       <>
-                        Nick Name <span className="required">*</span>
+                        Nickname <span className="required">*</span>
                       </>
                     }
                     name="nick_name"
@@ -1002,10 +1002,10 @@ export default function AddOrManage({ add }: any) {
                               <Input maxLength={1024} />
                             )}
                           </Form.Item>
-                          {/* cmap about nick name ========================================== --------------------- */}
+                          {/* cmap about Nickname ========================================== --------------------- */}
                           <Form.Item
                             className={`${styles.formItem} mb-2`}
-                            label={<>Camp About Nick Name</>}
+                            label={<>Camp About Nickname</>}
                             name="camp_about_nick_name"
                           >
                             {screenLoading ? (
@@ -1018,7 +1018,7 @@ export default function AddOrManage({ add }: any) {
                             ) : (
                               <Select
                                 size={"large"}
-                                placeholder="--Select Camp About Nick Name"
+                                placeholder="--Select Camp About Nickname"
                                 // data-id="parent-camp"
                                 showSearch
                                 optionFilterProp="children"
@@ -1072,6 +1072,7 @@ export default function AddOrManage({ add }: any) {
                           className={`btn-orange mr-3 ${styles.btnSubmit}`}
                           htmlType="submit"
                           disabled={submitIsDisable && submitIsDisableCheck}
+                          id="update-submit-btn"
                         >
                           {add
                             ? K?.exceptionalMessages?.submitStatementButton
@@ -1140,6 +1141,7 @@ export default function AddOrManage({ add }: any) {
                                           )}`
                                     );
                               }}
+                              id="update-cancel-btn"
                             >
                               Cancel
                             </Button>
@@ -1160,6 +1162,7 @@ export default function AddOrManage({ add }: any) {
 
                                 setModalVisible(true);
                               }}
+                              id="update-preview-btn"
                             >
                               Preview
                             </Button>
@@ -1256,7 +1259,7 @@ export default function AddOrManage({ add }: any) {
                 </Link>
               </Descriptions.Item>
 
-              <Descriptions.Item label="Camp About Nick Name">
+              <Descriptions.Item label="Camp About Nickname">
                 <Link
                   href={`/user/supports/${
                     form?.getFieldValue("camp_about_nick_name") || ""
@@ -1287,7 +1290,7 @@ export default function AddOrManage({ add }: any) {
             {" "}
             {form?.getFieldValue("edit_summary")}
           </Descriptions.Item>
-          <Descriptions.Item label="Submitter Nick Name">
+          <Descriptions.Item label="Submitter Nickname">
             <Link
               href={`/user/supports/${
                 form?.getFieldValue("nick_name") || ""

@@ -66,7 +66,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
         </Paragraph>
 
         <div className="topicDetailsCollapseFooter">
-          <CustomButton className="btn-green">
+          <CustomButton className="btn-green" id="add-camp-statement-btn">
             <Link
               href={
                 history?.items?.length > 0

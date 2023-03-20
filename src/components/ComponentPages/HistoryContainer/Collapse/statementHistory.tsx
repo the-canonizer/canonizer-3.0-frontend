@@ -19,7 +19,7 @@ const StatementHistory = ({ campStatement, topicNamespaceId }: any) => {
         Submitted On : <span>{covertToTime(campStatement?.submit_time)}</span>
       </Title>
       <Title level={5}>
-        Submitter Nick Name :{" "}
+        Submitter Nickname :{" "}
         <span>
           <Link
             href={`/user/supports/${

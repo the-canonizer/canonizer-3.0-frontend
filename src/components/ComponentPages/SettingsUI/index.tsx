@@ -31,7 +31,7 @@ const tabList = [
   },
   {
     key: "nick_name",
-    tab: "Nick Names",
+    tab: "Nicknames",
   },
   {
     key: "supported_camps",
