@@ -379,7 +379,13 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                 <i className="icon-info"></i>
               </Popover>
             </div>
+            {isAuth.isUserAuthenticated ? (
+              <div className={styles.scoreCheckbox}>
+                <FullScoreCheckbox />
+              </div>
+          ) : null}
           </Panel>
+          
           <Panel
             header={
               <span className={styles.title}>
@@ -451,20 +457,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
               }
             />
           </Panel>
-          {isAuth.isUserAuthenticated ? (
-            <Panel
-              header={
-                <span className={styles.title}>
-                  Score on all supported camps
-                </span>
-              }
-              key="3"
-            >
-              <div className={styles.scoreCheckbox}>
-                <FullScoreCheckbox />
-              </div>
-            </Panel>
-          ) : null}
+          
         </Collapse>
       </div>
     </>
