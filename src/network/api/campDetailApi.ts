@@ -14,7 +14,7 @@ import NetworkCall from "../networkCall";
 import TreeRequest from "../request/campDetailRequest";
 import { message } from "antd";
 import { store } from "../../store";
-import { handleError } from "../../utils/generalUtility";
+import { handleError, isServer } from "../../utils/generalUtility";
 import { createToken, SupportTreeAndScoreCount } from "./userApi";
 
 export const getTreesApi = async (reqBody) => {
@@ -305,6 +305,32 @@ export const getAllRemovedReasons = async () => {
       rs = rs?.map((r: { reason: any }) => ({ ...r, label: r.reason }));
       store.dispatch(setRemovedReasons(rs));
     }
+  } catch (err) {
+    handleError(err);
+  }
+};
+
+export const checkTopicCampExistAPICall = async (body: {
+  topic_num: number;
+  camp_num: number;
+}) => {
+  let state = await store.getState();
+
+  const { auth } = state,
+    tc = !isServer() && localStorage?.getItem("auth_token");
+
+  let token = auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
+
+  if (!token) {
+    const response = await createToken();
+    token = response?.access_token;
+  }
+
+  try {
+    const res = await NetworkCall.fetch(
+      TreeRequest.checkTopicCampExistRequest(body, token)
+    );
+    return res;
   } catch (err) {
     handleError(err);
   }

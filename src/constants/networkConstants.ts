@@ -185,6 +185,7 @@ const NetworkConstants = {
 
     GetRemovedReasons: `${BaseCanonizerApiUrl}/support-reason-list`,
     GetXMLData: `${BaseCanonizerApiUrl}/sitemaps`,
+    CheckTopicCampExist: `${BaseCanonizerApiUrl}/notify-if-url-not-exist`,
   },
   Method: {
     GET: "GET",
