@@ -48,7 +48,7 @@ export default function CanonVideos() {
     node.play();
   };
 
-  const onChange = (e: RadioChangeEvent, res) => {
+  const onChange = (e: RadioChangeEvent, res: string) => {
     setVideoResolution(e.target.value);
 
     const filtredVides = videos?.filter((vd) => vd?.id === selectedVideoId);
@@ -74,8 +74,8 @@ export default function CanonVideos() {
 
         const videoss = data?.data;
 
-        if (q?.ch || q?.res) {
-          const videoTitle = replaceString(q?.ch as string, true);
+        if (q?.chapter || q?.res) {
+          const videoTitle = replaceString(q?.chapter as string, true);
           const filteredVideo = Object.values(videoss)?.filter((video) => {
             if (video["title"] === videoTitle) {
               return video;
@@ -89,13 +89,18 @@ export default function CanonVideos() {
 
             setSelectedVideoId(selectedVideo["id"]);
 
-            selectedVideo["resolutions"]?.map((res) => {
-              if (res?.title?.includes(q?.res)) {
-                setVideoResolution(res?.link);
-                resLink = res?.link;
-                return;
+            selectedVideo["resolutions"]?.map(
+              (res: {
+                title: string | (string | string[])[];
+                link: React.SetStateAction<string>;
+              }) => {
+                if (res?.title?.includes(q?.res as string)) {
+                  setVideoResolution(res?.link);
+                  resLink = res?.link as string;
+                  return;
+                }
               }
-            });
+            );
 
             const node = document.getElementsByTagName("video")[0];
             if (node) {
@@ -155,8 +160,12 @@ export default function CanonVideos() {
     }, 800);
   }, []);
 
-  function addQueryParams(ch, res, t) {
-    router.query.ch = ch;
+  function addQueryParams(
+    chapter: string | string[],
+    res: string | string[],
+    t: string | string[]
+  ) {
+    router.query.chapter = chapter;
     router.query.res = res;
     if (t) {
       router.query.t = t;
@@ -205,18 +214,28 @@ export default function CanonVideos() {
                 className={styles.radioGroup}
                 value={videoResolution}
               >
-                {videos[selectedVideoId - 1]?.resolutions?.map((data) => {
-                  return (
-                    <Radio
-                      key={data?.id}
-                      value={data?.link}
-                      checked={videoResolution === data?.link}
-                      onChange={(e) => onChange(e, data?.title)}
-                    >
-                      {data?.title}
-                    </Radio>
-                  );
-                })}
+                {videos[selectedVideoId - 1]?.resolutions?.map(
+                  (data: {
+                    id: React.Key;
+                    link: string;
+                    title:
+                      | boolean
+                      | React.ReactChild
+                      | React.ReactFragment
+                      | React.ReactPortal;
+                  }) => {
+                    return (
+                      <Radio
+                        key={data?.id}
+                        value={data?.link}
+                        checked={videoResolution === data?.link}
+                        onChange={(e) => onChange(e, data?.title)}
+                      >
+                        {data?.title}
+                      </Radio>
+                    );
+                  }
+                )}
               </Radio.Group>
             ) : (
               <CustomSkelton
