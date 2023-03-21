@@ -91,6 +91,7 @@ function HistoryCollapse({
       camp_num: historyOf == "topic" ? 1 : router.query.camp[1].split("-")[0],
       change_for: historyOf,
       nick_name_id: userNickNameData[0]?.id,
+      user_agreed: campStatement?.agreed_to_change ? 0 : 1,
     };
     await agreeToChangeApi(reqBody);
     changeAgree();
@@ -210,7 +211,9 @@ function HistoryCollapse({
                         (
                           !isUserAuthenticated
                             ? true
-                            : ifIamSupporter == 0 || ifSupportDelayed != 0
+                            : (!ifIAmExplicitSupporter &&
+                                ifIamSupporter == 0) ||
+                              ifSupportDelayed != 0
                             ? true
                             : false
                         )
@@ -399,18 +402,45 @@ function HistoryCollapse({
                   </div>
                 )}
               {campStatement?.status == "in_review" &&
-                !!(ifIamSupporter != 0 && ifSupportDelayed == 0) &&
+                !!(
+                  (ifIamSupporter != 0 && ifSupportDelayed == 0) ||
+                  ifIAmExplicitSupporter
+                ) &&
                 isUserAuthenticated &&
                 !campStatement?.isAuthor && (
                   <div className={styles.campStatementCollapseButtons}>
                     <Spin spinning={loading} size="default">
                       {" "}
+                      <div className={styles.infoText}>
+                        {campStatement?.status == "in_review" && (
+                          <>
+                            <i
+                              className="icon-info tooltip-icon-style"
+                              style={{
+                                position: "relative",
+                                top: 2,
+                                marginRight: 8,
+                              }}
+                            ></i>
+                            {"    "}
+                            {campStatement?.agreed_supporters} out of{" "}
+                            {campStatement?.total_supporters} required
+                            supporters have agreed
+                            {campStatement?.total_supporters -
+                              campStatement?.agreed_supporters ==
+                              1 &&
+                              !campStatement?.agreed_to_change && (
+                                <>
+                                  , Since you are the last hold out, the instant
+                                  you agree, this will go live.
+                                </>
+                              )}
+                          </>
+                        )}
+                      </div>
                       <Checkbox
                         defaultChecked={campStatement?.agreed_to_change}
-                        disabled={
-                          campStatement?.agreed_to_change || isSelectChecked
-                        }
-                        className={styles.campSelectCheckbox}
+                        className={styles.campSelectCheckbox + " agreed-text"}
                         onChange={agreeWithChange}
                       >
                         I agree with this{" "}

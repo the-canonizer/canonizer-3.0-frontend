@@ -21,6 +21,7 @@ const SupportRemovedModal = ({
   handleCancel,
   form,
   isAdd = false,
+  isOrderChange = false,
 }) => {
   const reasons = useSelector(
     (state: RootState) => state?.topicDetails?.removedReasons
@@ -60,7 +61,13 @@ const SupportRemovedModal = ({
         <Row gutter={16}>
           <Col xs={24} sm={24}>
             <Form.Item
-              label={<Fragment>{labels.reasonLabel}</Fragment>}
+              label={
+                <Fragment>
+                  {isOrderChange
+                    ? labels.reasonChangeLabel
+                    : labels.reasonLabel}
+                </Fragment>
+              }
               name="reason"
               {...removedReasonSelectRule}
             >

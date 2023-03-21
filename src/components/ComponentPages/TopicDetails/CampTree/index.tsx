@@ -48,6 +48,8 @@ const CampTree = ({
     selectedKeys,
     e: { selected; selectedNodes; node; event }
   ) => {
+    let uniquekeyss = toFindDuplicates([...selectedKeys, ...uniqueKeys]);
+    onExpand(uniquekeyss);
     if (!(selectedKeys.join() === "custom" || selectedKeys.join() === "")) {
       setSelectedExpand(selectedKeys);
       dispatch(setCurrentCamp(e?.selectedNodes[0]?.data));
@@ -171,7 +173,10 @@ const CampTree = ({
 
     if (tree?.at(0)) {
       const agreementCamp = tree?.at(0)[1].score;
-      if (agreementCamp > 5 && Object.keys(tree?.at(0)[1].children).length>1) {
+      if (
+        agreementCamp > 5 &&
+        Object.keys(tree?.at(0)[1].children).length > 1
+      ) {
         setShowScoreBars(true);
       } else {
         setShowScoreBars(false);

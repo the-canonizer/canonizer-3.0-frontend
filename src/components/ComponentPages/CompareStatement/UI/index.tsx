@@ -112,7 +112,7 @@ function CompareStatementUI({
                       <Text>{covertToTime(s1?.submit_time)}</Text>
                     </Paragraph>
                     <Paragraph>
-                      <Text strong>Submitter Nick Name : </Text>
+                      <Text strong>Submitter Nickname : </Text>
                       <Text>
                         <Link
                           href={`/user/supports/${
@@ -159,7 +159,7 @@ function CompareStatementUI({
                           </Text>
                         </Paragraph>
                         <Paragraph>
-                          <Text strong>Camp About Nick Name : </Text>
+                          <Text strong>Camp About Nickname : </Text>
                           <Text>
                             <Link
                               href={`/user/supports/${
@@ -222,7 +222,7 @@ function CompareStatementUI({
                       <Text>{covertToTime(s2?.submit_time)}</Text>
                     </Paragraph>
                     <Paragraph>
-                      <Text strong>Submitter Nick Name : </Text>
+                      <Text strong>Submitter Nickname : </Text>
                       <Text>
                         <Link
                           href={`/user/supports/${
@@ -268,7 +268,7 @@ function CompareStatementUI({
                           </Text>
                         </Paragraph>
                         <Paragraph>
-                          <Text strong>Camp About Nick Name : </Text>
+                          <Text strong>Camp About Nickname : </Text>
                           <Text>
                             <Link
                               href={`/user/supports/${
@@ -353,7 +353,7 @@ function CompareStatementUI({
                       <Text>{covertToTime(liveStatement?.submit_time)}</Text>
                     </Paragraph>
                     <Paragraph>
-                      <Text strong>Submitter Nick Name : </Text>
+                      <Text strong>Submitter Nickname : </Text>
                       <Text>
                         <Link
                           href={`/user/supports/${
@@ -401,7 +401,7 @@ function CompareStatementUI({
                           </Text>
                         </Paragraph>
                         <Paragraph>
-                          <Text strong>Camp About Nick Name : </Text>
+                          <Text strong>Camp About Nickname : </Text>
                           <Text>
                             <Link
                               href={`/user/supports/${

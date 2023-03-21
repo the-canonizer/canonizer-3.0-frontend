@@ -14,7 +14,7 @@ const profileData = {
 
 const userSupportedCampsList = [
   {
-    nick_name: "Test Nick Name",
+    nick_name: "Test Nickname",
     topic: [],
   },
 ];
@@ -103,7 +103,7 @@ describe("userProfileCard", () => {
     );
     // expect(
     //   container.getElementsByClassName("UserProfile_Bluecolor__El2lJ")[0]
-    // ).toHaveTextContent("Test Nick Name");
+    // ).toHaveTextContent("Test Nickname");
     expect(
       container.getElementsByClassName("UserProfile_Bluecolor__El2lJ")
     ).toBeTruthy();

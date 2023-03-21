@@ -44,7 +44,7 @@ const CurrentTopicCard = ({ loadingIndicator }) => {
           </Descriptions.Item>
         </Descriptions>
         <div className="topicDetailsCollapseFooter">
-          <CustomButton className="btn-green">
+          <CustomButton className="btn-green" id="manage-topic-btn">
             <Link
               href={`/topic/history/${replaceSpecialCharacters(
                 router?.query?.camp[0],

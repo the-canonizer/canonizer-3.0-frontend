@@ -20,6 +20,7 @@ export const createToken = async () => {
   try {
     const token = await NetworkCall.fetch(UserRequest.createToken());
     store.dispatch(setAuthToken(token?.data?.access_token));
+    localStorage.setItem("auth_token", token?.data?.access_token);
     return token.data;
   } catch (error) {
     handleError(error);

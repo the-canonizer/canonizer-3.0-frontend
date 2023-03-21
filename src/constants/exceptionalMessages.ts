@@ -10,7 +10,7 @@ const ExceptionalMessageConstants = {
   manageCampButton: "Manage/Edit This Camp",
   tooltipNewsEdit: "Only the author of this news is allowed to edit.",
   tooltipNewsDelete: "Only the author of this news is allowed to delete.",
-  selectNickNameErrorMsg: "Please select Nick name",
+  selectNickNameErrorMsg: "Please select Nickname",
   campNameReqErr: "Camp name is required",
   topicNameReqErr: "Topic name is required",
   statementRequiredErrorMsg: "Statement is required",
@@ -32,7 +32,7 @@ const ExceptionalMessageConstants = {
     "Only direct supporters at the time this change was submitted can object.",
   createNewCampTooltipMsg:
     "A new camp cannot be created since the topic didn’t exist on the selected date.",
-  objectorNickNameHeading: "Objector Nick Name : ",
+  objectorNickNameHeading: "Objector Nickname : ",
   objectedModelTitle: "Why can't I object?",
   objectedModalMsg:
     "Only direct supporters at the time this change was submitted can object.",
