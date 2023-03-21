@@ -229,7 +229,7 @@ export default function CanonVideos() {
                         key={data?.id}
                         value={data?.link}
                         checked={videoResolution === data?.link}
-                        onChange={(e) => onChange(e, data?.title)}
+                        onChange={(e) => onChange(e, data?.title as string)}
                       >
                         {data?.title}
                       </Radio>
