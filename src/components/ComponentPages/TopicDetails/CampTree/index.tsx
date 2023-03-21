@@ -278,6 +278,10 @@ const CampTree = ({
                           </a>
                         </Link>
                       </span>
+                      <span className={styles.subScriptionIcon}>
+                        {isUserAuthenticated &&
+                          subScriptionStatus(data[item].subscribed_users)}
+                      </span>
                       <span>
                         <ProgressBar
                           completed={77}
@@ -302,10 +306,6 @@ const CampTree = ({
                               : data[item].score?.toFixed(2)
                           }
                         />
-                      </span>
-                      <span className={styles.subScriptionIcon}>
-                        {isUserAuthenticated &&
-                          subScriptionStatus(data[item].subscribed_users)}
                       </span>
                     </div>
                   </div>
