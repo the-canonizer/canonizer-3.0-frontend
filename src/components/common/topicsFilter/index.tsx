@@ -383,9 +383,9 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
               <div className={styles.scoreCheckbox}>
                 <FullScoreCheckbox />
               </div>
-          ) : null}
+            ) : null}
           </Panel>
-          
+
           <Panel
             header={
               <span className={styles.title}>
@@ -457,7 +457,6 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
               }
             />
           </Panel>
-          
         </Collapse>
       </div>
     </>

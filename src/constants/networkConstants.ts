@@ -184,6 +184,7 @@ const NetworkConstants = {
     GetNickSupportUser: `${BaseCanonizerApiUrl}/get-nick-support-user/`,
 
     GetRemovedReasons: `${BaseCanonizerApiUrl}/support-reason-list`,
+    CheckTopicCampExist: `${BaseCanonizerApiUrl}/notify-if-url-not-exist`,
   },
   Method: {
     GET: "GET",
