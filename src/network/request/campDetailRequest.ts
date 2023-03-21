@@ -189,4 +189,18 @@ export default class TreeRequest extends Request {
       {}
     );
   }
+
+  static checkTopicCampExistRequest(
+    body: { topic_num: number; camp_num: number },
+    token: string
+  ) {
+    return new Request(
+      K.Network.URL.CheckTopicCampExist,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
 }

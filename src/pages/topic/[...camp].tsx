@@ -1,8 +1,8 @@
-import Layout from "../../hoc/layout";
-
-import TopicDetails from "../../components/ComponentPages/TopicDetails";
-import { setCurrentDate } from "src/store/slices/filtersSlice";
 import { useDispatch } from "react-redux";
+
+import Layout from "src/hoc/layout";
+import TopicDetails from "src/components/ComponentPages/TopicDetails";
+import { setCurrentDate } from "src/store/slices/filtersSlice";
 
 // import { wrapper } from "src/store";
 
