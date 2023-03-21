@@ -74,8 +74,8 @@ export default function CanonVideos() {
 
         const videoss = data?.data;
 
-        if (q?.ch || q?.res) {
-          const videoTitle = replaceString(q?.ch as string, true);
+        if (q?.chapter || q?.res) {
+          const videoTitle = replaceString(q?.chapter as string, true);
           const filteredVideo = Object.values(videoss)?.filter((video) => {
             if (video["title"] === videoTitle) {
               return video;
@@ -155,8 +155,8 @@ export default function CanonVideos() {
     }, 800);
   }, []);
 
-  function addQueryParams(ch, res, t) {
-    router.query.ch = ch;
+  function addQueryParams(chapter, res, t) {
+    router.query.chapter = chapter;
     router.query.res = res;
     if (t) {
       router.query.t = t;
