@@ -184,6 +184,7 @@ const NetworkConstants = {
     GetNickSupportUser: `${BaseCanonizerApiUrl}/get-nick-support-user/`,
 
     GetRemovedReasons: `${BaseCanonizerApiUrl}/support-reason-list`,
+    GetXMLData: `${BaseCanonizerApiUrl}/sitemaps`,
   },
   Method: {
     GET: "GET",
