@@ -8,6 +8,15 @@ type HeadContentProps = {
   author: string;
 };
 
+declare global {
+  interface Window {
+    dataLayer: any;
+  }
+}
+
+export const GA_TRACKING_ID =
+  process.env.NEXT_PUBLIC_GA_TRACKING_ID || "G-HKYLGCPPDC";
+
 function HeadContent({ description, title, route, author }: HeadContentProps) {
   const image_url = `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/canonizer_preview.jpg`;
   return (
@@ -49,6 +58,17 @@ function HeadContent({ description, title, route, author }: HeadContentProps) {
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image_url} />
+
+      {/* GTM Code */}
+      <script
+        async
+        src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+      ></script>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `window.dataLayer = window.dataLayer || []; function gtag(){window.dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '${GA_TRACKING_ID}');`,
+        }}
+      />
     </Head>
   );
 }
