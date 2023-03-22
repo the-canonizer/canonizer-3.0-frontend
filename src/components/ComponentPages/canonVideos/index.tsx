@@ -48,12 +48,12 @@ export default function CanonVideos() {
     node.play();
   };
 
-  const onChange = (e: RadioChangeEvent, res: string) => {
+  const onChange = (e: RadioChangeEvent, format: string) => {
     setVideoResolution(e.target.value);
 
     const filtredVides = videos?.filter((vd) => vd?.id === selectedVideoId);
     if (filtredVides && filtredVides.length) {
-      addQueryParams(filtredVides[0].title, res?.split(" ")[0], null);
+      addQueryParams(filtredVides[0].title, format?.split(" ")[0], null);
     }
 
     const node = document.getElementsByTagName("video")[0];
@@ -74,7 +74,7 @@ export default function CanonVideos() {
 
         const videoss = data?.data;
 
-        if (q?.chapter || q?.res) {
+        if (q?.chapter || q?.format) {
           const videoTitle = replaceString(q?.chapter as string, true);
           const filteredVideo = Object.values(videoss)?.filter((video) => {
             if (video["title"] === videoTitle) {
@@ -90,13 +90,13 @@ export default function CanonVideos() {
             setSelectedVideoId(selectedVideo["id"]);
 
             selectedVideo["resolutions"]?.map(
-              (res: {
+              (format: {
                 title: string | (string | string[])[];
                 link: React.SetStateAction<string>;
               }) => {
-                if (res?.title?.includes(q?.res as string)) {
-                  setVideoResolution(res?.link);
-                  resLink = res?.link as string;
+                if (format?.title?.includes(q?.format as string)) {
+                  setVideoResolution(format?.link);
+                  resLink = format?.link as string;
                   return;
                 }
               }
@@ -138,11 +138,11 @@ export default function CanonVideos() {
       const filtredVides = videos?.filter((vd) => vd?.id === selectedVideoId);
       if (filtredVides && filtredVides.length) {
         const splitedarray = videoResolution?.split("_");
-        const res = splitedarray[splitedarray?.length - 1]?.split(".")[0];
+        const format = splitedarray[splitedarray?.length - 1]?.split(".")[0];
 
         addQueryParams(
           filtredVides[0].title,
-          res,
+          format,
           playeref?.current?.currentTime
         );
       }
@@ -162,11 +162,11 @@ export default function CanonVideos() {
 
   function addQueryParams(
     chapter: string | string[],
-    res: string | string[],
+    format: string | string[],
     t: string | string[]
   ) {
     router.query.chapter = chapter;
-    router.query.res = res;
+    router.query.format = format;
     if (t) {
       router.query.t = t;
     } else {
