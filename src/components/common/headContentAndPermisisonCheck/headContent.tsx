@@ -18,7 +18,7 @@ export const GA_TRACKING_ID =
   process.env.NEXT_PUBLIC_GA_TRACKING_ID || "G-HKYLGCPPDC";
 
 function HeadContent({ description, title, route, author }: HeadContentProps) {
-  const image_url = `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/canonizer_preview.jpg`;
+  const image_url = `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/canonizer_logo.jpg`;
   return (
     <Head>
       <script
