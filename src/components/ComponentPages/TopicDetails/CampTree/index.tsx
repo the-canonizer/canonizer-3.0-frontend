@@ -48,6 +48,8 @@ const CampTree = ({
     selectedKeys,
     e: { selected; selectedNodes; node; event }
   ) => {
+    let uniquekeyss = toFindDuplicates([...selectedKeys, ...uniqueKeys]);
+    onExpand(uniquekeyss);
     if (!(selectedKeys.join() === "custom" || selectedKeys.join() === "")) {
       setSelectedExpand(selectedKeys);
       dispatch(setCurrentCamp(e?.selectedNodes[0]?.data));
@@ -276,6 +278,10 @@ const CampTree = ({
                           </a>
                         </Link>
                       </span>
+                      <span className={styles.subScriptionIcon}>
+                        {isUserAuthenticated &&
+                          subScriptionStatus(data[item].subscribed_users)}
+                      </span>
                       <span>
                         <ProgressBar
                           completed={77}
@@ -300,10 +306,6 @@ const CampTree = ({
                               : data[item].score?.toFixed(2)
                           }
                         />
-                      </span>
-                      <span className={styles.subScriptionIcon}>
-                        {isUserAuthenticated &&
-                          subScriptionStatus(data[item].subscribed_users)}
                       </span>
                     </div>
                   </div>

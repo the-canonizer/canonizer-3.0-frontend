@@ -216,26 +216,36 @@ export default function RecentActivities() {
                             <br />
                             <Tooltip
                               title={
-                                convert(
-                                  decodedProperties?.description?.replace(
-                                    /<img[^>]*>/gi,
-                                    ""
-                                  ),
-                                  {
-                                    wordwrap: 130,
-                                  }
-                                ).substring(0, 90) + "..."
+                                decodedProperties?.topic_name
+                                  ? `Topic: ${decodedProperties?.topic_name}` +
+                                    (decodedProperties?.camp_name
+                                      ? ` | Camp: ${decodedProperties?.camp_name}`
+                                      : "")
+                                  : convert(
+                                      decodedProperties?.description?.replace(
+                                        /<img[^>]*>/gi,
+                                        ""
+                                      ),
+                                      {
+                                        wordwrap: 130,
+                                      }
+                                    ).substring(0, 90) + "..."
                               }
                             >
-                              {convert(
-                                decodedProperties?.description?.replace(
-                                  /<img[^>]*>/gi,
-                                  ""
-                                ),
-                                {
-                                  wordwrap: 130,
-                                }
-                              )}
+                              {decodedProperties?.topic_name
+                                ? `Topic: ${decodedProperties?.topic_name}` +
+                                  (decodedProperties?.camp_name
+                                    ? ` | Camp: ${decodedProperties?.camp_name}`
+                                    : "")
+                                : convert(
+                                    decodedProperties?.description?.replace(
+                                      /<img[^>]*>/gi,
+                                      ""
+                                    ),
+                                    {
+                                      wordwrap: 130,
+                                    }
+                                  )}
                             </Tooltip>
                             {/* {decodedProperties?.description?.length > 100 ? (
                                 <Tooltip title={decodedProperties?.description}>

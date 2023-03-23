@@ -298,7 +298,7 @@ export default function AddOrEdit({ edit }: any) {
               className={styles.formItem}
               label={
                 <>
-                  Nick Name
+                  Nickname
                   <span className="required">*</span>
                 </>
               }
@@ -306,7 +306,7 @@ export default function AddOrEdit({ edit }: any) {
               rules={[
                 {
                   required: true,
-                  message: "Please select Nick name",
+                  message: "Please select Nickname",
                 },
               ]}
             >

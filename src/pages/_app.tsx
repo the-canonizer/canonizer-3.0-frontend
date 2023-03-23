@@ -13,7 +13,7 @@ import "../assets/scss/global.scss";
 
 import ErrorBoundary from "../hoc/ErrorBoundary";
 import HeadContentAndPermissionComponent from "../components/common/headContentAndPermisisonCheck";
-import GoogleAnalyticScripts from "../firebaseConfig/scripts";
+// import GoogleAnalyticScripts from "../firebaseConfig/scripts";
 import { store, wrapper } from "../store";
 
 class WrappedApp extends App<AppInitialProps> {
@@ -21,7 +21,7 @@ class WrappedApp extends App<AppInitialProps> {
     const { Component, pageProps } = this.props;
     return (
       <>
-        <GoogleAnalyticScripts />
+        {/* <GoogleAnalyticScripts /> */}
         <Provider store={store}>
           <ErrorBoundary>
             <HeadContentAndPermissionComponent

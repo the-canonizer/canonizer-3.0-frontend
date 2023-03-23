@@ -129,8 +129,8 @@ const CampInfoBar = ({
 
   const campOrTopicScribe = async (isTopic: Boolean) => {
     const reqBodyForService = {
-      topic_num: +router?.query?.camp[0]?.split("-")[0],
-      camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+      topic_num: +router?.query?.camp?.[0]?.split("-")[0],
+      camp_num: +(router?.query?.camp?.[1]?.split("-")[0] ?? 1),
       asOf: asof,
       asofdate:
         asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
@@ -148,16 +148,23 @@ const CampInfoBar = ({
       getTreesApi(reqBodyForService);
     }
   };
-
   const campForumDropdownMenu = (
     <Menu className={styles.campForumDropdownMenu}>
       {isUserAuthenticated && is_admin && (
         <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
-          <Link href={router.asPath.replace("topic", "addnews")}>
-            <a rel="noopener noreferrer" href="/add-news">
-              Add News
-            </a>
-          </Link>
+          {router.pathname == "/support/[...manageSupport]" ? (
+            <Link href={router.asPath.replace("support", "addnews")}>
+              <a rel="noopener noreferrer" href="/add-news">
+                Add News
+              </a>
+            </Link>
+          ) : (
+            <Link href={router.asPath.replace("topic", "addnews")}>
+              <a rel="noopener noreferrer" href="/add-news">
+                Add News
+              </a>
+            </Link>
+          )}
         </Menu.Item>
       )}
       <Menu.Item

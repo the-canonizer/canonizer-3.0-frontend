@@ -471,6 +471,7 @@ const ManageSupportUI = ({
                   handleCancel={closePopup}
                   form={removeForm}
                   isAdd={true}
+                  isOrderChange={isTagDragged}
                 />
               </Card>
             )}
@@ -479,7 +480,7 @@ const ManageSupportUI = ({
         <div>
           <Card className={styles.margin_top} type="inner">
             <div className={styles.card_heading}>
-              <p id="nickNameToSupport">Nick Name To Support Above Camps</p>
+              <p id="nickNameToSupport">Nickname To Support Above Camps</p>
             </div>
             <Select
               placeholder={placeholders.nickName}

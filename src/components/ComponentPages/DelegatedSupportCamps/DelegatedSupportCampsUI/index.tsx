@@ -67,7 +67,7 @@ export default function DelegatedSupportCampsUI({
             </Link>
           </p>
           <p>
-            Nick Name:{" "}
+            Nickname:{" "}
             <Link href={props.NickNameLink}>
               <a className={styles.Bluecolor}>{props.NickName}</a>
             </Link>
@@ -93,13 +93,14 @@ export default function DelegatedSupportCampsUI({
     // });
     if (search.trim() == "") {
       return displayList;
-    }
-    else {
-      return delegatedSupportCampsList.filter((val: any)=>{
-        if(val.title.toLowerCase().trim().includes(search.toLowerCase().trim())){
+    } else {
+      return delegatedSupportCampsList.filter((val: any) => {
+        if (
+          val.title.toLowerCase().trim().includes(search.toLowerCase().trim())
+        ) {
           return val;
         }
-      })
+      });
     }
   };
 
@@ -220,7 +221,9 @@ export default function DelegatedSupportCampsUI({
                 })
               : showEmpty("No Data Found")
             : showEmpty("No Data Found")}
-          {delegatedSupportCampsList && delegatedSupportCampsList.length > 0 && search.length == 0 ? (
+          {delegatedSupportCampsList &&
+          delegatedSupportCampsList.length > 0 &&
+          search.length == 0 ? (
             <Pagination
               hideOnSinglePage={true}
               total={delegatedSupportCampsList.length}
