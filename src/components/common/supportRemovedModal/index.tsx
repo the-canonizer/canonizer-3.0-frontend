@@ -137,7 +137,7 @@ const SupportRemovedModal = ({
               className={`${classes.submit_btn}`}
               id="create-topic-btn"
             >
-              Remove
+              {!isOrderChange ? "Remove" : "Remove/Change"}
             </Button>
 
             <Button
