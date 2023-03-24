@@ -191,7 +191,7 @@ export const socialLoginCallback = async (values: object, router) => {
 
     store.dispatch(setLoggedInUser(payload));
 
-    if (res && res.status_code === 200) {
+    if (res && res.status_code === 200 && res?.data?.user?.default_algo) {
       store.dispatch(
         setFilterCanonizedTopics({
           algorithm: res?.data?.user?.default_algo,
