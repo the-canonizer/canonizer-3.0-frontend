@@ -18,6 +18,8 @@ const My404Page = () => {
    * /forum.asp/88/1
    * /topoc.asp/85
    * /manage.asp/2/2?class=camp
+   * /statement.asp/2/2
+   * /stmt.asp/2/2
    *
    */
 
@@ -29,7 +31,6 @@ const My404Page = () => {
     nick_id: any = "",
     thread_id: any = ""
   ) => {
-    console.log("[REDIRECT]", url, topic_num, camp_num, is_type);
     const reqBody = { topic_num, camp_num, url, nick_id, thread_id, is_type };
     const checkRes = await checkTopicCampExistAPICall(reqBody);
 
@@ -96,6 +97,16 @@ const My404Page = () => {
             camp = +spilitedPath[spilitedPath?.length - 1];
           redirect(`/forum/${topic}/${camp}/threads`, topic, camp, "topic");
         }
+      } else if (
+        aspath?.includes("statement.asp") ||
+        aspath?.includes("smt.asp") ||
+        aspath?.includes("stmt.asp")
+      ) {
+        const replaced = aspath.replace(".asp", "");
+        let spilitedPath = replaced?.split("/");
+        const topic = +spilitedPath[spilitedPath?.length - 2],
+          camp = +spilitedPath[spilitedPath?.length - 1];
+        redirect(`/statement/history/${topic}/${camp}`, topic, camp, "topic");
       } else if (aspath?.includes("manage.asp")) {
         if (!isServer()) {
           const replaced = aspath.replace(".asp", "");
