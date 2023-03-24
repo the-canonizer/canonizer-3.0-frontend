@@ -25,10 +25,12 @@ const My404Page = () => {
     url: string,
     topic_num: number,
     camp_num: number,
-    is_type: string
+    is_type: string,
+    nick_id: number = 0,
+    thread_id: number = 0
   ) => {
     console.log("[REDIRECT]", url, topic_num, camp_num, is_type);
-    const reqBody = { topic_num, camp_num, url, is_type };
+    const reqBody = { topic_num, camp_num, url, nick_id, thread_id, is_type };
     const checkRes = await checkTopicCampExistAPICall(reqBody);
 
     if (checkRes && checkRes?.status_code === 200 && checkRes?.data?.is_exist) {
@@ -65,7 +67,8 @@ const My404Page = () => {
                 namespace,
               null,
               null,
-              "nickname"
+              "nickname",
+              +nickname
             );
           }
         }
@@ -84,12 +87,14 @@ const My404Page = () => {
             `/forum/${topic}/${camp}/threads/${thread_id}`,
             topic,
             camp,
-            "thread"
+            "thread",
+            null,
+            thread_id
           );
         } else {
           const topic = +spilitedPath[spilitedPath?.length - 2],
             camp = +spilitedPath[spilitedPath?.length - 1];
-          redirect(`/forum/${topic}/${camp}/threads`, topic, camp, "thread");
+          redirect(`/forum/${topic}/${camp}/threads`, topic, camp, "topic");
         }
       } else if (aspath?.includes("manage.asp")) {
         if (!isServer()) {
