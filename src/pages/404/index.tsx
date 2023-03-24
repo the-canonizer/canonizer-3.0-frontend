@@ -20,6 +20,7 @@ const My404Page = () => {
    * /manage.asp/2/2?class=camp
    * /statement.asp/2/2
    * /stmt.asp/2/2
+   * /[anything].asp/dadsa
    *
    */
 
@@ -129,7 +130,7 @@ const My404Page = () => {
           }
         }
       } else {
-        redirect(null, null, null, "");
+        redirect(aspath, null, null, "");
       }
     }
   }, []);
