@@ -26,8 +26,8 @@ const My404Page = () => {
     topic_num: number,
     camp_num: number,
     is_type: string,
-    nick_id: number = 0,
-    thread_id: number = 0
+    nick_id: any = "",
+    thread_id: any = ""
   ) => {
     console.log("[REDIRECT]", url, topic_num, camp_num, is_type);
     const reqBody = { topic_num, camp_num, url, nick_id, thread_id, is_type };
