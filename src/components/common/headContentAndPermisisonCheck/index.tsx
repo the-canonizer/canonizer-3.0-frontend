@@ -18,7 +18,7 @@ const HeadContentAndPermissionComponent = ({
   componentName,
 }: HeadContentComponentProps) => {
   const router = useRouter();
-  const pageRoute = process.env.NEXT_PUBLIC_SITE_NAME + router?.asPath;
+  const pageRoute = process.env.NEXT_PUBLIC_BASE_URL + router?.asPath;
 
   const { authToken } = useSelector((state: RootState) => ({
     authToken: state.auth.authToken,
