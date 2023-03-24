@@ -22,7 +22,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
     campStatement: state?.topicDetails?.campStatement,
     history: state?.topicDetails?.history,
   }));
-  return loadingIndicator ? (
+  return loadingIndicator || !campStatement ? (
     <CustomSkelton
       skeltonFor="card"
       titleName={K?.exceptionalMessages?.campStatementHeading}
