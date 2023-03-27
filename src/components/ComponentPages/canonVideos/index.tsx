@@ -22,10 +22,10 @@ export default function CanonVideos() {
 
   const replaceString = (text: string, reverse: boolean = false) => {
     if (reverse) {
-      let reverseText = text?.replace(/-/g, " ");
+      let reverseText = text?.replace(/_/g, " ");
       return reverseText;
     } else {
-      let updatedText = text?.replace(/\s+/g, "-");
+      let updatedText = text?.replace(/\s+/g, "_")?.toLowerCase();
       return updatedText;
     }
   };
@@ -77,7 +77,7 @@ export default function CanonVideos() {
         if (q?.chapter || q?.format) {
           const videoTitle = replaceString(q?.chapter as string, true);
           const filteredVideo = Object.values(videoss)?.filter((video) => {
-            if (video["title"] === videoTitle) {
+            if (video["title"]?.toLowerCase() === videoTitle?.toLowerCase()) {
               return video;
             }
           });
