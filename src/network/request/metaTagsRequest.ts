@@ -18,4 +18,15 @@ export default class MetaTagsRequest extends Request {
       token
     );
   }
+
+  static getSitemapXMLContent(token) {
+    return new Request(
+      K.Network.URL.GetXMLData,
+      K.Network.Method.POST,
+      null,
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
 }
