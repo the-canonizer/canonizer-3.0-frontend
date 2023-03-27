@@ -22,7 +22,12 @@ export default function CanonVideos() {
 
   const replaceString = (text: string, reverse: boolean = false) => {
     if (reverse) {
-      let reverseText = text?.replace(new RegExp("\\+", "g"), " ");
+      let reverseText;
+      if (text?.includes("_")) {
+        reverseText = text?.replace(new RegExp("_", "g"), " ");
+      } else {
+        reverseText = text?.replace(new RegExp("\\+", "g"), " ");
+      }
       return reverseText;
     } else {
       let updatedText = text?.replace(/\s+/g, " ")?.toLowerCase();
@@ -98,7 +103,7 @@ export default function CanonVideos() {
                 title: string | (string | string[])[];
                 link: React.SetStateAction<string>;
               }) => {
-                if (format?.title?.includes(q?.format as string)) {
+                if (format?.title?.includes((q?.format as string) || "360")) {
                   setVideoResolution(format?.link);
                   resLink = format?.link as string;
                   return;
