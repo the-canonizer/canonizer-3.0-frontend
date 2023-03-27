@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { RadioChangeEvent, Typography, Radio } from "antd";
 import { useRouter } from "next/router";
 
@@ -22,10 +22,10 @@ export default function CanonVideos() {
 
   const replaceString = (text: string, reverse: boolean = false) => {
     if (reverse) {
-      let reverseText = text?.replace(/_/g, " ");
+      let reverseText = text?.replace(new RegExp("\\+", "g"), " ");
       return reverseText;
     } else {
-      let updatedText = text?.replace(/\s+/g, "_")?.toLowerCase();
+      let updatedText = text?.replace(/\s+/g, " ")?.toLowerCase();
       return updatedText;
     }
   };
@@ -53,7 +53,11 @@ export default function CanonVideos() {
 
     const filtredVides = videos?.filter((vd) => vd?.id === selectedVideoId);
     if (filtredVides && filtredVides.length) {
-      addQueryParams(filtredVides[0].title, format?.split(" ")[0], null);
+      addQueryParams(
+        replaceString(filtredVides[0].title),
+        format?.split(" ")[0],
+        null
+      );
     }
 
     const node = document.getElementsByTagName("video")[0];
@@ -141,7 +145,7 @@ export default function CanonVideos() {
         const format = splitedarray[splitedarray?.length - 1]?.split(".")[0];
 
         addQueryParams(
-          filtredVides[0].title,
+          replaceString(filtredVides[0].title),
           format,
           playeref?.current?.currentTime
         );
@@ -176,7 +180,7 @@ export default function CanonVideos() {
   }
 
   return (
-    <>
+    <Fragment>
       <div className="w-100 pt-4 pb-4 ">
         <Title className={`text-center ${styles.pageTitle}`} level={1}>
           Consciousness: Not a Hard Problem, Just a Color Problem
@@ -291,6 +295,6 @@ export default function CanonVideos() {
           )}
         </div>
       </div>
-    </>
+    </Fragment>
   );
 }
