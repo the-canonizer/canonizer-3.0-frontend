@@ -116,7 +116,7 @@ const CampTreeCard = ({
               </>
             }
           >
-            {getTreeLoadingIndicator ? (
+            {getTreeLoadingIndicator || !tree ? (
               <CustomSkelton
                 skeltonFor="tree"
                 bodyCount={4}
