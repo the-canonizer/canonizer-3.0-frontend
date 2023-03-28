@@ -103,6 +103,8 @@ const NetworkConstants = {
     GetCampHistory: `${BaseCanonizerApiUrl}/get-camp-history`,
     GetTopicHistory: `${BaseCanonizerApiUrl}/get-topic-history`,
     CommitChangeStatement: `${BaseCanonizerApiUrl}/commit/change`,
+    DiscardChangeStatement: `${BaseCanonizerApiUrl}/discard/change`,
+
     AgreeToChange: `${BaseCanonizerApiUrl}/agree-to-change`,
 
     GetSocialLinkedAccounts: `${BaseCanonizerApiUrl}/user/social/list`,
