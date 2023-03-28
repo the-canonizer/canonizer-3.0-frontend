@@ -172,6 +172,14 @@ function CompareStatementUI({
                             </Link>
                           </Text>
                         </Paragraph>
+                        <Paragraph>
+                          <Text strong>Disable Additional Sub Camps : </Text>
+                          <Text>{s1?.is_disabled == 1 ? "Yes" : "No"}</Text>
+                        </Paragraph>
+                        <Paragraph>
+                          <Text strong>Single Level Camps Only : </Text>
+                          <Text>{s1?.is_one_level == 1 ? "Yes" : "No"}</Text>
+                        </Paragraph>
                       </Fragment>
                     ) : null}
                     <Text strong style={{ textTransform: "capitalize" }}>
@@ -280,6 +288,14 @@ function CompareStatementUI({
                               <a>{s2?.camp_about_nick_name}</a>
                             </Link>
                           </Text>
+                        </Paragraph>
+                        <Paragraph>
+                          <Text strong>Disable Additional Sub Camps : </Text>
+                          <Text>{s2?.is_disabled == 1 ? "Yes" : "No"}</Text>
+                        </Paragraph>
+                        <Paragraph>
+                          <Text strong>Single Level Camps Only : </Text>
+                          <Text>{s2?.is_one_level == 1 ? "Yes" : "No"}</Text>
                         </Paragraph>
                       </Fragment>
                     ) : null}
@@ -416,6 +432,18 @@ function CompareStatementUI({
                             >
                               <a>{liveStatement?.camp_about_nick_name}</a>
                             </Link>
+                          </Text>
+                        </Paragraph>
+                        <Paragraph>
+                          <Text strong>Disable Additional Sub Camps : </Text>
+                          <Text>
+                            {liveStatement?.is_disabled == 1 ? "Yes" : "No"}
+                          </Text>
+                        </Paragraph>
+                        <Paragraph>
+                          <Text strong>Single Level Camps Only : </Text>
+                          <Text>
+                            {liveStatement?.is_one_level == 1 ? "Yes" : "No"}
                           </Text>
                         </Paragraph>
                       </Fragment>
