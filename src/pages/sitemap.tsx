@@ -32,7 +32,7 @@ const SitemapPage = () => {
 
 export const getStaticProps = async () => {
   const XMLData = await getSitemapXML();
-  const data = XMLData.data,
+  const data = XMLData?.data,
     keys = Object.keys(data);
 
   let sitemap = "";
