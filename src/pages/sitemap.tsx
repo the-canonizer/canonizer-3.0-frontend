@@ -89,7 +89,7 @@ export const getStaticProps = async () => {
     }
   });
 
-  if (!data) {
+  if (!XMLData) {
     return {
       notFound: true,
     };
