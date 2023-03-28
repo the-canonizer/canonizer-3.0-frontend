@@ -54,7 +54,8 @@ function HeadContent({ description, title, route, author }: HeadContentProps) {
       />
       {/* Meta tags for twitter link preview  */}
       <meta name="twitter:card" content="summary" />
-      <meta name="twitter:site" content={route} />
+      <meta name="twitter:site" content={process.env.NEXT_PUBLIC_SITE_NAME} />
+      <meta name="twitter:url" content={route} />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image_url} />
