@@ -138,7 +138,7 @@ const CampInfoBar = ({
       update_all: 1,
     };
     const reqBody = {
-      topic_num: campRecord.topic_num,
+      topic_num: campRecord.topic_num ?? payload?.topic_num,
       camp_num: isTopic ? 0 : campRecord.camp_num,
       checked: isTopic ? !topicSubscriptionID : !campSubscriptionID,
       subscription_id: isTopic ? topicSubscriptionID : campSubscriptionID,
@@ -199,7 +199,12 @@ const CampInfoBar = ({
             }`}
           ></i>
         }
-        disabled={!!campSubscriptionID && campRecord?.flag == 2 ? true : false}
+        disabled={
+          (!!campSubscriptionID && campRecord?.flag == 2) ||
+          campRecord?.length == 0
+            ? true
+            : false
+        }
         onClick={() => {
           if (isUserAuthenticated) {
             campOrTopicScribe(false);
@@ -217,6 +222,12 @@ const CampInfoBar = ({
         ) : !!campSubscriptionID && campRecord?.flag == 2 ? (
           <Tooltip
             title={`You are subscribed to ${campRecord?.subscriptionCampName}`}
+          >
+            Subscribe to the Camp
+          </Tooltip>
+        ) : campRecord?.length == 0 ? (
+          <Tooltip
+            title={`You can't modify history, please go to the current state. `}
           >
             Subscribe to the Camp
           </Tooltip>
