@@ -113,7 +113,7 @@ function HistoryContainer() {
         break;
       }
       if (data[item].children) {
-        dispatchData(data[item], _isDisabled, _isOneLevel);
+        dispatchData(data[item].children, _isDisabled, _isOneLevel);
       }
     }
   };
