@@ -89,6 +89,12 @@ export const getStaticProps = async () => {
     }
   });
 
+  if (!data) {
+    return {
+      notFound: true,
+    };
+  }
+
   return {
     props: {},
     revalidate: 1296000,
