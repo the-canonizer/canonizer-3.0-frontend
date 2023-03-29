@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 
 // import { wrapper } from "src/store";
 
-const EventLinePage = ({ current_date }: any) => {
+const TopicAnimationPage = ({ current_date }: any) => {
   const dispatch = useDispatch();
 
   dispatch(setCurrentDate(current_date));
@@ -29,7 +29,6 @@ export async function getServerSideProps() {
     },
   };
 }
+TopicAnimationPage.displayName = "TopicAnimationPage";
 
-EventLinePage.displayName = "EventLinePage";
-
-export default EventLinePage;
+export default TopicAnimationPage;
