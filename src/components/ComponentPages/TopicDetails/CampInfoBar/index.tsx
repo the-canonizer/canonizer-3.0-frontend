@@ -29,7 +29,7 @@ import {
 } from "../../../../utils/generalUtility";
 import SocialShareUI from "../../../common/socialShare";
 
-const TimelineInfoBar = ({
+const CampInfoBar = ({
   payload = null,
   isTopicPage = false,
   isTopicHistoryPage = false,
@@ -531,4 +531,4 @@ const TimelineInfoBar = ({
   );
 };
 
-export default TimelineInfoBar;
+export default CampInfoBar;

@@ -17,9 +17,11 @@ export default function CampRecentActivities() {
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
+
   useEffect(() => {
     async function getTopicActivityLogCall() {
       setLoadingIndicator(true);
+
       let reqBody = {
         topic_num: router?.query?.camp[0]?.split("-")[0],
         camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
