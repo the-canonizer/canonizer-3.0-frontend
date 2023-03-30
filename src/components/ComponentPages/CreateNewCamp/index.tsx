@@ -165,7 +165,6 @@ const CreateNewCamp = ({
         op.disable = false;
       });
       setOptions(oldOptions);
-      setIsLoading(false);
     }
 
     if (res && res.status_code === 400) {
@@ -184,8 +183,9 @@ const CreateNewCamp = ({
           });
         }
       }
-      setIsLoading(false);
     }
+
+    setIsLoading(false);
   };
 
   const onCancel = () => {

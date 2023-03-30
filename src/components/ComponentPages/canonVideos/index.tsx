@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { RadioChangeEvent, Typography, Radio } from "antd";
 import { useRouter } from "next/router";
 
@@ -22,10 +22,15 @@ export default function CanonVideos() {
 
   const replaceString = (text: string, reverse: boolean = false) => {
     if (reverse) {
-      let reverseText = text?.replace(/-/g, " ");
+      let reverseText;
+      if (text?.includes("_")) {
+        reverseText = text?.replace(new RegExp("_", "g"), " ");
+      } else {
+        reverseText = text?.replace(new RegExp("\\+", "g"), " ");
+      }
       return reverseText;
     } else {
-      let updatedText = text?.replace(/\s+/g, "-");
+      let updatedText = text?.replace(/\s+/g, " ")?.toLowerCase();
       return updatedText;
     }
   };
@@ -53,7 +58,11 @@ export default function CanonVideos() {
 
     const filtredVides = videos?.filter((vd) => vd?.id === selectedVideoId);
     if (filtredVides && filtredVides.length) {
-      addQueryParams(filtredVides[0].title, format?.split(" ")[0], null);
+      addQueryParams(
+        replaceString(filtredVides[0].title),
+        format?.split(" ")[0],
+        null
+      );
     }
 
     const node = document.getElementsByTagName("video")[0];
@@ -77,7 +86,7 @@ export default function CanonVideos() {
         if (q?.chapter || q?.format) {
           const videoTitle = replaceString(q?.chapter as string, true);
           const filteredVideo = Object.values(videoss)?.filter((video) => {
-            if (video["title"] === videoTitle) {
+            if (video["title"]?.toLowerCase() === videoTitle?.toLowerCase()) {
               return video;
             }
           });
@@ -94,7 +103,7 @@ export default function CanonVideos() {
                 title: string | (string | string[])[];
                 link: React.SetStateAction<string>;
               }) => {
-                if (format?.title?.includes(q?.format as string)) {
+                if (format?.title?.includes((q?.format as string) || "360")) {
                   setVideoResolution(format?.link);
                   resLink = format?.link as string;
                   return;
@@ -141,7 +150,7 @@ export default function CanonVideos() {
         const format = splitedarray[splitedarray?.length - 1]?.split(".")[0];
 
         addQueryParams(
-          filtredVides[0].title,
+          replaceString(filtredVides[0].title),
           format,
           playeref?.current?.currentTime
         );
@@ -170,13 +179,14 @@ export default function CanonVideos() {
     if (t) {
       router.query.t = t;
     } else {
-      delete router.query.t;
+      const { t, ...rest } = router.query;
+      router.query = rest;
     }
     router.push(router, null, { shallow: true });
   }
 
   return (
-    <>
+    <Fragment>
       <div className="w-100 pt-4 pb-4 ">
         <Title className={`text-center ${styles.pageTitle}`} level={1}>
           Consciousness: Not a Hard Problem, Just a Color Problem
@@ -291,6 +301,6 @@ export default function CanonVideos() {
           )}
         </div>
       </div>
-    </>
+    </Fragment>
   );
 }

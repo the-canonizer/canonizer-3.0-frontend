@@ -129,7 +129,7 @@ function Footer() {
                           </li>
                         );
                       })}
-                       <li key="sitemap-link">
+                      <li key="sitemap-link">
                         <a href="/sitemap.xml" target="_blank">
                           <i className="icon-angle-right"></i>{" "}
                           <span>Sitemap</span>

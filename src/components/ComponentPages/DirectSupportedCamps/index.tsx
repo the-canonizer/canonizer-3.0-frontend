@@ -48,9 +48,8 @@ const DirectSupportedCamps = ({ search }: any) => {
     let data = directSopportedCampsListRevert.filter((val) => {
       return val.topic_num == topicId;
     });
-
     if (data[0].camps.length > 0) {
-      let newData = directSupportedCampsList.map((val) => {
+      let newData = [...directSupportedCampsList].map((val) => {
         if (val.topic_num == topicId) {
           return { ...val, camps: data[0].camps };
         } else {
@@ -142,6 +141,7 @@ const DirectSupportedCamps = ({ search }: any) => {
       setShowSaveChanges(false);
       setCardCamp_ID("");
       fetchDirectSupportedCampsList();
+      setIsChangingOrder(false)
     }
     handleSupportedCampsCancel();
   };
