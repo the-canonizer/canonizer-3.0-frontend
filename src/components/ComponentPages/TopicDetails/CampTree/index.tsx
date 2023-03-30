@@ -291,7 +291,7 @@ const CampTree = ({
                             showScoreBars
                               ? (data[item].score * 460) /
                                   tree?.at(0)["1"].score +
-                                  40 +
+                                  50 +
                                   "px"
                               : "40px"
                           )}
