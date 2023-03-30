@@ -132,6 +132,8 @@ const My404Page = () => {
       } else {
         redirect(aspath, null, null, "");
       }
+    } else if (aspath.includes(".xml")) {
+      redirect(aspath, null, null, "");
     }
   }, []);
 

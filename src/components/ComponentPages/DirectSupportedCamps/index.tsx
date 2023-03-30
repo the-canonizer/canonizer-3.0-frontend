@@ -141,7 +141,7 @@ const DirectSupportedCamps = ({ search }: any) => {
       setShowSaveChanges(false);
       setCardCamp_ID("");
       fetchDirectSupportedCampsList();
-      setIsChangingOrder(false)
+      setIsChangingOrder(false);
     }
     handleSupportedCampsCancel();
   };
