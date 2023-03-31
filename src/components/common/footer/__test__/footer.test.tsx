@@ -84,6 +84,9 @@ describe("Footer", () => {
     const supportingMailLink = screen.getByRole("link", {
       name: /support@canonizer.com/i,
     });
+    const sitemapLink = screen.getByRole("link", {
+      name: /Sitemap/i,
+    });
 
     screen.getByText((content, node) => {
       const hasText = (node) =>
@@ -98,8 +101,8 @@ describe("Footer", () => {
     });
     expect(container.getElementsByTagName("footer")).toHaveLength(1);
     expect(container.getElementsByTagName("ul")).toHaveLength(3);
-    expect(container.getElementsByTagName("li")).toHaveLength(8);
-    expect(container.getElementsByTagName("a")).toHaveLength(11);
+    expect(container.getElementsByTagName("li")).toHaveLength(9);
+    expect(container.getElementsByTagName("a")).toHaveLength(12);
     //we have commented socail icons coz we don't have social accounts yet
     // expect(container.getElementsByTagName("img")).toHaveLength(4);
 
@@ -122,6 +125,7 @@ describe("Footer", () => {
     expect(supportingMailLink.getAttribute("href")).toBe(
       "mailto:support@canonizer.com"
     );
+    expect(sitemapLink.getAttribute("href")).toBe("/sitemap");
   });
 });
 
