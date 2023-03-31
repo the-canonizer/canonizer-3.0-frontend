@@ -45,7 +45,7 @@ export default function DirectSupportedCampsUI({
   const [displayList, setDisplayList] = useState([]);
   const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
   const [currentCamp, setCurrentCamp] = useState(null);
-const [currentPage , setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(1);
   let tagsArrayList = [];
   const CardTitle = (props: any) => {
     return (
@@ -62,7 +62,7 @@ const [currentPage , setCurrentPage] = useState(1)
       </div>
     );
   };
-  const buttonText = "Save"
+  const buttonText = "Save";
 
   const tagsOrder = (topic_num, data, tags) => {
     setTagsCampsOrderID(data.topic_num);
@@ -114,7 +114,7 @@ const [currentPage , setCurrentPage] = useState(1)
     pageChange(currentPage, 5);
   }, [directSupportedCampsList]);
   const pageChange = (pageNumber, pageSize) => {
-    setCurrentPage(pageNumber)
+    setCurrentPage(pageNumber);
     const startingPosition = (pageNumber - 1) * pageSize;
     const endingPosition = startingPosition + pageSize;
     setDisplayList(
@@ -231,7 +231,7 @@ const [currentPage , setCurrentPage] = useState(1)
                                 setCurrentCamp(data.topic_num);
                                 handleSupportedCampsOpen(data);
                                 //setCurrentPage(currentPage)
-                                pageChange(currentPage , 5)
+                                pageChange(currentPage, 5);
                               }}
                             >
                               Save Changes
@@ -264,7 +264,7 @@ const [currentPage , setCurrentPage] = useState(1)
               hideOnSinglePage={true}
               total={directSupportedCampsList.length}
               pageSize={5}
-              defaultCurrent = {currentPage}
+              defaultCurrent={currentPage}
               onChange={pageChange}
               showSizeChanger={false}
             />

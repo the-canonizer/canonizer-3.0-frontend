@@ -328,16 +328,16 @@ const CampTree = ({
                         <p className={styles.startNew}>
                           <Link
                             href={{
-                              pathname: `/camp/create/${
-                                replaceSpecialCharacters(
-                                  router.query.camp[0],
-                                  "-"
-                                ) +
-                                "/" +
-                                replaceSpecialCharacters(
-                                  router.query.camp[1],
-                                  "-"
-                                )
+                              pathname: `/camp/create/${replaceSpecialCharacters(
+                                router.query.camp[0],
+                                "-"
+                              )}/${
+                                router.query.camp[1]
+                                  ? replaceSpecialCharacters(
+                                      router.query.camp[1],
+                                      "-"
+                                    )
+                                  : 1
                               }`,
                             }}
                           >

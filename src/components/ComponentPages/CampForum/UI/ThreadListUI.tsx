@@ -250,17 +250,11 @@ const ThreadListUI = ({
                 }}
                 width="350px"
               />
-              <Column
-                title="Replies"
-                dataIndex="post_count"
-                key="post_count"
-                responsive={["lg"]}
-              />
+              <Column title="Replies" dataIndex="post_count" key="post_count" />
               <Column
                 title="Last Updated On"
                 dataIndex="post_updated_at"
                 key="post_updated_at"
-                responsive={["lg"]}
                 render={(dt, others) => {
                   return (
                     <Text>

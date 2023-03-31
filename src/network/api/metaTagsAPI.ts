@@ -43,3 +43,4 @@ export const getSitemapXML = async () => {
     return error?.error?.data;
   }
 };
+

@@ -47,8 +47,8 @@ const My404Page = () => {
         const replaced = aspath.replace(".asp", "");
         let spilitedPath = replaced?.split("/");
         if (spilitedPath?.length > 3) {
-          const topic = +spilitedPath[spilitedPath?.length - 2],
-            camp = +spilitedPath[spilitedPath?.length - 1];
+          const topic = +spilitedPath[spilitedPath?.length - 2]?.split("-")[0],
+            camp = +spilitedPath[spilitedPath?.length - 1]?.split("-")[0] ?? 1;
           redirect(`/topic/${topic}/${camp}`, topic, camp, "topic");
         } else {
           const topic = +spilitedPath[spilitedPath?.length - 1],
@@ -82,8 +82,8 @@ const My404Page = () => {
         let spilitedPath = replaced?.split("/");
 
         if (spilitedPath?.length > 4) {
-          const topic = +spilitedPath[spilitedPath?.length - 3],
-            camp = +spilitedPath[spilitedPath?.length - 2],
+          const topic = +spilitedPath[spilitedPath?.length - 3]?.split("-")[0],
+            camp = +spilitedPath[spilitedPath?.length - 2]?.split("-")[0] ?? 1,
             thread_id = +spilitedPath[spilitedPath?.length - 1];
           redirect(
             `/forum/${topic}/${camp}/threads/${thread_id}`,
@@ -94,8 +94,8 @@ const My404Page = () => {
             thread_id
           );
         } else {
-          const topic = +spilitedPath[spilitedPath?.length - 2],
-            camp = +spilitedPath[spilitedPath?.length - 1];
+          const topic = +spilitedPath[spilitedPath?.length - 2]?.split("-")[0],
+            camp = +spilitedPath[spilitedPath?.length - 1]?.split("-")[0] ?? 1;
           redirect(`/forum/${topic}/${camp}/threads`, topic, camp, "topic");
         }
       } else if (
@@ -105,8 +105,8 @@ const My404Page = () => {
       ) {
         const replaced = aspath.replace(".asp", "");
         let spilitedPath = replaced?.split("/");
-        const topic = +spilitedPath[spilitedPath?.length - 2],
-          camp = +spilitedPath[spilitedPath?.length - 1];
+        const topic = +spilitedPath[spilitedPath?.length - 2]?.split("-")[0],
+          camp = +spilitedPath[spilitedPath?.length - 1]?.split("-")[0] ?? 1;
         redirect(`/statement/history/${topic}/${camp}`, topic, camp, "topic");
       } else if (aspath?.includes("manage.asp")) {
         if (!isServer()) {
@@ -114,8 +114,8 @@ const My404Page = () => {
           let spilitedPath = replaced?.split("?")[0]?.split("/");
           const params = new URLSearchParams(window.location.search),
             classType = params.get("class"),
-            topic = +spilitedPath[spilitedPath?.length - 2],
-            camp = +spilitedPath[spilitedPath?.length - 1];
+            topic = +spilitedPath[spilitedPath?.length - 2]?.split("-")[0],
+            camp = +spilitedPath[spilitedPath?.length - 1]?.split("-")[0] ?? 1;
           if (classType == "camp") {
             redirect(`/camp/history/${topic}/${camp}`, topic, camp, "topic");
           } else if (classType == "topic") {
@@ -132,6 +132,8 @@ const My404Page = () => {
       } else {
         redirect(aspath, null, null, "");
       }
+    } else if (aspath.includes(".xml")) {
+      redirect(aspath, null, null, "");
     }
   }, []);
 
