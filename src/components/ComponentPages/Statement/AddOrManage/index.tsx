@@ -80,12 +80,14 @@ export default function AddOrManage({ add }: any) {
   const [canNameSpace, setCanNameSpace] = useState([]);
   const [options, setOptions] = useState([...messages.preventCampLabel]);
   const [initialOptions, setInitialOptions] = useState([]);
+  const [editCampStatementData, setEditCampStatementData] = useState({});
 
   const [form] = Form.useForm();
   let objection = router?.query?.statement?.at(0)?.split("-")[1] == "objection";
   let update = router?.query?.statement?.at(0)?.split("-")[1] == "update";
   let manageFormOf = router?.asPath.split("/")[2];
-
+  const editorTextLength = editorState.getCurrentContent().getPlainText().trim().length;
+  // const editorTextLengthTrim =editorTextLength
   const onFinish = async (values: any) => {
     setScreenLoading(true);
     let res;
@@ -206,7 +208,9 @@ export default function AddOrManage({ add }: any) {
     } else if (manageFormOf == "topic") {
       res = await updateTopicApi(reqBody);
     }
+
     return res;
+    
   };
   const fetchCampNickNameList = async () => {
     let response = await getAllCampNickNames();
@@ -250,7 +254,10 @@ export default function AddOrManage({ add }: any) {
         };
         if (manageFormOf == "statement") {
           res = await getEditStatementApi(getDataPayload);
+          if(res && res.status_code == 200){
+          setEditCampStatementData(res.data.statement.note)
 
+          }
           //if(isJSON(res.data.statement.parsed_value))setEditorState(EditorState.createWithContent(convertFromRaw(JSON.parse(res.data.statement.parsed_value))));
           if (
             !res.data.statement.parsed_value?.startsWith("<p>") &&
@@ -555,6 +562,8 @@ export default function AddOrManage({ add }: any) {
                 if (initialFormStatus?.statement == null || undefined) {
                   initialFormStatus.statement = "";
                 }
+                if(typeof initialFormStatus.edit_summary == 'string') initialFormStatus.edit_summary = initialFormStatus.edit_summary.trim();
+                if(typeof initialFormStatus.statement == 'string') initialFormStatus.statement = initialFormStatus.statement.trim();
                 nowFormStatus = Object.keys(form?.getFieldsValue()).reduce(
                   (acc, key) => {
                     acc[key] =
@@ -571,10 +580,11 @@ export default function AddOrManage({ add }: any) {
                 if (nowFormStatus?.statement == null || undefined) {
                   nowFormStatus.statement = "";
                 }
-
+                if(typeof nowFormStatus.edit_summary == 'string') nowFormStatus.edit_summary = nowFormStatus.edit_summary.trim();
+                if(typeof nowFormStatus.statement == 'string') nowFormStatus.statement = nowFormStatus.statement.trim();
                 if (
-                  JSON.stringify(nowFormStatus) ==
-                  JSON.stringify(initialFormStatus)
+                  JSON.stringify(nowFormStatus.edit_summary) ==
+                  JSON.stringify(initialFormStatus.edit_summary)
                 ) {
                   setSubmitIsDisable(true);
                 } else {
@@ -832,7 +842,6 @@ export default function AddOrManage({ add }: any) {
                     )}
                   </>
                 )}
-
                 {/* statement================================================================================ */}
                 {manageFormOf == "statement" && (
                   <Col xs={24} xl={24}>
@@ -855,6 +864,12 @@ export default function AddOrManage({ add }: any) {
                           message:
                             K?.exceptionalMessages?.statementRequiredErrorMsg,
                         },
+                        {
+                          type: editorTextLength,
+                          message:
+                            K?.exceptionalMessages?.statementRequiredErrorMsg,
+                        }
+                        
                         //allowedEmojies(), this needs to be moved to validation file
                       ]}
                     >
@@ -913,7 +928,7 @@ export default function AddOrManage({ add }: any) {
                           isButton={false}
                         />
                       ) : (
-                        <Input.TextArea size="large" rows={1} maxLength={100} />
+                        <Input.TextArea size="large" rows={1} maxLength={100}  />
                       )}
                     </Form.Item>
                   ) : (
@@ -941,7 +956,7 @@ export default function AddOrManage({ add }: any) {
                             skeltonFor="video"
                           />
                         ) : (
-                          <Input.TextArea size="large" rows={7} />
+                          <Input.TextArea size="large" rows={7} defaultValue={String(editCampStatementData)} />
                         )}
                       </Form.Item>
                       {manageFormOf == "camp" && (
@@ -1053,7 +1068,7 @@ export default function AddOrManage({ add }: any) {
                           size="large"
                           className={`btn-orange mr-3 ${styles.btnSubmit}`}
                           htmlType="submit"
-                          disabled={submitIsDisable && submitIsDisableCheck}
+                          disabled={(submitIsDisable && submitIsDisableCheck && editorTextLength < 1)}
                           id="update-submit-btn"
                         >
                           {add
