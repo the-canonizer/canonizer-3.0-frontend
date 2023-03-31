@@ -189,7 +189,9 @@ const CampTree = ({
     return Object.keys(subscribedUsers).length > 0 &&
       Object.keys(subscribedUsers)?.includes(`${userID}`) ? (
       subscribedUsers[userID].explicit ? (
-        <i className={`icon-subscribe ${"text-primary"}`}></i>
+        <i
+          className={`icon-subscribe text-primary ${styles.iconSubscribe}`}
+        ></i>
       ) : (
         <Tooltip
           title={`You are subscribed to ${
