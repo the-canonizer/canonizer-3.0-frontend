@@ -104,7 +104,7 @@ function TimeLine({ setTimelineDescript }) {
         setIsPlaying={setIsPlaying}
       />
       <div className="evenline-bars">
-        {loading ? (
+        {loading || !data ? (
           <CustomSkelton
             skeltonFor="tree"
             bodyCount={4}
