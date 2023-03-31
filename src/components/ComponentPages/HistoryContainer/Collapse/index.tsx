@@ -421,7 +421,7 @@ function HistoryCollapse({
                         id={`commit-change-${campStatement?.id}`}
                         disabled={loading}
                       >
-                        Discard Change
+                        Cancel
                       </Button>
                     </div>
                   </div>
