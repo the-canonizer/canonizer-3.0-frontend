@@ -253,11 +253,11 @@ export default function AddOrManage({ add }: any) {
 
           //if(isJSON(res.data.statement.parsed_value))setEditorState(EditorState.createWithContent(convertFromRaw(JSON.parse(res.data.statement.parsed_value))));
           if (
-            !res.data.statement.parsed_value?.startsWith("<p>") &&
-            !res.data.statement.parsed_value?.startsWith("<div>")
+            !res.data.statement.value?.startsWith("<p>") &&
+            !res.data.statement.value?.startsWith("<div>")
           )
-            res.data.statement.parsed_value = `<div></div> ${res.data.statement.parsed_value}`;
-          const contentBlocks = htmlToDraft(res.data.statement.parsed_value);
+            res.data.statement.value = `<div></div> ${res.data.statement.value}`;
+          const contentBlocks = htmlToDraft(res.data.statement.value);
           const contentState = ContentState.createFromBlockArray(
             contentBlocks.contentBlocks
             //contentBlocks.entityMap
@@ -344,7 +344,7 @@ export default function AddOrManage({ add }: any) {
           ? {
               nick_name: res?.data?.nick_name[0]?.id,
               parent_camp_num: res?.data?.statement?.camp_num,
-              statement: res?.data?.statement?.parsed_value,
+              statement: res?.data?.statement?.value,
               edit_summary: res?.data?.statement?.note,
             }
           : manageFormOf == "camp"
@@ -369,7 +369,7 @@ export default function AddOrManage({ add }: any) {
             }
           : {
               nick_name: res?.data?.nick_name[0]?.id,
-              statement: res?.data?.statement?.parsed_value,
+              statement: res?.data?.statement?.value,
               parent_camp_num: res?.data?.statement?.camp_num,
             };
 
