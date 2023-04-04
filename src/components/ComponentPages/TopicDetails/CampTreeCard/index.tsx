@@ -56,7 +56,7 @@ const CampTreeCard = ({
 
   const router = useRouter();
   const { isUserAuthenticated } = useAuthentication();
-
+  const eventLinePath = router.asPath.replace("topic", "eventline")
   const dispatch = useDispatch();
   const onCreateTreeDate = () => {
     dispatch(
@@ -89,7 +89,7 @@ const CampTreeCard = ({
                   type={"primary"}
                   size="small"
                   className={styles.eventLineBtn}
-                  href={`/eventline/${router?.query?.camp[0]}`}
+                  href={eventLinePath}
                 >
                   Event Line
                 </Button>
