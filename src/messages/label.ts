@@ -105,10 +105,18 @@ export const preventCampLabel = [
     disable: false,
   },
   {
-    label: "Single level sub camps only.",
+    label: "Single level sub camps onlysss.",
     tooltip:
       "Disable the ability to add additional sub camps beyond direct sub camps.",
     id: "is_one_level",
+    checked: false,
+    disable: false,
+  },
+  {
+    label: "Camp archive.",
+    tooltip:
+      "Archive the camp.",
+    id: "is_archive",
     checked: false,
     disable: false,
   },

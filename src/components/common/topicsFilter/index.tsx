@@ -32,6 +32,7 @@ import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 // import { showCreateCampButton } from "src/utils/generalUtility";
 import FullScoreCheckbox from "../../ComponentPages/FullScoreCheckbox";
 import useAuthentication from "src/hooks/isUserAuthenticated";
+import ArchivedCampCheckBox from "../../ComponentPages/ArchivedCampCheckBox";
 
 const infoContent = (
   <>
@@ -383,7 +384,12 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
               <div className={styles.scoreCheckbox}>
                 <FullScoreCheckbox />
               </div>
-            ) : null}
+          ) : null}
+           {isAuth.isUserAuthenticated ? (
+              <div className={styles.scoreCheckbox}>
+                <ArchivedCampCheckBox />
+              </div>
+          ) : null}
           </Panel>
 
           <Panel

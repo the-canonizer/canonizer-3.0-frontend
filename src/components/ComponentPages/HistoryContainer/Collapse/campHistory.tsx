@@ -8,6 +8,7 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
+
   return (
     <>
       {!!campStatement?.parent_camp_name && (
@@ -77,6 +78,10 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
       <Title level={5}>
         Single Level Camps Only :{" "}
         <span>{campStatement?.is_one_level == 1 ? "Yes" : "No"}</span>
+      </Title>
+      <Title level={5}>
+        Camp Archived :{" "}
+        <span>{campStatement?.is_archive == 1 ? "Yes" : "No"}</span>
       </Title>
       <Title level={5}>
         Submitted On : <span>{covertToTime(campStatement?.submit_time)}</span>

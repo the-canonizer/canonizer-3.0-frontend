@@ -295,7 +295,7 @@ const CampTree = ({
                                   tree?.at(0)["1"].score +
                                   50 +
                                   "px"
-                              : "40px"
+                              : "50px"
                           )}
                           baseBgColor={"#fff"}
                           labelAlignment={"left"}
