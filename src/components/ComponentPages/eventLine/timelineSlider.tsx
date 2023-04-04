@@ -144,17 +144,37 @@ function TimelineSlider({
     let pdata: any = Object.keys(mockData);
 
     let obj = {};
-    if (pdata.length - 1 < 4) {
-      pdata.map((value, index) => {
-        let formattedDate = DateFormate(new Date(value?.split("_")[1] * 1000));
-        obj[index] = formattedDate;
-      });
+    // console.log("window ==>", window.innerWidth);
+
+    if (typeof window !== "undefined" && window.innerWidth > 767) {
+      if (pdata.length - 1 < 4) {
+        pdata.map((value, index) => {
+          let formattedDate = DateFormate(
+            new Date(value?.split("_")[1] * 1000)
+          );
+          obj[index] = formattedDate;
+        });
+      } else {
+        pdata.map((value, index) => {
+          if (index == 0) {
+            obj[index] = DateFormate(new Date(value?.split("_")[1] * 1000));
+          }
+          let pointDiff = (index + 1) * ((pdata.length - 1) / 4);
+          if (Math.round(pointDiff) < pdata.length) {
+            let datess = new Date(
+              pdata[Math.round(pointDiff)]?.split("_")[1] * 1000
+            );
+            let formattedDate = DateFormate(datess);
+            obj[Math.round(pointDiff)] = formattedDate;
+          }
+        });
+      }
     } else {
       pdata.map((value, index) => {
         if (index == 0) {
           obj[index] = DateFormate(new Date(value?.split("_")[1] * 1000));
         }
-        let pointDiff = (index + 1) * ((pdata.length - 1) / 4);
+        let pointDiff = (index + 1) * ((pdata.length - 1) / 2);
         if (Math.round(pointDiff) < pdata.length) {
           let datess = new Date(
             pdata[Math.round(pointDiff)]?.split("_")[1] * 1000

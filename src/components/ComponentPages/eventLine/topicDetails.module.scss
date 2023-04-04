@@ -28,9 +28,8 @@
     }
   }
   &_Left {
-    @media screen and (min-width: 992px) {
       display: flex;
-      flex-wrap: wrap;
+    @media screen and (min-width: 992px) {
       width: calc(100% - 300px);
     }
     .topicTitleStyle,
@@ -40,6 +39,9 @@
     }
     .topicTitleStyle {
       margin-right: 50px;
+      span {
+        white-space:normal;
+      }
     }
     .topicTitleSkeleton {
       margin-right: 100px;
@@ -258,5 +260,8 @@
 
 
 .backButton {
-  margin-right: 25px;
+  margin-right: 18px;
+  svg {
+    font-size: 18px;
+  }
 }

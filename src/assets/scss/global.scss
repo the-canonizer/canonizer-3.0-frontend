@@ -1948,17 +1948,19 @@ div[role="option"]::before {
 }
 
 .rang-slider {
+  @media screen and (min-width:768px) {
+  margin:10px 40px 10px;
+}
+@media screen and (max-width:767px) {
+  margin:10px 16px 10px;
+}
   .ant-slider-mark {
     top:-22px;
     &-text {
       color: var(--primary);
       font-size: 10px;
-      &:first-child {
-        transform: translateX(0)!important;
-      }
       &:last-child {
         white-space: nowrap;
-        transform: translateX(-50px)!important;
       }
     }
   }

@@ -103,34 +103,15 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
     router.push("/create/topic");
   };
 
-  const {
-    algorithms,
-    filteredScore,
-    selectedAlgorithm,
-    selectedAsOf,
-    filteredAsOfDate,
-    currentCampNode,
-    tree,
-    loading,
-    current_date_filter,
-    campExist,
-  } = useSelector((state: RootState) => ({
-    algorithms: state.homePage?.algorithms,
-    filteredScore: state?.filters?.filterObject?.filterByScore,
-    selectedAlgorithm: state?.filters?.filterObject?.algorithm,
-    selectedAsOf: state?.filters?.filterObject?.asof,
-    filteredAsOfDate: state?.filters?.filterObject?.asofdate,
-    currentCampNode: state?.filters?.selectedCampNode,
-    tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
-    loading: state?.loading?.loading,
-    current_date_filter: state?.filters?.current_date,
-    campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
-  }));
-
-  const [value, setValue] = useState(
-    selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3
+  const { algorithms, filteredScore, selectedAlgorithm, loading } = useSelector(
+    (state: RootState) => ({
+      algorithms: state.homePage?.algorithms,
+      filteredScore: state?.filters?.filterObject?.filterByScore,
+      selectedAlgorithm: state?.filters?.filterObject?.algorithm,
+      loading: state?.loading?.loading,
+    })
   );
-  const [selectedAsOFDate, setSelectedAsOFDate] = useState(filteredAsOfDate);
+
   const [timer, setTimer] = useState(null);
   const [inputValue, setInputValue] = useState(filteredScore);
   const [isLoading, setIsLoading] = useState(loading);
@@ -140,28 +121,9 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   //                        uncomment bellow code                         //
   // //////////////////////////////////////////////////////////////////////
 
-  // useEffect(() => {
-  //   if (didMount.current) {
-  //     if (history.pushState) {
-  //       const queryParams = `?filter=${filterObject?.filterByScore}&algorithm=${filterObject?.algorithm}&asofdate=${filterObject?.asofdate}&namespace=${filterObject?.namespace_id}`;
-  //       var newurl =
-  //         window.location.protocol +
-  //         "//" +
-  //         window.location.host +
-  //         window.location.pathname +
-  //         queryParams;
-  //       window.history.pushState({ path: newurl }, "", newurl);
-  //     }
-  //   } else didMount.current = true;
-  // }, [filterObject]);
-
   useEffect(() => {
     setIsLoading(loading);
   }, [isLoading]);
-
-  useEffect(() => {
-    setValue(selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3);
-  }, [selectedAsOf]);
 
   useEffect(() => {
     if (router.pathname.includes("/topic/")) {
@@ -171,11 +133,6 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   }, [router.pathname]);
 
   useEffect(() => {
-    setSelectedAsOFDate(filteredAsOfDate);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filteredAsOfDate]);
-
-  useEffect(() => {
     getCanonizedAlgorithmsApi();
   }, []);
 
@@ -183,44 +140,6 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
     dispatch(
       setFilterCanonizedTopics({
         algorithm: value,
-      })
-    );
-  };
-
-  const onChange = (e) => {
-    if (e.target.value === 3) {
-      setIsDatePicker(true);
-    } else {
-      setIsDatePicker(false);
-    }
-    setValue(e.target.value);
-  };
-
-  const pickDate = (e) => {
-    dispatch(setViewThisVersion(false));
-    let IsoDateFormat;
-    if (e == null) {
-      IsoDateFormat = Date.now() / 1000;
-    } else {
-      let datepicker =
-        moment().unix() > moment(e?._d).unix() &&
-        moment().format("YYYY-MM-DD") > moment(e?._d).format("YYYY-MM-DD")
-          ? momentDateObject(moment(e?._d).endOf("day"))
-          : momentDateObject(
-              moment(e?._d).set({
-                hour: moment().hour(),
-                minute: moment().minute(),
-                second: moment().second(),
-              })
-            );
-      setDatePickerValue(datepicker);
-      IsoDateFormat = Date.parse(datepicker) / 1000;
-    }
-
-    dispatch(
-      setFilterCanonizedTopics({
-        asofdate: IsoDateFormat,
-        asof: "bydate",
       })
     );
   };
@@ -241,33 +160,6 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
       setTimer(newTimer);
     }
   };
-
-  const handleAsOfClick = () => {
-    if (datePickerValue !== null) {
-      let dateValue =
-        moment().unix() > moment(datePickerValue).unix() &&
-        moment().format("YYYY-MM-DD") >
-          moment(datePickerValue).format("YYYY-MM-DD")
-          ? momentDateObject(moment(datePickerValue).endOf("day"))
-          : momentDateObject(
-              moment(datePickerValue).set({
-                hour: moment().hour(),
-                minute: moment().minute(),
-                second: moment().second(),
-              })
-            );
-      dispatch(
-        setFilterCanonizedTopics({
-          asofdate: Date.parse(dateValue) / 1000,
-          asof: "bydate",
-        })
-      );
-    }
-  };
-
-  function momentDateObject(e) {
-    return e?._d;
-  }
 
   return (
     <>
@@ -343,60 +235,6 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
               </Popover>
             </div>
           </Panel>
-          {/* <Panel
-            header={
-              <span className={styles.title}>
-                Granularity
-                <Popover content={asContent} placement="right">
-                  <i className="icon-info"></i>
-                </Popover>
-              </span>
-            }
-            key="2"
-          >
-            <Radio.Group onChange={onChange} value={value} disabled={loading}>
-              <Space direction="vertical" style={{ gap: "12px" }}>
-                <Radio className={styles.radio} value={1} onClick={() => {}}>
-                  All
-                </Radio>
-                <Radio className={styles.radio} value={2} onClick={() => {}}>
-                  Daily
-                </Radio>
-                <Radio className={styles.radio} value={3} onClick={() => {}}>
-                  Monthly
-                </Radio>
-                <Radio className={styles.radio} value={3} onClick={() => {}}>
-                  Yearly
-                </Radio>
-              </Space>
-            </Radio.Group>
-          </Panel> */}
-          {/* <Panel
-            header={
-              <span className={styles.title}>
-                Date Range{" "}
-                <Popover content={asContent} placement="right">
-                  <i className="icon-info"></i>
-                </Popover>
-              </span>
-            }
-            key="3"
-          >
-            <DatePicker
-              disabled={isDatePicker || selectedAsOf == "bydate" ? false : true}
-              format="YYYY-MM-DD"
-              defaultValue={moment(current_date_filter * 1000)}
-              value={moment(selectedAsOFDate * 1000)}
-              suffixIcon={<i className="icon-calendar"></i>}
-              size={"large"}
-              className={`${styles.date} w-100`}
-              onChange={pickDate}
-              inputReadOnly={true}
-              disabledDate={(current) =>
-                current && current > moment(current_date_filter).endOf("day")
-              }
-            />
-          </Panel> */}
         </Collapse>
       </div>
     </>

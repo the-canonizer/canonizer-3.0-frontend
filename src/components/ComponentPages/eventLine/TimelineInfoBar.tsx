@@ -17,15 +17,13 @@ const CampInfoBar = () => {
             <Button
               className={styles.backButton}
               size="small"
-              type={"primary"}
+              type={"text"}
               ghost
               icon={<ArrowLeftOutlined />}
               onClick={() =>
                 router.push(router.asPath.replace("eventline", "topic"))
               }
-            >
-              Back
-            </Button>
+            />
             <Typography.Paragraph
               className={
                 "mb-0 " +
