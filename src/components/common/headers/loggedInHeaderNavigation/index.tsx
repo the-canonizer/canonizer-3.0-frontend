@@ -130,6 +130,9 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
           <div
             className={`${styles.navWrap} ${isActive && styles.showMobMenu}`}
           >
+            <div className={styles.mobLogoIcon}>
+              <Logo />
+            </div>
             <Button
               size="large"
               className={`${styles.btnCloseMobMenu} mb-4 float-right`}
@@ -153,12 +156,23 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
                     </Space>
                   </div>
                 </div>
-                <div className="mobile_tag">
-                  <Link href="/settings">Account Settings</Link>
-                  <Link href="/settings?tab=supported_camps" passHref>
-                    <a>Supported Camps</a>
+                <div className={`mobile_tag ${styles.mobMenuWithIcons}`}>
+                  <Link href="/settings">
+                    <a>
+                      <SettingOutlined />
+                      Account Settings
+                    </a>
                   </Link>
-                  <a onClick={logOut}>Log Out</a>
+                  <Link href="/settings?tab=supported_camps" passHref>
+                    <a>
+                      <CheckCircleOutlined />
+                      Supported Camps
+                    </a>
+                  </Link>
+                  <a onClick={logOut}>
+                    <LogoutOutlined />
+                    Log Out
+                  </a>
                 </div>
               </Fragment>
             ) : null}
