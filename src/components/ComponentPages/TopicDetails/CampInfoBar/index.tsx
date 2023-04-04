@@ -92,7 +92,7 @@ const TimelineInfoBar = ({
       getBreadCrumbApiCall();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router, asofdate]);
+  }, [router?.asPath, asofdate]);
 
   useEffect(() => {
     if (isTopicPage) {
