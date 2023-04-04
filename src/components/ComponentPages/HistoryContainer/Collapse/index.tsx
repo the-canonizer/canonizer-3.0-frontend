@@ -16,6 +16,7 @@ import { useState, useEffect, useRef } from "react";
 
 import {
   changeCommitStatement,
+  discardStatement,
   agreeToChangeApi,
 } from "../../../../network/api/history";
 import { setFilterCanonizedTopics } from "../../../../store/slices/filtersSlice";
@@ -44,6 +45,7 @@ function HistoryCollapse({
   onSelectCompare,
   isDisabledCheck,
   changeAgree,
+  changeDiscard,
   isChecked,
   setIsTreesApiCallStop,
 }: any) {
@@ -81,6 +83,18 @@ function HistoryCollapse({
     if (res?.status_code === 200) {
       setCommited(true);
     }
+  };
+
+  const discardChanges = async () => {
+    let reqBody = {
+      type: historyOf,
+      id: campStatement?.id,
+    };
+    let res = await discardStatement(reqBody);
+    if (res?.status_code === 200) {
+      setCommited(true);
+    }
+    changeDiscard();
   };
 
   const agreeWithChange = async () => {
@@ -391,12 +405,23 @@ function HistoryCollapse({
                         </Link>
                       </Button>
                       <Button
+                        className=" mr-3"
                         type="primary"
                         onClick={commitChanges}
                         id={`commit-change-${campStatement?.id}`}
                         disabled={loading}
                       >
                         Commit Change
+                      </Button>
+                      <Button
+                        className=" mr-3"
+                        type="primary"
+                        danger
+                        onClick={discardChanges}
+                        id={`commit-change-${campStatement?.id}`}
+                        disabled={loading}
+                      >
+                        Cancel
                       </Button>
                     </div>
                   </div>
