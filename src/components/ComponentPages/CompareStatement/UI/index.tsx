@@ -180,6 +180,10 @@ function CompareStatementUI({
                           <Text strong>Single Level Camps Only : </Text>
                           <Text>{s1?.is_one_level == 1 ? "Yes" : "No"}</Text>
                         </Paragraph>
+                        {/* <Paragraph>
+                          <Text strong>Camp archive : </Text>
+                          <Text>{s1?.is_archive == 1 ? "Yes" : "No"}</Text>
+                        </Paragraph> */}
                       </Fragment>
                     ) : null}
                     <Text strong style={{ textTransform: "capitalize" }}>
@@ -297,6 +301,10 @@ function CompareStatementUI({
                           <Text strong>Single Level Camps Only : </Text>
                           <Text>{s2?.is_one_level == 1 ? "Yes" : "No"}</Text>
                         </Paragraph>
+                        {/* <Paragraph>
+                          <Text strong>Camp archive : </Text>
+                          <Text>{s2?.is_archive == 1 ? "Yes" : "No"}</Text>
+                        </Paragraph> */}
                       </Fragment>
                     ) : null}
                     <Text strong style={{ textTransform: "capitalize" }}>
@@ -446,6 +454,12 @@ function CompareStatementUI({
                             {liveStatement?.is_one_level == 1 ? "Yes" : "No"}
                           </Text>
                         </Paragraph>
+                        {/* <Paragraph>
+                          <Text strong>Camp archive: </Text>
+                          <Text>
+                            {liveStatement?.is_archive == 1 ? "Yes" : "No"}
+                          </Text>
+                        </Paragraph> */}
                       </Fragment>
                     ) : null}
                   </Card>
