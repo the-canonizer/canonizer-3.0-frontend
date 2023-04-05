@@ -95,6 +95,8 @@
         [class="ant-tabs-nav-list"] {
           flex-flow: column;
           overflow: hidden;
+          width: 100%;
+
           [class="ant-tabs-tab"] {
             margin-right: 0;
             margin-bottom: 10px;
@@ -110,12 +112,7 @@
     }
   }
 
-  @media screen and (max-width: 350px) {
-    .search_users {
-      min-width: 100%;
-      top: 155px;
-    }
-  }
+
 }
 
 .notes {
