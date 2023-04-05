@@ -114,8 +114,7 @@ export const preventCampLabel = [
   },
   {
     label: "Camp archive.",
-    tooltip:
-      "Archive the camp.",
+    tooltip: "Archive the camp.",
     id: "is_archive",
     checked: false,
     disable: false,

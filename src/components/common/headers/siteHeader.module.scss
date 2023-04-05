@@ -341,3 +341,33 @@
     }
   }
 }
+
+.mobMenuWithIcons {
+  span[role="img"] {
+    margin-right: 8px;
+    svg {
+      width: 15px;
+      height: 15px;
+    }
+  }
+  span[class="anticon anticon-logout"] {
+    transform: rotate(-90deg);
+  }
+  a {
+    white-space: nowrap;
+  }
+}
+
+.mobLogoIcon {
+  display: none;
+  background-color: var(--primary);
+  padding: 1rem;
+  position: relative;
+  top: -1.5rem;
+  left: -1.5rem;
+  width: calc(100% + 3rem);
+
+  @media screen and (max-width: 1199px) {
+    display: grid;
+  }
+}
