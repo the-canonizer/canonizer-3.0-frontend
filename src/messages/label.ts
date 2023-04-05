@@ -105,7 +105,7 @@ export const preventCampLabel = [
     disable: false,
   },
   {
-    label: "Single level sub camps onlysss.",
+    label: "Single level sub camps only.",
     tooltip:
       "Disable the ability to add additional sub camps beyond direct sub camps.",
     id: "is_one_level",
