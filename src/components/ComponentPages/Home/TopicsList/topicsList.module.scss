@@ -96,6 +96,16 @@
       @media screen and (max-width: 1200px) {
         flex-wrap: wrap;
       }
+      @media screen and (max-width: 767px) {
+        display: grid;
+        .checkboxOnlyMyTopics {
+          order: 3;
+          margin-top: 10px;
+        }
+        .dropdown {
+          margin-top: 1rem;
+        }
+      }
       & > h3 {
         @media screen and (max-width: 1200px) {
           width: 100%;

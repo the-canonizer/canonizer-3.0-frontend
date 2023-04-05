@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -5,7 +6,7 @@ import styles from "../siteHeader.module.scss";
 
 const LogoHeader = () => {
   return (
-    <>
+    <Fragment>
       <div className={styles.logo}>
         <Link href="/" passHref>
           <a>
@@ -19,7 +20,7 @@ const LogoHeader = () => {
           </a>
         </Link>
       </div>
-    </>
+    </Fragment>
   );
 };
 

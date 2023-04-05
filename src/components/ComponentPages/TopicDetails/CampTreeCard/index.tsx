@@ -56,7 +56,7 @@ const CampTreeCard = ({
 
   const router = useRouter();
   const { isUserAuthenticated } = useAuthentication();
-  const eventLinePath = router.asPath.replace("topic", "eventline")
+  const eventLinePath = router.asPath.replace("topic", "eventline");
   const dispatch = useDispatch();
   const onCreateTreeDate = () => {
     dispatch(

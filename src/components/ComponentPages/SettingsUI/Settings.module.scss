@@ -29,7 +29,6 @@
 .accountSetting {
   width: calc(100% - 260px);
   margin: 0 8px !important;
-  // border: 1px solid #f0f0f0;
 
   @media screen and (max-width: 767px) {
     margin-left: 0 !important;
@@ -88,7 +87,7 @@
 
   @media screen and (max-width: 767px) {
     .search_users {
-      top: 110px;
+      top: 125px;
     }
     [class="ant-tabs ant-tabs-top ant-tabs-mobile ant-tabs-card"] {
       [class="ant-tabs-nav"] {
@@ -99,13 +98,14 @@
 
           [class="ant-tabs-tab"] {
             margin-right: 0;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             white-space: pre-wrap;
             word-break: break-word;
           }
           [class="ant-tabs-tab ant-tabs-tab-active"] {
             white-space: pre-wrap;
             word-break: break-word;
+            margin-bottom: 15px;
           }
         }
       }

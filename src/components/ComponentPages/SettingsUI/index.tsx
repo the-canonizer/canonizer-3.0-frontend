@@ -73,12 +73,7 @@ const SettingsUI = () => {
                 }}
               />
             </div>
-            <Button
-              onClick={() => {
-                setSearch("");
-              }}
-              className={styles.btn}
-            >
+            <Button onClick={() => setSearch("")} className={styles.btn}>
               Reset
             </Button>
           </div>
