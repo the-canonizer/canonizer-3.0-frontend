@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import App, { AppContext, AppInitialProps } from "next/app";
 import { Provider } from "react-redux";
 import scriptLoader from "react-async-script-loader";
@@ -13,17 +13,18 @@ import "../assets/scss/global.scss";
 
 import ErrorBoundary from "../hoc/ErrorBoundary";
 import HeadContentAndPermissionComponent from "../components/common/headContentAndPermisisonCheck";
-// import GoogleAnalyticScripts from "../firebaseConfig/scripts";
 import { store, wrapper } from "../store";
 import { metaTagsApi } from "src/network/api/metaTagsAPI";
+import { checkTopicCampExistAPICall } from "src/network/api/campDetailApi";
 
 class WrappedApp extends App<AppInitialProps> {
   public render() {
     const { Component, pageProps, meta } = this.props as any;
+
     console.log("[META_LOG]", meta);
+
     return (
-      <>
-        {/* <GoogleAnalyticScripts /> */}
+      <Fragment>
         <Provider store={store}>
           <ErrorBoundary>
             <HeadContentAndPermissionComponent
@@ -33,7 +34,7 @@ class WrappedApp extends App<AppInitialProps> {
             <Component {...pageProps} />
           </ErrorBoundary>
         </Provider>
-      </>
+      </Fragment>
     );
   }
 }
@@ -84,7 +85,166 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
   const metaData =
     metaResults?.status_code == 200 ? metaResults.data : defaultTags;
 
-  return { ...appProps, meta: metaData };
+  /**
+   *
+   * [OLD Routes]
+   * /topic.asp/120/8
+   * /support_list.asp?nick_name_id=1
+   * /thread.asp/23/13/4
+   * /forum.asp/88/1
+   * /topoc.asp/85
+   * /manage.asp/2/2?class=camp
+   * /statement.asp/2/2
+   * /stmt.asp/2/2
+   * /[anything].asp/dadsa
+   *
+   */
+
+  const redirect = async (
+    url: string,
+    topic_num: number,
+    camp_num: number,
+    is_type: string,
+    nick_id: any = "",
+    thread_id: any = ""
+  ) => {
+    const reqBody = { topic_num, camp_num, url, nick_id, thread_id, is_type };
+    const checkRes = await checkTopicCampExistAPICall(reqBody);
+
+    if (checkRes && checkRes?.status_code === 200 && checkRes?.data?.is_exist) {
+      return url;
+    }
+    return "";
+  };
+
+  const aspath = appContext.router.asPath;
+  let returnData: string;
+
+  if (aspath?.includes(".asp")) {
+    if (aspath?.includes("topic.asp") || aspath?.includes("topoc.asp")) {
+      const replaced = aspath.replace(".asp", "");
+      let spilitedPath = replaced?.split("/");
+      if (spilitedPath?.length > 3) {
+        const topic = +spilitedPath[spilitedPath?.length - 2]?.split("-")[0],
+          camp = +spilitedPath[spilitedPath?.length - 1]?.split("-")[0] ?? 1;
+        returnData = await redirect(
+          `/topic/${topic}/${camp}`,
+          topic,
+          camp,
+          "topic"
+        );
+      } else {
+        const topic = +spilitedPath[spilitedPath?.length - 1],
+          camp = 1;
+        returnData = await redirect(
+          `/topic/${topic}/${camp}`,
+          topic,
+          camp,
+          "topic"
+        );
+      }
+    } else if (aspath?.includes("support_list.asp")) {
+      const nickname = appContext.ctx.query?.nick_name_id,
+        namespace = appContext.ctx.query?.nick_name_id || 1;
+
+      if (nickname) {
+        returnData = await redirect(
+          "/user/supports/" +
+            nickname +
+            "?topicnum=&campnum=&namespace=" +
+            namespace,
+          null,
+          null,
+          "nickname",
+          +nickname
+        );
+      }
+    } else if (
+      aspath?.includes("thread.asp") ||
+      aspath?.includes("forum.asp")
+    ) {
+      const replaced = aspath.replace(".asp", "");
+      let spilitedPath = replaced?.split("/");
+
+      if (spilitedPath?.length > 4) {
+        const topic = +spilitedPath[spilitedPath?.length - 3]?.split("-")[0],
+          camp = +spilitedPath[spilitedPath?.length - 2]?.split("-")[0] ?? 1,
+          thread_id = +spilitedPath[spilitedPath?.length - 1];
+
+        returnData = await redirect(
+          `/forum/${topic}/${camp}/threads/${thread_id}`,
+          topic,
+          camp,
+          "thread",
+          null,
+          thread_id
+        );
+      } else {
+        const topic = +spilitedPath[spilitedPath?.length - 2]?.split("-")[0],
+          camp = +spilitedPath[spilitedPath?.length - 1]?.split("-")[0] ?? 1;
+        returnData = await redirect(
+          `/forum/${topic}/${camp}/threads`,
+          topic,
+          camp,
+          "topic"
+        );
+      }
+    } else if (
+      aspath?.includes("statement.asp") ||
+      aspath?.includes("smt.asp") ||
+      aspath?.includes("stmt.asp")
+    ) {
+      const replaced = aspath.replace(".asp", "");
+      let spilitedPath = replaced?.split("/");
+      const topic = +spilitedPath[spilitedPath?.length - 2]?.split("-")[0],
+        camp = +spilitedPath[spilitedPath?.length - 1]?.split("-")[0] ?? 1;
+      returnData = await redirect(
+        `/statement/history/${topic}/${camp}`,
+        topic,
+        camp,
+        "topic"
+      );
+    } else if (aspath?.includes("manage.asp")) {
+      const replaced = aspath.replace(".asp", "");
+      let spilitedPath = replaced?.split("?")[0]?.split("/");
+
+      const classType = appContext.ctx.query?.class,
+        topic = +spilitedPath[spilitedPath?.length - 2]?.split("-")[0],
+        camp = +spilitedPath[spilitedPath?.length - 1]?.split("-")[0] ?? 1;
+
+      if (classType == "camp") {
+        returnData = await redirect(
+          `/camp/history/${topic}/${camp}`,
+          topic,
+          camp,
+          "topic"
+        );
+      } else if (classType == "topic") {
+        returnData = await redirect(
+          `/topic/history/${topic}/${camp}`,
+          topic,
+          camp,
+          "topic"
+        );
+      } else if (classType == "statement") {
+        returnData = await redirect(
+          `/statement/history/${topic}/${camp}`,
+          topic,
+          camp,
+          "statement"
+        );
+      }
+    } else {
+      returnData = await redirect(aspath, null, null, "");
+    }
+  }
+
+  if (returnData) {
+    appContext.ctx.res.writeHead(302, { Location: returnData });
+    appContext.ctx.res.end();
+  }
+
+  return { ...appProps, meta: metaData, returnURL: returnData };
 };
 
 const googleAPIKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
