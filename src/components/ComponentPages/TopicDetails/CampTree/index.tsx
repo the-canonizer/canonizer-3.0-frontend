@@ -185,8 +185,6 @@ const CampTree = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tree?.at(0)]);
 
-  console.log("showScoreBars", showScoreBars);
-
   const subScriptionStatus = (subscribedUsers: {}) => {
     return Object.keys(subscribedUsers).length > 0 &&
       Object.keys(subscribedUsers)?.includes(`${userID}`) ? (
