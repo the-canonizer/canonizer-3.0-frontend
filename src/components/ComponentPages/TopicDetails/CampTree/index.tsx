@@ -175,7 +175,7 @@ const CampTree = ({
       const agreementCamp = tree?.at(0)[1].score;
       if (
         agreementCamp > 5 &&
-        Object.keys(tree?.at(0)[1].children).length > 1
+        Object.keys(tree?.at(0)[1].children).length > 0
       ) {
         setShowScoreBars(true);
       } else {
@@ -184,6 +184,8 @@ const CampTree = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tree?.at(0)]);
+
+  console.log("showScoreBars", showScoreBars);
 
   const subScriptionStatus = (subscribedUsers: {}) => {
     return Object.keys(subscribedUsers).length > 0 &&
