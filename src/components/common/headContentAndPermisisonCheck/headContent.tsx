@@ -1,11 +1,14 @@
 import React from "react";
 import Head from "next/head";
 
+import schemas from "./schemaContent";
+
 type HeadContentProps = {
   description: string;
   title: string;
   route: string;
   author: string;
+  componentName: string;
 };
 
 declare global {
@@ -17,7 +20,13 @@ declare global {
 export const GA_TRACKING_ID =
   process.env.NEXT_PUBLIC_GA_TRACKING_ID || "G-HKYLGCPPDC";
 
-function HeadContent({ description, title, route, author }: HeadContentProps) {
+function HeadContent({
+  description,
+  title,
+  route,
+  author,
+  componentName,
+}: HeadContentProps) {
   const image_url = `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/canonizer_logo.jpg`;
   return (
     <Head>
@@ -28,6 +37,12 @@ function HeadContent({ description, title, route, author }: HeadContentProps) {
 
       {/* Meta tags for browser link preview  */}
       <title>{title}</title>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: schemas[componentName] }}
+      />
+
       <meta charSet="utf-8" />
       <meta name="title" content={title} />
       <meta name="description" content={description} />

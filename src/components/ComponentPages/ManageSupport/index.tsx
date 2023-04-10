@@ -447,12 +447,14 @@ const ManageSupport = () => {
 
     //Case if data pass from delegated or direct
     if (CheckDelegatedOrDirect) {
+      setGetManageSupportLoadingIndicator(true)
+
       let nickNameID = nickNameList.filter(
         (values) => selectedtNickname == values.id
       );
       let nickNameIDValue = nickNameID[0].id;
       let delegated_user_id = router?.query?.manageSupport[1].split("_");
-
+      
       const addDelegatedSupport = {
         nick_name_id: nickNameIDValue,
         delegated_nick_name_id: delegated_user_id[1],

@@ -158,13 +158,13 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
                 </div>
                 <div className={`mobile_tag ${styles.mobMenuWithIcons}`}>
                   <Link href="/settings">
-                    <a>
+                    <a onClick={toggleMobNav}>
                       <SettingOutlined />
                       Account Settings
                     </a>
                   </Link>
                   <Link href="/settings?tab=supported_camps" passHref>
-                    <a>
+                    <a onClick={toggleMobNav}>
                       <CheckCircleOutlined />
                       Supported Camps
                     </a>
