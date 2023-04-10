@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { Tabs, Typography, List, Button, Spin, Tooltip } from "antd";
+import { useEffect, useMemo, useState, Fragment } from "react";
+import { Tabs, Typography, List, Button, Spin, Tooltip, Switch } from "antd";
 import styles from "./recentActivities.module.scss";
 import { getRecentActivitiesApi } from "../../../../network/api/homePageApi";
 import { useRouter } from "next/router";
@@ -16,14 +16,21 @@ const { TabPane } = Tabs;
 const { Title, Link: AntLink, Text } = Typography;
 
 const OperationsSlot = {
-  left: <Title level={3}>Recent Activities</Title>,
+  left: (
+    <Fragment>
+      <Title level={3}>Recent Activities</Title>{" "}
+    </Fragment>
+  ),
 };
 
 export default function RecentActivities() {
-  const { topicsData, threadsData } = useSelector((state: RootState) => ({
-    topicsData: state?.recentActivities?.topicsData,
-    threadsData: state?.recentActivities?.threadsData,
-  }));
+  const { topicsData, threadsData, loggedInUser } = useSelector(
+    (state: RootState) => ({
+      topicsData: state?.recentActivities?.topicsData,
+      threadsData: state?.recentActivities?.threadsData,
+      loggedInUser: state.auth.loggedInUser,
+    })
+  );
 
   const { isUserAuthenticated } = useAuthentication();
   const router = useRouter();
@@ -37,6 +44,7 @@ export default function RecentActivities() {
   const [loadMoreIndicator, setLoadMoreIndicator] = useState(false);
   const [getTopicsLoadingIndicator, setGetTopicsLoadingIndicator] =
     useState(false);
+  const [isChecked, setIsChecked] = useState(false);
 
   const slot = useMemo(() => {
     if (position.length === 0) return null;
@@ -68,7 +76,7 @@ export default function RecentActivities() {
       setGetTopicsLoadingIndicator(true);
       router.push("/login");
     }
-  }, [selectedTab]);
+  }, [selectedTab, isChecked]);
 
   const handleTabChange = (key: string) => {
     if (key == "threads") {
@@ -111,6 +119,7 @@ export default function RecentActivities() {
       log_type: topicType,
       page: pageNo,
       per_page: 15,
+      is_admin_show_all: isChecked ? "all" : "",
     };
     await getRecentActivitiesApi(reqBody, loadMore, topicType);
     setLoadMoreIndicator(false);
@@ -171,12 +180,24 @@ export default function RecentActivities() {
     );
   };
 
+  const onChange = () => setIsChecked(!isChecked);
+
   return (
     <>
       <div className={`${styles.listCard} recentActivities_listWrap`}>
         {/* <Spin spinning={getTopicsLoadingIndicator} size="large"> */}
+
+        {loggedInUser?.is_admin ? (
+          <Title className={styles.switchButton} level={4}>
+            <span>Show All</span>
+            <Switch checked={isChecked} size="small" onChange={onChange} />
+          </Title>
+        ) : null}
+
         <Tabs
-          className={`${styles.listCardTabs} recentActivities_listCardTabs`}
+          className={`${styles.listCardTabs} ${
+            loggedInUser?.is_admin ? styles.spaceCardTabs : ""
+          } recentActivities_listCardTabs`}
           defaultActiveKey={`${
             router?.query?.tabName ? router?.query?.tabName : "topic/camps"
           }`}

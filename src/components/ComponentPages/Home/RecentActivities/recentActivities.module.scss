@@ -4,12 +4,33 @@
   border: solid 1px #f0f0f0;
   margin-bottom: 16px;
   height: calc(100% - 16px);
+  position: relative;
+
+  .switchButton {
+    position: absolute;
+    z-index: 100;
+    top: 60px;
+    left: auto;
+    right: 20px;
+    margin: 0;
+
+    span {
+      font-size: 14px;
+      margin-right: 10px;
+    }
+  }
 }
 
 .listCardTabs {
   display: block;
+  &.spaceCardTabs {
+    div[role="tablist"] {
+      margin-bottom: 40px;
+    }
+  }
   div[role="tablist"] {
     display: flex;
+
     @media screen and (max-width: 992px) {
       flex-wrap: wrap;
     }
@@ -84,7 +105,7 @@
         white-space: nowrap;
         overflow: hidden;
         color: #0f2a4d;
-        &>span {
+        & > span {
           color: #888;
           display: block;
           overflow: hidden;
