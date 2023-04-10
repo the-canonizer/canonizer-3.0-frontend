@@ -40,7 +40,7 @@ export default class ErrorBoundary extends Component {
             <div className={styles.errorPageImg}>
               <Image
                 src={"/images/error-boundary-img.png"}
-                alt=""
+                alt="error boundry"
                 width={487}
                 height={552}
                 layout="fixed"
