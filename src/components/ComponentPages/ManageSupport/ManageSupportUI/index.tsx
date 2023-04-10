@@ -442,7 +442,7 @@ const ManageSupportUI = ({
                             window.location.href = tag.link;
                           }}
                         >
-                          aaa {tag?.camp_name}
+                          {tag?.camp_name}
                         </a>
                       </div>
                       {CheckDelegatedOrDirect ? (
