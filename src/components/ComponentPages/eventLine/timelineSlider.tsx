@@ -193,9 +193,23 @@ function TimelineSlider({
       setIteration(0);
       setStart(false);
     }
+    console.log("iteration", iteration);
 
     let showkey = Object.keys(mockData)[iteration];
-    setTimelineDescript(mockData[showkey]?.event?.message);
+    console.log("shpwkey ", showkey, Object.keys(mockData)[1]);
+    // console.log("mock data ", mockData);
+    console.log("1: show key ", showkey);
+    let mappedArr = [];
+    for (let i = 0; i < Object.keys(mockData).length; i++) {
+      console.log("1:  Object.keys(mockData)[i]", Object.keys(mockData)[i]);
+      if (showkey == Object.keys(mockData)[i]) {
+        break; // Stop iterating once key reaches 7
+      }
+      mappedArr.push(mockData[Object.keys(mockData)[i]]?.event?.message);
+    }
+    console.log("mappedf arr ", mappedArr);
+
+    setTimelineDescript(mappedArr);
   }, [iteration, mockData]);
 
   return (
