@@ -16,7 +16,7 @@ const My404 = () => {
         <div className={styles.errorPageImg}>
           <Image
             src={"/images/404-page-img.png"}
-            alt=""
+            alt="404 page"
             width={487}
             height={552}
             layout="fixed"

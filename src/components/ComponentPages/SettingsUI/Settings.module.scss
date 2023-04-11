@@ -65,6 +65,10 @@
       background: transparent;
       width: 100%;
       outline: inherit;
+      @media screen and (max-width:1150px)
+      {
+        max-width: 170px;
+      }
     }
   }
   .ant-tabs-nav-list {
@@ -78,38 +82,14 @@
     .search_users {
       top: 55px;
     }
-    [class="ant-tabs ant-tabs-top ant-tabs-mobile ant-tabs-card"] {
-      [class="ant-tabs-nav"] {
-        margin-bottom: 60px;
-      }
-    }
+    
   }
 
   @media screen and (max-width: 767px) {
     .search_users {
       top: 125px;
     }
-    [class="ant-tabs ant-tabs-top ant-tabs-mobile ant-tabs-card"] {
-      [class="ant-tabs-nav"] {
-        [class="ant-tabs-nav-list"] {
-          flex-flow: column;
-          overflow: hidden;
-          width: 100%;
-
-          [class="ant-tabs-tab"] {
-            margin-right: 0;
-            margin-bottom: 15px;
-            white-space: pre-wrap;
-            word-break: break-word;
-          }
-          [class="ant-tabs-tab ant-tabs-tab-active"] {
-            white-space: pre-wrap;
-            word-break: break-word;
-            margin-bottom: 15px;
-          }
-        }
-      }
-    }
+    
   }
 
 
