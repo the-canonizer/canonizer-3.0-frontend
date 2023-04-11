@@ -416,53 +416,55 @@ const ManageSupportUI = ({
                 </span>
               </div>
             )}
-            <DraggableArea
-              tags={tagsArrayList}
-              render={({ tag, index }) => (
-                <div className="">
-                  <Button
-                    key={tag.camp_num}
-                    className={styles.tag_btn}
-                    disabled={tag.dis}
-                  >
-                    <div className={styles.btndiv}>
-                      {" "}
-                      {filterList(tag.camp_num, index)}
-                      <span className={styles.count}>
-                        {/* {getSupportStatusData == ""
+            {tagsArrayList.length > 0 && (
+              <DraggableArea
+                tags={tagsArrayList}
+                render={({ tag, index }) => (
+                  <div className="">
+                    <Button
+                      key={tag.camp_num}
+                      className={styles.tag_btn}
+                      disabled={tag.dis}
+                    >
+                      <div className={styles.btndiv}>
+                        {" "}
+                        {filterList(tag.camp_num, index)}
+                        <span className={styles.count}>
+                          {/* {getSupportStatusData == ""
                           ? index + 1
                           : tag.support_order} */}
-                        {index + 1}.{" "}
-                      </span>
-                      <a
-                        className={styles.Bluecolor}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          window.location.href = tag.link;
-                        }}
-                      >
-                        {tag.camp_name}
-                      </a>
-                    </div>
-                    {CheckDelegatedOrDirect ? (
-                      ""
-                    ) : (
-                      <CloseCircleOutlined
-                        onClick={() => {
-                          handleClose(tag, tag.topic_num, tagsArrayList);
-                          setRemoveCampsSupport(true);
-                        }}
-                      />
-                    )}
-                  </Button>
-                </div>
-              )}
-              onChange={(tags) => {
-                setIsTagDragged(true);
-                setUpdatePostion(true);
-                setManageSupportList(tags);
-              }}
-            />
+                          {index + 1}.{" "}
+                        </span>
+                        <a
+                          className={styles.Bluecolor}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            window.location.href = tag.link;
+                          }}
+                        >
+                          {tag?.camp_name}
+                        </a>
+                      </div>
+                      {CheckDelegatedOrDirect ? (
+                        ""
+                      ) : (
+                        <CloseCircleOutlined
+                          onClick={() => {
+                            handleClose(tag, tag.topic_num, tagsArrayList);
+                            setRemoveCampsSupport(true);
+                          }}
+                        />
+                      )}
+                    </Button>
+                  </div>
+                )}
+                onChange={(tags) => {
+                  setIsTagDragged(true);
+                  setUpdatePostion(true);
+                  setManageSupportList(tags);
+                }}
+              />
+            )}
 
             {!CheckDelegatedOrDirect && (
               <Card className={styles.support_reason} type="inner">
