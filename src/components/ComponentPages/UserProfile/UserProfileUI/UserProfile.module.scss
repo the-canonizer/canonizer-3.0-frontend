@@ -74,6 +74,9 @@
   border-radius: 0;
   align-items: center;
   box-shadow: 3px 3px 0px #3f4f5b14;
+  @media screen and (max-width: 992px) {
+    white-space: break-spaces;
+  }
   @media screen and (max-width: 767px) {
     font-size: 13px;
   }
@@ -91,6 +94,9 @@
   font-size: 16px;
   color: #4484ce;
   font-weight: 600;
+  @media screen and (max-width: 992px) {
+    white-space: break-spaces;
+  }
   @media screen and (max-width: 767px) {
     font-size: 13px;
   }
@@ -112,9 +118,9 @@
   width: 25%;
   display: inline-block;
   margin-left: auto;
-  @media screen and (max-width: 767px) {
-    margin-top: 10px;
+  @media screen and (max-width: 992px) {
     width: 100%;
+    margin-top: 5px;
   }
 }
 
@@ -122,11 +128,18 @@
   display: inline-block;
   font-size: 20px;
   font-weight: 600;
+  @media screen and (max-width: 992px) {
+    width: 100%;
+  }
 }
 
 .main_card_title {
   font-size: 16px;
   font-weight: 500;
+  @media screen and (max-width: 992px) {
+    width: 100%;
+    margin-bottom: 10px;
+  }
   @media screen and (max-width: 767px) {
     width: 100%;
     flex-grow: 1;
@@ -165,13 +178,16 @@
   .titleBox {
     margin: 0;
     display: flex;
-    align-items: center;    
-    @media screen and (max-width: 767px) {
+    align-items: center;
+    @media screen and (max-width: 992px) {
       flex-wrap: wrap;
     }
   }
   .nickname_box {
-    margin-left: auto;    
+    margin-left: auto;
+    @media screen and (max-width: 992px) {
+      margin-left: 0;
+    }
     @media screen and (max-width: 767px) {
       margin: 0;
     }
@@ -185,7 +201,10 @@
     height: 40px !important;
     width: 25%;
     margin: 0 !important;
-    display: inline-block;    
+    display: inline-block;
+    @media screen and (max-width: 992px) {
+      width: 50%;
+    }
     @media screen and (max-width: 767px) {
       width: 100%;
       position: relative;
@@ -203,6 +222,5 @@
         width: 100%;
       }
     }
-    
   }
 }
