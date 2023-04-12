@@ -1,4 +1,4 @@
-import { Collapse, Popover, Image, Typography } from "antd";
+import { Collapse, Popover, Image, Typography, Button } from "antd";
 import React, { useEffect, useState } from "react";
 import CampTree from "../CampTree";
 import Link from "next/link";
@@ -56,7 +56,7 @@ const CampTreeCard = ({
 
   const router = useRouter();
   const { isUserAuthenticated } = useAuthentication();
-
+  const eventLinePath = router.asPath.replace("topic", "eventline");
   const dispatch = useDispatch();
   const onCreateTreeDate = () => {
     dispatch(
@@ -82,7 +82,19 @@ const CampTreeCard = ({
         >
           <Panel
             disabled
-            header={<h3>Canonizer Sorted Camp Tree</h3>}
+            header={
+              <h3>
+                Canonizer Sorted Camp Tree{" "}
+                {/* <Button
+                  type={"primary"}
+                  size="small"
+                  className={styles.eventLineBtn}
+                  href={eventLinePath}
+                >
+                  Event Line
+                </Button> */}
+              </h3>
+            }
             key="1"
             extra={
               <>

@@ -175,7 +175,7 @@ const CampTree = ({
       const agreementCamp = tree?.at(0)[1].score;
       if (
         agreementCamp > 5 &&
-        Object.keys(tree?.at(0)[1].children).length > 1
+        Object.keys(tree?.at(0)[1].children).length > 0
       ) {
         setShowScoreBars(true);
       } else {
@@ -189,7 +189,9 @@ const CampTree = ({
     return Object.keys(subscribedUsers).length > 0 &&
       Object.keys(subscribedUsers)?.includes(`${userID}`) ? (
       subscribedUsers[userID].explicit ? (
-        <i className={`icon-subscribe ${"text-primary"}`}></i>
+        <i
+          className={`icon-subscribe text-primary ${styles.iconSubscribe}`}
+        ></i>
       ) : (
         <Tooltip
           title={`You are subscribed to ${
@@ -291,9 +293,9 @@ const CampTree = ({
                             showScoreBars
                               ? (data[item].score * 460) /
                                   tree?.at(0)["1"].score +
-                                  40 +
+                                  50 +
                                   "px"
-                              : "40px"
+                              : "50px"
                           )}
                           baseBgColor={"#fff"}
                           labelAlignment={"left"}
@@ -328,16 +330,16 @@ const CampTree = ({
                         <p className={styles.startNew}>
                           <Link
                             href={{
-                              pathname: `/camp/create/${
-                                replaceSpecialCharacters(
-                                  router.query.camp[0],
-                                  "-"
-                                ) +
-                                "/" +
-                                replaceSpecialCharacters(
-                                  router.query.camp[1],
-                                  "-"
-                                )
+                              pathname: `/camp/create/${replaceSpecialCharacters(
+                                router.query.camp[0],
+                                "-"
+                              )}/${
+                                router.query.camp[1]
+                                  ? replaceSpecialCharacters(
+                                      router.query.camp[1],
+                                      "-"
+                                    )
+                                  : 1
                               }`,
                             }}
                           >

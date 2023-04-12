@@ -1,5 +1,6 @@
-@import "./fonts";
 
+@import "./fonts";
+@import "./speed-controller";
 :root {
   --primary: #4484ce;
   --font-family-asap: "Asap", sans-serif;
@@ -218,8 +219,14 @@ body {
   &.miniSideBar {
     @media screen and (min-width: 992px) {
       width: 300px;
-      & + .pageContentWrap {
+      & + .pageContentWrap:not(.timelineContent) {
         width: calc(100% - 300px);
+      }
+      & + .pageContentWrap.timelineContent {
+        width: calc(100% - 300px);
+        & + .timelineRightSidebar {
+          width: 250px;
+        }
       }
     }
     @media screen and (max-width: 991px) {
@@ -227,6 +234,11 @@ body {
       & + .pageContentWrap {
         width: 100%;
         margin: 0;
+        &.timelineContent {
+          & + .timelineRightSidebar {
+            width: 100%;
+          }
+        }
       }
     }
     @media screen and (max-width: 767px) {
@@ -1935,10 +1947,72 @@ div[role="option"]::before {
   }
 }
 
+.rang-slider {
+  @media screen and (min-width:768px) {
+  margin:10px 40px 10px;
+}
+@media screen and (max-width:767px) {
+  margin:10px 16px 10px;
+}
+  .ant-slider-mark {
+    top:-22px;
+    &-text {
+      color: var(--primary);
+      font-size: 10px;
+      &:last-child {
+        white-space: nowrap;
+      }
+    }
+  }
+  .ant-slider-handle {
+    border-color:  var(--primary);
+    background-color:  var(--primary);
+  }
+  .ant-slider-rail, .ant-slider-track {
+    height: 2px;
+  }
+  .ant-slider-handle {
+    margin-top: -6px;
+  }
+  .ant-slider-rail {
+    background-color: #BBDBFF;
+  }
+  .ant-slider-track {
+    background-color: var(--primary);
+  }
+  .ant-slider-dot {
+    width: 1px;
+    border-width: 1px;
+    height: 4px;
+    border-color: #BBDBFF;
+    &-active {
+      border-color: var(--primary);
+    }
+    top:-4px;
+    &:last-child {
+      left:auto!important;
+      right: 0;
+    }
 .progress-bar {
   margin-left: 10px;
   span {
     font-size: 11px!important;
     font-weight: 400!important;
+  }
+}
+}
+}
+
+.evntLineActivity {
+  .ant-card-body {
+      padding-left: 40px!important;
+  }
+}
+
+.evenline-bars {
+  overflow: auto;
+  &> div {
+    width: 1160px;
+    white-space: nowrap;
   }
 }

@@ -1,27 +1,38 @@
 import fs from "fs";
 
+import { Fragment, useEffect } from "react";
+import { Card, Typography } from "antd";
+import { useRouter } from "next/router";
+
+import GetStartedLayout from "src/hoc/getStartedLayout";
+
 import { getSitemapXML } from "src/network/api/metaTagsAPI";
 
-const Sitemap = () => {
-  return null;
+const { Text } = Typography;
+
+const SitemapPage = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace("/sitemap.xml");
+  }, []);
+
+  return (
+    <Fragment>
+      <GetStartedLayout initialProps={undefined} initialState={undefined}>
+        <Card bordered={false} style={{ height: "50vh", textAlign: "center" }}>
+          <Text>
+            This page is generating sitemap.xml file in every 15 days interval.
+          </Text>
+        </Card>
+      </GetStartedLayout>
+    </Fragment>
+  );
 };
-
-// export async function getStaticProps() {
-//   const res = await fetch("https://.../posts");
-//   const posts = await res.json();
-
-//   return {
-//     props: {
-//       posts,
-//     },
-
-//     revalidate: 1296000,
-//   };
-// }
 
 export const getStaticProps = async () => {
   const XMLData = await getSitemapXML();
-  const data = XMLData.data,
+  const data = XMLData?.data || {},
     keys = Object.keys(data);
 
   let sitemap = "";
@@ -78,10 +89,18 @@ export const getStaticProps = async () => {
     }
   });
 
+  if (!XMLData) {
+    return {
+      notFound: true,
+    };
+  }
+
   return {
     props: {},
     revalidate: 1296000,
   };
 };
 
-export default Sitemap;
+SitemapPage.displayName = "SitemapPage";
+
+export default SitemapPage;

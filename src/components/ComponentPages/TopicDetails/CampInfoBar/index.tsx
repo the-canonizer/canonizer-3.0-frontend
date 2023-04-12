@@ -29,7 +29,7 @@ import {
 } from "../../../../utils/generalUtility";
 import SocialShareUI from "../../../common/socialShare";
 
-const CampInfoBar = ({
+const TimelineInfoBar = ({
   payload = null,
   isTopicPage = false,
   isTopicHistoryPage = false,
@@ -92,7 +92,7 @@ const CampInfoBar = ({
       getBreadCrumbApiCall();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router, asofdate]);
+  }, [router?.asPath, asofdate]);
 
   useEffect(() => {
     if (isTopicPage) {
@@ -531,4 +531,4 @@ const CampInfoBar = ({
   );
 };
 
-export default CampInfoBar;
+export default TimelineInfoBar;

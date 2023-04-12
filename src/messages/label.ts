@@ -112,4 +112,12 @@ export const preventCampLabel = [
     checked: false,
     disable: false,
   },
+  // {
+  //   label: "Camp archive.",
+  //   tooltip:
+  //     "Archive the camp.",
+  //   id: "is_archive",
+  //   checked: false,
+  //   disable: false,
+  // },
 ];

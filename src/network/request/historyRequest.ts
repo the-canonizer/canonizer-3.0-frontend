@@ -59,6 +59,15 @@ export default class CampStatementHistoryRequest extends Request {
       {}
     );
   }
+  static discardChangeStatement(body) {
+    return new Request(
+      K.Network.URL.DiscardChangeStatement,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
   static agreeToChange(body) {
     return new Request(
       K.Network.URL.AgreeToChange,

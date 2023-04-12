@@ -32,6 +32,7 @@ import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 // import { showCreateCampButton } from "src/utils/generalUtility";
 import FullScoreCheckbox from "../../ComponentPages/FullScoreCheckbox";
 import useAuthentication from "src/hooks/isUserAuthenticated";
+// import ArchivedCampCheckBox from "../../ComponentPages/ArchivedCampCheckBox";
 
 const infoContent = (
   <>
@@ -126,7 +127,6 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
     current_date_filter: state?.filters?.current_date,
     campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
   }));
-
   const [value, setValue] = useState(
     selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3
   );
@@ -383,7 +383,12 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
               <div className={styles.scoreCheckbox}>
                 <FullScoreCheckbox />
               </div>
-            ) : null}
+          ) : null}
+           {/* {isAuth.isUserAuthenticated && currentCampNode.is_disabled == true ? (
+              <div className={styles.scoreCheckbox}>
+                <ArchivedCampCheckBox />
+              </div>
+          ) : null} */}
           </Panel>
 
           <Panel

@@ -103,6 +103,8 @@ const NetworkConstants = {
     GetCampHistory: `${BaseCanonizerApiUrl}/get-camp-history`,
     GetTopicHistory: `${BaseCanonizerApiUrl}/get-topic-history`,
     CommitChangeStatement: `${BaseCanonizerApiUrl}/commit/change`,
+    DiscardChangeStatement: `${BaseCanonizerApiUrl}/discard/change`,
+
     AgreeToChange: `${BaseCanonizerApiUrl}/agree-to-change`,
 
     GetSocialLinkedAccounts: `${BaseCanonizerApiUrl}/user/social/list`,
@@ -183,6 +185,8 @@ const NetworkConstants = {
 
     GetNickSupportUser: `${BaseCanonizerApiUrl}/get-nick-support-user/`,
 
+    // Evetline API
+    EventLineEndpoint: `${BaseCanonizerServiceUrl}/api/v1/timeline/get`,
     GetRemovedReasons: `${BaseCanonizerApiUrl}/support-reason-list`,
     GetXMLData: `${BaseCanonizerApiUrl}/sitemaps`,
     CheckTopicCampExist: `${BaseCanonizerApiUrl}/notify-if-url-not-exist`,

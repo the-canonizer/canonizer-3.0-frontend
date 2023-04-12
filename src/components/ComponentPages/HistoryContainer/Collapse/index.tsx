@@ -16,6 +16,7 @@ import { useState, useEffect, useRef } from "react";
 
 import {
   changeCommitStatement,
+  discardStatement,
   agreeToChangeApi,
 } from "../../../../network/api/history";
 import { setFilterCanonizedTopics } from "../../../../store/slices/filtersSlice";
@@ -44,6 +45,7 @@ function HistoryCollapse({
   onSelectCompare,
   isDisabledCheck,
   changeAgree,
+  changeDiscard,
   isChecked,
   setIsTreesApiCallStop,
 }: any) {
@@ -81,6 +83,18 @@ function HistoryCollapse({
     if (res?.status_code === 200) {
       setCommited(true);
     }
+  };
+
+  const discardChanges = async () => {
+    let reqBody = {
+      type: historyOf,
+      id: campStatement?.id,
+    };
+    let res = await discardStatement(reqBody);
+    if (res?.status_code === 200) {
+      setCommited(true);
+    }
+    changeDiscard();
   };
 
   const agreeWithChange = async () => {
@@ -391,6 +405,7 @@ function HistoryCollapse({
                         </Link>
                       </Button>
                       <Button
+                        className=" mr-3"
                         type="primary"
                         onClick={commitChanges}
                         id={`commit-change-${campStatement?.id}`}
@@ -398,62 +413,83 @@ function HistoryCollapse({
                       >
                         Commit Change
                       </Button>
+                      <Button
+                        className=" mr-3"
+                        type="primary"
+                        danger
+                        onClick={discardChanges}
+                        id={`commit-change-${campStatement?.id}`}
+                        disabled={loading}
+                      >
+                        Cancel
+                      </Button>
                     </div>
                   </div>
                 )}
-              {campStatement?.status == "in_review" &&
-                !!(
-                  (ifIamSupporter != 0 && ifSupportDelayed == 0) ||
-                  ifIAmExplicitSupporter
-                ) &&
-                isUserAuthenticated &&
-                !campStatement?.isAuthor && (
-                  <div className={styles.campStatementCollapseButtons}>
-                    <Spin spinning={loading} size="default">
-                      {" "}
-                      <div className={styles.infoText}>
-                        {campStatement?.status == "in_review" && (
-                          <>
-                            <i
-                              className="icon-info tooltip-icon-style"
-                              style={{
-                                position: "relative",
-                                top: 2,
-                                marginRight: 8,
-                              }}
-                            ></i>
-                            {"    "}
-                            {campStatement?.agreed_supporters} out of{" "}
-                            {campStatement?.total_supporters} required
-                            supporters have agreed
-                            {campStatement?.total_supporters -
+              {campStatement?.status == "in_review" && (
+                <div className={styles.campStatementCollapseButtons}>
+                  <Spin spinning={loading} size="default">
+                    {" "}
+                    <div className={styles.infoText}>
+                      {!!(
+                        (ifIamSupporter != 0 && ifSupportDelayed == 0) ||
+                        ifIAmExplicitSupporter ||
+                        campStatement?.isAuthor
+                      ) && (
+                        <>
+                          <i
+                            className="icon-info tooltip-icon-style"
+                            style={{
+                              position: "relative",
+                              top: 2,
+                              marginRight: 8,
+                            }}
+                          ></i>
+                          {"    "}
+                          {campStatement?.agreed_supporters} out of{" "}
+                          {campStatement?.total_supporters} required supporters
+                          have agreed
+                          {!!(
+                            (ifIamSupporter != 0 && ifSupportDelayed == 0) ||
+                            ifIAmExplicitSupporter
+                          ) &&
+                            isUserAuthenticated &&
+                            !campStatement?.isAuthor &&
+                            campStatement?.total_supporters -
                               campStatement?.agreed_supporters ==
                               1 &&
-                              !campStatement?.agreed_to_change && (
-                                <>
-                                  , Since you are the last hold out, the instant
-                                  you agree, this will go live.
-                                </>
-                              )}
-                          </>
-                        )}
-                      </div>
-                      <Checkbox
-                        defaultChecked={campStatement?.agreed_to_change}
-                        className={styles.campSelectCheckbox + " agreed-text"}
-                        onChange={agreeWithChange}
-                      >
-                        I agree with this{" "}
-                        {historyOf == "camp"
-                          ? "camp"
-                          : historyOf == "topic"
-                          ? "topic"
-                          : "statement"}{" "}
-                        change
-                      </Checkbox>
-                    </Spin>
-                  </div>
-                )}
+                            !campStatement?.agreed_to_change && (
+                              <>
+                                , Since you are the last hold out, the instant
+                                you agree, this will go live.
+                              </>
+                            )}
+                        </>
+                      )}
+                    </div>
+                    {!!(
+                      (ifIamSupporter != 0 && ifSupportDelayed == 0) ||
+                      ifIAmExplicitSupporter
+                    ) &&
+                      isUserAuthenticated &&
+                      !campStatement?.isAuthor && (
+                        <Checkbox
+                          defaultChecked={campStatement?.agreed_to_change}
+                          className={styles.campSelectCheckbox + " agreed-text"}
+                          onChange={agreeWithChange}
+                        >
+                          I agree with this{" "}
+                          {historyOf == "camp"
+                            ? "camp"
+                            : historyOf == "topic"
+                            ? "topic"
+                            : "statement"}{" "}
+                          change
+                        </Checkbox>
+                      )}
+                  </Spin>
+                </div>
+              )}
             </div>
           </>
         </Collapse>
