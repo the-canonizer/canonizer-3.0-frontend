@@ -86,7 +86,7 @@ describe("LoggedOutHeader", () => {
     expect(container.getElementsByTagName("nav")).toHaveLength(1);
     expect(container.getElementsByTagName("ul")).toHaveLength(1);
     expect(container.getElementsByTagName("li")).toHaveLength(5);
-    expect(container.getElementsByTagName("a")).toHaveLength(7);
+    expect(container.getElementsByTagName("a")).toHaveLength(6);
     expect(container.getElementsByTagName("button")).toHaveLength(8);
     expect(container.getElementsByTagName("img")).toHaveLength(1);
 

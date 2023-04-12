@@ -371,12 +371,12 @@ const ManageSupportUI = ({
               {" "}
               {messages.labels.manageSupportNote}
             </div>
-            {!CheckDelegatedOrDirect && topicSupportListData.length != 0 ? (
+            {!CheckDelegatedOrDirect && topicSupportListData?.length != 0 ? (
               <div>
                 <Card className={styles.margin_top} type="inner">
                   <b>
                     {messages.labels.topicSupportText} &quot;{""}
-                    {topicSupportListData[0]?.title}
+                    {topicSupportListData?.at(0)?.title}
                     {""}&quot;
                   </b>
                 </Card>
