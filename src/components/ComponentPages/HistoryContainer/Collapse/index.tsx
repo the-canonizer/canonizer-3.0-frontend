@@ -432,8 +432,8 @@ function HistoryCollapse({
                     {" "}
                     <div className={styles.infoText}>
                       {!!(
-                        campStatement?.ifIamSupporter != 0 ||
-                        campStatement?.ifIAmExplicitSupporter ||
+                        (ifIamSupporter != 0 && ifSupportDelayed == 0) ||
+                        ifIAmExplicitSupporter ||
                         campStatement?.isAuthor
                       ) && (
                         <>
@@ -468,8 +468,8 @@ function HistoryCollapse({
                       )}
                     </div>
                     {!!(
-                      campStatement?.ifIamSupporter != 0 ||
-                      campStatement?.ifIAmExplicitSupporter
+                      (ifIamSupporter != 0 && ifSupportDelayed == 0) ||
+                      ifIAmExplicitSupporter
                     ) &&
                       isUserAuthenticated &&
                       !campStatement?.isAuthor && (

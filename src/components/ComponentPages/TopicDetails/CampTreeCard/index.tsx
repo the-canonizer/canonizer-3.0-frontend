@@ -85,14 +85,14 @@ const CampTreeCard = ({
             header={
               <h3>
                 Canonizer Sorted Camp Tree{" "}
-                <Button
+                {/* <Button
                   type={"primary"}
                   size="small"
                   className={styles.eventLineBtn}
                   href={eventLinePath}
                 >
                   Event Line
-                </Button>
+                </Button> */}
               </h3>
             }
             key="1"
