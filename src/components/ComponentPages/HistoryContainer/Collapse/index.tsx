@@ -225,9 +225,8 @@ function HistoryCollapse({
                         (
                           !isUserAuthenticated
                             ? true
-                            : (!ifIAmExplicitSupporter &&
-                                ifIamSupporter == 0) ||
-                              ifSupportDelayed != 0
+                            : !campStatement?.ifIAmExplicitSupporter &&
+                              campStatement?.ifIamSupporter == 0
                             ? true
                             : false
                         )
@@ -241,9 +240,8 @@ function HistoryCollapse({
                         onClick={() => {
                           let isModelPop = !isUserAuthenticated
                             ? true
-                            : (!ifIAmExplicitSupporter &&
-                                ifIamSupporter == 0) ||
-                              ifSupportDelayed != 0
+                            : !campStatement?.ifIAmExplicitSupporter &&
+                              campStatement?.ifIamSupporter == 0
                             ? true
                             : false;
                           if (isModelPop) {
@@ -262,9 +260,8 @@ function HistoryCollapse({
                           (
                             !isUserAuthenticated
                               ? true
-                              : (!ifIAmExplicitSupporter &&
-                                  ifIamSupporter == 0) ||
-                                ifSupportDelayed != 0
+                              : !campStatement?.ifIAmExplicitSupporter &&
+                                campStatement?.ifIamSupporter == 0
                               ? true
                               : false
                           )
@@ -432,8 +429,8 @@ function HistoryCollapse({
                     {" "}
                     <div className={styles.infoText}>
                       {!!(
-                        (ifIamSupporter != 0 && ifSupportDelayed == 0) ||
-                        ifIAmExplicitSupporter ||
+                        campStatement?.ifIamSupporter != 0 ||
+                        campStatement?.ifIAmExplicitSupporter ||
                         campStatement?.isAuthor
                       ) && (
                         <>
@@ -450,8 +447,8 @@ function HistoryCollapse({
                           {campStatement?.total_supporters} required supporters
                           have agreed
                           {!!(
-                            (ifIamSupporter != 0 && ifSupportDelayed == 0) ||
-                            ifIAmExplicitSupporter
+                            campStatement?.ifIamSupporter != 0 ||
+                            campStatement?.ifIAmExplicitSupporter
                           ) &&
                             isUserAuthenticated &&
                             !campStatement?.isAuthor &&
@@ -468,8 +465,8 @@ function HistoryCollapse({
                       )}
                     </div>
                     {!!(
-                      (ifIamSupporter != 0 && ifSupportDelayed == 0) ||
-                      ifIAmExplicitSupporter
+                      campStatement?.ifIamSupporter != 0 ||
+                      campStatement?.ifIAmExplicitSupporter
                     ) &&
                       isUserAuthenticated &&
                       !campStatement?.isAuthor && (
