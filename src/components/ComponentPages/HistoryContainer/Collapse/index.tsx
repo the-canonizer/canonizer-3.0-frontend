@@ -215,7 +215,7 @@ function HistoryCollapse({
                   Select To Compare
                 </Checkbox>
               </div>
-              {!campStatement?.grace_period && (
+              {(!campStatement?.grace_period || commited) && (
                 <div className={styles.campStatementCollapseButtons}>
                   {(campStatement?.status == "in_review" ||
                     (campStatement?.status == "objected" &&
@@ -433,70 +433,73 @@ function HistoryCollapse({
                     </div>
                   </div>
                 )}
-              {campStatement?.status == "in_review" && (
-                <div className={styles.campStatementCollapseButtons}>
-                  <Spin spinning={loading} size="default">
-                    {" "}
-                    <div className={styles.infoText}>
+              {campStatement?.status == "in_review" &&
+                (!campStatement?.grace_period || commited) && (
+                  <div className={styles.campStatementCollapseButtons}>
+                    <Spin spinning={loading} size="default">
+                      {" "}
+                      <div className={styles.infoText}>
+                        {!!(
+                          (ifIamSupporter != 0 && ifSupportDelayed == 0) ||
+                          ifIAmExplicitSupporter ||
+                          campStatement?.isAuthor
+                        ) && (
+                          <>
+                            <i
+                              className="icon-info tooltip-icon-style"
+                              style={{
+                                position: "relative",
+                                top: 2,
+                                marginRight: 8,
+                              }}
+                            ></i>
+                            {"    "}
+                            {campStatement?.agreed_supporters} out of{" "}
+                            {campStatement?.total_supporters} required
+                            supporters have agreed
+                            {!!(
+                              (ifIamSupporter != 0 && ifSupportDelayed == 0) ||
+                              ifIAmExplicitSupporter
+                            ) &&
+                              isUserAuthenticated &&
+                              !campStatement?.isAuthor &&
+                              campStatement?.total_supporters -
+                                campStatement?.agreed_supporters ==
+                                1 &&
+                              !campStatement?.agreed_to_change && (
+                                <>
+                                  , Since you are the last hold out, the instant
+                                  you agree, this will go live.
+                                </>
+                              )}
+                          </>
+                        )}
+                      </div>
                       {!!(
                         (ifIamSupporter != 0 && ifSupportDelayed == 0) ||
-                        ifIAmExplicitSupporter ||
-                        campStatement?.isAuthor
-                      ) && (
-                        <>
-                          <i
-                            className="icon-info tooltip-icon-style"
-                            style={{
-                              position: "relative",
-                              top: 2,
-                              marginRight: 8,
-                            }}
-                          ></i>
-                          {"    "}
-                          {campStatement?.agreed_supporters} out of{" "}
-                          {campStatement?.total_supporters} required supporters
-                          have agreed
-                          {!!(
-                            (ifIamSupporter != 0 && ifSupportDelayed == 0) ||
-                            ifIAmExplicitSupporter
-                          ) &&
-                            isUserAuthenticated &&
-                            !campStatement?.isAuthor &&
-                            campStatement?.total_supporters -
-                              campStatement?.agreed_supporters ==
-                              1 &&
-                            !campStatement?.agreed_to_change && (
-                              <>
-                                , Since you are the last hold out, the instant
-                                you agree, this will go live.
-                              </>
-                            )}
-                        </>
-                      )}
-                    </div>
-                    {!!(
-                      (ifIamSupporter != 0 && ifSupportDelayed == 0) ||
-                      ifIAmExplicitSupporter
-                    ) &&
-                      isUserAuthenticated &&
-                      !campStatement?.isAuthor && (
-                        <Checkbox
-                          defaultChecked={campStatement?.agreed_to_change}
-                          className={styles.campSelectCheckbox + " agreed-text"}
-                          onChange={agreeWithChange}
-                        >
-                          I agree with this{" "}
-                          {historyOf == "camp"
-                            ? "camp"
-                            : historyOf == "topic"
-                            ? "topic"
-                            : "statement"}{" "}
-                          change
-                        </Checkbox>
-                      )}
-                  </Spin>
-                </div>
-              )}
+                        ifIAmExplicitSupporter
+                      ) &&
+                        isUserAuthenticated &&
+                        !campStatement?.isAuthor && (
+                          <Checkbox
+                            defaultChecked={campStatement?.agreed_to_change}
+                            className={
+                              styles.campSelectCheckbox + " agreed-text"
+                            }
+                            onChange={agreeWithChange}
+                          >
+                            I agree with this{" "}
+                            {historyOf == "camp"
+                              ? "camp"
+                              : historyOf == "topic"
+                              ? "topic"
+                              : "statement"}{" "}
+                            change
+                          </Checkbox>
+                        )}
+                    </Spin>
+                  </div>
+                )}
             </div>
           </>
         </Collapse>
