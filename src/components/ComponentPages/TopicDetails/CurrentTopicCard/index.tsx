@@ -39,7 +39,7 @@ const CurrentTopicCard = ({ loadingIndicator }) => {
           <Descriptions.Item label="Topic Name">
             {topicRecord && topicRecord?.topic_name}
           </Descriptions.Item>
-          <Descriptions.Item label="Namespace">
+          <Descriptions.Item label="Canon">
             {topicRecord && topicRecord?.namespace_name}
           </Descriptions.Item>
         </Descriptions>

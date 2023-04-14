@@ -183,7 +183,7 @@ const SupportTreeCard = ({
                           query: {
                             topicnum: topicRecord?.topic_num,
                             campnum: topicRecord?.camp_num,
-                            namespace: topicRecord?.namespace_id,
+                            canon: topicRecord?.namespace_id,
                           },
                         }}
                       >

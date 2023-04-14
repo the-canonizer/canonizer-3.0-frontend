@@ -21,8 +21,6 @@ class WrappedApp extends App<AppInitialProps> {
   public render() {
     const { Component, pageProps, meta } = this.props as any;
 
-    console.log("[META_LOG]", meta);
-
     return (
       <Fragment>
         <Provider store={store}>
@@ -145,14 +143,11 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
       }
     } else if (aspath?.includes("support_list.asp")) {
       const nickname = appContext.ctx.query?.nick_name_id,
-        namespace = appContext.ctx.query?.nick_name_id || 1;
+        canon = appContext.ctx.query?.nick_name_id || 1;
 
       if (nickname) {
         returnData = await redirect(
-          "/user/supports/" +
-            nickname +
-            "?topicnum=&campnum=&namespace=" +
-            namespace,
+          "/user/supports/" + nickname + "?topicnum=&campnum=&canon=" + canon,
           null,
           null,
           "nickname",

@@ -143,7 +143,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   // useEffect(() => {
   //   if (didMount.current) {
   //     if (history.pushState) {
-  //       const queryParams = `?filter=${filterObject?.filterByScore}&algorithm=${filterObject?.algorithm}&asofdate=${filterObject?.asofdate}&namespace=${filterObject?.namespace_id}`;
+  //       const queryParams = `?filter=${filterObject?.filterByScore}&algorithm=${filterObject?.algorithm}&asofdate=${filterObject?.asofdate}&canon=${filterObject?.namespace_id}`;
   //       var newurl =
   //         window.location.protocol +
   //         "//" +
@@ -383,8 +383,8 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
               <div className={styles.scoreCheckbox}>
                 <FullScoreCheckbox />
               </div>
-          ) : null}
-           {/* {isAuth.isUserAuthenticated && currentCampNode.is_disabled == true ? (
+            ) : null}
+            {/* {isAuth.isUserAuthenticated && currentCampNode.is_disabled == true ? (
               <div className={styles.scoreCheckbox}>
                 <ArchivedCampCheckBox />
               </div>

@@ -178,7 +178,7 @@ export const UserProfileCard = ({
                                                 query: {
                                                   topicnum: data?.topic_num,
                                                   campnum: reqBody?.campNum,
-                                                  namespace: data?.namespace_id,
+                                                  canon: data?.namespace_id,
                                                 },
                                               }}
                                             >
