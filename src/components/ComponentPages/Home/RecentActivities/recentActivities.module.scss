@@ -15,8 +15,9 @@
     margin: 0;
 
     span {
-      font-size: 14px;
+      font-size: 12px;
       margin-right: 10px;
+      font-weight: 500;
     }
   }
 }
@@ -26,6 +27,14 @@
   &.spaceCardTabs {
     div[role="tablist"] {
       margin-bottom: 40px;
+    }
+  }
+  &.hideTabs {
+    div[role="tablist"] {
+      div[class="ant-tabs-nav-wrap"] {
+        visibility: hidden;
+        opacity: 0;
+      }
     }
   }
   div[role="tablist"] {

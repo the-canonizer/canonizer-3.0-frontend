@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState, Fragment } from "react";
 import { Tabs, Typography, List, Button, Spin, Tooltip, Switch } from "antd";
 import { useRouter } from "next/router";
 import { LoadingOutlined } from "@ant-design/icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import { convert } from "html-to-text";
 
@@ -12,6 +12,7 @@ import { RootState } from "src/store";
 import { getRecentActivitiesApi } from "../../../../network/api/homePageApi";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
 import CustomSkelton from "../../../common/customSkelton";
+import { setIsChecked } from "src/store/slices/recentActivitiesSlice";
 
 const antIcon = <LoadingOutlined spin />;
 
@@ -27,16 +28,17 @@ const OperationsSlot = {
 };
 
 export default function RecentActivities() {
-  const { topicsData, threadsData, loggedInUser } = useSelector(
-    (state: RootState) => ({
+  const { topicsData, threadsData, loggedInUser, isCheckedRecent } =
+    useSelector((state: RootState) => ({
       topicsData: state?.recentActivities?.topicsData,
       threadsData: state?.recentActivities?.threadsData,
       loggedInUser: state.auth.loggedInUser,
-    })
-  );
+      isCheckedRecent: state.recentActivities.isCheckedAllRecent,
+    }));
 
   const { isUserAuthenticated } = useAuthentication();
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const [position] = useState(["left", "right"]);
   const [recentActivities, setRecentActivities] = useState(topicsData);
@@ -48,8 +50,9 @@ export default function RecentActivities() {
   const [loadMoreIndicator, setLoadMoreIndicator] = useState(false);
   const [getTopicsLoadingIndicator, setGetTopicsLoadingIndicator] =
     useState(false);
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsInternalChecked] = useState(isCheckedRecent);
   const [userData, setUserData] = useState(loggedInUser);
+  const [isShowAllLoading, setIsShowAllLoading] = useState(false);
 
   const slot = useMemo(() => {
     if (position.length === 0) return null;
@@ -60,6 +63,8 @@ export default function RecentActivities() {
   }, [position]);
 
   useEffect(() => setUserData(loggedInUser), [loggedInUser]);
+
+  useEffect(() => setIsInternalChecked(isCheckedRecent), [isCheckedRecent]);
 
   useEffect(() => {
     setRecentActivities(topicsData);
@@ -132,6 +137,7 @@ export default function RecentActivities() {
     };
     await getRecentActivitiesApi(reqBody, loadMore, topicType);
     setLoadMoreIndicator(false);
+    setIsShowAllLoading(false);
   }
 
   const covertToTime = (unixTime) => {
@@ -189,22 +195,35 @@ export default function RecentActivities() {
     );
   };
 
-  const onChange = () => setIsChecked(!isChecked);
+  const onChange = () => {
+    setIsShowAllLoading(true);
+    dispatch(setIsChecked(!isChecked));
+  };
 
   return (
     <>
       <div className={`${styles.listCard} recentActivities_listWrap`}>
-        {userData?.is_admin ? (
+        {userData?.is_admin &&
+        !router?.query?.camp_num &&
+        !router?.query?.topic_num ? (
           <Title className={styles.switchButton} level={4}>
-            <span>Show All User Activities</span>
-            <Switch checked={isChecked} size="small" onChange={onChange} />
+            <span>Show all user activities</span>
+            {isShowAllLoading ? (
+              <Spin size="small" />
+            ) : (
+              <Switch checked={isChecked} size="small" onChange={onChange} />
+            )}
           </Title>
         ) : null}
 
         <Tabs
           className={`${styles.listCardTabs} ${
             userData?.is_admin ? styles.spaceCardTabs : ""
-          } recentActivities_listCardTabs`}
+          } recentActivities_listCardTabs ${
+            router?.query?.camp_num && router?.query?.topic_num
+              ? styles.hideTabs
+              : ""
+          }`}
           defaultActiveKey={`${
             router?.query?.tabName ? router?.query?.tabName : "topic/camps"
           }`}

@@ -59,7 +59,6 @@ export default function CampRecentActivities() {
                   query: {
                     topic_num: router?.query?.camp[0]?.split("-")[0],
                     camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
-                    tabName: "topic/camps",
                   },
                 }}
               >
