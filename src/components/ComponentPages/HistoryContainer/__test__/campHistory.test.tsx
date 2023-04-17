@@ -120,7 +120,7 @@ describe("CampHistory Page", () => {
       expect(screen.getAllByText(/theories of consciousness/i)[1]);
       expect(screen.getByText(/edit summary :/i));
       expect(screen.getByText(/SEO name change as proposed in forum./i));
-      expect(screen.getByText(/Namespace :/i));
+      expect(screen.getByText(/Canon :/i));
       expect(screen.getByText(/\/general\//i));
       expect(screen.getByText(/submitted on :/i));
       expect(screen.getByText(/submitter nickname :/i));

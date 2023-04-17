@@ -26,7 +26,7 @@ const StatementHistory = ({ campStatement, topicNamespaceId }: any) => {
               campStatement?.submitter_nick_id || ""
             }?topicnum=${campStatement?.topic_num || ""}&campnum=${
               campStatement?.camp_num || ""
-            }&namespace=${topicNamespaceId || ""}`}
+            }&canon=${topicNamespaceId || ""}`}
             passHref
           >
             <a>{campStatement?.submitter_nick_name}</a>
@@ -47,7 +47,7 @@ const StatementHistory = ({ campStatement, topicNamespaceId }: any) => {
                 campStatement?.objector_nick_id || ""
               }?topicnum=${campStatement?.topic_num || ""}&campnum=${
                 campStatement?.camp_num || ""
-              }&namespace=${topicNamespaceId || ""}`}
+              }&canon=${topicNamespaceId || ""}`}
               passHref
             >
               <a>{campStatement?.objector_nick_name}</a>

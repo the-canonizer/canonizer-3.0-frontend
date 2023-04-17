@@ -11,9 +11,8 @@ import {
 } from "src/store/slices/filtersSlice";
 import { GetUserProfileInfo } from "src/network/api/userApi";
 import { setAuthToken, setLoggedInUser } from "src/store/slices/authSlice";
-import { isServer } from "src/utils/generalUtility";
 
-function Home({ current_date, token }) {
+function Home({ current_date }) {
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -25,8 +24,15 @@ function Home({ current_date, token }) {
   }, []);
 
   useEffect(() => {
-    const queries = router.query,
+    let queries = router.query,
       accessToken = queries?.access_token as string;
+    if ("namespace" in queries) {
+      const { namespace, ...rest } = queries;
+      queries = rest;
+      queries.canon = namespace;
+      router.query = queries;
+      router.replace(router, null, { shallow: true });
+    }
 
     const getData = async (token: string) => {
       let resData = await GetUserProfileInfo(token);
@@ -60,7 +66,7 @@ function Home({ current_date, token }) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(ctx) {
   const currentDate = new Date().valueOf();
 
   return {
