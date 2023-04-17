@@ -80,7 +80,7 @@ export default function AddOrManage({ add }: any) {
   const [canNameSpace, setCanNameSpace] = useState([]);
   const [options, setOptions] = useState([...messages.preventCampLabel]);
   const [initialOptions, setInitialOptions] = useState([]);
-  const [editCampStatementData, setEditCampStatementData] = useState({});
+  const [editCampStatementData, setEditCampStatementData] = useState("");
 
   const [form] = Form.useForm();
   let objection = router?.query?.statement?.at(0)?.split("-")[1] == "objection";
@@ -482,7 +482,7 @@ export default function AddOrManage({ add }: any) {
       oldOptions[0]?.checked == initialOptions[0]?.checked &&
       oldOptions[0]?.disable == initialOptions[0]?.disable &&
       oldOptions[1]?.checked == initialOptions[1]?.checked &&
-      oldOptions[1]?.disable == initialOptions[1]?.disable 
+      oldOptions[1]?.disable == initialOptions[1]?.disable
       // oldOptions[2]?.checked == initialOptions[2]?.checked &&
       // oldOptions[2]?.disable == initialOptions[2]?.disable
     ) {
