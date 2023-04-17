@@ -118,7 +118,6 @@ const SupportTreeCard = ({
   };
 
   const handleClickSupportCheck = () => {
-    dispatch(setCurrentCampRecord(null));
     dispatch(setManageSupportUrlLink(manageSupportPath));
     dispatch(setManageSupportStatusCheck(true));
   };

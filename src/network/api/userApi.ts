@@ -238,12 +238,16 @@ export const getCountryCodes = async () => {
   }
 };
 
-export const GetUserProfileInfo = async () => {
+export const GetUserProfileInfo = async (token = "") => {
   let state = store.getState();
   const { auth } = state;
-  const res = await NetworkCall.fetch(
-    UserRequest.GetUserProfileInfo(auth.loggedInUser?.token)
-  )
+  let tcn = "";
+  if (token) {
+    tcn = token;
+  } else {
+    tcn = auth.loggedInUser?.token;
+  }
+  const res = await NetworkCall.fetch(UserRequest.GetUserProfileInfo(tcn))
     .then((value) => {
       return value;
     })

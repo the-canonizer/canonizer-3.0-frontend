@@ -1,6 +1,6 @@
-import { useEffect, Fragment } from "react";
-import { useRouter } from "next/router";
+import { Fragment, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
 
 import Layout from "src/hoc/layout";
 import HomePageContainer from "src/components/ComponentPages/Home";
@@ -9,10 +9,12 @@ import {
   setFilterCanonizedTopics,
   setCurrentDate,
 } from "src/store/slices/filtersSlice";
+import { GetUserProfileInfo } from "src/network/api/userApi";
+import { setAuthToken, setLoggedInUser } from "src/store/slices/authSlice";
 
 function Home({ current_date }) {
-  const router = useRouter();
   const dispatch = useDispatch();
+  const router = useRouter();
 
   dispatch(setFilterCanonizedTopics({ search: "" }));
   dispatch(setCurrentDate(current_date));
@@ -22,13 +24,36 @@ function Home({ current_date }) {
   }, []);
 
   useEffect(() => {
-    let queries = router.query;
+    let queries = router.query,
+      accessToken = queries?.access_token as string;
     if ("namespace" in queries) {
       const { namespace, ...rest } = queries;
       queries = rest;
       queries.canon = namespace;
       router.query = queries;
       router.replace(router, null, { shallow: true });
+    }
+
+    const getData = async (token: string) => {
+      let resData = await GetUserProfileInfo(token);
+      if (resData.status_code === 200) {
+        dispatch(
+          setLoggedInUser({
+            ...resData?.data,
+            token: accessToken,
+            refresh_token: null,
+          })
+        );
+        const { access_token, ...rest } = router?.query;
+        router.query = rest;
+        await router.replace(router, null, { shallow: true });
+      }
+    };
+
+    if (accessToken) {
+      localStorage.setItem("auth_token", accessToken);
+      dispatch(setAuthToken(accessToken));
+      getData(accessToken);
     }
   }, []);
 
