@@ -4,23 +4,33 @@ import { useRouter } from "next/router";
 import { BellFilled } from "@ant-design/icons";
 import moment from "moment";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 import styles from "./campRecentActivities.module.scss";
 
 import { getTopicActivityLogApi } from "../../../../network/api/campDetailApi";
 import K from "../../../../constants";
 import CustomSkelton from "../../../common/customSkelton";
+import { RootState } from "src/store";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 export default function CampRecentActivities() {
+  const loggedInUser = useSelector(
+    (state: RootState) => state.auth.loggedInUser
+  );
+
   const router = useRouter();
   const [data, setData] = useState([]);
   const [loadingIndicator, setLoadingIndicator] = useState(false);
+  const [userData, setUserData] = useState(loggedInUser);
 
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
+
+  useEffect(() => setUserData(loggedInUser), [loggedInUser]);
+
   useEffect(() => {
     async function getTopicActivityLogCall() {
       setLoadingIndicator(true);
@@ -42,21 +52,25 @@ export default function CampRecentActivities() {
         className={"activities " + styles.campActivities}
         actions={[
           <Fragment>
-            <Link
-              href={{
-                pathname: "/activities",
-                query: {
-                  topic_num: router?.query?.camp[0]?.split("-")[0],
-                  camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
-                  tabName: "topic/camps",
-                },
-              }}
-            >
-              <a className={styles.viewAllLink}>
-                <Text>View All</Text>
-                <i className="icon-angle-right"></i>
-              </a>
-            </Link>
+            {userData?.is_admin ? (
+              <Link
+                href={{
+                  pathname: "/activities",
+                  query: {
+                    topic_num: router?.query?.camp[0]?.split("-")[0],
+                    camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
+                    tabName: "topic/camps",
+                  },
+                }}
+              >
+                <a className={styles.viewAllLink}>
+                  <Text>View All</Text>
+                  <i className="icon-angle-right"></i>
+                </a>
+              </Link>
+            ) : (
+              ""
+            )}
           </Fragment>,
         ]}
       >
