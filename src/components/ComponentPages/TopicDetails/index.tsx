@@ -72,6 +72,7 @@ const TopicDetails = () => {
   const [supportTreeForCamp, setSupportTreeForCamp] = useState<number>(null);
   const router = useRouter();
   const dispatch = useDispatch();
+  const showTreeSkeltonRef = useRef(false);
   const {
     asof,
     asofdate,
@@ -105,7 +106,11 @@ const TopicDetails = () => {
   };
   useEffect(() => {
     async function getTreeApiCall() {
-      setGetTreeLoadingIndicator(true);
+      console.log("show tree check ", showTreeSkeltonRef);
+      if (!showTreeSkeltonRef) {
+        setGetTreeLoadingIndicator(true);
+        showTreeSkeltonRef.current = true;
+      }
       setLoadingIndicator(true);
       const reqBodyForService = {
         topic_num: +router?.query?.camp[0]?.split("-")[0],

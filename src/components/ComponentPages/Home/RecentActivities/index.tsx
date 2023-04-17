@@ -83,7 +83,7 @@ export default function RecentActivities() {
       setGetTopicsLoadingIndicator(true);
       router.push("/login");
     }
-  }, [selectedTab, isChecked]);
+  }, [selectedTab, isChecked, router]);
 
   const handleTabChange = (key: string) => {
     if (key == "threads") {

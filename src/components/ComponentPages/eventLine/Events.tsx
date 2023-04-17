@@ -16,17 +16,24 @@ const Events = ({ timelineDescript }) => {
         }
       >
         <List itemLayout="horizontal" className="activeListWrap pl-4">
-          <List.Item className={activityStyle.activitiesList}>
-            <List.Item.Meta
-              avatar={
-                timelineDescript && (
-                  <BellFilled className={activityStyle.bellIcon} />
-                )
-              }
-              title={timelineDescript}
-              className={styles.listItem}
-            />
-          </List.Item>
+          {timelineDescript &&
+            timelineDescript.map((title) => {
+              return (
+                <>
+                  <List.Item className={activityStyle.activitiesList}>
+                    <List.Item.Meta
+                      avatar={
+                        title && (
+                          <BellFilled className={activityStyle.bellIcon} />
+                        )
+                      }
+                      title={title}
+                      className={styles.listItem}
+                    />
+                  </List.Item>
+                </>
+              );
+            })}
         </List>
       </Card>
     </>
