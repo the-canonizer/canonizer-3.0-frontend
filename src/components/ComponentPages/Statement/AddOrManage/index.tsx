@@ -808,7 +808,7 @@ export default function AddOrManage({ add }: any) {
                           className={`${styles.formItem} namespace_in mb-2`}
                           label={
                             <>
-                              Namespace <span className="required">*</span>
+                              Canon <span className="required">*</span>
                               <span className={styles.small}>
                                 (General is recommended, unless you know
                                 otherwise)

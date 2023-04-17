@@ -39,6 +39,9 @@ const LoggedOutHeader = ({}: any) => {
       <Header className={styles.wrap}>
         <Logo />
         <div className={`${styles.navWrap} ${isActive && styles.showMobMenu}`}>
+          <div className={styles.mobLogoIcon}>
+            <Logo />
+          </div>
           <Button
             size="large"
             className={`${styles.btnCloseMobMenu} mb-4 float-right`}
