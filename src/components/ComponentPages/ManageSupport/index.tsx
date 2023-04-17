@@ -74,7 +74,6 @@ const ManageSupport = () => {
         ? Date.now() / 1000
         : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
   };
-
   //Support page Link Url
   const { manageSupportUrlLink } = useSelector((state: RootState) => ({
     manageSupportUrlLink: state.topicDetails.manageSupportUrlLink,
@@ -269,7 +268,7 @@ const ManageSupport = () => {
         setSubmitButtonDisable(unavailable_camp ? unavailable_camp : false);
         setGetSupportStatusData(dataValue);
         //if Warning message is show
-        if (resultFilterSupportCamp.length == 0) {
+        if (resultFilterSupportCamp.length == 0 && CampName) {
           let supportOrderLen =
             fiterSupportedCamps.length + manageSupportArr.length + 1;
           //push data into a array of manageSupportArray
@@ -291,22 +290,27 @@ const ManageSupport = () => {
       } else {
         //warning  message is not show
         setGetSupportStatusData("");
-
-        if (resultFilterSupportCamp.length == 0) {
+        
+        if (resultFilterSupportCamp.length == 0 && CampName) {
           let supportOrderLen = supportedCampsList.length + 1;
           //push data into a array of manageSupportArray
-          campRecordRef?.current?.camp_name &&
+          if(campRecordRef?.current?.camp_name){
             supportedCampsList.push({
               topic_num: parseInt(topicNum),
               camp_num: parseInt(campNum),
-              camp_name: CampName
-                ? CampName
-                : campRecordRef?.current?.camp_name,
+              camp_name:CampName ?? campRecordRef?.current?.camp_name,
               support_order: supportOrderLen,
               link: campSupportPath,
             });
+          }else{
+            supportedCampsList.push({
+              topic_num: parseInt(topicNum),
+              camp_num: parseInt(campNum),
+              camp_name:CampName ?? campRecordRef?.current?.camp_name,
+              support_order: supportOrderLen,
+              link: campSupportPath,
+            })};
         }
-
         setManageSupportList(supportedCampsList);
         setManageSupportRevertData(supportedCampsList);
       }
@@ -447,14 +451,14 @@ const ManageSupport = () => {
 
     //Case if data pass from delegated or direct
     if (CheckDelegatedOrDirect) {
-      setGetManageSupportLoadingIndicator(true)
+      setGetManageSupportLoadingIndicator(true);
 
       let nickNameID = nickNameList.filter(
         (values) => selectedtNickname == values.id
       );
       let nickNameIDValue = nickNameID[0].id;
       let delegated_user_id = router?.query?.manageSupport[1].split("_");
-      
+
       const addDelegatedSupport = {
         nick_name_id: nickNameIDValue,
         delegated_nick_name_id: delegated_user_id[1],

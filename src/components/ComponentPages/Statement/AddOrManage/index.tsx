@@ -808,7 +808,7 @@ export default function AddOrManage({ add }: any) {
                           className={`${styles.formItem} namespace_in mb-2`}
                           label={
                             <>
-                              Namespace <span className="required">*</span>
+                              Canon <span className="required">*</span>
                               <span className={styles.small}>
                                 (General is recommended, unless you know
                                 otherwise)
@@ -851,7 +851,7 @@ export default function AddOrManage({ add }: any) {
                   </>
                 )}
                 {/* statement================================================================================ */}
-                {manageFormOf == "statement" && (
+                {manageFormOf == "statement" && !objection && (
                   <Col xs={24} xl={24}>
                     <Form.Item
                       className={`${styles.formItem} mb-2`}
@@ -1083,7 +1083,8 @@ export default function AddOrManage({ add }: any) {
                           disabled={
                             submitIsDisable &&
                             submitIsDisableCheck &&
-                            editorTextLength < 1
+                            editorTextLength < 1 &&
+                            !objection
                           }
                           id="update-submit-btn"
                         >

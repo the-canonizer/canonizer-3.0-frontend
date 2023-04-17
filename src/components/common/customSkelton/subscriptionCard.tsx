@@ -13,7 +13,7 @@ const SubscriptionCustomSkelton = ({ bodyCount, stylingClass }) => {
   for (let i = 0; i < bodyCount; i++) {
     cardArray.push(
       <Card
-        key="skeleton_card"
+        key={"skeleton_card_" + i}
         className={`${styles.cardBox_tags} ${styles.cardSkeleton} ${styles.postCard}`}
         type="inner"
         size="default"

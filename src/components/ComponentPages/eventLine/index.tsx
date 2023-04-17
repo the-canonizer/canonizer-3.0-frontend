@@ -17,7 +17,7 @@ const { Title } = Typography;
 const TopicDetails = () => {
   const router = useRouter();
 
-  const [timelineDescript, setTimelineDescript] = useState("");
+  const [timelineDescript, setTimelineDescript] = useState([]);
 
   return (
     <>
