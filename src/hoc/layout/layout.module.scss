@@ -125,6 +125,8 @@
     @media screen and (min-width: 767px) {
       display: flex;
       flex-wrap: wrap;
+      align-content: baseline;
+      // flex-direction: column;
       &:not(.timelineLayout) {
         width: calc(100% - 180px);
       }
