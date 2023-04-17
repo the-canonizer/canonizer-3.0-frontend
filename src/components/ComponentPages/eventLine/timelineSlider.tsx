@@ -193,9 +193,15 @@ function TimelineSlider({
       setIteration(0);
       setStart(false);
     }
-
     let showkey = Object.keys(mockData)[iteration];
-    setTimelineDescript(mockData[showkey]?.event?.message);
+    let mappedArr = [];
+    for (let i = 0; i < Object.keys(mockData).length; i++) {
+      if (showkey == Object.keys(mockData)[i]) {
+        break;
+      }
+      mappedArr.push(mockData[Object.keys(mockData)[i]]?.event?.message);
+    }
+    setTimelineDescript(mappedArr);
   }, [iteration, mockData]);
 
   return (
