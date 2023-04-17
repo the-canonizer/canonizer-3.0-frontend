@@ -73,7 +73,7 @@ const CurrentCampCard = ({ loadingIndicator }) => {
                               ""
                             }?topicnum=${campRecord?.topic_num || ""}&campnum=${
                               campRecord?.camp_num || ""
-                            }&namespace=${topicRecord?.namespace_id || ""}`}
+                            }&canon=${topicRecord?.namespace_id || ""}`}
                             passHref
                           >
                             <a>{campRecord[description.key]}</a>

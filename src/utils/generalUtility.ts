@@ -230,14 +230,14 @@ export const routeToUserPage = (
   router,
   topicnum = "",
   campnum = "",
-  namespace = 1
+  canon = 1
 ) => {
   return router.push({
     pathname: `/user/supports`,
     query: {
       topicnum,
       campnum,
-      namespace,
+      canon,
       camp: `camp_${topicnum}_${campnum}`,
     },
   });

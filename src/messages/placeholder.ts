@@ -26,7 +26,7 @@ export const placeholders = {
   editSummary: "Summary",
   nickName: "Nickname",
   topicName: "Topic Name",
-  namespace: "Namespace",
+  namespace: "Canon",
   campAboutNickName: "--Select Camp About Nickname--",
   campURL: "https://",
   searchPlaceholder: "Search by thread name",
