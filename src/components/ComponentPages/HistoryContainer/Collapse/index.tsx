@@ -135,12 +135,6 @@ function HistoryCollapse({
       router.push(`/manage/${historyOf}/${campStatement?.id}`);
     }
   };
-  console.log("comit =>", commited);
-  console.log(
-    "campStatement?.ifIAmExplicitSupporter",
-    campStatement?.ifIAmExplicitSupporter
-  );
-  console.log("campStatement?.ifIamSupporter", campStatement?.ifIamSupporter);
   return (
     <div>
       <Space
