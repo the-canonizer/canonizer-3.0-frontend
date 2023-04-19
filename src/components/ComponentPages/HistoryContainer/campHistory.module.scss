@@ -306,6 +306,8 @@
       & > div {
         & > h5 {
           line-height: 16px;
+          word-break: break-all;
+          padding-right: 5px;
         }
 
         & > h2 {
