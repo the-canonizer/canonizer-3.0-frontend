@@ -154,7 +154,7 @@ const TopicsList = () => {
   useEffect(() => {
     setSelectedNameSpace(filterNameSpace);
     setNameSpaceId(filterNameSpaceId);
-    setInputSearch(search);
+    setInputSearch(search.replace(/\s/g, ''));
     setNameSpacesList(nameSpaces);
   }, [filterNameSpace, filterNameSpaceId, search, nameSpaces]);
 
@@ -204,7 +204,7 @@ const TopicsList = () => {
   }
 
   const onSearch = (value) => {
-    setInputSearch(value);
+    setInputSearch(value.replace(/\s/g, ''));
     dispatch(
       setFilterCanonizedTopics({
         search: value || "",
