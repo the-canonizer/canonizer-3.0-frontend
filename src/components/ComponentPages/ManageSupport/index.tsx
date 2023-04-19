@@ -290,26 +290,27 @@ const ManageSupport = () => {
       } else {
         //warning  message is not show
         setGetSupportStatusData("");
-        
+
         if (resultFilterSupportCamp.length == 0 && CampName) {
           let supportOrderLen = supportedCampsList.length + 1;
           //push data into a array of manageSupportArray
-          if(campRecordRef?.current?.camp_name){
+          if (campRecordRef?.current?.camp_name) {
             supportedCampsList.push({
               topic_num: parseInt(topicNum),
               camp_num: parseInt(campNum),
-              camp_name:CampName ?? campRecordRef?.current?.camp_name,
+              camp_name: CampName ?? campRecordRef?.current?.camp_name,
               support_order: supportOrderLen,
               link: campSupportPath,
             });
-          }else{
+          } else {
             supportedCampsList.push({
               topic_num: parseInt(topicNum),
               camp_num: parseInt(campNum),
-              camp_name:CampName ?? campRecordRef?.current?.camp_name,
+              camp_name: CampName ?? campRecordRef?.current?.camp_name,
               support_order: supportOrderLen,
               link: campSupportPath,
-            })};
+            });
+          }
         }
         setManageSupportList(supportedCampsList);
         setManageSupportRevertData(supportedCampsList);
