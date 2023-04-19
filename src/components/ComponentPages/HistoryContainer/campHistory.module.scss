@@ -324,6 +324,9 @@
         & > span a {
           color: #4484ce;
         }
+        @media screen and (max-width: 767px) {
+          padding-right: 30px !important;
+        }
       }
 
       h3 {
@@ -379,6 +382,9 @@
         font-weight: 400;
         color: #0f2a4d;
       }
+      @media screen and (max-width: 370px) {
+        word-break: break-all;
+      }
     }
 
     .campSelectCheckbox {
@@ -387,6 +393,12 @@
         font-weight: 600;
         margin-top: 16px;
       }
+    }
+  }
+
+  .collapsiablePanel {
+    @media screen and (max-width: 767px) {
+      padding-right: 0;
     }
   }
 }
@@ -402,7 +414,8 @@ $btn-bkg: #4484ce;
     padding: 15px 18px;
     margin-right: -55px;
 
-    @media screen and (max-width: 1018px) {
+    @media screen and (max-width: 767px) {
+      margin-right: 0;
     }
 
     .campUpdateButton,

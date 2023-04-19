@@ -146,9 +146,9 @@ function HistoryCollapse({
           collapsible="header"
           defaultActiveKey={["1"]}
           expandIconPosition="right"
-          className={`campHistoryCollapseCards + " " + ${
+          className={`campHistoryCollapseCards ${
             campStatement?.status ? campStatement?.status : "live"
-          }`}
+          } ${styles.collapsiablePanel}`}
         >
           <Panel
             header={<i className="icon-uparrow"></i>}
