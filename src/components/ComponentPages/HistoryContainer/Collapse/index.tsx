@@ -12,7 +12,7 @@ import {
 import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Fragment } from "react";
 
 import {
   changeCommitStatement,
@@ -147,9 +147,9 @@ function HistoryCollapse({
           collapsible="header"
           defaultActiveKey={["1"]}
           expandIconPosition="right"
-          className={`campHistoryCollapseCards + " " + ${
+          className={`campHistoryCollapseCards ${
             campStatement?.status ? campStatement?.status : "live"
-          }`}
+          } ${styles.collapsiablePanel}`}
         >
           <Panel
             header={<i className="icon-uparrow"></i>}
@@ -157,8 +157,20 @@ function HistoryCollapse({
             className={styles.campStatementCollapse}
             showArrow={false}
           >
-            <>
-              <Title level={5}>{historyTitle()} :</Title>
+            <Fragment>
+              <Title level={5}>
+                {historyTitle()} :{" "}
+                {historyOf == "camp" && (
+                  <span className={styles.updateSurveyPrj}>
+                    {campStatement?.camp_name}
+                  </span>
+                )}
+                {historyOf == "topic" && (
+                  <span className={styles.updateSurveyPrj}>
+                    {campStatement?.topic_name}
+                  </span>
+                )}
+              </Title>
               <div>
                 {historyOf == "statement" && (
                   <div
@@ -168,22 +180,10 @@ function HistoryCollapse({
                   />
                 )}
               </div>
-
-              {historyOf == "camp" && (
-                <span className={styles.updateSurveyPrj}>
-                  {campStatement?.camp_name}
-                </span>
-              )}
-              {historyOf == "topic" && (
-                <span className={styles.updateSurveyPrj}>
-                  {campStatement?.topic_name}
-                </span>
-              )}
-
               <Divider />
-            </>
+            </Fragment>
           </Panel>
-          <>
+          <Fragment>
             <div className={styles.campCollapseSummaryWrap}>
               <div className={styles.campStatementCollapseSummary}>
                 {historyOf == "statement" && (
@@ -383,7 +383,7 @@ function HistoryCollapse({
                         : "statement"}{" "}
                       before other direct supporters are notified.
                     </p>
-                    <div className="mb-3 text-right">
+                    <div className={`mb-3 text-right ${styles.resActionBtn}`}>
                       <span className="ant-btn ant-btn-primary mr-3">
                         {campStatement && (
                           <Timer
@@ -499,7 +499,7 @@ function HistoryCollapse({
                   </div>
                 )}
             </div>
-          </>
+          </Fragment>
         </Collapse>
       </Space>
     </div>
