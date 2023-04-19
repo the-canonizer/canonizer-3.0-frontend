@@ -2016,3 +2016,7 @@ div[role="option"]::before {
     white-space: nowrap;
   }
 }
+.evntLineActivity {
+  max-height: 400px;
+  overflow-x: hidden;
+}
