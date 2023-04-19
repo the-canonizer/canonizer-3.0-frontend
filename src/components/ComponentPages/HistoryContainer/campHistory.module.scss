@@ -447,6 +447,17 @@ $btn-bkg: #4484ce;
         white-space: normal;
       }
     }
+    .resActionBtn {
+      @media screen and (max-width: 767px) {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, calc(100% / 2 - 10px));
+        width: 100%;
+        grid-gap: 20px;
+      }
+      @media screen and (max-width: 365px) {
+        grid-template-columns: repeat(auto-fill, 100%);
+      }
+    }
   }
 }
 
@@ -529,7 +540,7 @@ $btn-bkg: #4484ce;
 
 .infoText {
   font-size: 14px;
-  font-style:italic;
+  font-style: italic;
   color: #a4a3a3;
   margin-bottom: 5px;
 }

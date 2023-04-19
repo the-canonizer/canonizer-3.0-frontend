@@ -378,7 +378,7 @@ function HistoryCollapse({
                         : "statement"}{" "}
                       before other direct supporters are notified.
                     </p>
-                    <div className="mb-3 text-right">
+                    <div className={`mb-3 text-right ${styles.resActionBtn}`}>
                       <span className="ant-btn ant-btn-primary mr-3">
                         {campStatement && (
                           <Timer
