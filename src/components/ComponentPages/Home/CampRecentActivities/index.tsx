@@ -1,22 +1,36 @@
-import { useEffect, useState } from "react";
-import { Card, List } from "antd";
-import { BellFilled } from "@ant-design/icons";
+import { Fragment, useEffect, useState } from "react";
+import { Card, List, Typography } from "antd";
 import { useRouter } from "next/router";
+import { BellFilled } from "@ant-design/icons";
 import moment from "moment";
-import { getTopicActivityLogApi } from "../../../../network/api/campDetailApi";
-import K from "../../../../constants";
+import Link from "next/link";
+import { useSelector } from "react-redux";
+
 import styles from "./campRecentActivities.module.scss";
 
+import { getTopicActivityLogApi } from "../../../../network/api/campDetailApi";
+import K from "../../../../constants";
 import CustomSkelton from "../../../common/customSkelton";
+import { RootState } from "src/store";
+
+const { Text } = Typography;
 
 export default function CampRecentActivities() {
+  const loggedInUser = useSelector(
+    (state: RootState) => state.auth.loggedInUser
+  );
+
   const router = useRouter();
   const [data, setData] = useState([]);
   const [loadingIndicator, setLoadingIndicator] = useState(false);
+  const [userData, setUserData] = useState(loggedInUser);
 
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
+
+  useEffect(() => setUserData(loggedInUser), [loggedInUser]);
+
   useEffect(() => {
     async function getTopicActivityLogCall() {
       setLoadingIndicator(true);
@@ -36,6 +50,28 @@ export default function CampRecentActivities() {
       <Card
         title="Recent Activities"
         className={"activities " + styles.campActivities}
+        actions={[
+          <Fragment>
+            {userData?.is_admin ? (
+              <Link
+                href={{
+                  pathname: "/activities",
+                  query: {
+                    topic_num: router?.query?.camp[0]?.split("-")[0],
+                    camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
+                  },
+                }}
+              >
+                <a className={styles.viewAllLink}>
+                  <Text>View All</Text>
+                  <i className="icon-angle-right"></i>
+                </a>
+              </Link>
+            ) : (
+              ""
+            )}
+          </Fragment>,
+        ]}
       >
         {loadingIndicator ? (
           <CustomSkelton
