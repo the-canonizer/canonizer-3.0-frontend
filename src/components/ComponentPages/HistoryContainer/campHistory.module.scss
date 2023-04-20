@@ -469,7 +469,7 @@ $btn-bkg: #4484ce;
         width: 100%;
         grid-gap: 20px;
       }
-      @media screen and (max-width: 365px) {
+      @media screen and (max-width: 420px) {
         grid-template-columns: repeat(auto-fill, 100%);
       }
     }
