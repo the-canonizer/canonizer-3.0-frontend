@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Tree, Tooltip } from "antd";
+import React, { useEffect, useState, useRef } from "react";
+import { Tree, Tooltip, Select } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../../store";
 import Link from "next/link";
@@ -17,7 +17,9 @@ const CampTree = ({
   scrollToCampStatement,
   setTotalCampScoreForSupportTree,
   setSupportTreeForCamp,
-}) => {
+  treeExpandValue,
+  prevTreeValueRef,
+}: any) => {
   const { tree, filterByScore, review, is_checked } = useSelector(
     (state: RootState) => ({
       tree: state?.topicDetails?.tree,
@@ -33,7 +35,7 @@ const CampTree = ({
   const [showScoreBars, setShowScoreBars] = useState(false);
 
   const [selectedExpand, setSelectedExpand] = useState([]);
-  const [expandedKeys, setExpandedKeys] = useState([]);
+
   const [autoExpandParent, setAutoExpandParent] = useState(true);
 
   // const [selectedNodeID, setSelectedNodeID] = useState(1);
@@ -84,12 +86,15 @@ const CampTree = ({
     }
   };
 
-  const getAllDefaultExpandKeys = (data) => {
+  const getAllDefaultExpandKeys = (data, topic_score) => {
     if (data?.children) {
       Object?.keys(data?.children).map((item) => {
-        if (data?.score / 2 < data?.children[item]?.score) {
+        if (
+          (topic_score * treeExpandValue) / 100 <
+          data?.children[item]?.score
+        ) {
           childExpandTree.push(data?.children[item]?.camp_id);
-          getAllDefaultExpandKeys(data?.children[item]);
+          getAllDefaultExpandKeys(data?.children[item], topic_score);
         } else return childExpandTree;
       });
     } else return childExpandTree;
@@ -140,7 +145,11 @@ const CampTree = ({
       tree?.at(0) &&
       sesionexpandkeys.find((age) => age.topic_id == tree?.at(0)["1"].topic_id);
 
-    if (keyexistSession && tree?.at(0)) {
+    if (
+      keyexistSession &&
+      tree?.at(0) &&
+      treeExpandValue == prevTreeValueRef.current
+    ) {
       setDefaultExpandKeys(keyexistSession.sessionexpandsKeys);
       setUniqueKeys(keyexistSession.sessionexpandsKeys);
       setShowTree(true);
@@ -152,14 +161,16 @@ const CampTree = ({
           tree?.at(1)
         );
 
-      let expandKeys = tree?.at(0) && getAllDefaultExpandKeys(tree?.at(0)["1"]);
+      let expandKeys =
+        tree?.at(0) &&
+        getAllDefaultExpandKeys(tree?.at(0)["1"], tree?.at(0)["1"]?.score);
       tree?.at(0) &&
         expandKeys.push(
           +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) == 1
             ? 2
             : +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1)
         );
-      let allkeys = [...selectedExpand, ...(expandKeys || []), ...expandedKeys];
+      let allkeys = [...selectedExpand, ...(expandKeys || [])];
       let uniquekeyss = toFindDuplicates(allkeys);
       setDefaultExpandKeys(expandKeys);
       setUniqueKeys(uniquekeyss);
@@ -182,8 +193,9 @@ const CampTree = ({
         setShowScoreBars(false);
       }
     }
+    prevTreeValueRef.current = treeExpandValue;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tree?.at(0)]);
+  }, [tree?.at(0), treeExpandValue]);
 
   const subScriptionStatus = (subscribedUsers: {}) => {
     return Object.keys(subscribedUsers).length > 0 &&
@@ -376,7 +388,7 @@ const CampTree = ({
 
     sessionStorage.setItem("value", JSON.stringify(sesionExpandnewKeys));
     setUniqueKeys(expandedKeys);
-    setExpandedKeys(expandedKeys);
+
     // setAutoExpandParent(false);
   };
 
@@ -390,19 +402,21 @@ const CampTree = ({
 
   return tree?.at(0) ? (
     showTree && tree?.at(0)["1"].title != "" && defaultExpandKeys ? (
-      <Tree
-        showLine={{ showLeafIcon: false }}
-        defaultExpandedKeys={uniqueKeys}
-        onSelect={onSelect}
-        // defaultSelectedKeys={uniqueKeys}
-        onExpand={onExpand}
-        // expandedKeys={uniqueKeys}
-        // autoExpandParent={autoExpandParent}
-        // selectedKeys={uniqueKeys}
-        // selectable={true}
-      >
-        {tree?.at(0) && renderTreeNodes(tree?.at(0))}
-      </Tree>
+      <>
+        <Tree
+          showLine={{ showLeafIcon: false }}
+          // defaultExpandedKeys={uniqueKeys}
+          onSelect={onSelect}
+          // defaultSelectedKeys={uniqueKeys}
+          onExpand={onExpand}
+          expandedKeys={[...uniqueKeys, "1"]}
+          // autoExpandParent={autoExpandParent}
+          // selectedKeys={uniqueKeys}
+          // selectable={true}
+        >
+          {tree?.at(0) && renderTreeNodes(tree?.at(0))}
+        </Tree>
+      </>
     ) : null
   ) : (
     <p>No Camp Tree Found</p>
