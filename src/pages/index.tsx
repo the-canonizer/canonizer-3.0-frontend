@@ -28,9 +28,8 @@ function Home({ current_date }) {
       accessToken = queries?.access_token as string;
     if ("namespace" in queries) {
       const { namespace, ...rest } = queries;
-      queries = rest;
-      queries.canon = namespace;
-      router.query = queries;
+      rest.canon = namespace;
+      router.query = rest;
       router.replace(router, null, { shallow: true });
     }
 
