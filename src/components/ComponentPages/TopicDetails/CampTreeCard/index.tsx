@@ -1,5 +1,5 @@
-import { Collapse, Popover, Image, Typography, Button } from "antd";
-import React, { useEffect, useState } from "react";
+import { Collapse, Popover, Image, Typography, Button, Select } from "antd";
+import React, { useEffect, useState, useRef } from "react";
 import CampTree from "../CampTree";
 import Link from "next/link";
 import { RootState } from "src/store";
@@ -57,6 +57,8 @@ const CampTreeCard = ({
   const router = useRouter();
   const { isUserAuthenticated } = useAuthentication();
   const eventLinePath = router.asPath.replace("topic", "eventline");
+  const [treeExpandValue, setTreeExpandValue] = useState<any>(50);
+  const prevTreeValueRef = useRef(50);
   const dispatch = useDispatch();
   const onCreateTreeDate = () => {
     dispatch(
@@ -65,6 +67,9 @@ const CampTreeCard = ({
         asof: "bydate",
       })
     );
+  };
+  const handleChange = (value) => {
+    setTreeExpandValue(value);
   };
   useEffect(() => {
     return () => {
@@ -121,6 +126,41 @@ const CampTreeCard = ({
                       </a>
                     </Link>
                   )}
+                  <Select
+                    defaultValue={"50%"}
+                    style={{ width: 80 }}
+                    onChange={handleChange}
+                    options={[
+                      {
+                        value: "0",
+                        label: "0%",
+                      },
+                      {
+                        value: "10",
+                        label: "10%",
+                      },
+                      {
+                        value: "20",
+                        label: "20%",
+                      },
+                      {
+                        value: "50",
+                        label: "50%",
+                      },
+                      {
+                        value: "70",
+                        label: "70%",
+                      },
+                      {
+                        value: "80",
+                        label: "80%",
+                      },
+                      {
+                        value: "90",
+                        label: "90%",
+                      },
+                    ]}
+                  />
                   <Popover content={addContent} placement="left">
                     <i className="icon-info tooltip-icon-style"></i>
                   </Popover>
@@ -142,6 +182,9 @@ const CampTreeCard = ({
                   setTotalCampScoreForSupportTree
                 }
                 setSupportTreeForCamp={setSupportTreeForCamp}
+                treeExpandValue={treeExpandValue}
+                setTreeExpandValue={setTreeExpandValue}
+                prevTreeValueRef={prevTreeValueRef}
               />
             )}
           </Panel>

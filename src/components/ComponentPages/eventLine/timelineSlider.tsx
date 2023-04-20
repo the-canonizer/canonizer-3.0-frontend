@@ -199,7 +199,7 @@ function TimelineSlider({
       if (showkey == Object.keys(mockData)[i]) {
         break;
       }
-      mappedArr.push(mockData[Object.keys(mockData)[i]]?.event?.message);
+      mappedArr.unshift(mockData[Object.keys(mockData)[i]]?.event?.message);
     }
     setTimelineDescript(mappedArr);
   }, [iteration, mockData]);
