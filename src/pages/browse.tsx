@@ -1,16 +1,30 @@
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
 import { Row, Col } from "antd";
+
 import Layout from "../hoc/layout";
 import SideBar from "../components/ComponentPages/Home/SideBar";
 import TopicsList from "../components/ComponentPages/Home/TopicsList";
-import { useDispatch } from "react-redux";
 import { setCurrentDate } from "src/store/slices/filtersSlice";
 
 const BrowsePage = ({ current_date }: any) => {
   const dispatch = useDispatch();
+  const router = useRouter();
   // dispatch(setCanonizedNameSpaces(nameSpacesList));
   // dispatch(setCanonizedAlgorithms(algorithms));
 
   dispatch(setCurrentDate(current_date));
+
+  useEffect(() => {
+    let queries = router.query;
+    if ("namespace" in queries) {
+      const { namespace, ...rest } = queries;
+      rest.canon = namespace;
+      router.query = rest;
+      router.replace(router, null, { shallow: true });
+    }
+  }, []);
 
   return (
     <>
