@@ -119,7 +119,7 @@ function CompareStatementUI({
                             s1["submitter_nick_id"] || ""
                           }?topicnum=${s1["topic_num"] || ""}&campnum=${
                             s1["camp_num"] || ""
-                          }&namespace=${s1["namespace_id"] || 1}`}
+                          }&canon=${s1["namespace_id"] || 1}`}
                         >
                           <a>{s1?.submitter_nick_name}</a>
                         </Link>
@@ -131,7 +131,7 @@ function CompareStatementUI({
                     </Paragraph>
                     {from == "topic" ? (
                       <Paragraph>
-                        <Text strong>Namespace : </Text>
+                        <Text strong>Canon : </Text>
                         <Text>{s1?.namespace}</Text>
                       </Paragraph>
                     ) : null}
@@ -166,7 +166,7 @@ function CompareStatementUI({
                                 s1["camp_about_nick_id"] || ""
                               }?topicnum=${s1["topic_num"] || ""}&campnum=${
                                 s1["camp_num"] || ""
-                              }&namespace=${s1["namespace_id"] || 1}`}
+                              }&canon=${s1["namespace_id"] || 1}`}
                             >
                               <a>{s1?.camp_about_nick_name}</a>
                             </Link>
@@ -241,7 +241,7 @@ function CompareStatementUI({
                             s2["submitter_nick_id"] || ""
                           }?topicnum=${s2["topic_num"] || ""}&campnum=${
                             s2["camp_num"] || ""
-                          }&namespace=${s2["namespace_id"] || 1}`}
+                          }&canon=${s2["namespace_id"] || 1}`}
                         >
                           <a>{s2?.submitter_nick_name}</a>
                         </Link>
@@ -253,7 +253,7 @@ function CompareStatementUI({
                     </Paragraph>
                     {from == "topic" ? (
                       <Paragraph>
-                        <Text strong>Namespace : </Text>
+                        <Text strong>Canon : </Text>
                         <Text>{s2?.namespace}</Text>
                       </Paragraph>
                     ) : null}
@@ -287,7 +287,7 @@ function CompareStatementUI({
                                 s2["camp_about_nick_id"] || ""
                               }?topicnum=${s2["topic_num"] || ""}&campnum=${
                                 s2["camp_num"] || ""
-                              }&namespace=${s2["namespace_id"] || 1}`}
+                              }&canon=${s2["namespace_id"] || 1}`}
                             >
                               <a>{s2?.camp_about_nick_name}</a>
                             </Link>
@@ -384,9 +384,9 @@ function CompareStatementUI({
                             liveStatement["submitter_nick_id"] || ""
                           }?topicnum=${
                             liveStatement["topic_num"] || ""
-                          }&campnum=${
-                            liveStatement["camp_num"] || ""
-                          }&namespace=${liveStatement["namespace_id"] || 1}`}
+                          }&campnum=${liveStatement["camp_num"] || ""}&canon=${
+                            liveStatement["namespace_id"] || 1
+                          }`}
                         >
                           <a>{liveStatement?.submitter_nick_name}</a>
                         </Link>
@@ -398,7 +398,7 @@ function CompareStatementUI({
                     </Paragraph>
                     {from == "topic" ? (
                       <Paragraph>
-                        <Text strong>Namespace : </Text>
+                        <Text strong>Canon : </Text>
                         <Text>{liveStatement?.namespace}</Text>
                       </Paragraph>
                     ) : null}
@@ -434,9 +434,7 @@ function CompareStatementUI({
                                 liveStatement["topic_num"] || ""
                               }&campnum=${
                                 liveStatement["camp_num"] || ""
-                              }&namespace=${
-                                liveStatement["namespace_id"] || 1
-                              }`}
+                              }&canon=${liveStatement["namespace_id"] || 1}`}
                             >
                               <a>{liveStatement?.camp_about_nick_name}</a>
                             </Link>

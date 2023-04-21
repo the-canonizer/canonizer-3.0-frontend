@@ -30,12 +30,11 @@ const { Search } = Input;
 const infoContent = (
   <>
     <div className={styles.namespacesPopover}>
-      <Title level={5}>Namespace</Title>
+      <Title level={5}>Canon</Title>
       <p>
-        Namespaces are a set of topics created for specific organizations and
-        cities to separate topics exclusively for them from the topics of
-        general interest. To get a namespace created for your organization,
-        contact{" "}
+        Canons are a set of topics created for specific organizations and cities
+        to separate topics exclusively for them from the topics of general
+        interest. To get a canon created for your organization, contact{" "}
         <Link href="mailto:support@canonizer.com">
           <a>support@canonizer.com</a>
         </Link>
@@ -106,11 +105,12 @@ const TopicsList = () => {
     setSelectedNameSpace(nameSpace?.children);
 
     if (nameSpace?.children?.toLowerCase() !== "/general/") {
-      router.query.namespace = formatnamespace(nameSpace?.children);
+      router.query.canon = formatnamespace(nameSpace?.children);
       router.replace(router, undefined, { shallow: true });
     } else {
-      if (router.query.namespace) {
+      if (router.query.canon) {
         const params = router.query;
+        delete params.canon;
         delete params.namespace;
         router.query = params;
         router.replace(router, undefined, { shallow: true });
@@ -127,16 +127,16 @@ const TopicsList = () => {
 
   useEffect(() => {
     if (filterNameSpace?.toLowerCase() !== "/general/") {
-      router.query.namespace = formatnamespace(filterNameSpace);
+      router.query.canon = formatnamespace(filterNameSpace);
       router.replace(router, undefined, { shallow: true });
     }
   }, []);
 
   useEffect(() => {
     const q = router.query;
-    if (q.namespace) {
+    if (q.canon) {
       const filteredName = nameSpacesList?.filter((n) => {
-        if (n.label === formatnamespace(q.namespace, true)) {
+        if (n.label === formatnamespace(q.canon, true)) {
           return n;
         }
       });
@@ -144,7 +144,7 @@ const TopicsList = () => {
       if (filteredName && filteredName.length) {
         dispatch(
           setFilterCanonizedTopics({
-            nameSpace: formatnamespace(q.namespace, true),
+            nameSpace: formatnamespace(q.canon, true),
             namespace_id: filteredName[0]?.id,
           })
         );
@@ -155,7 +155,7 @@ const TopicsList = () => {
   useEffect(() => {
     setSelectedNameSpace(filterNameSpace);
     setNameSpaceId(filterNameSpaceId);
-    setInputSearch(search);
+    setInputSearch(search.replace(/\s/g, ""));
     setNameSpacesList(nameSpaces);
   }, [filterNameSpace, filterNameSpaceId, search, nameSpaces]);
 
@@ -205,7 +205,7 @@ const TopicsList = () => {
   }
 
   const onSearch = (value) => {
-    setInputSearch(value);
+    setInputSearch(value.replace(/\s/g, ""));
     dispatch(
       setFilterCanonizedTopics({
         search: value || "",
@@ -275,7 +275,7 @@ const TopicsList = () => {
               }`}
             >
               <Title level={3}>
-                Select Namespace
+                Select Canon
                 <Popover content={infoContent} placement="right">
                   <i className="icon-info cursor-pointer"></i>
                 </Popover>

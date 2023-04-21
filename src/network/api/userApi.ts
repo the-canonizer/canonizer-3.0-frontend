@@ -15,6 +15,7 @@ import NetworkCall from "../networkCall";
 import UserRequest from "../request/userRequest";
 import { store } from "../../store";
 import { setFilterCanonizedTopics } from "../../store/slices/filtersSlice";
+import { setHeaderData } from "src/store/slices/notificationSlice";
 
 export const createToken = async () => {
   try {
@@ -66,6 +67,7 @@ export const logout = async (error = "", status = null, count: number = 1) => {
       store.dispatch(logoutUser());
       store.dispatch(removeAuthToken());
       store.dispatch(updateStatus(status));
+      store.dispatch(setHeaderData({ count: 0, list: [] }));
 
       if (+state.ui.apiStatus === +status) {
         return;
@@ -87,10 +89,12 @@ export const logout = async (error = "", status = null, count: number = 1) => {
     store.dispatch(setLogout());
     store.dispatch(logoutUser());
     store.dispatch(removeAuthToken());
+    store.dispatch(setHeaderData({ count: 0, list: [] }));
     return res;
   } catch (error) {
     store.dispatch(logoutUser());
     store.dispatch(removeAuthToken());
+    store.dispatch(setHeaderData({ count: 0, list: [] }));
     handleError(error);
   }
 };
@@ -238,12 +242,16 @@ export const getCountryCodes = async () => {
   }
 };
 
-export const GetUserProfileInfo = async () => {
+export const GetUserProfileInfo = async (token = "") => {
   let state = store.getState();
   const { auth } = state;
-  const res = await NetworkCall.fetch(
-    UserRequest.GetUserProfileInfo(auth.loggedInUser?.token)
-  )
+  let tcn = "";
+  if (token) {
+    tcn = token;
+  } else {
+    tcn = auth.loggedInUser?.token;
+  }
+  const res = await NetworkCall.fetch(UserRequest.GetUserProfileInfo(tcn))
     .then((value) => {
       return value;
     })

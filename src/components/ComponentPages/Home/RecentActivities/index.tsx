@@ -1,32 +1,45 @@
-import { useEffect, useMemo, useState } from "react";
-import { Tabs, Typography, List, Button, Spin, Tooltip } from "antd";
-import styles from "./recentActivities.module.scss";
-import { getRecentActivitiesApi } from "../../../../network/api/homePageApi";
+import { useEffect, useMemo, useState, Fragment } from "react";
+import { Tabs, Typography, List, Button, Spin, Tooltip, Switch } from "antd";
 import { useRouter } from "next/router";
 import { LoadingOutlined } from "@ant-design/icons";
-import { useSelector } from "react-redux";
-import { RootState } from "src/store";
-import useAuthentication from "../../../../hooks/isUserAuthenticated";
+import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import { convert } from "html-to-text";
+
+import styles from "./recentActivities.module.scss";
+
+import { RootState } from "src/store";
+import { getRecentActivitiesApi } from "../../../../network/api/homePageApi";
+import useAuthentication from "../../../../hooks/isUserAuthenticated";
 import CustomSkelton from "../../../common/customSkelton";
+import { setIsChecked } from "src/store/slices/recentActivitiesSlice";
 
 const antIcon = <LoadingOutlined spin />;
+
 const { TabPane } = Tabs;
 const { Title, Link: AntLink, Text } = Typography;
 
 const OperationsSlot = {
-  left: <Title level={3}>Recent Activities</Title>,
+  left: (
+    <Fragment>
+      <Title level={3}>Recent Activities</Title>{" "}
+    </Fragment>
+  ),
 };
 
 export default function RecentActivities() {
-  const { topicsData, threadsData } = useSelector((state: RootState) => ({
-    topicsData: state?.recentActivities?.topicsData,
-    threadsData: state?.recentActivities?.threadsData,
-  }));
+  const { topicsData, threadsData, loggedInUser, isCheckedRecent } =
+    useSelector((state: RootState) => ({
+      topicsData: state?.recentActivities?.topicsData,
+      threadsData: state?.recentActivities?.threadsData,
+      loggedInUser: state.auth.loggedInUser,
+      isCheckedRecent: state.recentActivities.isCheckedAllRecent,
+    }));
 
   const { isUserAuthenticated } = useAuthentication();
   const router = useRouter();
+  const dispatch = useDispatch();
+
   const [position] = useState(["left", "right"]);
   const [recentActivities, setRecentActivities] = useState(topicsData);
   const [topicPageNumber, setTopicPageNumber] = useState(1);
@@ -37,6 +50,9 @@ export default function RecentActivities() {
   const [loadMoreIndicator, setLoadMoreIndicator] = useState(false);
   const [getTopicsLoadingIndicator, setGetTopicsLoadingIndicator] =
     useState(false);
+  const [isChecked, setIsInternalChecked] = useState(isCheckedRecent);
+  const [userData, setUserData] = useState(loggedInUser);
+  const [isShowAllLoading, setIsShowAllLoading] = useState(false);
 
   const slot = useMemo(() => {
     if (position.length === 0) return null;
@@ -45,6 +61,10 @@ export default function RecentActivities() {
       {}
     );
   }, [position]);
+
+  useEffect(() => setUserData(loggedInUser), [loggedInUser]);
+
+  useEffect(() => setIsInternalChecked(isCheckedRecent), [isCheckedRecent]);
 
   useEffect(() => {
     setRecentActivities(topicsData);
@@ -68,7 +88,7 @@ export default function RecentActivities() {
       setGetTopicsLoadingIndicator(true);
       router.push("/login");
     }
-  }, [selectedTab]);
+  }, [selectedTab, isChecked, router]);
 
   const handleTabChange = (key: string) => {
     if (key == "threads") {
@@ -111,9 +131,13 @@ export default function RecentActivities() {
       log_type: topicType,
       page: pageNo,
       per_page: 15,
+      is_admin_show_all: isChecked ? "all" : "",
+      camp_num: router?.query?.camp_num,
+      topic_num: router?.query?.topic_num,
     };
     await getRecentActivitiesApi(reqBody, loadMore, topicType);
     setLoadMoreIndicator(false);
+    setIsShowAllLoading(false);
   }
 
   const covertToTime = (unixTime) => {
@@ -171,12 +195,35 @@ export default function RecentActivities() {
     );
   };
 
+  const onChange = () => {
+    setIsShowAllLoading(true);
+    dispatch(setIsChecked(!isChecked));
+  };
+
   return (
     <>
       <div className={`${styles.listCard} recentActivities_listWrap`}>
-        {/* <Spin spinning={getTopicsLoadingIndicator} size="large"> */}
+        {userData?.is_admin &&
+        !router?.query?.camp_num &&
+        !router?.query?.topic_num ? (
+          <Title className={styles.switchButton} level={4}>
+            <span>Show all user activities</span>
+            {isShowAllLoading ? (
+              <Spin size="small" />
+            ) : (
+              <Switch checked={isChecked} size="small" onChange={onChange} />
+            )}
+          </Title>
+        ) : null}
+
         <Tabs
-          className={`${styles.listCardTabs} recentActivities_listCardTabs`}
+          className={`${styles.listCardTabs} ${
+            userData?.is_admin ? styles.spaceCardTabs : ""
+          } recentActivities_listCardTabs ${
+            router?.query?.camp_num && router?.query?.topic_num
+              ? styles.hideTabs
+              : ""
+          }`}
           defaultActiveKey={`${
             router?.query?.tabName ? router?.query?.tabName : "topic/camps"
           }`}
@@ -195,7 +242,7 @@ export default function RecentActivities() {
               <List
                 className={styles.listWrap}
                 footer={
-                  router.asPath !== "/activities"
+                  !router?.asPath?.includes("/activities")
                     ? ViewAllTopics(true)
                     : LoadMoreTopics("topic/camps")
                 }
@@ -282,7 +329,7 @@ export default function RecentActivities() {
               <List
                 className={styles.listWrap}
                 footer={
-                  router.asPath !== "/activities"
+                  !router?.asPath?.includes("/activities")
                     ? ViewAllTopics(false)
                     : LoadMoreTopics("threads")
                 }

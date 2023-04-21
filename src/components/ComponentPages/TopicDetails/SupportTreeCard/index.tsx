@@ -118,7 +118,6 @@ const SupportTreeCard = ({
   };
 
   const handleClickSupportCheck = () => {
-    dispatch(setCurrentCampRecord(null));
     dispatch(setManageSupportUrlLink(manageSupportPath));
     dispatch(setManageSupportStatusCheck(true));
   };
@@ -183,7 +182,7 @@ const SupportTreeCard = ({
                           query: {
                             topicnum: topicRecord?.topic_num,
                             campnum: topicRecord?.camp_num,
-                            namespace: topicRecord?.namespace_id,
+                            canon: topicRecord?.namespace_id,
                           },
                         }}
                       >

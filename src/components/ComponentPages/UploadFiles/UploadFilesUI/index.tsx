@@ -323,7 +323,12 @@ const UploadFileUI = ({
         {(() => {
           if (imageRegexData.test(obj.file_type) && obj.file_path) {
             return (
-              <Image alt="uploaded-file" src={obj.file_path} height={150} width={140} />
+              <Image
+                alt="uploaded-file"
+                src={obj.file_path}
+                height={150}
+                width={140}
+              />
             );
           } else if (obj.type == "folder") {
             return (
@@ -876,7 +881,12 @@ const UploadFileUI = ({
         {(() => {
           if (imageRegexData.test(file.file_type || file.type) && imageData) {
             return (
-              <Image alt="displayed-file" src={imageData} height={150} width={140} />
+              <Image
+                alt="displayed-file"
+                src={imageData}
+                height={150}
+                width={140}
+              />
             );
           } else if (textFileRegex.test(file.file_type || file.type)) {
             return fileText;
