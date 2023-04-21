@@ -111,6 +111,7 @@ const TopicsList = () => {
       if (router.query.canon) {
         const params = router.query;
         delete params.canon;
+        delete params.namespace;
         router.query = params;
         router.replace(router, undefined, { shallow: true });
       }
@@ -154,7 +155,7 @@ const TopicsList = () => {
   useEffect(() => {
     setSelectedNameSpace(filterNameSpace);
     setNameSpaceId(filterNameSpaceId);
-    setInputSearch(search.replace(/\s/g, ''));
+    setInputSearch(search.replace(/\s/g, ""));
     setNameSpacesList(nameSpaces);
   }, [filterNameSpace, filterNameSpaceId, search, nameSpaces]);
 
@@ -204,7 +205,7 @@ const TopicsList = () => {
   }
 
   const onSearch = (value) => {
-    setInputSearch(value.replace(/\s/g, ''));
+    setInputSearch(value.replace(/\s/g, ""));
     dispatch(
       setFilterCanonizedTopics({
         search: value || "",
