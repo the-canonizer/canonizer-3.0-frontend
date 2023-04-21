@@ -384,7 +384,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                 <FullScoreCheckbox />
               </div>
             ) : null}
-            {/* {isAuth.isUserAuthenticated && currentCampNode.is_disabled == true ? (
+           {isAuth.isUserAuthenticated && currentCampNode.is_disabled == true ? (
               <div className={styles.scoreCheckbox}>
                 <ArchivedCampCheckBox />
               </div>
