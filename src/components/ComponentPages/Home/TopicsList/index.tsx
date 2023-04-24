@@ -78,7 +78,7 @@ const TopicsList = () => {
   const [nameSpacesList, setNameSpacesList] = useState(nameSpaces);
 
   const [isReview, setIsReview] = useState(asof == "review");
-  const [inputSearch, setInputSearch] = useState(search || "");
+  const [inputSearch, setInputSearch] = useState("");
 
   const [nameSpaceId, setNameSpaceId] = useState(filterNameSpaceId || "");
 
@@ -132,6 +132,7 @@ const TopicsList = () => {
     }
   }, []);
 
+  
   useEffect(() => {
     const q = router.query;
     if (q.canon) {
@@ -155,7 +156,7 @@ const TopicsList = () => {
   useEffect(() => {
     setSelectedNameSpace(filterNameSpace);
     setNameSpaceId(filterNameSpaceId);
-    setInputSearch(search.replace(/\s/g, ""));
+    setInputSearch(search.trim());
     setNameSpacesList(nameSpaces);
   }, [filterNameSpace, filterNameSpaceId, search, nameSpaces]);
 
@@ -203,9 +204,9 @@ const TopicsList = () => {
     await getCanonizedTopicsApi(reqBody, loadMore);
     setLoadMoreIndicator(false);
   }
-
+ 
   const onSearch = (value) => {
-    setInputSearch(value.replace(/\s/g, ""));
+    setInputSearch(value.trim());
     dispatch(
       setFilterCanonizedTopics({
         search: value || "",
@@ -316,8 +317,9 @@ const TopicsList = () => {
               {router.asPath.includes("/browse") && (
                 <div className={styles.inputSearchTopic}>
                   <Search
+                    key={inputSearch}
                     placeholder="Search by topic name"
-                    allowClear
+                    allowClear={true}
                     className={styles.topic}
                     defaultValue={inputSearch}
                     onSearch={onSearch}
