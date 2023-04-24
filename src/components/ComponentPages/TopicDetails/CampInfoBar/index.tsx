@@ -21,6 +21,7 @@ import {
   MoreOutlined,
   FileTextOutlined,
   HeartOutlined,
+  DoubleRightOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
 import {
@@ -421,7 +422,7 @@ const TimelineInfoBar = ({
                           <a>
                             <span className={styles.slashStyle}>
                               {" "}
-                              {index !== 0 && "/"}{" "}
+                              {index !== 0 && <DoubleRightOutlined />}{" "}
                             </span>
                             <span
                               className={
