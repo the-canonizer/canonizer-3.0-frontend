@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { useRouter } from "next/router";
-import { Typography, Button, Row, Col, Spin, Card, Divider } from "antd";
+import { Typography, Button, Row, Col, Card, Divider } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import moment from "moment";
@@ -11,6 +11,7 @@ import CreateCampBtn from "../../../common/button/createNewCampBtn";
 import CreateTopicBtn from "../../../common/button/createNewTopicBtn";
 import CampInfoBar from "../../TopicDetails/CampInfoBar";
 import CustomSkelton from "../../../common/customSkelton";
+import { changeSlashToArrow } from "src/utils/generalUtility";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -132,7 +133,7 @@ function CompareStatementUI({
                     {from == "topic" ? (
                       <Paragraph>
                         <Text strong>Canon : </Text>
-                        <Text>{s1?.namespace}</Text>
+                        <Text>{changeSlashToArrow(s1?.namespace)}</Text>
                       </Paragraph>
                     ) : null}
                     {from == "camp" ? (
@@ -254,7 +255,7 @@ function CompareStatementUI({
                     {from == "topic" ? (
                       <Paragraph>
                         <Text strong>Canon : </Text>
-                        <Text>{s2?.namespace}</Text>
+                        <Text>{changeSlashToArrow(s2?.namespace)}</Text>
                       </Paragraph>
                     ) : null}
                     {from == "camp" ? (
@@ -399,7 +400,9 @@ function CompareStatementUI({
                     {from == "topic" ? (
                       <Paragraph>
                         <Text strong>Canon : </Text>
-                        <Text>{liveStatement?.namespace}</Text>
+                        <Text>
+                          {changeSlashToArrow(liveStatement?.namespace)}
+                        </Text>
                       </Paragraph>
                     ) : null}
                     {from == "camp" ? (
