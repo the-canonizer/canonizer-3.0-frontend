@@ -19,7 +19,10 @@ const ArchivedCampCheckBox = () => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => setIsChecked(is_camp_archive_checked), [is_camp_archive_checked]);
+  useEffect(
+    () => setIsChecked(is_camp_archive_checked),
+    [is_camp_archive_checked]
+  );
 
   const setCheckboxStore = (val) => {
     dispatch(setArchivedCheckBox(val)), console.log(val, "val");
