@@ -13,14 +13,17 @@ import {
 import { setFilterCanonizedTopics } from "../../../../store/slices/filtersSlice";
 import styles from "./topicsList.module.scss";
 import { Spin, Checkbox } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
+import { LoadingOutlined, RightOutlined } from "@ant-design/icons";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import {
   setCheckSupportExistsData,
   setCurrentCheckSupportStatus,
   setManageSupportStatusCheck,
 } from "src/store/slices/campDetailSlice";
-import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import {
+  replaceSpecialCharacters,
+  changeSlashToArrow,
+} from "src/utils/generalUtility";
 import CustomSkelton from "../../../common/customSkelton";
 
 const antIcon = <LoadingOutlined spin />;
@@ -91,11 +94,11 @@ const TopicsList = () => {
   const formatnamespace = (namespace, reverse = false) => {
     if (reverse) {
       let addslash = `/${namespace}/`;
-      addslash = addslash?.replace(/-/g, "/");
+      addslash = addslash?.replace(/-/g, " > ");
       return addslash;
     } else {
       let removednamespace = namespace?.replace(/^\/|\/$/g, "");
-      removednamespace = removednamespace?.replace(/\//g, "-");
+      removednamespace = removednamespace?.replace(/ > /g, "-");
       return removednamespace;
     }
   };
@@ -291,8 +294,8 @@ const TopicsList = () => {
               <Select
                 size="large"
                 className={styles.dropdown}
-                defaultValue={selectedNameSpace}
-                value={selectedNameSpace}
+                defaultValue={changeSlashToArrow(selectedNameSpace)}
+                value={changeSlashToArrow(selectedNameSpace)}
                 onChange={selectNameSpace}
                 showSearch
                 optionFilterProp="children"
@@ -305,7 +308,7 @@ const TopicsList = () => {
                       key={item.id}
                       value={item.id}
                     >
-                      {item.label}
+                      {changeSlashToArrow(item.label)}
                     </Select.Option>
                   );
                 })}

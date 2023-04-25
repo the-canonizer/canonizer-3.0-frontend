@@ -3,6 +3,7 @@ import { Card, Form, Input, Button, Select, Row, Col } from "antd";
 
 import messages from "../../../../messages";
 import styles from "./createNewTopic.module.scss";
+import { changeSlashToArrow } from "src/utils/generalUtility";
 
 const { Option } = Select;
 
@@ -122,7 +123,7 @@ const CreateTopicFromUI = ({
                   >
                     {nameSpaces.map((name) => (
                       <Option key={name.id} value={name.id}>
-                        {name.label}
+                        {changeSlashToArrow(name.label)}
                       </Option>
                     ))}
                   </Select>

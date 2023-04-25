@@ -333,3 +333,9 @@ export const allowedEmojies =
       return Promise.resolve();
     },
   });
+
+export const changeSlashToArrow = (label: string) => {
+  let removednamespace = label?.replace(/^\/|\/$/g, "");
+  removednamespace = removednamespace?.replace(/\//g, " > ");
+  return removednamespace;
+};

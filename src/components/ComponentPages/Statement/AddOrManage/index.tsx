@@ -37,6 +37,7 @@ import {
   replaceSpecialCharacters,
   allowedEmojies,
   emojiValidation,
+  changeSlashToArrow,
 } from "src/utils/generalUtility";
 import { EditorState, convertToRaw, ContentState } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
@@ -856,7 +857,7 @@ export default function AddOrManage({ add }: any) {
                             >
                               {canNameSpace.map((camp) => (
                                 <Select.Option value={camp.id} key={camp.id}>
-                                  {camp.label}
+                                  {changeSlashToArrow(camp.label)}
                                 </Select.Option>
                               ))}
                             </Select>
