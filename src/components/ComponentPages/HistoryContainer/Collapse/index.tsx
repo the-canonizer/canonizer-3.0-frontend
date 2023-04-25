@@ -175,7 +175,7 @@ function HistoryCollapse({
                 {historyOf == "statement" && (
                   <div
                     dangerouslySetInnerHTML={{
-                      __html: campStatement?.parsed_value,
+                      __html: campStatement?.value,
                     }}
                   />
                 )}
