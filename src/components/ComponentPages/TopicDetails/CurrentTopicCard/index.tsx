@@ -1,14 +1,16 @@
-import CustomButton from "../../../common/button";
 import Link from "next/link";
 import { useRouter } from "next/router";
-
-import K from "../../../../constants";
-
 import { Descriptions, Collapse } from "antd";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../../store";
-import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
-import CustomSkelton from "../../../common/customSkelton";
+
+import CustomButton from "src/components/common/button";
+import K from "src/constants";
+import { RootState } from "src/store";
+import {
+  changeSlashToArrow,
+  replaceSpecialCharacters,
+} from "src/utils/generalUtility";
+import CustomSkelton from "src/components/common/customSkelton";
 
 const { Panel } = Collapse;
 
@@ -40,7 +42,7 @@ const CurrentTopicCard = ({ loadingIndicator }) => {
             {topicRecord && topicRecord?.topic_name}
           </Descriptions.Item>
           <Descriptions.Item label="Canon">
-            {topicRecord && topicRecord?.namespace_name}
+            {topicRecord && changeSlashToArrow(topicRecord?.namespace_name)}
           </Descriptions.Item>
         </Descriptions>
         <div className="topicDetailsCollapseFooter">
