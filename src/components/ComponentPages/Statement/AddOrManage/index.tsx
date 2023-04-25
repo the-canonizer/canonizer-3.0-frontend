@@ -401,6 +401,13 @@ export default function AddOrManage({ add }: any) {
             if (op.id === "is_archive") {
               op.checked =
                 res?.data[manageFormOf]?.is_archive === 1 ? true : false;
+              if(res?.data[manageFormOf]?.direct_archive === 0 &&res?.data[manageFormOf]?.is_archive === 0)  
+                op.disable = false
+              else if (res?.data[manageFormOf]?.direct_archive === 0 && res?.data[manageFormOf]?.is_archive === 1){
+                op.disable = true;
+              }else if(res?.data[manageFormOf]?.direct_archive === 1 && res?.data[manageFormOf]?.is_archive === 1){
+                op.disable = false;
+              }
             }
           });
 
@@ -414,10 +421,10 @@ export default function AddOrManage({ add }: any) {
               checked: oldOptions[1]?.checked,
               disable: oldOptions[1]?.disable,
             },
-            // {
-            //   checked: oldOptions[2]?.checked,
-            //   disable: oldOptions[2]?.disable,
-            // },
+            {
+              checked: oldOptions[2]?.checked,
+              disable: oldOptions[2]?.disable,
+            },
           ]);
         }
       }
@@ -460,10 +467,10 @@ export default function AddOrManage({ add }: any) {
           checked: oldOptions[1]?.checked,
           disable: oldOptions[1]?.disable,
         },
-        // {
-        //   checked: oldOptions[2]?.checked,
-        //   disable: oldOptions[2]?.disable,
-        // },
+        {
+          checked: oldOptions[2]?.checked,
+          disable: oldOptions[2]?.disable,
+        },
       ]);
     };
   }, []);
@@ -483,9 +490,9 @@ export default function AddOrManage({ add }: any) {
       oldOptions[0]?.checked == initialOptions[0]?.checked &&
       oldOptions[0]?.disable == initialOptions[0]?.disable &&
       oldOptions[1]?.checked == initialOptions[1]?.checked &&
-      oldOptions[1]?.disable == initialOptions[1]?.disable
-      // oldOptions[2]?.checked == initialOptions[2]?.checked &&
-      // oldOptions[2]?.disable == initialOptions[2]?.disable
+      oldOptions[1]?.disable == initialOptions[1]?.disable &&
+      oldOptions[2]?.checked == initialOptions[2]?.checked &&
+      oldOptions[2]?.disable == initialOptions[2]?.disable
     ) {
       setSubmitIsDisableCheck(true);
     } else {
