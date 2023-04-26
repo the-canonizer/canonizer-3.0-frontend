@@ -267,3 +267,15 @@
 .eventLineBtn {
   margin-left: 10px;
 }
+
+.descriptions {
+  table {
+    tbody {
+      tr {
+        [class="ant-descriptions-item-label"] {
+          font-weight: 600;
+        }
+      }
+    }
+  }
+}

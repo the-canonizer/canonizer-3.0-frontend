@@ -2,6 +2,9 @@ import { Descriptions, Collapse } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
+import moment from "moment";
+
+import styles from "../topicDetails.module.scss";
 
 import { currentCampRecordConstants } from "../../../common/componentConstants";
 import CustomButton from "../../../common/button";
@@ -23,6 +26,10 @@ const CurrentCampCard = ({ loadingIndicator }) => {
     })
   );
 
+  const covertToTime = (unixTime) => {
+    return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
+  };
+
   return loadingIndicator ? (
     <CustomSkelton
       titleName={K?.exceptionalMessages?.campRecordHeading}
@@ -42,7 +49,7 @@ const CurrentCampCard = ({ loadingIndicator }) => {
         header={<h3>{K?.exceptionalMessages?.campRecordHeading}</h3>}
         key="1"
       >
-        <Descriptions column={1}>
+        <Descriptions column={1} className={styles.descriptions}>
           {currentCampRecordConstants?.map((description) => {
             if (
               description.key == "parent_camp_name" &&
@@ -58,11 +65,14 @@ const CurrentCampCard = ({ loadingIndicator }) => {
                   {campRecord && description.key != "camp_about_url"
                     ? campRecord &&
                       (description.key == "is_disabled" ||
-                        description.key == "is_one_level")
+                        description.key == "is_one_level" ||
+                        description.key == "is_archive")
                       ? campRecord[description.key] == 1
                         ? "Yes"
                         : "No"
-                      : campRecord && description.key == "nick_name"
+                      : campRecord &&
+                        (description.key == "submitter_nick_name" ||
+                          description.key == "camp_about_nick_name")
                       ? campRecord &&
                         history &&
                         (campRecord[description.key] !=
@@ -81,6 +91,10 @@ const CurrentCampCard = ({ loadingIndicator }) => {
                         ) : (
                           campRecord[description.key]
                         ))
+                      : campRecord &&
+                        (description.key == "go_live_time" ||
+                          description.key == "submit_time")
+                      ? covertToTime(campRecord[description.key])
                       : campRecord[description.key]
                     : campRecord && (
                         <a
