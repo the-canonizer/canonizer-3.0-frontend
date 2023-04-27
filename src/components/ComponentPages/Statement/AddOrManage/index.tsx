@@ -82,8 +82,8 @@ export default function AddOrManage({ add }: any) {
   const [options, setOptions] = useState([...messages.preventCampLabel]);
   const [initialOptions, setInitialOptions] = useState([]);
   const [editCampStatementData, setEditCampStatementData] = useState("");
-  const [statementResponseDisable, setStatementResponseDisable] = useState(false);
-
+  const [statementResponseDisable, setStatementResponseDisable] =
+    useState(false);
 
   const [form] = Form.useForm();
   let objection = router?.query?.statement?.at(0)?.split("-")[1] == "objection";
@@ -209,18 +209,18 @@ export default function AddOrManage({ add }: any) {
     if (manageFormOf == "camp") {
       options.map((op) => (reqBody[op.id] = op.checked ? 1 : 0));
       res = await updateCampApi(reqBody);
-      if(res.status_code == 200){
-        setStatementResponseDisable(true)
+      if (res.status_code == 200) {
+        setStatementResponseDisable(true);
       }
     } else if (manageFormOf == "statement") {
       res = await updateStatementApi(reqBody);
-      if(res.status_code == 200){
-        setStatementResponseDisable(true)
-      }      
+      if (res.status_code == 200) {
+        setStatementResponseDisable(true);
+      }
     } else if (manageFormOf == "topic") {
       res = await updateTopicApi(reqBody);
-      if(res.status_code == 200){
-        setStatementResponseDisable(true)
+      if (res.status_code == 200) {
+        setStatementResponseDisable(true);
       }
     }
 
@@ -1110,9 +1110,10 @@ export default function AddOrManage({ add }: any) {
                           htmlType="submit"
                           disabled={
                             (submitIsDisable &&
-                            submitIsDisableCheck &&
-                            editorTextLength < 1 && 
-                            !objection) || statementResponseDisable
+                              submitIsDisableCheck &&
+                              editorTextLength < 1 &&
+                              !objection) ||
+                            statementResponseDisable
                           }
                           id="update-submit-btn"
                         >
