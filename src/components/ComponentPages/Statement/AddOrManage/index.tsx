@@ -82,8 +82,8 @@ export default function AddOrManage({ add }: any) {
   const [options, setOptions] = useState([...messages.preventCampLabel]);
   const [initialOptions, setInitialOptions] = useState([]);
   const [editCampStatementData, setEditCampStatementData] = useState("");
-  const [statementResponseDisable, setStatementResponseDisable] = useState(false);
-
+  const [statementResponseDisable, setStatementResponseDisable] =
+    useState(false);
 
   const [form] = Form.useForm();
   let objection = router?.query?.statement?.at(0)?.split("-")[1] == "objection";
@@ -209,18 +209,18 @@ export default function AddOrManage({ add }: any) {
     if (manageFormOf == "camp") {
       options.map((op) => (reqBody[op.id] = op.checked ? 1 : 0));
       res = await updateCampApi(reqBody);
-      if(res.status_code == 200){
-        setStatementResponseDisable(true)
+      if (res.status_code == 200) {
+        setStatementResponseDisable(true);
       }
     } else if (manageFormOf == "statement") {
       res = await updateStatementApi(reqBody);
-      if(res.status_code == 200){
-        setStatementResponseDisable(true)
-      }      
+      if (res.status_code == 200) {
+        setStatementResponseDisable(true);
+      }
     } else if (manageFormOf == "topic") {
       res = await updateTopicApi(reqBody);
-      if(res.status_code == 200){
-        setStatementResponseDisable(true)
+      if (res.status_code == 200) {
+        setStatementResponseDisable(true);
       }
     }
 
@@ -591,12 +591,14 @@ export default function AddOrManage({ add }: any) {
                 if (initialFormStatus?.statement == null || undefined) {
                   initialFormStatus.statement = "";
                 }
-                if (typeof initialFormStatus.edit_summary == "string")
+                if (typeof initialFormStatus.edit_summary == "string") {
                   initialFormStatus.edit_summary =
                     initialFormStatus.edit_summary.trim();
-                if (typeof initialFormStatus.statement == "string")
+                }
+                if (typeof initialFormStatus.statement == "string") {
                   initialFormStatus.statement =
                     initialFormStatus.statement.trim();
+                }
                 nowFormStatus = Object.keys(form?.getFieldsValue()).reduce(
                   (acc, key) => {
                     acc[key] =
@@ -613,14 +615,16 @@ export default function AddOrManage({ add }: any) {
                 if (nowFormStatus?.statement == null || undefined) {
                   nowFormStatus.statement = "";
                 }
-                if (typeof nowFormStatus.edit_summary == "string")
+                if (typeof nowFormStatus.edit_summary == "string") {
                   nowFormStatus.edit_summary =
                     nowFormStatus.edit_summary.trim();
-                if (typeof nowFormStatus.statement == "string")
+                }
+                if (typeof nowFormStatus.statement == "string") {
                   nowFormStatus.statement = nowFormStatus.statement.trim();
+                }
                 if (
-                  JSON.stringify(nowFormStatus.edit_summary) ==
-                  JSON.stringify(initialFormStatus.edit_summary)
+                  JSON.stringify(nowFormStatus) ==
+                  JSON.stringify(initialFormStatus)
                 ) {
                   setSubmitIsDisable(true);
                 } else {
@@ -1109,10 +1113,8 @@ export default function AddOrManage({ add }: any) {
                           className={`btn-orange mr-3 ${styles.btnSubmit}`}
                           htmlType="submit"
                           disabled={
-                            (submitIsDisable &&
-                            submitIsDisableCheck &&
-                            editorTextLength < 1 && 
-                            !objection) || statementResponseDisable
+                            (submitIsDisable && submitIsDisableCheck) ||
+                            statementResponseDisable
                           }
                           id="update-submit-btn"
                         >
