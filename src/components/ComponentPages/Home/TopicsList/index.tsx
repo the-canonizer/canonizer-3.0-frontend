@@ -109,6 +109,7 @@ const TopicsList = () => {
 
     if (nameSpace?.children?.toLowerCase() !== "/general/") {
       router.query.canon = formatnamespace(nameSpace?.children);
+      delete router?.query?.namespace;
       router.replace(router, undefined, { shallow: true });
     } else {
       if (router.query.canon) {
@@ -131,6 +132,7 @@ const TopicsList = () => {
   useEffect(() => {
     if (filterNameSpace?.toLowerCase() !== "/general/") {
       router.query.canon = formatnamespace(filterNameSpace);
+      delete router?.query?.namespace;
       router.replace(router, undefined, { shallow: true });
     }
   }, []);
