@@ -469,9 +469,6 @@ const TopicDetails = () => {
                         {typeof window !== "undefined" &&
                           window.innerWidth < 767 && (
                             <>
-                              {router.asPath.includes("topic") && (
-                                <CampRecentActivities />
-                              )}
                               <Spin spinning={loadingIndicator} size="large">
                                 {!!newsFeed?.length && (
                                   <NewsFeedsCard newsFeed={newsFeed} />
@@ -479,6 +476,7 @@ const TopicDetails = () => {
                               </Spin>
                             </>
                           )}
+
                         <CurrentTopicCard loadingIndicator={loadingIndicator} />
 
                         <CurrentCampCard loadingIndicator={loadingIndicator} />
@@ -511,6 +509,15 @@ const TopicDetails = () => {
                             totalCampScoreForSupportTree
                           }
                         />
+
+                        {typeof window !== "undefined" &&
+                          window.innerWidth < 767 && (
+                            <>
+                              {router.asPath.includes("topic") && (
+                                <CampRecentActivities />
+                              )}
+                            </>
+                          )}
                       </>
                     )}
               </>
