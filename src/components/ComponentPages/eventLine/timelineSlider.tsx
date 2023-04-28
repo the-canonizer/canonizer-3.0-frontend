@@ -186,7 +186,6 @@ function TimelineSlider({
     }
     return obj;
   };
-
   useEffect(() => {
     if (Object.keys(mockData).length == iteration) {
       setIsPlaying(false);
@@ -197,6 +196,7 @@ function TimelineSlider({
     let mappedArr = [];
     for (let i = 0; i < Object.keys(mockData).length; i++) {
       if (showkey == Object.keys(mockData)[i]) {
+        mappedArr.unshift(mockData[Object.keys(mockData)[i]]?.event?.message);
         break;
       }
       mappedArr.unshift(mockData[Object.keys(mockData)[i]]?.event?.message);
