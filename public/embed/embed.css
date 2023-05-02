@@ -47,7 +47,7 @@ summary::-webkit-details-marker {
   font-family: "ionicons";
   /* transform: rotate(90deg); */
   /* content: "\f209"; */
-  content: "\f463"
+  content: "\f463";
 }
 .tree-nav__item.is-expandable > .tree-nav__item-title {
   padding-left: 2.4rem;
@@ -58,7 +58,6 @@ summary::-webkit-details-marker {
   transition: transform 300ms ease;
   font-family: "ionicons";
   color: #262626;
-  font-size: 1.1rem;
   /* content: "\f125"; */
   /* content: "\f218"; */
   content: "\f48a";
@@ -66,6 +65,7 @@ summary::-webkit-details-marker {
   display: inline-block;
   width: 1.6rem;
   text-align: center;
+  font-size: 16px;
 }
 
 .tree-nav__item-title {
