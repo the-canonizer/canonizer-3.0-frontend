@@ -29,6 +29,7 @@ import {
   isServer,
 } from "../../../../utils/generalUtility";
 import SocialShareUI from "../../../common/socialShare";
+import GenerateModal from "src/components/common/generateScript";
 
 const TimelineInfoBar = ({
   payload = null,
@@ -506,7 +507,10 @@ const TimelineInfoBar = ({
                       >
                         Camp Forum
                       </Button>
-
+                      <GenerateModal
+                        topic_num={payload?.topic_num}
+                        camp_num={payload?.camp_num}
+                      />
                       <Dropdown
                         className={styles.campForumDropdown}
                         placement="bottomRight"

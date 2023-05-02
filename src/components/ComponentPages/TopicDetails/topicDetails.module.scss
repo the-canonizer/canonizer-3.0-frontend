@@ -31,7 +31,7 @@
     @media screen and (min-width: 992px) {
       display: flex;
       flex-wrap: wrap;
-      width: calc(100% - 300px);
+      width: calc(100% - 400px);
     }
     .topicTitleStyle,
     .breadcrumbLinks {
@@ -61,7 +61,7 @@
       margin-top: 1rem;
     }
     .btnCampForum {
-      margin-right: 20px;
+      margin-right: 10px;
       background-color: #4484ce;
       box-shadow: none;
       border-color: transparent;

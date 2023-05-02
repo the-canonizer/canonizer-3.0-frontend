@@ -1,0 +1,67 @@
+.script_modal {
+  pre {
+    margin: 0;
+    code {
+      background-color: #262626;
+      border: 1px solid #999;
+      display: block;
+      padding: 20px;
+      color: #fff;
+      white-space: break-spaces;
+      word-break: break-word;
+      word-wrap: normal;
+      border-radius: 0.25rem;
+    }
+  }
+}
+.generate_btn {
+  font-size: normal;
+  margin-right: 15px;
+}
+
+.btn_box {
+  width: 100%;
+  .cancel_btn {
+    background: #ffffff 0% 0% no-repeat padding-box;
+    border: 1px solid var(--primary);
+    border-radius: 2px;
+    opacity: 1;
+    letter-spacing: 0px;
+    color: var(--primary);
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 1;
+    line-height: 16px;
+    transition: all 0.3s;
+
+    &:hover {
+      background: var(--primary);
+      color: #ffffff;
+    }
+  }
+  .submit_btn {
+    background: #f89d15 0% 0% no-repeat padding-box;
+    border-radius: 2px;
+    border-color: #f89d15;
+    opacity: 1;
+    margin-right: 15px;
+    color: #ffffff;
+    transition: all 0.3s;
+
+    &:hover {
+      background: #d3840e;
+    }
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .btn_box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .submit_btn {
+      margin-right: 5px;
+    }
+  }
+}
