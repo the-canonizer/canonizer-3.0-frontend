@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Tree, Tooltip, Select } from "antd";
+import { Tree, Tooltip, Select, Image } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../../store";
 import Link from "next/link";
@@ -10,6 +10,8 @@ import { setCurrentCamp } from "../../../../store/slices/filtersSlice";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import ProgressBar from "@ramonak/react-progress-bar";
+import Archive_icon from "src/assets/image/archive_icon.svg"
+
 
 const { TreeNode } = Tree;
 
@@ -271,6 +273,12 @@ const CampTree = ({
                           "treeListItemTitle " + styles.treeListItemTitle
                         }
                       >
+                        {data[item].is_archive == 1 ?<Image
+                            src={Archive_icon.src}
+                            width={20}    
+                            height={20}
+                            alt="archive"
+                            />:""}
                         <Link
                           href={{
                             pathname: includeReview
