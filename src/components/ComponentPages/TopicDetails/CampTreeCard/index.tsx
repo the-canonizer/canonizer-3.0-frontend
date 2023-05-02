@@ -48,8 +48,25 @@ const CampTreeCard = ({
     asofdate: state.filters?.filterObject?.asofdate,
     asof: state?.filters?.filterObject?.asof,
   }));
+  const treedetail=(state)=>{
+    var tr="";
+    if(state !=null)
+    {
+      if(state.topicDetails!=null)
+      {
+        if(state.topicDetails.tree!=null)
+        {
+          debugger;
+          if(Array.isArray(state.topicDetails.tree))
+            tr=state.topicDetails.tree.at(0)
+        }
+      }
+    }
+     
+    return tr;
+  }
   const { tree, is_admin } = useSelector((state: RootState) => ({
-    tree: state?.topicDetails?.tree?.at(0),
+    tree: treedetail(state),
 
     is_admin: state?.auth?.loggedInUser?.is_admin,
   }));
