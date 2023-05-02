@@ -42,7 +42,7 @@ export default function GenerateModal({ topic_num, camp_num }) {
           .then(() => {
             // navigator.clipboard.readText().then((text) => {
             //   if (text === copyText.innerText) {
-            message.success(labels.copied_error);
+            message.success(labels.copied_success);
             //   } else {
             // message.error("Error: Text was not copied.");
             //   }
