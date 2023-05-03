@@ -141,7 +141,7 @@ function TimelineSlider({
     return formatedDate;
   };
   const MarkPointsData = () => {
-    let pdata: any = Object.keys(mockData);
+    let pdata: any = Object.keys(mockData)?.sort();
 
     let obj = {};
     // console.log("window ==>", window.innerWidth);
