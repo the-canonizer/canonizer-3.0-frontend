@@ -38,7 +38,9 @@ function TimeLine({ setTimelineDescript }) {
         algorithm: algorithm,
       });
 
-      setMockData(data);
+      if (data?.code == 200) {
+        setMockData(data?.data);
+      }
     }
 
     apiCall();
