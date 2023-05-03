@@ -1,6 +1,6 @@
 class LoadTree {
-  static API_PATH = "http://canonizer-service.local/api/v1/tree/get";
-  static CSS_URL = "http://localhost:4000/embed/embed.css";
+  static API_PATH = "https://service.canonizer.com/api/v1/tree/get";
+  static CSS_URL = "https://canonizer3.canonizer.com/embed/embed.css";
 
   static async init(params) {
     const { selector, topic_num, camp_num } = params;
