@@ -8,7 +8,6 @@ import { RouterContext } from "next/dist/shared/lib/router-context";
 import { act } from "react-dom/test-utils";
 import { setHistory } from "../../../../store/slices/campDetailSlice";
 import CampHistory from "../Collapse/campHistory";
-
 function createMockRouter(router: Partial<NextRouter>): NextRouter {
   return {
     basePath: "",
