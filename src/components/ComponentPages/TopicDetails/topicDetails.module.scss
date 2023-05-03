@@ -61,7 +61,7 @@
       margin-top: 1rem;
     }
     .btnCampForum {
-      margin-right: 20px;
+      margin-right: 10px;
       background-color: #4484ce;
       box-shadow: none;
       border-color: transparent;
@@ -266,4 +266,13 @@
 
 .eventLineBtn {
   margin-left: 10px;
+}
+
+.svgIconCode {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  svg {
+    width: 15px;
+  }
 }
