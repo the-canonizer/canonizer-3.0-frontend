@@ -36,8 +36,20 @@ summary::-webkit-details-marker {
   height: 100%;
   left: 0.8rem;
   position: absolute;
-  top: 2.4rem;
-  height: calc(100% - 2.4rem);
+  top: 2rem;
+  height: calc(100% - 2rem);
+}
+.tree-nav__item::after {
+  border-left: 1px solid #eee;
+  content: "";
+  left: -18px;
+  position: absolute;
+  top: 5px;
+  height: 15px;
+  transform: rotate(90deg);
+}
+.tree-nav__item.is-expandable::after {
+  content: none;
 }
 .tree-nav__item .tree-nav__item {
   margin-left: 2.4rem;
@@ -100,4 +112,20 @@ summary::-webkit-details-marker {
 
 .tree-nav__item-title::-webkit-details-marker {
   display: none;
+}
+
+.tree-nav__item.is-expandable[open] > summary > a {
+  font-weight: 700;
+  color: #4484ce;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.tree-nav__item.need_parent_expand.is-expandable[open]
+  > .tree-nav__item-title
+  > .tree-nav__item-title {
+  font-size: 16px;
+  font-weight: 600;
+  font-weight: 700;
+  color: #08b608;
 }

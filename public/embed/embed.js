@@ -13,6 +13,8 @@ class LoadTree {
     const elm = document.querySelector(selector);
 
     if (elm) elm.innerHTML = tree;
+
+    this.expandParent(elm);
   }
 
   static async getTree(topic_num, camp_num, asofdate, algorithm) {
@@ -64,7 +66,7 @@ class LoadTree {
       if (data[item].children) {
         nodes += `<details class="tree-nav__item ${
           data[item].children?.length == 0 ? "is_empty" : "is-expandable"
-        }" ${
+        } ${+data[item].camp_id === +camp_num ? "need_parent_expand" : ""}" ${
           index === 0 || +data[item].camp_id === +camp_num ? "open" : ""
         } ><summary class="tree-nav__item-title"><a class="tree-nav__item-title" href="${
           data[item].link
@@ -94,5 +96,25 @@ class LoadTree {
     });
 
     return nodes;
+  }
+
+  static async expandParent(elm) {
+    const child = elm.querySelector(".need_parent_expand");
+    console.log(child, "[CHILD]");
+
+    let parent = child.parentNode;
+
+    while (parent) {
+      if (parent?.tagName?.toLowerCase() === "details") {
+        console.dir(parent);
+        if (!parent.hasAttribute("open")) {
+          parent.setAttribute("open", "");
+          console.log("The details tag is not open!");
+        } else {
+          console.log("The details tag is  open!");
+        }
+      }
+      parent = parent.parentNode;
+    }
   }
 }

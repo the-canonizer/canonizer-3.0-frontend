@@ -31,6 +31,20 @@ import {
 import SocialShareUI from "../../../common/socialShare";
 import GenerateModal from "src/components/common/generateScript";
 
+const CodeIcon = () => (
+  <svg
+    viewBox="0 0 64 64"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    stroke="#000000"
+  >
+    <rect x="8" y="12" width="48" height="40" />
+    <polyline points="40 40 48 32 40 24" />
+    <polyline points="24 24 16 32 24 40" />
+    <line x1="34" y1="22" x2="30" y2="42" />
+  </svg>
+);
+
 const TimelineInfoBar = ({
   payload = null,
   isTopicPage = false,
@@ -324,6 +338,20 @@ const TimelineInfoBar = ({
           </Link>
         )}
       </Menu.Item>
+      <Menu.Item
+        icon={
+          <span className={styles.svgIconCode}>
+            <CodeIcon />
+          </span>
+        }
+      >
+        {isTopicPage && (
+          <GenerateModal
+            topic_num={payload?.topic_num}
+            camp_num={payload?.camp_num}
+          />
+        )}
+      </Menu.Item>
     </Menu>
   );
 
@@ -507,10 +535,6 @@ const TimelineInfoBar = ({
                       >
                         Camp Forum
                       </Button>
-                      <GenerateModal
-                        topic_num={payload?.topic_num}
-                        camp_num={payload?.camp_num}
-                      />
                       <Dropdown
                         className={styles.campForumDropdown}
                         placement="bottomRight"

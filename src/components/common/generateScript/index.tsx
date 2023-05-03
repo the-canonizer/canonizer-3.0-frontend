@@ -68,7 +68,7 @@ export default function GenerateModal({ topic_num, camp_num }) {
         data-testid="generate-btn"
         className={`${styles.generate_btn}`}
       >
-        Get Code
+        Get Embed Code
       </Button>
       <Modal
         title="Copy Script"
@@ -106,7 +106,7 @@ export default function GenerateModal({ topic_num, camp_num }) {
       >
         <pre>
           <code id="script_for_generate_tree">
-            {`<div id="embedHere"></div>
+            {`<div id="embedHere">Loading...</div>
 <script src="${path}/embed/embed.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">
     LoadTree.init({ selector: "#embedHere", topic_num: ${topic_num}, camp_num: ${camp_num} });

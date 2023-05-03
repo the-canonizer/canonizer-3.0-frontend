@@ -267,3 +267,12 @@
 .eventLineBtn {
   margin-left: 10px;
 }
+
+.svgIconCode {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  svg {
+    width: 15px;
+  }
+}

@@ -17,6 +17,19 @@
 .generate_btn {
   font-size: normal;
   margin-right: 15px;
+  background-color: transparent !important;
+  color: #022541 !important;
+  outline: none !important;
+  font-weight: 500;
+  font-size: 13px;
+  width: 100%;
+  border: none;
+  box-shadow: none;
+  text-align: left;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+  height: auto;
 }
 
 .btn_box {
