@@ -273,12 +273,7 @@ const CampTree = ({
                           "treeListItemTitle " + styles.treeListItemTitle
                         }
                       >
-                        {data[item].is_archive == 1 ?<Image
-                            src={Archive_icon.src}
-                            width={20}    
-                            height={20}
-                            alt="archive"
-                            />:""}{" "}
+                        
                         <Link
                           href={{
                             pathname: includeReview
@@ -303,6 +298,13 @@ const CampTree = ({
                               : data[item]?.title}
                           </a>
                         </Link>
+                        {" "}{data[item].is_archive == 1 ?<Image
+                            src={Archive_icon.src}
+                            width={20}    
+                            height={20}
+                            alt="archive"
+                            preview={false}
+                            />:""}
                       </span>
                       <span className={styles.subScriptionIcon}>
                         {isUserAuthenticated &&
