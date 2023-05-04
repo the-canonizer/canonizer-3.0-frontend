@@ -24,14 +24,19 @@ function Home({ current_date }) {
   }, []);
 
   useEffect(() => {
-    let queries = router.query,
-      accessToken = queries?.access_token as string;
+    let queries = router.query;
     if ("namespace" in queries) {
       const { namespace, ...rest } = queries;
       rest.canon = namespace;
       router.query = rest;
+      delete router?.query?.namespace;
       router.replace(router, null, { shallow: true });
     }
+  }, []);
+
+  useEffect(() => {
+    let queries = router.query,
+      accessToken = queries?.access_token as string;
 
     const getData = async (token: string) => {
       let resData = await GetUserProfileInfo(token);

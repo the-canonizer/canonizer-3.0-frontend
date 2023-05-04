@@ -82,8 +82,8 @@ export default function AddOrManage({ add }: any) {
   const [options, setOptions] = useState([...messages.preventCampLabel]);
   const [initialOptions, setInitialOptions] = useState([]);
   const [editCampStatementData, setEditCampStatementData] = useState("");
-  const [statementResponseDisable, setStatementResponseDisable] = useState(false);
-
+  const [statementResponseDisable, setStatementResponseDisable] =
+    useState(false);
 
   const [form] = Form.useForm();
   let objection = router?.query?.statement?.at(0)?.split("-")[1] == "objection";
@@ -209,18 +209,18 @@ export default function AddOrManage({ add }: any) {
     if (manageFormOf == "camp") {
       options.map((op) => (reqBody[op.id] = op.checked ? 1 : 0));
       res = await updateCampApi(reqBody);
-      if(res.status_code == 200){
-        setStatementResponseDisable(true)
+      if (res.status_code == 200) {
+        setStatementResponseDisable(true);
       }
     } else if (manageFormOf == "statement") {
       res = await updateStatementApi(reqBody);
-      if(res.status_code == 200){
-        setStatementResponseDisable(true)
-      }      
+      if (res.status_code == 200) {
+        setStatementResponseDisable(true);
+      }
     } else if (manageFormOf == "topic") {
       res = await updateTopicApi(reqBody);
-      if(res.status_code == 200){
-        setStatementResponseDisable(true)
+      if (res.status_code == 200) {
+        setStatementResponseDisable(true);
       }
     }
 
@@ -273,11 +273,11 @@ export default function AddOrManage({ add }: any) {
           }
           //if(isJSON(res.data.statement.parsed_value))setEditorState(EditorState.createWithContent(convertFromRaw(JSON.parse(res.data.statement.parsed_value))));
           if (
-            !res.data.statement.value?.startsWith("<p>") &&
-            !res.data.statement.value?.startsWith("<div>")
+            !res.data.statement.parsed_value?.startsWith("<p>") &&
+            !res.data.statement.parsed_value?.startsWith("<div>")
           )
-            res.data.statement.value = `<div></div> ${res.data.statement.value}`;
-          const contentBlocks = htmlToDraft(res.data.statement.value);
+            res.data.statement.parsed_value = `<div></div> ${res.data.statement.parsed_value}`;
+          const contentBlocks = htmlToDraft(res.data.statement.parsed_value);
           const contentState = ContentState.createFromBlockArray(
             contentBlocks.contentBlocks
             //contentBlocks.entityMap
@@ -364,7 +364,7 @@ export default function AddOrManage({ add }: any) {
           ? {
               nick_name: res?.data?.nick_name[0]?.id,
               parent_camp_num: res?.data?.statement?.camp_num,
-              statement: res?.data?.statement?.value,
+              statement: res?.data?.statement?.parsed_value,
               edit_summary: res?.data?.statement?.note,
             }
           : manageFormOf == "camp"
@@ -389,7 +389,7 @@ export default function AddOrManage({ add }: any) {
             }
           : {
               nick_name: res?.data?.nick_name[0]?.id,
-              statement: res?.data?.statement?.value,
+              statement: res?.data?.statement?.parsed_value,
               parent_camp_num: res?.data?.statement?.camp_num,
             };
 
@@ -707,6 +707,8 @@ export default function AddOrManage({ add }: any) {
                               // data-id="parent-camp"
                               disabled={objection}
                               optionFilterProp="children"
+                              onChange={()=>{setSubmitIsDisable(false);}}
+
                             >
                               {parentCamp.map((camp) =>
                                 camp?.camp_num !==
@@ -1110,9 +1112,10 @@ export default function AddOrManage({ add }: any) {
                           htmlType="submit"
                           disabled={
                             (submitIsDisable &&
-                            submitIsDisableCheck &&
-                            editorTextLength < 1 && 
-                            !objection) || statementResponseDisable
+                              submitIsDisableCheck &&
+                              editorTextLength < 1 &&
+                              !objection) ||
+                            statementResponseDisable
                           }
                           id="update-submit-btn"
                         >

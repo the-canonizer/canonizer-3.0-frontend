@@ -7,7 +7,7 @@ import { NextRouter } from "next/router";
 import { RouterContext } from "next/dist/shared/lib/router-context";
 import { act } from "react-dom/test-utils";
 import { setHistory } from "../../../../store/slices/campDetailSlice";
-
+import CampHistory from "../Collapse/campHistory";
 function createMockRouter(router: Partial<NextRouter>): NextRouter {
   return {
     basePath: "",
@@ -134,5 +134,15 @@ describe("CampHistory Page", () => {
       expect(container.getElementsByTagName("button")).toHaveLength(4);
       expect(container.getElementsByTagName("input")).toHaveLength(1);
     });
+  });
+});
+
+describe("CampHistory", () => {
+  it("render show CampHistory fields", () => {
+    render(
+      <CampHistory
+      />
+    );
+    expect(screen.getByText("Camp Archived :")).toBeTruthy();
   });
 });

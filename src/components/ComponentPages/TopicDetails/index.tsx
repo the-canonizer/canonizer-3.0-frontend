@@ -423,7 +423,12 @@ const TopicDetails = () => {
               setSupportTreeForCamp={setSupportTreeForCamp}
             />
 
-            {((tree && tree["1"]?.is_valid_as_of_time) ||
+            {((tree &&
+              tree["1"]?.is_valid_as_of_time &&
+              tree["1"]?.created_date <=
+                (asof == "default" || asof == "review"
+                  ? Date.now() / 1000
+                  : asofdate)) ||
               asof == "default") && (
               <>
                 {campExist &&
@@ -469,9 +474,6 @@ const TopicDetails = () => {
                         {typeof window !== "undefined" &&
                           window.innerWidth < 767 && (
                             <>
-                              {router.asPath.includes("topic") && (
-                                <CampRecentActivities />
-                              )}
                               <Spin spinning={loadingIndicator} size="large">
                                 {!!newsFeed?.length && (
                                   <NewsFeedsCard newsFeed={newsFeed} />
@@ -479,6 +481,7 @@ const TopicDetails = () => {
                               </Spin>
                             </>
                           )}
+
                         <CurrentTopicCard loadingIndicator={loadingIndicator} />
 
                         <CurrentCampCard loadingIndicator={loadingIndicator} />
@@ -511,6 +514,15 @@ const TopicDetails = () => {
                             totalCampScoreForSupportTree
                           }
                         />
+
+                        {typeof window !== "undefined" &&
+                          window.innerWidth < 767 && (
+                            <>
+                              {router.asPath.includes("topic") && (
+                                <CampRecentActivities />
+                              )}
+                            </>
+                          )}
                       </>
                     )}
               </>
