@@ -96,14 +96,17 @@ const CampTreeCard = ({
             header={
               <h3>
                 Canonizer Sorted Camp Tree{" "}
-                <Button
+                {/* <Button
                   type={"primary"}
                   size="small"
                   className={styles.eventLineBtn}
                   href={eventLinePath}
                 >
                   Event Line
-                </Button>
+                </Button> */}
+                <Popover content={addContent} placement="left">
+                  <i className="icon-info tooltip-icon-style"></i>
+                </Popover>
               </h3>
             }
             key="1"
@@ -115,23 +118,6 @@ const CampTreeCard = ({
                     event.stopPropagation();
                   }}
                 >
-                  {isUserAuthenticated && is_admin && tree && (
-                    <Link
-                      href={{
-                        pathname: router.asPath.replace("topic", "addnews"),
-                      }}
-                    >
-                      <a
-                        className={styles.addNew}
-                        onClick={(event) => {
-                          event.stopPropagation();
-                        }}
-                      >
-                        <i className={"icon-fi-document " + styles.iconMr} />
-                        Add News
-                      </a>
-                    </Link>
-                  )}
                   <Select
                     defaultValue={"50%"}
                     style={{ width: 80 }}
@@ -167,7 +153,7 @@ const CampTreeCard = ({
                       },
                     ]}
                   />
-                  <Popover content={addContent} placement="left">
+                  <Popover placement="left">
                     <i className="icon-info tooltip-icon-style"></i>
                   </Popover>
                 </div>

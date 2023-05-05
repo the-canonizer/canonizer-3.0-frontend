@@ -62,6 +62,7 @@ const TimelineInfoBar = ({
   });
   const didMount = useRef(false);
   const router = useRouter();
+
   const {
     topicRecord,
     campRecord,
@@ -141,6 +142,10 @@ const TimelineInfoBar = ({
         "-"
       )}/threads`,
     });
+  };
+
+  const eventLinePath = () => {
+    router.push(router.asPath.replace("topic", "eventline"));
   };
 
   const campOrTopicScribe = async (isTopic: Boolean) => {
@@ -527,6 +532,14 @@ const TimelineInfoBar = ({
                     />
                   ) : (
                     <>
+                      <Button
+                        type="primary"
+                        onClick={eventLinePath}
+                        className={styles.btnCampForum}
+                        id="camp-forum-btn"
+                      >
+                        Event Line
+                      </Button>
                       <Button
                         type="primary"
                         className={styles.btnCampForum}
