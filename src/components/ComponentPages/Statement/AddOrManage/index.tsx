@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Form, Button, Row, Col, Card, Input, Select, Typography } from "antd";
+import { Form, Button, Row, Col, Card, Input, Select, Typography, Tooltip} from "antd";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import "antd/dist/antd.css";
@@ -495,6 +495,8 @@ export default function AddOrManage({ add }: any) {
     };
   }, []);
 
+  const toolTipContent = "This camp is under review"
+
   const onCheckboxChange = async (e: CheckboxChangeEvent) => {
     const oldOptions = [...options];
 
@@ -708,7 +710,6 @@ export default function AddOrManage({ add }: any) {
                               disabled={objection}
                               optionFilterProp="children"
                               onChange={()=>{setSubmitIsDisable(false);}}
-
                             >
                               {parentCamp.map((camp) =>
                                 camp?.camp_num !==
@@ -716,8 +717,12 @@ export default function AddOrManage({ add }: any) {
                                   <Select.Option
                                     value={camp.camp_num}
                                     key={camp.id}
+                                    disabled={camp.parent_change_in_review == true ?true:false}
+                                   
                                   >
+                                    <Tooltip title={camp.parent_change_in_review == true ? toolTipContent: null} >
                                     {camp.camp_name}
+                                    </Tooltip>
                                   </Select.Option>
                                 ) : (
                                   ""
