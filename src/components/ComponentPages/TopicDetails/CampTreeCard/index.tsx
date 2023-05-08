@@ -118,6 +118,7 @@ const CampTreeCard = ({
                     event.stopPropagation();
                   }}
                 >
+                <h3>{`Show camps with score >= `}</h3>
                   <Select
                     defaultValue={"50%"}
                     style={{ width: 80 }}
