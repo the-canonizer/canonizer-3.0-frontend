@@ -707,8 +707,9 @@ export default function AddOrManage({ add }: any) {
                               // data-id="parent-camp"
                               disabled={objection}
                               optionFilterProp="children"
-                              onChange={()=>{setSubmitIsDisable(false);}}
-
+                              onChange={() => {
+                                setSubmitIsDisable(false);
+                              }}
                             >
                               {parentCamp.map((camp) =>
                                 camp?.camp_num !==
