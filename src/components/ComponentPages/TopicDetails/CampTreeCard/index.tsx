@@ -7,6 +7,7 @@ import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import styles from "../topicDetails.module.scss";
 import { useRouter } from "next/router";
 import CustomSkelton from "../../../common/customSkelton";
+import {RightOutlined} from '@ant-design/icons';
 
 import { useSelector, useDispatch } from "react-redux";
 import { store } from "../../../../store";
@@ -17,7 +18,7 @@ import { fallBackSrc } from "src/assets/data-images";
 import { setFilterCanonizedTopics } from "../../../../store/slices/filtersSlice";
 
 const { Panel } = Collapse;
-const { Link: AntLink } = Typography;
+const { Link: AntLink, Text } = Typography;
 
 const addContent = (
   <>
@@ -118,7 +119,7 @@ const CampTreeCard = ({
                     event.stopPropagation();
                   }}
                 >
-                <h3>{`Show camps with score >= `}</h3>
+                <Text>{`Show camps with score`}<RightOutlined className="rightOutlined"  /></Text>
                   <Select
                     defaultValue={"50%"}
                     style={{ width: 80 }}
@@ -154,9 +155,7 @@ const CampTreeCard = ({
                       },
                     ]}
                   />
-                  <Popover placement="left">
-                    <i className="icon-info tooltip-icon-style"></i>
-                  </Popover>
+                 
                 </div>
               </>
             }
