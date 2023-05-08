@@ -4,12 +4,12 @@ export const currentCampRecordConstants = [
     key: "camp_name",
   },
   {
-    label: "Parent Camp",
-    key: "parent_camp_name",
+    label: "Keywords",
+    key: "key_words",
   },
   {
-    label: "Keywords ",
-    key: "key_words",
+    label: "Edit Summary",
+    key: "note",
   },
   {
     label: "Camp About URL",
@@ -17,7 +17,7 @@ export const currentCampRecordConstants = [
   },
   {
     label: "Camp About Nickname",
-    key: "nick_name",
+    key: "camp_about_nick_name",
   },
   {
     label: "Disable additional sub camps",
@@ -30,5 +30,21 @@ export const currentCampRecordConstants = [
   {
     label: "Camp Archived",
     key: "camp_archived",
+  },
+  {
+    label: "Submitted On",
+    key: "submit_time",
+  },
+  {
+    label: "Submitter Nickname",
+    key: "submitter_nick_name",
+  },
+  {
+    label: "Go Live Time",
+    key: "go_live_time",
+  },
+  {
+    label: "Parent Camp",
+    key: "parent_camp_name",
   },
 ];

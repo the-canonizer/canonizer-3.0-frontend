@@ -139,10 +139,7 @@ describe("CampHistory Page", () => {
 
 describe("CampHistory", () => {
   it("render show CampHistory fields", () => {
-    render(
-      <CampHistory
-      />
-    );
+    render(<CampHistory />);
     expect(screen.getByText("Camp Archived :")).toBeTruthy();
   });
 });
