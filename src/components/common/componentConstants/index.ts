@@ -29,7 +29,7 @@ export const currentCampRecordConstants = [
   },
   {
     label: "Camp Archived",
-    key: "is_archive",
+    key: "camp_archived",
   },
   {
     label: "Submitted On",
