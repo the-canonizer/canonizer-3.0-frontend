@@ -1,5 +1,5 @@
 class LoadTree {
-  static SERVICE_API_PATH = "https://service.canonizer.com/api/v1/tree/gets";
+  static SERVICE_API_PATH = "https://service.canonizer.com/api/v1/tree/get";
   static CSS_URL = "https://canonizer3.canonizer.com/embed/embed.css";
   static API_PATH = "https://api3.canonizer.com/api/v3/embedded-code-tracking";
 
@@ -106,15 +106,17 @@ class LoadTree {
   static async expandParent(elm) {
     const child = elm.querySelector(".need_parent_expand");
 
-    let parent = child.parentNode;
+    if (child) {
+      let parent = child.parentNode;
 
-    while (parent) {
-      if (parent?.tagName?.toLowerCase() === "details") {
-        if (!parent.hasAttribute("open")) {
-          parent.setAttribute("open", "");
+      while (parent) {
+        if (parent?.tagName?.toLowerCase() === "details") {
+          if (!parent.hasAttribute("open")) {
+            parent.setAttribute("open", "");
+          }
         }
+        parent = parent.parentNode;
       }
-      parent = parent.parentNode;
     }
   }
 
