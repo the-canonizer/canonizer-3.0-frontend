@@ -47,9 +47,7 @@ describe("Sidebar Filters Component", () => {
     expect(container.getElementsByTagName("button")).toHaveLength(1);
     expect(getByText("Create New Topic")).toBeInTheDocument();
     expect(getByText("Canonizer Algorithm:")).toBeInTheDocument();
-    expect(
-      container.getElementsByClassName("ant-checkbox")
-    ).toBeTruthy();
+    expect(container.getElementsByClassName("ant-checkbox")).toBeTruthy();
     expect(
       container.getElementsByClassName("ant-checkbox ant-checkbox-checked")
     ).toBeTruthy();
