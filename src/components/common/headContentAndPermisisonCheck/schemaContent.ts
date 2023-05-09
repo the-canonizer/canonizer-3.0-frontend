@@ -38,7 +38,7 @@ export default {
     "url": "https://canonizer.com/browse",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://www.google.com/search?sitesearch=canonizer.com&q={search_term_string}",
+      "target": "https://canonizer.com/browse?namespace=All{search_term_string}",
       "query-input": "required name=search_term_string"
     }
   }`,
