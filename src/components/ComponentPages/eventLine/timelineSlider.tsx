@@ -206,16 +206,31 @@ function TimelineSlider({
 
   return (
     <>
-      <div className={styles.timeBarControl}>
+      <div
+        className={`${styles.timeBarControl} ${
+          mockData && Object.keys(mockData).length <= 2
+            ? styles.disablePlayBtn
+            : ""
+        }`}
+      >
         <StepBackwardOutlined
           onClick={() => {
-            handleClickBackword();
+            if (mockData && Object.keys(mockData).length > 2) {
+              handleClickBackword();
+            }
           }}
           className={styles.controlBtnSecond}
         />
         {/* <BackwardOutlined className={styles.controlBtn} /> */}
         {"     "}
-        <div className={styles.playBtn} onClick={handleClick}>
+        <div
+          className={`${styles.playBtn}`}
+          onClick={() => {
+            if (mockData && Object.keys(mockData).length > 2) {
+              handleClick();
+            }
+          }}
+        >
           {isPlaying ? <PauseOutlined /> : <CaretRightOutlined />}
         </div>
         {"   "}
@@ -223,7 +238,9 @@ function TimelineSlider({
 
         <StepForwardOutlined
           onClick={() => {
-            handleClickForward();
+            if (mockData && Object.keys(mockData).length > 2) {
+              handleClickForward();
+            }
           }}
           className={styles.controlBtnSecond}
         />
@@ -236,10 +253,17 @@ function TimelineSlider({
             setSpeedBar(newOpen);
           }}
         >
-          <DashboardOutlined className="speed-icon" />
+          <DashboardOutlined
+            className={`${"speed-icon"}  ${
+              mockData && Object.keys(mockData).length <= 2
+                ? styles.disableIcon
+                : ""
+            }`}
+          />
         </Popover>
       </div>
       <Slider
+        disabled={mockData && Object.keys(mockData).length > 2 ? false : true}
         className="rang-slider"
         tooltip={{
           formatter,

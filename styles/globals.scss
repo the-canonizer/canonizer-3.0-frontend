@@ -306,3 +306,17 @@ img {
       color:#0524e9;
   }
 }
+.animatedText {
+  animation-name: rightToLeft;
+  animation-duration: 0.4s;
+  animation-timing-function: linear;
+}
+
+@keyframes rightToLeft {
+  0% {
+    transform: translateX(150px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
