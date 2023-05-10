@@ -15,11 +15,13 @@ import NetworkCall from "../networkCall";
 import UserRequest from "../request/userRequest";
 import { store } from "../../store";
 import { setFilterCanonizedTopics } from "../../store/slices/filtersSlice";
+import { setHeaderData } from "src/store/slices/notificationSlice";
 
 export const createToken = async () => {
   try {
     const token = await NetworkCall.fetch(UserRequest.createToken());
     store.dispatch(setAuthToken(token?.data?.access_token));
+    localStorage.setItem("auth_token", token?.data?.access_token);
     return token.data;
   } catch (error) {
     handleError(error);
@@ -65,6 +67,7 @@ export const logout = async (error = "", status = null, count: number = 1) => {
       store.dispatch(logoutUser());
       store.dispatch(removeAuthToken());
       store.dispatch(updateStatus(status));
+      store.dispatch(setHeaderData({ count: 0, list: [] }));
 
       if (+state.ui.apiStatus === +status) {
         return;
@@ -86,10 +89,12 @@ export const logout = async (error = "", status = null, count: number = 1) => {
     store.dispatch(setLogout());
     store.dispatch(logoutUser());
     store.dispatch(removeAuthToken());
+    store.dispatch(setHeaderData({ count: 0, list: [] }));
     return res;
   } catch (error) {
     store.dispatch(logoutUser());
     store.dispatch(removeAuthToken());
+    store.dispatch(setHeaderData({ count: 0, list: [] }));
     handleError(error);
   }
 };
@@ -190,7 +195,7 @@ export const socialLoginCallback = async (values: object, router) => {
 
     store.dispatch(setLoggedInUser(payload));
 
-    if (res && res.status_code === 200) {
+    if (res && res.status_code === 200 && res?.data?.user?.default_algo) {
       store.dispatch(
         setFilterCanonizedTopics({
           algorithm: res?.data?.user?.default_algo,
@@ -237,12 +242,16 @@ export const getCountryCodes = async () => {
   }
 };
 
-export const GetUserProfileInfo = async () => {
+export const GetUserProfileInfo = async (token = "") => {
   let state = store.getState();
   const { auth } = state;
-  const res = await NetworkCall.fetch(
-    UserRequest.GetUserProfileInfo(auth.loggedInUser?.token)
-  )
+  let tcn = "";
+  if (token) {
+    tcn = token;
+  } else {
+    tcn = auth.loggedInUser?.token;
+  }
+  const res = await NetworkCall.fetch(UserRequest.GetUserProfileInfo(tcn))
     .then((value) => {
       return value;
     })

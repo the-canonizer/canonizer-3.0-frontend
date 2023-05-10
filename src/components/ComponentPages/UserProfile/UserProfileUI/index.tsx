@@ -76,7 +76,7 @@ const UserProfile = () => {
     const camp_num = router?.query?.campnum;
     const namespace_name_id = dropdownNameSpaceList
       ? dropdownNameSpaceList
-      : router?.query?.namespace;
+      : router?.query?.canon;
     if (dropdownNameSpaceList) {
       const query = `${userId}?topicnum=${topic_num}&campnum=${camp_num}&namespace=${namespace_name_id}`;
       UserSupportedCampsListApi(query);

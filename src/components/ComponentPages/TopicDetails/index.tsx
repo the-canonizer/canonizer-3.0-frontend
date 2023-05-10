@@ -80,6 +80,7 @@ const TopicDetails = () => {
   const [isClient, setIsClient] = useState<boolean>(false);
   const router = useRouter();
   const dispatch = useDispatch();
+  const showTreeSkeltonRef = useRef(false);
   const {
     asof,
     asofdate,
@@ -113,7 +114,11 @@ const TopicDetails = () => {
   // };
   useEffect(() => {
     async function getTreeApiCall() {
-      setGetTreeLoadingIndicator(true);
+      console.log("show tree check ", showTreeSkeltonRef);
+      if (!showTreeSkeltonRef) {
+        setGetTreeLoadingIndicator(true);
+        showTreeSkeltonRef.current = true;
+      }
       setLoadingIndicator(true);
       const reqBodyForService = {
         topic_num: +router?.query?.camp[0]?.split("-")[0],
@@ -146,11 +151,11 @@ const TopicDetails = () => {
         page: 1,
       };
       await Promise.all([
+        dispatch(setCampSupportingTree({})),
         getNewsFeedApi(reqBody),
         getCurrentTopicRecordApi(reqBody),
         getCurrentCampRecordApi(reqBody),
         getCanonizedCampStatementApi(reqBody),
-        dispatch(setCampSupportingTree({})),
         getHistoryApi(reqBodyForCampData, "1", "statement"),
         getCanonizedAlgorithmsApi(),
         getTreesApi(reqBodyForService),
@@ -375,7 +380,12 @@ const TopicDetails = () => {
               setSupportTreeForCamp={setSupportTreeForCamp}
             />
 
-            {((tree && tree["1"]?.is_valid_as_of_time) ||
+            {((tree &&
+              tree["1"]?.is_valid_as_of_time &&
+              tree["1"]?.created_date <=
+                (asof == "default" || asof == "review"
+                  ? Date.now() / 1000
+                  : asofdate)) ||
               asof == "default") && (
               <>
                 {campExist &&
@@ -417,18 +427,17 @@ const TopicDetails = () => {
                           loadingIndicator={loadingIndicator}
                         />
 
-                        {isClient && (
-                          <>
-                            {router.asPath.includes("topic") && (
-                              <CampRecentActivities />
-                            )}
-                            <Spin spinning={loadingIndicator} size="large">
-                              {!!newsFeed?.length && (
-                                <NewsFeedsCard newsFeed={newsFeed} />
-                              )}
-                            </Spin>
-                          </>
-                        )}
+                        {typeof window !== "undefined" &&
+                          window.innerWidth < 767 && (
+                            <>
+                              <Spin spinning={loadingIndicator} size="large">
+                                {!!newsFeed?.length && (
+                                  <NewsFeedsCard newsFeed={newsFeed} />
+                                )}
+                              </Spin>
+                            </>
+                          )}
+
                         <CurrentTopicCard loadingIndicator={loadingIndicator} />
 
                         <CurrentCampCard loadingIndicator={loadingIndicator} />
@@ -460,6 +469,15 @@ const TopicDetails = () => {
                             totalCampScoreForSupportTree
                           }
                         />
+
+                        {typeof window !== "undefined" &&
+                          window.innerWidth < 767 && (
+                            <>
+                              {router.asPath.includes("topic") && (
+                                <CampRecentActivities />
+                              )}
+                            </>
+                          )}
                       </>
                     )}
               </>

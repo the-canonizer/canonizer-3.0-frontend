@@ -98,7 +98,7 @@ describe("Should render Addnews", () => {
         name: /create new topic/i,
       });
 
-      expect(screen.getByText(/nick name/i)).toBeInTheDocument();
+      expect(screen.getByText(/nickname/i)).toBeInTheDocument();
       expect(screen.getAllByText(/statement/i)[1]).toBeInTheDocument();
 
       expect(

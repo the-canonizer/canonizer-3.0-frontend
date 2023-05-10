@@ -23,22 +23,22 @@ export const labels = {
   zipCode: "Zip Code (Limit 255 Chars)",
   chooseAlgorithm: "Choose Default Algorithm Preferences",
   emailId: "Email ID",
-  addnewNickName: "Add New Nick Name",
-  nickName: "Nick Name (Limit 50 Char)",
+  addnewNickName: "Add New Nickname",
+  nickName: "Nickname (Limit 50 Char)",
   visibilityStatus: "Visibility Status",
 
   removeSupport: "Remove Support",
   fortopic: "For Topic",
   supportdelegatedto: "Support Delegated To:",
-  nickname: "Nick Name:",
+  nickname: "Nickname:",
   viewMore: "View More",
   currentSupportedCamps: "Current Supported Camps:",
 
-  cr_nick_name: "Nick Name",
+  cr_nick_name: "Nickname",
   cr_nick_name_sp:
-    "(Once you pick a nick name, for any contribution to a topic, you must always use the same nick name for any other contribution or forum post to this topic.)",
+    "(Once you pick a nickname, for any contribution to a topic, you must always use the same nickname for any other contribution or forum post to this topic.)",
   cr_topic_name: "Topic Name",
-  cr_namespace: "Namespace",
+  cr_namespace: "Canon",
   cr_edit_summary: "Edit Summary",
   cr_camp_name: "Camp Name",
   cr_parent_camp: "Parent Camp",
@@ -46,7 +46,7 @@ export const labels = {
   cr_keywords_sp:
     "The following fields are rarely used and are for advanced users only.",
   cr_camp_url: "Camp About URL",
-  cr_nick_name_about: "Camp About Nick Name",
+  cr_nick_name_about: "Camp About Nickname",
   multiUser: "Select User",
   threadTitle: "Title of Thread",
   uploadFiles: "Upload Files",
@@ -89,10 +89,13 @@ export const labels = {
   forgotModalLabel: "Forgot Your Password?",
   nameConfirmationTitle: "Name Confirmation",
   reasonLabel: "Reason for adding/removing support",
+  reasonChangeLabel: "Reason for adding/removing/changing order support",
   reasonLabelAdd: "Reason for support",
   reasonLabelSummary: "Summary",
   resonURLLabel: "Citation Link",
   reasonModalTitle: "Reason for support end!",
+  copied_success: "Text has been copied.",
+  copied_error: "Error: Text could not be copied.",
 };
 
 export const preventCampLabel = [
@@ -108,6 +111,13 @@ export const preventCampLabel = [
     tooltip:
       "Disable the ability to add additional sub camps beyond direct sub camps.",
     id: "is_one_level",
+    checked: false,
+    disable: false,
+  },
+  {
+    label: "Camp archive.",
+    tooltip: "Archive the camp.",
+    id: "is_archive",
     checked: false,
     disable: false,
   },

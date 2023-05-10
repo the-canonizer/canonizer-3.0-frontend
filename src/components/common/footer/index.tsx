@@ -120,6 +120,12 @@ function Footer() {
                           </li>
                         );
                       })}
+                      <li key="sitemap-link">
+                        <a href="/sitemap" target="_blank">
+                          <i className="icon-angle-right"></i>{" "}
+                          <span>Sitemap</span>
+                        </a>
+                      </li>
                     </ul>
                   </Col>
                   <Col xs={24} md={12}>

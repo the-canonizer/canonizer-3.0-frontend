@@ -6,13 +6,24 @@ import {
 } from "../../store/slices/campDetailSlice";
 import NetworkCall from "../networkCall";
 import historyRequest from "../request/historyRequest";
+import { createToken } from "./userApi";
 
 export const getHistoryApi = async (reqBody, pageNumber, historyOf: string) => {
-  let state = store.getState();
-  const { auth } = state;
+  let state = await store.getState();
+
+  const { auth } = state,
+    tc = localStorage?.getItem("auth_token");
+
+  let token = auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
+
+  if (!token) {
+    const response = await createToken();
+    token = response?.access_token;
+  }
+
   try {
     const history = await NetworkCall.fetch(
-      historyRequest.getHistory(reqBody, auth.loggedInUser?.token, historyOf),
+      historyRequest.getHistory(reqBody, token, historyOf),
       false
     );
     if (pageNumber == 1) {
@@ -43,6 +54,19 @@ export const changeCommitStatement = async (reqBody) => {
   try {
     const res = await NetworkCall.fetch(
       historyRequest.commitChangeStatement(reqBody),
+      false
+    );
+
+    return res;
+  } catch (error) {
+    handleError(error);
+    return error;
+  }
+};
+export const discardStatement = async (reqBody) => {
+  try {
+    const res = await NetworkCall.fetch(
+      historyRequest.discardChangeStatement(reqBody),
       false
     );
 

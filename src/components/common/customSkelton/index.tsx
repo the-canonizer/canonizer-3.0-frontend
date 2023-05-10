@@ -122,6 +122,7 @@ const CustomSkelton = ({
     <UserProfileCardSkeleton
       bodyCount={bodyCount}
       stylingClass={stylingClass}
+      key="profileCard_unique"
     />
   ) : skeltonFor == "directSupportCampsCard" ? (
     <Skeleton

@@ -33,6 +33,10 @@ export default function DirectSupportedCampsUI({
   directSkeletonIndicator,
   handleSupportedCampsOpen,
   modalPopupText,
+  campIds,
+  removeCampLink,
+  isChangingOrder,
+  setIsChangingOrder,
 }: any) {
   const [valData, setValData] = useState({});
   const [tagsDataArrValue, setTagsDataArrValue] = useState([]);
@@ -41,7 +45,7 @@ export default function DirectSupportedCampsUI({
   // const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
   // eslint-disable-next-line no-unused-vars
   const [currentCamp, setCurrentCamp] = useState(null);
-
+  const [currentPage, setCurrentPage] = useState(1);
   let tagsArrayList = [];
   const CardTitle = (props: any) => {
     return (
@@ -56,12 +60,14 @@ export default function DirectSupportedCampsUI({
       </div>
     );
   };
+  const buttonText = "Save";
 
   const tagsOrder = (topic_num, data, tags) => {
     setTagsCampsOrderID(data.topic_num);
     setTagsDataArrValue(tags);
     handleClose({}, topic_num, data, tags);
     setValData({});
+    setIsChangingOrder(true);
   };
 
   useEffect(() => {
@@ -81,22 +87,32 @@ export default function DirectSupportedCampsUI({
     return <Empty description={msg} />;
   };
   const filteredArray = () => {
-    return displayList.filter((val: any) => {
-      if (search.trim() == "") {
-        return val;
-      } else if (
-        val.title.toLowerCase().trim().includes(search.toLowerCase().trim())
-      ) {
-        return val;
-      }
-    });
+    // return displayList.filter((val: any) => {
+    //   if (search.trim() == "") {
+    //     return val;
+    //   } else if (
+    //     val.title.toLowerCase().trim().includes(search.toLowerCase().trim())
+    //   ) {
+    //     return val;
+    //   }
+    // });
+    if (search.trim() == "") {
+      return displayList;
+    } else {
+      return directSupportedCampsList.filter((val: any) => {
+        if (
+          val.title.toLowerCase().trim().includes(search.toLowerCase().trim())
+        ) {
+          return val;
+        }
+      });
+    }
   };
-
   useEffect(() => {
-    pageChange(1, 5);
+    pageChange(currentPage, 5);
   }, [directSupportedCampsList]);
-
   const pageChange = (pageNumber, pageSize) => {
+    setCurrentPage(pageNumber);
     const startingPosition = (pageNumber - 1) * pageSize;
     const endingPosition = startingPosition + pageSize;
     setDisplayList(
@@ -210,7 +226,9 @@ export default function DirectSupportedCampsUI({
                               className={styles.save_Changes_Btn}
                               onClick={() => {
                                 setCurrentCamp(data.topic_num);
-                                handleSupportedCampsOpen();
+                                handleSupportedCampsOpen(data);
+                                //setCurrentPage(currentPage)
+                                pageChange(currentPage, 5);
                               }}
                             >
                               Save Changes
@@ -236,11 +254,14 @@ export default function DirectSupportedCampsUI({
                 })
               : showEmpty("No Data Found ")
             : showEmpty("No Data Found ")}
-          {directSupportedCampsList && directSupportedCampsList.length > 0 ? (
+          {directSupportedCampsList &&
+          directSupportedCampsList.length > 0 &&
+          search.length == 0 ? (
             <Pagination
               hideOnSinglePage={true}
               total={directSupportedCampsList.length}
               pageSize={5}
+              defaultCurrent={currentPage}
               onChange={pageChange}
               showSizeChanger={false}
             />
@@ -253,18 +274,41 @@ export default function DirectSupportedCampsUI({
         className={styles.modal_cross}
         title={
           <p id="all_camps_topics" className={styles.modalTitle}>
-           {modalPopupText ?" You are about to remove your support from all the camps:":"You are about to remove your support from the camp:"}{" "}
-            <span>
-              &quot;
-              <Link
-                href={{
-                  pathname: removeSupportCampsData.title_link,
-                }}
-              >
-                <a>{removeSupportCampsData.title}.</a>
-              </Link>
-              &quot;
-            </span>{" "}
+            {isChangingOrder
+              ? "You are about to change the order of your supported camps"
+              : modalPopupText
+              ? "You are about to remove your support from all the camps from the topic: "
+              : campIds.length > 1
+              ? "You are about to remove your support from the camps: "
+              : "You are about to remove your support from the camp: "}
+            {!isChangingOrder && (
+              <span>
+                &quot;
+                {modalPopupText ? (
+                  <Link
+                    href={{
+                      pathname: removeSupportCampsData.title_link,
+                    }}
+                  >
+                    <a>{removeSupportCampsData.title}</a>
+                  </Link>
+                ) : (
+                  removeCampLink.map((val, index) => {
+                    return (
+                      <Link
+                        href={{
+                          pathname: val.camp_link,
+                        }}
+                      >
+                        <a>{(index ? ", " : "") + val.camp_name}</a>
+                      </Link>
+                    );
+                  })
+                )}
+                &quot;
+              </span>
+            )}
+            {". "}
             You can optionally add a helpful reason, along with a citation link.
           </p>
         }
@@ -318,6 +362,14 @@ export default function DirectSupportedCampsUI({
             </Button>
           </Form.Item>
         </Form>
+        {/* <Spin spinning={removeSupportSpinner} size="small">
+          <SupportRemovedModal
+            onFinish={onRemoveFinish}
+            handleCancel={handleSupportedCampsCancel}
+            form={removeForm}
+            isOrderChange={isChangingOrder}
+          />
+        </Spin> */}
       </Modal>
 
       <Modal
@@ -326,6 +378,11 @@ export default function DirectSupportedCampsUI({
         open={visible}
         onOk={() => {
           handleOk(idData, valData);
+
+          // setTagsCampsOrderID("");
+          // setTagsDataArrValue([]);
+          // setValData({});
+          // setIsChangingOrder(false);
         }}
         onCancel={handleCancel}
       >

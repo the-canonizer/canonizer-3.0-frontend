@@ -63,6 +63,7 @@ const persistConfig = {
     "supportTreeCard",
     "topicDetails",
     "utils",
+    "recentActivities",
   ],
 };
 

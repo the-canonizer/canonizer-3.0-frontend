@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { RadioChangeEvent, Typography, Radio } from "antd";
 import { useRouter } from "next/router";
 
@@ -22,10 +22,15 @@ export default function CanonVideos() {
 
   const replaceString = (text: string, reverse: boolean = false) => {
     if (reverse) {
-      let reverseText = text?.replace(/-/g, " ");
+      let reverseText;
+      if (text?.includes("_")) {
+        reverseText = text?.replace(new RegExp("_", "g"), " ");
+      } else {
+        reverseText = text?.replace(new RegExp("\\+", "g"), " ");
+      }
       return reverseText;
     } else {
-      let updatedText = text?.replace(/\s+/g, "-");
+      let updatedText = text?.replace(/\s+/g, " ")?.toLowerCase();
       return updatedText;
     }
   };
@@ -48,12 +53,16 @@ export default function CanonVideos() {
     node.play();
   };
 
-  const onChange = (e: RadioChangeEvent, res) => {
+  const onChange = (e: RadioChangeEvent, format: string) => {
     setVideoResolution(e.target.value);
 
     const filtredVides = videos?.filter((vd) => vd?.id === selectedVideoId);
     if (filtredVides && filtredVides.length) {
-      addQueryParams(filtredVides[0].title, res?.split(" ")[0], null);
+      addQueryParams(
+        replaceString(filtredVides[0].title),
+        format?.split(" ")[0],
+        null
+      );
     }
 
     const node = document.getElementsByTagName("video")[0];
@@ -74,10 +83,10 @@ export default function CanonVideos() {
 
         const videoss = data?.data;
 
-        if (q?.ch || q?.res) {
-          const videoTitle = replaceString(q?.ch as string, true);
+        if (q?.chapter || q?.format) {
+          const videoTitle = replaceString(q?.chapter as string, true);
           const filteredVideo = Object.values(videoss)?.filter((video) => {
-            if (video["title"] === videoTitle) {
+            if (video["title"]?.toLowerCase() === videoTitle?.toLowerCase()) {
               return video;
             }
           });
@@ -89,19 +98,22 @@ export default function CanonVideos() {
 
             setSelectedVideoId(selectedVideo["id"]);
 
-            selectedVideo["resolutions"]?.map((res) => {
-              if (res?.title?.includes(q?.res)) {
-                setVideoResolution(res?.link);
-                resLink = res?.link;
-                return;
+            selectedVideo["resolutions"]?.map(
+              (format: {
+                title: string | (string | string[])[];
+                link: React.SetStateAction<string>;
+              }) => {
+                if (format?.title?.includes((q?.format as string) || "360")) {
+                  setVideoResolution(format?.link);
+                  resLink = format?.link as string;
+                  return;
+                }
               }
-            });
+            );
 
             const node = document.getElementsByTagName("video")[0];
             if (node) {
               node.src = K.Network.URL?.BaseVideosURL + "/" + resLink;
-              node.play();
-              playeref.current.play();
             }
           }
         } else {
@@ -133,11 +145,11 @@ export default function CanonVideos() {
       const filtredVides = videos?.filter((vd) => vd?.id === selectedVideoId);
       if (filtredVides && filtredVides.length) {
         const splitedarray = videoResolution?.split("_");
-        const res = splitedarray[splitedarray?.length - 1]?.split(".")[0];
+        const format = splitedarray[splitedarray?.length - 1]?.split(".")[0];
 
         addQueryParams(
-          filtredVides[0].title,
-          res,
+          replaceString(filtredVides[0].title),
+          format,
           playeref?.current?.currentTime
         );
       }
@@ -150,24 +162,28 @@ export default function CanonVideos() {
       const node = document.getElementsByTagName("video")[0];
       if (node && ct) {
         node.currentTime = Number(ct);
-        node.play();
       }
     }, 800);
   }, []);
 
-  function addQueryParams(ch, res, t) {
-    router.query.ch = ch;
-    router.query.res = res;
+  function addQueryParams(
+    chapter: string | string[],
+    format: string | string[],
+    t: string | string[]
+  ) {
+    router.query.chapter = chapter;
+    router.query.format = format;
     if (t) {
       router.query.t = t;
     } else {
-      delete router.query.t;
+      const { t, ...rest } = router.query;
+      router.query = rest;
     }
     router.push(router, null, { shallow: true });
   }
 
   return (
-    <>
+    <Fragment>
       <div className="w-100 pt-4 pb-4 ">
         <Title className={`text-center ${styles.pageTitle}`} level={1}>
           Consciousness: Not a Hard Problem, Just a Color Problem
@@ -204,18 +220,28 @@ export default function CanonVideos() {
                 className={styles.radioGroup}
                 value={videoResolution}
               >
-                {videos[selectedVideoId - 1]?.resolutions?.map((data) => {
-                  return (
-                    <Radio
-                      key={data?.id}
-                      value={data?.link}
-                      checked={videoResolution === data?.link}
-                      onChange={(e) => onChange(e, data?.title)}
-                    >
-                      {data?.title}
-                    </Radio>
-                  );
-                })}
+                {videos[selectedVideoId - 1]?.resolutions?.map(
+                  (data: {
+                    id: React.Key;
+                    link: string;
+                    title:
+                      | boolean
+                      | React.ReactChild
+                      | React.ReactFragment
+                      | React.ReactPortal;
+                  }) => {
+                    return (
+                      <Radio
+                        key={data?.id}
+                        value={data?.link}
+                        checked={videoResolution === data?.link}
+                        onChange={(e) => onChange(e, data?.title as string)}
+                      >
+                        {data?.title}
+                      </Radio>
+                    );
+                  }
+                )}
               </Radio.Group>
             ) : (
               <CustomSkelton
@@ -237,7 +263,6 @@ export default function CanonVideos() {
                 height={"auto"}
                 controls
                 ref={playeref}
-                autoPlay
               >
                 <source
                   src={K.Network.URL?.BaseVideosURL + "/" + videoResolution}
@@ -247,16 +272,12 @@ export default function CanonVideos() {
                   kind="chapters"
                   label="Locations"
                   src={"/subs/" + vttPath() + ".vtt"}
-                  // ref={playeref2}
-                  // onLoad={getChaptersReady}
                   default
                 ></track>
               </video>
               <div
                 className={`video-chap-content ${styles.vttComtainer}`}
-                dangerouslySetInnerHTML={{
-                  __html: topic,
-                }}
+                dangerouslySetInnerHTML={{ __html: topic }}
               ></div>
             </>
           ) : (
@@ -269,6 +290,6 @@ export default function CanonVideos() {
           )}
         </div>
       </div>
-    </>
+    </Fragment>
   );
 }

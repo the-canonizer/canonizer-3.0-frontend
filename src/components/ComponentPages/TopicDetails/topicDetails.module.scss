@@ -61,7 +61,7 @@
       margin-top: 1rem;
     }
     .btnCampForum {
-      margin-right: 20px;
+      margin-right: 10px;
       background-color: #4484ce;
       box-shadow: none;
       border-color: transparent;
@@ -163,16 +163,20 @@
     padding: 2px 7px;
     border-radius: 2px;
     color: #fff;
-    margin-left: 6px ;
+    margin-left: 6px;
     transition: all ease 50s;
-    @media screen and (max-width:767px) {
-      width:auto !important;
-  }
+    @media screen and (max-width: 767px) {
+      width: auto !important;
+    }
   }
   .subScriptionIcon {
     margin-left: 6px;
     .implicitIcon {
       color: #bbb;
+      margin-right: 8px;
+    }
+    .iconSubscribe {
+      margin-right: 8px;
     }
   }
 }
@@ -237,6 +241,9 @@
 .slashStyle {
   align-self: center;
   // margin-inline: 5px;
+  svg {
+    width: 11px;
+  }
 }
 
 .greenIndicateText {
@@ -255,4 +262,29 @@
   margin: 0;
   font-size: 16px;
   width: 95%;
+}
+
+.eventLineBtn {
+  margin-left: 10px;
+}
+
+.descriptions {
+  table {
+    tbody {
+      tr {
+        [class="ant-descriptions-item-label"] {
+          font-weight: 600;
+        }
+      }
+    }
+  }
+}
+
+.svgIconCode {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  svg {
+    width: 15px;
+  }
 }

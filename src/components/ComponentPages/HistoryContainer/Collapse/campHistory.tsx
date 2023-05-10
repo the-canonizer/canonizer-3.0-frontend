@@ -8,6 +8,7 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
+
   return (
     <>
       {!!campStatement?.parent_camp_name && (
@@ -40,14 +41,14 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
       </Title>
 
       <Title level={5}>
-        Camp About Nick Name :{" "}
+        Camp About Nickname :{" "}
         <span>
           <Link
             href={`/user/supports/${
               campStatement?.camp_about_nick_id || ""
             }?topicnum=${campStatement?.topic_num || ""}&campnum=${
               campStatement?.camp_num || ""
-            }&namespace=${topicNamespaceId || ""}`}
+            }&canon=${topicNamespaceId || ""}`}
             passHref
           >
             {campStatement?.camp_about_nick_name}
@@ -56,14 +57,14 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
       </Title>
 
       <Title level={5}>
-        Submitter Nick Name :{" "}
+        Submitter Nickname :{" "}
         <span>
           <Link
             href={`/user/supports/${
               campStatement?.submitter_nick_id || ""
             }?topicnum=${campStatement?.topic_num || ""}&campnum=${
               campStatement?.camp_num || ""
-            }&namespace=${topicNamespaceId || ""}`}
+            }&canon=${topicNamespaceId || ""}`}
             passHref
           >
             {campStatement?.submitter_nick_name}
@@ -79,6 +80,10 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
         <span>{campStatement?.is_one_level == 1 ? "Yes" : "No"}</span>
       </Title>
       <Title level={5}>
+        Camp Archived :{" "}
+        <span>{campStatement?.is_archive == 1 ? "Yes" : "No"}</span>
+      </Title>
+      <Title level={5}>
         Submitted On : <span>{covertToTime(campStatement?.submit_time)}</span>
       </Title>
 
@@ -92,14 +97,14 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
       )}
       {campStatement?.objector_nick_name && (
         <Title level={5}>
-          Objector Nick Name :{" "}
+          Objector Nickname :{" "}
           <span>
             <Link
               href={`/user/supports/${
                 campStatement?.objector_nick_id || ""
               }?topicnum=${campStatement?.topic_num || ""}&campnum=${
                 campStatement?.camp_num || ""
-              }&namespace=${topicNamespaceId || ""}`}
+              }&canon=${topicNamespaceId || ""}`}
               passHref
             >
               {campStatement?.objector_nick_name}

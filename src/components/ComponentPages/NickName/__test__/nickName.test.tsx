@@ -43,15 +43,15 @@ describe("NickName page", () => {
     );
 
     expect(screen.getByText("Sr.No.")).toBeInTheDocument();
-    expect(screen.getByText("Nick Name ID")).toBeInTheDocument();
-    expect(screen.getByText("Nick Name")).toBeInTheDocument();
+    expect(screen.getByText("Nickname ID")).toBeInTheDocument();
+    expect(screen.getByText("Nickname")).toBeInTheDocument();
     expect(screen.getByLabelText("Visibility Status")).toBeInTheDocument();
     expect(
       screen.getAllByText(labels.addnewNickName)[0] as HTMLButtonElement
     ).toBeInTheDocument();
   });
 
-  it("render Nick Name Table", () => {
+  it("render Nickname Table", () => {
     render(
       <NickNameUI
         addEditTitle={addEditTitle}
@@ -66,8 +66,8 @@ describe("NickName page", () => {
       />
     );
     expect(screen.getByText("Sr.No.")).toBeInTheDocument();
-    expect(screen.getByText("Nick Name ID")).toBeInTheDocument();
-    expect(screen.getByText("Nick Name")).toBeInTheDocument();
+    expect(screen.getByText("Nickname ID")).toBeInTheDocument();
+    expect(screen.getByText("Nickname")).toBeInTheDocument();
     expect(screen.getByLabelText("Visibility Status")).toBeInTheDocument();
 
     screen.getByText((content, node) => {
@@ -82,7 +82,7 @@ describe("NickName page", () => {
     });
   });
 
-  it("render Add new Nick Name button", () => {
+  it("render Add new Nickname button", () => {
     const { getAllByText } = render(
       <NickNameUI
         addEditTitle={addEditTitle}
@@ -103,7 +103,7 @@ describe("NickName page", () => {
   });
 
   it("render Modal when Add new NickName is clicked", () => {
-    addEditTitle = "Add New Nick Name";
+    addEditTitle = "Add New Nickname";
     addEditBtn = "Create";
 
     const { getByText } = render(
@@ -132,7 +132,7 @@ describe("NickName page", () => {
   });
 
   it("render Modal when Edit NickName is clicked", () => {
-    addEditTitle = "Edit Nick Name";
+    addEditTitle = "Edit Nickname";
     addEditBtn = "Update";
 
     const { getByText } = render(
@@ -149,10 +149,10 @@ describe("NickName page", () => {
       />
     );
 
-    const nickname = screen.getByPlaceholderText("Enter nick name");
+    const nickname = screen.getByPlaceholderText("Enter Nickname");
     const addbutton = getByText("Update");
     expect(addbutton).toBeTruthy();
-    expect(screen.getByText("Edit Nick Name")).toBeInTheDocument();
+    expect(screen.getByText("Edit Nickname")).toBeInTheDocument();
     expect(screen.getByText(labels.nickName)).toBeInTheDocument();
     expect(nickname).toBeInTheDocument();
     expect(nickname).toHaveAttribute("type", "text");
@@ -162,8 +162,8 @@ describe("NickName page", () => {
     ).toBeInTheDocument();
   });
 
-  it("Nick Name input disabled on Edit click", () => {
-    addEditTitle = "Edit Nick Name";
+  it("Nickname input disabled on Edit click", () => {
+    addEditTitle = "Edit Nickname";
     addEditBtn = "Update";
 
     render(
@@ -179,7 +179,7 @@ describe("NickName page", () => {
         disableButton={disableButton}
       />
     );
-    const nickname = screen.getByPlaceholderText("Enter nick name");
+    const nickname = screen.getByPlaceholderText("Enter Nickname");
 
     expect(nickname).toHaveAttribute("type", "text");
     expect(nickname).toHaveAttribute("disabled");

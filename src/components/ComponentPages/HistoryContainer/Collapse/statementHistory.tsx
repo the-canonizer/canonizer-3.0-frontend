@@ -19,14 +19,14 @@ const StatementHistory = ({ campStatement, topicNamespaceId }: any) => {
         Submitted On : <span>{covertToTime(campStatement?.submit_time)}</span>
       </Title>
       <Title level={5}>
-        Submitter Nick Name :{" "}
+        Submitter Nickname :{" "}
         <span>
           <Link
             href={`/user/supports/${
               campStatement?.submitter_nick_id || ""
             }?topicnum=${campStatement?.topic_num || ""}&campnum=${
               campStatement?.camp_num || ""
-            }&namespace=${topicNamespaceId || ""}`}
+            }&canon=${topicNamespaceId || ""}`}
             passHref
           >
             {campStatement?.submitter_nick_name}
@@ -47,7 +47,7 @@ const StatementHistory = ({ campStatement, topicNamespaceId }: any) => {
                 campStatement?.objector_nick_id || ""
               }?topicnum=${campStatement?.topic_num || ""}&campnum=${
                 campStatement?.camp_num || ""
-              }&namespace=${topicNamespaceId || ""}`}
+              }&canon=${topicNamespaceId || ""}`}
               passHref
             >
               {campStatement?.objector_nick_name}

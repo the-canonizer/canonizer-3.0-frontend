@@ -13,14 +13,17 @@ import {
 import { setFilterCanonizedTopics } from "../../../../store/slices/filtersSlice";
 import styles from "./topicsList.module.scss";
 import { Spin, Checkbox } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
+import { LoadingOutlined, RightOutlined } from "@ant-design/icons";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import {
   setCheckSupportExistsData,
   setCurrentCheckSupportStatus,
   setManageSupportStatusCheck,
 } from "src/store/slices/campDetailSlice";
-import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import {
+  replaceSpecialCharacters,
+  changeSlashToArrow,
+} from "src/utils/generalUtility";
 import CustomSkelton from "../../../common/customSkelton";
 
 const antIcon = <LoadingOutlined spin />;
@@ -30,13 +33,14 @@ const { Search } = Input;
 const infoContent = (
   <>
     <div className={styles.namespacesPopover}>
-      <Title level={5}>Namespace</Title>
+      <Title level={5}>Canon</Title>
       <p>
-        Namespaces are a set of topics created for specific organizations and
-        cities to separate topics exclusively for them from the topics of
-        general interest. To get a namespace created for your organization,
-        contact{" "}
-        <Link href="mailto:support@canonizer.com">support@canonizer.com</Link>
+        Canons are a set of topics created for specific organizations and cities
+        to separate topics exclusively for them from the topics of general
+        interest. To get a canon created for your organization, contact{" "}
+        <Link href="mailto:support@canonizer.com">
+          <a>support@canonizer.com</a>
+        </Link>
       </p>
     </div>
   </>
@@ -77,7 +81,7 @@ const TopicsList = () => {
   const [nameSpacesList, setNameSpacesList] = useState(nameSpaces);
 
   const [isReview, setIsReview] = useState(asof == "review");
-  const [inputSearch, setInputSearch] = useState(search || "");
+  const [inputSearch, setInputSearch] = useState("");
 
   const [nameSpaceId, setNameSpaceId] = useState(filterNameSpaceId || "");
 
@@ -90,11 +94,11 @@ const TopicsList = () => {
   const formatnamespace = (namespace, reverse = false) => {
     if (reverse) {
       let addslash = `/${namespace}/`;
-      addslash = addslash?.replace(/-/g, "/");
+      addslash = addslash?.replace(/-/g, " > ");
       return addslash;
     } else {
       let removednamespace = namespace?.replace(/^\/|\/$/g, "");
-      removednamespace = removednamespace?.replace(/\//g, "-");
+      removednamespace = removednamespace?.replace(/ > /g, "-");
       return removednamespace;
     }
   };
@@ -104,11 +108,13 @@ const TopicsList = () => {
     setSelectedNameSpace(nameSpace?.children);
 
     if (nameSpace?.children?.toLowerCase() !== "/general/") {
-      router.query.namespace = formatnamespace(nameSpace?.children);
+      router.query.canon = formatnamespace(nameSpace?.children);
+      delete router?.query?.namespace;
       router.replace(router, undefined, { shallow: true });
     } else {
-      if (router.query.namespace) {
+      if (router.query.canon) {
         const params = router.query;
+        delete params.canon;
         delete params.namespace;
         router.query = params;
         router.replace(router, undefined, { shallow: true });
@@ -125,16 +131,17 @@ const TopicsList = () => {
 
   useEffect(() => {
     if (filterNameSpace?.toLowerCase() !== "/general/") {
-      router.query.namespace = formatnamespace(filterNameSpace);
+      router.query.canon = formatnamespace(filterNameSpace);
+      delete router?.query?.namespace;
       router.replace(router, undefined, { shallow: true });
     }
   }, []);
 
   useEffect(() => {
     const q = router.query;
-    if (q.namespace) {
+    if (q.canon) {
       const filteredName = nameSpacesList?.filter((n) => {
-        if (n.label === formatnamespace(q.namespace, true)) {
+        if (n.label === formatnamespace(q.canon, true)) {
           return n;
         }
       });
@@ -142,7 +149,7 @@ const TopicsList = () => {
       if (filteredName && filteredName.length) {
         dispatch(
           setFilterCanonizedTopics({
-            nameSpace: formatnamespace(q.namespace, true),
+            nameSpace: formatnamespace(q.canon, true),
             namespace_id: filteredName[0]?.id,
           })
         );
@@ -153,7 +160,7 @@ const TopicsList = () => {
   useEffect(() => {
     setSelectedNameSpace(filterNameSpace);
     setNameSpaceId(filterNameSpaceId);
-    setInputSearch(search);
+    setInputSearch(search.trim());
     setNameSpacesList(nameSpaces);
   }, [filterNameSpace, filterNameSpaceId, search, nameSpaces]);
 
@@ -203,7 +210,7 @@ const TopicsList = () => {
   }
 
   const onSearch = (value) => {
-    setInputSearch(value);
+    setInputSearch(value.trim());
     dispatch(
       setFilterCanonizedTopics({
         search: value || "",
@@ -271,7 +278,7 @@ const TopicsList = () => {
               }`}
             >
               <Title level={3}>
-                Select Namespace
+                Select Canon
                 <Popover content={infoContent} placement="right">
                   <i className="icon-info cursor-pointer"></i>
                 </Popover>
@@ -287,8 +294,8 @@ const TopicsList = () => {
               <Select
                 size="large"
                 className={styles.dropdown}
-                defaultValue={selectedNameSpace}
-                value={selectedNameSpace}
+                defaultValue={changeSlashToArrow(selectedNameSpace)}
+                value={changeSlashToArrow(selectedNameSpace)}
                 onChange={selectNameSpace}
                 showSearch
                 optionFilterProp="children"
@@ -301,7 +308,7 @@ const TopicsList = () => {
                       key={item.id}
                       value={item.id}
                     >
-                      {item.label}
+                      {changeSlashToArrow(item.label)}
                     </Select.Option>
                   );
                 })}
@@ -312,8 +319,9 @@ const TopicsList = () => {
               {router.asPath.includes("/browse") && (
                 <div className={styles.inputSearchTopic}>
                   <Search
+                    key={inputSearch}
                     placeholder="Search by topic name"
-                    allowClear
+                    allowClear={true}
                     className={styles.topic}
                     defaultValue={inputSearch}
                     onSearch={onSearch}

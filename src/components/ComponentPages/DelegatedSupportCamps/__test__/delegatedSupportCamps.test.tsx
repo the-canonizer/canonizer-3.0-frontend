@@ -46,10 +46,10 @@ const delegatedSupportCampsList = [
     ],
     delegated_to_nick_name: "Rohit_Talentelgia",
     delegated_to_nick_name_link:
-      "https://canonizer-api.teamtalentelgia.com/user/supports/1138?topicnum=286&campnum=5&namespace=19",
+      "https://canonizer-api.teamtalentelgia.com/user/supports/1138?topicnum=286&campnum=5&canon=19",
     my_nick_name: "reena_talentelgia",
     my_nick_name_link:
-      "https://canonizer-api.teamtalentelgia.com/user/supports/1134?topicnum=286&campnum=5&namespace=19",
+      "https://canonizer-api.teamtalentelgia.com/user/supports/1134?topicnum=286&campnum=5&canon=19",
   },
   {
     id: "2",
@@ -64,19 +64,19 @@ const delegatedSupportCampsList = [
     ],
     delegated_to_nick_name: "Rohit_Talentelgia",
     delegated_to_nick_name_link:
-      "https://canonizer-api.teamtalentelgia.com/user/supports/1138?topicnum=286&campnum=5&namespace=19",
+      "https://canonizer-api.teamtalentelgia.com/user/supports/1138?topicnum=286&campnum=5&canon=19",
     my_nick_name: "reena_talentelgia",
     my_nick_name_link:
-      "https://canonizer-api.teamtalentelgia.com/user/supports/1134?topicnum=286&campnum=5&namespace=19",
+      "https://canonizer-api.teamtalentelgia.com/user/supports/1134?topicnum=286&campnum=5&canon=19",
   },
 ];
 const viewMoreDataValue = {
   delegated_to_nick_name: "Rohit_Talentelgia",
   delegated_to_nick_name_link:
-    "https://canonizer-api.teamtalentelgia.com/user/supports/1138?topicnum=286&campnum=5&namespace=19",
+    "https://canonizer-api.teamtalentelgia.com/user/supports/1138?topicnum=286&campnum=5&canon=19",
   my_nick_name: "reena_talentelgia",
   my_nick_name_link:
-    "https://canonizer-api.teamtalentelgia.com/user/supports/1134?topicnum=286&campnum=5&namespace=19",
+    "https://canonizer-api.teamtalentelgia.com/user/supports/1134?topicnum=286&campnum=5&canon=19",
   title: "This is a test topic RG",
   title_link:
     "https://canonizer-api.teamtalentelgia.com/topic/286-This-is-a-test-topic-RG/1-Aggreement",
@@ -105,10 +105,9 @@ const removeSupportCampsData = {
   ],
   delegated_nick_name_id: 1,
   delegated_to_nick_name: "Brent_Allsop",
-  delegated_to_nick_name_link:
-    "/user/supports/1?topicnum=16&campnum=2&namespace=1",
+  delegated_to_nick_name_link: "/user/supports/1?topicnum=16&campnum=2&canon=1",
   my_nick_name: "Nick",
-  my_nick_name_link: "/user/supports/643?topicnum=16&campnum=2&namespace=1",
+  my_nick_name_link: "/user/supports/643?topicnum=16&campnum=2&canon=1",
   nick_name_id: 643,
   title: "Friendly AI Importance",
   title_link: "/topic/16-Friendly-AI-Importance/1-Agreement",

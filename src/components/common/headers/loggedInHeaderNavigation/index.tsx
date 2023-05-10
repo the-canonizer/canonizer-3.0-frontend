@@ -130,9 +130,53 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
           >
             <CloseOutlined />
           </Button>
+          <div className={styles.mobLogoIcon}>
+            <Logo />
+          </div>
+          <Button
+            size="large"
+            className={`${styles.btnCloseMobMenu} mb-4 float-right`}
+            onClick={toggleMobNav}
+          >
+            <CloseOutlined />
+          </Button>
 
           <HeaderMenu loggedUser={loggedUser} />
-
+          {!isLoginPage ? (
+            <Fragment>
+              <div className={styles.btnsLoginRegister}>
+                <div className="hdrUserdropdown">
+                  <Space size="large">
+                    <i className="icon-user"></i>{" "}
+                    <div>
+                      {loggedUser ? loggedUser["first_name"] : ""}{" "}
+                      {loggedUser ? loggedUser["last_name"] : ""}
+                    </div>
+                  </Space>
+                </div>
+              </div>
+              <div className={`mobile_tag ${styles.mobMenuWithIcons}`}>
+                <Link href="/settings">
+                  <a onClick={toggleMobNav}>
+                    <SettingOutlined />
+                    Account Settings
+                  </a>
+                </Link>
+                <Link href="/settings?tab=supported_camps" passHref>
+                  <a onClick={toggleMobNav}>
+                    <CheckCircleOutlined />
+                    Supported Camps
+                  </a>
+                </Link>
+                <a onClick={logOut}>
+                  <LogoutOutlined />
+                  Log Out
+                </a>
+              </div>
+            </Fragment>
+          ) : null}
+        </div>
+        <div className={styles.right}>
           {!isLoginPage ? (
             <Fragment>
               <div className={styles.btnsLoginRegister}>

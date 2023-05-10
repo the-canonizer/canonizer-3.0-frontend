@@ -32,6 +32,7 @@ import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 // import { showCreateCampButton } from "src/utils/generalUtility";
 import FullScoreCheckbox from "../../ComponentPages/FullScoreCheckbox";
 import useAuthentication from "src/hooks/isUserAuthenticated";
+import ArchivedCampCheckBox from "../../ComponentPages/ArchivedCampCheckBox";
 
 const infoContent = (
   <div className={styles.infoText}>
@@ -122,7 +123,6 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
     current_date_filter: state?.filters?.current_date,
     campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
   }));
-
   const [value, setValue] = useState(
     selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3
   );
@@ -139,7 +139,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   // useEffect(() => {
   //   if (didMount.current) {
   //     if (history.pushState) {
-  //       const queryParams = `?filter=${filterObject?.filterByScore}&algorithm=${filterObject?.algorithm}&asofdate=${filterObject?.asofdate}&namespace=${filterObject?.namespace_id}`;
+  //       const queryParams = `?filter=${filterObject?.filterByScore}&algorithm=${filterObject?.algorithm}&asofdate=${filterObject?.asofdate}&canon=${filterObject?.namespace_id}`;
   //       var newurl =
   //         window.location.protocol +
   //         "//" +
@@ -441,6 +441,18 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
             }
           />
         </Panel>
+
+        {isAuth.isUserAuthenticated ? (
+          <div className={styles.scoreCheckbox}>
+            <FullScoreCheckbox />
+          </div>
+        ) : null}
+        {isAuth.isUserAuthenticated ? (
+          <div className={styles.scoreCheckbox}>
+            <ArchivedCampCheckBox />
+          </div>
+        ) : null}
+
         {isAuth.isUserAuthenticated ? (
           <Panel
             header={

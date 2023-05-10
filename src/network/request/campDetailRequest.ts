@@ -30,23 +30,25 @@ export default class TreeRequest extends Request {
     );
   }
 
-  static getCampStatement(reqBody) {
+  static getCampStatement(reqBody, token) {
     return new Request(
       K.Network.URL.GetCampStatement,
       K.Network.Method.POST,
       reqBody,
       K.Network.Header.Type.Json,
-      {}
+      {},
+      token
     );
   }
 
-  static getCurrentTopicRecord(reqBody) {
+  static getCurrentTopicRecord(reqBody, token) {
     return new Request(
       K.Network.URL.GetCurrentTopicRecord,
       K.Network.Method.POST,
       reqBody,
       K.Network.Header.Type.Json,
-      {}
+      {},
+      token
     );
   }
 
@@ -137,13 +139,14 @@ export default class TreeRequest extends Request {
       token
     );
   }
-  static getCampBreadCrumb(reqBody) {
+  static getCampBreadCrumb(reqBody, token) {
     return new Request(
       K.Network.URL.GetCampBreadCrumb,
       K.Network.Method.POST,
       reqBody,
       K.Network.Header.Type.Json,
-      {}
+      {},
+      token
     );
   }
 
@@ -184,6 +187,20 @@ export default class TreeRequest extends Request {
       null,
       K.Network.Header.Type.Json,
       {}
+    );
+  }
+
+  static checkTopicCampExistRequest(
+    body: { topic_num: number; camp_num: number },
+    token: string
+  ) {
+    return new Request(
+      K.Network.URL.CheckTopicCampExist,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      token
     );
   }
 }

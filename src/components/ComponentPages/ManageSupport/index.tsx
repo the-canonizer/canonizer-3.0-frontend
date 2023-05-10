@@ -74,7 +74,6 @@ const ManageSupport = () => {
         ? Date.now() / 1000
         : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
   };
-
   //Support page Link Url
   const { manageSupportUrlLink } = useSelector((state: RootState) => ({
     manageSupportUrlLink: state.topicDetails.manageSupportUrlLink,
@@ -117,16 +116,17 @@ const ManageSupport = () => {
     campRecord: state?.topicDetails?.currentCampRecord,
   }));
   const refSetter = async (reqBody) => {
-    const res = await getCurrentCampRecordApi(reqBody);
+    let reqBodyCAmpRecord = reqBody;
+    reqBodyCAmpRecord.as_of = "default";
+    const res = await getCurrentCampRecordApi(reqBodyCAmpRecord);
     campRef.current = res;
   };
-
   //isUserAuthenticated
   useEffect(() => {
     (async () => {
       if (isUserAuthenticated) {
         setUpdatePostion(false);
-        refSetter(reqBody);
+        await refSetter(reqBody);
         if (manageSupportStatusCheck) {
           setGetManageSupportLoadingIndicator(true);
           await getCanonizedNicknameList();
@@ -141,8 +141,7 @@ const ManageSupport = () => {
         // }
       }
     })();
-  }, [isUserAuthenticated, reqBodyData.topic_num]);
-  // eslint-disable-next-line no-unused-vars
+  }, [isUserAuthenticated, reqBodyData.topic_num, campRecord?.camp_name]);
   const GetCheckStatusData = async (campReff: any) => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
     if (response && response.status_code === 200) {
@@ -269,7 +268,7 @@ const ManageSupport = () => {
         setSubmitButtonDisable(unavailable_camp ? unavailable_camp : false);
         setGetSupportStatusData(dataValue);
         //if Warning message is show
-        if (resultFilterSupportCamp.length == 0) {
+        if (resultFilterSupportCamp.length == 0 && CampName) {
           let supportOrderLen =
             fiterSupportedCamps.length + manageSupportArr.length + 1;
           //push data into a array of manageSupportArray
@@ -292,18 +291,27 @@ const ManageSupport = () => {
         //warning  message is not show
         setGetSupportStatusData("");
 
-        if (resultFilterSupportCamp.length == 0) {
+        if (resultFilterSupportCamp.length == 0 && CampName) {
           let supportOrderLen = supportedCampsList.length + 1;
           //push data into a array of manageSupportArray
-          supportedCampsList.push({
-            topic_num: parseInt(topicNum),
-            camp_num: parseInt(campNum),
-            camp_name: CampName ?? campRecordRef?.current?.camp_name,
-            support_order: supportOrderLen,
-            link: campSupportPath,
-          });
+          if (campRecordRef?.current?.camp_name) {
+            supportedCampsList.push({
+              topic_num: parseInt(topicNum),
+              camp_num: parseInt(campNum),
+              camp_name: CampName ?? campRecordRef?.current?.camp_name,
+              support_order: supportOrderLen,
+              link: campSupportPath,
+            });
+          } else {
+            supportedCampsList.push({
+              topic_num: parseInt(topicNum),
+              camp_num: parseInt(campNum),
+              camp_name: CampName ?? campRecordRef?.current?.camp_name,
+              support_order: supportOrderLen,
+              link: campSupportPath,
+            });
+          }
         }
-
         setManageSupportList(supportedCampsList);
         setManageSupportRevertData(supportedCampsList);
       }
@@ -444,6 +452,8 @@ const ManageSupport = () => {
 
     //Case if data pass from delegated or direct
     if (CheckDelegatedOrDirect) {
+      setGetManageSupportLoadingIndicator(true);
+
       let nickNameID = nickNameList.filter(
         (values) => selectedtNickname == values.id
       );
@@ -491,33 +501,35 @@ const ManageSupport = () => {
       <div className={styles.card}>
         <Sidebar />
       </div>
-      <ManageSupportUI
-        nickNameList={nickNameList}
-        manageSupportList={manageSupportList}
-        clearAllChanges={clearAllChanges}
-        removeAll={removeAll}
-        handleClose={handleClose}
-        checked={checked}
-        setManageSupportList={setManageSupportList}
-        parentSupportDataList={parentSupportDataList}
-        getSupportStatusData={getSupportStatusData}
-        submitNickNameSupportCamps={submitNickNameSupportCamps}
-        cancelManageRoute={cancelManageRoute}
-        setSelectedtNickname={setSelectedtNickname}
-        selectedtNickname={selectedtNickname}
-        submitButtonDisable={submitButtonDisable}
-        setUpdatePostion={setUpdatePostion}
-        unableToFindCamp={unableToFindCamp}
-        updatePostion={updatePostion}
-        campIds={campIds}
-        setcampIds={setcampIds}
-        CurrentCheckSupportStatus={CurrentCheckSupportStatus}
-        getManageSupportLoadingIndicator={getManageSupportLoadingIndicator}
-        setGetManageSupportLoadingIndicator={
-          setGetManageSupportLoadingIndicator
-        }
-        topicSupportListData={topicSupportListData}
-      />
+      {campRecord && (
+        <ManageSupportUI
+          nickNameList={nickNameList}
+          manageSupportList={manageSupportList}
+          clearAllChanges={clearAllChanges}
+          removeAll={removeAll}
+          handleClose={handleClose}
+          checked={checked}
+          setManageSupportList={setManageSupportList}
+          parentSupportDataList={parentSupportDataList}
+          getSupportStatusData={getSupportStatusData}
+          submitNickNameSupportCamps={submitNickNameSupportCamps}
+          cancelManageRoute={cancelManageRoute}
+          setSelectedtNickname={setSelectedtNickname}
+          selectedtNickname={selectedtNickname}
+          submitButtonDisable={submitButtonDisable}
+          setUpdatePostion={setUpdatePostion}
+          unableToFindCamp={unableToFindCamp}
+          updatePostion={updatePostion}
+          campIds={campIds}
+          setcampIds={setcampIds}
+          CurrentCheckSupportStatus={CurrentCheckSupportStatus}
+          getManageSupportLoadingIndicator={getManageSupportLoadingIndicator}
+          setGetManageSupportLoadingIndicator={
+            setGetManageSupportLoadingIndicator
+          }
+          topicSupportListData={topicSupportListData}
+        />
+      )}
     </>
   );
 };

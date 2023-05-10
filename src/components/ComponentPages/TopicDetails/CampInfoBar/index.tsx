@@ -21,6 +21,7 @@ import {
   MoreOutlined,
   FileTextOutlined,
   HeartOutlined,
+  DoubleRightOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
 import {
@@ -28,8 +29,23 @@ import {
   isServer,
 } from "../../../../utils/generalUtility";
 import SocialShareUI from "../../../common/socialShare";
+import GenerateModal from "src/components/common/generateScript";
 
-const CampInfoBar = ({
+const CodeIcon = () => (
+  <svg
+    viewBox="0 0 64 64"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    stroke="#000000"
+  >
+    <rect x="8" y="12" width="48" height="40" />
+    <polyline points="40 40 48 32 40 24" />
+    <polyline points="24 24 16 32 24 40" />
+    <line x1="34" y1="22" x2="30" y2="42" />
+  </svg>
+);
+
+const TimelineInfoBar = ({
   payload = null,
   isTopicPage = false,
   isTopicHistoryPage = false,
@@ -91,7 +107,7 @@ const CampInfoBar = ({
       getBreadCrumbApiCall();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router, asofdate]);
+  }, [router?.asPath, asofdate]);
 
   useEffect(() => {
     if (isTopicPage) {
@@ -128,8 +144,8 @@ const CampInfoBar = ({
 
   const campOrTopicScribe = async (isTopic: Boolean) => {
     const reqBodyForService = {
-      topic_num: +router?.query?.camp[0]?.split("-")[0],
-      camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+      topic_num: +router?.query?.camp?.[0]?.split("-")[0],
+      camp_num: +(router?.query?.camp?.[1]?.split("-")[0] ?? 1),
       asOf: asof,
       asofdate:
         asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
@@ -137,7 +153,7 @@ const CampInfoBar = ({
       update_all: 1,
     };
     const reqBody = {
-      topic_num: campRecord.topic_num,
+      topic_num: campRecord.topic_num ?? payload?.topic_num,
       camp_num: isTopic ? 0 : campRecord.camp_num,
       checked: isTopic ? !topicSubscriptionID : !campSubscriptionID,
       subscription_id: isTopic ? topicSubscriptionID : campSubscriptionID,
@@ -147,17 +163,23 @@ const CampInfoBar = ({
       getTreesApi(reqBodyForService);
     }
   };
-
   const campForumDropdownMenu = (
     <Menu className={styles.campForumDropdownMenu}>
       {isUserAuthenticated && is_admin && (
         <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
-          <Link
-            href={router?.asPath.replace("topic", "addnews")}
-            rel="noopener noreferrer"
-          >
-            Add News
-          </Link>
+          {router.pathname == "/support/[...manageSupport]" ? (
+            <Link href={router.asPath.replace("support", "addnews")}>
+              <a rel="noopener noreferrer" href="/add-news">
+                Add News
+              </a>
+            </Link>
+          ) : (
+            <Link href={router.asPath.replace("topic", "addnews")}>
+              <a rel="noopener noreferrer" href="/add-news">
+                Add News
+              </a>
+            </Link>
+          )}
         </Menu.Item>
       )}
       <Menu.Item
@@ -192,7 +214,12 @@ const CampInfoBar = ({
             }`}
           ></i>
         }
-        disabled={!!campSubscriptionID && campRecord?.flag == 2 ? true : false}
+        disabled={
+          (!!campSubscriptionID && campRecord?.flag == 2) ||
+          campRecord?.length == 0
+            ? true
+            : false
+        }
         onClick={() => {
           if (isUserAuthenticated) {
             campOrTopicScribe(false);
@@ -210,6 +237,12 @@ const CampInfoBar = ({
         ) : !!campSubscriptionID && campRecord?.flag == 2 ? (
           <Tooltip
             title={`You are subscribed to ${campRecord?.subscriptionCampName}`}
+          >
+            Subscribe to the Camp
+          </Tooltip>
+        ) : campRecord?.length == 0 ? (
+          <Tooltip
+            title={`You can't modify history, please go to the current state. `}
           >
             Subscribe to the Camp
           </Tooltip>
@@ -298,6 +331,20 @@ const CampInfoBar = ({
               ? K?.exceptionalMessages?.manageCampStatementButton
               : K?.exceptionalMessages?.addCampStatementButton}
           </Link>
+        )}
+      </Menu.Item>
+      <Menu.Item
+        icon={
+          <span className={styles.svgIconCode}>
+            <CodeIcon />
+          </span>
+        }
+      >
+        {isTopicPage && (
+          <GenerateModal
+            topic_num={payload?.topic_num}
+            camp_num={payload?.camp_num}
+          />
         )}
       </Menu.Item>
     </Menu>
@@ -392,17 +439,19 @@ const CampInfoBar = ({
                           }}
                           key={index}
                         >
-                          <span className={styles.slashStyle}>
-                            {" "}
-                            {index !== 0 && "/"}{" "}
-                          </span>
-                          <span
-                            className={
-                              breadCrumbRes?.bread_crumb.length - 1 == index
-                                ? styles.greenIndicateText
-                                : styles.boldBreadcrumb
-                            }
-                          >{`${camp?.camp_name}`}</span>
+                          <a>
+                            <span className={styles.slashStyle}>
+                              {" "}
+                              {index !== 0 && <DoubleRightOutlined />}{" "}
+                            </span>
+                            <span
+                              className={
+                                breadCrumbRes?.bread_crumb.length - 1 == index
+                                  ? styles.greenIndicateText
+                                  : styles.boldBreadcrumb
+                              }
+                            >{`${camp?.camp_name}`}</span>
+                          </a>
                         </Link>
                       );
                     })
@@ -473,7 +522,6 @@ const CampInfoBar = ({
                       >
                         Camp Forum
                       </Button>
-
                       <Dropdown
                         className={styles.campForumDropdown}
                         placement="bottomRight"
@@ -499,4 +547,4 @@ const CampInfoBar = ({
   );
 };
 
-export default CampInfoBar;
+export default TimelineInfoBar;

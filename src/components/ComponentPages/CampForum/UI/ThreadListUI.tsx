@@ -246,17 +246,11 @@ const ThreadListUI = ({
                 }}
                 width="350px"
               />
-              <Column
-                title="Replies"
-                dataIndex="post_count"
-                key="post_count"
-                responsive={["lg"]}
-              />
+              <Column title="Replies" dataIndex="post_count" key="post_count" />
               <Column
                 title="Last Updated On"
                 dataIndex="post_updated_at"
                 key="post_updated_at"
-                responsive={["lg"]}
                 render={(dt, others) => {
                   return (
                     <Text>
@@ -269,7 +263,7 @@ const ThreadListUI = ({
                               others["nick_name_id"] || ""
                             }?topicnum=${others["topic_id"] || ""}&campnum=${
                               others["camp_id"] || ""
-                            }&namespace=${others["namespace_id"] || 1}`}
+                            }&canon=${others["namespace_id"] || 1}`}
                             passHref
                           >
                             {others["nick_name"] === null ||

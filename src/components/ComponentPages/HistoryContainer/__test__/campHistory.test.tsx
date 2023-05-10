@@ -20,6 +20,7 @@ jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
 
+import CampHistory from "../Collapse/campHistory";
 function createMockRouter(router: Partial<NextRouter>): NextRouter {
   return {
     basePath: "",
@@ -133,13 +134,13 @@ describe("CampHistory Page", () => {
           hidden: true,
         })
       );
-      expect(screen.queryAllByText(/theories of consciousness/i)[1]);
-      expect(screen.queryByText(/edit summary :/i));
-      expect(screen.queryByText(/SEO name change as proposed in forum./i));
-      expect(screen.queryByText(/Namespace :/i));
-      expect(screen.queryByText(/\/general\//i));
-      expect(screen.queryByText(/submitted on :/i));
-      expect(screen.queryByText(/submitter nick name :/i));
+      expect(screen.getAllByText(/theories of consciousness/i)[1]);
+      expect(screen.getByText(/edit summary :/i));
+      expect(screen.getByText(/SEO name change as proposed in forum./i));
+      expect(screen.getByText(/Canon :/i));
+      expect(screen.getByText(/\/general\//i));
+      expect(screen.getByText(/submitted on :/i));
+      expect(screen.getByText(/submitter nickname :/i));
       expect(
         screen.queryByRole("link", {
           name: /brent_allsop/i,
@@ -150,5 +151,12 @@ describe("CampHistory Page", () => {
       expect(container.getElementsByTagName("button"));
       expect(container.getElementsByTagName("input"));
     });
+  });
+});
+
+describe("CampHistory", () => {
+  it("render show CampHistory fields", () => {
+    render(<CampHistory />);
+    expect(screen.getByText("Camp Archived :")).toBeTruthy();
   });
 });

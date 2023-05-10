@@ -1,16 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Form,
-  Button,
-  Row,
-  Col,
-  Card,
-  Modal,
-  Input,
-  Select,
-  Typography,
-  Descriptions,
-} from "antd";
+import { Form, Button, Row, Col, Card, Input, Select, Typography } from "antd";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import "antd/dist/antd.css";
@@ -25,7 +14,6 @@ import {
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
 import {
   getEditStatementApi,
-  getParseCampStatementApi,
   getEditCampApi,
   getEditTopicApi,
 } from "../../../../network/api/campManageStatementApi";
@@ -44,12 +32,12 @@ import SideBarNoFilter from "../../../ComponentPages/Home/SideBarNoFilter";
 import CampInfoBar from "../../TopicDetails/CampInfoBar";
 import PreventSubCamps from "../../../common/preventSubCampCheckbox";
 
-import Link from "next/link";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
 import {
   replaceSpecialCharacters,
   allowedEmojies,
   emojiValidation,
+  changeSlashToArrow,
 } from "src/utils/generalUtility";
 import { EditorState, convertToRaw, ContentState } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
@@ -72,11 +60,7 @@ export default function AddOrManage({ add }: any) {
   const [editStatementData, setEditStatementData] = useState({ data: null });
   const [submitIsDisable, setSubmitIsDisable] = useState(true);
   const [submitIsDisableCheck, setSubmitIsDisableCheck] = useState(true);
-  const [currentTopicData, setCurrentTopicData] = useState({
-    namespace_id: "",
-  });
 
-  const [modalVisible, setModalVisible] = useState(false);
   const [nickNameData, setNickNameData] = useState([]);
   const [screenLoading, setScreenLoading] = useState(false);
   const [initialFormValues, setInitialFormValues] = useState({});
@@ -85,13 +69,6 @@ export default function AddOrManage({ add }: any) {
     camp_num: "",
   });
   const [parentCamp, setParentCamps] = useState([]);
-  const [wikiStatement, setWikiStatement] = useState("");
-  // const [errors, setErrors] = useState({
-  //   CampNameError: false,
-  //   campNameMsg: "",
-  //   displayTextError: false,
-  //   displayTextErrorMsg: "",
-  // });
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
@@ -100,13 +77,19 @@ export default function AddOrManage({ add }: any) {
   const [canNameSpace, setCanNameSpace] = useState([]);
   const [options, setOptions] = useState([...messages.preventCampLabel]);
   const [initialOptions, setInitialOptions] = useState([]);
-  // const [uploadImage, setUploadImage] = useState([]);
+  const [editCampStatementData, setEditCampStatementData] = useState("");
+  const [statementResponseDisable, setStatementResponseDisable] =
+    useState(false);
 
   const [form] = Form.useForm();
   let objection = router?.query?.statement?.at(0)?.split("-")[1] == "objection";
   let update = router?.query?.statement?.at(0)?.split("-")[1] == "update";
   let manageFormOf = router?.asPath.split("/")[2];
-
+  const editorTextLength = editorState
+    .getCurrentContent()
+    .getPlainText()
+    .trim().length;
+  // const editorTextLengthTrim =editorTextLength
   const onFinish = async (values: any) => {
     setScreenLoading(true);
     let res;
@@ -222,11 +205,21 @@ export default function AddOrManage({ add }: any) {
     if (manageFormOf == "camp") {
       options.map((op) => (reqBody[op.id] = op.checked ? 1 : 0));
       res = await updateCampApi(reqBody);
+      if (res.status_code == 200) {
+        setStatementResponseDisable(true);
+      }
     } else if (manageFormOf == "statement") {
       res = await updateStatementApi(reqBody);
+      if (res.status_code == 200) {
+        setStatementResponseDisable(true);
+      }
     } else if (manageFormOf == "topic") {
       res = await updateTopicApi(reqBody);
+      if (res.status_code == 200) {
+        setStatementResponseDisable(true);
+      }
     }
+
     return res;
   };
   const fetchCampNickNameList = async () => {
@@ -271,7 +264,9 @@ export default function AddOrManage({ add }: any) {
         };
         if (manageFormOf == "statement") {
           res = await getEditStatementApi(getDataPayload);
-
+          if (res && res.status_code == 200) {
+            setEditCampStatementData(res.data.statement.note);
+          }
           //if(isJSON(res.data.statement.parsed_value))setEditorState(EditorState.createWithContent(convertFromRaw(JSON.parse(res.data.statement.parsed_value))));
           if (
             !res.data.statement.parsed_value?.startsWith("<p>") &&
@@ -345,7 +340,6 @@ export default function AddOrManage({ add }: any) {
           topic_num: router?.query?.statement[0].split("-")[0],
           camp_num: router?.query?.statement[1].split("-")[0] ?? "1",
         });
-        setCurrentTopicData(topic_res);
         setPayloadBreadCrumb({
           camp_num: router?.query?.statement[1].split("-")[0] ?? "1",
           topic_num: router?.query?.statement[0].split("-")[0],
@@ -411,6 +405,26 @@ export default function AddOrManage({ add }: any) {
               op.checked =
                 res?.data[manageFormOf]?.is_one_level === 1 ? true : false;
             }
+            if (op.id === "is_archive") {
+              op.checked =
+                res?.data[manageFormOf]?.is_archive === 1 ? true : false;
+              if (
+                res?.data[manageFormOf]?.direct_archive === 0 &&
+                res?.data[manageFormOf]?.is_archive === 0
+              )
+                op.disable = false;
+              else if (
+                res?.data[manageFormOf]?.direct_archive === 0 &&
+                res?.data[manageFormOf]?.is_archive === 1
+              ) {
+                op.disable = true;
+              } else if (
+                res?.data[manageFormOf]?.direct_archive === 1 &&
+                res?.data[manageFormOf]?.is_archive === 1
+              ) {
+                op.disable = false;
+              }
+            }
           });
 
           setOptions(oldOptions);
@@ -422,6 +436,10 @@ export default function AddOrManage({ add }: any) {
             {
               checked: oldOptions[1]?.checked,
               disable: oldOptions[1]?.disable,
+            },
+            {
+              checked: oldOptions[2]?.checked,
+              disable: oldOptions[2]?.disable,
             },
           ]);
         }
@@ -465,6 +483,10 @@ export default function AddOrManage({ add }: any) {
           checked: oldOptions[1]?.checked,
           disable: oldOptions[1]?.disable,
         },
+        {
+          checked: oldOptions[2]?.checked,
+          disable: oldOptions[2]?.disable,
+        },
       ]);
     };
   }, []);
@@ -484,7 +506,9 @@ export default function AddOrManage({ add }: any) {
       oldOptions[0]?.checked == initialOptions[0]?.checked &&
       oldOptions[0]?.disable == initialOptions[0]?.disable &&
       oldOptions[1]?.checked == initialOptions[1]?.checked &&
-      oldOptions[1]?.disable == initialOptions[1]?.disable
+      oldOptions[1]?.disable == initialOptions[1]?.disable &&
+      oldOptions[2]?.checked == initialOptions[2]?.checked &&
+      oldOptions[2]?.disable == initialOptions[2]?.disable
     ) {
       setSubmitIsDisableCheck(true);
     } else {
@@ -563,6 +587,14 @@ export default function AddOrManage({ add }: any) {
                 if (initialFormStatus?.statement == null || undefined) {
                   initialFormStatus.statement = "";
                 }
+                if (typeof initialFormStatus.edit_summary == "string") {
+                  initialFormStatus.edit_summary =
+                    initialFormStatus.edit_summary.trim();
+                }
+                if (typeof initialFormStatus.statement == "string") {
+                  initialFormStatus.statement =
+                    initialFormStatus.statement.trim();
+                }
                 nowFormStatus = Object.keys(form?.getFieldsValue()).reduce(
                   (acc, key) => {
                     acc[key] =
@@ -579,7 +611,13 @@ export default function AddOrManage({ add }: any) {
                 if (nowFormStatus?.statement == null || undefined) {
                   nowFormStatus.statement = "";
                 }
-
+                if (typeof nowFormStatus.edit_summary == "string") {
+                  nowFormStatus.edit_summary =
+                    nowFormStatus.edit_summary.trim();
+                }
+                if (typeof nowFormStatus.statement == "string") {
+                  nowFormStatus.statement = nowFormStatus.statement.trim();
+                }
                 if (
                   JSON.stringify(nowFormStatus) ==
                   JSON.stringify(initialFormStatus)
@@ -593,12 +631,12 @@ export default function AddOrManage({ add }: any) {
             >
               <Row gutter={28}>
                 <Col xs={24} sm={24} xl={12}>
-                  {/* Nick name=================================================================== */}
+                  {/* Nickname=================================================================== */}
                   <Form.Item
                     className={styles.formItem}
                     label={
                       <>
-                        Nick Name <span className="required">*</span>
+                        Nickname <span className="required">*</span>
                       </>
                     }
                     name="nick_name"
@@ -667,6 +705,9 @@ export default function AddOrManage({ add }: any) {
                               // data-id="parent-camp"
                               disabled={objection}
                               optionFilterProp="children"
+                              onChange={() => {
+                                setSubmitIsDisable(false);
+                              }}
                             >
                               {parentCamp.map((camp) =>
                                 camp?.camp_num !==
@@ -793,7 +834,7 @@ export default function AddOrManage({ add }: any) {
                           className={`${styles.formItem} namespace_in mb-2`}
                           label={
                             <>
-                              Namespace <span className="required">*</span>
+                              Canon <span className="required">*</span>
                               <span className={styles.small}>
                                 (General is recommended, unless you know
                                 otherwise)
@@ -824,7 +865,7 @@ export default function AddOrManage({ add }: any) {
                             >
                               {canNameSpace.map((camp) => (
                                 <Select.Option value={camp.id} key={camp.id}>
-                                  {camp.label}
+                                  {changeSlashToArrow(camp.label)}
                                 </Select.Option>
                               ))}
                             </Select>
@@ -834,9 +875,8 @@ export default function AddOrManage({ add }: any) {
                     )}
                   </>
                 )}
-
                 {/* statement================================================================================ */}
-                {manageFormOf == "statement" && (
+                {manageFormOf == "statement" && !objection && (
                   <Col xs={24} xl={24}>
                     <Form.Item
                       className={`${styles.formItem} mb-2`}
@@ -857,6 +897,12 @@ export default function AddOrManage({ add }: any) {
                           message:
                             K?.exceptionalMessages?.statementRequiredErrorMsg,
                         },
+                        {
+                          type: editorTextLength,
+                          message:
+                            K?.exceptionalMessages?.statementRequiredErrorMsg,
+                        },
+
                         //allowedEmojies(), this needs to be moved to validation file
                       ]}
                     >
@@ -871,8 +917,8 @@ export default function AddOrManage({ add }: any) {
                         <Editor
                           toolbarClassName="toolbarClassName"
                           wrapperClassName={"wrapperClassName"}
-                          editorStyle={{ height: "176px" }}
                           editorClassName={styles.reactDraftBox}
+                          editorStyle={{ height: "180px" }}
                           editorState={editorState}
                           onEditorStateChange={setEditorState}
                         />
@@ -940,7 +986,11 @@ export default function AddOrManage({ add }: any) {
                             skeltonFor="video"
                           />
                         ) : (
-                          <Input.TextArea size="large" rows={7} />
+                          <Input.TextArea
+                            size="large"
+                            rows={7}
+                            defaultValue={String(editCampStatementData)}
+                          />
                         )}
                       </Form.Item>
                       {manageFormOf == "camp" && (
@@ -982,10 +1032,10 @@ export default function AddOrManage({ add }: any) {
                               <Input maxLength={1024} />
                             )}
                           </Form.Item>
-                          {/* cmap about nick name ========================================== --------------------- */}
+                          {/* cmap about Nickname ========================================== --------------------- */}
                           <Form.Item
                             className={`${styles.formItem} mb-2`}
-                            label={<>Camp About Nick Name</>}
+                            label={<>Camp About Nickname</>}
                             name="camp_about_nick_name"
                           >
                             {screenLoading ? (
@@ -997,7 +1047,7 @@ export default function AddOrManage({ add }: any) {
                             ) : (
                               <Select
                                 size={"large"}
-                                placeholder="--Select Camp About Nick Name"
+                                placeholder="--Select Camp About Nickname"
                                 // data-id="parent-camp"
                                 showSearch
                                 optionFilterProp="children"
@@ -1047,7 +1097,11 @@ export default function AddOrManage({ add }: any) {
                           size="large"
                           className={`btn-orange mr-3 ${styles.btnSubmit}`}
                           htmlType="submit"
-                          disabled={submitIsDisable && submitIsDisableCheck}
+                          disabled={
+                            (submitIsDisable && submitIsDisableCheck) ||
+                            statementResponseDisable
+                          }
+                          id="update-submit-btn"
                         >
                           {add
                             ? K?.exceptionalMessages?.submitStatementButton
@@ -1116,28 +1170,9 @@ export default function AddOrManage({ add }: any) {
                                           )}`
                                     );
                               }}
+                              id="update-cancel-btn"
                             >
                               Cancel
-                            </Button>
-
-                            <Button
-                              htmlType="button"
-                              className="cancel-btn"
-                              type="primary"
-                              size="large"
-                              onClick={async () => {
-                                const editorValues = draftToHtml(
-                                  convertToRaw(editorState.getCurrentContent())
-                                );
-                                let res = await getParseCampStatementApi({
-                                  value: editorValues,
-                                });
-                                setWikiStatement(res?.data);
-
-                                setModalVisible(true);
-                              }}
-                            >
-                              Preview
                             </Button>
                           </>
                         )}
@@ -1150,147 +1185,6 @@ export default function AddOrManage({ add }: any) {
           </Card>
         </div>
       </div>
-      <Modal
-        title={
-          manageFormOf?.charAt(0).toUpperCase() +
-          manageFormOf?.slice(1) +
-          " Preview"
-        }
-        style={{
-          top: 20,
-        }}
-        open={modalVisible}
-        onCancel={() => setModalVisible(false)}
-        onOk={() => {
-          form?.submit();
-          setModalVisible(false);
-        }}
-        okButtonProps={{
-          disabled: submitIsDisable && submitIsDisableCheck,
-        }}
-        okText={
-          add
-            ? K?.exceptionalMessages?.submitStatementButton
-            : K?.exceptionalMessages?.submitUpdateButton
-        }
-        className="statementPreviewModal"
-      >
-        <Descriptions
-          size="small"
-          column={{ xs: 1, sm: 1 }}
-          //layout="vertical"
-        >
-          {manageFormOf == "statement" && (
-            <Descriptions.Item label="Statement">
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: wikiStatement,
-                }}
-              ></div>
-            </Descriptions.Item>
-          )}
-          {manageFormOf == "topic" && (
-            <>
-              <Descriptions.Item label="Topic Name">
-                {form?.getFieldValue("topic_name")}
-              </Descriptions.Item>
-              <Descriptions.Item label="Namespace">
-                {
-                  canNameSpace?.find(
-                    (id) => id?.id == form?.getFieldValue("name_space")
-                  )?.label
-                  // form?.getFieldValue("name_space")
-                }
-              </Descriptions.Item>
-            </>
-          )}
-          {manageFormOf == "camp" && (
-            <>
-              <Descriptions.Item label="Camp Name">
-                {form?.getFieldValue("camp_name")}
-              </Descriptions.Item>
-
-              {parentCamp.length > 1 && (
-                <Descriptions.Item label="Parent Camp">
-                  {
-                    parentCamp?.find(
-                      (parent) =>
-                        parent?.camp_num ==
-                        form?.getFieldValue("parent_camp_num")
-                    )?.camp_name
-                  }
-                </Descriptions.Item>
-              )}
-
-              <Descriptions.Item label="Keywords">
-                {form?.getFieldValue("keywords")}
-              </Descriptions.Item>
-
-              <Descriptions.Item label="Camp About URL">
-                <Link href={form?.getFieldValue("camp_about_url") || ""}>
-                  {form?.getFieldValue("camp_about_url") || ""}
-                </Link>
-              </Descriptions.Item>
-
-              <Descriptions.Item label="Camp About Nick Name">
-                <Link
-                  href={`/user/supports/${
-                    form?.getFieldValue("camp_about_nick_name") || ""
-                  }?topicnum=${
-                    editStatementData?.data?.topic?.topic_num || ""
-                  }&campnum=${
-                    editStatementData?.data?.camp?.camp_num || ""
-                  }&namespace=${
-                    editStatementData?.data?.topic?.namespace_id || 1
-                  }`}
-                  passHref
-                >
-                  {" "}
-                  {
-                    campNickName?.find(
-                      (id) =>
-                        id?.id == form?.getFieldValue("camp_about_nick_name")
-                    )?.nick_name
-                  }
-                </Link>
-              </Descriptions.Item>
-            </>
-          )}
-
-          <Descriptions.Item label="Edit Summary">
-            {" "}
-            {form?.getFieldValue("edit_summary")}
-          </Descriptions.Item>
-          <Descriptions.Item label="Submitter Nick Name">
-            <Link
-              href={`/user/supports/${
-                form?.getFieldValue("nick_name") || ""
-              }?topicnum=${
-                editStatementData?.data?.topic?.topic_num ||
-                router?.query?.statement?.at(0)?.split("-")[0] ||
-                ""
-              }&campnum=${
-                editStatementData?.data?.camp?.camp_num ||
-                editStatementData?.data?.topic?.camp_num ||
-                router?.query?.statement?.at(1)?.split("-")[0] ||
-                1
-              }&namespace=${
-                editStatementData?.data?.topic?.namespace_id ||
-                currentTopicData?.namespace_id ||
-                ""
-              }`}
-              passHref
-            >
-              {" "}
-              {
-                nickNameData?.find(
-                  (id) => id?.id == form?.getFieldValue("nick_name")
-                )?.nick_name
-              }
-            </Link>
-          </Descriptions.Item>
-        </Descriptions>
-      </Modal>
     </>
   );
 }

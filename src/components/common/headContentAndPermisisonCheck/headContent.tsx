@@ -1,17 +1,33 @@
+import React from "react";
 import Head from "next/head";
 
-import React from "react";
+import schemas from "./schemaContent";
 
 type HeadContentProps = {
   description: string;
   title: string;
   route: string;
   author: string;
+  componentName: string;
 };
 
-function HeadContent({ description, title, route, author }: HeadContentProps) {
-  const url = process.env.NEXT_PUBLIC_SITE_NAME;
-  const image_url = `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/canonizer_preview.jpg`;
+declare global {
+  interface Window {
+    dataLayer: any;
+  }
+}
+
+export const GA_TRACKING_ID =
+  process.env.NEXT_PUBLIC_GA_TRACKING_ID || "G-HKYLGCPPDC";
+
+function HeadContent({
+  description,
+  title,
+  route,
+  author,
+  componentName,
+}: HeadContentProps) {
+  const image_url = `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/canonizer_logo.jpg`;
   return (
     <Head>
       <script
@@ -21,6 +37,12 @@ function HeadContent({ description, title, route, author }: HeadContentProps) {
 
       {/* Meta tags for browser link preview  */}
       <title>{title}</title>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: schemas[componentName] }}
+      />
+
       <meta charSet="utf-8" />
       <meta name="title" content={title} />
       <meta name="description" content={description} />
@@ -38,7 +60,7 @@ function HeadContent({ description, title, route, author }: HeadContentProps) {
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:type" content="website" />
-      <meta property="og:url" content={url + route} />
+      <meta property="og:url" content={route} />
       <meta property="og:image" content={image_url} />
       <meta property="og:image:alt" content="canonizer" />
       <meta
@@ -47,10 +69,22 @@ function HeadContent({ description, title, route, author }: HeadContentProps) {
       />
       {/* Meta tags for twitter link preview  */}
       <meta name="twitter:card" content="summary" />
-      <meta name="twitter:site" content={url + route} />
+      <meta name="twitter:site" content={process.env.NEXT_PUBLIC_SITE_NAME} />
+      <meta name="twitter:url" content={route} />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image_url} />
+
+      {/* GTM Code */}
+      <script
+        async
+        src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+      ></script>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `window.dataLayer = window.dataLayer || []; function gtag(){window.dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '${GA_TRACKING_ID}');`,
+        }}
+      />
     </Head>
   );
 }

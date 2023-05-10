@@ -33,7 +33,7 @@ const CreateCampFormUI = ({
                   (router?.query?.topic as string)?.split("-")[0] || ""
                 }&campnum=${
                   (router?.query?.camp as string)?.split("-")[0] || ""
-                }&namespace=${post["namespace_id"] || 1}`}
+                }&canon=${post["namespace_id"] || 1}`}
                 passHref
                 className={styles.by}
               >

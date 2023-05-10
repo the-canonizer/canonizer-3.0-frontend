@@ -195,7 +195,7 @@ const LoginUi = ({
             </Paragraph>
             <Image
               width={300}
-              alt=""
+              alt="login-illustration"
               title=""
               preview={false}
               className={styles.bImg}

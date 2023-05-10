@@ -20,6 +20,7 @@ import CustomButton from "../../../common/button";
 import { RootState } from "src/store";
 import isAuth from "../../../../hooks/isUserAuthenticated";
 import K from "../../../../constants";
+import { setCurrentCampRecord } from "../../../../store/slices/campDetailSlice";
 import { setDelegatedSupportClick } from "../../../../store/slices/supportTreeCard";
 import CustomSkelton from "../../../common/customSkelton";
 import {
@@ -181,7 +182,7 @@ const SupportTreeCard = ({
                           query: {
                             topicnum: topicRecord?.topic_num,
                             campnum: topicRecord?.camp_num,
-                            namespace: topicRecord?.namespace_id,
+                            canon: topicRecord?.namespace_id,
                           },
                         }}
                       >
@@ -364,14 +365,20 @@ const SupportTreeCard = ({
             className="topicDetailsCollapseFooter"
             onClick={handleClickSupportCheck}
           >
-            <Link href={manageSupportPath || ""}>
-              <CustomButton className="btn-orange" disabled={asof == "bydate"}>
-                {/* {K?.exceptionalMessages?.directJoinSupport} */}
-                {getCheckSupportStatus?.is_delegator == 1 ||
-                getCheckSupportStatus?.support_flag != 1
-                  ? K?.exceptionalMessages?.directJoinSupport
-                  : K?.exceptionalMessages?.manageSupport}
-              </CustomButton>
+            <Link href={manageSupportPath}>
+              <a>
+                <CustomButton
+                  className="btn-orange"
+                  disabled={asof == "bydate"}
+                  id="manage-support-btn"
+                >
+                  {/* {K?.exceptionalMessages?.directJoinSupport} */}
+                  {getCheckSupportStatus?.is_delegator == 1 ||
+                  getCheckSupportStatus?.support_flag != 1
+                    ? K?.exceptionalMessages?.directJoinSupport
+                    : K?.exceptionalMessages?.manageSupport}
+                </CustomButton>
+              </a>
             </Link>
           </div>
         </Panel>

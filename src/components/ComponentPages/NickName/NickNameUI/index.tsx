@@ -33,12 +33,12 @@ export default function NickNameUI({
       render: (text, record, index) => (page - 1) * paginationSize + index + 1,
     },
     {
-      title: "Nick Name ID",
+      title: "Nickname ID",
       dataIndex: "id",
       width: "20%",
     },
     {
-      title: "Nick Name",
+      title: "Nickname",
       dataIndex: "nick_name",
       width: "40%",
     },
@@ -129,7 +129,7 @@ export default function NickNameUI({
               <Input
                 maxLength={50}
                 id="enterNickName"
-                placeholder="Enter nick name"
+                placeholder="Enter Nickname"
                 value=""
                 size="large"
                 disabled={isDisable}

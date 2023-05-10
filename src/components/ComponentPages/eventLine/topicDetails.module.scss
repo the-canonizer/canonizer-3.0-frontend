@@ -1,0 +1,267 @@
+.topicDetailContentWrap {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.ctCard {
+  .chexkboxLabel {
+    color: #0f2a4d;
+    font-size: 15px;
+    font-weight: 400;
+  }
+  .startNew {
+    color: #f89d15;
+    font-weight: 500;
+  }
+}
+
+.topicDetailContentHead {
+  width: 100%;
+  padding: 0 8px 10px 0;
+  & > div > div {
+    @media screen and (min-width: 992px) {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+  &_Left {
+      display: flex;
+    @media screen and (min-width: 992px) {
+      width: calc(100% - 300px);
+    }
+    .topicTitleStyle,
+    .breadcrumbLinks {
+      font-size: 16px;
+      color: #0f2a4d;
+    }
+    .topicTitleStyle {
+      margin-right: 50px;
+      span {
+        white-space:normal;
+      }
+    }
+    .topicTitleSkeleton {
+      margin-right: 100px;
+    }
+    .breadcrumbLinks {
+      display: flex;
+      a {
+        font-size: 16px;
+        color: var(--primary);
+        font-weight: 400;
+      }
+    }
+  }
+  &_Right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    @media screen and (max-width: 991px) {
+      margin-top: 1rem;
+    }
+    .btnCampForum {
+      margin-right: 20px;
+      background-color: #4484ce;
+      box-shadow: none;
+      border-color: transparent;
+      font-size: 14px;
+
+      &:hover {
+        background-color: darken(#4484ce, 7%);
+      }
+    }
+
+    .campForumDropdown {
+      font-size: 24px;
+      color: #0f2a4d !important;
+      span {
+        color: #000 !important;
+        position: static !important;
+        bottom: initial !important;
+      }
+    }
+  }
+}
+
+.imageWrapper {
+  width: calc(100% - 316px);
+  background: #fff;
+  margin: 0 8px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  @media screen and (max-width: 991px){
+    width: 100%;
+    margin: 0;
+  }
+}
+
+.breadcrumbLinks {
+  display: flex;
+  font-size: 16px;
+  flex-wrap: wrap;
+  a {
+    font-size: 16px;
+    color: var(--primary) !important;
+    font-weight: 400;
+    /* white-space: nowrap; */
+    &:hover {
+      color: #71b1fc!important;
+    }
+  }
+}
+
+.campForumDropdownMenu {
+  & > li {
+    color: #022541;
+    font-weight: 500;
+    font-size: 13px;
+    width: 100%;
+
+    & > i:first-child,
+    & > span:first-child {
+      color: #8b959d;
+      margin-right: 10px;
+      min-width: 14px;
+      text-align: center;
+    }
+    & > i:first-child {
+      font-size: 11px;
+    }
+  }
+}
+
+.topicDetailsTreeListItem {
+  display: flex;
+  align-items: center;
+  .treeListItemTitle {
+    font-size: 15px;
+    font-weight: 400;
+    color: #0f2a4d;
+    margin-left: 4px;
+    a {
+      color: var(--primary);
+      &:hover {
+        font-weight: bold;
+        color: #4484ce;
+      }
+      &.activeCamp {
+          color: #08b608 !important;
+        }
+    }
+  }
+  .treeListItemNumber {
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    background: #f89d15;
+    padding: 2px 7px;
+    border-radius: 2px;
+    color: #fff;
+    margin-left: 6px ;
+    transition: all ease 50s;
+    @media screen and (max-width:767px) {
+      width:auto !important;
+  }
+  }
+  .subScriptionIcon {
+    margin-left: 6px;
+    .implicitIcon {
+      color: #bbb;
+    }
+  }
+}
+
+.addSupportText {
+  width: 300px;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  color: #0f2a4d;
+  h5 {
+    font-size: 0.875rem;
+    color: #0f2a4d;
+    font-weight: 600;
+  }
+}
+
+// .miniSide {
+//   [class="btnsWrap"] {
+//     display: flex;
+//     align-items: center;
+//     justify-content: space-between;
+
+//     button {
+//       width: 49%;
+//       margin-top: 0 !important;
+//       margin-bottom: 0 !important;
+//     }
+//   }
+//   @media screen and (min-width: 992px) {
+//     width: 420px !important;
+//   }
+// }
+
+// .pageContent {
+//   @media screen and (min-width: 992px) {
+//     width: calc(100% - 420px) !important;
+//   }
+// }
+
+.cardActions {
+  color: #6e7880;
+  font-weight: 500;
+  span {
+    font-weight: bold;
+    color: #0f2a4d;
+  }
+}
+
+.campStatement {
+  ul, ol {
+    padding-left: 40px;
+  }
+}
+
+
+.boldBreadcrumb {
+    font-weight: 700;
+    font-size: 17px;
+}
+
+.slashStyle {
+  align-self: center;
+  // margin-inline: 5px;
+}
+
+.greenIndicateText {
+  font-weight: 700;
+  font-size: 17px;
+  color: #08b608;
+}
+
+.campinfoSocialOt {
+  .btn_group {
+    padding: 0;
+  }
+}
+.eventLineBtn {
+
+  margin-left: 10px;
+
+}
+
+
+.backButton {
+  margin-right: 18px;
+  svg {
+    font-size: 18px;
+  }
+}

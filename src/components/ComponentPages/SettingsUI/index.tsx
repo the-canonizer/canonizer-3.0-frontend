@@ -1,5 +1,5 @@
 import { useState, Fragment, useEffect } from "react";
-import { Card, Col, Row, Button, Tabs } from "antd";
+import { Card, Col, Row, Button, Tabs, Input } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
 
@@ -31,7 +31,7 @@ const tabList = [
   },
   {
     key: "nick_name",
-    tab: "Nick Names",
+    tab: "Nicknames",
   },
   {
     key: "supported_camps",
@@ -63,7 +63,7 @@ const SettingsUI = () => {
           <div className={styles.search_box}>
             <div className={styles.search01}>
               <SearchOutlined />
-              <input
+              <Input
                 value={search}
                 placeholder="Search by topic name"
                 type="text"
@@ -73,18 +73,13 @@ const SettingsUI = () => {
                 }}
               />
             </div>
-            <Button
-              onClick={() => {
-                setSearch("");
-              }}
-              className={styles.btn}
-            >
+            <Button onClick={() => setSearch("")} className={styles.btn}>
               Reset
             </Button>
           </div>
         </div>
 
-        <Tabs onChange={callback} type="card">
+        <Tabs onChange={callback} type="card" className={styles.supptab}>
           <TabPane tab="Direct Supported Camps" key="1">
             <div className={styles.text_checkbox_cont}>
               <div className={styles.notes}>{messages.labels.settingNote}</div>

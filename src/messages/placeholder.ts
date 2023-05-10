@@ -24,10 +24,10 @@ export const placeholders = {
   algorithm: "Select an algorithm",
   emailId: "Enter Your Email",
   editSummary: "Summary",
-  nickName: "Nick Name",
+  nickName: "Nickname",
   topicName: "Topic Name",
-  namespace: "Namespace",
-  campAboutNickName: "--Select Camp About Nick Name--",
+  namespace: "Canon",
+  campAboutNickName: "--Select Camp About Nickname--",
   campURL: "https://",
   searchPlaceholder: "Search by thread name",
 };

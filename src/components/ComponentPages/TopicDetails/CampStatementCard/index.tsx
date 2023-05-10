@@ -22,7 +22,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
     campStatement: state?.topicDetails?.campStatement,
     history: state?.topicDetails?.history,
   }));
-  return loadingIndicator ? (
+  return loadingIndicator || !campStatement ? (
     <CustomSkelton
       skeltonFor="card"
       titleName={K?.exceptionalMessages?.campStatementHeading}
@@ -65,7 +65,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
         </Paragraph>
 
         <div className="topicDetailsCollapseFooter">
-          <CustomButton className="btn-green">
+          <CustomButton className="btn-green" id="add-camp-statement-btn">
             <Link
               href={
                 history?.items?.length > 0

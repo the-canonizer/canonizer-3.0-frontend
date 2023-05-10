@@ -1,9 +1,13 @@
 import { Typography } from "antd";
-import styles from ".././campHistory.module.scss";
-
-const { Title } = Typography;
 import moment from "moment";
 import Link from "next/link";
+
+import styles from ".././campHistory.module.scss";
+
+import { changeSlashToArrow } from "src/utils/generalUtility";
+
+const { Title } = Typography;
+
 const TopicHistory = ({ campStatement, topicNamespaceId }: any) => {
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
@@ -15,20 +19,20 @@ const TopicHistory = ({ campStatement, topicNamespaceId }: any) => {
         <span className={styles.updateSurveyPrj}>{campStatement?.note}</span>
       </Title>
       <Title level={5}>
-        Namespace : <span>{campStatement?.namespace}</span>
+        Canon : <span>{changeSlashToArrow(campStatement?.namespace)}</span>
       </Title>
       <Title level={5}>
         Submitted On : <span>{covertToTime(campStatement?.submit_time)}</span>
       </Title>
       <Title level={5}>
-        Submitter Nick Name :{" "}
+        Submitter Nickname :{" "}
         <span>
           <Link
             href={`/user/supports/${
               campStatement?.submitter_nick_id || ""
             }?topicnum=${campStatement?.topic_num || ""}&campnum=${
               campStatement?.camp_num || ""
-            }&namespace=${topicNamespaceId || ""}`}
+            }&canon=${topicNamespaceId || ""}`}
             passHref
           >
             {campStatement?.submitter_nick_name}
@@ -46,14 +50,14 @@ const TopicHistory = ({ campStatement, topicNamespaceId }: any) => {
       )}
       {campStatement?.objector_nick_name && (
         <Title level={5}>
-          Objector Nick Name :
+          Objector Nickname :
           <span>
             <Link
               href={`/user/supports/${
                 campStatement?.objector_nick_id || ""
               }?topicnum=${campStatement?.topic_num || ""}&campnum=${
                 campStatement?.camp_num || ""
-              }&namespace=${topicNamespaceId || ""}`}
+              }&canon=${topicNamespaceId || ""}`}
               passHref
             >
               {campStatement?.objector_nick_name}

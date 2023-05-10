@@ -58,13 +58,20 @@ export const getRecentActivitiesApi = async (
 ) => {
   try {
     let state = await store.getState();
-    const { auth } = state;
+
+    const { auth } = state,
+      tc = localStorage?.getItem("auth_token");
+
+    let token =
+      auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
+
+    if (!token) {
+      const response = await createToken();
+      token = response?.access_token;
+    }
 
     const recentActivities = await NetworkCall.fetch(
-      HomePageRequests.getCanonizedRecentActivities(
-        reqBody,
-        auth?.loggedInUser?.token
-      ),
+      HomePageRequests.getCanonizedRecentActivities(reqBody, token),
       false
     );
     if (loadMore) {

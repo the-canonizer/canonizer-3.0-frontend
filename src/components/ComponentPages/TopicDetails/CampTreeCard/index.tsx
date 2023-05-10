@@ -1,5 +1,5 @@
-import { Collapse, Popover, Image, Typography } from "antd";
-import React, { useEffect } from "react";
+import { Collapse, Popover, Image, Typography, Button, Select } from "antd";
+import React, { useEffect, useState, useRef } from "react";
 import CampTree from "../CampTree";
 import Link from "next/link";
 import { RootState } from "src/store";
@@ -56,7 +56,9 @@ const CampTreeCard = ({
 
   const router = useRouter();
   const { isUserAuthenticated } = useAuthentication();
-
+  const eventLinePath = router.asPath.replace("topic", "eventline");
+  const [treeExpandValue, setTreeExpandValue] = useState<any>(50);
+  const prevTreeValueRef = useRef(50);
   const dispatch = useDispatch();
   const onCreateTreeDate = () => {
     dispatch(
@@ -66,6 +68,9 @@ const CampTreeCard = ({
       })
     );
   };
+  const handleChange = (value) => {
+    setTreeExpandValue(value);
+  };
   useEffect(() => {
     return () => {
       store.dispatch(setTree([]));
@@ -74,7 +79,13 @@ const CampTreeCard = ({
 
   return (
     <>
-      {((tree && tree["1"]?.is_valid_as_of_time) || asof == "default") && (
+      {((tree &&
+        tree["1"]?.is_valid_as_of_time &&
+        tree["1"]?.created_date <=
+          (asof == "default" || asof == "review"
+            ? Date.now() / 1000
+            : asofdate)) ||
+        asof == "default") && (
         <Collapse
           defaultActiveKey={["1"]}
           expandIconPosition="end"
@@ -82,7 +93,19 @@ const CampTreeCard = ({
         >
           <Panel
             disabled
-            header={<h3>Canonizer Sorted Camp Tree</h3>}
+            header={
+              <h3>
+                Canonizer Sorted Camp Tree{" "}
+                <Button
+                  type={"primary"}
+                  size="small"
+                  className={styles.eventLineBtn}
+                  href={eventLinePath}
+                >
+                  Event Line
+                </Button>
+              </h3>
+            }
             key="1"
             extra={
               <>
@@ -106,6 +129,41 @@ const CampTreeCard = ({
                       Add News
                     </Link>
                   )}
+                  <Select
+                    defaultValue={"50%"}
+                    style={{ width: 80 }}
+                    onChange={handleChange}
+                    options={[
+                      {
+                        value: "0",
+                        label: "0%",
+                      },
+                      {
+                        value: "10",
+                        label: "10%",
+                      },
+                      {
+                        value: "20",
+                        label: "20%",
+                      },
+                      {
+                        value: "50",
+                        label: "50%",
+                      },
+                      {
+                        value: "70",
+                        label: "70%",
+                      },
+                      {
+                        value: "80",
+                        label: "80%",
+                      },
+                      {
+                        value: "90",
+                        label: "90%",
+                      },
+                    ]}
+                  />
                   <Popover content={addContent} placement="left">
                     <i className="icon-info tooltip-icon-style"></i>
                   </Popover>
@@ -113,8 +171,13 @@ const CampTreeCard = ({
               </>
             }
           >
-            {getTreeLoadingIndicator ? (
-              <CustomSkelton skeltonFor="tree" bodyCount={4} stylingClass="" />
+            {getTreeLoadingIndicator || !tree ? (
+              <CustomSkelton
+                skeltonFor="tree"
+                bodyCount={4}
+                isButton={false}
+                stylingClass=""
+              />
             ) : (
               <CampTree
                 scrollToCampStatement={scrollToCampStatement}
@@ -122,38 +185,49 @@ const CampTreeCard = ({
                   setTotalCampScoreForSupportTree
                 }
                 setSupportTreeForCamp={setSupportTreeForCamp}
+                treeExpandValue={treeExpandValue}
+                setTreeExpandValue={setTreeExpandValue}
+                prevTreeValueRef={prevTreeValueRef}
               />
             )}
           </Panel>
         </Collapse>
       )}
-      {tree && !tree["1"]?.is_valid_as_of_time && (
-        <div className={styles.imageWrapper}>
-          <div>
-            <Image
-              preview={false}
-              alt="No topic created"
-              src={"/images/empty-img-default.png"}
-              fallback={fallBackSrc}
-              width={200}
-              id="forgot-modal-img"
-            />
-            <p>
-              The topic was created on
-              <AntLink
-                onClick={() => {
-                  onCreateTreeDate();
-                }}
-              >
-                {" "}
-                {new Date(
-                  (tree && tree["1"]?.created_date) * 1000
-                ).toLocaleString()}
-              </AntLink>
-            </p>
+      {tree &&
+        (!tree["1"]?.is_valid_as_of_time ||
+          (tree["1"]?.is_valid_as_of_time &&
+            !(
+              tree["1"]?.created_date <=
+              (asof == "default" || asof == "review"
+                ? Date.now() / 1000
+                : asofdate)
+            ))) && (
+          <div className={styles.imageWrapper}>
+            <div>
+              <Image
+                preview={false}
+                alt="No topic created"
+                src={"/images/empty-img-default.png"}
+                fallback={fallBackSrc}
+                width={200}
+                id="forgot-modal-img"
+              />
+              <p>
+                The topic was created on
+                <AntLink
+                  onClick={() => {
+                    onCreateTreeDate();
+                  }}
+                >
+                  {" "}
+                  {new Date(
+                    (tree && tree["1"]?.created_date) * 1000
+                  ).toLocaleString()}
+                </AntLink>
+              </p>
+            </div>
           </div>
-        </div>
-      )}
+        )}
     </>
   );
 };

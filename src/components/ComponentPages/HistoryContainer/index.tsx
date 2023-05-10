@@ -39,8 +39,13 @@ function HistoryContainer() {
   const [isAbs, setIsAbs] = useState(false);
   const [loadMoreItems, setLoadMoreItems] = useState(true);
   const [agreecheck, setAgreeCheck] = useState(false);
+  const [discardChange, setDiscardChange] = useState(false);
+
   const changeAgree = () => {
     setAgreeCheck(!agreecheck);
+  };
+  const changeDiscard = () => {
+    setDiscardChange(!discardChange);
   };
   const historyOf = router?.asPath.split("/")[1];
 
@@ -113,7 +118,7 @@ function HistoryContainer() {
         break;
       }
       if (data[item].children) {
-        dispatchData(data[item], _isDisabled, _isOneLevel);
+        dispatchData(data[item].children, _isDisabled, _isOneLevel);
       }
     }
   };
@@ -137,7 +142,7 @@ function HistoryContainer() {
     };
     asynCall();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeTab, agreecheck, isUserAuthenticated]);
+  }, [activeTab, agreecheck, discardChange, isUserAuthenticated]);
   useEffect(() => {
     return () => {
       store.dispatch(setTree([]));
@@ -276,6 +281,7 @@ function HistoryContainer() {
             }
             topicNamespaceId={campHistory?.details?.topic?.namespace_id}
             changeAgree={changeAgree}
+            changeDiscard={changeDiscard}
             isDisabledCheck={
               selectedTopic.length >= 2 &&
               !selectedTopic?.includes(campHistoryData?.id)

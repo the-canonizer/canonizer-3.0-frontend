@@ -270,3 +270,33 @@ img {
 {
   min-width: 60px;
 }
+@media screen and (max-width:1024px)
+{
+  .tab--card  .ant-card-body  .ant-tabs-top  .ant-tabs-nav {
+    margin-bottom: 60px;
+  }
+}
+@media screen and (max-width:767px)
+{
+  .tab--card .ant-card-body  .ant-tabs-card {
+    .ant-tabs-nav {
+      [class="ant-tabs-nav-list"] {
+        flex-flow: column;
+        overflow: hidden;
+        width: 100%;
+
+        [class="ant-tabs-tab"] {
+          margin-right: 0;
+          margin-bottom: 15px;
+          white-space: pre-wrap;
+          word-break: break-word;
+        }
+        [class="ant-tabs-tab ant-tabs-tab-active"] {
+          white-space: pre-wrap;
+          word-break: break-word;
+          margin-bottom: 15px;
+        }
+      }
+    }
+  }
+}
