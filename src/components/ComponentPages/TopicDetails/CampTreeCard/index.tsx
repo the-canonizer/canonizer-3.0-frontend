@@ -7,6 +7,7 @@ import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import styles from "../topicDetails.module.scss";
 import { useRouter } from "next/router";
 import CustomSkelton from "../../../common/customSkelton";
+import { RightOutlined } from "@ant-design/icons";
 
 import { useSelector, useDispatch } from "react-redux";
 import { store } from "../../../../store";
@@ -17,7 +18,7 @@ import { fallBackSrc } from "src/assets/data-images";
 import { setFilterCanonizedTopics } from "../../../../store/slices/filtersSlice";
 
 const { Panel } = Collapse;
-const { Link: AntLink } = Typography;
+const { Link: AntLink, Text } = Typography;
 
 const addContent = (
   <>
@@ -96,14 +97,17 @@ const CampTreeCard = ({
             header={
               <h3>
                 Canonizer Sorted Camp Tree{" "}
-                <Button
+                {/* <Button
                   type={"primary"}
                   size="small"
                   className={styles.eventLineBtn}
                   href={eventLinePath}
                 >
                   Event Line
-                </Button>
+                </Button> */}
+                <Popover content={addContent} placement="left">
+                  <i className="icon-info tooltip-icon-style"></i>
+                </Popover>
               </h3>
             }
             key="1"
@@ -115,20 +119,10 @@ const CampTreeCard = ({
                     event.stopPropagation();
                   }}
                 >
-                  {isUserAuthenticated && is_admin && tree && (
-                    <Link
-                      href={{
-                        pathname: router.asPath.replace("topic", "addnews"),
-                      }}
-                      className={styles.addNew}
-                      onClick={(event) => {
-                        event.stopPropagation();
-                      }}
-                    >
-                      <i className={"icon-fi-document " + styles.iconMr} />
-                      Add News
-                    </Link>
-                  )}
+                  <Text>
+                    {`Show camps with score`}
+                    <RightOutlined className="rightOutlined" />
+                  </Text>
                   <Select
                     defaultValue={"50%"}
                     style={{ width: 80 }}
@@ -164,9 +158,6 @@ const CampTreeCard = ({
                       },
                     ]}
                   />
-                  <Popover content={addContent} placement="left">
-                    <i className="icon-info tooltip-icon-style"></i>
-                  </Popover>
                 </div>
               </>
             }

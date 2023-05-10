@@ -38,11 +38,11 @@ function TimeLine({ setTimelineDescript }) {
         algorithm: algorithm,
       });
 
-      if (Object.keys(data).length == 1) {
+      if (data && Object.keys(data).length == 1) {
         let a = new Date().getTime() / 1000;
         data[`asoftime_${Math.round(a)}`] = data[Object.keys(data)[0]];
       }
-      setMockData(data);
+      data && setMockData(data);
     }
 
     apiCall();
