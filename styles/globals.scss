@@ -300,3 +300,9 @@ img {
     }
   }
 }
+
+.topicFilterRadio {
+  .ant-radio-checked + span {
+      color:#0524e9;
+  }
+}
