@@ -405,7 +405,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
             <Radio.Group onChange={onChange} value={value} disabled={loading}>
               <Space direction="vertical" style={{ gap: "12px" }}>
                 <Radio
-                  className={styles.radio}
+                  className={styles.radio + " topicFilterRadio"}
                   value={1}
                   onClick={() => {
                     dispatch(setViewThisVersion(false));
@@ -421,7 +421,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                   Include review
                 </Radio>
                 <Radio
-                  className={styles.radio}
+                  className={styles.radio + " topicFilterRadio"}
                   value={2}
                   onClick={() => {
                     dispatch(setViewThisVersion(false));
@@ -436,7 +436,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                   Default
                 </Radio>
                 <Radio
-                  className={styles.radio}
+                  className={styles.radio + " topicFilterRadio"}
                   value={3}
                   onClick={() => {
                     dispatch(setViewThisVersion(false));
