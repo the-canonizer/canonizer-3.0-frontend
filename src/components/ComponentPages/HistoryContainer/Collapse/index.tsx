@@ -140,7 +140,7 @@ function HistoryCollapse({
     Modal.confirm({
       title: "Do you Want to Cancel this commit?",
       icon: <ExclamationCircleFilled />,
-      content: "your changes most be lost",
+      content: "Your changes will be lost.",
       onOk() {
         discardChanges();
       },
