@@ -48,9 +48,6 @@ const CurrentTopicCard = ({ loadingIndicator }) => {
           <Descriptions.Item label="Topic Name">
             {topicRecord && topicRecord?.topic_name}
           </Descriptions.Item>
-          <Descriptions.Item label="Edit Summary">
-            {topicRecord && topicRecord?.note}
-          </Descriptions.Item>
           <Descriptions.Item label="Canon">
             {topicRecord && changeSlashToArrow(topicRecord?.namespace_name)}
           </Descriptions.Item>
