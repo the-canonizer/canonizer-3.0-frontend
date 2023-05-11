@@ -38,9 +38,11 @@ function TimeLine({ setTimelineDescript }) {
         algorithm: algorithm,
       });
 
-      if (data?.code == 200) {
-        setMockData(data?.data);
+      if (data && Object.keys(data).length == 1) {
+        let a = new Date().getTime() / 1000;
+        data[`asoftime_${Math.round(a)}`] = data[Object.keys(data)[0]];
       }
+      data && setMockData(data);
     }
 
     apiCall();

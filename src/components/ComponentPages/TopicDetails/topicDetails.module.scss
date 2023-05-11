@@ -31,7 +31,7 @@
     @media screen and (min-width: 992px) {
       display: flex;
       flex-wrap: wrap;
-      width: calc(100% - 300px);
+      width: calc(100% - 390px);
     }
     .topicTitleStyle,
     .breadcrumbLinks {
@@ -266,6 +266,18 @@
 
 .eventLineBtn {
   margin-left: 10px;
+}
+
+.descriptions {
+  table {
+    tbody {
+      tr {
+        [class="ant-descriptions-item-label"] {
+          font-weight: 600;
+        }
+      }
+    }
+  }
 }
 
 .svgIconCode {

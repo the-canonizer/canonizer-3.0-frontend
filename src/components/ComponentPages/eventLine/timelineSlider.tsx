@@ -142,7 +142,9 @@ function TimelineSlider({
   };
   const MarkPointsData = () => {
     let pdata: any =
-      mockData && Object.keys(mockData)?.length > 0 && Object.keys(mockData);
+      mockData &&
+      Object.keys(mockData)?.length > 0 &&
+      Object.keys(mockData)?.sort();
 
     let obj = {};
     // console.log("window ==>", window.innerWidth);
@@ -189,7 +191,6 @@ function TimelineSlider({
     }
     return obj;
   };
-
   useEffect(() => {
     if (Object.keys(mockData).length == iteration) {
       setIsPlaying(false);
@@ -200,6 +201,7 @@ function TimelineSlider({
     let mappedArr = [];
     for (let i = 0; i < Object.keys(mockData).length; i++) {
       if (showkey == Object.keys(mockData)[i]) {
+        mappedArr.unshift(mockData[Object.keys(mockData)[i]]?.event?.message);
         break;
       }
       mappedArr.unshift(mockData[Object.keys(mockData)[i]]?.event?.message);
@@ -209,16 +211,31 @@ function TimelineSlider({
 
   return (
     <>
-      <div className={styles.timeBarControl}>
+      <div
+        className={`${styles.timeBarControl} ${
+          mockData && Object.keys(mockData).length <= 2
+            ? styles.disablePlayBtn
+            : ""
+        }`}
+      >
         <StepBackwardOutlined
           onClick={() => {
-            handleClickBackword();
+            if (mockData && Object.keys(mockData).length > 2) {
+              handleClickBackword();
+            }
           }}
           className={styles.controlBtnSecond}
         />
         {/* <BackwardOutlined className={styles.controlBtn} /> */}
         {"     "}
-        <div className={styles.playBtn} onClick={handleClick}>
+        <div
+          className={`${styles.playBtn}`}
+          onClick={() => {
+            if (mockData && Object.keys(mockData).length > 2) {
+              handleClick();
+            }
+          }}
+        >
           {isPlaying ? <PauseOutlined /> : <CaretRightOutlined />}
         </div>
         {"   "}
@@ -226,7 +243,9 @@ function TimelineSlider({
 
         <StepForwardOutlined
           onClick={() => {
-            handleClickForward();
+            if (mockData && Object.keys(mockData).length > 2) {
+              handleClickForward();
+            }
           }}
           className={styles.controlBtnSecond}
         />
@@ -239,11 +258,18 @@ function TimelineSlider({
             setSpeedBar(newOpen);
           }}
         >
-          <DashboardOutlined className="speed-icon" />
+          <DashboardOutlined
+            className={`${"speed-icon"}  ${
+              mockData && Object.keys(mockData).length <= 2
+                ? styles.disableIcon
+                : ""
+            }`}
+          />
         </Popover>
       </div>
       {mockData && (
         <Slider
+          disabled={mockData && Object.keys(mockData).length > 2 ? false : true}
           className="rang-slider"
           tooltip={{
             formatter,

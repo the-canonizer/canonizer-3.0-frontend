@@ -1,6 +1,9 @@
 class LoadTree {
-  static API_PATH = "http://canonizer-service.local/api/v1/tree/get";
-  static CSS_URL = "http://localhost:4000/embed/embed.css";
+  static SERVICE_API_PATH = "https://service.canonizer.com/api/v1/tree/get";
+  static CSS_URL = "https://canonizer3.canonizer.com/embed/embed.css";
+  static API_PATH = "https://api3.canonizer.com/api/v3/embedded-code-tracking";
+
+  static IP_API = "https://api.ipify.org?format=json";
 
   static async init(params) {
     const { selector, topic_num, camp_num } = params;
@@ -15,6 +18,8 @@ class LoadTree {
     if (elm) elm.innerHTML = tree;
 
     this.expandParent(elm);
+    const session = await sessionStorage.getItem("created_at");
+    if (!session) this.saveUserAgent();
   }
 
   static async getTree(topic_num, camp_num, asofdate, algorithm) {
@@ -36,7 +41,7 @@ class LoadTree {
         },
       };
 
-    const res = await fetch(LoadTree.API_PATH, option);
+    const res = await fetch(LoadTree.SERVICE_API_PATH, option);
     const resData = await res.json();
 
     if (res.status === 200) {
@@ -49,7 +54,7 @@ class LoadTree {
 
       return temp;
     }
-    return "Not Found!";
+    return "Something went wrong!";
   }
 
   static renderTreeNodes(prevNodes = "", data, camp_num, idx) {
@@ -100,21 +105,46 @@ class LoadTree {
 
   static async expandParent(elm) {
     const child = elm.querySelector(".need_parent_expand");
-    console.log(child, "[CHILD]");
 
-    let parent = child.parentNode;
+    if (child) {
+      let parent = child.parentNode;
 
-    while (parent) {
-      if (parent?.tagName?.toLowerCase() === "details") {
-        console.dir(parent);
-        if (!parent.hasAttribute("open")) {
-          parent.setAttribute("open", "");
-          console.log("The details tag is not open!");
-        } else {
-          console.log("The details tag is  open!");
+      while (parent) {
+        if (parent?.tagName?.toLowerCase() === "details") {
+          if (!parent.hasAttribute("open")) {
+            parent.setAttribute("open", "");
+          }
         }
+        parent = parent.parentNode;
       }
-      parent = parent.parentNode;
+    }
+  }
+
+  static async saveUserAgent() {
+    const josnRes = await fetch(LoadTree.IP_API),
+      ipRes = await josnRes.json(),
+      reqBody = {
+        url: window.location.href,
+        ip_address: ipRes.ip,
+        user_agent: navigator.userAgent,
+      },
+      option = {
+        method: "POST",
+        body: JSON.stringify(reqBody),
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      };
+
+    const res = await fetch(LoadTree.API_PATH, option);
+    const resData = await res.json();
+
+    if (res.status === 200) {
+      sessionStorage.setItem(
+        "created_at",
+        JSON.stringify(resData.data.created_at)
+      );
     }
   }
 }
