@@ -35,6 +35,7 @@ import { setViewThisVersion } from "src/store/slices/filtersSlice";
 const { Panel } = Collapse;
 const { Title } = Typography;
 
+import { ExclamationCircleFilled } from "@ant-design/icons";
 function HistoryCollapse({
   ifIamSupporter,
   ifSupportDelayed,
@@ -134,6 +135,16 @@ function HistoryCollapse({
     } else {
       router.push(`/manage/${historyOf}/${campStatement?.id}`);
     }
+  };
+  const cancelConfirm = () => {
+    Modal.confirm({
+      title: "Do you Want to Cancel this commit?",
+      icon: <ExclamationCircleFilled />,
+      content: "your changes most be lost",
+      onOk() {
+        discardChanges();
+      },
+    });
   };
   return (
     <div>
@@ -422,7 +433,7 @@ function HistoryCollapse({
                         className=" mr-3"
                         type="primary"
                         danger
-                        onClick={discardChanges}
+                        onClick={() => cancelConfirm()}
                         id={`commit-change-${campStatement?.id}`}
                         disabled={loading}
                       >
