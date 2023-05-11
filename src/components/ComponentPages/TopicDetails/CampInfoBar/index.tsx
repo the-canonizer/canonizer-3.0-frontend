@@ -532,7 +532,6 @@ const TimelineInfoBar = ({
                     />
                   ) : (
                     <>
-                     
                       <Button
                         type="primary"
                         className={styles.btnCampForum}
@@ -541,7 +540,7 @@ const TimelineInfoBar = ({
                       >
                         Camp Forum
                       </Button>
-                       <Button
+                      <Button
                         type="primary"
                         onClick={eventLinePath}
                         className={styles.btnCampForum}
