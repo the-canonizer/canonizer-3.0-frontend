@@ -64,6 +64,7 @@ const SupportTreeCard = ({
   totalCampScoreForSupportTree,
   isDelegateSupportTreeCardModal,
   setIsDelegateSupportTreeCardModal,
+  backGroundColorClass,
 }: any) => {
   const {
     currentGetCheckSupportExistsData,
@@ -312,7 +313,7 @@ const SupportTreeCard = ({
         className="topicDetailsCollapse"
       >
         <Panel
-        className="header-bg-color-change default"
+          className={`header-bg-color-change ${backGroundColorClass}`}
           header={
             <h3>
               Support Tree for &quot;

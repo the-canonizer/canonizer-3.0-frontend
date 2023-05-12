@@ -7,7 +7,7 @@ import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import styles from "../topicDetails.module.scss";
 import { useRouter } from "next/router";
 import CustomSkelton from "../../../common/customSkelton";
-import {RightOutlined} from '@ant-design/icons';
+import { RightOutlined } from "@ant-design/icons";
 
 import { useSelector, useDispatch } from "react-redux";
 import { store } from "../../../../store";
@@ -44,6 +44,7 @@ const CampTreeCard = ({
   scrollToCampStatement,
   setTotalCampScoreForSupportTree,
   setSupportTreeForCamp,
+  backGroundColorClass,
 }) => {
   const { asof, asofdate } = useSelector((state: RootState) => ({
     asofdate: state.filters?.filterObject?.asofdate,
@@ -94,7 +95,7 @@ const CampTreeCard = ({
         >
           <Panel
             disabled
-            className={'header-bg-color-change default'}
+            className={`header-bg-color-change ${backGroundColorClass}`}
             header={
               <h3>
                 Canonizer Sorted Camp Tree{" "}
@@ -120,7 +121,10 @@ const CampTreeCard = ({
                     event.stopPropagation();
                   }}
                 >
-                <Text>{`Show camps with score`}<RightOutlined className="rightOutlined"  /></Text>
+                  <Text>
+                    {`Show camps with score`}
+                    <RightOutlined className="rightOutlined" />
+                  </Text>
                   <Select
                     defaultValue={"50%"}
                     style={{ width: 80 }}
@@ -156,7 +160,6 @@ const CampTreeCard = ({
                       },
                     ]}
                   />
-                 
                 </div>
               </>
             }

@@ -67,6 +67,7 @@ const TopicDetails = () => {
   const [isDelegateSupportTreeCardModal, setIsDelegateSupportTreeCardModal] =
     useState(false);
   const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
+  const [backGroundColorClass, setBackGroundColorClass] = useState("default");
   const [totalCampScoreForSupportTree, setTotalCampScoreForSupportTree] =
     useState<number>(null);
   const [supportTreeForCamp, setSupportTreeForCamp] = useState<number>(null);
@@ -318,6 +319,10 @@ const TopicDetails = () => {
     // fetchTotalScore();
   }, [isUserAuthenticated, router, algorithm]);
 
+  useEffect(() => {
+    setBackGroundColorClass(asof);
+  }, [asof]);
+
   const scrollToCampStatement = () => {
     myRefToCampStatement.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -421,6 +426,7 @@ const TopicDetails = () => {
               scrollToCampStatement={scrollToCampStatement}
               setTotalCampScoreForSupportTree={setTotalCampScoreForSupportTree}
               setSupportTreeForCamp={setSupportTreeForCamp}
+              backGroundColorClass={backGroundColorClass}
             />
 
             {((tree &&
@@ -469,15 +475,20 @@ const TopicDetails = () => {
                       <>
                         <CampStatementCard
                           loadingIndicator={loadingIndicator}
+                          backGroundColorClass={backGroundColorClass}
                         />
-
-                      
 
                         {typeof window !== "undefined" &&
                           window.innerWidth > 767 && (
                             <>
-                              <CurrentTopicCard loadingIndicator={loadingIndicator} />
-                              <CurrentCampCard loadingIndicator={loadingIndicator} />
+                              <CurrentTopicCard
+                                loadingIndicator={loadingIndicator}
+                                backGroundColorClass={backGroundColorClass}
+                              />
+                              <CurrentCampCard
+                                loadingIndicator={loadingIndicator}
+                                backGroundColorClass={backGroundColorClass}
+                              />
                             </>
                           )}
 
@@ -508,26 +519,29 @@ const TopicDetails = () => {
                           totalCampScoreForSupportTree={
                             totalCampScoreForSupportTree
                           }
+                          backGroundColorClass={backGroundColorClass}
                         />
                         {typeof window !== "undefined" &&
                           window.innerWidth < 767 && (
                             <>
-                              <CurrentTopicCard loadingIndicator={loadingIndicator} />
-                              <CurrentCampCard loadingIndicator={loadingIndicator} />
-                               <Spin spinning={loadingIndicator} size="large">
+                              <CurrentTopicCard
+                                loadingIndicator={loadingIndicator}
+                              />
+                              <CurrentCampCard
+                                loadingIndicator={loadingIndicator}
+                              />
+                              <Spin spinning={loadingIndicator} size="large">
                                 {!!newsFeed?.length && (
                                   <NewsFeedsCard newsFeed={newsFeed} />
                                 )}
                               </Spin>
-                               <>
-                              {router.asPath.includes("topic") && (
-                                <CampRecentActivities />
-                              )}
-                            </>
+                              <>
+                                {router.asPath.includes("topic") && (
+                                  <CampRecentActivities />
+                                )}
+                              </>
                             </>
                           )}
-
-                      
                       </>
                     )}
               </>

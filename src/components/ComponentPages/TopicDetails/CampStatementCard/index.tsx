@@ -16,7 +16,7 @@ const { Panel } = Collapse;
 const covertToTime = (unixTime) => {
   return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm A");
 };
-const CampStatementCard = ({ loadingIndicator }) => {
+const CampStatementCard = ({ loadingIndicator, backGroundColorClass }) => {
   const router = useRouter();
   const { campStatement, history } = useSelector((state: RootState) => ({
     campStatement: state?.topicDetails?.campStatement,
@@ -37,7 +37,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
       className="topicDetailsCollapse"
     >
       <Panel
-        className="campStatementPanel header-bg-color-change default"
+        className={`campStatementPanel header-bg-color-change ${backGroundColorClass}`}
         disabled
         header={<h3>{K?.exceptionalMessages?.campStatementHeading}</h3>}
         key="1"

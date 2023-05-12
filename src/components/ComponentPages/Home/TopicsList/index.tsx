@@ -81,6 +81,7 @@ const TopicsList = () => {
   const [nameSpacesList, setNameSpacesList] = useState(nameSpaces);
 
   const [isReview, setIsReview] = useState(asof == "review");
+  const [backGroundColorClass, setBackGroundColorClass] = useState("default");
   const [inputSearch, setInputSearch] = useState("");
 
   const [nameSpaceId, setNameSpaceId] = useState(filterNameSpaceId || "");
@@ -171,6 +172,7 @@ const TopicsList = () => {
 
   useEffect(() => {
     setIsReview(asof == "review");
+    setBackGroundColorClass(asof);
   }, [asof]);
 
   useEffect(() => {
@@ -270,10 +272,10 @@ const TopicsList = () => {
   }, []);
   return (
     <>
-
       <div
-        className={`header-bg-color-change default topics-list-card-header ${styles.head} ${router.asPath.includes("/browse") ? styles.browsePage : ""
-          }`}
+        className={`header-bg-color-change ${backGroundColorClass} topics-list-card-header ${
+          styles.head
+        } ${router.asPath.includes("/browse") ? styles.browsePage : ""}`}
       >
         <Title level={3}>
           Select Canon
@@ -328,11 +330,13 @@ const TopicsList = () => {
         )}
       </div>
 
-      <div className={`${styles.card} ${router.asPath.includes("/browse") ? '' : styles.homePageCardList}`}>
-
+      <div
+        className={`${styles.card} ${
+          router.asPath.includes("/browse") ? "" : styles.homePageCardList
+        }`}
+      >
         <List
           className={styles.wrap}
-
           footer={
             <div className={styles.footer}>
               {router.asPath.includes("/browse")
@@ -355,14 +359,15 @@ const TopicsList = () => {
                 <>
                   <Link
                     href={{
-                      pathname: `/topic/${item?.topic_id
-                        }-${replaceSpecialCharacters(
-                          isReview
-                            ? item?.tree_structure &&
-                            item?.tree_structure[1]?.review_title
-                            : item?.topic_name,
-                          "-"
-                        )}/1-Agreement`,
+                      pathname: `/topic/${
+                        item?.topic_id
+                      }-${replaceSpecialCharacters(
+                        isReview
+                          ? item?.tree_structure &&
+                              item?.tree_structure[1]?.review_title
+                          : item?.topic_name,
+                        "-"
+                      )}/1-Agreement`,
                     }}
                   >
                     <a
@@ -373,7 +378,7 @@ const TopicsList = () => {
                       <Text className={styles.text}>
                         {isReview
                           ? item?.tree_structure &&
-                          item?.tree_structure[1].review_title
+                            item?.tree_structure[1].review_title
                           : item?.topic_name}
                       </Text>
                       <Tag className={styles.tag}>
