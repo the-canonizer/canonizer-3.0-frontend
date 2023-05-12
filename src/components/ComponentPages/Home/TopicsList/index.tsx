@@ -270,68 +270,69 @@ const TopicsList = () => {
   }, []);
   return (
     <>
-      <div className={`${styles.card} topicsList_card`}>
+
+      <div
+        className={`header-bg-color-change default topics-list-card-header ${styles.head} ${router.asPath.includes("/browse") ? styles.browsePage : ""
+          }`}
+      >
+        <Title level={3}>
+          Select Canon
+          <Popover content={infoContent} placement="right">
+            <i className="icon-info cursor-pointer"></i>
+          </Popover>
+        </Title>
+        {router.asPath.includes("/browse") && isUserAuthenticated && (
+          <Checkbox
+            className={styles.checkboxOnlyMyTopics}
+            onChange={handleCheckbox}
+          >
+            Only My Topics
+          </Checkbox>
+        )}
+        <Select
+          size="large"
+          className={styles.dropdown}
+          defaultValue={changeSlashToArrow(selectedNameSpace)}
+          value={changeSlashToArrow(selectedNameSpace)}
+          onChange={selectNameSpace}
+          showSearch
+          optionFilterProp="children"
+          id="name-space-dropdown"
+        >
+          {nameSpacesList?.map((item) => {
+            return (
+              <Select.Option
+                id={`name-space-${item.id}`}
+                key={item.id}
+                value={item.id}
+              >
+                {changeSlashToArrow(item.label)}
+              </Select.Option>
+            );
+          })}
+          <Select.Option id="name-space-custom" key="custom-key" value="">
+            All
+          </Select.Option>
+        </Select>
+        {router.asPath.includes("/browse") && (
+          <div className={styles.inputSearchTopic}>
+            <Search
+              key={inputSearch}
+              placeholder="Search by topic name"
+              allowClear={true}
+              className={styles.topic}
+              defaultValue={inputSearch}
+              onSearch={onSearch}
+            />
+          </div>
+        )}
+      </div>
+
+      <div className={`${styles.card}`}>
+
         <List
           className={styles.wrap}
-          header={
-            <div
-              className={`${styles.head} ${
-                router.asPath.includes("/browse") ? styles.browsePage : ""
-              }`}
-            >
-              <Title level={3}>
-                Select Canon
-                <Popover content={infoContent} placement="right">
-                  <i className="icon-info cursor-pointer"></i>
-                </Popover>
-              </Title>
-              {router.asPath.includes("/browse") && isUserAuthenticated && (
-                <Checkbox
-                  className={styles.checkboxOnlyMyTopics}
-                  onChange={handleCheckbox}
-                >
-                  Only My Topics
-                </Checkbox>
-              )}
-              <Select
-                size="large"
-                className={styles.dropdown}
-                defaultValue={changeSlashToArrow(selectedNameSpace)}
-                value={changeSlashToArrow(selectedNameSpace)}
-                onChange={selectNameSpace}
-                showSearch
-                optionFilterProp="children"
-                id="name-space-dropdown"
-              >
-                {nameSpacesList?.map((item) => {
-                  return (
-                    <Select.Option
-                      id={`name-space-${item.id}`}
-                      key={item.id}
-                      value={item.id}
-                    >
-                      {changeSlashToArrow(item.label)}
-                    </Select.Option>
-                  );
-                })}
-                <Select.Option id="name-space-custom" key="custom-key" value="">
-                  All
-                </Select.Option>
-              </Select>
-              {router.asPath.includes("/browse") && (
-                <div className={styles.inputSearchTopic}>
-                  <Search
-                    key={inputSearch}
-                    placeholder="Search by topic name"
-                    allowClear={true}
-                    className={styles.topic}
-                    defaultValue={inputSearch}
-                    onSearch={onSearch}
-                  />
-                </div>
-              )}
-            </div>
-          }
+
           footer={
             <div className={styles.footer}>
               {router.asPath.includes("/browse")
@@ -354,15 +355,14 @@ const TopicsList = () => {
                 <>
                   <Link
                     href={{
-                      pathname: `/topic/${
-                        item?.topic_id
-                      }-${replaceSpecialCharacters(
-                        isReview
-                          ? item?.tree_structure &&
-                              item?.tree_structure[1]?.review_title
-                          : item?.topic_name,
-                        "-"
-                      )}/1-Agreement`,
+                      pathname: `/topic/${item?.topic_id
+                        }-${replaceSpecialCharacters(
+                          isReview
+                            ? item?.tree_structure &&
+                            item?.tree_structure[1]?.review_title
+                            : item?.topic_name,
+                          "-"
+                        )}/1-Agreement`,
                     }}
                   >
                     <a
@@ -373,7 +373,7 @@ const TopicsList = () => {
                       <Text className={styles.text}>
                         {isReview
                           ? item?.tree_structure &&
-                            item?.tree_structure[1].review_title
+                          item?.tree_structure[1].review_title
                           : item?.topic_name}
                       </Text>
                       <Tag className={styles.tag}>

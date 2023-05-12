@@ -37,7 +37,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
       className="topicDetailsCollapse"
     >
       <Panel
-        className="campStatementPanel"
+        className="campStatementPanel header-bg-color-change default"
         disabled
         header={<h3>{K?.exceptionalMessages?.campStatementHeading}</h3>}
         key="1"

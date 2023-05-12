@@ -46,6 +46,7 @@ const CurrentCampCard = ({ loadingIndicator }) => {
       className="topicDetailsCollapse"
     >
       <Panel
+        className="header-bg-color-change default"
         header={<h3>{K?.exceptionalMessages?.campRecordHeading}</h3>}
         key="1"
       >
@@ -72,17 +73,15 @@ const CurrentCampCard = ({ loadingIndicator }) => {
                       : campRecord &&
                         (description.key == "submitter_nick_name" ||
                           description.key == "camp_about_nick_name")
-                      ? campRecord &&
+                        ? campRecord &&
                         history &&
                         (campRecord[description.key] !=
-                        "Nickname not associated." ? (
+                          "Nickname not associated." ? (
                           <Link
-                            href={`/user/supports/${
-                              history?.details?.liveCamp?.camp_about_nick_id ||
+                            href={`/user/supports/${history?.details?.liveCamp?.camp_about_nick_id ||
                               ""
-                            }?topicnum=${campRecord?.topic_num || ""}&campnum=${
-                              campRecord?.camp_num || ""
-                            }&canon=${topicRecord?.namespace_id || ""}`}
+                              }?topicnum=${campRecord?.topic_num || ""}&campnum=${campRecord?.camp_num || ""
+                              }&canon=${topicRecord?.namespace_id || ""}`}
                             passHref
                           >
                             <a>{campRecord[description.key]}</a>
@@ -90,20 +89,20 @@ const CurrentCampCard = ({ loadingIndicator }) => {
                         ) : (
                           campRecord[description.key]
                         ))
-                      : campRecord &&
-                        (description.key == "go_live_time" ||
-                          description.key == "submit_time")
-                      ? covertToTime(campRecord[description.key])
-                      : campRecord[description.key]
+                        : campRecord &&
+                          (description.key == "go_live_time" ||
+                            description.key == "submit_time")
+                          ? covertToTime(campRecord[description.key])
+                          : campRecord[description.key]
                     : campRecord && (
-                        <a
-                          href={campRecord[description.key]}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          {campRecord[description.key]}
-                        </a>
-                      )}
+                      <a
+                        href={campRecord[description.key]}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {campRecord[description.key]}
+                      </a>
+                    )}
                 </Descriptions.Item>
               );
             }

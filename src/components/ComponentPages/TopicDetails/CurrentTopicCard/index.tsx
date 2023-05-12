@@ -41,6 +41,7 @@ const CurrentTopicCard = ({ loadingIndicator }) => {
       className="topicDetailsCollapse"
     >
       <Panel
+      className="header-bg-color-change default"
         header={<h3>{K?.exceptionalMessages?.topicRecordHeading}</h3>}
         key="1"
       >

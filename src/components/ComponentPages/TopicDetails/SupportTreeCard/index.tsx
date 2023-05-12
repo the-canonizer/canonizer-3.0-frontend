@@ -312,6 +312,7 @@ const SupportTreeCard = ({
         className="topicDetailsCollapse"
       >
         <Panel
+        className="header-bg-color-change default"
           header={
             <h3>
               Support Tree for &quot;

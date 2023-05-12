@@ -94,6 +94,7 @@ const CampTreeCard = ({
         >
           <Panel
             disabled
+            className={'header-bg-color-change default'}
             header={
               <h3>
                 Canonizer Sorted Camp Tree{" "}
