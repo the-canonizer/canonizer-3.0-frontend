@@ -1,7 +1,7 @@
 import { Button, Spin, Typography } from "antd";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import styles from "./topicDetails.module.scss";
+import styles from "../timeBarControl.module.scss";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 
 const CampInfoBar = () => {
