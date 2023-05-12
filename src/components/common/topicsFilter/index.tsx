@@ -384,11 +384,9 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                 <FullScoreCheckbox />
               </div>
             ) : null}
-            {isAuth.isUserAuthenticated ? (
               <div className={styles.scoreCheckbox}>
                 <ArchivedCampCheckBox />
               </div>
-            ) : null}
           </Panel>
 
           <Panel
