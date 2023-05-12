@@ -328,7 +328,7 @@ const TopicsList = () => {
         )}
       </div>
 
-      <div className={`${styles.card}`}>
+      <div className={`${styles.card} ${router.asPath.includes("/browse") ? '' : styles.homePageCardList}`}>
 
         <List
           className={styles.wrap}
