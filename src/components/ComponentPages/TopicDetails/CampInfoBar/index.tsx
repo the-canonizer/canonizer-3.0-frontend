@@ -173,13 +173,13 @@ const TimelineInfoBar = ({
       {isUserAuthenticated && is_admin && (
         <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
           {router.pathname == "/support/[...manageSupport]" ? (
-            <Link href={router.asPath.replace("support", "addnews")}>
+            <Link href={router.asPath.replace("support", "addnews")} legacyBehavior>
               <a rel="noopener noreferrer" href="/add-news">
                 Add News
               </a>
             </Link>
           ) : (
-            <Link href={router.asPath.replace("topic", "addnews")}>
+            <Link href={router.asPath.replace("topic", "addnews")} legacyBehavior>
               <a rel="noopener noreferrer" href="/add-news">
                 Add News
               </a>
@@ -444,7 +444,7 @@ const TimelineInfoBar = ({
                           }}
                           key={index}
                         >
-                          <a>
+                          
                             <span className={styles.slashStyle}>
                               {" "}
                               {index !== 0 && <DoubleRightOutlined />}{" "}
@@ -456,7 +456,7 @@ const TimelineInfoBar = ({
                                   : styles.boldBreadcrumb
                               }
                             >{`${camp?.camp_name}`}</span>
-                          </a>
+                          
                         </Link>
                       );
                     })

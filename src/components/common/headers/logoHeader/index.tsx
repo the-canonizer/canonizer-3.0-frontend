@@ -9,7 +9,7 @@ const LogoHeader = () => {
     <Fragment>
       <div className={styles.logo}>
         <Link href="/" passHref>
-          <a>
+          
             <Image
               src={`${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/site-images/logo.svg`}
               alt="Picture of the author"
@@ -17,7 +17,7 @@ const LogoHeader = () => {
               width={200}
               height={42}
             />
-          </a>
+          
         </Link>
       </div>
     </Fragment>

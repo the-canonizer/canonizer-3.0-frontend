@@ -29,7 +29,7 @@ function TopicSubscriptionsTab({
               <span>
                 &quot;
                 <Link href={data.title_link}>
-                  <a>{data.title}</a>
+                  {data.title}
                 </Link>
                 &quot;
               </span>
@@ -54,7 +54,7 @@ function TopicSubscriptionsTab({
                   >
                     <div>
                       <span className={styles.count}>{i + 1}. </span>
-                      <Link href={camp.camp_link}>
+                      <Link href={camp.camp_link} legacyBehavior>
                         <a className={styles.Bluecolor}> {camp.camp_name}</a>
                       </Link>
                     </div>
@@ -68,7 +68,7 @@ function TopicSubscriptionsTab({
                   <br />
                   <Text className={`${styles.reasonLink} ${styles.Bluecolor}`}>
                     <Link href={""} passHref target="_blank">
-                      <a>Reference Link</a>
+                       Reference Link
                     </Link>
                   </Text>
                 </Col>

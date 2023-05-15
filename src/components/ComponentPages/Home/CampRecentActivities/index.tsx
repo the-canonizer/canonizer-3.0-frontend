@@ -61,6 +61,7 @@ export default function CampRecentActivities() {
                     camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
                   },
                 }}
+                legacyBehavior
               >
                 <a className={styles.viewAllLink}>
                   <Text>View All</Text>

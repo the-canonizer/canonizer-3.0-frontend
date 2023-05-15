@@ -29,7 +29,7 @@ const My404 = () => {
             {`We're sorry, the page you requested could not be found Please go
             back to the homepage`}
           </p>
-          <Link href={""}>
+          <Link href={""} legacyBehavior>
             <a onClick={goBack} className={styles.btnGoBack}>
               Go Back
             </a>

@@ -65,7 +65,7 @@ export default function DelegatedSupportCampsUI({
           </p>
           <p>
             Nickname:{" "}
-            <Link href={props.NickNameLink}>
+            <Link href={props.NickNameLink} legacyBehavior>
               <a className={styles.Bluecolor}>{props.NickName}</a>
             </Link>
           </p>
@@ -240,7 +240,7 @@ export default function DelegatedSupportCampsUI({
             <span className={styles.Bluecolor}>
               &quot;
               <Link href={removeSupportCampsData.title_link}>
-                <a>{removeSupportCampsData.title}</a>
+                {removeSupportCampsData.title}
               </Link>
               &quot;
             </span>{" "}

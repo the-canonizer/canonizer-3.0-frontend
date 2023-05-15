@@ -114,8 +114,10 @@ function Footer() {
                         return (
                           <li key={item.id}>
                             <Link href={item.link}>
+                              <>
                               <i className="icon-angle-right"></i>{" "}
                               {item.linkTitle}
+                              </>
                             </Link>
                           </li>
                         );
@@ -145,8 +147,10 @@ function Footer() {
                               </a>
                             ) : (
                               <Link href={item.link}>
+                                <>
                                 <i className="icon-angle-right"></i>{" "}
                                 {item.linkTitle}
+                                </>
                               </Link>
                             )}
                           </li>

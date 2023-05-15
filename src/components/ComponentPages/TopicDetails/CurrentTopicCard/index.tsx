@@ -66,7 +66,7 @@ const CurrentTopicCard = ({ loadingIndicator }) => {
                 }&canon=${topicRecord?.namespace_id || ""}`}
                 passHref
               >
-                <a>{topicRecord?.submitter_nick_name}</a>
+                {topicRecord?.submitter_nick_name}
               </Link>
             )}
           </Descriptions.Item>

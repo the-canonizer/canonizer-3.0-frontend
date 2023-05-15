@@ -366,7 +366,7 @@ const SupportTreeCard = ({
             onClick={handleClickSupportCheck}
           >
             <Link href={manageSupportPath}>
-              <a>
+              
                 <CustomButton
                   className="btn-orange"
                   disabled={asof == "bydate"}
@@ -378,7 +378,7 @@ const SupportTreeCard = ({
                     ? K?.exceptionalMessages?.directJoinSupport
                     : K?.exceptionalMessages?.manageSupport}
                 </CustomButton>
-              </a>
+              
             </Link>
           </div>
         </Panel>
@@ -396,7 +396,7 @@ const SupportTreeCard = ({
                   pathname: `/topic/${topicRecord?.topic_num}-${topicRecord?.topic_name}/${campRecord?.camp_num}-${campRecord?.camp_name}`,
                 }}
               >
-                <a>{campRecord?.camp_name}.</a>
+                {campRecord?.camp_name}.
               </Link>
               &quot;
             </span>{" "}

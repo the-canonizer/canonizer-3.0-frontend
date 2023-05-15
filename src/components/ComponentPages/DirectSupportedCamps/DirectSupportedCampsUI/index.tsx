@@ -290,7 +290,7 @@ export default function DirectSupportedCampsUI({
                       pathname: removeSupportCampsData.title_link,
                     }}
                   >
-                    <a>{removeSupportCampsData.title}</a>
+                    {removeSupportCampsData.title}
                   </Link>
                 ) : (
                   removeCampLink.map((val, index) => {
@@ -300,7 +300,7 @@ export default function DirectSupportedCampsUI({
                           pathname: val.camp_link,
                         }}
                       >
-                        <a>{(index ? ", " : "") + val.camp_name}</a>
+                        {(index ? ", " : "") + val.camp_name}
                       </Link>
                     );
                   })

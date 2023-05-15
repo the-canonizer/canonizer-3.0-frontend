@@ -39,7 +39,7 @@ const infoContent = (
         to separate topics exclusively for them from the topics of general
         interest. To get a canon created for your organization, contact{" "}
         <Link href="mailto:support@canonizer.com">
-          <a>support@canonizer.com</a>
+          support@canonizer.com
         </Link>
       </p>
     </div>

@@ -298,7 +298,7 @@ function HistoryCollapse({
                         <p>
                           {K?.exceptionalMessages?.objectedModalMsgForMoreInfo}
                         </p>
-                        <Link href="/topic/132-Help/4-Disagreement">
+                        <Link href="/topic/132-Help/4-Disagreement" legacyBehavior>
                           <a style={{ fontSize: "16px" }}>
                             https://canonizer.com/topic/132-Help/4-Disagreement
                           </a>

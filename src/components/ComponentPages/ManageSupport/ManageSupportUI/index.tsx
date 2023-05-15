@@ -541,7 +541,7 @@ const ManageSupportUI = ({
                   pathname: `/topic/${topicRecord?.topic_num}-${topicRecord?.topic_name}/${campRecord?.camp_num}-${campRecord?.camp_name}`,
                 }}
               >
-                <a>{campRecord?.camp_name}</a>.
+                {campRecord?.camp_name}.
               </Link>
               &quot;
             </span>{" "}
