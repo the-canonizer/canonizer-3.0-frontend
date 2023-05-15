@@ -288,6 +288,7 @@ const CampTree = ({
                               ? `font-weight-bold ${styles.activeCamp}`
                               : ""
                           }
+                          legacyBehavior
                         >
                           <a
                             className={
