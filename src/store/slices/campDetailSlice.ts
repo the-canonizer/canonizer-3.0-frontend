@@ -9,6 +9,7 @@ export const treeSlice = createSlice({
     campSupportingTree: null,
     currentTopicRecord: null,
     currentCampRecord: null,
+    topic_name: null,
     history: {
       items: [],
       details: {
@@ -75,6 +76,9 @@ export const treeSlice = createSlice({
     setHistory: (state, action) => {
       state.history = action.payload;
     },
+    setTopicName: (state, action) => {
+      state.topic_name = action.payload;
+    },
     pushToCampHistory: (state, action) => {
       state.history = {
         ...state.history,
@@ -111,6 +115,7 @@ export const treeSlice = createSlice({
 
 export const {
   setTree,
+  setTopicName,
   setNewsFeed,
   setCampStatement,
   setCampSupportingTree,
