@@ -7,7 +7,7 @@ import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import styles from "../topicDetails.module.scss";
 import { useRouter } from "next/router";
 import CustomSkelton from "../../../common/customSkelton";
-import {RightOutlined} from '@ant-design/icons';
+import { RightOutlined } from "@ant-design/icons";
 
 import { useSelector, useDispatch } from "react-redux";
 import { store } from "../../../../store";
@@ -119,7 +119,10 @@ const CampTreeCard = ({
                     event.stopPropagation();
                   }}
                 >
-                <Text>{`Show camps with score`}<RightOutlined className="rightOutlined"  /></Text>
+                  <Text>
+                    {`Show camps with score`}
+                    <RightOutlined className="rightOutlined" />
+                  </Text>
                   <Select
                     defaultValue={"50%"}
                     style={{ width: 80 }}
@@ -155,7 +158,6 @@ const CampTreeCard = ({
                       },
                     ]}
                   />
-                 
                 </div>
               </>
             }
