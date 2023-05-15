@@ -471,13 +471,15 @@ const TopicDetails = () => {
                           loadingIndicator={loadingIndicator}
                         />
 
-                      
-
                         {typeof window !== "undefined" &&
                           window.innerWidth > 767 && (
                             <>
-                              <CurrentTopicCard loadingIndicator={loadingIndicator} />
-                              <CurrentCampCard loadingIndicator={loadingIndicator} />
+                              <CurrentTopicCard
+                                loadingIndicator={loadingIndicator}
+                              />
+                              <CurrentCampCard
+                                loadingIndicator={loadingIndicator}
+                              />
                             </>
                           )}
 
@@ -512,22 +514,24 @@ const TopicDetails = () => {
                         {typeof window !== "undefined" &&
                           window.innerWidth < 767 && (
                             <>
-                              <CurrentTopicCard loadingIndicator={loadingIndicator} />
-                              <CurrentCampCard loadingIndicator={loadingIndicator} />
-                               <Spin spinning={loadingIndicator} size="large">
+                              <CurrentTopicCard
+                                loadingIndicator={loadingIndicator}
+                              />
+                              <CurrentCampCard
+                                loadingIndicator={loadingIndicator}
+                              />
+                              <Spin spinning={loadingIndicator} size="large">
                                 {!!newsFeed?.length && (
                                   <NewsFeedsCard newsFeed={newsFeed} />
                                 )}
                               </Spin>
-                               <>
-                              {router.asPath.includes("topic") && (
-                                <CampRecentActivities />
-                              )}
-                            </>
+                              <>
+                                {router.asPath.includes("topic") && (
+                                  <CampRecentActivities />
+                                )}
+                              </>
                             </>
                           )}
-
-                      
                       </>
                     )}
               </>
