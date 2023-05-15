@@ -3,7 +3,7 @@ import RacingBarChart from "./RacingBarChart.js";
 import useInterval from "./useInterval";
 // import "./App.css";
 import HorizontalTimelineComp from "./HorizontalTimeline";
-import TimelineSlider from "../eventLine/timelineSlider";
+import TimelineSlider from "../eventLine/TimelineSlider";
 import { getEventLineApi } from "src/network/api/topicEventLineAPI";
 import { useRouter } from "next/router.js";
 import { useSelector } from "react-redux";

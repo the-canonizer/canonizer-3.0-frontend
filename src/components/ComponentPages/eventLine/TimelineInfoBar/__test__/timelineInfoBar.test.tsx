@@ -7,10 +7,13 @@ import {
   cleanup,
 } from "@testing-library/react";
 import { Provider } from "react-redux";
+
 import { store } from "../../../../../store";
 import { RouterContext } from "next/dist/shared/lib/router-context";
-import NewsAdd from "../index";
-function createMockRouter() {
+import CampInfoBar from "../index";
+import { NextRouter } from "next/router";
+
+function createMockRouter(router: Partial<NextRouter>): NextRouter {
   return {
     basePath: "",
     pathname: "/",
@@ -34,6 +37,7 @@ function createMockRouter() {
     defaultLocale: "en",
     domainLocales: [],
     isPreview: false,
+    ...router,
   };
 }
 
@@ -49,36 +53,22 @@ window.matchMedia =
 
 afterEach(cleanup);
 describe("Should render Addnews", () => {
-  beforeEach(() => {
-    jest.mock("../../../../../network/api/campNewsApi", () => ({
-      addNewsFeedApi: jest.fn(() => Promise.resolve({ status_code: 200 })),
-    }));
-  });
   it("Render without crash", async () => {
-    const { container } = await render(
+    const { container } = render(
       <Provider store={store}>
-        <RouterContext.Provider value={createMockRouter()}>
-          <NewsAdd />
+        <RouterContext.Provider
+          value={createMockRouter({
+            asPath: "/eventline/1245-test-event-topic/2-camp-122",
+          })}
+        >
+          <CampInfoBar />
         </RouterContext.Provider>
       </Provider>
     );
-    waitFor(() => {
-      const submitButton = screen.getByRole("button", {
-        name: /Create News/i,
-      });
-      const cancelButton = screen.getByRole("button", {
-        name: /Cancel/i,
-      });
-
-      expect(container.getElementsByTagName("button")).toHaveLength(2);
-      expect(container.getElementsByTagName("textarea")).toHaveLength(1);
-      expect(container.getElementsByTagName("input")).toHaveLength(3);
-      expect(screen.getByText(/display text/i).textContent).toBe(
-        "Display Text * (Limit 256 chars)"
-      );
-
-      expect(submitButton.textContent).toBe(" Create News");
-      expect(cancelButton.textContent).toBe("Cancel");
+    console.log("container ", container);
+    const a = screen.getByText(/topic :/i);
+    const b = screen.getByRole("button", {
+      name: /arrow\-left/i,
     });
   });
 });

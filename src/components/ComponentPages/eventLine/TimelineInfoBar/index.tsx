@@ -1,7 +1,7 @@
 import { Button, Spin, Typography } from "antd";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import styles from "../timeBarControl.module.scss";
+import styles from "../topicDetails.module.scss";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 
 const CampInfoBar = () => {
@@ -37,7 +37,7 @@ const CampInfoBar = () => {
               {" "}
               <span className="bold">
                 {" "}
-                Topic : {router.query.camp[0].split("-").slice(1).join(" ")}
+                Topic : {router.query.camp?.at(0).split("-").slice(1).join(" ")}
               </span>
             </Typography.Paragraph>
           </div>
