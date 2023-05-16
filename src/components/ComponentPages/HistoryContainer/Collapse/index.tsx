@@ -8,6 +8,8 @@ import {
   Modal,
   Spin,
   Tooltip,
+  Table,
+  Tag,
 } from "antd";
 import moment from "moment";
 import Link from "next/link";
@@ -22,6 +24,11 @@ import {
 import { setFilterCanonizedTopics } from "../../../../store/slices/filtersSlice";
 import { RootState } from "../../../../store";
 import K from "../../../../constants";
+
+import {
+  getHistoryApi,
+  getChangeSupporters,
+} from "../../../..//network/api/history";
 
 import { useDispatch, useSelector } from "react-redux";
 import styles from ".././campHistory.module.scss";
@@ -58,6 +65,9 @@ function HistoryCollapse({
   }));
 
   const [modal1Open, setModal1Open] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [supporters, setSupporters] = useState([]);
+
   const dispatch = useDispatch();
   const { isUserAuthenticated } = useAuthentication();
   const handleViewThisVersion = (goLiveTime) => {
@@ -136,11 +146,36 @@ function HistoryCollapse({
       router.push(`/manage/${historyOf}/${campStatement?.id}`);
     }
   };
+
+  const columns = [
+    {
+      title: "Nick Name",
+      dataIndex: "nickNameData",
+      render: (text) => (
+        <Link href={text?.path} passHref>
+          <a>{text?.name}</a>
+        </Link>
+      ),
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      render: (tag) => {
+        return (
+          <Tag color={tag ? "geekblue" : "volcano"} key={tag}>
+            {tag ? "Agreed" : "Not Agree"}
+          </Tag>
+        );
+      },
+    },
+  ];
   const cancelConfirm = () => {
     Modal.confirm({
-      title: "Do you Want to Cancel this commit?",
+      title: "Do you want to cancel this commit?",
       icon: <ExclamationCircleFilled />,
-      content: "Your changes will be lost.",
+      content:
+        "Please note that any unsaved changes will be lost if you cancel.",
       onOk() {
         discardChanges();
       },
@@ -453,7 +488,42 @@ function HistoryCollapse({
                           campStatement?.ifIAmExplicitSupporter ||
                           campStatement?.isAuthor
                         ) && (
-                          <>
+                          <div
+                            onClick={async () => {
+                              let req = {
+                                topic_num: router.query.camp[0].split("-")[0],
+                                camp_num:
+                                  historyOf == "topic"
+                                    ? 1
+                                    : router.query.camp[1].split("-")[0],
+                                change_id: campStatement?.id,
+                                type: historyOf,
+                              };
+                              let res = await getChangeSupporters(req);
+                              if (res.status_code == 200) {
+                                let supportersData = res?.data.supporters?.map(
+                                  (data, key) => {
+                                    return {
+                                      key: key,
+                                      status: data?.agreed,
+                                      nickNameData: {
+                                        name: data?.nick_name,
+                                        path: `/user/supports/${
+                                          data?.id || ""
+                                        }?topicnum=${
+                                          campStatement?.topic_num || ""
+                                        }&campnum=${
+                                          campStatement?.camp_num || ""
+                                        }&canon=${topicNamespaceId || ""}`,
+                                      },
+                                    };
+                                  }
+                                );
+                                setSupporters(supportersData);
+                              }
+                              setIsModalOpen(true);
+                            }}
+                          >
                             <i
                               className="icon-info tooltip-icon-style"
                               style={{
@@ -481,9 +551,25 @@ function HistoryCollapse({
                                   you agree, this will go live.
                                 </>
                               )}
-                          </>
+                          </div>
                         )}
                       </div>
+                      <Modal
+                        title="Direct Supporters"
+                        open={isModalOpen}
+                        onCancel={() => {
+                          setIsModalOpen(false);
+                        }}
+                        footer={null}
+                      >
+                        {supporters.length > 0 && (
+                          <Table
+                            dataSource={supporters}
+                            pagination={false}
+                            columns={columns}
+                          />
+                        )}
+                      </Modal>
                       {!!(
                         campStatement?.ifIamSupporter != 0 ||
                         campStatement?.ifIAmExplicitSupporter

@@ -63,7 +63,7 @@ const TopicsList = () => {
     filterNameSpaceId,
     search,
     is_checked,
-    is_archive
+    is_archive,
   } = useSelector((state: RootState) => ({
     canonizedTopics: state.homePage?.canonizedTopicsData,
     asofdate: state.filters?.filterObject?.asofdate,
@@ -76,7 +76,7 @@ const TopicsList = () => {
     filterNameSpaceId: state?.filters?.filterObject?.namespace_id,
     search: state?.filters?.filterObject?.search,
     is_checked: state?.utils?.score_checkbox,
-    is_archive: state?.filters?.filterObject?.is_archive
+    is_archive: state?.filters?.filterObject?.is_archive,
   }));
   const [topicsData, setTopicsData] = useState(canonizedTopics);
   const [nameSpacesList, setNameSpacesList] = useState(nameSpaces);
@@ -84,7 +84,6 @@ const TopicsList = () => {
   const [isReview, setIsReview] = useState(asof == "review");
   const [inputSearch, setInputSearch] = useState("");
   const [archiveSearch, setArchiveSearch] = useState(0);
-
 
   const [nameSpaceId, setNameSpaceId] = useState(filterNameSpaceId || "");
 
@@ -163,10 +162,10 @@ const TopicsList = () => {
   useEffect(() => {
     setSelectedNameSpace(filterNameSpace);
     setNameSpaceId(filterNameSpaceId);
-    setArchiveSearch(is_archive)
+    setArchiveSearch(is_archive);
     setInputSearch(search.trim());
     setNameSpacesList(nameSpaces);
-  }, [filterNameSpace, filterNameSpaceId, search, nameSpaces,is_archive]);
+  }, [filterNameSpace, filterNameSpaceId, search, nameSpaces, is_archive]);
 
   useEffect(() => {
     setTopicsData(canonizedTopics);
@@ -208,7 +207,7 @@ const TopicsList = () => {
       filter: filterByScore,
       asof: asof,
       user_email: onlyMyTopicsCheck.current ? userEmail : "",
-      is_archive : archiveSearch
+      is_archive: archiveSearch,
     };
     await getCanonizedTopicsApi(reqBody, loadMore);
     setLoadMoreIndicator(false);

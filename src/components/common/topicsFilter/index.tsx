@@ -384,9 +384,9 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                 <FullScoreCheckbox />
               </div>
             ) : null}
-              <div className={styles.scoreCheckbox}>
-                <ArchivedCampCheckBox />
-              </div>
+            <div className={styles.scoreCheckbox}>
+              <ArchivedCampCheckBox />
+            </div>
           </Panel>
 
           <Panel
