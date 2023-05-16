@@ -36,6 +36,17 @@ export const getHistoryApi = async (reqBody, pageNumber, historyOf: string) => {
     store.dispatch(pushToCampHistory([]));
   }
 };
+export const getChangeSupporters = async (reqBody) => {
+  try {
+    const res = await NetworkCall.fetch(
+      historyRequest.changeSupporters(reqBody),
+      false
+    );
+    return res;
+  } catch (error) {
+    handleError(error);
+  }
+};
 
 export const getCompareStatement = async (reqBody) => {
   try {
