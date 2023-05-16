@@ -12,7 +12,7 @@ const LoggedInHeader = () => {
       <LoggedInHeaderNavigation></LoggedInHeaderNavigation>
       <SearchSection />
       <DisclaimerMsg />
-      <ArchivedCampMsg/>
+      <ArchivedCampMsg />
       <LoginModal />
       <RegistrationModal />
     </React.Fragment>
