@@ -40,7 +40,7 @@
     "json2mq": "^0.2.0",
     "localforage": "^1.10.0",
     "moment": "^2.29.1",
-    "next": "^13.1.6",
+    "next": "^13.4.2",
     "next-plugin-antd-less": "^1.6.0",
     "next-redux-wrapper": "6.0.0",
     "next-share": "^0.19.0",
@@ -102,5 +102,8 @@
   "version": "1.0.0",
   "author": "",
   "license": "ISC",
-  "eslintIgnore": ["**/__tests__/*.tsx", "**/__test__/*.tsx"]
+  "eslintIgnore": [
+    "**/__tests__/*.tsx",
+    "**/__test__/*.tsx"
+  ]
 }
