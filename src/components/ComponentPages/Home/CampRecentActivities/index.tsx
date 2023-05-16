@@ -64,8 +64,10 @@ export default function CampRecentActivities() {
                 legacyBehavior
               >
                 <a className={styles.viewAllLink}>
-                  <Text>View All</Text>
-                  <i className="icon-angle-right"></i>
+                  <>
+                    <Text>View All</Text>
+                    <i className="icon-angle-right"></i>
+                  </>
                 </a>
               </Link>
             ) : (

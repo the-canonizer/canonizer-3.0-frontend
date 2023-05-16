@@ -230,17 +230,19 @@ const ThreadListUI = ({
                       className={styles.threadListTitle}
                       id={"thread-label-" + (+idx + 1)}
                     >
-                      {text}
-                      {isLog && paramsList.by === "my" ? (
-                        <Tooltip title="edit">
-                          <a
-                            onClick={(e) => onEditClick(e, others)}
-                            className="linkCss"
-                          >
-                            <EditOutlined />
-                          </a>
-                        </Tooltip>
-                      ) : null}
+                      <>
+                        {text}
+                        {isLog && paramsList.by === "my" ? (
+                          <Tooltip title="edit">
+                            <a
+                              onClick={(e) => onEditClick(e, others)}
+                              className="linkCss"
+                            >
+                              <EditOutlined />
+                            </a>
+                          </Tooltip>
+                        ) : null}
+                      </>
                     </a>
                   );
                 }}
