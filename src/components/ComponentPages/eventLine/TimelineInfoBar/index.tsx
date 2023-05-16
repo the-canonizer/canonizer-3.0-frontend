@@ -3,9 +3,9 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { RootState } from "src/store";
 import { useSelector, useDispatch } from "react-redux";
-import styles from "./topicDetails.module.scss";
+import styles from "../topicDetails.module.scss";
 import { ArrowLeftOutlined } from "@ant-design/icons";
-import CustomSkelton from "../../common/customSkelton";
+import CustomSkelton from "../../../common/customSkelton";
 import { setTopicName } from "src/store/slices/campDetailSlice";
 
 const CampInfoBar = () => {
