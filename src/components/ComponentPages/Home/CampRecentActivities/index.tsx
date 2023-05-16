@@ -51,7 +51,7 @@ export default function CampRecentActivities() {
         title="Recent Activities"
         className={"activities " + styles.campActivities}
         actions={[
-          <Fragment>
+          <Fragment key={0}>
             {userData?.is_admin ? (
               <Link
                 href={{

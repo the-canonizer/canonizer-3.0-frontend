@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Tree, Tooltip, Select, Image } from "antd";
+import React, { useEffect, useState } from "react";
+import { Tree, Tooltip, Image } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../../store";
 import Link from "next/link";
@@ -39,8 +39,6 @@ const CampTree = ({
   const [showScoreBars, setShowScoreBars] = useState(false);
 
   const [selectedExpand, setSelectedExpand] = useState([]);
-
-  const [autoExpandParent, setAutoExpandParent] = useState(true);
 
   // const [selectedNodeID, setSelectedNodeID] = useState(1);
   const [scoreFilter, setScoreFilter] = useState(filterByScore);

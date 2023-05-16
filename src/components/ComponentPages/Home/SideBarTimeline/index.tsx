@@ -1,27 +1,20 @@
 import { useState, Fragment, useEffect } from "react";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
 import { Button, Drawer } from "antd";
 import { AppstoreAddOutlined } from "@ant-design/icons";
 
-import { RootState } from "src/store";
 import TimelineFilter from "../../../common/timelineFilter";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import Events from "../../eventLine/Events";
 
-export default function SideBarTimeline({
-  onCreateCamp = () => {},
-  timelineDescript,
-}: any) {
+export default function SideBarTimeline({ timelineDescript }: any) {
   const { isUserAuthenticated } = useAuthentication();
 
+  /* eslint-disable */
   const [isAuth, setIsAuth] = useState(isUserAuthenticated);
+  /* eslint-enable */
 
   const router = useRouter();
-
-  const { newsFeed } = useSelector((state: RootState) => ({
-    newsFeed: state?.topicDetails?.newsFeed,
-  }));
 
   const [visible, setVisible] = useState(false);
 
@@ -39,7 +32,7 @@ export default function SideBarTimeline({
     <Fragment>
       {" "}
       {typeof window !== "undefined" && window.innerWidth > 767 ? (
-        <TimelineFilter onCreateCamp={onCreateCamp} />
+        <TimelineFilter />
       ) : (
         <Fragment>
           <Button type="primary" onClick={showDrawer} className="btnFilter">
@@ -51,7 +44,7 @@ export default function SideBarTimeline({
             onClose={onClose}
             visible={visible}
           >
-            <TimelineFilter onCreateCamp={onCreateCamp} />
+            <TimelineFilter />
           </Drawer>
         </Fragment>
       )}

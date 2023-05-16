@@ -6,10 +6,7 @@ import { useEffect, useState } from "react";
 import styles from "./archivedCamps.module.scss";
 
 import { RootState } from "src/store";
-import {
-  setScoreCheckBox,
-  setArchivedCheckBox,
-} from "src/store/slices/utilsSlice";
+import { setArchivedCheckBox } from "src/store/slices/utilsSlice";
 
 const ArchivedCampCheckBox = () => {
   const { is_camp_archive_checked } = useSelector((state: RootState) => ({
@@ -25,7 +22,7 @@ const ArchivedCampCheckBox = () => {
   );
 
   const setCheckboxStore = (val) => {
-    dispatch(setArchivedCheckBox(val)), console.log(val, "val");
+    dispatch(setArchivedCheckBox(val));
   };
 
   const onChange = (e: CheckboxChangeEvent) => {

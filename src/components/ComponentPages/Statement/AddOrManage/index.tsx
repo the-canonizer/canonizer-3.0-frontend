@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Form, Button, Row, Col, Card, Input, Select, Typography, Tooltip} from "antd";
+import {
+  Form,
+  Button,
+  Row,
+  Col,
+  Card,
+  Input,
+  Select,
+  Typography,
+  Tooltip,
+} from "antd";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import "antd/dist/antd.css";
@@ -336,7 +346,7 @@ export default function AddOrManage({ add }: any) {
           setEditStatementData(res);
         }
       } else {
-        let topic_res = await getCurrentTopicRecordApi({
+        await getCurrentTopicRecordApi({
           topic_num: router?.query?.statement[0].split("-")[0],
           camp_num: router?.query?.statement[1].split("-")[0] ?? "1",
         });
@@ -491,7 +501,7 @@ export default function AddOrManage({ add }: any) {
     };
   }, []);
 
-  const toolTipContent = "This camp is under review"
+  const toolTipContent = "This camp is under review";
 
   const onCheckboxChange = async (e: CheckboxChangeEvent) => {
     const oldOptions = [...options];
@@ -717,11 +727,20 @@ export default function AddOrManage({ add }: any) {
                                   <Select.Option
                                     value={camp.camp_num}
                                     key={camp.id}
-                                    disabled={camp.parent_change_in_review == true ?true:false}
-                                   
+                                    disabled={
+                                      camp.parent_change_in_review == true
+                                        ? true
+                                        : false
+                                    }
                                   >
-                                    <Tooltip title={camp.parent_change_in_review == true ? toolTipContent: null} >
-                                    {camp.camp_name}
+                                    <Tooltip
+                                      title={
+                                        camp.parent_change_in_review == true
+                                          ? toolTipContent
+                                          : null
+                                      }
+                                    >
+                                      {camp.camp_name}
                                     </Tooltip>
                                   </Select.Option>
                                 ) : (

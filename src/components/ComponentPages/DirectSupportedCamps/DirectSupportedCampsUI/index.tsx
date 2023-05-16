@@ -60,7 +60,7 @@ export default function DirectSupportedCampsUI({
       </div>
     );
   };
-  const buttonText = "Save";
+  // const buttonText = "Save";
 
   const tagsOrder = (topic_num, data, tags) => {
     setTagsCampsOrderID(data.topic_num);
@@ -296,6 +296,7 @@ export default function DirectSupportedCampsUI({
                   removeCampLink.map((val, index) => {
                     return (
                       <Link
+                        key={index}
                         href={{
                           pathname: val.camp_link,
                         }}

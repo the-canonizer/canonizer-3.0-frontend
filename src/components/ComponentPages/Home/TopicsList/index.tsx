@@ -13,7 +13,7 @@ import {
 import { setFilterCanonizedTopics } from "../../../../store/slices/filtersSlice";
 import styles from "./topicsList.module.scss";
 import { Spin, Checkbox } from "antd";
-import { LoadingOutlined, RightOutlined } from "@ant-design/icons";
+import { LoadingOutlined } from "@ant-design/icons";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import {
   setCheckSupportExistsData,
@@ -38,9 +38,7 @@ const infoContent = (
         Canons are a set of topics created for specific organizations and cities
         to separate topics exclusively for them from the topics of general
         interest. To get a canon created for your organization, contact{" "}
-        <Link href="mailto:support@canonizer.com">
-          support@canonizer.com
-        </Link>
+        <Link href="mailto:support@canonizer.com">support@canonizer.com</Link>
       </p>
     </div>
   </>

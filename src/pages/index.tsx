@@ -53,7 +53,7 @@ function Home({ current_date }) {
             refresh_token: null,
           })
         );
-        const { access_token, ...rest } = router?.query;
+        const { ...rest } = router?.query;
         router.query = rest;
         await router.replace(router, null, { shallow: true });
       }
@@ -75,7 +75,7 @@ function Home({ current_date }) {
   );
 }
 
-export async function getServerSideProps(ctx) {
+export async function getServerSideProps() {
   const currentDate = new Date().valueOf();
 
   return {

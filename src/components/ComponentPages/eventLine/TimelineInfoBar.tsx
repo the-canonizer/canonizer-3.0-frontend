@@ -5,7 +5,7 @@ import styles from "./topicDetails.module.scss";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 
 const CampInfoBar = () => {
-  const [loadingIndicator, setLoadingIndicator] = useState(false);
+  const [loadingIndicator] = useState(false);
 
   const router = useRouter();
 

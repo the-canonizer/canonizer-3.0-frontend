@@ -3,8 +3,6 @@ import { Slider, Popover, Typography } from "antd";
 import {
   CaretRightOutlined,
   PauseOutlined,
-  BackwardOutlined,
-  ForwardOutlined,
   StepBackwardOutlined,
   StepForwardOutlined,
   DashboardOutlined,

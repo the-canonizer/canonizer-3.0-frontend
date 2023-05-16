@@ -1,11 +1,9 @@
-import { Collapse, Popover, Image, Typography, Button, Select } from "antd";
+import { Collapse, Popover, Image, Typography, Select } from "antd";
 import React, { useEffect, useState, useRef } from "react";
 import CampTree from "../CampTree";
-import Link from "next/link";
 import { RootState } from "src/store";
-import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import styles from "../topicDetails.module.scss";
-import { useRouter } from "next/router";
+
 import CustomSkelton from "../../../common/customSkelton";
 import { RightOutlined } from "@ant-design/icons";
 
@@ -45,19 +43,14 @@ const CampTreeCard = ({
   setTotalCampScoreForSupportTree,
   setSupportTreeForCamp,
 }) => {
-  const { asof } = useSelector((state: RootState) => ({
+  const { asof, asofdate } = useSelector((state: RootState) => ({
     asofdate: state.filters?.filterObject?.asofdate,
     asof: state?.filters?.filterObject?.asof,
   }));
-  const { tree, is_admin } = useSelector((state: RootState) => ({
+  const { tree } = useSelector((state: RootState) => ({
     tree: state?.topicDetails?.tree?.at(0),
-
-    is_admin: state?.auth?.loggedInUser?.is_admin,
   }));
 
-  const router = useRouter();
-  const { isUserAuthenticated } = useAuthentication();
-  const eventLinePath = router.asPath.replace("topic", "eventline");
   const [treeExpandValue, setTreeExpandValue] = useState<any>(50);
   const prevTreeValueRef = useRef(50);
   const dispatch = useDispatch();
@@ -163,12 +156,7 @@ const CampTreeCard = ({
             }
           >
             {getTreeLoadingIndicator || !tree ? (
-              <CustomSkelton
-                skeltonFor="tree"
-                bodyCount={4}
-                isButton={false}
-                stylingClass=""
-              />
+              <CustomSkelton skeltonFor="tree" bodyCount={4} stylingClass="" />
             ) : (
               <CampTree
                 scrollToCampStatement={scrollToCampStatement}
