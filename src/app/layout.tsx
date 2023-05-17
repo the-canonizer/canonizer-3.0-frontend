@@ -1,4 +1,5 @@
 // import "./globals.css";
+import * as React from 'react';
 
 import Layout from "src/hoc/layout/layoutApp";
 import { Providers } from ".././store/provider";
