@@ -23,7 +23,7 @@ function TimeLine({ setTimelineDescript }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const router = useRouter();
 
-  const events = mockData && Object.keys(mockData);
+  const events = mockData && Object.keys(mockData).sort();
   const [data, setData] = useState([]);
   const { algorithm, score } = useSelector((state: RootState) => ({
     algorithm: state.filters?.filterObject?.algorithm,
@@ -52,11 +52,11 @@ function TimeLine({ setTimelineDescript }) {
 
   useEffect(() => {
     setData(
-      mockData[Object.keys(mockData)[iteration]]?.payload_response?.filter(
-        (item) => item.score >= score
-      )
+      mockData[
+        Object.keys(mockData)?.sort()[iteration]
+      ]?.payload_response?.filter((item) => item.score >= score)
     );
-  }, [mockData, score]);
+  }, [mockData, score, isPlaying]);
 
   useInterval(() => {
     if (start && events.length > iteration) {
