@@ -1,10 +1,10 @@
-import { Fragment } from "react";
+import { Fragment, memo } from "react";
 import { useSelector } from "react-redux";
 
 import styles from "./helpCard.module.scss";
 import { RootState } from "../../../../store";
 
-const HelpCard = () => {
+const HelpCard = memo(() => {
   const { whatsNew } = useSelector((state: RootState) => ({
     whatsNew: state.homePage?.whatsNew,
   }));
@@ -20,6 +20,6 @@ const HelpCard = () => {
       )}
     </Fragment>
   );
-};
+});
 
 export default HelpCard;

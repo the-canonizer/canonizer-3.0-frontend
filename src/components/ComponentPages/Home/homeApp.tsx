@@ -1,7 +1,7 @@
 import { Row, Col } from "antd";
 import useAuthentication from "../../../hooks/isUserAuthenticated";
-import SideBar from "./SideBar";
-const TopicsList = dynamic(() => import("./TopicsList"), { ssr: false });
+import SideBar from "./SideBar/sideBarApp";
+const TopicsList = dynamic(() => import("./TopicsList/topicListApp"), { ssr: false });
 import HelpCard from "./HelpCard";
 import dynamic from "next/dynamic";
 const RecentActivities = dynamic(() => import("./RecentActivities"), {

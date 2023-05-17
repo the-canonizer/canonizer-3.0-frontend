@@ -9,7 +9,7 @@ const HomePageContainer = dynamic(
   () => import("../components/ComponentPages/Home/homeApp"),
   { ssr: false }
 );
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 import { getCanonizedWhatsNewContentApi } from "src/network/api/homePageApi";
 import {
@@ -21,7 +21,7 @@ import { setAuthToken, setLoggedInUser } from "src/store/slices/authSlice";
 
 function Home() {
   const dispatch = useDispatch();
-  // const router = useRouter();
+  const router = useRouter();
 
   dispatch(setFilterCanonizedTopics({ search: "" }));
   dispatch(setCurrentDate(new Date().valueOf()));
@@ -70,9 +70,9 @@ function Home() {
 
   return (
     <Fragment>
-      <Layout>
+      
         <HomePageContainer />
-      </Layout>
+     
     </Fragment>
   );
 }
