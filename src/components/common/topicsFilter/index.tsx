@@ -88,7 +88,7 @@ const asContent = (
 //   };
 // }
 
-const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
+const CreateTopic = ({ onCreateCamp = () => { },backGroundColorClass}: any) => {
   const isAuth = useAuthentication();
 
   const [isDatePicker, setIsDatePicker] = useState(false);
@@ -204,15 +204,15 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
     } else {
       let datepicker =
         moment().unix() > moment(e?._d).unix() &&
-        moment().format("YYYY-MM-DD") > moment(e?._d).format("YYYY-MM-DD")
+          moment().format("YYYY-MM-DD") > moment(e?._d).format("YYYY-MM-DD")
           ? momentDateObject(moment(e?._d).endOf("day"))
           : momentDateObject(
-              moment(e?._d).set({
-                hour: moment().hour(),
-                minute: moment().minute(),
-                second: moment().second(),
-              })
-            );
+            moment(e?._d).set({
+              hour: moment().hour(),
+              minute: moment().minute(),
+              second: moment().second(),
+            })
+          );
       setDatePickerValue(datepicker);
       IsoDateFormat = Date.parse(datepicker) / 1000;
     }
@@ -246,16 +246,16 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
     if (datePickerValue !== null) {
       let dateValue =
         moment().unix() > moment(datePickerValue).unix() &&
-        moment().format("YYYY-MM-DD") >
+          moment().format("YYYY-MM-DD") >
           moment(datePickerValue).format("YYYY-MM-DD")
           ? momentDateObject(moment(datePickerValue).endOf("day"))
           : momentDateObject(
-              moment(datePickerValue).set({
-                hour: moment().hour(),
-                minute: moment().minute(),
-                second: moment().second(),
-              })
-            );
+            moment(datePickerValue).set({
+              hour: moment().hour(),
+              minute: moment().minute(),
+              second: moment().second(),
+            })
+          );
       dispatch(
         setFilterCanonizedTopics({
           asofdate: Date.parse(dateValue) / 1000,
@@ -268,7 +268,6 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   function momentDateObject(e) {
     return e?._d;
   }
-
   return (
     <>
       <div className="leftSideBar_Card">
@@ -277,8 +276,8 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
             <i className="icon-topic"></i> Create New Topic
           </Button>
           {isCampBtnVisible &&
-          currentCampNode?._isDisabled == 0 &&
-          currentCampNode?.parentIsOneLevel == 0 ? (
+            currentCampNode?._isDisabled == 0 &&
+            currentCampNode?.parentIsOneLevel == 0 ? (
             <Tooltip
               title={
                 tree && !tree["1"]?.is_valid_as_of_time
@@ -291,7 +290,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                 size="large"
                 disabled={
                   (tree && !tree["1"]?.is_valid_as_of_time) ||
-                  (campExist && !campExist?.camp_exist)
+                    (campExist && !campExist?.camp_exist)
                     ? true
                     : false
                 }
@@ -390,8 +389,9 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
               </div>
             ) : null}
           </Panel>
-
+          {/* ${backGroundColorClass}` */}
           <Panel
+            className={`header-bg-color-change radio-group-sider ${backGroundColorClass}` }
             header={
               <span className={styles.title}>
                 As Of

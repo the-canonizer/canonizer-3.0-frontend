@@ -391,7 +391,6 @@ const TopicDetails = () => {
       })
     );
   };
-
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
@@ -416,7 +415,7 @@ const TopicDetails = () => {
         )}
 
         <aside className={styles.miniSide + " leftSideBar miniSideBar"}>
-          <SideBar onCreateCamp={onCreateCamp} />
+          <SideBar onCreateCamp={onCreateCamp} backGroundColorClass={backGroundColorClass}/>
         </aside>
 
         <>

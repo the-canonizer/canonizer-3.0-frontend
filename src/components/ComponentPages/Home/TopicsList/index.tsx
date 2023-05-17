@@ -46,7 +46,7 @@ const infoContent = (
   </>
 );
 
-const TopicsList = () => {
+const TopicsList = ({backGroundColorClass, setBackGroundColorClass}) => {
   const router = useRouter();
   const [pageNumber, setPageNumber, pageNumberRef] = useState(1);
   const dispatch = useDispatch();
@@ -81,7 +81,6 @@ const TopicsList = () => {
   const [nameSpacesList, setNameSpacesList] = useState(nameSpaces);
 
   const [isReview, setIsReview] = useState(asof == "review");
-  const [backGroundColorClass, setBackGroundColorClass] = useState("default");
   const [inputSearch, setInputSearch] = useState("");
 
   const [nameSpaceId, setNameSpaceId] = useState(filterNameSpaceId || "");
