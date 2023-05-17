@@ -8,10 +8,6 @@ export const currentCampRecordConstants = [
     key: "key_words",
   },
   {
-    label: "Edit Summary",
-    key: "note",
-  },
-  {
     label: "Camp About URL",
     key: "camp_about_url",
   },
@@ -29,7 +25,7 @@ export const currentCampRecordConstants = [
   },
   {
     label: "Camp Archived",
-    key: "camp_archived",
+    key: "is_archive",
   },
   {
     label: "Submitted On",
