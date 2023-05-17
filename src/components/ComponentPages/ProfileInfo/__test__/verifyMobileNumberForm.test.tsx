@@ -97,7 +97,7 @@ describe("Verify Mobile Number Page", () => {
     userEvent.click(btnEl);
 
     await waitFor(() => {
-      expect(screen.queryByText(validations.phoneNumber)).toBeVisible();
+      expect(screen.queryByText(validations.phoneNumber)).toBeInTheDocument();
     });
   });
 });

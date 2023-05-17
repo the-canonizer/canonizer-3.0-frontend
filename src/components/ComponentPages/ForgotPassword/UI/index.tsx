@@ -70,6 +70,7 @@ function ForgotPasswordUI({ form, onFinish, isModal, closeModal, isScreen }) {
           {isScreen === 0 && (
             <Form.Item
               name="email_id"
+              data-testid="forgot-email-id"
               label={
                 <Fragment>
                   {messages.labels.emailId}
@@ -81,6 +82,7 @@ function ForgotPasswordUI({ form, onFinish, isModal, closeModal, isScreen }) {
               className={styles.textCenter}
             >
               <Input
+                data-testid="forgot-email-id-input"
                 className={styles.otpInput}
                 placeholder={messages.placeholders.emailId}
                 onKeyDown={(e) =>

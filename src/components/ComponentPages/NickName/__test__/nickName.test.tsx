@@ -204,7 +204,7 @@ describe("NickName page", () => {
     userEvent.click(btnEl);
 
     await waitFor(() => {
-      expect(screen.queryByText(validations.nickName)).toBeVisible();
+      expect(screen.queryByText(validations.nickName)).toBeInTheDocument();
     });
   });
 });

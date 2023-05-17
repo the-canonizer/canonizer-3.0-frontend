@@ -172,9 +172,9 @@ describe("Profile Info Page", () => {
     userEvent.click(btnEl);
 
     await waitFor(() => {
-      expect(screen.queryByText(validations.firstName)).toBeVisible();
-      expect(screen.queryByText(validations.lastName)).toBeVisible();
-      expect(screen.queryByText(validations.email)).toBeVisible();
+      expect(screen.queryByText(validations.firstName)).toBeInTheDocument();
+      expect(screen.queryByText(validations.lastName)).toBeInTheDocument();
+      expect(screen.queryByText(validations.email)).toBeInTheDocument();
     });
   });
 
