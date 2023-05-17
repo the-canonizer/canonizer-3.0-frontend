@@ -36,9 +36,6 @@ const { Panel } = Collapse;
 const { Title } = Typography;
 
 function HistoryCollapse({
-  ifIamSupporter,
-  ifSupportDelayed,
-  ifIAmExplicitSupporter,
   userNickNameData,
   topicNamespaceId,
   campStatement,
@@ -51,7 +48,6 @@ function HistoryCollapse({
 }: any) {
   const router = useRouter();
   const [commited, setCommited] = useState(false);
-  const [isSelectChecked, setIsSelectChecked] = useState(false);
   const { loading } = useSelector((state: RootState) => ({
     loading: state?.loading?.loading,
   }));
@@ -99,7 +95,6 @@ function HistoryCollapse({
   };
 
   const agreeWithChange = async () => {
-    setIsSelectChecked(true);
     let reqBody = {
       record_id: campStatement.id,
       topic_num: router.query.camp[0].split("-")[0],
@@ -298,7 +293,10 @@ function HistoryCollapse({
                         <p>
                           {K?.exceptionalMessages?.objectedModalMsgForMoreInfo}
                         </p>
-                        <Link href="/topic/132-Help/4-Disagreement" legacyBehavior>
+                        <Link
+                          href="/topic/132-Help/4-Disagreement"
+                          legacyBehavior
+                        >
                           <a style={{ fontSize: "16px" }}>
                             https://canonizer.com/topic/132-Help/4-Disagreement
                           </a>

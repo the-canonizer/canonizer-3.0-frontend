@@ -1,5 +1,5 @@
-import React, { useRef, useEffect, useLayoutEffect } from "react";
-import { select, scaleBand, scaleLinear, max , linkHorizontal} from "d3";
+import React, { useRef, useLayoutEffect } from "react";
+import { select, scaleBand, scaleLinear, max ,} from "d3";
 import useResizeObserver from "./useResizeObserver";
 
 import styles from './timeline.module.scss'
@@ -22,7 +22,6 @@ function RacingBarChart({ data }) {
       }
   }
 
-  console.log('lines', linesData)
   const svgRef = useRef();
   const wrapperRef = useRef();
   const dimensions = useResizeObserver(wrapperRef);
@@ -55,7 +54,7 @@ svg.selectAll('text').remove()
     // sorting the data
     // data.sort((a, b) => b.value - a.value);
 
-    const linkGenerator = linkHorizontal()
+    // const linkGenerator = linkHorizontal()
     // .x(link => link.y)
     // .y(link => link.x);
 
@@ -79,7 +78,7 @@ svg.selectAll('text').remove()
     // Add minus square icon
     svg
     .selectAll(".icon")
-      .data(data, (entry, index) => entry.title)
+      .data(data, (entry,) => entry.title)
       .join((enter) =>
       enter
       .append("image")
@@ -103,20 +102,20 @@ svg.selectAll('text').remove()
       .attr("class", "icon")
       .attr("x", (entry) => manageXAxis(entry) - 10 )
       // .transition()
-      .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 - 8);
+      .attr("y", (_, index) => yScale(index) + yScale.bandwidth() / 2 - 8);
 
   
 
     // draw the Title labels
     svg
       .selectAll(".label")
-      .data(data, (entry, index) => entry.title)
+      .data(data, (entry, ) => entry.title)
       .join((enter) =>
         enter
           .append("text")
           .attr(
             "y",
-            (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5
+            (_, index) => yScale(index) + yScale.bandwidth() / 2 + 5
           )
       )
       // .attr("fill", (entry) => '#f89d15')
@@ -125,43 +124,43 @@ svg.selectAll('text').remove()
       .attr("id", (entry)=> entry.camp_id)
       .attr("x", (entry) => manageXAxis(entry) + 10)
       .transition()
-      .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5);
+      .attr("y", (_, index) => yScale(index) + yScale.bandwidth() / 2 + 5);
 
   
 
     // draw the bars
     svg
       .selectAll(".bar")
-      .data(data, (entry, index) => entry.title)
+      .data(data, (entry) => entry.title)
       .join((enter) =>
         enter.append("rect").attr("y", (entry, index) => yScale(index))
       )
-      .attr("fill", (entry) => '#f89d15')
+      .attr("fill", () => '#f89d15')
       .attr("class", "bar")
       .attr("x", (entry) =>   manageBarXAxis(entry))
       .attr("height", yScale.bandwidth())
       .transition()
       .attr("width", (entry) => xScale(entry.score) + 39)
-      .attr("y", (entry, index) => yScale(index));
+      .attr("y", (_, index) => yScale(index));
 
         // draw the Score labels
         svg
         .selectAll(".label1")
-        .data(data, (entry, index) => entry.title)
+        .data(data, (entry) => entry.title)
         .join((enter) =>
           enter
             .append("text")
             .attr(
               "y",
-              (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5
+              (_, index) => yScale(index) + yScale.bandwidth() / 2 + 5
             )
         )
-        .attr("fill", (entry) => '#fff')
+        .attr("fill", () => '#fff')
         .text((entry) => ` ${entry.score.toFixed(2)}`)
         .attr("class", "label")
         .attr("x", (entry) => manageBarXAxis(entry) + 7)
         .transition()
-        .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5);
+        .attr("y", (_, index) => yScale(index) + yScale.bandwidth() / 2 + 5);
 
         // Lines Data
 

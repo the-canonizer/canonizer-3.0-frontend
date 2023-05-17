@@ -115,18 +115,22 @@ function Footer() {
                           <li key={item.id}>
                             <Link href={item.link}>
                               <>
-                              <i className="icon-angle-right"></i>{" "}
-                              {item.linkTitle}
+                                <i className="icon-angle-right"></i>{" "}
+                                {item.linkTitle}
                               </>
                             </Link>
                           </li>
                         );
                       })}
                       <li key="sitemap-link">
+                        {/* eslint-disable  */}
                         <a href="/sitemap" target="_blank">
-                          <i className="icon-angle-right"></i>{" "}
-                          <span>Sitemap</span>
+                          <>
+                            <i className="icon-angle-right"></i>{" "}
+                            <span>Sitemap</span>
+                          </>
                         </a>
+                        {/*  eslint-enable  */}
                       </li>
                     </ul>
                   </Col>
@@ -142,14 +146,16 @@ function Footer() {
                                 rel="noopener noreferrer"
                                 target={item.external ? "_blank" : "_self"}
                               >
-                                <i className="icon-angle-right"></i>{" "}
-                                {item.linkTitle}
+                                <>
+                                  <i className="icon-angle-right"></i>{" "}
+                                  {item.linkTitle}
+                                </>
                               </a>
                             ) : (
                               <Link href={item.link}>
                                 <>
-                                <i className="icon-angle-right"></i>{" "}
-                                {item.linkTitle}
+                                  <i className="icon-angle-right"></i>{" "}
+                                  {item.linkTitle}
                                 </>
                               </Link>
                             )}

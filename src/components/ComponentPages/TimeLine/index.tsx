@@ -2,23 +2,21 @@ import React, { useEffect, useState } from "react";
 import RacingBarChart from "./RacingBarChart.js";
 import useInterval from "./useInterval";
 // import "./App.css";
-import HorizontalTimelineComp from "./HorizontalTimeline";
 import TimelineSlider from "../eventLine/timelineSlider";
 import { getEventLineApi } from "src/network/api/topicEventLineAPI";
 import { useRouter } from "next/router.js";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store/index.js";
 import CustomSkelton from "@/components/common/customSkelton";
-const getRandomIndex = (array) => {
-  return Math.floor(array.length * Math.random());
-};
+// const getRandomIndex = (array) => {
+//   return Math.floor(array.length * Math.random());
+// };
 
 function TimeLine({ setTimelineDescript }) {
   const [loading, setLoading] = useState(false);
   const [iteration, setIteration] = useState(0);
   const [start, setStart] = useState(false);
   const [mockData, setMockData] = useState({});
-  const [eventDescription, setEventDescription] = useState("");
   const [animationSpeed, setAnimationSpeed] = useState(1000);
   const [isPlaying, setIsPlaying] = useState(false);
   const router = useRouter();
@@ -65,7 +63,7 @@ function TimeLine({ setTimelineDescript }) {
           (item) => item.score >= score
         )
       );
-      setEventDescription(mockData[events[iteration]].event?.message);
+      // setEventDescription(mockData[events[iteration]].event?.message);
       // if(isPlaying){
       setIteration(iteration + 1);
       // }
@@ -78,7 +76,7 @@ function TimeLine({ setTimelineDescript }) {
         (item) => item.score >= score
       )
     );
-    setEventDescription(mockData[events[index]].event?.message);
+    // setEventDescription(mockData[events[index]].event?.message);
     setIteration(index);
   };
 
@@ -88,7 +86,7 @@ function TimeLine({ setTimelineDescript }) {
         (item) => item.score >= score
       )
     );
-    setEventDescription(mockData[events[iteration]].event?.message);
+    // setEventDescription(mockData[events[iteration]].event?.message);
   };
 
   return (
@@ -112,7 +110,7 @@ function TimeLine({ setTimelineDescript }) {
           <CustomSkelton
             skeltonFor="tree"
             bodyCount={4}
-            isButton={false}
+            // isButton={false}
             stylingClass=""
           />
         ) : data?.length ? (

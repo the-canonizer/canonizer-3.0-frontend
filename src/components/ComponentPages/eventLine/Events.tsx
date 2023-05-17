@@ -1,12 +1,9 @@
-import { useRouter } from "next/router";
 import { useState, Fragment, useEffect } from "react";
 import { BellFilled } from "@ant-design/icons";
 import { Card, List } from "antd";
-import styles from "./topicDetails.module.scss";
 import activityStyle from "../Home/CampRecentActivities/campRecentActivities.module.scss";
 const Events = ({ timelineDescript }) => {
   const [check, setCheck] = useState(true);
-  const router = useRouter();
   useEffect(() => {
     setCheck(true);
     setTimeout(() => {

@@ -1,22 +1,11 @@
-import { useRouter } from "next/router";
-import { useSelector, useDispatch } from "react-redux";
-import { BellFilled } from "@ant-design/icons";
-
-import { Card, List } from "antd";
-
 import SideBarTimeline from "../Home/SideBarTimeline";
 import TimelineInfoBar from "./TimelineInfoBar";
 import styles from "./topicDetails.module.scss";
-import activityStyle from "../Home/CampRecentActivities/campRecentActivities.module.scss";
-import { BackTop, Collapse, Typography } from "antd";
+import { BackTop, Collapse } from "antd";
 import TimeLine from "../TimeLine";
 import { useState } from "react";
-import Events from "./Events";
 const { Panel } = Collapse;
-const { Title } = Typography;
 const TopicDetails = () => {
-  const router = useRouter();
-
   const [timelineDescript, setTimelineDescript] = useState([]);
 
   return (

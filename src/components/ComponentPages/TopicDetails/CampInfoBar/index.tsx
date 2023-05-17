@@ -173,13 +173,19 @@ const TimelineInfoBar = ({
       {isUserAuthenticated && is_admin && (
         <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
           {router.pathname == "/support/[...manageSupport]" ? (
-            <Link href={router.asPath.replace("support", "addnews")} legacyBehavior>
+            <Link
+              href={router.asPath.replace("support", "addnews")}
+              legacyBehavior
+            >
               <a rel="noopener noreferrer" href="/add-news">
                 Add News
               </a>
             </Link>
           ) : (
-            <Link href={router.asPath.replace("topic", "addnews")} legacyBehavior>
+            <Link
+              href={router.asPath.replace("topic", "addnews")}
+              legacyBehavior
+            >
               <a rel="noopener noreferrer" href="/add-news">
                 Add News
               </a>
@@ -444,7 +450,7 @@ const TimelineInfoBar = ({
                           }}
                           key={index}
                         >
-                          
+                          <>
                             <span className={styles.slashStyle}>
                               {" "}
                               {index !== 0 && <DoubleRightOutlined />}{" "}
@@ -456,7 +462,7 @@ const TimelineInfoBar = ({
                                   : styles.boldBreadcrumb
                               }
                             >{`${camp?.camp_name}`}</span>
-                          
+                          </>
                         </Link>
                       );
                     })
@@ -519,7 +525,6 @@ const TimelineInfoBar = ({
                     />
                   ) : (
                     <>
-                     
                       <Button
                         type="primary"
                         className={styles.btnCampForum}
@@ -528,7 +533,7 @@ const TimelineInfoBar = ({
                       >
                         Camp Forum
                       </Button>
-                       <Button
+                      <Button
                         type="primary"
                         onClick={eventLinePath}
                         className={styles.btnCampForum}
