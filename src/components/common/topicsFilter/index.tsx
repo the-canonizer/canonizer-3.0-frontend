@@ -272,7 +272,6 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   function momentDateObject(e) {
     return e?._d;
   }
-  console.log("asof ");
   return (
     <>
       <div className="leftSideBar_Card">
