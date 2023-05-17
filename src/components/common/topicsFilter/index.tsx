@@ -88,8 +88,10 @@ const asContent = (
 //   };
 // }
 
-const CreateTopic = ({ onCreateCamp = () => { },backGroundColorClass}: any) => {
+const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   const isAuth = useAuthentication();
+
+  const [backGroundColorClass, setBackGroundColorClass] = useState("default");
 
   const [isDatePicker, setIsDatePicker] = useState(false);
   // const [isPanelCollapse, setIsPanelCollapse] = useState(false);
@@ -204,15 +206,15 @@ const CreateTopic = ({ onCreateCamp = () => { },backGroundColorClass}: any) => {
     } else {
       let datepicker =
         moment().unix() > moment(e?._d).unix() &&
-          moment().format("YYYY-MM-DD") > moment(e?._d).format("YYYY-MM-DD")
+        moment().format("YYYY-MM-DD") > moment(e?._d).format("YYYY-MM-DD")
           ? momentDateObject(moment(e?._d).endOf("day"))
           : momentDateObject(
-            moment(e?._d).set({
-              hour: moment().hour(),
-              minute: moment().minute(),
-              second: moment().second(),
-            })
-          );
+              moment(e?._d).set({
+                hour: moment().hour(),
+                minute: moment().minute(),
+                second: moment().second(),
+              })
+            );
       setDatePickerValue(datepicker);
       IsoDateFormat = Date.parse(datepicker) / 1000;
     }
@@ -246,16 +248,18 @@ const CreateTopic = ({ onCreateCamp = () => { },backGroundColorClass}: any) => {
     if (datePickerValue !== null) {
       let dateValue =
         moment().unix() > moment(datePickerValue).unix() &&
-          moment().format("YYYY-MM-DD") >
+        moment().format("YYYY-MM-DD") >
           moment(datePickerValue).format("YYYY-MM-DD")
           ? momentDateObject(moment(datePickerValue).endOf("day"))
           : momentDateObject(
-            moment(datePickerValue).set({
-              hour: moment().hour(),
-              minute: moment().minute(),
-              second: moment().second(),
-            })
-          );
+              moment(datePickerValue).set({
+                hour: moment().hour(),
+                minute: moment().minute(),
+                second: moment().second(),
+              })
+            );
+
+      setBackGroundColorClass("bydate");
       dispatch(
         setFilterCanonizedTopics({
           asofdate: Date.parse(dateValue) / 1000,
@@ -268,6 +272,7 @@ const CreateTopic = ({ onCreateCamp = () => { },backGroundColorClass}: any) => {
   function momentDateObject(e) {
     return e?._d;
   }
+  console.log("asof ");
   return (
     <>
       <div className="leftSideBar_Card">
@@ -276,8 +281,8 @@ const CreateTopic = ({ onCreateCamp = () => { },backGroundColorClass}: any) => {
             <i className="icon-topic"></i> Create New Topic
           </Button>
           {isCampBtnVisible &&
-            currentCampNode?._isDisabled == 0 &&
-            currentCampNode?.parentIsOneLevel == 0 ? (
+          currentCampNode?._isDisabled == 0 &&
+          currentCampNode?.parentIsOneLevel == 0 ? (
             <Tooltip
               title={
                 tree && !tree["1"]?.is_valid_as_of_time
@@ -290,7 +295,7 @@ const CreateTopic = ({ onCreateCamp = () => { },backGroundColorClass}: any) => {
                 size="large"
                 disabled={
                   (tree && !tree["1"]?.is_valid_as_of_time) ||
-                    (campExist && !campExist?.camp_exist)
+                  (campExist && !campExist?.camp_exist)
                     ? true
                     : false
                 }
@@ -387,9 +392,8 @@ const CreateTopic = ({ onCreateCamp = () => { },backGroundColorClass}: any) => {
               <ArchivedCampCheckBox />
             </div>
           </Panel>
-          {/* ${backGroundColorClass}` */}
           <Panel
-            className={`header-bg-color-change radio-group-sider ${backGroundColorClass}` }
+            className={`header-bg-color-change radio-group-sider ${backGroundColorClass}`}
             header={
               <span className={styles.title}>
                 As Of
@@ -406,6 +410,7 @@ const CreateTopic = ({ onCreateCamp = () => { },backGroundColorClass}: any) => {
                   className={styles.radio + " topicFilterRadio"}
                   value={1}
                   onClick={() => {
+                    setBackGroundColorClass("review");
                     dispatch(setViewThisVersion(false));
                     dispatch(
                       setIsReviewCanonizedTopics({
@@ -422,6 +427,7 @@ const CreateTopic = ({ onCreateCamp = () => { },backGroundColorClass}: any) => {
                   className={styles.radio + " topicFilterRadio"}
                   value={2}
                   onClick={() => {
+                    setBackGroundColorClass("default");
                     dispatch(setViewThisVersion(false));
                     dispatch(
                       setFilterCanonizedTopics({

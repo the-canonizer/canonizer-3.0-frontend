@@ -11,7 +11,7 @@ import NewsFeedsCard from "../../TopicDetails/NewsFeedsCard";
 import GoogleAd from "../../../googleAds";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 
-export default function HomeSideBar({ onCreateCamp = () => {} ,backGroundColorClass}: any) {
+export default function HomeSideBar({ onCreateCamp = () => {} }: any) {
   const { isUserAuthenticated } = useAuthentication();
 
   const [isAuth, setIsAuth] = useState(isUserAuthenticated);
@@ -38,7 +38,7 @@ export default function HomeSideBar({ onCreateCamp = () => {} ,backGroundColorCl
     <Fragment>
       {" "}
       {typeof window !== "undefined" && window.innerWidth > 767 ? (
-        <TopicsFilter onCreateCamp={onCreateCamp} backGroundColorClass={backGroundColorClass} />
+        <TopicsFilter onCreateCamp={onCreateCamp} />
       ) : (
         <Fragment>
           <Button type="primary" onClick={showDrawer} className="btnFilter">
@@ -50,7 +50,7 @@ export default function HomeSideBar({ onCreateCamp = () => {} ,backGroundColorCl
             onClose={onClose}
             visible={visible}
           >
-            <TopicsFilter onCreateCamp={onCreateCamp} backGroundColorClass={backGroundColorClass} />
+            <TopicsFilter onCreateCamp={onCreateCamp} />
           </Drawer>
         </Fragment>
       )}

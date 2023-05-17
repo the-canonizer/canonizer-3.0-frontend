@@ -415,7 +415,7 @@ const TopicDetails = () => {
         )}
 
         <aside className={styles.miniSide + " leftSideBar miniSideBar"}>
-          <SideBar onCreateCamp={onCreateCamp} backGroundColorClass={backGroundColorClass}/>
+          <SideBar onCreateCamp={onCreateCamp} />
         </aside>
 
         <>
@@ -524,9 +524,11 @@ const TopicDetails = () => {
                           window.innerWidth < 767 && (
                             <>
                               <CurrentTopicCard
+                                backGroundColorClass={backGroundColorClass}
                                 loadingIndicator={loadingIndicator}
                               />
                               <CurrentCampCard
+                                backGroundColorClass={backGroundColorClass}
                                 loadingIndicator={loadingIndicator}
                               />
                               <Spin spinning={loadingIndicator} size="large">

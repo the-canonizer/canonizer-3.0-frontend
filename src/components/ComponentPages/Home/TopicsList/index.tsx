@@ -46,7 +46,7 @@ const infoContent = (
   </>
 );
 
-const TopicsList = ({backGroundColorClass, setBackGroundColorClass}) => {
+const TopicsList = () => {
   const router = useRouter();
   const [pageNumber, setPageNumber, pageNumberRef] = useState(1);
   const dispatch = useDispatch();
@@ -80,6 +80,7 @@ const TopicsList = ({backGroundColorClass, setBackGroundColorClass}) => {
   }));
   const [topicsData, setTopicsData] = useState(canonizedTopics);
   const [nameSpacesList, setNameSpacesList] = useState(nameSpaces);
+  const [backGroundColorClass, setBackGroundColorClass] = useState("default");
 
   const [isReview, setIsReview] = useState(asof == "review");
   const [inputSearch, setInputSearch] = useState("");
