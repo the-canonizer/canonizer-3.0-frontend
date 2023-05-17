@@ -197,7 +197,9 @@ const CampTree = ({
         setShowScoreBars(false);
       }
     }
-    prevTreeValueRef.current = treeExpandValue;
+    if (prevTreeValueRef) {
+      prevTreeValueRef.current = treeExpandValue;
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tree?.at(0), treeExpandValue]);
 

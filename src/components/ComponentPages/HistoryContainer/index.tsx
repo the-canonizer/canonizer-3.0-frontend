@@ -47,7 +47,7 @@ function HistoryContainer() {
   const changeDiscard = () => {
     setDiscardChange(!discardChange);
   };
-  const historyOf = router?.asPath.split("/")[1];
+  const historyOf = router?.asPath?.split("/")[1];
 
   const count = useRef(1);
 
@@ -153,9 +153,9 @@ function HistoryContainer() {
     try {
       setLoadingIndicator(true);
       const reqBody = {
-        topic_num: +router.query.camp[0].split("-")[0],
+        topic_num: +router?.query?.camp[0]?.split("-")[0],
         camp_num:
-          historyOf != "topic" ? +router.query.camp[1].split("-")[0] : null,
+          historyOf != "topic" ? +router?.query?.camp[1]?.split("-")[0] : null,
         type: activeTab,
         per_page: 4,
         page: count.current,

@@ -32,7 +32,7 @@ describe("OTP page", () => {
   it("check with 6 digit otp", async () => {
     render(<ForgotPassword isModal={false} isTestScreen={1} />);
     const inputEl = screen.getByPlaceholderText(placeholders.otp);
-    userEvent.type(inputEl, "123456");
+    fireEvent.change(inputEl, { target: { value: 123456 } });
     await waitFor(() => {
       expect(inputEl).toHaveValue("123456");
       expect(screen.queryByRole("alert")).not.toBeInTheDocument();

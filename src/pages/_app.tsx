@@ -48,19 +48,38 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
 
   const componentName =
     appContext.Component.displayName || appContext.Component.name;
+  let prePath = appContext?.router?.asPath?.substring(
+    0,
+    appContext?.router?.asPath.lastIndexOf("/")
+  );
+  let path;
 
+  if (prePath == "/manage/camp") {
+    path =
+      appContext?.router?.components &&
+      appContext?.router?.components["/camp/history/[...camp]"]?.query;
+  } else if (prePath == "/manage/topic") {
+    path =
+      appContext?.router?.components &&
+      appContext?.router?.components["/topic/history/[...camp]"]?.query;
+  } else if (prePath == "/manage/statement") {
+    path =
+      appContext?.router?.components &&
+      appContext?.router?.components["/statement/history/[...camp]"]?.query;
+  } else {
+    path = appContext.router?.query;
+  }
   const req = {
     page_name:
       componentName == "SocialLoginCallbackPage" ? "Home" : componentName,
     keys: {
       topic_num: appContext.router.asPath.includes("forum")
-        ? appContext.router?.query?.topic?.toLocaleString().split("-")[0]
-        : appContext.router?.query?.camp?.length &&
-          appContext.router.query.camp[0].split("-")[0],
+        ? path?.topic?.toLocaleString().split("-")[0]
+        : path?.camp?.length && path?.camp[0].split("-")[0],
       camp_num: appContext.router.asPath.includes("forum")
-        ? appContext.router.query.camp?.toLocaleString().split("-")[0]
-        : appContext.router?.query?.camp?.length > 1
-        ? appContext.router.query.camp[1].split("-")[0]
+        ? path?.camp?.toLocaleString().split("-")[0]
+        : path?.camp?.length > 1
+        ? path?.camp[1].split("-")[0]
         : "1",
       forum_num:
         appContext.router?.query?.camp?.length > 2

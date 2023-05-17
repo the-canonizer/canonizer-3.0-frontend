@@ -1,8 +1,14 @@
+import { RouterContext } from "next/dist/shared/lib/router-context";
+import { NextRouter } from "next/router";
+import { Provider } from "react-redux";
+import { store } from "src/store";
+
 import {
   render,
   screen,
   waitFor,
   fireEvent,
+  cleanup,
 } from "../../../../utils/testUtils";
 
 import CreateNewCamp from "..";
@@ -54,15 +60,64 @@ const campNickNamesList = [
   { id: 22, nick_name: "Rahul -Singh919" },
 ];
 
+jest.isolateModules(() => {
+  const preloadAll = require("jest-next-dynamic");
+  beforeAll(async () => {
+    await preloadAll();
+  });
+});
+
+jest.mock("next/router", () => ({
+  __esModule: true,
+  useRouter: jest.fn().mockReturnValue({
+    asPath: "/camp/create/88-Theories-of-Consciousness/1-Agreement",
+    query: { camp: ["88-Theories-of-Consciousness", "1-Agreement"] },
+  }),
+}));
+
+function createMockRouter(router: Partial<NextRouter>): any {
+  return {
+    basePath: "",
+    pathname: "/",
+    route: "/",
+    query: { camp: ["88-Theories-of-Consciousness", "1-Agreement"] },
+    asPath: "/camp/create/88-Theories-of-Consciousness/1-Agreement",
+    back: jest.fn(),
+    beforePopState: jest.fn(),
+    prefetch: jest.fn(),
+    push: jest.fn(),
+    reload: jest.fn(),
+    replace: jest.fn(),
+    events: {
+      on: jest.fn(),
+      off: jest.fn(),
+      emit: jest.fn(),
+    },
+    isFallback: false,
+    isLocaleDomain: false,
+    isReady: true,
+    defaultLocale: "en",
+    domainLocales: [],
+    isPreview: false,
+    ...router,
+  };
+}
+
+afterEach(cleanup);
+
 describe("Create New Topic page", () => {
   it("render heading and labels", () => {
     render(
-      <CreateNewCamp
-        nickNames={nickNamesList}
-        parentCamps={parentCampsList}
-        campNickNames={campNickNamesList}
-        initialValues={initialValues}
-      />
+      <Provider store={store}>
+        <RouterContext.Provider value={createMockRouter({})}>
+          <CreateNewCamp
+            nickNames={nickNamesList}
+            parentCamps={parentCampsList}
+            campNickNames={campNickNamesList}
+            initialValues={initialValues}
+          />
+        </RouterContext.Provider>
+      </Provider>
     );
 
     waitFor(async () => {
@@ -80,12 +135,16 @@ describe("Create New Topic page", () => {
 
   it("render inputs field and submit button", () => {
     render(
-      <CreateNewCamp
-        nickNames={nickNamesList}
-        parentCamps={parentCampsList}
-        campNickNames={campNickNamesList}
-        initialValues={initialValues}
-      />
+      <Provider store={store}>
+        <RouterContext.Provider value={createMockRouter({})}>
+          <CreateNewCamp
+            nickNames={nickNamesList}
+            parentCamps={parentCampsList}
+            campNickNames={campNickNamesList}
+            initialValues={initialValues}
+          />
+        </RouterContext.Provider>
+      </Provider>
     );
 
     waitFor(async () => {
@@ -112,12 +171,16 @@ describe("Create New Topic page", () => {
 
   it("blank form should not be submit", async () => {
     render(
-      <CreateNewCamp
-        nickNames={nickNamesList}
-        parentCamps={parentCampsList}
-        campNickNames={campNickNamesList}
-        initialValues={initialValues}
-      />
+      <Provider store={store}>
+        <RouterContext.Provider value={createMockRouter({})}>
+          <CreateNewCamp
+            nickNames={nickNamesList}
+            parentCamps={parentCampsList}
+            campNickNames={campNickNamesList}
+            initialValues={initialValues}
+          />
+        </RouterContext.Provider>
+      </Provider>
     );
     const btnEl = screen.getByTestId("btn");
 

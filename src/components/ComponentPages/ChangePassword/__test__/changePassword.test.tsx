@@ -50,9 +50,9 @@ describe("ChangePassword page", () => {
   });
 
   it("check password minimum length > 8", async () => {
-    render(<ChangePassword isModal={false} />);
+    render(<ChangePassword />);
     const inputEl = screen.getByPlaceholderText(labels.newPassword);
-    userEvent.type(inputEl, "123");
+    fireEvent.change(inputEl, { target: { value: "123" } });
     await waitFor(() => {
       expect(inputEl).toHaveValue("123");
       const alerts = screen.getAllByRole("alert");
@@ -64,7 +64,7 @@ describe("ChangePassword page", () => {
   it("pass valid password", async () => {
     render(<ChangePassword />);
     const inputEl = screen.getByPlaceholderText(labels.newPassword);
-    userEvent.type(inputEl, "Abc@1234");
+    fireEvent.change(inputEl, { target: { value: "Abc@1234" } });
     await waitFor(() => {
       expect(inputEl).toHaveValue("Abc@1234");
       expect(screen.queryByRole("alert")).not.toBeInTheDocument();

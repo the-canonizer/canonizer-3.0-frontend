@@ -162,7 +162,11 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
                     Account Settings
                   </a>
                 </Link>
-                <Link href="/settings?tab=supported_camps" passHref legacyBehavior>
+                <Link
+                  href="/settings?tab=supported_camps"
+                  passHref
+                  legacyBehavior
+                >
                   <a onClick={toggleMobNav}>
                     <CheckCircleOutlined />
                     Supported Camps

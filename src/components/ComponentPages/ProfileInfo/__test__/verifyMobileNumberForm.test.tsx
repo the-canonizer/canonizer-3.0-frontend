@@ -1,4 +1,9 @@
-import { render, screen, waitFor } from "../../../../utils/testUtils";
+import {
+  render,
+  screen,
+  waitFor,
+  fireEvent,
+} from "../../../../utils/testUtils";
 import userEvent from "@testing-library/user-event";
 
 import VerifyMobileNumberForm from "../../Form/VerifyMobileNumberForm";
@@ -45,7 +50,7 @@ describe("Verify Mobile Number Page", () => {
     );
 
     const inputEl = screen.getByPlaceholderText("Enter Phone Number");
-    userEvent.type(inputEl, "12345678");
+    fireEvent.change(inputEl, { target: { value: "12345678" } });
     await waitFor(() => {
       expect(inputEl).toHaveValue(12345678);
       expect(screen.queryByRole("alert")).toBeInTheDocument();
@@ -67,7 +72,7 @@ describe("Verify Mobile Number Page", () => {
     );
 
     const inputEl = screen.getByPlaceholderText("Enter Phone Number");
-    userEvent.type(inputEl, "123456789");
+    fireEvent.change(inputEl, { target: { value: "123456789" } });
     await waitFor(() => {
       expect(inputEl).toHaveValue(123456789);
       expect(screen.queryByRole("alert")).not.toBeInTheDocument();

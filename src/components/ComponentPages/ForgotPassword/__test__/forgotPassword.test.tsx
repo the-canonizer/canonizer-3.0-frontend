@@ -1,4 +1,9 @@
-import { render, screen, waitFor } from "../../../../utils/testUtils";
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "../../../../utils/testUtils";
 import userEvent from "@testing-library/user-event";
 
 import ForgotPassword from "../index";
@@ -42,7 +47,9 @@ describe("Forgot Password", () => {
     render(<ForgotPassword isModal={false} />);
     waitFor(async () => {
       const inputEl = screen.getByLabelText(labels.emailId);
-      userEvent.type(inputEl, "rahul.singh@iffort.com");
+      fireEvent.change(inputEl, {
+        target: { value: "rahul.singh@iffort.com" },
+      });
       expect(inputEl).toHaveValue("rahul.singh@iffort.com");
       expect(screen.queryByRole("alert")).not.toBeInTheDocument();
     });
@@ -52,7 +59,7 @@ describe("Forgot Password", () => {
     render(<ForgotPassword isModal={false} />);
     waitFor(async () => {
       const inputEl = screen.getByLabelText(labels.emailId);
-      userEvent.type(inputEl, "rahul.singhiffort.com");
+      fireEvent.change(inputEl, { target: { value: "rahul.singhiffort.com" } });
       userEvent.tab();
 
       expect(inputEl).toHaveValue("rahul.singhiffort.com");

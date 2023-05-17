@@ -17,16 +17,16 @@ jest.isolateModules(() => {
 
 jest.mock("next/router", () => ({
   __esModule: true,
-  useRouter: jest.fn(),
+  useRouter: jest.fn().mockReturnValue({ asPath: "/topic" }),
 }));
 
-function createMockRouter(): NextRouter {
+function createMockRouter(): any {
   return {
     basePath: "",
     pathname: "/",
     route: "/",
     query: {},
-    asPath: "/",
+    asPath: "/topic",
     back: jest.fn(),
     beforePopState: jest.fn(),
     prefetch: jest.fn(),
@@ -72,7 +72,7 @@ describe("LoggedOutHeader", () => {
         </RouterContext.Provider>
       </Provider>
     );
-    const logoLink = screen.getByRole("link", {
+    const logoLink = screen.getAllByRole("link", {
       name: /Picture of the author/i,
     });
     const browseLink = screen.getByRole("link", {
@@ -98,11 +98,11 @@ describe("LoggedOutHeader", () => {
     expect(container.getElementsByTagName("nav")).toHaveLength(1);
     expect(container.getElementsByTagName("ul")).toHaveLength(1);
     expect(container.getElementsByTagName("li")).toHaveLength(5);
-    expect(container.getElementsByTagName("a")).toHaveLength(7);
+    expect(container.getElementsByTagName("a")).toHaveLength(8);
     expect(container.getElementsByTagName("button")).toHaveLength(6);
-    expect(container.getElementsByTagName("img")).toHaveLength(1);
+    expect(container.getElementsByTagName("img")).toHaveLength(2);
 
-    expect(logoLink.getAttribute("href")).toBe("/");
+    expect(logoLink.at(0).getAttribute("href")).toBe("/");
     expect(browseLink.getAttribute("href")).toBe("/browse");
     // expect(uploadFilesLink.getAttribute("href")).toBe("/uploadFile");
     expect(helpLink.getAttribute("href")).toBe("/topic/132-Help/1-Agreement");

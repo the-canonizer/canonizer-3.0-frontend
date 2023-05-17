@@ -115,8 +115,8 @@ function Footer() {
                           <li key={item.id}>
                             <Link href={item.link}>
                               <>
-                              <i className="icon-angle-right"></i>{" "}
-                              {item.linkTitle}
+                                <i className="icon-angle-right"></i>{" "}
+                                {item.linkTitle}
                               </>
                             </Link>
                           </li>
@@ -148,8 +148,8 @@ function Footer() {
                             ) : (
                               <Link href={item.link}>
                                 <>
-                                <i className="icon-angle-right"></i>{" "}
-                                {item.linkTitle}
+                                  <i className="icon-angle-right"></i>{" "}
+                                  {item.linkTitle}
                                 </>
                               </Link>
                             )}

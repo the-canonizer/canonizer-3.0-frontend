@@ -50,9 +50,7 @@ function TopicSubscriptionsTab({
                   For Topic{" "}
                   <span>
                     &quot;
-                    <Link href={data.title_link}>
-                      {data.title}
-                    </Link>
+                    <Link href={data.title_link}>{data.title}</Link>
                     &quot;
                   </span>
                 </Title>

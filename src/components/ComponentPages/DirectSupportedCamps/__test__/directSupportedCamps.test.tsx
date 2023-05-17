@@ -75,6 +75,7 @@ const removeSupportCampsData = {
   title_link: "/topic/788-absd---/1-Agreement",
   topic_num: 788,
 };
+
 describe("Direct Support camps page", () => {
   it("render Modal when Remove support is clicked", () => {
     render(
@@ -224,7 +225,6 @@ describe("Direct Support camps page", () => {
     <input placeholder="Search by topic name" />;
     screen.queryByPlaceholderText(/Search by topic name/i);
   });
-
   it("render click on topic cross button then two buttons are activated", () => {
     const { container } = render(
       <DirectSupportedCampsUI
@@ -248,6 +248,7 @@ describe("Direct Support camps page", () => {
         handleOk={handleOk}
         handleCancel={handleCancel}
         removeSupportCampsData={removeSupportCampsData}
+        removeCampLink={[]}
       />
     );
     expect(

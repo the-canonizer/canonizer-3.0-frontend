@@ -5,7 +5,7 @@ import { store } from "../../../../store";
 import { NextRouter } from "next/router";
 import { RouterContext } from "next/dist/shared/lib/router-context";
 
-function createMockRouter(): NextRouter {
+function createMockRouter(): any {
   return {
     basePath: "",
     pathname: "/",
@@ -44,9 +44,10 @@ describe("Sidebar Filters Component", () => {
       </Provider>
     );
 
-    expect(container.getElementsByTagName("button")).toHaveLength(1);
-    expect(getByText("Create New Topic")).toBeInTheDocument();
     expect(getByText("Canonizer Algorithm:")).toBeInTheDocument();
+    expect(getByText("Filter")).toBeInTheDocument();
+
+    // expect(container.getElementsByTagName("button")).toHaveLength(1);
     // expect(getByText("Algorithm Information")).toBeInTheDocument();
   });
 });

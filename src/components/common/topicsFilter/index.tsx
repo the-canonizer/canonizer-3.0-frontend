@@ -440,19 +440,29 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
               current && current > moment(current_date_filter).endOf("day")
             }
           />
-        </Panel>
-
-        {isAuth.isUserAuthenticated ? (
-          <div className={styles.scoreCheckbox}>
-            <FullScoreCheckbox />
-          </div>
-        ) : null}
-        {isAuth.isUserAuthenticated ? (
+          {/* </Panel> */}
+          {/* </div> */}
+          {isAuth.isUserAuthenticated ? (
+            <div className={styles.scoreCheckbox}>
+              <FullScoreCheckbox />
+            </div>
+          ) : null}
           <div className={styles.scoreCheckbox}>
             <ArchivedCampCheckBox />
           </div>
-        ) : null}
+          {/* </Panel> */}
 
+          {isAuth.isUserAuthenticated ? (
+            <div className={styles.scoreCheckbox}>
+              <FullScoreCheckbox />
+            </div>
+          ) : null}
+          {isAuth.isUserAuthenticated ? (
+            <div className={styles.scoreCheckbox}>
+              <ArchivedCampCheckBox />
+            </div>
+          ) : null}
+        </Panel>
         {isAuth.isUserAuthenticated ? (
           <Panel
             header={
@@ -463,6 +473,65 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
             <div className={styles.scoreCheckbox}>
               <FullScoreCheckbox />
             </div>
+            <Radio.Group onChange={onChange} value={value} disabled={loading}>
+              <Space direction="vertical" style={{ gap: "12px" }}>
+                <Radio
+                  className={styles.radio + " topicFilterRadio"}
+                  value={1}
+                  onClick={() => {
+                    dispatch(setViewThisVersion(false));
+                    dispatch(
+                      setIsReviewCanonizedTopics({
+                        includeReview: true,
+                        asof: "review",
+                        asofdate: Date.now() / 1000,
+                      })
+                    );
+                  }}
+                >
+                  Include review
+                </Radio>
+                <Radio
+                  className={styles.radio + " topicFilterRadio"}
+                  value={2}
+                  onClick={() => {
+                    dispatch(setViewThisVersion(false));
+                    dispatch(
+                      setFilterCanonizedTopics({
+                        asofdate: Date.now() / 1000,
+                        asof: "default",
+                      })
+                    );
+                  }}
+                >
+                  Default
+                </Radio>
+                <Radio
+                  className={styles.radio + " topicFilterRadio"}
+                  value={3}
+                  onClick={() => {
+                    dispatch(setViewThisVersion(false));
+                    handleAsOfClick();
+                  }}
+                >
+                  As of date
+                </Radio>
+              </Space>
+            </Radio.Group>
+            <DatePicker
+              disabled={isDatePicker || selectedAsOf == "bydate" ? false : true}
+              format="YYYY-MM-DD"
+              defaultValue={moment(current_date_filter * 1000)}
+              value={moment(selectedAsOFDate * 1000)}
+              suffixIcon={<i className="icon-calendar"></i>}
+              size={"large"}
+              className={`${styles.date} w-100`}
+              onChange={pickDate}
+              inputReadOnly={true}
+              disabledDate={(current) =>
+                current && current > moment(current_date_filter).endOf("day")
+              }
+            />
           </Panel>
         ) : null}
       </Collapse>

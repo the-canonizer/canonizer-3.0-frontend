@@ -122,7 +122,8 @@ const SupportTreeCard = ({
     dispatch(setManageSupportStatusCheck(true));
   };
 
-  const manageSupportPath = router?.asPath.replace("/topic/", "/support/");
+  const manageSupportPath =
+    router?.asPath.replace("/topic/", "/support/") || "";
 
   const { campSupportingTree, asof } = useSelector((state: RootState) => ({
     campSupportingTree: supportTreeForCamp,
@@ -366,19 +367,17 @@ const SupportTreeCard = ({
             onClick={handleClickSupportCheck}
           >
             <Link href={manageSupportPath}>
-              
-                <CustomButton
-                  className="btn-orange"
-                  disabled={asof == "bydate"}
-                  id="manage-support-btn"
-                >
-                  {/* {K?.exceptionalMessages?.directJoinSupport} */}
-                  {getCheckSupportStatus?.is_delegator == 1 ||
-                  getCheckSupportStatus?.support_flag != 1
-                    ? K?.exceptionalMessages?.directJoinSupport
-                    : K?.exceptionalMessages?.manageSupport}
-                </CustomButton>
-              
+              <CustomButton
+                className="btn-orange"
+                disabled={asof == "bydate" || campRecord?.is_archive == 1}
+                id="manage-support-btn"
+              >
+                {/* {K?.exceptionalMessages?.directJoinSupport} */}
+                {getCheckSupportStatus?.is_delegator == 1 ||
+                getCheckSupportStatus?.support_flag != 1
+                  ? K?.exceptionalMessages?.directJoinSupport
+                  : K?.exceptionalMessages?.manageSupport}
+              </CustomButton>
             </Link>
           </div>
         </Panel>

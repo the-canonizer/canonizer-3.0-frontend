@@ -30,7 +30,11 @@ const My404 = () => {
             back to the homepage`}
           </p>
           <Link href={""} legacyBehavior>
-            <a onClick={goBack} className={styles.btnGoBack}>
+            <a
+              onClick={goBack}
+              className={styles.btnGoBack}
+              data-testid="go_back"
+            >
               Go Back
             </a>
           </Link>
