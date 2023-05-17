@@ -383,11 +383,9 @@ const CreateTopic = ({ onCreateCamp = () => { },backGroundColorClass}: any) => {
                 <FullScoreCheckbox />
               </div>
             ) : null}
-            {isAuth.isUserAuthenticated ? (
-              <div className={styles.scoreCheckbox}>
-                <ArchivedCampCheckBox />
-              </div>
-            ) : null}
+            <div className={styles.scoreCheckbox}>
+              <ArchivedCampCheckBox />
+            </div>
           </Panel>
           {/* ${backGroundColorClass}` */}
           <Panel
@@ -405,7 +403,7 @@ const CreateTopic = ({ onCreateCamp = () => { },backGroundColorClass}: any) => {
             <Radio.Group onChange={onChange} value={value} disabled={loading}>
               <Space direction="vertical" style={{ gap: "12px" }}>
                 <Radio
-                  className={styles.radio}
+                  className={styles.radio + " topicFilterRadio"}
                   value={1}
                   onClick={() => {
                     dispatch(setViewThisVersion(false));
@@ -421,7 +419,7 @@ const CreateTopic = ({ onCreateCamp = () => { },backGroundColorClass}: any) => {
                   Include review
                 </Radio>
                 <Radio
-                  className={styles.radio}
+                  className={styles.radio + " topicFilterRadio"}
                   value={2}
                   onClick={() => {
                     dispatch(setViewThisVersion(false));
@@ -436,7 +434,7 @@ const CreateTopic = ({ onCreateCamp = () => { },backGroundColorClass}: any) => {
                   Default
                 </Radio>
                 <Radio
-                  className={styles.radio}
+                  className={styles.radio + " topicFilterRadio"}
                   value={3}
                   onClick={() => {
                     dispatch(setViewThisVersion(false));

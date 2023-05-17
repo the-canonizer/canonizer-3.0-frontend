@@ -18,10 +18,13 @@ const covertToTime = (unixTime) => {
 };
 const CampStatementCard = ({ loadingIndicator, backGroundColorClass }) => {
   const router = useRouter();
-  const { campStatement, history } = useSelector((state: RootState) => ({
-    campStatement: state?.topicDetails?.campStatement,
-    history: state?.topicDetails?.history,
-  }));
+  const { campRecord, campStatement, history } = useSelector(
+    (state: RootState) => ({
+      campStatement: state?.topicDetails?.campStatement,
+      history: state?.topicDetails?.history,
+      campRecord: state?.topicDetails?.currentCampRecord,
+    })
+  );
   return loadingIndicator || !campStatement ? (
     <CustomSkelton
       skeltonFor="card"
@@ -66,7 +69,11 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }) => {
         </Paragraph>
 
         <div className="topicDetailsCollapseFooter">
-          <CustomButton className="btn-green" id="add-camp-statement-btn">
+          <CustomButton
+            disabled={campRecord.is_archive == 1 ? true : false}
+            className="btn-green"
+            id="add-camp-statement-btn"
+          >
             <Link
               href={
                 history?.items?.length > 0

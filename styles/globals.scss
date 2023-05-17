@@ -301,6 +301,11 @@ img {
   }
 }
 
+.topicFilterRadio {
+  .ant-radio-checked + span {
+      color:#0524e9;
+  }
+}
 .animatedText {
   animation-name: rightToLeft;
   animation-duration: 0.4s;
