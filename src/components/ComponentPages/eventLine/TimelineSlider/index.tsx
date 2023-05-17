@@ -134,7 +134,7 @@ function TimelineSlider({
   };
 
   const formatter = (value) => {
-    let pdata: any = Object.keys(mockData);
+    let pdata: any = Object.keys(mockData)?.sort();
     let formatedDate =
       pdata.length > 0 &&
       DateFormate(new Date(pdata[value]?.split("_")[1] * 1000));
@@ -147,7 +147,6 @@ function TimelineSlider({
       Object.keys(mockData)?.sort();
 
     let obj = {};
-    // console.log("window ==>", window.innerWidth);
 
     if (typeof window !== "undefined" && window.innerWidth > 767) {
       if (pdata?.length > 0 && pdata.length - 1 < 4) {
@@ -197,14 +196,18 @@ function TimelineSlider({
       setIteration(0);
       setStart(false);
     }
-    let showkey = Object.keys(mockData)[iteration];
+    let showkey = Object.keys(mockData).sort()[iteration];
     let mappedArr = [];
     for (let i = 0; i < Object.keys(mockData).length; i++) {
-      if (showkey == Object.keys(mockData)[i]) {
-        mappedArr.unshift(mockData[Object.keys(mockData)[i]]?.event?.message);
+      if (showkey == Object.keys(mockData).sort()[i]) {
+        mappedArr.unshift(
+          mockData[Object.keys(mockData).sort()[i]]?.event?.message
+        );
         break;
       }
-      mappedArr.unshift(mockData[Object.keys(mockData)[i]]?.event?.message);
+      mappedArr.unshift(
+        mockData[Object.keys(mockData).sort()[i]]?.event?.message
+      );
     }
     setTimelineDescript(mappedArr);
   }, [iteration, mockData]);
