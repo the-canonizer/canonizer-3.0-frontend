@@ -91,8 +91,6 @@ const asContent = (
 const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   const isAuth = useAuthentication();
 
-  const [backGroundColorClass, setBackGroundColorClass] = useState("default");
-
   const [isDatePicker, setIsDatePicker] = useState(false);
   // const [isPanelCollapse, setIsPanelCollapse] = useState(false);
 
@@ -258,8 +256,6 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                 second: moment().second(),
               })
             );
-
-      setBackGroundColorClass("bydate");
       dispatch(
         setFilterCanonizedTopics({
           asofdate: Date.parse(dateValue) / 1000,
@@ -392,7 +388,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
             </div>
           </Panel>
           <Panel
-            className={`header-bg-color-change radio-group-sider ${backGroundColorClass}`}
+            className={`header-bg-color-change radio-group-sider ${selectedAsOf}`}
             header={
               <span className={styles.title}>
                 As Of
@@ -409,7 +405,6 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                   className={styles.radio + " topicFilterRadio"}
                   value={1}
                   onClick={() => {
-                    setBackGroundColorClass("review");
                     dispatch(setViewThisVersion(false));
                     dispatch(
                       setIsReviewCanonizedTopics({
@@ -426,7 +421,6 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                   className={styles.radio + " topicFilterRadio"}
                   value={2}
                   onClick={() => {
-                    setBackGroundColorClass("default");
                     dispatch(setViewThisVersion(false));
                     dispatch(
                       setFilterCanonizedTopics({
