@@ -1,4 +1,4 @@
-export default {
+const schemas = {
   Home: `{
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -76,3 +76,4 @@ export default {
     }
   }`,
 };
+export default schemas;
