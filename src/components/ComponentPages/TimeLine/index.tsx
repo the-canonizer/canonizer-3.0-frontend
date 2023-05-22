@@ -90,7 +90,6 @@ function TimeLine({ setTimelineDescript }) {
     );
     setEventDescription(mockData[events[iteration]].event?.message);
   };
-
   return (
     <React.Fragment>
       <TimelineSlider
@@ -115,10 +114,12 @@ function TimeLine({ setTimelineDescript }) {
             isButton={false}
             stylingClass=""
           />
-        ) : data?.length ? (
-          <RacingBarChart data={data} />
+        ) : data?.length > 0 ? (
+          <>
+            <RacingBarChart data={data} />
+          </>
         ) : (
-          <h1>No Camps Found</h1>
+          <h1>No Event Found!</h1>
         )}
       </div>
     </React.Fragment>

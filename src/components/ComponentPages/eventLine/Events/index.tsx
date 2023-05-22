@@ -22,35 +22,39 @@ const Events = ({ timelineDescript }) => {
           "activities evntLineActivity " + activityStyle.campActivities
         }
       >
-        <List itemLayout="horizontal" className="activeListWrap pl-4">
-          {timelineDescript &&
-            timelineDescript.map((title, key) => {
-              return (
-                <>
-                  <List.Item
-                    className={
-                      activityStyle.activitiesList +
-                      ` ${key == 0 && check ? "animatedText" : ""}`
-                    }
-                  >
-                    <List.Item.Meta
-                      avatar={
-                        title && (
-                          <BellFilled className={activityStyle.bellIcon} />
-                        )
-                      }
+        {timelineDescript.length > 0 ? (
+          <List itemLayout="horizontal" className="activeListWrap pl-4">
+            {timelineDescript &&
+              timelineDescript.map((title, key) => {
+                return (
+                  <>
+                    <List.Item
                       className={
                         activityStyle.activitiesList +
-                        ` ${key == 0 ? "animatedText" : ""}`
+                        ` ${key == 0 && check ? "animatedText" : ""}`
                       }
-                      title={title}
-                      // className={styles.listItem}
-                    />
-                  </List.Item>
-                </>
-              );
-            })}
-        </List>
+                    >
+                      <List.Item.Meta
+                        avatar={
+                          title && (
+                            <BellFilled className={activityStyle.bellIcon} />
+                          )
+                        }
+                        className={
+                          activityStyle.activitiesList +
+                          ` ${key == 0 ? "animatedText" : ""}`
+                        }
+                        title={title}
+                        // className={styles.listItem}
+                      />
+                    </List.Item>
+                  </>
+                );
+              })}
+          </List>
+        ) : (
+          <h3 className="activeListWrap pl-4">No events found!</h3>
+        )}
       </Card>
     </>
   );
