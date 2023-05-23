@@ -28,9 +28,7 @@ function TopicSubscriptionsTab({
               For Topic{" "}
               <span>
                 &quot;
-                <Link href={data.title_link}>
-                  {data.title}
-                </Link>
+                <Link href={data.title_link}>{data.title}</Link>
                 &quot;
               </span>
             </Title>
@@ -68,7 +66,7 @@ function TopicSubscriptionsTab({
                   <br />
                   <Text className={`${styles.reasonLink} ${styles.Bluecolor}`}>
                     <Link href={""} passHref target="_blank">
-                       Reference Link
+                      Reference Link
                     </Link>
                   </Text>
                 </Col>

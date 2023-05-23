@@ -1,28 +1,28 @@
-import RecentActivities from "../";
-import { cleanup, render, screen } from "src/utils/testUtils";
-import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
-import { store } from "../../../../../store";
-import { windowMatchMedia } from "../../../../../utils/testUtils";
+import { act } from "@testing-library/react-hooks";
 import { NextRouter } from "next/router";
 import { RouterContext } from "next/dist/shared/lib/router-context";
-import { setTopics } from "../../../../../store/slices/recentActivitiesSlice";
 
-jest.isolateModules(() => {
-  const preloadAll = require("jest-next-dynamic");
-  beforeAll(async () => {
-    await preloadAll();
-  });
-});
+import { cleanup, render, screen, windowMatchMedia } from "src/utils/testUtils";
 
-jest.mock(
-  "next/link",
-  () =>
-    ({ children }: any) =>
-      children
-);
+import { store } from "src/store";
+import { setTopics } from "src/store/slices/recentActivitiesSlice";
 
-function createMockRouter(router: Partial<NextRouter>): NextRouter {
+import RecentActivities from "../";
+
+// jest.isolateModules(() => {
+//   const preloadAll = require("jest-next-dynamic");
+//   beforeAll(async () => {
+//     await preloadAll();
+//   });
+// });
+
+jest.mock("next/router", () => ({
+  __esModule: true,
+  useRouter: jest.fn().mockReturnValue({ push: jest.fn() }),
+}));
+
+function createMockRouter(router: Partial<NextRouter>): any {
   return {
     basePath: "",
     pathname: "/",
@@ -50,7 +50,6 @@ function createMockRouter(router: Partial<NextRouter>): NextRouter {
   };
 }
 
-// router.asPath !== "/activities"
 afterEach(cleanup);
 windowMatchMedia();
 
@@ -387,7 +386,7 @@ describe("RecentActivities on HomePage for authenticated user", () => {
       const { container } = render(
         <Provider store={store}>
           <RouterContext.Provider
-            value={createMockRouter({ asPath: "/activities" })}
+            value={createMockRouter({ asPath: "/activities", push: jest.fn() })}
           >
             <RecentActivities />
           </RouterContext.Provider>
@@ -411,32 +410,6 @@ describe("RecentActivities on HomePage for authenticated user", () => {
       });
       expect(container.getElementsByTagName("li"));
       expect(container.getElementsByTagName("button"));
-      // expect(mainHeadig.textContent).toBe("Recent Activities");
-      // expect(topictab.textContent).toBe("Topics/Camps");
-      // expect(threadtab.textContent).toBe("Threads");
-      // expect(loadmorebutton.textContent).toBe("Load More");
-
-      // when asPath "/" then use this
-
-      // const mainHeadig = screen.getByRole("heading", {
-      //   name: /recent activities/i,
-      // });
-      // const topictab = screen.getByRole("tab", {
-      //   name: /topics\/camps/i,
-      // });
-      // const threadtab = screen.getByRole("tab", {
-      //   name: /threads/i,
-      // });
-
-      // expect(container.getElementsByTagName("li")).toHaveLength(15);
-      // expect(container.getElementsByTagName("button")).toHaveLength(1);
-
-      // expect(mainHeadig.textContent).toBe("Recent Activities");
-
-      // expect(topictab.textContent).toBe("Topics/Camps");
-
-      // expect(threadtab.textContent).toBe("Threads");
-      // expect(screen.getByText(/view all topics/i)).toBeInTheDocument();
     });
   });
 });

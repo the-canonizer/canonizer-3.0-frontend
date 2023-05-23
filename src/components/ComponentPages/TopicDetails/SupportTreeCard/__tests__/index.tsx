@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import { store } from "../../../../../store";
 import { windowMatchMedia } from "../../../../../utils/testUtils";
 import { RouterContext } from "next/dist/shared/lib/router-context";
+import { NextRouter } from "next/router";
 
 jest.isolateModules(() => {
   const preloadAll = require("jest-next-dynamic");
@@ -17,7 +18,7 @@ jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
 
-function createMockRouter() {
+function createMockRouter(router: Partial<NextRouter>): any {
   return {
     basePath: "",
     pathname: "/",
@@ -41,6 +42,7 @@ function createMockRouter() {
     defaultLocale: "en",
     domainLocales: [],
     isPreview: false,
+    ...router,
   };
 }
 
@@ -50,7 +52,11 @@ describe("SupportTreeCard on camp details page", () => {
   it("Should render without crash", () => {
     render(
       <Provider store={store}>
-        <RouterContext.Provider value={createMockRouter()}>
+        <RouterContext.Provider
+          value={createMockRouter({
+            asPath: "/topic/",
+          })}
+        >
           <SupportTreeCard />
         </RouterContext.Provider>
       </Provider>

@@ -139,13 +139,16 @@ function TimelineSlider({
     return formatedDate;
   };
   const MarkPointsData = () => {
-    let pdata: any = Object.keys(mockData)?.sort();
+    let pdata: any =
+      mockData &&
+      Object.keys(mockData)?.length > 0 &&
+      Object.keys(mockData)?.sort();
 
     let obj = {};
     // console.log("window ==>", window.innerWidth);
 
     if (typeof window !== "undefined" && window.innerWidth > 767) {
-      if (pdata.length - 1 < 4) {
+      if (pdata?.length > 0 && pdata.length - 1 < 4) {
         pdata.map((value, index) => {
           let formattedDate = DateFormate(
             new Date(value?.split("_")[1] * 1000)
@@ -153,11 +156,28 @@ function TimelineSlider({
           obj[index] = formattedDate;
         });
       } else {
+        pdata?.length > 0 &&
+          pdata?.map((value, index) => {
+            if (index == 0) {
+              obj[index] = DateFormate(new Date(value?.split("_")[1] * 1000));
+            }
+            let pointDiff = (index + 1) * ((pdata.length - 1) / 4);
+            if (Math.round(pointDiff) < pdata.length) {
+              let datess = new Date(
+                pdata[Math.round(pointDiff)]?.split("_")[1] * 1000
+              );
+              let formattedDate = DateFormate(datess);
+              obj[Math.round(pointDiff)] = formattedDate;
+            }
+          });
+      }
+    } else {
+      pdata?.length > 0 &&
         pdata.map((value, index) => {
           if (index == 0) {
             obj[index] = DateFormate(new Date(value?.split("_")[1] * 1000));
           }
-          let pointDiff = (index + 1) * ((pdata.length - 1) / 4);
+          let pointDiff = (index + 1) * ((pdata.length - 1) / 2);
           if (Math.round(pointDiff) < pdata.length) {
             let datess = new Date(
               pdata[Math.round(pointDiff)]?.split("_")[1] * 1000
@@ -166,21 +186,6 @@ function TimelineSlider({
             obj[Math.round(pointDiff)] = formattedDate;
           }
         });
-      }
-    } else {
-      pdata.map((value, index) => {
-        if (index == 0) {
-          obj[index] = DateFormate(new Date(value?.split("_")[1] * 1000));
-        }
-        let pointDiff = (index + 1) * ((pdata.length - 1) / 2);
-        if (Math.round(pointDiff) < pdata.length) {
-          let datess = new Date(
-            pdata[Math.round(pointDiff)]?.split("_")[1] * 1000
-          );
-          let formattedDate = DateFormate(datess);
-          obj[Math.round(pointDiff)] = formattedDate;
-        }
-      });
     }
     return obj;
   };
@@ -260,18 +265,20 @@ function TimelineSlider({
           />
         </Popover>
       </div>
-      <Slider
-        disabled={mockData && Object.keys(mockData).length > 2 ? false : true}
-        className="rang-slider"
-        tooltip={{
-          formatter,
-        }}
-        onChange={onChange}
-        value={Number(iteration)}
-        marks={MarkPointsData()}
-        min={0}
-        max={Object?.keys(mockData).length - 1}
-      />
+      {mockData && (
+        <Slider
+          disabled={mockData && Object.keys(mockData).length > 2 ? false : true}
+          className="rang-slider"
+          tooltip={{
+            formatter,
+          }}
+          onChange={onChange}
+          value={Number(iteration)}
+          marks={MarkPointsData()}
+          min={0}
+          max={Object?.keys(mockData).length - 1}
+        />
+      )}
     </>
   );
 }

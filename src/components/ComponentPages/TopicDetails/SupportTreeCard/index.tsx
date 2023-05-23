@@ -121,7 +121,8 @@ const SupportTreeCard = ({
     dispatch(setManageSupportStatusCheck(true));
   };
 
-  const manageSupportPath = router?.asPath.replace("/topic/", "/support/");
+  const manageSupportPath =
+    router?.asPath.replace("/topic/", "/support/") || "";
 
   const { campSupportingTree, asof } = useSelector((state: RootState) => ({
     campSupportingTree: supportTreeForCamp,
@@ -367,7 +368,7 @@ const SupportTreeCard = ({
             <Link href={manageSupportPath}>
               <CustomButton
                 className="btn-orange"
-                disabled={asof == "bydate"}
+                disabled={asof == "bydate" || campRecord?.is_archive == 1}
                 id="manage-support-btn"
               >
                 {/* {K?.exceptionalMessages?.directJoinSupport} */}

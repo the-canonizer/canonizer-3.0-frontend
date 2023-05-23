@@ -278,7 +278,7 @@ export default function DirectSupportedCampsUI({
               ? "You are about to change the order of your supported camps"
               : modalPopupText
               ? "You are about to remove your support from all the camps from the topic: "
-              : campIds.length > 1
+              : campIds?.length > 1
               ? "You are about to remove your support from the camps: "
               : "You are about to remove your support from the camp: "}
             {!isChangingOrder && (
@@ -293,7 +293,7 @@ export default function DirectSupportedCampsUI({
                     {removeSupportCampsData.title}
                   </Link>
                 ) : (
-                  removeCampLink.map((val, index) => {
+                  removeCampLink?.map((val, index) => {
                     return (
                       <Link
                         key={index}

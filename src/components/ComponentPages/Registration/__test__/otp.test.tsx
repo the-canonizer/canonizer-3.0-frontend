@@ -9,6 +9,7 @@ import userEvent from "@testing-library/user-event";
 import Registration from "../index";
 import messages from "../../../../messages";
 import React from "react";
+import { validations } from "src/messages/validation";
 
 const { placeholders, labels } = messages;
 
@@ -59,7 +60,7 @@ describe("Registration OTP page", () => {
     userEvent.click(btnEl);
 
     await waitFor(() => {
-      expect(screen.queryByText("Please input your OTP!")).toBeVisible();
+      expect(screen.queryByText(validations.otp)).toBeVisible();
     });
   });
 });

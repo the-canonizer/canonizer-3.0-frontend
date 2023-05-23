@@ -617,6 +617,9 @@ export default function AddOrManage({ add }: any) {
                   },
                   {}
                 );
+                if (nowFormStatus?.parent_camp_num) {
+                  delete nowFormStatus.parent_camp_num;
+                }
                 if (nowFormStatus?.edit_summary == null || undefined) {
                   nowFormStatus.edit_summary = "";
                 }

@@ -61,10 +61,12 @@ const CurrentCampCard = ({ loadingIndicator }) => {
                   label={description.label}
                   key={description.key}
                 >
+                  {console.log(campRecord, "[campRecord]")}
                   {campRecord && description.key != "camp_about_url"
                     ? campRecord &&
                       (description.key == "is_disabled" ||
-                        description.key == "is_one_level" || description.key == "camp_archived")
+                        description.key == "is_one_level" ||
+                        description.key == "camp_archived")
                       ? campRecord[description.key] == 1
                         ? "Yes"
                         : "No"
@@ -77,8 +79,11 @@ const CurrentCampCard = ({ loadingIndicator }) => {
                         "Nickname not associated." ? (
                           <Link
                             href={`/user/supports/${
-                              history?.details?.liveCamp?.camp_about_nick_id ||
-                              ""
+                              description.key == "submitter_nick_name"
+                                ? campRecord?.submitter_nick_id
+                                : description.key == "camp_about_nick_name"
+                                ? campRecord?.camp_about_nick_id
+                                : ""
                             }?topicnum=${campRecord?.topic_num || ""}&campnum=${
                               campRecord?.camp_num || ""
                             }&canon=${topicRecord?.namespace_id || ""}`}

@@ -1,12 +1,21 @@
 import { Button, Spin, Typography } from "antd";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { RootState } from "src/store";
+import { useSelector, useDispatch } from "react-redux";
 import styles from "./topicDetails.module.scss";
 import { ArrowLeftOutlined } from "@ant-design/icons";
+import CustomSkelton from "../../common/customSkelton";
+import { setTopicName } from "src/store/slices/campDetailSlice";
 
 const CampInfoBar = () => {
   const [loadingIndicator] = useState(false);
 
+  const dispatch = useDispatch();
+  const { topic_name, loading } = useSelector((state: RootState) => ({
+    topic_name: state?.topicDetails?.topic_name,
+    loading: state?.loading?.loading,
+  }));
   const router = useRouter();
 
   return (
@@ -20,9 +29,10 @@ const CampInfoBar = () => {
               type={"text"}
               ghost
               icon={<ArrowLeftOutlined />}
-              onClick={() =>
-                router.push(router.asPath.replace("eventline", "topic"))
-              }
+              onClick={() => {
+                dispatch(setTopicName(null));
+                router.push(router.asPath.replace("eventline", "topic"));
+              }}
             />
             <Typography.Paragraph
               className={
@@ -35,10 +45,16 @@ const CampInfoBar = () => {
               }
             >
               {" "}
-              <span className="bold">
-                {" "}
-                Topic : {router.query.camp[0].split("-").slice(1).join(" ")}
-              </span>
+              {!topic_name || loading ? (
+                <CustomSkelton
+                  skeltonFor="list"
+                  bodyCount={1}
+                  stylingClass="topic-skeleton"
+                  isButton={false}
+                />
+              ) : (
+                <span className="bold"> Topic : {topic_name}</span>
+              )}
             </Typography.Paragraph>
           </div>
         </Spin>

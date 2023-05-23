@@ -35,6 +35,7 @@ import { setViewThisVersion } from "src/store/slices/filtersSlice";
 const { Panel } = Collapse;
 const { Title } = Typography;
 
+import { ExclamationCircleFilled } from "@ant-design/icons";
 function HistoryCollapse({
   userNickNameData,
   topicNamespaceId,
@@ -65,7 +66,7 @@ function HistoryCollapse({
       })
     );
   };
-  const historyOf = router?.asPath.split("/")[1];
+  const historyOf = router?.asPath?.split("/")[1];
   // const covertToTime = (unixTime) => {
   //   return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   // };
@@ -129,6 +130,16 @@ function HistoryCollapse({
     } else {
       router.push(`/manage/${historyOf}/${campStatement?.id}`);
     }
+  };
+  const cancelConfirm = () => {
+    Modal.confirm({
+      title: "Do you Want to Cancel this commit?",
+      icon: <ExclamationCircleFilled />,
+      content: "Your changes will be lost.",
+      onOk() {
+        discardChanges();
+      },
+    });
   };
   return (
     <div>
@@ -420,7 +431,7 @@ function HistoryCollapse({
                         className=" mr-3"
                         type="primary"
                         danger
-                        onClick={discardChanges}
+                        onClick={() => cancelConfirm()}
                         id={`commit-change-${campStatement?.id}`}
                         disabled={loading}
                       >

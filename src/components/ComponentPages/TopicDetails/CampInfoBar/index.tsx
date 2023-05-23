@@ -450,19 +450,17 @@ const TimelineInfoBar = ({
                           }}
                           key={index}
                         >
-                          <>
-                            <span className={styles.slashStyle}>
-                              {" "}
-                              {index !== 0 && <DoubleRightOutlined />}{" "}
-                            </span>
-                            <span
-                              className={
-                                breadCrumbRes?.bread_crumb.length - 1 == index
-                                  ? styles.greenIndicateText
-                                  : styles.boldBreadcrumb
-                              }
-                            >{`${camp?.camp_name}`}</span>
-                          </>
+                          <span className={styles.slashStyle}>
+                            {" "}
+                            {index !== 0 && <DoubleRightOutlined />}{" "}
+                          </span>
+                          <span
+                            className={
+                              breadCrumbRes?.bread_crumb.length - 1 == index
+                                ? styles.greenIndicateText
+                                : styles.boldBreadcrumb
+                            }
+                          >{`${camp?.camp_name}`}</span>
                         </Link>
                       );
                     })
