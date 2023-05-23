@@ -1,5 +1,6 @@
+'use client'
 import React, { Fragment, useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { Layout, Menu, Dropdown, Button, Space } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
@@ -17,14 +18,14 @@ import {
   LogoutOutlined,
   CheckCircleOutlined,
 } from "@ant-design/icons";
-import Notifications from "../notification";
+import Notifications from "../notification/indexApp";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import {
   getLists,
   markNotificationRead,
 } from "src/network/api/notificationAPI";
 import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
-import HeaderMenu from "../HeaderMenu";
+import HeaderMenu from "../HeaderMenu/indexApp";
 
 const { Header } = Layout;
 
@@ -122,6 +123,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
     <React.Fragment>
       <Header className={styles.wrap}>
         <Logo />
+        
         <div className={`${styles.navWrap} ${isActive && styles.showMobMenu}`}>
           <Button
             size="large"
@@ -133,6 +135,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
           <div className={styles.mobLogoIcon}>
             <Logo />
           </div>
+          
           <Button
             size="large"
             className={`${styles.btnCloseMobMenu} mb-4 float-right`}
@@ -158,14 +161,22 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
               <div className={`mobile_tag ${styles.mobMenuWithIcons}`}>
                 <Link href="/settings" legacyBehavior>
                   <a onClick={toggleMobNav}>
-                    <SettingOutlined />
-                    Account Settings
+                    <>
+                      <SettingOutlined />
+                      Account Settings
+                    </>
                   </a>
                 </Link>
-                <Link href="/settings?tab=supported_camps" passHref legacyBehavior>
+                <Link
+                  href="/settings?tab=supported_camps"
+                  passHref
+                  legacyBehavior
+                >
                   <a onClick={toggleMobNav}>
-                    <CheckCircleOutlined />
-                    Supported Camps
+                    <>
+                      <CheckCircleOutlined />
+                      Supported Camps
+                    </>
                   </a>
                 </Link>
                 <a onClick={logOut}>
@@ -176,7 +187,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
             </Fragment>
           ) : null}
         </div>
-        <div className={styles.right}>
+        {/* <div className={styles.right}>
           {!isLoginPage ? (
             <Fragment>
               <div className={styles.btnsLoginRegister}>
@@ -199,7 +210,8 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
               </div>
             </Fragment>
           ) : null}
-        </div>
+        </div> */}
+        
         <div className={styles.right}>
           {!isLoginPage ? (
             <div className={styles.btnsLoginRegister}>
@@ -244,6 +256,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
             </Button>
           </div>
         </div>
+        
         <div
           className={`${styles.mobNavBG} ${isActive && styles.mobNavBGshow}`}
           onClick={toggleMobNav}

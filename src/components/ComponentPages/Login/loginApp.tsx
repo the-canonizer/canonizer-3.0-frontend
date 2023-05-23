@@ -1,9 +1,10 @@
+"use client"
 import { Fragment, useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { Form } from "antd";
 
-import LoginUI from "./UI";
+import LoginUI from "./UI/indexApp";
 
 import {
   hideLoginModal,

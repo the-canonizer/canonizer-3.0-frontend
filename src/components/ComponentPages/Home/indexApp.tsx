@@ -4,7 +4,7 @@ import SideBar from "./SideBar/sideBarApp";
 const TopicsList = dynamic(() => import("./TopicsList/topicListApp"), { ssr: false });
 import HelpCard from "./HelpCard";
 import dynamic from "next/dynamic";
-const RecentActivities = dynamic(() => import("./RecentActivities"), {
+const RecentActivities = dynamic(() => import("./RecentActivities/indexApp"), {
   ssr: false,
 });
 

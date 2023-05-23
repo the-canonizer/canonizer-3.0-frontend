@@ -1,6 +1,7 @@
+'use client'
 import React, { Fragment, useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import styles from "../siteHeader.module.scss";
 
@@ -42,9 +43,11 @@ const HeaderMenu = ({ loggedUser }) => {
 
   const [mockLinks, setMockLinks] = useState(links);
 
-  
-    const pathname = usePathname();
-    const searchParams = useSearchParams();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+
+
 
   useEffect(() => {
     if (!loggedUser?.is_admin) {

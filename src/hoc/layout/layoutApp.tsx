@@ -8,7 +8,7 @@ import useAuthentication from "../../hooks/isUserAuthenticated";
 import GoogleAd from "../../components/googleAds";
 
 const LoggedInHeader = dynamic(
-  () => import("../../components/common/headers/loggedInHeader/LoggedInHeaderApp"),
+  () => import("../../components/common/headers/loggedInHeader/indexApp"),
   { ssr: false }
 );
 const LoggedOutHeader = dynamic(
@@ -28,9 +28,8 @@ function Layout(props: any) {
   return (
     <>
       <div className={styles.pageWrap}>
-        {/* {isUserAuthenticated ? <LoggedInHeader /> : <LoggedOutHeader />} */}
-        {/* <LoggedInHeader /> */}
-        <LoggedOutHeader />
+        {isUserAuthenticated ? <LoggedInHeader /> : <LoggedOutHeader />}
+     
         <div className={styles.contentWrap}>
           <div
             className={

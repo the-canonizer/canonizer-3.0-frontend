@@ -7,15 +7,15 @@ import styles from "../siteHeader.module.scss";
 
 import Logo from "../logoHeader";
 import SearchSection from "../../searchSection";
-import LoginModal from "../../../ComponentPages/Login/loginModal";
-import RegistrationModal from "../../../ComponentPages/Registration/registrationModal";
+import LoginModal from "../../../ComponentPages/Login/loginModalApp";
+import RegistrationModal from "../../../ComponentPages/Registration/registrationModalApp";
 import {
   showLoginModal,
   showRegistrationModal,
 } from "../../../../store/slices/uiSlice";
 import ForgotModal from "../../../ComponentPages/ForgotPassword/forgotPasswordModal";
 import DisclaimerMsg from "../../disclaimer";
-import HeaderMenu from "../HeaderMenu/HeaderMenuApp";
+import HeaderMenu from "../HeaderMenu/indexApp";
 
 const { Header } = Layout;
 

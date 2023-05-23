@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 
 import Layout from "../hoc/layout/layoutApp";
 const HomePageContainer = dynamic(
-  () => import("../components/ComponentPages/Home/homeApp"),
+  () => import("../components/ComponentPages/Home/indexApp"),
   { ssr: false }
 );
 import { useRouter } from "next/navigation";
