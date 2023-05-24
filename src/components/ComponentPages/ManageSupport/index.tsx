@@ -261,9 +261,10 @@ const ManageSupport = () => {
         (values) => values.camp_num == campNum
       );
 
-      if (dataValue !== "") {
+      if (dataValue !== "" || CheckDelegatedOrDirect) {
         const unavailable_camp =
           dataValue && dataValue.includes("unable to find this camp");
+
         setUnableToFindCamp(unavailable_camp);
         setSubmitButtonDisable(unavailable_camp ? unavailable_camp : false);
         setGetSupportStatusData(dataValue);
@@ -292,6 +293,7 @@ const ManageSupport = () => {
         setGetSupportStatusData("");
 
         if (resultFilterSupportCamp.length == 0 && CampName) {
+          
           let supportOrderLen = supportedCampsList.length + 1;
           //push data into a array of manageSupportArray
           if (campRecordRef?.current?.camp_name) {
