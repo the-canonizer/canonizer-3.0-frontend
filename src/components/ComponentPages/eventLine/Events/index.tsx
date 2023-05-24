@@ -2,12 +2,9 @@ import { useRouter } from "next/router";
 import { useState, Fragment, useEffect } from "react";
 import { BellFilled } from "@ant-design/icons";
 import { Card, List } from "antd";
-
 import { useDispatch, useSelector } from "react-redux";
-
 import { setViewThisVersion } from "src/store/slices/filtersSlice";
 import moment from "moment";
-
 import { setFilterCanonizedTopics } from "../../../../store/slices/filtersSlice";
 import styles from "./topicDetails.module.scss";
 import Link from "next/link";
