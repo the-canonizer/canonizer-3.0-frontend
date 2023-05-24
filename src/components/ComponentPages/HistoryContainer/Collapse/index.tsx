@@ -18,7 +18,6 @@ import { useRouter } from "next/router";
 import { useState, useEffect, useRef, Fragment } from "react";
 
 import { LoadingOutlined } from "@ant-design/icons";
-
 import {
   changeCommitStatement,
   discardStatement,
@@ -122,16 +121,11 @@ function HistoryCollapse({
       nick_name_id: userNickNameData[0]?.id,
       user_agreed: campStatement?.agreed_to_change ? 0 : 1,
     };
-
-    await new Promise((r) => setTimeout(r, 3000));
     let res = await agreeToChangeApi(reqBody);
-
-    await new Promise((r) => setTimeout(r, 5000));
     if (res?.status_code == 200) {
       res?.data?.is_submitted
         ? message.success(res?.message)
         : message?.error(res?.message);
-
       setIsSelectChecked(false);
     }
 
