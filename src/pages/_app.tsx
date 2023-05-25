@@ -1,3 +1,4 @@
+
 import React, { Fragment } from "react";
 import App, { AppContext, AppInitialProps } from "next/app";
 import { Provider } from "react-redux";
@@ -13,7 +14,7 @@ import "../assets/scss/global.scss";
 
 import ErrorBoundary from "../hoc/ErrorBoundary";
 import HeadContentAndPermissionComponent from "../components/common/headContentAndPermisisonCheck";
-import { store, wrapper } from "../store";
+import { store } from "../store";
 import { metaTagsApi } from "src/network/api/metaTagsAPI";
 import { checkTopicCampExistAPICall } from "src/network/api/campDetailApi";
 
@@ -265,4 +266,5 @@ const googleAPIKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
 //export default wrapper.withRedux(MyApp);
 export default scriptLoader([
   `https://maps.googleapis.com/maps/api/js?key=${googleAPIKey}&libraries=places`,
-])(wrapper.withRedux(WrappedApp));
+// ])(wrapper.withRedux(WrappedApp));
+])(WrappedApp);

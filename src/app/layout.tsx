@@ -19,12 +19,7 @@ type Props = {
 };
 
 export async function generateMetadata(currentPath: any) {
-  // const currentPath = context;
-  console.log('currentPath123', currentPath);
-
-  // const product = await fetch(`https://.../${id}`).then((res) => res.json())
-  // const metaResults = await metaTagsApi('req');
-  // const previousImages = (await parent).openGraph?.images || []
+ 
 
   var myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
@@ -49,7 +44,7 @@ export async function generateMetadata(currentPath: any) {
   const responseMeta: any = await fetch("http://codedistrictem.com:7020/api/v3/meta-tags", requestOptions)
     .then(response => response.json())
     .catch(error => console.log('error', error));
-  console.log('result///', responseMeta);
+
   return {
     title: `${responseMeta?.data?.title} | OK`,
     description: responseMeta?.data?.description,
@@ -66,8 +61,7 @@ interface LayoutProps {
 
 const RootLayout: React.FC<LayoutProps> = ({ children, context }) => {
   const metadata = generateMetadata( children?.props?.childProp?.segment); // Generate metadata based on the provided context
-// console.log('context', context)
-console.log('segment', children?.props?.childProp?.segment )
+
   return (
     <html lang="en">
       <body>
