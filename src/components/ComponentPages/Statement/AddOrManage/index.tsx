@@ -289,10 +289,10 @@ export default function AddOrManage({ add }: any) {
           )
             res.data.statement.parsed_value = `<div></div> ${res.data.statement.parsed_value}`;
           const editor_statement = res.data.statement.parsed_value
-          const contentBlocks = htmlToDraft(res.data.statement.parsed_value);
-          const contentState = ContentState.createFromBlockArray(
-            contentBlocks.contentBlocks
-          );
+          // const contentBlocks = htmlToDraft(res.data.statement.parsed_value);
+          // const contentState = ContentState.createFromBlockArray(
+          //   contentBlocks.contentBlocks
+          // );
           setEditorState(`${editor_statement}`)
 
           if (
