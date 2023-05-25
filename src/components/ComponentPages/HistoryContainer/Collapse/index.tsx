@@ -85,10 +85,15 @@ function HistoryCollapse({
   //   return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   // };
 
+  console.log("data old ", campStatement?.old_parent_camp_num ?? null);
+  console.log("data parent ", campStatement?.parent_camp_num ?? null);
+
   const commitChanges = async () => {
     let reqBody = {
       type: historyOf,
       id: campStatement?.id,
+      old_parent_camp_num: campStatement?.old_parent_camp_num ?? null,
+      parent_camp_num: campStatement?.parent_camp_num ?? null,
     };
     let res = await changeCommitStatement(reqBody);
     if (res?.status_code === 200) {
