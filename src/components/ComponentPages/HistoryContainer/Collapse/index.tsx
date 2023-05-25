@@ -39,7 +39,6 @@ import useAuthentication from "../../../../hooks/isUserAuthenticated";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 
 import { setViewThisVersion } from "src/store/slices/filtersSlice";
-import { marked } from 'marked';
 
 const { Panel } = Collapse;
 const { Title } = Typography;
