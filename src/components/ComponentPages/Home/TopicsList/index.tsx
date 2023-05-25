@@ -26,6 +26,7 @@ import {
 } from "src/utils/generalUtility";
 import CustomSkelton from "../../../common/customSkelton";
 import { CloseCircleOutlined } from "@ant-design/icons";
+import { clearAllListeners } from "@reduxjs/toolkit";
 
 
 const antIcon = <LoadingOutlined spin />;
@@ -65,8 +66,9 @@ const TopicsList = () => {
     filterNameSpaceId,
     search,
     is_checked,
-    is_archive,
+    // archeived
   } = useSelector((state: RootState) => ({
+    // archeived: state.utils?.archived_checkbox,
     canonizedTopics: state.homePage?.canonizedTopicsData,
     asofdate: state.filters?.filterObject?.asofdate,
     asof: state.filters?.filterObject?.asof,
@@ -84,9 +86,7 @@ const TopicsList = () => {
   const [nameSpacesList, setNameSpacesList] = useState(nameSpaces);
 
   const [isReview, setIsReview] = useState(asof == "review");
-  const [inputSearch, setInputSearch] = useState(search||"");
-  const [archiveSearch, setArchiveSearch] = useState(0);
-
+  const [inputSearch, setInputSearch] = useState(search || "");
 
   const [nameSpaceId, setNameSpaceId] = useState(filterNameSpaceId || "");
 
@@ -136,6 +136,10 @@ const TopicsList = () => {
     );
   };
 
+  // useEffect(() => {
+  //   console.log(archeived, "####archeived checkbox value##########")
+  // }, [archeived])
+
   useEffect(() => {
     if (filterNameSpace?.toLowerCase() !== "/general/") {
       router.query.canon = formatnamespace(filterNameSpace);
@@ -167,10 +171,19 @@ const TopicsList = () => {
   useEffect(() => {
     setSelectedNameSpace(filterNameSpace);
     setNameSpaceId(filterNameSpaceId);
-    setArchiveSearch(is_archive);
     setInputSearch(search.trim());
     setNameSpacesList(nameSpaces);
-  }, [filterNameSpace, filterNameSpaceId, search, nameSpaces, is_archive]);
+  }, [filterNameSpace, filterNameSpaceId, search, nameSpaces]);
+
+  useEffect(() => {
+
+    if (inputSearch.length > 0 || search.length > 0) {
+      setClear(true)
+    } else {
+      setClear(false)
+    }
+  }, [])
+
 
   useEffect(() => {
     setTopicsData(canonizedTopics);
@@ -229,8 +242,8 @@ const TopicsList = () => {
       search: inputSearch,
       filter: filterByScore,
       asof: asof,
+      // archive:archeived?1:0,
       user_email: onlyMyTopicsCheck.current ? userEmail : "",
-      is_archive: archiveSearch,
     };
     await getCanonizedTopicsApi(reqBody, loadMore);
     setLoadMoreIndicator(false);
@@ -295,6 +308,7 @@ const TopicsList = () => {
     getCanonizedNameSpacesApi();
   }, []);
 
+
   return (
     <>
       <div className={`${styles.card} topicsList_card`}>
@@ -302,9 +316,8 @@ const TopicsList = () => {
           className={styles.wrap}
           header={
             <div
-              className={`${styles.head} ${
-                router.asPath.includes("/browse") ? styles.browsePage : ""
-              }`}
+              className={`${styles.head} ${router.asPath.includes("/browse") ? styles.browsePage : ""
+                }`}
             >
               <Title level={3}>
                 Select Canon
@@ -384,15 +397,14 @@ const TopicsList = () => {
                 <>
                   <Link
                     href={{
-                      pathname: `/topic/${
-                        item?.topic_id
-                      }-${replaceSpecialCharacters(
-                        isReview
-                          ? item?.tree_structure &&
-                              item?.tree_structure[1]?.review_title
-                          : item?.topic_name,
-                        "-"
-                      )}/1-Agreement`,
+                      pathname: `/topic/${item?.topic_id
+                        }-${replaceSpecialCharacters(
+                          isReview
+                            ? item?.tree_structure &&
+                            item?.tree_structure[1]?.review_title
+                            : item?.topic_name,
+                          "-"
+                        )}/1-Agreement`,
                     }}
                   >
                     <a
@@ -403,7 +415,7 @@ const TopicsList = () => {
                       <Text className={styles.text}>
                         {isReview
                           ? item?.tree_structure &&
-                            item?.tree_structure[1].review_title
+                          item?.tree_structure[1].review_title
                           : item?.topic_name}
                       </Text>
                       <Tag className={styles.tag}>
