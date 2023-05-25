@@ -49,7 +49,7 @@ import {
   emojiValidation,
   changeSlashToArrow,
 } from "src/utils/generalUtility";
-import { EditorState, convertToRaw, ContentState } from "draft-js";
+// import { EditorState, convertToRaw, ContentState } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
 
@@ -83,11 +83,8 @@ export default function AddOrManage({ add }: any) {
   });
   const [parentCamp, setParentCamps] = useState([]);
 
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
-
-
+  const [editorState, setEditorState] = useState("")
+  
   const [campNickName, setCampNickName] = useState([]);
   const [canNameSpace, setCanNameSpace] = useState([]);
   const [options, setOptions] = useState([...messages.preventCampLabel]);

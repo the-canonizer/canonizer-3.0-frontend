@@ -21,14 +21,8 @@ export default function Editorck(props: (editorstate & editorchange)) {
 
     useEffect(() => {
 
-        if (typeof props.editorstate !== 'object')
             setEditordata(props.editorstate)
-        else
-            setEditordata("")
-
-        // setTimeout(() => {
             setLoadeditor(true)
-        // }, 100)
     }, [isUserAuthenticated])
 
     const editorConfiguration = {
@@ -87,7 +81,7 @@ export default function Editorck(props: (editorstate & editorchange)) {
                     editor={ClassicEditor}
                     data={editordata}
                     onReady={(editor) => {
-                        editor.editing.view.change((writer) => {
+                        editor.editing.view.change((writer:any) => {
                         writer.setStyle(
                             {"resize":
                             "vertical","height":"200px"," overflow-x":"auto"},
@@ -97,7 +91,7 @@ export default function Editorck(props: (editorstate & editorchange)) {
                         });
                     }}
                     
-                    onChange={(event, editor) => {
+                    onChange={(event, editor:any) => {
                         const data = editor?.getData();
                         props.oneditorchange(data)
                     }}
