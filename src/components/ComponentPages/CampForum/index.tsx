@@ -1,14 +1,14 @@
 import { Fragment, useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { Form, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
+import dynamic from "next/dynamic";
 
-import { RootState } from "../../../store";
-import useIsUserAuthenticated from "../../../hooks/isUserAuthenticated";
+import { RootState } from "src/store";
+import useIsUserAuthenticated from "src/hooks/isUserAuthenticated";
 import ForumUIList from "./List";
 import ForumUICreate from "./Create";
 import ForumUIPost from "./Post";
-
 import {
   createThread,
   getThreadsList,
@@ -18,28 +18,29 @@ import {
   getPostsList,
   deletePost,
   getThreadData,
-} from "../../../network/api/campForumApi";
+} from "src/network/api/campForumApi";
 import {
   getAllUsedNickNames,
   getCurrentCampRecordApi,
   getCurrentTopicRecordApi,
-} from "../../../network/api/campDetailApi";
-import { setThread, setPost } from "../../../store/slices/campForumSlice";
+} from "src/network/api/campDetailApi";
+import { setThread, setPost } from "src/store/slices/campForumSlice";
 const CampInfoBar = dynamic(() => import("../TopicDetails/CampInfoBar"), {
   ssr: false,
 });
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
-import dynamic from "next/dynamic";
 
 const ForumComponent = () => {
-  const router = useRouter();
+  const router = useRouter(),
+    params = useParams(),
+    searchParams = useSearchParams();
 
   const { isUserAuthenticated } = useIsUserAuthenticated();
 
   const [paramsList, setParamsList] = useState({});
   const [threadList, setThreadList] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [page, setPage] = useState(+router?.query?.page || 1);
+  const [page, setPage] = useState(params?.page ? +params?.page : 1);
   const [totalRecords, setTotalRecords] = useState(0);
   const [nickNameList, setNickNameList] = useState([]);
   const [initialValue, setInitialValues] = useState({});
@@ -71,68 +72,79 @@ const ForumComponent = () => {
       currentPost: state.forum.currentPost,
     }));
 
-  const setCurrentThread = (data) => dispatch(setThread(data));
+  const setCurrentThread = (data: any) => dispatch(setThread(data));
 
-  const setCurrentPost = (data) => dispatch(setPost(data));
+  const setCurrentPost = (data: {}) => dispatch(setPost(data));
 
-  const getSelectedNode = async (nodeKey) => {
-    const queries = router?.query;
-    const topicArr = (queries.topic as string).split("-");
-    const topic_num = topicArr.shift();
+  const getSelectedNode = async (nodeKey: string | number | undefined) => {
+    if (params && params.topic) {
+      const topicArr = (params.topic as string).split("-");
+      const topic_num = topicArr.shift();
+      const reqBody = {
+        topic_num: topic_num !== undefined ? +topic_num : 0,
+        camp_num: nodeKey !== undefined ? +nodeKey : 0,
+        as_of: asof,
+        as_of_date: asofdate || Date.now() / 1000,
+        algorithm: algorithm,
+        update_all: 1,
+      };
 
-    const reqBody = {
-      topic_num: +topic_num,
-      camp_num: +nodeKey,
-      as_of: asof,
-      as_of_date: asofdate || Date.now() / 1000,
-      algorithm: algorithm,
-      update_all: 1,
-    };
-
-    await Promise.all([
-      getCurrentTopicRecordApi(reqBody),
-      getCurrentCampRecordApi(reqBody),
-    ]);
+      await Promise.all([
+        getCurrentTopicRecordApi(reqBody),
+        getCurrentCampRecordApi(reqBody),
+      ]);
+    }
   };
 
   async function getThreads(
-    camp,
-    topic,
+    camp: string | undefined,
+    topic: string | undefined,
     type = "all",
     pp = 1,
     like = "",
     per_page = perPage
   ) {
     setLoading(true);
-    let res = null;
 
-    if (isLoggedIn && type !== "all") {
+    try {
       let q = `?camp_num=${camp}&topic_num=${topic}&type=${type}&page=${pp}&per_page=${per_page}&like=${like}`;
+      if (!isLoggedIn || type === "all") {
+        q = `?camp_num=${camp}&topic_num=${topic}&type=all&page=${pp}&per_page=${per_page}&like=${like}`;
+      }
 
-      res = await getThreadsList(q);
-    } else {
-      let q = `?camp_num=${camp}&topic_num=${topic}&type=all&page=${pp}&per_page=${per_page}&like=${like}`;
+      const res = await getThreadsList(q);
 
-      res = await getThreadsList(q);
-    }
-
-    setLoading(false);
-
-    if (res && res.status_code === 200) {
-      setThreadList(res.data?.items);
-      setTotalRecords(res.data?.total_rows);
+      if (res.status_code === 200) {
+        setThreadList(res.data.items);
+        setTotalRecords(res.data.total_rows);
+      }
+    } catch (error) {
+      // Handle error or show appropriate feedback to the user
+    } finally {
+      setLoading(false);
     }
   }
 
-  const getPosts = async (id, pp = 1, like = "", per_page = postperPage) => {
+  const getPosts = async (
+    id: any,
+    pp = 1,
+    like = "",
+    per_page = postperPage
+  ) => {
     setPostLoading(true);
-    const q = `?page=${pp}&per_page=${per_page}&like=${like}`;
 
-    const res = await getPostsList(id, q);
-    setPostLoading(false);
-    if (res && res.status_code === 200) {
-      setPostList(res.data?.items);
-      setPtotalRecords(res.data?.total_rows);
+    try {
+      const q = `?page=${pp}&per_page=${per_page}&like=${like}`;
+      const res = await getPostsList(id, q);
+
+      if (res.status_code === 200) {
+        setPostList(res.data?.items);
+        setPtotalRecords(res.data?.total_rows);
+      }
+    } catch (error) {
+      // Handle error or show appropriate feedback to the user
+    } finally {
+      setPostLoading(false);
     }
   };
 
@@ -152,21 +164,18 @@ const ForumComponent = () => {
   };
 
   useEffect(() => {
-    if (router && router?.query) {
-      const queries = router?.query;
-      const campArr = (queries.camp as string).split("-");
+    if (params) {
+      const campArr = (params.camp as string).split("-");
       const camp_num = campArr.shift();
       getSelectedNode(camp_num);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   useEffect(() => {
-    const queries = router?.query;
     let p_camps = "";
 
-    const topicArr = (queries?.topic as string)?.split("-");
-    const campArr = (queries?.camp as string)?.split("-");
+    const topicArr = (params?.topic as string)?.split("-");
+    const campArr = (params?.camp as string)?.split("-");
     const topic_num = topicArr?.shift();
     const camp_num = campArr?.shift();
     const topic = topicArr?.join(" ");
@@ -183,7 +192,7 @@ const ForumComponent = () => {
       camp: p_camps,
       camp_num,
       topic_num,
-      by: queries.by,
+      by: searchParams?.get("by"),
       camp_name: camp,
     };
 
@@ -192,7 +201,7 @@ const ForumComponent = () => {
 
   // start thread List section
 
-  const onSearch = (v) => {
+  const onSearch = (v: string) => {
     setSearchQuery(v.trim());
   };
 

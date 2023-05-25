@@ -39,8 +39,8 @@ const CreateCampFormUI = ({
               >
                 {nick_name}
               </Link>
-              {new Date(postedTime).getTime() ===
-              new Date(postedUpdatedTime).getTime()
+              {new Date(postedTime || new Date()).getTime() ===
+              new Date(postedUpdatedTime || new Date()).getTime()
                 ? ` replied ${moment(getTime(postedTime))
                     .local()
                     .startOf("seconds")

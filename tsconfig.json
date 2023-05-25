@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -16,8 +20,16 @@
     "isolatedModules": true,
     "baseUrl": ".",
     "paths": {
-      "@/components/*": ["./src/components/*"]
-    }
+      "@/components/*": [
+        "./src/components/*"
+      ]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "strictNullChecks": true
   },
   "include": [
     "next-env.d.ts",
@@ -26,7 +38,11 @@
     "next.config.js",
     "src/components/common/helpCard/help.tsx",
     "src/components/common/headers/loggedOutHeader/index.jsx",
-    "src/utils/testUtils.tsx"
-, "src/firebaseConfig/firebase.ts"  ],
-  "exclude": ["node_modules"]
+    "src/utils/testUtils.tsx",
+    "src/firebaseConfig/firebase.ts",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

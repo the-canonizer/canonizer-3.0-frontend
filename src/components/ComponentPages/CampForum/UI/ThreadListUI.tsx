@@ -253,7 +253,7 @@ const ThreadListUI = ({
                 title="Last Updated On"
                 dataIndex="post_updated_at"
                 key="post_updated_at"
-                render={(dt, others) => {
+                render={(dt, others: any) => {
                   return (
                     <Text>
                       {others["post_count"] === 0 ? (
