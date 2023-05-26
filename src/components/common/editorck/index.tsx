@@ -1,5 +1,5 @@
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import {Editor as ClassicEditor}  from 'ckeditor51/build/ckeditor'
+import ClassicEditor from 'ckeditor51/build/ckeditor'
 import { useState, useEffect } from 'react';
 import { Skeleton } from 'antd';
 import isAuth from "../../../hooks/isUserAuthenticated";
@@ -78,7 +78,7 @@ export default function Editorck(props: (editorstate & editorchange)) {
             {loadeditor ?
                 <CKEditor
                     config={editorConfiguration}
-                    editor={ClassicEditor}
+                    editor={ClassicEditor.Editor}
                     data={editordata}
                     onReady={(editor) => {
                         editor.editing.view.change((writer:any) => {

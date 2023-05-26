@@ -73,7 +73,6 @@ export default function AddOrManage({ add }: any) {
   const [editStatementData, setEditStatementData] = useState({ data: null });
   const [submitIsDisable, setSubmitIsDisable] = useState(true);
   const [submitIsDisableCheck, setSubmitIsDisableCheck] = useState(true);
-
   const [nickNameData, setNickNameData] = useState([]);
   const [screenLoading, setScreenLoading] = useState(false);
   const [initialFormValues, setInitialFormValues] = useState({});
@@ -97,13 +96,12 @@ export default function AddOrManage({ add }: any) {
   let objection = router?.query?.statement?.at(0)?.split("-")[1] == "objection";
   let update = router?.query?.statement?.at(0)?.split("-")[1] == "update";
   let manageFormOf = router?.asPath.split("/")[2];
-  let editorTextLength;
-  if (typeof editorState === 'object') {
-    editorTextLength = 0
-  } else {
-    editorTextLength = editorState.replace(/<(?!img\b)[^\s<>]*>/, '').length
-
-  }
+  // let editorTextLength;
+  // if (typeof editorState === 'object') {
+  //   editorTextLength = 0
+  // } else {
+  let  editorTextLength = editorState.replace(/<(?!img\b)[^\s<>]*>/, '').length
+  // }
 
   const onFinish = async (values: any) => {
     setScreenLoading(true);
@@ -548,7 +546,8 @@ export default function AddOrManage({ add }: any) {
 
   const onEditorStateChange = (changedata) => {
     const datachangec = `${changedata}`
-    setEditorState(datachangec)
+      setEditorState(datachangec)
+  
   }
 
 
@@ -959,7 +958,7 @@ export default function AddOrManage({ add }: any) {
                         />
                       ) : (
 
-                        <Editorckl editorstate={editorState ? editorState : ""} oneditorchange={onEditorStateChange}></Editorckl>
+                        <Editorckl editorstate={editorState} oneditorchange={onEditorStateChange}></Editorckl>
 
                       )}
                     </Form.Item>
