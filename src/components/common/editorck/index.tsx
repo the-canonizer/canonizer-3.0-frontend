@@ -84,7 +84,7 @@ export default function Editorck(props: (editorstate & editorchange)) {
                         editor.editing.view.change((writer:any) => {
                         writer.setStyle(
                             {"resize":
-                            "vertical","height":"200px"," overflow-x":"auto"},
+                            "vertical","height":"200px"," overflow-x":"auto",'min-height':"100px"},
                             editor.editing.view.document.getRoot()
                         );
                         
