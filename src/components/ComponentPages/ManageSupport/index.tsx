@@ -284,7 +284,7 @@ const ManageSupport = () => {
         if (CheckDelegatedOrDirect && resultFilterSupportCamp.length == 0) {
           setManageSupportList(manageSupportArr);
         } else {
-          setManageSupportList([...fiterSupportedCamps, ...manageSupportArr]);
+          setManageSupportList([...fiterSupportedCamps, ...manageSupportArr, ...resultFilterSupportCamp]);
         }
 
         setManageSupportRevertData(manageSupportArr);
