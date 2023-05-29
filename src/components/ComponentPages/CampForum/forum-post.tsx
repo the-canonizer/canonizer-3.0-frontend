@@ -2,10 +2,10 @@ import { Fragment, useState, useEffect } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { Form, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
+import dynamic from "next/dynamic";
 
 import { RootState } from "src/store";
 import useIsUserAuthenticated from "src/hooks/isUserAuthenticated";
-import ForumUIPost from "./Post";
 import {
   createPost,
   updatePost,
@@ -17,6 +17,8 @@ import { getAllUsedNickNames } from "src/network/api/campDetailApi";
 import CampInfoBar from "../TopicDetails/CampInfoBar/index-app";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import { setPost, setThread } from "src/store/slices/campForumSlice";
+
+const ForumUIPost = dynamic(() => import("./Post-app"), { ssr: false });
 
 const ForumComponent = () => {
   const { currentThread, currentPost } = useSelector((state: RootState) => ({
@@ -205,7 +207,7 @@ const ForumComponent = () => {
     setPostLoading(false);
   };
 
-  const onPostEditClick = (post: { body?: any; }) => {
+  const onPostEditClick = (post: { body?: any }) => {
     const element = document.querySelector("#new_post");
     if (element) {
       element.scrollIntoView({
