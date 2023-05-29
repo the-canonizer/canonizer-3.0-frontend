@@ -2,7 +2,7 @@
 
 import { Fragment } from "react";
 
-import CampForumComponent from "src/components/ComponentPages/CampForum";
+import CampForumComponent from "src/components/ComponentPages/CampForum/index-app";
 
 function CampForumListPage() {
   return (

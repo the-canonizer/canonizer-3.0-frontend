@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 
-import Sidebar from "../../Home/SideBarNoFilter";
+import Sidebar from "../../Home/SideBarNoFilter/index-app";
 
 const ThreadSidebar = () => (
   <Fragment>

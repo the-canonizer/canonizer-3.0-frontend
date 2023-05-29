@@ -1,5 +1,5 @@
 import { Fragment, useState, useEffect } from "react";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Form, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import dynamic from "next/dynamic";
@@ -32,8 +32,8 @@ import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 const ForumComponent = () => {
   const router = useRouter(),
-    params = useParams(),
-    searchParams = useSearchParams();
+    params = router.query,
+    searchParams = router.query;
 
   const { isUserAuthenticated } = useIsUserAuthenticated();
 
@@ -192,7 +192,7 @@ const ForumComponent = () => {
       camp: p_camps,
       camp_num,
       topic_num,
-      by: searchParams?.get("by"),
+      by: searchParams?.by,
       camp_name: camp,
     };
 
