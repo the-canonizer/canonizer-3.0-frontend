@@ -1224,6 +1224,7 @@ body {
       right: 0;
       top: 0;
       background: rgba(0, 0, 0, 0.06);
+      // rgb(227 237 232)
       padding: 0 !important;
       display: flex;
       align-items: center;
@@ -1239,7 +1240,7 @@ body {
 
     &:not(.ant-collapse-item-active) {
       .ant-collapse-header {
-        bottom: 66px;
+        bottom: 0px;
 
         .ant-collapse-header-text {
           i {
@@ -1264,8 +1265,24 @@ body {
   }
 }
 
+.objected {
+  .ant-collapse-item {
+    .ant-collapse-header {
+      background: #e3ede8;
+    }
+    &.ant-collapse-item-active {
+      .ant-collapse-header {
+        background-color: #12c879;
+      }
+    }
+  }
+}
+
 .live {
   .ant-collapse-item {
+    .ant-collapse-header {
+      background: #e3ede8;
+    }
     &.ant-collapse-item-active {
       .ant-collapse-header {
         background-color: #12c879;
@@ -1276,10 +1293,20 @@ body {
 
 .in_review {
   .ant-collapse-item {
+    .ant-collapse-header {
+      background: #f0eee5;
+    }
     &.ant-collapse-item-active {
       .ant-collapse-header {
         background-color: #ffdd00;
       }
+    }
+  }
+}
+.old {
+  .ant-collapse-item {
+    .ant-collapse-header {
+      background: rgb(232 234 240);
     }
   }
 }
