@@ -22,7 +22,7 @@ export const getEventLineApi = async (reqBody) => {
         )
       );
     }
-    return eventLineData;
+    return eventLineData.data;
     // return mockData
   } catch (error) {
     // return mockData

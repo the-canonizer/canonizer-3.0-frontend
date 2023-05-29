@@ -25,6 +25,7 @@ import {
   changeSlashToArrow,
 } from "src/utils/generalUtility";
 import CustomSkelton from "../../../common/customSkelton";
+import { CloseCircleOutlined } from "@ant-design/icons";
 
 const antIcon = <LoadingOutlined spin />;
 const { Title, Text } = Typography;
@@ -92,6 +93,8 @@ const TopicsList = () => {
   const [getTopicsLoadingIndicator, setGetTopicsLoadingIndicator] =
     useState(false);
   const [selectedNameSpace, setSelectedNameSpace] = useState(filterNameSpace);
+  const [clear, setClear] = useState(false);
+
   let onlyMyTopicsCheck = useRef();
 
   const formatnamespace = (namespace, reverse = false) => {
@@ -195,7 +198,21 @@ const TopicsList = () => {
     inputSearch,
     onlyMyTopicsCheck.current,
   ]);
+  useEffect(() => {
+    if (inputSearch.length > 0 || search.length > 0) {
+      setClear(true);
+    } else {
+      setClear(false);
+    }
+  }, []);
 
+  const handlesearch = (e) => {
+    if (e.target.value.length > 0) {
+      setClear(true);
+    } else {
+      setClear(false);
+    }
+  };
   async function getTopicsApiCallWithReqBody(loadMore = false) {
     loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
     const reqBody = {
@@ -273,6 +290,7 @@ const TopicsList = () => {
     dispatch(setManageSupportStatusCheck(false));
     getCanonizedNameSpacesApi();
   }, []);
+
   return (
     <>
       <div

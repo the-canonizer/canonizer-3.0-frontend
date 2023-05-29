@@ -10,12 +10,14 @@ import {
   Tooltip,
   Table,
   Tag,
+  message,
 } from "antd";
 import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, useEffect, useRef, Fragment } from "react";
 
+import { LoadingOutlined } from "@ant-design/icons";
 import {
   changeCommitStatement,
   discardStatement,
@@ -89,6 +91,8 @@ function HistoryCollapse({
     let reqBody = {
       type: historyOf,
       id: campStatement?.id,
+      old_parent_camp_num: campStatement?.old_parent_camp_num ?? null,
+      parent_camp_num: campStatement?.parent_camp_num ?? null,
     };
     let res = await changeCommitStatement(reqBody);
     if (res?.status_code === 200) {
@@ -119,7 +123,14 @@ function HistoryCollapse({
       nick_name_id: userNickNameData[0]?.id,
       user_agreed: campStatement?.agreed_to_change ? 0 : 1,
     };
-    await agreeToChangeApi(reqBody);
+    let res = await agreeToChangeApi(reqBody);
+    if (res?.status_code == 200) {
+      res?.data?.is_submitted
+        ? message.success(res?.message)
+        : message?.error(res?.message);
+      setIsSelectChecked(false);
+    }
+
     changeAgree();
   };
 
@@ -576,21 +587,34 @@ function HistoryCollapse({
                       ) &&
                         isUserAuthenticated &&
                         !campStatement?.isAuthor && (
-                          <Checkbox
-                            defaultChecked={campStatement?.agreed_to_change}
-                            className={
-                              styles.campSelectCheckbox + " agreed-text"
+                          <Spin
+                            indicator={
+                              <LoadingOutlined
+                                style={{
+                                  fontSize: 21,
+                                  left: 8,
+                                }}
+                                spin
+                              />
                             }
-                            onChange={agreeWithChange}
+                            spinning={isSelectChecked}
                           >
-                            I agree with this{" "}
-                            {historyOf == "camp"
-                              ? "camp"
-                              : historyOf == "topic"
-                              ? "topic"
-                              : "statement"}{" "}
-                            change
-                          </Checkbox>
+                            <Checkbox
+                              defaultChecked={campStatement?.agreed_to_change}
+                              className={
+                                styles.campSelectCheckbox + " agreed-text"
+                              }
+                              onChange={agreeWithChange}
+                            >
+                              I agree with this{" "}
+                              {historyOf == "camp"
+                                ? "camp"
+                                : historyOf == "topic"
+                                ? "topic"
+                                : "statement"}{" "}
+                              change
+                            </Checkbox>
+                          </Spin>
                         )}
                     </Spin>
                   </div>

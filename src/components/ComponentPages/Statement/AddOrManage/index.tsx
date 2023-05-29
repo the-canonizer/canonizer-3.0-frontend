@@ -422,6 +422,7 @@ export default function AddOrManage({ add }: any) {
             if (op.id === "is_archive") {
               op.checked =
                 res?.data[manageFormOf]?.is_archive === 1 ? true : false;
+                op.tooltip = op.checked ? 'Unarchive the camp.' : 'Archive the camp.'
               if (
                 res?.data[manageFormOf]?.direct_archive === 0 &&
                 res?.data[manageFormOf]?.is_archive === 0
@@ -516,6 +517,7 @@ export default function AddOrManage({ add }: any) {
       } else {
         op.checked = false;
       }
+      op.tooltip = op.checked ? 'Unarchive the camp.' : 'Archive the camp.'
     });
     setOptions(oldOptions);
     if (

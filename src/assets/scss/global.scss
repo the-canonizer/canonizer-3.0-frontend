@@ -1407,6 +1407,7 @@ body {
       right: 0;
       top: 0;
       background: rgba(0, 0, 0, 0.06);
+      // rgb(227 237 232)
       padding: 0 !important;
       display: flex;
       align-items: center;
@@ -1422,7 +1423,7 @@ body {
 
     &:not(.ant-collapse-item-active) {
       .ant-collapse-header {
-        bottom: 66px;
+        bottom: 0px;
 
         .ant-collapse-header-text {
           i {
@@ -1447,8 +1448,24 @@ body {
   }
 }
 
+.objected {
+  .ant-collapse-item {
+    .ant-collapse-header {
+      background: #e3ede8;
+    }
+    &.ant-collapse-item-active {
+      .ant-collapse-header {
+        background-color: #12c879;
+      }
+    }
+  }
+}
+
 .live {
   .ant-collapse-item {
+    .ant-collapse-header {
+      background: #e3ede8;
+    }
     &.ant-collapse-item-active {
       .ant-collapse-header {
         background-color: #12c879;
@@ -1459,6 +1476,9 @@ body {
 
 .in_review {
   .ant-collapse-item {
+    .ant-collapse-header {
+      background: #f0eee5;
+    }
     &.ant-collapse-item-active {
       .ant-collapse-header {
         background-color: #ffdd00;
@@ -1466,7 +1486,13 @@ body {
     }
   }
 }
-
+.old {
+  .ant-collapse-item {
+    .ant-collapse-header {
+      background: rgb(232 234 240);
+    }
+  }
+}
 .imgWrap {
   width: 100%;
   text-align: center;
@@ -2233,14 +2259,20 @@ div[role="option"]::before {
 }
 
 .rang-slider {
-  @media screen and (min-width: 768px) {
-    margin: 10px 40px 10px;
+  @media screen and (min-width:768px) {
+  margin:10px 40px 10px;
+}
+@media screen and (max-width:767px) {
+  margin:10px 16px 10px;
+}
+.ant-slider-tooltip {
+  .ant-tooltip-arrow-content  {
+    --antd-arrow-background-color: #4484ce;
   }
-
-  @media screen and (max-width: 767px) {
-    margin: 10px 16px 10px;
+  .ant-tooltip-inner{
+  background-color: #4484ce;
   }
-
+}
   .ant-slider-mark {
     top: -22px;
 
