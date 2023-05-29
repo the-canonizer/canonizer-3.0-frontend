@@ -4,28 +4,26 @@ import { useState, useEffect } from 'react';
 import { Skeleton } from 'antd';
 import isAuth from "../../../hooks/isUserAuthenticated";
 
-interface editorstate {
-    editorstate: string;
+interface editorState {
+    editorState: string;
 }
 
-export interface editorchange {
+interface editorchange {
     oneditorchange: (changedata: string | undefined) => void
-
 }
 
-export default function Editorck(props: (editorstate & editorchange)) {
+export default function Editorck(props: (editorState & editorchange)) {
 
     const {isUserAuthenticated} = isAuth();
     const [loadeditor, setLoadeditor] = useState(false)
     const [editordata, setEditordata] = useState('')
 
     useEffect(() => {
-
-            setEditordata(props.editorstate)
+            setEditordata(props.editorState)
             setLoadeditor(true)
     }, [isUserAuthenticated])
 
-    const editorConfiguration = {
+    const editorConfiguration = { 
         placeholder: "Write Your Statement Here",
         mediaEmbed:{previewsInData:true},
         toolbar: { shouldNotGroupWhenFull: true, 
@@ -86,8 +84,7 @@ export default function Editorck(props: (editorstate & editorchange)) {
                             {"resize":
                             "vertical","height":"200px"," overflow-x":"auto",'min-height':"100px"},
                             editor.editing.view.document.getRoot()
-                        );
-                        
+                        );                        
                         });
                     }}
                     
