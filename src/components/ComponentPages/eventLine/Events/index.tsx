@@ -2,11 +2,16 @@ import { useRouter } from "next/router";
 import { useState, Fragment, useEffect } from "react";
 import { BellFilled } from "@ant-design/icons";
 import { Card, List } from "antd";
+import moment from "moment";
 import styles from "./topicDetails.module.scss";
 import activityStyle from "../../Home/CampRecentActivities/campRecentActivities.module.scss";
 const Events = ({ timelineDescript }) => {
   const [check, setCheck] = useState(true);
   const router = useRouter();
+  const covertToTime = (unixTime) => {
+    return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
+  };
+
   useEffect(() => {
     setCheck(true);
     setTimeout(() => {
@@ -44,7 +49,7 @@ const Events = ({ timelineDescript }) => {
                           activityStyle.activitiesList +
                           ` ${key == 0 ? "animatedText" : ""}`
                         }
-                        title={title}
+                        title={title?.message}
                         // className={styles.listItem}
                       />
                     </List.Item>

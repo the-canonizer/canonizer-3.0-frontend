@@ -169,11 +169,7 @@ const CampTree = ({
         tree?.at(0) &&
         getAllDefaultExpandKeys(tree?.at(0)["1"], tree?.at(0)["1"]?.score);
       tree?.at(0) &&
-        expandKeys.push(
-          +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) == 1
-            ? 2
-            : +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1)
-        );
+        expandKeys.push(+(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1));
       let allkeys = [...selectedExpand, ...(expandKeys || [])];
       let uniquekeyss = toFindDuplicates(allkeys);
       setDefaultExpandKeys(expandKeys);
@@ -390,7 +386,9 @@ const CampTree = ({
     });
   };
 
-  const onExpand = (expandedKeys) => {
+  const onExpand = (expandedKeyss) => {
+    let expandedKeys = toFindDuplicates(expandedKeyss);
+    console.log("sda", expandedKeys);
     let topic_id = tree?.at(0) && tree?.at(0)["1"].topic_id;
     let sesionexpandkeys = JSON.parse(sessionStorage.getItem("value"));
 
@@ -425,7 +423,7 @@ const CampTree = ({
           onSelect={onSelect}
           // defaultSelectedKeys={uniqueKeys}
           onExpand={onExpand}
-          expandedKeys={[...uniqueKeys, "1"]}
+          expandedKeys={[...uniqueKeys]}
           // autoExpandParent={autoExpandParent}
           // selectedKeys={uniqueKeys}
           // selectable={true}

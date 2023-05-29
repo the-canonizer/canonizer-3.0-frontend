@@ -197,17 +197,21 @@ function TimelineSlider({
       setStart(false);
     }
     let showkey = Object.keys(mockData).sort()[iteration];
+    let sortMockData = Object.keys(mockData).sort();
     let mappedArr = [];
     for (let i = 0; i < Object.keys(mockData).length; i++) {
-      if (showkey == Object.keys(mockData).sort()[i]) {
-        mappedArr.unshift(
-          mockData[Object.keys(mockData).sort()[i]]?.event?.message
-        );
+      if (showkey == sortMockData[i]) {
+        mappedArr.unshift({
+          message: mockData[sortMockData[i]]?.event?.message,
+          eventDate: sortMockData[i]?.split("_")[1],
+        });
         break;
       }
-      mappedArr.unshift(
-        mockData[Object.keys(mockData).sort()[i]]?.event?.message
-      );
+
+      mappedArr.unshift({
+        message: mockData[sortMockData[i]]?.event?.message,
+        eventDate: sortMockData[i]?.split("_")[1],
+      });
     }
     setTimelineDescript(mappedArr);
   }, [iteration, mockData]);
@@ -275,7 +279,9 @@ function TimelineSlider({
           disabled={mockData && Object.keys(mockData).length > 2 ? false : true}
           className="rang-slider"
           tooltip={{
+            open: true,
             formatter,
+            getPopupContainer: (triggerNode) => triggerNode.parentElement,
           }}
           onChange={onChange}
           value={Number(iteration)}
