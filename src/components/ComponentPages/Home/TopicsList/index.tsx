@@ -27,7 +27,6 @@ import {
 import CustomSkelton from "../../../common/customSkelton";
 import { CloseCircleOutlined } from "@ant-design/icons";
 
-
 const antIcon = <LoadingOutlined spin />;
 const { Title, Text } = Typography;
 const { Search } = Input;
@@ -84,9 +83,8 @@ const TopicsList = () => {
   const [nameSpacesList, setNameSpacesList] = useState(nameSpaces);
 
   const [isReview, setIsReview] = useState(asof == "review");
-  const [inputSearch, setInputSearch] = useState(search||"");
+  const [inputSearch, setInputSearch] = useState(search || "");
   const [archiveSearch, setArchiveSearch] = useState(0);
-
 
   const [nameSpaceId, setNameSpaceId] = useState(filterNameSpaceId || "");
 
@@ -94,7 +92,7 @@ const TopicsList = () => {
   const [getTopicsLoadingIndicator, setGetTopicsLoadingIndicator] =
     useState(false);
   const [selectedNameSpace, setSelectedNameSpace] = useState(filterNameSpace);
-  const [clear,setClear] = useState(false)
+  const [clear, setClear] = useState(false);
 
   let onlyMyTopicsCheck = useRef();
 
@@ -180,14 +178,12 @@ const TopicsList = () => {
   useEffect(() => {
     setIsReview(asof == "review");
   }, [asof]);
-  
 
   useEffect(() => {
     async function getTopicsApiCall() {
       setGetTopicsLoadingIndicator(true);
       await getTopicsApiCallWithReqBody();
       setGetTopicsLoadingIndicator(false);
-      
     }
     getTopicsApiCall();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -201,22 +197,20 @@ const TopicsList = () => {
     onlyMyTopicsCheck.current,
   ]);
   useEffect(() => {
-
     if (inputSearch.length > 0 || search.length > 0) {
-      setClear(true)
-      
+      setClear(true);
     } else {
-      setClear(false)
+      setClear(false);
     }
-  }, [])
+  }, []);
 
-  const handlesearch = (e) =>{
-    if(e.target.value.length > 0 ){
-      setClear(true)
-    }else{
-      setClear(false)
+  const handlesearch = (e) => {
+    if (e.target.value.length > 0) {
+      setClear(true);
+    } else {
+      setClear(false);
     }
-}
+  };
   async function getTopicsApiCallWithReqBody(loadMore = false) {
     loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
     const reqBody = {
@@ -349,11 +343,23 @@ const TopicsList = () => {
                 <div className={styles.inputSearchTopic}>
                   <Search
                     key={inputSearch}
-                    placeholder="Search by topic name"                    
+                    placeholder="Search by topic name"
                     allowClear={{
-                      clearIcon: <CloseCircleOutlined onClick={()=>{setInputSearch(''); setClear(false)}} style={clear ? { visibility: "visible" } : { visibility: "hidden" }} />
+                      clearIcon: (
+                        <CloseCircleOutlined
+                          onClick={() => {
+                            setInputSearch("");
+                            setClear(false);
+                          }}
+                          style={
+                            clear
+                              ? { visibility: "visible" }
+                              : { visibility: "hidden" }
+                          }
+                        />
+                      ),
                     }}
-                    className={styles.topic} 
+                    className={styles.topic}
                     defaultValue={inputSearch}
                     onChange={handlesearch}
                     onSearch={onSearch}

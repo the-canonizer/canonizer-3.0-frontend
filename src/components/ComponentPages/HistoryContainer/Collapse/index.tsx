@@ -91,6 +91,8 @@ function HistoryCollapse({
     let reqBody = {
       type: historyOf,
       id: campStatement?.id,
+      old_parent_camp_num: campStatement?.old_parent_camp_num ?? null,
+      parent_camp_num: campStatement?.parent_camp_num ?? null,
     };
     let res = await changeCommitStatement(reqBody);
     if (res?.status_code === 200) {
