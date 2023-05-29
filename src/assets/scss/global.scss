@@ -1964,6 +1964,14 @@ div[role="option"]::before {
 @media screen and (max-width:767px) {
   margin:10px 16px 10px;
 }
+.ant-slider-tooltip {
+  .ant-tooltip-arrow-content  {
+    --antd-arrow-background-color: #4484ce;
+  }
+  .ant-tooltip-inner{
+  background-color: #4484ce;
+  }
+}
   .ant-slider-mark {
     top:-22px;
     &-text {
