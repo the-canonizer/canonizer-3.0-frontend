@@ -18,10 +18,11 @@ import { useSelector } from "react-redux";
 
 import styles from "../siteHeader.module.scss";
 
-import { firebaseCloudMessaging } from "../../../../firebaseConfig/firebase";
-import Lists from "../../../ComponentPages/Notifications/UI/List";
-import { updateFCMToken } from "../../../../network/api/notificationAPI";
-import { RootState } from "../../../../store";
+import { firebaseCloudMessaging } from "src/firebaseConfig/firebase";
+import Lists from "src/components/ComponentPages/Notifications/UI/List";
+import { updateFCMToken } from "src/network/api/notificationAPI";
+import { RootState } from "src/store";
+
 import Fav from "./icon";
 
 const Notifications = () => {
@@ -37,7 +38,7 @@ const Notifications = () => {
 
   const router = useRouter();
 
-  const updateToken = async (tc) => {
+  const updateToken = async (tc: string) => {
     await updateFCMToken(tc);
   };
 
@@ -61,30 +62,38 @@ const Notifications = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onSwitch = async (st, event) => {
+  const onSwitch = async (st: any, event: { stopPropagation: () => void }) => {
     setIsLoading(true);
     event.stopPropagation();
+
     if (st) {
       const messaging = firebase.messaging();
       if ("serviceWorker" in navigator && "PushManager" in window) {
-        const status = await Notification.requestPermission();
+        try {
+          const status = await Notification.requestPermission();
 
-        if (status && status === "granted") {
-          const fcm_token = await messaging.getToken({
-            vapidKey: process.env.NEXT_PUBLIC_FCM_CERTIFICATE_KEY,
-          });
+          if (status === "granted") {
+            const fcm_token = await messaging.getToken({
+              vapidKey: process.env.NEXT_PUBLIC_FCM_CERTIFICATE_KEY,
+            });
 
-          // Set token in our local storage
-          if (fcm_token) {
-            localforage.setItem("fcm_token", fcm_token);
-            await updateToken(fcm_token);
-            setChecked(true);
-            getMessage();
-            setIsLoading(false);
+            if (fcm_token) {
+              await localforage.setItem("fcm_token", fcm_token);
+              await updateToken(fcm_token);
+              setChecked(true);
+              getMessage();
+              setIsLoading(false);
+            } else {
+              message.info("Something went wrong!");
+              setIsLoading(false);
+            }
           } else {
-            message.info("Something went wrong!");
+            message.info("Notification permission denied!");
             setIsLoading(false);
           }
+        } catch (error) {
+          message.error("Failed to request notification permission:", error);
+          setIsLoading(false);
         }
       }
     } else {
