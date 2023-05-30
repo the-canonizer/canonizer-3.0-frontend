@@ -1,21 +1,21 @@
 import { Collapse, Popover, Image, Typography, Button, Select } from "antd";
 import React, { useEffect, useState, useRef } from "react";
-import CampTree from "../CampTree";
 import Link from "next/link";
+import { RightOutlined } from "@ant-design/icons";
+import { useSelector, useDispatch } from "react-redux";
+
+import CampTree from "../CampTree";
 import { RootState } from "src/store";
-import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
+import useAuthentication from "src/hooks/isUserAuthenticated";
 import styles from "../topicDetails.module.scss";
 import { useRouter } from "next/router";
 import CustomSkelton from "../../../common/customSkelton";
-import { RightOutlined } from "@ant-design/icons";
 
-import { useSelector, useDispatch } from "react-redux";
-import { store } from "../../../../store";
-import { setTree } from "../../../../store/slices/campDetailSlice";
+import { store } from "src/store";
+import { setTree } from "src/store/slices/campDetailSlice";
+import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 
 import { fallBackSrc } from "src/assets/data-images";
-
-import { setFilterCanonizedTopics } from "../../../../store/slices/filtersSlice";
 
 const { Panel } = Collapse;
 const { Link: AntLink, Text } = Typography;
@@ -81,6 +81,42 @@ const CampTreeCard = ({
 
   return (
     <>
+      {tree &&
+        (!tree["1"]?.is_valid_as_of_time ||
+          (tree["1"]?.is_valid_as_of_time &&
+            !(
+              tree["1"]?.created_date <=
+              (asof == "default" || asof == "review"
+                ? Date.now() / 1000
+                : asofdate)
+            ))) && (
+          <div className={styles.imageWrapper}>
+            <div>
+              <Image
+                preview={false}
+                alt="No topic created"
+                src={"/images/empty-img-default.png"}
+                fallback={fallBackSrc}
+                width={200}
+                id="forgot-modal-img"
+              />
+              <p>
+                The topic was created on
+                <AntLink
+                  onClick={() => {
+                    onCreateTreeDate();
+                  }}
+                >
+                  {" "}
+                  {new Date(
+                    (tree && tree["1"]?.created_date) * 1000
+                  ).toLocaleString()}
+                </AntLink>
+              </p>
+            </div>
+          </div>
+        )}
+
       {((tree &&
         tree["1"]?.is_valid_as_of_time &&
         tree["1"]?.created_date <=
@@ -91,7 +127,7 @@ const CampTreeCard = ({
         <Collapse
           defaultActiveKey={["1"]}
           expandIconPosition="right"
-          className="topicDetailsCollapse"
+          className={`topicDetailsCollapse ${styles.topicDetailsPanelNo}`}
         >
           <Panel
             disabled
@@ -186,41 +222,6 @@ const CampTreeCard = ({
           </Panel>
         </Collapse>
       )}
-      {tree &&
-        (!tree["1"]?.is_valid_as_of_time ||
-          (tree["1"]?.is_valid_as_of_time &&
-            !(
-              tree["1"]?.created_date <=
-              (asof == "default" || asof == "review"
-                ? Date.now() / 1000
-                : asofdate)
-            ))) && (
-          <div className={styles.imageWrapper}>
-            <div>
-              <Image
-                preview={false}
-                alt="No topic created"
-                src={"/images/empty-img-default.png"}
-                fallback={fallBackSrc}
-                width={200}
-                id="forgot-modal-img"
-              />
-              <p>
-                The topic was created on
-                <AntLink
-                  onClick={() => {
-                    onCreateTreeDate();
-                  }}
-                >
-                  {" "}
-                  {new Date(
-                    (tree && tree["1"]?.created_date) * 1000
-                  ).toLocaleString()}
-                </AntLink>
-              </p>
-            </div>
-          </div>
-        )}
     </>
   );
 };

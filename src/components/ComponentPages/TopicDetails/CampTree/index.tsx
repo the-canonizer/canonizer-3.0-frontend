@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Tree, Tooltip, Select, Image } from "antd";
+import { Tree, Tooltip, Select, Image, Popover } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../../store";
 import Link from "next/link";
@@ -280,19 +280,25 @@ const CampTree = ({
                         >
                           <a
                             className={
+                             data[item].is_archive == 1 ? `font-weight-bold ${styles.archive_grey}`:
                               data[item]?.camp_id ==
                                 router?.query?.camp?.at(1)?.split("-")?.at(0) ??
-                              "1"
-                                ? `font-weight-bold ${styles.activeCamp}`
+                              "1" 
+                                ? `font-weight-bold ${styles.activeCamp}` 
                                 : ""
                             }
                           >
+                            {data[item].is_archive == 1 ?
+                            <Popover  content="Archived Camp">
                             {includeReview
                               ? data[item]?.review_title
                               : data[item]?.title}
+                              </Popover>:includeReview
+                              ? data[item]?.review_title
+                              : data[item]?.title }
                           </a>
                         </Link>{" "}
-                        {data[item].is_archive == 1 ? (
+                        {/* {data[item].is_archive == 1 ? (
                           <Image
                             src={Archive_icon.src}
                             width={20}
@@ -302,7 +308,7 @@ const CampTree = ({
                           />
                         ) : (
                           ""
-                        )}
+                        )} */}
                       </span>
                       <span className={styles.subScriptionIcon}>
                         {isUserAuthenticated &&
