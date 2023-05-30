@@ -79,12 +79,15 @@ const TopicsList = () => {
     is_checked: state?.utils?.score_checkbox,
     is_archive: state?.filters?.filterObject?.is_archive,
   }));
+  const { is_camp_archive_checked } = useSelector((state: RootState) => ({
+    is_camp_archive_checked: state?.utils?.archived_checkbox,
+  }));
   const [topicsData, setTopicsData] = useState(canonizedTopics);
   const [nameSpacesList, setNameSpacesList] = useState(nameSpaces);
 
   const [isReview, setIsReview] = useState(asof == "review");
-  const [inputSearch, setInputSearch] = useState(search || "");
-  const [archiveSearch, setArchiveSearch] = useState(0);
+  const [inputSearch, setInputSearch] = useState(search||"");
+  // const [archiveSearch, setArchiveSearch] = useState(is_archive || 0);
 
   const [nameSpaceId, setNameSpaceId] = useState(filterNameSpaceId || "");
 
@@ -133,7 +136,14 @@ const TopicsList = () => {
       })
     );
   };
-
+  // const checkTopics = (topics)=>{
+  //   let archive = 
+  //   if(topics?.length > 0 && !is_camp_archive_checked){
+  //     topics?.forEach(element => {
+  //       if(element.item.is_archive)
+  //     });
+  //   }
+  // }
   useEffect(() => {
     if (filterNameSpace?.toLowerCase() !== "/general/") {
       router.query.canon = formatnamespace(filterNameSpace);
@@ -165,7 +175,7 @@ const TopicsList = () => {
   useEffect(() => {
     setSelectedNameSpace(filterNameSpace);
     setNameSpaceId(filterNameSpaceId);
-    setArchiveSearch(is_archive);
+    // setArchiveSearch(is_archive);
     setInputSearch(search.trim());
     setNameSpacesList(nameSpaces);
   }, [filterNameSpace, filterNameSpaceId, search, nameSpaces, is_archive]);
@@ -195,6 +205,7 @@ const TopicsList = () => {
     filterByScore,
     inputSearch,
     onlyMyTopicsCheck.current,
+    is_camp_archive_checked
   ]);
   useEffect(() => {
     if (inputSearch.length > 0 || search.length > 0) {
@@ -224,7 +235,7 @@ const TopicsList = () => {
       filter: filterByScore,
       asof: asof,
       user_email: onlyMyTopicsCheck.current ? userEmail : "",
-      is_archive: archiveSearch,
+      is_archive: is_camp_archive_checked ? 1: 0,
     };
     await getCanonizedTopicsApi(reqBody, loadMore);
     setLoadMoreIndicator(false);
@@ -401,6 +412,7 @@ const TopicsList = () => {
                       )}/1-Agreement`,
                     }}
                   >
+                    {!item.is_archive || (item.is_archive  && is_camp_archive_checked) ?
                     <a
                       onClick={() => {
                         handleTopicClick();
@@ -418,7 +430,7 @@ const TopicsList = () => {
                           ? item?.topic_full_score?.toFixed(2)
                           : item?.topic_score?.toFixed(2)}
                       </Tag>
-                    </a>
+                    </a>: <></>}
                   </Link>
                 </>
               </List.Item>
