@@ -44,6 +44,7 @@ const CampTreeCard = ({
   scrollToCampStatement,
   setTotalCampScoreForSupportTree,
   setSupportTreeForCamp,
+  backGroundColorClass,
 }) => {
   const { asof, asofdate } = useSelector((state: RootState) => ({
     asofdate: state.filters?.filterObject?.asofdate,
@@ -130,6 +131,7 @@ const CampTreeCard = ({
         >
           <Panel
             disabled
+            className={`header-bg-color-change ${backGroundColorClass}`}
             header={
               <h3>
                 Canonizer Sorted Camp Tree{" "}

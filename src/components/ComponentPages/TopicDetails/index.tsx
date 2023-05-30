@@ -67,6 +67,7 @@ const TopicDetails = () => {
   const [isDelegateSupportTreeCardModal, setIsDelegateSupportTreeCardModal] =
     useState(false);
   const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
+  const [backGroundColorClass, setBackGroundColorClass] = useState("default");
   const [totalCampScoreForSupportTree, setTotalCampScoreForSupportTree] =
     useState<number>(null);
   const [supportTreeForCamp, setSupportTreeForCamp] = useState<number>(null);
@@ -318,6 +319,10 @@ const TopicDetails = () => {
     // fetchTotalScore();
   }, [isUserAuthenticated, router, algorithm]);
 
+  useEffect(() => {
+    setBackGroundColorClass(asof);
+  }, [asof]);
+
   const scrollToCampStatement = () => {
     myRefToCampStatement.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -386,7 +391,6 @@ const TopicDetails = () => {
       })
     );
   };
-
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
@@ -421,6 +425,7 @@ const TopicDetails = () => {
               scrollToCampStatement={scrollToCampStatement}
               setTotalCampScoreForSupportTree={setTotalCampScoreForSupportTree}
               setSupportTreeForCamp={setSupportTreeForCamp}
+              backGroundColorClass={backGroundColorClass}
             />
 
             {((tree &&
@@ -469,6 +474,7 @@ const TopicDetails = () => {
                       <>
                         <CampStatementCard
                           loadingIndicator={loadingIndicator}
+                          backGroundColorClass={backGroundColorClass}
                         />
 
                         {typeof window !== "undefined" &&
@@ -476,9 +482,11 @@ const TopicDetails = () => {
                             <>
                               <CurrentTopicCard
                                 loadingIndicator={loadingIndicator}
+                                backGroundColorClass={backGroundColorClass}
                               />
                               <CurrentCampCard
                                 loadingIndicator={loadingIndicator}
+                                backGroundColorClass={backGroundColorClass}
                               />
                             </>
                           )}
@@ -510,14 +518,17 @@ const TopicDetails = () => {
                           totalCampScoreForSupportTree={
                             totalCampScoreForSupportTree
                           }
+                          backGroundColorClass={backGroundColorClass}
                         />
                         {typeof window !== "undefined" &&
                           window.innerWidth < 767 && (
                             <>
                               <CurrentTopicCard
+                                backGroundColorClass={backGroundColorClass}
                                 loadingIndicator={loadingIndicator}
                               />
                               <CurrentCampCard
+                                backGroundColorClass={backGroundColorClass}
                                 loadingIndicator={loadingIndicator}
                               />
                               <Spin spinning={loadingIndicator} size="large">

@@ -84,6 +84,7 @@ const TopicsList = () => {
   }));
   const [topicsData, setTopicsData] = useState(canonizedTopics);
   const [nameSpacesList, setNameSpacesList] = useState(nameSpaces);
+  const [backGroundColorClass, setBackGroundColorClass] = useState("default");
 
   const [isReview, setIsReview] = useState(asof == "review");
   const [inputSearch, setInputSearch] = useState(search||"");
@@ -187,6 +188,7 @@ const TopicsList = () => {
 
   useEffect(() => {
     setIsReview(asof == "review");
+    setBackGroundColorClass(asof);
   }, [asof]);
 
   useEffect(() => {
@@ -302,83 +304,71 @@ const TopicsList = () => {
 
   return (
     <>
-      <div className={`${styles.card} topicsList_card`}>
+      <div
+        className={`header-bg-color-change ${backGroundColorClass} topics-list-card-header ${
+          styles.head
+        } ${router.asPath.includes("/browse") ? styles.browsePage : ""}`}
+      >
+        <Title level={3}>
+          Select Canon
+          <Popover content={infoContent} placement="right">
+            <i className="icon-info cursor-pointer"></i>
+          </Popover>
+        </Title>
+        {router.asPath.includes("/browse") && isUserAuthenticated && (
+          <Checkbox
+            className={styles.checkboxOnlyMyTopics}
+            onChange={handleCheckbox}
+          >
+            Only My Topics
+          </Checkbox>
+        )}
+        <Select
+          size="large"
+          className={styles.dropdown}
+          defaultValue={changeSlashToArrow(selectedNameSpace)}
+          value={changeSlashToArrow(selectedNameSpace)}
+          onChange={selectNameSpace}
+          showSearch
+          optionFilterProp="children"
+          id="name-space-dropdown"
+        >
+          {nameSpacesList?.map((item) => {
+            return (
+              <Select.Option
+                id={`name-space-${item.id}`}
+                key={item.id}
+                value={item.id}
+              >
+                {changeSlashToArrow(item.label)}
+              </Select.Option>
+            );
+          })}
+          <Select.Option id="name-space-custom" key="custom-key" value="">
+            All
+          </Select.Option>
+        </Select>
+        {router.asPath.includes("/browse") && (
+          <div className={styles.inputSearchTopic}>
+            <Search
+              key={inputSearch}
+              placeholder="Search by topic name"
+              allowClear={true}
+              className={styles.topic}
+              defaultValue={inputSearch}
+              onSearch={onSearch}
+            />
+          </div>
+        )}
+      </div>
+
+      <div
+        className={`${styles.card} ${
+          router.asPath.includes("/browse") ? "" : styles.homePageCardList
+        }`}
+      >
         <List
           className={styles.wrap}
-          header={
-            <div
-              className={`${styles.head} ${
-                router.asPath.includes("/browse") ? styles.browsePage : ""
-              }`}
-            >
-              <Title level={3}>
-                Select Canon
-                <Popover content={infoContent} placement="right">
-                  <i className="icon-info cursor-pointer"></i>
-                </Popover>
-              </Title>
-              {router.asPath.includes("/browse") && isUserAuthenticated && (
-                <Checkbox
-                  className={styles.checkboxOnlyMyTopics}
-                  onChange={handleCheckbox}
-                >
-                  Only My Topics
-                </Checkbox>
-              )}
-              <Select
-                size="large"
-                className={styles.dropdown}
-                defaultValue={changeSlashToArrow(selectedNameSpace)}
-                value={changeSlashToArrow(selectedNameSpace)}
-                onChange={selectNameSpace}
-                showSearch
-                optionFilterProp="children"
-                id="name-space-dropdown"
-              >
-                {nameSpacesList?.map((item) => {
-                  return (
-                    <Select.Option
-                      id={`name-space-${item.id}`}
-                      key={item.id}
-                      value={item.id}
-                    >
-                      {changeSlashToArrow(item.label)}
-                    </Select.Option>
-                  );
-                })}
-                <Select.Option id="name-space-custom" key="custom-key" value="">
-                  All
-                </Select.Option>
-              </Select>
-              {router.asPath.includes("/browse") && (
-                <div className={styles.inputSearchTopic}>
-                  <Search
-                    key={inputSearch}
-                    placeholder="Search by topic name"
-                    allowClear={{
-                      clearIcon: (
-                        <CloseCircleOutlined
-                          onClick={() => {
-                            setInputSearch("");
-                            setClear(false);
-                          }}
-                          style={
-                            clear
-                              ? { visibility: "visible" }
-                              : { visibility: "hidden" }
-                          }
-                        />
-                      ),
-                    }}
-                    className={styles.topic}
-                    defaultValue={inputSearch}
-                    onChange={handlesearch}
-                    onSearch={onSearch}
-                  />
-                </div>
-              )}
-            </div>
-          }
           footer={
             <div className={styles.footer}>
               {router.asPath.includes("/browse")
