@@ -36,6 +36,7 @@ export default function Editorck(props: (editorState & editorchange)) {
                 'strikethrough',
                 'superscript',
                 'subscript',
+                '|',
                 'numberedList',
                 'bulletedList',
                 'todoList',
@@ -86,8 +87,8 @@ export default function Editorck(props: (editorState & editorchange)) {
                             editor.editing.view.document.getRoot()
                         );                        
                         });
+                        editor.editing.view.focus()
                     }}
-                    
                     onChange={(event, editor:any) => {
                         const data = editor?.getData();
                         props.oneditorchange(data)
