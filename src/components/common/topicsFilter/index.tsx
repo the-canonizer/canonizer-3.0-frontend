@@ -379,11 +379,11 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                 <i className="icon-info"></i>
               </Popover>
             </div>
-      
-              <div className={styles.scoreCheckbox}>
-                <FullScoreCheckbox />
-              </div>
-             
+
+            <div className={styles.scoreCheckbox}>
+              <FullScoreCheckbox />
+            </div>
+
             <div className={styles.scoreCheckbox}>
               <ArchivedCampCheckBox />
             </div>
