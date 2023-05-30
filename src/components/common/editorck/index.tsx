@@ -83,7 +83,7 @@ export default function Editorck(props: (editorState & editorchange)) {
                     data={editordata}
                     onReady={(editor) => {
                         editor.editing.view.change((writer:any) => {
-                            if(editordata.length > 1){
+                            if(editordata.length > 50){
                                 writer.setStyle(
                                     {"resize":
                                     "vertical","height":"400px"," overflow-x":"auto",'min-height':"100px"},
