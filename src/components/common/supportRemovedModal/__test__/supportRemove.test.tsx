@@ -21,6 +21,7 @@ describe("Support remove modal", () => {
     );
 
     const inp = screen.getByPlaceholderText(placeholders.campURL);
+    const btn = screen.getByText("Remove");
 
     expect(screen.getByText(labels.reasonLabel)).toBeInTheDocument();
     expect(screen.getByText("Select reason")).toBeInTheDocument();
@@ -29,6 +30,8 @@ describe("Support remove modal", () => {
     expect(screen.getByText("Cancel")).toBeInTheDocument();
     expect(inp).toBeInTheDocument();
     expect(inp).toHaveAttribute("type", "text");
+    expect(btn).toBeInTheDocument();
+    fireEvent.click(btn);
   });
 
   it("render heading and labels on add", () => {
@@ -67,6 +70,7 @@ describe("Support remove modal", () => {
     );
 
     const inp = screen.getByPlaceholderText(placeholders.campURL);
+    const btn = screen.getByText("Submit");
 
     expect(screen.getByText(labels.reasonChangeLabel)).toBeInTheDocument();
     expect(screen.getByText("Select reason")).toBeInTheDocument();
@@ -77,5 +81,7 @@ describe("Support remove modal", () => {
     expect(inp).toHaveAttribute("type", "text");
     fireEvent.change(inp, { target: { value: "link" } });
     expect(inp).toHaveValue("link");
+    expect(btn).toBeInTheDocument();
+    fireEvent.click(btn);
   });
 });
