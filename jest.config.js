@@ -18,6 +18,12 @@ const jestConfig = {
     "<rootDir>/coverage",
     "<rootDir>/dist",
   ],
+  coveragePathIgnorePatterns:[
+    "<rootDir>/.next/",
+    "<rootDir>/node_modules/",
+    "<rootDir>/coverage",
+    "<rootDir>/dist",
+  ],
   moduleDirectories: [
     "<rootDir>/node_modules",
     "<rootDir>/src",
