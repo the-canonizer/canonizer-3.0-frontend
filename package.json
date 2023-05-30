@@ -8,7 +8,9 @@
     "lint": "next lint",
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage --watchAll=false"
+    
   },
   "dependencies": {
     "@babel/core": "^7.16.5",

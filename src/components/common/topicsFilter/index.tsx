@@ -322,7 +322,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                 Canonizer Algorithm:
               </Title>
               <Popover content="Algorithm Information" placement="top">
-                {router.asPath.includes("/topic") ? (
+                {router?.asPath.includes("/topic") ? (
                   <a href={K?.Network?.URL?.algoInfoUrl}>
                     Algorithm Information
                   </a>

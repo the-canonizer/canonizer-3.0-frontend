@@ -343,16 +343,16 @@ const ForumComponent = () => {
   };
 
   useEffect(() => {
-    const q = router.query;
+    const q = router?.query;
     const cI = threadList.filter((it) => +it.id === +q.tId);
     if (q.tId && cI[0]) {
       form.setFieldsValue({ thread_title: cI[0]?.title });
     }
-  }, [form, router.query, threadList]);
+  }, [form, router?.query, threadList]);
 
   const onFinish = async (values) => {
     setLoading(true);
-    const q = router.query;
+    const q = router?.query;
     let res = null;
 
     if (values.thread_title.trim()) {
@@ -449,7 +449,7 @@ const ForumComponent = () => {
 
   const onFinishPost = async (values) => {
     setPostLoading(true);
-    const q = router.query;
+    const q = router?.query;
 
     if (quillContent.trim() === "" || isEmpty(quillContent)) {
       setIsError(true);
@@ -512,7 +512,7 @@ const ForumComponent = () => {
   };
 
   const onDeleteClick = async (id) => {
-    const q = router.query;
+    const q = router?.query;
 
     const res = await deletePost(+id);
     if (res && res.status_code === 200) {

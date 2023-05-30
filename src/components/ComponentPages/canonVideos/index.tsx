@@ -73,7 +73,7 @@ export default function CanonVideos() {
   };
 
   useEffect(() => {
-    const q = router.query;
+    const q = router?.query;
     async function getTreeApiCall() {
       setLoader(true);
       let data = await getVideosContentApi();

@@ -68,7 +68,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
   };
 
   useEffect(() => {
-    const q = router.query;
+    const q = router?.query;
     if (q && q.from && q.from.includes("notify_")) {
       const fArr = (q.from as String).split("_");
       if (+fArr[1]) {

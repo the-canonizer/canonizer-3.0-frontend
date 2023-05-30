@@ -143,8 +143,8 @@ const TopicsList = () => {
   }, []);
 
   useEffect(() => {
-    const q = router.query;
-    if (q.canon) {
+    const q = router?.query;
+    if (q?.canon) {
       const filteredName = nameSpacesList?.filter((n) => {
         if (n.label === formatnamespace(q.canon, true)) {
           return n;
@@ -297,7 +297,7 @@ const TopicsList = () => {
           header={
             <div
               className={`${styles.head} ${
-                router.asPath.includes("/browse") ? styles.browsePage : ""
+                router?.asPath.includes("/browse") ? styles.browsePage : ""
               }`}
             >
               <Title level={3}>
@@ -306,7 +306,7 @@ const TopicsList = () => {
                   <i className="icon-info cursor-pointer"></i>
                 </Popover>
               </Title>
-              {router.asPath.includes("/browse") && isUserAuthenticated && (
+              {router?.asPath.includes("/browse") && isUserAuthenticated && (
                 <Checkbox
                   className={styles.checkboxOnlyMyTopics}
                   onChange={handleCheckbox}
@@ -339,7 +339,7 @@ const TopicsList = () => {
                   All
                 </Select.Option>
               </Select>
-              {router.asPath.includes("/browse") && (
+              {router?.asPath.includes("/browse") && (
                 <div className={styles.inputSearchTopic}>
                   <Search
                     key={inputSearch}
@@ -370,7 +370,7 @@ const TopicsList = () => {
           }
           footer={
             <div className={styles.footer}>
-              {router.asPath.includes("/browse")
+              {router?.asPath.includes("/browse")
                 ? LoadMoreTopics
                 : ViewAllTopics}
             </div>
