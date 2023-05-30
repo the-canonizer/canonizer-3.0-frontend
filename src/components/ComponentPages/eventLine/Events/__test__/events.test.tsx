@@ -22,7 +22,7 @@ afterEach(cleanup);
 describe("Should render Addnews", () => {
   it("Render without crash", async () => {
     const { container } = render(
-      <Events timelineDescript={["latest timeline created"]} />
+      <Events timelineDescript={[{ message: "latest timeline created" }]} />
     );
     const titleElement = screen.getByText("Events");
     expect(titleElement).toBeInTheDocument();
