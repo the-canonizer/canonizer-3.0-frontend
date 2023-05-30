@@ -24,6 +24,8 @@ const jestConfig = {
     "<rootDir>/coverage",
     "<rootDir>/dist",
      "<rootDir>/src/pages",
+     "<rootDir>/src/assets",
+     "<rootDir>/public",
   ],
   moduleDirectories: [
     "<rootDir>/node_modules",
