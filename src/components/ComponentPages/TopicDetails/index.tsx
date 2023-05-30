@@ -526,8 +526,10 @@ const TopicDetails = () => {
                             <>
                               <CurrentTopicCard
                                 loadingIndicator={loadingIndicator}
+                                backGroundColorClass={backGroundColorClass}
                               />
                               <CurrentCampCard
+                                backGroundColorClass={backGroundColorClass}
                                 loadingIndicator={loadingIndicator}
                               />
                               <Spin spinning={loadingIndicator} size="large">
