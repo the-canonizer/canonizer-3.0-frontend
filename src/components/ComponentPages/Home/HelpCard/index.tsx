@@ -11,7 +11,7 @@ const HelpCard = () => {
   return (
     <Fragment>
       {whatsNew && (
-        <section className={styles.wrap}>
+        <section className={styles.wrap} >
           <div
             className="help-card-wrap"
             dangerouslySetInnerHTML={{ __html: whatsNew }}

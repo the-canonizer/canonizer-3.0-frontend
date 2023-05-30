@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
 import CustomSkelton from "../../common/customSkelton";
 
-//  "../../../store/slices/filtersSlice";
+
 import {
   getCanonizedCampStatementApi,
   getNewsFeedApi,

@@ -164,11 +164,11 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   }, [selectedAsOf]);
 
   useEffect(() => {
-    if (router.pathname.includes("/topic/")) {
+    if (router?.pathname.includes("/topic/")) {
       // setIsPanelCollapse(true);
       setIsCampBtnVisible(true);
     }
-  }, [router.pathname]);
+  }, [router?.pathname]);
 
   useEffect(() => {
     setSelectedAsOFDate(filteredAsOfDate);
