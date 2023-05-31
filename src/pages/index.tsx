@@ -4,24 +4,45 @@ import { useRouter } from "next/router";
 
 import Layout from "src/hoc/layout";
 import HomePageContainer from "src/components/ComponentPages/Home";
-import { getCanonizedWhatsNewContentApi } from "src/network/api/homePageApi";
+import {
+  getCanonizedNameSpacesApi,
+  getCanonizedWhatsNewContentApi,
+  getCanonizedAlgorithmsApi,
+  getCanonizedTopicsApi,
+} from "src/network/api/homePageApi";
 import {
   setFilterCanonizedTopics,
   setCurrentDate,
 } from "src/store/slices/filtersSlice";
 import { GetUserProfileInfo } from "src/network/api/userApi";
 import { setAuthToken, setLoggedInUser } from "src/store/slices/authSlice";
+import {
+  setCanonizedAlgorithms,
+  setCanonizedNameSpaces,
+  setWhatsNewContent,
+  setCanonizedTopics,
+} from "src/store/slices/homePageSlice";
 
-function Home({ current_date }) {
+function Home({
+  current_date,
+  nameSpacesList,
+  whatsNew,
+  algorithms,
+  topicsData,
+}) {
   const dispatch = useDispatch();
   const router = useRouter();
 
   dispatch(setFilterCanonizedTopics({ search: "" }));
   dispatch(setCurrentDate(current_date));
 
-  useEffect(() => {
-    getCanonizedWhatsNewContentApi();
-  }, []);
+  // useEffect(() => {
+  //   getCanonizedWhatsNewContentApi();
+  // }, []);
+  dispatch(setCanonizedTopics(topicsData));
+  dispatch(setCanonizedNameSpaces(nameSpacesList));
+  dispatch(setWhatsNewContent(whatsNew));
+  dispatch(setCanonizedAlgorithms(algorithms));
 
   useEffect(() => {
     let queries = router.query;
@@ -72,9 +93,32 @@ function Home({ current_date }) {
 
 export async function getServerSideProps(ctx) {
   const currentDate = new Date().valueOf();
-
+  const currentTime = Date.now() / 1000;
+  const reqBody = {
+    algorithm: "blind_popularity",
+    asofdate: currentTime,
+    filter: 0,
+    namespace_id: 1,
+    page_number: 1,
+    page_size: 15,
+    search: "",
+    asof: "default",
+  };
+  const [nameSpaces, whatsNewResult, canonizedAlgorithms, result] =
+    await Promise.all([
+      getCanonizedNameSpacesApi(),
+      getCanonizedWhatsNewContentApi(),
+      getCanonizedAlgorithmsApi(),
+      getCanonizedTopicsApi(reqBody),
+    ]);
   return {
-    props: { current_date: currentDate },
+    props: {
+      current_date: currentDate,
+      nameSpacesList: nameSpaces || [],
+      whatsNew: whatsNewResult || [],
+      algorithms: canonizedAlgorithms || [],
+      topicsData: result || [],
+    },
   };
 }
 

@@ -175,9 +175,9 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filteredAsOfDate]);
 
-  useEffect(() => {
-    getCanonizedAlgorithmsApi();
-  }, []);
+  // useEffect(() => {
+  //   getCanonizedAlgorithmsApi();
+  // }, []);
 
   const selectAlgorithm = (value) => {
     dispatch(
