@@ -63,7 +63,7 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }) => {
                   label={description.label}
                   key={description.key}
                 >
-                  {console.log(campRecord, "[campRecord]")}
+                  {/* {console.log(campRecord, "[campRecord]")} */}
                   {campRecord && description.key != "camp_about_url"
                     ? campRecord &&
                       (description.key == "is_disabled" ||
