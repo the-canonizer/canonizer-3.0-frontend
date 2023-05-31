@@ -31,7 +31,7 @@ const MultiUserModal = () => {
       message.success(res.message);
       closeModal();
       removeUsers();
-      router.push("/settings?tab=social");
+      router?.push("/settings?tab=social");
     }
   };
 

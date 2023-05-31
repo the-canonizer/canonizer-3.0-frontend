@@ -91,7 +91,7 @@ export default function RecentActivities() {
       }
     } else {
       setGetTopicsLoadingIndicator(true);
-      router.push("/login");
+      router?.push("/login");
     }
   }, [selectedTab, isChecked, router]);
 

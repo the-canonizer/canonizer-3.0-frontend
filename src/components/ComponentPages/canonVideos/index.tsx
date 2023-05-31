@@ -171,15 +171,15 @@ export default function CanonVideos() {
     format: string | string[],
     t: string | string[]
   ) {
-    router.query.chapter = chapter;
-    router.query.format = format;
+    router?.query.chapter = chapter;
+    router?.query.format = format;
     if (t) {
-      router.query.t = t;
+      router?.query.t = t;
     } else {
-      const { t, ...rest } = router.query;
-      router.query = rest;
+      const { t, ...rest } = router?.query;
+      router?.query = rest;
     }
-    router.push(router, null, { shallow: true });
+    router?.push(router, null, { shallow: true });
   }
 
   return (

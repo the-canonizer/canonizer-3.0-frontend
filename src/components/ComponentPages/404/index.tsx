@@ -8,7 +8,7 @@ import styles from "./errorPage.module.scss";
 const My404 = () => {
   const router = useRouter();
   const goBack = () => {
-    router.back();
+    router?.back();
   };
   return (
     <>

@@ -198,7 +198,7 @@ const ForumComponent = () => {
     setPage(p);
     const queries = router?.query;
     queries.page = p;
-    router.push(router, undefined, { shallow: true });
+    router?.push(router, undefined, { shallow: true });
   };
 
   const onCreateThread = () => {
@@ -212,9 +212,9 @@ const ForumComponent = () => {
       )}/threads/create`;
 
     if (isLoggedIn) {
-      router.push({ pathname: create_path });
+      router?.push({ pathname: create_path });
     } else {
-      router.push({
+      router?.push({
         pathname: "/login",
         query: { returnUrl: create_path },
       });
@@ -227,7 +227,7 @@ const ForumComponent = () => {
     e.preventDefault();
     e.stopPropagation();
 
-    router.push({
+    router?.push({
       pathname: `/forum/${replaceSpecialCharacters(
         queries.topic as string,
         "-"
@@ -246,7 +246,7 @@ const ForumComponent = () => {
       // setThreadList([]);
       setPage(1);
       queries.by = type;
-      router.push(router, undefined, { shallow: true });
+      router?.push(router, undefined, { shallow: true });
     }
     setLoading(false);
   };
@@ -257,7 +257,7 @@ const ForumComponent = () => {
     e.preventDefault();
     e.stopPropagation();
 
-    router.push({
+    router?.push({
       pathname: `/forum/${replaceSpecialCharacters(
         queries.topic as string,
         "-"
@@ -321,7 +321,7 @@ const ForumComponent = () => {
     const queries = router?.query;
     if (queries?.tId) {
       const queries = router?.query;
-      router.push({
+      router?.push({
         pathname: `/forum/${replaceSpecialCharacters(
           queries.topic as string,
           "-"
@@ -330,10 +330,10 @@ const ForumComponent = () => {
       });
     } else if (queries?.from) {
       const redirects = queries?.from as string;
-      router.push({ pathname: redirects });
+      router?.push({ pathname: redirects });
     } else {
       const queries = router?.query;
-      router.push({
+      router?.push({
         pathname: `/forum/${replaceSpecialCharacters(
           queries.topic as string,
           "-"
@@ -390,7 +390,7 @@ const ForumComponent = () => {
       form.resetFields();
       if (q.tId) {
         const queries = router?.query;
-        router.push({
+        router?.push({
           pathname: `/forum/${replaceSpecialCharacters(
             queries.topic as string,
             "-"
@@ -399,7 +399,7 @@ const ForumComponent = () => {
         });
       } else {
         const queries = router?.query;
-        router.push({
+        router?.push({
           pathname: `/forum/${replaceSpecialCharacters(
             queries.topic as string,
             "-"

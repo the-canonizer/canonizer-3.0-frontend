@@ -49,11 +49,11 @@ const HeadContentAndPermissionComponent = ({
     if (requiredAuthentication && !isUserAuthenticated) {
       const lgt = localStorage.getItem("logout_type");
       if (lgt == "true") {
-        router.push("/");
+        router?.push("/");
       } else {
-        router.push({
+        router?.push({
           pathname: "/login",
-          query: { returnUrl: router.asPath },
+          query: { returnUrl: router?.asPath },
         });
       }
       localStorage.removeItem("logout_type");
@@ -61,7 +61,7 @@ const HeadContentAndPermissionComponent = ({
 
     //redirect if user doesn't have specific permission to view that page
     if (requiredPermission && !isAllowed(permission.permissionName)) {
-      router.push("/required-permission");
+      router?.push("/required-permission");
     }
   }, [componentName, isUserAuthenticated, isAllowed, router]);
 

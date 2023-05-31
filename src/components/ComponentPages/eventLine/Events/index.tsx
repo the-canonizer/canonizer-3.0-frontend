@@ -66,7 +66,7 @@ const Events = ({ timelineDescript }) => {
                           <div onClick={() => handleEvents(title.eventDate)}>
                             <Link
                               href={{
-                                pathname: router.asPath.replace(
+                                pathname: router?.asPath.replace(
                                   "eventline",
                                   "topic"
                                 ),

@@ -50,7 +50,7 @@ const LoginUi = ({
       closeModal();
       openForgotPasswordModal();
     } else {
-      router.push("/forgot-password");
+      router?.push("/forgot-password");
     }
   };
 
@@ -60,7 +60,7 @@ const LoginUi = ({
       closeModal();
       openRegistration();
     } else {
-      router.push("/registration");
+      router?.push("/registration");
     }
   };
 

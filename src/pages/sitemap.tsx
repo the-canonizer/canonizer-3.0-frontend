@@ -14,7 +14,7 @@ const SitemapPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    router.replace("/sitemap.xml");
+    router?.replace("/sitemap.xml");
   }, []);
 
   return (

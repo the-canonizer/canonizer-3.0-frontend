@@ -109,6 +109,7 @@ function TimelineSlider({
         step={null}
         tooltip={{ open: false }}
         onChange={handleSpeedChange}
+        data-testid="slider"
       />
     </div>
   );
@@ -224,6 +225,7 @@ function TimelineSlider({
             ? styles.disablePlayBtn
             : ""
         }`}
+        
       >
         <StepBackwardOutlined
           onClick={() => {
@@ -242,6 +244,7 @@ function TimelineSlider({
               handleClick();
             }
           }}
+          data-testid="play-button"
         >
           {isPlaying ? <PauseOutlined /> : <CaretRightOutlined />}
         </div>

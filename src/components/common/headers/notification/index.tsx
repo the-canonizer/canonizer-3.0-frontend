@@ -116,7 +116,7 @@ const Notifications = () => {
       //     description: event?.data?.notification?.body,
       //     icon: <Fav />,
       //     onClick: () => {
-      //       router.push({ pathname: url });
+      //       router?.push({ pathname: url });
       //     },
       //   });
       // await getListData();
@@ -139,7 +139,7 @@ const Notifications = () => {
           description: message?.notification?.body,
           icon: <Fav />,
           onClick: () => {
-            router.push(url);
+            router?.push(url);
           },
         });
       });

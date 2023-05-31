@@ -62,8 +62,8 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
     const res = await markNotificationRead(id);
     if (res && res.status_code === 200) {
       delete router?.query?.from;
-      // router.query.from = "";
-      router.replace(router);
+      // router?.query.from = "";
+      router?.replace(router);
     }
   };
 
@@ -81,7 +81,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
   const logOut = async () => {
     const res = await logout();
     if (res?.status_code === 200) {
-      router.push("/");
+      router?.push("/");
     }
   };
 

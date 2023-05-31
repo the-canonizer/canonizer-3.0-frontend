@@ -8,13 +8,13 @@ function UserProfile() {
   const router = useRouter();
 
   useEffect(() => {
-    let queries = router.query;
+    let queries = router?.query;
     if ("namespace" in queries) {
       const { namespace, ...rest } = queries;
       queries = rest;
       queries.canon = namespace;
-      router.query = queries;
-      router.replace(router, null, { shallow: true });
+      router?.query = queries;
+      router?.replace(router, null, { shallow: true });
     }
   }, []);
 

@@ -101,7 +101,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   const [isCampBtnVisible, setIsCampBtnVisible] = useState(false);
 
   const campRoute = () => {
-    router.push("/create/topic");
+    router?.push("/create/topic");
   };
 
   const {

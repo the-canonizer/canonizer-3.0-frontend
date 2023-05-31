@@ -228,7 +228,7 @@ const ManageSupport = () => {
   //replace use to - change to space
   const camp_Name_ = campRecord?.camp_name;
   const CampName = camp_Name_;
-  const campSupportPath = router.asPath?.replace("/support/", "/topic/");
+  const campSupportPath = router?.asPath?.replace("/support/", "/topic/");
   const body = { topic_num: topicNum };
   const getActiveSupportTopicList = async (
     warning?: string,
@@ -322,7 +322,7 @@ const ManageSupport = () => {
       }
     }
   };
-  let manageSupportPath = router.asPath?.replace("/support/", "/topic/");
+  let manageSupportPath = router?.asPath?.replace("/support/", "/topic/");
   if (manageSupportPath.lastIndexOf("_") > -1)
     manageSupportPath = manageSupportPath.substring(
       0,
@@ -342,7 +342,7 @@ const ManageSupport = () => {
       "/topic/"
     );
     if (manageSupportPath || manageSupportPath1) {
-      router.push({
+      router?.push({
         pathname: CheckDelegatedOrDirect
           ? manageSupportPath
           : manageSupportPath1,
@@ -474,7 +474,7 @@ const ManageSupport = () => {
       if (res && res.status_code == 200) {
         message.success(res.message);
         //After Submit page is redirect to previous
-        router.push({
+        router?.push({
           pathname: manageSupportPath,
         });
       } else {
@@ -485,7 +485,7 @@ const ManageSupport = () => {
       if (res && res.status_code == 200) {
         message.success(res.message);
         //After Submit page is redirect to previous
-        router.push({
+        router?.push({
           pathname: manageSupportPath,
         });
       } else {
