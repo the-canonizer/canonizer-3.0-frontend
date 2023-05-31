@@ -269,6 +269,7 @@ function TimelineSlider({
           onOpenChange={(newOpen) => {
             setSpeedBar(newOpen);
           }}
+          
         >
           <DashboardOutlined
             className={`${"speed-icon"}  ${
@@ -276,6 +277,7 @@ function TimelineSlider({
                 ? styles.disableIcon
                 : ""
             }`}
+            data-testid="speed-icon"
           />
         </Popover>
       </div>
@@ -293,6 +295,7 @@ function TimelineSlider({
           marks={MarkPointsData()}
           min={0}
           max={Object?.keys(mockData).length - 1}
+          data-testid="slider"
         />
       )}
     </>
