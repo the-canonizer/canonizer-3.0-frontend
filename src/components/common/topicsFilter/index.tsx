@@ -268,7 +268,6 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   function momentDateObject(e) {
     return e?._d;
   }
-
   return (
     <>
       <div className="leftSideBar_Card">
@@ -379,17 +378,17 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                 <i className="icon-info"></i>
               </Popover>
             </div>
-      
-              <div className={styles.scoreCheckbox}>
-                <FullScoreCheckbox />
-              </div>
-             
+
+            <div className={styles.scoreCheckbox}>
+              <FullScoreCheckbox />
+            </div>
+
             <div className={styles.scoreCheckbox}>
               <ArchivedCampCheckBox />
             </div>
           </Panel>
-
           <Panel
+            className={`header-bg-color-change radio-group-sider ${selectedAsOf}`}
             header={
               <span className={styles.title}>
                 As Of
