@@ -17,7 +17,7 @@ import CustomSkelton from "src/components/common/customSkelton";
 
 const { Panel } = Collapse;
 
-const CurrentTopicCard = ({ loadingIndicator }) => {
+const CurrentTopicCard = ({ loadingIndicator, backGroundColorClass }) => {
   const router = useRouter();
   const { topicRecord } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
@@ -41,6 +41,7 @@ const CurrentTopicCard = ({ loadingIndicator }) => {
       className="topicDetailsCollapse"
     >
       <Panel
+        className={`header-bg-color-change ${backGroundColorClass}`}
         header={<h3>{K?.exceptionalMessages?.topicRecordHeading}</h3>}
         key="1"
       >

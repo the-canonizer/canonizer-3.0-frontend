@@ -220,14 +220,14 @@ function TimelineSlider({
     <>
       <div
         className={`${styles.timeBarControl} ${
-          mockData && Object.keys(mockData).length <= 2
+          mockData && Object.keys(mockData).length <= 1
             ? styles.disablePlayBtn
             : ""
         }`}
       >
         <StepBackwardOutlined
           onClick={() => {
-            if (mockData && Object.keys(mockData).length > 2) {
+            if (mockData && Object.keys(mockData).length > 1) {
               handleClickBackword();
             }
           }}
@@ -238,7 +238,7 @@ function TimelineSlider({
         <div
           className={`${styles.playBtn}`}
           onClick={() => {
-            if (mockData && Object.keys(mockData).length > 2) {
+            if (mockData && Object.keys(mockData).length > 1) {
               handleClick();
             }
           }}
@@ -250,7 +250,7 @@ function TimelineSlider({
 
         <StepForwardOutlined
           onClick={() => {
-            if (mockData && Object.keys(mockData).length > 2) {
+            if (mockData && Object.keys(mockData).length > 1) {
               handleClickForward();
             }
           }}
@@ -267,7 +267,7 @@ function TimelineSlider({
         >
           <DashboardOutlined
             className={`${"speed-icon"}  ${
-              mockData && Object.keys(mockData).length <= 2
+              mockData && Object.keys(mockData).length <= 1
                 ? styles.disableIcon
                 : ""
             }`}
@@ -276,7 +276,7 @@ function TimelineSlider({
       </div>
       {mockData && (
         <Slider
-          disabled={mockData && Object.keys(mockData).length > 2 ? false : true}
+          disabled={mockData && Object.keys(mockData).length > 1 ? false : true}
           className="rang-slider"
           tooltip={{
             open: true,

@@ -284,7 +284,11 @@ const ManageSupport = () => {
         if (CheckDelegatedOrDirect && resultFilterSupportCamp.length == 0) {
           setManageSupportList(manageSupportArr);
         } else {
-          setManageSupportList([...fiterSupportedCamps, ...manageSupportArr, ...resultFilterSupportCamp]);
+          setManageSupportList([
+            ...fiterSupportedCamps,
+            ...manageSupportArr,
+            ...resultFilterSupportCamp,
+          ]);
         }
 
         setManageSupportRevertData(manageSupportArr);
@@ -293,7 +297,6 @@ const ManageSupport = () => {
         setGetSupportStatusData("");
 
         if (resultFilterSupportCamp.length == 0 && CampName) {
-          
           let supportOrderLen = supportedCampsList.length + 1;
           //push data into a array of manageSupportArray
           if (campRecordRef?.current?.camp_name) {

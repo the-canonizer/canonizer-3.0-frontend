@@ -16,7 +16,7 @@ import CustomSkelton from "../../../common/customSkelton";
 
 const { Panel } = Collapse;
 
-const CurrentCampCard = ({ loadingIndicator }) => {
+const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }) => {
   const router = useRouter();
   const { campRecord, topicRecord, history } = useSelector(
     (state: RootState) => ({
@@ -46,6 +46,7 @@ const CurrentCampCard = ({ loadingIndicator }) => {
       className="topicDetailsCollapse"
     >
       <Panel
+        className={`header-bg-color-change ${backGroundColorClass}`}
         header={<h3>{K?.exceptionalMessages?.campRecordHeading}</h3>}
         key="1"
       >
