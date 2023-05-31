@@ -6,12 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   socialLoginCallback,
   socialLoginLinkUser,
-} from "../../../network/api/userApi";
-import { getSearchedParams } from "../../../utils/generalUtility";
+} from "src/network/api/userApi";
+import { getSearchedParams } from "src/utils/generalUtility";
 import {
   showSocialEmailPopup,
   showSocialNamePopup,
-} from "../../../store/slices/uiSlice";
+} from "src/store/slices/uiSlice";
 import { setValue } from "src/store/slices/utilsSlice";
 import { RootState } from "src/store";
 import CallbackUI from "./UI";
@@ -32,7 +32,7 @@ function SocialLoginCallback() {
   const openModal = () => dispatch(showSocialEmailPopup());
   const openNameModal = () => dispatch(showSocialNamePopup());
 
-  const sendData = async (data) => {
+  const sendData = async (data: object) => {
     const redirectTab = localStorage.getItem("redirectTab");
 
     if (!redirectTab) {
@@ -108,7 +108,7 @@ function SocialLoginCallback() {
       }
     } catch (error) {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.query]);
+  }, [router?.query]);
 
   return <CallbackUI />;
 }
