@@ -87,7 +87,7 @@ const TopicsList = () => {
   const [backGroundColorClass, setBackGroundColorClass] = useState("default");
 
   const [isReview, setIsReview] = useState(asof == "review");
-  const [inputSearch, setInputSearch] = useState(search||"");
+  const [inputSearch, setInputSearch] = useState(search || "");
   // const [archiveSearch, setArchiveSearch] = useState(is_archive || 0);
 
   const [nameSpaceId, setNameSpaceId] = useState(filterNameSpaceId || "");
@@ -138,7 +138,7 @@ const TopicsList = () => {
     );
   };
   // const checkTopics = (topics)=>{
-  //   let archive = 
+  //   let archive =
   //   if(topics?.length > 0 && !is_camp_archive_checked){
   //     topics?.forEach(element => {
   //       if(element.item.is_archive)
@@ -207,7 +207,7 @@ const TopicsList = () => {
     filterByScore,
     inputSearch,
     onlyMyTopicsCheck.current,
-    is_camp_archive_checked
+    is_camp_archive_checked,
   ]);
   useEffect(() => {
     if (inputSearch.length > 0 || search.length > 0) {
@@ -237,7 +237,7 @@ const TopicsList = () => {
       filter: filterByScore,
       asof: asof,
       user_email: onlyMyTopicsCheck.current ? userEmail : "",
-      is_archive: is_camp_archive_checked ? 1: 0,
+      is_archive: is_camp_archive_checked ? 1 : 0,
     };
     await getCanonizedTopicsApi(reqBody, loadMore);
     setLoadMoreIndicator(false);
@@ -402,25 +402,29 @@ const TopicsList = () => {
                       )}/1-Agreement`,
                     }}
                   >
-                    {!item.is_archive || (item.is_archive  && is_camp_archive_checked) ?
-                    <a
-                      onClick={() => {
-                        handleTopicClick();
-                      }}
-                    >
-                      <Text className={styles.text}>
-                        {isReview
-                          ? item?.tree_structure &&
-                            item?.tree_structure[1].review_title
-                          : item?.topic_name}
-                      </Text>
-                      <Tag className={styles.tag}>
-                        {/* // ? item?.topic_full_score // : item?.full_score?.toFixed(2) */}
-                        {is_checked && isUserAuthenticated
-                          ? item?.topic_full_score?.toFixed(2)
-                          : item?.topic_score?.toFixed(2)}
-                      </Tag>
-                    </a>: <></>}
+                    {!item.is_archive ||
+                    (item.is_archive && is_camp_archive_checked) ? (
+                      <a
+                        onClick={() => {
+                          handleTopicClick();
+                        }}
+                      >
+                        <Text className={styles.text}>
+                          {isReview
+                            ? item?.tree_structure &&
+                              item?.tree_structure[1].review_title
+                            : item?.topic_name}
+                        </Text>
+                        <Tag className={styles.tag}>
+                          {/* // ? item?.topic_full_score // : item?.full_score?.toFixed(2) */}
+                          {is_checked && isUserAuthenticated
+                            ? item?.topic_full_score?.toFixed(2)
+                            : item?.topic_score?.toFixed(2)}
+                        </Tag>
+                      </a>
+                    ) : (
+                      <></>
+                    )}
                   </Link>
                 </>
               </List.Item>
