@@ -234,6 +234,7 @@ function TimelineSlider({
             }
           }}
           className={styles.controlBtnSecond}
+          data-testid="backward-button"
         />
         {/* <BackwardOutlined className={styles.controlBtn} /> */}
         {"     "}
@@ -258,6 +259,7 @@ function TimelineSlider({
             }
           }}
           className={styles.controlBtnSecond}
+          data-testid="forward-button"
         />
         <Popover
           content={content}

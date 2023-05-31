@@ -16,7 +16,7 @@ function WithoutSidebarLayout(props: any) {
 
   return (
     <Fragment>
-      <div className={styles.pageWrap} >
+      <div className={styles.pageWrap} data-testid="loggedInHeader" >
         {isUserAuthenticated ? <LoggedInHeader /> : <LoggedOutHeader />}
         <div className={styles.contentWrap}>
           <div className={styles.contentArea}>{props.children} </div>
