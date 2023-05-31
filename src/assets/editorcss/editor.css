@@ -17,7 +17,7 @@
     background: url('../image//video_loader.gif') center center no-repeat;
     height: 15em;
     width: 30em;
-    background-size: 20em 20em;
+    background-size: cover;
 }
 
 @media screen and (max-width:767px) {
