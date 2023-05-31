@@ -26,7 +26,6 @@ export default function Editorck(props: (editorState & editorchange)) {
     const editorConfiguration = { 
         placeholder: "Write Your Statement Here",
         mediaEmbed:{previewsInData:true},
-
         toolbar: { shouldNotGroupWhenFull: true, 
             items: [
                 'heading',
@@ -82,22 +81,6 @@ export default function Editorck(props: (editorState & editorchange)) {
                     editor={ClassicEditor.Editor}
                     data={editordata}
                     onReady={(editor) => {
-                        editor.editing.view.change((writer:any) => {
-                            if(editordata.length > 50){
-                                writer.setStyle(
-                                    {"resize":
-                                    "vertical","height":"400px"," overflow-x":"auto",'min-height':"100px"},
-                                    editor.editing.view.document.getRoot()
-                                );            
-                            }else{
-                                writer.setStyle(
-                                    {"resize":
-                                    "vertical","height":"200px"," overflow-x":"auto",'min-height':"100px"},
-                                    editor.editing.view.document.getRoot()
-                                );    
-                            }
-                                  
-                        });
                         editor.editing.view.focus()
                     }}
                     onChange={(event, editor:any) => {
