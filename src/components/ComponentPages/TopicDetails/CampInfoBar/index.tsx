@@ -256,7 +256,7 @@ const TimelineInfoBar = ({
           "Subscribe to the Camp"
         )}
       </Menu.Item>
-      <Menu.Item icon={<HeartOutlined />} disabled={asof == "bydate"}>
+      <Menu.Item icon={<HeartOutlined />} disabled={asof == "bydate" || campRecord?.is_archive}>
         {isTopicPage && (
           <Link href={router.asPath.replace("/topic/", "/support/")}>
             <a>
@@ -273,7 +273,7 @@ const TimelineInfoBar = ({
           </Link>
         )}
       </Menu.Item>
-      <Menu.Item icon={<i className="icon-camp"></i>}>
+      <Menu.Item icon={<i className="icon-camp"></i>} >
         {isTopicPage && (
           <Link
             href={`/camp/history/${replaceSpecialCharacters(
@@ -306,7 +306,7 @@ const TimelineInfoBar = ({
           </Link>
         )}
       </Menu.Item>
-      <Menu.Item icon={<FileTextOutlined />}>
+      <Menu.Item icon={<FileTextOutlined />} disabled={campRecord?.is_archive}>
         {isTopicPage && (
           <Link
             href={
