@@ -109,6 +109,7 @@ function TimelineSlider({
         step={null}
         tooltip={{ open: false }}
         onChange={handleSpeedChange}
+        data-testid="slider"
       />
     </div>
   );
@@ -224,6 +225,7 @@ function TimelineSlider({
             ? styles.disablePlayBtn
             : ""
         }`}
+        
       >
         <StepBackwardOutlined
           onClick={() => {
@@ -232,6 +234,7 @@ function TimelineSlider({
             }
           }}
           className={styles.controlBtnSecond}
+          data-testid="backward-button"
         />
         {/* <BackwardOutlined className={styles.controlBtn} /> */}
         {"     "}
@@ -242,6 +245,7 @@ function TimelineSlider({
               handleClick();
             }
           }}
+          data-testid="play-button"
         >
           {isPlaying ? <PauseOutlined /> : <CaretRightOutlined />}
         </div>
@@ -255,6 +259,7 @@ function TimelineSlider({
             }
           }}
           className={styles.controlBtnSecond}
+          data-testid="forward-button"
         />
         <Popover
           content={content}
@@ -264,6 +269,7 @@ function TimelineSlider({
           onOpenChange={(newOpen) => {
             setSpeedBar(newOpen);
           }}
+          
         >
           <DashboardOutlined
             className={`${"speed-icon"}  ${
@@ -271,6 +277,7 @@ function TimelineSlider({
                 ? styles.disableIcon
                 : ""
             }`}
+            data-testid="speed-icon"
           />
         </Popover>
       </div>
@@ -288,6 +295,7 @@ function TimelineSlider({
           marks={MarkPointsData()}
           min={0}
           max={Object?.keys(mockData).length - 1}
+          data-testid="slider"
         />
       )}
     </>

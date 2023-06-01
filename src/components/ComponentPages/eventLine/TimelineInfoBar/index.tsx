@@ -31,7 +31,7 @@ const CampInfoBar = () => {
               icon={<ArrowLeftOutlined />}
               onClick={() => {
                 dispatch(setTopicName(null));
-                router.push(router.asPath.replace("eventline", "topic"));
+                router?.push(router?.asPath.replace("eventline", "topic"));
               }}
             />
             <Typography.Paragraph

@@ -122,7 +122,7 @@ const Registration = ({ isModal, isTest = false }) => {
         setIsOtpScreen(false);
         isModal ? closeModal() : "";
 
-        router.push({
+        router?.push({
           pathname: "/settings",
           query: {
             tab: "profile",

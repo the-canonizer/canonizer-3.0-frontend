@@ -45,9 +45,9 @@ function SocialLoginCallback() {
         if (redirectType) {
           dispatch(setValue({ label: "redirect_type", value: false }));
 
-          router.push("/settings?tab=profile");
+          router?.push("/settings?tab=profile");
         } else {
-          router.push("/");
+          router?.push("/");
         }
       }
 
@@ -73,20 +73,20 @@ function SocialLoginCallback() {
         message.success(response.message);
 
         localStorage.removeItem("redirectTab");
-        router.push("/settings?tab=social");
+        router?.push("/settings?tab=social");
       }
 
       if (response && response.status_code === 403) {
         localStorage.removeItem("redirectTab");
         message.error(response.message);
-        router.push("/settings?tab=social&status=403");
+        router?.push("/settings?tab=social&status=403");
       }
     }
   };
 
   useEffect(() => {
     try {
-      const queryParams = router.query;
+      const queryParams = router?.query;
       const params = getSearchedParams();
       const redirectTab = localStorage.getItem("redirectTab");
 
@@ -101,9 +101,9 @@ function SocialLoginCallback() {
         dispatch(setValue({ label: "redirect_type", value: false }));
 
         if (!redirectTab) {
-          router.push("/");
+          router?.push("/");
         } else {
-          router.push("/settings?tab=social");
+          router?.push("/settings?tab=social");
         }
       }
     } catch (error) {}

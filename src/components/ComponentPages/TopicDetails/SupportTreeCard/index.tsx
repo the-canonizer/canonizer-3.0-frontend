@@ -123,7 +123,7 @@ const SupportTreeCard = ({
     dispatch(setManageSupportStatusCheck(true));
   };
 
-  const manageSupportPath = router.asPath.replace("/topic/", "/support/");
+  const manageSupportPath = router?.asPath.replace("/topic/", "/support/");
 
   const { campSupportingTree, asof } = useSelector((state: RootState) => ({
     campSupportingTree: supportTreeForCamp,

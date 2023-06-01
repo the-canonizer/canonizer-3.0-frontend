@@ -22,7 +22,6 @@ function RacingBarChart({ data }) {
       }
   }
 
-  console.log('lines', linesData)
   const svgRef = useRef();
   const wrapperRef = useRef();
   const dimensions = useResizeObserver(wrapperRef);

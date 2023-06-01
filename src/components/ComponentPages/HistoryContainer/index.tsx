@@ -153,9 +153,9 @@ function HistoryContainer() {
     try {
       setLoadingIndicator(true);
       const reqBody = {
-        topic_num: +router.query.camp[0].split("-")[0],
+        topic_num: +router?.query.camp[0].split("-")[0],
         camp_num:
-          historyOf != "topic" ? +router.query.camp[1].split("-")[0] : null,
+          historyOf != "topic" ? +router?.query.camp[1].split("-")[0] : null,
         type: activeTab,
         per_page: 4,
         page: count.current,
@@ -210,9 +210,9 @@ function HistoryContainer() {
   };
 
   const onCompareClick = () => {
-    router.push({
-      pathname: `/statement/compare/${router.query.camp[0]}/${
-        router.query.camp[1] ? router.query.camp[1] : "1-Agreement"
+    router?.push({
+      pathname: `/statement/compare/${router?.query.camp[0]}/${
+        router?.query.camp[1] ? router?.query.camp[1] : "1-Agreement"
       }`,
       query: {
         statements: selectedTopic[0] + "_" + selectedTopic[1],
@@ -308,7 +308,7 @@ function HistoryContainer() {
             className={styles.createBtn}
             click={campRoute}
             url={`/camp/create/${
-              router.query.camp[0] + "/" + router.query.camp[1]
+              router?.query.camp[0] + "/" + router?.query.camp[1]
             }`}
           />
         ) : null}

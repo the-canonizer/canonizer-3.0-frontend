@@ -5,7 +5,7 @@ import useInterval from "./useInterval";
 import HorizontalTimelineComp from "./HorizontalTimeline";
 import TimelineSlider from "../eventLine/TimelineSlider";
 import { getEventLineApi } from "src/network/api/topicEventLineAPI";
-import { useRouter } from "next/router.js";
+import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store/index.js";
 import CustomSkelton from "@/components/common/customSkelton";

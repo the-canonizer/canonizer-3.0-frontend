@@ -55,7 +55,7 @@ export default function SideBarTimeline({
           </Drawer>
         </Fragment>
       )}
-      {typeof window !== "undefined" && router.asPath.includes("eventline") && (
+      {typeof window !== "undefined" && router?.asPath.includes("eventline") && (
         <Fragment>{<Events timelineDescript={timelineDescript} />}</Fragment>
       )}
     </Fragment>

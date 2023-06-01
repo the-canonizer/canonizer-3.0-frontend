@@ -100,7 +100,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   const [isCampBtnVisible, setIsCampBtnVisible] = useState(false);
 
   const campRoute = () => {
-    router.push("/create/topic");
+    router?.push("/create/topic");
   };
 
   const { algorithms, filteredScore, selectedAlgorithm, loading } = useSelector(
@@ -126,11 +126,11 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   }, [isLoading]);
 
   useEffect(() => {
-    if (router.pathname.includes("/topic/")) {
+    if (router?.pathname.includes("/topic/")) {
       // setIsPanelCollapse(true);
       setIsCampBtnVisible(true);
     }
-  }, [router.pathname]);
+  }, [router?.pathname]);
 
   useEffect(() => {
     getCanonizedAlgorithmsApi();

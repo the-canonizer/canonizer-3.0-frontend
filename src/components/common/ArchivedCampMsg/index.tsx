@@ -15,8 +15,8 @@ const ArchivedCampMsg = () => {
   const router = useRouter();
   return campRecord?.is_archive &&
     isAuth.isUserAuthenticated &&
-    router.asPath.includes("/topic/") &&
-    !router.asPath.includes("/topic/history") ? (
+    router?.asPath.includes("/topic/") &&
+    !router?.asPath.includes("/topic/history") ? (
     <span>
       <Card className={styles.archive_wrapper}>{campArchiveStatement}</Card>
     </span>

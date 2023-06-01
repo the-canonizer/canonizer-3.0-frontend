@@ -60,7 +60,7 @@ describe("LoggedOutHeader", () => {
         </RouterContext.Provider>
       </Provider>
     );
-    const logoLink = screen.getByRole("link", {
+    const logoLink = screen.getAllByRole("link", {
       name: /Picture of the author/i,
     });
     const browseLink = screen.getByRole("link", {
@@ -88,9 +88,10 @@ describe("LoggedOutHeader", () => {
     expect(container.getElementsByTagName("li")).toHaveLength(5);
     expect(container.getElementsByTagName("a")).toHaveLength(7);
     expect(container.getElementsByTagName("button")).toHaveLength(8);
-    expect(container.getElementsByTagName("img")).toHaveLength(1);
-
-    expect(logoLink.getAttribute("href")).toBe("/");
+    expect(container.getElementsByTagName("img")).toHaveLength(2);
+    expect(logoLink).toHaveLength(2);
+    expect(logoLink[0].getAttribute("href")).toBe("/");
+    expect(logoLink[1].getAttribute("href")).toBe("/");
     expect(browseLink.getAttribute("href")).toBe("/browse");
     // expect(uploadFilesLink.getAttribute("href")).toBe("/uploadFile");
     expect(helpLink.getAttribute("href")).toBe("/topic/132-Help/1-Agreement");

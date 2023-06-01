@@ -19,7 +19,7 @@ const HomePageContainer = () => {
             <TopicsList />
           </Col>
           {isUserAuthenticated && (
-            <Col xs={24} sm={24} xl={12}>
+            <Col xs={24} sm={24} xl={12} data-testid="recentActivities">
               <RecentActivities />
             </Col>
           )}
@@ -28,6 +28,7 @@ const HomePageContainer = () => {
             sm={24}
             xl={isUserAuthenticated ? 24 : 12}
             className={isUserAuthenticated && "logged-in-view"}
+            data-testid="helpCard"
           >
             <HelpCard />
           </Col>

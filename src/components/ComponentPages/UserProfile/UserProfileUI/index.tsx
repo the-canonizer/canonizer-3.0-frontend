@@ -101,10 +101,10 @@ const UserProfile = () => {
   }, [router, isLoggedIn]);
 
   const onNickNameChange = (value, nickname) => {
-    let pathQueries = router.query.supports;
+    let pathQueries = router?.query.supports;
     pathQueries = [value];
-    router.query.supports = pathQueries;
-    router.push(router);
+    router?.query.supports = pathQueries;
+    router?.push(router);
     setSelectedNikname(value);
   };
 

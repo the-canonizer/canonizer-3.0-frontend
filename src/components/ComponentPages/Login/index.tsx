@@ -87,11 +87,11 @@ const Login = ({ isModal, isTest = false }) => {
 
       isModal ? closeModal() : "";
 
-      if (router.query.returnUrl) {
-        router.push(`${router.query.returnUrl}`);
+      if (router?.query.returnUrl) {
+        router?.push(`${router?.query.returnUrl}`);
       } else {
-        if (router.pathname == "/login") {
-          router.push("/");
+        if (router?.pathname == "/login") {
+          router?.push("/");
         } else {
           closeModal();
         }
@@ -147,11 +147,11 @@ const Login = ({ isModal, isTest = false }) => {
         setIsOtpScreen(false);
         isModal ? closeModal() : "";
 
-        if (router.query.returnUrl) {
-          router.push(`${router.query.returnUrl}`);
+        if (router?.query.returnUrl) {
+          router?.push(`${router?.query.returnUrl}`);
         } else {
-          if (!router.pathname?.includes("/forum/")) {
-            router.push("/");
+          if (!router?.pathname?.includes("/forum/")) {
+            router?.push("/");
           }
         }
       }

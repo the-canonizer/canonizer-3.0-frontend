@@ -36,7 +36,7 @@ const LoggedOutHeader = ({}: any) => {
 
   return (
     <React.Fragment>
-      <Header className={styles.wrap}>
+      <Header className={styles.wrap}  data-testid= 'loggedOutHeader'>
         <Logo />
         <div className={`${styles.navWrap} ${isActive && styles.showMobMenu}`}>
           <div className={styles.mobLogoIcon}>

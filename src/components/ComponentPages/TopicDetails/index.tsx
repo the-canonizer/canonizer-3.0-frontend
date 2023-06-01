@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
 import CustomSkelton from "../../common/customSkelton";
 
-//  "../../../store/slices/filtersSlice";
+
 import {
   getCanonizedCampStatementApi,
   getNewsFeedApi,
@@ -335,7 +335,7 @@ const TopicDetails = () => {
   const setCurrentTopics = (data) => dispatch(setCurrentTopic(data));
 
   const onCreateCamp = () => {
-    // const queryParams = router.query;
+    // const queryParams = router?.query;
 
     const data = {
       message: null,
@@ -348,7 +348,7 @@ const TopicDetails = () => {
     const topicName = topicRecord?.topic_name?.replaceAll(" ", "-");
     const campName = campRecord?.camp_name?.replaceAll(" ", "-");
 
-    router.push({
+    router?.push({
       pathname: `/camp/create/${
         topicRecord?.topic_num
       }-${replaceSpecialCharacters(topicName, "-")}/${
@@ -366,7 +366,7 @@ const TopicDetails = () => {
       campNum = campRecord?.camp_num;
 
     if (topicName && topicNum && campName && campNum) {
-      router.push({
+      router?.push({
         pathname: `/forum/${topicNum}-${replaceSpecialCharacters(
           topicName,
           "-"
@@ -393,7 +393,7 @@ const TopicDetails = () => {
   };
   return (
     <>
-      <div className={styles.topicDetailContentWrap}>
+      <div className={styles.topicDetailContentWrap} >
         {(tree && tree["1"]?.is_valid_as_of_time) || asof == "default" ? (
           <CampInfoBar
             isTopicPage={true}
@@ -537,7 +537,7 @@ const TopicDetails = () => {
                                 )}
                               </Spin>
                               <>
-                                {router.asPath.includes("topic") && (
+                                {router?.asPath.includes("topic") && (
                                   <CampRecentActivities />
                                 )}
                               </>

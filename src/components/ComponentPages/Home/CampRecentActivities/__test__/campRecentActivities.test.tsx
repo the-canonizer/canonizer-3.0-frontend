@@ -2,6 +2,9 @@ import CampRecentActivities from "..";
 import { cleanup, render, screen } from "@testing-library/react";
 import { waitFor } from "@testing-library/react";
 
+import { store } from "../../../../../store";
+import { Provider } from "react-redux";
+
 window.matchMedia =
   window.matchMedia ||
   function () {
@@ -15,7 +18,11 @@ window.matchMedia =
 afterEach(cleanup);
 describe("Should render Addnews", () => {
   it("Render without crash", async () => {
-    const { container } = await render(<CampRecentActivities />);
+    const { container } = await render(
+      <Provider store={store}>
+        <CampRecentActivities />
+      </Provider>
+    );
     const userList = await waitFor(() =>
       screen.getByText(/No Recent Activity Found/i)
     );
