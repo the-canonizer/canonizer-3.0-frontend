@@ -225,7 +225,7 @@ function TimelineSlider({
             ? styles.disablePlayBtn
             : ""
         }`}
-        
+        data-testid="time-bar-control"
       >
         <StepBackwardOutlined
           onClick={() => {
