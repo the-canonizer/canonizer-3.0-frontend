@@ -23,6 +23,25 @@ jest.mock("../../../../hooks/isUserAuthenticated", () => ({
   default: jest.fn(() => ({ isUserAuthenticated: true })),
 }));
 
+jest.mock("next/router", () => ({
+  __esModule: true,
+  useRouter() {
+    return {
+      route: "/",
+      pathname: "",
+      query: {},
+      asPath: "",
+      push: jest.fn(),
+      events: {
+        on: jest.fn(),
+        off: jest.fn(),
+      },
+      beforePopState: jest.fn(() => null),
+      prefetch: jest.fn(() => null),
+    };
+  },
+}));
+
 
 
 describe("HomePageContainer", () => {
@@ -52,7 +71,7 @@ describe("HomePageContainer", () => {
 
     render(<Provider store={store}><HomePageContainer /></Provider>);
     const recentActivitiesElement = screen.queryByTestId("recentActivities");
-    expect(recentActivitiesElement).toBeNull();
+    expect(recentActivitiesElement).toBeInTheDocument();
   });
 
   test("renders HelpCard component", () => {

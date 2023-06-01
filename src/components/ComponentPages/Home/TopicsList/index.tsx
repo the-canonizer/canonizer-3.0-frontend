@@ -117,16 +117,16 @@ const TopicsList = () => {
     setSelectedNameSpace(nameSpace?.children);
 
     if (nameSpace?.children?.toLowerCase() !== "/general/") {
-      router?.query.canon = formatnamespace(nameSpace?.children);
+      router.query.canon = formatnamespace(nameSpace?.children);
       delete router?.query?.namespace;
       router?.replace(router, undefined, { shallow: true });
     } else {
-      if (router?.query.canon) {
+      if (router.query.canon) {
         const params = router?.query;
         delete params.canon;
         delete params.namespace;
-        router?.query = params;
-        router?.replace(router, undefined, { shallow: true });
+        router.query = params;
+        router.replace(router, undefined, { shallow: true });
       }
     }
 
@@ -147,9 +147,9 @@ const TopicsList = () => {
   // }
   useEffect(() => {
     if (filterNameSpace?.toLowerCase() !== "/general/") {
-      router?.query.canon = formatnamespace(filterNameSpace);
-      delete router?.query?.namespace;
-      router?.replace(router, undefined, { shallow: true });
+      router.query.canon = formatnamespace(filterNameSpace);
+      delete router.query?.namespace;
+      router.replace(router, undefined, { shallow: true });
     }
   }, []);
 

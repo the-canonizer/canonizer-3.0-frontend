@@ -73,7 +73,7 @@ export default function CanonVideos() {
   };
 
   useEffect(() => {
-    const q = router?.query;
+    const q = router.query;
     async function getTreeApiCall() {
       setLoader(true);
       let data = await getVideosContentApi();
@@ -171,13 +171,13 @@ export default function CanonVideos() {
     format: string | string[],
     t: string | string[]
   ) {
-    router?.query.chapter = chapter;
-    router?.query.format = format;
+    router.query.chapter = chapter;
+    router.query.format = format;
     if (t) {
-      router?.query.t = t;
+      router.query.t = t;
     } else {
       const { t, ...rest } = router?.query;
-      router?.query = rest;
+      router.query = rest;
     }
     router?.push(router, null, { shallow: true });
   }
