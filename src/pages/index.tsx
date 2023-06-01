@@ -28,7 +28,7 @@ function Home({ current_date }) {
     if ("namespace" in queries) {
       const { namespace, ...rest } = queries;
       rest.canon = namespace;
-      router?.query = rest;
+      router.query = rest;
       delete router?.query?.namespace;
       router?.replace(router, null, { shallow: true });
     }
@@ -49,7 +49,7 @@ function Home({ current_date }) {
           })
         );
         const { access_token, ...rest } = router?.query;
-        router?.query = rest;
+        router.query = rest;
         await router?.replace(router, null, { shallow: true });
       }
     };
