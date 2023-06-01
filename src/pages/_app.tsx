@@ -17,21 +17,24 @@ import { store, wrapper } from "../store";
 import { metaTagsApi } from "src/network/api/metaTagsAPI";
 import { checkTopicCampExistAPICall } from "src/network/api/campDetailApi";
 
+import { CookiesProvider } from "react-cookie";
 class WrappedApp extends App<AppInitialProps> {
   public render() {
     const { Component, pageProps, meta } = this.props as any;
 
     return (
       <Fragment>
-        <Provider store={store}>
-          <ErrorBoundary>
-            <HeadContentAndPermissionComponent
-              componentName={Component.displayName || Component.name}
-              metaContent={meta}
-            />
-            <Component {...pageProps} />
-          </ErrorBoundary>
-        </Provider>
+        <CookiesProvider>
+          <Provider store={store}>
+            <ErrorBoundary>
+              <HeadContentAndPermissionComponent
+                componentName={Component.displayName || Component.name}
+                metaContent={meta}
+              />
+              <Component {...pageProps} />
+            </ErrorBoundary>
+          </Provider>
+        </CookiesProvider>
       </Fragment>
     );
   }

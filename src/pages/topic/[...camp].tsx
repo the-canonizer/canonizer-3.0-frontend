@@ -63,9 +63,12 @@ export async function getServerSideProps({ req, res, resolvedUrl }) {
   const reqBodyForService = {
     topic_num: topicNum,
     camp_num: campNum,
-    asOf: "default",
-    asofdate: Date.now() / 1000,
-    algorithm: "blind_popularity",
+    asOf: req.cookies["asof"] ?? "default",
+    asofdate:
+      req.cookies["asofDate"] && req.cookies["asof"] == "bydate"
+        ? parseFloat(req.cookies["asofDate"])
+        : Date.now() / 1000,
+    algorithm: req.cookies["canAlgo"] ?? "blind_popularity",
     update_all: 1,
     fetch_topic_history: null,
   };
@@ -73,8 +76,11 @@ export async function getServerSideProps({ req, res, resolvedUrl }) {
   const reqBody = {
     topic_num: topicNum,
     camp_num: campNum,
-    as_of: "default",
-    as_of_date: Date.now() / 1000,
+    as_of: req.cookies["asof"] ?? "default",
+    as_of_date:
+      req.cookies["asofDate"] && req.cookies["asof"] == "bydate"
+        ? parseFloat(req.cookies["asofDate"])
+        : Date.now() / 1000,
   };
 
   const reqBodyForCampData = {

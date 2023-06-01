@@ -29,6 +29,7 @@ function HistoryContainer() {
   const { isUserAuthenticated } = useIsUserAuthenticated();
   const router = useRouter();
   const dispatch = useDispatch();
+  const didMount = useRef(false);
 
   const [activeTab, setActiveTab] = useState("all");
 
@@ -144,9 +145,11 @@ function HistoryContainer() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, agreecheck, discardChange, isUserAuthenticated]);
   useEffect(() => {
-    return () => {
-      store.dispatch(setTree([]));
-    };
+    if (didMount.current) {
+      return () => {
+        store.dispatch(setTree([]));
+      };
+    } else didMount.current = true;
   }, []);
 
   const campStatementApiCall = async () => {

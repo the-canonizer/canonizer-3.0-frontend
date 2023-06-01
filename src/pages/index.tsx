@@ -91,18 +91,20 @@ function Home({
   );
 }
 
-export async function getServerSideProps(ctx) {
+export async function getServerSideProps(context) {
   const currentDate = new Date().valueOf();
   const currentTime = Date.now() / 1000;
   const reqBody = {
-    algorithm: "blind_popularity",
-    asofdate: currentTime,
+    algorithm: context.req.cookies["canAlgo"] ?? "blind_popularity",
+    asofdate: context.req.cookies["asofDate"]
+      ? parseFloat(context.req.cookies["asofDate"])
+      : currentTime,
     filter: 0,
     namespace_id: 1,
     page_number: 1,
     page_size: 15,
     search: "",
-    asof: "default",
+    asof: context.req.cookies["asof"] ?? "default",
   };
   const [nameSpaces, whatsNewResult, canonizedAlgorithms, result] =
     await Promise.all([
