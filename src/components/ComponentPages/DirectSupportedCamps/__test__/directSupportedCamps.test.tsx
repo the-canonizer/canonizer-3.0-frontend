@@ -90,9 +90,11 @@
 //     ).toBeInTheDocument();
 //   });
 // });
-import { render, screen } from "../../../../utils/testUtils";
+import { render, screen, waitFor } from "../../../../utils/testUtils";
 import DirectSupportedCampsUI from "../DirectSupportedCampsUI/index";
 import messages from "../../../../messages";
+import DirectSupportedCamps from "..";
+import userEvent from "@testing-library/user-event";
 const { labels } = messages;
 
 const isSupportedCampsModalVisible = true;
@@ -346,4 +348,49 @@ describe("Direct Support camps page", () => {
       container.getElementsByClassName("ant-btn ant-btn-default")
     ).toBeTruthy();
   });
+
+  describe("direct supported camps",()=>{
+    it("render a value when write in search box", () => {
+      render(
+        <DirectSupportedCamps search={directSupportedCampsList}
+        />
+      );
+      waitFor(async () => {
+        expect(screen.getAllByText("For topic").length).toEqual(2);
+        expect(screen.getByText(directSupportedCampsList[0].title)).toBeInTheDocument();
+        expect(screen.getByText(directSupportedCampsList[1].title)).toBeInTheDocument();
+        expect(screen.getAllByText("Remove Support").length).toEqual(2);
+        expect(screen.getByText("Agreement")).toBeInTheDocument();
+        expect(screen.getByText("Agreement-2")).toBeInTheDocument();
+      });
+    });
+  
+    it("click on remove support button and open modal", () => {
+      render(<DirectSupportedCamps search={directSupportedCampsList} />);
+      waitFor(async () => {
+        const btns = screen.getAllByText("Remove Support");
+  
+        userEvent.click(btns[0]);
+  
+        expect(screen.getByText(directSupportedCampsList[0].title)).toBeInTheDocument();
+        expect(screen.getByText("Remove")).toBeInTheDocument();
+        expect(screen.getByText("Cancel")).toBeInTheDocument();
+      });
+    });
+  
+    it("render direct Supported Camps is clicked/active", () => {
+      render(<DirectSupportedCamps search={directSupportedCampsList} />);
+      waitFor(async () => {
+  
+         expect(
+        screen.getAllByText(labels.fortopic)[1] as HTMLLabelElement
+      ).toBeInTheDocument();
+      expect(
+        screen.getAllByText(labels.removeSupport)[1] as HTMLLabelElement
+      ).toBeInTheDocument();
+      });
+    });
+  })
+
+ 
 });
