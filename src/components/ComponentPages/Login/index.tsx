@@ -9,18 +9,18 @@ import {
   hideLoginModal,
   showForgotModal,
   showRegistrationModal,
-} from "../../../store/slices/uiSlice";
+} from "src/store/slices/uiSlice";
 import {
   login,
   resendOTPForRegistration,
   verifyOtp,
-} from "../../../network/api/userApi";
-import { AppDispatch, RootState } from "../../../store";
+} from "src/network/api/userApi";
+import { AppDispatch, RootState } from "src/store";
 import Spinner from "../../common/spinner/spinner";
 import OTPVerify from "../Registration/UI/otp";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
-import { setValue } from "../../../store/slices/utilsSlice";
-import messages from "../../../messages";
+import { setValue } from "src/store/slices/utilsSlice";
+import messages from "src/messages";
 
 const Login = ({ isModal, isTest = false }) => {
   const remember = useSelector((state: RootState) => state.utils.remember_me);

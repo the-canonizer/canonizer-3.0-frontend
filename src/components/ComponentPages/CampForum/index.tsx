@@ -185,7 +185,7 @@ const ForumComponent = () => {
     };
 
     setParamsList(paramsLists);
-  }, [campRecord, router]);
+  }, [campRecord]);
 
   // start thread List section
 
