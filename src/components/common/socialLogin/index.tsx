@@ -10,7 +10,7 @@ import {
 
 import styles from "./social-login.module.scss";
 
-import { socialLogin } from "../../../network/api/userApi";
+import { socialLogin } from "src/network/api/userApi";
 import { setValue } from "src/store/slices/utilsSlice";
 import CustomSkeleton from "../customSkelton";
 
@@ -22,7 +22,10 @@ export default function SocialLoginUi({ isNotLogin = false }) {
   const dispatch = useDispatch();
 
   // social login api call
-  const onSocialLogin = async (provider, e) => {
+  const onSocialLogin = async (
+    provider: any,
+    e: { preventDefault: () => void }
+  ) => {
     setIsLoading(true);
 
     e.preventDefault();

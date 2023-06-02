@@ -1,6 +1,6 @@
-import { render, screen, waitFor } from "../../../../utils/testUtils";
+import { render, screen, waitFor } from "src/utils/testUtils";
 
-import SocialOauth from "..";
+import SocialOauth from "../";
 
 describe("Social oauth verification page", () => {
   it("render labels and text", () => {

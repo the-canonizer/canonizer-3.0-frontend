@@ -109,7 +109,7 @@ const PostForm = ({
               )}
             </Text>
             {!isLog && (
-              <Text id="sign-in-msg">
+              <Text id="sign-in-msg" data-testid="logincheck">
                 Please <a onClick={openModal}>Sign In</a> to comment on this
                 Thread
               </Text>
