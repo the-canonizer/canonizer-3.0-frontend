@@ -14,19 +14,20 @@ interface editorchange {
 
 export default function Editorck(props: (editorState & editorchange)) {
 
-    const {isUserAuthenticated} = isAuth();
+    const { isUserAuthenticated } = isAuth();
     const [loadeditor, setLoadeditor] = useState(false)
     const [editordata, setEditordata] = useState('')
 
     useEffect(() => {
-            setEditordata(props.editorState)
-            setLoadeditor(true)
+        setEditordata(props.editorState)
+        setLoadeditor(true)
     }, [isUserAuthenticated])
 
-    const editorConfiguration = { 
+    const editorConfiguration = {
         placeholder: "Write Your Statement Here",
-        mediaEmbed:{previewsInData:true},
-        toolbar: { shouldNotGroupWhenFull: true, 
+        mediaEmbed: { previewsInData: true },
+        toolbar: {
+            shouldNotGroupWhenFull: true,
             items: [
                 'heading',
                 '|',
@@ -65,11 +66,12 @@ export default function Editorck(props: (editorState & editorchange)) {
                 '|',
                 'undo',
                 'redo'
-		],},
+            ],
+        },
         image: {
             toolbar: ["imageTextAlternative", "imageStyle:inline", "imageStyle:block", "imageStyle:side", "linkImage"]
         },
-    
+
     };
 
 
@@ -80,12 +82,29 @@ export default function Editorck(props: (editorState & editorchange)) {
                     config={editorConfiguration}
                     editor={ClassicEditor.Editor}
                     data={editordata}
-                    onReady={(editor) => {
-                        editor.editing.view.focus()
-                    }}
-                    onChange={(event, editor:any) => {
-                        const data = editor?.getData();
-                        props.oneditorchange(data)
+                    onChange={(event, editor: any) => {
+
+
+                        let isTyping = false;
+
+                        let typingTimer;
+
+                        const dataAppend = async () => {
+                           return props.oneditorchange(editor?.getData())
+                        }
+
+                        editor.editing.view.document.on('keyup', (evt) => {
+                            clearTimeout(typingTimer);
+                            isTyping = true;
+
+                            typingTimer = setTimeout(async () => {
+                                isTyping = false;
+                               await dataAppend()
+                            }, 500)
+                            evt.stop()
+                        });
+                    
+
                     }}
                 />
                 :

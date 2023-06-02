@@ -17,6 +17,11 @@ body {
 .diffdel {
   display: inline !important;
   text-decoration: line-through !important;
+  // opacity: 0.4;
+}
+
+.diffdel img{
+  opacity:0.2; 
 }
 
 .diffmod {

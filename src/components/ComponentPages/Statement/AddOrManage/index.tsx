@@ -546,10 +546,9 @@ export default function AddOrManage({ add }: any) {
 
   const onEditorStateChange = (changedata) => {
     const datachangec = `${changedata}`
- 
+    setEditorState(datachangec)
     if (manageFormOf == "statement") {
       form.setFieldsValue({ statement: datachangec })
-      setEditorState(datachangec)
       handleformvalues()
     }
   }
@@ -1149,10 +1148,10 @@ export default function AddOrManage({ add }: any) {
                           size="large"
                           className={`btn-orange mr-3 ${styles.btnSubmit}`}
                           htmlType="submit"
-                          disabled={
-                            (submitIsDisable && submitIsDisableCheck) || editorTextLength < 1 ||
-                            statementResponseDisable
-                          }
+                          // disabled={
+                          //   (submitIsDisable && submitIsDisableCheck) || editorTextLength < 1 ||
+                          //   statementResponseDisable
+                          // }
                           id="update-submit-btn"
                         >
                           {add
