@@ -26,6 +26,7 @@ const jestConfig = {
      "<rootDir>/src/pages",
      "<rootDir>/src/assets",
      "<rootDir>/public",
+      "\\.config\\.(ts|js)$"
   ],
   moduleDirectories: [
     "<rootDir>/node_modules",
