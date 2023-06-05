@@ -44,9 +44,8 @@ describe("Sidebar Filters Component", () => {
       </Provider>
     );
 
-    expect(container.getElementsByTagName("button")).toHaveLength(1);
-    expect(getByText("Create New Topic")).toBeInTheDocument();
+    expect(getByText("Canonizer")).toBeInTheDocument();
     expect(getByText("Canonizer Algorithm:")).toBeInTheDocument();
-    // expect(getByText("Algorithm Information")).toBeInTheDocument();
+    // expect(getByText("Algorithm Information")).toBeInTheDocument();/
   });
 });

@@ -34,15 +34,15 @@ function CompareStatementUI({
   const getBackUrl = () => {
     const query = router?.query;
     if (query.from === "topic") {
-      router.push({
+      router?.push({
         pathname: `/topic/history/${router?.query?.routes[0]}}`,
       });
     } else if (query.from === "statement") {
-      router.push({
+      router?.push({
         pathname: `/statement/history/${router?.query?.routes[0]}/${router?.query?.routes[1]}`,
       });
     } else {
-      router.push({
+      router?.push({
         pathname: `/camp/history/${router?.query?.routes[0]}/${router?.query?.routes[1]}`,
       });
     }

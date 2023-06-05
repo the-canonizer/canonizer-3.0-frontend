@@ -176,10 +176,10 @@ export default function CanonVideos() {
     if (t) {
       router.query.t = t;
     } else {
-      const { t, ...rest } = router.query;
+      const { t, ...rest } = router?.query;
       router.query = rest;
     }
-    router.push(router, null, { shallow: true });
+    router?.push(router, null, { shallow: true });
   }
 
   return (

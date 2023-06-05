@@ -18,8 +18,8 @@ function CompareStatement() {
     setIsLoading(true);
     const reqBody = {
       ids,
-      topic_num: +router.query.routes[0].split("-")[0],
-      camp_num: +router.query.routes[1].split("-")[0],
+      topic_num: +router?.query.routes[0].split("-")[0],
+      camp_num: +router?.query.routes[1].split("-")[0],
       compare: router?.query?.from,
     };
     const res = await getCompareStatement(reqBody);

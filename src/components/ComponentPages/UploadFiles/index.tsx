@@ -293,7 +293,7 @@ const UploadFiles = () => {
     isUserAuthenticated &&
     loggedInUser.is_admin == false &&
     location.pathname == "/uploadFile"
-      ? router.push("/")
+      ? router?.push("/")
       : "";
   }, []);
   //onLoad

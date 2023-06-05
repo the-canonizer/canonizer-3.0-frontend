@@ -1,24 +1,37 @@
-import React from "react";
-import { render, cleanup } from "@testing-library/react";
-import TopicsList from "../";
-import { Provider } from "react-redux";
-import { store } from "../../../../../store";
-import * as nextRouter from "next/router";
+import React from 'react';
+import { cleanup, render, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import TopicsList from '../index';
+import { store } from 'src/store';
 
-nextRouter.useRouter = jest.fn();
-nextRouter.useRouter.mockImplementation(() => ({ route: "/" }));
+window.matchMedia =
+  window.matchMedia ||
+  function () {
+    return {
+      matches: false,
+      addListener: function () {},
+      removeListener: function () {},
+    };
+  };
 
-describe("TopicsList Component", function () {
-  it("should render without crash", function () {
-    // let { getByText } = render(
-    //   <Provider store={store}>
-    //     <TopicsList />
-    //   </Provider>
-    // );
-    // expect(getByText("Canonized list for")).toMatchInlineSnapshot(`
-    //   <h3>
-    //   Canonized list for
-    //   </h3>
-    // `);
+afterEach(cleanup);
+
+
+describe('TopicsList', () => {
+  beforeEach(() => {
+    render(
+      <Provider store={store}>
+        <TopicsList />
+      </Provider>
+    );
   });
+
+  test('renders select canon title', () => {
+    const selectCanonTitle = screen.getByText('Select Canon');
+    expect(selectCanonTitle).toBeInTheDocument();
+  });
+
+ 
+
+  
 });

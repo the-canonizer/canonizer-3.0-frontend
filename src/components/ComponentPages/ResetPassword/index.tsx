@@ -19,7 +19,7 @@ const ResetPassword = ({ is_test = false }) => {
       await localStorage.removeItem("verified");
     }
 
-    router.push({ pathname: "/login" });
+    router?.push({ pathname: "/login" });
   };
 
   useEffect(() => {

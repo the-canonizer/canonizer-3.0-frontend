@@ -1,7 +1,7 @@
-import { render, screen } from "../../../../utils/testUtils";
+import { render, screen } from "src/utils/testUtils";
 
 import ForumList from "../List";
-import messages from "../../../../messages";
+import messages from "src/messages";
 
 const { placeholders } = messages;
 
@@ -25,21 +25,19 @@ const params = { topic: "topic-88", camp: "camp-22" };
 describe("Camp forum page", () => {
   it("render heading and labels before login", () => {
     render(
-      <>
-        <ForumList
-          onSearch={jest.fn()}
-          onChange={jest.fn()}
-          onCreateThread={jest.fn()}
-          threadList={data}
-          onThreadClick={jest.fn()}
-          onEditClick={jest.fn()}
-          current={1}
-          total={10}
-          filterThread={jest.fn()}
-          isLoggedIn={false}
-          paramsList={params}
-        />
-      </>
+      <ForumList
+        onSearch={jest.fn()}
+        onChange={jest.fn()}
+        onCreateThread={jest.fn()}
+        threadList={data}
+        onThreadClick={jest.fn()}
+        onEditClick={jest.fn()}
+        current={1}
+        total={10}
+        filterThread={jest.fn()}
+        isLoading={undefined}
+        paramsList={params}
+      />
     );
 
     expect(screen.getByText("Camp Forum")).toBeInTheDocument();
@@ -54,21 +52,19 @@ describe("Camp forum page", () => {
 
   it("render buttons after login", () => {
     render(
-      <>
-        <ForumList
-          onSearch={jest.fn()}
-          onChange={jest.fn()}
-          onCreateThread={jest.fn()}
-          threadList={data}
-          onThreadClick={jest.fn()}
-          onEditClick={jest.fn()}
-          current={1}
-          total={10}
-          filterThread={jest.fn()}
-          isLoggedIn={true}
-          paramsList={params}
-        />
-      </>
+      <ForumList
+        onSearch={jest.fn()}
+        onChange={jest.fn()}
+        onCreateThread={jest.fn()}
+        threadList={data}
+        onThreadClick={jest.fn()}
+        onEditClick={jest.fn()}
+        current={1}
+        total={10}
+        filterThread={jest.fn()}
+        paramsList={params}
+        isLoading={undefined}
+      />
     );
 
     expect(screen.getByText("Camp Forum")).toBeInTheDocument();
