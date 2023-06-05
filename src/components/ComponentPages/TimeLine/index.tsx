@@ -25,11 +25,14 @@ function TimeLine({ setTimelineDescript }) {
 
   const events = mockData && Object.keys(mockData).sort();
   const [data, setData] = useState([]);
-  const { algorithm, score } = useSelector((state: RootState) => ({
-    algorithm: state.filters?.filterObject?.algorithm,
-    score: state?.filters?.filterObject?.filterByScore,
-  }));
-
+  const { algorithm, score, asofdate, asof } = useSelector(
+    (state: RootState) => ({
+      algorithm: state.filters?.filterObject?.algorithm,
+      score: state?.filters?.filterObject?.filterByScore,
+      asofdate: state.filters?.filterObject?.asofdate,
+      asof: state?.filters?.filterObject?.asof,
+    })
+  );
   useEffect(() => {
     setLoading(true);
     async function apiCall() {
@@ -41,6 +44,18 @@ function TimeLine({ setTimelineDescript }) {
       if (data && Object.keys(data).length == 1) {
         let a = new Date().getTime() / 1000;
         data[`asoftime_${Math.round(a)}`] = data[Object.keys(data)[0]];
+      } else if (data && Object.keys(data).length > 1 && asof == "bydate") {
+        let sortMockData = Object.keys(data).sort();
+        let i = 0;
+        for (i; i < Object.keys(data).length; i++) {
+          if (
+            JSON.stringify(asofdate) ==
+            JSON.stringify(sortMockData[i]?.split("_")[1])
+          ) {
+            setIteration(i);
+            break;
+          }
+        }
       }
       data && setMockData(data);
     }
