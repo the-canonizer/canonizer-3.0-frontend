@@ -339,7 +339,7 @@ const CampTree = ({
                           borderRadius={"2px"}
                           height="16px"
                           customLabel={
-                            is_checked && isUserAuthenticated
+                            is_checked
                               ? data[item].full_score?.toFixed(2)
                               : data[item].score?.toFixed(2)
                           }

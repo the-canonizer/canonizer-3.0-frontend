@@ -1,10 +1,11 @@
-import { render, screen } from "../../../../utils/testUtils";
+import { render, screen, waitFor } from "../../../../utils/testUtils";
 import UserProfileDetails from "../UserProfileDetails/UserProfileDetails";
 import { UserProfileCard } from "../UserProfileDetails/UserProfileCard";
 import messages from "../../../../messages";
+import UserProfile from "..";
 const { labels } = messages;
 const profileData = {
-  name: "first_name",
+  name: "Name",
   email: "email",
   address_1: "address_1",
   city: "city",
@@ -12,10 +13,26 @@ const profileData = {
   country: "country",
 };
 
+
 const userSupportedCampsList = [
   {
     nick_name: "Test Nickname",
-    topic: [],
+    nick_name_id:123,
+    private_status:0,
+    topic: [
+      {
+        camp_name:"Agreement",
+        namespace_id:1,
+        title_link:"https://www.google.com/",
+        topic_num:12
+      },
+      {
+        camp_name:"Agreement-2",
+        namespace_id:2,
+        title_link:"https://www.google.com/",
+        topic_num:13
+      }
+    ],
   },
 ];
 
@@ -24,6 +41,18 @@ const nameSpaceList = [
     name: "Test Name Space",
   },
 ];
+
+const nickNameList = [
+  {
+    nick_name: "ABC",
+    nick_name_id:123,
+    private_status:0,
+  },
+];
+
+const totalPages = 5;
+const currentPage = 3;
+const onPageChange = jest.fn();
 
 const dropdownNameSpaceList = "";
 const noData = false;
@@ -36,7 +65,7 @@ describe("userProfileDetails", () => {
         userSupportedCampsList={userSupportedCampsList}
       />
     );
-    expect(screen.queryByTestId(labels.userProfile)).toBeNull();
+    expect(screen.getByText(labels.userProfile)).toBeTruthy();
   });
 });
 
@@ -48,12 +77,11 @@ describe("userProfileDetails", () => {
         userSupportedCampsList={userSupportedCampsList}
       />
     );
-    expect(screen.queryByTestId(labels.name)).toBeNull();
-    expect(screen.queryByTestId(labels.emailAddress)).toBeNull();
-    expect(screen.queryByTestId(labels.address)).toBeNull();
-    expect(screen.queryByTestId(labels.city)).toBeNull();
-    expect(screen.queryByTestId(labels.country)).toBeNull();
-    expect(screen.queryByTestId(labels.zipcode)).toBeNull();
+    expect(screen.getByText(labels.emailAddress)).toBeTruthy();
+    expect(screen.getByText(labels.address)).toBeTruthy();
+    expect(screen.getByText(labels.city)).toBeTruthy();
+    expect(screen.getByText(labels.country)).toBeTruthy();
+    expect(screen.getByText(labels.zipcode)).toBeTruthy();
   });
 });
 
@@ -126,3 +154,41 @@ describe("userProfileCard", () => {
     ).toBeTruthy();
   });
 });
+
+describe("User profile",()=>{
+  it("render select namespace form dropdown", () => {
+    render(<UserProfile/>);
+    waitFor(async () => {
+
+      expect(screen.getByText(nameSpaceList[0].name)).toBeInTheDocument();
+
+    });
+  });
+
+  it("render user supported camp list", () => {
+    render(<UserProfile/>);
+    waitFor(async () => {
+
+      expect(screen.getAllByText(userSupportedCampsList[0].nick_name)).toBeInTheDocument();
+      expect(screen.getAllByText(userSupportedCampsList[0].nick_name_id)).toBeInTheDocument();
+      expect(screen.getAllByText(userSupportedCampsList[0].private_status)).toBeInTheDocument();
+      expect(screen.getAllByText(userSupportedCampsList[0].topic[0].camp_name)).toBeInTheDocument();
+      expect(screen.getAllByText(userSupportedCampsList[0].topic[0].namespace_id)).toBeInTheDocument();
+      expect(screen.getAllByText(userSupportedCampsList[0].topic[0].title_link)).toBeInTheDocument();
+      expect(screen.getAllByText(userSupportedCampsList[0].topic[0].topic_num)).toBeInTheDocument();
+      expect(screen.getAllByText(userSupportedCampsList[0].topic[1].camp_name)).toBeInTheDocument();
+      expect(screen.getAllByText(userSupportedCampsList[0].topic[1].namespace_id)).toBeInTheDocument();
+      expect(screen.getAllByText(userSupportedCampsList[0].topic[1].title_link)).toBeInTheDocument();
+      expect(screen.getAllByText(userSupportedCampsList[0].topic[1].topic_num)).toBeInTheDocument();
+    });
+  });
+
+  it("render select namespace form dropdown", () => {
+    render(<UserProfile/>);
+    waitFor(async () => {
+      expect(screen.getByText(nickNameList[0].nick_name)).toBeInTheDocument();
+      expect(screen.getByText(nickNameList[0].nick_name_id)).toBeInTheDocument();
+      expect(screen.getByText(nickNameList[0].private_status)).toBeInTheDocument();
+    });
+  });
+})

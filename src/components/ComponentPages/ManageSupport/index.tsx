@@ -121,6 +121,15 @@ const ManageSupport = () => {
     const res = await getCurrentCampRecordApi(reqBodyCAmpRecord);
     campRef.current = res;
   };
+
+  //prevent user to open this page if camp archive is true
+  useEffect(()=>{
+    isUserAuthenticated &&
+    campRecord?.is_archive  &&
+    router.route == "/support/[...manageSupport]"
+      ? router.push("/")
+      : "";
+  },[])
   //isUserAuthenticated
   useEffect(() => {
     (async () => {

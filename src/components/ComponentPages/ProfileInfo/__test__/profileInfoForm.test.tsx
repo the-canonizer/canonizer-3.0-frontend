@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 
 import ProfileInfoForm from "../../Form/ProfileInfoForm";
 import messages from "../../../../messages";
+import ProfileInfo from "..";
 
 const { labels, placeholders, validations } = messages;
 const privateFlags = "first_name";
@@ -12,8 +13,82 @@ const handleselectAfter = jest.fn();
 const handleAddressChange = jest.fn();
 const handleAddressSelect = jest.fn();
 
-const algorithmList = [];
-const languageList = [];
+const algorithmList = [
+  {
+    algorithm_key:"blind_popularity",
+    algorithm_label:"One Person One Vote",
+    id:1,
+  },
+  {
+    algorithm_key:"mind_experts",
+    algorithm_label:"mind experts",
+    id:2,
+  },
+  {
+    algorithm_key:"computer_science_experts",
+    algorithm_label:"computer science experts",
+    id:3,
+  },
+];
+const languageList = [
+  {
+    id:1,
+    name:"English"
+  },
+  {
+    id:2,
+    name:"French"
+  },
+  {
+    id:3,
+    name:"Spain"
+  },
+
+];
+
+const userProfileData = {
+address_1: "sector-102,sudo enclave,florida",
+address_2: "sector-102,sudo enclave,florida",
+birthda: null,
+city: "Florida",
+country: "America",
+country_code: null,
+default_algo: "blind_popularity",
+email: "ABC@talentelgia.in",
+fcm_token: null,
+first_name: "ABC",
+gender: "male",
+id: 1,
+is_active: 1,
+join_time: null,
+language: null,
+last_name: "Rana",
+middle_name: null,
+mobile_carrier: null,
+mobile_verified: 0,
+otp: "",
+phone_number: null,
+postal_code: null,
+private_flags: null,
+state: null,
+status: 1,
+type: "user",
+update_time: null,
+}
+
+const mobileCarrierData =[
+  {
+  carrier_address:"abc@gami.com",
+  id:1,
+  name:"ABC"
+},
+{
+  carrier_address:"def@gami.com",
+  id:2,
+  name:"def"
+}
+
+]
 const address = "";
 const setupGoogleMock = () => {
   /** Mock Google Maps JavaScript API **/
@@ -198,7 +273,7 @@ describe("Profile Info Page", () => {
     ).toBeInTheDocument();
   });
 
-  it("render update button", () => {
+  it("render *", () => {
     render(
       <ProfileInfoForm
         onFinish={onFinish}
@@ -253,7 +328,7 @@ describe("Profile Info Page", () => {
 
   // });
 
-  it("render update button", () => {
+  it("render gender label", () => {
     render(
       <ProfileInfoForm
         onFinish={onFinish}
@@ -273,3 +348,76 @@ describe("Profile Info Page", () => {
     expect(screen.getAllByText("Other")).toBeTruthy();
   });
 });
+
+describe("UserProfile",()=>{
+  it("render algorithim list",()=>{
+    render(<ProfileInfo/>);
+    waitFor(async () => {
+      expect(screen.getByText(algorithmList[0].algorithm_key)).toBeInTheDocument();
+      expect(screen.getByText(algorithmList[0].algorithm_label)).toBeInTheDocument();
+      expect(screen.getByText(algorithmList[0].id)).toBeInTheDocument();
+    });
+  })
+
+  it("render language list",()=>{
+    render(<ProfileInfo/>);
+    waitFor(async () => {
+      expect(screen.getByText(languageList[0].id)).toBeInTheDocument();
+      expect(screen.getByText(languageList[0].name)).toBeInTheDocument();
+      expect(screen.getByText(languageList[1].id)).toBeInTheDocument();
+      expect(screen.getByText(languageList[1].name)).toBeInTheDocument();
+      expect(screen.getByText(languageList[2].id)).toBeInTheDocument();
+      expect(screen.getByText(languageList[2].name)).toBeInTheDocument();
+    });
+  })  
+
+  it("render Profile data",()=>{
+    render(<ProfileInfo/>);
+    waitFor(async () => {
+      expect(screen.getByText(userProfileData.address_1)).toBeInTheDocument();
+      expect(screen.getByText(userProfileData.address_2)).toBeInTheDocument();
+      expect(screen.getByText(userProfileData.birthda)).toBeInTheDocument();
+      expect(screen.getByText(userProfileData.city)).toBeInTheDocument();
+      expect(screen.getByText(userProfileData.country)).toBeInTheDocument();
+      expect(screen.getByText(userProfileData.country_code)).toBeInTheDocument();
+      expect(screen.getByText(userProfileData.default_algo)).toBeInTheDocument();
+      expect(screen.getByText(userProfileData.email)).toBeInTheDocument();
+      expect(screen.getByText(userProfileData.fcm_token)).toBeInTheDocument();
+      expect(screen.getByText(userProfileData.first_name)).toBeInTheDocument();
+      expect(screen.getByText(userProfileData.gender)).toBeInTheDocument();
+      expect(screen.getByText(userProfileData.id)).toBeInTheDocument();
+      expect(screen.getByText(userProfileData.is_active)).toBeInTheDocument();
+      expect(screen.getByText(userProfileData.join_time)).toBeInTheDocument();
+      expect(screen.getByText(userProfileData.language)).toBeInTheDocument();
+      expect(screen.getByText(userProfileData.last_name)).toBeInTheDocument();
+      expect(screen.getByText(userProfileData.middle_name)).toBeInTheDocument();
+      expect(screen.getByText(userProfileData.mobile_carrier)).toBeInTheDocument();
+      expect(screen.getByText(userProfileData.mobile_verified)).toBeInTheDocument();
+      expect(screen.getByText(userProfileData.otp)).toBeInTheDocument();
+      expect(screen.getByText(userProfileData.phone_number)).toBeInTheDocument();
+      expect(screen.getByText(userProfileData.postal_code)).toBeInTheDocument();
+      expect(screen.getByText(userProfileData.private_flags)).toBeInTheDocument();
+      expect(screen.getByText(userProfileData.state)).toBeInTheDocument();
+      expect(screen.getByText(userProfileData.status)).toBeInTheDocument();
+      expect(screen.getByText(userProfileData.update_time)).toBeInTheDocument();
+      expect(screen.getByText(userProfileData.type)).toBeInTheDocument();
+
+
+    });
+  })  
+  it("render mobile carrier data",()=>{
+    render(<ProfileInfo/>);
+    waitFor(async () => {
+      expect(screen.getByText(mobileCarrierData[0].carrier_address)).toBeInTheDocument();
+      expect(screen.getByText(mobileCarrierData[0].id)).toBeInTheDocument();
+      expect(screen.getByText(mobileCarrierData[0].name)).toBeInTheDocument();
+      expect(screen.getByText(mobileCarrierData[1].carrier_address)).toBeInTheDocument();
+      expect(screen.getByText(mobileCarrierData[1].id)).toBeInTheDocument();
+      expect(screen.getByText(mobileCarrierData[1].name)).toBeInTheDocument();
+    });
+  })
+})
+
+
+
+
