@@ -8,9 +8,10 @@ import {
   Modal,
   Spin,
   Tooltip,
-  Table,
+  Tabs,
   Tag,
   message,
+  Table,
 } from "antd";
 import moment from "moment";
 import Link from "next/link";
@@ -175,7 +176,7 @@ function HistoryCollapse({
       render: (tag) => {
         return (
           <Tag color={tag ? "geekblue" : "volcano"} key={tag}>
-            {tag ? "Agreed" : "Not Agree"}
+            {tag ? "Agreed" : "Not Agreed"}
           </Tag>
         );
       },
@@ -567,6 +568,8 @@ function HistoryCollapse({
                       </div>
                       <Modal
                         title="Direct Supporters"
+                        centered
+                        className="direct-support-modal"
                         open={isModalOpen}
                         onCancel={() => {
                           setIsModalOpen(false);
@@ -574,10 +577,42 @@ function HistoryCollapse({
                         footer={null}
                       >
                         {supporters.length > 0 && (
-                          <Table
-                            dataSource={supporters}
-                            pagination={false}
-                            columns={columns}
+                          <Tabs
+                            defaultActiveKey="1"
+                            className="agreed-tabs"
+                            items={[
+                              {
+                                key: "1",
+                                label: `Not Agreed`,
+                                children: (
+                                  <>
+                                    <Table
+                                      dataSource={supporters?.filter(
+                                        (obj) => obj.status === false
+                                      )}
+                                      pagination={false}
+                                      columns={columns}
+                                    />
+                                  </>
+                                ),
+                              },
+                              {
+                                key: "2",
+                                label: `Agreed`,
+                                children: (
+                                  <>
+                                    {" "}
+                                    <Table
+                                      dataSource={supporters?.filter(
+                                        (obj) => obj.status === true
+                                      )}
+                                      pagination={false}
+                                      columns={columns}
+                                    />
+                                  </>
+                                ),
+                              },
+                            ]}
                           />
                         )}
                       </Modal>
