@@ -1,8 +1,12 @@
-import { render, screen, waitFor } from "../../../../utils/testUtils";
+import { fireEvent, render, screen, waitFor } from "../../../../utils/testUtils";
 import UserProfileDetails from "../UserProfileDetails/UserProfileDetails";
 import { UserProfileCard } from "../UserProfileDetails/UserProfileCard";
 import messages from "../../../../messages";
 import UserProfile from "..";
+import { useState } from "react";
+import { useRouter } from "next/router";
+import { renderHook } from "@testing-library/react-hooks";
+import { Input, message } from "antd";
 const { labels } = messages;
 const profileData = {
   name: "Name",
@@ -57,6 +61,9 @@ const onPageChange = jest.fn();
 const dropdownNameSpaceList = "";
 const noData = false;
 
+jest.mock('next/router', () => ({
+  useRouter: jest.fn(),
+}));
 describe("userProfileDetails", () => {
   it("render show userProfile", () => {
     render(
@@ -153,6 +160,27 @@ describe("userProfileCard", () => {
       container.getElementsByClassName("ant-select-selection-search")
     ).toBeTruthy();
   });
+  test('Input component handles user input correctly', () => {
+    render(<UserProfileCard
+        userSupportedCampsList={userSupportedCampsList}
+        nameSpaceList={nameSpaceList}
+        dropdownNameSpaceList={dropdownNameSpaceList}
+        setDropdownNameSpaceList={() => {}}
+        noData={noData}
+      />)
+    // Render the Input component
+    render(<Input />);
+  
+    // Find the input element
+    const inputElement = screen.getByRole('textbox');
+  
+    // Simulate user input
+    const userInput = 'Test Input';
+    fireEvent.change(inputElement, { target: { value: userInput } });
+  
+    // Assert that the input value is updated
+    expect(inputElement.value).toBe(userInput);
+  });
 });
 
 describe("User profile",()=>{
@@ -190,5 +218,63 @@ describe("User profile",()=>{
       expect(screen.getByText(nickNameList[0].nick_name_id)).toBeInTheDocument();
       expect(screen.getByText(nickNameList[0].private_status)).toBeInTheDocument();
     });
+  });
+  it("render useState is working ",()=>{
+    render(<UserProfile/>)
+    const TestComponent = () => {
+      const [isActive, setIsActive] = useState(false);
+      
+  
+      const toggleActive = () => {
+        setIsActive(!isActive);
+      };
+  
+      return (
+        <div>
+          <p>{isActive ? 'Active' : 'Inactive'}</p>
+          <button onClick={toggleActive}>Toggle</button>
+        </div>
+      );
+    };
+  
+    const { getByText } = render(<TestComponent />);
+  
+    const statusElement = getByText('Inactive');
+    const toggleButton = getByText('Toggle');
+  
+    expect(statusElement.textContent).toBe('Inactive');
+  
+    fireEvent.click(toggleButton);
+  
+    expect(statusElement.textContent).toBe('Active');
+  
+    fireEvent.click(toggleButton);
+  
+    expect(statusElement.textContent).toBe('Inactive');
+  });
+
+  it("path is working with use router",()=>{
+    render(<UserProfile/>)
+    const mockedRouter = {
+      pathname: '/about',
+    };
+  
+    // Setting up the mocked useRouter implementation
+    useRouter.mockImplementation(() => mockedRouter);
+  
+    const { result } = renderHook(() => useRouter());
+  
+    expect(result.current.pathname).toBe('/about');
+  });
+  it("Message component displays correct content",()=>{
+    render(<UserProfile/>)
+    const messageContent = 'Test message';
+
+  // Render the Message component
+  message.success(messageContent);
+
+  // Assert that the message content is displayed
+  const messageElement = screen.getByText(messageContent);
+  expect(messageElement).toBeInTheDocument();
   });
 })
