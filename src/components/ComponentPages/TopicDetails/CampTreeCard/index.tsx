@@ -58,7 +58,7 @@ const CampTreeCard = ({
 
   const router = useRouter();
   const { isUserAuthenticated } = useAuthentication();
-  const eventLinePath = router.asPath.replace("topic", "eventline");
+  const eventLinePath = router?.asPath.replace("topic", "eventline");
   const [treeExpandValue, setTreeExpandValue] = useState<any>(50);
   const prevTreeValueRef = useRef(50);
   const dispatch = useDispatch();

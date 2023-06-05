@@ -5,7 +5,7 @@ export default function TermsAndPrivacy({ termsAndPrivacyContent }: any) {
   const router = useRouter();
 
   return (
-    <div className={styles.pageWrapper}>
+    <div className={styles.pageWrapper} data-testid="termsAndPolicy">
       <div
         className="policy-content"
         dangerouslySetInnerHTML={{

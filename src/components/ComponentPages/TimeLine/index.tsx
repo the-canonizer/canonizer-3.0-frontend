@@ -5,10 +5,10 @@ import useInterval from "./useInterval";
 import HorizontalTimelineComp from "./HorizontalTimeline";
 import TimelineSlider from "../eventLine/TimelineSlider";
 import { getEventLineApi } from "src/network/api/topicEventLineAPI";
-import { useRouter } from "next/router.js";
+import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store/index.js";
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "../../common/customSkelton";
 const getRandomIndex = (array) => {
   return Math.floor(array.length * Math.random());
 };
@@ -37,7 +37,7 @@ function TimeLine({ setTimelineDescript }) {
     setLoading(true);
     async function apiCall() {
       const data = await getEventLineApi({
-        topic_num: router?.query?.camp[0].split("-")[0],
+        topic_num: router?.query?.camp[0]?.split("-")[0],
         algorithm: algorithm,
       });
 

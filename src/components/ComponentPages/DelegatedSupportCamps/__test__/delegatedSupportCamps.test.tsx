@@ -1,6 +1,16 @@
-import { render, screen } from "../../../../utils/testUtils";
+import { fireEvent, render, screen, waitFor } from "../../../../utils/testUtils";
 import DelegatedSupportCampsUI from "../DelegatedSupportCampsUI/index";
 import messages from "../../../../messages";
+import DelegatedSupportCamps from "..";
+import userEvent from "@testing-library/user-event";
+import { useRouter } from "next/router";
+import { renderHook } from "@testing-library/react-hooks";
+import { useState } from "react";
+import { Input, message } from "antd";
+
+jest.mock('next/router', () => ({
+  useRouter: jest.fn(),
+}));
 
 const { labels } = messages;
 
@@ -235,4 +245,139 @@ describe("Delegated Support camps page", () => {
     ).toBeInTheDocument();
     expect(screen.getAllByText("Current Supported Camps:")).toBeTruthy();
   });
+
 });
+
+describe("delegated supported",()=>{
+  it("render a value when write in search box", () => {
+    render(
+      <DelegatedSupportCamps search={delegatedSupportCampsList}
+      />
+    );
+    waitFor(async () => {
+      expect(screen.getAllByText("For topic").length).toEqual(2);
+      expect(screen.getByText(delegatedSupportCampsList[0].title)).toBeInTheDocument();
+      expect(screen.getByText(delegatedSupportCampsList[1].title)).toBeInTheDocument();
+      expect(screen.getAllByText("Remove Support").length).toEqual(2);
+      expect(screen.getByText("Agreement")).toBeInTheDocument();
+      expect(screen.getByText("Agreement-2")).toBeInTheDocument();
+    });
+  });
+
+  it("render view more data value of delegate supporter", () => {
+    render(
+      <DelegatedSupportCamps search={delegatedSupportCampsList}
+      />
+    );
+    waitFor(async () => {
+      expect(screen.getByText(viewMoreDataValue[0].delegated_to_nick_name)).toBeInTheDocument();
+      expect(screen.getByText(viewMoreDataValue[0].delegated_to_nick_name_link)).toBeInTheDocument();
+      expect(screen.getByText(viewMoreDataValue[0].my_nick_name)).toBeInTheDocument();
+      expect(screen.getByText(viewMoreDataValue[0].my_nick_name_link)).toBeInTheDocument();
+      expect(screen.getByText(viewMoreDataValue[0].title)).toBeInTheDocument();
+      expect(screen.getByText(viewMoreDataValue[0].title_link)).toBeInTheDocument();
+      expect(screen.getByText(viewMoreDataValue[0].topic_num)).toBeInTheDocument();
+    });
+  });
+
+  it("click on remove support button and open modal", () => {
+    render(<DelegatedSupportCamps search={delegatedSupportCampsList} />);
+    waitFor(async () => {
+      const btns = screen.getAllByText("Remove Support");
+
+      userEvent.click(btns[0]);
+
+      expect(screen.getByText(delegatedSupportCampsList[0].title)).toBeInTheDocument();
+      expect(screen.getByText("Remove")).toBeInTheDocument();
+      expect(screen.getByText("Cancel")).toBeInTheDocument();
+    });
+  });
+
+  it("click on view more button for display all the camps", () => {
+    render(<DelegatedSupportCamps search={delegatedSupportCampsList} />);
+    waitFor(async () => {
+      const btns = screen.getAllByText(labels.viewMore);
+
+      userEvent.click(btns[0]);
+
+      expect(screen.getByText("Current Supported Camps:")).toBeInTheDocument();
+      expect(screen.getByText("Agreement")).toBeInTheDocument();
+      expect(screen.getByText("Agreement-2")).toBeInTheDocument();
+
+    });
+  });
+  it("render useState is working ",()=>{
+    render(<DelegatedSupportCamps search={delegatedSupportCampsList} />)
+    const TestComponent = () => {
+      const [isActive, setIsActive] = useState(false);
+      
+  
+      const toggleActive = () => {
+        setIsActive(!isActive);
+      };
+  
+      return (
+        <div>
+          <p>{isActive ? 'Active' : 'Inactive'}</p>
+          <button onClick={toggleActive}>Toggle</button>
+        </div>
+      );
+    };
+  
+    const { getByText } = render(<TestComponent />);
+  
+    const statusElement = getByText('Inactive');
+    const toggleButton = getByText('Toggle');
+  
+    expect(statusElement.textContent).toBe('Inactive');
+  
+    fireEvent.click(toggleButton);
+  
+    expect(statusElement.textContent).toBe('Active');
+  
+    fireEvent.click(toggleButton);
+  
+    expect(statusElement.textContent).toBe('Inactive');
+  });
+
+  it("path is working with use router",()=>{
+    render(<DelegatedSupportCamps search={delegatedSupportCampsList} />)
+    const mockedRouter = {
+      pathname: '/about',
+    };
+  
+    // Setting up the mocked useRouter implementation
+    useRouter.mockImplementation(() => mockedRouter);
+  
+    const { result } = renderHook(() => useRouter());
+  
+    expect(result.current.pathname).toBe('/about');
+  });
+  it("Message component displays correct content",()=>{
+    render(<DelegatedSupportCamps search={delegatedSupportCampsList}/>)
+    const messageContent = 'Test message';
+
+  // Render the Message component
+  message.success(messageContent);
+
+  // Assert that the message content is displayed
+  const messageElement = screen.getByText(messageContent);
+  expect(messageElement).toBeInTheDocument();
+  });
+  test('Input component handles user input correctly', () => {
+    render(<DelegatedSupportCamps search={delegatedSupportCampsList}/>)
+
+    // Render the Input component
+    render(<Input />);
+  
+    // Find the input element
+    const inputElement = screen.getByRole('textbox');
+  
+    // Simulate user input
+    const userInput = 'Test Input';
+    fireEvent.change(inputElement, { target: { value: userInput } });
+  
+    // Assert that the input value is updated
+    expect(inputElement.value).toBe(userInput);
+  });
+})

@@ -82,7 +82,7 @@ const NewsFeedsCard = ({ newsFeed }: any) => {
                             //   setEditNews(true);
                             //   setDeleteNews(false);
                             // } else {
-                            //   router.push("/login");
+                            //   router?.push("/login");
                             // }
 
                             setEditNews(true);
@@ -101,7 +101,7 @@ const NewsFeedsCard = ({ newsFeed }: any) => {
                             //   setDeleteNews(true);
                             //   setEditNews(false);
                             // } else {
-                            //   router.push("/login");
+                            //   router?.push("/login");
                             // }
                             setEditNews(false);
                             setDeleteNews(true);
@@ -235,7 +235,7 @@ const NewsFeedsCard = ({ newsFeed }: any) => {
                           // disabled={!news.owner_flag}
                           id="news-edit-btn"
                           onClick={() =>
-                            router.push(
+                            router?.push(
                               `/editnews/${replaceSpecialCharacters(
                                 router?.query?.camp[0],
                                 "-"

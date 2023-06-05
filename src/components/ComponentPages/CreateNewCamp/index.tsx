@@ -151,9 +151,9 @@ const CreateNewCamp = ({
         setCurrentTopic({ message: res.message, camp_num: res.data.camp_num })
       );
 
-      const { camp } = router.query;
+      const { camp } = router?.query;
 
-      router.push({
+      router?.push({
         pathname: `/topic/${replaceSpecialCharacters(camp[0], "-")}/${
           res?.data?.camp_num
         }-${replaceSpecialCharacters(values.camp_name, "-")}`,
@@ -189,8 +189,8 @@ const CreateNewCamp = ({
   };
 
   const onCancel = () => {
-    const { camp } = router.query;
-    router.push({
+    const { camp } = router?.query;
+    router?.push({
       pathname: `/topic/${replaceSpecialCharacters(
         camp[0],
         "-"

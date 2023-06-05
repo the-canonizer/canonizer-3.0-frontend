@@ -280,22 +280,28 @@ const CampTree = ({
                         >
                           <a
                             className={
-                             data[item].is_archive == 1 ? `font-weight-bold ${styles.archive_grey}`:
-                              data[item]?.camp_id ==
-                                router?.query?.camp?.at(1)?.split("-")?.at(0) ??
-                              "1" 
-                                ? `font-weight-bold ${styles.activeCamp}` 
+                              data[item].is_archive == 1
+                                ? `font-weight-bold ${styles.archive_grey}`
+                                : data[item]?.camp_id ==
+                                    router?.query?.camp
+                                      ?.at(1)
+                                      ?.split("-")
+                                      ?.at(0) ?? "1"
+                                ? `font-weight-bold ${styles.activeCamp}`
                                 : ""
                             }
                           >
-                            {data[item].is_archive == 1 ?
-                            <Popover  content="Archived Camp">
-                            {includeReview
-                              ? data[item]?.review_title
-                              : data[item]?.title}
-                              </Popover>:includeReview
-                              ? data[item]?.review_title
-                              : data[item]?.title }
+                            {data[item].is_archive == 1 ? (
+                              <Popover content="Archived Camp">
+                                {includeReview
+                                  ? data[item]?.review_title
+                                  : data[item]?.title}
+                              </Popover>
+                            ) : includeReview ? (
+                              data[item]?.review_title
+                            ) : (
+                              data[item]?.title
+                            )}
                           </a>
                         </Link>{" "}
                         {/* {data[item].is_archive == 1 ? (
@@ -333,7 +339,7 @@ const CampTree = ({
                           borderRadius={"2px"}
                           height="16px"
                           customLabel={
-                            is_checked && isUserAuthenticated
+                            is_checked
                               ? data[item].full_score?.toFixed(2)
                               : data[item].score?.toFixed(2)
                           }
@@ -361,12 +367,12 @@ const CampTree = ({
                           <Link
                             href={{
                               pathname: `/camp/create/${replaceSpecialCharacters(
-                                router.query.camp[0],
+                                router?.query.camp[0],
                                 "-"
                               )}/${
-                                router.query.camp[1]
+                                router?.query.camp[1]
                                   ? replaceSpecialCharacters(
-                                      router.query.camp[1],
+                                      router?.query.camp[1],
                                       "-"
                                     )
                                   : 1

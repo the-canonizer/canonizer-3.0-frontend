@@ -52,8 +52,6 @@ import {
 import { EditorState, convertToRaw, ContentState } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
-//import htmlToDraft from "html-to-draftjs";
-//import { Editor } from 'react-draft-wysiwyg';
 const Editor: any = dynamic(
   () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
   { ssr: false }
@@ -103,7 +101,6 @@ export default function AddOrManage({ add }: any) {
     .getCurrentContent()
     .getPlainText()
     .trim().length;
-  // const editorTextLengthTrim =editorTextLength
   const onFinish = async (values: any) => {
     setScreenLoading(true);
     let res;
@@ -114,8 +111,8 @@ export default function AddOrManage({ add }: any) {
 
     if (res?.status_code == 200) {
       if (add) {
-        router.push(
-          router.asPath.replace("create/statement", "statement/history")
+        router?.push(
+          router?.asPath.replace("create/statement", "statement/history")
         );
       } else {
         let route =
@@ -134,11 +131,11 @@ export default function AddOrManage({ add }: any) {
                 "-"
               )}`;
         if (manageFormOf == "camp") {
-          router.push(`/camp/history/${route}`);
+          router?.push(`/camp/history/${route}`);
         } else if (manageFormOf == "statement") {
-          router.push(`/statement/history/${route}`);
+          router?.push(`/statement/history/${route}`);
         } else if (manageFormOf == "topic") {
-          router.push(`/topic/history/${route}`);
+          router?.push(`/topic/history/${route}`);
         }
       }
       const oldOptions = [...options];
@@ -465,9 +462,9 @@ export default function AddOrManage({ add }: any) {
     }
     isUserAuthenticated
       ? nickNameListApiCall()
-      : router.push({
+      : router?.push({
           pathname: "/login",
-          query: { returnUrl: router.asPath },
+          query: { returnUrl: router?.asPath },
         });
   }, []);
   let formTitle = () => {
@@ -1170,7 +1167,7 @@ export default function AddOrManage({ add }: any) {
                                 let backdata = editStatementData?.data;
                                 setScreenLoading(true);
                                 add
-                                  ? router.push(
+                                  ? router?.push(
                                       `/topic/${replaceSpecialCharacters(
                                         router?.query?.statement[0],
                                         "-"

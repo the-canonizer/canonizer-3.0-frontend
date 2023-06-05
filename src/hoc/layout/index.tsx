@@ -29,7 +29,7 @@ function Layout(props: any) {
               styles.eventListArea +
               " " +
               `${
-                router.asPath.includes("timelinetest")
+                router?.asPath.includes("timelinetest")
                   ? styles.timelineLayout
                   : ""
               }`
@@ -38,7 +38,7 @@ function Layout(props: any) {
             {props.children}{" "}
           </div>
 
-          {!router.asPath.includes("eventline") && (
+          {!router?.asPath.includes("eventline") && (
             <aside className={styles.rightSidebar}>
               <GoogleAd
                 ad_client={process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}

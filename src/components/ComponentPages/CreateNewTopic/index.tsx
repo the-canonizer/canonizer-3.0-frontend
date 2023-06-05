@@ -80,7 +80,7 @@ const CreateNewTopic = ({
         topic_name: res.data.topic_name,
       };
       dispatch(setCurrentTopic(data));
-      router.push({
+      router?.push({
         pathname: `/topic/${res.data.topic_num}-${replaceSpecialCharacters(
           res.data.topic_name,
           "-"
@@ -125,7 +125,7 @@ const CreateNewTopic = ({
   };
 
   const onCancel = () => {
-    router.push({ pathname: "/" });
+    router?.push({ pathname: "/" });
   };
 
   // checkbox

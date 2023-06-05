@@ -17,12 +17,12 @@ const BrowsePage = ({ current_date }: any) => {
   dispatch(setCurrentDate(current_date));
 
   useEffect(() => {
-    let queries = router.query;
+    let queries = router?.query;
     if ("namespace" in queries) {
       const { namespace, ...rest } = queries;
       rest.canon = namespace;
       router.query = rest;
-      router.replace(router, null, { shallow: true });
+      router?.replace(router, null, { shallow: true });
     }
   }, []);
 

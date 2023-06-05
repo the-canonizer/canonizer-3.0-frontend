@@ -37,7 +37,7 @@ function createMockRouter(router: Partial<NextRouter>): NextRouter {
   };
 }
 
-// router.asPath !== "/activities"
+// router?.asPath !== "/activities"
 afterEach(cleanup);
 windowMatchMedia();
 
