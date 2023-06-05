@@ -1,8 +1,12 @@
-import { render, screen, waitFor } from "../../../../utils/testUtils";
+import { fireEvent, render, screen, waitFor } from "../../../../utils/testUtils";
 import userEvent from "@testing-library/user-event";
 
 import NickNameUI from "../NickNameUI/index";
 import messages from "../../../../messages";
+import NickName from "..";
+import { useState } from "react";
+import { useRouter } from "next/router";
+import { renderHook } from "@testing-library/react-hooks";
 
 const { labels, validations } = messages;
 var addEditTitle = "";
@@ -25,6 +29,27 @@ const nickNameList = [
     private: 0,
   },
 ];
+
+const addNewNickName =[
+  {
+    create_time:"1998-01-01",
+    id:1,
+    nick_name:"ABC",
+    owner_code:"aabbcc",
+    private:0
+  },
+  {
+    create_time:"1979-02-02",
+    id:2,
+    nick_name:"DEF",
+    owner_code:"ddeeff",
+    private:0
+  }
+]
+jest.mock('next/router', () => ({
+  useRouter: jest.fn(),
+}));
+
 
 describe("NickName page", () => {
   it("render Column Names and Button", () => {
@@ -208,3 +233,64 @@ describe("NickName page", () => {
     });
   });
 });
+
+describe("",()=>{
+  it("render nickname list", () => {
+    render(
+      <NickName
+      />
+    );
+    waitFor(async()=>{
+    expect(screen.getByText(nickNameList[0].id)).toBeInTheDocument();
+    expect(screen.getByText(nickNameList[0].nick_name)).toBeInTheDocument();
+    expect(screen.getByText(nickNameList[0].private)).toBeInTheDocument();
+    })
+  });
+  it("render useState is working ",()=>{
+    render(<NickName/>)
+    const TestComponent = () => {
+      const [isActive, setIsActive] = useState(false);
+      
+  
+      const toggleActive = () => {
+        setIsActive(!isActive);
+      };
+  
+      return (
+        <div>
+          <p>{isActive ? 'Active' : 'Inactive'}</p>
+          <button onClick={toggleActive}>Toggle</button>
+        </div>
+      );
+    };
+  
+    const { getByText } = render(<TestComponent />);
+  
+    const statusElement = getByText('Inactive');
+    const toggleButton = getByText('Toggle');
+  
+    expect(statusElement.textContent).toBe('Inactive');
+  
+    fireEvent.click(toggleButton);
+  
+    expect(statusElement.textContent).toBe('Active');
+  
+    fireEvent.click(toggleButton);
+  
+    expect(statusElement.textContent).toBe('Inactive');
+  });
+
+  it("path is working with use router",()=>{
+    render(<NickName/>)
+    const mockedRouter = {
+      pathname: '/about',
+    };
+  
+    // Setting up the mocked useRouter implementation
+    useRouter.mockImplementation(() => mockedRouter);
+  
+    const { result } = renderHook(() => useRouter());
+  
+    expect(result.current.pathname).toBe('/about');
+  });
+})

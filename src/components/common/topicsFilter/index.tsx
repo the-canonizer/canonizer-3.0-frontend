@@ -127,6 +127,9 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
     current_date_filter: state?.filters?.current_date,
     campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
   }));
+  const { campRecord } = useSelector((state: RootState) => ({
+    campRecord: state?.topicDetails?.currentCampRecord,
+  }));
   const [value, setValue] = useState(
     selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3
   );
@@ -277,7 +280,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
           </Button>
           {isCampBtnVisible &&
           currentCampNode?._isDisabled == 0 &&
-          currentCampNode?.parentIsOneLevel == 0 ? (
+          currentCampNode?.parentIsOneLevel == 0 && campRecord?.is_archive == 0 ? (
             <Tooltip
               title={
                 tree && !tree["1"]?.is_valid_as_of_time

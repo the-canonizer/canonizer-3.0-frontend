@@ -61,6 +61,9 @@ function HistoryContainer() {
       asof: state?.filters?.filterObject?.asof,
       algorithm: state.filters?.filterObject?.algorithm,
     }));
+    const { campRecord } = useSelector((state: RootState) => ({
+      campRecord: state?.topicDetails?.currentCampRecord,
+    }));
   const [isTreesApiCallStop, setIsTreesApiCallStop] = useState(false);
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [campHistory, setCampHistory] = useState(history);
@@ -303,7 +306,7 @@ function HistoryContainer() {
 
         {historyOf !== "topic" &&
         currentCampNode?._isDisabled == 0 &&
-        currentCampNode?.parentIsOneLevel == 0 ? (
+        currentCampNode?.parentIsOneLevel == 0 && currentCampNode?.is_archive == 0 ? (
           <CreateNewCampButton
             className={styles.createBtn}
             click={campRoute}
