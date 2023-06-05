@@ -6,12 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   socialLoginCallback,
   socialLoginLinkUser,
-} from "../../../network/api/userApi";
-import { getSearchedParams } from "../../../utils/generalUtility";
+} from "src/network/api/userApi";
+import { getSearchedParams } from "src/utils/generalUtility";
 import {
   showSocialEmailPopup,
   showSocialNamePopup,
-} from "../../../store/slices/uiSlice";
+} from "src/store/slices/uiSlice";
 import { setValue } from "src/store/slices/utilsSlice";
 import { RootState } from "src/store";
 import CallbackUI from "./UI";
@@ -32,7 +32,7 @@ function SocialLoginCallback() {
   const openModal = () => dispatch(showSocialEmailPopup());
   const openNameModal = () => dispatch(showSocialNamePopup());
 
-  const sendData = async (data) => {
+  const sendData = async (data: object) => {
     const redirectTab = localStorage.getItem("redirectTab");
 
     if (!redirectTab) {
@@ -45,9 +45,9 @@ function SocialLoginCallback() {
         if (redirectType) {
           dispatch(setValue({ label: "redirect_type", value: false }));
 
-          router.push("/settings?tab=profile");
+          router?.push("/settings?tab=profile");
         } else {
-          router.push("/");
+          router?.push("/");
         }
       }
 
@@ -73,20 +73,20 @@ function SocialLoginCallback() {
         message.success(response.message);
 
         localStorage.removeItem("redirectTab");
-        router.push("/settings?tab=social");
+        router?.push("/settings?tab=social");
       }
 
       if (response && response.status_code === 403) {
         localStorage.removeItem("redirectTab");
         message.error(response.message);
-        router.push("/settings?tab=social&status=403");
+        router?.push("/settings?tab=social&status=403");
       }
     }
   };
 
   useEffect(() => {
     try {
-      const queryParams = router.query;
+      const queryParams = router?.query;
       const params = getSearchedParams();
       const redirectTab = localStorage.getItem("redirectTab");
 
@@ -101,14 +101,14 @@ function SocialLoginCallback() {
         dispatch(setValue({ label: "redirect_type", value: false }));
 
         if (!redirectTab) {
-          router.push("/");
+          router?.push("/");
         } else {
-          router.push("/settings?tab=social");
+          router?.push("/settings?tab=social");
         }
       }
     } catch (error) {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.query]);
+  }, [router?.query]);
 
   return <CallbackUI />;
 }

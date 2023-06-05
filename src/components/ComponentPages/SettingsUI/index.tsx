@@ -49,7 +49,7 @@ const SettingsUI = () => {
   const [activeTabKey, setActiveTabKey] = useState("profile_info");
   const onTabChange = (key) => {
     setActiveTabKey(key);
-    router.push("/settings?tab=" + key);
+    router?.push("/settings?tab=" + key);
   };
   const router = useRouter();
 

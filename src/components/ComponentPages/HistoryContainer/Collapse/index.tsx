@@ -117,8 +117,8 @@ function HistoryCollapse({
     setIsSelectChecked(true);
     let reqBody = {
       record_id: campStatement.id,
-      topic_num: router.query.camp[0].split("-")[0],
-      camp_num: historyOf == "topic" ? 1 : router.query.camp[1].split("-")[0],
+      topic_num: router?.query.camp[0].split("-")[0],
+      camp_num: historyOf == "topic" ? 1 : router?.query.camp[1].split("-")[0],
       change_for: historyOf,
       nick_name_id: userNickNameData[0]?.id,
       user_agreed: campStatement?.agreed_to_change ? 0 : 1,
@@ -149,12 +149,12 @@ function HistoryCollapse({
 
   const submitUpdateRedirect = (historyOf: string) => {
     if (!isUserAuthenticated) {
-      router.push({
+      router?.push({
         pathname: "/login",
         query: { returnUrl: `/manage/${historyOf}/${campStatement?.id}` },
       });
     } else {
-      router.push(`/manage/${historyOf}/${campStatement?.id}`);
+      router?.push(`/manage/${historyOf}/${campStatement?.id}`);
     }
   };
 
@@ -306,7 +306,7 @@ function HistoryCollapse({
                             if (isModelPop) {
                               setModal1Open(true);
                             } else {
-                              router.push(
+                              router?.push(
                                 historyOf == "camp"
                                   ? `/manage/camp/${campStatement?.id}-objection`
                                   : historyOf == "topic"
@@ -502,11 +502,11 @@ function HistoryCollapse({
                           <div
                             onClick={async () => {
                               let req = {
-                                topic_num: router.query.camp[0].split("-")[0],
+                                topic_num: router?.query.camp[0].split("-")[0],
                                 camp_num:
                                   historyOf == "topic"
                                     ? 1
-                                    : router.query.camp[1].split("-")[0],
+                                    : router?.query.camp[1].split("-")[0],
                                 change_id: campStatement?.id,
                                 type: historyOf,
                               };

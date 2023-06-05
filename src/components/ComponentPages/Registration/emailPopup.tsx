@@ -84,14 +84,14 @@ const EmailPopup = ({ isModal = false }) => {
         if (redirectType) {
           dispatch(setValue({ label: "redirect_type", value: false }));
 
-          router.push({
+          router?.push({
             pathname: "/settings",
             query: {
               tab: "profile",
             },
           });
         } else {
-          router.push("/");
+          router?.push("/");
         }
       }
     } else {

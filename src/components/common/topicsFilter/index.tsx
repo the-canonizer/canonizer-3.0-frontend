@@ -101,7 +101,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   const [isCampBtnVisible, setIsCampBtnVisible] = useState(false);
 
   const campRoute = () => {
-    router.push("/create/topic");
+    router?.push("/create/topic");
   };
 
   const {
@@ -167,11 +167,11 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   }, [selectedAsOf]);
 
   useEffect(() => {
-    if (router.pathname.includes("/topic/")) {
+    if (router?.pathname.includes("/topic/")) {
       // setIsPanelCollapse(true);
       setIsCampBtnVisible(true);
     }
-  }, [router.pathname]);
+  }, [router?.pathname]);
 
   useEffect(() => {
     setSelectedAsOFDate(filteredAsOfDate);
@@ -324,7 +324,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                 Canonizer Algorithm:
               </Title>
               <Popover content="Algorithm Information" placement="top">
-                {router.asPath.includes("/topic") ? (
+                {router?.asPath.includes("/topic") ? (
                   <a href={K?.Network?.URL?.algoInfoUrl}>
                     Algorithm Information
                   </a>

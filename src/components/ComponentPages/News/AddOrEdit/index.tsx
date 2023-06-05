@@ -57,14 +57,14 @@ export default function AddOrEdit({ edit }: any) {
 
   const goBack = () => {
     if (edit) {
-      router.push(
+      router?.push(
         `/topic/${replaceSpecialCharacters(
           router?.query?.camp[0],
           "-"
         )}/${replaceSpecialCharacters(router?.query?.camp[1], "-")}`
       );
     } else {
-      router.push(router.asPath.replace("addnews", "topic"));
+      router?.push(router?.asPath.replace("addnews", "topic"));
     }
   };
 
@@ -81,8 +81,8 @@ export default function AddOrEdit({ edit }: any) {
           submitter_nick_id: nickNameData[0]?.id,
         }))
       : (res = await addNewsFeedApi({
-          topic_num: +router.query?.camp[0]?.split("-")[0],
-          camp_num: +router.query?.camp[1]?.split("-")[0],
+          topic_num: +router?.query?.camp[0]?.split("-")[0],
+          camp_num: +router?.query?.camp[1]?.split("-")[0],
           available_for_child: values?.available_for_child,
           link: values?.link.trim(),
           display_text: values?.display_text,
@@ -90,7 +90,7 @@ export default function AddOrEdit({ edit }: any) {
         }));
     if (res?.status_code == 200) {
       if (edit) {
-        router.push(
+        router?.push(
           `/topic/${replaceSpecialCharacters(
             router?.query?.camp[0],
             "-"
@@ -98,7 +98,7 @@ export default function AddOrEdit({ edit }: any) {
         );
         return;
       } else {
-        router.push(router.asPath.replace("addnews", "topic"));
+        router?.push(router?.asPath.replace("addnews", "topic"));
         return;
       }
     } else if (res?.status_code == 400) {
@@ -145,7 +145,7 @@ export default function AddOrEdit({ edit }: any) {
     async function nickNameListApiCall() {
       if (edit) {
         const reqBody = {
-          newsfeed_id: +router.query?.camp[2]?.split("-")[2],
+          newsfeed_id: +router?.query?.camp[2]?.split("-")[2],
         };
         const res = await getEditCampNewsFeedApi(reqBody);
         const news = (res && res[0]) || {};
@@ -156,7 +156,7 @@ export default function AddOrEdit({ edit }: any) {
           available_for_child: news?.available_for_child,
         });
         const reqBodyNickName = {
-          topic_num: +router.query?.camp[0]?.split("-")[0],
+          topic_num: +router?.query?.camp[0]?.split("-")[0],
         };
         const result = await getAllUsedNickNames(reqBodyNickName);
         form.setFieldsValue({
@@ -166,7 +166,7 @@ export default function AddOrEdit({ edit }: any) {
         setScreenLoading(false);
       } else {
         const reqBody = {
-          topic_num: +router.query?.camp[0]?.split("-")[0],
+          topic_num: +router?.query?.camp[0]?.split("-")[0],
         };
         const result = await getAllUsedNickNames(reqBody);
         form.setFieldsValue({
@@ -180,9 +180,9 @@ export default function AddOrEdit({ edit }: any) {
       nickNameListApiCall();
     } else if (!is_admin) {
       message.error("Only admin can add/edit news");
-      router.push("/");
+      router?.push("/");
     } else {
-      router.push("/login");
+      router?.push("/login");
     }
   }, []);
 

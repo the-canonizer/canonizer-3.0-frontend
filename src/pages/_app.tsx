@@ -73,17 +73,17 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
     page_name:
       componentName == "SocialLoginCallbackPage" ? "Home" : componentName,
     keys: {
-      topic_num: appContext.router.asPath.includes("forum")
+      topic_num: appContext.router?.asPath.includes("forum")
         ? path?.topic?.toLocaleString().split("-")[0]
         : path?.camp?.length && path?.camp[0].split("-")[0],
-      camp_num: appContext.router.asPath.includes("forum")
+      camp_num: appContext.router?.asPath.includes("forum")
         ? path?.camp?.toLocaleString().split("-")[0]
         : path?.camp?.length > 1
         ? path?.camp[1].split("-")[0]
         : "1",
       forum_num:
         appContext.router?.query?.camp?.length > 2
-          ? Object.keys(appContext.router.query)?.length > 2
+          ? Object.keys(appContext.router?.query)?.length > 2
             ? appContext.router?.query?.id
             : null
           : null,
@@ -134,7 +134,7 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
     return "";
   };
 
-  const aspath = appContext.router.asPath;
+  const aspath = appContext.router?.asPath;
   let returnData: string;
 
   if (aspath?.includes(".asp")) {

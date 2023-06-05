@@ -87,7 +87,7 @@ const TopicsList = () => {
   const [backGroundColorClass, setBackGroundColorClass] = useState("default");
 
   const [isReview, setIsReview] = useState(asof == "review");
-  const [inputSearch, setInputSearch] = useState(search||"");
+  const [inputSearch, setInputSearch] = useState(search || "");
   // const [archiveSearch, setArchiveSearch] = useState(is_archive || 0);
 
   const [nameSpaceId, setNameSpaceId] = useState(filterNameSpaceId || "");
@@ -119,10 +119,10 @@ const TopicsList = () => {
     if (nameSpace?.children?.toLowerCase() !== "/general/") {
       router.query.canon = formatnamespace(nameSpace?.children);
       delete router?.query?.namespace;
-      router.replace(router, undefined, { shallow: true });
+      router?.replace(router, undefined, { shallow: true });
     } else {
       if (router.query.canon) {
-        const params = router.query;
+        const params = router?.query;
         delete params.canon;
         delete params.namespace;
         router.query = params;
@@ -138,7 +138,7 @@ const TopicsList = () => {
     );
   };
   // const checkTopics = (topics)=>{
-  //   let archive = 
+  //   let archive =
   //   if(topics?.length > 0 && !is_camp_archive_checked){
   //     topics?.forEach(element => {
   //       if(element.item.is_archive)
@@ -148,14 +148,14 @@ const TopicsList = () => {
   useEffect(() => {
     if (filterNameSpace?.toLowerCase() !== "/general/") {
       router.query.canon = formatnamespace(filterNameSpace);
-      delete router?.query?.namespace;
+      delete router.query?.namespace;
       router.replace(router, undefined, { shallow: true });
     }
   }, []);
 
   useEffect(() => {
-    const q = router.query;
-    if (q.canon) {
+    const q = router?.query;
+    if (q?.canon) {
       const filteredName = nameSpacesList?.filter((n) => {
         if (n.label === formatnamespace(q.canon, true)) {
           return n;
@@ -208,7 +208,7 @@ const TopicsList = () => {
     filterByScore,
     inputSearch,
     onlyMyTopicsCheck.current,
-    is_camp_archive_checked
+    is_camp_archive_checked,
   ]);
   useEffect(() => {
     if (inputSearch.length > 0 || search.length > 0) {
@@ -238,7 +238,7 @@ const TopicsList = () => {
       filter: filterByScore,
       asof: asof,
       user_email: onlyMyTopicsCheck.current ? userEmail : "",
-      is_archive: is_camp_archive_checked ? 1: 0,
+      is_archive: is_camp_archive_checked ? 1 : 0,
     };
     await getCanonizedTopicsApi(reqBody, loadMore);
     setLoadMoreIndicator(false);
@@ -309,7 +309,7 @@ const TopicsList = () => {
       <div
         className={`header-bg-color-change ${backGroundColorClass} topics-list-card-header ${
           styles.head
-        } ${router.asPath.includes("/browse") ? styles.browsePage : ""}`}
+        } ${router?.asPath.includes("/browse") ? styles.browsePage : ""}`}
       >
         <Title level={3}>
           Select Canon
@@ -317,7 +317,7 @@ const TopicsList = () => {
             <i className="icon-info cursor-pointer"></i>
           </Popover>
         </Title>
-        {router.asPath.includes("/browse") && isUserAuthenticated && (
+        {router?.asPath.includes("/browse") && isUserAuthenticated && (
           <Checkbox
             className={styles.checkboxOnlyMyTopics}
             onChange={handleCheckbox}
@@ -350,7 +350,7 @@ const TopicsList = () => {
             All
           </Select.Option>
         </Select>
-        {router.asPath.includes("/browse") && (
+        {router?.asPath.includes("/browse") && (
           <div className={styles.inputSearchTopic}>
             <Search
               key={inputSearch}
@@ -366,14 +366,14 @@ const TopicsList = () => {
 
       <div
         className={`${styles.card} ${
-          router.asPath.includes("/browse") ? "" : styles.homePageCardList
+          router?.asPath.includes("/browse") ? "" : styles.homePageCardList
         }`}
       >
         <List
           className={styles.wrap}
           footer={
             <div className={styles.footer}>
-              {router.asPath.includes("/browse")
+              {router?.asPath.includes("/browse")
                 ? LoadMoreTopics
                 : ViewAllTopics}
             </div>
@@ -428,6 +428,7 @@ const TopicsList = () => {
                           : item?.topic_score?.toFixed(2)}
                       </Tag>
                     </a>: <></>}
+
                   </Link>
                 </>
               </List.Item>

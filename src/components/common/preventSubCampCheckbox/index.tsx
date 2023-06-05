@@ -9,7 +9,7 @@ const PreventSubCamps = ({ options, onCheckboxChange }) => {
   });
   return (
     <Fragment>
-      {(router.asPath.includes("/camp/create") ? filterLabels : options)?.map(
+      {(router?.asPath.includes("/camp/create") ? filterLabels : options)?.map(
         (option) => (
           <Tooltip title={option.tooltip} key={option.id}>
             <Checkbox
