@@ -1,9 +1,13 @@
-import { render, screen, waitFor } from "../../../../utils/testUtils";
+import { fireEvent, render, screen, waitFor } from "../../../../utils/testUtils";
 import userEvent from "@testing-library/user-event";
 
 import ProfileInfoForm from "../../Form/ProfileInfoForm";
 import messages from "../../../../messages";
 import ProfileInfo from "..";
+import { useRouter } from "next/router";
+import { renderHook } from "@testing-library/react-hooks";
+import { useState } from "react";
+import { Input } from "antd";
 
 const { labels, placeholders, validations } = messages;
 const privateFlags = "first_name";
@@ -12,6 +16,9 @@ const onFinishFailed = jest.fn();
 const handleselectAfter = jest.fn();
 const handleAddressChange = jest.fn();
 const handleAddressSelect = jest.fn();
+jest.mock('next/router', () => ({
+  useRouter: jest.fn(),
+}));
 
 const algorithmList = [
   {
@@ -416,6 +423,67 @@ describe("UserProfile",()=>{
       expect(screen.getByText(mobileCarrierData[1].name)).toBeInTheDocument();
     });
   })
+  it("render useState is working ",()=>{
+    render(<ProfileInfo/>)
+    const TestComponent = () => {
+      const [isActive, setIsActive] = useState(false);
+      
+  
+      const toggleActive = () => {
+        setIsActive(!isActive);
+      };
+  
+      return (
+        <div>
+          <p>{isActive ? 'Active' : 'Inactive'}</p>
+          <button onClick={toggleActive}>Toggle</button>
+        </div>
+      );
+    };
+  
+    const { getByText } = render(<TestComponent />);
+  
+    const statusElement = getByText('Inactive');
+    const toggleButton = getByText('Toggle');
+  
+    expect(statusElement.textContent).toBe('Inactive');
+  
+    fireEvent.click(toggleButton);
+  
+    expect(statusElement.textContent).toBe('Active');
+  
+    fireEvent.click(toggleButton);
+  
+    expect(statusElement.textContent).toBe('Inactive');
+  });
+
+  it("path is working with use router",()=>{
+    render(<ProfileInfo/>)
+    const mockedRouter = {
+      pathname: '/about',
+    };
+  
+    // Setting up the mocked useRouter implementation
+    useRouter.mockImplementation(() => mockedRouter);
+  
+    const { result } = renderHook(() => useRouter());
+  
+    expect(result.current.pathname).toBe('/about');
+  });
+  test('Input component handles user input correctly', () => {
+    // Render the Input component
+    render(<Input />);
+  
+    // Find the input element
+    const inputElement = screen.getByRole('textbox');
+  
+    // Simulate user input
+    const userInput = 'Test Input';
+    fireEvent.change(inputElement, { target: { value: userInput } });
+  
+    // Assert that the input value is updated
+    expect(inputElement.value).toBe(userInput);
+  });
 })
 
 

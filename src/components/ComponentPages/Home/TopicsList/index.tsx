@@ -172,6 +172,7 @@ const TopicsList = () => {
       }
     }
   }, [router, nameSpacesList]);
+  console.log(search,"search")
 
   useEffect(() => {
     setSelectedNameSpace(filterNameSpace);
@@ -243,6 +244,7 @@ const TopicsList = () => {
     setLoadMoreIndicator(false);
   }
   const onSearch = (value) => {
+    console.log(inputSearch,"value")
     setInputSearch(value.trim());
     dispatch(
       setFilterCanonizedTopics({
@@ -408,8 +410,13 @@ const TopicsList = () => {
                         handleTopicClick();
                       }}
                     >
-                      <Text className={styles.text}>
+                      <Text className={item.is_archive? `font-weight-bold ${styles.archive_topic}`: styles.text}>
+                       {item.is_archive? <Popover content="Archived Topic">
                         {isReview
+                          ? item?.tree_structure &&
+                            item?.tree_structure[1].review_title
+                          : item?.topic_name}
+                          </Popover>:isReview
                           ? item?.tree_structure &&
                             item?.tree_structure[1].review_title
                           : item?.topic_name}

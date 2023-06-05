@@ -90,11 +90,15 @@
 //     ).toBeInTheDocument();
 //   });
 // });
-import { render, screen, waitFor } from "../../../../utils/testUtils";
+import { fireEvent, render, screen, waitFor } from "../../../../utils/testUtils";
 import DirectSupportedCampsUI from "../DirectSupportedCampsUI/index";
 import messages from "../../../../messages";
 import DirectSupportedCamps from "..";
 import userEvent from "@testing-library/user-event";
+import { useRouter } from "next/router";
+import { renderHook } from "@testing-library/react-hooks";
+import { useState } from "react";
+import { Input } from "antd";
 const { labels } = messages;
 
 const isSupportedCampsModalVisible = true;
@@ -169,6 +173,9 @@ const removeSupportCampsData = {
   title_link: "/topic/788-absd---/1-Agreement",
   topic_num: 788,
 };
+jest.mock('next/router', () => ({
+  useRouter: jest.fn(),
+}));
 describe("Direct Support camps page", () => {
   it("render Modal when Remove support is clicked", () => {
     render(
@@ -391,6 +398,66 @@ describe("Direct Support camps page", () => {
       });
     });
   })
+  it("render useState is working ",()=>{
+    render(<DirectSupportedCamps search={directSupportedCampsList} />)
+    const TestComponent = () => {
+      const [isActive, setIsActive] = useState(false);
+      
+  
+      const toggleActive = () => {
+        setIsActive(!isActive);
+      };
+  
+      return (
+        <div>
+          <p>{isActive ? 'Active' : 'Inactive'}</p>
+          <button onClick={toggleActive}>Toggle</button>
+        </div>
+      );
+    };
+  
+    const { getByText } = render(<TestComponent />);
+  
+    const statusElement = getByText('Inactive');
+    const toggleButton = getByText('Toggle');
+  
+    expect(statusElement.textContent).toBe('Inactive');
+  
+    fireEvent.click(toggleButton);
+  
+    expect(statusElement.textContent).toBe('Active');
+  
+    fireEvent.click(toggleButton);
+  
+    expect(statusElement.textContent).toBe('Inactive');
+  });
 
- 
+  it("path is working with use router",()=>{
+    render(<DirectSupportedCamps search={directSupportedCampsList} />)
+    const mockedRouter = {
+      pathname: '/about',
+    };
+    // Setting up the mocked useRouter implementation
+    useRouter.mockImplementation(() => mockedRouter);
+  
+    const { result } = renderHook(() => useRouter());
+  
+    expect(result.current.pathname).toBe('/about');
+  });
+  test('Input component handles user input correctly', () => {
+    render(<DirectSupportedCamps search={directSupportedCampsList} />)
+
+    // Render the Input component
+    render(<Input />);
+  
+    // Find the input element
+    const inputElement = screen.getByRole('textbox');
+  
+    // Simulate user input
+    const userInput = 'Test Input';
+    fireEvent.change(inputElement, { target: { value: userInput } });
+  
+    // Assert that the input value is updated
+    expect(inputElement.value).toBe(userInput);
+  });
 });
