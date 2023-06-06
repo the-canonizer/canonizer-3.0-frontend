@@ -82,28 +82,31 @@ export default function Editorck(props: (editorState & editorchange)) {
                     config={editorConfiguration}
                     editor={ClassicEditor.Editor}
                     data={editordata}
+                    onReady={(editor) => {
+                        editor.editing.view.focus()
+                        editor.editing.view.document.on('click', () => {
+                            console.log("Clicked")
+                            props.oneditorchange(editor?.getData())
+                            console.log("data sent")
+                        });
+                    }}
                     onChange={(event, editor: any) => {
 
-
                         let isTyping = false;
-
                         let typingTimer;
-
                         const dataAppend = async () => {
-                           return props.oneditorchange(editor?.getData())
+                            return props.oneditorchange(editor?.getData())
                         }
 
                         editor.editing.view.document.on('keyup', (evt) => {
                             clearTimeout(typingTimer);
                             isTyping = true;
-
                             typingTimer = setTimeout(async () => {
                                 isTyping = false;
-                               await dataAppend()
+                                await dataAppend()
                             }, 500)
                             evt.stop()
                         });
-                    
 
                     }}
                 />

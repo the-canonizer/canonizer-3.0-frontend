@@ -28,6 +28,10 @@ body {
   display: inline !important;
 }
 
+del.diffmod img{
+  opacity: 0.2;
+}
+
 .alert-camp-created-on {
   .ant-alert-content {
     display: flex;
