@@ -2466,3 +2466,28 @@ div[role="option"]::before {
     }
   }
 }
+
+.direct-support-modal {
+  padding: 15px!important;
+  .ant-modal-body {
+    max-height: calc(50vh - 85px);
+    min-height: calc(100vh - 310px);;
+    overflow: auto;
+  }
+}
+
+.agreed-tabs {
+  .ant-tabs-nav-list {
+    width: 100%;
+  }
+  .ant-tabs-tab {
+    width: 50%;
+    justify-content: center;
+  }
+  .ant-tabs-nav-operations {
+    position: absolute;
+  }
+  .ant-tabs-nav-more {
+    display: none;
+  }
+}
