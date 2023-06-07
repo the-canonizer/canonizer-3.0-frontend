@@ -540,14 +540,17 @@ const TimelineInfoBar = ({
                       >
                         Camp Forum
                       </Button>
-                      <Button
-                        type="primary"
-                        onClick={eventLinePath}
-                        className={styles.btnCampForum}
-                        id="camp-forum-btn"
-                      >
-                        Event Line
-                      </Button>
+                      {
+                        router.pathname != "/support/[...manageSupport]" ?
+                          <Button
+                            type="primary"
+                            onClick={eventLinePath}
+                            className={styles.btnCampForum}
+                            id="camp-forum-btn"
+                          >
+                            Event Line
+                          </Button> : null
+                      }
                       <Dropdown
                         className={styles.campForumDropdown}
                         placement="bottomRight"
