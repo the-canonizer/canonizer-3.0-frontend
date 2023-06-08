@@ -269,7 +269,6 @@ function TimelineSlider({
           onOpenChange={(newOpen) => {
             setSpeedBar(newOpen);
           }}
-          
         >
           <DashboardOutlined
             className={`${"speed-icon"}  ${
@@ -284,7 +283,11 @@ function TimelineSlider({
       {mockData && (
         <Slider
           disabled={mockData && Object.keys(mockData).length > 1 ? false : true}
-          className="rang-slider"
+          className={`${
+            mockData && Object.keys(mockData).length > 0
+              ? "rang-slider"
+              : "skeleton-rangslider"
+          }`}
           tooltip={{
             open: true,
             formatter,
