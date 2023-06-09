@@ -66,6 +66,7 @@ function HistoryCollapse({
   const { loading } = useSelector((state: RootState) => ({
     loading: state?.loading?.loading,
   }));
+  const [collapseKey, setCollapseKey] = useState("1");
 
   const [modal1Open, setModal1Open] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -207,12 +208,26 @@ function HistoryCollapse({
           expandIconPosition="right"
           className={`campHistoryCollapseCards ${
             campStatement?.status ? campStatement?.status : "live"
-          } ${styles.collapsiablePanel}`}
+          } ${styles.collapsiablePanel} `}
+          activeKey={collapseKey}
+          onChange={() => {
+            if (historyOf == "statement") {
+              if (collapseKey == "") {
+                setCollapseKey("1");
+              } else {
+                setCollapseKey("");
+              }
+            }
+          }}
         >
           <Panel
-            header={<i className="icon-uparrow"></i>}
+            header={
+              historyOf == "statement" ? <i className="icon-uparrow"></i> : ""
+            }
             key="1"
-            className={styles.campStatementCollapse}
+            className={` ${styles.campStatementCollapse}  ${
+              historyOf != "statement" ? "header-none" : ""
+            } `}
             showArrow={false}
           >
             <Fragment>
