@@ -249,8 +249,7 @@ const CampTree = ({
       }
       if (data[item].children) {
         if (data[item].score >= scoreFilter) {
-          return data[item].is_archive == 0 ||
-            (data[item].is_archive != 0 && is_camp_archive_checked == true) ? (
+          return (
             <>
               <TreeNode
                 title={
@@ -389,7 +388,7 @@ const CampTree = ({
                 {renderTreeNodes(data[item].children, _isDisabled, _isOneLevel)}
               </TreeNode>
             </>
-          ) : null;
+          );
         } else {
           return null;
         }
