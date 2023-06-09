@@ -193,7 +193,9 @@ const CampTree = ({
         setShowScoreBars(false);
       }
     }
-    prevTreeValueRef.current = treeExpandValue;
+    if (prevTreeValueRef !== undefined) {
+      prevTreeValueRef.current = treeExpandValue;
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tree?.at(0), treeExpandValue]);
 
@@ -439,13 +441,15 @@ const CampTree = ({
           // autoExpandParent={autoExpandParent}
           // selectedKeys={uniqueKeys}
           // selectable={true}
+
+          data-testid="camp-tree"
         >
           {tree?.at(0) && renderTreeNodes(tree?.at(0))}
         </Tree>
       </>
     ) : null
   ) : (
-    <p>No Camp Tree Found</p>
+    <p data-testid="camp-tree">No Camp Tree Found</p>
   );
 };
 
