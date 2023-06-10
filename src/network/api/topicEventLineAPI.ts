@@ -15,7 +15,7 @@ export const getEventLineApi = async (reqBody) => {
       store.dispatch(
         setTopicName(
           eventLineData?.data[
-            Object.keys(eventLineData?.data)[
+            Object.keys(eventLineData?.data).sort()[
               Object.keys(eventLineData?.data).length - 1
             ]
           ]?.payload_response[0]?.title
