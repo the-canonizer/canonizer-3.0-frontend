@@ -306,6 +306,8 @@
       & > div {
         & > h5 {
           line-height: 16px;
+          word-break: break-all;
+          padding-right: 5px;
         }
 
         & > h2 {
@@ -323,6 +325,9 @@
 
         & > span a {
           color: #4484ce;
+        }
+        @media screen and (max-width: 767px) {
+          padding-right: 30px !important;
         }
       }
 
@@ -379,6 +384,9 @@
         font-weight: 400;
         color: #0f2a4d;
       }
+      @media screen and (max-width: 370px) {
+        word-break: break-all;
+      }
     }
 
     .campSelectCheckbox {
@@ -387,6 +395,12 @@
         font-weight: 600;
         margin-top: 16px;
       }
+    }
+  }
+
+  .collapsiablePanel {
+    @media screen and (max-width: 767px) {
+      padding-right: 0;
     }
   }
 }
@@ -402,7 +416,8 @@ $btn-bkg: #4484ce;
     padding: 15px 18px;
     margin-right: -55px;
 
-    @media screen and (max-width: 1018px) {
+    @media screen and (max-width: 767px) {
+      margin-right: 0;
     }
 
     .campUpdateButton,
@@ -445,6 +460,17 @@ $btn-bkg: #4484ce;
         width: 308px;
         min-width: 100%;
         white-space: normal;
+      }
+    }
+    .resActionBtn {
+      @media screen and (max-width: 767px) {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, calc(100% / 2 - 10px));
+        width: 100%;
+        grid-gap: 20px;
+      }
+      @media screen and (max-width: 420px) {
+        grid-template-columns: repeat(auto-fill, 100%);
       }
     }
   }
@@ -529,7 +555,7 @@ $btn-bkg: #4484ce;
 
 .infoText {
   font-size: 14px;
-  font-style:italic;
+  font-style: italic;
   color: #a4a3a3;
   margin-bottom: 5px;
 }

@@ -1,5 +1,15 @@
 import { Fragment } from "react";
-import { Card, Form, Input, Button, Select, Row, Col, Typography } from "antd";
+import {
+  Card,
+  Form,
+  Input,
+  Button,
+  Select,
+  Row,
+  Col,
+  Typography,
+  Tooltip,
+} from "antd";
 
 import styles from "../../CreateNewTopic/UI/createNewTopic.module.scss";
 import messages from "../../../../messages";
@@ -37,6 +47,7 @@ const CreateCampFormUI = ({
       Create New Camp
     </span>
   );
+  const toolTipContent = "This camp is under review";
 
   return (
     <Fragment>
@@ -145,9 +156,19 @@ const CreateCampFormUI = ({
                         key={camp.id}
                         id={`parent-camp-${camp.id}`}
                         camp={camp}
-                        // disabled={disableInput(camp)}
+                        disabled={
+                          camp.parent_change_in_review == true ? true : false
+                        }
                       >
-                        {camp.camp_name}
+                        <Tooltip
+                          title={
+                            camp.parent_change_in_review == true
+                              ? toolTipContent
+                              : null
+                          }
+                        >
+                          {camp.camp_name}
+                        </Tooltip>
                       </Option>
                     ))}
                   </Select>

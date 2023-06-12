@@ -22,8 +22,6 @@ class WrappedApp extends App<AppInitialProps> {
   public render() {
     const { Component, pageProps, meta } = this.props as any;
 
-    console.log("[META_LOG]", meta);
-
     return (
       <Fragment>
         <Provider store={store}>
@@ -51,23 +49,42 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
 
   const componentName =
     appContext.Component.displayName || appContext.Component.name;
+  let prePath = appContext?.router?.asPath?.substring(
+    0,
+    appContext?.router?.asPath.lastIndexOf("/")
+  );
+  let path;
 
+  if (prePath == "/manage/camp") {
+    path =
+      appContext?.router?.components &&
+      appContext?.router?.components["/camp/history/[...camp]"]?.query;
+  } else if (prePath == "/manage/topic") {
+    path =
+      appContext?.router?.components &&
+      appContext?.router?.components["/topic/history/[...camp]"]?.query;
+  } else if (prePath == "/manage/statement") {
+    path =
+      appContext?.router?.components &&
+      appContext?.router?.components["/statement/history/[...camp]"]?.query;
+  } else {
+    path = appContext.router?.query;
+  }
   const req = {
     page_name:
       componentName == "SocialLoginCallbackPage" ? "Home" : componentName,
     keys: {
-      topic_num: appContext.router.asPath.includes("forum")
-        ? appContext.router?.query?.topic?.toLocaleString().split("-")[0]
-        : appContext.router?.query?.camp?.length &&
-          appContext.router.query.camp[0].split("-")[0],
-      camp_num: appContext.router.asPath.includes("forum")
-        ? appContext.router.query.camp?.toLocaleString().split("-")[0]
-        : appContext.router?.query?.camp?.length > 1
-        ? appContext.router.query.camp[1].split("-")[0]
+      topic_num: appContext.router?.asPath.includes("forum")
+        ? path?.topic?.toLocaleString().split("-")[0]
+        : path?.camp?.length && path?.camp[0].split("-")[0],
+      camp_num: appContext.router?.asPath.includes("forum")
+        ? path?.camp?.toLocaleString().split("-")[0]
+        : path?.camp?.length > 1
+        ? path?.camp[1].split("-")[0]
         : "1",
       forum_num:
         appContext.router?.query?.camp?.length > 2
-          ? Object.keys(appContext.router.query)?.length > 2
+          ? Object.keys(appContext.router?.query)?.length > 2
             ? appContext.router?.query?.id
             : null
           : null,
@@ -118,7 +135,7 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
     return "";
   };
 
-  const aspath = appContext.router.asPath;
+  const aspath = appContext.router?.asPath;
   let returnData: string;
 
   if (aspath?.includes(".asp")) {
@@ -146,14 +163,11 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
       }
     } else if (aspath?.includes("support_list.asp")) {
       const nickname = appContext.ctx.query?.nick_name_id,
-        namespace = appContext.ctx.query?.nick_name_id || 1;
+        canon = appContext.ctx.query?.nick_name_id || 1;
 
       if (nickname) {
         returnData = await redirect(
-          "/user/supports/" +
-            nickname +
-            "?topicnum=&campnum=&namespace=" +
-            namespace,
+          "/user/supports/" + nickname + "?topicnum=&campnum=&canon=" + canon,
           null,
           null,
           "nickname",

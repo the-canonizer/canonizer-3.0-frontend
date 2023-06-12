@@ -13,15 +13,19 @@ import {
 import { setFilterCanonizedTopics } from "../../../../store/slices/filtersSlice";
 import styles from "./topicsList.module.scss";
 import { Spin, Checkbox } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
+import { LoadingOutlined, RightOutlined } from "@ant-design/icons";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import {
   setCheckSupportExistsData,
   setCurrentCheckSupportStatus,
   setManageSupportStatusCheck,
 } from "src/store/slices/campDetailSlice";
-import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import {
+  replaceSpecialCharacters,
+  changeSlashToArrow,
+} from "src/utils/generalUtility";
 import CustomSkelton from "../../../common/customSkelton";
+import { CloseCircleOutlined } from "@ant-design/icons";
 
 const antIcon = <LoadingOutlined spin />;
 const { Title, Text } = Typography;
@@ -30,12 +34,11 @@ const { Search } = Input;
 const infoContent = (
   <>
     <div className={styles.namespacesPopover}>
-      <Title level={5}>Namespace</Title>
+      <Title level={5}>Canon</Title>
       <p>
-        Namespaces are a set of topics created for specific organizations and
-        cities to separate topics exclusively for them from the topics of
-        general interest. To get a namespace created for your organization,
-        contact{" "}
+        Canons are a set of topics created for specific organizations and cities
+        to separate topics exclusively for them from the topics of general
+        interest. To get a canon created for your organization, contact{" "}
         <Link href="mailto:support@canonizer.com">
           <a>support@canonizer.com</a>
         </Link>
@@ -61,6 +64,7 @@ const TopicsList = () => {
     filterNameSpaceId,
     search,
     is_checked,
+    // is_archive,
   } = useSelector((state: RootState) => ({
     canonizedTopics: state.homePage?.canonizedTopicsData,
     asofdate: state.filters?.filterObject?.asofdate,
@@ -73,13 +77,18 @@ const TopicsList = () => {
     filterNameSpaceId: state?.filters?.filterObject?.namespace_id,
     search: state?.filters?.filterObject?.search,
     is_checked: state?.utils?.score_checkbox,
+    // is_archive: state?.filters?.filterObject?.is_archive,
   }));
-
+  const { is_camp_archive_checked } = useSelector((state: RootState) => ({
+    is_camp_archive_checked: state?.utils?.archived_checkbox,
+  }));
   const [topicsData, setTopicsData] = useState(canonizedTopics);
   const [nameSpacesList, setNameSpacesList] = useState(nameSpaces);
+  const [backGroundColorClass, setBackGroundColorClass] = useState("default");
 
   const [isReview, setIsReview] = useState(asof == "review");
   const [inputSearch, setInputSearch] = useState(search || "");
+  // const [archiveSearch, setArchiveSearch] = useState(is_archive || 0);
 
   const [nameSpaceId, setNameSpaceId] = useState(filterNameSpaceId || "");
 
@@ -87,16 +96,18 @@ const TopicsList = () => {
   const [getTopicsLoadingIndicator, setGetTopicsLoadingIndicator] =
     useState(false);
   const [selectedNameSpace, setSelectedNameSpace] = useState(filterNameSpace);
+  const [clear, setClear] = useState(false);
+
   let onlyMyTopicsCheck = useRef();
 
   const formatnamespace = (namespace, reverse = false) => {
     if (reverse) {
       let addslash = `/${namespace}/`;
-      addslash = addslash?.replace(/-/g, "/");
+      addslash = addslash?.replace(/-/g, " > ");
       return addslash;
     } else {
       let removednamespace = namespace?.replace(/^\/|\/$/g, "");
-      removednamespace = removednamespace?.replace(/\//g, "-");
+      removednamespace = removednamespace?.replace(/ > /g, "-");
       return removednamespace;
     }
   };
@@ -106,11 +117,13 @@ const TopicsList = () => {
     setSelectedNameSpace(nameSpace?.children);
 
     if (nameSpace?.children?.toLowerCase() !== "/general/") {
-      router.query.namespace = formatnamespace(nameSpace?.children);
-      router.replace(router, undefined, { shallow: true });
+      router.query.canon = formatnamespace(nameSpace?.children);
+      delete router?.query?.namespace;
+      router?.replace(router, undefined, { shallow: true });
     } else {
-      if (router.query.namespace) {
-        const params = router.query;
+      if (router.query.canon) {
+        const params = router?.query;
+        delete params.canon;
         delete params.namespace;
         router.query = params;
         router.replace(router, undefined, { shallow: true });
@@ -124,19 +137,27 @@ const TopicsList = () => {
       })
     );
   };
-
+  // const checkTopics = (topics)=>{
+  //   let archive =
+  //   if(topics?.length > 0 && !is_camp_archive_checked){
+  //     topics?.forEach(element => {
+  //       if(element.item.is_archive)
+  //     });
+  //   }
+  // }
   useEffect(() => {
     if (filterNameSpace?.toLowerCase() !== "/general/") {
-      router.query.namespace = formatnamespace(filterNameSpace);
+      router.query.canon = formatnamespace(filterNameSpace);
+      delete router.query?.namespace;
       router.replace(router, undefined, { shallow: true });
     }
   }, []);
 
   useEffect(() => {
-    const q = router.query;
-    if (q.namespace) {
+    const q = router?.query;
+    if (q?.canon) {
       const filteredName = nameSpacesList?.filter((n) => {
-        if (n.label === formatnamespace(q.namespace, true)) {
+        if (n.label === formatnamespace(q.canon, true)) {
           return n;
         }
       });
@@ -144,18 +165,20 @@ const TopicsList = () => {
       if (filteredName && filteredName.length) {
         dispatch(
           setFilterCanonizedTopics({
-            nameSpace: formatnamespace(q.namespace, true),
+            nameSpace: formatnamespace(q.canon, true),
             namespace_id: filteredName[0]?.id,
           })
         );
       }
     }
   }, [router, nameSpacesList]);
+  console.log(search,"search")
 
   useEffect(() => {
     setSelectedNameSpace(filterNameSpace);
     setNameSpaceId(filterNameSpaceId);
-    setInputSearch(search);
+    // setArchiveSearch(is_archive);
+    setInputSearch(search.trim());
     setNameSpacesList(nameSpaces);
   }, [filterNameSpace, filterNameSpaceId, search, nameSpaces]);
 
@@ -166,6 +189,7 @@ const TopicsList = () => {
 
   useEffect(() => {
     setIsReview(asof == "review");
+    setBackGroundColorClass(asof);
   }, [asof]);
 
   useEffect(() => {
@@ -184,8 +208,23 @@ const TopicsList = () => {
     filterByScore,
     inputSearch,
     onlyMyTopicsCheck.current,
+    // is_camp_archive_checked,
   ]);
+  useEffect(() => {
+    if (inputSearch.length > 0 || search.length > 0) {
+      setClear(true);
+    } else {
+      setClear(false);
+    }
+  }, []);
 
+  const handlesearch = (e) => {
+    if (e.target.value.length > 0) {
+      setClear(true);
+    } else {
+      setClear(false);
+    }
+  };
   async function getTopicsApiCallWithReqBody(loadMore = false) {
     loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
     const reqBody = {
@@ -199,13 +238,14 @@ const TopicsList = () => {
       filter: filterByScore,
       asof: asof,
       user_email: onlyMyTopicsCheck.current ? userEmail : "",
+      // is_archive: is_camp_archive_checked ? 1 : 0,
     };
     await getCanonizedTopicsApi(reqBody, loadMore);
     setLoadMoreIndicator(false);
   }
-
   const onSearch = (value) => {
-    setInputSearch(value);
+    console.log(inputSearch,"value")
+    setInputSearch(value.trim());
     dispatch(
       setFilterCanonizedTopics({
         search: value || "",
@@ -263,72 +303,77 @@ const TopicsList = () => {
     dispatch(setManageSupportStatusCheck(false));
     getCanonizedNameSpacesApi();
   }, []);
+
   return (
     <>
-      <div className={`${styles.card} topicsList_card`}>
+      <div
+        className={`header-bg-color-change ${backGroundColorClass} topics-list-card-header ${
+          styles.head
+        } ${router?.asPath.includes("/browse") ? styles.browsePage : ""}`}
+      >
+        <Title level={3}>
+          Select Canon
+          <Popover content={infoContent} placement="right">
+            <i className="icon-info cursor-pointer"></i>
+          </Popover>
+        </Title>
+        {router?.asPath.includes("/browse") && isUserAuthenticated && (
+          <Checkbox
+            className={styles.checkboxOnlyMyTopics}
+            onChange={handleCheckbox}
+          >
+            Only My Topics
+          </Checkbox>
+        )}
+        <Select
+          size="large"
+          className={styles.dropdown}
+          defaultValue={changeSlashToArrow(selectedNameSpace)}
+          value={changeSlashToArrow(selectedNameSpace)}
+          onChange={selectNameSpace}
+          showSearch
+          optionFilterProp="children"
+          id="name-space-dropdown"
+        >
+          {nameSpacesList?.map((item) => {
+            return (
+              <Select.Option
+                id={`name-space-${item.id}`}
+                key={item.id}
+                value={item.id}
+              >
+                {changeSlashToArrow(item.label)}
+              </Select.Option>
+            );
+          })}
+          <Select.Option id="name-space-custom" key="custom-key" value="">
+            All
+          </Select.Option>
+        </Select>
+        {router?.asPath.includes("/browse") && (
+          <div className={styles.inputSearchTopic}>
+            <Search
+              key={inputSearch}
+              placeholder="Search by topic name"
+              allowClear={true}
+              className={styles.topic}
+              defaultValue={inputSearch}
+              onSearch={onSearch}
+            />
+          </div>
+        )}
+      </div>
+
+      <div
+        className={`${styles.card} ${
+          router?.asPath.includes("/browse") ? "" : styles.homePageCardList
+        }`}
+      >
         <List
           className={styles.wrap}
-          header={
-            <div
-              className={`${styles.head} ${
-                router.asPath.includes("/browse") ? styles.browsePage : ""
-              }`}
-            >
-              <Title level={3}>
-                Select Namespace
-                <Popover content={infoContent} placement="right">
-                  <i className="icon-info cursor-pointer"></i>
-                </Popover>
-              </Title>
-              {router.asPath.includes("/browse") && isUserAuthenticated && (
-                <Checkbox
-                  className={styles.checkboxOnlyMyTopics}
-                  onChange={handleCheckbox}
-                >
-                  Only My Topics
-                </Checkbox>
-              )}
-              <Select
-                size="large"
-                className={styles.dropdown}
-                defaultValue={selectedNameSpace}
-                value={selectedNameSpace}
-                onChange={selectNameSpace}
-                showSearch
-                optionFilterProp="children"
-                id="name-space-dropdown"
-              >
-                {nameSpacesList?.map((item) => {
-                  return (
-                    <Select.Option
-                      id={`name-space-${item.id}`}
-                      key={item.id}
-                      value={item.id}
-                    >
-                      {item.label}
-                    </Select.Option>
-                  );
-                })}
-                <Select.Option id="name-space-custom" key="custom-key" value="">
-                  All
-                </Select.Option>
-              </Select>
-              {router.asPath.includes("/browse") && (
-                <div className={styles.inputSearchTopic}>
-                  <Search
-                    placeholder="Search by topic name"
-                    allowClear
-                    className={styles.topic}
-                    defaultValue={inputSearch}
-                    onSearch={onSearch}
-                  />
-                </div>
-              )}
-            </div>
-          }
           footer={
             <div className={styles.footer}>
-              {router.asPath.includes("/browse")
+              {router?.asPath.includes("/browse")
                 ? LoadMoreTopics
                 : ViewAllTopics}
             </div>
@@ -359,13 +404,19 @@ const TopicsList = () => {
                       )}/1-Agreement`,
                     }}
                   >
+                    {!item.is_archive || (item.is_archive  && is_camp_archive_checked) ?
                     <a
                       onClick={() => {
                         handleTopicClick();
                       }}
                     >
-                      <Text className={styles.text}>
+                      <Text className={item.is_archive? `font-weight-bold ${styles.archive_topic}`: styles.text}>
+                       {item.is_archive? <Popover content="Archived Topic">
                         {isReview
+                          ? item?.tree_structure &&
+                            item?.tree_structure[1].review_title
+                          : item?.topic_name}
+                          </Popover>:isReview
                           ? item?.tree_structure &&
                             item?.tree_structure[1].review_title
                           : item?.topic_name}
@@ -376,7 +427,8 @@ const TopicsList = () => {
                           ? item?.topic_full_score?.toFixed(2)
                           : item?.topic_score?.toFixed(2)}
                       </Tag>
-                    </a>
+                    </a>: <></>}
+
                   </Link>
                 </>
               </List.Item>

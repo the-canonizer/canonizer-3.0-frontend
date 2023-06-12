@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Tree, Tooltip } from "antd";
+import React, { useEffect, useState, useRef } from "react";
+import { Tree, Tooltip, Select, Image, Popover } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../../store";
 import Link from "next/link";
@@ -10,6 +10,7 @@ import { setCurrentCamp } from "../../../../store/slices/filtersSlice";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import ProgressBar from "@ramonak/react-progress-bar";
+import Archive_icon from "src/assets/image/archive_icon.svg";
 
 const { TreeNode } = Tree;
 
@@ -17,7 +18,9 @@ const CampTree = ({
   scrollToCampStatement,
   setTotalCampScoreForSupportTree,
   setSupportTreeForCamp,
-}) => {
+  treeExpandValue,
+  prevTreeValueRef,
+}: any) => {
   const { tree, filterByScore, review, is_checked } = useSelector(
     (state: RootState) => ({
       tree: state?.topicDetails?.tree,
@@ -26,6 +29,9 @@ const CampTree = ({
       is_checked: state?.utils?.score_checkbox,
     })
   );
+  const { is_camp_archive_checked } = useSelector((state: RootState) => ({
+    is_camp_archive_checked: state?.utils?.archived_checkbox,
+  }));
   let childExpandTree = [];
 
   const [defaultExpandKeys, setDefaultExpandKeys] = useState([]);
@@ -33,7 +39,7 @@ const CampTree = ({
   const [showScoreBars, setShowScoreBars] = useState(false);
 
   const [selectedExpand, setSelectedExpand] = useState([]);
-  const [expandedKeys, setExpandedKeys] = useState([]);
+
   const [autoExpandParent, setAutoExpandParent] = useState(true);
 
   // const [selectedNodeID, setSelectedNodeID] = useState(1);
@@ -84,12 +90,15 @@ const CampTree = ({
     }
   };
 
-  const getAllDefaultExpandKeys = (data) => {
+  const getAllDefaultExpandKeys = (data, topic_score) => {
     if (data?.children) {
       Object?.keys(data?.children).map((item) => {
-        if (data?.score / 2 < data?.children[item]?.score) {
+        if (
+          (topic_score * treeExpandValue) / 100 <
+          data?.children[item]?.score
+        ) {
           childExpandTree.push(data?.children[item]?.camp_id);
-          getAllDefaultExpandKeys(data?.children[item]);
+          getAllDefaultExpandKeys(data?.children[item], topic_score);
         } else return childExpandTree;
       });
     } else return childExpandTree;
@@ -140,7 +149,11 @@ const CampTree = ({
       tree?.at(0) &&
       sesionexpandkeys.find((age) => age.topic_id == tree?.at(0)["1"].topic_id);
 
-    if (keyexistSession && tree?.at(0)) {
+    if (
+      keyexistSession &&
+      tree?.at(0) &&
+      treeExpandValue == prevTreeValueRef.current
+    ) {
       setDefaultExpandKeys(keyexistSession.sessionexpandsKeys);
       setUniqueKeys(keyexistSession.sessionexpandsKeys);
       setShowTree(true);
@@ -152,14 +165,12 @@ const CampTree = ({
           tree?.at(1)
         );
 
-      let expandKeys = tree?.at(0) && getAllDefaultExpandKeys(tree?.at(0)["1"]);
+      let expandKeys =
+        tree?.at(0) &&
+        getAllDefaultExpandKeys(tree?.at(0)["1"], tree?.at(0)["1"]?.score);
       tree?.at(0) &&
-        expandKeys.push(
-          +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) == 1
-            ? 2
-            : +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1)
-        );
-      let allkeys = [...selectedExpand, ...(expandKeys || []), ...expandedKeys];
+        expandKeys.push(+(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1));
+      let allkeys = [...selectedExpand, ...(expandKeys || [])];
       let uniquekeyss = toFindDuplicates(allkeys);
       setDefaultExpandKeys(expandKeys);
       setUniqueKeys(uniquekeyss);
@@ -182,8 +193,9 @@ const CampTree = ({
         setShowScoreBars(false);
       }
     }
+    prevTreeValueRef.current = treeExpandValue;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tree?.at(0)]);
+  }, [tree?.at(0), treeExpandValue]);
 
   const subScriptionStatus = (subscribedUsers: {}) => {
     return Object.keys(subscribedUsers).length > 0 &&
@@ -267,18 +279,41 @@ const CampTree = ({
                         >
                           <a
                             className={
-                              data[item]?.camp_id ==
-                                router?.query?.camp?.at(1)?.split("-")?.at(0) ??
-                              "1"
+                              data[item].is_archive == 1
+                                ? `font-weight-bold ${styles.archive_grey}`
+                                : data[item]?.camp_id ==
+                                    router?.query?.camp
+                                      ?.at(1)
+                                      ?.split("-")
+                                      ?.at(0) ?? "1"
                                 ? `font-weight-bold ${styles.activeCamp}`
                                 : ""
                             }
                           >
-                            {includeReview
-                              ? data[item]?.review_title
-                              : data[item]?.title}
+                            {data[item].is_archive == 1 ? (
+                              <Popover content="Archived Camp">
+                                {includeReview
+                                  ? data[item]?.review_title
+                                  : data[item]?.title}
+                              </Popover>
+                            ) : includeReview ? (
+                              data[item]?.review_title
+                            ) : (
+                              data[item]?.title
+                            )}
                           </a>
-                        </Link>
+                        </Link>{" "}
+                        {/* {data[item].is_archive == 1 ? (
+                          <Image
+                            src={Archive_icon.src}
+                            width={20}
+                            height={20}
+                            alt="archive"
+                            preview={false}
+                          />
+                        ) : (
+                          ""
+                        )} */}
                       </span>
                       <span className={styles.subScriptionIcon}>
                         {isUserAuthenticated &&
@@ -303,7 +338,7 @@ const CampTree = ({
                           borderRadius={"2px"}
                           height="16px"
                           customLabel={
-                            is_checked && isUserAuthenticated
+                            is_checked
                               ? data[item].full_score?.toFixed(2)
                               : data[item].score?.toFixed(2)
                           }
@@ -331,12 +366,12 @@ const CampTree = ({
                           <Link
                             href={{
                               pathname: `/camp/create/${replaceSpecialCharacters(
-                                router.query.camp[0],
+                                router?.query.camp[0],
                                 "-"
                               )}/${
-                                router.query.camp[1]
+                                router?.query.camp[1]
                                   ? replaceSpecialCharacters(
-                                      router.query.camp[1],
+                                      router?.query.camp[1],
                                       "-"
                                     )
                                   : 1
@@ -362,7 +397,9 @@ const CampTree = ({
     });
   };
 
-  const onExpand = (expandedKeys) => {
+  const onExpand = (expandedKeyss) => {
+    let expandedKeys = toFindDuplicates(expandedKeyss);
+    console.log("sda", expandedKeys);
     let topic_id = tree?.at(0) && tree?.at(0)["1"].topic_id;
     let sesionexpandkeys = JSON.parse(sessionStorage.getItem("value"));
 
@@ -376,7 +413,7 @@ const CampTree = ({
 
     sessionStorage.setItem("value", JSON.stringify(sesionExpandnewKeys));
     setUniqueKeys(expandedKeys);
-    setExpandedKeys(expandedKeys);
+
     // setAutoExpandParent(false);
   };
 
@@ -390,19 +427,21 @@ const CampTree = ({
 
   return tree?.at(0) ? (
     showTree && tree?.at(0)["1"].title != "" && defaultExpandKeys ? (
-      <Tree
-        showLine={{ showLeafIcon: false }}
-        defaultExpandedKeys={uniqueKeys}
-        onSelect={onSelect}
-        // defaultSelectedKeys={uniqueKeys}
-        onExpand={onExpand}
-        // expandedKeys={uniqueKeys}
-        // autoExpandParent={autoExpandParent}
-        // selectedKeys={uniqueKeys}
-        // selectable={true}
-      >
-        {tree?.at(0) && renderTreeNodes(tree?.at(0))}
-      </Tree>
+      <>
+        <Tree
+          showLine={{ showLeafIcon: false }}
+          // defaultExpandedKeys={uniqueKeys}
+          onSelect={onSelect}
+          // defaultSelectedKeys={uniqueKeys}
+          onExpand={onExpand}
+          expandedKeys={[...uniqueKeys]}
+          // autoExpandParent={autoExpandParent}
+          // selectedKeys={uniqueKeys}
+          // selectable={true}
+        >
+          {tree?.at(0) && renderTreeNodes(tree?.at(0))}
+        </Tree>
+      </>
     ) : null
   ) : (
     <p>No Camp Tree Found</p>

@@ -64,6 +64,7 @@ const SupportTreeCard = ({
   totalCampScoreForSupportTree,
   isDelegateSupportTreeCardModal,
   setIsDelegateSupportTreeCardModal,
+  backGroundColorClass,
 }: any) => {
   const {
     currentGetCheckSupportExistsData,
@@ -118,12 +119,11 @@ const SupportTreeCard = ({
   };
 
   const handleClickSupportCheck = () => {
-    dispatch(setCurrentCampRecord(null));
     dispatch(setManageSupportUrlLink(manageSupportPath));
     dispatch(setManageSupportStatusCheck(true));
   };
 
-  const manageSupportPath = router.asPath.replace("/topic/", "/support/");
+  const manageSupportPath = router?.asPath.replace("/topic/", "/support/");
 
   const { campSupportingTree, asof } = useSelector((state: RootState) => ({
     campSupportingTree: supportTreeForCamp,
@@ -183,7 +183,7 @@ const SupportTreeCard = ({
                           query: {
                             topicnum: topicRecord?.topic_num,
                             campnum: topicRecord?.camp_num,
-                            namespace: topicRecord?.namespace_id,
+                            canon: topicRecord?.namespace_id,
                           },
                         }}
                       >
@@ -313,6 +313,7 @@ const SupportTreeCard = ({
         className="topicDetailsCollapse"
       >
         <Panel
+          className={`header-bg-color-change ${backGroundColorClass}`}
           header={
             <h3>
               Support Tree for &quot;

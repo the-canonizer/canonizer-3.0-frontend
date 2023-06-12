@@ -31,7 +31,7 @@
     @media screen and (min-width: 992px) {
       display: flex;
       flex-wrap: wrap;
-      width: calc(100% - 300px);
+      width: calc(100% - 390px);
     }
     .topicTitleStyle,
     .breadcrumbLinks {
@@ -61,7 +61,7 @@
       margin-top: 1rem;
     }
     .btnCampForum {
-      margin-right: 20px;
+      margin-right: 10px;
       background-color: #4484ce;
       box-shadow: none;
       border-color: transparent;
@@ -84,8 +84,23 @@
   }
 }
 
+.topicDetailsPanelNo {
+  [class="ant-collapse-item ant-collapse-item-active ant-collapse-item-disabled"] {
+    [class="ant-collapse-header"] {
+      img {
+        max-width: 200px;
+        text-align: center;
+        margin: auto;
+      }
+    }
+    p {
+      text-align: center;
+    }
+  }
+}
+
 .imageWrapper {
-  width: calc(100% - 316px);
+  // width: calc(100% - 316px);
   background: #fff;
   margin: 0 8px;
   text-align: center;
@@ -93,6 +108,9 @@
   justify-content: center;
   align-items: center;
   padding: 24px;
+  img {
+    max-width: 200px;
+  }
   @media screen and (max-width: 991px) {
     width: 100%;
     margin: 0;
@@ -163,11 +181,11 @@
     padding: 2px 7px;
     border-radius: 2px;
     color: #fff;
-    margin-left: 6px ;
+    margin-left: 6px;
     transition: all ease 50s;
-    @media screen and (max-width:767px) {
-      width:auto !important;
-  }
+    @media screen and (max-width: 767px) {
+      width: auto !important;
+    }
   }
   .subScriptionIcon {
     margin-left: 6px;
@@ -241,6 +259,9 @@
 .slashStyle {
   align-self: center;
   // margin-inline: 5px;
+  svg {
+    width: 11px;
+  }
 }
 
 .greenIndicateText {
@@ -263,4 +284,29 @@
 
 .eventLineBtn {
   margin-left: 10px;
+}
+
+.descriptions {
+  table {
+    tbody {
+      tr {
+        [class="ant-descriptions-item-label"] {
+          font-weight: 600;
+        }
+      }
+    }
+  }
+}
+
+.svgIconCode {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  svg {
+    width: 15px;
+  }
+}
+
+.archive_grey{
+  color: #6A6A6A !important;
 }

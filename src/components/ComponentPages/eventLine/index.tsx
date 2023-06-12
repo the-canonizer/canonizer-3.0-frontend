@@ -1,23 +1,16 @@
 import { useRouter } from "next/router";
-import { useSelector, useDispatch } from "react-redux";
-import { BellFilled } from "@ant-design/icons";
-
-import { Card, List } from "antd";
-
 import SideBarTimeline from "../Home/SideBarTimeline";
-import TimelineInfoBar from "./TimelineInfoBar";
+import TimelineInfoBar from "./TimelineInfoBar/index";
 import styles from "./topicDetails.module.scss";
-import activityStyle from "../Home/CampRecentActivities/campRecentActivities.module.scss";
 import { BackTop, Collapse, Typography } from "antd";
 import TimeLine from "../TimeLine";
 import { useState } from "react";
-import Events from "./Events";
 const { Panel } = Collapse;
 const { Title } = Typography;
 const TopicDetails = () => {
   const router = useRouter();
 
-  const [timelineDescript, setTimelineDescript] = useState("");
+  const [timelineDescript, setTimelineDescript] = useState([]);
 
   return (
     <>
@@ -38,11 +31,7 @@ const TopicDetails = () => {
               expandIconPosition="right"
               className="topicDetailsCollapse"
             >
-              <Panel
-                disabled
-                header={<h3>Canonizer Sorted Camp Race</h3>}
-                key="1"
-              >
+              <Panel disabled header={<h3>Consensus Tree Race</h3>} key="1">
                 <TimeLine setTimelineDescript={setTimelineDescript} />
               </Panel>
             </Collapse>

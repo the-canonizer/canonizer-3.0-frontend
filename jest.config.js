@@ -18,6 +18,16 @@ const jestConfig = {
     "<rootDir>/coverage",
     "<rootDir>/dist",
   ],
+  coveragePathIgnorePatterns:[
+    "<rootDir>/.next/",
+    "<rootDir>/node_modules/",
+    "<rootDir>/coverage",
+    "<rootDir>/dist",
+     "<rootDir>/src/pages",
+     "<rootDir>/src/assets",
+     "<rootDir>/public",
+      "\\.config\\.(ts|js)$"
+  ],
   moduleDirectories: [
     "<rootDir>/node_modules",
     "<rootDir>/src",
@@ -32,15 +42,14 @@ const jestConfig = {
     "^.+\\.(css|sass|scss)$": "<rootDir>/styleMock.js",
     // https://jestjs.io/docs/webpack#handling-static-assets
     "^.+\\.(jpg|jpeg|png|gif|webp|avif|svg)$": `<rootDir>/fileMock.js`,
+    "d3": "<rootDir>/mocks/d3Mock.ts",
   },
   coverageDirectory: "coverage",
-  transform: {
-    // Use babel-jest to transpile tests with the next/babel preset
-    // https://jestjs.io/docs/configuration#transform-objectstring-pathtotransformer--pathtotransformer-object
-    "^.+\\.(js|jsx|ts|tsx)$": ["babel-jest", { presets: ["next/babel"] }],
+ transform: {
+    "^.+\\.[jt]sx?$": "babel-jest",
   },
   transformIgnorePatterns: [
-    "/node_modules/",
+     "/node_modules/(?!d3)/",
     "^.+\\.module\\.(css|sass|scss)$",
   ],
   coverageThreshold: {

@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { useRouter } from "next/router";
-import { Typography, Button, Row, Col, Spin, Card, Divider } from "antd";
+import { Typography, Button, Row, Col, Card, Divider } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import moment from "moment";
@@ -11,6 +11,7 @@ import CreateCampBtn from "../../../common/button/createNewCampBtn";
 import CreateTopicBtn from "../../../common/button/createNewTopicBtn";
 import CampInfoBar from "../../TopicDetails/CampInfoBar";
 import CustomSkelton from "../../../common/customSkelton";
+import { changeSlashToArrow } from "src/utils/generalUtility";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -33,15 +34,15 @@ function CompareStatementUI({
   const getBackUrl = () => {
     const query = router?.query;
     if (query.from === "topic") {
-      router.push({
+      router?.push({
         pathname: `/topic/history/${router?.query?.routes[0]}}`,
       });
     } else if (query.from === "statement") {
-      router.push({
+      router?.push({
         pathname: `/statement/history/${router?.query?.routes[0]}/${router?.query?.routes[1]}`,
       });
     } else {
-      router.push({
+      router?.push({
         pathname: `/camp/history/${router?.query?.routes[0]}/${router?.query?.routes[1]}`,
       });
     }
@@ -119,7 +120,7 @@ function CompareStatementUI({
                             s1["submitter_nick_id"] || ""
                           }?topicnum=${s1["topic_num"] || ""}&campnum=${
                             s1["camp_num"] || ""
-                          }&namespace=${s1["namespace_id"] || 1}`}
+                          }&canon=${s1["namespace_id"] || 1}`}
                         >
                           <a>{s1?.submitter_nick_name}</a>
                         </Link>
@@ -131,8 +132,8 @@ function CompareStatementUI({
                     </Paragraph>
                     {from == "topic" ? (
                       <Paragraph>
-                        <Text strong>Namespace : </Text>
-                        <Text>{s1?.namespace}</Text>
+                        <Text strong>Canon : </Text>
+                        <Text>{changeSlashToArrow(s1?.namespace)}</Text>
                       </Paragraph>
                     ) : null}
                     {from == "camp" ? (
@@ -166,7 +167,7 @@ function CompareStatementUI({
                                 s1["camp_about_nick_id"] || ""
                               }?topicnum=${s1["topic_num"] || ""}&campnum=${
                                 s1["camp_num"] || ""
-                              }&namespace=${s1["namespace_id"] || 1}`}
+                              }&canon=${s1["namespace_id"] || 1}`}
                             >
                               <a>{s1?.camp_about_nick_name}</a>
                             </Link>
@@ -181,7 +182,7 @@ function CompareStatementUI({
                           <Text>{s1?.is_one_level == 1 ? "Yes" : "No"}</Text>
                         </Paragraph>
                         {/* <Paragraph>
-                          <Text strong>Camp archive : </Text>
+                          <Text strong>Camp Archived : </Text>
                           <Text>{s1?.is_archive == 1 ? "Yes" : "No"}</Text>
                         </Paragraph> */}
                       </Fragment>
@@ -241,7 +242,7 @@ function CompareStatementUI({
                             s2["submitter_nick_id"] || ""
                           }?topicnum=${s2["topic_num"] || ""}&campnum=${
                             s2["camp_num"] || ""
-                          }&namespace=${s2["namespace_id"] || 1}`}
+                          }&canon=${s2["namespace_id"] || 1}`}
                         >
                           <a>{s2?.submitter_nick_name}</a>
                         </Link>
@@ -253,8 +254,8 @@ function CompareStatementUI({
                     </Paragraph>
                     {from == "topic" ? (
                       <Paragraph>
-                        <Text strong>Namespace : </Text>
-                        <Text>{s2?.namespace}</Text>
+                        <Text strong>Canon : </Text>
+                        <Text>{changeSlashToArrow(s2?.namespace)}</Text>
                       </Paragraph>
                     ) : null}
                     {from == "camp" ? (
@@ -287,7 +288,7 @@ function CompareStatementUI({
                                 s2["camp_about_nick_id"] || ""
                               }?topicnum=${s2["topic_num"] || ""}&campnum=${
                                 s2["camp_num"] || ""
-                              }&namespace=${s2["namespace_id"] || 1}`}
+                              }&canon=${s2["namespace_id"] || 1}`}
                             >
                               <a>{s2?.camp_about_nick_name}</a>
                             </Link>
@@ -301,10 +302,10 @@ function CompareStatementUI({
                           <Text strong>Single Level Camps Only : </Text>
                           <Text>{s2?.is_one_level == 1 ? "Yes" : "No"}</Text>
                         </Paragraph>
-                        {/* <Paragraph>
-                          <Text strong>Camp archive : </Text>
-                          <Text>{s2?.is_archive == 1 ? "Yes" : "No"}</Text>
-                        </Paragraph> */}
+                        <Paragraph>
+                          <Text strong>Camp Archived : </Text>
+                          {/* <Text>{s2?.is_archive == 1 ? "Yes" : "No"}</Text> */}
+                        </Paragraph>
                       </Fragment>
                     ) : null}
                     <Text strong style={{ textTransform: "capitalize" }}>
@@ -384,9 +385,9 @@ function CompareStatementUI({
                             liveStatement["submitter_nick_id"] || ""
                           }?topicnum=${
                             liveStatement["topic_num"] || ""
-                          }&campnum=${
-                            liveStatement["camp_num"] || ""
-                          }&namespace=${liveStatement["namespace_id"] || 1}`}
+                          }&campnum=${liveStatement["camp_num"] || ""}&canon=${
+                            liveStatement["namespace_id"] || 1
+                          }`}
                         >
                           <a>{liveStatement?.submitter_nick_name}</a>
                         </Link>
@@ -398,8 +399,10 @@ function CompareStatementUI({
                     </Paragraph>
                     {from == "topic" ? (
                       <Paragraph>
-                        <Text strong>Namespace : </Text>
-                        <Text>{liveStatement?.namespace}</Text>
+                        <Text strong>Canon : </Text>
+                        <Text>
+                          {changeSlashToArrow(liveStatement?.namespace)}
+                        </Text>
                       </Paragraph>
                     ) : null}
                     {from == "camp" ? (
@@ -434,9 +437,7 @@ function CompareStatementUI({
                                 liveStatement["topic_num"] || ""
                               }&campnum=${
                                 liveStatement["camp_num"] || ""
-                              }&namespace=${
-                                liveStatement["namespace_id"] || 1
-                              }`}
+                              }&canon=${liveStatement["namespace_id"] || 1}`}
                             >
                               <a>{liveStatement?.camp_about_nick_name}</a>
                             </Link>
@@ -455,7 +456,7 @@ function CompareStatementUI({
                           </Text>
                         </Paragraph>
                         {/* <Paragraph>
-                          <Text strong>Camp archive: </Text>
+                          <Text strong>Camp Archived: </Text>
                           <Text>
                             {liveStatement?.is_archive == 1 ? "Yes" : "No"}
                           </Text>

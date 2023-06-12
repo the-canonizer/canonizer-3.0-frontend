@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
 import CustomSkelton from "../../common/customSkelton";
 
-//  "../../../store/slices/filtersSlice";
+
 import {
   getCanonizedCampStatementApi,
   getNewsFeedApi,
@@ -67,11 +67,13 @@ const TopicDetails = () => {
   const [isDelegateSupportTreeCardModal, setIsDelegateSupportTreeCardModal] =
     useState(false);
   const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
+  const [backGroundColorClass, setBackGroundColorClass] = useState("default");
   const [totalCampScoreForSupportTree, setTotalCampScoreForSupportTree] =
     useState<number>(null);
   const [supportTreeForCamp, setSupportTreeForCamp] = useState<number>(null);
   const router = useRouter();
   const dispatch = useDispatch();
+  const showTreeSkeltonRef = useRef(false);
   const {
     asof,
     asofdate,
@@ -105,7 +107,11 @@ const TopicDetails = () => {
   };
   useEffect(() => {
     async function getTreeApiCall() {
-      setGetTreeLoadingIndicator(true);
+      console.log("show tree check ", showTreeSkeltonRef);
+      if (!showTreeSkeltonRef) {
+        setGetTreeLoadingIndicator(true);
+        showTreeSkeltonRef.current = true;
+      }
       setLoadingIndicator(true);
       const reqBodyForService = {
         topic_num: +router?.query?.camp[0]?.split("-")[0],
@@ -313,6 +319,10 @@ const TopicDetails = () => {
     // fetchTotalScore();
   }, [isUserAuthenticated, router, algorithm]);
 
+  useEffect(() => {
+    setBackGroundColorClass(asof);
+  }, [asof]);
+
   const scrollToCampStatement = () => {
     myRefToCampStatement.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -325,7 +335,7 @@ const TopicDetails = () => {
   const setCurrentTopics = (data) => dispatch(setCurrentTopic(data));
 
   const onCreateCamp = () => {
-    // const queryParams = router.query;
+    // const queryParams = router?.query;
 
     const data = {
       message: null,
@@ -338,7 +348,7 @@ const TopicDetails = () => {
     const topicName = topicRecord?.topic_name?.replaceAll(" ", "-");
     const campName = campRecord?.camp_name?.replaceAll(" ", "-");
 
-    router.push({
+    router?.push({
       pathname: `/camp/create/${
         topicRecord?.topic_num
       }-${replaceSpecialCharacters(topicName, "-")}/${
@@ -356,7 +366,7 @@ const TopicDetails = () => {
       campNum = campRecord?.camp_num;
 
     if (topicName && topicNum && campName && campNum) {
-      router.push({
+      router?.push({
         pathname: `/forum/${topicNum}-${replaceSpecialCharacters(
           topicName,
           "-"
@@ -381,10 +391,9 @@ const TopicDetails = () => {
       })
     );
   };
-
   return (
     <>
-      <div className={styles.topicDetailContentWrap}>
+      <div className={styles.topicDetailContentWrap} >
         {(tree && tree["1"]?.is_valid_as_of_time) || asof == "default" ? (
           <CampInfoBar
             isTopicPage={true}
@@ -416,9 +425,15 @@ const TopicDetails = () => {
               scrollToCampStatement={scrollToCampStatement}
               setTotalCampScoreForSupportTree={setTotalCampScoreForSupportTree}
               setSupportTreeForCamp={setSupportTreeForCamp}
+              backGroundColorClass={backGroundColorClass}
             />
 
-            {((tree && tree["1"]?.is_valid_as_of_time) ||
+            {((tree &&
+              tree["1"]?.is_valid_as_of_time &&
+              tree["1"]?.created_date <=
+                (asof == "default" || asof == "review"
+                  ? Date.now() / 1000
+                  : asofdate)) ||
               asof == "default") && (
               <>
                 {campExist &&
@@ -459,24 +474,22 @@ const TopicDetails = () => {
                       <>
                         <CampStatementCard
                           loadingIndicator={loadingIndicator}
+                          backGroundColorClass={backGroundColorClass}
                         />
 
                         {typeof window !== "undefined" &&
-                          window.innerWidth < 767 && (
+                          window.innerWidth > 767 && (
                             <>
-                              {router.asPath.includes("topic") && (
-                                <CampRecentActivities />
-                              )}
-                              <Spin spinning={loadingIndicator} size="large">
-                                {!!newsFeed?.length && (
-                                  <NewsFeedsCard newsFeed={newsFeed} />
-                                )}
-                              </Spin>
+                              <CurrentTopicCard
+                                loadingIndicator={loadingIndicator}
+                                backGroundColorClass={backGroundColorClass}
+                              />
+                              <CurrentCampCard
+                                loadingIndicator={loadingIndicator}
+                                backGroundColorClass={backGroundColorClass}
+                              />
                             </>
                           )}
-                        <CurrentTopicCard loadingIndicator={loadingIndicator} />
-
-                        <CurrentCampCard loadingIndicator={loadingIndicator} />
 
                         <SupportTreeCard
                           loadingIndicator={loadingIndicator}
@@ -505,7 +518,31 @@ const TopicDetails = () => {
                           totalCampScoreForSupportTree={
                             totalCampScoreForSupportTree
                           }
+                          backGroundColorClass={backGroundColorClass}
                         />
+                        {typeof window !== "undefined" &&
+                          window.innerWidth < 767 && (
+                            <>
+                              <CurrentTopicCard
+                                backGroundColorClass={backGroundColorClass}
+                                loadingIndicator={loadingIndicator}
+                              />
+                              <CurrentCampCard
+                                backGroundColorClass={backGroundColorClass}
+                                loadingIndicator={loadingIndicator}
+                              />
+                              <Spin spinning={loadingIndicator} size="large">
+                                {!!newsFeed?.length && (
+                                  <NewsFeedsCard newsFeed={newsFeed} />
+                                )}
+                              </Spin>
+                              <>
+                                {router?.asPath.includes("topic") && (
+                                  <CampRecentActivities />
+                                )}
+                              </>
+                            </>
+                          )}
                       </>
                     )}
               </>

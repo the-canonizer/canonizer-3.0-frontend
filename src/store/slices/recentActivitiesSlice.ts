@@ -5,14 +5,13 @@ export const recentActivitiesSlice = createSlice({
   initialState: {
     topicsData: {
       topics: [],
-
       numOfPages: 0,
     },
     threadsData: {
       topics: [],
-
       numOfPages: 0,
     },
+    isCheckedAllRecent: false,
   },
   reducers: {
     setTopics: (state, action) => {
@@ -39,10 +38,18 @@ export const recentActivitiesSlice = createSlice({
         topics: [...state.threadsData.topics, ...action.payload?.items],
       };
     },
+    setIsChecked: (state, action) => {
+      state.isCheckedAllRecent = action.payload;
+    },
   },
 });
 
-export const { setTopics, pushToTopics, setThreads, pushToThreads } =
-  recentActivitiesSlice.actions;
+export const {
+  setTopics,
+  pushToTopics,
+  setThreads,
+  pushToThreads,
+  setIsChecked,
+} = recentActivitiesSlice.actions;
 
 export default recentActivitiesSlice.reducer;

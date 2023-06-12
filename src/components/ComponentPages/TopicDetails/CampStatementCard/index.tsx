@@ -16,12 +16,15 @@ const { Panel } = Collapse;
 const covertToTime = (unixTime) => {
   return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm A");
 };
-const CampStatementCard = ({ loadingIndicator }) => {
+const CampStatementCard = ({ loadingIndicator, backGroundColorClass }) => {
   const router = useRouter();
-  const { campStatement, history } = useSelector((state: RootState) => ({
-    campStatement: state?.topicDetails?.campStatement,
-    history: state?.topicDetails?.history,
-  }));
+  const { campRecord, campStatement, history } = useSelector(
+    (state: RootState) => ({
+      campStatement: state?.topicDetails?.campStatement,
+      history: state?.topicDetails?.history,
+      campRecord: state?.topicDetails?.currentCampRecord,
+    })
+  );
   return loadingIndicator || !campStatement ? (
     <CustomSkelton
       skeltonFor="card"
@@ -37,7 +40,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
       className="topicDetailsCollapse"
     >
       <Panel
-        className="campStatementPanel"
+        className={`campStatementPanel header-bg-color-change ${backGroundColorClass}`}
         disabled
         header={<h3>{K?.exceptionalMessages?.campStatementHeading}</h3>}
         key="1"
@@ -66,7 +69,10 @@ const CampStatementCard = ({ loadingIndicator }) => {
         </Paragraph>
 
         <div className="topicDetailsCollapseFooter">
-          <CustomButton className="btn-green" id="add-camp-statement-btn">
+          <CustomButton
+            className="btn-green"
+            id="add-camp-statement-btn"
+          >
             <Link
               href={
                 history?.items?.length > 0

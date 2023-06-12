@@ -101,7 +101,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   const [isCampBtnVisible, setIsCampBtnVisible] = useState(false);
 
   const campRoute = () => {
-    router.push("/create/topic");
+    router?.push("/create/topic");
   };
 
   const {
@@ -127,6 +127,9 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
     current_date_filter: state?.filters?.current_date,
     campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
   }));
+  const { campRecord } = useSelector((state: RootState) => ({
+    campRecord: state?.topicDetails?.currentCampRecord,
+  }));
   const [value, setValue] = useState(
     selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3
   );
@@ -143,7 +146,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   // useEffect(() => {
   //   if (didMount.current) {
   //     if (history.pushState) {
-  //       const queryParams = `?filter=${filterObject?.filterByScore}&algorithm=${filterObject?.algorithm}&asofdate=${filterObject?.asofdate}&namespace=${filterObject?.namespace_id}`;
+  //       const queryParams = `?filter=${filterObject?.filterByScore}&algorithm=${filterObject?.algorithm}&asofdate=${filterObject?.asofdate}&canon=${filterObject?.namespace_id}`;
   //       var newurl =
   //         window.location.protocol +
   //         "//" +
@@ -164,11 +167,11 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   }, [selectedAsOf]);
 
   useEffect(() => {
-    if (router.pathname.includes("/topic/")) {
+    if (router?.pathname.includes("/topic/")) {
       // setIsPanelCollapse(true);
       setIsCampBtnVisible(true);
     }
-  }, [router.pathname]);
+  }, [router?.pathname]);
 
   useEffect(() => {
     setSelectedAsOFDate(filteredAsOfDate);
@@ -268,7 +271,6 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   function momentDateObject(e) {
     return e?._d;
   }
-
   return (
     <>
       <div className="leftSideBar_Card">
@@ -322,7 +324,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                 Canonizer Algorithm:
               </Title>
               <Popover content="Algorithm Information" placement="top">
-                {router.asPath.includes("/topic") ? (
+                {router?.asPath.includes("/topic") ? (
                   <a href={K?.Network?.URL?.algoInfoUrl}>
                     Algorithm Information
                   </a>
@@ -379,19 +381,17 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                 <i className="icon-info"></i>
               </Popover>
             </div>
-            {isAuth.isUserAuthenticated ? (
-              <div className={styles.scoreCheckbox}>
-                <FullScoreCheckbox />
-              </div>
-          ) : null}
-           {/* {isAuth.isUserAuthenticated && currentCampNode.is_disabled == true ? (
-              <div className={styles.scoreCheckbox}>
-                <ArchivedCampCheckBox />
-              </div>
-          ) : null} */}
-          </Panel>
 
+            <div className={styles.scoreCheckbox}>
+              <FullScoreCheckbox />
+            </div>
+
+            {/* <div className={styles.scoreCheckbox}>
+              <ArchivedCampCheckBox />
+            </div> */}
+          </Panel>
           <Panel
+            className={`header-bg-color-change radio-group-sider ${selectedAsOf}`}
             header={
               <span className={styles.title}>
                 As Of
@@ -405,7 +405,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
             <Radio.Group onChange={onChange} value={value} disabled={loading}>
               <Space direction="vertical" style={{ gap: "12px" }}>
                 <Radio
-                  className={styles.radio}
+                  className={styles.radio + " topicFilterRadio"}
                   value={1}
                   onClick={() => {
                     dispatch(setViewThisVersion(false));
@@ -421,7 +421,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                   Include review
                 </Radio>
                 <Radio
-                  className={styles.radio}
+                  className={styles.radio + " topicFilterRadio"}
                   value={2}
                   onClick={() => {
                     dispatch(setViewThisVersion(false));
@@ -436,7 +436,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                   Default
                 </Radio>
                 <Radio
-                  className={styles.radio}
+                  className={styles.radio + " topicFilterRadio"}
                   value={3}
                   onClick={() => {
                     dispatch(setViewThisVersion(false));

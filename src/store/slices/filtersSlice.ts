@@ -14,6 +14,7 @@ export const filtersSlice = createSlice({
       algorithm: "blind_popularity",
       search: "",
       includeReview: false,
+      // is_archive: 0,
     },
     selectedCampNode: null,
     current_date: new Date().valueOf(),

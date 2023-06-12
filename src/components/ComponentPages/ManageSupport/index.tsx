@@ -74,7 +74,6 @@ const ManageSupport = () => {
         ? Date.now() / 1000
         : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
   };
-
   //Support page Link Url
   const { manageSupportUrlLink } = useSelector((state: RootState) => ({
     manageSupportUrlLink: state.topicDetails.manageSupportUrlLink,
@@ -122,6 +121,15 @@ const ManageSupport = () => {
     const res = await getCurrentCampRecordApi(reqBodyCAmpRecord);
     campRef.current = res;
   };
+
+  //prevent user to open this page if camp archive is true
+  useEffect(()=>{
+    isUserAuthenticated &&
+    campRecord?.is_archive  &&
+    router.route == "/support/[...manageSupport]"
+      ? router.push("/")
+      : "";
+  },[])
   //isUserAuthenticated
   useEffect(() => {
     (async () => {
@@ -229,7 +237,7 @@ const ManageSupport = () => {
   //replace use to - change to space
   const camp_Name_ = campRecord?.camp_name;
   const CampName = camp_Name_;
-  const campSupportPath = router.asPath?.replace("/support/", "/topic/");
+  const campSupportPath = router?.asPath?.replace("/support/", "/topic/");
   const body = { topic_num: topicNum };
   const getActiveSupportTopicList = async (
     warning?: string,
@@ -262,14 +270,15 @@ const ManageSupport = () => {
         (values) => values.camp_num == campNum
       );
 
-      if (dataValue !== "") {
+      if (dataValue !== "" || CheckDelegatedOrDirect) {
         const unavailable_camp =
           dataValue && dataValue.includes("unable to find this camp");
+
         setUnableToFindCamp(unavailable_camp);
         setSubmitButtonDisable(unavailable_camp ? unavailable_camp : false);
         setGetSupportStatusData(dataValue);
         //if Warning message is show
-        if (resultFilterSupportCamp.length == 0) {
+        if (resultFilterSupportCamp.length == 0 && CampName) {
           let supportOrderLen =
             fiterSupportedCamps.length + manageSupportArr.length + 1;
           //push data into a array of manageSupportArray
@@ -284,7 +293,11 @@ const ManageSupport = () => {
         if (CheckDelegatedOrDirect && resultFilterSupportCamp.length == 0) {
           setManageSupportList(manageSupportArr);
         } else {
-          setManageSupportList([...fiterSupportedCamps, ...manageSupportArr]);
+          setManageSupportList([
+            ...fiterSupportedCamps,
+            ...manageSupportArr,
+            ...resultFilterSupportCamp,
+          ]);
         }
 
         setManageSupportRevertData(manageSupportArr);
@@ -292,27 +305,33 @@ const ManageSupport = () => {
         //warning  message is not show
         setGetSupportStatusData("");
 
-        if (resultFilterSupportCamp.length == 0) {
+        if (resultFilterSupportCamp.length == 0 && CampName) {
           let supportOrderLen = supportedCampsList.length + 1;
           //push data into a array of manageSupportArray
-          campRecordRef?.current?.camp_name &&
+          if (campRecordRef?.current?.camp_name) {
             supportedCampsList.push({
               topic_num: parseInt(topicNum),
               camp_num: parseInt(campNum),
-              camp_name: CampName
-                ? CampName
-                : campRecordRef?.current?.camp_name,
+              camp_name: CampName ?? campRecordRef?.current?.camp_name,
               support_order: supportOrderLen,
               link: campSupportPath,
             });
+          } else {
+            supportedCampsList.push({
+              topic_num: parseInt(topicNum),
+              camp_num: parseInt(campNum),
+              camp_name: CampName ?? campRecordRef?.current?.camp_name,
+              support_order: supportOrderLen,
+              link: campSupportPath,
+            });
+          }
         }
-
         setManageSupportList(supportedCampsList);
         setManageSupportRevertData(supportedCampsList);
       }
     }
   };
-  let manageSupportPath = router.asPath?.replace("/support/", "/topic/");
+  let manageSupportPath = router?.asPath?.replace("/support/", "/topic/");
   if (manageSupportPath.lastIndexOf("_") > -1)
     manageSupportPath = manageSupportPath.substring(
       0,
@@ -332,7 +351,7 @@ const ManageSupport = () => {
       "/topic/"
     );
     if (manageSupportPath || manageSupportPath1) {
-      router.push({
+      router?.push({
         pathname: CheckDelegatedOrDirect
           ? manageSupportPath
           : manageSupportPath1,
@@ -447,14 +466,14 @@ const ManageSupport = () => {
 
     //Case if data pass from delegated or direct
     if (CheckDelegatedOrDirect) {
-      setGetManageSupportLoadingIndicator(true)
+      setGetManageSupportLoadingIndicator(true);
 
       let nickNameID = nickNameList.filter(
         (values) => selectedtNickname == values.id
       );
       let nickNameIDValue = nickNameID[0].id;
       let delegated_user_id = router?.query?.manageSupport[1].split("_");
-      
+
       const addDelegatedSupport = {
         nick_name_id: nickNameIDValue,
         delegated_nick_name_id: delegated_user_id[1],
@@ -464,7 +483,7 @@ const ManageSupport = () => {
       if (res && res.status_code == 200) {
         message.success(res.message);
         //After Submit page is redirect to previous
-        router.push({
+        router?.push({
           pathname: manageSupportPath,
         });
       } else {
@@ -475,7 +494,7 @@ const ManageSupport = () => {
       if (res && res.status_code == 200) {
         message.success(res.message);
         //After Submit page is redirect to previous
-        router.push({
+        router?.push({
           pathname: manageSupportPath,
         });
       } else {

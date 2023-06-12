@@ -40,6 +40,15 @@ export default class CampStatementHistoryRequest extends Request {
       token
     );
   }
+  static changeSupporters(body) {
+    return new Request(
+      K.Network.URL.ChangeSupporters,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
 
   static statementCompare(body) {
     return new Request(

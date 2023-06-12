@@ -8,6 +8,7 @@ import styles from "../UserProfileUI/UserProfile.module.scss";
 import messages from "../../../../messages";
 
 import CustomSkelton from "../../../common/customSkelton";
+import { changeSlashToArrow } from "src/utils/generalUtility";
 export const UserProfileCard = ({
   userSupportedCampsList,
   nameSpaceList,
@@ -28,7 +29,13 @@ export const UserProfileCard = ({
     const filteredVal = nameSpaceList.filter(
       (obj) => obj.id == dropdownNameSpaceList
     );
-    return filteredVal[0];
+    let returnValue = filteredVal[0];
+    if (returnValue)
+      returnValue = {
+        ...returnValue,
+        label: changeSlashToArrow(returnValue.label),
+      };
+    return returnValue;
   };
 
   // userSupportedCampsList[0]?.private_status == 0
@@ -129,7 +136,7 @@ export const UserProfileCard = ({
                       {nameSpaceList?.map((item) => {
                         return (
                           <Select.Option key={item.id} value={item.id}>
-                            {item.label}
+                            {changeSlashToArrow(item.label)}
                           </Select.Option>
                         );
                       })}
@@ -178,7 +185,7 @@ export const UserProfileCard = ({
                                                 query: {
                                                   topicnum: data?.topic_num,
                                                   campnum: reqBody?.campNum,
-                                                  namespace: data?.namespace_id,
+                                                  canon: data?.namespace_id,
                                                 },
                                               }}
                                             >

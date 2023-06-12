@@ -21,6 +21,7 @@ import {
   MoreOutlined,
   FileTextOutlined,
   HeartOutlined,
+  DoubleRightOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
 import {
@@ -28,6 +29,21 @@ import {
   isServer,
 } from "../../../../utils/generalUtility";
 import SocialShareUI from "../../../common/socialShare";
+import GenerateModal from "src/components/common/generateScript";
+
+const CodeIcon = () => (
+  <svg
+    viewBox="0 0 64 64"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    stroke="#000000"
+  >
+    <rect x="8" y="12" width="48" height="40" />
+    <polyline points="40 40 48 32 40 24" />
+    <polyline points="24 24 16 32 24 40" />
+    <line x1="34" y1="22" x2="30" y2="42" />
+  </svg>
+);
 
 const TimelineInfoBar = ({
   payload = null,
@@ -46,6 +62,7 @@ const TimelineInfoBar = ({
   });
   const didMount = useRef(false);
   const router = useRouter();
+
   const {
     topicRecord,
     campRecord,
@@ -116,7 +133,7 @@ const TimelineInfoBar = ({
   const onCampForumClick = () => {
     const topicName = topicRecord?.topic_name?.replaceAll(" ", "-");
     const campName = campRecord?.camp_name?.replaceAll(" ", "-");
-    router.push({
+    router?.push({
       pathname: `/forum/${topicRecord?.topic_num}-${replaceSpecialCharacters(
         topicName,
         "-"
@@ -125,6 +142,13 @@ const TimelineInfoBar = ({
         "-"
       )}/threads`,
     });
+  };
+
+  const eventLinePath = () => {
+    router?.push(router?.asPath.replace("topic", "eventline"));
+  };
+  const eventLinePath2 = () => {
+    router.push(router.asPath.replace("support", "eventline"));
   };
 
   const campOrTopicScribe = async (isTopic: Boolean) => {
@@ -152,14 +176,14 @@ const TimelineInfoBar = ({
     <Menu className={styles.campForumDropdownMenu}>
       {isUserAuthenticated && is_admin && (
         <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
-          {router.pathname == "/support/[...manageSupport]" ? (
-            <Link href={router.asPath.replace("support", "addnews")}>
+          {router?.pathname == "/support/[...manageSupport]" ? (
+            <Link href={router?.asPath.replace("support", "addnews")}>
               <a rel="noopener noreferrer" href="/add-news">
                 Add News
               </a>
             </Link>
           ) : (
-            <Link href={router.asPath.replace("topic", "addnews")}>
+            <Link href={router?.asPath.replace("topic", "addnews")}>
               <a rel="noopener noreferrer" href="/add-news">
                 Add News
               </a>
@@ -180,9 +204,9 @@ const TimelineInfoBar = ({
             campOrTopicScribe(true);
           } else {
             setLoadingIndicator(true);
-            router.push({
+            router?.push({
               pathname: "/login",
-              query: { returnUrl: router.asPath },
+              query: { returnUrl: router?.asPath },
             });
           }
         }}
@@ -210,9 +234,9 @@ const TimelineInfoBar = ({
             campOrTopicScribe(false);
           } else {
             setLoadingIndicator(true);
-            router.push({
+            router?.push({
               pathname: "/login",
-              query: { returnUrl: router.asPath },
+              query: { returnUrl: router?.asPath },
             });
           }
         }}
@@ -235,9 +259,12 @@ const TimelineInfoBar = ({
           "Subscribe to the Camp"
         )}
       </Menu.Item>
-      <Menu.Item icon={<HeartOutlined />} disabled={asof == "bydate"}>
+      <Menu.Item
+        icon={<HeartOutlined />}
+        disabled={asof == "bydate"}
+      >
         {isTopicPage && (
-          <Link href={router.asPath.replace("/topic/", "/support/")}>
+          <Link href={router?.asPath?.replace("/topic/", "/support/")}>
             <a>
               <div
                 className="topicDetailsCollapseFooter"
@@ -320,6 +347,20 @@ const TimelineInfoBar = ({
                 : K?.exceptionalMessages?.addCampStatementButton}
             </a>
           </Link>
+        )}
+      </Menu.Item>
+      <Menu.Item
+        icon={
+          <span className={styles.svgIconCode}>
+            <CodeIcon />
+          </span>
+        }
+      >
+        {isTopicPage && (
+          <GenerateModal
+            topic_num={payload?.topic_num}
+            camp_num={payload?.camp_num}
+          />
         )}
       </Menu.Item>
     </Menu>
@@ -421,7 +462,7 @@ const TimelineInfoBar = ({
                           <a>
                             <span className={styles.slashStyle}>
                               {" "}
-                              {index !== 0 && "/"}{" "}
+                              {index !== 0 && <DoubleRightOutlined />}{" "}
                             </span>
                             <span
                               className={
@@ -505,7 +546,17 @@ const TimelineInfoBar = ({
                       >
                         Camp Forum
                       </Button>
-
+                      {/* {
+                        router.pathname != "/support/[...manageSupport]" ?
+                          <Button
+                            type="primary"
+                            onClick={eventLinePath}
+                            className={styles.btnCampForum}
+                            id="camp-forum-btn"
+                          >
+                            Event Line
+                          </Button> : null
+                      } */}
                       <Dropdown
                         className={styles.campForumDropdown}
                         placement="bottomRight"

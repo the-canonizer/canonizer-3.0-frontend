@@ -195,6 +195,33 @@
   width: 95%;
 }
 
-.support_reason{
+.support_reason {
   background: whitesmoke;
+}
+
+@media screen and (max-width: 767px) {
+  .quickAction {
+    display: block;
+    width: 100%;
+    .checkbox {
+      margin: 0 10px;
+    }
+    .removeAll {
+      margin: 0 10px 0 0;
+    }
+    .clear_Btn {
+      padding: 0 15px;
+    }
+  }
+}
+
+@media screen and (max-width: 438px) {
+  .quickAction {
+    .removeAll {
+      margin: 0 10px 0 0;
+    }
+    .clear_Btn {
+      margin-top: 10px;
+    }
+  }
 }

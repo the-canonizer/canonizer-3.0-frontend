@@ -9,6 +9,16 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
 
+
+  const validUrl = (url) =>{
+    try {
+      new URL(url);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
   return (
     <>
       {!!campStatement?.parent_camp_name && (
@@ -32,7 +42,7 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
       <Title level={5}>
         Camp About URL :{" "}
         <span className={styles.updateSurveyPrj}>
-          {campStatement?.camp_about_url && (
+          {campStatement?.camp_about_url && validUrl(campStatement?.camp_about_url) && (
             <Link href={campStatement?.camp_about_url}>
               <a target="_blank">{campStatement?.camp_about_url}</a>
             </Link>
@@ -48,7 +58,7 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
               campStatement?.camp_about_nick_id || ""
             }?topicnum=${campStatement?.topic_num || ""}&campnum=${
               campStatement?.camp_num || ""
-            }&namespace=${topicNamespaceId || ""}`}
+            }&canon=${topicNamespaceId || ""}`}
             passHref
           >
             <a>{campStatement?.camp_about_nick_name}</a>
@@ -64,7 +74,7 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
               campStatement?.submitter_nick_id || ""
             }?topicnum=${campStatement?.topic_num || ""}&campnum=${
               campStatement?.camp_num || ""
-            }&namespace=${topicNamespaceId || ""}`}
+            }&canon=${topicNamespaceId || ""}`}
             passHref
           >
             <a>{campStatement?.submitter_nick_name}</a>
@@ -104,7 +114,7 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
                 campStatement?.objector_nick_id || ""
               }?topicnum=${campStatement?.topic_num || ""}&campnum=${
                 campStatement?.camp_num || ""
-              }&namespace=${topicNamespaceId || ""}`}
+              }&canon=${topicNamespaceId || ""}`}
               passHref
             >
               <a>{campStatement?.objector_nick_name}</a>

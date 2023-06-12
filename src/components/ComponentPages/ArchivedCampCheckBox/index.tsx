@@ -12,17 +12,20 @@ import {
 } from "src/store/slices/utilsSlice";
 
 const ArchivedCampCheckBox = () => {
-  const { is_checked } = useSelector((state: RootState) => ({
-    is_checked: state?.utils?.archived_checkbox,
+  const { is_camp_archive_checked } = useSelector((state: RootState) => ({
+    is_camp_archive_checked: state?.utils?.archived_checkbox,
   }));
-  const [isChecked, setIsChecked] = useState(is_checked);
+  const [isChecked, setIsChecked] = useState(is_camp_archive_checked);
 
   const dispatch = useDispatch();
 
-  useEffect(() => setIsChecked(is_checked), [is_checked]);
+  useEffect(
+    () => setIsChecked(is_camp_archive_checked),
+    [is_camp_archive_checked]
+  );
 
   const setCheckboxStore = (val) => {
-    dispatch(setArchivedCheckBox(val)), console.log(val, "val");
+    dispatch(setArchivedCheckBox(val));
   };
 
   const onChange = (e: CheckboxChangeEvent) => {

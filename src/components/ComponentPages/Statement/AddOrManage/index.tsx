@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Form, Button, Row, Col, Card, Input, Select, Typography } from "antd";
+import {
+  Form,
+  Button,
+  Row,
+  Col,
+  Card,
+  Input,
+  Select,
+  Typography,
+  Tooltip,
+} from "antd";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import "antd/dist/antd.css";
@@ -37,12 +47,11 @@ import {
   replaceSpecialCharacters,
   allowedEmojies,
   emojiValidation,
+  changeSlashToArrow,
 } from "src/utils/generalUtility";
 import { EditorState, convertToRaw, ContentState } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
-//import htmlToDraft from "html-to-draftjs";
-//import { Editor } from 'react-draft-wysiwyg';
 const Editor: any = dynamic(
   () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
   { ssr: false }
@@ -80,7 +89,9 @@ export default function AddOrManage({ add }: any) {
   const [canNameSpace, setCanNameSpace] = useState([]);
   const [options, setOptions] = useState([...messages.preventCampLabel]);
   const [initialOptions, setInitialOptions] = useState([]);
-  const [editCampStatementData, setEditCampStatementData] = useState({});
+  const [editCampStatementData, setEditCampStatementData] = useState("");
+  const [statementResponseDisable, setStatementResponseDisable] =
+    useState(false);
 
   const [form] = Form.useForm();
   let objection = router?.query?.statement?.at(0)?.split("-")[1] == "objection";
@@ -90,7 +101,6 @@ export default function AddOrManage({ add }: any) {
     .getCurrentContent()
     .getPlainText()
     .trim().length;
-  // const editorTextLengthTrim =editorTextLength
   const onFinish = async (values: any) => {
     setScreenLoading(true);
     let res;
@@ -101,8 +111,8 @@ export default function AddOrManage({ add }: any) {
 
     if (res?.status_code == 200) {
       if (add) {
-        router.push(
-          router.asPath.replace("create/statement", "statement/history")
+        router?.push(
+          router?.asPath.replace("create/statement", "statement/history")
         );
       } else {
         let route =
@@ -121,11 +131,11 @@ export default function AddOrManage({ add }: any) {
                 "-"
               )}`;
         if (manageFormOf == "camp") {
-          router.push(`/camp/history/${route}`);
+          router?.push(`/camp/history/${route}`);
         } else if (manageFormOf == "statement") {
-          router.push(`/statement/history/${route}`);
+          router?.push(`/statement/history/${route}`);
         } else if (manageFormOf == "topic") {
-          router.push(`/topic/history/${route}`);
+          router?.push(`/topic/history/${route}`);
         }
       }
       const oldOptions = [...options];
@@ -206,10 +216,19 @@ export default function AddOrManage({ add }: any) {
     if (manageFormOf == "camp") {
       options.map((op) => (reqBody[op.id] = op.checked ? 1 : 0));
       res = await updateCampApi(reqBody);
+      if (res.status_code == 200) {
+        setStatementResponseDisable(true);
+      }
     } else if (manageFormOf == "statement") {
       res = await updateStatementApi(reqBody);
+      if (res.status_code == 200) {
+        setStatementResponseDisable(true);
+      }
     } else if (manageFormOf == "topic") {
       res = await updateTopicApi(reqBody);
+      if (res.status_code == 200) {
+        setStatementResponseDisable(true);
+      }
     }
 
     return res;
@@ -397,10 +416,29 @@ export default function AddOrManage({ add }: any) {
               op.checked =
                 res?.data[manageFormOf]?.is_one_level === 1 ? true : false;
             }
-            if (op.id === "is_archive") {
-              op.checked =
-                res?.data[manageFormOf]?.is_archive === 1 ? true : false;
-            }
+            // if (op.id === "is_archive") {
+            //   op.checked =
+            //     res?.data[manageFormOf]?.is_archive === 1 ? true : false;
+            //   op.tooltip = op.checked
+            //     ? "Unarchive the camp."
+            //     : "Archive the camp.";
+            //   if (
+            //     res?.data[manageFormOf]?.direct_archive === 0 &&
+            //     res?.data[manageFormOf]?.is_archive === 0
+            //   )
+            //     op.disable = false;
+            //   else if (
+            //     res?.data[manageFormOf]?.direct_archive === 0 &&
+            //     res?.data[manageFormOf]?.is_archive === 1
+            //   ) {
+            //     op.disable = true;
+            //   } else if (
+            //     res?.data[manageFormOf]?.direct_archive === 1 &&
+            //     res?.data[manageFormOf]?.is_archive === 1
+            //   ) {
+            //     op.disable = false;
+            //   }
+            // }
           });
 
           setOptions(oldOptions);
@@ -413,10 +451,10 @@ export default function AddOrManage({ add }: any) {
               checked: oldOptions[1]?.checked,
               disable: oldOptions[1]?.disable,
             },
-            // {
-            //   checked: oldOptions[2]?.checked,
-            //   disable: oldOptions[2]?.disable,
-            // },
+            {
+              checked: oldOptions[2]?.checked,
+              disable: oldOptions[2]?.disable,
+            },
           ]);
         }
       }
@@ -424,9 +462,9 @@ export default function AddOrManage({ add }: any) {
     }
     isUserAuthenticated
       ? nickNameListApiCall()
-      : router.push({
+      : router?.push({
           pathname: "/login",
-          query: { returnUrl: router.asPath },
+          query: { returnUrl: router?.asPath },
         });
   }, []);
   let formTitle = () => {
@@ -459,13 +497,15 @@ export default function AddOrManage({ add }: any) {
           checked: oldOptions[1]?.checked,
           disable: oldOptions[1]?.disable,
         },
-        // {
-        //   checked: oldOptions[2]?.checked,
-        //   disable: oldOptions[2]?.disable,
-        // },
+        {
+          checked: oldOptions[2]?.checked,
+          disable: oldOptions[2]?.disable,
+        },
       ]);
     };
   }, []);
+
+  const toolTipContent = "This camp is under review";
 
   const onCheckboxChange = async (e: CheckboxChangeEvent) => {
     const oldOptions = [...options];
@@ -476,15 +516,16 @@ export default function AddOrManage({ add }: any) {
       } else {
         op.checked = false;
       }
+      op.tooltip = op.checked ? "Unarchive the camp." : "Archive the camp.";
     });
     setOptions(oldOptions);
     if (
       oldOptions[0]?.checked == initialOptions[0]?.checked &&
       oldOptions[0]?.disable == initialOptions[0]?.disable &&
       oldOptions[1]?.checked == initialOptions[1]?.checked &&
-      oldOptions[1]?.disable == initialOptions[1]?.disable 
-      // oldOptions[2]?.checked == initialOptions[2]?.checked &&
-      // oldOptions[2]?.disable == initialOptions[2]?.disable
+      oldOptions[1]?.disable == initialOptions[1]?.disable &&
+      oldOptions[2]?.checked == initialOptions[2]?.checked &&
+      oldOptions[2]?.disable == initialOptions[2]?.disable
     ) {
       setSubmitIsDisableCheck(true);
     } else {
@@ -563,12 +604,14 @@ export default function AddOrManage({ add }: any) {
                 if (initialFormStatus?.statement == null || undefined) {
                   initialFormStatus.statement = "";
                 }
-                if (typeof initialFormStatus.edit_summary == "string")
+                if (typeof initialFormStatus.edit_summary == "string") {
                   initialFormStatus.edit_summary =
                     initialFormStatus.edit_summary.trim();
-                if (typeof initialFormStatus.statement == "string")
+                }
+                if (typeof initialFormStatus.statement == "string") {
                   initialFormStatus.statement =
                     initialFormStatus.statement.trim();
+                }
                 nowFormStatus = Object.keys(form?.getFieldsValue()).reduce(
                   (acc, key) => {
                     acc[key] =
@@ -579,20 +622,25 @@ export default function AddOrManage({ add }: any) {
                   },
                   {}
                 );
+                if (nowFormStatus?.parent_camp_num) {
+                  delete nowFormStatus.parent_camp_num;
+                }
                 if (nowFormStatus?.edit_summary == null || undefined) {
                   nowFormStatus.edit_summary = "";
                 }
                 if (nowFormStatus?.statement == null || undefined) {
                   nowFormStatus.statement = "";
                 }
-                if (typeof nowFormStatus.edit_summary == "string")
+                if (typeof nowFormStatus.edit_summary == "string") {
                   nowFormStatus.edit_summary =
                     nowFormStatus.edit_summary.trim();
-                if (typeof nowFormStatus.statement == "string")
+                }
+                if (typeof nowFormStatus.statement == "string") {
                   nowFormStatus.statement = nowFormStatus.statement.trim();
+                }
                 if (
-                  JSON.stringify(nowFormStatus.edit_summary) ==
-                  JSON.stringify(initialFormStatus.edit_summary)
+                  JSON.stringify(nowFormStatus) ==
+                  JSON.stringify(initialFormStatus)
                 ) {
                   setSubmitIsDisable(true);
                 } else {
@@ -679,6 +727,9 @@ export default function AddOrManage({ add }: any) {
                               // data-id="parent-camp"
                               disabled={objection}
                               optionFilterProp="children"
+                              onChange={() => {
+                                setSubmitIsDisable(false);
+                              }}
                             >
                               {parentCamp.map((camp) =>
                                 camp?.camp_num !==
@@ -686,8 +737,21 @@ export default function AddOrManage({ add }: any) {
                                   <Select.Option
                                     value={camp.camp_num}
                                     key={camp.id}
+                                    disabled={
+                                      camp.parent_change_in_review == true
+                                        ? true
+                                        : false
+                                    }
                                   >
-                                    {camp.camp_name}
+                                    <Tooltip
+                                      title={
+                                        camp.parent_change_in_review == true
+                                          ? toolTipContent
+                                          : null
+                                      }
+                                    >
+                                      {camp.camp_name}
+                                    </Tooltip>
                                   </Select.Option>
                                 ) : (
                                   ""
@@ -808,7 +872,7 @@ export default function AddOrManage({ add }: any) {
                           className={`${styles.formItem} namespace_in mb-2`}
                           label={
                             <>
-                              Namespace <span className="required">*</span>
+                              Canon <span className="required">*</span>
                               <span className={styles.small}>
                                 (General is recommended, unless you know
                                 otherwise)
@@ -840,7 +904,7 @@ export default function AddOrManage({ add }: any) {
                             >
                               {canNameSpace.map((camp) => (
                                 <Select.Option value={camp.id} key={camp.id}>
-                                  {camp.label}
+                                  {changeSlashToArrow(camp.label)}
                                 </Select.Option>
                               ))}
                             </Select>
@@ -851,7 +915,7 @@ export default function AddOrManage({ add }: any) {
                   </>
                 )}
                 {/* statement================================================================================ */}
-                {manageFormOf == "statement" && (
+                {manageFormOf == "statement" && !objection && (
                   <Col xs={24} xl={24}>
                     <Form.Item
                       className={`${styles.formItem} mb-2`}
@@ -1081,9 +1145,8 @@ export default function AddOrManage({ add }: any) {
                           className={`btn-orange mr-3 ${styles.btnSubmit}`}
                           htmlType="submit"
                           disabled={
-                            submitIsDisable &&
-                            submitIsDisableCheck &&
-                            editorTextLength < 1
+                            (submitIsDisable && submitIsDisableCheck) ||
+                            statementResponseDisable
                           }
                           id="update-submit-btn"
                         >
@@ -1104,7 +1167,7 @@ export default function AddOrManage({ add }: any) {
                                 let backdata = editStatementData?.data;
                                 setScreenLoading(true);
                                 add
-                                  ? router.push(
+                                  ? router?.push(
                                       `/topic/${replaceSpecialCharacters(
                                         router?.query?.statement[0],
                                         "-"

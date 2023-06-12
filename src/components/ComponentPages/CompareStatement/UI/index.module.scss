@@ -176,4 +176,12 @@
       }
     }
   }
+  @media screen and (max-width: 767px) {
+    padding: 15px;
+    .latestCard {
+      [class="ant-card-head-title"] {
+        white-space: break-spaces;
+      }
+    }
+  }
 }

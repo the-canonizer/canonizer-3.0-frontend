@@ -114,8 +114,6 @@ export default function CanonVideos() {
             const node = document.getElementsByTagName("video")[0];
             if (node) {
               node.src = K.Network.URL?.BaseVideosURL + "/" + resLink;
-              node.play();
-              playeref.current.play();
             }
           }
         } else {
@@ -164,7 +162,6 @@ export default function CanonVideos() {
       const node = document.getElementsByTagName("video")[0];
       if (node && ct) {
         node.currentTime = Number(ct);
-        node.play();
       }
     }, 800);
   }, []);
@@ -179,10 +176,10 @@ export default function CanonVideos() {
     if (t) {
       router.query.t = t;
     } else {
-      const { t, ...rest } = router.query;
+      const { t, ...rest } = router?.query;
       router.query = rest;
     }
-    router.push(router, null, { shallow: true });
+    router?.push(router, null, { shallow: true });
   }
 
   return (
@@ -268,7 +265,6 @@ export default function CanonVideos() {
                 height={"auto"}
                 controls
                 ref={playeref}
-                autoPlay
               >
                 <source
                   src={K.Network.URL?.BaseVideosURL + "/" + videoResolution}
@@ -278,16 +274,12 @@ export default function CanonVideos() {
                   kind="chapters"
                   label="Locations"
                   src={"/subs/" + vttPath() + ".vtt"}
-                  // ref={playeref2}
-                  // onLoad={getChaptersReady}
                   default
                 ></track>
               </video>
               <div
                 className={`video-chap-content ${styles.vttComtainer}`}
-                dangerouslySetInnerHTML={{
-                  __html: topic,
-                }}
+                dangerouslySetInnerHTML={{ __html: topic }}
               ></div>
             </>
           ) : (

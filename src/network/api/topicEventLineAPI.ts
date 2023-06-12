@@ -1,5 +1,7 @@
 import NetworkCall from "../networkCall";
 import EventLine from "../request/eventLineRequest";
+import { store } from "../../store";
+import { setTopicName } from "../../store/slices/campDetailSlice";
 
 import { mockData } from "../../components/ComponentPages/TimeLine/mockData";
 
@@ -9,8 +11,18 @@ export const getEventLineApi = async (reqBody) => {
       EventLine.getEventLine(reqBody),
       false
     );
-
-    return eventLineData?.data;
+    if (eventLineData?.code == 200) {
+      store.dispatch(
+        setTopicName(
+          eventLineData?.data[
+            Object.keys(eventLineData?.data)[
+              Object.keys(eventLineData?.data).length - 1
+            ]
+          ]?.payload_response[0]?.title
+        )
+      );
+    }
+    return eventLineData.data;
     // return mockData
   } catch (error) {
     // return mockData

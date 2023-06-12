@@ -230,14 +230,14 @@ export const routeToUserPage = (
   router,
   topicnum = "",
   campnum = "",
-  namespace = 1
+  canon = 1
 ) => {
-  return router.push({
+  return router?.push({
     pathname: `/user/supports`,
     query: {
       topicnum,
       campnum,
-      namespace,
+      canon,
       camp: `camp_${topicnum}_${campnum}`,
     },
   });
@@ -333,3 +333,9 @@ export const allowedEmojies =
       return Promise.resolve();
     },
   });
+
+export const changeSlashToArrow = (label: string) => {
+  let removednamespace = label?.replace(/^\/|\/$/g, "");
+  removednamespace = removednamespace?.replace(/\//g, " > ");
+  return removednamespace;
+};

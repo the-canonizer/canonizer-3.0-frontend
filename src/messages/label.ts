@@ -38,7 +38,7 @@ export const labels = {
   cr_nick_name_sp:
     "(Once you pick a nickname, for any contribution to a topic, you must always use the same nickname for any other contribution or forum post to this topic.)",
   cr_topic_name: "Topic Name",
-  cr_namespace: "Namespace",
+  cr_namespace: "Canon",
   cr_edit_summary: "Edit Summary",
   cr_camp_name: "Camp Name",
   cr_parent_camp: "Parent Camp",
@@ -94,6 +94,8 @@ export const labels = {
   reasonLabelSummary: "Summary",
   resonURLLabel: "Citation Link",
   reasonModalTitle: "Reason for support end!",
+  copied_success: "Text has been copied.",
+  copied_error: "Error: Text could not be copied.",
 };
 
 export const preventCampLabel = [
@@ -114,8 +116,7 @@ export const preventCampLabel = [
   },
   // {
   //   label: "Camp archive.",
-  //   tooltip:
-  //     "Archive the camp.",
+  //   tooltip: "Archive the camp.",
   //   id: "is_archive",
   //   checked: false,
   //   disable: false,
