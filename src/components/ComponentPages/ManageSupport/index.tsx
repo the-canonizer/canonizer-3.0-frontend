@@ -106,8 +106,8 @@ const ManageSupport = () => {
   const CheckDelegatedOrDirect =
     currentDelegatedSupportedClick.delegatedSupportClick;
   const reqBodyData: any = {
-    topic_num: +router?.query?.manageSupport[0]?.split("-")[0],
-    camp_num: +router?.query?.manageSupport[1]?.split("-")[0],
+    topic_num: +router?.query?.manageSupport?.[0]?.split("-")[0],
+    camp_num: +router?.query?.manageSupport?.[1]?.split("-")[0],
   };
   if (CheckDelegatedOrDirect && router?.query?.manageSupport[1]?.split("_")[1])
     reqBodyData.delegated_nick_name_id =
@@ -123,13 +123,13 @@ const ManageSupport = () => {
   };
 
   //prevent user to open this page if camp archive is true
-  useEffect(()=>{
-    isUserAuthenticated &&
-    campRecord?.is_archive  &&
-    router.route == "/support/[...manageSupport]"
-      ? router.push("/")
-      : "";
-  },[])
+  // useEffect(()=>{
+  //   isUserAuthenticated &&
+  //   campRecord?.is_archive  &&
+  //   router.route == "/support/[...manageSupport]"
+  //     ? router.push("/")
+  //     : "";
+  // },[])
   //isUserAuthenticated
   useEffect(() => {
     (async () => {
@@ -332,7 +332,7 @@ const ManageSupport = () => {
     }
   };
   let manageSupportPath = router?.asPath?.replace("/support/", "/topic/");
-  if (manageSupportPath.lastIndexOf("_") > -1)
+  if (manageSupportPath?.lastIndexOf("_") > -1)
     manageSupportPath = manageSupportPath.substring(
       0,
       manageSupportPath.lastIndexOf("_")
