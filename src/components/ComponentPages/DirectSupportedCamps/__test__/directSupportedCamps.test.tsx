@@ -98,7 +98,7 @@ import userEvent from "@testing-library/user-event";
 import { useRouter } from "next/router";
 import { renderHook } from "@testing-library/react-hooks";
 import { useState } from "react";
-import { Input } from "antd";
+import { Input, message } from "antd";
 const { labels } = messages;
 
 const isSupportedCampsModalVisible = true;
@@ -459,5 +459,16 @@ describe("Direct Support camps page", () => {
   
     // Assert that the input value is updated
     expect(inputElement.value).toBe(userInput);
+  });
+  it("Message component displays correct content",()=>{
+    render(<DirectSupportedCamps search={directSupportedCampsList} />)
+    const messageContent = 'Test message';
+
+  // Render the Message component
+  message.success(messageContent);
+
+  // Assert that the message content is displayed
+  const messageElement = screen.getByText(messageContent);
+  expect(messageElement).toBeInTheDocument();
   });
 });

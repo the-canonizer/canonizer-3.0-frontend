@@ -31,11 +31,7 @@ const TopicDetails = () => {
               expandIconPosition="right"
               className="topicDetailsCollapse"
             >
-              <Panel
-                disabled
-                header={<h3>Canonizer Sorted Camp Race</h3>}
-                key="1"
-              >
+              <Panel disabled header={<h3>Consensus Tree Race</h3>} key="1">
                 <TimeLine setTimelineDescript={setTimelineDescript} />
               </Panel>
             </Collapse>
