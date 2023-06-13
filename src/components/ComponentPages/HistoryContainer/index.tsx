@@ -61,9 +61,9 @@ function HistoryContainer() {
       asof: state?.filters?.filterObject?.asof,
       algorithm: state.filters?.filterObject?.algorithm,
     }));
-    const { campRecord } = useSelector((state: RootState) => ({
-      campRecord: state?.topicDetails?.currentCampRecord,
-    }));
+  const { campRecord } = useSelector((state: RootState) => ({
+    campRecord: state?.topicDetails?.currentCampRecord,
+  }));
   const [isTreesApiCallStop, setIsTreesApiCallStop] = useState(false);
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [campHistory, setCampHistory] = useState(history);
