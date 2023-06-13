@@ -193,7 +193,9 @@ const CampTree = ({
         setShowScoreBars(false);
       }
     }
-    prevTreeValueRef.current = treeExpandValue;
+    if (prevTreeValueRef !== undefined) {
+      prevTreeValueRef.current = treeExpandValue;
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tree?.at(0), treeExpandValue]);
 
@@ -249,8 +251,7 @@ const CampTree = ({
       }
       if (data[item].children) {
         if (data[item].score >= scoreFilter) {
-          return data[item].is_archive == 0 ||
-            (data[item].is_archive != 0 && is_camp_archive_checked == true) ? (
+          return (
             <>
               <TreeNode
                 title={
@@ -389,7 +390,7 @@ const CampTree = ({
                 {renderTreeNodes(data[item].children, _isDisabled, _isOneLevel)}
               </TreeNode>
             </>
-          ) : null;
+          );
         } else {
           return null;
         }
@@ -439,13 +440,15 @@ const CampTree = ({
           // autoExpandParent={autoExpandParent}
           // selectedKeys={uniqueKeys}
           // selectable={true}
+
+          data-testid="camp-tree"
         >
           {tree?.at(0) && renderTreeNodes(tree?.at(0))}
         </Tree>
       </>
     ) : null
   ) : (
-    <p>No Camp Tree Found</p>
+    <p data-testid="camp-tree">No Camp Tree Found</p>
   );
 };
 

@@ -306,8 +306,7 @@ function HistoryContainer() {
 
         {historyOf !== "topic" &&
         currentCampNode?._isDisabled == 0 &&
-        currentCampNode?.parentIsOneLevel == 0 &&
-        currentCampNode?.is_archive == 0 ? (
+        currentCampNode?.parentIsOneLevel == 0 ? (
           <CreateNewCampButton
             className={styles.createBtn}
             click={campRoute}
