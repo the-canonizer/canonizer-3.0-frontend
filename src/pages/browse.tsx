@@ -21,7 +21,7 @@ const BrowsePage = ({ current_date }: any) => {
     if ("namespace" in queries) {
       const { namespace, ...rest } = queries;
       rest.canon = namespace;
-      router?.query = rest;
+      router.query = rest;
       router?.replace(router, null, { shallow: true });
     }
   }, []);

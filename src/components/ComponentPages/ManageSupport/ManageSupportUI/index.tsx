@@ -371,12 +371,12 @@ const ManageSupportUI = ({
               {" "}
               {messages.labels.manageSupportNote}
             </div>
-            {!CheckDelegatedOrDirect && topicSupportListData.length != 0 ? (
+            {!CheckDelegatedOrDirect && topicSupportListData?.length != 0 ? (
               <div>
                 <Card className={styles.margin_top} type="inner">
                   <b>
                     {messages.labels.topicSupportText} &quot;{""}
-                    {topicSupportListData[0]?.title}
+                    {topicSupportListData?.[0]?.title}
                     {""}&quot;
                   </b>
                 </Card>
@@ -399,6 +399,7 @@ const ManageSupportUI = ({
                         removeAll((e.target as any).checked, manageSupportList);
                         setRemoveCampsSupport(!removeCampsSupport);
                       }}
+                      onChange={()=>{}}
                     ></input>
                   </span>
                   <span className={styles.removeAll}>Remove all</span>

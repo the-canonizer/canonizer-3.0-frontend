@@ -117,16 +117,16 @@ const TopicsList = () => {
     setSelectedNameSpace(nameSpace?.children);
 
     if (nameSpace?.children?.toLowerCase() !== "/general/") {
-      router?.query.canon = formatnamespace(nameSpace?.children);
+      router.query.canon = formatnamespace(nameSpace?.children);
       delete router?.query?.namespace;
       router?.replace(router, undefined, { shallow: true });
     } else {
-      if (router?.query.canon) {
+      if (router.query.canon) {
         const params = router?.query;
         delete params.canon;
         delete params.namespace;
-        router?.query = params;
-        router?.replace(router, undefined, { shallow: true });
+        router.query = params;
+        router.replace(router, undefined, { shallow: true });
       }
     }
 
@@ -147,9 +147,9 @@ const TopicsList = () => {
   // }
   useEffect(() => {
     if (filterNameSpace?.toLowerCase() !== "/general/") {
-      router?.query.canon = formatnamespace(filterNameSpace);
-      delete router?.query?.namespace;
-      router?.replace(router, undefined, { shallow: true });
+      router.query.canon = formatnamespace(filterNameSpace);
+      delete router.query?.namespace;
+      router.replace(router, undefined, { shallow: true });
     }
   }, []);
 
@@ -172,6 +172,7 @@ const TopicsList = () => {
       }
     }
   }, [router, nameSpacesList]);
+  console.log(search,"search")
 
   useEffect(() => {
     setSelectedNameSpace(filterNameSpace);
@@ -243,6 +244,7 @@ const TopicsList = () => {
     setLoadMoreIndicator(false);
   }
   const onSearch = (value) => {
+    console.log(inputSearch,"value")
     setInputSearch(value.trim());
     dispatch(
       setFilterCanonizedTopics({
@@ -402,29 +404,31 @@ const TopicsList = () => {
                       )}/1-Agreement`,
                     }}
                   >
-                    {!item.is_archive ||
-                    (item.is_archive && is_camp_archive_checked) ? (
-                      <a
-                        onClick={() => {
-                          handleTopicClick();
-                        }}
-                      >
-                        <Text className={styles.text}>
-                          {isReview
-                            ? item?.tree_structure &&
-                              item?.tree_structure[1].review_title
-                            : item?.topic_name}
-                        </Text>
-                        <Tag className={styles.tag}>
-                          {/* // ? item?.topic_full_score // : item?.full_score?.toFixed(2) */}
-                          {is_checked && isUserAuthenticated
-                            ? item?.topic_full_score?.toFixed(2)
-                            : item?.topic_score?.toFixed(2)}
-                        </Tag>
-                      </a>
-                    ) : (
-                      <></>
-                    )}
+                    {!item.is_archive || (item.is_archive  && is_camp_archive_checked) ?
+                    <a
+                      onClick={() => {
+                        handleTopicClick();
+                      }}
+                    >
+                      <Text className={item.is_archive? `font-weight-bold ${styles.archive_topic}`: styles.text}>
+                       {item.is_archive? <Popover content="Archived Topic">
+                        {isReview
+                          ? item?.tree_structure &&
+                            item?.tree_structure[1].review_title
+                          : item?.topic_name}
+                          </Popover>:isReview
+                          ? item?.tree_structure &&
+                            item?.tree_structure[1].review_title
+                          : item?.topic_name}
+                      </Text>
+                      <Tag className={styles.tag}>
+                        {/* // ? item?.topic_full_score // : item?.full_score?.toFixed(2) */}
+                        {is_checked && isUserAuthenticated
+                          ? item?.topic_full_score?.toFixed(2)
+                          : item?.topic_score?.toFixed(2)}
+                      </Tag>
+                    </a>: <></>}
+
                   </Link>
                 </>
               </List.Item>

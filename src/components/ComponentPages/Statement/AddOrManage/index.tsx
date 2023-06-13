@@ -52,8 +52,6 @@ import {
 import { EditorState, convertToRaw, ContentState } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
-//import htmlToDraft from "html-to-draftjs";
-//import { Editor } from 'react-draft-wysiwyg';
 const Editor: any = dynamic(
   () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
   { ssr: false }
@@ -103,7 +101,6 @@ export default function AddOrManage({ add }: any) {
     .getCurrentContent()
     .getPlainText()
     .trim().length;
-  // const editorTextLengthTrim =editorTextLength
   const onFinish = async (values: any) => {
     setScreenLoading(true);
     let res;

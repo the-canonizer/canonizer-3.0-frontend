@@ -13,7 +13,7 @@ function UserProfile() {
       const { namespace, ...rest } = queries;
       queries = rest;
       queries.canon = namespace;
-      router?.query = queries;
+      router.query = queries;
       router?.replace(router, null, { shallow: true });
     }
   }, []);
