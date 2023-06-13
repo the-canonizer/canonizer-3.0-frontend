@@ -299,7 +299,7 @@ const UploadFileUI = ({
               width={12}
               height={15}
             />
-            <span className={styles.marginLeftView}>Delete File</span>
+            <span id="delete_file_text" className={styles.marginLeftView}>Delete File</span>
           </span>
         </Menu.Item>
       </span>
@@ -557,7 +557,7 @@ const UploadFileUI = ({
                     <div
                       className={styles.menu_item}
                       onClick={() => {
-                        navigator.clipboard.writeText(keyParam.short_code_path),
+                        navigator?.clipboard?.writeText(keyParam.short_code_path),
                           message.success("Perma Link Copied");
                       }}
                     >
