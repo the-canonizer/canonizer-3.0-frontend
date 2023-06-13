@@ -115,22 +115,22 @@ function TimelineSlider({
   );
   const DateFormate = (datess) => {
     const months = [
-      "January",
-      "February",
-      "March",
-      "April",
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
       "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
     ];
     let formattedDate = `${
       months[datess.getMonth()]
-    } ${datess.getDate()},${datess.getFullYear()}`;
+    } ${datess.getDate()}, ${datess.getYear().toString().slice(1)}`;
     return formattedDate;
   };
 
@@ -269,7 +269,6 @@ function TimelineSlider({
           onOpenChange={(newOpen) => {
             setSpeedBar(newOpen);
           }}
-          
         >
           <DashboardOutlined
             className={`${"speed-icon"}  ${

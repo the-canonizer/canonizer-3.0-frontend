@@ -134,7 +134,7 @@ const CampTreeCard = ({
             className={`header-bg-color-change ${backGroundColorClass}`}
             header={
               <h3>
-                Canonizer Sorted Camp Tree{" "}
+                Consensus Tree{" "}
                 {/* <Button
                   type={"primary"}
                   size="small"
