@@ -433,7 +433,7 @@ const TopicsList = () => {
                         </Text>
                         <Tag className={styles.tag}>
                           {/* // ? item?.topic_full_score // : item?.full_score?.toFixed(2) */}
-                          {is_checked && isUserAuthenticated
+                          {is_checked
                             ? item?.topic_full_score?.toFixed(2)
                             : item?.topic_score?.toFixed(2)}
                         </Tag>

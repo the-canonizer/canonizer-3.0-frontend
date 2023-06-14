@@ -2491,3 +2491,8 @@ div[role="option"]::before {
     display: none;
   }
 }
+.header-none {
+  .ant-collapse-header {
+    display: none !important;
+  }
+}

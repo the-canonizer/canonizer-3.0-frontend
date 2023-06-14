@@ -79,6 +79,12 @@ const DelegatedSupportCamps = ({ search }: any) => {
     fetchDelegatedSupportCampsList();
   }, []);
 
+  useEffect(() => {
+    return () => {
+      setDelegatedSupportCampsList(null);
+    }
+}, []);
+
   return (
     <DelegatedSupportCampsUI
       removeCardDelegatedSupportedCamps={removeCardDelegatedSupportedCamps}
