@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import moment from "moment";
 import {
   Typography,
@@ -32,6 +32,7 @@ import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 // import { showCreateCampButton } from "src/utils/generalUtility";
 import FullScoreCheckbox from "../../ComponentPages/FullScoreCheckbox";
 import useAuthentication from "src/hooks/isUserAuthenticated";
+import { log } from "console";
 // import ArchivedCampCheckBox from "../../ComponentPages/ArchivedCampCheckBox";
 
 const infoContent = (
@@ -130,12 +131,16 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   const { campRecord } = useSelector((state: RootState) => ({
     campRecord: state?.topicDetails?.currentCampRecord,
   }));
+
   const [value, setValue] = useState(
     selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3
   );
+
   const [selectedAsOFDate, setSelectedAsOFDate] = useState(filteredAsOfDate);
   const [timer, setTimer] = useState(null);
-  const [inputValue, setInputValue] = useState(filteredScore);
+  const [inputValue, setInputValue] = useState(
+    router?.query?.filt || filteredScore
+  );
   const [isLoading, setIsLoading] = useState(loading);
 
   // /////////////////////////////////////////////////////////////////////////
@@ -183,6 +188,26 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   }, []);
 
   const selectAlgorithm = (value) => {
+    if (!router?.query?.algo) {
+      router.push(
+        {
+          pathname: router.pathname,
+          query: { ...router.query, algo: value },
+        },
+        undefined,
+        { shallow: true }
+      );
+    } else {
+      router.push(
+        {
+          pathname: router.pathname,
+          query: { ...router.query, algo: value },
+        },
+        undefined,
+        { shallow: true }
+      );
+    }
+
     dispatch(
       setFilterCanonizedTopics({
         algorithm: value,
@@ -219,6 +244,25 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
       setDatePickerValue(datepicker);
       IsoDateFormat = Date.parse(datepicker) / 1000;
     }
+    if (!router?.query?.asof) {
+      router.push(
+        {
+          pathname: router.pathname,
+          query: { ...router.query, asof: IsoDateFormat },
+        },
+        undefined,
+        { shallow: true }
+      );
+    } else {
+      router.push(
+        {
+          pathname: router.pathname,
+          query: { ...router.query, asof: IsoDateFormat },
+        },
+        undefined,
+        { shallow: true }
+      );
+    }
 
     dispatch(
       setFilterCanonizedTopics({
@@ -240,12 +284,21 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
             filterByScore: value,
           })
         );
+        router.push(
+          {
+            pathname: router.pathname,
+            query: { ...router.query, filt: value },
+          },
+          undefined,
+          { shallow: true }
+        );
       }, 1000);
       setTimer(newTimer);
     }
   };
 
   const handleAsOfClick = () => {
+    let IsoDateFormat;
     if (datePickerValue !== null) {
       let dateValue =
         moment().unix() > moment(datePickerValue).unix() &&
@@ -259,20 +312,35 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                 second: moment().second(),
               })
             );
-      dispatch(
-        setFilterCanonizedTopics({
-          asofdate: Date.parse(dateValue) / 1000,
-          asof: "bydate",
-        })
+      IsoDateFormat = Date.parse(dateValue) / 1000;
+    } else {
+      IsoDateFormat = Date.now() / 1000;
+    }
+    if (!router?.query?.asof) {
+      router.push(
+        {
+          pathname: router.pathname,
+          query: { ...router.query, asof: IsoDateFormat },
+        },
+        undefined,
+        { shallow: true }
       );
     } else {
-      dispatch(
-        setFilterCanonizedTopics({
-          asofdate: Date.now() / 1000,
-          asof: "bydate",
-        })
+      router.push(
+        {
+          pathname: router.pathname,
+          query: { ...router.query, asof: IsoDateFormat },
+        },
+        undefined,
+        { shallow: true }
       );
     }
+    dispatch(
+      setFilterCanonizedTopics({
+        asofdate: IsoDateFormat,
+        asof: "bydate",
+      })
+    );
   };
 
   function momentDateObject(e) {
@@ -423,6 +491,26 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                         asofdate: Date.now() / 1000,
                       })
                     );
+
+                    if (!router?.query?.asof) {
+                      router.push(
+                        {
+                          pathname: router.pathname,
+                          query: { ...router.query, asof: "review" },
+                        },
+                        undefined,
+                        { shallow: true }
+                      );
+                    } else {
+                      router.push(
+                        {
+                          pathname: router.pathname,
+                          query: { ...router.query, asof: "review" },
+                        },
+                        undefined,
+                        { shallow: true }
+                      );
+                    }
                   }}
                 >
                   Include review
@@ -438,6 +526,13 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                         asof: "default",
                       })
                     );
+                    if (router?.query?.asof) {
+                      const { pathname, query } = router;
+                      delete router.query.asof;
+                      router.replace({ pathname, query }, undefined, {
+                        shallow: true,
+                      });
+                    }
                   }}
                 >
                   Default
