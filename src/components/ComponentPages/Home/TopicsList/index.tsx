@@ -64,7 +64,7 @@ const TopicsList = () => {
     filterNameSpaceId,
     search,
     is_checked,
-    // is_archive,
+    is_archive,
   } = useSelector((state: RootState) => ({
     canonizedTopics: state.homePage?.canonizedTopicsData,
     asofdate: state.filters?.filterObject?.asofdate,
@@ -77,7 +77,7 @@ const TopicsList = () => {
     filterNameSpaceId: state?.filters?.filterObject?.namespace_id,
     search: state?.filters?.filterObject?.search,
     is_checked: state?.utils?.score_checkbox,
-    // is_archive: state?.filters?.filterObject?.is_archive,
+    is_archive: state?.filters?.filterObject?.is_archive,
   }));
   const { is_camp_archive_checked } = useSelector((state: RootState) => ({
     is_camp_archive_checked: state?.utils?.archived_checkbox,
@@ -179,7 +179,7 @@ const TopicsList = () => {
     // setArchiveSearch(is_archive);
     setInputSearch(search.trim());
     setNameSpacesList(nameSpaces);
-  }, [filterNameSpace, filterNameSpaceId, search, nameSpaces]);
+  }, [filterNameSpace, filterNameSpaceId, search, nameSpaces,is_archive]);
 
   useEffect(() => {
     setTopicsData(canonizedTopics);
@@ -207,7 +207,7 @@ const TopicsList = () => {
     filterByScore,
     inputSearch,
     onlyMyTopicsCheck.current,
-    // is_camp_archive_checked,
+    is_camp_archive_checked,
   ]);
   useEffect(() => {
     if (inputSearch.length > 0 || search.length > 0) {
@@ -237,7 +237,7 @@ const TopicsList = () => {
       filter: filterByScore,
       asof: asof,
       user_email: onlyMyTopicsCheck.current ? userEmail : "",
-      // is_archive: is_camp_archive_checked ? 1 : 0,
+      is_archive: is_camp_archive_checked ? 1 : 0,
     };
     await getCanonizedTopicsApi(reqBody, loadMore);
     setLoadMoreIndicator(false);

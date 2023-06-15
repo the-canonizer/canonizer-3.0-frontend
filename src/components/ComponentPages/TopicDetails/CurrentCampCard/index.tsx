@@ -75,7 +75,7 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }) => {
                   {campRecord && description.key != "camp_about_url"
                     ? campRecord &&
                       (description.key == "is_disabled" ||
-                        description.key == "is_one_level")
+                        description.key == "is_one_level" ||  description.key == "is_archive")
                       ? campRecord[description.key] == 1
                         ? "Yes"
                         : "No"
