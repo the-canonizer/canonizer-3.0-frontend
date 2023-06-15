@@ -1964,7 +1964,7 @@ div[role="option"]::before {
 
 .newsFeedsList {
   list-style-type: square;
-
+  padding-left: 20px;
   li {
     &::marker {
       color: var(--primary);
@@ -2489,5 +2489,10 @@ div[role="option"]::before {
   }
   .ant-tabs-nav-more {
     display: none;
+  }
+}
+.header-none {
+  .ant-collapse-header {
+    display: none !important;
   }
 }

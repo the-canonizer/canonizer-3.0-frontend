@@ -265,6 +265,13 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
           asof: "bydate",
         })
       );
+    } else {
+      dispatch(
+        setFilterCanonizedTopics({
+          asofdate: Date.now() / 1000,
+          asof: "bydate",
+        })
+      );
     }
   };
 

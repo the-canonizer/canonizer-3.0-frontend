@@ -42,7 +42,10 @@ function TimeLine({ setTimelineDescript }) {
 
       if (data && Object.keys(data).length == 1) {
         let a = new Date().getTime() / 1000;
-        data[`asoftime_${Math.round(a)}`] = data[Object.keys(data)[0]];
+        data[`asoftime_${Math.round(a)}`] = {
+          ...data[Object.keys(data)[0]],
+          firstEvent: true,
+        };
       } else if (data && Object.keys(data).length > 1 && asof == "bydate") {
         let sortMockData = Object.keys(data).sort();
         let i = 0;

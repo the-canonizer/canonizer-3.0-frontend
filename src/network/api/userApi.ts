@@ -473,7 +473,7 @@ export const getDirectSupportedCampsList = async () => {
   const { auth } = state;
 
   const res = await NetworkCall.fetch(
-    UserRequest.getDirectSupportedCampsList(auth.loggedInUser.token)
+    UserRequest.getDirectSupportedCampsList(auth?.loggedInUser?.token)
   )
     .then((value) => {
       return value;
@@ -556,7 +556,7 @@ export const getDelegatedSupportCampsList = async () => {
   const { auth } = state;
 
   const res = await NetworkCall.fetch(
-    UserRequest.getDelegatedSupportCampsList(auth.loggedInUser.token)
+    UserRequest.getDelegatedSupportCampsList(auth.loggedInUser?.token)
   )
     .then((value) => {
       return value;
