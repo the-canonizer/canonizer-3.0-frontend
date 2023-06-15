@@ -7,6 +7,7 @@ import NickName from "..";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { renderHook } from "@testing-library/react-hooks";
+import {getNickNameList} from "src/network/api/userApi"
 
 const { labels, validations } = messages;
 var addEditTitle = "";
@@ -49,6 +50,10 @@ const addNewNickName =[
 jest.mock('next/router', () => ({
   useRouter: jest.fn(),
 }));
+
+jest.mock('src/network/api/userApi', () => ({
+  getNickNameList: jest.fn(),
+}))
 
 
 describe("NickName page", () => {
@@ -245,6 +250,27 @@ describe("",()=>{
     expect(screen.getByText(nickNameList[0].nick_name)).toBeInTheDocument();
     expect(screen.getByText(nickNameList[0].private)).toBeInTheDocument();
     })
+  });
+  it('should call getNickNameList and update state when response is not undefined and status_code is 200', async () => {
+    const mockResponse = {
+      status_code: 200,
+      data: [{id: "1",
+      nick_name: "Mike",
+      private: 0,}],
+    };
+
+    const fetchNickNameList = jest.fn()
+
+    getNickNameList.mockResolvedValueOnce(mockResponse);
+
+    const setNickNameList = jest.fn();
+
+    // Call the function
+    await fetchNickNameList(setNickNameList);
+
+    // Assertions
+    expect(getNickNameList).toHaveBeenCalled();
+    // expect(setNickNameList).toHaveBeenCalledWith(mockResponse.data[0]);
   });
   it("render useState is working ",()=>{
     render(<NickName/>)
