@@ -18,16 +18,24 @@ afterEach(cleanup);
 describe("WithoutSidebarLayout", () => {
   test("renders LoggedInHeader when user is authenticated", () => {
     const isUserAuthenticated = true;
-    render(<Provider store={store}><WithoutSidebarLayout isUserAuthenticated={isUserAuthenticated} /></Provider>);
-    
+    render(
+      <Provider store={store}>
+        <WithoutSidebarLayout isUserAuthenticated={isUserAuthenticated} />
+      </Provider>
+    );
+
     const loggedInHeaderElement = screen.getByTestId("loggedInHeader");
     expect(loggedInHeaderElement).toBeInTheDocument();
   });
 
   test("renders LoggedOutHeader when user is not authenticated", () => {
     const isUserAuthenticated = false;
-    render(<Provider store={store}><WithoutSidebarLayout isUserAuthenticated={isUserAuthenticated} /></Provider>);
-    
+    render(
+      <Provider store={store}>
+        <WithoutSidebarLayout isUserAuthenticated={isUserAuthenticated} />
+      </Provider>
+    );
+
     const loggedOutHeaderElement = screen.getByTestId("loggedOutHeader");
     expect(loggedOutHeaderElement).toBeInTheDocument();
   });
@@ -35,16 +43,15 @@ describe("WithoutSidebarLayout", () => {
   test("renders children content", () => {
     const isUserAuthenticated = true;
     const childrenContent = "Test Children Content";
-    render(<Provider store={store}>
-      <WithoutSidebarLayout isUserAuthenticated={isUserAuthenticated}>
-        {childrenContent}
-      </WithoutSidebarLayout>
+    render(
+      <Provider store={store}>
+        <WithoutSidebarLayout isUserAuthenticated={isUserAuthenticated}>
+          {childrenContent}
+        </WithoutSidebarLayout>
       </Provider>
     );
-    
+
     const childrenContentElement = screen.getByText(childrenContent);
     expect(childrenContentElement).toBeInTheDocument();
   });
-
-  
 });
