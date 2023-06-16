@@ -135,7 +135,6 @@ const ManageSupportUI = ({
     // })();
     setIsTagDragged(false);
   }, []);
-
   const isFormValid = async () => {
     const isDropdownValid = await removeForm.validateFields([
       "reason",
@@ -317,7 +316,7 @@ const ManageSupportUI = ({
           currentGetCheckSupportExistsData.remove_camps.length < 0) ||
         unableToFindCamp ? (
           <>
-            <span id="warning" className={styles.warning}>
+            <span data-testId="warning" className={styles.warning}>
               <strong> Warning! </strong>
               {getSupportStatusData || currentGetCheckSupportExistsData.warning}
             </span>
@@ -392,7 +391,7 @@ const ManageSupportUI = ({
                   Quick Actions:
                   <span className={styles.checkbox}>
                     <input
-                      id="checkbox"
+                      data-testId="checkbox"
                       type="checkbox"
                       checked={checked}
                       onClick={(e) => {
@@ -468,6 +467,7 @@ const ManageSupportUI = ({
             )}
 
             {!CheckDelegatedOrDirect && (
+              <div data-testid="support-remove-modal">
               <Card className={styles.support_reason} type="inner">
                 <SupportRemovedModal
                   onFinish={onRemoveFinish}
@@ -477,6 +477,7 @@ const ManageSupportUI = ({
                   isOrderChange={isTagDragged}
                 />
               </Card>
+              </div>
             )}
           </>
         )}
