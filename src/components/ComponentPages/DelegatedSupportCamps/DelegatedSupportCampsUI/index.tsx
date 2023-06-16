@@ -329,7 +329,7 @@ export default function DelegatedSupportCampsUI({
       <Modal
         title={<h3 id="currentSupportedCamps">Current Supported Camps:</h3>}
         footer={null}
-        visible={viewMoreModalVisible}
+        open={viewMoreModalVisible}
         onOk={handelViewMoreModalCancel}
         onCancel={handelViewMoreModalCancel}
         closeIcon={<CloseCircleOutlined />}
