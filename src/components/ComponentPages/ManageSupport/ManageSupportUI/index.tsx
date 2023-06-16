@@ -399,7 +399,7 @@ const ManageSupportUI = ({
                         removeAll((e.target as any).checked, manageSupportList);
                         setRemoveCampsSupport(!removeCampsSupport);
                       }}
-                      onChange={()=>{}}
+                      onChange={() => {}}
                     ></input>
                   </span>
                   <span className={styles.removeAll}>Remove all</span>
