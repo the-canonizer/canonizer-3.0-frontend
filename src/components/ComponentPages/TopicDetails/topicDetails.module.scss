@@ -293,6 +293,15 @@
         [class="ant-descriptions-item-label"] {
           font-weight: 600;
         }
+        & > td {
+          padding-bottom: 10px;
+        }
+
+        &:last-child {
+          & > td {
+            padding-bottom: 0;
+          }
+        }
       }
     }
   }
@@ -307,6 +316,6 @@
   }
 }
 
-.archive_grey{
-  color: #6A6A6A !important;
+.archive_grey {
+  color: #6a6a6a !important;
 }
