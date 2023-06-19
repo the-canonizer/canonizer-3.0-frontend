@@ -13,7 +13,10 @@ describe("campNewsSlice", () => {
 
   it("should handle setCampNewsToEdit", () => {
     const newsToEdit = { id: 1, title: "News Title" };
-    const newState = campNewsReducer(initialState, setCampNewsToEdit(newsToEdit));
+    const newState = campNewsReducer(
+      initialState,
+      setCampNewsToEdit(newsToEdit)
+    );
     expect(newState.campNews.newsToEdit).toEqual(newsToEdit);
   });
 

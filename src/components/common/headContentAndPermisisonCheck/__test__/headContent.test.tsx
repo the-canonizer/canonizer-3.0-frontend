@@ -1,39 +1,39 @@
-import React from 'react';
-import { render } from '@testing-library/react';
-import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
+import React from "react";
+import { render } from "@testing-library/react";
+import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 
-import HeadContentAndPermissionComponent from '../index';
+import HeadContentAndPermissionComponent from "../index";
 
-jest.mock('next/router', () => ({
+jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
 
-jest.mock('react-redux', () => ({
+jest.mock("react-redux", () => ({
   useSelector: jest.fn(),
 }));
 
-describe('HeadContentAndPermissionComponent', () => {
+describe("HeadContentAndPermissionComponent", () => {
   beforeEach(() => {
     useRouter.mockReset();
     useSelector.mockReset();
   });
 
-  test('renders HeadContent component with correct props', () => {
-    const componentName = 'ComponentName';
+  test("renders HeadContent component with correct props", () => {
+    const componentName = "ComponentName";
     const metaContent = {
-      title: 'Page Title',
-      description: 'Page Description',
-      author: 'Page Author',
+      title: "Page Title",
+      description: "Page Description",
+      author: "Page Author",
     };
 
     useRouter.mockReturnValue({
-      asPath: '/path',
+      asPath: "/path",
       push: jest.fn(),
     });
 
     useSelector.mockReturnValue({
-      authToken: 'token',
+      authToken: "token",
     });
 
     const { getByText } = render(
@@ -47,6 +47,4 @@ describe('HeadContentAndPermissionComponent', () => {
     // expect(getByText(metaContent.description)).toBeInTheDocument();
     // expect(getByText(metaContent.author)).toBeInTheDocument();
   });
-
-
 });

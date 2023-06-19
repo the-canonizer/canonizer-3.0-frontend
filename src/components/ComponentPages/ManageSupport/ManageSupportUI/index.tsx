@@ -398,7 +398,7 @@ const ManageSupportUI = ({
                         removeAll((e.target as any).checked, manageSupportList);
                         setRemoveCampsSupport(!removeCampsSupport);
                       }}
-                      onChange={()=>{}}
+                      onChange={() => {}}
                     ></input>
                   </span>
                   <span className={styles.removeAll}>Remove all</span>
@@ -468,15 +468,15 @@ const ManageSupportUI = ({
 
             {!CheckDelegatedOrDirect && (
               <div data-testid="support-remove-modal">
-              <Card className={styles.support_reason} type="inner">
-                <SupportRemovedModal
-                  onFinish={onRemoveFinish}
-                  handleCancel={closePopup}
-                  form={removeForm}
-                  isAdd={true}
-                  isOrderChange={isTagDragged}
-                />
-              </Card>
+                <Card className={styles.support_reason} type="inner">
+                  <SupportRemovedModal
+                    onFinish={onRemoveFinish}
+                    handleCancel={closePopup}
+                    form={removeForm}
+                    isAdd={true}
+                    isOrderChange={isTagDragged}
+                  />
+                </Card>
               </div>
             )}
           </>
