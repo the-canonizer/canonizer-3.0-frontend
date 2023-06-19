@@ -278,14 +278,14 @@ const ManageSupport = () => {
         setSubmitButtonDisable(unavailable_camp ? unavailable_camp : false);
         setGetSupportStatusData(dataValue);
         //if Warning message is show
-        if (resultFilterSupportCamp.length == 0 ) {
+        if (resultFilterSupportCamp.length == 0) {
           let supportOrderLen =
             fiterSupportedCamps.length + manageSupportArr.length + 1;
           //push data into a array of manageSupportArray
           manageSupportArr.push({
             topic_num: parseInt(topicNum),
             camp_num: parseInt(campNum),
-            camp_name:  campRef?.current?.camp_name,
+            camp_name: campRef?.current?.camp_name,
             support_order: supportOrderLen,
             link: campSupportPath,
           });
@@ -312,7 +312,7 @@ const ManageSupport = () => {
             supportedCampsList.push({
               topic_num: parseInt(topicNum),
               camp_num: parseInt(campNum),
-              camp_name:  campRef?.current?.camp_name,
+              camp_name: campRef?.current?.camp_name,
               support_order: supportOrderLen,
               link: campSupportPath,
             });
@@ -320,7 +320,7 @@ const ManageSupport = () => {
             supportedCampsList.push({
               topic_num: parseInt(topicNum),
               camp_num: parseInt(campNum),
-              camp_name:  campRef?.current?.camp_name,
+              camp_name: campRef?.current?.camp_name,
               support_order: supportOrderLen,
               link: campSupportPath,
             });
