@@ -203,6 +203,7 @@
     &.item {
       border: 0;
       padding: 0;
+      
       & + li {
         margin-top: 8px;
       }
@@ -220,7 +221,7 @@
         width: 100%;
         border: solid 1px #f0f0f0;
         background-color: #fff;
-        box-shadow: 3px 3px rgba(63, 79, 91, 8%);
+        // box-shadow: 3px 3px rgba(63, 79, 91, 8%);
         transition: all 0.5s;
         &:hover {
           background-color: #f9f9f9;
