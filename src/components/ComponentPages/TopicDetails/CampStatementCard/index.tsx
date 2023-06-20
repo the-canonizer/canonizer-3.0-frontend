@@ -69,7 +69,11 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }) => {
         </Paragraph>
 
         <div className="topicDetailsCollapseFooter">
-          <CustomButton className="btn-green" id="add-camp-statement-btn">
+          <CustomButton
+            disabled={campRecord.is_archive == 1 ? true : false}
+            className="btn-green"
+            id="add-camp-statement-btn"
+          >
             <Link
               href={
                 history?.items?.length > 0
