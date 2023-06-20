@@ -34,7 +34,7 @@ const CampTree = ({
     is_camp_archive_checked: state?.utils?.archived_checkbox,
   }));
   let childExpandTree = [];
-  let getUrlCampInfo;
+  let urlCampInfo;
   const didMount = useRef(true);
   const [defaultExpandKeys, setDefaultExpandKeys] = useState([]);
   const [uniqueKeys, setUniqueKeys] = useState([]);
@@ -87,21 +87,21 @@ const CampTree = ({
       setShowTree(true);
     }
   };
-  const showSelectedCamp2 = (data, select_camp) => {
+  const getUrlCampInfo = (data, select_camp) => {
     Object?.keys(data).map((item) => {
       if (data[item].children) {
         if (data[item].score >= scoreFilter) {
           if (data[item]?.camp_id == select_camp) {
-            getUrlCampInfo = data[item];
+            urlCampInfo = data[item];
             return;
           }
-          showSelectedCamp2(data[item].children, select_camp);
+          getUrlCampInfo(data[item].children, select_camp);
         } else {
           return null;
         }
       }
       if (data[item]?.camp_id == select_camp) {
-        getUrlCampInfo = data[item];
+        urlCampInfo = data[item];
         return;
       }
     });
@@ -221,20 +221,20 @@ const CampTree = ({
   useEffect(() => {
     if (didMount) {
       tree?.at(0) &&
-        showSelectedCamp2(
+        getUrlCampInfo(
           tree?.at(0),
           +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1)
         );
       if (
         !(
           (tree?.at(0)["1"]?.score * treeExpandValue) / 100 <=
-          getUrlCampInfo?.score
+          urlCampInfo?.score
         )
       ) {
         let expandpercetvalues = [20, 10, 0];
         let a = expandpercetvalues.filter(
           (value) =>
-            (tree?.at(0)["1"]?.score * value) / 100 <= getUrlCampInfo?.score
+            (tree?.at(0)["1"]?.score * value) / 100 <= urlCampInfo?.score
         );
         setTreeExpandValue(a[0]);
       }
