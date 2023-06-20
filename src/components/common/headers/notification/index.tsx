@@ -159,7 +159,7 @@ const Notifications = () => {
             notifications
           </Typography.Title>
           <Typography.Text className={styles.notificationEBTN}>
-            <small>Enable push notification </small>
+            <small data-testid="enable-text">Enable push notification </small>
             {isLoading ? (
               <Spin size="small" />
             ) : (
@@ -186,7 +186,9 @@ const Notifications = () => {
   return (
     <Fragment>
       <Dropdown
-        overlay={notificationDropdown}
+        menu={{}}
+        // overlay={notificationDropdown}
+        dropdownRender={() => notificationDropdown}
         trigger={["click"]}
         placement="bottomRight"
       >
@@ -195,6 +197,7 @@ const Notifications = () => {
           color="orange"
           size="small"
           className={styles.badgeCls}
+          data-testid="clickable"
         >
           <BellOutlined className={styles.bellIcon} />
         </Badge>
