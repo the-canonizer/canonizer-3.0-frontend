@@ -74,28 +74,43 @@ describe("treeSlice", () => {
   });
 
   it("should handle setCampStatement", () => {
-    const newState = treeReducer(initialState, setCampStatement("your camp statement"));
+    const newState = treeReducer(
+      initialState,
+      setCampStatement("your camp statement")
+    );
     expect(newState.campStatement).toEqual("your camp statement");
   });
 
   it("should handle setCampSupportingTree", () => {
-    const newState = treeReducer(initialState, setCampSupportingTree("your camp supporting tree"));
+    const newState = treeReducer(
+      initialState,
+      setCampSupportingTree("your camp supporting tree")
+    );
     expect(newState.campSupportingTree).toEqual("your camp supporting tree");
   });
 
   it("should handle pushToCampSupportingTree", () => {
     const currentState = { ...initialState, campSupportingTree: ["item1"] };
-    const newState = treeReducer(currentState, pushToCampSupportingTree(["item2", "item3"]));
+    const newState = treeReducer(
+      currentState,
+      pushToCampSupportingTree(["item2", "item3"])
+    );
     expect(newState.campSupportingTree).toEqual(["item1", "item2", "item3"]);
   });
 
   it("should handle setCurrentTopicRecord", () => {
-    const newState = treeReducer(initialState, setCurrentTopicRecord("your current topic record"));
+    const newState = treeReducer(
+      initialState,
+      setCurrentTopicRecord("your current topic record")
+    );
     expect(newState.currentTopicRecord).toEqual("your current topic record");
   });
 
   it("should handle setCurrentCampRecord", () => {
-    const newState = treeReducer(initialState, setCurrentCampRecord("your current camp record"));
+    const newState = treeReducer(
+      initialState,
+      setCurrentCampRecord("your current camp record")
+    );
     expect(newState.currentCampRecord).toEqual("your current camp record");
   });
 
@@ -106,24 +121,40 @@ describe("treeSlice", () => {
 
   it("should handle setCurrentTopicRecordSubscriptionId", () => {
     const currentState = { ...initialState, currentTopicRecord: {} };
-    const newState = treeReducer(currentState, setCurrentTopicRecordSubscriptionId("your subscription ID"));
-    expect(newState.currentTopicRecord.topicSubscriptionId).toEqual("your subscription ID");
+    const newState = treeReducer(
+      currentState,
+      setCurrentTopicRecordSubscriptionId("your subscription ID")
+    );
+    expect(newState.currentTopicRecord.topicSubscriptionId).toEqual(
+      "your subscription ID"
+    );
   });
 
   it("should handle setCurrentCampRecordSubscriptionId", () => {
     const currentState = { ...initialState, currentCampRecord: {} };
-    const newState = treeReducer(currentState, setCurrentCampRecordSubscriptionId("your subscription ID"));
-    expect(newState.currentCampRecord.subscriptionId).toEqual("your subscription ID");
+    const newState = treeReducer(
+      currentState,
+      setCurrentCampRecordSubscriptionId("your subscription ID")
+    );
+    expect(newState.currentCampRecord.subscriptionId).toEqual(
+      "your subscription ID"
+    );
   });
 
   it("should handle pushToCampHistory", () => {
     const currentState = { ...initialState, history: { items: ["item1"] } };
-    const newState = treeReducer(currentState, pushToCampHistory(["item2", "item3"]));
+    const newState = treeReducer(
+      currentState,
+      pushToCampHistory(["item2", "item3"])
+    );
     expect(newState.history.items).toEqual(["item1", "item2", "item3"]);
   });
 
   it("should handle setCurrentCheckSupportStatus", () => {
-    const newState = treeReducer(initialState, setCurrentCheckSupportStatus("your support status"));
+    const newState = treeReducer(
+      initialState,
+      setCurrentCheckSupportStatus("your support status")
+    );
     expect(newState.CurrentCheckSupportStatus).toEqual("your support status");
   });
 
@@ -139,22 +170,34 @@ describe("treeSlice", () => {
       message: "Some message",
       disable_submit: false,
     };
-    const newState = treeReducer(initialState, setCheckSupportExistsData(payload));
+    const newState = treeReducer(
+      initialState,
+      setCheckSupportExistsData(payload)
+    );
     expect(newState.currentGetCheckSupportExistsData).toEqual(payload);
   });
 
   it("should handle setManageSupportStatusCheck", () => {
-    const newState = treeReducer(initialState, setManageSupportStatusCheck(true));
+    const newState = treeReducer(
+      initialState,
+      setManageSupportStatusCheck(true)
+    );
     expect(newState.manageSupportStatusCheck).toEqual(true);
   });
 
   it("should handle setManageSupportUrlLink", () => {
-    const newState = treeReducer(initialState, setManageSupportUrlLink("your URL link"));
+    const newState = treeReducer(
+      initialState,
+      setManageSupportUrlLink("your URL link")
+    );
     expect(newState.manageSupportUrlLink).toEqual("your URL link");
   });
 
   it("should handle setRemovedReasons", () => {
-    const newState = treeReducer(initialState, setRemovedReasons("your removed reasons"));
+    const newState = treeReducer(
+      initialState,
+      setRemovedReasons("your removed reasons")
+    );
     expect(newState.removedReasons).toEqual("your removed reasons");
   });
 });

@@ -1,4 +1,3 @@
-
 import { render, cleanup } from "@testing-library/react";
 import Layout from "../index";
 import { Provider } from "react-redux";
@@ -18,7 +17,11 @@ afterEach(cleanup);
 
 describe("Layout", () => {
   it("renders the correct header based on user authentication status", () => {
-    const { container } = render(<Provider store={store}><Layout /></Provider>);
+    const { container } = render(
+      <Provider store={store}>
+        <Layout />
+      </Provider>
+    );
     const loggedInHeader = container.querySelector(".loggedInHeader");
     const loggedOutHeader = container.querySelector(".loggedOutHeader");
     expect(loggedInHeader).toBeDefined();
@@ -28,10 +31,10 @@ describe("Layout", () => {
   it("renders the child components", () => {
     const MockChild = () => <div>Mock Child Component</div>;
     const { getByText } = render(
-        <Provider store={store}>
-      <Layout>
-        <MockChild />
-      </Layout>
+      <Provider store={store}>
+        <Layout>
+          <MockChild />
+        </Layout>
       </Provider>
     );
     const childComponent = getByText("Mock Child Component");

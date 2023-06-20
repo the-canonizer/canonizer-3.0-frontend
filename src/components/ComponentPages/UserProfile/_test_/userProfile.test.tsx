@@ -1,4 +1,9 @@
-import { fireEvent, render, screen, waitFor } from "../../../../utils/testUtils";
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "../../../../utils/testUtils";
 import UserProfileDetails from "../UserProfileDetails/UserProfileDetails";
 import { UserProfileCard } from "../UserProfileDetails/UserProfileCard";
 import messages from "../../../../messages";
@@ -17,25 +22,24 @@ const profileData = {
   country: "country",
 };
 
-
 const userSupportedCampsList = [
   {
     nick_name: "Test Nickname",
-    nick_name_id:123,
-    private_status:0,
+    nick_name_id: 123,
+    private_status: 0,
     topic: [
       {
-        camp_name:"Agreement",
-        namespace_id:1,
-        title_link:"https://www.google.com/",
-        topic_num:12
+        camp_name: "Agreement",
+        namespace_id: 1,
+        title_link: "https://www.google.com/",
+        topic_num: 12,
       },
       {
-        camp_name:"Agreement-2",
-        namespace_id:2,
-        title_link:"https://www.google.com/",
-        topic_num:13
-      }
+        camp_name: "Agreement-2",
+        namespace_id: 2,
+        title_link: "https://www.google.com/",
+        topic_num: 13,
+      },
     ],
   },
 ];
@@ -49,8 +53,8 @@ const nameSpaceList = [
 const nickNameList = [
   {
     nick_name: "ABC",
-    nick_name_id:123,
-    private_status:0,
+    nick_name_id: 123,
+    private_status: 0,
   },
 ];
 
@@ -61,7 +65,7 @@ const onPageChange = jest.fn();
 const dropdownNameSpaceList = "";
 const noData = false;
 
-jest.mock('next/router', () => ({
+jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
 describe("userProfileDetails", () => {
@@ -160,121 +164,145 @@ describe("userProfileCard", () => {
       container.getElementsByClassName("ant-select-selection-search")
     ).toBeTruthy();
   });
-  test('Input component handles user input correctly', () => {
-    render(<UserProfileCard
+  test("Input component handles user input correctly", () => {
+    render(
+      <UserProfileCard
         userSupportedCampsList={userSupportedCampsList}
         nameSpaceList={nameSpaceList}
         dropdownNameSpaceList={dropdownNameSpaceList}
         setDropdownNameSpaceList={() => {}}
         noData={noData}
-      />)
+      />
+    );
     // Render the Input component
     render(<Input />);
-  
+
     // Find the input element
-    const inputElement = screen.getByRole('textbox');
-  
+    const inputElement = screen.getByRole("textbox");
+
     // Simulate user input
-    const userInput = 'Test Input';
+    const userInput = "Test Input";
     fireEvent.change(inputElement, { target: { value: userInput } });
-  
+
     // Assert that the input value is updated
     expect(inputElement.value).toBe(userInput);
   });
 });
 
-describe("User profile",()=>{
+describe("User profile", () => {
   it("render select namespace form dropdown", () => {
-    render(<UserProfile/>);
+    render(<UserProfile />);
     waitFor(async () => {
-
       expect(screen.getByText(nameSpaceList[0].name)).toBeInTheDocument();
-
     });
   });
 
   it("render user supported camp list", () => {
-    render(<UserProfile/>);
+    render(<UserProfile />);
     waitFor(async () => {
-
-      expect(screen.getAllByText(userSupportedCampsList[0].nick_name)).toBeInTheDocument();
-      expect(screen.getAllByText(userSupportedCampsList[0].nick_name_id)).toBeInTheDocument();
-      expect(screen.getAllByText(userSupportedCampsList[0].private_status)).toBeInTheDocument();
-      expect(screen.getAllByText(userSupportedCampsList[0].topic[0].camp_name)).toBeInTheDocument();
-      expect(screen.getAllByText(userSupportedCampsList[0].topic[0].namespace_id)).toBeInTheDocument();
-      expect(screen.getAllByText(userSupportedCampsList[0].topic[0].title_link)).toBeInTheDocument();
-      expect(screen.getAllByText(userSupportedCampsList[0].topic[0].topic_num)).toBeInTheDocument();
-      expect(screen.getAllByText(userSupportedCampsList[0].topic[1].camp_name)).toBeInTheDocument();
-      expect(screen.getAllByText(userSupportedCampsList[0].topic[1].namespace_id)).toBeInTheDocument();
-      expect(screen.getAllByText(userSupportedCampsList[0].topic[1].title_link)).toBeInTheDocument();
-      expect(screen.getAllByText(userSupportedCampsList[0].topic[1].topic_num)).toBeInTheDocument();
+      expect(
+        screen.getAllByText(userSupportedCampsList[0].nick_name)
+      ).toBeInTheDocument();
+      expect(
+        screen.getAllByText(userSupportedCampsList[0].nick_name_id)
+      ).toBeInTheDocument();
+      expect(
+        screen.getAllByText(userSupportedCampsList[0].private_status)
+      ).toBeInTheDocument();
+      expect(
+        screen.getAllByText(userSupportedCampsList[0].topic[0].camp_name)
+      ).toBeInTheDocument();
+      expect(
+        screen.getAllByText(userSupportedCampsList[0].topic[0].namespace_id)
+      ).toBeInTheDocument();
+      expect(
+        screen.getAllByText(userSupportedCampsList[0].topic[0].title_link)
+      ).toBeInTheDocument();
+      expect(
+        screen.getAllByText(userSupportedCampsList[0].topic[0].topic_num)
+      ).toBeInTheDocument();
+      expect(
+        screen.getAllByText(userSupportedCampsList[0].topic[1].camp_name)
+      ).toBeInTheDocument();
+      expect(
+        screen.getAllByText(userSupportedCampsList[0].topic[1].namespace_id)
+      ).toBeInTheDocument();
+      expect(
+        screen.getAllByText(userSupportedCampsList[0].topic[1].title_link)
+      ).toBeInTheDocument();
+      expect(
+        screen.getAllByText(userSupportedCampsList[0].topic[1].topic_num)
+      ).toBeInTheDocument();
     });
   });
 
   it("render select namespace form dropdown", () => {
-    render(<UserProfile/>);
+    render(<UserProfile />);
     waitFor(async () => {
       expect(screen.getByText(nickNameList[0].nick_name)).toBeInTheDocument();
-      expect(screen.getByText(nickNameList[0].nick_name_id)).toBeInTheDocument();
-      expect(screen.getByText(nickNameList[0].private_status)).toBeInTheDocument();
+      expect(
+        screen.getByText(nickNameList[0].nick_name_id)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(nickNameList[0].private_status)
+      ).toBeInTheDocument();
     });
   });
-  it("render useState is working ",()=>{
-    render(<UserProfile/>)
+  it("render useState is working ", () => {
+    render(<UserProfile />);
     const TestComponent = () => {
       const [isActive, setIsActive] = useState(false);
-      
-  
+
       const toggleActive = () => {
         setIsActive(!isActive);
       };
-  
+
       return (
         <div>
-          <p>{isActive ? 'Active' : 'Inactive'}</p>
+          <p>{isActive ? "Active" : "Inactive"}</p>
           <button onClick={toggleActive}>Toggle</button>
         </div>
       );
     };
-  
+
     const { getByText } = render(<TestComponent />);
-  
-    const statusElement = getByText('Inactive');
-    const toggleButton = getByText('Toggle');
-  
-    expect(statusElement.textContent).toBe('Inactive');
-  
+
+    const statusElement = getByText("Inactive");
+    const toggleButton = getByText("Toggle");
+
+    expect(statusElement.textContent).toBe("Inactive");
+
     fireEvent.click(toggleButton);
-  
-    expect(statusElement.textContent).toBe('Active');
-  
+
+    expect(statusElement.textContent).toBe("Active");
+
     fireEvent.click(toggleButton);
-  
-    expect(statusElement.textContent).toBe('Inactive');
+
+    expect(statusElement.textContent).toBe("Inactive");
   });
 
-  it("path is working with use router",()=>{
-    render(<UserProfile/>)
+  it("path is working with use router", () => {
+    render(<UserProfile />);
     const mockedRouter = {
-      pathname: '/about',
+      pathname: "/about",
     };
-  
+
     // Setting up the mocked useRouter implementation
     useRouter.mockImplementation(() => mockedRouter);
-  
+
     const { result } = renderHook(() => useRouter());
-  
-    expect(result.current.pathname).toBe('/about');
-  });
-  it("Message component displays correct content",()=>{
-    render(<UserProfile/>)
-    const messageContent = 'Test message';
 
-  // Render the Message component
-  message.success(messageContent);
-
-  // Assert that the message content is displayed
-  const messageElement = screen.getByText(messageContent);
-  expect(messageElement).toBeInTheDocument();
+    expect(result.current.pathname).toBe("/about");
   });
-})
+  it("Message component displays correct content", () => {
+    render(<UserProfile />);
+    const messageContent = "Test message";
+
+    // Render the Message component
+    message.success(messageContent);
+
+    // Assert that the message content is displayed
+    const messageElement = screen.getByText(messageContent);
+    expect(messageElement).toBeInTheDocument();
+  });
+});

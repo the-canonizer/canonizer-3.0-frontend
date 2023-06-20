@@ -1,4 +1,9 @@
-import { fireEvent, render, screen, waitFor } from "../../../../utils/testUtils";
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "../../../../utils/testUtils";
 import userEvent from "@testing-library/user-event";
 
 import ProfileInfoForm from "../../Form/ProfileInfoForm";
@@ -16,86 +21,84 @@ const onFinishFailed = jest.fn();
 const handleselectAfter = jest.fn();
 const handleAddressChange = jest.fn();
 const handleAddressSelect = jest.fn();
-jest.mock('next/router', () => ({
+jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
 
 const algorithmList = [
   {
-    algorithm_key:"blind_popularity",
-    algorithm_label:"One Person One Vote",
-    id:1,
+    algorithm_key: "blind_popularity",
+    algorithm_label: "One Person One Vote",
+    id: 1,
   },
   {
-    algorithm_key:"mind_experts",
-    algorithm_label:"mind experts",
-    id:2,
+    algorithm_key: "mind_experts",
+    algorithm_label: "mind experts",
+    id: 2,
   },
   {
-    algorithm_key:"computer_science_experts",
-    algorithm_label:"computer science experts",
-    id:3,
+    algorithm_key: "computer_science_experts",
+    algorithm_label: "computer science experts",
+    id: 3,
   },
 ];
 const languageList = [
   {
-    id:1,
-    name:"English"
+    id: 1,
+    name: "English",
   },
   {
-    id:2,
-    name:"French"
+    id: 2,
+    name: "French",
   },
   {
-    id:3,
-    name:"Spain"
+    id: 3,
+    name: "Spain",
   },
-
 ];
 
 const userProfileData = {
-address_1: "sector-102,sudo enclave,florida",
-address_2: "sector-102,sudo enclave,florida",
-birthda: null,
-city: "Florida",
-country: "America",
-country_code: null,
-default_algo: "blind_popularity",
-email: "ABC@talentelgia.in",
-fcm_token: null,
-first_name: "ABC",
-gender: "male",
-id: 1,
-is_active: 1,
-join_time: null,
-language: null,
-last_name: "Rana",
-middle_name: null,
-mobile_carrier: null,
-mobile_verified: 0,
-otp: "",
-phone_number: null,
-postal_code: null,
-private_flags: null,
-state: null,
-status: 1,
-type: "user",
-update_time: null,
-}
+  address_1: "sector-102,sudo enclave,florida",
+  address_2: "sector-102,sudo enclave,florida",
+  birthda: null,
+  city: "Florida",
+  country: "America",
+  country_code: null,
+  default_algo: "blind_popularity",
+  email: "ABC@talentelgia.in",
+  fcm_token: null,
+  first_name: "ABC",
+  gender: "male",
+  id: 1,
+  is_active: 1,
+  join_time: null,
+  language: null,
+  last_name: "Rana",
+  middle_name: null,
+  mobile_carrier: null,
+  mobile_verified: 0,
+  otp: "",
+  phone_number: null,
+  postal_code: null,
+  private_flags: null,
+  state: null,
+  status: 1,
+  type: "user",
+  update_time: null,
+};
 
-const mobileCarrierData =[
+const mobileCarrierData = [
   {
-  carrier_address:"abc@gami.com",
-  id:1,
-  name:"ABC"
-},
-{
-  carrier_address:"def@gami.com",
-  id:2,
-  name:"def"
-}
-
-]
+    carrier_address: "abc@gami.com",
+    id: 1,
+    name: "ABC",
+  },
+  {
+    carrier_address: "def@gami.com",
+    id: 2,
+    name: "def",
+  },
+];
 const address = "";
 const setupGoogleMock = () => {
   /** Mock Google Maps JavaScript API **/
@@ -356,18 +359,22 @@ describe("Profile Info Page", () => {
   });
 });
 
-describe("UserProfile",()=>{
-  it("render algorithim list",()=>{
-    render(<ProfileInfo/>);
+describe("UserProfile", () => {
+  it("render algorithim list", () => {
+    render(<ProfileInfo />);
     waitFor(async () => {
-      expect(screen.getByText(algorithmList[0].algorithm_key)).toBeInTheDocument();
-      expect(screen.getByText(algorithmList[0].algorithm_label)).toBeInTheDocument();
+      expect(
+        screen.getByText(algorithmList[0].algorithm_key)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(algorithmList[0].algorithm_label)
+      ).toBeInTheDocument();
       expect(screen.getByText(algorithmList[0].id)).toBeInTheDocument();
     });
-  })
+  });
 
-  it("render language list",()=>{
-    render(<ProfileInfo/>);
+  it("render language list", () => {
+    render(<ProfileInfo />);
     waitFor(async () => {
       expect(screen.getByText(languageList[0].id)).toBeInTheDocument();
       expect(screen.getByText(languageList[0].name)).toBeInTheDocument();
@@ -376,18 +383,22 @@ describe("UserProfile",()=>{
       expect(screen.getByText(languageList[2].id)).toBeInTheDocument();
       expect(screen.getByText(languageList[2].name)).toBeInTheDocument();
     });
-  })  
+  });
 
-  it("render Profile data",()=>{
-    render(<ProfileInfo/>);
+  it("render Profile data", () => {
+    render(<ProfileInfo />);
     waitFor(async () => {
       expect(screen.getByText(userProfileData.address_1)).toBeInTheDocument();
       expect(screen.getByText(userProfileData.address_2)).toBeInTheDocument();
       expect(screen.getByText(userProfileData.birthda)).toBeInTheDocument();
       expect(screen.getByText(userProfileData.city)).toBeInTheDocument();
       expect(screen.getByText(userProfileData.country)).toBeInTheDocument();
-      expect(screen.getByText(userProfileData.country_code)).toBeInTheDocument();
-      expect(screen.getByText(userProfileData.default_algo)).toBeInTheDocument();
+      expect(
+        screen.getByText(userProfileData.country_code)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(userProfileData.default_algo)
+      ).toBeInTheDocument();
       expect(screen.getByText(userProfileData.email)).toBeInTheDocument();
       expect(screen.getByText(userProfileData.fcm_token)).toBeInTheDocument();
       expect(screen.getByText(userProfileData.first_name)).toBeInTheDocument();
@@ -398,94 +409,99 @@ describe("UserProfile",()=>{
       expect(screen.getByText(userProfileData.language)).toBeInTheDocument();
       expect(screen.getByText(userProfileData.last_name)).toBeInTheDocument();
       expect(screen.getByText(userProfileData.middle_name)).toBeInTheDocument();
-      expect(screen.getByText(userProfileData.mobile_carrier)).toBeInTheDocument();
-      expect(screen.getByText(userProfileData.mobile_verified)).toBeInTheDocument();
+      expect(
+        screen.getByText(userProfileData.mobile_carrier)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(userProfileData.mobile_verified)
+      ).toBeInTheDocument();
       expect(screen.getByText(userProfileData.otp)).toBeInTheDocument();
-      expect(screen.getByText(userProfileData.phone_number)).toBeInTheDocument();
+      expect(
+        screen.getByText(userProfileData.phone_number)
+      ).toBeInTheDocument();
       expect(screen.getByText(userProfileData.postal_code)).toBeInTheDocument();
-      expect(screen.getByText(userProfileData.private_flags)).toBeInTheDocument();
+      expect(
+        screen.getByText(userProfileData.private_flags)
+      ).toBeInTheDocument();
       expect(screen.getByText(userProfileData.state)).toBeInTheDocument();
       expect(screen.getByText(userProfileData.status)).toBeInTheDocument();
       expect(screen.getByText(userProfileData.update_time)).toBeInTheDocument();
       expect(screen.getByText(userProfileData.type)).toBeInTheDocument();
-
-
     });
-  })  
-  it("render mobile carrier data",()=>{
-    render(<ProfileInfo/>);
+  });
+  it("render mobile carrier data", () => {
+    render(<ProfileInfo />);
     waitFor(async () => {
-      expect(screen.getByText(mobileCarrierData[0].carrier_address)).toBeInTheDocument();
+      expect(
+        screen.getByText(mobileCarrierData[0].carrier_address)
+      ).toBeInTheDocument();
       expect(screen.getByText(mobileCarrierData[0].id)).toBeInTheDocument();
       expect(screen.getByText(mobileCarrierData[0].name)).toBeInTheDocument();
-      expect(screen.getByText(mobileCarrierData[1].carrier_address)).toBeInTheDocument();
+      expect(
+        screen.getByText(mobileCarrierData[1].carrier_address)
+      ).toBeInTheDocument();
       expect(screen.getByText(mobileCarrierData[1].id)).toBeInTheDocument();
       expect(screen.getByText(mobileCarrierData[1].name)).toBeInTheDocument();
     });
-  })
-  it("render useState is working ",()=>{
-    render(<ProfileInfo/>)
+  });
+  it("render useState is working ", () => {
+    render(<ProfileInfo />);
     const TestComponent = () => {
       const [isActive, setIsActive] = useState(false);
-      
-  
+
       const toggleActive = () => {
         setIsActive(!isActive);
       };
-  
+
       return (
         <div>
-          <p>{isActive ? 'Active' : 'Inactive'}</p>
+          <p>{isActive ? "Active" : "Inactive"}</p>
           <button onClick={toggleActive}>Toggle</button>
         </div>
       );
     };
-  
+
     const { getByText } = render(<TestComponent />);
-  
-    const statusElement = getByText('Inactive');
-    const toggleButton = getByText('Toggle');
-  
-    expect(statusElement.textContent).toBe('Inactive');
-  
+
+    const statusElement = getByText("Inactive");
+    const toggleButton = getByText("Toggle");
+
+    expect(statusElement.textContent).toBe("Inactive");
+
     fireEvent.click(toggleButton);
-  
-    expect(statusElement.textContent).toBe('Active');
-  
+
+    expect(statusElement.textContent).toBe("Active");
+
     fireEvent.click(toggleButton);
-  
-    expect(statusElement.textContent).toBe('Inactive');
+
+    expect(statusElement.textContent).toBe("Inactive");
   });
 
-  it("path is working with use router",()=>{
-    render(<ProfileInfo/>)
+  it("path is working with use router", () => {
+    render(<ProfileInfo />);
     const mockedRouter = {
-      pathname: '/about',
+      pathname: "/about",
     };
-  
+
     // Setting up the mocked useRouter implementation
     useRouter.mockImplementation(() => mockedRouter);
-  
+
     const { result } = renderHook(() => useRouter());
-  
-    expect(result.current.pathname).toBe('/about');
+
+    expect(result.current.pathname).toBe("/about");
   });
-  test('Input component handles user input correctly', () => {
+  test("Input component handles user input correctly", () => {
     // Render the Input component
     render(<Input />);
-  
+
     // Find the input element
-    const inputElement = screen.getByRole('textbox');
-  
+    const inputElement = screen.getByRole("textbox");
+
     // Simulate user input
-    const userInput = 'Test Input';
+    const userInput = "Test Input";
     fireEvent.change(inputElement, { target: { value: userInput } });
-  
+
     // Assert that the input value is updated
     expect(inputElement.value).toBe(userInput);
   });
-})
-
-
-
-
+});

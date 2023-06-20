@@ -14,7 +14,7 @@
 //     camp_name:"",
 //     camp_num: 0,
 //     direct_archive:0,
-//     flag:0, 
+//     flag:0,
 //     go_live_time: 1685597186,
 //     // is_archive: 0,
 //     is_disabled:0,
@@ -31,7 +31,7 @@
 //   jest.mock('next/router', () => ({
 //     useRouter: jest.fn(),
 //   }));
-  
+
 // describe("ArchiveCampMsg",()=>{
 //     it("render camp record",()=>{
 //         render(<ArchivedCampMsg/>)
@@ -60,12 +60,12 @@
 //         const mockedRouter = {
 //           pathname: '/about',
 //         };
-      
+
 //         // Setting up the mocked useRouter implementation
 //         useRouter.mockImplementation(() => mockedRouter);
-      
+
 //         const { result } = renderHook(() => useRouter());
-      
+
 //         expect(result.current.pathname).toBe('/about');
 //       });
 
@@ -74,16 +74,16 @@
 //          )
 //         const title = 'Test Card Title';
 //         const content = 'Test Card Content';
-      
+
 //         render(
 //           <Card title={title}>
 //             <p>{content}</p>
 //           </Card>
 //         );
-      
+
 //         const cardTitle = screen.getByText(title);
 //         const cardContent = screen.getByText(content);
-      
+
 //         expect(cardTitle).toBeInTheDocument();
 //         expect(cardContent).toBeInTheDocument();
 //       });

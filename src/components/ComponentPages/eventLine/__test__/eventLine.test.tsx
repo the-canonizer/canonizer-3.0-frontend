@@ -15,11 +15,10 @@ jest.mock("next/router", () => ({
     return {
       route: "/",
       pathname: "",
-      query: {camp: ['1-agreement'], 
-    },
+      query: { camp: ["1-agreement"] },
       asPath: "",
       push: jest.fn(),
-      mockReset:jest.fn(),
+      mockReset: jest.fn(),
       events: {
         on: jest.fn(),
         off: jest.fn(),
@@ -31,15 +30,15 @@ jest.mock("next/router", () => ({
 }));
 
 describe("TopicDetails component", () => {
- 
-
   test("renders TopicDetails component", () => {
-  
-
     // Render the component
-    const { getByText } = render(<Provider store={store}> <TopicDetails /></Provider>);
+    const { getByText } = render(
+      <Provider store={store}>
+        {" "}
+        <TopicDetails />
+      </Provider>
+    );
 
     expect(getByText("Canonizer Sorted Camp Race")).toBeInTheDocument();
   });
-
 });
