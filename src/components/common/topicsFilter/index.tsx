@@ -32,12 +32,7 @@ import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 // import { showCreateCampButton } from "src/utils/generalUtility";
 import FullScoreCheckbox from "../../ComponentPages/FullScoreCheckbox";
 import useAuthentication from "src/hooks/isUserAuthenticated";
-<<<<<<< HEAD
-import { log } from "console";
-// import ArchivedCampCheckBox from "../../ComponentPages/ArchivedCampCheckBox";
-=======
 import ArchivedCampCheckBox from "src/components/ComponentPages/ArchivedCampCheckBox";
->>>>>>> 1893c2ce3133e25216dbf9dbe4c07272e72dcaec
 
 const infoContent = (
   <>
