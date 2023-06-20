@@ -16,14 +16,14 @@ import CustomSkelton from "../../../common/customSkelton";
 
 const { Panel } = Collapse;
 
-const validUrl = (url) =>{
+const validUrl = (url) => {
   try {
     new URL(url);
     return true;
   } catch (error) {
     return false;
   }
-}
+};
 
 const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }) => {
   const router = useRouter();
@@ -75,7 +75,8 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }) => {
                   {campRecord && description.key != "camp_about_url"
                     ? campRecord &&
                       (description.key == "is_disabled" ||
-                        description.key == "is_one_level")
+                        description.key == "is_one_level" ||
+                        description.key == "is_archive")
                       ? campRecord[description.key] == 1
                         ? "Yes"
                         : "No"
@@ -108,7 +109,8 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }) => {
                           description.key == "submit_time")
                       ? covertToTime(campRecord[description.key])
                       : campRecord[description.key]
-                    : campRecord && validUrl(campRecord[description.key]) && (
+                    : campRecord &&
+                      validUrl(campRecord[description.key]) && (
                         <a
                           href={campRecord[description.key]}
                           target="_blank"

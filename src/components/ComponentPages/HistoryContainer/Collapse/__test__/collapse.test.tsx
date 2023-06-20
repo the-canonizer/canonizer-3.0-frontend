@@ -77,7 +77,7 @@ describe("HistoryCollapse component", () => {
         {" "}
         <HistoryCollapse
           campStatement={inReviewCampStatement}
-        topicNamespaceId={1}
+          topicNamespaceId={1}
         />
       </Provider>
     );

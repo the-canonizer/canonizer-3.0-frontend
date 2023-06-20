@@ -4,7 +4,7 @@ import GenerateScript from "../";
 
 describe("Generate Script Component", () => {
   it("check social login links and text exists in page", async () => {
-    render(<GenerateScript isNotLogin={false} />);
+    render(<GenerateScript topic_num={undefined} camp_num={undefined} />);
     await waitFor(() => {
       expect(screen.getByText("Generate Script")).toBeInTheDocument();
       expect(screen.getByText("Copy Script")).toBeInTheDocument();

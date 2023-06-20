@@ -32,8 +32,12 @@ import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 // import { showCreateCampButton } from "src/utils/generalUtility";
 import FullScoreCheckbox from "../../ComponentPages/FullScoreCheckbox";
 import useAuthentication from "src/hooks/isUserAuthenticated";
+<<<<<<< HEAD
 import { log } from "console";
 // import ArchivedCampCheckBox from "../../ComponentPages/ArchivedCampCheckBox";
+=======
+import ArchivedCampCheckBox from "src/components/ComponentPages/ArchivedCampCheckBox";
+>>>>>>> 1893c2ce3133e25216dbf9dbe4c07272e72dcaec
 
 const infoContent = (
   <>
@@ -355,7 +359,8 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
           </Button>
           {isCampBtnVisible &&
           currentCampNode?._isDisabled == 0 &&
-          currentCampNode?.parentIsOneLevel == 0 ? (
+          currentCampNode?.parentIsOneLevel == 0 &&
+          campRecord?.is_archive == 0 ? (
             <Tooltip
               title={
                 tree && !tree["1"]?.is_valid_as_of_time
@@ -461,9 +466,9 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
               <FullScoreCheckbox />
             </div>
 
-            {/* <div className={styles.scoreCheckbox}>
+            <div className={styles.scoreCheckbox}>
               <ArchivedCampCheckBox />
-            </div> */}
+            </div>
           </Panel>
           <Panel
             className={`header-bg-color-change radio-group-sider ${selectedAsOf}`}
