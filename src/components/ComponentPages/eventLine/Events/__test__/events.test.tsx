@@ -25,7 +25,7 @@ describe("Should render Addnews", () => {
   it("Render without crash", async () => {
     const { container } = render(
       <Provider store={store}>
-      <Events timelineDescript={[{ message: "latest timeline created" }]} />
+        <Events timelineDescript={[{ message: "latest timeline created" }]} />
       </Provider>
     );
     const titleElement = screen.getByText("Events");

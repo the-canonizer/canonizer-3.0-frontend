@@ -1,13 +1,18 @@
 import React from "react";
-import { render, fireEvent, screen, waitFor, cleanup } from "@testing-library/react";
+import {
+  render,
+  fireEvent,
+  screen,
+  waitFor,
+  cleanup,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import AddOrManage from "../index";
 import { Provider } from "react-redux";
 import { store } from "src/store";
 
-  import { NextRouter } from "next/router";
+import { NextRouter } from "next/router";
 import { RouterContext } from "next/dist/shared/lib/router-context";
-
 
 window.matchMedia =
   window.matchMedia ||
@@ -18,7 +23,6 @@ window.matchMedia =
       removeListener: function () {},
     };
   };
-
 
 function createMockRouter(router: Partial<NextRouter>): NextRouter {
   return {
@@ -52,27 +56,43 @@ afterEach(cleanup);
 
 // Mock the API functions used in the component
 jest.mock("../../../../../network/api/campDetailApi", () => ({
-  getAllUsedNickNames: jest.fn(() => Promise.resolve({ status_code: 200, data: [] })),
-  getAllParentsCamp: jest.fn(() => Promise.resolve({ status_code: 200, data: [] })),
-  getAllCampNickNames: jest.fn(() => Promise.resolve({ status_code: 200, data: [] })),
-  getCurrentTopicRecordApi: jest.fn(() => Promise.resolve({ status_code: 200, data: {} })),
+  getAllUsedNickNames: jest.fn(() =>
+    Promise.resolve({ status_code: 200, data: [] })
+  ),
+  getAllParentsCamp: jest.fn(() =>
+    Promise.resolve({ status_code: 200, data: [] })
+  ),
+  getAllCampNickNames: jest.fn(() =>
+    Promise.resolve({ status_code: 200, data: [] })
+  ),
+  getCurrentTopicRecordApi: jest.fn(() =>
+    Promise.resolve({ status_code: 200, data: {} })
+  ),
 }));
 jest.mock("../../../../../network/api/campManageStatementApi", () => ({
-  getEditStatementApi: jest.fn(() => Promise.resolve({ status_code: 200, data: {} })),
-  getEditCampApi: jest.fn(() => Promise.resolve({ status_code: 200, data: {} })),
-  getEditTopicApi: jest.fn(() => Promise.resolve({ status_code: 200, data: {} })),
+  getEditStatementApi: jest.fn(() =>
+    Promise.resolve({ status_code: 200, data: {} })
+  ),
+  getEditCampApi: jest.fn(() =>
+    Promise.resolve({ status_code: 200, data: {} })
+  ),
+  getEditTopicApi: jest.fn(() =>
+    Promise.resolve({ status_code: 200, data: {} })
+  ),
   updateStatementApi: jest.fn(() => Promise.resolve({ status_code: 200 })),
   updateTopicApi: jest.fn(() => Promise.resolve({ status_code: 200 })),
   updateCampApi: jest.fn(() => Promise.resolve({ status_code: 200 })),
 }));
 jest.mock("../../../../../network/api/homePageApi", () => ({
-  getCanonizedNameSpacesApi: jest.fn(() => Promise.resolve({ status_code: 200, data: [] })),
+  getCanonizedNameSpacesApi: jest.fn(() =>
+    Promise.resolve({ status_code: 200, data: [] })
+  ),
 }));
 
 describe("AddOrManage component", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-     jest.mock("../../../../../network/api/campDetailApi", () => ({
+    jest.mock("../../../../../network/api/campDetailApi", () => ({
       getAllUsedNickNames: jest.fn(() => Promise.resolve({ status_code: 200 })),
       getAllParentsCamp: jest.fn(() => Promise.resolve({ status_code: 200 })),
       getAllCampNickNames: jest.fn(() => Promise.resolve({ status_code: 200 })),
@@ -88,21 +108,30 @@ describe("AddOrManage component", () => {
   });
 
   test("renders AddOrManage component", () => {
-    render(<Provider store={store}> <AddOrManage add={true} /></Provider>);
-  
-   
+    render(
+      <Provider store={store}>
+        {" "}
+        <AddOrManage add={true} />
+      </Provider>
+    );
   });
 
   test("submits the form with valid data", async () => {
-    render(<Provider store={store}> <AddOrManage add={true} /></Provider>);
-  
-
+    render(
+      <Provider store={store}>
+        {" "}
+        <AddOrManage add={true} />
+      </Provider>
+    );
   });
 
   test("displays an error message for invalid data", async () => {
-    render(<Provider store={store}> <AddOrManage add={true} /></Provider>);
-  
-   
+    render(
+      <Provider store={store}>
+        {" "}
+        <AddOrManage add={true} />
+      </Provider>
+    );
   });
   it("Render without crash", async () => {
     const { container } = await render(
@@ -144,9 +173,3 @@ describe("AddOrManage component", () => {
     });
   });
 });
-
-
-
-
-
-

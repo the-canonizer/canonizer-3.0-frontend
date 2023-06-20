@@ -1,8 +1,8 @@
-import React from 'react';
-import { cleanup, render, screen } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import TopicsList from '../index';
-import { store } from 'src/store';
+import React from "react";
+import { cleanup, render, screen } from "@testing-library/react";
+import { Provider } from "react-redux";
+import TopicsList from "../index";
+import { store } from "src/store";
 
 window.matchMedia =
   window.matchMedia ||
@@ -16,8 +16,7 @@ window.matchMedia =
 
 afterEach(cleanup);
 
-
-describe('TopicsList', () => {
+describe("TopicsList", () => {
   beforeEach(() => {
     render(
       <Provider store={store}>
@@ -26,12 +25,8 @@ describe('TopicsList', () => {
     );
   });
 
-  test('renders select canon title', () => {
-    const selectCanonTitle = screen.getByText('Select Canon');
+  test("renders select canon title", () => {
+    const selectCanonTitle = screen.getByText("Select Canon");
     expect(selectCanonTitle).toBeInTheDocument();
   });
-
- 
-
-  
 });

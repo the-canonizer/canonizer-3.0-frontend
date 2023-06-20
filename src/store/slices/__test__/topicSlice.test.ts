@@ -1,4 +1,7 @@
-import topicReducer, { setCurrentTopic, resetCurrentTopic } from "../topicSlice"; // Replace with the path to your slice file
+import topicReducer, {
+  setCurrentTopic,
+  resetCurrentTopic,
+} from "../topicSlice"; // Replace with the path to your slice file
 
 describe("topicSlice", () => {
   let initialState;

@@ -28,14 +28,20 @@ describe("recentActivitiesSlice", () => {
       items: [{ id: 1, title: "Topic 1" }],
       last_page: 1,
     };
-    const newState = recentActivitiesReducer(initialState, setTopics(topicsPayload));
+    const newState = recentActivitiesReducer(
+      initialState,
+      setTopics(topicsPayload)
+    );
     expect(newState.topicsData.topics).toEqual(topicsPayload.items);
     expect(newState.topicsData.numOfPages).toEqual(topicsPayload.last_page);
   });
 
   it("should handle pushToTopics", () => {
     const existingTopics = [{ id: 1, title: "Topic 1" }];
-    const newTopics = [{ id: 2, title: "Topic 2" }, { id: 3, title: "Topic 3" }];
+    const newTopics = [
+      { id: 2, title: "Topic 2" },
+      { id: 3, title: "Topic 3" },
+    ];
     const topicsPayload = {
       items: newTopics,
     };
@@ -46,8 +52,14 @@ describe("recentActivitiesSlice", () => {
         numOfPages: 1,
       },
     };
-    const newState = recentActivitiesReducer(initialStateWithTopics, pushToTopics(topicsPayload));
-    expect(newState.topicsData.topics).toEqual([...existingTopics, ...newTopics]);
+    const newState = recentActivitiesReducer(
+      initialStateWithTopics,
+      pushToTopics(topicsPayload)
+    );
+    expect(newState.topicsData.topics).toEqual([
+      ...existingTopics,
+      ...newTopics,
+    ]);
   });
 
   it("should handle setThreads", () => {
@@ -55,14 +67,20 @@ describe("recentActivitiesSlice", () => {
       items: [{ id: 1, title: "Thread 1" }],
       last_page: 1,
     };
-    const newState = recentActivitiesReducer(initialState, setThreads(threadsPayload));
+    const newState = recentActivitiesReducer(
+      initialState,
+      setThreads(threadsPayload)
+    );
     expect(newState.threadsData.topics).toEqual(threadsPayload.items);
     expect(newState.threadsData.numOfPages).toEqual(threadsPayload.last_page);
   });
 
   it("should handle pushToThreads", () => {
     const existingThreads = [{ id: 1, title: "Thread 1" }];
-    const newThreads = [{ id: 2, title: "Thread 2" }, { id: 3, title: "Thread 3" }];
+    const newThreads = [
+      { id: 2, title: "Thread 2" },
+      { id: 3, title: "Thread 3" },
+    ];
     const threadsPayload = {
       items: newThreads,
     };
@@ -73,13 +91,22 @@ describe("recentActivitiesSlice", () => {
         numOfPages: 1,
       },
     };
-    const newState = recentActivitiesReducer(initialStateWithThreads, pushToThreads(threadsPayload));
-    expect(newState.threadsData.topics).toEqual([...existingThreads, ...newThreads]);
+    const newState = recentActivitiesReducer(
+      initialStateWithThreads,
+      pushToThreads(threadsPayload)
+    );
+    expect(newState.threadsData.topics).toEqual([
+      ...existingThreads,
+      ...newThreads,
+    ]);
   });
 
   it("should handle setIsChecked", () => {
     const isChecked = true;
-    const newState = recentActivitiesReducer(initialState, setIsChecked(isChecked));
+    const newState = recentActivitiesReducer(
+      initialState,
+      setIsChecked(isChecked)
+    );
     expect(newState.isCheckedAllRecent).toEqual(isChecked);
   });
 });

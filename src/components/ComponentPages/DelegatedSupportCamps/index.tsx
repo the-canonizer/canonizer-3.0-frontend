@@ -82,8 +82,8 @@ const DelegatedSupportCamps = ({ search }: any) => {
   useEffect(() => {
     return () => {
       setDelegatedSupportCampsList(null);
-    }
-}, []);
+    };
+  }, []);
 
   return (
     <DelegatedSupportCampsUI
