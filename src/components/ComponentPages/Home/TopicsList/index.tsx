@@ -13,7 +13,7 @@ import {
 import { setFilterCanonizedTopics } from "../../../../store/slices/filtersSlice";
 import styles from "./topicsList.module.scss";
 import { Spin, Checkbox } from "antd";
-import { LoadingOutlined, RightOutlined } from "@ant-design/icons";
+import { LoadingOutlined, CopyOutlined } from "@ant-design/icons";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import {
   setCheckSupportExistsData,
@@ -28,7 +28,7 @@ import CustomSkelton from "../../../common/customSkelton";
 import { CloseCircleOutlined } from "@ant-design/icons";
 
 const antIcon = <LoadingOutlined spin />;
-const { Title, Text } = Typography;
+const { Title, Text, Paragraph } = Typography;
 const { Search } = Input;
 
 const infoContent = (
@@ -390,58 +390,80 @@ const TopicsList = () => {
             ) : (
               <List.Item className={styles.item} id={`topic-${item?.topic_id}`}>
                 <>
-                  <Link
-                    href={{
-                      pathname: `/topic/${
-                        item?.topic_id
-                      }-${replaceSpecialCharacters(
-                        isReview
-                          ? item?.tree_structure &&
-                              item?.tree_structure[1]?.review_title
-                          : item?.topic_name,
-                        "-"
-                      )}/1-Agreement`,
+                  <span>
+                    <Link
+                      href={{
+                        pathname: `/topic/${
+                          item?.topic_id
+                        }-${replaceSpecialCharacters(
+                          isReview
+                            ? item?.tree_structure &&
+                                item?.tree_structure[1]?.review_title
+                            : item?.topic_name,
+                          "-"
+                        )}/1-Agreement`,
+                      }}
+                    >
+                      {!item.is_archive ||
+                      (item.is_archive && is_camp_archive_checked) ? (
+                        <a
+                          onClick={() => {
+                            handleTopicClick();
+                          }}
+                        >
+                          <Text
+                            className={
+                              item.is_archive
+                                ? `font-weight-bold ${styles.archive_topic}`
+                                : styles.text
+                            }
+                          >
+                            {item.is_archive ? (
+                              <Popover content="Archived Topic">
+                                {isReview
+                                  ? item?.tree_structure &&
+                                    item?.tree_structure[1].review_title
+                                  : item?.topic_name}
+                              </Popover>
+                            ) : isReview ? (
+                              item?.tree_structure &&
+                              item?.tree_structure[1].review_title
+                            ) : (
+                              item?.topic_name
+                            )}
+                          </Text>
+                        </a>
+                      ) : (
+                        <></>
+                      )}
+                    </Link>
+                    <Tag className={styles.tag}>
+                      {/* // ? item?.topic_full_score // : item?.full_score?.toFixed(2) */}
+                      {is_checked
+                        ? item?.topic_full_score?.toFixed(2)
+                        : item?.topic_score?.toFixed(2)}
+                    </Tag>
+                  </span>
+                  <Paragraph
+                    className={styles.copyable}
+                    copyable={{
+                      text: item.is_archive ? (
+                        <Popover content="Archived Topic">
+                          {isReview
+                            ? item?.tree_structure &&
+                              item?.tree_structure[1].review_title
+                            : item?.topic_name}
+                        </Popover>
+                      ) : isReview ? (
+                        item?.tree_structure &&
+                        item?.tree_structure[1].review_title
+                      ) : (
+                        item?.topic_name
+                      ),
                     }}
                   >
-                    {!item.is_archive ||
-                    (item.is_archive && is_camp_archive_checked) ? (
-                      <a
-                        onClick={() => {
-                          handleTopicClick();
-                        }}
-                      >
-                        <Text
-                          className={
-                            item.is_archive
-                              ? `font-weight-bold ${styles.archive_topic}`
-                              : styles.text
-                          }
-                        >
-                          {item.is_archive ? (
-                            <Popover content="Archived Topic">
-                              {isReview
-                                ? item?.tree_structure &&
-                                  item?.tree_structure[1].review_title
-                                : item?.topic_name}
-                            </Popover>
-                          ) : isReview ? (
-                            item?.tree_structure &&
-                            item?.tree_structure[1].review_title
-                          ) : (
-                            item?.topic_name
-                          )}
-                        </Text>
-                        <Tag className={styles.tag}>
-                          {/* // ? item?.topic_full_score // : item?.full_score?.toFixed(2) */}
-                          {is_checked
-                            ? item?.topic_full_score?.toFixed(2)
-                            : item?.topic_score?.toFixed(2)}
-                        </Tag>
-                      </a>
-                    ) : (
-                      <></>
-                    )}
-                  </Link>
+                    {" "}
+                  </Paragraph>
                 </>
               </List.Item>
             );

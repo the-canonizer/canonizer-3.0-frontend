@@ -11,9 +11,7 @@
       height: calc(100% - 160px);
     }
   }
-
 }
-
 
 .wrap {
   border: none;
@@ -202,7 +200,34 @@
   li {
     &.item {
       border: 0;
-      padding: 0;
+      // padding: 0;
+      display: flex;
+      align-items: center;
+      padding-top: 8px;
+      padding-bottom: 8px;
+      font-size: 14px;
+      line-height: 21px;
+      width: 100%;
+      border: solid 1px #f0f0f0;
+      background-color: #fff;
+      box-shadow: 3px 3px rgba(63, 79, 91, 8%);
+      transition: all 0.5s;
+      &:hover {
+        background-color: #f9f9f9;
+      }
+      .copyable {
+        margin-bottom: 0;
+        font-size: 1rem;
+      }
+      @media screen and (min-width: 768px) {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+      @media screen and (max-width: 767px) {
+        justify-content: space-between;
+        padding-left: 15px;
+        padding-right: 15px;
+      }
       & + li {
         margin-top: 8px;
       }
@@ -210,33 +235,9 @@
         // font-size: 1rem;
       }
       a {
-        display: flex;
-        align-items: center;
-        padding-top: 8px;
-        padding-bottom: 8px;
         color: #0f2a4d;
-        font-size: 14px;
-        line-height: 21px;
-        width: 100%;
-        border: solid 1px #f0f0f0;
-        background-color: #fff;
-        box-shadow: 3px 3px rgba(63, 79, 91, 8%);
-        transition: all 0.5s;
-        &:hover {
-          background-color: #f9f9f9;
-        }
-        @media screen and (min-width: 768px) {
-          padding-left: 20px;
-          padding-right: 20px;
-        }
-        @media screen and (max-width: 767px) {
-          justify-content: space-between;
-          padding-left: 15px;
-          padding-right: 15px;
-        }
       }
       .text {
-        padding-right: 12px;
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
@@ -251,6 +252,7 @@
         color: #fff;
         border: none;
         background-color: #f89d15;
+        margin-left: 12px;
       }
       &:last-child {
         border-bottom: none !important;
@@ -298,7 +300,7 @@
 .namespacesPopover {
   max-width: 350px;
 }
-.archive_topic{
+.archive_topic {
   padding-right: 12px;
-  color: #6A6A6A;
+  color: #6a6a6a;
 }
