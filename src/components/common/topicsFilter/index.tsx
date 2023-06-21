@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import moment from "moment";
 import {
   Typography,
@@ -106,6 +106,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
 
   const {
     algorithms,
+    filterObject,
     filteredScore,
     selectedAlgorithm,
     selectedAsOf,
@@ -117,6 +118,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
     campExist,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
+    filterObject: state?.filters?.filterObject,
     filteredScore: state?.filters?.filterObject?.filterByScore,
     selectedAlgorithm: state?.filters?.filterObject?.algorithm,
     selectedAsOf: state?.filters?.filterObject?.asof,
@@ -137,26 +139,42 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   const [timer, setTimer] = useState(null);
   const [inputValue, setInputValue] = useState(filteredScore);
   const [isLoading, setIsLoading] = useState(loading);
+  const didMount = useRef(false);
 
   // /////////////////////////////////////////////////////////////////////////
   // Discussion required on this functionality after that I will remove or //
   //                        uncomment bellow code                         //
   // //////////////////////////////////////////////////////////////////////
 
-  // useEffect(() => {
-  //   if (didMount.current) {
-  //     if (history.pushState) {
-  //       const queryParams = `?filter=${filterObject?.filterByScore}&algorithm=${filterObject?.algorithm}&asofdate=${filterObject?.asofdate}&canon=${filterObject?.namespace_id}`;
-  //       var newurl =
-  //         window.location.protocol +
-  //         "//" +
-  //         window.location.host +
-  //         window.location.pathname +
-  //         queryParams;
-  //       window.history.pushState({ path: newurl }, "", newurl);
-  //     }
-  //   } else didMount.current = true;
-  // }, [filterObject]);
+  useEffect(() => {
+    if (didMount.current) {
+      console.log("first", router.query);
+      debugger;
+      if (history.pushState) {
+        const queryParams = `?score=${filterObject?.filterByScore}&algo=${filterObject?.algorithm}&asofdate=${filterObject?.asofdate}&canon=${filterObject?.namespace_id}`;
+        var newurl =
+          window.location.protocol +
+          "//" +
+          window.location.host +
+          window.location.pathname +
+          queryParams;
+        window.history.pushState({ path: newurl }, "", newurl);
+      }
+    } else {
+      console.log("second", router.query);
+      debugger;
+      dispatch(
+        setFilterCanonizedTopics({
+          filterByScore: router.query.score,
+          asofdate: router.query.asofdate,
+          asof: "bydate",
+          algorithm: router.query.algo,
+          namespace_id: router.query.canon,
+        })
+      );
+      didMount.current = true;
+    }
+  }, [filterObject]);
 
   useEffect(() => {
     setIsLoading(loading);
