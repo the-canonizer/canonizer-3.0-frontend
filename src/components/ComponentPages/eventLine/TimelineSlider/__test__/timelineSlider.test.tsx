@@ -157,20 +157,7 @@ describe("TimelineSlider", () => {
     // expect(setIteration).toHaveBeenCalledWith(1);
     // expect(handleEventSelection).toHaveBeenCalledWith(1);
   });
-
 });
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import React from "react";
 // import {

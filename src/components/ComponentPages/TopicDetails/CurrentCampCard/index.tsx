@@ -16,6 +16,15 @@ import CustomSkelton from "../../../common/customSkelton";
 
 const { Panel } = Collapse;
 
+const validUrl = (url) => {
+  try {
+    new URL(url);
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
+
 const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }) => {
   const router = useRouter();
   const { campRecord, topicRecord, history } = useSelector(
@@ -63,7 +72,6 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }) => {
                   label={description.label}
                   key={description.key}
                 >
-                  {console.log(campRecord, "[campRecord]")}
                   {campRecord && description.key != "camp_about_url"
                     ? campRecord &&
                       (description.key == "is_disabled" ||
@@ -101,7 +109,8 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }) => {
                           description.key == "submit_time")
                       ? covertToTime(campRecord[description.key])
                       : campRecord[description.key]
-                    : campRecord && (
+                    : campRecord &&
+                      validUrl(campRecord[description.key]) && (
                         <a
                           href={campRecord[description.key]}
                           target="_blank"

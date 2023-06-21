@@ -15,6 +15,15 @@ import { changeSlashToArrow } from "src/utils/generalUtility";
 
 const { Title, Text, Paragraph } = Typography;
 
+const validUrl = (url) => {
+  try {
+    new URL(url);
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
+
 function CompareStatementUI({
   statements,
   isLoading,
@@ -154,9 +163,11 @@ function CompareStatementUI({
                         <Paragraph>
                           <Text strong>Camp About URL : </Text>
                           <Text>
-                            <Link href={s1?.camp_about_url || ""}>
-                              <a>{s1?.camp_about_url}</a>
-                            </Link>
+                            {validUrl(s1?.camp_about_url) ? (
+                              <Link href={s1?.camp_about_url || ""}>
+                                <a>{s1?.camp_about_url}</a>
+                              </Link>
+                            ) : null}
                           </Text>
                         </Paragraph>
                         <Paragraph>
@@ -275,9 +286,11 @@ function CompareStatementUI({
                         <Paragraph>
                           <Text strong>Camp About URL : </Text>
                           <Text>
-                            <Link href={s2?.camp_about_url || ""}>
-                              <a>{s2?.camp_about_url}</a>
-                            </Link>
+                            {validUrl(s2?.camp_about_url) ? (
+                              <Link href={s2?.camp_about_url || ""}>
+                                <a>{s2?.camp_about_url}</a>
+                              </Link>
+                            ) : null}
                           </Text>
                         </Paragraph>
                         <Paragraph>
@@ -422,9 +435,11 @@ function CompareStatementUI({
                         <Paragraph>
                           <Text strong>Camp About URL : </Text>
                           <Text>
-                            <Link href={liveStatement?.camp_about_url || ""}>
-                              <a>{liveStatement?.camp_about_url}</a>
-                            </Link>
+                            {validUrl(liveStatement?.camp_about_url) ? (
+                              <Link href={liveStatement?.camp_about_url || ""}>
+                                <a>{liveStatement?.camp_about_url}</a>
+                              </Link>
+                            ) : null}
                           </Text>
                         </Paragraph>
                         <Paragraph>

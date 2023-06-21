@@ -147,6 +147,9 @@ const TimelineInfoBar = ({
   const eventLinePath = () => {
     router?.push(router?.asPath.replace("topic", "eventline"));
   };
+  const eventLinePath2 = () => {
+    router.push(router.asPath.replace("support", "eventline"));
+  };
 
   const campOrTopicScribe = async (isTopic: Boolean) => {
     const reqBodyForService = {
@@ -256,9 +259,12 @@ const TimelineInfoBar = ({
           "Subscribe to the Camp"
         )}
       </Menu.Item>
-      <Menu.Item icon={<HeartOutlined />} disabled={asof == "bydate" || campRecord?.is_archive}>
+      <Menu.Item
+        icon={<HeartOutlined />}
+        disabled={asof == "bydate" || campRecord?.is_archive}
+      >
         {isTopicPage && (
-          <Link href={router?.asPath.replace("/topic/", "/support/")}>
+          <Link href={router?.asPath?.replace("/topic/", "/support/")}>
             <a>
               <div
                 className="topicDetailsCollapseFooter"
@@ -273,7 +279,7 @@ const TimelineInfoBar = ({
           </Link>
         )}
       </Menu.Item>
-      <Menu.Item icon={<i className="icon-camp"></i>} >
+      <Menu.Item icon={<i className="icon-camp"></i>}>
         {isTopicPage && (
           <Link
             href={`/camp/history/${replaceSpecialCharacters(
@@ -540,7 +546,7 @@ const TimelineInfoBar = ({
                       >
                         Camp Forum
                       </Button>
-                      {
+                      {/* {
                         router.pathname != "/support/[...manageSupport]" ?
                           <Button
                             type="primary"
@@ -550,7 +556,7 @@ const TimelineInfoBar = ({
                           >
                             Event Line
                           </Button> : null
-                      }
+                      } */}
                       <Dropdown
                         className={styles.campForumDropdown}
                         placement="bottomRight"

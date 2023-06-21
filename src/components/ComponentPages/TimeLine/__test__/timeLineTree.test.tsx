@@ -8,15 +8,11 @@ import { store } from "src/store";
 jest.mock("src/network/api/topicEventLineAPI", () => ({
   getEventLineApi: jest.fn().mockResolvedValue({
     // Mocked response data
-    "asoftime_123456": {
+    asoftime_123456: {
       event: {
         message: "Mocked event message",
       },
-      payload_response: [
-        { score: 10 },
-        { score: 20 },
-        { score: 30 },
-      ],
+      payload_response: [{ score: 10 }, { score: 20 }, { score: 30 }],
     },
   }),
 }));
@@ -24,15 +20,11 @@ jest.mock("src/network/api/topicEventLineAPI", () => ({
 describe("TimelineSlider", () => {
   test("renders the component with correct props", () => {
     const mockData = {
-      "asoftime_123456": {
+      asoftime_123456: {
         event: {
           message: "Mocked event message",
         },
-        payload_response: [
-          { score: 10 },
-          { score: 20 },
-          { score: 30 },
-        ],
+        payload_response: [{ score: 10 }, { score: 20 }, { score: 30 }],
       },
     };
     const setStart = jest.fn();
@@ -73,7 +65,12 @@ describe("TimelineSlider", () => {
 
 describe("TimeLine", () => {
   test("renders the component with correct data", async () => {
-    render(<Provider store={store}> <TimeLine setTimelineDescript={jest.fn()} /></Provider>);
+    render(
+      <Provider store={store}>
+        {" "}
+        <TimeLine setTimelineDescript={jest.fn()} />
+      </Provider>
+    );
 
     // Wait for the API call to complete and data to be rendered
     // await screen.findByText("Mocked event message");
