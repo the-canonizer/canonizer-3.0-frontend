@@ -214,10 +214,15 @@
       transition: all 0.5s;
       &:hover {
         background-color: #f9f9f9;
+        .copyable {
+          opacity: 1;
+        }
       }
       .copyable {
         margin-bottom: 0;
         font-size: 1rem;
+        opacity: 0;
+        transition: all ease-in-out 0.4s;
       }
       @media screen and (min-width: 768px) {
         padding-left: 20px;

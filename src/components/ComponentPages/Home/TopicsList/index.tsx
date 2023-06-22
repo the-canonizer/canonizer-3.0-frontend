@@ -390,60 +390,58 @@ const TopicsList = () => {
             ) : (
               <List.Item className={styles.item} id={`topic-${item?.topic_id}`}>
                 <>
-                  <span>
-                    <Link
-                      href={{
-                        pathname: `/topic/${
-                          item?.topic_id
-                        }-${replaceSpecialCharacters(
-                          isReview
-                            ? item?.tree_structure &&
-                                item?.tree_structure[1]?.review_title
-                            : item?.topic_name,
-                          "-"
-                        )}/1-Agreement`,
-                      }}
-                    >
-                      {!item.is_archive ||
-                      (item.is_archive && is_camp_archive_checked) ? (
-                        <a
-                          onClick={() => {
-                            handleTopicClick();
-                          }}
+                  <Link
+                    href={{
+                      pathname: `/topic/${
+                        item?.topic_id
+                      }-${replaceSpecialCharacters(
+                        isReview
+                          ? item?.tree_structure &&
+                              item?.tree_structure[1]?.review_title
+                          : item?.topic_name,
+                        "-"
+                      )}/1-Agreement`,
+                    }}
+                  >
+                    {!item.is_archive ||
+                    (item.is_archive && is_camp_archive_checked) ? (
+                      <a
+                        onClick={() => {
+                          handleTopicClick();
+                        }}
+                      >
+                        <Text
+                          className={
+                            item.is_archive
+                              ? `font-weight-bold ${styles.archive_topic}`
+                              : styles.text
+                          }
                         >
-                          <Text
-                            className={
-                              item.is_archive
-                                ? `font-weight-bold ${styles.archive_topic}`
-                                : styles.text
-                            }
-                          >
-                            {item.is_archive ? (
-                              <Popover content="Archived Topic">
-                                {isReview
-                                  ? item?.tree_structure &&
-                                    item?.tree_structure[1].review_title
-                                  : item?.topic_name}
-                              </Popover>
-                            ) : isReview ? (
-                              item?.tree_structure &&
-                              item?.tree_structure[1].review_title
-                            ) : (
-                              item?.topic_name
-                            )}
-                          </Text>
-                        </a>
-                      ) : (
-                        <></>
-                      )}
-                    </Link>
-                    <Tag className={styles.tag}>
-                      {/* // ? item?.topic_full_score // : item?.full_score?.toFixed(2) */}
-                      {is_checked
-                        ? item?.topic_full_score?.toFixed(2)
-                        : item?.topic_score?.toFixed(2)}
-                    </Tag>
-                  </span>
+                          {item.is_archive ? (
+                            <Popover content="Archived Topic">
+                              {isReview
+                                ? item?.tree_structure &&
+                                  item?.tree_structure[1].review_title
+                                : item?.topic_name}
+                            </Popover>
+                          ) : isReview ? (
+                            item?.tree_structure &&
+                            item?.tree_structure[1].review_title
+                          ) : (
+                            item?.topic_name
+                          )}
+                        </Text>
+                        <Tag className={styles.tag}>
+                          {/* // ? item?.topic_full_score // : item?.full_score?.toFixed(2) */}
+                          {is_checked
+                            ? item?.topic_full_score?.toFixed(2)
+                            : item?.topic_score?.toFixed(2)}
+                        </Tag>
+                      </a>
+                    ) : (
+                      <></>
+                    )}
+                  </Link>
                   <Paragraph
                     className={styles.copyable}
                     copyable={{
