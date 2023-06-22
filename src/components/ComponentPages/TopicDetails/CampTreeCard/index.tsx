@@ -1,6 +1,5 @@
 import { Collapse, Popover, Image, Typography, Button, Select } from "antd";
 import React, { useEffect, useState, useRef } from "react";
-import Link from "next/link";
 import { RightOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -162,6 +161,7 @@ const CampTreeCard = ({
                     <RightOutlined className="rightOutlined" />
                   </Text>
                   <Select
+                    value={treeExpandValue}
                     defaultValue={"50%"}
                     style={{ width: 80 }}
                     onChange={handleChange}
