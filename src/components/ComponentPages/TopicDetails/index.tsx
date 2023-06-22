@@ -130,7 +130,7 @@ const TopicDetails = () => {
         as_of_date:
           asof == "default" || asof == "review"
             ? Date.now() / 1000
-            : moment(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
+            : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
       };
       const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
 
