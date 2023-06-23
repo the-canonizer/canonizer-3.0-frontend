@@ -23,10 +23,10 @@ export const currentCampRecordConstants = [
     label: "Single level camps only",
     key: "is_one_level",
   },
-  {
-    label: "Camp Archived",
-    key: "is_archive",
-  },
+  // {
+  //   label: "Camp Archived",
+  //   key: "is_archive",
+  // },
   {
     label: "Submitted On",
     key: "submit_time",

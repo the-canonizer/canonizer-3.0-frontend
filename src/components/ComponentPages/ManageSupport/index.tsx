@@ -78,19 +78,20 @@ const ManageSupport = () => {
   const { manageSupportUrlLink } = useSelector((state: RootState) => ({
     manageSupportUrlLink: state.topicDetails.manageSupportUrlLink,
   }));
-
   const { currentDelegatedSupportedClick } = useSelector(
     (state: RootState) => ({
       currentDelegatedSupportedClick:
         state.supportTreeCard.currentDelegatedSupportedClick,
     })
   );
+
   const { currentGetCheckSupportExistsData } = useSelector(
     (state: RootState) => ({
       currentGetCheckSupportExistsData:
         state.topicDetails.currentGetCheckSupportExistsData,
     })
   );
+
   const { CurrentCheckSupportStatus } = useSelector((state: RootState) => ({
     CurrentCheckSupportStatus: state.topicDetails.CurrentCheckSupportStatus,
   }));
@@ -245,7 +246,7 @@ const ManageSupport = () => {
     campRecordRef?: any
   ) => {
     const response = await GetActiveSupportTopic(topicNum && body);
-    setTopicSupportListData(response.data);
+    setTopicSupportListData(response?.data);
     const fiterSupportedCamps = response?.data?.filter((val) => {
       return (
         currentGetCheckSupportExistsData.remove_camps?.findIndex(
