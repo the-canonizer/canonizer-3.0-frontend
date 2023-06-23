@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import App, { AppContext, AppInitialProps } from "next/app";
 import { Provider } from "react-redux";
 import scriptLoader from "react-async-script-loader";
+import { CookiesProvider } from "react-cookie";
 
 import "antd/dist/antd.css";
 import "react-quill/dist/quill.snow.css";
@@ -23,15 +24,17 @@ class WrappedApp extends App<AppInitialProps> {
 
     return (
       <Fragment>
-        <Provider store={store}>
-          <ErrorBoundary>
-            <HeadContentAndPermissionComponent
-              componentName={Component.displayName || Component.name}
-              metaContent={meta}
-            />
-            <Component {...pageProps} />
-          </ErrorBoundary>
-        </Provider>
+        <CookiesProvider>
+          <Provider store={store}>
+            <ErrorBoundary>
+              <HeadContentAndPermissionComponent
+                componentName={Component.displayName || Component.name}
+                metaContent={meta}
+              />
+              <Component {...pageProps} />
+            </ErrorBoundary>
+          </Provider>
+        </CookiesProvider>
       </Fragment>
     );
   }

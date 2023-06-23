@@ -59,6 +59,7 @@ const CampTreeCard = ({
   const { isUserAuthenticated } = useAuthentication();
   const eventLinePath = router?.asPath.replace("topic", "eventline");
   const [treeExpandValue, setTreeExpandValue] = useState<any>(50);
+  const didMount = useRef(false);
   const prevTreeValueRef = useRef(50);
   const dispatch = useDispatch();
   const onCreateTreeDate = () => {
@@ -73,9 +74,11 @@ const CampTreeCard = ({
     setTreeExpandValue(value);
   };
   useEffect(() => {
-    return () => {
-      store.dispatch(setTree([]));
-    };
+    if (didMount.current) {
+      return () => {
+        store.dispatch(setTree([]));
+      };
+    } else didMount.current = true;
   }, []);
 
   return (
