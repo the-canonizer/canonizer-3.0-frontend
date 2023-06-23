@@ -374,7 +374,7 @@ const SupportTreeCard = ({
               <a>
                 <CustomButton
                   className="btn-orange"
-                  disabled={asof == "bydate" || campRecord?.is_archive == 1}
+                  disabled={asof == "bydate"}
                   id="manage-support-btn"
                 >
                   {/* {K?.exceptionalMessages?.directJoinSupport} */}
