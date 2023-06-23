@@ -22,8 +22,6 @@ import Spinner from "../../common/spinner/spinner";
 const Registration = ({ isModal, isTest = false }) => {
   const [isOtpScreen, setIsOtpScreen] = useState(isTest);
   const [isResend, setIsResend] = useState(false);
-  const [isCaptchaVerified, setIsCaptchaVerified] = useState(true);
-  const [isReCaptchaRef, setIsReCaptchaRef] = useState(false);
   const [country, setCountry] = useState([]);
   const [formData, setFormData] = useState({ email: "" });
   const [failedMsg, setFailedMsg] = useState("");
@@ -43,23 +41,13 @@ const Registration = ({ isModal, isTest = false }) => {
 
   const openLogin = () => dispatch(showLoginModal());
 
-  const onReCAPTCHAChange = async (captchaCode) => {
-    if (!captchaCode) {
-      return;
-    }
-
-    // Else reCAPTCHA was executed successfully so proceed with the success status
-    setIsCaptchaVerified(true);
-  };
-
   const handleSumitForm = useCallback(
     (values) => {
       if (!executeRecaptcha) {
-        console.log("Execute recaptcha not yet available");
+        message.error("Execute recaptcha not yet available");
         return;
       }
-      executeRecaptcha("enquiryFormSubmit").then((gReCaptchaToken) => {
-        console.log(gReCaptchaToken, "response Google reCaptcha server");
+      executeRecaptcha("registrationFormSubmit").then((gReCaptchaToken) => {
         onFinish(values, gReCaptchaToken);
       });
     },
@@ -86,8 +74,10 @@ const Registration = ({ isModal, isTest = false }) => {
       if (res && res.status_code === 403) {
         setIsOtpScreen(true);
         setIsResend(true);
-        setIsReCaptchaRef(true);
         setFailedMsg(res.message);
+      }
+      if (res && res.status_code === 406) {
+        message.error(res.message);
       }
       if (res && res.status_code === 400) {
         if (res?.error) {
@@ -110,10 +100,6 @@ const Registration = ({ isModal, isTest = false }) => {
       if (res && res.status_code === 200) {
         form.resetFields();
         message.success(res.message);
-
-        // Reset the reCAPTCHA so that it can be executed again if user
-        setIsReCaptchaRef(true);
-
         setIsOtpScreen(true);
       }
     }
@@ -223,12 +209,6 @@ const Registration = ({ isModal, isTest = false }) => {
             onFinish={handleSumitForm}
             closeModal={closeModal}
             isModal={isModal}
-            onReCAPTCHAChange={onReCAPTCHAChange}
-            resetCaptcha={isReCaptchaRef}
-            showCaptchaError={isCaptchaVerified}
-            setToken={(...rest) => {
-              console.log(rest);
-            }}
             country={country}
             openLogin={openLogin}
           />
