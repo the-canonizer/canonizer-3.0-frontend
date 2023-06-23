@@ -1,7 +1,8 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { Form, message } from "antd";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 import RegistrationUi from "./UI";
 import OTPVerify from "./UI/otp";
@@ -21,17 +22,17 @@ import Spinner from "../../common/spinner/spinner";
 const Registration = ({ isModal, isTest = false }) => {
   const [isOtpScreen, setIsOtpScreen] = useState(isTest);
   const [isResend, setIsResend] = useState(false);
-  const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
+  const [isCaptchaVerified, setIsCaptchaVerified] = useState(true);
   const [isReCaptchaRef, setIsReCaptchaRef] = useState(false);
   const [country, setCountry] = useState([]);
   const [formData, setFormData] = useState({ email: "" });
   const [failedMsg, setFailedMsg] = useState("");
 
-  const dispatch = useDispatch<AppDispatch>();
-  const [form] = Form.useForm();
-  const [otpForm] = Form.useForm();
-
-  const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>(),
+    router = useRouter(),
+    [form] = Form.useForm(),
+    [otpForm] = Form.useForm(),
+    { executeRecaptcha } = useGoogleReCaptcha();
 
   const closeModal = () => {
     dispatch(hideRegistrationModal());
@@ -51,8 +52,22 @@ const Registration = ({ isModal, isTest = false }) => {
     setIsCaptchaVerified(true);
   };
 
-  const onFinish = async (values: any) => {
-    if (isCaptchaVerified) {
+  const handleSumitForm = useCallback(
+    (values) => {
+      if (!executeRecaptcha) {
+        console.log("Execute recaptcha not yet available");
+        return;
+      }
+      executeRecaptcha("enquiryFormSubmit").then((gReCaptchaToken) => {
+        console.log(gReCaptchaToken, "response Google reCaptcha server");
+        onFinish(values, gReCaptchaToken);
+      });
+    },
+    [executeRecaptcha]
+  );
+
+  const onFinish = async (values: any, captchaKey: string) => {
+    if (captchaKey) {
       setFormData(values);
       let formBody = {
         first_name: values.first_name?.trim(),
@@ -62,6 +77,8 @@ const Registration = ({ isModal, isTest = false }) => {
         password_confirmation: values.confirm,
         phone_number: values.phone?.trim(),
         country_code: values.prefix?.split(" ")[0],
+        secret_key: process.env.NEXT_PUBLIC_RECAPTCHA_SECRET_KEY,
+        captcha_token: captchaKey,
       };
 
       let res = await register(formBody);
@@ -203,12 +220,15 @@ const Registration = ({ isModal, isTest = false }) => {
         ) : (
           <RegistrationUi
             form={form}
-            onFinish={onFinish}
+            onFinish={handleSumitForm}
             closeModal={closeModal}
             isModal={isModal}
             onReCAPTCHAChange={onReCAPTCHAChange}
             resetCaptcha={isReCaptchaRef}
             showCaptchaError={isCaptchaVerified}
+            setToken={(...rest) => {
+              console.log(rest);
+            }}
             country={country}
             openLogin={openLogin}
           />

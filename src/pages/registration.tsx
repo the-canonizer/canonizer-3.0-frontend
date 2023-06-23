@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { Card } from "antd";
+import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
 import Registration from "../components/ComponentPages/Registration";
 import GetStartedLayout from "../hoc/getStartedLayout";
@@ -16,9 +17,19 @@ const RegistrationPage = () => {
 
   return (
     <GetStartedLayout initialProps={undefined} initialState={undefined}>
-      <Card bordered={false} className="login-container">
-        <Registration isModal={false} />
-      </Card>
+      <GoogleReCaptchaProvider
+        reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+        scriptProps={{
+          async: false,
+          defer: false,
+          appendTo: "head",
+          nonce: undefined,
+        }}
+      >
+        <Card bordered={false} className="login-container">
+          <Registration isModal={false} />
+        </Card>
+      </GoogleReCaptchaProvider>
     </GetStartedLayout>
   );
 };

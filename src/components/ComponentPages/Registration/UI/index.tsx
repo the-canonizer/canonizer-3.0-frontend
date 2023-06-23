@@ -2,7 +2,8 @@ import React, { createRef, useEffect, Fragment } from "react";
 import { useRouter } from "next/router";
 import { Row, Col, Typography, Form, Input, Button, Select } from "antd";
 import { CloseCircleOutlined, ArrowRightOutlined } from "@ant-design/icons";
-import ReCAPTCHA from "react-google-recaptcha";
+// import ReCAPTCHA from "react-google-recaptcha";
+import { ReCaptcha } from "next-recaptcha-v3";
 
 import styles from "./Registration.module.scss";
 
@@ -29,6 +30,7 @@ function RegistrationUi({
   showCaptchaError,
   country,
   openLogin,
+  setToken
 }) {
   const router = useRouter();
 
@@ -226,12 +228,13 @@ function RegistrationUi({
           className={styles.captchaContainer}
         >
           <div className={styles.captchaCol}>
-            <ReCAPTCHA
+            {/* <ReCaptcha onValidate={setToken} action="page_view" /> */}
+            {/* <ReCAPTCHA
               ref={recaptchaRef}
               sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
               onChange={onReCAPTCHAChange}
               grecaptcha={global?.window?.grecaptcha}
-            />
+            /> */}
           </div>
         </Form.Item>
 

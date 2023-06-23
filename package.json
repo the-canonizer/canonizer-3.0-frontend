@@ -56,6 +56,7 @@
     "react-draft-wysiwyg": "^1.15.0",
     "react-draggable-tags": "^1.0.6",
     "react-google-recaptcha": "^2.1.0",
+    "react-google-recaptcha-v3": "^1.10.1",
     "react-horizontal-timeline": "^1.5.3",
     "react-infinite-scroller": "^1.2.6",
     "react-loading-skeleton": "^3.1.0",

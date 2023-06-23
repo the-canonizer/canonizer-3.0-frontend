@@ -1,6 +1,7 @@
 import { Modal } from "antd";
 import { Fragment } from "react";
 import { useSelector } from "react-redux";
+import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
 import { RootState } from "../../../store";
 import Registration from "./index";
@@ -27,7 +28,17 @@ const RegistrationModal = () => {
         width={800}
         className="loginModal"
       >
-        <Registration isModal={true} />
+        <GoogleReCaptchaProvider
+          reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+          scriptProps={{
+            async: false,
+            defer: false,
+            appendTo: "head",
+            nonce: undefined,
+          }}
+        >
+          <Registration isModal={true} />
+        </GoogleReCaptchaProvider>
       </Modal>
 
       {/* email confirmation popup */}
