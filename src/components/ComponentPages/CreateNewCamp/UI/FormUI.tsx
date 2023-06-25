@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import {
   Card,
   Form,
@@ -14,6 +14,9 @@ import {
 import styles from "../../CreateNewTopic/UI/createNewTopic.module.scss";
 import messages from "../../../../messages";
 import PreventSubCamps from "../../../common/preventSubCampCheckbox";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
+import { useRouter } from "next/router";
 
 const { Option } = Select;
 const { Text } = Typography;
@@ -42,12 +45,24 @@ const CreateCampFormUI = ({
   onCheckboxChange,
   onParentCampChange,
 }) => {
+  const router = useRouter()
+  const { campRecord } = useSelector((state: RootState) => ({
+    campRecord: state?.topicDetails?.currentCampRecord,
+  }));
+
   const CardTitle = (
     <span className={styles.cardTitle} data-testid="head" id="card-title">
       Create New Camp
     </span>
   );
   const toolTipContent = "This camp is under review";
+  const archiveToolTipContent = "This camp is archived"
+  // useEffect(() => {
+  //  campRecord.is_archive && 
+  //   router.pathname == "/camp/create/[...camp]"
+  //     ? router?.back()
+  //     : "";
+  // }, []);
 
   return (
     <Fragment>
@@ -157,7 +172,7 @@ const CreateCampFormUI = ({
                         id={`parent-camp-${camp.id}`}
                         camp={camp}
                         disabled={
-                          camp.parent_change_in_review == true ? true : false
+                          camp.parent_change_in_review == true
                         }
                       >
                         <Tooltip

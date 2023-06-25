@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
 import CustomSkelton from "../../common/customSkelton";
 
-
 import {
   getCanonizedCampStatementApi,
   getNewsFeedApi,
@@ -393,7 +392,7 @@ const TopicDetails = () => {
   };
   return (
     <>
-      <div className={styles.topicDetailContentWrap} >
+      <div className={styles.topicDetailContentWrap}>
         {(tree && tree["1"]?.is_valid_as_of_time) || asof == "default" ? (
           <CampInfoBar
             isTopicPage={true}

@@ -172,7 +172,6 @@ const TopicsList = () => {
       }
     }
   }, [router, nameSpacesList]);
-  console.log(search,"search")
 
   useEffect(() => {
     setSelectedNameSpace(filterNameSpace);
@@ -208,7 +207,7 @@ const TopicsList = () => {
     filterByScore,
     inputSearch,
     onlyMyTopicsCheck.current,
-    // is_camp_archive_checked,
+    is_camp_archive_checked,
   ]);
   useEffect(() => {
     if (inputSearch.length > 0 || search.length > 0) {
@@ -244,7 +243,6 @@ const TopicsList = () => {
     setLoadMoreIndicator(false);
   }
   const onSearch = (value) => {
-    console.log(inputSearch,"value")
     setInputSearch(value.trim());
     dispatch(
       setFilterCanonizedTopics({
@@ -317,14 +315,7 @@ const TopicsList = () => {
             <i className="icon-info cursor-pointer"></i>
           </Popover>
         </Title>
-        {router?.asPath.includes("/browse") && isUserAuthenticated && (
-          <Checkbox
-            className={styles.checkboxOnlyMyTopics}
-            onChange={handleCheckbox}
-          >
-            Only My Topics
-          </Checkbox>
-        )}
+
         <Select
           size="large"
           className={styles.dropdown}
@@ -350,6 +341,14 @@ const TopicsList = () => {
             All
           </Select.Option>
         </Select>
+        {router?.asPath.includes("/browse") && isUserAuthenticated && (
+          <Checkbox
+            className={styles.checkboxOnlyMyTopics}
+            onChange={handleCheckbox}
+          >
+            Only My Topics
+          </Checkbox>
+        )}
         {router?.asPath.includes("/browse") && (
           <div className={styles.inputSearchTopic}>
             <Search
@@ -404,31 +403,34 @@ const TopicsList = () => {
                       )}/1-Agreement`,
                     }}
                   >
-                    {!item.is_archive || (item.is_archive  && is_camp_archive_checked) ?
-                    <a
-                      onClick={() => {
-                        handleTopicClick();
-                      }}
-                    >
-                      <Text className={item.is_archive? `font-weight-bold ${styles.archive_topic}`: styles.text}>
-                       {item.is_archive? <Popover content="Archived Topic">
-                        {isReview
-                          ? item?.tree_structure &&
+                    
+                    
+                      <a
+                        onClick={() => {
+                          handleTopicClick();
+                        }}
+                      >
+                        <Text
+                          className={
+                           styles.text
+                          }
+                        >
+                          {isReview ? (
+                            item?.tree_structure &&
                             item?.tree_structure[1].review_title
-                          : item?.topic_name}
-                          </Popover>:isReview
-                          ? item?.tree_structure &&
-                            item?.tree_structure[1].review_title
-                          : item?.topic_name}
-                      </Text>
-                      <Tag className={styles.tag}>
-                        {/* // ? item?.topic_full_score // : item?.full_score?.toFixed(2) */}
-                        {is_checked && isUserAuthenticated
-                          ? item?.topic_full_score?.toFixed(2)
-                          : item?.topic_score?.toFixed(2)}
-                      </Tag>
-                    </a>: <></>}
-
+                          ) : (
+                            item?.topic_name
+                          )}
+                        </Text>
+                        <Tag className={styles.tag}>
+                          {/* // ? item?.topic_full_score // : item?.full_score?.toFixed(2) */}
+                          {is_checked
+                            ? item?.topic_full_score?.toFixed(2)
+                            : item?.topic_score?.toFixed(2)}
+                        </Tag>
+                      </a>
+                    
+                    
                   </Link>
                 </>
               </List.Item>

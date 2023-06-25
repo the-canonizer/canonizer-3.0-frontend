@@ -3,8 +3,6 @@ import EventLine from "../request/eventLineRequest";
 import { store } from "../../store";
 import { setTopicName } from "../../store/slices/campDetailSlice";
 
-import { mockData } from "../../components/ComponentPages/TimeLine/mockData";
-
 export const getEventLineApi = async (reqBody) => {
   try {
     const eventLineData = await NetworkCall.fetch(
@@ -15,7 +13,7 @@ export const getEventLineApi = async (reqBody) => {
       store.dispatch(
         setTopicName(
           eventLineData?.data[
-            Object.keys(eventLineData?.data)[
+            Object.keys(eventLineData?.data).sort()[
               Object.keys(eventLineData?.data).length - 1
             ]
           ]?.payload_response[0]?.title
@@ -23,8 +21,5 @@ export const getEventLineApi = async (reqBody) => {
       );
     }
     return eventLineData.data;
-    // return mockData
-  } catch (error) {
-    // return mockData
-  }
+  } catch (error) {}
 };

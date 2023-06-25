@@ -20,6 +20,7 @@ const CampTree = ({
   setSupportTreeForCamp,
   treeExpandValue,
   prevTreeValueRef,
+  setTreeExpandValue,
 }: any) => {
   const { tree, filterByScore, review, is_checked } = useSelector(
     (state: RootState) => ({
@@ -33,15 +34,13 @@ const CampTree = ({
     is_camp_archive_checked: state?.utils?.archived_checkbox,
   }));
   let childExpandTree = [];
-
+  let urlCampInfo;
+  const didMount = useRef(true);
   const [defaultExpandKeys, setDefaultExpandKeys] = useState([]);
   const [uniqueKeys, setUniqueKeys] = useState([]);
   const [showScoreBars, setShowScoreBars] = useState(false);
-
   const [selectedExpand, setSelectedExpand] = useState([]);
-
   const [autoExpandParent, setAutoExpandParent] = useState(true);
-
   // const [selectedNodeID, setSelectedNodeID] = useState(1);
   const [scoreFilter, setScoreFilter] = useState(filterByScore);
   const [includeReview, setIncludeReview] = useState(
@@ -62,7 +61,6 @@ const CampTree = ({
       scrollToCampStatement();
     }
   };
-
   const { isUserAuthenticated, userID } = useAuthentication();
 
   const showSelectedCamp = (data, select_camp, campExist) => {
@@ -88,6 +86,25 @@ const CampTree = ({
     if (campExist ? !campExist.camp_exist : false) {
       setShowTree(true);
     }
+  };
+  const getUrlCampInfo = (data, select_camp) => {
+    Object?.keys(data).map((item) => {
+      if (data[item].children) {
+        if (data[item].score >= scoreFilter) {
+          if (data[item]?.camp_id == select_camp) {
+            urlCampInfo = data[item];
+            return;
+          }
+          getUrlCampInfo(data[item].children, select_camp);
+        } else {
+          return null;
+        }
+      }
+      if (data[item]?.camp_id == select_camp) {
+        urlCampInfo = data[item];
+        return;
+      }
+    });
   };
 
   const getAllDefaultExpandKeys = (data, topic_score) => {
@@ -170,7 +187,9 @@ const CampTree = ({
         getAllDefaultExpandKeys(tree?.at(0)["1"], tree?.at(0)["1"]?.score);
       tree?.at(0) &&
         expandKeys.push(+(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1));
-      let allkeys = [...selectedExpand, ...(expandKeys || [])];
+
+      let allkeys = ["1", ...selectedExpand, ...(expandKeys || [])];
+
       let uniquekeyss = toFindDuplicates(allkeys);
       setDefaultExpandKeys(expandKeys);
       setUniqueKeys(uniquekeyss);
@@ -193,9 +212,35 @@ const CampTree = ({
         setShowScoreBars(false);
       }
     }
-    prevTreeValueRef.current = treeExpandValue;
+    if (prevTreeValueRef !== undefined) {
+      prevTreeValueRef.current = treeExpandValue;
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tree?.at(0), treeExpandValue]);
+
+  useEffect(() => {
+    if (didMount) {
+      tree?.at(0) &&
+        getUrlCampInfo(
+          tree?.at(0),
+          +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1)
+        );
+      if (
+        !(
+          (tree?.at(0)["1"]?.score * treeExpandValue) / 100 <=
+          urlCampInfo?.score
+        )
+      ) {
+        let expandpercetvalues = [20, 10, 0];
+        let a = expandpercetvalues.filter(
+          (value) =>
+            (tree?.at(0)["1"]?.score * value) / 100 <= urlCampInfo?.score
+        );
+        setTreeExpandValue(a[0]);
+      }
+      didMount.current = false;
+    }
+  }, []);
 
   const subScriptionStatus = (subscribedUsers: {}) => {
     return Object.keys(subscribedUsers).length > 0 &&
@@ -279,9 +324,7 @@ const CampTree = ({
                         >
                           <a
                             className={
-                              data[item].is_archive == 1
-                                ? `font-weight-bold ${styles.archive_grey}`
-                                : data[item]?.camp_id ==
+                              data[item]?.camp_id ==
                                     router?.query?.camp
                                       ?.at(1)
                                       ?.split("-")
@@ -290,13 +333,7 @@ const CampTree = ({
                                 : ""
                             }
                           >
-                            {data[item].is_archive == 1 ? (
-                              <Popover content="Archived Camp">
-                                {includeReview
-                                  ? data[item]?.review_title
-                                  : data[item]?.title}
-                              </Popover>
-                            ) : includeReview ? (
+                            {includeReview ? (
                               data[item]?.review_title
                             ) : (
                               data[item]?.title
@@ -399,7 +436,6 @@ const CampTree = ({
 
   const onExpand = (expandedKeyss) => {
     let expandedKeys = toFindDuplicates(expandedKeyss);
-    console.log("sda", expandedKeys);
     let topic_id = tree?.at(0) && tree?.at(0)["1"].topic_id;
     let sesionexpandkeys = JSON.parse(sessionStorage.getItem("value"));
 
@@ -438,13 +474,15 @@ const CampTree = ({
           // autoExpandParent={autoExpandParent}
           // selectedKeys={uniqueKeys}
           // selectable={true}
+
+          data-testid="camp-tree"
         >
           {tree?.at(0) && renderTreeNodes(tree?.at(0))}
         </Tree>
       </>
     ) : null
   ) : (
-    <p>No Camp Tree Found</p>
+    <p data-testid="camp-tree">No Camp Tree Found</p>
   );
 };
 

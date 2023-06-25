@@ -37,7 +37,10 @@ describe("homePageSlice", () => {
     const payload = {
       topic: [5, 6],
     };
-    const newState = homePageReducer(initialState, pushToCanonizedTopics(payload));
+    const newState = homePageReducer(
+      initialState,
+      pushToCanonizedTopics(payload)
+    );
     expect(newState.canonizedTopicsData).toEqual({
       topics: [1, 5, 6],
       numOfPages: null,
@@ -48,7 +51,10 @@ describe("homePageSlice", () => {
     const payload = {
       data: ["namespace1", "namespace2"],
     };
-    const newState = homePageReducer(initialState, setCanonizedNameSpaces(payload));
+    const newState = homePageReducer(
+      initialState,
+      setCanonizedNameSpaces(payload)
+    );
     expect(newState.nameSpaces).toEqual(["namespace1", "namespace2"]);
   });
 
@@ -66,7 +72,10 @@ describe("homePageSlice", () => {
     const payload = {
       data: ["algorithm1", "algorithm2"],
     };
-    const newState = homePageReducer(initialState, setCanonizedAlgorithms(payload));
+    const newState = homePageReducer(
+      initialState,
+      setCanonizedAlgorithms(payload)
+    );
     expect(newState.algorithms).toEqual(["algorithm1", "algorithm2"]);
   });
 });

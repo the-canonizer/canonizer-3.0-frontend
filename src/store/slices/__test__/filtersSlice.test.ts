@@ -22,7 +22,7 @@ describe("filtersSlice", () => {
         algorithm: "blind_popularity",
         search: "",
         includeReview: false,
-        // is_archive: 0,
+        is_archive: 0,
       },
       selectedCampNode: null,
       current_date: new Date().valueOf(),
@@ -37,7 +37,10 @@ describe("filtersSlice", () => {
       filterByScore: 1,
       search: "example",
     };
-    const newState = filtersReducer(initialState, setFilterCanonizedTopics(payload));
+    const newState = filtersReducer(
+      initialState,
+      setFilterCanonizedTopics(payload)
+    );
     expect(newState.filterObject).toEqual({
       ...initialState.filterObject,
       ...payload,
@@ -49,7 +52,10 @@ describe("filtersSlice", () => {
     const payload = {
       includeReview: true,
     };
-    const newState = filtersReducer(initialState, setIsReviewCanonizedTopics(payload));
+    const newState = filtersReducer(
+      initialState,
+      setIsReviewCanonizedTopics(payload)
+    );
     expect(newState.filterObject).toEqual({
       ...initialState.filterObject,
       ...payload,
@@ -57,7 +63,10 @@ describe("filtersSlice", () => {
   });
 
   it("should handle setCurrentCamp", () => {
-    const newState = filtersReducer(initialState, setCurrentCamp("your selected camp"));
+    const newState = filtersReducer(
+      initialState,
+      setCurrentCamp("your selected camp")
+    );
     expect(newState.selectedCampNode).toEqual("your selected camp");
   });
 
@@ -67,7 +76,10 @@ describe("filtersSlice", () => {
   });
 
   it("should handle setCurrentDate", () => {
-    const newState = filtersReducer(initialState, setCurrentDate(1622275226000));
+    const newState = filtersReducer(
+      initialState,
+      setCurrentDate(1622275226000)
+    );
     expect(newState.current_date).toEqual(1622275226000);
   });
 });

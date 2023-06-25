@@ -32,7 +32,7 @@ import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 // import { showCreateCampButton } from "src/utils/generalUtility";
 import FullScoreCheckbox from "../../ComponentPages/FullScoreCheckbox";
 import useAuthentication from "src/hooks/isUserAuthenticated";
-// import ArchivedCampCheckBox from "../../ComponentPages/ArchivedCampCheckBox";
+import ArchivedCampCheckBox from "src/components/ComponentPages/ArchivedCampCheckBox";
 
 const infoContent = (
   <>
@@ -265,6 +265,13 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
           asof: "bydate",
         })
       );
+    } else {
+      dispatch(
+        setFilterCanonizedTopics({
+          asofdate: Date.now() / 1000,
+          asof: "bydate",
+        })
+      );
     }
   };
 
@@ -280,7 +287,8 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
           </Button>
           {isCampBtnVisible &&
           currentCampNode?._isDisabled == 0 &&
-          currentCampNode?.parentIsOneLevel == 0 ? (
+          currentCampNode?.parentIsOneLevel == 0 &&
+          campRecord?.is_archive == 0 ? (
             <Tooltip
               title={
                 tree && !tree["1"]?.is_valid_as_of_time
