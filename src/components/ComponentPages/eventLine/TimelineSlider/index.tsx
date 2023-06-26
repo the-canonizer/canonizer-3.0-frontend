@@ -289,7 +289,11 @@ function TimelineSlider({
               ? false
               : true
           }
-          className="rang-slider"
+          className={`${
+            mockData && Object.keys(mockData).length > 0
+              ? "rang-slider"
+              : "skeleton-rangslider"
+          }`}
           tooltip={{
             open: true,
             formatter,
