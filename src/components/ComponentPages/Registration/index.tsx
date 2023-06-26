@@ -9,14 +9,14 @@ import OTPVerify from "./UI/otp";
 import {
   hideRegistrationModal,
   showLoginModal,
-} from "../../../store/slices/uiSlice";
+} from "src/store/slices/uiSlice";
 import {
   register,
   verifyOtp,
   getCountryCodes,
   resendOTPForRegistration,
-} from "../../../network/api/userApi";
-import { AppDispatch } from "../../../store";
+} from "src/network/api/userApi";
+import { AppDispatch } from "src/store";
 import Spinner from "../../common/spinner/spinner";
 
 const Registration = ({ isModal, isTest = false }) => {
@@ -48,6 +48,7 @@ const Registration = ({ isModal, isTest = false }) => {
         return;
       }
       executeRecaptcha("registrationFormSubmit").then((gReCaptchaToken) => {
+        // console.log("🚀 ~ file: index.tsx:51 ~ executeRecaptcha ~ gReCaptchaToken:", gReCaptchaToken)
         onFinish(values, gReCaptchaToken);
       });
     },
