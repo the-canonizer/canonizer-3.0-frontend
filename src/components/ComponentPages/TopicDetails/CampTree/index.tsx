@@ -294,7 +294,8 @@ const CampTree = ({
       }
       if (data[item].children) {
         if (data[item].score >= scoreFilter) {
-          return (
+          return data[item].is_archive == 0 ||
+          (data[item].is_archive != 0 && is_camp_archive_checked == true) ? (
             <>
               <TreeNode
                 title={
@@ -324,7 +325,9 @@ const CampTree = ({
                         >
                           <a
                             className={
-                              data[item]?.camp_id ==
+                              data[item].is_archive == 1
+                              ? `font-weight-bold ${styles.archive_grey}`
+                              : data[item]?.camp_id ==
                                     router?.query?.camp
                                       ?.at(1)
                                       ?.split("-")
@@ -333,7 +336,13 @@ const CampTree = ({
                                 : ""
                             }
                           >
-                            {includeReview ? (
+                            {data[item].is_archive == 1 ? (
+                              <Popover content="Archived Camp">
+                                {includeReview
+                                  ? data[item]?.review_title
+                                  : data[item]?.title}
+                              </Popover>
+                            ) :includeReview ? (
                               data[item]?.review_title
                             ) : (
                               data[item]?.title
@@ -425,7 +434,7 @@ const CampTree = ({
                 {renderTreeNodes(data[item].children, _isDisabled, _isOneLevel)}
               </TreeNode>
             </>
-          );
+          ):null;
         } else {
           return null;
         }
