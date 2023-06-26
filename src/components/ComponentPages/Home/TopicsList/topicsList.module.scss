@@ -3,8 +3,17 @@
   background-color: #fff;
   border: solid 1px #f0f0f0;
   margin-bottom: 16px;
-  height: calc(100% - 16px);
+  &:not(.homePageCardList) {
+    @media screen and (min-width: 768px) {
+      height: calc(100% - 72px);
+    }
+    @media screen and (max-width: 767px) {
+      height: calc(100% - 160px);
+    }
+  }
+
 }
+
 
 .wrap {
   border: none;
@@ -288,4 +297,8 @@
 }
 .namespacesPopover {
   max-width: 350px;
+}
+.archive_topic{
+  padding-right: 12px;
+  color: #6A6A6A;
 }

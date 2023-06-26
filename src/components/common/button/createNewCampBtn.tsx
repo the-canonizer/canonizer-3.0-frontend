@@ -11,7 +11,7 @@ const CreateNewCampButton = (props) => {
     if (props.click) {
       props.click();
     }
-    router.push({
+    router?.push({
       pathname: props.url,
     });
   };

@@ -1,9 +1,8 @@
-import { render, screen, waitFor } from "../../../../utils/testUtils";
+import { render, screen, waitFor } from "src/utils/testUtils";
 
 import Registration from "../index";
 
 describe("Social Login Component", () => {
-  // social login buttons
   it("check social login links and text exists in page", async () => {
     render(<Registration isNotLogin={false} />);
     await waitFor(() => {

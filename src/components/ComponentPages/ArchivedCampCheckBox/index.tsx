@@ -25,7 +25,7 @@ const ArchivedCampCheckBox = () => {
   );
 
   const setCheckboxStore = (val) => {
-    dispatch(setArchivedCheckBox(val)), console.log(val, "val");
+    dispatch(setArchivedCheckBox(val));
   };
 
   const onChange = (e: CheckboxChangeEvent) => {

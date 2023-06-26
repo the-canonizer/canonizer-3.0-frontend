@@ -13,6 +13,7 @@ import { getRecentActivitiesApi } from "../../../../network/api/homePageApi";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
 import CustomSkelton from "../../../common/customSkelton";
 import { setIsChecked } from "src/store/slices/recentActivitiesSlice";
+import { getTopicActivityLogApi } from "src/network/api/campDetailApi";
 
 const antIcon = <LoadingOutlined spin />;
 
@@ -83,10 +84,14 @@ export default function RecentActivities() {
       setGetTopicsLoadingIndicator(false);
     }
     if (isUserAuthenticated) {
-      linksApiCall();
+      if (router?.query?.topic_num && router?.query?.camp_num) {
+        getTopicActivityLogCall();
+      } else {
+        linksApiCall();
+      }
     } else {
       setGetTopicsLoadingIndicator(true);
-      router.push("/login");
+      router?.push("/login");
     }
   }, [selectedTab, isChecked, router]);
 
@@ -106,6 +111,50 @@ export default function RecentActivities() {
       "-"
     );
   };
+
+  async function getTopicActivityLogCall(loadMore = false) {
+    setGetTopicsLoadingIndicator(true);
+    let pageNo;
+    if (loadMore) {
+      setTopicPageNumber((prev) => prev + 1);
+      pageNo = topicPageNumber + 1;
+    } else {
+      setTopicPageNumber(1);
+      pageNo = 1;
+    }
+    let reqBody = {
+      page: pageNo,
+      per_page: 15,
+      is_admin_show_all: "all",
+      topic_num: router?.query?.topic_num,
+      camp_num: router?.query?.camp_num ?? 1,
+    };
+    let res = await getTopicActivityLogApi(reqBody);
+    if (res?.status_code == 200) {
+      if (loadMore) {
+        let resData = res?.data;
+
+        resData = resData?.items?.map((i: any) => ({ ...i, activity: i }));
+
+        resData = {
+          topics: resData,
+          numOfPages: res?.data?.last_page,
+        };
+
+        resData.topics = resData?.topics?.concat(recentActivities?.topics);
+
+        setRecentActivities(resData);
+      } else {
+        let resData = res?.data;
+
+        resData = resData?.items?.map((i: any) => ({ ...i, activity: i }));
+        resData = { topics: resData, numOfPages: res?.data?.last_page };
+        setRecentActivities(resData);
+      }
+    }
+    setLoadMoreIndicator(false);
+    setGetTopicsLoadingIndicator(false);
+  }
 
   async function getTopicsApiCallWithReqBody(loadMore = false, topicType) {
     let pageNo;
@@ -181,7 +230,11 @@ export default function RecentActivities() {
                 className={styles.viewAll}
                 onClick={() => {
                   setLoadMoreIndicator(true);
-                  getTopicsApiCallWithReqBody(true, topicType);
+                  if (router?.query?.topic_num && router?.query?.camp_num) {
+                    getTopicActivityLogCall(true);
+                  } else {
+                    getTopicsApiCallWithReqBody(true, topicType);
+                  }
                 }}
               >
                 <Text>Load More</Text>

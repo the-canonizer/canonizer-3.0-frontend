@@ -135,7 +135,6 @@ const ManageSupportUI = ({
     // })();
     setIsTagDragged(false);
   }, []);
-
   const isFormValid = async () => {
     const isDropdownValid = await removeForm.validateFields([
       "reason",
@@ -179,13 +178,13 @@ const ManageSupportUI = ({
     // }
     const response = await removeSupportedCamps(supportedCampsRemove);
     if (response && response.status_code == 200) {
-      let manageSupportPath = router.asPath.replace("/support/", "/topic/");
+      let manageSupportPath = router?.asPath.replace("/support/", "/topic/");
       if (manageSupportPath.lastIndexOf("_") > -1)
         manageSupportPath = manageSupportPath.substring(
           0,
           manageSupportPath.lastIndexOf("_")
         );
-      router.push(manageSupportPath);
+      router?.push(manageSupportPath);
     }
   };
 
@@ -231,13 +230,13 @@ const ManageSupportUI = ({
     };
     let addedRes = await addSupport(addSupportId);
     if (addedRes && addedRes.status_code == 200) {
-      let manageSupportPath = router.asPath.replace("/support/", "/topic/");
+      let manageSupportPath = router?.asPath.replace("/support/", "/topic/");
       if (manageSupportPath.lastIndexOf("_") > -1)
         manageSupportPath = manageSupportPath.substring(
           0,
           manageSupportPath.lastIndexOf("_")
         );
-      router.push(manageSupportPath);
+      router?.push(manageSupportPath);
     }
   };
 
@@ -317,7 +316,7 @@ const ManageSupportUI = ({
           currentGetCheckSupportExistsData.remove_camps.length < 0) ||
         unableToFindCamp ? (
           <>
-            <span id="warning" className={styles.warning}>
+            <span data-testId="warning" className={styles.warning}>
               <strong> Warning! </strong>
               {getSupportStatusData || currentGetCheckSupportExistsData.warning}
             </span>
@@ -371,12 +370,12 @@ const ManageSupportUI = ({
               {" "}
               {messages.labels.manageSupportNote}
             </div>
-            {!CheckDelegatedOrDirect && topicSupportListData.length != 0 ? (
+            {!CheckDelegatedOrDirect && topicSupportListData?.length != 0 ? (
               <div>
                 <Card className={styles.margin_top} type="inner">
                   <b>
                     {messages.labels.topicSupportText} &quot;{""}
-                    {topicSupportListData[0]?.title}
+                    {topicSupportListData?.[0]?.title}
                     {""}&quot;
                   </b>
                 </Card>
@@ -392,13 +391,14 @@ const ManageSupportUI = ({
                   Quick Actions:
                   <span className={styles.checkbox}>
                     <input
-                      id="checkbox"
+                      data-testId="checkbox"
                       type="checkbox"
                       checked={checked}
                       onClick={(e) => {
                         removeAll((e.target as any).checked, manageSupportList);
                         setRemoveCampsSupport(!removeCampsSupport);
                       }}
+                      onChange={() => {}}
                     ></input>
                   </span>
                   <span className={styles.removeAll}>Remove all</span>
@@ -467,15 +467,17 @@ const ManageSupportUI = ({
             )}
 
             {!CheckDelegatedOrDirect && (
-              <Card className={styles.support_reason} type="inner">
-                <SupportRemovedModal
-                  onFinish={onRemoveFinish}
-                  handleCancel={closePopup}
-                  form={removeForm}
-                  isAdd={true}
-                  isOrderChange={isTagDragged}
-                />
-              </Card>
+              <div data-testid="support-remove-modal">
+                <Card className={styles.support_reason} type="inner">
+                  <SupportRemovedModal
+                    onFinish={onRemoveFinish}
+                    handleCancel={closePopup}
+                    form={removeForm}
+                    isAdd={true}
+                    isOrderChange={isTagDragged}
+                  />
+                </Card>
+              </div>
             )}
           </>
         )}

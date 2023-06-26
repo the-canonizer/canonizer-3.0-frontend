@@ -15,6 +15,15 @@ import { changeSlashToArrow } from "src/utils/generalUtility";
 
 const { Title, Text, Paragraph } = Typography;
 
+const validUrl = (url) => {
+  try {
+    new URL(url);
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
+
 function CompareStatementUI({
   statements,
   isLoading,
@@ -34,15 +43,15 @@ function CompareStatementUI({
   const getBackUrl = () => {
     const query = router?.query;
     if (query.from === "topic") {
-      router.push({
+      router?.push({
         pathname: `/topic/history/${router?.query?.routes[0]}}`,
       });
     } else if (query.from === "statement") {
-      router.push({
+      router?.push({
         pathname: `/statement/history/${router?.query?.routes[0]}/${router?.query?.routes[1]}`,
       });
     } else {
-      router.push({
+      router?.push({
         pathname: `/camp/history/${router?.query?.routes[0]}/${router?.query?.routes[1]}`,
       });
     }
@@ -154,9 +163,11 @@ function CompareStatementUI({
                         <Paragraph>
                           <Text strong>Camp About URL : </Text>
                           <Text>
-                            <Link href={s1?.camp_about_url || ""}>
-                              <a>{s1?.camp_about_url}</a>
-                            </Link>
+                            {validUrl(s1?.camp_about_url) ? (
+                              <Link href={s1?.camp_about_url || ""}>
+                                <a>{s1?.camp_about_url}</a>
+                              </Link>
+                            ) : null}
                           </Text>
                         </Paragraph>
                         <Paragraph>
@@ -181,10 +192,10 @@ function CompareStatementUI({
                           <Text strong>Single Level Camps Only : </Text>
                           <Text>{s1?.is_one_level == 1 ? "Yes" : "No"}</Text>
                         </Paragraph>
-                        <Paragraph>
-                          <Text strong>Camp archive : </Text>
+                        {/* <Paragraph>
+                          <Text strong>Camp Archived : </Text>
                           <Text>{s1?.is_archive == 1 ? "Yes" : "No"}</Text>
-                        </Paragraph>
+                        </Paragraph> */}
                       </Fragment>
                     ) : null}
                     <Text strong style={{ textTransform: "capitalize" }}>
@@ -275,9 +286,11 @@ function CompareStatementUI({
                         <Paragraph>
                           <Text strong>Camp About URL : </Text>
                           <Text>
-                            <Link href={s2?.camp_about_url || ""}>
-                              <a>{s2?.camp_about_url}</a>
-                            </Link>
+                            {validUrl(s2?.camp_about_url) ? (
+                              <Link href={s2?.camp_about_url || ""}>
+                                <a>{s2?.camp_about_url}</a>
+                              </Link>
+                            ) : null}
                           </Text>
                         </Paragraph>
                         <Paragraph>
@@ -302,10 +315,10 @@ function CompareStatementUI({
                           <Text strong>Single Level Camps Only : </Text>
                           <Text>{s2?.is_one_level == 1 ? "Yes" : "No"}</Text>
                         </Paragraph>
-                        <Paragraph>
-                          <Text strong>Camp archive : </Text>
+                        {/* <Paragraph>
+                          <Text strong>Camp Archived : </Text>
                           <Text>{s2?.is_archive == 1 ? "Yes" : "No"}</Text>
-                        </Paragraph>
+                        </Paragraph> */}
                       </Fragment>
                     ) : null}
                     <Text strong style={{ textTransform: "capitalize" }}>
@@ -422,9 +435,11 @@ function CompareStatementUI({
                         <Paragraph>
                           <Text strong>Camp About URL : </Text>
                           <Text>
-                            <Link href={liveStatement?.camp_about_url || ""}>
-                              <a>{liveStatement?.camp_about_url}</a>
-                            </Link>
+                            {validUrl(liveStatement?.camp_about_url) ? (
+                              <Link href={liveStatement?.camp_about_url || ""}>
+                                <a>{liveStatement?.camp_about_url}</a>
+                              </Link>
+                            ) : null}
                           </Text>
                         </Paragraph>
                         <Paragraph>
@@ -455,12 +470,12 @@ function CompareStatementUI({
                             {liveStatement?.is_one_level == 1 ? "Yes" : "No"}
                           </Text>
                         </Paragraph>
-                        <Paragraph>
-                          <Text strong>Camp archive: </Text>
+                        {/* <Paragraph>
+                          <Text strong>Camp Archived: </Text>
                           <Text>
                             {liveStatement?.is_archive == 1 ? "Yes" : "No"}
                           </Text>
-                        </Paragraph>
+                        </Paragraph> */}
                       </Fragment>
                     ) : null}
                   </Card>

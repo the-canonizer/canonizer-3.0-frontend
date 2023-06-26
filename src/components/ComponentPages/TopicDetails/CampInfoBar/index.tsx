@@ -62,6 +62,7 @@ const TimelineInfoBar = ({
   });
   const didMount = useRef(false);
   const router = useRouter();
+
   const {
     topicRecord,
     campRecord,
@@ -132,7 +133,7 @@ const TimelineInfoBar = ({
   const onCampForumClick = () => {
     const topicName = topicRecord?.topic_name?.replaceAll(" ", "-");
     const campName = campRecord?.camp_name?.replaceAll(" ", "-");
-    router.push({
+    router?.push({
       pathname: `/forum/${topicRecord?.topic_num}-${replaceSpecialCharacters(
         topicName,
         "-"
@@ -141,6 +142,13 @@ const TimelineInfoBar = ({
         "-"
       )}/threads`,
     });
+  };
+
+  const eventLinePath = () => {
+    router?.push(router?.asPath.replace("topic", "eventline"));
+  };
+  const eventLinePath2 = () => {
+    router.push(router.asPath.replace("support", "eventline"));
   };
 
   const campOrTopicScribe = async (isTopic: Boolean) => {
@@ -168,14 +176,14 @@ const TimelineInfoBar = ({
     <Menu className={styles.campForumDropdownMenu}>
       {isUserAuthenticated && is_admin && (
         <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
-          {router.pathname == "/support/[...manageSupport]" ? (
-            <Link href={router.asPath.replace("support", "addnews")}>
+          {router?.pathname == "/support/[...manageSupport]" ? (
+            <Link href={router?.asPath.replace("support", "addnews")}>
               <a rel="noopener noreferrer" href="/add-news">
                 Add News
               </a>
             </Link>
           ) : (
-            <Link href={router.asPath.replace("topic", "addnews")}>
+            <Link href={router?.asPath.replace("topic", "addnews")}>
               <a rel="noopener noreferrer" href="/add-news">
                 Add News
               </a>
@@ -196,9 +204,9 @@ const TimelineInfoBar = ({
             campOrTopicScribe(true);
           } else {
             setLoadingIndicator(true);
-            router.push({
+            router?.push({
               pathname: "/login",
-              query: { returnUrl: router.asPath },
+              query: { returnUrl: router?.asPath },
             });
           }
         }}
@@ -226,9 +234,9 @@ const TimelineInfoBar = ({
             campOrTopicScribe(false);
           } else {
             setLoadingIndicator(true);
-            router.push({
+            router?.push({
               pathname: "/login",
-              query: { returnUrl: router.asPath },
+              query: { returnUrl: router?.asPath },
             });
           }
         }}
@@ -251,9 +259,12 @@ const TimelineInfoBar = ({
           "Subscribe to the Camp"
         )}
       </Menu.Item>
-      <Menu.Item icon={<HeartOutlined />} disabled={asof == "bydate"}>
+      <Menu.Item
+        icon={<HeartOutlined />}
+        disabled={asof == "bydate"}
+      >
         {isTopicPage && (
-          <Link href={router.asPath.replace("/topic/", "/support/")}>
+          <Link href={router?.asPath?.replace("/topic/", "/support/")}>
             <a>
               <div
                 className="topicDetailsCollapseFooter"
@@ -535,6 +546,17 @@ const TimelineInfoBar = ({
                       >
                         Camp Forum
                       </Button>
+                      {/* {
+                        router.pathname != "/support/[...manageSupport]" ?
+                          <Button
+                            type="primary"
+                            onClick={eventLinePath}
+                            className={styles.btnCampForum}
+                            id="camp-forum-btn"
+                          >
+                            Event Line
+                          </Button> : null
+                      } */}
                       <Dropdown
                         className={styles.campForumDropdown}
                         placement="bottomRight"

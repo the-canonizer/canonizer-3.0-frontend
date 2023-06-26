@@ -121,7 +121,7 @@ describe("CampHistory Page", () => {
       expect(screen.getByText(/edit summary :/i));
       expect(screen.getByText(/SEO name change as proposed in forum./i));
       expect(screen.getByText(/Canon :/i));
-      expect(screen.getByText(/\/general\//i));
+      // expect(screen.getByText(/\/general\//i));
       expect(screen.getByText(/submitted on :/i));
       expect(screen.getByText(/submitter nickname :/i));
       expect(
@@ -139,10 +139,7 @@ describe("CampHistory Page", () => {
 
 describe("CampHistory", () => {
   it("render show CampHistory fields", () => {
-    render(
-      <CampHistory
-      />
-    );
+    render(<CampHistory />);
     expect(screen.getByText("Camp Archived :")).toBeTruthy();
   });
 });

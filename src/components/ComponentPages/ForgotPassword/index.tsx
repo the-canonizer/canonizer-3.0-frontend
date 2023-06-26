@@ -58,7 +58,7 @@ const ForgotPassword = ({ isModal, isTestScreen = 0 }) => {
         isModal && closeModal();
         // dispatch(setValue({ label: "email_id", value: formData?.email_id }));
         localStorage.setItem("verified", formData?.email_id);
-        router.push({ pathname: "/reset-password" });
+        router?.push({ pathname: "/reset-password" });
       }
     } else {
       if (isScreen === 1) {

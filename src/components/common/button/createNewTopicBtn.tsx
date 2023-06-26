@@ -11,7 +11,7 @@ const CreateNewTopicButton = (props) => {
     if (props.click) {
       props.click();
     }
-    router.push({ pathname: "/create/topic" });
+    router?.push({ pathname: "/create/topic" });
   };
 
   return (

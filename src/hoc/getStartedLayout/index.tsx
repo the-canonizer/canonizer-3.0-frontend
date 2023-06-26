@@ -20,4 +20,4 @@ const makeStore = () => store;
 const wrapper = createWrapper(makeStore);
 
 // export default Layout;
-export default wrapper.withRedux(GetStartedLayout);
+export default GetStartedLayout;

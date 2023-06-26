@@ -1,7 +1,7 @@
 import NetworkCall from "../networkCall";
 import EventLine from "../request/eventLineRequest";
-
-import { mockData } from "../../components/ComponentPages/TimeLine/mockData";
+import { store } from "../../store";
+import { setTopicName } from "../../store/slices/campDetailSlice";
 
 export const getEventLineApi = async (reqBody) => {
   try {
@@ -9,10 +9,17 @@ export const getEventLineApi = async (reqBody) => {
       EventLine.getEventLine(reqBody),
       false
     );
-
-    return eventLineData?.data;
-    // return mockData
-  } catch (error) {
-    // return mockData
-  }
+    if (eventLineData?.code == 200) {
+      store.dispatch(
+        setTopicName(
+          eventLineData?.data[
+            Object.keys(eventLineData?.data).sort()[
+              Object.keys(eventLineData?.data).length - 1
+            ]
+          ]?.payload_response[0]?.title
+        )
+      );
+    }
+    return eventLineData.data;
+  } catch (error) {}
 };

@@ -1,23 +1,23 @@
 import { Collapse, Popover, Image, Typography, Button, Select } from "antd";
 import React, { useEffect, useState, useRef } from "react";
+import { RightOutlined } from "@ant-design/icons";
+import { useSelector, useDispatch } from "react-redux";
+
 import CampTree from "../CampTree";
-import Link from "next/link";
 import { RootState } from "src/store";
-import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
+import useAuthentication from "src/hooks/isUserAuthenticated";
 import styles from "../topicDetails.module.scss";
 import { useRouter } from "next/router";
 import CustomSkelton from "../../../common/customSkelton";
 
-import { useSelector, useDispatch } from "react-redux";
-import { store } from "../../../../store";
-import { setTree } from "../../../../store/slices/campDetailSlice";
+import { store } from "src/store";
+import { setTree } from "src/store/slices/campDetailSlice";
+import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 
 import { fallBackSrc } from "src/assets/data-images";
 
-import { setFilterCanonizedTopics } from "../../../../store/slices/filtersSlice";
-
 const { Panel } = Collapse;
-const { Link: AntLink } = Typography;
+const { Link: AntLink, Text } = Typography;
 
 const addContent = (
   <>
@@ -43,6 +43,7 @@ const CampTreeCard = ({
   scrollToCampStatement,
   setTotalCampScoreForSupportTree,
   setSupportTreeForCamp,
+  backGroundColorClass,
 }) => {
   const { asof, asofdate } = useSelector((state: RootState) => ({
     asofdate: state.filters?.filterObject?.asofdate,
@@ -73,7 +74,7 @@ const CampTreeCard = ({
 
   const router = useRouter();
   const { isUserAuthenticated } = useAuthentication();
-  const eventLinePath = router.asPath.replace("topic", "eventline");
+  const eventLinePath = router?.asPath.replace("topic", "eventline");
   const [treeExpandValue, setTreeExpandValue] = useState<any>(50);
   const prevTreeValueRef = useRef(50);
   const dispatch = useDispatch();
@@ -96,25 +97,71 @@ const CampTreeCard = ({
 
   return (
     <>
-      {((tree && tree["1"]?.is_valid_as_of_time) || asof == "default") && (
+      {tree &&
+        (!tree["1"]?.is_valid_as_of_time ||
+          (tree["1"]?.is_valid_as_of_time &&
+            !(
+              tree["1"]?.created_date <=
+              (asof == "default" || asof == "review"
+                ? Date.now() / 1000
+                : asofdate)
+            ))) && (
+          <div className={styles.imageWrapper}>
+            <div>
+              <Image
+                preview={false}
+                alt="No topic created"
+                src={"/images/empty-img-default.png"}
+                fallback={fallBackSrc}
+                width={200}
+                id="forgot-modal-img"
+              />
+              <p>
+                The topic was created on
+                <AntLink
+                  onClick={() => {
+                    onCreateTreeDate();
+                  }}
+                >
+                  {" "}
+                  {new Date(
+                    (tree && tree["1"]?.created_date) * 1000
+                  ).toLocaleString()}
+                </AntLink>
+              </p>
+            </div>
+          </div>
+        )}
+
+      {((tree &&
+        tree["1"]?.is_valid_as_of_time &&
+        tree["1"]?.created_date <=
+          (asof == "default" || asof == "review"
+            ? Date.now() / 1000
+            : asofdate)) ||
+        asof == "default") && (
         <Collapse
           defaultActiveKey={["1"]}
           expandIconPosition="right"
-          className="topicDetailsCollapse"
+          className={`topicDetailsCollapse ${styles.topicDetailsPanelNo}`}
         >
           <Panel
             disabled
+            className={`header-bg-color-change ${backGroundColorClass}`}
             header={
               <h3>
-                Canonizer Sorted Camp Tree{" "}
-                <Button
+                Consensus Tree{" "}
+                {/* <Button
                   type={"primary"}
                   size="small"
                   className={styles.eventLineBtn}
                   href={eventLinePath}
                 >
                   Event Line
-                </Button>
+                </Button> */}
+                <Popover content={addContent} placement="left">
+                  <i className="icon-info tooltip-icon-style"></i>
+                </Popover>
               </h3>
             }
             key="1"
@@ -126,24 +173,12 @@ const CampTreeCard = ({
                     event.stopPropagation();
                   }}
                 >
-                  {isUserAuthenticated && is_admin && tree && (
-                    <Link
-                      href={{
-                        pathname: router.asPath.replace("topic", "addnews"),
-                      }}
-                    >
-                      <a
-                        className={styles.addNew}
-                        onClick={(event) => {
-                          event.stopPropagation();
-                        }}
-                      >
-                        <i className={"icon-fi-document " + styles.iconMr} />
-                        Add News
-                      </a>
-                    </Link>
-                  )}
+                  <Text>
+                    {`Show camps with score`}
+                    <RightOutlined className="rightOutlined" />
+                  </Text>
                   <Select
+                    value={treeExpandValue}
                     defaultValue={"50%"}
                     style={{ width: 80 }}
                     onChange={handleChange}
@@ -178,9 +213,6 @@ const CampTreeCard = ({
                       },
                     ]}
                   />
-                  <Popover content={addContent} placement="left">
-                    <i className="icon-info tooltip-icon-style"></i>
-                  </Popover>
                 </div>
               </>
             }
@@ -206,33 +238,6 @@ const CampTreeCard = ({
             )}
           </Panel>
         </Collapse>
-      )}
-      {tree && !tree["1"]?.is_valid_as_of_time && (
-        <div className={styles.imageWrapper}>
-          <div>
-            <Image
-              preview={false}
-              alt="No topic created"
-              src={"/images/empty-img-default.png"}
-              fallback={fallBackSrc}
-              width={200}
-              id="forgot-modal-img"
-            />
-            <p>
-              The topic was created on
-              <AntLink
-                onClick={() => {
-                  onCreateTreeDate();
-                }}
-              >
-                {" "}
-                {new Date(
-                  (tree && tree["1"]?.created_date) * 1000
-                ).toLocaleString()}
-              </AntLink>
-            </p>
-          </div>
-        </div>
       )}
     </>
   );
