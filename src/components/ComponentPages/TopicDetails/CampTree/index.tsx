@@ -325,19 +325,15 @@ const CampTree = ({
                           <a
                             className={
                               data[item]?.camp_id ==
-                                    router?.query?.camp
-                                      ?.at(1)
-                                      ?.split("-")
-                                      ?.at(0) ?? "1"
+                                router?.query?.camp?.at(1)?.split("-")?.at(0) ??
+                              "1"
                                 ? `font-weight-bold ${styles.activeCamp}`
                                 : ""
                             }
                           >
-                            {includeReview ? (
-                              data[item]?.review_title
-                            ) : (
-                              data[item]?.title
-                            )}
+                            {includeReview
+                              ? data[item]?.review_title
+                              : data[item]?.title}
                           </a>
                         </Link>{" "}
                         {/* {data[item].is_archive == 1 ? (
@@ -367,7 +363,12 @@ const CampTree = ({
                                   tree?.at(0)["1"].score +
                                   50 +
                                   "px"
-                              : "50px"
+                              : `${
+                                  (is_checked
+                                    ? data[item].full_score?.toFixed(2)
+                                    : data[item].score?.toFixed(2)
+                                  ).length * 11
+                                }px`
                           )}
                           baseBgColor={"#fff"}
                           labelAlignment={"left"}
