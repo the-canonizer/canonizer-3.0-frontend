@@ -16,12 +16,17 @@ import UserRequest from "../request/userRequest";
 import { store } from "../../store";
 import { setFilterCanonizedTopics } from "../../store/slices/filtersSlice";
 import { setHeaderData } from "src/store/slices/notificationSlice";
+import { useCookies } from "react-cookie";
 
 export const createToken = async () => {
   try {
+    // const [cookie, setCookie] = useCookies(["authToken"]);
     const token = await NetworkCall.fetch(UserRequest.createToken());
     store.dispatch(setAuthToken(token?.data?.access_token));
     localStorage.setItem("auth_token", token?.data?.access_token);
+    // setCookie("authToken", token?.data?.access_token, {
+    //   path: "/",
+    // });
     return token.data;
   } catch (error) {
     handleError(error);

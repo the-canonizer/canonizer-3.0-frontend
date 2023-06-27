@@ -99,11 +99,16 @@ export async function getServerSideProps({ req, res, resolvedUrl }) {
     canonizedAlgorithms,
     tree,
   ] = await Promise.all([
-    getNewsFeedApi(reqBody),
-    getCurrentTopicRecordApi(reqBody),
-    getCurrentCampRecordApi(reqBody),
-    getCanonizedCampStatementApi(reqBody),
-    getHistoryApi(reqBodyForCampData, "1", "statement"),
+    getNewsFeedApi(reqBody, req.cookies["authToken"]),
+    getCurrentTopicRecordApi(reqBody, req.cookies["authToken"]),
+    getCurrentCampRecordApi(reqBody, req.cookies["authToken"]),
+    getCanonizedCampStatementApi(reqBody, req.cookies["authToken"]),
+    getHistoryApi(
+      reqBodyForCampData,
+      "1",
+      "statement",
+      req.cookies["authToken"]
+    ),
     getCanonizedAlgorithmsApi(),
     getTreesApi(reqBodyForService),
   ]);
