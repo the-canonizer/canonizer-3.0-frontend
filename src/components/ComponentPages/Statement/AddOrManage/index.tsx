@@ -416,29 +416,29 @@ export default function AddOrManage({ add }: any) {
               op.checked =
                 res?.data[manageFormOf]?.is_one_level === 1 ? true : false;
             }
-            // if (op.id === "is_archive") {
-            //   op.checked =
-            //     res?.data[manageFormOf]?.is_archive === 1 ? true : false;
-            //   op.tooltip = op.checked
-            //     ? "Unarchive the camp."
-            //     : "Archive the camp.";
-            //   if (
-            //     res?.data[manageFormOf]?.direct_archive === 0 &&
-            //     res?.data[manageFormOf]?.is_archive === 0
-            //   )
-            //     op.disable = false;
-            //   else if (
-            //     res?.data[manageFormOf]?.direct_archive === 0 &&
-            //     res?.data[manageFormOf]?.is_archive === 1
-            //   ) {
-            //     op.disable = true;
-            //   } else if (
-            //     res?.data[manageFormOf]?.direct_archive === 1 &&
-            //     res?.data[manageFormOf]?.is_archive === 1
-            //   ) {
-            //     op.disable = false;
-            //   }
-            // }
+            if (op.id === "is_archive") {
+              op.checked =
+                res?.data[manageFormOf]?.is_archive === 1 ? true : false;
+              op.tooltip = op.checked
+                ? "Unarchive the camp."
+                : "Archive the camp.";
+              if (
+                res?.data[manageFormOf]?.direct_archive === 0 &&
+                res?.data[manageFormOf]?.is_archive === 0
+              )
+                op.disable = false;
+              else if (
+                res?.data[manageFormOf]?.direct_archive === 0 &&
+                res?.data[manageFormOf]?.is_archive === 1
+              ) {
+                op.disable = true;
+              } else if (
+                res?.data[manageFormOf]?.direct_archive === 1 &&
+                res?.data[manageFormOf]?.is_archive === 1
+              ) {
+                op.disable = false;
+              }
+            }
           });
 
           setOptions(oldOptions);
