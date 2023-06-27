@@ -16,11 +16,7 @@ const Events = ({ timelineDescript }) => {
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
-  const urlPath = (id) => {
-    let path = router?.asPath.replace("eventline", "topic");
-    let main = path.replace(path.split("/")[3], id);
-    return main;
-  };
+
   const handleEvents = (goLiveTime) => {
     dispatch(setViewThisVersion(true));
     dispatch(
@@ -69,13 +65,12 @@ const Events = ({ timelineDescript }) => {
                         }
                         title={
                           <div onClick={() => handleEvents(title.eventDate)}>
-                            <Link
-                              href={{
-                                pathname: urlPath(title.id),
-                              }}
+                            <a
+                              href={title?.url}
+                              onClick={() => router.push(title?.url)}
                             >
                               {title?.message}
-                            </Link>
+                            </a>
                           </div>
                         }
                         description={covertToTime(title?.eventDate)}
