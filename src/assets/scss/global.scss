@@ -2253,19 +2253,18 @@ div[role="option"]::before {
 }
 
 .rang-slider {
-  @media screen and (min-width: 768px) {
-    margin: 10px 40px 10px;
+  @media screen and (min-width:768px) {
+  margin:10px 40px 10px;
+}
+@media screen and (max-width:767px) {
+  margin:10px 16px 10px;
+}
+.ant-slider-tooltip {
+  .ant-tooltip-arrow-content  {
+    --antd-arrow-background-color: rgba(45, 145, 203, 0.856);
   }
-  @media screen and (max-width: 767px) {
-    margin: 10px 16px 10px;
-  }
-  .ant-slider-tooltip {
-    .ant-tooltip-arrow-content {
-      --antd-arrow-background-color: rgba(45, 145, 203, 0.856);
-    }
-    .ant-tooltip-inner {
-      background-color: rgba(45, 145, 203, 0.856);
-    }
+  .ant-tooltip-inner{
+  background-color: rgba(45, 145, 203, 0.856);
   }
   .ant-slider-mark {
     top: -22px;
@@ -2494,13 +2493,11 @@ div[role="option"]::before {
 .skeleton-rangslider {
   .ant-slider-tooltip {
     .ant-tooltip-inner {
-      background-color: #ebebeb;
+  background-color: #ebebeb;
     }
     .ant-tooltip-arrow-content {
-      --antd-arrow-background-color: #ebebeb;
-    }
-  }
-}
+    --antd-arrow-background-color: #ebebeb;
+     }}}
 .header-none {
   .ant-collapse-header {
     display: none !important;
