@@ -261,7 +261,7 @@ const TimelineInfoBar = ({
       </Menu.Item>
       <Menu.Item
         icon={<HeartOutlined />}
-        disabled={asof == "bydate"}
+        disabled={asof == "bydate" || campRecord?.is_archive}
       >
         {isTopicPage && (
           <Link href={router?.asPath?.replace("/topic/", "/support/")}>
@@ -312,7 +312,7 @@ const TimelineInfoBar = ({
           </Link>
         )}
       </Menu.Item>
-      <Menu.Item icon={<FileTextOutlined />}>
+      <Menu.Item icon={<FileTextOutlined />}  disabled={campRecord?.is_archive}>
         {isTopicPage && (
           <Link
             href={
