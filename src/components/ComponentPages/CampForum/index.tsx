@@ -542,7 +542,7 @@ const ForumComponent = () => {
   };
 
   return (
-    <Fragment>
+    <Fragment data-testid="forum-component">
       <CampInfoBar payload={payload} />
       {router?.pathname === "/forum/[topic]/[camp]/threads" ? (
         <ForumUIList
