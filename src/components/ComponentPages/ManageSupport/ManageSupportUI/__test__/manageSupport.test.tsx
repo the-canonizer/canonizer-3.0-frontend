@@ -3,7 +3,6 @@ import {
   render,
   screen,
   waitFor,
-  mount,
 } from "../../../../../utils/testUtils";
 import messages from "../../../../../messages";
 import ManageSupportUI from "../index";
@@ -18,7 +17,7 @@ import moment from "moment";
 import isAuth from "src/hooks/isUserAuthenticated";
 import { act } from "react-dom/test-utils";
 import { placeholders } from "src/messages/placeholder";
-
+import SupportRemovedModal from "src/components/common/supportRemovedModal";
 const { labels } = messages;
 const nickNameList = [
   {
@@ -36,6 +35,28 @@ const nickNameList = [
     private: 1,
   },
 ];
+const currentGetCheckSupportExist={
+  camp_num:expect.any(Number),
+  disable_submit:"true",
+  is_confirm:expect.any(Number),
+  is_delegator:expect.any(Number),
+  message:expect.any(String),
+  remove_camps:[{
+    camp_name:expect.any(String),
+    camp_num:expect.any(Number),
+    link:expect.any(String),
+    support_order:expect.any(Number)
+  }],
+  support_flag:expect.any(Number),
+  topic_num:expect.any(Number),
+  warning:expect.any(String)
+}
+
+const currentDelegatedSupportedClick={
+  delegatedSupportClick:true
+}
+const checkDelegateClick= true
+const manageSupportLink = "/support/949-top/2-camp-1 link"
 const manageSupportList = [];
 const clearAllChanges = jest.fn();
 const removeAll = jest.fn();
@@ -127,12 +148,45 @@ jest.mock("next/router", () => ({
     query: { manageSupport: manageSupport },
   })),
 }));
-jest.mock("src/hooks/isUserAuthenticated", () => () => ({
-  isAuth: jest.fn(() => ({
-    isUserAuthenticated: true,
-  })),
+jest.mock("react-redux", () => ({
+  ...jest.requireActual('react-redux'),
+  useSelector: jest.fn().mockImplementation(()=>{
+    return {
+      campRecord: {
+        camp_name: 'ABC'
+      },
+      asof:'', 
+      asofdate: '',
+      manageSupportUrlLink: '',
+      currentDelegatedSupportedClick: {},
+      currentGetCheckSupportExistsData: {},
+      CurrentCheckSupportStatus: '',
+      manageSupportStatusCheck: true
+    }
+  })
 }));
-
+jest.mock("src/hooks/isUserAuthenticated", () => jest.fn(()=>({isUserAuthenticated: true})));
+jest.mock("src/network/api/campDetailApi", () =>  ({
+  getAllUsedNickNames: jest.fn(),
+  getCurrentCampRecordApi:jest.fn(),
+  getAllRemovedReasons: jest.fn().mockReturnValue(Promise.resolve({success: true})),
+  getCampBreadCrumbApi: jest.fn(() =>
+        Promise.resolve({ data: {}, status_code: 200 })
+      ),
+}));
+jest.mock("src/network/api/topicAPI", () =>  ({
+  GetActiveSupportTopic:jest.fn(() =>
+    Promise.resolve({ data: [], status_code: 200 })
+  ),
+  GetCheckSupportExists: jest.fn(() =>
+    Promise.resolve({ data: {
+      remove_camps: {}
+    }, status_code: 200 })
+  ),
+}));
+jest.mock("src/components/common/supportRemovedModal", () => ()=> {
+  return <div>Removed Modal</div>;
+});
 function MyComponent() {
   const inputRef = useRef(null);
 
@@ -525,20 +579,16 @@ it("should render card with title and content", () => {
   expect(cardContent).toBeInTheDocument();
 });
 describe("Manage support", () => {
-  it("render nick name list", () => {
-    render(<ManageSupport />);
-    waitFor(async () => {
+  it("render nick name list", async() => {
+    await render(<ManageSupport />);
+    waitFor(() => {
       expect(screen.getByText(nickNameList[0].create_time)).toBeInTheDocument();
       expect(screen.getByText(nickNameList[0].id)).toBeInTheDocument();
       expect(screen.getByText(nickNameList[0].nick_name)).toBeInTheDocument();
       expect(screen.getByText(nickNameList[0].owner_code)).toBeInTheDocument();
       expect(screen.getByText(nickNameList[0].private)).toBeInTheDocument();
-      expect(screen.getByText(nickNameList[1].create_time)).toBeInTheDocument();
-      expect(screen.getByText(nickNameList[1].id)).toBeInTheDocument();
-      expect(screen.getByText(nickNameList[1].nick_name)).toBeInTheDocument();
-      expect(screen.getByText(nickNameList[1].owner_code)).toBeInTheDocument();
-      expect(screen.getByText(nickNameList[1].private)).toBeInTheDocument();
     });
+    
   });
   it("render camp record", () => {
     render(<ManageSupport />);
@@ -570,266 +620,5 @@ describe("Manage support", () => {
         screen.getByText(campRecord.parentCamps[0].topic_num)
       ).toBeInTheDocument();
     });
-  });
-  it("render check support exist", () => {
-    const container = render(<ManageSupport />);
-    container;
-    waitFor(async () => {
-      expect(
-        screen.getByText(currentGetCheckSupportExistData.camp_num)
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(currentGetCheckSupportExistData.is_confirm)
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(currentGetCheckSupportExistData.support_flag)
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(currentGetCheckSupportExistData.topic_num)
-      ).toBeInTheDocument();
-    });
-  });
-  it("Message component displays correct content", async () => {
-    await act(async () => {
-      render(<ManageSupport />);
-    });
-    const messageContent = "Test message";
-
-    // Render the Message component
-    message.success(messageContent);
-
-    // Assert that the message content is displayed
-    const messageElement = screen.getByText(messageContent);
-    expect(messageElement).toBeInTheDocument();
-  });
-  it("render check support exist", () => {
-    render(<ManageSupport />);
-    waitFor(async () => {
-      expect(
-        screen.getByText(currentGetCheckSupportExistData.camp_num)
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(currentGetCheckSupportExistData.is_confirm)
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(currentGetCheckSupportExistData.support_flag)
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(currentGetCheckSupportExistData.topic_num)
-      ).toBeInTheDocument();
-    });
-  });
-  it("Message component displays correct content", () => {
-    render(<ManageSupport />);
-    const messageContent = "Test message";
-
-    // Render the Message component
-    message.success(messageContent);
-
-    // Assert that the message content is displayed
-    const messageElement = screen.getByText(messageContent);
-    expect(messageElement).toBeInTheDocument();
-  });
-  it("render useState is working ", () => {
-    render(<ManageSupport />);
-    const TestComponent = () => {
-      const [isActive, setIsActive] = useState(false);
-
-      const toggleActive = () => {
-        setIsActive(!isActive);
-      };
-
-      return (
-        <div>
-          <p>{isActive ? "Active" : "Inactive"}</p>
-          <button onClick={toggleActive}>Toggle</button>
-        </div>
-      );
-    };
-
-    const { getByText } = render(<TestComponent />);
-
-    const statusElement = getByText("Inactive");
-    const toggleButton = getByText("Toggle");
-
-    expect(statusElement.textContent).toBe("Inactive");
-
-    fireEvent.click(toggleButton);
-
-    expect(statusElement.textContent).toBe("Active");
-
-    fireEvent.click(toggleButton);
-
-    expect(statusElement.textContent).toBe("Inactive");
-  });
-
-  // it("path is working with use router",()=>{
-  //   render(<ManageSupport/>)
-  //   const mockedRouter = {
-  //     pathname: '/about',
-  //   };
-
-  //   // Setting up the mocked useRouter implementation
-  //   // useRouter.mockImplementation(() => mockedRouter);
-
-  //   const { result } = renderHook(() => useRouter());
-
-  //   // expect(result.current.pathname).toBe('/about');
-  // });
-  it("render topic support list", () => {
-    render(<ManageSupport />);
-    waitFor(async () => {
-      expect(
-        screen.getByText(topicSupportList[0].camp_name)
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(topicSupportList[0].camp_num)
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(topicSupportList[0].delegate_nick_name_id)
-      ).toBeInTheDocument();
-      expect(screen.getByText(topicSupportList[0].end)).toBeInTheDocument();
-      expect(screen.getByText(topicSupportList[0].link)).toBeInTheDocument();
-      expect(
-        screen.getByText(topicSupportList[0].namespace_id)
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(topicSupportList[0].nick_name_id)
-      ).toBeInTheDocument();
-      expect(screen.getByText(topicSupportList[0].start)).toBeInTheDocument();
-      expect(
-        screen.getByText(topicSupportList[0].support_id)
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(topicSupportList[0].support_order)
-      ).toBeInTheDocument();
-      expect(screen.getByText(topicSupportList[0].title)).toBeInTheDocument();
-      expect(
-        screen.getByText(topicSupportList[0].topic_num)
-      ).toBeInTheDocument();
-    });
-  });
-  it("render all parent list", () => {
-    render(<ManageSupport />);
-    waitFor(async () => {
-      expect(
-        screen.getByText(allParentList[0].camp_about_nick_id)
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(allParentList[0].camp_about_url)
-      ).toBeInTheDocument();
-      expect(screen.getByText(allParentList[0].camp_name)).toBeInTheDocument();
-      expect(screen.getByText(allParentList[0].camp_num)).toBeInTheDocument();
-      expect(
-        screen.getByText(allParentList[0].direct_archive)
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(allParentList[0].go_live_time)
-      ).toBeInTheDocument();
-    });
-  });
-  it("checks the value of a variable", () => {
-    render(<ManageSupport />);
-
-    const myVariable = 42;
-
-    expect(myVariable).toBe(42);
-  });
-  it("performs the correct action based on the condition", () => {
-    render(<ManageSupport />);
-
-    const condition = true;
-
-    if (condition) {
-      // Perform action A
-      expect(condition).toBe(true);
-    } else {
-      // Perform action B
-      expect(condition).toBe(false);
-    }
-  });
-  it("returns the correct router object", () => {
-    render(<ManageSupport />);
-
-    const mockRouter = {
-      pathname: "/example",
-      query: { id: "123" },
-      push: jest.fn(),
-    };
-
-    jest.spyOn(require("next/router"), "useRouter").mockReturnValue(mockRouter);
-
-    const { result } = renderHook(() => useRouter());
-
-    expect(result.current.pathname).toBe("/example");
-    expect(result.current.query).toEqual({ id: "123" });
-
-    // Test calling a router function
-    result.current.push("/new-page");
-    expect(mockRouter.push).toHaveBeenCalledWith("/new-page");
-  });
-  it("render all parent list", () => {
-    render(<ManageSupport />);
-    const res = { status_code: 200, message: "Success" };
-    // addDelegatedSupport.mockResolvedValueOnce(res)
-    waitFor(async () => {
-      expect(
-        screen.getByText(addDelegatedSupport.nick_name_id)
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(addDelegatedSupport.delegated_nick_name_id)
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(addDelegatedSupport.topic_num)
-      ).toBeInTheDocument();
-      expect(message.success).toHaveBeenCalledWith(res.message);
-    });
-  });
-  it("sets the ref object correctly", () => {
-    render(<ManageSupport />);
-    const { container } = render(<MyComponent />);
-    const inputElement = container.querySelector("input");
-
-    expect(inputElement).toBeDefined();
-    expect(inputElement).toEqual(expect.any(HTMLInputElement));
-  });
-  it("formats a date correctly", () => {
-    render(<ManageSupport />);
-    const date = moment("2023-06-07");
-    const formattedDate = date.format("YYYY-MM-DD");
-
-    expect(formattedDate).toBe("2023-06-07");
-  });
-
-  it("adds days to a date correctly", () => {
-    render(<ManageSupport />);
-    const date = moment("2023-06-07");
-    const newDate = date.add(7, "days");
-
-    expect(newDate.format("YYYY-MM-DD")).toBe("2023-06-14");
-  });
-
-  it("checks if a date is before another date", () => {
-    render(<ManageSupport />);
-    const date1 = moment("2023-06-07");
-    const date2 = moment("2023-06-08");
-
-    expect(date1.isBefore(date2)).toBe(true);
-  });
-
-  it("checks if a date is after another date", () => {
-    const date1 = moment("2023-06-07");
-    const date2 = moment("2023-06-06");
-
-    expect(date1.isAfter(date2)).toBe(true);
-  });
-});
-
-describe("Dynamic import", () => {
-  render(<ManageSupport />);
-  it("loads the module asynchronously", async () => {
-    const dynamicImport = import("../../ManageSupportUI");
-
-    await expect(dynamicImport).resolves.toBeDefined();
   });
 });

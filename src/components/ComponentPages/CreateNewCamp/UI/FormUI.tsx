@@ -172,14 +172,14 @@ const CreateCampFormUI = ({
                         id={`parent-camp-${camp.id}`}
                         camp={camp}
                         disabled={
-                          camp.parent_change_in_review == true || camp.is_archive ? true : false
+                          camp.parent_change_in_review == true|| camp.is_archive ? true : false
                         }
                       >
                         <Tooltip
                           title={
                             camp.parent_change_in_review == true
-                              ? toolTipContent
-                              :camp.is_archive ? archiveToolTipContent : null
+                              ? toolTipContent  :camp.is_archive ? archiveToolTipContent 
+                              : null
                           }
                         >
                           {camp.camp_name}

@@ -130,7 +130,7 @@ const TopicDetails = () => {
         as_of_date:
           asof == "default" || asof == "review"
             ? Date.now() / 1000
-            : moment(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
+            : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
       };
       const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
 
@@ -385,7 +385,10 @@ const TopicDetails = () => {
   const onCreateCampDate = () => {
     dispatch(
       setFilterCanonizedTopics({
-        asofdate: campExist?.created_at,
+        asofdate:
+          Date.parse(
+            moment.unix(campExist && campExist?.created_at).endOf("day")["_d"]
+          ) / 1000,
         asof: "bydate",
       })
     );
@@ -458,9 +461,13 @@ const TopicDetails = () => {
                               }}
                             >
                               {" "}
-                              {new Date(
-                                (campExist && campExist?.created_at) * 1000
-                              ).toLocaleString()}
+                              {
+                                new Date(
+                                  (campExist && campExist?.created_at) * 1000
+                                )
+                                  .toLocaleString()
+                                  ?.split(",")[0]
+                              }
                             </Link>
                           </span>
                         }
