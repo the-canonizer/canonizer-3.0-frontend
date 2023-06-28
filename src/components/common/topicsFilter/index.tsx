@@ -394,9 +394,9 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
               <FullScoreCheckbox />
             </div>
 
-            <div className={styles.scoreCheckbox}>
+            {/* <div className={styles.scoreCheckbox}>
               <ArchivedCampCheckBox />
-            </div>
+            </div> */}
           </Panel>
           <Panel
             className={`header-bg-color-change radio-group-sider ${selectedAsOf}`}

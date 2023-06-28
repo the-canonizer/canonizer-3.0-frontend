@@ -2,6 +2,7 @@ import { Collapse, Popover, Image, Typography, Button, Select } from "antd";
 import React, { useEffect, useState, useRef } from "react";
 import { RightOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
+import moment from "moment";
 
 import CampTree from "../CampTree";
 import { RootState } from "src/store";
@@ -64,7 +65,9 @@ const CampTreeCard = ({
   const onCreateTreeDate = () => {
     dispatch(
       setFilterCanonizedTopics({
-        asofdate: tree["1"]?.created_date,
+        asofdate:
+          Date.parse(moment.unix(tree["1"]?.created_date).endOf("day")["_d"]) /
+          1000,
         asof: "bydate",
       })
     );
@@ -107,9 +110,11 @@ const CampTreeCard = ({
                   }}
                 >
                   {" "}
-                  {new Date(
-                    (tree && tree["1"]?.created_date) * 1000
-                  ).toLocaleString()}
+                  {
+                    new Date((tree && tree["1"]?.created_date) * 1000)
+                      .toLocaleString()
+                      ?.split(",")[0]
+                  }
                 </AntLink>
               </p>
             </div>

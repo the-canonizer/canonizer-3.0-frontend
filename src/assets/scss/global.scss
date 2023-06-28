@@ -2259,10 +2259,10 @@ div[role="option"]::before {
 }
 .ant-slider-tooltip {
   .ant-tooltip-arrow-content  {
-    --antd-arrow-background-color: #4484ce;
+    --antd-arrow-background-color: rgba(45, 145, 203, 0.856);
   }
   .ant-tooltip-inner{
-  background-color: #4484ce;
+  background-color: rgba(45, 145, 203, 0.856);
   }
 }
   .ant-slider-mark {
@@ -2493,6 +2493,15 @@ div[role="option"]::before {
     display: none;
   }
 }
+
+.skeleton-rangslider {
+  .ant-slider-tooltip {
+    .ant-tooltip-inner {
+  background-color: #ebebeb;
+    }
+    .ant-tooltip-arrow-content {
+    --antd-arrow-background-color: #ebebeb;
+     }}}
 .header-none {
   .ant-collapse-header {
     display: none !important;
