@@ -516,7 +516,7 @@ export default function AddOrManage({ add }: any) {
       } else {
         op.checked = false;
       }
-      op.tooltip = op.checked ? "Unarchive the camp." : "Archive the camp.";
+       op.tooltip = op.id === "is_archive"?op.checked ? "Unarchive the camp." : "Archive the camp.":op.tooltip;
     });
     setOptions(oldOptions);
     if (
