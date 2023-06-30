@@ -3,6 +3,10 @@ import moment from "moment";
 import { Form, message } from "antd";
 import isAuth from "../../../hooks/isUserAuthenticated";
 
+import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
+
+import { useDispatch } from "react-redux";
+
 import {
   GetUserProfileInfo,
   UpdateUserProfileInfo,
@@ -24,6 +28,7 @@ type UpdateAddress = {
 const ProfileInfo = () => {
   const [form] = Form.useForm();
   const [formVerify] = Form.useForm();
+  const dispatch = useDispatch();
   const [mobileCarrier, setMobileCarrier] = useState([]);
   const [isOTPModalVisible, setIsOTPModalVisible] = useState(false);
   const [otp, setOTP] = useState("");
@@ -107,9 +112,17 @@ const ProfileInfo = () => {
     values.address_1 = address;
     values.postal_code = code;
     values = { ...values, ...updateAddress };
+
     let res = await UpdateUserProfileInfo(values);
     if (res && res.status_code === 200) {
       message.success(res.message);
+      if (values?.default_algo) {
+        dispatch(
+          setFilterCanonizedTopics({
+            algorithm: values?.default_algo,
+          })
+        );
+      }
       setDisableButton(false);
       setAdd(false);
       setZipCode(false);

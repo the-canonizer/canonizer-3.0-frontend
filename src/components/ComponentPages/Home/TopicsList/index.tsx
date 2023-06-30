@@ -13,7 +13,7 @@ import {
 import { setFilterCanonizedTopics } from "../../../../store/slices/filtersSlice";
 import styles from "./topicsList.module.scss";
 import { Spin, Checkbox } from "antd";
-import { LoadingOutlined, RightOutlined } from "@ant-design/icons";
+import { LoadingOutlined, CopyOutlined } from "@ant-design/icons";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import {
   setCheckSupportExistsData,
@@ -28,7 +28,7 @@ import CustomSkelton from "../../../common/customSkelton";
 import { CloseCircleOutlined } from "@ant-design/icons";
 
 const antIcon = <LoadingOutlined spin />;
-const { Title, Text } = Typography;
+const { Title, Text, Paragraph } = Typography;
 const { Search } = Input;
 
 const infoContent = (
@@ -179,7 +179,7 @@ const TopicsList = () => {
     // setArchiveSearch(is_archive);
     setInputSearch(search.trim());
     setNameSpacesList(nameSpaces);
-  }, [filterNameSpace, filterNameSpaceId, search, nameSpaces, is_archive]);
+  }, [filterNameSpace, filterNameSpaceId, search, nameSpaces,is_archive]);
 
   useEffect(() => {
     setTopicsData(canonizedTopics);
@@ -403,8 +403,9 @@ const TopicsList = () => {
                       )}/1-Agreement`,
                     }}
                   >
-                    {!item.is_archive ||
-                    (item.is_archive && is_camp_archive_checked) ? (
+                    {
+                      !item.is_archive ||
+                      (item.is_archive && is_camp_archive_checked) ?( 
                       <a
                         onClick={() => {
                           handleTopicClick();
@@ -437,11 +438,30 @@ const TopicsList = () => {
                             ? item?.topic_full_score?.toFixed(2)
                             : item?.topic_score?.toFixed(2)}
                         </Tag>
-                      </a>
-                    ) : (
-                      <></>
-                    )}
+                      </a>)
+                      :(<></>)
+                    }
                   </Link>
+                  <Paragraph
+                    className={styles.copyable}
+                    copyable={{
+                      text: item.is_archive ? (
+                        <Popover content="Archived Topic">
+                          {isReview
+                            ? item?.tree_structure &&
+                              item?.tree_structure[1].review_title
+                            : item?.topic_name}
+                        </Popover>
+                      ) : isReview ? (
+                        item?.tree_structure &&
+                        item?.tree_structure[1].review_title
+                      ) : (
+                        item?.topic_name
+                      ),
+                    }}
+                  >
+                    {" "}
+                  </Paragraph>
                 </>
               </List.Item>
             );
