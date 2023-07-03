@@ -68,9 +68,8 @@ function CompareStatementUI({
         <div className={styles.btnGroup}>
           <CreateTopicBtn />
           <CreateCampBtn
-            url={`/camp/create/${
-              router?.query?.routes[0] + "/" + router?.query?.routes[1]
-            }`}
+            url={`/camp/create/${router?.query?.routes[0] + "/" + router?.query?.routes[1]
+              }`}
           />
         </div>
         <div className={styles.campStatement}>
@@ -87,8 +86,8 @@ function CompareStatementUI({
                 {from === "topic"
                   ? "Topic "
                   : from === "camp"
-                  ? "Camp "
-                  : "Camp Statement "}
+                    ? "Camp "
+                    : "Camp Statement "}
                 History Comparison
               </Title>
             </div>
@@ -125,11 +124,9 @@ function CompareStatementUI({
                       <Text strong>Submitter Nickname : </Text>
                       <Text>
                         <Link
-                          href={`/user/supports/${
-                            s1["submitter_nick_id"] || ""
-                          }?topicnum=${s1["topic_num"] || ""}&campnum=${
-                            s1["camp_num"] || ""
-                          }&canon=${s1["namespace_id"] || 1}`}
+                          href={`/user/supports/${s1["submitter_nick_id"] || ""
+                            }?topicnum=${s1["topic_num"] || ""}&campnum=${s1["camp_num"] || ""
+                            }&canon=${s1["namespace_id"] || 1}`}
                         >
                           <a>{s1?.submitter_nick_name}</a>
                         </Link>
@@ -174,11 +171,9 @@ function CompareStatementUI({
                           <Text strong>Camp About Nickname : </Text>
                           <Text>
                             <Link
-                              href={`/user/supports/${
-                                s1["camp_about_nick_id"] || ""
-                              }?topicnum=${s1["topic_num"] || ""}&campnum=${
-                                s1["camp_num"] || ""
-                              }&canon=${s1["namespace_id"] || 1}`}
+                              href={`/user/supports/${s1["camp_about_nick_id"] || ""
+                                }?topicnum=${s1["topic_num"] || ""}&campnum=${s1["camp_num"] || ""
+                                }&canon=${s1["namespace_id"] || 1}`}
                             >
                               <a>{s1?.camp_about_nick_name}</a>
                             </Link>
@@ -202,8 +197,8 @@ function CompareStatementUI({
                       {from === "topic"
                         ? "Topic Name"
                         : from === "camp"
-                        ? "Camp Name"
-                        : from}{" "}
+                          ? "Camp Name"
+                          : from}{" "}
                       :{" "}
                     </Text>
                     <Card
@@ -214,7 +209,7 @@ function CompareStatementUI({
                     >
                       <div
                         dangerouslySetInnerHTML={{ __html: s1?.parsed_v }}
-                      ></div>
+                      ></div> 
                     </Card>
                   </Card>
                 )}
@@ -249,11 +244,9 @@ function CompareStatementUI({
                       <Text strong>Submitter Nickname : </Text>
                       <Text>
                         <Link
-                          href={`/user/supports/${
-                            s2["submitter_nick_id"] || ""
-                          }?topicnum=${s2["topic_num"] || ""}&campnum=${
-                            s2["camp_num"] || ""
-                          }&canon=${s2["namespace_id"] || 1}`}
+                          href={`/user/supports/${s2["submitter_nick_id"] || ""
+                            }?topicnum=${s2["topic_num"] || ""}&campnum=${s2["camp_num"] || ""
+                            }&canon=${s2["namespace_id"] || 1}`}
                         >
                           <a>{s2?.submitter_nick_name}</a>
                         </Link>
@@ -297,11 +290,9 @@ function CompareStatementUI({
                           <Text strong>Camp About Nickname : </Text>
                           <Text>
                             <Link
-                              href={`/user/supports/${
-                                s2["camp_about_nick_id"] || ""
-                              }?topicnum=${s2["topic_num"] || ""}&campnum=${
-                                s2["camp_num"] || ""
-                              }&canon=${s2["namespace_id"] || 1}`}
+                              href={`/user/supports/${s2["camp_about_nick_id"] || ""
+                                }?topicnum=${s2["topic_num"] || ""}&campnum=${s2["camp_num"] || ""
+                                }&canon=${s2["namespace_id"] || 1}`}
                             >
                               <a>{s2?.camp_about_nick_name}</a>
                             </Link>
@@ -325,8 +316,8 @@ function CompareStatementUI({
                       {from === "topic"
                         ? "Topic Name"
                         : from === "camp"
-                        ? "Camp Name"
-                        : from}{" "}
+                          ? "Camp Name"
+                          : from}{" "}
                       :{" "}
                     </Text>
                     <Card
@@ -372,8 +363,8 @@ function CompareStatementUI({
                       {from === "topic"
                         ? "Topic Name"
                         : from === "camp"
-                        ? "Camp Name"
-                        : from}{" "}
+                          ? "Camp Name"
+                          : from}{" "}
                       :{" "}
                     </Text>
                     <div
@@ -394,13 +385,10 @@ function CompareStatementUI({
                       <Text strong>Submitter Nickname : </Text>
                       <Text>
                         <Link
-                          href={`/user/supports/${
-                            liveStatement["submitter_nick_id"] || ""
-                          }?topicnum=${
-                            liveStatement["topic_num"] || ""
-                          }&campnum=${liveStatement["camp_num"] || ""}&canon=${
-                            liveStatement["namespace_id"] || 1
-                          }`}
+                          href={`/user/supports/${liveStatement["submitter_nick_id"] || ""
+                            }?topicnum=${liveStatement["topic_num"] || ""
+                            }&campnum=${liveStatement["camp_num"] || ""}&canon=${liveStatement["namespace_id"] || 1
+                            }`}
                         >
                           <a>{liveStatement?.submitter_nick_name}</a>
                         </Link>
@@ -446,13 +434,10 @@ function CompareStatementUI({
                           <Text strong>Camp About Nickname : </Text>
                           <Text>
                             <Link
-                              href={`/user/supports/${
-                                liveStatement["camp_about_nick_id"] || ""
-                              }?topicnum=${
-                                liveStatement["topic_num"] || ""
-                              }&campnum=${
-                                liveStatement["camp_num"] || ""
-                              }&canon=${liveStatement["namespace_id"] || 1}`}
+                              href={`/user/supports/${liveStatement["camp_about_nick_id"] || ""
+                                }?topicnum=${liveStatement["topic_num"] || ""
+                                }&campnum=${liveStatement["camp_num"] || ""
+                                }&canon=${liveStatement["namespace_id"] || 1}`}
                             >
                               <a>{liveStatement?.camp_about_nick_name}</a>
                             </Link>
