@@ -1,18 +1,19 @@
 import React, { useState } from "react";
-import { Row, Col, Form, Input, Button, Select, Modal } from "antd";
+import { Row, Col, Form, Input, Button, Select, Modal,message } from "antd";
 import styles from "../ProfileInfo/ProfileInfoUI/ProfileInfo.module.scss";
 import messages from "../../../messages";
 import verifyIcon from "../../../../public/images/checkbox-icn.svg";
 import Icon from "@ant-design/icons";
 import Image from "next/image";
 import CustomSkelton from "../../common/customSkelton";
+import { SendOTP } from "../../../network/api/userApi";
 
 const { Option } = Select;
 
 function VerifyMobileNumberForm({
   mobileCarrier,
   formVerify,
-  onVerifyClick,
+  // onVerifyClick,
   onOTPBtnClick,
   isOTPModalVisible,
   handleOTPCancel,
@@ -21,6 +22,8 @@ function VerifyMobileNumberForm({
   toggleVerifyButton,
   handleMobileNumberChange,
   userProfileSkeletonV,
+  setIsOTPModalVisible,
+  setOTP
 }: any) {
   const [symbolsArr] = useState(["e", "E", "+", "-", "."]);
   const [maxLengthKeysAllowed] = useState([
@@ -40,6 +43,15 @@ function VerifyMobileNumberForm({
         </Option>
       );
     });
+  const onVerifyClick = async (values: any) => {
+    let res = await SendOTP(values);
+    if (res && res.status_code === 200) {
+      message.success(res.message);
+      setIsOTPModalVisible(true);
+      setOTP("");
+      //setOTP(res.data.otp)
+    }
+  };
   return (
     <section className={styles.profileInfo_wrapper}>
       <Form
