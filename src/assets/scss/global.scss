@@ -1691,7 +1691,7 @@ body {
 
   .ant-collapse-header,
   .ant-collapse-content-box {
-    padding: 20px;
+    padding: 15px;
   }
 
   .ant-collapse-content {
@@ -1856,7 +1856,7 @@ body {
 
       & > .ant-tree-treenode-switcher-open {
         .treeListItemTitle {
-          font-size: 16px;
+          // font-size: 16px;
           font-weight: 600;
 
           a {
@@ -2112,7 +2112,9 @@ div[role="option"]::before {
     }
   }
 }
-
+.boldLabel {
+  font-weight: 600;
+}
 .ant-drawer-content-wrapper {
   max-width: 100%;
 }
@@ -2507,6 +2509,17 @@ div[role="option"]::before {
   }
 }
 .grecaptcha-badge {
-  visibility: hidden;
-  opacity: 0;
+  // visibility: hidden;
+  // opacity: 0;
+}
+
+.ant-descriptions-item-label::after {
+  margin: 0 4px 0 1px;
+}
+.progress-bar {
+  margin-left: 10px;
+  span {
+    font-size: 11px !important;
+    font-weight: 400 !important;
+  }
 }

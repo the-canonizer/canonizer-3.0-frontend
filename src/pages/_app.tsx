@@ -259,6 +259,10 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
           "statement"
         );
       }
+    } else if (aspath?.includes("login.asp")) {
+      returnData = "/login";
+    } else if (aspath?.includes("signup.asp")) {
+      returnData = "/registration";
     } else {
       returnData = await redirect(aspath, null, null, "");
     }
