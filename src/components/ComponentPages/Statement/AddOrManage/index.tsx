@@ -248,12 +248,12 @@ export default function AddOrManage({ add }: any) {
     if (response && response.status_code === 200) {
       let filteredNamespace = [];
 
-      if (originalData?.name_space === 16 || originalData?.name_space === 19) {
-        filteredNamespace = response.data;
-      } else {
-        filteredNamespace = response.data?.filter(
-          (n) => n?.id !== 16 && n?.id !== 19
+      if (originalData?.name_space !== 16 && originalData?.name_space !== 19) {
+        filteredNamespace = response?.data?.filter(
+          (n: { id: number }) => n?.id !== 16 && n?.id !== 19
         );
+      } else {
+        filteredNamespace = response.data;
       }
 
       setCanNameSpace(filteredNamespace);
@@ -894,7 +894,7 @@ export default function AddOrManage({ add }: any) {
                           label={
                             <>
                               Canon <span className="required">*</span>
-                                <span className={styles.small}>
+                              <span className={styles.small}>
                                 (General is recommended, unless you know
                                 otherwise)
                               </span>
