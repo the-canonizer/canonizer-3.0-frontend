@@ -1,37 +1,36 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { Form, message } from "antd";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 import RegistrationUi from "./UI";
 import OTPVerify from "./UI/otp";
 import {
   hideRegistrationModal,
   showLoginModal,
-} from "../../../store/slices/uiSlice";
+} from "src/store/slices/uiSlice";
 import {
   register,
   verifyOtp,
   getCountryCodes,
   resendOTPForRegistration,
-} from "../../../network/api/userApi";
-import { AppDispatch } from "../../../store";
+} from "src/network/api/userApi";
+import { AppDispatch } from "src/store";
 import Spinner from "../../common/spinner/spinner";
 
 const Registration = ({ isModal, isTest = false }) => {
   const [isOtpScreen, setIsOtpScreen] = useState(isTest);
   const [isResend, setIsResend] = useState(false);
-  const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
-  const [isReCaptchaRef, setIsReCaptchaRef] = useState(false);
   const [country, setCountry] = useState([]);
   const [formData, setFormData] = useState({ email: "" });
   const [failedMsg, setFailedMsg] = useState("");
 
-  const dispatch = useDispatch<AppDispatch>();
-  const [form] = Form.useForm();
-  const [otpForm] = Form.useForm();
-
-  const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>(),
+    router = useRouter(),
+    [form] = Form.useForm(),
+    [otpForm] = Form.useForm(),
+    { executeRecaptcha } = useGoogleReCaptcha();
 
   const closeModal = () => {
     dispatch(hideRegistrationModal());
@@ -42,17 +41,22 @@ const Registration = ({ isModal, isTest = false }) => {
 
   const openLogin = () => dispatch(showLoginModal());
 
-  const onReCAPTCHAChange = async (captchaCode) => {
-    if (!captchaCode) {
-      return;
-    }
+  const handleSumitForm = useCallback(
+    (values) => {
+      if (!executeRecaptcha) {
+        message.error("Execute recaptcha not yet available");
+        return;
+      }
+      executeRecaptcha("registrationFormSubmit").then((gReCaptchaToken) => {
+        // console.log("🚀 ~ file: index.tsx:51 ~ executeRecaptcha ~ gReCaptchaToken:", gReCaptchaToken)
+        onFinish(values, gReCaptchaToken);
+      });
+    },
+    [executeRecaptcha]
+  );
 
-    // Else reCAPTCHA was executed successfully so proceed with the success status
-    setIsCaptchaVerified(true);
-  };
-
-  const onFinish = async (values: any) => {
-    if (isCaptchaVerified) {
+  const onFinish = async (values: any, captchaKey: string) => {
+    if (captchaKey) {
       setFormData(values);
       let formBody = {
         first_name: values.first_name?.trim(),
@@ -62,6 +66,8 @@ const Registration = ({ isModal, isTest = false }) => {
         password_confirmation: values.confirm,
         phone_number: values.phone?.trim(),
         country_code: values.prefix?.split(" ")[0],
+        secret_key: process.env.NEXT_PUBLIC_RECAPTCHA_SECRET_KEY,
+        captcha_token: captchaKey,
       };
 
       let res = await register(formBody);
@@ -69,8 +75,10 @@ const Registration = ({ isModal, isTest = false }) => {
       if (res && res.status_code === 403) {
         setIsOtpScreen(true);
         setIsResend(true);
-        setIsReCaptchaRef(true);
         setFailedMsg(res.message);
+      }
+      if (res && res.status_code === 406) {
+        message.error(res.message);
       }
       if (res && res.status_code === 400) {
         if (res?.error) {
@@ -93,10 +101,6 @@ const Registration = ({ isModal, isTest = false }) => {
       if (res && res.status_code === 200) {
         form.resetFields();
         message.success(res.message);
-
-        // Reset the reCAPTCHA so that it can be executed again if user
-        setIsReCaptchaRef(true);
-
         setIsOtpScreen(true);
       }
     }
@@ -203,12 +207,9 @@ const Registration = ({ isModal, isTest = false }) => {
         ) : (
           <RegistrationUi
             form={form}
-            onFinish={onFinish}
+            onFinish={handleSumitForm}
             closeModal={closeModal}
             isModal={isModal}
-            onReCAPTCHAChange={onReCAPTCHAChange}
-            resetCaptcha={isReCaptchaRef}
-            showCaptchaError={isCaptchaVerified}
             country={country}
             openLogin={openLogin}
           />

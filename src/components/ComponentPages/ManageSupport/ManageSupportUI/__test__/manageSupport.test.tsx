@@ -35,28 +35,30 @@ const nickNameList = [
     private: 1,
   },
 ];
-const currentGetCheckSupportExist={
-  camp_num:expect.any(Number),
-  disable_submit:"true",
-  is_confirm:expect.any(Number),
-  is_delegator:expect.any(Number),
-  message:expect.any(String),
-  remove_camps:[{
-    camp_name:expect.any(String),
-    camp_num:expect.any(Number),
-    link:expect.any(String),
-    support_order:expect.any(Number)
-  }],
-  support_flag:expect.any(Number),
-  topic_num:expect.any(Number),
-  warning:expect.any(String)
-}
+const currentGetCheckSupportExist = {
+  camp_num: expect.any(Number),
+  disable_submit: "true",
+  is_confirm: expect.any(Number),
+  is_delegator: expect.any(Number),
+  message: expect.any(String),
+  remove_camps: [
+    {
+      camp_name: expect.any(String),
+      camp_num: expect.any(Number),
+      link: expect.any(String),
+      support_order: expect.any(Number),
+    },
+  ],
+  support_flag: expect.any(Number),
+  topic_num: expect.any(Number),
+  warning: expect.any(String),
+};
 
-const currentDelegatedSupportedClick={
-  delegatedSupportClick:true
-}
-const checkDelegateClick= true
-const manageSupportLink = "/support/949-top/2-camp-1 link"
+const currentDelegatedSupportedClick = {
+  delegatedSupportClick: true,
+};
+const checkDelegateClick = true;
+const manageSupportLink = "/support/949-top/2-camp-1 link";
 const manageSupportList = [];
 const clearAllChanges = jest.fn();
 const removeAll = jest.fn();
@@ -149,42 +151,49 @@ jest.mock("next/router", () => ({
   })),
 }));
 jest.mock("react-redux", () => ({
-  ...jest.requireActual('react-redux'),
-  useSelector: jest.fn().mockImplementation(()=>{
+  ...jest.requireActual("react-redux"),
+  useSelector: jest.fn().mockImplementation(() => {
     return {
       campRecord: {
-        camp_name: 'ABC'
+        camp_name: "ABC",
       },
-      asof:'', 
-      asofdate: '',
-      manageSupportUrlLink: '',
+      asof: "",
+      asofdate: "",
+      manageSupportUrlLink: "",
       currentDelegatedSupportedClick: {},
       currentGetCheckSupportExistsData: {},
-      CurrentCheckSupportStatus: '',
-      manageSupportStatusCheck: true
-    }
-  })
+      CurrentCheckSupportStatus: "",
+      manageSupportStatusCheck: true,
+    };
+  }),
 }));
-jest.mock("src/hooks/isUserAuthenticated", () => jest.fn(()=>({isUserAuthenticated: true})));
-jest.mock("src/network/api/campDetailApi", () =>  ({
+jest.mock("src/hooks/isUserAuthenticated", () =>
+  jest.fn(() => ({ isUserAuthenticated: true }))
+);
+jest.mock("src/network/api/campDetailApi", () => ({
   getAllUsedNickNames: jest.fn(),
-  getCurrentCampRecordApi:jest.fn(),
-  getAllRemovedReasons: jest.fn().mockReturnValue(Promise.resolve({success: true})),
+  getCurrentCampRecordApi: jest.fn(),
+  getAllRemovedReasons: jest
+    .fn()
+    .mockReturnValue(Promise.resolve({ success: true })),
   getCampBreadCrumbApi: jest.fn(() =>
-        Promise.resolve({ data: {}, status_code: 200 })
-      ),
+    Promise.resolve({ data: {}, status_code: 200 })
+  ),
 }));
-jest.mock("src/network/api/topicAPI", () =>  ({
-  GetActiveSupportTopic:jest.fn(() =>
+jest.mock("src/network/api/topicAPI", () => ({
+  GetActiveSupportTopic: jest.fn(() =>
     Promise.resolve({ data: [], status_code: 200 })
   ),
   GetCheckSupportExists: jest.fn(() =>
-    Promise.resolve({ data: {
-      remove_camps: {}
-    }, status_code: 200 })
+    Promise.resolve({
+      data: {
+        remove_camps: {},
+      },
+      status_code: 200,
+    })
   ),
 }));
-jest.mock("src/components/common/supportRemovedModal", () => ()=> {
+jest.mock("src/components/common/supportRemovedModal", () => () => {
   return <div>Removed Modal</div>;
 });
 function MyComponent() {
@@ -579,7 +588,7 @@ it("should render card with title and content", () => {
   expect(cardContent).toBeInTheDocument();
 });
 describe("Manage support", () => {
-  it("render nick name list", async() => {
+  it("render nick name list", async () => {
     await render(<ManageSupport />);
     waitFor(() => {
       expect(screen.getByText(nickNameList[0].create_time)).toBeInTheDocument();
@@ -588,7 +597,6 @@ describe("Manage support", () => {
       expect(screen.getByText(nickNameList[0].owner_code)).toBeInTheDocument();
       expect(screen.getByText(nickNameList[0].private)).toBeInTheDocument();
     });
-    
   });
   it("render camp record", () => {
     render(<ManageSupport />);

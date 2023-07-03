@@ -188,25 +188,33 @@ const removeSupportCampsData = {
 jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
-jest.mock('src/network/api/userApi', () => ({
-  getDirectSupportedCampsList:jest.fn(() =>
+jest.mock("src/network/api/userApi", () => ({
+  getDirectSupportedCampsList: jest.fn(() =>
     Promise.resolve({ data: [], status_code: 200 })
   ),
-  removeOrUpdateDirectSupportCamps:jest.fn(() =>
-  Promise.resolve({ data: [{
-    removeEntireData:{}
-  }], status_code: 200 })
-),
-}))
+  removeOrUpdateDirectSupportCamps: jest.fn(() =>
+    Promise.resolve({
+      data: [
+        {
+          removeEntireData: {},
+        },
+      ],
+      status_code: 200,
+    })
+  ),
+}));
 
-jest.mock("src/network/api/topicAPI", () =>  ({
-  GetActiveSupportTopic:jest.fn(() =>
+jest.mock("src/network/api/topicAPI", () => ({
+  GetActiveSupportTopic: jest.fn(() =>
     Promise.resolve({ data: [], status_code: 200 })
   ),
   GetCheckSupportExists: jest.fn(() =>
-    Promise.resolve({ data: {
-      remove_camps: {}
-    }, status_code: 200 })
+    Promise.resolve({
+      data: {
+        remove_camps: {},
+      },
+      status_code: 200,
+    })
   ),
 }));
 
@@ -406,7 +414,7 @@ describe("Direct Support camps page", () => {
         expect(screen.getByText("Agreement-2")).toBeInTheDocument();
       });
     });
-    
+
     it("click on remove support button and open modal", () => {
       render(<DirectSupportedCamps search={directSupportedCampsList} />);
       waitFor(async () => {
@@ -506,7 +514,6 @@ describe("Direct Support camps page", () => {
     const messageElement = screen.getByText(messageContent);
     expect(messageElement).toBeInTheDocument();
   });
-
 
   // it("Message component displays correct content",()=>{
   //   const {getByText,container}=render(<DirectSupportedCamps search={directSupportedCampsList} />)
