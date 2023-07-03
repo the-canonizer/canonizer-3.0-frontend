@@ -14,8 +14,14 @@ import { useRouter } from "next/router";
 import { act, renderHook } from "@testing-library/react-hooks";
 import isAuth from "../../../../hooks/isUserAuthenticated";
 import { Input, message } from "antd";
-  GetAlgorithmsList:jest.fn()
-import { VerifyOTP,GetMobileCarrier,GetLanguageList,GetAlgorithmsList,GetUserProfileInfo } from 'src/network/api/userApi'
+GetAlgorithmsList: jest.fn();
+import {
+  VerifyOTP,
+  GetMobileCarrier,
+  GetLanguageList,
+  GetAlgorithmsList,
+  GetUserProfileInfo,
+} from "src/network/api/userApi";
 import { useEffect } from "react";
 
 const { labels, placeholders, validations } = messages;
@@ -28,36 +34,39 @@ const handleAddressSelect = jest.fn();
 jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
-jest.mock("src/network/api/userApi", () =>  ({
-  UpdateUserProfileInfo:jest.fn(() =>
-  Promise.resolve({ data: {}, status_code: 200 })
-),
-  SendOTP: jest.fn(() =>
-  Promise.resolve({ data: {}, status_code: 200 })
-),
-  GetMobileCarrier:jest.fn(() =>
-  Promise.resolve({ data: {}, status_code: 200 })
-),
-  VerifyOTP:jest.fn(() =>
-  Promise.resolve({ data: {}, status_code: 200 })
-),
-  GetAlgorithmsList:jest.fn(() =>
-  Promise.resolve({ data: {}, status_code: 200 })
-),
-  GetLanguageList:jest.fn(() =>
-  Promise.resolve({ data: {}, status_code: 200 })
-),
-  GetUserProfileInfo: jest.fn().mockReturnValue(Promise.resolve({data: {
-    phone_number: 12321312312,
-    mobile_carrier: "sdc",
-    birthday: "01-01-20",
-    postalCode: 411021,
-  },success: true})),
+jest.mock("src/network/api/userApi", () => ({
+  UpdateUserProfileInfo: jest.fn(() =>
+    Promise.resolve({ data: {}, status_code: 200 })
+  ),
+  SendOTP: jest.fn(() => Promise.resolve({ data: {}, status_code: 200 })),
+  GetMobileCarrier: jest.fn(() =>
+    Promise.resolve({ data: {}, status_code: 200 })
+  ),
+  VerifyOTP: jest.fn(() => Promise.resolve({ data: {}, status_code: 200 })),
+  GetAlgorithmsList: jest.fn(() =>
+    Promise.resolve({ data: {}, status_code: 200 })
+  ),
+  GetLanguageList: jest.fn(() =>
+    Promise.resolve({ data: {}, status_code: 200 })
+  ),
+  GetUserProfileInfo: jest.fn().mockReturnValue(
+    Promise.resolve({
+      data: {
+        phone_number: 12321312312,
+        mobile_carrier: "sdc",
+        birthday: "01-01-20",
+        postalCode: 411021,
+      },
+      success: true,
+    })
+  ),
   getUploadFileAndFolder: jest.fn(() =>
-        Promise.resolve({ data: {}, status_code: 200 })
-      ),
+    Promise.resolve({ data: {}, status_code: 200 })
+  ),
 }));
-jest.mock("src/hooks/isUserAuthenticated", () => jest.fn(()=>({isUserAuthenticated: true})))
+jest.mock("src/hooks/isUserAuthenticated", () =>
+  jest.fn(() => ({ isUserAuthenticated: true }))
+);
 const algorithmList = [
   {
     algorithm_key: "blind_popularity",
@@ -460,11 +469,10 @@ describe("UserProfile", () => {
       expect(screen.getByText(userProfileData.status)).toBeInTheDocument();
       expect(screen.getByText(userProfileData.update_time)).toBeInTheDocument();
       expect(screen.getByText(userProfileData.type)).toBeInTheDocument();
-      
+
       expect(screen.getByText("Update")).toBeInTheDocument();
-      
     });
-      });
+  });
   it("render mobile carrier data", () => {
     render(<ProfileInfo />);
     waitFor(async () => {
@@ -480,7 +488,7 @@ describe("UserProfile", () => {
       expect(screen.getByText(mobileCarrierData[1].name)).toBeInTheDocument();
     });
   });
-  
+
   it("path is working with use router", () => {
     render(<ProfileInfo />);
     const mockedRouter = {

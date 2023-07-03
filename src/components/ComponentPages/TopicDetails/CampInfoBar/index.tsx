@@ -312,7 +312,7 @@ const TimelineInfoBar = ({
           </Link>
         )}
       </Menu.Item>
-      <Menu.Item icon={<FileTextOutlined />}  disabled={campRecord?.is_archive}>
+      <Menu.Item icon={<FileTextOutlined />} disabled={campRecord?.is_archive}>
         {isTopicPage && (
           <Link
             href={

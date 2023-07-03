@@ -124,3 +124,15 @@ export const getCanonizedWhatsNewContentApi = async (tc = "") => {
     // message.error(error.message);
   }
 };
+
+export const getCanonizedTopicsForSuggestion = async (reqBody: any) => {
+  try {
+    const topics = await NetworkCall.fetch(
+      HomePageRequests.getCanonizedTopics(reqBody)
+    );
+
+    return topics?.data;
+  } catch (error) {
+    // hanlde error here
+  }
+};
