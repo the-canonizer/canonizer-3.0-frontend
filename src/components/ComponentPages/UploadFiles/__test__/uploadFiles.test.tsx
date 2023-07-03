@@ -16,7 +16,26 @@ import { Provider, useDispatch } from "react-redux";
 import { showDrageBox, hideAddButton } from "src/store/slices/uiSlice";
 import { store } from "src/store";
 
-// jest.mock('react-redux');
+jest.mock("src/hooks/isUserAuthenticated", () => jest.fn(()=>({isUserAuthenticated: true})));
+
+jest.mock("src/network/api/userApi", () => ({
+  uploadFile:jest.fn(),
+  deleteFolderApi: jest.fn(),
+  deleteUploadFileApi:jest.fn(),
+  getFileInsideFolderApi: jest.fn().mockReturnValue(Promise.resolve({success: true})),
+  getUploadFileAndFolder: jest.fn(()=>Promise.resolve({ data: {files: [],folders: []}})) 
+}));
+// jest.mock("react-redux", () => ({
+//   ...jest.requireActual('react-redux'),
+//   useDispatch: ()=> jest.fn(),
+//   useSelector: ()=>jest.fn().mockImplementation(()=>{
+//     return {
+//       folderId:'', 
+//       openFolder: true,
+//       loggedInUser: true
+//     }
+//   })
+// }));
 
 const { labels } = messages;
 
@@ -46,6 +65,12 @@ const flickringData = true;
 const setFlickringData = jest.fn();
 const toggleFileView = true;
 const setToggleFileView = jest.fn();
+
+const dragBoxShow = () => {
+  const dispatch = useDispatch();
+  dispatch(showDrageBox());
+};
+
 // const listview = <ListView/>
 
 jest.mock("next/router", () => ({
@@ -254,6 +279,21 @@ describe("Upload File UI Page", () => {
       screen.getAllByText("Create a Folder")[0] as HTMLButtonElement
     ).toBeInTheDocument();
   });
+  // it("ssss",()=>{
+  //     render(<UploadFiles/>)
+  //     // Create a mock dispatch function
+  //     const dispatchMock = jest.fn();
+    
+  //     // Mock useDispatch hook
+  //     jest.spyOn(require('react-redux'),'useDispatch').mockReturnValue(dispatchMock);
+    
+  //     // Call the dragBoxShow function
+  //     dragBoxShow();
+    
+  //     // Verify that the showDragBox action was dispatched
+  //     expect(dispatchMock).toHaveBeenCalledWith(showDrageBox());
+
+  // })
   it("render upload file(images) is loaded ", () => {
     render(
       <UploadFileUI
@@ -631,6 +671,36 @@ describe("Upload File UI Page", () => {
       expect(screen.getByText(createNewFolder.user_id)).toBeInTheDocument();
     });
   });
+  it("render cancel button", async() => {
+    const { getByTestId } = await render(
+      <UploadFileUI
+      show_UploadOptions={true}
+      />
+    );
+    waitFor(()=>{
+      const cancel = getByTestId("cancel_btn")
+      fireEvent.click(cancel)
+    })
+    // const cancelButton = screen.getByRole('button', { name: /Cancel/i });
+   
+    // expect(cancelButton).toBeInTheDocument();
+  });
+  it("add New File function", () =>{
+    render(<UploadFiles/>)
+    waitFor(async () => {
+      const btns = screen.getAllByText("Add a File");
+
+      fireEvent.click(btns[0]);
+
+      expect(showDrageBox()).toHaveBeenCalled();
+      expect(hideAddButton()).toHaveBeenCalled();
+      expect(addNewFile()).toHaveBeenCalled();
+
+
+      // expect(screen.getByText("Remove")).toBeInTheDocument();
+      // expect(screen.getByText("Cancel")).toBeInTheDocument();
+    });
+  }) 
   it("render Modal when create folder button  is clicked", () => {
     const { getByText } = render(
       <UploadFileUI
@@ -946,6 +1016,7 @@ describe("Upload file page", () => {
 });
 afterEach(cleanup);
 describe("TopicsList", () => {
+  
   it("render", () => {
     render(
       <Provider store={store}>
