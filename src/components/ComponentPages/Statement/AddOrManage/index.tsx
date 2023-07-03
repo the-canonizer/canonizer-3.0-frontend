@@ -246,14 +246,19 @@ export default function AddOrManage({ add }: any) {
   const fetchNameSpaceList = async () => {
     let response = await getCanonizedNameSpacesApi();
     if (response && response.status_code === 200) {
+      // setCanNameSpace(response?.data);
+
       let filteredNamespace = [];
 
-      if (originalData?.name_space !== 16 && originalData?.name_space !== 19) {
+      if (
+        originalData?.name_space &&
+        (originalData?.name_space === 16 || originalData?.name_space === 19)
+      ) {
+        filteredNamespace = response.data;
+      } else {
         filteredNamespace = response?.data?.filter(
           (n: { id: number }) => n?.id !== 16 && n?.id !== 19
         );
-      } else {
-        filteredNamespace = response.data;
       }
 
       setCanNameSpace(filteredNamespace);
@@ -349,7 +354,7 @@ export default function AddOrManage({ add }: any) {
           ) {
             router?.back();
           } else {
-            fetchNameSpaceList();
+            // fetchNameSpaceList();
             setPayloadBreadCrumb({
               topic_num: res?.data?.topic?.topic_num,
               camp_num: "1",
@@ -418,7 +423,10 @@ export default function AddOrManage({ add }: any) {
         form.setFieldsValue(fieldSValuesForForm);
 
         setInitialFormValues(form?.getFieldsValue());
-        setOriginalData(fieldSValuesForForm);
+
+        const og: any = { ...fieldSValuesForForm };
+        setOriginalData(og);
+
         setNickNameData(result?.data);
         if (manageFormOf == "topic" || manageFormOf == "camp") {
           const oldOptions = [...options];
@@ -633,6 +641,12 @@ export default function AddOrManage({ add }: any) {
       setSubmitIsDisable(false);
     }
   };
+
+  useEffect(() => {
+    if (manageFormOf == "topic") {
+      fetchNameSpaceList();
+    }
+  }, [originalData]);
 
   return (
     <>
