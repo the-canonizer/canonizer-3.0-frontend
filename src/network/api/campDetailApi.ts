@@ -29,7 +29,7 @@ export const getTreesApi = async (reqBody) => {
   }
 };
 
-export const getNewsFeedApi = async (reqBody, tokenSsr) => {
+export const getNewsFeedApi = async (reqBody, tokenSsr = null) => {
   let state = await store.getState();
 
   const { auth } = state,
@@ -56,7 +56,10 @@ export const getNewsFeedApi = async (reqBody, tokenSsr) => {
   }
 };
 
-export const getCanonizedCampStatementApi = async (reqBody, tokenSsr) => {
+export const getCanonizedCampStatementApi = async (
+  reqBody,
+  tokenSsr = null
+) => {
   let state = await store.getState();
 
   const { auth } = state,
@@ -81,7 +84,7 @@ export const getCanonizedCampStatementApi = async (reqBody, tokenSsr) => {
   }
 };
 
-export const getCurrentTopicRecordApi = async (reqBody, tokenSsr) => {
+export const getCurrentTopicRecordApi = async (reqBody, tokenSsr = null) => {
   let state = await store.getState();
 
   const { auth } = state,
@@ -106,7 +109,7 @@ export const getCurrentTopicRecordApi = async (reqBody, tokenSsr) => {
   }
 };
 
-export const getCurrentCampRecordApi = async (reqBody, tokenSsr) => {
+export const getCurrentCampRecordApi = async (reqBody, tokenSsr = null) => {
   let state = await store.getState();
 
   const { auth } = state,

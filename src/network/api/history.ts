@@ -12,7 +12,7 @@ export const getHistoryApi = async (
   reqBody,
   pageNumber,
   historyOf: string,
-  tokenSsr
+  tokenSsr = null
 ) => {
   let state = await store.getState();
 
