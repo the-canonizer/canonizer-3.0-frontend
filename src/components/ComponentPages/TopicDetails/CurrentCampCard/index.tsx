@@ -13,6 +13,7 @@ import K from "../../../../constants";
 import { RootState } from "../../../../store";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 import CustomSkelton from "../../../common/customSkelton";
+import { useEffect } from "react";
 
 const { Panel } = Collapse;
 
@@ -34,6 +35,10 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }) => {
       history: state?.topicDetails?.history,
     })
   );
+
+  useEffect(() => {
+    console.log(campRecord, "#############campdata################");
+  }, []);
 
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");

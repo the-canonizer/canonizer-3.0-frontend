@@ -8,4 +8,4 @@ module.exports = {
       "canonizer3.canonizer.com",
     ],
   },
-};
+}

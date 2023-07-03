@@ -49,14 +49,16 @@ import {
   emojiValidation,
   changeSlashToArrow,
 } from "src/utils/generalUtility";
-import { EditorState, convertToRaw, ContentState } from "draft-js";
+// import { EditorState, convertToRaw, ContentState } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
-const Editor: any = dynamic(
-  () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
-  { ssr: false }
-);
-let htmlToDraft = null;
+
+//Ckeditor
+const Editorckl = dynamic(() => import("../../../common/editorck"), {
+  ssr: false,
+});
+
+let htmlToDraft: any = null;
 if (typeof window === "object") {
   htmlToDraft = require("html-to-draftjs").default;
 }
@@ -71,7 +73,6 @@ export default function AddOrManage({ add }: any) {
   const [editStatementData, setEditStatementData] = useState({ data: null });
   const [submitIsDisable, setSubmitIsDisable] = useState(true);
   const [submitIsDisableCheck, setSubmitIsDisableCheck] = useState(true);
-
   const [nickNameData, setNickNameData] = useState([]);
   const [screenLoading, setScreenLoading] = useState(false);
   const [initialFormValues, setInitialFormValues] = useState({});
@@ -82,9 +83,7 @@ export default function AddOrManage({ add }: any) {
   const [originalData, setOriginalData] = useState({ name_space: null });
   const [parentCamp, setParentCamps] = useState([]);
 
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
+  const [editorState, setEditorState] = useState("");
 
   const [campNickName, setCampNickName] = useState([]);
   const [canNameSpace, setCanNameSpace] = useState([]);
@@ -98,10 +97,13 @@ export default function AddOrManage({ add }: any) {
   let objection = router?.query?.statement?.at(0)?.split("-")[1] == "objection";
   let update = router?.query?.statement?.at(0)?.split("-")[1] == "update";
   let manageFormOf = router?.asPath.split("/")[2];
-  const editorTextLength = editorState
-    .getCurrentContent()
-    .getPlainText()
-    .trim().length;
+  // let editorTextLength;
+  // if (typeof editorState === 'object') {
+  //   editorTextLength = 0
+  // } else {
+  let editorTextLength = editorState.replace(/<(?!img\b)[^\s<>]*>/, "").length;
+  // }
+
   const onFinish = async (values: any) => {
     setScreenLoading(true);
     let res;
@@ -149,7 +151,8 @@ export default function AddOrManage({ add }: any) {
   };
 
   const addOrManageStatement = async (values) => {
-    const blocks = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+    // const blocks = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+    const blocks = editorState;
     // const contentState = editorState.getCurrentContent();
     let editInfo = editStatementData?.data;
     let parent_camp = editInfo?.parent_camp;
@@ -275,6 +278,7 @@ export default function AddOrManage({ add }: any) {
       return false;
     }
   };
+
   useEffect(() => {
     setScreenLoading(true);
     async function nickNameListApiCall() {
@@ -294,13 +298,13 @@ export default function AddOrManage({ add }: any) {
             !res.data.statement.parsed_value?.startsWith("<p>") &&
             !res.data.statement.parsed_value?.startsWith("<div>")
           )
-            res.data.statement.parsed_value = `<div></div> ${res.data.statement.parsed_value}`;
-          const contentBlocks = htmlToDraft(res.data.statement.parsed_value);
-          const contentState = ContentState.createFromBlockArray(
-            contentBlocks.contentBlocks
-            //contentBlocks.entityMap
-          );
-          setEditorState(EditorState.createWithContent(contentState));
+            res.data.statement.parsed_value = `<div><div/>${res.data.statement.parsed_value}`;
+          const editor_statement = res.data.statement.parsed_value;
+          // const contentBlocks = htmlToDraft(res.data.statement.parsed_value);
+          // const contentState = ContentState.createFromBlockArray(
+          //   contentBlocks.contentBlocks
+          // );
+          setEditorState(`${editor_statement}`);
 
           if (
             res?.data?.statement?.go_live_time <
@@ -562,6 +566,74 @@ export default function AddOrManage({ add }: any) {
     }
   };
 
+  const onEditorStateChange = (changedata) => {
+    const datachangec = `${changedata}`;
+    setEditorState(datachangec);
+    if (manageFormOf == "statement") {
+      form.setFieldsValue({ statement: datachangec });
+      handleformvalues();
+    }
+  };
+
+  const handleformvalues = () => {
+    let initialFormStatus = {
+      statement: "",
+      edit_summary: "",
+    } as any;
+
+    let nowFormStatus = {
+      statement: "",
+      edit_summary: "",
+    } as any;
+
+    initialFormStatus = Object.keys(initialFormValues).reduce((acc, key) => {
+      acc[key] =
+        initialFormValues[key] === null || undefined
+          ? ""
+          : initialFormValues[key];
+      return acc;
+    }, {});
+    if (initialFormStatus?.edit_summary == null || undefined) {
+      initialFormStatus.edit_summary = "";
+    }
+    if (initialFormStatus?.statement == null || undefined) {
+      initialFormStatus.statement = "";
+    }
+    if (typeof initialFormStatus.edit_summary == "string") {
+      initialFormStatus.edit_summary = initialFormStatus.edit_summary.trim();
+    }
+    if (typeof initialFormStatus.statement == "string") {
+      initialFormStatus.statement = initialFormStatus.statement.trim();
+    }
+    nowFormStatus = Object.keys(form?.getFieldsValue()).reduce((acc, key) => {
+      acc[key] =
+        form?.getFieldsValue()[key] === null || undefined
+          ? ""
+          : form?.getFieldsValue()[key];
+      return acc;
+    }, {});
+    if (nowFormStatus?.parent_camp_num) {
+      delete nowFormStatus.parent_camp_num;
+    }
+    if (nowFormStatus?.edit_summary == null || undefined) {
+      nowFormStatus.edit_summary = "";
+    }
+    if (nowFormStatus?.statement == null || undefined) {
+      nowFormStatus.statement = "";
+    }
+    if (typeof nowFormStatus.edit_summary == "string") {
+      nowFormStatus.edit_summary = nowFormStatus.edit_summary.trim();
+    }
+    if (typeof nowFormStatus.statement == "string") {
+      nowFormStatus.statement = nowFormStatus.statement.trim();
+    }
+    if (JSON.stringify(nowFormStatus) == JSON.stringify(initialFormStatus)) {
+      setSubmitIsDisable(true);
+    } else {
+      setSubmitIsDisable(false);
+    }
+  };
+
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
@@ -595,76 +667,7 @@ export default function AddOrManage({ add }: any) {
               initialValues={{
                 available_for_child: 0,
               }}
-              onValuesChange={() => {
-                let initialFormStatus = {
-                  statement: "",
-                  edit_summary: "",
-                } as any;
-
-                let nowFormStatus = {
-                  statement: "",
-                  edit_summary: "",
-                } as any;
-
-                initialFormStatus = Object.keys(initialFormValues).reduce(
-                  (acc, key) => {
-                    acc[key] =
-                      initialFormValues[key] === null || undefined
-                        ? ""
-                        : initialFormValues[key];
-                    return acc;
-                  },
-                  {}
-                );
-                if (initialFormStatus?.edit_summary == null || undefined) {
-                  initialFormStatus.edit_summary = "";
-                }
-                if (initialFormStatus?.statement == null || undefined) {
-                  initialFormStatus.statement = "";
-                }
-                if (typeof initialFormStatus.edit_summary == "string") {
-                  initialFormStatus.edit_summary =
-                    initialFormStatus.edit_summary.trim();
-                }
-                if (typeof initialFormStatus.statement == "string") {
-                  initialFormStatus.statement =
-                    initialFormStatus.statement.trim();
-                }
-                nowFormStatus = Object.keys(form?.getFieldsValue()).reduce(
-                  (acc, key) => {
-                    acc[key] =
-                      form?.getFieldsValue()[key] === null || undefined
-                        ? ""
-                        : form?.getFieldsValue()[key];
-                    return acc;
-                  },
-                  {}
-                );
-                if (nowFormStatus?.parent_camp_num) {
-                  delete nowFormStatus.parent_camp_num;
-                }
-                if (nowFormStatus?.edit_summary == null || undefined) {
-                  nowFormStatus.edit_summary = "";
-                }
-                if (nowFormStatus?.statement == null || undefined) {
-                  nowFormStatus.statement = "";
-                }
-                if (typeof nowFormStatus.edit_summary == "string") {
-                  nowFormStatus.edit_summary =
-                    nowFormStatus.edit_summary.trim();
-                }
-                if (typeof nowFormStatus.statement == "string") {
-                  nowFormStatus.statement = nowFormStatus.statement.trim();
-                }
-                if (
-                  JSON.stringify(nowFormStatus) ==
-                  JSON.stringify(initialFormStatus)
-                ) {
-                  setSubmitIsDisable(true);
-                } else {
-                  setSubmitIsDisable(false);
-                }
-              }}
+              onValuesChange={handleformvalues}
               onFinish={onFinish}
             >
               <Row gutter={28}>
@@ -891,7 +894,7 @@ export default function AddOrManage({ add }: any) {
                           label={
                             <>
                               Canon <span className="required">*</span>
-                              <span className={styles.small}>
+                                <span className={styles.small}>
                                 (General is recommended, unless you know
                                 otherwise)
                               </span>
@@ -954,13 +957,8 @@ export default function AddOrManage({ add }: any) {
                           message:
                             K?.exceptionalMessages?.statementRequiredErrorMsg,
                         },
-                        {
-                          type: editorTextLength,
-                          message:
-                            K?.exceptionalMessages?.statementRequiredErrorMsg,
-                        },
 
-                        //allowedEmojies(), this needs to be moved to validation file
+                        // allowedEmojies(), this needs to be moved to validation file
                       ]}
                     >
                       {screenLoading ? (
@@ -972,18 +970,15 @@ export default function AddOrManage({ add }: any) {
                           skeltonFor="video"
                         />
                       ) : (
-                        <Editor
-                          toolbarClassName="toolbarClassName"
-                          wrapperClassName={"wrapperClassName"}
-                          editorClassName={styles.reactDraftBox}
-                          editorStyle={{ height: "180px" }}
+                        <Editorckl
                           editorState={editorState}
-                          onEditorStateChange={setEditorState}
-                        />
+                          oneditorchange={onEditorStateChange}
+                        ></Editorckl>
                       )}
                     </Form.Item>
                   </Col>
                 )}
+
                 <Col xs={24} xl={24}>
                   {/* object reason  =================================================================================? */}
                   {objection ? (
@@ -1162,10 +1157,10 @@ export default function AddOrManage({ add }: any) {
                           size="large"
                           className={`btn-orange mr-3 ${styles.btnSubmit}`}
                           htmlType="submit"
-                          disabled={
-                            (submitIsDisable && submitIsDisableCheck) ||
-                            statementResponseDisable
-                          }
+                          // disabled={
+                          //   (submitIsDisable && submitIsDisableCheck) || editorTextLength < 1 ||
+                          //   statementResponseDisable
+                          // }
                           id="update-submit-btn"
                         >
                           {add
@@ -1185,7 +1180,7 @@ export default function AddOrManage({ add }: any) {
                                 let backdata = editStatementData?.data;
                                 setScreenLoading(true);
                                 add
-                                  ? router?.push(
+                                  ? router.push(
                                       `/topic/${replaceSpecialCharacters(
                                         router?.query?.statement[0],
                                         "-"
