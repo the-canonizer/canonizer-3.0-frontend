@@ -79,6 +79,7 @@ export default function AddOrManage({ add }: any) {
     topic_num: "",
     camp_num: "",
   });
+  const [originalData, setOriginalData] = useState({ name_space: null });
   const [parentCamp, setParentCamps] = useState([]);
 
   const [editorState, setEditorState] = useState(() =>
@@ -242,7 +243,17 @@ export default function AddOrManage({ add }: any) {
   const fetchNameSpaceList = async () => {
     let response = await getCanonizedNameSpacesApi();
     if (response && response.status_code === 200) {
-      setCanNameSpace(response.data);
+      let filteredNamespace = [];
+
+      if (originalData?.name_space === 16 || originalData?.name_space === 19) {
+        filteredNamespace = response.data;
+      } else {
+        filteredNamespace = response.data?.filter(
+          (n) => n?.id !== 16 && n?.id !== 19
+        );
+      }
+
+      setCanNameSpace(filteredNamespace);
     }
   };
 
@@ -403,6 +414,7 @@ export default function AddOrManage({ add }: any) {
         form.setFieldsValue(fieldSValuesForForm);
 
         setInitialFormValues(form?.getFieldsValue());
+        setOriginalData(fieldSValuesForForm);
         setNickNameData(result?.data);
         if (manageFormOf == "topic" || manageFormOf == "camp") {
           const oldOptions = [...options];
@@ -549,6 +561,7 @@ export default function AddOrManage({ add }: any) {
       return null;
     }
   };
+
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
