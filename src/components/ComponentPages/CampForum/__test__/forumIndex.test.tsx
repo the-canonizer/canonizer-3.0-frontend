@@ -101,14 +101,35 @@ describe("ForumComponent", () => {
         total_rows: 2,
       },
     });
+
     jest.mock("src/network/api/campForumApi", () => ({
       getThreadsList: mockGetThreadsList,
     }));
+    const mockGetThreadData = jest.fn().mockResolvedValueOnce({
+      status_code: 200,
+      data: {
+        items: [
+          { id: 1, title: "Thread 1" },
+          { id: 2, title: "Thread 2" },
+        ],
+        total_rows: 2,
+      },
+    });
     jest.mock("src/network/api/campForumApi", () => ({
-      getThreadData: mockGetThreadsList,
+      getThreadData: mockGetThreadData,
     }));
+    const mockFetchNickNameList = jest.fn().mockResolvedValueOnce({
+      status_code: 200,
+      data: {
+        items: [
+          { id: 1, title: "Thread 1" },
+          { id: 2, title: "Thread 2" },
+        ],
+        total_rows: 2,
+      },
+    });
     jest.mock("src/network/api/campForumApi", () => ({
-      fetchNickNameList: mockGetThreadsList,
+      fetchNickNameList: mockFetchNickNameList,
     }));
 
     render(
