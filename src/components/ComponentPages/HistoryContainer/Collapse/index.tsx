@@ -50,6 +50,7 @@ function HistoryCollapse({
   ifIamSupporter,
   ifSupportDelayed,
   ifIAmExplicitSupporter,
+  collapseKeys,
   userNickNameData,
   topicNamespaceId,
   campStatement,
@@ -66,7 +67,7 @@ function HistoryCollapse({
   const { loading } = useSelector((state: RootState) => ({
     loading: state?.loading?.loading,
   }));
-  const [collapseKey, setCollapseKey] = useState("1");
+  const [collapseKey, setCollapseKey] = useState(collapseKeys);
 
   const [modal1Open, setModal1Open] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);

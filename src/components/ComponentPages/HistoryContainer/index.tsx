@@ -265,12 +265,33 @@ function HistoryContainer() {
       </h2>
     );
   };
+  const getCollapseKeys = (campHistoryData, index) => {
+    let key = "";
+    let oldstatements = campHistory?.items?.filter(
+      (campHistoryData) => campHistoryData?.status == "old"
+    );
+
+    if (campHistoryData?.status == "live" || campHistory?.items?.length <= 3) {
+      key = "1";
+    } else if (
+      oldstatements.length > 0 &&
+      oldstatements[oldstatements.length >= 3 ? 2 : oldstatements.length - 1]
+        ?.go_live_time <= campHistoryData?.go_live_time
+    ) {
+      key = "1";
+    } else if (oldstatements.length == 0 && index < 2) {
+      key = "1";
+    }
+
+    return key;
+  };
 
   const renderCampHistories =
     campHistory && campHistory?.items?.length ? (
       campHistory?.items?.map((campHistoryData, index) => {
         return (
           <HistoryCollapse
+            collapseKeys={getCollapseKeys(campHistoryData, index)}
             key={index}
             campStatement={campHistoryData}
             onSelectCompare={onSelectCompare}
