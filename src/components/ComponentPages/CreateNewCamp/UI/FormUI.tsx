@@ -57,12 +57,11 @@ const CreateCampFormUI = ({
   );
   const toolTipContent = "This camp is under review";
   const archiveToolTipContent = "This camp is archived";
-  // useEffect(() => {
-  //  campRecord.is_archive &&
-  //   router.pathname == "/camp/create/[...camp]"
-  //     ? router?.back()
-  //     : "";
-  // }, []);
+  useEffect(() => {
+    campRecord.is_archive && router.pathname == "/camp/create/[...camp]"
+      ? router?.back()
+      : "";
+  }, []);
 
   return (
     <Fragment>
@@ -171,12 +170,19 @@ const CreateCampFormUI = ({
                         key={camp.id}
                         id={`parent-camp-${camp.id}`}
                         camp={camp}
-                        disabled={camp.parent_change_in_review == true}
+                        disabled={
+                          camp.parent_change_in_review == true ||
+                          camp.is_archive
+                            ? true
+                            : false
+                        }
                       >
                         <Tooltip
                           title={
                             camp.parent_change_in_review == true
                               ? toolTipContent
+                              : camp.is_archive
+                              ? archiveToolTipContent
                               : null
                           }
                         >

@@ -65,7 +65,7 @@ const TopicsList = () => {
     filterNameSpaceId,
     search,
     is_checked,
-    // is_archive,
+    is_archive,
   } = useSelector((state: RootState) => ({
     canonizedTopics: state.homePage?.canonizedTopicsData,
     asofdate: state.filters?.filterObject?.asofdate,
@@ -78,7 +78,7 @@ const TopicsList = () => {
     filterNameSpaceId: state?.filters?.filterObject?.namespace_id,
     search: state?.filters?.filterObject?.search,
     is_checked: state?.utils?.score_checkbox,
-    // is_archive: state?.filters?.filterObject?.is_archive,
+    is_archive: state?.filters?.filterObject?.is_archive,
   }));
   const { is_camp_archive_checked } = useSelector((state: RootState) => ({
     is_camp_archive_checked: state?.utils?.archived_checkbox,
@@ -184,7 +184,7 @@ const TopicsList = () => {
     // setArchiveSearch(is_archive);
     setInputSearch(search.trim());
     setNameSpacesList(nameSpaces);
-  }, [filterNameSpace, filterNameSpaceId, search, nameSpaces]);
+  }, [filterNameSpace, filterNameSpaceId, search, nameSpaces, is_archive]);
 
   useEffect(() => {
     setTopicsData(canonizedTopics);
@@ -242,7 +242,7 @@ const TopicsList = () => {
       filter: filterByScore,
       asof: asof,
       user_email: onlyMyTopicsCheck.current ? userEmail : "",
-      // is_archive: is_camp_archive_checked ? 1 : 0,
+      is_archive: is_camp_archive_checked ? 1 : 0,
     };
     await getCanonizedTopicsApi(reqBody, loadMore);
     setLoadMoreIndicator(false);
@@ -519,24 +519,44 @@ const TopicsList = () => {
                       )}/1-Agreement`,
                     }}
                   >
-                    <a
-                      onClick={() => {
-                        handleTopicClick();
-                      }}
-                    >
-                      <Text className={styles.text}>
-                        {isReview
-                          ? item?.tree_structure &&
+                    {!item.is_archive ||
+                    (item.is_archive && is_camp_archive_checked) ? (
+                      <a
+                        onClick={() => {
+                          handleTopicClick();
+                        }}
+                      >
+                        <Text
+                          className={
+                            item.is_archive
+                              ? `font-weight-bold ${styles.archive_topic}`
+                              : styles.text
+                          }
+                        >
+                          {item.is_archive ? (
+                            <Popover content="Archived Topic">
+                              {isReview
+                                ? item?.tree_structure &&
+                                  item?.tree_structure[1].review_title
+                                : item?.topic_name}
+                            </Popover>
+                          ) : isReview ? (
+                            item?.tree_structure &&
                             item?.tree_structure[1].review_title
-                          : item?.topic_name}
-                      </Text>
-                      <Tag className={styles.tag}>
-                        {/* // ? item?.topic_full_score // : item?.full_score?.toFixed(2) */}
-                        {is_checked
-                          ? item?.topic_full_score?.toFixed(2)
-                          : item?.topic_score?.toFixed(2)}
-                      </Tag>
-                    </a>
+                          ) : (
+                            item?.topic_name
+                          )}
+                        </Text>
+                        <Tag className={styles.tag}>
+                          {/* // ? item?.topic_full_score // : item?.full_score?.toFixed(2) */}
+                          {is_checked
+                            ? item?.topic_full_score?.toFixed(2)
+                            : item?.topic_score?.toFixed(2)}
+                        </Tag>
+                      </a>
+                    ) : (
+                      <></>
+                    )}
                   </Link>
                   <Paragraph
                     className={styles.copyable}

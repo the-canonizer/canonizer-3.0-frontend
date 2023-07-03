@@ -92,6 +92,7 @@
 // });
 import {
   fireEvent,
+  queryAllByTestId,
   render,
   screen,
   waitFor,
@@ -104,6 +105,12 @@ import { useRouter } from "next/router";
 import { renderHook } from "@testing-library/react-hooks";
 import { useState } from "react";
 import { Input, message } from "antd";
+import {
+  getDirectSupportedCampsList,
+  removeOrUpdateDirectSupportCamps,
+} from "src/network/api/userApi";
+import SupportRemovedModal from "../../../common/supportRemovedModal";
+
 const { labels } = messages;
 
 const isSupportedCampsModalVisible = true;
@@ -181,6 +188,36 @@ const removeSupportCampsData = {
 jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
+jest.mock("src/network/api/userApi", () => ({
+  getDirectSupportedCampsList: jest.fn(() =>
+    Promise.resolve({ data: [], status_code: 200 })
+  ),
+  removeOrUpdateDirectSupportCamps: jest.fn(() =>
+    Promise.resolve({
+      data: [
+        {
+          removeEntireData: {},
+        },
+      ],
+      status_code: 200,
+    })
+  ),
+}));
+
+jest.mock("src/network/api/topicAPI", () => ({
+  GetActiveSupportTopic: jest.fn(() =>
+    Promise.resolve({ data: [], status_code: 200 })
+  ),
+  GetCheckSupportExists: jest.fn(() =>
+    Promise.resolve({
+      data: {
+        remove_camps: {},
+      },
+      status_code: 200,
+    })
+  ),
+}));
+
 describe("Direct Support camps page", () => {
   it("render Modal when Remove support is clicked", () => {
     render(
@@ -477,4 +514,12 @@ describe("Direct Support camps page", () => {
     const messageElement = screen.getByText(messageContent);
     expect(messageElement).toBeInTheDocument();
   });
+
+  // it("Message component displays correct content",()=>{
+  //   const {getByText,container}=render(<DirectSupportedCamps search={directSupportedCampsList} />)
+  //   // const onCancel = container.querySelectorAll(".ant-btn ant-btn-default")[0]
+  //   fireEvent.click(container.querySelector(".anticon-close-circle")[0])
+  //   expect(getByText('Changes will be reverted ?')).toBeDefined();
+  //   fireEvent.click(getByText('Changes will be reverted ?'))
+  // });
 });
