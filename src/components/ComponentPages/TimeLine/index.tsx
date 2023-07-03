@@ -2,13 +2,12 @@ import React, { useEffect, useState } from "react";
 import RacingBarChart from "./RacingBarChart.js";
 import useInterval from "./useInterval";
 // import "./App.css";
-import HorizontalTimelineComp from "./HorizontalTimeline";
 import TimelineSlider from "../eventLine/TimelineSlider";
 import { getEventLineApi } from "src/network/api/topicEventLineAPI";
-import { useRouter } from "next/router.js";
+import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store/index.js";
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "../../common/customSkelton";
 const getRandomIndex = (array) => {
   return Math.floor(array.length * Math.random());
 };
@@ -25,22 +24,40 @@ function TimeLine({ setTimelineDescript }) {
 
   const events = mockData && Object.keys(mockData).sort();
   const [data, setData] = useState([]);
-  const { algorithm, score } = useSelector((state: RootState) => ({
-    algorithm: state.filters?.filterObject?.algorithm,
-    score: state?.filters?.filterObject?.filterByScore,
-  }));
-
+  const { algorithm, score, asofdate, asof } = useSelector(
+    (state: RootState) => ({
+      algorithm: state.filters?.filterObject?.algorithm,
+      score: state?.filters?.filterObject?.filterByScore,
+      asofdate: state.filters?.filterObject?.asofdate,
+      asof: state?.filters?.filterObject?.asof,
+    })
+  );
   useEffect(() => {
     setLoading(true);
     async function apiCall() {
       const data = await getEventLineApi({
-        topic_num: router?.query?.camp[0].split("-")[0],
+        topic_num: router?.query?.camp[0]?.split("-")[0],
         algorithm: algorithm,
       });
 
       if (data && Object.keys(data).length == 1) {
         let a = new Date().getTime() / 1000;
-        data[`asoftime_${Math.round(a)}`] = data[Object.keys(data)[0]];
+        data[`asoftime_${Math.round(a)}`] = {
+          ...data[Object.keys(data)[0]],
+          firstEvent: true,
+        };
+      } else if (data && Object.keys(data).length > 1 && asof == "bydate") {
+        let sortMockData = Object.keys(data).sort();
+        let i = 0;
+        for (i; i < Object.keys(data).length; i++) {
+          if (
+            JSON.stringify(asofdate) ==
+            JSON.stringify(sortMockData[i]?.split("_")[1])
+          ) {
+            setIteration(i);
+            break;
+          }
+        }
       }
       data && setMockData(data);
     }
@@ -90,7 +107,6 @@ function TimeLine({ setTimelineDescript }) {
     );
     setEventDescription(mockData[events[iteration]].event?.message);
   };
-
   return (
     <React.Fragment>
       <TimelineSlider
@@ -115,10 +131,12 @@ function TimeLine({ setTimelineDescript }) {
             isButton={false}
             stylingClass=""
           />
-        ) : data?.length ? (
-          <RacingBarChart data={data} />
+        ) : data?.length > 0 ? (
+          <>
+            <RacingBarChart data={data} />
+          </>
         ) : (
-          <h1>No Camps Found</h1>
+          <h1>No Event Found!</h1>
         )}
       </div>
     </React.Fragment>

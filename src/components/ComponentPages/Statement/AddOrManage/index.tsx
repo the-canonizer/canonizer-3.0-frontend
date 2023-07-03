@@ -113,8 +113,8 @@ export default function AddOrManage({ add }: any) {
 
     if (res?.status_code == 200) {
       if (add) {
-        router.push(
-          router.asPath.replace("create/statement", "statement/history")
+        router?.push(
+          router?.asPath.replace("create/statement", "statement/history")
         );
       } else {
         let route =
@@ -132,11 +132,11 @@ export default function AddOrManage({ add }: any) {
               "-"
             )}`;
         if (manageFormOf == "camp") {
-          router.push(`/camp/history/${route}`);
+          router?.push(`/camp/history/${route}`);
         } else if (manageFormOf == "statement") {
-          router.push(`/statement/history/${route}`);
+          router?.push(`/statement/history/${route}`);
         } else if (manageFormOf == "topic") {
-          router.push(`/topic/history/${route}`);
+          router?.push(`/topic/history/${route}`);
         }
       }
       const oldOptions = [...options];
@@ -422,6 +422,9 @@ export default function AddOrManage({ add }: any) {
             if (op.id === "is_archive") {
               op.checked =
                 res?.data[manageFormOf]?.is_archive === 1 ? true : false;
+              op.tooltip = op.checked
+                ? "Unarchive the camp."
+                : "Archive the camp.";
               if (
                 res?.data[manageFormOf]?.direct_archive === 0 &&
                 res?.data[manageFormOf]?.is_archive === 0
@@ -462,10 +465,10 @@ export default function AddOrManage({ add }: any) {
     }
     isUserAuthenticated
       ? nickNameListApiCall()
-      : router.push({
-        pathname: "/login",
-        query: { returnUrl: router.asPath },
-      });
+      : router?.push({
+          pathname: "/login",
+          query: { returnUrl: router?.asPath },
+        });
   }, []);
   let formTitle = () => {
     let update: string;
@@ -516,6 +519,7 @@ export default function AddOrManage({ add }: any) {
       } else {
         op.checked = false;
       }
+       op.tooltip = op.id === "is_archive"?op.checked ? "Unarchive the camp." : "Archive the camp.":op.tooltip;
     });
     setOptions(oldOptions);
     if (

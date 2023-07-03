@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
 import CustomSkelton from "../../common/customSkelton";
 
-//  "../../../store/slices/filtersSlice";
 import {
   getCanonizedCampStatementApi,
   getNewsFeedApi,
@@ -67,6 +66,7 @@ const TopicDetails = () => {
   const [isDelegateSupportTreeCardModal, setIsDelegateSupportTreeCardModal] =
     useState(false);
   const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
+  const [backGroundColorClass, setBackGroundColorClass] = useState("default");
   const [totalCampScoreForSupportTree, setTotalCampScoreForSupportTree] =
     useState<number>(null);
   const [supportTreeForCamp, setSupportTreeForCamp] = useState<number>(null);
@@ -318,6 +318,10 @@ const TopicDetails = () => {
     // fetchTotalScore();
   }, [isUserAuthenticated, router, algorithm]);
 
+  useEffect(() => {
+    setBackGroundColorClass(asof);
+  }, [asof]);
+
   const scrollToCampStatement = () => {
     myRefToCampStatement.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -330,7 +334,7 @@ const TopicDetails = () => {
   const setCurrentTopics = (data) => dispatch(setCurrentTopic(data));
 
   const onCreateCamp = () => {
-    // const queryParams = router.query;
+    // const queryParams = router?.query;
 
     const data = {
       message: null,
@@ -343,7 +347,7 @@ const TopicDetails = () => {
     const topicName = topicRecord?.topic_name?.replaceAll(" ", "-");
     const campName = campRecord?.camp_name?.replaceAll(" ", "-");
 
-    router.push({
+    router?.push({
       pathname: `/camp/create/${
         topicRecord?.topic_num
       }-${replaceSpecialCharacters(topicName, "-")}/${
@@ -361,7 +365,7 @@ const TopicDetails = () => {
       campNum = campRecord?.camp_num;
 
     if (topicName && topicNum && campName && campNum) {
-      router.push({
+      router?.push({
         pathname: `/forum/${topicNum}-${replaceSpecialCharacters(
           topicName,
           "-"
@@ -381,12 +385,14 @@ const TopicDetails = () => {
   const onCreateCampDate = () => {
     dispatch(
       setFilterCanonizedTopics({
-        asofdate: campExist?.created_at,
+        asofdate:
+          Date.parse(
+            moment.unix(campExist && campExist?.created_at).endOf("day")["_d"]
+          ) / 1000,
         asof: "bydate",
       })
     );
   };
-
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
@@ -421,6 +427,7 @@ const TopicDetails = () => {
               scrollToCampStatement={scrollToCampStatement}
               setTotalCampScoreForSupportTree={setTotalCampScoreForSupportTree}
               setSupportTreeForCamp={setSupportTreeForCamp}
+              backGroundColorClass={backGroundColorClass}
             />
 
             {((tree &&
@@ -454,9 +461,13 @@ const TopicDetails = () => {
                               }}
                             >
                               {" "}
-                              {new Date(
-                                (campExist && campExist?.created_at) * 1000
-                              ).toLocaleString()}
+                              {
+                                new Date(
+                                  (campExist && campExist?.created_at) * 1000
+                                )
+                                  .toLocaleString()
+                                  ?.split(",")[0]
+                              }
                             </Link>
                           </span>
                         }
@@ -469,6 +480,7 @@ const TopicDetails = () => {
                       <>
                         <CampStatementCard
                           loadingIndicator={loadingIndicator}
+                          backGroundColorClass={backGroundColorClass}
                         />
 
                         {typeof window !== "undefined" &&
@@ -476,9 +488,11 @@ const TopicDetails = () => {
                             <>
                               <CurrentTopicCard
                                 loadingIndicator={loadingIndicator}
+                                backGroundColorClass={backGroundColorClass}
                               />
                               <CurrentCampCard
                                 loadingIndicator={loadingIndicator}
+                                backGroundColorClass={backGroundColorClass}
                               />
                             </>
                           )}
@@ -510,14 +524,17 @@ const TopicDetails = () => {
                           totalCampScoreForSupportTree={
                             totalCampScoreForSupportTree
                           }
+                          backGroundColorClass={backGroundColorClass}
                         />
                         {typeof window !== "undefined" &&
                           window.innerWidth < 767 && (
                             <>
                               <CurrentTopicCard
+                                backGroundColorClass={backGroundColorClass}
                                 loadingIndicator={loadingIndicator}
                               />
                               <CurrentCampCard
+                                backGroundColorClass={backGroundColorClass}
                                 loadingIndicator={loadingIndicator}
                               />
                               <Spin spinning={loadingIndicator} size="large">
@@ -526,7 +543,7 @@ const TopicDetails = () => {
                                 )}
                               </Spin>
                               <>
-                                {router.asPath.includes("topic") && (
+                                {router?.asPath.includes("topic") && (
                                   <CampRecentActivities />
                                 )}
                               </>

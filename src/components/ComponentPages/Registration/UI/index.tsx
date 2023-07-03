@@ -72,7 +72,7 @@ function RegistrationUi({
       closeModal();
       openLogin();
     } else {
-      router.push("/login");
+      router?.push("/login");
     }
   };
 

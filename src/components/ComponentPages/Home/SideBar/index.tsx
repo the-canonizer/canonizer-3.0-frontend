@@ -56,7 +56,7 @@ export default function HomeSideBar({ onCreateCamp = () => {} }: any) {
       )}
       {typeof window !== "undefined" &&
         window.innerWidth > 767 &&
-        router.asPath.includes("topic") &&
+        router?.asPath.includes("topic") &&
         isAuth && (
           <Fragment>
             {<CampRecentActivities />}

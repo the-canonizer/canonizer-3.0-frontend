@@ -1425,6 +1425,7 @@ del.diffmod img{
       right: 0;
       top: 0;
       background: rgba(0, 0, 0, 0.06);
+      // rgb(227 237 232)
       padding: 0 !important;
       display: flex;
       align-items: center;
@@ -1440,7 +1441,7 @@ del.diffmod img{
 
     &:not(.ant-collapse-item-active) {
       .ant-collapse-header {
-        bottom: 66px;
+        bottom: 0px;
 
         .ant-collapse-header-text {
           i {
@@ -1465,8 +1466,24 @@ del.diffmod img{
   }
 }
 
+.objected {
+  .ant-collapse-item {
+    .ant-collapse-header {
+      background: #e3ede8;
+    }
+    &.ant-collapse-item-active {
+      .ant-collapse-header {
+        background-color: #12c879;
+      }
+    }
+  }
+}
+
 .live {
   .ant-collapse-item {
+    .ant-collapse-header {
+      background: #e3ede8;
+    }
     &.ant-collapse-item-active {
       .ant-collapse-header {
         background-color: #12c879;
@@ -1477,6 +1494,9 @@ del.diffmod img{
 
 .in_review {
   .ant-collapse-item {
+    .ant-collapse-header {
+      background: #f0eee5;
+    }
     &.ant-collapse-item-active {
       .ant-collapse-header {
         background-color: #ffdd00;
@@ -1689,7 +1709,7 @@ del.diffmod img{
 
   .ant-collapse-header,
   .ant-collapse-content-box {
-    padding: 20px;
+    padding: 15px;
   }
 
   .ant-collapse-content {
@@ -1767,7 +1787,7 @@ del.diffmod img{
     .ant-collapse-header {
       cursor: inherit;
 
-      @media screen and (max-width:767px) {
+      @media screen and (max-width: 767px) {
         flex-direction: column;
         align-items: flex-start;
         gap: 15px;
@@ -1854,7 +1874,7 @@ del.diffmod img{
 
       &>.ant-tree-treenode-switcher-open {
         .treeListItemTitle {
-          font-size: 16px;
+          // font-size: 16px;
           font-weight: 600;
 
           a {
@@ -1962,7 +1982,7 @@ div[role="option"]::before {
 
 .newsFeedsList {
   list-style-type: square;
-
+  padding-left: 20px;
   li {
     &::marker {
       color: var(--primary);
@@ -2106,7 +2126,9 @@ div[role="option"]::before {
     }
   }
 }
-
+.boldLabel {
+  font-weight: 600;
+}
 .ant-drawer-content-wrapper {
   max-width: 100%;
 }
@@ -2248,13 +2270,19 @@ div[role="option"]::before {
 
 .rang-slider {
   @media screen and (min-width:768px) {
-    margin: 10px 40px 10px;
+  margin:10px 40px 10px;
+}
+@media screen and (max-width:767px) {
+  margin:10px 16px 10px;
+}
+.ant-slider-tooltip {
+  .ant-tooltip-arrow-content  {
+    --antd-arrow-background-color: rgba(45, 145, 203, 0.856);
   }
-
-  @media screen and (max-width:767px) {
-    margin: 10px 16px 10px;
+  .ant-tooltip-inner{
+  background-color: rgba(45, 145, 203, 0.856);
   }
-
+}
   .ant-slider-mark {
     top: -22px;
 
@@ -2283,7 +2311,7 @@ div[role="option"]::before {
   }
 
   .ant-slider-rail {
-    background-color: #BBDBFF;
+    background-color: #bbdbff;
   }
 
   .ant-slider-track {
@@ -2294,13 +2322,13 @@ div[role="option"]::before {
     width: 1px;
     border-width: 1px;
     height: 4px;
-    border-color: #BBDBFF;
+    border-color: #bbdbff;
 
     &-active {
       border-color: var(--primary);
     }
 
-    top:-4px;
+    top: -4px;
 
     &:last-child {
       left: auto !important;
@@ -2336,4 +2364,176 @@ div[role="option"]::before {
 .evntLineActivity {
   max-height: 400px;
   overflow-x: hidden;
+}
+
+.header-bg-color-change {
+  &.default {
+
+    .ant-collapse-header,
+    &.topics-list-card-header {
+      border-top: 2px solid #12c879;
+      background-color: #e5f6ee;
+    }
+    &.radio-group-sider {
+      .ant-radio.ant-radio-checked {
+        .ant-radio-inner {
+          border-color: #12c879;
+          &::after {
+            background-color: #12c879;
+          }
+        }
+      }
+    }
+  }
+
+  &.bydate {
+
+    .ant-collapse-header,
+    &.topics-list-card-header {
+      border-top: 2px solid #4484ce;
+      background-color: #eef3ff;
+    }
+    &.radio-group-sider {
+      .ant-radio.ant-radio-checked {
+        .ant-radio-inner {
+          border-color: #4484ce;
+          &::after {
+            background-color: #4484ce;
+          }
+        }
+      }
+    }
+  }
+
+  &.review {
+
+    .ant-collapse-header,
+    &.topics-list-card-header {
+      border-top: 2px solid #ffde0b;
+      background-color: #fffae3;
+    }
+    &.radio-group-sider {
+      .ant-radio.ant-radio-checked {
+        .ant-radio-inner {
+          border-color: #ffde0b;
+          &::after {
+            background-color: #ffde0b;
+          }
+        }
+      }
+    }
+  }
+
+  &.radio-group-sider {
+    border-top: 0 !important;
+
+    .ant-collapse-header {
+      margin-left: -15px;
+      margin-right: -15px;
+      padding-left: 15px;
+      padding-right: 15px;
+
+      .ant-collapse-expand-icon {
+        .ant-collapse-arrow {
+          right: 15px;
+        }
+
+      }
+    }
+  }
+}
+
+.topics-list-card-header {
+  padding: 15px;
+  display: flex;
+  gap: 1rem;
+
+  @media screen and (min-width: 768px) {
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  @media screen and (max-width: 767px) {
+    flex-direction: column;
+  }
+
+  .ant-select.ant-select-lg {
+    margin-right: auto;
+
+    @media screen and (min-width: 768px) {
+      min-width: 170px;
+      margin-left: 20px;
+    }
+
+    @media screen and (max-width: 767px) {
+      width: 100%;
+    }
+
+  }
+
+  h3 {
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    color: #1c1b24;
+    margin-bottom: 0;
+    white-space: nowrap;
+
+    i {
+      margin-left: 5px;
+      color: #d1d4db;
+    }
+  }
+}
+
+.direct-support-modal {
+  padding: 15px!important;
+  .ant-modal-body {
+    max-height: calc(50vh - 85px);
+    min-height: calc(100vh - 310px);;
+    overflow: auto;
+  }
+}
+
+.agreed-tabs {
+  .ant-tabs-nav-list {
+    width: 100%;
+  }
+  .ant-tabs-tab {
+    width: 50%;
+    justify-content: center;
+  }
+  .ant-tabs-nav-operations {
+    position: absolute;
+  }
+  .ant-tabs-nav-more {
+    display: none;
+  }
+}
+
+.skeleton-rangslider {
+  .ant-slider-tooltip {
+    .ant-tooltip-inner {
+  background-color: #ebebeb;
+    }
+    .ant-tooltip-arrow-content {
+    --antd-arrow-background-color: #ebebeb;
+     }}}
+.header-none {
+  .ant-collapse-header {
+    display: none !important;
+  }
+}
+
+
+.ant-descriptions-item-label::after {
+  margin: 0 4px 0 1px;
+}
+.progress-bar {
+  margin-left: 10px;
+  span {
+    font-size: 11px !important;
+    font-weight: 400 !important;
+  }
 }

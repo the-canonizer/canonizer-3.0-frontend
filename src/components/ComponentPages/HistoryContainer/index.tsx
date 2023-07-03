@@ -61,6 +61,9 @@ function HistoryContainer() {
       asof: state?.filters?.filterObject?.asof,
       algorithm: state.filters?.filterObject?.algorithm,
     }));
+  const { campRecord } = useSelector((state: RootState) => ({
+    campRecord: state?.topicDetails?.currentCampRecord,
+  }));
   const [isTreesApiCallStop, setIsTreesApiCallStop] = useState(false);
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [campHistory, setCampHistory] = useState(history);
@@ -153,9 +156,9 @@ function HistoryContainer() {
     try {
       setLoadingIndicator(true);
       const reqBody = {
-        topic_num: +router.query.camp[0].split("-")[0],
+        topic_num: +router?.query.camp[0].split("-")[0],
         camp_num:
-          historyOf != "topic" ? +router.query.camp[1].split("-")[0] : null,
+          historyOf != "topic" ? +router?.query.camp[1].split("-")[0] : null,
         type: activeTab,
         per_page: 4,
         page: count.current,
@@ -210,9 +213,9 @@ function HistoryContainer() {
   };
 
   const onCompareClick = () => {
-    router.push({
-      pathname: `/statement/compare/${router.query.camp[0]}/${
-        router.query.camp[1] ? router.query.camp[1] : "1-Agreement"
+    router?.push({
+      pathname: `/statement/compare/${router?.query.camp[0]}/${
+        router?.query.camp[1] ? router?.query.camp[1] : "1-Agreement"
       }`,
       query: {
         statements: selectedTopic[0] + "_" + selectedTopic[1],
@@ -303,12 +306,12 @@ function HistoryContainer() {
 
         {historyOf !== "topic" &&
         currentCampNode?._isDisabled == 0 &&
-        currentCampNode?.parentIsOneLevel == 0 ? (
+        currentCampNode?.parentIsOneLevel == 0 && currentCampNode?.is_archive == 0 ?  (
           <CreateNewCampButton
             className={styles.createBtn}
             click={campRoute}
             url={`/camp/create/${
-              router.query.camp[0] + "/" + router.query.camp[1]
+              router?.query.camp[0] + "/" + router?.query.camp[1]
             }`}
           />
         ) : null}

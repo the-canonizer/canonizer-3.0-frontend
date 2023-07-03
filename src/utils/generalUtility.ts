@@ -232,7 +232,7 @@ export const routeToUserPage = (
   campnum = "",
   canon = 1
 ) => {
-  return router.push({
+  return router?.push({
     pathname: `/user/supports`,
     query: {
       topicnum,

@@ -109,35 +109,45 @@ function TimelineSlider({
         step={null}
         tooltip={{ open: false }}
         onChange={handleSpeedChange}
+        data-testid="slider"
       />
     </div>
   );
-  const DateFormate = (datess) => {
+  const DateFormate = (datess, value = null) => {
     const months = [
-      "January",
-      "February",
-      "March",
-      "April",
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
       "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
     ];
     let formattedDate = `${
       months[datess.getMonth()]
-    } ${datess.getDate()},${datess.getFullYear()}`;
-    return formattedDate;
+    } ${datess.getDate()}, ${datess
+      .getYear()
+      .toString()
+      .slice(1)}<span style=display:none>${value}</span>`;
+    return (
+      <div
+        dangerouslySetInnerHTML={{
+          __html: formattedDate,
+        }}
+      />
+    );
   };
 
   const formatter = (value) => {
     let pdata: any = Object.keys(mockData)?.sort();
     let formatedDate =
       pdata.length > 0 &&
-      DateFormate(new Date(pdata[value]?.split("_")[1] * 1000));
+      DateFormate(new Date(pdata[value]?.split("_")[1] * 1000), value);
     return formatedDate;
   };
   const MarkPointsData = () => {
@@ -197,17 +207,23 @@ function TimelineSlider({
       setStart(false);
     }
     let showkey = Object.keys(mockData).sort()[iteration];
+    let sortMockData = Object.keys(mockData).sort();
     let mappedArr = [];
     for (let i = 0; i < Object.keys(mockData).length; i++) {
-      if (showkey == Object.keys(mockData).sort()[i]) {
-        mappedArr.unshift(
-          mockData[Object.keys(mockData).sort()[i]]?.event?.message
-        );
+      if (showkey == sortMockData[i]) {
+        mappedArr.unshift({
+          message: mockData[sortMockData[i]]?.event?.message,
+          eventDate: sortMockData[i]?.split("_")[1],
+          id: mockData[sortMockData[i]]?.event?.id,
+        });
         break;
       }
-      mappedArr.unshift(
-        mockData[Object.keys(mockData).sort()[i]]?.event?.message
-      );
+
+      mappedArr.unshift({
+        message: mockData[sortMockData[i]]?.event?.message,
+        eventDate: sortMockData[i]?.split("_")[1],
+        id: mockData[sortMockData[i]]?.event?.id,
+      });
     }
     setTimelineDescript(mappedArr);
   }, [iteration, mockData]);
@@ -216,28 +232,31 @@ function TimelineSlider({
     <>
       <div
         className={`${styles.timeBarControl} ${
-          mockData && Object.keys(mockData).length <= 2
-            ? styles.disablePlayBtn
-            : ""
+          mockData && !mockData[Object.keys(mockData)[1]]?.firstEvent
+            ? ""
+            : styles.disablePlayBtn
         }`}
+        data-testid="time-bar-control"
       >
         <StepBackwardOutlined
           onClick={() => {
-            if (mockData && Object.keys(mockData).length > 2) {
+            if (mockData && !mockData[Object.keys(mockData)[1]]?.firstEvent) {
               handleClickBackword();
             }
           }}
           className={styles.controlBtnSecond}
+          data-testid="backward-button"
         />
         {/* <BackwardOutlined className={styles.controlBtn} /> */}
         {"     "}
         <div
           className={`${styles.playBtn}`}
           onClick={() => {
-            if (mockData && Object.keys(mockData).length > 2) {
+            if (mockData && !mockData[Object.keys(mockData)[1]]?.firstEvent) {
               handleClick();
             }
           }}
+          data-testid="play-button"
         >
           {isPlaying ? <PauseOutlined /> : <CaretRightOutlined />}
         </div>
@@ -246,11 +265,12 @@ function TimelineSlider({
 
         <StepForwardOutlined
           onClick={() => {
-            if (mockData && Object.keys(mockData).length > 2) {
+            if (mockData && !mockData[Object.keys(mockData)[1]]?.firstEvent) {
               handleClickForward();
             }
           }}
           className={styles.controlBtnSecond}
+          data-testid="forward-button"
         />
         <Popover
           content={content}
@@ -263,25 +283,37 @@ function TimelineSlider({
         >
           <DashboardOutlined
             className={`${"speed-icon"}  ${
-              mockData && Object.keys(mockData).length <= 2
+              mockData && mockData[Object.keys(mockData)[1]]?.firstEvent
                 ? styles.disableIcon
                 : ""
             }`}
+            data-testid="speed-icon"
           />
         </Popover>
       </div>
       {mockData && (
         <Slider
-          disabled={mockData && Object.keys(mockData).length > 2 ? false : true}
-          className="rang-slider"
+          disabled={
+            mockData && !mockData[Object.keys(mockData)[1]]?.firstEvent
+              ? false
+              : true
+          }
+          className={`${
+            mockData && Object.keys(mockData).length > 0
+              ? "rang-slider"
+              : "skeleton-rangslider"
+          }`}
           tooltip={{
+            open: true,
             formatter,
+            getPopupContainer: (triggerNode) => triggerNode.parentElement,
           }}
           onChange={onChange}
           value={Number(iteration)}
           marks={MarkPointsData()}
           min={0}
           max={Object?.keys(mockData).length - 1}
+          data-testid="slider"
         />
       )}
     </>

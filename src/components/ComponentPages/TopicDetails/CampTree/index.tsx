@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Tree, Tooltip, Select, Image } from "antd";
+import { Tree, Tooltip, Select, Image, Popover } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../../store";
 import Link from "next/link";
@@ -20,6 +20,7 @@ const CampTree = ({
   setSupportTreeForCamp,
   treeExpandValue,
   prevTreeValueRef,
+  setTreeExpandValue,
 }: any) => {
   const { tree, filterByScore, review, is_checked } = useSelector(
     (state: RootState) => ({
@@ -32,16 +33,18 @@ const CampTree = ({
   const { is_camp_archive_checked } = useSelector((state: RootState) => ({
     is_camp_archive_checked: state?.utils?.archived_checkbox,
   }));
+  const { campRecord } = useSelector((state: RootState) => ({
+    campRecord: state?.topicDetails?.currentCampRecord,
+  }));
+  console.log(campRecord, "record");
   let childExpandTree = [];
-
+  let urlCampInfo;
+  const didMount = useRef(true);
   const [defaultExpandKeys, setDefaultExpandKeys] = useState([]);
   const [uniqueKeys, setUniqueKeys] = useState([]);
   const [showScoreBars, setShowScoreBars] = useState(false);
-
   const [selectedExpand, setSelectedExpand] = useState([]);
-
   const [autoExpandParent, setAutoExpandParent] = useState(true);
-
   // const [selectedNodeID, setSelectedNodeID] = useState(1);
   const [scoreFilter, setScoreFilter] = useState(filterByScore);
   const [includeReview, setIncludeReview] = useState(
@@ -62,7 +65,6 @@ const CampTree = ({
       scrollToCampStatement();
     }
   };
-
   const { isUserAuthenticated, userID } = useAuthentication();
 
   const showSelectedCamp = (data, select_camp, campExist) => {
@@ -89,6 +91,25 @@ const CampTree = ({
       setShowTree(true);
     }
   };
+  const getUrlCampInfo = (data, select_camp) => {
+    Object?.keys(data).map((item) => {
+      if (data[item].children) {
+        if (data[item].score >= scoreFilter) {
+          if (data[item]?.camp_id == select_camp) {
+            urlCampInfo = data[item];
+            return;
+          }
+          getUrlCampInfo(data[item].children, select_camp);
+        } else {
+          return null;
+        }
+      }
+      if (data[item]?.camp_id == select_camp) {
+        urlCampInfo = data[item];
+        return;
+      }
+    });
+  };
 
   const getAllDefaultExpandKeys = (data, topic_score) => {
     if (data?.children) {
@@ -110,13 +131,19 @@ const CampTree = ({
     setIncludeReview(review == "review" ? true : false);
   }, [filterByScore, review]);
 
-  const dispatchData = (data, isDisabled = 0, isOneLevel = 0) => {
+  const dispatchData = (
+    data,
+    isDisabled = 0,
+    isOneLevel = 0,
+    isArchive = 0
+  ) => {
     const keys = Object.keys(data);
     for (let i = 0; i < keys.length; i++) {
       const item = keys[i];
       const parentIsOneLevel = isOneLevel;
       let _isOneLevel = data[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
       let _isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
+      let _isArchive = data[item].is_archive == 1 || isArchive == 1 ? 1 : 0;
 
       if (
         data[item].camp_id ===
@@ -128,12 +155,13 @@ const CampTree = ({
             parentIsOneLevel,
             _isDisabled,
             _isOneLevel,
+            _isArchive,
           })
         );
         break;
       }
       if (data[item].children) {
-        dispatchData(data[item].children, _isDisabled, _isOneLevel);
+        dispatchData(data[item].children, _isDisabled, _isOneLevel, _isArchive);
       }
     }
   };
@@ -169,12 +197,10 @@ const CampTree = ({
         tree?.at(0) &&
         getAllDefaultExpandKeys(tree?.at(0)["1"], tree?.at(0)["1"]?.score);
       tree?.at(0) &&
-        expandKeys.push(
-          +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) == 1
-            ? 2
-            : +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1)
-        );
-      let allkeys = [...selectedExpand, ...(expandKeys || [])];
+        expandKeys.push(+(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1));
+
+      let allkeys = ["1", ...selectedExpand, ...(expandKeys || [])];
+
       let uniquekeyss = toFindDuplicates(allkeys);
       setDefaultExpandKeys(expandKeys);
       setUniqueKeys(uniquekeyss);
@@ -197,9 +223,35 @@ const CampTree = ({
         setShowScoreBars(false);
       }
     }
-    prevTreeValueRef.current = treeExpandValue;
+    if (prevTreeValueRef !== undefined) {
+      prevTreeValueRef.current = treeExpandValue;
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tree?.at(0), treeExpandValue]);
+
+  useEffect(() => {
+    if (didMount) {
+      tree?.at(0) &&
+        getUrlCampInfo(
+          tree?.at(0),
+          +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1)
+        );
+      if (
+        !(
+          (tree?.at(0)["1"]?.score * treeExpandValue) / 100 <=
+          urlCampInfo?.score
+        )
+      ) {
+        let expandpercetvalues = [20, 10, 0];
+        let a = expandpercetvalues.filter(
+          (value) =>
+            (tree?.at(0)["1"]?.score * value) / 100 <= urlCampInfo?.score
+        );
+        setTreeExpandValue(a[0]);
+      }
+      didMount.current = false;
+    }
+  }, []);
 
   const subScriptionStatus = (subscribedUsers: {}) => {
     return Object.keys(subscribedUsers).length > 0 &&
@@ -224,7 +276,12 @@ const CampTree = ({
     ) : null;
   };
 
-  const renderTreeNodes = (data: any, isDisabled = 0, isOneLevel = 0) => {
+  const renderTreeNodes = (
+    data: any,
+    isDisabled = 0,
+    isOneLevel = 0,
+    isArchive = 0
+  ) => {
     let sortedData = Object.keys(data)
       .map((key) => [Number(key), data[key]])
       .sort((a, b) => b[1].score - a[1].score);
@@ -234,6 +291,7 @@ const CampTree = ({
       const parentIsOneLevel = isOneLevel;
       let _isOneLevel = data[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
       let _isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
+      let _isArchive = data[item].is_archive == 1 || isArchive == 1 ? 1 : 0;
       if (router?.query?.camp?.at(1)?.split("-")?.at(0)) {
         if (
           data[item]?.camp_id == router?.query?.camp?.at(1)?.split("-")?.at(0)
@@ -284,19 +342,31 @@ const CampTree = ({
                         >
                           <a
                             className={
-                              data[item]?.camp_id ==
-                                router?.query?.camp?.at(1)?.split("-")?.at(0) ??
-                              "1"
+                              data[item].is_archive == 1
+                                ? `font-weight-bold ${styles.archive_grey}`
+                                : data[item]?.camp_id ==
+                                    router?.query?.camp
+                                      ?.at(1)
+                                      ?.split("-")
+                                      ?.at(0) ?? "1"
                                 ? `font-weight-bold ${styles.activeCamp}`
                                 : ""
                             }
                           >
-                            {includeReview
-                              ? data[item]?.review_title
-                              : data[item]?.title}
+                            {data[item].is_archive == 1 ? (
+                              <Popover content="Archived Camp">
+                                {includeReview
+                                  ? data[item]?.review_title
+                                  : data[item]?.title}
+                              </Popover>
+                            ) : includeReview ? (
+                              data[item]?.review_title
+                            ) : (
+                              data[item]?.title
+                            )}
                           </a>
                         </Link>{" "}
-                        {data[item].is_archive == 1 ? (
+                        {/* {data[item].is_archive == 1 ? (
                           <Image
                             src={Archive_icon.src}
                             width={20}
@@ -306,7 +376,7 @@ const CampTree = ({
                           />
                         ) : (
                           ""
-                        )}
+                        )} */}
                       </span>
                       <span className={styles.subScriptionIcon}>
                         {isUserAuthenticated &&
@@ -323,7 +393,12 @@ const CampTree = ({
                                   tree?.at(0)["1"].score +
                                   50 +
                                   "px"
-                              : "50px"
+                              : `${
+                                  (is_checked
+                                    ? data[item].full_score?.toFixed(2)
+                                    : data[item].score?.toFixed(2)
+                                  ).length * 11
+                                }px`
                           )}
                           baseBgColor={"#fff"}
                           labelAlignment={"left"}
@@ -331,7 +406,7 @@ const CampTree = ({
                           borderRadius={"2px"}
                           height="16px"
                           customLabel={
-                            is_checked && isUserAuthenticated
+                            is_checked
                               ? data[item].full_score?.toFixed(2)
                               : data[item].score?.toFixed(2)
                           }
@@ -346,12 +421,14 @@ const CampTree = ({
                   parentIsOneLevel,
                   _isDisabled,
                   _isOneLevel,
+                  _isArchive,
                 }}
               >
                 {data[item].camp_id ===
                   +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) &&
                   _isDisabled == 0 &&
-                  parentIsOneLevel == 0 && (
+                  parentIsOneLevel == 0 &&
+                  _isArchive == 0 && (
                     <TreeNode
                       key={"custom"}
                       title={
@@ -359,12 +436,12 @@ const CampTree = ({
                           <Link
                             href={{
                               pathname: `/camp/create/${replaceSpecialCharacters(
-                                router.query.camp[0],
+                                router?.query.camp[0],
                                 "-"
                               )}/${
-                                router.query.camp[1]
+                                router?.query.camp[1]
                                   ? replaceSpecialCharacters(
-                                      router.query.camp[1],
+                                      router?.query.camp[1],
                                       "-"
                                     )
                                   : 1
@@ -378,7 +455,12 @@ const CampTree = ({
                     />
                   )}
 
-                {renderTreeNodes(data[item].children, _isDisabled, _isOneLevel)}
+                {renderTreeNodes(
+                  data[item].children,
+                  _isDisabled,
+                  _isOneLevel,
+                  _isArchive
+                )}
               </TreeNode>
             </>
           ) : null;
@@ -390,7 +472,8 @@ const CampTree = ({
     });
   };
 
-  const onExpand = (expandedKeys) => {
+  const onExpand = (expandedKeyss) => {
+    let expandedKeys = toFindDuplicates(expandedKeyss);
     let topic_id = tree?.at(0) && tree?.at(0)["1"].topic_id;
     let sesionexpandkeys = JSON.parse(sessionStorage.getItem("value"));
 
@@ -425,17 +508,19 @@ const CampTree = ({
           onSelect={onSelect}
           // defaultSelectedKeys={uniqueKeys}
           onExpand={onExpand}
-          expandedKeys={[...uniqueKeys, "1"]}
+          expandedKeys={[...uniqueKeys]}
           // autoExpandParent={autoExpandParent}
           // selectedKeys={uniqueKeys}
           // selectable={true}
+
+          data-testid="camp-tree"
         >
           {tree?.at(0) && renderTreeNodes(tree?.at(0))}
         </Tree>
       </>
     ) : null
   ) : (
-    <p>No Camp Tree Found</p>
+    <p data-testid="camp-tree">No Camp Tree Found</p>
   );
 };
 

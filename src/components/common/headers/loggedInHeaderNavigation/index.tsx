@@ -62,13 +62,13 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
     const res = await markNotificationRead(id);
     if (res && res.status_code === 200) {
       delete router?.query?.from;
-      // router.query.from = "";
-      router.replace(router);
+      // router?.query.from = "";
+      router?.replace(router);
     }
   };
 
   useEffect(() => {
-    const q = router.query;
+    const q = router?.query;
     if (q && q.from && q.from.includes("notify_")) {
       const fArr = (q.from as String).split("_");
       if (+fArr[1]) {
@@ -81,7 +81,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
   const logOut = async () => {
     const res = await logout();
     if (res?.status_code === 200) {
-      router.push("/");
+      router?.push("/");
     }
   };
 
@@ -177,7 +177,9 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
               </Fragment>
             ) : null}
           </div>
-          <div className={styles.right}>
+          <div
+            className={`${styles.right} ${!isLoginPage ? styles.onlogin : ""}`}
+          >
             {!isLoginPage ? (
               <div className={styles.btnsLoginRegister}>
                 <div className="hdrUserdropdown">

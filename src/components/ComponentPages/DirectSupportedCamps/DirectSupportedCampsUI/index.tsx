@@ -8,7 +8,7 @@ import styles from "./DirectSupportedCamps.module.scss";
 
 import messages from "../../../../messages";
 import CustomSkelton from "../../../common/customSkelton";
-import SupportRemovedModal from "@/components/common/supportRemovedModal";
+import SupportRemovedModal from "../../../common/supportRemovedModal";
 
 export default function DirectSupportedCampsUI({
   removeCardSupportedCamps,
@@ -281,7 +281,7 @@ export default function DirectSupportedCampsUI({
               ? "You are about to change the order of your supported camps"
               : modalPopupText
               ? "You are about to remove your support from all the camps from the topic: "
-              : campIds.length > 1
+              : campIds?.length > 1
               ? "You are about to remove your support from the camps: "
               : "You are about to remove your support from the camp: "}
             {!isChangingOrder && (
@@ -296,7 +296,7 @@ export default function DirectSupportedCampsUI({
                     <a>{removeSupportCampsData.title}</a>
                   </Link>
                 ) : (
-                  removeCampLink.map((val, index) => {
+                  removeCampLink?.map((val, index) => {
                     return (
                       <Link
                         href={{

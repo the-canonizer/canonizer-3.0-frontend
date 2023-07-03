@@ -6,7 +6,7 @@ import GoogleAd from "../../../googleAds";
 export default function HomeSideBar({ isShowBtn = true }: any) {
   const router = useRouter();
   const campRoute = () => {
-    router.push("/create/topic");
+    router?.push("/create/topic");
   };
 
   return (

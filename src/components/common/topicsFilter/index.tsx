@@ -32,7 +32,7 @@ import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 // import { showCreateCampButton } from "src/utils/generalUtility";
 import FullScoreCheckbox from "../../ComponentPages/FullScoreCheckbox";
 import useAuthentication from "src/hooks/isUserAuthenticated";
-import ArchivedCampCheckBox from "../../ComponentPages/ArchivedCampCheckBox";
+import ArchivedCampCheckBox from "src/components/ComponentPages/ArchivedCampCheckBox";
 
 const infoContent = (
   <>
@@ -101,7 +101,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   const [isCampBtnVisible, setIsCampBtnVisible] = useState(false);
 
   const campRoute = () => {
-    router.push("/create/topic");
+    router?.push("/create/topic");
   };
 
   const {
@@ -126,6 +126,9 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
     loading: state?.loading?.loading,
     current_date_filter: state?.filters?.current_date,
     campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
+  }));
+  const { campRecord } = useSelector((state: RootState) => ({
+    campRecord: state?.topicDetails?.currentCampRecord,
   }));
   const [value, setValue] = useState(
     selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3
@@ -164,11 +167,11 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   }, [selectedAsOf]);
 
   useEffect(() => {
-    if (router.pathname.includes("/topic/")) {
+    if (router?.pathname.includes("/topic/")) {
       // setIsPanelCollapse(true);
       setIsCampBtnVisible(true);
     }
-  }, [router.pathname]);
+  }, [router?.pathname]);
 
   useEffect(() => {
     setSelectedAsOFDate(filteredAsOfDate);
@@ -262,13 +265,19 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
           asof: "bydate",
         })
       );
+    } else {
+      dispatch(
+        setFilterCanonizedTopics({
+          asofdate: Date.now() / 1000,
+          asof: "bydate",
+        })
+      );
     }
   };
 
   function momentDateObject(e) {
     return e?._d;
   }
-
   return (
     <>
       <div className="leftSideBar_Card">
@@ -278,7 +287,8 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
           </Button>
           {isCampBtnVisible &&
           currentCampNode?._isDisabled == 0 &&
-          currentCampNode?.parentIsOneLevel == 0 ? (
+          currentCampNode?.parentIsOneLevel == 0 &&
+          campRecord?.is_archive == 0 ? (
             <Tooltip
               title={
                 tree && !tree["1"]?.is_valid_as_of_time
@@ -322,7 +332,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                 Canonizer Algorithm:
               </Title>
               <Popover content="Algorithm Information" placement="top">
-                {router.asPath.includes("/topic") ? (
+                {router?.asPath.includes("/topic") ? (
                   <a href={K?.Network?.URL?.algoInfoUrl}>
                     Algorithm Information
                   </a>
@@ -379,17 +389,17 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                 <i className="icon-info"></i>
               </Popover>
             </div>
-            {isAuth.isUserAuthenticated ? (
-              <div className={styles.scoreCheckbox}>
-                <FullScoreCheckbox />
-              </div>
-            ) : null}
+
+            <div className={styles.scoreCheckbox}>
+              <FullScoreCheckbox />
+            </div>
+
             <div className={styles.scoreCheckbox}>
               <ArchivedCampCheckBox />
             </div>
           </Panel>
-
           <Panel
+            className={`header-bg-color-change radio-group-sider ${selectedAsOf}`}
             header={
               <span className={styles.title}>
                 As Of

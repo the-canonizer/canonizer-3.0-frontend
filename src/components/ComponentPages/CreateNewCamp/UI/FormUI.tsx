@@ -1,9 +1,22 @@
-import { Fragment } from "react";
-import { Card, Form, Input, Button, Select, Row, Col, Typography } from "antd";
+import { Fragment, useEffect } from "react";
+import {
+  Card,
+  Form,
+  Input,
+  Button,
+  Select,
+  Row,
+  Col,
+  Typography,
+  Tooltip,
+} from "antd";
 
 import styles from "../../CreateNewTopic/UI/createNewTopic.module.scss";
 import messages from "../../../../messages";
 import PreventSubCamps from "../../../common/preventSubCampCheckbox";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
+import { useRouter } from "next/router";
 
 const { Option } = Select;
 const { Text } = Typography;
@@ -32,11 +45,24 @@ const CreateCampFormUI = ({
   onCheckboxChange,
   onParentCampChange,
 }) => {
+  const router = useRouter()
+  const { campRecord } = useSelector((state: RootState) => ({
+    campRecord: state?.topicDetails?.currentCampRecord,
+  }));
+
   const CardTitle = (
     <span className={styles.cardTitle} data-testid="head" id="card-title">
       Create New Camp
     </span>
   );
+  const toolTipContent = "This camp is under review";
+  const archiveToolTipContent = "This camp is archived"
+  useEffect(() => {
+   campRecord.is_archive && 
+    router.pathname == "/camp/create/[...camp]"
+      ? router?.back()
+      : "";
+  }, []);
 
   return (
     <Fragment>
@@ -145,9 +171,19 @@ const CreateCampFormUI = ({
                         key={camp.id}
                         id={`parent-camp-${camp.id}`}
                         camp={camp}
-                        // disabled={disableInput(camp)}
+                        disabled={
+                          camp.parent_change_in_review == true|| camp.is_archive ? true : false
+                        }
                       >
-                        {camp.camp_name}
+                        <Tooltip
+                          title={
+                            camp.parent_change_in_review == true
+                              ? toolTipContent  :camp.is_archive ? archiveToolTipContent 
+                              : null
+                          }
+                        >
+                          {camp.camp_name}
+                        </Tooltip>
                       </Option>
                     ))}
                   </Select>
