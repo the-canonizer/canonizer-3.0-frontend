@@ -40,7 +40,6 @@ export default function Editorck(props: (editorState & editorchange)) {
                 '|',
                 'numberedList',
                 'bulletedList',
-                'todoList',
                 'alignment',
                 '|',
                 'fontSize',

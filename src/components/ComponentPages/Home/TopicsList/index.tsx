@@ -65,6 +65,7 @@ const TopicsList = () => {
     filterNameSpaceId,
     search,
     is_checked,
+    is_archive
     // archeived
   } = useSelector((state: RootState) => ({
     // archeived: state.utils?.archived_checkbox,
@@ -181,7 +182,7 @@ const TopicsList = () => {
     // setArchiveSearch(is_archive);
     setInputSearch(search.trim());
     setNameSpacesList(nameSpaces);
-  }, [filterNameSpace, filterNameSpaceId, search, nameSpaces,is_archive]);
+  }, [filterNameSpace, filterNameSpaceId, search, nameSpaces, is_archive]);
 
   useEffect(() => {
     setTopicsData(canonizedTopics);
