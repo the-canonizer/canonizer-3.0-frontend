@@ -2,7 +2,6 @@ import React, { createRef, useEffect, Fragment } from "react";
 import { useRouter } from "next/router";
 import { Row, Col, Typography, Form, Input, Button, Select } from "antd";
 import { CloseCircleOutlined, ArrowRightOutlined } from "@ant-design/icons";
-import ReCAPTCHA from "react-google-recaptcha";
 
 import styles from "./Registration.module.scss";
 
@@ -24,15 +23,10 @@ function RegistrationUi({
   onFinish,
   isModal,
   closeModal,
-  onReCAPTCHAChange,
-  resetCaptcha,
-  showCaptchaError,
   country,
   openLogin,
 }) {
   const router = useRouter();
-
-  const recaptchaRef: React.RefObject<{ reset }> = createRef();
 
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
@@ -59,12 +53,6 @@ function RegistrationUi({
       </Select>
     </Form.Item>
   );
-
-  useEffect(() => {
-    if (resetCaptcha) {
-      recaptchaRef?.current?.reset();
-    }
-  }, [resetCaptcha, recaptchaRef]);
 
   const onLoginClick = (e) => {
     e.preventDefault();
@@ -219,21 +207,6 @@ function RegistrationUi({
             </Col>
           </Row>
         </div>
-
-        <Form.Item
-          name="captcha"
-          {...messages.getCaptchaRule(showCaptchaError)}
-          className={styles.captchaContainer}
-        >
-          <div className={styles.captchaCol}>
-            <ReCAPTCHA
-              ref={recaptchaRef}
-              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-              onChange={onReCAPTCHAChange}
-              grecaptcha={global?.window?.grecaptcha}
-            />
-          </div>
-        </Form.Item>
 
         <Form.Item>
           <Button

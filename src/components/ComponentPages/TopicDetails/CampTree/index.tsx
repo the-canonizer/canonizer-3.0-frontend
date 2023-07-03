@@ -33,6 +33,10 @@ const CampTree = ({
   const { is_camp_archive_checked } = useSelector((state: RootState) => ({
     is_camp_archive_checked: state?.utils?.archived_checkbox,
   }));
+  const { campRecord } = useSelector((state: RootState) => ({
+    campRecord: state?.topicDetails?.currentCampRecord,
+  }));
+  console.log(campRecord, "record");
   let childExpandTree = [];
   let urlCampInfo;
   const didMount = useRef(true);
@@ -127,13 +131,19 @@ const CampTree = ({
     setIncludeReview(review == "review" ? true : false);
   }, [filterByScore, review]);
 
-  const dispatchData = (data, isDisabled = 0, isOneLevel = 0) => {
+  const dispatchData = (
+    data,
+    isDisabled = 0,
+    isOneLevel = 0,
+    isArchive = 0
+  ) => {
     const keys = Object.keys(data);
     for (let i = 0; i < keys.length; i++) {
       const item = keys[i];
       const parentIsOneLevel = isOneLevel;
       let _isOneLevel = data[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
       let _isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
+      let _isArchive = data[item].is_archive == 1 || isArchive == 1 ? 1 : 0;
 
       if (
         data[item].camp_id ===
@@ -145,12 +155,13 @@ const CampTree = ({
             parentIsOneLevel,
             _isDisabled,
             _isOneLevel,
+            _isArchive,
           })
         );
         break;
       }
       if (data[item].children) {
-        dispatchData(data[item].children, _isDisabled, _isOneLevel);
+        dispatchData(data[item].children, _isDisabled, _isOneLevel, _isArchive);
       }
     }
   };
@@ -265,7 +276,12 @@ const CampTree = ({
     ) : null;
   };
 
-  const renderTreeNodes = (data: any, isDisabled = 0, isOneLevel = 0) => {
+  const renderTreeNodes = (
+    data: any,
+    isDisabled = 0,
+    isOneLevel = 0,
+    isArchive = 0
+  ) => {
     let sortedData = Object.keys(data)
       .map((key) => [Number(key), data[key]])
       .sort((a, b) => b[1].score - a[1].score);
@@ -275,6 +291,7 @@ const CampTree = ({
       const parentIsOneLevel = isOneLevel;
       let _isOneLevel = data[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
       let _isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
+      let _isArchive = data[item].is_archive == 1 || isArchive == 1 ? 1 : 0;
       if (router?.query?.camp?.at(1)?.split("-")?.at(0)) {
         if (
           data[item]?.camp_id == router?.query?.camp?.at(1)?.split("-")?.at(0)
@@ -294,7 +311,8 @@ const CampTree = ({
       }
       if (data[item].children) {
         if (data[item].score >= scoreFilter) {
-          return (
+          return data[item].is_archive == 0 ||
+            (data[item].is_archive != 0 && is_camp_archive_checked == true) ? (
             <>
               <TreeNode
                 title={
@@ -324,7 +342,9 @@ const CampTree = ({
                         >
                           <a
                             className={
-                              data[item]?.camp_id ==
+                              data[item].is_archive == 1
+                                ? `font-weight-bold ${styles.archive_grey}`
+                                : data[item]?.camp_id ==
                                     router?.query?.camp
                                       ?.at(1)
                                       ?.split("-")
@@ -333,7 +353,13 @@ const CampTree = ({
                                 : ""
                             }
                           >
-                            {includeReview ? (
+                            {data[item].is_archive == 1 ? (
+                              <Popover content="Archived Camp">
+                                {includeReview
+                                  ? data[item]?.review_title
+                                  : data[item]?.title}
+                              </Popover>
+                            ) : includeReview ? (
                               data[item]?.review_title
                             ) : (
                               data[item]?.title
@@ -367,7 +393,12 @@ const CampTree = ({
                                   tree?.at(0)["1"].score +
                                   50 +
                                   "px"
-                              : "50px"
+                              : `${
+                                  (is_checked
+                                    ? data[item].full_score?.toFixed(2)
+                                    : data[item].score?.toFixed(2)
+                                  ).length * 11
+                                }px`
                           )}
                           baseBgColor={"#fff"}
                           labelAlignment={"left"}
@@ -390,12 +421,14 @@ const CampTree = ({
                   parentIsOneLevel,
                   _isDisabled,
                   _isOneLevel,
+                  _isArchive,
                 }}
               >
                 {data[item].camp_id ===
                   +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) &&
                   _isDisabled == 0 &&
-                  parentIsOneLevel == 0 && (
+                  parentIsOneLevel == 0 &&
+                  _isArchive == 0 && (
                     <TreeNode
                       key={"custom"}
                       title={
@@ -422,10 +455,15 @@ const CampTree = ({
                     />
                   )}
 
-                {renderTreeNodes(data[item].children, _isDisabled, _isOneLevel)}
+                {renderTreeNodes(
+                  data[item].children,
+                  _isDisabled,
+                  _isOneLevel,
+                  _isArchive
+                )}
               </TreeNode>
             </>
-          );
+          ) : null;
         } else {
           return null;
         }

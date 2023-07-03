@@ -390,7 +390,10 @@ const TopicDetails = () => {
   const onCreateCampDate = () => {
     dispatch(
       setFilterCanonizedTopics({
-        asofdate: campExist?.created_at,
+        asofdate:
+          Date.parse(
+            moment.unix(campExist && campExist?.created_at).endOf("day")["_d"]
+          ) / 1000,
         asof: "bydate",
       })
     );
@@ -463,9 +466,13 @@ const TopicDetails = () => {
                               }}
                             >
                               {" "}
-                              {new Date(
-                                (campExist && campExist?.created_at) * 1000
-                              ).toLocaleString()}
+                              {
+                                new Date(
+                                  (campExist && campExist?.created_at) * 1000
+                                )
+                                  .toLocaleString()
+                                  ?.split(",")[0]
+                              }
                             </Link>
                           </span>
                         }
