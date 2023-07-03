@@ -11,6 +11,8 @@ import "../../styles/globals.scss";
 import "../../styles/variables.less";
 import "../assets/fonticons/style.css";
 import "../assets/scss/global.scss";
+import "../assets/editorcss/editor.css";
+
 
 import ErrorBoundary from "../hoc/ErrorBoundary";
 import HeadContentAndPermissionComponent from "../components/common/headContentAndPermisisonCheck";
