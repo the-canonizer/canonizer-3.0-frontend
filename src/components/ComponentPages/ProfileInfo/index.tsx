@@ -18,6 +18,7 @@ import {
 } from "../../../network/api/userApi";
 import ProfileInfoUI from "./ProfileInfoUI";
 import { geocodeByAddress, geocodeByPlaceId } from "react-places-autocomplete";
+import { formatDate} from "../../common/FormatDate";
 type UpdateAddress = {
   city?: string;
   state?: string;
@@ -67,17 +68,17 @@ const ProfileInfo = () => {
   const isPublicOrPrivate = (field_value) => {
     return privateList.includes(field_value) ? 0 : 1;
   };
-  function formatDate(date) {
-    var d = new Date(date),
-      month = "" + (d.getMonth() + 1),
-      day = "" + d.getDate(),
-      year = d.getFullYear();
+  // function formatDate(date) {
+  //   var d = new Date(date),
+  //     month = "" + (d.getMonth() + 1),
+  //     day = "" + d.getDate(),
+  //     year = d.getFullYear();
 
-    if (month.length < 2) month = "0" + month;
-    if (day.length < 2) day = "0" + day;
+  //   if (month.length < 2) month = "0" + month;
+  //   if (day.length < 2) day = "0" + day;
 
-    return [year, month, day].join("-");
-  }
+  //   return [year, month, day].join("-");
+  // }
   //on update profile click
   const onFinish = async (values: any) => {
     let birthday = values.birthday?._d;
@@ -135,20 +136,20 @@ const ProfileInfo = () => {
 
   const { isUserAuthenticated } = isAuth();
 
-  const onFinishFailed = (errorInfo) => {
-    window.console.log("Failed:", errorInfo);
-  };
+  // const onFinishFailed = (errorInfo) => {
+  //   window.console.log("Failed:", errorInfo);
+  // };
 
   //Send OTP to mobile number
-  const onVerifyClick = async (values: any) => {
-    let res = await SendOTP(values);
-    if (res && res.status_code === 200) {
-      message.success(res.message);
-      setIsOTPModalVisible(true);
-      setOTP("");
-      //setOTP(res.data.otp)
-    }
-  };
+  // const onVerifyClick = async (values: any) => {
+  //   let res = await SendOTP(values);
+  //   if (res && res.status_code === 200) {
+  //     message.success(res.message);
+  //     setIsOTPModalVisible(true);
+  //     setOTP("");
+  //     //setOTP(res.data.otp)
+  //   }
+  // };
 
   const handleOTPCancel = () => {
     setIsOTPModalVisible(false);
@@ -356,10 +357,10 @@ const ProfileInfo = () => {
       algorithmList={algorithmList}
       languageList={languageList}
       onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      onVerifyClick={onVerifyClick}
+      // onVerifyClick={onVerifyClick}
       onOTPBtnClick={onOTPBtnClick}
       isOTPModalVisible={isOTPModalVisible}
+      setIsOTPModalVisible={setIsOTPModalVisible}
       handleOTPCancel={handleOTPCancel}
       otp={otp}
       handleChangeOTP={handleChangeOTP}
@@ -374,6 +375,7 @@ const ProfileInfo = () => {
       postalCodeDisable={postalCodeDisable}
       userProfileSkeleton={userProfileSkeleton}
       userProfileSkeletonV={userProfileSkeletonV}
+      setOTP={setOTP}
     />
   );
 };
