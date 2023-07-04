@@ -15,7 +15,7 @@ function CompareStatement() {
   const router = useRouter();
 
   const getStatement = async (ids) => {
-    setIsLoading(true);
+    // setIsLoading(true);
     const reqBody = {
       ids,
       topic_num: +router?.query.routes[0].split("-")[0],

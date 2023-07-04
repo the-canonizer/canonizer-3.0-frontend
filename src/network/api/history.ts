@@ -62,7 +62,6 @@ export const getCompareStatement = async (reqBody) => {
       historyRequest.statementCompare(reqBody),
       false
     );
-
     return res;
   } catch (error) {
     handleError(error);

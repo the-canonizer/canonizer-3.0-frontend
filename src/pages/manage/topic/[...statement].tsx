@@ -1,5 +1,5 @@
-import AddOrManage from "../../../components/ComponentPages/Statement/AddOrManage";
-import Layout from "../../../hoc/layout";
+import AddOrManage from "src/components/ComponentPages/Statement/AddOrManage";
+import Layout from "src/hoc/layout";
 
 const ManageTopicPage = () => {
   return (
