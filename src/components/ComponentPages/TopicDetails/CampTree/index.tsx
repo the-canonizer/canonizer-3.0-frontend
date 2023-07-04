@@ -274,9 +274,18 @@ const CampTree = ({
   console.log("/////did mount ", didMount);
 
   useEffect(() => {
-    console.log("didmount ", didMount);
+    console.log(
+      "didmount ",
+      didMount,
+      router?.query?.camp?.at(0)?.split("-")?.at(0),
+      "  ",
+      tree?.at(0)["1"].topic_id
+    );
 
-    if (didMount.current) {
+    if (
+      didMount.current &&
+      tree?.at(0)["1"].topic_id == router?.query?.camp?.at(0)?.split("-")?.at(0)
+    ) {
       console.log("1---------------------1");
 
       let aaa =
