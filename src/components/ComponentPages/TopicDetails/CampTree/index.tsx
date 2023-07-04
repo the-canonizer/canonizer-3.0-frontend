@@ -36,7 +36,6 @@ const CampTree = ({
   const { campRecord } = useSelector((state: RootState) => ({
     campRecord: state?.topicDetails?.currentCampRecord,
   }));
-  console.log(campRecord, "record");
   let childExpandTree = [];
   let urlCampInfo;
   const didMount = useRef(true);
@@ -92,30 +91,49 @@ const CampTree = ({
     }
   };
   const getUrlCampInfo = (data, select_camp) => {
+    console.log("1*************************1");
+
+    console.log("a1 : data ", data);
+
+    console.log("a2 : select_camp ", select_camp);
+
+    let urlinfo2;
     Object?.keys(data).map((item) => {
-      if (data[item].children) {
-        if (data[item].score >= scoreFilter) {
-          if (data[item]?.camp_id == select_camp) {
-            urlCampInfo = data[item];
-            return;
-          }
-          getUrlCampInfo(data[item].children, select_camp);
-        } else {
-          return null;
-        }
-      }
+      console.log("a3: data[item]?.camp_id", data[item]?.camp_id);
+
       if (data[item]?.camp_id == select_camp) {
-        urlCampInfo = data[item];
+        console.log("a5: got it  ");
+
+        urlCampInfo = data[item]?.score;
+        urlinfo2 = data[item]?.score;
+        return urlinfo2;
+      } else if (data[item].children) {
+        getUrlCampInfo(data[item].children, select_camp);
+      } else {
         return;
       }
+
+      console.log("a4 : check ", data[item]?.camp_id == select_camp);
+
+      // if (data[item]?.camp_id == select_camp) {
+      //   console.log("a5: got it  ");
+
+      //   urlCampInfo = data[item]?.score;
+      //   urlinfo2 = data[item]?.score;
+      //   return urlinfo2;
+      // }
     });
+    console.log("a6 : urlinfo ", urlinfo2);
+
+    console.log("2*************************2");
+    return urlinfo2;
   };
 
   const getAllDefaultExpandKeys = (data, topic_score) => {
     if (data?.children) {
       Object?.keys(data?.children).map((item) => {
         if (
-          (topic_score * treeExpandValue) / 100 <
+          (topic_score * treeExpandValue) / 100 <=
           data?.children[item]?.score
         ) {
           childExpandTree.push(data?.children[item]?.camp_id);
@@ -167,6 +185,8 @@ const CampTree = ({
   };
 
   useEffect(() => {
+    console.log("1+++++++++++++++++++++++++++1");
+
     if (tree?.at(0) != null) {
       dispatchData(tree?.at(0));
     }
@@ -176,16 +196,20 @@ const CampTree = ({
       sesionexpandkeys &&
       tree?.at(0) &&
       sesionexpandkeys.find((age) => age.topic_id == tree?.at(0)["1"].topic_id);
+    console.log("1: sesion ", sesionexpandkeys);
 
     if (
       keyexistSession &&
       tree?.at(0) &&
       treeExpandValue == prevTreeValueRef.current
     ) {
+      console.log("2.1: first check");
+
       setDefaultExpandKeys(keyexistSession.sessionexpandsKeys);
       setUniqueKeys(keyexistSession.sessionexpandsKeys);
       setShowTree(true);
     } else {
+      console.log("2.1: second check");
       tree?.at(0) &&
         showSelectedCamp(
           tree?.at(0),
@@ -199,17 +223,34 @@ const CampTree = ({
       tree?.at(0) &&
         expandKeys.push(+(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1));
 
+      console.log("3 : expand keys", expandKeys);
+
       let allkeys = ["1", ...selectedExpand, ...(expandKeys || [])];
 
       let uniquekeyss = toFindDuplicates(allkeys);
+      console.log("4: unique keyss ", uniquekeyss);
+      console.log("5: treeexpand vlue", treeExpandValue);
+      console.log("6: prevtreeexpandref ", prevTreeValueRef);
+
       setDefaultExpandKeys(expandKeys);
       setUniqueKeys(uniquekeyss);
-      tree?.at(0) &&
-        sesionexpandkeys.push({
-          topic_id: tree?.at(0)["1"].topic_id,
-          sessionexpandsKeys: uniquekeyss,
-        });
-      sessionStorage.setItem("value", JSON.stringify(sesionexpandkeys));
+      if (tree?.at(0)) {
+        let index = sesionexpandkeys.findIndex(
+          (item) => item.topic_id === tree?.at(0)["1"].topic_id
+        );
+        if (index !== -1) {
+          sesionexpandkeys[index] = {
+            topic_id: tree?.at(0)["1"].topic_id,
+            sessionexpandsKeys: uniquekeyss,
+          };
+        } else {
+          sesionexpandkeys.push({
+            topic_id: tree?.at(0)["1"].topic_id,
+            sessionexpandsKeys: uniquekeyss,
+          });
+        }
+        sessionStorage.setItem("value", JSON.stringify(sesionexpandkeys));
+      }
     }
 
     if (tree?.at(0)) {
@@ -226,32 +267,40 @@ const CampTree = ({
     if (prevTreeValueRef !== undefined) {
       prevTreeValueRef.current = treeExpandValue;
     }
+
+    console.log("2+++++++++++++++++++++++++++2");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tree?.at(0), treeExpandValue]);
+  console.log("/////did mount ", didMount);
 
   useEffect(() => {
-    if (didMount) {
-      tree?.at(0) &&
+    console.log("didmount ", didMount);
+
+    if (didMount.current) {
+      console.log("1---------------------1");
+
+      let aaa =
+        tree?.at(0) &&
         getUrlCampInfo(
           tree?.at(0),
           +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1)
         );
-      if (
-        !(
-          (tree?.at(0)["1"]?.score * treeExpandValue) / 100 <=
-          urlCampInfo?.score
-        )
-      ) {
+      console.log("get csmp info2 ", aaa);
+      console.log("get csmp info1 ", urlCampInfo);
+
+      if (!((tree?.at(0)["1"]?.score * treeExpandValue) / 100 <= urlCampInfo)) {
         let expandpercetvalues = [20, 10, 0];
         let a = expandpercetvalues.filter(
-          (value) =>
-            (tree?.at(0)["1"]?.score * value) / 100 <= urlCampInfo?.score
+          (value) => (tree?.at(0)["1"]?.score * value) / 100 <= urlCampInfo
         );
         setTreeExpandValue(a[0]);
       }
+
+      console.log("2--------------------2");
+
       didMount.current = false;
     }
-  }, []);
+  }, [tree?.at(0)]);
 
   const subScriptionStatus = (subscribedUsers: {}) => {
     return Object.keys(subscribedUsers).length > 0 &&

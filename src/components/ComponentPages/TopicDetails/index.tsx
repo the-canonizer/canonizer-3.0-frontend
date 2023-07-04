@@ -106,7 +106,6 @@ const TopicDetails = () => {
   };
   useEffect(() => {
     async function getTreeApiCall() {
-      console.log("show tree check ", showTreeSkeltonRef);
       if (!showTreeSkeltonRef) {
         setGetTreeLoadingIndicator(true);
         showTreeSkeltonRef.current = true;
