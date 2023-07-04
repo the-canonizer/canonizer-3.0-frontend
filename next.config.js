@@ -8,4 +8,7 @@ module.exports = {
       "canonizer3.canonizer.com",
     ],
   },
-}
+    typescript: {
+        //ignoreBuildErrors: true,
+    }
+};
