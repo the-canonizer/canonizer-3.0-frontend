@@ -271,15 +271,14 @@ function HistoryContainer() {
       (campHistoryData) => campHistoryData?.status == "old"
     );
 
-    if (campHistoryData?.status == "live" || campHistory?.items?.length <= 3) {
-      key = "1";
-    } else if (
-      oldstatements.length > 0 &&
-      oldstatements[oldstatements.length >= 3 ? 2 : oldstatements.length - 1]
-        ?.go_live_time <= campHistoryData?.go_live_time
+    if (
+      campHistoryData?.status == "live" ||
+      campHistory?.items?.length <= 3 ||
+      (oldstatements.length > 0 &&
+        oldstatements[oldstatements.length >= 3 ? 2 : oldstatements.length - 1]
+          ?.submit_time <= campHistoryData?.submit_time) ||
+      (oldstatements.length == 0 && index < 2)
     ) {
-      key = "1";
-    } else if (oldstatements.length == 0 && index < 2) {
       key = "1";
     }
 
