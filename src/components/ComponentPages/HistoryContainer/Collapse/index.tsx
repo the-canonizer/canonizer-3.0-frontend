@@ -42,6 +42,7 @@ import useAuthentication from "../../../../hooks/isUserAuthenticated";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 
 import { setViewThisVersion } from "src/store/slices/filtersSlice";
+
 const { Panel } = Collapse;
 const { Title } = Typography;
 
@@ -249,7 +250,7 @@ function HistoryCollapse({
                 {historyOf == "statement" && (
                   <div
                     dangerouslySetInnerHTML={{
-                      __html: campStatement?.parsed_value,
+                      __html: `<div class="ck-content">${campStatement?.parsed_value}</div>`,
                     }}
                   />
                 )}
