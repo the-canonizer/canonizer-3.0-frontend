@@ -37,8 +37,8 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }) => {
   );
 
   useEffect(() => {
-    console.log(campRecord, "#############campdata################")
-  }, [])
+    console.log(campRecord, "#############campdata################");
+  }, []);
 
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
@@ -88,10 +88,10 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }) => {
                       : campRecord &&
                         (description.key == "submitter_nick_name" ||
                           description.key == "camp_about_nick_name")
-                        ? campRecord &&
+                      ? campRecord &&
                         history &&
                         (campRecord[description.key] !=
-                          "Nickname not associated." ? (
+                        "Nickname not associated." ? (
                           <Link
                             href={`/user/supports/${
                               description.key == "submitter_nick_name"

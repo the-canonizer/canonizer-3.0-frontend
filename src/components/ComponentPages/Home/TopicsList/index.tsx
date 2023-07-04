@@ -66,7 +66,7 @@ const TopicsList = () => {
     filterNameSpaceId,
     search,
     is_checked,
-    is_archive
+    is_archive,
     // archeived
   } = useSelector((state: RootState) => ({
     // archeived: state.utils?.archived_checkbox,
@@ -386,7 +386,6 @@ const TopicsList = () => {
     getCanonizedNameSpacesApi();
   }, []);
 
-
   return (
     <>
       <div
@@ -513,14 +512,15 @@ const TopicsList = () => {
                 <>
                   <Link
                     href={{
-                      pathname: `/topic/${item?.topic_id
-                        }-${replaceSpecialCharacters(
-                          isReview
-                            ? item?.tree_structure &&
-                            item?.tree_structure[1]?.review_title
-                            : item?.topic_name,
-                          "-"
-                        )}/1-Agreement`,
+                      pathname: `/topic/${
+                        item?.topic_id
+                      }-${replaceSpecialCharacters(
+                        isReview
+                          ? item?.tree_structure &&
+                              item?.tree_structure[1]?.review_title
+                          : item?.topic_name,
+                        "-"
+                      )}/1-Agreement`,
                     }}
                   >
                     {!item.is_archive ||

@@ -246,9 +246,7 @@ function HistoryCollapse({
                 )}
               </Title>
               <div>
-                
                 {historyOf == "statement" && (
-                
                   <div
                     dangerouslySetInnerHTML={{
                       __html: `<div class="ck-content">${campStatement?.parsed_value}</div>`,
