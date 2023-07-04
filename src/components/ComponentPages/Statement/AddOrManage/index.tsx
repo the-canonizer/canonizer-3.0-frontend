@@ -53,7 +53,7 @@ import {
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
 
-//Ckeditor 
+//Ckeditor
 const Editorckl = dynamic(() => import("../../../common/editorck"), {
   ssr: false,
 });
@@ -80,9 +80,10 @@ export default function AddOrManage({ add }: any) {
     topic_num: "",
     camp_num: "",
   });
+  const [originalData, setOriginalData] = useState({ name_space: null });
   const [parentCamp, setParentCamps] = useState([]);
 
-  const [editorState, setEditorState] = useState("")
+  const [editorState, setEditorState] = useState("");
 
   const [campNickName, setCampNickName] = useState([]);
   const [canNameSpace, setCanNameSpace] = useState([]);
@@ -100,7 +101,7 @@ export default function AddOrManage({ add }: any) {
   // if (typeof editorState === 'object') {
   //   editorTextLength = 0
   // } else {
-  let editorTextLength = editorState.replace(/<(?!img\b)[^\s<>]*>/, '').length
+  let editorTextLength = editorState.replace(/<(?!img\b)[^\s<>]*>/, "").length;
   // }
 
   const onFinish = async (values: any) => {
@@ -120,17 +121,18 @@ export default function AddOrManage({ add }: any) {
         let route =
           manageFormOf == "topic"
             ? `${editInfo?.topic?.topic_num}-${replaceSpecialCharacters(
-              editInfo?.topic?.topic_name,
-              "-"
-            )}`
+                editInfo?.topic?.topic_name,
+                "-"
+              )}`
             : `${editInfo?.topic?.topic_num}-${replaceSpecialCharacters(
-              editInfo?.topic?.topic_name,
-              "-"
-            )}/${parent_camp[parent_camp?.length - 1]?.camp_num
-            }-${replaceSpecialCharacters(
-              parent_camp[parent_camp?.length - 1]?.camp_name,
-              "-"
-            )}`;
+                editInfo?.topic?.topic_name,
+                "-"
+              )}/${
+                parent_camp[parent_camp?.length - 1]?.camp_num
+              }-${replaceSpecialCharacters(
+                parent_camp[parent_camp?.length - 1]?.camp_name,
+                "-"
+              )}`;
         if (manageFormOf == "camp") {
           router?.push(`/camp/history/${route}`);
         } else if (manageFormOf == "statement") {
@@ -150,7 +152,7 @@ export default function AddOrManage({ add }: any) {
 
   const addOrManageStatement = async (values) => {
     // const blocks = draftToHtml(convertToRaw(editorState.getCurrentContent()));
-    const blocks = editorState
+    const blocks = editorState;
     // const contentState = editorState.getCurrentContent();
     let editInfo = editStatementData?.data;
     let parent_camp = editInfo?.parent_camp;
@@ -158,8 +160,8 @@ export default function AddOrManage({ add }: any) {
       topic_num: add
         ? router?.query?.statement[0]?.split("-")[0]
         : manageFormOf == "topic"
-          ? editInfo?.topic?.topic_num
-          : parent_camp[parent_camp?.length - 1]?.topic_num,
+        ? editInfo?.topic?.topic_num
+        : parent_camp[parent_camp?.length - 1]?.topic_num,
       topic_id: manageFormOf == "topic" ? editInfo?.topic?.id : null,
       topic_name: manageFormOf == "topic" ? values?.topic_name : null,
       namespace_id:
@@ -171,26 +173,26 @@ export default function AddOrManage({ add }: any) {
       camp_num: add
         ? router?.query?.statement[1]?.split("-")[0]
         : manageFormOf == "topic"
-          ? null
-          : parent_camp[parent_camp?.length - 1]?.camp_num,
+        ? null
+        : parent_camp[parent_camp?.length - 1]?.camp_num,
       nick_name: values?.nick_name,
       note: values?.edit_summary?.trim(),
       submitter: add
         ? nickNameData[0]?.id
         : manageFormOf == "camp"
-          ? editInfo?.camp?.submitter_nick_id
-          : manageFormOf == "topic"
-            ? editInfo?.topic?.submitter_nick_id
-            : editInfo?.statement?.submitter_nick_id,
+        ? editInfo?.camp?.submitter_nick_id
+        : manageFormOf == "topic"
+        ? editInfo?.topic?.submitter_nick_id
+        : editInfo?.statement?.submitter_nick_id,
       statement: blocks, //JSON.stringify(convertToRaw(contentState)),//values?.statement?.blocks[0].text.trim(),
       //statement: values?.statement?.trim(), //JSON.stringify(convertToRaw(contentState)),//values?.statement?.blocks[0].text.trim(),
       event_type: add
         ? "create"
         : update
-          ? "edit"
-          : objection
-            ? "objection"
-            : "update",
+        ? "edit"
+        : objection
+        ? "objection"
+        : "update",
       statement_id:
         (objection || update) && manageFormOf == "statement"
           ? router?.query?.statement[0]?.split("-")[0]
@@ -244,7 +246,22 @@ export default function AddOrManage({ add }: any) {
   const fetchNameSpaceList = async () => {
     let response = await getCanonizedNameSpacesApi();
     if (response && response.status_code === 200) {
-      setCanNameSpace(response.data);
+      // setCanNameSpace(response?.data);
+
+      let filteredNamespace = [];
+
+      if (
+        originalData?.name_space &&
+        (originalData?.name_space === 16 || originalData?.name_space === 19)
+      ) {
+        filteredNamespace = response.data;
+      } else {
+        filteredNamespace = response?.data?.filter(
+          (n: { id: number }) => n?.id !== 16 && n?.id !== 19
+        );
+      }
+
+      setCanNameSpace(filteredNamespace);
     }
   };
 
@@ -287,16 +304,16 @@ export default function AddOrManage({ add }: any) {
             !res.data.statement.parsed_value?.startsWith("<div>")
           )
             res.data.statement.parsed_value = `<div><div/>${res.data.statement.parsed_value}`;
-          const editor_statement = res.data.statement.parsed_value
+          const editor_statement = res.data.statement.parsed_value;
           // const contentBlocks = htmlToDraft(res.data.statement.parsed_value);
           // const contentState = ContentState.createFromBlockArray(
           //   contentBlocks.contentBlocks
           // );
-          setEditorState(`${editor_statement}`)
+          setEditorState(`${editor_statement}`);
 
           if (
             res?.data?.statement?.go_live_time <
-            Math.floor(new Date().getTime() / 1000) &&
+              Math.floor(new Date().getTime() / 1000) &&
             objection
           ) {
             router?.back();
@@ -310,7 +327,7 @@ export default function AddOrManage({ add }: any) {
           res = await getEditCampApi(getDataPayload);
           if (
             res?.data?.camp?.go_live_time <
-            Math.floor(new Date().getTime() / 1000) &&
+              Math.floor(new Date().getTime() / 1000) &&
             objection
           ) {
             router?.back();
@@ -332,12 +349,12 @@ export default function AddOrManage({ add }: any) {
           res = await getEditTopicApi(getDataPayload);
           if (
             res?.data?.topic?.go_live_time <
-            Math.floor(new Date().getTime() / 1000) &&
+              Math.floor(new Date().getTime() / 1000) &&
             objection
           ) {
             router?.back();
           } else {
-            fetchNameSpaceList();
+            // fetchNameSpaceList();
             setPayloadBreadCrumb({
               topic_num: res?.data?.topic?.topic_num,
               camp_num: "1",
@@ -368,44 +385,48 @@ export default function AddOrManage({ add }: any) {
       if (result?.status_code == 200) {
         let fieldSValuesForForm = add
           ? {
-            nick_name: result?.data[0].id,
-          }
+              nick_name: result?.data[0].id,
+            }
           : (objection || update) && manageFormOf == "statement"
-            ? {
+          ? {
               nick_name: res?.data?.nick_name[0]?.id,
               parent_camp_num: res?.data?.statement?.camp_num,
               statement: res?.data?.statement?.parsed_value,
               edit_summary: res?.data?.statement?.note,
             }
-            : manageFormOf == "camp"
-              ? {
-                nick_name: res?.data?.nick_name[0]?.id,
-                statement: res?.data?.camp?.note,
-                parent_camp_num: res?.data?.camp?.parent_camp_num,
-                camp_name: res?.data?.camp?.camp_name,
-                keywords: res?.data?.camp?.key_words,
-                camp_about_url: res?.data?.camp?.camp_about_url,
-                camp_about_nick_name:
-                  res?.data?.camp?.camp_about_nick_id > 0
-                    ? res?.data?.camp?.camp_about_nick_id
-                    : null,
-                edit_summary: update ? res?.data?.camp?.note : null,
-              }
-              : manageFormOf == "topic"
-                ? {
-                  nick_name: res?.data?.nick_name[0]?.id,
-                  topic_name: res?.data?.topic?.topic_name,
-                  name_space: res?.data?.topic?.namespace_id,
-                }
-                : {
-                  nick_name: res?.data?.nick_name[0]?.id,
-                  statement: res?.data?.statement?.parsed_value,
-                  parent_camp_num: res?.data?.statement?.camp_num,
-                };
+          : manageFormOf == "camp"
+          ? {
+              nick_name: res?.data?.nick_name[0]?.id,
+              statement: res?.data?.camp?.note,
+              parent_camp_num: res?.data?.camp?.parent_camp_num,
+              camp_name: res?.data?.camp?.camp_name,
+              keywords: res?.data?.camp?.key_words,
+              camp_about_url: res?.data?.camp?.camp_about_url,
+              camp_about_nick_name:
+                res?.data?.camp?.camp_about_nick_id > 0
+                  ? res?.data?.camp?.camp_about_nick_id
+                  : null,
+              edit_summary: update ? res?.data?.camp?.note : null,
+            }
+          : manageFormOf == "topic"
+          ? {
+              nick_name: res?.data?.nick_name[0]?.id,
+              topic_name: res?.data?.topic?.topic_name,
+              name_space: res?.data?.topic?.namespace_id,
+            }
+          : {
+              nick_name: res?.data?.nick_name[0]?.id,
+              statement: res?.data?.statement?.parsed_value,
+              parent_camp_num: res?.data?.statement?.camp_num,
+            };
 
         form.setFieldsValue(fieldSValuesForForm);
 
         setInitialFormValues(form?.getFieldsValue());
+
+        const og: any = { ...fieldSValuesForForm };
+        setOriginalData(og);
+
         setNickNameData(result?.data);
         if (manageFormOf == "topic" || manageFormOf == "camp") {
           const oldOptions = [...options];
@@ -554,13 +575,13 @@ export default function AddOrManage({ add }: any) {
   };
 
   const onEditorStateChange = (changedata) => {
-    const datachangec = `${changedata}`
-    setEditorState(datachangec)
+    const datachangec = `${changedata}`;
+    setEditorState(datachangec);
     if (manageFormOf == "statement") {
-      form.setFieldsValue({ statement: datachangec })
-      handleformvalues()
+      form.setFieldsValue({ statement: datachangec });
+      handleformvalues();
     }
-  }
+  };
 
   const handleformvalues = () => {
     let initialFormStatus = {
@@ -573,16 +594,13 @@ export default function AddOrManage({ add }: any) {
       edit_summary: "",
     } as any;
 
-    initialFormStatus = Object.keys(initialFormValues).reduce(
-      (acc, key) => {
-        acc[key] =
-          initialFormValues[key] === null || undefined
-            ? ""
-            : initialFormValues[key];
-        return acc;
-      },
-      {}
-    );
+    initialFormStatus = Object.keys(initialFormValues).reduce((acc, key) => {
+      acc[key] =
+        initialFormValues[key] === null || undefined
+          ? ""
+          : initialFormValues[key];
+      return acc;
+    }, {});
     if (initialFormStatus?.edit_summary == null || undefined) {
       initialFormStatus.edit_summary = "";
     }
@@ -590,23 +608,18 @@ export default function AddOrManage({ add }: any) {
       initialFormStatus.statement = "";
     }
     if (typeof initialFormStatus.edit_summary == "string") {
-      initialFormStatus.edit_summary =
-        initialFormStatus.edit_summary.trim();
+      initialFormStatus.edit_summary = initialFormStatus.edit_summary.trim();
     }
     if (typeof initialFormStatus.statement == "string") {
-      initialFormStatus.statement =
-        initialFormStatus.statement.trim();
+      initialFormStatus.statement = initialFormStatus.statement.trim();
     }
-    nowFormStatus = Object.keys(form?.getFieldsValue()).reduce(
-      (acc, key) => {
-        acc[key] =
-          form?.getFieldsValue()[key] === null || undefined
-            ? ""
-            : form?.getFieldsValue()[key];
-        return acc;
-      },
-      {}
-    );
+    nowFormStatus = Object.keys(form?.getFieldsValue()).reduce((acc, key) => {
+      acc[key] =
+        form?.getFieldsValue()[key] === null || undefined
+          ? ""
+          : form?.getFieldsValue()[key];
+      return acc;
+    }, {});
     if (nowFormStatus?.parent_camp_num) {
       delete nowFormStatus.parent_camp_num;
     }
@@ -617,22 +630,23 @@ export default function AddOrManage({ add }: any) {
       nowFormStatus.statement = "";
     }
     if (typeof nowFormStatus.edit_summary == "string") {
-      nowFormStatus.edit_summary =
-        nowFormStatus.edit_summary.trim();
+      nowFormStatus.edit_summary = nowFormStatus.edit_summary.trim();
     }
     if (typeof nowFormStatus.statement == "string") {
       nowFormStatus.statement = nowFormStatus.statement.trim();
     }
-    if (
-      JSON.stringify(nowFormStatus) ==
-      JSON.stringify(initialFormStatus)
-    ) {
+    if (JSON.stringify(nowFormStatus) == JSON.stringify(initialFormStatus)) {
       setSubmitIsDisable(true);
     } else {
       setSubmitIsDisable(false);
     }
-  }
+  };
 
+  useEffect(() => {
+    if (manageFormOf == "topic") {
+      fetchNameSpaceList();
+    }
+  }, [originalData]);
 
   return (
     <>
@@ -654,8 +668,8 @@ export default function AddOrManage({ add }: any) {
               add
                 ? K?.exceptionalMessages?.addCampStatement
                 : !objection
-                  ? formTitle()
-                  : K?.exceptionalMessages?.objectionStatementHeading
+                ? formTitle()
+                : K?.exceptionalMessages?.objectionStatementHeading
             }
             className={styles.card}
             extra={extra()}
@@ -754,7 +768,7 @@ export default function AddOrManage({ add }: any) {
                             >
                               {parentCamp.map((camp) =>
                                 camp?.camp_num !==
-                                  editStatementData?.data?.camp?.camp_num ? (
+                                editStatementData?.data?.camp?.camp_num ? (
                                   <Select.Option
                                     value={camp.camp_num}
                                     key={camp.id}
@@ -958,7 +972,6 @@ export default function AddOrManage({ add }: any) {
                             K?.exceptionalMessages?.statementRequiredErrorMsg,
                         },
 
-
                         // allowedEmojies(), this needs to be moved to validation file
                       ]}
                     >
@@ -971,9 +984,10 @@ export default function AddOrManage({ add }: any) {
                           skeltonFor="video"
                         />
                       ) : (
-
-                        <Editorckl editorState={editorState} oneditorchange={onEditorStateChange}></Editorckl>
-
+                        <Editorckl
+                          editorState={editorState}
+                          oneditorchange={onEditorStateChange}
+                        ></Editorckl>
                       )}
                     </Form.Item>
                   </Col>
@@ -1166,8 +1180,8 @@ export default function AddOrManage({ add }: any) {
                           {add
                             ? K?.exceptionalMessages?.submitStatementButton
                             : !objection
-                              ? K?.exceptionalMessages?.submitUpdateButton
-                              : "Submit Objection"}
+                            ? K?.exceptionalMessages?.submitUpdateButton
+                            : "Submit Objection"}
                         </Button>
                         {!objection && (
                           <>
@@ -1181,49 +1195,54 @@ export default function AddOrManage({ add }: any) {
                                 setScreenLoading(true);
                                 add
                                   ? router.push(
-                                    `/topic/${replaceSpecialCharacters(
-                                      router?.query?.statement[0],
-                                      "-"
-                                    )}/${replaceSpecialCharacters(
-                                      router?.query?.statement[1],
-                                      "-"
-                                    )}`
-                                  )
-                                  : router?.push(
-                                    manageFormOf == "camp"
-                                      ? `/camp/history/${backdata?.topic?.topic_num
-                                      }-${replaceSpecialCharacters(
-                                        backdata?.topic?.topic_name,
+                                      `/topic/${replaceSpecialCharacters(
+                                        router?.query?.statement[0],
                                         "-"
-                                      )}/${backdata?.parent_camp[
-                                        backdata?.parent_camp.length - 1
-                                      ].camp_num
-                                      }-${replaceSpecialCharacters(
-                                        backdata?.parent_camp[
-                                          backdata?.parent_camp.length - 1
-                                        ].camp_name,
+                                      )}/${replaceSpecialCharacters(
+                                        router?.query?.statement[1],
                                         "-"
                                       )}`
-                                      : manageFormOf == "statement"
-                                        ? `/statement/history/${backdata?.topic?.topic_num
-                                        }-${replaceSpecialCharacters(
-                                          backdata?.topic?.topic_name,
-                                          "-"
-                                        )}/${backdata?.parent_camp[
-                                          backdata?.parent_camp.length - 1
-                                        ].camp_num
-                                        }-${replaceSpecialCharacters(
-                                          backdata?.parent_camp[
-                                            backdata?.parent_camp.length - 1
-                                          ].camp_name,
-                                          "-"
-                                        )}`
-                                        : `/topic/history/${backdata?.topic?.topic_num
-                                        }-${replaceSpecialCharacters(
-                                          backdata?.topic?.topic_name,
-                                          "-"
-                                        )}`
-                                  );
+                                    )
+                                  : router?.push(
+                                      manageFormOf == "camp"
+                                        ? `/camp/history/${
+                                            backdata?.topic?.topic_num
+                                          }-${replaceSpecialCharacters(
+                                            backdata?.topic?.topic_name,
+                                            "-"
+                                          )}/${
+                                            backdata?.parent_camp[
+                                              backdata?.parent_camp.length - 1
+                                            ].camp_num
+                                          }-${replaceSpecialCharacters(
+                                            backdata?.parent_camp[
+                                              backdata?.parent_camp.length - 1
+                                            ].camp_name,
+                                            "-"
+                                          )}`
+                                        : manageFormOf == "statement"
+                                        ? `/statement/history/${
+                                            backdata?.topic?.topic_num
+                                          }-${replaceSpecialCharacters(
+                                            backdata?.topic?.topic_name,
+                                            "-"
+                                          )}/${
+                                            backdata?.parent_camp[
+                                              backdata?.parent_camp.length - 1
+                                            ].camp_num
+                                          }-${replaceSpecialCharacters(
+                                            backdata?.parent_camp[
+                                              backdata?.parent_camp.length - 1
+                                            ].camp_name,
+                                            "-"
+                                          )}`
+                                        : `/topic/history/${
+                                            backdata?.topic?.topic_num
+                                          }-${replaceSpecialCharacters(
+                                            backdata?.topic?.topic_name,
+                                            "-"
+                                          )}`
+                                    );
                               }}
                               id="update-cancel-btn"
                             >
