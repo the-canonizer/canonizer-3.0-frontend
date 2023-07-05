@@ -45,11 +45,12 @@ const CodeIcon = () => (
   </svg>
 );
 
-const TimelineInfoBar = ({
+const InfoBar = ({
   payload = null,
   isTopicPage = false,
   isTopicHistoryPage = false,
   getCheckSupportStatus = null,
+  onCreateCamp = () => {},
 }: any) => {
   const { isUserAuthenticated } = useAuthentication();
 
@@ -60,6 +61,7 @@ const TimelineInfoBar = ({
     topic_name: "",
     bread_crumb: [],
   });
+  const [isCampBtnVisible, setIsCampBtnVisible] = useState(false);
   const didMount = useRef(false);
   const router = useRouter();
 
@@ -72,6 +74,9 @@ const TimelineInfoBar = ({
     asof,
     algorithm,
     viewThisVersionCheck,
+    currentCampNode,
+    tree,
+    campExist,
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -81,7 +86,11 @@ const TimelineInfoBar = ({
     algorithm: state.filters?.filterObject?.algorithm,
     asof: state?.filters?.filterObject?.asof,
     viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
+    currentCampNode: state?.filters?.selectedCampNode,
+    tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
+    campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
   }));
+
   const [campSubscriptionID, setCampSubscriptionID] = useState(
     campRecord?.subscriptionId
   );
@@ -189,7 +198,7 @@ const TimelineInfoBar = ({
               </a>
             </Link>
           )}
-        </Menu.Item> 
+        </Menu.Item>
       )}
       <Menu.Item
         icon={
@@ -366,220 +375,141 @@ const TimelineInfoBar = ({
     </Menu>
   );
 
+  const campRoute = () => {
+    router?.push("/create/topic");
+  };
+  useEffect(() => {
+    if (router?.pathname.includes("/topic/")) {
+      // setIsPanelCollapse(true);
+      setIsCampBtnVisible(true);
+    }
+  }, [router?.pathname]);
+
   return (
     <>
-      <div className={styles.topicDetailContentHead}>
-        {/* {loadingIndicator ? (
-          <CustomSkelton
-            skeltonFor="list"
-            bodyCount={1}
-            stylingClass=""
-            isButton={false}
-          /> */}
-
+      <div
+        className={`${styles.topicDetailContentHead} ${styles.inforBarHEad}`}
+      >
         <Spin spinning={false}>
-          <div className={styles.topicDetailContentHead_Left}>
-            <Typography.Paragraph
-              className={
-                "mb-0 " +
-                `${
-                  loadingIndicator
-                    ? styles.topicTitleSkeleton
-                    : styles.topicTitleStyle
-                }`
-              }
-            >
-              {" "}
-              <span className="bold"> Topic : </span>
-              {loadingIndicator ? (
-                <CustomSkelton
-                  skeltonFor="list"
-                  bodyCount={1}
-                  stylingClass="topic-skeleton"
-                  isButton={false}
-                />
-              ) : isTopicHistoryPage ? (
-                <>
-                  {" "}
-                  <Link
-                    href={`/topic/${
-                      payload?.topic_num
-                    }-${replaceSpecialCharacters(
-                      breadCrumbRes?.topic_name,
-                      "-"
-                    )}/1-Agreement`}
+          <div
+            className={`${styles.topicDetailContentHead_Left} ${styles.rightPanel}`}
+          >
+            <div className="btnsWrap">
+              <Button size="large" className="mb-3 btn" onClick={campRoute}>
+                <i className="icon-topic"></i> Create New Topic
+              </Button>
+              {isCampBtnVisible &&
+              currentCampNode?._isDisabled == 0 &&
+              currentCampNode?.parentIsOneLevel == 0 &&
+              campRecord?.is_archive == 0 ? (
+                <Tooltip
+                  title={
+                    tree && !tree["1"]?.is_valid_as_of_time
+                      ? K.exceptionalMessages.createNewCampTooltipMsg
+                      : ""
+                  }
+                >
+                  <Button
+                    className="btn"
+                    size="large"
+                    disabled={
+                      (tree && !tree["1"]?.is_valid_as_of_time) ||
+                      (campExist && !campExist?.camp_exist)
+                        ? true
+                        : false
+                    }
+                    onClick={onCreateCamp}
                   >
-                    <a className={styles.boldBreadcrumb}>
-                      {breadCrumbRes?.topic_name}
-                    </a>
-                  </Link>
-                </>
-              ) : (
-                <span className={styles.boldBreadcrumb}>
-                  {breadCrumbRes?.topic_name}
-                </span>
-              )}
-              {"  "}
-              {!!topicSubscriptionID && (
-                <small>
-                  <i className="icon-subscribe text-primary"></i>
-                </small>
-              )}
-            </Typography.Paragraph>
-            <div className={styles.breadcrumbLinks}>
-              {" "}
+                    <i className="icon-camp"></i> Create New Camp
+                  </Button>
+                </Tooltip>
+              ) : null}
+            </div>
+            <div
+              className={`${styles.topicDetailContentHead_Right} ${styles.leftPanel}`}
+            >
               <Typography.Paragraph
-                className={"mb-0 " + styles.topicTitleStyle}
+                className={"mb-0 campInfoRight " + styles.topicTitleStyle}
               >
-                <span className="bold mr-1">
-                  {!isTopicHistoryPage ? "Camp :" : ""}{" "}
-                </span>
-                {loadingIndicator ? (
-                  <CustomSkelton
-                    skeltonFor="list"
-                    bodyCount={1}
-                    stylingClass="topic-skeleton"
-                    isButton={false}
-                  />
-                ) : !isTopicHistoryPage ? (
-                  breadCrumbRes ? (
-                    breadCrumbRes?.bread_crumb?.map((camp, index) => {
-                      return (
-                        <Link
-                          href={{
-                            pathname: `/topic/${
-                              payloadData?.topic_num
-                            }-${replaceSpecialCharacters(
-                              breadCrumbRes?.topic_name,
-                              "-"
-                            )}/${camp?.camp_num}-${replaceSpecialCharacters(
-                              camp?.camp_name,
-                              "-"
-                            )}`,
-                          }}
-                          key={index}
+                {isTopicPage && (
+                  <Fragment>
+                    {loadingIndicator ? (
+                      <>
+                        <div className="socail-skeleton mr-3">
+                          <CustomSkelton
+                            skeltonFor="list"
+                            bodyCount={1}
+                            stylingClass="skeleton-item"
+                            isButton={false}
+                            circle={true}
+                          />
+                          <CustomSkelton
+                            skeltonFor="list"
+                            bodyCount={1}
+                            stylingClass="skeleton-item"
+                            isButton={false}
+                            circle={true}
+                          />
+                          <CustomSkelton
+                            skeltonFor="list"
+                            bodyCount={1}
+                            stylingClass="skeleton-item"
+                            isButton={false}
+                            circle={true}
+                          />
+                        </div>
+                      </>
+                    ) : (
+                      <div className="cam-social-ot">
+                        <SocialShareUI
+                          campName={campRecord?.camp_name}
+                          campUrl={!isServer() && window?.location?.href}
+                        />
+                      </div>
+                    )}
+                    {loadingIndicator ? (
+                      <CustomSkelton
+                        skeltonFor="list"
+                        bodyCount={1}
+                        stylingClass="header-skeleton-btn"
+                        // stylingClass="skeleton-item"
+                        isButton={false}
+                      />
+                    ) : (
+                      <>
+                        <Button
+                          type="primary"
+                          className={styles.btnCampForum}
+                          onClick={onCampForumClick}
+                          id="camp-forum-btn"
                         >
-                          <a>
-                            <span className={styles.slashStyle}>
-                              {" "}
-                              {index !== 0 && <DoubleRightOutlined />}{" "}
-                            </span>
-                            <span
-                              className={
-                                breadCrumbRes?.bread_crumb.length - 1 == index
-                                  ? styles.greenIndicateText
-                                  : styles.boldBreadcrumb
-                              }
-                            >{`${camp?.camp_name}`}</span>
+                          Camp Forum
+                        </Button>
+
+                        <Dropdown
+                          className={styles.campForumDropdown}
+                          placement="bottomRight"
+                          overlay={campForumDropdownMenu}
+                          trigger={["click"]}
+                        >
+                          <a
+                            className={styles.iconMore}
+                            onClick={(e) => e.preventDefault()}
+                          >
+                            <MoreOutlined />
                           </a>
-                        </Link>
-                      );
-                    })
-                  ) : (
-                    "N/A"
-                  )
-                ) : null}
-                {!!campSubscriptionID && !isTopicHistoryPage && (
-                  <small style={{ alignSelf: "center", marginLeft: "10px" }}>
-                    <i className="icon-subscribe text-primary"></i>
-                  </small>
+                        </Dropdown>
+                      </>
+                    )}
+                  </Fragment>
                 )}
               </Typography.Paragraph>
             </div>
           </div>
-
-          {/* <div className={styles.topicDetailContentHead_Right}>
-            <Typography.Paragraph
-              className={"mb-0 campInfoRight " + styles.topicTitleStyle}
-            >
-              {isTopicPage && (
-                <Fragment>
-                  {loadingIndicator ? (
-                    <>
-                      <div className="socail-skeleton mr-3">
-                        <CustomSkelton
-                          skeltonFor="list"
-                          bodyCount={1}
-                          stylingClass="skeleton-item"
-                          isButton={false}
-                          circle={true}
-                        />
-                        <CustomSkelton
-                          skeltonFor="list"
-                          bodyCount={1}
-                          stylingClass="skeleton-item"
-                          isButton={false}
-                          circle={true}
-                        />
-                        <CustomSkelton
-                          skeltonFor="list"
-                          bodyCount={1}
-                          stylingClass="skeleton-item"
-                          isButton={false}
-                          circle={true}
-                        />
-                      </div>
-                    </>
-                  ) : (
-                    <div className="cam-social-ot">
-                      <SocialShareUI
-                        campName={campRecord?.camp_name}
-                        campUrl={!isServer() && window?.location?.href}
-                      />
-                    </div>
-                  )}
-                  {loadingIndicator ? (
-                    <CustomSkelton
-                      skeltonFor="list"
-                      bodyCount={1}
-                      stylingClass="header-skeleton-btn"
-                      // stylingClass="skeleton-item"
-                      isButton={false}
-                    />
-                  ) : (
-                    <>
-                      <Button
-                        type="primary"
-                        className={styles.btnCampForum}
-                        onClick={onCampForumClick}
-                        id="camp-forum-btn"
-                      >
-                        Camp Forum
-                      </Button>
-                      {/* {
-                        router.pathname != "/support/[...manageSupport]" ?
-                          <Button
-                            type="primary"
-                            onClick={eventLinePath}
-                            className={styles.btnCampForum}
-                            id="camp-forum-btn"
-                          >
-                            Event Line
-                          </Button> : null
-                      } 
-                      <Dropdown
-                        className={styles.campForumDropdown}
-                        placement="bottomRight"
-                        overlay={campForumDropdownMenu}
-                        trigger={["click"]}
-                      >
-                        <a
-                          className={styles.iconMore}
-                          onClick={(e) => e.preventDefault()}
-                        >
-                          <MoreOutlined />
-                        </a>
-                      </Dropdown>
-                    </>
-                  )}
-                </Fragment>
-              )}
-            </Typography.Paragraph>
-          </div> */}
         </Spin>
       </div>
     </>
   );
 };
 
-export default TimelineInfoBar;
+export default InfoBar;

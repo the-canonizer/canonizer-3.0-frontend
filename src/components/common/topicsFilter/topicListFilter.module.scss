@@ -64,6 +64,68 @@
       }
     }
   }
+  &.cardWithDrawerAccordian {
+    [class="ant-collapse-expand-icon"] {
+      display: none !important;
+    }
+    [class="ant-collapse-header"] {
+      display: none;
+    }
+    .filterRow {
+      padding-left: 20px;
+      padding-right: 20px;
+      padding-top: 20px;
+    }
+    .algoText {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--primary);
+      & + a {
+        color: #d1d4db;
+      }
+    }
+    .algoSelect {
+      margin-bottom: 0 !important;
+      padding-bottom: 0 !important;
+      font-size: 13px !important;
+      span {
+        font-size: 13px;
+      }
+      [class="ant-select-selector"] {
+        height: 35px;
+        padding: 0 10px;
+        padding-left: 8px !important;
+        [class="ant-select-selection-search"] {
+          input {
+            height: 100%;
+          }
+        }
+        [class="ant-select-selection-item"] {
+          line-height: 33px;
+        }
+      }
+    }
+    .filter {
+      margin-bottom: 0;
+      input {
+        height: 35px;
+      }
+    }
+    .scoreCheckbox {
+      & > div {
+        margin-bottom: 0;
+      }
+      .radioBtns {
+        .radio {
+          span {
+            &:last-child {
+              font-size: 14px;
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 .title {

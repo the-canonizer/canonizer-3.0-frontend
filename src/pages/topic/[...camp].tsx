@@ -1,6 +1,5 @@
 import { useDispatch } from "react-redux";
 
-import Layout from "src/hoc/layout";
 import TopicDetails from "src/components/ComponentPages/TopicDetails";
 import { setCurrentDate } from "src/store/slices/filtersSlice";
 
@@ -13,9 +12,7 @@ const TopicDetailsPage = ({ current_date }: any) => {
 
   return (
     <>
-      <Layout>
-        <TopicDetails />
-      </Layout>
+      <TopicDetails />
     </>
   );
 };

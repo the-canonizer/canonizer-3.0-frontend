@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import styles from "../siteHeader.module.scss";
 
 import Logo from "../logoHeader";
-import SearchSection from "../../searchSection";
+// import SearchSection from "../../searchSection";
 import LoginModal from "../../../ComponentPages/Login/loginModal";
 import RegistrationModal from "../../../ComponentPages/Registration/registrationModal";
 import {
@@ -95,7 +95,7 @@ const LoggedOutHeader = ({}: any) => {
           onClick={toggleMobNav}
         ></div>
       </Header>
-      <SearchSection />
+      {/* <SearchSection /> */}
       <DisclaimerMsg />
       <LoginModal />
       <RegistrationModal />
