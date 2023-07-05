@@ -18,7 +18,7 @@ import {
 } from "../../../network/api/userApi";
 import ProfileInfoUI from "./ProfileInfoUI";
 import { geocodeByAddress, geocodeByPlaceId } from "react-places-autocomplete";
-import { formatDate} from "../../common/FormatDate";
+import { formatDate } from "../../common/FormatDate";
 type UpdateAddress = {
   city?: string;
   state?: string;

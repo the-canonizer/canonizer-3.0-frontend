@@ -28,7 +28,7 @@ function ProfileInfoUI({
   postalCodeDisable,
   userProfileSkeletonV,
   setIsOTPModalVisible,
-  setOTP
+  setOTP,
 }: any) {
   return (
     <section className={styles.profileInfo_wrapper}>
