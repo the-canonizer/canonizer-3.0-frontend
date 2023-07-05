@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import { Form, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
@@ -32,6 +32,7 @@ const ForumComponent = () => {
   const router = useRouter();
 
   const { isUserAuthenticated } = useIsUserAuthenticated();
+  const didMount = useRef(false);
 
   const [paramsList, setParamsList] = useState({});
   const [threadList, setThreadList] = useState([]);
@@ -149,12 +150,12 @@ const ForumComponent = () => {
   };
 
   useEffect(() => {
-    if (router && router?.query) {
+    if (router && router?.query && didMount.current) {
       const queries = router?.query;
       const campArr = (queries.camp as string).split("-");
       const camp_num = campArr.shift();
       getSelectedNode(camp_num);
-    }
+    } else didMount.current = true;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
