@@ -40,6 +40,7 @@ import CampHistory from "./campHistory";
 import TopicHistory from "./topicHistory";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
+import { getTreesApi } from "src/network/api/campDetailApi";
 
 import { setViewThisVersion } from "src/store/slices/filtersSlice";
 
@@ -85,6 +86,12 @@ function HistoryCollapse({
       })
     );
   };
+  const {asofdate, asof, algorithm } =
+  useSelector((state: RootState) => ({
+    asofdate: state.filters?.filterObject?.asofdate,
+    asof: state?.filters?.filterObject?.asof,
+    algorithm: state.filters?.filterObject?.algorithm,
+  }));
   const historyOf = router?.asPath.split("/")[1];
   // const covertToTime = (unixTime) => {
   //   return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
@@ -97,11 +104,23 @@ function HistoryCollapse({
       old_parent_camp_num: campStatement?.old_parent_camp_num ?? null,
       parent_camp_num: campStatement?.parent_camp_num ?? null,
     };
+    const reqBodyForService = {
+      topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+      camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
+      asOf: asof,
+      asofdate:
+        asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+      algorithm: algorithm,
+      update_all: 1,
+    };
+
     let res = await changeCommitStatement(reqBody);
     if (res?.status_code === 200) {
       setCommited(true);
     }
     changeAgree();
+    await getTreesApi(reqBodyForService);
+
   };
 
   const discardChanges = async () => {
