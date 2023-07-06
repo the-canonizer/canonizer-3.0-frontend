@@ -8,11 +8,19 @@ import NetworkCall from "../networkCall";
 import historyRequest from "../request/historyRequest";
 import { createToken } from "./userApi";
 
-export const getHistoryApi = async (reqBody, pageNumber, historyOf: string) => {
+export const getHistoryApi = async (
+  reqBody,
+  pageNumber,
+  historyOf: string,
+  tokenSsr = null
+) => {
   let state = await store.getState();
 
   const { auth } = state,
-    tc = localStorage?.getItem("auth_token");
+    tc =
+      typeof window !== "undefined"
+        ? localStorage?.getItem("auth_token")
+        : tokenSsr;
 
   let token = auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
 

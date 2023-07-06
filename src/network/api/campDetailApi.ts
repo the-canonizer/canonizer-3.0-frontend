@@ -29,11 +29,13 @@ export const getTreesApi = async (reqBody) => {
   }
 };
 
-export const getNewsFeedApi = async (reqBody) => {
+export const getNewsFeedApi = async (reqBody, tokenSsr = null) => {
   let state = await store.getState();
 
   const { auth } = state,
-    tc = localStorage?.getItem("auth_token");
+    tc = !isServer ? localStorage?.getItem("auth_token") : tokenSsr;
+
+  console.log("tc", tc);
 
   let token = auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
 
@@ -54,11 +56,14 @@ export const getNewsFeedApi = async (reqBody) => {
   }
 };
 
-export const getCanonizedCampStatementApi = async (reqBody) => {
+export const getCanonizedCampStatementApi = async (
+  reqBody,
+  tokenSsr = null
+) => {
   let state = await store.getState();
 
   const { auth } = state,
-    tc = localStorage?.getItem("auth_token");
+    tc = !isServer ? localStorage?.getItem("auth_token") : tokenSsr;
 
   let token = auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
 
@@ -79,11 +84,11 @@ export const getCanonizedCampStatementApi = async (reqBody) => {
   }
 };
 
-export const getCurrentTopicRecordApi = async (reqBody) => {
+export const getCurrentTopicRecordApi = async (reqBody, tokenSsr = null) => {
   let state = await store.getState();
 
   const { auth } = state,
-    tc = localStorage?.getItem("auth_token");
+    tc = !isServer ? localStorage?.getItem("auth_token") : tokenSsr;
 
   let token = auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
 
@@ -104,11 +109,11 @@ export const getCurrentTopicRecordApi = async (reqBody) => {
   }
 };
 
-export const getCurrentCampRecordApi = async (reqBody) => {
+export const getCurrentCampRecordApi = async (reqBody, tokenSsr = null) => {
   let state = await store.getState();
 
   const { auth } = state,
-    tc = localStorage?.getItem("auth_token");
+    tc = !isServer ? localStorage?.getItem("auth_token") : tokenSsr;
 
   let token = auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
 

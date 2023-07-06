@@ -83,11 +83,19 @@
     }
     .topicTitleStyle,
     .breadcrumbLinks {
+      span {
+        &:first-child {
+          font-weight: normal;
+          font-size: 16px;
+        }
+      }
       font-size: 16px;
       color: #0f2a4d;
+      font-weight: 400;
     }
     .topicTitleStyle {
       margin-right: 50px;
+      font-weight: 700;
     }
     .topicTitleSkeleton {
       margin-right: 100px;
@@ -97,7 +105,7 @@
       a {
         font-size: 16px;
         color: var(--primary);
-        font-weight: 400;
+        font-weight: 700;
       }
     }
   }
@@ -230,7 +238,7 @@
         color: #4484ce;
       }
       &.activeCamp {
-        font-size: 15px;
+        font-size: 16px;
         color: #08b608 !important;
       }
     }
@@ -332,7 +340,7 @@
 
 .greenIndicateText {
   // font-weight: 600;
-  // font-size: 16px;
+  font-size: 18px;
   color: #08b608;
 }
 

@@ -57,6 +57,7 @@ import InfoBar from "./CampInfoBar/infoBar";
 
 const TopicDetails = () => {
   let myRefToCampStatement = useRef(null);
+  const didMount = useRef(false);
   const { isUserAuthenticated } = isAuth();
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [getTreeLoadingIndicator, setGetTreeLoadingIndicator] = useState(false);
@@ -108,53 +109,57 @@ const TopicDetails = () => {
   };
   useEffect(() => {
     async function getTreeApiCall() {
-      console.log("show tree check ", showTreeSkeltonRef);
       if (!showTreeSkeltonRef) {
         setGetTreeLoadingIndicator(true);
         showTreeSkeltonRef.current = true;
       }
       setLoadingIndicator(true);
-      const reqBodyForService = {
-        topic_num: +router?.query?.camp[0]?.split("-")[0],
-        camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
-        asOf: asof,
-        asofdate:
-          asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
-        algorithm: algorithm,
-        update_all: 1,
-        fetch_topic_history: viewThisVersionCheck ? 1 : null,
-      };
 
-      const reqBody = {
-        topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
-        camp_num: +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1),
-        as_of: asof,
-        as_of_date:
-          asof == "default" || asof == "review"
-            ? Date.now() / 1000
-            : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
-      };
-      const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
+      if (didMount.current) {
+        const reqBodyForService = {
+          topic_num: +router?.query?.camp[0]?.split("-")[0],
+          camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+          asOf: asof,
+          asofdate:
+            asof == "default" || asof == "review"
+              ? Date.now() / 1000
+              : asofdate,
+          algorithm: algorithm,
+          update_all: 1,
+          fetch_topic_history: viewThisVersionCheck ? 1 : null,
+        };
 
-      const body = { topic_num: topicNum };
-      const reqBodyForCampData = {
-        topic_num: +router?.query?.camp[0]?.split("-")[0],
-        camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
-        type: "all",
-        per_page: 4,
-        page: 1,
-      };
-      await Promise.all([
-        dispatch(setCampSupportingTree({})),
-        getNewsFeedApi(reqBody),
-        getCurrentTopicRecordApi(reqBody),
-        getCurrentCampRecordApi(reqBody),
-        getCanonizedCampStatementApi(reqBody),
-        getHistoryApi(reqBodyForCampData, "1", "statement"),
-        getCanonizedAlgorithmsApi(),
-        getTreesApi(reqBodyForService),
-      ]);
+        const reqBody = {
+          topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+          camp_num: +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1),
+          as_of: asof,
+          as_of_date:
+            asof == "default" || asof == "review"
+              ? Date.now() / 1000
+              : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
+        };
+        const reqBodyForCampData = {
+          topic_num: +router?.query?.camp[0]?.split("-")[0],
+          camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+          type: "all",
+          per_page: 4,
+          page: 1,
+        };
+        await Promise.all([
+          dispatch(setCampSupportingTree({})),
+          getNewsFeedApi(reqBody),
+          getCurrentTopicRecordApi(reqBody),
+          getCurrentCampRecordApi(reqBody),
+          getCanonizedCampStatementApi(reqBody),
+          getHistoryApi(reqBodyForCampData, "1", "statement"),
+          getCanonizedAlgorithmsApi(),
+          getTreesApi(reqBodyForService),
+        ]);
+      } else didMount.current = true;
       //getCanonizedCampSupportingTreeApi(reqBody, algorithm);
+
+      const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
+      const body = { topic_num: topicNum };
       const reponse = await GetActiveSupportTopic(topicNum && body);
       if (reponse?.status_code == 200) {
         setTopicList(reponse?.data);

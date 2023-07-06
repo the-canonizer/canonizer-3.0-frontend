@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import App, { AppContext, AppInitialProps } from "next/app";
 import { Provider } from "react-redux";
 import scriptLoader from "react-async-script-loader";
+import { CookiesProvider } from "react-cookie";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
 import "antd/dist/antd.css";
@@ -25,25 +26,27 @@ class WrappedApp extends App<AppInitialProps> {
 
     return (
       <Fragment>
-        <Provider store={store}>
-          <ErrorBoundary>
-            <HeadContentAndPermissionComponent
-              componentName={Component.displayName || Component.name}
-              metaContent={meta}
-            />
-            <GoogleReCaptchaProvider
-              reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-              scriptProps={{
-                async: false,
-                defer: false,
-                appendTo: "head",
-                nonce: undefined,
-              }}
-            >
-              <Component {...pageProps} />
-            </GoogleReCaptchaProvider>
-          </ErrorBoundary>
-        </Provider>
+        <CookiesProvider>
+          <Provider store={store}>
+            <ErrorBoundary>
+              <HeadContentAndPermissionComponent
+                componentName={Component.displayName || Component.name}
+                metaContent={meta}
+              />
+              <GoogleReCaptchaProvider
+                reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                scriptProps={{
+                  async: false,
+                  defer: false,
+                  appendTo: "head",
+                  nonce: undefined,
+                }}
+              >
+                <Component {...pageProps} />
+              </GoogleReCaptchaProvider>
+            </ErrorBoundary>
+          </Provider>
+        </CookiesProvider>
       </Fragment>
     );
   }

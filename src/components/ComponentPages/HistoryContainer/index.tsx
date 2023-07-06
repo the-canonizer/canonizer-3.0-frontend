@@ -29,6 +29,7 @@ function HistoryContainer() {
   const { isUserAuthenticated } = useIsUserAuthenticated();
   const router = useRouter();
   const dispatch = useDispatch();
+  const didMount = useRef(false);
 
   const [activeTab, setActiveTab] = useState("all");
 
@@ -147,9 +148,11 @@ function HistoryContainer() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, agreecheck, discardChange, isUserAuthenticated]);
   useEffect(() => {
-    return () => {
-      store.dispatch(setTree([]));
-    };
+    if (didMount.current) {
+      return () => {
+        store.dispatch(setTree([]));
+      };
+    } else didMount.current = true;
   }, []);
 
   const campStatementApiCall = async () => {
@@ -265,12 +268,32 @@ function HistoryContainer() {
       </h2>
     );
   };
+  const getCollapseKeys = (campHistoryData, index) => {
+    let key = "";
+    let oldstatements = campHistory?.items?.filter(
+      (campHistoryData) => campHistoryData?.status == "old"
+    );
+
+    if (
+      campHistoryData?.status == "live" ||
+      campHistory?.items?.length <= 3 ||
+      (oldstatements.length > 0 &&
+        oldstatements[oldstatements.length >= 3 ? 2 : oldstatements.length - 1]
+          ?.submit_time <= campHistoryData?.submit_time) ||
+      (oldstatements.length == 0 && index < 2)
+    ) {
+      key = "1";
+    }
+
+    return key;
+  };
 
   const renderCampHistories =
     campHistory && campHistory?.items?.length ? (
       campHistory?.items?.map((campHistoryData, index) => {
         return (
           <HistoryCollapse
+            collapseKeys={getCollapseKeys(campHistoryData, index)}
             key={index}
             campStatement={campHistoryData}
             onSelectCompare={onSelectCompare}

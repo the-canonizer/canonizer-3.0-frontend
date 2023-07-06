@@ -11,10 +11,13 @@ import {
 } from "src/store/slices/filtersSlice";
 import { GetUserProfileInfo } from "src/network/api/userApi";
 import { setAuthToken, setLoggedInUser } from "src/store/slices/authSlice";
+import { useCookies } from "react-cookie";
 
 function Home({ current_date }) {
   const dispatch = useDispatch();
   const router = useRouter();
+
+  const [cookie, setCookie] = useCookies(["authToken"]);
 
   dispatch(setFilterCanonizedTopics({ search: "" }));
   dispatch(setCurrentDate(current_date));
@@ -56,6 +59,9 @@ function Home({ current_date }) {
 
     if (accessToken) {
       localStorage.setItem("auth_token", accessToken);
+      setCookie("authToken", accessToken, {
+        path: "/",
+      });
       dispatch(setAuthToken(accessToken));
       getData(accessToken);
     }
