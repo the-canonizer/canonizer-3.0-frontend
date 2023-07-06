@@ -87,8 +87,7 @@ function HistoryCollapse({
       })
     );
   };
-  const {asofdate, asof, algorithm } =
-  useSelector((state: RootState) => ({
+  const { asofdate, asof, algorithm } = useSelector((state: RootState) => ({
     asofdate: state.filters?.filterObject?.asofdate,
     asof: state?.filters?.filterObject?.asof,
     algorithm: state.filters?.filterObject?.algorithm,
@@ -121,7 +120,6 @@ function HistoryCollapse({
     }
     changeAgree();
     await getTreesApi(reqBodyForService);
-
   };
 
   const discardChanges = async () => {

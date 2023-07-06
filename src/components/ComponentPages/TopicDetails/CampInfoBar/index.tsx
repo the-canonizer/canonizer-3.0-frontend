@@ -189,7 +189,7 @@ const TimelineInfoBar = ({
               </a>
             </Link>
           )}
-        </Menu.Item> 
+        </Menu.Item>
       )}
       <Menu.Item
         icon={
