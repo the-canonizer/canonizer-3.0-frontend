@@ -437,6 +437,8 @@ del.diffmod img {
 .treeDrawer {
   .ant-drawer-header {
     background-color: #f1f1f1;
+    border-bottom-width: 2px;
+
     .ant-drawer-header-title {
       .ant-drawer-title {
         order: 0;
@@ -445,11 +447,31 @@ del.diffmod img {
       }
       .ant-drawer-close {
         order: 1;
+        margin: 0;
       }
     }
   }
   .ant-drawer-body {
     padding: 0;
+    overflow: hidden;
+  }
+  &.review {
+    .ant-drawer-header {
+      border-bottom: 2px solid #ffde0b;
+      background-color: #fffae3;
+    }
+  }
+  &.default {
+    .ant-drawer-header {
+      border-bottom: 2px solid #12c879;
+      background-color: #e5f6ee;
+    }
+  }
+  &.bydate {
+    .ant-drawer-header {
+      border-bottom: 2px solid #4484ce;
+      background-color: #eef3ff;
+    }
   }
 }
 

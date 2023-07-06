@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import moment from "moment";
 import {
   Typography,
-  Button,
   Collapse,
   Select,
   Radio,
@@ -10,7 +9,6 @@ import {
   Input,
   DatePicker,
   Popover,
-  Tooltip,
   Row,
   Col,
 } from "antd";
@@ -35,6 +33,7 @@ import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 import FullScoreCheckbox from "../../ComponentPages/FullScoreCheckbox";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import ArchivedCampCheckBox from "src/components/ComponentPages/ArchivedCampCheckBox";
+import CampTreeCard from "@/components/ComponentPages/TopicDetails/CampTreeCard";
 
 const infoContent = (
   <>
@@ -90,7 +89,14 @@ const asContent = (
 //   };
 // }
 
-const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
+const FilterWithTree = ({
+  onCreateCamp = () => {},
+  getTreeLoadingIndicator,
+  scrollToCampStatement,
+  setTotalCampScoreForSupportTree,
+  setSupportTreeForCamp,
+  backGroundColorClass,
+}: any) => {
   const isAuth = useAuthentication();
 
   const [isDatePicker, setIsDatePicker] = useState(false);
@@ -295,7 +301,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
             key="1"
           >
             <Row gutter={20} className={styles.filterRow}>
-              <Col md={12}>
+              <Col xs={12}>
                 <div className={styles.algo_title}>
                   <Title level={5} className={styles.algoText}>
                     Canonizer Algorithm:
@@ -342,7 +348,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                 </Select>
               </Col>
               <Col
-                md={12}
+                xs={12}
                 style={{
                   display: "flex",
                   justifyContent: "center",
@@ -450,6 +456,19 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                   }
                 />
               </Col>
+              <Col md={24}>
+                <div className={styles.treeContainer}>
+                  <CampTreeCard
+                    getTreeLoadingIndicator={getTreeLoadingIndicator}
+                    scrollToCampStatement={scrollToCampStatement}
+                    setTotalCampScoreForSupportTree={
+                      setTotalCampScoreForSupportTree
+                    }
+                    backGroundColorClass={backGroundColorClass}
+                    setSupportTreeForCamp={setSupportTreeForCamp}
+                  />
+                </div>
+              </Col>
             </Row>
           </Panel>
         </Collapse>
@@ -458,4 +477,4 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   );
 };
 
-export default CreateTopic;
+export default FilterWithTree;

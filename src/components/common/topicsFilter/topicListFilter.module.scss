@@ -125,6 +125,53 @@
         }
       }
     }
+    .treeContainer {
+      width: 100%;
+      max-height: 100%;
+      height: 100%;
+      overflow: hidden;
+      // padding-top: 15px;
+      padding-bottom: 15px;
+
+      [class="ant-collapse-header"] {
+        display: flex;
+        border: none !important;
+        background-color: transparent !important;
+
+        [class="ant-collapse-header-text"] {
+          display: none;
+        }
+      }
+      [class="ant-collapse-extra"] {
+        width: 100%;
+      }
+      [class="ant-tree-list-holder-inner"] {
+        // max-height: calc(100% - 220px);
+        overflow: auto;
+        height: 100%;
+        max-height: 220px;
+
+        &::-webkit-scrollbar {
+          width: 5px;
+          height: 8px;
+        }
+
+        &::-webkit-scrollbar-track {
+          background: #f1f1f1;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background: #888;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+          background: #555;
+        }
+      }
+      [class="ant-collapse-content-box"] {
+        padding: 0;
+      }
+    }
   }
 }
 

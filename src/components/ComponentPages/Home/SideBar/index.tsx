@@ -11,7 +11,14 @@ import CampRecentActivities from "../CampRecentActivities";
 import NewsFeedsCard from "../../TopicDetails/NewsFeedsCard";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 
-export default function HomeSideBar({ onCreateCamp = () => {} }: any) {
+export default function HomeSideBar({
+  onCreateCamp = () => {},
+  getTreeLoadingIndicator,
+  scrollToCampStatement,
+  setTotalCampScoreForSupportTree,
+  setSupportTreeForCamp,
+  backGroundColorClass,
+}: any) {
   const { isUserAuthenticated } = useAuthentication();
 
   const [isAuth, setIsAuth] = useState(isUserAuthenticated);
@@ -53,10 +60,17 @@ export default function HomeSideBar({ onCreateCamp = () => {} }: any) {
             placement="left"
             onClose={onClose}
             visible={visible}
-            className="treeDrawer"
+            className={`treeDrawer ${backGroundColorClass}`}
             closeIcon={<CloseCircleOutlined />}
           >
-            <TopicsFilterWithDrawer onCreateCamp={onCreateCamp} />
+            <TopicsFilterWithDrawer
+              onCreateCamp={onCreateCamp}
+              getTreeLoadingIndicator={getTreeLoadingIndicator}
+              scrollToCampStatement={scrollToCampStatement}
+              setTotalCampScoreForSupportTree={setTotalCampScoreForSupportTree}
+              setSupportTreeForCamp={setSupportTreeForCamp}
+              backGroundColorClass={backGroundColorClass}
+            />
           </Drawer>
         </Fragment>
       )}

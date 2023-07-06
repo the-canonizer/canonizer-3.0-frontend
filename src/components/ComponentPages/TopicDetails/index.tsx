@@ -421,15 +421,22 @@ const TopicDetails = () => {
         }
       >
         <div className={styles.topicDetailContentWrap}>
-        <InfoBar onCreateCamp={onCreateCamp}  isTopicPage={true} />
+          <InfoBar onCreateCamp={onCreateCamp} isTopicPage={true} />
 
           <aside className={styles.miniSide + " leftSideBar miniSideBar"}>
-            <SideBar onCreateCamp={onCreateCamp} />
+            <SideBar
+              onCreateCamp={onCreateCamp}
+              getTreeLoadingIndicator={getTreeLoadingIndicator}
+              scrollToCampStatement={scrollToCampStatement}
+              setTotalCampScoreForSupportTree={setTotalCampScoreForSupportTree}
+              setSupportTreeForCamp={setSupportTreeForCamp}
+              backGroundColorClass={backGroundColorClass}
+            />
           </aside>
 
           <>
             <div className={styles.pageContent + " pageContentWrap"}>
-              <CampTreeCard
+              {/* <CampTreeCard
                 getTreeLoadingIndicator={getTreeLoadingIndicator}
                 scrollToCampStatement={scrollToCampStatement}
                 setTotalCampScoreForSupportTree={
@@ -437,7 +444,7 @@ const TopicDetails = () => {
                 }
                 setSupportTreeForCamp={setSupportTreeForCamp}
                 backGroundColorClass={backGroundColorClass}
-              />
+              /> */}
 
               {((tree &&
                 tree["1"]?.is_valid_as_of_time &&
