@@ -22,9 +22,9 @@ const SocialShare = ({ campUrl, campName }) => {
         >
           <FacebookIcon size={32} round />
         </FacebookShareButton>
-        <TwitterShareButton url={campUrl} title={campName}>
+        {/* <TwitterShareButton url={campUrl} title={campName}>
           <TwitterIcon size={32} round />
-        </TwitterShareButton>
+        </TwitterShareButton> */}
         <LinkedinShareButton url={campUrl}>
           <LinkedinIcon size={32} round />
         </LinkedinShareButton>

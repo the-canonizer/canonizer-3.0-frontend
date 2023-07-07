@@ -12,7 +12,7 @@ describe("Social Login Component", () => {
       expect(screen.getByTestId("facebook")).toBeInTheDocument();
       expect(screen.getByTestId("google")).toBeInTheDocument();
       expect(screen.getByTestId("linkedin")).toBeInTheDocument();
-      expect(screen.getByTestId("twitter")).toBeInTheDocument();
+      // expect(screen.getByTestId("twitter")).toBeInTheDocument();
       expect(screen.getByTestId("github")).toBeInTheDocument();
     });
   });
@@ -26,7 +26,7 @@ describe("Social Login Component", () => {
       expect(screen.getByTestId("facebook")).toBeInTheDocument();
       expect(screen.getByTestId("google")).toBeInTheDocument();
       expect(screen.getByTestId("linkedin")).toBeInTheDocument();
-      expect(screen.getByTestId("twitter")).toBeInTheDocument();
+      // expect(screen.getByTestId("twitter")).toBeInTheDocument();
       expect(screen.getByTestId("github")).toBeInTheDocument();
     });
   });

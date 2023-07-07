@@ -80,7 +80,7 @@ export default function SocialLoginUi({ isNotLogin = false }) {
             id="google-link"
           />
 
-          <Button
+          {/* <Button
             shape="circle"
             onClick={onSocialLogin.bind(this, "twitter")}
             type="link"
@@ -88,7 +88,7 @@ export default function SocialLoginUi({ isNotLogin = false }) {
             data-testid="twitter"
             className={styles["twitter-btn"]}
             id="twitter-link"
-          />
+          /> */}
 
           <Button
             shape="circle"
