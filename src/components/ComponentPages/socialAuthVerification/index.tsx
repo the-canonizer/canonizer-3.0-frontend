@@ -93,13 +93,13 @@ function SocialAuthVerification() {
             provider="facebook"
             icon={<FacebookFilled />}
           />
-          <IconWrapper
+          {/* <IconWrapper
             socialLinks={socialLinks}
             onUnlinkClick={onUnlinkClick}
             onLinkClick={onLinkClick}
             provider="twitter"
             icon={<TwitterOutlined />}
-          />
+          /> */}
           <IconWrapper
             socialLinks={socialLinks}
             onUnlinkClick={onUnlinkClick}
