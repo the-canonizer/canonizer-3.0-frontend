@@ -28,23 +28,28 @@ import { setThread, setPost } from "../../../store/slices/campForumSlice";
 import CampInfoBar from "../TopicDetails/CampInfoBar";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
-const ForumComponent = () => {
+const ForumComponent = ({
+  threadlist = [],
+  postlist = { items: [], total_rows: 0 },
+}) => {
   const router = useRouter();
 
   const { isUserAuthenticated } = useIsUserAuthenticated();
   const didMount = useRef(false);
+  const didMountList = useRef(false);
+  const didMountPost = useRef(false);
 
   const [paramsList, setParamsList] = useState({});
-  const [threadList, setThreadList] = useState([]);
+  const [threadList, setThreadList] = useState(threadlist || []);
   const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(+router?.query?.page || 1);
   const [totalRecords, setTotalRecords] = useState(0);
   const [nickNameList, setNickNameList] = useState([]);
   const [initialValue, setInitialValues] = useState({});
-  const [postList, setPostList] = useState([]);
+  const [postList, setPostList] = useState(postlist?.items || []);
   const [isLoggedIn, setIsLoggedIn] = useState(isUserAuthenticated);
   const [ppage, setPpage] = useState(1);
-  const [pTotalRecords, setPtotalRecords] = useState(0);
+  const [pTotalRecords, setPtotalRecords] = useState(postlist?.total_rows || 0);
   const [quillContent, setQuillContent] = useState("");
   const [isError, setIsError] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -296,17 +301,20 @@ const ForumComponent = () => {
     const topicArr = (queries?.topic as string)?.split("-");
     const topic_num = topicArr?.shift();
     const type = queries["by"] as string;
+    if (didMountList.current) {
+      let timer = 0;
 
-    let timer = 0;
-
-    if (timer) {
-      clearTimeout(timer);
-      timer = 0;
+      if (timer) {
+        clearTimeout(timer);
+        timer = 0;
+      }
+      timer = window.setTimeout(async () => {
+        getThreads(camp_num, topic_num, type, page, searchQuery);
+      }, 800);
+    } else {
+      didMountList.current = true;
+      setLoading(false);
     }
-
-    timer = window.setTimeout(async () => {
-      getThreads(camp_num, topic_num, type, page, searchQuery);
-    }, 800);
 
     if (
       router?.pathname === "/forum/[topic]/[camp]/threads/create" ||
@@ -430,8 +438,10 @@ const ForumComponent = () => {
     const q = router?.query,
       threadId = q?.id;
 
-    if (threadId) {
+    if (threadId && didMountPost?.current) {
       getPosts(threadId, ppage);
+    } else {
+      didMountPost.current = true;
     }
   }, [router?.query?.id, ppage]);
 

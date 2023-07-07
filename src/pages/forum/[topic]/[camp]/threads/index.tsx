@@ -8,11 +8,12 @@ import {
   setCurrentTopicRecord,
   setCurrentCampRecord,
 } from "../../../../..//store/slices/campDetailSlice";
+import { getThreadsList } from "../../../../../network/api/campForumApi";
 
 import Layout from "../../../../../hoc/layout";
 import CampForumComponent from "../../../../../components/ComponentPages/CampForum";
 
-function CampForumListPage({ topicRecord, campRecord }) {
+function CampForumListPage({ topicRecord, campRecord, threadList }) {
   const dispatch = useDispatch();
   dispatch(setCurrentTopicRecord(topicRecord));
   dispatch(setCurrentCampRecord(campRecord));
@@ -20,7 +21,11 @@ function CampForumListPage({ topicRecord, campRecord }) {
     <Fragment>
       <Layout routeName={"forum"}>
         <div className="" style={{ width: "100%" }}>
-          <CampForumComponent />
+          <CampForumComponent
+            threadlist={
+              threadList?.status_code == 200 ? threadList?.data?.items : []
+            }
+          />
         </div>
       </Layout>
     </Fragment>
@@ -29,6 +34,7 @@ function CampForumListPage({ topicRecord, campRecord }) {
 export async function getServerSideProps({ req, res, resolvedUrl }) {
   let topicNum = +resolvedUrl?.split("/")[2].split("-")[0];
   let campNum = +(resolvedUrl?.split("/")[3].split("-")[0] ?? 1);
+  let q = `?camp_num=${campNum}&topic_num=${topicNum}&type=all&page=${1}&per_page=${10}&like=`;
   const reqBody = {
     topic_num: topicNum,
     camp_num: campNum,
@@ -38,15 +44,17 @@ export async function getServerSideProps({ req, res, resolvedUrl }) {
         ? parseFloat(req.cookies["asofDate"])
         : Date.now() / 1000,
   };
-  const [topicRecord, campRecord] = await Promise.all([
+  const [topicRecord, campRecord, threadList] = await Promise.all([
     getCurrentTopicRecordApi(reqBody, req.cookies["authToken"]),
     getCurrentCampRecordApi(reqBody, req.cookies["authToken"]),
+    getThreadsList(q),
   ]);
 
   return {
     props: {
       topicRecord: topicRecord || {},
       campRecord: campRecord || {},
+      threadList: threadList || [],
     },
   };
 }
