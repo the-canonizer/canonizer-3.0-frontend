@@ -9,7 +9,8 @@
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage --watchAll=false"
+    "test:coverage": "jest --coverage --watchAll=false",
+    "analyze": "cross-env ANALYZE=true next build"
   },
   "dependencies": {
     "@babel/core": "^7.22.1",
@@ -78,6 +79,7 @@
     "video.js": "^7.20.3"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^13.4.9",
     "@testing-library/dom": "^8.11.3",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",
