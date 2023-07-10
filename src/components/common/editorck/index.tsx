@@ -40,6 +40,7 @@ export default function Editorck(props: editorState & editorchange) {
         "numberedList",
         "bulletedList",
         "alignment",
+        "todoList",
         "|",
         "fontSize",
         "fontColor",
@@ -87,9 +88,10 @@ export default function Editorck(props: editorState & editorchange) {
           onReady={(editor) => {
             editor.editing.view.focus();
             editor.editing.view.document.on("click", () => {
-              console.log("Clicked");
               props.oneditorchange(editor?.getData());
-              console.log("data sent");
+            });
+            editor.editing.view.document.on("blur", () => {
+              props.oneditorchange(editor?.getData());
             });
           }}
           onChange={(event, editor: any) => {

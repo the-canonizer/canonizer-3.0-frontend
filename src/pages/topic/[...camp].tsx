@@ -32,7 +32,6 @@ const TopicDetailsPage = ({
   campRecord,
   campStatement,
   statementHistory,
-  canonizedAlgorithms,
   tree,
 }) => {
   const dispatch = useDispatch();
@@ -41,7 +40,7 @@ const TopicDetailsPage = ({
   dispatch(setCurrentCampRecord(campRecord));
   dispatch(setCampStatement(campStatement));
   dispatch(setHistory(statementHistory));
-  dispatch(setCanonizedAlgorithms(canonizedAlgorithms));
+  // dispatch(setCanonizedAlgorithms(canonizedAlgorithms));
   dispatch(setTree([tree] || []));
 
   dispatch(setCurrentDate(current_date));
@@ -93,13 +92,11 @@ export async function getServerSideProps({ req, res, resolvedUrl }) {
     campRecord,
     campStatement,
     statementHistory,
-    canonizedAlgorithms,
     tree,
   ] = await Promise.all([
     getNewsFeedApi(reqBody, req.cookies["authToken"]),
     getCurrentTopicRecordApi(reqBody, req.cookies["authToken"]),
     getCurrentCampRecordApi(reqBody, req.cookies["authToken"]),
-    getCanonizedCampStatementApi(reqBody, req.cookies["authToken"]),
     getHistoryApi(
       reqBodyForCampData,
       "1",
@@ -118,7 +115,6 @@ export async function getServerSideProps({ req, res, resolvedUrl }) {
       campRecord: campRecord || {},
       campStatement: campStatement || [],
       statementHistory: statementHistory || {},
-      canonizedAlgorithms: canonizedAlgorithms || [],
       tree: tree || [],
     },
   };
