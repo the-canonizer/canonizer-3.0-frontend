@@ -55,7 +55,9 @@
     }
   }
   .navWrap {
-    display: flex;
+    @media screen and (min-width: 1025px) {
+      display: flex;
+    }
     @media screen and (max-width: 1199px) {
       padding: 1.5rem;
       position: fixed;

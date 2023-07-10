@@ -143,7 +143,9 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
             </Button>
 
             <HeaderMenu loggedUser={loggedUser} />
-            <SearchSectionForHeader />
+            {typeof window !== "undefined" && window.innerWidth > 1024 && (
+              <SearchSectionForHeader />
+            )}
 
             {!isLoginPage ? (
               <Fragment>

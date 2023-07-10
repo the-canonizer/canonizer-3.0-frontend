@@ -52,7 +52,9 @@ const LoggedOutHeader = ({}: any) => {
           </Button>
 
           <HeaderMenu loggedUser={null} />
-          <SearchSectionForHeader />
+          {typeof window !== "undefined" && window.innerWidth > 1024 && (
+            <SearchSectionForHeader />
+          )}
 
           <div className={styles.btnsLoginRegister}>
             <Button
