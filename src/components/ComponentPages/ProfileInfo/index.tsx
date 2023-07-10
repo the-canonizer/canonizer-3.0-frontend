@@ -156,17 +156,17 @@ const ProfileInfo = () => {
   };
 
   //function to verify the OTP
-  const onOTPBtnClick = async () => {
-    let otpBody = {
-      otp: otp,
-    };
+  // const onOTPBtnClick = async () => {
+  //   let otpBody = {
+  //     otp: otp,
+  //   };
 
-    let res = await VerifyOTP(otpBody);
-    if (res && res.status_code === 200) {
-      message.success(res.message);
-      setIsOTPModalVisible(false);
-    }
-  };
+  //   let res = await VerifyOTP(otpBody);
+  //   if (res && res.status_code === 200) {
+  //     message.success(res.message);
+  //     setIsOTPModalVisible(false);
+  //   }
+  // };
 
   const handleChangeOTP = (e) => {
     setOTP(e.target.value);
@@ -358,7 +358,7 @@ const ProfileInfo = () => {
       languageList={languageList}
       onFinish={onFinish}
       // onVerifyClick={onVerifyClick}
-      onOTPBtnClick={onOTPBtnClick}
+      // onOTPBtnClick={onOTPBtnClick}
       isOTPModalVisible={isOTPModalVisible}
       setIsOTPModalVisible={setIsOTPModalVisible}
       handleOTPCancel={handleOTPCancel}

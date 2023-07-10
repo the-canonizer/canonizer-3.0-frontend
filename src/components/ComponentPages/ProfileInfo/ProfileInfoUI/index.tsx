@@ -36,7 +36,7 @@ function ProfileInfoUI({
         mobileCarrier={mobileCarrier}
         formVerify={formVerify}
         // onVerifyClick={onVerifyClick}
-        onOTPBtnClick={onOTPBtnClick}
+        // onOTPBtnClick={onOTPBtnClick}
         isOTPModalVisible={isOTPModalVisible}
         setIsOTPModalVisible={setIsOTPModalVisible}
         handleOTPCancel={handleOTPCancel}
