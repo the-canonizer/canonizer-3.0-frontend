@@ -59,9 +59,8 @@ function Home({ current_date }) {
 
     if (accessToken) {
       localStorage.setItem("auth_token", accessToken);
-      setCookie("authToken", accessToken, {
-        path: "/",
-      });
+
+      document.cookie = "authToken=" + accessToken + ";path=/";
       dispatch(setAuthToken(accessToken));
       getData(accessToken);
     }

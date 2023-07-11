@@ -1,4 +1,4 @@
-import { handleError } from "../../utils/generalUtility";
+import { handleError, isServer } from "../../utils/generalUtility";
 import { store } from "../../store";
 import {
   pushToCampHistory,
@@ -8,21 +8,39 @@ import NetworkCall from "../networkCall";
 import historyRequest from "../request/historyRequest";
 import { createToken } from "./userApi";
 
+function getCookie(cname) {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(";");
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == " ") {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
 export const getHistoryApi = async (
   reqBody,
   pageNumber,
   historyOf: string,
-  tokenSsr = null
+  tokenSsr = null,
+  loginToken = null
 ) => {
   let state = await store.getState();
 
   const { auth } = state,
-    tc =
-      typeof window !== "undefined"
-        ? localStorage?.getItem("auth_token")
-        : tokenSsr;
+    tc = !isServer()
+      ? localStorage?.getItem("auth_token") || getCookie("authToken")
+      : loginToken || tokenSsr;
 
-  let token = auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
+  let token = !isServer()
+    ? auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc
+    : tc;
 
   if (!token) {
     const response = await createToken();

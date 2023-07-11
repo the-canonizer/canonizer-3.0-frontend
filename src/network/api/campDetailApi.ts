@@ -29,15 +29,21 @@ export const getTreesApi = async (reqBody) => {
   }
 };
 
-export const getNewsFeedApi = async (reqBody, tokenSsr = null) => {
+export const getNewsFeedApi = async (
+  reqBody,
+  tokenSsr = null,
+  loginToken = null
+) => {
   let state = await store.getState();
 
   const { auth } = state,
-    tc = !isServer ? localStorage?.getItem("auth_token") : tokenSsr;
+    tc = !isServer()
+      ? localStorage?.getItem("auth_token") || getCookie("authToken")
+      : loginToken || tokenSsr;
 
-  console.log("tc", tc);
-
-  let token = auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
+  let token = !isServer()
+    ? auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc
+    : tc;
 
   if (!token) {
     const response = await createToken();
@@ -83,39 +89,83 @@ export const getCanonizedCampStatementApi = async (
     // message.error(error.message);
   }
 };
+function getCookie(cname) {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(";");
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == " ") {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
 
-export const getCurrentTopicRecordApi = async (reqBody, tokenSsr = null) => {
+export const getCurrentTopicRecordApi = async (
+  reqBody,
+  tokenSsr = null,
+  loginToken = null
+) => {
   let state = await store.getState();
 
   const { auth } = state,
-    tc = !isServer ? localStorage?.getItem("auth_token") : tokenSsr;
+    tc = !isServer()
+      ? localStorage?.getItem("auth_token") || getCookie("authToken")
+      : loginToken || tokenSsr;
 
-  let token = auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
+  let token = !isServer()
+    ? auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc
+    : tc;
+
+  console.log("token ssr ", {
+    tokenSsr,
+    token1: auth?.loggedInUser?.token,
+    token2: auth?.authToken,
+    token4: auth?.token,
+  });
 
   if (!token) {
     const response = await createToken();
     token = response?.access_token;
   }
 
+  console.log("token==", token, "|||||");
   try {
     const currentTopicRecord = await NetworkCall.fetch(
       TreeRequest.getCurrentTopicRecord(reqBody, token),
       false
     );
+
+    console.log("aaaaaa1", currentTopicRecord);
+
     store.dispatch(setCurrentTopicRecord(currentTopicRecord?.data));
+    console.log("aaaaaa2", currentTopicRecord);
+
     return currentTopicRecord?.data;
   } catch (error) {
     // message.error(error.message);
   }
 };
 
-export const getCurrentCampRecordApi = async (reqBody, tokenSsr = null) => {
+export const getCurrentCampRecordApi = async (
+  reqBody,
+  tokenSsr = null,
+  loginToken = null
+) => {
   let state = await store.getState();
 
   const { auth } = state,
-    tc = !isServer ? localStorage?.getItem("auth_token") : tokenSsr;
+    tc = !isServer
+      ? localStorage?.getItem("auth_token") || getCookie("authToken")
+      : loginToken || tokenSsr;
 
-  let token = auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
+  let token = !isServer()
+    ? auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc
+    : tc;
 
   if (!token) {
     const response = await createToken();

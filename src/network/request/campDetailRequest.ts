@@ -42,6 +42,7 @@ export default class TreeRequest extends Request {
   }
 
   static getCurrentTopicRecord(reqBody, token) {
+    console.log("token==11111", token, "|||||");
     return new Request(
       K.Network.URL.GetCurrentTopicRecord,
       K.Network.Method.POST,

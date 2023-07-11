@@ -89,6 +89,12 @@ export async function getServerSideProps({ req, res, resolvedUrl }) {
     per_page: 4,
     page: 1,
   };
+  console.log(
+    "req body=/> ========================================================================== ",
+    reqBody,
+    req.cookies
+  );
+
   const [
     newsFeed,
     topicRecord,
@@ -97,18 +103,34 @@ export async function getServerSideProps({ req, res, resolvedUrl }) {
     statementHistory,
     tree,
   ] = await Promise.all([
-    getNewsFeedApi(reqBody, req.cookies["authToken"]),
-    getCurrentTopicRecordApi(reqBody, req.cookies["authToken"]),
-    getCurrentCampRecordApi(reqBody, req.cookies["authToken"]),
+    getNewsFeedApi(
+      reqBody,
+      req.cookies["authToken"],
+      req.cookies["authToken2"]
+    ),
+    getCurrentTopicRecordApi(
+      reqBody,
+      req.cookies["authToken"],
+      req.cookies["authToken2"]
+    ),
+    getCurrentCampRecordApi(
+      reqBody,
+      req.cookies["authToken"],
+      req.cookies["authToken2"]
+    ),
     getHistoryApi(
       reqBodyForCampData,
       "1",
       "statement",
-      req.cookies["authToken"]
+      req.cookies["authToken"],
+      req.cookies["authToken2"]
     ),
-    getCanonizedAlgorithmsApi(),
+    getCanonizedAlgorithmsApi(req.cookies["authToken"]),
     getTreesApi(reqBodyForService),
   ]);
+
+  console.log("1. topic record", topicRecord);
+  console.log("1. camp record", campRecord);
 
   return {
     props: {
