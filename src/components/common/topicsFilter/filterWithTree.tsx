@@ -443,23 +443,35 @@ const FilterWithTree = ({
                       </Radio>
                     </Space>
                   </Radio.Group>
-                  <DatePicker
-                    disabled={
-                      isDatePicker || selectedAsOf == "bydate" ? false : true
-                    }
-                    format="YYYY-MM-DD"
-                    defaultValue={moment(current_date_filter * 1000)}
-                    value={moment(selectedAsOFDate * 1000)}
-                    suffixIcon={<i className="icon-calendar"></i>}
-                    size={"large"}
-                    className={`${styles.date} ${styles.dates} w-100`}
-                    onChange={pickDate}
-                    inputReadOnly={true}
-                    disabledDate={(current) =>
-                      current &&
-                      current > moment(current_date_filter).endOf("day")
-                    }
-                  />
+                  <div className="d-flex">
+                    <DatePicker
+                      disabled={
+                        isDatePicker || selectedAsOf == "bydate" ? false : true
+                      }
+                      format="YYYY-MM-DD"
+                      defaultValue={moment(current_date_filter * 1000)}
+                      value={moment(selectedAsOFDate * 1000)}
+                      suffixIcon={<i className="icon-calendar"></i>}
+                      size={"large"}
+                      className={`${styles.date} ${styles.dates} w-100`}
+                      onChange={pickDate}
+                      inputReadOnly={true}
+                      disabledDate={(current) =>
+                        current &&
+                        current > moment(current_date_filter).endOf("day")
+                      }
+                    />
+                    <Popover
+                      content={""}
+                      placement="right"
+                      className={styles.infoIcon}
+                    >
+                      <i
+                        className="icon-info"
+                        style={{ visibility: "hidden", width: "40px" }}
+                      ></i>
+                    </Popover>
+                  </div>
                 </Space>
               </Col>
               <Col md={24}>
