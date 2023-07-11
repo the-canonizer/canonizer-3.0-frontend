@@ -272,12 +272,12 @@ const CampTree = ({
         </Tooltip>
       ) : (
         <Tooltip
-          // title={`You are subscribed to ${
-          //   subscribedUsers[userID].child_camp_name
-          //     ? subscribedUsers[userID].child_camp_name
-          //     : "child camp"
-          // }`}
-          title="You have subscribed to the entire topic."
+          title={`You are subscribed to ${
+            subscribedUsers[userID].child_camp_name
+              ? subscribedUsers[userID].child_camp_name
+              : "child camp"
+          }`}
+          // title="You have subscribed to the entire topic."
         >
           <i
             className={`icon-subscribe text-secondary  ${styles.implicitIcon}`}
