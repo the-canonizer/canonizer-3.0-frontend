@@ -422,7 +422,7 @@ const TimelineInfoBar = ({
               {"  "}
               {!!topicSubscriptionID && (
                 <Tooltip
-                  title="You have subscribed to the entire topic"
+                  title="You have subscribed to the entire topic."
                   key="camp_subscribed_icon"
                 >
                   <small>
