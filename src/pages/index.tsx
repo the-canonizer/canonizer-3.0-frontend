@@ -1,8 +1,9 @@
 import { Fragment, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-
-import Layout from "src/hoc/layout";
+import dynamic from 'next/dynamic'
+// import Layout from "src/hoc/layout";
+const Layout = dynamic(()=> import('../hoc/layout'))
 import HomePageContainer from "src/components/ComponentPages/Home";
 import { getCanonizedWhatsNewContentApi } from "src/network/api/homePageApi";
 import {
