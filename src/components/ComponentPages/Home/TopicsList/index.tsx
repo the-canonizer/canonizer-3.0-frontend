@@ -11,7 +11,10 @@ import {
   getCanonizedTopicsApi,
   getCanonizedTopicsForSuggestion,
 } from "../../../../network/api/homePageApi";
-import { setFilterCanonizedTopics } from "../../../../store/slices/filtersSlice";
+import {
+  setFilterCanonizedTopics,
+  setShowDrawer,
+} from "../../../../store/slices/filtersSlice";
 import styles from "./topicsList.module.scss";
 import { Spin, Checkbox } from "antd";
 import { LoadingOutlined, CopyOutlined } from "@ant-design/icons";
@@ -377,6 +380,7 @@ const TopicsList = () => {
 
   const handleTopicClick = () => {
     setGetTopicsLoadingIndicator(true);
+    dispatch(setShowDrawer(true));
   };
   useEffect(() => {
     //When Page is render remove data from GetCheckSupportStatus and GetCheckSupportExistsData

@@ -8,7 +8,7 @@ import styles from "../siteHeader.module.scss";
 
 import Logo from "../logoHeader";
 import SearchSection from "../../searchSection";
-import SearchSectionForHeader from "../../searchSection/searchForHeader";
+// import SearchSectionForHeader from "../../searchSection/searchForHeader";
 import LoginModal from "../../../ComponentPages/Login/loginModal";
 import RegistrationModal from "../../../ComponentPages/Registration/registrationModal";
 import {
@@ -52,9 +52,9 @@ const LoggedOutHeader = ({}: any) => {
           </Button>
 
           <HeaderMenu loggedUser={null} />
-          {typeof window !== "undefined" && window.innerWidth > 1024 && (
+          {/* {typeof window !== "undefined" && window.innerWidth > 1024 && (
             <SearchSectionForHeader />
-          )}
+          )} */}
 
           <div className={styles.btnsLoginRegister}>
             <Button
@@ -99,7 +99,7 @@ const LoggedOutHeader = ({}: any) => {
           onClick={toggleMobNav}
         ></div>
       </Header>
-      {/* <SearchSection /> */}
+      <SearchSection />
       <DisclaimerMsg />
       <LoginModal />
       <RegistrationModal />

@@ -419,6 +419,7 @@ del.diffmod img {
     }
     &.drawer_card {
       padding: 0;
+      border: none;
     }
   }
 
@@ -453,7 +454,9 @@ del.diffmod img {
   }
   .ant-drawer-body {
     padding: 0;
-    overflow: hidden;
+    // overflow: hidden;
+    // overflow-y: auto;
+    overflow: auto;
   }
   &.review {
     .ant-drawer-header {
@@ -1930,6 +1933,7 @@ del.diffmod img {
     .ant-tree-list-holder-inner {
       overflow-x: auto;
       overflow-y: clip;
+      overflow: visible;
       white-space: nowrap;
 
       & > .ant-tree-treenode-switcher-open {

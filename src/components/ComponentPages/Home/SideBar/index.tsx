@@ -1,6 +1,6 @@
 import { useState, Fragment, useEffect } from "react";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Drawer } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 
@@ -10,6 +10,7 @@ import TopicsFilterWithDrawer from "../../../common/topicsFilter/filterWithTree"
 import CampRecentActivities from "../CampRecentActivities";
 import NewsFeedsCard from "../../TopicDetails/NewsFeedsCard";
 import useAuthentication from "src/hooks/isUserAuthenticated";
+import { setShowDrawer } from "src/store/slices/filtersSlice";
 
 export default function HomeSideBar({
   onCreateCamp = () => {},
@@ -19,24 +20,29 @@ export default function HomeSideBar({
   setSupportTreeForCamp,
   backGroundColorClass,
 }: any) {
+  const { drawerShow } = useSelector((state: RootState) => ({
+    drawerShow: state?.filters?.showDrawer,
+  }));
   const { isUserAuthenticated } = useAuthentication();
 
   const [isAuth, setIsAuth] = useState(isUserAuthenticated);
+  const [drawerIsVisible, setDrawerIsVisible] = useState(drawerShow);
 
   const router = useRouter();
+  const dispatch = useDispatch();
+
+  useEffect(() => setDrawerIsVisible(drawerShow), [drawerShow]);
 
   const { newsFeed } = useSelector((state: RootState) => ({
     newsFeed: state?.topicDetails?.newsFeed,
   }));
 
-  const [visible, setVisible] = useState(false);
-
   const showDrawer = () => {
-    setVisible(true);
+    dispatch(setShowDrawer(true));
   };
 
   const onClose = () => {
-    setVisible(false);
+    dispatch(setShowDrawer(false));
   };
 
   useEffect(() => setIsAuth(isUserAuthenticated), [isUserAuthenticated]);
@@ -59,9 +65,13 @@ export default function HomeSideBar({
             title="Canonizer Sorted Camp Tree"
             placement="left"
             onClose={onClose}
-            visible={visible}
+            visible={drawerIsVisible}
             className={`treeDrawer ${backGroundColorClass}`}
             closeIcon={<CloseCircleOutlined />}
+            // width={720}
+            height={"auto"}
+            size="large"
+            bodyStyle={{ paddingBottom: 80 }}
           >
             <TopicsFilterWithDrawer
               onCreateCamp={onCreateCamp}

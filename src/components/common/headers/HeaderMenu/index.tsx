@@ -11,33 +11,33 @@ const HeaderMenu = ({ loggedUser }) => {
       linkTitle: "Browse",
       id: 1,
     },
-    // {
-    //   link: "/uploadFile",
-    //   linkTitle: "Upload File",
-    //   id: 2,
-    // },
+    {
+      link: "/uploadFile",
+      linkTitle: "Upload File",
+      id: 2,
+    },
     {
       link: "/topic/132-Help/1-Agreement",
       linkTitle: "Help",
       id: 3,
     },
-    // {
-    //   link: "/files/2012_amplifying_final.pdf",
-    //   linkTitle: "White Paper",
-    //   id: 4,
-    //   external: true,
-    // },
+    {
+      link: "/files/2012_amplifying_final.pdf",
+      linkTitle: "White Paper",
+      id: 4,
+      external: true,
+    },
     {
       link: process.env.NEXT_PUBLIC_BLOG_URL,
       linkTitle: "Blog",
       id: 5,
       external: true,
     },
-    // {
-    //   link: "/topic/6-Canonizer-Jobs/1-Agreement",
-    //   linkTitle: "Jobs",
-    //   id: 6,
-    // },
+    {
+      link: "/topic/6-Canonizer-Jobs/1-Agreement",
+      linkTitle: "Jobs",
+      id: 6,
+    },
   ];
 
   const [mockLinks, setMockLinks] = useState(links);

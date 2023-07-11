@@ -25,7 +25,7 @@ import {
 } from "src/network/api/notificationAPI";
 import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 import HeaderMenu from "../HeaderMenu";
-import SearchSectionForHeader from "../../searchSection/searchForHeader";
+// import SearchSectionForHeader from "../../searchSection/searchForHeader";
 
 const { Header } = Layout;
 
@@ -143,9 +143,9 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
             </Button>
 
             <HeaderMenu loggedUser={loggedUser} />
-            {typeof window !== "undefined" && window.innerWidth > 1024 && (
+            {/* {typeof window !== "undefined" && window.innerWidth > 1024 && (
               <SearchSectionForHeader />
-            )}
+            )} */}
 
             {!isLoginPage ? (
               <Fragment>

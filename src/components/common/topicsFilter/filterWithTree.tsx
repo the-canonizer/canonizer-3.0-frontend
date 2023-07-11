@@ -304,21 +304,21 @@ const FilterWithTree = ({
               <Col xs={12}>
                 <div className={styles.algo_title}>
                   <Title level={5} className={styles.algoText}>
-                    Canonizer Algorithm:
-                  </Title>
-                  <Popover content="Algorithm Information" placement="top">
-                    {router?.asPath.includes("/topic") ? (
-                      <a href={K?.Network?.URL?.algoInfoUrl}>
-                        <i className="icon-info"></i>
-                      </a>
-                    ) : (
-                      <Link href={K?.Network?.URL?.algoInfoUrl}>
-                        <a>
+                    Canonizer Algorithm:{"  "}
+                    <Popover content="Algorithm Information" placement="top">
+                      {router?.asPath.includes("/topic") ? (
+                        <a href={K?.Network?.URL?.algoInfoUrl}>
                           <i className="icon-info"></i>
                         </a>
-                      </Link>
-                    )}
-                  </Popover>
+                      ) : (
+                        <Link href={K?.Network?.URL?.algoInfoUrl}>
+                          <a>
+                            <i className="icon-info"></i>
+                          </a>
+                        </Link>
+                      )}
+                    </Popover>
+                  </Title>
                 </div>
                 <Select
                   size="large"
@@ -383,78 +383,84 @@ const FilterWithTree = ({
                 <div className={`${styles.algo_title} ${styles.title}`}>
                   <Title level={5} className={styles.algoText}>
                     As Of
+                    <Popover content={asContent} placement="right">
+                      <i className="icon-info"></i>
+                    </Popover>
                   </Title>
-                  <Popover content={asContent} placement="right">
-                    <i className="icon-info"></i>
-                  </Popover>
                 </div>
-                <Radio.Group
-                  onChange={onChange}
-                  value={value}
-                  disabled={loading}
-                  className={styles.radioBtns}
+                <Space
+                  direction="horizontal"
+                  style={{ gap: "12px", width: "100%" }}
+                  className={styles.radioInputs}
                 >
-                  <Space direction="horizontal" style={{ gap: "12px" }}>
-                    <Radio
-                      className={styles.radio + " topicFilterRadio"}
-                      value={1}
-                      onClick={() => {
-                        dispatch(setViewThisVersion(false));
-                        dispatch(
-                          setIsReviewCanonizedTopics({
-                            includeReview: true,
-                            asof: "review",
-                            asofdate: Date.now() / 1000,
-                          })
-                        );
-                      }}
-                    >
-                      Include review
-                    </Radio>
-                    <Radio
-                      className={styles.radio + " topicFilterRadio"}
-                      value={2}
-                      onClick={() => {
-                        dispatch(setViewThisVersion(false));
-                        dispatch(
-                          setFilterCanonizedTopics({
-                            asofdate: Date.now() / 1000,
-                            asof: "default",
-                          })
-                        );
-                      }}
-                    >
-                      Default
-                    </Radio>
-                    <Radio
-                      className={styles.radio + " topicFilterRadio"}
-                      value={3}
-                      onClick={() => {
-                        dispatch(setViewThisVersion(false));
-                        handleAsOfClick();
-                      }}
-                    >
-                      As of date
-                    </Radio>
-                  </Space>
-                </Radio.Group>
-                <DatePicker
-                  disabled={
-                    isDatePicker || selectedAsOf == "bydate" ? false : true
-                  }
-                  format="YYYY-MM-DD"
-                  defaultValue={moment(current_date_filter * 1000)}
-                  value={moment(selectedAsOFDate * 1000)}
-                  suffixIcon={<i className="icon-calendar"></i>}
-                  size={"large"}
-                  className={`${styles.date} w-100`}
-                  onChange={pickDate}
-                  inputReadOnly={true}
-                  disabledDate={(current) =>
-                    current &&
-                    current > moment(current_date_filter).endOf("day")
-                  }
-                />
+                  <Radio.Group
+                    onChange={onChange}
+                    value={value}
+                    disabled={loading}
+                    className={styles.radioBtns}
+                  >
+                    <Space direction="horizontal" style={{ gap: "12px" }}>
+                      <Radio
+                        className={styles.radio + " topicFilterRadio"}
+                        value={1}
+                        onClick={() => {
+                          dispatch(setViewThisVersion(false));
+                          dispatch(
+                            setIsReviewCanonizedTopics({
+                              includeReview: true,
+                              asof: "review",
+                              asofdate: Date.now() / 1000,
+                            })
+                          );
+                        }}
+                      >
+                        Include review
+                      </Radio>
+                      <Radio
+                        className={styles.radio + " topicFilterRadio"}
+                        value={2}
+                        onClick={() => {
+                          dispatch(setViewThisVersion(false));
+                          dispatch(
+                            setFilterCanonizedTopics({
+                              asofdate: Date.now() / 1000,
+                              asof: "default",
+                            })
+                          );
+                        }}
+                      >
+                        Default
+                      </Radio>
+                      <Radio
+                        className={styles.radio + " topicFilterRadio"}
+                        value={3}
+                        onClick={() => {
+                          dispatch(setViewThisVersion(false));
+                          handleAsOfClick();
+                        }}
+                      >
+                        As of date
+                      </Radio>
+                    </Space>
+                  </Radio.Group>
+                  <DatePicker
+                    disabled={
+                      isDatePicker || selectedAsOf == "bydate" ? false : true
+                    }
+                    format="YYYY-MM-DD"
+                    defaultValue={moment(current_date_filter * 1000)}
+                    value={moment(selectedAsOFDate * 1000)}
+                    suffixIcon={<i className="icon-calendar"></i>}
+                    size={"large"}
+                    className={`${styles.date} ${styles.dates} w-100`}
+                    onChange={pickDate}
+                    inputReadOnly={true}
+                    disabledDate={(current) =>
+                      current &&
+                      current > moment(current_date_filter).endOf("day")
+                    }
+                  />
+                </Space>
               </Col>
               <Col md={24}>
                 <div className={styles.treeContainer}>
