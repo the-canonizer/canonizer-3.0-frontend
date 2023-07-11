@@ -6,7 +6,7 @@ import verifyIcon from "../../../../public/images/checkbox-icn.svg";
 import Icon from "@ant-design/icons";
 import Image from "next/image";
 import CustomSkelton from "../../common/customSkelton";
-import { SendOTP } from "../../../network/api/userApi";
+import { SendOTP, VerifyOTP } from "../../../network/api/userApi";
 
 const { Option } = Select;
 
@@ -14,7 +14,7 @@ function VerifyMobileNumberForm({
   mobileCarrier,
   formVerify,
   // onVerifyClick,
-  onOTPBtnClick,
+  // onOTPBtnClick,
   isOTPModalVisible,
   handleOTPCancel,
   otp,
@@ -43,6 +43,17 @@ function VerifyMobileNumberForm({
         </Option>
       );
     });
+      const onOTPBtnClick = async () => {
+    let otpBody = {
+      otp: otp,
+    };
+
+    let res = await VerifyOTP(otpBody);
+    if (res && res.status_code === 200) {
+      message.success(res.message);
+      setIsOTPModalVisible(false);
+    }
+  };
   const onVerifyClick = async (values: any) => {
     let res = await SendOTP(values);
     if (res && res.status_code === 200) {
@@ -175,6 +186,7 @@ function VerifyMobileNumberForm({
               />
               <p></p> {/* For Empty Row */}
               <Button
+                data-testid="on_otp_btn_click"
                 id="submitBtn"
                 type="primary"
                 className="ant-btn ant-btn-orange ant-btn-lg"
