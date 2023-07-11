@@ -10,8 +10,16 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage --watchAll=false",
-    "analyze": "cross-env ANALYZE=true next build"
+    "analyze": "cross-env ANALYZE=true next build",
+    "find:unused": "next-unused"
   },
+  "next-unused": {
+   "alias": {},
+   "debug": true,
+   "include": ["src"],
+   "exclude": ["__test__", "__tests__"],
+   "entrypoints": ["src/pages"]
+ },
   "dependencies": {
     "@babel/core": "^7.22.1",
     "@babel/preset-env": "^7.22.4",
