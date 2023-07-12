@@ -21,12 +21,13 @@ const CampTree = ({
   prevTreeValueRef,
   setTreeExpandValue,
 }: any) => {
-  const { tree, filterByScore, review, is_checked } = useSelector(
+  const { tree, filterByScore, review, is_checked, topicRecord } = useSelector(
     (state: RootState) => ({
       tree: state?.topicDetails?.tree,
       filterByScore: state.filters?.filterObject?.filterByScore,
       review: state?.filters?.filterObject?.asof,
       is_checked: state?.utils?.score_checkbox,
+      topicRecord: state?.topicDetails?.currentTopicRecord,
     })
   );
   const { is_camp_archive_checked } = useSelector((state: RootState) => ({
@@ -257,20 +258,33 @@ const CampTree = ({
     }
   }, [tree?.at(0)]);
 
-  const subScriptionStatus = (subscribedUsers: {}) => {
+  const subScriptionStatus = (subscribedUsers: {}, data) => {
     return Object.keys(subscribedUsers).length > 0 &&
       Object.keys(subscribedUsers)?.includes(`${userID}`) ? (
       subscribedUsers[userID].explicit ? (
-        <i
-          className={`icon-subscribe text-primary ${styles.iconSubscribe}`}
-        ></i>
+        <Tooltip
+          // title="You have subscribed to the entire topic."
+          title={
+            topicRecord?.topicSubscriptionId &&
+            (data?.title === topicRecord?.topic_name ||
+              data?.review_title === topicRecord?.topic_name)
+              ? "You have subscribed to the entire topic."
+              : `You have subscribed to this camp.`
+          }
+          key="camp_subscribed_icon"
+        >
+          <i
+            className={`icon-subscribe text-primary ${styles.iconSubscribe}`}
+          ></i>
+        </Tooltip>
       ) : (
         <Tooltip
           title={`You are subscribed to ${
             subscribedUsers[userID].child_camp_name
               ? subscribedUsers[userID].child_camp_name
-              : "child camp"
+              : "child camp."
           }`}
+          // title="You have subscribed to the entire topic."
         >
           <i
             className={`icon-subscribe text-secondary  ${styles.implicitIcon}`}
@@ -384,7 +398,10 @@ const CampTree = ({
                       </span>
                       <span className={styles.subScriptionIcon}>
                         {isUserAuthenticated &&
-                          subScriptionStatus(data[item].subscribed_users)}
+                          subScriptionStatus(
+                            data[item].subscribed_users,
+                            data[item]
+                          )}
                       </span>
                       <span>
                         <ProgressBar
