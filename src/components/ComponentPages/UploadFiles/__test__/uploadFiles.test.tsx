@@ -11,28 +11,35 @@ import { useRouter } from "next/router";
 import { cleanup, renderHook } from "@testing-library/react-hooks";
 import { message } from "antd";
 
-jest.mock("src/hooks/isUserAuthenticated", () => jest.fn(()=>({isUserAuthenticated: true})));
+jest.mock("src/hooks/isUserAuthenticated", () =>
+  jest.fn(() => ({ isUserAuthenticated: true }))
+);
 
 jest.mock("src/network/api/userApi", () => ({
-  uploadFile:jest.fn(),
+  uploadFile: jest.fn(),
   deleteFolderApi: jest.fn(),
-  deleteUploadFileApi:jest.fn(),
-  getFileInsideFolderApi: jest.fn().mockReturnValue(Promise.resolve({success: true})),
-  getUploadFileAndFolder: jest.fn(()=>Promise.resolve({ data: {files: [],folders: []}})) 
+  deleteUploadFileApi: jest.fn(),
+  getFileInsideFolderApi: jest
+    .fn()
+    .mockReturnValue(Promise.resolve({ success: true })),
+  getUploadFileAndFolder: jest.fn(() =>
+    Promise.resolve({ data: { files: [], folders: [] } })
+  ),
 }));
 const mockState = {
   ui: {
     // dragBox,
     // disabledCreateFolderBtn,
     visibleUploadOptions: true,
-    addButton: true
-  }
-}
+    addButton: true,
+  },
+};
 
 jest.mock("react-redux", () => ({
-  ...jest.requireActual('react-redux'),
-  useDispatch: ()=> jest.fn(),
-  useSelector: ()=>jest.fn().mockImplementation(callback => callback(mockState))
+  ...jest.requireActual("react-redux"),
+  useDispatch: () => jest.fn(),
+  useSelector: () =>
+    jest.fn().mockImplementation((callback) => callback(mockState)),
 }));
 
 jest.mock("next/router", () => ({
@@ -227,7 +234,7 @@ describe("Upload file page", () => {
     //   ...jest.requireActual('react'),
     //   useState: ()=> [true,jest.fn()],
     // }));
-    const {container, asFragment}= render(<UploadFiles />);
+    const { container, asFragment } = render(<UploadFiles />);
     await waitFor(() => {
       // expect(container).toMatchSnapshot();
       expect(screen.getByTestId("cancel_btn")).toBeInTheDocument();
@@ -240,7 +247,6 @@ describe("Upload file page", () => {
       // expect(screen.getByText(fileLists[1].type)).toBeInTheDocument();
       // expect(screen.getByText(fileLists[1].updated_at)).toBeInTheDocument();
       // expect(screen.getByText(fileLists[1].user_id)).toBeInTheDocument();
-
     });
   });
   it("render useState is working ", () => {
@@ -290,7 +296,7 @@ describe("Upload file page", () => {
     expect(result.current.pathname).toBe("/about");
   });
   it("Message component displays correct content", () => {
-    const {getByTestId}=render(<UploadFiles />);
+    const { getByTestId } = render(<UploadFiles />);
     const messageContent = "Test message";
 
     // Render the Message component
@@ -299,7 +305,6 @@ describe("Upload file page", () => {
     // Assert that the message content is displayed
     const messageElement = screen.getByText(messageContent);
     expect(messageElement).toBeInTheDocument();
-    
   });
 });
 afterEach(cleanup);

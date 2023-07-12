@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Row, Col, Form, Input, Button, Select, Modal,message } from "antd";
+import { Row, Col, Form, Input, Button, Select, Modal, message } from "antd";
 import styles from "../ProfileInfo/ProfileInfoUI/ProfileInfo.module.scss";
 import messages from "../../../messages";
 import verifyIcon from "../../../../public/images/checkbox-icn.svg";
@@ -23,7 +23,7 @@ function VerifyMobileNumberForm({
   handleMobileNumberChange,
   userProfileSkeletonV,
   setIsOTPModalVisible,
-  setOTP
+  setOTP,
 }: any) {
   const [symbolsArr] = useState(["e", "E", "+", "-", "."]);
   const [maxLengthKeysAllowed] = useState([
