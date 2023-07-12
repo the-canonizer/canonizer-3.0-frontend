@@ -420,7 +420,6 @@ const TimelineInfoBar = ({
                 </span>
               )}
               {"  "}
-              {console.log(topicSubscriptionID)}
               {!!topicSubscriptionID && (
                 <Tooltip
                   title="You have subscribed to the entire topic."
