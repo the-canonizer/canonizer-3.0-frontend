@@ -31,74 +31,6 @@ const onFinishFailed = jest.fn();
 const handleselectAfter = jest.fn();
 const handleAddressChange = jest.fn();
 const handleAddressSelect = jest.fn();
-jest.mock("next/router", () => ({
-  useRouter: jest.fn(),
-}));
-jest.mock("src/network/api/userApi", () => ({
-  UpdateUserProfileInfo: jest.fn(() =>
-    Promise.resolve({ data: {}, status_code: 200 })
-  ),
-  SendOTP: jest.fn(() => Promise.resolve({ data: {}, status_code: 200 })),
-  GetMobileCarrier: jest.fn(() =>
-    Promise.resolve({ data: {}, status_code: 200 })
-  ),
-  VerifyOTP: jest.fn(() => Promise.resolve({ data: {}, status_code: 200 })),
-  GetAlgorithmsList: jest.fn(() =>
-    Promise.resolve({ data: {}, status_code: 200 })
-  ),
-  GetLanguageList: jest.fn(() =>
-    Promise.resolve({ data: {}, status_code: 200 })
-  ),
-  GetUserProfileInfo: jest.fn().mockReturnValue(
-    Promise.resolve({
-      data: {
-        phone_number: 12321312312,
-        mobile_carrier: "sdc",
-        birthday: "01-01-20",
-        postalCode: 411021,
-      },
-      success: true,
-    })
-  ),
-  getUploadFileAndFolder: jest.fn(() =>
-    Promise.resolve({ data: {}, status_code: 200 })
-  ),
-}));
-jest.mock("src/hooks/isUserAuthenticated", () =>
-  jest.fn(() => ({ isUserAuthenticated: true }))
-);
-const algorithmList = [
-  {
-    algorithm_key: "blind_popularity",
-    algorithm_label: "One Person One Vote",
-    id: 1,
-  },
-  {
-    algorithm_key: "mind_experts",
-    algorithm_label: "mind experts",
-    id: 2,
-  },
-  {
-    algorithm_key: "computer_science_experts",
-    algorithm_label: "computer science experts",
-    id: 3,
-  },
-];
-const languageList = [
-  {
-    id: 1,
-    name: "English",
-  },
-  {
-    id: 2,
-    name: "French",
-  },
-  {
-    id: 3,
-    name: "Spain",
-  },
-];
-
 const userProfileData = {
   address_1: "sector-102,sudo enclave,florida",
   address_2: "sector-102,sudo enclave,florida",
@@ -141,6 +73,76 @@ const mobileCarrierData = [
     name: "def",
   },
 ];
+const algorithmList = [
+  {
+    algorithm_key: "blind_popularity",
+    algorithm_label: "One Person One Vote",
+    id: 1,
+  },
+  {
+    algorithm_key: "mind_experts",
+    algorithm_label: "mind experts",
+    id: 2,
+  },
+  {
+    algorithm_key: "computer_science_experts",
+    algorithm_label: "computer science experts",
+    id: 3,
+  },
+];
+const languageList = [
+  {
+    id: 1,
+    name: "English",
+  },
+  {
+    id: 2,
+    name: "French",
+  },
+  {
+    id: 3,
+    name: "Spain",
+  },
+];
+jest.mock("next/router", () => ({
+  useRouter: jest.fn(),
+}));
+jest.mock("src/network/api/userApi", () => ({
+  UpdateUserProfileInfo: jest.fn(() =>
+    Promise.resolve({ data: {}, status_code: 200 })
+  ),
+  SendOTP: jest.fn(() => Promise.resolve({ data: {}, status_code: 200 })),
+  GetMobileCarrier: jest.fn(() =>
+    Promise.resolve({ data: mobileCarrierData, status_code: 200 })
+  ),
+  VerifyOTP: jest.fn(() => Promise.resolve({ data: {}, status_code: 200 })),
+  GetAlgorithmsList: jest.fn(() =>
+    Promise.resolve({ data: algorithmList, status_code: 200 })
+  ),
+  GetLanguageList: jest.fn(() =>
+    Promise.resolve({ data: languageList, status_code: 200 })
+  ),
+  GetUserProfileInfo: jest.fn().mockReturnValue(
+    Promise.resolve({
+      data: {
+        phone_number: 12321312312,
+        mobile_carrier: "sdc",
+        birthday: "01-01-20",
+        postalCode: 411021,
+      },
+      success: true,
+    })
+  ),
+  getUploadFileAndFolder: jest.fn(() =>
+    Promise.resolve({ data: {}, status_code: 200 })
+  ),
+}));
+jest.mock("src/hooks/isUserAuthenticated", () =>
+  jest.fn(() => ({ isUserAuthenticated: true }))
+);
+
+
+
 const address = "";
 const setupGoogleMock = () => {
   /** Mock Google Maps JavaScript API **/
