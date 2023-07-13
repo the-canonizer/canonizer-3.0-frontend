@@ -59,10 +59,10 @@ export default function HomeSideBar({
             onClick={showDrawer}
             className="btnFilter drawerBtn"
           >
-            Canonizer Sorted Camp Tree
+            Consensus Tree
           </Button>
           <Drawer
-            title="Canonizer Sorted Camp Tree"
+            title="Consensus Tree"
             placement="left"
             onClose={onClose}
             visible={drawerIsVisible}
