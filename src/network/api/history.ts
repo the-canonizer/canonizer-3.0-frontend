@@ -8,45 +8,31 @@ import NetworkCall from "../networkCall";
 import historyRequest from "../request/historyRequest";
 import { createToken } from "./userApi";
 
-function getCookie(cname) {
-  let name = cname + "=";
-  let decodedCookie = decodeURIComponent(document.cookie);
-  let ca = decodedCookie.split(";");
-  for (let i = 0; i < ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) == " ") {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
-}
-
 export const getHistoryApi = async (
   reqBody,
   pageNumber,
   historyOf: string,
-  tokenSsr = null,
   loginToken = null
 ) => {
-  let state = await store.getState();
+  let token;
+  if (isServer()) {
+    if (loginToken) {
+      token = loginToken;
+    } else {
+      const response = await createToken();
+      token = response?.access_token;
+    }
+  } else {
+    let state = await store.getState();
+    const { auth } = state,
+      tc = localStorage?.getItem("auth_token");
+    token = auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
 
-  const { auth } = state,
-    tc = !isServer()
-      ? localStorage?.getItem("auth_token") || getCookie("authToken")
-      : loginToken || tokenSsr;
-
-  let token = !isServer()
-    ? auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc
-    : tc;
-
-  if (!token) {
-    const response = await createToken();
-    token = response?.access_token;
+    if (!token) {
+      const response = await createToken();
+      token = response?.access_token;
+    }
   }
-
   try {
     const history = await NetworkCall.fetch(
       historyRequest.getHistory(reqBody, token, historyOf),

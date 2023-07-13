@@ -16,17 +16,12 @@ import UserRequest from "../request/userRequest";
 import { store } from "../../store";
 import { setFilterCanonizedTopics } from "../../store/slices/filtersSlice";
 import { setHeaderData } from "src/store/slices/notificationSlice";
-import { useCookies } from "react-cookie";
 
 export const createToken = async () => {
   try {
-    // const [cookie, setCookie] = useCookies(["authToken"]);
     const token = await NetworkCall.fetch(UserRequest.createToken());
     store.dispatch(setAuthToken(token?.data?.access_token));
-    console.log("auth token ", token?.data?.access_token);
-
     localStorage.setItem("auth_token", token?.data?.access_token);
-    document.cookie = "authToken=" + token?.data?.access_token + ";path=/";
     return token.data;
   } catch (error) {
     handleError(error);
@@ -46,7 +41,7 @@ export const login = async (email: string, password: string) => {
       token: res.data.auth?.access_token,
       refresh_token: res.data?.auth?.refresh_token,
     };
-    document.cookie = "authToken2=" + res.data.auth?.access_token + ";path=/";
+    document.cookie = "loginToken=" + res.data.auth?.access_token + ";path=/";
     store.dispatch(setLoggedInUser(payload));
 
     return res;
@@ -141,7 +136,7 @@ export const verifyOtp = async (values: object) => {
       token: res.data.auth?.access_token,
       refresh_token: res.data?.auth?.refresh_token,
     };
-    document.cookie = "authToken2=" + res.data.auth?.access_token + ";path=/";
+    document.cookie = "loginToken=" + res.data.auth?.access_token + ";path=/";
     store.dispatch(setLoggedInUser(payload));
 
     return res;
@@ -198,7 +193,7 @@ export const socialLoginCallback = async (values: object, router) => {
       token: res.data.auth?.access_token,
       refresh_token: res.data?.auth?.refresh_token,
     };
-    document.cookie = "authToken2=" + res.data.auth?.access_token + ";path=/";
+    document.cookie = "loginToken=" + res.data.auth?.access_token + ";path=/";
     store.dispatch(setLoggedInUser(payload));
 
     if (res && res.status_code === 200 && res?.data?.user?.default_algo) {
