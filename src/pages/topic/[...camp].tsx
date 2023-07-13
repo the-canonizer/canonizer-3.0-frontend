@@ -100,13 +100,13 @@ export async function getServerSideProps({ req, res, resolvedUrl }) {
     getNewsFeedApi(reqBody, req.cookies["authToken"]),
     getCurrentTopicRecordApi(reqBody, req.cookies["authToken"]),
     getCurrentCampRecordApi(reqBody, req.cookies["authToken"]),
+    getCanonizedCampStatementApi(reqBody),
     getHistoryApi(
       reqBodyForCampData,
       "1",
       "statement",
       req.cookies["authToken"]
     ),
-    getCanonizedAlgorithmsApi(),
     getTreesApi(reqBodyForService),
   ]);
 
