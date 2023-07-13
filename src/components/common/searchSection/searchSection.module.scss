@@ -111,4 +111,50 @@
       width: 100%;
     }
   }
+  &.wrapHeader {
+    padding: 0;
+    background-color: transparent;
+    margin-left: 15px;
+    .container {
+      form {
+        .form {
+          border: none;
+          height: auto;
+          display: block;
+          margin: 0;
+          padding: 0;
+          .formInput {
+            &.formInputHeader {
+              margin: 0;
+              padding: 0;
+              max-width: 300px;
+              width: 300px;
+              [class="ant-input-affix-wrapper ant-input-affix-wrapper-lg"],
+              [class="ant-input-affix-wrapper ant-input-affix-wrapper-focused ant-input-affix-wrapper-lg"] {
+                display: flex;
+                align-items: center;
+                background-color: #2c6cb5 !important;
+                border-color: #2c6cb5 !important;
+                [class="icon-search"] {
+                  color: #fff;
+                }
+                input {
+                  background-color: #2c6cb5 !important;
+                  color: #fff !important;
+                  box-shadow: none !important;
+                  &::placeholder {
+                    color: #f1f1f1;
+                    font-size: 14px;
+                  }
+                }
+              }
+              [class="ant-input-group-addon"] {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }

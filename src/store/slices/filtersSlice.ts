@@ -19,6 +19,7 @@ export const filtersSlice = createSlice({
     selectedCampNode: null,
     current_date: new Date().valueOf(),
     viewThisVersionCheck: false,
+    showDrawer: false,
   },
   reducers: {
     setFilterCanonizedTopics: (state, action) => {
@@ -44,6 +45,9 @@ export const filtersSlice = createSlice({
     setCurrentDate: (state, action) => {
       state.current_date = action.payload;
     },
+    setShowDrawer: (state, action) => {
+      state.showDrawer = action.payload;
+    },
   },
 });
 
@@ -53,6 +57,7 @@ export const {
   setCurrentCamp,
   setViewThisVersion,
   setCurrentDate,
+  setShowDrawer,
 } = filtersSlice.actions;
 
 export default filtersSlice.reducer;

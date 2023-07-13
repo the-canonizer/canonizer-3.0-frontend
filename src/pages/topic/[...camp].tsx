@@ -20,7 +20,6 @@ import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 
 import { getHistoryApi } from "../../network/api/history";
 
-import Layout from "src/hoc/layout";
 import TopicDetails from "src/components/ComponentPages/TopicDetails";
 import { setCurrentDate } from "src/store/slices/filtersSlice";
 
@@ -48,9 +47,7 @@ const TopicDetailsPage = ({
 
   return (
     <>
-      <Layout>
-        <TopicDetails />
-      </Layout>
+      <TopicDetails />
     </>
   );
 };
