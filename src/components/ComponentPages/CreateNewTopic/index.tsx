@@ -9,7 +9,10 @@ import { RootState } from "../../../store";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
 import CreateNewTopicUI from "./UI/TopicUI";
 import isAuth from "../../../hooks/isUserAuthenticated";
-import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
+import {
+  setFilterCanonizedTopics,
+  setShowDrawer,
+} from "../../../store/slices/filtersSlice";
 import messages from "../../../messages";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
@@ -94,6 +97,7 @@ const CreateNewTopic = ({
       });
       setOptions(oldOptions);
       setIsLoading(false);
+      dispatch(setShowDrawer(true));
     }
 
     if (res && res.status_code === 400) {

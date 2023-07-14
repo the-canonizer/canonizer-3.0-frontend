@@ -21,6 +21,7 @@ function Layout(props: any) {
     <>
       <div className={styles.pageWrap}>
         {isUserAuthenticated ? <LoggedInHeader /> : <LoggedOutHeader />}
+        {props?.campInfoBar ? props?.campInfoBar : null}
         <div className={styles.contentWrap}>
           <div
             className={
