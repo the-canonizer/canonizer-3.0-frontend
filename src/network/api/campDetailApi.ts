@@ -29,19 +29,25 @@ export const getTreesApi = async (reqBody) => {
   }
 };
 
-export const getNewsFeedApi = async (reqBody, tokenSsr = null) => {
-  let state = await store.getState();
+export const getNewsFeedApi = async (reqBody, loginToken = null) => {
+  let token;
 
-  const { auth } = state,
-    tc = !isServer ? localStorage?.getItem("auth_token") : tokenSsr;
-
-  console.log("tc", tc);
-
-  let token = auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
-
-  if (!token) {
-    const response = await createToken();
-    token = response?.access_token;
+  if (isServer()) {
+    if (loginToken) {
+      token = loginToken;
+    } else {
+      const response = await createToken();
+      token = response?.access_token;
+    }
+  } else {
+    let state = await store.getState();
+    const { auth } = state,
+      tc = localStorage?.getItem("auth_token");
+    token = auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
+    if (!token) {
+      const response = await createToken();
+      token = response?.access_token;
+    }
   }
 
   try {
@@ -58,18 +64,29 @@ export const getNewsFeedApi = async (reqBody, tokenSsr = null) => {
 
 export const getCanonizedCampStatementApi = async (
   reqBody,
-  tokenSsr = null
+  loginToken = null
 ) => {
-  let state = await store.getState();
+  let token;
 
-  const { auth } = state,
-    tc = !isServer ? localStorage?.getItem("auth_token") : tokenSsr;
+  if (isServer()) {
+    if (loginToken) {
+      token = loginToken;
+    } else {
+      const response = await createToken();
+      token = response?.access_token;
+    }
+  } else {
+    let state = await store.getState();
+    const { auth } = state,
+      tc = localStorage?.getItem("auth_token");
 
-  let token = auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
+    let token =
+      auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
 
-  if (!token) {
-    const response = await createToken();
-    token = response?.access_token;
+    if (!token) {
+      const response = await createToken();
+      token = response?.access_token;
+    }
   }
 
   try {
@@ -84,24 +101,34 @@ export const getCanonizedCampStatementApi = async (
   }
 };
 
-export const getCurrentTopicRecordApi = async (reqBody, tokenSsr = null) => {
-  let state = await store.getState();
+export const getCurrentTopicRecordApi = async (reqBody, loginToken = null) => {
+  let token;
+  if (isServer()) {
+    if (loginToken) {
+      token = loginToken;
+    } else {
+      const response = await createToken();
+      token = response?.access_token;
+    }
+  } else {
+    let state = await store.getState();
+    const { auth } = state,
+      tc = localStorage?.getItem("auth_token");
 
-  const { auth } = state,
-    tc = !isServer ? localStorage?.getItem("auth_token") : tokenSsr;
+    let token =
+      auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
 
-  let token = auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
-
-  if (!token) {
-    const response = await createToken();
-    token = response?.access_token;
+    if (!token) {
+      const response = await createToken();
+      token = response?.access_token;
+    }
   }
-
   try {
     const currentTopicRecord = await NetworkCall.fetch(
       TreeRequest.getCurrentTopicRecord(reqBody, token),
       false
     );
+
     store.dispatch(setCurrentTopicRecord(currentTopicRecord?.data));
     return currentTopicRecord?.data;
   } catch (error) {
@@ -109,17 +136,26 @@ export const getCurrentTopicRecordApi = async (reqBody, tokenSsr = null) => {
   }
 };
 
-export const getCurrentCampRecordApi = async (reqBody, tokenSsr = null) => {
-  let state = await store.getState();
+export const getCurrentCampRecordApi = async (reqBody, loginToken = null) => {
+  let token;
+  if (isServer()) {
+    if (loginToken) {
+      token = loginToken;
+    } else {
+      const response = await createToken();
+      token = response?.access_token;
+    }
+  } else {
+    let state = await store.getState();
+    const { auth } = state,
+      tc = localStorage?.getItem("auth_token");
 
-  const { auth } = state,
-    tc = !isServer ? localStorage?.getItem("auth_token") : tokenSsr;
+    token = auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
 
-  let token = auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
-
-  if (!token) {
-    const response = await createToken();
-    token = response?.access_token;
+    if (!token) {
+      const response = await createToken();
+      token = response?.access_token;
+    }
   }
 
   try {

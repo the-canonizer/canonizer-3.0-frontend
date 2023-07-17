@@ -1,3 +1,4 @@
+import { isServer } from "src/utils/generalUtility";
 import K from "../../constants";
 import { store } from "../../store";
 
@@ -19,7 +20,9 @@ export default class Request {
     const { auth } = state;
 
     let bearerToken = "";
-    if (auth?.loggedInUser) {
+    if (isServer && token) {
+      bearerToken = token;
+    } else if (auth?.loggedInUser) {
       token ? (bearerToken = token) : (bearerToken = auth?.loggedInUser?.token);
     } else {
       bearerToken = auth?.authToken;

@@ -1,8 +1,9 @@
 import { Fragment, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-
-import Layout from "src/hoc/layout";
+import dynamic from "next/dynamic";
+// import Layout from "src/hoc/layout";
+const Layout = dynamic(() => import("../hoc/layout"));
 import HomePageContainer from "src/components/ComponentPages/Home";
 import { getCanonizedWhatsNewContentApi } from "src/network/api/homePageApi";
 import {
@@ -51,6 +52,10 @@ function Home({ current_date }) {
             refresh_token: null,
           })
         );
+        document.cookie =
+          "loginToken=" +
+          accessToken +
+          "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
         const { access_token, ...rest } = router?.query;
         router.query = rest;
         await router?.replace(router, null, { shallow: true });
@@ -59,9 +64,6 @@ function Home({ current_date }) {
 
     if (accessToken) {
       localStorage.setItem("auth_token", accessToken);
-      setCookie("authToken", accessToken, {
-        path: "/",
-      });
       dispatch(setAuthToken(accessToken));
       getData(accessToken);
     }
