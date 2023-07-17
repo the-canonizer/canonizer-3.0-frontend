@@ -72,6 +72,7 @@ export default function HomeSideBar({
             height={"auto"}
             size="large"
             bodyStyle={{ paddingBottom: 80 }}
+            forceRender
           >
             <TopicsFilterWithDrawer
               onCreateCamp={onCreateCamp}

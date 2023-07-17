@@ -141,8 +141,6 @@ jest.mock("src/hooks/isUserAuthenticated", () =>
   jest.fn(() => ({ isUserAuthenticated: true }))
 );
 
-
-
 const address = "";
 const setupGoogleMock = () => {
   /** Mock Google Maps JavaScript API **/

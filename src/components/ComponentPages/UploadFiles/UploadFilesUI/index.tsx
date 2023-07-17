@@ -1071,8 +1071,7 @@ const UploadFileUI = ({
                         </div>
                         <div>
                           <Button
-                            data-testid = "add_AFile_Btn2"
-
+                            data-testid="add_AFile_Btn2"
                             disabled={disabledResetButton}
                             onClick={() => {
                               setSearch("");
@@ -1090,8 +1089,7 @@ const UploadFileUI = ({
                           </Button>
                         </div>
                         <Button
-                            data-testid = "add_AFile_Btn"
-
+                          data-testid="add_AFile_Btn"
                           id="createFolderBtn"
                           disabled={disabledCreateFolder}
                           className={styles.create_folder_btn}
@@ -1414,7 +1412,7 @@ const UploadFileUI = ({
                           Upload
                         </Button>
                         <Button
-                          data-testid ="cancel_btn"
+                          data-testid="cancel_btn"
                           id="cancelBtn"
                           htmlType="button"
                           className={styles.cancel_Btn}
@@ -1578,7 +1576,6 @@ const UploadFileUI = ({
             </Button>
             <Button
               data-testid="cancel_modal"
-
               onClick={() => {
                 setDeleteConfirmationVisible(false);
               }}
