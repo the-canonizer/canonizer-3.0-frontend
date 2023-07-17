@@ -2,6 +2,8 @@ import React, { Fragment } from "react";
 import App, { AppContext, AppInitialProps } from "next/app";
 import { Provider } from "react-redux";
 import scriptLoader from "react-async-script-loader";
+import { CookiesProvider } from "react-cookie";
+import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
 import "antd/dist/antd.css";
 import "react-quill/dist/quill.snow.css";
@@ -10,6 +12,7 @@ import "../../styles/globals.scss";
 import "../../styles/variables.less";
 import "../assets/fonticons/style.css";
 import "../assets/scss/global.scss";
+import "../assets/editorcss/editor.css";
 
 import ErrorBoundary from "../hoc/ErrorBoundary";
 import HeadContentAndPermissionComponent from "../components/common/headContentAndPermisisonCheck";
@@ -23,15 +26,27 @@ class WrappedApp extends App<AppInitialProps> {
 
     return (
       <Fragment>
-        <Provider store={store}>
-          <ErrorBoundary>
-            <HeadContentAndPermissionComponent
-              componentName={Component.displayName || Component.name}
-              metaContent={meta}
-            />
-            <Component {...pageProps} />
-          </ErrorBoundary>
-        </Provider>
+        <CookiesProvider>
+          <Provider store={store}>
+            <ErrorBoundary>
+              <HeadContentAndPermissionComponent
+                componentName={Component.displayName || Component.name}
+                metaContent={meta}
+              />
+              <GoogleReCaptchaProvider
+                reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                scriptProps={{
+                  async: false,
+                  defer: false,
+                  appendTo: "head",
+                  nonce: undefined,
+                }}
+              >
+                <Component {...pageProps} />
+              </GoogleReCaptchaProvider>
+            </ErrorBoundary>
+          </Provider>
+        </CookiesProvider>
       </Fragment>
     );
   }
@@ -248,6 +263,10 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
           "statement"
         );
       }
+    } else if (aspath?.includes("login.asp")) {
+      returnData = "/login";
+    } else if (aspath?.includes("signup.asp")) {
+      returnData = "/registration";
     } else {
       returnData = await redirect(aspath, null, null, "");
     }

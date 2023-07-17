@@ -390,7 +390,7 @@ const TimelineInfoBar = ({
               }
             >
               {" "}
-              <span className="bold"> Topic : </span>
+              <span className="normal"> Topic : </span>
               {loadingIndicator ? (
                 <CustomSkelton
                   skeltonFor="list"
@@ -421,9 +421,14 @@ const TimelineInfoBar = ({
               )}
               {"  "}
               {!!topicSubscriptionID && (
-                <small>
-                  <i className="icon-subscribe text-primary"></i>
-                </small>
+                <Tooltip
+                  title="You have subscribed to the entire topic."
+                  key="camp_subscribed_icon"
+                >
+                  <small>
+                    <i className="icon-subscribe text-primary"></i>
+                  </small>
+                </Tooltip>
               )}
             </Typography.Paragraph>
             <div className={styles.breadcrumbLinks}>
@@ -431,7 +436,7 @@ const TimelineInfoBar = ({
               <Typography.Paragraph
                 className={"mb-0 " + styles.topicTitleStyle}
               >
-                <span className="bold mr-1">
+                <span className="normal mr-1">
                   {!isTopicHistoryPage ? "Camp :" : ""}{" "}
                 </span>
                 {loadingIndicator ? (
@@ -480,15 +485,20 @@ const TimelineInfoBar = ({
                   )
                 ) : null}
                 {!!campSubscriptionID && !isTopicHistoryPage && (
-                  <small style={{ alignSelf: "center", marginLeft: "10px" }}>
-                    <i className="icon-subscribe text-primary"></i>
-                  </small>
+                  <Tooltip
+                    title="You have subscribed to this camp."
+                    key="camp_subscribed_icon"
+                  >
+                    <small style={{ alignSelf: "center", marginLeft: "10px" }}>
+                      <i className="icon-subscribe text-primary"></i>
+                    </small>
+                  </Tooltip>
                 )}
               </Typography.Paragraph>
             </div>
           </div>
 
-          <div className={styles.topicDetailContentHead_Right}>
+          {/* <div className={styles.topicDetailContentHead_Right}>
             <Typography.Paragraph
               className={"mb-0 campInfoRight " + styles.topicTitleStyle}
             >
@@ -556,7 +566,7 @@ const TimelineInfoBar = ({
                           >
                             Event Line
                           </Button> : null
-                      } */}
+                      } 
                       <Dropdown
                         className={styles.campForumDropdown}
                         placement="bottomRight"
@@ -575,7 +585,7 @@ const TimelineInfoBar = ({
                 </Fragment>
               )}
             </Typography.Paragraph>
-          </div>
+          </div> */}
         </Spin>
       </div>
     </>

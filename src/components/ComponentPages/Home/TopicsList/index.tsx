@@ -9,11 +9,15 @@ import { RootState } from "../../../../store";
 import {
   getCanonizedNameSpacesApi,
   getCanonizedTopicsApi,
+  getCanonizedTopicsForSuggestion,
 } from "../../../../network/api/homePageApi";
-import { setFilterCanonizedTopics } from "../../../../store/slices/filtersSlice";
+import {
+  setFilterCanonizedTopics,
+  setShowDrawer,
+} from "../../../../store/slices/filtersSlice";
 import styles from "./topicsList.module.scss";
 import { Spin, Checkbox } from "antd";
-import { LoadingOutlined, RightOutlined } from "@ant-design/icons";
+import { LoadingOutlined, CopyOutlined } from "@ant-design/icons";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import {
   setCheckSupportExistsData,
@@ -26,9 +30,10 @@ import {
 } from "src/utils/generalUtility";
 import CustomSkelton from "../../../common/customSkelton";
 import { CloseCircleOutlined } from "@ant-design/icons";
+import { clearAllListeners } from "@reduxjs/toolkit";
 
 const antIcon = <LoadingOutlined spin />;
-const { Title, Text } = Typography;
+const { Title, Text, Paragraph } = Typography;
 const { Search } = Input;
 
 const infoContent = (
@@ -65,7 +70,9 @@ const TopicsList = () => {
     search,
     is_checked,
     is_archive,
+    // archeived
   } = useSelector((state: RootState) => ({
+    // archeived: state.utils?.archived_checkbox,
     canonizedTopics: state.homePage?.canonizedTopicsData,
     asofdate: state.filters?.filterObject?.asofdate,
     asof: state.filters?.filterObject?.asof,
@@ -97,6 +104,10 @@ const TopicsList = () => {
     useState(false);
   const [selectedNameSpace, setSelectedNameSpace] = useState(filterNameSpace);
   const [clear, setClear] = useState(false);
+  const [showSearchDropdown, setShowSearchDropdown] = useState(false);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchedResult, setSearchedResult] = useState([]);
 
   let onlyMyTopicsCheck = useRef();
 
@@ -179,7 +190,7 @@ const TopicsList = () => {
     // setArchiveSearch(is_archive);
     setInputSearch(search.trim());
     setNameSpacesList(nameSpaces);
-  }, [filterNameSpace, filterNameSpaceId, search, nameSpaces,is_archive]);
+  }, [filterNameSpace, filterNameSpaceId, search, nameSpaces, is_archive]);
 
   useEffect(() => {
     setTopicsData(canonizedTopics);
@@ -236,6 +247,7 @@ const TopicsList = () => {
       search: inputSearch,
       filter: filterByScore,
       asof: asof,
+      // archive:archeived?1:0,
       user_email: onlyMyTopicsCheck.current ? userEmail : "",
       is_archive: is_camp_archive_checked ? 1 : 0,
     };
@@ -249,6 +261,81 @@ const TopicsList = () => {
         search: value || "",
       })
     );
+    setShowSearchDropdown(false);
+  };
+
+  const handleKeyUpSearch = (event: any) => {
+    setSearchedResult([]);
+    setSearchLoading(true);
+    const value = event.target.value?.trim();
+    if (value) {
+      setSearchTerm(value);
+      setShowSearchDropdown(true);
+    } else {
+      setSearchTerm("");
+      setSearchedResult([]);
+      setShowSearchDropdown(false);
+    }
+  };
+
+  const onSearchInput = async (value: string) => {
+    try {
+      const reqBody = {
+        algorithm: algorithm,
+        asofdate:
+          asof == ("default" || asof == "review")
+            ? Date.now() / 1000
+            : asofdate,
+        namespace_id: nameSpaceId,
+        page_number: pageNumberRef.current,
+        page_size: 15,
+        search: value,
+        filter: filterByScore,
+        asof: asof,
+        user_email: onlyMyTopicsCheck.current ? userEmail : "",
+        // is_archive: is_camp_archive_checked ? 1 : 0,
+      };
+      const res = await getCanonizedTopicsForSuggestion(reqBody);
+      setSearchLoading(false);
+      if (res) {
+        setSearchedResult(res?.topic);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  let throttled: NodeJS.Timeout | null = null;
+
+  useEffect(() => {
+    if (throttled) {
+      clearTimeout(throttled);
+    }
+
+    throttled = setTimeout(() => {
+      if (searchTerm?.trim()) {
+        onSearchInput(searchTerm);
+      }
+    }, 800);
+
+    return () => {
+      if (throttled) {
+        clearTimeout(throttled);
+        throttled = null;
+      }
+    };
+  }, [searchTerm]);
+
+  const hanldeTopicNameClick = (
+    value: string,
+    e: { preventDefault: () => void }
+  ) => {
+    e.preventDefault();
+    if (value?.trim()) {
+      setInputSearch(value?.trim());
+      setSearchTerm(value?.trim());
+      setShowSearchDropdown(false);
+    }
   };
 
   const LoadMoreTopics = (
@@ -293,6 +380,7 @@ const TopicsList = () => {
 
   const handleTopicClick = () => {
     setGetTopicsLoadingIndicator(true);
+    dispatch(setShowDrawer(true));
   };
   useEffect(() => {
     //When Page is render remove data from GetCheckSupportStatus and GetCheckSupportExistsData
@@ -358,7 +446,43 @@ const TopicsList = () => {
               className={styles.topic}
               defaultValue={inputSearch}
               onSearch={onSearch}
+              onChange={handleKeyUpSearch}
+              onBlur={() => {
+                setTimeout(() => {
+                  setShowSearchDropdown(false);
+                }, 300);
+              }}
+              onFocus={() => {
+                if (!inputSearch) {
+                  setSearchTerm(inputSearch);
+                }
+                setSearchLoading(false);
+                setShowSearchDropdown(true);
+              }}
             />
+            {showSearchDropdown && searchTerm && (
+              <div className={styles.dropdown_list}>
+                <ul>
+                  {searchLoading ? (
+                    <li className={styles.searLoader}>
+                      <LoadingOutlined spin />
+                    </li>
+                  ) : searchedResult?.length > 0 ? (
+                    searchedResult?.map((t) => (
+                      <li
+                        onClick={hanldeTopicNameClick.bind(this, t?.topic_name)}
+                      >
+                        {t?.topic_name}
+                      </li>
+                    ))
+                  ) : searchTerm ? (
+                    <li>No Data</li>
+                  ) : (
+                    ""
+                  )}
+                </ul>
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -404,7 +528,7 @@ const TopicsList = () => {
                     }}
                   >
                     {!item.is_archive ||
-                    (item.is_archive && is_camp_archive_checked)?(
+                    (item.is_archive && is_camp_archive_checked) ? (
                       <a
                         onClick={() => {
                           handleTopicClick();
@@ -424,7 +548,7 @@ const TopicsList = () => {
                                   item?.tree_structure[1].review_title
                                 : item?.topic_name}
                             </Popover>
-                          ) :isReview ? (
+                          ) : isReview ? (
                             item?.tree_structure &&
                             item?.tree_structure[1].review_title
                           ) : (
@@ -438,8 +562,30 @@ const TopicsList = () => {
                             : item?.topic_score?.toFixed(2)}
                         </Tag>
                       </a>
-                    ):(<></>)}
+                    ) : (
+                      <></>
+                    )}
                   </Link>
+                  <Paragraph
+                    className={styles.copyable}
+                    copyable={{
+                      text: item.is_archive ? (
+                        <Popover content="Archived Topic">
+                          {isReview
+                            ? item?.tree_structure &&
+                              item?.tree_structure[1].review_title
+                            : item?.topic_name}
+                        </Popover>
+                      ) : isReview ? (
+                        item?.tree_structure &&
+                        item?.tree_structure[1].review_title
+                      ) : (
+                        item?.topic_name
+                      ),
+                    }}
+                  >
+                    {" "}
+                  </Paragraph>
                 </>
               </List.Item>
             );

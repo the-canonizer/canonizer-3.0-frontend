@@ -9,7 +9,7 @@ function ProfileInfoUI({
   onFinish,
   onFinishFailed,
   formVerify,
-  onVerifyClick,
+  // onVerifyClick,
   onOTPBtnClick,
   isOTPModalVisible,
   handleOTPCancel,
@@ -27,27 +27,30 @@ function ProfileInfoUI({
   disableButton,
   postalCodeDisable,
   userProfileSkeletonV,
+  setIsOTPModalVisible,
+  setOTP,
 }: any) {
   return (
     <section className={styles.profileInfo_wrapper}>
       <VerifyMobileNumber
         mobileCarrier={mobileCarrier}
         formVerify={formVerify}
-        onVerifyClick={onVerifyClick}
-        onOTPBtnClick={onOTPBtnClick}
+        // onVerifyClick={onVerifyClick}
+        // onOTPBtnClick={onOTPBtnClick}
         isOTPModalVisible={isOTPModalVisible}
+        setIsOTPModalVisible={setIsOTPModalVisible}
         handleOTPCancel={handleOTPCancel}
         otp={otp}
         handleChangeOTP={handleChangeOTP}
         toggleVerifyButton={toggleVerifyButton}
         handleMobileNumberChange={handleMobileNumberChange}
         userProfileSkeletonV={userProfileSkeletonV}
+        setOTP={setOTP}
       />
 
       <ProfileInfoForm
         form={form}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         handleselectAfter={handleselectAfter}
         privateFlags={privateFlags}
         algorithmList={algorithmList}

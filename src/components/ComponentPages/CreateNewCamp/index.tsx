@@ -16,6 +16,7 @@ import messages from "../../../messages";
 import CreateNewCampUI from "./UI/CampUI";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import isAuth from "../../../hooks/isUserAuthenticated";
+import { setShowDrawer } from "src/store/slices/filtersSlice";
 
 const CreateNewCamp = ({
   nickNames = [],
@@ -165,6 +166,7 @@ const CreateNewCamp = ({
         op.disable = false;
       });
       setOptions(oldOptions);
+      dispatch(setShowDrawer(true));
     }
 
     if (res && res.status_code === 400) {

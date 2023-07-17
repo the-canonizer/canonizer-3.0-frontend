@@ -45,7 +45,7 @@ const CreateCampFormUI = ({
   onCheckboxChange,
   onParentCampChange,
 }) => {
-  const router = useRouter()
+  const router = useRouter();
   const { campRecord } = useSelector((state: RootState) => ({
     campRecord: state?.topicDetails?.currentCampRecord,
   }));
@@ -56,10 +56,9 @@ const CreateCampFormUI = ({
     </span>
   );
   const toolTipContent = "This camp is under review";
-  const archiveToolTipContent = "This camp is archived"
+  const archiveToolTipContent = "This camp is archived";
   useEffect(() => {
-   campRecord.is_archive && 
-    router.pathname == "/camp/create/[...camp]"
+    campRecord.is_archive && router.pathname == "/camp/create/[...camp]"
       ? router?.back()
       : "";
   }, []);
@@ -171,16 +170,10 @@ const CreateCampFormUI = ({
                         key={camp.id}
                         id={`parent-camp-${camp.id}`}
                         camp={camp}
-                        disabled={
-                          camp.parent_change_in_review == true || camp.is_archive ? true : false
-                        }
+                        disabled={camp.is_archive ? true : false}
                       >
                         <Tooltip
-                          title={
-                            camp.parent_change_in_review == true
-                              ? toolTipContent :camp.is_archive ? archiveToolTipContent
-                              : null
-                          }
+                          title={camp.is_archive ? archiveToolTipContent : null}
                         >
                           {camp.camp_name}
                         </Tooltip>

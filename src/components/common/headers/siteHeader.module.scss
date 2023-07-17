@@ -55,6 +55,9 @@
     }
   }
   .navWrap {
+    // @media screen and (min-width: 1025px) {
+    //   display: flex;
+    // }
     @media screen and (max-width: 1199px) {
       padding: 1.5rem;
       position: fixed;
@@ -176,7 +179,7 @@
   .right {
     display: flex;
     align-items: center;
-    // width: 207px;
+    width: 218px;
     .iconMobMenu {
       margin-left: 1.5rem;
       button {
@@ -214,6 +217,9 @@
       .btnLogin {
         margin-right: 1rem;
       }
+    }
+    &.onlogin {
+      width: auto;
     }
     @media screen and (max-width: 767px) {
       width: auto;

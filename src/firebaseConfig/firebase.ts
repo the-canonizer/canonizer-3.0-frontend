@@ -43,7 +43,6 @@ export const firebaseCloudMessaging = {
           return token;
         }
       } catch (error) {
-        // console.error(error);
         return null;
       }
     }

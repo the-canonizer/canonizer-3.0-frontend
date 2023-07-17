@@ -2,6 +2,7 @@ import { Collapse, Popover, Image, Typography, Button, Select } from "antd";
 import React, { useEffect, useState, useRef } from "react";
 import { RightOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
+import moment from "moment";
 
 import CampTree from "../CampTree";
 import { RootState } from "src/store";
@@ -76,12 +77,15 @@ const CampTreeCard = ({
   const { isUserAuthenticated } = useAuthentication();
   const eventLinePath = router?.asPath.replace("topic", "eventline");
   const [treeExpandValue, setTreeExpandValue] = useState<any>(50);
+  const didMount = useRef(false);
   const prevTreeValueRef = useRef(50);
   const dispatch = useDispatch();
   const onCreateTreeDate = () => {
     dispatch(
       setFilterCanonizedTopics({
-        asofdate: tree["1"]?.created_date,
+        asofdate:
+          Date.parse(moment.unix(tree["1"]?.created_date).endOf("day")["_d"]) /
+          1000,
         asof: "bydate",
       })
     );
@@ -90,9 +94,11 @@ const CampTreeCard = ({
     setTreeExpandValue(value);
   };
   useEffect(() => {
-    return () => {
-      store.dispatch(setTree([]));
-    };
+    if (didMount.current) {
+      return () => {
+        store.dispatch(setTree([]));
+      };
+    } else didMount.current = true;
   }, []);
 
   return (
@@ -124,9 +130,11 @@ const CampTreeCard = ({
                   }}
                 >
                   {" "}
-                  {new Date(
-                    (tree && tree["1"]?.created_date) * 1000
-                  ).toLocaleString()}
+                  {
+                    new Date((tree && tree["1"]?.created_date) * 1000)
+                      .toLocaleString()
+                      ?.split(",")[0]
+                  }
                 </AntLink>
               </p>
             </div>

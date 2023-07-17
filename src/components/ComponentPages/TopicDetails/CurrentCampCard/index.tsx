@@ -13,6 +13,7 @@ import K from "../../../../constants";
 import { RootState } from "../../../../store";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 import CustomSkelton from "../../../common/customSkelton";
+import { useEffect } from "react";
 
 const { Panel } = Collapse;
 
@@ -34,6 +35,10 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }) => {
       history: state?.topicDetails?.history,
     })
   );
+
+  useEffect(() => {
+    console.log(campRecord, "#############campdata################");
+  }, []);
 
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
@@ -69,15 +74,14 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }) => {
             } else {
               return (
                 <Descriptions.Item
-                  label={description.label}
+                  label={<span className="boldLabel">{description.label}</span>}
                   key={description.key}
                 >
                   {campRecord && description.key != "camp_about_url"
                     ? campRecord &&
                       (description.key == "is_disabled" ||
                         description.key == "is_one_level" ||
-                        description.key == "is_archive"
-                        )
+                        description.key == "is_archive")
                       ? campRecord[description.key] == 1
                         ? "Yes"
                         : "No"

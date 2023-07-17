@@ -15,10 +15,17 @@
     font-weight: 500;
   }
 }
-
+.startNew {
+  margin-bottom: 0;
+}
 .topicDetailContentHead {
   width: 100%;
-  padding: 0 8px 10px 0;
+  padding: 15px;
+  padding-bottom: 0;
+  &.inforBarHEad {
+    padding: 0;
+    padding-bottom: 10px;
+  }
   & > div > div {
     @media screen and (min-width: 992px) {
       display: flex;
@@ -28,18 +35,67 @@
     }
   }
   &_Left {
+    &.rightPanel {
+      display: flex;
+      justify-content: space-between;
+      border: none;
+      padding-top: 0;
+      [class="btnsWrap"] {
+        display: flex;
+        button {
+          margin-bottom: 0 !important;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          font-size: 14px;
+          font-weight: 600;
+          color: #0f2a4d;
+          border: solid 1px #d9d9d9;
+          flex-flow: row;
+          i {
+            font-size: 1.1875rem;
+            color: var(--primary);
+            margin-right: 8px;
+          }
+          &:first-child {
+            margin-right: 15px;
+          }
+        }
+      }
+      .leftPanel {
+        margin-top: 0;
+        padding-top: 0;
+        width: auto;
+        .topicTitleStyle {
+          margin-right: 0;
+        }
+      }
+    }
     @media screen and (min-width: 992px) {
       display: flex;
       flex-wrap: wrap;
-      width: calc(100% - 390px);
+      // width: calc(100% - 220px);
+      width: 100%;
+      border-bottom: 1px solid #f1f1f1;
+      padding-top: 10px;
+      padding-bottom: 10px;
     }
     .topicTitleStyle,
     .breadcrumbLinks {
+      span {
+        &:first-child {
+          font-weight: normal;
+          font-size: 16px;
+        }
+      }
       font-size: 16px;
       color: #0f2a4d;
+      font-weight: 400;
     }
     .topicTitleStyle {
       margin-right: 50px;
+      font-weight: 700;
     }
     .topicTitleSkeleton {
       margin-right: 100px;
@@ -49,7 +105,7 @@
       a {
         font-size: 16px;
         color: var(--primary);
-        font-weight: 400;
+        font-weight: 700;
       }
     }
   }
@@ -57,11 +113,14 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    width: 100%;
+    padding-top: 10px;
     @media screen and (max-width: 991px) {
       margin-top: 1rem;
     }
     .btnCampForum {
-      margin-right: 10px;
+      margin-right: 20px;
+      margin-left: 20px;
       background-color: #4484ce;
       box-shadow: none;
       border-color: transparent;
@@ -75,6 +134,16 @@
     .campForumDropdown {
       font-size: 24px;
       color: #0f2a4d !important;
+      background-color: #e8ebef;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
       span {
         color: #000 !important;
         position: static !important;
@@ -85,6 +154,8 @@
 }
 
 .topicDetailsPanelNo {
+  margin-bottom: 0 !important;
+  border: none !important;
   [class="ant-collapse-item ant-collapse-item-active ant-collapse-item-disabled"] {
     [class="ant-collapse-header"] {
       img {
@@ -167,6 +238,7 @@
         color: #4484ce;
       }
       &.activeCamp {
+        font-size: 16px;
         color: #08b608 !important;
       }
     }
@@ -252,8 +324,8 @@
 }
 
 .boldBreadcrumb {
-  font-weight: 700;
-  font-size: 17px;
+  // font-weight: 700;
+  // font-size: 17px;
 }
 
 .slashStyle {
@@ -262,11 +334,13 @@
   svg {
     width: 11px;
   }
+  margin-left: 5px;
+  // font-size: 14px;
 }
 
 .greenIndicateText {
-  font-weight: 700;
-  font-size: 17px;
+  // font-weight: 600;
+  font-size: 18px;
   color: #08b608;
 }
 
