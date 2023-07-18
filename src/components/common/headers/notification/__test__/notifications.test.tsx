@@ -161,7 +161,10 @@ describe("Notifications", () => {
 
     const image = screen.getByAltText("fav-icon");
     expect(image).toBeInTheDocument();
-    expect(image).toHaveAttribute("src", "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");
+    expect(image).toHaveAttribute(
+      "src",
+      "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+    );
     // expect(image).toHaveAttribute("width", "32");
     // expect(image).toHaveAttribute("height", "32");
   });

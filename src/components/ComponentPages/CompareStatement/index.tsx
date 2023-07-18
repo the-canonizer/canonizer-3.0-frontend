@@ -5,14 +5,19 @@ import HtmlDiff from "htmldiff-js";
 import CompareStatementUI from "./UI";
 
 import { getCompareStatement } from "../../../network/api/history";
+import useAuthentication from "src/hooks/isUserAuthenticated";
 
 function CompareStatement() {
+  const router = useRouter();
+  const { isUserAuthenticated } = useAuthentication();
+
   const [isLoading, setIsLoading] = useState(false);
   const [statements, setStatements] = useState([]);
   const [liveStatement, setLiveStatement] = useState({});
   const [itemsStatus, setItemsStatus] = useState({});
+  const [isLoggedIn, setIsLoggedIn] = useState(isUserAuthenticated);
 
-  const router = useRouter();
+  useEffect(() => setIsLoggedIn(isUserAuthenticated), [isUserAuthenticated]);
 
   const getStatement = async (ids) => {
     // setIsLoading(true);
@@ -49,8 +54,9 @@ function CompareStatement() {
   useEffect(() => {
     const ids = (router?.query?.statements as String)?.split("_");
     const status = (router?.query?.status as String)?.split("-");
-
-    if (ids?.length) getStatement(ids);
+    if (isLoggedIn) {
+      if (ids?.length) getStatement(ids);
+    }
     if (status?.length) {
       const oldStatus = {};
       status.forEach((st) => {
@@ -61,7 +67,7 @@ function CompareStatement() {
       setItemsStatus(oldStatus);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router]);
+  }, [router, isLoggedIn]);
 
   return (
     <CompareStatementUI

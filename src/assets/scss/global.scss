@@ -20,15 +20,15 @@ body {
   // opacity: 0.4;
 }
 
-.diffdel img{
-  opacity:0.2; 
+.diffdel img {
+  opacity: 0.2;
 }
 
 .diffmod {
   display: inline !important;
 }
 
-del.diffmod img{
+del.diffmod img {
   opacity: 0.2;
 }
 
@@ -348,6 +348,23 @@ del.diffmod img{
     width: 3rem;
     height: 3rem;
     font-size: 1.25rem;
+    &.drawerBtn {
+      position: absolute;
+      height: auto;
+      right: auto;
+      left: 0;
+      width: auto;
+      padding-top: 5px;
+      top: 36%;
+      padding-bottom: 5px;
+      font-size: 14px;
+      font-weight: 600;
+      transform: rotate(90deg) translateY(-50%);
+      transform-origin: left;
+      background-color: rgb(248, 157, 21);
+      border-color: rgb(248, 157, 21);
+      border-radius: 8px 8px 0 0;
+    }
   }
 
   &_Card {
@@ -400,6 +417,10 @@ del.diffmod img{
         margin-top: 0.5rem;
       } */
     }
+    &.drawer_card {
+      padding: 0;
+      border: none;
+    }
   }
 
   .leftSidebarNewsFeeds {
@@ -411,6 +432,48 @@ del.diffmod img{
       .ant-collapse-extra {
         margin-top: 0.5rem;
       }
+    }
+  }
+}
+.treeDrawer {
+  .ant-drawer-header {
+    background-color: #f1f1f1;
+    border-bottom-width: 2px;
+
+    .ant-drawer-header-title {
+      .ant-drawer-title {
+        order: 0;
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .ant-drawer-close {
+        order: 1;
+        margin: 0;
+      }
+    }
+  }
+  .ant-drawer-body {
+    padding: 0;
+    // overflow: hidden;
+    // overflow-y: auto;
+    overflow: auto;
+  }
+  &.review {
+    .ant-drawer-header {
+      border-bottom: 2px solid #ffde0b;
+      background-color: #fffae3;
+    }
+  }
+  &.default {
+    .ant-drawer-header {
+      border-bottom: 2px solid #12c879;
+      background-color: #e5f6ee;
+    }
+  }
+  &.bydate {
+    .ant-drawer-header {
+      border-bottom: 2px solid #4484ce;
+      background-color: #eef3ff;
     }
   }
 }
@@ -1870,6 +1933,7 @@ del.diffmod img{
     .ant-tree-list-holder-inner {
       overflow-x: auto;
       overflow-y: clip;
+      overflow: visible;
       white-space: nowrap;
 
       & > .ant-tree-treenode-switcher-open {
