@@ -15,6 +15,7 @@ import {
   pushToTopics,
 } from "../../store/slices/recentActivitiesSlice";
 import { createToken } from "./userApi";
+import { getCookies } from "src/utils/generalUtility";
 
 export const getCanonizedTopicsApi = async (reqBody, loadMore = false) => {
   try {
@@ -59,16 +60,12 @@ export const getRecentActivitiesApi = async (
   try {
     let state = await store.getState();
 
+    const cc: any = getCookies();
+
     const { auth } = state,
-      tc = localStorage?.getItem("auth_token");
+      tc = cc?.loginToken;
 
-    let token =
-      auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
-
-    if (!token) {
-      const response = await createToken();
-      token = response?.access_token;
-    }
+    let token = tc;
 
     const recentActivities = await NetworkCall.fetch(
       HomePageRequests.getCanonizedRecentActivities(reqBody, token),

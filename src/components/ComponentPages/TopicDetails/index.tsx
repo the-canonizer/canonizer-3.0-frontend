@@ -160,9 +160,11 @@ const TopicDetails = () => {
 
       const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
       const body = { topic_num: topicNum };
-      const reponse = await GetActiveSupportTopic(topicNum && body);
-      if (reponse?.status_code == 200) {
-        setTopicList(reponse?.data);
+      if (isUserAuthenticated) {
+        const reponse = await GetActiveSupportTopic(topicNum && body);
+        if (reponse?.status_code == 200) {
+          setTopicList(reponse?.data);
+        }
       }
       setGetTreeLoadingIndicator(false);
       setLoadingIndicator(false);

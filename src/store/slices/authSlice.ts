@@ -6,7 +6,6 @@ export const authSlice = createSlice({
     id: null,
     loggedInUser: null,
     authenticated: false,
-    authToken: null,
     token: "",
     authRefreshToken: null,
     permissions: [""],
@@ -14,10 +13,10 @@ export const authSlice = createSlice({
   },
   reducers: {
     setAuthToken: (state, action) => {
-      state.authToken = action.payload;
+      state.token = action.payload;
     },
     removeAuthToken: (state) => {
-      state.authToken = null;
+      state.token = null;
     },
     setLoggedInUser: (state, action) => {
       state.loggedInUser = action.payload;
@@ -29,7 +28,6 @@ export const authSlice = createSlice({
       state.loggedInUser = null;
       state.token = null;
       state.authenticated = false;
-      state.authToken = null;
       state.authRefreshToken = null;
       state.socialUsers = [];
     },

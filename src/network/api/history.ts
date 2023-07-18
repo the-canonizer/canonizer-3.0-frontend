@@ -1,4 +1,4 @@
-import { handleError, isServer } from "../../utils/generalUtility";
+import { getCookies, handleError, isServer } from "../../utils/generalUtility";
 import { store } from "../../store";
 import {
   pushToCampHistory,
@@ -15,24 +15,28 @@ export const getHistoryApi = async (
   loginToken = null
 ) => {
   let token;
-  if (isServer()) {
-    if (loginToken) {
-      token = loginToken;
-    } else {
-      const response = await createToken();
-      token = response?.access_token;
-    }
-  } else {
-    let state = await store.getState();
-    const { auth } = state,
-      tc = localStorage?.getItem("auth_token");
-    token = auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
+  // if (isServer()) {
+  //   if (loginToken) {
+  //     token = loginToken;
+  //   } else {
+  //     const response = await createToken();
+  //     token = response?.access_token;
+  //   }
+  // } else {
+  //   let state = await store.getState();
+  //   const { auth } = state,
+  //     tc = localStorage?.getItem("auth_token");
+  //   token = auth?.token || tc;
 
-    if (!token) {
-      const response = await createToken();
-      token = response?.access_token;
-    }
-  }
+  //   if (!token) {
+  //     const response = await createToken();
+  //     token = response?.access_token;
+  //   }
+  // }
+
+  const cc: any = getCookies();
+
+  token = cc?.loginToken;
   try {
     const history = await NetworkCall.fetch(
       historyRequest.getHistory(reqBody, token, historyOf),

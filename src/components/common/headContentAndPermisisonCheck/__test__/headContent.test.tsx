@@ -33,7 +33,7 @@ describe("HeadContentAndPermissionComponent", () => {
     });
 
     useSelector.mockReturnValue({
-      authToken: "token",
+      token: "token",
     });
 
     const { getByText } = render(

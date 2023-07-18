@@ -1,6 +1,6 @@
-import { isServer } from "src/utils/generalUtility";
+import { getCookies } from "src/utils/generalUtility";
 import K from "../../constants";
-import { store } from "../../store";
+import { store } from "src/store";
 
 export default class Request {
   url: string = "";
@@ -16,17 +16,12 @@ export default class Request {
     headers = {},
     token = null
   ) {
-    const state = store.getState();
-    const { auth } = state;
+    // const state = store.getState();
+    // const { auth } = state;
 
-    let bearerToken = "";
-    if (isServer && token) {
-      bearerToken = token;
-    } else if (auth?.loggedInUser) {
-      token ? (bearerToken = token) : (bearerToken = auth?.loggedInUser?.token);
-    } else {
-      bearerToken = auth?.authToken;
-    }
+    const cc: any = getCookies();
+
+    let bearerToken = token || cc?.loginToken;
 
     headers = {
       ...(defaultHeaderType === K.Network.Header.Type.Json ||
@@ -35,6 +30,7 @@ export default class Request {
         : K.Network.Header.Authorization(bearerToken)),
       ...headers,
     };
+
     this.url = relativeURL;
     this.method = method;
     this.body = body;

@@ -1,6 +1,7 @@
 import K from "../../constants";
 import Request from ".";
 import { store } from "../../store";
+import { getCookies } from "src/utils/generalUtility";
 
 export default class TopicRequest extends Request {
   constructor(params) {
@@ -11,28 +12,27 @@ export default class TopicRequest extends Request {
     let state = store.getState();
     const { auth } = state;
 
+    const cc: any = getCookies();
+
     return new Request(
       K.Network.URL.CreateTopic,
       K.Network.Method.POST,
       body,
       K.Network.Header.Type.Json,
       {},
-      auth.loggedInUser.token
+      cc?.loginToken
     );
   }
 
   //getTopicsSuypported camps
-  static GetActiveSupportTopic(body) {
-    let state = store.getState();
-    const { auth } = state;
-
+  static GetActiveSupportTopic(body, token) {
     return new Request(
       K.Network.URL.GetActiveSupportTopic,
       K.Network.Method.POST,
       body,
       K.Network.Header.Type.Json,
       {},
-      auth.loggedInUser.token
+      token
     );
   }
   //GetCheckSupportExists

@@ -1,13 +1,22 @@
 import NetworkCall from "../networkCall";
 import NotificationRequests from "../request/notificationsRequests";
-import { handleError } from "../../utils/generalUtility";
+import { getCookies, handleError } from "../../utils/generalUtility";
 import { store } from "../../store";
 import { setData, setHeaderData } from "../../store/slices/notificationSlice";
 
 export const getLists = async (page: number = 1, per_page: number = 5) => {
+  // let state = await store.getState();
+
+  // const { auth } = state;
+
+  // let token = auth?.token;
+
+  const cc: any = getCookies();
+  let token = cc?.loginToken;
+
   try {
     const res = await NetworkCall.fetch(
-      NotificationRequests.getNotification(page, per_page),
+      NotificationRequests.getNotification(page, per_page, token),
       false
     );
 
@@ -29,9 +38,19 @@ export const getNotificationsList = async (
   page: number = 1,
   per_page: number = 50
 ) => {
+  // let state = await store.getState();
+
+  // const { auth } = state;
+
+  // let token = auth?.token;
+
+  const cc: any = getCookies();
+
+  let token = cc?.loginToken;
+
   try {
     const res = await NetworkCall.fetch(
-      NotificationRequests.getNotification(page, per_page),
+      NotificationRequests.getNotification(page, per_page, token),
       false
     );
 
