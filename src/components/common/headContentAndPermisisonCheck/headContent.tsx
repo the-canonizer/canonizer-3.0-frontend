@@ -48,7 +48,7 @@ function HeadContent({
       <meta name="description" content={description} />
       <meta
         name="viewport"
-        content="width=device-width,minimum-scale=1, initial-scale=1, maximum-scale=1, user-scalable=no"
+        content="width=device-width,minimum-scale=1, initial-scale=1, minimum-scale=1, maximum-scale=5 user-scalable=no"
       />
       <meta name="author" content={author} />
       <meta name="type" content="website" />
