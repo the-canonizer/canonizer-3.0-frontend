@@ -109,7 +109,7 @@ describe("Footer", () => {
     expect(logoLink.getAttribute("href")).toBe("/");
     expect(browseLink.getAttribute("href")).toBe("/browse");
     // expect(uploadFilesLink.getAttribute("href")).toBe("/uploadFile");
-    expect(helpLink.getAttribute("href")).toBe("/topic/132-Help/1-Agreement");
+    expect(helpLink.getAttribute("href")).toBe("/topic/132-Help/1-Agreement?is_tree_open=1");
     expect(whitePaperLink.getAttribute("href")).toBe(
       "/files/2012_amplifying_final.pdf"
     );

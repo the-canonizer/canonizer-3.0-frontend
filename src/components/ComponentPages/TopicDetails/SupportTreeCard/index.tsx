@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {
@@ -30,7 +30,7 @@ import {
 import { getNickNameList } from "../../../../network/api/userApi";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
 
-const { Paragraph } = Typography;
+const { Paragraph, Title } = Typography;
 const { Panel } = Collapse;
 const { TreeNode } = Tree;
 
@@ -71,20 +71,35 @@ const SupportTreeCard = ({
     is_checked,
     topicRecord,
     campRecord,
+    filterData,
+    algorithms,
   } = useSelector((state: RootState) => ({
     currentGetCheckSupportExistsData:
       state.topicDetails.currentGetCheckSupportExistsData,
     is_checked: state?.utils?.score_checkbox,
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
+    filterData: state?.filters?.filterObject,
+    algorithms: state.homePage?.algorithms,
   }));
 
   const { isUserAuthenticated } = isAuth();
+
   const router = useRouter();
+
   const [userNickNameList, setUserNickNameList] = useState([]);
   const [loadMore, setLoadMore] = useState(false);
   const [modalData, setModalData] = useState<any>({});
   const [delegateNickNameId, setDelegateNickNameId] = useState<number>();
+  const [currentAlgo, setCurrentAlgo] = useState<string>("");
+
+  useEffect(() => {
+    const filteredAlgo = algorithms?.filter(
+      (a: { algorithm_key: string }) =>
+        a.algorithm_key === filterData?.algorithm
+    );
+    setCurrentAlgo(filteredAlgo[0]?.algorithm_label);
+  }, [filterData]);
 
   const dispatch = useDispatch();
   const arr = [];
@@ -329,9 +344,14 @@ const SupportTreeCard = ({
           }
           key="1"
           extra={
-            <Popover content={supportContent} placement="left">
-              <i className="icon-info tooltip-icon-style"></i>
-            </Popover>
+            <Fragment>
+              <h5 className={styles.algoLabel}>
+                Based on: &quot;{currentAlgo}&quot;
+              </h5>
+              <Popover content={supportContent} placement="left">
+                <i className="icon-info tooltip-icon-style"></i>
+              </Popover>
+            </Fragment>
           }
         >
           <Paragraph>

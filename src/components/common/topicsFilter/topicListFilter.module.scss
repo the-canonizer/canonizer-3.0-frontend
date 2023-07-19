@@ -10,6 +10,12 @@
     font-weight: 400;
     color: #343434;
     font-size: 14px;
+    .algoInfoIcon {
+      color: #d1d4db;
+      font-size: 16px;
+      cursor: pointer;
+      text-decoration: none;
+    }
   }
   .algoSelect {
     width: 100%;
@@ -251,7 +257,7 @@
         [class*="ant-space ant-space-horizontal"] {
           flex-wrap: wrap;
           // flex-flow: column;
-          [class="ant-space-item"]{
+          [class="ant-space-item"] {
             width: 100%;
           }
         }

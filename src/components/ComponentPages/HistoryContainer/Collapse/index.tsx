@@ -393,7 +393,7 @@ function HistoryCollapse({
                         <p>
                           {K?.exceptionalMessages?.objectedModalMsgForMoreInfo}
                         </p>
-                        <Link href="/topic/132-Help/4-Disagreement">
+                        <Link href="/topic/132-Help/4-Disagreement?is_tree_open=1">
                           <a style={{ fontSize: "16px" }}>
                             https://canonizer.com/topic/132-Help/4-Disagreement
                           </a>
