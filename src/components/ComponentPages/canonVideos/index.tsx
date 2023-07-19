@@ -33,16 +33,16 @@ export default function CanonVideos() {
           spaceChangeToDash(replaceString(chapter as string, true));
       }
 
-      // router.push(
-      //   {
-      //     pathname: route,
-      //     query: {
-      //       ...restq,
-      //     },
-      //   },
-      //   null,
-      //   { shallow: true }
-      // );
+      router.push(
+        {
+          pathname: route,
+          query: {
+            ...restq,
+          },
+        },
+        null,
+        { shallow: true }
+      );
     }
   }, []);
 
