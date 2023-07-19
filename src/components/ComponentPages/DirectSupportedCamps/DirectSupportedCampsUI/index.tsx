@@ -240,7 +240,6 @@ export default function DirectSupportedCampsUI({
                             </Button>
                             <Button
                               data-testid="save_change_btn"
-
                               id="revertBtn"
                               className={styles.revert_Btn}
                               onClick={() => {

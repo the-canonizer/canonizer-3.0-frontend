@@ -19,7 +19,6 @@ const CampTree = ({
   setSupportTreeForCamp,
   treeExpandValue,
   prevTreeValueRef,
-  setTreeExpandValue,
 }: any) => {
   const { tree, filterByScore, review, is_checked, topicRecord } = useSelector(
     (state: RootState) => ({
@@ -37,8 +36,6 @@ const CampTree = ({
     campRecord: state?.topicDetails?.currentCampRecord,
   }));
   let childExpandTree = [];
-  let urlCampInfo;
-  const didMount = useRef(true);
   const [defaultExpandKeys, setDefaultExpandKeys] = useState([]);
   const [uniqueKeys, setUniqueKeys] = useState([]);
   const [showScoreBars, setShowScoreBars] = useState(false);
@@ -90,22 +87,6 @@ const CampTree = ({
       setShowTree(true);
     }
   };
-  const getUrlCampInfo = (data, select_camp) => {
-    let urlinfo2;
-    Object?.keys(data).map((item) => {
-      if (data[item]?.camp_id == select_camp) {
-        urlCampInfo = data[item]?.score;
-        urlinfo2 = data[item]?.score;
-        return urlinfo2;
-      } else if (data[item].children) {
-        getUrlCampInfo(data[item].children, select_camp);
-      } else {
-        return;
-      }
-    });
-
-    return urlinfo2;
-  };
 
   const getAllDefaultExpandKeys = (data, topic_score) => {
     if (data?.children) {
@@ -120,6 +101,13 @@ const CampTree = ({
       });
     } else return childExpandTree;
     return childExpandTree;
+  };
+  const mergeArray = (arry1 = [], arry2 = []) => {
+    const mergedSet = new Set([...arry1.map(String), ...arry2.map(String)]);
+    const output = Array.from(mergedSet).sort((x, y) =>
+      x.localeCompare(y, "en", { numeric: true })
+    );
+    return output;
   };
 
   useEffect(() => {
@@ -161,7 +149,6 @@ const CampTree = ({
       }
     }
   };
-
   useEffect(() => {
     if (tree?.at(0) != null) {
       dispatchData(tree?.at(0));
@@ -175,7 +162,10 @@ const CampTree = ({
     if (
       keyexistSession &&
       tree?.at(0) &&
-      treeExpandValue == prevTreeValueRef.current
+      treeExpandValue == prevTreeValueRef.current &&
+      keyexistSession?.sessionexpandsKeys?.includes(
+        String(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1)
+      )
     ) {
       setDefaultExpandKeys(keyexistSession.sessionexpandsKeys);
       setUniqueKeys(keyexistSession.sessionexpandsKeys);
@@ -197,6 +187,12 @@ const CampTree = ({
 
       let allkeys = ["1", ...selectedExpand, ...(expandKeys || [])];
       let uniquekeyss = toFindDuplicates(allkeys);
+      if (treeExpandValue == prevTreeValueRef.current) {
+        uniquekeyss = mergeArray(
+          uniquekeyss,
+          tree?.at(0)["1"]?.collapsedTreeCampIds
+        );
+      }
       setDefaultExpandKeys(expandKeys);
       setUniqueKeys(uniquekeyss);
       if (tree?.at(0)) {
@@ -233,30 +229,6 @@ const CampTree = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tree?.at(0), treeExpandValue]);
-
-  useEffect(() => {
-    if (
-      didMount.current &&
-      tree?.at(0)["1"].topic_id == router?.query?.camp?.at(0)?.split("-")?.at(0)
-    ) {
-      let aaa =
-        tree?.at(0) &&
-        getUrlCampInfo(
-          tree?.at(0),
-          +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1)
-        );
-
-      if (!((tree?.at(0)["1"]?.score * treeExpandValue) / 100 <= urlCampInfo)) {
-        let expandpercetvalues = [20, 10, 0];
-        let a = expandpercetvalues.filter(
-          (value) => (tree?.at(0)["1"]?.score * value) / 100 <= urlCampInfo
-        );
-        setTreeExpandValue(a[0]);
-      }
-
-      didMount.current = false;
-    }
-  }, [tree?.at(0)]);
 
   const subScriptionStatus = (subscribedUsers: {}, data) => {
     return Object.keys(subscribedUsers).length > 0 &&
@@ -356,6 +328,7 @@ const CampTree = ({
                                   ""
                                 )
                               : data[item]?.link?.replace("#statement", ""),
+                            query: { filter: treeExpandValue },
                           }}
                         >
                           <a

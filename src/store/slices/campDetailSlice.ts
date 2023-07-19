@@ -81,7 +81,7 @@ export const treeSlice = createSlice({
     },
     pushToCampHistory: (state, action) => {
       console.log(state.history);
-      
+
       state.history = {
         ...state.history,
         items: [...state?.history?.items, ...action.payload],

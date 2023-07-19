@@ -3,7 +3,10 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import Layout from "src/hoc/layout";
-import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
+import {
+  setFilterCanonizedTopics,
+  setShowDrawer,
+} from "../../../store/slices/filtersSlice";
 import CustomSkelton from "../../common/customSkelton";
 
 import {
@@ -400,6 +403,18 @@ const TopicDetails = () => {
       })
     );
   };
+
+  useEffect(() => {
+    const q = router?.query;
+    if (q?.is_tree_open) {
+      if (q?.is_tree_open === "1") {
+        dispatch(setShowDrawer(true));
+      } else if (q?.is_tree_open === "0") {
+        dispatch(setShowDrawer(false));
+      }
+    }
+  }, []);
+
   return (
     <>
       <Layout

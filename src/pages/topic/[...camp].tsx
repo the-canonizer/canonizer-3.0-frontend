@@ -86,6 +86,7 @@ export async function getServerSideProps({ req, res, resolvedUrl }) {
     per_page: 4,
     page: 1,
   };
+
   const [
     newsFeed,
     topicRecord,
@@ -94,15 +95,22 @@ export async function getServerSideProps({ req, res, resolvedUrl }) {
     statementHistory,
     tree,
   ] = await Promise.all([
+<<<<<<< HEAD
     getNewsFeedApi(reqBody, req.cookies["authToken"]),
     getCurrentTopicRecordApi(reqBody, req.cookies["authToken"]),
     getCurrentCampRecordApi(reqBody, req.cookies["authToken"]),
     getCanonizedCampStatementApi(reqBody),
+=======
+    getNewsFeedApi(reqBody, req.cookies["loginToken"]),
+    getCurrentTopicRecordApi(reqBody, req.cookies["loginToken"]),
+    getCurrentCampRecordApi(reqBody, req.cookies["loginToken"]),
+    getCanonizedCampStatementApi(reqBody, req.cookies["loginToken"]),
+>>>>>>> 05bb8b8ebc74fc30a2a930db749fe899a0b36c9a
     getHistoryApi(
       reqBodyForCampData,
       "1",
       "statement",
-      req.cookies["authToken"]
+      req.cookies["loginToken"]
     ),
     getTreesApi(reqBodyForService),
   ]);

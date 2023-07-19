@@ -2338,7 +2338,7 @@ div[role="option"]::before {
 
 .rang-slider {
   @media screen and (min-width: 768px) {
-    margin: 10px 40px 10px;
+    margin: 50px 40px 10px;
   }
   @media screen and (max-width: 767px) {
     margin: 10px 16px 10px;
@@ -2579,9 +2579,11 @@ div[role="option"]::before {
   .ant-slider-tooltip {
     .ant-tooltip-inner {
       background-color: #ebebeb;
+      box-shadow: none;
     }
     .ant-tooltip-arrow-content {
       --antd-arrow-background-color: #ebebeb;
+      box-shadow: none;
     }
   }
 }

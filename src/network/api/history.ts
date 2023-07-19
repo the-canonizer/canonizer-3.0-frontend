@@ -1,4 +1,4 @@
-import { handleError } from "../../utils/generalUtility";
+import { handleError, isServer } from "../../utils/generalUtility";
 import { store } from "../../store";
 import {
   pushToCampHistory,
@@ -12,23 +12,27 @@ export const getHistoryApi = async (
   reqBody,
   pageNumber,
   historyOf: string,
-  tokenSsr = null
+  loginToken = null
 ) => {
-  let state = await store.getState();
+  let token;
+  if (isServer()) {
+    if (loginToken) {
+      token = loginToken;
+    } else {
+      const response = await createToken();
+      token = response?.access_token;
+    }
+  } else {
+    let state = await store.getState();
+    const { auth } = state,
+      tc = localStorage?.getItem("auth_token");
+    token = auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
 
-  const { auth } = state,
-    tc =
-      typeof window !== "undefined"
-        ? localStorage?.getItem("auth_token")
-        : tokenSsr;
-
-  let token = auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
-
-  if (!token) {
-    const response = await createToken();
-    token = response?.access_token;
+    if (!token) {
+      const response = await createToken();
+      token = response?.access_token;
+    }
   }
-
   try {
     const history = await NetworkCall.fetch(
       historyRequest.getHistory(reqBody, token, historyOf),
