@@ -70,7 +70,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }) => {
 
         <div className="topicDetailsCollapseFooter">
           <CustomButton
-            disabled={campRecord.is_archive == 1 ? true : false}
+            disabled={campRecord?.is_archive == 1 ? true : false}
             className="btn-green"
             id="add-camp-statement-btn"
           >
