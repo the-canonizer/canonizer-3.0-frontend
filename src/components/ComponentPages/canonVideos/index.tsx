@@ -20,6 +20,32 @@ export default function CanonVideos() {
 
   const router = useRouter();
 
+  useEffect(() => {
+    if (router?.route === "/videos/consciousness") {
+      let { chapter, ...restq }: any = { ...router.query };
+
+      let route = router.pathname + "/introduction";
+
+      if (chapter) {
+        route =
+          router.pathname +
+          "/" +
+          spaceChangeToDash(replaceString(chapter as string, true));
+      }
+
+      // router.push(
+      //   {
+      //     pathname: route,
+      //     query: {
+      //       ...restq,
+      //     },
+      //   },
+      //   null,
+      //   { shallow: true }
+      // );
+    }
+  }, []);
+
   const replaceString = (text: string, reverse: boolean = false) => {
     if (reverse) {
       let reverseText;
@@ -35,11 +61,26 @@ export default function CanonVideos() {
     }
   };
 
+  const spaceChangeToDash = (text: string, reverse: boolean = false) => {
+    if (reverse) {
+      let reverseText;
+      if (text?.includes("_")) {
+        reverseText = text?.replace(new RegExp("_", "g"), "-");
+      } else {
+        reverseText = text?.replace(new RegExp("\\-", "g"), "_");
+      }
+      return reverseText;
+    } else {
+      let updatedText = text?.replace(/\s+/g, "-")?.toLowerCase();
+      return updatedText;
+    }
+  };
+
   const handleVideoSelection = (videodata: any) => {
     playeref.current;
 
     addQueryParams(
-      replaceString(videodata?.title),
+      spaceChangeToDash(videodata?.title),
       videodata?.resolutions[0]?.title?.split(" ")[0],
       null
     );
@@ -59,7 +100,7 @@ export default function CanonVideos() {
     const filtredVides = videos?.filter((vd) => vd?.id === selectedVideoId);
     if (filtredVides && filtredVides.length) {
       addQueryParams(
-        replaceString(filtredVides[0].title),
+        spaceChangeToDash(filtredVides[0].title),
         format?.split(" ")[0],
         null
       );
@@ -74,6 +115,7 @@ export default function CanonVideos() {
 
   useEffect(() => {
     const q = router.query;
+
     async function getTreeApiCall() {
       setLoader(true);
       let data = await getVideosContentApi();
@@ -84,7 +126,10 @@ export default function CanonVideos() {
         const videoss = data?.data;
 
         if (q?.chapter || q?.format) {
-          const videoTitle = replaceString(q?.chapter as string, true);
+          const videoTitle = replaceString(
+            spaceChangeToDash(q?.chapter as string, true),
+            true
+          );
           const filteredVideo = Object.values(videoss)?.filter((video) => {
             if (video["title"]?.toLowerCase() === videoTitle?.toLowerCase()) {
               return video;
@@ -148,7 +193,7 @@ export default function CanonVideos() {
         const format = splitedarray[splitedarray?.length - 1]?.split(".")[0];
 
         addQueryParams(
-          replaceString(filtredVides[0].title),
+          spaceChangeToDash(replaceString(filtredVides[0].title)),
           format,
           playeref?.current?.currentTime
         );
