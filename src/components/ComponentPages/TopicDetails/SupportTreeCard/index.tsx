@@ -145,7 +145,7 @@ const SupportTreeCard = ({
       }
     });
   };
- 
+
   const supportLength = 15;
   const renderTreeNodes = (
     data: any,
@@ -162,16 +162,18 @@ const SupportTreeCard = ({
       //isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
       if ((!loadMore && index < supportLength) || loadMore) {
         if (data[item].delegates) {
-          const linkss =<Link
-          href={{
-            pathname: `/user/supports/${data[item].nick_name_id}`,
-            query: {
-              topicnum: topicRecord?.topic_num,
-              campnum: topicRecord?.camp_num,
-              canon: topicRecord?.namespace_id,
-            },
-          }}
-        ></Link>
+          const linkss = (
+            <Link
+              href={{
+                pathname: `/user/supports/${data[item].nick_name_id}`,
+                query: {
+                  topicnum: topicRecord?.topic_num,
+                  campnum: topicRecord?.camp_num,
+                  canon: topicRecord?.namespace_id,
+                },
+              }}
+            ></Link>
+          );
           return (
             <>
               <TreeNode
@@ -196,10 +198,10 @@ const SupportTreeCard = ({
                             canon: topicRecord?.namespace_id,
                           },
                         }}
-                      >                        
-                            <a className={styles.Bluecolor}>
-                              {data[item].support_order}:
-                            {data[item].nick_name}</a>
+                      >
+                        <a className={styles.Bluecolor}>
+                          {data[item].support_order}:{data[item].nick_name}
+                        </a>
                       </Link>
 
                       {/* </span> */}
