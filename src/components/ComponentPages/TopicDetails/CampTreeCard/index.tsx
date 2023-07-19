@@ -59,9 +59,11 @@ const CampTreeCard = ({
   const router = useRouter();
   const { isUserAuthenticated } = useAuthentication();
   const eventLinePath = router?.asPath.replace("topic", "eventline");
-  const [treeExpandValue, setTreeExpandValue] = useState<any>(50);
+  const [treeExpandValue, setTreeExpandValue] = useState<any>(
+    router?.query?.filter || 50
+  );
   const didMount = useRef(false);
-  const prevTreeValueRef = useRef(50);
+  const prevTreeValueRef = useRef(router?.query?.filter || 50);
   const dispatch = useDispatch();
   const onCreateTreeDate = () => {
     dispatch(
@@ -74,6 +76,14 @@ const CampTreeCard = ({
     );
   };
   const handleChange = (value) => {
+    router.push(
+      {
+        pathname: router.pathname,
+        query: { ...router.query, ...{ filter: value } },
+      },
+      undefined,
+      { shallow: true }
+    );
     setTreeExpandValue(value);
   };
   useEffect(() => {
@@ -169,8 +179,8 @@ const CampTreeCard = ({
                     <RightOutlined className="rightOutlined" />
                   </Text>
                   <Select
-                    value={treeExpandValue}
-                    defaultValue={"50%"}
+                    // value={treeExpandValue}
+                    defaultValue={`${router?.query?.filter || 50}%`}
                     style={{ width: 80 }}
                     onChange={handleChange}
                     options={[
