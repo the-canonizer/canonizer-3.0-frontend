@@ -10,6 +10,12 @@
     font-weight: 400;
     color: #343434;
     font-size: 14px;
+    .algoInfoIcon {
+      color: #d1d4db;
+      font-size: 16px;
+      cursor: pointer;
+      text-decoration: none;
+    }
   }
   .algoSelect {
     width: 100%;
@@ -61,6 +67,118 @@
       font-size: 14px;
       &::placeholder {
         font-size: 12px;
+      }
+    }
+    &.dates {
+      margin: 0;
+    }
+  }
+  &.cardWithDrawerAccordian {
+    [class="ant-collapse-expand-icon"] {
+      display: none !important;
+    }
+    [class="ant-collapse-header"] {
+      display: none;
+    }
+    .filterRow {
+      padding-left: 20px;
+      padding-right: 20px;
+      padding-top: 20px;
+    }
+    .algoText {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--primary);
+      & + a {
+        color: #d1d4db;
+      }
+    }
+    .algoSelect {
+      margin-bottom: 0 !important;
+      padding-bottom: 0 !important;
+      font-size: 13px !important;
+      span {
+        font-size: 13px;
+      }
+      [class="ant-select-selector"] {
+        height: 35px;
+        padding: 0 10px;
+        padding-left: 8px !important;
+        [class="ant-select-selection-search"] {
+          input {
+            height: 100%;
+          }
+        }
+        [class="ant-select-selection-item"] {
+          line-height: 33px;
+        }
+      }
+    }
+    .filter {
+      margin-bottom: 0;
+      input {
+        height: 35px;
+      }
+    }
+    .scoreCheckbox {
+      & > div {
+        margin-bottom: 0;
+      }
+      .radioBtns {
+        .radio {
+          span {
+            &:last-child {
+              font-size: 14px;
+            }
+          }
+        }
+      }
+    }
+    .treeContainer {
+      width: 100%;
+      max-height: 100%;
+      height: 100%;
+      // overflow: hidden;
+      // padding-top: 15px;
+      padding-bottom: 15px;
+
+      [class="ant-collapse-header"] {
+        display: flex;
+        border: none !important;
+        background-color: transparent !important;
+
+        [class="ant-collapse-header-text"] {
+          display: none;
+        }
+      }
+      [class="ant-collapse-extra"] {
+        width: 100%;
+      }
+      [class="ant-tree-list-holder-inner"] {
+        // max-height: calc(100% - 220px);
+        // overflow: auto;
+        // height: 100%;
+        // max-height: 220px;
+
+        &::-webkit-scrollbar {
+          width: 5px;
+          height: 8px;
+        }
+
+        &::-webkit-scrollbar-track {
+          background: #f1f1f1;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background: #888;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+          background: #555;
+        }
+      }
+      [class="ant-collapse-content-box"] {
+        padding: 0;
       }
     }
   }
@@ -117,4 +235,33 @@
 
 .infoIcon {
   margin-left: auto;
+}
+
+.radioInputs {
+  [class="ant-space-item"] {
+    &:last-child {
+      flex: 1;
+    }
+  }
+  @media screen and (max-width: 767px) {
+    flex-flow: column;
+    [class="ant-space-item"] {
+      &:last-child {
+        width: 100%;
+      }
+    }
+  }
+  @media screen and (max-width: 360px) {
+    [class="ant-space-item"] {
+      &:first-child {
+        [class*="ant-space ant-space-horizontal"] {
+          flex-wrap: wrap;
+          // flex-flow: column;
+          [class="ant-space-item"] {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
 }

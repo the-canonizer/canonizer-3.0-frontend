@@ -41,7 +41,10 @@ export const login = async (email: string, password: string) => {
       token: res.data.auth?.access_token,
       refresh_token: res.data?.auth?.refresh_token,
     };
-
+    document.cookie =
+      "loginToken=" +
+      res.data.auth?.access_token +
+      "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
     store.dispatch(setLoggedInUser(payload));
 
     return res;
@@ -89,6 +92,8 @@ export const logout = async (error = "", status = null, count: number = 1) => {
     store.dispatch(setLogout());
     store.dispatch(logoutUser());
     store.dispatch(removeAuthToken());
+    document.cookie =
+      "loginToken=; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
     store.dispatch(setHeaderData({ count: 0, list: [] }));
     return res;
   } catch (error) {
@@ -136,7 +141,10 @@ export const verifyOtp = async (values: object) => {
       token: res.data.auth?.access_token,
       refresh_token: res.data?.auth?.refresh_token,
     };
-
+    document.cookie =
+      "loginToken=" +
+      res.data.auth?.access_token +
+      "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
     store.dispatch(setLoggedInUser(payload));
 
     return res;
@@ -193,7 +201,7 @@ export const socialLoginCallback = async (values: object, router) => {
       token: res.data.auth?.access_token,
       refresh_token: res.data?.auth?.refresh_token,
     };
-
+    document.cookie = "loginToken=" + res.data.auth?.access_token + ";path=/";
     store.dispatch(setLoggedInUser(payload));
 
     if (res && res.status_code === 200 && res?.data?.user?.default_algo) {
@@ -279,6 +287,11 @@ export const UpdateUserProfileInfo = async (values: object) => {
         token: auth.loggedInUser.token,
         refresh_token: auth.loggedInUser.refresh_token,
       };
+      document.cookie =
+        "loginToken=" +
+        res.data.auth?.access_token +
+        "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+
       store.dispatch(setLoggedInUser(payload));
       return value;
     })
@@ -821,7 +834,10 @@ export const verifyEmailOnSocial = async (body) => {
       token: res.data.auth?.access_token,
       refresh_token: res.data?.auth?.refresh_token,
     };
-
+    document.cookie =
+      "loginToken=" +
+      res.data.auth?.access_token +
+      "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
     store.dispatch(setLoggedInUser(payload));
 
     return res;

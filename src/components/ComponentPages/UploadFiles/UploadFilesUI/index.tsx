@@ -137,27 +137,27 @@ const UploadFileUI = ({
     fileLists: [],
   });
   const dispatch = useDispatch<AppDispatch>();
-  const drageBoxVisible = useSelector((state: RootState) => state.ui.dragBox);
+  const drageBoxVisible = useSelector((state: RootState) => state.ui?.dragBox);
   const disabledCreateFolder = useSelector(
-    (state: RootState) => state.ui.disabledCreateFolderBtn
+    (state: RootState) => state.ui?.disabledCreateFolderBtn
   );
   const disabledResetButton = useSelector(
-    (state: RootState) => state.ui.disabledResetBtn
+    (state: RootState) => state.ui?.disabledResetBtn
   );
-  const dragBoxStatus = useSelector((state: RootState) => state.ui.dragBox);
+  const dragBoxStatus = useSelector((state: RootState) => state.ui?.dragBox);
   const show_UploadOptions = useSelector(
-    (state: RootState) => state.ui.visibleUploadOptions
+    (state: RootState) => state.ui?.visibleUploadOptions
   );
-  const afterUpload = useSelector((state: RootState) => state.ui.uploadAfter);
+  const afterUpload = useSelector((state: RootState) => state.ui?.uploadAfter);
   // const showFolderData = useSelector(
   //   (state: RootState) => state.ui.folderShown
   // );
-  const openFolder = useSelector((state: RootState) => state.ui.folderOpen);
-  const addButtonShow = useSelector((state: RootState) => state.ui.addButton);
-  const fileStatus = useSelector((state: RootState) => state.ui.fileStatus);
-  const showCrossBtn = useSelector((state: RootState) => state.ui.crossBtn);
+  const openFolder = useSelector((state: RootState) => state.ui?.folderOpen);
+  const addButtonShow = useSelector((state: RootState) => state.ui?.addButton);
+  const fileStatus = useSelector((state: RootState) => state.ui?.fileStatus);
+  const showCrossBtn = useSelector((state: RootState) => state.ui?.crossBtn);
   const afterUploadClass = useSelector(
-    (state: RootState) => state.ui.showFiles
+    (state: RootState) => state.ui?.showFiles
   );
 
   const dragBoxShow = () => dispatch(showDrageBox());
@@ -634,7 +634,7 @@ const UploadFileUI = ({
     if (!openFolder && search !== "") {
       return filteredList;
     }
-    return (openFolder ? getFileListFromFolderID : fileLists).filter((val) => {
+    return (openFolder ? getFileListFromFolderID : fileLists)?.filter((val) => {
       if (val.id) {
         val.key = val.id;
       }
@@ -764,7 +764,7 @@ const UploadFileUI = ({
   };
   const filterArrList = [];
   const searchFilter = () => {
-    return (openFolder ? fileLists : filteredArray()).length > 0 ? (
+    return (openFolder ? fileLists : filteredArray())?.length > 0 ? (
       (openFolder ? fileLists : filteredArray()).map((item, i) => {
         filterArrList.push(item);
         return (
@@ -955,6 +955,7 @@ const UploadFileUI = ({
           <h3 className="BoxcopyWrap">
             <span className="value">{subStringData(file.file_name)}</span>
             <span
+              data-testid="copySpan"
               className="copySpan"
               onClick={() => {
                 navigator.clipboard.writeText(file.short_code_path),
@@ -1070,6 +1071,7 @@ const UploadFileUI = ({
                         </div>
                         <div>
                           <Button
+                            data-testid="add_AFile_Btn2"
                             disabled={disabledResetButton}
                             onClick={() => {
                               setSearch("");
@@ -1087,6 +1089,7 @@ const UploadFileUI = ({
                           </Button>
                         </div>
                         <Button
+                          data-testid="add_AFile_Btn"
                           id="createFolderBtn"
                           disabled={disabledCreateFolder}
                           className={styles.create_folder_btn}
@@ -1409,6 +1412,7 @@ const UploadFileUI = ({
                           Upload
                         </Button>
                         <Button
+                          data-testid="cancel_btn"
                           id="cancelBtn"
                           htmlType="button"
                           className={styles.cancel_Btn}
@@ -1432,7 +1436,7 @@ const UploadFileUI = ({
         className={styles.modal_cross}
         centered
         title={editModal ? "Edit your folder name" : labels.CreateaFolder}
-        visible={showCreateFolderModal}
+        open={showCreateFolderModal}
         footer=""
         onCancel={() => setShowCreateFolderModal(false)}
         width={450}
@@ -1454,7 +1458,7 @@ const UploadFileUI = ({
       <Modal
         destroyOnClose={true}
         className="modalStyle"
-        visible={preview.previewVisible}
+        open={preview.previewVisible}
         footer={null}
         centered
         closeIcon={<CloseCircleOutlined className={styles.crossIcon} />}
@@ -1532,7 +1536,7 @@ const UploadFileUI = ({
       <Modal
         className={styles.modal_cross}
         title="Delete"
-        visible={DeleteConfirmationVisible}
+        open={DeleteConfirmationVisible}
         onOk={() => {
           setDeleteConfirmationVisible(false);
         }}
@@ -1552,6 +1556,7 @@ const UploadFileUI = ({
             style={{ marginBottom: "0px" }}
           >
             <Button
+              data-testid="remove_files"
               onClick={() => {
                 removeFiles(
                   removeFileData.keyParam,
@@ -1570,6 +1575,7 @@ const UploadFileUI = ({
               Delete
             </Button>
             <Button
+              data-testid="cancel_modal"
               onClick={() => {
                 setDeleteConfirmationVisible(false);
               }}

@@ -1,8 +1,9 @@
 import { Fragment, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-
-import Layout from "src/hoc/layout";
+import dynamic from "next/dynamic";
+// import Layout from "src/hoc/layout";
+const Layout = dynamic(() => import("../hoc/layout"));
 import HomePageContainer from "src/components/ComponentPages/Home";
 import { getCanonizedWhatsNewContentApi } from "src/network/api/homePageApi";
 import {
@@ -11,10 +12,13 @@ import {
 } from "src/store/slices/filtersSlice";
 import { GetUserProfileInfo } from "src/network/api/userApi";
 import { setAuthToken, setLoggedInUser } from "src/store/slices/authSlice";
+import { useCookies } from "react-cookie";
 
 function Home({ current_date }) {
   const dispatch = useDispatch();
   const router = useRouter();
+
+  const [cookie, setCookie] = useCookies(["authToken"]);
 
   dispatch(setFilterCanonizedTopics({ search: "" }));
   dispatch(setCurrentDate(current_date));
@@ -48,6 +52,10 @@ function Home({ current_date }) {
             refresh_token: null,
           })
         );
+        document.cookie =
+          "loginToken=" +
+          accessToken +
+          "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
         const { access_token, ...rest } = router?.query;
         router.query = rest;
         await router?.replace(router, null, { shallow: true });

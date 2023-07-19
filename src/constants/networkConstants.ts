@@ -15,8 +15,8 @@ const NetworkConstants = {
       BasePort: process.env.NEXT_PUBLIC_CLIENT_BASE_PORT,
     },
     // Redirect URLs
-    helpTopicUrl: "/topic/132-Help/1-Agreement",
-    algoInfoUrl: "/topic/53-Canonizer-Algorithms/1-Agreement",
+    helpTopicUrl: "/topic/132-Help/1-Agreement?is_tree_open=1",
+    algoInfoUrl: "/topic/53-Canonizer-Algorithms/1-Agreement?is_tree_open=1",
     // User
     CreateToken: `${BaseCanonizerApiUrl}/client-token`,
     LoginUser: `${BaseCanonizerApiUrl}/user/login`,

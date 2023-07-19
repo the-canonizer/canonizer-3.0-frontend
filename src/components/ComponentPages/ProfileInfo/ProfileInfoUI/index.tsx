@@ -28,7 +28,7 @@ function ProfileInfoUI({
   postalCodeDisable,
   userProfileSkeletonV,
   setIsOTPModalVisible,
-  setOTP
+  setOTP,
 }: any) {
   return (
     <section className={styles.profileInfo_wrapper}>
@@ -36,7 +36,7 @@ function ProfileInfoUI({
         mobileCarrier={mobileCarrier}
         formVerify={formVerify}
         // onVerifyClick={onVerifyClick}
-        onOTPBtnClick={onOTPBtnClick}
+        // onOTPBtnClick={onOTPBtnClick}
         isOTPModalVisible={isOTPModalVisible}
         setIsOTPModalVisible={setIsOTPModalVisible}
         handleOTPCancel={handleOTPCancel}

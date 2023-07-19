@@ -11,7 +11,10 @@ import {
   getCanonizedTopicsApi,
   getCanonizedTopicsForSuggestion,
 } from "../../../../network/api/homePageApi";
-import { setFilterCanonizedTopics } from "../../../../store/slices/filtersSlice";
+import {
+  setFilterCanonizedTopics,
+  setShowDrawer,
+} from "../../../../store/slices/filtersSlice";
 import styles from "./topicsList.module.scss";
 import { Spin, Checkbox } from "antd";
 import { LoadingOutlined, CopyOutlined } from "@ant-design/icons";
@@ -27,6 +30,7 @@ import {
 } from "src/utils/generalUtility";
 import CustomSkelton from "../../../common/customSkelton";
 import { CloseCircleOutlined } from "@ant-design/icons";
+import { clearAllListeners } from "@reduxjs/toolkit";
 
 const antIcon = <LoadingOutlined spin />;
 const { Title, Text, Paragraph } = Typography;
@@ -66,7 +70,9 @@ const TopicsList = () => {
     search,
     is_checked,
     is_archive,
+    // archeived
   } = useSelector((state: RootState) => ({
+    // archeived: state.utils?.archived_checkbox,
     canonizedTopics: state.homePage?.canonizedTopicsData,
     asofdate: state.filters?.filterObject?.asofdate,
     asof: state.filters?.filterObject?.asof,
@@ -241,6 +247,7 @@ const TopicsList = () => {
       search: inputSearch,
       filter: filterByScore,
       asof: asof,
+      // archive:archeived?1:0,
       user_email: onlyMyTopicsCheck.current ? userEmail : "",
       is_archive: is_camp_archive_checked ? 1 : 0,
     };
@@ -373,6 +380,7 @@ const TopicsList = () => {
 
   const handleTopicClick = () => {
     setGetTopicsLoadingIndicator(true);
+    dispatch(setShowDrawer(true));
   };
   useEffect(() => {
     //When Page is render remove data from GetCheckSupportStatus and GetCheckSupportExistsData
