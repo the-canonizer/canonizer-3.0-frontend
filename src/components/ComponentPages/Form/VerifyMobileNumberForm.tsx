@@ -43,7 +43,7 @@ function VerifyMobileNumberForm({
         </Option>
       );
     });
-      const onOTPBtnClick = async () => {
+  const onOTPBtnClick = async () => {
     let otpBody = {
       otp: otp,
     };
