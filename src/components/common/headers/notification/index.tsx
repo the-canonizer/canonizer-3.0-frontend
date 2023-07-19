@@ -67,14 +67,17 @@ const Notifications = () => {
     event.stopPropagation();
 
     if (st) {
+      const registration = await navigator.serviceWorker.ready;
+      console.log("🚀 ~ file: index.tsx:71 ~ onSwitch ~ registration:", registration)
       const messaging = firebase.messaging();
+
       if ("serviceWorker" in navigator && "PushManager" in window) {
         try {
           const status = await Notification.requestPermission();
-
           if (status === "granted") {
             const fcm_token = await messaging.getToken({
               vapidKey: process.env.NEXT_PUBLIC_FCM_CERTIFICATE_KEY,
+              serviceWorkerRegistration: registration,
             });
 
             if (fcm_token) {
