@@ -36,7 +36,7 @@ function Footer() {
   ];
   const mockLinks2 = [
     {
-      link: "/topic/132-Help/1-Agreement",
+      link: "/topic/132-Help/1-Agreement?is_tree_open=1",
       linkTitle: "Help",
       id: 4,
     },
@@ -53,7 +53,7 @@ function Footer() {
       external: true,
     },
     {
-      link: "/topic/6-Canonizer-Jobs/1-Agreement",
+      link: "/topic/6-Canonizer-Jobs/1-Agreement?is_tree_open=1",
       linkTitle: "Jobs",
       id: 8,
     },

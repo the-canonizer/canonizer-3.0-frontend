@@ -38,10 +38,32 @@ export default function HomeSideBar({
   }));
 
   const showDrawer = () => {
+    router.push(
+      {
+        pathname: router.pathname,
+        query: { ...router?.query, is_tree_open: "1" },
+      },
+      null,
+      {
+        shallow: true,
+      }
+    );
+
     dispatch(setShowDrawer(true));
   };
 
   const onClose = () => {
+    router.push(
+      {
+        pathname: router.pathname,
+        query: { ...router?.query, is_tree_open: "0" },
+      },
+      null,
+      {
+        shallow: true,
+      }
+    );
+
     dispatch(setShowDrawer(false));
   };
 
@@ -68,7 +90,6 @@ export default function HomeSideBar({
             visible={drawerIsVisible}
             className={`treeDrawer ${backGroundColorClass}`}
             closeIcon={<CloseCircleOutlined />}
-            // width={720}
             height={"auto"}
             size="large"
             bodyStyle={{ paddingBottom: 80 }}
