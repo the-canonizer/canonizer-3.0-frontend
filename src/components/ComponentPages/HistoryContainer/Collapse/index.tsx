@@ -406,12 +406,12 @@ function HistoryCollapse({
                     type="primary"
                     id={`submit-update-${campStatement?.id}`}
                     className={`mr-3 ${styles.campUpdateButton}`}
-                    onClick={() =>campHistoryItems[0]?.is_archive == 1?callManageCampApi(): submitUpdateRedirect(historyOf)}
+                    onClick={() =>campHistoryItems[0]?.is_archive == 1 && campStatement?.status == "live"?callManageCampApi(): submitUpdateRedirect(historyOf)}
                     disabled={historyOf == "camp" && campHistoryItems[0]?.is_archive == 1 && campStatement.status == "old"? true:false
                   }
                   >
                     
-                    { historyOf == "camp" && campStatement?.is_archive == 1
+                    { historyOf == "camp" && campStatement?.is_archive == 1 && campStatement?.status == "live"
                       ? "Un-Archive This Camp"
                       
                       : historyOf == "topic"
