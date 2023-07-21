@@ -20,9 +20,13 @@ export default function HomeSideBar({
   setSupportTreeForCamp,
   backGroundColorClass,
 }: any) {
-  const { drawerShow } = useSelector((state: RootState) => ({
-    drawerShow: state?.filters?.showDrawer,
-  }));
+  const { drawerShow, filterObject, filterByScore } = useSelector(
+    (state: RootState) => ({
+      drawerShow: state?.filters?.showDrawer,
+      filterObject: state?.filters?.filterObject,
+      filterByScore: state.filters?.filterObject?.filterByScore,
+    })
+  );
   const { isUserAuthenticated } = useAuthentication();
 
   const [isAuth, setIsAuth] = useState(isUserAuthenticated);
@@ -54,10 +58,15 @@ export default function HomeSideBar({
 
   const onClose = () => {
     router.push(
-      {
-        pathname: router.pathname,
-        query: { ...router?.query, is_tree_open: "0" },
-      },
+      `/topic/${router?.query?.camp[0]}/${
+        router?.query?.camp[1]
+      }?score=${filterByScore}&algo=${filterObject?.algorithm}${
+        filterObject?.asof == "bydate"
+          ? "&asofdate=" + filterObject?.asofdate
+          : ""
+      }&asof=${filterObject?.asof}&canon=${
+        filterObject?.namespace_id
+      }&is_tree_open=0`,
       null,
       {
         shallow: true,

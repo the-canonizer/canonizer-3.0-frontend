@@ -1,14 +1,26 @@
 import { Fragment } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../store";
 
 import styles from "../siteHeader.module.scss";
 
 const LogoHeader = () => {
+  const { filterByScore, filterObject } = useSelector((state: RootState) => ({
+    filterByScore: state.filters?.filterObject?.filterByScore,
+    filterObject: state?.filters?.filterObject,
+  }));
   return (
     <Fragment>
       <div className={styles.logo}>
-        <Link href="/" passHref>
+        <Link
+          href={`/?score=${filterByScore}&algo=${filterObject?.algorithm}${
+            filterObject?.asof == "bydate"
+              ? "&asofdate=" + filterObject?.asofdate
+              : ""
+          }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}`}
+        >
           <a>
             <Image
               src={`${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/site-images/logo.svg`}

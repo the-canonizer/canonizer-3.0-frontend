@@ -1,6 +1,8 @@
 import React, { Fragment, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../store";
 
 import styles from "../siteHeader.module.scss";
 
@@ -39,6 +41,11 @@ const HeaderMenu = ({ loggedUser }) => {
       id: 6,
     },
   ];
+  const { filterObject, filterByScore } = useSelector((state: RootState) => ({
+    filterObject: state?.filters?.filterObject,
+
+    filterByScore: state.filters?.filterObject?.filterByScore,
+  }));
 
   const [mockLinks, setMockLinks] = useState(links);
 
@@ -74,7 +81,17 @@ const HeaderMenu = ({ loggedUser }) => {
                     {item.linkTitle}
                   </a>
                 ) : (
-                  <Link href={{ pathname: item.link }} passHref>
+                  <Link
+                    href={`${item.link}?score=${filterByScore}&algo=${
+                      filterObject?.algorithm
+                    }${
+                      filterObject?.asof == "bydate"
+                        ? "&asofdate=" + filterObject?.asofdate
+                        : ""
+                    }&asof=${filterObject?.asof}&canon=${
+                      filterObject?.namespace_id
+                    }`}
+                  >
                     <a>{item.linkTitle}</a>
                   </Link>
                 )}

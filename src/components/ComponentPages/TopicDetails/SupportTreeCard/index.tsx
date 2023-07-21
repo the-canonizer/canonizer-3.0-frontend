@@ -98,7 +98,7 @@ const SupportTreeCard = ({
       (a: { algorithm_key: string }) =>
         a.algorithm_key === filterData?.algorithm
     );
-    setCurrentAlgo(filteredAlgo[0]?.algorithm_label);
+    setCurrentAlgo(filteredAlgo?.at(0)?.algorithm_label);
   }, [filterData]);
 
   const dispatch = useDispatch();

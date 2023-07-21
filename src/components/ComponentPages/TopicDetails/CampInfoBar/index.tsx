@@ -72,6 +72,8 @@ const TimelineInfoBar = ({
     asof,
     algorithm,
     viewThisVersionCheck,
+    filterObject,
+    filterByScore,
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -81,6 +83,8 @@ const TimelineInfoBar = ({
     algorithm: state.filters?.filterObject?.algorithm,
     asof: state?.filters?.filterObject?.asof,
     viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
+    filterObject: state?.filters?.filterObject,
+    filterByScore: state.filters?.filterObject?.filterByScore,
   }));
   const [campSubscriptionID, setCampSubscriptionID] = useState(
     campRecord?.subscriptionId
@@ -407,7 +411,15 @@ const TimelineInfoBar = ({
                     }-${replaceSpecialCharacters(
                       breadCrumbRes?.topic_name,
                       "-"
-                    )}/1-Agreement`}
+                    )}/1-Agreement?score=${filterByScore}&algo=${
+                      filterObject?.algorithm
+                    }${
+                      filterObject?.asof == "bydate"
+                        ? "&asofdate=" + filterObject?.asofdate
+                        : ""
+                    }&asof=${filterObject?.asof}&canon=${
+                      filterObject?.namespace_id
+                    }`}
                   >
                     <a className={styles.boldBreadcrumb}>
                       {breadCrumbRes?.topic_name}
@@ -451,17 +463,23 @@ const TimelineInfoBar = ({
                     breadCrumbRes?.bread_crumb?.map((camp, index) => {
                       return (
                         <Link
-                          href={{
-                            pathname: `/topic/${
-                              payloadData?.topic_num
-                            }-${replaceSpecialCharacters(
-                              breadCrumbRes?.topic_name,
-                              "-"
-                            )}/${camp?.camp_num}-${replaceSpecialCharacters(
-                              camp?.camp_name,
-                              "-"
-                            )}`,
-                          }}
+                          href={`/topic/${
+                            payloadData?.topic_num
+                          }-${replaceSpecialCharacters(
+                            breadCrumbRes?.topic_name,
+                            "-"
+                          )}/${camp?.camp_num}-${replaceSpecialCharacters(
+                            camp?.camp_name,
+                            "-"
+                          )}?score=${filterByScore}&algo=${
+                            filterObject?.algorithm
+                          }${
+                            filterObject?.asof == "bydate"
+                              ? "&asofdate=" + filterObject?.asofdate
+                              : ""
+                          }&asof=${filterObject?.asof}&canon=${
+                            filterObject?.namespace_id
+                          }`}
                           key={index}
                         >
                           <a>

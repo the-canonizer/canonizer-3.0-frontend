@@ -22,6 +22,7 @@ import { getHistoryApi } from "../../network/api/history";
 
 import TopicDetails from "src/components/ComponentPages/TopicDetails";
 import { setCurrentDate } from "src/store/slices/filtersSlice";
+import { useRef } from "react";
 
 // import { wrapper } from "src/store";
 
@@ -33,7 +34,9 @@ const TopicDetailsPage = ({
   campStatement,
   statementHistory,
   tree,
+  serverCall,
 }) => {
+  const serverSideCall = useRef(serverCall || false);
   const dispatch = useDispatch();
   dispatch(setNewsFeed(newsFeed));
   dispatch(setCurrentTopicRecord(topicRecord));
@@ -47,24 +50,24 @@ const TopicDetailsPage = ({
 
   return (
     <>
-      <TopicDetails />
+      <TopicDetails serverSideCall={serverSideCall} />
     </>
   );
 };
 
-export async function getServerSideProps({ req, res, resolvedUrl }) {
-  let topicNum = +resolvedUrl?.split("/")[2].split("-")[0];
-  let campNum = +(resolvedUrl?.split("/")[3].split("-")[0] ?? 1);
+export async function getServerSideProps({ req, res, resolvedUrl, query }) {
+  let topicNum = +query?.camp[0]?.split("-")[0];
+  let campNum = +(query?.camp[1]?.split("-")[0] ?? 1);
   const currentDate = new Date().valueOf();
   const reqBodyForService = {
     topic_num: topicNum,
     camp_num: campNum,
-    asOf: req.cookies["asof"] ?? "default",
+    asOf: query?.asof ?? "default",
     asofdate:
-      req.cookies["asofDate"] && req.cookies["asof"] == "bydate"
-        ? parseFloat(req.cookies["asofDate"])
+      query?.asofdate && query?.asof == "bydate"
+        ? parseFloat(query?.asofdate)
         : Date.now() / 1000,
-    algorithm: req.cookies["canAlgo"] ?? "blind_popularity",
+    algorithm: query?.algo ?? "blind_popularity",
     update_all: 1,
     fetch_topic_history: null,
   };
@@ -72,10 +75,10 @@ export async function getServerSideProps({ req, res, resolvedUrl }) {
   const reqBody = {
     topic_num: topicNum,
     camp_num: campNum,
-    as_of: req.cookies["asof"] ?? "default",
+    as_of: query?.asof ?? "default",
     as_of_date:
-      req.cookies["asofDate"] && req.cookies["asof"] == "bydate"
-        ? parseFloat(req.cookies["asofDate"])
+      query?.asofdate && query?.asof == "bydate"
+        ? parseFloat(query?.asofdate)
         : Date.now() / 1000,
   };
 
@@ -117,6 +120,7 @@ export async function getServerSideProps({ req, res, resolvedUrl }) {
       campStatement: campStatement || [],
       statementHistory: statementHistory || {},
       tree: tree || [],
+      serverCall: true,
     },
   };
 }
