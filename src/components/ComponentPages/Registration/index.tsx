@@ -66,7 +66,6 @@ const Registration = ({ isModal, isTest = false }) => {
         password_confirmation: values.confirm,
         phone_number: values.phone?.trim(),
         country_code: values.prefix?.split(" ")[0],
-        secret_key: process.env.NEXT_PUBLIC_RECAPTCHA_SECRET_KEY,
         captcha_token: captchaKey,
       };
 
