@@ -170,7 +170,7 @@ function Footer() {
             </Col>
             <Col xs={24} sm={12} md={7} lg={6}>
               <div className={styles.supportWidget}>
-                <Title level={5}>Comments and Questions:</Title>
+                <Title level={3}>Comments and Questions:</Title>
                 <Link href="mailto:support@canonizer.com">
                   <a>
                     <i className="icon-envelope"></i> support@canonizer.com
