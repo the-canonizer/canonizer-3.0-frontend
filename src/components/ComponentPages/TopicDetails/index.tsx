@@ -519,20 +519,6 @@ const TopicDetails = () => {
                             backGroundColorClass={backGroundColorClass}
                           />
 
-                          {typeof window !== "undefined" &&
-                            window.innerWidth > 767 && (
-                              <>
-                                <CurrentTopicCard
-                                  loadingIndicator={loadingIndicator}
-                                  backGroundColorClass={backGroundColorClass}
-                                />
-                                <CurrentCampCard
-                                  loadingIndicator={loadingIndicator}
-                                  backGroundColorClass={backGroundColorClass}
-                                />
-                              </>
-                            )}
-
                           <SupportTreeCard
                             loadingIndicator={loadingIndicator}
                             handleLoadMoreSupporters={handleLoadMoreSupporters}
@@ -564,6 +550,21 @@ const TopicDetails = () => {
                             }
                             backGroundColorClass={backGroundColorClass}
                           />
+
+                          {typeof window !== "undefined" &&
+                            window.innerWidth > 767 && (
+                              <>
+                                <CurrentTopicCard
+                                  loadingIndicator={loadingIndicator}
+                                  backGroundColorClass={backGroundColorClass}
+                                />
+                                <CurrentCampCard
+                                  loadingIndicator={loadingIndicator}
+                                  backGroundColorClass={backGroundColorClass}
+                                />
+                              </>
+                            )}
+
                           {typeof window !== "undefined" &&
                             window.innerWidth < 767 && (
                               <>
