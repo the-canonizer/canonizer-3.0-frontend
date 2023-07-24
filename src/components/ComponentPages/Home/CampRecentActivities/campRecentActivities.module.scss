@@ -1,5 +1,7 @@
 .campActivities {
-  margin-bottom: 1rem;
+  // margin-bottom: 1rem;
+  height: 100%;
+
   & > div:first-child {
     font-weight: 800;
     font-size: 17px;
@@ -11,8 +13,23 @@
       line-height: 20px;
     }
   }
+
   & > div:nth-child(2) {
     padding: 20px;
+  }
+
+  [class="ant-collapse-header"] {
+    display: flex !important;
+  }
+  .footerLink {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 15px 0 0;
+    border-top: 1px solid #f1f1f1;
+    margin-top: 15px;
+    margin-bottom: -10px;
   }
 }
 

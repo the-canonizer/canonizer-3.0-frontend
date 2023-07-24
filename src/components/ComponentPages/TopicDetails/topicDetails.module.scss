@@ -283,6 +283,9 @@
     font-weight: 600;
   }
 }
+.miniSide {
+  width: 180px;
+}
 
 // .miniSide {
 //   [class="btnsWrap"] {
@@ -398,4 +401,9 @@
   margin-top: -3px;
   padding-right: 8px;
   font-size: 14px;
+}
+
+.bottomRow {
+  margin-top: 15px;
+  margin-bottom: 15px;
 }

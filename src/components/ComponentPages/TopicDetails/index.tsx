@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import Layout from "src/hoc/layout";
@@ -28,7 +28,7 @@ import CurrentCampCard from "./CurrentCampCard";
 import CurrentTopicCard from "./CurrentTopicCard";
 import NewsFeedsCard from "./NewsFeedsCard";
 import SupportTreeCard from "./SupportTreeCard";
-import { BackTop, Image, Typography, message, Alert } from "antd";
+import { BackTop, Image, Typography, message, Alert, Row, Col } from "antd";
 import { Spin } from "antd";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
@@ -416,7 +416,7 @@ const TopicDetails = () => {
   }, []);
 
   return (
-    <>
+    <Fragment>
       <Layout
         campInfoBar={
           (tree && tree["1"]?.is_valid_as_of_time) || asof == "default" ? (
@@ -443,7 +443,12 @@ const TopicDetails = () => {
         <div className={styles.topicDetailContentWrap}>
           <InfoBar onCreateCamp={onCreateCamp} isTopicPage={true} />
 
-          <aside className={styles.miniSide + " leftSideBar miniSideBar"}>
+          <aside
+            className={
+              styles.miniSide +
+              " topicPageNewLayoutSidebar leftSideBar miniSideBar"
+            }
+          >
             <SideBar
               onCreateCamp={onCreateCamp}
               getTreeLoadingIndicator={getTreeLoadingIndicator}
@@ -510,6 +515,7 @@ const TopicDetails = () => {
                         />
                       </>
                     ))}
+
                   {campExist
                     ? campExist?.camp_exist
                     : true && (
@@ -564,29 +570,52 @@ const TopicDetails = () => {
                             }
                             backGroundColorClass={backGroundColorClass}
                           />
-                          {typeof window !== "undefined" &&
-                            window.innerWidth < 767 && (
-                              <>
-                                <CurrentTopicCard
-                                  backGroundColorClass={backGroundColorClass}
-                                  loadingIndicator={loadingIndicator}
-                                />
-                                <CurrentCampCard
-                                  backGroundColorClass={backGroundColorClass}
-                                  loadingIndicator={loadingIndicator}
-                                />
-                                <Spin spinning={loadingIndicator} size="large">
+
+                          {/* {typeof window !== "undefined" &&
+                            window.innerWidth < 767 && ( */}
+                          <>
+                            {/* <CurrentTopicCard
+                              backGroundColorClass={backGroundColorClass}
+                              loadingIndicator={loadingIndicator}
+                            />
+                            <CurrentCampCard
+                              backGroundColorClass={backGroundColorClass}
+                              loadingIndicator={loadingIndicator}
+                            /> */}
+                            <Row gutter={15} className={styles.bottomRow}>
+                              <Col
+                                xs={24}
+                                sm={24}
+                                md={12}
+                                lg={12}
+                                xl={12}
+                                xxl={12}
+                              >
+                                {router?.asPath.includes("topic") && (
+                                  <CampRecentActivities />
+                                )}
+                              </Col>
+                              <Col
+                                xs={24}
+                                sm={24}
+                                md={12}
+                                lg={12}
+                                xl={12}
+                                xxl={12}
+                              >
+                                <Spin
+                                  spinning={loadingIndicator}
+                                  size="large"
+                                  wrapperClassName="newfeedCardSpinner"
+                                >
                                   {!!newsFeed?.length && (
                                     <NewsFeedsCard newsFeed={newsFeed} />
                                   )}
                                 </Spin>
-                                <>
-                                  {router?.asPath.includes("topic") && (
-                                    <CampRecentActivities />
-                                  )}
-                                </>
-                              </>
-                            )}
+                              </Col>
+                            </Row>
+                          </>
+                          {/* )} */}
                         </>
                       )}
                 </>
@@ -596,7 +625,7 @@ const TopicDetails = () => {
         </div>
         <BackTop />
       </Layout>
-    </>
+    </Fragment>
   );
 };
 

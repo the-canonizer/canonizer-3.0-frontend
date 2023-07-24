@@ -7,8 +7,8 @@ import { CloseCircleOutlined } from "@ant-design/icons";
 import { RootState } from "src/store";
 import TopicsFilter from "../../../common/topicsFilter";
 import TopicsFilterWithDrawer from "../../../common/topicsFilter/filterWithTree";
-import CampRecentActivities from "../CampRecentActivities";
-import NewsFeedsCard from "../../TopicDetails/NewsFeedsCard";
+// import CampRecentActivities from "../CampRecentActivities";
+// import NewsFeedsCard from "../../TopicDetails/NewsFeedsCard";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import { setShowDrawer } from "src/store/slices/filtersSlice";
 
@@ -106,7 +106,7 @@ export default function HomeSideBar({
           </Drawer>
         </Fragment>
       )}
-      {typeof window !== "undefined" &&
+      {/* {typeof window !== "undefined" &&
         window.innerWidth > 767 &&
         router?.asPath.includes("topic") &&
         isAuth && (
@@ -114,7 +114,7 @@ export default function HomeSideBar({
             {<CampRecentActivities />}
             {!!newsFeed?.length && <NewsFeedsCard newsFeed={newsFeed} />}
           </Fragment>
-        )}
+        )} */}
     </Fragment>
   );
 }
