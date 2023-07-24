@@ -288,6 +288,33 @@ const InfoBar = ({
           </Link>
         )}
       </Menu.Item>
+      {isCampBtnVisible &&
+      currentCampNode?._isDisabled == 0 &&
+      currentCampNode?.parentIsOneLevel == 0 &&
+      campRecord?.is_archive == 0 ? (
+        <Tooltip
+          title={
+            tree && !tree["1"]?.is_valid_as_of_time
+              ? K.exceptionalMessages.createNewCampTooltipMsg
+              : ""
+          }
+        >
+          <Menu.Item
+            icon={<i className="icon-camp"></i>}
+            className={styles.createCampBtn}
+            onClick={onCreateCamp}
+            disabled={
+              (tree && !tree["1"]?.is_valid_as_of_time) ||
+              (campExist && !campExist?.camp_exist)
+                ? true
+                : false
+            }
+            key="create-camp-btn"
+          >
+            Create New Camp
+          </Menu.Item>
+        </Tooltip>
+      ) : null}
       <Menu.Item icon={<i className="icon-camp"></i>}>
         {isTopicPage && (
           <Link
@@ -398,7 +425,7 @@ const InfoBar = ({
               <Button size="large" className="mb-3 btn" onClick={campRoute}>
                 <i className="icon-topic"></i> Create New Topic
               </Button>
-              {isCampBtnVisible &&
+              {/* {isCampBtnVisible &&
               currentCampNode?._isDisabled == 0 &&
               currentCampNode?.parentIsOneLevel == 0 &&
               campRecord?.is_archive == 0 ? (
@@ -423,7 +450,7 @@ const InfoBar = ({
                     <i className="icon-camp"></i> Create New Camp
                   </Button>
                 </Tooltip>
-              ) : null}
+              ) : null} */}
             </div>
             <div
               className={`${styles.topicDetailContentHead_Right} ${styles.leftPanel}`}
