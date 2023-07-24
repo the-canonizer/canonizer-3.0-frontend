@@ -72,6 +72,7 @@ const TopicsList = () => {
     is_checked,
     is_archive,
     filterObject,
+    viewThisVersion,
     // archeived
   } = useSelector((state: RootState) => ({
     // archeived: state.utils?.archived_checkbox,
@@ -88,6 +89,7 @@ const TopicsList = () => {
     is_checked: state?.utils?.score_checkbox,
     is_archive: state?.filters?.filterObject?.is_archive,
     filterObject: state?.filters?.filterObject,
+    viewThisVersion: state?.filters?.viewThisVersionCheck,
   }));
   const { is_camp_archive_checked } = useSelector((state: RootState) => ({
     is_camp_archive_checked: state?.utils?.archived_checkbox,
@@ -545,7 +547,7 @@ const TopicsList = () => {
                         : ""
                     }&asof=${filterObject?.asof}&canon=${
                       filterObject?.namespace_id
-                    }`}
+                    }${viewThisVersion ? "&viewversion=1" : ""}`}
                   >
                     {!item.is_archive ||
                     (item.is_archive && is_camp_archive_checked) ? (

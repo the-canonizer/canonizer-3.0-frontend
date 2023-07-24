@@ -71,7 +71,7 @@ const TimelineInfoBar = ({
     asofdate,
     asof,
     algorithm,
-    viewThisVersionCheck,
+    viewThisVersion,
     filterObject,
     filterByScore,
   } = useSelector((state: RootState) => ({
@@ -82,7 +82,7 @@ const TimelineInfoBar = ({
     asofdate: state.filters?.filterObject?.asofdate,
     algorithm: state.filters?.filterObject?.algorithm,
     asof: state?.filters?.filterObject?.asof,
-    viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
+    viewThisVersion: state?.filters?.viewThisVersionCheck,
     filterObject: state?.filters?.filterObject,
     filterByScore: state.filters?.filterObject?.filterByScore,
   }));
@@ -419,7 +419,7 @@ const TimelineInfoBar = ({
                         : ""
                     }&asof=${filterObject?.asof}&canon=${
                       filterObject?.namespace_id
-                    }`}
+                    }${viewThisVersion ? "&viewversion=1" : ""}`}
                   >
                     <a className={styles.boldBreadcrumb}>
                       {breadCrumbRes?.topic_name}
@@ -479,7 +479,7 @@ const TimelineInfoBar = ({
                               : ""
                           }&asof=${filterObject?.asof}&canon=${
                             filterObject?.namespace_id
-                          }`}
+                          }${viewThisVersion ? "&viewversion=1" : ""}`}
                           key={index}
                         >
                           <a>

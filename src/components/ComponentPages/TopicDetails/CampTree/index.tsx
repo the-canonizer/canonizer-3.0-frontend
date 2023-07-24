@@ -20,21 +20,31 @@ const CampTree = ({
   treeExpandValue,
   prevTreeValueRef,
 }: any) => {
-  const { tree, filterByScore, review, is_checked, topicRecord, filterObject } =
-    useSelector((state: RootState) => ({
-      tree: state?.topicDetails?.tree,
-      filterByScore: state.filters?.filterObject?.filterByScore,
-      review: state?.filters?.filterObject?.asof,
-      is_checked: state?.utils?.score_checkbox,
-      topicRecord: state?.topicDetails?.currentTopicRecord,
-      filterObject: state?.filters?.filterObject,
-    }));
+  const {
+    tree,
+    filterByScore,
+    review,
+    is_checked,
+    topicRecord,
+    filterObject,
+    viewThisVersion,
+  } = useSelector((state: RootState) => ({
+    tree: state?.topicDetails?.tree,
+    filterByScore: state.filters?.filterObject?.filterByScore,
+    review: state?.filters?.filterObject?.asof,
+    is_checked: state?.utils?.score_checkbox,
+    topicRecord: state?.topicDetails?.currentTopicRecord,
+    filterObject: state?.filters?.filterObject,
+    viewThisVersion: state?.filters?.viewThisVersionCheck,
+  }));
   const { is_camp_archive_checked } = useSelector((state: RootState) => ({
     is_camp_archive_checked: state?.utils?.archived_checkbox,
   }));
   const { campRecord } = useSelector((state: RootState) => ({
     campRecord: state?.topicDetails?.currentCampRecord,
   }));
+  console.log("vie =>> ", viewThisVersion);
+
   let childExpandTree = [];
   const [defaultExpandKeys, setDefaultExpandKeys] = useState([]);
   const [uniqueKeys, setUniqueKeys] = useState([]);
@@ -336,7 +346,7 @@ const CampTree = ({
                               : ""
                           }&asof=${filterObject?.asof}&canon=${
                             filterObject?.namespace_id
-                          }`}
+                          }${viewThisVersion ? "&viewversion=1" : ""}`}
                         >
                           <a
                             className={

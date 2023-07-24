@@ -41,11 +41,13 @@ const HeaderMenu = ({ loggedUser }) => {
       id: 6,
     },
   ];
-  const { filterObject, filterByScore } = useSelector((state: RootState) => ({
-    filterObject: state?.filters?.filterObject,
-
-    filterByScore: state.filters?.filterObject?.filterByScore,
-  }));
+  const { filterObject, filterByScore, viewThisVersion } = useSelector(
+    (state: RootState) => ({
+      filterObject: state?.filters?.filterObject,
+      filterByScore: state.filters?.filterObject?.filterByScore,
+      viewThisVersion: state?.filters?.viewThisVersionCheck,
+    })
+  );
 
   const [mockLinks, setMockLinks] = useState(links);
 
@@ -90,7 +92,7 @@ const HeaderMenu = ({ loggedUser }) => {
                         : ""
                     }&asof=${filterObject?.asof}&canon=${
                       filterObject?.namespace_id
-                    }`}
+                    }${viewThisVersion ? "&viewversion=1" : ""}`}
                   >
                     <a>{item.linkTitle}</a>
                   </Link>

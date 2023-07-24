@@ -58,6 +58,7 @@ const TopicDetailsPage = ({
 export async function getServerSideProps({ req, res, resolvedUrl, query }) {
   let topicNum = +query?.camp[0]?.split("-")[0];
   let campNum = +(query?.camp[1]?.split("-")[0] ?? 1);
+
   const currentDate = new Date().valueOf();
   const reqBodyForService = {
     topic_num: topicNum,
@@ -69,7 +70,7 @@ export async function getServerSideProps({ req, res, resolvedUrl, query }) {
         : Date.now() / 1000,
     algorithm: query?.algo ?? "blind_popularity",
     update_all: 1,
-    fetch_topic_history: null,
+    fetch_topic_history: query?.viewversion == "1" ? 1 : null,
   };
 
   const reqBody = {

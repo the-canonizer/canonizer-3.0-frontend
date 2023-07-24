@@ -19,12 +19,14 @@ export default function HomeSideBar({
   setTotalCampScoreForSupportTree,
   setSupportTreeForCamp,
   backGroundColorClass,
+  viewThisVersion,
 }: any) {
   const { drawerShow, filterObject, filterByScore } = useSelector(
     (state: RootState) => ({
       drawerShow: state?.filters?.showDrawer,
       filterObject: state?.filters?.filterObject,
       filterByScore: state.filters?.filterObject?.filterByScore,
+      viewThisVersion: state?.filters?.viewThisVersionCheck,
     })
   );
   const { isUserAuthenticated } = useAuthentication();
@@ -66,7 +68,7 @@ export default function HomeSideBar({
           : ""
       }&asof=${filterObject?.asof}&canon=${
         filterObject?.namespace_id
-      }&is_tree_open=0`,
+      }&is_tree_open=0${viewThisVersion ? "&viewversion=1" : ""}`,
       null,
       {
         shallow: true,

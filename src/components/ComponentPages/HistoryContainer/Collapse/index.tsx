@@ -466,7 +466,7 @@ function HistoryCollapse({
                           : "1-Agreement")
                       }?algo=${algorithm}&asofdate=${
                         campStatement?.go_live_time
-                      }&asof=bydate&canon=${namespace_id}`}
+                      }&asof=bydate&canon=${namespace_id}&viewversion=${1}`}
                     >
                       View This Version
                     </Link>

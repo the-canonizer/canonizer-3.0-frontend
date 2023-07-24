@@ -7,10 +7,13 @@ import { RootState } from "../../../../store";
 import styles from "../siteHeader.module.scss";
 
 const LogoHeader = () => {
-  const { filterByScore, filterObject } = useSelector((state: RootState) => ({
-    filterByScore: state.filters?.filterObject?.filterByScore,
-    filterObject: state?.filters?.filterObject,
-  }));
+  const { filterByScore, filterObject, viewThisVersion } = useSelector(
+    (state: RootState) => ({
+      filterByScore: state.filters?.filterObject?.filterByScore,
+      filterObject: state?.filters?.filterObject,
+      viewThisVersion: state?.filters?.viewThisVersionCheck,
+    })
+  );
   return (
     <Fragment>
       <div className={styles.logo}>
@@ -19,7 +22,9 @@ const LogoHeader = () => {
             filterObject?.asof == "bydate"
               ? "&asofdate=" + filterObject?.asofdate
               : ""
-          }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}`}
+          }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
+            viewThisVersion ? "&viewversion=1" : ""
+          }`}
         >
           <a>
             <Image
