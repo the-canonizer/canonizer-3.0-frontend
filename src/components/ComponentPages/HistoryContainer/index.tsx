@@ -104,6 +104,8 @@ function HistoryContainer() {
     }
   }, [asofdate, algorithm, +router?.query?.camp?.at(1)?.split("-")[0]]);
 
+console.log(nickName, "Nickname33")
+
   const dispatchData = (data, isDisabled = 0, isOneLevel = 0) => {
     const keys = Object.keys(data);
     for (let i = 0; i < keys.length; i++) {
@@ -280,7 +282,7 @@ function HistoryContainer() {
      null,
      statement_id: null,
     camp_num:campHistory?.items[0]?.camp_num ,
-    nick_name: campHistory?.items[0]?.submitter_nick_id,
+    nick_name: nickName?.[0]?.id,
     // nick_name_id:userNickNameData?.[0]?.n,
     submitter: campHistory?.items[0]?.submitter_nick_id,
     statement: "", //JSON.stringify(convertToRaw(contentState)),//values?.statement?.blocks[0].text.trim(),
