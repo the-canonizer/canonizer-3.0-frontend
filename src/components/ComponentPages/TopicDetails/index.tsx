@@ -459,7 +459,7 @@ const TopicDetails = () => {
             />
           </aside>
 
-          <>
+          <Fragment>
             <div className={styles.pageContent + " pageContentWrap"}>
               {/* <CampTreeCard
                 getTreeLoadingIndicator={getTreeLoadingIndicator}
@@ -478,7 +478,7 @@ const TopicDetails = () => {
                     ? Date.now() / 1000
                     : asofdate)) ||
                 asof == "default") && (
-                <>
+                <Fragment>
                   {campExist &&
                     !campExist?.camp_exist &&
                     (loadingIndicator ? (
@@ -489,7 +489,7 @@ const TopicDetails = () => {
                         isButton={false}
                       />
                     ) : (
-                      <>
+                      <Fragment>
                         <Alert
                           className="alert-camp-created-on"
                           message="The camp was first created on"
@@ -513,31 +513,17 @@ const TopicDetails = () => {
                             </span>
                           }
                         />
-                      </>
+                      </Fragment>
                     ))}
 
                   {campExist
                     ? campExist?.camp_exist
                     : true && (
-                        <>
+                        <Fragment>
                           <CampStatementCard
                             loadingIndicator={loadingIndicator}
                             backGroundColorClass={backGroundColorClass}
                           />
-
-                          {typeof window !== "undefined" &&
-                            window.innerWidth > 767 && (
-                              <>
-                                <CurrentTopicCard
-                                  loadingIndicator={loadingIndicator}
-                                  backGroundColorClass={backGroundColorClass}
-                                />
-                                <CurrentCampCard
-                                  loadingIndicator={loadingIndicator}
-                                  backGroundColorClass={backGroundColorClass}
-                                />
-                              </>
-                            )}
 
                           <SupportTreeCard
                             loadingIndicator={loadingIndicator}
@@ -571,57 +557,53 @@ const TopicDetails = () => {
                             backGroundColorClass={backGroundColorClass}
                           />
 
-                          {/* {typeof window !== "undefined" &&
-                            window.innerWidth < 767 && ( */}
-                          <>
-                            {/* <CurrentTopicCard
-                              backGroundColorClass={backGroundColorClass}
-                              loadingIndicator={loadingIndicator}
-                            />
-                            <CurrentCampCard
-                              backGroundColorClass={backGroundColorClass}
-                              loadingIndicator={loadingIndicator}
-                            /> */}
-                            <Row gutter={15} className={styles.bottomRow}>
-                              <Col
-                                xs={24}
-                                sm={24}
-                                md={12}
-                                lg={12}
-                                xl={12}
-                                xxl={12}
+                          <CurrentTopicCard
+                            loadingIndicator={loadingIndicator}
+                            backGroundColorClass={backGroundColorClass}
+                          />
+                          <CurrentCampCard
+                            loadingIndicator={loadingIndicator}
+                            backGroundColorClass={backGroundColorClass}
+                          />
+
+                          <Row gutter={15} className={styles.bottomRow}>
+                            <Col
+                              xs={24}
+                              sm={24}
+                              md={12}
+                              lg={12}
+                              xl={12}
+                              xxl={12}
+                            >
+                              {router?.asPath.includes("topic") && (
+                                <CampRecentActivities />
+                              )}
+                            </Col>
+                            <Col
+                              xs={24}
+                              sm={24}
+                              md={12}
+                              lg={12}
+                              xl={12}
+                              xxl={12}
+                            >
+                              <Spin
+                                spinning={loadingIndicator}
+                                size="large"
+                                wrapperClassName="newfeedCardSpinner"
                               >
-                                {router?.asPath.includes("topic") && (
-                                  <CampRecentActivities />
+                                {!!newsFeed?.length && (
+                                  <NewsFeedsCard newsFeed={newsFeed} />
                                 )}
-                              </Col>
-                              <Col
-                                xs={24}
-                                sm={24}
-                                md={12}
-                                lg={12}
-                                xl={12}
-                                xxl={12}
-                              >
-                                <Spin
-                                  spinning={loadingIndicator}
-                                  size="large"
-                                  wrapperClassName="newfeedCardSpinner"
-                                >
-                                  {!!newsFeed?.length && (
-                                    <NewsFeedsCard newsFeed={newsFeed} />
-                                  )}
-                                </Spin>
-                              </Col>
-                            </Row>
-                          </>
-                          {/* )} */}
-                        </>
+                              </Spin>
+                            </Col>
+                          </Row>
+                        </Fragment>
                       )}
-                </>
+                </Fragment>
               )}
             </div>
-          </>
+          </Fragment>
         </div>
         <BackTop />
       </Layout>

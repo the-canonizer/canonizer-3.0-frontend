@@ -94,7 +94,9 @@ describe("LoggedOutHeader", () => {
     expect(logoLink[1].getAttribute("href")).toBe("/");
     expect(browseLink.getAttribute("href")).toBe("/browse");
     // expect(uploadFilesLink.getAttribute("href")).toBe("/uploadFile");
-    expect(helpLink.getAttribute("href")).toBe("/topic/132-Help/1-Agreement%3Fis_tree_open=1");
+    expect(helpLink.getAttribute("href")).toBe(
+      "/topic/132-Help/1-Agreement%3Fis_tree_open=1"
+    );
     expect(whitePaperLink.getAttribute("href")).toBe(
       "/files/2012_amplifying_final.pdf"
     );
