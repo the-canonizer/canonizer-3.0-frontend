@@ -595,6 +595,13 @@ del.diffmod img {
     }
   }
 }
+.topicFilterBorderRemove {
+  &.ant-collapse {
+    .ant-collapse-item {
+      border-top: none;
+    }
+  }
+}
 
 .tab--card {
   .ant-card-head {
@@ -2634,5 +2641,18 @@ div[role="option"]::before {
         transform: translateY(0);
       }
     }
+  }
+}
+
+.topicDeskBTN {
+  display: block !important;
+  @media screen and (max-width: 767px) {
+    display: none !important;
+  }
+}
+.topicMobBTN {
+  display: none !important;
+  @media screen and (max-width: 767px) {
+    display: block !important;
   }
 }

@@ -402,9 +402,9 @@ const InfoBar = ({
     </Menu>
   );
 
-  const campRoute = () => {
-    router?.push("/create/topic");
-  };
+  // const campRoute = () => {
+  //   router?.push("/create/topic");
+  // };
   useEffect(() => {
     if (router?.pathname.includes("/topic/")) {
       // setIsPanelCollapse(true);
@@ -421,11 +421,11 @@ const InfoBar = ({
           <div
             className={`${styles.topicDetailContentHead_Left} ${styles.rightPanel}`}
           >
-            <div className="btnsWrap">
+            {/* <div className="btnsWrap">
               <Button size="large" className="mb-3 btn" onClick={campRoute}>
                 <i className="icon-topic"></i> Create New Topic
               </Button>
-              {/* {isCampBtnVisible &&
+              {isCampBtnVisible &&
               currentCampNode?._isDisabled == 0 &&
               currentCampNode?.parentIsOneLevel == 0 &&
               campRecord?.is_archive == 0 ? (
@@ -450,8 +450,8 @@ const InfoBar = ({
                     <i className="icon-camp"></i> Create New Camp
                   </Button>
                 </Tooltip>
-              ) : null} */}
-            </div>
+              ) : null}
+            </div> */}
             <div
               className={`${styles.topicDetailContentHead_Right} ${styles.leftPanel}`}
             >

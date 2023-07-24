@@ -37,9 +37,10 @@
   &_Left {
     &.rightPanel {
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
       border: none;
       padding-top: 0;
+
       [class="btnsWrap"] {
         display: flex;
         button {
@@ -69,6 +70,16 @@
         width: auto;
         .topicTitleStyle {
           margin-right: 0;
+        }
+      }
+      @media screen and (max-width: 767px) {
+        .leftPanel {
+          width: 100%;
+          .topicTitleStyle {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+          }
         }
       }
     }
