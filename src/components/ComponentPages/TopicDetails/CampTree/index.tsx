@@ -43,7 +43,6 @@ const CampTree = ({
   const { campRecord } = useSelector((state: RootState) => ({
     campRecord: state?.topicDetails?.currentCampRecord,
   }));
-  console.log("vie =>> ", viewThisVersion);
 
   let childExpandTree = [];
   const [defaultExpandKeys, setDefaultExpandKeys] = useState([]);
