@@ -23,6 +23,7 @@ import { getHistoryApi } from "../../network/api/history";
 import TopicDetails from "src/components/ComponentPages/TopicDetails";
 import { setCurrentDate } from "src/store/slices/filtersSlice";
 import { useRef } from "react";
+import { formatTheDate } from "src/utils/generalUtility";
 
 // import { wrapper } from "src/store";
 
@@ -78,9 +79,9 @@ export async function getServerSideProps({ req, res, resolvedUrl, query }) {
     camp_num: campNum,
     as_of: query?.asof ?? "default",
     as_of_date:
-      query?.asofdate && query?.asof == "bydate"
-        ? parseFloat(query?.asofdate)
-        : Date.now() / 1000,
+      query?.asofdate == "default" || query?.asof == "review"
+        ? Date.now() / 1000
+        : formatTheDate(query?.asofdate * 1000, "DD-MM-YYYY H:mm:ss"),
   };
 
   const reqBodyForCampData = {

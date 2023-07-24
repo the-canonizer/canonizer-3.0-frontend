@@ -159,7 +159,7 @@ const TopicDetails = ({ serverSideCall }) => {
           getTreesApi(reqBodyForService),
         ]);
       } else if (serverSideCall.current) {
-        serverSideCall.current = true;
+        serverSideCall.current = false;
       } else {
         didMount.current = true;
       }
