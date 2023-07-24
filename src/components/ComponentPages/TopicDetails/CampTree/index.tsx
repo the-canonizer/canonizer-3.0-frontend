@@ -489,7 +489,7 @@ const CampTree = ({
           return null;
         }
       }
-      return <TreeNode key={data[item].key} {...data[item]} />;
+      return <TreeNode role="treeitem" key={data[item].key} {...data[item]} />;
     });
   };
 

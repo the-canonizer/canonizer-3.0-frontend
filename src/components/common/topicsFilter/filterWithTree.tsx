@@ -90,7 +90,7 @@ const asContent = (
 // }
 
 const FilterWithTree = ({
-  onCreateCamp = () => {},
+  onCreateCamp = () => { },
   getTreeLoadingIndicator,
   scrollToCampStatement,
   setTotalCampScoreForSupportTree,
@@ -215,15 +215,15 @@ const FilterWithTree = ({
     } else {
       let datepicker =
         moment().unix() > moment(e?._d).unix() &&
-        moment().format("YYYY-MM-DD") > moment(e?._d).format("YYYY-MM-DD")
+          moment().format("YYYY-MM-DD") > moment(e?._d).format("YYYY-MM-DD")
           ? momentDateObject(moment(e?._d).endOf("day"))
           : momentDateObject(
-              moment(e?._d).set({
-                hour: moment().hour(),
-                minute: moment().minute(),
-                second: moment().second(),
-              })
-            );
+            moment(e?._d).set({
+              hour: moment().hour(),
+              minute: moment().minute(),
+              second: moment().second(),
+            })
+          );
       setDatePickerValue(datepicker);
       IsoDateFormat = Date.parse(datepicker) / 1000;
     }
@@ -257,16 +257,16 @@ const FilterWithTree = ({
     if (datePickerValue !== null) {
       let dateValue =
         moment().unix() > moment(datePickerValue).unix() &&
-        moment().format("YYYY-MM-DD") >
+          moment().format("YYYY-MM-DD") >
           moment(datePickerValue).format("YYYY-MM-DD")
           ? momentDateObject(moment(datePickerValue).endOf("day"))
           : momentDateObject(
-              moment(datePickerValue).set({
-                hour: moment().hour(),
-                minute: moment().minute(),
-                second: moment().second(),
-              })
-            );
+            moment(datePickerValue).set({
+              hour: moment().hour(),
+              minute: moment().minute(),
+              second: moment().second(),
+            })
+          );
       dispatch(
         setFilterCanonizedTopics({
           asofdate: Date.parse(dateValue) / 1000,
@@ -302,25 +302,26 @@ const FilterWithTree = ({
           >
             <Row gutter={20} className={styles.filterRow}>
               <Col xs={12}>
-                <div className={styles.algo_title}>
-                  <Title level={5} className={styles.algoText}>
+                <label className={styles.algo_title} htmlFor="my-select">
+                  <Title level={3} className={styles.algoText}>
                     Canonizer Algorithm:{"  "}
                     <Popover content="Algorithm Information" placement="top">
                       {router?.asPath.includes("/topic") ? (
-                        <a href={K?.Network?.URL?.algoInfoUrl}>
+                        <a href={K?.Network?.URL?.algoInfoUrl} aria-label="Topic link">
                           <i className="icon-info"></i>
                         </a>
                       ) : (
                         <Link href={K?.Network?.URL?.algoInfoUrl}>
-                          <a>
+                          <a aria-label="Topic link">
                             <i className="icon-info"></i>
                           </a>
                         </Link>
                       )}
                     </Popover>
                   </Title>
-                </div>
+                </label>
                 <Select
+                  id="my-select"
                   size="large"
                   showSearch
                   optionFilterProp="children"
@@ -381,7 +382,7 @@ const FilterWithTree = ({
               </Col>
               <Col md={24}>
                 <div className={`${styles.algo_title} ${styles.title}`}>
-                  <Title level={5} className={styles.algoText}>
+                  <Title level={3} className={styles.algoText}>
                     As Of
                     <Popover content={asContent} placement="right">
                       <i className="icon-info"></i>
