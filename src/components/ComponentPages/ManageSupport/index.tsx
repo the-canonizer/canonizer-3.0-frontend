@@ -110,9 +110,10 @@ const ManageSupport = () => {
     topic_num: +router?.query?.manageSupport?.[0]?.split("-")[0],
     camp_num: +router?.query?.manageSupport?.[1]?.split("-")[0],
   };
-  if (CheckDelegatedOrDirect && router?.query?.manageSupport[1]?.split("_")[1])
+
+  if (CheckDelegatedOrDirect && router?.query?.manageSupport[1]?.split("=")[1]?.split("_")[1])
     reqBodyData.delegated_nick_name_id =
-      router?.query?.manageSupport[1]?.split("_")[1];
+    router?.query?.manageSupport[1]?.split("=")[1]?.split("_")[1]
   const { campRecord } = useSelector((state: RootState) => ({
     campRecord: state?.topicDetails?.currentCampRecord,
   }));
@@ -467,17 +468,18 @@ const ManageSupport = () => {
 
     //Case if data pass from delegated or direct
     if (CheckDelegatedOrDirect) {
+      
       setGetManageSupportLoadingIndicator(true);
 
       let nickNameID = nickNameList.filter(
         (values) => selectedtNickname == values.id
       );
       let nickNameIDValue = nickNameID[0].id;
-      let delegated_user_id = router?.query?.manageSupport[1].split("_");
+      let delegated_user_id = router?.query?.manageSupport[1]?.split("=")[1]?.split("_")[1];
 
       const addDelegatedSupport = {
         nick_name_id: nickNameIDValue,
-        delegated_nick_name_id: delegated_user_id[1],
+        delegated_nick_name_id: delegated_user_id,
         topic_num: topicNumId,
       };
       let res = await addDelegateSupportCamps(addDelegatedSupport);

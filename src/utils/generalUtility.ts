@@ -1,4 +1,5 @@
 import { message } from "antd";
+import moment from "moment";
 
 export const handleError = (error, log = false) => {
   log ? window.console.log(error) : "";
@@ -30,6 +31,9 @@ export const handleError = (error, log = false) => {
     }
   }
   return null;
+};
+export const formatTheDate = (date, formatString) => {
+  return moment.utc(date).format(formatString);
 };
 
 export const toCamelCaseToSentence = (string) => {

@@ -15,6 +15,7 @@ import styles from "../ProfileInfo/ProfileInfoUI/ProfileInfo.module.scss";
 import messages from "../../../messages";
 import PlacesAutocomplete from "react-places-autocomplete";
 import CustomSkelton from "../../common/customSkelton";
+import { useEffect, useState } from "react";
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -32,6 +33,12 @@ function ProfileInfoForm({
   disableButton,
   postalCodeDisable,
 }: any) {
+
+  const [gmapsLoaded, setgmapsLoaded] = useState(false)
+  useEffect(() => {
+    setgmapsLoaded(true)
+  }, []);
+
   const listOfOption = (optionList, algoOrLang): any => {
     let option = [];
     optionList.length > 0 &&
@@ -52,6 +59,8 @@ function ProfileInfoForm({
       });
     return option;
   };
+
+
   const onFinishFailed = (errorInfo) => {
     window.console.log("Failed:", errorInfo);
   };
@@ -97,13 +106,13 @@ function ProfileInfoForm({
         {suggestions.map((suggestion, index) => {
           const style = suggestion.active
             ? {
-                backgroundColor: "#f8f8f8",
-                cursor: "pointer",
-              }
+              backgroundColor: "#f8f8f8",
+              cursor: "pointer",
+            }
             : {
-                backgroundColor: "#ffffff",
-                cursor: "pointer",
-              };
+              backgroundColor: "#ffffff",
+              cursor: "pointer",
+            };
           return (
             <div
               {...getSuggestionItemProps(suggestion, {
@@ -118,6 +127,7 @@ function ProfileInfoForm({
       </div>
     </div>
   );
+
   // @ts-ignore
   // if (privateFlags != "loading")
   return (
@@ -264,13 +274,18 @@ function ProfileInfoForm({
           <Col md={12}>
             <Form.Item name="address_1" label={messages.labels.addressLine1}>
               <div className="reactDropdown">
-                <PlacesAutocomplete
-                  value={address}
-                  onChange={handleAddressChange}
-                  onSelect={handleAddressSelect}
-                >
-                  {renderFuncForGooglePlaces}
-                </PlacesAutocomplete>
+                {
+                  gmapsLoaded ?
+                    <PlacesAutocomplete
+                      value={address}
+                      onChange={handleAddressChange}
+                      onSelect={handleAddressSelect}
+                    >
+                      {renderFuncForGooglePlaces}
+                    </PlacesAutocomplete>
+                    : null
+                }
+
               </div>
             </Form.Item>
             <Form.Item name="city" label={messages.labels.city}>
