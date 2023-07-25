@@ -297,7 +297,7 @@ export const UpdateUserProfileInfo = async (values: object) => {
         birthday: value.data.birthday,
         email: value.data.email,
       };
-      
+
       document.cookie =
         "loginToken=" +
         res.data.auth?.access_token +

@@ -1,22 +1,18 @@
 import NetworkCall from "../networkCall";
 import NotificationRequests from "../request/notificationsRequests";
-import { getCookies, handleError } from "../../utils/generalUtility";
-import { store } from "../../store";
+import { handleError } from "../../utils/generalUtility";
+
 import { setData, setHeaderData } from "../../store/slices/notificationSlice";
+import { store } from "src/store";
 
-export const getLists = async (page: number = 1, per_page: number = 5) => {
-  // let state = await store.getState();
-
-  // const { auth } = state;
-
-  // let token = auth?.token;
-
-  const cc: any = getCookies();
-  let token = cc?.loginToken;
-
+export const getLists = async (
+  page: number = 1,
+  per_page: number = 5,
+  loginToken = null
+) => {
   try {
     const res = await NetworkCall.fetch(
-      NotificationRequests.getNotification(page, per_page, token),
+      NotificationRequests.getNotification(page, per_page, loginToken),
       false
     );
 
@@ -36,21 +32,12 @@ export const getLists = async (page: number = 1, per_page: number = 5) => {
 
 export const getNotificationsList = async (
   page: number = 1,
-  per_page: number = 50
+  per_page: number = 50,
+  loginToken = null
 ) => {
-  // let state = await store.getState();
-
-  // const { auth } = state;
-
-  // let token = auth?.token;
-
-  const cc: any = getCookies();
-
-  let token = cc?.loginToken;
-
   try {
     const res = await NetworkCall.fetch(
-      NotificationRequests.getNotification(page, per_page, token),
+      NotificationRequests.getNotification(page, per_page, loginToken),
       false
     );
 

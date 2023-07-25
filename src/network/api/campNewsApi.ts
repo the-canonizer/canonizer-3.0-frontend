@@ -3,17 +3,11 @@ import { message } from "antd";
 import { campNewsRequest } from "../request/campNewsRequest";
 import { store } from "../../store";
 import { setCampNewsToEdit } from "../../../src/store/slices/news";
-import { getCookies } from "src/utils/generalUtility";
 
-export const addNewsFeedApi = async (body) => {
-  // let state = store.getState();
-  // const { auth } = state;
-
-  const cc: any = getCookies();
-
+export const addNewsFeedApi = async (body, loginToken = null) => {
   try {
     const editNewsData = await NetworkCall.fetch(
-      campNewsRequest.addNewsFeed(body, cc?.loginToken)
+      campNewsRequest.addNewsFeed(body, loginToken)
     );
     return editNewsData;
   } catch (error) {
@@ -22,15 +16,10 @@ export const addNewsFeedApi = async (body) => {
   }
 };
 
-export const getEditCampNewsFeedApi = async (body) => {
-  // let state = store.getState();
-  // const { auth } = state;
-
-  const cc: any = getCookies();
-
+export const getEditCampNewsFeedApi = async (body, loginToken = null) => {
   try {
     const editNewsData = await NetworkCall.fetch(
-      campNewsRequest.getEditCampNewsFeed(body, cc?.loginToken)
+      campNewsRequest.getEditCampNewsFeed(body, loginToken)
     );
     let res = editNewsData?.data;
     store.dispatch(setCampNewsToEdit((res && res[0]) || {}));
@@ -40,15 +29,10 @@ export const getEditCampNewsFeedApi = async (body) => {
   }
 };
 
-export const updateNewsFeedApi = async (body) => {
-  // let state = store.getState();
-  // const { auth } = state;
-
-  const cc: any = getCookies();
-
+export const updateNewsFeedApi = async (body, loginToken = null) => {
   try {
     const editNewsData = await NetworkCall.fetch(
-      campNewsRequest.updateNewsFeed(body, cc?.loginToken)
+      campNewsRequest.updateNewsFeed(body, loginToken)
     );
     return editNewsData;
   } catch (error) {
@@ -59,15 +43,10 @@ export const updateNewsFeedApi = async (body) => {
   }
 };
 
-export const deleteNewsFeedApi = async (body) => {
-  // let state = store.getState();
-  // const { auth } = state;
-
-  const cc: any = getCookies();
-
+export const deleteNewsFeedApi = async (body, loginToken = null) => {
   try {
     const editNewsData = await NetworkCall.fetch(
-      campNewsRequest.deleteNewsFeed(body, cc?.loginToken)
+      campNewsRequest.deleteNewsFeed(body, loginToken)
     );
     return editNewsData;
   } catch (error) {

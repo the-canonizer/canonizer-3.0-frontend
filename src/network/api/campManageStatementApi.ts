@@ -2,17 +2,10 @@ import NetworkCall from "../networkCall";
 import { message } from "antd";
 import { campManageStatementRequest } from "../request/campManageStatementRequest";
 import { store } from "../../store";
-import { getCookies } from "src/utils/generalUtility";
-
-export const getEditStatementApi = async (body) => {
-  const cc: any = getCookies();
-
-  // let state = store.getState();
-  // const { auth } = state;
-
+export const getEditStatementApi = async (body, loginToken = null) => {
   try {
     const res = await NetworkCall.fetch(
-      campManageStatementRequest.getEditStatement(body, cc?.loginToken),
+      campManageStatementRequest.getEditStatement(body, loginToken),
       false
     );
     return res;
@@ -20,15 +13,10 @@ export const getEditStatementApi = async (body) => {
     return error?.error?.data;
   }
 };
-export const getEditCampApi = async (body) => {
-  // let state = store.getState();
-  // const { auth } = state;
-
-  const cc: any = getCookies();
-
+export const getEditCampApi = async (body, loginToken = null) => {
   try {
     const res = await NetworkCall.fetch(
-      campManageStatementRequest.getEditCamp(body, cc?.loginToken),
+      campManageStatementRequest.getEditCamp(body, loginToken),
       false
     );
     return res;
@@ -38,15 +26,10 @@ export const getEditCampApi = async (body) => {
   }
 };
 
-export const getEditTopicApi = async (body) => {
-  // let state = store.getState();
-  // const { auth } = state;
-
-  const cc: any = getCookies();
-
+export const getEditTopicApi = async (body, loginToken = null) => {
   try {
     const res = await NetworkCall.fetch(
-      campManageStatementRequest.getEditTopic(body, cc?.loginToken),
+      campManageStatementRequest.getEditTopic(body, loginToken),
       false
     );
     return res;
@@ -65,15 +48,10 @@ export const getParseCampStatementApi = async (body) => {
     return error;
   }
 };
-export const updateStatementApi = async (body) => {
-  // let state = store.getState();
-  // const { auth } = state;
-
-  const cc: any = getCookies();
-
+export const updateStatementApi = async (body, loginToken = null) => {
   try {
     const res = await NetworkCall.fetch(
-      campManageStatementRequest.updateStatement(body, cc?.loginToken)
+      campManageStatementRequest.updateStatement(body, loginToken)
     );
     return res;
   } catch (error) {
@@ -81,15 +59,10 @@ export const updateStatementApi = async (body) => {
     return error?.error?.data;
   }
 };
-export const updateCampApi = async (body) => {
-  // let state = store.getState();
-  // const { auth } = state;
-
-  const cc: any = getCookies();
-
+export const updateCampApi = async (body, loginToken = null) => {
   try {
     const res = await NetworkCall.fetch(
-      campManageStatementRequest.updateCamp(body, cc?.loginToken)
+      campManageStatementRequest.updateCamp(body, loginToken)
     );
     return res;
   } catch (error) {
@@ -98,15 +71,10 @@ export const updateCampApi = async (body) => {
   }
 };
 
-export const updateTopicApi = async (body) => {
-  // let state = store.getState();
-  // const { auth } = state;
-
-  const cc: any = getCookies();
-
+export const updateTopicApi = async (body, loginToken = null) => {
   try {
     const res = await NetworkCall.fetch(
-      campManageStatementRequest.updateTopic(body, cc?.loginToken)
+      campManageStatementRequest.updateTopic(body, loginToken)
     );
     return res;
   } catch (error) {

@@ -1,8 +1,6 @@
 import NetworkCall from "../networkCall";
 import TopicRequest from "../request/topicRequests";
-import { store } from "src/store";
-import { handleError, getCookies } from "src/utils/generalUtility";
-import { createToken } from "./userApi";
+import { handleError } from "src/utils/generalUtility";
 
 export const createTopic = async (body) => {
   try {
@@ -23,23 +21,10 @@ export const createTopic = async (body) => {
   }
 };
 
-export const GetActiveSupportTopic = async (body) => {
-  // let state = await store.getState();
-
-  const cc: any = getCookies();
-
-  const tc = cc?.loginToken;
-
-  let token = tc;
-
-  // if (!token) {
-  //   const response = await createToken();
-  //   token = response?.access_token;
-  // }
-
+export const GetActiveSupportTopic = async (body, loginToken = null) => {
   try {
     const res = await NetworkCall.fetch(
-      TopicRequest.GetActiveSupportTopic(body, token)
+      TopicRequest.GetActiveSupportTopic(body, loginToken)
     );
 
     return res;
@@ -58,18 +43,10 @@ export const GetActiveSupportTopic = async (body) => {
   }
 };
 
-export const GetCheckSupportExists = async (reqbody) => {
-  // let state = await store.getState();
-
-  const cc: any = getCookies();
-
-  // const { auth } = state;
-
-  let token = cc?.loginToken;
-
+export const GetCheckSupportExists = async (reqbody, loginToken = null) => {
   try {
     const res = await NetworkCall.fetch(
-      TopicRequest.GetCheckSupportExists(reqbody, token)
+      TopicRequest.GetCheckSupportExists(reqbody, loginToken)
     );
     return res;
   } catch (err) {

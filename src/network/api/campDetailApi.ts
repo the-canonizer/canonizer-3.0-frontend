@@ -14,7 +14,7 @@ import NetworkCall from "../networkCall";
 import TreeRequest from "../request/campDetailRequest";
 import { message } from "antd";
 import { store } from "../../store";
-import { getCookies, handleError, isServer } from "../../utils/generalUtility";
+import { handleError } from "../../utils/generalUtility";
 import { createToken, SupportTreeAndScoreCount } from "./userApi";
 
 export const getTreesApi = async (reqBody) => {
@@ -30,31 +30,9 @@ export const getTreesApi = async (reqBody) => {
 };
 
 export const getNewsFeedApi = async (reqBody, loginToken = null) => {
-  // let token;
-
-  // if (isServer()) {
-  //   if (loginToken) {
-  //     token = loginToken;
-  //   } else {
-  //     const response = await createToken();
-  //     token = response?.access_token;
-  //   }
-  // } else {
-  //   let state = await store.getState();
-  //   const { auth } = state,
-  //     tc = localStorage?.getItem("auth_token");
-  //   token = auth?.token || tc;
-  //   if (!token) {
-  //     const response = await createToken();
-  //     token = response?.access_token;
-  //   }
-  // }
-
-  const cc: any = getCookies();
-
   try {
     const newsFeed = await NetworkCall.fetch(
-      TreeRequest.getNewsFeed(reqBody, cc?.loginToken),
+      TreeRequest.getNewsFeed(reqBody, loginToken),
       false
     );
     store.dispatch(setNewsFeed(newsFeed?.data));
@@ -68,33 +46,9 @@ export const getCanonizedCampStatementApi = async (
   reqBody,
   loginToken = null
 ) => {
-  // let token;
-
-  // if (isServer()) {
-  //   if (loginToken) {
-  //     token = loginToken;
-  //   } else {
-  //     const response = await createToken();
-  //     token = response?.access_token;
-  //   }
-  // } else {
-  //   let state = await store.getState();
-  //   const { auth } = state,
-  //     tc = localStorage?.getItem("auth_token");
-
-  //   let token = auth?.token || tc;
-
-  //   if (!token) {
-  //     const response = await createToken();
-  //     token = response?.access_token;
-  //   }
-  // }
-
-  const cc: any = getCookies();
-
   try {
     const campStatement = await NetworkCall.fetch(
-      TreeRequest.getCampStatement(reqBody, cc?.loginToken),
+      TreeRequest.getCampStatement(reqBody, loginToken),
       false
     );
     store.dispatch(setCampStatement(campStatement?.data));
@@ -119,32 +73,9 @@ export const getCurrentTopicRecordApi = async (reqBody, loginToken = null) => {
 };
 
 export const getCurrentCampRecordApi = async (reqBody, loginToken = null) => {
-  // let token;
-  // if (isServer()) {
-  //   if (loginToken) {
-  //     token = loginToken;
-  //   } else {
-  //     const response = await createToken();
-  //     token = response?.access_token;
-  //   }
-  // } else {
-  //   let state = await store.getState();
-  //   const { auth } = state,
-  //     tc = localStorage?.getItem("auth_token");
-
-  //   token = auth?.token || tc;
-
-  //   if (!token) {
-  //     const response = await createToken();
-  //     token = response?.access_token;
-  //   }
-  // }
-
-  const cc: any = getCookies();
-
   try {
     const currentCampRecord = await NetworkCall.fetch(
-      TreeRequest.getCurrentCampRecord(reqBody, cc?.loginToken),
+      TreeRequest.getCurrentCampRecord(reqBody, loginToken),
       false
     );
 
@@ -155,14 +86,14 @@ export const getCurrentCampRecordApi = async (reqBody, loginToken = null) => {
   }
 };
 
-export const subscribeToCampApi = async (reqBody, isTopic: Boolean) => {
-  let state = store.getState();
-  const { auth } = state;
-  const cc: any = getCookies();
-
+export const subscribeToCampApi = async (
+  reqBody,
+  isTopic: Boolean,
+  loginToken = null
+) => {
   try {
     const subscribeToCamp = await NetworkCall.fetch(
-      TreeRequest.subscribeToCamp(reqBody, cc?.loginToken),
+      TreeRequest.subscribeToCamp(reqBody, loginToken),
       false
     );
     isTopic
@@ -262,19 +193,10 @@ export const getAllUsedNickNames = async (body) => {
     return error.error;
   }
 };
-export const getCampBreadCrumbApi = async (reqBody) => {
-  // let state = await store.getState();
-
-  // const { auth } = state,
-  //   tc = localStorage?.getItem("auth_token");
-
-  // let token = auth?.token || tc;
-
-  const cc: any = getCookies();
-
+export const getCampBreadCrumbApi = async (reqBody, loginToken = null) => {
   try {
     const currentTopicRecord = await NetworkCall.fetch(
-      TreeRequest.getCampBreadCrumb(reqBody, cc?.loginToken),
+      TreeRequest.getCampBreadCrumb(reqBody, loginToken),
       false
     );
     return currentTopicRecord;
@@ -283,24 +205,10 @@ export const getCampBreadCrumbApi = async (reqBody) => {
   }
 };
 
-export const getTopicActivityLogApi = async (reqBody) => {
-  // let state = await store.getState();
-
-  const cc: any = getCookies();
-
-  // const { auth } = state,
-  //   tc = cc?.loginToken;
-
-  // let token = auth?.token || tc;
-
-  // if (!token) {
-  //   const response = await createToken();
-  //   token = response?.access_token;
-  // }
-
+export const getTopicActivityLogApi = async (reqBody, loginToken = null) => {
   try {
     const newsFeed = await NetworkCall.fetch(
-      TreeRequest.getTopicActivityLog(reqBody, cc?.loginToken),
+      TreeRequest.getTopicActivityLog(reqBody, loginToken),
       false
     );
     return newsFeed;
@@ -348,27 +256,16 @@ export const getAllRemovedReasons = async () => {
   }
 };
 
-export const checkTopicCampExistAPICall = async (body: {
-  topic_num: number;
-  camp_num: number;
-}) => {
-  // let state = await store.getState();
-
-  // const { auth } = state,
-  //   tc = !isServer() && localStorage?.getItem("auth_token");
-
-  // let token = auth?.token || tc;
-
-  // if (!token) {
-  //   const response = await createToken();
-  //   token = response?.access_token;
-  // }
-
-  const cc: any = getCookies();
-
+export const checkTopicCampExistAPICall = async (
+  body: {
+    topic_num: number;
+    camp_num: number;
+  },
+  loginToken = null
+) => {
   try {
     const res = await NetworkCall.fetch(
-      TreeRequest.checkTopicCampExistRequest(body, cc?.loginToken)
+      TreeRequest.checkTopicCampExistRequest(body, loginToken)
     );
     return res;
   } catch (err) {
