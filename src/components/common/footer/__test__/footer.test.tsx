@@ -117,7 +117,7 @@ describe("Footer", () => {
     );
     expect(blogLink).toBeInTheDocument();
     expect(jobsLink.getAttribute("href")).toBe(
-      "/topic/6-Canonizer-Jobs/1-Agreement"
+      "/topic/6-Canonizer-Jobs/1-Agreement?is_tree_open=1"
     );
     expect(termsAndServicesLink.getAttribute("href")).toBe(
       "/terms-and-services"
