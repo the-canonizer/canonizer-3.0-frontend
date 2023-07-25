@@ -89,11 +89,14 @@ function HistoryCollapse({
     );
   };
 
-  const { asofdate, asof, algorithm } = useSelector((state: RootState) => ({
-    asofdate: state.filters?.filterObject?.asofdate,
-    asof: state?.filters?.filterObject?.asof,
-    algorithm: state.filters?.filterObject?.algorithm,
-  }));
+  const { asofdate, asof, algorithm, namespace_id } = useSelector(
+    (state: RootState) => ({
+      asofdate: state.filters?.filterObject?.asofdate,
+      asof: state?.filters?.filterObject?.asof,
+      algorithm: state.filters?.filterObject?.algorithm,
+      namespace_id: state.filters?.filterObject?.namespace_id,
+    })
+  );
   const historyOf = router?.asPath.split("/")[1];
   // const covertToTime = (unixTime) => {
   //   return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
@@ -428,41 +431,35 @@ function HistoryCollapse({
                     }
                   >
                     <Link
-                      href={{
-                        pathname: `/topic/${
-                          replaceSpecialCharacters(
-                            historyOf == "topic"
-                              ? replaceSpecialCharacters(
-                                  campStatement?.topic_num +
-                                    "-" +
-                                    campStatement?.topic_name?.replace(
-                                      / /g,
-                                      "-"
-                                    ),
-                                  "-"
-                                )
-                              : router?.query?.camp?.at(0),
-                            "-"
-                          ) +
-                          "/" +
-                          (historyOf != "topic"
-                            ? historyOf == "camp"
-                              ? replaceSpecialCharacters(
-                                  campStatement?.camp_num +
-                                    "-" +
-                                    campStatement?.camp_name?.replace(
-                                      / /g,
-                                      "-"
-                                    ),
-                                  "-"
-                                )
-                              : replaceSpecialCharacters(
-                                  router?.query?.camp?.at(1),
-                                  "-"
-                                )
-                            : "1-Agreement")
-                        }`,
-                      }}
+                      href={`/topic/${
+                        replaceSpecialCharacters(
+                          historyOf == "topic"
+                            ? replaceSpecialCharacters(
+                                campStatement?.topic_num +
+                                  "-" +
+                                  campStatement?.topic_name?.replace(/ /g, "-"),
+                                "-"
+                              )
+                            : router?.query?.camp?.at(0),
+                          "-"
+                        ) +
+                        "/" +
+                        (historyOf != "topic"
+                          ? historyOf == "camp"
+                            ? replaceSpecialCharacters(
+                                campStatement?.camp_num +
+                                  "-" +
+                                  campStatement?.camp_name?.replace(/ /g, "-"),
+                                "-"
+                              )
+                            : replaceSpecialCharacters(
+                                router?.query?.camp?.at(1),
+                                "-"
+                              )
+                          : "1-Agreement")
+                      }?algo=${algorithm}&asofdate=${
+                        campStatement?.go_live_time
+                      }&asof=bydate&canon=${namespace_id}&viewversion=${1}`}
                     >
                       View This Version
                     </Link>
