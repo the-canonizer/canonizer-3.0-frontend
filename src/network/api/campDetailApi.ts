@@ -185,33 +185,6 @@ export const subscribeToCampApi = async (reqBody, isTopic: Boolean) => {
   }
 };
 
-export const getCanonizedCampSupportingTreeApi = async (
-  reqBody,
-  algorithm,
-  loadMore = false
-) => {
-  try {
-    // const supportingTree = await NetworkCall.fetch(
-    //   TreeRequest.getCampSupportingTree(reqBody), false
-    // );
-
-    const supportTreeCard = await SupportTreeAndScoreCount({
-      algorithm: algorithm,
-      topic_num: reqBody.topic_num,
-      camp_num: reqBody.camp_num,
-    });
-
-    if (loadMore) {
-      store.dispatch(pushToCampSupportingTree(supportTreeCard.data));
-    } else {
-      store.dispatch(setCampSupportingTree(supportTreeCard.data));
-    }
-    return supportTreeCard.data;
-  } catch (error) {
-    message.error(error.message);
-  }
-};
-
 export const createCamp = async (body) => {
   try {
     const res = await NetworkCall.fetch(TreeRequest.createCamp(body));
