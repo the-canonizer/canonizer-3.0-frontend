@@ -23,14 +23,14 @@ const HeadContentAndPermissionComponent = ({
   const { isAllowed } = usePermission();
   const { isUserAuthenticated } = useAuthentication();
 
-  const getToken = async () => {
-    const cc: any = getCookies();
-    if (!cc?.loginToken) await createToken();
-  };
+  // const getToken = async () => {
+  //   const cc: any = getCookies();
+  //   if (!cc?.loginToken) await createToken();
+  // };
 
-  useEffect(() => {
-    getToken();
-  }, [router]);
+  // useEffect(() => {
+  //   getToken();
+  // }, [router]);
 
   useEffect(() => {
     //Check permission

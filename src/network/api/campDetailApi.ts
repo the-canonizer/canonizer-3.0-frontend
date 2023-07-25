@@ -105,32 +105,9 @@ export const getCanonizedCampStatementApi = async (
 };
 
 export const getCurrentTopicRecordApi = async (reqBody, loginToken = null) => {
-  // let token;
-  // if (isServer()) {
-  //   if (loginToken) {
-  //     token = loginToken;
-  //   } else {
-  //     const response = await createToken();
-  //     token = response?.access_token;
-  //   }
-  // } else {
-  //   let state = await store.getState();
-  //   const { auth } = state,
-  //     tc = localStorage?.getItem("auth_token");
-
-  //   let token = auth?.token || tc;
-
-  //   if (!token) {
-  //     const response = await createToken();
-  //     token = response?.access_token;
-  //   }
-  // }
-
-  const cc: any = getCookies();
-
   try {
     const currentTopicRecord = await NetworkCall.fetch(
-      TreeRequest.getCurrentTopicRecord(reqBody, cc?.loginToken),
+      TreeRequest.getCurrentTopicRecord(reqBody, loginToken),
       false
     );
 

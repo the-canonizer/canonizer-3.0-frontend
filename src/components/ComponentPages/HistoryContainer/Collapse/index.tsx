@@ -62,6 +62,8 @@ function HistoryCollapse({
   changeDiscard,
   isChecked,
   setIsTreesApiCallStop,
+  campHistoryItems,
+  callManageCampApi,
 }: any) {
   const router = useRouter();
   const [commited, setCommited] = useState(false);
@@ -74,7 +76,6 @@ function HistoryCollapse({
   const [modal1Open, setModal1Open] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [supporters, setSupporters] = useState([]);
-
   const dispatch = useDispatch();
   const { isUserAuthenticated } = useAuthentication();
   const handleViewThisVersion = (goLiveTime) => {
@@ -87,6 +88,7 @@ function HistoryCollapse({
       })
     );
   };
+
   const { asofdate, asof, algorithm } = useSelector((state: RootState) => ({
     asofdate: state.filters?.filterObject?.asofdate,
     asof: state?.filters?.filterObject?.asof,
@@ -390,7 +392,7 @@ function HistoryCollapse({
                         <p>
                           {K?.exceptionalMessages?.objectedModalMsgForMoreInfo}
                         </p>
-                        <Link href="/topic/132-Help/4-Disagreement">
+                        <Link href="/topic/132-Help/4-Disagreement?is_tree_open=1">
                           <a style={{ fontSize: "16px" }}>
                             https://canonizer.com/topic/132-Help/4-Disagreement
                           </a>
@@ -398,16 +400,30 @@ function HistoryCollapse({
                       </Modal>
                     </>
                   )}
+
                   <Button
                     type="primary"
                     id={`submit-update-${campStatement?.id}`}
                     className={`mr-3 ${styles.campUpdateButton}`}
-                    onClick={() => submitUpdateRedirect(historyOf)}
+                    onClick={() =>
+                      campHistoryItems[0]?.is_archive == 1
+                        ? callManageCampApi()
+                        : submitUpdateRedirect(historyOf)
+                    }
+                    disabled={
+                      historyOf == "camp" &&
+                      campHistoryItems[0]?.is_archive == 1 &&
+                      campStatement.status == "old"
+                        ? true
+                        : false
+                    }
                   >
-                    {historyOf == "camp"
-                      ? "Submit Camp Update Based On This"
+                    {historyOf == "camp" && campStatement?.is_archive == 1
+                      ? "Un-Archive This Camp"
                       : historyOf == "topic"
                       ? "Submit Topic Update Based On This"
+                      : historyOf == "camp"
+                      ? "Submit Camp Update Based On This"
                       : "Submit Statement Update Based On This"}
                   </Button>
                   <Button

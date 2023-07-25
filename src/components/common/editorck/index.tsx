@@ -1,5 +1,5 @@
 import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "ckeditor51/build/ckeditor";
+import ClassicEditor from "../../../../ckeditor51/build/ckeditor";
 import { useState, useEffect } from "react";
 import { Skeleton } from "antd";
 import isAuth from "../../../hooks/isUserAuthenticated";

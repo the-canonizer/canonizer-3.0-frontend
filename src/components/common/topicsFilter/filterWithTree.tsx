@@ -33,7 +33,7 @@ import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 import FullScoreCheckbox from "../../ComponentPages/FullScoreCheckbox";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import ArchivedCampCheckBox from "src/components/ComponentPages/ArchivedCampCheckBox";
-import CampTreeCard from "@/components/ComponentPages/TopicDetails/CampTreeCard";
+import CampTreeCard from "src/components/ComponentPages/TopicDetails/CampTreeCard";
 
 const infoContent = (
   <>
@@ -305,7 +305,11 @@ const FilterWithTree = ({
                 <div className={styles.algo_title}>
                   <Title level={5} className={styles.algoText}>
                     Canonizer Algorithm:{"  "}
-                    <Popover content="Algorithm Information" placement="top">
+                    <Popover
+                      content="Algorithm Information"
+                      placement="top"
+                      className={styles.algoInfoIcon}
+                    >
                       {router?.asPath.includes("/topic") ? (
                         <a href={K?.Network?.URL?.algoInfoUrl}>
                           <i className="icon-info"></i>

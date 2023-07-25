@@ -1,6 +1,7 @@
 import { getCookies } from "src/utils/generalUtility";
 import K from "../../constants";
 import { store } from "src/store";
+import { createToken } from "../api/userApi";
 
 export default class Request {
   url: string = "";
@@ -18,10 +19,26 @@ export default class Request {
   ) {
     // const state = store.getState();
     // const { auth } = state;
-
+    let bearerToken = "";
     const cc: any = getCookies();
+    if (token) {
+      //coming from server side use it
+      bearerToken = token;
+    } else {
+      const cc: any = getCookies();
+      if (cc?.loginToken) {
+        bearerToken = cc.loginToken;
+      } else {
+        // create token
+        (async () => {
+          // const res = await createToken();
+          // debugger;
+          // bearerToken = res?.data?.access_token;
+        })();
+      }
+    }
 
-    let bearerToken = token || cc?.loginToken;
+    // let bearerToken = token || cc?.loginToken;
 
     headers = {
       ...(defaultHeaderType === K.Network.Header.Type.Json ||
