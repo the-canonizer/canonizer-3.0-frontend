@@ -99,7 +99,7 @@ const LoggedOutHeader = ({}: any) => {
           onClick={toggleMobNav}
         ></div>
       </Header>
-      <SearchSection />
+      {/* <SearchSection /> */}
       <DisclaimerMsg />
       <LoginModal />
       <RegistrationModal />

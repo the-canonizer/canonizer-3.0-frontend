@@ -10,7 +10,7 @@ const LoggedInHeader = () => {
   return (
     <React.Fragment>
       <LoggedInHeaderNavigation></LoggedInHeaderNavigation>
-      <SearchSection />
+      {/* <SearchSection /> */}
       <DisclaimerMsg />
       <ArchivedCampMsg />
       <LoginModal />

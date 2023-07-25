@@ -58,6 +58,8 @@
     // @media screen and (min-width: 1025px) {
     //   display: flex;
     // }
+    display: flex;
+    flex: 1;
     @media screen and (max-width: 1199px) {
       padding: 1.5rem;
       position: fixed;
@@ -97,6 +99,7 @@
       }
     }
     .nav {
+      padding-left: 20px;
       ul {
         margin: 0;
         padding: 0;
@@ -376,4 +379,22 @@
   @media screen and (max-width: 1199px) {
     display: grid;
   }
+}
+
+
+.search_heading_top
+{
+  font-size: 16px;
+  font-weight: 700;
+  color: #4484CE;
+}
+.statement_date_search_camp_statement
+{
+  margin-left: auto;
+  font-size: 12px;
+  color: #86909F;
+}
+.tags_all_search_camp_statement
+{
+  color: #1890ff;
 }

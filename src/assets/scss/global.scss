@@ -2607,3 +2607,49 @@ div[role="option"]::before {
     font-weight: 400 !important;
   }
 }
+.leftSideBar_Card  
+{
+  .search_tabs
+  {
+      button 
+      {
+          background: #F3F4F5;
+          border-radius: 2px;
+          margin-bottom: 7px;
+          border: 1px solid #F3F4F5;
+          justify-content: flex-start !important;
+          font-size: 14px;
+          letter-spacing: 0px;
+          color: #1C1B24;
+          opacity: 1;
+          i 
+          {
+            color: #A2ACB9;
+            font-size: 15px;
+          }
+          a 
+          {
+            color: #1c1b24;
+          }
+
+          &:hover,  &.active
+          {
+            background-color: #4484CE;
+            color: #fff;
+            i 
+            {
+              color: #fff;
+            }
+            a 
+            {
+              color: #fff;
+
+            }
+          }
+      }
+  }
+  
+}
+.nick_name_icon{
+  background-color: red;
+}
