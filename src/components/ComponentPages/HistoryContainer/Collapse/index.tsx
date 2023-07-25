@@ -44,7 +44,6 @@ import { getTreesApi } from "src/network/api/campDetailApi";
 
 import { setViewThisVersion } from "src/store/slices/filtersSlice";
 
-
 const { Panel } = Collapse;
 const { Title } = Typography;
 
@@ -64,7 +63,7 @@ function HistoryCollapse({
   isChecked,
   setIsTreesApiCallStop,
   campHistoryItems,
-  callManageCampApi
+  callManageCampApi,
 }: any) {
   const router = useRouter();
   const [commited, setCommited] = useState(false);
@@ -99,7 +98,7 @@ function HistoryCollapse({
   // const covertToTime = (unixTime) => {
   //   return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   // };
- 
+
   const commitChanges = async () => {
     let reqBody = {
       type: historyOf,
@@ -401,7 +400,7 @@ function HistoryCollapse({
                       </Modal>
                     </>
                   )}
-                
+
                   <Button
                     type="primary"
                     id={`submit-update-${campStatement?.id}`}
@@ -412,13 +411,12 @@ function HistoryCollapse({
                   >
                     
                     { historyOf == "camp" && campStatement?.is_archive == 1 && campStatement?.status == "live"
+
                       ? "Un-Archive This Camp"
-                      
                       : historyOf == "topic"
                       ? "Submit Topic Update Based On This"
-                      :historyOf == "camp"
+                      : historyOf == "camp"
                       ? "Submit Camp Update Based On This"
-
                       : "Submit Statement Update Based On This"}
                   </Button>
                   <Button
@@ -471,7 +469,7 @@ function HistoryCollapse({
                   </Button>
                 </div>
               )}
-              {campStatement?.status == "in_review"&&
+              {campStatement?.status == "in_review" &&
                 !commited &&
                 !!campStatement?.grace_period &&
                 moment.now() < campStatement?.submit_time * 1000 + 3600000 && (

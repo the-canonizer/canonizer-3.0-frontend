@@ -98,7 +98,7 @@ const SupportTreeCard = ({
       (a: { algorithm_key: string }) =>
         a.algorithm_key === filterData?.algorithm
     );
-    setCurrentAlgo(filteredAlgo?.[0]?.algorithm_label);
+    if (filteredAlgo?.length) setCurrentAlgo(filteredAlgo[0]?.algorithm_label);
   }, [filterData]);
 
   const dispatch = useDispatch();
@@ -337,17 +337,19 @@ const SupportTreeCard = ({
         <Panel
           className={`header-bg-color-change ${backGroundColorClass}`}
           header={
-            <h3>
-              Support Tree for &quot;
-              {campRecord?.camp_name}&quot; Camp
-            </h3>
+            <Fragment>
+              <h3>
+                Support Tree for &quot;
+                {campRecord?.camp_name}&quot; Camp
+              </h3>
+              <h5 className={styles.algoLabel}>
+                ( Based on: &quot;{currentAlgo}&quot; )
+              </h5>
+            </Fragment>
           }
           key="1"
           extra={
             <Fragment>
-              <h5 className={styles.algoLabel}>
-                Based on: &quot;{currentAlgo}&quot;
-              </h5>
               <Popover content={supportContent} placement="left">
                 <i className="icon-info tooltip-icon-style"></i>
               </Popover>

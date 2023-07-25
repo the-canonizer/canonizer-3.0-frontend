@@ -22,9 +22,7 @@ import useIsUserAuthenticated from "../../../hooks/isUserAuthenticated";
 
 import { store } from "../../../store";
 import { setTree } from "../../../store/slices/campDetailSlice";
-import {
-  updateCampApi,
-} from "../../../network/api/campManageStatementApi";
+import { updateCampApi } from "../../../network/api/campManageStatementApi";
 
 const { Title } = Typography;
 
@@ -274,8 +272,7 @@ function HistoryContainer() {
     topic_num: campHistory?.items[0]?.topic_num,
     topic_id: null,
     topic_name: null,
-    namespace_id:
-      null,
+    namespace_id: null,
     statement_id: null,
     camp_num: campHistory?.items[0]?.camp_num,
     nick_name: nickName?.[0]?.id,
@@ -297,7 +294,6 @@ function HistoryContainer() {
     old_parent_camp_num: campHistory?.items[0]?.old_parent_camp_num,
     is_disabled: 0,
     is_one_level: 0,
-
     is_archive: 0
   };
   const callManageCampApi = async () => {
@@ -309,8 +305,6 @@ function HistoryContainer() {
     setLoadingIndicator(false)
     // await commitChanges()
   }
-
-  console.log(count?.current, "##current")
   const getCollapseKeys = (campHistoryData, index) => {
     let key = "";
     let oldstatements = campHistory?.items?.filter(
