@@ -33,7 +33,7 @@ import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 import FullScoreCheckbox from "../../ComponentPages/FullScoreCheckbox";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import ArchivedCampCheckBox from "src/components/ComponentPages/ArchivedCampCheckBox";
-import CampTreeCard from "@/components/ComponentPages/TopicDetails/CampTreeCard";
+import CampTreeCard from "src/components/ComponentPages/TopicDetails/CampTreeCard";
 
 const infoContent = (
   <>
