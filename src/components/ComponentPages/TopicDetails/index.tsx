@@ -13,7 +13,6 @@ import {
   getCanonizedCampStatementApi,
   getNewsFeedApi,
   getTreesApi,
-  getCanonizedCampSupportingTreeApi,
   getCurrentTopicRecordApi,
   getCurrentCampRecordApi,
 } from "src/network/api/campDetailApi";
@@ -159,7 +158,6 @@ const TopicDetails = () => {
           getTreesApi(reqBodyForService),
         ]);
       } else didMount.current = true;
-      //getCanonizedCampSupportingTreeApi(reqBody, algorithm);
 
       const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
       const body = { topic_num: topicNum };
@@ -208,7 +206,6 @@ const TopicDetails = () => {
       message.success(res.message);
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
-      //getCanonizedCampSupportingTreeApi(reqBody, algorithm);
       getTreesApi(reqBodyForService);
       // fetchTotalScore();
     }
@@ -242,7 +239,6 @@ const TopicDetails = () => {
       message.success(res.message);
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
-      //getCanonizedCampSupportingTreeApi(reqBody, algorithm);
       getTreesApi(reqBodyForService);
       // fetchTotalScore();
     }
@@ -272,7 +268,6 @@ const TopicDetails = () => {
       setIsSupportTreeCardModal(false);
       setIsDelegateSupportTreeCardModal(false);
       GetCheckStatusData();
-      //getCanonizedCampSupportingTreeApi(reqBody, algorithm);
       getTreesApi(reqBodyForService);
       // fetchTotalScore();
     }
@@ -340,7 +335,6 @@ const TopicDetails = () => {
 
   const handleLoadMoreSupporters = async () => {
     const reqBody = { topic_num: 45, camp_num: 1 };
-    //await getCanonizedCampSupportingTreeApi(reqBody, algorithm, true);
   };
 
   const setCurrentTopics = (data) => dispatch(setCurrentTopic(data));
