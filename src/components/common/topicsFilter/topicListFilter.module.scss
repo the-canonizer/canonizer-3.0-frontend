@@ -200,6 +200,9 @@
     font-size: 14px;
     color: #1c1b24;
   }
+  @media screen and (max-width:767px){
+    margin-right: 0;
+  }
 }
 
 .infoText,
