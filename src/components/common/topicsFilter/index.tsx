@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import moment from "moment";
 import {
   Typography,
@@ -112,22 +112,26 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
     selectedAlgorithm,
     selectedAsOf,
     filteredAsOfDate,
+    filterObject,
     currentCampNode,
     tree,
     loading,
     current_date_filter,
     campExist,
+    viewThisVersion,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filteredScore: state?.filters?.filterObject?.filterByScore,
     selectedAlgorithm: state?.filters?.filterObject?.algorithm,
     selectedAsOf: state?.filters?.filterObject?.asof,
     filteredAsOfDate: state?.filters?.filterObject?.asofdate,
+    filterObject: state?.filters?.filterObject,
     currentCampNode: state?.filters?.selectedCampNode,
     tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
     loading: state?.loading?.loading,
     current_date_filter: state?.filters?.current_date,
     campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
+    viewThisVersion: state?.filters?.viewThisVersionCheck,
   }));
   const { campRecord } = useSelector((state: RootState) => ({
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -137,28 +141,60 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   );
   const [selectedAsOFDate, setSelectedAsOFDate] = useState(filteredAsOfDate);
   const [timer, setTimer] = useState(null);
-  const [inputValue, setInputValue] = useState(filteredScore);
+  const [inputValue, setInputValue] = useState(
+    router.query.score || filteredScore
+  );
   const [isLoading, setIsLoading] = useState(loading);
+  const didMount = useRef(false);
 
   // /////////////////////////////////////////////////////////////////////////
   // Discussion required on this functionality after that I will remove or //
   //                        uncomment bellow code                         //
   // //////////////////////////////////////////////////////////////////////
+  function removeEmptyValues(obj) {
+    const result = {};
+    for (const key in obj) {
+      const value = obj[key];
 
-  // useEffect(() => {
-  //   if (didMount.current) {
-  //     if (history.pushState) {
-  //       const queryParams = `?filter=${filterObject?.filterByScore}&algorithm=${filterObject?.algorithm}&asofdate=${filterObject?.asofdate}&canon=${filterObject?.namespace_id}`;
-  //       var newurl =
-  //         window.location.protocol +
-  //         "//" +
-  //         window.location.host +
-  //         window.location.pathname +
-  //         queryParams;
-  //       window.history.pushState({ path: newurl }, "", newurl);
-  //     }
-  //   } else didMount.current = true;
-  // }, [filterObject]);
+      if (value && value != "undefined") {
+        result[key] = value;
+      }
+    }
+    return result;
+  }
+  useEffect(() => {
+    if (didMount.current) {
+      if (history.pushState) {
+        const queryParams = `?score=${filterObject?.filterByScore}&algo=${
+          filterObject?.algorithm
+        }${
+          filterObject?.asof == "bydate"
+            ? "&asofdate=" + filterObject?.asofdate
+            : ""
+        }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
+          viewThisVersion ? "&viewversion=1" : ""
+        }`;
+        var newurl =
+          window.location.protocol +
+          "//" +
+          window.location.host +
+          window.location.pathname +
+          queryParams;
+        window.history.pushState({ path: newurl }, "", newurl);
+      }
+    } else {
+      let aa = removeEmptyValues({
+        filterByScore: `${router.query.score}` || `${filteredScore}` || "0",
+        asofdate: +router.query.asofdate || filterObject?.asofdate,
+        asof: router.query.asof || filterObject?.asof || "default",
+        algorithm:
+          router.query.algo || filterObject?.algorithm || "blind_popularity",
+        namespace_id: +router.query.canon,
+      });
+      dispatch(setFilterCanonizedTopics(aa));
+      didMount.current = true;
+    }
+  }, [filterObject]);
 
   useEffect(() => {
     setIsLoading(loading);

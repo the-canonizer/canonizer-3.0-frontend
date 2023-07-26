@@ -58,7 +58,7 @@ import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import { SupportTreeTotalScore } from "src/network/api/campDetailApi";
 import InfoBar from "./CampInfoBar/infoBar";
 
-const TopicDetails = () => {
+const TopicDetails = ({ serverSideCall }) => {
   let myRefToCampStatement = useRef(null);
   const didMount = useRef(false);
   const { isUserAuthenticated } = isAuth();
@@ -118,7 +118,7 @@ const TopicDetails = () => {
       }
       setLoadingIndicator(true);
 
-      if (didMount.current) {
+      if (didMount.current && !serverSideCall.current) {
         const reqBodyForService = {
           topic_num: +router?.query?.camp[0]?.split("-")[0],
           camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
@@ -158,7 +158,11 @@ const TopicDetails = () => {
           getCanonizedAlgorithmsApi(),
           getTreesApi(reqBodyForService),
         ]);
-      } else didMount.current = true;
+      } else if (serverSideCall.current) {
+        serverSideCall.current = false;
+      } else {
+        didMount.current = true;
+      }
       //getCanonizedCampSupportingTreeApi(reqBody, algorithm);
 
       const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);

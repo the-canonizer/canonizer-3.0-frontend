@@ -143,13 +143,7 @@ const InfoBar = ({
     const topicName = topicRecord?.topic_name?.replaceAll(" ", "-");
     const campName = campRecord?.camp_name?.replaceAll(" ", "-");
     router?.push({
-      pathname: `/forum/${topicRecord?.topic_num}-${replaceSpecialCharacters(
-        topicName,
-        "-"
-      )}/${campRecord?.camp_num}-${replaceSpecialCharacters(
-        campName,
-        "-"
-      )}/threads`,
+      pathname: `/forum/${router?.query?.camp[0]}/${router?.query?.camp[1]}/threads`,
     });
   };
 

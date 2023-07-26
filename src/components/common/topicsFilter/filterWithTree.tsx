@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import moment from "moment";
 import {
   Typography,
@@ -123,6 +123,8 @@ const FilterWithTree = ({
     loading,
     current_date_filter,
     campExist,
+    filterObject,
+    viewThisVersion,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filteredScore: state?.filters?.filterObject?.filterByScore,
@@ -134,6 +136,8 @@ const FilterWithTree = ({
     loading: state?.loading?.loading,
     current_date_filter: state?.filters?.current_date,
     campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
+    filterObject: state?.filters?.filterObject,
+    viewThisVersion: state?.filters?.viewThisVersionCheck,
   }));
   const { campRecord } = useSelector((state: RootState) => ({
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -143,28 +147,62 @@ const FilterWithTree = ({
   );
   const [selectedAsOFDate, setSelectedAsOFDate] = useState(filteredAsOfDate);
   const [timer, setTimer] = useState(null);
-  const [inputValue, setInputValue] = useState(filteredScore);
+  const [inputValue, setInputValue] = useState(
+    router.query.score || filteredScore
+  );
   const [isLoading, setIsLoading] = useState(loading);
+  const didMount = useRef(false);
 
   // /////////////////////////////////////////////////////////////////////////
   // Discussion required on this functionality after that I will remove or //
   //                        uncomment bellow code                         //
   // //////////////////////////////////////////////////////////////////////
 
-  // useEffect(() => {
-  //   if (didMount.current) {
-  //     if (history.pushState) {
-  //       const queryParams = `?filter=${filterObject?.filterByScore}&algorithm=${filterObject?.algorithm}&asofdate=${filterObject?.asofdate}&canon=${filterObject?.namespace_id}`;
-  //       var newurl =
-  //         window.location.protocol +
-  //         "//" +
-  //         window.location.host +
-  //         window.location.pathname +
-  //         queryParams;
-  //       window.history.pushState({ path: newurl }, "", newurl);
-  //     }
-  //   } else didMount.current = true;
-  // }, [filterObject]);
+  function removeEmptyValues(obj) {
+    const result = {};
+    for (const key in obj) {
+      const value = obj[key];
+
+      if (value && value != "undefined") {
+        result[key] = value;
+      }
+    }
+    return result;
+  }
+  useEffect(() => {
+    if (didMount.current) {
+      if (history.pushState) {
+        const queryParams = `?score=${filterObject?.filterByScore}&algo=${
+          filterObject?.algorithm
+        }${
+          filterObject?.asof == "bydate"
+            ? "&asofdate=" + filterObject?.asofdate
+            : ""
+        }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
+          viewThisVersion ? "&viewversion=1" : ""
+        }`;
+        var newurl =
+          window.location.protocol +
+          "//" +
+          window.location.host +
+          window.location.pathname +
+          queryParams;
+        window.history.pushState({ path: newurl }, "", newurl);
+      }
+    } else {
+      let newObject = removeEmptyValues({
+        filterByScore: router.query.score || `${filteredScore}` || "0",
+        asofdate: router.query.asofdate || filterObject?.asofdate,
+        asof: router.query.asof || filterObject?.asof || "default",
+        algorithm:
+          router.query.algo || filterObject?.algorithm || "blind_popularity",
+        namespace_id: +router.query.canon,
+      });
+
+      dispatch(setFilterCanonizedTopics(newObject));
+      didMount.current = true;
+    }
+  }, [filterObject]);
 
   useEffect(() => {
     setIsLoading(loading);
