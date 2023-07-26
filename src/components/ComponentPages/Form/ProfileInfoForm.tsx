@@ -36,7 +36,7 @@ function ProfileInfoForm({
 
   const [gmapsLoaded, setgmapsLoaded] = useState(false)
   useEffect(() => {
-    setgmapsLoaded(true)
+    window.initMap = () => setgmapsLoaded(true)
   }, []);
 
   const listOfOption = (optionList, algoOrLang): any => {
