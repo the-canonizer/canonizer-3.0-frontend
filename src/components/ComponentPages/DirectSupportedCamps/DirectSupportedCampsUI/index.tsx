@@ -200,7 +200,7 @@ export default function DirectSupportedCampsUI({
                                     <a
                                       className={styles.Bluecolor}
                                       draggable="false"
-                                      href="javascript:;"
+                                      onClick={()=>{return false}}
                                     >
                                       {" "}
                                       {tag.camp_name}
