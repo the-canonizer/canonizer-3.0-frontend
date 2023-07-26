@@ -92,7 +92,12 @@ export default function HomeSideBar({
             onClick={showDrawer}
             className="btnFilter drawerBtn"
           >
-            Consensus Tree
+            Consensus Tree{" "}
+            <p className="arrow">
+              <span></span>
+              <span></span>
+              <span></span>
+            </p>
           </Button>
           <Drawer
             title="Consensus Tree"
