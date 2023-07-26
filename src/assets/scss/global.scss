@@ -530,6 +530,11 @@ del.diffmod img {
       background-color: #eef3ff;
     }
   }
+  @media screen and (max-width:767px) {
+    [class="ant-drawer-content-wrapper"]{
+      max-width: 90%;
+    }
+  }
 }
 
 .topicsList_card,
