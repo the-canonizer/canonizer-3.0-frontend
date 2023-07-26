@@ -53,7 +53,7 @@ const Events = ({ timelineDescript }) => {
             {timelineDescript &&
               timelineDescript.map((title, key) => {
                 return (
-                  <>
+                  <Fragment key={key}>
                     <List.Item
                       className={
                         activityStyle.activitiesList +
@@ -83,7 +83,7 @@ const Events = ({ timelineDescript }) => {
                         // className={styles.listItem}
                       />
                     </List.Item>
-                  </>
+                  </Fragment>
                 );
               })}
           </List>
