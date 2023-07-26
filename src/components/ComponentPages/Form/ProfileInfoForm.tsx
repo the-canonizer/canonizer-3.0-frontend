@@ -34,11 +34,6 @@ function ProfileInfoForm({
   postalCodeDisable,
 }: any) {
 
-  const [gmapsLoaded, setgmapsLoaded] = useState(false)
-  useEffect(() => {
-    setgmapsLoaded(true)
-  }, []);
-
   const listOfOption = (optionList, algoOrLang): any => {
     let option = [];
     optionList.length > 0 &&
@@ -274,18 +269,13 @@ function ProfileInfoForm({
           <Col md={12}>
             <Form.Item name="address_1" label={messages.labels.addressLine1}>
               <div className="reactDropdown">
-                {
-                  gmapsLoaded ?
-                    <PlacesAutocomplete
-                      value={address}
-                      onChange={handleAddressChange}
-                      onSelect={handleAddressSelect}
-                    >
-                      {renderFuncForGooglePlaces}
-                    </PlacesAutocomplete>
-                    : null
-                }
-
+                <PlacesAutocomplete
+                  value={address}
+                  onChange={handleAddressChange}
+                  onSelect={handleAddressSelect}
+                >
+                  {renderFuncForGooglePlaces}
+                </PlacesAutocomplete>
               </div>
             </Form.Item>
             <Form.Item name="city" label={messages.labels.city}>
