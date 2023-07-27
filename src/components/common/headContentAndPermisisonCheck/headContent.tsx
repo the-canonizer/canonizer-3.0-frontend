@@ -34,7 +34,10 @@ function HeadContent({
         async
         src={`Https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}`}
       ></script>
-
+      <script
+        async
+        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}&libraries=places`}
+      ></script>
       {/* Meta tags for browser link preview  */}
       <title>{title}</title>
 
