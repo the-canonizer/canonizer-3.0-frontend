@@ -41,7 +41,7 @@ function HistoryContainer() {
   const [isAbs, setIsAbs] = useState(false);
   const [loadMoreItems, setLoadMoreItems] = useState(true);
   const [agreecheck, setAgreeCheck] = useState(false);
-  const [discardChange, setDiscardChange] = useState(false)
+  const [discardChange, setDiscardChange] = useState(false);
 
   const changeAgree = () => {
     setAgreeCheck(!agreecheck);
@@ -157,7 +157,7 @@ function HistoryContainer() {
 
   const campStatementApiCall = async () => {
     try {
-      setLoadingIndicator(true)
+      setLoadingIndicator(true);
       const reqBody = {
         topic_num: +router?.query.camp[0].split("-")[0],
         camp_num:
@@ -178,9 +178,8 @@ function HistoryContainer() {
         count.current = count.current + 1;
       }
 
-
       setLoadingIndicator(false);
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const handleTabButton = async (tabName) => {
@@ -218,16 +217,17 @@ function HistoryContainer() {
 
   const onCompareClick = () => {
     router?.push({
-      pathname: `/statement/compare/${router?.query.camp[0]}/${router?.query.camp[1] ? router?.query.camp[1] : "1-Agreement"
-        }`,
+      pathname: `/statement/compare/${router?.query.camp[0]}/${
+        router?.query.camp[1] ? router?.query.camp[1] : "1-Agreement"
+      }`,
       query: {
         statements: selectedTopic[0] + "_" + selectedTopic[1],
         from:
           historyOf == "statement"
             ? "statement"
             : historyOf == "camp"
-              ? "camp"
-              : "topic",
+            ? "camp"
+            : "topic",
         status: selectedTopicStatus.join("-"),
       },
     });
@@ -294,17 +294,17 @@ function HistoryContainer() {
     old_parent_camp_num: campHistory?.items[0]?.old_parent_camp_num,
     is_disabled: 0,
     is_one_level: 0,
-    is_archive: 0
+    is_archive: 0,
   };
   const callManageCampApi = async () => {
     // window.location.reload()
-    setLoadingIndicator(true)
+    setLoadingIndicator(true);
     count.current = 1;
-    updateCampApi(reqBody)
-    await campStatementApiCall()
-    setLoadingIndicator(false)
+    updateCampApi(reqBody);
+    await campStatementApiCall();
+    setLoadingIndicator(false);
     // await commitChanges()
-  }
+  };
   const getCollapseKeys = (campHistoryData, index) => {
     let key = "";
     let oldstatements = campHistory?.items?.filter(
@@ -367,14 +367,15 @@ function HistoryContainer() {
         <CreateNewTopicButton className={styles.createBtn} click={topicRoute} />
 
         {historyOf !== "topic" &&
-          currentCampNode?._isDisabled == 0 &&
-          currentCampNode?.parentIsOneLevel == 0 &&
-          currentCampNode?.is_archive == 0 ? (
+        currentCampNode?._isDisabled == 0 &&
+        currentCampNode?.parentIsOneLevel == 0 &&
+        currentCampNode?.is_archive == 0 ? (
           <CreateNewCampButton
             className={styles.createBtn}
             click={campRoute}
-            url={`/camp/create/${router?.query.camp[0] + "/" + router?.query.camp[1]
-              }`}
+            url={`/camp/create/${
+              router?.query.camp[0] + "/" + router?.query.camp[1]
+            }`}
           />
         ) : null}
       </div>
@@ -390,8 +391,9 @@ function HistoryContainer() {
               {/* <Spin spinning={loadingIndicator} size="default"> */}
               <List className={styles.cshcHeadFilter} size="small">
                 <List.Item
-                  className={`${styles.campStatementViewAll} ${styles.cshcHeadFilterItem
-                    } ${activeTab == "all" ? styles.active : null}`}
+                  className={`${styles.campStatementViewAll} ${
+                    styles.cshcHeadFilterItem
+                  } ${activeTab == "all" ? styles.active : null}`}
                 >
                   <a
                     onClick={() => {
@@ -402,8 +404,9 @@ function HistoryContainer() {
                   </a>
                 </List.Item>
                 <List.Item
-                  className={`${styles.campStatementObjected}  ${styles.cshcHeadFilterItem
-                    }  ${activeTab == "objected" ? styles.active : null}`}
+                  className={`${styles.campStatementObjected}  ${
+                    styles.cshcHeadFilterItem
+                  }  ${activeTab == "objected" ? styles.active : null}`}
                 >
                   <a
                     onClick={() => {
@@ -414,8 +417,9 @@ function HistoryContainer() {
                   </a>
                 </List.Item>
                 <List.Item
-                  className={`${styles.campStatementLive} ${styles.cshcHeadFilterItem
-                    } ${activeTab == "live" ? styles.active : null}`}
+                  className={`${styles.campStatementLive} ${
+                    styles.cshcHeadFilterItem
+                  } ${activeTab == "live" ? styles.active : null}`}
                 >
                   <a
                     onClick={() => {
@@ -426,8 +430,9 @@ function HistoryContainer() {
                   </a>
                 </List.Item>
                 <List.Item
-                  className={`${styles.campStatementNotLive} ${styles.cshcHeadFilterItem
-                    } ${activeTab == "in_review" ? styles.active : null}`}
+                  className={`${styles.campStatementNotLive} ${
+                    styles.cshcHeadFilterItem
+                  } ${activeTab == "in_review" ? styles.active : null}`}
                 >
                   <a
                     onClick={() => {
@@ -438,8 +443,9 @@ function HistoryContainer() {
                   </a>
                 </List.Item>
                 <List.Item
-                  className={`${styles.campStatementOld} ${styles.cshcHeadFilterItem
-                    } ${activeTab == "old" ? styles.active : null}`}
+                  className={`${styles.campStatementOld} ${
+                    styles.cshcHeadFilterItem
+                  } ${activeTab == "old" ? styles.active : null}`}
                 >
                   <a
                     onClick={() => {
@@ -467,8 +473,8 @@ function HistoryContainer() {
               {historyOf == "topic"
                 ? "Topics"
                 : historyOf == "camp"
-                  ? "Camps"
-                  : "Statements"}
+                ? "Camps"
+                : "Statements"}
             </Button>
           </div>
         </Affix>

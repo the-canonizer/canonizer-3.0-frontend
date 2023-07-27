@@ -359,8 +359,11 @@ function HistoryCollapse({
                             (
                               !isUserAuthenticated
                                 ? true
-                                : !campStatement?.ifIAmExplicitSupporter &&
-                                  campStatement?.ifIamSupporter == 0 || (campHistoryItems[0]?.is_archive == 1 && campHistoryItems[0]?.status == "live" && campStatement.status == "objected")
+                                : (!campStatement?.ifIAmExplicitSupporter &&
+                                    campStatement?.ifIamSupporter == 0) ||
+                                  (campHistoryItems[0]?.is_archive == 1 &&
+                                    campHistoryItems[0]?.status == "live" &&
+                                    campStatement.status == "objected")
                                 ? true
                                 : false
                             )
@@ -408,13 +411,26 @@ function HistoryCollapse({
                     type="primary"
                     id={`submit-update-${campStatement?.id}`}
                     className={`mr-3 ${styles.campUpdateButton}`}
-                    onClick={() =>campHistoryItems[0]?.is_archive == 1 && campHistoryItems[0]?.status == "live"?callManageCampApi(): submitUpdateRedirect(historyOf)}
-                    disabled={historyOf == "camp" && campHistoryItems[0]?.is_archive == 1 && (campStatement.status == "old") || (campHistoryItems[0]?.is_archive == 1 && campHistoryItems[0]?.status == "live" && campStatement.status == "objected" ) ? true:false
-                  }
+                    onClick={() =>
+                      campHistoryItems[0]?.is_archive == 1 &&
+                      campHistoryItems[0]?.status == "live"
+                        ? callManageCampApi()
+                        : submitUpdateRedirect(historyOf)
+                    }
+                    disabled={
+                      (historyOf == "camp" &&
+                        campHistoryItems[0]?.is_archive == 1 &&
+                        campStatement.status == "old") ||
+                      (campHistoryItems[0]?.is_archive == 1 &&
+                        campHistoryItems[0]?.status == "live" &&
+                        campStatement.status == "objected")
+                        ? true
+                        : false
+                    }
                   >
-                    
-                    { historyOf == "camp" && campStatement?.is_archive == 1 && campStatement?.status == "live"
-
+                    {historyOf == "camp" &&
+                    campStatement?.is_archive == 1 &&
+                    campStatement?.status == "live"
                       ? "Un-Archive This Camp"
                       : historyOf == "topic"
                       ? "Submit Topic Update Based On This"

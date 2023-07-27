@@ -33,7 +33,6 @@ function ProfileInfoForm({
   disableButton,
   postalCodeDisable,
 }: any) {
-
   const listOfOption = (optionList, algoOrLang): any => {
     let option = [];
     optionList.length > 0 &&
@@ -54,7 +53,6 @@ function ProfileInfoForm({
       });
     return option;
   };
-
 
   const onFinishFailed = (errorInfo) => {
     window.console.log("Failed:", errorInfo);
@@ -101,13 +99,13 @@ function ProfileInfoForm({
         {suggestions.map((suggestion, index) => {
           const style = suggestion.active
             ? {
-              backgroundColor: "#f8f8f8",
-              cursor: "pointer",
-            }
+                backgroundColor: "#f8f8f8",
+                cursor: "pointer",
+              }
             : {
-              backgroundColor: "#ffffff",
-              cursor: "pointer",
-            };
+                backgroundColor: "#ffffff",
+                cursor: "pointer",
+              };
           return (
             <div
               {...getSuggestionItemProps(suggestion, {
