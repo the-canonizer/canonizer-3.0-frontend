@@ -1846,6 +1846,23 @@ del.diffmod img {
     border-width: 2px;
     padding-top: 15px;
   }
+  &.default {
+    .ant-collapse-content {
+      border-color: #12c879;
+    }
+  }
+
+  &.bydate {
+    .ant-collapse-content {
+      border-color: #4484ce;
+    }
+  }
+
+  &.review {
+    .ant-collapse-content {
+      border-color: #ffde0b;
+    }
+  }
 
   .ant-collapse-header {
     display: flex;
@@ -2697,7 +2714,7 @@ div[role="option"]::before {
 .topicDeskBTN {
   display: block !important;
   @media screen and (min-width: 1025px) {
-    margin-right: -70px;
+    margin-right: 0;
   }
   .ant-btn {
     background-color: transparent;
@@ -2705,12 +2722,22 @@ div[role="option"]::before {
     box-shadow: none;
     border-color: #fff;
     transition: all 0.3s;
+    border: none;
+    padding: 0 !important;
+    height: auto;
+    line-height: 1;
+    font-weight: 500;
+
     i {
       color: #fff;
     }
+    img {
+      margin-right: 5px;
+      width: 16px;
+    }
     &:hover {
-      background-color: #0f2a4d;
-      border-color: #0f2a4d;
+      background-color: transparent;
+      border-color: transparent;
     }
   }
   @media screen and (max-width: 767px) {

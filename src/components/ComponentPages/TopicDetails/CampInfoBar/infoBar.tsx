@@ -282,7 +282,7 @@ const InfoBar = ({
           </Link>
         )}
       </Menu.Item>
-      {isCampBtnVisible &&
+      {/* {isCampBtnVisible &&
       currentCampNode?._isDisabled == 0 &&
       currentCampNode?.parentIsOneLevel == 0 &&
       campRecord?.is_archive == 0 ? (
@@ -308,7 +308,7 @@ const InfoBar = ({
             Create New Camp
           </Menu.Item>
         </Tooltip>
-      ) : null}
+      ) : null} */}
       <Menu.Item icon={<i className="icon-camp"></i>}>
         {isTopicPage && (
           <Link
@@ -415,10 +415,10 @@ const InfoBar = ({
           <div
             className={`${styles.topicDetailContentHead_Left} ${styles.rightPanel}`}
           >
-            {/* <div className="btnsWrap">
-              <Button size="large" className="mb-3 btn" onClick={campRoute}>
-                <i className="icon-topic"></i> Create New Topic
-              </Button>
+            <div className="btnsWrap">
+              {/* <Button size="large" className="mb-3 btn" onClick={campRoute}>
+                <i className="icon-topic"></i> Create Topic
+              </Button> */}
               {isCampBtnVisible &&
               currentCampNode?._isDisabled == 0 &&
               currentCampNode?.parentIsOneLevel == 0 &&
@@ -445,7 +445,7 @@ const InfoBar = ({
                   </Button>
                 </Tooltip>
               ) : null}
-            </div> */}
+            </div>
             <div
               className={`${styles.topicDetailContentHead_Right} ${styles.leftPanel}`}
             >

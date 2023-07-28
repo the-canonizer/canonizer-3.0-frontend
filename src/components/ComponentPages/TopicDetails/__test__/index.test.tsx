@@ -1,11 +1,42 @@
 import React from "react";
-import { render, screen, waitFor } from "@testing-library/react";
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import TopicDetails from "../index";
+import { NextRouter } from "next/router";
+import { RouterContext } from "next/dist/shared/lib/router-context";
 
 // Mock Redux store
 const mockStore = configureStore([]);
+
+function createMockRouter(): NextRouter {
+  return {
+    basePath: "",
+    pathname: "/",
+    route: "/",
+    query: { camp: ["88-Theories-of-Consciousness", "1-Agreement"] },
+    asPath: "/",
+    back: jest.fn(),
+    beforePopState: jest.fn(),
+    prefetch: jest.fn(),
+    push: jest.fn(),
+    reload: jest.fn(),
+    replace: jest.fn(),
+    events: {
+      on: jest.fn(),
+      off: jest.fn(),
+      emit: jest.fn(),
+    },
+    isFallback: false,
+    isLocaleDomain: false,
+    isReady: true,
+    defaultLocale: "en",
+    domainLocales: [],
+    isPreview: false,
+  };
+}
+
+afterEach(cleanup);
 
 describe("TopicDetails", () => {
   let store;
@@ -36,7 +67,9 @@ describe("TopicDetails", () => {
   it("renders TopicDetails component correctly", async () => {
     render(
       <Provider store={store}>
-        <TopicDetails />
+        <RouterContext.Provider value={createMockRouter()}>
+          <TopicDetails serverSideCall={undefined} />
+        </RouterContext.Provider>
       </Provider>
     );
 

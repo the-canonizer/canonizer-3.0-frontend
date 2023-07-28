@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 
 import styles from "../siteHeader.module.scss";
+import TopicCreationBTN from "../TopicCreationBTN";
 
 const HeaderMenu = ({ loggedUser }) => {
   const links = [
@@ -68,6 +69,14 @@ const HeaderMenu = ({ loggedUser }) => {
     <Fragment>
       <nav className={styles.nav}>
         <ul>
+          <li
+            className={`topicDeskBTN ${
+              router?.asPath === "/create/topic" ? styles.active : ""
+            }`}
+            key="create-topic-li"
+          >
+            <TopicCreationBTN key="create-topic-area" />
+          </li>
           {mockLinks?.map((item, idx) => {
             return (
               <li

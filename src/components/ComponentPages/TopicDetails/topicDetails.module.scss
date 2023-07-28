@@ -22,6 +22,10 @@
   width: 100%;
   padding: 15px;
   padding-bottom: 0;
+  &.info_bar_n {
+    padding: 0;
+    padding-bottom: 10px;
+  }
   &.inforBarHEad {
     padding: 0;
     padding-bottom: 10px;
@@ -37,7 +41,7 @@
   &_Left {
     &.rightPanel {
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
       border: none;
       padding-top: 0;
 

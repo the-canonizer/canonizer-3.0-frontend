@@ -364,7 +364,7 @@ function HistoryContainer() {
         isTopicHistoryPage={historyOf == "topic" ? true : false}
       />
       <div className={styles.btnGroup}>
-        <CreateNewTopicButton className={styles.createBtn} click={topicRoute} />
+        {/* <CreateNewTopicButton className={styles.createBtn} click={topicRoute} /> */}
 
         {historyOf !== "topic" &&
         currentCampNode?._isDisabled == 0 &&

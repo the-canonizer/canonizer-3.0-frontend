@@ -53,7 +53,7 @@ const ResetPassword = ({ is_test = false }) => {
 
   return (
     <div className={styles.wrapper}>
-      <aside className="leftSideBar miniSideBar">
+      <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar">
         <SideBar />
       </aside>
       <div className={`pageContentWrap ${styles.pageContentWrap}`}>

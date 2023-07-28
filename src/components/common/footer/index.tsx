@@ -25,7 +25,7 @@ function Footer() {
     },
     {
       link: "/create/topic",
-      linkTitle: "Create New Topic",
+      linkTitle: "Create Topic",
       id: 3,
     },
     {

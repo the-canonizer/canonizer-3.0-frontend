@@ -15,6 +15,7 @@ import {
 } from "../../store/slices/campDetailSlice";
 import { setHistory } from "../../store/slices/campDetailSlice";
 import { setCanonizedAlgorithms } from "../../store/slices/homePageSlice";
+import Layout from "src/hoc/layout";
 
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 
@@ -50,9 +51,9 @@ const TopicDetailsPage = ({
   dispatch(setCurrentDate(current_date));
 
   return (
-    <>
+    <Layout>
       <TopicDetails serverSideCall={serverSideCall} />
-    </>
+    </Layout>
   );
 };
 

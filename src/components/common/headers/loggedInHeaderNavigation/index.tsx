@@ -183,10 +183,6 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
             ) : null}
           </div>
 
-          <div className="topicDeskBTN" key="topic-btn-div">
-            <TopicCreationBTN key="create-topic-area" />
-          </div>
-
           <div
             className={`${styles.right} ${!isLoginPage ? styles.onlogin : ""}`}
             key="right-area"

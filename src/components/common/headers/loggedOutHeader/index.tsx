@@ -74,10 +74,6 @@ const LoggedOutHeader = ({}: any) => {
           </div>
         </div>
 
-        <div className="topicDeskBTN">
-          <TopicCreationBTN key="create-topic-area" />
-        </div>
-
         <div className={styles.right} key="right-panel">
           <div className={styles.btnsLoginRegister} key="btns-area">
             <Button

@@ -337,7 +337,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
       <div className="leftSideBar_Card">
         {/* <div className="btnsWrap">
           <Button size="large" className="mb-3 btn" onClick={campRoute}>
-            <i className="icon-topic"></i> Create New Topic
+            <i className="icon-topic"></i> Create Topic
           </Button>
           {isCampBtnVisible &&
           currentCampNode?._isDisabled == 0 &&
