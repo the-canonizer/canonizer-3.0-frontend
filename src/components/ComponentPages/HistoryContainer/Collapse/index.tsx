@@ -409,7 +409,7 @@ function HistoryCollapse({
                     id={`submit-update-${campStatement?.id}`}
                     className={`mr-3 ${styles.campUpdateButton}`}
                     onClick={() =>campHistoryItems[0]?.is_archive == 1 && campHistoryItems[0]?.status == "live"?callManageCampApi(): submitUpdateRedirect(historyOf)}
-                    disabled={historyOf == "camp" && campHistoryItems[0]?.is_archive == 1 && (campStatement.status == "old") || (campHistoryItems[0]?.is_archive == 1 && campHistoryItems[0]?.status == "live" && campStatement.status == "objected" ) ? true:false
+                    disabled={ campHistoryItems[0]?.status == "in_review"||(campHistoryItems[0]?.is_archive == 1 && (campStatement.status == "old") || (campHistoryItems[0]?.is_archive == 1 && campHistoryItems[0]?.status == "live" && campStatement.status == "objected" )) ? true:false
                   }
                   >
                     

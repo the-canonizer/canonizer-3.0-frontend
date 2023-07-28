@@ -111,7 +111,7 @@ const ManageSupport = () => {
     camp_num: +router?.query?.manageSupport?.[1]?.split("-")[0],
   };
 
-  if (CheckDelegatedOrDirect &&  router.query.manageSupport[1]?.split("_")?.[1])
+  if (CheckDelegatedOrDirect && router.query.manageSupport[1]?.split("_")?.[1])
     reqBodyData.delegated_nick_name_id =
     router.query.manageSupport[1]?.split("_")?.[1]
   const { campRecord } = useSelector((state: RootState) => ({
@@ -475,7 +475,7 @@ const ManageSupport = () => {
         (values) => selectedtNickname == values.id
       );
       let nickNameIDValue = nickNameID[0].id;
-      let delegated_user_id =  router.query.manageSupport[1]?.split("_")?.[1]
+      let delegated_user_id = router.query.manageSupport[1]?.split("_")?.[1];
 
       const addDelegatedSupport = {
         nick_name_id: nickNameIDValue,
