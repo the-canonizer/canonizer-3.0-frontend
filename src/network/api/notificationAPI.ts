@@ -4,10 +4,10 @@ import { handleError } from "../../utils/generalUtility";
 import { store } from "../../store";
 import { setData, setHeaderData } from "../../store/slices/notificationSlice";
 
-export const getLists = async (page: number = 1, per_page: number = 5) => {
+export const getLists = async (page: number = 1, per_page: number = 5, is_seen:number = 0) => {
   try {
     const res = await NetworkCall.fetch(
-      NotificationRequests.getNotification(page, per_page),
+      NotificationRequests.getNotification(page, per_page, is_seen),
       false
     );
 
@@ -18,7 +18,6 @@ export const getLists = async (page: number = 1, per_page: number = 5) => {
       };
       store.dispatch(setHeaderData(data));
     }
-
     return res;
   } catch (error) {
     handleError(error);
@@ -27,11 +26,12 @@ export const getLists = async (page: number = 1, per_page: number = 5) => {
 
 export const getNotificationsList = async (
   page: number = 1,
-  per_page: number = 50
+  per_page: number = 50,
+  is_seen:number = 1
 ) => {
   try {
     const res = await NetworkCall.fetch(
-      NotificationRequests.getNotification(page, per_page),
+      NotificationRequests.getNotification(page, per_page, is_seen),
       false
     );
 
