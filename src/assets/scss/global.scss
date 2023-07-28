@@ -363,29 +363,32 @@ del.diffmod img {
       background-color: rgb(248, 157, 21);
       border-color: rgb(248, 157, 21);
       border-radius: 0 0 2px 2px;
+      z-index: 2;
       .arrow {
-        display: none;
         position: absolute;
-        width: 80%;
-        height: 20px;
+        width: 40px;
+        height: 40px;
         background-color: rgb(248, 157, 21);
         border-color: rgb(248, 157, 21);
-        bottom: -20px;
+        bottom: -15px;
         left: 50%;
         transform: translateX(-50%);
         margin: 0;
-        border-radius: 0 0 5px 5px;
+        border-radius: 0 0 100px 100px;
+        z-index: -1;
       }
 
       .arrow span {
         display: block;
-        width: 15px;
-        height: 15px;
-        border-bottom: 2px solid white;
-        border-right: 2px solid white;
+        width: 10px;
+        height: 10px;
+        border-bottom: 1px solid white;
+        border-right: 1px solid white;
         margin: -10px auto;
-        transform: rotate(45deg);
+        transform: rotate(45deg) translate(20px, 20px);
         animation: animate 2s infinite;
+        // animation-iteration-count: 3;
+        z-index: 1;
       }
 
       .arrow span:nth-child(2) {
@@ -399,14 +402,14 @@ del.diffmod img {
       @keyframes animate {
         0% {
           opacity: 0;
-          transform: rotate(45deg) translate(-20px, -20px);
+          transform: rotate(45deg) translate(10px, 10px);
         }
         50% {
           opacity: 1;
         }
         100% {
           opacity: 0;
-          transform: rotate(45deg) translate(5px, 5px);
+          transform: rotate(45deg) translate(25px, 25px);
         }
       }
     }

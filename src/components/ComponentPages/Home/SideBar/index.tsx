@@ -7,9 +7,6 @@ import { CloseCircleOutlined } from "@ant-design/icons";
 import { RootState } from "src/store";
 import TopicsFilter from "../../../common/topicsFilter";
 import TopicsFilterWithDrawer from "../../../common/topicsFilter/filterWithTree";
-// import CampRecentActivities from "../CampRecentActivities";
-// import NewsFeedsCard from "../../TopicDetails/NewsFeedsCard";
-import useAuthentication from "src/hooks/isUserAuthenticated";
 import { setShowDrawer } from "src/store/slices/filtersSlice";
 
 export default function HomeSideBar({
@@ -29,9 +26,7 @@ export default function HomeSideBar({
       viewThisVersion: state?.filters?.viewThisVersionCheck,
     })
   );
-  const { isUserAuthenticated } = useAuthentication();
 
-  const [isAuth, setIsAuth] = useState(isUserAuthenticated);
   const [drawerIsVisible, setDrawerIsVisible] = useState(drawerShow);
 
   const router = useRouter();
@@ -39,16 +34,17 @@ export default function HomeSideBar({
 
   useEffect(() => setDrawerIsVisible(drawerShow), [drawerShow]);
 
-  const { newsFeed } = useSelector((state: RootState) => ({
-    newsFeed: state?.topicDetails?.newsFeed,
-  }));
-
   const showDrawer = () => {
     router.push(
-      {
-        pathname: router.pathname,
-        query: { ...router?.query, is_tree_open: "1" },
-      },
+      `/topic/${router?.query?.camp[0]}/${
+        router?.query?.camp[1]
+      }?score=${filterByScore}&algo=${filterObject?.algorithm}${
+        filterObject?.asof == "bydate"
+          ? "&asofdate=" + filterObject?.asofdate
+          : ""
+      }&asof=${filterObject?.asof}&canon=${
+        filterObject?.namespace_id
+      }&is_tree_open=1${viewThisVersion ? "&viewversion=1" : ""}`,
       null,
       {
         shallow: true,
@@ -77,8 +73,6 @@ export default function HomeSideBar({
 
     dispatch(setShowDrawer(false));
   };
-
-  useEffect(() => setIsAuth(isUserAuthenticated), [isUserAuthenticated]);
 
   return (
     <Fragment>
@@ -122,15 +116,6 @@ export default function HomeSideBar({
           </Drawer>
         </Fragment>
       )}
-      {/* {typeof window !== "undefined" &&
-        window.innerWidth > 767 &&
-        router?.asPath.includes("topic") &&
-        isAuth && (
-          <Fragment>
-            {<CampRecentActivities />}
-            {!!newsFeed?.length && <NewsFeedsCard newsFeed={newsFeed} />}
-          </Fragment>
-        )} */}
     </Fragment>
   );
 }
