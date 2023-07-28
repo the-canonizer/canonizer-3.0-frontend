@@ -122,7 +122,7 @@ function ProfileInfoForm({
   );
 
   // @ts-ignore
-  // if (privateFlags != "loading")
+  if (privateFlags != "loading")
   return (
     <Form
       name="profileInfo"
@@ -386,17 +386,17 @@ function ProfileInfoForm({
       </Form.Item>
     </Form>
   );
-  // else
-  //   return (
-  //     <div>
-  //       <CustomSkelton
-  //         skeltonFor="profileInfoForm"
-  //         bodyCount={7}
-  //         stylingClass=""
-  //         isButton={false}
-  //       />
-  //     </div>
-  //   );
+  else
+    return (
+      <div>
+        <CustomSkelton
+          skeltonFor="profileInfoForm"
+          bodyCount={7}
+          stylingClass=""
+          isButton={false}
+        />
+      </div>
+    );
 }
 
 export default ProfileInfoForm;
