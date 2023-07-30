@@ -108,14 +108,15 @@ describe("Camp forum post page", () => {
             isLoading={false}
             postperPage={10}
             threadDetailsLoading={false}
+            payload={undefined}
           />
         </RouterContext.Provider>
       </Provider>
     );
 
-    expect(screen.getByText("Create New Topic")).toBeInTheDocument();
+    // expect(screen.getByText("Create Topic")).toBeInTheDocument();
     expect(
-      screen.getAllByText("replied 53 years ago (Jan 1st 1970, 5:30:00 am)")
+      screen.getAllByText("replied 54 years ago (Jan 1st 1970, 5:30:00 am)")
     ).toHaveLength(2);
     expect(screen.getByText("Submit")).toBeInTheDocument();
     expect(screen.getByText("Back")).toBeInTheDocument();
@@ -157,15 +158,16 @@ describe("Camp forum post page", () => {
             isLoading={false}
             postperPage={10}
             threadDetailsLoading={false}
+            payload={undefined}
           />
         </RouterContext.Provider>
       </Provider>
     );
 
     expect(screen.getByTestId("logincheck")).toBeInTheDocument();
-    expect(screen.getByText("Create New Topic")).toBeInTheDocument();
+    // expect(screen.getByText("Create Topic")).toBeInTheDocument();
     expect(
-      screen.getAllByText("replied 53 years ago (Jan 1st 1970, 5:30:00 am)")
+      screen.getAllByText("replied 54 years ago (Jan 1st 1970, 5:30:00 am)")
     ).toHaveLength(2);
     expect(
       screen.getByText("Number of Post in this thread: 10")

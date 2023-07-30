@@ -15,6 +15,7 @@ import {
 } from "../../store/slices/campDetailSlice";
 import { setHistory } from "../../store/slices/campDetailSlice";
 import { setCanonizedAlgorithms } from "../../store/slices/homePageSlice";
+import Layout from "src/hoc/layout";
 
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 
@@ -50,9 +51,9 @@ const TopicDetailsPage = ({
   dispatch(setCurrentDate(current_date));
 
   return (
-    <>
+    <Layout>
       <TopicDetails serverSideCall={serverSideCall} />
-    </>
+    </Layout>
   );
 };
 
@@ -69,7 +70,7 @@ export async function getServerSideProps({ req, res, resolvedUrl, query }) {
       query?.asofdate && query?.asof == "bydate"
         ? parseFloat(query?.asofdate)
         : Date.now() / 1000,
-    algorithm: query?.algo ?? "blind_popularity",
+    algorithm: query?.algo ?? "",
     update_all: 1,
     fetch_topic_history: query?.viewversion == "1" ? 1 : null,
   };

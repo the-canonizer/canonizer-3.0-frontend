@@ -131,7 +131,7 @@ describe("CampHistory Page", () => {
       );
       expect(screen.getByText(/go live time :/i));
       expect(screen.getByText(/Select to Compare/i));
-      expect(container.getElementsByTagName("button")).toHaveLength(4);
+      expect(container.getElementsByTagName("button")).toHaveLength(3);
       expect(container.getElementsByTagName("input")).toHaveLength(1);
     });
   });

@@ -651,18 +651,17 @@ export default function AddOrManage({ add }: any) {
   return (
     <>
       <div className={styles.topicDetailContentWrap}>
-        {!!payloadBreadCrumb?.camp_num && (
-          <CampInfoBar
-            payload={payloadBreadCrumb}
-            isTopicHistoryPage={manageFormOf == "topic" ? true : false}
-          />
-        )}
-
-        <aside className="leftSideBar miniSideBar">
-          <SideBarNoFilter />
+        <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar">
+          {/* <SideBarNoFilter /> */}
         </aside>
 
         <div className="pageContentWrap">
+          {!!payloadBreadCrumb?.camp_num && (
+            <CampInfoBar
+              payload={payloadBreadCrumb}
+              isTopicHistoryPage={manageFormOf == "topic" ? true : false}
+            />
+          )}
           <Card
             title={
               add
