@@ -113,7 +113,7 @@ const ManageSupport = () => {
 
   if (CheckDelegatedOrDirect && router.query.manageSupport[1]?.split("_")?.[1])
     reqBodyData.delegated_nick_name_id =
-    router.query.manageSupport[1]?.split("_")?.[1]
+      router.query.manageSupport[1]?.split("_")?.[1];
   const { campRecord } = useSelector((state: RootState) => ({
     campRecord: state?.topicDetails?.currentCampRecord,
   }));

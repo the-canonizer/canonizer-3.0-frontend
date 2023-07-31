@@ -190,12 +190,11 @@ const Notifications = () => {
     </Card>
   );
 
-
   const getNotofications = async (e) => {
     if (e) {
-      await getLists(1, 5, 1)
+      await getLists(1, 5, 1);
     }
-  }
+  };
 
   return (
     <Fragment>

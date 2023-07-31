@@ -42,7 +42,7 @@ const tabList = [
     tab: "Subscriptions",
   },
 ];
-function callback(key) { }
+function callback(key) {}
 
 const SettingsUI = () => {
   const [search, setSearch] = useState("");
@@ -108,14 +108,13 @@ const SettingsUI = () => {
     const query = router?.query;
     if (query && !query.tab) {
       setActiveTabKey("profile_info");
-    }
-    else if (query && query?.tab.includes("social")) {
+    } else if (query && query?.tab.includes("social")) {
       setActiveTabKey("social_oauth_verification");
     } else if (query && query?.tab.includes("profile")) {
       setActiveTabKey("profile_info");
     } else if (query && query.tab) {
-      setActiveTabKey(query.tab.toString())
-    };
+      setActiveTabKey(query.tab.toString());
+    }
   }, [router?.query]);
 
   return (

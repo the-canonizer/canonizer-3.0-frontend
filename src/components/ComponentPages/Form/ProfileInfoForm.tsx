@@ -121,17 +121,17 @@ function ProfileInfoForm({
     </div>
   );
 
-  const [loaded, setLoaded] = useState(false)
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    const scripttag = document.createElement('script')
-    scripttag.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}&libraries=places`
-    scripttag.addEventListener('load', () => setLoaded(true))
-    document.body.appendChild(scripttag)
-    return (() => {
-      document.body.removeChild(scripttag)
-    })
-  }, [])
+    const scripttag = document.createElement("script");
+    scripttag.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}&libraries=places`;
+    scripttag.addEventListener("load", () => setLoaded(true));
+    document.body.appendChild(scripttag);
+    return () => {
+      document.body.removeChild(scripttag);
+    };
+  }, []);
 
   // @ts-ignore
   if (privateFlags != "loading")
@@ -279,16 +279,15 @@ function ProfileInfoForm({
             <Col md={12}>
               <Form.Item name="address_1" label={messages.labels.addressLine1}>
                 <div className="reactDropdown">
-                  {
-                    loaded ? <PlacesAutocomplete
+                  {loaded ? (
+                    <PlacesAutocomplete
                       value={address}
                       onChange={handleAddressChange}
                       onSelect={handleAddressSelect}
                     >
                       {renderFuncForGooglePlaces}
-                    </PlacesAutocomplete> : null
-                  }
-
+                    </PlacesAutocomplete>
+                  ) : null}
                 </div>
               </Form.Item>
               <Form.Item name="city" label={messages.labels.city}>
@@ -303,7 +302,10 @@ function ProfileInfoForm({
               <Form.Item name="country" label={messages.labels.country}>
                 <Input
                   id="selectCountry"
-                  addonAfter={selectAfter("country", publicOrPrivate("country"))}
+                  addonAfter={selectAfter(
+                    "country",
+                    publicOrPrivate("country")
+                  )}
                   placeholder={messages.placeholders.country}
                   size="large"
                   disabled

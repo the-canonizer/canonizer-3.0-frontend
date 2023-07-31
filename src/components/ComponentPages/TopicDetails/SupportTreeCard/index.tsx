@@ -234,11 +234,9 @@ const SupportTreeCard = ({
                       {isUserAuthenticated ? (
                         !userNickNameList.includes(data[item].nick_name_id) ? (
                           <Link
-                            href={
-                              {
-                                pathname:`/support/${topicRecord.topic_num}-${topicRecord.topic_name}/${topicRecord.camp_num}-${campRecord?.camp_name}_${data[item].nick_name_id}`
-                              }
-                            }
+                            href={{
+                              pathname: `/support/${topicRecord.topic_num}-${topicRecord.topic_name}/${topicRecord.camp_num}-${campRecord?.camp_name}_${data[item].nick_name_id}`,
+                            }}
                           >
                             {loggedInUserDelegate ||
                             (loggedInUserChild &&
