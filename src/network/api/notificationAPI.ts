@@ -37,8 +37,8 @@ export const getNotificationsList = async (
 
     if (res && res?.status_code == 200) {
       store.dispatch(setData(res?.data?.items));
+      store.dispatch(setHeaderData({count:res?.data?.unread_count, list:res?.data?.items.slice(0,5)}));
     }
-
     return res;
   } catch (error) {
     handleError(error);
