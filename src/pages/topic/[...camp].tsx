@@ -23,7 +23,7 @@ import { getHistoryApi } from "../../network/api/history";
 
 import TopicDetails from "src/components/ComponentPages/TopicDetails";
 import { setCurrentDate } from "src/store/slices/filtersSlice";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { formatTheDate } from "src/utils/generalUtility";
 
 // import { wrapper } from "src/store";
@@ -40,15 +40,17 @@ const TopicDetailsPage = ({
 }) => {
   const serverSideCall = useRef(serverCall || false);
   const dispatch = useDispatch();
-  dispatch(setNewsFeed(newsFeed));
-  dispatch(setCurrentTopicRecord(topicRecord));
-  dispatch(setCurrentCampRecord(campRecord));
-  dispatch(setCampStatement(campStatement));
-  dispatch(setHistory(statementHistory));
-  // dispatch(setCanonizedAlgorithms(canonizedAlgorithms));
-  dispatch(setTree([tree] || []));
 
-  dispatch(setCurrentDate(current_date));
+  useEffect(() => {
+    dispatch(setNewsFeed(newsFeed));
+    dispatch(setCurrentTopicRecord(topicRecord));
+    dispatch(setCurrentCampRecord(campRecord));
+    dispatch(setCampStatement(campStatement));
+    dispatch(setHistory(statementHistory));
+    // dispatch(setCanonizedAlgorithms(canonizedAlgorithms));
+    dispatch(setTree([tree] || []));
+    dispatch(setCurrentDate(current_date));
+  }, []);
 
   return (
     <Layout>
