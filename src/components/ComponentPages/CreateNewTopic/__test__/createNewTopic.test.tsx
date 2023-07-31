@@ -33,7 +33,7 @@ const nameSpaceList = [
   { id: 2, parent_id: 0, name: "corporations", label: "/corporations/" },
 ];
 
-describe("Create New Topic page", () => {
+describe("Create Topic page", () => {
   it("render heading and labels", async () => {
     render(
       <CreateNewTopic

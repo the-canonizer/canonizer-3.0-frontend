@@ -66,12 +66,12 @@ function CompareStatementUI({
       <div className={styles.wrap}>
         <CampInfoBar payload={payload} />
         <div className={styles.btnGroup}>
-          <CreateTopicBtn />
+          {/* <CreateTopicBtn />
           <CreateCampBtn
             url={`/camp/create/${
               router?.query?.routes[0] + "/" + router?.query?.routes[1]
             }`}
-          />
+          /> */}
         </div>
         <div className={styles.campStatement}>
           <div className={styles.tabHead}>

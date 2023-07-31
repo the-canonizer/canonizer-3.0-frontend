@@ -58,7 +58,7 @@ const CreateCampFormUI = ({
   const toolTipContent = "This camp is under review";
   const archiveToolTipContent = "This camp is archived";
   useEffect(() => {
-    campRecord.is_archive && router.pathname == "/camp/create/[...camp]"
+    campRecord?.is_archive && router.pathname == "/camp/create/[...camp]"
       ? router?.back()
       : "";
   }, []);

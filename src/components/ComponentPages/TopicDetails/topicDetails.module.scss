@@ -22,6 +22,10 @@
   width: 100%;
   padding: 15px;
   padding-bottom: 0;
+  &.info_bar_n {
+    padding: 0;
+    padding-bottom: 10px;
+  }
   &.inforBarHEad {
     padding: 0;
     padding-bottom: 10px;
@@ -40,6 +44,7 @@
       justify-content: space-between;
       border: none;
       padding-top: 0;
+
       [class="btnsWrap"] {
         display: flex;
         button {
@@ -69,6 +74,16 @@
         width: auto;
         .topicTitleStyle {
           margin-right: 0;
+        }
+      }
+      @media screen and (max-width: 767px) {
+        .leftPanel {
+          width: 100%;
+          .topicTitleStyle {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+          }
         }
       }
     }
@@ -283,6 +298,9 @@
     font-weight: 600;
   }
 }
+.miniSide {
+  width: 180px;
+}
 
 // .miniSide {
 //   [class="btnsWrap"] {
@@ -399,4 +417,9 @@
   padding-left: 8px;
   font-size: 13px;
   display: inline-block;
+}
+
+.bottomRow {
+  margin-top: 15px;
+  margin-bottom: 15px;
 }

@@ -372,7 +372,7 @@ const TimelineInfoBar = ({
 
   return (
     <>
-      <div className={styles.topicDetailContentHead}>
+      <div className={styles.topicDetailContentHead + " " + styles.info_bar_n}>
         {/* {loadingIndicator ? (
           <CustomSkelton
             skeltonFor="list"

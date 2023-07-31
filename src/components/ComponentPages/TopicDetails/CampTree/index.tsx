@@ -10,6 +10,7 @@ import { setCurrentCamp } from "../../../../store/slices/filtersSlice";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import ProgressBar from "@ramonak/react-progress-bar";
+import { setTotalCampScore } from "src/store/slices/supportTreeCard";
 
 const { TreeNode } = Tree;
 

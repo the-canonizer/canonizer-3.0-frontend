@@ -66,7 +66,7 @@ describe("Footer", () => {
     });
 
     const createNewTopicLink = screen.getByRole("link", {
-      name: /Create New Topic/i,
+      name: /Create Topic/i,
     });
     const helpLink = screen.getByRole("link", {
       name: /Help/i,

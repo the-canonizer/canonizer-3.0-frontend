@@ -1,4 +1,4 @@
-import { formatDate } from "..";
+import { formatDate } from ".";
 import { render } from "../../../utils/testUtils";
 
 describe("formatDate", () => {

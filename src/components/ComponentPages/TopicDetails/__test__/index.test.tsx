@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, waitFor } from "@testing-library/react";
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import TopicDetails from "../index";
@@ -9,12 +9,50 @@ import { NextRouter } from "next/router";
 
 // Mock Redux store
 const mockStore = configureStore([]);
-function createMockRouter(router: Partial<NextRouter>): NextRouter {
+// function createMockRouter(router: Partial<NextRouter>): NextRouter {
+//   return {
+//     basePath: "",
+//     pathname: "/",
+//     route: "/",
+//     query: {},
+//     asPath: "/",
+//     back: jest.fn(),
+//     beforePopState: jest.fn(),
+//     prefetch: jest.fn(),
+//     push: jest.fn(),
+//     reload: jest.fn(),
+//     replace: jest.fn(),
+//     events: {
+//       on: jest.fn(),
+//       off: jest.fn(),
+//       emit: jest.fn(),
+//     },
+//     isFallback: false,
+//     isLocaleDomain: false,
+//     isReady: true,
+//     defaultLocale: "en",
+//     domainLocales: [],
+//     isPreview: false,
+//     ...router,
+//   };
+// }
+
+window.matchMedia =
+  window.matchMedia ||
+  function () {
+    return {
+      matches: false,
+      addListener: function () {},
+      removeListener: function () {},
+    };
+  };
+
+function createMockRouter(): NextRouter {
   return {
     basePath: "",
     pathname: "/",
     route: "/",
-    query: {},
+    query: { camp: ["88-Theories-of-Consciousness", "1-Agreement"] },
     asPath: "/",
     back: jest.fn(),
     beforePopState: jest.fn(),
@@ -33,19 +71,10 @@ function createMockRouter(router: Partial<NextRouter>): NextRouter {
     defaultLocale: "en",
     domainLocales: [],
     isPreview: false,
-    ...router,
   };
 }
 
-window.matchMedia =
-  window.matchMedia ||
-  function () {
-    return {
-      matches: false,
-      addListener: function () {},
-      removeListener: function () {},
-    };
-  };
+afterEach(cleanup);
 
 describe("TopicDetails", () => {
   // let store;
@@ -76,14 +105,7 @@ describe("TopicDetails", () => {
   it("renders TopicDetails component correctly", async () => {
     render(
       <Provider store={store}>
-        <RouterContext.Provider
-          value={createMockRouter({
-            query: {
-              camp: ["88-topic", "1-camp"],
-            },
-            asPath: "/topic/88-topic/1-camp",
-          })}
-        >
+        <RouterContext.Provider value={createMockRouter()}>
           <TopicDetails serverSideCall={true} />
         </RouterContext.Provider>
       </Provider>

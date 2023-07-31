@@ -12,7 +12,7 @@ export default function HomeSideBar({ isShowBtn = true }: any) {
   return (
     <>
       <div
-        className="leftSideBar_Card noFilter"
+        className={"topicPageNewLayoutSidebar leftSideBar miniSideBar noFilter"}
         style={{
           padding: !isShowBtn ? "0" : "",
           border: !isShowBtn ? "none" : "",
@@ -20,9 +20,9 @@ export default function HomeSideBar({ isShowBtn = true }: any) {
       >
         {isShowBtn && (
           <div className="btnsWrap">
-            <Button size="large" className={"btn"} onClick={campRoute}>
-              <i className="icon-topic"></i>Create New Topic
-            </Button>
+            {/* <Button size="large" className={"btn"} onClick={campRoute}>
+              <i className="icon-topic"></i>Create Topic
+            </Button> */}
           </div>
         )}
       </div>

@@ -152,7 +152,7 @@ describe("AddOrManage component", () => {
         name: /preview/i,
       });
       const createNewTopicButton = screen.getByRole("button", {
-        name: /create new topic/i,
+        name: /create topic/i,
       });
 
       expect(screen.getByText(/nickname/i)).toBeInTheDocument();
@@ -168,7 +168,7 @@ describe("AddOrManage component", () => {
       );
       expect(submitButton.textContent).toBe("Submit Update");
       expect(previewButton.textContent).toBe("Preview");
-      expect(createNewTopicButton.textContent).toBe("Create New Topic");
+      expect(createNewTopicButton.textContent).toBe("Create Topic");
       expect(mainHeading.textContent).toBe("Statement Update");
     });
   });
