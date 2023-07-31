@@ -282,6 +282,7 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
 
 const googleAPIKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
 //export default wrapper.withRedux(MyApp);
-export default scriptLoader([
-  `https://maps.googleapis.com/maps/api/js?key=${googleAPIKey}&libraries=places`,
-])(wrapper.withRedux(WrappedApp));
+// export default scriptLoader([
+//   `https://maps.googleapis.com/maps/api/js?key=${googleAPIKey}&libraries=places`,
+// ])
+export default (wrapper.withRedux(WrappedApp));
