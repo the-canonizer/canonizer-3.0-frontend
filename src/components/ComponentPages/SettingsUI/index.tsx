@@ -116,25 +116,23 @@ const SettingsUI = () => {
 
   return (
     <Fragment>
-      <div>
+      <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar">
         <Sidebar />
+      </aside>
+      <div className="pageContentWrap">
+        <Card
+          style={{ width: "100%" }}
+          title="Account Settings"
+          tabList={tabList}
+          activeTabKey={activeTabKey}
+          onTabChange={(key) => {
+            onTabChange(key);
+          }}
+          className="tab--card"
+        >
+          {contentList[activeTabKey]}
+        </Card>
       </div>
-      <Row gutter={16} className={styles.accountSetting}>
-        <Col xs={24} sm={24} xl={24}>
-          <Card
-            style={{ width: "100%" }}
-            title="Account Settings"
-            tabList={tabList}
-            activeTabKey={activeTabKey}
-            onTabChange={(key) => {
-              onTabChange(key);
-            }}
-            className="tab--card"
-          >
-            {contentList[activeTabKey]}
-          </Card>
-        </Col>
-      </Row>
     </Fragment>
   );
 };

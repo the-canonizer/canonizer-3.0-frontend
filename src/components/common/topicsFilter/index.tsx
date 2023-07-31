@@ -335,9 +335,9 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   return (
     <>
       <div className="leftSideBar_Card">
-        <div className="btnsWrap">
+        {/* <div className="btnsWrap">
           <Button size="large" className="mb-3 btn" onClick={campRoute}>
-            <i className="icon-topic"></i> Create New Topic
+            <i className="icon-topic"></i> Create Topic
           </Button>
           {isCampBtnVisible &&
           currentCampNode?._isDisabled == 0 &&
@@ -365,9 +365,9 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
               </Button>
             </Tooltip>
           ) : null}
-        </div>
+        </div> */}
         <Collapse
-          className={`${styles.cardAccordian} topicListFilterCardCollapse`}
+          className={`${styles.cardAccordian} topicListFilterCardCollapse topicFilterBorderRemove`}
           expandIconPosition="right"
           expandIcon={() => (
             <div className={styles.collapseIcon}>

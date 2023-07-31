@@ -73,6 +73,7 @@ const SupportTreeCard = ({
     campRecord,
     filterData,
     algorithms,
+    totalScoreForSupportTree,
   } = useSelector((state: RootState) => ({
     currentGetCheckSupportExistsData:
       state.topicDetails.currentGetCheckSupportExistsData,
@@ -81,6 +82,7 @@ const SupportTreeCard = ({
     campRecord: state?.topicDetails?.currentCampRecord,
     filterData: state?.filters?.filterObject,
     algorithms: state.homePage?.algorithms,
+    totalScoreForSupportTree: state?.supportTreeCard?.totalScoreForSupportTree,
   }));
 
   const { isUserAuthenticated } = isAuth();
@@ -95,11 +97,10 @@ const SupportTreeCard = ({
 
   useEffect(() => {
     const filteredAlgo = algorithms?.filter(
-      (a: { algorithm_key: string }) =>
-        a.algorithm_key === filterData?.algorithm
+      (a: { algorithm_key: string }) => a.algorithm_key === router?.query?.algo
     );
     if (filteredAlgo?.length) setCurrentAlgo(filteredAlgo[0]?.algorithm_label);
-  }, [filterData]);
+  }, [algorithms, router?.query?.algo]);
 
   const dispatch = useDispatch();
   const arr = [];

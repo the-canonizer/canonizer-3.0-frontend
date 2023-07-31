@@ -6,7 +6,7 @@ function AddNewsPage() {
   return (
     <>
       <Layout>
-        <aside className="leftSideBar miniSideBar">
+        <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar">
           <SideBarNoFilter />
         </aside>
         <div className="pageContentWrap">

@@ -18,6 +18,7 @@ import {
 import ForgotModal from "../../../ComponentPages/ForgotPassword/forgotPasswordModal";
 import DisclaimerMsg from "../../disclaimer";
 import HeaderMenu from "../HeaderMenu";
+import TopicCreationBTN from "../TopicCreationBTN";
 
 const { Header } = Layout;
 
@@ -72,34 +73,42 @@ const LoggedOutHeader = ({}: any) => {
             </Button>
           </div>
         </div>
-        <div className={styles.right}>
-          <div className={styles.btnsLoginRegister}>
+
+        <div className={styles.right} key="right-panel">
+          <div className={styles.btnsLoginRegister} key="btns-area">
             <Button
               type="link"
               className={styles.btnLogin}
               onClick={openLoginModal}
+              key="login-btn"
             >
               <i className="icon-user"></i> Log In
             </Button>
             <Button
               className={styles.btnRegister}
               onClick={openRegistrationModal}
+              key="register-btn"
             >
               <i className="icon-user-plus"></i> Register
             </Button>
           </div>
-          <div className={styles.iconMobMenu}>
-            <Button size="large" onClick={toggleMobNav}>
+          <div className={styles.iconMobMenu} key="mob-menu-area">
+            <Button size="large" onClick={toggleMobNav} key="outline-btn">
               <MenuOutlined />
             </Button>
           </div>
         </div>
+
         <div
           className={`${styles.mobNavBG} ${isActive && styles.mobNavBGshow}`}
           onClick={toggleMobNav}
+          key="toggle-btn"
         ></div>
       </Header>
       <SearchSection />
+      <div className="topicMobBTN">
+        <TopicCreationBTN key="create-topic-area" />
+      </div>
       <DisclaimerMsg />
       <LoginModal />
       <RegistrationModal />

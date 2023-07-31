@@ -144,7 +144,7 @@ const CampTreeCard = ({
         <Collapse
           defaultActiveKey={["1"]}
           expandIconPosition="right"
-          className={`topicDetailsCollapse ${styles.topicDetailsPanelNo}`}
+          className={`topicDetailsCollapse ${styles.topicDetailsPanelNo} ${backGroundColorClass}`}
         >
           <Panel
             disabled
