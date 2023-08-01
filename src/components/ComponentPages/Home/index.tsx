@@ -15,10 +15,7 @@ const HomePageContainer = () => {
 
   return (
     <>
-      <aside
-        className="leftSideBar miniSideBar"
-        data-testid="sideBar"
-      >
+      <aside className="leftSideBar miniSideBar" data-testid="sideBar">
         <SideBar />
       </aside>
       <div className="pageContentWrap">

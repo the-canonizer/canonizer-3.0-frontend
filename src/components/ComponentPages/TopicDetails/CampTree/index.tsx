@@ -510,7 +510,7 @@ const CampTree = ({
     return uniqueArraytoString;
   };
 
-  console.log("[TREES]", tree, tree[0]); 
+  console.log("[TREES]", tree, tree[0]);
 
   return tree?.at(0) ? (
     showTree && tree?.at(0)["1"].title != "" && defaultExpandKeys ? (
