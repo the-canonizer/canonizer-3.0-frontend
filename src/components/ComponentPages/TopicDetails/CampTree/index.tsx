@@ -209,7 +209,7 @@ const CampTree = ({
       setUniqueKeys(uniquekeyss);
       if (tree?.at(0)) {
         let index = sesionexpandkeys.findIndex(
-          (item) => item.topic_id === tree?.at(0)["1"].topic_id
+          (item) => item.topic_id === tree?.at(0)["1"]?.topic_id
         );
         if (index !== -1) {
           sesionexpandkeys[index] = {
@@ -512,7 +512,7 @@ const CampTree = ({
     return uniqueArraytoString;
   };
 
-  console.log("[TREES]", tree, tree[0]); 
+  console.log("[TREES]", tree, tree[0]);
 
   return tree?.at(0) ? (
     showTree && tree?.at(0)["1"]?.title != "" && defaultExpandKeys ? (

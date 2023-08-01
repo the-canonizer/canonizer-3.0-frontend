@@ -93,9 +93,15 @@ describe("LoggedOutHeader", () => {
     expect(container.getElementsByTagName("button")).toHaveLength(8);
     expect(container.getElementsByTagName("img")).toHaveLength(4);
     expect(logoLink).toHaveLength(2);
-    expect(logoLink[0].getAttribute("href")).toBe("/?score=0&algo=blind_popularity&asof=default&canon=1");
-    expect(logoLink[1].getAttribute("href")).toBe("/?score=0&algo=blind_popularity&asof=default&canon=1");
-    expect(browseLink.getAttribute("href")).toBe("/browse?score=0&algo=blind_popularity&asof=default&canon=1");
+    expect(logoLink[0].getAttribute("href")).toBe(
+      "/?score=0&algo=blind_popularity&asof=default&canon=1"
+    );
+    expect(logoLink[1].getAttribute("href")).toBe(
+      "/?score=0&algo=blind_popularity&asof=default&canon=1"
+    );
+    expect(browseLink.getAttribute("href")).toBe(
+      "/browse?score=0&algo=blind_popularity&asof=default&canon=1"
+    );
     // expect(uploadFilesLink.getAttribute("href")).toBe("/uploadFile");
     expect(helpLink.getAttribute("href")).toBe(
       "/topic/132-Help/1-Agreement?is_tree_open=1?score=0&algo=blind_popularity&asof=default&canon=1"
