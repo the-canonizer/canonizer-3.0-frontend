@@ -129,6 +129,7 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
    * /statement.asp/2/2
    * /stmt.asp/2/2
    * /[anything].asp/dadsa
+   * /secure/upload.asp
    *
    */
 
@@ -267,6 +268,8 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
       returnData = "/login";
     } else if (aspath?.includes("signup.asp")) {
       returnData = "/registration";
+    } else if (aspath?.includes("upload.asp")) {
+      returnData = "/uploadFile";
     } else {
       returnData = await redirect(aspath, null, null, "");
     }
@@ -282,6 +285,7 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
 
 const googleAPIKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
 //export default wrapper.withRedux(MyApp);
-export default scriptLoader([
-  `https://maps.googleapis.com/maps/api/js?key=${googleAPIKey}&libraries=places`,
-])(wrapper.withRedux(WrappedApp));
+// export default scriptLoader([
+//   `https://maps.googleapis.com/maps/api/js?key=${googleAPIKey}&libraries=places`,
+// ])
+export default wrapper.withRedux(WrappedApp);

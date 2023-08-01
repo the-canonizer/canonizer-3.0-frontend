@@ -46,7 +46,7 @@ function callback(key) {}
 
 const SettingsUI = () => {
   const [search, setSearch] = useState("");
-  const [activeTabKey, setActiveTabKey] = useState("profile_info");
+  const [activeTabKey, setActiveTabKey] = useState("");
   const onTabChange = (key) => {
     setActiveTabKey(key);
     router?.push("/settings?tab=" + key);
@@ -106,12 +106,15 @@ const SettingsUI = () => {
 
   useEffect(() => {
     const query = router?.query;
-    if (query && query.tab === "social") {
-      setActiveTabKey("social_oauth_verification");
-    } else if (query && query.tab === "profile") {
+    if (query && !query.tab) {
       setActiveTabKey("profile_info");
-    } else if (query && query.tab) setActiveTabKey(query.tab.toString());
-    else setActiveTabKey("profile_info");
+    } else if (query && query?.tab.includes("social")) {
+      setActiveTabKey("social_oauth_verification");
+    } else if (query && query?.tab.includes("profile")) {
+      setActiveTabKey("profile_info");
+    } else if (query && query.tab) {
+      setActiveTabKey(query.tab.toString());
+    }
   }, [router?.query]);
 
   return (

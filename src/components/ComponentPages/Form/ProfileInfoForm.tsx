@@ -121,6 +121,18 @@ function ProfileInfoForm({
     </div>
   );
 
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const scripttag = document.createElement("script");
+    scripttag.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}&libraries=places`;
+    scripttag.addEventListener("load", () => setLoaded(true));
+    document.body.appendChild(scripttag);
+    return () => {
+      document.body.removeChild(scripttag);
+    };
+  }, []);
+
   // @ts-ignore
   if (privateFlags != "loading")
     return (
@@ -267,13 +279,15 @@ function ProfileInfoForm({
             <Col md={12}>
               <Form.Item name="address_1" label={messages.labels.addressLine1}>
                 <div className="reactDropdown">
-                  <PlacesAutocomplete
-                    value={address}
-                    onChange={handleAddressChange}
-                    onSelect={handleAddressSelect}
-                  >
-                    {renderFuncForGooglePlaces}
-                  </PlacesAutocomplete>
+                  {loaded ? (
+                    <PlacesAutocomplete
+                      value={address}
+                      onChange={handleAddressChange}
+                      onSelect={handleAddressSelect}
+                    >
+                      {renderFuncForGooglePlaces}
+                    </PlacesAutocomplete>
+                  ) : null}
                 </div>
               </Form.Item>
               <Form.Item name="city" label={messages.labels.city}>
