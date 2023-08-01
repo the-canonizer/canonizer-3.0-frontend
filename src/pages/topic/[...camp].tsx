@@ -23,7 +23,7 @@ import { getHistoryApi } from "../../network/api/history";
 
 import TopicDetails from "src/components/ComponentPages/TopicDetails";
 import { setCurrentDate } from "src/store/slices/filtersSlice";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { formatTheDate } from "src/utils/generalUtility";
 
 // import { wrapper } from "src/store";
@@ -40,15 +40,17 @@ const TopicDetailsPage = ({
 }) => {
   const serverSideCall = useRef(serverCall || false);
   const dispatch = useDispatch();
-  dispatch(setNewsFeed(newsFeed));
-  dispatch(setCurrentTopicRecord(topicRecord));
-  dispatch(setCurrentCampRecord(campRecord));
-  dispatch(setCampStatement(campStatement));
-  dispatch(setHistory(statementHistory));
-  // dispatch(setCanonizedAlgorithms(canonizedAlgorithms));
-  dispatch(setTree([tree] || []));
+  useEffect(() => {
+    dispatch(setNewsFeed(newsFeed));
+    dispatch(setCurrentTopicRecord(topicRecord));
+    dispatch(setCurrentCampRecord(campRecord));
+    dispatch(setCampStatement(campStatement));
+    dispatch(setHistory(statementHistory));
+    // dispatch(setCanonizedAlgorithms(canonizedAlgorithms));
+    dispatch(setTree([tree] || []));
 
-  dispatch(setCurrentDate(current_date));
+    dispatch(setCurrentDate(current_date));
+  }, []);
 
   return (
     <Layout>
@@ -70,7 +72,7 @@ export async function getServerSideProps({ req, res, resolvedUrl, query }) {
       query?.asofdate && query?.asof == "bydate"
         ? parseFloat(query?.asofdate)
         : Date.now() / 1000,
-    algorithm: query?.algo ?? "",
+    algorithm: query?.algo ?? "blind_popularity",
     update_all: 1,
     fetch_topic_history: query?.viewversion == "1" ? 1 : null,
   };
@@ -80,9 +82,9 @@ export async function getServerSideProps({ req, res, resolvedUrl, query }) {
     camp_num: campNum,
     as_of: query?.asof ?? "default",
     as_of_date:
-      query?.asofdate == "default" || query?.asof == "review"
-        ? Date.now() / 1000
-        : formatTheDate(query?.asofdate * 1000, "DD-MM-YYYY H:mm:ss"),
+      query?.asofdate && query?.asof == "bydate"
+        ? formatTheDate(query?.asofdate * 1000, "DD-MM-YYYY H:mm:ss")
+        : Date.now() / 1000,
   };
 
   const reqBodyForCampData = {
