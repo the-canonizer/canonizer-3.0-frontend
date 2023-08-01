@@ -22,6 +22,7 @@ import { firebaseCloudMessaging } from "src/firebaseConfig/firebase";
 import Lists from "src/components/ComponentPages/Notifications/UI/List";
 import { updateFCMToken } from "src/network/api/notificationAPI";
 import { RootState } from "src/store";
+import { getLists } from "../../../../network/api/notificationAPI";
 
 import Fav from "./icon";
 
@@ -189,6 +190,12 @@ const Notifications = () => {
     </Card>
   );
 
+  const getNotofications = async (e) => {
+    if (e) {
+      await getLists(1, 5, 1);
+    }
+  };
+
   return (
     <Fragment>
       <Dropdown
@@ -197,6 +204,7 @@ const Notifications = () => {
         dropdownRender={() => notificationDropdown}
         trigger={["click"]}
         placement="bottomRight"
+        onOpenChange={getNotofications}
       >
         <Badge
           count={count}

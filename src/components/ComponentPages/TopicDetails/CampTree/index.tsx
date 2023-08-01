@@ -167,7 +167,9 @@ const CampTree = ({
     let keyexistSession =
       sesionexpandkeys &&
       tree?.at(0) &&
-      sesionexpandkeys.find((age) => age.topic_id == tree?.at(0)["1"].topic_id);
+      sesionexpandkeys.find(
+        (age) => age.topic_id == tree?.at(0)["1"]?.topic_id
+      );
 
     if (
       keyexistSession &&
@@ -207,7 +209,7 @@ const CampTree = ({
       setUniqueKeys(uniquekeyss);
       if (tree?.at(0)) {
         let index = sesionexpandkeys.findIndex(
-          (item) => item.topic_id === tree?.at(0)["1"].topic_id
+          (item) => item.topic_id === tree?.at(0)["1"]?.topic_id
         );
         if (index !== -1) {
           sesionexpandkeys[index] = {
@@ -216,7 +218,7 @@ const CampTree = ({
           };
         } else {
           sesionexpandkeys.push({
-            topic_id: tree?.at(0)["1"].topic_id,
+            topic_id: tree?.at(0)["1"]?.topic_id,
             sessionexpandsKeys: uniquekeyss,
           });
         }
@@ -224,7 +226,7 @@ const CampTree = ({
       }
     }
     if (tree?.at(0)) {
-      const agreementCamp = tree?.at(0)[1].score;
+      const agreementCamp = tree?.at(0)[1]?.score;
       if (
         agreementCamp > 5 &&
         Object.keys(tree?.at(0)[1].children).length > 0
@@ -510,10 +512,10 @@ const CampTree = ({
     return uniqueArraytoString;
   };
 
-  console.log("[TREES]", tree, tree[0]); 
+  console.log("[TREES]", tree, tree[0]);
 
   return tree?.at(0) ? (
-    showTree && tree?.at(0)["1"].title != "" && defaultExpandKeys ? (
+    showTree && tree?.at(0)["1"]?.title != "" && defaultExpandKeys ? (
       <>
         <Tree
           showLine={{ showLeafIcon: false }}
