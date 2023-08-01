@@ -129,6 +129,7 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
    * /statement.asp/2/2
    * /stmt.asp/2/2
    * /[anything].asp/dadsa
+   * /secure/upload.asp
    *
    */
 
@@ -267,6 +268,8 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
       returnData = "/login";
     } else if (aspath?.includes("signup.asp")) {
       returnData = "/registration";
+    } else if (aspath?.includes("upload.asp")) {
+      returnData = "/uploadFile";
     } else {
       returnData = await redirect(aspath, null, null, "");
     }
