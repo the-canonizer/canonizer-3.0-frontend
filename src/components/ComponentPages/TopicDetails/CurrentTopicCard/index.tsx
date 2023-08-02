@@ -46,7 +46,7 @@ const CurrentTopicCard = ({ loadingIndicator, backGroundColorClass }) => {
           <>
             <h3>{K?.exceptionalMessages?.topicRecordHeading}</h3>
             {topicRecord?.in_review_changes > 0 ? (
-              <img src="/images/change-icon.svg" />
+              <img className="change-icon" src="/images/change-icon.svg" />
             ) : (
               ""
             )}
