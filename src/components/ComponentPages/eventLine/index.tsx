@@ -17,12 +17,7 @@ const TopicDetails = () => {
       <div className={styles.topicDetailContentWrap}>
         <TimelineInfoBar />
 
-        <aside
-          className={
-            styles.miniSide +
-            " leftSideBar miniSideBar topicPageNewLayoutSidebar"
-          }
-        >
+        <aside className={styles.miniSide + " leftSideBar miniSideBar"}>
           <SideBarTimeline timelineDescript={timelineDescript} />
         </aside>
 
