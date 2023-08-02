@@ -42,7 +42,16 @@ const CurrentTopicCard = ({ loadingIndicator, backGroundColorClass }) => {
     >
       <Panel
         className={`header-bg-color-change ${backGroundColorClass}`}
-        header={<h3>{K?.exceptionalMessages?.topicRecordHeading}</h3>}
+        header={
+          <>
+            <h3>{K?.exceptionalMessages?.topicRecordHeading}</h3>
+            {topicRecord?.in_review_changes > 0 ? (
+              <img src="/images/change-icon.svg" />
+            ) : (
+              ""
+            )}
+          </>
+        }
         key="1"
       >
         <Descriptions column={1} className={styles.descriptions}>

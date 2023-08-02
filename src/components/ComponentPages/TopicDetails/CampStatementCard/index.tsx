@@ -42,7 +42,16 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }) => {
       <Panel
         className={`campStatementPanel header-bg-color-change ${backGroundColorClass}`}
         disabled
-        header={<h3>{K?.exceptionalMessages?.campStatementHeading}</h3>}
+        header={
+          <>
+            <h3>{K?.exceptionalMessages?.campStatementHeading}</h3>
+            {campStatement[0]?.in_review_changes > 0 ? (
+              <img src="/images/change-icon.svg" />
+            ) : (
+              ""
+            )}
+          </>
+        }
         key="1"
         extra={
           campStatement?.length ? (

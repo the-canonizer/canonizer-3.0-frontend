@@ -82,9 +82,9 @@ export async function getServerSideProps({ req, res, resolvedUrl, query }) {
     camp_num: campNum,
     as_of: query?.asof ?? "default",
     as_of_date:
-      query?.asofdate == "default" || query?.asof == "review"
-        ? Date.now() / 1000
-        : formatTheDate(query?.asofdate * 1000, "DD-MM-YYYY H:mm:ss"),
+      query?.asofdate && query?.asof == "bydate"
+        ? formatTheDate(query?.asofdate * 1000, "DD-MM-YYYY H:mm:ss")
+        : Date.now() / 1000,
   };
 
   const reqBodyForCampData = {
