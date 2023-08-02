@@ -40,17 +40,6 @@ const TopicDetailsPage = ({
 }) => {
   const serverSideCall = useRef(serverCall || false);
   const dispatch = useDispatch();
-<<<<<<< HEAD
-  useEffect(() => {
-    dispatch(setNewsFeed(newsFeed));
-    dispatch(setCurrentTopicRecord(topicRecord));
-    dispatch(setCurrentCampRecord(campRecord));
-    dispatch(setCampStatement(campStatement));
-    dispatch(setHistory(statementHistory));
-    // dispatch(setCanonizedAlgorithms(canonizedAlgorithms));
-    dispatch(setTree([tree] || []));
-
-=======
 
   useEffect(() => {
     dispatch(setNewsFeed(newsFeed));
@@ -60,7 +49,6 @@ const TopicDetailsPage = ({
     dispatch(setHistory(statementHistory));
     // dispatch(setCanonizedAlgorithms(canonizedAlgorithms));
     dispatch(setTree([tree] || []));
->>>>>>> bd2dcf3f285014234e8b8ff2b5ff25c4563a0399
     dispatch(setCurrentDate(current_date));
   }, []);
 
