@@ -88,16 +88,16 @@ const CreateNewTopic = ({
         topic_name: res.data.topic_name,
       };
       dispatch(setCurrentTopic(data));
-      router?.push({
-        pathname: `/topic/${res.data.topic_num}-${replaceSpecialCharacters(
+      router?.push(
+        `/topic/${res.data.topic_num}-${replaceSpecialCharacters(
           res.data.topic_name,
           "-"
         )}/1-Agreement?score=${filterByScore}&algo=${filterObject?.algorithm}${
           filterObject?.asof == "bydate"
             ? "&asofdate=" + filterObject?.asofdate
             : ""
-        }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}`,
-      });
+        }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}`
+      );
 
       const oldOptions = [...options];
       await oldOptions.map((op) => {
