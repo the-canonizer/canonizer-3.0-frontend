@@ -418,8 +418,8 @@ function HistoryCollapse({
                         : submitUpdateRedirect(historyOf)
                     }
                     disabled={
-                      (historyOf == "camp" &&
-                        campHistoryItems?.at(0)?.is_archive == 1 &&
+                      campHistoryItems[0]?.status == "in_review" ||
+                      (campHistoryItems[0]?.is_archive == 1 &&
                         campStatement.status == "old") ||
                       (campHistoryItems?.at(0)?.is_archive == 1 &&
                         campHistoryItems?.at(0)?.status == "live" &&

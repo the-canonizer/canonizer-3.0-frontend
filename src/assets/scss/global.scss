@@ -2520,6 +2520,7 @@ div[role="option"]::before {
 .evntLineActivity {
   max-height: 400px;
   overflow-x: hidden;
+  height: auto!important;
 }
 
 .header-bg-color-change {
