@@ -122,7 +122,6 @@ function RemovedSupportList({ isTestData = [] }) {
   };
 
   const onNickNameChange = (id, option) => {
-    console.log("ksakdjshk", id, option);
     setSelectedNikname(id);
   };
 

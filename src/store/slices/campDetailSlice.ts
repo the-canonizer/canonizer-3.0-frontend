@@ -38,8 +38,6 @@ export const treeSlice = createSlice({
   },
   reducers: {
     setTree: (state, action) => {
-      console.log("[action.payload]", action.payload);
-
       state.tree = action.payload;
     },
     setNewsFeed: (state, action) => {
@@ -82,8 +80,6 @@ export const treeSlice = createSlice({
       state.topic_name = action.payload;
     },
     pushToCampHistory: (state, action) => {
-      console.log(state.history);
-
       state.history = {
         ...state.history,
         items: [...state?.history?.items, ...action.payload],
