@@ -213,7 +213,7 @@ const CampTree = ({
         );
         if (index !== -1) {
           sesionexpandkeys[index] = {
-            topic_id: tree?.at(0)["1"].topic_id,
+            topic_id: tree?.at(0)["1"]?.topic_id,
             sessionexpandsKeys: uniquekeyss,
           };
         } else {
