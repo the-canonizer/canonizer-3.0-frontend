@@ -34,15 +34,14 @@ export const getCanonizedTopicsApi = async (reqBody, loadMore = false) => {
 };
 
 export const getCanonizedNameSpacesApi = async (tc = "") => {
-  let token = tc;
-  if (!tc) {
-    const response = await createToken();
-    token = response?.access_token;
-  }
-
+  // let token = tc;
+  // if (!tc) {
+  //   const response = await createToken();
+  //   token = response?.access_token;
+  // }
   try {
     const nameSpaces = await NetworkCall.fetch(
-      HomePageRequests.getCanonizedNameSpaces(token)
+      HomePageRequests.getCanonizedNameSpaces(tc)
     );
     store.dispatch(setCanonizedNameSpaces(nameSpaces));
     return nameSpaces;
@@ -96,15 +95,15 @@ export const getCanonizedAlgorithmsApi = async (loginToken = null) => {
 };
 
 export const getCanonizedWhatsNewContentApi = async (tc = "") => {
-  let token = tc;
-  if (!tc) {
-    const response = await createToken();
-    token = response?.access_token;
-  }
+  // let token = tc;
+  // if (!tc) {
+  //   const response = await createToken();
+  //   token = response?.access_token;
+  // }
 
   try {
     const whatsNew = await NetworkCall.fetch(
-      HomePageRequests.getCanonizedWhatsNewContent(token)
+      HomePageRequests.getCanonizedWhatsNewContent(tc)
     );
     store.dispatch(setWhatsNewContent(whatsNew?.data));
     return whatsNew?.data;
