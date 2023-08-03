@@ -92,7 +92,6 @@ function HistoryContainer() {
         });
         setNickName(response?.data);
       }
-
       await getTreesApi(reqBodyForService);
       setLoadingIndicator(false);
     }
@@ -168,7 +167,6 @@ function HistoryContainer() {
         page: count.current,
       };
       let res = await getHistoryApi(reqBody, count.current, historyOf);
-
       if (!res || !res?.last_page) {
         setLoadMoreItems(false);
         setLoadingIndicator(false);
@@ -179,6 +177,7 @@ function HistoryContainer() {
       } else {
         count.current = count.current + 1;
       }
+
       setLoadingIndicator(false);
     } catch (error) {}
   };
@@ -270,38 +269,39 @@ function HistoryContainer() {
     );
   };
   let reqBody = {
-    topic_num: campHistory?.items[0]?.topic_num,
+    topic_num: campHistory?.items?.[0]?.topic_num,
     topic_id: null,
     topic_name: null,
     namespace_id: null,
     statement_id: null,
-    camp_num: campHistory?.items[0]?.camp_num,
-    nick_name: campHistory?.items[0]?.submitter_nick_id,
+    camp_num: campHistory?.items?.[0]?.camp_num,
+    nick_name: nickName?.[0]?.id,
     // nick_name_id:userNickNameData?.[0]?.n,
-    submitter: campHistory?.items[0]?.submitter_nick_id,
+    submitter: campHistory?.items?.[0]?.submitter_nick_id,
     statement: "", //JSON.stringify(convertToRaw(contentState)),//values?.statement?.blocks[0].text.trim(),
     //statement: values?.statement?.trim(), //JSON.stringify(convertToRaw(contentState)),//values?.statement?.blocks[0].text.trim(),
     event_type: "update",
     objection_reason: null,
     statement_update: null,
-    camp_id: campHistory?.items[0]?.id,
-    camp_name: campHistory?.items[0]?.camp_name,
-    key_words: campHistory?.items[0]?.key_words,
-    camp_about_url: campHistory?.items[0]?.camp_about_url,
+    camp_id: campHistory?.items?.[0]?.id,
+    camp_name: campHistory?.items?.[0]?.camp_name,
+    key_words: campHistory?.items?.[0]?.key_words,
+    camp_about_url: campHistory?.items?.[0]?.camp_about_url,
     camp_about_nick_id: null,
 
-    parent_camp_num: campHistory?.items[0]?.parent_camp_num,
+    parent_camp_num: campHistory?.items?.[0]?.parent_camp_num,
 
-    old_parent_camp_num: campHistory?.items[0]?.old_parent_camp_num,
+    old_parent_camp_num: campHistory?.items?.[0]?.old_parent_camp_num,
     is_disabled: 0,
     is_one_level: 0,
-
     is_archive: 0,
   };
-  const callManageCampApi = () => {
-    window.location.reload();
+  const callManageCampApi = async () => {
+    // window.location.reload()
     setLoadingIndicator(true);
+    count.current = 1;
     updateCampApi(reqBody);
+    await campStatementApiCall();
     setLoadingIndicator(false);
     // await commitChanges()
   };
@@ -364,7 +364,7 @@ function HistoryContainer() {
         isTopicHistoryPage={historyOf == "topic" ? true : false}
       />
       <div className={styles.btnGroup}>
-        <CreateNewTopicButton className={styles.createBtn} click={topicRoute} />
+        {/* <CreateNewTopicButton className={styles.createBtn} click={topicRoute} /> */}
 
         {historyOf !== "topic" &&
         currentCampNode?._isDisabled == 0 &&

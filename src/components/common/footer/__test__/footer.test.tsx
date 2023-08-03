@@ -66,7 +66,7 @@ describe("Footer", () => {
     });
 
     const createNewTopicLink = screen.getByRole("link", {
-      name: /Create New Topic/i,
+      name: /Create Topic/i,
     });
     const helpLink = screen.getByRole("link", {
       name: /Help/i,
@@ -117,7 +117,7 @@ describe("Footer", () => {
     );
     expect(blogLink).toBeInTheDocument();
     expect(jobsLink.getAttribute("href")).toBe(
-      "/topic/6-Canonizer-Jobs/1-Agreement"
+      "/topic/6-Canonizer-Jobs/1-Agreement?is_tree_open=1"
     );
     expect(termsAndServicesLink.getAttribute("href")).toBe(
       "/terms-and-services"

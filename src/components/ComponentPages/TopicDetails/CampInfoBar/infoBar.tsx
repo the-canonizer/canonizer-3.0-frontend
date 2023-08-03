@@ -143,13 +143,7 @@ const InfoBar = ({
     const topicName = topicRecord?.topic_name?.replaceAll(" ", "-");
     const campName = campRecord?.camp_name?.replaceAll(" ", "-");
     router?.push({
-      pathname: `/forum/${topicRecord?.topic_num}-${replaceSpecialCharacters(
-        topicName,
-        "-"
-      )}/${campRecord?.camp_num}-${replaceSpecialCharacters(
-        campName,
-        "-"
-      )}/threads`,
+      pathname: `/forum/${router?.query?.camp[0]}/${router?.query?.camp[1]}/threads`,
     });
   };
 
@@ -288,6 +282,33 @@ const InfoBar = ({
           </Link>
         )}
       </Menu.Item>
+      {/* {isCampBtnVisible &&
+      currentCampNode?._isDisabled == 0 &&
+      currentCampNode?.parentIsOneLevel == 0 &&
+      campRecord?.is_archive == 0 ? (
+        <Tooltip
+          title={
+            tree && !tree["1"]?.is_valid_as_of_time
+              ? K.exceptionalMessages.createNewCampTooltipMsg
+              : ""
+          }
+        >
+          <Menu.Item
+            icon={<i className="icon-camp"></i>}
+            className={styles.createCampBtn}
+            onClick={onCreateCamp}
+            disabled={
+              (tree && !tree["1"]?.is_valid_as_of_time) ||
+              (campExist && !campExist?.camp_exist)
+                ? true
+                : false
+            }
+            key="create-camp-btn"
+          >
+            Create New Camp
+          </Menu.Item>
+        </Tooltip>
+      ) : null} */}
       <Menu.Item icon={<i className="icon-camp"></i>}>
         {isTopicPage && (
           <Link
@@ -375,9 +396,9 @@ const InfoBar = ({
     </Menu>
   );
 
-  const campRoute = () => {
-    router?.push("/create/topic");
-  };
+  // const campRoute = () => {
+  //   router?.push("/create/topic");
+  // };
   useEffect(() => {
     if (router?.pathname.includes("/topic/")) {
       // setIsPanelCollapse(true);
@@ -395,9 +416,9 @@ const InfoBar = ({
             className={`${styles.topicDetailContentHead_Left} ${styles.rightPanel}`}
           >
             <div className="btnsWrap">
-              <Button size="large" className="mb-3 btn" onClick={campRoute}>
-                <i className="icon-topic"></i> Create New Topic
-              </Button>
+              {/* <Button size="large" className="mb-3 btn" onClick={campRoute}>
+                <i className="icon-topic"></i> Create Topic
+              </Button> */}
               {isCampBtnVisible &&
               currentCampNode?._isDisabled == 0 &&
               currentCampNode?.parentIsOneLevel == 0 &&

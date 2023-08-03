@@ -73,6 +73,7 @@ const SupportTreeCard = ({
     campRecord,
     filterData,
     algorithms,
+    totalScoreForSupportTree,
   } = useSelector((state: RootState) => ({
     currentGetCheckSupportExistsData:
       state.topicDetails.currentGetCheckSupportExistsData,
@@ -81,6 +82,7 @@ const SupportTreeCard = ({
     campRecord: state?.topicDetails?.currentCampRecord,
     filterData: state?.filters?.filterObject,
     algorithms: state.homePage?.algorithms,
+    totalScoreForSupportTree: state?.supportTreeCard?.totalScoreForSupportTree,
   }));
 
   const { isUserAuthenticated } = isAuth();
@@ -95,11 +97,10 @@ const SupportTreeCard = ({
 
   useEffect(() => {
     const filteredAlgo = algorithms?.filter(
-      (a: { algorithm_key: string }) =>
-        a.algorithm_key === filterData?.algorithm
+      (a: { algorithm_key: string }) => a.algorithm_key === router?.query?.algo
     );
     if (filteredAlgo?.length) setCurrentAlgo(filteredAlgo[0]?.algorithm_label);
-  }, [filterData]);
+  }, [algorithms, router?.query?.algo]);
 
   const dispatch = useDispatch();
   const arr = [];
@@ -233,9 +234,9 @@ const SupportTreeCard = ({
                       {isUserAuthenticated ? (
                         !userNickNameList.includes(data[item].nick_name_id) ? (
                           <Link
-                            href={
-                              manageSupportPath + `_${data[item].nick_name_id}`
-                            }
+                            href={{
+                              pathname: `/support/${topicRecord.topic_num}-${topicRecord.topic_name}/${topicRecord.camp_num}-${campRecord?.camp_name}_${data[item].nick_name_id}`,
+                            }}
                           >
                             {loggedInUserDelegate ||
                             (loggedInUserChild &&

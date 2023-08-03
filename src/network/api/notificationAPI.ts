@@ -8,11 +8,12 @@ import { store } from "src/store";
 export const getLists = async (
   page: number = 1,
   per_page: number = 5,
+  is_seen: number = 0,
   loginToken = null
 ) => {
   try {
     const res = await NetworkCall.fetch(
-      NotificationRequests.getNotification(page, per_page, loginToken),
+      NotificationRequests.getNotification(page, per_page, is_seen, loginToken),
       false
     );
 
@@ -23,7 +24,6 @@ export const getLists = async (
       };
       store.dispatch(setHeaderData(data));
     }
-
     return res;
   } catch (error) {
     handleError(error);
@@ -33,18 +33,24 @@ export const getLists = async (
 export const getNotificationsList = async (
   page: number = 1,
   per_page: number = 50,
-  loginToken = null
+  loginToken = null,
+  is_seen: number = 1
 ) => {
   try {
     const res = await NetworkCall.fetch(
-      NotificationRequests.getNotification(page, per_page, loginToken),
+      NotificationRequests.getNotification(page, per_page, is_seen, loginToken),
       false
     );
 
     if (res && res?.status_code == 200) {
       store.dispatch(setData(res?.data?.items));
+      store.dispatch(
+        setHeaderData({
+          count: res?.data?.unread_count,
+          list: res?.data?.items.slice(0, 5),
+        })
+      );
     }
-
     return res;
   } catch (error) {
     handleError(error);

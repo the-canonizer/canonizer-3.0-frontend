@@ -26,6 +26,7 @@ import {
 import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 import HeaderMenu from "../HeaderMenu";
 // import SearchSectionForHeader from "../../searchSection/searchForHeader";
+import TopicCreationBTN from "../TopicCreationBTN";
 
 const { Header } = Layout;
 
@@ -181,12 +182,14 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
               </Fragment>
             ) : null}
           </div>
+
           <div
             className={`${styles.right} ${!isLoginPage ? styles.onlogin : ""}`}
+            key="right-area"
           >
             {!isLoginPage ? (
-              <div className={styles.btnsLoginRegister}>
-                <div className="hdrUserdropdown">
+              <div className={styles.btnsLoginRegister} key="registerbtnarea">
+                <div className="hdrUserdropdown" key="hdrUserdropdown">
                   <Space size={40}>
                     <div className={styles.not_2}>
                       <Notifications />
@@ -224,7 +227,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
                   <Notifications />
                 </div>
               ) : null}
-              <Button size="middle" onClick={toggleMobNav}>
+              <Button size="middle" onClick={toggleMobNav} key="outnline-btn">
                 <MenuOutlined />
               </Button>
             </div>
@@ -232,6 +235,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
           <div
             className={`${styles.mobNavBG} ${isActive && styles.mobNavBGshow}`}
             onClick={toggleMobNav}
+            key="toggle-menu"
           ></div>
         </Header>
       </React.Fragment>

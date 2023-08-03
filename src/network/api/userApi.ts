@@ -300,7 +300,7 @@ export const UpdateUserProfileInfo = async (values: object) => {
 
       document.cookie =
         "loginToken=" +
-        res.data.auth?.access_token +
+        value?.data.auth?.access_token +
         "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
 
       store.dispatch(setLoggedInUser(payload));

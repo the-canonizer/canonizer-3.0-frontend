@@ -10,6 +10,7 @@ import { setCurrentCamp } from "../../../../store/slices/filtersSlice";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import ProgressBar from "@ramonak/react-progress-bar";
+import { setTotalCampScore } from "src/store/slices/supportTreeCard";
 
 const { TreeNode } = Tree;
 
@@ -20,21 +21,30 @@ const CampTree = ({
   treeExpandValue,
   prevTreeValueRef,
 }: any) => {
-  const { tree, filterByScore, review, is_checked, topicRecord } = useSelector(
-    (state: RootState) => ({
-      tree: state?.topicDetails?.tree,
-      filterByScore: state.filters?.filterObject?.filterByScore,
-      review: state?.filters?.filterObject?.asof,
-      is_checked: state?.utils?.score_checkbox,
-      topicRecord: state?.topicDetails?.currentTopicRecord,
-    })
-  );
+  const {
+    tree,
+    filterByScore,
+    review,
+    is_checked,
+    topicRecord,
+    filterObject,
+    viewThisVersion,
+  } = useSelector((state: RootState) => ({
+    tree: state?.topicDetails?.tree,
+    filterByScore: state.filters?.filterObject?.filterByScore,
+    review: state?.filters?.filterObject?.asof,
+    is_checked: state?.utils?.score_checkbox,
+    topicRecord: state?.topicDetails?.currentTopicRecord,
+    filterObject: state?.filters?.filterObject,
+    viewThisVersion: state?.filters?.viewThisVersionCheck,
+  }));
   const { is_camp_archive_checked } = useSelector((state: RootState) => ({
     is_camp_archive_checked: state?.utils?.archived_checkbox,
   }));
   const { campRecord } = useSelector((state: RootState) => ({
     campRecord: state?.topicDetails?.currentCampRecord,
   }));
+
   let childExpandTree = [];
   const [defaultExpandKeys, setDefaultExpandKeys] = useState([]);
   const [uniqueKeys, setUniqueKeys] = useState([]);
@@ -199,7 +209,7 @@ const CampTree = ({
       setUniqueKeys(uniquekeyss);
       if (tree?.at(0)) {
         let index = sesionexpandkeys.findIndex(
-          (item) => item.topic_id === tree?.at(0)["1"].topic_id
+          (item) => item.topic_id === tree?.at(0)["1"]?.topic_id
         );
         if (index !== -1) {
           sesionexpandkeys[index] = {
@@ -323,15 +333,22 @@ const CampTree = ({
                         }
                       >
                         <Link
-                          href={{
-                            pathname: includeReview
+                          href={`${
+                            includeReview
                               ? data[item]?.review_link?.replace(
                                   "#statement",
                                   ""
                                 )
-                              : data[item]?.link?.replace("#statement", ""),
-                            query: { filter: treeExpandValue },
-                          }}
+                              : data[item]?.link?.replace("#statement", "")
+                          }?filter=${treeExpandValue}?score=${filterByScore}&algo=${
+                            filterObject?.algorithm
+                          }${
+                            filterObject?.asof == "bydate"
+                              ? "&asofdate=" + filterObject?.asofdate
+                              : ""
+                          }&asof=${filterObject?.asof}&canon=${
+                            filterObject?.namespace_id
+                          }${viewThisVersion ? "&viewversion=1" : ""}`}
                         >
                           <a
                             className={
@@ -494,6 +511,8 @@ const CampTree = ({
     let uniqueArraytoString = uniqueArray.map(String);
     return uniqueArraytoString;
   };
+
+  console.log("[TREES]", tree, tree[0]);
 
   return tree?.at(0) ? (
     showTree && tree?.at(0)["1"]?.title != "" && defaultExpandKeys ? (
