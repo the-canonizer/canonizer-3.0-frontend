@@ -76,16 +76,16 @@ export const getRecentActivitiesApi = async (
   }
 };
 
-export const getCanonizedAlgorithmsApi = async (tc = "") => {
-  let token = tc;
-  if (!tc) {
-    const response = await createToken();
-    token = response?.access_token;
-  }
+export const getCanonizedAlgorithmsApi = async (loginToken = null) => {
+  // let token = tc;
+  // if (!tc) {
+  //   const response = await createToken();
+  //   token = response?.access_token;
+  // }
 
   try {
     const algorithms = await NetworkCall.fetch(
-      HomePageRequests.getCanonizedAlgorithms(token),
+      HomePageRequests.getCanonizedAlgorithms(loginToken),
       false
     );
     store.dispatch(setCanonizedAlgorithms(algorithms));
