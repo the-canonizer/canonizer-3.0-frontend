@@ -2,7 +2,9 @@ import { Fragment, useState, useEffect } from "react";
 import { Form, message } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
+import { RootState } from "../../../store";
 
 import {
   createCamp,
@@ -31,6 +33,10 @@ const CreateNewCamp = ({
   const [params, setParams] = useState({});
   const [options, setOptions] = useState([...messages.preventCampLabel]);
   const [isLoading, setIsLoading] = useState(false);
+  const { filterByScore, filterObject } = useSelector((state: RootState) => ({
+    filterByScore: state.filters?.filterObject?.filterByScore,
+    filterObject: state?.filters?.filterObject,
+  }));
 
   const router = useRouter();
   const [form] = Form.useForm();
@@ -154,11 +160,18 @@ const CreateNewCamp = ({
 
       const { camp } = router?.query;
 
-      router?.push({
-        pathname: `/topic/${replaceSpecialCharacters(camp[0], "-")}/${
+      router?.push(
+        `/topic/${replaceSpecialCharacters(camp[0], "-")}/${
           res?.data?.camp_num
-        }-${replaceSpecialCharacters(values.camp_name, "-")}`,
-      });
+        }-${replaceSpecialCharacters(
+          values.camp_name,
+          "-"
+        )}?score=${filterByScore}&algo=${filterObject?.algorithm}${
+          filterObject?.asof == "bydate"
+            ? "&asofdate=" + filterObject?.asofdate
+            : ""
+        }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}`
+      );
 
       const oldOptions = [...options];
       await oldOptions.map((op) => {
