@@ -8,13 +8,8 @@ import styles from "../siteHeader.module.scss";
 
 import Logo from "../logoHeader";
 import SearchSection from "../../searchSection";
-// import SearchSectionForHeader from "../../searchSection/searchForHeader";
 import LoginModal from "../../../ComponentPages/Login/loginModal";
-import RegistrationModal from "../../../ComponentPages/Registration/registrationModal";
-import {
-  showLoginModal,
-  showRegistrationModal,
-} from "../../../../store/slices/uiSlice";
+import { showLoginModal } from "../../../../store/slices/uiSlice";
 import ForgotModal from "../../../ComponentPages/ForgotPassword/forgotPasswordModal";
 import DisclaimerMsg from "../../disclaimer";
 import HeaderMenu from "../HeaderMenu";
@@ -32,9 +27,18 @@ const LoggedOutHeader = ({}: any) => {
     setActive(!isActive);
   };
 
-  const openLoginModal = () => dispatch(showLoginModal());
+  const openLoginModal = () => {
+    if (
+      router?.asPath?.includes("/login") ||
+      router?.asPath?.includes("/registration")
+    ) {
+      router.push("/login");
+    } else {
+      dispatch(showLoginModal());
+    }
+  };
 
-  const openRegistrationModal = () => dispatch(showRegistrationModal());
+  const openRegistrationModal = () => router.push("registration");
 
   return (
     <React.Fragment>
@@ -53,9 +57,6 @@ const LoggedOutHeader = ({}: any) => {
           </Button>
 
           <HeaderMenu loggedUser={null} />
-          {/* {typeof window !== "undefined" && window.innerWidth > 1024 && (
-            <SearchSectionForHeader />
-          )} */}
 
           <div className={styles.btnsLoginRegister}>
             <Button
@@ -111,7 +112,6 @@ const LoggedOutHeader = ({}: any) => {
       </div>
       <DisclaimerMsg />
       <LoginModal />
-      <RegistrationModal />
       <ForgotModal />
     </React.Fragment>
   );
