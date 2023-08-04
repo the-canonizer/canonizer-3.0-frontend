@@ -18,7 +18,7 @@ const Events = ({ timelineDescript }) => {
   };
   const urlPath = (id) => {
     let path = router?.asPath.replace("eventline", "topic");
-    let main = path.replace(path.split("/")[3], id);
+    let main = path?.replace(path.split("/")[3], id);
     return main;
   };
   const handleEvents = (goLiveTime, url) => {
@@ -53,7 +53,7 @@ const Events = ({ timelineDescript }) => {
             {timelineDescript &&
               timelineDescript.map((title, key) => {
                 return (
-                  <>
+                  <Fragment key={key}>
                     <List.Item
                       className={
                         activityStyle.activitiesList +
@@ -83,7 +83,7 @@ const Events = ({ timelineDescript }) => {
                         // className={styles.listItem}
                       />
                     </List.Item>
-                  </>
+                  </Fragment>
                 );
               })}
           </List>
