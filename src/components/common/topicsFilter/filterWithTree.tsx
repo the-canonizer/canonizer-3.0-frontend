@@ -17,6 +17,7 @@ import { RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsReviewCanonizedTopics } from "../../../store/slices/filtersSlice";
 import Link from "next/link";
+import { useCookies } from "react-cookie";
 
 import { setViewThisVersion } from "src/store/slices/filtersSlice";
 
@@ -111,6 +112,8 @@ const FilterWithTree = ({
   const campRoute = () => {
     router?.push("/create/topic");
   };
+
+  const [cookies, setCookie] = useCookies(["canAlgo", "asof", "asofDate"]);
 
   const {
     algorithms,
@@ -229,6 +232,9 @@ const FilterWithTree = ({
   }, []);
 
   const selectAlgorithm = (value) => {
+    setCookie("canAlgo", value, {
+      path: "/",
+    });
     dispatch(
       setFilterCanonizedTopics({
         algorithm: value,
@@ -265,6 +271,13 @@ const FilterWithTree = ({
       setDatePickerValue(datepicker);
       IsoDateFormat = Date.parse(datepicker) / 1000;
     }
+
+    setCookie("asofDate", JSON.stringify(IsoDateFormat), {
+      path: "/",
+    });
+    setCookie("asof", "bydate", {
+      path: "/",
+    });
 
     dispatch(
       setFilterCanonizedTopics({
@@ -305,6 +318,12 @@ const FilterWithTree = ({
                 second: moment().second(),
               })
             );
+            setCookie("asofDate", JSON.stringify(Date.parse(dateValue) / 1000), {
+              path: "/",
+            });
+            setCookie("asof", "bydate", {
+              path: "/",
+            });
       dispatch(
         setFilterCanonizedTopics({
           asofdate: Date.parse(dateValue) / 1000,
@@ -447,6 +466,9 @@ const FilterWithTree = ({
                         value={1}
                         onClick={() => {
                           dispatch(setViewThisVersion(false));
+                          setCookie("asof", "review", {
+                            path: "/",
+                          });
                           dispatch(
                             setIsReviewCanonizedTopics({
                               includeReview: true,
@@ -463,6 +485,9 @@ const FilterWithTree = ({
                         value={2}
                         onClick={() => {
                           dispatch(setViewThisVersion(false));
+                          setCookie("asof", "default", {
+                            path: "/",
+                          });
                           dispatch(
                             setFilterCanonizedTopics({
                               asofdate: Date.now() / 1000,
