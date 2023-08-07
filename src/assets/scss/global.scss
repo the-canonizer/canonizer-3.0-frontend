@@ -2616,6 +2616,8 @@ div[role="option"]::before {
     @media screen and (min-width: 768px) {
       min-width: 207px;
       margin-left: 15px;
+      max-width: 100%;
+      width: 100%;
     }
 
     @media screen and (max-width: 767px) {
