@@ -174,7 +174,7 @@ const CampTree = ({
     if (
       keyexistSession &&
       tree?.at(0) &&
-      treeExpandValue == prevTreeValueRef.current &&
+      treeExpandValue == prevTreeValueRef?.current &&
       keyexistSession?.sessionexpandsKeys?.includes(
         String(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1)
       )
@@ -199,7 +199,7 @@ const CampTree = ({
 
       let allkeys = ["1", ...selectedExpand, ...(expandKeys || [])];
       let uniquekeyss = toFindDuplicates(allkeys);
-      if (treeExpandValue == prevTreeValueRef.current) {
+      if (treeExpandValue == prevTreeValueRef?.current) {
         uniquekeyss = mergeArray(
           uniquekeyss,
           tree?.at(0)["1"]?.collapsedTreeCampIds
@@ -517,15 +517,9 @@ const CampTree = ({
       <>
         <Tree
           showLine={{ showLeafIcon: false }}
-          // defaultExpandedKeys={uniqueKeys}
           onSelect={onSelect}
-          // defaultSelectedKeys={uniqueKeys}
           onExpand={onExpand}
           expandedKeys={[...uniqueKeys]}
-          // autoExpandParent={autoExpandParent}
-          // selectedKeys={uniqueKeys}
-          // selectable={true}
-
           data-testid="camp-tree"
         >
           {tree?.at(0) && renderTreeNodes(tree?.at(0))}

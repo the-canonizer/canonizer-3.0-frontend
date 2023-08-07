@@ -21,22 +21,18 @@ const CreateNewTopic = ({
   testNamespace = [],
   testInitialValue = {},
 }) => {
-  const { filterByScore, filterObject, viewThisVersion } = useSelector(
-    (state: RootState) => ({
+  const { nameSpaces, filterByScore, filterObject, viewThisVersion } =
+    useSelector((state: RootState) => ({
       filterByScore: state.filters?.filterObject?.filterByScore,
       filterObject: state?.filters?.filterObject,
       viewThisVersion: state?.filters?.viewThisVersionCheck,
-    })
-  );
+      nameSpaces: state.homePage.nameSpaces || testNamespace,
+    }));
 
   const [nickNameList, setNickNameList] = useState(testNickName);
   const [initialValue, setInitialValues] = useState(testInitialValue);
   const [options, setOptions] = useState([...messages.preventCampLabel]);
   const [isLoading, setIsLoading] = useState(false);
-
-  const nameSpaces =
-    useSelector((state: RootState) => state.homePage.nameSpaces) ||
-    testNamespace;
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -95,9 +91,7 @@ const CreateNewTopic = ({
         `/topic/${res.data.topic_num}-${replaceSpecialCharacters(
           res.data.topic_name,
           "-"
-        )}/1-Agreement/?filter=${50}?score=${filterByScore}&algo=${
-          filterObject?.algorithm
-        }${
+        )}/1-Agreement/?score=${filterByScore}&algo=${filterObject?.algorithm}${
           filterObject?.asof == "bydate"
             ? "&asofdate=" + filterObject?.asofdate
             : ""

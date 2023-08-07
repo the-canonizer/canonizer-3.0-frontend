@@ -169,7 +169,7 @@ const CreateNewCamp = ({
         }-${replaceSpecialCharacters(
           values.camp_name,
           "-"
-        )}?filter=${50}?score=${filterByScore}&algo=${filterObject?.algorithm}${
+        )}?score=${filterByScore}&algo=${filterObject?.algorithm}${
           filterObject?.asof == "bydate"
             ? "&asofdate=" + filterObject?.asofdate
             : ""
@@ -217,7 +217,7 @@ const CreateNewCamp = ({
       )}/${replaceSpecialCharacters(
         camp[1],
         "-"
-      )}?filter=${50}?score=${filterByScore}&algo=${filterObject?.algorithm}${
+      )}?score=${filterByScore}&algo=${filterObject?.algorithm}${
         filterObject?.asof == "bydate"
           ? "&asofdate=" + filterObject?.asofdate
           : ""

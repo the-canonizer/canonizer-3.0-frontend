@@ -3,7 +3,6 @@ import App, { AppContext, AppInitialProps } from "next/app";
 import { Provider } from "react-redux";
 import scriptLoader from "react-async-script-loader";
 import { CookiesProvider } from "react-cookie";
-import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
 import "antd/dist/antd.css";
 import "react-quill/dist/quill.snow.css";
@@ -33,17 +32,7 @@ class WrappedApp extends App<AppInitialProps> {
                 componentName={Component.displayName || Component.name}
                 metaContent={meta}
               />
-              <GoogleReCaptchaProvider
-                reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-                scriptProps={{
-                  async: false,
-                  defer: false,
-                  appendTo: "head",
-                  nonce: undefined,
-                }}
-              >
-                <Component {...pageProps} />
-              </GoogleReCaptchaProvider>
+              <Component {...pageProps} />
             </ErrorBoundary>
           </Provider>
         </CookiesProvider>
