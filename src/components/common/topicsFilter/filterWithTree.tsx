@@ -318,12 +318,12 @@ const FilterWithTree = ({
                 second: moment().second(),
               })
             );
-            setCookie("asofDate", JSON.stringify(Date.parse(dateValue) / 1000), {
-              path: "/",
-            });
-            setCookie("asof", "bydate", {
-              path: "/",
-            });
+      setCookie("asofDate", JSON.stringify(Date.parse(dateValue) / 1000), {
+        path: "/",
+      });
+      setCookie("asof", "bydate", {
+        path: "/",
+      });
       dispatch(
         setFilterCanonizedTopics({
           asofdate: Date.parse(dateValue) / 1000,

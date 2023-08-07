@@ -161,7 +161,6 @@ const ManageSupportUI = ({
     if (isDropdownValid?.errorFields) {
       return;
     }
-    console.log("removeCampsApi-is-valid", isDropdownValid, formData);
     setGetManageSupportLoadingIndicator(true);
     const supportedCampsRemove = {
       topic_num: reqBodyData.topic_num,
@@ -194,7 +193,6 @@ const ManageSupportUI = ({
     if (isDropdownValid?.errorFields) {
       return;
     }
-    console.log("addRemoveApi-is-valid", isDropdownValid, formData);
     setGetManageSupportLoadingIndicator(true);
     const addSupportId = {
       topic_num: reqBodyData.topic_num,
@@ -275,7 +273,6 @@ const ManageSupportUI = ({
     // if (removeCampsSupport) {
     // submitNickNameSupportCamps(values);
     // } else {
-    // console.log(values);
     // removeCampsApi(values);
     // }
     // removeForm.resetFields();
@@ -288,7 +285,6 @@ const ManageSupportUI = ({
     if (isDropdownValid?.errorFields) {
       return;
     }
-    console.log("is-valid", isDropdownValid, formData);
     submitNickNameSupportCamps(formData);
   };
 

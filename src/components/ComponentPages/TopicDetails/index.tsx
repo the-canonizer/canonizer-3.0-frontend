@@ -462,7 +462,16 @@ const TopicDetails = ({ serverSideCall }) => {
                 getCheckSupportStatus={getCheckSupportStatus}
               />
             )}
-            <InfoBar onCreateCamp={onCreateCamp} isTopicPage={true} />
+            <InfoBar
+              onCreateCamp={onCreateCamp}
+              isTopicPage={true}
+              payload={{
+                topic_num: +router?.query?.camp[0]?.split("-")[0],
+                camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+              }}
+              isTopicHistoryPage={true}
+              getCheckSupportStatus={getCheckSupportStatus}
+            />
             {/* <CampTreeCard
                 getTreeLoadingIndicator={getTreeLoadingIndicator}
                 scrollToCampStatement={scrollToCampStatement}
