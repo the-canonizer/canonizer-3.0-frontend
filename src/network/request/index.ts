@@ -1,9 +1,10 @@
-import { getCookies } from "src/utils/generalUtility";
+import { getCookies, isServer } from "src/utils/generalUtility";
 import K from "../../constants";
 import { store } from "src/store";
 import { createToken } from "../api/userApi";
 
 export default class Request {
+  static counter = 0;
   url: string = "";
   method: string = "";
   body: any;
@@ -17,8 +18,7 @@ export default class Request {
     headers = {},
     token = null
   ) {
-    // const state = store.getState();
-    // const { auth } = state;
+    console.log('first', Request.counter)
     let bearerToken = "";
     const cc: any = getCookies();
     if (token) {
@@ -28,12 +28,13 @@ export default class Request {
       const cc: any = getCookies();
       if (cc?.loginToken) {
         bearerToken = cc.loginToken;
-      } else {
+      } else if(Request.counter === 0 ) {
+        Request.counter++;
         // create token
         (async () => {
-          // const res = await createToken();
-          // debugger;
-          // bearerToken = res?.data?.access_token;
+          const res = await createToken();
+          debugger;
+          bearerToken = res?.data?.access_token;
         })();
       }
     }
