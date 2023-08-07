@@ -2,24 +2,36 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { Card } from "antd";
 
-import GetStartedLayout from "../hoc/getStartedLayout";
+import Layout from "../hoc/layout";
 import Login from "../components/ComponentPages/Login";
 import useAuthentication from "../hooks/isUserAuthenticated";
 
 const LoginPage = () => {
   const router = useRouter();
   const { isUserAuthenticated } = useAuthentication();
+
   useEffect(() => {
     isUserAuthenticated && router?.push("/");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <GetStartedLayout initialProps={undefined} initialState={undefined}>
-      <Card bordered={false} className="login-container">
-        <Login isModal={false} />
-      </Card>
-    </GetStartedLayout>
+    <Layout initialProps={undefined} initialState={undefined}>
+      <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar"></aside>
+      <div className="pageContentWrap">
+        <Card
+          bordered={false}
+          className={`login-container ${
+            router?.asPath?.includes("/login") ||
+            router?.asPath?.includes("/registration")
+              ? "fill-width"
+              : ""
+          }`}
+        >
+          <Login isModal={false} />
+        </Card>
+      </div>
+    </Layout>
   );
 };
 

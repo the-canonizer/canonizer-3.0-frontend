@@ -116,6 +116,8 @@ const TopicDetails = ({ serverSideCall }) => {
       }
       setLoadingIndicator(true);
 
+      console.log(didMount, serverSideCall);
+
       if (didMount.current && !serverSideCall.current) {
         const reqBodyForService = {
           topic_num: +router?.query?.camp[0]?.split("-")[0],
@@ -158,6 +160,7 @@ const TopicDetails = ({ serverSideCall }) => {
         ]);
       } else if (serverSideCall.current) {
         serverSideCall.current = false;
+        didMount.current = true;
       } else {
         didMount.current = true;
       }
@@ -174,6 +177,7 @@ const TopicDetails = ({ serverSideCall }) => {
       setGetTreeLoadingIndicator(false);
       setLoadingIndicator(false);
     }
+
     getTreeApiCall();
   }, [asofdate, algorithm, +(router?.query?.camp[1]?.split("-")[0] ?? 1)]);
 
