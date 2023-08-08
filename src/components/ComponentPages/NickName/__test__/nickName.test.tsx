@@ -1,5 +1,6 @@
 import {
   fireEvent,
+  getByAltText,
   render,
   screen,
   waitFor,
@@ -58,6 +59,8 @@ jest.mock("next/router", () => ({
 
 jest.mock("src/network/api/userApi", () => ({
   getNickNameList: jest.fn(),
+  addNickName: jest.fn(),
+  updateNickName: jest.fn()
 }));
 
 describe("NickName page", () => {
@@ -318,3 +321,30 @@ describe("", () => {
     expect(result.current.pathname).toBe("/about");
   });
 });
+
+describe('Nickname test cases', () => {
+
+  it('addnickname function should be called while click on edit button', async () => {
+
+    const { getAllByText } = render(<NickName></NickName>)
+
+    waitFor(() => {
+      const edit_button = getAllByText("Add New Nickname")
+      fireEvent.click(edit_button[0])
+      expect(getAllByText("Add New Nickname")[1]).toBeInTheDocument()
+    })
+  })
+
+  it('add new neickname ', async () => {
+    const { getAllByTestId, getAllByText } = render(<NickName></NickName>)
+
+    await waitFor(async () => {
+      const edit_button = getAllByText("Add New Nickname")
+      fireEvent.click(edit_button[0])
+      const nickname_input = getAllByTestId("enterNickName")[0]
+      await userEvent.type(nickname_input, "nickname123");
+      const submit_button = getAllByTestId("submitButton")[0]
+      userEvent.click(submit_button)
+    })
+  })
+})
