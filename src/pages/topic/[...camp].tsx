@@ -72,7 +72,7 @@ export async function getServerSideProps({ req, res, resolvedUrl, query }) {
       query?.asofdate && query?.asof == "bydate"
         ? parseFloat(query?.asofdate)
         : Date.now() / 1000,
-    algorithm: query?.algo ?? "",
+    algorithm: query?.algo ?? "blind_popularity",
     update_all: 1,
     fetch_topic_history: query?.viewversion == "1" ? 1 : null,
   };

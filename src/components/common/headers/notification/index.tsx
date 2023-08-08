@@ -69,10 +69,7 @@ const Notifications = () => {
 
     if (st) {
       const registration = await navigator.serviceWorker.ready;
-      console.log(
-        "🚀 ~ file: index.tsx:71 ~ onSwitch ~ registration:",
-        registration
-      );
+
       const messaging = firebase.messaging();
 
       if ("serviceWorker" in navigator && "PushManager" in window) {

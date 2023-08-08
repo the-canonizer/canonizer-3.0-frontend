@@ -48,7 +48,6 @@ const Registration = ({ isModal, isTest = false }) => {
         return;
       }
       executeRecaptcha("registrationFormSubmit").then((gReCaptchaToken) => {
-        // console.log("🚀 ~ file: index.tsx:51 ~ executeRecaptcha ~ gReCaptchaToken:", gReCaptchaToken)
         onFinish(values, gReCaptchaToken);
       });
     },

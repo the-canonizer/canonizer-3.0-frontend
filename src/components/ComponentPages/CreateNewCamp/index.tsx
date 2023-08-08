@@ -2,7 +2,7 @@ import { Fragment, useState, useEffect } from "react";
 import { Form, message } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   createCamp,
@@ -17,6 +17,7 @@ import CreateNewCampUI from "./UI/CampUI";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import isAuth from "../../../hooks/isUserAuthenticated";
 import { setShowDrawer } from "src/store/slices/filtersSlice";
+import { RootState } from "src/store";
 
 const CreateNewCamp = ({
   nickNames = [],
@@ -24,6 +25,14 @@ const CreateNewCamp = ({
   campNickNames = [],
   initialValues = {},
 }) => {
+  const { filterByScore, filterObject, viewThisVersion } = useSelector(
+    (state: RootState) => ({
+      filterByScore: state.filters?.filterObject?.filterByScore,
+      filterObject: state?.filters?.filterObject,
+      viewThisVersion: state?.filters?.viewThisVersionCheck,
+    })
+  );
+
   const [nickNameList, setNickNameList] = useState(nickNames);
   const [initialValue, setInitialValues] = useState(initialValues);
   const [parentCamp, setParentCamps] = useState(parentCamps);
@@ -154,11 +163,20 @@ const CreateNewCamp = ({
 
       const { camp } = router?.query;
 
-      router?.push({
-        pathname: `/topic/${replaceSpecialCharacters(camp[0], "-")}/${
+      router?.push(
+        `/topic/${replaceSpecialCharacters(camp[0], "-")}/${
           res?.data?.camp_num
-        }-${replaceSpecialCharacters(values.camp_name, "-")}`,
-      });
+        }-${replaceSpecialCharacters(
+          values.camp_name,
+          "-"
+        )}?score=${filterByScore}&algo=${filterObject?.algorithm}${
+          filterObject?.asof == "bydate"
+            ? "&asofdate=" + filterObject?.asofdate
+            : ""
+        }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
+          viewThisVersion ? "&viewversion=1" : ""
+        }`
+      );
 
       const oldOptions = [...options];
       await oldOptions.map((op) => {
@@ -192,12 +210,21 @@ const CreateNewCamp = ({
 
   const onCancel = () => {
     const { camp } = router?.query;
-    router?.push({
-      pathname: `/topic/${replaceSpecialCharacters(
+    router?.push(
+      `/topic/${replaceSpecialCharacters(
         camp[0],
         "-"
-      )}/${replaceSpecialCharacters(camp[1], "-")}`,
-    });
+      )}/${replaceSpecialCharacters(
+        camp[1],
+        "-"
+      )}?score=${filterByScore}&algo=${filterObject?.algorithm}${
+        filterObject?.asof == "bydate"
+          ? "&asofdate=" + filterObject?.asofdate
+          : ""
+      }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
+        viewThisVersion ? "&viewversion=1" : ""
+      }`
+    );
   };
 
   // checkbox
