@@ -45,7 +45,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }) => {
         header={<h3>{K?.exceptionalMessages?.campStatementHeading}</h3>}
         key="1"
         extra={
-          campStatement?.length ? (
+          campStatement?.length && campStatement[0]?.go_live_time ? (
             <div className={styles.cardActions}>
               <span className="bold">Go live Time : </span>
               {campStatement?.length &&
