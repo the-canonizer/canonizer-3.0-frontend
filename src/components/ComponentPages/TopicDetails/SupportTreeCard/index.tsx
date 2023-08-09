@@ -97,10 +97,12 @@ const SupportTreeCard = ({
 
   useEffect(() => {
     const filteredAlgo = algorithms?.filter(
-      (a: { algorithm_key: string }) => a.algorithm_key === router?.query?.algo
+      (a: { algorithm_key: string }) =>
+        a.algorithm_key === (filterData?.algorithm || router?.query?.algo)
     );
+
     if (filteredAlgo?.length) setCurrentAlgo(filteredAlgo[0]?.algorithm_label);
-  }, [algorithms, router?.query?.algo]);
+  }, [algorithms, router?.query?.algo, filterData?.algorithm]);
 
   const dispatch = useDispatch();
   const arr = [];

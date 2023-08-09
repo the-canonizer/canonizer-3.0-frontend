@@ -288,7 +288,7 @@ export const nickNameRule = {
   ],
 };
 
-// create new topic
+// create topic
 export const nickNmRule = {
   rules: [
     {

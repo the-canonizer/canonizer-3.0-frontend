@@ -274,9 +274,10 @@ const InfoBar = ({
                 onClick={handleClickSupportCheck}
               >
                 {/* {K?.exceptionalMessages?.directJoinSupport} */}
-                {getCheckSupportStatus?.support_flag == 1
-                  ? K?.exceptionalMessages?.manageSupport
-                  : K?.exceptionalMessages?.directJoinSupport}
+                {getCheckSupportStatus?.is_delegator == 1 ||
+                getCheckSupportStatus?.support_flag != 1
+                  ? K?.exceptionalMessages?.directJoinSupport
+                  : K?.exceptionalMessages?.manageSupport}
               </div>
             </a>
           </Link>

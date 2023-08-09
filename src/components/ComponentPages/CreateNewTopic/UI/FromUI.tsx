@@ -26,7 +26,7 @@ const CreateTopicFromUI = ({
 }) => {
   const CardTitle = (
     <span className={styles.cardTitle} data-testid="head">
-      Create New Topic
+      Create Topic
     </span>
   );
 

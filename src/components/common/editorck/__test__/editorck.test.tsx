@@ -9,51 +9,52 @@ import userEvent from "@testing-library/user-event";
 
 const editorState = "";
 const onEditorStateChange = jest.fn();
+const editor_items = [
+  "heading",
+  "|",
+  "bold",
+  "italic",
+  "underline",
+  "strikethrough",
+  "superscript",
+  "subscript",
+  "|",
+  "numberedList",
+  "bulletedList",
+  "alignment",
+  "todoList",
+  "|",
+  "fontSize",
+  "fontColor",
+  "fontBackgroundColor",
+  "highlight",
+  "fontFamily",
+  "|",
+  "indent",
+  "outdent",
+  "|",
+  "link",
+  "autolink",
+  "imageInsert",
+  "blockQuote",
+  "insertTable",
+  "mediaEmbed",
+  "|",
+  "findAndReplace",
+  "horizontalLine",
+  "pageBreak",
+  "specialCharacters",
+  "|",
+  "undo",
+  "redo",
+]
 
 const editorConfiguration = {
   placeholder: "Write Your Statement Here",
   mediaEmbed: { previewsInData: true },
   toolbar: {
     shouldNotGroupWhenFull: true,
-    items: [
-      "heading",
-      "|",
-      "bold",
-      "italic",
-      "underline",
-      "strikethrough",
-      "superscript",
-      "subscript",
-      "|",
-      "numberedList",
-      "bulletedList",
-      "alignment",
-      "todoList",
-      "|",
-      "fontSize",
-      "fontColor",
-      "fontBackgroundColor",
-      "highlight",
-      "fontFamily",
-      "|",
-      "indent",
-      "outdent",
-      "|",
-      "link",
-      "autolink",
-      "imageInsert",
-      "blockQuote",
-      "insertTable",
-      "mediaEmbed",
-      "|",
-      "findAndReplace",
-      "horizontalLine",
-      "pageBreak",
-      "specialCharacters",
-      "|",
-      "undo",
-      "redo",
-    ],
+    items: editor_items
   },
   image: {
     toolbar: [
@@ -78,6 +79,9 @@ test("renders the <CKEditor> component", async () => {
       <Editorckl
         editorState={editorState}
         oneditorchange={onEditorStateChange}
+        placeholder="Write Your Statement Here"
+        items={editor_items}
+        height={200}
       ></Editorckl>
     </Provider>
   );

@@ -117,6 +117,8 @@ const TopicDetails = ({ serverSideCall }) => {
       }
       setLoadingIndicator(true);
 
+      console.log(didMount, serverSideCall);
+
       if (didMount.current && !serverSideCall.current) {
         const reqBodyForService = {
           topic_num: +router?.query?.camp[0]?.split("-")[0],
@@ -159,6 +161,7 @@ const TopicDetails = ({ serverSideCall }) => {
         ]);
       } else if (serverSideCall.current) {
         serverSideCall.current = false;
+        didMount.current = true;
       } else {
         didMount.current = true;
       }
@@ -173,6 +176,7 @@ const TopicDetails = ({ serverSideCall }) => {
       setGetTreeLoadingIndicator(false);
       setLoadingIndicator(false);
     }
+
     getTreeApiCall();
   }, [asofdate, algorithm, +(router?.query?.camp[1]?.split("-")[0] ?? 1)]);
 
@@ -458,7 +462,16 @@ const TopicDetails = ({ serverSideCall }) => {
                 getCheckSupportStatus={getCheckSupportStatus}
               />
             )}
-            <InfoBar onCreateCamp={onCreateCamp} isTopicPage={true} />
+            <InfoBar
+              onCreateCamp={onCreateCamp}
+              isTopicPage={true}
+              payload={{
+                topic_num: +router?.query?.camp[0]?.split("-")[0],
+                camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+              }}
+              isTopicHistoryPage={true}
+              getCheckSupportStatus={getCheckSupportStatus}
+            />
             {/* <CampTreeCard
                 getTreeLoadingIndicator={getTreeLoadingIndicator}
                 scrollToCampStatement={scrollToCampStatement}

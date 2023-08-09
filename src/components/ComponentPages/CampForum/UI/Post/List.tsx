@@ -81,7 +81,7 @@ const CreateCampFormUI = ({
         <div
           className={styles.htmlContainer + " ql-editor ql-html-editor"}
           dangerouslySetInnerHTML={{
-            __html: sanitizeHtml(content, {
+            __html: sanitizeHtml(`<div class="ck-content">${content}</div>`, {
               allowedAttributes: {
                 "*": [
                   "class",
