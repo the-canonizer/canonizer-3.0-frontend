@@ -61,7 +61,16 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }) => {
     >
       <Panel
         className={`header-bg-color-change ${backGroundColorClass}`}
-        header={<h3>{K?.exceptionalMessages?.campRecordHeading}</h3>}
+        header={
+          <>
+            <h3>{K?.exceptionalMessages?.campRecordHeading}</h3>
+            {campRecord?.in_review_changes > 0 ? (
+              <img className="change-icon" src="/images/change-icon.svg" />
+            ) : (
+              ""
+            )}
+          </>
+        }
         key="1"
       >
         <Descriptions column={1} className={styles.descriptions}>
