@@ -19,7 +19,6 @@ import { act } from "react-dom/test-utils";
 import { placeholders } from "src/messages/placeholder";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
 
-
 const { labels } = messages;
 const nickNameList = [
   {
@@ -633,30 +632,27 @@ describe("Manage support", () => {
   });
 });
 
-describe('', () => {
-
-  it('click on cancel button', () => {
-    const { getAllByText } = render(<ManageSupport></ManageSupport>)
-    const cancel_button = getAllByText("Cancel")[0]
+describe("", () => {
+  it("click on cancel button", () => {
+    const { getAllByText } = render(<ManageSupport></ManageSupport>);
+    const cancel_button = getAllByText("Cancel")[0];
     fireEvent.click(cancel_button);
-
-  })
-  it('click on Submit button', () => {
-    const { getAllByText } = render(<ManageSupport></ManageSupport>)
-    const cancel_button = getAllByText("Submit")[0]
+  });
+  it("click on Submit button", () => {
+    const { getAllByText } = render(<ManageSupport></ManageSupport>);
+    const cancel_button = getAllByText("Submit")[0];
     fireEvent.click(cancel_button);
-  })
+  });
 
-  it('click on clear all changes button', () => {
-    const { getAllByText } = render(<ManageSupport></ManageSupport>)
-    const clear_all_button = getAllByText("Clear all changes")[0]
-    fireEvent.click(clear_all_button)
-  })
+  it("click on clear all changes button", () => {
+    const { getAllByText } = render(<ManageSupport></ManageSupport>);
+    const clear_all_button = getAllByText("Clear all changes")[0];
+    fireEvent.click(clear_all_button);
+  });
 
-  it('click on remove all changes button', () => {
-    const { getAllByTestId } = render(<ManageSupport></ManageSupport>)
-    const remove_all_button = getAllByTestId("checkbox")[0]
-    fireEvent.click(remove_all_button)
-  })
-
-})
+  it("click on remove all changes button", () => {
+    const { getAllByTestId } = render(<ManageSupport></ManageSupport>);
+    const remove_all_button = getAllByTestId("checkbox")[0];
+    fireEvent.click(remove_all_button);
+  });
+});

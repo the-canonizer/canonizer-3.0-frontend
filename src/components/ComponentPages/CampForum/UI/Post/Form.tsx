@@ -10,9 +10,12 @@ import { showLoginModal } from "../../../../../store/slices/uiSlice";
 import CustomSkelton from "../../../../common/customSkelton";
 
 // const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
-const Editorckl = dynamic(() => import("src/components/common/editorck/index"), {
-  ssr: false,
-});
+const Editorckl = dynamic(
+  () => import("src/components/common/editorck/index"),
+  {
+    ssr: false,
+  }
+);
 
 const { Option } = Select;
 const { Text } = Typography;
@@ -77,8 +80,7 @@ const formats = [
   "|",
   "undo",
   "redo",
-]
-
+];
 
 const PostForm = ({
   onFinish,
