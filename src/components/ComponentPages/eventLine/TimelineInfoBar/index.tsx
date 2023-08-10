@@ -28,7 +28,7 @@ const CampInfoBar = () => {
               size="small"
               type={"text"}
               ghost
-              icon={<ArrowLeftOutlined />}
+              icon={<ArrowLeftOutlined  rev=""/>}
               onClick={() => {
                 dispatch(setTopicName(null));
                 router?.push(router?.asPath.replace("eventline", "topic"));
