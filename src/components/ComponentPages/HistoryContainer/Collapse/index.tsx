@@ -418,7 +418,9 @@ function HistoryCollapse({
                         : submitUpdateRedirect(historyOf)
                     }
                     disabled={
-                      (campHistoryItems[0]?.status == "in_review" && !commited && !!campHistoryItems[0]?.grace_period) ||
+                      (campHistoryItems?.at(0)?.status == "in_review" &&
+                        !commited &&
+                        !!campHistoryItems?.at(0)?.grace_period) ||
                       (campHistoryItems?.at(0)?.is_archive == 1 &&
                         campStatement.status == "old") ||
                       (campHistoryItems?.at(0)?.is_archive == 1 &&
