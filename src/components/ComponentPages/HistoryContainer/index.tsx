@@ -299,7 +299,9 @@ function HistoryContainer() {
   const callManageCampApi = async () => {
     // window.location.reload()
     setLoadingIndicator(true);
-    count.current = 1;
+    if( campHistory?.items?.length >= 3){
+      count.current =1
+    }
     updateCampApi(reqBody);
     await campStatementApiCall();
     setLoadingIndicator(false);

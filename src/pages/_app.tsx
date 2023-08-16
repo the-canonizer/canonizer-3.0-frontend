@@ -5,7 +5,6 @@ import scriptLoader from "react-async-script-loader";
 import { CookiesProvider } from "react-cookie";
 
 import "antd/dist/antd.css";
-import "react-quill/dist/quill.snow.css";
 
 import "../../styles/globals.scss";
 import "../../styles/variables.less";
