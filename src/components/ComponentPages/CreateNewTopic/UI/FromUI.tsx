@@ -157,6 +157,7 @@ const CreateTopicFromUI = ({
               size={"large"}
               className={`${styles.submit_btn}`}
               id="create-topic-btn"
+              data-testid="create-topic-btn"
             >
               Create Topic
             </Button>
