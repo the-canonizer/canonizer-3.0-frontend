@@ -235,7 +235,7 @@ const TopicsList = () => {
     nameSpaceId,
     filterByScore,
     inputSearch,
-    onlyMyTopicsCheck.current,
+    // onlyMyTopicsCheck.current,
     is_camp_archive_checked,
   ]);
   useEffect(() => {

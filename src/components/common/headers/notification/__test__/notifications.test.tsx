@@ -15,6 +15,7 @@ jest.mock("src/firebaseConfig/firebase", () => ({
 }));
 
 jest.mock("src/network/api/notificationAPI", () => ({
+  getLists:jest.fn(),
   updateFCMToken: jest.fn(),
 }));
 
