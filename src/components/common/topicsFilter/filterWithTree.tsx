@@ -127,7 +127,7 @@ const FilterWithTree = ({
     current_date_filter,
     campExist,
     filterObject,
-    viewThisVersion,
+    viewThisVersion,campScoreValue
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filteredScore: state?.filters?.filterObject?.filterByScore,
@@ -141,6 +141,7 @@ const FilterWithTree = ({
     campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
     filterObject: state?.filters?.filterObject,
     viewThisVersion: state?.filters?.viewThisVersionCheck,
+    campScoreValue: state?.filters?.campWithScoreValue,
   }));
   const { campRecord } = useSelector((state: RootState) => ({
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -183,7 +184,7 @@ const FilterWithTree = ({
             : ""
         }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
           viewThisVersion ? "&viewversion=1" : ""
-        }`;
+        }&filter=${campScoreValue}`;
         var newurl =
           window.location.protocol +
           "//" +

@@ -119,6 +119,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
     current_date_filter,
     campExist,
     viewThisVersion,
+    campScoreValue,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filteredScore: state?.filters?.filterObject?.filterByScore,
@@ -132,6 +133,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
     current_date_filter: state?.filters?.current_date,
     campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
     viewThisVersion: state?.filters?.viewThisVersionCheck,
+    campScoreValue: state?.filters?.campWithScoreValue,
   }));
   const { campRecord } = useSelector((state: RootState) => ({
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -173,7 +175,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
             : ""
         }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
           viewThisVersion ? "&viewversion=1" : ""
-        }`;
+        }&filter=${campScoreValue}`;
         var newurl =
           window.location.protocol +
           "//" +

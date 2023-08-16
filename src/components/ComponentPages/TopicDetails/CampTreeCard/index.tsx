@@ -13,7 +13,10 @@ import CustomSkelton from "../../../common/customSkelton";
 
 import { store } from "src/store";
 import { setTree } from "src/store/slices/campDetailSlice";
-import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
+import {
+  setCampWithScorevalue,
+  setFilterCanonizedTopics,
+} from "src/store/slices/filtersSlice";
 
 import { fallBackSrc } from "src/assets/data-images";
 
@@ -39,6 +42,37 @@ const addContent = (
   </>
 );
 
+const scoreOptions = [
+  {
+    value: "0",
+    label: "0%",
+  },
+  {
+    value: "10",
+    label: "10%",
+  },
+  {
+    value: "20",
+    label: "20%",
+  },
+  {
+    value: "50",
+    label: "50%",
+  },
+  {
+    value: "70",
+    label: "70%",
+  },
+  {
+    value: "80",
+    label: "80%",
+  },
+  {
+    value: "90",
+    label: "90%",
+  },
+];
+
 const CampTreeCard = ({
   getTreeLoadingIndicator,
   scrollToCampStatement,
@@ -46,25 +80,27 @@ const CampTreeCard = ({
   setSupportTreeForCamp,
   backGroundColorClass,
 }) => {
-  const { asof, asofdate } = useSelector((state: RootState) => ({
-    asofdate: state.filters?.filterObject?.asofdate,
-    asof: state?.filters?.filterObject?.asof,
-  }));
-  const { tree, is_admin } = useSelector((state: RootState) => ({
-    tree: state?.topicDetails?.tree?.at(0),
-
-    is_admin: state?.auth?.loggedInUser?.is_admin,
-  }));
+  const { asof, asofdate, campWithScore, tree } = useSelector(
+    (state: RootState) => ({
+      asofdate: state.filters?.filterObject?.asofdate,
+      asof: state?.filters?.filterObject?.asof,
+      campWithScore: state?.filters?.campWithScoreValue,
+      tree: state?.topicDetails?.tree?.at(0),
+    })
+  );
 
   const router = useRouter();
-  const { isUserAuthenticated } = useAuthentication();
-  const eventLinePath = router?.asPath.replace("topic", "eventline");
-  const [treeExpandValue, setTreeExpandValue] = useState<any>(
-    router?.query?.filter || 50
-  );
-  const didMount = useRef(false);
-  const prevTreeValueRef = useRef(router?.query?.filter || 50);
   const dispatch = useDispatch();
+
+  const didMount = useRef(false);
+
+  // const eventLinePath = router?.asPath.replace("topic", "eventline");
+  const [treeExpandValue, setTreeExpandValue] = useState<any>(campWithScore);
+
+  const prevTreeValueRef = useRef(campWithScore || 10);
+
+  useEffect(() => setTreeExpandValue(campWithScore), [campWithScore]);
+
   const onCreateTreeDate = () => {
     dispatch(
       setFilterCanonizedTopics({
@@ -75,7 +111,9 @@ const CampTreeCard = ({
       })
     );
   };
+
   const handleChange = (value) => {
+    console.log("🚀 ~ file: index.tsx:116 ~ handleChange ~ value:", value);
     router.push(
       {
         pathname: router.pathname,
@@ -84,8 +122,9 @@ const CampTreeCard = ({
       undefined,
       { shallow: true }
     );
-    setTreeExpandValue(value);
+    dispatch(setCampWithScorevalue(value));
   };
+
   useEffect(() => {
     if (didMount.current) {
       return () => {
@@ -93,6 +132,11 @@ const CampTreeCard = ({
       };
     } else didMount.current = true;
   }, []);
+
+  useEffect(() => {
+    if (router?.query?.filter)
+      dispatch(setCampWithScorevalue(router?.query?.filter));
+  }, [router?.query?.filter]);
 
   return (
     <>
@@ -178,41 +222,13 @@ const CampTreeCard = ({
                     {`Show camps with score`}
                     <RightOutlined className="rightOutlined" />
                   </Text>
+                  {console.log(treeExpandValue, " <<<<<<<<")}
                   <Select
-                    // value={treeExpandValue}
-                    defaultValue={`${router?.query?.filter || 50}%`}
+                    value={`${treeExpandValue}`}
+                    defaultValue={`${treeExpandValue}`}
                     style={{ width: 80 }}
                     onChange={handleChange}
-                    options={[
-                      {
-                        value: "0",
-                        label: "0%",
-                      },
-                      {
-                        value: "10",
-                        label: "10%",
-                      },
-                      {
-                        value: "20",
-                        label: "20%",
-                      },
-                      {
-                        value: "50",
-                        label: "50%",
-                      },
-                      {
-                        value: "70",
-                        label: "70%",
-                      },
-                      {
-                        value: "80",
-                        label: "80%",
-                      },
-                      {
-                        value: "90",
-                        label: "90%",
-                      },
-                    ]}
+                    options={scoreOptions}
                   />
                 </div>
               </>
