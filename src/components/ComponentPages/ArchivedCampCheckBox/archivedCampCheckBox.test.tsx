@@ -1,11 +1,11 @@
-// import { render, screen } from "../../../utils/testUtils";
+import { render, screen } from "../../../utils/testUtils";
 
-// import ArchivedCampCheckBox from ".";
+import ArchivedCampCheckBox from ".";
 
-// describe("Compare Statement page", () => {
-//   it("should render without crash", () => {
-//     render(<ArchivedCampCheckBox />);
+describe("Compare Statement page", () => {
+  it("should render without crash", () => {
+    render(<ArchivedCampCheckBox />);
 
-//     expect(screen.getByText("Show archived camps")).toBeInTheDocument();
-//   });
-// });
+    expect(screen.getByText("Show archived camps")).toBeInTheDocument();
+  });
+});
