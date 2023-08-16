@@ -42,7 +42,16 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }) => {
       <Panel
         className={`campStatementPanel header-bg-color-change ${backGroundColorClass}`}
         disabled
-        header={<h3>{K?.exceptionalMessages?.campStatementHeading}</h3>}
+        header={
+          <>
+            <h3>{K?.exceptionalMessages?.campStatementHeading}</h3>
+            {campStatement[0]?.in_review_changes > 0 ? (
+              <img className="change-icon" src="/images/change-icon.svg" />
+            ) : (
+              ""
+            )}
+          </>
+        }
         key="1"
         extra={
           campStatement?.length ? (
@@ -70,7 +79,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }) => {
 
         <div className="topicDetailsCollapseFooter">
           <CustomButton
-            disabled={campRecord.is_archive == 1 ? true : false}
+            disabled={campRecord?.is_archive == 1 ? true : false}
             className="btn-green"
             id="add-camp-statement-btn"
           >

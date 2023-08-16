@@ -1,5 +1,7 @@
 import { render, screen, waitFor } from "../../../../utils/testUtils";
 import userEvent from "@testing-library/user-event";
+import { Provider } from "react-redux";
+import { store } from "src/store";
 
 import CreateNewCamp from "..";
 import messages from "../../../../messages";
@@ -50,15 +52,17 @@ const campNickNamesList = [
   { id: 22, nick_name: "Rahul -Singh919" },
 ];
 
-describe("Create New Topic page", () => {
+describe("Create Topic page", () => {
   it("render heading and labels", () => {
     render(
-      <CreateNewCamp
-        nickNames={nickNamesList}
-        parentCamps={parentCampsList}
-        campNickNames={campNickNamesList}
-        initialValues={initialValues}
-      />
+      <Provider store={store}>
+        <CreateNewCamp
+          nickNames={nickNamesList}
+          parentCamps={parentCampsList}
+          campNickNames={campNickNamesList}
+          initialValues={initialValues}
+        />
+      </Provider>
     );
 
     waitFor(async () => {
@@ -76,12 +80,14 @@ describe("Create New Topic page", () => {
 
   it("render inputs field and submit button", () => {
     render(
-      <CreateNewCamp
-        nickNames={nickNamesList}
-        parentCamps={parentCampsList}
-        campNickNames={campNickNamesList}
-        initialValues={initialValues}
-      />
+      <Provider store={store}>
+        <CreateNewCamp
+          nickNames={nickNamesList}
+          parentCamps={parentCampsList}
+          campNickNames={campNickNamesList}
+          initialValues={initialValues}
+        />
+      </Provider>
     );
 
     waitFor(async () => {
@@ -108,12 +114,14 @@ describe("Create New Topic page", () => {
 
   it("blank form should not be submit", async () => {
     render(
-      <CreateNewCamp
-        nickNames={nickNamesList}
-        parentCamps={parentCampsList}
-        campNickNames={campNickNamesList}
-        initialValues={initialValues}
-      />
+      <Provider store={store}>
+        <CreateNewCamp
+          nickNames={nickNamesList}
+          parentCamps={parentCampsList}
+          campNickNames={campNickNamesList}
+          initialValues={initialValues}
+        />
+      </Provider>
     );
     const btnEl = screen.getByTestId("btn");
 

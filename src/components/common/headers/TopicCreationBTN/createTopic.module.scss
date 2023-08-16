@@ -1,0 +1,24 @@
+.topicBTN {
+  background-color: inherit;
+  button {
+    margin-bottom: 0 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    font-size: 14px;
+    font-weight: 600;
+    color: #0f2a4d;
+    border: solid 1px #d9d9d9;
+    flex-flow: row;
+    padding: 6px 10px;
+    i {
+      font-size: 1.1875rem;
+      color: var(--primary);
+      margin-right: 8px;
+    }
+  }
+  @media screen and (max-width: 767px) {
+    padding: 15px 15px 0;
+  }
+}

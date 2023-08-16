@@ -3,7 +3,6 @@ import App, { AppContext, AppInitialProps } from "next/app";
 import { Provider } from "react-redux";
 import scriptLoader from "react-async-script-loader";
 import { CookiesProvider } from "react-cookie";
-import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
 import "antd/dist/antd.css";
 import "react-quill/dist/quill.snow.css";
@@ -33,17 +32,7 @@ class WrappedApp extends App<AppInitialProps> {
                 componentName={Component.displayName || Component.name}
                 metaContent={meta}
               />
-              <GoogleReCaptchaProvider
-                reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-                scriptProps={{
-                  async: false,
-                  defer: false,
-                  appendTo: "head",
-                  nonce: undefined,
-                }}
-              >
-                <Component {...pageProps} />
-              </GoogleReCaptchaProvider>
+              <Component {...pageProps} />
             </ErrorBoundary>
           </Provider>
         </CookiesProvider>
@@ -129,6 +118,7 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
    * /statement.asp/2/2
    * /stmt.asp/2/2
    * /[anything].asp/dadsa
+   * /secure/upload.asp
    *
    */
 
@@ -267,6 +257,8 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
       returnData = "/login";
     } else if (aspath?.includes("signup.asp")) {
       returnData = "/registration";
+    } else if (aspath?.includes("upload.asp")) {
+      returnData = "/uploadFile";
     } else {
       returnData = await redirect(aspath, null, null, "");
     }
@@ -282,6 +274,7 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
 
 const googleAPIKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
 //export default wrapper.withRedux(MyApp);
-export default scriptLoader([
-  `https://maps.googleapis.com/maps/api/js?key=${googleAPIKey}&libraries=places`,
-])(wrapper.withRedux(WrappedApp));
+// export default scriptLoader([
+//   `https://maps.googleapis.com/maps/api/js?key=${googleAPIKey}&libraries=places`,
+// ])
+export default wrapper.withRedux(WrappedApp);

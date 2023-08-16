@@ -14,13 +14,21 @@
     "find:unused": "next-unused"
   },
   "next-unused": {
-   "alias": {},
-   "debug": true,
-   "include": ["src"],
-   "exclude": ["__test__", "__tests__"],
-   "entrypoints": ["src/pages"]
- },
+    "alias": {},
+    "debug": true,
+    "include": [
+      "src"
+    ],
+    "exclude": [
+      "__test__",
+      "__tests__"
+    ],
+    "entrypoints": [
+      "src/pages"
+    ]
+  },
   "dependencies": {
+    "@ant-design/icons": "4.8.0",
     "@babel/core": "^7.22.1",
     "@babel/preset-env": "^7.22.4",
     "@ckeditor/ckeditor5-react": "^6.1.0",
@@ -71,7 +79,8 @@
     "react-redux": "^7.2.6",
     "react-usestateref": "^1.0.8",
     "redux": "4.0.5",
-    "redux-persist": "^6.0.0",    
+    "redux-persist": "^6.0.0",
+    "redux-thunk": "^2.4.2",
     "sanitize-html": "^2.7.0",
     "sass": "^1.44.0"
   },

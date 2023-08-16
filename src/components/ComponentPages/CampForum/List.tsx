@@ -1,5 +1,6 @@
 import ThreadListUI from "./UI/ThreadListUI";
 import ThreadSidebar from "./UI/sidebar";
+import CampInfoBar from "../TopicDetails/CampInfoBar";
 
 const Threads = ({
   onSearch,
@@ -13,10 +14,12 @@ const Threads = ({
   onEditClick,
   paramsList,
   isLoading,
+  payload,
 }) => (
   <div className="d-flex">
     <ThreadSidebar />
     <div className="pageContentWrap">
+      <CampInfoBar payload={payload} />
       <ThreadListUI
         onSearch={onSearch}
         onChange={onChange}

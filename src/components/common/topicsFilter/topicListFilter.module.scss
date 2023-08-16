@@ -10,6 +10,11 @@
     font-weight: 400;
     color: #343434;
     font-size: 14px;
+    .algoInfoIcon {
+      color: #d1d4db;
+      font-size: 16px;
+      cursor: pointer;
+    }
   }
   .algoSelect {
     width: 100%;
@@ -194,6 +199,9 @@
     font-size: 14px;
     color: #1c1b24;
   }
+  @media screen and (max-width:767px){
+    margin-right: 0;
+  }
 }
 
 .infoText,
@@ -251,7 +259,7 @@
         [class*="ant-space ant-space-horizontal"] {
           flex-wrap: wrap;
           // flex-flow: column;
-          [class="ant-space-item"]{
+          [class="ant-space-item"] {
             width: 100%;
           }
         }

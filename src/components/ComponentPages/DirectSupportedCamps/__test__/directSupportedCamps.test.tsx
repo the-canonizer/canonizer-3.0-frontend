@@ -218,89 +218,89 @@ jest.mock("src/network/api/topicAPI", () => ({
   ),
 }));
 
-  describe("direct supported camps", () => {
-    // it("render a value when write in search box", async() => {
-    //   render(<DirectSupportedCamps search={"dir"} />);
-    //  await waitFor(() => {
-    //     // expect(screen.getAllByText("For topic").length).toEqual(2);
-    //     expect(screen.getByTestId("save_change_btn")).toBeInTheDocument();
-    //     fireEvent.click(screen.getByTestId("save_change_btn"));
-    //   });
-    // });
+describe("direct supported camps", () => {
+  // it("render a value when write in search box", async() => {
+  //   render(<DirectSupportedCamps search={"dir"} />);
+  //  await waitFor(() => {
+  //     // expect(screen.getAllByText("For topic").length).toEqual(2);
+  //     expect(screen.getByTestId("save_change_btn")).toBeInTheDocument();
+  //     fireEvent.click(screen.getByTestId("save_change_btn"));
+  //   });
+  // });
 
-    // it("click on remove support button and open modal", () => {
-    //   render(<DirectSupportedCamps search={"dir"} />);
-    //   waitFor(async () => {
-    //     const btns = screen.getAllByText("Remove Support");
+  // it("click on remove support button and open modal", () => {
+  //   render(<DirectSupportedCamps search={"dir"} />);
+  //   waitFor(async () => {
+  //     const btns = screen.getAllByText("Remove Support");
 
-    //     userEvent.click(btns[0]);
+  //     userEvent.click(btns[0]);
 
-    //     expect(
-    //       screen.getByText(directSupportedCampsList[0].title)
-    //     ).toBeInTheDocument();
-    //     expect(screen.getByText("Remove")).toBeInTheDocument();
-    //     expect(screen.getByText("Cancel")).toBeInTheDocument();
-    //   });
-    // });
+  //     expect(
+  //       screen.getByText(directSupportedCampsList[0].title)
+  //     ).toBeInTheDocument();
+  //     expect(screen.getByText("Remove")).toBeInTheDocument();
+  //     expect(screen.getByText("Cancel")).toBeInTheDocument();
+  //   });
+  // });
 
-    it("render direct Supported Camps is clicked/active", async() => {
-      render(<DirectSupportedCamps search={"dir"} />);
-     await waitFor(() => {
-        // expect(
-        //   screen.getAllByText(labels.fortopic)[1] as HTMLLabelElement
-        // ).toBeInTheDocument();
-        // expect(
-        //   screen.getAllByText(labels.removeSupport)[1] as HTMLLabelElement
-        // ).toBeInTheDocument();
-        expect(screen.getAllByTestId("handle_close")[0]).toBeInTheDocument();
+  it("render direct Supported Camps is clicked/active", async () => {
+    render(<DirectSupportedCamps search={"dir"} />);
+    await waitFor(() => {
+      // expect(
+      //   screen.getAllByText(labels.fortopic)[1] as HTMLLabelElement
+      // ).toBeInTheDocument();
+      // expect(
+      //   screen.getAllByText(labels.removeSupport)[1] as HTMLLabelElement
+      // ).toBeInTheDocument();
+      expect(screen.getAllByTestId("handle_close")[0]).toBeInTheDocument();
       fireEvent.click(screen.getAllByTestId("handle_close")[0]);
       expect(screen.getAllByTestId("handle_close")[0]).toBeInTheDocument();
       fireEvent.click(screen.getAllByTestId("handle_close")[0]);
-      });
     });
   });
-  it("render useState is working ", () => {
-    render(<DirectSupportedCamps search={"dir"} />);
-    const TestComponent = () => {
-      const [isActive, setIsActive] = useState(false);
+});
+it("render useState is working ", () => {
+  render(<DirectSupportedCamps search={"dir"} />);
+  const TestComponent = () => {
+    const [isActive, setIsActive] = useState(false);
 
-      const toggleActive = () => {
-        setIsActive(!isActive);
-      };
-
-      return (
-        <div>
-          <p>{isActive ? "Active" : "Inactive"}</p>
-          <button onClick={toggleActive}>Toggle</button>
-        </div>
-      );
+    const toggleActive = () => {
+      setIsActive(!isActive);
     };
 
-    const { getByText } = render(<TestComponent />);
+    return (
+      <div>
+        <p>{isActive ? "Active" : "Inactive"}</p>
+        <button onClick={toggleActive}>Toggle</button>
+      </div>
+    );
+  };
 
-    const statusElement = getByText("Inactive");
-    const toggleButton = getByText("Toggle");
+  const { getByText } = render(<TestComponent />);
 
-    expect(statusElement.textContent).toBe("Inactive");
+  const statusElement = getByText("Inactive");
+  const toggleButton = getByText("Toggle");
 
-    fireEvent.click(toggleButton);
+  expect(statusElement.textContent).toBe("Inactive");
 
-    expect(statusElement.textContent).toBe("Active");
+  fireEvent.click(toggleButton);
 
-    fireEvent.click(toggleButton);
+  expect(statusElement.textContent).toBe("Active");
 
-    expect(statusElement.textContent).toBe("Inactive");
-  });
+  fireEvent.click(toggleButton);
 
-  it("path is working with use router", () => {
-    render(<DirectSupportedCamps search={"dir"} />);
-    const mockedRouter = {
-      pathname: "/about",
-    };
-    // Setting up the mocked useRouter implementation
-    useRouter.mockImplementation(() => mockedRouter);
+  expect(statusElement.textContent).toBe("Inactive");
+});
 
-    const { result } = renderHook(() => useRouter());
+it("path is working with use router", () => {
+  render(<DirectSupportedCamps search={"dir"} />);
+  const mockedRouter = {
+    pathname: "/about",
+  };
+  // Setting up the mocked useRouter implementation
+  useRouter.mockImplementation(() => mockedRouter);
 
-    expect(result.current.pathname).toBe("/about");
-  });
+  const { result } = renderHook(() => useRouter());
+
+  expect(result.current.pathname).toBe("/about");
+});

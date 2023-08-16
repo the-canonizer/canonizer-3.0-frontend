@@ -25,7 +25,6 @@ export default function GenerateModal({ topic_num, camp_num }) {
   };
 
   useEffect(() => {
-    console.log(window?.location);
     setPath(window?.location?.origin);
   }, []);
 
@@ -35,7 +34,6 @@ export default function GenerateModal({ topic_num, camp_num }) {
         "script_for_generate_tree"
       )! as any;
 
-      console.log(copyText.innerText);
       if (navigator.clipboard) {
         navigator.clipboard
           .writeText(copyText.innerText)
