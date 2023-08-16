@@ -58,7 +58,8 @@ const LoginUi = ({
     e.preventDefault();
     if (isModal) {
       closeModal();
-      openRegistration();
+      router?.push("/registration");
+      // openRegistration();
     } else {
       router?.push("/registration");
     }
