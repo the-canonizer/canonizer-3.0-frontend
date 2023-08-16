@@ -7,9 +7,6 @@ import { CloseCircleOutlined } from "@ant-design/icons";
 import { RootState } from "src/store";
 import TopicsFilter from "../../../common/topicsFilter";
 import TopicsFilterWithDrawer from "../../../common/topicsFilter/filterWithTree";
-import CampRecentActivities from "../CampRecentActivities";
-import NewsFeedsCard from "../../TopicDetails/NewsFeedsCard";
-import useAuthentication from "src/hooks/isUserAuthenticated";
 import { setShowDrawer } from "src/store/slices/filtersSlice";
 
 export default function HomeSideBar({
@@ -19,13 +16,17 @@ export default function HomeSideBar({
   setTotalCampScoreForSupportTree,
   setSupportTreeForCamp,
   backGroundColorClass,
+  viewThisVersion,
 }: any) {
-  const { drawerShow } = useSelector((state: RootState) => ({
-    drawerShow: state?.filters?.showDrawer,
-  }));
-  const { isUserAuthenticated } = useAuthentication();
+  const { drawerShow, filterObject, filterByScore } = useSelector(
+    (state: RootState) => ({
+      drawerShow: state?.filters?.showDrawer,
+      filterObject: state?.filters?.filterObject,
+      filterByScore: state.filters?.filterObject?.filterByScore,
+      viewThisVersion: state?.filters?.viewThisVersionCheck,
+    })
+  );
 
-  const [isAuth, setIsAuth] = useState(isUserAuthenticated);
   const [drawerIsVisible, setDrawerIsVisible] = useState(drawerShow);
 
   const router = useRouter();
@@ -33,19 +34,45 @@ export default function HomeSideBar({
 
   useEffect(() => setDrawerIsVisible(drawerShow), [drawerShow]);
 
-  const { newsFeed } = useSelector((state: RootState) => ({
-    newsFeed: state?.topicDetails?.newsFeed,
-  }));
-
   const showDrawer = () => {
+    router.push(
+      `/topic/${router?.query?.camp[0]}/${
+        router?.query?.camp[1]
+      }?score=${filterByScore}&algo=${filterObject?.algorithm}${
+        filterObject?.asof == "bydate"
+          ? "&asofdate=" + filterObject?.asofdate
+          : ""
+      }&asof=${filterObject?.asof}&canon=${
+        filterObject?.namespace_id
+      }&is_tree_open=1${viewThisVersion ? "&viewversion=1" : ""}`,
+      null,
+      {
+        shallow: true,
+      }
+    );
+
     dispatch(setShowDrawer(true));
   };
 
   const onClose = () => {
+    router.push(
+      `/topic/${router?.query?.camp[0]}/${
+        router?.query?.camp[1]
+      }?score=${filterByScore}&algo=${filterObject?.algorithm}${
+        filterObject?.asof == "bydate"
+          ? "&asofdate=" + filterObject?.asofdate
+          : ""
+      }&asof=${filterObject?.asof}&canon=${
+        filterObject?.namespace_id
+      }&is_tree_open=0${viewThisVersion ? "&viewversion=1" : ""}`,
+      null,
+      {
+        shallow: true,
+      }
+    );
+
     dispatch(setShowDrawer(false));
   };
-
-  useEffect(() => setIsAuth(isUserAuthenticated), [isUserAuthenticated]);
 
   return (
     <Fragment>
@@ -59,7 +86,12 @@ export default function HomeSideBar({
             onClick={showDrawer}
             className="btnFilter drawerBtn"
           >
-            Consensus Tree
+            Consensus Tree{" "}
+            <p className="arrow">
+              <span></span>
+              <span></span>
+              <span></span>
+            </p>
           </Button>
           <Drawer
             title="Consensus Tree"
@@ -68,10 +100,10 @@ export default function HomeSideBar({
             visible={drawerIsVisible}
             className={`treeDrawer ${backGroundColorClass}`}
             closeIcon={<CloseCircleOutlined />}
-            // width={720}
             height={"auto"}
             size="large"
             bodyStyle={{ paddingBottom: 80 }}
+            forceRender
           >
             <TopicsFilterWithDrawer
               onCreateCamp={onCreateCamp}
@@ -84,15 +116,6 @@ export default function HomeSideBar({
           </Drawer>
         </Fragment>
       )}
-      {typeof window !== "undefined" &&
-        window.innerWidth > 767 &&
-        router?.asPath.includes("topic") &&
-        isAuth && (
-          <Fragment>
-            {<CampRecentActivities />}
-            {!!newsFeed?.length && <NewsFeedsCard newsFeed={newsFeed} />}
-          </Fragment>
-        )}
     </Fragment>
   );
 }

@@ -61,7 +61,7 @@ const CreateCampFormUI = ({
                     className="linkCss"
                     id={"post-edit-icon" + post.id}
                   >
-                    <EditOutlined />
+                    <EditOutlined/>
                   </a>
                 </Tooltip>
                 <Popconfirm
@@ -81,7 +81,7 @@ const CreateCampFormUI = ({
         <div
           className={styles.htmlContainer + " ql-editor ql-html-editor"}
           dangerouslySetInnerHTML={{
-            __html: sanitizeHtml(content, {
+            __html: sanitizeHtml(`<div class="ck-content">${content}</div>`, {
               allowedAttributes: {
                 "*": [
                   "class",

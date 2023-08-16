@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import moment from "moment";
 import {
   Typography,
@@ -17,6 +17,7 @@ import { RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsReviewCanonizedTopics } from "../../../store/slices/filtersSlice";
 import Link from "next/link";
+import { useCookies } from "react-cookie";
 
 import { setViewThisVersion } from "src/store/slices/filtersSlice";
 
@@ -33,7 +34,7 @@ import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 import FullScoreCheckbox from "../../ComponentPages/FullScoreCheckbox";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import ArchivedCampCheckBox from "src/components/ComponentPages/ArchivedCampCheckBox";
-import CampTreeCard from "@/components/ComponentPages/TopicDetails/CampTreeCard";
+import CampTreeCard from "src/components/ComponentPages/TopicDetails/CampTreeCard";
 
 const infoContent = (
   <>
@@ -112,6 +113,8 @@ const FilterWithTree = ({
     router?.push("/create/topic");
   };
 
+  const [cookies, setCookie] = useCookies(["canAlgo", "asof", "asofDate"]);
+
   const {
     algorithms,
     filteredScore,
@@ -123,6 +126,8 @@ const FilterWithTree = ({
     loading,
     current_date_filter,
     campExist,
+    filterObject,
+    viewThisVersion,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filteredScore: state?.filters?.filterObject?.filterByScore,
@@ -134,6 +139,8 @@ const FilterWithTree = ({
     loading: state?.loading?.loading,
     current_date_filter: state?.filters?.current_date,
     campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
+    filterObject: state?.filters?.filterObject,
+    viewThisVersion: state?.filters?.viewThisVersionCheck,
   }));
   const { campRecord } = useSelector((state: RootState) => ({
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -143,28 +150,62 @@ const FilterWithTree = ({
   );
   const [selectedAsOFDate, setSelectedAsOFDate] = useState(filteredAsOfDate);
   const [timer, setTimer] = useState(null);
-  const [inputValue, setInputValue] = useState(filteredScore);
+  const [inputValue, setInputValue] = useState(
+    router.query.score || filteredScore
+  );
   const [isLoading, setIsLoading] = useState(loading);
+  const didMount = useRef(false);
 
   // /////////////////////////////////////////////////////////////////////////
   // Discussion required on this functionality after that I will remove or //
   //                        uncomment bellow code                         //
   // //////////////////////////////////////////////////////////////////////
 
-  // useEffect(() => {
-  //   if (didMount.current) {
-  //     if (history.pushState) {
-  //       const queryParams = `?filter=${filterObject?.filterByScore}&algorithm=${filterObject?.algorithm}&asofdate=${filterObject?.asofdate}&canon=${filterObject?.namespace_id}`;
-  //       var newurl =
-  //         window.location.protocol +
-  //         "//" +
-  //         window.location.host +
-  //         window.location.pathname +
-  //         queryParams;
-  //       window.history.pushState({ path: newurl }, "", newurl);
-  //     }
-  //   } else didMount.current = true;
-  // }, [filterObject]);
+  function removeEmptyValues(obj) {
+    const result = {};
+    for (const key in obj) {
+      const value = obj[key];
+
+      if (value && value != "undefined") {
+        result[key] = value;
+      }
+    }
+    return result;
+  }
+  useEffect(() => {
+    if (didMount.current) {
+      if (history.pushState) {
+        const queryParams = `?score=${filterObject?.filterByScore}&algo=${
+          filterObject?.algorithm
+        }${
+          filterObject?.asof == "bydate"
+            ? "&asofdate=" + filterObject?.asofdate
+            : ""
+        }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
+          viewThisVersion ? "&viewversion=1" : ""
+        }`;
+        var newurl =
+          window.location.protocol +
+          "//" +
+          window.location.host +
+          window.location.pathname +
+          queryParams;
+        window.history.pushState({ path: newurl }, "", newurl);
+      }
+    } else {
+      let newObject = removeEmptyValues({
+        filterByScore: router.query.score || `${filteredScore}` || "0",
+        asofdate: router.query.asofdate || filterObject?.asofdate,
+        asof: router.query.asof || filterObject?.asof || "default",
+        algorithm:
+          router.query.algo || filterObject?.algorithm || "blind_popularity",
+        namespace_id: +router.query.canon,
+      });
+
+      dispatch(setFilterCanonizedTopics(newObject));
+      didMount.current = true;
+    }
+  }, [filterObject]);
 
   useEffect(() => {
     setIsLoading(loading);
@@ -191,6 +232,9 @@ const FilterWithTree = ({
   }, []);
 
   const selectAlgorithm = (value) => {
+    setCookie("canAlgo", value, {
+      path: "/",
+    });
     dispatch(
       setFilterCanonizedTopics({
         algorithm: value,
@@ -227,6 +271,13 @@ const FilterWithTree = ({
       setDatePickerValue(datepicker);
       IsoDateFormat = Date.parse(datepicker) / 1000;
     }
+
+    setCookie("asofDate", JSON.stringify(IsoDateFormat), {
+      path: "/",
+    });
+    setCookie("asof", "bydate", {
+      path: "/",
+    });
 
     dispatch(
       setFilterCanonizedTopics({
@@ -267,6 +318,12 @@ const FilterWithTree = ({
                 second: moment().second(),
               })
             );
+      setCookie("asofDate", JSON.stringify(Date.parse(dateValue) / 1000), {
+        path: "/",
+      });
+      setCookie("asof", "bydate", {
+        path: "/",
+      });
       dispatch(
         setFilterCanonizedTopics({
           asofdate: Date.parse(dateValue) / 1000,
@@ -305,7 +362,11 @@ const FilterWithTree = ({
                 <div className={styles.algo_title}>
                   <Title level={5} className={styles.algoText}>
                     Canonizer Algorithm:{"  "}
-                    <Popover content="Algorithm Information" placement="top">
+                    <Popover
+                      content="Algorithm Information"
+                      placement="top"
+                      className={styles.algoInfoIcon}
+                    >
                       {router?.asPath.includes("/topic") ? (
                         <a href={K?.Network?.URL?.algoInfoUrl}>
                           <i className="icon-info"></i>
@@ -405,6 +466,9 @@ const FilterWithTree = ({
                         value={1}
                         onClick={() => {
                           dispatch(setViewThisVersion(false));
+                          setCookie("asof", "review", {
+                            path: "/",
+                          });
                           dispatch(
                             setIsReviewCanonizedTopics({
                               includeReview: true,
@@ -421,6 +485,9 @@ const FilterWithTree = ({
                         value={2}
                         onClick={() => {
                           dispatch(setViewThisVersion(false));
+                          setCookie("asof", "default", {
+                            path: "/",
+                          });
                           dispatch(
                             setFilterCanonizedTopics({
                               asofdate: Date.now() / 1000,

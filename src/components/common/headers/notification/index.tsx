@@ -22,6 +22,7 @@ import { firebaseCloudMessaging } from "src/firebaseConfig/firebase";
 import Lists from "src/components/ComponentPages/Notifications/UI/List";
 import { updateFCMToken } from "src/network/api/notificationAPI";
 import { RootState } from "src/store";
+import { getLists } from "../../../../network/api/notificationAPI";
 
 import Fav from "./icon";
 
@@ -67,14 +68,17 @@ const Notifications = () => {
     event.stopPropagation();
 
     if (st) {
+      const registration = await navigator.serviceWorker.ready;
+
       const messaging = firebase.messaging();
+
       if ("serviceWorker" in navigator && "PushManager" in window) {
         try {
           const status = await Notification.requestPermission();
-
           if (status === "granted") {
             const fcm_token = await messaging.getToken({
               vapidKey: process.env.NEXT_PUBLIC_FCM_CERTIFICATE_KEY,
+              serviceWorkerRegistration: registration,
             });
 
             if (fcm_token) {
@@ -183,6 +187,12 @@ const Notifications = () => {
     </Card>
   );
 
+  const getNotofications = async (e) => {
+    if (e) {
+      await getLists(1, 5, 1);
+    }
+  };
+
   return (
     <Fragment>
       <Dropdown
@@ -191,6 +201,7 @@ const Notifications = () => {
         dropdownRender={() => notificationDropdown}
         trigger={["click"]}
         placement="bottomRight"
+        onOpenChange={getNotofications}
       >
         <Badge
           count={count}

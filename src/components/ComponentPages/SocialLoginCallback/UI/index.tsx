@@ -12,7 +12,7 @@ const { Panel } = Collapse;
 function SocialLoginCallback() {
   return (
     <Fragment>
-      <aside className="leftSideBar miniSideBar">
+      <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar">
         <div className="leftSideBar_Card">
           <div className="btnsWrap">
             <CustomSkelton

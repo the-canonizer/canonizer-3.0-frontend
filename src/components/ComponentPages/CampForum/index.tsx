@@ -301,20 +301,21 @@ const ForumComponent = ({
     const topicArr = (queries?.topic as string)?.split("-");
     const topic_num = topicArr?.shift();
     const type = queries["by"] as string;
-    if (didMountList.current) {
-      let timer = 0;
+    // if (didMountList.current) {
 
-      if (timer) {
-        clearTimeout(timer);
-        timer = 0;
-      }
-      timer = window.setTimeout(async () => {
-        getThreads(camp_num, topic_num, type, page, searchQuery);
-      }, 800);
-    } else {
-      didMountList.current = true;
-      setLoading(false);
+    let timer = 0;
+
+    if (timer) {
+      clearTimeout(timer);
+      timer = 0;
     }
+    timer = window.setTimeout(async () => {
+      getThreads(camp_num, topic_num, type, page, searchQuery);
+    }, 800);
+    // } else {
+    //   didMountList.current = true;
+    //   setLoading(false);
+    // }
 
     if (
       router?.pathname === "/forum/[topic]/[camp]/threads/create" ||
@@ -324,7 +325,7 @@ const ForumComponent = ({
       fetchNickNameList(topic_num);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router?.query, page, searchQuery, isLoggedIn]);
+  }, [router, page, searchQuery, isLoggedIn]);
 
   const onCancelCreateThread = () => {
     const queries = router?.query;
@@ -554,7 +555,7 @@ const ForumComponent = ({
 
   return (
     <Fragment data-testid="forum-component">
-      <CampInfoBar payload={payload} />
+      {/* <CampInfoBar payload={payload} /> */}
       {router?.pathname === "/forum/[topic]/[camp]/threads" ? (
         <ForumUIList
           onSearch={onSearch}
@@ -568,6 +569,7 @@ const ForumComponent = ({
           filterThread={filterThread}
           paramsList={paramsList}
           isLoading={loading}
+          payload={payload}
         />
       ) : null}
       {router?.pathname === "/forum/[topic]/[camp]/threads/create" ? (
@@ -579,6 +581,7 @@ const ForumComponent = ({
           form={form}
           initialValue={initialValue}
           isLoading={loading}
+          payload={payload}
         />
       ) : null}
       {router?.pathname === "/forum/[topic]/[camp]/threads/edit/[tId]" ? (
@@ -590,6 +593,7 @@ const ForumComponent = ({
           form={form}
           initialValue={initialValue}
           isLoading={loading}
+          payload={payload}
         />
       ) : null}
       {router?.pathname === "/forum/[topic]/[camp]/threads/[id]" ? (
@@ -613,6 +617,7 @@ const ForumComponent = ({
           isLoading={postLoading}
           postperPage={postperPage}
           threadDetailsLoading={threadDetailsLoading}
+          payload={payload}
         />
       ) : null}
     </Fragment>

@@ -15,7 +15,7 @@ const CreateNewTopicUI = ({
 }) => {
   return (
     <Fragment>
-      <aside className="leftSideBar miniSideBar bg-white">
+      <aside className="leftSideBar miniSideBar bg-white topicPageNewLayoutSidebar">
         <Sidebar isShowBtn={false} />
       </aside>
       <div className="pageContentWrap">

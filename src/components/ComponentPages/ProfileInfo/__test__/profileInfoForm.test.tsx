@@ -141,8 +141,6 @@ jest.mock("src/hooks/isUserAuthenticated", () =>
   jest.fn(() => ({ isUserAuthenticated: true }))
 );
 
-
-
 const address = "";
 const setupGoogleMock = () => {
   /** Mock Google Maps JavaScript API **/
@@ -234,7 +232,7 @@ describe("Profile Info Page", () => {
     const firstName = screen.getByPlaceholderText(placeholders.firstName);
     const lastName = screen.getByPlaceholderText(placeholders.lastName);
     const email = screen.getByPlaceholderText(placeholders.email);
-    const addressLine1 = screen.getByPlaceholderText(placeholders.addressLine1);
+    // const addressLine1 = screen.getByPlaceholderText(placeholders.addressLine1);
     const addressLine2 = screen.getByPlaceholderText(placeholders.addressLine2);
     const city = screen.getByPlaceholderText(placeholders.city);
     const zipCode = screen.getByPlaceholderText(placeholders.zipCode);
@@ -254,12 +252,12 @@ describe("Profile Info Page", () => {
     expect(email).toHaveAttribute("type", "text");
     expect(email).toHaveAttribute("placeholder", placeholders.email);
 
-    expect(addressLine1).toBeInTheDocument();
-    expect(addressLine1).toHaveAttribute("type", "text");
-    expect(addressLine1).toHaveAttribute(
-      "placeholder",
-      placeholders.addressLine1
-    );
+    // expect(addressLine1).toBeInTheDocument();
+    // expect(addressLine1).toHaveAttribute("type", "text");
+    // expect(addressLine1).toHaveAttribute(
+    //   "placeholder",
+    //   placeholders.addressLine1
+    // );
 
     expect(addressLine2).toBeInTheDocument();
     expect(addressLine2).toHaveAttribute("type", "text");

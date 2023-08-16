@@ -200,7 +200,9 @@ export default function DirectSupportedCampsUI({
                                     <a
                                       className={styles.Bluecolor}
                                       draggable="false"
-                                      href="javascript:;"
+                                      onClick={() => {
+                                        return false;
+                                      }}
                                     >
                                       {" "}
                                       {tag.camp_name}
@@ -240,7 +242,6 @@ export default function DirectSupportedCampsUI({
                             </Button>
                             <Button
                               data-testid="save_change_btn"
-
                               id="revertBtn"
                               className={styles.revert_Btn}
                               onClick={() => {

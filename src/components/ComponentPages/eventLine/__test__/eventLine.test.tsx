@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { useRouter } from "next/router";
 import TopicDetails from "../index";
 import { Provider } from "react-redux";
@@ -38,7 +38,10 @@ describe("TopicDetails component", () => {
         <TopicDetails />
       </Provider>
     );
-
-    expect(getByText("Canonizer Sorted Camp Race")).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        name: /consensus tree race/i,
+      })
+    ).toBeInTheDocument();
   });
 });
