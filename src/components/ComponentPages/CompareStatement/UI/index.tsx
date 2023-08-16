@@ -81,7 +81,7 @@ function CompareStatementUI({
                 type="primary"
                 onClick={getBackUrl}
               >
-                <ArrowLeftOutlined rev=""/>
+                <ArrowLeftOutlined />
               </Button>
               <Title level={4}>
                 {from === "topic"

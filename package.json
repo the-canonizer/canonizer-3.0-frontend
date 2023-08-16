@@ -28,6 +28,7 @@
     ]
   },
   "dependencies": {
+    "@ant-design/icons": "4.8.0",
     "@babel/core": "^7.22.1",
     "@babel/preset-env": "^7.22.4",
     "@ckeditor/ckeditor5-react": "^6.1.0",

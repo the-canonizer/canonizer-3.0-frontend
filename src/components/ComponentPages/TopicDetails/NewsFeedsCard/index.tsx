@@ -246,7 +246,7 @@ const NewsFeedsCard = ({ newsFeed }: any) => {
                             )
                           }
                         >
-                          <EditOutlined rev=""/>
+                          <EditOutlined/>
                         </Button>
                         // </Tooltip>
                       )}

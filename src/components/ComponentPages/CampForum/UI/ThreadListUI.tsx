@@ -241,7 +241,7 @@ const ThreadListUI = ({
                             onClick={(e) => onEditClick(e, others)}
                             className="linkCss"
                           >
-                            <EditOutlined rev="" />
+                            <EditOutlined/>
                           </a>
                         </Tooltip>
                       ) : null}
