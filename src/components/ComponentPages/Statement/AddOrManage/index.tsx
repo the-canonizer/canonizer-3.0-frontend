@@ -49,9 +49,6 @@ import {
   emojiValidation,
   changeSlashToArrow,
 } from "src/utils/generalUtility";
-// import { EditorState, convertToRaw, ContentState } from "draft-js";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import draftToHtml from "draftjs-to-html";
 
 //Ckeditor
 const Editorckl = dynamic(() => import("../../../common/editorck"), {
@@ -137,12 +134,7 @@ export default function AddOrManage({ add }: any) {
   let objection = router?.query?.statement?.at(0)?.split("-")[1] == "objection";
   let update = router?.query?.statement?.at(0)?.split("-")[1] == "update";
   let manageFormOf = router?.asPath.split("/")[2];
-  // let editorTextLength;
-  // if (typeof editorState === 'object') {
-  //   editorTextLength = 0
-  // } else {
   let editorTextLength = editorState.replace(/<(?!img\b)[^\s<>]*>/, "").length;
-  // }
 
   const onFinish = async (values: any) => {
     setScreenLoading(true);
@@ -191,9 +183,7 @@ export default function AddOrManage({ add }: any) {
   };
 
   const addOrManageStatement = async (values) => {
-    // const blocks = draftToHtml(convertToRaw(editorState.getCurrentContent()));
     const blocks = editorState;
-    // const contentState = editorState.getCurrentContent();
     let editInfo = editStatementData?.data;
     let parent_camp = editInfo?.parent_camp;
     let reqBody = {
@@ -225,7 +215,6 @@ export default function AddOrManage({ add }: any) {
         ? editInfo?.topic?.submitter_nick_id
         : editInfo?.statement?.submitter_nick_id,
       statement: blocks, //JSON.stringify(convertToRaw(contentState)),//values?.statement?.blocks[0].text.trim(),
-      //statement: values?.statement?.trim(), //JSON.stringify(convertToRaw(contentState)),//values?.statement?.blocks[0].text.trim(),
       event_type: add
         ? "create"
         : update
@@ -338,7 +327,6 @@ export default function AddOrManage({ add }: any) {
           if (res && res.status_code == 200) {
             setEditCampStatementData(res.data.statement.note);
           }
-          //if(isJSON(res.data.statement.parsed_value))setEditorState(EditorState.createWithContent(convertFromRaw(JSON.parse(res.data.statement.parsed_value))));
           if (
             !res.data.statement.parsed_value?.startsWith("<p>") &&
             !res.data.statement.parsed_value?.startsWith("<div>")

@@ -9,45 +9,14 @@ import { showLoginModal } from "../../../../../store/slices/uiSlice";
 
 import CustomSkelton from "../../../../common/customSkelton";
 
-// const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
-const Editorckl = dynamic(
-  () => import("src/components/common/editorck/index"),
-  {
-    ssr: false,
-  }
-);
+const Editorckl = dynamic(() => import("src/components/common/editorck/index"), {
+  ssr: false,
+});
 
 const { Option } = Select;
 const { Text } = Typography;
 
 const { labels, placeholders, nickNmRule, validations } = messages;
-
-// const modules = {
-//   /*
-//    * Quill editor toolbars
-//    * See https://quilljs.com/docs/modules/toolbar/
-//    */
-//   toolbar: [
-//     [{ header: [1, 2, 3, 4, 5, 6, false] }, { font: [] }],
-//     [{ size: ["small", false, "large", "huge"] }],
-//     ["bold", "italic", "underline", "strike", "blockquote"],
-//     [{ color: [] }, { background: [] }],
-//     [
-//       { list: "ordered" },
-//       { list: "bullet" },
-//       { indent: "-1" },
-//       { indent: "+1" },
-//     ],
-//     ["link"],
-//     ["clean"],
-//   ],
-//   clipboard: { matchVisual: false },
-// };
-
-// /*
-//  * Quill editor formats
-//  * See https://quilljs.com/docs/formats/
-//  */
 
 const formats = [
   "heading",
@@ -137,14 +106,6 @@ const PostForm = ({
             )}
             {isLog ? (
               <div className={styles.editorQuill}>
-                {/* <ReactQuill
-                  modules={modules}
-                  formats={formats}
-                  onChange={onContentChange}
-                  value={quillContent}
-                  theme="snow"
-                  placeholder="Post Your Message Here..."
-                /> */}
                 <Editorckl
                   editorState={quillContent}
                   oneditorchange={onContentChange}
