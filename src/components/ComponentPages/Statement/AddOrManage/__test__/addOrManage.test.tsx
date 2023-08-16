@@ -11,6 +11,8 @@ import AddOrManage from "../index";
 import { Provider } from "react-redux";
 import { store } from "src/store";
 
+import configureMockStore from "redux-mock-store";
+
 import { NextRouter } from "next/router";
 import { RouterContext } from "next/dist/shared/lib/router-context";
 
@@ -29,7 +31,9 @@ function createMockRouter(router: Partial<NextRouter>): NextRouter {
     basePath: "",
     pathname: "/",
     route: "/",
-    query: {},
+    query: {
+      statement: ["2966-test-case", "1-Agreement"],
+    },
     asPath: "/",
     back: jest.fn(),
     beforePopState: jest.fn(),
@@ -53,6 +57,25 @@ function createMockRouter(router: Partial<NextRouter>): NextRouter {
 }
 
 afterEach(cleanup);
+const mockStore = configureMockStore();
+const store1 = mockStore({
+  auth: {
+    authenticated: true,
+    loggedInUser: {
+      is_admin: true,
+    },
+  },
+  topicDetails: {
+    currentCampRecord: {},
+  },
+  filters: {
+    filterObject: {},
+  },
+  forum: {
+    currentThread: null,
+    currentPost: null,
+  },
+});
 
 // Mock the API functions used in the component
 jest.mock("../../../../../network/api/campDetailApi", () => ({
@@ -68,6 +91,7 @@ jest.mock("../../../../../network/api/campDetailApi", () => ({
   getCurrentTopicRecordApi: jest.fn(() =>
     Promise.resolve({ status_code: 200, data: {} })
   ),
+  getCampBreadCrumbApi: jest.fn(() => Promise.resolve({ status_code: 200 })),
 }));
 jest.mock("../../../../../network/api/campManageStatementApi", () => ({
   getEditStatementApi: jest.fn(() =>
@@ -93,9 +117,15 @@ describe("AddOrManage component", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.mock("../../../../../network/api/campDetailApi", () => ({
+      getCurrentTopicRecordApi: jest.fn(() =>
+        Promise.resolve({ status_code: 200, data: {} })
+      ),
       getAllUsedNickNames: jest.fn(() => Promise.resolve({ status_code: 200 })),
       getAllParentsCamp: jest.fn(() => Promise.resolve({ status_code: 200 })),
       getAllCampNickNames: jest.fn(() => Promise.resolve({ status_code: 200 })),
+      getCampBreadCrumbApi: jest.fn(() =>
+        Promise.resolve({ status_code: 200 })
+      ),
     }));
     jest.mock("../../../../../network/api/campManageStatementApi", () => ({
       getEditStatementApi: jest.fn(() => Promise.resolve({ status_code: 200 })),
@@ -135,41 +165,45 @@ describe("AddOrManage component", () => {
   });
   it("Render without crash", async () => {
     const { container } = await render(
-      <Provider store={store}>
+      <Provider store={store1}>
         <RouterContext.Provider
-          value={createMockRouter({ asPath: "/manage/statement/3267" })}
+          value={createMockRouter({
+            asPath: "/create/statement/2966-test-case/1-Agreement",
+          })}
         >
-          <AddOrManage add={false} />
+          <AddOrManage add={true} />
         </RouterContext.Provider>
       </Provider>
     );
-    waitFor(() => {
-      const mainHeading = screen.getByText(/statement update/i);
+    await waitFor(() => {
+      const mainHeading = screen.getByText(/add camp statement/i);
       const submitButton = screen.getByRole("button", {
-        name: /submit update/i,
+        name: /submit statement/i,
       });
-      const previewButton = screen.getByRole("button", {
-        name: /preview/i,
-      });
-      const createNewTopicButton = screen.getByRole("button", {
-        name: /create topic/i,
+      const cancelButton = screen.getByRole("button", {
+        name: /cancel/i,
       });
 
       expect(screen.getByText(/nickname/i)).toBeInTheDocument();
       expect(screen.getAllByText(/statement/i)[1]).toBeInTheDocument();
 
+      expect(screen.getByText(/edit summary/i).textContent).toBe(
+        "Edit Summary (Briefly describe your changes)"
+      );
       expect(
         screen.getByText(/\(briefly describe your changes\)/i)
       ).toBeInTheDocument();
-      expect(container.getElementsByTagName("button")).toHaveLength(4);
+      expect(container.getElementsByTagName("button")).toHaveLength(2);
       expect(container.getElementsByTagName("input")).toHaveLength(1);
+      expect(container.getElementsByTagName("textarea")).toHaveLength(1);
+      expect(container.getElementsByTagName("a")).toHaveLength(0);
+
       expect(
         container.getElementsByClassName("wrapperClassName rdw-editor-wrapper")
       );
-      expect(submitButton.textContent).toBe("Submit Update");
-      expect(previewButton.textContent).toBe("Preview");
-      expect(createNewTopicButton.textContent).toBe("Create Topic");
-      expect(mainHeading.textContent).toBe("Statement Update");
+      expect(submitButton.textContent).toBe("Submit Statement");
+      expect(cancelButton.textContent).toBe("Cancel");
+      expect(mainHeading.textContent).toBe("Add Camp Statement");
     });
   });
 });
