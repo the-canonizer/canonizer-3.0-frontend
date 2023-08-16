@@ -73,6 +73,7 @@ const SupportTreeCard = ({
     campRecord,
     filterData,
     algorithms,
+    totalScoreForSupportTree,
   } = useSelector((state: RootState) => ({
     currentGetCheckSupportExistsData:
       state.topicDetails.currentGetCheckSupportExistsData,
@@ -81,6 +82,7 @@ const SupportTreeCard = ({
     campRecord: state?.topicDetails?.currentCampRecord,
     filterData: state?.filters?.filterObject,
     algorithms: state.homePage?.algorithms,
+    totalScoreForSupportTree: state?.supportTreeCard?.totalScoreForSupportTree,
   }));
 
   const { isUserAuthenticated } = isAuth();
@@ -96,10 +98,11 @@ const SupportTreeCard = ({
   useEffect(() => {
     const filteredAlgo = algorithms?.filter(
       (a: { algorithm_key: string }) =>
-        a.algorithm_key === filterData?.algorithm
+        a.algorithm_key === (filterData?.algorithm || router?.query?.algo)
     );
-    setCurrentAlgo(filteredAlgo[0]?.algorithm_label);
-  }, [filterData]);
+
+    if (filteredAlgo?.length) setCurrentAlgo(filteredAlgo[0]?.algorithm_label);
+  }, [algorithms, router?.query?.algo, filterData?.algorithm]);
 
   const dispatch = useDispatch();
   const arr = [];
@@ -337,17 +340,19 @@ const SupportTreeCard = ({
         <Panel
           className={`header-bg-color-change ${backGroundColorClass}`}
           header={
-            <h3>
-              Support Tree for &quot;
-              {campRecord?.camp_name}&quot; Camp
-            </h3>
+            <Fragment>
+              <h3>
+                Support Tree for &quot;
+                {campRecord?.camp_name}&quot; Camp
+              </h3>
+              <h5 className={styles.algoLabel}>
+                ( Based on: &quot;{currentAlgo}&quot; )
+              </h5>
+            </Fragment>
           }
           key="1"
           extra={
             <Fragment>
-              <h5 className={styles.algoLabel}>
-                Based on: &quot;{currentAlgo}&quot;
-              </h5>
               <Popover content={supportContent} placement="left">
                 <i className="icon-info tooltip-icon-style"></i>
               </Popover>

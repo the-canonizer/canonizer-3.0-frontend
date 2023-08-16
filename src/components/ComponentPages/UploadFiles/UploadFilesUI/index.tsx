@@ -996,7 +996,7 @@ const UploadFileUI = ({
   return (
     <Fragment>
       <div className="d-flex w-100">
-        <aside className="leftSideBar miniSideBar">
+        <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar">
           <div className="leftSideBar_Card p-0 m-0">
             <SideBar />
           </div>

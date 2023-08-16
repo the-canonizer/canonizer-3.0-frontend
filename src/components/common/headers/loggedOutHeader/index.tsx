@@ -8,16 +8,12 @@ import styles from "../siteHeader.module.scss";
 
 import Logo from "../logoHeader";
 import SearchSection from "../../searchSection";
-// import SearchSectionForHeader from "../../searchSection/searchForHeader";
 import LoginModal from "../../../ComponentPages/Login/loginModal";
-import RegistrationModal from "../../../ComponentPages/Registration/registrationModal";
-import {
-  showLoginModal,
-  showRegistrationModal,
-} from "../../../../store/slices/uiSlice";
+import { showLoginModal } from "../../../../store/slices/uiSlice";
 import ForgotModal from "../../../ComponentPages/ForgotPassword/forgotPasswordModal";
 import DisclaimerMsg from "../../disclaimer";
 import HeaderMenu from "../HeaderMenu";
+import TopicCreationBTN from "../TopicCreationBTN";
 
 const { Header } = Layout;
 
@@ -31,9 +27,18 @@ const LoggedOutHeader = ({}: any) => {
     setActive(!isActive);
   };
 
-  const openLoginModal = () => dispatch(showLoginModal());
+  const openLoginModal = () => {
+    if (
+      router?.asPath?.includes("/login") ||
+      router?.asPath?.includes("/registration")
+    ) {
+      router.push("/login");
+    } else {
+      dispatch(showLoginModal());
+    }
+  };
 
-  const openRegistrationModal = () => dispatch(showRegistrationModal());
+  const openRegistrationModal = () => router.push("registration");
 
   return (
     <React.Fragment>
@@ -52,9 +57,6 @@ const LoggedOutHeader = ({}: any) => {
           </Button>
 
           <HeaderMenu loggedUser={null} />
-          {/* {typeof window !== "undefined" && window.innerWidth > 1024 && (
-            <SearchSectionForHeader />
-          )} */}
 
           <div className={styles.btnsLoginRegister}>
             <Button
@@ -72,37 +74,44 @@ const LoggedOutHeader = ({}: any) => {
             </Button>
           </div>
         </div>
-        <div className={styles.right}>
-          <div className={styles.btnsLoginRegister}>
+
+        <div className={styles.right} key="right-panel">
+          <div className={styles.btnsLoginRegister} key="btns-area">
             <Button
               type="link"
               className={styles.btnLogin}
               onClick={openLoginModal}
+              key="login-btn"
             >
               <i className="icon-user"></i> Log In
             </Button>
             <Button
               className={styles.btnRegister}
               onClick={openRegistrationModal}
+              key="register-btn"
             >
               <i className="icon-user-plus"></i> Register
             </Button>
           </div>
-          <div className={styles.iconMobMenu}>
-            <Button size="large" onClick={toggleMobNav}>
+          <div className={styles.iconMobMenu} key="mob-menu-area">
+            <Button size="large" onClick={toggleMobNav} key="outline-btn">
               <MenuOutlined />
             </Button>
           </div>
         </div>
+
         <div
           className={`${styles.mobNavBG} ${isActive && styles.mobNavBGshow}`}
           onClick={toggleMobNav}
+          key="toggle-btn"
         ></div>
       </Header>
       <SearchSection />
+      <div className="topicMobBTN">
+        <TopicCreationBTN key="create-topic-area" />
+      </div>
       <DisclaimerMsg />
       <LoginModal />
-      <RegistrationModal />
       <ForgotModal />
     </React.Fragment>
   );

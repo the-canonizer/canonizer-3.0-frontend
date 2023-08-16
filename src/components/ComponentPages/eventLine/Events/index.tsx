@@ -18,17 +18,20 @@ const Events = ({ timelineDescript }) => {
   };
   const urlPath = (id) => {
     let path = router?.asPath.replace("eventline", "topic");
-    let main = path.replace(path.split("/")[3], id);
+    let main = path?.replace(path.split("/")[3], id);
     return main;
   };
-  const handleEvents = (goLiveTime) => {
-    dispatch(setViewThisVersion(true));
-    dispatch(
-      setFilterCanonizedTopics({
-        asofdate: goLiveTime,
-        asof: "bydate",
-      })
-    );
+  const handleEvents = (goLiveTime, url) => {
+    let isTopicPage = url.split("/")[1];
+    if (isTopicPage == "topic") {
+      dispatch(setViewThisVersion(true));
+      dispatch(
+        setFilterCanonizedTopics({
+          asofdate: goLiveTime,
+          asof: "bydate",
+        })
+      );
+    }
   };
   useEffect(() => {
     setCheck(true);
@@ -50,7 +53,7 @@ const Events = ({ timelineDescript }) => {
             {timelineDescript &&
               timelineDescript.map((title, key) => {
                 return (
-                  <>
+                  <Fragment key={key}>
                     <List.Item
                       className={
                         activityStyle.activitiesList +
@@ -68,21 +71,19 @@ const Events = ({ timelineDescript }) => {
                           ` ${key == 0 ? "animatedText" : ""}`
                         }
                         title={
-                          <div onClick={() => handleEvents(title.eventDate)}>
-                            <Link
-                              href={{
-                                pathname: urlPath(title.id),
-                              }}
-                            >
-                              {title?.message}
-                            </Link>
+                          <div
+                            onClick={() =>
+                              handleEvents(title?.eventDate, title?.url)
+                            }
+                          >
+                            <Link href={title?.url}>{title?.message}</Link>
                           </div>
                         }
                         description={covertToTime(title?.eventDate)}
                         // className={styles.listItem}
                       />
                     </List.Item>
-                  </>
+                  </Fragment>
                 );
               })}
           </List>

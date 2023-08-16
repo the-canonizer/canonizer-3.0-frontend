@@ -57,6 +57,7 @@ const TopicsList = () => {
   const [pageNumber, setPageNumber, pageNumberRef] = useState(1);
   const dispatch = useDispatch();
   const { isUserAuthenticated } = useAuthentication();
+  const didMount = useRef(false);
   const {
     canonizedTopics,
     asofdate,
@@ -70,6 +71,8 @@ const TopicsList = () => {
     search,
     is_checked,
     is_archive,
+    filterObject,
+    viewThisVersion,
     // archeived
   } = useSelector((state: RootState) => ({
     // archeived: state.utils?.archived_checkbox,
@@ -85,6 +88,8 @@ const TopicsList = () => {
     search: state?.filters?.filterObject?.search,
     is_checked: state?.utils?.score_checkbox,
     is_archive: state?.filters?.filterObject?.is_archive,
+    filterObject: state?.filters?.filterObject,
+    viewThisVersion: state?.filters?.viewThisVersionCheck,
   }));
   const { is_camp_archive_checked } = useSelector((state: RootState) => ({
     is_camp_archive_checked: state?.utils?.archived_checkbox,
@@ -208,7 +213,20 @@ const TopicsList = () => {
       await getTopicsApiCallWithReqBody();
       setGetTopicsLoadingIndicator(false);
     }
-    getTopicsApiCall();
+    if (
+      didMount.current ||
+      !(
+        router?.query?.asof != filterObject?.asof ||
+        router?.query?.algo != filterObject?.algorithm ||
+        +router?.query?.score != filterByScore
+      ) ||
+      (router?.query?.algo == undefined &&
+        router?.query?.asof == undefined &&
+        router?.query?.score == undefined)
+    ) {
+      getTopicsApiCall();
+    }
+    didMount.current = true;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     asofdate,
@@ -217,7 +235,7 @@ const TopicsList = () => {
     nameSpaceId,
     filterByScore,
     inputSearch,
-    onlyMyTopicsCheck.current,
+    // onlyMyTopicsCheck.current,
     is_camp_archive_checked,
   ]);
   useEffect(() => {
@@ -515,17 +533,21 @@ const TopicsList = () => {
               <List.Item className={styles.item} id={`topic-${item?.topic_id}`}>
                 <>
                   <Link
-                    href={{
-                      pathname: `/topic/${
-                        item?.topic_id
-                      }-${replaceSpecialCharacters(
-                        isReview
-                          ? item?.tree_structure &&
-                              item?.tree_structure[1]?.review_title
-                          : item?.topic_name,
-                        "-"
-                      )}/1-Agreement`,
-                    }}
+                    href={`/topic/${item?.topic_id}-${replaceSpecialCharacters(
+                      isReview
+                        ? item?.tree_structure &&
+                            item?.tree_structure[1]?.review_title
+                        : item?.topic_name,
+                      "-"
+                    )}/1-Agreement?score=${filterByScore}&algo=${
+                      filterObject?.algorithm
+                    }${
+                      filterObject?.asof == "bydate"
+                        ? "&asofdate=" + filterObject?.asofdate
+                        : ""
+                    }&asof=${filterObject?.asof}&canon=${
+                      filterObject?.namespace_id
+                    }${viewThisVersion ? "&viewversion=1" : ""}`}
                   >
                     {!item.is_archive ||
                     (item.is_archive && is_camp_archive_checked) ? (

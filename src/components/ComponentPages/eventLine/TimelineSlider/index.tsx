@@ -215,6 +215,7 @@ function TimelineSlider({
           message: mockData[sortMockData[i]]?.event?.message,
           eventDate: sortMockData[i]?.split("_")[1],
           id: mockData[sortMockData[i]]?.event?.id,
+          url: mockData[sortMockData[i]]?.event?.url,
         });
         break;
       }
@@ -223,6 +224,7 @@ function TimelineSlider({
         message: mockData[sortMockData[i]]?.event?.message,
         eventDate: sortMockData[i]?.split("_")[1],
         id: mockData[sortMockData[i]]?.event?.id,
+        url: mockData[sortMockData[i]]?.event?.url,
       });
     }
     setTimelineDescript(mappedArr);
