@@ -7,6 +7,7 @@ const SideBar = dynamic(() => import("./SideBar"));
 const TopicsList = dynamic(() => import("./TopicsList"));
 // import HelpCard from "./HelpCard";
 // import RecentActivities from "./RecentActivities";
+import HotTopic from "src/components/common/hotTopic";
 const RecentActivities = dynamic(() => import("./RecentActivities"));
 const HelpCard = dynamic(() => import("./HelpCard"));
 
@@ -20,6 +21,9 @@ const HomePageContainer = () => {
       </aside>
       <div className="pageContentWrap">
         <Row gutter={8}>
+          <Col xs={24} sm={24} xl={24} data-testid="hotTopicColumn">
+            <HotTopic />
+          </Col>
           <Col xs={24} sm={24} xl={12} data-testid="topicsList">
             <TopicsList />
           </Col>

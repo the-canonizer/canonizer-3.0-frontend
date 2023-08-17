@@ -1,0 +1,50 @@
+.hotopicCard {
+  margin-bottom: 20px;
+  [class="ant-card-head"] {
+    border: none;
+    [class*="ant-card-head-wrapper"] {
+      width: 100%;
+      justify-content: center;
+      [class="ant-card-head-title"] {
+        font-size: 20px;
+        margin: 0;
+        padding: 0;
+        padding-top: 20px;
+        font-weight: 600;
+      }
+    }
+  }
+  .imageSection {
+    position: relative;
+    img {
+      border-radius: 2px;
+      object-fit: cover;
+      object-position: center;
+    }
+    .date {
+      text-align: right;
+      font-style: italic;
+      position: absolute;
+      right: 0;
+      top: -30px;
+      font-size: 14px;
+      text-transform: capitalize;
+      font-weight: 500;
+    }
+    .imageLabel {
+      font-size: 14px;
+      margin: 20px 0 15px;
+      display: block;
+    }
+  }
+  .content_area {
+    padding: 15px 25px;
+    .contenTitle {
+      font-size: 22px;
+      text-align: center;
+    }
+    .contenCon {
+      font-size: 14px;
+    }
+  }
+}
