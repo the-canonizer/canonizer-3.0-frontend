@@ -1,9 +1,10 @@
 import { Fragment, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
+import { useCookies } from "react-cookie";
 import dynamic from "next/dynamic";
+
 import Layout from "src/hoc/layout";
-// const Layout = dynamic(() => import("../hoc/layout"));
 import HomePageContainer from "src/components/ComponentPages/Home";
 import { getCanonizedWhatsNewContentApi } from "src/network/api/homePageApi";
 import {
@@ -12,9 +13,9 @@ import {
 } from "src/store/slices/filtersSlice";
 import { GetUserProfileInfo } from "src/network/api/userApi";
 import { setAuthToken, setLoggedInUser } from "src/store/slices/authSlice";
-import { useCookies } from "react-cookie";
+import { setHotTopic } from "src/store/slices/hotTopicSlice";
 
-function Home({ current_date }) {
+function Home({ current_date, currentData }) {
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -22,6 +23,10 @@ function Home({ current_date }) {
 
   dispatch(setFilterCanonizedTopics({ search: "" }));
   dispatch(setCurrentDate(current_date));
+
+  useEffect(() => {
+    dispatch(setHotTopic(currentData));
+  }, []);
 
   useEffect(() => {
     getCanonizedWhatsNewContentApi();
@@ -78,11 +83,13 @@ function Home({ current_date }) {
   );
 }
 
-export async function getServerSideProps(ctx) {
+export async function getServerSideProps({ req, res, resolvedUrl, query }) {
   const currentDate = new Date().valueOf();
 
+  // const resData = await ddd(req.cookies["loginToken"]);
+
   return {
-    props: { current_date: currentDate },
+    props: { current_date: currentDate, currentData: null },
   };
 }
 

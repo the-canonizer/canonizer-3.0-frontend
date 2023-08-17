@@ -3,10 +3,21 @@ import { Card, Image, Typography } from "antd";
 import moment from "moment";
 
 import styles from "./HotTopic.module.scss";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
 
 const { Text, Title } = Typography;
 
 function HotTopic({}) {
+  const { topicData } = useSelector((state: RootState) => ({
+    topicData: state?.hotTopic?.topicData,
+  }));
+
+  console.log(
+    "🚀 ~ file: index.tsx:15 ~ const{topicData}=useSelector ~ topicData:",
+    topicData
+  );
+
   return (
     <Fragment>
       <Card title="Hot Topic" bordered={false} className={styles.hotopicCard}>
