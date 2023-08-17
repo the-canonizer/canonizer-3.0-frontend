@@ -2520,7 +2520,7 @@ div[role="option"]::before {
 .evntLineActivity {
   max-height: 400px;
   overflow-x: hidden;
-  height: auto!important;
+  height: auto !important;
 }
 
 .header-bg-color-change {
@@ -2614,12 +2614,20 @@ div[role="option"]::before {
     margin-right: auto;
 
     @media screen and (min-width: 768px) {
-      min-width: 170px;
-      margin-left: 20px;
+      min-width: 207px;
+      margin-left: 15px;
+      max-width: 100%;
+      width: 100%;
     }
 
     @media screen and (max-width: 767px) {
       width: 100%;
+    }
+
+    @supports (-webkit-touch-callout: none) {
+      @media screen and (min-width: 768px) {
+        min-width: 300px;
+      }
     }
   }
 

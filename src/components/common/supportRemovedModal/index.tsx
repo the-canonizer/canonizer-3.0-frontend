@@ -108,7 +108,7 @@ const SupportRemovedModal = ({
               >
                 <Input.TextArea
                   rows={5}
-                  data-testid = "supportremoval"
+                  data-testid="supportremoval"
                   placeholder={placeholders.editSummary}
                 />
               </Form.Item>

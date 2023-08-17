@@ -577,9 +577,7 @@ const TopicDetails = ({ serverSideCall }) => {
 
                         <Row gutter={15} className={styles.bottomRow}>
                           <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
-                            {router?.asPath.includes("topic") && (
-                              <CampRecentActivities />
-                            )}
+                            <CampRecentActivities />
                           </Col>
                           <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
                             <Spin
@@ -587,9 +585,7 @@ const TopicDetails = ({ serverSideCall }) => {
                               size="large"
                               wrapperClassName="newfeedCardSpinner"
                             >
-                              {!!newsFeed?.length && (
-                                <NewsFeedsCard newsFeed={newsFeed} />
-                              )}
+                              <NewsFeedsCard newsFeed={newsFeed} />
                             </Spin>
                           </Col>
                         </Row>

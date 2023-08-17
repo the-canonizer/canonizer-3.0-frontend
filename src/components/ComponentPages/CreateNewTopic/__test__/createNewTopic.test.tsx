@@ -43,16 +43,14 @@ describe("Create Topic page", () => {
       />
     );
 
-    await waitFor(async () => {
-      expect(screen.getByTestId("head")).toBeInTheDocument();
-      expect(screen.getByText(labels.cr_nick_name)).toBeInTheDocument();
-      expect(screen.getByText(labels.cr_topic_name)).toBeInTheDocument();
-      expect(screen.getByText(labels.cr_nick_name_sp)).toBeInTheDocument();
-      expect(screen.getByText(labels.cr_namespace)).toBeInTheDocument();
-      expect(screen.getByText(labels.cr_namespace)).toBeInTheDocument();
-      expect(screen.getByText("Create Topic")).toBeInTheDocument();
-      expect(screen.getByText("Cancel")).toBeInTheDocument();
-    });
+    expect(screen.getByTestId("head")).toBeInTheDocument();
+    expect(screen.getByText(labels.cr_nick_name)).toBeInTheDocument();
+    expect(screen.getByText(labels.cr_topic_name)).toBeInTheDocument();
+    expect(screen.getByText(labels.cr_nick_name_sp)).toBeInTheDocument();
+    expect(screen.getByText(labels.cr_namespace)).toBeInTheDocument();
+    expect(screen.getByText(labels.cr_namespace)).toBeInTheDocument();
+    expect(screen.getAllByText("Create Topic")).toHaveLength(2);
+    expect(screen.getByText("Cancel")).toBeInTheDocument();
   });
 
   it("render inputs field and submit button", () => {
@@ -89,7 +87,7 @@ describe("Create Topic page", () => {
         testInitialValue={initialValues}
       />
     );
-    const btnEl = screen.getByText("Create Topic");
+    const btnEl = screen.getByTestId("create-topic-btn");
 
     userEvent.click(btnEl);
 
