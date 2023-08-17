@@ -47,14 +47,14 @@ const editor_items = [
   "|",
   "undo",
   "redo",
-]
+];
 
 const editorConfiguration = {
   placeholder: "Write Your Statement Here",
   mediaEmbed: { previewsInData: true },
   toolbar: {
     shouldNotGroupWhenFull: true,
-    items: editor_items
+    items: editor_items,
   },
   image: {
     toolbar: [

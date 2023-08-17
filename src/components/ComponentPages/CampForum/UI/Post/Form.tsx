@@ -49,8 +49,7 @@ const formats = [
   "|",
   "undo",
   "redo",
-]
-
+];
 
 const PostForm = ({
   onFinish,

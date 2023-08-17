@@ -133,7 +133,7 @@ export default function NickNameUI({
             >
               <Input
                 maxLength={50}
-                data-testid = "enterNickName"
+                data-testid="enterNickName"
                 id="enterNickName"
                 placeholder="Enter Nickname"
                 value=""

@@ -340,7 +340,7 @@ const CampTree = ({
                                   ""
                                 )
                               : data[item]?.link?.replace("#statement", "")
-                          }?filter=${treeExpandValue}?score=${filterByScore}&algo=${
+                          }?filter=${treeExpandValue}&score=${filterByScore}&algo=${
                             filterObject?.algorithm
                           }${
                             filterObject?.asof == "bydate"

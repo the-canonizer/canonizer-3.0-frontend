@@ -8,11 +8,19 @@ import moment from "moment";
 import { setFilterCanonizedTopics } from "../../../../store/slices/filtersSlice";
 import styles from "./topicDetails.module.scss";
 import Link from "next/link";
+import { RootState } from "src/store";
 import activityStyle from "../../Home/CampRecentActivities/campRecentActivities.module.scss";
 const Events = ({ timelineDescript }) => {
   const dispatch = useDispatch();
   const [check, setCheck] = useState(true);
   const router = useRouter();
+  const { viewThisVersion, filterObject, filterByScore } = useSelector(
+    (state: RootState) => ({
+      viewThisVersion: state?.filters?.viewThisVersionCheck,
+      filterObject: state?.filters?.filterObject,
+      filterByScore: state.filters?.filterObject?.filterByScore,
+    })
+  );
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
@@ -76,7 +84,25 @@ const Events = ({ timelineDescript }) => {
                               handleEvents(title?.eventDate, title?.url)
                             }
                           >
-                            <Link href={title?.url}>{title?.message}</Link>
+                            <Link
+                              href={
+                                title?.url?.split("/")[1] == "topic"
+                                  ? `${
+                                      title?.url
+                                    }?score=${filterByScore}&algo=${
+                                      filterObject?.algorithm
+                                    }${
+                                      filterObject?.asof == "bydate"
+                                        ? "&asofdate=" + title?.eventDate
+                                        : ""
+                                    }&asof=${filterObject?.asof}&canon=${
+                                      filterObject?.namespace_id
+                                    }${viewThisVersion ? "&viewversion=1" : ""}`
+                                  : title?.url
+                              }
+                            >
+                              {title?.message}
+                            </Link>
                           </div>
                         }
                         description={covertToTime(title?.eventDate)}

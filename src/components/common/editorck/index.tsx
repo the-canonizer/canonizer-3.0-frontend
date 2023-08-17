@@ -21,10 +21,12 @@ interface toolbaritems {
 }
 
 interface height {
-  height?: number
+  height?: number;
 }
 
-export default function Editorck(props: editorState & editorchange & placeholder & toolbaritems & height) {
+export default function Editorck(
+  props: editorState & editorchange & placeholder & toolbaritems & height
+) {
   const { isUserAuthenticated } = isAuth();
   const [loadeditor, setLoadeditor] = useState(false);
   const [editordata, setEditordata] = useState("");
@@ -40,7 +42,7 @@ export default function Editorck(props: editorState & editorchange & placeholder
     mediaEmbed: { previewsInData: true },
     toolbar: {
       shouldNotGroupWhenFull: true,
-      items: props.items
+      items: props.items,
     },
     image: {
       toolbar: [
@@ -69,8 +71,12 @@ export default function Editorck(props: editorState & editorchange & placeholder
               props.oneditorchange(editor?.getData());
             });
             if (props.height)
-              editor.editing.view.change(writer => {
-                writer.setStyle('height', `${props.height}px`, editor.editing.view.document.getRoot());
+              editor.editing.view.change((writer) => {
+                writer.setStyle(
+                  "height",
+                  `${props.height}px`,
+                  editor.editing.view.document.getRoot()
+                );
               });
           }}
           onChange={(event, editor: any) => {

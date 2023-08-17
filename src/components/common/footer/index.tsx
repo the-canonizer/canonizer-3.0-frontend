@@ -33,12 +33,6 @@ function Footer() {
       linkTitle: "Upload File",
       id: 5,
     },
-    {
-      link: "/sitemap",
-      linkTitle: "Sitemap",
-      id: 9,
-      external: true,
-    },
   ];
   const mockLinks2 = [
     {
@@ -118,31 +112,28 @@ function Footer() {
                     <ul>
                       {mockLinks1
                         .filter((obj) =>
-                          loggedInUser?.is_admin ? obj : obj.id != 5
+                          !loggedInUser?.is_admin ? obj.id != 5 : obj
                         )
-                        ?.map((item) => {
-                          return (
-                            <li key={item.id}>
-                              {item.external ? (
-                                <a
-                                  href={item.link}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                >
-                                  <i className="icon-angle-right"></i>{" "}
-                                  <span>Sitemap</span>
-                                </a>
-                              ) : (
-                                <Link href={item.link}>
-                                  <a>
-                                    <i className="icon-angle-right"></i>{" "}
-                                    {item.linkTitle}
-                                  </a>
-                                </Link>
-                              )}
-                            </li>
-                          );
-                        })}
+                        ?.map((item) => (
+                          <li key={item.id}>
+                            <Link href={item.link}>
+                              <a>
+                                <i className="icon-angle-right"></i>{" "}
+                                {item.linkTitle}
+                              </a>
+                            </Link>
+                          </li>
+                        ))}
+                      <li key="sitemap-li">
+                        <a
+                          href="/sitemap"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <i className="icon-angle-right"></i>{" "}
+                          <span>Sitemap</span>
+                        </a>
+                      </li>
                     </ul>
                   </Col>
                   <Col xs={24} md={12}>
