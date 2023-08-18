@@ -325,10 +325,10 @@ export default function AddOrManage({ add }: any) {
         if (manageFormOf == "statement") {
           res = await getEditStatementApi(getDataPayload);
           if (res && res.status_code == 200) {
-            setEditCampStatementData(res.data.statement.note);
+            setEditCampStatementData(res?.data?.statement?.note);
           }
           if (
-            res?.data &&
+            res?.data?.statement?.parsed_value &&
             !res?.data?.statement?.parsed_value?.startsWith("<p>") &&
             !res?.data?.statement?.parsed_value?.startsWith("<div>")
           )
@@ -418,14 +418,14 @@ export default function AddOrManage({ add }: any) {
             }
           : (objection || update) && manageFormOf == "statement"
           ? {
-              nick_name: res?.data?.nick_name[0]?.id,
+              nick_name: res?.data?.nick_name?.at(0)?.id,
               parent_camp_num: res?.data?.statement?.camp_num,
               statement: res?.data?.statement?.parsed_value,
               edit_summary: res?.data?.statement?.note,
             }
           : manageFormOf == "camp"
           ? {
-              nick_name: res?.data?.nick_name[0]?.id,
+              nick_name: res?.data?.nick_name?.at(0)?.id,
               statement: res?.data?.camp?.note,
               parent_camp_num: res?.data?.camp?.parent_camp_num,
               camp_name: res?.data?.camp?.camp_name,
