@@ -1,3 +1,4 @@
+import { Fragment, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Row, Col, Typography } from "antd";
 import Image from "next/image";
@@ -7,7 +8,6 @@ import { useSelector } from "react-redux";
 import styles from "./siteFooter.module.scss";
 
 import { RootState } from "src/store";
-import { Fragment } from "react";
 
 const { Title } = Typography;
 
@@ -33,7 +33,14 @@ function Footer() {
       linkTitle: "Upload File",
       id: 5,
     },
+    {
+      link: "/sitemap",
+      linkTitle: "Sitemap",
+      id: 10,
+      external: true,
+    },
   ];
+
   const mockLinks2 = [
     {
       link: "/topic/132-Help/1-Agreement?is_tree_open=1",
@@ -58,6 +65,19 @@ function Footer() {
       id: 8,
     },
   ];
+
+  const [mockLinks, setMockLinks] = useState(mockLinks1);
+
+  useEffect(() => {
+    if (!loggedInUser?.is_admin) {
+      const allLinks = [...mockLinks];
+      const filteredLinks = allLinks.filter((obj) => {
+        return obj.link != "/uploadFile";
+      });
+
+      setMockLinks(filteredLinks);
+    }
+  }, [loggedInUser]);
 
   return (
     <Fragment>
@@ -110,30 +130,27 @@ function Footer() {
                 <Row gutter={20}>
                   <Col xs={24} md={12}>
                     <ul>
-                      {mockLinks1
-                        .filter((obj) =>
-                          !loggedInUser?.is_admin ? obj.id != 5 : obj
-                        )
-                        ?.map((item) => (
-                          <li key={item.id}>
+                      {mockLinks?.map((item) => (
+                        <li key={item.id}>
+                          {item?.external ? (
+                            <a
+                              href={item.link}
+                              rel="noopener noreferrer"
+                              target="_blank"
+                            >
+                              <i className="icon-angle-right"></i>{" "}
+                              {item.linkTitle}
+                            </a>
+                          ) : (
                             <Link href={item.link}>
                               <a>
                                 <i className="icon-angle-right"></i>{" "}
                                 {item.linkTitle}
                               </a>
                             </Link>
-                          </li>
-                        ))}
-                      <li key="sitemap-li">
-                        <a
-                          href="/sitemap"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <i className="icon-angle-right"></i>{" "}
-                          <span>Sitemap</span>
-                        </a>
-                      </li>
+                          )}
+                        </li>
+                      ))}
                     </ul>
                   </Col>
                   <Col xs={24} md={12}>
