@@ -54,7 +54,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }) => {
         }
         key="1"
         extra={
-          campStatement?.length ? (
+          campStatement?.length && campStatement[0]?.go_live_time ? (
             <div className={styles.cardActions}>
               <span className="bold">Go live Time : </span>
               {campStatement?.length &&
