@@ -127,7 +127,8 @@ const FilterWithTree = ({
     current_date_filter,
     campExist,
     filterObject,
-    viewThisVersion,campScoreValue
+    viewThisVersion,
+    campScoreValue,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filteredScore: state?.filters?.filterObject?.filterByScore,
@@ -184,7 +185,7 @@ const FilterWithTree = ({
             : ""
         }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
           viewThisVersion ? "&viewversion=1" : ""
-        }&filter=${campScoreValue}`;
+        }&filter=${campScoreValue || 10}`;
         var newurl =
           window.location.protocol +
           "//" +

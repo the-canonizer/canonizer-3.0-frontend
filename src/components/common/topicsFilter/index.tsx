@@ -175,7 +175,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
             : ""
         }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
           viewThisVersion ? "&viewversion=1" : ""
-        }&filter=${campScoreValue}`;
+        }&filter=${campScoreValue || 10}`;
         var newurl =
           window.location.protocol +
           "//" +

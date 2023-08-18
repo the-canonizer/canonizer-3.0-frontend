@@ -17,6 +17,7 @@ export default function HomeSideBar({
   setSupportTreeForCamp,
   backGroundColorClass,
   viewThisVersion,
+  campScoreValue,
 }: any) {
   const { drawerShow, filterObject, filterByScore } = useSelector(
     (state: RootState) => ({
@@ -24,6 +25,7 @@ export default function HomeSideBar({
       filterObject: state?.filters?.filterObject,
       filterByScore: state.filters?.filterObject?.filterByScore,
       viewThisVersion: state?.filters?.viewThisVersionCheck,
+      campScoreValue: state?.filters?.campWithScoreValue,
     })
   );
 
@@ -42,8 +44,8 @@ export default function HomeSideBar({
         filterObject?.asof == "bydate"
           ? "&asofdate=" + filterObject?.asofdate
           : ""
-      }&asof=${filterObject?.asof}&canon=${
-        filterObject?.namespace_id
+      }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}&filter=${
+        campScoreValue || 10
       }&is_tree_open=1${viewThisVersion ? "&viewversion=1" : ""}`,
       null,
       {
@@ -62,8 +64,8 @@ export default function HomeSideBar({
         filterObject?.asof == "bydate"
           ? "&asofdate=" + filterObject?.asofdate
           : ""
-      }&asof=${filterObject?.asof}&canon=${
-        filterObject?.namespace_id
+      }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}&filter=${
+        campScoreValue || 10
       }&is_tree_open=0${viewThisVersion ? "&viewversion=1" : ""}`,
       null,
       {
