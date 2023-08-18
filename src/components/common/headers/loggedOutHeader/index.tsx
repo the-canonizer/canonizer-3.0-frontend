@@ -38,7 +38,7 @@ const LoggedOutHeader = ({}: any) => {
     }
   };
 
-  const openRegistrationModal = () => router.push("registration");
+  const openRegistrationModal = () => router.push("/registration");
 
   return (
     <React.Fragment>
