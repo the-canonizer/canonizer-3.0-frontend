@@ -229,11 +229,11 @@ const ManageSupportUI = ({
     let addedRes = await addSupport(addSupportId);
     if (addedRes && addedRes.status_code == 200) {
       let manageSupportPath = router?.asPath.replace("/support/", "/topic/");
-      if (manageSupportPath.lastIndexOf("_") > -1)
-        manageSupportPath = manageSupportPath.substring(
-          0,
-          manageSupportPath.lastIndexOf("_")
-        );
+      // if (manageSupportPath.lastIndexOf("_") > -1)
+      //   manageSupportPath = manageSupportPath.substring(
+      //     0,
+      //     manageSupportPath.lastIndexOf("_")
+      //   );
       router?.push(manageSupportPath);
     }
   };
