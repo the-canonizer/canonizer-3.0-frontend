@@ -222,7 +222,6 @@ const CampTreeCard = ({
                     {`Show camps with score`}
                     <RightOutlined className="rightOutlined" />
                   </Text>
-                  {console.log(treeExpandValue, " <<<<<<<<")}
                   <Select
                     value={`${treeExpandValue}`}
                     defaultValue={`${treeExpandValue}`}

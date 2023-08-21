@@ -17,17 +17,15 @@ export default function HomeSideBar({
   setSupportTreeForCamp,
   backGroundColorClass,
   viewThisVersion,
-  campScoreValue,
 }: any) {
-  const { drawerShow, filterObject, filterByScore } = useSelector(
-    (state: RootState) => ({
+  const { drawerShow, filterObject, filterByScore, campScoreValue } =
+    useSelector((state: RootState) => ({
       drawerShow: state?.filters?.showDrawer,
       filterObject: state?.filters?.filterObject,
       filterByScore: state.filters?.filterObject?.filterByScore,
       viewThisVersion: state?.filters?.viewThisVersionCheck,
       campScoreValue: state?.filters?.campWithScoreValue,
-    })
-  );
+    }));
 
   const [drawerIsVisible, setDrawerIsVisible] = useState(drawerShow);
 
