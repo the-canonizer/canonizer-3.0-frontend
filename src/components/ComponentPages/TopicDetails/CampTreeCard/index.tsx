@@ -218,17 +218,15 @@ const CampTreeCard = ({
                     event.stopPropagation();
                   }}
                 >
-                  <Text>
-                    {`Show camps with score`}
-                    <RightOutlined className="rightOutlined" />
-                  </Text>
+                  <Text>Collapse camps with less than</Text>
                   <Select
                     value={`${treeExpandValue}`}
                     defaultValue={`${treeExpandValue}`}
-                    style={{ width: 80 }}
+                    style={{ width: 80, margin: "0 5px" }}
                     onChange={handleChange}
                     options={scoreOptions}
                   />
+                  <Text>of all support.</Text>
                 </div>
               </>
             }
