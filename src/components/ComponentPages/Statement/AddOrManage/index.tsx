@@ -319,20 +319,21 @@ export default function AddOrManage({ add }: any) {
       let res;
       if (!add) {
         let getDataPayload = {
-          record_id: router?.query?.statement[0]?.split("-")[0],
+          record_id: router?.query?.statement?.at(0)?.split("-")[0],
           event_type: objection ? "objection" : "edit",
         };
         if (manageFormOf == "statement") {
           res = await getEditStatementApi(getDataPayload);
           if (res && res.status_code == 200) {
-            setEditCampStatementData(res.data.statement.note);
+            setEditCampStatementData(res?.data?.statement?.note);
           }
           if (
-            !res.data.statement.parsed_value?.startsWith("<p>") &&
-            !res.data.statement.parsed_value?.startsWith("<div>")
+            res?.data?.statement?.parsed_value &&
+            !res?.data?.statement?.parsed_value?.startsWith("<p>") &&
+            !res?.data?.statement?.parsed_value?.startsWith("<div>")
           )
-            res.data.statement.parsed_value = `<div><div/>${res.data.statement.parsed_value}`;
-          const editor_statement = res.data.statement.parsed_value;
+            res.data.statement.parsed_value = `<div><div/>${res.data?.statement?.parsed_value}`;
+          const editor_statement = res?.data?.statement?.parsed_value;
           // const contentBlocks = htmlToDraft(res.data.statement.parsed_value);
           // const contentState = ContentState.createFromBlockArray(
           //   contentBlocks.contentBlocks
@@ -396,35 +397,35 @@ export default function AddOrManage({ add }: any) {
         }
       } else {
         let topic_res = await getCurrentTopicRecordApi({
-          topic_num: router?.query?.statement[0].split("-")[0],
-          camp_num: router?.query?.statement[1].split("-")[0] ?? "1",
+          topic_num: router?.query?.statement?.at(0).split("-")[0],
+          camp_num: router?.query?.statement?.at(1).split("-")[0] ?? "1",
         });
         setPayloadBreadCrumb({
-          camp_num: router?.query?.statement[1].split("-")[0] ?? "1",
-          topic_num: router?.query?.statement[0].split("-")[0],
+          camp_num: router?.query?.statement?.at(1).split("-")[0] ?? "1",
+          topic_num: router?.query?.statement?.at(0).split("-")[0],
         });
       }
       const reqBody = {
         topic_num: add
-          ? router?.query?.statement[0]?.split("-")[0]
+          ? router?.query?.statement?.at(0)?.split("-")[0]
           : res?.data?.topic?.topic_num,
       };
       const result = await getAllUsedNickNames(reqBody);
       if (result?.status_code == 200) {
         let fieldSValuesForForm = add
           ? {
-              nick_name: result?.data[0].id,
+              nick_name: result?.data?.at(0)?.id,
             }
           : (objection || update) && manageFormOf == "statement"
           ? {
-              nick_name: res?.data?.nick_name[0]?.id,
+              nick_name: res?.data?.nick_name?.at(0)?.id,
               parent_camp_num: res?.data?.statement?.camp_num,
               statement: res?.data?.statement?.parsed_value,
               edit_summary: res?.data?.statement?.note,
             }
           : manageFormOf == "camp"
           ? {
-              nick_name: res?.data?.nick_name[0]?.id,
+              nick_name: res?.data?.nick_name?.at(0)?.id,
               statement: res?.data?.camp?.note,
               parent_camp_num: res?.data?.camp?.parent_camp_num,
               camp_name: res?.data?.camp?.camp_name,
