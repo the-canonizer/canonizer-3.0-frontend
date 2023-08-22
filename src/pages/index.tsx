@@ -14,8 +14,9 @@ import {
 import { GetUserProfileInfo } from "src/network/api/userApi";
 import { setAuthToken, setLoggedInUser } from "src/store/slices/authSlice";
 import { setHotTopic } from "src/store/slices/hotTopicSlice";
+import { GetHotTopicDetails } from "src/network/api/topicAPI";
 
-function Home({ current_date, currentData }) {
+function Home({ current_date, hotTopicData }) {
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -25,10 +26,7 @@ function Home({ current_date, currentData }) {
   dispatch(setCurrentDate(current_date));
 
   useEffect(() => {
-    dispatch(setHotTopic(currentData));
-  }, []);
-
-  useEffect(() => {
+    dispatch(setHotTopic(hotTopicData));
     getCanonizedWhatsNewContentApi();
   }, []);
 
@@ -86,10 +84,13 @@ function Home({ current_date, currentData }) {
 export async function getServerSideProps({ req, res, resolvedUrl, query }) {
   const currentDate = new Date().valueOf();
 
-  // const resData = await ddd(req.cookies["loginToken"]);
+  const resData = await GetHotTopicDetails(req.cookies["loginToken"] as string);
 
   return {
-    props: { current_date: currentDate, currentData: null },
+    props: {
+      current_date: currentDate,
+      hotTopicData: resData?.data || null,
+    },
   };
 }
 
