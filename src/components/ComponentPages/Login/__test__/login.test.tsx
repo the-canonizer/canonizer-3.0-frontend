@@ -62,6 +62,16 @@ describe("Login page", () => {
       ),
     }));
   });
+  
+  test("render component", () => {
+    render(
+      <Provider store={store}>
+        <RouterContext.Provider value={createMockRouter({ asPath: "/login" })}>
+          <Login isModal={false} />
+        </RouterContext.Provider>
+      </Provider>
+    );
+  });
 
   it("render heading and labels", () => {
     render(
@@ -75,6 +85,7 @@ describe("Login page", () => {
       let heading = screen.getByRole("heading", {
         name: /Login To Canonizer/i,
       });
+      expect(heading).toHaveTextContent("Heading");
       expect(heading).toBeInTheDocument();
       expect(screen.getByText(labels.emailPhone)).toBeInTheDocument();
       expect(screen.getByText(labels.password)).toBeInTheDocument();
