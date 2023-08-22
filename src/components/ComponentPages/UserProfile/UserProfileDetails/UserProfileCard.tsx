@@ -18,7 +18,7 @@ export const UserProfileCard = ({
   nickNames,
   defaultNickname,
   selectedNikname,
-  onNickNameChange,
+  setSelectedNikname,
   isLoggedIn,
   userProfileCardSkeleton,
 }: any) => {
@@ -48,6 +48,13 @@ export const UserProfileCard = ({
     setStartingPosition((pageNumber - 1) * pageSize);
     setEndingPosition((pageNumber - 1) * pageSize + pageSize);
   };
+    const onNickNameChange = (value, nickname) => {
+    let pathQueries = router?.query.supports;
+    pathQueries = [value];
+    router.query.supports = pathQueries;
+    router.push(router);
+    setSelectedNikname(value);
+  };
 
   return (
     <div className="user--cards-outer">
@@ -61,7 +68,7 @@ export const UserProfileCard = ({
       ) : (
         <div
           className={
-            userSupportedCampsList[0]?.private_status == 0
+            userSupportedCampsList?.[0]?.private_status == 0
               ? styles.card_spacing
               : ""
           }
