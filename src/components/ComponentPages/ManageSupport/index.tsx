@@ -84,7 +84,6 @@ const ManageSupport = () => {
         state.supportTreeCard.currentDelegatedSupportedClick,
     })
   );
-
   const { currentGetCheckSupportExistsData } = useSelector(
     (state: RootState) => ({
       currentGetCheckSupportExistsData:
@@ -110,7 +109,7 @@ const ManageSupport = () => {
     topic_num: +router?.query?.manageSupport?.[0]?.split("-")[0],
     camp_num: +router?.query?.manageSupport?.[1]?.split("-")[0],
   };
-const getDelegateId = router.asPath.substring(router.asPath.lastIndexOf("_") + 1)
+const getDelegateId = router.asPath?.substring(router.asPath.lastIndexOf("_") + 1)
 
 
   if (CheckDelegatedOrDirect && getDelegateId)
