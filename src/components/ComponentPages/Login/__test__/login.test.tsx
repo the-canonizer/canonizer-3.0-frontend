@@ -8,6 +8,8 @@ import Login from "../index";
 import messages from "src/messages";
 import { store } from "src/store";
 
+import { login } from "src/network/api/userApi";
+
 const { labels, placeholders, validations } = messages;
 
 jest.mock("next/router", () => ({
@@ -62,7 +64,7 @@ describe("Login page", () => {
       ),
     }));
   });
-  
+
   test("render component", () => {
     render(
       <Provider store={store}>
@@ -188,6 +190,44 @@ describe("Login page", () => {
     waitFor(() => {
       expect(screen.getByText(validations.username)).toBeVisible();
       expect(screen.getByText(validations.password)).toBeVisible();
+    });
+  });
+
+  it("api call", async () => {
+    login.mockResolvedValue({
+      status_code: 200,
+      data: {},
+    });
+
+    const store1 = mockStore({
+      auth: {
+        authenticated: true,
+        loggedInUser: {
+          is_admin: true,
+        },
+      },
+      topicDetails: {
+        currentCampRecord: {},
+      },
+      filters: {
+        filterObject: {},
+      },
+      forum: {
+        currentThread: null,
+        currentPost: null,
+      },
+    });
+
+    render(
+      <Provider store={store}>
+        <RouterContext.Provider value={createMockRouter({ asPath: "/login" })}>
+          <Login isModal={false} />
+        </RouterContext.Provider>
+      </Provider>
+    );
+
+    await waitFor(() => {
+      expect(login).toHaveBeenCalled();
     });
   });
 });

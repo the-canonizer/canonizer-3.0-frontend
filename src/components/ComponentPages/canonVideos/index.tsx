@@ -244,6 +244,7 @@ export default function CanonVideos() {
               isButton={false}
               action={false}
               title={false}
+              data-testid="skeleton"
             />
           ) : (
             <ul>
@@ -301,7 +302,7 @@ export default function CanonVideos() {
             )}
           </div>
         </div>
-        <div className={styles.videoPlayer}>
+        <div className={styles.videoPlayer} data-testid="videoPlayer">
           {videos && videoResolution ? (
             <>
               <video

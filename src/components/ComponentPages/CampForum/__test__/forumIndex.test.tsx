@@ -7,6 +7,8 @@ import { NextRouter } from "next/router";
 
 import ForumComponent from "../index";
 
+import { getThreadsList, getPostsList } from "src/network/api/campForumApi";
+
 const useRouter = jest.fn();
 
 export { useRouter };
@@ -54,6 +56,25 @@ const store = mockStore({
   },
 });
 
+const store1 = mockStore({
+  auth: {
+    authenticated: true,
+    loggedInUser: {
+      is_admin: true,
+    },
+  },
+  topicDetails: {
+    currentCampRecord: { parentCamps: [{ camp_name: "camp one" }] },
+  },
+  filters: {
+    filterObject: {},
+  },
+  forum: {
+    currentThread: null,
+    currentPost: null,
+  },
+});
+
 function createMockRouter(router: Partial<NextRouter>): NextRouter {
   return {
     basePath: "",
@@ -81,6 +102,8 @@ function createMockRouter(router: Partial<NextRouter>): NextRouter {
     ...router,
   };
 }
+
+jest.mock("src/network/api/campForumApi");
 
 afterEach(cleanup);
 
@@ -259,6 +282,201 @@ describe("ForumComponent", () => {
       userEvent.click(screen.getByText("Create Thread"));
 
       userEvent.type(screen.getByLabelText("Thread Title"), "New Thread");
+    });
+  });
+
+  test("displays error message when thread creation fails", async () => {
+    act(() => {
+      jest.mock("src/network/api/campForumApi", () => ({
+        getThreadsList: jest.fn().mockResolvedValueOnce({
+          status_code: 400,
+          data: {
+            items: [
+              { id: 1, title: "Thread 1" },
+              { id: 2, title: "Thread 2" },
+            ],
+            total_rows: 2,
+          },
+        }),
+      }));
+
+      jest.mock("next/router", () => ({
+        __esModule: true,
+        useRouter() {
+          return {
+            route: "/",
+            pathname: "/forum/[topic]/[camp]/threads",
+            query: {},
+            asPath: "",
+            push: jest.fn(),
+            events: {
+              on: jest.fn(),
+              off: jest.fn(),
+            },
+            beforePopState: jest.fn(() => null),
+            prefetch: jest.fn(() => null),
+          };
+        },
+      }));
+    });
+
+    render(
+      <Provider store={store}>
+        <ForumComponent />
+      </Provider>
+    );
+
+    waitFor(() => {
+      userEvent.click(screen.getByText("Create Thread"));
+
+      userEvent.type(screen.getByLabelText("Thread Title"), "New Thread");
+    });
+  });
+
+  test("displays error message when thread creation fails", async () => {
+    const mockGetThreadsList = jest.fn().mockResolvedValueOnce({
+      status_code: 200,
+      data: {
+        items: [
+          { id: 1, title: "Thread 1" },
+          { id: 2, title: "Thread 2" },
+        ],
+        total_rows: 2,
+      },
+    });
+
+    jest.mock("src/network/api/campForumApi", () => ({
+      getThreadsList: mockGetThreadsList,
+    }));
+
+    render(
+      <Provider store={store}>
+        <RouterContext.Provider
+          value={createMockRouter({
+            pathname: "/forum/[topic]/[camp]/threads/[tId]",
+            query: { camp: "84-test", topic: "2-test", tId: "1" },
+          })}
+        >
+          <ForumComponent />
+        </RouterContext.Provider>
+      </Provider>
+    );
+
+    waitFor(() => {
+      expect(screen.getByText("topic")).toBeInTheDocument();
+    });
+  });
+
+  test("displays error message when thread creation fails", async () => {
+    getThreadsList.mockResolvedValue({
+      status_code: 200,
+      data: {
+        items: [
+          { id: 1, title: "Thread 1" },
+          { id: 2, title: "Thread 2" },
+        ],
+        total_rows: 2,
+      },
+    });
+
+    jest.mock("next/router", () => ({
+      __esModule: true,
+      useRouter() {
+        return {
+          route: "/",
+          pathname: "/forum/[topic]/[camp]/threads/create",
+          query: {
+            camp: "84-test",
+            topic: "1-agreement ",
+            tId: "1",
+          },
+          asPath: "",
+          push: jest.fn(),
+          events: {
+            on: jest.fn(),
+            off: jest.fn(),
+          },
+          beforePopState: jest.fn(() => null),
+          prefetch: jest.fn(() => null),
+        };
+      },
+    }));
+
+    render(
+      <Provider store={store}>
+        <ForumComponent />
+      </Provider>
+    );
+
+    waitFor(() => {
+      expect(getThreadsList).toHaveBeenCalled();
+    });
+  });
+
+  it("api call", async () => {
+    getThreadsList.mockResolvedValue({
+      status_code: 200,
+      data: {
+        items: [
+          { id: 1, title: "Thread 1" },
+          { id: 2, title: "Thread 2" },
+        ],
+        total_rows: 2,
+      },
+    });
+
+    getPostsList.mockResolvedValue({
+      status_code: 200,
+      data: {
+        items: [
+          { id: 1, title: "Thread 1" },
+          { id: 2, title: "Thread 2" },
+        ],
+        total_rows: 2,
+      },
+    });
+
+    render(
+      <Provider store={store1}>
+        <RouterContext.Provider
+          value={createMockRouter({
+            pathname: "/forum/[topic]/[camp]/threads/create",
+            query: { camp: "84-test", topic: "2-test", tId: "1" },
+          })}
+        >
+          <ForumComponent />
+        </RouterContext.Provider>
+      </Provider>
+    );
+
+    waitFor(() => {
+      expect(getThreadsList).toHaveBeenCalled();
+      expect(getPostsList).toHaveBeenCalled();
+    });
+  });
+
+  it("fetches thread list and displays them", async () => {
+    getThreadsList.mockResolvedValue({
+      status_code: 200,
+      data: { items: [{ id: 1, title: "Thread 1" }], total_rows: 1 },
+    });
+
+    render(
+      <Provider store={store1}>
+        <RouterContext.Provider
+          value={createMockRouter({
+            pathname: "/forum/[topic]/[camp]/threads/create",
+            query: { camp: "84-test", topic: "2-test", tId: "1" },
+          })}
+        >
+          <ForumComponent />
+        </RouterContext.Provider>
+      </Provider>
+    );
+
+    waitFor(() => {
+      expect(getThreadsList).toHaveBeenCalled();
+      expect(screen.getByText("Thread 1")).toBeInTheDocument();
     });
   });
 });
