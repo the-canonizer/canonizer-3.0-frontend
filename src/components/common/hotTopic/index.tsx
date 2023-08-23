@@ -30,19 +30,31 @@ function HotTopic({}) {
         key={`data-card-${topicData?.id}`}
       >
         <div className={styles.imageSection}>
-          <Text className={styles.date}>
-            {moment(
-              getTime(topicData?.updated_at || topicData?.created_at)
-            ).format("MMMM DD, YYYY")}
-          </Text>
+          {(topicData?.updated_at || topicData?.created_at) && (
+            <Text className={styles.date}>
+              {moment(
+                getTime(topicData?.updated_at || topicData?.created_at)
+              ).format("MMMM DD, YYYY")}
+            </Text>
+          )}
           {topicData?.file_full_path && (
-            <Image
-              width={"100%"}
-              height={350}
-              src={topicData?.file_full_path}
-              alt=""
-              preview={false}
-            />
+            <Link
+              href={{
+                pathname: `/topic/${topicData?.topic_num}-${
+                  topicData?.topic_name || ""
+                }/${topicData?.camp_num || 1}-${
+                  topicData?.camp_name || "Agreement"
+                }`,
+              }}
+            >
+              <Image
+                width={"100%"}
+                height={350}
+                src={topicData?.file_full_path}
+                alt=""
+                preview={false}
+              />
+            </Link>
           )}
           <div
             className={styles.imageLabel}
