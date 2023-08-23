@@ -3,6 +3,7 @@ import { Card, Image, Typography } from "antd";
 import moment from "moment";
 import sanitizeHtml from "sanitize-html";
 import { useSelector } from "react-redux";
+import Link from "next/link";
 
 import styles from "./HotTopic.module.scss";
 
@@ -15,6 +16,10 @@ function HotTopic({}) {
   const { topicData } = useSelector((state: RootState) => ({
     topicData: state?.hotTopic?.topicData,
   }));
+  console.log(
+    "🚀 ~ file: index.tsx:18 ~ const{topicData}=useSelector ~ topicData:",
+    topicData
+  );
 
   return (
     <Fragment>
@@ -62,6 +67,17 @@ function HotTopic({}) {
               }),
             }}
           ></div>
+          <Link
+            href={{
+              pathname: `/topic/${topicData?.topic_num}-${
+                topicData?.topic_name || ""
+              }/${topicData?.camp_num || 1}-${
+                topicData?.camp_name || "Agreement"
+              }`,
+            }}
+          >
+            View Topic
+          </Link>
         </div>
       </Card>
     </Fragment>
