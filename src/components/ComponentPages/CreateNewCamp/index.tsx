@@ -24,7 +24,7 @@ const CreateNewCamp = ({
   parentCamps = [],
   campNickNames = [],
   initialValues = {},
-}) => {
+}: any) => {
   const { filterByScore, filterObject, viewThisVersion } = useSelector(
     (state: RootState) => ({
       filterByScore: state.filters?.filterObject?.filterByScore,

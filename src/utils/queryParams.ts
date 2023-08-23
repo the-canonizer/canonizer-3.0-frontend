@@ -1,4 +1,4 @@
-export default function queryParams(body) {
+export default function queryParams(body:any) {
   return (
     "?" +
     Object.keys(body)

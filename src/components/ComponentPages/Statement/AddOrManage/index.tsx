@@ -38,7 +38,7 @@ import {
 
 import { getCanonizedNameSpacesApi } from "../../../../network/api/homePageApi";
 // "../../../network/api/homePageApi";
-import SideBarNoFilter from "../../../ComponentPages/Home/SideBarNoFilter";
+
 import CampInfoBar from "../../TopicDetails/CampInfoBar";
 import PreventSubCamps from "../../../common/preventSubCampCheckbox";
 
@@ -95,14 +95,13 @@ const EditorToolbarItems = [
   "redo",
 ];
 
-let htmlToDraft: any = null;
-if (typeof window === "object") {
-  htmlToDraft = require("html-to-draftjs").default;
-}
+// let htmlToDraft: any = null;
+// if (typeof window === "object") {
+//   htmlToDraft = require("html-to-draftjs").default;
+// }
 const { Text } = Typography;
 
-const { campAboutUrlRule, summaryRule, keywordsRule, patterns, validations } =
-  messages;
+const { campAboutUrlRule, summaryRule, keywordsRule, patterns } = messages;
 
 export default function AddOrManage({ add }: any) {
   const { isUserAuthenticated } = useAuthentication();
@@ -134,7 +133,7 @@ export default function AddOrManage({ add }: any) {
   let objection = router?.query?.statement?.at(0)?.split("-")[1] == "objection";
   let update = router?.query?.statement?.at(0)?.split("-")[1] == "update";
   let manageFormOf = router?.asPath.split("/")[2];
-  let editorTextLength = editorState.replace(/<(?!img\b)[^\s<>]*>/, "").length;
+  // let editorTextLength = editorState.replace(/<(?!img\b)[^\s<>]*>/, "").length;
 
   const onFinish = async (values: any) => {
     setScreenLoading(true);
@@ -305,13 +304,13 @@ export default function AddOrManage({ add }: any) {
       setParentCamps(res.data);
     }
   };
-  const isJSON = (str) => {
-    try {
-      return JSON.parse(str) && !!str;
-    } catch (e) {
-      return false;
-    }
-  };
+  // const isJSON = (str) => {
+  //   try {
+  //     return JSON.parse(str) && !!str;
+  //   } catch (e) {
+  //     return false;
+  //   }
+  // };
 
   useEffect(() => {
     setScreenLoading(true);
@@ -396,7 +395,7 @@ export default function AddOrManage({ add }: any) {
           setEditStatementData(res);
         }
       } else {
-        let topic_res = await getCurrentTopicRecordApi({
+        await getCurrentTopicRecordApi({
           topic_num: router?.query?.statement?.at(0).split("-")[0],
           camp_num: router?.query?.statement?.at(1).split("-")[0] ?? "1",
         });

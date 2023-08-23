@@ -92,45 +92,41 @@
 // });
 import {
   fireEvent,
-  queryAllByTestId,
   render,
   screen,
   waitFor,
 } from "../../../../utils/testUtils";
-import DirectSupportedCampsUI from "../DirectSupportedCampsUI/index";
-import messages from "../../../../messages";
+// import DirectSupportedCampsUI from "../DirectSupportedCampsUI/index";
+// import messages from "../../../../messages";
 import DirectSupportedCamps from "..";
-import userEvent from "@testing-library/user-event";
+// import userEvent from "@testing-library/user-event";
 import { useRouter } from "next/router";
 import { renderHook } from "@testing-library/react-hooks";
 import { useState } from "react";
-import { Input, message } from "antd";
-import {
-  getDirectSupportedCampsList,
-  removeOrUpdateDirectSupportCamps,
-} from "src/network/api/userApi";
-import SupportRemovedModal from "../../../common/supportRemovedModal";
+// import {
+//   getDirectSupportedCampsList,
+//   removeOrUpdateDirectSupportCamps,
+// } from "src/network/api/userApi";
+// import SupportRemovedModal from "../../../common/supportRemovedModal";
 
-const { labels } = messages;
-
-const isSupportedCampsModalVisible = true;
-const removeCardSupportedCamps = jest.fn();
-const handleSupportedCampsCancel = jest.fn();
-const removeSupport = jest.fn();
-const search = "",
-  idData = "",
-  visible = "false",
-  revertBack = [];
-const handleOk = jest.fn();
-const handleCancel = jest.fn();
-const handleRevertBack = jest.fn();
-const setRevertBack = jest.fn();
-const showSaveChanges = false;
-const setCardCamp_ID = jest.fn();
-const setShowSaveChanges = jest.fn();
-const saveChanges = jest.fn();
-const handleClose = jest.fn();
-const setDirectSupportedCampsList = [];
+// const isSupportedCampsModalVisible = true;
+// const removeCardSupportedCamps = jest.fn();
+// const handleSupportedCampsCancel = jest.fn();
+// const removeSupport = jest.fn();
+const search = "";
+// idData = "",
+// visible = "false",
+// revertBack = [];
+// const handleOk = jest.fn();
+// const handleCancel = jest.fn();
+// const handleRevertBack = jest.fn();
+// const setRevertBack = jest.fn();
+// const showSaveChanges = false;
+// const setCardCamp_ID = jest.fn();
+// const setShowSaveChanges = jest.fn();
+// const saveChanges = jest.fn();
+// const handleClose = jest.fn();
+// const setDirectSupportedCampsList = [];
 
 const directSupportedCampsList = [
   {

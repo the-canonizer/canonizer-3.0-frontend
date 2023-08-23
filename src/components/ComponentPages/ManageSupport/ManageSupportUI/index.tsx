@@ -11,7 +11,7 @@ import styles from "../ManageSupportUI/ManageSupport.module.scss";
 import messages from "../../../../messages";
 import { RootState } from "src/store";
 import { addSupport, removeSupportedCamps } from "src/network/api/userApi";
-import { GetActiveSupportTopic } from "src/network/api/topicAPI";
+// import { GetActiveSupportTopic } from "src/network/api/topicAPI";
 import CustomSkelton from "src/components/common/customSkelton";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
 
@@ -42,23 +42,17 @@ const ManageSupportUI = ({
   const [tagsArrayList, setTagsArrayList] = useState([]);
   const [isTagDragged, setIsTagDragged] = useState(false);
   const [isSupportTreeCardModal, setIsSupportTreeCardModal] = useState(false);
-  const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
-  const [topicSupportList, setTopicSupportList] = useState([]);
+  // const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
+  // const [topicSupportList, setTopicSupportList] = useState([]);
   const [removeCampsSupport, setRemoveCampsSupport] = useState(false);
 
-  const {
-    currentDelegatedSupportedClick,
-    topicRecord,
-    campRecord,
-    currentGetCheckSupportExistsData,
-  } = useSelector((state: RootState) => ({
-    currentDelegatedSupportedClick:
-      state.supportTreeCard.currentDelegatedSupportedClick,
-    topicRecord: state?.topicDetails?.currentTopicRecord,
-    currentGetCheckSupportExistsData:
-      state.topicDetails.currentGetCheckSupportExistsData,
-    campRecord: state?.topicDetails?.currentCampRecord,
-  }));
+  const { currentDelegatedSupportedClick, currentGetCheckSupportExistsData } =
+    useSelector((state: RootState) => ({
+      currentDelegatedSupportedClick:
+        state.supportTreeCard.currentDelegatedSupportedClick,
+      currentGetCheckSupportExistsData:
+        state.topicDetails.currentGetCheckSupportExistsData,
+    }));
 
   const dispatch = useDispatch();
   const router = useRouter();

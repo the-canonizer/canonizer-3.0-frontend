@@ -1,4 +1,4 @@
-import { render, screen, waitFor, fireEvent } from "src/utils/testUtils";
+import { render, screen } from "src/utils/testUtils";
 import { Provider } from "react-redux";
 import userEvent from "@testing-library/user-event";
 import configureMockStore from "redux-mock-store";

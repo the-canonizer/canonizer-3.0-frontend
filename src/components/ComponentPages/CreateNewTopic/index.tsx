@@ -20,7 +20,7 @@ const CreateNewTopic = ({
   testNickName = [],
   testNamespace = [],
   testInitialValue = {},
-}) => {
+}: any) => {
   const { nameSpaces, filterByScore, filterObject, viewThisVersion } =
     useSelector((state: RootState) => ({
       filterByScore: state.filters?.filterObject?.filterByScore,

@@ -42,7 +42,7 @@ import CompareStatementUI from "../";
 
 // jest.mock("src/network/api/history");
 
-describe("Compare Statement page", () => {
+describe("Compare Statements page", () => {
   // beforeEach(() => {
   //   // useRouter.mockReset();
   //   getCompareStatement.mockReset();

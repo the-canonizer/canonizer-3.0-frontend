@@ -25,18 +25,18 @@ import {
   getCurrentTopicRecordApi,
 } from "../../../network/api/campDetailApi";
 import { setThread, setPost } from "../../../store/slices/campForumSlice";
-import CampInfoBar from "../TopicDetails/CampInfoBar";
+// import CampInfoBar from "../TopicDetails/CampInfoBar";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 const ForumComponent = ({
   threadlist = [],
   postlist = { items: [], total_rows: 0 },
-}) => {
+}: any) => {
   const router = useRouter();
 
   const { isUserAuthenticated } = useIsUserAuthenticated();
   const didMount = useRef(false);
-  const didMountList = useRef(false);
+  // const didMountList = useRef(false);
   const didMountPost = useRef(false);
 
   const [paramsList, setParamsList] = useState({});

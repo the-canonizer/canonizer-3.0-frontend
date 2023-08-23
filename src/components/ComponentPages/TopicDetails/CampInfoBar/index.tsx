@@ -1,6 +1,6 @@
 import { Spin, Tooltip, Typography } from "antd";
 import { useRouter } from "next/router";
-import { useState, useEffect, useRef, Fragment } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getTreesApi,
@@ -8,7 +8,7 @@ import {
 } from "../../../../network/api/campDetailApi";
 import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
-import { Dropdown, Menu, Button } from "antd";
+import { Menu } from "antd";
 import K from "../../../../constants";
 import moment from "moment";
 import CustomSkelton from "../../../common/customSkelton";
@@ -18,17 +18,13 @@ import { setManageSupportStatusCheck } from "../../../../store/slices/campDetail
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import { getCampBreadCrumbApi } from "../../../../network/api/campDetailApi";
 import {
-  MoreOutlined,
   FileTextOutlined,
   HeartOutlined,
   DoubleRightOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
-import {
-  replaceSpecialCharacters,
-  isServer,
-} from "../../../../utils/generalUtility";
-import SocialShareUI from "../../../common/socialShare";
+import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
+// import SocialShareUI from "../../../common/socialShare";
 import GenerateModal from "src/components/common/generateScript";
 
 const CodeIcon = () => (
@@ -134,26 +130,26 @@ const TimelineInfoBar = ({
     dispatch(setManageSupportStatusCheck(true));
   };
 
-  const onCampForumClick = () => {
-    const topicName = topicRecord?.topic_name?.replaceAll(" ", "-");
-    const campName = campRecord?.camp_name?.replaceAll(" ", "-");
-    router?.push({
-      pathname: `/forum/${topicRecord?.topic_num}-${replaceSpecialCharacters(
-        topicName,
-        "-"
-      )}/${campRecord?.camp_num}-${replaceSpecialCharacters(
-        campName,
-        "-"
-      )}/threads`,
-    });
-  };
+  // const onCampForumClick = () => {
+  //   const topicName = topicRecord?.topic_name?.replaceAll(" ", "-");
+  //   const campName = campRecord?.camp_name?.replaceAll(" ", "-");
+  //   router?.push({
+  //     pathname: `/forum/${topicRecord?.topic_num}-${replaceSpecialCharacters(
+  //       topicName,
+  //       "-"
+  //     )}/${campRecord?.camp_num}-${replaceSpecialCharacters(
+  //       campName,
+  //       "-"
+  //     )}/threads`,
+  //   });
+  // };
 
-  const eventLinePath = () => {
-    router?.push(router?.asPath.replace("topic", "eventline"));
-  };
-  const eventLinePath2 = () => {
-    router.push(router.asPath.replace("support", "eventline"));
-  };
+  // const eventLinePath = () => {
+  //   router?.push(router?.asPath.replace("topic", "eventline"));
+  // };
+  // const eventLinePath2 = () => {
+  //   router.push(router.asPath.replace("support", "eventline"));
+  // };
 
   const campOrTopicScribe = async (isTopic: Boolean) => {
     const reqBodyForService = {

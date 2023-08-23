@@ -3,8 +3,6 @@ import { Slider, Popover, Typography } from "antd";
 import {
   CaretRightOutlined,
   PauseOutlined,
-  BackwardOutlined,
-  ForwardOutlined,
   StepBackwardOutlined,
   StepForwardOutlined,
   DashboardOutlined,
@@ -34,7 +32,7 @@ function TimelineSlider({
   handleForwardOrBackord,
   isPlaying,
   setIsPlaying,
-}) {
+}: any) {
   const [intervalId, setIntervalId] = useState(null);
 
   const [speedBar, setSpeedBar] = useState(false);

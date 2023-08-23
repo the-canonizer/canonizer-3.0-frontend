@@ -3,7 +3,7 @@ import Skeleton from "react-loading-skeleton";
 
 import styles from "./style.module.scss";
 
-const PostCustomSkelton = ({ bodyCount, stylingClass }) => {
+const PostCustomSkelton = ({ bodyCount, stylingClass }: any) => {
   return (
     <Card
       className={`${styles.cardSkeleton} ${styles.postCard}`}

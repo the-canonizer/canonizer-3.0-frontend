@@ -8,8 +8,8 @@ import UploadFileUI from "../UploadFilesUI";
 import messages from "../../../../messages";
 import { cleanup } from "@testing-library/react-hooks";
 import { Empty, Input } from "antd";
-import { Provider, useDispatch } from "react-redux";
-import { showDrageBox } from "src/store/slices/uiSlice";
+import { Provider } from "react-redux";
+// import { showDrageBox } from "src/store/slices/uiSlice";
 import { store } from "src/store";
 
 jest.mock("src/hooks/isUserAuthenticated", () =>
@@ -56,10 +56,10 @@ const setFlickringData = jest.fn();
 const toggleFileView = true;
 const setToggleFileView = jest.fn();
 
-const dragBoxShow = () => {
-  const dispatch = useDispatch();
-  dispatch(showDrageBox());
-};
+// const dragBoxShow = () => {
+//   const dispatch = useDispatch();
+//   dispatch(showDrageBox());
+// };
 
 // const listview = <ListView/>
 
@@ -223,11 +223,11 @@ const createNewFolder = {
   updated_at: 161616556,
   user_id: 362,
 };
-function createMockRouter() {
-  return {
-    showDrageBox: true,
-  };
-}
+// function createMockRouter() {
+//   return {
+//     showDrageBox: true,
+//   };
+// }
 describe("Upload File UI Page", () => {
   it("render Upload Files Page ", () => {
     render(

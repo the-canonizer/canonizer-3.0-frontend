@@ -17,7 +17,7 @@ import CustomSkelton from "src/components/common/customSkelton";
 
 const { Panel } = Collapse;
 
-const CurrentTopicCard = ({ loadingIndicator, backGroundColorClass }) => {
+const CurrentTopicCard = ({ loadingIndicator, backGroundColorClass }: any) => {
   const router = useRouter();
   const { topicRecord } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,

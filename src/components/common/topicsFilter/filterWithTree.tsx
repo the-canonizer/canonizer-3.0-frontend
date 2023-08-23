@@ -32,7 +32,7 @@ import K from "../../../constants";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 // import { showCreateCampButton } from "src/utils/generalUtility";
 import FullScoreCheckbox from "../../ComponentPages/FullScoreCheckbox";
-import useAuthentication from "src/hooks/isUserAuthenticated";
+// import useAuthentication from "src/hooks/isUserAuthenticated";
 import ArchivedCampCheckBox from "src/components/ComponentPages/ArchivedCampCheckBox";
 import CampTreeCard from "src/components/ComponentPages/TopicDetails/CampTreeCard";
 
@@ -98,7 +98,7 @@ const FilterWithTree = ({
   setSupportTreeForCamp,
   backGroundColorClass,
 }: any) => {
-  const isAuth = useAuthentication();
+  // const isAuth = useAuthentication();
 
   const [isDatePicker, setIsDatePicker] = useState(false);
   // const [isPanelCollapse, setIsPanelCollapse] = useState(false);
@@ -109,9 +109,9 @@ const FilterWithTree = ({
   const router = useRouter();
   const [isCampBtnVisible, setIsCampBtnVisible] = useState(false);
 
-  const campRoute = () => {
-    router?.push("/create/topic");
-  };
+  // const campRoute = () => {
+  //   router?.push("/create/topic");
+  // };
 
   const [cookies, setCookie] = useCookies(["canAlgo", "asof", "asofDate"]);
 
@@ -121,11 +121,11 @@ const FilterWithTree = ({
     selectedAlgorithm,
     selectedAsOf,
     filteredAsOfDate,
-    currentCampNode,
-    tree,
+    // currentCampNode,
+    // tree,
     loading,
     current_date_filter,
-    campExist,
+    // campExist,
     filterObject,
     viewThisVersion,
   } = useSelector((state: RootState) => ({
@@ -134,17 +134,17 @@ const FilterWithTree = ({
     selectedAlgorithm: state?.filters?.filterObject?.algorithm,
     selectedAsOf: state?.filters?.filterObject?.asof,
     filteredAsOfDate: state?.filters?.filterObject?.asofdate,
-    currentCampNode: state?.filters?.selectedCampNode,
-    tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
+    // currentCampNode: state?.filters?.selectedCampNode,
+    // tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
     loading: state?.loading?.loading,
     current_date_filter: state?.filters?.current_date,
-    campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
+    // campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
     filterObject: state?.filters?.filterObject,
     viewThisVersion: state?.filters?.viewThisVersionCheck,
   }));
-  const { campRecord } = useSelector((state: RootState) => ({
-    campRecord: state?.topicDetails?.currentCampRecord,
-  }));
+  // const { campRecord } = useSelector((state: RootState) => ({
+  //   campRecord: state?.topicDetails?.currentCampRecord,
+  // }));
   const [value, setValue] = useState(
     selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3
   );

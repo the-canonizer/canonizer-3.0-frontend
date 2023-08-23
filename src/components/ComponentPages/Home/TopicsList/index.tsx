@@ -17,7 +17,7 @@ import {
 } from "../../../../store/slices/filtersSlice";
 import styles from "./topicsList.module.scss";
 import { Spin, Checkbox } from "antd";
-import { LoadingOutlined, CopyOutlined } from "@ant-design/icons";
+import { LoadingOutlined } from "@ant-design/icons";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import {
   setCheckSupportExistsData,
@@ -29,8 +29,8 @@ import {
   changeSlashToArrow,
 } from "src/utils/generalUtility";
 import CustomSkelton from "../../../common/customSkelton";
-import { CloseCircleOutlined } from "@ant-design/icons";
-import { clearAllListeners } from "@reduxjs/toolkit";
+// import { CloseCircleOutlined } from "@ant-design/icons";
+// import { clearAllListeners } from "@reduxjs/toolkit";
 
 const antIcon = <LoadingOutlined spin />;
 const { Title, Text, Paragraph } = Typography;
@@ -486,8 +486,9 @@ const TopicsList = () => {
                       <LoadingOutlined spin />
                     </li>
                   ) : searchedResult?.length > 0 ? (
-                    searchedResult?.map((t) => (
+                    searchedResult?.map((t, i) => (
                       <li
+                        key={i}
                         onClick={hanldeTopicNameClick.bind(this, t?.topic_name)}
                       >
                         {t?.topic_name}

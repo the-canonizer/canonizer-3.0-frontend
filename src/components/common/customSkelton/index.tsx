@@ -1,17 +1,7 @@
-import {
-  Avatar,
-  Card,
-  Col,
-  Form,
-  Input,
-  Row,
-  Switch,
-  Table,
-  Typography,
-} from "antd";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import { Card, Col, Form, Row, Typography } from "antd";
+import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import FormItem from "../formElements";
+// import FormItem from "../formElements";
 
 import styles from "./style.module.scss";
 
@@ -19,14 +9,13 @@ import PostCustomSkelton from "./postCard";
 import SubscriptionCustomSkelton from "./subscriptionCard";
 import DelegateCardSkeleton from "./delegateCard";
 import UserProfileCardSkeleton from "./userProfileSupportCars";
-const { Title } = Typography;
 
 const CustomSkelton = ({
   titleName = "",
   skeltonFor,
   bodyCount,
   stylingClass,
-  isButton,
+
   action = true,
   bordered = true,
   title = true,
@@ -36,7 +25,7 @@ const CustomSkelton = ({
   circle = false,
 
   height = 0,
-}) => {
+}: any) => {
   return skeltonFor == "card" ? (
     <Card
       className={` ${styles.cardSkeleton} ${styles[cardStylingClass]}`}

@@ -28,11 +28,11 @@ const LoginUi = ({
   closeModal,
   isModal,
   openForgotPasswordModal,
-  openRegistration,
+  // openRegistration,
   onOTPClick,
   errorMsg,
   rememberValue,
-}) => {
+}: any) => {
   const router = useRouter();
 
   useEffect(() => {

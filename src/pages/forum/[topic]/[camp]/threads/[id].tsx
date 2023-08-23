@@ -13,7 +13,7 @@ import {
 import Layout from "../../../../../hoc/layout";
 import CampForumComponent from "../../../../../components/ComponentPages/CampForum";
 
-function CampForumPostPage({ topicRecord, campRecord, postList }) {
+function CampForumPostPage({ topicRecord, campRecord, postList }: any) {
   const dispatch = useDispatch();
   dispatch(setCurrentTopicRecord(topicRecord));
   dispatch(setCurrentCampRecord(campRecord));

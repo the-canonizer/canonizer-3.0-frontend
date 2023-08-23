@@ -26,7 +26,7 @@ const validUrl = (url) => {
   }
 };
 
-const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }) => {
+const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }: any) => {
   const router = useRouter();
   const { campRecord, topicRecord, history } = useSelector(
     (state: RootState) => ({

@@ -13,7 +13,7 @@ import { getThreadsList } from "../../../../../network/api/campForumApi";
 import Layout from "../../../../../hoc/layout";
 import CampForumComponent from "../../../../../components/ComponentPages/CampForum";
 
-function CampForumListPage({ topicRecord, campRecord, threadList }) {
+function CampForumListPage({ topicRecord, campRecord, threadList }: any) {
   const dispatch = useDispatch();
   dispatch(setCurrentTopicRecord(topicRecord));
   dispatch(setCurrentCampRecord(campRecord));

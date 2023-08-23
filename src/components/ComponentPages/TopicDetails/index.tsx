@@ -12,22 +12,21 @@ import {
   getCanonizedCampStatementApi,
   getNewsFeedApi,
   getTreesApi,
-  getCanonizedCampSupportingTreeApi,
+  // getCanonizedCampSupportingTreeApi,
   getCurrentTopicRecordApi,
   getCurrentCampRecordApi,
 } from "src/network/api/campDetailApi";
-import { fallBackSrc } from "src/assets/data-images";
 import { RootState } from "src/store";
 import SideBar from "../Home/SideBar";
 import CampStatementCard from "./CampStatementCard";
 import CampInfoBar from "./CampInfoBar";
 import styles from "./topicDetails.module.scss";
-import CampTreeCard from "./CampTreeCard";
+// import CampTreeCard from "./CampTreeCard";
 import CurrentCampCard from "./CurrentCampCard";
 import CurrentTopicCard from "./CurrentTopicCard";
 import NewsFeedsCard from "./NewsFeedsCard";
 import SupportTreeCard from "./SupportTreeCard";
-import { BackTop, Image, Typography, message, Alert, Row, Col } from "antd";
+import { BackTop, Typography, message, Alert, Row, Col } from "antd";
 import { Spin } from "antd";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
@@ -54,10 +53,10 @@ import {
   removeSupportedCampsEntireTopic,
 } from "src/network/api/userApi";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
-import { SupportTreeTotalScore } from "src/network/api/campDetailApi";
+// import { SupportTreeTotalScore } from "src/network/api/campDetailApi";
 import InfoBar from "./CampInfoBar/infoBar";
 
-const TopicDetails = ({ serverSideCall }) => {
+const TopicDetails = ({ serverSideCall }: any) => {
   let myRefToCampStatement = useRef(null);
   const didMount = useRef(false);
   const { isUserAuthenticated } = isAuth();

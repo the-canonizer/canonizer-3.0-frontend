@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import moment from "moment";
 import {
   Typography,
-  Button,
+  // Button,
   Collapse,
   Select,
   Radio,
@@ -10,7 +10,7 @@ import {
   Input,
   DatePicker,
   Popover,
-  Tooltip,
+  // Tooltip,
 } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
 import { RootState } from "../../../store";
@@ -32,7 +32,7 @@ import K from "../../../constants";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 // import { showCreateCampButton } from "src/utils/generalUtility";
 import FullScoreCheckbox from "../../ComponentPages/FullScoreCheckbox";
-import useAuthentication from "src/hooks/isUserAuthenticated";
+// import useAuthentication from "src/hooks/isUserAuthenticated";
 import ArchivedCampCheckBox from "src/components/ComponentPages/ArchivedCampCheckBox";
 
 const infoContent = (
@@ -90,7 +90,7 @@ const asContent = (
 // }
 
 const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
-  const isAuth = useAuthentication();
+  // const isAuth = useAuthentication();
 
   const [isDatePicker, setIsDatePicker] = useState(false);
   // const [isPanelCollapse, setIsPanelCollapse] = useState(false);
@@ -101,9 +101,9 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   const router = useRouter();
   const [isCampBtnVisible, setIsCampBtnVisible] = useState(false);
 
-  const campRoute = () => {
-    router?.push("/create/topic");
-  };
+  // const campRoute = () => {
+  //   router?.push("/create/topic");
+  // };
   const [cookies, setCookie] = useCookies(["canAlgo", "asof", "asofDate"]);
 
   const {
@@ -113,11 +113,11 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
     selectedAsOf,
     filteredAsOfDate,
     filterObject,
-    currentCampNode,
-    tree,
+    // currentCampNode,
+    // tree,
     loading,
     current_date_filter,
-    campExist,
+    // campExist,
     viewThisVersion,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
@@ -126,16 +126,16 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
     selectedAsOf: state?.filters?.filterObject?.asof,
     filteredAsOfDate: state?.filters?.filterObject?.asofdate,
     filterObject: state?.filters?.filterObject,
-    currentCampNode: state?.filters?.selectedCampNode,
-    tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
+    // currentCampNode: state?.filters?.selectedCampNode,
+    // tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
     loading: state?.loading?.loading,
     current_date_filter: state?.filters?.current_date,
-    campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
+    // campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
     viewThisVersion: state?.filters?.viewThisVersionCheck,
   }));
-  const { campRecord } = useSelector((state: RootState) => ({
-    campRecord: state?.topicDetails?.currentCampRecord,
-  }));
+  // const { campRecord } = useSelector((state: RootState) => ({
+  //   campRecord: state?.topicDetails?.currentCampRecord,
+  // }));
   const [value, setValue] = useState(
     selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3
   );

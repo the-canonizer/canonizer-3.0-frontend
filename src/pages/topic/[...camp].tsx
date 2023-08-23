@@ -1,3 +1,4 @@
+import React from "react";
 import { useDispatch } from "react-redux";
 import {
   getCanonizedCampStatementApi,
@@ -14,10 +15,7 @@ import {
   setCurrentCampRecord,
 } from "../../store/slices/campDetailSlice";
 import { setHistory } from "../../store/slices/campDetailSlice";
-import { setCanonizedAlgorithms } from "../../store/slices/homePageSlice";
 import Layout from "src/hoc/layout";
-
-import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 
 import { getHistoryApi } from "../../network/api/history";
 
@@ -37,7 +35,7 @@ const TopicDetailsPage = ({
   statementHistory,
   tree,
   serverCall,
-}) => {
+}: any) => {
   const serverSideCall = useRef(serverCall || false);
   const dispatch = useDispatch();
 

@@ -1,24 +1,17 @@
 import React, { useEffect, useState } from "react";
-import moment from "moment";
+// import moment from "moment";
 import {
   Typography,
-  Button,
+  // Button,
   Collapse,
   Select,
-  Radio,
-  Space,
   Input,
-  DatePicker,
+  // DatePicker,
   Popover,
-  Tooltip,
 } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
 import { RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsReviewCanonizedTopics } from "../../../store/slices/filtersSlice";
-import Link from "next/link";
-
-import { setViewThisVersion } from "src/store/slices/filtersSlice";
 
 const { Title, Text, Paragraph } = Typography;
 const { Panel } = Collapse;
@@ -27,11 +20,11 @@ const { Option } = Select;
 import styles from "./topicListFilter.module.scss";
 import { useRouter } from "next/router";
 import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
-import K from "../../../constants";
+// import K from "../../../constants";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 // import { showCreateCampButton } from "src/utils/generalUtility";
-import FullScoreCheckbox from "../../ComponentPages/FullScoreCheckbox";
-import useAuthentication from "src/hooks/isUserAuthenticated";
+// import FullScoreCheckbox from "../../ComponentPages/FullScoreCheckbox";
+// import useAuthentication from "src/hooks/isUserAuthenticated";
 
 const infoContent = (
   <>
@@ -46,25 +39,25 @@ const infoContent = (
   </>
 );
 
-const asContent = (
-  <>
-    <div className={styles.asfoText}>
-      <Title level={5}>Include review</Title>
-      <Paragraph>
-        In addition to the published camps, this option shows camps in Review.
-      </Paragraph>
-      <Title level={5}>Default</Title>
-      <Paragraph>
-        This option lists down the latest (current date) version of camps.
-      </Paragraph>
-      <Title level={5}>As of date</Title>
-      <Paragraph>
-        This option shows the historical view of camps according to the selected
-        date.
-      </Paragraph>
-    </div>
-  </>
-);
+// const asContent = (
+//   <>
+//     <div className={styles.asfoText}>
+//       <Title level={5}>Include review</Title>
+//       <Paragraph>
+//         In addition to the published camps, this option shows camps in Review.
+//       </Paragraph>
+//       <Title level={5}>Default</Title>
+//       <Paragraph>
+//         This option lists down the latest (current date) version of camps.
+//       </Paragraph>
+//       <Title level={5}>As of date</Title>
+//       <Paragraph>
+//         This option shows the historical view of camps according to the selected
+//         date.
+//       </Paragraph>
+//     </div>
+//   </>
+// );
 
 // function range(start, end) {
 //   const result = [];
@@ -88,20 +81,20 @@ const asContent = (
 // }
 
 const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
-  const isAuth = useAuthentication();
+  // const isAuth = useAuthentication();
 
   const [isDatePicker, setIsDatePicker] = useState(false);
   // const [isPanelCollapse, setIsPanelCollapse] = useState(false);
 
-  const [datePickerValue, setDatePickerValue] = useState(null);
+  // const [datePickerValue, setDatePickerValue] = useState(null);
 
   const dispatch = useDispatch();
   const router = useRouter();
   const [isCampBtnVisible, setIsCampBtnVisible] = useState(false);
 
-  const campRoute = () => {
-    router?.push("/create/topic");
-  };
+  // const campRoute = () => {
+  //   router?.push("/create/topic");
+  // };
 
   const { algorithms, filteredScore, selectedAlgorithm, loading } = useSelector(
     (state: RootState) => ({

@@ -6,11 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { setViewThisVersion } from "src/store/slices/filtersSlice";
 import moment from "moment";
 import { setFilterCanonizedTopics } from "../../../../store/slices/filtersSlice";
-import styles from "./topicDetails.module.scss";
+// import styles from "./topicDetails.module.scss";
 import Link from "next/link";
 import { RootState } from "src/store";
 import activityStyle from "../../Home/CampRecentActivities/campRecentActivities.module.scss";
-const Events = ({ timelineDescript }) => {
+const Events = ({ timelineDescript }: any) => {
   const dispatch = useDispatch();
   const [check, setCheck] = useState(true);
   const router = useRouter();

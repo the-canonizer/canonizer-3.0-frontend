@@ -1,7 +1,6 @@
 import { Fragment, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import dynamic from "next/dynamic";
 import Layout from "src/hoc/layout";
 // const Layout = dynamic(() => import("../hoc/layout"));
 import HomePageContainer from "src/components/ComponentPages/Home";
@@ -12,13 +11,10 @@ import {
 } from "src/store/slices/filtersSlice";
 import { GetUserProfileInfo } from "src/network/api/userApi";
 import { setAuthToken, setLoggedInUser } from "src/store/slices/authSlice";
-import { useCookies } from "react-cookie";
 
 function Home({ current_date }) {
   const dispatch = useDispatch();
   const router = useRouter();
-
-  const [cookie, setCookie] = useCookies(["authToken"]);
 
   dispatch(setFilterCanonizedTopics({ search: "" }));
   dispatch(setCurrentDate(current_date));

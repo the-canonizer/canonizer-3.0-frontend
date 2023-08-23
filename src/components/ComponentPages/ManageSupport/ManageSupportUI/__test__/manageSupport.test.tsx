@@ -8,16 +8,16 @@ import messages from "../../../../../messages";
 import ManageSupportUI from "../index";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import ManageSupport from "../..";
-import { Card, message } from "antd";
-import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/router";
-import { renderHook } from "@testing-library/react-hooks";
-import dynamic from "next/dynamic";
-import moment from "moment";
-import isAuth from "src/hooks/isUserAuthenticated";
-import { act } from "react-dom/test-utils";
-import { placeholders } from "src/messages/placeholder";
-import SupportRemovedModal from "src/components/common/supportRemovedModal";
+import { Card } from "antd";
+import { useRef } from "react";
+// import { useRouter } from "next/router";
+// import { renderHook } from "@testing-library/react-hooks";
+// import dynamic from "next/dynamic";
+// import moment from "moment";
+// import isAuth from "src/hooks/isUserAuthenticated";
+// import { act } from "react-dom/test-utils";
+// import { placeholders } from "src/messages/placeholder";
+// import SupportRemovedModal from "src/components/common/supportRemovedModal";
 
 const { labels } = messages;
 const nickNameList = [
@@ -58,8 +58,8 @@ const currentGetCheckSupportExist = {
 const currentDelegatedSupportedClick = {
   delegatedSupportClick: true,
 };
-const checkDelegateClick = true;
-const manageSupportLink = "/support/949-top/2-camp-1 link";
+// const checkDelegateClick = true;
+// const manageSupportLink = "/support/949-top/2-camp-1 link";
 const manageSupportList = [];
 const clearAllChanges = jest.fn();
 const removeAll = jest.fn();
@@ -98,53 +98,53 @@ const campRecord = {
     },
   ],
 };
-const currentGetCheckSupportExistData = {
-  camp_num: 1,
-  is_confirm: 0,
-  support_flag: 1,
-  topic_num: 12,
-};
+// const currentGetCheckSupportExistData = {
+//   camp_num: 1,
+//   is_confirm: 0,
+//   support_flag: 1,
+//   topic_num: 12,
+// };
 
-const topicSupportList = [
-  {
-    camp_name: "Aggreement",
-    camp_num: 1,
-    delegate_nick_name_id: 1,
-    end: 0,
-    link: "",
-    namespace_id: 1,
-    nick_name_id: 627,
-    start: 1111,
-    support_id: 1,
-    support_order: 1,
-    title: "ABC",
-    topic_num: 920,
-  },
-];
+// const topicSupportList = [
+//   {
+//     camp_name: "Aggreement",
+//     camp_num: 1,
+//     delegate_nick_name_id: 1,
+//     end: 0,
+//     link: "",
+//     namespace_id: 1,
+//     nick_name_id: 627,
+//     start: 1111,
+//     support_id: 1,
+//     support_order: 1,
+//     title: "ABC",
+//     topic_num: 920,
+//   },
+// ];
 
-const allParentList = [
-  {
-    camp_about_nick_id: 1,
-    camp_about_url: "",
-    camp_name: "Aggrement",
-    camp_num: 2,
-    direct_archive: 0,
-    go_live_time: 121212,
-    grace_period: 0,
-    id: 23,
-    // is_archive:0,
-    is_disabled: 0,
-    is_one_level: 0,
-    key_words: "abc",
-    language: "English",
-    note: "",
-  },
-];
-const addDelegatedSupport = {
-  nick_name_id: 1,
-  delegated_nick_name_id: 2,
-  topic_num: 12,
-};
+// const allParentList = [
+//   {
+//     camp_about_nick_id: 1,
+//     camp_about_url: "",
+//     camp_name: "Aggrement",
+//     camp_num: 2,
+//     direct_archive: 0,
+//     go_live_time: 121212,
+//     grace_period: 0,
+//     id: 23,
+//     // is_archive:0,
+//     is_disabled: 0,
+//     is_one_level: 0,
+//     key_words: "abc",
+//     language: "English",
+//     note: "",
+//   },
+// ];
+// const addDelegatedSupport = {
+//   nick_name_id: 1,
+//   delegated_nick_name_id: 2,
+//   topic_num: 12,
+// };
 const manageSupport = ["abc-name", "def-age"];
 jest.mock("next/router", () => ({
   useRouter: jest.fn(() => ({

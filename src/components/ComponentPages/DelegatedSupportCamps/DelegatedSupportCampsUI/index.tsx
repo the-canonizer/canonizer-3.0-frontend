@@ -20,7 +20,7 @@ export default function DelegatedSupportCampsUI({
   search,
   removeSupport,
   removeSupportCampsData,
-  statusFlag,
+  // statusFlag,
   delegateSupportedSkeleton,
 }: any) {
   const [displayList, setDisplayList] = useState([]);

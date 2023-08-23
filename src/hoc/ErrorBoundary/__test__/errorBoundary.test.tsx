@@ -1,5 +1,5 @@
 import ErrorBoundary from "../";
-import { render, cleanup, screen } from "@testing-library/react";
+import { render, cleanup } from "@testing-library/react";
 
 afterEach(cleanup);
 

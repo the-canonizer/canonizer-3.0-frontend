@@ -21,7 +21,7 @@ describe("TimelineSlider", () => {
   };
 
   it("should render the slider and control buttons", () => {
-    const { getByText, getByTestId } = render(
+    const { getByTestId } = render(
       <TimelineSlider
         mockData={mockData}
         setStart={jest.fn()}
@@ -134,7 +134,7 @@ describe("TimelineSlider", () => {
   it("should handle slider change and update iteration", () => {
     const setIteration = jest.fn();
     const handleEventSelection = jest.fn();
-    const { getByTestId } = render(
+    render(
       <TimelineSlider
         mockData={mockData}
         setStart={jest.fn()}

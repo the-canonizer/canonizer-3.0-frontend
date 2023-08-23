@@ -1,11 +1,11 @@
-import { Card, Typography, Tag } from "antd";
+import { Card, Typography } from "antd";
 import Skeleton from "react-loading-skeleton";
 
 import styles from "./style.module.scss";
 
 const { Title } = Typography;
 
-const UserProfileCardSkeleton = ({ bodyCount, stylingClass }) => {
+const UserProfileCardSkeleton = ({ bodyCount, stylingClass }: any) => {
   const cardArray = [];
   if (bodyCount == null || bodyCount == undefined || bodyCount == "") {
     bodyCount = 1;

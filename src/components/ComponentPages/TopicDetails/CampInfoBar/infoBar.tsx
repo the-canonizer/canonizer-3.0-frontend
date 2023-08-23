@@ -21,7 +21,6 @@ import {
   MoreOutlined,
   FileTextOutlined,
   HeartOutlined,
-  DoubleRightOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
 import {
@@ -48,7 +47,7 @@ const CodeIcon = () => (
 const InfoBar = ({
   payload = null,
   isTopicPage = false,
-  isTopicHistoryPage = false,
+  // isTopicHistoryPage = false,
   getCheckSupportStatus = null,
   onCreateCamp = () => {},
 }: any) => {
@@ -73,7 +72,6 @@ const InfoBar = ({
     asofdate,
     asof,
     algorithm,
-    viewThisVersionCheck,
     currentCampNode,
     tree,
     campExist,
@@ -85,7 +83,6 @@ const InfoBar = ({
     asofdate: state.filters?.filterObject?.asofdate,
     algorithm: state.filters?.filterObject?.algorithm,
     asof: state?.filters?.filterObject?.asof,
-    viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
     currentCampNode: state?.filters?.selectedCampNode,
     tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
     campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
@@ -140,19 +137,19 @@ const InfoBar = ({
   };
 
   const onCampForumClick = () => {
-    const topicName = topicRecord?.topic_name?.replaceAll(" ", "-");
-    const campName = campRecord?.camp_name?.replaceAll(" ", "-");
+    // const topicName = topicRecord?.topic_name?.replaceAll(" ", "-");
+    // const campName = campRecord?.camp_name?.replaceAll(" ", "-");
     router?.push({
       pathname: `/forum/${router?.query?.camp[0]}/${router?.query?.camp[1]}/threads`,
     });
   };
 
-  const eventLinePath = () => {
-    router?.push(router?.asPath.replace("topic", "eventline"));
-  };
-  const eventLinePath2 = () => {
-    router.push(router.asPath.replace("support", "eventline"));
-  };
+  // const eventLinePath = () => {
+  //   router?.push(router?.asPath.replace("topic", "eventline"));
+  // };
+  // const eventLinePath2 = () => {
+  //   router.push(router.asPath.replace("support", "eventline"));
+  // };
 
   const campOrTopicScribe = async (isTopic: Boolean) => {
     const reqBodyForService = {

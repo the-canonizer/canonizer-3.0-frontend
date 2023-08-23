@@ -1,6 +1,5 @@
 import {
   fireEvent,
-  getByAltText,
   render,
   screen,
   waitFor,

@@ -58,9 +58,9 @@ const nickNameList = [
   },
 ];
 
-const totalPages = 5;
-const currentPage = 3;
-const onPageChange = jest.fn();
+// const totalPages = 5;
+// const currentPage = 3;
+// const onPageChange = jest.fn();
 
 const dropdownNameSpaceList = "";
 const noData = false;

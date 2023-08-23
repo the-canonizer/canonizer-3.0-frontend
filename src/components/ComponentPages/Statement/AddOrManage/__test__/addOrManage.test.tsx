@@ -1,12 +1,6 @@
 import React from "react";
-import {
-  render,
-  fireEvent,
-  screen,
-  waitFor,
-  cleanup,
-} from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { render, screen, waitFor, cleanup } from "@testing-library/react";
+
 import AddOrManage from "../index";
 import { Provider } from "react-redux";
 import { store } from "src/store";
@@ -183,9 +177,9 @@ describe("AddOrManage component", () => {
       expect(container.getElementsByTagName("textarea")).toHaveLength(1);
       expect(container.getElementsByTagName("a")).toHaveLength(0);
 
-      expect(
-        container.getElementsByClassName("wrapperClassName rdw-editor-wrapper")
-      );
+      // expect(
+      //   container.getElementsByClassName("wrapperClassName rdw-editor-wrapper")
+      // );
       expect(submitButton.textContent).toBe("Submit Statement");
       expect(cancelButton.textContent).toBe("Cancel");
       expect(mainHeading.textContent).toBe("Add Camp Statement");
@@ -234,9 +228,9 @@ describe("AddOrManage component", () => {
       expect(container.getElementsByTagName("button")).toHaveLength(1);
       expect(container.getElementsByTagName("input")).toHaveLength(1);
       expect(container.getElementsByTagName("textarea")).toHaveLength(1);
-      expect(
-        container.getElementsByClassName("wrapperClassName rdw-editor-wrapper")
-      );
+      // expect(
+      //   container.getElementsByClassName("wrapperClassName rdw-editor-wrapper")
+      // );
       expect(submitButton.textContent).toBe("Submit Objection");
       expect(mainHeading.textContent).toBe("Object To This Proposed Change");
     });
@@ -309,7 +303,7 @@ describe("AddOrManage component", () => {
         screen.getAllByText(/camp about nickname/i)[0]
       ).toBeInTheDocument();
       expect(
-        screen.getByText(/\-\-select camp about nickname/i)
+        screen.getByText(/select camp about nickname/i)
       ).toBeInTheDocument();
       expect(container.getElementsByTagName("button")).toHaveLength(2);
       expect(container.getElementsByTagName("input")).toHaveLength(8);

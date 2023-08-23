@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { Typography, Button, List, Spin, Affix } from "antd";
+import { Typography, Button, List, Affix } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
@@ -16,7 +16,6 @@ import HistoryCollapse from "./Collapse";
 import { RootState } from "src/store";
 import CampInfoBar from "../TopicDetails/CampInfoBar";
 import CreateNewCampButton from "../../common/button/createNewCampBtn";
-import CreateNewTopicButton from "../../common/button/createNewTopicBtn";
 import { setCurrentCamp } from "src/store/slices/filtersSlice";
 import useIsUserAuthenticated from "../../../hooks/isUserAuthenticated";
 
@@ -63,9 +62,7 @@ function HistoryContainer() {
       asof: state?.filters?.filterObject?.asof,
       algorithm: state.filters?.filterObject?.algorithm,
     }));
-  const { campRecord } = useSelector((state: RootState) => ({
-    campRecord: state?.topicDetails?.currentCampRecord,
-  }));
+
   const [isTreesApiCallStop, setIsTreesApiCallStop] = useState(false);
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [campHistory, setCampHistory] = useState(history);
@@ -186,9 +183,9 @@ function HistoryContainer() {
     setActiveTab(tabName);
   };
 
-  const topicRoute = () => {
-    setLoadingIndicator(true);
-  };
+  // const topicRoute = () => {
+  //   setLoadingIndicator(true);
+  // };
 
   const campRoute = () => {
     setLoadingIndicator(true);
@@ -299,8 +296,8 @@ function HistoryContainer() {
   const callManageCampApi = async () => {
     // window.location.reload()
     setLoadingIndicator(true);
-    if( campHistory?.items?.length >= 3){
-      count.current =1
+    if (campHistory?.items?.length >= 3) {
+      count.current = 1;
     }
     updateCampApi(reqBody);
     await campStatementApiCall();
