@@ -79,17 +79,19 @@ function HotTopic({}) {
               }),
             }}
           ></div>
-          <Link
-            href={{
-              pathname: `/topic/${topicData?.topic_num}-${
-                topicData?.topic_name || ""
-              }/${topicData?.camp_num || 1}-${
-                topicData?.camp_name || "Agreement"
-              }`,
-            }}
-          >
-            View Topic
-          </Link>
+          {topicData?.topic_name && topicData?.topic_num && (
+            <Link
+              href={{
+                pathname: `/topic/${topicData?.topic_num}-${
+                  topicData?.topic_name || ""
+                }/${topicData?.camp_num || 1}-${
+                  topicData?.camp_name || "Agreement"
+                }`,
+              }}
+            >
+              View Topic
+            </Link>
+          )}
         </div>
       </Card>
     </Fragment>
