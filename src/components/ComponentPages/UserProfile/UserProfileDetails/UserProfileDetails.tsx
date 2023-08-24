@@ -13,7 +13,7 @@ const UserProfileDetails = ({
   return (
     <>
       {
-        !userSupportedCampsList[0]?.private_status ? (
+        !userSupportedCampsList?.[0]?.private_status ? (
           <Card
             title={
               <h3 style={{ margin: "0px" }}>{messages.labels.userProfile} </h3>
@@ -30,7 +30,7 @@ const UserProfileDetails = ({
               <div>
                 <div style={{ paddingBottom: "8px" }}>
                   <Row gutter={30}>
-                    {profileData.first_name || profileData.last_name ? (
+                    {profileData?.first_name || profileData?.last_name ? (
                       <Col md={12} sm={12} xs={12}>
                         <label className={styles.userProfileLabel}>
                           {messages.labels.name}
@@ -52,7 +52,7 @@ const UserProfileDetails = ({
                     ) : (
                       ""
                     )}
-                    {profileData.email ? (
+                    {profileData?.email ? (
                       <Col md={12} sm={12} xs={12}>
                         <label className={styles.userProfileLabel}>
                           {messages.labels.emailAddress}
@@ -63,7 +63,7 @@ const UserProfileDetails = ({
                       ""
                     )}
 
-                    {profileData.address_1 ? (
+                    {profileData?.address_1 ? (
                       <Col md={12} sm={12} xs={12}>
                         <label className={styles.userProfileLabel}>
                           {messages.labels.address}
@@ -73,7 +73,7 @@ const UserProfileDetails = ({
                     ) : (
                       ""
                     )}
-                    {profileData.city ? (
+                    {profileData?.city ? (
                       <Col md={12} sm={12} xs={12}>
                         <label className={styles.userProfileLabel}>
                           {messages.labels.City}
@@ -83,7 +83,7 @@ const UserProfileDetails = ({
                     ) : (
                       ""
                     )}
-                    {profileData.postal_code ? (
+                    {profileData?.postal_code ? (
                       <Col md={12} sm={12} xs={12}>
                         <label className={styles.userProfileLabel}>
                           {messages.labels.zipcode}
@@ -93,7 +93,7 @@ const UserProfileDetails = ({
                     ) : (
                       ""
                     )}
-                    {profileData.country ? (
+                    {profileData?.country ? (
                       <Col md={12} sm={12} xs={12}>
                         <label className={styles.userProfileLabel}>
                           {messages.labels.country}

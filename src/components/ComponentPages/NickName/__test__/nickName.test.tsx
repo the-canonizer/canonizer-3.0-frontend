@@ -10,7 +10,7 @@ import userEvent from "@testing-library/user-event";
 import NickNameUI from "../NickNameUI/index";
 import messages from "../../../../messages";
 import NickName from "..";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { renderHook } from "@testing-library/react-hooks";
 import { getNickNameList } from "src/network/api/userApi";
@@ -333,7 +333,7 @@ describe("Nickname test cases", () => {
     });
   });
 
-  it("add new neickname ", async () => {
+  it("add new nickname ", async () => {
     const { getAllByTestId, getAllByText } = render(<NickName></NickName>);
 
     await waitFor(async () => {
@@ -345,4 +345,52 @@ describe("Nickname test cases", () => {
       userEvent.click(submit_button);
     });
   });
+
+  it('add new nickname cancel model', async () => {
+    const { container, getAllByText } = render(
+      <NickNameUI
+        addEditTitle={addEditTitle}
+        addEditBtn={addEditBtn}
+        isNickNameModalVisible={isNickNameModalVisible}
+        editNickName={editNickName}
+        handleAddNickName={handleAddNickName}
+        handleNickNameCancel={handleNickNameCancel}
+        onAddUpdateNickName={onAddUpdateNickName}
+        nickNameList={nickNameList}
+        disableButton={disableButton}
+      />
+    )
+    await waitFor(async () => {
+      const add_button = getAllByText("Add New Nickname")
+      userEvent.click(add_button[0])
+      const edit_button = getAllByText("edit")
+      userEvent.click(edit_button[0])
+    })
+  })
+
+  it('cancel button click', async () => {
+    const { getAllByText } = render(<NickName></NickName>)
+    render(
+      <NickNameUI
+        addEditTitle={addEditTitle}
+        addEditBtn={addEditBtn}
+        isNickNameModalVisible={isNickNameModalVisible}
+        editNickName={editNickName}
+        handleAddNickName={handleAddNickName}
+        handleNickNameCancel={handleNickNameCancel}
+        onAddUpdateNickName={onAddUpdateNickName}
+        nickNameList={nickNameList}
+        disableButton={disableButton}
+      />
+    )
+    await waitFor(async () => {
+      const add_button = getAllByText("Add New Nickname")
+      userEvent.click(add_button[0])
+      const edit_button = getAllByText("edit")
+      userEvent.click(edit_button[0])
+    })
+
+  })
+
+
 });
