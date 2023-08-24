@@ -253,6 +253,7 @@ export default function CanonVideos() {
                   className={video.id === selectedVideoId ? styles.active : ""}
                   onClick={() => handleVideoSelection(video)}
                   key={video?.id}
+                  data-testid={video?.title}
                 >
                   {video?.title}
                 </li>
@@ -283,6 +284,7 @@ export default function CanonVideos() {
                         value={data?.link}
                         checked={videoResolution === data?.link}
                         onChange={(e) => onChange(e, data?.title as string)}
+                        data-testid={data?.link}
                       >
                         {data?.title}
                       </Radio>
@@ -313,6 +315,7 @@ export default function CanonVideos() {
                 ref={playeref}
               >
                 <source
+                  data-testid="playerId"
                   src={K.Network.URL?.BaseVideosURL + "/" + videoResolution}
                   type="video/mp4"
                 />

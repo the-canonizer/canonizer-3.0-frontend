@@ -66,6 +66,7 @@ function TopicSubscriptionsTab({
                       type="link"
                       danger
                       icon={<CloseCircleOutlined />}
+                      data-testid="camp-remove"
                     >
                       Remove subscription
                     </Button>

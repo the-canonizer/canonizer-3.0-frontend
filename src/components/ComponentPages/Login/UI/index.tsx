@@ -165,6 +165,7 @@ const LoginUi = ({
                   block
                   onClick={onOTPClick}
                   id="request-otp-btn"
+                  data-testid="request-otp-btn"
                 >
                   Request One Time Verification Code
                 </Button>

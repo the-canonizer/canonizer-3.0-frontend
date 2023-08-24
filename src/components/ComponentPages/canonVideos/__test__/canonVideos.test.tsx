@@ -9,16 +9,18 @@ import {
 import { Provider } from "react-redux";
 import { NextRouter } from "next/router";
 import { RouterContext } from "next/dist/shared/lib/router-context";
+import configureMockStore from "redux-mock-store";
 
 import CanonVideos from "../";
 import { store } from "src/store";
-import { wait } from "@testing-library/user-event/dist/utils";
+import { act } from "react-dom/test-utils";
+import { getVideosContentApi } from "src/network/api/videos";
 
 jest.mock("next/router", () => ({
   __esModule: true,
   useRouter() {
     return {
-      route: "/",
+      route: "/videos/consciousness",
       pathname: "",
       query: {},
       asPath: "",
@@ -118,6 +120,26 @@ jest.mock("src/network/api/videos", () => ({
   ),
 }));
 
+const mockStore = configureMockStore();
+const store1 = mockStore({
+  auth: {
+    authenticated: true,
+    loggedInUser: {
+      is_admin: true,
+    },
+  },
+  topicDetails: {
+    currentCampRecord: {},
+  },
+  filters: {
+    filterObject: {},
+  },
+  forum: {
+    currentThread: null,
+    currentPost: null,
+  },
+});
+
 afterEach(cleanup);
 
 describe("Canonizer Videos", () => {
@@ -137,6 +159,7 @@ describe("Canonizer Videos", () => {
       <Provider store={store}>
         <RouterContext.Provider
           value={createMockRouter({
+            route: "/videos/consciousness",
             asPath: "/videos/consciousness/introduction",
           })}
         >
@@ -156,6 +179,7 @@ describe("Canonizer Videos", () => {
       <Provider store={store}>
         <RouterContext.Provider
           value={createMockRouter({
+            route: "/videos/consciousness",
             asPath: "/videos/consciousness/introduction",
           })}
         >
@@ -175,13 +199,6 @@ describe("Canonizer Videos", () => {
       expect(videoPlayer).toBeInTheDocument();
     });
   });
-
-  // it("renders video player skeleton when video data is loading", () => {
-  //   render(<CanonVideos />);
-
-  //   const videoPlayerSkeleton = screen.getByTestId("video-player-skeleton");
-  //   expect(videoPlayerSkeleton).toBeInTheDocument();
-  // });
 
   it("render heading and labels", () => {
     render(
@@ -203,5 +220,46 @@ describe("Canonizer Videos", () => {
 
     expect(mainHeadig).toBeInTheDocument();
     expect(topictab).toBeInTheDocument();
+  });
+  it("render", async () => {
+    getVideosContentApi.mockResolvedValue({
+      status_code: 200,
+      data: resDat,
+    });
+
+    render(
+      <Fragment>
+        <Provider store={store1}>
+          <RouterContext.Provider
+            value={createMockRouter({
+              route: "/videos/consciousness",
+              asPath: "/videos/consciousness",
+            })}
+          >
+            <CanonVideos />
+          </RouterContext.Provider>
+        </Provider>
+      </Fragment>
+    );
+
+    await waitFor(() => {
+      expect(getVideosContentApi).toHaveBeenCalled();
+      expect(screen.getByText("Introduction")).toBeInTheDocument();
+      expect(screen.getByText("Perceiving a Strawberry")).toBeInTheDocument();
+      fireEvent.click(screen.getByText("Perceiving a Strawberry"));
+      expect(screen.getByTestId("playerId")).toHaveAttribute(
+        "src",
+        "https://canonizer3.canonizer.com/static/videos/consciousness/perceiving_a_strawberry_360.mp4"
+      );
+      // fireEvent.click(screen.getByText("perceiving_a_strawberry_1080.mp4"));
+      // expect(screen.getByTestId("playerId")).toHaveAttribute(
+      //   "src",
+      //   "https://canonizer3.canonizer.com/static/videos/consciousness/perceiving_a_strawberry_1080.mp4"
+      // );
+
+      expect(screen.getByText("360 P")).toBeInTheDocument();
+      expect(screen.getByText("720 P")).toBeInTheDocument();
+      expect(screen.getByText("1080 P")).toBeInTheDocument();
+    });
   });
 });

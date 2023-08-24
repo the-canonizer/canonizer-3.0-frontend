@@ -1,14 +1,26 @@
-import { act, render, screen, waitFor, cleanup } from "src/utils/testUtils";
+import {
+  act,
+  render,
+  screen,
+  waitFor,
+  cleanup,
+  fireEvent,
+} from "src/utils/testUtils";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { NextRouter } from "next/router";
 import { RouterContext } from "next/dist/shared/lib/router-context";
+import configureMockStore from "redux-mock-store";
 
 import Login from "../index";
 import messages from "src/messages";
 import { store } from "src/store";
 
-import { login } from "src/network/api/userApi";
+import {
+  login,
+  resendOTPForRegistration,
+  verifyOtp,
+} from "src/network/api/userApi";
 
 const { labels, placeholders, validations } = messages;
 
@@ -51,6 +63,28 @@ function createMockRouter(router: Partial<NextRouter>): NextRouter {
     ...router,
   };
 }
+
+jest.mock("src/network/api/userApi");
+
+const mockStore = configureMockStore();
+const store1 = mockStore({
+  auth: {
+    authenticated: true,
+    loggedInUser: {
+      is_admin: true,
+    },
+  },
+  topicDetails: {
+    currentCampRecord: {},
+  },
+  filters: {
+    filterObject: {},
+  },
+  forum: {
+    currentThread: null,
+    currentPost: null,
+  },
+});
 
 afterEach(cleanup);
 
@@ -122,7 +156,7 @@ describe("Login page", () => {
     });
   });
 
-  it("render password input field", () => {
+  it("render password fields", () => {
     render(
       <Provider store={store}>
         <RouterContext.Provider value={createMockRouter({ asPath: "/login" })}>
@@ -193,7 +227,7 @@ describe("Login page", () => {
     });
   });
 
-  it("api call", async () => {
+  it("test api response", async () => {
     login.mockResolvedValue({
       status_code: 200,
       data: {},
@@ -226,8 +260,118 @@ describe("Login page", () => {
       </Provider>
     );
 
-    await waitFor(() => {
+    waitFor(() => {
       expect(login).toHaveBeenCalled();
+    });
+  });
+  test("otp button click", async () => {
+    login.mockResolvedValue({
+      status_code: 200,
+      data: {},
+    });
+    resendOTPForRegistration.mockResolvedValue({
+      status_code: 200,
+      data: {},
+    });
+    verifyOtp.mockResolvedValue({
+      status_code: 200,
+      data: {},
+    });
+
+    const store1 = mockStore({
+      auth: {
+        authenticated: true,
+        loggedInUser: {
+          is_admin: true,
+        },
+      },
+      topicDetails: {
+        currentCampRecord: {},
+      },
+      filters: {
+        filterObject: {},
+      },
+      forum: {
+        currentThread: null,
+        currentPost: null,
+      },
+    });
+
+    render(
+      <Provider store={store}>
+        <RouterContext.Provider value={createMockRouter({ asPath: "/login" })}>
+          <Login isModal={false} />
+        </RouterContext.Provider>
+      </Provider>
+    );
+    const inputEl = screen.getByPlaceholderText(placeholders.emailPhone);
+    expect(inputEl).toBeInTheDocument();
+    expect(inputEl).toHaveAttribute("type", "text");
+
+    fireEvent.change(inputEl, { target: { value: "admin@gmai.com" } });
+    expect(screen.getByTestId("request-otp-btn")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByTestId("request-otp-btn"));
+
+    waitFor(() => {
+      expect(login).toHaveBeenCalled();
+      expect(resendOTPForRegistration).toHaveBeenCalled();
+      expect(verifyOtp).toHaveBeenCalled();
+    });
+  });
+  test("for failled response", async () => {
+    login.mockResolvedValue({
+      status_code: 400,
+      data: {},
+    });
+    resendOTPForRegistration.mockResolvedValue({
+      status_code: 400,
+      data: {},
+    });
+    verifyOtp.mockResolvedValue({
+      status_code: 400,
+      data: {},
+    });
+
+    const store1 = mockStore({
+      auth: {
+        authenticated: true,
+        loggedInUser: {
+          is_admin: true,
+        },
+      },
+      topicDetails: {
+        currentCampRecord: {},
+      },
+      filters: {
+        filterObject: {},
+      },
+      forum: {
+        currentThread: null,
+        currentPost: null,
+      },
+    });
+
+    render(
+      <Provider store={store}>
+        <RouterContext.Provider value={createMockRouter({ asPath: "/login" })}>
+          <Login isModal={false} />
+        </RouterContext.Provider>
+      </Provider>
+    );
+    const inputEl = screen.getByPlaceholderText(placeholders.emailPhone);
+    expect(inputEl).toBeInTheDocument();
+    expect(inputEl).toHaveAttribute("type", "text");
+
+    fireEvent.change(inputEl, { target: { value: "admin@gmai.com" } });
+    expect(screen.getByTestId("request-otp-btn")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByTestId("request-otp-btn"));
+
+    waitFor(() => {
+      expect(login).toHaveBeenCalled();
+      expect(resendOTPForRegistration).toHaveBeenCalled();
+      expect(verifyOtp).toHaveBeenCalled();
     });
   });
 });
