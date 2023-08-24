@@ -12,6 +12,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { renderHook } from "@testing-library/react-hooks";
 import { Input, message } from "antd";
+
 const { labels } = messages;
 const profileData = {
   name: "Name",
@@ -68,7 +69,27 @@ const noData = false;
 jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
+
+jest.mock("src/network/api/homePageApi", () => ({
+  getCanonizedNameSpacesApi: jest.fn(() =>
+  Promise.resolve({ status_code: 200, data: [] })
+),
+}));
+jest.mock("src/network/api/campDetailApi", () => ({
+  GetSupportedNickNames: jest.fn(() =>
+    Promise.resolve({ status_code: 200, data: [] })
+  ),
+}));
+jest.mock("src/network/api/userApi", () => ({
+  getUserSupportedCampList: jest.fn(() =>
+    Promise.resolve({ status_code: 200, data: []})
+  ),
+}));
+jest.mock("src/hooks/isUserAuthenticated", () =>
+  jest.fn(() => ({ isUserAuthenticated: true }))
+);
 describe("userProfileDetails", () => {
+
   it("render show userProfile", () => {
     render(
       <UserProfileDetails
