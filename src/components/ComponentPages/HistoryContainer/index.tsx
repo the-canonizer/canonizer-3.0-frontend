@@ -42,6 +42,7 @@ function HistoryContainer() {
   const [loadMoreItems, setLoadMoreItems] = useState(true);
   const [agreecheck, setAgreeCheck] = useState(false);
   const [discardChange, setDiscardChange] = useState(false);
+  const[parentarchived,setParentarchived] = useState(0)
 
   const changeAgree = () => {
     setAgreeCheck(!agreecheck);
@@ -92,12 +93,14 @@ function HistoryContainer() {
         });
         setNickName(response?.data);
       }
-      await getTreesApi(reqBodyForService);
+      let res = await getTreesApi(reqBodyForService);
       setLoadingIndicator(false);
+      setParentarchived(res[1].is_archive)
     }
     if (!isTreesApiCallStop) {
       getTreeApiCall();
     }
+   
   }, [asofdate, algorithm, +router?.query?.camp?.at(1)?.split("-")[0]]);
 
   const dispatchData = (data, isDisabled = 0, isOneLevel = 0) => {
@@ -353,6 +356,7 @@ function HistoryContainer() {
             setIsTreesApiCallStop={setIsTreesApiCallStop}
             campHistoryItems={campHistory?.items}
             callManageCampApi={callManageCampApi}
+            parentArchived={parentarchived}
           />
         );
       })
