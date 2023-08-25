@@ -1,11 +1,10 @@
-import React, { useState } from "react";
-import { fireEvent, render, waitFor } from "@testing-library/react";
+import React from "react";
+import { render, waitFor } from "@testing-library/react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import Editorckl from "../index";
 import { Provider } from "react-redux";
 import { store } from "src/store";
 import ClassicEditor from "../../../../../ckeditor51/build/ckeditor";
-import userEvent from "@testing-library/user-event";
 
 const editorState = "";
 const onEditorStateChange = jest.fn();
@@ -117,7 +116,7 @@ test("Editor content is retrieved correctly using getData", async () => {
 
 test("Editor onChange event is triggered correctly", () => {
   const onChangeMock = jest.fn();
-  const { container } = render(
+  render(
     <CKEditor
       config={editorConfiguration}
       editor={ClassicEditor.Editor}

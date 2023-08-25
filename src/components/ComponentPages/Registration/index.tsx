@@ -19,7 +19,7 @@ import {
 import { AppDispatch } from "src/store";
 import Spinner from "../../common/spinner/spinner";
 
-const Registration = ({ isModal, isTest = false }) => {
+const Registration = ({ isModal, isTest = false }: any) => {
   const [isOtpScreen, setIsOtpScreen] = useState(isTest);
   const [isResend, setIsResend] = useState(false);
   const [country, setCountry] = useState([]);

@@ -28,7 +28,7 @@ import HeaderMenu from "../HeaderMenu";
 
 const { Header } = Layout;
 
-const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
+const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
   const { loggedInUser, list } = useSelector((state: RootState) => ({
     loggedInUser: state.auth.loggedInUser,
     list: state.notifications.headerNotification.list,

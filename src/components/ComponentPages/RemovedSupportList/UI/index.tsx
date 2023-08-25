@@ -12,7 +12,7 @@ function SubscriptionsListUI({
   nickNameList,
   selectedNikname,
   onNickNameChange,
-}) {
+}: any) {
   return (
     <div className={styles.supported_camps}>
       <Card

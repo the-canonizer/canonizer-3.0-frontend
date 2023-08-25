@@ -20,7 +20,7 @@ import CustomButton from "../../../common/button";
 import { RootState } from "src/store";
 import isAuth from "../../../../hooks/isUserAuthenticated";
 import K from "../../../../constants";
-import { setCurrentCampRecord } from "../../../../store/slices/campDetailSlice";
+// import { setCurrentCampRecord } from "../../../../store/slices/campDetailSlice";
 import { setDelegatedSupportClick } from "../../../../store/slices/supportTreeCard";
 import CustomSkelton from "../../../common/customSkelton";
 import {
@@ -30,7 +30,7 @@ import {
 import { getNickNameList } from "../../../../network/api/userApi";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
 
-const { Paragraph, Title } = Typography;
+const { Paragraph } = Typography;
 const { Panel } = Collapse;
 const { TreeNode } = Tree;
 
@@ -73,7 +73,6 @@ const SupportTreeCard = ({
     campRecord,
     filterData,
     algorithms,
-    totalScoreForSupportTree,
   } = useSelector((state: RootState) => ({
     currentGetCheckSupportExistsData:
       state.topicDetails.currentGetCheckSupportExistsData,
@@ -82,7 +81,6 @@ const SupportTreeCard = ({
     campRecord: state?.topicDetails?.currentCampRecord,
     filterData: state?.filters?.filterObject,
     algorithms: state.homePage?.algorithms,
-    totalScoreForSupportTree: state?.supportTreeCard?.totalScoreForSupportTree,
   }));
 
   const { isUserAuthenticated } = isAuth();

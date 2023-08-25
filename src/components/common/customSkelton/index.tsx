@@ -1,4 +1,4 @@
-import { Card, Col, Form, Row, Typography } from "antd";
+import { Card, Col, Form, Row } from "antd";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 // import FormItem from "../formElements";

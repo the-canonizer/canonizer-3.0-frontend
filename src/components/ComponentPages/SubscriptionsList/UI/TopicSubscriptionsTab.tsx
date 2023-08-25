@@ -20,7 +20,7 @@ function TopicSubscriptionsTab({
   subscriptionsList,
   onRemoveSubscription,
   onConfirm,
-}) {
+}: any) {
   const [subList, setSubList] = useState([]);
   const [current, setCurrent] = useState(1);
   useEffect(() => {

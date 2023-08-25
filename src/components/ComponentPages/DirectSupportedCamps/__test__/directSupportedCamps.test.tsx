@@ -113,7 +113,7 @@ import { useState } from "react";
 // const removeCardSupportedCamps = jest.fn();
 // const handleSupportedCampsCancel = jest.fn();
 // const removeSupport = jest.fn();
-const search = "";
+// const search = "";
 // idData = "",
 // visible = "false",
 // revertBack = [];
@@ -166,21 +166,21 @@ const directSupportedCampsList = [
     ],
   },
 ];
-const removeSupportCampsData = {
-  camps: [
-    {
-      id: 1,
-      camp_num: 1,
-      camp_name: "Agreement",
-      support_order: 1,
-      camp_link: "/topic/788-absd---/1-Agreement#statement",
-    },
-  ],
-  nick_name_id: 571,
-  title: "absd@#$",
-  title_link: "/topic/788-absd---/1-Agreement",
-  topic_num: 788,
-};
+// const removeSupportCampsData = {
+//   camps: [
+//     {
+//       id: 1,
+//       camp_num: 1,
+//       camp_name: "Agreement",
+//       support_order: 1,
+//       camp_link: "/topic/788-absd---/1-Agreement#statement",
+//     },
+//   ],
+//   nick_name_id: 571,
+//   title: "absd@#$",
+//   title_link: "/topic/788-absd---/1-Agreement",
+//   topic_num: 788,
+// };
 jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));

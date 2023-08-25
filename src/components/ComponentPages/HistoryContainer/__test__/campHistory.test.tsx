@@ -102,16 +102,31 @@ describe("CampHistory Page", () => {
           </RouterContext.Provider>
         </Provider>
       );
-      const topicHistoryHeading = screen.getByRole("heading", {
-        name: /topic history/i,
-      });
-      const submitTopicButton = screen.getByRole("button", {
-        name: /submit topic update based on this/i,
-      });
-      const viewThisButton = screen.getByRole("button", {
-        name: /view this version/i,
-      });
+      // const topicHistoryHeading = screen.getByRole("heading", {
+      //   name: /topic history/i,
+      // });
+      // const submitTopicButton = screen.getByRole("button", {
+      //   name: /submit topic update based on this/i,
+      // });
+      // const viewThisButton = screen.getByRole("button", {
+      //   name: /view this version/i,
+      // });
+      expect(
+        screen.getByRole("heading", {
+          name: /topic history/i,
+        })
+      ).toBeInTheDocument;
 
+      expect(
+        screen.getByRole("button", {
+          name: /submit topic update based on this/i,
+        })
+      ).toBeInTheDocument;
+      expect(
+        screen.getByRole("button", {
+          name: /view this version/i,
+        })
+      ).toBeInTheDocument;
       expect(
         screen.getByRole("heading", {
           name: /topic name :/i,

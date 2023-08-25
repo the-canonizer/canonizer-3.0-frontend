@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { message, Typography } from "antd";
+import { message } from "antd";
 
 import SubscriptionsListUI from "./UI";
 import CustomSkelton from "../../common/customSkelton";
@@ -13,9 +13,7 @@ import {
   getAllRemovedReasons,
 } from "src/network/api/campDetailApi";
 
-const { Text } = Typography;
-
-function RemovedSupportList({ isTestData = [] }) {
+function RemovedSupportList({ isTestData = [] }: any) {
   const [subscriptionsList, setSubscriptionsList] = useState(isTestData);
   const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -58,19 +56,19 @@ function RemovedSupportList({ isTestData = [] }) {
     getNickNames();
   }, []);
 
-  const campOrTopicUnsubscribe = async (body: Object) => {
-    setIsLoading(true);
-    const res = await unsubscribeTopicOrCampAPI(body);
+  // const campOrTopicUnsubscribe = async (body: Object) => {
+  //   setIsLoading(true);
+  //   const res = await unsubscribeTopicOrCampAPI(body);
 
-    const query = `?page=${page}&per_page=${perPage}`;
+  //   const query = `?page=${page}&per_page=${perPage}`;
 
-    if (res && res["status_code"] === 200) {
-      message.success(res?.data?.msg);
-      setIsVisible(false);
-      getSubscriptionsList(query);
-    }
-    setIsLoading(false);
-  };
+  //   if (res && res["status_code"] === 200) {
+  //     message.success(res?.data?.msg);
+  //     setIsVisible(false);
+  //     getSubscriptionsList(query);
+  //   }
+  //   setIsLoading(false);
+  // };
 
   const onRemoveSubscription = (e: any, topic: object) => {
     e.preventDefault();
@@ -91,37 +89,37 @@ function RemovedSupportList({ isTestData = [] }) {
     setIsLoading(false);
   };
 
-  const onCancel = () => {
-    setIsVisible(false);
-    setCurrentTopic({});
-    setCamp({});
-  };
+  // const onCancel = () => {
+  //   setIsVisible(false);
+  //   setCurrentTopic({});
+  //   setCamp({});
+  // };
 
-  const onRemove = () => {
-    setIsLoading(true);
-    let body = null;
-    if (isCamp) {
-      body = {
-        topic_num: currentTopic["topic_num"],
-        camp_num: camp["camp_num"],
-        checked: false,
-        subscription_id: camp["subscription_id"],
-      };
-    } else {
-      body = {
-        topic_num: currentTopic["topic_num"],
-        camp_num: 0,
-        checked: false,
-        subscription_id: currentTopic["subscription_id"],
-      };
-    }
-    if (body) {
-      campOrTopicUnsubscribe(body);
-    }
-    setIsLoading(false);
-  };
+  // const onRemove = () => {
+  //   setIsLoading(true);
+  //   let body = null;
+  //   if (isCamp) {
+  //     body = {
+  //       topic_num: currentTopic["topic_num"],
+  //       camp_num: camp["camp_num"],
+  //       checked: false,
+  //       subscription_id: camp["subscription_id"],
+  //     };
+  //   } else {
+  //     body = {
+  //       topic_num: currentTopic["topic_num"],
+  //       camp_num: 0,
+  //       checked: false,
+  //       subscription_id: currentTopic["subscription_id"],
+  //     };
+  //   }
+  //   if (body) {
+  //     campOrTopicUnsubscribe(body);
+  //   }
+  //   setIsLoading(false);
+  // };
 
-  const onNickNameChange = (id, option) => {
+  const onNickNameChange = (id) => {
     setSelectedNikname(id);
   };
 

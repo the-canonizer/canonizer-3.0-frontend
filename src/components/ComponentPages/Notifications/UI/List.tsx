@@ -11,7 +11,7 @@ export default function NotificationList({
   list,
   isFooter = false,
   LoadMoreTopics = null,
-}) {
+}: any) {
   return (
     <List
       itemLayout="horizontal"

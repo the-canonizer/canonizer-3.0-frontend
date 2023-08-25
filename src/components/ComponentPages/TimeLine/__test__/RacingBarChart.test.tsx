@@ -1,4 +1,4 @@
-import { select, scaleBand, scaleLinear, max, linkHorizontal } from "d3";
+// import { select, scaleBand, scaleLinear, max, linkHorizontal } from "d3";
 
 import React from "react";
 import { render } from "@testing-library/react";

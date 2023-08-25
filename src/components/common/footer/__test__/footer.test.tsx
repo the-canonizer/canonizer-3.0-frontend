@@ -6,6 +6,8 @@ import { loadEnvConfig } from "@next/env";
 import { RouterContext } from "next/dist/shared/lib/router-context";
 import { Provider } from "react-redux";
 import { store } from "../../../../store";
+
+import { NextRouter } from "next/router";
 const loadConfig = async () => {
   const projectDir = process.cwd();
   loadEnvConfig(projectDir);

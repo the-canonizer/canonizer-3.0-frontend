@@ -36,7 +36,7 @@ describe("HeadContentAndPermissionComponent", () => {
       authToken: "token",
     });
 
-    const { getByText } = render(
+    render(
       <HeadContentAndPermissionComponent
         componentName={componentName}
         metaContent={metaContent}

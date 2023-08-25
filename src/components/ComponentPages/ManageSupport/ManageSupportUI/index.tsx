@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Card, Tag, Select, Button, Col, Modal, Spin, Form } from "antd";
+import { Card, Tag, Select, Button, Col, Form } from "antd";
 import { DraggableArea } from "react-draggable-tags";
 import { CloseCircleOutlined } from "@ant-design/icons";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import Link from "next/link";
 
 import styles from "../ManageSupportUI/ManageSupport.module.scss";
 
@@ -34,7 +33,6 @@ const ManageSupportUI = ({
   submitButtonDisable,
   setUpdatePostion,
   unableToFindCamp,
-  CurrentCheckSupportStatus,
   getManageSupportLoadingIndicator,
   setGetManageSupportLoadingIndicator,
   topicSupportListData,
@@ -54,11 +52,10 @@ const ManageSupportUI = ({
         state.topicDetails.currentGetCheckSupportExistsData,
     }));
 
-  const dispatch = useDispatch();
   const router = useRouter();
 
   const [removeForm] = Form.useForm();
-  const openPopup = () => setIsSupportTreeCardModal(true);
+  // const openPopup = () => setIsSupportTreeCardModal(true);
   const closePopup = () => setIsSupportTreeCardModal(false);
 
   const filteredList = manageSupportList.map((obj: any, index: any) => {
@@ -99,7 +96,7 @@ const ManageSupportUI = ({
     camp_num: +router?.query?.manageSupport[1]?.split("-")[0],
   };
 
-  const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
+  // const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
 
   const findManageOrder = filteredList.findIndex((obj: any) => {
     return obj.camp_num === reqBodyData.camp_num;
@@ -112,7 +109,7 @@ const ManageSupportUI = ({
         : manageSupportList[manageSupportList.length - 1]?.support_order
       : 1;
 
-  const body = { topic_num: topicNum };
+  // const body = { topic_num: topicNum };
 
   const nickNameloop = nickNameList.filter((nickName) => {
     return selectedtNickname == nickName.id;
@@ -262,7 +259,7 @@ const ManageSupportUI = ({
 
   // remove support popup added.
 
-  const onRemoveFinish = (values) => {
+  const onRemoveFinish = () => {
     // setRemoveSupportSpinner(true);
     // if (removeCampsSupport) {
     // submitNickNameSupportCamps(values);

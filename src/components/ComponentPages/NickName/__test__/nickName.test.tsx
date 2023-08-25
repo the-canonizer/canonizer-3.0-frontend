@@ -1,6 +1,5 @@
 import {
   fireEvent,
-  getByAltText,
   render,
   screen,
   waitFor,
@@ -10,7 +9,7 @@ import userEvent from "@testing-library/user-event";
 import NickNameUI from "../NickNameUI/index";
 import messages from "../../../../messages";
 import NickName from "..";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import { renderHook } from "@testing-library/react-hooks";
 import { getNickNameList } from "src/network/api/userApi";
@@ -37,22 +36,22 @@ const nickNameList = [
   },
 ];
 
-const addNewNickName = [
-  {
-    create_time: "1998-01-01",
-    id: 1,
-    nick_name: "ABC",
-    owner_code: "aabbcc",
-    private: 0,
-  },
-  {
-    create_time: "1979-02-02",
-    id: 2,
-    nick_name: "DEF",
-    owner_code: "ddeeff",
-    private: 0,
-  },
-];
+// const addNewNickName = [
+//   {
+//     create_time: "1998-01-01",
+//     id: 1,
+//     nick_name: "ABC",
+//     owner_code: "aabbcc",
+//     private: 0,
+//   },
+//   {
+//     create_time: "1979-02-02",
+//     id: 2,
+//     nick_name: "DEF",
+//     owner_code: "ddeeff",
+//     private: 0,
+//   },
+// ];
 jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
@@ -246,7 +245,7 @@ describe("NickName page", () => {
   });
 });
 
-describe("", () => {
+describe("test nickname componaent", () => {
   it("render nickname list", () => {
     render(<NickName />);
     waitFor(async () => {
@@ -274,7 +273,7 @@ describe("", () => {
     expect(getNickNameList).toHaveBeenCalled();
     // expect(setNickNameList).toHaveBeenCalledWith(mockResponse.data[0]);
   });
-  it("render useState is working ", () => {
+  it("render useState is working", () => {
     render(<NickName />);
     const TestComponent = () => {
       const [isActive, setIsActive] = useState(false);
@@ -346,8 +345,8 @@ describe("Nickname test cases", () => {
     });
   });
 
-  it('add new nickname cancel model', async () => {
-    const { container, getAllByText } = render(
+  it("add new nickname cancel model", async () => {
+    const { getAllByText } = render(
       <NickNameUI
         addEditTitle={addEditTitle}
         addEditBtn={addEditBtn}
@@ -359,17 +358,17 @@ describe("Nickname test cases", () => {
         nickNameList={nickNameList}
         disableButton={disableButton}
       />
-    )
+    );
     await waitFor(async () => {
-      const add_button = getAllByText("Add New Nickname")
-      userEvent.click(add_button[0])
-      const edit_button = getAllByText("edit")
-      userEvent.click(edit_button[0])
-    })
-  })
+      const add_button = getAllByText("Add New Nickname");
+      userEvent.click(add_button[0]);
+      const edit_button = getAllByText("edit");
+      userEvent.click(edit_button[0]);
+    });
+  });
 
-  it('cancel button click', async () => {
-    const { getAllByText } = render(<NickName></NickName>)
+  it("cancel button click", async () => {
+    const { getAllByText } = render(<NickName></NickName>);
     render(
       <NickNameUI
         addEditTitle={addEditTitle}
@@ -382,15 +381,12 @@ describe("Nickname test cases", () => {
         nickNameList={nickNameList}
         disableButton={disableButton}
       />
-    )
+    );
     await waitFor(async () => {
-      const add_button = getAllByText("Add New Nickname")
-      userEvent.click(add_button[0])
-      const edit_button = getAllByText("edit")
-      userEvent.click(edit_button[0])
-    })
-
-  })
-
-
+      const add_button = getAllByText("Add New Nickname");
+      userEvent.click(add_button[0]);
+      const edit_button = getAllByText("edit");
+      userEvent.click(edit_button[0]);
+    });
+  });
 });

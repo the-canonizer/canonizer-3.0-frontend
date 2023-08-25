@@ -31,7 +31,7 @@ const UserProfileCardSkeleton = ({ bodyCount, stylingClass }: any) => {
       >
         {[1, 2]?.map((camp, i) => {
           return (
-            <div className={`${styles.tag_btn}`}>
+            <div key={i} className={`${styles.tag_btn}`}>
               <Skeleton
                 height={30}
                 className={`${styles[stylingClass]} ${styles.tag_btn}`}

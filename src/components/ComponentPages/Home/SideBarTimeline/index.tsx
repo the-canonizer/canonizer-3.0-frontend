@@ -1,10 +1,9 @@
 import { useState, Fragment, useEffect } from "react";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+
 import { Button, Drawer } from "antd";
 import { AppstoreAddOutlined } from "@ant-design/icons";
 
-import { RootState } from "src/store";
 import TimelineFilter from "../../../common/timelineFilter";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import Events from "../../eventLine/Events";
@@ -18,10 +17,6 @@ export default function SideBarTimeline({
   const [isAuth, setIsAuth] = useState(isUserAuthenticated);
 
   const router = useRouter();
-
-  const { newsFeed } = useSelector((state: RootState) => ({
-    newsFeed: state?.topicDetails?.newsFeed,
-  }));
 
   const [visible, setVisible] = useState(false);
 

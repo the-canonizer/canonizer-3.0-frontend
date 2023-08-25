@@ -246,13 +246,13 @@ const TopicsList = () => {
     }
   }, []);
 
-  const handlesearch = (e) => {
-    if (e.target.value.length > 0) {
-      setClear(true);
-    } else {
-      setClear(false);
-    }
-  };
+  // const handlesearch = (e) => {
+  //   if (e.target.value.length > 0) {
+  //     setClear(true);
+  //   } else {
+  //     setClear(false);
+  //   }
+  // };
   async function getTopicsApiCallWithReqBody(loadMore = false) {
     loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
     const reqBody = {

@@ -7,7 +7,7 @@ import ForumComponent from "../index";
 
 const useRouter = jest.fn();
 
-export { useRouter };
+// export { useRouter };
 
 jest.mock("next/router", () => ({
   __esModule: true,

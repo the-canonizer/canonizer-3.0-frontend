@@ -36,24 +36,24 @@ const nickNameList = [
     private: 1,
   },
 ];
-const currentGetCheckSupportExist = {
-  camp_num: expect.any(Number),
-  disable_submit: "true",
-  is_confirm: expect.any(Number),
-  is_delegator: expect.any(Number),
-  message: expect.any(String),
-  remove_camps: [
-    {
-      camp_name: expect.any(String),
-      camp_num: expect.any(Number),
-      link: expect.any(String),
-      support_order: expect.any(Number),
-    },
-  ],
-  support_flag: expect.any(Number),
-  topic_num: expect.any(Number),
-  warning: expect.any(String),
-};
+// const currentGetCheckSupportExist = {
+//   camp_num: expect.any(Number),
+//   disable_submit: "true",
+//   is_confirm: expect.any(Number),
+//   is_delegator: expect.any(Number),
+//   message: expect.any(String),
+//   remove_camps: [
+//     {
+//       camp_name: expect.any(String),
+//       camp_num: expect.any(Number),
+//       link: expect.any(String),
+//       support_order: expect.any(Number),
+//     },
+//   ],
+//   support_flag: expect.any(Number),
+//   topic_num: expect.any(Number),
+//   warning: expect.any(String),
+// };
 
 const currentDelegatedSupportedClick = {
   delegatedSupportClick: true,
@@ -321,7 +321,7 @@ it("render support remove card component", () => {
     },
   ];
   const mockRemoveAll = jest.fn();
-  const { getAllByText } = render(
+  render(
     <ManageSupportUI
       nickNameList={nickNameList}
       manageSupportList={manageSupportList}

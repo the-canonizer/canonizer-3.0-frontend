@@ -5,7 +5,7 @@ afterEach(cleanup);
 
 describe("Error Boundary", () => {
   it("should render without crash", () => {
-    const { container } = render(
+    render(
       <ErrorBoundary>
         <h1>error</h1>
       </ErrorBoundary>

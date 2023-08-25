@@ -10,7 +10,7 @@ import SideBar from "../CampForum/UI/sidebar";
 
 const { Title } = Typography;
 
-const ResetPassword = ({ is_test = false }) => {
+const ResetPassword = ({ is_test = false }: any) => {
   const router = useRouter();
   const [form] = Form.useForm();
 

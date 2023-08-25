@@ -347,7 +347,7 @@ describe("Upload File UI Page", () => {
     expect(createFolderbutton).toBeTruthy();
   });
 
-  it("render Create folder button", async () => {
+  it("render Create folder button image grid view", async () => {
     const { getByAltText } = await render(
       <UploadFileUI
         input={input}
@@ -384,7 +384,7 @@ describe("Upload File UI Page", () => {
     expect(image).toHaveAttribute("alt", "gridView");
   });
 
-  it("render Create folder button", async () => {
+  it("render Create folder button image list view", async () => {
     const { getByAltText } = await render(
       <UploadFileUI
         input={input}
@@ -607,7 +607,7 @@ describe("Upload File UI Page", () => {
     expect(screen.getByText(labels.FolderName)).toBeInTheDocument();
   });
   it("render Modal when create folder button  is clicked", () => {
-    const { getByText } = render(
+    render(
       <UploadFileUI
         input={input}
         setInput={setInput}
@@ -696,7 +696,7 @@ describe("Upload File UI Page", () => {
     expect(addbutton).toBeTruthy();
   });
   it("render file type", () => {
-    const { getByText } = render(
+    render(
       <UploadFileUI
         input={input}
         setInput={setInput}

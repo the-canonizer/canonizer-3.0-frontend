@@ -16,7 +16,7 @@ const { Panel } = Collapse;
 const covertToTime = (unixTime) => {
   return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm A");
 };
-const CampStatementCard = ({ loadingIndicator, backGroundColorClass }) => {
+const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
   const router = useRouter();
   const { campRecord, campStatement, history } = useSelector(
     (state: RootState) => ({

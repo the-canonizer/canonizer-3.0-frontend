@@ -1,5 +1,5 @@
 import { useState, Fragment, useEffect } from "react";
-import { Card, Col, Row, Button, Tabs, Input } from "antd";
+import { Card, Button, Tabs, Input } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
 

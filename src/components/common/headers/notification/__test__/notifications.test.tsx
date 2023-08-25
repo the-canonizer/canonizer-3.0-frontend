@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 import Notifications from "../";
 import { firebaseCloudMessaging } from "src/firebaseConfig/firebase";
 import { updateFCMToken } from "src/network/api/notificationAPI";
-import localforage from "localforage";
+// import localforage from "localforage";
 import Fav from "../icon";
 
 jest.mock("src/firebaseConfig/firebase", () => ({
@@ -15,7 +15,7 @@ jest.mock("src/firebaseConfig/firebase", () => ({
 }));
 
 jest.mock("src/network/api/notificationAPI", () => ({
-  getLists:jest.fn(),
+  getLists: jest.fn(),
   updateFCMToken: jest.fn(),
 }));
 
@@ -40,9 +40,9 @@ window.matchMedia = jest.fn().mockImplementation((query) => {
   };
 });
 
-const mockMessaging = {
-  getToken: jest.fn().mockResolvedValue("mockToken"),
-};
+// const mockMessaging = {
+//   getToken: jest.fn().mockResolvedValue("mockToken"),
+// };
 
 describe("Notifications", () => {
   let store;

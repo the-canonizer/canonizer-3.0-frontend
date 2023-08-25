@@ -3,7 +3,6 @@ import { cleanup, render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { store } from "../../../../../store";
 import { setTree } from "../../../../../store/slices/campDetailSlice";
-import configureStore from "redux-mock-store";
 import React from "react";
 import { act } from "react-dom/test-utils";
 

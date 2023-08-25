@@ -1,6 +1,5 @@
 import {
   fireEvent,
-  getByTestId,
   render,
   screen,
   waitFor,
@@ -11,18 +10,17 @@ import ProfileInfoForm from "../../Form/ProfileInfoForm";
 import messages from "../../../../messages";
 import ProfileInfo from "..";
 import { useRouter } from "next/router";
-import { act, renderHook } from "@testing-library/react-hooks";
-import isAuth from "../../../../hooks/isUserAuthenticated";
-import { Input, message } from "antd";
-GetAlgorithmsList: jest.fn();
-import {
-  VerifyOTP,
-  GetMobileCarrier,
-  GetLanguageList,
-  GetAlgorithmsList,
-  GetUserProfileInfo,
-} from "src/network/api/userApi";
-import { useEffect } from "react";
+
+import { renderHook } from "@testing-library/react-hooks";
+import { Input } from "antd";
+// GetAlgorithmsList: jest.fn();
+// import {
+//   VerifyOTP,
+//   GetMobileCarrier,
+//   GetLanguageList,
+//   GetAlgorithmsList,
+//   GetUserProfileInfo,
+// } from "src/network/api/userApi";
 
 const { labels, placeholders, validations } = messages;
 const privateFlags = "first_name";
@@ -343,7 +341,7 @@ describe("Profile Info Page", () => {
     expect(screen.getAllByText("*")).toBeTruthy();
   });
 
-  it("render update button", () => {
+  it("render update button require", () => {
     render(
       <ProfileInfoForm
         onFinish={onFinish}

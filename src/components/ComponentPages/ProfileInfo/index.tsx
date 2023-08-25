@@ -11,8 +11,6 @@ import {
   GetUserProfileInfo,
   UpdateUserProfileInfo,
   GetMobileCarrier,
-  SendOTP,
-  VerifyOTP,
   GetAlgorithmsList,
   GetLanguageList,
 } from "../../../network/api/userApi";

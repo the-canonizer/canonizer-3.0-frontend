@@ -1,5 +1,5 @@
 import { RouterContext } from "next/dist/shared/lib/router-context";
-import { render, screen, fireEvent, cleanup } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import HistoryCollapse from "../index";
 import { Provider } from "react-redux";
 import { store } from "src/store";
@@ -120,7 +120,7 @@ describe("HistoryCollapse component", () => {
   });
 
   it("should render without crash", () => {
-    const { container } = render(
+    render(
       <Provider store={store}>
         <RouterContext.Provider value={createMockRouter()}>
           <HistoryCollapse />

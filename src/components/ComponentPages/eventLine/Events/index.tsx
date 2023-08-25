@@ -24,11 +24,11 @@ const Events = ({ timelineDescript }: any) => {
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
-  const urlPath = (id) => {
-    let path = router?.asPath.replace("eventline", "topic");
-    let main = path?.replace(path.split("/")[3], id);
-    return main;
-  };
+  // const urlPath = (id) => {
+  //   let path = router?.asPath.replace("eventline", "topic");
+  //   let main = path?.replace(path.split("/")[3], id);
+  //   return main;
+  // };
   const handleEvents = (goLiveTime, url) => {
     let isTopicPage = url.split("/")[1];
     if (isTopicPage == "topic") {

@@ -9,7 +9,7 @@ import CustomSkelton from "../../../common/customSkelton";
 import { setTopicName } from "src/store/slices/campDetailSlice";
 
 const CampInfoBar = () => {
-  const [loadingIndicator, setLoadingIndicator] = useState(false);
+  // const [loadingIndicator, setLoadingIndicator] = useState(false);
 
   const dispatch = useDispatch();
   const { topic_name, loading } = useSelector((state: RootState) => ({
@@ -28,7 +28,7 @@ const CampInfoBar = () => {
               size="small"
               type={"text"}
               ghost
-              icon={<ArrowLeftOutlined/>}
+              icon={<ArrowLeftOutlined />}
               onClick={() => {
                 dispatch(setTopicName(null));
                 router?.push(router?.asPath.replace("eventline", "topic"));
@@ -38,9 +38,9 @@ const CampInfoBar = () => {
               className={
                 "mb-0 " +
                 `${
-                  loadingIndicator
-                    ? styles.topicTitleSkeleton
-                    : styles.topicTitleStyle
+                  // loadingIndicator
+                  //   ? styles.topicTitleSkeleton :
+                  styles.topicTitleStyle
                 }`
               }
             >

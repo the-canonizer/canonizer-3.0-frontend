@@ -1,4 +1,4 @@
-import { Card, Tag, Button, Tooltip, Typography, Empty, Row, Col } from "antd";
+import { Card, Tag, Tooltip, Typography, Empty, Row, Col } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 
 import Link from "next/link";
@@ -11,7 +11,7 @@ function TopicSubscriptionsTab({
   subscriptionsList,
   onRemoveSubscription,
   onConfirm,
-}) {
+}: any) {
   return subscriptionsList.length ? (
     subscriptionsList.map((data, i) => {
       return (
