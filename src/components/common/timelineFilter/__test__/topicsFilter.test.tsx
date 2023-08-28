@@ -36,7 +36,7 @@ afterEach(cleanup);
 
 describe("Sidebar Filters Component", () => {
   it("Should render without crash", () => {
-    const { container, getByText } = render(
+    const { getByText } = render(
       <Provider store={store}>
         <RouterContext.Provider value={createMockRouter()}>
           <CreateTopic />

@@ -79,7 +79,7 @@ describe("firebaseCloudMessaging", () => {
     global.navigator.serviceWorker = serviceWorkerMock;
     global.navigator.PushManager = {};
 
-    const token = await firebaseCloudMessaging.init();
+    // const token = await firebaseCloudMessaging.init();
 
     expect(firebase.initializeApp).toHaveBeenCalled();
 

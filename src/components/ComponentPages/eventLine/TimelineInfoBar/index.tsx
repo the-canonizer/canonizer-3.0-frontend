@@ -1,6 +1,6 @@
 import { Button, Spin, Typography } from "antd";
 import { useRouter } from "next/router";
-import { useState } from "react";
+// import { useState } from "react";
 import { RootState } from "src/store";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "../topicDetails.module.scss";

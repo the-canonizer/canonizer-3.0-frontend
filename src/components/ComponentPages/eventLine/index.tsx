@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import SideBarTimeline from "../Home/SideBarTimeline";
 import TimelineInfoBar from "./TimelineInfoBar/index";
 import styles from "./topicDetails.module.scss";
@@ -7,7 +7,7 @@ import TimeLine from "../TimeLine";
 import { useState } from "react";
 const { Panel } = Collapse;
 const TopicDetails = () => {
-  const router = useRouter();
+  // const router = useRouter();
 
   const [timelineDescript, setTimelineDescript] = useState([]);
 

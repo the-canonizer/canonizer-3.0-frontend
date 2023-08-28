@@ -12,7 +12,7 @@ import {
 import { GetUserProfileInfo } from "src/network/api/userApi";
 import { setAuthToken, setLoggedInUser } from "src/store/slices/authSlice";
 
-function Home({ current_date }) {
+function Home({ current_date }: any) {
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -74,7 +74,7 @@ function Home({ current_date }) {
   );
 }
 
-export async function getServerSideProps(ctx) {
+export async function getServerSideProps() {
   const currentDate = new Date().valueOf();
 
   return {

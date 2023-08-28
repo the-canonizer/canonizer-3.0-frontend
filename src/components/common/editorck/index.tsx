@@ -80,7 +80,7 @@ export default function Editorck(
               });
           }}
           onChange={(event, editor: any) => {
-            let isTyping = false;
+            // let isTyping = false;
             let typingTimer;
             const dataAppend = async () => {
               return props.oneditorchange(editor?.getData());

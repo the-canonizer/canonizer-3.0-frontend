@@ -4,7 +4,6 @@ import { Button, Modal, message } from "antd";
 import styles from "./generate.module.scss";
 
 import messages from "src/messages";
-import { useRouter } from "next/router";
 
 const { labels } = messages;
 

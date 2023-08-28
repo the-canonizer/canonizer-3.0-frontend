@@ -80,7 +80,7 @@ const store = configureStore({
   // .concat(logger),
 });
 
-const makeStore = (context: Context) => createStore(persistedReducer);
+const makeStore = () => createStore(persistedReducer);
 const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof rootReducer>;

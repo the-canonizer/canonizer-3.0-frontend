@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import { useState, Fragment, useEffect } from "react";
 import { BellFilled } from "@ant-design/icons";
 import { Card, List } from "antd";
@@ -13,7 +13,7 @@ import activityStyle from "../../Home/CampRecentActivities/campRecentActivities.
 const Events = ({ timelineDescript }: any) => {
   const dispatch = useDispatch();
   const [check, setCheck] = useState(true);
-  const router = useRouter();
+  // const router = useRouter();
   const { viewThisVersion, filterObject, filterByScore } = useSelector(
     (state: RootState) => ({
       viewThisVersion: state?.filters?.viewThisVersionCheck,
