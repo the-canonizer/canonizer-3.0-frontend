@@ -1,7 +1,20 @@
-import { render, screen, waitFor } from "../../../../utils/testUtils";
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "src/utils/testUtils";
 import userEvent from "@testing-library/user-event";
+import configureMockStore from "redux-mock-store";
 
 import SubscriptionList from "../";
+
+import {
+  GetAllSubscriptionsList,
+  unsubscribeTopicOrCampAPI,
+} from "src/network/api/userApi";
+import { Provider } from "react-redux";
 
 const subsList = [
   {
@@ -35,7 +48,34 @@ const subsList = [
   },
 ];
 
+afterEach(cleanup);
+
+const mockStore = configureMockStore();
+const store1 = mockStore({
+  auth: {
+    authenticated: true,
+    loggedInUser: {
+      is_admin: true,
+    },
+  },
+  topicDetails: {
+    currentCampRecord: {},
+  },
+  filters: {
+    filterObject: {},
+  },
+  forum: {
+    currentThread: null,
+    currentPost: null,
+  },
+});
+
+jest.mock("src/network/api/userApi");
+
 describe("Subscriptions List Component", () => {
+  beforeEach(() => {
+    jest.mock("src/network/api/userApi");
+  });
   it("render heading and labels", () => {
     render(<SubscriptionList isTestData={subsList} />);
     waitFor(async () => {
@@ -56,6 +96,136 @@ describe("Subscriptions List Component", () => {
       userEvent.click(btns[0]);
 
       expect(screen.getByText(subsList[0].title)).toBeInTheDocument();
+      expect(screen.getByText("Remove")).toBeInTheDocument();
+      expect(screen.getByText("Cancel")).toBeInTheDocument();
+    });
+  });
+
+  it("data render", async () => {
+    GetAllSubscriptionsList.mockResolvedValue({
+      status_code: 200,
+      data: {
+        items: [
+          {
+            topic_num: 69,
+            title: "Public Sex Education",
+            title_link:
+              "http://localhost:4000/topic/69-Public-Sex-Education/1-Agreement",
+            is_remove_subscription: true,
+            subscription_id: 295,
+            camps: [
+              {
+                camp_num: 11,
+                camp_name: "Funds for Sex Ed Before obama",
+                camp_link:
+                  "http://localhost:4000/topic/69-Public-Sex-Education/11-Funds-for-Sex-Ed-Before-obama",
+                subscription_start: "1678449914",
+                subscription_id: 294,
+              },
+            ],
+          },
+          {
+            topic_num: 70,
+            title: "Public Education",
+            title_link:
+              "http://localhost:4000/topic/69-Public-Sex-Education/1-Agreement",
+            is_remove_subscription: true,
+            subscription_id: 296,
+            camps: [
+              {
+                camp_num: 11,
+                camp_name: "Funds for Sex Ed Before obama",
+                camp_link:
+                  "http://localhost:4000/topic/69-Public-Sex-Education/11-Funds-for-Sex-Ed-Before-obama",
+                subscription_start: "1678449914",
+                subscription_id: 204,
+              },
+            ],
+          },
+        ],
+      },
+    });
+
+    render(
+      <Provider store={store1}>
+        <SubscriptionList isTestData={subsList} />
+      </Provider>
+    );
+
+    await waitFor(async () => {
+      expect(GetAllSubscriptionsList).toHaveBeenCalled();
+      expect(screen.getByText("Public Sex Education")).toBeInTheDocument();
+      expect(screen.getAllByText("Funds for Sex Ed Before obama")).toHaveLength(
+        2
+      );
+      expect(screen.getByText("Public Education")).toBeInTheDocument();
+      expect(screen.getByText("Remove Subscription")).toBeInTheDocument();
+      expect(screen.getByText("Remove")).toBeInTheDocument();
+      expect(screen.getByText("Cancel")).toBeInTheDocument();
+    });
+  });
+  it("data render camp remove", async () => {
+    GetAllSubscriptionsList.mockResolvedValue({
+      status_code: 200,
+      data: {
+        items: [
+          {
+            topic_num: 69,
+            title: "Public Sex Education",
+            title_link:
+              "http://localhost:4000/topic/69-Public-Sex-Education/1-Agreement",
+            is_remove_subscription: true,
+            subscription_id: 295,
+            camps: [
+              {
+                camp_num: 11,
+                camp_name: "Funds for Sex Ed Before obama",
+                camp_link:
+                  "http://localhost:4000/topic/69-Public-Sex-Education/11-Funds-for-Sex-Ed-Before-obama",
+                subscription_start: "1678449914",
+                subscription_id: 294,
+              },
+            ],
+          },
+          {
+            topic_num: 70,
+            title: "Public Education",
+            title_link:
+              "http://localhost:4000/topic/69-Public-Sex-Education/1-Agreement",
+            is_remove_subscription: true,
+            subscription_id: 296,
+            camps: [
+              {
+                camp_num: 11,
+                camp_name: "Funds for Sex Ed Before obama",
+                camp_link:
+                  "http://localhost:4000/topic/69-Public-Sex-Education/11-Funds-for-Sex-Ed-Before-obama",
+                subscription_start: "1678449914",
+                subscription_id: 204,
+              },
+            ],
+          },
+        ],
+      },
+    });
+
+    render(
+      <Provider store={store1}>
+        <SubscriptionList isTestData={subsList} />
+      </Provider>
+    );
+
+    await waitFor(async () => {
+      expect(GetAllSubscriptionsList).toHaveBeenCalled();
+      expect(screen.getByText("Public Sex Education")).toBeInTheDocument();
+      expect(screen.getAllByText("Funds for Sex Ed Before obama")).toHaveLength(
+        2
+      );
+      expect(screen.getByText("Public Education")).toBeInTheDocument();
+      expect(screen.getByText("Remove Subscription")).toBeInTheDocument();
+      const closeCircle = screen.getAllByRole("img");
+      expect(closeCircle).toHaveLength(5);
+      fireEvent.click(closeCircle[0]);
       expect(screen.getByText("Remove")).toBeInTheDocument();
       expect(screen.getByText("Cancel")).toBeInTheDocument();
     });

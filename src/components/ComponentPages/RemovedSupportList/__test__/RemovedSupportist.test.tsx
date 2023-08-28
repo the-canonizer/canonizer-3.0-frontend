@@ -1,7 +1,11 @@
-import { render, screen, waitFor } from "../../../../utils/testUtils";
+import { cleanup, render, screen, waitFor } from "src/utils/testUtils";
 import userEvent from "@testing-library/user-event";
+import { Provider } from "react-redux";
+import { NextRouter } from "next/router";
 
 import SubscriptionList from "..";
+import { store } from "src/store";
+import { RouterContext } from "next/dist/shared/lib/router-context";
 
 const subsList = [
   {
@@ -35,9 +39,83 @@ const subsList = [
   },
 ];
 
+// jest.mock("src/network/api/userApi", () => ({
+//   GetAllSubscriptionsList: jest.fn(() =>
+//     Promise.resolve({ status_code: 200, data: [] })
+//   ),
+//   unsubscribeTopicOrCampAPI: jest.fn(() =>
+//     Promise.resolve({ status_code: 200, data: [] })
+//   ),
+// }));
+
+// jest.mock("src/network/api/campDetailApi", () => ({
+//   getAllUsedNickNames: jest.fn(() =>
+//     Promise.resolve({ status_code: 200, data: [] })
+//   ),
+//   getAllRemovedReasons: jest.fn(() =>
+//     Promise.resolve({ status_code: 200, data: [] })
+//   ),
+// }));
+
+function createMockRouter(router: Partial<NextRouter>): NextRouter {
+  return {
+    basePath: "",
+    pathname: "/",
+    route: "/",
+    query: {},
+    asPath: "/",
+    back: jest.fn(),
+    beforePopState: jest.fn(),
+    prefetch: jest.fn(),
+    push: jest.fn(),
+    reload: jest.fn(),
+    replace: jest.fn(),
+    events: {
+      on: jest.fn(),
+      off: jest.fn(),
+      emit: jest.fn(),
+    },
+    isFallback: false,
+    isLocaleDomain: false,
+    isReady: true,
+    defaultLocale: "en",
+    domainLocales: [],
+    isPreview: false,
+    ...router,
+  };
+}
+
+afterEach(cleanup);
+
 describe("Removed Support List Component", () => {
+  // beforeEach(() => {
+  //   jest.clearAllMocks();
+  //   jest.mock("src/network/api/userApi", () => ({
+  //     GetAllSubscriptionsList: jest.fn(() =>
+  //       Promise.resolve({ status_code: 200, data: [] })
+  //     ),
+  //     unsubscribeTopicOrCampAPI: jest.fn(() =>
+  //       Promise.resolve({ status_code: 200, data: [] })
+  //     ),
+  //   }));
+
+  //   jest.mock("src/network/api/campDetailApi", () => ({
+  //     getAllUsedNickNames: jest.fn(() =>
+  //       Promise.resolve({ status_code: 200, data: [] })
+  //     ),
+  //     getAllRemovedReasons: jest.fn(() =>
+  //       Promise.resolve({ status_code: 200, data: [] })
+  //     ),
+  //   }));
+  // });
   it("render heading and labels", () => {
-    render(<SubscriptionList isTestData={subsList} />);
+    render(
+      <Provider store={store}>
+        <RouterContext.Provider value={createMockRouter({})}>
+          <SubscriptionList isTestData={subsList} />
+        </RouterContext.Provider>
+      </Provider>
+    );
     waitFor(async () => {
       expect(screen.getAllByText("For topic").length).toEqual(2);
       expect(screen.getByText(subsList[0].title)).toBeInTheDocument();
@@ -49,7 +127,13 @@ describe("Removed Support List Component", () => {
   });
 
   it("click on remove subscription button and open modal", () => {
-    render(<SubscriptionList isTestData={subsList} />);
+    render(
+      <Provider store={store}>
+        <RouterContext.Provider value={createMockRouter({})}>
+          <SubscriptionList isTestData={subsList} />
+        </RouterContext.Provider>
+      </Provider>
+    );
     waitFor(async () => {
       const btns = screen.getAllByText("Remove subscription");
 
