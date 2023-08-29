@@ -7,11 +7,7 @@ import styles from "../../SubscriptionsList/UI/SubscriptionsList.module.scss";
 
 const { Title, Text } = Typography;
 
-function TopicSubscriptionsTab({
-  subscriptionsList,
-  onRemoveSubscription,
-  onConfirm,
-}: any) {
+function TopicSubscriptionsTab({ subscriptionsList, onConfirm }: any) {
   return subscriptionsList.length ? (
     subscriptionsList.map((data, i) => {
       return (

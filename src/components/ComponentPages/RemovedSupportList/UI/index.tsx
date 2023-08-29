@@ -7,7 +7,6 @@ import TopicSubscriptionsTab from "./TopicSubscriptionsTab";
 
 function SubscriptionsListUI({
   subscriptionsList,
-  onRemoveSubscription,
   onConfirm,
   nickNameList,
   selectedNikname,
@@ -58,7 +57,6 @@ function SubscriptionsListUI({
         }
       >
         <TopicSubscriptionsTab
-          onRemoveSubscription={onRemoveSubscription}
           onConfirm={onConfirm}
           subscriptionsList={subscriptionsList}
         />

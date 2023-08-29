@@ -47,7 +47,10 @@ function RemovedSupportList({ isTestData = [] }: any) {
 
     let res = await getAllUsedNickNames(body);
     if (res && res.status_code == 200) {
-      let nicks = res?.data?.map((n) => ({ ...n, label: n.nick_name }));
+      let nicks = res?.data?.map((n: { nick_name: any }) => ({
+        ...n,
+        label: n.nick_name,
+      }));
       setNickNames(nicks);
     }
   };
@@ -69,15 +72,6 @@ function RemovedSupportList({ isTestData = [] }: any) {
   //   }
   //   setIsLoading(false);
   // };
-
-  const onRemoveSubscription = (e: any, topic: object) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setIsVisible(true);
-    setCurrentTopic(topic);
-    setIsCamp(false);
-    setIsLoading(false);
-  };
 
   const onConfirm = (e: any, topic: any, camp: any) => {
     e.preventDefault();
@@ -133,7 +127,6 @@ function RemovedSupportList({ isTestData = [] }: any) {
     />
   ) : (
     <SubscriptionsListUI
-      onRemoveSubscription={onRemoveSubscription}
       onConfirm={onConfirm}
       subscriptionsList={subscriptionsList}
       nickNameList={nickNames}
