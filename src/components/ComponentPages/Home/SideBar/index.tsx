@@ -35,7 +35,7 @@ export default function HomeSideBar({
   useEffect(() => setDrawerIsVisible(drawerShow), [drawerShow]);
 
   const showDrawer = () => {
-    router.push(
+    router.replace(
       `/topic/${router?.query?.camp[0]}/${
         router?.query?.camp[1]
       }?score=${filterByScore}&algo=${filterObject?.algorithm}${
@@ -55,7 +55,7 @@ export default function HomeSideBar({
   };
 
   const onClose = () => {
-    router.push(
+    router.replace(
       `/topic/${router?.query?.camp[0]}/${
         router?.query?.camp[1]
       }?score=${filterByScore}&algo=${filterObject?.algorithm}${
@@ -99,11 +99,12 @@ export default function HomeSideBar({
             onClose={onClose}
             visible={drawerIsVisible}
             className={`treeDrawer ${backGroundColorClass}`}
-            closeIcon={<CloseCircleOutlined />}
+            closeIcon={<CloseCircleOutlined id="close_svg" onClick={onClose} />}
             height={"auto"}
             size="large"
             bodyStyle={{ paddingBottom: 80 }}
             forceRender
+            data-testid="treeDrawer"
           >
             <TopicsFilterWithDrawer
               onCreateCamp={onCreateCamp}

@@ -213,6 +213,7 @@ const CampTreeCard = ({
                         label: "90%",
                       },
                     ]}
+                    id="scor_dropdown_input"
                   />
                 </div>
               </>

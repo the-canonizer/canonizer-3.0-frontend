@@ -26,7 +26,7 @@ const { Panel } = Collapse;
 const { Option } = Select;
 
 import styles from "./topicListFilter.module.scss";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
 import K from "../../../constants";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
@@ -174,7 +174,7 @@ const FilterWithTree = ({
   }
   useEffect(() => {
     if (didMount.current) {
-      if (history.pushState) {
+      if (history?.replaceState) {
         const queryParams = `?score=${filterObject?.filterByScore}&algo=${
           filterObject?.algorithm
         }${
@@ -190,8 +190,42 @@ const FilterWithTree = ({
           window.location.host +
           window.location.pathname +
           queryParams;
-        window.history.pushState({ path: newurl }, "", newurl);
+
+        // console.log(window.location.href, "<<<<<<<<< filter tree");
+
+        // window.history.replaceState({ path: newurl }, "", newurl);
+
+        Router.replace(newurl, null, { shallow: true });
+
+        // console.log(window.location.href, "<<<<<<<<< filter tree");
       }
+    }
+  }, [didMount.current]);
+  useEffect(() => {
+    if (didMount.current) {
+      // if (history?.replaceState) {
+        // const queryParams = `?score=${filterObject?.filterByScore}&algo=${
+        //   filterObject?.algorithm
+        // }${
+        //   filterObject?.asof == "bydate"
+        //     ? "&asofdate=" + filterObject?.asofdate
+        //     : ""
+        // }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
+        //   viewThisVersion ? "&viewversion=1" : ""
+        // }`;
+        // var newurl =
+        //   window.location.protocol +
+        //   "//" +
+        //   window.location.host +
+        //   window.location.pathname +
+        //   queryParams;
+
+        // console.log(window.location.href, "<<<<<<<<< filter tree");
+
+        // window.history.replaceState({ path: newurl }, "", newurl);
+
+        // console.log(window.location.href, "<<<<<<<<< filter tree");
+      // }
     } else {
       let newObject = removeEmptyValues({
         filterByScore: router.query.score || `${filteredScore}` || "0",
@@ -398,10 +432,15 @@ const FilterWithTree = ({
                     )[0]?.algorithm_label
                   }
                   disabled={loading}
+                  id="algo_dropdown"
                 >
                   {algorithms?.map((algo) => {
                     return (
-                      <Option key={algo.id} value={algo.algorithm_key}>
+                      <Option
+                        key={algo.id}
+                        value={algo.algorithm_key}
+                        id={"algo_drop_item_" + algo?.id}
+                      >
                         {algo.algorithm_label}
                       </Option>
                     );
@@ -424,6 +463,7 @@ const FilterWithTree = ({
                     onChange={filterOnScore}
                     value={inputValue}
                     disabled={loading}
+                    id="filter_input"
                   />
                   <Popover
                     content={infoContent}
@@ -459,6 +499,7 @@ const FilterWithTree = ({
                     value={value}
                     disabled={loading}
                     className={styles.radioBtns}
+                    id="radio_group"
                   >
                     <Space direction="horizontal" style={{ gap: "12px" }}>
                       <Radio
@@ -477,6 +518,7 @@ const FilterWithTree = ({
                             })
                           );
                         }}
+                        id="review_input"
                       >
                         Include review
                       </Radio>
@@ -495,6 +537,7 @@ const FilterWithTree = ({
                             })
                           );
                         }}
+                        id="default_input"
                       >
                         Default
                       </Radio>
@@ -505,6 +548,7 @@ const FilterWithTree = ({
                           dispatch(setViewThisVersion(false));
                           handleAsOfClick();
                         }}
+                        id="as_input"
                       >
                         As of date
                       </Radio>
@@ -527,6 +571,7 @@ const FilterWithTree = ({
                         current &&
                         current > moment(current_date_filter).endOf("day")
                       }
+                      id="date_input"
                     />
                     <Popover
                       content={""}

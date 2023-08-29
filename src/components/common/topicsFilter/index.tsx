@@ -26,7 +26,7 @@ const { Panel } = Collapse;
 const { Option } = Select;
 
 import styles from "./topicListFilter.module.scss";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
 import K from "../../../constants";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
@@ -164,7 +164,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   }
   useEffect(() => {
     if (didMount.current) {
-      if (history.pushState) {
+      if (history?.pushState) {
         const queryParams = `?score=${filterObject?.filterByScore}&algo=${
           filterObject?.algorithm
         }${
@@ -180,8 +180,35 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
           window.location.host +
           window.location.pathname +
           queryParams;
-        window.history.pushState({ path: newurl }, "", newurl);
+
+        Router.replace(newurl, null, { shallow: true });
       }
+    }
+  }, [didMount.current]);
+
+  useEffect(() => {
+    if (didMount.current) {
+      // if (history?.pushState) {
+      // const queryParams = `?score=${filterObject?.filterByScore}&algo=${
+      //   filterObject?.algorithm
+      // }${
+      //   filterObject?.asof == "bydate"
+      //     ? "&asofdate=" + filterObject?.asofdate
+      //     : ""
+      // }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
+      //   viewThisVersion ? "&viewversion=1" : ""
+      // }`;
+      // var newurl =
+      //   window.location.protocol +
+      //   "//" +
+      //   window.location.host +
+      //   window.location.pathname +
+      //   queryParams;
+      // console.log(window.location.href, "<<<<<<<<<newurl");
+      // window.history.replaceState({ path: newurl }, "", newurl);
+      // window.location.href = newurl;
+      // console.log(window.location.href, "<<<<<<<<<newurl");
+      // }
     } else {
       let aa = removeEmptyValues({
         filterByScore: `${router.query.score}` || `${filteredScore}` || "0",
