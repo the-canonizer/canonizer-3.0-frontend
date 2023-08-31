@@ -14,7 +14,7 @@ import { AppDispatch, RootState } from "../../../store";
 import { setValue } from "../../../store/slices/utilsSlice";
 import Spinner from "../../common/spinner/spinner";
 
-const EmailPopup = ({ isModal = false }) => {
+const EmailPopup = ({ isModal = false }: any) => {
   const { socialKeys, rdType } = useSelector((state: RootState) => ({
     socialKeys: state.utils.social_login_keys,
     rdType: state.utils.redirect_type,

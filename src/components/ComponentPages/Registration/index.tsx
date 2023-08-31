@@ -51,6 +51,7 @@ const Registration = ({ isModal, isTest = false }: any) => {
         onFinish(values, gReCaptchaToken);
       });
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [executeRecaptcha]
   );
 

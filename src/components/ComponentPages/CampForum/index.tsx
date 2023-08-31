@@ -191,6 +191,7 @@ const ForumComponent = ({
     };
 
     setParamsList(paramsLists);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [campRecord]);
 
   // start thread List section
@@ -433,6 +434,7 @@ const ForumComponent = ({
     if (threadId) {
       threadDetails(threadId);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   useEffect(() => {
@@ -444,6 +446,7 @@ const ForumComponent = ({
     } else {
       didMountPost.current = true;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router?.query?.id, ppage]);
 
   const onContentChange = (v) => {

@@ -61,6 +61,7 @@ const CreateCampFormUI = ({
     campRecord?.is_archive && router.pathname == "/camp/create/[...camp]"
       ? router?.back()
       : "";
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
