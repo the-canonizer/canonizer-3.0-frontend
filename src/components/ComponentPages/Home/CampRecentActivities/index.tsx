@@ -46,6 +46,8 @@ export default function CampRecentActivities() {
       setLoadingIndicator(false);
     }
     getTopicActivityLogCall();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router?.query?.camp[1]?.split("-")[0] ?? 1]);
 
   return (

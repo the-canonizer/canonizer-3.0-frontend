@@ -99,15 +99,15 @@ const TopicDetails = ({ serverSideCall }: any) => {
     viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
   }));
 
-  const reqBody = {
-    topic_num: +router?.query?.camp[0]?.split("-")[0],
-    camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
-    as_of: asof,
-    as_of_date:
-      asof == "default" || asof == "review"
-        ? Date.now() / 1000
-        : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
-  };
+  // const reqBody = {
+  //   topic_num: +router?.query?.camp[0]?.split("-")[0],
+  //   camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+  //   as_of: asof,
+  //   as_of_date:
+  //     asof == "default" || asof == "review"
+  //       ? Date.now() / 1000
+  //       : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
+  // };
   useEffect(() => {
     async function getTreeApiCall() {
       if (!showTreeSkeltonRef) {
@@ -116,7 +116,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       }
       setLoadingIndicator(true);
 
-      console.log(didMount, serverSideCall);
+      // console.log(didMount, serverSideCall);
 
       if (didMount.current && !serverSideCall.current) {
         const reqBodyForService = {
@@ -177,6 +177,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
     }
 
     getTreeApiCall();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asofdate, algorithm, +(router?.query?.camp[1]?.split("-")[0] ?? 1)]);
 
   const reqBodyData = {
@@ -331,7 +333,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
     if (isUserAuthenticated) {
       GetCheckStatusData();
     }
-    // fetchTotalScore();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserAuthenticated, router, algorithm]);
 
   useEffect(() => {
@@ -343,7 +346,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
   };
 
   const handleLoadMoreSupporters = async () => {
-    const reqBody = { topic_num: 45, camp_num: 1 };
+    // const reqBody = { topic_num: 45, camp_num: 1 };
     //await getCanonizedCampSupportingTreeApi(reqBody, algorithm, true);
   };
 
@@ -374,30 +377,22 @@ const TopicDetails = ({ serverSideCall }: any) => {
     setCurrentTopics(data);
   };
 
-  const onCampForumClick = async () => {
-    const topicName = await topicRecord?.topic_name?.replaceAll(" ", "-"),
-      topicNum = topicRecord?.topic_num,
-      campName = await campRecord?.camp_name?.replaceAll(" ", "-"),
-      campNum = campRecord?.camp_num;
+  // const onCampForumClick = async () => {
+  //   const topicName = await topicRecord?.topic_name?.replaceAll(" ", "-"),
+  //     topicNum = topicRecord?.topic_num,
+  //     campName = await campRecord?.camp_name?.replaceAll(" ", "-"),
+  //     campNum = campRecord?.camp_num;
 
-    if (topicName && topicNum && campName && campNum) {
-      router?.push({
-        pathname: `/forum/${topicNum}-${replaceSpecialCharacters(
-          topicName,
-          "-"
-        )}/${campNum}-${replaceSpecialCharacters(campName, "-")}/threads`,
-      });
-    }
-  };
+  //   if (topicName && topicNum && campName && campNum) {
+  //     router?.push({
+  //       pathname: `/forum/${topicNum}-${replaceSpecialCharacters(
+  //         topicName,
+  //         "-"
+  //       )}/${campNum}-${replaceSpecialCharacters(campName, "-")}/threads`,
+  //     });
+  //   }
+  // };
 
-  const onCreateTreeDate = () => {
-    dispatch(
-      setFilterCanonizedTopics({
-        asofdate: tree["1"]?.created_date,
-        asof: "bydate",
-      })
-    );
-  };
   const onCreateCampDate = () => {
     dispatch(
       setFilterCanonizedTopics({

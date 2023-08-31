@@ -34,7 +34,7 @@ function TopicSubscriptionsTab({ subscriptionsList, onConfirm }: any) {
         >
           {data.camps?.map((camp, i) => {
             return (
-              <Row gutter={30}>
+              <Row gutter={30} key={i}>
                 <Col md={12}>
                   <Tag
                     key={camp.subscription_start + i}

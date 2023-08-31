@@ -65,6 +65,7 @@ function TimeLine({ setTimelineDescript }: any) {
     apiCall();
 
     setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [algorithm]);
 
   useEffect(() => {
@@ -73,6 +74,7 @@ function TimeLine({ setTimelineDescript }: any) {
         Object.keys(mockData)?.sort()[iteration]
       ]?.payload_response?.filter((item) => item.score >= score)
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mockData, score, isPlaying]);
 
   useInterval(() => {

@@ -116,6 +116,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
 
   useEffect(() => {
     setIsLoading(loading);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
   useEffect(() => {

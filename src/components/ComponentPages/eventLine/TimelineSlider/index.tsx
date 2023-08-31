@@ -226,6 +226,8 @@ function TimelineSlider({
       });
     }
     setTimelineDescript(mappedArr);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [iteration, mockData]);
 
   return (

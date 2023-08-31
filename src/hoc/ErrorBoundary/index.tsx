@@ -6,7 +6,7 @@ import Image from "next/image";
 
 import styles from "./errorPage.module.scss";
 
-export default class ErrorBoundary extends Component {
+export default class ErrorBoundary extends Component<any> {
   state = { hasError: false, redirect: false };
 
   static getDerivedStateFromError(error) {

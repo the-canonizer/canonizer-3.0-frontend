@@ -9,7 +9,7 @@ import {
   unsubscribeTopicOrCampAPI,
 } from "../../../network/api/userApi";
 
-function SubscriptionsList({ isTestData = [] }) {
+function SubscriptionsList({ isTestData = [] }: any) {
   const [subscriptionsList, setSubscriptionsList] = useState(isTestData);
   const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

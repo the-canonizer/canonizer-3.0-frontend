@@ -12,7 +12,7 @@ import SubscriptionList from "../";
 
 import {
   GetAllSubscriptionsList,
-  unsubscribeTopicOrCampAPI,
+  // unsubscribeTopicOrCampAPI,
 } from "src/network/api/userApi";
 import { Provider } from "react-redux";
 

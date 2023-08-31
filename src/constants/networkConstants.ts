@@ -206,7 +206,7 @@ const NetworkConstants = {
       Accept: "application/json",
       Authorization: "Bearer " + token,
     }),
-    Authorization: (token = "") => ({
+    Authorization: () => ({
       // Authorization: "Bearer " + token,
       // "Content-Type": "multipart/form-data",
       // Accept: "application/json",

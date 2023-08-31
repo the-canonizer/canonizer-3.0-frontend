@@ -124,12 +124,16 @@ const InfoBar = ({
         setTopicSubscriptionID(topicRecord?.topicSubscriptionId);
       } else didMount.current = true;
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [campRecord?.subscriptionId, topicRecord?.topicSubscriptionId]);
 
   useEffect(() => {
     if (isTopicPage) {
       dispatch(setManageSupportStatusCheck(false));
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleClickSupportCheck = () => {

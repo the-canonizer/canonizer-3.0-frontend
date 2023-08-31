@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import { message } from "antd";
 
 import SubscriptionsListUI from "./UI";
 import CustomSkelton from "../../common/customSkelton";
 
 import {
   GetAllSubscriptionsList,
-  unsubscribeTopicOrCampAPI,
+  // unsubscribeTopicOrCampAPI,
 } from "../../../network/api/userApi";
 import {
   getAllUsedNickNames,

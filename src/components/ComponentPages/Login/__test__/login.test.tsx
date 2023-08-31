@@ -67,24 +67,24 @@ function createMockRouter(router: Partial<NextRouter>): NextRouter {
 jest.mock("src/network/api/userApi");
 
 const mockStore = configureMockStore();
-const store1 = mockStore({
-  auth: {
-    authenticated: true,
-    loggedInUser: {
-      is_admin: true,
-    },
-  },
-  topicDetails: {
-    currentCampRecord: {},
-  },
-  filters: {
-    filterObject: {},
-  },
-  forum: {
-    currentThread: null,
-    currentPost: null,
-  },
-});
+// const store1 = mockStore({
+//   auth: {
+//     authenticated: true,
+//     loggedInUser: {
+//       is_admin: true,
+//     },
+//   },
+//   topicDetails: {
+//     currentCampRecord: {},
+//   },
+//   filters: {
+//     filterObject: {},
+//   },
+//   forum: {
+//     currentThread: null,
+//     currentPost: null,
+//   },
+// });
 
 afterEach(cleanup);
 
@@ -233,24 +233,24 @@ describe("Login page", () => {
       data: {},
     });
 
-    const store1 = mockStore({
-      auth: {
-        authenticated: true,
-        loggedInUser: {
-          is_admin: true,
-        },
-      },
-      topicDetails: {
-        currentCampRecord: {},
-      },
-      filters: {
-        filterObject: {},
-      },
-      forum: {
-        currentThread: null,
-        currentPost: null,
-      },
-    });
+    // const store1 = mockStore({
+    //   auth: {
+    //     authenticated: true,
+    //     loggedInUser: {
+    //       is_admin: true,
+    //     },
+    //   },
+    //   topicDetails: {
+    //     currentCampRecord: {},
+    //   },
+    //   filters: {
+    //     filterObject: {},
+    //   },
+    //   forum: {
+    //     currentThread: null,
+    //     currentPost: null,
+    //   },
+    // });
 
     render(
       <Provider store={store}>
@@ -278,24 +278,24 @@ describe("Login page", () => {
       data: {},
     });
 
-    const store1 = mockStore({
-      auth: {
-        authenticated: true,
-        loggedInUser: {
-          is_admin: true,
-        },
-      },
-      topicDetails: {
-        currentCampRecord: {},
-      },
-      filters: {
-        filterObject: {},
-      },
-      forum: {
-        currentThread: null,
-        currentPost: null,
-      },
-    });
+    // const store1 = mockStore({
+    //   auth: {
+    //     authenticated: true,
+    //     loggedInUser: {
+    //       is_admin: true,
+    //     },
+    //   },
+    //   topicDetails: {
+    //     currentCampRecord: {},
+    //   },
+    //   filters: {
+    //     filterObject: {},
+    //   },
+    //   forum: {
+    //     currentThread: null,
+    //     currentPost: null,
+    //   },
+    // });
 
     render(
       <Provider store={store}>
@@ -333,24 +333,24 @@ describe("Login page", () => {
       data: {},
     });
 
-    const store1 = mockStore({
-      auth: {
-        authenticated: true,
-        loggedInUser: {
-          is_admin: true,
-        },
-      },
-      topicDetails: {
-        currentCampRecord: {},
-      },
-      filters: {
-        filterObject: {},
-      },
-      forum: {
-        currentThread: null,
-        currentPost: null,
-      },
-    });
+    // const store1 = mockStore({
+    //   auth: {
+    //     authenticated: true,
+    //     loggedInUser: {
+    //       is_admin: true,
+    //     },
+    //   },
+    //   topicDetails: {
+    //     currentCampRecord: {},
+    //   },
+    //   filters: {
+    //     filterObject: {},
+    //   },
+    //   forum: {
+    //     currentThread: null,
+    //     currentPost: null,
+    //   },
+    // });
 
     render(
       <Provider store={store}>

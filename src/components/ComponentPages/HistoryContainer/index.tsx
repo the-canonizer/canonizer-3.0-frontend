@@ -41,7 +41,7 @@ function HistoryContainer() {
   const [loadMoreItems, setLoadMoreItems] = useState(true);
   const [agreecheck, setAgreeCheck] = useState(false);
   const [discardChange, setDiscardChange] = useState(false);
-  const[parentarchived,setParentarchived] = useState(0)
+  const [parentarchived, setParentarchived] = useState(0);
 
   const changeAgree = () => {
     setAgreeCheck(!agreecheck);
@@ -92,12 +92,12 @@ function HistoryContainer() {
       }
       let res = await getTreesApi(reqBodyForService);
       setLoadingIndicator(false);
-      setParentarchived(res[1].is_archive)
+      setParentarchived(res[1].is_archive);
     }
     if (!isTreesApiCallStop) {
       getTreeApiCall();
     }
-   
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asofdate, algorithm, +router?.query?.camp?.at(1)?.split("-")[0]]);
 
   const dispatchData = (data, isDisabled = 0, isOneLevel = 0) => {

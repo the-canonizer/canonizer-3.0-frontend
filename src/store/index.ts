@@ -1,5 +1,5 @@
 import { createStore } from "redux";
-import { createWrapper, Context } from "next-redux-wrapper";
+import { createWrapper } from "next-redux-wrapper";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import {
   FLUSH,

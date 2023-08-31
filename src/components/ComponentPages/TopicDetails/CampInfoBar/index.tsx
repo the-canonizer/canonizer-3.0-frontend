@@ -172,200 +172,200 @@ const TimelineInfoBar = ({
       getTreesApi(reqBodyForService);
     }
   };
-  const campForumDropdownMenu = (
-    <Menu className={styles.campForumDropdownMenu}>
-      {isUserAuthenticated && is_admin && (
-        <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
-          {router?.pathname == "/support/[...manageSupport]" ? (
-            <Link href={router?.asPath.replace("support", "addnews")}>
-              <a rel="noopener noreferrer" href="/add-news">
-                Add News
-              </a>
-            </Link>
-          ) : (
-            <Link href={router?.asPath.replace("topic", "addnews")}>
-              <a rel="noopener noreferrer" href="/add-news">
-                Add News
-              </a>
-            </Link>
-          )}
-        </Menu.Item>
-      )}
-      <Menu.Item
-        icon={
-          <i
-            className={`icon-subscribe ${
-              !!topicSubscriptionID && "text-primary"
-            }`}
-          ></i>
-        }
-        onClick={() => {
-          if (isUserAuthenticated) {
-            campOrTopicScribe(true);
-          } else {
-            setLoadingIndicator(true);
-            router?.push({
-              pathname: "/login",
-              query: { returnUrl: router?.asPath },
-            });
-          }
-        }}
-      >
-        {topicSubscriptionID
-          ? " Unsubscribe to Entire Topic"
-          : " Subscribe to Entire Topic"}
-      </Menu.Item>
-      <Menu.Item
-        icon={
-          <i
-            className={`icon-subscribe ${
-              !!campSubscriptionID && "text-primary"
-            }`}
-          ></i>
-        }
-        disabled={
-          (!!campSubscriptionID && campRecord?.flag == 2) ||
-          campRecord?.length == 0
-            ? true
-            : false
-        }
-        onClick={() => {
-          if (isUserAuthenticated) {
-            campOrTopicScribe(false);
-          } else {
-            setLoadingIndicator(true);
-            router?.push({
-              pathname: "/login",
-              query: { returnUrl: router?.asPath },
-            });
-          }
-        }}
-      >
-        {!!campSubscriptionID && campRecord?.flag !== 2 ? (
-          "Unsubscribe to the Camp"
-        ) : !!campSubscriptionID && campRecord?.flag == 2 ? (
-          <Tooltip
-            title={`You are subscribed to ${campRecord?.subscriptionCampName}`}
-          >
-            Subscribe to the Camp
-          </Tooltip>
-        ) : campRecord?.length == 0 ? (
-          <Tooltip
-            title={`You can't modify history, please go to the current state. `}
-          >
-            Subscribe to the Camp
-          </Tooltip>
-        ) : (
-          "Subscribe to the Camp"
-        )}
-      </Menu.Item>
-      <Menu.Item
-        icon={<HeartOutlined />}
-        disabled={asof == "bydate" || campRecord?.is_archive}
-      >
-        {isTopicPage && (
-          <Link href={router?.asPath?.replace("/topic/", "/support/")}>
-            <a>
-              <div
-                className="topicDetailsCollapseFooter"
-                onClick={handleClickSupportCheck}
-              >
-                {/* {K?.exceptionalMessages?.directJoinSupport} */}
-                {getCheckSupportStatus?.is_delegator == 1 ||
-                getCheckSupportStatus?.support_flag != 1
-                  ? K?.exceptionalMessages?.directJoinSupport
-                  : K?.exceptionalMessages?.manageSupport}
-              </div>
-            </a>
-          </Link>
-        )}
-      </Menu.Item>
-      <Menu.Item icon={<i className="icon-camp"></i>}>
-        {isTopicPage && (
-          <Link
-            href={`/camp/history/${replaceSpecialCharacters(
-              router?.query?.camp
-                ? router?.query?.camp[0]
-                : router?.query?.manageSupport?.at(0),
-              "-"
-            )}/${replaceSpecialCharacters(
-              router?.query?.camp
-                ? router?.query?.camp[1] ?? "1-Agreement"
-                : router?.query?.manageSupport?.at(1),
-              "-"
-            )}`}
-          >
-            <a>{K?.exceptionalMessages?.manageCampButton}</a>
-          </Link>
-        )}
-      </Menu.Item>
-      <Menu.Item icon={<i className="icon-topic"></i>}>
-        {isTopicPage && (
-          <Link
-            href={`/topic/history/${replaceSpecialCharacters(
-              router?.query?.camp
-                ? router?.query?.camp[0]
-                : router?.query?.manageSupport?.at(0),
-              "-"
-            )}`}
-          >
-            <a>{K?.exceptionalMessages?.manageTopicButton} </a>
-          </Link>
-        )}
-      </Menu.Item>
-      <Menu.Item icon={<FileTextOutlined />} disabled={campRecord?.is_archive}>
-        {isTopicPage && (
-          <Link
-            href={
-              history?.items?.length > 0
-                ? `/statement/history/${replaceSpecialCharacters(
-                    router?.query?.camp
-                      ? router?.query?.camp[0]
-                      : router?.query?.manageSupport[0],
-                    "-"
-                  )}/${replaceSpecialCharacters(
-                    router?.query?.camp
-                      ? router?.query?.camp[1] ?? "1-Agreement"
-                      : router?.query?.manageSupport[1],
-                    "-"
-                  )}`
-                : `/create/statement/${replaceSpecialCharacters(
-                    router?.query?.camp
-                      ? router?.query?.camp[0]
-                      : router?.query?.manageSupport?.at(0),
-                    "-"
-                  )}/${replaceSpecialCharacters(
-                    router?.query?.camp
-                      ? router?.query?.camp[1] ?? "1-Agreement"
-                      : router?.query?.manageSupport?.at(1),
-                    "-"
-                  )}`
-            }
-          >
-            <a>
-              {history?.items?.length > 0
-                ? K?.exceptionalMessages?.manageCampStatementButton
-                : K?.exceptionalMessages?.addCampStatementButton}
-            </a>
-          </Link>
-        )}
-      </Menu.Item>
-      <Menu.Item
-        icon={
-          <span className={styles.svgIconCode}>
-            <CodeIcon />
-          </span>
-        }
-      >
-        {isTopicPage && (
-          <GenerateModal
-            topic_num={payload?.topic_num}
-            camp_num={payload?.camp_num}
-          />
-        )}
-      </Menu.Item>
-    </Menu>
-  );
+  // const campForumDropdownMenu = (
+  //   <Menu className={styles.campForumDropdownMenu}>
+  //     {isUserAuthenticated && is_admin && (
+  //       <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
+  //         {router?.pathname == "/support/[...manageSupport]" ? (
+  //           <Link href={router?.asPath.replace("support", "addnews")}>
+  //             <a rel="noopener noreferrer" href="/add-news">
+  //               Add News
+  //             </a>
+  //           </Link>
+  //         ) : (
+  //           <Link href={router?.asPath.replace("topic", "addnews")}>
+  //             <a rel="noopener noreferrer" href="/add-news">
+  //               Add News
+  //             </a>
+  //           </Link>
+  //         )}
+  //       </Menu.Item>
+  //     )}
+  //     <Menu.Item
+  //       icon={
+  //         <i
+  //           className={`icon-subscribe ${
+  //             !!topicSubscriptionID && "text-primary"
+  //           }`}
+  //         ></i>
+  //       }
+  //       onClick={() => {
+  //         if (isUserAuthenticated) {
+  //           campOrTopicScribe(true);
+  //         } else {
+  //           setLoadingIndicator(true);
+  //           router?.push({
+  //             pathname: "/login",
+  //             query: { returnUrl: router?.asPath },
+  //           });
+  //         }
+  //       }}
+  //     >
+  //       {topicSubscriptionID
+  //         ? " Unsubscribe to Entire Topic"
+  //         : " Subscribe to Entire Topic"}
+  //     </Menu.Item>
+  //     <Menu.Item
+  //       icon={
+  //         <i
+  //           className={`icon-subscribe ${
+  //             !!campSubscriptionID && "text-primary"
+  //           }`}
+  //         ></i>
+  //       }
+  //       disabled={
+  //         (!!campSubscriptionID && campRecord?.flag == 2) ||
+  //         campRecord?.length == 0
+  //           ? true
+  //           : false
+  //       }
+  //       onClick={() => {
+  //         if (isUserAuthenticated) {
+  //           campOrTopicScribe(false);
+  //         } else {
+  //           setLoadingIndicator(true);
+  //           router?.push({
+  //             pathname: "/login",
+  //             query: { returnUrl: router?.asPath },
+  //           });
+  //         }
+  //       }}
+  //     >
+  //       {!!campSubscriptionID && campRecord?.flag !== 2 ? (
+  //         "Unsubscribe to the Camp"
+  //       ) : !!campSubscriptionID && campRecord?.flag == 2 ? (
+  //         <Tooltip
+  //           title={`You are subscribed to ${campRecord?.subscriptionCampName}`}
+  //         >
+  //           Subscribe to the Camp
+  //         </Tooltip>
+  //       ) : campRecord?.length == 0 ? (
+  //         <Tooltip
+  //           title={`You can't modify history, please go to the current state. `}
+  //         >
+  //           Subscribe to the Camp
+  //         </Tooltip>
+  //       ) : (
+  //         "Subscribe to the Camp"
+  //       )}
+  //     </Menu.Item>
+  //     <Menu.Item
+  //       icon={<HeartOutlined />}
+  //       disabled={asof == "bydate" || campRecord?.is_archive}
+  //     >
+  //       {isTopicPage && (
+  //         <Link href={router?.asPath?.replace("/topic/", "/support/")}>
+  //           <a>
+  //             <div
+  //               className="topicDetailsCollapseFooter"
+  //               onClick={handleClickSupportCheck}
+  //             >
+  //               {/* {K?.exceptionalMessages?.directJoinSupport} */}
+  //               {getCheckSupportStatus?.is_delegator == 1 ||
+  //               getCheckSupportStatus?.support_flag != 1
+  //                 ? K?.exceptionalMessages?.directJoinSupport
+  //                 : K?.exceptionalMessages?.manageSupport}
+  //             </div>
+  //           </a>
+  //         </Link>
+  //       )}
+  //     </Menu.Item>
+  //     <Menu.Item icon={<i className="icon-camp"></i>}>
+  //       {isTopicPage && (
+  //         <Link
+  //           href={`/camp/history/${replaceSpecialCharacters(
+  //             router?.query?.camp
+  //               ? router?.query?.camp[0]
+  //               : router?.query?.manageSupport?.at(0),
+  //             "-"
+  //           )}/${replaceSpecialCharacters(
+  //             router?.query?.camp
+  //               ? router?.query?.camp[1] ?? "1-Agreement"
+  //               : router?.query?.manageSupport?.at(1),
+  //             "-"
+  //           )}`}
+  //         >
+  //           <a>{K?.exceptionalMessages?.manageCampButton}</a>
+  //         </Link>
+  //       )}
+  //     </Menu.Item>
+  //     <Menu.Item icon={<i className="icon-topic"></i>}>
+  //       {isTopicPage && (
+  //         <Link
+  //           href={`/topic/history/${replaceSpecialCharacters(
+  //             router?.query?.camp
+  //               ? router?.query?.camp[0]
+  //               : router?.query?.manageSupport?.at(0),
+  //             "-"
+  //           )}`}
+  //         >
+  //           <a>{K?.exceptionalMessages?.manageTopicButton} </a>
+  //         </Link>
+  //       )}
+  //     </Menu.Item>
+  //     <Menu.Item icon={<FileTextOutlined />} disabled={campRecord?.is_archive}>
+  //       {isTopicPage && (
+  //         <Link
+  //           href={
+  //             history?.items?.length > 0
+  //               ? `/statement/history/${replaceSpecialCharacters(
+  //                   router?.query?.camp
+  //                     ? router?.query?.camp[0]
+  //                     : router?.query?.manageSupport[0],
+  //                   "-"
+  //                 )}/${replaceSpecialCharacters(
+  //                   router?.query?.camp
+  //                     ? router?.query?.camp[1] ?? "1-Agreement"
+  //                     : router?.query?.manageSupport[1],
+  //                   "-"
+  //                 )}`
+  //               : `/create/statement/${replaceSpecialCharacters(
+  //                   router?.query?.camp
+  //                     ? router?.query?.camp[0]
+  //                     : router?.query?.manageSupport?.at(0),
+  //                   "-"
+  //                 )}/${replaceSpecialCharacters(
+  //                   router?.query?.camp
+  //                     ? router?.query?.camp[1] ?? "1-Agreement"
+  //                     : router?.query?.manageSupport?.at(1),
+  //                   "-"
+  //                 )}`
+  //           }
+  //         >
+  //           <a>
+  //             {history?.items?.length > 0
+  //               ? K?.exceptionalMessages?.manageCampStatementButton
+  //               : K?.exceptionalMessages?.addCampStatementButton}
+  //           </a>
+  //         </Link>
+  //       )}
+  //     </Menu.Item>
+  //     <Menu.Item
+  //       icon={
+  //         <span className={styles.svgIconCode}>
+  //           <CodeIcon />
+  //         </span>
+  //       }
+  //     >
+  //       {isTopicPage && (
+  //         <GenerateModal
+  //           topic_num={payload?.topic_num}
+  //           camp_num={payload?.camp_num}
+  //         />
+  //       )}
+  //     </Menu.Item>
+  //   </Menu>
+  // );
 
   return (
     <>

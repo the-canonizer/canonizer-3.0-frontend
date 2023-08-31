@@ -17,7 +17,7 @@ function GetStartedLayout(props: any) {
 }
 
 const makeStore = () => store;
-const wrapper = createWrapper(makeStore);
+// const wrapper = createWrapper(makeStore);
 
 // export default Layout;
 export default GetStartedLayout;

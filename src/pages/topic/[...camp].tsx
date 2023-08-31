@@ -48,6 +48,7 @@ const TopicDetailsPage = ({
     // dispatch(setCanonizedAlgorithms(canonizedAlgorithms));
     dispatch(setTree([tree] || []));
     dispatch(setCurrentDate(current_date));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -57,7 +58,7 @@ const TopicDetailsPage = ({
   );
 };
 
-export async function getServerSideProps({ req, res, resolvedUrl, query }) {
+export async function getServerSideProps({ req, query }) {
   let topicNum = +query?.camp[0]?.split("-")[0];
   let campNum = +(query?.camp[1]?.split("-")[0] ?? 1);
 

@@ -93,6 +93,8 @@ export default function RecentActivities() {
       setGetTopicsLoadingIndicator(true);
       router?.push("/login");
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTab, isChecked, router]);
 
   const handleTabChange = (key: string) => {

@@ -167,6 +167,8 @@ const TopicsList = () => {
       delete router.query?.namespace;
       router.replace(router, undefined, { shallow: true });
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -187,6 +189,8 @@ const TopicsList = () => {
         );
       }
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router, nameSpacesList]);
 
   useEffect(() => {
@@ -244,6 +248,8 @@ const TopicsList = () => {
     } else {
       setClear(false);
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // const handlesearch = (e) => {
@@ -406,6 +412,8 @@ const TopicsList = () => {
     dispatch(setCheckSupportExistsData(""));
     dispatch(setManageSupportStatusCheck(false));
     getCanonizedNameSpacesApi();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

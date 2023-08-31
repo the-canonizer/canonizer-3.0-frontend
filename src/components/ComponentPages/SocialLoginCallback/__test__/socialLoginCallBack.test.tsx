@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { cleanup, render, screen, waitFor, act } from "src/utils/testUtils";
+import { cleanup, render, screen } from "src/utils/testUtils";
 import { Provider } from "react-redux";
 import { NextRouter } from "next/router";
 import { RouterContext } from "next/dist/shared/lib/router-context";
@@ -7,10 +7,10 @@ import configureMockStore from "redux-mock-store";
 
 import SocialLoginCallback from "../";
 import { store } from "src/store";
-import {
-  socialLoginCallback,
-  socialLoginLinkUser,
-} from "src/network/api/userApi";
+// import {
+//   socialLoginCallback,
+//   socialLoginLinkUser,
+// } from "src/network/api/userApi";
 
 function createMockRouter(router: Partial<NextRouter>): NextRouter {
   return {

@@ -518,6 +518,8 @@ export default function AddOrManage({ add }: any) {
           pathname: "/login",
           query: { returnUrl: router?.asPath },
         });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   let formTitle = () => {
     let update: string;
@@ -555,6 +557,8 @@ export default function AddOrManage({ add }: any) {
         },
       ]);
     };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const toolTipContent = "This camp is under review";
@@ -674,6 +678,8 @@ export default function AddOrManage({ add }: any) {
     if (manageFormOf == "topic") {
       fetchNameSpaceList();
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [originalData]);
 
   return (
