@@ -26,6 +26,7 @@ function TopicSubscriptionsTab({
   useEffect(() => {
     pageChange(1, 5);
     setCurrent(1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subscriptionsList]);
   const pageChange = (pageNumber, pageSize) => {
     setCurrent(pageNumber);
@@ -34,7 +35,7 @@ function TopicSubscriptionsTab({
     setSubList(subscriptionsList.slice(startingPosition, endingPosition));
   };
   return subscriptionsList.length ? (
-    <div>
+    <div key="subscription_cart">
       {subList.length > 0 &&
         subList.map((data) => {
           return (

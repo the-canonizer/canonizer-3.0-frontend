@@ -71,7 +71,7 @@ const UserProfile = () => {
   //onLoad
   useEffect(() => {
     setNoData(false);
-    const userId = router?.query?.supports[0];
+    const userId = router?.query?.supports?.[0];
     const topic_num = router?.query?.topicnum;
     const camp_num = router?.query?.campnum;
     const namespace_name_id = dropdownNameSpaceList
@@ -88,7 +88,7 @@ const UserProfile = () => {
 
   useEffect(() => {
     const q = router?.query,
-      nick_id = q?.supports[0];
+      nick_id = q?.supports?.[0];
     if (nick_id) {
       if (!token && !isLoggedIn) {
         setTimeout(() => {

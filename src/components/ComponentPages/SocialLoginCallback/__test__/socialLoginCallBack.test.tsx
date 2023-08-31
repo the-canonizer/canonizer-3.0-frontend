@@ -7,10 +7,6 @@ import configureMockStore from "redux-mock-store";
 
 import SocialLoginCallback from "../";
 import { store } from "src/store";
-// import {
-//   socialLoginCallback,
-//   socialLoginLinkUser,
-// } from "src/network/api/userApi";
 
 function createMockRouter(router: Partial<NextRouter>): NextRouter {
   return {

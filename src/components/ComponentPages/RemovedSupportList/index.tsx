@@ -3,10 +3,7 @@ import { useEffect, useState } from "react";
 import SubscriptionsListUI from "./UI";
 import CustomSkelton from "../../common/customSkelton";
 
-import {
-  GetAllSubscriptionsList,
-  // unsubscribeTopicOrCampAPI,
-} from "../../../network/api/userApi";
+import { GetAllSubscriptionsList } from "../../../network/api/userApi";
 import {
   getAllUsedNickNames,
   getAllRemovedReasons,
@@ -14,13 +11,13 @@ import {
 
 function RemovedSupportList({ isTestData = [] }: any) {
   const [subscriptionsList, setSubscriptionsList] = useState(isTestData);
-  const [isVisible, setIsVisible] = useState(false);
+  // const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [currentTopic, setCurrentTopic] = useState({});
+  // const [currentTopic, setCurrentTopic] = useState({});
   const [page] = useState(1);
   const [perPage] = useState("");
-  const [isCamp, setIsCamp] = useState(false);
-  const [camp, setCamp] = useState({});
+  // const [isCamp, setIsCamp] = useState(false);
+  // const [camp, setCamp] = useState({});
   const [nickNames, setNickNames] = useState([]);
   const [selectedNikname, setSelectedNikname] = useState(null);
 
@@ -72,13 +69,13 @@ function RemovedSupportList({ isTestData = [] }: any) {
   //   setIsLoading(false);
   // };
 
-  const onConfirm = (e: any, topic: any, camp: any) => {
+  const onConfirm = (e: any) => {
     e.preventDefault();
     setIsLoading(true);
-    setIsVisible(true);
-    setIsCamp(true);
-    setCurrentTopic(topic);
-    setCamp(camp);
+    // setIsVisible(true);
+    // setIsCamp(true);
+    // setCurrentTopic(topic);
+    // setCamp(camp);
     setIsLoading(false);
   };
 

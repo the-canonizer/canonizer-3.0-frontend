@@ -10,7 +10,6 @@ import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { NextRouter } from "next/router";
 import { RouterContext } from "next/dist/shared/lib/router-context";
-import configureMockStore from "redux-mock-store";
 
 import Login from "../index";
 import messages from "src/messages";
@@ -66,26 +65,6 @@ function createMockRouter(router: Partial<NextRouter>): NextRouter {
 
 jest.mock("src/network/api/userApi");
 
-const mockStore = configureMockStore();
-// const store1 = mockStore({
-//   auth: {
-//     authenticated: true,
-//     loggedInUser: {
-//       is_admin: true,
-//     },
-//   },
-//   topicDetails: {
-//     currentCampRecord: {},
-//   },
-//   filters: {
-//     filterObject: {},
-//   },
-//   forum: {
-//     currentThread: null,
-//     currentPost: null,
-//   },
-// });
-
 afterEach(cleanup);
 
 describe("Login page", () => {
@@ -107,6 +86,7 @@ describe("Login page", () => {
         </RouterContext.Provider>
       </Provider>
     );
+    expect(screen.getByText("login")).not.toBeInTheDocument();
   });
 
   it("render heading and labels", () => {
@@ -233,25 +213,6 @@ describe("Login page", () => {
       data: {},
     });
 
-    // const store1 = mockStore({
-    //   auth: {
-    //     authenticated: true,
-    //     loggedInUser: {
-    //       is_admin: true,
-    //     },
-    //   },
-    //   topicDetails: {
-    //     currentCampRecord: {},
-    //   },
-    //   filters: {
-    //     filterObject: {},
-    //   },
-    //   forum: {
-    //     currentThread: null,
-    //     currentPost: null,
-    //   },
-    // });
-
     render(
       <Provider store={store}>
         <RouterContext.Provider value={createMockRouter({ asPath: "/login" })}>
@@ -277,25 +238,6 @@ describe("Login page", () => {
       status_code: 200,
       data: {},
     });
-
-    // const store1 = mockStore({
-    //   auth: {
-    //     authenticated: true,
-    //     loggedInUser: {
-    //       is_admin: true,
-    //     },
-    //   },
-    //   topicDetails: {
-    //     currentCampRecord: {},
-    //   },
-    //   filters: {
-    //     filterObject: {},
-    //   },
-    //   forum: {
-    //     currentThread: null,
-    //     currentPost: null,
-    //   },
-    // });
 
     render(
       <Provider store={store}>
@@ -332,25 +274,6 @@ describe("Login page", () => {
       status_code: 400,
       data: {},
     });
-
-    // const store1 = mockStore({
-    //   auth: {
-    //     authenticated: true,
-    //     loggedInUser: {
-    //       is_admin: true,
-    //     },
-    //   },
-    //   topicDetails: {
-    //     currentCampRecord: {},
-    //   },
-    //   filters: {
-    //     filterObject: {},
-    //   },
-    //   forum: {
-    //     currentThread: null,
-    //     currentPost: null,
-    //   },
-    // });
 
     render(
       <Provider store={store}>

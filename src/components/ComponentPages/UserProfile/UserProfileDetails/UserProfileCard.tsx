@@ -42,7 +42,7 @@ export const UserProfileCard = ({
 
   const router = useRouter();
 
-  const reqBody = { campNum: +router?.query?.supports[0] };
+  const reqBody = { campNum: +router?.query?.supports?.[0] };
 
   const pageChange = (pageNumber, pageSize) => {
     setStartingPosition((pageNumber - 1) * pageSize);
@@ -96,6 +96,7 @@ export const UserProfileCard = ({
                       </span>
                     </div>
                     <Select
+                      data-testid="onNicknameChange"
                       size="large"
                       className={`${styles.dropdown} ${styles.nickname_dropdown}`}
                       defaultValue={defaultNickname}
@@ -131,6 +132,7 @@ export const UserProfileCard = ({
                     </span>
 
                     <Select
+                      data-testid="setDropdownNameSpaceList"
                       size="large"
                       className={styles.dropdown}
                       value={renderFilter()}

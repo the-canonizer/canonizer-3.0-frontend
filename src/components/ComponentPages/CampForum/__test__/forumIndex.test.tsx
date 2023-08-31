@@ -201,7 +201,7 @@ describe("ForumComponent", () => {
       </Provider>
     );
 
-    screen.getByText("Thread Name");
+    expect(screen.getByText("Thread Name")).toBeInTheDocument();
   });
 
   test("fetches and displays thread list black", async () => {
@@ -238,7 +238,7 @@ describe("ForumComponent", () => {
       </Provider>
     );
 
-    screen.getByText("Thread Name");
+    expect(screen.getByText("Thread Name")).toBeInTheDocument();
   });
 
   test("displays error message when thread creation fails", async () => {
@@ -283,9 +283,11 @@ describe("ForumComponent", () => {
 
       userEvent.type(screen.getByLabelText("Thread Title"), "New Thread");
     });
+
+    expect(screen.getByText("Thread Name")).toBeInTheDocument();
   });
 
-  test("displays error message when thread creation fails", async () => {
+  test("displays error message", async () => {
     act(() => {
       jest.mock("src/network/api/campForumApi", () => ({
         getThreadsList: jest.fn().mockResolvedValueOnce({
@@ -331,9 +333,10 @@ describe("ForumComponent", () => {
 
       userEvent.type(screen.getByLabelText("Thread Title"), "New Thread");
     });
+    expect(screen.getByText("Thread Name")).toBeInTheDocument();
   });
 
-  test("displays error message when thread creation fails", async () => {
+  test("thread creation fails", async () => {
     const mockGetThreadsList = jest.fn().mockResolvedValueOnce({
       status_code: 200,
       data: {
@@ -367,7 +370,7 @@ describe("ForumComponent", () => {
     });
   });
 
-  test("displays error message when thread creation fails", async () => {
+  test("displays creation fails", async () => {
     getThreadsList.mockResolvedValue({
       status_code: 200,
       data: {

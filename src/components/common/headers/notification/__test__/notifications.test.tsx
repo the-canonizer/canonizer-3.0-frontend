@@ -94,11 +94,13 @@ describe("Notifications", () => {
     const clicked = screen.getByTestId("clickable");
     fireEvent.click(clicked);
 
-    expect(screen.getByText("notifications"));
+    expect(screen.getByText("notifications")).not.toBeInTheDocument();
 
     // Enable push notification switch
     const enableSwitch = screen.getByTestId("enable-text");
-    expect(screen.getByText("Enable push notification"));
+    expect(
+      screen.getByText("Enable push notification")
+    ).not.toBeInTheDocument();
 
     fireEvent.click(enableSwitch);
 
@@ -143,7 +145,9 @@ describe("Notifications", () => {
 
     // Disable push notification switch
     const disableSwitch = screen.getByTestId("enable-text");
-    expect(screen.getByText("Enable push notification"));
+    expect(
+      screen.getByText("Enable push notification")
+    ).not.toBeInTheDocument();
     fireEvent.click(disableSwitch);
 
     // Verify that the token is removed

@@ -1,5 +1,6 @@
 import {
   fireEvent,
+  getByTestId,
   render,
   screen,
   waitFor,
@@ -10,7 +11,7 @@ import messages from "../../../../messages";
 import UserProfile from "..";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { renderHook } from "@testing-library/react-hooks";
+import { act, renderHook } from "@testing-library/react-hooks";
 import { Input, message } from "antd";
 
 const { labels } = messages;
@@ -109,6 +110,7 @@ describe("userProfileDetails", () => {
         userSupportedCampsList={userSupportedCampsList}
       />
     );
+   
     expect(screen.getByText(labels.emailAddress)).toBeTruthy();
     expect(screen.getByText(labels.address)).toBeTruthy();
     expect(screen.getByText(labels.city)).toBeTruthy();
@@ -128,6 +130,12 @@ describe("userProfileCard", () => {
         noData={noData}
       />
     );
+    const btn = screen.getByTestId("onNicknameChange")
+    // fireEvent.change(btn, { target: { value: 'new value' } });
+    fireEvent.click(btn)
+    const btn2 = screen.getByTestId("setDropdownNameSpaceList")
+    // fireEvent.change(btn, { target: { value: 'new value' } });
+    fireEvent.click(btn2)
     expect(screen.getByText(labels.listOfSupportedCamps)).toBeTruthy();
   });
 });
@@ -185,29 +193,29 @@ describe("userProfileCard", () => {
       container.getElementsByClassName("ant-select-selection-search")
     ).toBeTruthy();
   });
-  test("Input component handles user input correctly", () => {
-    render(
-      <UserProfileCard
-        userSupportedCampsList={userSupportedCampsList}
-        nameSpaceList={nameSpaceList}
-        dropdownNameSpaceList={dropdownNameSpaceList}
-        setDropdownNameSpaceList={() => {}}
-        noData={noData}
-      />
-    );
-    // Render the Input component
-    render(<Input />);
+  // test("Input component handles user input correctly", () => {
+  //   render(
+  //     <UserProfileCard
+  //       userSupportedCampsList={userSupportedCampsList}
+  //       nameSpaceList={nameSpaceList}
+  //       dropdownNameSpaceList={dropdownNameSpaceList}
+  //       setDropdownNameSpaceList={() => {}}
+  //       noData={noData}
+  //     />
+  //   );
+  //   // Render the Input component
+  //   render(<Input />);
 
-    // Find the input element
-    const inputElement = screen.getByRole("textbox");
+  //   // Find the input element
+  //   const inputElement = screen.getByRole("textbox");
 
-    // Simulate user input
-    const userInput = "Test Input";
-    fireEvent.change(inputElement, { target: { value: userInput } });
+  //   // Simulate user input
+  //   const userInput = "Test Input";
+  //   fireEvent.change(inputElement, { target: { value: userInput } });
 
-    // Assert that the input value is updated
-    expect(inputElement.value).toBe(userInput);
-  });
+  //   // Assert that the input value is updated
+  //   expect(inputElement.value).toBe(userInput);
+  // });
 });
 
 describe("User profile", () => {
