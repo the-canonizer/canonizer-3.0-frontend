@@ -395,13 +395,7 @@ export default function RecentActivities() {
 
                   return (
                     <List.Item className={styles.listItem}>
-                      <Link
-                        href={{
-                          pathname: decodeUrlLink(activity),
-                          query: { from: router?.asPath },
-                        }}
-                        passHref
-                      >
+                      <Link href={decodeUrlLink(activity)} passHref>
                         <a>
                           <Text className={styles.text}>
                             {activity?.activity?.description}
