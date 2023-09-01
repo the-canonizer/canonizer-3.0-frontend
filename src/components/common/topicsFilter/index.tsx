@@ -184,7 +184,15 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
         Router.replace(newurl, null, { shallow: true });
       }
     }
-  }, [didMount.current]);
+  }, [
+    didMount.current,
+    filterObject?.filterByScore,
+    filterObject?.algorithm,
+    filterObject?.asof,
+    filterObject?.asofdate,
+    filterObject?.namespace_id,
+    viewThisVersion,
+  ]);
 
   useEffect(() => {
     if (didMount.current) {
@@ -221,7 +229,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
       dispatch(setFilterCanonizedTopics(aa));
       didMount.current = true;
     }
-  }, [filterObject]);
+  }, []);
 
   useEffect(() => {
     setIsLoading(loading);

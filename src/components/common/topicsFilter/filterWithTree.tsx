@@ -200,31 +200,37 @@ const FilterWithTree = ({
         // console.log(window.location.href, "<<<<<<<<< filter tree");
       }
     }
-  }, [didMount.current]);
+  }, [
+    didMount.current,
+    filterObject?.filterByScore,
+    filterObject?.algorithm,
+    filterObject?.asof,
+    filterObject?.asofdate,
+    filterObject?.namespace_id,
+    viewThisVersion,
+  ]);
+
   useEffect(() => {
     if (didMount.current) {
       // if (history?.replaceState) {
-        // const queryParams = `?score=${filterObject?.filterByScore}&algo=${
-        //   filterObject?.algorithm
-        // }${
-        //   filterObject?.asof == "bydate"
-        //     ? "&asofdate=" + filterObject?.asofdate
-        //     : ""
-        // }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
-        //   viewThisVersion ? "&viewversion=1" : ""
-        // }`;
-        // var newurl =
-        //   window.location.protocol +
-        //   "//" +
-        //   window.location.host +
-        //   window.location.pathname +
-        //   queryParams;
-
-        // console.log(window.location.href, "<<<<<<<<< filter tree");
-
-        // window.history.replaceState({ path: newurl }, "", newurl);
-
-        // console.log(window.location.href, "<<<<<<<<< filter tree");
+      // const queryParams = `?score=${filterObject?.filterByScore}&algo=${
+      //   filterObject?.algorithm
+      // }${
+      //   filterObject?.asof == "bydate"
+      //     ? "&asofdate=" + filterObject?.asofdate
+      //     : ""
+      // }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
+      //   viewThisVersion ? "&viewversion=1" : ""
+      // }`;
+      // var newurl =
+      //   window.location.protocol +
+      //   "//" +
+      //   window.location.host +
+      //   window.location.pathname +
+      //   queryParams;
+      // console.log(window.location.href, "<<<<<<<<< filter tree");
+      // window.history.replaceState({ path: newurl }, "", newurl);
+      // console.log(window.location.href, "<<<<<<<<< filter tree");
       // }
     } else {
       let newObject = removeEmptyValues({
@@ -239,7 +245,7 @@ const FilterWithTree = ({
       dispatch(setFilterCanonizedTopics(newObject));
       didMount.current = true;
     }
-  }, [filterObject]);
+  }, []);
 
   useEffect(() => {
     setIsLoading(loading);
