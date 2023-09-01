@@ -64,6 +64,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
 
       setMockLinks(filteredLinks);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUser]);
 
   return (

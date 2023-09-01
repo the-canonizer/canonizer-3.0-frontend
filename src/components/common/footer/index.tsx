@@ -77,6 +77,7 @@ function Footer() {
 
       setMockLinks(filteredLinks);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedInUser]);
 
   return (

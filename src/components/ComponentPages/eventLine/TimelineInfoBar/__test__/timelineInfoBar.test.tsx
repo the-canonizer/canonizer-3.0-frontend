@@ -76,7 +76,7 @@ describe("CampInfoBar", () => {
     expect(screen.getByText("Topic : Test Topic")).toBeInTheDocument();
     expect(
       screen.getByRole("button", {
-        name: /arrow\-left/i,
+        name: /arrow\\-left/i,
       })
     ).toBeInTheDocument();
   });

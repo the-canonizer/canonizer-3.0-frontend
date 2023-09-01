@@ -2,52 +2,44 @@ import { Spin, Tooltip, Typography } from "antd";
 import { useRouter } from "next/router";
 import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  getTreesApi,
-  subscribeToCampApi,
-} from "../../../../network/api/campDetailApi";
+// import {
+//   getTreesApi,
+//   subscribeToCampApi,
+// } from "../../../../network/api/campDetailApi";
 import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
-import { Menu } from "antd";
-import K from "../../../../constants";
 import moment from "moment";
 import CustomSkelton from "../../../common/customSkelton";
 
 import { setManageSupportStatusCheck } from "../../../../store/slices/campDetailSlice";
 
-import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
+// import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import { getCampBreadCrumbApi } from "../../../../network/api/campDetailApi";
-import {
-  FileTextOutlined,
-  HeartOutlined,
-  DoubleRightOutlined,
-} from "@ant-design/icons";
+import { DoubleRightOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 // import SocialShareUI from "../../../common/socialShare";
-import GenerateModal from "src/components/common/generateScript";
 
-const CodeIcon = () => (
-  <svg
-    viewBox="0 0 64 64"
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    stroke="#000000"
-  >
-    <rect x="8" y="12" width="48" height="40" />
-    <polyline points="40 40 48 32 40 24" />
-    <polyline points="24 24 16 32 24 40" />
-    <line x1="34" y1="22" x2="30" y2="42" />
-  </svg>
-);
+// const CodeIcon = () => (
+//   <svg
+//     viewBox="0 0 64 64"
+//     xmlns="http://www.w3.org/2000/svg"
+//     fill="none"
+//     stroke="#000000"
+//   >
+//     <rect x="8" y="12" width="48" height="40" />
+//     <polyline points="40 40 48 32 40 24" />
+//     <polyline points="24 24 16 32 24 40" />
+//     <line x1="34" y1="22" x2="30" y2="42" />
+//   </svg>
+// );
 
 const TimelineInfoBar = ({
   payload = null,
   isTopicPage = false,
   isTopicHistoryPage = false,
-  getCheckSupportStatus = null,
 }: any) => {
-  const { isUserAuthenticated } = useAuthentication();
+  // const { isUserAuthenticated } = useAuthentication();
 
   const dispatch = useDispatch();
   const [loadingIndicator, setLoadingIndicator] = useState(false);
@@ -62,21 +54,17 @@ const TimelineInfoBar = ({
   const {
     topicRecord,
     campRecord,
-    is_admin,
-    history,
     asofdate,
     asof,
-    algorithm,
+    // algorithm,
     viewThisVersion,
     filterObject,
     filterByScore,
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
-    is_admin: state?.auth?.loggedInUser?.is_admin,
-    history: state?.topicDetails?.history,
     asofdate: state.filters?.filterObject?.asofdate,
-    algorithm: state.filters?.filterObject?.algorithm,
+    // algorithm: state.filters?.filterObject?.algorithm,
     asof: state?.filters?.filterObject?.asof,
     viewThisVersion: state?.filters?.viewThisVersionCheck,
     filterObject: state?.filters?.filterObject,
@@ -118,17 +106,21 @@ const TimelineInfoBar = ({
         setTopicSubscriptionID(topicRecord?.topicSubscriptionId);
       } else didMount.current = true;
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [campRecord?.subscriptionId, topicRecord?.topicSubscriptionId]);
 
   useEffect(() => {
     if (isTopicPage) {
       dispatch(setManageSupportStatusCheck(false));
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleClickSupportCheck = () => {
-    dispatch(setManageSupportStatusCheck(true));
-  };
+  // const handleClickSupportCheck = () => {
+  //   dispatch(setManageSupportStatusCheck(true));
+  // };
 
   // const onCampForumClick = () => {
   //   const topicName = topicRecord?.topic_name?.replaceAll(" ", "-");
@@ -151,27 +143,27 @@ const TimelineInfoBar = ({
   //   router.push(router.asPath.replace("support", "eventline"));
   // };
 
-  const campOrTopicScribe = async (isTopic: Boolean) => {
-    const reqBodyForService = {
-      topic_num: +router?.query?.camp?.[0]?.split("-")[0],
-      camp_num: +(router?.query?.camp?.[1]?.split("-")[0] ?? 1),
-      asOf: asof,
-      asofdate:
-        asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
-      algorithm: algorithm,
-      update_all: 1,
-    };
-    const reqBody = {
-      topic_num: campRecord.topic_num ?? payload?.topic_num,
-      camp_num: isTopic ? 0 : campRecord.camp_num,
-      checked: isTopic ? !topicSubscriptionID : !campSubscriptionID,
-      subscription_id: isTopic ? topicSubscriptionID : campSubscriptionID,
-    };
-    let result = await subscribeToCampApi(reqBody, isTopic);
-    if (result?.status_code === 200) {
-      getTreesApi(reqBodyForService);
-    }
-  };
+  // const campOrTopicScribe = async (isTopic: Boolean) => {
+  //   const reqBodyForService = {
+  //     topic_num: +router?.query?.camp?.[0]?.split("-")[0],
+  //     camp_num: +(router?.query?.camp?.[1]?.split("-")[0] ?? 1),
+  //     asOf: asof,
+  //     asofdate:
+  //       asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+  //     algorithm: algorithm,
+  //     update_all: 1,
+  //   };
+  //   const reqBody = {
+  //     topic_num: campRecord.topic_num ?? payload?.topic_num,
+  //     camp_num: isTopic ? 0 : campRecord.camp_num,
+  //     checked: isTopic ? !topicSubscriptionID : !campSubscriptionID,
+  //     subscription_id: isTopic ? topicSubscriptionID : campSubscriptionID,
+  //   };
+  //   let result = await subscribeToCampApi(reqBody, isTopic);
+  //   if (result?.status_code === 200) {
+  //     getTreesApi(reqBodyForService);
+  //   }
+  // };
   // const campForumDropdownMenu = (
   //   <Menu className={styles.campForumDropdownMenu}>
   //     {isUserAuthenticated && is_admin && (

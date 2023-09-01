@@ -133,4 +133,4 @@ describe("Footer", () => {
   });
 });
 
-export default loadConfig;
+// export default loadConfig;

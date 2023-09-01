@@ -236,6 +236,7 @@ const ManageSupportUI = ({
     if (nickNameList.length > 0) {
       setSelectedtNickname(nickNameList[0]?.id);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nickNameList]);
 
   useEffect(() => {
@@ -255,6 +256,7 @@ const ManageSupportUI = ({
         else setTagsArrayList(newTagList);
       } else setTagsArrayList(newTagList);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [manageSupportList, parentSupportDataList]);
 
   // remove support popup added.

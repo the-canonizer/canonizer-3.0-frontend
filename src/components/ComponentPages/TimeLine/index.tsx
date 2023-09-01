@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import RacingBarChart from "./RacingBarChart.js";
+import RacingBarChart from "./RacingBarChart";
 import useInterval from "./useInterval";
 // import "./App.css";
 import TimelineSlider from "../eventLine/TimelineSlider";

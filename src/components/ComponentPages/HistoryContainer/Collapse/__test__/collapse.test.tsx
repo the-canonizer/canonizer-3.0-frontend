@@ -1,4 +1,3 @@
-import { RouterContext } from "next/dist/shared/lib/router-context";
 import { render, screen } from "@testing-library/react";
 import HistoryCollapse from "../index";
 import { Provider } from "react-redux";
@@ -68,37 +67,6 @@ describe("HistoryCollapse component", () => {
     parsed_value: "<br />",
   };
 
-  function createMockRouter() {
-    return {
-      basePath: "",
-      pathname: "/",
-      route: "/",
-      query: {
-        camp: ["989-test-case", "1-Agreement"],
-      },
-      asPath: "/",
-      back: jest.fn(),
-      beforePopState: jest.fn(),
-      prefetch: jest.fn(),
-      push: jest.fn(),
-      reload: jest.fn(),
-      replace: jest.fn(),
-      events: {
-        on: jest.fn(),
-        off: jest.fn(),
-        emit: jest.fn(),
-      },
-      isFallback: false,
-      isLocaleDomain: false,
-      isReady: true,
-      defaultLocale: "en",
-      domainLocales: [],
-      isPreview: false,
-    };
-  }
-
-  // afterEach(cleanup);
-
   const mockStore = configureMockStore();
   const store1 = mockStore({
     auth: {
@@ -117,16 +85,6 @@ describe("HistoryCollapse component", () => {
       currentThread: null,
       currentPost: null,
     },
-  });
-
-  it("should render without crash", () => {
-    render(
-      <Provider store={store}>
-        <RouterContext.Provider value={createMockRouter()}>
-          <HistoryCollapse />
-        </RouterContext.Provider>
-      </Provider>
-    );
   });
 
   test("renders commit and cancel button", () => {

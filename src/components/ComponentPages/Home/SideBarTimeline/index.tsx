@@ -1,20 +1,20 @@
-import { useState, Fragment, useEffect } from "react";
+import { useState, Fragment } from "react";
 import { useRouter } from "next/router";
 
 import { Button, Drawer } from "antd";
 import { AppstoreAddOutlined } from "@ant-design/icons";
 
 import TimelineFilter from "../../../common/timelineFilter";
-import useAuthentication from "src/hooks/isUserAuthenticated";
+// import useAuthentication from "src/hooks/isUserAuthenticated";
 import Events from "../../eventLine/Events";
 
 export default function SideBarTimeline({
   onCreateCamp = () => {},
   timelineDescript,
 }: any) {
-  const { isUserAuthenticated } = useAuthentication();
+  // const { isUserAuthenticated } = useAuthentication();
 
-  const [isAuth, setIsAuth] = useState(isUserAuthenticated);
+  // const [isAuth, setIsAuth] = useState(isUserAuthenticated);
 
   const router = useRouter();
 
@@ -28,7 +28,7 @@ export default function SideBarTimeline({
     setVisible(false);
   };
 
-  useEffect(() => setIsAuth(isUserAuthenticated), [isUserAuthenticated]);
+  // useEffect(() => setIsAuth(isUserAuthenticated), [isUserAuthenticated]);
 
   return (
     <Fragment>

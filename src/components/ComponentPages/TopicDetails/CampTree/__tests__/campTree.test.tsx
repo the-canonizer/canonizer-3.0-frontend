@@ -9,15 +9,6 @@ import { act } from "react-dom/test-utils";
 afterEach(cleanup);
 
 describe("Camp tree on camp details page", () => {
-  it("Should render without crash", () => {
-    const refMock = { current: null }; // Mock the ref object
-    render(
-      <Provider store={store}>
-        <CampTree prevTreeValueRef={refMock} />
-      </Provider>
-    );
-  });
-
   test("renders CampTree component correctly", () => {
     render(
       <Provider store={store}>

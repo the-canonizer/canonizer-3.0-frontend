@@ -786,6 +786,7 @@ const Timer = ({ unixTime, setCommited }: any) => {
   useEffect(() => {
     timeall();
     didMount.current = true;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [unixTime]);
 
   return (

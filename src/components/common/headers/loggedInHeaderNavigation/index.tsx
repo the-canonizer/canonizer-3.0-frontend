@@ -55,6 +55,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
     if (!list?.length) {
       getListData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserAuthenticated]);
 
   const onNotifyClick = async (id) => {

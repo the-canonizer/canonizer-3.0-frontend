@@ -115,18 +115,18 @@ describe("CampHistory Page", () => {
         screen.getByRole("heading", {
           name: /topic history/i,
         })
-      ).toBeInTheDocument;
+      ).toBeInTheDocument();
 
       expect(
         screen.getByRole("button", {
           name: /submit topic update based on this/i,
         })
-      ).toBeInTheDocument;
+      ).toBeInTheDocument();
       expect(
         screen.getByRole("button", {
           name: /view this version/i,
         })
-      ).toBeInTheDocument;
+      ).toBeInTheDocument();
       expect(
         screen.getByRole("heading", {
           name: /topic name :/i,

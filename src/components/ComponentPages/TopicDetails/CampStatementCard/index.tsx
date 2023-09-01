@@ -9,6 +9,7 @@ import K from "../../../../constants";
 import moment from "moment";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 import CustomSkelton from "../../../common/customSkelton";
+import Image from "next/image";
 
 const { Paragraph } = Typography;
 
@@ -45,11 +46,19 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
         header={
           <>
             <h3>{K?.exceptionalMessages?.campStatementHeading}</h3>
-            {campStatement[0]?.in_review_changes > 0 ? (
-              <img className="change-icon" src="/images/change-icon.svg" />
-            ) : (
-              ""
-            )}
+            {
+              // campStatement[0]?.in_review_changes > 0
+              true ? (
+                <Image
+                  className="change-icon"
+                  width={20}
+                  height={20}
+                  src="/images/change-icon.svg"
+                />
+              ) : (
+                ""
+              )
+            }
           </>
         }
         key="1"

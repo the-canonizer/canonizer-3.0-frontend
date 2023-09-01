@@ -13,7 +13,7 @@ import configureMockStore from "redux-mock-store";
 
 import CanonVideos from "../";
 import { store } from "src/store";
-import { act } from "react-dom/test-utils";
+// import { act } from "react-dom/test-utils";
 import { getVideosContentApi } from "src/network/api/videos";
 
 jest.mock("next/router", () => ({

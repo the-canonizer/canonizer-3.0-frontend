@@ -205,10 +205,12 @@ const FilterWithTree = ({
       dispatch(setFilterCanonizedTopics(newObject));
       didMount.current = true;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterObject]);
 
   useEffect(() => {
     setIsLoading(loading);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
   useEffect(() => {

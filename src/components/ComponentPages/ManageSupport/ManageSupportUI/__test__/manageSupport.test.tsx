@@ -55,9 +55,9 @@ const nickNameList = [
 //   warning: expect.any(String),
 // };
 
-const currentDelegatedSupportedClick = {
-  delegatedSupportClick: true,
-};
+// const currentDelegatedSupportedClick = {
+//   delegatedSupportClick: true,
+// };
 // const checkDelegateClick = true;
 // const manageSupportLink = "/support/949-top/2-camp-1 link";
 const manageSupportList = [];

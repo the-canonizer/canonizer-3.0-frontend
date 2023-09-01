@@ -151,6 +151,7 @@ const ManageSupport = () => {
         // }
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserAuthenticated, reqBodyData.topic_num, campRecord?.camp_name]);
   const GetCheckStatusData = async (campReff: any) => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
