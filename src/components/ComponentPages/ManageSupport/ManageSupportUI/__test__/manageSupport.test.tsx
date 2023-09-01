@@ -197,15 +197,6 @@ jest.mock("src/network/api/topicAPI", () => ({
 // jest.mock("src/components/common/supportRemovedModal", () => () => {
 //   return <div>Removed Modal</div>;
 // });
-function MyComponent() {
-  const inputRef = useRef(null);
-
-  return (
-    <div>
-      <input ref={inputRef} type="text" />
-    </div>
-  );
-}
 
 describe("ManageSupportUI", () => {
   it("render show SupportedCamps", () => {
@@ -233,7 +224,7 @@ describe("ManageSupportUI", () => {
   });
 });
 
-describe("ManageSupportUI", () => {
+describe("ManageSupportUI Nick name", () => {
   it("render show Nickname To Support Above Camps", () => {
     render(
       <ManageSupportUI
@@ -634,26 +625,37 @@ describe("Manage support", () => {
 
 describe("Manage support ui cancle or submit button", () => {
   it("click on cancel button", () => {
-    const { getAllByText } = render(<ManageSupport></ManageSupport>);
+    const { getAllByText,container } = render(<ManageSupport></ManageSupport>);
     const cancel_button = getAllByText("Cancel")[0];
     fireEvent.click(cancel_button);
-    
+    expect(
+      container.getElementsByClassName("ant-select-selection-item")
+    ).toBeTruthy();
   });
   it("click on Submit button", () => {
-    const { getAllByText } = render(<ManageSupport></ManageSupport>);
+    const { getAllByText,container } = render(<ManageSupport></ManageSupport>);
     const cancel_button = getAllByText("Submit")[0];
     fireEvent.click(cancel_button);
+    expect(
+      container.getElementsByClassName("ant-select-selection-item")
+    ).toBeTruthy();
   });
 
   it("click on clear all changes button", () => {
-    const { getAllByText } = render(<ManageSupport></ManageSupport>);
+    const { getAllByText,container } = render(<ManageSupport></ManageSupport>);
     const clear_all_button = getAllByText("Clear all changes")[0];
     fireEvent.click(clear_all_button);
+    expect(
+      container.getElementsByClassName("ant-select-selection-item")
+    ).toBeTruthy();
   });
 
   it("click on remove all changes button", () => {
-    const { getAllByTestId } = render(<ManageSupport></ManageSupport>);
+    const { getAllByTestId ,container} = render(<ManageSupport></ManageSupport>);
     const remove_all_button = getAllByTestId("checkbox")[0];
     fireEvent.click(remove_all_button);
+    expect(
+      container.getElementsByClassName("ManageSupport_checkbox__DQcrk")
+    ).toBeTruthy();
   });
 });
