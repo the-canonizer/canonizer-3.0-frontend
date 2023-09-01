@@ -9,7 +9,7 @@ interface editorState {
 }
 
 interface editorchange {
-  oneditorchange: (changedata: string | undefined) => void;
+  oneditorchange: () => void;
 }
 
 interface placeholder {
@@ -88,9 +88,7 @@ export default function Editorck(
 
             editor.editing.view.document.on("keyup", (evt) => {
               clearTimeout(typingTimer);
-              isTyping = true;
               typingTimer = setTimeout(async () => {
-                isTyping = false;
                 await dataAppend();
               }, 500);
               evt.stop();

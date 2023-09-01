@@ -359,25 +359,6 @@ describe("Profile Info Page", () => {
     expect(screen.getAllByText("*")).toBeTruthy();
   });
 
-  // it("radio",  () => {
-
-  //   const { getByLabelText }= render(
-  //     <form>
-  //     <label>
-  //        Male <input type="radio" name="radio1" value="male" />
-  //     </label>
-  //     <label>
-  //       Female <input type="radio" name="radio1" value="female" />
-  //     </label>
-  //   </form>
-  //   );
-
-  //   const radio = getByLabelText('First')
-  // fireEvent.change(radio, { target: { value: "female" } });
-  // expect(radio.)value).toBe('female')
-
-  // });
-
   it("render gender label", () => {
     render(
       <ProfileInfoForm

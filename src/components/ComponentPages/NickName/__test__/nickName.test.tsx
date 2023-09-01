@@ -332,12 +332,15 @@ describe("Nickname test cases", () => {
     });
   });
 
-  it("add new nickname ", async () => {
+  it("add new nickname", async () => {
     const { getAllByTestId, getAllByText } = render(<NickName></NickName>);
 
     await waitFor(async () => {
       const edit_button = getAllByText("Add New Nickname");
       fireEvent.click(edit_button[0]);
+      expect(getAllByText("Add New Nickname")[1]).toBeInTheDocument();
+
+
       const nickname_input = getAllByTestId("enterNickName")[0];
       await userEvent.type(nickname_input, "nickname123");
       const submit_button = getAllByTestId("submitButton")[0];
@@ -362,6 +365,8 @@ describe("Nickname test cases", () => {
     await waitFor(async () => {
       const add_button = getAllByText("Add New Nickname");
       userEvent.click(add_button[0]);
+      expect(getAllByText("Add New Nickname")[0]).toBeInTheDocument();
+
       const edit_button = getAllByText("edit");
       userEvent.click(edit_button[0]);
     });
@@ -385,6 +390,8 @@ describe("Nickname test cases", () => {
     await waitFor(async () => {
       const add_button = getAllByText("Add New Nickname");
       userEvent.click(add_button[0]);
+      expect(getAllByText("Add New Nickname")[0]).toBeInTheDocument();
+
       const edit_button = getAllByText("edit");
       userEvent.click(edit_button[0]);
     });

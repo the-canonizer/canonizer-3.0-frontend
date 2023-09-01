@@ -321,7 +321,7 @@ describe("delegated supported", () => {
       expect(screen.getByText("Agreement-2")).toBeInTheDocument();
     });
   });
-  it("render useState is working ", () => {
+  it("render useState is working", () => {
     render(<DelegatedSupportCamps search={delegatedSupportCampsList} />);
     const TestComponent = () => {
       const [isActive, setIsActive] = useState(false);
