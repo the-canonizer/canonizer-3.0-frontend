@@ -6,7 +6,7 @@ const createJestConfig = nextJest({
 const jestConfig = {
   testEnvironment: "jest-environment-jsdom",
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
-  testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|js?|tsx?|ts?)$',
+  testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|js?|tsx?|ts?)$",
   collectCoverageFrom: [
     "**/*.{js,jsx,ts,tsx}",
     "!**/*.d.ts",
@@ -18,15 +18,15 @@ const jestConfig = {
     "<rootDir>/coverage",
     "<rootDir>/dist",
   ],
-  coveragePathIgnorePatterns:[
+  coveragePathIgnorePatterns: [
     "<rootDir>/.next/",
     "<rootDir>/node_modules/",
     "<rootDir>/coverage",
     "<rootDir>/dist",
-     "<rootDir>/src/pages",
-     "<rootDir>/src/assets",
-     "<rootDir>/public",
-      "\\.config\\.(ts|js)$"
+    "<rootDir>/src/pages",
+    "<rootDir>/src/assets",
+    "<rootDir>/public",
+    "\\.config\\.(ts|js)$",
   ],
   moduleDirectories: [
     "<rootDir>/node_modules",
@@ -42,14 +42,14 @@ const jestConfig = {
     "^.+\\.(css|sass|scss)$": "<rootDir>/styleMock.js",
     // https://jestjs.io/docs/webpack#handling-static-assets
     "^.+\\.(jpg|jpeg|png|gif|webp|avif|svg)$": `<rootDir>/fileMock.js`,
-    "d3": "<rootDir>/mocks/d3Mock.ts",
+    d3: "<rootDir>/mocks/d3Mock.ts",
   },
   coverageDirectory: "coverage",
- transform: {
+  transform: {
     "^.+\\.[jt]sx?$": "babel-jest",
   },
   transformIgnorePatterns: [
-     "/node_modules/(?!d3)/",
+    "/node_modules/(?!d3)/",
     "^.+\\.module\\.(css|sass|scss)$",
   ],
   coverageThreshold: {
