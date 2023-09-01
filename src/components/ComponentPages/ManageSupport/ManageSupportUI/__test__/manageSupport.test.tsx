@@ -194,9 +194,9 @@ jest.mock("src/network/api/topicAPI", () => ({
     })
   ),
 }));
-jest.mock("src/components/common/supportRemovedModal", () => () => {
-  return <div>Removed Modal</div>;
-});
+// jest.mock("src/components/common/supportRemovedModal", () => () => {
+//   return <div>Removed Modal</div>;
+// });
 function MyComponent() {
   const inputRef = useRef(null);
 
@@ -632,11 +632,12 @@ describe("Manage support", () => {
   });
 });
 
-describe("", () => {
+describe("Manage support ui cancle or submit button", () => {
   it("click on cancel button", () => {
     const { getAllByText } = render(<ManageSupport></ManageSupport>);
     const cancel_button = getAllByText("Cancel")[0];
     fireEvent.click(cancel_button);
+    
   });
   it("click on Submit button", () => {
     const { getAllByText } = render(<ManageSupport></ManageSupport>);

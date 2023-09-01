@@ -1,7 +1,5 @@
 import { render } from "../../../../utils/testUtils";
 import ProfileInfoUI from "../ProfileInfoUI";
-import VerifyMobileNumberForm from "../../Form/VerifyMobileNumberForm";
-
 import styles from "./ProfileInfo.module.scss";
 
 const mobileCarrier = [];

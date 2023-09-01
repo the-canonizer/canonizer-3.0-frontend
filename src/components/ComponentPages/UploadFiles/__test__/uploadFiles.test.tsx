@@ -208,26 +208,6 @@ jest.mock("next/router", () => ({
 // }
 
 describe("Upload file page", () => {
-  // it("upload files api render files", () => {
-  //   render(<UploadFiles />);
-  //   waitFor(async () => {
-  //     expect(screen.getByText(fileLists[0].created_at)).toBeInTheDocument();
-  //     expect(screen.getByText(fileLists[0].deleted_at)).toBeInTheDocument();
-  //     expect(screen.getByText(fileLists[0].file_id)).toBeInTheDocument();
-  //     expect(screen.getByText(fileLists[0].file_name)).toBeInTheDocument();
-  //     expect(screen.getByText(fileLists[0].file_path)).toBeInTheDocument();
-  //     expect(
-  //       screen.getByText(fileLists[0].short_code_path)
-  //     ).toBeInTheDocument();
-  //     expect(screen.getByText(fileLists[0].folder_id)).toBeInTheDocument();
-  //     expect(screen.getByText(fileLists[0].id)).toBeInTheDocument();
-  //     expect(screen.getByText(fileLists[0].short_code)).toBeInTheDocument();
-  //     expect(screen.getByText(fileLists[0].type)).toBeInTheDocument();
-  //     expect(screen.getByText(fileLists[0].updated_at)).toBeInTheDocument();
-  //     expect(screen.getByText(fileLists[0].user_id)).toBeInTheDocument();
-  //   });
-  // });
-
   it("upload files api render folder", async () => {
     // jest.mock("react", () => ({
     //   ...jest.requireActual('react'),
@@ -248,7 +228,7 @@ describe("Upload file page", () => {
       // expect(screen.getByText(fileLists[1].user_id)).toBeInTheDocument();
     });
   });
-  it("render useState is working ", () => {
+  it("render useState is working", () => {
     render(<UploadFiles />);
     const TestComponent = () => {
       const [isActive, setIsActive] = useState(false);

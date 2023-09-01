@@ -116,7 +116,7 @@ test("Editor content is retrieved correctly using getData", async () => {
 
 test("Editor onChange event is triggered correctly", () => {
   const onChangeMock = jest.fn();
-  render(
+ const {container}= render(
     <CKEditor
       config={editorConfiguration}
       editor={ClassicEditor.Editor}
@@ -128,4 +128,6 @@ test("Editor onChange event is triggered correctly", () => {
   editor.model.change((writer) => {
     writer.insertText(newContent, editor.model.document.getRoot());
   });
+  const editorWrapper = container.querySelectorAll(".ck-editor__editable");
+  expect(editorWrapper[0]).toBeInTheDocument();
 });
