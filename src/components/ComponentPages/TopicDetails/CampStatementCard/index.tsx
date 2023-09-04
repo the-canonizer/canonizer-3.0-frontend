@@ -46,19 +46,16 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
         header={
           <>
             <h3>{K?.exceptionalMessages?.campStatementHeading}</h3>
-            {
-              // campStatement[0]?.in_review_changes > 0
-              true ? (
-                <Image
-                  className="change-icon"
-                  width={20}
-                  height={20}
-                  src="/images/change-icon.svg"
-                />
-              ) : (
-                ""
-              )
-            }
+            {campStatement[0]?.in_review_changes > 0 ? (
+              <Image
+                className="change-icon"
+                width={20}
+                height={20}
+                src="/images/change-icon.svg"
+              />
+            ) : (
+              ""
+            )}
           </>
         }
         key="1"

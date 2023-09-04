@@ -8,10 +8,10 @@ import { Provider } from "react-redux";
 import { store } from "../../../../store";
 
 import { NextRouter } from "next/router";
-const loadConfig = async () => {
-  const projectDir = process.cwd();
-  loadEnvConfig(projectDir);
-};
+// const loadConfig = async () => {
+//   const projectDir = process.cwd();
+//   loadEnvConfig(projectDir);
+// };
 
 function createMockRouter(): NextRouter {
   return {

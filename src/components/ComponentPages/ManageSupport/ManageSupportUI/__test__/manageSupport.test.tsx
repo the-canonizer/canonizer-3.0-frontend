@@ -9,7 +9,6 @@ import ManageSupportUI from "../index";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import ManageSupport from "../..";
 import { Card } from "antd";
-import { useRef } from "react";
 // import { useRouter } from "next/router";
 // import { renderHook } from "@testing-library/react-hooks";
 // import dynamic from "next/dynamic";

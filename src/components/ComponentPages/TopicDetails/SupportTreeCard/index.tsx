@@ -117,11 +117,15 @@ const SupportTreeCard = ({
     if (isUserAuthenticated) {
       getNickNameListData();
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserAuthenticated]);
 
   useEffect(() => {
     dispatch(setDelegatedSupportClick({ delegatedSupportClick: false }));
     dispatch(setManageSupportStatusCheck(false));
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //Delegate Support Camp
@@ -150,6 +154,8 @@ const SupportTreeCard = ({
     if (campSupportingTree?.length > 0) {
       getDelegateNicknameId(campSupportingTree);
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [campSupportingTree]);
 
   const getDelegateNicknameId = (delegates) => {

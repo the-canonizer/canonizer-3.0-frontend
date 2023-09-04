@@ -414,6 +414,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
         dispatch(setShowDrawer(false));
       }
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
