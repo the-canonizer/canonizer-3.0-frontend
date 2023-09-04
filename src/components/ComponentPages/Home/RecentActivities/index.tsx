@@ -395,25 +395,38 @@ export default function RecentActivities() {
 
                   return (
                     <List.Item className={styles.listItem}>
-                      <Link
-                        href={{
-                          pathname: decodeUrlLink(activity),
-                          query: { from: router?.asPath },
-                        }}
-                        passHref
-                      >
+                      <Link href={decodeUrlLink(activity)} passHref>
                         <a>
                           <Text className={styles.text}>
                             {activity?.activity?.description}
                             <br />
                             <Tooltip
                               title={
-                                decodedProperties?.topic_name
-                                  ? `Topic: ${decodedProperties?.topic_name}` +
-                                    (decodedProperties?.camp_name
-                                      ? ` | Camp: ${decodedProperties?.camp_name}`
-                                      : "")
-                                  : convert(
+                                activity?.activity?.subject_type ==
+                                "App\\Models\\Thread"
+                                  ? `Camp: ${decodedProperties?.camp_name} | Thread: ${decodedProperties?.thread_name}`
+                                  : `Thread: ${
+                                      decodedProperties?.thread_name
+                                    } | Post: ${
+                                      convert(
+                                        decodedProperties?.description?.replace(
+                                          /<img[^>]*>/gi,
+                                          ""
+                                        ),
+                                        {
+                                          wordwrap: 130,
+                                        }
+                                      ).substring(0, 90) + "..."
+                                    }`
+                              }
+                            >
+                              {activity?.activity?.subject_type ==
+                              "App\\Models\\Thread"
+                                ? `Camp: ${decodedProperties?.camp_name} | Thread: ${decodedProperties?.thread_name}`
+                                : `Thread: ${
+                                    decodedProperties?.thread_name
+                                  } | Post: ${
+                                    convert(
                                       decodedProperties?.description?.replace(
                                         /<img[^>]*>/gi,
                                         ""
@@ -422,22 +435,7 @@ export default function RecentActivities() {
                                         wordwrap: 130,
                                       }
                                     ).substring(0, 90) + "..."
-                              }
-                            >
-                              {decodedProperties?.topic_name
-                                ? `Topic: ${decodedProperties?.topic_name}` +
-                                  (decodedProperties?.camp_name
-                                    ? ` | Camp: ${decodedProperties?.camp_name}`
-                                    : "")
-                                : convert(
-                                    decodedProperties?.description?.replace(
-                                      /<img[^>]*>/gi,
-                                      ""
-                                    ),
-                                    {
-                                      wordwrap: 130,
-                                    }
-                                  )}
+                                  }`}
                             </Tooltip>
                           </Text>
                           <Text className={styles.secondary} type="secondary">
