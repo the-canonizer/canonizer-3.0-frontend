@@ -34,7 +34,7 @@ export default function Editorck(
   useEffect(() => {
     setEditordata(props.editorState);
     setLoadeditor(true);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserAuthenticated]);
 
   const editorConfiguration = {

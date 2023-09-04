@@ -490,8 +490,9 @@ describe("Upload File UI Page", () => {
       />
     );
     expect(container.getElementsByClassName("threeDOt")).toBeTruthy();
-    expect(container.getElementsByClassName("UploadFile_shortcode_icon__Ixf_x"))
-      .toBeTruthy();
+    expect(
+      container.getElementsByClassName("UploadFile_shortcode_icon__Ixf_x")
+    ).toBeTruthy();
   });
 
   it("render list view & grid view icon icon", () => {
@@ -739,7 +740,7 @@ describe("Upload File UI Page", () => {
     });
   });
   it("render add_file_btn", () => {
-    const { getByTestId,getByText } = render(
+    const { getByTestId, getByText } = render(
       <UploadFileUI
         input={input}
         setInput={setInput}

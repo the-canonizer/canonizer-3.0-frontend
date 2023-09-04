@@ -340,7 +340,6 @@ describe("Nickname test cases", () => {
       fireEvent.click(edit_button[0]);
       expect(getAllByText("Add New Nickname")[1]).toBeInTheDocument();
 
-
       const nickname_input = getAllByTestId("enterNickName")[0];
       await userEvent.type(nickname_input, "nickname123");
       const submit_button = getAllByTestId("submitButton")[0];

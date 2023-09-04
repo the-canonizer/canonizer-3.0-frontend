@@ -625,7 +625,7 @@ describe("Manage support", () => {
 
 describe("Manage support ui cancle or submit button", () => {
   it("click on cancel button", () => {
-    const { getAllByText,container } = render(<ManageSupport></ManageSupport>);
+    const { getAllByText, container } = render(<ManageSupport></ManageSupport>);
     const cancel_button = getAllByText("Cancel")[0];
     fireEvent.click(cancel_button);
     expect(
@@ -633,7 +633,7 @@ describe("Manage support ui cancle or submit button", () => {
     ).toBeTruthy();
   });
   it("click on Submit button", () => {
-    const { getAllByText,container } = render(<ManageSupport></ManageSupport>);
+    const { getAllByText, container } = render(<ManageSupport></ManageSupport>);
     const cancel_button = getAllByText("Submit")[0];
     fireEvent.click(cancel_button);
     expect(
@@ -642,7 +642,7 @@ describe("Manage support ui cancle or submit button", () => {
   });
 
   it("click on clear all changes button", () => {
-    const { getAllByText,container } = render(<ManageSupport></ManageSupport>);
+    const { getAllByText, container } = render(<ManageSupport></ManageSupport>);
     const clear_all_button = getAllByText("Clear all changes")[0];
     fireEvent.click(clear_all_button);
     expect(
@@ -651,7 +651,9 @@ describe("Manage support ui cancle or submit button", () => {
   });
 
   it("click on remove all changes button", () => {
-    const { getAllByTestId ,container} = render(<ManageSupport></ManageSupport>);
+    const { getAllByTestId, container } = render(
+      <ManageSupport></ManageSupport>
+    );
     const remove_all_button = getAllByTestId("checkbox")[0];
     fireEvent.click(remove_all_button);
     expect(

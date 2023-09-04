@@ -226,6 +226,7 @@ export default function CanonVideos() {
     if (t) {
       router.query.t = t;
     } else {
+      // eslint-disable-next-line no-unused-vars
       const { t, ...rest } = router?.query;
       router.query = rest;
     }

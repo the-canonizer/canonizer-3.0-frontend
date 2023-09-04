@@ -116,7 +116,7 @@ test("Editor content is retrieved correctly using getData", async () => {
 
 test("Editor onChange event is triggered correctly", () => {
   const onChangeMock = jest.fn();
- const {container}= render(
+  const { container } = render(
     <CKEditor
       config={editorConfiguration}
       editor={ClassicEditor.Editor}

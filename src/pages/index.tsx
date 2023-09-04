@@ -32,6 +32,7 @@ function Home({ current_date }: any) {
       delete router?.query?.namespace;
       router?.replace(router, null, { shallow: true });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -52,6 +53,7 @@ function Home({ current_date }: any) {
           "loginToken=" +
           accessToken +
           "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+        // eslint-disable-next-line no-unused-vars
         const { access_token, ...rest } = router?.query;
         router.query = rest;
         await router?.replace(router, null, { shallow: true });
@@ -63,6 +65,7 @@ function Home({ current_date }: any) {
       dispatch(setAuthToken(accessToken));
       getData(accessToken);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

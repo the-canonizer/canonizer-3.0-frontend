@@ -10,8 +10,8 @@ import messages from "../../../../messages";
 import UserProfile from "..";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import {  renderHook } from "@testing-library/react-hooks";
-import {  message } from "antd";
+import { renderHook } from "@testing-library/react-hooks";
+import { message } from "antd";
 
 const { labels } = messages;
 const profileData = {
@@ -72,8 +72,8 @@ jest.mock("next/router", () => ({
 
 jest.mock("src/network/api/homePageApi", () => ({
   getCanonizedNameSpacesApi: jest.fn(() =>
-  Promise.resolve({ status_code: 200, data: [] })
-),
+    Promise.resolve({ status_code: 200, data: [] })
+  ),
 }));
 jest.mock("src/network/api/campDetailApi", () => ({
   GetSupportedNickNames: jest.fn(() =>
@@ -82,14 +82,13 @@ jest.mock("src/network/api/campDetailApi", () => ({
 }));
 jest.mock("src/network/api/userApi", () => ({
   getUserSupportedCampList: jest.fn(() =>
-    Promise.resolve({ status_code: 200, data: []})
+    Promise.resolve({ status_code: 200, data: [] })
   ),
 }));
 jest.mock("src/hooks/isUserAuthenticated", () =>
   jest.fn(() => ({ isUserAuthenticated: true }))
 );
 describe("userProfileDetails", () => {
-
   it("render show userProfile", () => {
     render(
       <UserProfileDetails
@@ -106,7 +105,7 @@ describe("userProfileDetails", () => {
         userSupportedCampsList={userSupportedCampsList}
       />
     );
-   
+
     expect(screen.getByText(labels.emailAddress)).toBeTruthy();
     expect(screen.getByText(labels.address)).toBeTruthy();
     expect(screen.getByText(labels.city)).toBeTruthy();
@@ -126,12 +125,12 @@ describe("userProfileCard", () => {
         noData={noData}
       />
     );
-    const btn = screen.getByTestId("onNicknameChange")
+    const btn = screen.getByTestId("onNicknameChange");
     // fireEvent.change(btn, { target: { value: 'new value' } });
-    fireEvent.click(btn)
-    const btn2 = screen.getByTestId("setDropdownNameSpaceList")
+    fireEvent.click(btn);
+    const btn2 = screen.getByTestId("setDropdownNameSpaceList");
     // fireEvent.change(btn, { target: { value: 'new value' } });
-    fireEvent.click(btn2)
+    fireEvent.click(btn2);
     expect(screen.getByText(labels.listOfSupportedCamps)).toBeTruthy();
   });
 
