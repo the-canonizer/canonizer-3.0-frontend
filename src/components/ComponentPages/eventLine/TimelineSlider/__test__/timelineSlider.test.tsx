@@ -101,31 +101,4 @@ describe("TimelineSlider", () => {
     expect(setIteration).toHaveBeenCalledWith(0);
     expect(handleForwardOrBackord).toHaveBeenCalledWith(0);
   });
-
-  it("should handle slider change and update iteration", () => {
-    const setIteration = jest.fn();
-    const handleEventSelection = jest.fn();
-    render(
-      <TimelineSlider
-        mockData={mockData}
-        setStart={jest.fn()}
-        start={false}
-        setTimelineDescript={jest.fn()}
-        handleEventSelection={handleEventSelection}
-        animationSpeed={1000}
-        setAnimationSpeed={jest.fn()}
-        iteration={0}
-        setIteration={setIteration}
-        handleForwardOrBackord={jest.fn()}
-        isPlaying={false}
-        setIsPlaying={jest.fn()}
-      />
-    );
-
-    // const slider = getByTestId("slider");
-    // fireEvent.change(slider, { target: { value: "1" } });
-
-    // expect(setIteration).toHaveBeenCalledWith(1);
-    // expect(handleEventSelection).toHaveBeenCalledWith(1);
-  });
 });

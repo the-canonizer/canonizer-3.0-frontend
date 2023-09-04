@@ -1,7 +1,6 @@
 import Footer from "../";
 import { cleanup, render, screen } from "@testing-library/react";
 import { windowMatchMedia } from "../../../../utils/testUtils";
-import { loadEnvConfig } from "@next/env";
 
 import { RouterContext } from "next/dist/shared/lib/router-context";
 import { Provider } from "react-redux";

@@ -18,7 +18,7 @@ const { Panel } = Collapse;
 const { Option } = Select;
 
 import styles from "./topicListFilter.module.scss";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
 // import K from "../../../constants";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
@@ -83,14 +83,14 @@ const infoContent = (
 const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   // const isAuth = useAuthentication();
 
-  const [isDatePicker, setIsDatePicker] = useState(false);
+  // const [isDatePicker, setIsDatePicker] = useState(false);
   // const [isPanelCollapse, setIsPanelCollapse] = useState(false);
 
   // const [datePickerValue, setDatePickerValue] = useState(null);
 
   const dispatch = useDispatch();
-  const router = useRouter();
-  const [isCampBtnVisible, setIsCampBtnVisible] = useState(false);
+  // const router = useRouter();
+  // const [isCampBtnVisible, setIsCampBtnVisible] = useState(false);
 
   // const campRoute = () => {
   //   router?.push("/create/topic");
@@ -119,12 +119,12 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
-  useEffect(() => {
-    if (router?.pathname.includes("/topic/")) {
-      // setIsPanelCollapse(true);
-      setIsCampBtnVisible(true);
-    }
-  }, [router?.pathname]);
+  // useEffect(() => {
+  //   if (router?.pathname.includes("/topic/")) {
+  //     // setIsPanelCollapse(true);
+  //     setIsCampBtnVisible(true);
+  //   }
+  // }, [router?.pathname]);
 
   useEffect(() => {
     getCanonizedAlgorithmsApi();
