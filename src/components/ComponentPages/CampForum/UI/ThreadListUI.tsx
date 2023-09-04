@@ -122,6 +122,7 @@ const ThreadListUI = ({
                 onClick={filterThread.bind(this, "my")}
                 key="my-btn"
                 id="my-thread-btn"
+                data-testid="my-thread-btn"
               >
                 My Threads
               </Button>
@@ -134,6 +135,7 @@ const ThreadListUI = ({
                 onClick={filterThread.bind(this, "participate")}
                 key="participate-btn"
                 id="participate-btn"
+                data-testid="participate-btn"
               >
                 My Participation
               </Button>
@@ -146,6 +148,7 @@ const ThreadListUI = ({
                 onClick={filterThread.bind(this, "most_replies")}
                 key="most_replies-btn"
                 id="most-rep-btn"
+                data-testid="most-rep-btn"
               >
                 Top 10
               </Button>
@@ -157,6 +160,7 @@ const ThreadListUI = ({
             onClick={onCreateThread}
             key="create-btn"
             id="create-btn"
+            data-testid="create-new-thread"
           >
             Create Thread
           </Button>
@@ -233,6 +237,7 @@ const ThreadListUI = ({
                       onClick={(e) => onThreadClick(e, others)}
                       className={styles.threadListTitle}
                       id={"thread-label-" + (+idx + 1)}
+                      data-testid={"thread-label-" + (+idx + 1)}
                     >
                       {text}
                       {isLog && paramsList.by === "my" ? (
@@ -240,8 +245,9 @@ const ThreadListUI = ({
                           <a
                             onClick={(e) => onEditClick(e, others)}
                             className="linkCss"
+                            data-test-id="edit_btn"
                           >
-                            <EditOutlined/>
+                            <EditOutlined />
                           </a>
                         </Tooltip>
                       ) : null}

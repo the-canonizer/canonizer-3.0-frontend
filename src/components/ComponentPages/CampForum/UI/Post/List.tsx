@@ -60,8 +60,9 @@ const CreateCampFormUI = ({
                     onClick={onEditClick}
                     className="linkCss"
                     id={"post-edit-icon" + post.id}
+                    data-testid={"post-edit-icon" + post.id}
                   >
-                    <EditOutlined/>
+                    <EditOutlined />
                   </a>
                 </Tooltip>
                 <Popconfirm
@@ -70,7 +71,11 @@ const CreateCampFormUI = ({
                   okText="Yes"
                   cancelText="No"
                 >
-                  <a className="linkCss" id={"post-delete-icon-" + post.id}>
+                  <a
+                    className="linkCss"
+                    id={"post-delete-icon-" + post.id}
+                    data-testid={"post-delete-icon-" + post.id}
+                  >
                     <DeleteOutlined />
                   </a>
                 </Popconfirm>
