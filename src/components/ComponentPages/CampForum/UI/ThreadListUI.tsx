@@ -108,6 +108,7 @@ const ThreadListUI = ({
             onClick={filterThread.bind(this, "all")}
             key="all-btn"
             id="all-thread-btn"
+            data-testid="all-thread-btn"
           >
             All Threads
           </Button>
@@ -245,7 +246,7 @@ const ThreadListUI = ({
                           <a
                             onClick={(e) => onEditClick(e, others)}
                             className="linkCss"
-                            data-test-id="edit_btn"
+                            data-testid="edit_btn"
                           >
                             <EditOutlined />
                           </a>

@@ -70,6 +70,7 @@ const CreateCampFormUI = ({
                   onConfirm={onDeleteClick}
                   okText="Yes"
                   cancelText="No"
+                  data-testid="delete_pop_confirm"
                 >
                   <a
                     className="linkCss"

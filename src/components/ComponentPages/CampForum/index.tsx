@@ -596,6 +596,7 @@ const ForumComponent = ({
           payload={payload}
         />
       ) : null}
+      {console.log('ro',router)}
       {router?.pathname === "/forum/[topic]/[camp]/threads/[id]" ? (
         <ForumUIPost
           nickNameList={nickNameList}
