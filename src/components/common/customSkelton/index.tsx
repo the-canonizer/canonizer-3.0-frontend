@@ -33,7 +33,7 @@ const CustomSkelton = ({
       actions={
         action
           ? [
-              <div className={styles.cardSkeleton_actions}>
+              <div key={0} className={styles.cardSkeleton_actions}>
                 <Skeleton
                   className={styles.cardSkeleton_actions_button}
                   count={1}
@@ -139,7 +139,7 @@ const CustomSkelton = ({
     <Card
       className={styles.manageCardSkeleton}
       actions={[
-        <div className={styles.manageCardSkeleton_actions}>
+        <div key={0} className={styles.manageCardSkeleton_actions}>
           <Skeleton
             className={styles.manageCardSkeleton_actions_button}
             count={1}

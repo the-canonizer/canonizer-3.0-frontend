@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import moment from "moment";
 
+import Image from "next/image";
+
 import styles from "../topicDetails.module.scss";
 
 import { currentCampRecordConstants } from "../../../common/componentConstants";
@@ -65,7 +67,15 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }: any) => {
           <>
             <h3>{K?.exceptionalMessages?.campRecordHeading}</h3>
             {campRecord?.in_review_changes > 0 ? (
-              <img className="change-icon" src="/images/change-icon.svg" />
+              // <img className="change-icon" src="/images/change-icon.svg" />
+
+              <Image
+                className="change-icon"
+                src={"/images/change-icon.svg"}
+                alt=""
+                width={20}
+                height={20}
+              />
             ) : (
               ""
             )}

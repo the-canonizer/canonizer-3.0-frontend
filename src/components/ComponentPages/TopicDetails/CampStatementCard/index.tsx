@@ -52,6 +52,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                 width={20}
                 height={20}
                 src="/images/change-icon.svg"
+                alt=""
               />
             ) : (
               ""
