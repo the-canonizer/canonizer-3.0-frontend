@@ -117,7 +117,17 @@ describe("ChangePassword page", () => {
     });
   });
   it('onChangeFun updates state correctly', async() => {
-    const { getByPlaceholderText, getByTestId } = render(<ChangePasswordUI />);
+    const form = jest.fn(),
+    onFinish = jest.fn(),
+    onFinishFailed = jest.fn(),
+    incorrectPasswordData = "",
+    setIncorrectPasswordData = jest.fn();
+    const { getByPlaceholderText, getByTestId } = render(<ChangePasswordUI 
+      form={null}
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+      incorrectPasswordData={incorrectPasswordData}
+      setIncorrectPasswordData={setIncorrectPasswordData}/>);
     // const input = getByPlaceholderText('password');
   
     // Simulate a change event with a new value

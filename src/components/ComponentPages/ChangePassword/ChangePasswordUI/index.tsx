@@ -11,14 +11,13 @@ export default function ChangePasswordUI({
   setIncorrectPasswordData,
 }: any) {
   const [currentPassWord, setCurrentPassWord] = useState("");
-
   const validateFun = {
     validateStatus: "error" as any,
     help: incorrectPasswordData as any,
   };
   const onChangeFun = (value) => {
     setCurrentPassWord(value);
-    // setIncorrectPasswordData("");
+    setIncorrectPasswordData("");
   };
   return (
     <>
@@ -56,7 +55,6 @@ export default function ChangePasswordUI({
                     : "")}
                 >
                   <Input
-                    data-testid="onChangePassword"
                     id="currentPassword"
                     type="password"
                     placeholder={messages.placeholders.currentPassword}
@@ -113,9 +111,9 @@ export default function ChangePasswordUI({
                     className={styles.Password_input}
                     type="password"
                     placeholder={messages.placeholders.confirmPassword}
-                    // onKeyDown={(e) =>
-                    //   e.key === " " && e.keyCode === 32 && e.preventDefault()
-                    // }
+                    onKeyDown={(e) =>
+                      e.key === " " && e.keyCode === 32 && e.preventDefault()
+                    }
                   />
                 </Form.Item>
               </Col>
