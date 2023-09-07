@@ -187,6 +187,7 @@ const PostForm = ({
               size={"large"}
               className={`${styles.submit_btn}`}
               id="submit-btn"
+              data-testid="submit-btn"
             >
               Submit
             </Button>

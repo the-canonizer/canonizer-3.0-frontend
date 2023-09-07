@@ -21,6 +21,8 @@ import {
   getThreadData,
   createThread,
   updateThread,
+  createPost,
+  updatePost,
 } from "src/network/api/campForumApi";
 import { getAllUsedNickNames } from "src/network/api/campDetailApi";
 
@@ -638,6 +640,16 @@ describe("ForumComponent", () => {
       ],
     });
 
+    createThread.mockResolvedValue({
+      status_code: 200,
+      data: null,
+    });
+
+    updateThread.mockResolvedValue({
+      status_code: 200,
+      data: null,
+    });
+
     const store1 = mockStore({
       auth: {
         authenticated: true,
@@ -680,6 +692,8 @@ describe("ForumComponent", () => {
               by: "all",
               topic: "88-theories",
               id: "1",
+              tId: "2",
+              from: "test",
             },
           })}
         >
@@ -697,6 +711,8 @@ describe("ForumComponent", () => {
     ).toBeInTheDocument();
     expect(screen.getByText("Submit")).toBeInTheDocument();
     expect(screen.getByText("Back")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByTestId("submit-btn"));
 
     await waitFor(() => {
       expect(getAllUsedNickNames).toHaveBeenCalled();
@@ -755,8 +771,17 @@ describe("ForumComponent", () => {
         },
       },
       forum: {
-        currentThread: {},
-        currentPost: {},
+        currentThread: {
+          id: "1",
+          title: "test",
+          created_at: Date.now(),
+          creation_nick_name_id: 1,
+          topic_id: 11,
+          camp_id: 1,
+          namespace_id: 1,
+          creation_nick_name: "test name",
+        },
+        currentPost: { id: "1" },
       },
     });
 
@@ -770,6 +795,8 @@ describe("ForumComponent", () => {
               by: "all",
               topic: "88-theories",
               id: "1",
+              tId: "1",
+              from: "thread",
             },
           })}
         >
@@ -790,7 +817,8 @@ describe("ForumComponent", () => {
     fireEvent.change(screen.getByPlaceholderText("Title"), {
       target: { value: "test" },
     });
-    fireEvent.click(screen.getByTestId("submit-btn"));
+
+    await fireEvent.click(screen.getByTestId("submit-btn"));
 
     await waitFor(() => {
       expect(getAllUsedNickNames).toHaveBeenCalled();
@@ -937,6 +965,7 @@ describe("ForumComponent", () => {
               by: "all",
               topic: "88-theories",
               id: "1",
+              from: "thread",
             },
           })}
         >
@@ -1155,6 +1184,8 @@ describe("ForumComponent", () => {
       current: true,
     });
 
+    jest.mock("axios");
+
     getThreadData.mockResolvedValue({
       status_code: 200,
       data: {
@@ -1200,6 +1231,63 @@ describe("ForumComponent", () => {
         { id: 2, title: "Thread 2" },
       ],
     });
+    createPost.mockResolvedValue({
+      status_code: 200,
+      data: [
+        { id: 1, title: "Thread 1" },
+        { id: 2, title: "Thread 2" },
+      ],
+    });
+    updatePost.mockResolvedValue({
+      status_code: 200,
+      data: [
+        { id: 1, title: "Thread 1" },
+        { id: 2, title: "Thread 2" },
+      ],
+    });
+
+    const store1 = mockStore({
+      auth: {
+        authenticated: true,
+        loggedInUser: {
+          is_admin: true,
+          id: 1,
+        },
+      },
+      topicDetails: {
+        currentCampRecord: { parentCamps: [{ camp_name: "camp one" }] },
+      },
+      filters: {
+        filterObject: {
+          page_number: 1,
+          page_size: 15,
+          nameSpace: "/General/",
+          namespace_id: 1,
+          asofdate: Date.now() / 1000,
+          asof: "default",
+          filterByScore: 0,
+          algorithm: "blind_popularity",
+          search: "",
+          includeReview: false,
+          is_archive: 0,
+        },
+      },
+      forum: {
+        currentThread: {
+          id: "1",
+          title: "test",
+          created_at: Date.now(),
+          creation_nick_name_id: 1,
+          topic_id: 11,
+          camp_id: 1,
+          namespace_id: 1,
+          creation_nick_name: "test name",
+        },
+        currentPost: {
+          id: "1",
+        },
+      },
+    });
 
     const { container } = render(
       <Provider store={store1}>
@@ -1236,6 +1324,10 @@ describe("ForumComponent", () => {
     const editBTN2 = container.getElementsByClassName("linkCss");
     expect(editBTN2.length).toEqual(4);
 
+    screen.debug(container);
     fireEvent.click(backBTN);
+    fireEvent.click(deleteBTN);
+
+    await fireEvent.click(screen.getByTestId("submit-btn"));
   });
 });
