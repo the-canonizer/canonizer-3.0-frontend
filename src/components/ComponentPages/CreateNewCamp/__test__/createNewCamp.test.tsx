@@ -1,10 +1,17 @@
-import { render, screen, waitFor } from "../../../../utils/testUtils";
+import { cleanup, render, screen, waitFor } from "src/utils/testUtils";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { store } from "src/store";
+import configureMockStore from "redux-mock-store";
 
 import CreateNewCamp from "..";
 import messages from "../../../../messages";
+
+import {
+  getAllUsedNickNames,
+  getAllCampNickNames,
+  getAllParentsCamp,
+} from "src/network/api/campDetailApi";
 
 const { labels } = messages;
 
@@ -52,7 +59,51 @@ const campNickNamesList = [
   { id: 22, nick_name: "Rahul -Singh919" },
 ];
 
+jest.mock("src/network/api/campDetailApi");
+
+jest.mock("src/network/api/campDetailApi", () => ({
+  createCamp: jest.fn(() =>
+    Promise.resolve({ status_code: 200, data: campNickNamesList })
+  ),
+  getAllParentsCamp: jest.fn(() =>
+    Promise.resolve({ status_code: 200, data: campNickNamesList })
+  ),
+  getAllCampNickNames: jest.fn(() =>
+    Promise.resolve({ status_code: 200, data: campNickNamesList })
+  ),
+  getAllUsedNickNames: jest.fn(() =>
+    Promise.resolve({ status_code: 200, data: campNickNamesList })
+  ),
+  getCampBreadCrumbApi: jest.fn(() =>
+    Promise.resolve({ status_code: 200, data: campNickNamesList })
+  ),
+}));
+
+const mockStore = configureMockStore();
+
+afterEach(cleanup);
+
 describe("Create Topic page", () => {
+  beforeEach(() => {
+    jest.mock("src/network/api/campDetailApi", () => ({
+      createCamp: jest.fn(() =>
+        Promise.resolve({ status_code: 200, data: campNickNamesList })
+      ),
+      getAllParentsCamp: jest.fn(() =>
+        Promise.resolve({ status_code: 200, data: campNickNamesList })
+      ),
+      getAllCampNickNames: jest.fn(() =>
+        Promise.resolve({ status_code: 200, data: campNickNamesList })
+      ),
+      getAllUsedNickNames: jest.fn(() =>
+        Promise.resolve({ status_code: 200, data: campNickNamesList })
+      ),
+      getCampBreadCrumbApi: jest.fn(() =>
+        Promise.resolve({ status_code: 200, data: campNickNamesList })
+      ),
+    }));
+  });
+
   it("render heading and labels", () => {
     render(
       <Provider store={store}>
@@ -129,6 +180,46 @@ describe("Create Topic page", () => {
 
     await waitFor(() => {
       expect(screen.queryByRole("alert")).toBeInTheDocument();
+    });
+  });
+  it("api call", async () => {
+    getAllUsedNickNames.mockResolvedValue({
+      status_code: 200,
+      data: [{ id: 1, name: "Nickname 1" }],
+    });
+
+    const store1 = mockStore({
+      auth: {
+        authenticated: true,
+        loggedInUser: {
+          is_admin: true,
+        },
+      },
+      topicDetails: {
+        currentCampRecord: {},
+      },
+      filters: {
+        filterObject: {},
+      },
+      forum: {
+        currentThread: null,
+        currentPost: null,
+      },
+    });
+
+    render(
+      <Provider store={store1}>
+        <CreateNewCamp
+          nickNames={nickNamesList}
+          parentCamps={parentCampsList}
+          campNickNames={campNickNamesList}
+          initialValues={initialValues}
+        />
+      </Provider>
+    );
+
+    await waitFor(() => {
+      expect(getAllUsedNickNames).toHaveBeenCalled();
     });
   });
 });
