@@ -64,6 +64,7 @@ const SettingsUI = () => {
             <div className={styles.search01}>
               <SearchOutlined />
               <Input
+                data-testid="settingSearch"
                 value={search}
                 placeholder="Search by topic name"
                 type="text"
@@ -73,7 +74,7 @@ const SettingsUI = () => {
                 }}
               />
             </div>
-            <Button onClick={() => setSearch("")} className={styles.btn}>
+            <Button data-testid="reset" onClick={() => setSearch("")} className={styles.btn}>
               Reset
             </Button>
           </div>
@@ -124,6 +125,7 @@ const SettingsUI = () => {
       </aside>
       <div className="pageContentWrap">
         <Card
+          data-testid="contentlist"
           style={{ width: "100%" }}
           title="Account Settings"
           tabList={tabList}

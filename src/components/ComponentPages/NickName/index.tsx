@@ -47,7 +47,7 @@ const NickName = () => {
     setDisableButton(true);
     if (addEditBtn == create) {
       formBody = {
-        nick_name: values.nick_name.replace(/\s\s+/g, " "),
+        nick_name: values.nick_name?.replace(/\s\s+/g, " "),
         visibility_status:
           parseInt(values.visibility_status).toString() == "NaN"
             ? 0

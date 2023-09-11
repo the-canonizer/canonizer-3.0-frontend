@@ -10,6 +10,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { cleanup, renderHook } from "@testing-library/react-hooks";
 import { message } from "antd";
+import CreateFolder from "../CreateFolder";
 
 jest.mock("src/hooks/isUserAuthenticated", () =>
   jest.fn(() => ({ isUserAuthenticated: true }))
@@ -305,6 +306,36 @@ describe("Upload file page", () => {
     // Assert that the message content is displayed
     const messageElement = screen.getByText(messageContent);
     expect(messageElement).toBeInTheDocument();
+  });
+  it('onChange updates state correctly', async() => {
+    const editModal = true,
+    createFolderForm = jest.fn(),
+    onFinish = jest.fn(),
+    validateMessages = {},
+    rename = "",
+    input="",
+    setRename= jest.fn(),
+    editFolderNameVal=""
+    const { getByPlaceholderText, getByTestId } = render(<CreateFolder 
+      editModal={editModal}
+      createFolderForm={null}
+      onFinish={onFinish}
+      validateMessages={validateMessages}
+      rename={rename}
+      input={input}
+      setRename={setRename}
+      editFolderNameVal={editFolderNameVal}
+      />);
+    // const input = getByPlaceholderText('password');
+  
+    // Simulate a change event with a new value
+    const inputEl = screen.getByPlaceholderText("Enter name of the Folder");
+    expect(inputEl).toBeInTheDocument();
+    // expect(inputEl).toHaveAttribute("type", "password");
+
+    await fireEvent.change(inputEl, { target: { value: "ABCD" } });
+    // await userEvent.tab();
+
   });
 });
 afterEach(cleanup);
