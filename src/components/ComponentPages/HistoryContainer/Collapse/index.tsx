@@ -64,7 +64,7 @@ function HistoryCollapse({
   setIsTreesApiCallStop,
   campHistoryItems,
   callManageCampApi,
-  parentArchived
+  parentArchived,
 }: any) {
   const router = useRouter();
   const [commited, setCommited] = useState(false);
@@ -418,9 +418,14 @@ function HistoryCollapse({
                         : submitUpdateRedirect(historyOf)
                     }
                     disabled={
-                     (campHistoryItems[0]?.status == "in_review" && !commited && !!campHistoryItems[0]?.grace_period) || 
-                      (campHistoryItems?.at(0)?.status == "live"&&campHistoryItems?.at(0)?.is_archive == 1 &&
-                      campStatement.status == "old") || (parentArchived == 1 && campHistoryItems[0]?.camp_num != 1)||
+                      (campHistoryItems[0]?.status == "in_review" &&
+                        !commited &&
+                        !!campHistoryItems[0]?.grace_period) ||
+                      (campHistoryItems?.at(0)?.status == "live" &&
+                        campHistoryItems?.at(0)?.is_archive == 1 &&
+                        campStatement.status == "old") ||
+                      (parentArchived == 1 &&
+                        campHistoryItems[0]?.camp_num != 1) ||
                       (campHistoryItems?.at(0)?.is_archive == 1 &&
                         campHistoryItems?.at(0)?.status == "live" &&
                         campStatement.status == "objected")

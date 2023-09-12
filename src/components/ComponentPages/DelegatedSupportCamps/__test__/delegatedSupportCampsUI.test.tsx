@@ -251,5 +251,3 @@ describe("Delegated Support camps page", () => {
     expect(screen.getAllByText("Current Supported Camps:")).toBeTruthy();
   });
 });
-
-

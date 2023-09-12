@@ -43,12 +43,11 @@ const tabList = [
 
 jest.mock("next/router", () => ({
   useRouter() {
-    return{
+    return {
       pathname: "/about",
-      push: jest.fn()
-    }  
+      push: jest.fn(),
+    };
   },
-  
 }));
 
 describe("settingUI page", () => {
@@ -133,10 +132,10 @@ describe("settingUI page", () => {
     // Assert that the input value is updated
     expect(inputElement.value).toBe(userInput);
   });
-  it('onChange updates state correctly', async() => {
+  it("onChange updates state correctly", async () => {
     const { getByTestId, getByText } = render(<SettingsUI />);
     // const input = getByPlaceholderText('password');
-  
+
     // Simulate a change event with a new value
     const text = getByText("Supported Camps");
     fireEvent.click(text);
@@ -146,12 +145,11 @@ describe("settingUI page", () => {
 
     await fireEvent.change(inputEl, { target: { value: "ABCD" } });
     // await userEvent.tab();
-
   });
   // it('render reset btn', async() => {
   //   const { getByTestId } = render(<SettingsUI />);
   //   // const input = getByPlaceholderText('password');
-  
+
   //   // Simulate a change event with a new value
   //   const inputEl = getByTestId("reset");
   //   // expect(inputEl).toBeInTheDocument();

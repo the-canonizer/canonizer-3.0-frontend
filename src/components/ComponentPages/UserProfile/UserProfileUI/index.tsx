@@ -78,11 +78,11 @@ const UserProfile = () => {
       ? dropdownNameSpaceList
       : router?.query?.canon;
     // if (dropdownNameSpaceList) {
-      const query = `${userId}?topicnum=${topic_num}&campnum=${camp_num}&namespace=${namespace_name_id}`;
-      UserSupportedCampsListApi(query);
+    const query = `${userId}?topicnum=${topic_num}&campnum=${camp_num}&namespace=${namespace_name_id}`;
+    UserSupportedCampsListApi(query);
     // } else {
-      UserSupportCampListNewSpaces();
-      setDropdownNameSpaceList(namespace_name_id as any);
+    UserSupportCampListNewSpaces();
+    setDropdownNameSpaceList(namespace_name_id as any);
     // }
   }, [dropdownNameSpaceList, router?.query]);
 
@@ -99,7 +99,6 @@ const UserProfile = () => {
       }
     }
   }, [router, isLoggedIn]);
-
 
   return (
     <>

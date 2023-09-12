@@ -61,7 +61,7 @@ const CreateCampFormUI = ({
                     className="linkCss"
                     id={"post-edit-icon" + post.id}
                   >
-                    <EditOutlined/>
+                    <EditOutlined />
                   </a>
                 </Tooltip>
                 <Popconfirm
