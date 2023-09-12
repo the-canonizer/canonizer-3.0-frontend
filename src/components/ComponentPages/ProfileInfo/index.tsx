@@ -3,6 +3,10 @@ import moment from "moment";
 import { Form, message } from "antd";
 import isAuth from "../../../hooks/isUserAuthenticated";
 
+import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
+
+import { useDispatch } from "react-redux";
+
 import {
   GetUserProfileInfo,
   UpdateUserProfileInfo,
@@ -14,6 +18,7 @@ import {
 } from "../../../network/api/userApi";
 import ProfileInfoUI from "./ProfileInfoUI";
 import { geocodeByAddress, geocodeByPlaceId } from "react-places-autocomplete";
+import { formatDate } from "../../common/FormatDate";
 type UpdateAddress = {
   city?: string;
   state?: string;
@@ -24,6 +29,7 @@ type UpdateAddress = {
 const ProfileInfo = () => {
   const [form] = Form.useForm();
   const [formVerify] = Form.useForm();
+  const dispatch = useDispatch();
   const [mobileCarrier, setMobileCarrier] = useState([]);
   const [isOTPModalVisible, setIsOTPModalVisible] = useState(false);
   const [otp, setOTP] = useState("");
@@ -62,17 +68,17 @@ const ProfileInfo = () => {
   const isPublicOrPrivate = (field_value) => {
     return privateList.includes(field_value) ? 0 : 1;
   };
-  function formatDate(date) {
-    var d = new Date(date),
-      month = "" + (d.getMonth() + 1),
-      day = "" + d.getDate(),
-      year = d.getFullYear();
+  // function formatDate(date) {
+  //   var d = new Date(date),
+  //     month = "" + (d.getMonth() + 1),
+  //     day = "" + d.getDate(),
+  //     year = d.getFullYear();
 
-    if (month.length < 2) month = "0" + month;
-    if (day.length < 2) day = "0" + day;
+  //   if (month.length < 2) month = "0" + month;
+  //   if (day.length < 2) day = "0" + day;
 
-    return [year, month, day].join("-");
-  }
+  //   return [year, month, day].join("-");
+  // }
   //on update profile click
   const onFinish = async (values: any) => {
     let birthday = values.birthday?._d;
@@ -107,9 +113,17 @@ const ProfileInfo = () => {
     values.address_1 = address;
     values.postal_code = code;
     values = { ...values, ...updateAddress };
+
     let res = await UpdateUserProfileInfo(values);
     if (res && res.status_code === 200) {
       message.success(res.message);
+      if (values?.default_algo) {
+        dispatch(
+          setFilterCanonizedTopics({
+            algorithm: values?.default_algo,
+          })
+        );
+      }
       setDisableButton(false);
       setAdd(false);
       setZipCode(false);
@@ -122,37 +136,37 @@ const ProfileInfo = () => {
 
   const { isUserAuthenticated } = isAuth();
 
-  const onFinishFailed = (errorInfo) => {
-    window.console.log("Failed:", errorInfo);
-  };
+  // const onFinishFailed = (errorInfo) => {
+  //   window.console.log("Failed:", errorInfo);
+  // };
 
   //Send OTP to mobile number
-  const onVerifyClick = async (values: any) => {
-    let res = await SendOTP(values);
-    if (res && res.status_code === 200) {
-      message.success(res.message);
-      setIsOTPModalVisible(true);
-      setOTP("");
-      //setOTP(res.data.otp)
-    }
-  };
+  // const onVerifyClick = async (values: any) => {
+  //   let res = await SendOTP(values);
+  //   if (res && res.status_code === 200) {
+  //     message.success(res.message);
+  //     setIsOTPModalVisible(true);
+  //     setOTP("");
+  //     //setOTP(res.data.otp)
+  //   }
+  // };
 
   const handleOTPCancel = () => {
     setIsOTPModalVisible(false);
   };
 
   //function to verify the OTP
-  const onOTPBtnClick = async () => {
-    let otpBody = {
-      otp: otp,
-    };
+  // const onOTPBtnClick = async () => {
+  //   let otpBody = {
+  //     otp: otp,
+  //   };
 
-    let res = await VerifyOTP(otpBody);
-    if (res && res.status_code === 200) {
-      message.success(res.message);
-      setIsOTPModalVisible(false);
-    }
-  };
+  //   let res = await VerifyOTP(otpBody);
+  //   if (res && res.status_code === 200) {
+  //     message.success(res.message);
+  //     setIsOTPModalVisible(false);
+  //   }
+  // };
 
   const handleChangeOTP = (e) => {
     setOTP(e.target.value);
@@ -343,10 +357,10 @@ const ProfileInfo = () => {
       algorithmList={algorithmList}
       languageList={languageList}
       onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      onVerifyClick={onVerifyClick}
-      onOTPBtnClick={onOTPBtnClick}
+      // onVerifyClick={onVerifyClick}
+      // onOTPBtnClick={onOTPBtnClick}
       isOTPModalVisible={isOTPModalVisible}
+      setIsOTPModalVisible={setIsOTPModalVisible}
       handleOTPCancel={handleOTPCancel}
       otp={otp}
       handleChangeOTP={handleChangeOTP}
@@ -361,6 +375,7 @@ const ProfileInfo = () => {
       postalCodeDisable={postalCodeDisable}
       userProfileSkeleton={userProfileSkeleton}
       userProfileSkeletonV={userProfileSkeletonV}
+      setOTP={setOTP}
     />
   );
 };

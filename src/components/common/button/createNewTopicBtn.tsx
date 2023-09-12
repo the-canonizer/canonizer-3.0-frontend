@@ -22,7 +22,7 @@ const CreateNewTopicButton = (props) => {
       onClick={campRoute}
       id="create-topic-btn"
     >
-      <i className="icon-topic"></i> Create New Topic
+      <i className="icon-topic"></i> Create Topic
     </Button>
   );
 };

@@ -2,14 +2,15 @@ import React, { Fragment } from "react";
 import App, { AppContext, AppInitialProps } from "next/app";
 import { Provider } from "react-redux";
 import scriptLoader from "react-async-script-loader";
+import { CookiesProvider } from "react-cookie";
 
 import "antd/dist/antd.css";
-import "react-quill/dist/quill.snow.css";
 
 import "../../styles/globals.scss";
 import "../../styles/variables.less";
 import "../assets/fonticons/style.css";
 import "../assets/scss/global.scss";
+import "../assets/editorcss/editor.css";
 
 import ErrorBoundary from "../hoc/ErrorBoundary";
 import HeadContentAndPermissionComponent from "../components/common/headContentAndPermisisonCheck";
@@ -24,15 +25,17 @@ class WrappedApp extends App<AppInitialProps> {
 
     return (
       <Fragment>
-        <Provider store={store}>
-          <ErrorBoundary>
-            <HeadContentAndPermissionComponent
-              componentName={Component.displayName || Component.name}
-              metaContent={meta}
-            />
-            <Component {...pageProps} />
-          </ErrorBoundary>
-        </Provider>
+        <CookiesProvider>
+          <Provider store={store}>
+            <ErrorBoundary>
+              <HeadContentAndPermissionComponent
+                componentName={Component.displayName || Component.name}
+                metaContent={meta}
+              />
+              <Component {...pageProps} />
+            </ErrorBoundary>
+          </Provider>
+        </CookiesProvider>
       </Fragment>
     );
   }
@@ -115,6 +118,7 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
    * /statement.asp/2/2
    * /stmt.asp/2/2
    * /[anything].asp/dadsa
+   * /secure/upload.asp
    *
    */
 
@@ -249,6 +253,12 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
           "statement"
         );
       }
+    } else if (aspath?.includes("login.asp")) {
+      returnData = "/login";
+    } else if (aspath?.includes("signup.asp")) {
+      returnData = "/registration";
+    } else if (aspath?.includes("upload.asp")) {
+      returnData = "/uploadFile";
     } else {
       returnData = await redirect(aspath, null, null, "");
     }
@@ -264,6 +274,7 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
 
 const googleAPIKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
 //export default wrapper.withRedux(MyApp);
-export default scriptLoader([
-  `https://maps.googleapis.com/maps/api/js?key=${googleAPIKey}&libraries=places`,
-])(wrapper.withRedux(WrappedApp));
+// export default scriptLoader([
+//   `https://maps.googleapis.com/maps/api/js?key=${googleAPIKey}&libraries=places`,
+// ])
+export default wrapper.withRedux(WrappedApp);

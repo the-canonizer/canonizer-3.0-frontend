@@ -40,8 +40,10 @@ import CampHistory from "./campHistory";
 import TopicHistory from "./topicHistory";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
+import { getTreesApi } from "src/network/api/campDetailApi";
 
 import { setViewThisVersion } from "src/store/slices/filtersSlice";
+
 const { Panel } = Collapse;
 const { Title } = Typography;
 
@@ -50,6 +52,7 @@ function HistoryCollapse({
   ifIamSupporter,
   ifSupportDelayed,
   ifIAmExplicitSupporter,
+  collapseKeys,
   userNickNameData,
   topicNamespaceId,
   campStatement,
@@ -59,6 +62,9 @@ function HistoryCollapse({
   changeDiscard,
   isChecked,
   setIsTreesApiCallStop,
+  campHistoryItems,
+  callManageCampApi,
+  parentArchived
 }: any) {
   const router = useRouter();
   const [commited, setCommited] = useState(false);
@@ -66,12 +72,11 @@ function HistoryCollapse({
   const { loading } = useSelector((state: RootState) => ({
     loading: state?.loading?.loading,
   }));
-  const [collapseKey, setCollapseKey] = useState("1");
+  const [collapseKey, setCollapseKey] = useState(collapseKeys);
 
   const [modal1Open, setModal1Open] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [supporters, setSupporters] = useState([]);
-
   const dispatch = useDispatch();
   const { isUserAuthenticated } = useAuthentication();
   const handleViewThisVersion = (goLiveTime) => {
@@ -84,6 +89,14 @@ function HistoryCollapse({
       })
     );
   };
+  const { asofdate, asof, algorithm, namespace_id } = useSelector(
+    (state: RootState) => ({
+      asofdate: state.filters?.filterObject?.asofdate,
+      asof: state?.filters?.filterObject?.asof,
+      algorithm: state.filters?.filterObject?.algorithm,
+      namespace_id: state.filters?.filterObject?.namespace_id,
+    })
+  );
   const historyOf = router?.asPath.split("/")[1];
   // const covertToTime = (unixTime) => {
   //   return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
@@ -96,11 +109,22 @@ function HistoryCollapse({
       old_parent_camp_num: campStatement?.old_parent_camp_num ?? null,
       parent_camp_num: campStatement?.parent_camp_num ?? null,
     };
+    const reqBodyForService = {
+      topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+      camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
+      asOf: asof,
+      asofdate:
+        asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+      algorithm: algorithm,
+      update_all: 1,
+    };
+
     let res = await changeCommitStatement(reqBody);
     if (res?.status_code === 200) {
       setCommited(true);
     }
     changeAgree();
+    await getTreesApi(reqBodyForService);
   };
 
   const discardChanges = async () => {
@@ -248,7 +272,7 @@ function HistoryCollapse({
                 {historyOf == "statement" && (
                   <div
                     dangerouslySetInnerHTML={{
-                      __html: campStatement?.parsed_value,
+                      __html: `<div class="ck-content">${campStatement?.parsed_value}</div>`,
                     }}
                   />
                 )}
@@ -335,8 +359,11 @@ function HistoryCollapse({
                             (
                               !isUserAuthenticated
                                 ? true
-                                : !campStatement?.ifIAmExplicitSupporter &&
-                                  campStatement?.ifIamSupporter == 0
+                                : (!campStatement?.ifIAmExplicitSupporter &&
+                                    campStatement?.ifIamSupporter == 0) ||
+                                  (campHistoryItems[0]?.is_archive == 1 &&
+                                    campHistoryItems[0]?.status == "live" &&
+                                    campStatement.status == "objected")
                                 ? true
                                 : false
                             )
@@ -371,7 +398,7 @@ function HistoryCollapse({
                         <p>
                           {K?.exceptionalMessages?.objectedModalMsgForMoreInfo}
                         </p>
-                        <Link href="/topic/132-Help/4-Disagreement">
+                        <Link href="/topic/132-Help/4-Disagreement?is_tree_open=1">
                           <a style={{ fontSize: "16px" }}>
                             https://canonizer.com/topic/132-Help/4-Disagreement
                           </a>
@@ -379,16 +406,36 @@ function HistoryCollapse({
                       </Modal>
                     </>
                   )}
+
                   <Button
                     type="primary"
                     id={`submit-update-${campStatement?.id}`}
                     className={`mr-3 ${styles.campUpdateButton}`}
-                    onClick={() => submitUpdateRedirect(historyOf)}
+                    onClick={() =>
+                      campHistoryItems[0]?.is_archive == 1 &&
+                      campHistoryItems[0]?.status == "live"
+                        ? callManageCampApi()
+                        : submitUpdateRedirect(historyOf)
+                    }
+                    disabled={
+                     (campHistoryItems[0]?.status == "in_review" && !commited && !!campHistoryItems[0]?.grace_period) || 
+                      (campHistoryItems?.at(0)?.status == "live"&&campHistoryItems?.at(0)?.is_archive == 1 &&
+                      campStatement.status == "old") || (parentArchived == 1 && campHistoryItems[0]?.camp_num != 1)||
+                      (campHistoryItems?.at(0)?.is_archive == 1 &&
+                        campHistoryItems?.at(0)?.status == "live" &&
+                        campStatement.status == "objected")
+                        ? true
+                        : false
+                    }
                   >
-                    {historyOf == "camp"
-                      ? "Submit Camp Update Based On This"
+                    {historyOf == "camp" &&
+                    campStatement?.is_archive == 1 &&
+                    campStatement?.status == "live"
+                      ? "Un-Archive This Camp"
                       : historyOf == "topic"
                       ? "Submit Topic Update Based On This"
+                      : historyOf == "camp"
+                      ? "Submit Camp Update Based On This"
                       : "Submit Statement Update Based On This"}
                   </Button>
                   <Button
@@ -400,41 +447,35 @@ function HistoryCollapse({
                     }
                   >
                     <Link
-                      href={{
-                        pathname: `/topic/${
-                          replaceSpecialCharacters(
-                            historyOf == "topic"
-                              ? replaceSpecialCharacters(
-                                  campStatement?.topic_num +
-                                    "-" +
-                                    campStatement?.topic_name?.replace(
-                                      / /g,
-                                      "-"
-                                    ),
-                                  "-"
-                                )
-                              : router?.query?.camp?.at(0),
-                            "-"
-                          ) +
-                          "/" +
-                          (historyOf != "topic"
-                            ? historyOf == "camp"
-                              ? replaceSpecialCharacters(
-                                  campStatement?.camp_num +
-                                    "-" +
-                                    campStatement?.camp_name?.replace(
-                                      / /g,
-                                      "-"
-                                    ),
-                                  "-"
-                                )
-                              : replaceSpecialCharacters(
-                                  router?.query?.camp?.at(1),
-                                  "-"
-                                )
-                            : "1-Agreement")
-                        }`,
-                      }}
+                      href={`/topic/${
+                        replaceSpecialCharacters(
+                          historyOf == "topic"
+                            ? replaceSpecialCharacters(
+                                campStatement?.topic_num +
+                                  "-" +
+                                  campStatement?.topic_name?.replace(/ /g, "-"),
+                                "-"
+                              )
+                            : router?.query?.camp?.at(0),
+                          "-"
+                        ) +
+                        "/" +
+                        (historyOf != "topic"
+                          ? historyOf == "camp"
+                            ? replaceSpecialCharacters(
+                                campStatement?.camp_num +
+                                  "-" +
+                                  campStatement?.camp_name?.replace(/ /g, "-"),
+                                "-"
+                              )
+                            : replaceSpecialCharacters(
+                                router?.query?.camp?.at(1),
+                                "-"
+                              )
+                          : "1-Agreement")
+                      }?algo=${algorithm}&asofdate=${
+                        campStatement?.go_live_time
+                      }&asof=bydate&canon=${namespace_id}&viewversion=${1}`}
                     >
                       View This Version
                     </Link>

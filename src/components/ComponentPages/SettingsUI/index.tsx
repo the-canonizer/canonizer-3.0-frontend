@@ -46,7 +46,7 @@ function callback(key) {}
 
 const SettingsUI = () => {
   const [search, setSearch] = useState("");
-  const [activeTabKey, setActiveTabKey] = useState("profile_info");
+  const [activeTabKey, setActiveTabKey] = useState("");
   const onTabChange = (key) => {
     setActiveTabKey(key);
     router?.push("/settings?tab=" + key);
@@ -64,6 +64,7 @@ const SettingsUI = () => {
             <div className={styles.search01}>
               <SearchOutlined />
               <Input
+                data-testid="settingSearch"
                 value={search}
                 placeholder="Search by topic name"
                 type="text"
@@ -73,7 +74,7 @@ const SettingsUI = () => {
                 }}
               />
             </div>
-            <Button onClick={() => setSearch("")} className={styles.btn}>
+            <Button data-testid="reset" onClick={() => setSearch("")} className={styles.btn}>
               Reset
             </Button>
           </div>
@@ -106,35 +107,37 @@ const SettingsUI = () => {
 
   useEffect(() => {
     const query = router?.query;
-    if (query && query.tab === "social") {
-      setActiveTabKey("social_oauth_verification");
-    } else if (query && query.tab === "profile") {
+    if (query && !query.tab) {
       setActiveTabKey("profile_info");
-    } else if (query && query.tab) setActiveTabKey(query.tab.toString());
-    else setActiveTabKey("profile_info");
+    } else if (query && query?.tab.includes("social")) {
+      setActiveTabKey("social_oauth_verification");
+    } else if (query && query?.tab.includes("profile")) {
+      setActiveTabKey("profile_info");
+    } else if (query && query.tab) {
+      setActiveTabKey(query.tab.toString());
+    }
   }, [router?.query]);
 
   return (
     <Fragment>
-      <div>
+      <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar">
         <Sidebar />
+      </aside>
+      <div className="pageContentWrap">
+        <Card
+          data-testid="contentlist"
+          style={{ width: "100%" }}
+          title="Account Settings"
+          tabList={tabList}
+          activeTabKey={activeTabKey}
+          onTabChange={(key) => {
+            onTabChange(key);
+          }}
+          className="tab--card"
+        >
+          {contentList[activeTabKey]}
+        </Card>
       </div>
-      <Row gutter={16} className={styles.accountSetting}>
-        <Col xs={24} sm={24} xl={24}>
-          <Card
-            style={{ width: "100%" }}
-            title="Account Settings"
-            tabList={tabList}
-            activeTabKey={activeTabKey}
-            onTabChange={(key) => {
-              onTabChange(key);
-            }}
-            className="tab--card"
-          >
-            {contentList[activeTabKey]}
-          </Card>
-        </Col>
-      </Row>
     </Fragment>
   );
 };

@@ -1,8 +1,11 @@
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
+import {
+  setFilterCanonizedTopics,
+  setShowDrawer,
+} from "../../../store/slices/filtersSlice";
 import CustomSkelton from "../../common/customSkelton";
 
 import {
@@ -24,7 +27,7 @@ import CurrentCampCard from "./CurrentCampCard";
 import CurrentTopicCard from "./CurrentTopicCard";
 import NewsFeedsCard from "./NewsFeedsCard";
 import SupportTreeCard from "./SupportTreeCard";
-import { BackTop, Image, Typography, message, Alert } from "antd";
+import { BackTop, Image, Typography, message, Alert, Row, Col } from "antd";
 import { Spin } from "antd";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
@@ -52,9 +55,11 @@ import {
 } from "src/network/api/userApi";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import { SupportTreeTotalScore } from "src/network/api/campDetailApi";
+import InfoBar from "./CampInfoBar/infoBar";
 
-const TopicDetails = () => {
+const TopicDetails = ({ serverSideCall }) => {
   let myRefToCampStatement = useRef(null);
+  const didMount = useRef(false);
   const { isUserAuthenticated } = isAuth();
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [getTreeLoadingIndicator, setGetTreeLoadingIndicator] = useState(false);
@@ -106,53 +111,64 @@ const TopicDetails = () => {
   };
   useEffect(() => {
     async function getTreeApiCall() {
-      console.log("show tree check ", showTreeSkeltonRef);
       if (!showTreeSkeltonRef) {
         setGetTreeLoadingIndicator(true);
         showTreeSkeltonRef.current = true;
       }
       setLoadingIndicator(true);
-      const reqBodyForService = {
-        topic_num: +router?.query?.camp[0]?.split("-")[0],
-        camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
-        asOf: asof,
-        asofdate:
-          asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
-        algorithm: algorithm,
-        update_all: 1,
-        fetch_topic_history: viewThisVersionCheck ? 1 : null,
-      };
 
-      const reqBody = {
-        topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
-        camp_num: +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1),
-        as_of: asof,
-        as_of_date:
-          asof == "default" || asof == "review"
-            ? Date.now() / 1000
-            : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
-      };
-      const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
+      console.log(didMount, serverSideCall);
 
-      const body = { topic_num: topicNum };
-      const reqBodyForCampData = {
-        topic_num: +router?.query?.camp[0]?.split("-")[0],
-        camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
-        type: "all",
-        per_page: 4,
-        page: 1,
-      };
-      await Promise.all([
-        dispatch(setCampSupportingTree({})),
-        getNewsFeedApi(reqBody),
-        getCurrentTopicRecordApi(reqBody),
-        getCurrentCampRecordApi(reqBody),
-        getCanonizedCampStatementApi(reqBody),
-        getHistoryApi(reqBodyForCampData, "1", "statement"),
-        getCanonizedAlgorithmsApi(),
-        getTreesApi(reqBodyForService),
-      ]);
+      if (didMount.current && !serverSideCall.current) {
+        const reqBodyForService = {
+          topic_num: +router?.query?.camp[0]?.split("-")[0],
+          camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+          asOf: asof,
+          asofdate:
+            asof == "default" || asof == "review"
+              ? Date.now() / 1000
+              : asofdate,
+          algorithm: algorithm,
+          update_all: 1,
+          fetch_topic_history: viewThisVersionCheck ? 1 : null,
+        };
+
+        const reqBody = {
+          topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+          camp_num: +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1),
+          as_of: asof,
+          as_of_date:
+            asof == "default" || asof == "review"
+              ? Date.now() / 1000
+              : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
+        };
+        const reqBodyForCampData = {
+          topic_num: +router?.query?.camp[0]?.split("-")[0],
+          camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+          type: "all",
+          per_page: 4,
+          page: 1,
+        };
+        await Promise.all([
+          dispatch(setCampSupportingTree({})),
+          getNewsFeedApi(reqBody),
+          getCurrentTopicRecordApi(reqBody),
+          getCurrentCampRecordApi(reqBody),
+          getCanonizedCampStatementApi(reqBody),
+          getHistoryApi(reqBodyForCampData, "1", "statement"),
+          getCanonizedAlgorithmsApi(),
+          getTreesApi(reqBodyForService),
+        ]);
+      } else if (serverSideCall.current) {
+        serverSideCall.current = false;
+        didMount.current = true;
+      } else {
+        didMount.current = true;
+      }
       //getCanonizedCampSupportingTreeApi(reqBody, algorithm);
+
+      const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
+      const body = { topic_num: topicNum };
       const reponse = await GetActiveSupportTopic(topicNum && body);
       if (reponse?.status_code == 200) {
         setTopicList(reponse?.data);
@@ -160,6 +176,7 @@ const TopicDetails = () => {
       setGetTreeLoadingIndicator(false);
       setLoadingIndicator(false);
     }
+
     getTreeApiCall();
   }, [asofdate, algorithm, +(router?.query?.camp[1]?.split("-")[0] ?? 1)]);
 
@@ -385,47 +402,85 @@ const TopicDetails = () => {
   const onCreateCampDate = () => {
     dispatch(
       setFilterCanonizedTopics({
-        asofdate: campExist?.created_at,
+        asofdate:
+          Date.parse(
+            moment.unix(campExist && campExist?.created_at).endOf("day")["_d"]
+          ) / 1000,
         asof: "bydate",
       })
     );
   };
-  return (
-    <>
-      <div className={styles.topicDetailContentWrap}>
-        {(tree && tree["1"]?.is_valid_as_of_time) || asof == "default" ? (
-          <CampInfoBar
-            isTopicPage={true}
-            payload={{
-              topic_num: +router?.query?.camp[0]?.split("-")[0],
-              camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
-            }}
-            getCheckSupportStatus={getCheckSupportStatus}
-          />
-        ) : (
-          <CampInfoBar
-            payload={{
-              topic_num: +router?.query?.camp[0]?.split("-")[0],
-              camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
-            }}
-            isTopicHistoryPage={true}
-            getCheckSupportStatus={getCheckSupportStatus}
-          />
-        )}
 
-        <aside className={styles.miniSide + " leftSideBar miniSideBar"}>
-          <SideBar onCreateCamp={onCreateCamp} />
+  useEffect(() => {
+    const q = router?.query;
+    if (q?.is_tree_open) {
+      if (q?.is_tree_open === "1") {
+        dispatch(setShowDrawer(true));
+      } else if (q?.is_tree_open === "0") {
+        dispatch(setShowDrawer(false));
+      }
+    }
+  }, []);
+
+  return (
+    <Fragment>
+      <div className={styles.topicDetailContentWrap}>
+        <aside
+          className={
+            styles.miniSide +
+            " topicPageNewLayoutSidebar leftSideBar miniSideBar"
+          }
+        >
+          <SideBar
+            onCreateCamp={onCreateCamp}
+            getTreeLoadingIndicator={getTreeLoadingIndicator}
+            scrollToCampStatement={scrollToCampStatement}
+            setTotalCampScoreForSupportTree={setTotalCampScoreForSupportTree}
+            setSupportTreeForCamp={setSupportTreeForCamp}
+            backGroundColorClass={backGroundColorClass}
+          />
         </aside>
 
-        <>
+        <Fragment>
           <div className={styles.pageContent + " pageContentWrap"}>
-            <CampTreeCard
-              getTreeLoadingIndicator={getTreeLoadingIndicator}
-              scrollToCampStatement={scrollToCampStatement}
-              setTotalCampScoreForSupportTree={setTotalCampScoreForSupportTree}
-              setSupportTreeForCamp={setSupportTreeForCamp}
-              backGroundColorClass={backGroundColorClass}
+            {(tree && tree["1"]?.is_valid_as_of_time) || asof == "default" ? (
+              <CampInfoBar
+                isTopicPage={true}
+                payload={{
+                  topic_num: +router?.query?.camp[0]?.split("-")[0],
+                  camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+                }}
+                getCheckSupportStatus={getCheckSupportStatus}
+              />
+            ) : (
+              <CampInfoBar
+                payload={{
+                  topic_num: +router?.query?.camp[0]?.split("-")[0],
+                  camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+                }}
+                isTopicHistoryPage={true}
+                getCheckSupportStatus={getCheckSupportStatus}
+              />
+            )}
+            <InfoBar
+              onCreateCamp={onCreateCamp}
+              isTopicPage={true}
+              payload={{
+                topic_num: +router?.query?.camp[0]?.split("-")[0],
+                camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+              }}
+              isTopicHistoryPage={true}
+              getCheckSupportStatus={getCheckSupportStatus}
             />
+            {/* <CampTreeCard
+                getTreeLoadingIndicator={getTreeLoadingIndicator}
+                scrollToCampStatement={scrollToCampStatement}
+                setTotalCampScoreForSupportTree={
+                  setTotalCampScoreForSupportTree
+                }
+                setSupportTreeForCamp={setSupportTreeForCamp}
+                backGroundColorClass={backGroundColorClass}
+              /> */}
 
             {((tree &&
               tree["1"]?.is_valid_as_of_time &&
@@ -434,7 +489,7 @@ const TopicDetails = () => {
                   ? Date.now() / 1000
                   : asofdate)) ||
               asof == "default") && (
-              <>
+              <Fragment>
                 {campExist &&
                   !campExist?.camp_exist &&
                   (loadingIndicator ? (
@@ -445,7 +500,7 @@ const TopicDetails = () => {
                       isButton={false}
                     />
                   ) : (
-                    <>
+                    <Fragment>
                       <Alert
                         className="alert-camp-created-on"
                         message="The camp was first created on"
@@ -458,37 +513,28 @@ const TopicDetails = () => {
                               }}
                             >
                               {" "}
-                              {new Date(
-                                (campExist && campExist?.created_at) * 1000
-                              ).toLocaleString()}
+                              {
+                                new Date(
+                                  (campExist && campExist?.created_at) * 1000
+                                )
+                                  .toLocaleString()
+                                  ?.split(",")[0]
+                              }
                             </Link>
                           </span>
                         }
                       />
-                    </>
+                    </Fragment>
                   ))}
+
                 {campExist
                   ? campExist?.camp_exist
                   : true && (
-                      <>
+                      <Fragment>
                         <CampStatementCard
                           loadingIndicator={loadingIndicator}
                           backGroundColorClass={backGroundColorClass}
                         />
-
-                        {typeof window !== "undefined" &&
-                          window.innerWidth > 767 && (
-                            <>
-                              <CurrentTopicCard
-                                loadingIndicator={loadingIndicator}
-                                backGroundColorClass={backGroundColorClass}
-                              />
-                              <CurrentCampCard
-                                loadingIndicator={loadingIndicator}
-                                backGroundColorClass={backGroundColorClass}
-                              />
-                            </>
-                          )}
 
                         <SupportTreeCard
                           loadingIndicator={loadingIndicator}
@@ -519,38 +565,39 @@ const TopicDetails = () => {
                           }
                           backGroundColorClass={backGroundColorClass}
                         />
-                        {typeof window !== "undefined" &&
-                          window.innerWidth < 767 && (
-                            <>
-                              <CurrentTopicCard
-                                backGroundColorClass={backGroundColorClass}
-                                loadingIndicator={loadingIndicator}
-                              />
-                              <CurrentCampCard
-                                backGroundColorClass={backGroundColorClass}
-                                loadingIndicator={loadingIndicator}
-                              />
-                              <Spin spinning={loadingIndicator} size="large">
-                                {!!newsFeed?.length && (
-                                  <NewsFeedsCard newsFeed={newsFeed} />
-                                )}
-                              </Spin>
-                              <>
-                                {router?.asPath.includes("topic") && (
-                                  <CampRecentActivities />
-                                )}
-                              </>
-                            </>
-                          )}
-                      </>
+
+                        <CurrentTopicCard
+                          loadingIndicator={loadingIndicator}
+                          backGroundColorClass={backGroundColorClass}
+                        />
+                        <CurrentCampCard
+                          loadingIndicator={loadingIndicator}
+                          backGroundColorClass={backGroundColorClass}
+                        />
+
+                        <Row gutter={15} className={styles.bottomRow}>
+                          <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
+                            <CampRecentActivities />
+                          </Col>
+                          <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
+                            <Spin
+                              spinning={loadingIndicator}
+                              size="large"
+                              wrapperClassName="newfeedCardSpinner"
+                            >
+                              <NewsFeedsCard newsFeed={newsFeed} />
+                            </Spin>
+                          </Col>
+                        </Row>
+                      </Fragment>
                     )}
-              </>
+              </Fragment>
             )}
           </div>
-        </>
+        </Fragment>
       </div>
       <BackTop />
-    </>
+    </Fragment>
   );
 };
 

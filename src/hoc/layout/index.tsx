@@ -1,26 +1,24 @@
-import useAuthentication from "../../hooks/isUserAuthenticated";
-import LoggedInHeader from "../../components/common/headers/loggedInHeader";
-import LoggedOutHeader from "../../components/common/headers/loggedOutHeader";
-import Spinner from "../../components/common/spinner/spinner";
-import styles from "./layout.module.scss";
-import Footer from "../../components/common/footer";
-import GoogleAd from "../../components/googleAds";
+import { Fragment } from "react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import CampRecentActivities from "@/components/ComponentPages/Home/CampRecentActivities";
+
+import styles from "./layout.module.scss";
+
+import useAuthentication from "src/hooks/isUserAuthenticated";
+import LoggedInHeader from "src/components/common/headers/loggedInHeader";
+import LoggedOutHeader from "src/components/common/headers/loggedOutHeader";
+import Footer from "src/components/common/footer";
+import GoogleAd from "src/components/googleAds";
 
 function Layout(props: any) {
   const router = useRouter();
+
   const { isUserAuthenticated } = useAuthentication();
 
-  const [log, setLog] = useState(isUserAuthenticated);
-
-  useEffect(() => setLog(isUserAuthenticated), [isUserAuthenticated]);
-
   return (
-    <>
+    <Fragment>
       <div className={styles.pageWrap}>
         {isUserAuthenticated ? <LoggedInHeader /> : <LoggedOutHeader />}
+        {props?.campInfoBar ? props?.campInfoBar : null}
         <div className={styles.contentWrap}>
           <div
             className={
@@ -49,7 +47,7 @@ function Layout(props: any) {
         </div>
         <Footer />
       </div>
-    </>
+    </Fragment>
   );
 }
 

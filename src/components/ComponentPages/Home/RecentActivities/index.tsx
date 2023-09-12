@@ -388,27 +388,65 @@ export default function RecentActivities() {
                 }
                 bordered={false}
                 dataSource={recentActivities?.topics}
-                renderItem={(activity: any) => (
-                  <List.Item className={styles.listItem}>
-                    <Link
-                      href={{
-                        pathname: decodeUrlLink(activity),
-                        query: { from: router?.asPath },
-                      }}
-                      passHref
-                    >
-                      <a>
-                        <Text className={styles.text}>
-                          {activity?.activity?.description}
-                        </Text>
-                        <Text className={styles.secondary} type="secondary">
-                          <i className="icon-calendar"></i>
-                          {covertToTime(activity.updated_at)}
-                        </Text>
-                      </a>
-                    </Link>
-                  </List.Item>
-                )}
+                renderItem={(activity: any) => {
+                  const decodedProperties = JSON.parse(
+                    activity?.activity?.properties
+                  );
+
+                  return (
+                    <List.Item className={styles.listItem}>
+                      <Link href={decodeUrlLink(activity)} passHref>
+                        <a>
+                          <Text className={styles.text}>
+                            {activity?.activity?.description}
+                            <br />
+                            <Tooltip
+                              title={
+                                activity?.activity?.subject_type ==
+                                "App\\Models\\Thread"
+                                  ? `Camp: ${decodedProperties?.camp_name} | Thread: ${decodedProperties?.thread_name}`
+                                  : `Thread: ${
+                                      decodedProperties?.thread_name
+                                    } | Post: ${
+                                      convert(
+                                        decodedProperties?.description?.replace(
+                                          /<img[^>]*>/gi,
+                                          ""
+                                        ),
+                                        {
+                                          wordwrap: 130,
+                                        }
+                                      ).substring(0, 90) + "..."
+                                    }`
+                              }
+                            >
+                              {activity?.activity?.subject_type ==
+                              "App\\Models\\Thread"
+                                ? `Camp: ${decodedProperties?.camp_name} | Thread: ${decodedProperties?.thread_name}`
+                                : `Thread: ${
+                                    decodedProperties?.thread_name
+                                  } | Post: ${
+                                    convert(
+                                      decodedProperties?.description?.replace(
+                                        /<img[^>]*>/gi,
+                                        ""
+                                      ),
+                                      {
+                                        wordwrap: 130,
+                                      }
+                                    ).substring(0, 90) + "..."
+                                  }`}
+                            </Tooltip>
+                          </Text>
+                          <Text className={styles.secondary} type="secondary">
+                            <i className="icon-calendar"></i>
+                            {covertToTime(activity.updated_at)}
+                          </Text>
+                        </a>
+                      </Link>
+                    </List.Item>
+                  );
+                }}
               />
             )}
           </TabPane>

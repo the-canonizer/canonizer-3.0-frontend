@@ -2,6 +2,7 @@ import { Collapse, Popover, Image, Typography, Button, Select } from "antd";
 import React, { useEffect, useState, useRef } from "react";
 import { RightOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
+import moment from "moment";
 
 import CampTree from "../CampTree";
 import { RootState } from "src/store";
@@ -58,24 +59,39 @@ const CampTreeCard = ({
   const router = useRouter();
   const { isUserAuthenticated } = useAuthentication();
   const eventLinePath = router?.asPath.replace("topic", "eventline");
-  const [treeExpandValue, setTreeExpandValue] = useState<any>(50);
-  const prevTreeValueRef = useRef(50);
+  const [treeExpandValue, setTreeExpandValue] = useState<any>(
+    router?.query?.filter || 50
+  );
+  const didMount = useRef(false);
+  const prevTreeValueRef = useRef(router?.query?.filter || 50);
   const dispatch = useDispatch();
   const onCreateTreeDate = () => {
     dispatch(
       setFilterCanonizedTopics({
-        asofdate: tree["1"]?.created_date,
+        asofdate:
+          Date.parse(moment.unix(tree["1"]?.created_date).endOf("day")["_d"]) /
+          1000,
         asof: "bydate",
       })
     );
   };
   const handleChange = (value) => {
+    router.push(
+      {
+        pathname: router.pathname,
+        query: { ...router.query, ...{ filter: value } },
+      },
+      undefined,
+      { shallow: true }
+    );
     setTreeExpandValue(value);
   };
   useEffect(() => {
-    return () => {
-      store.dispatch(setTree([]));
-    };
+    if (didMount.current) {
+      return () => {
+        store.dispatch(setTree([]));
+      };
+    } else didMount.current = true;
   }, []);
 
   return (
@@ -107,9 +123,11 @@ const CampTreeCard = ({
                   }}
                 >
                   {" "}
-                  {new Date(
-                    (tree && tree["1"]?.created_date) * 1000
-                  ).toLocaleString()}
+                  {
+                    new Date((tree && tree["1"]?.created_date) * 1000)
+                      .toLocaleString()
+                      ?.split(",")[0]
+                  }
                 </AntLink>
               </p>
             </div>
@@ -126,7 +144,7 @@ const CampTreeCard = ({
         <Collapse
           defaultActiveKey={["1"]}
           expandIconPosition="right"
-          className={`topicDetailsCollapse ${styles.topicDetailsPanelNo}`}
+          className={`topicDetailsCollapse ${styles.topicDetailsPanelNo} ${backGroundColorClass}`}
         >
           <Panel
             disabled
@@ -161,8 +179,8 @@ const CampTreeCard = ({
                     <RightOutlined className="rightOutlined" />
                   </Text>
                   <Select
-                    value={treeExpandValue}
-                    defaultValue={"50%"}
+                    // value={treeExpandValue}
+                    defaultValue={`${router?.query?.filter || 50}%`}
                     style={{ width: 80 }}
                     onChange={handleChange}
                     options={[

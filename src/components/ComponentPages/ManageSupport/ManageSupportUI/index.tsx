@@ -161,7 +161,6 @@ const ManageSupportUI = ({
     if (isDropdownValid?.errorFields) {
       return;
     }
-    console.log("removeCampsApi-is-valid", isDropdownValid, formData);
     setGetManageSupportLoadingIndicator(true);
     const supportedCampsRemove = {
       topic_num: reqBodyData.topic_num,
@@ -194,7 +193,6 @@ const ManageSupportUI = ({
     if (isDropdownValid?.errorFields) {
       return;
     }
-    console.log("addRemoveApi-is-valid", isDropdownValid, formData);
     setGetManageSupportLoadingIndicator(true);
     const addSupportId = {
       topic_num: reqBodyData.topic_num,
@@ -231,11 +229,11 @@ const ManageSupportUI = ({
     let addedRes = await addSupport(addSupportId);
     if (addedRes && addedRes.status_code == 200) {
       let manageSupportPath = router?.asPath.replace("/support/", "/topic/");
-      if (manageSupportPath.lastIndexOf("_") > -1)
-        manageSupportPath = manageSupportPath.substring(
-          0,
-          manageSupportPath.lastIndexOf("_")
-        );
+      // if (manageSupportPath.lastIndexOf("_") > -1)
+      //   manageSupportPath = manageSupportPath.substring(
+      //     0,
+      //     manageSupportPath.lastIndexOf("_")
+      //   );
       router?.push(manageSupportPath);
     }
   };
@@ -275,7 +273,6 @@ const ManageSupportUI = ({
     // if (removeCampsSupport) {
     // submitNickNameSupportCamps(values);
     // } else {
-    // console.log(values);
     // removeCampsApi(values);
     // }
     // removeForm.resetFields();
@@ -288,7 +285,6 @@ const ManageSupportUI = ({
     if (isDropdownValid?.errorFields) {
       return;
     }
-    console.log("is-valid", isDropdownValid, formData);
     submitNickNameSupportCamps(formData);
   };
 

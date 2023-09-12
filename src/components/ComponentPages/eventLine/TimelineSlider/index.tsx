@@ -113,7 +113,7 @@ function TimelineSlider({
       />
     </div>
   );
-  const DateFormate = (datess) => {
+  const DateFormate = (datess, value = null) => {
     const months = [
       "Jan",
       "Feb",
@@ -130,15 +130,24 @@ function TimelineSlider({
     ];
     let formattedDate = `${
       months[datess.getMonth()]
-    } ${datess.getDate()}, ${datess.getYear().toString().slice(1)}`;
-    return formattedDate;
+    } ${datess.getDate()}, ${datess
+      .getYear()
+      .toString()
+      .slice(1)}<span style=display:none>${value}</span>`;
+    return (
+      <div
+        dangerouslySetInnerHTML={{
+          __html: formattedDate,
+        }}
+      />
+    );
   };
 
   const formatter = (value) => {
     let pdata: any = Object.keys(mockData)?.sort();
     let formatedDate =
       pdata.length > 0 &&
-      DateFormate(new Date(pdata[value]?.split("_")[1] * 1000));
+      DateFormate(new Date(pdata[value]?.split("_")[1] * 1000), value);
     return formatedDate;
   };
   const MarkPointsData = () => {
@@ -206,6 +215,7 @@ function TimelineSlider({
           message: mockData[sortMockData[i]]?.event?.message,
           eventDate: sortMockData[i]?.split("_")[1],
           id: mockData[sortMockData[i]]?.event?.id,
+          url: mockData[sortMockData[i]]?.event?.url,
         });
         break;
       }
@@ -214,6 +224,7 @@ function TimelineSlider({
         message: mockData[sortMockData[i]]?.event?.message,
         eventDate: sortMockData[i]?.split("_")[1],
         id: mockData[sortMockData[i]]?.event?.id,
+        url: mockData[sortMockData[i]]?.event?.url,
       });
     }
     setTimelineDescript(mappedArr);
@@ -289,7 +300,11 @@ function TimelineSlider({
               ? false
               : true
           }
-          className="rang-slider"
+          className={`${
+            mockData && Object.keys(mockData).length > 0
+              ? "rang-slider"
+              : "skeleton-rangslider"
+          }`}
           tooltip={{
             open: true,
             formatter,

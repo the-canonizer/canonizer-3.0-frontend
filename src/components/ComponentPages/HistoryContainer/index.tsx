@@ -22,6 +22,7 @@ import useIsUserAuthenticated from "../../../hooks/isUserAuthenticated";
 
 import { store } from "../../../store";
 import { setTree } from "../../../store/slices/campDetailSlice";
+import { updateCampApi } from "../../../network/api/campManageStatementApi";
 
 const { Title } = Typography;
 
@@ -29,6 +30,7 @@ function HistoryContainer() {
   const { isUserAuthenticated } = useIsUserAuthenticated();
   const router = useRouter();
   const dispatch = useDispatch();
+  const didMount = useRef(false);
 
   const [activeTab, setActiveTab] = useState("all");
 
@@ -40,6 +42,7 @@ function HistoryContainer() {
   const [loadMoreItems, setLoadMoreItems] = useState(true);
   const [agreecheck, setAgreeCheck] = useState(false);
   const [discardChange, setDiscardChange] = useState(false);
+  const[parentarchived,setParentarchived] = useState(0)
 
   const changeAgree = () => {
     setAgreeCheck(!agreecheck);
@@ -71,6 +74,15 @@ function HistoryContainer() {
     camp_num: router?.query?.camp?.at(1)?.split("-")?.at(0) ?? "1",
     topic_num: router?.query?.camp?.at(0)?.split("-")?.at(0),
   };
+  const reqBodyForService = {
+    topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+    camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
+    asOf: asof,
+    asofdate:
+      asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+    algorithm: algorithm,
+    update_all: 1,
+  };
 
   useEffect(() => {
     async function getTreeApiCall() {
@@ -81,22 +93,14 @@ function HistoryContainer() {
         });
         setNickName(response?.data);
       }
-      const reqBodyForService = {
-        topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
-        camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
-        asOf: asof,
-        asofdate:
-          asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
-        algorithm: algorithm,
-        update_all: 1,
-      };
-
-      await getTreesApi(reqBodyForService);
+      let res = await getTreesApi(reqBodyForService);
       setLoadingIndicator(false);
+      setParentarchived(res[1].is_archive)
     }
     if (!isTreesApiCallStop) {
       getTreeApiCall();
     }
+   
   }, [asofdate, algorithm, +router?.query?.camp?.at(1)?.split("-")[0]]);
 
   const dispatchData = (data, isDisabled = 0, isOneLevel = 0) => {
@@ -147,9 +151,11 @@ function HistoryContainer() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, agreecheck, discardChange, isUserAuthenticated]);
   useEffect(() => {
-    return () => {
-      store.dispatch(setTree([]));
-    };
+    if (didMount.current) {
+      return () => {
+        store.dispatch(setTree([]));
+      };
+    } else didMount.current = true;
   }, []);
 
   const campStatementApiCall = async () => {
@@ -164,7 +170,6 @@ function HistoryContainer() {
         page: count.current,
       };
       let res = await getHistoryApi(reqBody, count.current, historyOf);
-
       if (!res || !res?.last_page) {
         setLoadMoreItems(false);
         setLoadingIndicator(false);
@@ -175,6 +180,7 @@ function HistoryContainer() {
       } else {
         count.current = count.current + 1;
       }
+
       setLoadingIndicator(false);
     } catch (error) {}
   };
@@ -265,12 +271,71 @@ function HistoryContainer() {
       </h2>
     );
   };
+  let reqBody = {
+    topic_num: campHistory?.items?.[0]?.topic_num,
+    topic_id: null,
+    topic_name: null,
+    namespace_id: null,
+    statement_id: null,
+    camp_num: campHistory?.items?.[0]?.camp_num,
+    nick_name: nickName?.[0]?.id,
+    // nick_name_id:userNickNameData?.[0]?.n,
+    submitter: campHistory?.items?.[0]?.submitter_nick_id,
+    statement: "", //JSON.stringify(convertToRaw(contentState)),//values?.statement?.blocks[0].text.trim(),
+    //statement: values?.statement?.trim(), //JSON.stringify(convertToRaw(contentState)),//values?.statement?.blocks[0].text.trim(),
+    event_type: "update",
+    objection_reason: null,
+    statement_update: null,
+    camp_id: campHistory?.items?.[0]?.id,
+    camp_name: campHistory?.items?.[0]?.camp_name,
+    key_words: campHistory?.items?.[0]?.key_words,
+    camp_about_url: campHistory?.items?.[0]?.camp_about_url,
+    camp_about_nick_id: null,
+
+    parent_camp_num: campHistory?.items?.[0]?.parent_camp_num,
+
+    old_parent_camp_num: campHistory?.items?.[0]?.old_parent_camp_num,
+    is_disabled: 0,
+    is_one_level: 0,
+    is_archive: 0,
+  };
+  const callManageCampApi = async () => {
+    // window.location.reload()
+    setLoadingIndicator(true);
+    if( campHistory?.items?.length >= 3){
+      count.current =1
+    }
+    updateCampApi(reqBody);
+    await campStatementApiCall();
+    setLoadingIndicator(false);
+    // await commitChanges()
+  };
+  const getCollapseKeys = (campHistoryData, index) => {
+    let key = "";
+    let oldstatements = campHistory?.items?.filter(
+      (campHistoryData) => campHistoryData?.status == "old"
+    );
+
+    if (
+      campHistoryData?.status == "live" ||
+      campHistory?.items?.length <= 3 ||
+      (oldstatements.length > 0 &&
+        oldstatements[oldstatements.length >= 3 ? 2 : oldstatements.length - 1]
+          ?.submit_time <= campHistoryData?.submit_time) ||
+      (oldstatements.length == 0 && index < 2)
+    ) {
+      key = "1";
+    }
+
+    return key;
+  };
 
   const renderCampHistories =
     campHistory && campHistory?.items?.length ? (
       campHistory?.items?.map((campHistoryData, index) => {
         return (
           <HistoryCollapse
+            collapseKeys={getCollapseKeys(campHistoryData, index)}
             key={index}
             campStatement={campHistoryData}
             onSelectCompare={onSelectCompare}
@@ -289,6 +354,9 @@ function HistoryContainer() {
             }
             isChecked={selectedTopic?.includes(campHistoryData?.id)}
             setIsTreesApiCallStop={setIsTreesApiCallStop}
+            campHistoryItems={campHistory?.items}
+            callManageCampApi={callManageCampApi}
+            parentArchived={parentarchived}
           />
         );
       })
@@ -302,11 +370,12 @@ function HistoryContainer() {
         isTopicHistoryPage={historyOf == "topic" ? true : false}
       />
       <div className={styles.btnGroup}>
-        <CreateNewTopicButton className={styles.createBtn} click={topicRoute} />
+        {/* <CreateNewTopicButton className={styles.createBtn} click={topicRoute} /> */}
 
         {historyOf !== "topic" &&
         currentCampNode?._isDisabled == 0 &&
-        currentCampNode?.parentIsOneLevel == 0  ? (
+        currentCampNode?.parentIsOneLevel == 0 &&
+        currentCampNode?.is_archive == 0 ? (
           <CreateNewCampButton
             className={styles.createBtn}
             click={campRoute}

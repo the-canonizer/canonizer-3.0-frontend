@@ -4,7 +4,7 @@ import { Fragment, useEffect } from "react";
 import { Card, Typography } from "antd";
 import { useRouter } from "next/router";
 
-import GetStartedLayout from "src/hoc/getStartedLayout";
+import Layout from "src/hoc/layout";
 
 import { getSitemapXML } from "src/network/api/metaTagsAPI";
 
@@ -19,13 +19,13 @@ const SitemapPage = () => {
 
   return (
     <Fragment>
-      <GetStartedLayout initialProps={undefined} initialState={undefined}>
+      <Layout initialProps={undefined} initialState={undefined}>
         <Card bordered={false} style={{ height: "50vh", textAlign: "center" }}>
           <Text>
             This page is generating sitemap.xml file in every 15 days interval.
           </Text>
         </Card>
-      </GetStartedLayout>
+      </Layout>
     </Fragment>
   );
 };

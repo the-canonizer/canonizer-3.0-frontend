@@ -13,6 +13,7 @@ import K from "../../../../constants";
 import { RootState } from "../../../../store";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 import CustomSkelton from "../../../common/customSkelton";
+import { useEffect } from "react";
 
 const { Panel } = Collapse;
 
@@ -35,6 +36,10 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }) => {
     })
   );
 
+  useEffect(() => {
+    console.log(campRecord, "#############campdata################");
+  }, []);
+
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
@@ -56,7 +61,16 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }) => {
     >
       <Panel
         className={`header-bg-color-change ${backGroundColorClass}`}
-        header={<h3>{K?.exceptionalMessages?.campRecordHeading}</h3>}
+        header={
+          <>
+            <h3>{K?.exceptionalMessages?.campRecordHeading}</h3>
+            {campRecord?.in_review_changes > 0 ? (
+              <img className="change-icon" src="/images/change-icon.svg" />
+            ) : (
+              ""
+            )}
+          </>
+        }
         key="1"
       >
         <Descriptions column={1} className={styles.descriptions}>
@@ -69,14 +83,14 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }) => {
             } else {
               return (
                 <Descriptions.Item
-                  label={description.label}
+                  label={<span className="boldLabel">{description.label}</span>}
                   key={description.key}
                 >
                   {campRecord && description.key != "camp_about_url"
                     ? campRecord &&
                       (description.key == "is_disabled" ||
-                        description.key == "is_one_level" 
-                        )
+                        description.key == "is_one_level" ||
+                        description.key == "is_archive")
                       ? campRecord[description.key] == 1
                         ? "Yes"
                         : "No"

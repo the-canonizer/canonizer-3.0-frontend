@@ -22,6 +22,7 @@ import { firebaseCloudMessaging } from "src/firebaseConfig/firebase";
 import Lists from "src/components/ComponentPages/Notifications/UI/List";
 import { updateFCMToken } from "src/network/api/notificationAPI";
 import { RootState } from "src/store";
+import { getLists } from "../../../../network/api/notificationAPI";
 
 import Fav from "./icon";
 
@@ -67,14 +68,17 @@ const Notifications = () => {
     event.stopPropagation();
 
     if (st) {
+      const registration = await navigator.serviceWorker.ready;
+
       const messaging = firebase.messaging();
+
       if ("serviceWorker" in navigator && "PushManager" in window) {
         try {
           const status = await Notification.requestPermission();
-
           if (status === "granted") {
             const fcm_token = await messaging.getToken({
               vapidKey: process.env.NEXT_PUBLIC_FCM_CERTIFICATE_KEY,
+              serviceWorkerRegistration: registration,
             });
 
             if (fcm_token) {
@@ -93,8 +97,14 @@ const Notifications = () => {
           }
         } catch (error) {
           message.error("Failed to request notification permission:", error);
+        } finally {
           setIsLoading(false);
         }
+      } else {
+        message.error(
+          "Something went wrong or Push notification is not supported in this device."
+        );
+        setIsLoading(false);
       }
     } else {
       await localforage.removeItem("fcm_token");
@@ -159,7 +169,7 @@ const Notifications = () => {
             notifications
           </Typography.Title>
           <Typography.Text className={styles.notificationEBTN}>
-            <small>Enable push notification </small>
+            <small data-testid="enable-text">Enable push notification </small>
             {isLoading ? (
               <Spin size="small" />
             ) : (
@@ -183,18 +193,28 @@ const Notifications = () => {
     </Card>
   );
 
+  const getNotofications = async (e) => {
+    if (e) {
+      await getLists(1, 5, 1);
+    }
+  };
+
   return (
     <Fragment>
       <Dropdown
-        overlay={notificationDropdown}
+        menu={{}}
+        // overlay={notificationDropdown}
+        dropdownRender={() => notificationDropdown}
         trigger={["click"]}
         placement="bottomRight"
+        onOpenChange={getNotofications}
       >
         <Badge
           count={count}
           color="orange"
           size="small"
           className={styles.badgeCls}
+          data-testid="clickable"
         >
           <BellOutlined className={styles.bellIcon} />
         </Badge>

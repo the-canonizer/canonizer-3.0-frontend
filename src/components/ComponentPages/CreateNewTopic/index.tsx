@@ -9,7 +9,10 @@ import { RootState } from "../../../store";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
 import CreateNewTopicUI from "./UI/TopicUI";
 import isAuth from "../../../hooks/isUserAuthenticated";
-import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
+import {
+  setFilterCanonizedTopics,
+  setShowDrawer,
+} from "../../../store/slices/filtersSlice";
 import messages from "../../../messages";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
@@ -18,14 +21,18 @@ const CreateNewTopic = ({
   testNamespace = [],
   testInitialValue = {},
 }) => {
+  const { nameSpaces, filterByScore, filterObject, viewThisVersion } =
+    useSelector((state: RootState) => ({
+      filterByScore: state.filters?.filterObject?.filterByScore,
+      filterObject: state?.filters?.filterObject,
+      viewThisVersion: state?.filters?.viewThisVersionCheck,
+      nameSpaces: state.homePage.nameSpaces || testNamespace,
+    }));
+
   const [nickNameList, setNickNameList] = useState(testNickName);
   const [initialValue, setInitialValues] = useState(testInitialValue);
   const [options, setOptions] = useState([...messages.preventCampLabel]);
   const [isLoading, setIsLoading] = useState(false);
-
-  const nameSpaces =
-    useSelector((state: RootState) => state.homePage.nameSpaces) ||
-    testNamespace;
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -80,12 +87,18 @@ const CreateNewTopic = ({
         topic_name: res.data.topic_name,
       };
       dispatch(setCurrentTopic(data));
-      router?.push({
-        pathname: `/topic/${res.data.topic_num}-${replaceSpecialCharacters(
+      router?.push(
+        `/topic/${res.data.topic_num}-${replaceSpecialCharacters(
           res.data.topic_name,
           "-"
-        )}/1-Agreement`,
-      });
+        )}/1-Agreement/?score=${filterByScore}&algo=${filterObject?.algorithm}${
+          filterObject?.asof == "bydate"
+            ? "&asofdate=" + filterObject?.asofdate
+            : ""
+        }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
+          viewThisVersion ? "&viewversion=1" : ""
+        }`
+      );
 
       const oldOptions = [...options];
       await oldOptions.map((op) => {
@@ -94,6 +107,7 @@ const CreateNewTopic = ({
       });
       setOptions(oldOptions);
       setIsLoading(false);
+      dispatch(setShowDrawer(true));
     }
 
     if (res && res.status_code === 400) {

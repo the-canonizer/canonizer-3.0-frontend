@@ -18,7 +18,7 @@ export const UserProfileCard = ({
   nickNames,
   defaultNickname,
   selectedNikname,
-  onNickNameChange,
+  setSelectedNikname,
   isLoggedIn,
   userProfileCardSkeleton,
 }: any) => {
@@ -42,11 +42,18 @@ export const UserProfileCard = ({
 
   const router = useRouter();
 
-  const reqBody = { campNum: +router?.query?.supports[0] };
+  const reqBody = { campNum: +router?.query?.supports?.[0] };
 
   const pageChange = (pageNumber, pageSize) => {
     setStartingPosition((pageNumber - 1) * pageSize);
     setEndingPosition((pageNumber - 1) * pageSize + pageSize);
+  };
+    const onNickNameChange = (value, nickname) => {
+    let pathQueries = router?.query.supports;
+    pathQueries = [value];
+    router.query.supports = pathQueries;
+    router.push(router);
+    setSelectedNikname(value);
   };
 
   return (
@@ -61,7 +68,7 @@ export const UserProfileCard = ({
       ) : (
         <div
           className={
-            userSupportedCampsList[0]?.private_status == 0
+            userSupportedCampsList?.[0]?.private_status == 0
               ? styles.card_spacing
               : ""
           }
@@ -89,6 +96,7 @@ export const UserProfileCard = ({
                       </span>
                     </div>
                     <Select
+                      data-testid="onNicknameChange"
                       size="large"
                       className={`${styles.dropdown} ${styles.nickname_dropdown}`}
                       defaultValue={defaultNickname}
@@ -124,6 +132,7 @@ export const UserProfileCard = ({
                     </span>
 
                     <Select
+                      data-testid="setDropdownNameSpaceList"
                       size="large"
                       className={styles.dropdown}
                       value={renderFilter()}

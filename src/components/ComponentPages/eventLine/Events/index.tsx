@@ -8,27 +8,38 @@ import moment from "moment";
 import { setFilterCanonizedTopics } from "../../../../store/slices/filtersSlice";
 import styles from "./topicDetails.module.scss";
 import Link from "next/link";
+import { RootState } from "src/store";
 import activityStyle from "../../Home/CampRecentActivities/campRecentActivities.module.scss";
 const Events = ({ timelineDescript }) => {
   const dispatch = useDispatch();
   const [check, setCheck] = useState(true);
   const router = useRouter();
+  const { viewThisVersion, filterObject, filterByScore } = useSelector(
+    (state: RootState) => ({
+      viewThisVersion: state?.filters?.viewThisVersionCheck,
+      filterObject: state?.filters?.filterObject,
+      filterByScore: state.filters?.filterObject?.filterByScore,
+    })
+  );
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
   const urlPath = (id) => {
     let path = router?.asPath.replace("eventline", "topic");
-    let main = path.replace(path.split("/")[3], id);
+    let main = path?.replace(path.split("/")[3], id);
     return main;
   };
-  const handleEvents = (goLiveTime) => {
-    dispatch(setViewThisVersion(true));
-    dispatch(
-      setFilterCanonizedTopics({
-        asofdate: goLiveTime,
-        asof: "bydate",
-      })
-    );
+  const handleEvents = (goLiveTime, url) => {
+    let isTopicPage = url.split("/")[1];
+    if (isTopicPage == "topic") {
+      dispatch(setViewThisVersion(true));
+      dispatch(
+        setFilterCanonizedTopics({
+          asofdate: goLiveTime,
+          asof: "bydate",
+        })
+      );
+    }
   };
   useEffect(() => {
     setCheck(true);
@@ -50,7 +61,7 @@ const Events = ({ timelineDescript }) => {
             {timelineDescript &&
               timelineDescript.map((title, key) => {
                 return (
-                  <>
+                  <Fragment key={key}>
                     <List.Item
                       className={
                         activityStyle.activitiesList +
@@ -68,11 +79,27 @@ const Events = ({ timelineDescript }) => {
                           ` ${key == 0 ? "animatedText" : ""}`
                         }
                         title={
-                          <div onClick={() => handleEvents(title.eventDate)}>
+                          <div
+                            onClick={() =>
+                              handleEvents(title?.eventDate, title?.url)
+                            }
+                          >
                             <Link
-                              href={{
-                                pathname: urlPath(title.id),
-                              }}
+                              href={
+                                title?.url?.split("/")[1] == "topic"
+                                  ? `${
+                                      title?.url
+                                    }?score=${filterByScore}&algo=${
+                                      filterObject?.algorithm
+                                    }${
+                                      filterObject?.asof == "bydate"
+                                        ? "&asofdate=" + title?.eventDate
+                                        : ""
+                                    }&asof=${filterObject?.asof}&canon=${
+                                      filterObject?.namespace_id
+                                    }${viewThisVersion ? "&viewversion=1" : ""}`
+                                  : title?.url
+                              }
                             >
                               {title?.message}
                             </Link>
@@ -82,7 +109,7 @@ const Events = ({ timelineDescript }) => {
                         // className={styles.listItem}
                       />
                     </List.Item>
-                  </>
+                  </Fragment>
                 );
               })}
           </List>

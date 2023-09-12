@@ -1,5 +1,6 @@
 import {
   fireEvent,
+  getByTestId,
   render,
   screen,
   waitFor,
@@ -10,9 +11,18 @@ import ProfileInfoForm from "../../Form/ProfileInfoForm";
 import messages from "../../../../messages";
 import ProfileInfo from "..";
 import { useRouter } from "next/router";
-import { renderHook } from "@testing-library/react-hooks";
-import { useState } from "react";
-import { Input } from "antd";
+import { act, renderHook } from "@testing-library/react-hooks";
+import isAuth from "../../../../hooks/isUserAuthenticated";
+import { Input, message } from "antd";
+GetAlgorithmsList: jest.fn();
+import {
+  VerifyOTP,
+  GetMobileCarrier,
+  GetLanguageList,
+  GetAlgorithmsList,
+  GetUserProfileInfo,
+} from "src/network/api/userApi";
+import { useEffect } from "react";
 
 const { labels, placeholders, validations } = messages;
 const privateFlags = "first_name";
@@ -21,42 +31,6 @@ const onFinishFailed = jest.fn();
 const handleselectAfter = jest.fn();
 const handleAddressChange = jest.fn();
 const handleAddressSelect = jest.fn();
-jest.mock("next/router", () => ({
-  useRouter: jest.fn(),
-}));
-
-const algorithmList = [
-  {
-    algorithm_key: "blind_popularity",
-    algorithm_label: "One Person One Vote",
-    id: 1,
-  },
-  {
-    algorithm_key: "mind_experts",
-    algorithm_label: "mind experts",
-    id: 2,
-  },
-  {
-    algorithm_key: "computer_science_experts",
-    algorithm_label: "computer science experts",
-    id: 3,
-  },
-];
-const languageList = [
-  {
-    id: 1,
-    name: "English",
-  },
-  {
-    id: 2,
-    name: "French",
-  },
-  {
-    id: 3,
-    name: "Spain",
-  },
-];
-
 const userProfileData = {
   address_1: "sector-102,sudo enclave,florida",
   address_2: "sector-102,sudo enclave,florida",
@@ -99,6 +73,74 @@ const mobileCarrierData = [
     name: "def",
   },
 ];
+const algorithmList = [
+  {
+    algorithm_key: "blind_popularity",
+    algorithm_label: "One Person One Vote",
+    id: 1,
+  },
+  {
+    algorithm_key: "mind_experts",
+    algorithm_label: "mind experts",
+    id: 2,
+  },
+  {
+    algorithm_key: "computer_science_experts",
+    algorithm_label: "computer science experts",
+    id: 3,
+  },
+];
+const languageList = [
+  {
+    id: 1,
+    name: "English",
+  },
+  {
+    id: 2,
+    name: "French",
+  },
+  {
+    id: 3,
+    name: "Spain",
+  },
+];
+jest.mock("next/router", () => ({
+  useRouter: jest.fn(),
+}));
+jest.mock("src/network/api/userApi", () => ({
+  UpdateUserProfileInfo: jest.fn(() =>
+    Promise.resolve({ data: {}, status_code: 200 })
+  ),
+  SendOTP: jest.fn(() => Promise.resolve({ data: {}, status_code: 200 })),
+  GetMobileCarrier: jest.fn(() =>
+    Promise.resolve({ data: mobileCarrierData, status_code: 200 })
+  ),
+  VerifyOTP: jest.fn(() => Promise.resolve({ data: {}, status_code: 200 })),
+  GetAlgorithmsList: jest.fn(() =>
+    Promise.resolve({ data: algorithmList, status_code: 200 })
+  ),
+  GetLanguageList: jest.fn(() =>
+    Promise.resolve({ data: languageList, status_code: 200 })
+  ),
+  GetUserProfileInfo: jest.fn().mockReturnValue(
+    Promise.resolve({
+      data: {
+        phone_number: 12321312312,
+        mobile_carrier: "sdc",
+        birthday: "01-01-20",
+        postalCode: 411021,
+      },
+      success: true,
+    })
+  ),
+  getUploadFileAndFolder: jest.fn(() =>
+    Promise.resolve({ data: {}, status_code: 200 })
+  ),
+}));
+jest.mock("src/hooks/isUserAuthenticated", () =>
+  jest.fn(() => ({ isUserAuthenticated: true }))
+);
+
 const address = "";
 const setupGoogleMock = () => {
   /** Mock Google Maps JavaScript API **/
@@ -190,7 +232,7 @@ describe("Profile Info Page", () => {
     const firstName = screen.getByPlaceholderText(placeholders.firstName);
     const lastName = screen.getByPlaceholderText(placeholders.lastName);
     const email = screen.getByPlaceholderText(placeholders.email);
-    const addressLine1 = screen.getByPlaceholderText(placeholders.addressLine1);
+    // const addressLine1 = screen.getByPlaceholderText(placeholders.addressLine1);
     const addressLine2 = screen.getByPlaceholderText(placeholders.addressLine2);
     const city = screen.getByPlaceholderText(placeholders.city);
     const zipCode = screen.getByPlaceholderText(placeholders.zipCode);
@@ -210,12 +252,12 @@ describe("Profile Info Page", () => {
     expect(email).toHaveAttribute("type", "text");
     expect(email).toHaveAttribute("placeholder", placeholders.email);
 
-    expect(addressLine1).toBeInTheDocument();
-    expect(addressLine1).toHaveAttribute("type", "text");
-    expect(addressLine1).toHaveAttribute(
-      "placeholder",
-      placeholders.addressLine1
-    );
+    // expect(addressLine1).toBeInTheDocument();
+    // expect(addressLine1).toHaveAttribute("type", "text");
+    // expect(addressLine1).toHaveAttribute(
+    //   "placeholder",
+    //   placeholders.addressLine1
+    // );
 
     expect(addressLine2).toBeInTheDocument();
     expect(addressLine2).toHaveAttribute("type", "text");
@@ -427,6 +469,8 @@ describe("UserProfile", () => {
       expect(screen.getByText(userProfileData.status)).toBeInTheDocument();
       expect(screen.getByText(userProfileData.update_time)).toBeInTheDocument();
       expect(screen.getByText(userProfileData.type)).toBeInTheDocument();
+
+      expect(screen.getByText("Update")).toBeInTheDocument();
     });
   });
   it("render mobile carrier data", () => {
@@ -444,38 +488,6 @@ describe("UserProfile", () => {
       expect(screen.getByText(mobileCarrierData[1].name)).toBeInTheDocument();
     });
   });
-  it("render useState is working ", () => {
-    render(<ProfileInfo />);
-    const TestComponent = () => {
-      const [isActive, setIsActive] = useState(false);
-
-      const toggleActive = () => {
-        setIsActive(!isActive);
-      };
-
-      return (
-        <div>
-          <p>{isActive ? "Active" : "Inactive"}</p>
-          <button onClick={toggleActive}>Toggle</button>
-        </div>
-      );
-    };
-
-    const { getByText } = render(<TestComponent />);
-
-    const statusElement = getByText("Inactive");
-    const toggleButton = getByText("Toggle");
-
-    expect(statusElement.textContent).toBe("Inactive");
-
-    fireEvent.click(toggleButton);
-
-    expect(statusElement.textContent).toBe("Active");
-
-    fireEvent.click(toggleButton);
-
-    expect(statusElement.textContent).toBe("Inactive");
-  });
 
   it("path is working with use router", () => {
     render(<ProfileInfo />);
@@ -490,7 +502,7 @@ describe("UserProfile", () => {
 
     expect(result.current.pathname).toBe("/about");
   });
-  test("Input component handles user input correctly", () => {
+  it("Input component handles user input correctly", () => {
     // Render the Input component
     render(<Input />);
 

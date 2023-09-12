@@ -26,7 +26,7 @@ const CreateTopicFromUI = ({
 }) => {
   const CardTitle = (
     <span className={styles.cardTitle} data-testid="head">
-      Create New Topic
+      Create Topic
     </span>
   );
 
@@ -157,6 +157,7 @@ const CreateTopicFromUI = ({
               size={"large"}
               className={`${styles.submit_btn}`}
               id="create-topic-btn"
+              data-testid="create-topic-btn"
             >
               Create Topic
             </Button>

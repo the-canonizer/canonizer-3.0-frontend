@@ -35,8 +35,8 @@ const UserProfile = () => {
     let res = await getUserSupportedCampList(id);
     if (res && res.status_code === 200) {
       setNoData(true);
-      setUserSupportedCampsList(res.data.support_list);
-      setProfileData(res.data.profile);
+      setUserSupportedCampsList(res?.data?.support_list);
+      setProfileData(res?.data?.profile);
     }
     SetUserProfileCardSkeleton(false);
   };
@@ -71,24 +71,24 @@ const UserProfile = () => {
   //onLoad
   useEffect(() => {
     setNoData(false);
-    const userId = router?.query?.supports[0];
+    const userId = router?.query?.supports?.[0];
     const topic_num = router?.query?.topicnum;
     const camp_num = router?.query?.campnum;
     const namespace_name_id = dropdownNameSpaceList
       ? dropdownNameSpaceList
       : router?.query?.canon;
-    if (dropdownNameSpaceList) {
+    // if (dropdownNameSpaceList) {
       const query = `${userId}?topicnum=${topic_num}&campnum=${camp_num}&namespace=${namespace_name_id}`;
       UserSupportedCampsListApi(query);
-    } else {
+    // } else {
       UserSupportCampListNewSpaces();
       setDropdownNameSpaceList(namespace_name_id as any);
-    }
+    // }
   }, [dropdownNameSpaceList, router?.query]);
 
   useEffect(() => {
     const q = router?.query,
-      nick_id = q?.supports[0];
+      nick_id = q?.supports?.[0];
     if (nick_id) {
       if (!token && !isLoggedIn) {
         setTimeout(() => {
@@ -100,13 +100,6 @@ const UserProfile = () => {
     }
   }, [router, isLoggedIn]);
 
-  const onNickNameChange = (value, nickname) => {
-    let pathQueries = router?.query.supports;
-    pathQueries = [value];
-    router.query.supports = pathQueries;
-    router.push(router);
-    setSelectedNikname(value);
-  };
 
   return (
     <>
@@ -127,9 +120,10 @@ const UserProfile = () => {
           nickNames={nickNameList}
           defaultNickname={defaultNickname}
           selectedNikname={selectedNikname}
-          onNickNameChange={onNickNameChange}
+          // onNickNameChange={onNickNameChange}
           isLoggedIn={isLoggedIn}
           userProfileCardSkeleton={userProfileCardSkeleton}
+          setSelectedNikname={setSelectedNikname}
         />
       </div>
     </>

@@ -71,7 +71,9 @@ const TimelineInfoBar = ({
     asofdate,
     asof,
     algorithm,
-    viewThisVersionCheck,
+    viewThisVersion,
+    filterObject,
+    filterByScore,
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -80,7 +82,9 @@ const TimelineInfoBar = ({
     asofdate: state.filters?.filterObject?.asofdate,
     algorithm: state.filters?.filterObject?.algorithm,
     asof: state?.filters?.filterObject?.asof,
-    viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
+    viewThisVersion: state?.filters?.viewThisVersionCheck,
+    filterObject: state?.filters?.filterObject,
+    filterByScore: state.filters?.filterObject?.filterByScore,
   }));
   const [campSubscriptionID, setCampSubscriptionID] = useState(
     campRecord?.subscriptionId
@@ -261,7 +265,7 @@ const TimelineInfoBar = ({
       </Menu.Item>
       <Menu.Item
         icon={<HeartOutlined />}
-        disabled={asof == "bydate"}
+        disabled={asof == "bydate" || campRecord?.is_archive}
       >
         {isTopicPage && (
           <Link href={router?.asPath?.replace("/topic/", "/support/")}>
@@ -271,9 +275,10 @@ const TimelineInfoBar = ({
                 onClick={handleClickSupportCheck}
               >
                 {/* {K?.exceptionalMessages?.directJoinSupport} */}
-                {getCheckSupportStatus?.support_flag == 1
-                  ? K?.exceptionalMessages?.manageSupport
-                  : K?.exceptionalMessages?.directJoinSupport}
+                {getCheckSupportStatus?.is_delegator == 1 ||
+                getCheckSupportStatus?.support_flag != 1
+                  ? K?.exceptionalMessages?.directJoinSupport
+                  : K?.exceptionalMessages?.manageSupport}
               </div>
             </a>
           </Link>
@@ -312,7 +317,7 @@ const TimelineInfoBar = ({
           </Link>
         )}
       </Menu.Item>
-      <Menu.Item icon={<FileTextOutlined />}>
+      <Menu.Item icon={<FileTextOutlined />} disabled={campRecord?.is_archive}>
         {isTopicPage && (
           <Link
             href={
@@ -368,7 +373,7 @@ const TimelineInfoBar = ({
 
   return (
     <>
-      <div className={styles.topicDetailContentHead}>
+      <div className={styles.topicDetailContentHead + " " + styles.info_bar_n}>
         {/* {loadingIndicator ? (
           <CustomSkelton
             skeltonFor="list"
@@ -390,7 +395,7 @@ const TimelineInfoBar = ({
               }
             >
               {" "}
-              <span className="bold"> Topic : </span>
+              <span className="normal"> Topic : </span>
               {loadingIndicator ? (
                 <CustomSkelton
                   skeltonFor="list"
@@ -407,7 +412,15 @@ const TimelineInfoBar = ({
                     }-${replaceSpecialCharacters(
                       breadCrumbRes?.topic_name,
                       "-"
-                    )}/1-Agreement`}
+                    )}/1-Agreement?score=${filterByScore}&algo=${
+                      filterObject?.algorithm
+                    }${
+                      filterObject?.asof == "bydate"
+                        ? "&asofdate=" + filterObject?.asofdate
+                        : ""
+                    }&asof=${filterObject?.asof}&canon=${
+                      filterObject?.namespace_id
+                    }${viewThisVersion ? "&viewversion=1" : ""}`}
                   >
                     <a className={styles.boldBreadcrumb}>
                       {breadCrumbRes?.topic_name}
@@ -421,9 +434,14 @@ const TimelineInfoBar = ({
               )}
               {"  "}
               {!!topicSubscriptionID && (
-                <small>
-                  <i className="icon-subscribe text-primary"></i>
-                </small>
+                <Tooltip
+                  title="You have subscribed to the entire topic."
+                  key="camp_subscribed_icon"
+                >
+                  <small>
+                    <i className="icon-subscribe text-primary"></i>
+                  </small>
+                </Tooltip>
               )}
             </Typography.Paragraph>
             <div className={styles.breadcrumbLinks}>
@@ -431,7 +449,7 @@ const TimelineInfoBar = ({
               <Typography.Paragraph
                 className={"mb-0 " + styles.topicTitleStyle}
               >
-                <span className="bold mr-1">
+                <span className="normal mr-1">
                   {!isTopicHistoryPage ? "Camp :" : ""}{" "}
                 </span>
                 {loadingIndicator ? (
@@ -446,17 +464,23 @@ const TimelineInfoBar = ({
                     breadCrumbRes?.bread_crumb?.map((camp, index) => {
                       return (
                         <Link
-                          href={{
-                            pathname: `/topic/${
-                              payloadData?.topic_num
-                            }-${replaceSpecialCharacters(
-                              breadCrumbRes?.topic_name,
-                              "-"
-                            )}/${camp?.camp_num}-${replaceSpecialCharacters(
-                              camp?.camp_name,
-                              "-"
-                            )}`,
-                          }}
+                          href={`/topic/${
+                            payloadData?.topic_num
+                          }-${replaceSpecialCharacters(
+                            breadCrumbRes?.topic_name,
+                            "-"
+                          )}/${camp?.camp_num}-${replaceSpecialCharacters(
+                            camp?.camp_name,
+                            "-"
+                          )}?score=${filterByScore}&algo=${
+                            filterObject?.algorithm
+                          }${
+                            filterObject?.asof == "bydate"
+                              ? "&asofdate=" + filterObject?.asofdate
+                              : ""
+                          }&asof=${filterObject?.asof}&canon=${
+                            filterObject?.namespace_id
+                          }${viewThisVersion ? "&viewversion=1" : ""}`}
                           key={index}
                         >
                           <a>
@@ -480,15 +504,20 @@ const TimelineInfoBar = ({
                   )
                 ) : null}
                 {!!campSubscriptionID && !isTopicHistoryPage && (
-                  <small style={{ alignSelf: "center", marginLeft: "10px" }}>
-                    <i className="icon-subscribe text-primary"></i>
-                  </small>
+                  <Tooltip
+                    title="You have subscribed to this camp."
+                    key="camp_subscribed_icon"
+                  >
+                    <small style={{ alignSelf: "center", marginLeft: "10px" }}>
+                      <i className="icon-subscribe text-primary"></i>
+                    </small>
+                  </Tooltip>
                 )}
               </Typography.Paragraph>
             </div>
           </div>
 
-          <div className={styles.topicDetailContentHead_Right}>
+          {/* <div className={styles.topicDetailContentHead_Right}>
             <Typography.Paragraph
               className={"mb-0 campInfoRight " + styles.topicTitleStyle}
             >
@@ -556,7 +585,7 @@ const TimelineInfoBar = ({
                           >
                             Event Line
                           </Button> : null
-                      } */}
+                      } 
                       <Dropdown
                         className={styles.campForumDropdown}
                         placement="bottomRight"
@@ -575,7 +604,7 @@ const TimelineInfoBar = ({
                 </Fragment>
               )}
             </Typography.Paragraph>
-          </div>
+          </div> */}
         </Spin>
       </div>
     </>

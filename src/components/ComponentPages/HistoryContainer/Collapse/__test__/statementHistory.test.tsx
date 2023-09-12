@@ -25,7 +25,7 @@ describe("StatementHistory", () => {
   });
 
   it("renders the submitted on time", () => {
-    render(
+    const { container } = render(
       <StatementHistory
         campStatement={campStatement}
         topicNamespaceId="topicNamespaceId"
@@ -33,5 +33,10 @@ describe("StatementHistory", () => {
     );
     const submittedOnTime = screen.getByText("05 June 2021, 12:20:00 AM");
     expect(submittedOnTime).toBeInTheDocument();
+
+    expect(container.getElementsByTagName("button")).toHaveLength(0);
+    expect(container.getElementsByTagName("textarea")).toHaveLength(0);
+    expect(container.getElementsByTagName("input")).toHaveLength(0);
+    expect(container.getElementsByTagName("a")).toHaveLength(2);
   });
 });

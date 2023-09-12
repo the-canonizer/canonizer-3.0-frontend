@@ -1,6 +1,8 @@
 import { Fragment, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
+import { useCookies } from "react-cookie";
+import dynamic from "next/dynamic";
 
 import Layout from "src/hoc/layout";
 import HomePageContainer from "src/components/ComponentPages/Home";
@@ -11,15 +13,20 @@ import {
 } from "src/store/slices/filtersSlice";
 import { GetUserProfileInfo } from "src/network/api/userApi";
 import { setAuthToken, setLoggedInUser } from "src/store/slices/authSlice";
+import { setHotTopic } from "src/store/slices/hotTopicSlice";
+import { GetHotTopicDetails } from "src/network/api/topicAPI";
 
-function Home({ current_date }) {
+function Home({ current_date, hotTopicData }) {
   const dispatch = useDispatch();
   const router = useRouter();
+
+  const [cookie, setCookie] = useCookies(["authToken"]);
 
   dispatch(setFilterCanonizedTopics({ search: "" }));
   dispatch(setCurrentDate(current_date));
 
   useEffect(() => {
+    dispatch(setHotTopic(hotTopicData));
     getCanonizedWhatsNewContentApi();
   }, []);
 
@@ -48,6 +55,10 @@ function Home({ current_date }) {
             refresh_token: null,
           })
         );
+        document.cookie =
+          "loginToken=" +
+          accessToken +
+          "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
         const { access_token, ...rest } = router?.query;
         router.query = rest;
         await router?.replace(router, null, { shallow: true });
@@ -70,11 +81,16 @@ function Home({ current_date }) {
   );
 }
 
-export async function getServerSideProps(ctx) {
+export async function getServerSideProps({ req, res, resolvedUrl, query }) {
   const currentDate = new Date().valueOf();
 
+  const resData = await GetHotTopicDetails(req.cookies["loginToken"] as string);
+
   return {
-    props: { current_date: currentDate },
+    props: {
+      current_date: currentDate,
+      hotTopicData: resData?.data || null,
+    },
   };
 }
 

@@ -58,7 +58,8 @@ const LoginUi = ({
     e.preventDefault();
     if (isModal) {
       closeModal();
-      openRegistration();
+      router?.push("/registration");
+      // openRegistration();
     } else {
       router?.push("/registration");
     }
@@ -164,6 +165,7 @@ const LoginUi = ({
                   block
                   onClick={onOTPClick}
                   id="request-otp-btn"
+                  data-testid="request-otp-btn"
                 >
                   Request One Time Verification Code
                 </Button>

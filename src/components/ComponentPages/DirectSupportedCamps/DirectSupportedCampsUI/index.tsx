@@ -200,7 +200,9 @@ export default function DirectSupportedCampsUI({
                                     <a
                                       className={styles.Bluecolor}
                                       draggable="false"
-                                      href="javascript:;"
+                                      onClick={() => {
+                                        return false;
+                                      }}
                                     >
                                       {" "}
                                       {tag.camp_name}
@@ -208,6 +210,7 @@ export default function DirectSupportedCampsUI({
                                   </Link>
                                 </div>
                                 <CloseCircleOutlined
+                                  data-testid="handle_close"
                                   onClick={() => {
                                     handleClose(tag, data.topic_num, data, []),
                                       setValData(tag),
@@ -225,6 +228,7 @@ export default function DirectSupportedCampsUI({
                         {showSaveChanges && idData == data.topic_num ? (
                           <div className={styles.tag_Changes}>
                             <Button
+                              data-testid="save_change_btn"
                               id="saveChangeBtn"
                               className={styles.save_Changes_Btn}
                               onClick={() => {
@@ -237,6 +241,7 @@ export default function DirectSupportedCampsUI({
                               Save Changes
                             </Button>
                             <Button
+                              data-testid="save_change_btn"
                               id="revertBtn"
                               className={styles.revert_Btn}
                               onClick={() => {

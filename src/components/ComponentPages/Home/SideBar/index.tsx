@@ -1,68 +1,121 @@
 import { useState, Fragment, useEffect } from "react";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Drawer } from "antd";
-import { AppstoreAddOutlined } from "@ant-design/icons";
+import { CloseCircleOutlined } from "@ant-design/icons";
 
 import { RootState } from "src/store";
 import TopicsFilter from "../../../common/topicsFilter";
-import CampRecentActivities from "../CampRecentActivities";
-import NewsFeedsCard from "../../TopicDetails/NewsFeedsCard";
-import GoogleAd from "../../../googleAds";
-import useAuthentication from "src/hooks/isUserAuthenticated";
+import TopicsFilterWithDrawer from "../../../common/topicsFilter/filterWithTree";
+import { setShowDrawer } from "src/store/slices/filtersSlice";
 
-export default function HomeSideBar({ onCreateCamp = () => {} }: any) {
-  const { isUserAuthenticated } = useAuthentication();
+export default function HomeSideBar({
+  onCreateCamp = () => {},
+  getTreeLoadingIndicator,
+  scrollToCampStatement,
+  setTotalCampScoreForSupportTree,
+  setSupportTreeForCamp,
+  backGroundColorClass,
+  viewThisVersion,
+}: any) {
+  const { drawerShow, filterObject, filterByScore } = useSelector(
+    (state: RootState) => ({
+      drawerShow: state?.filters?.showDrawer,
+      filterObject: state?.filters?.filterObject,
+      filterByScore: state.filters?.filterObject?.filterByScore,
+      viewThisVersion: state?.filters?.viewThisVersionCheck,
+    })
+  );
 
-  const [isAuth, setIsAuth] = useState(isUserAuthenticated);
+  const [drawerIsVisible, setDrawerIsVisible] = useState(drawerShow);
 
   const router = useRouter();
+  const dispatch = useDispatch();
 
-  const { newsFeed } = useSelector((state: RootState) => ({
-    newsFeed: state?.topicDetails?.newsFeed,
-  }));
-
-  const [visible, setVisible] = useState(false);
+  useEffect(() => setDrawerIsVisible(drawerShow), [drawerShow]);
 
   const showDrawer = () => {
-    setVisible(true);
+    router.push(
+      `/topic/${router?.query?.camp[0]}/${
+        router?.query?.camp[1]
+      }?score=${filterByScore}&algo=${filterObject?.algorithm}${
+        filterObject?.asof == "bydate"
+          ? "&asofdate=" + filterObject?.asofdate
+          : ""
+      }&asof=${filterObject?.asof}&canon=${
+        filterObject?.namespace_id
+      }&is_tree_open=1${viewThisVersion ? "&viewversion=1" : ""}`,
+      null,
+      {
+        shallow: true,
+      }
+    );
+
+    dispatch(setShowDrawer(true));
   };
 
   const onClose = () => {
-    setVisible(false);
-  };
+    router.push(
+      `/topic/${router?.query?.camp[0]}/${
+        router?.query?.camp[1]
+      }?score=${filterByScore}&algo=${filterObject?.algorithm}${
+        filterObject?.asof == "bydate"
+          ? "&asofdate=" + filterObject?.asofdate
+          : ""
+      }&asof=${filterObject?.asof}&canon=${
+        filterObject?.namespace_id
+      }&is_tree_open=0${viewThisVersion ? "&viewversion=1" : ""}`,
+      null,
+      {
+        shallow: true,
+      }
+    );
 
-  useEffect(() => setIsAuth(isUserAuthenticated), [isUserAuthenticated]);
+    dispatch(setShowDrawer(false));
+  };
 
   return (
     <Fragment>
       {" "}
-      {typeof window !== "undefined" && window.innerWidth > 767 ? (
+      {!router?.asPath?.includes("topic") ? (
         <TopicsFilter onCreateCamp={onCreateCamp} />
       ) : (
         <Fragment>
-          <Button type="primary" onClick={showDrawer} className="btnFilter">
-            <AppstoreAddOutlined />
+          <Button
+            type="primary"
+            onClick={showDrawer}
+            className="btnFilter drawerBtn"
+          >
+            Consensus Tree{" "}
+            <p className="arrow">
+              <span></span>
+              <span></span>
+              <span></span>
+            </p>
           </Button>
           <Drawer
-            title="Filters"
-            placement="right"
+            title="Consensus Tree"
+            placement="left"
             onClose={onClose}
-            visible={visible}
+            visible={drawerIsVisible}
+            className={`treeDrawer ${backGroundColorClass}`}
+            closeIcon={<CloseCircleOutlined />}
+            height={"auto"}
+            size="large"
+            bodyStyle={{ paddingBottom: 80 }}
+            forceRender
           >
-            <TopicsFilter onCreateCamp={onCreateCamp} />
+            <TopicsFilterWithDrawer
+              onCreateCamp={onCreateCamp}
+              getTreeLoadingIndicator={getTreeLoadingIndicator}
+              scrollToCampStatement={scrollToCampStatement}
+              setTotalCampScoreForSupportTree={setTotalCampScoreForSupportTree}
+              setSupportTreeForCamp={setSupportTreeForCamp}
+              backGroundColorClass={backGroundColorClass}
+            />
           </Drawer>
         </Fragment>
       )}
-      {typeof window !== "undefined" &&
-        window.innerWidth > 767 &&
-        router?.asPath.includes("topic") &&
-        isAuth && (
-          <Fragment>
-            {<CampRecentActivities />}
-            {!!newsFeed?.length && <NewsFeedsCard newsFeed={newsFeed} />}
-          </Fragment>
-        )}
     </Fragment>
   );
 }

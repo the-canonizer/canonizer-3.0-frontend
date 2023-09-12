@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import moment from "moment";
 import {
   Typography,
@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setIsReviewCanonizedTopics } from "../../../store/slices/filtersSlice";
 import Link from "next/link";
 
+import { useCookies } from "react-cookie";
 import { setViewThisVersion } from "src/store/slices/filtersSlice";
 
 const { Title, Text, Paragraph } = Typography;
@@ -103,6 +104,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   const campRoute = () => {
     router?.push("/create/topic");
   };
+  const [cookies, setCookie] = useCookies(["canAlgo", "asof", "asofDate"]);
 
   const {
     algorithms,
@@ -110,22 +112,26 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
     selectedAlgorithm,
     selectedAsOf,
     filteredAsOfDate,
+    filterObject,
     currentCampNode,
     tree,
     loading,
     current_date_filter,
     campExist,
+    viewThisVersion,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filteredScore: state?.filters?.filterObject?.filterByScore,
     selectedAlgorithm: state?.filters?.filterObject?.algorithm,
     selectedAsOf: state?.filters?.filterObject?.asof,
     filteredAsOfDate: state?.filters?.filterObject?.asofdate,
+    filterObject: state?.filters?.filterObject,
     currentCampNode: state?.filters?.selectedCampNode,
     tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
     loading: state?.loading?.loading,
     current_date_filter: state?.filters?.current_date,
     campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
+    viewThisVersion: state?.filters?.viewThisVersionCheck,
   }));
   const { campRecord } = useSelector((state: RootState) => ({
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -135,28 +141,60 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   );
   const [selectedAsOFDate, setSelectedAsOFDate] = useState(filteredAsOfDate);
   const [timer, setTimer] = useState(null);
-  const [inputValue, setInputValue] = useState(filteredScore);
+  const [inputValue, setInputValue] = useState(
+    router.query.score || filteredScore
+  );
   const [isLoading, setIsLoading] = useState(loading);
+  const didMount = useRef(false);
 
   // /////////////////////////////////////////////////////////////////////////
   // Discussion required on this functionality after that I will remove or //
   //                        uncomment bellow code                         //
   // //////////////////////////////////////////////////////////////////////
+  function removeEmptyValues(obj) {
+    const result = {};
+    for (const key in obj) {
+      const value = obj[key];
 
-  // useEffect(() => {
-  //   if (didMount.current) {
-  //     if (history.pushState) {
-  //       const queryParams = `?filter=${filterObject?.filterByScore}&algorithm=${filterObject?.algorithm}&asofdate=${filterObject?.asofdate}&canon=${filterObject?.namespace_id}`;
-  //       var newurl =
-  //         window.location.protocol +
-  //         "//" +
-  //         window.location.host +
-  //         window.location.pathname +
-  //         queryParams;
-  //       window.history.pushState({ path: newurl }, "", newurl);
-  //     }
-  //   } else didMount.current = true;
-  // }, [filterObject]);
+      if (value && value != "undefined") {
+        result[key] = value;
+      }
+    }
+    return result;
+  }
+  useEffect(() => {
+    if (didMount.current) {
+      if (history.pushState) {
+        const queryParams = `?score=${filterObject?.filterByScore}&algo=${
+          filterObject?.algorithm
+        }${
+          filterObject?.asof == "bydate"
+            ? "&asofdate=" + filterObject?.asofdate
+            : ""
+        }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
+          viewThisVersion ? "&viewversion=1" : ""
+        }`;
+        var newurl =
+          window.location.protocol +
+          "//" +
+          window.location.host +
+          window.location.pathname +
+          queryParams;
+        window.history.pushState({ path: newurl }, "", newurl);
+      }
+    } else {
+      let aa = removeEmptyValues({
+        filterByScore: `${router.query.score}` || `${filteredScore}` || "0",
+        asofdate: +router.query.asofdate || filterObject?.asofdate,
+        asof: router.query.asof || filterObject?.asof || "default",
+        algorithm:
+          router.query.algo || filterObject?.algorithm || "blind_popularity",
+        namespace_id: +router.query.canon,
+      });
+      dispatch(setFilterCanonizedTopics(aa));
+      didMount.current = true;
+    }
+  }, [filterObject]);
 
   useEffect(() => {
     setIsLoading(loading);
@@ -183,6 +221,9 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   }, []);
 
   const selectAlgorithm = (value) => {
+    setCookie("canAlgo", value, {
+      path: "/",
+    });
     dispatch(
       setFilterCanonizedTopics({
         algorithm: value,
@@ -219,6 +260,12 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
       setDatePickerValue(datepicker);
       IsoDateFormat = Date.parse(datepicker) / 1000;
     }
+    setCookie("asofDate", JSON.stringify(IsoDateFormat), {
+      path: "/",
+    });
+    setCookie("asof", "bydate", {
+      path: "/",
+    });
 
     dispatch(
       setFilterCanonizedTopics({
@@ -259,6 +306,13 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                 second: moment().second(),
               })
             );
+
+      setCookie("asofDate", JSON.stringify(Date.parse(dateValue) / 1000), {
+        path: "/",
+      });
+      setCookie("asof", "bydate", {
+        path: "/",
+      });
       dispatch(
         setFilterCanonizedTopics({
           asofdate: Date.parse(dateValue) / 1000,
@@ -281,9 +335,9 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   return (
     <>
       <div className="leftSideBar_Card">
-        <div className="btnsWrap">
+        {/* <div className="btnsWrap">
           <Button size="large" className="mb-3 btn" onClick={campRoute}>
-            <i className="icon-topic"></i> Create New Topic
+            <i className="icon-topic"></i> Create Topic
           </Button>
           {isCampBtnVisible &&
           currentCampNode?._isDisabled == 0 &&
@@ -311,9 +365,9 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
               </Button>
             </Tooltip>
           ) : null}
-        </div>
+        </div> */}
         <Collapse
-          className={`${styles.cardAccordian} topicListFilterCardCollapse`}
+          className={`${styles.cardAccordian} topicListFilterCardCollapse topicFilterBorderRemove`}
           expandIconPosition="right"
           expandIcon={() => (
             <div className={styles.collapseIcon}>
@@ -394,9 +448,9 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
               <FullScoreCheckbox />
             </div>
 
-            {/* <div className={styles.scoreCheckbox}>
+            <div className={styles.scoreCheckbox}>
               <ArchivedCampCheckBox />
-            </div> */}
+            </div>
           </Panel>
           <Panel
             className={`header-bg-color-change radio-group-sider ${selectedAsOf}`}
@@ -417,6 +471,9 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                   value={1}
                   onClick={() => {
                     dispatch(setViewThisVersion(false));
+                    setCookie("asof", "review", {
+                      path: "/",
+                    });
                     dispatch(
                       setIsReviewCanonizedTopics({
                         includeReview: true,
@@ -433,6 +490,9 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                   value={2}
                   onClick={() => {
                     dispatch(setViewThisVersion(false));
+                    setCookie("asof", "default", {
+                      path: "/",
+                    });
                     dispatch(
                       setFilterCanonizedTopics({
                         asofdate: Date.now() / 1000,

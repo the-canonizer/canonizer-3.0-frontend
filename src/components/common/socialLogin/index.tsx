@@ -82,16 +82,6 @@ export default function SocialLoginUi({ isNotLogin = false }) {
 
           <Button
             shape="circle"
-            onClick={onSocialLogin.bind(this, "twitter")}
-            type="link"
-            icon={<TwitterOutlined />}
-            data-testid="twitter"
-            className={styles["twitter-btn"]}
-            id="twitter-link"
-          />
-
-          <Button
-            shape="circle"
             onClick={onSocialLogin.bind(this, "linkedin")}
             type="link"
             icon={<LinkedinFilled />}

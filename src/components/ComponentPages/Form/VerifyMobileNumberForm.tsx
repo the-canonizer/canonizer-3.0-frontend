@@ -1,19 +1,20 @@
 import React, { useState } from "react";
-import { Row, Col, Form, Input, Button, Select, Modal } from "antd";
+import { Row, Col, Form, Input, Button, Select, Modal, message } from "antd";
 import styles from "../ProfileInfo/ProfileInfoUI/ProfileInfo.module.scss";
 import messages from "../../../messages";
 import verifyIcon from "../../../../public/images/checkbox-icn.svg";
 import Icon from "@ant-design/icons";
 import Image from "next/image";
 import CustomSkelton from "../../common/customSkelton";
+import { SendOTP, VerifyOTP } from "../../../network/api/userApi";
 
 const { Option } = Select;
 
 function VerifyMobileNumberForm({
   mobileCarrier,
   formVerify,
-  onVerifyClick,
-  onOTPBtnClick,
+  // onVerifyClick,
+  // onOTPBtnClick,
   isOTPModalVisible,
   handleOTPCancel,
   otp,
@@ -21,6 +22,8 @@ function VerifyMobileNumberForm({
   toggleVerifyButton,
   handleMobileNumberChange,
   userProfileSkeletonV,
+  setIsOTPModalVisible,
+  setOTP,
 }: any) {
   const [symbolsArr] = useState(["e", "E", "+", "-", "."]);
   const [maxLengthKeysAllowed] = useState([
@@ -40,6 +43,26 @@ function VerifyMobileNumberForm({
         </Option>
       );
     });
+  const onOTPBtnClick = async () => {
+    let otpBody = {
+      otp: otp,
+    };
+
+    let res = await VerifyOTP(otpBody);
+    if (res && res.status_code === 200) {
+      message.success(res.message);
+      setIsOTPModalVisible(false);
+    }
+  };
+  const onVerifyClick = async (values: any) => {
+    let res = await SendOTP(values);
+    if (res && res.status_code === 200) {
+      message.success(res.message);
+      setIsOTPModalVisible(true);
+      setOTP("");
+      //setOTP(res.data.otp)
+    }
+  };
   return (
     <section className={styles.profileInfo_wrapper}>
       <Form
@@ -163,6 +186,7 @@ function VerifyMobileNumberForm({
               />
               <p></p> {/* For Empty Row */}
               <Button
+                data-testid="on_otp_btn_click"
                 id="submitBtn"
                 type="primary"
                 className="ant-btn ant-btn-orange ant-btn-lg"

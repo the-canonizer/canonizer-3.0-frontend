@@ -84,7 +84,6 @@ const ManageSupport = () => {
         state.supportTreeCard.currentDelegatedSupportedClick,
     })
   );
-
   const { currentGetCheckSupportExistsData } = useSelector(
     (state: RootState) => ({
       currentGetCheckSupportExistsData:
@@ -110,9 +109,12 @@ const ManageSupport = () => {
     topic_num: +router?.query?.manageSupport?.[0]?.split("-")[0],
     camp_num: +router?.query?.manageSupport?.[1]?.split("-")[0],
   };
-  if (CheckDelegatedOrDirect && router?.query?.manageSupport[1]?.split("_")[1])
+const getDelegateId = router.asPath?.substring(router.asPath.lastIndexOf("_") + 1)
+
+
+  if (CheckDelegatedOrDirect && getDelegateId)
     reqBodyData.delegated_nick_name_id =
-      router?.query?.manageSupport[1]?.split("_")[1];
+      getDelegateId;
   const { campRecord } = useSelector((state: RootState) => ({
     campRecord: state?.topicDetails?.currentCampRecord,
   }));
@@ -352,11 +354,10 @@ const ManageSupport = () => {
       "/topic/"
     );
     if (manageSupportPath || manageSupportPath1) {
-      router?.push({
-        pathname: CheckDelegatedOrDirect
+      router?.push(CheckDelegatedOrDirect
           ? manageSupportPath
           : manageSupportPath1,
-      });
+      );
     }
   };
 
@@ -473,20 +474,20 @@ const ManageSupport = () => {
         (values) => selectedtNickname == values.id
       );
       let nickNameIDValue = nickNameID[0].id;
-      let delegated_user_id = router?.query?.manageSupport[1].split("_");
+      let delegated_user_id = getDelegateId;
 
       const addDelegatedSupport = {
         nick_name_id: nickNameIDValue,
-        delegated_nick_name_id: delegated_user_id[1],
+        delegated_nick_name_id: delegated_user_id,
         topic_num: topicNumId,
       };
       let res = await addDelegateSupportCamps(addDelegatedSupport);
       if (res && res.status_code == 200) {
         message.success(res.message);
         //After Submit page is redirect to previous
-        router?.push({
-          pathname: manageSupportPath,
-        });
+        router?.push(
+          manageSupportPath,
+        );
       } else {
         setSubmitButtonDisable(false);
       }
@@ -495,9 +496,9 @@ const ManageSupport = () => {
       if (res && res.status_code == 200) {
         message.success(res.message);
         //After Submit page is redirect to previous
-        router?.push({
-          pathname: manageSupportPath,
-        });
+        router?.push(
+           manageSupportPath,
+        );
       } else {
         setSubmitButtonDisable(false);
       }
@@ -505,46 +506,48 @@ const ManageSupport = () => {
   };
   return (
     <>
-      <CampInfoBar
-        isTopicPage={true}
-        payload={{
-          topic_num: router?.query?.manageSupport?.at(0)?.split("-")?.at(0),
-          camp_num:
-            router?.query?.manageSupport?.at(1)?.split("-")?.at(0) ?? "1",
-        }}
-      />
-      <div className={styles.card}>
-        <Sidebar />
-      </div>
-      {campRecord && (
-        <ManageSupportUI
-          nickNameList={nickNameList}
-          manageSupportList={manageSupportList}
-          clearAllChanges={clearAllChanges}
-          removeAll={removeAll}
-          handleClose={handleClose}
-          checked={checked}
-          setManageSupportList={setManageSupportList}
-          parentSupportDataList={parentSupportDataList}
-          getSupportStatusData={getSupportStatusData}
-          submitNickNameSupportCamps={submitNickNameSupportCamps}
-          cancelManageRoute={cancelManageRoute}
-          setSelectedtNickname={setSelectedtNickname}
-          selectedtNickname={selectedtNickname}
-          submitButtonDisable={submitButtonDisable}
-          setUpdatePostion={setUpdatePostion}
-          unableToFindCamp={unableToFindCamp}
-          updatePostion={updatePostion}
-          campIds={campIds}
-          setcampIds={setcampIds}
-          CurrentCheckSupportStatus={CurrentCheckSupportStatus}
-          getManageSupportLoadingIndicator={getManageSupportLoadingIndicator}
-          setGetManageSupportLoadingIndicator={
-            setGetManageSupportLoadingIndicator
-          }
-          topicSupportListData={topicSupportListData}
+      <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar bg-white">
+        {/* <Sidebar /> */}
+      </aside>
+      <div className="pageContentWrap">
+        <CampInfoBar
+          isTopicPage={true}
+          payload={{
+            topic_num: router?.query?.manageSupport?.at(0)?.split("-")?.at(0),
+            camp_num:
+              router?.query?.manageSupport?.at(1)?.split("-")?.at(0) ?? "1",
+          }}
         />
-      )}
+        {campRecord && (
+          <ManageSupportUI
+            nickNameList={nickNameList}
+            manageSupportList={manageSupportList}
+            clearAllChanges={clearAllChanges}
+            removeAll={removeAll}
+            handleClose={handleClose}
+            checked={checked}
+            setManageSupportList={setManageSupportList}
+            parentSupportDataList={parentSupportDataList}
+            getSupportStatusData={getSupportStatusData}
+            submitNickNameSupportCamps={submitNickNameSupportCamps}
+            cancelManageRoute={cancelManageRoute}
+            setSelectedtNickname={setSelectedtNickname}
+            selectedtNickname={selectedtNickname}
+            submitButtonDisable={submitButtonDisable}
+            setUpdatePostion={setUpdatePostion}
+            unableToFindCamp={unableToFindCamp}
+            updatePostion={updatePostion}
+            campIds={campIds}
+            setcampIds={setcampIds}
+            CurrentCheckSupportStatus={CurrentCheckSupportStatus}
+            getManageSupportLoadingIndicator={getManageSupportLoadingIndicator}
+            setGetManageSupportLoadingIndicator={
+              setGetManageSupportLoadingIndicator
+            }
+            topicSupportListData={topicSupportListData}
+          />
+        )}
+      </div>
     </>
   );
 };

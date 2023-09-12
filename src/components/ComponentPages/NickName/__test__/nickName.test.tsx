@@ -1,5 +1,6 @@
 import {
   fireEvent,
+  getByAltText,
   render,
   screen,
   waitFor,
@@ -9,7 +10,7 @@ import userEvent from "@testing-library/user-event";
 import NickNameUI from "../NickNameUI/index";
 import messages from "../../../../messages";
 import NickName from "..";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { renderHook } from "@testing-library/react-hooks";
 import { getNickNameList } from "src/network/api/userApi";
@@ -57,7 +58,13 @@ jest.mock("next/router", () => ({
 }));
 
 jest.mock("src/network/api/userApi", () => ({
-  getNickNameList: jest.fn(),
+  getNickNameList: jest.fn(()=>Promise.resolve({ status_code: 200, 
+    message: "This is success",
+    data: addNewNickName })),
+  addNickName: jest.fn(()=>Promise.resolve({ status_code: 200, 
+    message: "This is success",
+    data: [] })),
+  updateNickName: jest.fn(),
 }));
 
 describe("NickName page", () => {
@@ -317,4 +324,83 @@ describe("", () => {
 
     expect(result.current.pathname).toBe("/about");
   });
+});
+
+describe("Nickname test cases", () => {
+  it("addnickname function should be called while click on edit button", async () => {
+    const { getAllByText } = render(<NickName></NickName>);
+
+    await waitFor(() => {
+      const edit_button= getAllByText("edit");
+      fireEvent.click(edit_button[0]);
+      const update_button= getAllByText("Update");
+      fireEvent.click(update_button[0]);
+      const add_button = getAllByText("Add New Nickname");
+      fireEvent.click(add_button[0]);
+      
+      expect(getAllByText("Add New Nickname")[1]).toBeInTheDocument();
+    });
+  });
+
+  it("add new nickname ", async () => {
+    const { getAllByTestId, getAllByText } = render(<NickName></NickName>);
+
+    await waitFor(async () => {
+      const add_button = getAllByText("Add New Nickname");
+      fireEvent.click(add_button[0]);
+      const nickname_input = getAllByTestId("enterNickName")[0];
+      await userEvent.type(nickname_input, "nickname123");
+      const submit_button = getAllByTestId("submitButton")[0];
+      userEvent.click(submit_button);
+      
+    });
+  });
+
+  it('add new nickname cancel model', async () => {
+    const { container, getAllByText } = render(
+      <NickNameUI
+        addEditTitle={addEditTitle}
+        addEditBtn={addEditBtn}
+        isNickNameModalVisible={isNickNameModalVisible}
+        editNickName={editNickName}
+        handleAddNickName={handleAddNickName}
+        handleNickNameCancel={handleNickNameCancel}
+        onAddUpdateNickName={onAddUpdateNickName}
+        nickNameList={nickNameList}
+        disableButton={disableButton}
+      />
+    )
+    await waitFor(async () => {
+      const add_button = getAllByText("Add New Nickname")
+      userEvent.click(add_button[0])
+      const edit_button = getAllByText("edit")
+      userEvent.click(edit_button[0])
+    })
+  })
+
+  it('cancel button click', async () => {
+    const { getAllByText } = render(<NickName></NickName>)
+    render(
+      <NickNameUI
+        addEditTitle={addEditTitle}
+        addEditBtn={addEditBtn}
+        isNickNameModalVisible={isNickNameModalVisible}
+        editNickName={editNickName}
+        handleAddNickName={handleAddNickName}
+        handleNickNameCancel={handleNickNameCancel}
+        onAddUpdateNickName={onAddUpdateNickName}
+        nickNameList={nickNameList}
+        disableButton={disableButton}
+      />
+    )
+    await waitFor(async () => {
+      const add_button = getAllByText("Add New Nickname")
+      userEvent.click(add_button[0])
+      const edit_button = getAllByText("edit")
+      userEvent.click(edit_button[0])
+    })
+
+  })
+
+
 });

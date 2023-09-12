@@ -11,6 +11,11 @@ img {
 .login-container {
   max-width: 60%;
   margin: 40px auto;
+  &.fill-width {
+    max-width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
 
   .ant-card-body {
     padding: 0;
@@ -28,8 +33,7 @@ img {
 
 .ant-tabs-card {
   .ant-tabs-nav-list {
-    .ant-tabs-tab 
-    {
+    .ant-tabs-tab {
       font-size: 16px;
       font-weight: 500;
     }
@@ -38,9 +42,7 @@ img {
 
       .ant-tabs-tab-btn {
         color: #1c1b24 !important;
-        
       }
-      
     }
   }
 }
@@ -205,7 +207,7 @@ img {
     border-bottom: 1px solid #f7f7f7;
     padding: 0px 24px 16px;
     margin-bottom: 15px;
-    display: flex; 
+    display: flex;
     flex-wrap: wrap;
   }
 }
@@ -248,17 +250,17 @@ img {
     font-weight: 500;
   }
 }
-.p-0{
+.p-0 {
   padding: 0 !important;
 }
-.m-0{
+.m-0 {
   margin: 0 !important;
 }
 
-.btn_med{
+.btn_med {
   max-width: 268px;
 }
-.leftSideBar_Card.bg--trans{
+.leftSideBar_Card.bg--trans {
   background-color: transparent;
   border: none;
 }
@@ -266,19 +268,16 @@ img {
   padding: 0 15px;
 }
 
-.min-60
-{
+.min-60 {
   min-width: 60px;
 }
-@media screen and (max-width:1024px)
-{
-  .tab--card  .ant-card-body  .ant-tabs-top  .ant-tabs-nav {
+@media screen and (max-width: 1024px) {
+  .tab--card .ant-card-body .ant-tabs-top .ant-tabs-nav {
     margin-bottom: 60px;
   }
 }
-@media screen and (max-width:767px)
-{
-  .tab--card .ant-card-body  .ant-tabs-card {
+@media screen and (max-width: 767px) {
+  .tab--card .ant-card-body .ant-tabs-card {
     .ant-tabs-nav {
       [class="ant-tabs-nav-list"] {
         flex-flow: column;
@@ -303,7 +302,7 @@ img {
 
 .topicFilterRadio {
   .ant-radio-checked + span {
-      color:#0524e9;
+    color: #0524e9;
   }
 }
 .animatedText {

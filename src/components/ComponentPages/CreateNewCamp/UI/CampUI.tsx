@@ -30,13 +30,12 @@ const CreateNewCampUI = ({
 
   return (
     <Fragment>
-      <CampInfoBar payload={payload} />
-
       <div className="d-flex">
-        <aside className="leftSideBar miniSideBar">
+        <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar">
           <SideBar />
         </aside>
         <div className="pageContentWrap">
+          <CampInfoBar payload={payload} />
           <Spin spinning={isLoading} size="large">
             <FormUI
               onFinish={onFinish}

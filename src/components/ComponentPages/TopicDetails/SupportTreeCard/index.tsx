@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {
@@ -30,7 +30,7 @@ import {
 import { getNickNameList } from "../../../../network/api/userApi";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
 
-const { Paragraph } = Typography;
+const { Paragraph, Title } = Typography;
 const { Panel } = Collapse;
 const { TreeNode } = Tree;
 
@@ -71,20 +71,38 @@ const SupportTreeCard = ({
     is_checked,
     topicRecord,
     campRecord,
+    filterData,
+    algorithms,
+    totalScoreForSupportTree,
   } = useSelector((state: RootState) => ({
     currentGetCheckSupportExistsData:
       state.topicDetails.currentGetCheckSupportExistsData,
     is_checked: state?.utils?.score_checkbox,
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
+    filterData: state?.filters?.filterObject,
+    algorithms: state.homePage?.algorithms,
+    totalScoreForSupportTree: state?.supportTreeCard?.totalScoreForSupportTree,
   }));
 
   const { isUserAuthenticated } = isAuth();
+
   const router = useRouter();
+
   const [userNickNameList, setUserNickNameList] = useState([]);
   const [loadMore, setLoadMore] = useState(false);
   const [modalData, setModalData] = useState<any>({});
   const [delegateNickNameId, setDelegateNickNameId] = useState<number>();
+  const [currentAlgo, setCurrentAlgo] = useState<string>("");
+
+  useEffect(() => {
+    const filteredAlgo = algorithms?.filter(
+      (a: { algorithm_key: string }) =>
+        a.algorithm_key === (filterData?.algorithm || router?.query?.algo)
+    );
+
+    if (filteredAlgo?.length) setCurrentAlgo(filteredAlgo[0]?.algorithm_label);
+  }, [algorithms, router?.query?.algo, filterData?.algorithm]);
 
   const dispatch = useDispatch();
   const arr = [];
@@ -162,6 +180,18 @@ const SupportTreeCard = ({
       //isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
       if ((!loadMore && index < supportLength) || loadMore) {
         if (data[item].delegates) {
+          const linkss = (
+            <Link
+              href={{
+                pathname: `/user/supports/${data[item].nick_name_id}`,
+                query: {
+                  topicnum: topicRecord?.topic_num,
+                  campnum: topicRecord?.camp_num,
+                  canon: topicRecord?.namespace_id,
+                },
+              }}
+            ></Link>
+          );
           return (
             <>
               <TreeNode
@@ -187,14 +217,9 @@ const SupportTreeCard = ({
                           },
                         }}
                       >
-                        {
-                          <div>
-                            <a className={styles.Bluecolor}>
-                              {data[item].support_order}:
-                            </a>
-                            <a>{data[item].nick_name}</a>
-                          </div>
-                        }
+                        <a className={styles.Bluecolor}>
+                          {data[item].support_order}:{data[item].nick_name}
+                        </a>
                       </Link>
 
                       {/* </span> */}
@@ -315,16 +340,23 @@ const SupportTreeCard = ({
         <Panel
           className={`header-bg-color-change ${backGroundColorClass}`}
           header={
-            <h3>
-              Support Tree for &quot;
-              {campRecord?.camp_name}&quot; Camp
-            </h3>
+            <Fragment>
+              <h3>
+                Support Tree for &quot;
+                {campRecord?.camp_name}&quot; Camp
+              </h3>
+              <h5 className={styles.algoLabel}>
+                ( Based on: &quot;{currentAlgo}&quot; )
+              </h5>
+            </Fragment>
           }
           key="1"
           extra={
-            <Popover content={supportContent} placement="left">
-              <i className="icon-info tooltip-icon-style"></i>
-            </Popover>
+            <Fragment>
+              <Popover content={supportContent} placement="left">
+                <i className="icon-info tooltip-icon-style"></i>
+              </Popover>
+            </Fragment>
           }
         >
           <Paragraph>
@@ -374,7 +406,7 @@ const SupportTreeCard = ({
               <a>
                 <CustomButton
                   className="btn-orange"
-                  disabled={asof == "bydate"}
+                  disabled={asof == "bydate" || campRecord?.is_archive == 1}
                   id="manage-support-btn"
                 >
                   {/* {K?.exceptionalMessages?.directJoinSupport} */}

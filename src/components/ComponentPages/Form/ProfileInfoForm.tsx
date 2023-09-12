@@ -15,7 +15,7 @@ import styles from "../ProfileInfo/ProfileInfoUI/ProfileInfo.module.scss";
 import messages from "../../../messages";
 import PlacesAutocomplete from "react-places-autocomplete";
 import CustomSkelton from "../../common/customSkelton";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -23,7 +23,6 @@ const { Option } = Select;
 function ProfileInfoForm({
   form,
   onFinish,
-  onFinishFailed,
   handleselectAfter,
   privateFlags,
   algorithmList,
@@ -34,9 +33,9 @@ function ProfileInfoForm({
   disableButton,
   postalCodeDisable,
 }: any) {
-  const [gmapsLoaded, setgmapsLoaded] = useState(false)
+  const [gmapsLoaded, setgmapsLoaded] = useState(false);
   useEffect(() => {
-    setgmapsLoaded(true)
+    setgmapsLoaded(true);
   }, []);
   const listOfOption = (optionList, algoOrLang): any => {
     let option = [];
@@ -57,6 +56,10 @@ function ProfileInfoForm({
         }
       });
     return option;
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    window.console.log("Failed:", errorInfo);
   };
   const publicOrPrivate = (val) => {
     return privateFlags
@@ -121,6 +124,19 @@ function ProfileInfoForm({
       </div>
     </div>
   );
+
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const scripttag = document.createElement("script");
+    scripttag.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}&libraries=places`;
+    scripttag.addEventListener("load", () => setLoaded(true));
+    document.body.appendChild(scripttag);
+    return () => {
+      document.body.removeChild(scripttag);
+    };
+  }, []);
+
   // @ts-ignore
   if (privateFlags != "loading")
     return (
@@ -267,17 +283,15 @@ function ProfileInfoForm({
             <Col md={12}>
               <Form.Item name="address_1" label={messages.labels.addressLine1}>
                 <div className="reactDropdown">
-
-                  {
-                    gmapsLoaded?<PlacesAutocomplete
-                    value={address}
-                    onChange={handleAddressChange}
-                    onSelect={handleAddressSelect}
-                  >
-                    {renderFuncForGooglePlaces}
-                  </PlacesAutocomplete>:null
-                  }
-                  
+                  {loaded ? (
+                    <PlacesAutocomplete
+                      value={address}
+                      onChange={handleAddressChange}
+                      onSelect={handleAddressSelect}
+                    >
+                      {renderFuncForGooglePlaces}
+                    </PlacesAutocomplete>
+                  ) : null}
                 </div>
               </Form.Item>
               <Form.Item name="city" label={messages.labels.city}>
