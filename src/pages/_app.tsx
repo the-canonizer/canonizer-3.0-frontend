@@ -18,6 +18,7 @@ import { store, wrapper } from "../store";
 import { metaTagsApi } from "src/network/api/metaTagsAPI";
 import { checkTopicCampExistAPICall } from "src/network/api/campDetailApi";
 
+
 class WrappedApp extends App<AppInitialProps> {
   public render() {
     const { Component, pageProps, meta } = this.props as any;
