@@ -33,6 +33,10 @@ function ProfileInfoForm({
   disableButton,
   postalCodeDisable,
 }: any) {
+  const [gmapsLoaded, setgmapsLoaded] = useState(false);
+  useEffect(() => {
+    setgmapsLoaded(true);
+  }, []);
   const listOfOption = (optionList, algoOrLang): any => {
     let option = [];
     optionList.length > 0 &&
