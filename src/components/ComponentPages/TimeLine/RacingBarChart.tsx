@@ -33,11 +33,11 @@ function RacingBarChart({ data }: any) {
   };
 
   const manageBarXAxis = (entry) => {
-    const length = document
-      .getElementById(entry.camp_id)
-      .getComputedTextLength();
+    // const length = document
+    //   ?.getElementById(entry.camp_id)
+    //   ?.getComputedTextLength();
 
-    return length + entry.level * 30 + 30;
+    return entry.level * 30 + 30;
   };
 
   // will be called initially and on every data change

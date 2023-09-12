@@ -32,7 +32,7 @@ export default class Request {
       ...(defaultHeaderType === K.Network.Header.Type.Json ||
       defaultHeaderType === K.Network.Header.Type.formData
         ? K.Network.Header.Default(bearerToken)
-        : K.Network.Header.Authorization(bearerToken)),
+        : K.Network.Header.Authorization()),
       ...headers,
     };
     this.url = relativeURL;

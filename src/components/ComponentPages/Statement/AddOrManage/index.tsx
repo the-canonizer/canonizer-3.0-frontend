@@ -606,7 +606,7 @@ export default function AddOrManage({ add }: any) {
     }
   };
 
-  const onEditorStateChange = (changedata) => {
+  const onEditorStateChange = (changedata: any) => {
     const datachangec = `${changedata}`;
     setEditorState(datachangec);
     if (manageFormOf == "statement") {

@@ -9,7 +9,7 @@ interface editorState {
 }
 
 interface editorchange {
-  oneditorchange: () => void;
+  oneditorchange: (any) => void;
 }
 
 interface placeholder {
