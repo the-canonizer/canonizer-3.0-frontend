@@ -16,7 +16,7 @@ const NotificationsListUI = ({
   onViewMoreClick,
   total,
   per_page,
-}) => {
+}: any) => {
   return (
     <Fragment>
       <SideBar />

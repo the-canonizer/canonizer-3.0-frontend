@@ -1,15 +1,16 @@
 import Footer from "../";
 import { cleanup, render, screen } from "@testing-library/react";
 import { windowMatchMedia } from "../../../../utils/testUtils";
-import { loadEnvConfig } from "@next/env";
 
 import { RouterContext } from "next/dist/shared/lib/router-context";
 import { Provider } from "react-redux";
 import { store } from "../../../../store";
-const loadConfig = async () => {
-  const projectDir = process.cwd();
-  loadEnvConfig(projectDir);
-};
+
+import { NextRouter } from "next/router";
+// const loadConfig = async () => {
+//   const projectDir = process.cwd();
+//   loadEnvConfig(projectDir);
+// };
 
 function createMockRouter(): NextRouter {
   return {
@@ -131,4 +132,4 @@ describe("Footer", () => {
   });
 });
 
-export default loadConfig;
+// export default loadConfig;

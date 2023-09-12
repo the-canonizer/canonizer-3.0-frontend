@@ -10,7 +10,11 @@ describe("Error Boundary", () => {
         <h1>error</h1>
       </ErrorBoundary>
     );
-
+    expect(screen.getByText(/error/i)).toBeInTheDocument();
+    expect(container.getElementsByTagName("button")).toHaveLength(0);
+    expect(container.getElementsByTagName("textarea")).toHaveLength(0);
+    expect(container.getElementsByTagName("input")).toHaveLength(0);
+    expect(container.getElementsByTagName("a")).toHaveLength(0);
     // const goBack = screen.getByRole("link", {
     //   name: "Click here",
     // });

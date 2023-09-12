@@ -24,7 +24,7 @@ const CreateNewCamp = ({
   parentCamps = [],
   campNickNames = [],
   initialValues = {},
-}) => {
+}: any) => {
   const { filterByScore, filterObject, viewThisVersion } = useSelector(
     (state: RootState) => ({
       filterByScore: state.filters?.filterObject?.filterByScore,
@@ -124,6 +124,7 @@ const CreateNewCamp = ({
       fetchParentsCampList();
       fetchNickNameList();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserAuthenticated]);
 
   const onFinish = async (values: any) => {
@@ -237,6 +238,7 @@ const CreateNewCamp = ({
 
       setOptions(oldOptions);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onCheckboxChange = async (e: CheckboxChangeEvent) => {

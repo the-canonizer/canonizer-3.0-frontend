@@ -9,6 +9,7 @@ import K from "../../../../constants";
 import moment from "moment";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 import CustomSkelton from "../../../common/customSkelton";
+import Image from "next/image";
 
 const { Paragraph } = Typography;
 
@@ -16,7 +17,7 @@ const { Panel } = Collapse;
 const covertToTime = (unixTime) => {
   return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm A");
 };
-const CampStatementCard = ({ loadingIndicator, backGroundColorClass }) => {
+const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
   const router = useRouter();
   const { campRecord, campStatement, history } = useSelector(
     (state: RootState) => ({
@@ -46,7 +47,13 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }) => {
           <>
             <h3>{K?.exceptionalMessages?.campStatementHeading}</h3>
             {campStatement[0]?.in_review_changes > 0 ? (
-              <img className="change-icon" src="/images/change-icon.svg" />
+              <Image
+                className="change-icon"
+                width={20}
+                height={20}
+                src="/images/change-icon.svg"
+                alt=""
+              />
             ) : (
               ""
             )}

@@ -13,7 +13,7 @@ function TopicRemoveModal({
   isCamp,
   campTitle,
   campLink,
-}) {
+}: any) {
   return (
     <Modal
       className={styles.modal_cross}

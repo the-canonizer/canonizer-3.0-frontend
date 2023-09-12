@@ -1,4 +1,4 @@
-import { Collapse, Popover, Image, Typography, Button, Select } from "antd";
+import { Collapse, Popover, Image, Typography, Select } from "antd";
 import React, { useEffect, useState, useRef } from "react";
 import { RightOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
@@ -6,7 +6,7 @@ import moment from "moment";
 
 import CampTree from "../CampTree";
 import { RootState } from "src/store";
-import useAuthentication from "src/hooks/isUserAuthenticated";
+// import useAuthentication from "src/hooks/isUserAuthenticated";
 import styles from "../topicDetails.module.scss";
 import { useRouter } from "next/router";
 import CustomSkelton from "../../../common/customSkelton";
@@ -45,20 +45,16 @@ const CampTreeCard = ({
   setTotalCampScoreForSupportTree,
   setSupportTreeForCamp,
   backGroundColorClass,
-}) => {
+}: any) => {
   const { asof, asofdate } = useSelector((state: RootState) => ({
     asofdate: state.filters?.filterObject?.asofdate,
     asof: state?.filters?.filterObject?.asof,
   }));
-  const { tree, is_admin } = useSelector((state: RootState) => ({
+  const { tree } = useSelector((state: RootState) => ({
     tree: state?.topicDetails?.tree?.at(0),
-
-    is_admin: state?.auth?.loggedInUser?.is_admin,
   }));
 
   const router = useRouter();
-  const { isUserAuthenticated } = useAuthentication();
-  const eventLinePath = router?.asPath.replace("topic", "eventline");
   const [treeExpandValue, setTreeExpandValue] = useState<any>(
     router?.query?.filter || 50
   );

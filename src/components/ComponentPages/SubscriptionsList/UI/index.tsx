@@ -17,7 +17,7 @@ function SubscriptionsListUI({
   isCamp,
   campTitle,
   campLink,
-}) {
+}: any) {
   return (
     <div className={styles.supported_camps}>
       <Card

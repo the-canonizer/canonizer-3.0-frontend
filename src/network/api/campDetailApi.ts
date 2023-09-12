@@ -314,13 +314,13 @@ export const getTopicActivityLogApi = async (reqBody) => {
   }
   try {
     const newsFeed = await NetworkCall.fetch(
-      TreeRequest.getTopicActivityLog(reqBody,token),
+      TreeRequest.getTopicActivityLog(reqBody, token),
       false
     );
     return newsFeed;
   } catch (error) {
     message.error(error.message);
-    return error
+    return error;
   }
 };
 

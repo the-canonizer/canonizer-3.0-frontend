@@ -13,7 +13,7 @@ import configureMockStore from "redux-mock-store";
 
 import CanonVideos from "../";
 import { store } from "src/store";
-import { act } from "react-dom/test-utils";
+// import { act } from "react-dom/test-utils";
 import { getVideosContentApi } from "src/network/api/videos";
 
 jest.mock("next/router", () => ({
@@ -174,6 +174,7 @@ describe("Canonizer Videos", () => {
     ).toBeInTheDocument();
   });
 
+  /* eslint-disable */
   it("changes video when clicked on video title", () => {
     render(
       <Provider store={store}>
@@ -190,6 +191,7 @@ describe("Canonizer Videos", () => {
     const videoTitle = screen.getByText("Video Format:");
     fireEvent.click(videoTitle);
   });
+  /* eslint-enable */
 
   it("renders video player with controls when video is available", async () => {
     render(<CanonVideos />);

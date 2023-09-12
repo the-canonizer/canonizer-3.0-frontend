@@ -1,14 +1,14 @@
 import React from "react";
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
+// import configureStore from "redux-mock-store";
 import TopicDetails from "../index";
 import { store } from "../../../../store";
 import { RouterContext } from "next/dist/shared/lib/router-context";
 import { NextRouter } from "next/router";
 
 // Mock Redux store
-const mockStore = configureStore([]);
+// const mockStore = configureStore([]);
 // function createMockRouter(router: Partial<NextRouter>): NextRouter {
 //   return {
 //     basePath: "",
@@ -103,13 +103,18 @@ describe("TopicDetails", () => {
   // });
 
   it("renders TopicDetails component correctly", async () => {
-    render(
+    const { container } = render(
       <Provider store={store}>
         <RouterContext.Provider value={createMockRouter()}>
           <TopicDetails serverSideCall={true} />
         </RouterContext.Provider>
       </Provider>
     );
+    expect(screen.getByText(/show archived camps/i)).toBeInTheDocument();
+    expect(container.getElementsByTagName("button")).toHaveLength(0);
+    expect(container.getElementsByTagName("textarea")).toHaveLength(0);
+    expect(container.getElementsByTagName("input")).toHaveLength(8);
+    expect(container.getElementsByTagName("a")).toHaveLength(1);
 
     // // Assert loading indicator is initially shown
     // expect(screen.getByTestId("loading-indicator")).toBeInTheDocument();

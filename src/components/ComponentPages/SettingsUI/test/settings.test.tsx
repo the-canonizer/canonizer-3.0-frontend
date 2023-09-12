@@ -1,18 +1,10 @@
 import SettingsUI from "..";
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-} from "../../../../utils/testUtils";
-import userEvent from "@testing-library/user-event";
-import messages from "../../../../messages";
+import { fireEvent, render, screen } from "../../../../utils/testUtils";
+
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { Input, message } from "antd";
+import { Input } from "antd";
 import { renderHook } from "@testing-library/react-hooks";
-
-const { labels, placeholders, validations } = messages;
 
 const tabList = [
   {
@@ -73,7 +65,7 @@ describe("settingUI page", () => {
 
     expect(cardTitle).toBeInTheDocument();
   });
-  it("render useState is working ", () => {
+  it("render useState is working", () => {
     render(<SettingsUI />);
     const TestComponent = () => {
       const [isActive, setIsActive] = useState(false);

@@ -15,6 +15,7 @@ const SitemapPage = () => {
 
   useEffect(() => {
     router?.replace("/sitemap.xml");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

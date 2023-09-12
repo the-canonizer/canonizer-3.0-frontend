@@ -9,7 +9,7 @@ const FormItem = ({
   type = "text",
   maxLength = null,
   dataid = "",
-}) => {
+}: any) => {
   return (
     <Form.Item name={name} label={label} {...rules} data-id={dataid}>
       <Input

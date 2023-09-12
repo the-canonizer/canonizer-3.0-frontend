@@ -1,5 +1,5 @@
 import { createStore } from "redux";
-import { createWrapper, Context } from "next-redux-wrapper";
+import { createWrapper } from "next-redux-wrapper";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import {
   FLUSH,
@@ -83,7 +83,7 @@ const store = configureStore({
   // .concat(logger),
 });
 
-const makeStore = (context: Context) => createStore(persistedReducer);
+const makeStore = () => createStore(persistedReducer);
 const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof rootReducer>;

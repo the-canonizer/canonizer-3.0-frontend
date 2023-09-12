@@ -6,7 +6,6 @@ import { store } from "../../../../../store";
 import { windowMatchMedia } from "../../../../../utils/testUtils";
 import { NextRouter } from "next/router";
 import { RouterContext } from "next/dist/shared/lib/router-context";
-import exp from "constants";
 import { setTopics } from "../../../../../store/slices/recentActivitiesSlice";
 
 function createMockRouter(router: Partial<NextRouter>): NextRouter {

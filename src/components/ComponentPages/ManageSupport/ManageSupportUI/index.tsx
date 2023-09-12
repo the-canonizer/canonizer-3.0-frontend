@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Card, Tag, Select, Button, Col, Modal, Spin, Form } from "antd";
+import { Card, Tag, Select, Button, Col, Form } from "antd";
 import { DraggableArea } from "react-draggable-tags";
 import { CloseCircleOutlined } from "@ant-design/icons";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import Link from "next/link";
 
 import styles from "../ManageSupportUI/ManageSupport.module.scss";
 
 import messages from "../../../../messages";
 import { RootState } from "src/store";
 import { addSupport, removeSupportedCamps } from "src/network/api/userApi";
-import { GetActiveSupportTopic } from "src/network/api/topicAPI";
+// import { GetActiveSupportTopic } from "src/network/api/topicAPI";
 import CustomSkelton from "src/components/common/customSkelton";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
 
@@ -34,38 +33,30 @@ const ManageSupportUI = ({
   submitButtonDisable,
   setUpdatePostion,
   unableToFindCamp,
-  CurrentCheckSupportStatus,
   getManageSupportLoadingIndicator,
   setGetManageSupportLoadingIndicator,
   topicSupportListData,
 }: any) => {
   const [tagsArrayList, setTagsArrayList] = useState([]);
   const [isTagDragged, setIsTagDragged] = useState(false);
-  const [isSupportTreeCardModal, setIsSupportTreeCardModal] = useState(false);
-  const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
-  const [topicSupportList, setTopicSupportList] = useState([]);
+  // const [isSupportTreeCardModal, setIsSupportTreeCardModal] = useState(false);
+  // const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
+  // const [topicSupportList, setTopicSupportList] = useState([]);
   const [removeCampsSupport, setRemoveCampsSupport] = useState(false);
 
-  const {
-    currentDelegatedSupportedClick,
-    topicRecord,
-    campRecord,
-    currentGetCheckSupportExistsData,
-  } = useSelector((state: RootState) => ({
-    currentDelegatedSupportedClick:
-      state.supportTreeCard.currentDelegatedSupportedClick,
-    topicRecord: state?.topicDetails?.currentTopicRecord,
-    currentGetCheckSupportExistsData:
-      state.topicDetails.currentGetCheckSupportExistsData,
-    campRecord: state?.topicDetails?.currentCampRecord,
-  }));
+  const { currentDelegatedSupportedClick, currentGetCheckSupportExistsData } =
+    useSelector((state: RootState) => ({
+      currentDelegatedSupportedClick:
+        state.supportTreeCard.currentDelegatedSupportedClick,
+      currentGetCheckSupportExistsData:
+        state.topicDetails.currentGetCheckSupportExistsData,
+    }));
 
-  const dispatch = useDispatch();
   const router = useRouter();
 
   const [removeForm] = Form.useForm();
-  const openPopup = () => setIsSupportTreeCardModal(true);
-  const closePopup = () => setIsSupportTreeCardModal(false);
+  // const openPopup = () => setIsSupportTreeCardModal(true);
+  const closePopup = () => {};
 
   const filteredList = manageSupportList.map((obj: any, index: any) => {
     return {
@@ -105,7 +96,7 @@ const ManageSupportUI = ({
     camp_num: +router?.query?.manageSupport[1]?.split("-")[0],
   };
 
-  const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
+  // const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
 
   const findManageOrder = filteredList.findIndex((obj: any) => {
     return obj.camp_num === reqBodyData.camp_num;
@@ -118,7 +109,7 @@ const ManageSupportUI = ({
         : manageSupportList[manageSupportList.length - 1]?.support_order
       : 1;
 
-  const body = { topic_num: topicNum };
+  // const body = { topic_num: topicNum };
 
   const nickNameloop = nickNameList.filter((nickName) => {
     return selectedtNickname == nickName.id;
@@ -245,6 +236,7 @@ const ManageSupportUI = ({
     if (nickNameList.length > 0) {
       setSelectedtNickname(nickNameList[0]?.id);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nickNameList]);
 
   useEffect(() => {
@@ -264,11 +256,12 @@ const ManageSupportUI = ({
         else setTagsArrayList(newTagList);
       } else setTagsArrayList(newTagList);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [manageSupportList, parentSupportDataList]);
 
   // remove support popup added.
 
-  const onRemoveFinish = (values) => {
+  const onRemoveFinish = () => {
     // setRemoveSupportSpinner(true);
     // if (removeCampsSupport) {
     // submitNickNameSupportCamps(values);

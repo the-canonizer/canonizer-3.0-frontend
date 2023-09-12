@@ -14,15 +14,6 @@ describe("TopicHistory", () => {
     go_live_time: 1622838000,
   };
 
-  it("renders the edit summary", () => {
-    render(
-      <TopicHistory
-        campStatement={campStatement}
-        topicNamespaceId="topicNamespaceId"
-      />
-    );
-  });
-
   it("renders the canon", () => {
     render(
       <TopicHistory

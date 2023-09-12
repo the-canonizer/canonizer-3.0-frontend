@@ -1,11 +1,10 @@
-import React, { useState } from "react";
-import { fireEvent, render, waitFor } from "@testing-library/react";
+import React from "react";
+import { render, waitFor } from "@testing-library/react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import Editorckl from "../index";
 import { Provider } from "react-redux";
 import { store } from "src/store";
 import ClassicEditor from "../../../../../ckeditor51/build/ckeditor";
-import userEvent from "@testing-library/user-event";
 
 const editorState = "";
 const onEditorStateChange = jest.fn();
@@ -129,4 +128,6 @@ test("Editor onChange event is triggered correctly", () => {
   editor.model.change((writer) => {
     writer.insertText(newContent, editor.model.document.getRoot());
   });
+  const editorWrapper = container.querySelectorAll(".ck-editor__editable");
+  expect(editorWrapper[0]).toBeInTheDocument();
 });

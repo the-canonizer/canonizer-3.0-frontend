@@ -1,10 +1,10 @@
 import React, { useRef, useLayoutEffect } from "react";
-import { select, scaleBand, scaleLinear, max, linkHorizontal } from "d3";
+import { select, scaleBand, scaleLinear, max } from "d3";
 import useResizeObserver from "./useResizeObserver";
 
 import styles from "./timeline.module.scss";
 
-function RacingBarChart({ data }) {
+function RacingBarChart({ data }: any) {
   const linesData = [];
 
   for (let i = 0; i < data?.length; i++) {
@@ -54,7 +54,7 @@ function RacingBarChart({ data }) {
     // sorting the data
     // data.sort((a, b) => b.value - a.value);
 
-    const linkGenerator = linkHorizontal();
+    // const linkGenerator = linkHorizontal();
     // .x(link => link.y)
     // .y(link => link.x);
 
@@ -70,7 +70,7 @@ function RacingBarChart({ data }) {
     // Add minus square icon
     svg
       .selectAll(".icon")
-      .data(data, (entry, index) => entry.title)
+      .data(data, (entry) => entry.title)
       .join((enter) =>
         enter
           .append("image")
@@ -99,7 +99,7 @@ function RacingBarChart({ data }) {
     // draw the Title labels
     svg
       .selectAll(".label")
-      .data(data, (entry, index) => entry.title)
+      .data(data, (entry) => entry.title)
       .join((enter) =>
         enter
           .append("text")
@@ -119,11 +119,11 @@ function RacingBarChart({ data }) {
     // draw the bars
     svg
       .selectAll(".bar")
-      .data(data, (entry, index) => entry.title)
+      .data(data, (entry) => entry.title)
       .join((enter) =>
         enter.append("rect").attr("y", (entry, index) => yScale(index))
       )
-      .attr("fill", (entry) => "#f89d15")
+      .attr("fill", () => "#f89d15")
       .attr("class", "bar")
       .attr("x", (entry) => manageBarXAxis(entry))
       .attr("height", yScale.bandwidth())
@@ -134,7 +134,7 @@ function RacingBarChart({ data }) {
     // draw the Score labels
     svg
       .selectAll(".label1")
-      .data(data, (entry, index) => entry.title)
+      .data(data, (entry) => entry.title)
       .join((enter) =>
         enter
           .append("text")
@@ -143,7 +143,7 @@ function RacingBarChart({ data }) {
             (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5
           )
       )
-      .attr("fill", (entry) => "#fff")
+      .attr("fill", () => "#fff")
       .text((entry) => ` ${entry.score.toFixed(2)}`)
       .attr("class", "label")
       .attr("x", (entry) => manageBarXAxis(entry) + 7)
@@ -178,6 +178,7 @@ function RacingBarChart({ data }) {
       // .transition()
       // .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, dimensions]);
 
   return (
