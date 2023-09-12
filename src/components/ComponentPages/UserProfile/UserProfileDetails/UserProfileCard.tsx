@@ -138,6 +138,8 @@ export const UserProfileCard = ({
                       value={renderFilter()}
                       onChange={(selectedNameSpaceList) => {
                         setDropdownNameSpaceList(selectedNameSpaceList);
+                        router.query.canon = selectedNameSpaceList;
+                        router?.replace(router, null, { shallow: true });
                       }}
                       showSearch
                       optionFilterProp="children"

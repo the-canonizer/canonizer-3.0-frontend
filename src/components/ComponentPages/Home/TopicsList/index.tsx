@@ -133,7 +133,7 @@ const TopicsList = () => {
     setSelectedNameSpace(nameSpace?.children);
 
     if (nameSpace?.children?.toLowerCase() !== "/general/") {
-      router.query.canon = formatnamespace(nameSpace?.children);
+      router.query.canon = id;
       delete router?.query?.namespace;
       router?.replace(router, undefined, { shallow: true });
     } else {
@@ -161,19 +161,19 @@ const TopicsList = () => {
   //     });
   //   }
   // }
-  useEffect(() => {
-    if (filterNameSpace?.toLowerCase() !== "/general/") {
-      router.query.canon = formatnamespace(filterNameSpace);
-      delete router.query?.namespace;
-      router.replace(router, undefined, { shallow: true });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (filterNameSpace?.toLowerCase() !== "/general/") {
+  //     router.query.canon = filterNameSpaceId?.toString();
+  //     delete router.query?.namespace;
+  //     router.replace(router, undefined, { shallow: true });
+  //   }
+  // }, []);
 
   useEffect(() => {
     const q = router?.query;
     if (q?.canon) {
       const filteredName = nameSpacesList?.filter((n) => {
-        if (n.label === formatnamespace(q.canon, true)) {
+        if (n?.id == q?.canon) {
           return n;
         }
       });
@@ -181,13 +181,13 @@ const TopicsList = () => {
       if (filteredName && filteredName.length) {
         dispatch(
           setFilterCanonizedTopics({
-            nameSpace: formatnamespace(q.canon, true),
+            nameSpace: filteredName[0]?.label,
             namespace_id: filteredName[0]?.id,
           })
         );
       }
     }
-  }, [router, nameSpacesList]);
+  }, [nameSpacesList, router]);
 
   useEffect(() => {
     setSelectedNameSpace(filterNameSpace);
@@ -319,7 +319,7 @@ const TopicsList = () => {
         setSearchedResult(res?.topic);
       }
     } catch (error) {
-      console.error("Error:", error);
+      //
     }
   };
 
