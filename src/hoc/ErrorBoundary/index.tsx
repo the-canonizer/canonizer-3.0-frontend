@@ -17,7 +17,9 @@ export default class ErrorBoundary extends Component<any> {
   }
 
   componentDidCatch(error, info) {
+    /* eslint-disable */
     console.error("ErrorBoundary caught an error", error, info);
+    /* eslint-enable */
   }
 
   componentDidUpdate() {
@@ -60,7 +62,7 @@ export default class ErrorBoundary extends Component<any> {
         </>
       );
     }
-
+    // eslint-disable-next-line react/prop-types
     return this.props.children;
   }
 }

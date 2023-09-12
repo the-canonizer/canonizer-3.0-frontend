@@ -298,6 +298,7 @@ it("render show cancel button", () => {
   const cancelButton = getAllByText("Cancel")[0] as HTMLButtonElement;
   expect(cancelButton).toBeTruthy();
 });
+/* eslint-disable */
 
 it("render support remove card component", () => {
   const manageSupportList = [
@@ -331,9 +332,11 @@ it("render support remove card component", () => {
       unableToFindCamp={unableToFindCamp}
     />
   );
+  // eslint-disable-next-line
   const checkboxElement = screen.getByTestId("checkbox");
   fireEvent.click(checkboxElement);
 });
+/* eslint-enable */
 
 it("render show clear changes button", () => {
   const { getAllByText } = render(

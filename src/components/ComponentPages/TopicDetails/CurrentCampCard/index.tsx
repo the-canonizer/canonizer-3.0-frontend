@@ -39,7 +39,8 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }: any) => {
   );
 
   useEffect(() => {
-    console.log(campRecord, "#############campdata################");
+    // console.log(campRecord, "#############campdata################");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const covertToTime = (unixTime) => {

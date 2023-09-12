@@ -55,11 +55,11 @@ const InfoBar = ({
 
   const dispatch = useDispatch();
   const [loadingIndicator, setLoadingIndicator] = useState(false);
-  const [payloadData, setPayloadData] = useState(payload);
-  const [breadCrumbRes, setBreadCrumbRes] = useState({
-    topic_name: "",
-    bread_crumb: [],
-  });
+  // const [payloadData, setPayloadData] = useState(payload);
+  // const [breadCrumbRes, setBreadCrumbRes] = useState({
+  //   topic_name: "",
+  //   bread_crumb: [],
+  // });
   const [isCampBtnVisible, setIsCampBtnVisible] = useState(false);
   const didMount = useRef(false);
   const router = useRouter();
@@ -95,7 +95,7 @@ const InfoBar = ({
     topicRecord?.topicSubscriptionId
   );
   useEffect(() => {
-    setPayloadData(payload);
+    // setPayloadData(payload);
     async function getBreadCrumbApiCall() {
       setLoadingIndicator(true);
       let reqBody = {
@@ -107,8 +107,8 @@ const InfoBar = ({
             ? Date.now() / 1000
             : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
       };
-      let res = await getCampBreadCrumbApi(reqBody);
-      setBreadCrumbRes(res?.data);
+      await getCampBreadCrumbApi(reqBody);
+      // setBreadCrumbRes(res?.data);
       setLoadingIndicator(false);
     }
     if (payload && Object.keys(payload).length > 0) {

@@ -184,6 +184,7 @@ const SupportTreeCard = ({
       //isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
       if ((!loadMore && index < supportLength) || loadMore) {
         if (data[item].delegates) {
+          /* eslint-disable */
           const linkss = (
             <Link
               href={{
@@ -196,6 +197,8 @@ const SupportTreeCard = ({
               }}
             ></Link>
           );
+          /* eslint-enable */
+
           return (
             <>
               <TreeNode

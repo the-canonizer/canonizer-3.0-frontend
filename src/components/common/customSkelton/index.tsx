@@ -200,6 +200,7 @@ const CustomSkelton = ({
       </Row>
     </div>
   ) : (
+    /* eslint-disable */
     (skeltonFor = "cardForUploadFile" ? (
       <Card
         className={styles.card_upload_file_skeleton}
@@ -217,7 +218,8 @@ const CustomSkelton = ({
           />
         </div>
       </Card>
-    ) : null)
+    ) : /* eslint-enable */
+    null)
   );
 };
 

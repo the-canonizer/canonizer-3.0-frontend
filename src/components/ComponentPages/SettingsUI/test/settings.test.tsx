@@ -59,7 +59,7 @@ describe("settingUI page", () => {
 
     expect(cardTitle).toBeInTheDocument();
   });
-  it("render useState is working ", () => {
+  it("render useState is working", () => {
     render(<SettingsUI />);
     const TestComponent = () => {
       const [isActive, setIsActive] = useState(false);

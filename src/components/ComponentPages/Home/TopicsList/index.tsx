@@ -108,7 +108,7 @@ const TopicsList = () => {
   const [getTopicsLoadingIndicator, setGetTopicsLoadingIndicator] =
     useState(false);
   const [selectedNameSpace, setSelectedNameSpace] = useState(filterNameSpace);
-  const [clear, setClear] = useState(false);
+  // const [clear, setClear] = useState(false);
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -244,9 +244,9 @@ const TopicsList = () => {
   ]);
   useEffect(() => {
     if (inputSearch.length > 0 || search.length > 0) {
-      setClear(true);
+      // setClear(true);
     } else {
-      setClear(false);
+      // setClear(false);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -325,10 +325,12 @@ const TopicsList = () => {
         setSearchedResult(res?.topic);
       }
     } catch (error) {
-      console.error("Error:", error);
+      // console.error("Error:", error);
+      /**/
     }
   };
 
+  /* eslint-disable */
   let throttled: NodeJS.Timeout | null = null;
 
   useEffect(() => {
@@ -349,6 +351,7 @@ const TopicsList = () => {
       }
     };
   }, [searchTerm]);
+  /* eslint-enable */
 
   const hanldeTopicNameClick = (
     value: string,

@@ -107,8 +107,8 @@ export default function AddOrManage({ add }: any) {
   const { isUserAuthenticated } = useAuthentication();
   const router = useRouter();
   const [editStatementData, setEditStatementData] = useState({ data: null });
-  const [submitIsDisable, setSubmitIsDisable] = useState(true);
-  const [submitIsDisableCheck, setSubmitIsDisableCheck] = useState(true);
+  // const [submitIsDisable, setSubmitIsDisable] = useState(true);
+  // const [submitIsDisableCheck, setSubmitIsDisableCheck] = useState(true);
   const [nickNameData, setNickNameData] = useState([]);
   const [screenLoading, setScreenLoading] = useState(false);
   const [initialFormValues, setInitialFormValues] = useState({});
@@ -126,8 +126,8 @@ export default function AddOrManage({ add }: any) {
   const [options, setOptions] = useState([...messages.preventCampLabel]);
   const [initialOptions, setInitialOptions] = useState([]);
   const [editCampStatementData, setEditCampStatementData] = useState("");
-  const [statementResponseDisable, setStatementResponseDisable] =
-    useState(false);
+  // const [statementResponseDisable, setStatementResponseDisable] =
+  //   useState(false);
 
   const [form] = Form.useForm();
   let objection = router?.query?.statement?.at(0)?.split("-")[1] == "objection";
@@ -249,17 +249,17 @@ export default function AddOrManage({ add }: any) {
       options.map((op) => (reqBody[op.id] = op.checked ? 1 : 0));
       res = await updateCampApi(reqBody);
       if (res.status_code == 200) {
-        setStatementResponseDisable(true);
+        // setStatementResponseDisable(true);
       }
     } else if (manageFormOf == "statement") {
       res = await updateStatementApi(reqBody);
       if (res.status_code == 200) {
-        setStatementResponseDisable(true);
+        // setStatementResponseDisable(true);
       }
     } else if (manageFormOf == "topic") {
       res = await updateTopicApi(reqBody);
       if (res.status_code == 200) {
-        setStatementResponseDisable(true);
+        // setStatementResponseDisable(true);
       }
     }
 
@@ -588,9 +588,9 @@ export default function AddOrManage({ add }: any) {
       oldOptions[2]?.checked == initialOptions[2]?.checked &&
       oldOptions[2]?.disable == initialOptions[2]?.disable
     ) {
-      setSubmitIsDisableCheck(true);
+      // setSubmitIsDisableCheck(true);
     } else {
-      setSubmitIsDisableCheck(false);
+      // setSubmitIsDisableCheck(false);
     }
   };
   const extra = () => {
@@ -668,9 +668,9 @@ export default function AddOrManage({ add }: any) {
       nowFormStatus.statement = nowFormStatus.statement.trim();
     }
     if (JSON.stringify(nowFormStatus) == JSON.stringify(initialFormStatus)) {
-      setSubmitIsDisable(true);
+      // setSubmitIsDisable(true);
     } else {
-      setSubmitIsDisable(false);
+      // setSubmitIsDisable(false);
     }
   };
 
@@ -796,7 +796,7 @@ export default function AddOrManage({ add }: any) {
                               disabled={objection}
                               optionFilterProp="children"
                               onChange={() => {
-                                setSubmitIsDisable(false);
+                                // setSubmitIsDisable(false);
                               }}
                             >
                               {parentCamp.map((camp) =>

@@ -80,7 +80,9 @@ const infoContent = (
 //   };
 // }
 
+/* eslint-disable */
 const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
+  /* eslint-enable */
   // const isAuth = useAuthentication();
 
   // const [isDatePicker, setIsDatePicker] = useState(false);

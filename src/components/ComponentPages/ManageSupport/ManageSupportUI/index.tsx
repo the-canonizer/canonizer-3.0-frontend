@@ -39,7 +39,7 @@ const ManageSupportUI = ({
 }: any) => {
   const [tagsArrayList, setTagsArrayList] = useState([]);
   const [isTagDragged, setIsTagDragged] = useState(false);
-  const [isSupportTreeCardModal, setIsSupportTreeCardModal] = useState(false);
+  // const [isSupportTreeCardModal, setIsSupportTreeCardModal] = useState(false);
   // const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
   // const [topicSupportList, setTopicSupportList] = useState([]);
   const [removeCampsSupport, setRemoveCampsSupport] = useState(false);
@@ -56,7 +56,7 @@ const ManageSupportUI = ({
 
   const [removeForm] = Form.useForm();
   // const openPopup = () => setIsSupportTreeCardModal(true);
-  const closePopup = () => setIsSupportTreeCardModal(false);
+  const closePopup = () => {};
 
   const filteredList = manageSupportList.map((obj: any, index: any) => {
     return {

@@ -179,7 +179,9 @@ function HistoryContainer() {
       }
 
       setLoadingIndicator(false);
-    } catch (error) {}
+    } catch (error) {
+      /**/
+    }
   };
 
   const handleTabButton = async (tabName) => {

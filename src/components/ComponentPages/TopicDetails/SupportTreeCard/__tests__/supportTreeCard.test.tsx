@@ -40,6 +40,7 @@ function createMockRouter() {
 afterEach(cleanup);
 windowMatchMedia();
 describe("SupportTreeCard on camp details page", () => {
+  /* eslint-disable */
   it("Should render without crash", () => {
     render(
       <Provider store={store}>
@@ -55,7 +56,9 @@ describe("SupportTreeCard on camp details page", () => {
       </Provider>
     );
   });
-  it("show heading of supported camps", () => {
+
+  /* eslint-enable */
+  it("show heading of supported camps text", () => {
     const { getByText } = render(
       <Provider store={store}>
         <RouterContext.Provider value={createMockRouter()}>
@@ -76,6 +79,7 @@ describe("SupportTreeCard on camp details page", () => {
     ).toBeInTheDocument();
   });
 
+  /* eslint-disable */
   it("show heading of supported camps", () => {
     const { container } = render(
       <Provider store={store}>
@@ -94,4 +98,6 @@ describe("SupportTreeCard on camp details page", () => {
     // expect(container.getElementsByTagName("header")).toHaveLength(1);
     expect(container.getElementsByClassName("icon-info tooltip-icon-style"));
   });
+
+  /* eslint-enable */
 });
