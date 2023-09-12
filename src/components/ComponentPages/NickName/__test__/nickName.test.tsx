@@ -61,7 +61,8 @@ jest.mock("src/network/api/userApi", () => ({
     Promise.resolve({
       status_code: 200,
       message: "This is success",
-      data: addNewNickName,
+      // data: addNewNickName,
+      data: null,
     })
   ),
   addNickName: jest.fn(() =>

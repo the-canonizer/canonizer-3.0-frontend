@@ -16,18 +16,18 @@ import { setAuthToken, setLoggedInUser } from "src/store/slices/authSlice";
 import { setHotTopic } from "src/store/slices/hotTopicSlice";
 import { GetHotTopicDetails } from "src/network/api/topicAPI";
 
-function Home({ current_date, hotTopicData }) {
+function Home({ current_date, hotTopicData }: any) {
   const dispatch = useDispatch();
   const router = useRouter();
 
   dispatch(setFilterCanonizedTopics({ search: "" }));
   dispatch(setCurrentDate(current_date));
-
+  /* eslint-disable */
   useEffect(() => {
     dispatch(setHotTopic(hotTopicData));
     getCanonizedWhatsNewContentApi();
   }, []);
-
+  /* eslint-enable */
   useEffect(() => {
     let queries = router?.query;
     if ("namespace" in queries) {
