@@ -44,6 +44,7 @@ function RegistrationUi({
               (optionB!.children as unknown as string).toLowerCase()
             )
         }
+        data-testid="dropdown_country"
       >
         {country.map((code) => (
           <Option value={code.phone_code} key={code.country_code}>
