@@ -58,8 +58,12 @@ jest.mock("next/router", () => ({
 }));
 
 jest.mock("src/network/api/userApi", () => ({
-  getNickNameList: jest.fn(),
-  addNickName: jest.fn(),
+  getNickNameList: jest.fn(()=>Promise.resolve({ status_code: 200, 
+    message: "This is success",
+    data: addNewNickName })),
+  addNickName: jest.fn(()=>Promise.resolve({ status_code: 200, 
+    message: "This is success",
+    data: [] })),
   updateNickName: jest.fn(),
 }));
 
@@ -326,9 +330,14 @@ describe("Nickname test cases", () => {
   it("addnickname function should be called while click on edit button", async () => {
     const { getAllByText } = render(<NickName></NickName>);
 
-    waitFor(() => {
-      const edit_button = getAllByText("Add New Nickname");
+    await waitFor(() => {
+      const edit_button= getAllByText("edit");
       fireEvent.click(edit_button[0]);
+      const update_button= getAllByText("Update");
+      fireEvent.click(update_button[0]);
+      const add_button = getAllByText("Add New Nickname");
+      fireEvent.click(add_button[0]);
+      
       expect(getAllByText("Add New Nickname")[1]).toBeInTheDocument();
     });
   });
@@ -337,12 +346,13 @@ describe("Nickname test cases", () => {
     const { getAllByTestId, getAllByText } = render(<NickName></NickName>);
 
     await waitFor(async () => {
-      const edit_button = getAllByText("Add New Nickname");
-      fireEvent.click(edit_button[0]);
+      const add_button = getAllByText("Add New Nickname");
+      fireEvent.click(add_button[0]);
       const nickname_input = getAllByTestId("enterNickName")[0];
       await userEvent.type(nickname_input, "nickname123");
       const submit_button = getAllByTestId("submitButton")[0];
       userEvent.click(submit_button);
+      
     });
   });
 
