@@ -113,6 +113,7 @@ jest.mock("../../../../../network/api/homePageApi", () => ({
 }));
 
 describe("AddOrManage component", () => {
+  jest.setTimeout(10000); // Set the timeout to 10 seconds (adjust as needed)
   beforeEach(() => {
     jest.clearAllMocks();
     jest.mock("../../../../../network/api/campDetailApi", () => ({

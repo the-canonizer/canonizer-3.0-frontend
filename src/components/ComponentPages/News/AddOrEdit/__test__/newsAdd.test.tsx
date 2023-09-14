@@ -78,7 +78,22 @@ const store1 = mockStore({
 describe("Should render Addnews", () => {
   beforeEach(() => {
     jest.mock("../../../../../network/api/campDetailApi", () => ({
-      getAllUsedNickNames: jest.fn(() => Promise.resolve({ status_code: 200 })),
+      getAllUsedNickNames: jest.fn(() =>
+        Promise.resolve({
+          status_code: 200,
+          message: "Success",
+          error: null,
+          data: [
+            {
+              id: 818,
+              owner_code: "TWFsaWExMzk0TWFsaWE=",
+              nick_name: "Sajid-Dev",
+              create_time: "1970-01-01",
+              private: 0,
+            },
+          ],
+        })
+      ),
     }));
   });
   it("Render without crash", async () => {

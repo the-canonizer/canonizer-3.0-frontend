@@ -325,7 +325,7 @@ export default function AddOrEdit({ edit }: any) {
                   showSearch
                   optionFilterProp="children"
                 >
-                  {nickNameData &&
+                  {Array.isArray(nickNameData) &&
                     nickNameData?.map((names) => (
                       <Select.Option value={names.id} key={names?.id}>
                         {names?.nick_name}
