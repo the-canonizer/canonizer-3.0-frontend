@@ -7,7 +7,7 @@ import CustomSkelton from "../../common/customSkelton";
 import {
   GetAllSubscriptionsList,
   unsubscribeTopicOrCampAPI,
-} from "../../../network/api/userApi";
+} from "src/network/api/userApi";
 
 function SubscriptionsList({ isTestData = [] }) {
   const [subscriptionsList, setSubscriptionsList] = useState(isTestData);
