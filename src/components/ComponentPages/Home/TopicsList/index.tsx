@@ -355,6 +355,36 @@ const TopicsList = () => {
       setShowSearchDropdown(false);
     }
   };
+  const getQueryParams = () => {
+    let isbool = false;
+    let params = "?";
+    if (filterObject?.filterByScore != 0) {
+      params = params + `score=${filterObject?.filterByScore}&`;
+      isbool = true;
+    }
+    if (filterObject?.algorithm != "blind_popularity") {
+      params = params + `algo=${filterObject?.algorithm}&`;
+      isbool = true;
+    }
+    if (filterObject?.asof != "default") {
+      params = params + `asof=${filterObject?.asof}&`;
+      isbool = true;
+    }
+    if (filterObject?.asof == "bydate") {
+      params = params + `asofdate=${filterObject?.asofdate}&`;
+      isbool = true;
+    }
+    if (filterObject?.namespace_id != 1) {
+      params = params + `canon=${filterObject?.namespace_id}&`;
+      isbool = true;
+    }
+    if (viewThisVersion) {
+      params = params + `viewversion=1&`;
+      isbool = true;
+    }
+    params = params.slice(0, -1);
+    return params;
+  };
 
   const LoadMoreTopics = (
     <div className="text-center">
@@ -539,15 +569,7 @@ const TopicsList = () => {
                             item?.tree_structure[1]?.review_title
                         : item?.topic_name,
                       "-"
-                    )}/1-Agreement?score=${filterByScore}&algo=${
-                      filterObject?.algorithm
-                    }${
-                      filterObject?.asof == "bydate"
-                        ? "&asofdate=" + filterObject?.asofdate
-                        : ""
-                    }&asof=${filterObject?.asof}&canon=${
-                      filterObject?.namespace_id
-                    }${viewThisVersion ? "&viewversion=1" : ""}`}
+                    )}/1-Agreement${getQueryParams()}`}
                   >
                     {!item.is_archive ||
                     (item.is_archive && is_camp_archive_checked) ? (

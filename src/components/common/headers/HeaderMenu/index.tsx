@@ -55,6 +55,37 @@ const HeaderMenu = ({ loggedUser }) => {
 
   const router = useRouter();
 
+  const getQueryParams = () => {
+    let isbool = false;
+    let params = "?";
+    if (filterObject?.filterByScore != 0) {
+      params = params + `score=${filterObject?.filterByScore}&`;
+      isbool = true;
+    }
+    if (filterObject?.algorithm != "blind_popularity") {
+      params = params + `algo=${filterObject?.algorithm}&`;
+      isbool = true;
+    }
+    if (filterObject?.asof != "default") {
+      params = params + `asof=${filterObject?.asof}&`;
+      isbool = true;
+    }
+    if (filterObject?.asof == "bydate") {
+      params = params + `asofdate=${filterObject?.asofdate}&`;
+      isbool = true;
+    }
+    if (filterObject?.namespace_id != 1) {
+      params = params + `canon=${filterObject?.namespace_id}&`;
+      isbool = true;
+    }
+    if (viewThisVersion) {
+      params = params + `viewversion=1&`;
+      isbool = true;
+    }
+    params = params.slice(0, -1);
+    return params;
+  };
+
   useEffect(() => {
     if (!loggedUser?.is_admin) {
       const allLinks = [...mockLinks];
@@ -93,17 +124,7 @@ const HeaderMenu = ({ loggedUser }) => {
                     {item.linkTitle}
                   </a>
                 ) : (
-                  <Link
-                    href={`${item.link}?score=${filterByScore}&algo=${
-                      filterObject?.algorithm
-                    }${
-                      filterObject?.asof == "bydate"
-                        ? "&asofdate=" + filterObject?.asofdate
-                        : ""
-                    }&asof=${filterObject?.asof}&canon=${
-                      filterObject?.namespace_id
-                    }${viewThisVersion ? "&viewversion=1" : ""}`}
-                  >
+                  <Link href={`${item.link}${getQueryParams()}`}>
                     <a>{item.linkTitle}</a>
                   </Link>
                 )}

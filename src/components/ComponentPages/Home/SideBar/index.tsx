@@ -33,18 +33,45 @@ export default function HomeSideBar({
   const dispatch = useDispatch();
 
   useEffect(() => setDrawerIsVisible(drawerShow), [drawerShow]);
+  const getQueryParams = (status) => {
+    let isbool = false;
+    let params = "?";
+    if (filterObject?.filterByScore != 0) {
+      params = params + `score=${filterObject?.filterByScore}&`;
+      isbool = true;
+    }
+    if (filterObject?.algorithm != "blind_popularity") {
+      params = params + `algo=${filterObject?.algorithm}&`;
+      isbool = true;
+    }
+
+    if (filterObject?.asof != "default") {
+      params = params + `asof=${filterObject?.asof}&`;
+      isbool = true;
+    }
+    if (filterObject?.asof == "bydate") {
+      params = params + `asofdate=${filterObject?.asofdate}&`;
+      isbool = true;
+    }
+    if (filterObject?.namespace_id != 1) {
+      params = params + `canon=${filterObject?.namespace_id}&`;
+      isbool = true;
+    }
+
+    if (viewThisVersion) {
+      params = params + `viewversion=1&`;
+      isbool = true;
+    }
+    params = params + `is_tree_open=${status}&`;
+    params = params.slice(0, -1);
+    return params;
+  };
 
   const showDrawer = () => {
     router.push(
       `/topic/${router?.query?.camp[0]}/${
         router?.query?.camp[1]
-      }?score=${filterByScore}&algo=${filterObject?.algorithm}${
-        filterObject?.asof == "bydate"
-          ? "&asofdate=" + filterObject?.asofdate
-          : ""
-      }&asof=${filterObject?.asof}&canon=${
-        filterObject?.namespace_id
-      }&is_tree_open=1${viewThisVersion ? "&viewversion=1" : ""}`,
+      }${getQueryParams("1")}`,
       null,
       {
         shallow: true,
@@ -58,13 +85,7 @@ export default function HomeSideBar({
     router.push(
       `/topic/${router?.query?.camp[0]}/${
         router?.query?.camp[1]
-      }?score=${filterByScore}&algo=${filterObject?.algorithm}${
-        filterObject?.asof == "bydate"
-          ? "&asofdate=" + filterObject?.asofdate
-          : ""
-      }&asof=${filterObject?.asof}&canon=${
-        filterObject?.namespace_id
-      }&is_tree_open=0${viewThisVersion ? "&viewversion=1" : ""}`,
+      }${getQueryParams("0")}`,
       null,
       {
         shallow: true,

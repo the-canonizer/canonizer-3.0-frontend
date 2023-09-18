@@ -117,6 +117,36 @@ const CreateNewCamp = ({
     }
     setIsLoading(false);
   };
+  const getQueryParams = () => {
+    let isbool = false;
+    let params = "?";
+    if (filterObject?.filterByScore != 0) {
+      params = params + `score=${filterObject?.filterByScore}&`;
+      isbool = true;
+    }
+    if (filterObject?.algorithm != "blind_popularity") {
+      params = params + `algo=${filterObject?.algorithm}&`;
+      isbool = true;
+    }
+    if (filterObject?.asof != "default") {
+      params = params + `asof=${filterObject?.asof}&`;
+      isbool = true;
+    }
+    if (filterObject?.asof == "bydate") {
+      params = params + `asofdate=${filterObject?.asofdate}&`;
+      isbool = true;
+    }
+    if (filterObject?.namespace_id != 1) {
+      params = params + `canon=${filterObject?.namespace_id}&`;
+      isbool = true;
+    }
+    if (viewThisVersion) {
+      params = params + `viewversion=1&`;
+      isbool = true;
+    }
+    params = params.slice(0, -1);
+    return params;
+  };
 
   useEffect(() => {
     if (isUserAuthenticated) {
@@ -166,16 +196,7 @@ const CreateNewCamp = ({
       router?.push(
         `/topic/${replaceSpecialCharacters(camp[0], "-")}/${
           res?.data?.camp_num
-        }-${replaceSpecialCharacters(
-          values.camp_name,
-          "-"
-        )}?score=${filterByScore}&algo=${filterObject?.algorithm}${
-          filterObject?.asof == "bydate"
-            ? "&asofdate=" + filterObject?.asofdate
-            : ""
-        }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
-          viewThisVersion ? "&viewversion=1" : ""
-        }`
+        }-${replaceSpecialCharacters(values.camp_name, "-")}${getQueryParams()}`
       );
 
       const oldOptions = [...options];
@@ -214,16 +235,7 @@ const CreateNewCamp = ({
       `/topic/${replaceSpecialCharacters(
         camp[0],
         "-"
-      )}/${replaceSpecialCharacters(
-        camp[1],
-        "-"
-      )}?score=${filterByScore}&algo=${filterObject?.algorithm}${
-        filterObject?.asof == "bydate"
-          ? "&asofdate=" + filterObject?.asofdate
-          : ""
-      }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
-        viewThisVersion ? "&viewversion=1" : ""
-      }`
+      )}/${replaceSpecialCharacters(camp[1], "-")}${getQueryParams()}`
     );
   };
 
