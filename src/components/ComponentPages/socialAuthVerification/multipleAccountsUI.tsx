@@ -18,6 +18,7 @@ const MultiUserModalForm = ({ visible, onFinish, closeModal, users }) => {
               htmlType="button"
               className={`ant-btn ant-btn-orange ant-btn-lg ${styles.submitBtn}`}
               type="primary"
+              data-testid="modalSubmit"
               onClick={() => {
                 form
                   .validateFields()
@@ -78,7 +79,11 @@ const MultiUserModalForm = ({ visible, onFinish, closeModal, users }) => {
             >
               <Space direction="vertical">
                 {users.map((user) => (
-                  <Radio value={user.user_id} key={user.id}>
+                  <Radio
+                    value={user.user_id}
+                    key={user.id}
+                    data-testid={"user_" + user.user_id}
+                  >
                     {user.social_name}
                   </Radio>
                 ))}
