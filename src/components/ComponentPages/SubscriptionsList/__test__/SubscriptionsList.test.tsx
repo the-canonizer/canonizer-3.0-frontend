@@ -12,10 +12,7 @@ import { NextRouter } from "next/router";
 import { Provider } from "react-redux";
 
 import SubscriptionList from "../";
-import {
-  GetAllSubscriptionsList,
-  unsubscribeTopicOrCampAPI,
-} from "src/network/api/userApi";
+import { GetAllSubscriptionsList } from "src/network/api/userApi";
 
 const subsList = [
   {

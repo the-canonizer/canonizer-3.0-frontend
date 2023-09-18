@@ -1,32 +1,111 @@
-import {
-  render,
-  screen,
-  waitFor,
-  act,
-  fireEvent,
-} from "../../../../utils/testUtils";
+import { render, screen, waitFor, act, cleanup } from "src/utils/testUtils";
 import userEvent from "@testing-library/user-event";
+import { Provider } from "react-redux";
+import { RouterContext } from "next/dist/shared/lib/router-context";
+import { NextRouter } from "next/router";
+import configureMockStore from "redux-mock-store";
 
 import ResetPassword from "../index";
 import messages from "../../../../messages";
+import { forgotPasswordUpdate } from "src/network/api/userApi";
 
 const { placeholders, labels, validations } = messages;
 
+function createMockRouter(router: Partial<NextRouter>): NextRouter {
+  return {
+    basePath: "",
+    pathname: "/reset-password",
+    route: "/reset-password",
+    query: {},
+    asPath: "/reset-password",
+    back: jest.fn(),
+    beforePopState: jest.fn(),
+    prefetch: jest.fn(),
+    push: jest.fn(),
+    reload: jest.fn(),
+    replace: jest.fn(),
+    events: {
+      on: jest.fn(),
+      off: jest.fn(),
+      emit: jest.fn(),
+    },
+    isFallback: false,
+    isLocaleDomain: false,
+    isReady: true,
+    defaultLocale: "en",
+    domainLocales: [],
+    isPreview: false,
+    ...router,
+  };
+}
+
+const mockStore = configureMockStore();
+const store1 = mockStore({
+  auth: {
+    authenticated: true,
+    loggedInUser: {
+      is_admin: true,
+    },
+  },
+  topicDetails: {
+    currentCampRecord: {},
+  },
+  filters: {
+    filterObject: {},
+  },
+  forum: {
+    currentThread: null,
+    currentPost: null,
+  },
+});
+
+jest.mock("src/network/api/userApi");
+
+beforeAll(() => {
+  delete global.window.localStorage;
+
+  global.window.localStorage = {
+    getItem: jest.fn(),
+    setItem: jest.fn(),
+    removeItem: jest.fn(),
+  };
+});
+
+afterEach(cleanup);
+
 describe("Reset Password page", () => {
-  it("render heading labels and text", async () => {
-    render(<ResetPassword is_test={true} />);
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("render heading labels, text and inputs", async () => {
+    act(() => {
+      global.localStorage.setItem = jest.fn(() => ({
+        verified: "verified",
+      }));
+
+      global.localStorage.getItem = jest.fn(() => "verified");
+    });
+
+    render(
+      <Provider store={store1}>
+        <RouterContext.Provider value={createMockRouter({})}>
+          <ResetPassword is_test={true} />
+        </RouterContext.Provider>
+      </Provider>
+    );
+
     let heading = screen.getByText(labels.createPassword);
+
     expect(heading).toBeInTheDocument();
     expect(screen.getByText(labels.newPassword)).toBeInTheDocument();
     expect(screen.getByText(labels.confirmPassword)).toBeInTheDocument();
-  });
 
-  it("render inputs field and submit button", async () => {
-    render(<ResetPassword is_test={true} />);
     const newPassword = screen.getByPlaceholderText(placeholders.newPassword);
     const confirmPassword = screen.getByPlaceholderText(
       placeholders.confirmPassword
     );
+    const btnEl = screen.getByTestId("submitButton");
 
     expect(newPassword).toBeInTheDocument();
     expect(newPassword).toHaveAttribute("type", "password");
@@ -41,70 +120,117 @@ describe("Reset Password page", () => {
       "placeholder",
       placeholders.confirmPassword
     );
+    expect(btnEl).toBeInTheDocument();
   });
 
-  it("check password minimum length > 8", async () => {
-    render(<ResetPassword is_test={true} />);
+  it("if password length is less than 8 show error message", async () => {
+    render(
+      <Provider store={store1}>
+        <RouterContext.Provider value={createMockRouter({})}>
+          <ResetPassword is_test={true} />
+        </RouterContext.Provider>
+      </Provider>
+    );
+
     const inputEl = screen.getByPlaceholderText(placeholders.newPassword);
-    await fireEvent.change(inputEl, { target: { value: "1234567" } });
-    await userEvent.tab();
-    // await act(async () => {
-    // });
-    waitFor(() => {
-      expect(inputEl).toHaveValue("1234567");
-      expect(screen.queryByRole("alert")).toBeInTheDocument();
+    userEvent.type(inputEl, "1234567");
+    userEvent.tab();
+    expect(inputEl).toHaveValue("1234567");
+
+    const confirmPassword = screen.getByPlaceholderText(
+      placeholders.confirmPassword
+    );
+    userEvent.type(confirmPassword, "123456");
+    userEvent.tab();
+    expect(confirmPassword).toHaveValue("123456");
+
+    await waitFor(() => {
+      expect(screen.queryAllByRole("alert").length).toEqual(2);
       expect(screen.queryByText(validations.passwordPattern)).toBeVisible();
-    });
-  });
-
-  it("pass valid password", async () => {
-    render(<ResetPassword is_test={true} />);
-    const inputEl = screen.getByPlaceholderText(placeholders.newPassword);
-    await fireEvent.change(inputEl, { target: { value: "Abc@1234" } });
-    expect(inputEl).toHaveValue("Abc@1234");
-    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
-  });
-
-  it("pass invalid confirm password", async () => {
-    render(<ResetPassword is_test={true} />);
-    const inputEl = screen.getByPlaceholderText(placeholders.newPassword);
-    const inputEl2 = screen.getByPlaceholderText(placeholders.confirmPassword);
-    act(async () => {
-      await fireEvent.change(inputEl, { target: { value: "Abc@1234" } });
-      await userEvent.tab();
-      await fireEvent.change(inputEl2, { target: { value: "Abc@12344" } });
-      await userEvent.tab();
-    });
-    waitFor(() => {
-      expect(inputEl).toHaveValue("Abc@1234");
-      expect(inputEl2).toHaveValue("Abc@12344");
-      expect(screen.queryByRole("alert")).toBeInTheDocument();
       expect(screen.queryByText(validations.confirmPasswordErr)).toBeVisible();
     });
   });
 
-  it("pass valid confirm password", async () => {
-    render(<ResetPassword is_test={true} />);
-    const inputEl = screen.getByPlaceholderText(placeholders.newPassword);
-    const inputEl2 = screen.getByPlaceholderText(placeholders.confirmPassword);
-    await fireEvent.change(inputEl, { target: { value: "Abc@1234" } });
-    await fireEvent.change(inputEl2, { target: { value: "Abc@1234" } });
-    expect(inputEl).toHaveValue("Abc@1234");
-    expect(inputEl2).toHaveValue("Abc@1234");
-    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
-  });
-
   it("blank form should not be submit", async () => {
-    render(<ResetPassword is_test={true} />);
+    render(
+      <Provider store={store1}>
+        <RouterContext.Provider value={createMockRouter({})}>
+          <ResetPassword is_test={true} />
+        </RouterContext.Provider>
+      </Provider>
+    );
 
     const btnEl = screen.getByTestId("submitButton");
-    await act(async () => {
-      await fireEvent.click(btnEl);
+    userEvent.click(btnEl);
+
+    await waitFor(() => {
+      expect(
+        screen.queryByText(validations.registrationPassword)
+      ).toBeVisible();
+      expect(screen.queryByText(validations.confirmPassword)).toBeVisible();
+    });
+  });
+
+  it("Redirect to login", async () => {
+    act(() => {
+      global.localStorage.setItem = jest.fn(() => ({
+        verified: "verified",
+      }));
+
+      global.localStorage.getItem = jest.fn(() => "verified");
+    });
+
+    render(
+      <Provider store={store1}>
+        <RouterContext.Provider value={createMockRouter({})}>
+          <ResetPassword />
+        </RouterContext.Provider>
+      </Provider>
+    );
+
+    let heading = screen.getByText(labels.createPassword);
+
+    expect(heading).toBeInTheDocument();
+    expect(screen.getByText(labels.newPassword)).toBeInTheDocument();
+    expect(screen.getByText(labels.confirmPassword)).toBeInTheDocument();
+  });
+
+  it("Submit valid form ", async () => {
+    render(
+      <Provider store={store1}>
+        <RouterContext.Provider value={createMockRouter({})}>
+          <ResetPassword is_test={true} />
+        </RouterContext.Provider>
+      </Provider>
+    );
+
+    const inputEl = screen.getByPlaceholderText(placeholders.newPassword);
+    userEvent.type(inputEl, "Test@123");
+    userEvent.tab();
+    expect(inputEl).toHaveValue("Test@123");
+
+    const confirmPassword = screen.getByPlaceholderText(
+      placeholders.confirmPassword
+    );
+    userEvent.type(confirmPassword, "Test@123");
+    userEvent.tab();
+    expect(confirmPassword).toHaveValue("Test@123");
+
+    const btnEl = screen.getByTestId("submitButton");
+    expect(btnEl).toBeInTheDocument();
+    userEvent.click(btnEl);
+
+    forgotPasswordUpdate.mockResolvedValue({
+      status_code: 200,
+      data: {},
+      message: "Password changed sucessfully!",
     });
 
     await waitFor(() => {
-      expect(screen.queryByText("Please input your password!")).toBeVisible();
-      expect(screen.queryByText("Please confirm your password!")).toBeVisible();
+      expect(forgotPasswordUpdate).toHaveBeenCalled();
+      expect(
+        screen.getByText("Password changed sucessfully!")
+      ).toBeInTheDocument();
     });
   });
 });
