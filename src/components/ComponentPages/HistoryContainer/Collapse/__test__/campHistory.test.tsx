@@ -73,3 +73,5 @@ describe("CampHistory", () => {
     expect(container.getElementsByTagName("a")).toHaveLength(4);
   });
 });
+
+// eslint-disable-next-line react-hooks/exhaustive-deps

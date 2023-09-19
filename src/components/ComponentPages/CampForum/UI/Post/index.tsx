@@ -32,7 +32,7 @@ const PostUI = ({
   isLoading,
   postperPage,
   threadDetailsLoading,
-}) => {
+}: any) => {
   return (
     <Fragment>
       <Card

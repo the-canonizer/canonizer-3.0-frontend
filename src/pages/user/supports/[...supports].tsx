@@ -16,6 +16,8 @@ function UserProfile() {
       router.query = queries;
       router?.replace(router, null, { shallow: true });
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

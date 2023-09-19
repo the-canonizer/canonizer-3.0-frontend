@@ -10,7 +10,13 @@ import { Fragment } from "react";
 const { Title, Text } = Typography;
 const { labels } = messages;
 
-function ForgotPasswordUI({ form, onFinish, isModal, closeModal, isScreen }) {
+function ForgotPasswordUI({
+  form,
+  onFinish,
+  isModal,
+  closeModal,
+  isScreen,
+}: any) {
   return (
     <section className={styles.signup_wrapper + " " + styles.textCenter}>
       <Form

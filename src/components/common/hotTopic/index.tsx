@@ -12,14 +12,16 @@ import { getTime } from "src/utils/generalUtility";
 
 const { Text } = Typography;
 
+/* eslint-disable */
 function HotTopic({}) {
+  /* eslint-enable */
   const { topicData } = useSelector((state: RootState) => ({
     topicData: state?.hotTopic?.topicData,
   }));
-  console.log(
-    "🚀 ~ file: index.tsx:18 ~ const{topicData}=useSelector ~ topicData:",
-    topicData
-  );
+  // console.log(
+  //   "🚀 ~ file: index.tsx:18 ~ const{topicData}=useSelector ~ topicData:",
+  //   topicData
+  // );
 
   return (
     <Fragment>
@@ -38,6 +40,7 @@ function HotTopic({}) {
                 ).format("MMMM DD, YYYY")}
               </Text>
             )}
+            {/* eslint-disable */}
             {topicData?.file_full_path && (
               <Link
                 href={{
@@ -57,6 +60,7 @@ function HotTopic({}) {
                 />
               </Link>
             )}
+            {/* eslint-enable  */}
             <div
               className={styles.imageLabel}
               dangerouslySetInnerHTML={{

@@ -18,7 +18,7 @@ window.matchMedia =
 afterEach(cleanup);
 describe("Should render Addnews", () => {
   it("Render without crash", async () => {
-    const { container } = await render(
+    await render(
       <Provider store={store}>
         <CampRecentActivities />
       </Provider>

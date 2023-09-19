@@ -35,7 +35,7 @@ const ThreadListUI = ({
   onEditClick,
   paramsList,
   isLoading,
-}) => {
+}: any) => {
   const [isLog, setIsLog] = useState(false);
   const { isUserAuthenticated } = useAuthentication();
 
@@ -241,7 +241,7 @@ const ThreadListUI = ({
                             onClick={(e) => onEditClick(e, others)}
                             className="linkCss"
                           >
-                            <EditOutlined/>
+                            <EditOutlined />
                           </a>
                         </Tooltip>
                       ) : null}

@@ -9,17 +9,10 @@ import {
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { RouterContext } from "next/dist/shared/lib/router-context";
-import router, { NextRouter } from "next/router";
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import configureMockStore from "redux-mock-store";
+import Router, { NextRouter } from "next/router";
 
 import Registration from "../emailPopup";
-import messages from "../../../../messages";
 import { store } from "src/store";
-import { Form } from "antd";
-import { hideRegistrationModal } from "src/store/slices/uiSlice";
-
-const { labels, placeholders, validations } = messages;
 
 // Mock dependencies
 window.matchMedia =
@@ -61,37 +54,7 @@ function createMockRouter(router: Partial<NextRouter>): NextRouter {
 }
 
 afterEach(cleanup);
-const mockStore = configureMockStore();
-const store1 = mockStore({
-  auth: {
-    authenticated: true,
-    loggedInUser: {
-      is_admin: true,
-    },
-  },
-  topicDetails: {
-    currentCampRecord: {},
-  },
-  filters: {
-    filterObject: {},
-  },
-  forum: {
-    currentThread: null,
-    currentPost: null,
-  },
-});
 
-const obj = {
-  resendOTPForRegistration: jest.fn(() =>
-    Promise.resolve({ status_code: 200, data: [] })
-  ),
-  SendOTPForVerify: jest.fn(() =>
-    Promise.resolve({ status_code: 200, data: [] })
-  ),
-  verifyEmailOnSocial: jest.fn(() =>
-    Promise.resolve({ status_code: 200, data: [] })
-  ),
-};
 jest.mock("src/network/api/userApi", () => ({
   resendOTPForRegistration: jest.fn(() =>
     Promise.resolve({ status_code: 200, data: [] })
@@ -125,11 +88,6 @@ describe("EmailPopup Component page", () => {
     );
 
     // Mock successful API response for SendOTPForVerify
-    const sendOTPForVerifyMock = jest
-      .spyOn(obj, "SendOTPForVerify")
-      .mockResolvedValue({
-        status_code: 200,
-      });
 
     // Fill out email form and submit
     fireEvent.click(screen.getByTestId("submitButton"));
@@ -157,18 +115,13 @@ describe("EmailPopup Component page", () => {
     );
 
     // Mock successful API response for verifyEmailOnSocial
-    const verifyEmailOnSocialMock = jest
-      .spyOn(obj, "verifyEmailOnSocial")
-      .mockResolvedValue({
-        status_code: 200,
-      });
 
     // Fill out OTP form and submit
     // userEvent.type(screen.getByLabelText("OTP"), "123456");
     fireEvent.click(screen.getByTestId("submitButton"));
 
     // Wait for navigation or route push
-    // await waitFor(() => expect(router.push).toHaveBeenCalled());
+    await waitFor(() => expect(Router.push).toHaveBeenCalled());
 
     // Verify that the API was called with the correct data
     // expect(verifyEmailOnSocialMock).toHaveBeenCalledWith(

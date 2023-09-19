@@ -28,7 +28,7 @@ import HeaderMenu from "../HeaderMenu";
 
 const { Header } = Layout;
 
-const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
+const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
   const { loggedInUser, list } = useSelector((state: RootState) => ({
     loggedInUser: state.auth.loggedInUser,
     list: state.notifications.headerNotification.list,
@@ -55,6 +55,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }) => {
     if (!list?.length) {
       getListData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserAuthenticated]);
 
   const onNotifyClick = async (id) => {

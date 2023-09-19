@@ -1,17 +1,17 @@
 import {
-  fireEvent,
+  // fireEvent,
   render,
   screen,
-  waitFor,
+  // waitFor,
 } from "../../../../utils/testUtils";
 import DelegatedSupportCampsUI from "../DelegatedSupportCampsUI/index";
 import messages from "../../../../messages";
-import DelegatedSupportCamps from "..";
-import userEvent from "@testing-library/user-event";
-import { useRouter } from "next/router";
-import { renderHook } from "@testing-library/react-hooks";
-import { useState } from "react";
-import { Input, message } from "antd";
+// import DelegatedSupportCamps from "..";
+// import userEvent from "@testing-library/user-event";
+// import { useRouter } from "next/router";
+// import { renderHook } from "@testing-library/react-hooks";
+// import { useState } from "react";
+// import { Input, message } from "antd";
 
 jest.mock("next/router", () => ({
   useRouter: jest.fn(),
@@ -251,5 +251,3 @@ describe("Delegated Support camps page", () => {
     expect(screen.getAllByText("Current Supported Camps:")).toBeTruthy();
   });
 });
-
-

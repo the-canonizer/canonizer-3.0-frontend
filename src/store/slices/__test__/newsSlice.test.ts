@@ -20,8 +20,5 @@ describe("campNewsSlice", () => {
     expect(newState.campNews.newsToEdit).toEqual(newsToEdit);
   });
 
-  it("should not modify state if action payload is not provided", () => {
-    const newState = campNewsReducer(initialState, setCampNewsToEdit());
-    // expect(newState).toEqual(initialState);
-  });
+ 
 });

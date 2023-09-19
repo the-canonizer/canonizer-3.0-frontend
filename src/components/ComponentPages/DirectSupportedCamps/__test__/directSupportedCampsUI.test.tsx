@@ -257,6 +257,7 @@ describe("Direct Support camps page", () => {
     );
     <input placeholder="Search by topic name" />;
     screen.queryByPlaceholderText(/Search by topic name/i);
+    expect(screen.getByText("OK")).toBeTruthy();
   });
 
   it("render click on topic cross button then two buttons are activated", () => {
