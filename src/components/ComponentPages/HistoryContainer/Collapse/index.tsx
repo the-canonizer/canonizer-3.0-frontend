@@ -412,8 +412,8 @@ function HistoryCollapse({
                     id={`submit-update-${campStatement?.id}`}
                     className={`mr-3 ${styles.campUpdateButton}`}
                     onClick={() =>
-                      campHistoryItems[0]?.is_archive == 1 &&
-                      campHistoryItems[0]?.status == "live"
+                      campStatement?.is_archive == 1 &&
+                      campStatement?.status == "live"
                         ? callManageCampApi()
                         : submitUpdateRedirect(historyOf)
                     }
