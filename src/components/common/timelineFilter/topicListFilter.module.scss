@@ -108,6 +108,7 @@
   align-items: flex-start;
   font-size: 12px;
   flex-direction: column;
+  min-width: 200px;
 
   a {
     color: var(--primary);
