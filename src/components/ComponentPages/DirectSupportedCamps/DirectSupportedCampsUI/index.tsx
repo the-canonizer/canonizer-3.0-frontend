@@ -30,7 +30,7 @@ export default function DirectSupportedCampsUI({
   handleOk,
   handleCancel,
   removeSupportCampsData,
-  statusFlag,
+  // statusFlag,
   directSkeletonIndicator,
   handleSupportedCampsOpen,
   modalPopupText,
@@ -62,7 +62,7 @@ export default function DirectSupportedCampsUI({
       </div>
     );
   };
-  const buttonText = "Save";
+  // const buttonText = "Save";
 
   const tagsOrder = (topic_num, data, tags) => {
     setTagsCampsOrderID(data.topic_num);
@@ -83,6 +83,7 @@ export default function DirectSupportedCampsUI({
       });
       setDirectSupportedCampsList(newData);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tagsDataArrValue]);
 
   const showEmpty = (msg) => {
@@ -112,6 +113,7 @@ export default function DirectSupportedCampsUI({
   };
   useEffect(() => {
     pageChange(currentPage, 5);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [directSupportedCampsList]);
   const pageChange = (pageNumber, pageSize) => {
     setCurrentPage(pageNumber);
@@ -304,6 +306,7 @@ export default function DirectSupportedCampsUI({
                   removeCampLink?.map((val, index) => {
                     return (
                       <Link
+                        key={index}
                         href={{
                           pathname: val.camp_link,
                         }}

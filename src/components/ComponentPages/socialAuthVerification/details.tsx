@@ -10,7 +10,7 @@ export default function Details({
   onUnlinkClick,
   onLinkClick,
   provider,
-}) {
+}: any) {
   const text = "Are you sure to unlink this account?";
 
   return (

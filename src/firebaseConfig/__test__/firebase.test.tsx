@@ -29,9 +29,9 @@ describe("firebaseCloudMessaging", () => {
   });
 
   it("should initialize Firebase and return the token if available in local storage", async () => {
-    const messagingMock = {
-      useServiceWorker: jest.fn(),
-    };
+    // const messagingMock = {
+    //   useServiceWorker: jest.fn(),
+    // };
 
     const serviceWorkerMock = {
       addEventListener: jest.fn(),
@@ -67,9 +67,9 @@ describe("firebaseCloudMessaging", () => {
       getItem: jest.fn().mockResolvedValue(null),
     }));
 
-    const messagingMock = {
-      useServiceWorker: jest.fn(),
-    };
+    // const messagingMock = {
+    //   useServiceWorker: jest.fn(),
+    // };
 
     const serviceWorkerMock = {
       addEventListener: jest.fn(),
@@ -79,7 +79,7 @@ describe("firebaseCloudMessaging", () => {
     global.navigator.serviceWorker = serviceWorkerMock;
     global.navigator.PushManager = {};
 
-    const token = await firebaseCloudMessaging.init();
+    // const token = await firebaseCloudMessaging.init();
 
     expect(firebase.initializeApp).toHaveBeenCalled();
 

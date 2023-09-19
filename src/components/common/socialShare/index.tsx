@@ -14,7 +14,7 @@ import { isServer } from "../../../utils/generalUtility";
 import { Fragment } from "react";
 import { Dropdown, Menu } from "antd";
 
-const SocialShare = ({ campUrl, campName }) => {
+const SocialShare = ({ campUrl, campName }: any) => {
   const campForumDropdownMenu = (
     <Menu className={styles.campForumDropdownMenu}>
       <Menu.Item>

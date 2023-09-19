@@ -3,7 +3,6 @@ import { Fragment, useEffect, useState } from "react";
 import Image from "next/image";
 import {
   FacebookFilled,
-  TwitterOutlined,
   GithubFilled,
   LinkedinFilled,
 } from "@ant-design/icons";

@@ -15,7 +15,7 @@ const Threads = ({
   initialValue,
   isLoading,
   payload,
-}) => {
+}: any) => {
   return (
     <div className="d-flex">
       <ThreadSidebar />

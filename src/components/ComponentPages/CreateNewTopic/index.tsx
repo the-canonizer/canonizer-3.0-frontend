@@ -20,7 +20,7 @@ const CreateNewTopic = ({
   testNickName = [],
   testNamespace = [],
   testInitialValue = {},
-}) => {
+}: any) => {
   const { nameSpaces, filterByScore, filterObject, viewThisVersion } =
     useSelector((state: RootState) => ({
       filterByScore: state.filters?.filterObject?.filterByScore,
@@ -152,6 +152,7 @@ const CreateNewTopic = ({
 
       setOptions(oldOptions);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

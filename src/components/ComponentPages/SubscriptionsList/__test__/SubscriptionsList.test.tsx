@@ -10,10 +10,7 @@ import configureMockStore from "redux-mock-store";
 
 import SubscriptionList from "../";
 
-import {
-  GetAllSubscriptionsList,
-  unsubscribeTopicOrCampAPI,
-} from "src/network/api/userApi";
+import { GetAllSubscriptionsList } from "src/network/api/userApi";
 import { Provider } from "react-redux";
 
 const subsList = [

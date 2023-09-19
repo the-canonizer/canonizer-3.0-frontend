@@ -1,4 +1,4 @@
-import { select, scaleBand, scaleLinear, max, linkHorizontal } from "d3";
+// import { select, scaleBand, scaleLinear, max, linkHorizontal } from "d3";
 
 import React from "react";
 import { render } from "@testing-library/react";
@@ -11,8 +11,12 @@ jest.mock("d3", () => ({
 
 describe("RacingBarChart", () => {
   it("renders without errors", () => {
-    render(<RacingBarChart data={[]} />);
+    const { container } = render(<RacingBarChart data={[]} />);
     // Add assertions as needed
+    expect(container.getElementsByTagName("button")).toHaveLength(0);
+    expect(container.getElementsByTagName("textarea")).toHaveLength(0);
+    expect(container.getElementsByTagName("input")).toHaveLength(0);
+    expect(container.getElementsByTagName("a")).toHaveLength(0);
   });
 
   // Add more test cases for different scenarios
@@ -24,7 +28,13 @@ describe("RacingBarChart", () => {
       { level: 2, score: 20, title: "Title 2", camp_id: "camp2" },
       // Add more data entries as needed
     ];
-    render(<RacingBarChart data={data} />);
+    const { container } = render(<RacingBarChart data={data} />);
+
     // Add assertions to check if the rendered output is correct based on the provided data
+
+    expect(container.getElementsByTagName("button")).toHaveLength(0);
+    expect(container.getElementsByTagName("textarea")).toHaveLength(0);
+    expect(container.getElementsByTagName("input")).toHaveLength(0);
+    expect(container.getElementsByTagName("a")).toHaveLength(0);
   });
 });

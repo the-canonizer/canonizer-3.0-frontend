@@ -2,7 +2,7 @@ import { Checkbox, Tooltip } from "antd";
 import { useRouter } from "next/router";
 import { Fragment } from "react";
 
-const PreventSubCamps = ({ options, onCheckboxChange }) => {
+const PreventSubCamps = ({ options, onCheckboxChange }: any) => {
   const router = useRouter();
   const filterLabels = options.filter((obj) => {
     return obj.id != "is_archive";

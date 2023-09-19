@@ -11,7 +11,7 @@ function IconWrapper({
   onLinkClick,
   provider,
   icon,
-}) {
+}: any) {
   return (
     <Fragment>
       <div className={`${styles.icon_wrapper}`}>

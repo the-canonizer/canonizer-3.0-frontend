@@ -1,9 +1,4 @@
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-} from "../../../../utils/testUtils";
+import { fireEvent, render, screen } from "../../../../utils/testUtils";
 
 import GenerateScript from "../";
 

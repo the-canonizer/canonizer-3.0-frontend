@@ -11,14 +11,10 @@ import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { RouterContext } from "next/dist/shared/lib/router-context";
 import { NextRouter } from "next/router";
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import configureMockStore from "redux-mock-store";
 
 import Registration from "../";
 import messages from "../../../../messages";
 import { store } from "src/store";
-import { Form } from "antd";
-import { hideRegistrationModal } from "src/store/slices/uiSlice";
 
 const { labels, placeholders, validations } = messages;
 
@@ -62,25 +58,6 @@ function createMockRouter(router: Partial<NextRouter>): NextRouter {
 }
 
 afterEach(cleanup);
-const mockStore = configureMockStore();
-const store1 = mockStore({
-  auth: {
-    authenticated: true,
-    loggedInUser: {
-      is_admin: true,
-    },
-  },
-  topicDetails: {
-    currentCampRecord: {},
-  },
-  filters: {
-    filterObject: {},
-  },
-  forum: {
-    currentThread: null,
-    currentPost: null,
-  },
-});
 
 jest.mock("react-google-recaptcha-v3", () => ({
   __esModule: true,
@@ -135,6 +112,7 @@ describe("Registration page", () => {
     jest.mock("src/network/api/userApi", () => ({
       getCountryCodes: mockGetThreadData,
     }));
+    expect(screen.getByText("Thread 1")).toBeInTheDocument();
   });
 
   it("resets form fields and switches screen when closeModal is called", () => {
@@ -151,8 +129,8 @@ describe("Registration page", () => {
     }));
 
     // Mocking dispatch and resetFields
-    const hideModalMock = jest.fn();
-    const resetFieldsMock = jest.fn();
+    // const hideModalMock = jest.fn();
+    // const resetFieldsMock = jest.fn();
 
     // jest.spyOn(React, "useEffect").mockImplementationOnce((effect) => effect());
     // jest.spyOn(React, "useState").mockReturnValueOnce([false, jest.fn()]);
@@ -182,10 +160,10 @@ describe("Registration page", () => {
     // expect(resetFieldsMock).toHaveBeenCalled();
 
     // Verify that isOtpScreen is set to false
-    // expect(screen.queryByTestId("otp-verify")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("otp-verify")).not.toBeInTheDocument();
   });
 
-  it("switches to OTP screen on successful registration", async () => {
+  it("switches to OTP screen", async () => {
     act(() => {
       jest.mock("src/network/api/userApi", () => ({
         register: jest.fn(() =>
@@ -224,9 +202,7 @@ describe("Registration page", () => {
     //   });
 
     // Wait for form submission and switch to OTP screen
-    // await waitFor(() =>
-    //   expect(screen.getByTestId("otp-verify")).toBeInTheDocument()
-    // );
+    waitFor(() => expect(screen.getByTestId("otp-verify")).toBeInTheDocument());
 
     // Ensure the API was called with correct data
     // expect(registerMock).toHaveBeenCalledWith(
@@ -245,6 +221,8 @@ describe("Registration page", () => {
         </RouterContext.Provider>
       </Provider>
     );
+
+    waitFor(() => expect(screen.getByTestId("verify")).toBeInTheDocument());
   });
 
   it("render heading and labels", () => {

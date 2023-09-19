@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 import Notifications from "../";
 import { firebaseCloudMessaging } from "src/firebaseConfig/firebase";
 import { updateFCMToken } from "src/network/api/notificationAPI";
-import localforage from "localforage";
+// import localforage from "localforage";
 import Fav from "../icon";
 
 jest.mock("src/firebaseConfig/firebase", () => ({
@@ -15,7 +15,7 @@ jest.mock("src/firebaseConfig/firebase", () => ({
 }));
 
 jest.mock("src/network/api/notificationAPI", () => ({
-  getLists:jest.fn(),
+  getLists: jest.fn(),
   updateFCMToken: jest.fn(),
 }));
 
@@ -40,9 +40,9 @@ window.matchMedia = jest.fn().mockImplementation((query) => {
   };
 });
 
-const mockMessaging = {
-  getToken: jest.fn().mockResolvedValue("mockToken"),
-};
+// const mockMessaging = {
+//   getToken: jest.fn().mockResolvedValue("mockToken"),
+// };
 
 describe("Notifications", () => {
   let store;
@@ -94,11 +94,13 @@ describe("Notifications", () => {
     const clicked = screen.getByTestId("clickable");
     fireEvent.click(clicked);
 
-    expect(screen.getByText("notifications"));
+    expect(screen.getByText("notifications")).not.toBeInTheDocument();
 
     // Enable push notification switch
     const enableSwitch = screen.getByTestId("enable-text");
-    expect(screen.getByText("Enable push notification"));
+    expect(
+      screen.getByText("Enable push notification")
+    ).not.toBeInTheDocument();
 
     fireEvent.click(enableSwitch);
 
@@ -143,7 +145,9 @@ describe("Notifications", () => {
 
     // Disable push notification switch
     const disableSwitch = screen.getByTestId("enable-text");
-    expect(screen.getByText("Enable push notification"));
+    expect(
+      screen.getByText("Enable push notification")
+    ).not.toBeInTheDocument();
     fireEvent.click(disableSwitch);
 
     // Verify that the token is removed

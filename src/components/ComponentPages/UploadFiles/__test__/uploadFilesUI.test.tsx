@@ -8,9 +8,7 @@ import UploadFileUI from "../UploadFilesUI";
 import messages from "../../../../messages";
 import { cleanup } from "@testing-library/react-hooks";
 import { Empty, Input } from "antd";
-import { Provider, useDispatch } from "react-redux";
-import { showDrageBox } from "src/store/slices/uiSlice";
-import { store } from "src/store";
+// import { showDrageBox } from "src/store/slices/uiSlice";
 
 jest.mock("src/hooks/isUserAuthenticated", () =>
   jest.fn(() => ({ isUserAuthenticated: true }))
@@ -56,10 +54,10 @@ const setFlickringData = jest.fn();
 const toggleFileView = true;
 const setToggleFileView = jest.fn();
 
-const dragBoxShow = () => {
-  const dispatch = useDispatch();
-  dispatch(showDrageBox());
-};
+// const dragBoxShow = () => {
+//   const dispatch = useDispatch();
+//   dispatch(showDrageBox());
+// };
 
 // const listview = <ListView/>
 
@@ -223,13 +221,13 @@ const createNewFolder = {
   updated_at: 161616556,
   user_id: 362,
 };
-function createMockRouter() {
-  return {
-    showDrageBox: true,
-  };
-}
+// function createMockRouter() {
+//   return {
+//     showDrageBox: true,
+//   };
+// }
 describe("Upload File UI Page", () => {
-  it("render Upload Files Page ", () => {
+  it("render Upload Files Page", () => {
     render(
       <UploadFileUI
         input={input}
@@ -269,7 +267,7 @@ describe("Upload File UI Page", () => {
       screen.getAllByText("Create a Folder")[0] as HTMLButtonElement
     ).toBeInTheDocument();
   });
-  it("render upload file(images) is loaded ", () => {
+  it("render upload file(images) is loaded", () => {
     render(
       <UploadFileUI
         input={input}
@@ -347,7 +345,7 @@ describe("Upload File UI Page", () => {
     expect(createFolderbutton).toBeTruthy();
   });
 
-  it("render Create folder button", async () => {
+  it("render Create folder button image grid view", async () => {
     const { getByAltText } = await render(
       <UploadFileUI
         input={input}
@@ -384,7 +382,7 @@ describe("Upload File UI Page", () => {
     expect(image).toHaveAttribute("alt", "gridView");
   });
 
-  it("render Create folder button", async () => {
+  it("render Create folder button image list view", async () => {
     const { getByAltText } = await render(
       <UploadFileUI
         input={input}
@@ -491,9 +489,10 @@ describe("Upload File UI Page", () => {
         setToggleFileView={setToggleFileView}
       />
     );
-    expect(container.getElementsByClassName("threeDOt")).toBeTruthy;
-    expect(container.getElementsByClassName("UploadFile_shortcode_icon__Ixf_x"))
-      .toBeTruthy;
+    expect(container.getElementsByClassName("threeDOt")).toBeTruthy();
+    expect(
+      container.getElementsByClassName("UploadFile_shortcode_icon__Ixf_x")
+    ).toBeTruthy();
   });
 
   it("render list view & grid view icon icon", () => {
@@ -528,7 +527,7 @@ describe("Upload File UI Page", () => {
         setToggleFileView={setToggleFileView}
       />
     );
-    expect(container.getElementsByClassName("top_icon")).toBeTruthy;
+    expect(container.getElementsByClassName("top_icon")).toBeTruthy();
   });
 
   it("render menuList  icon", () => {
@@ -563,7 +562,7 @@ describe("Upload File UI Page", () => {
         setToggleFileView={setToggleFileView}
       />
     );
-    expect(container.getElementsByClassName("menu_item")).toBeTruthy;
+    expect(container.getElementsByClassName("menu_item")).toBeTruthy();
   });
 
   it("render Modal when create folder button  is clicked", () => {
@@ -606,8 +605,8 @@ describe("Upload File UI Page", () => {
     ).toBeInTheDocument();
     expect(screen.getByText(labels.FolderName)).toBeInTheDocument();
   });
-  it("render Modal when create folder button  is clicked", () => {
-    const { getByText } = render(
+  it("render create folder button", () => {
+    render(
       <UploadFileUI
         input={input}
         setInput={setInput}
@@ -653,13 +652,14 @@ describe("Upload File UI Page", () => {
     waitFor(() => {
       const cancel = getByTestId("cancel_btn");
       fireEvent.click(cancel);
+      expect(screen.getByText(createNewFolder.user_id)).toBeInTheDocument();
     });
     // const cancelButton = screen.getByRole('button', { name: /Cancel/i });
 
     // expect(cancelButton).toBeInTheDocument();
   });
 
-  it("render Modal when create folder button  is clicked", () => {
+  it("render reset button", () => {
     const { getByText } = render(
       <UploadFileUI
         input={input}
@@ -696,7 +696,7 @@ describe("Upload File UI Page", () => {
     expect(addbutton).toBeTruthy();
   });
   it("render file type", () => {
-    const { getByText } = render(
+    render(
       <UploadFileUI
         input={input}
         setInput={setInput}
@@ -739,8 +739,8 @@ describe("Upload File UI Page", () => {
       expect(screen.getByText(fileLists[7].file_type)).toBeInTheDocument();
     });
   });
-  it("render file type", () => {
-    const { getByTestId } = render(
+  it("render add_file_btn", () => {
+    const { getByTestId, getByText } = render(
       <UploadFileUI
         input={input}
         setInput={setInput}
@@ -773,6 +773,7 @@ describe("Upload File UI Page", () => {
     );
     const btn = getByTestId("remove_files");
     fireEvent.click(btn);
+    expect(getByText("remove_files")).toBeDefined();
     const btnE1 = getByTestId("cancel_modal");
     fireEvent.click(btnE1);
     const btnE2 = getByTestId("add_AFile_Btn");
@@ -921,40 +922,3 @@ describe("Upload File UI Page", () => {
   });
 });
 afterEach(cleanup);
-describe("TopicsList", () => {
-  it("render", () => {
-    render(
-      <Provider store={store}>
-        <UploadFileUI
-          input={input}
-          setInput={setInput}
-          selectedFolderID={selectedFolderID}
-          fileLists={fileLists}
-          setFileLists={setFileLists}
-          folderFiles={folderFiles}
-          setFolderFiles={setFolderFiles}
-          closeFolder={closeFolder}
-          uploadFun={uploadFun}
-          handleCancel={handleCancel}
-          handle_X_btn={handle_X_btn}
-          addNewFile={addNewFile}
-          Openfolder={Openfolder}
-          removeFiles={removeFiles}
-          uploadFileList={uploadFileList}
-          setUploadFileList={setUploadFileList}
-          removeUploadFiles={removeUploadFiles}
-          GetUploadFileAndFolder={GetUploadFileAndFolder}
-          getFileListFromFolderID={getFileListFromFolderID}
-          setShowCreateFolderModal={setShowCreateFolderModal}
-          showCreateFolderModal={showCreateFolderModal}
-          DeleteConfirmationVisible={DeleteConfirmationVisible}
-          setDeleteConfirmationVisible={setDeleteConfirmationVisible}
-          flickringData={flickringData}
-          setFlickringData={setFlickringData}
-          toggleFileView={toggleFileView}
-          setToggleFileView={setToggleFileView}
-        />
-      </Provider>
-    );
-  });
-});

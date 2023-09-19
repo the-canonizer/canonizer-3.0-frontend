@@ -1,11 +1,11 @@
-import { Card, Typography, Tag } from "antd";
+import { Card, Typography } from "antd";
 import Skeleton from "react-loading-skeleton";
 
 import styles from "./style.module.scss";
 
 const { Title } = Typography;
 
-const SubscriptionCustomSkelton = ({ bodyCount, stylingClass }) => {
+const SubscriptionCustomSkelton = ({ bodyCount, stylingClass }: any) => {
   const cardArray = [];
   if (bodyCount == null || bodyCount == undefined || bodyCount == "") {
     bodyCount = 1;
@@ -41,7 +41,7 @@ const SubscriptionCustomSkelton = ({ bodyCount, stylingClass }) => {
       >
         {[1, 2]?.map((camp, i) => {
           return (
-            <div className={`${styles.tag_btn}`}>
+            <div key={i} className={`${styles.tag_btn}`}>
               <Skeleton
                 height={30}
                 className={`${styles[stylingClass]} ${styles.tag_btn}`}

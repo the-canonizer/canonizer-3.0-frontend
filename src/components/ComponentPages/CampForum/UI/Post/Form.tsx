@@ -9,9 +9,12 @@ import { showLoginModal } from "../../../../../store/slices/uiSlice";
 
 import CustomSkelton from "../../../../common/customSkelton";
 
-const Editorckl = dynamic(() => import("src/components/common/editorck/index"), {
-  ssr: false,
-});
+const Editorckl = dynamic(
+  () => import("src/components/common/editorck/index"),
+  {
+    ssr: false,
+  }
+);
 
 const { Option } = Select;
 const { Text } = Typography;
@@ -63,7 +66,7 @@ const PostForm = ({
   isError = false,
   isLog,
   isLoading,
-}) => {
+}: any) => {
   const dispatch = useDispatch();
   const openModal = () => dispatch(showLoginModal());
 

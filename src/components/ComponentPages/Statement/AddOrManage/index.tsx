@@ -38,7 +38,7 @@ import {
 
 import { getCanonizedNameSpacesApi } from "../../../../network/api/homePageApi";
 // "../../../network/api/homePageApi";
-import SideBarNoFilter from "../../../ComponentPages/Home/SideBarNoFilter";
+
 import CampInfoBar from "../../TopicDetails/CampInfoBar";
 import PreventSubCamps from "../../../common/preventSubCampCheckbox";
 
@@ -95,21 +95,20 @@ const EditorToolbarItems = [
   "redo",
 ];
 
-let htmlToDraft: any = null;
-if (typeof window === "object") {
-  htmlToDraft = require("html-to-draftjs").default;
-}
+// let htmlToDraft: any = null;
+// if (typeof window === "object") {
+//   htmlToDraft = require("html-to-draftjs").default;
+// }
 const { Text } = Typography;
 
-const { campAboutUrlRule, summaryRule, keywordsRule, patterns, validations } =
-  messages;
+const { campAboutUrlRule, summaryRule, keywordsRule, patterns } = messages;
 
 export default function AddOrManage({ add }: any) {
   const { isUserAuthenticated } = useAuthentication();
   const router = useRouter();
   const [editStatementData, setEditStatementData] = useState({ data: null });
-  const [submitIsDisable, setSubmitIsDisable] = useState(true);
-  const [submitIsDisableCheck, setSubmitIsDisableCheck] = useState(true);
+  // const [submitIsDisable, setSubmitIsDisable] = useState(true);
+  // const [submitIsDisableCheck, setSubmitIsDisableCheck] = useState(true);
   const [nickNameData, setNickNameData] = useState([]);
   const [screenLoading, setScreenLoading] = useState(false);
   const [initialFormValues, setInitialFormValues] = useState({});
@@ -127,14 +126,14 @@ export default function AddOrManage({ add }: any) {
   const [options, setOptions] = useState([...messages.preventCampLabel]);
   const [initialOptions, setInitialOptions] = useState([]);
   const [editCampStatementData, setEditCampStatementData] = useState("");
-  const [statementResponseDisable, setStatementResponseDisable] =
-    useState(false);
+  // const [statementResponseDisable, setStatementResponseDisable] =
+  //   useState(false);
 
   const [form] = Form.useForm();
   let objection = router?.query?.statement?.at(0)?.split("-")[1] == "objection";
   let update = router?.query?.statement?.at(0)?.split("-")[1] == "update";
   let manageFormOf = router?.asPath.split("/")[2];
-  let editorTextLength = editorState.replace(/<(?!img\b)[^\s<>]*>/, "").length;
+  // let editorTextLength = editorState.replace(/<(?!img\b)[^\s<>]*>/, "").length;
 
   const onFinish = async (values: any) => {
     setScreenLoading(true);
@@ -250,17 +249,17 @@ export default function AddOrManage({ add }: any) {
       options.map((op) => (reqBody[op.id] = op.checked ? 1 : 0));
       res = await updateCampApi(reqBody);
       if (res.status_code == 200) {
-        setStatementResponseDisable(true);
+        // setStatementResponseDisable(true);
       }
     } else if (manageFormOf == "statement") {
       res = await updateStatementApi(reqBody);
       if (res.status_code == 200) {
-        setStatementResponseDisable(true);
+        // setStatementResponseDisable(true);
       }
     } else if (manageFormOf == "topic") {
       res = await updateTopicApi(reqBody);
       if (res.status_code == 200) {
-        setStatementResponseDisable(true);
+        // setStatementResponseDisable(true);
       }
     }
 
@@ -305,13 +304,13 @@ export default function AddOrManage({ add }: any) {
       setParentCamps(res.data);
     }
   };
-  const isJSON = (str) => {
-    try {
-      return JSON.parse(str) && !!str;
-    } catch (e) {
-      return false;
-    }
-  };
+  // const isJSON = (str) => {
+  //   try {
+  //     return JSON.parse(str) && !!str;
+  //   } catch (e) {
+  //     return false;
+  //   }
+  // };
 
   useEffect(() => {
     setScreenLoading(true);
@@ -396,7 +395,7 @@ export default function AddOrManage({ add }: any) {
           setEditStatementData(res);
         }
       } else {
-        let topic_res = await getCurrentTopicRecordApi({
+        await getCurrentTopicRecordApi({
           topic_num: router?.query?.statement?.at(0).split("-")[0],
           camp_num: router?.query?.statement?.at(1).split("-")[0] ?? "1",
         });
@@ -519,6 +518,8 @@ export default function AddOrManage({ add }: any) {
           pathname: "/login",
           query: { returnUrl: router?.asPath },
         });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   let formTitle = () => {
     let update: string;
@@ -556,6 +557,8 @@ export default function AddOrManage({ add }: any) {
         },
       ]);
     };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const toolTipContent = "This camp is under review";
@@ -585,9 +588,9 @@ export default function AddOrManage({ add }: any) {
       oldOptions[2]?.checked == initialOptions[2]?.checked &&
       oldOptions[2]?.disable == initialOptions[2]?.disable
     ) {
-      setSubmitIsDisableCheck(true);
+      // setSubmitIsDisableCheck(true);
     } else {
-      setSubmitIsDisableCheck(false);
+      // setSubmitIsDisableCheck(false);
     }
   };
   const extra = () => {
@@ -603,7 +606,7 @@ export default function AddOrManage({ add }: any) {
     }
   };
 
-  const onEditorStateChange = (changedata) => {
+  const onEditorStateChange = (changedata: any) => {
     const datachangec = `${changedata}`;
     setEditorState(datachangec);
     if (manageFormOf == "statement") {
@@ -665,9 +668,9 @@ export default function AddOrManage({ add }: any) {
       nowFormStatus.statement = nowFormStatus.statement.trim();
     }
     if (JSON.stringify(nowFormStatus) == JSON.stringify(initialFormStatus)) {
-      setSubmitIsDisable(true);
+      // setSubmitIsDisable(true);
     } else {
-      setSubmitIsDisable(false);
+      // setSubmitIsDisable(false);
     }
   };
 
@@ -675,6 +678,8 @@ export default function AddOrManage({ add }: any) {
     if (manageFormOf == "topic") {
       fetchNameSpaceList();
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [originalData]);
 
   return (
@@ -791,7 +796,7 @@ export default function AddOrManage({ add }: any) {
                               disabled={objection}
                               optionFilterProp="children"
                               onChange={() => {
-                                setSubmitIsDisable(false);
+                                // setSubmitIsDisable(false);
                               }}
                             >
                               {parentCamp.map((camp) =>

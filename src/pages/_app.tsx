@@ -1,7 +1,6 @@
 import React, { Fragment } from "react";
 import App, { AppContext, AppInitialProps } from "next/app";
 import { Provider } from "react-redux";
-import scriptLoader from "react-async-script-loader";
 import { CookiesProvider } from "react-cookie";
 
 import "antd/dist/antd.css";
@@ -272,7 +271,7 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
   return { ...appProps, meta: metaData, returnURL: returnData };
 };
 
-const googleAPIKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
+// const googleAPIKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
 //export default wrapper.withRedux(MyApp);
 // export default scriptLoader([
 //   `https://maps.googleapis.com/maps/api/js?key=${googleAPIKey}&libraries=places`,
