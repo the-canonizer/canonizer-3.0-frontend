@@ -44,6 +44,7 @@ export default function CanonVideos() {
         { shallow: true }
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const replaceString = (text: string, reverse: boolean = false) => {
@@ -168,6 +169,8 @@ export default function CanonVideos() {
       setLoader(false);
     }
     getTreeApiCall();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function updateTime() {
@@ -199,6 +202,7 @@ export default function CanonVideos() {
         );
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [topic]);
 
   useEffect(() => {
@@ -209,6 +213,7 @@ export default function CanonVideos() {
         node.currentTime = Number(ct);
       }
     }, 800);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function addQueryParams(
@@ -221,6 +226,7 @@ export default function CanonVideos() {
     if (t) {
       router.query.t = t;
     } else {
+      // eslint-disable-next-line no-unused-vars
       const { t, ...rest } = router?.query;
       router.query = rest;
     }

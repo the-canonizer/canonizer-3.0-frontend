@@ -11,8 +11,6 @@ import {
   GetUserProfileInfo,
   UpdateUserProfileInfo,
   GetMobileCarrier,
-  SendOTP,
-  VerifyOTP,
   GetAlgorithmsList,
   GetLanguageList,
 } from "../../../network/api/userApi";
@@ -347,6 +345,7 @@ const ProfileInfo = () => {
           return await fetchUserProfileInfo(), setUserProfileSkeleton(false);
         });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserAuthenticated]);
 
   return (

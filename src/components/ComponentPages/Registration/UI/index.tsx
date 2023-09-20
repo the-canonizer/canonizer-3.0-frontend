@@ -1,4 +1,4 @@
-import React, { createRef, useEffect, Fragment } from "react";
+import React, { Fragment } from "react";
 import { useRouter } from "next/router";
 import { Row, Col, Typography, Form, Input, Button, Select } from "antd";
 import { CloseCircleOutlined, ArrowRightOutlined } from "@ant-design/icons";
@@ -25,7 +25,7 @@ function RegistrationUi({
   closeModal,
   country,
   openLogin,
-}) {
+}: any) {
   const router = useRouter();
 
   const prefixSelector = (

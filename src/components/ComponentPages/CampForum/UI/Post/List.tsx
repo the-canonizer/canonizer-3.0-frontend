@@ -19,7 +19,7 @@ const CreateCampFormUI = ({
   onEditClick,
   onDeleteClick,
   post,
-}) => {
+}: any) => {
   const router = useRouter();
 
   return (

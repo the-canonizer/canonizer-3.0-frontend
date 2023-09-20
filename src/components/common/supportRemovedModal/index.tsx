@@ -22,7 +22,7 @@ const SupportRemovedModal = ({
   form,
   isAdd = false,
   isOrderChange = false,
-}) => {
+}: any) => {
   const reasons = useSelector(
     (state: RootState) => state?.topicDetails?.removedReasons
   );
@@ -42,7 +42,7 @@ const SupportRemovedModal = ({
     setReasons(reasons);
   }, [reasons]);
 
-  const onSelectChange = (value, option) => {
+  const onSelectChange = (value) => {
     setSelectedValue(value);
   };
 

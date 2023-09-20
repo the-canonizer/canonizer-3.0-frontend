@@ -25,18 +25,18 @@ import {
   getCurrentTopicRecordApi,
 } from "../../../network/api/campDetailApi";
 import { setThread, setPost } from "../../../store/slices/campForumSlice";
-import CampInfoBar from "../TopicDetails/CampInfoBar";
+// import CampInfoBar from "../TopicDetails/CampInfoBar";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 const ForumComponent = ({
   threadlist = [],
   postlist = { items: [], total_rows: 0 },
-}) => {
+}: any) => {
   const router = useRouter();
 
   const { isUserAuthenticated } = useIsUserAuthenticated();
   const didMount = useRef(false);
-  const didMountList = useRef(false);
+  // const didMountList = useRef(false);
   const didMountPost = useRef(false);
 
   const [paramsList, setParamsList] = useState({});
@@ -191,6 +191,7 @@ const ForumComponent = ({
     };
 
     setParamsList(paramsLists);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [campRecord]);
 
   // start thread List section
@@ -433,6 +434,7 @@ const ForumComponent = ({
     if (threadId) {
       threadDetails(threadId);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   useEffect(() => {
@@ -444,6 +446,7 @@ const ForumComponent = ({
     } else {
       didMountPost.current = true;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router?.query?.id, ppage]);
 
   const onContentChange = (v) => {

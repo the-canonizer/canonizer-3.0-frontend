@@ -18,5 +18,7 @@ export const getVideosContentApi = async () => {
     );
 
     return videosData;
-  } catch (error) {}
+  } catch (error) {
+    //
+  }
 };

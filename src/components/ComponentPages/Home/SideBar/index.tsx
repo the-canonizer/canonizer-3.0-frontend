@@ -78,7 +78,7 @@ export default function HomeSideBar({
     <Fragment>
       {" "}
       {!router?.asPath?.includes("topic") ? (
-        <TopicsFilter onCreateCamp={onCreateCamp} />
+        <TopicsFilter />
       ) : (
         <Fragment>
           <Button

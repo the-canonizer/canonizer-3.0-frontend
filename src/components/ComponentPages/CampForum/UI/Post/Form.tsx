@@ -66,7 +66,7 @@ const PostForm = ({
   isError = false,
   isLog,
   isLoading,
-}) => {
+}: any) => {
   const dispatch = useDispatch();
   const openModal = () => dispatch(showLoginModal());
 

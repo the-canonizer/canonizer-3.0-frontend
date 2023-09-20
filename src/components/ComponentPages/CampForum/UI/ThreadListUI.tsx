@@ -35,7 +35,7 @@ const ThreadListUI = ({
   onEditClick,
   paramsList,
   isLoading,
-}) => {
+}: any) => {
   const [isLog, setIsLog] = useState(false);
   const { isUserAuthenticated } = useAuthentication();
 

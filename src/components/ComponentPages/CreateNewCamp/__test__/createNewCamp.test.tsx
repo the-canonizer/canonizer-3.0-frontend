@@ -7,11 +7,7 @@ import configureMockStore from "redux-mock-store";
 import CreateNewCamp from "..";
 import messages from "../../../../messages";
 
-import {
-  getAllUsedNickNames,
-  getAllCampNickNames,
-  getAllParentsCamp,
-} from "src/network/api/campDetailApi";
+import { getAllUsedNickNames } from "src/network/api/campDetailApi";
 
 const { labels } = messages;
 

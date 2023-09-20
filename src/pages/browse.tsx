@@ -24,6 +24,8 @@ const BrowsePage = ({ current_date }: any) => {
       router.query = rest;
       router?.replace(router, null, { shallow: true });
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

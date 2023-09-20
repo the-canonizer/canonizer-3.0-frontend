@@ -5,7 +5,7 @@ import styles from "./Social.module.scss";
 
 import messages from "../../../messages";
 
-const MultiUserModalForm = ({ visible, onFinish, closeModal, users }) => {
+const MultiUserModalForm = ({ visible, onFinish, closeModal, users }: any) => {
   const [form] = Form.useForm();
   return (
     <Fragment>

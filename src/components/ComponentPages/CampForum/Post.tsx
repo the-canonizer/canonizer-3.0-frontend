@@ -25,7 +25,7 @@ const Threads = ({
   postperPage,
   threadDetailsLoading,
   payload,
-}) => (
+}: any) => (
   <div className="d-flex">
     <ThreadSidebar />
     <div className="pageContentWrap">

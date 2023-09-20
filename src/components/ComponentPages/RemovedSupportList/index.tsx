@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Typography } from "antd";
 
 import SubscriptionsListUI from "./UI";
 import CustomSkelton from "../../common/customSkelton";
@@ -10,9 +9,7 @@ import {
   getAllRemovedReasons,
 } from "src/network/api/campDetailApi";
 
-const { Text } = Typography;
-
-function RemovedSupportList({ isTestData = [] }) {
+function RemovedSupportList({ isTestData = [] }: any) {
   const [subscriptionsList, setSubscriptionsList] = useState(isTestData);
   const [isLoading, setIsLoading] = useState(false);
   const [page] = useState(1);
@@ -60,7 +57,7 @@ function RemovedSupportList({ isTestData = [] }) {
     setIsLoading(false);
   };
 
-  const onNickNameChange = (id, option) => {
+  const onNickNameChange = (id) => {
     setSelectedNikname(id);
   };
 

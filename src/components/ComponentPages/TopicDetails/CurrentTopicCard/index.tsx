@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { Descriptions, Collapse } from "antd";
 import { useSelector } from "react-redux";
 import moment from "moment";
+import Image from "next/image";
 
 import styles from "../topicDetails.module.scss";
 
@@ -17,7 +18,7 @@ import CustomSkelton from "src/components/common/customSkelton";
 
 const { Panel } = Collapse;
 
-const CurrentTopicCard = ({ loadingIndicator, backGroundColorClass }) => {
+const CurrentTopicCard = ({ loadingIndicator, backGroundColorClass }: any) => {
   const router = useRouter();
   const { topicRecord } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
@@ -46,7 +47,14 @@ const CurrentTopicCard = ({ loadingIndicator, backGroundColorClass }) => {
           <>
             <h3>{K?.exceptionalMessages?.topicRecordHeading}</h3>
             {topicRecord?.in_review_changes > 0 ? (
-              <img className="change-icon" src="/images/change-icon.svg" />
+              // <img className="change-icon" src="/images/change-icon.svg" />
+              <Image
+                className="change-icon"
+                width={20}
+                height={20}
+                src="/images/change-icon.svg"
+                alt=""
+              />
             ) : (
               ""
             )}

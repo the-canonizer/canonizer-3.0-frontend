@@ -7,10 +7,6 @@ import configureMockStore from "redux-mock-store";
 
 import SocialLoginCallback from "../";
 import { store } from "src/store";
-import {
-  socialLoginCallback,
-  socialLoginLinkUser,
-} from "src/network/api/userApi";
 
 import Modals from "src/components/ComponentPages/Registration/registrationModal";
 import { act } from "react-dom/test-utils";

@@ -21,7 +21,6 @@ import {
   MoreOutlined,
   FileTextOutlined,
   HeartOutlined,
-  DoubleRightOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
 import {
@@ -48,7 +47,7 @@ const CodeIcon = () => (
 const InfoBar = ({
   payload = null,
   isTopicPage = false,
-  isTopicHistoryPage = false,
+  // isTopicHistoryPage = false,
   getCheckSupportStatus = null,
   onCreateCamp = () => {},
 }: any) => {
@@ -56,11 +55,11 @@ const InfoBar = ({
 
   const dispatch = useDispatch();
   const [loadingIndicator, setLoadingIndicator] = useState(false);
-  const [payloadData, setPayloadData] = useState(payload);
-  const [breadCrumbRes, setBreadCrumbRes] = useState({
-    topic_name: "",
-    bread_crumb: [],
-  });
+  // const [payloadData, setPayloadData] = useState(payload);
+  // const [breadCrumbRes, setBreadCrumbRes] = useState({
+  //   topic_name: "",
+  //   bread_crumb: [],
+  // });
   const [isCampBtnVisible, setIsCampBtnVisible] = useState(false);
   const didMount = useRef(false);
   const router = useRouter();
@@ -73,7 +72,6 @@ const InfoBar = ({
     asofdate,
     asof,
     algorithm,
-    viewThisVersionCheck,
     currentCampNode,
     tree,
     campExist,
@@ -85,7 +83,6 @@ const InfoBar = ({
     asofdate: state.filters?.filterObject?.asofdate,
     algorithm: state.filters?.filterObject?.algorithm,
     asof: state?.filters?.filterObject?.asof,
-    viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
     currentCampNode: state?.filters?.selectedCampNode,
     tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
     campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
@@ -98,7 +95,7 @@ const InfoBar = ({
     topicRecord?.topicSubscriptionId
   );
   useEffect(() => {
-    setPayloadData(payload);
+    // setPayloadData(payload);
     async function getBreadCrumbApiCall() {
       setLoadingIndicator(true);
       let reqBody = {
@@ -110,8 +107,8 @@ const InfoBar = ({
             ? Date.now() / 1000
             : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
       };
-      let res = await getCampBreadCrumbApi(reqBody);
-      setBreadCrumbRes(res?.data);
+      await getCampBreadCrumbApi(reqBody);
+      // setBreadCrumbRes(res?.data);
       setLoadingIndicator(false);
     }
     if (payload && Object.keys(payload).length > 0) {
@@ -127,12 +124,16 @@ const InfoBar = ({
         setTopicSubscriptionID(topicRecord?.topicSubscriptionId);
       } else didMount.current = true;
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [campRecord?.subscriptionId, topicRecord?.topicSubscriptionId]);
 
   useEffect(() => {
     if (isTopicPage) {
       dispatch(setManageSupportStatusCheck(false));
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleClickSupportCheck = () => {
@@ -140,19 +141,19 @@ const InfoBar = ({
   };
 
   const onCampForumClick = () => {
-    const topicName = topicRecord?.topic_name?.replaceAll(" ", "-");
-    const campName = campRecord?.camp_name?.replaceAll(" ", "-");
+    // const topicName = topicRecord?.topic_name?.replaceAll(" ", "-");
+    // const campName = campRecord?.camp_name?.replaceAll(" ", "-");
     router?.push({
       pathname: `/forum/${router?.query?.camp[0]}/${router?.query?.camp[1]}/threads`,
     });
   };
 
-  const eventLinePath = () => {
-    router?.push(router?.asPath.replace("topic", "eventline"));
-  };
-  const eventLinePath2 = () => {
-    router.push(router.asPath.replace("support", "eventline"));
-  };
+  // const eventLinePath = () => {
+  //   router?.push(router?.asPath.replace("topic", "eventline"));
+  // };
+  // const eventLinePath2 = () => {
+  //   router.push(router.asPath.replace("support", "eventline"));
+  // };
 
   const campOrTopicScribe = async (isTopic: Boolean) => {
     const reqBodyForService = {

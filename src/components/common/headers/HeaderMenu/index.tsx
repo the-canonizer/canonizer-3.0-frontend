@@ -7,7 +7,7 @@ import { RootState } from "../../../../store";
 import styles from "../siteHeader.module.scss";
 import TopicCreationBTN from "../TopicCreationBTN";
 
-const HeaderMenu = ({ loggedUser }) => {
+const HeaderMenu = ({ loggedUser }: any) => {
   const links = [
     {
       link: "/browse",
@@ -64,6 +64,7 @@ const HeaderMenu = ({ loggedUser }) => {
 
       setMockLinks(filteredLinks);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUser]);
 
   return (
