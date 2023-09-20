@@ -74,7 +74,11 @@ const SettingsUI = () => {
                 }}
               />
             </div>
-            <Button data-testid="reset" onClick={() => setSearch("")} className={styles.btn}>
+            <Button
+              data-testid="reset"
+              onClick={() => setSearch("")}
+              className={styles.btn}
+            >
               Reset
             </Button>
           </div>
