@@ -10,13 +10,11 @@ import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
 import { Dropdown, Menu, Button } from "antd";
 import K from "../../../../constants";
-import moment from "moment";
 import CustomSkelton from "../../../common/customSkelton";
 
 import { setManageSupportStatusCheck } from "../../../../store/slices/campDetailSlice";
 
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
-import { getCampBreadCrumbApi } from "../../../../network/api/campDetailApi";
 import {
   MoreOutlined,
   FileTextOutlined,
@@ -47,7 +45,6 @@ const CodeIcon = () => (
 const InfoBar = ({
   payload = null,
   isTopicPage = false,
-  // isTopicHistoryPage = false,
   getCheckSupportStatus = null,
   onCreateCamp = () => {},
 }: any) => {
@@ -55,11 +52,6 @@ const InfoBar = ({
 
   const dispatch = useDispatch();
   const [loadingIndicator, setLoadingIndicator] = useState(false);
-  // const [payloadData, setPayloadData] = useState(payload);
-  // const [breadCrumbRes, setBreadCrumbRes] = useState({
-  //   topic_name: "",
-  //   bread_crumb: [],
-  // });
   const [isCampBtnVisible, setIsCampBtnVisible] = useState(false);
   const didMount = useRef(false);
   const router = useRouter();
@@ -94,28 +86,6 @@ const InfoBar = ({
   const [topicSubscriptionID, setTopicSubscriptionID] = useState(
     topicRecord?.topicSubscriptionId
   );
-  useEffect(() => {
-    // setPayloadData(payload);
-    async function getBreadCrumbApiCall() {
-      setLoadingIndicator(true);
-      let reqBody = {
-        topic_num: payload?.topic_num,
-        camp_num: payload?.camp_num,
-        as_of: router?.pathname == "/topic/[...camp]" ? asof : "default",
-        as_of_date:
-          asof == "default" || asof == "review"
-            ? Date.now() / 1000
-            : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
-      };
-      await getCampBreadCrumbApi(reqBody);
-      // setBreadCrumbRes(res?.data);
-      setLoadingIndicator(false);
-    }
-    if (payload && Object.keys(payload).length > 0) {
-      getBreadCrumbApiCall();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router?.asPath, asofdate]);
 
   useEffect(() => {
     if (isTopicPage) {
@@ -141,19 +111,10 @@ const InfoBar = ({
   };
 
   const onCampForumClick = () => {
-    // const topicName = topicRecord?.topic_name?.replaceAll(" ", "-");
-    // const campName = campRecord?.camp_name?.replaceAll(" ", "-");
     router?.push({
       pathname: `/forum/${router?.query?.camp[0]}/${router?.query?.camp[1]}/threads`,
     });
   };
-
-  // const eventLinePath = () => {
-  //   router?.push(router?.asPath.replace("topic", "eventline"));
-  // };
-  // const eventLinePath2 = () => {
-  //   router.push(router.asPath.replace("support", "eventline"));
-  // };
 
   const campOrTopicScribe = async (isTopic: Boolean) => {
     const reqBodyForService = {
@@ -284,33 +245,6 @@ const InfoBar = ({
           </Link>
         )}
       </Menu.Item>
-      {/* {isCampBtnVisible &&
-      currentCampNode?._isDisabled == 0 &&
-      currentCampNode?.parentIsOneLevel == 0 &&
-      campRecord?.is_archive == 0 ? (
-        <Tooltip
-          title={
-            tree && !tree["1"]?.is_valid_as_of_time
-              ? K.exceptionalMessages.createNewCampTooltipMsg
-              : ""
-          }
-        >
-          <Menu.Item
-            icon={<i className="icon-camp"></i>}
-            className={styles.createCampBtn}
-            onClick={onCreateCamp}
-            disabled={
-              (tree && !tree["1"]?.is_valid_as_of_time) ||
-              (campExist && !campExist?.camp_exist)
-                ? true
-                : false
-            }
-            key="create-camp-btn"
-          >
-            Create New Camp
-          </Menu.Item>
-        </Tooltip>
-      ) : null} */}
       <Menu.Item icon={<i className="icon-camp"></i>}>
         {isTopicPage && (
           <Link
@@ -398,12 +332,8 @@ const InfoBar = ({
     </Menu>
   );
 
-  // const campRoute = () => {
-  //   router?.push("/create/topic");
-  // };
   useEffect(() => {
     if (router?.pathname.includes("/topic/")) {
-      // setIsPanelCollapse(true);
       setIsCampBtnVisible(true);
     }
   }, [router?.pathname]);
@@ -418,9 +348,6 @@ const InfoBar = ({
             className={`${styles.topicDetailContentHead_Left} ${styles.rightPanel}`}
           >
             <div className="btnsWrap">
-              {/* <Button size="large" className="mb-3 btn" onClick={campRoute}>
-                <i className="icon-topic"></i> Create Topic
-              </Button> */}
               {isCampBtnVisible &&
               currentCampNode?._isDisabled == 0 &&
               currentCampNode?.parentIsOneLevel == 0 &&
@@ -495,7 +422,6 @@ const InfoBar = ({
                         skeltonFor="list"
                         bodyCount={1}
                         stylingClass="header-skeleton-btn"
-                        // stylingClass="skeleton-item"
                         isButton={false}
                       />
                     ) : (
