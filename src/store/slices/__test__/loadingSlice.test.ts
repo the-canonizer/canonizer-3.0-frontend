@@ -13,6 +13,4 @@ describe("loadingSlice", () => {
     const newState = loadingReducer(initialState, setLoadingAction(true));
     expect(newState.loading).toEqual(true);
   });
-
-
 });

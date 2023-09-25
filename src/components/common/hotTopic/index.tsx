@@ -12,16 +12,10 @@ import { getTime } from "src/utils/generalUtility";
 
 const { Text } = Typography;
 
-/* eslint-disable */
-function HotTopic({}) {
-  /* eslint-enable */
+function HotTopic() {
   const { topicData } = useSelector((state: RootState) => ({
     topicData: state?.hotTopic?.topicData,
   }));
-  // console.log(
-  //   "🚀 ~ file: index.tsx:18 ~ const{topicData}=useSelector ~ topicData:",
-  //   topicData
-  // );
 
   return (
     <Fragment>
