@@ -148,13 +148,6 @@ const InfoBar = ({
     });
   };
 
-  // const eventLinePath = () => {
-  //   router?.push(router?.asPath.replace("topic", "eventline"));
-  // };
-  // const eventLinePath2 = () => {
-  //   router.push(router.asPath.replace("support", "eventline"));
-  // };
-
   const campOrTopicScribe = async (isTopic: Boolean) => {
     const reqBodyForService = {
       topic_num: +router?.query?.camp?.[0]?.split("-")[0],
