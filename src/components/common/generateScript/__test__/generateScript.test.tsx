@@ -89,7 +89,5 @@ describe("Generate Script Component", () => {
 
     const copyBtn = screen.getByTestId("btn");
     userEvent.click(copyBtn);
-
-    screen.debug();
   });
 });

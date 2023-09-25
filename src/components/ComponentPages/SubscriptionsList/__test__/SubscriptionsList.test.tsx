@@ -181,8 +181,6 @@ describe("Subscriptions List Component", () => {
 
     userEvent.click(removebtn[0]);
     userEvent.click(rmcancelbtn);
-
-    screen.debug();
   });
 
   it("data render camp remove", async () => {

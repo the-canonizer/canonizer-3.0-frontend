@@ -1324,7 +1324,6 @@ describe("ForumComponent", () => {
     const editBTN2 = container.getElementsByClassName("linkCss");
     expect(editBTN2.length).toEqual(4);
 
-    screen.debug(container);
     fireEvent.click(backBTN);
     fireEvent.click(deleteBTN);
 
