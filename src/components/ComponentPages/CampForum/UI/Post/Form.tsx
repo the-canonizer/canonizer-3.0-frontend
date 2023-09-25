@@ -199,7 +199,7 @@ const PostForm = ({
               className={`${styles.cancel_btn}`}
               onClick={onCancel}
               id="back-btn"
-             data-testid="back-btn"
+              data-testid="back-btn"
             >
               Back
             </Button>

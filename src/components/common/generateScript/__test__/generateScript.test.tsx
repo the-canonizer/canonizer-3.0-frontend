@@ -86,7 +86,7 @@ describe("Generate Script Component", () => {
     expect(screen.getByText("Copy Script")).toBeInTheDocument();
     expect(screen.getByText("Cancel")).toBeInTheDocument();
     expect(screen.getByText("Copy")).toBeInTheDocument();
-    
+
     const copyBtn = screen.getByTestId("btn");
     userEvent.click(copyBtn);
 
