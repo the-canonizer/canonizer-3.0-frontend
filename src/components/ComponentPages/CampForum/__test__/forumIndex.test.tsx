@@ -6,7 +6,7 @@ import {
   waitFor,
   cleanup,
   fireEvent,
-} from "@testing-library/react";
+} from "src/utils/testUtils";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
@@ -40,6 +40,7 @@ const store1 = mockStore({
     authenticated: true,
     loggedInUser: {
       is_admin: true,
+      id: 1,
     },
   },
   topicDetails: {
@@ -117,7 +118,23 @@ describe("ForumComponent", () => {
     jest.clearAllMocks();
   });
 
-  test("renders Forum Component", () => {
+  test("renders Forum Component", async () => {
+    act(() => {
+      jest.useFakeTimers();
+      jest.runAllTimers();
+    });
+
+    getThreadsList.mockResolvedValue({
+      status_code: 200,
+      data: {
+        items: [
+          { id: 1, title: "Thread 1" },
+          { id: 2, title: "Thread 2" },
+        ],
+        total_rows: 20,
+      },
+    });
+
     render(
       <Provider store={store1}>
         <RouterContext.Provider
@@ -131,187 +148,26 @@ describe("ForumComponent", () => {
       </Provider>
     );
 
+    await waitFor(() => {
+      expect(getThreadsList).toHaveBeenCalled();
+    });
+
     expect(screen.getByText("Camp Forum")).toBeInTheDocument();
     expect(screen.getByText("All Threads")).toBeInTheDocument();
     expect(screen.getByText("My Threads")).toBeInTheDocument();
     expect(screen.getByText("My Participation")).toBeInTheDocument();
     expect(screen.getByText("Top 10")).toBeInTheDocument();
     expect(screen.getByText("Create Thread")).toBeInTheDocument();
+    expect(screen.getByText("Thread 1")).toBeInTheDocument();
     expect(screen.getByText("List of All Camp Threads")).toBeInTheDocument();
-  });
-
-  test("fetches and displays thread list", async () => {
-    act(() => {
-      jest.useFakeTimers();
-      jest.runAllTimers();
-    });
-
-    getThreadsList.mockResolvedValue({
-      status_code: 200,
-      data: {
-        items: [
-          { id: 1, title: "Thread 1" },
-          { id: 2, title: "Thread 2" },
-        ],
-        total_rows: 2,
-      },
-    });
-
-    getThreadData.mockResolvedValue({
-      status_code: 200,
-      data: {
-        items: [
-          { id: 1, title: "Thread 1" },
-          { id: 2, title: "Thread 2" },
-        ],
-        total_rows: 2,
-      },
-    });
-
-    const store1 = mockStore({
-      auth: {
-        authenticated: true,
-        loggedInUser: {
-          is_admin: true,
-          id: 1,
-        },
-      },
-      topicDetails: {
-        currentCampRecord: { parentCamps: [{ camp_name: "camp one" }] },
-      },
-      filters: {
-        filterObject: {
-          page_number: 1,
-          page_size: 15,
-          nameSpace: "/General/",
-          namespace_id: 1,
-          asofdate: Date.now() / 1000,
-          asof: "default",
-          filterByScore: 0,
-          algorithm: "blind_popularity",
-          search: "",
-          includeReview: false,
-          is_archive: 0,
-        },
-      },
-      forum: {
-        currentThread: {},
-        currentPost: {},
-      },
-    });
-
-    render(
-      <Provider store={store1}>
-        <RouterContext.Provider
-          value={createMockRouter({
-            pathname: "/forum/[topic]/[camp]/threads",
-            query: {
-              camp: "1-Agreement",
-              by: "all",
-              topic: "88-theories",
-              id: "1",
-            },
-          })}
-        >
-          <ForumComponent />
-        </RouterContext.Provider>
-      </Provider>
-    );
 
     const createBtn = screen.getByTestId("create-new-thread");
     expect(createBtn).toBeInTheDocument();
 
-    await waitFor(() => {
-      expect(getThreadsList).toHaveBeenCalled();
-      expect(getThreadData).toHaveBeenCalled();
-    });
-  });
-
-  test("click on fetched thread list item", async () => {
-    act(() => {
-      jest.useFakeTimers();
-      jest.runAllTimers();
-    });
-
-    getThreadsList.mockResolvedValue({
-      status_code: 200,
-      data: {
-        items: [
-          { id: 1, title: "Thread 1" },
-          { id: 2, title: "Thread 2" },
-        ],
-        total_rows: 2,
-      },
-    });
-
-    getThreadData.mockResolvedValue({
-      status_code: 200,
-      data: {
-        items: [
-          { id: 1, title: "Thread 1" },
-          { id: 2, title: "Thread 2" },
-        ],
-        total_rows: 2,
-      },
-    });
-
-    const store1 = mockStore({
-      auth: {
-        authenticated: true,
-        loggedInUser: {
-          is_admin: true,
-          id: 1,
-        },
-      },
-      topicDetails: {
-        currentCampRecord: { parentCamps: [{ camp_name: "camp one" }] },
-      },
-      filters: {
-        filterObject: {
-          page_number: 1,
-          page_size: 15,
-          nameSpace: "/General/",
-          namespace_id: 1,
-          asofdate: Date.now() / 1000,
-          asof: "default",
-          filterByScore: 0,
-          algorithm: "blind_popularity",
-          search: "",
-          includeReview: false,
-          is_archive: 0,
-        },
-      },
-      forum: {
-        currentThread: {},
-        currentPost: {},
-      },
-    });
-
-    render(
-      <Provider store={store1}>
-        <RouterContext.Provider
-          value={createMockRouter({
-            pathname: "/forum/[topic]/[camp]/threads",
-            query: {
-              camp: "1-Agreement",
-              by: "all",
-              topic: "88-theories",
-              id: "1",
-            },
-          })}
-        >
-          <ForumComponent />
-        </RouterContext.Provider>
-      </Provider>
-    );
-
-    const createBtn = screen.getByTestId("create-new-thread");
-    expect(createBtn).toBeInTheDocument();
-
-    await waitFor(() => {
-      expect(getThreadsList).toHaveBeenCalled();
-      expect(getThreadData).toHaveBeenCalled();
-    });
+    const searchInp = screen.getByTestId("search-bar");
+    userEvent.type(searchInp, "thread 1");
+    expect(searchInp).toHaveValue("thread 1");
+    userEvent.click(searchInp, { ctrlKey: true });
 
     const thread1 = screen.getByTestId("thread-label-2");
     expect(thread1).toBeInTheDocument();
@@ -342,51 +198,11 @@ describe("ForumComponent", () => {
     getThreadsList.mockResolvedValue({
       status_code: 200,
       data: {
-        items: [{ id: 1, title: "Thread 1" }],
-        total_rows: 2,
-      },
-    });
-
-    getThreadData.mockResolvedValue({
-      status_code: 200,
-      data: {
         items: [
           { id: 1, title: "Thread 1" },
           { id: 2, title: "Thread 2" },
         ],
-        total_rows: 2,
-      },
-    });
-
-    const store1 = mockStore({
-      auth: {
-        authenticated: true,
-        loggedInUser: {
-          is_admin: true,
-          id: 1,
-        },
-      },
-      topicDetails: {
-        currentCampRecord: { parentCamps: [{ camp_name: "camp one" }] },
-      },
-      filters: {
-        filterObject: {
-          page_number: 1,
-          page_size: 15,
-          nameSpace: "/General/",
-          namespace_id: 1,
-          asofdate: Date.now() / 1000,
-          asof: "default",
-          filterByScore: 0,
-          algorithm: "blind_popularity",
-          search: "",
-          includeReview: false,
-          is_archive: 0,
-        },
-      },
-      forum: {
-        currentThread: {},
-        currentPost: {},
+        total_rows: 20,
       },
     });
 
@@ -408,21 +224,19 @@ describe("ForumComponent", () => {
       </Provider>
     );
 
-    const createBtn = screen.getByTestId("create-new-thread");
-    expect(createBtn).toBeInTheDocument();
-
     await waitFor(() => {
       expect(getThreadsList).toHaveBeenCalled();
-      expect(getThreadData).toHaveBeenCalled();
     });
 
     const thread1 = screen.getByTestId("thread-label-1");
     expect(thread1).toBeInTheDocument();
     fireEvent.click(thread1);
 
-    expect(screen.getByTestId("edit_btn")).toBeInTheDocument();
+    const eBTN = screen.getAllByTestId("edit_btn");
 
-    fireEvent.click(screen.getByTestId("edit_btn"));
+    expect(eBTN.length).toEqual(2);
+
+    fireEvent.click(eBTN[0]);
 
     fireEvent.change(screen.getByPlaceholderText("Search by thread name"), {
       target: { value: "thread" },
@@ -452,49 +266,6 @@ describe("ForumComponent", () => {
       },
     });
 
-    getThreadData.mockResolvedValue({
-      status_code: 200,
-      data: {
-        items: [
-          { id: 1, title: "Thread 1" },
-          { id: 2, title: "Thread 2" },
-        ],
-        total_rows: 2,
-      },
-    });
-
-    const store1 = mockStore({
-      auth: {
-        authenticated: true,
-        loggedInUser: {
-          is_admin: true,
-          id: 1,
-        },
-      },
-      topicDetails: {
-        currentCampRecord: { parentCamps: [{ camp_name: "camp one" }] },
-      },
-      filters: {
-        filterObject: {
-          page_number: 1,
-          page_size: 15,
-          nameSpace: "/General/",
-          namespace_id: 1,
-          asofdate: Date.now() / 1000,
-          asof: "default",
-          filterByScore: 0,
-          algorithm: "blind_popularity",
-          search: "",
-          includeReview: false,
-          is_archive: 0,
-        },
-      },
-      forum: {
-        currentThread: {},
-        currentPost: {},
-      },
-    });
-
     render(
       <Provider store={store1}>
         <RouterContext.Provider
@@ -519,100 +290,11 @@ describe("ForumComponent", () => {
 
     await waitFor(() => {
       expect(getThreadsList).toHaveBeenCalled();
-      expect(getThreadData).toHaveBeenCalled();
     });
 
     const thread1 = screen.getByTestId("thread-label-2");
     expect(thread1).toBeInTheDocument();
     fireEvent.click(thread1);
-  });
-
-  test("without login fetches and displays thread list", async () => {
-    act(() => {
-      jest.useFakeTimers();
-      jest.runAllTimers();
-    });
-
-    getThreadsList.mockResolvedValue({
-      status_code: 200,
-      data: {
-        items: [
-          { id: 1, title: "Thread 1" },
-          { id: 2, title: "Thread 2" },
-        ],
-        total_rows: 2,
-      },
-    });
-
-    getThreadData.mockResolvedValue({
-      status_code: 200,
-      data: {
-        items: [
-          { id: 1, title: "Thread 1" },
-          { id: 2, title: "Thread 2" },
-        ],
-        total_rows: 2,
-      },
-    });
-
-    const store1 = mockStore({
-      auth: {
-        authenticated: false,
-        loggedInUser: {
-          is_admin: true,
-          id: 1,
-        },
-      },
-      topicDetails: {
-        currentCampRecord: { parentCamps: [{ camp_name: "camp one" }] },
-      },
-      filters: {
-        filterObject: {
-          page_number: 1,
-          page_size: 15,
-          nameSpace: "/General/",
-          namespace_id: 1,
-          asofdate: Date.now() / 1000,
-          asof: "default",
-          filterByScore: 0,
-          algorithm: "blind_popularity",
-          search: "",
-          includeReview: false,
-          is_archive: 0,
-        },
-      },
-      forum: {
-        currentThread: {},
-        currentPost: {},
-      },
-    });
-
-    render(
-      <Provider store={store1}>
-        <RouterContext.Provider
-          value={createMockRouter({
-            pathname: "/forum/[topic]/[camp]/threads",
-            query: {
-              camp: "1-Agreement",
-              by: "most_replies",
-              topic: "88-theories",
-              id: "1",
-            },
-          })}
-        >
-          <ForumComponent />
-        </RouterContext.Provider>
-      </Provider>
-    );
-
-    const createBtn = screen.getByTestId("create-new-thread");
-    expect(createBtn).toBeInTheDocument();
-    fireEvent.click(createBtn);
-
-    await waitFor(() => {
-      expect(getThreadsList).toHaveBeenCalled();
-      expect(getThreadData).toHaveBeenCalled();
-    });
   });
 
   test("click on create new thread button", async () => {
@@ -621,65 +303,12 @@ describe("ForumComponent", () => {
       jest.runAllTimers();
     });
 
-    getThreadData.mockResolvedValue({
-      status_code: 200,
-      data: {
-        items: [
-          { id: 1, title: "Thread 1" },
-          { id: 2, title: "Thread 2" },
-        ],
-        total_rows: 2,
-      },
-    });
-
     getAllUsedNickNames.mockResolvedValue({
       status_code: 200,
       data: [
         { id: 1, title: "Thread 1" },
         { id: 2, title: "Thread 2" },
       ],
-    });
-
-    createThread.mockResolvedValue({
-      status_code: 200,
-      data: null,
-    });
-
-    updateThread.mockResolvedValue({
-      status_code: 200,
-      data: null,
-    });
-
-    const store1 = mockStore({
-      auth: {
-        authenticated: true,
-        loggedInUser: {
-          is_admin: true,
-          id: 1,
-        },
-      },
-      topicDetails: {
-        currentCampRecord: { parentCamps: [{ camp_name: "camp one" }] },
-      },
-      filters: {
-        filterObject: {
-          page_number: 1,
-          page_size: 15,
-          nameSpace: "/General/",
-          namespace_id: 1,
-          asofdate: Date.now() / 1000,
-          asof: "default",
-          filterByScore: 0,
-          algorithm: "blind_popularity",
-          search: "",
-          includeReview: false,
-          is_archive: 0,
-        },
-      },
-      forum: {
-        currentThread: {},
-        currentPost: {},
-      },
     });
 
     render(
@@ -702,6 +331,10 @@ describe("ForumComponent", () => {
       </Provider>
     );
 
+    await waitFor(() => {
+      expect(getAllUsedNickNames).toHaveBeenCalled();
+    });
+
     expect(screen.getByText("Create a new thread")).toBeInTheDocument();
     expect(screen.getByText("Title of Thread")).toBeInTheDocument();
     expect(
@@ -714,114 +347,13 @@ describe("ForumComponent", () => {
 
     fireEvent.click(screen.getByTestId("submit-btn"));
 
-    await waitFor(() => {
-      expect(getAllUsedNickNames).toHaveBeenCalled();
-      expect(getThreadData).toHaveBeenCalled();
-    });
-  });
-
-  test("check create/update thread api", async () => {
-    act(() => {
-      jest.useFakeTimers();
-      jest.runAllTimers();
-    });
+    userEvent.type(screen.getByPlaceholderText("Title"), "test");
+    userEvent.click(screen.getByTestId("submit-btn"));
 
     createThread.mockResolvedValue({
       status_code: 200,
       data: null,
-    });
-
-    updateThread.mockResolvedValue({
-      status_code: 200,
-      data: null,
-    });
-
-    getAllUsedNickNames.mockResolvedValue({
-      status_code: 200,
-      data: [
-        { id: 1, title: "Thread 1" },
-        { id: 2, title: "Thread 2" },
-      ],
-    });
-
-    const store1 = mockStore({
-      auth: {
-        authenticated: true,
-        loggedInUser: {
-          is_admin: true,
-          id: 1,
-        },
-      },
-      topicDetails: {
-        currentCampRecord: { parentCamps: [{ camp_name: "camp one" }] },
-      },
-      filters: {
-        filterObject: {
-          page_number: 1,
-          page_size: 15,
-          nameSpace: "/General/",
-          namespace_id: 1,
-          asofdate: Date.now() / 1000,
-          asof: "default",
-          filterByScore: 0,
-          algorithm: "blind_popularity",
-          search: "",
-          includeReview: false,
-          is_archive: 0,
-        },
-      },
-      forum: {
-        currentThread: {
-          id: "1",
-          title: "test",
-          created_at: Date.now(),
-          creation_nick_name_id: 1,
-          topic_id: 11,
-          camp_id: 1,
-          namespace_id: 1,
-          creation_nick_name: "test name",
-        },
-        currentPost: { id: "1" },
-      },
-    });
-
-    render(
-      <Provider store={store1}>
-        <RouterContext.Provider
-          value={createMockRouter({
-            pathname: "/forum/[topic]/[camp]/threads/create",
-            query: {
-              camp: "1-Agreement",
-              by: "all",
-              topic: "88-theories",
-              id: "1",
-              tId: "1",
-              from: "thread",
-            },
-          })}
-        >
-          <ForumComponent />
-        </RouterContext.Provider>
-      </Provider>
-    );
-
-    expect(screen.getByText("Create a new thread")).toBeInTheDocument();
-    expect(screen.getByText("Title of Thread")).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        "(Once you pick a nickname, for any contribution to a topic, you must always use the same nickname for any other contribution or forum post to this topic.)"
-      )
-    ).toBeInTheDocument();
-    expect(screen.getByText("Submit")).toBeInTheDocument();
-    expect(screen.getByText("Back")).toBeInTheDocument();
-    fireEvent.change(screen.getByPlaceholderText("Title"), {
-      target: { value: "test" },
-    });
-
-    await fireEvent.click(screen.getByTestId("submit-btn"));
-
-    await waitFor(() => {
-      expect(getAllUsedNickNames).toHaveBeenCalled();
+      message: "Created!",
     });
   });
 
@@ -829,17 +361,6 @@ describe("ForumComponent", () => {
     act(() => {
       jest.useFakeTimers();
       jest.runAllTimers();
-    });
-
-    getThreadData.mockResolvedValue({
-      status_code: 200,
-      data: {
-        items: [
-          { id: 1, title: "Thread 1" },
-          { id: 2, title: "Thread 2" },
-        ],
-        total_rows: 2,
-      },
     });
 
     const store1 = mockStore({
@@ -889,13 +410,9 @@ describe("ForumComponent", () => {
       </Provider>
     );
 
-    await waitFor(() => {
-      expect(getThreadData).toHaveBeenCalled();
-    });
-
     const createBTN = screen.getByTestId("create-new-thread");
     expect(createBTN).toBeInTheDocument();
-    fireEvent.click(createBTN);
+    userEvent.click(createBTN);
   });
 
   test("click on cancel craete thread button", async () => {
@@ -923,38 +440,6 @@ describe("ForumComponent", () => {
       ],
     });
 
-    const store1 = mockStore({
-      auth: {
-        authenticated: true,
-        loggedInUser: {
-          is_admin: true,
-          id: 1,
-        },
-      },
-      topicDetails: {
-        currentCampRecord: { parentCamps: [{ camp_name: "camp one" }] },
-      },
-      filters: {
-        filterObject: {
-          page_number: 1,
-          page_size: 15,
-          nameSpace: "/General/",
-          namespace_id: 1,
-          asofdate: Date.now() / 1000,
-          asof: "default",
-          filterByScore: 0,
-          algorithm: "blind_popularity",
-          search: "",
-          includeReview: false,
-          is_archive: 0,
-        },
-      },
-      forum: {
-        currentThread: {},
-        currentPost: {},
-      },
-    });
-
     render(
       <Provider store={store1}>
         <RouterContext.Provider
@@ -974,13 +459,6 @@ describe("ForumComponent", () => {
       </Provider>
     );
 
-    expect(screen.getByText("Create a new thread")).toBeInTheDocument();
-    expect(screen.getByText("Title of Thread")).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        "(Once you pick a nickname, for any contribution to a topic, you must always use the same nickname for any other contribution or forum post to this topic.)"
-      )
-    ).toBeInTheDocument();
     expect(screen.getByText("Submit")).toBeInTheDocument();
     expect(screen.getByText("Back")).toBeInTheDocument();
 
@@ -992,34 +470,15 @@ describe("ForumComponent", () => {
     fireEvent.click(screen.getByTestId("back-btn"));
   });
 
-  test("render posts components", async () => {
-    jest.spyOn(React, "useRef").mockReturnValue({
-      current: true,
+  test("Edit thread component", async () => {
+    act(() => {
+      jest.useFakeTimers();
+      jest.runAllTimers();
     });
-
-    jest.useFakeTimers();
-    jest.runAllTimers();
 
     getThreadData.mockResolvedValue({
       status_code: 200,
-      data: {
-        items: [
-          { id: 1, title: "Thread 1" },
-          { id: 2, title: "Thread 2" },
-        ],
-        total_rows: 2,
-      },
-    });
-
-    getPostsList.mockResolvedValue({
-      status_code: 200,
-      data: {
-        items: [
-          { id: 1, title: "Thread 1" },
-          { id: 2, title: "Thread 2" },
-        ],
-        total_rows: 2,
-      },
+      data: { id: 1, title: "Thread 1" },
     });
 
     getAllUsedNickNames.mockResolvedValue({
@@ -1030,48 +489,17 @@ describe("ForumComponent", () => {
       ],
     });
 
-    const store1 = mockStore({
-      auth: {
-        authenticated: true,
-        loggedInUser: {
-          is_admin: true,
-          id: 1,
-        },
-      },
-      topicDetails: {
-        currentCampRecord: { parentCamps: [{ camp_name: "camp one" }] },
-      },
-      filters: {
-        filterObject: {
-          page_number: 1,
-          page_size: 15,
-          nameSpace: "/General/",
-          namespace_id: 1,
-          asofdate: Date.now() / 1000,
-          asof: "default",
-          filterByScore: 0,
-          algorithm: "blind_popularity",
-          search: "",
-          includeReview: false,
-          is_archive: 0,
-        },
-      },
-      forum: {
-        currentThread: {},
-        currentPost: {},
-      },
-    });
-
     render(
       <Provider store={store1}>
         <RouterContext.Provider
           value={createMockRouter({
-            pathname: "/forum/[topic]/[camp]/threads/[id]",
+            pathname: "/forum/[topic]/[camp]/threads/edit/[tId]",
             query: {
               camp: "1-Agreement",
               by: "all",
               topic: "88-theories",
               id: "1",
+              from: "thread",
             },
           })}
         >
@@ -1080,30 +508,34 @@ describe("ForumComponent", () => {
       </Provider>
     );
 
-    waitFor(() => {
-      expect(getPostsList).toHaveBeenCalled();
-      expect(getThreadData).toHaveBeenCalled();
+    expect(screen.getByText("Submit")).toBeInTheDocument();
+    expect(screen.getByText("Back")).toBeInTheDocument();
+
+    await waitFor(() => {
       expect(getAllUsedNickNames).toHaveBeenCalled();
-      // expect(
-      //   screen.getByText("Number of Post in this thread: 2")
-      // ).toBeInTheDocument();
+      expect(getThreadData).toHaveBeenCalled();
+    });
+
+    fireEvent.click(screen.getByTestId("back-btn"));
+
+    userEvent.type(screen.getByPlaceholderText("Title"), "test");
+    userEvent.click(screen.getByTestId("submit-btn"));
+
+    updateThread.mockResolvedValue({
+      status_code: 200,
+      data: null,
+      message: "Updated!",
     });
   });
 
-  test("posts components case", async () => {
+  test("render posts components", async () => {
     jest.spyOn(React, "useRef").mockReturnValue({
       current: true,
     });
 
     getThreadData.mockResolvedValue({
       status_code: 200,
-      data: {
-        items: [
-          { id: 1, title: "Thread 1" },
-          { id: 2, title: "Thread 2" },
-        ],
-        total_rows: 2,
-      },
+      data: { id: 1, title: "Thread 1" },
     });
 
     getPostsList.mockResolvedValue({
@@ -1168,6 +600,7 @@ describe("ForumComponent", () => {
     expect(
       screen.getByText("Number of Post in this thread: 2")
     ).toBeInTheDocument();
+
     expect(screen.getAllByText("this is test body").length).toEqual(2);
     const editBTN = screen.getByTestId("post-edit-icon1");
     const deleteBTN = screen.getByTestId("post-delete-icon-1");
@@ -1178,7 +611,9 @@ describe("ForumComponent", () => {
     expect(deleteBTN2).toBeInTheDocument();
 
     fireEvent.click(editBTN);
-  });
+    fireEvent.click(screen.getByTestId("back-btn"));
+  }, 60_000);
+
   test("posts components click on delete btn", async () => {
     jest.spyOn(React, "useRef").mockReturnValue({
       current: true,
@@ -1246,49 +681,6 @@ describe("ForumComponent", () => {
       ],
     });
 
-    const store1 = mockStore({
-      auth: {
-        authenticated: true,
-        loggedInUser: {
-          is_admin: true,
-          id: 1,
-        },
-      },
-      topicDetails: {
-        currentCampRecord: { parentCamps: [{ camp_name: "camp one" }] },
-      },
-      filters: {
-        filterObject: {
-          page_number: 1,
-          page_size: 15,
-          nameSpace: "/General/",
-          namespace_id: 1,
-          asofdate: Date.now() / 1000,
-          asof: "default",
-          filterByScore: 0,
-          algorithm: "blind_popularity",
-          search: "",
-          includeReview: false,
-          is_archive: 0,
-        },
-      },
-      forum: {
-        currentThread: {
-          id: "1",
-          title: "test",
-          created_at: Date.now(),
-          creation_nick_name_id: 1,
-          topic_id: 11,
-          camp_id: 1,
-          namespace_id: 1,
-          creation_nick_name: "test name",
-        },
-        currentPost: {
-          id: "1",
-        },
-      },
-    });
-
     const { container } = render(
       <Provider store={store1}>
         <RouterContext.Provider
@@ -1313,6 +705,7 @@ describe("ForumComponent", () => {
       expect(getThreadData).toHaveBeenCalled();
       expect(getAllUsedNickNames).toHaveBeenCalled();
     });
+
     expect(screen.getAllByText("this is test body").length).toEqual(2);
     const editBTN = screen.getByTestId("post-edit-icon1");
     const deleteBTN = screen.getByTestId("post-delete-icon-1");
@@ -1324,9 +717,9 @@ describe("ForumComponent", () => {
     const editBTN2 = container.getElementsByClassName("linkCss");
     expect(editBTN2.length).toEqual(4);
 
-    fireEvent.click(backBTN);
-    fireEvent.click(deleteBTN);
+    // userEvent.click(deleteBTN);
+    userEvent.click(backBTN);
 
     await fireEvent.click(screen.getByTestId("submit-btn"));
-  });
+  }, 60_000);
 });

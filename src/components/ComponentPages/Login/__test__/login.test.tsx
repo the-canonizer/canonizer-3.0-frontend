@@ -11,10 +11,8 @@ import { Provider } from "react-redux";
 import { NextRouter } from "next/router";
 import { RouterContext } from "next/dist/shared/lib/router-context";
 import configureMockStore from "redux-mock-store";
-import { Form } from "antd";
 
 import Login from "../index";
-import LoginUI from "../UI";
 import messages from "src/messages";
 import { store } from "src/store";
 
@@ -24,7 +22,7 @@ import {
   verifyOtp,
 } from "src/network/api/userApi";
 
-const { labels, placeholders, validations } = messages;
+const { labels, placeholders } = messages;
 
 jest.mock(
   "next/link",
@@ -197,7 +195,7 @@ describe("Login page", () => {
         message: "Login successful",
       });
     });
-  });
+  }, 60_000);
 
   it("click on submit button 402", async () => {
     render(

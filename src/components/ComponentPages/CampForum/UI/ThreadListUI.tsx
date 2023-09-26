@@ -91,6 +91,7 @@ const ThreadListUI = ({
               onSearch={onSearch}
               className={styles.searchInput}
               id="search-bar"
+              data-testid="search-bar"
             />
           </div>
         }
