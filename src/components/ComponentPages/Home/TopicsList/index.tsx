@@ -293,9 +293,11 @@ const TopicsList = () => {
     setSearchLoading(true);
     const value = event.target.value?.trim();
     if (value) {
+      setAllowClear(true);
       setSearchTerm(value);
       setShowSearchDropdown(true);
     } else {
+      setAllowClear(false);
       setSearchTerm("");
       setSearchedResult([]);
       setShowSearchDropdown(false);
@@ -337,6 +339,7 @@ const TopicsList = () => {
     if (throttled) {
       clearTimeout(throttled);
     }
+    inputRef.current.focus();
 
     throttled = setTimeout(() => {
       if (searchTerm?.trim()) {
@@ -409,6 +412,11 @@ const TopicsList = () => {
     setGetTopicsLoadingIndicator(true);
     dispatch(setShowDrawer(true));
   };
+
+  const inputRef = useRef(null);
+  const [allowClear, setAllowClear] = useState(false);
+
+  var inputRef2 = false;
   useEffect(() => {
     //When Page is render remove data from GetCheckSupportStatus and GetCheckSupportExistsData
     dispatch(setCurrentCheckSupportStatus(""));
@@ -417,6 +425,12 @@ const TopicsList = () => {
     getCanonizedNameSpacesApi();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (inputSearch) {
+      setAllowClear(true);
+    }
   }, []);
 
   return (
@@ -471,11 +485,12 @@ const TopicsList = () => {
             <Search
               key={inputSearch}
               placeholder="Search by topic name"
-              allowClear={true}
+              allowClear={allowClear}
               className={styles.topic}
               defaultValue={inputSearch}
               onSearch={onSearch}
               onChange={handleKeyUpSearch}
+              ref={inputRef}
               onBlur={() => {
                 setTimeout(() => {
                   setShowSearchDropdown(false);
