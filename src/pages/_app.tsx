@@ -109,6 +109,7 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
    * [OLD Routes]
    * /topic.asp/120/8
    * /support_list.asp?nick_name_id=1
+   * /secure/support.asp?topic_num=97&camp_num=1
    * /thread.asp/23/13/4
    * /forum.asp/88/1
    * /topoc.asp/85
@@ -139,6 +140,10 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
 
   const aspath = appContext.router?.asPath;
   let returnData: string;
+  console.log(
+    "🚀 ~ file: _app.tsx:142 ~ WrappedApp.getInitialProps= ~ aspath:",
+    aspath
+  );
 
   if (aspath?.includes(".asp")) {
     if (aspath?.includes("topic.asp") || aspath?.includes("topoc.asp")) {
@@ -174,6 +179,35 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
           null,
           "nickname",
           +nickname
+        );
+      }
+    } else if (aspath?.includes("support.asp")) {
+      const nickname = appContext.ctx.query?.nick_name_id,
+        topic_num = appContext.ctx.query?.topic_num,
+        camp_num = appContext.ctx.query?.camp_num || "1",
+        canon = appContext.ctx.query?.nick_name_id || 1;
+
+      if (nickname) {
+        returnData = await redirect(
+          "/user/supports/" +
+            nickname +
+            "?topicnum=" +
+            topic_num +
+            "&campnum=" +
+            camp_num +
+            "&canon=" +
+            canon,
+          +topic_num,
+          +camp_num,
+          "nickname",
+          +nickname
+        );
+      } else {
+        returnData = await redirect(
+          `/topic/${topic_num}/${camp_num}`,
+          +topic_num,
+          +camp_num,
+          "topic"
         );
       }
     } else if (
@@ -261,7 +295,7 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
       returnData = await redirect(aspath, null, null, "");
     }
   }
-
+  console.log(returnData, "returnData");
   if (returnData) {
     appContext.ctx.res.writeHead(302, { Location: returnData });
     appContext.ctx.res.end();

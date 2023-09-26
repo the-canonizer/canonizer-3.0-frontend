@@ -52,7 +52,21 @@ afterEach(cleanup);
 // Mock the API functions used in the component
 jest.mock("src/network/api/topicAPI", () => ({
   GetHotTopicDetails: jest.fn(() =>
-    Promise.resolve({ status_code: 200, data: [] })
+    Promise.resolve({
+      status_code: 200,
+      data: {
+        id: 1,
+        updated_at: Date.now(),
+        created_at: Date.now(),
+        file_full_path: "",
+        topic_num: 88,
+        topic_name: "Theories",
+        camp_num: "",
+        camp_name: "Agreement",
+        description:
+          "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo animi distinctio sed? Sapiente sed numquam molestiae deserunt neque temporibus officiis qui, doloremque excepturi rem harum nihil iste. Magnam ut veniam nobis corporis a amet reprehenderit officia enim fugiat sit, dignissimos cupiditate eius, dolores libero sequi aspernatur exercitationem in necessitatibus quasi!",
+      },
+    })
   ),
 }));
 
@@ -61,7 +75,22 @@ describe("AddOrManage component", () => {
     jest.clearAllMocks();
     jest.mock("src/network/api/topicAPI", () => ({
       GetHotTopicDetails: jest.fn(() =>
-        Promise.resolve({ status_code: 200, data: [] })
+        Promise.resolve({
+          status_code: 200,
+          data: {
+            title: "Hot Topic",
+            id: 1,
+            updated_at: Date.now(),
+            created_at: Date.now(),
+            file_full_path: "",
+            topic_num: 88,
+            topic_name: "Theories",
+            camp_num: "",
+            camp_name: "Agreement",
+            description:
+              "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo animi distinctio sed? Sapiente sed numquam molestiae deserunt neque temporibus officiis qui, doloremque excepturi rem harum nihil iste. Magnam ut veniam nobis corporis a amet reprehenderit officia enim fugiat sit, dignissimos cupiditate eius, dolores libero sequi aspernatur exercitationem in necessitatibus quasi!",
+          },
+        })
       ),
     }));
   });
