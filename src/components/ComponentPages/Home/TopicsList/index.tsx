@@ -114,6 +114,9 @@ const TopicsList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchedResult, setSearchedResult] = useState([]);
 
+  const inputRef = useRef(null);
+  const [allowClear, setAllowClear] = useState(false);
+
   let onlyMyTopicsCheck = useRef();
 
   const formatnamespace = (namespace, reverse = false) => {
@@ -339,7 +342,7 @@ const TopicsList = () => {
     if (throttled) {
       clearTimeout(throttled);
     }
-    inputRef.current.focus();
+    inputRef.current?.focus();
 
     throttled = setTimeout(() => {
       if (searchTerm?.trim()) {
@@ -413,10 +416,6 @@ const TopicsList = () => {
     dispatch(setShowDrawer(true));
   };
 
-  const inputRef = useRef(null);
-  const [allowClear, setAllowClear] = useState(false);
-
-  var inputRef2 = false;
   useEffect(() => {
     //When Page is render remove data from GetCheckSupportStatus and GetCheckSupportExistsData
     dispatch(setCurrentCheckSupportStatus(""));
