@@ -2,7 +2,7 @@ import { useState, Fragment, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Drawer } from "antd";
-// import { CloseCircleOutlined } from "@ant-design/icons";
+import { CloseCircleOutlined } from "@ant-design/icons";
 
 import { RootState } from "src/store";
 import TopicsFilter from "../../../common/topicsFilter";
@@ -64,25 +64,9 @@ export default function HomeSideBar({
     dispatch(setShowDrawer(!drawerIsVisible));
   };
 
-  // const onClose = () => {
-  //   router.push(
-  //     `/topic/${router?.query?.camp[0]}/${
-  //       router?.query?.camp[1]
-  //     }?score=${filterByScore}&algo=${filterObject?.algorithm}${
-  //       filterObject?.asof == "bydate"
-  //         ? "&asofdate=" + filterObject?.asofdate
-  //         : ""
-  //     }&asof=${filterObject?.asof}&canon=${
-  //       filterObject?.namespace_id
-  //     }&is_tree_open=0${viewThisVersion ? "&viewversion=1" : ""}`,
-  //     null,
-  //     {
-  //       shallow: true,
-  //     }
-  //   );
-
-  //   dispatch(setShowDrawer(false));
-  // };
+  const onClose = () => {
+    showDrawer();
+  };
 
   return (
     <Fragment>
@@ -106,15 +90,16 @@ export default function HomeSideBar({
           <Drawer
             title="Consensus Tree"
             placement="left"
-            // onClose={onClose}
+            onClose={onClose}
             visible={drawerIsVisible}
-            className={`treeDrawer ${backGroundColorClass}`}
-            // closeIcon={<CloseCircleOutlined />}
-            closeIcon={null}
+            className={`treeDrawer closeIconHide ${backGroundColorClass}`}
+            closeIcon={<CloseCircleOutlined />}
             height={"auto"}
             size="large"
             bodyStyle={{ paddingBottom: 80 }}
             forceRender
+            mask={true}
+            maskClosable={true}
           >
             <TopicsFilterWithDrawer
               onCreateCamp={onCreateCamp}
