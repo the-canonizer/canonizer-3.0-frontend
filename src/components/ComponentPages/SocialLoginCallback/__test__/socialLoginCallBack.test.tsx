@@ -4,12 +4,12 @@ import { Provider } from "react-redux";
 import { NextRouter } from "next/router";
 import { RouterContext } from "next/dist/shared/lib/router-context";
 import configureMockStore from "redux-mock-store";
+import { act } from "react-dom/test-utils";
 
 import SocialLoginCallback from "../";
 import { store } from "src/store";
-
 import Modals from "src/components/ComponentPages/Registration/registrationModal";
-import { act } from "react-dom/test-utils";
+import { socialLoginCallback, socialLoginLinkUser } from "src/network/api/userApi";
 
 function createMockRouter(router: Partial<NextRouter>): NextRouter {
   return {

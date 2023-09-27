@@ -182,12 +182,10 @@ describe("Header Notifications", () => {
     const clicked = screen.getByTestId("clickable");
     fireEvent.click(clicked);
 
-    expect(screen.getByText("notifications")).not.toBeInTheDocument();
+    expect(screen.getByText("notifications")).toBeInTheDocument();
 
     const enableSwitch = screen.getByTestId("enable-text");
-    expect(
-      screen.getByText("Enable push notification")
-    ).not.toBeInTheDocument();
+    expect(screen.getByText("Enable push notification")).toBeInTheDocument();
 
     fireEvent.click(enableSwitch);
 
@@ -214,9 +212,7 @@ describe("Header Notifications", () => {
     fireEvent.click(clicked);
 
     const disableSwitch = screen.getByTestId("enable-text");
-    expect(
-      screen.getByText("Enable push notification")
-    ).not.toBeInTheDocument();
+    expect(screen.getByText("Enable push notification")).toBeInTheDocument();
     fireEvent.click(disableSwitch);
   });
 
