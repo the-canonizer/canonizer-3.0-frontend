@@ -16,6 +16,7 @@ function TopicSubscriptionsTab({ subscriptionsList, onConfirm }: any) {
           className={`${styles.cardBox_tags} ${
             data.camps?.length > 0 ? "" : styles.no_body
           }`}
+          data-testid="cards"
           type="inner"
           size="default"
           title={
