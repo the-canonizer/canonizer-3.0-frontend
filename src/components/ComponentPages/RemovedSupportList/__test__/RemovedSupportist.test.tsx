@@ -218,7 +218,7 @@ describe("Removed Support List Component", () => {
     });
   });
 
-  test("test nickname dropdown click", async () => {
+  test("testing nickname dropdown click", async () => {
     getAllRemovedReasons.mockResolvedValue({
       status_code: 400,
       data: null,

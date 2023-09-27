@@ -397,7 +397,7 @@ describe("Social Login Callback", () => {
       expect(screen.getByTestId("content-text")).toBeInTheDocument();
     });
   });
-  test("API failled socialLoginLinkUser response", async () => {
+  test("API failled socialLoginLinkUser 403 response", async () => {
     jest.mock("src/network/api/userApi", () => ({
       socialLoginLinkUser: jest.fn(() =>
         Promise.resolve({

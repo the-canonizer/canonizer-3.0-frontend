@@ -56,7 +56,9 @@ const originalLocation = window.navigator;
 beforeAll(() => {
   delete global.window.navigator;
   global.window.navigator = {
-    clipboard: { writeText: jest.fn((text) => Promise.resolve("copied!")) },
+    clipboard: {
+      writeText: jest.fn((text = "copied!") => Promise.resolve(text)),
+    },
   };
 });
 

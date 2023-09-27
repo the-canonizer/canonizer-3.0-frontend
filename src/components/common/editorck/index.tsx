@@ -7,8 +7,8 @@ import isAuth from "../../../hooks/isUserAuthenticated";
 interface editorState {
   editorState: string;
 }
-
 interface editorchange {
+  // eslint-disable-next-line no-unused-vars
   oneditorchange: (any) => void;
 }
 

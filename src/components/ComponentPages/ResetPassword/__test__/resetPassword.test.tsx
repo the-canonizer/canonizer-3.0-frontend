@@ -195,7 +195,7 @@ describe("Reset Password page", () => {
     expect(screen.getByText(labels.confirmPassword)).toBeInTheDocument();
   });
 
-  it("Submit valid form ", async () => {
+  it("Submit valid form", async () => {
     render(
       <Provider store={store1}>
         <RouterContext.Provider value={createMockRouter({})}>

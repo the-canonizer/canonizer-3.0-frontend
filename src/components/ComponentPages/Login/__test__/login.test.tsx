@@ -360,7 +360,7 @@ describe("Login page", () => {
     });
   });
 
-  test("Test UI Component", async () => {
+  test("Testing user interface component", async () => {
     render(
       <Provider store={store}>
         <RouterContext.Provider value={createMockRouter({ asPath: "/login" })}>

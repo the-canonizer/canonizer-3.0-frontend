@@ -51,7 +51,7 @@ function RemovedSupportList({ isTestData = [] }: any) {
     getNickNames();
   }, []);
 
-  const onConfirm = (e: any, topic: any, camp: any) => {
+  const onConfirm = (e: any) => {
     e.preventDefault();
     setIsLoading(true);
     setIsLoading(false);

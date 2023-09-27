@@ -216,7 +216,7 @@ describe("Header Notifications", () => {
     fireEvent.click(disableSwitch);
   });
 
-  test("test get list api success call", async () => {
+  test("testing get list api success call", async () => {
     getLists.mockResolvedValue({
       status_code: 200,
       data: {},
@@ -362,7 +362,7 @@ describe("Header Notifications", () => {
     });
   });
 
-  test("test update token api success call", async () => {
+  test("testing update token api success call", async () => {
     updateFCMToken.mockResolvedValue({
       status_code: 200,
       data: {},
@@ -416,7 +416,7 @@ describe("Header Notifications", () => {
     });
   });
 
-  test("test failed update token api call", async () => {
+  test("testing failed update token api call", async () => {
     jest.mock("firebase/app", () => ({
       messaging: () => ({
         getToken: jest.fn(() => Promise.reject("")),
