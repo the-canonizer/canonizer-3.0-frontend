@@ -552,6 +552,15 @@ del.diffmod img {
       max-width: 90%;
     }
   }
+  &.closeIconHide {
+    .ant-drawer-header {
+      .ant-drawer-close {
+        display: none;
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+  }
 }
 
 .topicsList_card,
