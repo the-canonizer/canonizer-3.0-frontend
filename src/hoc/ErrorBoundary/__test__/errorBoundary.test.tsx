@@ -40,7 +40,7 @@ function createMockRouter(router: Partial<NextRouter>): NextRouter {
 // reloadPage.mockImplementation(reloadPageMock);
 
 describe("Error Boundary", () => {
-  it("should render without crash", () => {
+  it("should render without params", () => {
     const { container } = render(
       <ErrorBoundary>
         <h1>error</h1>
@@ -49,7 +49,7 @@ describe("Error Boundary", () => {
     expect(screen.getByText(/error/i)).toBeInTheDocument();
   });
 
-  it("should render without crash", () => {
+  it("should render error", () => {
     const ThrowError = () => {
       throw new Error("Test");
     };
