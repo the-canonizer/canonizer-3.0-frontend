@@ -124,6 +124,7 @@ const CreateThreadForm = ({
               size={"large"}
               className={`${styles.submit_btn}`}
               id="submit-btn"
+              data-testid="submit-btn"
             >
               Submit
             </Button>
@@ -135,6 +136,7 @@ const CreateThreadForm = ({
               className={`${styles.cancel_btn}`}
               onClick={onCancel}
               id="back-btn"
+              data-testid="back-btn"
             >
               Back
             </Button>

@@ -18,33 +18,31 @@ window.matchMedia =
 const mockStore = configureMockStore();
 const store1 = mockStore({
   auth: {
-    authenticated: true,
+    authenticated: false,
     loggedInUser: {
       is_admin: true,
     },
   },
-  topicDetails: {
-    currentCampRecord: { parentCamps: [{ camp_name: "camp one" }] },
-  },
-  filters: {
-    filterObject: {},
-  },
-  forum: {
-    currentThread: null,
-    currentPost: null,
-  },
   hotTopic: {
     topicData: {
-      id: 1,
+      title: "Hot Topic",
+      id: "1",
       updated_at: Date.now(),
       created_at: Date.now(),
-      file_full_path: "",
-      topic_num: 88,
-      topic_name: "Theories",
-      camp_num: "",
+      topic_num: "88",
+      topic_name: "Topic",
+      camp_num: "1",
       camp_name: "Agreement",
+      file_full_path:
+        "https://canonizer-public-file.s3.us-east-2.amazonaws.com/canonizer_logo.jpg",
       description:
-        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo animi distinctio sed? Sapiente sed numquam molestiae deserunt neque temporibus officiis qui, doloremque excepturi rem harum nihil iste. Magnam ut veniam nobis corporis a amet reprehenderit officia enim fugiat sit, dignissimos cupiditate eius, dolores libero sequi aspernatur exercitationem in necessitatibus quasi!",
+        "Introducing It's Not a Hard Problem; It's a Color Problem, the new video that outlines the emerging consensus around the Representational Qualia Theory that is revolutionizing how we understand human consciousness.",
+    },
+  },
+  utils: {
+    remember_me: {
+      email: "",
+      password: "",
     },
   },
 });
@@ -105,7 +103,11 @@ describe("AddOrManage component", () => {
     );
 
     expect(screen.getByText("Hot Topic")).toBeInTheDocument();
-    expect(screen.getByText("Theories")).toBeInTheDocument();
-    expect(screen.getByText("Agreement")).toBeInTheDocument();
+    expect(screen.getByText("View Topic")).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Introducing It's Not a Hard Problem; It's a Color Problem, the new video that outlines the emerging consensus around the Representational Qualia Theory that is revolutionizing how we understand human consciousness."
+      )
+    ).toBeInTheDocument();
   });
 });

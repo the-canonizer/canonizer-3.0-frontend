@@ -296,7 +296,7 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
       returnData = await redirect(aspath, null, null, "");
     }
   }
-
+  
   if (returnData) {
     appContext.ctx.res.writeHead(302, { Location: returnData });
     appContext.ctx.res.end();
