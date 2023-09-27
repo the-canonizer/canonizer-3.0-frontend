@@ -19,7 +19,7 @@ import { checkTopicCampExistAPICall } from "src/network/api/campDetailApi";
 
 class WrappedApp extends App<AppInitialProps> {
   public render() {
-    const { Component, pageProps, meta } = this.props as any;
+    const { Component, pageProps, meta, canonical_url } = this.props as any;
 
     return (
       <Fragment>
@@ -29,6 +29,7 @@ class WrappedApp extends App<AppInitialProps> {
               <HeadContentAndPermissionComponent
                 componentName={Component.displayName || Component.name}
                 metaContent={meta}
+                canonical={canonical_url}
               />
               <Component {...pageProps} />
             </ErrorBoundary>
@@ -71,6 +72,10 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
   } else {
     path = appContext.router?.query;
   }
+
+  let canonical_url =
+    process.env.NEXT_PUBLIC_BASE_URL + appContext?.router?.asPath;
+
   const req = {
     page_name:
       componentName == "SocialLoginCallbackPage" ? "Home" : componentName,
@@ -140,10 +145,6 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
 
   const aspath = appContext.router?.asPath;
   let returnData: string;
-  console.log(
-    "🚀 ~ file: _app.tsx:142 ~ WrappedApp.getInitialProps= ~ aspath:",
-    aspath
-  );
 
   if (aspath?.includes(".asp")) {
     if (aspath?.includes("topic.asp") || aspath?.includes("topoc.asp")) {
@@ -295,13 +296,13 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
       returnData = await redirect(aspath, null, null, "");
     }
   }
-  console.log(returnData, "returnData");
+
   if (returnData) {
     appContext.ctx.res.writeHead(302, { Location: returnData });
     appContext.ctx.res.end();
   }
 
-  return { ...appProps, meta: metaData, returnURL: returnData };
+  return { ...appProps, meta: metaData, returnURL: returnData, canonical_url };
 };
 
 // const googleAPIKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
