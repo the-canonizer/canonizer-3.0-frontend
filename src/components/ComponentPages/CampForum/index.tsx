@@ -196,7 +196,7 @@ const ForumComponent = ({
 
   // start thread List section
 
-  const onSearch = (v) => {
+  const onSearch = (v: string) => {
     setSearchQuery(v.trim());
   };
 

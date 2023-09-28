@@ -138,6 +138,7 @@ const LoginUi = ({
                 <Link href="/">
                   <a
                     id="forgot-password-link"
+                    data-testid="forgot-password-link"
                     className={styles["login-form-forgot"]}
                     onClick={onForgotPasswordClick}
                   >
@@ -181,6 +182,7 @@ const LoginUi = ({
                     onClick={onRegister}
                     style={{ fontWeight: "bold" }}
                     id="dont-account-link-tag"
+                    data-testid="dont-account-link-tag"
                   >
                     {" "}
                     Register Now

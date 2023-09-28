@@ -13,6 +13,7 @@ import { getTime } from "src/utils/generalUtility";
 const { Text } = Typography;
 
 function HotTopic() {
+  /* eslint-enable */
   const { topicData } = useSelector((state: RootState) => ({
     topicData: state?.hotTopic?.topicData,
   }));

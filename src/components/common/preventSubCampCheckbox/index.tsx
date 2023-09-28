@@ -18,6 +18,7 @@ const PreventSubCamps = ({ options, onCheckboxChange }: any) => {
               value={option.id}
               checked={option.checked}
               id={option.id}
+              data-testid={option.id}
               disabled={option.disable}
             >
               {option?.label?.replace(/\.$/, "")}

@@ -146,6 +146,7 @@ const PostUI = ({
               onChange={pOnChange}
               total={pTotal}
               showSizeChanger={false}
+              data-testid="s"
             />
           ) : null}
         </div>

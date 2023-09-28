@@ -348,6 +348,7 @@ const CreateCampFormUI = ({
               className={`${styles.cancel_btn}`}
               onClick={onCancel}
               id="cancel-btn"
+              data-testid="cancel-btn"
             >
               Cancel
             </Button>

@@ -26,6 +26,7 @@ const RegistrationModal = () => {
         closable={false}
         width={800}
         className="loginModal"
+        data-testid="regiPop"
       >
         <Registration isModal={true} />
       </Modal>
@@ -38,6 +39,7 @@ const RegistrationModal = () => {
         closable={false}
         width={800}
         className="loginModal"
+        data-testid="emailpopup"
       >
         <EmailPopup isModal={true} />
       </Modal>
@@ -50,6 +52,7 @@ const RegistrationModal = () => {
         closable={false}
         width={800}
         className="loginModal"
+        data-testid="nameconfirmation"
       >
         <NameConfirmationPopup isModal={true} />
       </Modal>
