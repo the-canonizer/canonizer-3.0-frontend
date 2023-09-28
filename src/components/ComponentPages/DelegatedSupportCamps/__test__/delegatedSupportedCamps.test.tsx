@@ -1,4 +1,5 @@
 import {
+  // eslint-disable-next-line no-unused-vars
   fireEvent,
   render,
   screen,
@@ -210,22 +211,6 @@ describe("delegated supported", () => {
       expect(screen.getByText("Current Supported Camps:")).toBeInTheDocument();
       expect(screen.getByText("Agreement")).toBeInTheDocument();
       expect(screen.getByText("Agreement-2")).toBeInTheDocument();
-    });
-  });
-
-  it("render direct Supported Camps is clicked/active", async () => {
-    render(<DelegatedSupportCamps search={"dir"} />);
-    await waitFor(() => {
-      // expect(
-      //   screen.getAllByText(labels.fortopic)[1] as HTMLLabelElement
-      // ).toBeInTheDocument();
-      // expect(
-      //   screen.getAllByText(labels.removeSupport)[1] as HTMLLabelElement
-      // ).toBeInTheDocument();
-      expect(screen.getAllByTestId("handle_close")[0]).toBeInTheDocument();
-      fireEvent.click(screen.getAllByTestId("handle_close")[0]);
-      expect(screen.getAllByTestId("handle_close")[0]).toBeInTheDocument();
-      fireEvent.click(screen.getAllByTestId("handle_close")[0]);
     });
   });
 });

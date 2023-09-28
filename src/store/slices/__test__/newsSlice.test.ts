@@ -19,6 +19,4 @@ describe("campNewsSlice", () => {
     );
     expect(newState.campNews.newsToEdit).toEqual(newsToEdit);
   });
-
- 
 });

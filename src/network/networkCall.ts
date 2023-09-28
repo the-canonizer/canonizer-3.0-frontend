@@ -56,7 +56,7 @@ export default class NetworkCall {
       return Promise.reject({ error: error });
     }
   }
-    /* eslint-disable */
+  /* eslint-disable */
   static axios(arg0: {
     method: any;
     url: any;
@@ -67,7 +67,7 @@ export default class NetworkCall {
     throw new Error("Method not implemented.");
   }
 }
-  /* eslint-enable */
+/* eslint-enable */
 NetworkCall.axios = axios.create({
   baseURL: K.Network.URL.BaseAPI,
   timeout: +K.Network.URL.Timeout,

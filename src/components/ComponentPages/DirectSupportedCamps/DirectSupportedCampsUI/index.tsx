@@ -128,13 +128,13 @@ export default function DirectSupportedCampsUI({
 
   const [removeForm] = Form.useForm();
 
-  const onRemoveFinish = (values) => {
+  const onRemoveFinish = async (values) => {
     setRemoveSupportSpinner(true);
 
     if (showSaveChanges && idData == currentCamp) {
-      saveChanges(values);
+      await saveChanges(values);
     } else {
-      removeSupport(values);
+      await removeSupport(values);
     }
 
     removeForm.resetFields();

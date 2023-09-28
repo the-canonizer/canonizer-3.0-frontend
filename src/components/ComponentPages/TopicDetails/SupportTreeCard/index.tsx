@@ -82,7 +82,6 @@ const SupportTreeCard = ({
     filterData: state?.filters?.filterObject,
     algorithms: state.homePage?.algorithms,
   }));
-
   const { isUserAuthenticated } = isAuth();
 
   const router = useRouter();
@@ -198,7 +197,7 @@ const SupportTreeCard = ({
             ></Link>
           );
           /* eslint-enable */
-
+          
           return (
             <>
               <TreeNode
@@ -220,7 +219,7 @@ const SupportTreeCard = ({
                           query: {
                             topicnum: topicRecord?.topic_num,
                             campnum: topicRecord?.camp_num,
-                            canon: topicRecord?.namespace_id,
+                            canon: router?.query?.canon,
                           },
                         }}
                       >
