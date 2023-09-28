@@ -140,10 +140,6 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
 
   const aspath = appContext.router?.asPath;
   let returnData: string;
-  console.log(
-    "🚀 ~ file: _app.tsx:142 ~ WrappedApp.getInitialProps= ~ aspath:",
-    aspath
-  );
 
   if (aspath?.includes(".asp")) {
     if (aspath?.includes("topic.asp") || aspath?.includes("topoc.asp")) {
@@ -295,7 +291,6 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
       returnData = await redirect(aspath, null, null, "");
     }
   }
-  console.log(returnData, "returnData");
   if (returnData) {
     appContext.ctx.res.writeHead(302, { Location: returnData });
     appContext.ctx.res.end();

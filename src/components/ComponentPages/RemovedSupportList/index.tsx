@@ -11,13 +11,9 @@ import {
 
 function RemovedSupportList({ isTestData = [] }: any) {
   const [subscriptionsList, setSubscriptionsList] = useState(isTestData);
-  // const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  // const [currentTopic, setCurrentTopic] = useState({});
   const [page] = useState(1);
   const [perPage] = useState("");
-  // const [isCamp, setIsCamp] = useState(false);
-  // const [camp, setCamp] = useState({});
   const [nickNames, setNickNames] = useState([]);
   const [selectedNikname, setSelectedNikname] = useState(null);
 
@@ -55,59 +51,11 @@ function RemovedSupportList({ isTestData = [] }: any) {
     getNickNames();
   }, []);
 
-  // const campOrTopicUnsubscribe = async (body: Object) => {
-  //   setIsLoading(true);
-  //   const res = await unsubscribeTopicOrCampAPI(body);
-
-  //   const query = `?page=${page}&per_page=${perPage}`;
-
-  //   if (res && res["status_code"] === 200) {
-  //     message.success(res?.data?.msg);
-  //     setIsVisible(false);
-  //     getSubscriptionsList(query);
-  //   }
-  //   setIsLoading(false);
-  // };
-
   const onConfirm = (e: any) => {
     e.preventDefault();
     setIsLoading(true);
-    // setIsVisible(true);
-    // setIsCamp(true);
-    // setCurrentTopic(topic);
-    // setCamp(camp);
     setIsLoading(false);
   };
-
-  // const onCancel = () => {
-  //   setIsVisible(false);
-  //   setCurrentTopic({});
-  //   setCamp({});
-  // };
-
-  // const onRemove = () => {
-  //   setIsLoading(true);
-  //   let body = null;
-  //   if (isCamp) {
-  //     body = {
-  //       topic_num: currentTopic["topic_num"],
-  //       camp_num: camp["camp_num"],
-  //       checked: false,
-  //       subscription_id: camp["subscription_id"],
-  //     };
-  //   } else {
-  //     body = {
-  //       topic_num: currentTopic["topic_num"],
-  //       camp_num: 0,
-  //       checked: false,
-  //       subscription_id: currentTopic["subscription_id"],
-  //     };
-  //   }
-  //   if (body) {
-  //     campOrTopicUnsubscribe(body);
-  //   }
-  //   setIsLoading(false);
-  // };
 
   const onNickNameChange = (id) => {
     setSelectedNikname(id);
