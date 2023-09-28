@@ -1,14 +1,6 @@
 import LoggedInHeaderNavigation from "../index";
-import {
-  cleanup,
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  waitForElementToBeRemoved,
-} from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
-import { store } from "../../../../../store";
 
 import { RouterContext } from "next/dist/shared/lib/router-context";
 import { NextRouter } from "next/router";
@@ -41,14 +33,15 @@ function createMockRouter(router: Partial<NextRouter>): NextRouter {
     defaultLocale: "en",
     domainLocales: [],
     isPreview: false,
+    ...router,
   };
 }
 
 afterEach(cleanup);
-const payload = {
-  camp_num: 1,
-  topic_num: 88,
-};
+// const payload = {
+//   camp_num: 1,
+//   topic_num: 88,
+// };
 
 const mockStore = configureMockStore();
 const store1 = mockStore({
@@ -164,7 +157,7 @@ const store2 = mockStore({
 
 describe("Camp statement on camp details page", () => {
   it("Should render without crash", async () => {
-    const { container, debug } = render(
+    render(
       <Provider store={store1}>
         <RouterContext.Provider
           value={createMockRouter({
@@ -205,7 +198,7 @@ describe("Camp statement on camp details page", () => {
 
     expect(
       screen.getByRole("link", {
-        name: /check\-circle supported camps/i,
+        name: /check-circle supported camps/i,
       })
     ).toBeInTheDocument();
     expect(screen.getByText(/log out/i)).toBeInTheDocument();
@@ -217,8 +210,8 @@ describe("Camp statement on camp details page", () => {
     fireEvent.click(screen.getByText(/log out/i));
   });
 
-  it("Should render without crash", async () => {
-    const { container, debug } = render(
+  it("Should render without crash topic", async () => {
+    render(
       <Provider store={store2}>
         <RouterContext.Provider
           value={createMockRouter({

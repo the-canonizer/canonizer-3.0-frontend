@@ -1,19 +1,11 @@
-import {
-  getAllByAltText,
-  getAllByText,
-  render,
-  screen,
-  act,
-} from "src/utils/testUtils";
+import { render, screen, act } from "src/utils/testUtils";
 
 import { Provider } from "react-redux";
-import { store } from "../../../../store";
 import Statements from "../index";
 import { RouterContext } from "next/dist/shared/lib/router-context";
 import { NextRouter } from "next/router";
 import configureMockStore from "redux-mock-store";
 
-import { getCompareStatement } from "../../../../network/api/history";
 function createMockRouter(router: Partial<NextRouter>): NextRouter {
   return {
     basePath: "",
@@ -188,7 +180,7 @@ describe("Compare Statements page", () => {
   });
 
   it("compare statement 2", async () => {
-    const { container, debug } = render(
+    render(
       <Provider store={store1}>
         <RouterContext.Provider
           value={createMockRouter({

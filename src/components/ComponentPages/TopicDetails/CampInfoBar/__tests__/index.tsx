@@ -1,13 +1,6 @@
 import CampInfoBar from "..";
-import {
-  cleanup,
-  render,
-  screen,
-  waitFor,
-  waitForElementToBeRemoved,
-} from "@testing-library/react";
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
-import { store } from "../../../../../store";
 
 import { RouterContext } from "next/dist/shared/lib/router-context";
 import configureMockStore from "redux-mock-store";
@@ -85,16 +78,14 @@ describe("Camp statement on camp details page", () => {
     jest.mock("src/network/api/campDetailApi");
   });
   it("Should render without crash", async () => {
-    const { container, debug } = await render(
+    const { container } = await render(
       <Provider store={store1}>
         <RouterContext.Provider value={createMockRouter()}>
           <CampInfoBar payload={payload} isTopicPage={true} />
         </RouterContext.Provider>
       </Provider>
     );
-    const loadingSkeletonElements = container.querySelectorAll(
-      ".react-loading-skeleton"
-    );
+    container.querySelectorAll(".react-loading-skeleton");
     expect(screen.getByText(/topic :/i)).toBeInTheDocument();
     expect(screen.getByText(/camp :/i)).toBeInTheDocument();
 
@@ -120,7 +111,7 @@ describe("Camp statement on camp details page", () => {
         topic_name: "Camp2DSFVAL",
       },
     });
-    const { container, debug } = await render(
+    const { container } = await render(
       <Provider store={store1}>
         <RouterContext.Provider value={createMockRouter()}>
           <CampInfoBar payload={payload} isTopicPage={true} />

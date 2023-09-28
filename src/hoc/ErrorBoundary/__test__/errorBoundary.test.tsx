@@ -1,8 +1,5 @@
 import ErrorBoundary from "../";
-import { render, cleanup, screen, fireEvent } from "@testing-library/react";
-
-import userEvent from "@testing-library/user-event";
-import { useRouter } from "next/router"; // Import the useRouter hook
+import { render, cleanup, screen } from "@testing-library/react";
 
 import { NextRouter } from "next/router";
 import { RouterContext } from "next/dist/shared/lib/router-context";
@@ -41,7 +38,7 @@ function createMockRouter(router: Partial<NextRouter>): NextRouter {
 
 describe("Error Boundary", () => {
   it("should render without params", () => {
-    const { container } = render(
+    render(
       <ErrorBoundary>
         <h1>error</h1>
       </ErrorBoundary>

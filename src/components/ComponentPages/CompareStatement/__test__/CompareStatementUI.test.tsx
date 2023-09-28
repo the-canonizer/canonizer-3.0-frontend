@@ -3,7 +3,6 @@ import { fireEvent, render, screen } from "src/utils/testUtils";
 import CompareStatementUI from "../UI/index";
 
 import { Provider } from "react-redux";
-import { store } from "../../../../store";
 import { RouterContext } from "next/dist/shared/lib/router-context";
 import { NextRouter } from "next/router";
 import configureMockStore from "redux-mock-store";
@@ -61,84 +60,6 @@ const store1 = mockStore({
   },
 });
 
-const liveStatementTOpic = {
-  id: 135,
-  namespace: "/General/",
-  language: null,
-  topic_num: 88,
-  note: "SEO name change as proposed in forum.",
-  submit_time: 1268964861,
-  submitter_nick_id: 1,
-  go_live_time: 1269569661,
-  objector_nick_id: null,
-  object_time: null,
-  object_reason: null,
-  proposed: null,
-  replacement: null,
-  topic_name: "Theories of Consciousness",
-  namespace_id: 1,
-  grace_period: 0,
-  is_disabled: 0,
-  is_one_level: 0,
-  parsed_value: "Theories of Consciousness",
-  submitter_nick_name: "Brent_Allsop",
-  status: "live",
-  revision_date: 1268964861,
-};
-const itemStatusTopic = {
-  "101": "old",
-  "135": "live",
-};
-const statementsTopic = [
-  {
-    go_live_time: 1228141435,
-    submit_time: 1228141435,
-    object_time: null,
-    parsed_value: "Mind and Consciousness",
-    value: "Mind and Consciousness",
-    topic_num: 88,
-    camp_num: null,
-    id: 101,
-    note: "First Version of Topic",
-    submitter_nick_id: 96,
-    objector_nick_id: null,
-    object_reason: null,
-    proposed: null,
-    replacement: null,
-    language: null,
-    grace_period: 0,
-    submitter_nick_name: "Michael",
-    status: null,
-    namespace_id: 1,
-    namespace: "/General/",
-    parsed_v:
-      '<del class="diffmod">Theories</del><ins class="diffmod">Mind</ins> <del class="diffmod">of</del><ins class="diffmod">and</ins> Consciousness',
-  },
-  {
-    go_live_time: 1269569661,
-    submit_time: 1268964861,
-    object_time: null,
-    parsed_value: "Theories of Consciousness",
-    value: "Theories of Consciousness",
-    topic_num: 88,
-    camp_num: null,
-    id: 135,
-    note: "SEO name change as proposed in forum.",
-    submitter_nick_id: 1,
-    objector_nick_id: null,
-    object_reason: null,
-    proposed: null,
-    replacement: null,
-    language: null,
-    grace_period: 0,
-    submitter_nick_name: "Brent_Allsop",
-    status: null,
-    namespace_id: 1,
-    namespace: "/General/",
-    parsed_v:
-      '<del class="diffmod">Mind</del><ins class="diffmod">Theories</ins> <del class="diffmod">and</del><ins class="diffmod">of</ins> Consciousness',
-  },
-];
 const liveStatementCamp = {
   id: 10433,
   topic_num: 23,
@@ -317,7 +238,7 @@ const statements = [
 ];
 describe("Compare Statement page", () => {
   it("should render without crash", () => {
-    const { container, debug } = render(
+    render(
       <Provider store={store1}>
         <RouterContext.Provider
           value={createMockRouter({
@@ -380,14 +301,14 @@ describe("Compare Statement page", () => {
     ).toHaveLength(3);
     fireEvent.click(
       screen.getByRole("button", {
-        name: /arrow\-left/i,
+        name: /arrow-left/i,
       })
     );
     // debug();
   });
 
-  it("should render without crash", () => {
-    const { container, debug } = render(
+  it("should render without crash test", () => {
+    render(
       <Provider store={store1}>
         <RouterContext.Provider
           value={createMockRouter({
@@ -420,7 +341,7 @@ describe("Compare Statement page", () => {
   });
 
   it("Comapare camps", () => {
-    const { container, debug } = render(
+    render(
       <Provider store={store1}>
         <RouterContext.Provider
           value={createMockRouter({
@@ -495,7 +416,7 @@ describe("Compare Statement page", () => {
     expect(screen.getAllByText("Yes")).toHaveLength(2);
     fireEvent.click(
       screen.getByRole("button", {
-        name: /arrow\-left/i,
+        name: /arrow-left/i,
       })
     );
 
