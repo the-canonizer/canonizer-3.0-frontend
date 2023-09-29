@@ -347,7 +347,7 @@ export default function DirectSupportedCampsUI({
           handleOk(idData, valData);
 
           // setTagsCampsOrderID("");
-          // setTagsDataArrValue([]);
+          // setTagsDataArrValue([]);save
           // setValData({});
           // setIsChangingOrder(false);
         }}
