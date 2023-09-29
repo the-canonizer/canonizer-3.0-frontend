@@ -51,6 +51,9 @@ import { renderHook } from "@testing-library/react-hooks";
 import { useState } from "react";
 import Container from "postcss/lib/container";
 import userEvent from "@testing-library/user-event";
+import DirectSupportedCampsUI from "../DirectSupportedCampsUI";
+import { Modal } from "antd";
+
 
 const directSupportedCampsList = [
   {
@@ -182,6 +185,9 @@ it("path is working with use router", () => {
 });
 
 describe('directsupported camps', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
   it('direct support cancel', async () => {
 
@@ -223,7 +229,7 @@ describe('directsupported camps', () => {
 
   })
 
-  it('direct support revert changes', async () => {
+  it('direct support revert changes 2', async () => {
     const { getAllByTestId, getAllByText } = render(<DirectSupportedCamps search={""}></DirectSupportedCamps>)
     await waitFor(async () => {
       const remove_button = getAllByTestId('handle_close')
@@ -232,21 +238,5 @@ describe('directsupported camps', () => {
       fireEvent.click(save_changes[0])
     })
   })
-
-  it('direct support save changes 2', async () => {
-
-    const { getAllByTestId, getAllByText } = render(<DirectSupportedCamps search={""}></DirectSupportedCamps>)
-
-    await waitFor(async () => {
-
-      const remove_button = getAllByTestId('handle_close')
-      userEvent.click(remove_button[0])
-      userEvent.click(remove_button[1])
-      userEvent.click(remove_button[2])
-      const clear_changes = screen.getAllByText("Changes will be reverted ?")
-    })
-
-  })
-
 
 })
