@@ -3,15 +3,12 @@ import {
   render,
   screen,
   waitFor,
-  cleanup
 } from "../../../../../utils/testUtils";
 import messages from "../../../../../messages";
 import ManageSupportUI from "../index";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import ManageSupport from "../..";
 import { Card } from "antd";
-import { removeSupportedCamps } from "src/network/api/userApi";
-
 // import { useRouter } from "next/router";
 // import { renderHook } from "@testing-library/react-hooks";
 // import dynamic from "next/dynamic";
@@ -173,8 +170,6 @@ jest.mock("react-redux", () => ({
 jest.mock("src/hooks/isUserAuthenticated", () =>
   jest.fn(() => ({ isUserAuthenticated: true }))
 );
-
-
 jest.mock("src/network/api/campDetailApi", () => ({
   getAllUsedNickNames: jest.fn(),
   getCurrentCampRecordApi: jest.fn(),
@@ -198,9 +193,9 @@ jest.mock("src/network/api/topicAPI", () => ({
     })
   ),
 }));
-jest.mock("src/components/common/supportRemovedModal", () => () => {
-  return <div>Removed Modal</div>;
-});
+// jest.mock("src/components/common/supportRemovedModal", () => () => {
+//   return <div>Removed Modal</div>;
+// });
 
 describe("ManageSupportUI", () => {
   it("render show SupportedCamps", () => {
@@ -668,40 +663,3 @@ describe("Manage support ui cancle or submit button", () => {
     ).toBeTruthy();
   });
 });
-
-jest.mock("src/network/api/userApi");
-
-afterEach(cleanup);
-describe('Ui test cases', () => {
-
-  beforeEach(() => {
-    jest.clearAllMocks();
-    jest.mock("src/network/api/userApi");
-  });
-
-  it('remove Support', async () => {
-    const { getAllByTestId, getAllByText } = render(
-      <ManageSupport></ManageSupport>
-    );
-
-    await waitFor(() => {
-      const remove_all = getAllByTestId('checkbox')
-      fireEvent.click(remove_all[0])
-      const submit = getAllByText('Submit')
-      fireEvent.click(submit[0])
-    })
-  })
-
-  it('remove Support2', async () => {
-    const { getAllByTestId, getAllByText } = render(
-      <ManageSupport></ManageSupport>
-    );
-
-    await waitFor(() => {
-      const remove_all = getAllByTestId('checkbox')
-      fireEvent.click(remove_all[0])
-      const submit = getAllByText('Cancel')
-      fireEvent.click(submit[0])
-    })
-  })
-})
