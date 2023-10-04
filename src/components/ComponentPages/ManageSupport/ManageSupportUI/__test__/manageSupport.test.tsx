@@ -193,9 +193,9 @@ jest.mock("src/network/api/topicAPI", () => ({
     })
   ),
 }));
-// jest.mock("src/components/common/supportRemovedModal", () => () => {
-//   return <div>Removed Modal</div>;
-// });
+jest.mock("src/components/common/supportRemovedModal", () => () => {
+  return <div>Removed Modal</div>;
+});
 
 describe("ManageSupportUI", () => {
   it("render show SupportedCamps", () => {
