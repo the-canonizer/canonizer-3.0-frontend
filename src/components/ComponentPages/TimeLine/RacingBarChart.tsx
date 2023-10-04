@@ -37,7 +37,6 @@ function RacingBarChart({ data }: any) {
 
     if (element instanceof SVGTextElement) {
       const length = element.getComputedTextLength();
-      console.log(entry, length);
       return entry.level * 30 + 30 + length;
     } else {
       console.warn("Element is not an SVG text element");
