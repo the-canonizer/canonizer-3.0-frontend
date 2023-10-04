@@ -395,18 +395,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
   //   }
   // };
 
-  const onCreateCampDate = () => {
-    dispatch(
-      setFilterCanonizedTopics({
-        asofdate:
-          Date.parse(
-            moment.unix(campExist && campExist?.created_at).endOf("day")["_d"]
-          ) / 1000,
-        asof: "bydate",
-      })
-    );
-  };
-
   useEffect(() => {
     const q = router?.query;
     if (q?.is_tree_open) {
@@ -488,43 +476,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
                   : asofdate)) ||
               asof == "default") && (
               <Fragment>
-                {campExist &&
-                  !campExist?.camp_exist &&
-                  (loadingIndicator ? (
-                    <CustomSkelton
-                      skeltonFor="list"
-                      bodyCount={1}
-                      stylingClass=""
-                      isButton={false}
-                    />
-                  ) : (
-                    <Fragment>
-                      <Alert
-                        className="alert-camp-created-on"
-                        message="The camp was first created on"
-                        type="info"
-                        description={
-                          <span>
-                            <Link
-                              onClick={() => {
-                                onCreateCampDate();
-                              }}
-                            >
-                              {" "}
-                              {
-                                new Date(
-                                  (campExist && campExist?.created_at) * 1000
-                                )
-                                  .toLocaleString()
-                                  ?.split(",")[0]
-                              }
-                            </Link>
-                          </span>
-                        }
-                      />
-                    </Fragment>
-                  ))}
-
                 {campExist
                   ? campExist?.camp_exist
                   : true && (
