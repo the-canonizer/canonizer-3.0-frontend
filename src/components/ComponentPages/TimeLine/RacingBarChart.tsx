@@ -33,11 +33,16 @@ function RacingBarChart({ data }: any) {
   };
 
   const manageBarXAxis = (entry) => {
-    // const length = document
-    //   ?.getElementById(entry.camp_id)
-    //   ?.getComputedTextLength();
+    const element = document.getElementById(entry.camp_id);
 
-    return entry.level * 30 + 30;
+    if (element instanceof SVGTextElement) {
+      const length = element.getComputedTextLength();
+      console.log(entry, length);
+      return entry.level * 30 + 30 + length;
+    } else {
+      console.warn("Element is not an SVG text element");
+      return /* handle other cases or return a default value */;
+    }
   };
 
   // will be called initially and on every data change
