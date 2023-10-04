@@ -430,6 +430,8 @@ const TopicsList = () => {
     if (inputSearch) {
       setAllowClear(true);
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
