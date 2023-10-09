@@ -412,6 +412,19 @@ del.diffmod img {
           transform: rotate(45deg) translate(25px, 25px);
         }
       }
+      &.isDrawerOpen {
+        transition: all 0.3s;
+        z-index: 100000;
+        left: 753px;
+        .arrow {
+          bottom: 0;
+          transform: translateX(-50%) rotate(180deg);
+        }
+
+        @media screen and (max-width: 767px) {
+          left: 95%;
+        }
+      }
     }
   }
 
@@ -492,6 +505,7 @@ del.diffmod img {
     }
   }
 }
+
 .treeDrawer {
   .ant-drawer-header {
     background-color: #f1f1f1;
@@ -536,6 +550,15 @@ del.diffmod img {
   @media screen and (max-width: 767px) {
     [class="ant-drawer-content-wrapper"] {
       max-width: 90%;
+    }
+  }
+  &.closeIconHide {
+    .ant-drawer-header {
+      .ant-drawer-close {
+        display: none;
+        opacity: 0;
+        visibility: hidden;
+      }
     }
   }
 }
@@ -2520,7 +2543,7 @@ div[role="option"]::before {
 .evntLineActivity {
   max-height: 400px;
   overflow-x: hidden;
-  height: auto!important;
+  height: auto !important;
 }
 
 .header-bg-color-change {
@@ -2614,12 +2637,19 @@ div[role="option"]::before {
     margin-right: auto;
 
     @media screen and (min-width: 768px) {
-      min-width: 170px;
-      margin-left: 20px;
+      margin-left: 15px;
+      max-width: 100%;
+      width: 100%;
     }
 
     @media screen and (max-width: 767px) {
       width: 100%;
+    }
+
+    @supports (-webkit-touch-callout: none) {
+      @media screen and (min-width: 768px) {
+        min-width: 300px;
+      }
     }
   }
 
@@ -2757,7 +2787,7 @@ div[role="option"]::before {
 
 .change-icon {
   width: 20px;
-    position: relative;
-    left: 6px;
-    top: -4px;
+  position: relative;
+  left: 6px;
+  top: -4px;
 }

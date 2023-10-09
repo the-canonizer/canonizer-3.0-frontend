@@ -13,7 +13,7 @@ import { getThreadsList } from "../../../../../network/api/campForumApi";
 import Layout from "../../../../../hoc/layout";
 import CampForumComponent from "../../../../../components/ComponentPages/CampForum";
 
-function CampForumListPage({ topicRecord, campRecord, threadList }) {
+function CampForumListPage({ topicRecord, campRecord, threadList }: any) {
   const dispatch = useDispatch();
   dispatch(setCurrentTopicRecord(topicRecord));
   dispatch(setCurrentCampRecord(campRecord));
@@ -31,7 +31,7 @@ function CampForumListPage({ topicRecord, campRecord, threadList }) {
     </Fragment>
   );
 }
-export async function getServerSideProps({ req, res, resolvedUrl }) {
+export async function getServerSideProps({ req, resolvedUrl }) {
   let topicNum = +resolvedUrl?.split("/")[2].split("-")[0];
   let campNum = +(resolvedUrl?.split("/")[3].split("-")[0] ?? 1);
   let q = `?camp_num=${campNum}&topic_num=${topicNum}&type=all&page=${1}&per_page=${10}&like=`;

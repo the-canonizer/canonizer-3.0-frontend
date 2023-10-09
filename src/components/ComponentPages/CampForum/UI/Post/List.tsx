@@ -19,7 +19,7 @@ const CreateCampFormUI = ({
   onEditClick,
   onDeleteClick,
   post,
-}) => {
+}: any) => {
   const router = useRouter();
 
   return (
@@ -60,6 +60,7 @@ const CreateCampFormUI = ({
                     onClick={onEditClick}
                     className="linkCss"
                     id={"post-edit-icon" + post.id}
+                    data-testid={"post-edit-icon" + post.id}
                   >
                     <EditOutlined />
                   </a>
@@ -69,8 +70,13 @@ const CreateCampFormUI = ({
                   onConfirm={onDeleteClick}
                   okText="Yes"
                   cancelText="No"
+                  data-testid="delete_pop_confirm"
                 >
-                  <a className="linkCss" id={"post-delete-icon-" + post.id}>
+                  <a
+                    className="linkCss"
+                    id={"post-delete-icon-" + post.id}
+                    data-testid={"post-delete-icon-" + post.id}
+                  >
                     <DeleteOutlined />
                   </a>
                 </Popconfirm>

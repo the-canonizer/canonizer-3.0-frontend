@@ -1,3 +1,4 @@
+/* eslint-disable */
 export default {
   Home: `{
     "@context": "https://schema.org",
@@ -12,12 +13,12 @@ export default {
     "name": "Videos | Canonizer",
     "description": "Canonizer videos on Consciousness: Not a Hard Problem, Just a Color Problem",
     "thumbnailUrl": "https://imgur.com/a/X8WgRBg",
-    "uploadDate": "",
+    "uploadDate": "2022-08-14",
     "embedUrl": "https://canonizer.com/static/videos/consciousness/introduction_360.mp4",
     "potentialAction": {
-      "@type": "SeekToAction",
-      "target": "https://canonizer.com/static/videos/consciousness/introduction_360.mp4={seek_to_second_number}",
-      "startOffset-input": "required name=seek_to_second_number"
+    "@type": "SeekToAction",
+    "target": "https://canonizer.com/static/videos/consciousness/introduction_360.mp4={seek_to_second_number}",
+    "startOffset-input": "required name=seek_to_second_number"
     }
   }`,
   CreateNewTopicPage: `{
@@ -38,7 +39,7 @@ export default {
     "url": "https://canonizer.com/browse",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://www.google.com/search?sitesearch=canonizer.com&q={search_term_string}",
+      "target": "https://canonizer.com/browse?namespace=All{search_term_string}",
       "query-input": "required name=search_term_string"
     }
   }`,
@@ -76,3 +77,5 @@ export default {
     }
   }`,
 };
+
+/* eslint-enable */

@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { Typography, Button } from "antd";
 import {
   FacebookFilled,
-  TwitterOutlined,
+  // TwitterOutlined,
   GithubFilled,
   LinkedinFilled,
 } from "@ant-design/icons";
@@ -16,7 +16,7 @@ import CustomSkeleton from "../customSkelton";
 
 const { Text } = Typography;
 
-export default function SocialLoginUi({ isNotLogin = false }) {
+export default function SocialLoginUi({ isNotLogin = false }: any) {
   const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();

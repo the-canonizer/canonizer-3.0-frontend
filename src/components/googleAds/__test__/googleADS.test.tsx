@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { cleanup, render, screen } from "src/utils/testUtils";
+import { cleanup, render } from "src/utils/testUtils";
 
 import GoogleADS from "../";
 

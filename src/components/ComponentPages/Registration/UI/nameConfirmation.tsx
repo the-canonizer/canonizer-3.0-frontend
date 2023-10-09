@@ -22,7 +22,7 @@ const NameConfirmation = ({
   isOTP,
   onResendClick,
   isResend,
-}) => (
+}: any) => (
   <section className={styles.signup_wrapper + " " + styles.textCenter}>
     <Form
       form={form}

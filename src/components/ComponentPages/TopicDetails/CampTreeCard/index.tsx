@@ -1,12 +1,12 @@
-import { Collapse, Popover, Image, Typography, Button, Select } from "antd";
-import React, { useEffect, useState, useRef } from "react";
+import { Collapse, Popover, Image, Typography, Select, Alert } from "antd";
+import React, { Fragment, useEffect, useState, useRef } from "react";
 import { RightOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 
 import CampTree from "../CampTree";
 import { RootState } from "src/store";
-import useAuthentication from "src/hooks/isUserAuthenticated";
+// import useAuthentication from "src/hooks/isUserAuthenticated";
 import styles from "../topicDetails.module.scss";
 import { useRouter } from "next/router";
 import CustomSkelton from "../../../common/customSkelton";
@@ -79,19 +79,19 @@ const CampTreeCard = ({
   setTotalCampScoreForSupportTree,
   setSupportTreeForCamp,
   backGroundColorClass,
-}) => {
-  const { asof, asofdate, campWithScore, tree } = useSelector(
+}: any) => {
+  const { asof, asofdate, campWithScore, tree, campExist } = useSelector(
     (state: RootState) => ({
       asofdate: state.filters?.filterObject?.asofdate,
       asof: state?.filters?.filterObject?.asof,
       campWithScore: state?.filters?.campWithScoreValue,
       tree: state?.topicDetails?.tree?.at(0),
+      campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
     })
   );
 
   const router = useRouter();
   const dispatch = useDispatch();
-
   const didMount = useRef(false);
 
   // const eventLinePath = router?.asPath.replace("topic", "eventline");
@@ -113,7 +113,6 @@ const CampTreeCard = ({
   };
 
   const handleChange = (value) => {
-    console.log("🚀 ~ file: index.tsx:116 ~ handleChange ~ value:", value);
     router.push(
       {
         pathname: router.pathname,
@@ -123,6 +122,18 @@ const CampTreeCard = ({
       { shallow: true }
     );
     dispatch(setCampWithScorevalue(value));
+  };
+
+  const onCreateCampDate = () => {
+    dispatch(
+      setFilterCanonizedTopics({
+        asofdate:
+          Date.parse(
+            moment.unix(campExist && campExist?.created_at).endOf("day")["_d"]
+          ) / 1000,
+        asof: "bydate",
+      })
+    );
   };
 
   useEffect(() => {
@@ -253,6 +264,39 @@ const CampTreeCard = ({
           </Panel>
         </Collapse>
       )}
+      {((tree &&
+        tree["1"]?.is_valid_as_of_time &&
+        tree["1"]?.created_date <=
+          (asof == "default" || asof == "review"
+            ? Date.now() / 1000
+            : asofdate)) ||
+        asof == "default") &&
+        campExist &&
+        !campExist?.camp_exist && (
+          <Fragment>
+            <Alert
+              className="alert-camp-created-on"
+              message="The camp was first created on"
+              type="info"
+              description={
+                <span>
+                  <AntLink
+                    onClick={() => {
+                      onCreateCampDate();
+                    }}
+                  >
+                    {" "}
+                    {
+                      new Date((campExist && campExist?.created_at) * 1000)
+                        .toLocaleString()
+                        ?.split(",")[0]
+                    }
+                  </AntLink>
+                </span>
+              }
+            />
+          </Fragment>
+        )}
     </>
   );
 };

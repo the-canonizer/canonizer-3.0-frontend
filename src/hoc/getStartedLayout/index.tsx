@@ -1,6 +1,6 @@
-import { createWrapper } from "next-redux-wrapper";
+// import { createWrapper } from "next-redux-wrapper";
 
-import { store } from "../../store";
+// import { store } from "../../store";
 import GetStartedHeader from "../../components/common/headers/getStartedHeader";
 import Footer from "../../components/common/footer";
 
@@ -16,8 +16,8 @@ function GetStartedLayout(props: any) {
   );
 }
 
-const makeStore = () => store;
-const wrapper = createWrapper(makeStore);
+// const makeStore = () => store;
+// const wrapper = createWrapper(makeStore);
 
 // export default Layout;
 export default GetStartedLayout;

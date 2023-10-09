@@ -3,7 +3,7 @@ import { useEffect } from "react";
 function GoogleAd({
   ad_client = process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT,
   ad_slot,
-}) {
+}: any) {
   useEffect(() => {
     try {
       // @ts-ignore

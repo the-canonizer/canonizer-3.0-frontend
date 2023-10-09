@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  render,
-  fireEvent,
-  waitFor,
-  screen,
-  cleanup,
-} from "@testing-library/react";
+import { render, fireEvent, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 
 import { store } from "../../../../../store";
@@ -82,7 +76,7 @@ describe("CampInfoBar", () => {
     expect(screen.getByText("Topic : Test Topic")).toBeInTheDocument();
     expect(
       screen.getByRole("button", {
-        name: /arrow\-left/i,
+        name: /arrow\\-left/i,
       })
     ).toBeInTheDocument();
   });

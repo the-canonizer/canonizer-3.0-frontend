@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import moment from "moment";
 import {
   Typography,
-  Button,
   Collapse,
   Select,
   Radio,
@@ -10,7 +9,6 @@ import {
   Input,
   DatePicker,
   Popover,
-  Tooltip,
 } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
 import { RootState } from "../../../store";
@@ -30,9 +28,7 @@ import { useRouter } from "next/router";
 import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
 import K from "../../../constants";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
-// import { showCreateCampButton } from "src/utils/generalUtility";
 import FullScoreCheckbox from "../../ComponentPages/FullScoreCheckbox";
-import useAuthentication from "src/hooks/isUserAuthenticated";
 import ArchivedCampCheckBox from "src/components/ComponentPages/ArchivedCampCheckBox";
 
 const infoContent = (
@@ -68,43 +64,15 @@ const asContent = (
   </>
 );
 
-// function range(start, end) {
-//   const result = [];
-//   for (let i = start; i < end; i++) {
-//     result.push(i);
-//   }
-//   return result;
-// }
-
-// function disabledDate(current) {
-//   // Can not select days before today and today
-//   return current && current < moment().endOf("day");
-// }
-
-// function disabledDateTime() {
-//   return {
-//     disabledHours: () => range(0, 24).splice(4, 20),
-//     disabledMinutes: () => range(30, 60),
-//     disabledSeconds: () => [55, 56],
-//   };
-// }
-
-const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
-  const isAuth = useAuthentication();
-
+const CreateTopic = () => {
   const [isDatePicker, setIsDatePicker] = useState(false);
-  // const [isPanelCollapse, setIsPanelCollapse] = useState(false);
-
   const [datePickerValue, setDatePickerValue] = useState(null);
 
   const dispatch = useDispatch();
   const router = useRouter();
-  const [isCampBtnVisible, setIsCampBtnVisible] = useState(false);
 
-  const campRoute = () => {
-    router?.push("/create/topic");
-  };
-  const [cookies, setCookie] = useCookies(["canAlgo", "asof", "asofDate"]);
+  // eslint-disable-next-line no-unused-vars
+  const [cookie, setCookie] = useCookies(["canAlgo", "asof", "asofDate"]);
 
   const {
     algorithms,
@@ -113,11 +81,8 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
     selectedAsOf,
     filteredAsOfDate,
     filterObject,
-    currentCampNode,
-    tree,
     loading,
     current_date_filter,
-    campExist,
     viewThisVersion,
     campScoreValue,
   } = useSelector((state: RootState) => ({
@@ -127,17 +92,12 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
     selectedAsOf: state?.filters?.filterObject?.asof,
     filteredAsOfDate: state?.filters?.filterObject?.asofdate,
     filterObject: state?.filters?.filterObject,
-    currentCampNode: state?.filters?.selectedCampNode,
-    tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
     loading: state?.loading?.loading,
     current_date_filter: state?.filters?.current_date,
-    campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
     viewThisVersion: state?.filters?.viewThisVersionCheck,
     campScoreValue: state?.filters?.campWithScoreValue,
   }));
-  const { campRecord } = useSelector((state: RootState) => ({
-    campRecord: state?.topicDetails?.currentCampRecord,
-  }));
+
   const [value, setValue] = useState(
     selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3
   );
@@ -149,10 +109,6 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   const [isLoading, setIsLoading] = useState(loading);
   const didMount = useRef(false);
 
-  // /////////////////////////////////////////////////////////////////////////
-  // Discussion required on this functionality after that I will remove or //
-  //                        uncomment bellow code                         //
-  // //////////////////////////////////////////////////////////////////////
   function removeEmptyValues(obj) {
     const result = {};
     for (const key in obj) {
@@ -196,22 +152,19 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
       dispatch(setFilterCanonizedTopics(aa));
       didMount.current = true;
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterObject]);
 
   useEffect(() => {
     setIsLoading(loading);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
   useEffect(() => {
     setValue(selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3);
   }, [selectedAsOf]);
-
-  useEffect(() => {
-    if (router?.pathname.includes("/topic/")) {
-      // setIsPanelCollapse(true);
-      setIsCampBtnVisible(true);
-    }
-  }, [router?.pathname]);
 
   useEffect(() => {
     setSelectedAsOFDate(filteredAsOfDate);
@@ -337,37 +290,6 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   return (
     <>
       <div className="leftSideBar_Card">
-        {/* <div className="btnsWrap">
-          <Button size="large" className="mb-3 btn" onClick={campRoute}>
-            <i className="icon-topic"></i> Create Topic
-          </Button>
-          {isCampBtnVisible &&
-          currentCampNode?._isDisabled == 0 &&
-          currentCampNode?.parentIsOneLevel == 0 &&
-          campRecord?.is_archive == 0 ? (
-            <Tooltip
-              title={
-                tree && !tree["1"]?.is_valid_as_of_time
-                  ? K.exceptionalMessages.createNewCampTooltipMsg
-                  : ""
-              }
-            >
-              <Button
-                className="btn"
-                size="large"
-                disabled={
-                  (tree && !tree["1"]?.is_valid_as_of_time) ||
-                  (campExist && !campExist?.camp_exist)
-                    ? true
-                    : false
-                }
-                onClick={onCreateCamp}
-              >
-                <i className="icon-camp"></i> Create New Camp
-              </Button>
-            </Tooltip>
-          ) : null}
-        </div> */}
         <Collapse
           className={`${styles.cardAccordian} topicListFilterCardCollapse topicFilterBorderRemove`}
           expandIconPosition="right"

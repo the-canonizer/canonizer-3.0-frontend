@@ -1,5 +1,5 @@
 import { createStore } from "redux";
-import { createWrapper, Context } from "next-redux-wrapper";
+import { createWrapper } from "next-redux-wrapper";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import {
   FLUSH,
@@ -27,6 +27,7 @@ import notifications from "./slices/notificationSlice";
 import supportTreeCard from "./slices/supportTreeCard";
 import utilsSlice from "./slices/utilsSlice";
 import loadingSlice from "./slices/loading";
+import hotTopicSlice from "./slices/hotTopicSlice";
 // reducers
 
 let combinedReducer = combineReducers({
@@ -43,6 +44,7 @@ let combinedReducer = combineReducers({
   notifications,
   utils: utilsSlice,
   loading: loadingSlice,
+  hotTopic: hotTopicSlice,
 });
 
 const rootReducer = (state, action) => {
@@ -64,6 +66,7 @@ const persistConfig = {
     "topicDetails",
     "utils",
     "recentActivities",
+    "hotTopic",
   ],
 };
 
@@ -80,7 +83,7 @@ const store = configureStore({
   // .concat(logger),
 });
 
-const makeStore = (context: Context) => createStore(persistedReducer);
+const makeStore = () => createStore(persistedReducer);
 const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof rootReducer>;

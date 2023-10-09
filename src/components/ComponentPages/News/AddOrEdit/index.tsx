@@ -156,7 +156,7 @@ export default function AddOrEdit({ edit }: any) {
           available_for_child: news?.available_for_child,
         });
         const reqBodyNickName = {
-          topic_num: +router?.query?.camp[0]?.split("-")[0],
+          topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
         };
         const result = await getAllUsedNickNames(reqBodyNickName);
         form.setFieldsValue({
@@ -166,7 +166,7 @@ export default function AddOrEdit({ edit }: any) {
         setScreenLoading(false);
       } else {
         const reqBody = {
-          topic_num: +router?.query?.camp[0]?.split("-")[0],
+          topic_num: +router?.query?.camp?.at(0)?.split("-")[0],
         };
         const result = await getAllUsedNickNames(reqBody);
         form.setFieldsValue({
@@ -184,6 +184,8 @@ export default function AddOrEdit({ edit }: any) {
     } else {
       router?.push("/login");
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -319,7 +321,7 @@ export default function AddOrEdit({ edit }: any) {
                 />
               ) : (
                 <Select
-                  value={nickNameData[0]?.id}
+                  value={nickNameData?.at(0)?.id}
                   size="large"
                   disabled={edit}
                   showSearch

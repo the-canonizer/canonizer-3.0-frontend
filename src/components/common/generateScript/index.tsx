@@ -4,11 +4,10 @@ import { Button, Modal, message } from "antd";
 import styles from "./generate.module.scss";
 
 import messages from "src/messages";
-import { useRouter } from "next/router";
 
 const { labels } = messages;
 
-export default function GenerateModal({ topic_num, camp_num }) {
+export default function GenerateModal({ topic_num, camp_num }: any) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [path, setPath] = useState("");
 

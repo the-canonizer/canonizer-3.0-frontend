@@ -1,6 +1,8 @@
-import { render, screen } from "../../../../utils/testUtils";
+import { fireEvent, render, screen, waitFor } from "../../../../utils/testUtils";
 import DirectSupportedCampsUI from "../DirectSupportedCampsUI/index";
 import messages from "../../../../messages";
+import DirectSupportedCamps from "..";
+import { wait } from "@testing-library/user-event/dist/utils";
 
 const { labels } = messages;
 
@@ -257,6 +259,7 @@ describe("Direct Support camps page", () => {
     );
     <input placeholder="Search by topic name" />;
     screen.queryByPlaceholderText(/Search by topic name/i);
+    expect(screen.getByText("OK")).toBeTruthy();
   });
 
   it("render click on topic cross button then two buttons are activated", () => {

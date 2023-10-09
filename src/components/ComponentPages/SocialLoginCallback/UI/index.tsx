@@ -6,7 +6,7 @@ import helpStyles from "../../Home/HelpCard/helpCard.module.scss";
 
 import CustomSkelton from "../../../common/customSkelton";
 
-const { Title, Paragraph, Text } = Typography;
+const { Title, Paragraph } = Typography;
 const { Panel } = Collapse;
 
 function SocialLoginCallback() {
@@ -14,7 +14,7 @@ function SocialLoginCallback() {
     <Fragment>
       <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar">
         <div className="leftSideBar_Card">
-          <div className="btnsWrap">
+          <div className="btnsWrap" data-testid="btnwrap">
             <CustomSkelton
               skeltonFor="list"
               bodyCount={1}
@@ -27,6 +27,7 @@ function SocialLoginCallback() {
             expandIconPosition="right"
             bordered={false}
             defaultActiveKey={["1", "2", "3"]}
+            data-testid="collapse-card"
           >
             <Panel
               header={
@@ -40,9 +41,14 @@ function SocialLoginCallback() {
                 </span>
               }
               key="1"
+              data-testid="collapse-panel"
             >
               <div className={styles.algo_title}>
-                <Title level={5} className={styles.algoText}>
+                <Title
+                  level={5}
+                  className={styles.algoText}
+                  data-testid="title-tag"
+                >
                   <CustomSkelton
                     skeltonFor="list"
                     bodyCount={1}
@@ -57,7 +63,7 @@ function SocialLoginCallback() {
                 stylingClass="listSkeleton"
                 isButton={false}
               />
-              <Paragraph className={styles.algoInfo}>
+              <Paragraph className={styles.algoInfo} data-testid="content-text">
                 <CustomSkelton
                   skeltonFor="list"
                   bodyCount={1}
@@ -86,6 +92,7 @@ function SocialLoginCallback() {
                 </span>
               }
               key="2"
+              data-testid="panel-2"
             >
               <CustomSkelton
                 skeltonFor="list"
@@ -130,12 +137,15 @@ function SocialLoginCallback() {
       <div className="pageContentWrap">
         <Row gutter={8}>
           <Col xs={24} sm={24} xl={12}>
-            <div className={`${styles.card} topicsList_card`}>
+            <div
+              className={`${styles.card} topicsList_card`}
+              data-testid="list-card"
+            >
               <List
                 className={styles.wrap}
                 bordered
                 dataSource={["", ""]}
-                renderItem={(item: any) => {
+                renderItem={() => {
                   return (
                     <CustomSkelton
                       skeltonFor="list"
@@ -150,7 +160,7 @@ function SocialLoginCallback() {
           </Col>
           <Col xs={24} sm={24} xl={12}>
             <section className={helpStyles.wrap}>
-              <div className="help-card-wrap">
+              <div className="help-card-wrap" data-testid="help-card">
                 <CustomSkelton
                   skeltonFor="list"
                   bodyCount={10}
@@ -161,7 +171,7 @@ function SocialLoginCallback() {
             </section>
           </Col>
           <Col xs={24} sm={24} xl={24}>
-            <section className={helpStyles.wrap}>
+            <section className={helpStyles.wrap} data-testid="help-crd-wrap">
               <div className="help-card-wrap">
                 <CustomSkelton
                   skeltonFor="list"

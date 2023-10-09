@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
-import { Card, List, Typography, Collapse } from "antd";
+import { List, Typography, Collapse } from "antd";
 import { useRouter } from "next/router";
 import { BellFilled } from "@ant-design/icons";
 import moment from "moment";
@@ -23,6 +23,7 @@ export default function CampRecentActivities() {
 
   const router = useRouter();
   const [data, setData] = useState([]);
+  const [hasShowViewAll, setHasShowViewAll] = useState(false);
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [userData, setUserData] = useState(loggedInUser);
 
@@ -40,10 +41,13 @@ export default function CampRecentActivities() {
         camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
       };
       let res = await getTopicActivityLogApi(reqBody);
-      setData(res?.data);
+      setData(res?.data?.items);
+      setHasShowViewAll(res?.data?.is_show_all_btn);
       setLoadingIndicator(false);
     }
     getTopicActivityLogCall();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router?.query?.camp[1]?.split("-")[0] ?? 1]);
 
   return (
@@ -109,7 +113,7 @@ export default function CampRecentActivities() {
             K?.exceptionalMessages?.noRecentActivityFound
           )}
           <div className={styles.footerLink}>
-            {userData?.is_admin ? (
+            {userData?.is_admin && hasShowViewAll ? (
               <Link
                 href={{
                   pathname: "/activities",

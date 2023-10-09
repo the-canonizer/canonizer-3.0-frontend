@@ -7,8 +7,8 @@ import moment from "moment";
 
 import styles from "./index.module.scss";
 
-import CreateCampBtn from "../../../common/button/createNewCampBtn";
-import CreateTopicBtn from "../../../common/button/createNewTopicBtn";
+// import CreateCampBtn from "../../../common/button/createNewCampBtn";
+// import CreateTopicBtn from "../../../common/button/createNewTopicBtn";
 import CampInfoBar from "../../TopicDetails/CampInfoBar";
 import CustomSkelton from "../../../common/customSkelton";
 import { changeSlashToArrow } from "src/utils/generalUtility";
@@ -29,10 +29,10 @@ function CompareStatementUI({
   isLoading,
   liveStatement,
   itemsStatus,
-}) {
+}: any) {
   const router = useRouter();
-  const s1 = statements[0] || {},
-    s2 = statements[1] || {},
+  const s1 = statements?.at(0) || {},
+    s2 = statements?.at(1) || {},
     from = router?.query?.from;
 
   let payload = {
@@ -471,7 +471,7 @@ function CompareStatementUI({
                           </Text>
                         </Paragraph>
                         <Paragraph>
-                          <Text strong>Camp Archived: </Text>
+                          <Text strong>Camp Archived : </Text>
                           <Text>
                             {liveStatement?.is_archive == 1 ? "Yes" : "No"}
                           </Text>
