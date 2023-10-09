@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 // import ManageSupportUI from "./ManageSupportUI";
 import { message } from "antd";
-import styles from "./ManageSupportUI/ManageSupport.module.scss";
 import CampInfoBar from "../TopicDetails/CampInfoBar";
 import dynamic from "next/dynamic";
 import {
@@ -23,7 +22,6 @@ import {
   setManageSupportStatusCheck,
 } from "src/store/slices/campDetailSlice";
 import moment from "moment";
-import Sidebar from "../Home/SideBarNoFilter";
 
 const ManageSupportUI = dynamic(async () => await import("./ManageSupportUI"), {
   ssr: false,
@@ -109,12 +107,12 @@ const ManageSupport = () => {
     topic_num: +router?.query?.manageSupport?.[0]?.split("-")[0],
     camp_num: +router?.query?.manageSupport?.[1]?.split("-")[0],
   };
-const getDelegateId = router.asPath?.substring(router.asPath.lastIndexOf("_") + 1)
-
+  const getDelegateId = router.asPath?.substring(
+    router.asPath.lastIndexOf("_") + 1
+  );
 
   if (CheckDelegatedOrDirect && getDelegateId)
-    reqBodyData.delegated_nick_name_id =
-      getDelegateId;
+    reqBodyData.delegated_nick_name_id = getDelegateId;
   const { campRecord } = useSelector((state: RootState) => ({
     campRecord: state?.topicDetails?.currentCampRecord,
   }));
@@ -153,6 +151,7 @@ const getDelegateId = router.asPath?.substring(router.asPath.lastIndexOf("_") + 
         // }
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserAuthenticated, reqBodyData.topic_num, campRecord?.camp_name]);
   const GetCheckStatusData = async (campReff: any) => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
@@ -238,8 +237,8 @@ const getDelegateId = router.asPath?.substring(router.asPath.lastIndexOf("_") + 
   //const camp_Name = router?.query?.manageSupport?.at(1)?.split(/-(.*)/s);
 
   //replace use to - change to space
-  const camp_Name_ = campRecord?.camp_name;
-  const CampName = camp_Name_;
+  // const camp_Name_ = campRecord?.camp_name;
+  // const CampName = camp_Name_;
   const campSupportPath = router?.asPath?.replace("/support/", "/topic/");
   const body = { topic_num: topicNum };
   const getActiveSupportTopicList = async (
@@ -354,9 +353,8 @@ const getDelegateId = router.asPath?.substring(router.asPath.lastIndexOf("_") + 
       "/topic/"
     );
     if (manageSupportPath || manageSupportPath1) {
-      router?.push(CheckDelegatedOrDirect
-          ? manageSupportPath
-          : manageSupportPath1,
+      router?.push(
+        CheckDelegatedOrDirect ? manageSupportPath : manageSupportPath1
       );
     }
   };
@@ -485,9 +483,7 @@ const getDelegateId = router.asPath?.substring(router.asPath.lastIndexOf("_") + 
       if (res && res.status_code == 200) {
         message.success(res.message);
         //After Submit page is redirect to previous
-        router?.push(
-          manageSupportPath,
-        );
+        router?.push(manageSupportPath);
       } else {
         setSubmitButtonDisable(false);
       }
@@ -496,9 +492,7 @@ const getDelegateId = router.asPath?.substring(router.asPath.lastIndexOf("_") + 
       if (res && res.status_code == 200) {
         message.success(res.message);
         //After Submit page is redirect to previous
-        router?.push(
-           manageSupportPath,
-        );
+        router?.push(manageSupportPath);
       } else {
         setSubmitButtonDisable(false);
       }

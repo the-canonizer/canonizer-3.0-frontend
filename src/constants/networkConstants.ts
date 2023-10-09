@@ -191,6 +191,7 @@ const NetworkConstants = {
     GetRemovedReasons: `${BaseCanonizerApiUrl}/support-reason-list`,
     GetXMLData: `${BaseCanonizerApiUrl}/sitemaps`,
     CheckTopicCampExist: `${BaseCanonizerApiUrl}/notify-if-url-not-exist`,
+    GetHotTopic: `${BaseCanonizerApiUrl}/hot-topic`,
   },
   Method: {
     GET: "GET",
@@ -206,7 +207,7 @@ const NetworkConstants = {
       Accept: "application/json",
       Authorization: "Bearer " + token,
     }),
-    Authorization: (token = "") => ({
+    Authorization: () => ({
       // Authorization: "Bearer " + token,
       // "Content-Type": "multipart/form-data",
       // Accept: "application/json",

@@ -1,6 +1,5 @@
 import {
   fireEvent,
-  getByTestId,
   render,
   screen,
   waitFor,
@@ -11,18 +10,17 @@ import ProfileInfoForm from "../../Form/ProfileInfoForm";
 import messages from "../../../../messages";
 import ProfileInfo from "..";
 import { useRouter } from "next/router";
-import { act, renderHook } from "@testing-library/react-hooks";
-import isAuth from "../../../../hooks/isUserAuthenticated";
-import { Input, message } from "antd";
-GetAlgorithmsList: jest.fn();
-import {
-  VerifyOTP,
-  GetMobileCarrier,
-  GetLanguageList,
-  GetAlgorithmsList,
-  GetUserProfileInfo,
-} from "src/network/api/userApi";
-import { useEffect } from "react";
+
+import { renderHook } from "@testing-library/react-hooks";
+import { Input } from "antd";
+// GetAlgorithmsList: jest.fn();
+// import {
+//   VerifyOTP,
+//   GetMobileCarrier,
+//   GetLanguageList,
+//   GetAlgorithmsList,
+//   GetUserProfileInfo,
+// } from "src/network/api/userApi";
 
 const { labels, placeholders, validations } = messages;
 const privateFlags = "first_name";
@@ -147,8 +145,8 @@ const setupGoogleMock = () => {
   const google = {
     maps: {
       places: {
-        Autocomplete: class {},
-        AutocompleteService: class {},
+        Autocomplete: class { },
+        AutocompleteService: class { },
         PlacesServiceStatus: {
           INVALID_REQUEST: "INVALID_REQUEST",
           NOT_FOUND: "NOT_FOUND",
@@ -159,7 +157,7 @@ const setupGoogleMock = () => {
           ZERO_RESULTS: "ZERO_RESULTS",
         },
       },
-      Geocoder: () => {},
+      Geocoder: () => { },
       GeocoderStatus: {
         ERROR: "ERROR",
         INVALID_REQUEST: "INVALID_REQUEST",
@@ -343,7 +341,7 @@ describe("Profile Info Page", () => {
     expect(screen.getAllByText("*")).toBeTruthy();
   });
 
-  it("render update button", () => {
+  it("render update button require", () => {
     render(
       <ProfileInfoForm
         onFinish={onFinish}
@@ -360,25 +358,6 @@ describe("Profile Info Page", () => {
     );
     expect(screen.getAllByText("*")).toBeTruthy();
   });
-
-  // it("radio",  () => {
-
-  //   const { getByLabelText }= render(
-  //     <form>
-  //     <label>
-  //        Male <input type="radio" name="radio1" value="male" />
-  //     </label>
-  //     <label>
-  //       Female <input type="radio" name="radio1" value="female" />
-  //     </label>
-  //   </form>
-  //   );
-
-  //   const radio = getByLabelText('First')
-  // fireEvent.change(radio, { target: { value: "female" } });
-  // expect(radio.)value).toBe('female')
-
-  // });
 
   it("render gender label", () => {
     render(
@@ -517,3 +496,19 @@ describe("UserProfile", () => {
     expect(inputElement.value).toBe(userInput);
   });
 });
+
+describe('Profileinfo', () => {
+  it('update info', async () => {
+    const { getAllByTestId } = render(<ProfileInfo></ProfileInfo>)
+
+    await waitFor(() => {
+      const update_button = getAllByTestId('submitButton')
+      fireEvent.click(update_button[1])
+    })
+  })
+
+
+})
+
+
+

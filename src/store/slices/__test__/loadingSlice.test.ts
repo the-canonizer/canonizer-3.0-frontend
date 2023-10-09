@@ -13,9 +13,4 @@ describe("loadingSlice", () => {
     const newState = loadingReducer(initialState, setLoadingAction(true));
     expect(newState.loading).toEqual(true);
   });
-
-  it("should not modify state if action payload is not provided", () => {
-    const newState = loadingReducer(initialState, setLoadingAction());
-    // expect(newState).toEqual(initialState);
-  });
 });

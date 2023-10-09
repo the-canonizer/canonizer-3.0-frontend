@@ -93,6 +93,8 @@ export default function RecentActivities() {
       setGetTopicsLoadingIndicator(true);
       router?.push("/login");
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTab, isChecked, router]);
 
   const handleTabChange = (key: string) => {
@@ -402,36 +404,40 @@ export default function RecentActivities() {
                             <br />
                             <Tooltip
                               title={
-                                decodedProperties?.topic_name
-                                  ? `Topic: ${decodedProperties?.topic_name}` +
-                                    (decodedProperties?.camp_name
-                                      ? ` | Camp: ${decodedProperties?.camp_name}`
-                                      : "")
-                                  : convert(
-                                      decodedProperties?.description?.replace(
-                                        /<img[^>]*>/gi,
-                                        ""
-                                      ),
-                                      {
-                                        wordwrap: 130,
-                                      }
-                                    ).substring(0, 90) + "..."
+                                // decodedProperties?.topic_name
+                                //   ? `Topic: ${decodedProperties?.topic_name}` +
+                                //     (decodedProperties?.camp_name
+                                //       ? ` | Camp: ${decodedProperties?.camp_name}`
+                                //       : "")
+                                //   :
+                                convert(
+                                  decodedProperties?.description?.replace(
+                                    /<img[^>]*>/gi,
+                                    ""
+                                  ),
+                                  {
+                                    wordwrap: 130,
+                                  }
+                                ).substring(0, 90) + "..."
                               }
                             >
-                              {decodedProperties?.topic_name
-                                ? `Topic: ${decodedProperties?.topic_name}` +
-                                  (decodedProperties?.camp_name
-                                    ? ` | Camp: ${decodedProperties?.camp_name}`
-                                    : "")
-                                : convert(
-                                    decodedProperties?.description?.replace(
-                                      /<img[^>]*>/gi,
-                                      ""
-                                    ),
-                                    {
-                                      wordwrap: 130,
-                                    }
-                                  )}
+                              {
+                                // decodedProperties?.topic_name
+                                //   ? `Topic: ${decodedProperties?.topic_name}` +
+                                //     (decodedProperties?.camp_name
+                                //       ? ` | Camp: ${decodedProperties?.camp_name}`
+                                //       : "")
+                                //   :
+                                convert(
+                                  decodedProperties?.description?.replace(
+                                    /<img[^>]*>/gi,
+                                    ""
+                                  ),
+                                  {
+                                    wordwrap: 130,
+                                  }
+                                )
+                              }
                             </Tooltip>
                           </Text>
                           <Text className={styles.secondary} type="secondary">

@@ -44,7 +44,7 @@ const CreateCampFormUI = ({
   options,
   onCheckboxChange,
   onParentCampChange,
-}) => {
+}: any) => {
   const router = useRouter();
   const { campRecord } = useSelector((state: RootState) => ({
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -55,12 +55,13 @@ const CreateCampFormUI = ({
       Create New Camp
     </span>
   );
-  const toolTipContent = "This camp is under review";
+  // const toolTipContent = "This camp is under review";
   const archiveToolTipContent = "This camp is archived";
   useEffect(() => {
     campRecord?.is_archive && router.pathname == "/camp/create/[...camp]"
       ? router?.back()
       : "";
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -347,6 +348,7 @@ const CreateCampFormUI = ({
               className={`${styles.cancel_btn}`}
               onClick={onCancel}
               id="cancel-btn"
+              data-testid="cancel-btn"
             >
               Cancel
             </Button>

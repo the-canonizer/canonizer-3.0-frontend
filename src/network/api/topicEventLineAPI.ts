@@ -21,5 +21,7 @@ export const getEventLineApi = async (reqBody) => {
       );
     }
     return eventLineData.data;
-  } catch (error) {}
+  } catch (error) {
+    return error;
+  }
 };

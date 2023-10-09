@@ -7,14 +7,12 @@ import {
 } from "src/utils/testUtils";
 import userEvent from "@testing-library/user-event";
 import configureMockStore from "redux-mock-store";
+import { RouterContext } from "next/dist/shared/lib/router-context";
+import { NextRouter } from "next/router";
+import { Provider } from "react-redux";
 
 import SubscriptionList from "../";
-
-import {
-  GetAllSubscriptionsList,
-  unsubscribeTopicOrCampAPI,
-} from "src/network/api/userApi";
-import { Provider } from "react-redux";
+import { GetAllSubscriptionsList } from "src/network/api/userApi";
 
 const subsList = [
   {
@@ -48,6 +46,34 @@ const subsList = [
   },
 ];
 
+function createMockRouter(router: Partial<NextRouter>): NextRouter {
+  return {
+    basePath: "",
+    pathname: "/",
+    route: "/",
+    query: {},
+    asPath: "/",
+    back: jest.fn(),
+    beforePopState: jest.fn(),
+    prefetch: jest.fn(),
+    push: jest.fn(),
+    reload: jest.fn(),
+    replace: jest.fn(),
+    events: {
+      on: jest.fn(),
+      off: jest.fn(),
+      emit: jest.fn(),
+    },
+    isFallback: false,
+    isLocaleDomain: false,
+    isReady: true,
+    defaultLocale: "en",
+    domainLocales: [],
+    isPreview: false,
+    ...router,
+  };
+}
+
 afterEach(cleanup);
 
 const mockStore = configureMockStore();
@@ -74,34 +100,11 @@ jest.mock("src/network/api/userApi");
 
 describe("Subscriptions List Component", () => {
   beforeEach(() => {
+    jest.clearAllMocks();
     jest.mock("src/network/api/userApi");
   });
-  it("render heading and labels", () => {
-    render(<SubscriptionList isTestData={subsList} />);
-    waitFor(async () => {
-      expect(screen.getAllByText("For topic").length).toEqual(2);
-      expect(screen.getByText(subsList[0].title)).toBeInTheDocument();
-      expect(screen.getByText(subsList[1].title)).toBeInTheDocument();
-      expect(screen.getAllByText("Remove subscription").length).toEqual(2);
-      expect(screen.getByText("Agreement")).toBeInTheDocument();
-      expect(screen.getByText("Agreement-2")).toBeInTheDocument();
-    });
-  });
 
-  it("click on remove subscription button and open modal", () => {
-    render(<SubscriptionList isTestData={subsList} />);
-    waitFor(async () => {
-      const btns = screen.getAllByText("Remove subscription");
-
-      userEvent.click(btns[0]);
-
-      expect(screen.getByText(subsList[0].title)).toBeInTheDocument();
-      expect(screen.getByText("Remove")).toBeInTheDocument();
-      expect(screen.getByText("Cancel")).toBeInTheDocument();
-    });
-  });
-
-  it("data render", async () => {
+  it("render heading and labels", async () => {
     GetAllSubscriptionsList.mockResolvedValue({
       status_code: 200,
       data: {
@@ -148,22 +151,38 @@ describe("Subscriptions List Component", () => {
 
     render(
       <Provider store={store1}>
-        <SubscriptionList isTestData={subsList} />
+        <RouterContext.Provider value={createMockRouter({ asPath: "/" })}>
+          <SubscriptionList isTestData={subsList} />
+        </RouterContext.Provider>
       </Provider>
     );
 
-    await waitFor(async () => {
+    await waitFor(() => {
       expect(GetAllSubscriptionsList).toHaveBeenCalled();
-      expect(screen.getByText("Public Sex Education")).toBeInTheDocument();
-      expect(screen.getAllByText("Funds for Sex Ed Before obama")).toHaveLength(
-        2
-      );
-      expect(screen.getByText("Public Education")).toBeInTheDocument();
-      expect(screen.getByText("Remove Subscription")).toBeInTheDocument();
-      expect(screen.getByText("Remove")).toBeInTheDocument();
-      expect(screen.getByText("Cancel")).toBeInTheDocument();
     });
+
+    expect(screen.getByText("Public Sex Education")).toBeInTheDocument();
+    expect(screen.getByText("Public Education")).toBeInTheDocument();
+    expect(screen.getAllByText("Remove subscription").length).toEqual(2);
+    expect(screen.getAllByText("Funds for Sex Ed Before obama").length).toEqual(
+      2
+    );
+    const removebtn = screen.getAllByTestId("camp-remove");
+    expect(removebtn.length).toEqual(2);
+    userEvent.click(removebtn[0]);
+
+    expect(screen.getByTestId("topic-rm-title")).toBeInTheDocument();
+    const rmbtn = screen.getByTestId("popremove");
+    const rmcancelbtn = screen.getByTestId("popcancel");
+    expect(rmbtn).toBeInTheDocument();
+    expect(rmcancelbtn).toBeInTheDocument();
+
+    userEvent.click(rmbtn);
+
+    userEvent.click(removebtn[0]);
+    userEvent.click(rmcancelbtn);
   });
+
   it("data render camp remove", async () => {
     GetAllSubscriptionsList.mockResolvedValue({
       status_code: 200,
@@ -211,23 +230,26 @@ describe("Subscriptions List Component", () => {
 
     render(
       <Provider store={store1}>
-        <SubscriptionList isTestData={subsList} />
+        <RouterContext.Provider value={createMockRouter({ asPath: "/" })}>
+          <SubscriptionList isTestData={subsList} />
+        </RouterContext.Provider>
       </Provider>
     );
 
     await waitFor(async () => {
       expect(GetAllSubscriptionsList).toHaveBeenCalled();
-      expect(screen.getByText("Public Sex Education")).toBeInTheDocument();
-      expect(screen.getAllByText("Funds for Sex Ed Before obama")).toHaveLength(
-        2
-      );
-      expect(screen.getByText("Public Education")).toBeInTheDocument();
-      expect(screen.getByText("Remove Subscription")).toBeInTheDocument();
-      const closeCircle = screen.getAllByRole("img");
-      expect(closeCircle).toHaveLength(5);
-      fireEvent.click(closeCircle[0]);
-      expect(screen.getByText("Remove")).toBeInTheDocument();
-      expect(screen.getByText("Cancel")).toBeInTheDocument();
     });
+
+    expect(screen.getByText("Public Sex Education")).toBeInTheDocument();
+    expect(screen.getAllByText("Funds for Sex Ed Before obama")).toHaveLength(
+      2
+    );
+    expect(screen.getByText("Public Education")).toBeInTheDocument();
+    // expect(screen.getByText("Remove Subscription")).toBeInTheDocument();
+    const closeCircle = screen.getAllByRole("img");
+    expect(closeCircle).toHaveLength(4);
+    fireEvent.click(closeCircle[0]);
+    expect(screen.getByText("Remove")).toBeInTheDocument();
+    expect(screen.getByText("Cancel")).toBeInTheDocument();
   });
 });

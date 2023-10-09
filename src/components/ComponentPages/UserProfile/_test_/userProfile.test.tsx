@@ -1,6 +1,5 @@
 import {
   fireEvent,
-  getByTestId,
   render,
   screen,
   waitFor,
@@ -11,8 +10,8 @@ import messages from "../../../../messages";
 import UserProfile from "..";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { act, renderHook } from "@testing-library/react-hooks";
-import { Input, message } from "antd";
+import { renderHook } from "@testing-library/react-hooks";
+import { message } from "antd";
 
 const { labels } = messages;
 const profileData = {
@@ -60,9 +59,9 @@ const nickNameList = [
   },
 ];
 
-const totalPages = 5;
-const currentPage = 3;
-const onPageChange = jest.fn();
+// const totalPages = 5;
+// const currentPage = 3;
+// const onPageChange = jest.fn();
 
 const dropdownNameSpaceList = "";
 const noData = false;
@@ -73,8 +72,8 @@ jest.mock("next/router", () => ({
 
 jest.mock("src/network/api/homePageApi", () => ({
   getCanonizedNameSpacesApi: jest.fn(() =>
-  Promise.resolve({ status_code: 200, data: [] })
-),
+    Promise.resolve({ status_code: 200, data: [] })
+  ),
 }));
 jest.mock("src/network/api/campDetailApi", () => ({
   GetSupportedNickNames: jest.fn(() =>
@@ -83,14 +82,13 @@ jest.mock("src/network/api/campDetailApi", () => ({
 }));
 jest.mock("src/network/api/userApi", () => ({
   getUserSupportedCampList: jest.fn(() =>
-    Promise.resolve({ status_code: 200, data: []})
+    Promise.resolve({ status_code: 200, data: [] })
   ),
 }));
 jest.mock("src/hooks/isUserAuthenticated", () =>
   jest.fn(() => ({ isUserAuthenticated: true }))
 );
 describe("userProfileDetails", () => {
-
   it("render show userProfile", () => {
     render(
       <UserProfileDetails
@@ -100,9 +98,6 @@ describe("userProfileDetails", () => {
     );
     expect(screen.getByText(labels.userProfile)).toBeTruthy();
   });
-});
-
-describe("userProfileDetails", () => {
   it("render labels of userProfileDetails", () => {
     render(
       <UserProfileDetails
@@ -110,7 +105,7 @@ describe("userProfileDetails", () => {
         userSupportedCampsList={userSupportedCampsList}
       />
     );
-   
+
     expect(screen.getByText(labels.emailAddress)).toBeTruthy();
     expect(screen.getByText(labels.address)).toBeTruthy();
     expect(screen.getByText(labels.city)).toBeTruthy();
@@ -130,17 +125,15 @@ describe("userProfileCard", () => {
         noData={noData}
       />
     );
-    const btn = screen.getByTestId("onNicknameChange")
+    const btn = screen.getByTestId("onNicknameChange");
     // fireEvent.change(btn, { target: { value: 'new value' } });
-    fireEvent.click(btn)
-    const btn2 = screen.getByTestId("setDropdownNameSpaceList")
+    fireEvent.click(btn);
+    const btn2 = screen.getByTestId("setDropdownNameSpaceList");
     // fireEvent.change(btn, { target: { value: 'new value' } });
-    fireEvent.click(btn2)
+    fireEvent.click(btn2);
     expect(screen.getByText(labels.listOfSupportedCamps)).toBeTruthy();
   });
-});
 
-describe("userProfileCard", () => {
   it("render labels of nick_name  userProfileCard", () => {
     const { container } = render(
       <UserProfileCard
@@ -156,9 +149,6 @@ describe("userProfileCard", () => {
       container.getElementsByClassName("UserProfile_main_card_title__sqTKz")
     ).toBeTruthy();
   });
-});
-
-describe("userProfileCard", () => {
   it("render nick_name value userProfileCard", () => {
     const { container } = render(
       <UserProfileCard
@@ -176,9 +166,6 @@ describe("userProfileCard", () => {
       container.getElementsByClassName("UserProfile_Bluecolor__El2lJ")
     ).toBeTruthy();
   });
-});
-
-describe("userProfileCard", () => {
   it("render userProfileDropdown", () => {
     const { container } = render(
       <UserProfileCard
@@ -193,39 +180,9 @@ describe("userProfileCard", () => {
       container.getElementsByClassName("ant-select-selection-search")
     ).toBeTruthy();
   });
-  // test("Input component handles user input correctly", () => {
-  //   render(
-  //     <UserProfileCard
-  //       userSupportedCampsList={userSupportedCampsList}
-  //       nameSpaceList={nameSpaceList}
-  //       dropdownNameSpaceList={dropdownNameSpaceList}
-  //       setDropdownNameSpaceList={() => {}}
-  //       noData={noData}
-  //     />
-  //   );
-  //   // Render the Input component
-  //   render(<Input />);
-
-  //   // Find the input element
-  //   const inputElement = screen.getByRole("textbox");
-
-  //   // Simulate user input
-  //   const userInput = "Test Input";
-  //   fireEvent.change(inputElement, { target: { value: userInput } });
-
-  //   // Assert that the input value is updated
-  //   expect(inputElement.value).toBe(userInput);
-  // });
 });
 
 describe("User profile", () => {
-  it("render select namespace form dropdown", () => {
-    render(<UserProfile />);
-    waitFor(async () => {
-      expect(screen.getByText(nameSpaceList[0].name)).toBeInTheDocument();
-    });
-  });
-
   it("render user supported camp list", () => {
     render(<UserProfile />);
     waitFor(async () => {
@@ -277,7 +234,7 @@ describe("User profile", () => {
       ).toBeInTheDocument();
     });
   });
-  it("render useState is working ", () => {
+  it("render useState is working", () => {
     render(<UserProfile />);
     const TestComponent = () => {
       const [isActive, setIsActive] = useState(false);

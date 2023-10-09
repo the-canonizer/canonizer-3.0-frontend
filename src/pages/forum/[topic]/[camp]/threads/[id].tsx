@@ -13,7 +13,7 @@ import {
 import Layout from "../../../../../hoc/layout";
 import CampForumComponent from "../../../../../components/ComponentPages/CampForum";
 
-function CampForumPostPage({ topicRecord, campRecord, postList }) {
+function CampForumPostPage({ topicRecord, campRecord, postList }: any) {
   const dispatch = useDispatch();
   dispatch(setCurrentTopicRecord(topicRecord));
   dispatch(setCurrentCampRecord(campRecord));
@@ -29,7 +29,7 @@ function CampForumPostPage({ topicRecord, campRecord, postList }) {
     </Fragment>
   );
 }
-export async function getServerSideProps({ req, res, resolvedUrl }) {
+export async function getServerSideProps({ req, resolvedUrl }) {
   let id = resolvedUrl?.split("/")[5];
   let q = `?page=${1}&per_page=${10}&like=`;
   let topicNum = +resolvedUrl?.split("/")[2].split("-")[0];

@@ -8,7 +8,14 @@ const TopicCreationBTN = () => {
     <div className={styles.topicBTN} key="topic-btn-area">
       <Link href="/create/topic" key="create-topic-btn">
         <a className="ant-btn">
-          <img src="/images/topic-icon-orange.svg" className="icon-topic" />
+          {
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src="/images/topic-icon-orange.svg"
+              alt="svg"
+              className="icon-topic"
+            />
+          }
           Create Topic
         </a>
       </Link>
