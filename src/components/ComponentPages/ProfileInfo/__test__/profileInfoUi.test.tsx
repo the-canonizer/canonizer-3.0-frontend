@@ -1,15 +1,6 @@
-import { Provider } from "react-redux";
-import {
-  getByText,
-  render,
-  screen,
-  waitFor,
-} from "../../../../utils/testUtils";
+import { render } from "../../../../utils/testUtils";
 import ProfileInfoUI from "../ProfileInfoUI";
-import VerifyMobileNumberForm from "../../Form/VerifyMobileNumberForm";
-import { store } from "src/store";
 import styles from "./ProfileInfo.module.scss";
-import { Form } from "antd";
 
 const mobileCarrier = [];
 const algorithmList = [];
@@ -34,10 +25,10 @@ const postalCodeDisable = false;
 const userProfileSkeleton = false;
 const userProfileSkeletonV = true;
 
-const innerComponent = <VerifyMobileNumberForm />;
+// const innerComponent = <VerifyMobileNumberForm />;
 describe("sssfsf", () => {
   it("render", () => {
-    const { getByTestId, container } = render(
+    const { container } = render(
       <ProfileInfoUI
         form={null}
         formVerify={null}

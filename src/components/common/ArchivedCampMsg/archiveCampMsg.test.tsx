@@ -1,9 +1,7 @@
-import { fireEvent, render, screen, waitFor } from "../../../utils/testUtils";
-import userEvent from "@testing-library/user-event";
-import messages from "../../../messages";
-import { useState } from "react";
+import { render, screen, waitFor } from "../../../utils/testUtils";
+
 import { useRouter } from "next/router";
-import { Card, Input, message } from "antd";
+import { Card } from "antd";
 import { renderHook } from "@testing-library/react-hooks";
 import ArchivedCampMsg from ".";
 

@@ -66,7 +66,7 @@ const PostForm = ({
   isError = false,
   isLog,
   isLoading,
-}) => {
+}: any) => {
   const dispatch = useDispatch();
   const openModal = () => dispatch(showLoginModal());
 
@@ -187,6 +187,7 @@ const PostForm = ({
               size={"large"}
               className={`${styles.submit_btn}`}
               id="submit-btn"
+              data-testid="submit-btn"
             >
               Submit
             </Button>
@@ -198,6 +199,7 @@ const PostForm = ({
               className={`${styles.cancel_btn}`}
               onClick={onCancel}
               id="back-btn"
+              data-testid="back-btn"
             >
               Back
             </Button>

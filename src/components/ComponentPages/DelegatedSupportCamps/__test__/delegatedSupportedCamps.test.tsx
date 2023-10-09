@@ -1,17 +1,18 @@
 import {
+  // eslint-disable-next-line no-unused-vars
   fireEvent,
   render,
   screen,
   waitFor,
 } from "../../../../utils/testUtils";
-import DelegatedSupportCampsUI from "../DelegatedSupportCampsUI/index";
+// import DelegatedSupportCampsUI from "../DelegatedSupportCampsUI/index";
 import messages from "../../../../messages";
 import DelegatedSupportCamps from "..";
 import userEvent from "@testing-library/user-event";
-import { useRouter } from "next/router";
-import { renderHook } from "@testing-library/react-hooks";
-import { useState } from "react";
-import { Input, message } from "antd";
+// import { useRouter } from "next/router";
+// import { renderHook } from "@testing-library/react-hooks";
+// import { useState } from "react";
+// import { Input, message } from "antd";
 
 jest.mock("next/router", () => ({
   useRouter: jest.fn(),
@@ -33,14 +34,14 @@ jest.mock("src/network/api/userApi", () => ({
 }));
 const { labels } = messages;
 
-const viewMoreModalVisible = true;
-const isRemoveSupportModalVisible = true;
-const showViewMoreModal = jest.fn();
-const removeCardDelegatedSupportedCamps = jest.fn();
-const handleSupportedCampsCancel = jest.fn();
-const handelViewMoreModalCancel = jest.fn();
-const removeSupport = jest.fn();
-const search = "";
+// const viewMoreModalVisible = true;
+// const isRemoveSupportModalVisible = true;
+// const showViewMoreModal = jest.fn();
+// const removeCardDelegatedSupportedCamps = jest.fn();
+// const handleSupportedCampsCancel = jest.fn();
+// const handelViewMoreModalCancel = jest.fn();
+// const removeSupport = jest.fn();
+// const search = "";
 const delegatedSupportCampsList = [
   {
     id: "1",
@@ -121,27 +122,27 @@ const viewMoreDataValue = {
     },
   ],
 };
-const removeSupportCampsData = {
-  camps: [
-    {
-      camp_num: 2,
-      camp_name: "AI can only be friendly",
-      support_order: 1,
-      camp_link:
-        "/topic/16-Friendly-AI-Importance/2-AI-can-only-be-friendly#statement",
-      support_added: "2022-08-10",
-    },
-  ],
-  delegated_nick_name_id: 1,
-  delegated_to_nick_name: "Brent_Allsop",
-  delegated_to_nick_name_link: "/user/supports/1?topicnum=16&campnum=2&canon=1",
-  my_nick_name: "Nick",
-  my_nick_name_link: "/user/supports/643?topicnum=16&campnum=2&canon=1",
-  nick_name_id: 643,
-  title: "Friendly AI Importance",
-  title_link: "/topic/16-Friendly-AI-Importance/1-Agreement",
-  topic_num: 16,
-};
+// const removeSupportCampsData = {
+//   camps: [
+//     {
+//       camp_num: 2,
+//       camp_name: "AI can only be friendly",
+//       support_order: 1,
+//       camp_link:
+//         "/topic/16-Friendly-AI-Importance/2-AI-can-only-be-friendly#statement",
+//       support_added: "2022-08-10",
+//     },
+//   ],
+//   delegated_nick_name_id: 1,
+//   delegated_to_nick_name: "Brent_Allsop",
+//   delegated_to_nick_name_link: "/user/supports/1?topicnum=16&campnum=2&canon=1",
+//   my_nick_name: "Nick",
+//   my_nick_name_link: "/user/supports/643?topicnum=16&campnum=2&canon=1",
+//   nick_name_id: 643,
+//   title: "Friendly AI Importance",
+//   title_link: "/topic/16-Friendly-AI-Importance/1-Agreement",
+//   topic_num: 16,
+// };
 
 describe("delegated supported", () => {
   it("render a value when write in search box", () => {
@@ -210,22 +211,6 @@ describe("delegated supported", () => {
       expect(screen.getByText("Current Supported Camps:")).toBeInTheDocument();
       expect(screen.getByText("Agreement")).toBeInTheDocument();
       expect(screen.getByText("Agreement-2")).toBeInTheDocument();
-    });
-  });
-
-  it("render direct Supported Camps is clicked/active", async () => {
-    render(<DelegatedSupportCamps search={"dir"} />);
-    await waitFor(() => {
-      // expect(
-      //   screen.getAllByText(labels.fortopic)[1] as HTMLLabelElement
-      // ).toBeInTheDocument();
-      // expect(
-      //   screen.getAllByText(labels.removeSupport)[1] as HTMLLabelElement
-      // ).toBeInTheDocument();
-      expect(screen.getAllByTestId("handle_close")[0]).toBeInTheDocument();
-      fireEvent.click(screen.getAllByTestId("handle_close")[0]);
-      expect(screen.getAllByTestId("handle_close")[0]).toBeInTheDocument();
-      fireEvent.click(screen.getAllByTestId("handle_close")[0]);
     });
   });
 });

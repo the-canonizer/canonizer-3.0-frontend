@@ -1,11 +1,11 @@
-import { Card, Typography, Tag, Row, Col, Form } from "antd";
+import { Card, Typography, Row, Col, Form } from "antd";
 import Skeleton from "react-loading-skeleton";
 
 import styles from "./style.module.scss";
 
 const { Title } = Typography;
 
-const DelegateCardSkeleton = ({ bodyCount, stylingClass }) => {
+const DelegateCardSkeleton = ({ bodyCount, stylingClass }: any) => {
   const cardArray = [];
   if (bodyCount == null || bodyCount == undefined || bodyCount == "") {
     bodyCount = 1;

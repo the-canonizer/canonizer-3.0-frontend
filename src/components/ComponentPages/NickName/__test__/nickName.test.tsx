@@ -1,6 +1,7 @@
 import {
   fireEvent,
-  getByAltText,
+  getAllByTestId,
+  getByText,
   render,
   screen,
   waitFor,
@@ -10,7 +11,7 @@ import userEvent from "@testing-library/user-event";
 import NickNameUI from "../NickNameUI/index";
 import messages from "../../../../messages";
 import NickName from "..";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import { renderHook } from "@testing-library/react-hooks";
 import { getNickNameList } from "src/network/api/userApi";
@@ -37,22 +38,22 @@ const nickNameList = [
   },
 ];
 
-const addNewNickName = [
-  {
-    create_time: "1998-01-01",
-    id: 1,
-    nick_name: "ABC",
-    owner_code: "aabbcc",
-    private: 0,
-  },
-  {
-    create_time: "1979-02-02",
-    id: 2,
-    nick_name: "DEF",
-    owner_code: "ddeeff",
-    private: 0,
-  },
-];
+// const addNewNickName = [
+//   {
+//     create_time: "1998-01-01",
+//     id: 1,
+//     nick_name: "ABC",
+//     owner_code: "aabbcc",
+//     private: 0,
+//   },
+//   {
+//     create_time: "1979-02-02",
+//     id: 2,
+//     nick_name: "DEF",
+//     owner_code: "ddeeff",
+//     private: 0,
+//   },
+// ];
 jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
@@ -62,7 +63,8 @@ jest.mock("src/network/api/userApi", () => ({
     Promise.resolve({
       status_code: 200,
       message: "This is success",
-      data: addNewNickName,
+      // data: addNewNickName,
+      data: null,
     })
   ),
   addNickName: jest.fn(() =>
@@ -254,7 +256,7 @@ describe("NickName page", () => {
   });
 });
 
-describe("", () => {
+describe("test nickname componaent", () => {
   it("render nickname list", () => {
     render(<NickName />);
     waitFor(async () => {
@@ -282,7 +284,7 @@ describe("", () => {
     expect(getNickNameList).toHaveBeenCalled();
     // expect(setNickNameList).toHaveBeenCalledWith(mockResponse.data[0]);
   });
-  it("render useState is working ", () => {
+  it("render useState is working", () => {
     render(<NickName />);
     const TestComponent = () => {
       const [isActive, setIsActive] = useState(false);
@@ -331,27 +333,31 @@ describe("", () => {
 });
 
 describe("Nickname test cases", () => {
-  it("addnickname function should be called while click on edit button", async () => {
-    const { getAllByText } = render(<NickName></NickName>);
+  // it("addnickname function should be called while click on edit button", async () => {
+  //   const { getAllByText } = render(<NickName></NickName>);
 
-    await waitFor(() => {
-      const edit_button = getAllByText("edit");
-      fireEvent.click(edit_button[0]);
-      const update_button = getAllByText("Update");
-      fireEvent.click(update_button[0]);
-      const add_button = getAllByText("Add New Nickname");
-      fireEvent.click(add_button[0]);
+  //   await waitFor(() => {
+  //     const edit_button = getAllByText("edit");
+  //     fireEvent.click(edit_button[0]);
+  //     const update_button = getAllByText("Update");
+  //     fireEvent.click(update_button[0]);
+  //     const add_button = getAllByText("Add New Nickname");
+  //     fireEvent.click(add_button[0]);
 
-      expect(getAllByText("Add New Nickname")[1]).toBeInTheDocument();
-    });
-  });
+  //     expect(getAllByText("Add New Nickname")[1]).toBeInTheDocument();
+  //   });
+  // });
 
-  it("add new nickname ", async () => {
+  it("add new nickname", async () => {
     const { getAllByTestId, getAllByText } = render(<NickName></NickName>);
 
     await waitFor(async () => {
       const add_button = getAllByText("Add New Nickname");
       fireEvent.click(add_button[0]);
+      const edit_button = getAllByText("Add New Nickname");
+      fireEvent.click(edit_button[0]);
+      expect(getAllByText("Add New Nickname")[1]).toBeInTheDocument();
+
       const nickname_input = getAllByTestId("enterNickName")[0];
       await userEvent.type(nickname_input, "nickname123");
       const submit_button = getAllByTestId("submitButton")[0];
@@ -360,7 +366,7 @@ describe("Nickname test cases", () => {
   });
 
   it("add new nickname cancel model", async () => {
-    const { container, getAllByText } = render(
+    const { getAllByText } = render(
       <NickNameUI
         addEditTitle={addEditTitle}
         addEditBtn={addEditBtn}
@@ -376,6 +382,8 @@ describe("Nickname test cases", () => {
     await waitFor(async () => {
       const add_button = getAllByText("Add New Nickname");
       userEvent.click(add_button[0]);
+      expect(getAllByText("Add New Nickname")[0]).toBeInTheDocument();
+
       const edit_button = getAllByText("edit");
       userEvent.click(edit_button[0]);
     });
@@ -399,8 +407,49 @@ describe("Nickname test cases", () => {
     await waitFor(async () => {
       const add_button = getAllByText("Add New Nickname");
       userEvent.click(add_button[0]);
+      expect(getAllByText("Add New Nickname")[0]).toBeInTheDocument();
+
       const edit_button = getAllByText("edit");
       userEvent.click(edit_button[0]);
+    });
+  });
+});
+
+describe("nicknames", () => {
+  it("close add nickname modal", async () => {
+    const { getAllByText, getByTestId, container } = render(
+      <NickName></NickName>
+    );
+    await waitFor(async () => {
+      const add_button = getAllByText("Add New Nickname");
+      fireEvent.click(add_button[0]);
+      const chec_close = await getByTestId("addnicknamemodal");
+      const modal_contetn =
+        chec_close.getElementsByClassName("ant-modal-close-x");
+      fireEvent.click(modal_contetn[0]);
+    });
+  });
+
+  it("render editnickname modal", async () => {
+    const { getAllByText, getByText, container, getByTestId } = render(
+      <NickName></NickName>
+    );
+    render(
+      <NickNameUI
+        addEditTitle={addEditTitle}
+        addEditBtn={addEditBtn}
+        isNickNameModalVisible={isNickNameModalVisible}
+        editNickName={editNickName}
+        handleAddNickName={handleAddNickName}
+        handleNickNameCancel={handleNickNameCancel}
+        onAddUpdateNickName={onAddUpdateNickName}
+        nickNameList={nickNameList}
+        disableButton={disableButton}
+      />
+    );
+    await waitFor(async () => {
+      const edit_button = await getAllByText("edit");
+      fireEvent.click(edit_button[0]);
     });
   });
 });

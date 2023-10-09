@@ -1,13 +1,13 @@
-import { useRouter } from "next/router";
-import { Button } from "antd";
+// import { useRouter } from "next/router";
+// import { Button } from "antd";
 
-import GoogleAd from "../../../googleAds";
+// import GoogleAd from "../../../googleAds";
 
 export default function HomeSideBar({ isShowBtn = true }: any) {
-  const router = useRouter();
-  const campRoute = () => {
-    router?.push("/create/topic");
-  };
+  // const router = useRouter();
+  // const campRoute = () => {
+  //   router?.push("/create/topic");
+  // };
 
   return (
     <>

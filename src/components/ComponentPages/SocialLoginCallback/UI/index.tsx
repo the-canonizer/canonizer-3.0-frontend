@@ -6,7 +6,7 @@ import helpStyles from "../../Home/HelpCard/helpCard.module.scss";
 
 import CustomSkelton from "../../../common/customSkelton";
 
-const { Title, Paragraph, Text } = Typography;
+const { Title, Paragraph } = Typography;
 const { Panel } = Collapse;
 
 function SocialLoginCallback() {
@@ -145,7 +145,7 @@ function SocialLoginCallback() {
                 className={styles.wrap}
                 bordered
                 dataSource={["", ""]}
-                renderItem={(item: any) => {
+                renderItem={() => {
                   return (
                     <CustomSkelton
                       skeltonFor="list"

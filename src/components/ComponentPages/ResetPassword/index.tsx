@@ -10,7 +10,7 @@ import SideBar from "../CampForum/UI/sidebar";
 
 const { Title } = Typography;
 
-const ResetPassword = ({ is_test = false }) => {
+const ResetPassword = ({ is_test = false }: any) => {
   const router = useRouter();
   const [form] = Form.useForm();
 
@@ -32,6 +32,7 @@ const ResetPassword = ({ is_test = false }) => {
     };
 
     getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onFinish = async (values: any) => {

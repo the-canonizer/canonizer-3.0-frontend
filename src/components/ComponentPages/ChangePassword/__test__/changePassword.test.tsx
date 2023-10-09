@@ -14,7 +14,7 @@ const { labels, placeholders, validations } = messages;
 
 describe("ChangePassword page", () => {
   it("render labels", () => {
-    const { getByPlaceholderText } = render(<ChangePasswordUI />);
+    render(<ChangePasswordUI />);
     expect(screen.getByText(labels.currentPassword)).toBeInTheDocument();
     expect(screen.getByText(labels.newPassword)).toBeInTheDocument();
     expect(screen.getByText(labels.confirmPassword)).toBeInTheDocument();
@@ -122,12 +122,13 @@ describe("ChangePassword page", () => {
     });
   });
   it("onChangeFun updates state correctly", async () => {
-    const form = jest.fn(),
+    const // form = jest.fn(),
       onFinish = jest.fn(),
       onFinishFailed = jest.fn(),
       incorrectPasswordData = "",
       setIncorrectPasswordData = jest.fn();
-    const { getByPlaceholderText, getByTestId } = render(
+    // const { getByPlaceholderText, getByTestId } =
+    render(
       <ChangePasswordUI
         form={null}
         onFinish={onFinish}

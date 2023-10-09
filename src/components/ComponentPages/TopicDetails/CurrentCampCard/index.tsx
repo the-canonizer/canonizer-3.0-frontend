@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import moment from "moment";
 
+import Image from "next/image";
+
 import styles from "../topicDetails.module.scss";
 
 import { currentCampRecordConstants } from "../../../common/componentConstants";
@@ -26,7 +28,7 @@ const validUrl = (url) => {
   }
 };
 
-const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }) => {
+const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }: any) => {
   const router = useRouter();
   const { campRecord, topicRecord, history } = useSelector(
     (state: RootState) => ({
@@ -37,7 +39,8 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }) => {
   );
 
   useEffect(() => {
-    console.log(campRecord, "#############campdata################");
+    // console.log(campRecord, "#############campdata################");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const covertToTime = (unixTime) => {
@@ -65,7 +68,15 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }) => {
           <>
             <h3>{K?.exceptionalMessages?.campRecordHeading}</h3>
             {campRecord?.in_review_changes > 0 ? (
-              <img className="change-icon" src="/images/change-icon.svg" />
+              // <img className="change-icon" src="/images/change-icon.svg" />
+
+              <Image
+                className="change-icon"
+                src={"/images/change-icon.svg"}
+                alt=""
+                width={20}
+                height={20}
+              />
             ) : (
               ""
             )}

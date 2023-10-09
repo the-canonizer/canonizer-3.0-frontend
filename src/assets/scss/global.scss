@@ -412,6 +412,19 @@ del.diffmod img {
           transform: rotate(45deg) translate(25px, 25px);
         }
       }
+      &.isDrawerOpen {
+        transition: all 0.3s;
+        z-index: 100000;
+        left: 753px;
+        .arrow {
+          bottom: 0;
+          transform: translateX(-50%) rotate(180deg);
+        }
+
+        @media screen and (max-width: 767px) {
+          left: 95%;
+        }
+      }
     }
   }
 
@@ -492,6 +505,7 @@ del.diffmod img {
     }
   }
 }
+
 .treeDrawer {
   .ant-drawer-header {
     background-color: #f1f1f1;
@@ -536,6 +550,15 @@ del.diffmod img {
   @media screen and (max-width: 767px) {
     [class="ant-drawer-content-wrapper"] {
       max-width: 90%;
+    }
+  }
+  &.closeIconHide {
+    .ant-drawer-header {
+      .ant-drawer-close {
+        display: none;
+        opacity: 0;
+        visibility: hidden;
+      }
     }
   }
 }
@@ -2764,7 +2787,7 @@ div[role="option"]::before {
 
 .change-icon {
   width: 20px;
-    position: relative;
-    left: 6px;
-    top: -4px;
+  position: relative;
+  left: 6px;
+  top: -4px;
 }

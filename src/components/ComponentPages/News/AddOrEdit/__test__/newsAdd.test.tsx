@@ -1,18 +1,9 @@
 import React from "react";
-import {
-  render,
-  fireEvent,
-  waitFor,
-  screen,
-  cleanup,
-} from "@testing-library/react";
+import { render, waitFor, screen, cleanup } from "@testing-library/react";
 // import AddOrEdit from "../";
 // import { addNewsFeedApi } from "../../../../../network/api/campNewsApi";
 
-import { getAllUsedNickNames } from "../../../../../network/api/campDetailApi";
-import { Router } from "next/router";
 import { Provider } from "react-redux";
-import { store } from "../../../../../store";
 import { RouterContext } from "next/dist/shared/lib/router-context";
 import configureMockStore from "redux-mock-store";
 // import userEvent from "@testing-library

@@ -1,18 +1,10 @@
 import SettingsUI from "..";
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-} from "../../../../utils/testUtils";
-import userEvent from "@testing-library/user-event";
-import messages from "../../../../messages";
-import { useState } from "react";
-import { useRouter } from "next/router";
-import { Input, message } from "antd";
-import { renderHook } from "@testing-library/react-hooks";
+import { fireEvent, render, screen } from "../../../../utils/testUtils";
 
-const { labels, placeholders, validations } = messages;
+import { useState } from "react";
+// import { useRouter } from "next/router";
+import { Input } from "antd";
+// import { renderHook } from "@testing-library/react-hooks";
 
 const tabList = [
   {
@@ -72,7 +64,7 @@ describe("settingUI page", () => {
 
     expect(cardTitle).toBeInTheDocument();
   });
-  it("render useState is working ", () => {
+  it("render useState is working", () => {
     render(<SettingsUI />);
     const TestComponent = () => {
       const [isActive, setIsActive] = useState(false);
@@ -104,6 +96,7 @@ describe("settingUI page", () => {
 
     expect(statusElement.textContent).toBe("Inactive");
   });
+  /* eslint-disable */
 
   // it("path is working with use router", () => {
   //   render(<SettingsUI />);
@@ -118,6 +111,7 @@ describe("settingUI page", () => {
 
   //   expect(result.current.pathname).toBe("/about");
   // });
+  /* eslint-enable */
   test("Input component handles user input correctly", () => {
     // Render the Input component
     render(<Input />);
@@ -146,6 +140,7 @@ describe("settingUI page", () => {
     await fireEvent.change(inputEl, { target: { value: "ABCD" } });
     // await userEvent.tab();
   });
+  /* eslint-disable */
   // it('render reset btn', async() => {
   //   const { getByTestId } = render(<SettingsUI />);
   //   // const input = getByPlaceholderText('password');
@@ -159,4 +154,5 @@ describe("settingUI page", () => {
   //   // await userEvent.tab();
 
   // });
+  /* eslint-enable */
 });

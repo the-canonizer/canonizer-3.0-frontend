@@ -29,7 +29,7 @@ import { RootState } from "../../../../store";
 import K from "../../../../constants";
 
 import {
-  getHistoryApi,
+  // getHistoryApi,
   getChangeSupporters,
 } from "../../../..//network/api/history";
 
@@ -49,9 +49,6 @@ const { Title } = Typography;
 
 import { ExclamationCircleFilled } from "@ant-design/icons";
 function HistoryCollapse({
-  ifIamSupporter,
-  ifSupportDelayed,
-  ifIAmExplicitSupporter,
   collapseKeys,
   userNickNameData,
   topicNamespaceId,
@@ -412,8 +409,8 @@ function HistoryCollapse({
                     id={`submit-update-${campStatement?.id}`}
                     className={`mr-3 ${styles.campUpdateButton}`}
                     onClick={() =>
-                      campHistoryItems[0]?.is_archive == 1 &&
-                      campHistoryItems[0]?.status == "live"
+                      campStatement?.is_archive == 1 &&
+                      campStatement?.status == "live"
                         ? callManageCampApi()
                         : submitUpdateRedirect(historyOf)
                     }
@@ -789,6 +786,7 @@ const Timer = ({ unixTime, setCommited }: any) => {
   useEffect(() => {
     timeall();
     didMount.current = true;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [unixTime]);
 
   return (

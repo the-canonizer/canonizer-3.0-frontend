@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
-import { Card, List, Typography, Collapse } from "antd";
+import { List, Typography, Collapse } from "antd";
 import { useRouter } from "next/router";
 import { BellFilled } from "@ant-design/icons";
 import moment from "moment";
@@ -46,6 +46,8 @@ export default function CampRecentActivities() {
       setLoadingIndicator(false);
     }
     getTopicActivityLogCall();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router?.query?.camp[1]?.split("-")[0] ?? 1]);
 
   return (

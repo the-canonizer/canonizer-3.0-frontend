@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 // import ManageSupportUI from "./ManageSupportUI";
 import { message } from "antd";
-import styles from "./ManageSupportUI/ManageSupport.module.scss";
 import CampInfoBar from "../TopicDetails/CampInfoBar";
 import dynamic from "next/dynamic";
 import {
@@ -23,7 +22,6 @@ import {
   setManageSupportStatusCheck,
 } from "src/store/slices/campDetailSlice";
 import moment from "moment";
-import Sidebar from "../Home/SideBarNoFilter";
 
 const ManageSupportUI = dynamic(async () => await import("./ManageSupportUI"), {
   ssr: false,
@@ -153,6 +151,7 @@ const ManageSupport = () => {
         // }
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserAuthenticated, reqBodyData.topic_num, campRecord?.camp_name]);
   const GetCheckStatusData = async (campReff: any) => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
@@ -238,8 +237,8 @@ const ManageSupport = () => {
   //const camp_Name = router?.query?.manageSupport?.at(1)?.split(/-(.*)/s);
 
   //replace use to - change to space
-  const camp_Name_ = campRecord?.camp_name;
-  const CampName = camp_Name_;
+  // const camp_Name_ = campRecord?.camp_name;
+  // const CampName = camp_Name_;
   const campSupportPath = router?.asPath?.replace("/support/", "/topic/");
   const body = { topic_num: topicNum };
   const getActiveSupportTopicList = async (

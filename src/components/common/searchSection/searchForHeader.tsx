@@ -1,11 +1,11 @@
 import React from "react";
-import { Button, Radio, Input } from "antd";
+import { Input } from "antd";
 
 import styles from "./searchSection.module.scss";
 
 const { Search } = Input;
 
-const googleSearch = process.env.NEXT_PUBLIC_SITE_NAME;
+// const googleSearch = process.env.NEXT_PUBLIC_SITE_NAME;
 
 const SearchSectionForHeader = () => {
   return (
