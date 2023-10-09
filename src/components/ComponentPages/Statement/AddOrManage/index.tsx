@@ -1206,9 +1206,7 @@ export default function AddOrManage({ add }: any) {
                           size="large"
                           className={`btn-orange mr-3 ${styles.btnSubmit}`}
                           htmlType="submit"
-                          disabled={
-                            (submitIsDisable && submitIsDisableCheck)
-                          }
+                          disabled={submitIsDisable && submitIsDisableCheck}
                           id="update-submit-btn"
                         >
                           {add
