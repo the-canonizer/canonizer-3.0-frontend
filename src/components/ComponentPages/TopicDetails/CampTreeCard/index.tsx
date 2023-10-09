@@ -251,6 +251,7 @@ const CampTreeCard = ({
           </Panel>
         </Collapse>
       )}
+
       {((tree &&
         tree["1"]?.is_valid_as_of_time &&
         tree["1"]?.created_date <=
@@ -272,7 +273,6 @@ const CampTreeCard = ({
                       onCreateCampDate();
                     }}
                   >
-                    {" "}
                     {
                       new Date((campExist && campExist?.created_at) * 1000)
                         .toLocaleString()
