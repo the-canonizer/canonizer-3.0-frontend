@@ -13,7 +13,9 @@ function TopicRemoveModal({
   isCamp,
   campTitle,
   campLink,
+  isDisabled,
 }: any) {
+  console.log("🚀 MODAL:18:", isDisabled);
   return (
     <Modal
       className={styles.modal_cross}
@@ -36,6 +38,7 @@ function TopicRemoveModal({
             style={{ marginRight: 10 }}
             className="ant-btn ant-btn-orange"
             data-testid="popremove"
+            disabled={isDisabled}
           >
             Remove
           </Button>
