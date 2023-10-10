@@ -15,7 +15,6 @@ function TopicRemoveModal({
   campLink,
   isDisabled,
 }: any) {
-  console.log("🚀 MODAL:18:", isDisabled);
   return (
     <Modal
       className={styles.modal_cross}

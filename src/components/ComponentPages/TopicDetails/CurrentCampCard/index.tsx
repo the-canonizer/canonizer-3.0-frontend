@@ -38,11 +38,6 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }: any) => {
     })
   );
 
-  useEffect(() => {
-    // console.log(campRecord, "#############campdata################");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };

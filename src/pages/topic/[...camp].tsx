@@ -134,7 +134,6 @@ export async function getServerSideProps({ req, query }) {
 ////////////////////////////////////////////
 
 // export const getServerSideProps = wrapper.getServerSideProps(({ store }) => {
-//   console.log("/..///////////////////////store", store.getState());
 //   const reqBody = {
 //     topic_num: 88,
 //     asofdate: 1644323333,

@@ -105,8 +105,6 @@ function SubscriptionsList({ isTestData = [] }: any) {
     }, 300);
   };
 
-  console.log("🚀LIST:105:", isDisabled);
-
   return isLoading ? (
     <CustomSkelton
       skeltonFor="subscription_card"
