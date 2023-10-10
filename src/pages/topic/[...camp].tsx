@@ -23,6 +23,7 @@ import TopicDetails from "src/components/ComponentPages/TopicDetails";
 import { setCurrentDate } from "src/store/slices/filtersSlice";
 import { useEffect, useRef } from "react";
 import { formatTheDate } from "src/utils/generalUtility";
+import DataNotFound from "@/components/ComponentPages/DataNotFound";
 
 // import { wrapper } from "src/store";
 
@@ -46,14 +47,18 @@ const TopicDetailsPage = ({
     dispatch(setCampStatement(campStatement));
     dispatch(setHistory(statementHistory));
     // dispatch(setCanonizedAlgorithms(canonizedAlgorithms));
-    dispatch(setTree([tree] || []));
+    dispatch(setTree(tree?.status_code == 200 ? [tree?.treeData] : []));
     dispatch(setCurrentDate(current_date));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <Layout>
-      <TopicDetails serverSideCall={serverSideCall} />
+      {tree?.status_code == 404 ? (
+        <DataNotFound />
+      ) : (
+        <TopicDetails serverSideCall={serverSideCall} />
+      )}
     </Layout>
   );
 };

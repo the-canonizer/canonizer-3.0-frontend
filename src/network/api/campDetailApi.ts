@@ -22,10 +22,12 @@ export const getTreesApi = async (reqBody) => {
     const trees = await NetworkCall.fetch(TreeRequest.getTrees(reqBody), false);
 
     store.dispatch(setTree(trees?.data || []));
-    return trees?.data[0];
+    return {treeData:trees?.data[0],status_code:trees?.code,message:trees?.message };
   } catch (error) {
     store.dispatch(setTree([]));
-    // message.error(error.message);
+    let data = error?.error?.data
+    return {treeData:data?.data[0],status_code:data?.code,message:data?.message };
+
   }
 };
 

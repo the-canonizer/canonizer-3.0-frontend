@@ -92,7 +92,7 @@ function HistoryContainer() {
       }
       let res = await getTreesApi(reqBodyForService);
       setLoadingIndicator(false);
-      setParentarchived(res[1].is_archive);
+      setParentarchived(res?.treeData[1].is_archive);
     }
     if (!isTreesApiCallStop) {
       getTreeApiCall();
