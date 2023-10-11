@@ -17,6 +17,7 @@ import { RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsReviewCanonizedTopics } from "../../../store/slices/filtersSlice";
 import Link from "next/link";
+import { useCookies } from "react-cookie";
 
 import { setViewThisVersion } from "src/store/slices/filtersSlice";
 
@@ -29,9 +30,7 @@ import { useRouter } from "next/router";
 import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
 import K from "../../../constants";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
-// import { showCreateCampButton } from "src/utils/generalUtility";
 import FullScoreCheckbox from "../../ComponentPages/FullScoreCheckbox";
-import useAuthentication from "src/hooks/isUserAuthenticated";
 import ArchivedCampCheckBox from "src/components/ComponentPages/ArchivedCampCheckBox";
 import CampTreeCard from "src/components/ComponentPages/TopicDetails/CampTreeCard";
 
@@ -68,49 +67,22 @@ const asContent = (
   </>
 );
 
-// function range(start, end) {
-//   const result = [];
-//   for (let i = start; i < end; i++) {
-//     result.push(i);
-//   }
-//   return result;
-// }
-
-// function disabledDate(current) {
-//   // Can not select days before today and today
-//   return current && current < moment().endOf("day");
-// }
-
-// function disabledDateTime() {
-//   return {
-//     disabledHours: () => range(0, 24).splice(4, 20),
-//     disabledMinutes: () => range(30, 60),
-//     disabledSeconds: () => [55, 56],
-//   };
-// }
-
 const FilterWithTree = ({
-  onCreateCamp = () => {},
   getTreeLoadingIndicator,
   scrollToCampStatement,
   setTotalCampScoreForSupportTree,
   setSupportTreeForCamp,
   backGroundColorClass,
 }: any) => {
-  const isAuth = useAuthentication();
-
   const [isDatePicker, setIsDatePicker] = useState(false);
-  // const [isPanelCollapse, setIsPanelCollapse] = useState(false);
 
   const [datePickerValue, setDatePickerValue] = useState(null);
 
   const dispatch = useDispatch();
   const router = useRouter();
-  const [isCampBtnVisible, setIsCampBtnVisible] = useState(false);
 
-  const campRoute = () => {
-    router?.push("/create/topic");
-  };
+  // eslint-disable-next-line no-unused-vars
+  const [cookie, setCookie] = useCookies(["canAlgo", "asof", "asofDate"]);
 
   const {
     algorithms,
@@ -118,11 +90,8 @@ const FilterWithTree = ({
     selectedAlgorithm,
     selectedAsOf,
     filteredAsOfDate,
-    currentCampNode,
-    tree,
     loading,
     current_date_filter,
-    campExist,
     filterObject,
     viewThisVersion,
   } = useSelector((state: RootState) => ({
@@ -131,17 +100,12 @@ const FilterWithTree = ({
     selectedAlgorithm: state?.filters?.filterObject?.algorithm,
     selectedAsOf: state?.filters?.filterObject?.asof,
     filteredAsOfDate: state?.filters?.filterObject?.asofdate,
-    currentCampNode: state?.filters?.selectedCampNode,
-    tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
     loading: state?.loading?.loading,
     current_date_filter: state?.filters?.current_date,
-    campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
     filterObject: state?.filters?.filterObject,
     viewThisVersion: state?.filters?.viewThisVersionCheck,
   }));
-  const { campRecord } = useSelector((state: RootState) => ({
-    campRecord: state?.topicDetails?.currentCampRecord,
-  }));
+
   const [value, setValue] = useState(
     selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3
   );
@@ -152,11 +116,6 @@ const FilterWithTree = ({
   );
   const [isLoading, setIsLoading] = useState(loading);
   const didMount = useRef(false);
-
-  // /////////////////////////////////////////////////////////////////////////
-  // Discussion required on this functionality after that I will remove or //
-  //                        uncomment bellow code                         //
-  // //////////////////////////////////////////////////////////////////////
 
   function removeEmptyValues(obj) {
     const result = {};
@@ -202,22 +161,17 @@ const FilterWithTree = ({
       dispatch(setFilterCanonizedTopics(newObject));
       didMount.current = true;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterObject]);
 
   useEffect(() => {
     setIsLoading(loading);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
   useEffect(() => {
     setValue(selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3);
   }, [selectedAsOf]);
-
-  useEffect(() => {
-    if (router?.pathname.includes("/topic/")) {
-      // setIsPanelCollapse(true);
-      setIsCampBtnVisible(true);
-    }
-  }, [router?.pathname]);
 
   useEffect(() => {
     setSelectedAsOFDate(filteredAsOfDate);
@@ -229,6 +183,9 @@ const FilterWithTree = ({
   }, []);
 
   const selectAlgorithm = (value) => {
+    setCookie("canAlgo", value, {
+      path: "/",
+    });
     dispatch(
       setFilterCanonizedTopics({
         algorithm: value,
@@ -265,6 +222,13 @@ const FilterWithTree = ({
       setDatePickerValue(datepicker);
       IsoDateFormat = Date.parse(datepicker) / 1000;
     }
+
+    setCookie("asofDate", JSON.stringify(IsoDateFormat), {
+      path: "/",
+    });
+    setCookie("asof", "bydate", {
+      path: "/",
+    });
 
     dispatch(
       setFilterCanonizedTopics({
@@ -305,6 +269,12 @@ const FilterWithTree = ({
                 second: moment().second(),
               })
             );
+      setCookie("asofDate", JSON.stringify(Date.parse(dateValue) / 1000), {
+        path: "/",
+      });
+      setCookie("asof", "bydate", {
+        path: "/",
+      });
       dispatch(
         setFilterCanonizedTopics({
           asofdate: Date.parse(dateValue) / 1000,
@@ -447,6 +417,9 @@ const FilterWithTree = ({
                         value={1}
                         onClick={() => {
                           dispatch(setViewThisVersion(false));
+                          setCookie("asof", "review", {
+                            path: "/",
+                          });
                           dispatch(
                             setIsReviewCanonizedTopics({
                               includeReview: true,
@@ -463,6 +436,9 @@ const FilterWithTree = ({
                         value={2}
                         onClick={() => {
                           dispatch(setViewThisVersion(false));
+                          setCookie("asof", "default", {
+                            path: "/",
+                          });
                           dispatch(
                             setFilterCanonizedTopics({
                               asofdate: Date.now() / 1000,

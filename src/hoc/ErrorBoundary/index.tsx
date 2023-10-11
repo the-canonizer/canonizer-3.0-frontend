@@ -6,7 +6,7 @@ import Image from "next/image";
 
 import styles from "./errorPage.module.scss";
 
-export default class ErrorBoundary extends Component {
+export default class ErrorBoundary extends Component<any> {
   state = { hasError: false, redirect: false };
 
   static getDerivedStateFromError(error) {
@@ -17,7 +17,9 @@ export default class ErrorBoundary extends Component {
   }
 
   componentDidCatch(error, info) {
+    /* eslint-disable */
     console.error("ErrorBoundary caught an error", error, info);
+    /* eslint-enable */
   }
 
   componentDidUpdate() {
@@ -60,7 +62,7 @@ export default class ErrorBoundary extends Component {
         </>
       );
     }
-
+    // eslint-disable-next-line react/prop-types
     return this.props.children;
   }
 }

@@ -17,7 +17,7 @@ import {
 } from "../../../../store/slices/filtersSlice";
 import styles from "./topicsList.module.scss";
 import { Spin, Checkbox } from "antd";
-import { LoadingOutlined, CopyOutlined } from "@ant-design/icons";
+import { LoadingOutlined } from "@ant-design/icons";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import {
   setCheckSupportExistsData,
@@ -29,8 +29,8 @@ import {
   changeSlashToArrow,
 } from "src/utils/generalUtility";
 import CustomSkelton from "../../../common/customSkelton";
-import { CloseCircleOutlined } from "@ant-design/icons";
-import { clearAllListeners } from "@reduxjs/toolkit";
+// import { CloseCircleOutlined } from "@ant-design/icons";
+// import { clearAllListeners } from "@reduxjs/toolkit";
 
 const antIcon = <LoadingOutlined spin />;
 const { Title, Text, Paragraph } = Typography;
@@ -108,11 +108,14 @@ const TopicsList = () => {
   const [getTopicsLoadingIndicator, setGetTopicsLoadingIndicator] =
     useState(false);
   const [selectedNameSpace, setSelectedNameSpace] = useState(filterNameSpace);
-  const [clear, setClear] = useState(false);
+  // const [clear, setClear] = useState(false);
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchedResult, setSearchedResult] = useState([]);
+
+  const inputRef = useRef(null);
+  const [allowClear, setAllowClear] = useState(false);
 
   let onlyMyTopicsCheck = useRef();
 
@@ -167,6 +170,8 @@ const TopicsList = () => {
       delete router.query?.namespace;
       router.replace(router, undefined, { shallow: true });
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -187,6 +192,8 @@ const TopicsList = () => {
         );
       }
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router, nameSpacesList]);
 
   useEffect(() => {
@@ -235,24 +242,26 @@ const TopicsList = () => {
     nameSpaceId,
     filterByScore,
     inputSearch,
-    onlyMyTopicsCheck.current,
+    // onlyMyTopicsCheck.current,
     is_camp_archive_checked,
   ]);
   useEffect(() => {
     if (inputSearch.length > 0 || search.length > 0) {
-      setClear(true);
+      // setClear(true);
     } else {
-      setClear(false);
+      // setClear(false);
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handlesearch = (e) => {
-    if (e.target.value.length > 0) {
-      setClear(true);
-    } else {
-      setClear(false);
-    }
-  };
+  // const handlesearch = (e) => {
+  //   if (e.target.value.length > 0) {
+  //     setClear(true);
+  //   } else {
+  //     setClear(false);
+  //   }
+  // };
   async function getTopicsApiCallWithReqBody(loadMore = false) {
     loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
     const reqBody = {
@@ -287,9 +296,11 @@ const TopicsList = () => {
     setSearchLoading(true);
     const value = event.target.value?.trim();
     if (value) {
+      setAllowClear(true);
       setSearchTerm(value);
       setShowSearchDropdown(true);
     } else {
+      setAllowClear(false);
       setSearchTerm("");
       setSearchedResult([]);
       setShowSearchDropdown(false);
@@ -319,16 +330,19 @@ const TopicsList = () => {
         setSearchedResult(res?.topic);
       }
     } catch (error) {
-      console.error("Error:", error);
+      // console.error("Error:", error);
+      /**/
     }
   };
 
+  /* eslint-disable */
   let throttled: NodeJS.Timeout | null = null;
 
   useEffect(() => {
     if (throttled) {
       clearTimeout(throttled);
     }
+    inputRef.current?.focus();
 
     throttled = setTimeout(() => {
       if (searchTerm?.trim()) {
@@ -343,6 +357,7 @@ const TopicsList = () => {
       }
     };
   }, [searchTerm]);
+  /* eslint-enable */
 
   const hanldeTopicNameClick = (
     value: string,
@@ -358,8 +373,8 @@ const TopicsList = () => {
 
   const LoadMoreTopics = (
     <div className="text-center">
-      {pageNumber < topicsData?.numOfPages &&
-        topicsData?.topics?.length > 1 && (
+      {topicsData?.topics?.length > 1 &&
+        topicsData?.topics?.length % 15 == 0 && (
           <Button
             className={styles.viewAll}
             onClick={() => {
@@ -400,12 +415,23 @@ const TopicsList = () => {
     setGetTopicsLoadingIndicator(true);
     dispatch(setShowDrawer(true));
   };
+
   useEffect(() => {
     //When Page is render remove data from GetCheckSupportStatus and GetCheckSupportExistsData
     dispatch(setCurrentCheckSupportStatus(""));
     dispatch(setCheckSupportExistsData(""));
     dispatch(setManageSupportStatusCheck(false));
     getCanonizedNameSpacesApi();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (inputSearch) {
+      setAllowClear(true);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -460,11 +486,12 @@ const TopicsList = () => {
             <Search
               key={inputSearch}
               placeholder="Search by topic name"
-              allowClear={true}
+              allowClear={allowClear}
               className={styles.topic}
               defaultValue={inputSearch}
               onSearch={onSearch}
               onChange={handleKeyUpSearch}
+              ref={inputRef}
               onBlur={() => {
                 setTimeout(() => {
                   setShowSearchDropdown(false);
@@ -486,8 +513,9 @@ const TopicsList = () => {
                       <LoadingOutlined spin />
                     </li>
                   ) : searchedResult?.length > 0 ? (
-                    searchedResult?.map((t) => (
+                    searchedResult?.map((t, i) => (
                       <li
+                        key={i}
                         onClick={hanldeTopicNameClick.bind(this, t?.topic_name)}
                       >
                         {t?.topic_name}

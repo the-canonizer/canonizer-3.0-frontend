@@ -1,5 +1,5 @@
-import { render } from "@testing-library/react";
-import { useRouter } from "next/router";
+import { render, screen } from "@testing-library/react";
+
 import TopicDetails from "../index";
 import { Provider } from "react-redux";
 import { store } from "src/store";
@@ -32,13 +32,16 @@ jest.mock("next/router", () => ({
 describe("TopicDetails component", () => {
   test("renders TopicDetails component", () => {
     // Render the component
-    const { getByText } = render(
+    render(
       <Provider store={store}>
         {" "}
         <TopicDetails />
       </Provider>
     );
-
-    expect(getByText("Canonizer Sorted Camp Race")).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        name: /consensus tree race/i,
+      })
+    ).toBeInTheDocument();
   });
 });

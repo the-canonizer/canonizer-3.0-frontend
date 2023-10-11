@@ -16,6 +16,7 @@ import UserRequest from "../request/userRequest";
 import { store } from "../../store";
 import { setFilterCanonizedTopics } from "../../store/slices/filtersSlice";
 import { setHeaderData } from "src/store/slices/notificationSlice";
+import { setIsChecked } from "src/store/slices/recentActivitiesSlice";
 
 export const createToken = async () => {
   try {
@@ -71,6 +72,7 @@ export const logout = async (error = "", status = null, count: number = 1) => {
       store.dispatch(removeAuthToken());
       store.dispatch(updateStatus(status));
       store.dispatch(setHeaderData({ count: 0, list: [] }));
+      store.dispatch(setIsChecked(false));
 
       if (+state.ui.apiStatus === +status) {
         return;
@@ -90,6 +92,7 @@ export const logout = async (error = "", status = null, count: number = 1) => {
     let res = await NetworkCall.fetch(UserRequest.logoutCall(auth.token));
 
     store.dispatch(setLogout());
+    store.dispatch(setIsChecked(false));
     store.dispatch(logoutUser());
     store.dispatch(removeAuthToken());
     document.cookie =
@@ -289,7 +292,7 @@ export const UpdateUserProfileInfo = async (values: object) => {
       };
       document.cookie =
         "loginToken=" +
-        res.data.auth?.access_token +
+        value?.data.auth?.access_token +
         "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
 
       store.dispatch(setLoggedInUser(payload));

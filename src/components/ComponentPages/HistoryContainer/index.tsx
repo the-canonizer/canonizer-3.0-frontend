@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { Typography, Button, List, Spin, Affix } from "antd";
+import { Typography, Button, List, Affix } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
@@ -16,7 +16,6 @@ import HistoryCollapse from "./Collapse";
 import { RootState } from "src/store";
 import CampInfoBar from "../TopicDetails/CampInfoBar";
 import CreateNewCampButton from "../../common/button/createNewCampBtn";
-import CreateNewTopicButton from "../../common/button/createNewTopicBtn";
 import { setCurrentCamp } from "src/store/slices/filtersSlice";
 import useIsUserAuthenticated from "../../../hooks/isUserAuthenticated";
 
@@ -41,7 +40,8 @@ function HistoryContainer() {
   const [isAbs, setIsAbs] = useState(false);
   const [loadMoreItems, setLoadMoreItems] = useState(true);
   const [agreecheck, setAgreeCheck] = useState(false);
-  const [discardChange, setDiscardChange] = useState(false)
+  const [discardChange, setDiscardChange] = useState(false);
+  const [parentarchived, setParentarchived] = useState(0);
 
   const changeAgree = () => {
     setAgreeCheck(!agreecheck);
@@ -63,9 +63,7 @@ function HistoryContainer() {
       asof: state?.filters?.filterObject?.asof,
       algorithm: state.filters?.filterObject?.algorithm,
     }));
-  const { campRecord } = useSelector((state: RootState) => ({
-    campRecord: state?.topicDetails?.currentCampRecord,
-  }));
+
   const [isTreesApiCallStop, setIsTreesApiCallStop] = useState(false);
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [campHistory, setCampHistory] = useState(history);
@@ -92,12 +90,14 @@ function HistoryContainer() {
         });
         setNickName(response?.data);
       }
-      await getTreesApi(reqBodyForService);
+      let res = await getTreesApi(reqBodyForService);
       setLoadingIndicator(false);
+      setParentarchived(res[1].is_archive);
     }
     if (!isTreesApiCallStop) {
       getTreeApiCall();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asofdate, algorithm, +router?.query?.camp?.at(1)?.split("-")[0]]);
 
   const dispatchData = (data, isDisabled = 0, isOneLevel = 0) => {
@@ -157,7 +157,7 @@ function HistoryContainer() {
 
   const campStatementApiCall = async () => {
     try {
-      setLoadingIndicator(true)
+      setLoadingIndicator(true);
       const reqBody = {
         topic_num: +router?.query.camp[0].split("-")[0],
         camp_num:
@@ -178,18 +178,19 @@ function HistoryContainer() {
         count.current = count.current + 1;
       }
 
-
       setLoadingIndicator(false);
-    } catch (error) { }
+    } catch (error) {
+      /**/
+    }
   };
 
   const handleTabButton = async (tabName) => {
     setActiveTab(tabName);
   };
 
-  const topicRoute = () => {
-    setLoadingIndicator(true);
-  };
+  // const topicRoute = () => {
+  //   setLoadingIndicator(true);
+  // };
 
   const campRoute = () => {
     setLoadingIndicator(true);
@@ -218,16 +219,17 @@ function HistoryContainer() {
 
   const onCompareClick = () => {
     router?.push({
-      pathname: `/statement/compare/${router?.query.camp[0]}/${router?.query.camp[1] ? router?.query.camp[1] : "1-Agreement"
-        }`,
+      pathname: `/statement/compare/${router?.query.camp[0]}/${
+        router?.query.camp[1] ? router?.query.camp[1] : "1-Agreement"
+      }`,
       query: {
         statements: selectedTopic[0] + "_" + selectedTopic[1],
         from:
           historyOf == "statement"
             ? "statement"
             : historyOf == "camp"
-              ? "camp"
-              : "topic",
+            ? "camp"
+            : "topic",
         status: selectedTopicStatus.join("-"),
       },
     });
@@ -269,42 +271,44 @@ function HistoryContainer() {
     );
   };
   let reqBody = {
-    topic_num: campHistory?.items[0]?.topic_num,
+    topic_num: campHistory?.items?.[0]?.topic_num,
     topic_id: null,
     topic_name: null,
     namespace_id: null,
     statement_id: null,
-    camp_num: campHistory?.items[0]?.camp_num,
+    camp_num: campHistory?.items?.[0]?.camp_num,
     nick_name: nickName?.[0]?.id,
     // nick_name_id:userNickNameData?.[0]?.n,
-    submitter: campHistory?.items[0]?.submitter_nick_id,
+    submitter: campHistory?.items?.[0]?.submitter_nick_id,
     statement: "", //JSON.stringify(convertToRaw(contentState)),//values?.statement?.blocks[0].text.trim(),
     //statement: values?.statement?.trim(), //JSON.stringify(convertToRaw(contentState)),//values?.statement?.blocks[0].text.trim(),
     event_type: "update",
     objection_reason: null,
     statement_update: null,
-    camp_id: campHistory?.items[0]?.id,
-    camp_name: campHistory?.items[0]?.camp_name,
-    key_words: campHistory?.items[0]?.key_words,
-    camp_about_url: campHistory?.items[0]?.camp_about_url,
+    camp_id: campHistory?.items?.[0]?.id,
+    camp_name: campHistory?.items?.[0]?.camp_name,
+    key_words: campHistory?.items?.[0]?.key_words,
+    camp_about_url: campHistory?.items?.[0]?.camp_about_url,
     camp_about_nick_id: null,
 
-    parent_camp_num: campHistory?.items[0]?.parent_camp_num,
+    parent_camp_num: campHistory?.items?.[0]?.parent_camp_num,
 
-    old_parent_camp_num: campHistory?.items[0]?.old_parent_camp_num,
+    old_parent_camp_num: campHistory?.items?.[0]?.old_parent_camp_num,
     is_disabled: 0,
     is_one_level: 0,
-    is_archive: 0
+    is_archive: 0,
   };
   const callManageCampApi = async () => {
     // window.location.reload()
-    setLoadingIndicator(true)
-    count.current = 1;
-    updateCampApi(reqBody)
-    await campStatementApiCall()
-    setLoadingIndicator(false)
+    setLoadingIndicator(true);
+    if (campHistory?.items?.length >= 3) {
+      count.current = 1;
+    }
+    updateCampApi(reqBody);
+    await campStatementApiCall();
+    setLoadingIndicator(false);
     // await commitChanges()
-  }
+  };
   const getCollapseKeys = (campHistoryData, index) => {
     let key = "";
     let oldstatements = campHistory?.items?.filter(
@@ -351,6 +355,7 @@ function HistoryContainer() {
             setIsTreesApiCallStop={setIsTreesApiCallStop}
             campHistoryItems={campHistory?.items}
             callManageCampApi={callManageCampApi}
+            parentArchived={parentarchived}
           />
         );
       })
@@ -364,17 +369,18 @@ function HistoryContainer() {
         isTopicHistoryPage={historyOf == "topic" ? true : false}
       />
       <div className={styles.btnGroup}>
-        <CreateNewTopicButton className={styles.createBtn} click={topicRoute} />
+        {/* <CreateNewTopicButton className={styles.createBtn} click={topicRoute} /> */}
 
         {historyOf !== "topic" &&
-          currentCampNode?._isDisabled == 0 &&
-          currentCampNode?.parentIsOneLevel == 0 &&
-          currentCampNode?.is_archive == 0 ? (
+        currentCampNode?._isDisabled == 0 &&
+        currentCampNode?.parentIsOneLevel == 0 &&
+        currentCampNode?.is_archive == 0 ? (
           <CreateNewCampButton
             className={styles.createBtn}
             click={campRoute}
-            url={`/camp/create/${router?.query.camp[0] + "/" + router?.query.camp[1]
-              }`}
+            url={`/camp/create/${
+              router?.query.camp[0] + "/" + router?.query.camp[1]
+            }`}
           />
         ) : null}
       </div>
@@ -390,8 +396,9 @@ function HistoryContainer() {
               {/* <Spin spinning={loadingIndicator} size="default"> */}
               <List className={styles.cshcHeadFilter} size="small">
                 <List.Item
-                  className={`${styles.campStatementViewAll} ${styles.cshcHeadFilterItem
-                    } ${activeTab == "all" ? styles.active : null}`}
+                  className={`${styles.campStatementViewAll} ${
+                    styles.cshcHeadFilterItem
+                  } ${activeTab == "all" ? styles.active : null}`}
                 >
                   <a
                     onClick={() => {
@@ -402,8 +409,9 @@ function HistoryContainer() {
                   </a>
                 </List.Item>
                 <List.Item
-                  className={`${styles.campStatementObjected}  ${styles.cshcHeadFilterItem
-                    }  ${activeTab == "objected" ? styles.active : null}`}
+                  className={`${styles.campStatementObjected}  ${
+                    styles.cshcHeadFilterItem
+                  }  ${activeTab == "objected" ? styles.active : null}`}
                 >
                   <a
                     onClick={() => {
@@ -414,8 +422,9 @@ function HistoryContainer() {
                   </a>
                 </List.Item>
                 <List.Item
-                  className={`${styles.campStatementLive} ${styles.cshcHeadFilterItem
-                    } ${activeTab == "live" ? styles.active : null}`}
+                  className={`${styles.campStatementLive} ${
+                    styles.cshcHeadFilterItem
+                  } ${activeTab == "live" ? styles.active : null}`}
                 >
                   <a
                     onClick={() => {
@@ -426,8 +435,9 @@ function HistoryContainer() {
                   </a>
                 </List.Item>
                 <List.Item
-                  className={`${styles.campStatementNotLive} ${styles.cshcHeadFilterItem
-                    } ${activeTab == "in_review" ? styles.active : null}`}
+                  className={`${styles.campStatementNotLive} ${
+                    styles.cshcHeadFilterItem
+                  } ${activeTab == "in_review" ? styles.active : null}`}
                 >
                   <a
                     onClick={() => {
@@ -438,8 +448,9 @@ function HistoryContainer() {
                   </a>
                 </List.Item>
                 <List.Item
-                  className={`${styles.campStatementOld} ${styles.cshcHeadFilterItem
-                    } ${activeTab == "old" ? styles.active : null}`}
+                  className={`${styles.campStatementOld} ${
+                    styles.cshcHeadFilterItem
+                  } ${activeTab == "old" ? styles.active : null}`}
                 >
                   <a
                     onClick={() => {
@@ -467,8 +478,8 @@ function HistoryContainer() {
               {historyOf == "topic"
                 ? "Topics"
                 : historyOf == "camp"
-                  ? "Camps"
-                  : "Statements"}
+                ? "Camps"
+                : "Statements"}
             </Button>
           </div>
         </Affix>

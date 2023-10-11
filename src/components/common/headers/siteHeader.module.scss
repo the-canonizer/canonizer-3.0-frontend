@@ -55,6 +55,8 @@
     }
   }
   .navWrap {
+    margin-left: 25px;
+    margin-right: auto;
     // @media screen and (min-width: 1025px) {
     //   display: flex;
     // }
@@ -224,7 +226,7 @@
     &.onlogin {
       width: auto;
     }
-    @media screen and (max-width: 767px) {
+    @media screen and (max-width: 1024px) {
       width: auto;
     }
   }

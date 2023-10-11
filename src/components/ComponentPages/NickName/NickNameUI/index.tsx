@@ -111,6 +111,7 @@ export default function NickNameUI({
           footer=""
           onCancel={handleNickNameCancel}
           width={400}
+          data-testid="addnicknamemodal"
         >
           <Form
             name="add_edit_form"
@@ -133,6 +134,7 @@ export default function NickNameUI({
             >
               <Input
                 maxLength={50}
+                data-testid="enterNickName"
                 id="enterNickName"
                 placeholder="Enter Nickname"
                 value=""

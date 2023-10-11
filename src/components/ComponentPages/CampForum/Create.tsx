@@ -2,6 +2,7 @@ import { Spin } from "antd";
 
 import CreateThread from "./UI/ThreadFormUI";
 import ThreadSidebar from "./UI/sidebar";
+import CampInfoBar from "../TopicDetails/CampInfoBar";
 
 // email link issue with ashutosh/gautam's bro.
 
@@ -13,11 +14,13 @@ const Threads = ({
   form,
   initialValue,
   isLoading,
-}) => {
+  payload,
+}: any) => {
   return (
     <div className="d-flex">
       <ThreadSidebar />
       <div className="pageContentWrap">
+        <CampInfoBar payload={payload} />
         <Spin spinning={isLoading} size="large">
           <CreateThread
             onFinish={onFinish}

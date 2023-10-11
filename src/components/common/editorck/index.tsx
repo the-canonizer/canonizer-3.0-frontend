@@ -7,12 +7,26 @@ import isAuth from "../../../hooks/isUserAuthenticated";
 interface editorState {
   editorState: string;
 }
-
 interface editorchange {
-  oneditorchange: (changedata: string | undefined) => void;
+  // eslint-disable-next-line no-unused-vars
+  oneditorchange: (any) => void;
 }
 
-export default function Editorck(props: editorState & editorchange) {
+interface placeholder {
+  placeholder: string;
+}
+
+interface toolbaritems {
+  items: Array<string>;
+}
+
+interface height {
+  height?: number;
+}
+
+export default function Editorck(
+  props: editorState & editorchange & placeholder & toolbaritems & height
+) {
   const { isUserAuthenticated } = isAuth();
   const [loadeditor, setLoadeditor] = useState(false);
   const [editordata, setEditordata] = useState("");
@@ -20,52 +34,16 @@ export default function Editorck(props: editorState & editorchange) {
   useEffect(() => {
     setEditordata(props.editorState);
     setLoadeditor(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserAuthenticated]);
 
   const editorConfiguration = {
-    placeholder: "Write Your Statement Here",
+    innerHeight: 200,
+    placeholder: props.placeholder,
     mediaEmbed: { previewsInData: true },
     toolbar: {
       shouldNotGroupWhenFull: true,
-      items: [
-        "heading",
-        "|",
-        "bold",
-        "italic",
-        "underline",
-        "strikethrough",
-        "superscript",
-        "subscript",
-        "|",
-        "numberedList",
-        "bulletedList",
-        "alignment",
-        "todoList",
-        "|",
-        "fontSize",
-        "fontColor",
-        "fontBackgroundColor",
-        "highlight",
-        "fontFamily",
-        "|",
-        "indent",
-        "outdent",
-        "|",
-        "link",
-        "autolink",
-        "imageInsert",
-        "blockQuote",
-        "insertTable",
-        "mediaEmbed",
-        "|",
-        "findAndReplace",
-        "horizontalLine",
-        "pageBreak",
-        "specialCharacters",
-        "|",
-        "undo",
-        "redo",
-      ],
+      items: props.items,
     },
     image: {
       toolbar: [
@@ -93,9 +71,17 @@ export default function Editorck(props: editorState & editorchange) {
             editor.editing.view.document.on("blur", () => {
               props.oneditorchange(editor?.getData());
             });
+            if (props.height)
+              editor.editing.view.change((writer) => {
+                writer.setStyle(
+                  "height",
+                  `${props.height}px`,
+                  editor.editing.view.document.getRoot()
+                );
+              });
           }}
           onChange={(event, editor: any) => {
-            let isTyping = false;
+            // let isTyping = false;
             let typingTimer;
             const dataAppend = async () => {
               return props.oneditorchange(editor?.getData());
@@ -103,9 +89,7 @@ export default function Editorck(props: editorState & editorchange) {
 
             editor.editing.view.document.on("keyup", (evt) => {
               clearTimeout(typingTimer);
-              isTyping = true;
               typingTimer = setTimeout(async () => {
-                isTyping = false;
                 await dataAppend();
               }, 500);
               evt.stop();

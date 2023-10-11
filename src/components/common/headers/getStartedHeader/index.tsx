@@ -1,5 +1,4 @@
 import Navigation from "../loggedInHeaderNavigation";
-import RegistrationModal from "../../../ComponentPages/Registration/registrationModal";
 import { Fragment } from "react";
 import DisclaimerMsg from "../../disclaimer";
 
@@ -8,7 +7,6 @@ const GetStartedHeader = () => {
     <Fragment>
       <Navigation isLoginPage={true} />
       <DisclaimerMsg />
-      <RegistrationModal />
     </Fragment>
   );
 };

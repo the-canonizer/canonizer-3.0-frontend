@@ -1,18 +1,18 @@
-import { useRouter } from "next/router";
-import { Button } from "antd";
+// import { useRouter } from "next/router";
+// import { Button } from "antd";
 
-import GoogleAd from "../../../googleAds";
+// import GoogleAd from "../../../googleAds";
 
 export default function HomeSideBar({ isShowBtn = true }: any) {
-  const router = useRouter();
-  const campRoute = () => {
-    router?.push("/create/topic");
-  };
+  // const router = useRouter();
+  // const campRoute = () => {
+  //   router?.push("/create/topic");
+  // };
 
   return (
     <>
       <div
-        className="leftSideBar_Card noFilter"
+        className={"topicPageNewLayoutSidebar leftSideBar miniSideBar noFilter"}
         style={{
           padding: !isShowBtn ? "0" : "",
           border: !isShowBtn ? "none" : "",
@@ -20,9 +20,9 @@ export default function HomeSideBar({ isShowBtn = true }: any) {
       >
         {isShowBtn && (
           <div className="btnsWrap">
-            <Button size="large" className={"btn"} onClick={campRoute}>
-              <i className="icon-topic"></i>Create New Topic
-            </Button>
+            {/* <Button size="large" className={"btn"} onClick={campRoute}>
+              <i className="icon-topic"></i>Create Topic
+            </Button> */}
           </div>
         )}
       </div>

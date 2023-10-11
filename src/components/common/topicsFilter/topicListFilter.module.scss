@@ -14,7 +14,6 @@
       color: #d1d4db;
       font-size: 16px;
       cursor: pointer;
-      text-decoration: none;
     }
   }
   .algoSelect {
@@ -199,6 +198,9 @@
   span {
     font-size: 14px;
     color: #1c1b24;
+  }
+  @media screen and (max-width:767px){
+    margin-right: 0;
   }
 }
 

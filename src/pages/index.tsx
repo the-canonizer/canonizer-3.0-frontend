@@ -1,9 +1,10 @@
 import { Fragment, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import dynamic from "next/dynamic";
+// import { useCookies } from "react-cookie";
+// import dynamic from "next/dynamic";
+
 import Layout from "src/hoc/layout";
-// const Layout = dynamic(() => import("../hoc/layout"));
 import HomePageContainer from "src/components/ComponentPages/Home";
 import { getCanonizedWhatsNewContentApi } from "src/network/api/homePageApi";
 import {
@@ -12,21 +13,21 @@ import {
 } from "src/store/slices/filtersSlice";
 import { GetUserProfileInfo } from "src/network/api/userApi";
 import { setAuthToken, setLoggedInUser } from "src/store/slices/authSlice";
-import { useCookies } from "react-cookie";
+import { setHotTopic } from "src/store/slices/hotTopicSlice";
+import { GetHotTopicDetails } from "src/network/api/topicAPI";
 
-function Home({ current_date }) {
+function Home({ current_date, hotTopicData }: any) {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const [cookie, setCookie] = useCookies(["authToken"]);
-
   dispatch(setFilterCanonizedTopics({ search: "" }));
   dispatch(setCurrentDate(current_date));
-
+  /* eslint-disable */
   useEffect(() => {
+    dispatch(setHotTopic(hotTopicData));
     getCanonizedWhatsNewContentApi();
   }, []);
-
+  /* eslint-enable */
   useEffect(() => {
     let queries = router?.query;
     if ("namespace" in queries) {
@@ -36,6 +37,7 @@ function Home({ current_date }) {
       delete router?.query?.namespace;
       router?.replace(router, null, { shallow: true });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -56,6 +58,7 @@ function Home({ current_date }) {
           "loginToken=" +
           accessToken +
           "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+        // eslint-disable-next-line no-unused-vars
         const { access_token, ...rest } = router?.query;
         router.query = rest;
         await router?.replace(router, null, { shallow: true });
@@ -67,6 +70,7 @@ function Home({ current_date }) {
       dispatch(setAuthToken(accessToken));
       getData(accessToken);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -78,11 +82,16 @@ function Home({ current_date }) {
   );
 }
 
-export async function getServerSideProps(ctx) {
+export async function getServerSideProps({ req }) {
   const currentDate = new Date().valueOf();
 
+  const resData = await GetHotTopicDetails(req.cookies["loginToken"] as string);
+
   return {
-    props: { current_date: currentDate },
+    props: {
+      current_date: currentDate,
+      hotTopicData: resData?.data || null,
+    },
   };
 }
 

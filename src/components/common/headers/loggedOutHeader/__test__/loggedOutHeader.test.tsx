@@ -1,5 +1,5 @@
 import LoggedOutHeader from "../";
-import { cleanup, getByRole, render, screen } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { store } from "../../../../../store";
 import { windowMatchMedia } from "../../../../../utils/testUtils";
@@ -66,6 +66,9 @@ describe("LoggedOutHeader", () => {
     const browseLink = screen.getByRole("link", {
       name: /Browse/i,
     });
+    const createTopicLink = screen.getAllByRole("link", {
+      name: /Create Topic/i,
+    });
     // const uploadFilesLink = screen.getByRole("link", {
     //   name: /Upload File/i,
     // });
@@ -74,35 +77,42 @@ describe("LoggedOutHeader", () => {
       name: /Help/i,
     });
 
-    const whitePaperLink = screen.getByRole("link", {
-      name: /White Paper/i,
-    });
+    // const whitePaperLink = screen.getByRole("link", {
+    //   name: /White Paper/i,
+    // });
     const blogLink = screen.getByText(/blog/i);
-    const jobsLink = screen.getByRole("link", {
-      name: /Jobs/i,
-    });
+    // const jobsLink = screen.getByRole("link", {
+    //   name: /Jobs/i,
+    // });
 
     expect(container.getElementsByTagName("header")).toHaveLength(1);
     expect(container.getElementsByTagName("nav")).toHaveLength(1);
     expect(container.getElementsByTagName("ul")).toHaveLength(1);
-    expect(container.getElementsByTagName("li")).toHaveLength(5);
+    expect(container.getElementsByTagName("li")).toHaveLength(4);
     expect(container.getElementsByTagName("a")).toHaveLength(7);
     expect(container.getElementsByTagName("button")).toHaveLength(8);
-    expect(container.getElementsByTagName("img")).toHaveLength(2);
+    expect(container.getElementsByTagName("img")).toHaveLength(4);
     expect(logoLink).toHaveLength(2);
-    expect(logoLink[0].getAttribute("href")).toBe("/");
-    expect(logoLink[1].getAttribute("href")).toBe("/");
-    expect(browseLink.getAttribute("href")).toBe("/browse");
+    expect(logoLink[0].getAttribute("href")).toBe(
+      "/?score=0&algo=blind_popularity&asof=default&canon=1"
+    );
+    expect(logoLink[1].getAttribute("href")).toBe(
+      "/?score=0&algo=blind_popularity&asof=default&canon=1"
+    );
+    expect(browseLink.getAttribute("href")).toBe(
+      "/browse?score=0&algo=blind_popularity&asof=default&canon=1"
+    );
     // expect(uploadFilesLink.getAttribute("href")).toBe("/uploadFile");
     expect(helpLink.getAttribute("href")).toBe(
-      "/topic/132-Help/1-Agreement?is_tree_open=1"
+      "/topic/132-Help/1-Agreement?is_tree_open=1?score=0&algo=blind_popularity&asof=default&canon=1"
     );
-    expect(whitePaperLink.getAttribute("href")).toBe(
-      "/files/2012_amplifying_final.pdf"
-    );
+    expect(createTopicLink[0].getAttribute("href")).toBe("/create/topic");
+    // expect(whitePaperLink.getAttribute("href")).toBe(
+    //   "/files/2012_amplifying_final.pdf"
+    // );
     expect(blogLink).toBeInTheDocument();
-    expect(jobsLink.getAttribute("href")).toBe(
-      "/topic/6-Canonizer-Jobs/1-Agreement"
-    );
+    // expect(jobsLink.getAttribute("href")).toBe(
+    //   "/topic/6-Canonizer-Jobs/1-Agreement?is_tree_open=1?score=0&algo=blind_popularity&asof=default&canon=1"
+    // );
   });
 });

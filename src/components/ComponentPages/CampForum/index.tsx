@@ -25,18 +25,18 @@ import {
   getCurrentTopicRecordApi,
 } from "../../../network/api/campDetailApi";
 import { setThread, setPost } from "../../../store/slices/campForumSlice";
-import CampInfoBar from "../TopicDetails/CampInfoBar";
+// import CampInfoBar from "../TopicDetails/CampInfoBar";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 const ForumComponent = ({
   threadlist = [],
   postlist = { items: [], total_rows: 0 },
-}) => {
+}: any) => {
   const router = useRouter();
 
   const { isUserAuthenticated } = useIsUserAuthenticated();
   const didMount = useRef(false);
-  const didMountList = useRef(false);
+  // const didMountList = useRef(false);
   const didMountPost = useRef(false);
 
   const [paramsList, setParamsList] = useState({});
@@ -191,11 +191,12 @@ const ForumComponent = ({
     };
 
     setParamsList(paramsLists);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [campRecord]);
 
   // start thread List section
 
-  const onSearch = (v) => {
+  const onSearch = (v: string) => {
     setSearchQuery(v.trim());
   };
 
@@ -301,20 +302,21 @@ const ForumComponent = ({
     const topicArr = (queries?.topic as string)?.split("-");
     const topic_num = topicArr?.shift();
     const type = queries["by"] as string;
-    if (didMountList.current) {
-      let timer = 0;
+    // if (didMountList.current) {
 
-      if (timer) {
-        clearTimeout(timer);
-        timer = 0;
-      }
-      timer = window.setTimeout(async () => {
-        getThreads(camp_num, topic_num, type, page, searchQuery);
-      }, 800);
-    } else {
-      didMountList.current = true;
-      setLoading(false);
+    let timer = 0;
+
+    if (timer) {
+      clearTimeout(timer);
+      timer = 0;
     }
+    timer = window.setTimeout(async () => {
+      getThreads(camp_num, topic_num, type, page, searchQuery);
+    }, 800);
+    // } else {
+    //   didMountList.current = true;
+    //   setLoading(false);
+    // }
 
     if (
       router?.pathname === "/forum/[topic]/[camp]/threads/create" ||
@@ -324,7 +326,7 @@ const ForumComponent = ({
       fetchNickNameList(topic_num);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router?.query, page, searchQuery, isLoggedIn]);
+  }, [router, page, searchQuery, isLoggedIn]);
 
   const onCancelCreateThread = () => {
     const queries = router?.query;
@@ -432,6 +434,7 @@ const ForumComponent = ({
     if (threadId) {
       threadDetails(threadId);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   useEffect(() => {
@@ -443,6 +446,7 @@ const ForumComponent = ({
     } else {
       didMountPost.current = true;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router?.query?.id, ppage]);
 
   const onContentChange = (v) => {
@@ -553,8 +557,8 @@ const ForumComponent = ({
   };
 
   return (
-    <Fragment data-testid="forum-component">
-      <CampInfoBar payload={payload} />
+    <Fragment>
+      {/* <CampInfoBar payload={payload} /> */}
       {router?.pathname === "/forum/[topic]/[camp]/threads" ? (
         <ForumUIList
           onSearch={onSearch}
@@ -568,6 +572,7 @@ const ForumComponent = ({
           filterThread={filterThread}
           paramsList={paramsList}
           isLoading={loading}
+          payload={payload}
         />
       ) : null}
       {router?.pathname === "/forum/[topic]/[camp]/threads/create" ? (
@@ -579,6 +584,7 @@ const ForumComponent = ({
           form={form}
           initialValue={initialValue}
           isLoading={loading}
+          payload={payload}
         />
       ) : null}
       {router?.pathname === "/forum/[topic]/[camp]/threads/edit/[tId]" ? (
@@ -590,6 +596,7 @@ const ForumComponent = ({
           form={form}
           initialValue={initialValue}
           isLoading={loading}
+          payload={payload}
         />
       ) : null}
       {router?.pathname === "/forum/[topic]/[camp]/threads/[id]" ? (
@@ -613,6 +620,7 @@ const ForumComponent = ({
           isLoading={postLoading}
           postperPage={postperPage}
           threadDetailsLoading={threadDetailsLoading}
+          payload={payload}
         />
       ) : null}
     </Fragment>

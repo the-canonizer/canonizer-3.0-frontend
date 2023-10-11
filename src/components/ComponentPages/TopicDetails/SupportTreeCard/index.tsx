@@ -20,7 +20,7 @@ import CustomButton from "../../../common/button";
 import { RootState } from "src/store";
 import isAuth from "../../../../hooks/isUserAuthenticated";
 import K from "../../../../constants";
-import { setCurrentCampRecord } from "../../../../store/slices/campDetailSlice";
+// import { setCurrentCampRecord } from "../../../../store/slices/campDetailSlice";
 import { setDelegatedSupportClick } from "../../../../store/slices/supportTreeCard";
 import CustomSkelton from "../../../common/customSkelton";
 import {
@@ -30,7 +30,7 @@ import {
 import { getNickNameList } from "../../../../network/api/userApi";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
 
-const { Paragraph, Title } = Typography;
+const { Paragraph } = Typography;
 const { Panel } = Collapse;
 const { TreeNode } = Tree;
 
@@ -82,7 +82,6 @@ const SupportTreeCard = ({
     filterData: state?.filters?.filterObject,
     algorithms: state.homePage?.algorithms,
   }));
-
   const { isUserAuthenticated } = isAuth();
 
   const router = useRouter();
@@ -96,10 +95,11 @@ const SupportTreeCard = ({
   useEffect(() => {
     const filteredAlgo = algorithms?.filter(
       (a: { algorithm_key: string }) =>
-        a.algorithm_key === filterData?.algorithm
+        a.algorithm_key === (filterData?.algorithm || router?.query?.algo)
     );
+
     if (filteredAlgo?.length) setCurrentAlgo(filteredAlgo[0]?.algorithm_label);
-  }, [filterData]);
+  }, [algorithms, router?.query?.algo, filterData?.algorithm]);
 
   const dispatch = useDispatch();
   const arr = [];
@@ -116,11 +116,15 @@ const SupportTreeCard = ({
     if (isUserAuthenticated) {
       getNickNameListData();
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserAuthenticated]);
 
   useEffect(() => {
     dispatch(setDelegatedSupportClick({ delegatedSupportClick: false }));
     dispatch(setManageSupportStatusCheck(false));
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //Delegate Support Camp
@@ -149,6 +153,8 @@ const SupportTreeCard = ({
     if (campSupportingTree?.length > 0) {
       getDelegateNicknameId(campSupportingTree);
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [campSupportingTree]);
 
   const getDelegateNicknameId = (delegates) => {
@@ -177,6 +183,7 @@ const SupportTreeCard = ({
       //isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
       if ((!loadMore && index < supportLength) || loadMore) {
         if (data[item].delegates) {
+          /* eslint-disable */
           const linkss = (
             <Link
               href={{
@@ -189,6 +196,8 @@ const SupportTreeCard = ({
               }}
             ></Link>
           );
+          /* eslint-enable */
+          
           return (
             <>
               <TreeNode
@@ -210,7 +219,7 @@ const SupportTreeCard = ({
                           query: {
                             topicnum: topicRecord?.topic_num,
                             campnum: topicRecord?.camp_num,
-                            canon: topicRecord?.namespace_id,
+                            canon: router?.query?.canon,
                           },
                         }}
                       >

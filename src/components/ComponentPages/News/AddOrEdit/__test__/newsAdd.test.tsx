@@ -1,17 +1,12 @@
 import React from "react";
-import {
-  render,
-  fireEvent,
-  waitFor,
-  screen,
-  cleanup,
-} from "@testing-library/react";
-import AddOrEdit from "../";
-import { addNewsFeedApi } from "../../../../../network/api/campNewsApi";
-import { Router } from "next/router";
+import { render, waitFor, screen, cleanup } from "@testing-library/react";
+// import AddOrEdit from "../";
+// import { addNewsFeedApi } from "../../../../../network/api/campNewsApi";
+
 import { Provider } from "react-redux";
-import { store } from "../../../../../store";
 import { RouterContext } from "next/dist/shared/lib/router-context";
+import configureMockStore from "redux-mock-store";
+// import userEvent from "@testing-library
 import NewsAdd from "..";
 function createMockRouter() {
   return {
@@ -51,21 +46,41 @@ window.matchMedia =
   };
 
 afterEach(cleanup);
+
+const mockStore = configureMockStore();
+const store1 = mockStore({
+  auth: {
+    authenticated: true,
+    loggedInUser: {
+      is_admin: true,
+    },
+  },
+  topicDetails: {
+    currentCampRecord: {},
+  },
+  filters: {
+    filterObject: {},
+  },
+  forum: {
+    currentThread: null,
+    currentPost: null,
+  },
+});
 describe("Should render Addnews", () => {
   beforeEach(() => {
-    jest.mock("../../../../../network/api/campNewsApi", () => ({
-      addNewsFeedApi: jest.fn(() => Promise.resolve({ status_code: 200 })),
+    jest.mock("../../../../../network/api/campDetailApi", () => ({
+      getAllUsedNickNames: jest.fn(() => Promise.resolve({ status_code: 200 })),
     }));
   });
   it("Render without crash", async () => {
     const { container } = await render(
-      <Provider store={store}>
+      <Provider store={store1}>
         <RouterContext.Provider value={createMockRouter()}>
-          <NewsAdd />
+          <NewsAdd edit={false} />
         </RouterContext.Provider>
       </Provider>
     );
-    waitFor(() => {
+    await waitFor(() => {
       const submitButton = screen.getByRole("button", {
         name: /Create News/i,
       });
@@ -76,10 +91,14 @@ describe("Should render Addnews", () => {
       expect(container.getElementsByTagName("button")).toHaveLength(2);
       expect(container.getElementsByTagName("textarea")).toHaveLength(1);
       expect(container.getElementsByTagName("input")).toHaveLength(3);
+      expect(screen.getByText(/add news/i)).toBeInTheDocument();
       expect(screen.getByText(/display text/i).textContent).toBe(
         "Display Text * (Limit 256 chars)"
       );
-
+      expect(screen.getByText(/link/i).textContent).toBe(
+        "Link * (Limit 2000 chars)"
+      );
+      expect(screen.getByText(/nickname/i)).toBeInTheDocument();
       expect(submitButton.textContent).toBe(" Create News");
       expect(cancelButton.textContent).toBe("Cancel");
     });

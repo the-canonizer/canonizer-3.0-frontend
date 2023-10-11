@@ -1,12 +1,12 @@
-import { Collapse, Popover, Image, Typography, Button, Select } from "antd";
-import React, { useEffect, useState, useRef } from "react";
+import { Collapse, Popover, Image, Typography, Select, Alert } from "antd";
+import React, { Fragment, useEffect, useState, useRef } from "react";
 import { RightOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 
 import CampTree from "../CampTree";
 import { RootState } from "src/store";
-import useAuthentication from "src/hooks/isUserAuthenticated";
+// import useAuthentication from "src/hooks/isUserAuthenticated";
 import styles from "../topicDetails.module.scss";
 import { useRouter } from "next/router";
 import CustomSkelton from "../../../common/customSkelton";
@@ -45,20 +45,18 @@ const CampTreeCard = ({
   setTotalCampScoreForSupportTree,
   setSupportTreeForCamp,
   backGroundColorClass,
-}) => {
-  const { asof, asofdate } = useSelector((state: RootState) => ({
+}: any) => {
+  const { asof, asofdate, campExist } = useSelector((state: RootState) => ({
     asofdate: state.filters?.filterObject?.asofdate,
     asof: state?.filters?.filterObject?.asof,
-  }));
-  const { tree, is_admin } = useSelector((state: RootState) => ({
-    tree: state?.topicDetails?.tree?.at(0),
 
-    is_admin: state?.auth?.loggedInUser?.is_admin,
+    campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
+  }));
+  const { tree } = useSelector((state: RootState) => ({
+    tree: state?.topicDetails?.tree?.at(0),
   }));
 
   const router = useRouter();
-  const { isUserAuthenticated } = useAuthentication();
-  const eventLinePath = router?.asPath.replace("topic", "eventline");
   const [treeExpandValue, setTreeExpandValue] = useState<any>(
     router?.query?.filter || 50
   );
@@ -86,6 +84,19 @@ const CampTreeCard = ({
     );
     setTreeExpandValue(value);
   };
+
+  const onCreateCampDate = () => {
+    dispatch(
+      setFilterCanonizedTopics({
+        asofdate:
+          Date.parse(
+            moment.unix(campExist && campExist?.created_at).endOf("day")["_d"]
+          ) / 1000,
+        asof: "bydate",
+      })
+    );
+  };
+
   useEffect(() => {
     if (didMount.current) {
       return () => {
@@ -144,7 +155,7 @@ const CampTreeCard = ({
         <Collapse
           defaultActiveKey={["1"]}
           expandIconPosition="right"
-          className={`topicDetailsCollapse ${styles.topicDetailsPanelNo}`}
+          className={`topicDetailsCollapse ${styles.topicDetailsPanelNo} ${backGroundColorClass}`}
         >
           <Panel
             disabled
@@ -240,6 +251,39 @@ const CampTreeCard = ({
           </Panel>
         </Collapse>
       )}
+      {((tree &&
+        tree["1"]?.is_valid_as_of_time &&
+        tree["1"]?.created_date <=
+          (asof == "default" || asof == "review"
+            ? Date.now() / 1000
+            : asofdate)) ||
+        asof == "default") &&
+        campExist &&
+        !campExist?.camp_exist && (
+          <Fragment>
+            <Alert
+              className="alert-camp-created-on"
+              message="The camp was first created on"
+              type="info"
+              description={
+                <span>
+                  <AntLink
+                    onClick={() => {
+                      onCreateCampDate();
+                    }}
+                  >
+                    {" "}
+                    {
+                      new Date((campExist && campExist?.created_at) * 1000)
+                        .toLocaleString()
+                        ?.split(",")[0]
+                    }
+                  </AntLink>
+                </span>
+              }
+            />
+          </Fragment>
+        )}
     </>
   );
 };

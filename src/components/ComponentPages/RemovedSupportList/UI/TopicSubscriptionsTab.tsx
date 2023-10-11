@@ -1,4 +1,4 @@
-import { Card, Tag, Button, Tooltip, Typography, Empty, Row, Col } from "antd";
+import { Card, Tag, Tooltip, Typography, Empty, Row, Col } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 
 import Link from "next/link";
@@ -7,11 +7,7 @@ import styles from "../../SubscriptionsList/UI/SubscriptionsList.module.scss";
 
 const { Title, Text } = Typography;
 
-function TopicSubscriptionsTab({
-  subscriptionsList,
-  onRemoveSubscription,
-  onConfirm,
-}) {
+function TopicSubscriptionsTab({ subscriptionsList, onConfirm }: any) {
   return subscriptionsList.length ? (
     subscriptionsList.map((data, i) => {
       return (
@@ -20,6 +16,7 @@ function TopicSubscriptionsTab({
           className={`${styles.cardBox_tags} ${
             data.camps?.length > 0 ? "" : styles.no_body
           }`}
+          data-testid="cards"
           type="inner"
           size="default"
           title={
@@ -38,7 +35,7 @@ function TopicSubscriptionsTab({
         >
           {data.camps?.map((camp, i) => {
             return (
-              <Row gutter={30}>
+              <Row gutter={30} key={camp?.id}>
                 <Col md={12}>
                   <Tag
                     key={camp.subscription_start + i}

@@ -9,6 +9,7 @@ type HeadContentProps = {
   route: string;
   author: string;
   componentName: string;
+  canonical: string;
 };
 
 declare global {
@@ -26,6 +27,7 @@ function HeadContent({
   route,
   author,
   componentName,
+  canonical,
 }: HeadContentProps) {
   const image_url = `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/canonizer_logo.jpg`;
   return (
@@ -34,7 +36,6 @@ function HeadContent({
         async
         src={`Https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}`}
       ></script>
-
       {/* Meta tags for browser link preview  */}
       <title>{title}</title>
 
@@ -74,6 +75,9 @@ function HeadContent({
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image_url} />
+
+      {/* canonical url */}
+      <link rel="canonical" href={canonical || "https://canonizer.com/"} />
 
       {/* GTM Code */}
       <script

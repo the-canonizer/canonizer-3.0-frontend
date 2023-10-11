@@ -20,7 +20,7 @@ export default function DelegatedSupportCampsUI({
   search,
   removeSupport,
   removeSupportCampsData,
-  statusFlag,
+  // statusFlag,
   delegateSupportedSkeleton,
 }: any) {
   const [displayList, setDisplayList] = useState([]);
@@ -106,6 +106,7 @@ export default function DelegatedSupportCampsUI({
 
   useEffect(() => {
     pageChange(1, 5);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [delegatedSupportCampsList]);
 
   const pageChange = (pageNumber, pageSize) => {

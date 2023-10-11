@@ -1,7 +1,8 @@
-import { Spin } from "antd";
+// import { Spin } from "antd";
 
 import Post from "./UI/Post";
 import ThreadSidebar from "./UI/sidebar";
+import CampInfoBar from "../TopicDetails/CampInfoBar";
 
 const Threads = ({
   nickNameList = [],
@@ -23,10 +24,12 @@ const Threads = ({
   isLoading,
   postperPage,
   threadDetailsLoading,
-}) => (
+  payload,
+}: any) => (
   <div className="d-flex">
     <ThreadSidebar />
     <div className="pageContentWrap">
+      <CampInfoBar payload={payload} />
       {/* <Spin spinning={isLoading} size="large"> */}
       <Post
         onFinishPost={onFinishPost}

@@ -7,7 +7,9 @@ import { RootState } from "../../../../store";
 import styles from "../siteHeader.module.scss";
 import { AutoComplete, Input } from "antd";
 
-const HeaderMenu = ({ loggedUser }) => {
+import TopicCreationBTN from "../TopicCreationBTN";
+
+const HeaderMenu = ({ loggedUser }: any) => {
   const renderTitle = (icon:any ,title: string) => (
     <span>
       {icon}{title}
@@ -130,22 +132,11 @@ const HeaderMenu = ({ loggedUser }) => {
       linkTitle: "Browse",
       id: 1,
     },
-    {
-      link: "/uploadFile",
-      linkTitle: "Upload File",
-      id: 2,
-    },
-    {
-      link: "/topic/132-Help/1-Agreement?is_tree_open=1",
-      linkTitle: "Help",
-      id: 3,
-    },
-    {
-      link: "/files/2012_amplifying_final.pdf",
-      linkTitle: "White Paper",
-      id: 4,
-      external: true,
-    },
+    // {
+    //   link: "/uploadFile",
+    //   linkTitle: "Upload File",
+    //   id: 2,
+    // },
     {
       link: process.env.NEXT_PUBLIC_BLOG_URL,
       linkTitle: "Blog",
@@ -153,10 +144,22 @@ const HeaderMenu = ({ loggedUser }) => {
       external: true,
     },
     {
-      link: "/topic/6-Canonizer-Jobs/1-Agreement?is_tree_open=1",
-      linkTitle: "Jobs",
-      id: 6,
+      link: "/topic/132-Help/1-Agreement?is_tree_open=1",
+      linkTitle: "Help",
+      id: 3,
     },
+    // {
+    //   link: "/files/2012_amplifying_final.pdf",
+    //   linkTitle: "White Paper",
+    //   id: 4,
+    //   external: true,
+    // },
+
+    // {
+    //   link: "/topic/6-Canonizer-Jobs/1-Agreement?is_tree_open=1",
+    //   linkTitle: "Jobs",
+    //   id: 6,
+    // },
   ];
   const { filterObject, filterByScore, viewThisVersion } = useSelector(
     (state: RootState) => ({
@@ -179,12 +182,21 @@ const HeaderMenu = ({ loggedUser }) => {
 
       setMockLinks(filteredLinks);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUser]);
 
   return (
     <Fragment>
       <nav className={styles.nav}>
         <ul>
+          <li
+            className={`topicDeskBTN ${
+              router?.asPath === "/create/topic" ? styles.active : ""
+            }`}
+            key="create-topic-li"
+          >
+            <TopicCreationBTN key="create-topic-area" />
+          </li>
           {mockLinks?.map((item, idx) => {
             return (
               <li

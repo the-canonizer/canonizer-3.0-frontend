@@ -4,7 +4,7 @@ import styles from "./button.module.scss";
 
 import Button from "./index";
 
-const CreateNewTopicButton = (props) => {
+const CreateNewTopicButton = (props: any) => {
   const router = useRouter();
 
   const campRoute = () => {
@@ -22,7 +22,7 @@ const CreateNewTopicButton = (props) => {
       onClick={campRoute}
       id="create-topic-btn"
     >
-      <i className="icon-topic"></i> Create New Topic
+      <i className="icon-topic"></i> Create Topic
     </Button>
   );
 };

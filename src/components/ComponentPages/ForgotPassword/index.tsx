@@ -13,7 +13,7 @@ import {
 import { AppDispatch } from "../../../store";
 import Spinner from "../../common/spinner/spinner";
 
-const ForgotPassword = ({ isModal, isTestScreen = 0 }) => {
+const ForgotPassword = ({ isModal, isTestScreen = 0 }: any) => {
   const [isScreen, setIsScreen] = useState(isTestScreen);
   const [formData, setFormData] = useState({ email_id: "" });
 
