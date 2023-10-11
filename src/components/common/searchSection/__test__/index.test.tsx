@@ -1,11 +1,4 @@
-import {
-  cleanup,
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  waitForElementToBeRemoved,
-} from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 
 import { Provider } from "react-redux";
 
@@ -38,6 +31,7 @@ function createMockRouter(router: Partial<NextRouter>): NextRouter {
     defaultLocale: "en",
     domainLocales: [],
     isPreview: false,
+    ...router,
   };
 }
 
@@ -94,7 +88,7 @@ const store1 = mockStore({
 
 describe("Camp statement on camp details page", () => {
   it("Should render without crash", async () => {
-    const { container, debug } = render(
+    render(
       <Provider store={store1}>
         <RouterContext.Provider
           value={createMockRouter({
