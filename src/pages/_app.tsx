@@ -19,7 +19,7 @@ import { checkTopicCampExistAPICall } from "src/network/api/campDetailApi";
 
 class WrappedApp extends App<AppInitialProps> {
   public render() {
-    const { Component, pageProps, meta } = this.props as any;
+    const { Component, pageProps, meta, canonical_url } = this.props as any;
 
     return (
       <Fragment>
@@ -29,6 +29,7 @@ class WrappedApp extends App<AppInitialProps> {
               <HeadContentAndPermissionComponent
                 componentName={Component.displayName || Component.name}
                 metaContent={meta}
+                canonical={canonical_url}
               />
               <Component {...pageProps} />
             </ErrorBoundary>
@@ -71,6 +72,10 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
   } else {
     path = appContext.router?.query;
   }
+
+  let canonical_url =
+    process.env.NEXT_PUBLIC_BASE_URL + appContext?.router?.asPath;
+
   const req = {
     page_name:
       componentName == "SocialLoginCallbackPage" ? "Home" : componentName,
@@ -291,12 +296,13 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
       returnData = await redirect(aspath, null, null, "");
     }
   }
+  
   if (returnData) {
     appContext.ctx.res.writeHead(302, { Location: returnData });
     appContext.ctx.res.end();
   }
 
-  return { ...appProps, meta: metaData, returnURL: returnData };
+  return { ...appProps, meta: metaData, returnURL: returnData, canonical_url };
 };
 
 // const googleAPIKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;

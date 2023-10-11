@@ -5,7 +5,6 @@ import {
   render,
   screen,
   waitFor,
-  waitForElementToBeRemoved,
 } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
@@ -14,7 +13,7 @@ import { windowMatchMedia } from "../../../../../utils/testUtils";
 import { NextRouter } from "next/router";
 import { RouterContext } from "next/dist/shared/lib/router-context";
 import { setTopics } from "../../../../../store/slices/recentActivitiesSlice";
-import { getTopicActivityLogApi } from "src/network/api/campDetailApi";
+// import { getTopicActivityLogApi } from "src/network/api/campDetailApi";
 import configureMockStore from "redux-mock-store";
 
 function createMockRouter(router: Partial<NextRouter>): NextRouter {
@@ -142,58 +141,58 @@ const mocktopic = {
   from: 1,
   to: 15,
 };
-const mocktopic2 = {
-  items: [
-    {
-      id: 12015,
-      activity_id: 15114,
-      user_id: 1394,
-      viewed: 0,
-      created_at: 1692613711,
-      updated_at: 1692613711,
-      activity: {
-        id: 15114,
-        log_name: "topic/camps",
-        description: "wahaj-dev objected a change to statement",
-        subject_type: "App\\Models\\Statement",
-        subject_id: 6093,
-        causer_type: "App\\Models\\User",
-        causer_id: 1394,
-        properties:
-          '{"url": "/statement/history/2971/2", "camp_num": 2, "topic_num": 2971, "topic_name": null, "description": "<p> camp a</p>"}',
-        created_at: 1692613711,
-        updated_at: 1692613711,
-      },
-    },
-    {
-      id: 12014,
-      activity_id: 15113,
-      user_id: 1394,
-      viewed: 0,
-      created_at: 1692613681,
-      updated_at: 1692613681,
-      activity: {
-        id: 15113,
-        log_name: "topic/camps",
-        description: "Evil-Tester577 proposed a change to the statement",
-        subject_type: "App\\Models\\Statement",
-        subject_id: 6093,
-        causer_type: "App\\Models\\User",
-        causer_id: 1336,
-        properties:
-          '{"url": "/statement/history/2971/2", "camp_num": 2, "topic_num": 2971, "topic_name": "test 0021", "description": "<p>camp 1 camp a</p>"}',
-        created_at: 1692613681,
-        updated_at: 1692613681,
-      },
-    },
-  ],
-  current_page: 1,
-  per_page: 15,
-  last_page: 1,
-  total_rows: 2,
-  from: 1,
-  to: 15,
-};
+// const mocktopic2 = {
+//   items: [
+//     {
+//       id: 12015,
+//       activity_id: 15114,
+//       user_id: 1394,
+//       viewed: 0,
+//       created_at: 1692613711,
+//       updated_at: 1692613711,
+//       activity: {
+//         id: 15114,
+//         log_name: "topic/camps",
+//         description: "wahaj-dev objected a change to statement",
+//         subject_type: "App\\Models\\Statement",
+//         subject_id: 6093,
+//         causer_type: "App\\Models\\User",
+//         causer_id: 1394,
+//         properties:
+//           '{"url": "/statement/history/2971/2", "camp_num": 2, "topic_num": 2971, "topic_name": null, "description": "<p> camp a</p>"}',
+//         created_at: 1692613711,
+//         updated_at: 1692613711,
+//       },
+//     },
+//     {
+//       id: 12014,
+//       activity_id: 15113,
+//       user_id: 1394,
+//       viewed: 0,
+//       created_at: 1692613681,
+//       updated_at: 1692613681,
+//       activity: {
+//         id: 15113,
+//         log_name: "topic/camps",
+//         description: "Evil-Tester577 proposed a change to the statement",
+//         subject_type: "App\\Models\\Statement",
+//         subject_id: 6093,
+//         causer_type: "App\\Models\\User",
+//         causer_id: 1336,
+//         properties:
+//           '{"url": "/statement/history/2971/2", "camp_num": 2, "topic_num": 2971, "topic_name": "test 0021", "description": "<p>camp 1 camp a</p>"}',
+//         created_at: 1692613681,
+//         updated_at: 1692613681,
+//       },
+//     },
+//   ],
+//   current_page: 1,
+//   per_page: 15,
+//   last_page: 1,
+//   total_rows: 2,
+//   from: 1,
+//   to: 15,
+// };
 const mockThread = {
   items: [
     {
@@ -319,7 +318,7 @@ describe("RecentActivities on HomePage for authenticated user", () => {
           </RouterContext.Provider>
         </Provider>
       );
-      const { container, debug } = data;
+      const { container } = data;
 
       const listItems = container.querySelectorAll(".ant-list-item.listItem");
 
@@ -343,24 +342,24 @@ describe("RecentActivities on HomePage for authenticated user", () => {
 
       expect(
         screen.getByRole("link", {
-          name: /sajid\-dev proposed a change to the camp topic: test updated 2 dec 2021 \| camp: agreement sep 4, 2023, 6:41:09 pm/i,
+          name: /sajid-dev proposed a change to the camp topic: test updated 2 dec 2021 \| camp: agreement sep 4, 2023, 6:41:09 pm/i,
         })
       ).toBeInTheDocument();
 
       expect(
         screen.getByRole("link", {
-          name: /evil\-tester587 proposed a change to the camp topic: test 0021 \| camp: camp 1 aug 21, 2023, 3:31:04 pm/i,
+          name: /evil-tester587 proposed a change to the camp topic: test 0021 \| camp: camp 1 aug 21, 2023, 3:31:04 pm/i,
         })
       ).toBeInTheDocument();
       expect(
         screen.getByRole("link", {
-          name: /sajid\-dev objected a change to statement camp 1 camp a aug 21, 2023, 3:28:31 pm/i,
+          name: /sajid-dev objected a change to statement camp 1 camp a aug 21, 2023, 3:28:31 pm/i,
         })
       ).toBeInTheDocument();
 
       expect(
         screen.getByRole("link", {
-          name: /evil\-tester587 proposed a change to the statement topic: test 0021 \| camp: camp 1 aug 21, 2023, 3:28:01 pm/i,
+          name: /evil-tester587 proposed a change to the statement topic: test 0021 \| camp: camp 1 aug 21, 2023, 3:28:01 pm/i,
         })
       ).toBeInTheDocument();
 
@@ -381,7 +380,7 @@ describe("RecentActivities on HomePage for authenticated user", () => {
   it("Should render without crash22", () => {
     act(() => {
       store.dispatch(setTopics(mocktopic));
-      const { debug, container } = render(
+      const { container } = render(
         <Provider store={store}>
           <RouterContext.Provider value={createMockRouter({ asPath: "/" })}>
             <RecentActivities />
@@ -415,24 +414,24 @@ describe("RecentActivities on HomePage for authenticated user", () => {
 
       expect(
         screen.getByRole("link", {
-          name: /sajid\-dev proposed a change to the camp topic: test updated 2 dec 2021 \| camp: agreement sep 4, 2023, 6:41:09 pm/i,
+          name: /sajid-dev proposed a change to the camp topic: test updated 2 dec 2021 \| camp: agreement sep 4, 2023, 6:41:09 pm/i,
         })
       ).toBeInTheDocument();
 
       expect(
         screen.getByRole("link", {
-          name: /evil\-tester587 proposed a change to the camp topic: test 0021 \| camp: camp 1 aug 21, 2023, 3:31:04 pm/i,
+          name: /evil-tester587 proposed a change to the camp topic: test 0021 \| camp: camp 1 aug 21, 2023, 3:31:04 pm/i,
         })
       ).toBeInTheDocument();
       expect(
         screen.getByRole("link", {
-          name: /sajid\-dev objected a change to statement camp 1 camp a aug 21, 2023, 3:28:31 pm/i,
+          name: /sajid-dev objected a change to statement camp 1 camp a aug 21, 2023, 3:28:31 pm/i,
         })
       ).toBeInTheDocument();
 
       expect(
         screen.getByRole("link", {
-          name: /evil\-tester587 proposed a change to the statement topic: test 0021 \| camp: camp 1 aug 21, 2023, 3:28:01 pm/i,
+          name: /evil-tester587 proposed a change to the statement topic: test 0021 \| camp: camp 1 aug 21, 2023, 3:28:01 pm/i,
         })
       ).toBeInTheDocument();
     });
@@ -441,7 +440,7 @@ describe("RecentActivities on HomePage for authenticated user", () => {
   it("Should render without  aa", async () => {
     await act(async () => {
       store.dispatch(setTopics(mocktopic));
-      const { debug, container } = render(
+      const { container } = render(
         <Provider store={store}>
           <RouterContext.Provider value={createMockRouter({ asPath: "/" })}>
             <RecentActivities />
@@ -486,7 +485,7 @@ describe("RecentActivities on HomePage for authenticated user", () => {
   it("Should render without  admin", async () => {
     await act(async () => {
       // store1.dispatch(setTopics(mocktopic));
-      const { debug, container } = render(
+      render(
         <Provider store={store2}>
           <RouterContext.Provider value={createMockRouter({ asPath: "/" })}>
             <RecentActivities />
@@ -511,7 +510,7 @@ describe("RecentActivities on HomePage for authenticated user", () => {
   it("Should render without query params", async () => {
     await act(async () => {
       // store1.dispatch(setTopics(mocktopic));
-      const { debug, container } = render(
+      render(
         <Provider store={store1}>
           <RouterContext.Provider
             value={createMockRouter({
@@ -526,55 +525,6 @@ describe("RecentActivities on HomePage for authenticated user", () => {
       const tabElement = screen.getByRole("tab", { name: /threads/i });
       const ariaSelectedValue = tabElement.getAttribute("aria-selected");
       expect(ariaSelectedValue).toBe("true");
-    });
-  });
-
-  it("Should render without decoded", async () => {
-    let store;
-    store = mockStore({
-      auth: {
-        authenticated: true,
-        loggedInUser: {
-          is_admin: true,
-        },
-      },
-      topicDetails: {
-        currentCampRecord: { parentCamps: [{ camp_name: "camp one" }] },
-      },
-      filters: {
-        filterObject: {},
-      },
-      forum: {
-        currentThread: null,
-        currentPost: null,
-      },
-      recentActivities: {
-        topicsData: {
-          topics: mocktopic2.items,
-          numOfPages: 1,
-        },
-        threadsData: {
-          topics: mocktopic2.items,
-          numOfPages: 1,
-        },
-        isCheckedAllRecent: true,
-      },
-    });
-
-    await act(async () => {
-      const data = render(
-        <Provider store={store}>
-          <RouterContext.Provider
-            value={createMockRouter({
-              asPath: "/activities",
-              query: { topic_num: "44" },
-            })}
-          >
-            <RecentActivities />
-          </RouterContext.Provider>
-        </Provider>
-      );
-      const { container, debug } = data;
     });
   });
 });

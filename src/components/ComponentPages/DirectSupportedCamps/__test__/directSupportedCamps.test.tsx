@@ -40,6 +40,7 @@
 
 import {
   fireEvent,
+  getByText,
   render,
   screen,
   waitFor,
@@ -48,6 +49,11 @@ import DirectSupportedCamps from "..";
 import { useRouter } from "next/router";
 import { renderHook } from "@testing-library/react-hooks";
 import { useState } from "react";
+import Container from "postcss/lib/container";
+import userEvent from "@testing-library/user-event";
+import DirectSupportedCampsUI from "../DirectSupportedCampsUI";
+import { Modal } from "antd";
+
 
 const directSupportedCampsList = [
   {
@@ -177,3 +183,60 @@ it("path is working with use router", () => {
 
   expect(result.current.pathname).toBe("/about");
 });
+
+describe('directsupported camps', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('direct support cancel', async () => {
+
+    const { getAllByTestId, getAllByText } = render(<DirectSupportedCamps search={""}></DirectSupportedCamps>)
+
+    await waitFor(async () => {
+
+      const remove_button = getAllByText('Remove Support')
+      fireEvent.click(remove_button[0])
+      const cancel_button = getAllByText('Cancel')
+      fireEvent.click(cancel_button[0])
+    })
+
+  })
+  it('direct support remove', async () => {
+
+    const { getAllByTestId, getAllByText } = render(<DirectSupportedCamps search={""}></DirectSupportedCamps>)
+
+    await waitFor(async () => {
+
+      const remove_button = getAllByText('Remove Support')
+      fireEvent.click(remove_button[0])
+      const cancel_button = getAllByText('Remove')
+      fireEvent.click(cancel_button[0])
+    })
+
+  })
+  it('direct support save changes', async () => {
+
+    const { getAllByTestId, getAllByText } = render(<DirectSupportedCamps search={""}></DirectSupportedCamps>)
+
+    await waitFor(async () => {
+
+      const remove_button = getAllByTestId('handle_close')
+      fireEvent.click(remove_button[0])
+      const save_changes = getAllByText('Save Changes')
+      fireEvent.click(save_changes[0])
+    })
+
+  })
+
+  it('direct support revert changes 2', async () => {
+    const { getAllByTestId, getAllByText } = render(<DirectSupportedCamps search={""}></DirectSupportedCamps>)
+    await waitFor(async () => {
+      const remove_button = getAllByTestId('handle_close')
+      fireEvent.click(remove_button[0])
+      const save_changes = getAllByText('Revert')
+      fireEvent.click(save_changes[0])
+    })
+  })
+
+})

@@ -145,8 +145,8 @@ const setupGoogleMock = () => {
   const google = {
     maps: {
       places: {
-        Autocomplete: class {},
-        AutocompleteService: class {},
+        Autocomplete: class { },
+        AutocompleteService: class { },
         PlacesServiceStatus: {
           INVALID_REQUEST: "INVALID_REQUEST",
           NOT_FOUND: "NOT_FOUND",
@@ -157,7 +157,7 @@ const setupGoogleMock = () => {
           ZERO_RESULTS: "ZERO_RESULTS",
         },
       },
-      Geocoder: () => {},
+      Geocoder: () => { },
       GeocoderStatus: {
         ERROR: "ERROR",
         INVALID_REQUEST: "INVALID_REQUEST",
@@ -496,3 +496,19 @@ describe("UserProfile", () => {
     expect(inputElement.value).toBe(userInput);
   });
 });
+
+describe('Profileinfo', () => {
+  it('update info', async () => {
+    const { getAllByTestId } = render(<ProfileInfo></ProfileInfo>)
+
+    await waitFor(() => {
+      const update_button = getAllByTestId('submitButton')
+      fireEvent.click(update_button[1])
+    })
+  })
+
+
+})
+
+
+

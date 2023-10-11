@@ -5,10 +5,8 @@ import {
   render,
   screen,
   waitFor,
-  waitForElementToBeRemoved,
 } from "@testing-library/react";
 import { Provider } from "react-redux";
-import { store } from "../../../../../../store";
 
 import { RouterContext } from "next/dist/shared/lib/router-context";
 import { NextRouter } from "next/router";
@@ -38,6 +36,7 @@ function createMockRouter(router: Partial<NextRouter>): NextRouter {
     defaultLocale: "en",
     domainLocales: [],
     isPreview: false,
+    ...router,
   };
 }
 
@@ -98,7 +97,7 @@ const store1 = mockStore({
 
 describe("Camp statement on camp details page", () => {
   it("Should render without crash", async () => {
-    const { container, debug } = await render(
+    const { container } = await render(
       <Provider store={store1}>
         <RouterContext.Provider
           value={createMockRouter({
@@ -117,7 +116,7 @@ describe("Camp statement on camp details page", () => {
       ).toBeInTheDocument();
       expect(
         screen.getByRole("img", {
-          name: /share\-alt/i,
+          name: /share-alt/i,
         })
       ).toBeInTheDocument();
       expect(screen.getByText(/share/i)).toBeInTheDocument();
@@ -175,7 +174,7 @@ describe("Camp statement on camp details page", () => {
 
     expect(
       screen.getByRole("menuitem", {
-        name: /file\-text add camp statement/i,
+        name: /file-text add camp statement/i,
       })
     ).toBeInTheDocument();
 

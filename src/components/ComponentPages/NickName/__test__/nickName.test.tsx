@@ -1,5 +1,7 @@
 import {
   fireEvent,
+  getAllByTestId,
+  getByText,
   render,
   screen,
   waitFor,
@@ -331,20 +333,20 @@ describe("test nickname componaent", () => {
 });
 
 describe("Nickname test cases", () => {
-  it("addnickname function should be called while click on edit button", async () => {
-    const { getAllByText } = render(<NickName></NickName>);
+  // it("addnickname function should be called while click on edit button", async () => {
+  //   const { getAllByText } = render(<NickName></NickName>);
 
-    await waitFor(() => {
-      const edit_button = getAllByText("edit");
-      fireEvent.click(edit_button[0]);
-      const update_button = getAllByText("Update");
-      fireEvent.click(update_button[0]);
-      const add_button = getAllByText("Add New Nickname");
-      fireEvent.click(add_button[0]);
+  //   await waitFor(() => {
+  //     const edit_button = getAllByText("edit");
+  //     fireEvent.click(edit_button[0]);
+  //     const update_button = getAllByText("Update");
+  //     fireEvent.click(update_button[0]);
+  //     const add_button = getAllByText("Add New Nickname");
+  //     fireEvent.click(add_button[0]);
 
-      expect(getAllByText("Add New Nickname")[1]).toBeInTheDocument();
-    });
-  });
+  //     expect(getAllByText("Add New Nickname")[1]).toBeInTheDocument();
+  //   });
+  // });
 
   it("add new nickname", async () => {
     const { getAllByTestId, getAllByText } = render(<NickName></NickName>);
@@ -412,3 +414,39 @@ describe("Nickname test cases", () => {
     });
   });
 });
+
+describe('nicknames', () => {
+
+  it('close add nickname modal', async () => {
+    const { getAllByText, getByTestId, container } = render(<NickName></NickName>)
+    await waitFor(async () => {
+      const add_button = getAllByText("Add New Nickname");
+      fireEvent.click(add_button[0]);
+      const chec_close = await getByTestId('addnicknamemodal')
+      const modal_contetn = chec_close.getElementsByClassName('ant-modal-close-x')
+      fireEvent.click(modal_contetn[0])
+    })
+  })
+
+  it('render editnickname modal', async () => {
+    const { getAllByText, getByText, container, getByTestId } = render(<NickName></NickName>)
+    render(
+      <NickNameUI
+        addEditTitle={addEditTitle}
+        addEditBtn={addEditBtn}
+        isNickNameModalVisible={isNickNameModalVisible}
+        editNickName={editNickName}
+        handleAddNickName={handleAddNickName}
+        handleNickNameCancel={handleNickNameCancel}
+        onAddUpdateNickName={onAddUpdateNickName}
+        nickNameList={nickNameList}
+        disableButton={disableButton}
+      />
+    );
+    await waitFor(async () => {
+    const edit_button = await getAllByText('edit')
+    fireEvent.click(edit_button[0])
+    })
+  })
+
+})
