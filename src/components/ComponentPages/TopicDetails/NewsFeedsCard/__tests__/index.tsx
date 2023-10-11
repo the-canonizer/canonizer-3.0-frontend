@@ -201,7 +201,7 @@ describe("NewsFeedsCard on camp details page", () => {
     );
   });
 
-  it("newfeed exist admin", async () => {
+  it("newfeed exist admin fire delete", async () => {
     const { container } = render(
       <Provider store={store1}>
         <NewsFeedsCard

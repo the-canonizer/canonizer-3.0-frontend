@@ -279,7 +279,7 @@ describe("Sidebar Filters Component", () => {
     expect(container.getElementsByTagName("img")).toHaveLength(0);
   });
 
-  it("Should render without crash", async () => {
+  it("Change algorithm", async () => {
     const { container } = render(
       <Provider store={store1}>
         <RouterContext.Provider value={createMockRouter()}>
@@ -319,7 +319,7 @@ describe("Sidebar Filters Component", () => {
     });
   });
 
-  it("Should render without crash", async () => {
+  it("Fire All events", async () => {
     const { container } = render(
       <Provider store={store1}>
         <RouterContext.Provider
@@ -384,7 +384,7 @@ describe("Sidebar Filters Component", () => {
     );
   });
 
-  it("Should render without crash", async () => {
+  it("Change filter value", async () => {
     const { container } = render(
       <Provider store={store2}>
         <RouterContext.Provider
