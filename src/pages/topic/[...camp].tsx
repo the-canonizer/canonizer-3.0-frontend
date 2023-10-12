@@ -52,10 +52,12 @@ const TopicDetailsPage = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  console.log("campRecord", campRecord);
+
   return (
     <Layout>
-      {tree?.status_code == 404 ? (
-        <DataNotFound />
+      {tree?.status_code == 404 || campRecord?.status_code == 404 ? (
+        <DataNotFound isTopic={tree?.status_code == 404 ? true : false} />
       ) : (
         <TopicDetails serverSideCall={serverSideCall} />
       )}

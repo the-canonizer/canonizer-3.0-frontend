@@ -167,8 +167,9 @@ export const getCurrentCampRecordApi = async (reqBody, loginToken = null) => {
     );
 
     store.dispatch(setCurrentCampRecord(currentCampRecord?.data));
-    return currentCampRecord?.data;
+    return {campData: currentCampRecord?.data,status_code:currentCampRecord?.status_code}
   } catch (error) {
+    return {status_code:error?.error?.data?.status_code}
     // message.error(error.message);
   }
 };

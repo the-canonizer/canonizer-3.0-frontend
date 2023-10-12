@@ -8,7 +8,7 @@ import { RootState } from "../../../store";
 
 import styles from "../404/errorPage.module.scss";
 
-const DataNotFound = () => {
+const DataNotFound = ({ isTopic }) => {
   const router = useRouter();
   const {
     filterByScore,
@@ -33,7 +33,7 @@ const DataNotFound = () => {
           />
         </div>
         <div className={styles.errorPageContent}>
-          <h3>Topic Not Found</h3>
+          <h3> {isTopic ? "Topic" : "Camp"} Not Found</h3>
           <p>
             {`We're sorry, the page you requested could not be found Please go
             back to the homepage`}
