@@ -387,7 +387,7 @@ const SupportTreeCard = ({
               {campSupportingTree && renderTreeNodes(campSupportingTree)}
             </Tree>
           ) : (
-            <p>No Camp Tree Found</p>
+            <p>No supporters of this camp</p>
           )}
 
           {campSupportingTree?.length > supportLength && (

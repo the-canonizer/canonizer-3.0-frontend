@@ -121,8 +121,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
       }
       setLoadingIndicator(true);
 
-      // console.log(didMount, serverSideCall);
-
       if (didMount.current && !serverSideCall.current) {
         const reqBodyForService = {
           topic_num: +router?.query?.camp[0]?.split("-")[0],

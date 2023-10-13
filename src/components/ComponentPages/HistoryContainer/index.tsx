@@ -92,7 +92,7 @@ function HistoryContainer() {
       }
       let res = await getTreesApi(reqBodyForService);
       setLoadingIndicator(false);
-      setParentarchived(res[1].is_archive);
+      setParentarchived(res?.treeData[1].is_archive);
     }
     if (!isTreesApiCallStop) {
       getTreeApiCall();
@@ -323,6 +323,9 @@ function HistoryContainer() {
           ?.submit_time <= campHistoryData?.submit_time) ||
       (oldstatements.length == 0 && index < 2)
     ) {
+      key = "1";
+    }
+    if (historyOf != "statement") {
       key = "1";
     }
 
