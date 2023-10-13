@@ -57,6 +57,7 @@ export default function ChangePasswordUI({
                   <Input
                     id="currentPassword"
                     type="password"
+                    data-testid="currentpasssword"
                     placeholder={messages.placeholders.currentPassword}
                     onChange={(e) => onChangeFun(e.target.value)}
                     onKeyDown={(e) =>
@@ -83,6 +84,7 @@ export default function ChangePasswordUI({
                     id="newPassword"
                     //className={styles.Password_input}
                     type="password"
+                    data-testid="newpassword"
                     placeholder={messages.placeholders.newPassword}
                     onKeyDown={(e) =>
                       e.key === " " && e.keyCode === 32 && e.preventDefault()
@@ -108,6 +110,7 @@ export default function ChangePasswordUI({
                 >
                   <Input
                     id="confirmPassword"
+                    data-testid="confirmpassword"
                     className={styles.Password_input}
                     type="password"
                     placeholder={messages.placeholders.confirmPassword}

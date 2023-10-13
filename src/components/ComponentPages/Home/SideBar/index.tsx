@@ -18,14 +18,14 @@ export default function HomeSideBar({
   backGroundColorClass,
   viewThisVersion,
 }: any) {
-  const { drawerShow, filterObject, filterByScore } = useSelector(
-    (state: RootState) => ({
+  const { drawerShow, filterObject, filterByScore, campScoreValue } =
+    useSelector((state: RootState) => ({
       drawerShow: state?.filters?.showDrawer,
       filterObject: state?.filters?.filterObject,
       filterByScore: state.filters?.filterObject?.filterByScore,
       viewThisVersion: state?.filters?.viewThisVersionCheck,
-    })
-  );
+      campScoreValue: state?.filters?.campWithScoreValue,
+    }));
 
   const [drawerIsVisible, setDrawerIsVisible] = useState(drawerShow);
   const [isDrawerOpen, setIsDrawerOpen] = useState("");
@@ -52,7 +52,7 @@ export default function HomeSideBar({
           : ""
       }&asof=${filterObject?.asof}&canon=${
         filterObject?.namespace_id
-      }&is_tree_open=${drawerIsVisible ? 0 : 1}${
+      }&filter=${campScoreValue || 10}&is_tree_open=${drawerIsVisible ? 0 : 1}${
         viewThisVersion ? "&viewversion=1" : ""
       }`,
       null,

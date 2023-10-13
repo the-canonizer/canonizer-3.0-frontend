@@ -166,10 +166,13 @@ export default function AddOrManage({ add }: any) {
               )}`;
         if (manageFormOf == "camp") {
           router?.push(`/camp/history/${route}`);
+          return;
         } else if (manageFormOf == "statement") {
           router?.push(`/statement/history/${route}`);
+          return;
         } else if (manageFormOf == "topic") {
           router?.push(`/topic/history/${route}`);
+          return;
         }
       }
       const oldOptions = [...options];
