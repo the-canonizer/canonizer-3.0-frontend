@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Descriptions, Collapse } from "antd";
+import { Descriptions, Collapse, Popover } from "antd";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import Image from "next/image";
@@ -48,13 +48,21 @@ const CurrentTopicCard = ({ loadingIndicator, backGroundColorClass }: any) => {
             <h3>{K?.exceptionalMessages?.topicRecordHeading}</h3>
             {topicRecord?.in_review_changes > 0 ? (
               // <img className="change-icon" src="/images/change-icon.svg" />
-              <Image
-                className="change-icon"
-                width={20}
-                height={20}
-                src="/images/change-icon.svg"
-                alt=""
-              />
+              <Popover
+                content={
+                  "Some changes are currently under review in this topic."
+                }
+                placement="topLeft"
+                className={styles.infoIcon}
+              >
+                <Image
+                  className="change-icon"
+                  width={20}
+                  height={20}
+                  src="/images/change-icon.svg"
+                  alt=""
+                />
+              </Popover>
             ) : (
               ""
             )}

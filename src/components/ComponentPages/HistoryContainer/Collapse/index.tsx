@@ -408,12 +408,19 @@ function HistoryCollapse({
                     type="primary"
                     id={`submit-update-${campStatement?.id}`}
                     className={`mr-3 ${styles.campUpdateButton}`}
-                    onClick={() =>
+                    onClick={() => {
                       campStatement?.is_archive == 1 &&
                       campStatement?.status == "live"
-                        ? callManageCampApi()
-                        : submitUpdateRedirect(historyOf)
-                    }
+                        ? !isUserAuthenticated
+                          ? router?.push({
+                              pathname: "/login",
+                              query: {
+                                returnUrl: `/manage/${historyOf}/${campStatement?.id}`,
+                              },
+                            })
+                          : callManageCampApi()
+                        : submitUpdateRedirect(historyOf);
+                    }}
                     disabled={
                       (campHistoryItems[0]?.status == "in_review" &&
                         !commited &&

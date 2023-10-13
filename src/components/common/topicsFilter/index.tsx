@@ -84,6 +84,7 @@ const CreateTopic = () => {
     loading,
     current_date_filter,
     viewThisVersion,
+    campScoreValue,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filteredScore: state?.filters?.filterObject?.filterByScore,
@@ -94,6 +95,7 @@ const CreateTopic = () => {
     loading: state?.loading?.loading,
     current_date_filter: state?.filters?.current_date,
     viewThisVersion: state?.filters?.viewThisVersionCheck,
+    campScoreValue: state?.filters?.campWithScoreValue,
   }));
 
   const [value, setValue] = useState(
@@ -129,7 +131,7 @@ const CreateTopic = () => {
             : ""
         }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
           viewThisVersion ? "&viewversion=1" : ""
-        }`;
+        }&filter=${campScoreValue || 10}`;
         var newurl =
           window.location.protocol +
           "//" +

@@ -217,7 +217,7 @@ describe('directsupported camps', () => {
   })
   it('direct support save changes', async () => {
 
-    const { getAllByTestId, getAllByText } = render(<DirectSupportedCamps search={""}></DirectSupportedCamps>)
+    const { getAllByTestId, getAllByText } = render(<DirectSupportedCamps search={"Direct Supported camps"}></DirectSupportedCamps>)
 
     await waitFor(async () => {
 
@@ -225,6 +225,8 @@ describe('directsupported camps', () => {
       fireEvent.click(remove_button[0])
       const save_changes = getAllByText('Save Changes')
       fireEvent.click(save_changes[0])
+      const remove_button2 = getAllByText('Remove')
+      fireEvent.click(remove_button2[0])
     })
 
   })

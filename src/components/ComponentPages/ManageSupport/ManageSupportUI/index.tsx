@@ -13,6 +13,7 @@ import { addSupport, removeSupportedCamps } from "src/network/api/userApi";
 // import { GetActiveSupportTopic } from "src/network/api/topicAPI";
 import CustomSkelton from "src/components/common/customSkelton";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
+import My404 from "../../404";
 
 const { placeholders } = messages;
 
@@ -168,11 +169,11 @@ const ManageSupportUI = ({
     // }
     const response = await removeSupportedCamps(supportedCampsRemove);
     if (response && response.status_code == 200) {
-      let manageSupportPath = router?.asPath.replace("/support/", "/topic/");
-      if (manageSupportPath.lastIndexOf("_") > -1)
+      let manageSupportPath = router?.asPath?.replace("/support/", "/topic/");
+      if (manageSupportPath?.lastIndexOf("_") > -1)
         manageSupportPath = manageSupportPath.substring(
           0,
-          manageSupportPath.lastIndexOf("_")
+          manageSupportPath?.lastIndexOf("_")
         );
       router?.push(manageSupportPath);
     }
@@ -219,7 +220,7 @@ const ManageSupportUI = ({
     };
     let addedRes = await addSupport(addSupportId);
     if (addedRes && addedRes.status_code == 200) {
-      let manageSupportPath = router?.asPath.replace("/support/", "/topic/");
+      let manageSupportPath = router?.asPath?.replace("/support/", "/topic/");
       // if (manageSupportPath.lastIndexOf("_") > -1)
       //   manageSupportPath = manageSupportPath.substring(
       //     0,
@@ -282,8 +283,7 @@ const ManageSupportUI = ({
   };
 
   // remove support popup added.
-
-  return getManageSupportLoadingIndicator ? (
+  return currentGetCheckSupportExistsData.warning?.includes("You can not submit your support to this camp, as system is unable to find this camp.")?<My404/>:  getManageSupportLoadingIndicator ? (
     <CustomSkelton
       skeltonFor="manageSupportCard"
       bodyCount={15}

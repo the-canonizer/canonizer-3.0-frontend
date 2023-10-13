@@ -13,6 +13,7 @@ function TopicRemoveModal({
   isCamp,
   campTitle,
   campLink,
+  isDisabled,
 }: any) {
   return (
     <Modal
@@ -36,6 +37,7 @@ function TopicRemoveModal({
             style={{ marginRight: 10 }}
             className="ant-btn ant-btn-orange"
             data-testid="popremove"
+            disabled={isDisabled}
           >
             Remove
           </Button>

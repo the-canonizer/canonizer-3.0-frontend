@@ -1,4 +1,4 @@
-import CreateTopic from "../";
+import FilterWithTree from "../filterWithTree";
 import {
   cleanup,
   render,
@@ -48,15 +48,16 @@ function createMockRouter2(router: Partial<NextRouter>): NextRouter {
     basePath: "",
     pathname: "",
     route: "/",
+    asPath:
+      "/topic/88-Theories-of-Consciousness/1-Agreement?score=0&algo=mind_experts&asofdate=1696359599&asof=bydate&canon=1&filter=70",
     query: {
       score: "0",
       algo: "mind_experts",
       asofdate: "1696359599",
       asof: "bydate",
       canon: "1",
+      filter: "70",
     },
-    asPath:
-      "/?score=0&algo=mind_experts&asofdate=1696359599&asof=bydate&canon=1",
     back: jest.fn(),
     beforePopState: jest.fn(),
     prefetch: jest.fn(),
@@ -77,6 +78,18 @@ function createMockRouter2(router: Partial<NextRouter>): NextRouter {
     ...router,
   };
 }
+window.matchMedia = jest.fn().mockImplementation((query) => {
+  return {
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  };
+});
 const mockStore = configureMockStore();
 const store1 = mockStore({
   auth: {
@@ -196,14 +209,19 @@ describe("Sidebar Filters Component", () => {
     const { container } = render(
       <Provider store={store}>
         <RouterContext.Provider value={createMockRouter()}>
-          <CreateTopic />
+          <FilterWithTree
+            backGroundColorClass={"default"}
+            getTreeLoadingIndicator={false}
+            scrollToCampStatement={jest.fn()}
+            setSupportTreeForCamp={jest.fn()}
+            setTotalCampScoreForSupportTree={jest.fn()}
+          />
         </RouterContext.Provider>
       </Provider>
     );
-    expect(screen.getAllByText(/canonizer/i)).toHaveLength(2);
     expect(screen.getByText("Canonizer Algorithm:")).toBeInTheDocument();
-    expect(screen.getByText("Algorithm Information")).toBeInTheDocument();
-    expect(screen.getByRole("combobox")).toBeInTheDocument();
+    // expect(screen.getByText("Algorithm Information")).toBeInTheDocument();
+    expect(screen.getAllByRole("combobox")).toHaveLength(2);
     expect(screen.getByText(/filter/i)).toBeInTheDocument();
     expect(screen.getAllByRole("textbox")).toHaveLength(2);
     expect(
@@ -247,23 +265,35 @@ describe("Sidebar Filters Component", () => {
         name: /2023\-10\-11/i,
       })
     ).toBeInTheDocument();
-
+    expect(
+      screen.getByRole("heading", {
+        name: /consensus tree/i,
+      })
+    ).toBeInTheDocument();
+    expect(screen.getByText(/show camps with score/i)).toBeInTheDocument();
+    expect(screen.getByText(/50%/i)).toBeInTheDocument();
     expect(container.getElementsByTagName("button")).toHaveLength(0);
     expect(container.getElementsByTagName("textarea")).toHaveLength(0);
-    expect(container.getElementsByTagName("input")).toHaveLength(8);
+    expect(container.getElementsByTagName("input")).toHaveLength(9);
     expect(container.getElementsByTagName("a")).toHaveLength(1);
     expect(container.getElementsByTagName("img")).toHaveLength(0);
   });
 
-  it("Change Algorithm", async () => {
+  it("Change algorithm", async () => {
     const { container } = render(
       <Provider store={store1}>
         <RouterContext.Provider value={createMockRouter()}>
-          <CreateTopic />
+          <FilterWithTree
+            backGroundColorClass={"review"}
+            getTreeLoadingIndicator={false}
+            scrollToCampStatement={jest.fn()}
+            setSupportTreeForCamp={jest.fn()}
+            setTotalCampScoreForSupportTree={jest.fn()}
+          />
         </RouterContext.Provider>
       </Provider>
     );
-    const selectInput = screen.getByRole("combobox"); // Find the select input by role
+    const selectInput = screen.getAllByRole("combobox")[0]; // Find the select input by role
 
     userEvent.click(selectInput);
 
@@ -289,26 +319,34 @@ describe("Sidebar Filters Component", () => {
     });
   });
 
-  it("Fire All Events", async () => {
+  it("Fire All events", async () => {
     const { container } = render(
       <Provider store={store1}>
         <RouterContext.Provider
           value={createMockRouter2({
             asPath:
-              "/?score=0&algo=mind_experts&asofdate=1696359599&asof=bydate&canon=1",
+              "/topic/88-Theories-of-Consciousness/1-Agreement?score=0&algo=mind_experts&asofdate=1696359599&asof=bydate&canon=1&filter=70",
             query: {
               score: "0",
               algo: "mind_experts",
               asofdate: "1696359599",
               asof: "bydate",
               canon: "1",
+              filter: "70",
             },
           })}
         >
-          <CreateTopic />
+          <FilterWithTree
+            backGroundColorClass={"bydate"}
+            getTreeLoadingIndicator={false}
+            scrollToCampStatement={jest.fn()}
+            setSupportTreeForCamp={jest.fn()}
+            setTotalCampScoreForSupportTree={jest.fn()}
+          />
         </RouterContext.Provider>
       </Provider>
     );
+
     const includeReviewRadio = screen.getByText("Include review");
     const defaultRadio = screen.getByText("Default");
     const asOfDateRadio = screen.getByText("As of date");
@@ -324,14 +362,14 @@ describe("Sidebar Filters Component", () => {
     fireEvent.click(datePickerInput);
     expect(datePickerInput).not.toBeDisabled();
 
-    const selectedDate = moment("2022-10-11", "YYYY-MM-DD"); // Replace with the desired date
+    const selectedDate = moment("2022-10-15", "YYYY-MM-DD"); // Replace with the desired date
     fireEvent.change(datePickerInput, {
       target: { value: selectedDate.format("YYYY-MM-DD") },
     });
 
-    // Verify that the selected date is displayed in the input
-    expect(datePickerInput).toHaveValue("2022-10-11");
-    fireEvent.click(screen.getByText(/27/i));
+    // // Verify that the selected date is displayed in the input
+    expect(datePickerInput).toHaveValue("2022-10-15");
+    fireEvent.click(screen.getAllByText(/27/i)[0]);
 
     fireEvent.click(
       screen.getByRole("checkbox", {
@@ -344,38 +382,41 @@ describe("Sidebar Filters Component", () => {
         name: /show archived camps/i,
       })
     );
-    fireEvent.click(
-      screen.getByRole("link", {
-        name: /algorithm information/i,
-      })
-    );
   });
 
-  it("Change Filter Value", async () => {
+  it("Change filter value", async () => {
     const { container } = render(
       <Provider store={store2}>
         <RouterContext.Provider
           value={createMockRouter2({
             asPath:
-              "/?score=0&algo=mind_experts&asofdate=1696359599&asof=bydate&canon=1",
+              "/topic/88-Theories-of-Consciousness/1-Agreement?score=0&algo=mind_experts&asofdate=1696359599&asof=bydate&canon=1&filter=70",
             query: {
               score: "0",
               algo: "mind_experts",
               asofdate: "1696359599",
               asof: "bydate",
               canon: "1",
+              filter: "70",
             },
           })}
         >
-          <CreateTopic />
+          <FilterWithTree
+            backGroundColorClass={"bydate"}
+            getTreeLoadingIndicator={false}
+            scrollToCampStatement={jest.fn()}
+            setSupportTreeForCamp={jest.fn()}
+            setTotalCampScoreForSupportTree={jest.fn()}
+          />
         </RouterContext.Provider>
       </Provider>
     );
-
     expect(screen.getByText("Computer Science Experts")).toBeInTheDocument();
 
     const inputElement = screen.getAllByRole("textbox")[0];
     fireEvent.change(inputElement, { target: { value: "123" } });
+
+    // Advance timers by 1001 milliseconds (1 second + 1 millisecond)
     act(() => {
       jest.advanceTimersByTime(1001);
     });
