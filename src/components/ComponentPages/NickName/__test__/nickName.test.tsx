@@ -38,22 +38,22 @@ const nickNameList = [
   },
 ];
 
-// const addNewNickName = [
-//   {
-//     create_time: "1998-01-01",
-//     id: 1,
-//     nick_name: "ABC",
-//     owner_code: "aabbcc",
-//     private: 0,
-//   },
-//   {
-//     create_time: "1979-02-02",
-//     id: 2,
-//     nick_name: "DEF",
-//     owner_code: "ddeeff",
-//     private: 0,
-//   },
-// ];
+const addNewNickName = [
+  {
+    create_time: "1998-01-01",
+    id: 1,
+    nick_name: "ABC",
+    owner_code: "aabbcc",
+    private: 0,
+  },
+  {
+    create_time: "1979-02-02",
+    id: 2,
+    nick_name: "DEF",
+    owner_code: "ddeeff",
+    private: 0,
+  },
+];
 jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
@@ -63,8 +63,8 @@ jest.mock("src/network/api/userApi", () => ({
     Promise.resolve({
       status_code: 200,
       message: "This is success",
-      // data: addNewNickName,
-      data: null,
+      data: addNewNickName,
+      // data: null,
     })
   ),
   addNickName: jest.fn(() =>
@@ -333,20 +333,20 @@ describe("test nickname componaent", () => {
 });
 
 describe("Nickname test cases", () => {
-  // it("addnickname function should be called while click on edit button", async () => {
-  //   const { getAllByText } = render(<NickName></NickName>);
+  it("addnickname function should be called while click on edit button", async () => {
+    const { getAllByText } = render(<NickName></NickName>);
 
-  //   await waitFor(() => {
-  //     const edit_button = getAllByText("edit");
-  //     fireEvent.click(edit_button[0]);
-  //     const update_button = getAllByText("Update");
-  //     fireEvent.click(update_button[0]);
-  //     const add_button = getAllByText("Add New Nickname");
-  //     fireEvent.click(add_button[0]);
+    await waitFor(() => {
+      const edit_button = getAllByText("edit");
+      fireEvent.click(edit_button[0]);
+      const update_button = getAllByText("Update");
+      fireEvent.click(update_button[0]);
+      const add_button = getAllByText("Add New Nickname");
+      fireEvent.click(add_button[0]);
 
-  //     expect(getAllByText("Add New Nickname")[1]).toBeInTheDocument();
-  //   });
-  // });
+      expect(getAllByText("Add New Nickname")[1]).toBeInTheDocument();
+    });
+  });
 
   it("add new nickname", async () => {
     const { getAllByTestId, getAllByText } = render(<NickName></NickName>);
