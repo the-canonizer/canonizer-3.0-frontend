@@ -126,6 +126,8 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
    *
    */
 
+  const refererURL = appContext?.ctx?.req?.headers?.referer || "";
+
   const redirect = async (
     url: string,
     topic_num: number,
@@ -134,7 +136,15 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
     nick_id: any = "",
     thread_id: any = ""
   ) => {
-    const reqBody = { topic_num, camp_num, url, nick_id, thread_id, is_type };
+    const reqBody = {
+      topic_num,
+      camp_num,
+      url,
+      nick_id,
+      thread_id,
+      is_type,
+      refererURL,
+    };
     const checkRes = await checkTopicCampExistAPICall(reqBody);
 
     if (checkRes && checkRes?.status_code === 200 && checkRes?.data?.is_exist) {
@@ -296,7 +306,7 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
       returnData = await redirect(aspath, null, null, "");
     }
   }
-  
+
   if (returnData) {
     appContext.ctx.res.writeHead(302, { Location: returnData });
     appContext.ctx.res.end();

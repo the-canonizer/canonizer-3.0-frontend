@@ -135,7 +135,6 @@ const ProfileInfo = () => {
   const { isUserAuthenticated } = isAuth();
 
   // const onFinishFailed = (errorInfo) => {
-  //   window.console.log("Failed:", errorInfo);
   // };
 
   //Send OTP to mobile number
