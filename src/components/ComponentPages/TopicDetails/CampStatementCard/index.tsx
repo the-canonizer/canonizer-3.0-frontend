@@ -1,5 +1,5 @@
 import CustomButton from "../../../common/button";
-import { Typography, Collapse } from "antd";
+import { Typography, Collapse, Popover } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
@@ -47,13 +47,21 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
           <>
             <h3>{K?.exceptionalMessages?.campStatementHeading}</h3>
             {campStatement[0]?.in_review_changes > 0 ? (
-              <Image
-                className="change-icon"
-                width={20}
-                height={20}
-                src="/images/change-icon.svg"
-                alt=""
-              />
+              <Popover
+                content={
+                  "Some changes are currently under review in this camp statement."
+                }
+                placement="topLeft"
+                className={styles.infoIcon}
+              >
+                <Image
+                  className="change-icon"
+                  width={20}
+                  height={20}
+                  src="/images/change-icon.svg"
+                  alt=""
+                />
+              </Popover>
             ) : (
               ""
             )}

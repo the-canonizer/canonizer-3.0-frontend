@@ -1,4 +1,4 @@
-import { Descriptions, Collapse } from "antd";
+import { Descriptions, Collapse, Popover } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
@@ -69,14 +69,21 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }: any) => {
             <h3>{K?.exceptionalMessages?.campRecordHeading}</h3>
             {campRecord?.in_review_changes > 0 ? (
               // <img className="change-icon" src="/images/change-icon.svg" />
-
-              <Image
-                className="change-icon"
-                src={"/images/change-icon.svg"}
-                alt=""
-                width={20}
-                height={20}
-              />
+              <Popover
+                content={
+                  "Some changes are currently under review in this camp."
+                }
+                placement="topLeft"
+                className={styles.infoIcon}
+              >
+                <Image
+                  className="change-icon"
+                  src={"/images/change-icon.svg"}
+                  alt=""
+                  width={20}
+                  height={20}
+                />
+              </Popover>
             ) : (
               ""
             )}
