@@ -43,7 +43,7 @@ export default function HomeSideBar({
   }, [drawerShow]);
 
   const showDrawer = () => {
-    router.push(
+    router.replace(
       `/topic/${router?.query?.camp[0]}/${
         router?.query?.camp[1]
       }?score=${filterByScore}&algo=${filterObject?.algorithm}${
@@ -98,6 +98,7 @@ export default function HomeSideBar({
             size="large"
             bodyStyle={{ paddingBottom: 80 }}
             forceRender
+            data-testid="treeDrawer"
             mask={true}
             maskClosable={true}
           >
