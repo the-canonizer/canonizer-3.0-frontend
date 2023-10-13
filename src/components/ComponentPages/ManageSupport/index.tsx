@@ -120,7 +120,7 @@ const ManageSupport = () => {
     let reqBodyCAmpRecord = reqBody;
     reqBodyCAmpRecord.as_of = "default";
     const res = await getCurrentCampRecordApi(reqBodyCAmpRecord);
-    campRef.current = res;
+    campRef.current = res?.campData;
   };
 
   //prevent user to open this page if camp archive is true
