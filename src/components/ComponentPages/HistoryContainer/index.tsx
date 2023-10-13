@@ -325,6 +325,9 @@ function HistoryContainer() {
     ) {
       key = "1";
     }
+    if (historyOf != "statement") {
+      key = "1";
+    }
 
     return key;
   };
