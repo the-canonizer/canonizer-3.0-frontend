@@ -26,7 +26,7 @@ import CurrentCampCard from "./CurrentCampCard";
 import CurrentTopicCard from "./CurrentTopicCard";
 import NewsFeedsCard from "./NewsFeedsCard";
 import SupportTreeCard from "./SupportTreeCard";
-import { BackTop, Typography, message, Alert, Row, Col } from "antd";
+import { BackTop, Typography, message, Alert, Row, Col, Image } from "antd";
 import { Spin } from "antd";
 import { setCurrentTopic } from "../../../store/slices/topicSlice";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
@@ -46,7 +46,7 @@ import {
 import { getHistoryApi } from "../../../network/api/history";
 
 import CampRecentActivities from "../Home/CampRecentActivities";
-const { Link } = Typography;
+
 import {
   addSupport,
   removeSupportedCamps,
@@ -55,6 +55,9 @@ import {
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 // import { SupportTreeTotalScore } from "src/network/api/campDetailApi";
 import InfoBar from "./CampInfoBar/infoBar";
+import { fallBackSrc } from "src/assets/data-images";
+
+const { Link: AntLink } = Typography;
 
 const TopicDetails = ({ serverSideCall }: any) => {
   let myRefToCampStatement = useRef(null);
@@ -406,6 +409,29 @@ const TopicDetails = ({ serverSideCall }: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const onCreateTreeDate = () => {
+    dispatch(
+      setFilterCanonizedTopics({
+        asofdate:
+          Date.parse(moment.unix(tree["1"]?.created_date).endOf("day")["_d"]) /
+          1000,
+        asof: "bydate",
+      })
+    );
+  };
+
+  const onCreateCampDate = () => {
+    dispatch(
+      setFilterCanonizedTopics({
+        asofdate:
+          Date.parse(
+            moment.unix(campExist && campExist?.created_at).endOf("day")["_d"]
+          ) / 1000,
+        asof: "bydate",
+      })
+    );
+  };
+
   return (
     <Fragment>
       <div className={styles.topicDetailContentWrap}>
@@ -465,6 +491,44 @@ const TopicDetails = ({ serverSideCall }: any) => {
                 setSupportTreeForCamp={setSupportTreeForCamp}
                 backGroundColorClass={backGroundColorClass}
               /> */}
+
+            {tree &&
+              (!tree["1"]?.is_valid_as_of_time ||
+                (tree["1"]?.is_valid_as_of_time &&
+                  !(
+                    tree["1"]?.created_date <=
+                    (asof == "default" || asof == "review"
+                      ? Date.now() / 1000
+                      : asofdate)
+                  ))) && (
+                <div className={styles.imageWrapper}>
+                  <div>
+                    <Image
+                      preview={false}
+                      alt="No topic created"
+                      src={"/images/empty-img-default.png"}
+                      fallback={fallBackSrc}
+                      width={200}
+                      id="forgot-modal-img"
+                    />
+                    <p>
+                      The topic was created on
+                      <AntLink
+                        onClick={() => {
+                          onCreateTreeDate();
+                        }}
+                      >
+                        {" "}
+                        {
+                          new Date((tree && tree["1"]?.created_date) * 1000)
+                            .toLocaleString()
+                            ?.split(",")[0]
+                        }
+                      </AntLink>
+                    </p>
+                  </div>
+                </div>
+              )}
 
             {((tree &&
               tree["1"]?.is_valid_as_of_time &&
@@ -540,6 +604,41 @@ const TopicDetails = ({ serverSideCall }: any) => {
                     )}
               </Fragment>
             )}
+
+            {((tree &&
+              tree["1"]?.is_valid_as_of_time &&
+              tree["1"]?.created_date <=
+                (asof == "default" || asof == "review"
+                  ? Date.now() / 1000
+                  : asofdate)) ||
+              asof == "default") &&
+              campExist &&
+              !campExist?.camp_exist && (
+                <Fragment>
+                  <Alert
+                    className="alert-camp-created-on"
+                    message="The camp was first created on"
+                    type="info"
+                    description={
+                      <span>
+                        <AntLink
+                          onClick={() => {
+                            onCreateCampDate();
+                          }}
+                        >
+                          {
+                            new Date(
+                              (campExist && campExist?.created_at) * 1000
+                            )
+                              .toLocaleString()
+                              ?.split(",")[0]
+                          }
+                        </AntLink>
+                      </span>
+                    }
+                  />
+                </Fragment>
+              )}
           </div>
         </Fragment>
       </div>
