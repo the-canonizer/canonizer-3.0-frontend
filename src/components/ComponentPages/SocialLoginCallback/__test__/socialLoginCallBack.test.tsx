@@ -9,7 +9,10 @@ import { act } from "react-dom/test-utils";
 import SocialLoginCallback from "../";
 import { store } from "src/store";
 import Modals from "src/components/ComponentPages/Registration/registrationModal";
-import { socialLoginCallback, socialLoginLinkUser } from "src/network/api/userApi";
+import {
+  socialLoginCallback,
+  socialLoginLinkUser,
+} from "src/network/api/userApi";
 
 function createMockRouter(router: Partial<NextRouter>): NextRouter {
   return {

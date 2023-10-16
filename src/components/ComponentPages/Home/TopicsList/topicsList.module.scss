@@ -23,6 +23,7 @@
     margin-bottom: 18px;
     overflow: hidden;
     flex-wrap: wrap;
+    overflow-x: hidden;
     @media screen and (min-width: 576px) {
       display: flex;
       align-items: center;
@@ -300,6 +301,16 @@
       &:focus {
         box-shadow: none;
       }
+    }
+  }
+}
+.head {
+  overflow-x: hidden;
+  position: relative;
+
+  @media screen and (min-width: 1025px) {
+    [class*="ant-select-single"] {
+      max-width: 60% !important;
     }
   }
 }
