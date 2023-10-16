@@ -129,7 +129,7 @@ export async function getServerSideProps({ req, query }) {
       topicRecord: topicRecord || {},
       campRecord: campRecord || {},
       campStatement: campStatement || [],
-      statementHistory: statementHistory || {},
+      statementHistory: statementHistory?.data || {},
       tree: tree || [],
       serverCall: true,
     },
