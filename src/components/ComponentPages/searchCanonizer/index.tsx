@@ -3,7 +3,16 @@ import SearchSideBar from "@/components/common/SearchSideBar";
 import styles from "./search.module.scss"
 import { List, Tag } from "antd";
 import Link from "next/link";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
+import moment from "moment";
 const Search=()=>{
+    const { searchData } = useSelector((state: RootState) => ({
+        searchData: state?.searchSlice?.searchData,
+      }));
+      const covertToTime = (unixTime) => {
+        return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
+      };
     return(
         <Fragment>
             <aside className="leftSideBar miniSideBar">
@@ -17,86 +26,113 @@ const Search=()=>{
             <h4>Topic</h4>
             <div className={styles.search_lists}>
                 <ul>
-                    <li>
-                        <a href="#">
-                            <label>Theories of Consciousness</label>
+                    {searchData.topic.map((x)=>{
+                        return (<>
+                             <li>
+                        <Link href={x.link}>
+                        <a>
+                            <label>{x.type_value}</label>
                         </a>
-                        <span  className={styles.ml_auto}>Corporation</span>
+                        </Link>
+                       
+                        <span  className={styles.ml_auto}>{x.namespace}</span>
                     </li>
-                    <li>
-                        <a href="#">
-                            <label>God Theories</label>
-                        </a>
-                        <span className={styles.ml_auto}>crypto_currency</span>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <label>Hard Problem Theories</label>
-                        </a>
-                        <span className={styles.ml_auto}>family</span>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <label>Religious Preference Theories</label>
-                        </a>
-                        <span className={styles.ml_auto}>family/jesperson_oscar</span>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <label>Technological Improvement Theory</label>
-                        </a>
-                        <span className={styles.ml_auto}>Occupy wall street</span>
-                    </li>
+                        </>)
+                    })}
+                   
                 </ul>
             </div>
             <h4>Camp</h4>
 
             <div className={styles.search_lists}>
                 <ul>
-                    <li>
-                    Canonizer Algorithms
-                        <div className={styles.tags_all}> <a href="#"> Technological Improvement </a>/ 
-                            <a href="#"> Approachable Via Science Theory</a>/
-                            <a href="#">Representational Qualia </a>/
-                            <a href="#"> Embrace New Technology</a>/
-                            <a href="#"> </a>
+                    {searchData.camp.map((x)=>{
+                        const jsonData = JSON.parse(
+                            x.breadcrumb_data
+                          ) as Array<any>;
+                          const parsedData = jsonData.reduce(
+                            (accumulator, currentVal, index) => {
+                              const accIndex = index + 1;
+                              accumulator[index] = {
+                                camp_name: currentVal[accIndex]?.camp_name,
+                                camp_link: currentVal[accIndex]?.camp_link,
+                              };
+                             
+                              return accumulator;
+                            },
+                            []
+                          );
+                        return(<>
+                            <li>
+                            <Link href={jsonData[0][1].camp_link}>
+                                <a> {x.type_value}</a>
+                           
+                            </Link>
+                        <div className={styles.tags_all}> 
+                        {parsedData.reverse().map((obj,index)=>{
+                            return(<>
+                            <a href={obj.camp_link} key={obj.camp_link}>
+                              {obj.camp_name}
+                              {index < parsedData.length -1? "/ " : ""}
+                            </a>
+                            </>)
+                        })}
+                            
                             </div>
                     </li>
-                    <li>
-                    Technological Improvement
-                        <div className={styles.tags_all}> <a href="#"> Human Accomplishment</a>/ 
-                            <a href="#"> Approachable Via Science</a>/
-                            <a href="#">Representational Qualia Theory </a>/
-                            <a href="#"> Technological Improvement</a>/
-                            <a href="#"> </a>
-                            </div>
-                    </li>
-                    
+                        </>)
+                    })}
                 </ul>
             </div>
-
-
             <h4>Camp Statement</h4>
             <div className={styles.search_lists}>
                 <ul>
-                    <li>
-                        <div className="d-flex flex-wrap w-100 mb-1">
-                            <a href="" className={styles.search_heading}>Mind-Brain Identity</a>
+                    {searchData.statement.map((x)=>{
+                         const jsonData = JSON.parse(
+                            x.breadcrumb_data
+                          ) as Array<any>;
+                          const parsedData = jsonData.reduce(
+                            (accumulator, currentVal, index) => {
+                              const accIndex = index + 1;
+                              accumulator[index] = {
+                                camp_name: currentVal[accIndex]?.camp_name,
+                                camp_link: currentVal[accIndex]?.camp_link,
+                              };
+                              return accumulator;
+                            },
+                            []
+                          );
+                        return(<>
+                             <li>
+                               <a href={jsonData[0][1].camp_link}>
+                               <h3>{jsonData[0][1].camp_name}</h3>
+                               </a>
                             <div className={styles.statement_date}>
                                 <strong>Go live Time : </strong>
-                                5/27/2020, 8:04:24 AM
+                                {covertToTime(x.go_live_time)}
                             </div>
+                        <div className="d-flex flex-wrap w-100 mb-1">
+                            {/* <a className={styles.search_heading}>  */}
+                        <div
+                          dangerouslySetInnerHTML={{__html:x.type_value.substring(0,800)+ "..."}}
+                          >
+                          </div>
+                           
                         </div>
-                        <p>The goal of this topic is to build and track consensus around theories of consciousness. Everyone is invited to contribute, as we want to track the default popular consensus. There is also the “Theories” canonizer people can select, so people can compare the popular consensus with the...</p>
-                        <div className={styles.tags_all}> <a href="#"> Technological Improvement </a>/ 
-                            <a href="#"> Approachable Via Science Theory</a>/
-                            <a href="#">Representational Qualia </a>/
-                            <a href="#"> Embrace New Technology</a>/
-                            <a href="#"> </a>
+                        <div className={styles.tags_all}> 
+                        {parsedData.reverse().map((obj,index)=>{
+                            return(<>
+                            <a href={obj.camp_link} key={obj.camp_link}>
+                              {obj.camp_name}
+                              {index < parsedData.length -1? "/ " : ""}
+                            </a>
+                            </>)
+                        })}
                             </div>
 
-                    </li>
-                    
+                    </li>  
+                        </>)
+                    })}
                    
                 </ul>
             </div>
@@ -105,19 +141,19 @@ const Search=()=>{
             <h4>Nickname</h4>
             <div className={styles.search_lists}>
                 <ul>
-                    <li>
-                        <a href="#">
-                            <label>Techno</label>
+                    {searchData.nickname.map((x)=>{
+                        return(<>
+                             <li>
+                        <Link href={x.link}>
+                        <a>
+                            <label>{x.type_value}</label>
                         </a>
-                        <span  className={styles.ml_auto}>Supported camps: <strong className={styles.yellow_color}>23</strong> </span>
+                        </Link>
+                        
+                        <span  className={styles.ml_auto}>Supported camps: <strong className={styles.yellow_color}>{x.support_count}</strong> </span>
                     </li>
-                    
-                    <li>
-                        <a href="#">
-                            <label>RogerAndrews</label>
-                        </a>
-                        <span  className={styles.ml_auto}>Supported camps: <strong className={styles.yellow_color}>26</strong> </span>
-                    </li>
+                        </>)
+                    })}
                 </ul>
             </div>
          </div>

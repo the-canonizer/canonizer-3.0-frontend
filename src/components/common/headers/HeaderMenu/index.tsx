@@ -1,129 +1,240 @@
 import React, { Fragment, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 
 import styles from "../siteHeader.module.scss";
 import { AutoComplete, Input } from "antd";
 
 import TopicCreationBTN from "../TopicCreationBTN";
+import queryParams from "src/utils/queryParams";
+import { globalSearchCanonizer } from "src/network/api/userApi";
+import moment from "moment";
+import { setSearchData, setSearchValue } from "src/store/slices/searchSlice";
 
 const HeaderMenu = ({ loggedUser }: any) => {
-  const renderTitle = (icon:any ,title: string) => (
-    <span>
-      {icon}{title}
-    </span>
+  const [inputSearch, setInputSearch] = useState("");
+  const [searchTopics, setSearchTopics] = useState([]);
+  const [searchCamps, setSearchCamps] = useState([]);
+  const [searchCampStatement, setSearchCampStatement] = useState([]);
+  const [searchNickname, setSearchNickname] = useState([]);
+  const {searchValue}  = useSelector((state: RootState) => ({
+    searchValue: state?.searchSlice?.searchValue,
+  }));
+  const dispatch = useDispatch();
 
+
+  const renderTitle = (icon: any, title: string) => (
+    <span>
+      {icon}
+      {title}
+    </span>
   );
-  
+
   const renderItem = (title: any) => ({
     value: title,
     label: (
       <div>
-       {title}
-        <span>
-          {/* <UserOutlined /> */}
-        </span>
+        {title}
+        <span>{/* <UserOutlined /> */}</span>
       </div>
     ),
   });
+  const covertToTime = (unixTime) => {
+    return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
+  };
   const options = [
     {
-      label: renderTitle(<i className="icon-topic"></i>,'Topic'),
-      options: [renderItem( <div className={styles.search_lists}>
-        <ul>
-            <li>
-                <a href="#">
-                    <label>Theories of Consciousness</label>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <label>God Theories</label>
-                </a>
-            </li>
-        </ul>
-    </div>)],
+      label: renderTitle(
+        searchTopics.length? <i className="icon-topic"></i>:"",
+        searchTopics.length? "Topic":""
+      ),
+      options: [
+        renderItem(
+          <div className={styles.search_lists}>
+            <ul>
+              {searchTopics?.map((x) => {
+                return (
+                  <>
+                    <li>
+                      <Link href={x.link}>
+                        <a>
+                          <label>{x.type_value}</label>
+                        </a>
+                      </Link>
+                    </li>
+                  </>
+                );
+              })}
+            </ul>
+          </div>
+        ),
+      ],
     },
     {
-      label: renderTitle(<i className="icon-camp"></i>,'Camp'),
-      options: [renderItem( <div className={styles.search_lists}>
-        <ul>
-            <li>
-            Canonizer Algorithms
-                <div className={styles.tags_all_search_camp_statement}> <a href="#"> Technological Improvement </a>/ 
-                    <a href="#"> Approachable Via Science Theory</a>/
-                    <a href="#">Representational Qualia </a>/
-                    <a href="#"> Embrace New Technology</a>/
-                    <a href="#"> </a>
-                    </div>
-            </li>
-            <li>
-            Technological Improvement
-                <div className={styles.tags_all_search_camp_statement}> <a href="#"> Human Accomplishment</a>/ 
-                    <a href="#"> Approachable Via Science</a>/
-                    <a href="#">Representational Qualia Theory </a>/
-                    <a href="#"> Technological Improvement</a>/
-                    <a href="#"> </a>
-                    </div>
-            </li>
-            
-        </ul>
-    </div>)],
-    },
-    {
-      label: renderTitle(<i className="icon-camp"></i>,'Camp statement'),
-      options: [renderItem(<div className={styles.search_lists}>
-        <ul>
-            <li>
-                <div className="d-flex flex-wrap w-100 mb-1">
-                    <a href="" className={styles.search_heading_top}>Mind-Brain Identity</a>
-                    <div className={styles.statement_date_search_camp_statement}>
-                        <strong>Go live Time : </strong>
-                        5/27/2020, 8:04:24 AM
-                    </div>
-                </div>
-                <p>The goal of this topic is to build and track consensus around theories of consciousness. Everyone is invited to contribute, as we want to track the default popular consensus. There is also the “Theories” canonizer people can select, so people can compare the popular consensus with the...</p>
-                <div className={styles.tags_all_search_camp_statement}> <a href="#"> Technological Improvement </a>/ 
-                    <a href="#"> Approachable Via Science Theory</a>/
-                    <a href="#">Representational Qualia </a>/
-                    <a href="#"> Embrace New Technology</a>/
-                    <a href="#"> </a>
-                    </div>
+      label: renderTitle(searchCamps.length?<i className="icon-camp"></i>:"", searchCamps.length?"Camp":""),
+      options: [
+        renderItem(
+          <div className={styles.search_lists}>
+            <ul>
+              {searchCamps?.map((x) => {
+                const jsonData = JSON.parse(
+                  x.breadcrumb_data
+                ) as Array<any>;
+                const parsedData = jsonData.reduce(
+                  (accumulator, currentVal, index) => {
+                    const accIndex = index + 1;
+                    accumulator[index] = {
+                      camp_name: currentVal[accIndex]?.camp_name,
+                      camp_link: currentVal[accIndex]?.camp_link,
+                    };
+                    return accumulator;
+                  },
+                  []
+                );
 
-            </li>
-        </ul>
-    </div>)], 
+                return (
+                  <>
+                    <li>
+                      {x.type_value}
+                      <div className={styles.tags_all_search_camp_statement}>
+                        {parsedData?.reverse()?.map((obj,index) => {
+                          return (
+                            <a href={obj.camp_link} key={obj.camp_link}>
+                              {obj.camp_name}
+                              {index < parsedData.length -1? "/ " : ""}
+                            </a>
+                          );
+                        })}
+                      </div>
+                    </li>
+                  </>
+                );
+              })}
+            </ul>
+          </div>
+        ),
+      ],
     },
     {
-      label: renderTitle(<i className="icon-camp"></i>,'Nickname'),
-      options: [renderItem(<div className={styles.search_lists}>
-        <ul>
-            <li>
-              <div className="d-flex flex-wrap">
-
-                <a href="#">
-                    <label>Techno</label>
-                </a>
-                <span  className="ml_auto suppport_camps">Supported camps: <strong className={styles.yellow_color}>23</strong> </span>
-              </div>
-            </li>
-            
-            <li>
-              <div className="d-flex flex-wrap">
-                <a href="#">
-                    <label>RogerAndrews</label>
-                </a>
-                <span  className="ml_auto suppport_camps">Supported camps: <strong className={styles.yellow_color}>26</strong> </span>
-                </div>
-            </li>
-        </ul>
-    </div>)],
+      label: renderTitle(searchCampStatement.length?<i className="icon-camp"></i>:"", searchCampStatement.length?"Camp statement":""),
+      options: [
+        renderItem(
+          <div className={styles.search_lists}>
+            <ul>
+              {searchCampStatement?.map((x) => {
+                  const jsonData = JSON.parse(
+                    x.breadcrumb_data
+                  );
+                  const parsedData = jsonData.reduce(
+                    (accumulator, currentVal, index) => {
+                      const accIndex = index + 1;
+                      accumulator[index] = {
+                        camp_name: currentVal[accIndex].camp_name,
+                        camp_link: currentVal[accIndex].camp_link,
+                      };
+                      return accumulator;
+                    },
+                    []
+                  );
+                return (
+                  <>
+                    <li>
+                       <div className="d-flex flex-wrap g-2">
+                       <a href={jsonData[0][1].camp_link}>
+                               <h3 className="m-0" style={{color:"blue"}}>{jsonData[0][1].camp_name}</h3>
+                               </a>
+                            <div style={{marginLeft:"auto"}}>
+                                <strong>Go live Time : </strong>
+                                {covertToTime(x.go_live_time)}
+                            </div>
+                       </div>
+                      <div className="d-flex flex-wrap w-100 mb-1">
+                        <p  className={styles.search_heading_top}>
+                          <div
+                          dangerouslySetInnerHTML={{__html:x.type_value}}
+                          >
+                          </div>
+                        </p>
+                        {/* <div
+                          className={
+                            styles.statement_date_search_camp_statement
+                          }
+                        >
+                          <strong>Go live Time : </strong>
+                          {covertToTime(x.go_live_time)}
+                        </div> */}
+                      </div>
+                      {" "}
+                      <div className={styles.tags_all_search_camp_statement}>
+                        {parsedData?.reverse()?.map((obj,index) => {
+                          return (
+                            <a href={obj.camp_link} key={obj.camp_link}>
+                              {obj.camp_name}
+                              {index < parsedData.length -1? "/ " : ""}
+                            </a>
+                          );
+                        })}
+                      </div>
+                    </li>
+                  </>
+                );
+              })}
+            </ul>
+          </div>
+        ),
+      ],
     },
     {
-      options:[renderItem(<footer><i className="icon-search"></i><a href="/search">Search for</a></footer>)]
-    }
+      label: renderTitle(
+        searchNickname.length? <i className="icon-camp"></i>:"" ,
+        searchNickname.length?"Nickname" :""
+      ),
+      options: [
+        renderItem(
+          <div className={styles.search_lists}>
+            <ul>
+              {searchNickname?.map((x) => {
+                return (
+                  <>
+                    <li>
+                      <div className="d-flex flex-wrap">
+                        <Link href={x.link}>
+                          <a>
+                            <label>{x.type_value}</label>
+                          </a>
+                        </Link>
+                          <span className="ml_auto suppport_camps">
+                            Supported camps:{" "}
+                            <strong className={styles.yellow_color}>
+                              {x.support_count}
+                            </strong>{" "}
+                          </span>
+                        
+                        
+                      </div>
+                    </li>
+                  </>
+                );
+              })}
+            </ul>
+          </div>
+        ),
+      ],
+    },
+    {
+      options: [
+        renderItem(
+          <footer>
+            <i className="icon-search"></i>
+            <Link  href="/search">
+            <a>{`Search for "${searchValue}"`}</a>
+            </Link>
+          </footer>
+        ),
+      ],
+    },
   ];
 
   const links = [
@@ -184,7 +295,18 @@ const HeaderMenu = ({ loggedUser }: any) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUser]);
-
+  const getGlobalSearchCanonizer = async (queryString) => {
+    let response = await globalSearchCanonizer(
+      queryParams({ term: queryString })
+    );
+    if (response) {
+      setSearchTopics(response.data.data.topic);
+      setSearchCamps(response.data.data.camp)
+      setSearchCampStatement(response.data.data.statement)
+      setSearchNickname(response.data.data.nickname)
+      dispatch(setSearchData(response?.data?.data));
+    }
+  };
   return (
     <Fragment>
       <nav className={styles.nav}>
@@ -229,19 +351,36 @@ const HeaderMenu = ({ loggedUser }: any) => {
               </li>
             );
           })}
-          
         </ul>
       </nav>
+      <div className="search_header">
       <AutoComplete
-              popupClassName="certain-category-search-dropdown"
-              dropdownMatchSelectWidth={500}
-              className={"search_header"}
-              options={options}
-            > 
-          <Input size="large" placeholder="Search for" prefix={<i className="icon-search"></i>} />
-         </AutoComplete>
+        popupClassName="certain-category-search-dropdown"
+        dropdownMatchSelectWidth={500}
+        // className={"search_header"}
+        options={inputSearch ? options : []}
+        value={searchValue}
+      >
+        <Input
+          size="large"
+          placeholder="Search for"
+          value={searchValue}
+          type="text"
+          name="search"
+          prefix={<i className="icon-search"></i>}
+          onChange={(e) => {
+            dispatch(setSearchValue(e.target.value))
+            setInputSearch(e.target.value);
+            getGlobalSearchCanonizer(e.target.value);
+          }}
+        />
+      </AutoComplete>
+      </div>
+      
     </Fragment>
   );
+  
 };
+
 
 export default HeaderMenu;

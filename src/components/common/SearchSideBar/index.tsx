@@ -19,8 +19,8 @@ export default function SearchSideBar() {
       >
         {(
           <div className="search_tabs">
-            <Button size="large" className={"btn"}>
-              All
+            <Button size="large" className={router.asPath == "/search" ?"active":"btn"}>
+            <Link href="/search"><a>All</a></Link>
             </Button>
             <Button size="large" className={router.asPath == "/search/topic" ?"active":"btn"} >
               <i className="icon-topic"></i><Link href="/search/topic"><a>Topic</a></Link>

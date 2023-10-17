@@ -928,3 +928,24 @@ export const globalSearchUploadFiles = async (reqbody) => {
     }
   }
 };
+
+export const globalSearchCanonizer = async (reqbody) => {
+  let state = store.getState();
+  const { auth } = state;
+  try {
+    const res = await NetworkCall.fetch(
+      UserRequest.CanonizerGlobalSearch(reqbody, auth.loggedInUser?.token)
+    );
+    return res;
+  } catch (err) {
+    handleError(err);
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400
+    ) {
+      return err.error.data;
+    }
+  }
+};

@@ -1,101 +1,89 @@
 import React, { Fragment } from "react";
 import SearchSideBar from "@/components/common/SearchSideBar";
-import styles from "./search.module.scss"
+import styles from "./search.module.scss";
 import AdvanceFilter from "@/components/common/AdvanceSearchFilter";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
+import moment from "moment";
 
-const CampStatementSearch=()=>{
-    return(
-        <Fragment>
-            <aside className="leftSideBar miniSideBar">
-          <div className="leftSideBar_Card p-0 m-0">
-            <SearchSideBar />
-          </div>
-        </aside>
-        <div className="pageContentWrap">
+const CampStatementSearch = () => {
+  const { searchData } = useSelector((state: RootState) => ({
+    searchData: state?.searchSlice?.searchData,
+  }));
+  const covertToTime = (unixTime) => {
+    return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
+  };
+  const fileNameLength = 800;
+
+  return (
+    <Fragment>
+      <aside className="leftSideBar miniSideBar">
+        <div className="leftSideBar_Card p-0 m-0">
+          <SearchSideBar />
+        </div>
+      </aside>
+      <div className="pageContentWrap">
         <div className={styles.card}>
-        <div className="d-flex mb-2 align-items-center flex-wrap relative">
-        <h4>Camp Statement</h4>
-        <AdvanceFilter/>
+          <div className="d-flex mb-2 align-items-center flex-wrap relative">
+            <h4>Camp Statement</h4>
+            <AdvanceFilter />
+          </div>
+          <div className={styles.search_lists}>
+            <ul>
+              {searchData.statement.map((x) => {
+                const jsonData = JSON.parse(x.breadcrumb_data) as Array<any>;
+                const parsedData = jsonData.reduce(
+                  (accumulator, currentVal, index) => {
+                    const accIndex = index + 1;
+                    accumulator[index] = {
+                      camp_name: currentVal[accIndex]?.camp_name,
+                      camp_link: currentVal[accIndex]?.camp_link,
+                    };
+                    return accumulator;
+                  },
+                  []
+                );
+                return (
+                  <>
+                    <li>
+                      <a href={jsonData[0][1].camp_link}>
+                        <h3 className={styles.statement_heading}>{jsonData[0][1].camp_name}</h3>
+                      </a>
+                      <div className={styles.statement_date}>
+                        <strong>Go live Time : </strong>
+                        {covertToTime(x.go_live_time)}
+                      </div>
+                      <div className="d-flex flex-wrap w-100 mb-1">
+                        {/* <a className={styles.search_heading}>  */}
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html:
+                              x.type_value.substring(0, fileNameLength) + "...",
+                          }}
+                        ></div>
+                      </div>
+                      <div className={styles.tags_all}>
+                        {parsedData.reverse().map((obj, index) => {
+                          return (
+                            <>
+                              <a href={obj.camp_link} key={obj.camp_link}>
+                                {obj.camp_name}
+                                {index < parsedData.length - 1 ? "/ " : ""}
+                              </a>
+                            </>
+                          );
+                        })}
+                      </div>
+                    </li>
+                  </>
+                );
+              })}
+            </ul>
+          </div>
         </div>
-            <div className={styles.search_lists}>
-                <ul>
-                    <li>
-                        <div className="d-flex flex-wrap w-100 mb-1">
-                            <a href="" className={styles.search_heading}>Mind-Brain Identity</a>
-                            <div className={styles.statement_date}>
-                                <strong>Go live Time : </strong>
-                                5/27/2020, 8:04:24 AM
-                            </div>
-                        </div>
-                        <p>The goal of this topic is to build and track consensus around theories of consciousness. Everyone is invited to contribute, as we want to track the default popular consensus. There is also the “Theories” canonizer people can select, so people can compare the popular consensus with the...</p>
-                        <div className={styles.tags_all}> <a href="#"> Technological Improvement </a>/ 
-                            <a href="#"> Approachable Via Science Theory</a>/
-                            <a href="#">Representational Qualia </a>/
-                            <a href="#"> Embrace New Technology</a>/
-                            <a href="#"> </a>
-                            </div>
-
-                    </li>
-                    <li>
-                        <div className="d-flex flex-wrap w-100 mb-1">
-                            <a href="" className={styles.search_heading}>Spacetime geometry</a>
-                            <div className={styles.statement_date}>
-                                <strong>Go live Time : </strong>
-                                5/27/2020, 8:04:24 AM
-                            </div>
-                        </div>
-                        <p>technology, the application of scientific knowledge to the practical aims of human life or, as it is sometimes phrased, to the change and manipulation of ...</p>
-                        <div className={styles.tags_all}> <a href="#"> Technological Improvement </a>/ 
-                            <a href="#"> Approachable Via Science Theory</a>/
-                            <a href="#">Representational Qualia </a>/
-                            <a href="#"> Embrace New Technology</a>/
-                            <a href="#"> </a>
-                            </div>
-
-                    </li>
-                    <li>
-                        <div className="d-flex flex-wrap w-100 mb-1">
-                            <a href="" className={styles.search_heading}>Scientific knowledge for practical purposes</a>
-                            <div className={styles.statement_date}>
-                                <strong>Go live Time : </strong>
-                                5/27/2020, 8:04:24 AM
-                            </div>
-                        </div>
-                        <p>The definition of Technology is the branch of knowledge that deals with the creation and use of technical means and their interrelation with life, society, ...</p>
-                        <div className={styles.tags_all}> <a href="#"> Technological Improvement </a>/ 
-                            <a href="#"> Approachable Via Science Theory</a>/
-                            <a href="#">Representational Qualia </a>/
-                            <a href="#"> Embrace New Technology</a>/
-                            <a href="#"> </a>
-                            </div>
-
-                    </li>
-                    <li>
-                        <div className="d-flex flex-wrap w-100 mb-1">
-                            <a href="" className={styles.search_heading}>Application of scientific knowledge</a>
-                            <div className={styles.statement_date}>
-                                <strong>Go live Time : </strong>
-                                5/27/2020, 8:04:24 AM
-                            </div>
-                        </div>
-                        <p>From the earliest stone tools to the latest advances in artificial intelligence, robotics, blockchains and virtual reality, technology has continuously ...</p>
-                        <div className={styles.tags_all}> <a href="#"> Technological Improvement </a>/ 
-                            <a href="#"> Approachable Via Science Theory</a>/
-                            <a href="#">Representational Qualia </a>/
-                            <a href="#"> Embrace New Technology</a>/
-                            <a href="#"> </a>
-                            </div>
-
-                    </li>
-                    
-                   
-                </ul>
-            </div>
-        </div>
-        </div>
-        </Fragment>
-       
-    )
-}
+      </div>
+    </Fragment>
+  );
+};
 
 export default CampStatementSearch;

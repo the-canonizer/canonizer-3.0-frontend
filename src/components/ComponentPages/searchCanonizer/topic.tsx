@@ -1,9 +1,15 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import SearchSideBar from "@/components/common/SearchSideBar";
 import styles from "./search.module.scss"
 import AdvanceFilter from "@/components/common/AdvanceSearchFilter";
+import Link from "next/link";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
 
 const TopicSearch=()=>{
+    const { searchData } = useSelector((state: RootState) => ({
+        searchData: state?.searchSlice?.searchData,
+      }));
     return(
         <Fragment>
             <aside className="leftSideBar miniSideBar">
@@ -20,97 +26,20 @@ const TopicSearch=()=>{
         </div>
             <div className={styles.search_lists}>
                 <ul>
-                    <li>
-                        <a href="#">
-                            <label>Theories of Consciousness</label>
+                    {searchData.topic.map((x)=>{
+                    return(<>
+                     <li>
+                        <Link href={x.link}>
+                        <a>
+                            <label>{x.type_value}</label>
                         </a>
-                        <span  className={styles.ml_auto}>Corporation</span>
+                        </Link>
+                        
+                        <span  className={styles.ml_auto}>{x.namespace}</span>
                     </li>
-                    <li>
-                        <a href="#">
-                            <label>God Theories</label>
-                        </a>
-                        <span className={styles.ml_auto}>crypto_currency</span>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <label>Hard Problem Theories</label>
-                        </a>
-                        <span className={styles.ml_auto}>family</span>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <label>Religious Preference Theories</label>
-                        </a>
-                        <span className={styles.ml_auto}>family/jesperson_oscar</span>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <label>Technological Improvement Theory</label>
-                        </a>
-                        <span className={styles.ml_auto}>Occupy wall street</span>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <label>Theories of Consciousness</label>
-                        </a>
-                        <span  className={styles.ml_auto}>Corporation</span>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <label>God Theories</label>
-                        </a>
-                        <span className={styles.ml_auto}>crypto_currency</span>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <label>Hard Problem Theories</label>
-                        </a>
-                        <span className={styles.ml_auto}>family</span>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <label>Religious Preference Theories</label>
-                        </a>
-                        <span className={styles.ml_auto}>family/jesperson_oscar</span>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <label>Technological Improvement Theory</label>
-                        </a>
-                        <span className={styles.ml_auto}>Occupy wall street</span>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <label>Theories of Consciousness</label>
-                        </a>
-                        <span  className={styles.ml_auto}>Corporation</span>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <label>God Theories</label>
-                        </a>
-                        <span className={styles.ml_auto}>crypto_currency</span>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <label>Hard Problem Theories</label>
-                        </a>
-                        <span className={styles.ml_auto}>family</span>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <label>Religious Preference Theories</label>
-                        </a>
-                        <span className={styles.ml_auto}>family/jesperson_oscar</span>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <label>Technological Improvement Theory</label>
-                        </a>
-                        <span className={styles.ml_auto}>Occupy wall street</span>
-                    </li>
-
+                    </>)
+                       
+                    })}
                     
                 </ul>
             </div>

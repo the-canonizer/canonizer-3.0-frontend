@@ -436,8 +436,15 @@ img {
 }
 .search_header
 {
-  flex: 1;
-  padding: 0 30px;
+    flex: 1 1;
+    display: flex;
+    padding: 0 30px;
+    justify-content: center;
+  .ant-select{
+    width: 100%;
+    max-width: 550px;
+
+  }
   .ant-select-selection-search 
   {
     max-width: 550px;
@@ -486,7 +493,7 @@ img {
     border: 1px solid #E9E9E9;
     background: #fff;
     padding: 0px 0 0;
-    max-width: 528px !important;
+    max-width: 550px !important;
     min-width: inherit !important;
     width: 100% !important;
     border-radius: 0;

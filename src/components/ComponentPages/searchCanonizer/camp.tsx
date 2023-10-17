@@ -2,8 +2,13 @@ import React, { Fragment } from "react";
 import SearchSideBar from "@/components/common/SearchSideBar";
 import styles from "./search.module.scss"
 import AdvanceFilter from "@/components/common/AdvanceSearchFilter";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
 
 const CampSearch=()=>{
+    const { searchData } = useSelector((state: RootState) => ({
+        searchData: state?.searchSlice?.searchData,
+      }));
     return(
         <Fragment>
             <aside className="leftSideBar miniSideBar">
@@ -17,65 +22,42 @@ const CampSearch=()=>{
         <h4>Camp</h4>
         <AdvanceFilter/>
         </div>
-<div className={styles.search_lists}>
-    <ul>
-        <li>
-        Canonizer Algorithms
-            <div className={styles.tags_all}> <a href="#"> Technological Improvement </a>/ 
-                <a href="#"> Approachable Via Science Theory</a>/
-                <a href="#">Representational Qualia </a>/
-                <a href="#"> Embrace New Technology</a>/
-                <a href="#"> </a>
-                </div>
-        </li>
-        <li>
-        Technological Improvement
-            <div className={styles.tags_all}> <a href="#">Human Accomplishment </a>/ 
-                <a href="#"> Approachable Via Science</a>/
-                <a href="#">Representational Qualia Theories </a>/
-                <a href="#"> Technological Improvement</a>/
-                <a href="#"> </a>
-                </div>
-        </li>
-        <li>
-        Definition of Technology
-            <div className={styles.tags_all}> <a href="#">Human Accomplishment </a>/ 
-                <a href="#"> Approachable Via Science</a>/
-                <a href="#">reporting on big tech</a>/
-                <a href="#"> Technological Improvement</a>/
-                <a href="#"> </a>
-                </div>
-        </li>
-        <li>
-        Technology is also a particular method
-            <div className={styles.tags_all}> <a href="#">Human Accomplishment </a>/ 
-                <a href="#"> Approachable Via Science</a>/
-                <a href="#">practical application of knowledgeTheories</a>/
-                <a href="#"> Technological Improvement</a>/
-                <a href="#"> </a>
-                </div>
-        </li>
-        <li>
-        Technology News
-            <div className={styles.tags_all}> <a href="#">Human Accomplishment </a>/ 
-                <a href="#"> Approachable Via Science</a>/
-                <a href="#">Breaking news and analysis</a>/
-                <a href="#"> Technological Improvement</a>/
-                <a href="#"> </a>
-                </div>
-        </li>
-        <li>
-        TECHNOLOGY is the practical application
-            <div className={styles.tags_all}> <a href="#">Human Accomplishment </a>/ 
-                <a href="#"> Approachable Via Science</a>/
-                <a href="#">Particular method by which science is used </a>/
-                <a href="#"> Technological Improvement</a>/
-                <a href="#"> </a>
-                </div>
-        </li>
-        
-    </ul>
-</div>
+        <div className={styles.search_lists}>
+                <ul>
+                    {searchData.camp.map((x)=>{
+                        const jsonData = JSON.parse(
+                            x.breadcrumb_data
+                          ) as Array<any>;
+                          const parsedData = jsonData.reduce(
+                            (accumulator, currentVal, index) => {
+                              const accIndex = index + 1;
+                              accumulator[index] = {
+                                camp_name: currentVal[accIndex]?.camp_name,
+                                camp_link: currentVal[accIndex]?.camp_link,
+                              };
+                              return accumulator;
+                            },
+                            []
+                          );
+                        return(<>
+                            <li>
+                    {x.type_value}
+                        <div className={styles.tags_all}> 
+                        {parsedData.reverse().map((obj,index)=>{
+                            return(<>
+                            <a href={obj.camp_link} key={obj.camp_link}>
+                              {obj.camp_name}
+                              {index < parsedData.length -1? "/ " : ""}
+                            </a>
+                            </>)
+                        })}
+                            
+                            </div>
+                    </li>
+                        </>)
+                    })}
+                </ul>
+            </div>
         </div>
         </div>
         </Fragment>

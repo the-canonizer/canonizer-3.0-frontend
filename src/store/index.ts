@@ -28,6 +28,7 @@ import supportTreeCard from "./slices/supportTreeCard";
 import utilsSlice from "./slices/utilsSlice";
 import loadingSlice from "./slices/loading";
 import hotTopicSlice from "./slices/hotTopicSlice";
+import searchSlice from "./slices/searchSlice";
 // reducers
 
 let combinedReducer = combineReducers({
@@ -45,6 +46,7 @@ let combinedReducer = combineReducers({
   utils: utilsSlice,
   loading: loadingSlice,
   hotTopic: hotTopicSlice,
+  searchSlice:searchSlice
 });
 
 const rootReducer = (state, action) => {
