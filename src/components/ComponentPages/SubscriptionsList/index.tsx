@@ -17,6 +17,7 @@ function SubscriptionsList({ isTestData = [] }: any) {
   const [page] = useState(1);
   const [perPage] = useState("");
   const [isCamp, setIsCamp] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
   const [camp, setCamp] = useState({});
 
   const getSubscriptionsList = async (q: string) => {
@@ -73,8 +74,11 @@ function SubscriptionsList({ isTestData = [] }: any) {
     setCamp({});
   };
 
-  const onRemove = () => {
+  const onRemove = (e) => {
+    e?.preventDefault();
+    setIsDisabled(true);
     setIsLoading(true);
+
     let body = null;
     if (isCamp) {
       body = {
@@ -91,10 +95,14 @@ function SubscriptionsList({ isTestData = [] }: any) {
         subscription_id: currentTopic["subscription_id"],
       };
     }
+
     if (body) {
       campOrTopicUnsubscribe(body);
     }
-    setIsLoading(false);
+    setTimeout(() => {
+      setIsDisabled(false);
+      setIsLoading(false);
+    }, 300);
   };
 
   return isLoading ? (
@@ -118,6 +126,7 @@ function SubscriptionsList({ isTestData = [] }: any) {
       isCamp={isCamp}
       campTitle={camp["camp_name"]}
       campLink={camp["camp_link"]}
+      isDisabled={isDisabled}
     />
   );
 }

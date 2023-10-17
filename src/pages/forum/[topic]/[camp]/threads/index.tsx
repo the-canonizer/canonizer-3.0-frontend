@@ -53,7 +53,7 @@ export async function getServerSideProps({ req, resolvedUrl }) {
   return {
     props: {
       topicRecord: topicRecord || {},
-      campRecord: campRecord || {},
+      campRecord: campRecord?.campData || {},
       threadList: threadList || [],
     },
   };

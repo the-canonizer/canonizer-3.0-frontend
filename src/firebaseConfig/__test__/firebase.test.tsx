@@ -91,18 +91,17 @@ describe("firebaseCloudMessaging", () => {
     //   useServiceWorker: jest.fn(),
     // };
 
-    
     const serviceWorkerMock = {
       addEventListener: jest.fn(),
       register: jest.fn().mockResolvedValue("mocked-service-worker"),
     };
-    
+
     global.navigator.serviceWorker = serviceWorkerMock;
     global.navigator.PushManager = {};
-    
+
     await waitFor(async () => {
       const token = await firebaseCloudMessaging.init();
-      expect(token).toEqual("mocked-token")
+      expect(token).toEqual("mocked-token");
       // const token = await firebaseCloudMessaging.init();
       expect(firebase.initializeApp).toHaveBeenCalled();
       // expect(messagingMock.useServiceWorker).toHaveBeenCalled();

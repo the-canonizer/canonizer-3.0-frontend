@@ -30,17 +30,35 @@ const userSupportedCampsList = [
     private_status: 0,
     topic: [
       {
-        camp_name: "Agreement",
-        namespace_id: 1,
+        namespace_id: "1",
         title_link: "https://www.google.com/",
+        title: "Title 1",
+        delegate_nick_name_id: "2",
         topic_num: 12,
+        camps: [{
+          support_order: "Test order",
+          camp_link: "https://www.google.com/",
+          camp_name: "Agreement 1"
+        }]
       },
       {
-        camp_name: "Agreement-2",
-        namespace_id: 2,
+        namespace_id: "2",
         title_link: "https://www.google.com/",
-        topic_num: 13,
+        title: "Title 2",
+        delegate_nick_name_id: "3",
+        topic_num: 20,
+        camps: [{
+          support_order: "Test order 2",
+          camp_link: "https://www.google.com/",
+          camp_name: "Agreement 2"
+        }]
       },
+      // {
+      //   camp_name: "Agreement-2",
+      //   namespace_id: 2,
+      //   title_link: "https://www.google.com/",
+      //   topic_num: 13,
+      // },
     ],
   },
 ];
@@ -63,7 +81,7 @@ const nickNameList = [
 // const currentPage = 3;
 // const onPageChange = jest.fn();
 
-const dropdownNameSpaceList = "";
+const dropdownNameSpaceList = "2";
 const noData = false;
 
 jest.mock("next/router", () => ({
@@ -196,7 +214,7 @@ describe("User profile", () => {
         screen.getAllByText(userSupportedCampsList[0].private_status)
       ).toBeInTheDocument();
       expect(
-        screen.getAllByText(userSupportedCampsList[0].topic[0].camp_name)
+        screen.getAllByText(userSupportedCampsList[0].topic[0].camps[0].camp_name)
       ).toBeInTheDocument();
       expect(
         screen.getAllByText(userSupportedCampsList[0].topic[0].namespace_id)
@@ -208,7 +226,7 @@ describe("User profile", () => {
         screen.getAllByText(userSupportedCampsList[0].topic[0].topic_num)
       ).toBeInTheDocument();
       expect(
-        screen.getAllByText(userSupportedCampsList[0].topic[1].camp_name)
+        screen.getAllByText(userSupportedCampsList[0].topic[1].camps[0].camp_name)
       ).toBeInTheDocument();
       expect(
         screen.getAllByText(userSupportedCampsList[0].topic[1].namespace_id)

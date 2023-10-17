@@ -17,6 +17,7 @@ function SubscriptionsListUI({
   isCamp,
   campTitle,
   campLink,
+  isDisabled,
 }: any) {
   return (
     <div className={styles.supported_camps}>
@@ -41,6 +42,7 @@ function SubscriptionsListUI({
         isCamp={isCamp}
         campTitle={campTitle}
         campLink={campLink}
+        isDisabled={isDisabled}
       />
     </div>
   );
