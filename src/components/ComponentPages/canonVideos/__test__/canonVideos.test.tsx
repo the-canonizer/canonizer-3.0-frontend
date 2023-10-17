@@ -120,6 +120,8 @@ jest.mock("src/network/api/videos", () => ({
   ),
 }));
 
+jest.mock("src/network/api/videos");
+
 const mockStore = configureMockStore();
 const store1 = mockStore({
   auth: {
@@ -152,6 +154,7 @@ describe("Canonizer Videos", () => {
         })
       ),
     }));
+    jest.mock("src/network/api/videos");
   });
 
   it("renders video titles", () => {
