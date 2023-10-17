@@ -19,18 +19,27 @@ export default function SearchSideBar() {
       >
         {(
           <div className="search_tabs">
+            <Link href="/search">
             <Button size="large" className={router.asPath == "/search" ?"active":"btn"}>
-            <Link href="/search"><a>All</a></Link>
+            <a>All</a>
             </Button>
+            </Link>
+            <Link href="/search/topic">
             <Button size="large" className={router.asPath == "/search/topic" ?"active":"btn"} >
-              <i className="icon-topic"></i><Link href="/search/topic"><a>Topic</a></Link>
+              <i className="icon-topic"></i><a>Topic</a>
             </Button>
+            </Link>
+            <Link href="/search/camp">
             <Button size="large" className={router.asPath == "/search/camp" ?"active":"btn"}>
-            <i className="icon-camp"></i><Link href="/search/camp"><a>Camp</a></Link>
+            <i className="icon-camp"></i><a>Camp</a>
             </Button>
+            </Link>
+            <Link href={"/search/camp_statement"}>
             <Button size="large" className={router.asPath == "/search/camp_statement" ?"active":"btn"}>
-            <i className="icon-camp"></i><Link href="/search/camp_statement"><a>Camp Statement</a></Link>
+            <i className="icon-camp"></i><a>Camp Statement</a>
             </Button>
+            </Link>
+            <Link href="/search/nickname">
             <Button size="large" className={router.asPath == "/search/nickname" ?"active":"btn"}>
             <Image
               id="nick_name"
@@ -38,8 +47,9 @@ export default function SearchSideBar() {
               src={filter}
               width={17}
               height={17}
-            /><Link href="/search/nickname"><a>Nickname</a></Link>
+            /><a>Nickname</a>
             </Button>
+            </Link>
           </div>
         )}
       </div>
