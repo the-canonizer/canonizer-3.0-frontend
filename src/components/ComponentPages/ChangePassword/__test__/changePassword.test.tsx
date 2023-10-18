@@ -3,7 +3,7 @@ import {
   render,
   screen,
   waitFor,
-  cleanup
+  cleanup,
 } from "../../../../utils/testUtils";
 import userEvent from "@testing-library/user-event";
 
@@ -155,28 +155,26 @@ describe("ChangePassword page", () => {
 jest.mock("src/network/api/userApi");
 
 afterEach(cleanup);
-describe('change password', () => {
-
+describe("change password", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.mock("src/network/api/userApi");
   });
 
-  it('click on save button', async () => {
+  it("click on save button", async () => {
     const { getAllByTestId } = render(<ChangePassword />);
     await waitFor(() => {
-      const old_password = getAllByTestId('currentpasssword')
-      fireEvent.change(old_password[0], { target: { value: "Test@123" } })
-      const newPassword = getAllByTestId('newpassword')
-      fireEvent.change(newPassword[0], { target: { value: "Tests@123" } })
-      const confirmpassword = getAllByTestId("confirmpassword")
-      fireEvent.change(confirmpassword[0], { target: { value: "Tests@123" } })
+      const old_password = getAllByTestId("currentpasssword");
+      fireEvent.change(old_password[0], { target: { value: "Test@123" } });
+      const newPassword = getAllByTestId("newpassword");
+      fireEvent.change(newPassword[0], { target: { value: "Tests@123" } });
+      const confirmpassword = getAllByTestId("confirmpassword");
+      fireEvent.change(confirmpassword[0], { target: { value: "Tests@123" } });
       changePassword.mockResolvedValue({
         status_code: 200,
       });
-      const save_button = getAllByTestId("submitButton")
-      fireEvent.click(save_button[0])
-    })
-  })
-
-})
+      const save_button = getAllByTestId("submitButton");
+      fireEvent.click(save_button[0]);
+    });
+  });
+});

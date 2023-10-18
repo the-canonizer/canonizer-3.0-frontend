@@ -35,11 +35,13 @@ const userSupportedCampsList = [
         title: "Title 1",
         delegate_nick_name_id: "2",
         topic_num: 12,
-        camps: [{
-          support_order: "Test order",
-          camp_link: "https://www.google.com/",
-          camp_name: "Agreement 1"
-        }]
+        camps: [
+          {
+            support_order: "Test order",
+            camp_link: "https://www.google.com/",
+            camp_name: "Agreement 1",
+          },
+        ],
       },
       {
         namespace_id: "2",
@@ -47,11 +49,13 @@ const userSupportedCampsList = [
         title: "Title 2",
         delegate_nick_name_id: "3",
         topic_num: 20,
-        camps: [{
-          support_order: "Test order 2",
-          camp_link: "https://www.google.com/",
-          camp_name: "Agreement 2"
-        }]
+        camps: [
+          {
+            support_order: "Test order 2",
+            camp_link: "https://www.google.com/",
+            camp_name: "Agreement 2",
+          },
+        ],
       },
       // {
       //   camp_name: "Agreement-2",
@@ -214,7 +218,9 @@ describe("User profile", () => {
         screen.getAllByText(userSupportedCampsList[0].private_status)
       ).toBeInTheDocument();
       expect(
-        screen.getAllByText(userSupportedCampsList[0].topic[0].camps[0].camp_name)
+        screen.getAllByText(
+          userSupportedCampsList[0].topic[0].camps[0].camp_name
+        )
       ).toBeInTheDocument();
       expect(
         screen.getAllByText(userSupportedCampsList[0].topic[0].namespace_id)
@@ -226,7 +232,9 @@ describe("User profile", () => {
         screen.getAllByText(userSupportedCampsList[0].topic[0].topic_num)
       ).toBeInTheDocument();
       expect(
-        screen.getAllByText(userSupportedCampsList[0].topic[1].camps[0].camp_name)
+        screen.getAllByText(
+          userSupportedCampsList[0].topic[1].camps[0].camp_name
+        )
       ).toBeInTheDocument();
       expect(
         screen.getAllByText(userSupportedCampsList[0].topic[1].namespace_id)

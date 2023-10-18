@@ -50,9 +50,9 @@ export default function HomeSideBar({
         filterObject?.asof == "bydate"
           ? "&asofdate=" + filterObject?.asofdate
           : ""
-      }&asof=${filterObject?.asof}&canon=${
-        filterObject?.namespace_id
-      }&filter=${campScoreValue || 10}&is_tree_open=${drawerIsVisible ? 0 : 1}${
+      }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}&filter=${
+        campScoreValue || 10
+      }&is_tree_open=${drawerIsVisible ? 0 : 1}${
         viewThisVersion ? "&viewversion=1" : ""
       }`,
       null,

@@ -149,7 +149,7 @@ const manageSupport = ["abc-name", "def-age"];
 jest.mock("next/router", () => ({
   useRouter: jest.fn(() => ({
     query: { manageSupport: manageSupport },
-    push: jest.fn() 
+    push: jest.fn(),
   })),
 }));
 // jest.mock("react-redux", () => ({
@@ -198,9 +198,7 @@ jest.mock("src/network/api/topicAPI", () => ({
   ),
 }));
 jest.mock("src/network/api/userApi", () => ({
-  addSupport: jest.fn(() =>
-    Promise.resolve({status_code: 200 ,data:[{}]})
-  ),
+  addSupport: jest.fn(() => Promise.resolve({ status_code: 200, data: [{}] })),
   removeSupportedCamps: jest.fn(() =>
     Promise.resolve({
       data: {
@@ -210,7 +208,7 @@ jest.mock("src/network/api/userApi", () => ({
     })
   ),
 }));
-jest.mock("src/components/common/supportRemovedModal", () =>  {
+jest.mock("src/components/common/supportRemovedModal", () => {
   return <div>Removed Modal</div>;
 });
 
@@ -599,23 +597,23 @@ it("should render card with title and content", () => {
   expect(cardContent).toBeInTheDocument();
 });
 it("should render card with title and contents", async () => {
-  const nicknamelist =[]
-  const manageSupportList=[]
-  const removeAll =jest.fn() 
-  const handleClose=jest.fn()
-  const checked = false
-  const setManageSupportList=jest.fn()
-  const parentSupportDataList=jest.fn()
-  const getSupportStatusData=""
-  const submitNickNameSupportCamps=jest.fn()
-  const cancelManageRoute=jest.fn()
-  const setSelectedtNickname=jest.fn()
-  const selectedtNickname=""
-  const submitButtonDisable= false
-  const setUpdatePostion= jest.fn()
-  const unableToFindCamp= false
+  const nicknamelist = [];
+  const manageSupportList = [];
+  const removeAll = jest.fn();
+  const handleClose = jest.fn();
+  const checked = false;
+  const setManageSupportList = jest.fn();
+  const parentSupportDataList = jest.fn();
+  const getSupportStatusData = "";
+  const submitNickNameSupportCamps = jest.fn();
+  const cancelManageRoute = jest.fn();
+  const setSelectedtNickname = jest.fn();
+  const selectedtNickname = "";
+  const submitButtonDisable = false;
+  const setUpdatePostion = jest.fn();
+  const unableToFindCamp = false;
 
-  const {getByTestId}=render(
+  const { getByTestId } = render(
     <ManageSupportUI
       nickNameList={nicknamelist}
       manageSupportList={manageSupportList}
@@ -639,7 +637,6 @@ it("should render card with title and contents", async () => {
   expect(inputEl).toBeInTheDocument();
   // expect(inputEl).toHaveAttribute("type", "text");
   fireEvent.click(inputEl);
-
 
   // await fireEvent.change(inputEl, { target: { value: "abc" } });
   // userEvent.selectOptions(getByTestId('select-option'), '<value>');
@@ -690,25 +687,25 @@ describe("Manage support", () => {
 
 describe("Test Case", () => {
   // beforeEach(()=>{
-    jest.mock("react-redux", () => ({
-      ...jest.requireActual("react-redux"),
-      useSelector: jest.fn().mockImplementation(() => {
-        return {
-          campRecord: {
-            camp_name: "ABC",
-          },
-          asof: "",
-          asofdate: "",
-          manageSupportUrlLink: "",
-          currentDelegatedSupportedClick: {},
-          currentGetCheckSupportExistsData: {
-            is_delegator: true
-          },
-          CurrentCheckSupportStatus: "",
-          manageSupportStatusCheck: true,
-        };
-      }),
-    }));
+  jest.mock("react-redux", () => ({
+    ...jest.requireActual("react-redux"),
+    useSelector: jest.fn().mockImplementation(() => {
+      return {
+        campRecord: {
+          camp_name: "ABC",
+        },
+        asof: "",
+        asofdate: "",
+        manageSupportUrlLink: "",
+        currentDelegatedSupportedClick: {},
+        currentGetCheckSupportExistsData: {
+          is_delegator: true,
+        },
+        CurrentCheckSupportStatus: "",
+        manageSupportStatusCheck: true,
+      };
+    }),
+  }));
   // })
   // it("click on cancel button", () => {
   //   const { getAllByText, container } = render(<ManageSupport></ManageSupport>);
@@ -723,8 +720,7 @@ describe("Test Case", () => {
   //   const submit_button = getAllByText("Submit")[0];
   //   fireEvent.click(submit_button);
   // });
-  
-  
+
   // it("click on clear all changes button", () => {
   //   const { getAllByText, container } = render(<ManageSupport></ManageSupport>);
   //   const clear_all_button = getAllByText("Clear all changes")[0];
@@ -747,29 +743,29 @@ describe("Test Case", () => {
 });
 describe("Test Cases", () => {
   // beforeEach(()=>{
-    jest.mock("react-redux", () => ({
-      ...jest.requireActual("react-redux"),
-      useSelector: jest.fn().mockImplementation(() => {
-        return {
-          campRecord: {
-            camp_name: "ABC",
-          },
-          asof: "",
-          asofdate: "",
-          manageSupportUrlLink: "",
-          currentDelegatedSupportedClick: {},
-          currentGetCheckSupportExistsData: {
-            is_delegator: true
-          },
-          CurrentCheckSupportStatus: "",
-          manageSupportStatusCheck: true,
-        };
-      }),
-    }));
+  jest.mock("react-redux", () => ({
+    ...jest.requireActual("react-redux"),
+    useSelector: jest.fn().mockImplementation(() => {
+      return {
+        campRecord: {
+          camp_name: "ABC",
+        },
+        asof: "",
+        asofdate: "",
+        manageSupportUrlLink: "",
+        currentDelegatedSupportedClick: {},
+        currentGetCheckSupportExistsData: {
+          is_delegator: true,
+        },
+        CurrentCheckSupportStatus: "",
+        manageSupportStatusCheck: true,
+      };
+    }),
+  }));
   // })
   // it("click on Submit button - Add or Remove Api", () => {
   //   const { getAllByText } = render(<ManageSupport></ManageSupport>);
   //   const submit_button = getAllByText("Submit")[0];
   //   fireEvent.click(submit_button);
   // });
-})
+});
