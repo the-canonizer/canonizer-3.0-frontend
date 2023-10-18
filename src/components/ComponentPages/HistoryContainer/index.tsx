@@ -167,12 +167,15 @@ function HistoryContainer() {
         page: count.current,
       };
       let res = await getHistoryApi(reqBody, count.current, historyOf);
-      if (!res || !res?.last_page) {
+      if (res?.status_code == 404) {
+        router?.push(router?.asPath?.replace("statement/history", "topic"));
+      }
+      if (!res?.data || !res?.data?.last_page) {
         setLoadMoreItems(false);
         setLoadingIndicator(false);
         return;
       }
-      if (count.current >= res?.last_page) {
+      if (count.current >= res?.data?.last_page) {
         setLoadMoreItems(false);
       } else {
         count.current = count.current + 1;

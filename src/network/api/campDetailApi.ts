@@ -322,7 +322,7 @@ export const getTopicActivityLogApi = async (reqBody) => {
     );
     return newsFeed;
   } catch (error) {
-    message.error(error.message);
+    // message.error(error.message);
     return error;
   }
 };
