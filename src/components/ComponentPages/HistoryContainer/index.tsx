@@ -167,8 +167,13 @@ function HistoryContainer() {
         page: count.current,
       };
       let res = await getHistoryApi(reqBody, count.current, historyOf);
+      console.log("rouetr =>>", router);
       if (res?.status_code == 404) {
-        router?.push(router?.asPath?.replace("statement/history", "topic"));
+        if (router?.pathname == "/topic/history/[...camp]") {
+          router?.push(router?.asPath?.replace("topic/history", "topic"));
+        } else if (router?.pathname == "/statement/history/[...camp]") {
+          router?.push(router?.asPath?.replace("statement/history", "topic"));
+        }
       }
       if (!res?.data || !res?.data?.last_page) {
         setLoadMoreItems(false);
