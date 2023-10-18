@@ -283,7 +283,11 @@ const ManageSupportUI = ({
   };
 
   // remove support popup added.
-  return currentGetCheckSupportExistsData.warning?.includes("You can not submit your support to this camp, as system is unable to find this camp.")?<My404/>:  getManageSupportLoadingIndicator ? (
+  return currentGetCheckSupportExistsData.warning?.includes(
+    "You can not submit your support to this camp, as system is unable to find this camp."
+  ) ? (
+    <My404 />
+  ) : getManageSupportLoadingIndicator ? (
     <CustomSkelton
       skeltonFor="manageSupportCard"
       bodyCount={15}
