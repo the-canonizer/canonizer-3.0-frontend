@@ -43,7 +43,7 @@ const TopicDetailsPage = ({
   useEffect(() => {
     dispatch(setNewsFeed(newsFeed));
     dispatch(setCurrentTopicRecord(topicRecord));
-    dispatch(setCurrentCampRecord(campRecord));
+    dispatch(setCurrentCampRecord(campRecord?.campData));
     dispatch(setCampStatement(campStatement));
     dispatch(setHistory(statementHistory));
     // dispatch(setCanonizedAlgorithms(canonizedAlgorithms));
@@ -51,8 +51,6 @@ const TopicDetailsPage = ({
     dispatch(setCurrentDate(current_date));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  console.log("campRecord", campRecord);
 
   return (
     <Layout>
