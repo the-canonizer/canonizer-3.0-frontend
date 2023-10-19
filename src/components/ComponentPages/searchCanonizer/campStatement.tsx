@@ -47,7 +47,9 @@ const CampStatementSearch = () => {
                   <>
                     <li>
                       <a href={jsonData[0][1].camp_link}>
-                        <h3 className={styles.statement_heading}>{jsonData[0][1].camp_name}</h3>
+                        <h3 className={styles.statement_heading}>
+                          {jsonData[0][1].camp_name}
+                        </h3>
                       </a>
                       <div className={styles.statement_date}>
                         <strong>Go live Time : </strong>
