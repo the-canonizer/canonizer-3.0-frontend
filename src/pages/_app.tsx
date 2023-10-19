@@ -1,11 +1,9 @@
 import React, { Fragment } from "react";
 import App, { AppContext, AppInitialProps } from "next/app";
 import { Provider } from "react-redux";
-import scriptLoader from "react-async-script-loader";
 import { CookiesProvider } from "react-cookie";
 
 import "antd/dist/antd.css";
-import "react-quill/dist/quill.snow.css";
 
 import "../../styles/globals.scss";
 import "../../styles/variables.less";
@@ -21,7 +19,7 @@ import { checkTopicCampExistAPICall } from "src/network/api/campDetailApi";
 
 class WrappedApp extends App<AppInitialProps> {
   public render() {
-    const { Component, pageProps, meta } = this.props as any;
+    const { Component, pageProps, meta, canonical_url } = this.props as any;
 
     return (
       <Fragment>
@@ -31,6 +29,7 @@ class WrappedApp extends App<AppInitialProps> {
               <HeadContentAndPermissionComponent
                 componentName={Component.displayName || Component.name}
                 metaContent={meta}
+                canonical={canonical_url}
               />
               <Component {...pageProps} />
             </ErrorBoundary>
@@ -73,6 +72,10 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
   } else {
     path = appContext.router?.query;
   }
+
+  let canonical_url =
+    process.env.NEXT_PUBLIC_BASE_URL + appContext?.router?.asPath;
+
   const req = {
     page_name:
       componentName == "SocialLoginCallbackPage" ? "Home" : componentName,
@@ -111,6 +114,7 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
    * [OLD Routes]
    * /topic.asp/120/8
    * /support_list.asp?nick_name_id=1
+   * /secure/support.asp?topic_num=97&camp_num=1
    * /thread.asp/23/13/4
    * /forum.asp/88/1
    * /topoc.asp/85
@@ -122,6 +126,8 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
    *
    */
 
+  const refererURL = appContext?.ctx?.req?.headers?.referer || "";
+
   const redirect = async (
     url: string,
     topic_num: number,
@@ -130,7 +136,15 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
     nick_id: any = "",
     thread_id: any = ""
   ) => {
-    const reqBody = { topic_num, camp_num, url, nick_id, thread_id, is_type };
+    const reqBody = {
+      topic_num,
+      camp_num,
+      url,
+      nick_id,
+      thread_id,
+      is_type,
+      refererURL,
+    };
     const checkRes = await checkTopicCampExistAPICall(reqBody);
 
     if (checkRes && checkRes?.status_code === 200 && checkRes?.data?.is_exist) {
@@ -176,6 +190,35 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
           null,
           "nickname",
           +nickname
+        );
+      }
+    } else if (aspath?.includes("support.asp")) {
+      const nickname = appContext.ctx.query?.nick_name_id,
+        topic_num = appContext.ctx.query?.topic_num,
+        camp_num = appContext.ctx.query?.camp_num || "1",
+        canon = appContext.ctx.query?.nick_name_id || 1;
+
+      if (nickname) {
+        returnData = await redirect(
+          "/user/supports/" +
+            nickname +
+            "?topicnum=" +
+            topic_num +
+            "&campnum=" +
+            camp_num +
+            "&canon=" +
+            canon,
+          +topic_num,
+          +camp_num,
+          "nickname",
+          +nickname
+        );
+      } else {
+        returnData = await redirect(
+          `/topic/${topic_num}/${camp_num}`,
+          +topic_num,
+          +camp_num,
+          "topic"
         );
       }
     } else if (
@@ -269,10 +312,10 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
     appContext.ctx.res.end();
   }
 
-  return { ...appProps, meta: metaData, returnURL: returnData };
+  return { ...appProps, meta: metaData, returnURL: returnData, canonical_url };
 };
 
-const googleAPIKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
+// const googleAPIKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
 //export default wrapper.withRedux(MyApp);
 // export default scriptLoader([
 //   `https://maps.googleapis.com/maps/api/js?key=${googleAPIKey}&libraries=places`,

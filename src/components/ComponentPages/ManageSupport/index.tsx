@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 // import ManageSupportUI from "./ManageSupportUI";
 import { message } from "antd";
-import styles from "./ManageSupportUI/ManageSupport.module.scss";
 import CampInfoBar from "../TopicDetails/CampInfoBar";
 import dynamic from "next/dynamic";
 import {
@@ -23,7 +22,6 @@ import {
   setManageSupportStatusCheck,
 } from "src/store/slices/campDetailSlice";
 import moment from "moment";
-import Sidebar from "../Home/SideBarNoFilter";
 
 const ManageSupportUI = dynamic(async () => await import("./ManageSupportUI"), {
   ssr: false,
@@ -84,7 +82,6 @@ const ManageSupport = () => {
         state.supportTreeCard.currentDelegatedSupportedClick,
     })
   );
-
   const { currentGetCheckSupportExistsData } = useSelector(
     (state: RootState) => ({
       currentGetCheckSupportExistsData:
@@ -110,10 +107,12 @@ const ManageSupport = () => {
     topic_num: +router?.query?.manageSupport?.[0]?.split("-")[0],
     camp_num: +router?.query?.manageSupport?.[1]?.split("-")[0],
   };
+  const getDelegateId = router.asPath?.substring(
+    router.asPath.lastIndexOf("_") + 1
+  );
 
-  if (CheckDelegatedOrDirect && router.query.manageSupport[1]?.split("_")?.[1])
-    reqBodyData.delegated_nick_name_id =
-      router.query.manageSupport[1]?.split("_")?.[1];
+  if (CheckDelegatedOrDirect && getDelegateId)
+    reqBodyData.delegated_nick_name_id = getDelegateId;
   const { campRecord } = useSelector((state: RootState) => ({
     campRecord: state?.topicDetails?.currentCampRecord,
   }));
@@ -121,7 +120,7 @@ const ManageSupport = () => {
     let reqBodyCAmpRecord = reqBody;
     reqBodyCAmpRecord.as_of = "default";
     const res = await getCurrentCampRecordApi(reqBodyCAmpRecord);
-    campRef.current = res;
+    campRef.current = res?.campData;
   };
 
   //prevent user to open this page if camp archive is true
@@ -152,6 +151,7 @@ const ManageSupport = () => {
         // }
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserAuthenticated, reqBodyData.topic_num, campRecord?.camp_name]);
   const GetCheckStatusData = async (campReff: any) => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
@@ -239,8 +239,8 @@ const ManageSupport = () => {
   //const camp_Name = router?.query?.manageSupport?.at(1)?.split(/-(.*)/s);
 
   //replace use to - change to space
-  const camp_Name_ = campRecord?.camp_name;
-  const CampName = camp_Name_;
+  // const camp_Name_ = campRecord?.camp_name;
+  // const CampName = camp_Name_;
   const campSupportPath = router?.asPath?.replace("/support/", "/topic/");
   const body = { topic_num: topicNum };
   const getActiveSupportTopicList = async (
@@ -355,11 +355,9 @@ const ManageSupport = () => {
       "/topic/"
     );
     if (manageSupportPath || manageSupportPath1) {
-      router?.push({
-        pathname: CheckDelegatedOrDirect
-          ? manageSupportPath
-          : manageSupportPath1,
-      });
+      router?.push(
+        CheckDelegatedOrDirect ? manageSupportPath : manageSupportPath1
+      );
     }
   };
 
@@ -476,7 +474,7 @@ const ManageSupport = () => {
         (values) => selectedtNickname == values.id
       );
       let nickNameIDValue = nickNameID[0].id;
-      let delegated_user_id = router.query.manageSupport[1]?.split("_")?.[1];
+      let delegated_user_id = getDelegateId;
 
       const addDelegatedSupport = {
         nick_name_id: nickNameIDValue,
@@ -487,9 +485,7 @@ const ManageSupport = () => {
       if (res && res.status_code == 200) {
         message.success(res.message);
         //After Submit page is redirect to previous
-        router?.push({
-          pathname: manageSupportPath,
-        });
+        router?.push(manageSupportPath);
       } else {
         setSubmitButtonDisable(false);
       }
@@ -498,9 +494,7 @@ const ManageSupport = () => {
       if (res && res.status_code == 200) {
         message.success(res.message);
         //After Submit page is redirect to previous
-        router?.push({
-          pathname: manageSupportPath,
-        });
+        router?.push(manageSupportPath);
       } else {
         setSubmitButtonDisable(false);
       }

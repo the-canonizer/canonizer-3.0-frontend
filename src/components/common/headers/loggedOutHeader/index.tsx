@@ -17,7 +17,7 @@ import TopicCreationBTN from "../TopicCreationBTN";
 
 const { Header } = Layout;
 
-const LoggedOutHeader = ({}: any) => {
+const LoggedOutHeader = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -38,7 +38,7 @@ const LoggedOutHeader = ({}: any) => {
     }
   };
 
-  const openRegistrationModal = () => router.push("registration");
+  const openRegistrationModal = () => router.push("/registration");
 
   return (
     <React.Fragment>

@@ -1,3 +1,4 @@
+import React from "react";
 import { useDispatch } from "react-redux";
 import {
   getCanonizedCampStatementApi,
@@ -14,10 +15,7 @@ import {
   setCurrentCampRecord,
 } from "../../store/slices/campDetailSlice";
 import { setHistory } from "../../store/slices/campDetailSlice";
-import { setCanonizedAlgorithms } from "../../store/slices/homePageSlice";
 import Layout from "src/hoc/layout";
-
-import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 
 import { getHistoryApi } from "../../network/api/history";
 
@@ -25,6 +23,7 @@ import TopicDetails from "src/components/ComponentPages/TopicDetails";
 import { setCurrentDate } from "src/store/slices/filtersSlice";
 import { useEffect, useRef } from "react";
 import { formatTheDate } from "src/utils/generalUtility";
+import DataNotFound from "@/components/ComponentPages/DataNotFound";
 
 // import { wrapper } from "src/store";
 
@@ -37,29 +36,34 @@ const TopicDetailsPage = ({
   statementHistory,
   tree,
   serverCall,
-}) => {
+}: any) => {
   const serverSideCall = useRef(serverCall || false);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(setNewsFeed(newsFeed));
     dispatch(setCurrentTopicRecord(topicRecord));
-    dispatch(setCurrentCampRecord(campRecord));
+    dispatch(setCurrentCampRecord(campRecord?.campData));
     dispatch(setCampStatement(campStatement));
     dispatch(setHistory(statementHistory));
     // dispatch(setCanonizedAlgorithms(canonizedAlgorithms));
-    dispatch(setTree([tree] || []));
+    dispatch(setTree(tree?.status_code == 200 ? [tree?.treeData] : []));
     dispatch(setCurrentDate(current_date));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <Layout>
-      <TopicDetails serverSideCall={serverSideCall} />
+      {tree?.status_code == 404 || campRecord?.status_code == 404 ? (
+        <DataNotFound isTopic={tree?.status_code == 404 ? true : false} />
+      ) : (
+        <TopicDetails serverSideCall={serverSideCall} />
+      )}
     </Layout>
   );
 };
 
-export async function getServerSideProps({ req, res, resolvedUrl, query }) {
+export async function getServerSideProps({ req, query }) {
   let topicNum = +query?.camp[0]?.split("-")[0];
   let campNum = +(query?.camp[1]?.split("-")[0] ?? 1);
 
@@ -72,7 +76,7 @@ export async function getServerSideProps({ req, res, resolvedUrl, query }) {
       query?.asofdate && query?.asof == "bydate"
         ? parseFloat(query?.asofdate)
         : Date.now() / 1000,
-    algorithm: query?.algo ?? "blind_popularity",
+    algorithm: query?.algo || req.cookies["canAlgo"] || "blind_popularity",
     update_all: 1,
     fetch_topic_history: query?.viewversion == "1" ? 1 : null,
   };
@@ -123,7 +127,7 @@ export async function getServerSideProps({ req, res, resolvedUrl, query }) {
       topicRecord: topicRecord || {},
       campRecord: campRecord || {},
       campStatement: campStatement || [],
-      statementHistory: statementHistory || {},
+      statementHistory: statementHistory?.data || {},
       tree: tree || [],
       serverCall: true,
     },
@@ -135,7 +139,6 @@ export async function getServerSideProps({ req, res, resolvedUrl, query }) {
 ////////////////////////////////////////////
 
 // export const getServerSideProps = wrapper.getServerSideProps(({ store }) => {
-//   console.log("/..///////////////////////store", store.getState());
 //   const reqBody = {
 //     topic_num: 88,
 //     asofdate: 1644323333,

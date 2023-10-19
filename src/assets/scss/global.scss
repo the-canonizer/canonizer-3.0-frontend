@@ -412,6 +412,19 @@ del.diffmod img {
           transform: rotate(45deg) translate(25px, 25px);
         }
       }
+      &.isDrawerOpen {
+        transition: all 0.3s;
+        z-index: 100000;
+        left: 753px;
+        .arrow {
+          bottom: 0;
+          transform: translateX(-50%) rotate(180deg);
+        }
+
+        @media screen and (max-width: 767px) {
+          left: 95%;
+        }
+      }
     }
   }
 
@@ -492,6 +505,7 @@ del.diffmod img {
     }
   }
 }
+
 .treeDrawer {
   .ant-drawer-header {
     background-color: #f1f1f1;
@@ -536,6 +550,15 @@ del.diffmod img {
   @media screen and (max-width: 767px) {
     [class="ant-drawer-content-wrapper"] {
       max-width: 90%;
+    }
+  }
+  &.closeIconHide {
+    .ant-drawer-header {
+      .ant-drawer-close {
+        display: none;
+        opacity: 0;
+        visibility: hidden;
+      }
     }
   }
 }
@@ -2520,7 +2543,7 @@ div[role="option"]::before {
 .evntLineActivity {
   max-height: 400px;
   overflow-x: hidden;
-  height: auto!important;
+  height: auto !important;
 }
 
 .header-bg-color-change {
@@ -2614,12 +2637,19 @@ div[role="option"]::before {
     margin-right: auto;
 
     @media screen and (min-width: 768px) {
-      min-width: 170px;
-      margin-left: 20px;
+      margin-left: 15px;
+      max-width: 100%;
+      width: 100%;
     }
 
     @media screen and (max-width: 767px) {
       width: 100%;
+    }
+
+    @supports (-webkit-touch-callout: none) {
+      @media screen and (min-width: 768px) {
+        min-width: 300px;
+      }
     }
   }
 
@@ -2696,6 +2726,52 @@ div[role="option"]::before {
     font-weight: 400 !important;
   }
 }
+.leftSideBar_Card  
+{
+  .search_tabs
+  {
+      button 
+      {
+          background: #F3F4F5;
+          border-radius: 2px;
+          margin-bottom: 7px;
+          border: 1px solid #F3F4F5;
+          justify-content: flex-start !important;
+          font-size: 14px;
+          letter-spacing: 0px;
+          color: #1C1B24;
+          opacity: 1;
+          i 
+          {
+            color: #A2ACB9;
+            font-size: 15px;
+          }
+          a 
+          {
+            color: #1c1b24;
+          }
+
+          &:hover,  &.active
+          {
+            background-color: #4484CE;
+            color: #fff;
+            i 
+            {
+              color: #fff;
+            }
+            a 
+            {
+              color: #fff;
+
+            }
+          }
+      }
+  }
+  
+}
+.nick_name_icon{
+  background-color: red;
+}
 
 .newfeedCardSpinner {
   .topicDetailsCollapse.news-feeds {
@@ -2753,4 +2829,11 @@ div[role="option"]::before {
   @media screen and (max-width: 767px) {
     display: block !important;
   }
+}
+
+.change-icon {
+  width: 20px;
+  position: relative;
+  left: 6px;
+  top: -4px;
 }

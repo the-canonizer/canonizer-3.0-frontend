@@ -598,4 +598,15 @@ export default class UserRequest extends Request {
       authToken
     );
   }
+
+  static CanonizerGlobalSearch(reqbody, authToken) {
+    return new Request(
+      K.Network.URL.canonizerGlobalSearch + reqbody,
+      K.Network.Method.GET,
+      {},
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
 }

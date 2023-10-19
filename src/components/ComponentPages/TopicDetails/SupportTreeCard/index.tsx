@@ -20,7 +20,7 @@ import CustomButton from "../../../common/button";
 import { RootState } from "src/store";
 import isAuth from "../../../../hooks/isUserAuthenticated";
 import K from "../../../../constants";
-import { setCurrentCampRecord } from "../../../../store/slices/campDetailSlice";
+// import { setCurrentCampRecord } from "../../../../store/slices/campDetailSlice";
 import { setDelegatedSupportClick } from "../../../../store/slices/supportTreeCard";
 import CustomSkelton from "../../../common/customSkelton";
 import {
@@ -30,7 +30,7 @@ import {
 import { getNickNameList } from "../../../../network/api/userApi";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
 
-const { Paragraph, Title } = Typography;
+const { Paragraph } = Typography;
 const { Panel } = Collapse;
 const { TreeNode } = Tree;
 
@@ -73,7 +73,6 @@ const SupportTreeCard = ({
     campRecord,
     filterData,
     algorithms,
-    totalScoreForSupportTree,
   } = useSelector((state: RootState) => ({
     currentGetCheckSupportExistsData:
       state.topicDetails.currentGetCheckSupportExistsData,
@@ -82,9 +81,7 @@ const SupportTreeCard = ({
     campRecord: state?.topicDetails?.currentCampRecord,
     filterData: state?.filters?.filterObject,
     algorithms: state.homePage?.algorithms,
-    totalScoreForSupportTree: state?.supportTreeCard?.totalScoreForSupportTree,
   }));
-
   const { isUserAuthenticated } = isAuth();
 
   const router = useRouter();
@@ -97,10 +94,12 @@ const SupportTreeCard = ({
 
   useEffect(() => {
     const filteredAlgo = algorithms?.filter(
-      (a: { algorithm_key: string }) => a.algorithm_key === router?.query?.algo
+      (a: { algorithm_key: string }) =>
+        a.algorithm_key === (filterData?.algorithm || router?.query?.algo)
     );
+
     if (filteredAlgo?.length) setCurrentAlgo(filteredAlgo[0]?.algorithm_label);
-  }, [algorithms, router?.query?.algo]);
+  }, [algorithms, router?.query?.algo, filterData?.algorithm]);
 
   const dispatch = useDispatch();
   const arr = [];
@@ -117,11 +116,15 @@ const SupportTreeCard = ({
     if (isUserAuthenticated) {
       getNickNameListData();
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserAuthenticated]);
 
   useEffect(() => {
     dispatch(setDelegatedSupportClick({ delegatedSupportClick: false }));
     dispatch(setManageSupportStatusCheck(false));
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //Delegate Support Camp
@@ -150,6 +153,8 @@ const SupportTreeCard = ({
     if (campSupportingTree?.length > 0) {
       getDelegateNicknameId(campSupportingTree);
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [campSupportingTree]);
 
   const getDelegateNicknameId = (delegates) => {
@@ -178,6 +183,7 @@ const SupportTreeCard = ({
       //isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
       if ((!loadMore && index < supportLength) || loadMore) {
         if (data[item].delegates) {
+          /* eslint-disable */
           const linkss = (
             <Link
               href={{
@@ -190,6 +196,8 @@ const SupportTreeCard = ({
               }}
             ></Link>
           );
+          /* eslint-enable */
+
           return (
             <>
               <TreeNode
@@ -211,7 +219,7 @@ const SupportTreeCard = ({
                           query: {
                             topicnum: topicRecord?.topic_num,
                             campnum: topicRecord?.camp_num,
-                            canon: topicRecord?.namespace_id,
+                            canon: router?.query?.canon,
                           },
                         }}
                       >
@@ -234,9 +242,9 @@ const SupportTreeCard = ({
                       {isUserAuthenticated ? (
                         !userNickNameList.includes(data[item].nick_name_id) ? (
                           <Link
-                            href={{
-                              pathname: `/support/${topicRecord.topic_num}-${topicRecord.topic_name}/${topicRecord.camp_num}-${campRecord?.camp_name}_${data[item].nick_name_id}`,
-                            }}
+                            href={
+                              manageSupportPath + `_${data[item].nick_name_id}`
+                            }
                           >
                             {loggedInUserDelegate ||
                             (loggedInUserChild &&
@@ -379,7 +387,7 @@ const SupportTreeCard = ({
               {campSupportingTree && renderTreeNodes(campSupportingTree)}
             </Tree>
           ) : (
-            <p>No Camp Tree Found</p>
+            <p>No supporters of this camp</p>
           )}
 
           {campSupportingTree?.length > supportLength && (

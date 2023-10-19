@@ -29,7 +29,7 @@ import { RootState } from "../../../../store";
 import K from "../../../../constants";
 
 import {
-  getHistoryApi,
+  // getHistoryApi,
   getChangeSupporters,
 } from "../../../..//network/api/history";
 
@@ -49,9 +49,6 @@ const { Title } = Typography;
 
 import { ExclamationCircleFilled } from "@ant-design/icons";
 function HistoryCollapse({
-  ifIamSupporter,
-  ifSupportDelayed,
-  ifIAmExplicitSupporter,
   collapseKeys,
   userNickNameData,
   topicNamespaceId,
@@ -64,6 +61,7 @@ function HistoryCollapse({
   setIsTreesApiCallStop,
   campHistoryItems,
   callManageCampApi,
+  parentArchived,
 }: any) {
   const router = useRouter();
   const [commited, setCommited] = useState(false);
@@ -88,7 +86,6 @@ function HistoryCollapse({
       })
     );
   };
-
   const { asofdate, asof, algorithm, namespace_id } = useSelector(
     (state: RootState) => ({
       asofdate: state.filters?.filterObject?.asofdate,
@@ -411,16 +408,28 @@ function HistoryCollapse({
                     type="primary"
                     id={`submit-update-${campStatement?.id}`}
                     className={`mr-3 ${styles.campUpdateButton}`}
-                    onClick={() =>
-                      campHistoryItems[0]?.is_archive == 1 &&
-                      campHistoryItems[0]?.status == "live"
-                        ? callManageCampApi()
-                        : submitUpdateRedirect(historyOf)
-                    }
+                    onClick={() => {
+                      campStatement?.is_archive == 1 &&
+                      campStatement?.status == "live"
+                        ? !isUserAuthenticated
+                          ? router?.push({
+                              pathname: "/login",
+                              query: {
+                                returnUrl: `/manage/${historyOf}/${campStatement?.id}`,
+                              },
+                            })
+                          : callManageCampApi()
+                        : submitUpdateRedirect(historyOf);
+                    }}
                     disabled={
-                      campHistoryItems?.at(0)?.status == "in_review" ||
-                      (campHistoryItems?.at(0)?.is_archive == 1 &&
+                      (campHistoryItems[0]?.status == "in_review" &&
+                        !commited &&
+                        !!campHistoryItems[0]?.grace_period) ||
+                      (campHistoryItems?.at(0)?.status == "live" &&
+                        campHistoryItems?.at(0)?.is_archive == 1 &&
                         campStatement.status == "old") ||
+                      (parentArchived == 1 &&
+                        campHistoryItems[0]?.camp_num != 1) ||
                       (campHistoryItems?.at(0)?.is_archive == 1 &&
                         campHistoryItems?.at(0)?.status == "live" &&
                         campStatement.status == "objected")
@@ -784,6 +793,7 @@ const Timer = ({ unixTime, setCommited }: any) => {
   useEffect(() => {
     timeall();
     didMount.current = true;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [unixTime]);
 
   return (

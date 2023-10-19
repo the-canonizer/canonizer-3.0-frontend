@@ -26,13 +26,11 @@ const { Panel } = Collapse;
 const { Option } = Select;
 
 import styles from "./topicListFilter.module.scss";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
 import K from "../../../constants";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
-// import { showCreateCampButton } from "src/utils/generalUtility";
 import FullScoreCheckbox from "../../ComponentPages/FullScoreCheckbox";
-import useAuthentication from "src/hooks/isUserAuthenticated";
 import ArchivedCampCheckBox from "src/components/ComponentPages/ArchivedCampCheckBox";
 import CampTreeCard from "src/components/ComponentPages/TopicDetails/CampTreeCard";
 
@@ -69,51 +67,22 @@ const asContent = (
   </>
 );
 
-// function range(start, end) {
-//   const result = [];
-//   for (let i = start; i < end; i++) {
-//     result.push(i);
-//   }
-//   return result;
-// }
-
-// function disabledDate(current) {
-//   // Can not select days before today and today
-//   return current && current < moment().endOf("day");
-// }
-
-// function disabledDateTime() {
-//   return {
-//     disabledHours: () => range(0, 24).splice(4, 20),
-//     disabledMinutes: () => range(30, 60),
-//     disabledSeconds: () => [55, 56],
-//   };
-// }
-
 const FilterWithTree = ({
-  onCreateCamp = () => {},
   getTreeLoadingIndicator,
   scrollToCampStatement,
   setTotalCampScoreForSupportTree,
   setSupportTreeForCamp,
   backGroundColorClass,
 }: any) => {
-  const isAuth = useAuthentication();
-
   const [isDatePicker, setIsDatePicker] = useState(false);
-  // const [isPanelCollapse, setIsPanelCollapse] = useState(false);
 
   const [datePickerValue, setDatePickerValue] = useState(null);
 
   const dispatch = useDispatch();
   const router = useRouter();
-  const [isCampBtnVisible, setIsCampBtnVisible] = useState(false);
 
-  const campRoute = () => {
-    router?.push("/create/topic");
-  };
-
-  const [cookies, setCookie] = useCookies(["canAlgo", "asof", "asofDate"]);
+  // eslint-disable-next-line no-unused-vars
+  const [cookie, setCookie] = useCookies(["canAlgo", "asof", "asofDate"]);
 
   const {
     algorithms,
@@ -121,30 +90,24 @@ const FilterWithTree = ({
     selectedAlgorithm,
     selectedAsOf,
     filteredAsOfDate,
-    currentCampNode,
-    tree,
     loading,
     current_date_filter,
-    campExist,
     filterObject,
     viewThisVersion,
+    campScoreValue,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filteredScore: state?.filters?.filterObject?.filterByScore,
     selectedAlgorithm: state?.filters?.filterObject?.algorithm,
     selectedAsOf: state?.filters?.filterObject?.asof,
     filteredAsOfDate: state?.filters?.filterObject?.asofdate,
-    currentCampNode: state?.filters?.selectedCampNode,
-    tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
     loading: state?.loading?.loading,
     current_date_filter: state?.filters?.current_date,
-    campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
     filterObject: state?.filters?.filterObject,
     viewThisVersion: state?.filters?.viewThisVersionCheck,
+    campScoreValue: state?.filters?.campWithScoreValue,
   }));
-  const { campRecord } = useSelector((state: RootState) => ({
-    campRecord: state?.topicDetails?.currentCampRecord,
-  }));
+
   const [value, setValue] = useState(
     selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3
   );
@@ -155,11 +118,6 @@ const FilterWithTree = ({
   );
   const [isLoading, setIsLoading] = useState(loading);
   const didMount = useRef(false);
-
-  // /////////////////////////////////////////////////////////////////////////
-  // Discussion required on this functionality after that I will remove or //
-  //                        uncomment bellow code                         //
-  // //////////////////////////////////////////////////////////////////////
 
   function removeEmptyValues(obj) {
     const result = {};
@@ -174,7 +132,7 @@ const FilterWithTree = ({
   }
   useEffect(() => {
     if (didMount.current) {
-      if (history.pushState) {
+      if (history?.replaceState) {
         const queryParams = `?score=${filterObject?.filterByScore}&algo=${
           filterObject?.algorithm
         }${
@@ -183,15 +141,55 @@ const FilterWithTree = ({
             : ""
         }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
           viewThisVersion ? "&viewversion=1" : ""
-        }`;
+        }&filter=${campScoreValue || 10}`;
         var newurl =
           window.location.protocol +
           "//" +
           window.location.host +
           window.location.pathname +
           queryParams;
-        window.history.pushState({ path: newurl }, "", newurl);
+
+        // console.log(window.location.href, "<<<<<<<<< filter tree");
+
+        // window.history.replaceState({ path: newurl }, "", newurl);
+
+        Router.replace(newurl, null, { shallow: true });
+
+        // console.log(window.location.href, "<<<<<<<<< filter tree");
       }
+    }
+  }, [
+    didMount.current,
+    filterObject?.filterByScore,
+    filterObject?.algorithm,
+    filterObject?.asof,
+    filterObject?.asofdate,
+    filterObject?.namespace_id,
+    viewThisVersion,
+  ]);
+
+  useEffect(() => {
+    if (didMount.current) {
+      // if (history?.replaceState) {
+      // const queryParams = `?score=${filterObject?.filterByScore}&algo=${
+      //   filterObject?.algorithm
+      // }${
+      //   filterObject?.asof == "bydate"
+      //     ? "&asofdate=" + filterObject?.asofdate
+      //     : ""
+      // }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
+      //   viewThisVersion ? "&viewversion=1" : ""
+      // }`;
+      // var newurl =
+      //   window.location.protocol +
+      //   "//" +
+      //   window.location.host +
+      //   window.location.pathname +
+      //   queryParams;
+      // console.log(window.location.href, "<<<<<<<<< filter tree");
+      // window.history.replaceState({ path: newurl }, "", newurl);
+      // console.log(window.location.href, "<<<<<<<<< filter tree");
+      // }
     } else {
       let newObject = removeEmptyValues({
         filterByScore: router.query.score || `${filteredScore}` || "0",
@@ -205,22 +203,16 @@ const FilterWithTree = ({
       dispatch(setFilterCanonizedTopics(newObject));
       didMount.current = true;
     }
-  }, [filterObject]);
+  }, []);
 
   useEffect(() => {
     setIsLoading(loading);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
   useEffect(() => {
     setValue(selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3);
   }, [selectedAsOf]);
-
-  useEffect(() => {
-    if (router?.pathname.includes("/topic/")) {
-      // setIsPanelCollapse(true);
-      setIsCampBtnVisible(true);
-    }
-  }, [router?.pathname]);
 
   useEffect(() => {
     setSelectedAsOFDate(filteredAsOfDate);
@@ -318,12 +310,12 @@ const FilterWithTree = ({
                 second: moment().second(),
               })
             );
-            setCookie("asofDate", JSON.stringify(Date.parse(dateValue) / 1000), {
-              path: "/",
-            });
-            setCookie("asof", "bydate", {
-              path: "/",
-            });
+      setCookie("asofDate", JSON.stringify(Date.parse(dateValue) / 1000), {
+        path: "/",
+      });
+      setCookie("asof", "bydate", {
+        path: "/",
+      });
       dispatch(
         setFilterCanonizedTopics({
           asofdate: Date.parse(dateValue) / 1000,
@@ -398,10 +390,15 @@ const FilterWithTree = ({
                     )[0]?.algorithm_label
                   }
                   disabled={loading}
+                  id="algo_dropdown"
                 >
                   {algorithms?.map((algo) => {
                     return (
-                      <Option key={algo.id} value={algo.algorithm_key}>
+                      <Option
+                        key={algo.id}
+                        value={algo.algorithm_key}
+                        id={"algo_drop_item_" + algo?.id}
+                      >
                         {algo.algorithm_label}
                       </Option>
                     );
@@ -424,6 +421,7 @@ const FilterWithTree = ({
                     onChange={filterOnScore}
                     value={inputValue}
                     disabled={loading}
+                    id="filter_input"
                   />
                   <Popover
                     content={infoContent}
@@ -459,6 +457,7 @@ const FilterWithTree = ({
                     value={value}
                     disabled={loading}
                     className={styles.radioBtns}
+                    id="radio_group"
                   >
                     <Space direction="horizontal" style={{ gap: "12px" }}>
                       <Radio
@@ -477,6 +476,7 @@ const FilterWithTree = ({
                             })
                           );
                         }}
+                        id="review_input"
                       >
                         Include review
                       </Radio>
@@ -495,6 +495,7 @@ const FilterWithTree = ({
                             })
                           );
                         }}
+                        id="default_input"
                       >
                         Default
                       </Radio>
@@ -505,6 +506,7 @@ const FilterWithTree = ({
                           dispatch(setViewThisVersion(false));
                           handleAsOfClick();
                         }}
+                        id="as_input"
                       >
                         As of date
                       </Radio>
@@ -527,6 +529,7 @@ const FilterWithTree = ({
                         current &&
                         current > moment(current_date_filter).endOf("day")
                       }
+                      id="date_input"
                     />
                     <Popover
                       content={""}

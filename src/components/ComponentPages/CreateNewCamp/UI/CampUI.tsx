@@ -19,7 +19,7 @@ const CreateNewCampUI = ({
   onCheckboxChange,
   onParentCampChange,
   isLoading,
-}) => {
+}: any) => {
   const router = useRouter();
 
   //  post section end

@@ -76,6 +76,7 @@ describe("GoogleAnalyticScripts", () => {
     );
   });
 
+  /* eslint-disable */
   it("should call gtag.pageview on route change", () => {
     const events = { on: jest.fn(), off: jest.fn() };
     useRouter.mockReturnValueOnce({ events });
@@ -90,4 +91,6 @@ describe("GoogleAnalyticScripts", () => {
 
     expect(gtag.pageview).toHaveBeenCalledWith("/new-route");
   });
+
+  /* eslint-enable */
 });

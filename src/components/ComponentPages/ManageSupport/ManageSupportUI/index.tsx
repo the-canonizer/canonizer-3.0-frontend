@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Card, Tag, Select, Button, Col, Modal, Spin, Form } from "antd";
+import { Card, Tag, Select, Button, Col, Form } from "antd";
 import { DraggableArea } from "react-draggable-tags";
 import { CloseCircleOutlined } from "@ant-design/icons";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import Link from "next/link";
 
 import styles from "../ManageSupportUI/ManageSupport.module.scss";
 
 import messages from "../../../../messages";
 import { RootState } from "src/store";
 import { addSupport, removeSupportedCamps } from "src/network/api/userApi";
-import { GetActiveSupportTopic } from "src/network/api/topicAPI";
+// import { GetActiveSupportTopic } from "src/network/api/topicAPI";
 import CustomSkelton from "src/components/common/customSkelton";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
+import My404 from "../../404";
 
 const { placeholders } = messages;
 
@@ -34,38 +34,30 @@ const ManageSupportUI = ({
   submitButtonDisable,
   setUpdatePostion,
   unableToFindCamp,
-  CurrentCheckSupportStatus,
   getManageSupportLoadingIndicator,
   setGetManageSupportLoadingIndicator,
   topicSupportListData,
 }: any) => {
   const [tagsArrayList, setTagsArrayList] = useState([]);
   const [isTagDragged, setIsTagDragged] = useState(false);
-  const [isSupportTreeCardModal, setIsSupportTreeCardModal] = useState(false);
-  const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
-  const [topicSupportList, setTopicSupportList] = useState([]);
+  // const [isSupportTreeCardModal, setIsSupportTreeCardModal] = useState(false);
+  // const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
+  // const [topicSupportList, setTopicSupportList] = useState([]);
   const [removeCampsSupport, setRemoveCampsSupport] = useState(false);
 
-  const {
-    currentDelegatedSupportedClick,
-    topicRecord,
-    campRecord,
-    currentGetCheckSupportExistsData,
-  } = useSelector((state: RootState) => ({
-    currentDelegatedSupportedClick:
-      state.supportTreeCard.currentDelegatedSupportedClick,
-    topicRecord: state?.topicDetails?.currentTopicRecord,
-    currentGetCheckSupportExistsData:
-      state.topicDetails.currentGetCheckSupportExistsData,
-    campRecord: state?.topicDetails?.currentCampRecord,
-  }));
+  const { currentDelegatedSupportedClick, currentGetCheckSupportExistsData } =
+    useSelector((state: RootState) => ({
+      currentDelegatedSupportedClick:
+        state.supportTreeCard.currentDelegatedSupportedClick,
+      currentGetCheckSupportExistsData:
+        state.topicDetails.currentGetCheckSupportExistsData,
+    }));
 
-  const dispatch = useDispatch();
   const router = useRouter();
 
   const [removeForm] = Form.useForm();
-  const openPopup = () => setIsSupportTreeCardModal(true);
-  const closePopup = () => setIsSupportTreeCardModal(false);
+  // const openPopup = () => setIsSupportTreeCardModal(true);
+  const closePopup = () => {};
 
   const filteredList = manageSupportList.map((obj: any, index: any) => {
     return {
@@ -105,7 +97,7 @@ const ManageSupportUI = ({
     camp_num: +router?.query?.manageSupport[1]?.split("-")[0],
   };
 
-  const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
+  // const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
 
   const findManageOrder = filteredList.findIndex((obj: any) => {
     return obj.camp_num === reqBodyData.camp_num;
@@ -118,7 +110,7 @@ const ManageSupportUI = ({
         : manageSupportList[manageSupportList.length - 1]?.support_order
       : 1;
 
-  const body = { topic_num: topicNum };
+  // const body = { topic_num: topicNum };
 
   const nickNameloop = nickNameList.filter((nickName) => {
     return selectedtNickname == nickName.id;
@@ -161,7 +153,6 @@ const ManageSupportUI = ({
     if (isDropdownValid?.errorFields) {
       return;
     }
-    console.log("removeCampsApi-is-valid", isDropdownValid, formData);
     setGetManageSupportLoadingIndicator(true);
     const supportedCampsRemove = {
       topic_num: reqBodyData.topic_num,
@@ -178,11 +169,11 @@ const ManageSupportUI = ({
     // }
     const response = await removeSupportedCamps(supportedCampsRemove);
     if (response && response.status_code == 200) {
-      let manageSupportPath = router?.asPath.replace("/support/", "/topic/");
-      if (manageSupportPath.lastIndexOf("_") > -1)
+      let manageSupportPath = router?.asPath?.replace("/support/", "/topic/");
+      if (manageSupportPath?.lastIndexOf("_") > -1)
         manageSupportPath = manageSupportPath.substring(
           0,
-          manageSupportPath.lastIndexOf("_")
+          manageSupportPath?.lastIndexOf("_")
         );
       router?.push(manageSupportPath);
     }
@@ -194,7 +185,6 @@ const ManageSupportUI = ({
     if (isDropdownValid?.errorFields) {
       return;
     }
-    console.log("addRemoveApi-is-valid", isDropdownValid, formData);
     setGetManageSupportLoadingIndicator(true);
     const addSupportId = {
       topic_num: reqBodyData.topic_num,
@@ -230,12 +220,12 @@ const ManageSupportUI = ({
     };
     let addedRes = await addSupport(addSupportId);
     if (addedRes && addedRes.status_code == 200) {
-      let manageSupportPath = router?.asPath.replace("/support/", "/topic/");
-      if (manageSupportPath.lastIndexOf("_") > -1)
-        manageSupportPath = manageSupportPath.substring(
-          0,
-          manageSupportPath.lastIndexOf("_")
-        );
+      let manageSupportPath = router?.asPath?.replace("/support/", "/topic/");
+      // if (manageSupportPath.lastIndexOf("_") > -1)
+      //   manageSupportPath = manageSupportPath.substring(
+      //     0,
+      //     manageSupportPath.lastIndexOf("_")
+      //   );
       router?.push(manageSupportPath);
     }
   };
@@ -247,6 +237,7 @@ const ManageSupportUI = ({
     if (nickNameList.length > 0) {
       setSelectedtNickname(nickNameList[0]?.id);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nickNameList]);
 
   useEffect(() => {
@@ -266,16 +257,16 @@ const ManageSupportUI = ({
         else setTagsArrayList(newTagList);
       } else setTagsArrayList(newTagList);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [manageSupportList, parentSupportDataList]);
 
   // remove support popup added.
 
-  const onRemoveFinish = (values) => {
+  const onRemoveFinish = () => {
     // setRemoveSupportSpinner(true);
     // if (removeCampsSupport) {
     // submitNickNameSupportCamps(values);
     // } else {
-    // console.log(values);
     // removeCampsApi(values);
     // }
     // removeForm.resetFields();
@@ -288,13 +279,15 @@ const ManageSupportUI = ({
     if (isDropdownValid?.errorFields) {
       return;
     }
-    console.log("is-valid", isDropdownValid, formData);
     submitNickNameSupportCamps(formData);
   };
 
   // remove support popup added.
-
-  return getManageSupportLoadingIndicator ? (
+  return currentGetCheckSupportExistsData.warning?.includes(
+    "You can not submit your support to this camp, as system is unable to find this camp."
+  ) ? (
+    <My404 />
+  ) : getManageSupportLoadingIndicator ? (
     <CustomSkelton
       skeltonFor="manageSupportCard"
       bodyCount={15}

@@ -1,17 +1,29 @@
-import { render, screen, waitFor } from "../../../../utils/testUtils";
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  cleanup,
+} from "../../../../utils/testUtils";
 import userEvent from "@testing-library/user-event";
 
 import ChangePassword from "../index";
 import messages from "../../../../messages";
+import ChangePasswordUI from "../ChangePasswordUI";
+import { changePassword } from "../../../../network/api/userApi";
 
 const { labels, placeholders, validations } = messages;
 
 describe("ChangePassword page", () => {
   it("render labels", () => {
-    render(<ChangePassword />);
+    render(<ChangePasswordUI />);
     expect(screen.getByText(labels.currentPassword)).toBeInTheDocument();
     expect(screen.getByText(labels.newPassword)).toBeInTheDocument();
     expect(screen.getByText(labels.confirmPassword)).toBeInTheDocument();
+    const input = screen.getByPlaceholderText(labels.newPassword);
+
+    // Simulate a space key press
+    fireEvent.keyDown(input, { key: " ", keyCode: 32 });
   });
 
   it("render inputs field and submit button", () => {
@@ -88,6 +100,7 @@ describe("ChangePassword page", () => {
     const inputEl2 = screen.getByPlaceholderText("Enter Confirm Password");
     userEvent.type(inputEl, "Abc@1234");
     userEvent.type(inputEl2, "Abc@1234");
+
     await waitFor(() => {
       expect(inputEl).toHaveValue("Abc@1234");
       expect(inputEl2).toHaveValue("Abc@1234");
@@ -108,6 +121,60 @@ describe("ChangePassword page", () => {
       ).toBeVisible();
       expect(screen.queryByText("Please enter new password!")).toBeVisible();
       expect(screen.queryByText("Please confirm your password!")).toBeVisible();
+    });
+  });
+  it("onChangeFun updates state correctly", async () => {
+    const // form = jest.fn(),
+      onFinish = jest.fn(),
+      onFinishFailed = jest.fn(),
+      incorrectPasswordData = "",
+      setIncorrectPasswordData = jest.fn();
+    // const { getByPlaceholderText, getByTestId } =
+    render(
+      <ChangePasswordUI
+        form={null}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        incorrectPasswordData={incorrectPasswordData}
+        setIncorrectPasswordData={setIncorrectPasswordData}
+      />
+    );
+    // const input = getByPlaceholderText('password');
+
+    // Simulate a change event with a new value
+    const inputEl = screen.getByPlaceholderText(
+      messages.placeholders.currentPassword
+    );
+    expect(inputEl).toBeInTheDocument();
+    // expect(inputEl).toHaveAttribute("type", "password");
+
+    await fireEvent.change(inputEl, { target: { value: "123456" } });
+    await userEvent.tab();
+  });
+});
+jest.mock("src/network/api/userApi");
+
+afterEach(cleanup);
+describe("change password", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    jest.mock("src/network/api/userApi");
+  });
+
+  it("click on save button", async () => {
+    const { getAllByTestId } = render(<ChangePassword />);
+    await waitFor(() => {
+      const old_password = getAllByTestId("currentpasssword");
+      fireEvent.change(old_password[0], { target: { value: "Test@123" } });
+      const newPassword = getAllByTestId("newpassword");
+      fireEvent.change(newPassword[0], { target: { value: "Tests@123" } });
+      const confirmpassword = getAllByTestId("confirmpassword");
+      fireEvent.change(confirmpassword[0], { target: { value: "Tests@123" } });
+      changePassword.mockResolvedValue({
+        status_code: 200,
+      });
+      const save_button = getAllByTestId("submitButton");
+      fireEvent.click(save_button[0]);
     });
   });
 });

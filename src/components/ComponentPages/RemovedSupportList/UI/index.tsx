@@ -7,12 +7,11 @@ import TopicSubscriptionsTab from "./TopicSubscriptionsTab";
 
 function SubscriptionsListUI({
   subscriptionsList,
-  onRemoveSubscription,
   onConfirm,
   nickNameList,
   selectedNikname,
   onNickNameChange,
-}) {
+}: any) {
   return (
     <div className={styles.supported_camps}>
       <Card
@@ -34,6 +33,7 @@ function SubscriptionsListUI({
               showSearch
               optionFilterProp="children"
               id="user-nick-name-dropdown"
+              data-testid="user-nick-name-dropdown"
             >
               <Select.Option
                 id={`name-space-default`}
@@ -58,7 +58,6 @@ function SubscriptionsListUI({
         }
       >
         <TopicSubscriptionsTab
-          onRemoveSubscription={onRemoveSubscription}
           onConfirm={onConfirm}
           subscriptionsList={subscriptionsList}
         />

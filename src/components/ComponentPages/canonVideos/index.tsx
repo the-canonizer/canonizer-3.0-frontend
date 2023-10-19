@@ -44,6 +44,7 @@ export default function CanonVideos() {
         { shallow: true }
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const replaceString = (text: string, reverse: boolean = false) => {
@@ -168,6 +169,8 @@ export default function CanonVideos() {
       setLoader(false);
     }
     getTreeApiCall();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function updateTime() {
@@ -199,6 +202,7 @@ export default function CanonVideos() {
         );
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [topic]);
 
   useEffect(() => {
@@ -209,6 +213,7 @@ export default function CanonVideos() {
         node.currentTime = Number(ct);
       }
     }, 800);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function addQueryParams(
@@ -221,6 +226,7 @@ export default function CanonVideos() {
     if (t) {
       router.query.t = t;
     } else {
+      // eslint-disable-next-line no-unused-vars
       const { t, ...rest } = router?.query;
       router.query = rest;
     }
@@ -244,6 +250,7 @@ export default function CanonVideos() {
               isButton={false}
               action={false}
               title={false}
+              data-testid="skeleton"
             />
           ) : (
             <ul>
@@ -252,6 +259,7 @@ export default function CanonVideos() {
                   className={video.id === selectedVideoId ? styles.active : ""}
                   onClick={() => handleVideoSelection(video)}
                   key={video?.id}
+                  data-testid={video?.title}
                 >
                   {video?.title}
                 </li>
@@ -282,6 +290,7 @@ export default function CanonVideos() {
                         value={data?.link}
                         checked={videoResolution === data?.link}
                         onChange={(e) => onChange(e, data?.title as string)}
+                        data-testid={data?.link}
                       >
                         {data?.title}
                       </Radio>
@@ -301,7 +310,7 @@ export default function CanonVideos() {
             )}
           </div>
         </div>
-        <div className={styles.videoPlayer}>
+        <div className={styles.videoPlayer} data-testid="videoPlayer">
           {videos && videoResolution ? (
             <>
               <video
@@ -312,6 +321,7 @@ export default function CanonVideos() {
                 ref={playeref}
               >
                 <source
+                  data-testid="playerId"
                   src={K.Network.URL?.BaseVideosURL + "/" + videoResolution}
                   type="video/mp4"
                 />

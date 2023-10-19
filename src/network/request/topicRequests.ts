@@ -46,4 +46,15 @@ export default class TopicRequest extends Request {
       authToken
     );
   }
+  //GetHotTopic
+  static GetHotTopic(token: string = "") {
+    return new Request(
+      K.Network.URL.GetHotTopic,
+      K.Network.Method.GET,
+      {},
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
 }

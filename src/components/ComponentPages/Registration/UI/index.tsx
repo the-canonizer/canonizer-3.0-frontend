@@ -1,4 +1,4 @@
-import React, { createRef, useEffect, Fragment } from "react";
+import React, { Fragment } from "react";
 import { useRouter } from "next/router";
 import { Row, Col, Typography, Form, Input, Button, Select } from "antd";
 import { CloseCircleOutlined, ArrowRightOutlined } from "@ant-design/icons";
@@ -25,7 +25,7 @@ function RegistrationUi({
   closeModal,
   country,
   openLogin,
-}) {
+}: any) {
   const router = useRouter();
 
   const prefixSelector = (
@@ -44,6 +44,7 @@ function RegistrationUi({
               (optionB!.children as unknown as string).toLowerCase()
             )
         }
+        data-testid="dropdown_country"
       >
         {country.map((code) => (
           <Option value={code.phone_code} key={code.country_code}>

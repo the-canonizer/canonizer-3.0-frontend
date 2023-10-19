@@ -23,6 +23,7 @@
     margin-bottom: 18px;
     overflow: hidden;
     flex-wrap: wrap;
+    overflow-x: hidden;
     @media screen and (min-width: 576px) {
       display: flex;
       align-items: center;
@@ -119,6 +120,7 @@
         }
       }
       .dropdown {
+        max-width: 100%;
         @media screen and (min-width: 576px) {
           max-width: 225px;
           width: 100%;
@@ -302,6 +304,16 @@
     }
   }
 }
+.head {
+  overflow-x: hidden;
+  position: relative;
+
+  @media screen and (min-width: 1025px) {
+    [class*="ant-select-single"] {
+      max-width: 60% !important;
+    }
+  }
+}
 .namespacesPopover {
   max-width: 350px;
 }
@@ -370,5 +382,41 @@
 
   &::-webkit-scrollbar-thumb:hover {
     background: #555;
+  }
+}
+
+.browsePage {
+  .dropdown {
+    max-width: 100%;
+    @media screen and (min-width: 576px) {
+      max-width: 225px;
+      width: 100%;
+    }
+    @media screen and (min-width: 1350px) {
+      width: 40% !important;
+    }
+    @media screen and (min-width: 1200px) and (max-width: 1350px) {
+      width: 40% !important;
+    }
+    @media screen and (min-width: 576px) and (max-width: 1200px) {
+      max-width: inherit;
+      width: 48.5%;
+      margin-top: 10px;
+      margin-left: 0;
+    }
+  }
+  .inputSearchTopic {
+    @media screen and (min-width: 1200px) {
+      max-width: 275px;
+      width: 28%;
+      order: 3;
+    }
+    @media screen and (min-width: 1200px) and (max-width: 1350px) {
+      width: 270px;
+    }
+    @media screen and (min-width: 576px) and (max-width: 1200px) {
+      max-width: inherit;
+      width: 48.5%;
+    }
   }
 }

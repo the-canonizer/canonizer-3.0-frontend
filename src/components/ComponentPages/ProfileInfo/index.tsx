@@ -11,8 +11,6 @@ import {
   GetUserProfileInfo,
   UpdateUserProfileInfo,
   GetMobileCarrier,
-  SendOTP,
-  VerifyOTP,
   GetAlgorithmsList,
   GetLanguageList,
 } from "../../../network/api/userApi";
@@ -137,7 +135,6 @@ const ProfileInfo = () => {
   const { isUserAuthenticated } = isAuth();
 
   // const onFinishFailed = (errorInfo) => {
-  //   window.console.log("Failed:", errorInfo);
   // };
 
   //Send OTP to mobile number
@@ -347,6 +344,7 @@ const ProfileInfo = () => {
           return await fetchUserProfileInfo(), setUserProfileSkeleton(false);
         });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserAuthenticated]);
 
   return (

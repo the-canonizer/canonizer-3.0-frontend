@@ -19,6 +19,7 @@ describe("HeadContentAndPermissionComponent", () => {
     useSelector.mockReset();
   });
 
+  /* eslint-disable */
   test("renders HeadContent component with correct props", () => {
     const componentName = "ComponentName";
     const metaContent = {
@@ -36,7 +37,7 @@ describe("HeadContentAndPermissionComponent", () => {
       token: "token",
     });
 
-    const { getByText } = render(
+    render(
       <HeadContentAndPermissionComponent
         componentName={componentName}
         metaContent={metaContent}
@@ -47,4 +48,6 @@ describe("HeadContentAndPermissionComponent", () => {
     // expect(getByText(metaContent.description)).toBeInTheDocument();
     // expect(getByText(metaContent.author)).toBeInTheDocument();
   });
+
+  /* eslint-enable */
 });

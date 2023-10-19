@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Tree, Tooltip, Select, Image, Popover } from "antd";
+import React, { useEffect, useState } from "react";
+import { Tree, Tooltip, Popover } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../../store";
 import Link from "next/link";
@@ -10,7 +10,6 @@ import { setCurrentCamp } from "../../../../store/slices/filtersSlice";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import ProgressBar from "@ramonak/react-progress-bar";
-import { setTotalCampScore } from "src/store/slices/supportTreeCard";
 
 const { TreeNode } = Tree;
 
@@ -41,16 +40,13 @@ const CampTree = ({
   const { is_camp_archive_checked } = useSelector((state: RootState) => ({
     is_camp_archive_checked: state?.utils?.archived_checkbox,
   }));
-  const { campRecord } = useSelector((state: RootState) => ({
-    campRecord: state?.topicDetails?.currentCampRecord,
-  }));
 
   let childExpandTree = [];
   const [defaultExpandKeys, setDefaultExpandKeys] = useState([]);
   const [uniqueKeys, setUniqueKeys] = useState([]);
   const [showScoreBars, setShowScoreBars] = useState(false);
   const [selectedExpand, setSelectedExpand] = useState([]);
-  const [autoExpandParent, setAutoExpandParent] = useState(true);
+  // const [autoExpandParent, setAutoExpandParent] = useState(true);
   // const [selectedNodeID, setSelectedNodeID] = useState(1);
   const [scoreFilter, setScoreFilter] = useState(filterByScore);
   const [includeReview, setIncludeReview] = useState(
@@ -213,7 +209,7 @@ const CampTree = ({
         );
         if (index !== -1) {
           sesionexpandkeys[index] = {
-            topic_id: tree?.at(0)["1"].topic_id,
+            topic_id: tree?.at(0)["1"]?.topic_id,
             sessionexpandsKeys: uniquekeyss,
           };
         } else {
@@ -340,7 +336,7 @@ const CampTree = ({
                                   ""
                                 )
                               : data[item]?.link?.replace("#statement", "")
-                          }?filter=${treeExpandValue}?score=${filterByScore}&algo=${
+                          }?filter=${treeExpandValue}&score=${filterByScore}&algo=${
                             filterObject?.algorithm
                           }${
                             filterObject?.asof == "bydate"
@@ -512,22 +508,14 @@ const CampTree = ({
     return uniqueArraytoString;
   };
 
-  // console.log("[TREES]", tree, tree[0]);
-
   return tree?.at(0) ? (
     showTree && tree?.at(0)["1"]?.title != "" && defaultExpandKeys ? (
       <>
         <Tree
           showLine={{ showLeafIcon: false }}
-          // defaultExpandedKeys={uniqueKeys}
           onSelect={onSelect}
-          // defaultSelectedKeys={uniqueKeys}
           onExpand={onExpand}
           expandedKeys={[...uniqueKeys]}
-          // autoExpandParent={autoExpandParent}
-          // selectedKeys={uniqueKeys}
-          // selectable={true}
-
           data-testid="camp-tree"
         >
           {tree?.at(0) && renderTreeNodes(tree?.at(0))}

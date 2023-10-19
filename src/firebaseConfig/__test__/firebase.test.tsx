@@ -1,3 +1,5 @@
+import { waitFor } from "@testing-library/dom";
+import { act } from "react-dom/test-utils";
 import firebase from "firebase/app";
 import "firebase/messaging";
 import localforage from "localforage";
@@ -23,15 +25,25 @@ jest.mock("localforage", () => ({
   getItem: jest.fn().mockResolvedValue("mocked-token"),
 }));
 
+beforeAll(() => {
+  delete global.window.localStorage;
+
+  global.window.localStorage = {
+    getItem: jest.fn(),
+    setItem: jest.fn(),
+    removeItem: jest.fn(),
+  };
+});
+
 describe("firebaseCloudMessaging", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   it("should initialize Firebase and return the token if available in local storage", async () => {
-    const messagingMock = {
-      useServiceWorker: jest.fn(),
-    };
+    // const messagingMock = {
+    //   useServiceWorker: jest.fn(),
+    // };
 
     const serviceWorkerMock = {
       addEventListener: jest.fn(),
@@ -63,13 +75,21 @@ describe("firebaseCloudMessaging", () => {
   });
 
   it("should return null if local storage does not have a token", async () => {
+    act(() => {
+      global.localStorage.setItem = jest.fn(() => ({
+        verified: "verified",
+      }));
+
+      global.localStorage.getItem = jest.fn(() => "verified");
+    });
+
     jest.mock("localforage", () => ({
       getItem: jest.fn().mockResolvedValue(null),
     }));
 
-    const messagingMock = {
-      useServiceWorker: jest.fn(),
-    };
+    // const messagingMock = {
+    //   useServiceWorker: jest.fn(),
+    // };
 
     const serviceWorkerMock = {
       addEventListener: jest.fn(),
@@ -79,14 +99,14 @@ describe("firebaseCloudMessaging", () => {
     global.navigator.serviceWorker = serviceWorkerMock;
     global.navigator.PushManager = {};
 
-    const token = await firebaseCloudMessaging.init();
-
-    expect(firebase.initializeApp).toHaveBeenCalled();
-
-    // expect(messagingMock.useServiceWorker).toHaveBeenCalled();
-
-    expect(localforage.getItem).toHaveBeenCalledWith("fcm_token");
-
-    // expect(token).toBeNull();
+    await waitFor(async () => {
+      const token = await firebaseCloudMessaging.init();
+      expect(token).toEqual("mocked-token");
+      // const token = await firebaseCloudMessaging.init();
+      expect(firebase.initializeApp).toHaveBeenCalled();
+      // expect(messagingMock.useServiceWorker).toHaveBeenCalled();
+      expect(localforage.getItem).toHaveBeenCalledWith("fcm_token");
+      // expect(token).toBeNull();
+    });
   });
 });

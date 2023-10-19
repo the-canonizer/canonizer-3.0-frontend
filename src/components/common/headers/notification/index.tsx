@@ -69,10 +69,7 @@ const Notifications = () => {
 
     if (st) {
       const registration = await navigator.serviceWorker.ready;
-      console.log(
-        "🚀 ~ file: index.tsx:71 ~ onSwitch ~ registration:",
-        registration
-      );
+
       const messaging = firebase.messaging();
 
       if ("serviceWorker" in navigator && "PushManager" in window) {
@@ -100,8 +97,14 @@ const Notifications = () => {
           }
         } catch (error) {
           message.error("Failed to request notification permission:", error);
+        } finally {
           setIsLoading(false);
         }
+      } else {
+        message.error(
+          "Something went wrong or Push notification is not supported in this device."
+        );
+        setIsLoading(false);
       }
     } else {
       await localforage.removeItem("fcm_token");

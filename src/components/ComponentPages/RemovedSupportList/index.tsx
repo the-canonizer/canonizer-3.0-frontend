@@ -1,29 +1,19 @@
 import { useEffect, useState } from "react";
-import { message, Typography } from "antd";
 
 import SubscriptionsListUI from "./UI";
 import CustomSkelton from "../../common/customSkelton";
 
-import {
-  GetAllSubscriptionsList,
-  unsubscribeTopicOrCampAPI,
-} from "../../../network/api/userApi";
+import { GetAllSubscriptionsList } from "../../../network/api/userApi";
 import {
   getAllUsedNickNames,
   getAllRemovedReasons,
 } from "src/network/api/campDetailApi";
 
-const { Text } = Typography;
-
-function RemovedSupportList({ isTestData = [] }) {
+function RemovedSupportList({ isTestData = [] }: any) {
   const [subscriptionsList, setSubscriptionsList] = useState(isTestData);
-  const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [currentTopic, setCurrentTopic] = useState({});
   const [page] = useState(1);
   const [perPage] = useState("");
-  const [isCamp, setIsCamp] = useState(false);
-  const [camp, setCamp] = useState({});
   const [nickNames, setNickNames] = useState([]);
   const [selectedNikname, setSelectedNikname] = useState(null);
 
@@ -49,7 +39,10 @@ function RemovedSupportList({ isTestData = [] }) {
 
     let res = await getAllUsedNickNames(body);
     if (res && res.status_code == 200) {
-      let nicks = res?.data?.map((n) => ({ ...n, label: n.nick_name }));
+      let nicks = res?.data?.map((n: { nick_name: any }) => ({
+        ...n,
+        label: n.nick_name,
+      }));
       setNickNames(nicks);
     }
   };
@@ -58,71 +51,13 @@ function RemovedSupportList({ isTestData = [] }) {
     getNickNames();
   }, []);
 
-  const campOrTopicUnsubscribe = async (body: Object) => {
-    setIsLoading(true);
-    const res = await unsubscribeTopicOrCampAPI(body);
-
-    const query = `?page=${page}&per_page=${perPage}`;
-
-    if (res && res["status_code"] === 200) {
-      message.success(res?.data?.msg);
-      setIsVisible(false);
-      getSubscriptionsList(query);
-    }
-    setIsLoading(false);
-  };
-
-  const onRemoveSubscription = (e: any, topic: object) => {
+  const onConfirm = (e: any) => {
     e.preventDefault();
     setIsLoading(true);
-    setIsVisible(true);
-    setCurrentTopic(topic);
-    setIsCamp(false);
     setIsLoading(false);
   };
 
-  const onConfirm = (e: any, topic: any, camp: any) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setIsVisible(true);
-    setIsCamp(true);
-    setCurrentTopic(topic);
-    setCamp(camp);
-    setIsLoading(false);
-  };
-
-  const onCancel = () => {
-    setIsVisible(false);
-    setCurrentTopic({});
-    setCamp({});
-  };
-
-  const onRemove = () => {
-    setIsLoading(true);
-    let body = null;
-    if (isCamp) {
-      body = {
-        topic_num: currentTopic["topic_num"],
-        camp_num: camp["camp_num"],
-        checked: false,
-        subscription_id: camp["subscription_id"],
-      };
-    } else {
-      body = {
-        topic_num: currentTopic["topic_num"],
-        camp_num: 0,
-        checked: false,
-        subscription_id: currentTopic["subscription_id"],
-      };
-    }
-    if (body) {
-      campOrTopicUnsubscribe(body);
-    }
-    setIsLoading(false);
-  };
-
-  const onNickNameChange = (id, option) => {
-    console.log("ksakdjshk", id, option);
+  const onNickNameChange = (id) => {
     setSelectedNikname(id);
   };
 
@@ -136,7 +71,6 @@ function RemovedSupportList({ isTestData = [] }) {
     />
   ) : (
     <SubscriptionsListUI
-      onRemoveSubscription={onRemoveSubscription}
       onConfirm={onConfirm}
       subscriptionsList={subscriptionsList}
       nickNameList={nickNames}

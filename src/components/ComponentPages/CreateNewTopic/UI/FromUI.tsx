@@ -23,7 +23,7 @@ const CreateTopicFromUI = ({
   nameSpaces,
   nickNameList,
   onCancel,
-}) => {
+}: any) => {
   const CardTitle = (
     <span className={styles.cardTitle} data-testid="head">
       Create Topic
@@ -157,6 +157,7 @@ const CreateTopicFromUI = ({
               size={"large"}
               className={`${styles.submit_btn}`}
               id="create-topic-btn"
+              data-testid="create-topic-btn"
             >
               Create Topic
             </Button>
@@ -168,6 +169,7 @@ const CreateTopicFromUI = ({
               className={`${styles.cancel_btn}`}
               onClick={onCancel}
               id="cancel-btn"
+              data-testid="cancel-btn"
             >
               Cancel
             </Button>

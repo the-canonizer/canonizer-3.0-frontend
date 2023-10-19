@@ -93,6 +93,8 @@ export default function RecentActivities() {
       setGetTopicsLoadingIndicator(true);
       router?.push("/login");
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTab, isChecked, router]);
 
   const handleTabChange = (key: string) => {
@@ -388,27 +390,65 @@ export default function RecentActivities() {
                 }
                 bordered={false}
                 dataSource={recentActivities?.topics}
-                renderItem={(activity: any) => (
-                  <List.Item className={styles.listItem}>
-                    <Link
-                      href={{
-                        pathname: decodeUrlLink(activity),
-                        query: { from: router?.asPath },
-                      }}
-                      passHref
-                    >
-                      <a>
-                        <Text className={styles.text}>
-                          {activity?.activity?.description}
-                        </Text>
-                        <Text className={styles.secondary} type="secondary">
-                          <i className="icon-calendar"></i>
-                          {covertToTime(activity.updated_at)}
-                        </Text>
-                      </a>
-                    </Link>
-                  </List.Item>
-                )}
+                renderItem={(activity: any) => {
+                  const decodedProperties = JSON.parse(
+                    activity?.activity?.properties
+                  );
+
+                  return (
+                    <List.Item className={styles.listItem}>
+                      <Link href={decodeUrlLink(activity)} passHref>
+                        <a>
+                          <Text className={styles.text}>
+                            {activity?.activity?.description}
+                            <br />
+                            <Tooltip
+                              title={
+                                // decodedProperties?.topic_name
+                                //   ? `Topic: ${decodedProperties?.topic_name}` +
+                                //     (decodedProperties?.camp_name
+                                //       ? ` | Camp: ${decodedProperties?.camp_name}`
+                                //       : "")
+                                //   :
+                                convert(
+                                  decodedProperties?.description?.replace(
+                                    /<img[^>]*>/gi,
+                                    ""
+                                  ),
+                                  {
+                                    wordwrap: 130,
+                                  }
+                                ).substring(0, 90) + "..."
+                              }
+                            >
+                              {
+                                // decodedProperties?.topic_name
+                                //   ? `Topic: ${decodedProperties?.topic_name}` +
+                                //     (decodedProperties?.camp_name
+                                //       ? ` | Camp: ${decodedProperties?.camp_name}`
+                                //       : "")
+                                //   :
+                                convert(
+                                  decodedProperties?.description?.replace(
+                                    /<img[^>]*>/gi,
+                                    ""
+                                  ),
+                                  {
+                                    wordwrap: 130,
+                                  }
+                                )
+                              }
+                            </Tooltip>
+                          </Text>
+                          <Text className={styles.secondary} type="secondary">
+                            <i className="icon-calendar"></i>
+                            {covertToTime(activity.updated_at)}
+                          </Text>
+                        </a>
+                      </Link>
+                    </List.Item>
+                  );
+                }}
               />
             )}
           </TabPane>

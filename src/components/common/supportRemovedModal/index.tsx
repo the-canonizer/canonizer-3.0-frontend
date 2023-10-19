@@ -22,7 +22,7 @@ const SupportRemovedModal = ({
   form,
   isAdd = false,
   isOrderChange = false,
-}) => {
+}: any) => {
   const reasons = useSelector(
     (state: RootState) => state?.topicDetails?.removedReasons
   );
@@ -42,7 +42,7 @@ const SupportRemovedModal = ({
     setReasons(reasons);
   }, [reasons]);
 
-  const onSelectChange = (value, option) => {
+  const onSelectChange = (value) => {
     setSelectedValue(value);
   };
 
@@ -108,6 +108,7 @@ const SupportRemovedModal = ({
               >
                 <Input.TextArea
                   rows={5}
+                  data-testid="supportremoval"
                   placeholder={placeholders.editSummary}
                 />
               </Form.Item>

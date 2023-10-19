@@ -4,8 +4,6 @@ import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 
-import { RootState } from "../../../store";
-
 import {
   createCamp,
   getAllParentsCamp,
@@ -19,13 +17,22 @@ import CreateNewCampUI from "./UI/CampUI";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import isAuth from "../../../hooks/isUserAuthenticated";
 import { setShowDrawer } from "src/store/slices/filtersSlice";
+import { RootState } from "src/store";
 
 const CreateNewCamp = ({
   nickNames = [],
   parentCamps = [],
   campNickNames = [],
   initialValues = {},
-}) => {
+}: any) => {
+  const { filterByScore, filterObject, viewThisVersion } = useSelector(
+    (state: RootState) => ({
+      filterByScore: state.filters?.filterObject?.filterByScore,
+      filterObject: state?.filters?.filterObject,
+      viewThisVersion: state?.filters?.viewThisVersionCheck,
+    })
+  );
+
   const [nickNameList, setNickNameList] = useState(nickNames);
   const [initialValue, setInitialValues] = useState(initialValues);
   const [parentCamp, setParentCamps] = useState(parentCamps);
@@ -33,10 +40,6 @@ const CreateNewCamp = ({
   const [params, setParams] = useState({});
   const [options, setOptions] = useState([...messages.preventCampLabel]);
   const [isLoading, setIsLoading] = useState(false);
-  const { filterByScore, filterObject } = useSelector((state: RootState) => ({
-    filterByScore: state.filters?.filterObject?.filterByScore,
-    filterObject: state?.filters?.filterObject,
-  }));
 
   const router = useRouter();
   const [form] = Form.useForm();
@@ -121,6 +124,7 @@ const CreateNewCamp = ({
       fetchParentsCampList();
       fetchNickNameList();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserAuthenticated]);
 
   const onFinish = async (values: any) => {
@@ -170,7 +174,9 @@ const CreateNewCamp = ({
           filterObject?.asof == "bydate"
             ? "&asofdate=" + filterObject?.asofdate
             : ""
-        }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}`
+        }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
+          viewThisVersion ? "&viewversion=1" : ""
+        }`
       );
 
       const oldOptions = [...options];
@@ -205,12 +211,21 @@ const CreateNewCamp = ({
 
   const onCancel = () => {
     const { camp } = router?.query;
-    router?.push({
-      pathname: `/topic/${replaceSpecialCharacters(
+    router?.push(
+      `/topic/${replaceSpecialCharacters(
         camp[0],
         "-"
-      )}/${replaceSpecialCharacters(camp[1], "-")}`,
-    });
+      )}/${replaceSpecialCharacters(
+        camp[1],
+        "-"
+      )}?score=${filterByScore}&algo=${filterObject?.algorithm}${
+        filterObject?.asof == "bydate"
+          ? "&asofdate=" + filterObject?.asofdate
+          : ""
+      }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
+        viewThisVersion ? "&viewversion=1" : ""
+      }`
+    );
   };
 
   // checkbox
@@ -223,6 +238,7 @@ const CreateNewCamp = ({
 
       setOptions(oldOptions);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onCheckboxChange = async (e: CheckboxChangeEvent) => {

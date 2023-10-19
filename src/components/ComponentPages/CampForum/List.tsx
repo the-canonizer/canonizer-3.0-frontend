@@ -15,7 +15,7 @@ const Threads = ({
   paramsList,
   isLoading,
   payload,
-}) => (
+}: any) => (
   <div className="d-flex">
     <ThreadSidebar />
     <div className="pageContentWrap">

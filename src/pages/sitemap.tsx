@@ -15,6 +15,7 @@ const SitemapPage = () => {
 
   useEffect(() => {
     router?.replace("/sitemap.xml");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -48,7 +49,7 @@ export const getStaticProps = async () => {
             (d: { [x: string]: any; url: any }) => `
         <sitemap>
           <loc>
-            ${d.url}
+            ${process.env.NEXT_PUBLIC_BASE_URL + d.url}
           </loc>
           <lastmod>
             ${d.last_modified}

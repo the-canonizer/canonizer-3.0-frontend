@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { Typography, Button, List, Spin, Affix } from "antd";
+import { Typography, Button, List, Affix } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
@@ -16,7 +16,6 @@ import HistoryCollapse from "./Collapse";
 import { RootState } from "src/store";
 import CampInfoBar from "../TopicDetails/CampInfoBar";
 import CreateNewCampButton from "../../common/button/createNewCampBtn";
-import CreateNewTopicButton from "../../common/button/createNewTopicBtn";
 import { setCurrentCamp } from "src/store/slices/filtersSlice";
 import useIsUserAuthenticated from "../../../hooks/isUserAuthenticated";
 
@@ -42,6 +41,7 @@ function HistoryContainer() {
   const [loadMoreItems, setLoadMoreItems] = useState(true);
   const [agreecheck, setAgreeCheck] = useState(false);
   const [discardChange, setDiscardChange] = useState(false);
+  const [parentarchived, setParentarchived] = useState(0);
 
   const changeAgree = () => {
     setAgreeCheck(!agreecheck);
@@ -63,9 +63,7 @@ function HistoryContainer() {
       asof: state?.filters?.filterObject?.asof,
       algorithm: state.filters?.filterObject?.algorithm,
     }));
-  const { campRecord } = useSelector((state: RootState) => ({
-    campRecord: state?.topicDetails?.currentCampRecord,
-  }));
+
   const [isTreesApiCallStop, setIsTreesApiCallStop] = useState(false);
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [campHistory, setCampHistory] = useState(history);
@@ -92,12 +90,14 @@ function HistoryContainer() {
         });
         setNickName(response?.data);
       }
-      await getTreesApi(reqBodyForService);
+      let res = await getTreesApi(reqBodyForService);
       setLoadingIndicator(false);
+      setParentarchived(res?.treeData[1].is_archive);
     }
     if (!isTreesApiCallStop) {
       getTreeApiCall();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asofdate, algorithm, +router?.query?.camp?.at(1)?.split("-")[0]]);
 
   const dispatchData = (data, isDisabled = 0, isOneLevel = 0) => {
@@ -167,28 +167,39 @@ function HistoryContainer() {
         page: count.current,
       };
       let res = await getHistoryApi(reqBody, count.current, historyOf);
-      if (!res || !res?.last_page) {
+      if (res?.status_code == 404) {
+        if (router?.pathname == "/topic/history/[...camp]") {
+          router?.push(router?.asPath?.replace("topic/history", "topic"));
+        } else if (router?.pathname == "/statement/history/[...camp]") {
+          router?.push(router?.asPath?.replace("statement/history", "topic"));
+        } else if (router?.pathname == "/camp/history/[...camp]") {
+          router?.push(router?.asPath?.replace("camp/history", "topic"));
+        }
+      }
+      if (!res?.data || !res?.data?.last_page) {
         setLoadMoreItems(false);
         setLoadingIndicator(false);
         return;
       }
-      if (count.current >= res?.last_page) {
+      if (count.current >= res?.data?.last_page) {
         setLoadMoreItems(false);
       } else {
         count.current = count.current + 1;
       }
 
       setLoadingIndicator(false);
-    } catch (error) {}
+    } catch (error) {
+      /**/
+    }
   };
 
   const handleTabButton = async (tabName) => {
     setActiveTab(tabName);
   };
 
-  const topicRoute = () => {
-    setLoadingIndicator(true);
-  };
+  // const topicRoute = () => {
+  //   setLoadingIndicator(true);
+  // };
 
   const campRoute = () => {
     setLoadingIndicator(true);
@@ -299,7 +310,9 @@ function HistoryContainer() {
   const callManageCampApi = async () => {
     // window.location.reload()
     setLoadingIndicator(true);
-    count.current = 1;
+    if (campHistory?.items?.length >= 3) {
+      count.current = 1;
+    }
     updateCampApi(reqBody);
     await campStatementApiCall();
     setLoadingIndicator(false);
@@ -319,6 +332,9 @@ function HistoryContainer() {
           ?.submit_time <= campHistoryData?.submit_time) ||
       (oldstatements.length == 0 && index < 2)
     ) {
+      key = "1";
+    }
+    if (historyOf != "statement") {
       key = "1";
     }
 
@@ -351,6 +367,7 @@ function HistoryContainer() {
             setIsTreesApiCallStop={setIsTreesApiCallStop}
             campHistoryItems={campHistory?.items}
             callManageCampApi={callManageCampApi}
+            parentArchived={parentarchived}
           />
         );
       })

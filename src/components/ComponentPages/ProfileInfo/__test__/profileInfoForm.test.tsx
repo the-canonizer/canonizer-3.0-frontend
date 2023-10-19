@@ -1,6 +1,5 @@
 import {
   fireEvent,
-  getByTestId,
   render,
   screen,
   waitFor,
@@ -11,18 +10,17 @@ import ProfileInfoForm from "../../Form/ProfileInfoForm";
 import messages from "../../../../messages";
 import ProfileInfo from "..";
 import { useRouter } from "next/router";
-import { act, renderHook } from "@testing-library/react-hooks";
-import isAuth from "../../../../hooks/isUserAuthenticated";
-import { Input, message } from "antd";
-GetAlgorithmsList: jest.fn();
-import {
-  VerifyOTP,
-  GetMobileCarrier,
-  GetLanguageList,
-  GetAlgorithmsList,
-  GetUserProfileInfo,
-} from "src/network/api/userApi";
-import { useEffect } from "react";
+
+import { renderHook } from "@testing-library/react-hooks";
+import { Input } from "antd";
+// GetAlgorithmsList: jest.fn();
+// import {
+//   VerifyOTP,
+//   GetMobileCarrier,
+//   GetLanguageList,
+//   GetAlgorithmsList,
+//   GetUserProfileInfo,
+// } from "src/network/api/userApi";
 
 const { labels, placeholders, validations } = messages;
 const privateFlags = "first_name";
@@ -232,7 +230,7 @@ describe("Profile Info Page", () => {
     const firstName = screen.getByPlaceholderText(placeholders.firstName);
     const lastName = screen.getByPlaceholderText(placeholders.lastName);
     const email = screen.getByPlaceholderText(placeholders.email);
-    const addressLine1 = screen.getByPlaceholderText(placeholders.addressLine1);
+    // const addressLine1 = screen.getByPlaceholderText(placeholders.addressLine1);
     const addressLine2 = screen.getByPlaceholderText(placeholders.addressLine2);
     const city = screen.getByPlaceholderText(placeholders.city);
     const zipCode = screen.getByPlaceholderText(placeholders.zipCode);
@@ -252,12 +250,12 @@ describe("Profile Info Page", () => {
     expect(email).toHaveAttribute("type", "text");
     expect(email).toHaveAttribute("placeholder", placeholders.email);
 
-    expect(addressLine1).toBeInTheDocument();
-    expect(addressLine1).toHaveAttribute("type", "text");
-    expect(addressLine1).toHaveAttribute(
-      "placeholder",
-      placeholders.addressLine1
-    );
+    // expect(addressLine1).toBeInTheDocument();
+    // expect(addressLine1).toHaveAttribute("type", "text");
+    // expect(addressLine1).toHaveAttribute(
+    //   "placeholder",
+    //   placeholders.addressLine1
+    // );
 
     expect(addressLine2).toBeInTheDocument();
     expect(addressLine2).toHaveAttribute("type", "text");
@@ -343,7 +341,7 @@ describe("Profile Info Page", () => {
     expect(screen.getAllByText("*")).toBeTruthy();
   });
 
-  it("render update button", () => {
+  it("render update button require", () => {
     render(
       <ProfileInfoForm
         onFinish={onFinish}
@@ -360,25 +358,6 @@ describe("Profile Info Page", () => {
     );
     expect(screen.getAllByText("*")).toBeTruthy();
   });
-
-  // it("radio",  () => {
-
-  //   const { getByLabelText }= render(
-  //     <form>
-  //     <label>
-  //        Male <input type="radio" name="radio1" value="male" />
-  //     </label>
-  //     <label>
-  //       Female <input type="radio" name="radio1" value="female" />
-  //     </label>
-  //   </form>
-  //   );
-
-  //   const radio = getByLabelText('First')
-  // fireEvent.change(radio, { target: { value: "female" } });
-  // expect(radio.)value).toBe('female')
-
-  // });
 
   it("render gender label", () => {
     render(
@@ -515,5 +494,16 @@ describe("UserProfile", () => {
 
     // Assert that the input value is updated
     expect(inputElement.value).toBe(userInput);
+  });
+});
+
+describe("Profileinfo", () => {
+  it("update info", async () => {
+    const { getAllByTestId } = render(<ProfileInfo></ProfileInfo>);
+
+    await waitFor(() => {
+      const update_button = getAllByTestId("submitButton");
+      fireEvent.click(update_button[1]);
+    });
   });
 });

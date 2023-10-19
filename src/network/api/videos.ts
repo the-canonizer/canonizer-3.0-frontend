@@ -9,5 +9,7 @@ export const getVideosContentApi = async (loginToken = null) => {
     );
 
     return videosData;
-  } catch (error) {}
+  } catch (error) {
+    //
+  }
 };

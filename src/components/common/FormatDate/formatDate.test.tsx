@@ -1,5 +1,5 @@
 import { formatDate } from ".";
-import { render } from "../../../utils/testUtils";
+// import { render } from "../../../utils/testUtils";
 
 describe("formatDate", () => {
   it("formats the date correctly", () => {

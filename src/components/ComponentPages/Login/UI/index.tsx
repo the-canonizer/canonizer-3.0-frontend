@@ -28,11 +28,11 @@ const LoginUi = ({
   closeModal,
   isModal,
   openForgotPasswordModal,
-  openRegistration,
+  // openRegistration,
   onOTPClick,
   errorMsg,
   rememberValue,
-}) => {
+}: any) => {
   const router = useRouter();
 
   useEffect(() => {
@@ -58,7 +58,8 @@ const LoginUi = ({
     e.preventDefault();
     if (isModal) {
       closeModal();
-      openRegistration();
+      router?.push("/registration");
+      // openRegistration();
     } else {
       router?.push("/registration");
     }
@@ -137,6 +138,7 @@ const LoginUi = ({
                 <Link href="/">
                   <a
                     id="forgot-password-link"
+                    data-testid="forgot-password-link"
                     className={styles["login-form-forgot"]}
                     onClick={onForgotPasswordClick}
                   >
@@ -164,6 +166,7 @@ const LoginUi = ({
                   block
                   onClick={onOTPClick}
                   id="request-otp-btn"
+                  data-testid="request-otp-btn"
                 >
                   Request One Time Verification Code
                 </Button>
@@ -179,6 +182,7 @@ const LoginUi = ({
                     onClick={onRegister}
                     style={{ fontWeight: "bold" }}
                     id="dont-account-link-tag"
+                    data-testid="dont-account-link-tag"
                   >
                     {" "}
                     Register Now

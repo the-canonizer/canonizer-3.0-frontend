@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  render,
-  fireEvent,
-  waitFor,
-  screen,
-  cleanup,
-} from "@testing-library/react";
+import { render, screen, cleanup } from "@testing-library/react";
 import Events from "..";
 import { Provider } from "react-redux";
 import { store } from "src/store";
@@ -23,7 +17,7 @@ window.matchMedia =
 afterEach(cleanup);
 describe("Should render Addnews", () => {
   it("Render without crash", async () => {
-    const { container } = render(
+    render(
       <Provider store={store}>
         <Events
           timelineDescript={[

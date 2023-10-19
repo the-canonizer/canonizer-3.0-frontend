@@ -7,7 +7,7 @@ import styles from "./archivedCamps.module.scss";
 
 import { RootState } from "src/store";
 import {
-  setScoreCheckBox,
+  // setScoreCheckBox,
   setArchivedCheckBox,
 } from "src/store/slices/utilsSlice";
 

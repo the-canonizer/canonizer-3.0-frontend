@@ -12,7 +12,7 @@ const CreateNewTopicUI = ({
   nickNameList,
   onCancel,
   isLoading,
-}) => {
+}: any) => {
   return (
     <Fragment>
       <aside className="leftSideBar miniSideBar bg-white topicPageNewLayoutSidebar">
