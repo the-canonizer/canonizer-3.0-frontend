@@ -19,11 +19,10 @@ const HeaderMenu = ({ loggedUser }: any) => {
   const [searchCamps, setSearchCamps] = useState([]);
   const [searchCampStatement, setSearchCampStatement] = useState([]);
   const [searchNickname, setSearchNickname] = useState([]);
-  const {searchValue}  = useSelector((state: RootState) => ({
+  const { searchValue } = useSelector((state: RootState) => ({
     searchValue: state?.searchSlice?.searchValue,
   }));
   const dispatch = useDispatch();
-
 
   const renderTitle = (icon: any, title: string) => (
     <span>
@@ -47,8 +46,8 @@ const HeaderMenu = ({ loggedUser }: any) => {
   const options = [
     {
       label: renderTitle(
-        searchTopics.length? <i className="icon-topic"></i>:"",
-        searchTopics.length? "Topic":""
+        searchTopics.length ? <i className="icon-topic"></i> : "",
+        searchTopics.length ? "Topic" : ""
       ),
       options: [
         renderItem(
@@ -73,15 +72,16 @@ const HeaderMenu = ({ loggedUser }: any) => {
       ],
     },
     {
-      label: renderTitle(searchCamps.length?<i className="icon-camp"></i>:"", searchCamps.length?"Camp":""),
+      label: renderTitle(
+        searchCamps.length ? <i className="icon-camp"></i> : "",
+        searchCamps.length ? "Camp" : ""
+      ),
       options: [
         renderItem(
           <div className={styles.search_lists}>
             <ul>
               {searchCamps?.map((x) => {
-                const jsonData = JSON.parse(
-                  x.breadcrumb_data
-                ) as Array<any>;
+                const jsonData = JSON.parse(x.breadcrumb_data) as Array<any>;
                 const parsedData = jsonData.reduce(
                   (accumulator, currentVal, index) => {
                     const accIndex = index + 1;
@@ -99,80 +99,11 @@ const HeaderMenu = ({ loggedUser }: any) => {
                     <li>
                       {x.type_value}
                       <div className={styles.tags_all_search_camp_statement}>
-                        {parsedData?.reverse()?.map((obj,index) => {
+                        {parsedData?.reverse()?.map((obj, index) => {
                           return (
                             <a href={obj.camp_link} key={obj.camp_link}>
                               {obj.camp_name}
-                              {index < parsedData.length -1? "/ " : ""}
-                            </a>
-                          );
-                        })}
-                      </div>
-                    </li>
-                  </>
-                );
-              })}
-            </ul>
-          </div>
-        ),
-      ],
-    },
-    {
-      label: renderTitle(searchCampStatement.length?<i className="icon-camp"></i>:"", searchCampStatement.length?"Camp statement":""),
-      options: [
-        renderItem(
-          <div className={styles.search_lists}>
-            <ul>
-              {searchCampStatement?.map((x) => {
-                  const jsonData = JSON.parse(
-                    x.breadcrumb_data
-                  );
-                  const parsedData = jsonData.reduce(
-                    (accumulator, currentVal, index) => {
-                      const accIndex = index + 1;
-                      accumulator[index] = {
-                        camp_name: currentVal[accIndex].camp_name,
-                        camp_link: currentVal[accIndex].camp_link,
-                      };
-                      return accumulator;
-                    },
-                    []
-                  );
-                return (
-                  <>
-                    <li>
-                       <div className="d-flex flex-wrap g-2">
-                       <a href={jsonData[0][1].camp_link}>
-                               <h3 className="m-0" style={{color:"blue"}}>{jsonData[0][1].camp_name}</h3>
-                               </a>
-                            <div style={{marginLeft:"auto"}}>
-                                <strong>Go live Time : </strong>
-                                {covertToTime(x.go_live_time)}
-                            </div>
-                       </div>
-                      <div className="d-flex flex-wrap w-100 mb-1">
-                        <p  className={styles.search_heading_top}>
-                          <div
-                          dangerouslySetInnerHTML={{__html:x.type_value}}
-                          >
-                          </div>
-                        </p>
-                        {/* <div
-                          className={
-                            styles.statement_date_search_camp_statement
-                          }
-                        >
-                          <strong>Go live Time : </strong>
-                          {covertToTime(x.go_live_time)}
-                        </div> */}
-                      </div>
-                      {" "}
-                      <div className={styles.tags_all_search_camp_statement}>
-                        {parsedData?.reverse()?.map((obj,index) => {
-                          return (
-                            <a href={obj.camp_link} key={obj.camp_link}>
-                              {obj.camp_name}
-                              {index < parsedData.length -1? "/ " : ""}
+                              {index < parsedData.length - 1 ? "/ " : ""}
                             </a>
                           );
                         })}
@@ -188,8 +119,78 @@ const HeaderMenu = ({ loggedUser }: any) => {
     },
     {
       label: renderTitle(
-        searchNickname.length? <i className="icon-camp"></i>:"" ,
-        searchNickname.length?"Nickname" :""
+        searchCampStatement.length ? <i className="icon-camp"></i> : "",
+        searchCampStatement.length ? "Camp statement" : ""
+      ),
+      options: [
+        renderItem(
+          <div className={styles.search_lists}>
+            <ul>
+              {searchCampStatement?.map((x) => {
+                const jsonData = JSON.parse(x.breadcrumb_data);
+                const parsedData = jsonData.reduce(
+                  (accumulator, currentVal, index) => {
+                    const accIndex = index + 1;
+                    accumulator[index] = {
+                      camp_name: currentVal[accIndex].camp_name,
+                      camp_link: currentVal[accIndex].camp_link,
+                    };
+                    return accumulator;
+                  },
+                  []
+                );
+                return (
+                  <>
+                    <li>
+                      <div className="d-flex flex-wrap g-2">
+                        <a href={jsonData[0][1].camp_link}>
+                          <h3 className="m-0" style={{ color: "blue" }}>
+                            {jsonData[0][1].camp_name}
+                          </h3>
+                        </a>
+                        <div style={{ marginLeft: "auto" }}>
+                          <strong>Go live Time : </strong>
+                          {covertToTime(x.go_live_time)}
+                        </div>
+                      </div>
+                      <div className="d-flex flex-wrap w-100 mb-1">
+                        <p className={styles.search_heading_top}>
+                          <div
+                            dangerouslySetInnerHTML={{ __html: x.type_value }}
+                          ></div>
+                        </p>
+                        {/* <div
+                          className={
+                            styles.statement_date_search_camp_statement
+                          }
+                        >
+                          <strong>Go live Time : </strong>
+                          {covertToTime(x.go_live_time)}
+                        </div> */}
+                      </div>{" "}
+                      <div className={styles.tags_all_search_camp_statement}>
+                        {parsedData?.reverse()?.map((obj, index) => {
+                          return (
+                            <a href={obj.camp_link} key={obj.camp_link}>
+                              {obj.camp_name}
+                              {index < parsedData.length - 1 ? "/ " : ""}
+                            </a>
+                          );
+                        })}
+                      </div>
+                    </li>
+                  </>
+                );
+              })}
+            </ul>
+          </div>
+        ),
+      ],
+    },
+    {
+      label: renderTitle(
+        searchNickname.length ? <i className="icon-camp"></i> : "",
+        searchNickname.length ? "Nickname" : ""
       ),
       options: [
         renderItem(
@@ -205,14 +206,12 @@ const HeaderMenu = ({ loggedUser }: any) => {
                             <label>{x.type_value}</label>
                           </a>
                         </Link>
-                          <span className="ml_auto suppport_camps">
-                            Supported camps:{" "}
-                            <strong className={styles.yellow_color}>
-                              {x.support_count}
-                            </strong>{" "}
-                          </span>
-                        
-                        
+                        <span className="ml_auto suppport_camps">
+                          Supported camps:{" "}
+                          <strong className={styles.yellow_color}>
+                            {x.support_count}
+                          </strong>{" "}
+                        </span>
                       </div>
                     </li>
                   </>
@@ -228,8 +227,8 @@ const HeaderMenu = ({ loggedUser }: any) => {
         renderItem(
           <footer>
             <i className="icon-search"></i>
-            <Link  href="/search">
-            <a>{`Search for "${searchValue}"`}</a>
+            <Link href="/search">
+              <a>{`Search for "${searchValue}"`}</a>
             </Link>
           </footer>
         ),
@@ -301,9 +300,9 @@ const HeaderMenu = ({ loggedUser }: any) => {
     );
     if (response) {
       setSearchTopics(response.data.data.topic);
-      setSearchCamps(response.data.data.camp)
-      setSearchCampStatement(response.data.data.statement)
-      setSearchNickname(response.data.data.nickname)
+      setSearchCamps(response.data.data.camp);
+      setSearchCampStatement(response.data.data.statement);
+      setSearchNickname(response.data.data.nickname);
       dispatch(setSearchData(response?.data?.data));
     }
   };
@@ -354,33 +353,30 @@ const HeaderMenu = ({ loggedUser }: any) => {
         </ul>
       </nav>
       <div className="search_header">
-      <AutoComplete
-        popupClassName="certain-category-search-dropdown"
-        dropdownMatchSelectWidth={500}
-        // className={"search_header"}
-        options={inputSearch ? options : []}
-        value={searchValue}
-      >
-        <Input
-          size="large"
-          placeholder="Search for"
+        <AutoComplete
+          popupClassName="certain-category-search-dropdown"
+          dropdownMatchSelectWidth={500}
+          // className={"search_header"}
+          options={inputSearch ? options : []}
           value={searchValue}
-          type="text"
-          name="search"
-          prefix={<i className="icon-search"></i>}
-          onChange={(e) => {
-            dispatch(setSearchValue(e.target.value))
-            setInputSearch(e.target.value);
-            getGlobalSearchCanonizer(e.target.value);
-          }}
-        />
-      </AutoComplete>
+        >
+          <Input
+            size="large"
+            placeholder="Search for"
+            value={searchValue}
+            type="text"
+            name="search"
+            prefix={<i className="icon-search"></i>}
+            onChange={(e) => {
+              dispatch(setSearchValue(e.target.value));
+              setInputSearch(e.target.value);
+              getGlobalSearchCanonizer(e.target.value);
+            }}
+          />
+        </AutoComplete>
       </div>
-      
     </Fragment>
   );
-  
 };
-
 
 export default HeaderMenu;
