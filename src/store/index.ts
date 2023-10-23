@@ -46,7 +46,7 @@ let combinedReducer = combineReducers({
   utils: utilsSlice,
   loading: loadingSlice,
   hotTopic: hotTopicSlice,
-  searchSlice:searchSlice
+  searchSlice: searchSlice,
 });
 
 const rootReducer = (state, action) => {

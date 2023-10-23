@@ -1,15 +1,29 @@
 import React, { Fragment, useEffect, useState } from "react";
-import SearchSideBar from "@/components/common/SearchSideBar";
+import SearchSideBar from "../../common/SearchSideBar";
 import styles from "./search.module.scss"
-import AdvanceFilter from "@/components/common/AdvanceSearchFilter";
+import AdvanceFilter from "../../common/AdvanceSearchFilter";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
+import { Pagination } from "antd";
 
 const TopicSearch=()=>{
     const { searchData } = useSelector((state: RootState) => ({
         searchData: state?.searchSlice?.searchData,
       }));
+    const [startingPosition, setStartingPosition] = useState(0);
+    const [endingPosition, setEndingPosition] = useState(20);
+    const [currentPage, setCurrentPage] = useState(1);
+
+      const pageChange = (pageNumber, pageSize) => {
+        setCurrentPage(pageNumber);
+  
+          setStartingPosition((pageNumber - 1) * pageSize);
+          setEndingPosition((pageNumber - 1) * pageSize + pageSize);
+        };
+        useEffect(()=>{
+          pageChange(currentPage,20)
+        })
     return(
         <Fragment>
             <aside className="leftSideBar miniSideBar">
@@ -21,12 +35,12 @@ const TopicSearch=()=>{
         <div className="pageContentWrap">
         <div className={styles.card}>
         <div className="d-flex mb-2 align-items-center flex-wrap relative">
-        <h4>Topic</h4>
+        <h4 data-testid="topic_heading">Topic</h4>
             <AdvanceFilter/>
         </div>
             <div className={styles.search_lists}>
                 <ul>
-                    {searchData.topic.map((x)=>{
+                    {searchData.topic.slice(startingPosition,endingPosition).map((x)=>{
                     return(<>
                      <li>
                         <Link href={x.link}>
@@ -43,11 +57,16 @@ const TopicSearch=()=>{
                     
                 </ul>
             </div>
+            <Pagination
+                    hideOnSinglePage={true}
+                    total={searchData.topic?.length}
+                    pageSize={20}
+                    onChange={pageChange}
+                    showSizeChanger={false} />
         </div>
         </div>
         </Fragment>
        
     )
 }
-
 export default TopicSearch;

@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store";
 
-import styles from "../404/errorPage.module.scss";
+import styles from "./datanotfound.module.scss";
 
 const DataNotFound = ({ isTopic }) => {
   const router = useRouter();

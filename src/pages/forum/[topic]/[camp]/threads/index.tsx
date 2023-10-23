@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import {
   getCurrentTopicRecordApi,
@@ -9,23 +9,34 @@ import {
   setCurrentCampRecord,
 } from "../../../../..//store/slices/campDetailSlice";
 import { getThreadsList } from "../../../../../network/api/campForumApi";
-
+import { useRouter } from "next/router";
 import Layout from "../../../../../hoc/layout";
 import CampForumComponent from "../../../../../components/ComponentPages/CampForum";
 
 function CampForumListPage({ topicRecord, campRecord, threadList }: any) {
+  const router = useRouter();
   const dispatch = useDispatch();
   dispatch(setCurrentTopicRecord(topicRecord));
   dispatch(setCurrentCampRecord(campRecord));
+  useEffect(() => {
+    if (threadList?.status_code == 404) {
+      router?.push(
+        router?.asPath?.replace("forum", "topic")?.replace("/threads", "")
+      );
+    }
+  }, []);
+
   return (
     <Fragment>
       <Layout routeName={"forum"}>
         <div className="" style={{ width: "100%" }}>
-          <CampForumComponent
-            threadlist={
-              threadList?.status_code == 200 ? threadList?.data?.items : []
-            }
-          />
+          {threadList?.status_code != "404" && (
+            <CampForumComponent
+              threadlist={
+                threadList?.status_code == 200 ? threadList?.data?.items : []
+              }
+            />
+          )}
         </div>
       </Layout>
     </Fragment>
@@ -54,7 +65,7 @@ export async function getServerSideProps({ req, resolvedUrl }) {
     props: {
       topicRecord: topicRecord || {},
       campRecord: campRecord?.campData || {},
-      threadList: threadList || [],
+      threadList: threadList || {},
     },
   };
 }

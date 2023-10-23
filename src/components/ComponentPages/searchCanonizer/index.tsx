@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import SearchSideBar from "@/components/common/SearchSideBar";
+import SearchSideBar from "../../common/SearchSideBar";
 import styles from "./search.module.scss"
 import { List, Tag } from "antd";
 import Link from "next/link";
@@ -23,10 +23,10 @@ const Search=()=>{
         <div className="pageContentWrap">
 
         <div className={styles.card}>
-            <h4>Topic</h4>
+            <h4 data-testid="all_topic_heading">Topic</h4>
             <div className={styles.search_lists}>
                 <ul>
-                    {searchData.topic.map((x)=>{
+                    {searchData.topic.slice(0,5).map((x)=>{
                         return (<>
                              <li>
                         <Link href={x.link}>
@@ -42,11 +42,11 @@ const Search=()=>{
                    
                 </ul>
             </div>
-            <h4>Camp</h4>
+            <h4 data-testid="all_camp_heading">Camp</h4>
 
             <div className={styles.search_lists}>
                 <ul>
-                    {searchData.camp.map((x)=>{
+                    {searchData.camp.slice(0,5).map((x)=>{
                         const jsonData = JSON.parse(
                             x.breadcrumb_data
                           ) as Array<any>;
@@ -84,10 +84,10 @@ const Search=()=>{
                     })}
                 </ul>
             </div>
-            <h4>Camp Statement</h4>
+            <h4 data-testid="all_camp_statement_heading">Camp Statement</h4>
             <div className={styles.search_lists}>
                 <ul>
-                    {searchData.statement.map((x)=>{
+                    {searchData.statement.slice(0,5).map((x)=>{
                          const jsonData = JSON.parse(
                             x.breadcrumb_data
                           ) as Array<any>;
@@ -105,7 +105,7 @@ const Search=()=>{
                         return(<>
                              <li>
                                <a href={jsonData[0][1].camp_link}>
-                               <h3>{jsonData[0][1].camp_name}</h3>
+                               <h3 className={styles.statement_heading}>{jsonData[0][1].camp_name}</h3>
                                </a>
                             <div className={styles.statement_date}>
                                 <strong>Go live Time : </strong>
@@ -138,10 +138,10 @@ const Search=()=>{
             </div>
 
 
-            <h4>Nickname</h4>
+            <h4 data-testid="all_nick_name_heading">Nickname</h4>
             <div className={styles.search_lists}>
                 <ul>
-                    {searchData.nickname.map((x)=>{
+                    {searchData.nickname.slice(0,5).map((x)=>{
                         return(<>
                              <li>
                         <Link href={x.link}>
@@ -159,8 +159,7 @@ const Search=()=>{
          </div>
         </div>
         </Fragment>
-       
-    )
-}
+  );
+};
 
 export default Search;
