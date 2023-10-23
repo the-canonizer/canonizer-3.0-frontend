@@ -87,7 +87,12 @@
                 {
                     margin-left: auto;
                     color: #0F2A4D;
-                    font-weight: 400;
+                    font-weight: 400;                    
+                        @media only screen and (max-width: 580px) {
+                            margin-left: 0;
+                            margin-bottom: 10px;
+                            width: 100%;
+                        }
                 }
             }
             li + li 
