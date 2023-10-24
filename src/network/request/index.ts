@@ -18,7 +18,6 @@ export default class Request {
     headers = {},
     token = null
   ) {
-    console.log('first', Request.counter)
     let bearerToken = "";
     const cc: any = getCookies();
     if (token) {
@@ -26,14 +25,14 @@ export default class Request {
       bearerToken = token;
     } else {
       const cc: any = getCookies();
+
       if (cc?.loginToken) {
         bearerToken = cc.loginToken;
-      } else if(Request.counter === 0 ) {
+      } else if (!relativeURL?.includes("client-token")) {
         Request.counter++;
         // create token
         (async () => {
           const res = await createToken();
-          debugger;
           bearerToken = res?.data?.access_token;
         })();
       }
