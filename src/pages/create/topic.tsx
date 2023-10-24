@@ -23,9 +23,11 @@ const CreateNewTopicPage = ({ nameSpacesList, algorithms }: any) => {
   );
 };
 
-export async function getServerSideProps() {
-  const nameSpaces = await getCanonizedNameSpacesApi();
-  const canonizedAlgorithms = await getCanonizedAlgorithmsApi();
+export async function getServerSideProps({ req }) {
+  const nameSpaces = await getCanonizedNameSpacesApi(req.cookies["loginToken"]);
+  const canonizedAlgorithms = await getCanonizedAlgorithmsApi(
+    req.cookies["loginToken"]
+  );
 
   return {
     props: {
