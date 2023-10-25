@@ -47,12 +47,14 @@ const CampSearch=()=>{
                             (accumulator, currentVal, index) => {
                               const accIndex = index + 1;
                               accumulator[index] = {
-                                camp_name: currentVal[accIndex]?.camp_name,
+                                camp_name: currentVal[accIndex]?.camp_name == "Agreement"?currentVal[accIndex].topic_name: currentVal[accIndex].camp_name,
                                 camp_link: currentVal[accIndex]?.camp_link,
+                                topic_name:currentVal[accIndex]?.topic_name,
                               };
                               return accumulator;
                             },
                             []);
+                            console.log(parsedData,"parseddata")
                             return (
                               <>
                                 <li>

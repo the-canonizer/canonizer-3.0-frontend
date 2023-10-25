@@ -44,6 +44,16 @@ const HeaderMenu = ({ loggedUser }: any) => {
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
+  useEffect(()=>{
+    const localSearch = localStorage.getItem("searchValue")
+    if(localSearch){
+      dispatch(setSearchValue(localSearch))
+      getGlobalSearchCanonizer(localSearch,true)
+    }
+   
+
+  },[])
+
   const options = [
     {
       label: renderTitle(
@@ -89,7 +99,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                   (accumulator, currentVal, index) => {
                     const accIndex = index + 1;
                     accumulator[index] = {
-                      camp_name: currentVal[accIndex]?.camp_name,
+                      camp_name: currentVal[accIndex]?.camp_name == "Agreement"?currentVal[accIndex].topic_name: currentVal[accIndex].camp_name,
                       camp_link: currentVal[accIndex]?.camp_link,
                     };
                     return accumulator;
@@ -137,7 +147,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                     (accumulator, currentVal, index) => {
                       const accIndex = index + 1;
                       accumulator[index] = {
-                        camp_name: currentVal[accIndex].camp_name,
+                        camp_name: currentVal[accIndex].camp_name == "Agreement"?currentVal[accIndex].topic_name: currentVal[accIndex].camp_name,
                         camp_link: currentVal[accIndex].camp_link,
                         topic_name:currentVal[accIndex].topic_name
                       };
@@ -151,7 +161,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                        <div className="d-flex flex-wrap g-2">
                        <a href={`/${jsonData?.[0]?.[1].camp_link}`}>
                                <h3 className="m-0">
-                                {jsonData.length>1 ? jsonData[0][1].camp_name:jsonData[0][1].topic_name}
+                                {jsonData?.length>1 ? jsonData?.[0]?.[1]?.camp_name:jsonData?.[0]?.[1].topic_name}
                               </h3>
                                </a>
                             <div style={{marginLeft:"auto"}}>
@@ -305,7 +315,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUser]);
-  const getGlobalSearchCanonizer = async (queryString) => {
+  const getGlobalSearchCanonizer = async (queryString,onPresEnter) => {
     let response = await globalSearchCanonizer(
       queryParams({ term: queryString })
     );
@@ -314,7 +324,9 @@ const HeaderMenu = ({ loggedUser }: any) => {
       setSearchCamps(response.data.data.camp);
       setSearchCampStatement(response.data.data.statement);
       setSearchNickname(response.data.data.nickname);
-      dispatch(setSearchData(response?.data?.data));
+      if(onPresEnter){
+       dispatch(setSearchData(response?.data?.data));
+      }
     }
   };
   
@@ -383,13 +395,16 @@ const HeaderMenu = ({ loggedUser }: any) => {
             name="search"
             prefix={<i className="icon-search"></i>}
             onChange={(e) => {
+              localStorage.setItem("searchValue",(e.target .value))
+
               dispatch(setSearchValue(e.target.value));
               setInputSearch(e.target.value);
-              getGlobalSearchCanonizer(e.target.value);
+              getGlobalSearchCanonizer(e.target.value,false);
             }}
             onPressEnter={(e)=>{
-              !router.asPath.includes("/search")?handlePress():"";
-              getGlobalSearchCanonizer((e.target as HTMLTextAreaElement).value)
+              // localStorage.setItem("searchValue",(e.target as HTMLTextAreaElement).value)
+              !router.asPath.includes("/search")? handlePress() :"";
+              getGlobalSearchCanonizer((e.target as HTMLTextAreaElement).value,true)
             }}
           />
         </AutoComplete>
