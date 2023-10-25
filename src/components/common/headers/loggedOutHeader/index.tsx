@@ -107,7 +107,9 @@ const LoggedOutHeader = () => {
         ></div>
       </Header>
       <section className="Mob_View">
-        <div className="search_header"><HeaderMenu/></div>
+        <div className="search_header">
+          <HeaderMenu />
+        </div>
       </section>
       <SearchSection />
       <div className="topicMobBTN">
