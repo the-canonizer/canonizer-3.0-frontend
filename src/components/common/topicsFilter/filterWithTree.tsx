@@ -165,6 +165,17 @@ const FilterWithTree = ({
   };
 
   useEffect(() => {
+    if (
+      String(filterObject?.filterByScore) !== "0" ||
+      String(filterObject?.namespace_id) !== "1" ||
+      filterObject?.asof !== "default" ||
+      filterObject?.algorithm !== "blind_popularity"
+    ) {
+      onChangeRoute();
+    }
+  }, []);
+
+  useEffect(() => {
     if (!didMount.current) {
       let newObject = removeEmptyValues({
         filterByScore: router.query.score || `${filteredScore}` || "0",
@@ -351,7 +362,7 @@ const FilterWithTree = ({
   function momentDateObject(e) {
     return e?._d;
   }
-  
+
   return (
     <>
       <div className="leftSideBar_Card drawer_card">

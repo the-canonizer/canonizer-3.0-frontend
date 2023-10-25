@@ -155,6 +155,17 @@ const CreateTopic = () => {
   };
 
   useEffect(() => {
+    if (
+      String(filterObject?.filterByScore) !== "0" ||
+      String(filterObject?.namespace_id) !== "1" ||
+      filterObject?.asof !== "default" ||
+      filterObject?.algorithm !== "blind_popularity"
+    ) {
+      onChangeRoute();
+    }
+  }, []);
+
+  useEffect(() => {
     if (!didMount.current) {
       let aa = removeEmptyValues({
         filterByScore: `${router.query.score}` || `${filteredScore}` || "0",
