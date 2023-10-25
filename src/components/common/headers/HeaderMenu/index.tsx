@@ -44,15 +44,13 @@ const HeaderMenu = ({ loggedUser }: any) => {
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
-  useEffect(()=>{
-    const localSearch = localStorage.getItem("searchValue")
-    if(localSearch){
-      dispatch(setSearchValue(localSearch))
-      getGlobalSearchCanonizer(localSearch,true)
+  useEffect(() => {
+    const localSearch = localStorage.getItem("searchValue");
+    if (localSearch) {
+      dispatch(setSearchValue(localSearch));
+      getGlobalSearchCanonizer(localSearch, true);
     }
-   
-
-  },[])
+  }, []);
 
   const options = [
     {
@@ -97,7 +95,10 @@ const HeaderMenu = ({ loggedUser }: any) => {
                   (accumulator, currentVal, index) => {
                     const accIndex = index + 1;
                     accumulator[index] = {
-                      camp_name: currentVal[accIndex]?.camp_name == "Agreement"?currentVal[accIndex].topic_name: currentVal[accIndex].camp_name,
+                      camp_name:
+                        currentVal[accIndex]?.camp_name == "Agreement"
+                          ? currentVal[accIndex].topic_name
+                          : currentVal[accIndex].camp_name,
                       camp_link: currentVal[accIndex]?.camp_link,
                     };
                     return accumulator;
@@ -108,15 +109,20 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 return (
                   <>
                     <li>
-                    <Link href={`/${jsonData[0][1].camp_link}`}>
-                    <a className={styles.camp_heading_color}> {x.type_value}</a>
-                           
-                    </Link>
+                      <Link href={`/${jsonData[0][1].camp_link}`}>
+                        <a className={styles.camp_heading_color}>
+                          {" "}
+                          {x.type_value}
+                        </a>
+                      </Link>
 
                       <div className={styles.tags_all_search_camp_statement}>
                         {parsedData?.reverse()?.map((obj, index) => {
                           return (
-                            <a href={`/${obj.camp_link}`} key={`/${obj.camp_link}`}>
+                            <a
+                              href={`/${obj.camp_link}`}
+                              key={`/${obj.camp_link}`}
+                            >
                               {obj.camp_name}
                               {index < parsedData.length - 1 ? "/ " : ""}
                             </a>
@@ -141,36 +147,39 @@ const HeaderMenu = ({ loggedUser }: any) => {
         renderItem(
           <div className={styles.search_lists}>
             <ul>
-              {searchCampStatement.slice(0,5)?.map((x) => {
-                  const jsonData = JSON.parse(
-                    x.breadcrumb_data
-                  ) as Array<any>;
-                  const parsedData = jsonData?.reduce(
-                    (accumulator, currentVal, index) => {
-                      const accIndex = index + 1;
-                      accumulator[index] = {
-                        camp_name: currentVal[accIndex].camp_name == "Agreement"?currentVal[accIndex].topic_name: currentVal[accIndex].camp_name,
-                        camp_link: currentVal[accIndex].camp_link,
-                        topic_name:currentVal[accIndex].topic_name
-                      };
-                      return accumulator;
-                    },
-                    []
-                  );
+              {searchCampStatement.slice(0, 5)?.map((x) => {
+                const jsonData = JSON.parse(x.breadcrumb_data) as Array<any>;
+                const parsedData = jsonData?.reduce(
+                  (accumulator, currentVal, index) => {
+                    const accIndex = index + 1;
+                    accumulator[index] = {
+                      camp_name:
+                        currentVal[accIndex].camp_name == "Agreement"
+                          ? currentVal[accIndex].topic_name
+                          : currentVal[accIndex].camp_name,
+                      camp_link: currentVal[accIndex].camp_link,
+                      topic_name: currentVal[accIndex].topic_name,
+                    };
+                    return accumulator;
+                  },
+                  []
+                );
                 return (
                   <>
                     <li>
-                       <div className="d-flex flex-wrap g-2">
-                       <a href={`/${jsonData?.[0]?.[1].camp_link}`}>
-                               <h3 className="m-0">
-                                {jsonData?.length>1 ? jsonData?.[0]?.[1]?.camp_name:jsonData?.[0]?.[1].topic_name}
-                              </h3>
-                               </a>
-                            <div style={{marginLeft:"auto"}}>
-                                <strong>Go live Time : </strong>
-                                {covertToTime(x.go_live_time)}
-                            </div>
-                       </div>
+                      <div className="d-flex flex-wrap g-2">
+                        <a href={`/${jsonData?.[0]?.[1].camp_link}`}>
+                          <h3 className="m-0">
+                            {jsonData?.length > 1
+                              ? jsonData?.[0]?.[1]?.camp_name
+                              : jsonData?.[0]?.[1].topic_name}
+                          </h3>
+                        </a>
+                        <div style={{ marginLeft: "auto" }}>
+                          <strong>Go live Time : </strong>
+                          {covertToTime(x.go_live_time)}
+                        </div>
+                      </div>
 
                       <div className="d-flex flex-wrap w-100 mb-1">
                         <p className={styles.search_heading_top}>
@@ -184,7 +193,10 @@ const HeaderMenu = ({ loggedUser }: any) => {
                       <div className={styles.tags_all_search_camp_statement}>
                         {parsedData?.reverse()?.map((obj, index) => {
                           return (
-                            <a href={`/${obj.camp_link}`} key={`/${obj.camp_link}`}>
+                            <a
+                              href={`/${obj.camp_link}`}
+                              key={`/${obj.camp_link}`}
+                            >
                               {obj.camp_name}
                               {index < parsedData.length - 1 ? "/ " : ""}
                             </a>
@@ -240,11 +252,12 @@ const HeaderMenu = ({ loggedUser }: any) => {
         renderItem(
           <footer>
             <i className="icon-search"></i>
-            <Link href={{
-              pathname:"/search"
-            }}>
-            <a >{`Search for "${searchValue}"`}</a>
-
+            <Link
+              href={{
+                pathname: "/search",
+              }}
+            >
+              <a>{`Search for "${searchValue}"`}</a>
             </Link>
           </footer>
         ),
@@ -286,7 +299,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUser]);
-  const getGlobalSearchCanonizer = async (queryString,onPresEnter) => {
+  const getGlobalSearchCanonizer = async (queryString, onPresEnter) => {
     let response = await globalSearchCanonizer(
       queryParams({ term: queryString })
     );
@@ -295,15 +308,15 @@ const HeaderMenu = ({ loggedUser }: any) => {
       setSearchCamps(response.data.data.camp);
       setSearchCampStatement(response.data.data.statement);
       setSearchNickname(response.data.data.nickname);
-      if(onPresEnter){
-       dispatch(setSearchData(response?.data?.data));
+      if (onPresEnter) {
+        dispatch(setSearchData(response?.data?.data));
       }
     }
   };
-  
- const handlePress=()=>{
-  router.push("/search")
- }
+
+  const handlePress = () => {
+    router.push("/search");
+  };
   return (
     <Fragment>
       <nav className={styles.nav}>
@@ -356,16 +369,19 @@ const HeaderMenu = ({ loggedUser }: any) => {
             name="search"
             prefix={<i className="icon-search"></i>}
             onChange={(e) => {
-              localStorage.setItem("searchValue",(e.target .value))
+              localStorage.setItem("searchValue", e.target.value);
 
               dispatch(setSearchValue(e.target.value));
               setInputSearch(e.target.value);
-              getGlobalSearchCanonizer(e.target.value,false);
+              getGlobalSearchCanonizer(e.target.value, false);
             }}
-            onPressEnter={(e)=>{
+            onPressEnter={(e) => {
               // localStorage.setItem("searchValue",(e.target as HTMLTextAreaElement).value)
-              !router.asPath.includes("/search")? handlePress() :"";
-              getGlobalSearchCanonizer((e.target as HTMLTextAreaElement).value,true)
+              !router.asPath.includes("/search") ? handlePress() : "";
+              getGlobalSearchCanonizer(
+                (e.target as HTMLTextAreaElement).value,
+                true
+              );
             }}
           />
         </AutoComplete>
