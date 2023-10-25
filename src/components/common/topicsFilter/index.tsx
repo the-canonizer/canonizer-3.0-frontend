@@ -120,62 +120,42 @@ const CreateTopic = () => {
     }
     return result;
   }
-  useEffect(() => {
-    if (didMount.current) {
-      if (history?.pushState) {
-        const queryParams = `?score=${filterObject?.filterByScore}&algo=${
-          filterObject?.algorithm
-        }${
-          filterObject?.asof == "bydate"
-            ? "&asofdate=" + filterObject?.asofdate
-            : ""
-        }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
-          viewThisVersion ? "&viewversion=1" : ""
-        }&filter=${campScoreValue || 10}`;
-        var newurl =
-          window.location.protocol +
-          "//" +
-          window.location.host +
-          window.location.pathname +
-          queryParams;
 
-        Router.replace(newurl, null, { shallow: true });
-      }
+  const onChangeRoute = (
+    filterByScore = filterObject?.filterByScore,
+    algorithm = filterObject?.algorithm,
+    asof = filterObject?.asof,
+    asofdate = filterObject?.asofdate,
+    namespace_id = filterObject?.namespace_id,
+    viewversion = viewThisVersion
+  ) => {
+    let query: any = {
+      score: filterByScore,
+      algo: algorithm,
+      canon: namespace_id,
+      asof: asof,
+      filter: campScoreValue || "10",
+    };
+
+    if (asof == "bydate") {
+      query.asofdate = asofdate;
     }
-  }, [
-    didMount.current,
-    filterObject?.filterByScore,
-    filterObject?.algorithm,
-    filterObject?.asof,
-    filterObject?.asofdate,
-    filterObject?.namespace_id,
-    viewThisVersion,
-  ]);
+
+    if (viewversion) {
+      query.viewversion = "1";
+    }
+
+    router.query = { ...router?.query, ...query };
+
+    if (asof != "bydate") {
+      delete router.query.asofdate;
+    }
+
+    Router.replace(router, null, { shallow: true });
+  };
 
   useEffect(() => {
-    if (didMount.current) {
-      // if (history?.pushState) {
-      // const queryParams = `?score=${filterObject?.filterByScore}&algo=${
-      //   filterObject?.algorithm
-      // }${
-      //   filterObject?.asof == "bydate"
-      //     ? "&asofdate=" + filterObject?.asofdate
-      //     : ""
-      // }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
-      //   viewThisVersion ? "&viewversion=1" : ""
-      // }`;
-      // var newurl =
-      //   window.location.protocol +
-      //   "//" +
-      //   window.location.host +
-      //   window.location.pathname +
-      //   queryParams;
-      // console.log(window.location.href, "<<<<<<<<<newurl");
-      // window.history.replaceState({ path: newurl }, "", newurl);
-      // window.location.href = newurl;
-      // console.log(window.location.href, "<<<<<<<<<newurl");
-      // }
-    } else {
+    if (!didMount.current) {
       let aa = removeEmptyValues({
         filterByScore: `${router.query.score}` || `${filteredScore}` || "0",
         asofdate: +router.query.asofdate || filterObject?.asofdate,
@@ -187,6 +167,7 @@ const CreateTopic = () => {
       dispatch(setFilterCanonizedTopics(aa));
       didMount.current = true;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -216,6 +197,14 @@ const CreateTopic = () => {
       setFilterCanonizedTopics({
         algorithm: value,
       })
+    );
+    onChangeRoute(
+      filterObject?.filterByScore,
+      value,
+      filterObject?.asof,
+      filterObject?.asofdate,
+      filterObject?.namespace_id,
+      viewThisVersion
     );
   };
 
@@ -261,6 +250,14 @@ const CreateTopic = () => {
         asof: "bydate",
       })
     );
+    onChangeRoute(
+      filterObject?.filterByScore,
+      filterObject?.algorithm,
+      "bydate",
+      IsoDateFormat,
+      filterObject?.namespace_id,
+      viewThisVersion
+    );
   };
 
   const filterOnScore = (e) => {
@@ -274,6 +271,14 @@ const CreateTopic = () => {
           setFilterCanonizedTopics({
             filterByScore: value,
           })
+        );
+        onChangeRoute(
+          value,
+          filterObject?.algorithm,
+          filterObject?.asof,
+          filterObject?.asofdate,
+          filterObject?.namespace_id,
+          viewThisVersion
         );
       }, 1000);
       setTimer(newTimer);
@@ -307,12 +312,28 @@ const CreateTopic = () => {
           asof: "bydate",
         })
       );
+      onChangeRoute(
+        filterObject?.filterByScore,
+        filterObject?.algorithm,
+        "bydate",
+        Date.parse(dateValue) / 1000,
+        filterObject?.namespace_id,
+        viewThisVersion
+      );
     } else {
       dispatch(
         setFilterCanonizedTopics({
           asofdate: Date.now() / 1000,
           asof: "bydate",
         })
+      );
+      onChangeRoute(
+        filterObject?.filterByScore,
+        filterObject?.algorithm,
+        "bydate",
+        Date.now() / 1000,
+        filterObject?.namespace_id,
+        viewThisVersion
       );
     }
   };
@@ -438,6 +459,14 @@ const CreateTopic = () => {
                         asofdate: Date.now() / 1000,
                       })
                     );
+                    onChangeRoute(
+                      filterObject?.filterByScore,
+                      filterObject?.algorithm,
+                      "review",
+                      Date.now() / 1000,
+                      filterObject?.namespace_id,
+                      viewThisVersion
+                    );
                   }}
                 >
                   Include review
@@ -455,6 +484,14 @@ const CreateTopic = () => {
                         asofdate: Date.now() / 1000,
                         asof: "default",
                       })
+                    );
+                    onChangeRoute(
+                      filterObject?.filterByScore,
+                      filterObject?.algorithm,
+                      "default",
+                      Date.now() / 1000,
+                      filterObject?.namespace_id,
+                      viewThisVersion
                     );
                   }}
                 >

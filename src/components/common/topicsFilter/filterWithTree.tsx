@@ -130,67 +130,42 @@ const FilterWithTree = ({
     }
     return result;
   }
-  useEffect(() => {
-    if (didMount.current) {
-      if (history?.replaceState) {
-        const queryParams = `?score=${filterObject?.filterByScore}&algo=${
-          filterObject?.algorithm
-        }${
-          filterObject?.asof == "bydate"
-            ? "&asofdate=" + filterObject?.asofdate
-            : ""
-        }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
-          viewThisVersion ? "&viewversion=1" : ""
-        }&filter=${campScoreValue || 10}`;
-        var newurl =
-          window.location.protocol +
-          "//" +
-          window.location.host +
-          window.location.pathname +
-          queryParams;
 
-        // console.log(window.location.href, "<<<<<<<<< filter tree");
+  const onChangeRoute = (
+    filterByScore = filterObject?.filterByScore,
+    algorithm = filterObject?.algorithm,
+    asof = filterObject?.asof,
+    asofdate = filterObject?.asofdate,
+    namespace_id = filterObject?.namespace_id,
+    viewversion = viewThisVersion
+  ) => {
+    let query: any = {
+      score: filterByScore,
+      algo: algorithm,
+      canon: namespace_id,
+      asof: asof,
+      filter: campScoreValue || "10",
+    };
 
-        // window.history.replaceState({ path: newurl }, "", newurl);
-
-        Router.replace(newurl, null, { shallow: true });
-
-        // console.log(window.location.href, "<<<<<<<<< filter tree");
-      }
+    if (asof == "bydate") {
+      query.asofdate = asofdate;
     }
-  }, [
-    didMount.current,
-    filterObject?.filterByScore,
-    filterObject?.algorithm,
-    filterObject?.asof,
-    filterObject?.asofdate,
-    filterObject?.namespace_id,
-    viewThisVersion,
-  ]);
+
+    if (viewversion) {
+      query.viewversion = "1";
+    }
+
+    router.query = { ...router?.query, ...query };
+
+    if (asof != "bydate") {
+      delete router.query.asofdate;
+    }
+
+    Router.replace(router, null, { shallow: true });
+  };
 
   useEffect(() => {
-    if (didMount.current) {
-      // if (history?.replaceState) {
-      // const queryParams = `?score=${filterObject?.filterByScore}&algo=${
-      //   filterObject?.algorithm
-      // }${
-      //   filterObject?.asof == "bydate"
-      //     ? "&asofdate=" + filterObject?.asofdate
-      //     : ""
-      // }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
-      //   viewThisVersion ? "&viewversion=1" : ""
-      // }`;
-      // var newurl =
-      //   window.location.protocol +
-      //   "//" +
-      //   window.location.host +
-      //   window.location.pathname +
-      //   queryParams;
-      // console.log(window.location.href, "<<<<<<<<< filter tree");
-      // window.history.replaceState({ path: newurl }, "", newurl);
-      // console.log(window.location.href, "<<<<<<<<< filter tree");
-      // }
-    } else {
+    if (!didMount.current) {
       let newObject = removeEmptyValues({
         filterByScore: router.query.score || `${filteredScore}` || "0",
         asofdate: router.query.asofdate || filterObject?.asofdate,
@@ -203,6 +178,7 @@ const FilterWithTree = ({
       dispatch(setFilterCanonizedTopics(newObject));
       didMount.current = true;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -231,6 +207,14 @@ const FilterWithTree = ({
       setFilterCanonizedTopics({
         algorithm: value,
       })
+    );
+    onChangeRoute(
+      filterObject?.filterByScore,
+      value,
+      filterObject?.asof,
+      filterObject?.asofdate,
+      filterObject?.namespace_id,
+      viewThisVersion
     );
   };
 
@@ -277,6 +261,14 @@ const FilterWithTree = ({
         asof: "bydate",
       })
     );
+    onChangeRoute(
+      filterObject?.filterByScore,
+      filterObject?.algorithm,
+      "bydate",
+      IsoDateFormat,
+      filterObject?.namespace_id,
+      viewThisVersion
+    );
   };
 
   const filterOnScore = (e) => {
@@ -290,6 +282,14 @@ const FilterWithTree = ({
           setFilterCanonizedTopics({
             filterByScore: value,
           })
+        );
+        onChangeRoute(
+          value,
+          filterObject?.algorithm,
+          filterObject?.asof,
+          filterObject?.asofdate,
+          filterObject?.namespace_id,
+          viewThisVersion
         );
       }, 1000);
       setTimer(newTimer);
@@ -322,12 +322,28 @@ const FilterWithTree = ({
           asof: "bydate",
         })
       );
+      onChangeRoute(
+        filterObject?.filterByScore,
+        filterObject?.algorithm,
+        "bydate",
+        Date.parse(dateValue) / 1000,
+        filterObject?.namespace_id,
+        viewThisVersion
+      );
     } else {
       dispatch(
         setFilterCanonizedTopics({
           asofdate: Date.now() / 1000,
           asof: "bydate",
         })
+      );
+      onChangeRoute(
+        filterObject?.filterByScore,
+        filterObject?.algorithm,
+        "bydate",
+        Date.now() / 1000,
+        filterObject?.namespace_id,
+        viewThisVersion
       );
     }
   };
@@ -475,6 +491,14 @@ const FilterWithTree = ({
                               asofdate: Date.now() / 1000,
                             })
                           );
+                          onChangeRoute(
+                            filterObject?.filterByScore,
+                            filterObject?.algorithm,
+                            "review",
+                            Date.now() / 1000,
+                            filterObject?.namespace_id,
+                            viewThisVersion
+                          );
                         }}
                         id="review_input"
                       >
@@ -493,6 +517,14 @@ const FilterWithTree = ({
                               asofdate: Date.now() / 1000,
                               asof: "default",
                             })
+                          );
+                          onChangeRoute(
+                            filterObject?.filterByScore,
+                            filterObject?.algorithm,
+                            "default",
+                            Date.now() / 1000,
+                            filterObject?.namespace_id,
+                            viewThisVersion
                           );
                         }}
                         id="default_input"

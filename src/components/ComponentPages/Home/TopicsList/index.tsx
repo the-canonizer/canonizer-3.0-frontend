@@ -567,15 +567,7 @@ const TopicsList = () => {
                             item?.tree_structure[1]?.review_title
                         : item?.topic_name,
                       "-"
-                    )}/1-Agreement?score=${filterByScore}&algo=${
-                      filterObject?.algorithm
-                    }${
-                      filterObject?.asof == "bydate"
-                        ? "&asofdate=" + filterObject?.asofdate
-                        : ""
-                    }&asof=${filterObject?.asof}&canon=${
-                      filterObject?.namespace_id
-                    }${viewThisVersion ? "&viewversion=1" : ""}`}
+                    )}/1-Agreement`}
                   >
                     {!item.is_archive ||
                     (item.is_archive && is_camp_archive_checked) ? (
