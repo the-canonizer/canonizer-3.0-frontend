@@ -53,7 +53,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
         renderItem(
           <div className={styles.search_lists}>
             <ul>
-              {searchTopics.slice(0,5)?.map((x) => {
+              {searchTopics.slice(0, 5)?.map((x) => {
                 return (
                   <>
                     <li>
@@ -80,10 +80,8 @@ const HeaderMenu = ({ loggedUser }: any) => {
         renderItem(
           <div className={styles.search_lists}>
             <ul>
-              {searchCamps.slice(0,5)?.map((x) => {
-                const jsonData = JSON.parse(
-                  x.breadcrumb_data
-                ) as Array<any>;
+              {searchCamps.slice(0, 5)?.map((x) => {
+                const jsonData = JSON.parse(x.breadcrumb_data) as Array<any>;
                 const parsedData = jsonData.reduce(
                   (accumulator, currentVal, index) => {
                     const accIndex = index + 1;
@@ -99,16 +97,18 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 return (
                   <>
                     <li>
-                    <Link href={jsonData[0][1].camp_link}>
-                    <a className={styles.camp_heading_color}> {x.type_value}</a>
-                           
-                    </Link>
+                      <Link href={jsonData[0][1].camp_link}>
+                        <a className={styles.camp_heading_color}>
+                          {" "}
+                          {x.type_value}
+                        </a>
+                      </Link>
                       <div className={styles.tags_all_search_camp_statement}>
                         {parsedData?.reverse()?.map((obj, index) => {
                           return (
                             <a href={obj.camp_link} key={obj.camp_link}>
                               {obj.camp_name}
-                              {index < parsedData.length -1? "/ " : ""}
+                              {index < parsedData.length - 1 ? "/ " : ""}
                             </a>
                           );
                         })}
@@ -123,44 +123,46 @@ const HeaderMenu = ({ loggedUser }: any) => {
       ],
     },
     {
-      label: renderTitle(searchCampStatement.length?<i className="icon-camp"></i>:"", searchCampStatement.length?"Camp statement":""),
+      label: renderTitle(
+        searchCampStatement.length ? <i className="icon-camp"></i> : "",
+        searchCampStatement.length ? "Camp statement" : ""
+      ),
       options: [
         renderItem(
           <div className={styles.search_lists}>
             <ul>
-              {searchCampStatement.slice(0,5)?.map((x) => {
-                  const jsonData = JSON.parse(
-                    x.breadcrumb_data
-                  );
-                  const parsedData = jsonData.reduce(
-                    (accumulator, currentVal, index) => {
-                      const accIndex = index + 1;
-                      accumulator[index] = {
-                        camp_name: currentVal[accIndex].camp_name,
-                        camp_link: currentVal[accIndex].camp_link,
-                      };
-                      return accumulator;
-                    },
-                    []
-                  );
+              {searchCampStatement.slice(0, 5)?.map((x) => {
+                const jsonData = JSON.parse(x.breadcrumb_data);
+                const parsedData = jsonData.reduce(
+                  (accumulator, currentVal, index) => {
+                    const accIndex = index + 1;
+                    accumulator[index] = {
+                      camp_name: currentVal[accIndex].camp_name,
+                      camp_link: currentVal[accIndex].camp_link,
+                    };
+                    return accumulator;
+                  },
+                  []
+                );
                 return (
                   <>
                     <li>
-                       <div className="d-flex flex-wrap g-2">
-                       <a href={jsonData[0][1].camp_link}>
-                               <h3 className="m-0" style={{color:"blue"}}>{jsonData[0][1].camp_name}</h3>
-                               </a>
-                            <div style={{marginLeft:"auto"}}>
-                                <strong>Go live Time : </strong>
-                                {covertToTime(x.go_live_time)}
-                            </div>
-                       </div>
+                      <div className="d-flex flex-wrap g-2">
+                        <a href={jsonData[0][1].camp_link}>
+                          <h3 className="m-0" style={{ color: "blue" }}>
+                            {jsonData[0][1].camp_name}
+                          </h3>
+                        </a>
+                        <div style={{ marginLeft: "auto" }}>
+                          <strong>Go live Time : </strong>
+                          {covertToTime(x.go_live_time)}
+                        </div>
+                      </div>
                       <div className="d-flex flex-wrap w-100 mb-1">
-                        <p  className={styles.search_heading_top}>
+                        <p className={styles.search_heading_top}>
                           <div
-                          dangerouslySetInnerHTML={{__html:x.type_value}}
-                          >
-                          </div>
+                            dangerouslySetInnerHTML={{ __html: x.type_value }}
+                          ></div>
                         </p>
                         {/* <div
                           className={
@@ -170,14 +172,13 @@ const HeaderMenu = ({ loggedUser }: any) => {
                           <strong>Go live Time : </strong>
                           {covertToTime(x.go_live_time)}
                         </div> */}
-                      </div>
-                      {" "}
+                      </div>{" "}
                       <div className={styles.tags_all_search_camp_statement}>
-                        {parsedData?.reverse()?.map((obj,index) => {
+                        {parsedData?.reverse()?.map((obj, index) => {
                           return (
                             <a href={obj.camp_link} key={obj.camp_link}>
                               {obj.camp_name}
-                              {index < parsedData.length -1? "/ " : ""}
+                              {index < parsedData.length - 1 ? "/ " : ""}
                             </a>
                           );
                         })}
@@ -270,7 +271,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
         renderItem(
           <div className={styles.search_lists}>
             <ul>
-              {searchNickname.slice(0,5)?.map((x) => {
+              {searchNickname.slice(0, 5)?.map((x) => {
                 return (
                   <>
                     <li>
@@ -427,13 +428,13 @@ const HeaderMenu = ({ loggedUser }: any) => {
         </ul>
       </nav>
       <div className="search_header">
-      <AutoComplete
-        popupClassName="certain-category-search-dropdown"
-        dropdownMatchSelectWidth={false}
-        // className={"search_header"}
-        options={inputSearch ? options : []}
-        value={searchValue}
-      >
+        <AutoComplete
+          popupClassName="certain-category-search-dropdown"
+          dropdownMatchSelectWidth={false}
+          // className={"search_header"}
+          options={inputSearch ? options : []}
+          value={searchValue}
+        >
           <Input
             size="large"
             placeholder="Search for"
