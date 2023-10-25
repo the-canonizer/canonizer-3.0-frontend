@@ -16,16 +16,10 @@ export default function HomeSideBar({
   setTotalCampScoreForSupportTree,
   setSupportTreeForCamp,
   backGroundColorClass,
-  viewThisVersion,
 }: any) {
-  const { drawerShow, filterObject, filterByScore, campScoreValue } =
-    useSelector((state: RootState) => ({
-      drawerShow: state?.filters?.showDrawer,
-      filterObject: state?.filters?.filterObject,
-      filterByScore: state.filters?.filterObject?.filterByScore,
-      viewThisVersion: state?.filters?.viewThisVersionCheck,
-      campScoreValue: state?.filters?.campWithScoreValue,
-    }));
+  const { drawerShow } = useSelector((state: RootState) => ({
+    drawerShow: state?.filters?.showDrawer,
+  }));
 
   const [drawerIsVisible, setDrawerIsVisible] = useState(drawerShow);
   const [isDrawerOpen, setIsDrawerOpen] = useState("");
@@ -43,23 +37,12 @@ export default function HomeSideBar({
   }, [drawerShow]);
 
   const showDrawer = () => {
-    router.replace(
-      `/topic/${router?.query?.camp[0]}/${
-        router?.query?.camp[1]
-      }?score=${filterByScore}&algo=${filterObject?.algorithm}${
-        filterObject?.asof == "bydate"
-          ? "&asofdate=" + filterObject?.asofdate
-          : ""
-      }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}&filter=${
-        campScoreValue || 10
-      }&is_tree_open=${drawerIsVisible ? 0 : 1}${
-        viewThisVersion ? "&viewversion=1" : ""
-      }`,
-      null,
-      {
-        shallow: true,
-      }
-    );
+    router.query = {
+      ...router.query,
+      is_tree_open: drawerIsVisible ? "0" : "1",
+    };
+
+    router.replace(router, null, { shallow: true });
 
     dispatch(setShowDrawer(!drawerIsVisible));
   };

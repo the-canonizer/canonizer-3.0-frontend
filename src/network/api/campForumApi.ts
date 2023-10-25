@@ -38,8 +38,8 @@ export const getThreadsList = async (queries) => {
     return response;
   } catch (error) {
     // handleError(error);
-    
-     return error?.error?.data
+
+    return error?.error?.data;
   }
 };
 

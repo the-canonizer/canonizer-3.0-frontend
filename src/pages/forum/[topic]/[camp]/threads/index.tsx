@@ -24,6 +24,7 @@ function CampForumListPage({ topicRecord, campRecord, threadList }: any) {
         router?.asPath?.replace("forum", "topic")?.replace("/threads", "")
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
