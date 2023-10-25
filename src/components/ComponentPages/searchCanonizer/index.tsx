@@ -95,7 +95,7 @@ const Search=()=>{
                             (accumulator, currentVal, index) => {
                               const accIndex = index + 1;
                               accumulator[index] = {
-                                camp_name: currentVal[accIndex]?.camp_name,
+                                camp_name: currentVal[accIndex]?.camp_name== "Agreement"?currentVal[accIndex].topic_name: currentVal[accIndex].camp_name,
                                 camp_link: currentVal[accIndex]?.camp_link,
                               };
                               return accumulator;
@@ -105,7 +105,7 @@ const Search=()=>{
                         return(<>
                              <li>
                                <a href={jsonData[0][1].camp_link}>
-                               <h3 className={styles.statement_heading}>{jsonData[0][1].camp_name}</h3>
+                               <h3 className={styles.statement_heading}>{jsonData.length>1?jsonData?.[0]?.[1]?.camp_name:jsonData?.[0]?.[1]?.topic_name}</h3>
                                </a>
                             <div className={styles.statement_date}>
                                 <strong>Go live Time : </strong>
