@@ -37,6 +37,14 @@ const UserProfile = () => {
       setNoData(true);
       setUserSupportedCampsList(res?.data?.support_list);
       setProfileData(res?.data?.profile);
+    } else if (res && res.status_code === 404) {
+      let aa = `/topic/${router?.query?.topicnum}/${
+        router?.query?.campnum || "1"
+      }`;
+      router.push({
+        pathname: aa,
+        query: {},
+      });
     }
     SetUserProfileCardSkeleton(false);
   };
