@@ -185,11 +185,11 @@ del.diffmod img {
 
 .btn {
   &-blue {
-    background-color: #2e68db;
+    background-color: #4484CE;
 
     &:hover,
     &:focus {
-      background-color: darken(#2e68db, 10%);
+      background-color: darken(#4484CE, 10%);
     }
   }
 
@@ -880,7 +880,7 @@ del.diffmod img {
       }
 
       .ant-checkbox-inner {
-        border-color: #1890ff;
+        border-color: #4484CE;
 
         &::after {
           width: 5px;
@@ -892,7 +892,7 @@ del.diffmod img {
     }
 
     .ant-checkbox-inner {
-      border-color: #1890ff;
+      border-color: #4484CE;
 
       &::after {
         width: 5px;
