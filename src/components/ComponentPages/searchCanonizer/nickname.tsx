@@ -30,30 +30,46 @@ const NicknameSearch = () => {
         <div className="leftSideBar_Card p-0 m-0">
           <SearchSideBar />
         </div>
-        <div className={styles.search_lists}>
-                <ul>
-                    {searchData?.nickname?.slice(startingPosition,endingPosition).map((x)=>{
-                        return(<>
-                             <li>
+      </aside>
+      <div className="pageContentWrap">
+        <div className={styles.card}>
+          <div className="d-flex mb-2 align-items-center flex-wrap relative">
+            <h4 data-testid="nickname_heading">Nickname</h4>
+            <AdvanceFilter />
+          </div>
+          <div className={styles.search_lists}>
+            <ul>
+              {searchData.nickname
+                .slice(startingPosition, endingPosition)
+                .map((x) => {
+                  return (
+                    <>
+                      <li>
                         <Link href={`/${x.link}`}>
-                        <a>
-                          <label>{x.type_value}</label>
-                        </a>
+                          <a>
+                            <label style={{cursor:"pointer"}}>{x.type_value}</label>
+                          </a>
                         </Link>
-                        
-                        <span  className={styles.ml_auto}>Supported camps: <strong className={styles.yellow_color}>{x.support_count}</strong> </span>
-                    </li>
-                        </>)
-                    })}
-                </ul>
-            </div>
-            <Pagination
-                    hideOnSinglePage={true}
-                    total={searchData?.nickname?.length}
-                    pageSize={20}
-                    onChange={pageChange}
-                    showSizeChanger={false} />
-        </div>
+
+                        <span className={styles.ml_auto}>
+                          Supported camps:{" "}
+                          <strong className={styles.yellow_color}>
+                            {x.support_count}
+                          </strong>{" "}
+                        </span>
+                      </li>
+                    </>
+                  );
+                })}
+            </ul>
+          </div>
+          <Pagination
+            hideOnSinglePage={true}
+            total={searchData.nickname?.length}
+            pageSize={20}
+            onChange={pageChange}
+            showSizeChanger={false}
+          />
         </div>
       </div>
     </Fragment>

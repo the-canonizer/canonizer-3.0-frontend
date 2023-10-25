@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useReducer, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import SearchSideBar from "../../common/SearchSideBar";
 import styles from "./search.module.scss";
 import AdvanceFilter from "../../common/AdvanceSearchFilter";
@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { Pagination } from "antd";
-import { useRouter } from "next/router";
 
 const TopicSearch = () => {
   const { searchData } = useSelector((state: RootState) => ({
@@ -31,35 +30,42 @@ const TopicSearch = () => {
         <div className="leftSideBar_Card p-0 m-0">
           <SearchSideBar />
         </div>
+      </aside>
 
-            <div className={styles.search_lists}>
-                <ul>
-                    {searchData?.topic?.slice(startingPosition,endingPosition).map((x)=>{
-                    return(<>
-                     <li>
+      <div className="pageContentWrap">
+        <div className={styles.card}>
+          <div className="d-flex mb-2 align-items-center flex-wrap relative">
+            <h4 data-testid="topic_heading">Topic</h4>
+            <AdvanceFilter />
+          </div>
+          <div className={styles.search_lists}>
+            <ul>
+              {searchData.topic
+                .slice(startingPosition, endingPosition)
+                .map((x) => {
+                  return (
+                    <>
+                      <li>
                         <Link href={`/${x.link}`}>
-                        <a>
-
+                          <a>
                             <label>{x.type_value}</label>
                           </a>
                         </Link>
-                        
-                        <span  className={styles.ml_auto}>{x.namespace}</span>
-                    </li>
-                    </>)
-                       
-                    })}
-                    
-                </ul>
-            </div>
-            <Pagination
-                    hideOnSinglePage={true}
-                    total={searchData?.topic?.length}
-                    pageSize={20}
-                    onChange={pageChange}
-                    showSizeChanger={false} />
-        </div>
 
+                        <span className={styles.ml_auto}>{x.namespace}</span>
+                      </li>
+                    </>
+                  );
+                })}
+            </ul>
+          </div>
+          <Pagination
+            hideOnSinglePage={true}
+            total={searchData.topic?.length}
+            pageSize={20}
+            onChange={pageChange}
+            showSizeChanger={false}
+          />
         </div>
       </div>
     </Fragment>

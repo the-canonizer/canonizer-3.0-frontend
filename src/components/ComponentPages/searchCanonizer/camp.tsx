@@ -30,6 +30,13 @@ const CampSearch = () => {
         <div className="leftSideBar_Card p-0 m-0">
           <SearchSideBar />
         </div>
+        </aside>
+        <div className="pageContentWrap">
+        <div className={styles.card}>
+        <div className="d-flex mb-2 align-items-center flex-wrap relative">
+        <h4 data-testid="camp_heading">Camp</h4>
+        <AdvanceFilter/>
+        </div>
         <div className={styles.search_lists}>
                 <ul>
                     {searchData?.camp?.slice(startingPosition,endingPosition).map((x)=>{

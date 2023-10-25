@@ -31,7 +31,7 @@ const Search = () => {
                         <Link href={x.link}>
 
                         <a>
-                          <label>{x.type_value}</label>
+                          <label style={{cursor:"pointer"}}>{x.type_value}</label>
                         </a>
                       </Link>
 
@@ -43,8 +43,7 @@ const Search = () => {
                 </ul>
             </div>
             {searchData.camp.length>0?<h4 data-testid="all_camp_heading">Camp</h4>:""}
-
-            <div className={styles.search_lists}>
+                    <div className={styles.search_lists}>
                 <ul>
                     {searchData?.camp?.slice(0,5).map((x)=>{
                         const jsonData = JSON.parse(
@@ -56,12 +55,28 @@ const Search = () => {
                               accumulator[index] = {
                                 camp_name: currentVal[accIndex]?.camp_name == "Agreement"?currentVal[accIndex].topic_name: currentVal[accIndex].camp_name,
                                 camp_link: currentVal[accIndex]?.camp_link,
+                                topic_name:currentVal[accIndex]?.topic_name,
                               };
-                             
                               return accumulator;
                             },
-                            []
-
+                            []);
+                            console.log(parsedData,"parseddata")
+                            return (
+                              <>
+                                <li>
+                                <Link href={`/${jsonData[0][1].camp_link}`}>
+                                <a> {x.type_value}</a>
+                           
+                            </Link>
+                                  <div className={styles.tags_all}>
+                                    {parsedData.reverse().map((obj, index) => {
+                                      return (
+                                        <>
+                                          <a href={`/${obj.camp_link}`}key={`/${obj.camp_link}`}>
+                                            {obj.camp_name}
+                                            {index < parsedData.length - 1 ? "/ " : ""}
+                                          </a>
+                                        </>
                           );
                         })}
                       </div>
@@ -70,6 +85,7 @@ const Search = () => {
                     })}
                 </ul>
             </div>
+            
             {searchData.statement.length>0?<h4 data-testid="all_camp_statement_heading">Camp Statement</h4>:""}
             <div className={styles.search_lists}>
                 <ul>
@@ -133,7 +149,7 @@ const Search = () => {
                              <li>
                         <Link href={x.link}>
                         <a>
-                          <label>{x.type_value}</label>
+                          <label style={{cursor:"pointer"}}>{x.type_value}</label>
                         </a>
                       </Link>
 
