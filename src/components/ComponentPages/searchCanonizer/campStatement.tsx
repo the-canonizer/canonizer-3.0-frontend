@@ -44,7 +44,7 @@ const CampStatementSearch = () => {
           </div>
           <div className={styles.search_lists}>
             <ul>
-              {searchData.statement.slice(startingPosition,endingPosition).map((x) => {
+              {searchData?.statement?.slice(startingPosition,endingPosition).map((x) => {
                 const jsonData = JSON.parse(x.breadcrumb_data) as Array<any>;
                 const parsedData = jsonData.reduce(
                   (accumulator, currentVal, index) => {
@@ -52,6 +52,7 @@ const CampStatementSearch = () => {
                     accumulator[index] = {
                       camp_name: currentVal[accIndex]?.camp_name,
                       camp_link: currentVal[accIndex]?.camp_link,
+                      topic_name:currentVal[accIndex]?.topic_name
                     };
                     return accumulator;
                   },
@@ -60,9 +61,9 @@ const CampStatementSearch = () => {
                 return (
                   <>
                     <li>
-                      <a href={jsonData[0][1].camp_link}>
+                      <a href={`/${jsonData[0][1].camp_link}`}>
                         <h3 className={styles.statement_heading}>
-                          {jsonData[0][1].camp_name}
+                          {jsonData.length>1?jsonData[0][1].camp_name:jsonData[0][1].topic_name}
                         </h3>
                       </a>
                       <div className={styles.statement_date}>
@@ -82,7 +83,7 @@ const CampStatementSearch = () => {
                         {parsedData.reverse().map((obj, index) => {
                           return (
                             <>
-                              <a href={obj.camp_link} key={obj.camp_link}>
+                              <a href={`/${obj.camp_link}`} key={`/${obj.camp_link}`}>
                                 {obj.camp_name}
                                 {index < parsedData.length - 1 ? "/ " : ""}
                               </a>
@@ -98,7 +99,7 @@ const CampStatementSearch = () => {
           </div>
           <Pagination
                     hideOnSinglePage={true}
-                    total={searchData.statement?.length}
+                    total={searchData?.statement?.length}
                     pageSize={20}
                     onChange={pageChange}
                     showSizeChanger={false} />

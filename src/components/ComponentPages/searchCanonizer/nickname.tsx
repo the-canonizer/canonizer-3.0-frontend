@@ -39,10 +39,10 @@ const NicknameSearch=()=>{
         </div>
         <div className={styles.search_lists}>
                 <ul>
-                    {searchData.nickname.slice(startingPosition,endingPosition).map((x)=>{
+                    {searchData?.nickname?.slice(startingPosition,endingPosition).map((x)=>{
                         return(<>
                              <li>
-                        <Link href={x.link}>
+                        <Link href={`/${x.link}`}>
                         <a>
                           <label>{x.type_value}</label>
                         </a>
@@ -56,7 +56,7 @@ const NicknameSearch=()=>{
             </div>
             <Pagination
                     hideOnSinglePage={true}
-                    total={searchData.nickname?.length}
+                    total={searchData?.nickname?.length}
                     pageSize={20}
                     onChange={pageChange}
                     showSizeChanger={false} />

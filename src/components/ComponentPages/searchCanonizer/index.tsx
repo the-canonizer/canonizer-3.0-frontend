@@ -23,10 +23,10 @@ const Search=()=>{
         <div className="pageContentWrap">
 
         <div className={styles.card}>
-            <h4 data-testid="all_topic_heading">Topic</h4>
+            {searchData.topic.length>0?<h4 data-testid="all_topic_heading">Topic</h4>:""}
             <div className={styles.search_lists}>
                 <ul>
-                    {searchData.topic.slice(0,5).map((x)=>{
+                    {searchData?.topic?.slice(0,5).map((x)=>{
                         return (<>
                              <li>
                         <Link href={x.link}>
@@ -42,11 +42,11 @@ const Search=()=>{
                    
                 </ul>
             </div>
-            <h4 data-testid="all_camp_heading">Camp</h4>
+            {searchData.camp.length>0?<h4 data-testid="all_camp_heading">Camp</h4>:""}
 
             <div className={styles.search_lists}>
                 <ul>
-                    {searchData.camp.slice(0,5).map((x)=>{
+                    {searchData?.camp?.slice(0,5).map((x)=>{
                         const jsonData = JSON.parse(
                             x.breadcrumb_data
                           ) as Array<any>;
@@ -84,10 +84,10 @@ const Search=()=>{
                     })}
                 </ul>
             </div>
-            <h4 data-testid="all_camp_statement_heading">Camp Statement</h4>
+            {searchData.statement.length>0?<h4 data-testid="all_camp_statement_heading">Camp Statement</h4>:""}
             <div className={styles.search_lists}>
                 <ul>
-                    {searchData.statement.slice(0,5).map((x)=>{
+                    {searchData?.statement?.slice(0,5).map((x)=>{
                          const jsonData = JSON.parse(
                             x.breadcrumb_data
                           ) as Array<any>;
@@ -138,10 +138,10 @@ const Search=()=>{
             </div>
 
 
-            <h4 data-testid="all_nick_name_heading">Nickname</h4>
+            {searchData.nickname.length>0?<h4 data-testid="all_nick_name_heading">Nickname</h4>:""}
             <div className={styles.search_lists}>
                 <ul>
-                    {searchData.nickname.slice(0,5).map((x)=>{
+                    {searchData?.nickname?.slice(0,5).map((x)=>{
                         return(<>
                              <li>
                         <Link href={x.link}>

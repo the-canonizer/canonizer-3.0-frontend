@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useReducer, useState } from "react";
 import SearchSideBar from "../../common/SearchSideBar";
 import styles from "./search.module.scss"
 import AdvanceFilter from "../../common/AdvanceSearchFilter";
@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { Pagination } from "antd";
+import { useRouter } from "next/router";
 
 const TopicSearch=()=>{
     const { searchData } = useSelector((state: RootState) => ({
@@ -40,10 +41,10 @@ const TopicSearch=()=>{
         </div>
             <div className={styles.search_lists}>
                 <ul>
-                    {searchData.topic.slice(startingPosition,endingPosition).map((x)=>{
+                    {searchData?.topic?.slice(startingPosition,endingPosition).map((x)=>{
                     return(<>
                      <li>
-                        <Link href={x.link}>
+                        <Link href={`/${x.link}`}>
                         <a>
                             <label>{x.type_value}</label>
                         </a>
@@ -59,7 +60,7 @@ const TopicSearch=()=>{
             </div>
             <Pagination
                     hideOnSinglePage={true}
-                    total={searchData.topic?.length}
+                    total={searchData?.topic?.length}
                     pageSize={20}
                     onChange={pageChange}
                     showSizeChanger={false} />

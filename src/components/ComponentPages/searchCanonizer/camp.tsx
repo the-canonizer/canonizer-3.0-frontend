@@ -39,7 +39,7 @@ const CampSearch=()=>{
         </div>
         <div className={styles.search_lists}>
                 <ul>
-                    {searchData.camp.slice(startingPosition,endingPosition).map((x)=>{
+                    {searchData?.camp?.slice(startingPosition,endingPosition).map((x)=>{
                         const jsonData = JSON.parse(
                             x.breadcrumb_data
                           ) as Array<any>;
@@ -56,7 +56,7 @@ const CampSearch=()=>{
                             return (
                               <>
                                 <li>
-                                <Link href={jsonData[0][1].camp_link}>
+                                <Link href={`/${jsonData[0][1].camp_link}`}>
                                 <a> {x.type_value}</a>
                            
                             </Link>
@@ -64,7 +64,7 @@ const CampSearch=()=>{
                                     {parsedData.reverse().map((obj, index) => {
                                       return (
                                         <>
-                                          <a href={obj.camp_link} key={obj.camp_link}>
+                                          <a href={`/${obj.camp_link}`}key={`/${obj.camp_link}`}>
                                             {obj.camp_name}
                                             {index < parsedData.length - 1 ? "/ " : ""}
                                           </a>
@@ -80,7 +80,7 @@ const CampSearch=()=>{
             
             <Pagination
                     hideOnSinglePage={true}
-                    total={searchData.camp?.length}
+                    total={searchData?.camp?.length}
                     pageSize={20}
                     onChange={pageChange}
                     showSizeChanger={false} />
