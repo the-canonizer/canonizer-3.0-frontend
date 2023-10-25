@@ -400,15 +400,7 @@ const TimelineInfoBar = ({
                     }-${replaceSpecialCharacters(
                       breadCrumbRes?.topic_name,
                       "-"
-                    )}/1-Agreement?score=${filterByScore}&algo=${
-                      filterObject?.algorithm
-                    }${
-                      filterObject?.asof == "bydate"
-                        ? "&asofdate=" + filterObject?.asofdate
-                        : ""
-                    }&asof=${filterObject?.asof}&canon=${
-                      filterObject?.namespace_id
-                    }${viewThisVersion ? "&viewversion=1" : ""}`}
+                    )}/1-Agreement`}
                   >
                     <a className={styles.boldBreadcrumb}>
                       {breadCrumbRes?.topic_name}
@@ -460,15 +452,7 @@ const TimelineInfoBar = ({
                           )}/${camp?.camp_num}-${replaceSpecialCharacters(
                             camp?.camp_name,
                             "-"
-                          )}?score=${filterByScore}&algo=${
-                            filterObject?.algorithm
-                          }${
-                            filterObject?.asof == "bydate"
-                              ? "&asofdate=" + filterObject?.asofdate
-                              : ""
-                          }&asof=${filterObject?.asof}&canon=${
-                            filterObject?.namespace_id
-                          }${viewThisVersion ? "&viewversion=1" : ""}`}
+                          )}`}
                           key={index}
                         >
                           <a>

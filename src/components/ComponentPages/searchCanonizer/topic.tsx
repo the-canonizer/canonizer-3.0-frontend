@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useReducer, useState } from "react";
 import SearchSideBar from "../../common/SearchSideBar";
-import styles from "./search.module.scss"
+import styles from "./search.module.scss";
 import AdvanceFilter from "../../common/AdvanceSearchFilter";
 import Link from "next/link";
 import { useSelector } from "react-redux";
@@ -8,37 +8,30 @@ import { RootState } from "src/store";
 import { Pagination } from "antd";
 import { useRouter } from "next/router";
 
-const TopicSearch=()=>{
-    const { searchData } = useSelector((state: RootState) => ({
-        searchData: state?.searchSlice?.searchData,
-      }));
-    const [startingPosition, setStartingPosition] = useState(0);
-    const [endingPosition, setEndingPosition] = useState(20);
-    const [currentPage, setCurrentPage] = useState(1);
+const TopicSearch = () => {
+  const { searchData } = useSelector((state: RootState) => ({
+    searchData: state?.searchSlice?.searchData,
+  }));
+  const [startingPosition, setStartingPosition] = useState(0);
+  const [endingPosition, setEndingPosition] = useState(20);
+  const [currentPage, setCurrentPage] = useState(1);
 
-      const pageChange = (pageNumber, pageSize) => {
-        setCurrentPage(pageNumber);
-  
-          setStartingPosition((pageNumber - 1) * pageSize);
-          setEndingPosition((pageNumber - 1) * pageSize + pageSize);
-        };
-        useEffect(()=>{
-          pageChange(currentPage,20)
-        })
-    return(
-        <Fragment>
-            <aside className="leftSideBar miniSideBar">
-          <div className="leftSideBar_Card p-0 m-0">
-            <SearchSideBar />
-          </div>
-        </aside>
-        
-        <div className="pageContentWrap">
-        <div className={styles.card}>
-        <div className="d-flex mb-2 align-items-center flex-wrap relative">
-        <h4 data-testid="topic_heading">Topic</h4>
-            <AdvanceFilter/>
+  const pageChange = (pageNumber, pageSize) => {
+    setCurrentPage(pageNumber);
+
+    setStartingPosition((pageNumber - 1) * pageSize);
+    setEndingPosition((pageNumber - 1) * pageSize + pageSize);
+  };
+  useEffect(() => {
+    pageChange(currentPage, 20);
+  });
+  return (
+    <Fragment>
+      <aside className="leftSideBar miniSideBar">
+        <div className="leftSideBar_Card p-0 m-0">
+          <SearchSideBar />
         </div>
+
             <div className={styles.search_lists}>
                 <ul>
                     {searchData?.topic?.slice(startingPosition,endingPosition).map((x)=>{
@@ -46,8 +39,9 @@ const TopicSearch=()=>{
                      <li>
                         <Link href={`/${x.link}`}>
                         <a>
+
                             <label>{x.type_value}</label>
-                        </a>
+                          </a>
                         </Link>
                         
                         <span  className={styles.ml_auto}>{x.namespace}</span>
@@ -65,9 +59,10 @@ const TopicSearch=()=>{
                     onChange={pageChange}
                     showSizeChanger={false} />
         </div>
+
         </div>
-        </Fragment>
-       
-    )
-}
+      </div>
+    </Fragment>
+  );
+};
 export default TopicSearch;

@@ -12,18 +12,18 @@ const CampStatementSearch = () => {
     searchData: state?.searchSlice?.searchData,
   }));
   const [startingPosition, setStartingPosition] = useState(0);
-    const [endingPosition, setEndingPosition] = useState(20);
-    const [currentPage, setCurrentPage] = useState(1);
+  const [endingPosition, setEndingPosition] = useState(20);
+  const [currentPage, setCurrentPage] = useState(1);
 
-      const pageChange = (pageNumber, pageSize) => {
-        setCurrentPage(pageNumber);
-  
-          setStartingPosition((pageNumber - 1) * pageSize);
-          setEndingPosition((pageNumber - 1) * pageSize + pageSize);
-        };
-        useEffect(()=>{
-          pageChange(currentPage,20)
-        })
+  const pageChange = (pageNumber, pageSize) => {
+    setCurrentPage(pageNumber);
+
+    setStartingPosition((pageNumber - 1) * pageSize);
+    setEndingPosition((pageNumber - 1) * pageSize + pageSize);
+  };
+  useEffect(() => {
+    pageChange(currentPage, 20);
+  });
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };

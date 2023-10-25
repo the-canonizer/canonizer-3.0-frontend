@@ -64,7 +64,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
         renderItem(
           <div className={styles.search_lists}>
             <ul>
-              {searchTopics.slice(0,5)?.map((x) => {
+              {searchTopics.slice(0, 5)?.map((x) => {
                 return (
                   <>
                     <li>
@@ -91,10 +91,8 @@ const HeaderMenu = ({ loggedUser }: any) => {
         renderItem(
           <div className={styles.search_lists}>
             <ul>
-              {searchCamps.slice(0,5)?.map((x) => {
-                const jsonData = JSON.parse(
-                  x.breadcrumb_data
-                ) as Array<any>;
+              {searchCamps.slice(0, 5)?.map((x) => {
+                const jsonData = JSON.parse(x.breadcrumb_data) as Array<any>;
                 const parsedData = jsonData.reduce(
                   (accumulator, currentVal, index) => {
                     const accIndex = index + 1;
@@ -114,12 +112,13 @@ const HeaderMenu = ({ loggedUser }: any) => {
                     <a className={styles.camp_heading_color}> {x.type_value}</a>
                            
                     </Link>
+
                       <div className={styles.tags_all_search_camp_statement}>
                         {parsedData?.reverse()?.map((obj, index) => {
                           return (
                             <a href={`/${obj.camp_link}`} key={`/${obj.camp_link}`}>
                               {obj.camp_name}
-                              {index < parsedData.length -1? "/ " : ""}
+                              {index < parsedData.length - 1 ? "/ " : ""}
                             </a>
                           );
                         })}
@@ -134,7 +133,10 @@ const HeaderMenu = ({ loggedUser }: any) => {
       ],
     },
     {
-      label: renderTitle(searchCampStatement.length?<i className="icon-camp"></i>:"", searchCampStatement.length?"Camp statement":""),
+      label: renderTitle(
+        searchCampStatement.length ? <i className="icon-camp"></i> : "",
+        searchCampStatement.length ? "Camp statement" : ""
+      ),
       options: [
         renderItem(
           <div className={styles.search_lists}>
@@ -169,29 +171,22 @@ const HeaderMenu = ({ loggedUser }: any) => {
                                 {covertToTime(x.go_live_time)}
                             </div>
                        </div>
+
                       <div className="d-flex flex-wrap w-100 mb-1">
-                        <p  className={styles.search_heading_top}>
+                        <p className={styles.search_heading_top}>
                           <div
-                          dangerouslySetInnerHTML={{__html:x.type_value}}
-                          >
-                          </div>
+                            dangerouslySetInnerHTML={{ __html: x.type_value }}
+                          ></div>
                         </p>
-                        {/* <div
-                          className={
-                            styles.statement_date_search_camp_statement
-                          }
-                        >
-                          <strong>Go live Time : </strong>
-                          {covertToTime(x.go_live_time)}
-                        </div> */}
                       </div>
                       {/* {" "} */}
+
                       <div className={styles.tags_all_search_camp_statement}>
-                        {parsedData?.reverse()?.map((obj,index) => {
+                        {parsedData?.reverse()?.map((obj, index) => {
                           return (
                             <a href={`/${obj.camp_link}`} key={`/${obj.camp_link}`}>
                               {obj.camp_name}
-                              {index < parsedData.length -1? "/ " : ""}
+                              {index < parsedData.length - 1 ? "/ " : ""}
                             </a>
                           );
                         })}
@@ -214,7 +209,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
         renderItem(
           <div className={styles.search_lists}>
             <ul>
-              {searchNickname.slice(0,5)?.map((x) => {
+              {searchNickname.slice(0, 5)?.map((x) => {
                 return (
                   <>
                     <li>
@@ -263,11 +258,6 @@ const HeaderMenu = ({ loggedUser }: any) => {
       linkTitle: "Browse",
       id: 1,
     },
-    // {
-    //   link: "/uploadFile",
-    //   linkTitle: "Upload File",
-    //   id: 2,
-    // },
     {
       link: process.env.NEXT_PUBLIC_BLOG_URL,
       linkTitle: "Blog",
@@ -279,26 +269,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
       linkTitle: "Help",
       id: 3,
     },
-    // {
-    //   link: "/files/2012_amplifying_final.pdf",
-    //   linkTitle: "White Paper",
-    //   id: 4,
-    //   external: true,
-    // },
-
-    // {
-    //   link: "/topic/6-Canonizer-Jobs/1-Agreement?is_tree_open=1",
-    //   linkTitle: "Jobs",
-    //   id: 6,
-    // },
   ];
-  const { filterObject, filterByScore, viewThisVersion } = useSelector(
-    (state: RootState) => ({
-      filterObject: state?.filters?.filterObject,
-      filterByScore: state.filters?.filterObject?.filterByScore,
-      viewThisVersion: state?.filters?.viewThisVersionCheck,
-    })
-  );
 
   const [mockLinks, setMockLinks] = useState(links);
 
@@ -360,17 +331,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                     {item.linkTitle}
                   </a>
                 ) : (
-                  <Link
-                    href={`${item.link}?score=${filterByScore}&algo=${
-                      filterObject?.algorithm
-                    }${
-                      filterObject?.asof == "bydate"
-                        ? "&asofdate=" + filterObject?.asofdate
-                        : ""
-                    }&asof=${filterObject?.asof}&canon=${
-                      filterObject?.namespace_id
-                    }${viewThisVersion ? "&viewversion=1" : ""}`}
-                  >
+                  <Link href={item.link}>
                     <a>{item.linkTitle}</a>
                   </Link>
                 )}
@@ -380,13 +341,13 @@ const HeaderMenu = ({ loggedUser }: any) => {
         </ul>
       </nav>
       <div className="search_header">
-      <AutoComplete
-        popupClassName="certain-category-search-dropdown"
-        dropdownMatchSelectWidth={false}
-        // className={"search_header"}
-        options={inputSearch ? options : []}
-        value={searchValue}
-      >
+        <AutoComplete
+          popupClassName="certain-category-search-dropdown"
+          dropdownMatchSelectWidth={false}
+          // className={"search_header"}
+          options={inputSearch ? options : []}
+          value={searchValue}
+        >
           <Input
             size="large"
             placeholder="Search for"

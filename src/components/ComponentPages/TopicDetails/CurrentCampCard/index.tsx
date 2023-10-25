@@ -15,7 +15,6 @@ import K from "../../../../constants";
 import { RootState } from "../../../../store";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 import CustomSkelton from "../../../common/customSkelton";
-import { useEffect } from "react";
 
 const { Panel } = Collapse;
 
