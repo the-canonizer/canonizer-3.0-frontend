@@ -107,7 +107,7 @@ const mocktopic = {
         causer_type: "App\\Models\\User",
         causer_id: 1394,
         properties:
-          '{"url": "/statement/history/2971/2", "camp_num": 2, "camp_name": null, "topic_num": 2971, "topic_name": null, "description": "<p>camp 1 camp a</p>"}',
+          '{"url": "/statement/history/2971/2", "camp_num": 2, "topic_num": 2971, "topic_name": null, "description": "<p>camp 1 camp a</p>"}',
         created_at: 1692613711,
         updated_at: 1692613711,
       },
@@ -232,7 +232,7 @@ const mockThread = {
         causer_type: "App\\Models\\User",
         causer_id: 1394,
         properties:
-          '{"url": "/forum/1766-New1/1-Agreement/threads/726", "camp_num": 1, "camp_name": null, "topic_num": 1766, "topic_name": null, "description": "<p>test responesew posty</p>", "thread_name": "test respones"}',
+          '{"url": "/forum/1766-New1/1-Agreement/threads/726", "camp_num": 1 , "topic_num": 1766, "topic_name": null, "description": "<p>test responesew posty</p>", "thread_name": "test respones"}',
         created_at: 1693579113,
         updated_at: 1693579113,
       },
@@ -525,6 +525,80 @@ describe("RecentActivities on HomePage for authenticated user", () => {
       const tabElement = screen.getByRole("tab", { name: /threads/i });
       const ariaSelectedValue = tabElement.getAttribute("aria-selected");
       expect(ariaSelectedValue).toBe("true");
+    });
+  });
+
+  it("Should render without crash", async () => {
+    await act(async () => {
+      store.dispatch(setTopics(mocktopic));
+      const data = render(
+        <Provider store={store}>
+          <RouterContext.Provider
+            value={createMockRouter({
+              asPath: "/activities",
+              query: { topic_num: "44", camp_num: "1" },
+            })}
+          >
+            <RecentActivities />
+          </RouterContext.Provider>
+        </Provider>
+      );
+      const { container, debug } = data;
+
+      const listItems = container.querySelectorAll(".ant-list-item.listItem");
+
+      expect(listItems.length).toBe(4);
+      const mainHeadig = screen.getByRole("heading", {
+        name: /recent activities/i,
+      });
+      const topictab = screen.getByRole("tab", {
+        name: /topics\/camps/i,
+      });
+      const threadtab = screen.getByRole("tab", {
+        name: /threads/i,
+      });
+      expect(container.getElementsByTagName("li")).toHaveLength(4);
+      expect(container.getElementsByTagName("button")).toHaveLength(2);
+      expect(container.getElementsByTagName("a")).toHaveLength(4);
+
+      expect(mainHeadig.textContent).toBe("Recent Activities");
+      expect(topictab.textContent).toBe("Topics/Camps");
+      expect(threadtab.textContent).toBe("Threads");
+
+      expect(
+        screen.getByRole("link", {
+          name: /sajid-dev proposed a change to the camp topic: test updated 2 dec 2021 \| camp: agreement sep 4, 2023, 6:41:09 pm/i,
+        })
+      ).toBeInTheDocument();
+
+      expect(
+        screen.getByRole("link", {
+          name: /evil-tester587 proposed a change to the camp topic: test 0021 \| camp: camp 1 aug 21, 2023, 3:31:04 pm/i,
+        })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("link", {
+          name: /sajid-dev objected a change to statement camp 1 camp a aug 21, 2023, 3:28:31 pm/i,
+        })
+      ).toBeInTheDocument();
+
+      expect(
+        screen.getByRole("link", {
+          name: /evil-tester587 proposed a change to the statement topic: test 0021 \| camp: camp 1 aug 21, 2023, 3:28:01 pm/i,
+        })
+      ).toBeInTheDocument();
+
+      expect(
+        screen.getByRole("button", {
+          name: /load more/i,
+        })
+      ).toBeInTheDocument();
+
+      fireEvent.click(
+        screen.getByRole("button", {
+          name: /load more/i,
+        })
+      );
     });
   });
 });
