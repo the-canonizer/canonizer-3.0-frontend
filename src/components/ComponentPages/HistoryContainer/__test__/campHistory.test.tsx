@@ -613,7 +613,7 @@ const store1 = mockStore({
 // afterEach(cleanup);
 
 describe("CampHistory Page", () => {
-  it("should render without crash", () => {
+  it("should render without crash and fire events", () => {
     act(() => {
       const { container, debug } = render(
         <Provider store={store1}>
@@ -645,7 +645,7 @@ describe("CampHistory Page", () => {
     });
   });
 
-  it("should render without crash", () => {
+  it("should statementhistory render without crash without store", () => {
     act(() => {
       const { container, debug } = render(
         <Provider store={store}>
@@ -661,9 +661,9 @@ describe("CampHistory Page", () => {
     });
   });
 
-  it("should render without crash", () => {
+  it("should camphistory render without crash without store", () => {
     act(() => {
-      const { container, debug } = render(
+      render(
         <Provider store={store}>
           <RouterContext.Provider
             value={createMockRouter({
@@ -678,7 +678,7 @@ describe("CampHistory Page", () => {
       // debug();
     });
   });
-  it("should render without crash", () => {
+  it("should topichistory render without crash without store", () => {
     act(() => {
       const { container, debug } = render(
         <Provider store={store}>
@@ -694,7 +694,7 @@ describe("CampHistory Page", () => {
       );
     });
   });
-  it("should render without crash", () => {
+  it("Check rendered info", () => {
     act(() => {
       store.dispatch(
         setHistory({
@@ -736,7 +736,7 @@ describe("CampHistory Page", () => {
           },
         })
       );
-      const { container, debug } = render(
+      const { container } = render(
         <Provider store={store}>
           <RouterContext.Provider
             value={createMockRouter({
@@ -748,15 +748,6 @@ describe("CampHistory Page", () => {
           </RouterContext.Provider>
         </Provider>
       );
-      // const topicHistoryHeading = screen.getByRole("heading", {
-      //   name: /topic history/i,
-      // });
-      // const submitTopicButton = screen.getByRole("button", {
-      //   name: /submit topic update based on this/i,
-      // });
-      // const viewThisButton = screen.getByRole("button", {
-      //   name: /view this version/i,
-      // });
       expect(
         screen.getByRole("heading", {
           name: /topic history/i,
@@ -778,9 +769,6 @@ describe("CampHistory Page", () => {
           name: /topic name :/i,
         })
       ).toBeInTheDocument();
-      // expect(
-      //   screen.getAllByText(/theories of consciousness/i)[1]
-      // ).toBeInTheDocument();
       expect(screen.getByText(/edit summary :/i)).toBeInTheDocument();
       expect(
         screen.getByText(/SEO name change as proposed in forum./i)
@@ -801,9 +789,9 @@ describe("CampHistory Page", () => {
     });
   });
 
-  it("should render without crash", () => {
+  it("click on viewAll objected live", () => {
     act(() => {
-      const { container, debug } = render(
+      render(
         <Provider store={store1}>
           <RouterContext.Provider
             value={createMockRouter({

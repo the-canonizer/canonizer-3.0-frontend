@@ -40,7 +40,6 @@
 
 import {
   fireEvent,
-  getByText,
   render,
   screen,
   waitFor,
@@ -49,10 +48,6 @@ import DirectSupportedCamps from "..";
 import { useRouter } from "next/router";
 import { renderHook } from "@testing-library/react-hooks";
 import { useState } from "react";
-import Container from "postcss/lib/container";
-import userEvent from "@testing-library/user-event";
-import DirectSupportedCampsUI from "../DirectSupportedCampsUI";
-import { Modal } from "antd";
 
 const directSupportedCampsList = [
   {

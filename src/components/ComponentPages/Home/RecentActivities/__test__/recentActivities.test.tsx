@@ -528,7 +528,7 @@ describe("RecentActivities on HomePage for authenticated user", () => {
     });
   });
 
-  it("Should render without crash", async () => {
+  it("Should render without crash without store", async () => {
     await act(async () => {
       store.dispatch(setTopics(mocktopic));
       const data = render(
@@ -543,7 +543,7 @@ describe("RecentActivities on HomePage for authenticated user", () => {
           </RouterContext.Provider>
         </Provider>
       );
-      const { container, debug } = data;
+      const { container } = data;
 
       const listItems = container.querySelectorAll(".ant-list-item.listItem");
 
