@@ -11,7 +11,9 @@ const LoggedInHeader = () => {
     <React.Fragment>
       <LoggedInHeaderNavigation></LoggedInHeaderNavigation>
       <section className="Mob_View">
-        <div className="search_header"><HeaderMenu/></div>
+        <div className="search_header">
+          <HeaderMenu />
+        </div>
       </section>
       <SearchSection />
       <div className="topicMobBTN">
