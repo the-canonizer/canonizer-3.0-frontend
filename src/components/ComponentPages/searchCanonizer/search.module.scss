@@ -9,6 +9,12 @@
     }
     .search_lists 
     {
+        
+        h1 
+        {
+            font-size: 13px;
+            font-weight: 700;
+        }
         ul 
         {
             padding: 0;
@@ -31,6 +37,18 @@
                 padding-right: 20px;
                 font-weight: 600;
                 color: #2E3136;
+                ul li 
+                {
+                    padding: 0;
+                    background-color: transparent;
+                    border: none;
+                    box-shadow: none;
+                    a
+                    {
+                        font-size: 12px;
+                        color: #4484CE;
+                    }
+                }
                 &:hover 
                 {
                     background-color: #f9f9f9;
@@ -48,6 +66,13 @@
                 {
                     color: #2E3136;
                     font-weight: 600;
+                }
+                div
+                {
+                    color: #707070;
+                    font-size: 12px;
+                    margin-bottom: 0;
+                    font-weight: 400;
                 }
                 .ml_auto
                 {
@@ -100,7 +125,7 @@
                 margin-top: 8px;
             }
             .statement_heading{
-                color: blue;
+                color: #4484CE;
             }
         }
     }
