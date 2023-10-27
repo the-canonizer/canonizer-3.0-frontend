@@ -4,59 +4,91 @@ import Link from "next/link";
 import styles from "./searchSideBar.module.scss";
 import Image from "next/image";
 import filter from "src/assets/image/face.png";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
 
 export default function SearchSideBar() {
   const router = useRouter();
+  let { searchValue } = useSelector((state: RootState) => ({
+    searchValue: state?.searchSlice?.searchValue,
+  }));
+
   const campRoute = () => {
     router?.push("/search/topic");
   };
+
   return (
     <>
       <div className="leftSideBar_Card noFilter">
         {
           <div className="search_tabs">
-            <Link href="/search">
+            <Link
+              href={{
+                pathname: '/search',
+                query: { q: searchValue },
+              }}
+            >
               <Button
                 size="large"
-                className={router?.asPath == "/search" ? "active" : "btn"}
+                className={router?.asPath.includes("/search?") ? "active" : "btn"}
               >
                 <a>All</a>
               </Button>
             </Link>
-            <Link href="/search/topic">
+            <Link
+              href={{
+                pathname: '/search/topic',
+                query: { q: searchValue },
+              }}
+            >
               <Button
                 size="large"
-                className={router?.asPath == "/search/topic" ? "active" : "btn"}
+                className={router?.asPath.includes("/search/topic?") ? "active" : "btn"}
               >
                 <i className="icon-topic"></i>
                 <a>Topic</a>
               </Button>
             </Link>
-            <Link href="/search/camp">
+            <Link
+              href={{
+                pathname: '/search/camp',
+                query: { q: searchValue },
+              }}
+            >
               <Button
                 size="large"
-                className={router?.asPath == "/search/camp" ? "active" : "btn"}
+                className={router?.asPath.includes("/search/camp?") ? "active" : "btn"}
               >
                 <i className="icon-camp"></i>
                 <a>Camp</a>
               </Button>
             </Link>
-            <Link href={"/search/camp_statement"}>
+            <Link
+              href={{
+                pathname: '/search/camp_statement',
+                query: { q: searchValue },
+              }}
+            >
               <Button
                 size="large"
                 className={
-                  router?.asPath == "/search/camp_statement" ? "active" : "btn"
+                  router?.asPath.includes("/search/camp_statement?") ? "active" : "btn"
                 }
               >
                 <i className="icon-camp"></i>
                 <a>Camp Statement</a>
               </Button>
             </Link>
-            <Link href="/search/nickname">
+            <Link
+              href={{
+                pathname: '/search/nickname',
+                query: { q: searchValue },
+              }}
+            >
               <Button
                 size="large"
                 className={
-                  router?.asPath == "/search/nickname" ? "active" : "btn"
+                  router?.asPath.includes("/search/nickname?") ? "active" : "btn"
                 }
               >
                 <Image

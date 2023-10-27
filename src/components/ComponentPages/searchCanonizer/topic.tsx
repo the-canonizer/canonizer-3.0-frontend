@@ -6,23 +6,28 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { Pagination } from "antd";
+import CustomSkelton from "@/components/common/customSkelton";
 
 const TopicSearch = () => {
   const { searchData } = useSelector((state: RootState) => ({
     searchData: state?.searchSlice?.searchData,
   }));
+  const [loader, setLoader] = useState(true)
   const [startingPosition, setStartingPosition] = useState(0);
   const [endingPosition, setEndingPosition] = useState(20);
   const [currentPage, setCurrentPage] = useState(1);
 
   const pageChange = (pageNumber, pageSize) => {
     setCurrentPage(pageNumber);
-
     setStartingPosition((pageNumber - 1) * pageSize);
     setEndingPosition((pageNumber - 1) * pageSize + pageSize);
   };
   useEffect(() => {
     pageChange(currentPage, 20);
+    if(searchData.response){
+      setLoader(false)
+    }
+
   });
   return (
     <Fragment>
@@ -39,7 +44,7 @@ const TopicSearch = () => {
             <AdvanceFilter />
           </div>
           <div className={styles.search_lists}>
-            <ul>
+            {!loader ? searchData.topic.length > 0 ? <ul>
               {searchData.topic
                 .slice(startingPosition, endingPosition)
                 .map((x) => {
@@ -59,7 +64,13 @@ const TopicSearch = () => {
                     </>
                   );
                 })}
-            </ul>
+            </ul> : <div style={{ textAlign: "center" }}><h4>No Data Found</h4></div> : <CustomSkelton
+              skeltonFor="list"
+              bodyCount={2}
+              stylingClass="listSkeleton"
+              isButton={false}
+            />}
+
           </div>
           <Pagination
             hideOnSinglePage={true}

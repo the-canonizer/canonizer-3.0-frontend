@@ -20,9 +20,13 @@ const HeaderMenu = ({ loggedUser }: any) => {
   const [searchCamps, setSearchCamps] = useState([]);
   const [searchCampStatement, setSearchCampStatement] = useState([]);
   const [searchNickname, setSearchNickname] = useState([]);
-  const { searchValue } = useSelector((state: RootState) => ({
+  let { searchValue } = useSelector((state: RootState) => ({
     searchValue: state?.searchSlice?.searchValue,
   }));
+
+  const router = useRouter();
+  
+
   const dispatch = useDispatch();
 
   const renderTitle = (icon: any, title: string) => (
@@ -45,11 +49,15 @@ const HeaderMenu = ({ loggedUser }: any) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
   useEffect(() => {
-    const localSearch = localStorage.getItem("searchValue");
-    if (localSearch) {
-      dispatch(setSearchValue(localSearch));
-      getGlobalSearchCanonizer(localSearch, true);
+    if (searchValue.length == 0) {
+      // const localSearch = localStorage.getItem("searchValue");
+        searchValue = router?.asPath?.split("=")[1].split("+").join(" ")?.replace(/%20/g, " ")
+      // if (localSearch) {
+        dispatch(setSearchValue(searchValue));
+        getGlobalSearchCanonizer(searchValue, true);
+      // }
     }
+
   }, []);
 
   const options = [
@@ -254,10 +262,11 @@ const HeaderMenu = ({ loggedUser }: any) => {
             <i className="icon-search"></i>
             <Link
               href={{
-                pathname: "/search",
+                pathname: '/search',
+                query: { q: searchValue },
               }}
             >
-              <a>{`Search for "${searchValue}"`}</a>
+              <a onClick={() => handleSearchfor()}>{`Search for "${searchValue}"`}</a>
             </Link>
           </footer>
         ),
@@ -286,8 +295,6 @@ const HeaderMenu = ({ loggedUser }: any) => {
 
   const [mockLinks, setMockLinks] = useState(links);
 
-  const router = useRouter();
-
   useEffect(() => {
     if (!loggedUser?.is_admin) {
       const allLinks = [...mockLinks];
@@ -314,17 +321,23 @@ const HeaderMenu = ({ loggedUser }: any) => {
     }
   };
 
-  const handlePress = () => {
-    router.push("/search");
+  const handleSearchfor = () => {
+    getGlobalSearchCanonizer(searchValue, true);
+  }
+
+  const handlePress = (e) => {
+    router.push({
+      pathname: '/search',
+      query: { q: e.target.value }
+    })
   };
   return (
     <Fragment>
       <nav className={styles.nav}>
         <ul>
           <li
-            className={`topicDeskBTN d-none d-lg-block ${
-              router?.asPath === "/create/topic" ? styles.active : ""
-            }`}
+            className={`topicDeskBTN d-none d-lg-block ${router?.asPath === "/create/topic" ? styles.active : ""
+              }`}
             key="create-topic-li"
           >
             <TopicCreationBTN key="create-topic-area" />
@@ -377,7 +390,8 @@ const HeaderMenu = ({ loggedUser }: any) => {
             }}
             onPressEnter={(e) => {
               // localStorage.setItem("searchValue",(e.target as HTMLTextAreaElement).value)
-              !router.asPath.includes("/search") ? handlePress() : "";
+              // !router.asPath.includes("/search") ? handlePress(e) : "";
+              handlePress(e)
               getGlobalSearchCanonizer(
                 (e.target as HTMLTextAreaElement).value,
                 true

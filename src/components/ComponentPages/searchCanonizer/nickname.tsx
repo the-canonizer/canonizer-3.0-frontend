@@ -6,11 +6,13 @@ import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 import Link from "next/link";
 import { Pagination } from "antd";
+import CustomSkelton from "@/components/common/customSkelton";
 
 const NicknameSearch = () => {
   const { searchData } = useSelector((state: RootState) => ({
     searchData: state?.searchSlice?.searchData,
   }));
+  const [loader, setLoader] = useState(true)
   const [startingPosition, setStartingPosition] = useState(0);
   const [endingPosition, setEndingPosition] = useState(20);
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,6 +25,9 @@ const NicknameSearch = () => {
   };
   useEffect(() => {
     pageChange(currentPage, 20);
+    if (searchData.response) {
+      setLoader(false)
+    }
   });
   return (
     <Fragment>
@@ -38,30 +43,39 @@ const NicknameSearch = () => {
             <AdvanceFilter />
           </div>
           <div className={styles.search_lists}>
-            <ul>
-              {searchData.nickname
-                .slice(startingPosition, endingPosition)
-                .map((x) => {
-                  return (
-                    <>
-                      <li>
-                        <Link href={`/${x.link}`}>
-                          <a>
-                            <label style={{cursor:"pointer"}}>{x.type_value}</label>
-                          </a>
-                        </Link>
+            {
+              !loader ? searchData.nickname.length > 0 ? <ul>
+                {searchData.nickname
+                  .slice(startingPosition, endingPosition)
+                  .map((x) => {
+                    return (
+                      <>
+                        <li>
+                          <Link href={`/${x.link}`}>
+                            <a>
+                              <label style={{ cursor: "pointer" }}>{x.type_value}</label>
+                            </a>
+                          </Link>
 
-                        <span className={styles.ml_auto}>
-                          Supported camps:{" "}
-                          <strong className={styles.yellow_color}>
-                            {x.support_count}
-                          </strong>{" "}
-                        </span>
-                      </li>
-                    </>
-                  );
-                })}
-            </ul>
+                          <span className={styles.ml_auto}>
+                            Supported camps:{" "}
+                            <strong className={styles.yellow_color}>
+                              {x.support_count}
+                            </strong>{" "}
+                          </span>
+                        </li>
+                      </>
+                    );
+                  })}
+              </ul> : <div style={{ textAlign: "center" }}><h4>No Data Found</h4></div> :
+                <CustomSkelton
+                  skeltonFor="list"
+                  bodyCount={2}
+                  stylingClass="listSkeleton"
+                  isButton={false}
+                />
+            }
+
           </div>
           <Pagination
             hideOnSinglePage={true}
