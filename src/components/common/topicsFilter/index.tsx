@@ -151,6 +151,26 @@ const CreateTopic = () => {
       delete router.query.asofdate;
     }
 
+    if (String(filterByScore) === "0") {
+      delete router.query.score;
+    }
+
+    if (String(namespace_id) === "1") {
+      delete router.query.canon;
+    }
+
+    if (asof === "default") {
+      delete router.query.asof;
+    }
+
+    if (algorithm === "blind_popularity") {
+      delete router.query.algo;
+    }
+
+    if (String(campScoreValue) === "10") {
+      delete router.query.filter;
+    }
+
     Router.replace(router, null, { shallow: true });
   };
 
