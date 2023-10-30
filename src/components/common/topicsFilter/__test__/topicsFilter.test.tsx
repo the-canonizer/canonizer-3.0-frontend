@@ -352,7 +352,7 @@ describe("Sidebar Filters Component", () => {
   });
 
   it("Change Filter Value", async () => {
-    const { container } = render(
+    render(
       <Provider store={store2}>
         <RouterContext.Provider
           value={createMockRouter2({
