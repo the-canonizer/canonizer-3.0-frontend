@@ -1,87 +1,87 @@
-import React, { Fragment, useEffect, useState } from "react";
-import SearchSideBar from "../../common/SearchSideBar";
-import styles from "./search.module.scss";
-import AdvanceFilter from "../../common/AdvanceSearchFilter";
-import Link from "next/link";
-import { useSelector } from "react-redux";
-import { RootState } from "src/store";
-import { Pagination } from "antd";
-import CustomSkelton from "@/components/common/customSkelton";
+// import React, { Fragment, useEffect, useState } from "react";
+// import SearchSideBar from "../../common/SearchSideBar";
+// import styles from "./search.module.scss";
+// import AdvanceFilter from "../../common/AdvanceSearchFilter";
+// import Link from "next/link";
+// import { useSelector } from "react-redux";
+// import { RootState } from "src/store";
+// import { Pagination } from "antd";
+// import CustomSkelton from "@/components/common/customSkelton";
 
-const TopicSearch = () => {
-  const { searchData } = useSelector((state: RootState) => ({
-    searchData: state?.searchSlice?.searchData,
-  }));
-  const [loader, setLoader] = useState(true)
-  const [startingPosition, setStartingPosition] = useState(0);
-  const [endingPosition, setEndingPosition] = useState(20);
-  const [currentPage, setCurrentPage] = useState(1);
+// const TopicSearch = () => {
+//   const { searchData } = useSelector((state: RootState) => ({
+//     searchData: state?.searchSlice?.searchData,
+//   }));
+//   const [loader, setLoader] = useState(true)
+//   const [startingPosition, setStartingPosition] = useState(0);
+//   const [endingPosition, setEndingPosition] = useState(20);
+//   const [currentPage, setCurrentPage] = useState(1);
 
-  const pageChange = (pageNumber, pageSize) => {
-    setCurrentPage(pageNumber);
-    setStartingPosition((pageNumber - 1) * pageSize);
-    setEndingPosition((pageNumber - 1) * pageSize + pageSize);
-  };
-  useEffect(() => {
-    pageChange(currentPage, 20);
-    if(searchData.response){
-      setLoader(false)
-    }
+//   const pageChange = (pageNumber, pageSize) => {
+//     setCurrentPage(pageNumber);
+//     setStartingPosition((pageNumber - 1) * pageSize);
+//     setEndingPosition((pageNumber - 1) * pageSize + pageSize);
+//   };
+//   useEffect(() => {
+//     pageChange(currentPage, 20);
+//     if(searchData.response){
+//       setLoader(false)
+//     }
 
-  });
-  return (
-    <Fragment>
-      <aside className="leftSideBar miniSideBar">
-        <div className="leftSideBar_Card p-0 m-0">
-          <SearchSideBar />
-        </div>
-      </aside>
+//   });
+//   return (
+//     <Fragment>
+//       <aside className="leftSideBar miniSideBar">
+//         <div className="leftSideBar_Card p-0 m-0">
+//           <SearchSideBar />
+//         </div>
+//       </aside>
 
-      <div className="pageContentWrap">
-        <div className={styles.card}>
-          <div className="d-flex mb-2 align-items-center flex-wrap relative">
-            <h4 data-testid="topic_heading">Topic</h4>
-            <AdvanceFilter />
-          </div>
-          <div className={styles.search_lists}>
-            {!loader ? searchData.topic.length > 0 ? <ul>
-              {searchData.topic
-                .slice(startingPosition, endingPosition)
-                .map((x) => {
-                  return (
-                    <>
-                      <li>
-                        <Link href={`/${x.link}`}>
-                          <a>
-                            <label style={{ cursor: "pointer" }}>
-                              {x.type_value}
-                            </label>
-                          </a>
-                        </Link>
+//       <div className="pageContentWrap">
+//         <div className={styles.card}>
+//           <div className="d-flex mb-2 align-items-center flex-wrap relative">
+//             <h4 data-testid="topic_heading">Topic</h4>
+//             <AdvanceFilter />
+//           </div>
+//           <div className={styles.search_lists}>
+//             {!loader ? searchData.topic.length > 0 ? <ul>
+//               {searchData.topic
+//                 .slice(startingPosition, endingPosition)
+//                 .map((x) => {
+//                   return (
+//                     <>
+//                       <li>
+//                         <Link href={`/${x.link}`}>
+//                           <a>
+//                             <label style={{ cursor: "pointer" }}>
+//                               {x.type_value}
+//                             </label>
+//                           </a>
+//                         </Link>
 
-                        <span className={styles.ml_auto}>{x.namespace}</span>
-                      </li>
-                    </>
-                  );
-                })}
-            </ul> : <div style={{ textAlign: "center" }}><h4>No Data Found</h4></div> : <CustomSkelton
-              skeltonFor="list"
-              bodyCount={2}
-              stylingClass="listSkeleton"
-              isButton={false}
-            />}
+//                         <span className={styles.ml_auto}>{x.namespace}</span>
+//                       </li>
+//                     </>
+//                   );
+//                 })}
+//             </ul> : <div style={{ textAlign: "center" }}><h4>No Data Found</h4></div> : <CustomSkelton
+//               skeltonFor="list"
+//               bodyCount={2}
+//               stylingClass="listSkeleton"
+//               isButton={false}
+//             />}
 
-          </div>
-          <Pagination
-            hideOnSinglePage={true}
-            total={searchData.topic?.length}
-            pageSize={20}
-            onChange={pageChange}
-            showSizeChanger={false}
-          />
-        </div>
-      </div>
-    </Fragment>
-  );
-};
-export default TopicSearch;
+//           </div>
+//           <Pagination
+//             hideOnSinglePage={true}
+//             total={searchData.topic?.length}
+//             pageSize={20}
+//             onChange={pageChange}
+//             showSizeChanger={false}
+//           />
+//         </div>
+//       </div>
+//     </Fragment>
+//   );
+// };
+// export default TopicSearch;
