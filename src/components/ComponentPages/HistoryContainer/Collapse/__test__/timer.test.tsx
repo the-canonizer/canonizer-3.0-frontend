@@ -1,5 +1,6 @@
 import {
   fireEvent,
+  act,
   render,
   screen,
   waitFor,
@@ -51,52 +52,42 @@ describe("HistoryCollapse component", () => {
   });
   test("renders commit and cancel button", async () => {
     const { container, debug } = render(
-      <Timer unixTime={1698680436} setCommited={jest.fn()} />
+      <Timer unixTime={1698680495} setCommited={jest.fn()} />
     );
-    // debug();
-    await waitFor(() => {
-      //   const timerText = screen.getByText(/00:59:59/);
-      //   expect(timerText).toBeInTheDocument();
+    const timerText = container.querySelector("span");
+
+    expect(timerText).toHaveTextContent("01:00:00");
+    jest.advanceTimersByTime(1001);
+
+    expect(timerText).toHaveTextContent("00:59:59");
+    act(() => {
+      jest.advanceTimersByTime(3543000);
+    });
+
+    expect(timerText).toHaveTextContent("00:01:00");
+    act(() => {
+      jest.advanceTimersByTime(1001);
+    });
+
+    expect(timerText).toHaveTextContent("00:00:59");
+    act(() => {
+      jest.advanceTimersByTime(58000);
+    });
+
+    expect(timerText).toHaveTextContent("00:00:01");
+    act(() => {
+      jest.advanceTimersByTime(1001);
+    });
+
+    expect(timerText).toHaveTextContent("00:00:00");
+    act(() => {
+      jest.advanceTimersByTime(1001);
     });
   });
-  test("renders initial time", async () => {
-    const { container, debug } = render(
-      <Timer unixTime={1698676800} setCommited={jest.fn()} />
-    );
-    debug();
-    await waitFor(() => {
-      const timerText = screen.getByText("00:59:59");
-      expect(timerText).toBeInTheDocument();
-    });
+  it("renders with default time (00:00:00)", () => {
+    const { container, debug } = render(<Timer unixTime={0} />);
+    const timerText = container.querySelector("span");
+
+    expect(timerText).toHaveTextContent("00:00:00");
   });
-  //   it("renders with default time (00:00:00)", () => {
-  //     const { container, debug } = render(<Timer unixTime={0} />);
-  //     const timerText = container.querySelector("span");
-  //     debug();
-  //     expect(timerText).toHaveTextContent("00:00:00");
-  //   });
-
-  //   it("renders with a specific time (02:30:45)", async () => {
-  //     const { container } = render(<Timer unixTime={9045 * 1000} />);
-  //     const timerText = container.querySelector("span");
-
-  //     // Wait for the component to re-render and update
-  //     await waitFor(() => {
-  //       expect(timerText).toHaveTextContent("02:30:45");
-  //     });
-  //   });
-
-  //   it("renders with a time that exceeds 24 hours (27:45:15)", () => {
-  //     const { container } = render(<Timer unixTime={99915 * 1000} />);
-  //     const timerText = container.querySelector("span");
-  //     expect(timerText).toHaveTextContent("27:45:15");
-  //   });
-
-  //   // Add more test cases as needed
-
-  //   it("renders with negative time (-01:30:15)", () => {
-  //     const { container } = render(<Timer unixTime={-5415 * 1000} />);
-  //     const timerText = container.querySelector("span");
-  //     expect(timerText).toHaveTextContent("-01:30:15");
-  //   });
 });

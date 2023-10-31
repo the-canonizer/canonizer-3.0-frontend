@@ -78,7 +78,58 @@ const store1 = mockStore({
     },
   },
 });
-
+const store2 = mockStore({
+  auth: {
+    authenticated: false,
+    loggedInUser: {
+      is_admin: false,
+    },
+  },
+  topicDetails: {
+    currentCampRecord: {},
+  },
+  filters: {
+    filterObject: {
+      page_number: 1,
+      page_size: 15,
+      nameSpace: "/General/",
+      namespace_id: 1,
+      asofdate: 1698655445.598,
+      asof: "review",
+      filterByScore: "0",
+      algorithm: "blind_popularity",
+      search: "",
+      includeReview: false,
+      is_archive: 0,
+    },
+  },
+});
+const store3 = mockStore({
+  auth: {
+    authenticated: true,
+    loggedInUser: {
+      is_admin: false,
+    },
+  },
+  topicDetails: {
+    currentCampRecord: {},
+  },
+  filters: {
+    filterObject: {
+      page_number: 1,
+      page_size: 15,
+      nameSpace: "/General/",
+      namespace_id: 1,
+      asofdate: 1698655445.598,
+      asof: "bydate",
+      filterByScore: "0",
+      algorithm: "blind_popularity",
+      search: "",
+      includeReview: false,
+      is_archive: 0,
+    },
+  },
+});
 describe("HistoryCollapse component", () => {
   beforeAll(() => {
     jest.useFakeTimers();
@@ -335,12 +386,6 @@ describe("HistoryCollapse component", () => {
     expect(container.getElementsByTagName("textarea")).toHaveLength(0);
     expect(container.getElementsByTagName("input")).toHaveLength(2);
     expect(container.getElementsByTagName("a")).toHaveLength(2);
-    // fireEvent.click(
-    //   screen.getByRole("checkbox", {
-    //     name: /i agree with this statement change/i,
-    //   })
-    // );
-    // debug();
   });
 
   test("renders Objected", () => {
@@ -554,21 +599,7 @@ describe("HistoryCollapse component", () => {
     expect(container.getElementsByTagName("textarea")).toHaveLength(0);
     expect(container.getElementsByTagName("input")).toHaveLength(1);
     expect(container.getElementsByTagName("a")).toHaveLength(2);
-    debug();
-    // const statementHistory = screen.getByText("Select To Compare");
-    // expect(statementHistory).toBeInTheDocument();
 
-    // const statement = screen.getByText("Select To Compare");
-    // expect(statement).toBeInTheDocument();
-    // expect(
-    //   screen.getByRole("heading", {
-    //     name: /object reason : yes/i,
-    //   })
-    // ).toBeInTheDocument();
-    // expect(container.getElementsByTagName("button")).toHaveLength(2);
-    // expect(container.getElementsByTagName("textarea")).toHaveLength(0);
-    // expect(container.getElementsByTagName("input")).toHaveLength(1);
-    // expect(container.getElementsByTagName("a")).toHaveLength(3);
     fireEvent.click(
       screen.getByRole("button", {
         name: /object/i,
@@ -578,6 +609,185 @@ describe("HistoryCollapse component", () => {
     fireEvent.click(
       screen.getByRole("button", {
         name: /submit statement update based on this/i,
+      })
+    );
+  });
+  test("renders for Topic", () => {
+    const { container, debug } = render(
+      <Provider store={store2}>
+        <RouterContext.Provider
+          value={createMockRouter({
+            asPath: "/topic/history/3020-test-colapse-2/1-Agreement",
+            pathname: "/topic/history/[...camp]",
+          })}
+        >
+          <HistoryCollapse
+            collapseKey={"1"}
+            isChecked={false}
+            campStatement={{
+              value: "<p>stateedit</p>",
+              parsed_value: "<p>stateedit</p>",
+              topic_num: 3020,
+              camp_num: 1,
+              id: 6193,
+              note: "editSum",
+              submit_time: 1698655566,
+              submitter_nick_id: 831,
+              go_live_time: 1698741966,
+              objector_nick_id: null,
+              object_time: null,
+              object_reason: null,
+              proposed: null,
+              replacement: null,
+              language: "English",
+              grace_period: 1,
+              objector_nick_name: null,
+              agreed_to_change: 0,
+              submitter_nick_name: "test2",
+              isAuthor: true,
+              total_supporters: 2,
+              agreed_supporters: 1,
+              ifIamSupporter: 0,
+              ifIAmExplicitSupporter: false,
+              status: "in_review",
+            }}
+            topicNamespaceId={19}
+            userNickNameData={[
+              {
+                id: 2,
+                nick_name: "Malia_Allsop",
+              },
+            ]}
+            campHistoryItems={[
+              {
+                value: "<p>stateedit</p>",
+                parsed_value: "<p>stateedit</p>",
+                topic_num: 3020,
+                camp_num: 1,
+                id: 6193,
+                note: "editSum",
+                submit_time: 1698655566,
+                submitter_nick_id: 831,
+                go_live_time: 1698741966,
+                objector_nick_id: null,
+                object_time: null,
+                object_reason: null,
+                proposed: null,
+                replacement: null,
+                language: "English",
+                grace_period: 1,
+                objector_nick_name: null,
+                agreed_to_change: 0,
+                submitter_nick_name: "test2",
+                isAuthor: true,
+                total_supporters: 2,
+                agreed_supporters: 1,
+                ifIamSupporter: 0,
+                ifIAmExplicitSupporter: false,
+                status: "in_review",
+              },
+            ]}
+            callManageCampApi={jest.fn()}
+            changeAgree={jest.fn()}
+            changeDiscard={jest.fn()}
+            onSelectCompare={jest.fn()}
+            setIsTreesApiCallStop={jest.fn()}
+            isDisabledCheck={false}
+            parentArchived={0}
+          />
+        </RouterContext.Provider>
+      </Provider>
+    );
+  });
+  test("renders for Topic", () => {
+    const { container, debug } = render(
+      <Provider store={store3}>
+        <RouterContext.Provider
+          value={createMockRouter({
+            asPath: "/camp/history/3020-test-colapse-2/1-Agreement",
+            pathname: "/camp/history/[...camp]",
+          })}
+        >
+          <HistoryCollapse
+            collapseKey={"1"}
+            isChecked={false}
+            campStatement={{
+              value: "<p>stateedit</p>",
+              parsed_value: "<p>stateedit</p>",
+              topic_num: 3020,
+              camp_num: 1,
+              id: 6193,
+              note: "editSum",
+              submit_time: 1698655566,
+              submitter_nick_id: 831,
+              go_live_time: 1698741966,
+              objector_nick_id: null,
+              object_time: null,
+              object_reason: null,
+              proposed: null,
+              replacement: null,
+              language: "English",
+              grace_period: 1,
+              objector_nick_name: null,
+              agreed_to_change: 0,
+              submitter_nick_name: "test2",
+              isAuthor: true,
+              total_supporters: 2,
+              agreed_supporters: 1,
+              ifIamSupporter: 0,
+              ifIAmExplicitSupporter: false,
+              status: "in_review",
+            }}
+            topicNamespaceId={19}
+            userNickNameData={[
+              {
+                id: 2,
+                nick_name: "Malia_Allsop",
+              },
+            ]}
+            campHistoryItems={[
+              {
+                value: "<p>stateedit</p>",
+                parsed_value: "<p>stateedit</p>",
+                topic_num: 3020,
+                camp_num: 1,
+                id: 6193,
+                note: "editSum",
+                submit_time: 1698655566,
+                submitter_nick_id: 831,
+                go_live_time: 1698741966,
+                objector_nick_id: null,
+                object_time: null,
+                object_reason: null,
+                proposed: null,
+                replacement: null,
+                language: "English",
+                grace_period: 1,
+                objector_nick_name: null,
+                agreed_to_change: 0,
+                submitter_nick_name: "test2",
+                isAuthor: true,
+                total_supporters: 2,
+                agreed_supporters: 1,
+                ifIamSupporter: 0,
+                ifIAmExplicitSupporter: true,
+                status: "in_review",
+              },
+            ]}
+            callManageCampApi={jest.fn()}
+            changeAgree={jest.fn()}
+            changeDiscard={jest.fn()}
+            onSelectCompare={jest.fn()}
+            setIsTreesApiCallStop={jest.fn()}
+            isDisabledCheck={false}
+            parentArchived={0}
+          />
+        </RouterContext.Provider>
+      </Provider>
+    );
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: /commit change/i,
       })
     );
   });
