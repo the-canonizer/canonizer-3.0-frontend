@@ -220,20 +220,20 @@ const TopicsList = () => {
       await getTopicsApiCallWithReqBody();
       setGetTopicsLoadingIndicator(false);
     }
-    if (
-      didMount.current ||
-      !(
-        router?.query?.asof != filterObject?.asof ||
-        router?.query?.algo != filterObject?.algorithm ||
-        +router?.query?.score != filterByScore
-      ) ||
-      (router?.query?.algo == undefined &&
-        router?.query?.asof == undefined &&
-        router?.query?.score == undefined)
-    ) {
-      getTopicsApiCall();
-    }
-    didMount.current = true;
+    // if (
+    //   didMount.current ||
+    //   !(
+    //     router?.query?.asof != filterObject?.asof ||
+    //     router?.query?.algo != filterObject?.algorithm ||
+    //     +router?.query?.score != filterByScore
+    //   ) ||
+    //   (router?.query?.algo == undefined &&
+    //     router?.query?.asof == undefined &&
+    //     router?.query?.score == undefined)
+    // ) {
+    getTopicsApiCall();
+    // }
+    // didMount.current = true;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     asofdate,
