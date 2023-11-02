@@ -699,7 +699,7 @@ describe("HistoryCollapse component", () => {
       </Provider>
     );
   });
-  test("renders for Topic", () => {
+  test("renders for Topic commit", () => {
     const { container, debug } = render(
       <Provider store={store3}>
         <RouterContext.Provider
