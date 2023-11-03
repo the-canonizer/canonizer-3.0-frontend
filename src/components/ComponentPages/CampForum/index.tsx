@@ -302,7 +302,6 @@ const ForumComponent = ({
     const topicArr = (queries?.topic as string)?.split("-");
     const topic_num = topicArr?.shift();
     const type = queries["by"] as string;
-    // if (didMountList.current) {
 
     if (router?.pathname === "/forum/[topic]/[camp]/threads") {
       let timer = 0;
@@ -315,11 +314,6 @@ const ForumComponent = ({
         getThreads(camp_num, topic_num, type, page, searchQuery);
       }, 800);
     }
-
-    // } else {
-    //   didMountList.current = true;
-    //   setLoading(false);
-    // }
 
     if (
       router?.pathname === "/forum/[topic]/[camp]/threads/create" ||
