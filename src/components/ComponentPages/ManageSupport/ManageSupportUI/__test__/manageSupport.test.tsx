@@ -9,6 +9,9 @@ import ManageSupportUI from "../index";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import ManageSupport from "../..";
 import { Card } from "antd";
+import userEvent from "@testing-library/user-event";
+import { placeholders } from "src/messages/placeholder";
+
 
 const { labels } = messages;
 const nickNameList = [
@@ -103,6 +106,7 @@ jest.mock("next/router", () => ({
   useRouter: jest.fn(() => ({
     query: { manageSupport: manageSupport },
     push: jest.fn(),
+    asPath: 'abc_efg'
   })),
 }));
 jest.mock("react-redux", () => ({
@@ -116,10 +120,14 @@ jest.mock("react-redux", () => ({
       asofdate: "",
       manageSupportUrlLink: "",
       currentDelegatedSupportedClick: {
-        
+        delegatedSupportClick:false
       },
       currentGetCheckSupportExistsData: {
-        
+        warning:"",
+        is_confirm :1,
+        remove_camps:[{
+          camp:"abc"
+        }]
       },
       CurrentCheckSupportStatus: "",
       manageSupportStatusCheck: true,
@@ -545,51 +553,89 @@ it("Check the checkbox is checked/unchecked", () => {
 //   expect(tagBtn).toBeInTheDocument()
  
 // });
-// it("should render card with title and contents", async () => {
-//   const nicknamelist = [];
-//   const manageSupportList = [];
-//   const removeAll = jest.fn();
-//   const handleClose = jest.fn();
-//   const checked = false;
-//   const setManageSupportList = jest.fn();
-//   const parentSupportDataList = jest.fn();
-//   const getSupportStatusData = "";
-//   const submitNickNameSupportCamps = jest.fn();
-//   const cancelManageRoute = jest.fn();
-//   const setSelectedtNickname = jest.fn();
-//   const selectedtNickname = "";
-//   const submitButtonDisable = false;
-//   const setUpdatePostion = jest.fn();
-//   const unableToFindCamp = false;
+it("should render card with title and contents", async () => {
+  const nicknamelist = [{
+    nick_name:"Vikas",
+    id:"1"
+  }];
+  const manageSupportList = [{
+    topic_num:1,
+    camp_num: 1,
+    camp_name:"test",
+    support_order: 1,
+    link:"/test"
+  },
+  {
+    topic_num:2,
+    camp_num: 2,
+    camp_name:"test 2",
+    support_order: 2,
+    link:"/test2"
+  }];
+  const removeAll = jest.fn();
+  const handleClose = jest.fn();
+  const checked = false;
+  const setManageSupportList = jest.fn();
+  const parentSupportDataList = [{
+    camp_num:1,
+    support_order:1,
+    camp_name:"Test",
+    link:"/test"
 
-//   const { getByTestId } = render(
-//     <ManageSupportUI
-//       nickNameList={nicknamelist}
-//       manageSupportList={manageSupportList}
-//       clearAllChanges={clearAllChanges}
-//       removeAll={removeAll}
-//       handleClose={handleClose}
-//       checked={checked}
-//       setManageSupportList={setManageSupportList}
-//       parentSupportDataList={parentSupportDataList}
-//       getSupportStatusData={getSupportStatusData}
-//       submitNickNameSupportCamps={submitNickNameSupportCamps}
-//       cancelManageRoute={cancelManageRoute}
-//       setSelectedtNickname={setSelectedtNickname}
-//       selectedtNickname={selectedtNickname}
-//       submitButtonDisable={submitButtonDisable}
-//       setUpdatePostion={setUpdatePostion}
-//       unableToFindCamp={unableToFindCamp}
-//     />
-//   );
-//   const inputEl = getByTestId("select-option");
-//   expect(inputEl).toBeInTheDocument();
-//   // expect(inputEl).toHaveAttribute("type", "text");
-//   fireEvent.click(inputEl);
+  }];
+  const getSupportStatusData = "test";
+  const submitNickNameSupportCamps = jest.fn();
+  const cancelManageRoute = jest.fn();
+  const setSelectedtNickname = jest.fn();
+  const selectedtNickname = "1";
+  const submitButtonDisable = false;
+  const setUpdatePostion = jest.fn();
+  const unableToFindCamp = false;
 
-//   // await fireEvent.change(inputEl, { target: { value: "abc" } });
-//   // userEvent.selectOptions(getByTestId('select-option'), '<value>');
-// });
+  const { getByTestId,getAllByTestId } = render(
+    <ManageSupportUI
+      nickNameList={nicknamelist}
+      manageSupportList={manageSupportList}
+      clearAllChanges={clearAllChanges}
+      removeAll={removeAll}
+      handleClose={handleClose}
+      checked={checked}
+      setManageSupportList={setManageSupportList}
+      parentSupportDataList={parentSupportDataList}
+      getSupportStatusData={getSupportStatusData}
+      submitNickNameSupportCamps={submitNickNameSupportCamps}
+      cancelManageRoute={cancelManageRoute}
+      setSelectedtNickname={setSelectedtNickname}
+      selectedtNickname={selectedtNickname}
+      submitButtonDisable={submitButtonDisable}
+      setUpdatePostion={setUpdatePostion}
+      unableToFindCamp={unableToFindCamp}
+      getManageSupportLoadingIndicator={false}
+    />
+  );
+  const campName = getByTestId("camp_name")
+  expect(campName).toBeInTheDocument();
+
+  const clickOnCamp =getAllByTestId("styles_Bluecolor")[0]
+  expect(clickOnCamp).toBeInTheDocument();
+  fireEvent.click(clickOnCamp);
+  const closeCircle = getAllByTestId("close")[0]
+  expect(closeCircle).toBeInTheDocument();
+  fireEvent.click(closeCircle);
+  // const selectInput = screen.getByRole("combobox");
+
+  //   userEvent.click(selectInput);
+  // const inputE1 = screen.getByTestId("select-option")
+  // const inputE1 = screen.getAllByLabelText("Vikas");
+  // userEvent.click(inputE1[0]);
+
+  // expect(inputE1).toBeInTheDocument();
+  // expect(inputEl).toHaveAttribute("type", "search");
+  // fireEvent.click(inputEl);
+
+  // await fireEvent.change(inputE1, { target: { value: "1" } });
+//  await  userEvent.selectOptions(getByTestId('select-option'), '1');
+});
 describe("Manage support", () => {
   it("render nick name list", async () => {
     await render(<ManageSupport />);
