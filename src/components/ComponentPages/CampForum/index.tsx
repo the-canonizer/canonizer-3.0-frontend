@@ -304,15 +304,18 @@ const ForumComponent = ({
     const type = queries["by"] as string;
     // if (didMountList.current) {
 
-    let timer = 0;
+    if (router?.pathname === "/forum/[topic]/[camp]/threads") {
+      let timer = 0;
 
-    if (timer) {
-      clearTimeout(timer);
-      timer = 0;
+      if (timer) {
+        clearTimeout(timer);
+        timer = 0;
+      }
+      timer = window.setTimeout(async () => {
+        getThreads(camp_num, topic_num, type, page, searchQuery);
+      }, 800);
     }
-    timer = window.setTimeout(async () => {
-      getThreads(camp_num, topic_num, type, page, searchQuery);
-    }, 800);
+
     // } else {
     //   didMountList.current = true;
     //   setLoading(false);
