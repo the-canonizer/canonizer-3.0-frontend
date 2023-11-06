@@ -41,7 +41,7 @@ function CampForumPostPage({
           <DataNotFound
             name="Thread"
             message={notFoundMessage}
-            backURL={`/forum/${router?.query?.topic}/${router?.query?.camp}`}
+            backURL={`/forum/${router?.query?.topic}/${router?.query?.camp}/threads`}
           />
         ) : (
           <div className="" style={{ width: "100%" }}>
