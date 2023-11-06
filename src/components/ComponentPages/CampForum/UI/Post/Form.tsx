@@ -4,6 +4,7 @@ import { Form, Button, Select, Row, Col, Typography } from "antd";
 import { useDispatch } from "react-redux";
 
 import styles from "../Forum.module.scss";
+
 import messages from "../../../../../messages";
 import { showLoginModal } from "../../../../../store/slices/uiSlice";
 
@@ -11,9 +12,7 @@ import CustomSkelton from "../../../../common/customSkelton";
 
 const Editorckl = dynamic(
   () => import("src/components/common/editorck/index"),
-  {
-    ssr: false,
-  }
+  { ssr: false }
 );
 
 const { Option } = Select;
@@ -110,7 +109,7 @@ const PostForm = ({
             {isLog ? (
               <div className={styles.editorQuill}>
                 <Editorckl
-                  editorState={quillContent}
+                  editorState={quillContent || ""}
                   oneditorchange={onContentChange}
                   placeholder="Post Your Message Here..."
                   items={formats}

@@ -1,30 +1,55 @@
 import { Fragment } from "react";
-
+import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
+
 import {
   getCurrentTopicRecordApi,
   getCurrentCampRecordApi,
 } from "src/network/api/campDetailApi";
-import { getPostsList } from "../../../../../network/api/campForumApi";
+import {
+  getPostsList,
+  getThreadData,
+} from "../../../../../network/api/campForumApi";
 import {
   setCurrentTopicRecord,
   setCurrentCampRecord,
 } from "../../../../..//store/slices/campDetailSlice";
 import Layout from "../../../../../hoc/layout";
 import CampForumComponent from "../../../../../components/ComponentPages/CampForum";
+import DataNotFound from "@/components/ComponentPages/DataNotFound/dataNotFound";
+import { setThread } from "src/store/slices/campForumSlice";
 
-function CampForumPostPage({ topicRecord, campRecord, postList }: any) {
-  const dispatch = useDispatch();
+function CampForumPostPage({
+  topicRecord,
+  campRecord,
+  postList,
+  threadData,
+  notFoundStatus,
+  notFoundMessage,
+}: any) {
+  const dispatch = useDispatch(),
+    router = useRouter();
+
+  dispatch(setThread(threadData));
   dispatch(setCurrentTopicRecord(topicRecord));
   dispatch(setCurrentCampRecord(campRecord));
+
   return (
     <Fragment>
       <Layout routeName={"forum"}>
-        <div className="" style={{ width: "100%" }}>
-          <CampForumComponent
-            postlist={postList?.status_code == 200 ? postList?.data : {}}
+        {notFoundStatus ? (
+          <DataNotFound
+            name="Thread"
+            message={notFoundMessage}
+            backURL={`/forum/${router?.query?.topic}/${router?.query?.camp}`}
           />
-        </div>
+        ) : (
+          <div className="" style={{ width: "100%" }}>
+            <CampForumComponent
+              postlist={postList?.status_code == 200 ? postList?.data : {}}
+            />
+          </div>
+        )}
       </Layout>
     </Fragment>
   );
@@ -44,6 +69,21 @@ export async function getServerSideProps({ req, resolvedUrl }) {
         : Date.now() / 1000,
   };
 
+  const threadRes = await getThreadData(id, String(topicNum), String(campNum));
+
+  if (threadRes?.data?.status_code === 404) {
+    return {
+      props: {
+        topicRecord: {},
+        campRecord: {},
+        postList: {},
+        threadData: {},
+        notFoundStatus: true,
+        notFoundMessage: threadRes?.data?.error,
+      },
+    };
+  }
+
   const [topicRecord, campRecord, postList] = await Promise.all([
     getCurrentTopicRecordApi(reqBody, req.cookies["authToken"]),
     getCurrentCampRecordApi(reqBody, req.cookies["authToken"]),
@@ -55,6 +95,9 @@ export async function getServerSideProps({ req, resolvedUrl }) {
       topicRecord: topicRecord || {},
       campRecord: campRecord?.campData || {},
       postList: postList || {},
+      threadData: threadRes?.data || {},
+      notFoundStatus: false,
+      notFoundMessage: "",
     },
   };
 }
