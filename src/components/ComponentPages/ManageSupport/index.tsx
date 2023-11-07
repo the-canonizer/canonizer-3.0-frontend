@@ -155,9 +155,9 @@ const ManageSupport = () => {
   }, [isUserAuthenticated, reqBodyData.topic_num, campRecord?.camp_name]);
   const GetCheckStatusData = async (campReff: any) => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
-    if (response && response?.status_code === 404) {
-      router?.push(router?.asPath?.replace("support", "topic"));
-    }
+    // if (response && response?.status_code === 404) {
+    //   router?.push(router?.asPath?.replace("support", "topic"));
+    // }
     if (response && response.status_code === 200) {
       if (response.data?.remove_camps)
         setParentSupportDataList(response.data.remove_camps);
