@@ -57,15 +57,16 @@
   .navWrap {
     margin-left: 25px;
     margin-right: auto;
-    // @media screen and (min-width: 1025px) {
-    //   display: flex;
-    // }
-    display: flex;
-    flex: 1;
+    @media screen and (min-width: 1025px) {
+      display: flex;
+     flex: 1;
+    }
+    // display: flex;
+    // flex: 1;
     @media screen and (max-width: 1199px) {
       padding: 1.5rem;
       position: fixed;
-      left: -320px;
+      left: -380px;
       top: 0;
       width: 100%;
       max-width: 300px;
@@ -76,6 +77,7 @@
       transition: all 0.5s;
       &.showMobMenu {
         left: 0;
+        margin: 0;
       }
     }
     .btnCloseMobMenu {
@@ -101,7 +103,7 @@
       }
     }
     .nav {
-      padding-left: 20px;
+      // padding-left: 20px;
       ul {
         margin: 0;
         padding: 0;
@@ -135,8 +137,9 @@
             color: #fff;
           }
           @media screen and (max-width: 1199px) {
-            padding: 8px 0;
+            padding: 8px 0 !important;
             color: #222;
+            text-align: left;
           }
         }
         &.active {
@@ -161,7 +164,7 @@
       padding-top: 1.5rem;
       display: flex;
       justify-content: space-between;
-      @media screen and (min-width: 576px) {
+      @media screen and (min-width: 1080px) {
         display: none;
       }
 
@@ -398,5 +401,8 @@
 }
 .tags_all_search_camp_statement
 {
-  color: #1890ff;
+  color: #4484CE;
+}
+.camp_heading_color{
+  color: #2E3136;
 }

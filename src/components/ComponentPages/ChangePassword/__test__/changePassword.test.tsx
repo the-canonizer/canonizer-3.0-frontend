@@ -174,6 +174,7 @@ describe("change password", () => {
         status_code: 200,
       });
       const save_button = getAllByTestId("submitButton");
+      expect(save_button.length).toEqual(2);
       fireEvent.click(save_button[0]);
     });
   });

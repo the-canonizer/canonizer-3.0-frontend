@@ -73,7 +73,7 @@ function HistoryContainer() {
   };
   const reqBodyForService = {
     topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
-    camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
+    camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0) || 1,
     asOf: asof,
     asofdate:
       asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
@@ -391,7 +391,7 @@ function HistoryContainer() {
             className={styles.createBtn}
             click={campRoute}
             url={`/camp/create/${
-              router?.query.camp[0] + "/" + router?.query.camp[1]
+              router?.query.camp?.at(0) + "/" + router?.query.camp?.at(1)
             }`}
           />
         ) : null}

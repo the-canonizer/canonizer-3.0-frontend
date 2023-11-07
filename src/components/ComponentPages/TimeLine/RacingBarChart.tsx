@@ -63,19 +63,19 @@ function RacingBarChart({ data }: any) {
     // .y(link => link.x);
 
     const yScale = scaleBand()
-      .paddingInner(0.1)
-      .domain(data?.map((value, index) => index)) // [0,1,2,3,4,5]
-      .range([0, dimensions.height]); // [0, 200]
+      ?.paddingInner(0.1)
+      ?.domain(data?.map((value, index) => index)) // [0,1,2,3,4,5]
+      ?.range([0, dimensions.height]); // [0, 200]
 
     const xScale = scaleLinear()
-      .domain([0, max(data, (entry) => entry.score)]) // [0, 65 (example)]
-      .range([0, 900]); // [0, 400 (example)]
+      ?.domain([0, max(data, (entry) => entry.score)]) // [0, 65 (example)]
+      ?.range([0, 900]); // [0, 400 (example)]
 
     // Add minus square icon
     svg
-      .selectAll(".icon")
-      .data(data, (entry) => entry.title)
-      .join((enter) =>
+      ?.selectAll(".icon")
+      ?.data(data, (entry) => entry.title)
+      ?.join((enter) =>
         enter
           .append("image")
           .attr("class", "circle")
@@ -102,9 +102,9 @@ function RacingBarChart({ data }: any) {
 
     // draw the Title labels
     svg
-      .selectAll(".label")
-      .data(data, (entry) => entry.title)
-      .join((enter) =>
+      ?.selectAll(".label")
+      ?.data(data, (entry) => entry.title)
+      ?.join((enter) =>
         enter
           .append("text")
           .attr(
@@ -122,9 +122,9 @@ function RacingBarChart({ data }: any) {
 
     // draw the bars
     svg
-      .selectAll(".bar")
-      .data(data, (entry) => entry.title)
-      .join((enter) =>
+      ?.selectAll(".bar")
+      ?.data(data, (entry) => entry.title)
+      ?.join((enter) =>
         enter.append("rect").attr("y", (entry, index) => yScale(index))
       )
       .attr("fill", () => "#f89d15")
@@ -137,9 +137,9 @@ function RacingBarChart({ data }: any) {
 
     // draw the Score labels
     svg
-      .selectAll(".label1")
-      .data(data, (entry) => entry.title)
-      .join((enter) =>
+      ?.selectAll(".label1")
+      ?.data(data, (entry) => entry.title)
+      ?.join((enter) =>
         enter
           .append("text")
           .attr(
@@ -159,9 +159,9 @@ function RacingBarChart({ data }: any) {
     for (let i = 0; i < linesData?.length; i++) {
       count = count + 0.001;
       svg
-        .selectAll(`.line${i}`)
-        .data(linesData)
-        .join((enter) =>
+        ?.selectAll(`.line${i}`)
+        ?.data(linesData)
+        ?.join((enter) =>
           enter
             .append("line")
             .style("stroke", "#d9d9d9")

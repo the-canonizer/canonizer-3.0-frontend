@@ -106,6 +106,11 @@ const LoggedOutHeader = () => {
           key="toggle-btn"
         ></div>
       </Header>
+      <section className="Mob_View">
+        <div className="search_header">
+          <HeaderMenu />
+        </div>
+      </section>
       <SearchSection />
       <div className="topicMobBTN">
         <TopicCreationBTN key="create-topic-area" />

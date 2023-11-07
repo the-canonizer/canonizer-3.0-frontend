@@ -185,11 +185,11 @@ del.diffmod img {
 
 .btn {
   &-blue {
-    background-color: #2e68db;
+    background-color: #4484CE;
 
     &:hover,
     &:focus {
-      background-color: darken(#2e68db, 10%);
+      background-color: darken(#4484CE, 10%);
     }
   }
 
@@ -745,7 +745,7 @@ del.diffmod img {
     display: inline-block;
     border-radius: 50%;
     text-align: center;
-    font-size: 22px;
+    font-size: 16px;
     font-weight: bold;
   }
 
@@ -880,7 +880,7 @@ del.diffmod img {
       }
 
       .ant-checkbox-inner {
-        border-color: #1890ff;
+        border-color: #4484CE;
 
         &::after {
           width: 5px;
@@ -892,7 +892,7 @@ del.diffmod img {
     }
 
     .ant-checkbox-inner {
-      border-color: #1890ff;
+      border-color: #4484CE;
 
       &::after {
         width: 5px;
@@ -1211,13 +1211,13 @@ del.diffmod img {
   margin-top: 10px;
   display: none;
 
-  @media screen and (max-width: 567px) {
+  @media screen and (max-width: 1080px) {
     display: block;
   }
 
   a {
     width: 100%;
-    font-size: 16px;
+    font-size: 14px;
     display: inline-block;
     padding: 8px 0;
     color: #222;
@@ -1239,10 +1239,9 @@ del.diffmod img {
 
 .d-flex {
   display: flex;
-
-  @media screen and (max-width: 1024px) {
-    flex-flow: column;
-  }
+  // @media screen and (max-width: 1024px) {
+  //   flex-flow: column;
+  // }
 }
 
 .ant-btn-orange {
@@ -2726,25 +2725,42 @@ div[role="option"]::before {
     font-weight: 400 !important;
   }
 }
+.leftSideBar_Card .search_tabs .ant-btn > span {
+  position: absolute !important;
+  left: 15px;
+}
 .leftSideBar_Card  
 {
   .search_tabs
   {
-      button 
+      .ant-btn 
       {
-          background: #F3F4F5;
-          border-radius: 2px;
-          margin-bottom: 7px;
-          border: 1px solid #F3F4F5;
-          justify-content: flex-start !important;
-          font-size: 14px;
-          letter-spacing: 0px;
-          color: #1C1B24;
-          opacity: 1;
+        background: #F3F4F5;
+        border-radius: 2px;
+        margin-bottom: 7px;
+        border: 1px solid #F3F4F5;
+        justify-content: flex-start !important;
+        font-size: 14px;
+        letter-spacing: 0px;
+        color: #1C1B24;
+        opacity: 1;
+        padding: 6.4px 15px 6.4px 40px !important;
+        display: flex;
+        align-items: center;
+        position: relative;
           i 
           {
             color: #A2ACB9;
             font-size: 15px;
+            margin-right: 0px;
+            position: absolute;
+            left: 15px;
+          }
+          img{
+            transition: all 0.3s ease;
+          }
+          &:hover img{
+            filter: brightness(0) invert(1);
           }
           a 
           {
@@ -2791,11 +2807,7 @@ div[role="option"]::before {
   }
 }
 
-.topicDeskBTN {
-  display: block !important;
-  @media screen and (min-width: 1025px) {
-    margin-right: 0;
-  }
+.topicDeskBTN {  
   .ant-btn {
     background-color: transparent;
     color: #fff;
@@ -2824,16 +2836,76 @@ div[role="option"]::before {
     display: none !important;
   }
 }
-.topicMobBTN {
-  display: none !important;
-  @media screen and (max-width: 767px) {
-    display: block !important;
-  }
-}
 
 .change-icon {
   width: 20px;
   position: relative;
   left: 6px;
   top: -4px;
+}
+
+// .siteHeader_nav___O0X5{
+//   display: none;
+// }
+
+.Mob_View {  
+  .siteHeader_nav___O0X5{
+    display: none;
+  }
+  .search_header{
+    display: none;    
+    @media screen and (max-width: 1199px) {
+      display: flex;
+    }    
+    // @media only screen and (max-width: 580px) {
+    //   padding: 0;
+    // }
+  }
+  @media screen and (max-width: 1199px) {
+    display: block;
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 15px 0;  
+  }
+}
+
+.topicMobBTN {
+  display: none !important;
+  @media screen and (max-width: 1199px) {
+    display: block !important;
+    padding: 15px 15px 0;
+  }
+}
+
+.topicDeskBTN {
+  display: block;
+  // background: red;
+  @media screen and (max-width: 1080px) {
+    margin-right: 0;
+    display: none;
+  }
+}
+
+.siteHeader_wrap__DJamy .siteHeader_navWrap__yilWi.siteHeader_showMobMenu__Er4fO .search_header{
+  display: none;
+}
+
+// .ant-select-dropdown-hidden
+
+.siteHeader_showMobMenu__Er4fO .hdrUserdropdown > .ant-space {
+  gap: 8px !important;
+}
+
+.layout_pageWrap__Yr98j .layout_contentArea__WiOLg.layout_eventListArea__WsP_p {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.layout_pageWrap__Yr98j .layout_contentArea__WiOLg{
+  row-gap: 15px;
+}
+
+.miniSideBar .leftSideBar_Card .leftSideBar_Card {
+  border: none;
+  margin: 0;
 }

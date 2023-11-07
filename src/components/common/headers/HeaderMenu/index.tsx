@@ -1,241 +1,278 @@
 import React, { Fragment, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../../store";
+// import { useDispatch, useSelector } from "react-redux";
+// import { RootState } from "../../../../store";
 
 import styles from "../siteHeader.module.scss";
-import { AutoComplete, Input } from "antd";
+// import { AutoComplete, Input } from "antd";
 
 import TopicCreationBTN from "../TopicCreationBTN";
-import queryParams from "src/utils/queryParams";
-import { globalSearchCanonizer } from "src/network/api/userApi";
+// import queryParams from "src/utils/queryParams";
+// import { globalSearchCanonizer } from "src/network/api/userApi";
 import moment from "moment";
-import { setSearchData, setSearchValue } from "src/store/slices/searchSlice";
+// import { setSearchData, setSearchValue } from "src/store/slices/searchSlice";
+// import { key } from "localforage";
 
 const HeaderMenu = ({ loggedUser }: any) => {
-  const [inputSearch, setInputSearch] = useState("");
-  const [searchTopics, setSearchTopics] = useState([]);
-  const [searchCamps, setSearchCamps] = useState([]);
-  const [searchCampStatement, setSearchCampStatement] = useState([]);
-  const [searchNickname, setSearchNickname] = useState([]);
-  const {searchValue}  = useSelector((state: RootState) => ({
-    searchValue: state?.searchSlice?.searchValue,
-  }));
-  const dispatch = useDispatch();
+  // const [inputSearch, setInputSearch] = useState("");
+  // const [searchTopics, setSearchTopics] = useState([]);
+  // const [searchCamps, setSearchCamps] = useState([]);
+  // const [searchCampStatement, setSearchCampStatement] = useState([]);
+  // const [searchNickname, setSearchNickname] = useState([]);
+  // let { searchValue } = useSelector((state: RootState) => ({
+  //   searchValue: state?.searchSlice?.searchValue,
+  // }));
 
+  const router = useRouter();
+  
 
-  const renderTitle = (icon: any, title: string) => (
-    <span>
-      {icon}
-      {title}
-    </span>
-  );
+  // const dispatch = useDispatch();
 
-  const renderItem = (title: any) => ({
-    value: title,
-    label: (
-      <div>
-        {title}
-        <span>{/* <UserOutlined /> */}</span>
-      </div>
-    ),
-  });
-  const covertToTime = (unixTime) => {
-    return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
-  };
-  const options = [
-    {
-      label: renderTitle(
-        searchTopics.length? <i className="icon-topic"></i>:"",
-        searchTopics.length? "Topic":""
-      ),
-      options: [
-        renderItem(
-          <div className={styles.search_lists}>
-            <ul>
-              {searchTopics?.map((x) => {
-                return (
-                  <>
-                    <li>
-                      <Link href={x.link}>
-                        <a>
-                          <label>{x.type_value}</label>
-                        </a>
-                      </Link>
-                    </li>
-                  </>
-                );
-              })}
-            </ul>
-          </div>
-        ),
-      ],
-    },
-    {
-      label: renderTitle(searchCamps.length?<i className="icon-camp"></i>:"", searchCamps.length?"Camp":""),
-      options: [
-        renderItem(
-          <div className={styles.search_lists}>
-            <ul>
-              {searchCamps?.map((x) => {
-                const jsonData = JSON.parse(
-                  x.breadcrumb_data
-                ) as Array<any>;
-                const parsedData = jsonData.reduce(
-                  (accumulator, currentVal, index) => {
-                    const accIndex = index + 1;
-                    accumulator[index] = {
-                      camp_name: currentVal[accIndex]?.camp_name,
-                      camp_link: currentVal[accIndex]?.camp_link,
-                    };
-                    return accumulator;
-                  },
-                  []
-                );
+  // const renderTitle = (icon: any, title: string) => (
+  //   <span>
+  //     {icon}
+  //     {title}
+  //   </span>
+  // );
 
-                return (
-                  <>
-                    <li>
-                      {x.type_value}
-                      <div className={styles.tags_all_search_camp_statement}>
-                        {parsedData?.reverse()?.map((obj,index) => {
-                          return (
-                            <a href={obj.camp_link} key={obj.camp_link}>
-                              {obj.camp_name}
-                              {index < parsedData.length -1? "/ " : ""}
-                            </a>
-                          );
-                        })}
-                      </div>
-                    </li>
-                  </>
-                );
-              })}
-            </ul>
-          </div>
-        ),
-      ],
-    },
-    {
-      label: renderTitle(searchCampStatement.length?<i className="icon-camp"></i>:"", searchCampStatement.length?"Camp statement":""),
-      options: [
-        renderItem(
-          <div className={styles.search_lists}>
-            <ul>
-              {searchCampStatement?.map((x) => {
-                  const jsonData = JSON.parse(
-                    x.breadcrumb_data
-                  );
-                  const parsedData = jsonData.reduce(
-                    (accumulator, currentVal, index) => {
-                      const accIndex = index + 1;
-                      accumulator[index] = {
-                        camp_name: currentVal[accIndex].camp_name,
-                        camp_link: currentVal[accIndex].camp_link,
-                      };
-                      return accumulator;
-                    },
-                    []
-                  );
-                return (
-                  <>
-                    <li>
-                       <div className="d-flex flex-wrap g-2">
-                       <a href={jsonData[0][1].camp_link}>
-                               <h3 className="m-0" style={{color:"blue"}}>{jsonData[0][1].camp_name}</h3>
-                               </a>
-                            <div style={{marginLeft:"auto"}}>
-                                <strong>Go live Time : </strong>
-                                {covertToTime(x.go_live_time)}
-                            </div>
-                       </div>
-                      <div className="d-flex flex-wrap w-100 mb-1">
-                        <p  className={styles.search_heading_top}>
-                          <div
-                          dangerouslySetInnerHTML={{__html:x.type_value}}
-                          >
-                          </div>
-                        </p>
-                        {/* <div
-                          className={
-                            styles.statement_date_search_camp_statement
-                          }
-                        >
-                          <strong>Go live Time : </strong>
-                          {covertToTime(x.go_live_time)}
-                        </div> */}
-                      </div>
-                      {" "}
-                      <div className={styles.tags_all_search_camp_statement}>
-                        {parsedData?.reverse()?.map((obj,index) => {
-                          return (
-                            <a href={obj.camp_link} key={obj.camp_link}>
-                              {obj.camp_name}
-                              {index < parsedData.length -1? "/ " : ""}
-                            </a>
-                          );
-                        })}
-                      </div>
-                    </li>
-                  </>
-                );
-              })}
-            </ul>
-          </div>
-        ),
-      ],
-    },
-    {
-      label: renderTitle(
-        searchNickname.length? <i className="icon-camp"></i>:"" ,
-        searchNickname.length?"Nickname" :""
-      ),
-      options: [
-        renderItem(
-          <div className={styles.search_lists}>
-            <ul>
-              {searchNickname?.map((x) => {
-                return (
-                  <>
-                    <li>
-                      <div className="d-flex flex-wrap">
-                        <Link href={x.link}>
-                          <a>
-                            <label>{x.type_value}</label>
-                          </a>
-                        </Link>
-                          <span className="ml_auto suppport_camps">
-                            Supported camps:{" "}
-                            <strong className={styles.yellow_color}>
-                              {x.support_count}
-                            </strong>{" "}
-                          </span>
-                        
-                        
-                      </div>
-                    </li>
-                  </>
-                );
-              })}
-            </ul>
-          </div>
-        ),
-      ],
-    },
-    {
-      options: [
-        renderItem(
-          <footer>
-            <i className="icon-search"></i>
-            <Link  href="/search">
-            <a>{`Search for "${searchValue}"`}</a>
-            </Link>
-          </footer>
-        ),
-      ],
-    },
-  ];
+  // const renderItem = (title: any) => ({
+  //   value: title,
+  //   label: (
+  //     <div>
+  //       {title}
+  //       <span>{/* <UserOutlined /> */}</span>
+  //     </div>
+  //   ),
+  // });
+  // const covertToTime = (unixTime) => {
+  //   return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
+  // };
+  // useEffect(() => {
+  //   if (searchValue.length == 0) {
+  //     // const localSearch = localStorage.getItem("searchValue");
+  //       searchValue = router?.asPath?.split("=")[1].split("+").join(" ")?.replace(/%20/g, " ")
+  //     // if (localSearch) {
+  //       dispatch(setSearchValue(searchValue));
+  //       getGlobalSearchCanonizer(searchValue, true);
+  //     // }
+  //   }
+
+  // }, []);
+
+  // const options = [
+  //   {
+  //     label: renderTitle(
+  //       searchTopics.length ? <i className="icon-topic"></i> : "",
+  //       searchTopics.length ? "Topic" : ""
+  //     ),
+  //     options: [
+  //       renderItem(
+  //         <div className={styles.search_lists}>
+  //           <ul>
+  //             {searchTopics.slice(0, 5)?.map((x) => {
+  //               return (
+  //                 <>
+  //                   <li>
+  //                     <Link href={`/${x.link}`}>
+  //                       <a>
+  //                         <label>{x.type_value}</label>
+  //                       </a>
+  //                     </Link>
+  //                   </li>
+  //                 </>
+  //               );
+  //             })}
+  //           </ul>
+  //         </div>
+  //       ),
+  //     ],
+  //   },
+  //   {
+  //     label: renderTitle(
+  //       searchCamps.length ? <i className="icon-camp"></i> : "",
+  //       searchCamps.length ? "Camp" : ""
+  //     ),
+  //     options: [
+  //       renderItem(
+  //         <div className={styles.search_lists}>
+  //           <ul>
+  //             {searchCamps.slice(0, 5)?.map((x) => {
+  //               const jsonData = JSON.parse(x.breadcrumb_data) as Array<any>;
+  //               const parsedData = jsonData.reduce(
+  //                 (accumulator, currentVal, index) => {
+  //                   const accIndex = index + 1;
+  //                   accumulator[index] = {
+  //                     camp_name:
+  //                       currentVal[accIndex]?.camp_name == "Agreement"
+  //                         ? currentVal[accIndex].topic_name
+  //                         : currentVal[accIndex].camp_name,
+  //                     camp_link: currentVal[accIndex]?.camp_link,
+  //                   };
+  //                   return accumulator;
+  //                 },
+  //                 []
+  //               );
+
+  //               return (
+  //                 <>
+  //                   <li>
+  //                     <Link href={`/${jsonData[0][1].camp_link}`}>
+  //                       <a className={styles.camp_heading_color}>
+  //                         {" "}
+  //                         {x.type_value}
+  //                       </a>
+  //                     </Link>
+
+  //                     <div className={styles.tags_all_search_camp_statement}>
+  //                       {parsedData?.reverse()?.map((obj, index) => {
+  //                         return (
+  //                           <a
+  //                             href={`/${obj.camp_link}`}
+  //                             key={`/${obj.camp_link}`}
+  //                           >
+  //                             {obj.camp_name}
+  //                             {index < parsedData.length - 1 ? "/ " : ""}
+  //                           </a>
+  //                         );
+  //                       })}
+  //                     </div>
+  //                   </li>
+  //                 </>
+  //               );
+  //             })}
+  //           </ul>
+  //         </div>
+  //       ),
+  //     ],
+  //   },
+  //   {
+  //     label: renderTitle(
+  //       searchCampStatement.length ? <i className="icon-camp"></i> : "",
+  //       searchCampStatement.length ? "Camp statement" : ""
+  //     ),
+  //     options: [
+  //       renderItem(
+  //         <div className={styles.search_lists}>
+  //           <ul>
+  //             {searchCampStatement.slice(0, 5)?.map((x) => {
+  //               const jsonData = JSON.parse(x.breadcrumb_data) as Array<any>;
+  //               const parsedData = jsonData?.reduce(
+  //                 (accumulator, currentVal, index) => {
+  //                   const accIndex = index + 1;
+  //                   accumulator[index] = {
+  //                     camp_name:
+  //                       currentVal[accIndex].camp_name == "Agreement"
+  //                         ? currentVal[accIndex].topic_name
+  //                         : currentVal[accIndex].camp_name,
+  //                     camp_link: currentVal[accIndex].camp_link,
+  //                     topic_name: currentVal[accIndex].topic_name,
+  //                   };
+  //                   return accumulator;
+  //                 },
+  //                 []
+  //               );
+  //               return (
+  //                 <>
+  //                   <li>
+  //                     <div className="d-flex flex-wrap g-2">
+  //                       <a href={`/${jsonData?.[0]?.[1].camp_link}`}>
+  //                         <h3 className="m-0">
+  //                           {jsonData?.length > 1
+  //                             ? jsonData?.[0]?.[1]?.camp_name
+  //                             : jsonData?.[0]?.[1].topic_name}
+  //                         </h3>
+  //                       </a>
+  //                       <div style={{ marginLeft: "auto" }}>
+  //                         <strong>Go live Time : </strong>
+  //                         {covertToTime(x.go_live_time)}
+  //                       </div>
+  //                     </div>
+
+  //                     <div className="d-flex flex-wrap w-100 mb-1">
+  //                       <p className={styles.search_heading_top}>
+  //                         <div
+  //                           dangerouslySetInnerHTML={{ __html: x.type_value }}
+  //                         ></div>
+  //                       </p>
+  //                     </div>
+  //                     {/* {" "} */}
+
+  //                     <div className={styles.tags_all_search_camp_statement}>
+  //                       {parsedData?.reverse()?.map((obj, index) => {
+  //                         return (
+  //                           <a
+  //                             href={`/${obj.camp_link}`}
+  //                             key={`/${obj.camp_link}`}
+  //                           >
+  //                             {obj.camp_name}
+  //                             {index < parsedData.length - 1 ? "/ " : ""}
+  //                           </a>
+  //                         );
+  //                       })}
+  //                     </div>
+  //                   </li>
+  //                 </>
+  //               );
+  //             })}
+  //           </ul>
+  //         </div>
+  //       ),
+  //     ],
+  //   },
+  //   {
+  //     label: renderTitle(
+  //       searchNickname.length ? <i className="icon-camp"></i> : "",
+  //       searchNickname.length ? "Nickname" : ""
+  //     ),
+  //     options: [
+  //       renderItem(
+  //         <div className={styles.search_lists}>
+  //           <ul>
+  //             {searchNickname.slice(0, 5)?.map((x) => {
+  //               return (
+  //                 <>
+  //                   <li>
+  //                     <div className="d-flex flex-wrap">
+  //                       <Link href={`/${x.link}`}>
+  //                         <a>
+  //                           <label>{x.type_value}</label>
+  //                         </a>
+  //                       </Link>
+  //                       <span className="ml_auto suppport_camps">
+  //                         Supported camps:{" "}
+  //                         <strong className={styles.yellow_color}>
+  //                           {x.support_count}
+  //                         </strong>{" "}
+  //                       </span>
+  //                     </div>
+  //                   </li>
+  //                 </>
+  //               );
+  //             })}
+  //           </ul>
+  //         </div>
+  //       ),
+  //     ],
+  //   },
+  //   {
+  //     options: [
+  //       renderItem(
+  //         <footer>
+  //           <i className="icon-search"></i>
+  //           <Link
+  //             href={{
+  //               pathname: '/search',
+  //               query: { q: searchValue },
+  //             }}
+  //           >
+  //             <a onClick={() => handleSearchfor()}>{`Search for "${searchValue}"`}</a>
+  //           </Link>
+  //         </footer>
+  //       ),
+  //     ],
+  //   },
+  // ];
 
   const links = [
     {
@@ -243,11 +280,6 @@ const HeaderMenu = ({ loggedUser }: any) => {
       linkTitle: "Browse",
       id: 1,
     },
-    // {
-    //   link: "/uploadFile",
-    //   linkTitle: "Upload File",
-    //   id: 2,
-    // },
     {
       link: process.env.NEXT_PUBLIC_BLOG_URL,
       linkTitle: "Blog",
@@ -259,30 +291,9 @@ const HeaderMenu = ({ loggedUser }: any) => {
       linkTitle: "Help",
       id: 3,
     },
-    // {
-    //   link: "/files/2012_amplifying_final.pdf",
-    //   linkTitle: "White Paper",
-    //   id: 4,
-    //   external: true,
-    // },
-
-    // {
-    //   link: "/topic/6-Canonizer-Jobs/1-Agreement?is_tree_open=1",
-    //   linkTitle: "Jobs",
-    //   id: 6,
-    // },
   ];
-  const { filterObject, filterByScore, viewThisVersion } = useSelector(
-    (state: RootState) => ({
-      filterObject: state?.filters?.filterObject,
-      filterByScore: state.filters?.filterObject?.filterByScore,
-      viewThisVersion: state?.filters?.viewThisVersionCheck,
-    })
-  );
 
   const [mockLinks, setMockLinks] = useState(links);
-
-  const router = useRouter();
 
   useEffect(() => {
     if (!loggedUser?.is_admin) {
@@ -295,26 +306,38 @@ const HeaderMenu = ({ loggedUser }: any) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUser]);
-  const getGlobalSearchCanonizer = async (queryString) => {
-    let response = await globalSearchCanonizer(
-      queryParams({ term: queryString })
-    );
-    if (response) {
-      setSearchTopics(response.data.data.topic);
-      setSearchCamps(response.data.data.camp)
-      setSearchCampStatement(response.data.data.statement)
-      setSearchNickname(response.data.data.nickname)
-      dispatch(setSearchData(response?.data?.data));
-    }
-  };
+  // const getGlobalSearchCanonizer = async (queryString, onPresEnter) => {
+  //   let response = await globalSearchCanonizer(
+  //     queryParams({ term: queryString })
+  //   );
+  //   if (response) {
+  //     setSearchTopics(response.data.data.topic);
+  //     setSearchCamps(response.data.data.camp);
+  //     setSearchCampStatement(response.data.data.statement);
+  //     setSearchNickname(response.data.data.nickname);
+  //     if (onPresEnter) {
+  //       dispatch(setSearchData(response?.data?.data));
+  //     }
+  //   }
+  // };
+
+  // const handleSearchfor = () => {
+  //   getGlobalSearchCanonizer(searchValue, true);
+  // }
+
+  // const handlePress = (e) => {
+  //   router.push({
+  //     pathname: '/search',
+  //     query: { q: e.target.value }
+  //   })
+  // };
   return (
     <Fragment>
       <nav className={styles.nav}>
         <ul>
           <li
-            className={`topicDeskBTN ${
-              router?.asPath === "/create/topic" ? styles.active : ""
-            }`}
+            className={`topicDeskBTN d-none d-lg-block ${router?.asPath === "/create/topic" ? styles.active : ""
+              }`}
             key="create-topic-li"
           >
             <TopicCreationBTN key="create-topic-area" />
@@ -334,17 +357,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                     {item.linkTitle}
                   </a>
                 ) : (
-                  <Link
-                    href={`${item.link}?score=${filterByScore}&algo=${
-                      filterObject?.algorithm
-                    }${
-                      filterObject?.asof == "bydate"
-                        ? "&asofdate=" + filterObject?.asofdate
-                        : ""
-                    }&asof=${filterObject?.asof}&canon=${
-                      filterObject?.namespace_id
-                    }${viewThisVersion ? "&viewversion=1" : ""}`}
-                  >
+                  <Link href={item.link}>
                     <a>{item.linkTitle}</a>
                   </Link>
                 )}
@@ -353,34 +366,42 @@ const HeaderMenu = ({ loggedUser }: any) => {
           })}
         </ul>
       </nav>
-      <div className="search_header">
-      <AutoComplete
-        popupClassName="certain-category-search-dropdown"
-        dropdownMatchSelectWidth={500}
-        // className={"search_header"}
-        options={inputSearch ? options : []}
-        value={searchValue}
-      >
-        <Input
-          size="large"
-          placeholder="Search for"
+      {/* <div className="search_header">
+        <AutoComplete
+          popupClassName="certain-category-search-dropdown"
+          dropdownMatchSelectWidth={false}
+          // className={"search_header"}
+          options={inputSearch ? options : []}
           value={searchValue}
-          type="text"
-          name="search"
-          prefix={<i className="icon-search"></i>}
-          onChange={(e) => {
-            dispatch(setSearchValue(e.target.value))
-            setInputSearch(e.target.value);
-            getGlobalSearchCanonizer(e.target.value);
-          }}
-        />
-      </AutoComplete>
-      </div>
-      
+        >
+          <Input
+            size="large"
+            placeholder="Search for"
+            value={searchValue}
+            type="text"
+            name="search"
+            prefix={<i className="icon-search"></i>}
+            onChange={(e) => {
+              localStorage.setItem("searchValue", e.target.value);
+
+              dispatch(setSearchValue(e.target.value));
+              setInputSearch(e.target.value);
+              getGlobalSearchCanonizer(e.target.value, false);
+            }}
+            onPressEnter={(e) => {
+              // localStorage.setItem("searchValue",(e.target as HTMLTextAreaElement).value)
+              // !router.asPath.includes("/search") ? handlePress(e) : "";
+              handlePress(e)
+              getGlobalSearchCanonizer(
+                (e.target as HTMLTextAreaElement).value,
+                true
+              );
+            }}
+          />
+        </AutoComplete>
+      </div> */}
     </Fragment>
   );
-  
 };
-
 
 export default HeaderMenu;
