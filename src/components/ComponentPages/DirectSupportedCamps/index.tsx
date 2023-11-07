@@ -116,7 +116,6 @@ const DirectSupportedCamps = ({ search }: any) => {
     setNickNameId(data.nick_name_id);
   };
   const saveChanges = async (reasonData) => {
-    console.log("Save changes worked");
     let resultCamp = CardData.filter(
       (values) => !campIds.includes(values.camp_num)
     );

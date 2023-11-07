@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 
-import TopicDetails from "../index";
+import EventLine from "../index";
 import { Provider } from "react-redux";
 import { store } from "src/store";
 
@@ -29,13 +29,13 @@ jest.mock("next/router", () => ({
   },
 }));
 
-describe("TopicDetails component", () => {
+describe("eventline component", () => {
   test("renders TopicDetails component", () => {
     // Render the component
     render(
       <Provider store={store}>
         {" "}
-        <TopicDetails />
+        <EventLine />
       </Provider>
     );
     expect(

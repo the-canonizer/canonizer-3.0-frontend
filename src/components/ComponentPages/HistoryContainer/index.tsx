@@ -391,7 +391,7 @@ function HistoryContainer() {
             className={styles.createBtn}
             click={campRoute}
             url={`/camp/create/${
-              router?.query.camp[0] + "/" + router?.query.camp[1]
+              router?.query.camp?.at(0) + "/" + router?.query.camp?.at(1)
             }`}
           />
         ) : null}

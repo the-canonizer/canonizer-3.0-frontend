@@ -6,7 +6,7 @@ import { BackTop, Collapse } from "antd";
 import TimeLine from "../TimeLine";
 import { useState } from "react";
 const { Panel } = Collapse;
-const TopicDetails = () => {
+const EventLine = () => {
   // const router = useRouter();
 
   const [timelineDescript, setTimelineDescript] = useState([]);
@@ -45,4 +45,4 @@ const TopicDetails = () => {
   );
 };
 
-export default TopicDetails;
+export default EventLine;
