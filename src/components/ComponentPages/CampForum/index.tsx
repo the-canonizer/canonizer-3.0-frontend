@@ -156,7 +156,6 @@ const ForumComponent = ({
   //     setPostLoading(true);
 
   //     const res = await getThreadData(id, topic_num, camp_num);
-  //     console.log("🚀 ~ file: index.tsx:151 ~ res:", res);
 
   //     if (res?.data?.status_code === 404) {
   //       message.error(res?.data?.error || "Something went wrong ");

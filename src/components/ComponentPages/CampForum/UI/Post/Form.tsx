@@ -107,8 +107,9 @@ const PostForm = ({
               </Text>
             )}
             {isLog ? (
-              <div className={styles.editorQuill}>
+              <div className={styles.editorQuill} key="post_editor_div">
                 <Editorckl
+                  key="post_editor"
                   editorState={quillContent || ""}
                   oneditorchange={onContentChange}
                   placeholder="Post Your Message Here..."

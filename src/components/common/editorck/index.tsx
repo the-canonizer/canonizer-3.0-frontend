@@ -36,7 +36,7 @@ export default function Editorck(
     setEditordata(props.editorState);
     setLoadeditor(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isUserAuthenticated]);
+  }, [isUserAuthenticated, props.editorState]);
 
   const editorConfiguration = {
     innerHeight: 200,
