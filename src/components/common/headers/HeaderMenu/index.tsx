@@ -84,6 +84,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 );
               })}
             </ul>
+            {searchTopics.length?<span className={styles.bold_margin}></span>:""}
           </div>
         ),
       ],
@@ -142,6 +143,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 );
               })}
             </ul>
+            {searchCamps.length?<span className={styles.bold_margin}></span>:""}
           </div>
         ),
       ],
@@ -216,6 +218,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 );
               })}
             </ul>
+            {searchCampStatement.length?<span className={styles.bold_margin}></span>:""}
           </div>
         ),
       ],
@@ -251,6 +254,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 );
               })}
             </ul>
+            {searchNickname.length?<span className={styles.bold_margin}></span>:""}
           </div>
         ),
       ],
@@ -382,7 +386,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
             name="search"
             prefix={<i className="icon-search"></i>}
             onChange={(e) => {
-              localStorage.setItem("searchValue", e.target.value);
+              // localStorage.setItem("searchValue", e.target.value);
 
               dispatch(setSearchValue(e.target.value));
               setInputSearch(e.target.value);
