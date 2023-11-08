@@ -99,7 +99,7 @@ const Registration = ({ isModal, isTest = false }: any) => {
               form.setFields([
                 {
                   name: field_name,
-                  value: values[key],
+                  value: values[field_name],
                   errors: [res.error[key]],
                 },
               ]);
