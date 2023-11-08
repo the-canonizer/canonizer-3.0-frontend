@@ -1,8 +1,10 @@
-import { Descriptions, Collapse } from "antd";
+import { Descriptions, Collapse, Popover } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import moment from "moment";
+
+import Image from "next/image";
 
 import styles from "../topicDetails.module.scss";
 
@@ -13,7 +15,6 @@ import K from "../../../../constants";
 import { RootState } from "../../../../store";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 import CustomSkelton from "../../../common/customSkelton";
-import { useEffect } from "react";
 
 const { Panel } = Collapse;
 
@@ -26,7 +27,7 @@ const validUrl = (url) => {
   }
 };
 
-const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }) => {
+const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }: any) => {
   const router = useRouter();
   const { campRecord, topicRecord, history } = useSelector(
     (state: RootState) => ({
@@ -35,10 +36,6 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }) => {
       history: state?.topicDetails?.history,
     })
   );
-
-  useEffect(() => {
-    console.log(campRecord, "#############campdata################");
-  }, []);
 
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
@@ -65,7 +62,22 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }) => {
           <>
             <h3>{K?.exceptionalMessages?.campRecordHeading}</h3>
             {campRecord?.in_review_changes > 0 ? (
-              <img className="change-icon" src="/images/change-icon.svg" />
+              // <img className="change-icon" src="/images/change-icon.svg" />
+              <Popover
+                content={
+                  "Some changes are currently under review in this camp."
+                }
+                placement="topLeft"
+                className={styles.infoIcon}
+              >
+                <Image
+                  className="change-icon"
+                  src={"/images/change-icon.svg"}
+                  alt=""
+                  width={20}
+                  height={20}
+                />
+              </Popover>
             ) : (
               ""
             )}

@@ -16,75 +16,52 @@ export default function HomeSideBar({
   setTotalCampScoreForSupportTree,
   setSupportTreeForCamp,
   backGroundColorClass,
-  viewThisVersion,
 }: any) {
-  const { drawerShow, filterObject, filterByScore } = useSelector(
-    (state: RootState) => ({
-      drawerShow: state?.filters?.showDrawer,
-      filterObject: state?.filters?.filterObject,
-      filterByScore: state.filters?.filterObject?.filterByScore,
-      viewThisVersion: state?.filters?.viewThisVersionCheck,
-    })
-  );
+  const { drawerShow } = useSelector((state: RootState) => ({
+    drawerShow: state?.filters?.showDrawer,
+  }));
 
   const [drawerIsVisible, setDrawerIsVisible] = useState(drawerShow);
+  const [isDrawerOpen, setIsDrawerOpen] = useState("");
 
   const router = useRouter();
   const dispatch = useDispatch();
 
-  useEffect(() => setDrawerIsVisible(drawerShow), [drawerShow]);
+  useEffect(() => {
+    if (drawerShow) {
+      setIsDrawerOpen("isDrawerOpen");
+    } else {
+      setIsDrawerOpen("");
+    }
+    setDrawerIsVisible(drawerShow);
+  }, [drawerShow]);
 
   const showDrawer = () => {
-    router.push(
-      `/topic/${router?.query?.camp[0]}/${
-        router?.query?.camp[1]
-      }?score=${filterByScore}&algo=${filterObject?.algorithm}${
-        filterObject?.asof == "bydate"
-          ? "&asofdate=" + filterObject?.asofdate
-          : ""
-      }&asof=${filterObject?.asof}&canon=${
-        filterObject?.namespace_id
-      }&is_tree_open=1${viewThisVersion ? "&viewversion=1" : ""}`,
-      null,
-      {
-        shallow: true,
-      }
-    );
+    router.query = {
+      ...router.query,
+      is_tree_open: drawerIsVisible ? "0" : "1",
+    };
 
-    dispatch(setShowDrawer(true));
+    router.replace(router, null, { shallow: true });
+
+    dispatch(setShowDrawer(!drawerIsVisible));
   };
 
   const onClose = () => {
-    router.push(
-      `/topic/${router?.query?.camp[0]}/${
-        router?.query?.camp[1]
-      }?score=${filterByScore}&algo=${filterObject?.algorithm}${
-        filterObject?.asof == "bydate"
-          ? "&asofdate=" + filterObject?.asofdate
-          : ""
-      }&asof=${filterObject?.asof}&canon=${
-        filterObject?.namespace_id
-      }&is_tree_open=0${viewThisVersion ? "&viewversion=1" : ""}`,
-      null,
-      {
-        shallow: true,
-      }
-    );
-
-    dispatch(setShowDrawer(false));
+    showDrawer();
   };
 
   return (
     <Fragment>
-      {" "}
       {!router?.asPath?.includes("topic") ? (
-        <TopicsFilter onCreateCamp={onCreateCamp} />
+        <TopicsFilter key="topic_filter" />
       ) : (
         <Fragment>
           <Button
+            key="tree-opener-btn"
             type="primary"
             onClick={showDrawer}
-            className="btnFilter drawerBtn"
+            className={`btnFilter drawerBtn ${isDrawerOpen}`}
           >
             Consensus Tree{" "}
             <p className="arrow">
@@ -98,12 +75,15 @@ export default function HomeSideBar({
             placement="left"
             onClose={onClose}
             visible={drawerIsVisible}
-            className={`treeDrawer ${backGroundColorClass}`}
+            className={`treeDrawer closeIconHide ${backGroundColorClass}`}
             closeIcon={<CloseCircleOutlined />}
             height={"auto"}
             size="large"
             bodyStyle={{ paddingBottom: 80 }}
             forceRender
+            data-testid="treeDrawer"
+            mask={true}
+            maskClosable={true}
           >
             <TopicsFilterWithDrawer
               onCreateCamp={onCreateCamp}

@@ -295,6 +295,7 @@ const UploadFiles = () => {
     location.pathname == "/uploadFile"
       ? router?.push("/")
       : "";
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   //onLoad
   useEffect(() => {
@@ -311,6 +312,7 @@ const UploadFiles = () => {
         }
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserAuthenticated]);
   return (
     <UploadFileUI

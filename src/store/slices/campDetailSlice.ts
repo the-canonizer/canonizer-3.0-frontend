@@ -82,7 +82,7 @@ export const treeSlice = createSlice({
     pushToCampHistory: (state, action) => {
       state.history = {
         ...state.history,
-        items: [...state?.history?.items, ...action.payload],
+        items: [...(state?.history?.items || []), ...action.payload],
       };
     },
     setManageSupportStatusCheck: (state, action) => {

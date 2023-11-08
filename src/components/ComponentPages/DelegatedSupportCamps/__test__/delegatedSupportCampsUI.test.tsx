@@ -1,20 +1,42 @@
 import {
-  fireEvent,
+  // fireEvent,
   render,
   screen,
   waitFor,
+  // waitFor,
 } from "../../../../utils/testUtils";
 import DelegatedSupportCampsUI from "../DelegatedSupportCampsUI/index";
 import messages from "../../../../messages";
 import DelegatedSupportCamps from "..";
 import userEvent from "@testing-library/user-event";
-import { useRouter } from "next/router";
-import { renderHook } from "@testing-library/react-hooks";
-import { useState } from "react";
-import { Input, message } from "antd";
+// import DelegatedSupportCamps from "..";
+// import userEvent from "@testing-library/user-event";
+// import { useRouter } from "next/router";
+// import { renderHook } from "@testing-library/react-hooks";
+// import { useState } from "react";
+// import { Input, message } from "antd";
 
 jest.mock("next/router", () => ({
   useRouter: jest.fn(),
+}));
+
+jest.mock("next/router", () => ({
+  useRouter: jest.fn(),
+}));
+jest.mock("src/network/api/userApi", () => ({
+  getDelegatedSupportCampsList: jest.fn(() =>
+    Promise.resolve({ data: [], status_code: 200 })
+  ),
+  removeSupportedCampsEntireTopic: jest.fn(() =>
+    Promise.resolve({
+      data: [
+        {
+          removeEntireData: {},
+        },
+      ],
+      status_code: 200,
+    })
+  ),
 }));
 
 const { labels } = messages;
@@ -252,4 +274,73 @@ describe("Delegated Support camps page", () => {
   });
 });
 
+describe("delegated supported", () => {
+  it("render a value when write in search box", () => {
+    render(<DelegatedSupportCamps search={delegatedSupportCampsList} />);
+    waitFor(async () => {
+      expect(screen.getAllByText("For topic").length).toEqual(2);
+      expect(
+        screen.getByText(delegatedSupportCampsList[0].title)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(delegatedSupportCampsList[1].title)
+      ).toBeInTheDocument();
+      expect(screen.getAllByText("Remove Support").length).toEqual(2);
+      expect(screen.getByText("Agreement")).toBeInTheDocument();
+      expect(screen.getByText("Agreement-2")).toBeInTheDocument();
+    });
+  });
 
+  it("render view more data value of delegate supporter", () => {
+    render(<DelegatedSupportCamps search={delegatedSupportCampsList} />);
+    waitFor(async () => {
+      expect(
+        screen.getByText(viewMoreDataValue[0].delegated_to_nick_name)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(viewMoreDataValue[0].delegated_to_nick_name_link)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(viewMoreDataValue[0].my_nick_name)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(viewMoreDataValue[0].my_nick_name_link)
+      ).toBeInTheDocument();
+      expect(screen.getByText(viewMoreDataValue[0].title)).toBeInTheDocument();
+      expect(
+        screen.getByText(viewMoreDataValue[0].title_link)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(viewMoreDataValue[0].topic_num)
+      ).toBeInTheDocument();
+    });
+  });
+
+  it("click on remove support button and open modal", () => {
+    render(<DelegatedSupportCamps search={delegatedSupportCampsList} />);
+    waitFor(async () => {
+      const btns = screen.getAllByText("Remove Support");
+
+      userEvent.click(btns[0]);
+
+      expect(
+        screen.getByText(delegatedSupportCampsList[0].title)
+      ).toBeInTheDocument();
+      expect(screen.getByText("Remove")).toBeInTheDocument();
+      expect(screen.getByText("Cancel")).toBeInTheDocument();
+    });
+  });
+
+  it("click on view more button for display all the camps", () => {
+    render(<DelegatedSupportCamps search={delegatedSupportCampsList} />);
+    waitFor(async () => {
+      const btns = screen.getAllByText(labels.viewMore);
+
+      userEvent.click(btns[0]);
+
+      expect(screen.getByText("Current Supported Camps:")).toBeInTheDocument();
+      expect(screen.getByText("Agreement")).toBeInTheDocument();
+      expect(screen.getByText("Agreement-2")).toBeInTheDocument();
+    });
+  });
+});

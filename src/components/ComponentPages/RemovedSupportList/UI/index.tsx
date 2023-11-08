@@ -11,7 +11,7 @@ function SubscriptionsListUI({
   nickNameList,
   selectedNikname,
   onNickNameChange,
-}) {
+}: any) {
   return (
     <div className={styles.supported_camps}>
       <Card
@@ -33,6 +33,7 @@ function SubscriptionsListUI({
               showSearch
               optionFilterProp="children"
               id="user-nick-name-dropdown"
+              data-testid="user-nick-name-dropdown"
             >
               <Select.Option
                 id={`name-space-default`}

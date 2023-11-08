@@ -1,5 +1,5 @@
 import { useState, Fragment, useEffect } from "react";
-import { Card, Col, Row, Button, Tabs, Input } from "antd";
+import { Card, Button, Tabs, Input } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
 
@@ -42,7 +42,7 @@ const tabList = [
     tab: "Subscriptions",
   },
 ];
-function callback(key) {}
+function callback() {}
 
 const SettingsUI = () => {
   const [search, setSearch] = useState("");
@@ -74,7 +74,11 @@ const SettingsUI = () => {
                 }}
               />
             </div>
-            <Button data-testid="reset" onClick={() => setSearch("")} className={styles.btn}>
+            <Button
+              data-testid="reset"
+              onClick={() => setSearch("")}
+              className={styles.btn}
+            >
               Reset
             </Button>
           </div>

@@ -43,9 +43,13 @@ export const getHistoryApi = async (
     } else {
       store.dispatch(pushToCampHistory(history.data.items || []));
     }
-    return history?.data;
+    return { data: history?.data, status_code: history?.status_code };
   } catch (error) {
     store.dispatch(pushToCampHistory([]));
+    return {
+      status_code: error?.error?.data?.status_code,
+      errorType: error?.error?.data?.error,
+    };
   }
 };
 export const getChangeSupporters = async (reqBody) => {

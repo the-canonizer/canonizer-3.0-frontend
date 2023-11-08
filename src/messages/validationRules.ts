@@ -12,7 +12,7 @@ export const phoneNumberRule = {
       message: validations.phoneNumber,
     },
     {
-      min: 9,
+      min: 10,
       message: validations.phoneMinLength,
     },
     {
@@ -110,7 +110,7 @@ export const otpRule = {
 export const phoneRule = {
   rules: [
     {
-      min: 9,
+      min: 10,
       message: validations.phoneMinLength,
     },
     {

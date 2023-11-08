@@ -1,81 +1,182 @@
-import { render, fireEvent } from "@testing-library/react";
+import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import TimelineSlider from "../index";
 
-describe("TimelineSlider", () => {
-  const mockData = {
-    0: {
-      event: {
-        message: "Event 1",
-      },
+import userEvent from "@testing-library/user-event";
+const mockData = {
+  asoftime_1159293015_1: {
+    event: {
+      message: "Event 1",
+      id: 1,
+      namespaceId: 1,
+      new_parent_id: null,
+      nickname_id: 96,
+      old_parent_id: null,
+      type: "direct_support_added",
+      url: "/user/supports/96?topicnum=88&campnum=52&canon=1",
+      url_new: null,
     },
-    1: {
-      event: {
-        message: "Event 2",
-      },
-    },
-    2: {
-      event: {
-        message: "Event 3",
-      },
-    },
-  };
+  },
+  asoftime_1160967939_2: {
+    event: {
+      message: "Event 2",
 
-  it("should render the slider and control buttons", () => {
-    const { getByText, getByTestId } = render(
+      id: 52,
+      namespaceId: 1,
+      new_parent_id: null,
+      nickname_id: 96,
+      old_parent_id: null,
+      type: "direct_support_removed",
+      url: "/user/supports/96?topicnum=88&campnum=52&canon=1",
+      url_new: null,
+    },
+  },
+  asoftime_1163361514_3: {
+    event: {
+      message: "Event 3",
+      id: 2,
+      namespaceId: 1,
+      new_parent_id: null,
+      nickname_id: 96,
+      old_parent_id: null,
+      type: "direct_support_added",
+      url: "/user/supports/96?topicnum=88&campnum=52&canon=1",
+      url_new: null,
+    },
+  },
+  asoftime_1164361514_3: {
+    event: {
+      message: "Event 4",
+      id: 2,
+      namespaceId: 1,
+      new_parent_id: null,
+      nickname_id: 96,
+      old_parent_id: null,
+      type: "direct_support_added",
+      url: "/user/supports/96?topicnum=88&campnum=52&canon=1",
+      url_new: null,
+    },
+  },
+  asoftime_1165361514_3: {
+    event: {
+      message: "Event 5",
+      id: 2,
+      namespaceId: 1,
+      new_parent_id: null,
+      nickname_id: 96,
+      old_parent_id: null,
+      type: "direct_support_added",
+      url: "/user/supports/96?topicnum=88&campnum=52&canon=1",
+      url_new: null,
+    },
+    asoftime_1166361514_3: {
+      event: {
+        message: "Event 7",
+        id: 2,
+        namespaceId: 1,
+        new_parent_id: null,
+        nickname_id: 96,
+        old_parent_id: null,
+        type: "direct_support_added",
+        url: "/user/supports/96?topicnum=88&campnum=52&canon=1",
+        url_new: null,
+      },
+      asoftime_1167361514_3: {
+        event: {
+          message: "Event 8",
+          id: 2,
+          namespaceId: 1,
+          new_parent_id: null,
+          nickname_id: 96,
+          old_parent_id: null,
+          type: "direct_support_added",
+          url: "/user/supports/96?topicnum=88&campnum=52&canon=1",
+          url_new: null,
+        },
+      },
+      asoftime_1168361514_3: {
+        event: {
+          message: "Event 9",
+          id: 2,
+          namespaceId: 1,
+          new_parent_id: null,
+          nickname_id: 96,
+          old_parent_id: null,
+          type: "direct_support_added",
+          url: "/user/supports/96?topicnum=88&campnum=52&canon=1",
+          url_new: null,
+        },
+      },
+    },
+  },
+};
+
+describe("TimelineSlider", () => {
+  it("should render the slider and control buttons", async () => {
+    const setIteration = jest.fn();
+    const setStart = jest.fn();
+    const setIsPlaying = jest.fn();
+    const { getByTestId } = render(
       <TimelineSlider
         mockData={mockData}
-        setStart={jest.fn()}
+        setStart={setStart}
         start={false}
         setTimelineDescript={jest.fn()}
         handleEventSelection={jest.fn()}
         animationSpeed={1000}
         setAnimationSpeed={jest.fn()}
         iteration={0}
-        setIteration={jest.fn()}
+        setIteration={setIteration}
         handleForwardOrBackord={jest.fn()}
         isPlaying={false}
-        setIsPlaying={jest.fn()}
+        setIsPlaying={setIsPlaying}
       />
     );
+    expect(
+      screen.getByRole("img", {
+        name: /step\-backward/i,
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("img", {
+        name: /caret\-right/i,
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("img", {
+        name: /step\-forward/i,
+      })
+    ).toBeInTheDocument();
 
-    // const slider = getByTestId("slider");
-    // expect(slider).toBeInTheDocument();
+    expect(
+      screen.getByRole("img", {
+        name: /dashboard/i,
+      })
+    ).toBeInTheDocument();
 
+    expect(screen.getByText(/sep 26, 06/i)).toBeInTheDocument();
+
+    expect(screen.getByText(/oct 16, 06/i)).toBeInTheDocument();
+
+    expect(screen.getByText(/nov 13, 06/i)).toBeInTheDocument();
     const playButton = getByTestId("play-button");
     expect(playButton).toBeInTheDocument();
+    fireEvent.click(playButton);
 
     const speedIcon = getByTestId("speed-icon");
+
     expect(speedIcon).toBeInTheDocument();
+    userEvent.hover(speedIcon);
+
+    // Wait for the slider to open (adjust the timing as needed)
+    await waitFor(() => {
+      // Try to find an element containing "1.25x" text
+      const speed125x = screen.getByText(/1.25x/i, { exact: false });
+      expect(speed125x).toBeInTheDocument();
+
+      fireEvent.click(speed125x);
+      fireEvent.click(speedIcon);
+    });
   });
-
-  // it("should handle play button click and toggle play state", () => {
-  //   const setIsPlaying = jest.fn();
-  //   const { getByTestId } = render(
-  //     <TimelineSlider
-  //       mockData={mockData}
-  //       setStart={jest.fn()}
-  //       start={false}
-  //       setTimelineDescript={jest.fn()}
-  //       handleEventSelection={jest.fn()}
-  //       animationSpeed={1000}
-  //       setAnimationSpeed={jest.fn()}
-  //       iteration={0}
-  //       setIteration={jest.fn()}
-  //       handleForwardOrBackord={jest.fn()}
-  //       isPlaying={false}
-  //       setIsPlaying={setIsPlaying}
-  //     />
-  //   );
-
-  //   const playButton = getByTestId("play-button");
-  //   fireEvent.click(playButton);
-
-  //   expect(setIsPlaying).toHaveBeenCalledWith(true);
-
-  //   fireEvent.click(playButton);
-
-  //   expect(setIsPlaying).toHaveBeenCalledWith(false);
-  // });
 
   it("should handle forward button click and increment iteration", () => {
     const setIteration = jest.fn();
@@ -107,11 +208,12 @@ describe("TimelineSlider", () => {
   it("should handle backward button click and decrement iteration", () => {
     const setIteration = jest.fn();
     const handleForwardOrBackord = jest.fn();
+    const setIsPlaying = jest.fn();
     const { getByTestId } = render(
       <TimelineSlider
         mockData={mockData}
         setStart={jest.fn()}
-        start={false}
+        start={true}
         setTimelineDescript={jest.fn()}
         handleEventSelection={jest.fn()}
         animationSpeed={1000}
@@ -119,8 +221,8 @@ describe("TimelineSlider", () => {
         iteration={1}
         setIteration={setIteration}
         handleForwardOrBackord={handleForwardOrBackord}
-        isPlaying={false}
-        setIsPlaying={jest.fn()}
+        isPlaying={true}
+        setIsPlaying={setIsPlaying}
       />
     );
 
@@ -129,188 +231,9 @@ describe("TimelineSlider", () => {
 
     expect(setIteration).toHaveBeenCalledWith(0);
     expect(handleForwardOrBackord).toHaveBeenCalledWith(0);
-  });
 
-  it("should handle slider change and update iteration", () => {
-    const setIteration = jest.fn();
-    const handleEventSelection = jest.fn();
-    const { getByTestId } = render(
-      <TimelineSlider
-        mockData={mockData}
-        setStart={jest.fn()}
-        start={false}
-        setTimelineDescript={jest.fn()}
-        handleEventSelection={handleEventSelection}
-        animationSpeed={1000}
-        setAnimationSpeed={jest.fn()}
-        iteration={0}
-        setIteration={setIteration}
-        handleForwardOrBackord={jest.fn()}
-        isPlaying={false}
-        setIsPlaying={jest.fn()}
-      />
-    );
-
-    // const slider = getByTestId("slider");
-    // fireEvent.change(slider, { target: { value: "1" } });
-
-    // expect(setIteration).toHaveBeenCalledWith(1);
-    // expect(handleEventSelection).toHaveBeenCalledWith(1);
+    const playButton = getByTestId("play-button");
+    expect(playButton).toBeInTheDocument();
+    fireEvent.click(playButton);
   });
 });
-
-// import React from "react";
-// import {
-//   render,
-//   fireEvent,
-//   waitFor,
-//   screen,
-//   cleanup,
-// } from "@testing-library/react";
-// import { Provider } from "react-redux";
-
-// import { windowMatchMedia } from "../../../../../utils/testUtils";
-// import { store } from "../../../../../store";
-// import { RouterContext } from "next/dist/shared/lib/router-context";
-// import TimelineSlider from "../../timelineSlider";
-// import { NextRouter } from "next/router";
-
-// function createMockRouter(router: Partial<NextRouter>): NextRouter {
-//   return {
-//     basePath: "",
-//     pathname: "/",
-//     route: "/",
-//     query: {},
-//     asPath: "/",
-//     back: jest.fn(),
-//     beforePopState: jest.fn(),
-//     prefetch: jest.fn(),
-//     push: jest.fn(),
-//     reload: jest.fn(),
-//     replace: jest.fn(),
-//     events: {
-//       on: jest.fn(),
-//       off: jest.fn(),
-//       emit: jest.fn(),
-//     },
-//     isFallback: false,
-//     isLocaleDomain: false,
-//     isReady: true,
-//     defaultLocale: "en",
-//     domainLocales: [],
-//     isPreview: false,
-//     ...router,
-//   };
-// }
-
-// window.matchMedia =
-//   window.matchMedia ||
-//   function () {
-//     return {
-//       matches: false,
-//       addListener: function () {},
-//       removeListener: function () {},
-//     };
-//   };
-
-// afterEach(cleanup);
-// describe("Should render Addnews", () => {
-//   it("Render without crash", async () => {
-//     const { container } = render(
-//       <Provider store={store}>
-//         <RouterContext.Provider
-//           value={createMockRouter({
-//             asPath: "/eventline/1245-test-event-topic/2-camp-122",
-//           })}
-//         >
-//           <TimelineSlider
-//             mockData={{
-//               asoftime_1683285264: {
-//                 event: {
-//                   message: "latest timeline created",
-//                   type: "event_timeline",
-//                   id: 1245,
-//                   old_parent_id: null,
-//                   new_parent_id: null,
-//                   nickname_id: 4,
-//                 },
-//                 payload_response: [
-//                   {
-//                     topic_id: 1245,
-//                     level: 1,
-//                     camp_id: 1,
-//                     camp_name: "Agreement",
-//                     title: "test event topic",
-//                     score: 1,
-//                     full_score: 1,
-//                     submitter_nick_id: 4,
-//                   },
-//                 ],
-//               },
-//               asoftime_1683280316: {
-//                 event: {
-//                   message: "Andrea_Allsop created New Topic test event topic",
-//                   type: "create_topic",
-//                   id: "1898",
-//                   old_parent_id: "",
-//                   new_parent_id: "",
-//                   nickname_id: 4,
-//                 },
-//                 payload_response: [
-//                   {
-//                     topic_id: 1245,
-//                     level: 1,
-//                     camp_id: 1,
-//                     camp_name: "Agreement",
-//                     title: "test event topic",
-//                     score: 1,
-//                     full_score: 1,
-//                     submitter_nick_id: 4,
-//                   },
-//                 ],
-//               },
-//             }}
-//             start={false}
-//             animationSpeed={1000}
-//             iteration={0}
-//             isPlaying={false}
-//             setTimelineDescript={jest.fn()}
-//             handleEventSelection={jest.fn()}
-//             setAnimationSpeed={jest.fn()}
-//             setIteration={jest.fn()}
-//             handleForwardOrBackord={jest.fn()}
-//             setIsPlaying={jest.fn()}
-//             setStart={jest.fn()}
-//           />
-//         </RouterContext.Provider>
-//       </Provider>
-//     );
-//     // const a = screen.getByRole("button", {
-//     //   name: /arrow\-left/i,
-//     // });
-//     expect(
-//       screen.getByRole("img", {
-//         name: "step-backward",
-//       })
-//     ).toBeInTheDocument();
-//     expect(
-//       screen.getByRole("img", {
-//         name: "step-forward",
-//       })
-//     ).toBeInTheDocument();
-
-//     expect(
-//       screen.getByRole("img", {
-//         name: "caret-right",
-//       })
-//     ).toBeInTheDocument();
-//     expect(
-//       screen.getByRole("img", {
-//         name: "dashboard",
-//       })
-//     ).toBeInTheDocument();
-
-//     const date = screen.getAllByText(/may 5,2023/i);
-//     expect(date).toHaveLength(2);
-//   });
-// });

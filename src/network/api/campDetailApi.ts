@@ -22,10 +22,19 @@ export const getTreesApi = async (reqBody) => {
     const trees = await NetworkCall.fetch(TreeRequest.getTrees(reqBody), false);
 
     store.dispatch(setTree(trees?.data || []));
-    return trees?.data[0];
+    return {
+      treeData: trees?.data[0],
+      status_code: trees?.code,
+      message: trees?.message,
+    };
   } catch (error) {
     store.dispatch(setTree([]));
-    // message.error(error.message);
+    let data = error?.error?.data;
+    return {
+      treeData: data?.data[0],
+      status_code: data?.code,
+      message: data?.message,
+    };
   }
 };
 
@@ -165,8 +174,12 @@ export const getCurrentCampRecordApi = async (reqBody, loginToken = null) => {
     );
 
     store.dispatch(setCurrentCampRecord(currentCampRecord?.data));
-    return currentCampRecord?.data;
+    return {
+      campData: currentCampRecord?.data,
+      status_code: currentCampRecord?.status_code,
+    };
   } catch (error) {
+    return { status_code: error?.error?.data?.status_code };
     // message.error(error.message);
   }
 };
@@ -314,13 +327,13 @@ export const getTopicActivityLogApi = async (reqBody) => {
   }
   try {
     const newsFeed = await NetworkCall.fetch(
-      TreeRequest.getTopicActivityLog(reqBody,token),
+      TreeRequest.getTopicActivityLog(reqBody, token),
       false
     );
     return newsFeed;
   } catch (error) {
-    message.error(error.message);
-    return error
+    // message.error(error.message);
+    return error;
   }
 };
 

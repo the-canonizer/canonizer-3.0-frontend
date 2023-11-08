@@ -1,3 +1,4 @@
+/* eslint-disable */
 export default {
   Home: `{
     "@context": "https://schema.org",
@@ -76,3 +77,5 @@ export default {
     }
   }`,
 };
+
+/* eslint-enable */

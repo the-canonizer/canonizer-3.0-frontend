@@ -4,7 +4,7 @@ import styles from "./button.module.scss";
 
 import Button from "./index";
 
-const CreateNewTopicButton = (props) => {
+const CreateNewTopicButton = (props: any) => {
   const router = useRouter();
 
   const campRoute = () => {

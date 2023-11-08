@@ -7,9 +7,9 @@ import isAuth from "../../../hooks/isUserAuthenticated";
 interface editorState {
   editorState: string;
 }
-
 interface editorchange {
-  oneditorchange: (changedata: string | undefined) => void;
+  // eslint-disable-next-line no-unused-vars
+  oneditorchange: (any) => void;
 }
 
 interface placeholder {
@@ -34,6 +34,7 @@ export default function Editorck(
   useEffect(() => {
     setEditordata(props.editorState);
     setLoadeditor(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserAuthenticated]);
 
   const editorConfiguration = {
@@ -80,7 +81,7 @@ export default function Editorck(
               });
           }}
           onChange={(event, editor: any) => {
-            let isTyping = false;
+            // let isTyping = false;
             let typingTimer;
             const dataAppend = async () => {
               return props.oneditorchange(editor?.getData());
@@ -88,9 +89,7 @@ export default function Editorck(
 
             editor.editing.view.document.on("keyup", (evt) => {
               clearTimeout(typingTimer);
-              isTyping = true;
               typingTimer = setTimeout(async () => {
-                isTyping = false;
                 await dataAppend();
               }, 500);
               evt.stop();

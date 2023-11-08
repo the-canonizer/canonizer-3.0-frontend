@@ -37,6 +37,14 @@ const UserProfile = () => {
       setNoData(true);
       setUserSupportedCampsList(res?.data?.support_list);
       setProfileData(res?.data?.profile);
+    } else if (res && res.status_code === 404) {
+      let aa = `/topic/${router?.query?.topicnum}/${
+        router?.query?.campnum || "1"
+      }`;
+      router.push({
+        pathname: aa,
+        query: {},
+      });
     }
     SetUserProfileCardSkeleton(false);
   };
@@ -78,11 +86,11 @@ const UserProfile = () => {
       ? dropdownNameSpaceList
       : router?.query?.canon;
     // if (dropdownNameSpaceList) {
-      const query = `${userId}?topicnum=${topic_num}&campnum=${camp_num}&namespace=${namespace_name_id}`;
-      UserSupportedCampsListApi(query);
+    const query = `${userId}?topicnum=${topic_num}&campnum=${camp_num}&namespace=${namespace_name_id}`;
+    UserSupportedCampsListApi(query);
     // } else {
-      UserSupportCampListNewSpaces();
-      setDropdownNameSpaceList(namespace_name_id as any);
+    UserSupportCampListNewSpaces();
+    setDropdownNameSpaceList(namespace_name_id as any);
     // }
   }, [dropdownNameSpaceList, router?.query]);
 
@@ -98,8 +106,9 @@ const UserProfile = () => {
         getSupportedNickNames(nick_id);
       }
     }
-  }, [router, isLoggedIn]);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router, isLoggedIn]);
 
   return (
     <>

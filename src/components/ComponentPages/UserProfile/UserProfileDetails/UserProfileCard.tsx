@@ -48,7 +48,7 @@ export const UserProfileCard = ({
     setStartingPosition((pageNumber - 1) * pageSize);
     setEndingPosition((pageNumber - 1) * pageSize + pageSize);
   };
-    const onNickNameChange = (value, nickname) => {
+  const onNickNameChange = (value) => {
     let pathQueries = router?.query.supports;
     pathQueries = [value];
     router.query.supports = pathQueries;
@@ -138,6 +138,8 @@ export const UserProfileCard = ({
                       value={renderFilter()}
                       onChange={(selectedNameSpaceList) => {
                         setDropdownNameSpaceList(selectedNameSpaceList);
+                        router.query.canon = selectedNameSpaceList;
+                        router?.replace(router, null, { shallow: true });
                       }}
                       showSearch
                       optionFilterProp="children"

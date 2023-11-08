@@ -17,7 +17,7 @@ import TopicCreationBTN from "../TopicCreationBTN";
 
 const { Header } = Layout;
 
-const LoggedOutHeader = ({}: any) => {
+const LoggedOutHeader = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -106,6 +106,11 @@ const LoggedOutHeader = ({}: any) => {
           key="toggle-btn"
         ></div>
       </Header>
+      <section className="Mob_View">
+        <div className="search_header">
+          <HeaderMenu />
+        </div>
+      </section>
       <SearchSection />
       <div className="topicMobBTN">
         <TopicCreationBTN key="create-topic-area" />

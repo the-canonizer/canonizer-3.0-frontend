@@ -21,7 +21,7 @@ export default function OTPVerify({
   failedMsg,
   onResendClick,
   logMsg = "",
-}) {
+}: any) {
   return (
     <section className={styles.signup_wrapper + " " + styles.textCenter}>
       <Form

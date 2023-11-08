@@ -12,11 +12,13 @@ import { createToken } from "src/network/api/userApi";
 type HeadContentComponentProps = {
   componentName: string;
   metaContent: any;
+  canonical: string;
 };
 
 const HeadContentAndPermissionComponent = ({
   componentName,
   metaContent,
+  canonical,
 }: HeadContentComponentProps) => {
   const router = useRouter();
   const pageRoute = process.env.NEXT_PUBLIC_BASE_URL + router?.asPath;
@@ -34,6 +36,7 @@ const HeadContentAndPermissionComponent = ({
 
   useEffect(() => {
     getToken();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authToken, router]);
 
   useEffect(() => {
@@ -72,6 +75,7 @@ const HeadContentAndPermissionComponent = ({
       route={pageRoute}
       author={metaContent?.author}
       componentName={componentName}
+      canonical={canonical}
     />
   );
 };

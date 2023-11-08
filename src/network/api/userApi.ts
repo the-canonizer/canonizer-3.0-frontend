@@ -16,6 +16,7 @@ import UserRequest from "../request/userRequest";
 import { store } from "../../store";
 import { setFilterCanonizedTopics } from "../../store/slices/filtersSlice";
 import { setHeaderData } from "src/store/slices/notificationSlice";
+import { setIsChecked } from "src/store/slices/recentActivitiesSlice";
 
 export const createToken = async () => {
   try {
@@ -71,6 +72,7 @@ export const logout = async (error = "", status = null, count: number = 1) => {
       store.dispatch(removeAuthToken());
       store.dispatch(updateStatus(status));
       store.dispatch(setHeaderData({ count: 0, list: [] }));
+      store.dispatch(setIsChecked(false));
 
       if (+state.ui.apiStatus === +status) {
         return;
@@ -90,6 +92,7 @@ export const logout = async (error = "", status = null, count: number = 1) => {
     let res = await NetworkCall.fetch(UserRequest.logoutCall(auth.token));
 
     store.dispatch(setLogout());
+    store.dispatch(setIsChecked(false));
     store.dispatch(logoutUser());
     store.dispatch(removeAuthToken());
     document.cookie =
@@ -814,13 +817,8 @@ export const getUserSupportedCampList = async (params: string) => {
     return res;
   } catch (err) {
     handleError(err);
-    if (
-      err &&
-      err.error &&
-      err.error.data &&
-      err.error.data.status_code === 400
-    ) {
-      return err.error.data;
+    if (err && err.error && err.error.data) {
+      return err?.error?.data;
     }
   }
 };
@@ -911,6 +909,27 @@ export const globalSearchUploadFiles = async (reqbody) => {
   try {
     const res = await NetworkCall.fetch(
       UserRequest.GlobalSearchUploadedFiles(reqbody, auth.loggedInUser?.token)
+    );
+    return res;
+  } catch (err) {
+    handleError(err);
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400
+    ) {
+      return err.error.data;
+    }
+  }
+};
+
+export const globalSearchCanonizer = async (reqbody) => {
+  let state = store.getState();
+  const { auth } = state;
+  try {
+    const res = await NetworkCall.fetch(
+      UserRequest.CanonizerGlobalSearch(reqbody, auth.loggedInUser?.token)
     );
     return res;
   } catch (err) {
