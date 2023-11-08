@@ -108,7 +108,9 @@ const Events = ({ timelineDescript }: any) => {
                                         : ""
                                     }&asof=${filterObject?.asof}&canon=${
                                       filterObject?.namespace_id
-                                    }${viewThisVersion ? "&viewversion=1" : ""}`
+                                    }${
+                                      viewThisVersion ? "&viewversion=1" : ""
+                                    }&is_tree_open=1`
                                   : title?.url
                               }
                             >
