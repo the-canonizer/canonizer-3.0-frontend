@@ -334,6 +334,7 @@ const ManageSupportUI = ({
                       {parentSupportDataList?.map((tag) => {
                         return (
                           <Tag
+                            data-testid="camp_name"
                             key={tag.camp_num}
                             className={styles.tag_btn}
                             id="tags"
@@ -415,6 +416,7 @@ const ManageSupportUI = ({
                 render={({ tag, index }) => (
                   <div className="">
                     <Button
+                      data-testid="tag-btn"
                       key={tag.camp_num}
                       className={styles.tag_btn}
                       disabled={tag.dis}
@@ -429,6 +431,7 @@ const ManageSupportUI = ({
                           {index + 1}.{" "}
                         </span>
                         <a
+                          data-testid="styles_Bluecolor"
                           className={styles.Bluecolor}
                           onClick={(e) => {
                             e.preventDefault();
@@ -441,7 +444,10 @@ const ManageSupportUI = ({
                       {CheckDelegatedOrDirect ? (
                         ""
                       ) : (
+                        
                         <CloseCircleOutlined
+                          data-testid="close"
+                          className="closeId"
                           onClick={() => {
                             handleClose(tag, tag.topic_num, tagsArrayList);
                             setRemoveCampsSupport(true);
@@ -480,6 +486,7 @@ const ManageSupportUI = ({
               <p id="nickNameToSupport">Nickname To Support Above Camps</p>
             </div>
             <Select
+              data-testid="select-option"
               placeholder={placeholders.nickName}
               size="large"
               className={styles.dropdown}

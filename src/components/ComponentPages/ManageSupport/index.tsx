@@ -42,7 +42,7 @@ const ManageSupport = () => {
   const [manageSupportList, setManageSupportList] = useState([]);
   const [manageSupportRevertData, setManageSupportRevertData] = useState([]);
   const [parentSupportDataList, setParentSupportDataList] = useState([]);
-  const [selectedtNickname, setSelectedtNickname] = useState();
+  const [selectedtNickname, setSelectedtNickname] = useState("");
   const [checked, setChecked] = useState(false);
   const [getSupportStatusData, setGetSupportStatusData] = useState("");
   const [unableToFindCamp, setUnableToFindCamp] = useState<boolean>(false);
@@ -446,7 +446,7 @@ const ManageSupport = () => {
     let nickNameID = nickNameList.filter(
       (values) => selectedtNickname == values.id
     );
-    let nickNameIDValue = nickNameID[0].id;
+    let nickNameIDValue = nickNameID[0]?.id;
     let addCampsData;
     if (support_flag_Status == 1) {
       addCampsData = {};
@@ -474,7 +474,7 @@ const ManageSupport = () => {
       let nickNameID = nickNameList.filter(
         (values) => selectedtNickname == values.id
       );
-      let nickNameIDValue = nickNameID[0].id;
+      let nickNameIDValue = nickNameID[0]?.id;
       let delegated_user_id = getDelegateId;
 
       const addDelegatedSupport = {

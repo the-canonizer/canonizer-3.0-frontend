@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store/index.js";
 import CustomSkelton from "../../common/customSkelton";
+import { Empty } from "antd";
 // const getRandomIndex = (array) => {
 //   return Math.floor(array.length * Math.random());
 // };
@@ -138,7 +139,8 @@ function TimeLine({ setTimelineDescript }: any) {
             <RacingBarChart data={data} />
           </>
         ) : (
-          <h1>No Event Found!</h1>
+          // <h1>No Event Found!</h1>
+          <Empty description="No Event Found!" />
         )}
       </div>
     </React.Fragment>

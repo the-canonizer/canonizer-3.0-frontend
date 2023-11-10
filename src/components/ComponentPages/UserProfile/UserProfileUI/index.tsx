@@ -92,7 +92,7 @@ const UserProfile = () => {
     UserSupportCampListNewSpaces();
     setDropdownNameSpaceList(namespace_name_id as any);
     // }
-  }, [dropdownNameSpaceList, router?.query]);
+  }, [router?.query]);
 
   useEffect(() => {
     const q = router?.query,
