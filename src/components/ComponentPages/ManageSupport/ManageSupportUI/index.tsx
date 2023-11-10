@@ -444,7 +444,6 @@ const ManageSupportUI = ({
                       {CheckDelegatedOrDirect ? (
                         ""
                       ) : (
-                        
                         <CloseCircleOutlined
                           data-testid="close"
                           className="closeId"

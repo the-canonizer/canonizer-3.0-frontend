@@ -12,7 +12,6 @@ import { Card } from "antd";
 import userEvent from "@testing-library/user-event";
 import { placeholders } from "src/messages/placeholder";
 
-
 const { labels } = messages;
 const nickNameList = [
   {
@@ -106,7 +105,7 @@ jest.mock("next/router", () => ({
   useRouter: jest.fn(() => ({
     query: { manageSupport: manageSupport },
     push: jest.fn(),
-    asPath: 'abc_efg'
+    asPath: "abc_efg",
   })),
 }));
 jest.mock("react-redux", () => ({
@@ -120,14 +119,16 @@ jest.mock("react-redux", () => ({
       asofdate: "",
       manageSupportUrlLink: "",
       currentDelegatedSupportedClick: {
-        delegatedSupportClick:false
+        delegatedSupportClick: false,
       },
       currentGetCheckSupportExistsData: {
-        warning:"",
-        is_confirm :1,
-        remove_camps:[{
-          camp:"abc"
-        }]
+        warning: "",
+        is_confirm: 1,
+        remove_camps: [
+          {
+            camp: "abc",
+          },
+        ],
       },
       CurrentCheckSupportStatus: "",
       manageSupportStatusCheck: true,
@@ -139,8 +140,9 @@ jest.mock("src/hooks/isUserAuthenticated", () =>
 );
 jest.mock("src/network/api/campDetailApi", () => ({
   getAllUsedNickNames: jest.fn(),
-  getCurrentCampRecordApi: jest.fn()
-  .mockReturnValue(Promise.resolve({ camp_name: "Test Camp name" })),
+  getCurrentCampRecordApi: jest
+    .fn()
+    .mockReturnValue(Promise.resolve({ camp_name: "Test Camp name" })),
   getAllRemovedReasons: jest
     .fn()
     .mockReturnValue(Promise.resolve({ success: true })),
@@ -173,11 +175,14 @@ jest.mock("src/network/api/userApi", () => ({
   ),
 }));
 const supportRemovedModal = () => <div>Removed Modal</div>;
-supportRemovedModal.displayName = 'SupportRemovedModal';
-jest.mock("src/components/common/supportRemovedModal", () =>{
-  return()=> supportRemovedModal 
-},{virtual:true});
-
+supportRemovedModal.displayName = "SupportRemovedModal";
+jest.mock(
+  "src/components/common/supportRemovedModal",
+  () => {
+    return () => supportRemovedModal;
+  },
+  { virtual: true }
+);
 
 describe("ManageSupportUI", () => {
   it("render show SupportedCamps", () => {
@@ -551,38 +556,43 @@ it("Check the checkbox is checked/unchecked", () => {
 
 //   const tagBtn = screen.getByTestId("tag-btn")
 //   expect(tagBtn).toBeInTheDocument()
- 
+
 // });
 it("should render card with title and contents", async () => {
-  const nicknamelist = [{
-    nick_name:"Vikas",
-    id:"1"
-  }];
-  const manageSupportList = [{
-    topic_num:1,
-    camp_num: 1,
-    camp_name:"test",
-    support_order: 1,
-    link:"/test"
-  },
-  {
-    topic_num:2,
-    camp_num: 2,
-    camp_name:"test 2",
-    support_order: 2,
-    link:"/test2"
-  }];
+  const nicknamelist = [
+    {
+      nick_name: "Vikas",
+      id: "1",
+    },
+  ];
+  const manageSupportList = [
+    {
+      topic_num: 1,
+      camp_num: 1,
+      camp_name: "test",
+      support_order: 1,
+      link: "/test",
+    },
+    {
+      topic_num: 2,
+      camp_num: 2,
+      camp_name: "test 2",
+      support_order: 2,
+      link: "/test2",
+    },
+  ];
   const removeAll = jest.fn();
   const handleClose = jest.fn();
   const checked = false;
   const setManageSupportList = jest.fn();
-  const parentSupportDataList = [{
-    camp_num:1,
-    support_order:1,
-    camp_name:"Test",
-    link:"/test"
-
-  }];
+  const parentSupportDataList = [
+    {
+      camp_num: 1,
+      support_order: 1,
+      camp_name: "Test",
+      link: "/test",
+    },
+  ];
   const getSupportStatusData = "test";
   const submitNickNameSupportCamps = jest.fn();
   const cancelManageRoute = jest.fn();
@@ -592,7 +602,7 @@ it("should render card with title and contents", async () => {
   const setUpdatePostion = jest.fn();
   const unableToFindCamp = false;
 
-  const { getByTestId,getAllByTestId } = render(
+  const { getByTestId, getAllByTestId } = render(
     <ManageSupportUI
       nickNameList={nicknamelist}
       manageSupportList={manageSupportList}
@@ -613,13 +623,13 @@ it("should render card with title and contents", async () => {
       getManageSupportLoadingIndicator={false}
     />
   );
-  const campName = getByTestId("camp_name")
+  const campName = getByTestId("camp_name");
   expect(campName).toBeInTheDocument();
 
-  const clickOnCamp =getAllByTestId("styles_Bluecolor")[0]
+  const clickOnCamp = getAllByTestId("styles_Bluecolor")[0];
   expect(clickOnCamp).toBeInTheDocument();
   fireEvent.click(clickOnCamp);
-  const closeCircle = getAllByTestId("close")[0]
+  const closeCircle = getAllByTestId("close")[0];
   expect(closeCircle).toBeInTheDocument();
   fireEvent.click(closeCircle);
   // const selectInput = screen.getByRole("combobox");
@@ -634,7 +644,7 @@ it("should render card with title and contents", async () => {
   // fireEvent.click(inputEl);
 
   // await fireEvent.change(inputE1, { target: { value: "1" } });
-//  await  userEvent.selectOptions(getByTestId('select-option'), '1');
+  //  await  userEvent.selectOptions(getByTestId('select-option'), '1');
 });
 describe("Manage support", () => {
   it("render nick name list", async () => {
@@ -647,12 +657,12 @@ describe("Manage support", () => {
       expect(screen.getByText(nickNameList[0].private)).toBeInTheDocument();
     });
   });
-  it("render camp record", async() => {
+  it("render camp record", async () => {
     await render(<ManageSupport />);
     waitFor(async () => {
-      const tagBtn = screen.getByText("Test Camp name")
-      expect(tagBtn).toBeInTheDocument()
-      fireEvent.click(tagBtn)
+      const tagBtn = screen.getByText("Test Camp name");
+      expect(tagBtn).toBeInTheDocument();
+      fireEvent.click(tagBtn);
       expect(
         screen.getByText(campRecord.camp_about_nick_id)
       ).toBeInTheDocument();

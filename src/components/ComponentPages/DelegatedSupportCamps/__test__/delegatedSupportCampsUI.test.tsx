@@ -27,7 +27,7 @@ jest.mock("next/router", () => ({
 }));
 jest.mock("src/network/api/userApi", () => ({
   getDelegatedSupportCampsList: jest.fn(() =>
-    Promise.resolve({ data: [{title: "this is a title"}], status_code: 200 })
+    Promise.resolve({ data: [{ title: "this is a title" }], status_code: 200 })
   ),
   removeSupportedCampsEntireTopic: jest.fn(() =>
     Promise.resolve({
@@ -346,13 +346,13 @@ describe("delegated supported", () => {
     });
   });
   it("click on close circle outline btn", async () => {
-   render(<DelegatedSupportCamps search={"delegatedSupportCampsList"} />);
-   await waitFor(() => {
-    const onCloseBtn = screen.getAllByTestId("removeCardDelegatedSupportedCamps")[0]
-    fireEvent.click(onCloseBtn)
-    expect(screen.getByText("Agreement-2")).toBeInTheDocument();
-   })
-   
-
+    render(<DelegatedSupportCamps search={"delegatedSupportCampsList"} />);
+    await waitFor(() => {
+      const onCloseBtn = screen.getAllByTestId(
+        "removeCardDelegatedSupportedCamps"
+      )[0];
+      fireEvent.click(onCloseBtn);
+      expect(screen.getByText("Agreement-2")).toBeInTheDocument();
+    });
   });
 });

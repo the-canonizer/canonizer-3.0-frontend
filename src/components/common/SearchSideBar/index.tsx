@@ -24,26 +24,30 @@ export default function SearchSideBar() {
           <div className="search_tabs">
             <Link
               href={{
-                pathname: '/search',
+                pathname: "/search",
                 query: { q: searchValue },
               }}
             >
               <Button
                 size="large"
-                className={router?.asPath.includes("/search?") ? "active" : "btn"}
+                className={
+                  router?.asPath.includes("/search?") ? "active" : "btn"
+                }
               >
                 <a>All</a>
               </Button>
             </Link>
             <Link
               href={{
-                pathname: '/search/topic',
+                pathname: "/search/topic",
                 query: { q: searchValue },
               }}
             >
               <Button
                 size="large"
-                className={router?.asPath.includes("/search/topic?") ? "active" : "btn"}
+                className={
+                  router?.asPath.includes("/search/topic?") ? "active" : "btn"
+                }
               >
                 <i className="icon-topic"></i>
                 <a>Topic</a>
@@ -51,13 +55,15 @@ export default function SearchSideBar() {
             </Link>
             <Link
               href={{
-                pathname: '/search/camp',
+                pathname: "/search/camp",
                 query: { q: searchValue },
               }}
             >
               <Button
                 size="large"
-                className={router?.asPath.includes("/search/camp?") ? "active" : "btn"}
+                className={
+                  router?.asPath.includes("/search/camp?") ? "active" : "btn"
+                }
               >
                 <i className="icon-camp"></i>
                 <a>Camp</a>
@@ -65,14 +71,16 @@ export default function SearchSideBar() {
             </Link>
             <Link
               href={{
-                pathname: '/search/camp_statement',
+                pathname: "/search/camp_statement",
                 query: { q: searchValue },
               }}
             >
               <Button
                 size="large"
                 className={
-                  router?.asPath.includes("/search/camp_statement?") ? "active" : "btn"
+                  router?.asPath.includes("/search/camp_statement?")
+                    ? "active"
+                    : "btn"
                 }
               >
                 <i className="icon-camp"></i>
@@ -81,14 +89,16 @@ export default function SearchSideBar() {
             </Link>
             <Link
               href={{
-                pathname: '/search/nickname',
+                pathname: "/search/nickname",
                 query: { q: searchValue },
               }}
             >
               <Button
                 size="large"
                 className={
-                  router?.asPath.includes("/search/nickname?") ? "active" : "btn"
+                  router?.asPath.includes("/search/nickname?")
+                    ? "active"
+                    : "btn"
                 }
               >
                 <Image

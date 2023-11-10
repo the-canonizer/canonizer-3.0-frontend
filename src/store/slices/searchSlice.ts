@@ -8,7 +8,7 @@ export const searchSlice = createSlice({
       nickname: [],
       statement: [],
       topic: [],
-      response:false
+      response: false,
     },
     searchValue: "",
   },
@@ -19,7 +19,7 @@ export const searchSlice = createSlice({
         nickname: action.payload.nickname,
         statement: action.payload.statement,
         topic: action.payload.topic,
-        response: true
+        response: true,
       };
     },
     setSearchValue: (state, action) => {
