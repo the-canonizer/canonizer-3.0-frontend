@@ -19,16 +19,16 @@ jest.mock("next/router", () => ({
 }));
 jest.mock("src/network/api/userApi", () => ({
   getDelegatedSupportCampsList: jest.fn(() =>
-    Promise.resolve({ data: [], status_code: 200 })
+    Promise.resolve({ data: delegatedSupportCampsList, status_code: 200 })
   ),
-  removeSupportedCampsEntireTopic: jest.fn(() =>
+  removeSupportedCampsEntireTopic: jest.fn((camp) =>
     Promise.resolve({
-      data: [
-        {
-          removeEntireData: {},
-        },
-      ],
-      status_code: 200,
+      status_code:200,data:{
+        topic_num:1,
+        nick_name_id:10,
+        delegated_nick_name_id:1,
+        ...camp
+      }
     })
   ),
 }));
@@ -146,7 +146,7 @@ const viewMoreDataValue = {
 
 describe("delegated supported", () => {
   it("render a value when write in search box", () => {
-    render(<DelegatedSupportCamps search={delegatedSupportCampsList} />);
+    render(<DelegatedSupportCamps search="" />);
     waitFor(async () => {
       expect(screen.getAllByText("For topic").length).toEqual(2);
       expect(
@@ -162,7 +162,7 @@ describe("delegated supported", () => {
   });
 
   it("render view more data value of delegate supporter", () => {
-    render(<DelegatedSupportCamps search={delegatedSupportCampsList} />);
+    render(<DelegatedSupportCamps search="" />);
     waitFor(async () => {
       expect(
         screen.getByText(viewMoreDataValue[0].delegated_to_nick_name)
@@ -187,7 +187,7 @@ describe("delegated supported", () => {
   });
 
   it("click on remove support button and open modal", () => {
-    render(<DelegatedSupportCamps search={delegatedSupportCampsList} />);
+    render(<DelegatedSupportCamps search={""} />);
     waitFor(async () => {
       const btns = screen.getAllByText("Remove Support");
 
@@ -196,13 +196,16 @@ describe("delegated supported", () => {
       expect(
         screen.getByText(delegatedSupportCampsList[0].title)
       ).toBeInTheDocument();
+      const removeButton = screen.getAllByText("Remove Support");
+      userEvent.click(removeButton[0]);
+      expect(screen.getByText("Remove")).toBeInTheDocument();
       expect(screen.getByText("Remove")).toBeInTheDocument();
       expect(screen.getByText("Cancel")).toBeInTheDocument();
     });
   });
 
   it("click on view more button for display all the camps", () => {
-    render(<DelegatedSupportCamps search={delegatedSupportCampsList} />);
+    render(<DelegatedSupportCamps search="" />);
     waitFor(async () => {
       const btns = screen.getAllByText(labels.viewMore);
 
@@ -211,6 +214,22 @@ describe("delegated supported", () => {
       expect(screen.getByText("Current Supported Camps:")).toBeInTheDocument();
       expect(screen.getByText("Agreement")).toBeInTheDocument();
       expect(screen.getByText("Agreement-2")).toBeInTheDocument();
+    });
+  });
+  it("clicked on remove support button and open modal", async() => {
+    render(<DelegatedSupportCamps search="" />);
+    await waitFor(() => {
+      const btns = screen.getAllByText("Remove Support");
+
+      userEvent.click(btns[0]);
+
+      // expect(
+      //   screen.getByText(delegatedSupportCampsList[0].title)
+      // ).toBeInTheDocument();
+      const removeButton = screen.getAllByTestId("removeCardDelegatedSupportedCamps");
+      userEvent.click(removeButton[0]);
+      expect(screen.getByText("Remove")).toBeInTheDocument();
+      expect(screen.getByText("Cancel")).toBeInTheDocument();
     });
   });
 });
