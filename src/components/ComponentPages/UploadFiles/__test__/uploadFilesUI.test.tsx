@@ -771,9 +771,9 @@ describe("Upload File UI Page", () => {
         setToggleFileView={setToggleFileView}
       />
     );
+    expect(screen.getByText(labels.FolderName)).toBeInTheDocument();
     const btn = getByTestId("remove_files");
     fireEvent.click(btn);
-    expect(getByText("remove_files")).toBeDefined();
     const btnE1 = getByTestId("cancel_modal");
     fireEvent.click(btnE1);
     const btnE2 = getByTestId("add_AFile_Btn");

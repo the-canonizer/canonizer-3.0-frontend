@@ -106,7 +106,9 @@ export const getCanonizedCampStatementApi = async (
     store.dispatch(setCampStatement(campStatement?.data));
     return campStatement?.data;
   } catch (error) {
-    // message.error(error.message);
+    if (error?.error?.data?.status_code == 404) {
+      store.dispatch(setCampStatement([]));
+    }
   }
 };
 

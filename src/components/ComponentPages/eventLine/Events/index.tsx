@@ -1,7 +1,7 @@
 // import { useRouter } from "next/router";
 import { useState, Fragment, useEffect } from "react";
 import { BellFilled } from "@ant-design/icons";
-import { Card, List } from "antd";
+import { Card, Empty, List } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { setViewThisVersion } from "src/store/slices/filtersSlice";
 import moment from "moment";
@@ -58,7 +58,7 @@ const Events = ({ timelineDescript }: any) => {
           "activities evntLineActivity " + activityStyle.campActivities
         }
       >
-        {loading || timelineDescript?.length == 0 ? (
+        {loading && timelineDescript?.length == 0 ? (
           <>
             <CustomSkelton
               skeltonFor="list"
@@ -127,7 +127,8 @@ const Events = ({ timelineDescript }: any) => {
               })}
           </List>
         ) : (
-          <h3 className="activeListWrap pl-4">No events found!</h3>
+          // <h3 className="activeListWrap pl-4">No events found!.</h3>
+          <Empty description="No Event Found!" />
         )}
       </Card>
     </>
