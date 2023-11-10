@@ -33,30 +33,33 @@ const CampSearch = () => {
       </aside>
       <div className="pageContentWrap">
         <div className={styles.card}>
-
-        <div className="d-flex mb-2 align-items-center flex-wrap relative">
-        <h4 data-testid="camp_heading">Camp</h4>
-        {/* <AdvanceFilter/> */}
-        </div>
-        <div className={styles.search_lists}>
-                <ul>
-                    {searchData?.camp?.slice(startingPosition,endingPosition).map((x)=>{
-                        const jsonData = JSON.parse(
-                            x.breadcrumb_data
-                          ) as Array<any>;
-                          const parsedData = jsonData.reduce(
-                            (accumulator, currentVal, index) => {
-                              const accIndex = index + 1;
-                              accumulator[index] = {
-                                camp_name: currentVal[accIndex]?.camp_name == "Agreement"?currentVal[accIndex].topic_name: currentVal[accIndex].camp_name,
-                                camp_link: currentVal[accIndex]?.camp_link,
-                                topic_name:currentVal[accIndex]?.topic_name,
-                              };
-                              return accumulator;
-                            },
-                            []);
-                            console.log(parsedData,"parseddata")
-                                   return (
+          <div className="d-flex mb-2 align-items-center flex-wrap relative">
+            <h4 data-testid="camp_heading">Camp</h4>
+            {/* <AdvanceFilter/> */}
+          </div>
+          <div className={styles.search_lists}>
+            <ul>
+              {searchData?.camp
+                ?.slice(startingPosition, endingPosition)
+                .map((x) => {
+                  const jsonData = JSON.parse(x.breadcrumb_data) as Array<any>;
+                  const parsedData = jsonData.reduce(
+                    (accumulator, currentVal, index) => {
+                      const accIndex = index + 1;
+                      accumulator[index] = {
+                        camp_name:
+                          currentVal[accIndex]?.camp_name == "Agreement"
+                            ? currentVal[accIndex].topic_name
+                            : currentVal[accIndex].camp_name,
+                        camp_link: currentVal[accIndex]?.camp_link,
+                        topic_name: currentVal[accIndex]?.topic_name,
+                      };
+                      return accumulator;
+                    },
+                    []
+                  );
+                  console.log(parsedData, "parseddata");
+                  return (
                     <>
                       <li>
                         <Link href={`/${jsonData[0][1].camp_link}`}>

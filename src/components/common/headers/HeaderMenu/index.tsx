@@ -49,12 +49,16 @@ const HeaderMenu = ({ loggedUser }: any) => {
   };
   useEffect(() => {
     if (searchValue?.length == 0) {
-      // const localSearch = localStorage.getItem("searchValue");
-        searchValue = router?.asPath?.split("=")[1]?.split("+").join(" ")?.replace(/%20/g, " ")
-        
-      if (router.asPath == "/search" ||router.asPath == "/search/") {
-        dispatch(setSearchValue(searchValue));
-        getGlobalSearchCanonizer(searchValue, true);
+      const localSearch = localStorage.getItem("searchValue");
+      searchValue = router?.asPath
+        ?.split("=")[1]
+        ?.split("+")
+        .join(" ")
+        ?.replace(/%20/g, " ");
+
+      if (localSearch) {
+        dispatch(setSearchValue(localSearch));
+        getGlobalSearchCanonizer(localSearch, true);
       }
     }
   }, []);
@@ -349,9 +353,10 @@ const HeaderMenu = ({ loggedUser }: any) => {
   const handlePress = (e) => {
     router.push({
       pathname: "/search",
-      query: { q: e.target.value },
+      query: { q: searchValue },
     });
   };
+  console.log(router, "router");
   return (
     <Fragment>
       <nav className={styles.nav}>
@@ -404,7 +409,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
             name="search"
             prefix={<i className="icon-search"></i>}
             onChange={(e) => {
-              // localStorage.setItem("searchValue", e.target.value);
+              localStorage.setItem("searchValue", e.target.value);
 
               dispatch(setSearchValue(e.target.value));
               setInputSearch(e.target.value);
