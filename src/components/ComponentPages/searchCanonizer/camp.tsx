@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import SearchSideBar from "../../common/SearchSideBar";
 import styles from "./search.module.scss";
-import AdvanceFilter from "../../common/AdvanceSearchFilter";
+// import AdvanceFilter from "../../common/AdvanceSearchFilter";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { Pagination } from "antd";
@@ -35,7 +35,7 @@ const CampSearch = () => {
         <div className={styles.card}>
         <div className="d-flex mb-2 align-items-center flex-wrap relative">
         <h4 data-testid="camp_heading">Camp</h4>
-        <AdvanceFilter/>
+        {/* <AdvanceFilter/> */}
         </div>
         <div className={styles.search_lists}>
                 <ul>

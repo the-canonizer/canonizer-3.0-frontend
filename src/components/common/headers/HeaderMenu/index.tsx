@@ -52,10 +52,11 @@ const HeaderMenu = ({ loggedUser }: any) => {
     if (searchValue?.length == 0) {
       // const localSearch = localStorage.getItem("searchValue");
         searchValue = router?.asPath?.split("=")[1]?.split("+").join(" ")?.replace(/%20/g, " ")
-      // if (localSearch) {
+        
+      if (router.asPath == "/search" ||router.asPath == "/search/") {
         dispatch(setSearchValue(searchValue));
         getGlobalSearchCanonizer(searchValue, true);
-      // }
+      }
     }
 
   }, []);
