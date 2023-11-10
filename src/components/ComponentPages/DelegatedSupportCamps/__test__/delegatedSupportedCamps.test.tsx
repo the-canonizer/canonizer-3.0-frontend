@@ -23,12 +23,13 @@ jest.mock("src/network/api/userApi", () => ({
   ),
   removeSupportedCampsEntireTopic: jest.fn((camp) =>
     Promise.resolve({
-      status_code:200,data:{
-        topic_num:1,
-        nick_name_id:10,
-        delegated_nick_name_id:1,
-        ...camp
-      }
+      status_code: 200,
+      data: {
+        topic_num: 1,
+        nick_name_id: 10,
+        delegated_nick_name_id: 1,
+        ...camp,
+      },
     })
   ),
 }));
@@ -216,7 +217,7 @@ describe("delegated supported", () => {
       expect(screen.getByText("Agreement-2")).toBeInTheDocument();
     });
   });
-  it("clicked on remove support button and open modal", async() => {
+  it("clicked on remove support button and open modal", async () => {
     render(<DelegatedSupportCamps search="" />);
     await waitFor(() => {
       const btns = screen.getAllByText("Remove Support");
@@ -226,7 +227,9 @@ describe("delegated supported", () => {
       // expect(
       //   screen.getByText(delegatedSupportCampsList[0].title)
       // ).toBeInTheDocument();
-      const removeButton = screen.getAllByTestId("removeCardDelegatedSupportedCamps");
+      const removeButton = screen.getAllByTestId(
+        "removeCardDelegatedSupportedCamps"
+      );
       userEvent.click(removeButton[0]);
       expect(screen.getByText("Remove")).toBeInTheDocument();
       expect(screen.getByText("Cancel")).toBeInTheDocument();

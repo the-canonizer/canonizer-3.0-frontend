@@ -25,7 +25,6 @@ const HeaderMenu = ({ loggedUser }: any) => {
   }));
 
   const router = useRouter();
-  
 
   const dispatch = useDispatch();
 
@@ -58,7 +57,6 @@ const HeaderMenu = ({ loggedUser }: any) => {
         getGlobalSearchCanonizer(searchValue, true);
       }
     }
-
   }, []);
 
   const options = [
@@ -85,7 +83,11 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 );
               })}
             </ul>
-            {searchTopics.length?<span className={styles.bold_margin}></span>:""}
+            {searchTopics.length ? (
+              <span className={styles.bold_margin}></span>
+            ) : (
+              ""
+            )}
           </div>
         ),
       ],
@@ -144,7 +146,11 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 );
               })}
             </ul>
-            {searchCamps.length?<span className={styles.bold_margin}></span>:""}
+            {searchCamps.length ? (
+              <span className={styles.bold_margin}></span>
+            ) : (
+              ""
+            )}
           </div>
         ),
       ],
@@ -219,7 +225,11 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 );
               })}
             </ul>
-            {searchCampStatement.length?<span className={styles.bold_margin}></span>:""}
+            {searchCampStatement.length ? (
+              <span className={styles.bold_margin}></span>
+            ) : (
+              ""
+            )}
           </div>
         ),
       ],
@@ -255,7 +265,11 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 );
               })}
             </ul>
-            {searchNickname.length?<span className={styles.bold_margin}></span>:""}
+            {searchNickname.length ? (
+              <span className={styles.bold_margin}></span>
+            ) : (
+              ""
+            )}
           </div>
         ),
       ],
@@ -267,11 +281,13 @@ const HeaderMenu = ({ loggedUser }: any) => {
             <i className="icon-search"></i>
             <Link
               href={{
-                pathname: '/search',
+                pathname: "/search",
                 query: { q: searchValue },
               }}
             >
-              <a onClick={() => handleSearchfor()}>{`Search for "${searchValue}"`}</a>
+              <a
+                onClick={() => handleSearchfor()}
+              >{`Search for "${searchValue}"`}</a>
             </Link>
           </footer>
         ),
@@ -328,21 +344,22 @@ const HeaderMenu = ({ loggedUser }: any) => {
 
   const handleSearchfor = () => {
     getGlobalSearchCanonizer(searchValue, true);
-  }
+  };
 
   const handlePress = (e) => {
     router.push({
-      pathname: '/search',
-      query: { q: e.target.value }
-    })
+      pathname: "/search",
+      query: { q: e.target.value },
+    });
   };
   return (
     <Fragment>
       <nav className={styles.nav}>
         <ul>
           <li
-            className={`topicDeskBTN d-none d-lg-block ${router?.asPath === "/create/topic" ? styles.active : ""
-              }`}
+            className={`topicDeskBTN d-none d-lg-block ${
+              router?.asPath === "/create/topic" ? styles.active : ""
+            }`}
             key="create-topic-li"
           >
             <TopicCreationBTN key="create-topic-area" />
@@ -396,7 +413,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
             onPressEnter={(e) => {
               // localStorage.setItem("searchValue",(e.target as HTMLTextAreaElement).value)
               // !router.asPath.includes("/search") ? handlePress(e) : "";
-              handlePress(e)
+              handlePress(e);
               getGlobalSearchCanonizer(
                 (e.target as HTMLTextAreaElement).value,
                 true

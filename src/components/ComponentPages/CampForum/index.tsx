@@ -17,14 +17,17 @@ import {
   updatePost,
   getPostsList,
   deletePost,
-  getThreadData,
+  // getThreadData,
 } from "../../../network/api/campForumApi";
 import {
   getAllUsedNickNames,
   getCurrentCampRecordApi,
   getCurrentTopicRecordApi,
 } from "../../../network/api/campDetailApi";
-import { setThread, setPost } from "../../../store/slices/campForumSlice";
+import {
+  // setThread,
+  setPost,
+} from "../../../store/slices/campForumSlice";
 // import CampInfoBar from "../TopicDetails/CampInfoBar";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
@@ -74,7 +77,7 @@ const ForumComponent = ({
       currentPost: state.forum.currentPost,
     }));
 
-  const setCurrentThread = (data) => dispatch(setThread(data));
+  // const setCurrentThread = (data) => dispatch(setThread(data));
 
   const setCurrentPost = (data) => dispatch(setPost(data));
 
@@ -139,22 +142,37 @@ const ForumComponent = ({
     }
   };
 
-  const threadDetails = async (id) => {
-    setthreadDetailsLoading(true);
-    setPostLoading(true);
+  // const threadDetails = async () => {
+  //   const queries = router?.query;
+  //   const campArr = (queries.camp as string).split("-");
+  //   const camp_num = campArr.shift();
+  //   const topicArr = (queries?.topic as string)?.split("-");
+  //   const topic_num = topicArr?.shift(),
+  //     q = router?.query,
+  //     id = q?.id as string;
 
-    const res = await getThreadData(id);
+  //   try {
+  //     setthreadDetailsLoading(true);
+  //     setPostLoading(true);
 
-    if (res && res.status_code === 200) {
-      const data = res.data;
-      setCurrentThread(data);
-    } else if (res && res.status_code === 404) {
-      router.push(router.asPath.replace(`/${router?.query?.id}`, ""));
-    }
+  //     const res = await getThreadData(id, topic_num, camp_num);
 
-    setPostLoading(false);
-    setthreadDetailsLoading(false);
-  };
+  //     if (res?.data?.status_code === 404) {
+  //       message.error(res?.data?.error || "Something went wrong ");
+  //       setCurrentThread({});
+  //     }
+
+  //     if (res && res?.status_code === 200) {
+  //       const data = res.data;
+  //       setCurrentThread(data);
+  //     }
+  //   } catch (error) {
+  //     // handle errors
+  //   } finally {
+  //     setPostLoading(false);
+  //     setthreadDetailsLoading(false);
+  //   }
+  // };
 
   useEffect(() => {
     if (router && router?.query && didMount.current) {
@@ -304,21 +322,18 @@ const ForumComponent = ({
     const topicArr = (queries?.topic as string)?.split("-");
     const topic_num = topicArr?.shift();
     const type = queries["by"] as string;
-    // if (didMountList.current) {
 
-    let timer = 0;
+    if (router?.pathname === "/forum/[topic]/[camp]/threads") {
+      let timer = 0;
 
-    if (timer) {
-      clearTimeout(timer);
-      timer = 0;
+      if (timer) {
+        clearTimeout(timer);
+        timer = 0;
+      }
+      timer = window.setTimeout(async () => {
+        getThreads(camp_num, topic_num, type, page, searchQuery);
+      }, 800);
     }
-    timer = window.setTimeout(async () => {
-      getThreads(camp_num, topic_num, type, page, searchQuery);
-    }, 800);
-    // } else {
-    //   didMountList.current = true;
-    //   setLoading(false);
-    // }
 
     if (
       router?.pathname === "/forum/[topic]/[camp]/threads/create" ||
@@ -430,12 +445,16 @@ const ForumComponent = ({
   const [formPost] = Form.useForm();
 
   useEffect(() => {
-    const q = router?.query,
-      threadId = q?.id;
-
-    if (threadId) {
-      threadDetails(threadId);
-    }
+    // const queries = router?.query;
+    // const campArr = (queries.camp as string).split("-");
+    // const camp_num = campArr.shift();
+    // const topicArr = (queries?.topic as string)?.split("-");
+    // const topic_num = topicArr?.shift();
+    // const q = router?.query,
+    //   threadId = q?.id;
+    // if (threadId) {
+    //   threadDetails(threadId, topic_num, camp_num);
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
@@ -503,11 +522,12 @@ const ForumComponent = ({
     if (res && res.status_code === 200) {
       message.success(res.message);
       getPosts(q.id, ppage);
-      setQuillContent("");
 
       const queries = router?.query;
       const topicArr = (queries?.topic as string)?.split("-");
       const topic_num = topicArr?.shift();
+
+      setQuillContent("");
 
       fetchNickNameList(topic_num);
     }
