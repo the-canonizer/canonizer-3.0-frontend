@@ -105,5 +105,6 @@ export const getThreadData = async (thread_id: any) => {
     return response;
   } catch (error) {
     handleError(error);
+    return error?.error?.data;
   }
 };

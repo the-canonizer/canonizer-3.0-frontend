@@ -148,6 +148,8 @@ const ForumComponent = ({
     if (res && res.status_code === 200) {
       const data = res.data;
       setCurrentThread(data);
+    } else if (res && res.status_code === 404) {
+      router.push(router.asPath.replace(`/${router?.query?.id}`, ""));
     }
 
     setPostLoading(false);
