@@ -185,11 +185,11 @@ del.diffmod img {
 
 .btn {
   &-blue {
-    background-color: #4484CE;
+    background-color: #4484ce;
 
     &:hover,
     &:focus {
-      background-color: darken(#4484CE, 10%);
+      background-color: darken(#4484ce, 10%);
     }
   }
 
@@ -880,7 +880,7 @@ del.diffmod img {
       }
 
       .ant-checkbox-inner {
-        border-color: #4484CE;
+        border-color: #4484ce;
 
         &::after {
           width: 5px;
@@ -892,7 +892,7 @@ del.diffmod img {
     }
 
     .ant-checkbox-inner {
-      border-color: #4484CE;
+      border-color: #4484ce;
 
       &::after {
         width: 5px;
@@ -2454,6 +2454,7 @@ div[role="option"]::before {
     margin: 10px 16px 10px;
   }
   .ant-slider-tooltip {
+    z-index: 999;
     .ant-tooltip-arrow-content {
       --antd-arrow-background-color: rgba(45, 145, 203, 0.856);
     }
@@ -2729,63 +2730,54 @@ div[role="option"]::before {
   position: absolute !important;
   left: 15px;
 }
-.leftSideBar_Card  
-{
-  .search_tabs
-  {
-      .ant-btn 
-      {
-        background: #F3F4F5;
-        border-radius: 2px;
-        margin-bottom: 7px;
-        border: 1px solid #F3F4F5;
-        justify-content: flex-start !important;
-        font-size: 14px;
-        letter-spacing: 0px;
-        color: #1C1B24;
-        opacity: 1;
-        padding: 6.4px 15px 6.4px 40px !important;
-        display: flex;
-        align-items: center;
-        position: relative;
-          i 
-          {
-            color: #A2ACB9;
-            font-size: 15px;
-            margin-right: 0px;
-            position: absolute;
-            left: 15px;
-          }
-          img{
-            transition: all 0.3s ease;
-          }
-          &:hover img{
-            filter: brightness(0) invert(1);
-          }
-          a 
-          {
-            color: #1c1b24;
-          }
-
-          &:hover,  &.active
-          {
-            background-color: #4484CE;
-            color: #fff;
-            i 
-            {
-              color: #fff;
-            }
-            a 
-            {
-              color: #fff;
-
-            }
-          }
+.leftSideBar_Card {
+  .search_tabs {
+    .ant-btn {
+      background: #f3f4f5;
+      border-radius: 2px;
+      margin-bottom: 7px;
+      border: 1px solid #f3f4f5;
+      justify-content: flex-start !important;
+      font-size: 14px;
+      letter-spacing: 0px;
+      color: #1c1b24;
+      opacity: 1;
+      padding: 6.4px 15px 6.4px 40px !important;
+      display: flex;
+      align-items: center;
+      position: relative;
+      i {
+        color: #a2acb9;
+        font-size: 15px;
+        margin-right: 0px;
+        position: absolute;
+        left: 15px;
       }
+      img {
+        transition: all 0.3s ease;
+      }
+      &:hover img {
+        filter: brightness(0) invert(1);
+      }
+      a {
+        color: #1c1b24;
+      }
+
+      &:hover,
+      &.active {
+        background-color: #4484ce;
+        color: #fff;
+        i {
+          color: #fff;
+        }
+        a {
+          color: #fff;
+        }
+      }
+    }
   }
-  
 }
-.nick_name_icon{
+.nick_name_icon {
   background-color: red;
 }
 
@@ -2807,7 +2799,7 @@ div[role="option"]::before {
   }
 }
 
-.topicDeskBTN {  
+.topicDeskBTN {
   .ant-btn {
     background-color: transparent;
     color: #fff;
@@ -2848,15 +2840,15 @@ div[role="option"]::before {
 //   display: none;
 // }
 
-.Mob_View {  
-  .siteHeader_nav___O0X5{
+.Mob_View {
+  .siteHeader_nav___O0X5 {
     display: none;
   }
-  .search_header{
-    display: none;    
+  .search_header {
+    display: none;
     @media screen and (max-width: 1199px) {
       display: flex;
-    }    
+    }
     // @media only screen and (max-width: 580px) {
     //   padding: 0;
     // }
@@ -2865,7 +2857,7 @@ div[role="option"]::before {
     display: block;
     max-width: 850px;
     margin: 0 auto;
-    padding: 15px 0;  
+    padding: 15px 0;
   }
 }
 
@@ -2886,7 +2878,9 @@ div[role="option"]::before {
   }
 }
 
-.siteHeader_wrap__DJamy .siteHeader_navWrap__yilWi.siteHeader_showMobMenu__Er4fO .search_header{
+.siteHeader_wrap__DJamy
+  .siteHeader_navWrap__yilWi.siteHeader_showMobMenu__Er4fO
+  .search_header {
   display: none;
 }
 
@@ -2901,7 +2895,7 @@ div[role="option"]::before {
   flex-wrap: wrap;
 }
 
-.layout_pageWrap__Yr98j .layout_contentArea__WiOLg{
+.layout_pageWrap__Yr98j .layout_contentArea__WiOLg {
   row-gap: 15px;
 }
 
