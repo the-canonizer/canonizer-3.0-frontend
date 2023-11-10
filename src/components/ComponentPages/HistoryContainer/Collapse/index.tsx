@@ -811,3 +811,4 @@ const Timer = ({ unixTime, setCommited }: any) => {
     </div>
   );
 };
+export { Timer };
