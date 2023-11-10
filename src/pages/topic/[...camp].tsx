@@ -14,6 +14,7 @@ import {
   setCurrentTopicRecord,
   setCurrentCampRecord,
 } from "../../store/slices/campDetailSlice";
+import { formatTheDate } from "src/utils/generalUtility";
 import { setHistory } from "../../store/slices/campDetailSlice";
 import Layout from "src/hoc/layout";
 
@@ -68,9 +69,12 @@ export async function getServerSideProps({ req, query }) {
   const reqBodyForService = {
     topic_num: topicNum,
     camp_num: campNum,
-    asOf: "default",
-    asofdate: Date.now() / 1000,
-    algorithm: req.cookies["canAlgo"] || "blind_popularity",
+    asOf: query?.asof ?? "default",
+    asofdate:
+      query?.asofdate && query?.asof == "bydate"
+        ? parseFloat(query?.asofdate)
+        : Date.now() / 1000,
+    algorithm: query?.algo || "blind_popularity",
     update_all: 1,
     fetch_topic_history: query?.viewversion == "1" ? 1 : null,
   };
@@ -78,8 +82,11 @@ export async function getServerSideProps({ req, query }) {
   const reqBody = {
     topic_num: topicNum,
     camp_num: campNum,
-    as_of: "default",
-    as_of_date: Date.now() / 1000,
+    as_of: query?.asof ?? "default",
+    as_of_date:
+      query?.asofdate && query?.asof == "bydate"
+        ? formatTheDate(query?.asofdate * 1000, "DD-MM-YYYY H:mm:ss")
+        : Date.now() / 1000,
   };
 
   const reqBodyForCampData = {
