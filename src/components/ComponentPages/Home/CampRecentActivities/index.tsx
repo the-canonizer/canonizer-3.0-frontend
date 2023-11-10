@@ -59,7 +59,9 @@ export default function CampRecentActivities() {
       >
         <Panel
           header={
-            <h3 className="text-orange card_heading">Current Camp Recent Activities</h3>
+            <h3 className="text-orange card_heading">
+              Current Camp Recent Activities
+            </h3>
           }
           className={"activities " + styles.campActivities}
           key="1"
