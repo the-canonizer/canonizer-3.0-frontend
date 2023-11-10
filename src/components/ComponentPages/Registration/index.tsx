@@ -85,10 +85,21 @@ const Registration = ({ isModal, isTest = false }: any) => {
 
           if (errors_key.length) {
             errors_key.forEach((key) => {
+              let field_name = key;
+              if (key === "phone_number") {
+                field_name = "phone";
+              } else if (key === "country_code") {
+                field_name = "prefix";
+              } else if (key === "password_confirmation") {
+                field_name = "confirm";
+              } else {
+                field_name = key;
+              }
+
               form.setFields([
                 {
-                  name: key,
-                  value: values[key],
+                  name: field_name,
+                  value: values[field_name],
                   errors: [res.error[key]],
                 },
               ]);
