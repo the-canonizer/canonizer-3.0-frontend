@@ -160,6 +160,7 @@ export default function DelegatedSupportCampsUI({
                       }
                       extra={
                         <div
+                          data-testid="removeCardDelegatedSupportedCamps"
                           className={styles.RemoveCardSupported}
                           onClick={() =>
                             removeCardDelegatedSupportedCamps(data)
