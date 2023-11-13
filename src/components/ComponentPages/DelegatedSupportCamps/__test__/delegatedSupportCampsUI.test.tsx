@@ -1,4 +1,6 @@
 import {
+  fireEvent,
+  getByTestId,
   // fireEvent,
   render,
   screen,
@@ -25,7 +27,7 @@ jest.mock("next/router", () => ({
 }));
 jest.mock("src/network/api/userApi", () => ({
   getDelegatedSupportCampsList: jest.fn(() =>
-    Promise.resolve({ data: [], status_code: 200 })
+    Promise.resolve({ data: [{ title: "this is a title" }], status_code: 200 })
   ),
   removeSupportedCampsEntireTopic: jest.fn(() =>
     Promise.resolve({
@@ -276,7 +278,7 @@ describe("Delegated Support camps page", () => {
 
 describe("delegated supported", () => {
   it("render a value when write in search box", () => {
-    render(<DelegatedSupportCamps search={delegatedSupportCampsList} />);
+    render(<DelegatedSupportCamps search={"delegatedSupportCampsList"} />);
     waitFor(async () => {
       expect(screen.getAllByText("For topic").length).toEqual(2);
       expect(
@@ -292,7 +294,7 @@ describe("delegated supported", () => {
   });
 
   it("render view more data value of delegate supporter", () => {
-    render(<DelegatedSupportCamps search={delegatedSupportCampsList} />);
+    render(<DelegatedSupportCamps search={"delegatedSupportCampsList"} />);
     waitFor(async () => {
       expect(
         screen.getByText(viewMoreDataValue[0].delegated_to_nick_name)
@@ -317,7 +319,7 @@ describe("delegated supported", () => {
   });
 
   it("click on remove support button and open modal", () => {
-    render(<DelegatedSupportCamps search={delegatedSupportCampsList} />);
+    render(<DelegatedSupportCamps search={"delegatedSupportCampsList"} />);
     waitFor(async () => {
       const btns = screen.getAllByText("Remove Support");
 
@@ -332,7 +334,7 @@ describe("delegated supported", () => {
   });
 
   it("click on view more button for display all the camps", () => {
-    render(<DelegatedSupportCamps search={delegatedSupportCampsList} />);
+    render(<DelegatedSupportCamps search={"delegatedSupportCampsList"} />);
     waitFor(async () => {
       const btns = screen.getAllByText(labels.viewMore);
 
@@ -340,6 +342,16 @@ describe("delegated supported", () => {
 
       expect(screen.getByText("Current Supported Camps:")).toBeInTheDocument();
       expect(screen.getByText("Agreement")).toBeInTheDocument();
+      expect(screen.getByText("Agreement-2")).toBeInTheDocument();
+    });
+  });
+  it("click on close circle outline btn", async () => {
+    render(<DelegatedSupportCamps search={"delegatedSupportCampsList"} />);
+    await waitFor(() => {
+      const onCloseBtn = screen.getAllByTestId(
+        "removeCardDelegatedSupportedCamps"
+      )[0];
+      fireEvent.click(onCloseBtn);
       expect(screen.getByText("Agreement-2")).toBeInTheDocument();
     });
   });

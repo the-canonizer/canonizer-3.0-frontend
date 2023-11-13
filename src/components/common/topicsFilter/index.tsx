@@ -183,6 +183,7 @@ const CreateTopic = () => {
     ) {
       onChangeRoute();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -541,7 +542,13 @@ const CreateTopic = () => {
               </Space>
             </Radio.Group>
             <DatePicker
-              disabled={isDatePicker || selectedAsOf == "bydate" ? false : true}
+              disabled={
+                !loading
+                  ? isDatePicker || selectedAsOf == "bydate"
+                    ? false
+                    : true
+                  : true
+              }
               format="YYYY-MM-DD"
               defaultValue={moment(current_date_filter * 1000)}
               value={moment(selectedAsOFDate * 1000)}

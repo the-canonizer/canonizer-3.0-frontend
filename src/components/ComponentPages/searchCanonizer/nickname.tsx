@@ -47,7 +47,9 @@ const NicknameSearch = () => {
                       <li>
                         <Link href={`/${x.link}`}>
                           <a>
-                            <label style={{cursor:"pointer"}}>{x.type_value}</label>
+                            <label style={{ cursor: "pointer" }}>
+                              {x.type_value}
+                            </label>
                           </a>
                         </Link>
 

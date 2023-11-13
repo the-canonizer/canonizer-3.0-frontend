@@ -11,7 +11,7 @@ const LoginModal = () => {
   return (
     <Fragment>
       <Modal
-        style={{ top: "20px" }}
+        style={{ top: "20px", zIndex: 1100 }}
         visible={visible}
         footer={null}
         closable={false}

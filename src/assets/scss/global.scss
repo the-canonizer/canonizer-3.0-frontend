@@ -1627,7 +1627,7 @@ del.diffmod img {
     }
     &.ant-collapse-item-active {
       .ant-collapse-header {
-        background-color: #12c879;
+        background-color: #ef5e5e;
       }
     }
   }
@@ -2454,7 +2454,7 @@ div[role="option"]::before {
     margin: 10px 16px 10px;
   }
   .ant-slider-tooltip {
-    z-index: 1000;
+    z-index: 999;
     .ant-tooltip-arrow-content {
       --antd-arrow-background-color: rgba(45, 145, 203, 0.856);
     }
