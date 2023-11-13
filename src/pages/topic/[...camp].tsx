@@ -51,8 +51,19 @@ const TopicDetailsPage = ({
 
   return (
     <Layout>
-      {tree?.status_code == 404 || campRecord?.status_code == 404 ? (
-        <DataNotFound isTopic={tree?.status_code == 404 ? true : false} />
+      {tree?.status_code == 404 ||
+      tree?.status_code == 422 ||
+      campRecord?.status_code == 404 ? (
+        <DataNotFound
+          isTopic={
+            tree?.status_code == 404 ||
+            (tree?.status_code == 422 &&
+              (!tree?.error?.camp_num ||
+                (tree?.error?.camp_num && tree?.error?.topic_num)))
+              ? true
+              : false
+          }
+        />
       ) : (
         <TopicDetails serverSideCall={serverSideCall} />
       )}
@@ -61,8 +72,8 @@ const TopicDetailsPage = ({
 };
 
 export async function getServerSideProps({ req, query }) {
-  let topicNum = +query?.camp[0]?.split("-")[0];
-  let campNum = +(query?.camp[1]?.split("-")[0] ?? 1);
+  let topicNum = query?.camp[0]?.split("-")[0];
+  let campNum = query?.camp[1]?.split("-")[0] ?? 1;
 
   const currentDate = new Date().valueOf();
   const reqBodyForService = {
