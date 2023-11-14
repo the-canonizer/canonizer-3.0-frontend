@@ -106,9 +106,11 @@ const Events = ({ timelineDescript }: any) => {
                                       filterObject?.asof == "bydate"
                                         ? "&asofdate=" + title?.eventDate
                                         : ""
-                                    }&asof=${filterObject?.asof}&canon=${
+                                    }&asof=bydate&canon=${
                                       filterObject?.namespace_id
-                                    }${viewThisVersion ? "&viewversion=1" : ""}`
+                                    }${
+                                      viewThisVersion ? "&viewversion=1" : ""
+                                    }&is_tree_open=1`
                                   : title?.url
                               }
                             >
