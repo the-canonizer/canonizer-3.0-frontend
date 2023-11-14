@@ -97,6 +97,7 @@ const CreateTopic = () => {
     viewThisVersion: state?.filters?.viewThisVersionCheck,
     campScoreValue: state?.filters?.campWithScoreValue,
   }));
+  const didMountaa = useRef(null);
 
   const [value, setValue] = useState(
     selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3
@@ -210,6 +211,7 @@ const CreateTopic = () => {
 
   useEffect(() => {
     setValue(selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3);
+    didMountaa.current = selectedAsOf;
   }, [selectedAsOf]);
 
   useEffect(() => {
@@ -462,106 +464,108 @@ const CreateTopic = () => {
               <ArchivedCampCheckBox />
             </div>
           </Panel>
-          <Panel
-            className={`header-bg-color-change radio-group-sider ${selectedAsOf}`}
-            header={
-              <span className={styles.title}>
-                As Of
-                <Popover content={asContent} placement="right">
-                  <i className="icon-info"></i>
-                </Popover>
-              </span>
-            }
-            key="2"
-          >
-            <Radio.Group onChange={onChange} value={value} disabled={loading}>
-              <Space direction="vertical" style={{ gap: "12px" }}>
-                <Radio
-                  className={styles.radio + " topicFilterRadio"}
-                  value={1}
-                  onClick={() => {
-                    dispatch(setViewThisVersion(false));
-                    setCookie("asof", "review", {
-                      path: "/",
-                    });
-                    dispatch(
-                      setIsReviewCanonizedTopics({
-                        includeReview: true,
-                        asof: "review",
-                        asofdate: Date.now() / 1000,
-                      })
-                    );
-                    onChangeRoute(
-                      filterObject?.filterByScore,
-                      filterObject?.algorithm,
-                      "review",
-                      Date.now() / 1000,
-                      filterObject?.namespace_id,
-                      viewThisVersion
-                    );
-                  }}
-                >
-                  Include review
-                </Radio>
-                <Radio
-                  className={styles.radio + " topicFilterRadio"}
-                  value={2}
-                  onClick={() => {
-                    dispatch(setViewThisVersion(false));
-                    setCookie("asof", "default", {
-                      path: "/",
-                    });
-                    dispatch(
-                      setFilterCanonizedTopics({
-                        asofdate: Date.now() / 1000,
-                        asof: "default",
-                      })
-                    );
-                    onChangeRoute(
-                      filterObject?.filterByScore,
-                      filterObject?.algorithm,
-                      "default",
-                      Date.now() / 1000,
-                      filterObject?.namespace_id,
-                      viewThisVersion
-                    );
-                  }}
-                >
-                  Default
-                </Radio>
-                <Radio
-                  className={styles.radio + " topicFilterRadio"}
-                  value={3}
-                  onClick={() => {
-                    dispatch(setViewThisVersion(false));
-                    handleAsOfClick();
-                  }}
-                >
-                  As of date
-                </Radio>
-              </Space>
-            </Radio.Group>
-            <DatePicker
-              disabled={
-                !loading
-                  ? isDatePicker || selectedAsOf == "bydate"
-                    ? false
+          {didMountaa.current && (
+            <Panel
+              className={`header-bg-color-change radio-group-sider  ${didMountaa?.current}`}
+              header={
+                <span className={styles.title}>
+                  As Of
+                  <Popover content={asContent} placement="right">
+                    <i className="icon-info"></i>
+                  </Popover>
+                </span>
+              }
+              key="2"
+            >
+              <Radio.Group onChange={onChange} value={value} disabled={loading}>
+                <Space direction="vertical" style={{ gap: "12px" }}>
+                  <Radio
+                    className={styles.radio + " topicFilterRadio"}
+                    value={1}
+                    onClick={() => {
+                      dispatch(setViewThisVersion(false));
+                      setCookie("asof", "review", {
+                        path: "/",
+                      });
+                      dispatch(
+                        setIsReviewCanonizedTopics({
+                          includeReview: true,
+                          asof: "review",
+                          asofdate: Date.now() / 1000,
+                        })
+                      );
+                      onChangeRoute(
+                        filterObject?.filterByScore,
+                        filterObject?.algorithm,
+                        "review",
+                        Date.now() / 1000,
+                        filterObject?.namespace_id,
+                        viewThisVersion
+                      );
+                    }}
+                  >
+                    Include review
+                  </Radio>
+                  <Radio
+                    className={styles.radio + " topicFilterRadio"}
+                    value={2}
+                    onClick={() => {
+                      dispatch(setViewThisVersion(false));
+                      setCookie("asof", "default", {
+                        path: "/",
+                      });
+                      dispatch(
+                        setFilterCanonizedTopics({
+                          asofdate: Date.now() / 1000,
+                          asof: "default",
+                        })
+                      );
+                      onChangeRoute(
+                        filterObject?.filterByScore,
+                        filterObject?.algorithm,
+                        "default",
+                        Date.now() / 1000,
+                        filterObject?.namespace_id,
+                        viewThisVersion
+                      );
+                    }}
+                  >
+                    Default
+                  </Radio>
+                  <Radio
+                    className={styles.radio + " topicFilterRadio"}
+                    value={3}
+                    onClick={() => {
+                      dispatch(setViewThisVersion(false));
+                      handleAsOfClick();
+                    }}
+                  >
+                    As of date
+                  </Radio>
+                </Space>
+              </Radio.Group>
+              <DatePicker
+                disabled={
+                  !loading
+                    ? isDatePicker || selectedAsOf == "bydate"
+                      ? false
+                      : true
                     : true
-                  : true
-              }
-              format="YYYY-MM-DD"
-              defaultValue={moment(current_date_filter * 1000)}
-              value={moment(selectedAsOFDate * 1000)}
-              suffixIcon={<i className="icon-calendar"></i>}
-              size={"large"}
-              className={`${styles.date} w-100`}
-              onChange={pickDate}
-              inputReadOnly={true}
-              disabledDate={(current) =>
-                current && current > moment(current_date_filter).endOf("day")
-              }
-            />
-          </Panel>
+                }
+                format="YYYY-MM-DD"
+                defaultValue={moment(current_date_filter * 1000)}
+                value={moment(selectedAsOFDate * 1000)}
+                suffixIcon={<i className="icon-calendar"></i>}
+                size={"large"}
+                className={`${styles.date} w-100`}
+                onChange={pickDate}
+                inputReadOnly={true}
+                disabledDate={(current) =>
+                  current && current > moment(current_date_filter).endOf("day")
+                }
+              />
+            </Panel>
+          )}
         </Collapse>
       </div>
     </>
