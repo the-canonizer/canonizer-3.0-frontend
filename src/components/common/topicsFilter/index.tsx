@@ -97,7 +97,7 @@ const CreateTopic = () => {
     viewThisVersion: state?.filters?.viewThisVersionCheck,
     campScoreValue: state?.filters?.campWithScoreValue,
   }));
-  const didMountaa = useRef(null);
+  const panelColorRef = useRef(null);
 
   const [value, setValue] = useState(
     selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3
@@ -211,7 +211,7 @@ const CreateTopic = () => {
 
   useEffect(() => {
     setValue(selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3);
-    didMountaa.current = selectedAsOf;
+    panelColorRef.current = selectedAsOf;
   }, [selectedAsOf]);
 
   useEffect(() => {
@@ -464,9 +464,9 @@ const CreateTopic = () => {
               <ArchivedCampCheckBox />
             </div>
           </Panel>
-          {didMountaa.current && (
+          {panelColorRef.current && (
             <Panel
-              className={`header-bg-color-change radio-group-sider  ${didMountaa?.current}`}
+              className={`header-bg-color-change radio-group-sider  ${panelColorRef?.current}`}
               header={
                 <span className={styles.title}>
                   As Of
