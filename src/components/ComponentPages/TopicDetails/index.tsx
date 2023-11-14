@@ -132,8 +132,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
 
       if (didMount.current && !serverSideCall.current) {
         const reqBodyForService = {
-          topic_num: +router?.query?.camp[0]?.split("-")[0],
-          camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+          topic_num: router?.query?.camp[0]?.split("-")[0],
+          camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
           asOf: asof,
           asofdate:
             asof == "default" || asof == "review"
@@ -144,10 +144,9 @@ const TopicDetails = ({ serverSideCall }: any) => {
           fetch_topic_history: viewThisVersionCheck ? 1 : null,
         };
 
-      
         const reqBodyForCampData = {
-          topic_num: +router?.query?.camp[0]?.split("-")[0],
-          camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+          topic_num: router?.query?.camp[0]?.split("-")[0],
+          camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
           type: "all",
           per_page: 4,
           page: 1,

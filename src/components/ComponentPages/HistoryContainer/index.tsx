@@ -72,8 +72,8 @@ function HistoryContainer() {
     topic_num: router?.query?.camp?.at(0)?.split("-")?.at(0),
   };
   const reqBodyForService = {
-    topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
-    camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0) || 1,
+    topic_num: router?.query?.camp?.at(0)?.split("-")?.at(0),
+    camp_num: router?.query?.camp?.at(1)?.split("-")?.at(0) || 1,
     asOf: asof,
     asofdate:
       asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
@@ -92,7 +92,7 @@ function HistoryContainer() {
       }
       let res = await getTreesApi(reqBodyForService);
       setLoadingIndicator(false);
-      setParentarchived(res?.treeData[1].is_archive);
+      setParentarchived(res?.treeData[1]?.is_archive);
     }
     if (!isTreesApiCallStop) {
       getTreeApiCall();
@@ -159,9 +159,9 @@ function HistoryContainer() {
     try {
       setLoadingIndicator(true);
       const reqBody = {
-        topic_num: +router?.query.camp[0].split("-")[0],
+        topic_num: router?.query.camp[0].split("-")[0],
         camp_num:
-          historyOf != "topic" ? +router?.query.camp[1].split("-")[0] : null,
+          historyOf != "topic" ? router?.query.camp[1].split("-")[0] : null,
         type: activeTab,
         per_page: 4,
         page: count.current,

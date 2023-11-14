@@ -34,6 +34,7 @@ export const getTreesApi = async (reqBody) => {
       treeData: data?.data?.at(0) || {},
       status_code: data?.code,
       message: data?.message || "",
+      error: data?.error || {},
     };
   }
 };
