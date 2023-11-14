@@ -148,6 +148,7 @@ export default function AddOrManage({ add }: any) {
         router?.push(
           router?.asPath.replace("create/statement", "statement/history")
         );
+        return;
       } else {
         let route =
           manageFormOf == "topic"
@@ -181,6 +182,7 @@ export default function AddOrManage({ add }: any) {
       });
       setOptions(oldOptions);
     }
+    console.log("aaaaaaaaaaaa");
     setScreenLoading(false);
   };
 

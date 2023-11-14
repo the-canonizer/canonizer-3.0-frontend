@@ -587,10 +587,6 @@ function HistoryCollapse({
                                         name: data?.nick_name,
                                         path: `/user/supports/${
                                           data?.id || ""
-                                        }?topicnum=${
-                                          campStatement?.topic_num || ""
-                                        }&campnum=${
-                                          campStatement?.camp_num || ""
                                         }&canon=${topicNamespaceId || ""}`,
                                       },
                                     };
