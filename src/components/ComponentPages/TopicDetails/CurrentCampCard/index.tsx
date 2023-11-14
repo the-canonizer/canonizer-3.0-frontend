@@ -120,8 +120,6 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                                 : description.key == "camp_about_nick_name"
                                 ? campRecord?.camp_about_nick_id
                                 : ""
-                            }?topicnum=${campRecord?.topic_num || ""}&campnum=${
-                              campRecord?.camp_num || ""
                             }&canon=${topicRecord?.namespace_id || ""}`}
                             passHref
                           >
