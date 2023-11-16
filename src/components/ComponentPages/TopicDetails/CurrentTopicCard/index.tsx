@@ -85,7 +85,7 @@ const CurrentTopicCard = ({ loadingIndicator, backGroundColorClass }: any) => {
               <Link
                 href={`/user/supports/${
                   topicRecord?.submitter_nick_id || ""
-                }&canon=${topicRecord?.namespace_id || ""}`}
+                }?canon=${topicRecord?.namespace_id || ""}`}
                 passHref
               >
                 <a>{topicRecord?.submitter_nick_name}</a>
