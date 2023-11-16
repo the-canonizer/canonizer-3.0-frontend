@@ -69,10 +69,10 @@ export const updatePost = async (body, id) => {
   }
 };
 
-export const getPostsList = async (thread_id, queries) => {
+export const getPostsList = async (thread_id, queries, token = "") => {
   try {
     const response = await NetworkCall.fetch(
-      ForumRequests.getPosts(thread_id, queries),
+      ForumRequests.getPosts(thread_id, queries, token),
       false
     );
 

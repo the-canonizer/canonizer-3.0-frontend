@@ -388,9 +388,7 @@ function CompareStatementUI({
                         <Link
                           href={`/user/supports/${
                             liveStatement["submitter_nick_id"] || ""
-                          }&canon=${
-                            liveStatement["namespace_id"] || 1
-                          }`}
+                          }&canon=${liveStatement["namespace_id"] || 1}`}
                         >
                           <a>{liveStatement?.submitter_nick_name}</a>
                         </Link>

@@ -259,7 +259,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       message.success(res.message);
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
-      // getCanonizedCampSupportingTreeApi(reqBody, algorithm);  
+      // getCanonizedCampSupportingTreeApi(reqBody, algorithm);
       getTreesApi(reqBodyForService);
       // fetchTotalScore();
     }
