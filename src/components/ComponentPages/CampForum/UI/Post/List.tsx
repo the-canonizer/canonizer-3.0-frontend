@@ -25,7 +25,7 @@ const CreateCampFormUI = ({
         <Space size="small">
           <Text strong id={"post-title-" + post.id}>
             <Link
-              href={`/user/supports/${post["user_id"] || ""}&canon=${
+              href={`/user/supports/${post["user_id"] || ""}?canon=${
                 post["namespace_id"] || 1
               }`}
               passHref

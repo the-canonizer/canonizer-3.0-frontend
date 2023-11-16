@@ -56,7 +56,7 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
           <Link
             href={`/user/supports/${
               campStatement?.camp_about_nick_id || ""
-            }&canon=${topicNamespaceId || ""}`}
+            }?canon=${topicNamespaceId || ""}`}
             passHref
           >
             <a>{campStatement?.camp_about_nick_name}</a>
@@ -73,8 +73,6 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
                 campStatement?.submitter_nick_id || ""
               }`,
               query: {
-                topicnum: campStatement?.topic_num,
-                campnum: campStatement?.camp_num,
                 canon: topicNamespaceId || "",
               },
             }}
@@ -115,7 +113,7 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
             <Link
               href={`/user/supports/${
                 campStatement?.objector_nick_id || ""
-              }&canon=${topicNamespaceId || ""}`}
+              }?canon=${topicNamespaceId || ""}`}
               passHref
             >
               <a>{campStatement?.objector_nick_name}</a>
