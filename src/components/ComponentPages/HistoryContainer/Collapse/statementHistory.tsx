@@ -22,9 +22,16 @@ const StatementHistory = ({ campStatement, topicNamespaceId }: any) => {
         Submitter Nickname :{" "}
         <span>
           <Link
-            href={`/user/supports/${
-              campStatement?.submitter_nick_id || ""
-            }&canon=${topicNamespaceId || ""}`}
+            href={{
+              pathname: `/user/supports/${
+                campStatement?.submitter_nick_id || ""
+              }`,
+              query: {
+                topicnum: campStatement?.topic_num,
+                campnum: campStatement?.camp_num,
+                canon: topicNamespaceId || "",
+              },
+            }}
             passHref
           >
             <a>{campStatement?.submitter_nick_name}</a>

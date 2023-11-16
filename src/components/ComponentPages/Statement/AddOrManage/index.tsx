@@ -803,6 +803,12 @@ export default function AddOrManage({ add }: any) {
                               onChange={() => {
                                 setSubmitIsDisable(false);
                               }}
+                              filterOption={(input, option) =>
+                                (
+                                  (option?.children as any)?.props?.children ??
+                                  ""
+                                ).includes(input)
+                              }
                             >
                               {parentCamp.map((camp) =>
                                 camp?.camp_num !==
