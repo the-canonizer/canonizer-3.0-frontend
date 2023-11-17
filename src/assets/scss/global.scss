@@ -488,6 +488,10 @@ del.diffmod img {
     .topicDetailsCollapse {
       .ant-collapse-header {
         display: block;
+        &-text {
+          display: flex;
+          align-items: center;
+        }
       }
 
       .ant-collapse-extra {
@@ -2552,6 +2556,13 @@ div[role="option"]::before {
     &.topics-list-card-header {
       border-top: 2px solid #12c879;
       background-color: #e5f6ee;
+      &-text {
+        display: flex;
+        .cmp-change-icon {
+          top: 3px !important;
+          position: relative;
+        }
+      }
     }
     &.radio-group-sider {
       .ant-radio.ant-radio-checked {
@@ -2834,6 +2845,10 @@ div[role="option"]::before {
   position: relative;
   left: 6px;
   top: -4px;
+}
+
+.cmp-title {
+  margin-right: 10px;
 }
 
 // .siteHeader_nav___O0X5{
