@@ -20,6 +20,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
   const [searchCamps, setSearchCamps] = useState([]);
   const [searchCampStatement, setSearchCampStatement] = useState([]);
   const [searchNickname, setSearchNickname] = useState([]);
+  const [searchVal, setSearchVal] = useState("")
   let { searchValue } = useSelector((state: RootState) => ({
     searchValue: state?.searchSlice?.searchValue,
   }));
@@ -49,18 +50,19 @@ const HeaderMenu = ({ loggedUser }: any) => {
   };
   useEffect(() => {
     if (searchValue?.length == 0) {
-      const localSearch = localStorage.getItem("searchValue");
+      // const localSearch = localStorage.getItem("searchValue");
       searchValue = router?.asPath
         ?.split("=")[1]
         ?.split("+")
         .join(" ")
         ?.replace(/%20/g, " ");
-
-      if (localSearch) {
-        dispatch(setSearchValue(localSearch));
-        getGlobalSearchCanonizer(localSearch, true);
-      }
+        setSearchVal("")
+      // if (localSearch) {
+        dispatch(setSearchValue(searchValue));
+        getGlobalSearchCanonizer(searchValue, true);
+      // }
     }
+  
   }, []);
 
   const options = [
@@ -347,16 +349,20 @@ const HeaderMenu = ({ loggedUser }: any) => {
   };
 
   const handleSearchfor = () => {
+    setInputSearch("")
+    setSearchVal("")
     getGlobalSearchCanonizer(searchValue, true);
   };
 
   const handlePress = (e) => {
+    setInputSearch("")
+    setSearchVal("")
     router.push({
       pathname: "/search",
       query: { q: searchValue },
     });
+
   };
-  console.log(router, "router");
   return (
     <Fragment>
       <nav className={styles.nav}>
@@ -399,20 +405,21 @@ const HeaderMenu = ({ loggedUser }: any) => {
           dropdownMatchSelectWidth={false}
           // className={"search_header"}
           options={inputSearch ? options : []}
-          value={searchValue}
+          value={searchVal}
         >
           <Input
             size="large"
             placeholder="Search for"
-            value={searchValue}
+            value={searchVal}
             type="text"
             name="search"
             prefix={<i className="icon-search"></i>}
             onChange={(e) => {
-              localStorage.setItem("searchValue", e.target.value);
+              // localStorage.setItem("searchValue", e.target.value);
 
               dispatch(setSearchValue(e.target.value));
               setInputSearch(e.target.value);
+              setSearchVal(e.target.value)
               getGlobalSearchCanonizer(e.target.value, false);
             }}
             onPressEnter={(e) => {
