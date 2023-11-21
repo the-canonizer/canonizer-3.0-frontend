@@ -129,12 +129,14 @@ const SupportTreeCard = ({
 
   //Delegate Support Camp
   const handleDelegatedClick = () => {
-    dispatch(setManageSupportStatusCheck(true));
-    dispatch(
-      setDelegatedSupportClick({
-        delegatedSupportClick: true,
-      })
-    );
+    if (isUserAuthenticated) {
+      dispatch(setManageSupportStatusCheck(true));
+      dispatch(
+        setDelegatedSupportClick({
+          delegatedSupportClick: true,
+        })
+      );
+    }
   };
 
   const handleClickSupportCheck = () => {
@@ -225,7 +227,7 @@ const SupportTreeCard = ({
                           : data[item].score?.toFixed(2)}
                         {/* {data[item].score?.toFixed(2)} */}
                       </span>
-                      {isUserAuthenticated ? (
+                      {true ? (
                         !userNickNameList.includes(data[item].nick_name_id) ? (
                           <Link
                             href={
@@ -241,16 +243,23 @@ const SupportTreeCard = ({
                             ) > -1 ? (
                               ""
                             ) : (
-                              <a>
-                                <Button
-                                  id="supportTreeDelegateYourSupport"
-                                  disabled={asof == "bydate"}
-                                  onClick={handleDelegatedClick}
-                                  className="delegate-support-style"
-                                >
-                                  {"Delegate Your Support"}
-                                </Button>
-                              </a>
+                              <Popover
+                                placement="right"
+                                content={"Log in to participate"}
+                              >
+                                <a>
+                                  <Button
+                                    id="supportTreeDelegateYourSupport"
+                                    disabled={
+                                      asof == "bydate" || !isUserAuthenticated
+                                    }
+                                    onClick={handleDelegatedClick}
+                                    className="delegate-support-style"
+                                  >
+                                    {"Delegate Your Support"}
+                                  </Button>
+                                </a>
+                              </Popover>
                             )}
                           </Link>
                         ) : (
