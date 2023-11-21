@@ -759,6 +759,7 @@ del.diffmod img {
     color: #fff;
     font-size: 16px;
     font-weight: 400;
+    white-space: nowrap;
 
     @media screen and (max-width: 567px) {
       color: #222;
