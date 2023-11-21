@@ -25,6 +25,7 @@ import {
 } from "src/network/api/notificationAPI";
 import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 import HeaderMenu from "../HeaderMenu";
+import Image from "next/image";
 
 const { Header } = Layout;
 
@@ -149,7 +150,28 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
                 <div className={styles.btnsLoginRegister}>
                   <div className="hdrUserdropdown">
                     <Space size="large">
-                      <i className="icon-user"></i>{" "}
+                      {/* <i className="icon-user"></i>{" "} */}
+                      <Image
+                        alt="display-picture"
+                        width={35}
+                        height={35}
+                        style={{ borderRadius: "50px" }}
+                        src="https://aws-315.s3.ap-south-1.amazonaws.com/profile/TWFsaWExMjMwTWFsaWE%3D_1700577047_509823.jpeg"
+                      />
+                      <span
+                        style={{
+                          border: "1px solid",
+                          borderRadius: "50px",
+                          padding: "10px",
+                          color: "white",
+                          fontSize: "16px",
+                          fontWeight: "bolder",
+                          backgroundColor: "green",
+                        }}
+                      >
+                        {loggedUser["first_name"].charAt(0).toUpperCase() +
+                          loggedUser["last_name"].charAt(0).toUpperCase()}
+                      </span>
                       <div>
                         {loggedUser ? loggedUser["first_name"] : ""}{" "}
                         {loggedUser ? loggedUser["last_name"] : ""}
@@ -196,7 +218,14 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
                       placement="bottomLeft"
                     >
                       <Space size="small">
-                        <i className="icon-user"></i>{" "}
+                        {/* <i className="icon-user"></i>{" "} */}
+                        <Image
+                          alt="display-picture"
+                          width={50}
+                          height={50}
+                          style={{ borderRadius: "50px" }}
+                          src="https://aws-315.s3.ap-south-1.amazonaws.com/profile/TWFsaWExMjMwTWFsaWE%3D_1700577047_509823.jpeg"
+                        />
                         <a
                           className="ant-dropdown-link"
                           onClick={(e) => e.preventDefault()}

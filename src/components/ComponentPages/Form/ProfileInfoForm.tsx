@@ -16,6 +16,7 @@ import messages from "../../../messages";
 import PlacesAutocomplete from "react-places-autocomplete";
 import CustomSkelton from "../../common/customSkelton";
 import { useEffect, useState } from "react";
+import ImageUploader from "@/components/ComponentPages/ImageUploader";
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -153,6 +154,10 @@ function ProfileInfoForm({
         <Title level={4} className="form-Title">
           Personal Information
         </Title>
+        <div>
+          Profile Image
+          <ImageUploader />
+        </div>
         <div className={styles.section_two}>
           <Row gutter={30}>
             <Col md={12}>
