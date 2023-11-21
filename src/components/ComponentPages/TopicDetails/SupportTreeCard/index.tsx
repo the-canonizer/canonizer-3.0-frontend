@@ -215,7 +215,6 @@ const SupportTreeCard = ({
                           {data[item].support_order}:{data[item].nick_name}
                         </a>
                       </Link>
-
                       {/* </span> */}
                       <span
                         className={
@@ -227,64 +226,58 @@ const SupportTreeCard = ({
                           : data[item].score?.toFixed(2)}
                         {/* {data[item].score?.toFixed(2)} */}
                       </span>
-                      {true ? (
-                        !userNickNameList.includes(data[item].nick_name_id) ? (
-                          <Link
-                            href={
-                              manageSupportPath + `_${data[item].nick_name_id}`
-                            }
-                          >
-                            {loggedInUserDelegate ||
-                            (loggedInUserChild &&
-                              delegateNickNameId !=
-                                data[item].delegate_nick_name_id) ||
-                            data[item].delegates?.findIndex((obj) =>
-                              userNickNameList.includes(obj.nick_name_id)
-                            ) > -1 ? (
-                              ""
-                            ) : (
-                              <Popover
-                                placement="right"
-                                content={"Log in to participate"}
-                              >
-                                <a>
-                                  <Button
-                                    id="supportTreeDelegateYourSupport"
-                                    disabled={
-                                      asof == "bydate" || !isUserAuthenticated
-                                    }
-                                    onClick={handleDelegatedClick}
-                                    className="delegate-support-style"
-                                  >
-                                    {"Delegate Your Support"}
-                                  </Button>
-                                </a>
-                              </Popover>
-                            )}
-                          </Link>
+                      !userNickNameList.includes(data[item].nick_name_id) ? (
+                      <Link
+                        href={manageSupportPath + `_${data[item].nick_name_id}`}
+                      >
+                        {loggedInUserDelegate ||
+                        (loggedInUserChild &&
+                          delegateNickNameId !=
+                            data[item].delegate_nick_name_id) ||
+                        data[item].delegates?.findIndex((obj) =>
+                          userNickNameList.includes(obj.nick_name_id)
+                        ) > -1 ? (
+                          ""
                         ) : (
-                          <a>
-                            <Button
-                              id="supportTreeRemoveSupport"
-                              disabled={asof == "bydate"}
-                              onClick={() => {
-                                currentGetCheckSupportExistsData.is_delegator
-                                  ? setIsDelegateSupportTreeCardModal(true)
-                                  : topicList.length <= 1
-                                  ? setIsSupportTreeCardModal(true)
-                                  : setIsSupportTreeCardModal(true);
-
-                                setModalData(data[item]);
-                              }}
-                              className="delegate-support-style"
-                            >
-                              {"Remove Your Support"}
-                            </Button>
-                          </a>
-                        )
+                          <Popover
+                            placement="right"
+                            content={"Log in to participate"}
+                          >
+                            <a>
+                              <Button
+                                id="supportTreeDelegateYourSupport"
+                                disabled={
+                                  asof == "bydate" || !isUserAuthenticated
+                                }
+                                onClick={handleDelegatedClick}
+                                className="delegate-support-style"
+                              >
+                                {"Delegate Your Support"}
+                              </Button>
+                            </a>
+                          </Popover>
+                        )}
+                      </Link>
                       ) : (
-                        ""
-                      )}
+                      <a>
+                        <Button
+                          id="supportTreeRemoveSupport"
+                          disabled={asof == "bydate"}
+                          onClick={() => {
+                            currentGetCheckSupportExistsData.is_delegator
+                              ? setIsDelegateSupportTreeCardModal(true)
+                              : topicList.length <= 1
+                              ? setIsSupportTreeCardModal(true)
+                              : setIsSupportTreeCardModal(true);
+
+                            setModalData(data[item]);
+                          }}
+                          className="delegate-support-style"
+                        >
+                          {"Remove Your Support"}
+                        </Button>
+                      </a>
+                      )
                     </div>
                   </>
                 }
