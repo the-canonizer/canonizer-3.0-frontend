@@ -20,7 +20,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
   const [searchCamps, setSearchCamps] = useState([]);
   const [searchCampStatement, setSearchCampStatement] = useState([]);
   const [searchNickname, setSearchNickname] = useState([]);
-  const [searchVal, setSearchVal] = useState("")
+  const [searchVal, setSearchVal] = useState("");
   let { searchValue } = useSelector((state: RootState) => ({
     searchValue: state?.searchSlice?.searchValue,
   }));
@@ -56,13 +56,12 @@ const HeaderMenu = ({ loggedUser }: any) => {
         ?.split("+")
         .join(" ")
         ?.replace(/%20/g, " ");
-        setSearchVal("")
+      setSearchVal("");
       // if (localSearch) {
-        dispatch(setSearchValue(searchValue));
-        getGlobalSearchCanonizer(searchValue, true);
+      dispatch(setSearchValue(searchValue));
+      getGlobalSearchCanonizer(searchValue, true);
       // }
     }
-  
   }, []);
 
   const options = [
@@ -127,7 +126,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 return (
                   <>
                     <li>
-                      <Link href={`/${jsonData[0][1].camp_link}`}>
+                      <Link href={`/${jsonData[0][1]?.camp_link}`}>
                         <a className={styles.camp_heading_color}>
                           {" "}
                           {x.type_value}
@@ -191,7 +190,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                   <>
                     <li>
                       <div className="d-flex flex-wrap g-2">
-                        <a href={`/${jsonData?.[0]?.[1].camp_link}`}>
+                        <a href={`/${jsonData?.[0]?.[1]?.camp_link}`}>
                           <h3 className="m-0">
                             {jsonData?.length > 1
                               ? jsonData?.[0]?.[1]?.camp_name
@@ -349,19 +348,18 @@ const HeaderMenu = ({ loggedUser }: any) => {
   };
 
   const handleSearchfor = () => {
-    setInputSearch("")
-    setSearchVal("")
+    setInputSearch("");
+    setSearchVal("");
     getGlobalSearchCanonizer(searchValue, true);
   };
 
   const handlePress = (e) => {
-    setInputSearch("")
-    setSearchVal("")
+    setInputSearch("");
+    setSearchVal("");
     router.push({
       pathname: "/search",
       query: { q: searchValue },
     });
-
   };
   return (
     <Fragment>
@@ -419,7 +417,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
 
               dispatch(setSearchValue(e.target.value));
               setInputSearch(e.target.value);
-              setSearchVal(e.target.value)
+              setSearchVal(e.target.value);
               getGlobalSearchCanonizer(e.target.value, false);
             }}
             onPressEnter={(e) => {
