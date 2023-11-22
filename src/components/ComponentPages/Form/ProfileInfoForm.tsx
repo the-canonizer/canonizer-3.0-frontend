@@ -17,7 +17,7 @@ import PlacesAutocomplete from "react-places-autocomplete";
 import CustomSkelton from "../../common/customSkelton";
 import { useEffect, useState } from "react";
 import ImageUploader from "@/components/ComponentPages/ImageUploader";
-
+import style from "./style.module.scss";
 const { Title } = Typography;
 const { Option } = Select;
 
@@ -154,138 +154,155 @@ function ProfileInfoForm({
         <Title level={4} className="form-Title">
           Personal Information
         </Title>
-        <div>
-          <div>
-            Profile Image
-            <ImageUploader />
+        <div className={style.profileCardWrapper}>
+          <div className={style.imageWrapper}>
+            <div>
+              <ImageUploader />
+            </div>
           </div>
-          <div></div>
-          <div></div>
+          <div className={style.profileInfo}>
+            <Row gutter={40}>
+              <Col md={12}>
+                <Row>
+                  <Col md={24}>
+                    <Form.Item
+                      name="first_name"
+                      label={
+                        <>
+                          {messages.labels.firstName}
+                          <span className="required" id="asteriskFirstName">
+                            *
+                          </span>
+                        </>
+                      }
+                      {...messages.firstNameRule}
+                    >
+                      <Input
+                        id="firstName"
+                        addonAfter={selectAfter(
+                          "first_name",
+                          publicOrPrivate("first_name")
+                        )}
+                        placeholder={messages.placeholders.firstName}
+                        size="large"
+                        tabIndex={4}
+                        onKeyDown={(e) =>
+                          e.key === " " &&
+                          e.keyCode === 32 &&
+                          e.preventDefault()
+                        }
+                        maxLength={100}
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col md={24}>
+                    <Form.Item
+                      name="last_name"
+                      label={
+                        <>
+                          {messages.labels.lastName}
+                          <span className="required" id="asteriskLastName">
+                            *
+                          </span>
+                        </>
+                      }
+                      {...messages.lastNameRule}
+                    >
+                      <Input
+                        id="lastName"
+                        addonAfter={selectAfter(
+                          "last_name",
+                          publicOrPrivate("last_name")
+                        )}
+                        placeholder={messages.placeholders.lastName}
+                        tabIndex={6}
+                        size="large"
+                        onKeyDown={(e) =>
+                          e.key === " " &&
+                          e.keyCode === 32 &&
+                          e.preventDefault()
+                        }
+                        maxLength={100}
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col md={24}>
+                    <Form.Item name="gender" label={messages.labels.gender}>
+                      <Radio.Group name="radiogroup" defaultValue={1}>
+                        <Space size="large" className={styles.radio_Btn}>
+                          <Radio value={0} tabIndex={7}>
+                            Male
+                          </Radio>
+                          <Radio value={1}>Female</Radio>
+                          <Radio value={2}>Other</Radio>
+                        </Space>
+                      </Radio.Group>
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </Col>
+              <Col md={12}>
+                <Row>
+                  <Col md={24}>
+                    <Form.Item
+                      name="email"
+                      label={messages.labels.email}
+                      {...messages.emailRule}
+                    >
+                      <Input
+                        id="email"
+                        addonAfter={selectAfter(
+                          "email",
+                          publicOrPrivate("email")
+                        )}
+                        placeholder={messages.placeholders.email}
+                        size="large"
+                        disabled
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col md={24}>
+                    <Form.Item label="Date of Birth">
+                      <Input.Group compact className={styles.date_picker}>
+                        <Form.Item
+                          name="birthday"
+                          className={styles.date_picker_input_item}
+                        >
+                          <DatePicker
+                            size="large"
+                            tabIndex={8}
+                            className={styles.date_picker_inner}
+                            disabledDate={(current) => {
+                              let customDate = moment().format("YYYY-MM-DD");
+                              return (
+                                current &&
+                                current > moment(customDate, "YYYY-MM-DD")
+                              );
+                            }}
+                          />
+                        </Form.Item>
+                        <Form.Item>
+                          <Select
+                            size="large"
+                            defaultValue={publicOrPrivate("birthday")}
+                            onChange={handleselectAfter("birthday")}
+                            className={styles.select_after}
+                            showSearch
+                            optionFilterProp="children"
+                          >
+                            <Option value="private">Private</Option>
+                            <Option value="public">Public</Option>
+                          </Select>
+                        </Form.Item>
+                      </Input.Group>
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </div>
         </div>
         <div className={styles.section_two}>
-          <Row gutter={30}>
-            <Col md={12}>
-              <Form.Item
-                name="first_name"
-                label={
-                  <>
-                    {messages.labels.firstName}
-                    <span className="required" id="asteriskFirstName">
-                      *
-                    </span>
-                  </>
-                }
-                {...messages.firstNameRule}
-              >
-                <Input
-                  id="firstName"
-                  addonAfter={selectAfter(
-                    "first_name",
-                    publicOrPrivate("first_name")
-                  )}
-                  placeholder={messages.placeholders.firstName}
-                  size="large"
-                  tabIndex={4}
-                  onKeyDown={(e) =>
-                    e.key === " " && e.keyCode === 32 && e.preventDefault()
-                  }
-                  maxLength={100}
-                />
-              </Form.Item>
-            </Col>
-            <Col md={12}>
-              <Form.Item
-                name="last_name"
-                label={
-                  <>
-                    {messages.labels.lastName}
-                    <span className="required" id="asteriskLastName">
-                      *
-                    </span>
-                  </>
-                }
-                {...messages.lastNameRule}
-              >
-                <Input
-                  id="lastName"
-                  addonAfter={selectAfter(
-                    "last_name",
-                    publicOrPrivate("last_name")
-                  )}
-                  placeholder={messages.placeholders.lastName}
-                  tabIndex={6}
-                  size="large"
-                  onKeyDown={(e) =>
-                    e.key === " " && e.keyCode === 32 && e.preventDefault()
-                  }
-                  maxLength={100}
-                />
-              </Form.Item>
-            </Col>
-            <Col md={12}>
-              <Form.Item
-                name="email"
-                label={messages.labels.email}
-                {...messages.emailRule}
-              >
-                <Input
-                  id="email"
-                  addonAfter={selectAfter("email", publicOrPrivate("email"))}
-                  placeholder={messages.placeholders.email}
-                  size="large"
-                  disabled
-                />
-              </Form.Item>
-            </Col>
-            <Col md={12}>
-              <Form.Item label="Date of Birth">
-                <Input.Group compact className={styles.date_picker}>
-                  <Form.Item
-                    name="birthday"
-                    className={styles.date_picker_input_item}
-                  >
-                    <DatePicker
-                      size="large"
-                      tabIndex={8}
-                      className={styles.date_picker_inner}
-                      disabledDate={(current) => {
-                        let customDate = moment().format("YYYY-MM-DD");
-                        return (
-                          current && current > moment(customDate, "YYYY-MM-DD")
-                        );
-                      }}
-                    />
-                  </Form.Item>
-                  <Form.Item>
-                    <Select
-                      size="large"
-                      defaultValue={publicOrPrivate("birthday")}
-                      onChange={handleselectAfter("birthday")}
-                      className={styles.select_after}
-                      showSearch
-                      optionFilterProp="children"
-                    >
-                      <Option value="private">Private</Option>
-                      <Option value="public">Public</Option>
-                    </Select>
-                  </Form.Item>
-                </Input.Group>
-              </Form.Item>
-            </Col>
-            <Col md={12}>
-              <Form.Item name="gender" label={messages.labels.gender}>
-                <Radio.Group name="radiogroup" defaultValue={1}>
-                  <Space size="large" className={styles.radio_Btn}>
-                    <Radio value={0} tabIndex={7}>
-                      Male
-                    </Radio>
-                    <Radio value={1}>Female</Radio>
-                    <Radio value={2}>Other</Radio>
-                  </Space>
-                </Radio.Group>
-              </Form.Item>
-            </Col>
-          </Row>
           <Title level={4} className="form-Title">
             Address Information
           </Title>

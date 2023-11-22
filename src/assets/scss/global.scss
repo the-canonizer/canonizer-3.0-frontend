@@ -2903,3 +2903,36 @@ div[role="option"]::before {
   border: none;
   margin: 0;
 }
+
+// profile picture uploader
+
+.ant-upload-list-item {
+  border: 0 !important;
+}
+
+.ant-upload-list-item,
+.ant-upload-list-item-info,
+.ant-upload-list-item-thumbnail,
+.ant-upload-list-picture-card-container {
+  border-radius: 50%;
+}
+
+.ant-upload-list-item-actions {
+  border-radius: 50%;
+}
+
+.ant-upload-list-item-actions > li {
+  border-top: none;
+}
+
+.ant-upload-list-item-actions-icon,
+.ant-upload-list-item-actions-remove {
+  border-radius: 50%;
+}
+
+.picture-upload {
+  .ant-upload-select-picture-card {
+    background-color: transparent;
+    border-radius: 50%;
+  }
+}

@@ -20,7 +20,6 @@ export const authSlice = createSlice({
       state.authToken = null;
     },
     setProfilePicture: (state, action) => {
-      debugger;
       state.loggedInUser.profile_picture = action.payload;
     },
     setLoggedInUser: (state, action) => {

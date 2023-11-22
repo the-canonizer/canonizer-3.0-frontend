@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Layout, Menu, Dropdown, Button, Space } from "antd";
+import { Layout, Menu, Dropdown, Button, Space, Avatar } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 
@@ -151,31 +151,29 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
                   <div className="hdrUserdropdown">
                     <Space size="large">
                       {/* <i className="icon-user"></i>{" "} */}
-                      {loggedInUser?.profile_picture_path ? (
-                        <Image
-                          alt="display-picture"
-                          width={35}
-                          height={35}
-                          style={{ borderRadius: "50px" }}
+
+                      {loggedInUser?.profile_picture ? (
+                        <Avatar
                           src={loggedInUser?.profile_picture}
+                          size="small"
                         />
                       ) : (
-                        <span
+                        <Avatar
                           style={{
-                            border: "1px solid",
-                            borderRadius: "50px",
-                            padding: "10px",
-                            color: "white",
-                            fontSize: "16px",
-                            fontWeight: "bolder",
-                            backgroundColor: "green",
+                            border: "1px solid #fff",
+                            color: "#fff",
+                            backgroundColor: "#4484ce",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            fontSize: "12px",
                           }}
+                          size="small"
                         >
                           {loggedUser["first_name"].charAt(0).toUpperCase() +
                             loggedUser["last_name"].charAt(0).toUpperCase()}
-                        </span>
+                        </Avatar>
                       )}
-
                       <div>
                         {loggedUser ? loggedUser["first_name"] : ""}{" "}
                         {loggedUser ? loggedUser["last_name"] : ""}
@@ -212,7 +210,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
             {!isLoginPage ? (
               <div className={styles.btnsLoginRegister} key="registerbtnarea">
                 <div className="hdrUserdropdown" key="hdrUserdropdown">
-                  <Space size={40}>
+                  <Space size={15}>
                     <div className={styles.not_2}>
                       <Notifications />
                     </div>
@@ -223,28 +221,42 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
                     >
                       <Space size="small">
                         {loggedInUser?.profile_picture ? (
-                          <Image
-                            alt="display-picture"
-                            width={50}
-                            height={50}
-                            style={{ borderRadius: "50px" }}
-                            src={loggedInUser?.profile_picture}
-                          />
+                          // <Image
+                          //   alt="display-picture"
+                          //   width={50}
+                          //   height={50}
+                          //   style={{ borderRadius: "50px" }}
+                          //   src={loggedInUser?.profile_picture}
+                          // />
+                          <Avatar src={loggedInUser?.profile_picture} />
                         ) : (
-                          <span
+                          <Avatar
                             style={{
-                              border: "2px solid #fff",
-                              borderRadius: "50px",
-                              padding: "10px",
+                              border: "1px solid #fff",
                               color: "#fff",
-                              fontSize: "16px",
-                              fontWeight: "bolder",
                               backgroundColor: "#4484ce",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
                             }}
                           >
                             {loggedUser["first_name"].charAt(0).toUpperCase() +
                               loggedUser["last_name"].charAt(0).toUpperCase()}
-                          </span>
+                          </Avatar>
+                          // <span
+                          //   style={{
+                          //     border: "2px solid #fff",
+                          //     borderRadius: "50px",
+                          //     padding: "10px",
+                          //     color: "#fff",
+                          //     fontSize: "16px",
+                          //     fontWeight: "bolder",
+                          //     backgroundColor: "#4484ce",
+                          //   }}
+                          // >
+                          // {loggedUser["first_name"].charAt(0).toUpperCase() +
+                          //   loggedUser["last_name"].charAt(0).toUpperCase()}
+                          // </span>
                         )}
 
                         <a

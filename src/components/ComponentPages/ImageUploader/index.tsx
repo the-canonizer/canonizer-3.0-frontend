@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
 import { Modal, Upload, message } from "antd";
 import type { RcFile, UploadProps } from "antd/es/upload";
 import type { UploadFile } from "antd/es/upload/interface";
@@ -127,14 +127,17 @@ const ImageUploader: React.FC = () => {
 
   const uploadButton = (
     <div>
-      <PlusOutlined />
-      <div style={{ marginTop: 8 }}>Upload</div>
+      <UploadOutlined
+        style={{ fontSize: "24px", color: "rgba(64, 169, 255, 1)" }}
+        width="60px"
+      />
     </div>
   );
 
   return (
     <>
       <Upload
+        className="picture-upload"
         listType="picture-card"
         accept="image/*"
         fileList={fileList}
