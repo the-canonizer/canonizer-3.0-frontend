@@ -57,13 +57,14 @@ export default class TreeRequest extends Request {
     );
   }
 
-  static getPosts(thread_id, queries) {
+  static getPosts(thread_id, queries, token) {
     return new Request(
       K.Network.URL.PostList + "/" + thread_id + queries,
       K.Network.Method.GET,
       null,
       K.Network.Header.Type.Json,
-      {}
+      {},
+      token
     );
   }
 

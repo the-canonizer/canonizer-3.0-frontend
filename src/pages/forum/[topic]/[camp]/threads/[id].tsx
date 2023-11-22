@@ -87,7 +87,7 @@ export async function getServerSideProps({ req, resolvedUrl }) {
   const [topicRecord, campRecord, postList] = await Promise.all([
     getCurrentTopicRecordApi(reqBody, req.cookies["authToken"]),
     getCurrentCampRecordApi(reqBody, req.cookies["authToken"]),
-    getPostsList(id, q),
+    getPostsList(id, q, req.cookies["loginToken"] || req.cookies["authToken"]),
   ]);
 
   return {

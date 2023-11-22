@@ -290,7 +290,7 @@ const ThreadListUI = ({
                           <Link
                             href={`/user/supports/${
                               others["nick_name_id"] || ""
-                            }&canon=${others["namespace_id"] || 1}`}
+                            }?canon=${others["namespace_id"] || 1}`}
                             passHref
                           >
                             <a>
