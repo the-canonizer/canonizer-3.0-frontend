@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Modal, Upload, message } from "antd";
 import type { RcFile, UploadProps } from "antd/es/upload";
@@ -7,6 +7,9 @@ import {
   deleteProfileImage,
   uploadProfileImage,
 } from "src/network/api/userApi";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "src/store";
+import { setProfilePicture } from "src/store/slices/authSlice";
 
 const MAX_IMAGE_SIZE_MB = 5; // Maximum image size in megabytes
 const MAX_IMAGE_WIDTH = 1000; // Maximum image width in pixels
@@ -25,6 +28,25 @@ const ImageUploader: React.FC = () => {
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+
+  const dispatch = useDispatch();
+
+  const { userProfileImage } = useSelector((state: RootState) => ({
+    userProfileImage: state.auth.loggedInUser?.profile_picture,
+  }));
+
+  useEffect(() => {
+    userProfileImage
+      ? setFileList([
+          {
+            uid: "-1",
+            name: "Profile picture",
+            status: "done",
+            url: userProfileImage,
+          },
+        ])
+      : setFileList([]);
+  }, [userProfileImage]);
 
   const handleCancelPreview = () => setPreviewVisible(false);
 
@@ -76,16 +98,10 @@ const ImageUploader: React.FC = () => {
           const formData = new FormData();
           formData.append("profile_picture", lastFile.originFileObj as File);
           const response = await uploadProfileImage(formData);
-          const imageUrl = response.data.profile_picture_path;
-
-          // Display the returned image URL in the upload section
+          const imageUrl = response.data.profile_picture;
+          dispatch(setProfilePicture(imageUrl));
           message.success("Upload successful");
-          setFileList([
-            { uid: "-1", name: "image.png", status: "done", url: imageUrl },
-          ]);
         } catch (error) {
-          // Handle upload error
-          setFileList(newFileList);
           message.error("Upload failed");
         }
       } else {
@@ -97,12 +113,11 @@ const ImageUploader: React.FC = () => {
   };
 
   const handleDelete = async (file: UploadFile) => {
-    // Make an API call to delete the image
     try {
       await deleteProfileImage();
       const updatedFileList = fileList.filter((f) => f.uid !== file.uid);
       setFileList(updatedFileList);
-
+      dispatch(setProfilePicture(null));
       message.success("Image deleted successfully");
     } catch (error) {
       setFileList([]);
@@ -120,7 +135,6 @@ const ImageUploader: React.FC = () => {
   return (
     <>
       <Upload
-        // action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
         listType="picture-card"
         accept="image/*"
         fileList={fileList}

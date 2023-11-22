@@ -155,8 +155,12 @@ function ProfileInfoForm({
           Personal Information
         </Title>
         <div>
-          Profile Image
-          <ImageUploader />
+          <div>
+            Profile Image
+            <ImageUploader />
+          </div>
+          <div></div>
+          <div></div>
         </div>
         <div className={styles.section_two}>
           <Row gutter={30}>
