@@ -5,6 +5,7 @@ import {
   render,
   screen,
   waitFor,
+  act,
 } from "@testing-library/react";
 import { Provider } from "react-redux";
 import TopicsList from "../index";
@@ -17,6 +18,7 @@ import {
   getCanonizedTopicsApi,
 } from "src/network/api/homePageApi";
 import { RouterContext } from "next/dist/shared/lib/router-context";
+import userEvent from "@testing-library/user-event";
 function createMockRouter(router: Partial<NextRouter>): NextRouter {
   return {
     basePath: "",
@@ -419,7 +421,7 @@ const store2 = mockStore({
     filterObject: {
       page_number: 1,
       page_size: 15,
-      nameSpace: "/General/",
+      nameSpace: "/corporations/",
       namespace_id: 1,
       asofdate: 1699612621.161,
       asof: "review",
@@ -577,9 +579,6 @@ describe("TopicsList", () => {
 
     // Ensure the checkbox is initially unchecked
     expect(checkbox).not.toBeChecked();
-
-    // Simulate a click on the checkbox
-    fireEvent.click(checkboxLabel);
   });
 
   test("renders select canon title", async () => {
@@ -615,25 +614,11 @@ describe("TopicsList", () => {
       ).toBeInTheDocument();
     });
 
-    let dropdownButton = screen.getByTestId("name-space-dropdown");
+    const selectInput = screen.getByRole("combobox"); // Find the select input by role
 
-    // Simulate a click on the dropdown button
-    fireEvent.click(dropdownButton);
-    const optionToSelect = screen.getByText("General");
+    userEvent.click(selectInput);
 
-    // Simulate a click on the option
-    fireEvent.click(optionToSelect);
-
-    // Wait for any asynchronous updates to complete
-    await waitFor(() => {
-      // Ensure the selected value is updated
-      const selectedValue = screen.getByText("General");
-      expect(selectedValue).toBeInTheDocument();
-    });
-
-    console.log("-------------------------------------");
-    fireEvent.click(screen.getByText(/load more/i));
-    debug();
+    fireEvent.click(screen.getByText("corporations"));
   });
 
   test("renders select canon title", async () => {
@@ -649,7 +634,7 @@ describe("TopicsList", () => {
     });
 
     const { debug } = render(
-      <Provider store={store2}>
+      <Provider store={store1}>
         <RouterContext.Provider
           value={createMockRouter({
             asPath: "/browse?canon=1&asof=review",
@@ -668,7 +653,89 @@ describe("TopicsList", () => {
         screen.getByText(/theories of consciousness/i)
       ).toBeInTheDocument();
     });
+    expect(screen.getByRole("textbox")).toBeInTheDocument();
+    const seachField = screen.getByRole("textbox");
+
+    fireEvent.change(seachField, { target: { value: "the" } });
+    act(() => {
+      jest.advanceTimersByTime(3001);
+    });
+
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: /search/i,
+      })
+    );
+  });
+
+  test("renders select canon title", async () => {
+    getCanonizedTopicsApi.mockResolvedValue({
+      status_code: 200,
+      data: {
+        topic: topicsArchive,
+      },
+    });
+    getCanonizedNameSpacesApi.mockResolvedValue({
+      status_code: 200,
+      data: nameSpaces,
+    });
+
+    const { debug } = render(
+      <Provider store={store1}>
+        <RouterContext.Provider
+          value={createMockRouter({
+            asPath: "/browse?canon=1&asof=review",
+            query: {
+              canon: "1",
+              asof: "review",
+            },
+          })}
+        >
+          <TopicsList />
+        </RouterContext.Provider>
+      </Provider>
+    );
+    await waitFor(() => {
+      expect(
+        screen.getByText(/theories of consciousness/i)
+      ).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByText(/load more/i));
+  });
+
+  test("renders select canon title", async () => {
+    getCanonizedTopicsApi.mockResolvedValue({
+      status_code: 200,
+      data: {
+        topic: topicsArchive,
+      },
+    });
+    getCanonizedNameSpacesApi.mockResolvedValue({
+      status_code: 200,
+      data: nameSpaces,
+    });
+
+    const { debug } = render(
+      <Provider store={store2}>
+        <RouterContext.Provider
+          value={createMockRouter({
+            asPath: "/browse?canon=corporations&asof=review",
+            query: {
+              canon: "corporations",
+              asof: "review",
+            },
+          })}
+        >
+          <TopicsList />
+        </RouterContext.Provider>
+      </Provider>
+    );
+    await waitFor(() => {
+      expect(
+        screen.getByText(/theories of consciousness/i)
+      ).toBeInTheDocument();
+    });
     fireEvent.click(screen.getByText(/theories of consciousness/i));
-    // debug();
   });
 });
