@@ -465,7 +465,7 @@ describe("TopicsList", () => {
     expect(selectCanonTitle).toBeInTheDocument();
   });
 
-  test("renders select canon title", async () => {
+  test("click on view all topics", async () => {
     getCanonizedTopicsApi.mockResolvedValue({
       status_code: 200,
       data: {
@@ -540,7 +540,7 @@ describe("TopicsList", () => {
     fireEvent.click(screen.getByText(/view all topics/i));
   });
 
-  test("renders select canon title", async () => {
+  test("click on only my topics", async () => {
     getCanonizedTopicsApi.mockResolvedValue({
       status_code: 200,
       data: {
@@ -581,7 +581,7 @@ describe("TopicsList", () => {
     expect(checkbox).not.toBeChecked();
   });
 
-  test("renders select canon title", async () => {
+  test("Change namespaces", async () => {
     getCanonizedTopicsApi.mockResolvedValue({
       status_code: 200,
       data: {
@@ -621,7 +621,7 @@ describe("TopicsList", () => {
     fireEvent.click(screen.getByText("corporations"));
   });
 
-  test("renders select canon title", async () => {
+  test("Click on Search", async () => {
     getCanonizedTopicsApi.mockResolvedValue({
       status_code: 200,
       data: {
@@ -668,7 +668,7 @@ describe("TopicsList", () => {
     );
   });
 
-  test("renders select canon title", async () => {
+  test("Click on Load More", async () => {
     getCanonizedTopicsApi.mockResolvedValue({
       status_code: 200,
       data: {
@@ -704,7 +704,7 @@ describe("TopicsList", () => {
     fireEvent.click(screen.getByText(/load more/i));
   });
 
-  test("renders select canon title", async () => {
+  test("With archive check", async () => {
     getCanonizedTopicsApi.mockResolvedValue({
       status_code: 200,
       data: {

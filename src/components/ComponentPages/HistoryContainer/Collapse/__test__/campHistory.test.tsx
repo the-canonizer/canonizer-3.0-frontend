@@ -92,7 +92,7 @@ describe("CampHistory", () => {
     expect(container.getElementsByTagName("input")).toHaveLength(0);
     expect(container.getElementsByTagName("a")).toHaveLength(4);
   });
-  it("renders the keywords", () => {
+  it("renders the with topic namespaceid null", () => {
     const { container } = render(
       <CampHistory campStatement={campStatement2} topicNamespaceId={null} />
     );

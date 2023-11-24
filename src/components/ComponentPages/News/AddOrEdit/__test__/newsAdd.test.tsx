@@ -138,8 +138,8 @@ describe("Should render Addnews", () => {
     ).toBeInTheDocument();
   });
 
-  it("Login to acces page ", async () => {
-    const { container, debug } = await render(
+  it("Login to access this  page", () => {
+    const { container, debug } = render(
       <Provider store={store3}>
         <RouterContext.Provider
           value={createMockRouter(
@@ -153,6 +153,7 @@ describe("Should render Addnews", () => {
         </RouterContext.Provider>
       </Provider>
     );
+    expect(screen.getByText("Add News")).toBeInTheDocument();
   });
 
   it("Cancel to create news", async () => {
