@@ -49,6 +49,7 @@ import {
   emojiValidation,
   changeSlashToArrow,
 } from "src/utils/generalUtility";
+import DataNotFound from "../../DataNotFound/dataNotFound";
 
 //Ckeditor
 const Editorckl = dynamic(() => import("../../../common/editorck"), {
@@ -106,6 +107,10 @@ const { campAboutUrlRule, summaryRule, keywordsRule, patterns } = messages;
 export default function AddOrManage({ add }: any) {
   const { isUserAuthenticated } = useAuthentication();
   const router = useRouter();
+  const [notFoundStatus, setNotFoundStatus] = useState({
+    status: false,
+    name: "",
+  });
   const [editStatementData, setEditStatementData] = useState({ data: null });
   const [submitIsDisable, setSubmitIsDisable] = useState(true);
   const [submitIsDisableCheck, setSubmitIsDisableCheck] = useState(true);
@@ -328,6 +333,9 @@ export default function AddOrManage({ add }: any) {
         };
         if (manageFormOf == "statement") {
           res = await getEditStatementApi(getDataPayload);
+          if (res && res?.status_code == 404) {
+            setNotFoundStatus({ status: true, name: "Statement" });
+          }
           if (res && res.status_code == 200) {
             setEditCampStatementData(res?.data?.statement?.note);
           }
@@ -689,381 +697,60 @@ export default function AddOrManage({ add }: any) {
 
   return (
     <>
-      <div className={styles.topicDetailContentWrap}>
-        <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar">
-          {/* <SideBarNoFilter /> */}
-        </aside>
+      {notFoundStatus?.status ? (
+        <DataNotFound name={notFoundStatus?.name} backURL={"/"} />
+      ) : (
+        <div className={styles.topicDetailContentWrap}>
+          <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar">
+            {/* <SideBarNoFilter /> */}
+          </aside>
 
-        <div className="pageContentWrap">
-          {!!payloadBreadCrumb?.camp_num && (
-            <CampInfoBar
-              payload={payloadBreadCrumb}
-              isTopicHistoryPage={manageFormOf == "topic" ? true : false}
-            />
-          )}
-          <Card
-            title={
-              add
-                ? K?.exceptionalMessages?.addCampStatement
-                : !objection
-                ? formTitle()
-                : K?.exceptionalMessages?.objectionStatementHeading
-            }
-            className={styles.card}
-            extra={extra()}
-          >
-            <Form
-              form={form}
-              layout={"vertical"}
-              validateTrigger={messages.formValidationTypes()}
-              initialValues={{
-                available_for_child: 0,
-              }}
-              onValuesChange={handleformvalues}
-              onFinish={onFinish}
+          <div className="pageContentWrap">
+            {!!payloadBreadCrumb?.camp_num && (
+              <CampInfoBar
+                payload={payloadBreadCrumb}
+                isTopicHistoryPage={manageFormOf == "topic" ? true : false}
+              />
+            )}
+            <Card
+              title={
+                add
+                  ? K?.exceptionalMessages?.addCampStatement
+                  : !objection
+                  ? formTitle()
+                  : K?.exceptionalMessages?.objectionStatementHeading
+              }
+              className={styles.card}
+              extra={extra()}
             >
-              <Row gutter={28}>
-                <Col xs={24} sm={24} xl={12}>
-                  {/* Nickname=================================================================== */}
-                  <Form.Item
-                    className={styles.formItem}
-                    label={
-                      <>
-                        Nickname <span className="required">*</span>
-                      </>
-                    }
-                    name="nick_name"
-                    rules={[
-                      {
-                        required: true,
-                        message: K?.exceptionalMessages?.selectNickNameErrorMsg,
-                      },
-                    ]}
-                  >
-                    {screenLoading ? (
-                      <CustomSkelton
-                        skeltonFor="list"
-                        bodyCount={1}
-                        stylingClass="listSkeleton"
-                        isButton={false}
-                      />
-                    ) : (
-                      <Select
-                        value={nickNameData[0]?.id}
-                        size="large"
-                        showSearch
-                        optionFilterProp="children"
-                      >
-                        {!!nickNameData &&
-                          nickNameData?.map((names) => (
-                            <Select.Option value={names.id} key={names?.id}>
-                              {names?.nick_name}
-                            </Select.Option>
-                          ))}
-                      </Select>
-                    )}
-                  </Form.Item>
-                </Col>
-                {/* paraent Camp -----------------------===============--------------------------*/}
-                {manageFormOf == "camp" && (
-                  <>
-                    {parentCamp.length >= 1 && (
-                      <Col xs={24} sm={24} xl={12}>
-                        <Form.Item
-                          className={`${styles.formItem} mb-2`}
-                          label={
-                            <>
-                              Parent Camp <span className="required">*</span>
-                            </>
-                          }
-                          name="parent_camp_num"
-                          rules={[
-                            {
-                              required: true,
-                              message:
-                                K?.exceptionalMessages?.selectNickNameErrorMsg,
-                            },
-                          ]}
-                        >
-                          {screenLoading ? (
-                            <CustomSkelton
-                              skeltonFor="list"
-                              bodyCount={1}
-                              stylingClass="listSkeleton"
-                              isButton={false}
-                            />
-                          ) : (
-                            <Select
-                              showSearch
-                              size={"large"}
-                              placeholder="Parent camp"
-                              // data-id="parent-camp"
-                              disabled={objection}
-                              optionFilterProp="children"
-                              onChange={() => {
-                                setSubmitIsDisable(false);
-                              }}
-                              filterOption={(input, option) =>
-                                (
-                                  (option?.children as any)?.props?.children ??
-                                  ""
-                                ).includes(input)
-                              }
-                            >
-                              {parentCamp.map((camp) =>
-                                camp?.camp_num !==
-                                editStatementData?.data?.camp?.camp_num ? (
-                                  <Select.Option
-                                    value={camp.camp_num}
-                                    key={camp.id}
-                                    disabled={
-                                      camp.parent_change_in_review == true
-                                        ? true
-                                        : false
-                                    }
-                                  >
-                                    <Tooltip
-                                      title={
-                                        camp.parent_change_in_review == true
-                                          ? toolTipContent
-                                          : null
-                                      }
-                                    >
-                                      {camp.camp_name}
-                                    </Tooltip>
-                                  </Select.Option>
-                                ) : (
-                                  ""
-                                )
-                              )}
-                            </Select>
-                          )}
-                        </Form.Item>
-                      </Col>
-                    )}
-                    {/* camp name -------------------------------------------------------- -----------------------*/}
-                    <Col xs={24} sm={24} xl={12}>
-                      <Form.Item
-                        className={`${styles.formItem} mb-2`}
-                        label={
-                          <>
-                            Camp Name <span className="required">*</span>
-                            <span className={styles.small}>
-                              (Limit 30 Chars)
-                            </span>
-                          </>
-                        }
-                        name="camp_name"
-                        rules={[
-                          {
-                            required: true,
-                            message: K?.exceptionalMessages?.campNameReqErr,
-                          },
-                          {
-                            pattern: /[^ \s]/,
-                            message: K?.exceptionalMessages?.campNameReqErr,
-                          },
-                          emojiValidation(patterns.emoji_restrication),
-                        ]}
-                      >
-                        {screenLoading ? (
-                          <CustomSkelton
-                            skeltonFor="list"
-                            bodyCount={1}
-                            stylingClass="listSkeleton"
-                            isButton={false}
-                          />
-                        ) : (
-                          <Input
-                            disabled={!!(parentCamp.length < 1 || objection)}
-                            maxLength={30}
-                          />
-                        )}
-                      </Form.Item>
-                    </Col>
-                    {/* keywords  --------------------------------------------------- */}
-                    <Col xs={24} sm={24} xl={12}>
-                      {!objection && (
-                        <Form.Item
-                          className={`${styles.formItem} mb-2`}
-                          label={<>Keywords</>}
-                          name="keywords"
-                          {...keywordsRule}
-                        >
-                          {screenLoading ? (
-                            <CustomSkelton
-                              skeltonFor="list"
-                              bodyCount={1}
-                              stylingClass="listSkeleton"
-                              isButton={false}
-                            />
-                          ) : (
-                            <Input />
-                          )}
-                        </Form.Item>
-                      )}
-                    </Col>
-                  </>
-                )}
-                {/* Topic name =========================================== */}
-                {manageFormOf == "topic" && (
-                  <>
-                    <Col xs={24} sm={24} xl={12}>
-                      <Form.Item
-                        className={`${styles.formItem} mb-2`}
-                        label={
-                          <>
-                            Topic Name <span className="required">*</span>
-                            <span className={styles.small}>
-                              (Limit 30 Chars)
-                            </span>
-                          </>
-                        }
-                        name="topic_name"
-                        rules={[
-                          {
-                            required: true,
-                            message: K?.exceptionalMessages?.topicNameReqErr,
-                          },
-                          {
-                            pattern: /[^ \s]/,
-                            message: K?.exceptionalMessages?.topicNameReqErr,
-                          },
-                          emojiValidation(patterns.emoji_restrication),
-                        ]}
-                      >
-                        {screenLoading ? (
-                          <CustomSkelton
-                            skeltonFor="list"
-                            bodyCount={1}
-                            stylingClass="listSkeleton"
-                            isButton={false}
-                          />
-                        ) : (
-                          <Input disabled={objection} maxLength={30} />
-                        )}
-                      </Form.Item>
-                    </Col>
-                    {/* Name space -------------------------------------------------------------------- */}
-                    {!objection && (
-                      <Col xs={24} sm={24} xl={12}>
-                        <Form.Item
-                          className={`${styles.formItem} namespace_in mb-2`}
-                          label={
-                            <>
-                              Canon <span className="required">*</span>
-                              <span className={styles.small}>
-                                (General is recommended, unless you know
-                                otherwise)
-                              </span>
-                            </>
-                          }
-                          name="name_space"
-                          rules={[
-                            {
-                              required: true,
-                              message:
-                                K?.exceptionalMessages?.selectNickNameErrorMsg,
-                            },
-                          ]}
-                        >
-                          {screenLoading ? (
-                            <CustomSkelton
-                              skeltonFor="list"
-                              bodyCount={1}
-                              stylingClass="listSkeleton"
-                              isButton={false}
-                            />
-                          ) : (
-                            <Select
-                              size={"large"}
-                              placeholder="Name Space"
-                              showSearch
-                              optionFilterProp="children"
-                            >
-                              {canNameSpace.map((camp) => (
-                                <Select.Option value={camp.id} key={camp.id}>
-                                  {changeSlashToArrow(camp.label)}
-                                </Select.Option>
-                              ))}
-                            </Select>
-                          )}
-                        </Form.Item>
-                      </Col>
-                    )}
-                  </>
-                )}
-                {/* statement================================================================================ */}
-                {manageFormOf == "statement" && !objection && (
-                  <Col xs={24} xl={24}>
+              <Form
+                form={form}
+                layout={"vertical"}
+                validateTrigger={messages.formValidationTypes()}
+                initialValues={{
+                  available_for_child: 0,
+                }}
+                onValuesChange={handleformvalues}
+                onFinish={onFinish}
+              >
+                <Row gutter={28}>
+                  <Col xs={24} sm={24} xl={12}>
+                    {/* Nickname=================================================================== */}
                     <Form.Item
-                      className={`${styles.formItem} mb-2`}
-                      name="statement"
-                      label={
-                        <>
-                          Statement <span className="required">*</span>
-                        </>
-                      }
-                      rules={[
-                        {
-                          required: true,
-                          message:
-                            K?.exceptionalMessages?.statementRequiredErrorMsg,
-                        },
-                        {
-                          pattern: /[^ \s]/,
-                          message:
-                            K?.exceptionalMessages?.statementRequiredErrorMsg,
-                        },
-
-                        // allowedEmojies(), this needs to be moved to validation file
-                      ]}
-                    >
-                      {screenLoading ? (
-                        <CustomSkelton
-                          bodyCount
-                          stylingClass
-                          isButton
-                          height={250}
-                          skeltonFor="video"
-                        />
-                      ) : (
-                        <Editorckl
-                          editorState={editorState}
-                          oneditorchange={onEditorStateChange}
-                          placeholder="Write Your Statement Here"
-                          items={EditorToolbarItems}
-                        ></Editorckl>
-                      )}
-                    </Form.Item>
-                  </Col>
-                )}
-
-                <Col xs={24} xl={24}>
-                  {/* object reason  =================================================================================? */}
-                  {objection ? (
-                    <Form.Item
-                      rules={[
-                        {
-                          required: true,
-                          message:
-                            K?.exceptionalMessages?.objectionRequireErrorMsg,
-                        },
-                        {
-                          pattern: /[^ \s]/,
-                          message: K?.exceptionalMessages?.objectionIsRequire,
-                        },
-                        allowedEmojies(),
-                      ]}
                       className={styles.formItem}
-                      name="objection_reason"
                       label={
                         <>
-                          Your Objection Reason{" "}
-                          <span className="required">*</span>{" "}
-                          <small>(Limit 100 Char) </small>
+                          Nickname <span className="required">*</span>
                         </>
                       }
+                      name="nick_name"
+                      rules={[
+                        {
+                          required: true,
+                          message:
+                            K?.exceptionalMessages?.selectNickNameErrorMsg,
+                        },
+                      ]}
                     >
                       {screenLoading ? (
                         <CustomSkelton
@@ -1073,69 +760,43 @@ export default function AddOrManage({ add }: any) {
                           isButton={false}
                         />
                       ) : (
-                        <Input.TextArea size="large" rows={1} maxLength={100} />
+                        <Select
+                          value={nickNameData[0]?.id}
+                          size="large"
+                          showSearch
+                          optionFilterProp="children"
+                        >
+                          {!!nickNameData &&
+                            nickNameData?.map((names) => (
+                              <Select.Option value={names.id} key={names?.id}>
+                                {names?.nick_name}
+                              </Select.Option>
+                            ))}
+                        </Select>
                       )}
                     </Form.Item>
-                  ) : (
+                  </Col>
+                  {/* paraent Camp -----------------------===============--------------------------*/}
+                  {manageFormOf == "camp" && (
                     <>
-                      {/* edit sumaruy ========================================================================================= */}
-                      <Form.Item
-                        className={styles.formItem}
-                        name="edit_summary"
-                        label={
-                          <>
-                            Edit Summary{" "}
-                            <small className={styles.small}>
-                              (Briefly describe your changes)
-                            </small>
-                          </>
-                        }
-                        {...summaryRule}
-                      >
-                        {screenLoading ? (
-                          <CustomSkelton
-                            bodyCount
-                            stylingClass
-                            isButton
-                            height={200}
-                            skeltonFor="video"
-                          />
-                        ) : (
-                          <Input.TextArea
-                            size="large"
-                            rows={7}
-                            defaultValue={String(editCampStatementData)}
-                          />
-                        )}
-                      </Form.Item>
-                      {manageFormOf == "camp" && (
-                        <Text type="danger">
-                          The following fields are rarely used and are for
-                          advanced users only.
-                        </Text>
-                      )}
-                      {/* Camp about url ===================================================== ----------------- */}
-                      {manageFormOf == "camp" && (
-                        <>
+                      {parentCamp.length >= 1 && (
+                        <Col xs={24} sm={24} xl={12}>
                           <Form.Item
                             className={`${styles.formItem} mb-2`}
                             label={
                               <>
-                                Camp About URL
-                                <span className={styles.small}>
-                                  (Limit 1024 Chars)
-                                </span>
+                                Parent Camp <span className="required">*</span>
                               </>
                             }
-                            name="camp_about_url"
-                            // rules={[
-                            //   {
-                            //     pattern: /[^ \s]/,
-                            //     message: "Enter a valid link",
-                            //   },
-                            // ]}
-
-                            {...campAboutUrlRule}
+                            name="parent_camp_num"
+                            rules={[
+                              {
+                                required: true,
+                                message:
+                                  K?.exceptionalMessages
+                                    ?.selectNickNameErrorMsg,
+                              },
+                            ]}
                           >
                             {screenLoading ? (
                               <CustomSkelton
@@ -1145,14 +806,180 @@ export default function AddOrManage({ add }: any) {
                                 isButton={false}
                               />
                             ) : (
-                              <Input maxLength={1024} />
+                              <Select
+                                showSearch
+                                size={"large"}
+                                placeholder="Parent camp"
+                                // data-id="parent-camp"
+                                disabled={objection}
+                                optionFilterProp="children"
+                                onChange={() => {
+                                  setSubmitIsDisable(false);
+                                }}
+                                filterOption={(input, option) =>
+                                  (
+                                    (option?.children as any)?.props
+                                      ?.children ?? ""
+                                  ).includes(input)
+                                }
+                              >
+                                {parentCamp.map((camp) =>
+                                  camp?.camp_num !==
+                                  editStatementData?.data?.camp?.camp_num ? (
+                                    <Select.Option
+                                      value={camp.camp_num}
+                                      key={camp.id}
+                                      disabled={
+                                        camp.parent_change_in_review == true
+                                          ? true
+                                          : false
+                                      }
+                                    >
+                                      <Tooltip
+                                        title={
+                                          camp.parent_change_in_review == true
+                                            ? toolTipContent
+                                            : null
+                                        }
+                                      >
+                                        {camp.camp_name}
+                                      </Tooltip>
+                                    </Select.Option>
+                                  ) : (
+                                    ""
+                                  )
+                                )}
+                              </Select>
                             )}
                           </Form.Item>
-                          {/* cmap about Nickname ========================================== --------------------- */}
+                        </Col>
+                      )}
+                      {/* camp name -------------------------------------------------------- -----------------------*/}
+                      <Col xs={24} sm={24} xl={12}>
+                        <Form.Item
+                          className={`${styles.formItem} mb-2`}
+                          label={
+                            <>
+                              Camp Name <span className="required">*</span>
+                              <span className={styles.small}>
+                                (Limit 30 Chars)
+                              </span>
+                            </>
+                          }
+                          name="camp_name"
+                          rules={[
+                            {
+                              required: true,
+                              message: K?.exceptionalMessages?.campNameReqErr,
+                            },
+                            {
+                              pattern: /[^ \s]/,
+                              message: K?.exceptionalMessages?.campNameReqErr,
+                            },
+                            emojiValidation(patterns.emoji_restrication),
+                          ]}
+                        >
+                          {screenLoading ? (
+                            <CustomSkelton
+                              skeltonFor="list"
+                              bodyCount={1}
+                              stylingClass="listSkeleton"
+                              isButton={false}
+                            />
+                          ) : (
+                            <Input
+                              disabled={!!(parentCamp.length < 1 || objection)}
+                              maxLength={30}
+                            />
+                          )}
+                        </Form.Item>
+                      </Col>
+                      {/* keywords  --------------------------------------------------- */}
+                      <Col xs={24} sm={24} xl={12}>
+                        {!objection && (
                           <Form.Item
                             className={`${styles.formItem} mb-2`}
-                            label={<>Camp About Nickname</>}
-                            name="camp_about_nick_name"
+                            label={<>Keywords</>}
+                            name="keywords"
+                            {...keywordsRule}
+                          >
+                            {screenLoading ? (
+                              <CustomSkelton
+                                skeltonFor="list"
+                                bodyCount={1}
+                                stylingClass="listSkeleton"
+                                isButton={false}
+                              />
+                            ) : (
+                              <Input />
+                            )}
+                          </Form.Item>
+                        )}
+                      </Col>
+                    </>
+                  )}
+                  {/* Topic name =========================================== */}
+                  {manageFormOf == "topic" && (
+                    <>
+                      <Col xs={24} sm={24} xl={12}>
+                        <Form.Item
+                          className={`${styles.formItem} mb-2`}
+                          label={
+                            <>
+                              Topic Name <span className="required">*</span>
+                              <span className={styles.small}>
+                                (Limit 30 Chars)
+                              </span>
+                            </>
+                          }
+                          name="topic_name"
+                          rules={[
+                            {
+                              required: true,
+                              message: K?.exceptionalMessages?.topicNameReqErr,
+                            },
+                            {
+                              pattern: /[^ \s]/,
+                              message: K?.exceptionalMessages?.topicNameReqErr,
+                            },
+                            emojiValidation(patterns.emoji_restrication),
+                          ]}
+                        >
+                          {screenLoading ? (
+                            <CustomSkelton
+                              skeltonFor="list"
+                              bodyCount={1}
+                              stylingClass="listSkeleton"
+                              isButton={false}
+                            />
+                          ) : (
+                            <Input disabled={objection} maxLength={30} />
+                          )}
+                        </Form.Item>
+                      </Col>
+                      {/* Name space -------------------------------------------------------------------- */}
+                      {!objection && (
+                        <Col xs={24} sm={24} xl={12}>
+                          <Form.Item
+                            className={`${styles.formItem} namespace_in mb-2`}
+                            label={
+                              <>
+                                Canon <span className="required">*</span>
+                                <span className={styles.small}>
+                                  (General is recommended, unless you know
+                                  otherwise)
+                                </span>
+                              </>
+                            }
+                            name="name_space"
+                            rules={[
+                              {
+                                required: true,
+                                message:
+                                  K?.exceptionalMessages
+                                    ?.selectNickNameErrorMsg,
+                              },
+                            ]}
                           >
                             {screenLoading ? (
                               <CustomSkelton
@@ -1164,144 +991,339 @@ export default function AddOrManage({ add }: any) {
                             ) : (
                               <Select
                                 size={"large"}
-                                placeholder="--Select Camp About Nickname"
-                                // data-id="parent-camp"
+                                placeholder="Name Space"
                                 showSearch
                                 optionFilterProp="children"
                               >
-                                {campNickName.map((camp) => (
+                                {canNameSpace.map((camp) => (
                                   <Select.Option value={camp.id} key={camp.id}>
-                                    {camp.nick_name}
+                                    {changeSlashToArrow(camp.label)}
                                   </Select.Option>
                                 ))}
                               </Select>
                             )}
                           </Form.Item>
-                        </>
+                        </Col>
                       )}
                     </>
                   )}
-                </Col>
-                <Col xs={24} xl={24}>
-                  <Form.Item className="mb-0">
-                    {screenLoading ? (
-                      <>
-                        <div className="manage-form-btnwrap">
+                  {/* statement================================================================================ */}
+                  {manageFormOf == "statement" && !objection && (
+                    <Col xs={24} xl={24}>
+                      <Form.Item
+                        className={`${styles.formItem} mb-2`}
+                        name="statement"
+                        label={
+                          <>
+                            Statement <span className="required">*</span>
+                          </>
+                        }
+                        rules={[
+                          {
+                            required: true,
+                            message:
+                              K?.exceptionalMessages?.statementRequiredErrorMsg,
+                          },
+                          {
+                            pattern: /[^ \s]/,
+                            message:
+                              K?.exceptionalMessages?.statementRequiredErrorMsg,
+                          },
+
+                          // allowedEmojies(), this needs to be moved to validation file
+                        ]}
+                      >
+                        {screenLoading ? (
+                          <CustomSkelton
+                            bodyCount
+                            stylingClass
+                            isButton
+                            height={250}
+                            skeltonFor="video"
+                          />
+                        ) : (
+                          <Editorckl
+                            editorState={editorState}
+                            oneditorchange={onEditorStateChange}
+                            placeholder="Write Your Statement Here"
+                            items={EditorToolbarItems}
+                          ></Editorckl>
+                        )}
+                      </Form.Item>
+                    </Col>
+                  )}
+
+                  <Col xs={24} xl={24}>
+                    {/* object reason  =================================================================================? */}
+                    {objection ? (
+                      <Form.Item
+                        rules={[
+                          {
+                            required: true,
+                            message:
+                              K?.exceptionalMessages?.objectionRequireErrorMsg,
+                          },
+                          {
+                            pattern: /[^ \s]/,
+                            message: K?.exceptionalMessages?.objectionIsRequire,
+                          },
+                          allowedEmojies(),
+                        ]}
+                        className={styles.formItem}
+                        name="objection_reason"
+                        label={
+                          <>
+                            Your Objection Reason{" "}
+                            <span className="required">*</span>{" "}
+                            <small>(Limit 100 Char) </small>
+                          </>
+                        }
+                      >
+                        {screenLoading ? (
                           <CustomSkelton
                             skeltonFor="list"
                             bodyCount={1}
                             stylingClass="listSkeleton"
                             isButton={false}
                           />
-                          {!objection && (
-                            <>
-                              <CustomSkelton
-                                skeltonFor="list"
-                                bodyCount={1}
-                                stylingClass="listSkeleton"
-                                isButton={false}
-                              />{" "}
-                              <CustomSkelton
-                                skeltonFor="list"
-                                bodyCount={1}
-                                stylingClass="listSkeleton"
-                                isButton={false}
-                              />
-                            </>
-                          )}
-                        </div>
-                      </>
+                        ) : (
+                          <Input.TextArea
+                            size="large"
+                            rows={1}
+                            maxLength={100}
+                          />
+                        )}
+                      </Form.Item>
                     ) : (
                       <>
-                        <Button
-                          size="large"
-                          className={`btn-orange mr-3 ${styles.btnSubmit}`}
-                          htmlType="submit"
-                          disabled={submitIsDisable && submitIsDisableCheck}
-                          id="update-submit-btn"
+                        {/* edit sumaruy ========================================================================================= */}
+                        <Form.Item
+                          className={styles.formItem}
+                          name="edit_summary"
+                          label={
+                            <>
+                              Edit Summary{" "}
+                              <small className={styles.small}>
+                                (Briefly describe your changes)
+                              </small>
+                            </>
+                          }
+                          {...summaryRule}
                         >
-                          {add
-                            ? K?.exceptionalMessages?.submitStatementButton
-                            : !objection
-                            ? K?.exceptionalMessages?.submitUpdateButton
-                            : "Submit Objection"}
-                        </Button>
-                        {!objection && (
-                          <>
-                            <Button
-                              htmlType="button"
-                              className="cancel-btn mr-3"
-                              type="ghost"
+                          {screenLoading ? (
+                            <CustomSkelton
+                              bodyCount
+                              stylingClass
+                              isButton
+                              height={200}
+                              skeltonFor="video"
+                            />
+                          ) : (
+                            <Input.TextArea
                               size="large"
-                              onClick={() => {
-                                let backdata = editStatementData?.data;
-                                setScreenLoading(true);
-                                add
-                                  ? router.push(
-                                      `/topic/${replaceSpecialCharacters(
-                                        router?.query?.statement[0],
-                                        "-"
-                                      )}/${replaceSpecialCharacters(
-                                        router?.query?.statement[1],
-                                        "-"
-                                      )}`
-                                    )
-                                  : router?.push(
-                                      manageFormOf == "camp"
-                                        ? `/camp/history/${
-                                            backdata?.topic?.topic_num
-                                          }-${replaceSpecialCharacters(
-                                            backdata?.topic?.topic_name,
-                                            "-"
-                                          )}/${
-                                            backdata?.parent_camp[
-                                              backdata?.parent_camp.length - 1
-                                            ].camp_num
-                                          }-${replaceSpecialCharacters(
-                                            backdata?.parent_camp[
-                                              backdata?.parent_camp.length - 1
-                                            ].camp_name,
-                                            "-"
-                                          )}`
-                                        : manageFormOf == "statement"
-                                        ? `/statement/history/${
-                                            backdata?.topic?.topic_num
-                                          }-${replaceSpecialCharacters(
-                                            backdata?.topic?.topic_name,
-                                            "-"
-                                          )}/${
-                                            backdata?.parent_camp[
-                                              backdata?.parent_camp.length - 1
-                                            ].camp_num
-                                          }-${replaceSpecialCharacters(
-                                            backdata?.parent_camp[
-                                              backdata?.parent_camp.length - 1
-                                            ].camp_name,
-                                            "-"
-                                          )}`
-                                        : `/topic/history/${
-                                            backdata?.topic?.topic_num
-                                          }-${replaceSpecialCharacters(
-                                            backdata?.topic?.topic_name,
-                                            "-"
-                                          )}`
-                                    );
-                              }}
-                              id="update-cancel-btn"
+                              rows={7}
+                              defaultValue={String(editCampStatementData)}
+                            />
+                          )}
+                        </Form.Item>
+                        {manageFormOf == "camp" && (
+                          <Text type="danger">
+                            The following fields are rarely used and are for
+                            advanced users only.
+                          </Text>
+                        )}
+                        {/* Camp about url ===================================================== ----------------- */}
+                        {manageFormOf == "camp" && (
+                          <>
+                            <Form.Item
+                              className={`${styles.formItem} mb-2`}
+                              label={
+                                <>
+                                  Camp About URL
+                                  <span className={styles.small}>
+                                    (Limit 1024 Chars)
+                                  </span>
+                                </>
+                              }
+                              name="camp_about_url"
+                              // rules={[
+                              //   {
+                              //     pattern: /[^ \s]/,
+                              //     message: "Enter a valid link",
+                              //   },
+                              // ]}
+
+                              {...campAboutUrlRule}
                             >
-                              Cancel
-                            </Button>
+                              {screenLoading ? (
+                                <CustomSkelton
+                                  skeltonFor="list"
+                                  bodyCount={1}
+                                  stylingClass="listSkeleton"
+                                  isButton={false}
+                                />
+                              ) : (
+                                <Input maxLength={1024} />
+                              )}
+                            </Form.Item>
+                            {/* cmap about Nickname ========================================== --------------------- */}
+                            <Form.Item
+                              className={`${styles.formItem} mb-2`}
+                              label={<>Camp About Nickname</>}
+                              name="camp_about_nick_name"
+                            >
+                              {screenLoading ? (
+                                <CustomSkelton
+                                  skeltonFor="list"
+                                  bodyCount={1}
+                                  stylingClass="listSkeleton"
+                                  isButton={false}
+                                />
+                              ) : (
+                                <Select
+                                  size={"large"}
+                                  placeholder="--Select Camp About Nickname"
+                                  // data-id="parent-camp"
+                                  showSearch
+                                  optionFilterProp="children"
+                                >
+                                  {campNickName.map((camp) => (
+                                    <Select.Option
+                                      value={camp.id}
+                                      key={camp.id}
+                                    >
+                                      {camp.nick_name}
+                                    </Select.Option>
+                                  ))}
+                                </Select>
+                              )}
+                            </Form.Item>
                           </>
                         )}
                       </>
                     )}
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Form>
-          </Card>
+                  </Col>
+                  <Col xs={24} xl={24}>
+                    <Form.Item className="mb-0">
+                      {screenLoading ? (
+                        <>
+                          <div className="manage-form-btnwrap">
+                            <CustomSkelton
+                              skeltonFor="list"
+                              bodyCount={1}
+                              stylingClass="listSkeleton"
+                              isButton={false}
+                            />
+                            {!objection && (
+                              <>
+                                <CustomSkelton
+                                  skeltonFor="list"
+                                  bodyCount={1}
+                                  stylingClass="listSkeleton"
+                                  isButton={false}
+                                />{" "}
+                                <CustomSkelton
+                                  skeltonFor="list"
+                                  bodyCount={1}
+                                  stylingClass="listSkeleton"
+                                  isButton={false}
+                                />
+                              </>
+                            )}
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <Button
+                            size="large"
+                            className={`btn-orange mr-3 ${styles.btnSubmit}`}
+                            htmlType="submit"
+                            disabled={submitIsDisable && submitIsDisableCheck}
+                            id="update-submit-btn"
+                          >
+                            {add
+                              ? K?.exceptionalMessages?.submitStatementButton
+                              : !objection
+                              ? K?.exceptionalMessages?.submitUpdateButton
+                              : "Submit Objection"}
+                          </Button>
+                          {!objection && (
+                            <>
+                              <Button
+                                htmlType="button"
+                                className="cancel-btn mr-3"
+                                type="ghost"
+                                size="large"
+                                onClick={() => {
+                                  let backdata = editStatementData?.data;
+                                  setScreenLoading(true);
+                                  add
+                                    ? router.push(
+                                        `/topic/${replaceSpecialCharacters(
+                                          router?.query?.statement[0],
+                                          "-"
+                                        )}/${replaceSpecialCharacters(
+                                          router?.query?.statement[1],
+                                          "-"
+                                        )}`
+                                      )
+                                    : router?.push(
+                                        manageFormOf == "camp"
+                                          ? `/camp/history/${
+                                              backdata?.topic?.topic_num
+                                            }-${replaceSpecialCharacters(
+                                              backdata?.topic?.topic_name,
+                                              "-"
+                                            )}/${
+                                              backdata?.parent_camp[
+                                                backdata?.parent_camp.length - 1
+                                              ].camp_num
+                                            }-${replaceSpecialCharacters(
+                                              backdata?.parent_camp[
+                                                backdata?.parent_camp.length - 1
+                                              ].camp_name,
+                                              "-"
+                                            )}`
+                                          : manageFormOf == "statement"
+                                          ? `/statement/history/${
+                                              backdata?.topic?.topic_num
+                                            }-${replaceSpecialCharacters(
+                                              backdata?.topic?.topic_name,
+                                              "-"
+                                            )}/${
+                                              backdata?.parent_camp[
+                                                backdata?.parent_camp.length - 1
+                                              ].camp_num
+                                            }-${replaceSpecialCharacters(
+                                              backdata?.parent_camp[
+                                                backdata?.parent_camp.length - 1
+                                              ].camp_name,
+                                              "-"
+                                            )}`
+                                          : `/topic/history/${
+                                              backdata?.topic?.topic_num
+                                            }-${replaceSpecialCharacters(
+                                              backdata?.topic?.topic_name,
+                                              "-"
+                                            )}`
+                                      );
+                                }}
+                                id="update-cancel-btn"
+                              >
+                                Cancel
+                              </Button>
+                            </>
+                          )}
+                        </>
+                      )}
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </Form>
+            </Card>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 }

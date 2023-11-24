@@ -23,7 +23,7 @@ import { getHistoryApi } from "../../network/api/history";
 import TopicDetails from "src/components/ComponentPages/TopicDetails";
 import { setCurrentDate } from "src/store/slices/filtersSlice";
 import { useEffect, useRef } from "react";
-import DataNotFound from "@/components/ComponentPages/DataNotFound";
+import DataNotFound from "@/components/ComponentPages/DataNotFound/dataNotFound";
 
 const TopicDetailsPage = ({
   current_date,
@@ -50,20 +50,23 @@ const TopicDetailsPage = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  let ErrorStatus =
+    tree?.status_code == 404 ||
+    (tree?.status_code == 422 &&
+      (!tree?.error?.camp_num ||
+        (tree?.error?.camp_num && tree?.error?.topic_num)))
+      ? "Topic"
+      : "Camp";
+
   return (
     <Layout>
       {tree?.status_code == 404 ||
       tree?.status_code == 422 ||
       campRecord?.status_code == 404 ? (
         <DataNotFound
-          isTopic={
-            tree?.status_code == 404 ||
-            (tree?.status_code == 422 &&
-              (!tree?.error?.camp_num ||
-                (tree?.error?.camp_num && tree?.error?.topic_num)))
-              ? true
-              : false
-          }
+          name={ErrorStatus}
+          message={`${ErrorStatus} not found`}
+          backURL={"/"}
         />
       ) : (
         <TopicDetails serverSideCall={serverSideCall} />
