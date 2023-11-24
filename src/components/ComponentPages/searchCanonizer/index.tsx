@@ -73,8 +73,8 @@ const Search = () => {
                         accumulator[index] = {
                           camp_name:
                             currentVal[accIndex]?.camp_name == "Agreement"
-                              ? currentVal[accIndex].topic_name
-                              : currentVal[accIndex].camp_name,
+                              ? currentVal[accIndex]?.topic_name
+                              : currentVal[accIndex]?.camp_name,
                           camp_link: currentVal[accIndex]?.camp_link,
                           topic_name: currentVal[accIndex]?.topic_name,
                         };
@@ -85,7 +85,7 @@ const Search = () => {
                     return (
                       <>
                         <li>
-                          <Link href={`/${jsonData[0][1].camp_link}`}>
+                          <Link href={`/${jsonData[0][1]?.camp_link}`}>
                             <a> {x.type_value}</a>
                           </Link>
                           <div className={styles.tags_all}>
@@ -127,8 +127,8 @@ const Search = () => {
                         accumulator[index] = {
                           camp_name:
                             currentVal[accIndex]?.camp_name == "Agreement"
-                              ? currentVal[accIndex].topic_name
-                              : currentVal[accIndex].camp_name,
+                              ? currentVal[accIndex]?.topic_name
+                              : currentVal[accIndex]?.camp_name,
                           camp_link: currentVal[accIndex]?.camp_link,
                         };
                         return accumulator;
