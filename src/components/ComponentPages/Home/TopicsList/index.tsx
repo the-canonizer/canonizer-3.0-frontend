@@ -459,6 +459,7 @@ const TopicsList = () => {
           showSearch
           optionFilterProp="children"
           id="name-space-dropdown"
+          data-testid="name-space-dropdown"
           disabled={loading}
         >
           {nameSpacesList?.map((item) => {

@@ -5,7 +5,7 @@ import styles from "./search.module.scss";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
-import { Pagination } from "antd";
+import { Empty, Pagination } from "antd";
 
 const TopicSearch = () => {
   const { searchData } = useSelector((state: RootState) => ({
@@ -24,6 +24,9 @@ const TopicSearch = () => {
   useEffect(() => {
     pageChange(currentPage, 20);
   });
+  const showEmpty = (msg) => {
+    return <Empty description={msg} />;
+  };
   return (
     <Fragment>
       <aside className="leftSideBar miniSideBar">
@@ -39,25 +42,33 @@ const TopicSearch = () => {
             {/* <AdvanceFilter /> */}
           </div>
           <div className={styles.search_lists}>
-            <ul>
-              {searchData.topic
-                .slice(startingPosition, endingPosition)
-                .map((x) => {
-                  return (
-                    <>
-                      <li>
-                        <Link href={`/${x.link}`}>
-                          <a>
-                            <label>{x.type_value}</label>
-                          </a>
-                        </Link>
+            {searchData.topic.length ? (
+              <div>
+                <ul>
+                  {searchData.topic
+                    .slice(startingPosition, endingPosition)
+                    .map((x) => {
+                      return (
+                        <>
+                          <li>
+                            <Link href={`/${x.link}`}>
+                              <a>
+                                <label>{x.type_value}</label>
+                              </a>
+                            </Link>
 
-                        <span className={styles.ml_auto}>{x.namespace}</span>
-                      </li>
-                    </>
-                  );
-                })}
-            </ul>
+                            <span className={styles.ml_auto}>
+                              {x.namespace}
+                            </span>
+                          </li>
+                        </>
+                      );
+                    })}
+                </ul>
+              </div>
+            ) : (
+              showEmpty("No Data Found")
+            )}
           </div>
           <Pagination
             hideOnSinglePage={true}
