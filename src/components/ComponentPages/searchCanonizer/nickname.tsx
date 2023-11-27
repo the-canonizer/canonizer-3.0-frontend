@@ -5,7 +5,7 @@ import styles from "./search.module.scss";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 import Link from "next/link";
-import { Pagination } from "antd";
+import { Empty, Pagination } from "antd";
 
 const NicknameSearch = () => {
   const { searchData } = useSelector((state: RootState) => ({
@@ -24,6 +24,9 @@ const NicknameSearch = () => {
   useEffect(() => {
     pageChange(currentPage, 20);
   });
+  const showEmpty = (msg) => {
+    return <Empty description={msg} />;
+  };
   return (
     <Fragment>
       <aside className="leftSideBar miniSideBar">
@@ -38,32 +41,38 @@ const NicknameSearch = () => {
             {/* <AdvanceFilter /> */}
           </div>
           <div className={styles.search_lists}>
-            <ul>
-              {searchData.nickname
-                .slice(startingPosition, endingPosition)
-                .map((x) => {
-                  return (
-                    <>
-                      <li>
-                        <Link href={`/${x.link}`}>
-                          <a>
-                            <label style={{ cursor: "pointer" }}>
-                              {x.type_value}
-                            </label>
-                          </a>
-                        </Link>
+            {searchData.nickname.length ? (
+              <div>
+                <ul>
+                  {searchData.nickname
+                    .slice(startingPosition, endingPosition)
+                    .map((x) => {
+                      return (
+                        <>
+                          <li>
+                            <Link href={`/${x.link}`}>
+                              <a>
+                                <label style={{ cursor: "pointer" }}>
+                                  {x.type_value}
+                                </label>
+                              </a>
+                            </Link>
 
-                        <span className={styles.ml_auto}>
-                          Supported camps:{" "}
-                          <strong className={styles.yellow_color}>
-                            {x.support_count}
-                          </strong>{" "}
-                        </span>
-                      </li>
-                    </>
-                  );
-                })}
-            </ul>
+                            <span className={styles.ml_auto}>
+                              Supported camps:{" "}
+                              <strong className={styles.yellow_color}>
+                                {x.support_count ? x.support_count : 0}
+                              </strong>{" "}
+                            </span>
+                          </li>
+                        </>
+                      );
+                    })}
+                </ul>
+              </div>
+            ) : (
+              showEmpty("No Data Found")
+            )}
           </div>
           <Pagination
             hideOnSinglePage={true}
