@@ -1,24 +1,23 @@
-import { Spin, Tooltip, Typography } from "antd";
-import { useRouter } from "next/router";
 import { useState, useEffect, useRef } from "react";
+import { Button, Spin, Tooltip, Typography } from "antd";
+import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
+import { DoubleRightOutlined, ArrowLeftOutlined } from "@ant-design/icons";
+import Link from "next/link";
+import moment from "moment";
+
 // import {
 //   getTreesApi,
 //   subscribeToCampApi,
 // } from "../../../../network/api/campDetailApi";
 import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
-import moment from "moment";
-import CustomSkelton from "../../../common/customSkelton";
-
-import { setManageSupportStatusCheck } from "../../../../store/slices/campDetailSlice";
-
+import CustomSkelton from "src/components/common/customSkelton";
+import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 // import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
-import { getCampBreadCrumbApi } from "../../../../network/api/campDetailApi";
-import { DoubleRightOutlined } from "@ant-design/icons";
-import Link from "next/link";
-import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 // import SocialShareUI from "../../../common/socialShare";
+import { getCampBreadCrumbApi } from "src/network/api/campDetailApi";
+import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 // const CodeIcon = () => (
 //   <svg
@@ -38,6 +37,7 @@ const TimelineInfoBar = ({
   payload = null,
   isTopicPage = false,
   isTopicHistoryPage = false,
+  isForumPage = false,
 }: any) => {
   // const { isUserAuthenticated } = useAuthentication();
 
@@ -382,8 +382,7 @@ const TimelineInfoBar = ({
                 }`
               }
             >
-              {" "}
-              <span className="normal"> Topic : </span>
+              <span className="normal">Topic : </span>
               {loadingIndicator ? (
                 <CustomSkelton
                   skeltonFor="list"
@@ -393,7 +392,6 @@ const TimelineInfoBar = ({
                 />
               ) : isTopicHistoryPage ? (
                 <>
-                  {" "}
                   <Link
                     href={`/topic/${
                       payload?.topic_num
@@ -412,7 +410,6 @@ const TimelineInfoBar = ({
                   {breadCrumbRes?.topic_name}
                 </span>
               )}
-              {"  "}
               {!!topicSubscriptionID && (
                 <Tooltip
                   title="You have subscribed to the entire topic."
@@ -425,7 +422,6 @@ const TimelineInfoBar = ({
               )}
             </Typography.Paragraph>
             <div className={styles.breadcrumbLinks}>
-              {" "}
               <Typography.Paragraph
                 className={"mb-0 " + styles.topicTitleStyle}
               >
@@ -457,7 +453,6 @@ const TimelineInfoBar = ({
                         >
                           <a>
                             <span className={styles.slashStyle}>
-                              {" "}
                               {index !== 0 && <DoubleRightOutlined />}{" "}
                             </span>
                             <span
@@ -487,6 +482,17 @@ const TimelineInfoBar = ({
                 )}
               </Typography.Paragraph>
             </div>
+            {isForumPage ? (
+              <Button
+                onClick={() => router.back()}
+                className={styles.backButton}
+              >
+                <ArrowLeftOutlined />
+                Back
+              </Button>
+            ) : (
+              ""
+            )}
           </div>
 
           {/* <div className={styles.topicDetailContentHead_Right}>

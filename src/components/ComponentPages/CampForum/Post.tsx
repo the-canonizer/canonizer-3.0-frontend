@@ -27,7 +27,7 @@ const Threads = ({
   <div className="d-flex">
     <ThreadSidebar />
     <div className="pageContentWrap">
-      <CampInfoBar payload={payload} />
+      <CampInfoBar payload={payload} isForumPage={true} />
       <Post
         onFinishPost={onFinishPost}
         onCancel={onCancel}
