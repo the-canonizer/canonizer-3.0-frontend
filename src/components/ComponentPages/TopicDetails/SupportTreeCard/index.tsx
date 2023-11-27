@@ -243,7 +243,11 @@ const SupportTreeCard = ({
                           ) : (
                             <Popover
                               placement="right"
-                              content={"Log in to participate"}
+                              content={
+                                !isUserAuthenticated
+                                  ? "Log in to participate"
+                                  : ""
+                              }
                             >
                               <a>
                                 <Button
