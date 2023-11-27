@@ -34,6 +34,7 @@ const NetworkConstants = {
     SendOTP: `${BaseCanonizerApiUrl}/send-otp`,
     VerifyOTP: `${BaseCanonizerApiUrl}/verify-otp`,
     GetLanguageList: `${BaseCanonizerApiUrl}/get-languages`,
+    EditProfileImage: `${BaseCanonizerApiUrl}/update-profile-picture`,
     // Forgot Password
     SendForgotPasswordOTP: `${BaseCanonizerApiUrl}/forgot-password/send-otp`,
     VerifyForgotPasswordOTP: `${BaseCanonizerApiUrl}/forgot-password/verify-otp`,

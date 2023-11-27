@@ -10,6 +10,7 @@ const EventLine = () => {
   // const router = useRouter();
 
   const [timelineDescript, setTimelineDescript] = useState([]);
+  const [loadingEvents, setLoadingEvents] = useState(false);
 
   return (
     <>
@@ -17,7 +18,10 @@ const EventLine = () => {
         <TimelineInfoBar />
 
         <aside className={styles.miniSide + " leftSideBar miniSideBar"}>
-          <SideBarTimeline timelineDescript={timelineDescript} />
+          <SideBarTimeline
+            timelineDescript={timelineDescript}
+            loadingEvents={loadingEvents}
+          />
         </aside>
 
         <>
@@ -31,7 +35,11 @@ const EventLine = () => {
               className="topicDetailsCollapse"
             >
               <Panel disabled header={<h3>Consensus Tree Race</h3>} key="1">
-                <TimeLine setTimelineDescript={setTimelineDescript} />
+                <TimeLine
+                  setTimelineDescript={setTimelineDescript}
+                  loadingEvents={loadingEvents}
+                  setLoadingEvents={setLoadingEvents}
+                />
               </Panel>
             </Collapse>
           </div>

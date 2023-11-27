@@ -129,12 +129,14 @@ const SupportTreeCard = ({
 
   //Delegate Support Camp
   const handleDelegatedClick = () => {
-    dispatch(setManageSupportStatusCheck(true));
-    dispatch(
-      setDelegatedSupportClick({
-        delegatedSupportClick: true,
-      })
-    );
+    if (isUserAuthenticated) {
+      dispatch(setManageSupportStatusCheck(true));
+      dispatch(
+        setDelegatedSupportClick({
+          delegatedSupportClick: true,
+        })
+      );
+    }
   };
 
   const handleClickSupportCheck = () => {
@@ -184,18 +186,6 @@ const SupportTreeCard = ({
       if ((!loadMore && index < supportLength) || loadMore) {
         if (data[item].delegates) {
           /* eslint-disable */
-          const linkss = (
-            <Link
-              href={{
-                pathname: `/user/supports/${data[item].nick_name_id}`,
-                query: {
-                  topicnum: topicRecord?.topic_num,
-                  campnum: topicRecord?.camp_num,
-                  canon: topicRecord?.namespace_id,
-                },
-              }}
-            ></Link>
-          );
           /* eslint-enable */
 
           return (
@@ -225,7 +215,6 @@ const SupportTreeCard = ({
                           {data[item].support_order}:{data[item].nick_name}
                         </a>
                       </Link>
-
                       {/* </span> */}
                       <span
                         className={
@@ -237,56 +226,59 @@ const SupportTreeCard = ({
                           : data[item].score?.toFixed(2)}
                         {/* {data[item].score?.toFixed(2)} */}
                       </span>
-                      {isUserAuthenticated ? (
-                        !userNickNameList.includes(data[item].nick_name_id) ? (
-                          <Link
-                            href={
-                              manageSupportPath + `_${data[item].nick_name_id}`
-                            }
-                          >
-                            {loggedInUserDelegate ||
-                            (loggedInUserChild &&
-                              delegateNickNameId !=
-                                data[item].delegate_nick_name_id) ||
-                            data[item].delegates?.findIndex((obj) =>
-                              userNickNameList.includes(obj.nick_name_id)
-                            ) > -1 ? (
-                              ""
-                            ) : (
+                      {!userNickNameList.includes(data[item].nick_name_id) ? (
+                        <Link
+                          href={
+                            manageSupportPath + `_${data[item].nick_name_id}`
+                          }
+                        >
+                          {loggedInUserDelegate ||
+                          (loggedInUserChild &&
+                            delegateNickNameId !=
+                              data[item].delegate_nick_name_id) ||
+                          data[item].delegates?.findIndex((obj) =>
+                            userNickNameList.includes(obj.nick_name_id)
+                          ) > -1 ? (
+                            ""
+                          ) : (
+                            <Popover
+                              placement="right"
+                              content={"Log in to participate"}
+                            >
                               <a>
                                 <Button
                                   id="supportTreeDelegateYourSupport"
-                                  disabled={asof == "bydate"}
+                                  disabled={
+                                    asof == "bydate" || !isUserAuthenticated
+                                  }
                                   onClick={handleDelegatedClick}
                                   className="delegate-support-style"
                                 >
                                   {"Delegate Your Support"}
                                 </Button>
                               </a>
-                            )}
-                          </Link>
-                        ) : (
-                          <a>
-                            <Button
-                              id="supportTreeRemoveSupport"
-                              disabled={asof == "bydate"}
-                              onClick={() => {
-                                currentGetCheckSupportExistsData.is_delegator
-                                  ? setIsDelegateSupportTreeCardModal(true)
-                                  : topicList.length <= 1
-                                  ? setIsSupportTreeCardModal(true)
-                                  : setIsSupportTreeCardModal(true);
-
-                                setModalData(data[item]);
-                              }}
-                              className="delegate-support-style"
-                            >
-                              {"Remove Your Support"}
-                            </Button>
-                          </a>
-                        )
+                            </Popover>
+                          )}
+                        </Link>
                       ) : (
-                        ""
+                        <a>
+                          <Button
+                            id="supportTreeRemoveSupport"
+                            disabled={asof == "bydate"}
+                            onClick={() => {
+                              currentGetCheckSupportExistsData.is_delegator
+                                ? setIsDelegateSupportTreeCardModal(true)
+                                : topicList.length <= 1
+                                ? setIsSupportTreeCardModal(true)
+                                : setIsSupportTreeCardModal(true);
+
+                              setModalData(data[item]);
+                            }}
+                            className="delegate-support-style"
+                          >
+                            {"Remove Your Support"}
+                          </Button>
+                        </a>
                       )}
                     </div>
                   </>

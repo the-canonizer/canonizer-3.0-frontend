@@ -1,11 +1,11 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store";
-
+import debounce from "lodash/debounce";
 import styles from "../siteHeader.module.scss";
-import { AutoComplete, Input } from "antd";
+import { AutoComplete, Empty, Input } from "antd";
 
 import TopicCreationBTN from "../TopicCreationBTN";
 import queryParams from "src/utils/queryParams";
@@ -20,6 +20,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
   const [searchCamps, setSearchCamps] = useState([]);
   const [searchCampStatement, setSearchCampStatement] = useState([]);
   const [searchNickname, setSearchNickname] = useState([]);
+  const [searchVal, setSearchVal] = useState("");
   let { searchValue } = useSelector((state: RootState) => ({
     searchValue: state?.searchSlice?.searchValue,
   }));
@@ -49,19 +50,22 @@ const HeaderMenu = ({ loggedUser }: any) => {
   };
   useEffect(() => {
     if (searchValue?.length == 0) {
-      const localSearch = localStorage.getItem("searchValue");
+      // const localSearch = localStorage.getItem("searchValue");
       searchValue = router?.asPath
         ?.split("=")[1]
         ?.split("+")
         .join(" ")
         ?.replace(/%20/g, " ");
-
-      if (localSearch) {
-        dispatch(setSearchValue(localSearch));
-        getGlobalSearchCanonizer(localSearch, true);
-      }
+      setSearchVal("");
+      // if (localSearch) {
+      dispatch(setSearchValue(searchValue));
+      getGlobalSearchCanonizer(searchValue, true);
+      // }
     }
   }, []);
+  const showEmpty = (msg) => {
+    return <Empty description={msg} />;
+  };
 
   const options = [
     {
@@ -76,10 +80,12 @@ const HeaderMenu = ({ loggedUser }: any) => {
               {searchTopics.slice(0, 5)?.map((x) => {
                 return (
                   <>
-                    <li>
+                    <li style={{ cursor: "default" }}>
                       <Link href={`/${x.link}`}>
                         <a>
-                          <label>{x.type_value}</label>
+                          <label style={{ cursor: "pointer" }}>
+                            {x.type_value}
+                          </label>
                         </a>
                       </Link>
                     </li>
@@ -124,11 +130,13 @@ const HeaderMenu = ({ loggedUser }: any) => {
 
                 return (
                   <>
-                    <li>
-                      <Link href={`/${jsonData[0][1].camp_link}`}>
+                    <li style={{ cursor: "default" }}>
+                      <Link href={`/${jsonData[0][1]?.camp_link}`}>
                         <a className={styles.camp_heading_color}>
                           {" "}
-                          {x.type_value}
+                          <label style={{ cursor: "pointer" }}>
+                            {x.type_value}
+                          </label>
                         </a>
                       </Link>
 
@@ -187,9 +195,12 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 );
                 return (
                   <>
-                    <li>
+                    <li style={{ cursor: "default" }}>
                       <div className="d-flex flex-wrap g-2">
-                        <a href={`/${jsonData?.[0]?.[1].camp_link}`}>
+                        <a
+                          style={{ cursor: "pointer" }}
+                          href={`/${jsonData?.[0]?.[1]?.camp_link}`}
+                        >
                           <h3 className="m-0">
                             {jsonData?.length > 1
                               ? jsonData?.[0]?.[1]?.camp_name
@@ -250,11 +261,13 @@ const HeaderMenu = ({ loggedUser }: any) => {
               {searchNickname.slice(0, 5)?.map((x) => {
                 return (
                   <>
-                    <li>
+                    <li style={{ cursor: "default" }}>
                       <div className="d-flex flex-wrap">
                         <Link href={`/${x.link}`}>
                           <a>
-                            <label>{x.type_value}</label>
+                            <label style={{ cursor: "pointer" }}>
+                              {x.type_value}
+                            </label>
                           </a>
                         </Link>
                         <span className="ml_auto suppport_camps">
@@ -298,7 +311,11 @@ const HeaderMenu = ({ loggedUser }: any) => {
       ],
     },
   ];
-
+  const no = [
+    {
+      options: [renderItem(showEmpty("No Data Found"))],
+    },
+  ];
   const links = [
     {
       link: "/browse",
@@ -347,16 +364,20 @@ const HeaderMenu = ({ loggedUser }: any) => {
   };
 
   const handleSearchfor = () => {
+    setInputSearch("");
+    setSearchVal("");
     getGlobalSearchCanonizer(searchValue, true);
   };
 
   const handlePress = (e) => {
+    setInputSearch("");
+    setSearchVal("");
     router.push({
       pathname: "/search",
       query: { q: searchValue },
     });
   };
-  console.log(router, "router");
+  const debounceFn = useMemo(() => debounce(getGlobalSearchCanonizer, 500), []);
   return (
     <Fragment>
       <nav className={styles.nav}>
@@ -398,31 +419,43 @@ const HeaderMenu = ({ loggedUser }: any) => {
           popupClassName="certain-category-search-dropdown"
           dropdownMatchSelectWidth={false}
           // className={"search_header"}
-          options={inputSearch ? options : []}
-          value={searchValue}
+          options={
+            searchTopics.length ||
+            searchCamps.length ||
+            searchCampStatement.length ||
+            searchNickname.length
+              ? options
+              : inputSearch == ""
+              ? []
+              : no
+          }
+          value={searchVal}
         >
           <Input
             size="large"
             placeholder="Search for"
-            value={searchValue}
+            value={searchVal}
             type="text"
             name="search"
             prefix={<i className="icon-search"></i>}
             onChange={(e) => {
-              localStorage.setItem("searchValue", e.target.value);
+              // localStorage.setItem("searchValue", e.target.value);
 
               dispatch(setSearchValue(e.target.value));
               setInputSearch(e.target.value);
-              getGlobalSearchCanonizer(e.target.value, false);
+              setSearchVal(e.target.value);
+              debounceFn.cancel();
+              if (e?.target?.value) debounceFn(e.target.value, false);
             }}
             onPressEnter={(e) => {
               // localStorage.setItem("searchValue",(e.target as HTMLTextAreaElement).value)
               // !router.asPath.includes("/search") ? handlePress(e) : "";
               handlePress(e);
-              getGlobalSearchCanonizer(
-                (e.target as HTMLTextAreaElement).value,
-                true
-              );
+              if ((e.target as HTMLTextAreaElement).value)
+                getGlobalSearchCanonizer(
+                  (e.target as HTMLTextAreaElement).value,
+                  true
+                );
             }}
           />
         </AutoComplete>

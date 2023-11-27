@@ -3,6 +3,7 @@ import styles from "../UserProfileUI/UserProfile.module.scss";
 import messages from "../../../../messages";
 import { Card, Row, Col } from "antd";
 import CustomSkelton from "../../../common/customSkelton";
+import Image from "next/image";
 const UserProfileDetails = ({
   profileData,
   userSupportedCampsList,
@@ -28,7 +29,18 @@ const UserProfileDetails = ({
               />
             ) : (
               <div>
-                <div style={{ paddingBottom: "8px" }}>
+                <div className={styles.profileInfo}>
+                  {profileData?.profile_picture && (
+                    <div className={styles.profile_picture}>
+                      <Image
+                        src={profileData.profile_picture}
+                        alt="profile-picture"
+                        width={90}
+                        height={90}
+                        style={{ borderRadius: "50px" }}
+                      />
+                    </div>
+                  )}
                   <Row gutter={30}>
                     {profileData?.first_name || profileData?.last_name ? (
                       <Col md={12} sm={12} xs={12}>

@@ -127,7 +127,7 @@ function CompareStatementUI({
                         <Link
                           href={`/user/supports/${
                             s1["submitter_nick_id"] || ""
-                          }&canon=${s1["namespace_id"] || 1}`}
+                          }?canon=${s1["namespace_id"] || 1}`}
                         >
                           <a>{s1?.submitter_nick_name}</a>
                         </Link>
@@ -174,7 +174,7 @@ function CompareStatementUI({
                             <Link
                               href={`/user/supports/${
                                 s1["camp_about_nick_id"] || ""
-                              }&canon=${s1["namespace_id"] || 1}`}
+                              }?canon=${s1["namespace_id"] || 1}`}
                             >
                               <a>{s1?.camp_about_nick_name}</a>
                             </Link>
@@ -247,7 +247,7 @@ function CompareStatementUI({
                         <Link
                           href={`/user/supports/${
                             s2["submitter_nick_id"] || ""
-                          }&canon=${s2["namespace_id"] || 1}`}
+                          }?canon=${s2["namespace_id"] || 1}`}
                         >
                           <a>{s2?.submitter_nick_name}</a>
                         </Link>
@@ -293,7 +293,7 @@ function CompareStatementUI({
                             <Link
                               href={`/user/supports/${
                                 s2["camp_about_nick_id"] || ""
-                              }&canon=${s2["namespace_id"] || 1}`}
+                              }?canon=${s2["namespace_id"] || 1}`}
                             >
                               <a>{s2?.camp_about_nick_name}</a>
                             </Link>
@@ -388,7 +388,7 @@ function CompareStatementUI({
                         <Link
                           href={`/user/supports/${
                             liveStatement["submitter_nick_id"] || ""
-                          }&canon=${liveStatement["namespace_id"] || 1}`}
+                          }?canon=${liveStatement["namespace_id"] || 1}`}
                         >
                           <a>{liveStatement?.submitter_nick_name}</a>
                         </Link>
@@ -436,7 +436,7 @@ function CompareStatementUI({
                             <Link
                               href={`/user/supports/${
                                 liveStatement["camp_about_nick_id"] || ""
-                              }&canon=${liveStatement["namespace_id"] || 1}`}
+                              }?canon=${liveStatement["namespace_id"] || 1}`}
                             >
                               <a>{liveStatement?.camp_about_nick_name}</a>
                             </Link>

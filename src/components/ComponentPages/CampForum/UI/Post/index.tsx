@@ -78,7 +78,7 @@ const PostUI = ({
                 <Link
                   href={`/user/supports/${
                     currentThread["creation_nick_name_id"] || ""
-                  }&canon=${currentThread["namespace_id"] || 1}`}
+                  }?canon=${currentThread["namespace_id"] || 1}`}
                   passHref
                 >
                   <a className={styles.by}>
