@@ -58,9 +58,10 @@
     margin-left: 25px;
     margin-right: auto;
     display: flex;
+    align-items: center;
     @media screen and (min-width: 1440px) {
       display: flex;
-     flex: 1;
+      flex: 1;
     }
     // display: flex;
     // flex: 1;
@@ -388,27 +389,23 @@
   }
 }
 
-
-.search_heading_top
-{
+.search_heading_top {
   font-size: 16px;
   font-weight: 700;
-  color: #4484CE;
+  color: #4484ce;
 }
-.statement_date_search_camp_statement
-{
+.statement_date_search_camp_statement {
   margin-left: auto;
   font-size: 12px;
-  color: #86909F;
+  color: #86909f;
 }
-.tags_all_search_camp_statement
-{
-  color: #4484CE;
+.tags_all_search_camp_statement {
+  color: #4484ce;
 }
-.camp_heading_color{
-  color: #2E3136;
+.camp_heading_color {
+  color: #2e3136;
 }
-.bold_margin{
+.bold_margin {
   border-bottom: 2px solid #ededed;
   margin: 0 0 8px;
 }
