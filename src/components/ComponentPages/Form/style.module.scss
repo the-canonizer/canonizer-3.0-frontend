@@ -1,0 +1,19 @@
+.imageWrapper {
+  width: 150px;
+  display: flex;
+  justify-content: center;
+}
+.profileInfo {
+  @media screen and (min-width: 576px) {
+    width: calc(100% - 150px);
+  }
+  @media screen and (max-width: 575px) {
+    width: 100%;
+  }
+}
+.profileCardWrapper {
+  display: flex;
+  @media screen and (max-width: 575px) {
+    flex-direction: column;
+  }
+}

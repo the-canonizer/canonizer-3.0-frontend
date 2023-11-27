@@ -166,6 +166,22 @@ export const changePassword = async (values: object) => {
   return res;
 };
 
+export const uploadProfileImage = async (reqbody) => {
+  const { auth } = store.getState();
+  const res = await NetworkCall.fetch(
+    UserRequest.uploadProfileImage(reqbody, auth.loggedInUser.id)
+  );
+  return res;
+};
+
+export const deleteProfileImage = () => {
+  const { auth } = store.getState();
+  const res = NetworkCall.fetch(
+    UserRequest.deleteProfileImage(auth.loggedInUser.id)
+  );
+  return res;
+};
+
 // social login path
 export const socialLogin = async (values: object) => {
   try {
